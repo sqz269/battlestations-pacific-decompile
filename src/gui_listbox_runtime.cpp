@@ -1,6 +1,10 @@
 #include "bsp/gui_listbox_runtime.hpp"
 #include "bsp/gui_text_lifetime.hpp"
 #include "bsp/gui_listbox_row_control.hpp"
+#include "bsp/gui_resources.hpp"
+#include "bsp/gui_text_type_dispatch.hpp"
+#include "bsp/gui_widget_relative_bounds.hpp"
+#include <cstring>
 #include <exception>
 #include <stdexcept>
 
@@ -50,7 +54,50 @@ float center_offset(float accumulator, const volatile double* half) {
     }
     return accumulator;
 }
+float add_float(float a, float b) {
+    __asm {
+        fld a
+        fadd b
+        fstp a
+    }
+    return a;
+}
+float add_float_pair(float a, float b, const float* c) {
+    __asm {
+        fld a
+        fadd b
+        mov eax, c
+        fadd dword ptr [eax]
+        fstp a
+    }
+    return a;
+}
+float multiply_float(float a, const std::uint32_t* b) {
+    __asm {
+        fld a
+        mov eax, b
+        fmul dword ptr [eax]
+        fstp a
+    }
+    return a;
+}
 } // namespace
+
+GuiLayoutWidget* select_gui_highlight_widget_00aa0f50(
+    const GuiResourceState& manager, std::int32_t selector) noexcept {
+    if (selector == 1) return manager.highlight_frame;
+    if (selector == 2) return manager.highlight_circle;
+    return nullptr;
+}
+float gui_node_hierarchy_factor_00a9abd0(
+    GuiWidgetOwnerRuntime& owners, NativeNodeBinding& node) {
+    if (node.storage.parent_30)
+        return multiply_float(gui_node_hierarchy_factor_00a9abd0(
+            owners, owners.node(node.storage.parent_30)), &node.storage.scalar_ac);
+    float factor;
+    std::memcpy(&factor, &node.storage.scalar_ac, sizeof(factor));
+    return x87_argument(factor);
+}
 
 void set_gui_widget_local_xy_00aa7d00(GuiWidgetOwner& owner, float x, float y) {
     auto& p = owner.layout().transform.position;
@@ -144,6 +191,137 @@ void GuiListboxRuntime::select_row_00a9c740(GuiWidgetOwner* row) {
         }
     }
     refresh80_00a9c220(false);
+}
+void GuiListboxRuntime::select_first_selectable_00a9c310() {
+    Operation operation(*this);
+    for (auto it = rows_.begin(); it != rows_.end(); ++it) {
+        if ((*it)->scene_flags().hidden) continue;
+        selected_ = it;
+        refresh80_00a9c220(false);
+        return;
+    }
+}
+void GuiListboxRuntime::update_highlight_00a9c540(GuiWidgetOwner* row,
+    std::uint8_t paging, float depth, const GuiListboxHighlightServices& services) {
+    Operation operation(*this);
+    // Native reads118 AFTER GetOrCreate, so the getter may update this field.
+    const auto& manager = services.get_manager_004c12b0();
+    auto* layout = select_gui_highlight_widget_00aa0f50(manager, fields_.highlight_index_118);
+    if (!layout) throw std::logic_error("C540 requires its AA0F50 widget before its null-row test");
+    auto& highlight = owner_.runtime().owner(*layout);
+    const float old_y = resolved_position(layout->transform).y; // First6750.
+    const float old_x = resolved_position(layout->transform).x; // Second6750.
+    set_gui_widget_resolved_position_00aa8240(highlight, {old_x, old_y, depth});
+    if (!row) {
+        highlight.set_visible34(false);
+        return;
+    }
+    auto* node = row->node_binding(); // A9C5C3, AFTER initial position callbacks.
+    if (!node) throw std::logic_error("C540 requires the current row scene node");
+    float factor;
+    if (node->storage.parent_30)
+        factor = multiply_float(gui_node_hierarchy_factor_00a9abd0(owner_.runtime(),
+            owner_.runtime().node(node->storage.parent_30)), &node->storage.scalar_ac);
+    else {
+        std::memcpy(&factor, &node->storage.scalar_ac, sizeof(factor));
+        factor = x87_argument(factor);
+    }
+    highlight.set_visible34(factor != 0.0f); // unordered/NaN yields AL1 too.
+    fit_gui_widget_to_source_00ac0820(*row, highlight,
+        x87_argument(fields_.highlight_width_124), services.relative_bounds);
+    const auto fitted = resolved_position(layout->transform);
+    fields_.highlight_position_f0 = GuiWidgetPoint{
+        x87_argument(fitted.x), x87_argument(fitted.y), x87_argument(fitted.z)};
+    const auto& cached = *fields_.highlight_position_f0;
+    const float x = add_float(cached.x, fields_.highlight_offset_12c.x);
+    const float y = add_float(fields_.highlight_offset_12c.y, cached.y);
+    const float z = add_float(fields_.highlight_offset_12c.z, cached.z);
+    const float y_adjust = paging ? services.paging_y_00d7a23c
+        : services.ordinary_y_paging_height_00d5bbf0;
+    // Native captures this extra-height float BEFORE8240 callbacks.
+    const float height_adjust = paging ? services.ordinary_y_paging_height_00d5bbf0
+        : services.ordinary_height_00d5bbec;
+    set_gui_widget_resolved_position_00aa8240(highlight,
+        {add_float(x, 0.0f), add_float(y, y_adjust), add_float(0.0f, z)});
+    const float width = widget_size(layout->transform).width; // First6740.
+    const float height = add_float_pair(widget_size(layout->transform).height,
+        height_adjust, &fields_.highlight_height_128); // Second6740, live128.
+    set_gui_widget_current_size58(highlight, {width, x87_argument(height)});
+}
+std::uint32_t GuiListboxRuntime::paging_row_count_154() const noexcept {
+    return static_cast<std::uint32_t>(paging_rows_.size());
+}
+GuiWidgetOwner* GuiListboxRuntime::paging_row_at_14c(std::int32_t index) const noexcept {
+    std::uint32_t ordinal = 0;
+    for (auto* row : paging_rows_) {
+        if (ordinal == static_cast<std::uint32_t>(index)) return row;
+        ++ordinal;
+    }
+    return nullptr;
+}
+void GuiListboxRuntime::enable_paging_00a9e230(std::int32_t page_size,
+    NativeStringStorage& strings, int (*compare)(const char*, const char*)) {
+    Operation operation(*this);
+    fields_.raw_ec = 0;
+    fields_.paging_148 = 1;
+    // D9D0 clear followed by D560 range insertion, preserving row identities
+    // and duplicates. Allocation/SEH and allocator reentry are not projected.
+    ++paging_assignment_generation_;
+    paging_rows_.clear();
+    for (auto* row : rows_) paging_rows_.push_back(row);
+    fields_.page_size_158 = page_size;
+    const bool horizontal = fields_.horizontal_11f != 0;
+    auto find_arrow = [&](const char* spelling, std::optional<GuiWidgetOwner*>& slot) {
+        NativeString name;
+        name.assign_0041e870(strings, spelling);
+        try {
+            auto* found = find_child_by_name_00aa7e00(owner_.runtime(), owner_.layout(),
+                name, 1, compare);
+            slot = found ? &owner_.runtime().owner(*found) : nullptr;
+        } catch (...) {
+            destroy_native_string_header_0041dd20(&name, strings);
+            throw;
+        }
+        // The slot is published BEFORE the native temporary name is released.
+        destroy_native_string_header_0041dd20(&name, strings);
+    };
+    find_arrow(horizontal ? "ScrollLeft_Icon" : "ScrollUp_Icon", fields_.previous_arrow_15c);
+    find_arrow(horizontal ? "ScrollRight_Icon" : "ScrollDown_Icon", fields_.next_arrow_160);
+    fields_.page_start_164 = 0;
+    fields_.page_delay_168 = 0.0f;
+    select_index_00a9c7c0(0);
+    rebuild_page_00a9d870();
+}
+void GuiListboxRuntime::rebuild_page_00a9d870() {
+    Operation operation(*this);
+    void* const listener = listener_114_;
+    listener_114_ = nullptr;
+    auto* const selected = selected_row_00425e50();
+    while (!rows_.empty()) remove_row_00a9be60(*rows_.front());
+    auto it = paging_rows_.begin();
+    for (std::int32_t i = 0; i < fields_.page_start_164.value(); ++i) {
+        if (it == paging_rows_.end())
+            throw std::logic_error("D870 page start exceeds its native14C list");
+        ++it;
+    }
+    for (std::int32_t i = 0; i < fields_.page_size_158.value(); ++i) {
+        if (it == paging_rows_.end()) break;
+        const auto generation = paging_assignment_generation_;
+        std::unique_ptr<GuiLayoutWidget> detached;
+        append_row_00a9d750(**it, detached);
+        if (generation != paging_assignment_generation_)
+            throw std::logic_error("D870 callback replaced its current14C list node");
+        ++it; // Native reads current.next only AFTER append/attach callbacks.
+    }
+    if (selected) select_row_00a9c740(selected);
+    listener_114_ = listener; // Native restoration is not an exception guard.
+    refresh80_00a9c220(false);
+    auto* previous_arrow = fields_.previous_arrow_15c.value();
+    if (!previous_arrow) throw std::logic_error("D870 requires current15C arrow");
+    previous_arrow->set_visible34(true);
+    auto* next_arrow = fields_.next_arrow_160.value(); // Reload AFTER15C callback.
+    if (!next_arrow) throw std::logic_error("D870 requires current160 arrow");
+    next_arrow->set_visible34(true);
 }
 void GuiListboxRuntime::refresh80_00a9c220(bool force) {
     Operation operation(*this);
