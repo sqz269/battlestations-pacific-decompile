@@ -1,0 +1,269 @@
+{
+  "packet": "orch3_particle_arrays_am",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ghidra_read_only": true,
+  "functions": [
+    {
+      "address": "00afd130",
+      "end_exclusive": "00afd1cf",
+      "inclusive_end": "00afd1ce",
+      "final_instruction_address": "00afd1cc",
+      "final_instruction_length": 3,
+      "length": 159,
+      "sha256": "1a82bcd4248e5d19fa0ea872dfd7f9eac95d670e88cea53d5e45b6704b712050",
+      "live_disk_equal": true,
+      "live_prototype": "00afd130 CG_vector_deleting_dtor_00afd130  undefined CG_vector_deleting_dtor_00afd130(void)  body 00afd130 - 00afd1ce",
+      "xrefs": [
+        "From 00afd329 in BSP_NativeParticleModelArrays_Construct [UNCONDITIONAL_CALL]"
+      ],
+      "cpp_symbol": "resize_native_particle_model_byte_array_00afd130",
+      "source": "src/native_particle_array_resize.cpp",
+      "header": "include/bsp/native_particle_array_resize.hpp",
+      "original_abi": "ECX actual8h byte header; stack signed count; RET4",
+      "original_abi_compatible": false,
+      "coverage": "complete for valid native cookie-backed storage",
+      "ghidra_name": "BSP_NativeParticleModelBytes_Resize",
+      "descriptive_name_is_hypothesis": true,
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_NativeParticleModelBytes_Resize(int count)",
+      "evidence": "AM review: descriptive hypothesis, not recovered symbol. Complete installed/live bytes and final RET verified; new C++ source ABI. Actual cookie storage, sparse108h initialization, allocation publication/failure ordering and raw MOVSS constant preserved. See docs/NATIVE_PARTICLE_ARRAY_RESIZE.md and reports/native_particle_array_resize.json. Original FH3 exceptions and gameplay unvalidated."
+    },
+    {
+      "address": "00afd220",
+      "end_exclusive": "00afd2d5",
+      "inclusive_end": "00afd2d4",
+      "final_instruction_address": "00afd2d2",
+      "final_instruction_length": 3,
+      "length": 181,
+      "sha256": "a583af4ccb774443a13fe8868f73ecf757662a23847d1f07856d0017d4d28edb",
+      "live_disk_equal": true,
+      "live_prototype": "00afd220 CG_vector_deleting_dtor_00afd220  undefined CG_vector_deleting_dtor_00afd220(void)  body 00afd220 - 00afd2d4",
+      "xrefs": [
+        "From 00afd331 in BSP_NativeParticleModelArrays_Construct [UNCONDITIONAL_CALL]"
+      ],
+      "cpp_symbol": "resize_native_particle_model_record_array_00afd220",
+      "source": "src/native_particle_array_resize.cpp",
+      "header": "include/bsp/native_particle_array_resize.hpp",
+      "original_abi": "ECX actual8h record header; stack signed count; RET4",
+      "original_abi_compatible": false,
+      "coverage": "complete for valid native cookie-backed storage",
+      "ghidra_name": "BSP_NativeParticleModelRecords_Resize",
+      "descriptive_name_is_hypothesis": true,
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_NativeParticleModelRecords_Resize(int count)",
+      "evidence": "AM review: descriptive hypothesis, not recovered symbol. Complete installed/live bytes and final RET verified; new C++ source ABI. Actual cookie storage, sparse108h initialization, allocation publication/failure ordering and raw MOVSS constant preserved. See docs/NATIVE_PARTICLE_ARRAY_RESIZE.md and reports/native_particle_array_resize.json. Original FH3 exceptions and gameplay unvalidated."
+    },
+    {
+      "address": "00afcd90",
+      "end_exclusive": "00afcd96",
+      "inclusive_end": "00afcd95",
+      "final_instruction_address": "00afcd95",
+      "final_instruction_length": 1,
+      "length": 6,
+      "sha256": "643a9b227f3b8bc93142e908d080e8b01a97ebcffea9da65e5062be083708e0e",
+      "live_disk_equal": true,
+      "live_prototype": "00afcd90 FUN_00afcd90  undefined FUN_00afcd90(void)  body 00afcd90 - 00afcd95",
+      "xrefs": [
+        "From 00afd19d in CG_vector_deleting_dtor_00afd130 [DATA]"
+      ],
+      "cpp_symbol": "construct_native_particle_array_byte_00afcd90",
+      "source": "src/native_particle_array_resize.cpp",
+      "header": "include/bsp/native_particle_array_resize.hpp",
+      "original_abi": "ECX actual byte; EAX same pointer; RET",
+      "original_abi_compatible": false,
+      "coverage": "complete for valid native cookie-backed storage",
+      "ghidra_name": "BSP_NativeParticleArrayByte_Construct",
+      "descriptive_name_is_hypothesis": true,
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_NativeParticleArrayByte_Construct(void)",
+      "evidence": "AM review: descriptive hypothesis, not recovered symbol. Complete installed/live bytes and final RET verified; new C++ source ABI. Actual cookie storage, sparse108h initialization, allocation publication/failure ordering and raw MOVSS constant preserved. See docs/NATIVE_PARTICLE_ARRAY_RESIZE.md and reports/native_particle_array_resize.json. Original FH3 exceptions and gameplay unvalidated."
+    },
+    {
+      "address": "00afdac0",
+      "end_exclusive": "00afdae1",
+      "inclusive_end": "00afdae0",
+      "final_instruction_address": "00afdae0",
+      "final_instruction_length": 1,
+      "length": 33,
+      "sha256": "543bbe8fd9cfc218a5f56710f98dafd8c388bb326e7a0b29d4f8ffcde1a30e27",
+      "live_disk_equal": true,
+      "live_prototype": "00afdac0 FUN_00afdac0  undefined FUN_00afdac0(void)  body 00afdac0 - 00afdae0",
+      "xrefs": [
+        "From 00afd2a0 in CG_vector_deleting_dtor_00afd220 [DATA]"
+      ],
+      "cpp_symbol": "construct_native_particle_record_00afdac0",
+      "source": "src/native_particle_array_resize.cpp",
+      "header": "include/bsp/native_particle_array_resize.hpp",
+      "original_abi": "ECX actual108h record; EAX same pointer; RET",
+      "original_abi_compatible": false,
+      "coverage": "complete for valid native cookie-backed storage",
+      "ghidra_name": "BSP_NativeParticleRecord_Construct",
+      "descriptive_name_is_hypothesis": true,
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_NativeParticleRecord_Construct(void)",
+      "evidence": "AM review: descriptive hypothesis, not recovered symbol. Complete installed/live bytes and final RET verified; new C++ source ABI. Actual cookie storage, sparse108h initialization, allocation publication/failure ordering and raw MOVSS constant preserved. See docs/NATIVE_PARTICLE_ARRAY_RESIZE.md and reports/native_particle_array_resize.json. Original FH3 exceptions and gameplay unvalidated."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00afd15f",
+      "native": "00bf7c6e",
+      "function": "00afd130",
+      "stack_cleanup": "four stack words; RET10h",
+      "contract": "read: see docs/NATIVE_PARTICLE_ARRAY_RESIZE.md"
+    },
+    {
+      "address": "00afd165",
+      "native": "00bf6989",
+      "function": "00afd130",
+      "stack_cleanup": "one stack word; ADD ESP4 atAFD16A",
+      "contract": "read: see docs/NATIVE_PARTICLE_ARRAY_RESIZE.md"
+    },
+    {
+      "address": "00afd180",
+      "native": "00bf55be",
+      "function": "00afd130",
+      "stack_cleanup": "one stack word; ADD ESP4 atAFD185",
+      "contract": "read: see docs/NATIVE_PARTICLE_ARRAY_RESIZE.md"
+    },
+    {
+      "address": "00afd1ab",
+      "native": "00bf7cd1",
+      "function": "00afd130",
+      "stack_cleanup": "five stack words; RET14h",
+      "contract": "read: see docs/NATIVE_PARTICLE_ARRAY_RESIZE.md"
+    },
+    {
+      "address": "00afd252",
+      "native": "00bf7c6e",
+      "function": "00afd220",
+      "stack_cleanup": "four stack words; RET10h",
+      "contract": "read: see docs/NATIVE_PARTICLE_ARRAY_RESIZE.md"
+    },
+    {
+      "address": "00afd258",
+      "native": "00bf6989",
+      "function": "00afd220",
+      "stack_cleanup": "one stack word; ADD ESP4 atAFD25D",
+      "contract": "read: see docs/NATIVE_PARTICLE_ARRAY_RESIZE.md"
+    },
+    {
+      "address": "00afd283",
+      "native": "00bf55be",
+      "function": "00afd220",
+      "stack_cleanup": "one stack word; ADD ESP4 atAFD288",
+      "contract": "read: see docs/NATIVE_PARTICLE_ARRAY_RESIZE.md"
+    },
+    {
+      "address": "00afd2b1",
+      "native": "00bf7cd1",
+      "function": "00afd220",
+      "stack_cleanup": "five stack words; RET14h",
+      "contract": "read: see docs/NATIVE_PARTICLE_ARRAY_RESIZE.md"
+    }
+  ],
+  "names_are_descriptive_hypotheses": true,
+  "original_abi_compatible": false,
+  "game_validated": false,
+  "unwind_evidence": [
+    {
+      "entry": "00cbb1b0",
+      "inclusive_end": "00cbb1ba",
+      "final_instruction_address": "00cbb1ba",
+      "final_instruction_length": 1,
+      "sha256": "07c5a6b818ba8592010d957756528478c50782dfe4bdd73d80a875683b380f40",
+      "live_disk_equal": true,
+      "live_prototype": "00cbb1b0 Unwind@00cbb1b0  undefined Unwind@00cbb1b0(void)  body 00cbb1b0 - 00cbb1b8",
+      "ownership": "unowned evidence only; primary coordinates definitions"
+    },
+    {
+      "entry": "00cbb1bb",
+      "inclusive_end": "00cbb1c4",
+      "final_instruction_address": "00cbb1c0",
+      "final_instruction_length": 5,
+      "sha256": "95e2d18363f6bb9973ff8193c403ac603073abf39f50a672e0afc9e36b4790d6",
+      "live_disk_equal": true,
+      "live_prototype": "00cbb1bb ?  ?  body ?",
+      "ownership": "unowned evidence only; primary coordinates definitions"
+    },
+    {
+      "entry": "00cbb1d0",
+      "inclusive_end": "00cbb1da",
+      "final_instruction_address": "00cbb1da",
+      "final_instruction_length": 1,
+      "sha256": "c9b638dbe4477be12626c14dfdace90a33bff1f77d56611d6e444120318694c6",
+      "live_disk_equal": true,
+      "live_prototype": "00cbb1d0 Unwind@00cbb1d0  undefined Unwind@00cbb1d0(void)  body 00cbb1d0 - 00cbb1d8",
+      "ownership": "unowned evidence only; primary coordinates definitions"
+    },
+    {
+      "entry": "00cbb1db",
+      "inclusive_end": "00cbb1e4",
+      "final_instruction_address": "00cbb1e0",
+      "final_instruction_length": 5,
+      "sha256": "6973bb8dd236f28e7529d2565de037e50ff274dcd5fed0b6476a3ad2ead25088",
+      "live_disk_equal": true,
+      "live_prototype": "00cbb1db ?  ?  body ?",
+      "ownership": "unowned evidence only; primary coordinates definitions"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Array resize remained a required host callback; record constructor was unresolved",
+      "is": "Concrete actual cookie allocations with complete byte and108h element constructors",
+      "evidence": "AFD130/220 allocate after freeing; AFCD90 writes one zero byte; AFDAC0 captures D7A24C raw bits, writes A4=0/A0=0/B4=bits"
+    },
+    {
+      "was": "CG_vector_deleting_dtor names suggest deletion wrappers",
+      "is": "Destructive resize replacing all elements; zero count allocates a4h cookie",
+      "evidence": "Unconditional BF55BE after old free; count published atAFD1BC/AFD2C2"
+    }
+  ],
+  "validation": {
+    "strict_production_win32_compile": "passed /std:c++20 /EHsc /MD /W4 /WX /O2 /Gy /fp:strict /permissive-",
+    "call_report_verifier": {
+      "checked": 8,
+      "failed": 0
+    },
+    "focused_fixture": {
+      "original_byte_comparisons": 31,
+      "source_allocation_throw_checks": 2,
+      "assertions": 160,
+      "result": "PASS",
+      "local_artifacts": "C:/Users/sqz269/bsp-am-arrays",
+      "native_boundaries_redirected": [
+        "BF55BE real malloc fixture with size recording/null injection",
+        "BF6989 real free fixture with event recording",
+        "BF7CD1 signed construction iterator fixture invoking relocated original leaves",
+        "BF7C6E reverse destruction iterator fixture invoking literal-RET leaf"
+      ],
+      "source_boundaries_instrumented": [
+        "canonical singleton allocation/free names redirected only in local probe compilation",
+        "canonical AFD0F0/AFD1E0 unchanged source compiled into probe"
+      ],
+      "native_fh3_exception_execution": false
+    },
+    "full_repository_build": "deferred to primary combined build",
+    "full_model_constructor_execution": false,
+    "gameplay": false
+  },
+  "storage_contract": {
+    "existing_type": "NativeParticleArrayStorage from native_particle_model_construction.hpp",
+    "source_producer": "00AFD2E0",
+    "record_stride": "108h",
+    "cookie_bytes": 4,
+    "old_count_source": "signed DWORD at data-4, not descriptor count04",
+    "record_writes_in_order": [
+      "A4=0",
+      "A0=0",
+      "B4=captured current D7A24C raw bits"
+    ],
+    "untouched_record_bytes": 252,
+    "allocation_failure": "old data freed, original header remains stale",
+    "zero_count": "allocates4h cookie",
+    "size_overflow": "unsigned saturation toFFFFFFFF",
+    "existing_cookie_domain": "actual valid allocated spans and nonnegative signed old cookie counts"
+  }
+}
