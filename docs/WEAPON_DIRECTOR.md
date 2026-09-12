@@ -326,3 +326,16 @@ shape at the site.
 - Whether a periodic director step aims guns, and where the AI target-weight model of
   `docs/AI_GLOBALS_AND_TARGET_WEIGHTS.md` feeds in.
 - The `1E4h`-byte throwaway entity `0089A8B0` builds for a map-position target, and its `+54h` = 2.
+
+## Correction from docs/DIRECTOR_TARGET_GATE.md (packet cc2_director_target_gate)
+
+- The session-side caller of `0071C1E0` is `00721A40` (`BSP_WeaponDirector_ApplyGameUnitMessage`)
+  at `00721A93`, as `director->vtable[38h](message)`, reached from `00780120`'s `IsA(59h)` arm
+  (also recorded in docs/SESSION_MESSAGE_DISPATCH.md). The "contract: unread" above is closed.
+- `00720850` has since been read by packet cc2_director_commands and is documented in
+  docs/COMMAND_EXECUTION.md; the `00720CD0` coverage row above is stale on that point.
+- `director+40h` is a float countdown in seconds: `-1.0f` at construction (`00720225` inside the
+  base constructor `00720180`, which `008363E0` calls with `ECX` still the director), `-= dt` per
+  frame while non-negative (`0071F314` in `0071F290`, controller vtable `+0Ch`), and `3.0f` when a
+  `cleartarget` order arrives (`00817031`). `0071DF70` rejects a new target only while the hold is
+  strictly above `0.0f`; the constructed `-1.0f` passes.
