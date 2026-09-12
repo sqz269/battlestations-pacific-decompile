@@ -489,3 +489,12 @@ taken from the disk bytes; the next referenced entry point begins at `007C6760`,
 - **Was:** the rate law's yaw term is classDesc+1B0h YawSpd times the latched roll unit+0BB0h
   **Is:** unit+BB0h is yawF, the latched yawInput, so the term is YawSpd times the latched yaw; the two readings docs/PILOT_CONTROLS.md called contradictory agree once the labels are fixed, because unit+9ECh carrying the horizontal aim error is a bank-to-turn roll command
   **Evidence:** 007D6BB2 pairs unit+BB0h with 00D05D30 'yawF'; 007B9770 copies unit+9E4h to unit+BB0h
+
+## Correction from docs/GAMEPLAY_LOOSE_ENDS_2.md (packet cc2_gameplay_loose_ends_2)
+
+- **Was:** line 163: when ctl->+FCh != 1 the whole roll term is discarded
+  **Is:** the roll accumulator is discarded when ctl+FCh == 1, on the ground; it survives in free flight and on the water
+  **Evidence:** 007DA8D9 CMP dword [ESI+FCh],1; 007DA8E0 XORPS XMM2,XMM2; 007DA8E3 JNE 007DA8EB; 007DA8E5 MOVSS [ESP+18h],XMM2 - the zeroing store is reached only on equality
+- **Was:** line 79: +FCh is a mode dword, zeroed each step and tested == 1
+  **Is:** it is not zeroed each step; each of the three laws writes its own value (0, 1, 2) and it is read six ways, including a four-way dispatch in 007DA380 and a three-way dispatch in the core law
+  **Evidence:** writers 007DC841, 007DCD24, 007DCDDC; readers 007DA38D, 007DA8D9, 007DB6D1, 007DBE0E, 007DA211; the disp32 FCh scan over 007D7000-007DE000 returns eleven references and no others

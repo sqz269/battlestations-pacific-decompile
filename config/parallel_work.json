@@ -8782,6 +8782,101 @@
       "qualification": "Two control-flow projections through required geometry callees; no executable wiring or native storage adapter. New C++ interfaces; original ABI and game behavior are not validated."
     },
     {
+      "id": "orch5_main_menu_command_sequence",
+      "state": "bounded_implementation_build_and_scoped_fixture_checked",
+      "worker": "orch5-20260911",
+      "integration_owner": "primary",
+      "function_addresses": [
+        "005993a0",
+        "00530670",
+        "00530c20",
+        "005885d0",
+        "005886c0"
+      ],
+      "code_ownership": [
+        "include/bsp/main_menu_command_listener.hpp",
+        "src/main_menu_command_listener.cpp",
+        "include/bsp/main_menu_tactical_library.hpp",
+        "src/main_menu_tactical_library.cpp"
+      ],
+      "output_files": [
+        "include/bsp/main_menu_command_listener.hpp",
+        "src/main_menu_command_listener.cpp",
+        "include/bsp/main_menu_tactical_library.hpp",
+        "src/main_menu_tactical_library.cpp",
+        "docs/ORCH5_MENU_LISTBOX_GROUP_BATCH.md",
+        "reports/orch5_menu_listbox_group_batch.json"
+      ],
+      "contract": "Use SAME canonical owners, actual callback-sensitive fields, and documented required providers; no native ABI or game claim.",
+      "validation": "Combined Win322/2 tests and3final-library probes passed;132numericCALLrows/29savedGhidraannotations acrossbatch; worker93,600native sphere comparisons.",
+      "annotation_status": "Applied under write lock; saved old names/comments; affected exports refreshed.",
+      "next_work": "Current08, actual vehicle unlock and canonical listener/layout bindings are now in ORCH5_MENU_SELECTION_ROW_CONTROL_BATCH. Remaining concrete page584F50/594BF0, checkpoint/texture/transform/prompt and Movie providers remain required."
+    },
+    {
+      "id": "orch5_listbox_canonical_selection",
+      "state": "bounded_implementation_build_and_scoped_fixture_checked",
+      "worker": "orch5-20260911",
+      "integration_owner": "primary",
+      "function_addresses": [
+        "00a9df40",
+        "00a9ac30",
+        "00a9ac40",
+        "00a9ac90",
+        "00425e50",
+        "00a9c990",
+        "00a9c920",
+        "00a9be00",
+        "00a9c7c0",
+        "00a9c740",
+        "00a9c220",
+        "00a9c050",
+        "00a9c0a0",
+        "00a9d750",
+        "00a9be60",
+        "00941250"
+      ],
+      "code_ownership": [
+        "include/bsp/gui_listbox_runtime.hpp",
+        "src/gui_listbox_runtime.cpp"
+      ],
+      "output_files": [
+        "include/bsp/gui_listbox_runtime.hpp",
+        "src/gui_listbox_runtime.cpp",
+        "docs/ORCH5_MENU_LISTBOX_GROUP_BATCH.md",
+        "reports/orch5_menu_listbox_group_batch.json"
+      ],
+      "contract": "Use SAME canonical owners, actual callback-sensitive fields, and documented required providers; no native ABI or game claim.",
+      "validation": "Combined Win322/2 tests and3final-library probes passed;132numericCALLrows/29savedGhidraannotations acrossbatch; worker93,600native sphere comparisons.",
+      "annotation_status": "Applied under write lock; saved old names/comments; affected exports refreshed.",
+      "next_work": "Row predicate, row state dispatch, current60, null-position D8 append and table64/70 profiles advanced in ORCH5_MENU_SELECTION_ROW_CONTROL_BATCH. Full properties/frame/navigation/native teardown and non-null insertion remain open; BA90 visited-prefix callback domain is partial."
+    },
+    {
+      "id": "orch5_group_dynamic_world_sphere",
+      "state": "bounded_implementation_build_and_scoped_fixture_checked",
+      "worker": "orch5-20260911",
+      "integration_owner": "primary",
+      "function_addresses": [
+        "00b8e980",
+        "00b8e9f0",
+        "00b8ebe0",
+        "00b8f100"
+      ],
+      "code_ownership": [
+        "include/bsp/native_group_world_sphere.hpp",
+        "src/native_group_world_sphere.cpp"
+      ],
+      "output_files": [
+        "include/bsp/native_group_world_sphere.hpp",
+        "src/native_group_world_sphere.cpp",
+        "docs/ORCH5_MENU_LISTBOX_GROUP_BATCH.md",
+        "reports/orch5_menu_listbox_group_batch.json"
+      ],
+      "contract": "Use SAME canonical owners, actual callback-sensitive fields, and documented required providers; no native ABI or game claim.",
+      "validation": "Combined Win322/2 tests and3final-library probes passed;132numericCALLrows/29savedGhidraannotations acrossbatch; worker93,600native sphere comparisons.",
+      "annotation_status": "Applied under write lock; saved old names/comments; affected exports refreshed.",
+      "next_work": "Other concrete child48 profiles and complete particle/Text spatial providers remain dependencies; static affine numerical domain unchanged."
+    },
+    {
       "id": "orch4_sound_platform_ab",
       "worker": "agent/orch4-20260910",
       "done": true,
@@ -8934,6 +9029,230 @@
       ],
       "evidence": "reports/avoid_zone_query_binding.json",
       "qualification": "Owned native storage snapshots bind all five boundary geometry callees. Constructor-to-query fixture passes; executable registration and gameplay remain separate."
+    },
+    {
+      "id": "orch5_main_menu_selection_sequence",
+      "state": "bounded_implementation_build_and_scoped_fixture_checked",
+      "worker": "orch5-20260911",
+      "integration_owner": "primary",
+      "function_addresses": [
+        "005966f0",
+        "004260b0",
+        "004263b0",
+        "005c35d0"
+      ],
+      "code_ownership": [
+        "include/bsp/main_menu_selection_listener.hpp",
+        "src/main_menu_selection_listener.cpp",
+        "include/bsp/main_menu_runtime_listeners.hpp",
+        "src/main_menu_runtime_listeners.cpp",
+        "include/bsp/main_menu_layout_native.hpp",
+        "src/main_menu_layout_native.cpp"
+      ],
+      "output_files": [
+        "include/bsp/main_menu_selection_listener.hpp",
+        "src/main_menu_selection_listener.cpp",
+        "include/bsp/main_menu_runtime_listeners.hpp",
+        "src/main_menu_runtime_listeners.cpp",
+        "include/bsp/main_menu_layout_native.hpp",
+        "src/main_menu_layout_native.cpp",
+        "docs/ORCH5_MENU_SELECTION_ROW_CONTROL_BATCH.md",
+        "reports/orch5_menu_selection_row_control_batch.json"
+      ],
+      "contract": "Same canonical owners and callback-sensitive storage; required unresolved providers explicit. BA90 callback domain partial. New C++ interfaces, no native ABI/game claim.",
+      "validation": "Combined Win32 build and scoped final-library fixtures tracked in batch report;245 call-site rows with0failures;16 saved annotations.",
+      "annotation_status": "Applied under write lock; old names/comments preserved; affected exports refreshed.",
+      "next_work": "Concrete texture, checkpoint, profile/objective, transform, prompt and Movie providers on actual screen/resources; full menu construction and runtime validation."
+    },
+    {
+      "id": "orch5_main_menu_vehicle_unlock",
+      "state": "bounded_implementation_build_and_scoped_fixture_checked",
+      "worker": "orch5-20260911",
+      "integration_owner": "primary",
+      "function_addresses": [
+        "00584750",
+        "00b67690",
+        "00b65fb0",
+        "00b66250"
+      ],
+      "code_ownership": [
+        "include/bsp/main_menu_vehicle_unlock.hpp",
+        "src/main_menu_vehicle_unlock.cpp",
+        "include/bsp/native_lua_objects.hpp",
+        "src/native_lua_objects.cpp"
+      ],
+      "output_files": [
+        "include/bsp/main_menu_vehicle_unlock.hpp",
+        "src/main_menu_vehicle_unlock.cpp",
+        "include/bsp/native_lua_objects.hpp",
+        "src/native_lua_objects.cpp",
+        "docs/ORCH5_MENU_SELECTION_ROW_CONTROL_BATCH.md",
+        "reports/orch5_menu_selection_row_control_batch.json"
+      ],
+      "contract": "Same canonical owners and callback-sensitive storage; required unresolved providers explicit. BA90 callback domain partial. New C++ interfaces, no native ABI/game claim.",
+      "validation": "Combined Win32 build and scoped final-library fixtures tracked in batch report;245 call-site rows with0failures;16 saved annotations.",
+      "annotation_status": "Applied under write lock; old names/comments preserved; affected exports refreshed.",
+      "next_work": "Bind current game Lua/profile accessors to full screen construction and preserve mission completion synchronization; no copied ProfileResetState."
+    },
+    {
+      "id": "orch5_listbox_row_control_integration",
+      "state": "bounded_implementation_build_and_scoped_fixture_checked",
+      "worker": "orch5-20260911",
+      "integration_owner": "primary",
+      "function_addresses": [
+        "00a9b340",
+        "00a9ba40",
+        "00a9ba90",
+        "00a9cd20",
+        "00a9da30",
+        "00a9e120",
+        "00aaa3e0"
+      ],
+      "code_ownership": [
+        "include/bsp/gui_listbox_row_control.hpp",
+        "src/gui_listbox_row_control.cpp",
+        "include/bsp/gui_listbox_runtime.hpp",
+        "src/gui_listbox_runtime.cpp",
+        "include/bsp/gui_listbox_listener_binding.hpp",
+        "src/gui_listbox_listener_binding.cpp"
+      ],
+      "output_files": [
+        "include/bsp/gui_listbox_row_control.hpp",
+        "src/gui_listbox_row_control.cpp",
+        "include/bsp/gui_listbox_runtime.hpp",
+        "src/gui_listbox_runtime.cpp",
+        "include/bsp/gui_listbox_listener_binding.hpp",
+        "src/gui_listbox_listener_binding.cpp",
+        "docs/ORCH5_MENU_SELECTION_ROW_CONTROL_BATCH.md",
+        "reports/orch5_menu_selection_row_control_batch.json"
+      ],
+      "contract": "Same canonical owners and callback-sensitive storage; required unresolved providers explicit. BA90 callback domain partial. New C++ interfaces, no native ABI/game claim.",
+      "validation": "Combined Win32 build and scoped final-library fixtures tracked in batch report;245 call-site rows with0failures;16 saved annotations.",
+      "annotation_status": "Applied under write lock; old names/comments preserved; affected exports refreshed.",
+      "next_work": "Full current40 A9D030 and properties/teardown; establish non-null insertion caller/node relationship across GUI64/FC lists; actual Text/Icon resource fixtures; native Group list-node ownership beyond visited-prefix projection."
+    },
+    {
+      "id": "orch4_xlive_owner_lifetime_ac",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_win32_build_and_primary_archive_raw_drain_fixture_verified_required_providers_remain",
+      "function_addresses": [
+        "00a3f530",
+        "00a3f5d0",
+        "00a3f670",
+        "00a3fdc0"
+      ],
+      "code_ownership": [
+        "include/bsp/xlive_owner_lifetime.hpp",
+        "src/xlive_owner_lifetime.cpp"
+      ],
+      "integration_report": "reports/native_singleton_input_online.json",
+      "game_validated": false
+    },
+    {
+      "id": "orch4_native_input_backend_owner_ac",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_win32_build_and_primary_archive_raw_drain_fixture_verified_required_providers_remain",
+      "function_addresses": [
+        "00a908a0",
+        "00a90940",
+        "00a909e0",
+        "00a914c0",
+        "00a91570",
+        "00a90dc0",
+        "00a90e00",
+        "00a91150",
+        "00a982d0",
+        "00a97c00",
+        "00a97b00"
+      ],
+      "code_ownership": [
+        "include/bsp/native_input_backend_owner.hpp",
+        "src/native_input_backend_owner.cpp"
+      ],
+      "integration_report": "reports/native_singleton_input_online.json",
+      "game_validated": false
+    },
+    {
+      "id": "orch4_native_input_action_owner_ac",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_win32_build_and_primary_archive_raw_drain_fixture_verified_required_providers_remain",
+      "function_addresses": [
+        "004bec00",
+        "00a93da0",
+        "00a93dd0",
+        "00a93e50"
+      ],
+      "code_ownership": [
+        "include/bsp/native_input_action_owner.hpp",
+        "src/native_input_action_owner.cpp"
+      ],
+      "integration_report": "reports/native_singleton_input_online.json",
+      "game_validated": false
+    },
+    {
+      "id": "orch4_native_input_action_records_ac",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_win32_build_and_primary_archive_raw_drain_fixture_verified_required_providers_remain",
+      "function_addresses": [
+        "00a93940",
+        "00a939c0",
+        "00a93a60",
+        "00a93a80",
+        "00a93b30",
+        "00a93c10"
+      ],
+      "code_ownership": [
+        "include/bsp/native_input_action_records.hpp",
+        "src/native_input_action_records.cpp"
+      ],
+      "integration_report": "reports/native_singleton_input_online.json",
+      "game_validated": false
+    },
+    {
+      "id": "orch4_native_input_binding_storage_ac",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_win32_build_and_primary_archive_raw_drain_fixture_verified_required_providers_remain",
+      "function_addresses": [
+        "0086a220",
+        "0086a430",
+        "00696d80",
+        "00696e70",
+        "00696de0",
+        "00697220",
+        "00a92e70",
+        "00a92ee0",
+        "00a93100",
+        "00a93220",
+        "00a93500",
+        "00a93440",
+        "00a937e0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_input_binding_storage.hpp",
+        "src/native_input_binding_storage.cpp"
+      ],
+      "integration_report": "reports/native_singleton_input_online.json",
+      "game_validated": false
+    },
+    {
+      "id": "orch4_native_input_online_dispatch_ac",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_win32_build_and_primary_archive_raw_drain_fixture_verified_required_providers_remain",
+      "function_addresses": [
+        "00bd0400"
+      ],
+      "code_ownership": [
+        "include/bsp/native_singleton_destruction.hpp",
+        "src/native_singleton_destruction.cpp"
+      ],
+      "integration_report": "reports/native_singleton_input_online.json",
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {

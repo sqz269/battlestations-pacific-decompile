@@ -22,6 +22,15 @@ SoundLifetimeAccess GameSingletonHost::sound_lifetime() noexcept {
 void GameSingletonHost::bind_sound_runtime(GameSoundRuntime* runtime) noexcept {
     deletion_bindings_.sound_runtime = runtime;
 }
+void GameSingletonHost::bind_xlive_owner(XLiveOwnerAllocation* owner) noexcept {
+    deletion_bindings_.xlive_owner = owner;
+}
+void GameSingletonHost::bind_input_backend(NativeInputBackendOwnerContext* context) noexcept {
+    deletion_bindings_.input_backend = context;
+}
+void GameSingletonHost::bind_input_actions(NativeInputActionOwnerContext* context) noexcept {
+    deletion_bindings_.input_actions = context;
+}
 
 void GameSingletonHost::probe_gameplay_effect_memory(const char* label) {
     void* const owner = get_native_gameplay_effect_manager_004c1650(

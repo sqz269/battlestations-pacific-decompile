@@ -63,6 +63,14 @@ NativeStringPoolStorage* native_string_pool_get_or_create_00419cc0(
     NativeStringPoolStorage* volatile& actual_published_01090aa8,
     SingletonLifetimeDomain& actual_lifetime);
 
+// Same complete getter schedule using the application's actual raw14h manager
+// publication. Borrows the same01090AA0 cell used by SoundLifetimeAccess and
+// NativePhysicalFactoryContext; no semantic domain is allocated. Raw manager
+// shutdown requires the pool's explicit native deletion binding.
+NativeStringPoolStorage* native_string_pool_get_or_create_00419cc0(
+    NativeStringPoolStorage* volatile& actual_published_01090aa8,
+    void* volatile& actual_manager_publication_01090aa0);
+
 // 00BD14C0..00BD150E, ECX actual owner, RET; no specified return. Set the real
 // shutdown gate, drain only positive SIGNED depth, delete the embedded section,
 // clear publication unconditionally, then write baseCE3818. No unregister/free.

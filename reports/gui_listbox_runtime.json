@@ -1,0 +1,474 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "packet": "orch5_listbox_state",
+  "abi_compatible": false,
+  "game_validated": false,
+  "render_validated": false,
+  "new_permanent_tests": 0,
+  "functions": [
+    {
+      "address": "00a9df40",
+      "name": "BSP_GuiListbox_Construct",
+      "end_inclusive": "00a9e066",
+      "original_abi": "ECX storage, EAX this, RET",
+      "coverage": "partial_projection: only constructor-established FC row/selection/cache/listener and layout fields; base, remaining derived fields, raw pools/SEH excluded",
+      "source": "src/gui_listbox_runtime.cpp",
+      "cpp": "GuiListboxRuntime::GuiListboxRuntime"
+    },
+    {
+      "address": "00a9ac40",
+      "name": "BSP_GuiListbox_SetListener",
+      "end_inclusive": "00a9ac4c",
+      "original_abi": "ECX Listbox, stack borrowed listener, RET4",
+      "coverage": "complete normal body",
+      "source": "src/gui_listbox_runtime.cpp",
+      "cpp": "GuiListboxRuntime::set_listener_00a9ac40"
+    },
+    {
+      "address": "00a9ac90",
+      "name": "BSP_GuiListbox_SetLayoutFlags",
+      "end_inclusive": "00a9acb0",
+      "original_abi": "ECX Listbox, three stack low bytes, RETC",
+      "coverage": "complete normal body",
+      "source": "src/gui_listbox_runtime.cpp",
+      "cpp": "GuiListboxRuntime::set_layout_flags_00a9ac90"
+    },
+    {
+      "address": "00425e50",
+      "name": "STL_inst_00425e50",
+      "end_inclusive": "00425eac",
+      "original_abi": "ECX Listbox, EAX row or null, RET",
+      "coverage": "complete valid checked-iterator domain; corrupt iterator diagnostics excluded",
+      "source": "src/gui_listbox_runtime.cpp",
+      "cpp": "GuiListboxRuntime::selected_row_00425e50"
+    },
+    {
+      "address": "00a9c990",
+      "name": "BSP_GuiListbox_GetSelectedData",
+      "end_inclusive": "00a9c9f3",
+      "original_abi": "ECX Listbox, EAX raw row D8 or FFFFFFFF, RET",
+      "coverage": "complete valid checked-iterator domain",
+      "source": "src/gui_listbox_runtime.cpp",
+      "cpp": "GuiListboxRuntime::selected_data_d8_00a9c990"
+    },
+    {
+      "address": "00a9c920",
+      "name": "BSP_GuiListbox_GetSelectedIndex",
+      "end_inclusive": "00a9c98a",
+      "original_abi": "ECX Listbox, EAX ordinal or -1, RET",
+      "coverage": "complete valid checked-iterator domain",
+      "source": "src/gui_listbox_runtime.cpp",
+      "cpp": "GuiListboxRuntime::selected_index_00a9c920"
+    },
+    {
+      "address": "00a9be00",
+      "name": "STL_inst_00a9be00",
+      "end_inclusive": "00a9be57",
+      "original_abi": "ECX Listbox, stack signed ordinal, EAX row or null, RET4",
+      "coverage": "complete valid checked-iterator domain",
+      "source": "src/gui_listbox_runtime.cpp",
+      "cpp": "GuiListboxRuntime::row_at_00a9be00"
+    },
+    {
+      "address": "00a9c7c0",
+      "name": "BSP_GuiListbox_SelectIndex",
+      "end_inclusive": "00a9c853",
+      "original_abi": "ECX Listbox, stack signed ordinal, RET4",
+      "coverage": "complete normal body over actual current80 companion",
+      "source": "src/gui_listbox_runtime.cpp",
+      "cpp": "GuiListboxRuntime::select_index_00a9c7c0"
+    },
+    {
+      "address": "00a9c740",
+      "name": "BSP_GuiListbox_SelectRow",
+      "end_inclusive": "00a9c7b4",
+      "original_abi": "ECX Listbox, stack actual row or null, RET4",
+      "coverage": "complete normal body over actual current80 companion",
+      "source": "src/gui_listbox_runtime.cpp",
+      "cpp": "GuiListboxRuntime::select_row_00a9c740"
+    },
+    {
+      "address": "00a9c220",
+      "name": "BSP_GuiListbox_RefreshSelection",
+      "end_inclusive": "00a9c30c",
+      "original_abi": "ECX Listbox, stack low-byte force, RET4",
+      "coverage": "complete normal body; required actual listener08 and live F8BC0C dispatch",
+      "source": "src/gui_listbox_runtime.cpp",
+      "cpp": "GuiListboxRuntime::refresh80_00a9c220"
+    },
+    {
+      "address": "00941250",
+      "name": "BSP_SoundRequestQueue_RequestGuiFlags",
+      "end_inclusive": "0094126b",
+      "original_abi": "CL first request, DL priority request, RET",
+      "coverage": "complete normal body over actual singleton getter and existing SoundRequestQueue",
+      "source": "src/gui_listbox_runtime.cpp",
+      "cpp": "request_gui_sound_00941250"
+    },
+    {
+      "address": "00a9d750",
+      "name": "BSP_GuiListbox_InsertRow",
+      "end_inclusive": "00a9d863",
+      "original_abi": "ECX Listbox, stack row, iterator pointer, after-byte, RETC",
+      "coverage": "partial_projection: null-position branch A9D750..A9D7AB and common A9D813..A9D863; non-null iterator A9D7AC..A9D812 excluded; C++ owning-handle transport",
+      "source": "src/gui_listbox_runtime.cpp",
+      "cpp": "GuiListboxRuntime::append_row_00a9d750"
+    },
+    {
+      "address": "00a9be60",
+      "name": "BSP_GuiListbox_RemoveRow",
+      "end_inclusive": "00a9beb7",
+      "original_abi": "ECX Listbox, stack actual row, RET4",
+      "coverage": "complete normal body with std::list pointer-identity removal and actual current34/current7C; native allocator ABI excluded",
+      "source": "src/gui_listbox_runtime.cpp",
+      "cpp": "GuiListboxRuntime::remove_row_00a9be60"
+    },
+    {
+      "address": "00a9c0a0",
+      "name": "BSP_GuiListbox_LayoutRows",
+      "end_inclusive": "00a9c212",
+      "original_abi": "ECX Listbox, RET; x87 arithmetic",
+      "coverage": "complete vertical and centering paths; horizontal raw114 supported for canonical Text rows; other derived114 aliases excluded",
+      "source": "src/gui_listbox_runtime.cpp",
+      "cpp": "GuiListboxRuntime::layout7c_00a9c0a0"
+    },
+    {
+      "address": "00a9c050",
+      "name": "BSP_GuiListbox_Loaded",
+      "end_inclusive": "00a9c093",
+      "original_abi": "ECX Listbox, RET",
+      "coverage": "complete normal body with required actual base78/current60 profile",
+      "source": "src/gui_listbox_runtime.cpp",
+      "cpp": "GuiListboxRuntime::loaded78_00a9c050"
+    },
+    {
+      "address": "00aa7d00",
+      "name": "BSP_GuiWidget_SetLocalXYAndBounds",
+      "end_inclusive": "00aa7d32",
+      "original_abi": "ECX widget, two float stack args, RET8",
+      "coverage": "complete normal body over same GuiWidgetOwner transform/node/bounds",
+      "source": "src/gui_listbox_runtime.cpp",
+      "cpp": "set_gui_widget_local_xy_00aa7d00"
+    },
+    {
+      "address": "00aa78f0",
+      "name": "BSP_GuiWidget_SetLocalY",
+      "end_inclusive": "00aa7902",
+      "original_abi": "ECX widget, float stack arg, RET4",
+      "coverage": "complete normal body over same GuiWidgetOwner transform/node",
+      "source": "src/gui_listbox_runtime.cpp",
+      "cpp": "set_gui_widget_local_y_00aa78f0"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00a9c7c0",
+      "address": "00a9c848",
+      "native": "00a9c220",
+      "binding": "current80(false)",
+      "dispatch": "resolved_indirect"
+    },
+    {
+      "function": "00a9c740",
+      "address": "00a9c7af",
+      "native": "00a9c220",
+      "binding": "current80(false)",
+      "dispatch": "resolved_indirect"
+    },
+    {
+      "function": "00a9c220",
+      "address": "00a9c22a",
+      "native": "00425e50",
+      "binding": "same FC selected row before early return",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00a9c220",
+      "address": "00a9c2bf",
+      "native": "listener114.current08",
+      "binding": "required actual listener(selected row or null, same Listbox)",
+      "dispatch": "symbolic_indirect"
+    },
+    {
+      "function": "00a9c220",
+      "address": "00a9c2f5",
+      "native": "00941250",
+      "binding": "live F8BC0C registered 4DD700 target; CL=1 DL=0",
+      "dispatch": "resolved_indirect"
+    },
+    {
+      "function": "00a9c220",
+      "address": "00a9c2fd",
+      "native": "00425e50",
+      "binding": "fresh selected row after listener/sound callbacks",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00941250",
+      "address": "00941254",
+      "native": "004c1b90",
+      "binding": "actual sound request singleton; DL branch",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00941250",
+      "address": "00941262",
+      "native": "004c1b90",
+      "binding": "actual sound request singleton; CL branch",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00a9d750",
+      "address": "00a9d765",
+      "native": "row.current34",
+      "binding": "actual row current34(true)",
+      "dispatch": "symbolic_indirect"
+    },
+    {
+      "function": "00a9d750",
+      "address": "00a9d774",
+      "native": "00aaa5a0",
+      "binding": "same actual row and null insertion position",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00a9d750",
+      "address": "00a9d791",
+      "native": "00a9b790",
+      "binding": "native FC node construction; C++ std::list transport",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00a9d750",
+      "address": "00a9d79c",
+      "native": "00a9d480",
+      "binding": "native FC count guard/increment; C++ list transport",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00a9d750",
+      "address": "00a9d850",
+      "native": "00a9c220",
+      "binding": "first row current80(false)",
+      "dispatch": "resolved_indirect"
+    },
+    {
+      "function": "00a9d750",
+      "address": "00a9d859",
+      "native": "00a9c0a0",
+      "binding": "actual current7C after insertion",
+      "dispatch": "resolved_indirect"
+    },
+    {
+      "function": "00a9be60",
+      "address": "00a9be6f",
+      "native": "row.current34",
+      "binding": "actual row current34(false)",
+      "dispatch": "symbolic_indirect"
+    },
+    {
+      "function": "00a9be60",
+      "address": "00a9be7e",
+      "native": "00a9bd50",
+      "binding": "all matching FC row pointers removed; widget tree preserved",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00a9be60",
+      "address": "00a9bea8",
+      "native": "00a9c220",
+      "binding": "current80(false) after selected=end and cached110=null",
+      "dispatch": "resolved_indirect"
+    },
+    {
+      "function": "00a9be60",
+      "address": "00a9beb1",
+      "native": "00a9c0a0",
+      "binding": "actual current7C after removal",
+      "dispatch": "resolved_indirect"
+    },
+    {
+      "function": "00a9c0a0",
+      "address": "00a9c10a",
+      "native": "00aa7d00",
+      "binding": "horizontal row XY(offset,positive zero)",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00a9c0a0",
+      "address": "00a9c155",
+      "native": "00aa7d00",
+      "binding": "vertical row XY(positive zero,offset)",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00a9c0a0",
+      "address": "00a9c167",
+      "native": "00aa6740",
+      "binding": "same current row size before vertical increment",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00a9c0a0",
+      "address": "00a9c1d5",
+      "native": "00aa78f0",
+      "binding": "centering pass Y only, no bounds refresh",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00a9c0a0",
+      "address": "00a9c1e7",
+      "native": "00aa6740",
+      "binding": "same row height even after horizontal pass",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00a9c050",
+      "address": "00a9c053",
+      "native": "00aa7170",
+      "binding": "actual base loaded78, including current60",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00a9c050",
+      "address": "00a9c05f",
+      "native": "00a9c0a0",
+      "binding": "actual current7C",
+      "dispatch": "resolved_indirect"
+    },
+    {
+      "function": "00a9c050",
+      "address": "00a9c090",
+      "native": "00a9c220",
+      "binding": "current80(false) after selecting first without77 gate",
+      "dispatch": "resolved_indirect"
+    },
+    {
+      "function": "00aa7d00",
+      "address": "00aa7d23",
+      "native": "00aa7220",
+      "binding": "actual recompose",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00aa7d00",
+      "address": "00aa7d2a",
+      "native": "00aa70e0",
+      "binding": "actual bounds refresh",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00aa78f0",
+      "address": "00aa78fb",
+      "native": "00aa7220",
+      "binding": "actual recompose only",
+      "dispatch": "direct"
+    }
+  ],
+  "storage_producers": [
+    {
+      "function": "00a9df40",
+      "stores": [
+        "A9DF7F..A9DF8E FC sentinel/count and selected iterator",
+        "A9DF9C cached110=0",
+        "A9DFA2 listener114=0",
+        "A9DFA8 highlight118=-1",
+        "A9DFB2..A9DFC4 flags11C..11F=0",
+        "A9E016 distance13C=positive zero",
+        "A9E030 paging148=0"
+      ]
+    },
+    {
+      "function": "004dd5b0",
+      "address": "004dd700",
+      "native": "00a9ac80",
+      "evidence": "004DD6FB MOV ECX,00941250; setter writes currentF8BC0C"
+    },
+    {
+      "function": "005902e0",
+      "evidence": "59032D installs CEFC48 at screen+8; +08 cell CEFC50=5966F0. Required menu listener body remains outside this packet."
+    }
+  ],
+  "corrections": [
+    {
+      "was": "pseudocode A9D750 appears to have two arguments and treats row as iterator",
+      "is": "three stack arguments row, optional iterator, after-byte; null-position append uses actual row",
+      "evidence": "A9D756 stack20row;A9D767 stack24position;A9D7AC stack28after;A9D861 RETC"
+    },
+    {
+      "was": "menu selection can be treated as a bare index",
+      "is": "A9C990 returns live row+D8;A9C920 returns FC ordinal;425E50 returns actual row pointer",
+      "evidence": "A9C9E5 MOV EAX,[EAX+D8];A9C971 ordinal increment;425E50 returns node+8"
+    },
+    {
+      "was": "post selection callback can cache pre-callback row",
+      "is": "refresh80 reloads count/selection and final425E50 after callback",
+      "evidence": "A9C2C1 current count;A9C2FD fresh getter;A9C302 cache write"
+    },
+    {
+      "was": "C++ append capacity preflight used UINT32_MAX",
+      "is": "successful native FC domain ends at3FFFFFFF entries",
+      "evidence": "A9D480 callee checks 3FFFFFFF-count against requested increment; its allocation/throw timing remains excluded"
+    }
+  ],
+  "boundaries": [
+    "A9E400 property reader and remaining derived fields are not implemented",
+    "A9D030 frame/navigation, paged-list producers, copy/scalar native destructor and raw180h pool ABI are open",
+    "A9D750 non-null iterator insertion excluded explicitly",
+    "Current114 listener08 required actual body; main-menu5966F0 remains incomplete",
+    "Horizontal layout requires actual Text companion; fixture has not validated Text rendering/resources",
+    "Corrupt/debug STL iterator diagnostics and allocation failures are outside valid C++ list transport",
+    "Row/node owners and current FC iterator must remain alive across callbacks; no concurrent/destructive list mutation guarantee",
+    "Parent owns type11 factory/lifetime integration, A9C220/941250 names/definition evidence"
+  ],
+  "validation": {
+    "strict_msvc_win32_tu": "passed /W4 /WX /fp:strict /O2; local/listbox_compile.log",
+    "parent_build": "pending",
+    "actual_owner_fixture": "passed local/listbox_owner_probe.log; actual parent Listbox type11 adapter/owner/color TUs and worker source, linked prior parent bsp_core.lib; vertical/layout/identity/listener/sound plus direct/ancestor and active visibility retirement guards",
+    "call_report": "passed27 numeric rows,0failures;3 symbolic dynamic rows; local/listbox_call_report.log",
+    "fixture_source": "local/listbox_owner_probe.cpp",
+    "fixture_runner": "local/run_listbox_owner_probe.ps1",
+    "production_input_hashes": {
+      "src/gui_listbox_runtime.cpp": {
+        "sha256_lf": "c4202a60b97b52847663f15e03e787fc80d265efe5916bea4ea9ac0ab1f1fd24"
+      },
+      "include/bsp/gui_listbox_runtime.hpp": {
+        "sha256_lf": "ae54e1028141528271ba2a1019c8913df2e985cd1299b24872b4c7db4bb06495"
+      },
+      "J:/PROG/battlestations-pacific-decompile-orch5-20260911/src/gui_widget_owner.cpp": {
+        "sha256_lf": "464e2ab14426160231f4161f40b8a16b0b37026efe015640df6c59405b01fec7"
+      },
+      "J:/PROG/battlestations-pacific-decompile-orch5-20260911/src/gui_type_dispatch.cpp": {
+        "sha256_lf": "c48cc68b224bba19594e962aba85385f3c8ebb283f2dffba41faba34819ce01f"
+      },
+      "J:/PROG/battlestations-pacific-decompile-orch5-20260911/src/gui_widget_color_dispatch.cpp": {
+        "sha256_lf": "488e0b6e1cb29025e8520c63d552d8d44db88a6b9613935b501be809a3bf1200"
+      },
+      "J:/PROG/battlestations-pacific-decompile-orch5-20260911/include/bsp/gui_type_dispatch.hpp": {
+        "sha256_lf": "e8c4d8c5e5464c7e97a0a168501fc30d70f90abb0b1dbb8033322886dade2a59"
+      }
+    },
+    "artifact_sha256": {
+      "local\\listbox_owner_probe.cpp": "56973854b3968d137a4b1d9ce0ab9b3294b21dbc8733b409b0748ac2f4592c2c",
+      "local\\listbox_owner_probe.log": "7ec03accd66dc464719b545eb9b06b3d538d488541c34380803b2f26c43a76e5",
+      "local\\listbox_compile.log": "60866454285ecfea883624027cd57c963eb60b11fc919fb47907c4904bc2efac",
+      "local\\listbox_call_report.log": "6141be1aa733cead291314420fdfba8454f0dec24d0f929ce6e523a592d28520"
+    },
+    "parent_library": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_core.lib",
+      "sha256": "a18755b825e079a8f6837099bd7d1bf6bc70d9a8b8a5baacca72b5a73843a8de",
+      "limit": "prior parent library; changed owner/type/color TUs compiled directly for fixture. This is not the required combined CMake build."
+    },
+    "independent_review": "menu_command worker compared selection/refresh80/current78 and full x87 layout listing; no findings in declared borrowed-live-row/actual-Text114 domain",
+    "retirement_fixture": "nonempty Listbox and ancestor retirement rejected before binding/model-count changes; empty Listbox retirement during ancestor current38 callback inside current34 rejected while adapter active, then visibility call completed"
+  },
+  "parent_integration_2026_09_12": {
+    "report": "reports/orch5_menu_listbox_group_batch.json",
+    "combined_win32_build_passed": true,
+    "existing_tests_passed": 2,
+    "scope": "Final-library Group/Listbox/tactical probes passed; menu caller assembly/compile reviewed, no complete menu runtime claim",
+    "new_cpp_abi": true,
+    "game_validated": false
+  }
+}

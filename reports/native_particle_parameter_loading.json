@@ -1,0 +1,2622 @@
+{
+  "packet": "orch3_parameter_loading_ao",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_url": "http://127.0.0.1:8089",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00afbed0",
+      "end_exclusive": "00afbf14",
+      "end_inclusive": "00afbf13",
+      "length": 68,
+      "sha256": "027863bb2c45a5a7f74bc8713019494825c3014672ceb2bdb6d8e38f06fa7d52",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00afbf13",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      },
+      "cpp_symbol": "construct_native_particle_parameter_builder_00afbed0",
+      "ghidra_name": "BSP_ParticleParameterBuilder_Construct",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+      "original_abi": "ECX actual10h builder; RET; EAX same owner",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_ParticleParameterBuilder_Construct(void)",
+      "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+      "worker_human_receiver_prototype": "void * __thiscall BSP_ParticleParameterBuilder_Construct(void * actual_builder)"
+    },
+    {
+      "address": "00afbf60",
+      "end_exclusive": "00afc1a7",
+      "end_inclusive": "00afc1a6",
+      "length": 583,
+      "sha256": "0c8556d3bcf2a0d51f3ffbf564b12f8d4531261bc32e54f6ea6b28df3de80916",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00afc1a6",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      },
+      "cpp_symbol": "convert_native_particle_parameter_00afbf60",
+      "ghidra_name": "BSP_ParticleParameterBuilder_CreateRuntimeParameter",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+      "original_abi": "ECX actual10h builder; RET; EAX actual0Ch parameter or null",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_ParticleParameterBuilder_CreateRuntimeParameter(void)",
+      "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+      "worker_human_receiver_prototype": "void * __thiscall BSP_ParticleParameterBuilder_CreateRuntimeParameter(void * actual_builder)"
+    },
+    {
+      "address": "00afc360",
+      "end_exclusive": "00afc46c",
+      "end_inclusive": "00afc46b",
+      "length": 268,
+      "sha256": "63d8bd5a92b5567d964cb710ab9a0a763d60d52761eb55c1dc33611e2442987f",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00afc469",
+        "length": 3,
+        "bytes": "c20800",
+        "text": "ret 8"
+      },
+      "cpp_symbol": "initialize_native_particle_parameter_endpoints_00afc360",
+      "ghidra_name": "BSP_ParticleParameterBuilder_InsertDefaultEndpoints",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+      "original_abi": "ECX actual builder; stack(first_value,last_value); RET8",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleParameterBuilder_InsertDefaultEndpoints(float first_value, float last_value)",
+      "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+      "worker_human_receiver_prototype": "void __thiscall BSP_ParticleParameterBuilder_InsertDefaultEndpoints(void * actual_builder, float first_value, float last_value)"
+    },
+    {
+      "address": "00afc470",
+      "end_exclusive": "00afcc9f",
+      "end_inclusive": "00afcc9e",
+      "length": 2095,
+      "sha256": "1e0ccc85a3c849b93370b8b88541b585bd2f5643231e1e0a8dc57da42d29c623",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00afcc9c",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      },
+      "cpp_symbol": "parse_native_particle_parameter_00afc470",
+      "ghidra_name": "BSP_ParticleParameterBuilder_ParsePooledLine",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+      "original_abi": "ECX actual builder; stack(actual4h line); RET4; AL boolean",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "bool __thiscall BSP_ParticleParameterBuilder_ParsePooledLine(void * actual_line)",
+      "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+      "worker_human_receiver_prototype": "bool __thiscall BSP_ParticleParameterBuilder_ParsePooledLine(void * actual_builder, void * actual_line)"
+    },
+    {
+      "address": "00afc1b0",
+      "end_exclusive": "00afc1b6",
+      "end_inclusive": "00afc1b5",
+      "length": 6,
+      "sha256": "b707ebee62c39efa0b6d4258fdfdd23feb74b83931c72cbf99a7ebfdd5d69e8b",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00afc1b5",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      },
+      "cpp_symbol": "first_native_particle_parameter_value_00afc1b0",
+      "ghidra_name": "BSP_ParticleParameterBuilder_FirstValue",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+      "original_abi": "ECX actual builder; RET; ST0 float loaded from first key+4",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "float __thiscall BSP_ParticleParameterBuilder_FirstValue(void)",
+      "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+      "worker_human_receiver_prototype": "float __thiscall BSP_ParticleParameterBuilder_FirstValue(void * actual_builder)"
+    },
+    {
+      "address": "00af4110",
+      "end_exclusive": "00af412a",
+      "end_inclusive": "00af4129",
+      "length": 26,
+      "sha256": "48528fb6b6f080664c6d6c60618eec22bc5dd6060b9297c9069bdc9e886e6b19",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00af4129",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      },
+      "cpp_symbol": "destroy_native_particle_parameter_builder_00af4110",
+      "ghidra_name": "BSP_ParticleParameterBuilder_ReleaseKeys",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+      "original_abi": "ECX actual builder; RET",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleParameterBuilder_ReleaseKeys(void)",
+      "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+      "worker_human_receiver_prototype": "void __thiscall BSP_ParticleParameterBuilder_ReleaseKeys(void * actual_builder)"
+    },
+    {
+      "address": "00afbc90",
+      "end_exclusive": "00afbd03",
+      "end_inclusive": "00afbd02",
+      "length": 115,
+      "sha256": "99e1821ff5864aeb057333b1eae1a784c14eb10c668bc9b2623ec0948723742d",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00afbd00",
+        "length": 3,
+        "bytes": "c20800",
+        "text": "ret 8"
+      },
+      "cpp_symbol": "incoming",
+      "ghidra_name": "BSP_ParticleKey_NormalizeIncomingTangent",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+      "original_abi": "ECX actual2float destination; stack(x,y); RET8",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleKey_NormalizeIncomingTangent(float x, float y)",
+      "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+      "worker_human_receiver_prototype": "void __thiscall BSP_ParticleKey_NormalizeIncomingTangent(float * actual_tangent, float x, float y)"
+    },
+    {
+      "address": "00afbd10",
+      "end_exclusive": "00afbd83",
+      "end_inclusive": "00afbd82",
+      "length": 115,
+      "sha256": "6bfc8c3918d79cb1ae997b65daddd5e2367ed97fa82714d8b892d2359521dd18",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00afbd80",
+        "length": 3,
+        "bytes": "c20800",
+        "text": "ret 8"
+      },
+      "cpp_symbol": "outgoing",
+      "ghidra_name": "BSP_ParticleKey_NormalizeOutgoingTangent",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+      "original_abi": "ECX actual2float destination; stack(x,y); RET8",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleKey_NormalizeOutgoingTangent(float x, float y)",
+      "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+      "worker_human_receiver_prototype": "void __thiscall BSP_ParticleKey_NormalizeOutgoingTangent(float * actual_tangent, float x, float y)"
+    },
+    {
+      "address": "00afbdb0",
+      "end_exclusive": "00afbe75",
+      "end_inclusive": "00afbe74",
+      "length": 197,
+      "sha256": "49ec104d46852dd70291f9cda8a175360db2ea43ace7afa29add48b9204392f4",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00afbe72",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      },
+      "cpp_symbol": "reserve_00afbdb0",
+      "ghidra_name": "BSP_ParticleParameterBuilder_ReserveKeys",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+      "original_abi": "ECX actual builder; stack(signed capacity); RET4",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleParameterBuilder_ReserveKeys(int capacity)",
+      "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+      "worker_human_receiver_prototype": "void __thiscall BSP_ParticleParameterBuilder_ReserveKeys(void * actual_builder, int capacity)"
+    },
+    {
+      "address": "00afbf20",
+      "end_exclusive": "00afbf52",
+      "end_inclusive": "00afbf51",
+      "length": 50,
+      "sha256": "57eb9c245eafae46cbffbf092c6031c4d5ed3c58781794b97b08076da14b69a1",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00afbf51",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      },
+      "cpp_symbol": "convert_native_particle_parameter_00afbf60 coefficient loop",
+      "ghidra_name": "BSP_ParticleParameterBuilder_ComputeHermiteCoefficients",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+      "original_abi": "ECX actual builder; RET; original loop retains owner in EDX",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleParameterBuilder_ComputeHermiteCoefficients(void)",
+      "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+      "worker_human_receiver_prototype": "void __thiscall BSP_ParticleParameterBuilder_ComputeHermiteCoefficients(void * actual_builder)"
+    },
+    {
+      "address": "00afc260",
+      "end_exclusive": "00afc334",
+      "end_inclusive": "00afc333",
+      "length": 212,
+      "sha256": "b6c1c32782d4f3480ab9d29576b5cfa4eec3cd99cd6c60281603665784b0e36b",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00afc331",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      },
+      "cpp_symbol": "insert_00afc260",
+      "ghidra_name": "BSP_ParticleParameterBuilder_InsertSortedKey",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+      "original_abi": "ECX actual builder; stack(actual2Ch key); RET4; EAX inserted index",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "int __thiscall BSP_ParticleParameterBuilder_InsertSortedKey(void * actual_key)",
+      "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+      "worker_human_receiver_prototype": "int __thiscall BSP_ParticleParameterBuilder_InsertSortedKey(void * actual_builder, void * actual_key)"
+    },
+    {
+      "address": "00aff9b0",
+      "end_exclusive": "00aff9c7",
+      "end_inclusive": "00aff9c6",
+      "length": 23,
+      "sha256": "675ece3a470dd349f1ea738acc2985c6b2118e5c58afd79b73a7e295ea3839d7",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00aff9c6",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      },
+      "cpp_symbol": "convert_native_particle_parameter_00afbf60 sparse construction",
+      "ghidra_name": "BSP_ParticleParameter_ConstructPayload",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+      "original_abi": "ECX actual0Ch parameter; RET; EAX same owner",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_ParticleParameter_ConstructPayload(void)",
+      "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+      "worker_human_receiver_prototype": "void * __thiscall BSP_ParticleParameter_ConstructPayload(void * actual_parameter)"
+    },
+    {
+      "address": "00affd70",
+      "end_exclusive": "00affde1",
+      "end_inclusive": "00affde0",
+      "length": 113,
+      "sha256": "c73b154d716fc9b88cb86ee9b4759e1445a573eccc2bd7598bfa702f6c46e80a",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00affdde",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      },
+      "cpp_symbol": "allocate_segments_00affd70",
+      "ghidra_name": "BSP_ParticleParameter_AllocateSegments",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+      "original_abi": "ECX actual parameter; stack(count lowbyte); RET4",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleParameter_AllocateSegments(unsigned char count)",
+      "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+      "worker_human_receiver_prototype": "void __thiscall BSP_ParticleParameter_AllocateSegments(void * actual_parameter, unsigned char count)"
+    },
+    {
+      "address": "00b000a0",
+      "end_exclusive": "00b00114",
+      "end_inclusive": "00b00113",
+      "length": 116,
+      "sha256": "69c1ca91882c49dddc9b394fcbd90d564c57336ace4c56fbb05263f3f5e6046d",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00b00111",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      },
+      "cpp_symbol": "append_segment hermite branch",
+      "ghidra_name": "BSP_ParticleParameter_AppendHermiteSegment",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+      "original_abi": "ECX actual parameter; stack(actual1Ch segment); RET4",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleParameter_AppendHermiteSegment(void * actual_segment)",
+      "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+      "worker_human_receiver_prototype": "void __thiscall BSP_ParticleParameter_AppendHermiteSegment(void * actual_parameter, void * actual_segment)"
+    },
+    {
+      "address": "00b00120",
+      "end_exclusive": "00b00195",
+      "end_inclusive": "00b00194",
+      "length": 117,
+      "sha256": "49978341be177a329a3f56908dcd6a8d171f5b9630ac4e08891eb51e080e645b",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00b00192",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      },
+      "cpp_symbol": "append_segment linear branch",
+      "ghidra_name": "BSP_ParticleParameter_AppendLinearSegment",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+      "original_abi": "ECX actual parameter; stack(actual14h segment); RET4",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleParameter_AppendLinearSegment(void * actual_segment)",
+      "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+      "worker_human_receiver_prototype": "void __thiscall BSP_ParticleParameter_AppendLinearSegment(void * actual_parameter, void * actual_segment)"
+    },
+    {
+      "address": "00b004a0",
+      "end_exclusive": "00b004aa",
+      "end_inclusive": "00b004a9",
+      "length": 10,
+      "sha256": "7ce0d4106cfe309175069344767dd8d1e47256810f5acd541445f90c246cac23",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00b004a5",
+        "length": 5,
+        "bytes": "e9463ee2ff",
+        "text": "jmp 0x9242f0"
+      },
+      "cpp_symbol": "convert_native_particle_parameter_00afbf60 canonical pool allocation",
+      "ghidra_name": "BSP_ParticleParameter_AllocatePoolSlot",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+      "original_abi": "Ignores incoming ECX size; replaces ECX with actualF8D344; JMP9242F0, whose RET returns EAX slot",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+      "native_calling_convention": "__cdecl",
+      "native_prototype": "void * __cdecl BSP_ParticleParameter_AllocatePoolSlot(void)",
+      "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+      "worker_human_receiver_prototype": "void * __fastcall BSP_ParticleParameter_AllocatePoolSlot(unsigned int ignored_byte_count)"
+    },
+    {
+      "address": "00afb3a0",
+      "end_exclusive": "00afb544",
+      "end_inclusive": "00afb543",
+      "length": 420,
+      "sha256": "06b6d92922e809cb688b36e72e72619b6f62e7316a84c79b237c104a17f5ffcd",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00afb541",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      },
+      "cpp_symbol": "coefficients",
+      "ghidra_name": "BSP_ParticleKey_ComputeHermiteCoefficients",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+      "original_abi": "ECX actualfirst2Ch key; stack(actualnextkey); RET4",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleKey_ComputeHermiteCoefficients(void * actual_next_key)",
+      "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+      "worker_human_receiver_prototype": "void __thiscall BSP_ParticleKey_ComputeHermiteCoefficients(void * actual_first_key, void * actual_next_key)"
+    },
+    {
+      "address": "00afb670",
+      "end_exclusive": "00afb6a8",
+      "end_inclusive": "00afb6a7",
+      "length": 56,
+      "sha256": "3a2233da3edb7b14453ff04fe86a074ebbde01c780fa4b487ff2d1070fbb080f",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00afb6a7",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      },
+      "cpp_symbol": "key_construct",
+      "ghidra_name": "BSP_ParticleKey_ConstructSparse",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+      "original_abi": "ECX actual2Ch key; RET/EAX key; dormant tangent words copied from uninitialized frame scratch",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_ParticleKey_ConstructSparse(void)",
+      "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+      "worker_human_receiver_prototype": "void * __thiscall BSP_ParticleKey_ConstructSparse(void * actual_key)"
+    },
+    {
+      "address": "00affcb0",
+      "end_exclusive": "00affd1a",
+      "end_inclusive": "00affd19",
+      "length": 106,
+      "sha256": "952e5577aae6abce1f7cee64cf04108164b1468264d2b5ad360cfb234fb659c5",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00affd17",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      },
+      "cpp_symbol": "integral_hermite",
+      "ghidra_name": "BSP_ParticleParameter_IntegrateHermite",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+      "original_abi": "ECX actual parameter; stack(timefloat); RET4/ST0 float",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "float __thiscall BSP_ParticleParameter_IntegrateHermite(float time)",
+      "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+      "worker_human_receiver_prototype": "float __thiscall BSP_ParticleParameter_IntegrateHermite(void * actual_parameter, float time)"
+    },
+    {
+      "address": "00affd20",
+      "end_exclusive": "00affd70",
+      "end_inclusive": "00affd6f",
+      "length": 80,
+      "sha256": "563dfdf31e01e41e72defe0f51338eb39453f100256b3cbae1dd7d17b65196ad",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00affd6d",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      },
+      "cpp_symbol": "integral_linear",
+      "ghidra_name": "BSP_ParticleParameter_IntegrateLinear",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+      "original_abi": "ECX actual parameter; stack(timefloat); RET4/ST0 float",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "float __thiscall BSP_ParticleParameter_IntegrateLinear(float time)",
+      "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+      "worker_human_receiver_prototype": "float __thiscall BSP_ParticleParameter_IntegrateLinear(void * actual_parameter, float time)"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00afbefd",
+      "native": "00afbdb0",
+      "function": "00afbed0"
+    },
+    {
+      "address": "00afbf83",
+      "native": "00b004a0",
+      "function": "00afbf60"
+    },
+    {
+      "address": "00afbf98",
+      "native": "00aff9b0",
+      "function": "00afbf60"
+    },
+    {
+      "address": "00afbfbd",
+      "native": "00afbf20",
+      "function": "00afbf60"
+    },
+    {
+      "address": "00afbfcb",
+      "native": "00affd70",
+      "function": "00afbf60"
+    },
+    {
+      "address": "00afc059",
+      "native": "00b000a0",
+      "function": "00afbf60"
+    },
+    {
+      "address": "00afc0a7",
+      "native": "00affd70",
+      "function": "00afbf60"
+    },
+    {
+      "address": "00afc13f",
+      "native": "00b00120",
+      "function": "00afbf60"
+    },
+    {
+      "address": "00afc3ce",
+      "native": "00afbd10",
+      "function": "00afc360"
+    },
+    {
+      "address": "00afc3da",
+      "native": "00afc260",
+      "function": "00afc360"
+    },
+    {
+      "address": "00afc454",
+      "native": "00afbc90",
+      "function": "00afc360"
+    },
+    {
+      "address": "00afc460",
+      "native": "00afc260",
+      "function": "00afc360"
+    },
+    {
+      "address": "00afc4a6",
+      "native": "00aee3c0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc4bc",
+      "native": "00bf7fbf",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc4d5",
+      "native": "00aee3c0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc4dd",
+      "native": "00bf8417",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc50a",
+      "native": "00419cc0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc511",
+      "native": "00bd1510",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc552",
+      "native": "00419cc0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc559",
+      "native": "00bd1510",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc56d",
+      "native": "00bf6989",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc5a4",
+      "native": "00aee3c0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc5ac",
+      "native": "00bfa66c",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc5d7",
+      "native": "00419cc0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc5de",
+      "native": "00bd1510",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc5f6",
+      "native": "00aee3c0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc5fe",
+      "native": "00bfa66c",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc629",
+      "native": "00419cc0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc630",
+      "native": "00bd1510",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc70b",
+      "native": "00aee3c0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc725",
+      "native": "00aee3c0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc72f",
+      "native": "00bfa66c",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc73b",
+      "native": "00bfa66c",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc784",
+      "native": "00419cc0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc78b",
+      "native": "00bd1510",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc7c2",
+      "native": "00419cc0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc7c9",
+      "native": "00bd1510",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc7e1",
+      "native": "00aee3c0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc7fb",
+      "native": "00aee3c0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc805",
+      "native": "00bfa66c",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc811",
+      "native": "00bfa66c",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc85a",
+      "native": "00419cc0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc861",
+      "native": "00bd1510",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc893",
+      "native": "00419cc0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc89a",
+      "native": "00bd1510",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc8ac",
+      "native": "00afc260",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc8f2",
+      "native": "00419cc0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc8f9",
+      "native": "00bd1510",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc939",
+      "native": "00bf7fbf",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc952",
+      "native": "00aee3c0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc95a",
+      "native": "00bf8417",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc987",
+      "native": "00419cc0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc98e",
+      "native": "00bd1510",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc9aa",
+      "native": "00bf6989",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc9e3",
+      "native": "00aee3c0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc9eb",
+      "native": "00bfa66c",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afca16",
+      "native": "00419cc0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afca1d",
+      "native": "00bd1510",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afca36",
+      "native": "00aee3c0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afca3e",
+      "native": "00bfa66c",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afca69",
+      "native": "00419cc0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afca70",
+      "native": "00bd1510",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afcbcd",
+      "native": "00afc260",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afcc18",
+      "native": "00bf7fbf",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afcc30",
+      "native": "00aee3c0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afcc38",
+      "native": "00bfa66c",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afcc51",
+      "native": "00aee2a0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afcc65",
+      "native": "00aee2a0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afcc7d",
+      "native": "00aee2a0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00af4116",
+      "native": "00bf6989",
+      "function": "00af4110"
+    },
+    {
+      "address": "00afbcd6",
+      "native": "00bf7030",
+      "function": "00afbc90"
+    },
+    {
+      "address": "00afbd56",
+      "native": "00bf7030",
+      "function": "00afbd10"
+    },
+    {
+      "address": "00afbdf8",
+      "native": "00bf55be",
+      "function": "00afbdb0"
+    },
+    {
+      "address": "00afbe1b",
+      "native": "00403560",
+      "function": "00afbdb0"
+    },
+    {
+      "address": "00afbe53",
+      "native": "00bf6989",
+      "function": "00afbdb0"
+    },
+    {
+      "address": "00afbf3a",
+      "native": "00afb3a0",
+      "function": "00afbf20"
+    },
+    {
+      "address": "00afc2aa",
+      "native": "00afbdb0",
+      "function": "00afc260"
+    },
+    {
+      "address": "00afc2d6",
+      "native": "00afbdb0",
+      "function": "00afc260"
+    },
+    {
+      "address": "00affd90",
+      "native": "00bf6989",
+      "function": "00affd70"
+    },
+    {
+      "address": "00affdae",
+      "native": "00bf6989",
+      "function": "00affd70"
+    },
+    {
+      "address": "00affdd2",
+      "native": "00bf55be",
+      "function": "00affd70"
+    },
+    {
+      "address": "00b000c8",
+      "native": "00affcb0",
+      "function": "00b000a0"
+    },
+    {
+      "address": "00b00141",
+      "native": "00affd20",
+      "function": "00b00120"
+    },
+    {
+      "address": "00b004a5",
+      "native": "009242f0",
+      "function": "00b004a0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00403582",
+      "native": "ebx",
+      "function": "00403560"
+    }
+  ],
+  "pool_producer": {
+    "evidence": [
+      {
+        "address": "00cd78b0",
+        "length": 22,
+        "live_disk_equal": true,
+        "bytes": "b944d3f800e8f68be2ff68e00bce00e831f7f1ff59c3"
+      },
+      {
+        "address": "00b004fc",
+        "length": 6,
+        "live_disk_equal": true,
+        "bytes": "c706bcdcd500"
+      }
+    ],
+    "owner": "00f8d344",
+    "profile": "00d5dcbc",
+    "initialization": "CD78B5 callsB004B0 withECX F8D344; B004FC storesD5DCBC. CD78BF callsBF6FF5 with destructorCE0BE0. B004A0 loads sameF8D344 before tail-jumping9242F0. No0109CE94 binding or new pool exists here.",
+    "calls": [
+      {
+        "address": "00cd78b5",
+        "native": "00b004b0",
+        "function": "00cd78b0"
+      },
+      {
+        "address": "00cd78bf",
+        "native": "00bf6ff5",
+        "function": "00cd78b0"
+      }
+    ]
+  },
+  "validation": {
+    "strict_standalone_compile": "passed",
+    "focused_original_byte_fixture": {
+      "status": "passed",
+      "observations": 14,
+      "native_spans": 21,
+      "live_constants": 14,
+      "current_constant_sets": 2,
+      "log": "parameter original-byte actual-owner fixture: observations=14 native_spans=21 current_constant_sets=2 failures=0",
+      "compiler": "MSVC Win32 /std:c++20 /O2 /MD /EHsc /W4 /WX /fp:strict /link /MANIFEST:EMBED",
+      "library": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+      "library_sha256": "4f9bccfb266252d2318918e11718abf3cda1109fb944249a1bab95fd15977913",
+      "source_sha256": "15bcfac96921fa2c4ab9bd8128b6aa7003447e5b5498f2ed0dba619ef1450861",
+      "scratch": "C:\\Users\\sqz269\\bsp-ao-parameters",
+      "runner": "probe.cmd",
+      "generator": "make_fixture.py",
+      "limits": [
+        "Native throwing FH3 unwind not executed",
+        "Original machine-code internal flow retained; direct external service calls and absolute data operands relocated",
+        "Original vector constructor helper included as actual native dependency; canonical shared pool allocation and pooled-text services used",
+        "Controlled array/string allocator domains instrument allocation and release effects without replacing production owners",
+        "Only dormant endpoint tangent scratch and not-yet-produced coefficients excluded from key-byte comparisons; complete emitted runtime segment payloads compared",
+        "Byte count overflow, unsupported malformed token/null allocation faults, extreme integer overflow and gameplay untested"
+      ]
+    },
+    "integrated_repository_build": "primary integrator pending",
+    "game_validated": false,
+    "native_abi_compatible": false,
+    "native_call_rows": "86 direct CALL/tail rows checked, 0 failed; one original403560 CALL EBX row is indirect"
+  },
+  "dependencies": [
+    "native_pooled_text.cpp at sibling commit1537a64f or integrated current source",
+    "native_particle_definition.hpp/cpp actual owners",
+    "NativeWeakHandlePool::allocate_raw_slot_009242f0 over actual F8D344",
+    "native_crt_sqrt_st0_00bf7030 with required CameraAxesCrtAccess",
+    "actual BF55BE allocation and BF6989 release services; current runtime constants supplied by application"
+  ],
+  "analyzed_static_initializer": {
+    "address": "00cd78b0",
+    "end_inclusive": "00cd78c5",
+    "name": "BSP_ParticleParameterPool_StaticInitialize",
+    "evidence": "AO analyzed static initializer only, not an extra compiled function. Complete CD78B0..CD78C5 live/installed bytes verified: ECX=F8D344; CALLB004B0; PUSHCE0BE0; CALLBF6FF5; POP ECX; RET. Confirms this exact physical parameter pool uses the existing generic10h allocation/return mechanics; do not substitute0109CE94. Descriptive label is provisional, not a recovered symbol; existing CRT atexit wrapper BF6FF5 remains unchanged. See reports/native_particle_parameter_loading.json. Native startup/gameplay unvalidated.",
+    "status": "analyzed_static_initializer_only"
+  },
+  "integration_ao": {
+    "strict_win32_build_and_two_seeded_ctests": true,
+    "combined_library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+    "current_library_fixture": {
+      "label": "parameters",
+      "exit_code": 0,
+      "log": "local\\ao-parameters-current-replay.log",
+      "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+      "source_sha256": "2c6bf74c361c624a9779945487b3e76f84aade6e2184c0b4319d5783d173aa6f",
+      "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\parameters-current.cmd",
+      "executable_sha256": "15f890b0ba9179e5006f816069b0bfaf856354537cb92b02d7af5a36ad81604b"
+    },
+    "source_hashes": {
+      "include/bsp/native_particle_parameter_loading.hpp": "fa890306dc96f8522a4644fdcf9369a8357687f389a52cd12586ac22e6002ab8",
+      "src/native_particle_parameter_loading.cpp": "15bcfac96921fa2c4ab9bd8128b6aa7003447e5b5498f2ed0dba619ef1450861"
+    },
+    "normalized_entries": [
+      {
+        "address": "00afbed0",
+        "end_exclusive": "00afbf14",
+        "end_inclusive": "00afbf13",
+        "length": 68,
+        "sha256": "027863bb2c45a5a7f74bc8713019494825c3014672ceb2bdb6d8e38f06fa7d52",
+        "live_disk_equal": true,
+        "last_instruction": {
+          "address": "00afbf13",
+          "length": 1,
+          "bytes": "c3",
+          "text": "ret "
+        },
+        "cpp_symbol": "construct_native_particle_parameter_builder_00afbed0",
+        "ghidra_name": "BSP_ParticleParameterBuilder_Construct",
+        "source": "src/native_particle_parameter_loading.cpp",
+        "header": "include/bsp/native_particle_parameter_loading.hpp",
+        "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+        "original_abi": "ECX actual10h builder; RET; EAX same owner",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void * __thiscall BSP_ParticleParameterBuilder_Construct(void)",
+        "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+        "worker_human_receiver_prototype": "void * __thiscall BSP_ParticleParameterBuilder_Construct(void * actual_builder)"
+      },
+      {
+        "address": "00afbf60",
+        "end_exclusive": "00afc1a7",
+        "end_inclusive": "00afc1a6",
+        "length": 583,
+        "sha256": "0c8556d3bcf2a0d51f3ffbf564b12f8d4531261bc32e54f6ea6b28df3de80916",
+        "live_disk_equal": true,
+        "last_instruction": {
+          "address": "00afc1a6",
+          "length": 1,
+          "bytes": "c3",
+          "text": "ret "
+        },
+        "cpp_symbol": "convert_native_particle_parameter_00afbf60",
+        "ghidra_name": "BSP_ParticleParameterBuilder_CreateRuntimeParameter",
+        "source": "src/native_particle_parameter_loading.cpp",
+        "header": "include/bsp/native_particle_parameter_loading.hpp",
+        "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+        "original_abi": "ECX actual10h builder; RET; EAX actual0Ch parameter or null",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void * __thiscall BSP_ParticleParameterBuilder_CreateRuntimeParameter(void)",
+        "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+        "worker_human_receiver_prototype": "void * __thiscall BSP_ParticleParameterBuilder_CreateRuntimeParameter(void * actual_builder)"
+      },
+      {
+        "address": "00afc360",
+        "end_exclusive": "00afc46c",
+        "end_inclusive": "00afc46b",
+        "length": 268,
+        "sha256": "63d8bd5a92b5567d964cb710ab9a0a763d60d52761eb55c1dc33611e2442987f",
+        "live_disk_equal": true,
+        "last_instruction": {
+          "address": "00afc469",
+          "length": 3,
+          "bytes": "c20800",
+          "text": "ret 8"
+        },
+        "cpp_symbol": "initialize_native_particle_parameter_endpoints_00afc360",
+        "ghidra_name": "BSP_ParticleParameterBuilder_InsertDefaultEndpoints",
+        "source": "src/native_particle_parameter_loading.cpp",
+        "header": "include/bsp/native_particle_parameter_loading.hpp",
+        "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+        "original_abi": "ECX actual builder; stack(first_value,last_value); RET8",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void __thiscall BSP_ParticleParameterBuilder_InsertDefaultEndpoints(float first_value, float last_value)",
+        "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+        "worker_human_receiver_prototype": "void __thiscall BSP_ParticleParameterBuilder_InsertDefaultEndpoints(void * actual_builder, float first_value, float last_value)"
+      },
+      {
+        "address": "00afc470",
+        "end_exclusive": "00afcc9f",
+        "end_inclusive": "00afcc9e",
+        "length": 2095,
+        "sha256": "1e0ccc85a3c849b93370b8b88541b585bd2f5643231e1e0a8dc57da42d29c623",
+        "live_disk_equal": true,
+        "last_instruction": {
+          "address": "00afcc9c",
+          "length": 3,
+          "bytes": "c20400",
+          "text": "ret 4"
+        },
+        "cpp_symbol": "parse_native_particle_parameter_00afc470",
+        "ghidra_name": "BSP_ParticleParameterBuilder_ParsePooledLine",
+        "source": "src/native_particle_parameter_loading.cpp",
+        "header": "include/bsp/native_particle_parameter_loading.hpp",
+        "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+        "original_abi": "ECX actual builder; stack(actual4h line); RET4; AL boolean",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "bool __thiscall BSP_ParticleParameterBuilder_ParsePooledLine(void * actual_line)",
+        "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+        "worker_human_receiver_prototype": "bool __thiscall BSP_ParticleParameterBuilder_ParsePooledLine(void * actual_builder, void * actual_line)"
+      },
+      {
+        "address": "00afc1b0",
+        "end_exclusive": "00afc1b6",
+        "end_inclusive": "00afc1b5",
+        "length": 6,
+        "sha256": "b707ebee62c39efa0b6d4258fdfdd23feb74b83931c72cbf99a7ebfdd5d69e8b",
+        "live_disk_equal": true,
+        "last_instruction": {
+          "address": "00afc1b5",
+          "length": 1,
+          "bytes": "c3",
+          "text": "ret "
+        },
+        "cpp_symbol": "first_native_particle_parameter_value_00afc1b0",
+        "ghidra_name": "BSP_ParticleParameterBuilder_FirstValue",
+        "source": "src/native_particle_parameter_loading.cpp",
+        "header": "include/bsp/native_particle_parameter_loading.hpp",
+        "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+        "original_abi": "ECX actual builder; RET; ST0 float loaded from first key+4",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "float __thiscall BSP_ParticleParameterBuilder_FirstValue(void)",
+        "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+        "worker_human_receiver_prototype": "float __thiscall BSP_ParticleParameterBuilder_FirstValue(void * actual_builder)"
+      },
+      {
+        "address": "00af4110",
+        "end_exclusive": "00af412a",
+        "end_inclusive": "00af4129",
+        "length": 26,
+        "sha256": "48528fb6b6f080664c6d6c60618eec22bc5dd6060b9297c9069bdc9e886e6b19",
+        "live_disk_equal": true,
+        "last_instruction": {
+          "address": "00af4129",
+          "length": 1,
+          "bytes": "c3",
+          "text": "ret "
+        },
+        "cpp_symbol": "destroy_native_particle_parameter_builder_00af4110",
+        "ghidra_name": "BSP_ParticleParameterBuilder_ReleaseKeys",
+        "source": "src/native_particle_parameter_loading.cpp",
+        "header": "include/bsp/native_particle_parameter_loading.hpp",
+        "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+        "original_abi": "ECX actual builder; RET",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void __thiscall BSP_ParticleParameterBuilder_ReleaseKeys(void)",
+        "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+        "worker_human_receiver_prototype": "void __thiscall BSP_ParticleParameterBuilder_ReleaseKeys(void * actual_builder)"
+      },
+      {
+        "address": "00afbc90",
+        "end_exclusive": "00afbd03",
+        "end_inclusive": "00afbd02",
+        "length": 115,
+        "sha256": "99e1821ff5864aeb057333b1eae1a784c14eb10c668bc9b2623ec0948723742d",
+        "live_disk_equal": true,
+        "last_instruction": {
+          "address": "00afbd00",
+          "length": 3,
+          "bytes": "c20800",
+          "text": "ret 8"
+        },
+        "cpp_symbol": "incoming",
+        "ghidra_name": "BSP_ParticleKey_NormalizeIncomingTangent",
+        "source": "src/native_particle_parameter_loading.cpp",
+        "header": "include/bsp/native_particle_parameter_loading.hpp",
+        "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+        "original_abi": "ECX actual2float destination; stack(x,y); RET8",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void __thiscall BSP_ParticleKey_NormalizeIncomingTangent(float x, float y)",
+        "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+        "worker_human_receiver_prototype": "void __thiscall BSP_ParticleKey_NormalizeIncomingTangent(float * actual_tangent, float x, float y)"
+      },
+      {
+        "address": "00afbd10",
+        "end_exclusive": "00afbd83",
+        "end_inclusive": "00afbd82",
+        "length": 115,
+        "sha256": "6bfc8c3918d79cb1ae997b65daddd5e2367ed97fa82714d8b892d2359521dd18",
+        "live_disk_equal": true,
+        "last_instruction": {
+          "address": "00afbd80",
+          "length": 3,
+          "bytes": "c20800",
+          "text": "ret 8"
+        },
+        "cpp_symbol": "outgoing",
+        "ghidra_name": "BSP_ParticleKey_NormalizeOutgoingTangent",
+        "source": "src/native_particle_parameter_loading.cpp",
+        "header": "include/bsp/native_particle_parameter_loading.hpp",
+        "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+        "original_abi": "ECX actual2float destination; stack(x,y); RET8",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void __thiscall BSP_ParticleKey_NormalizeOutgoingTangent(float x, float y)",
+        "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+        "worker_human_receiver_prototype": "void __thiscall BSP_ParticleKey_NormalizeOutgoingTangent(float * actual_tangent, float x, float y)"
+      },
+      {
+        "address": "00afbdb0",
+        "end_exclusive": "00afbe75",
+        "end_inclusive": "00afbe74",
+        "length": 197,
+        "sha256": "49ec104d46852dd70291f9cda8a175360db2ea43ace7afa29add48b9204392f4",
+        "live_disk_equal": true,
+        "last_instruction": {
+          "address": "00afbe72",
+          "length": 3,
+          "bytes": "c20400",
+          "text": "ret 4"
+        },
+        "cpp_symbol": "reserve_00afbdb0",
+        "ghidra_name": "BSP_ParticleParameterBuilder_ReserveKeys",
+        "source": "src/native_particle_parameter_loading.cpp",
+        "header": "include/bsp/native_particle_parameter_loading.hpp",
+        "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+        "original_abi": "ECX actual builder; stack(signed capacity); RET4",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void __thiscall BSP_ParticleParameterBuilder_ReserveKeys(int capacity)",
+        "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+        "worker_human_receiver_prototype": "void __thiscall BSP_ParticleParameterBuilder_ReserveKeys(void * actual_builder, int capacity)"
+      },
+      {
+        "address": "00afbf20",
+        "end_exclusive": "00afbf52",
+        "end_inclusive": "00afbf51",
+        "length": 50,
+        "sha256": "57eb9c245eafae46cbffbf092c6031c4d5ed3c58781794b97b08076da14b69a1",
+        "live_disk_equal": true,
+        "last_instruction": {
+          "address": "00afbf51",
+          "length": 1,
+          "bytes": "c3",
+          "text": "ret "
+        },
+        "cpp_symbol": "convert_native_particle_parameter_00afbf60 coefficient loop",
+        "ghidra_name": "BSP_ParticleParameterBuilder_ComputeHermiteCoefficients",
+        "source": "src/native_particle_parameter_loading.cpp",
+        "header": "include/bsp/native_particle_parameter_loading.hpp",
+        "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+        "original_abi": "ECX actual builder; RET; original loop retains owner in EDX",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void __thiscall BSP_ParticleParameterBuilder_ComputeHermiteCoefficients(void)",
+        "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+        "worker_human_receiver_prototype": "void __thiscall BSP_ParticleParameterBuilder_ComputeHermiteCoefficients(void * actual_builder)"
+      },
+      {
+        "address": "00afc260",
+        "end_exclusive": "00afc334",
+        "end_inclusive": "00afc333",
+        "length": 212,
+        "sha256": "b6c1c32782d4f3480ab9d29576b5cfa4eec3cd99cd6c60281603665784b0e36b",
+        "live_disk_equal": true,
+        "last_instruction": {
+          "address": "00afc331",
+          "length": 3,
+          "bytes": "c20400",
+          "text": "ret 4"
+        },
+        "cpp_symbol": "insert_00afc260",
+        "ghidra_name": "BSP_ParticleParameterBuilder_InsertSortedKey",
+        "source": "src/native_particle_parameter_loading.cpp",
+        "header": "include/bsp/native_particle_parameter_loading.hpp",
+        "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+        "original_abi": "ECX actual builder; stack(actual2Ch key); RET4; EAX inserted index",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "int __thiscall BSP_ParticleParameterBuilder_InsertSortedKey(void * actual_key)",
+        "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+        "worker_human_receiver_prototype": "int __thiscall BSP_ParticleParameterBuilder_InsertSortedKey(void * actual_builder, void * actual_key)"
+      },
+      {
+        "address": "00aff9b0",
+        "end_exclusive": "00aff9c7",
+        "end_inclusive": "00aff9c6",
+        "length": 23,
+        "sha256": "675ece3a470dd349f1ea738acc2985c6b2118e5c58afd79b73a7e295ea3839d7",
+        "live_disk_equal": true,
+        "last_instruction": {
+          "address": "00aff9c6",
+          "length": 1,
+          "bytes": "c3",
+          "text": "ret "
+        },
+        "cpp_symbol": "convert_native_particle_parameter_00afbf60 sparse construction",
+        "ghidra_name": "BSP_ParticleParameter_ConstructPayload",
+        "source": "src/native_particle_parameter_loading.cpp",
+        "header": "include/bsp/native_particle_parameter_loading.hpp",
+        "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+        "original_abi": "ECX actual0Ch parameter; RET; EAX same owner",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void * __thiscall BSP_ParticleParameter_ConstructPayload(void)",
+        "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+        "worker_human_receiver_prototype": "void * __thiscall BSP_ParticleParameter_ConstructPayload(void * actual_parameter)"
+      },
+      {
+        "address": "00affd70",
+        "end_exclusive": "00affde1",
+        "end_inclusive": "00affde0",
+        "length": 113,
+        "sha256": "c73b154d716fc9b88cb86ee9b4759e1445a573eccc2bd7598bfa702f6c46e80a",
+        "live_disk_equal": true,
+        "last_instruction": {
+          "address": "00affdde",
+          "length": 3,
+          "bytes": "c20400",
+          "text": "ret 4"
+        },
+        "cpp_symbol": "allocate_segments_00affd70",
+        "ghidra_name": "BSP_ParticleParameter_AllocateSegments",
+        "source": "src/native_particle_parameter_loading.cpp",
+        "header": "include/bsp/native_particle_parameter_loading.hpp",
+        "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+        "original_abi": "ECX actual parameter; stack(count lowbyte); RET4",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void __thiscall BSP_ParticleParameter_AllocateSegments(unsigned char count)",
+        "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+        "worker_human_receiver_prototype": "void __thiscall BSP_ParticleParameter_AllocateSegments(void * actual_parameter, unsigned char count)"
+      },
+      {
+        "address": "00b000a0",
+        "end_exclusive": "00b00114",
+        "end_inclusive": "00b00113",
+        "length": 116,
+        "sha256": "69c1ca91882c49dddc9b394fcbd90d564c57336ace4c56fbb05263f3f5e6046d",
+        "live_disk_equal": true,
+        "last_instruction": {
+          "address": "00b00111",
+          "length": 3,
+          "bytes": "c20400",
+          "text": "ret 4"
+        },
+        "cpp_symbol": "append_segment hermite branch",
+        "ghidra_name": "BSP_ParticleParameter_AppendHermiteSegment",
+        "source": "src/native_particle_parameter_loading.cpp",
+        "header": "include/bsp/native_particle_parameter_loading.hpp",
+        "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+        "original_abi": "ECX actual parameter; stack(actual1Ch segment); RET4",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void __thiscall BSP_ParticleParameter_AppendHermiteSegment(void * actual_segment)",
+        "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+        "worker_human_receiver_prototype": "void __thiscall BSP_ParticleParameter_AppendHermiteSegment(void * actual_parameter, void * actual_segment)"
+      },
+      {
+        "address": "00b00120",
+        "end_exclusive": "00b00195",
+        "end_inclusive": "00b00194",
+        "length": 117,
+        "sha256": "49978341be177a329a3f56908dcd6a8d171f5b9630ac4e08891eb51e080e645b",
+        "live_disk_equal": true,
+        "last_instruction": {
+          "address": "00b00192",
+          "length": 3,
+          "bytes": "c20400",
+          "text": "ret 4"
+        },
+        "cpp_symbol": "append_segment linear branch",
+        "ghidra_name": "BSP_ParticleParameter_AppendLinearSegment",
+        "source": "src/native_particle_parameter_loading.cpp",
+        "header": "include/bsp/native_particle_parameter_loading.hpp",
+        "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+        "original_abi": "ECX actual parameter; stack(actual14h segment); RET4",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void __thiscall BSP_ParticleParameter_AppendLinearSegment(void * actual_segment)",
+        "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+        "worker_human_receiver_prototype": "void __thiscall BSP_ParticleParameter_AppendLinearSegment(void * actual_parameter, void * actual_segment)"
+      },
+      {
+        "address": "00b004a0",
+        "end_exclusive": "00b004aa",
+        "end_inclusive": "00b004a9",
+        "length": 10,
+        "sha256": "7ce0d4106cfe309175069344767dd8d1e47256810f5acd541445f90c246cac23",
+        "live_disk_equal": true,
+        "last_instruction": {
+          "address": "00b004a5",
+          "length": 5,
+          "bytes": "e9463ee2ff",
+          "text": "jmp 0x9242f0"
+        },
+        "cpp_symbol": "convert_native_particle_parameter_00afbf60 canonical pool allocation",
+        "ghidra_name": "BSP_ParticleParameter_AllocatePoolSlot",
+        "source": "src/native_particle_parameter_loading.cpp",
+        "header": "include/bsp/native_particle_parameter_loading.hpp",
+        "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+        "original_abi": "Ignores incoming ECX size; replaces ECX with actualF8D344; JMP9242F0, whose RET returns EAX slot",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+        "native_calling_convention": "__cdecl",
+        "native_prototype": "void * __cdecl BSP_ParticleParameter_AllocatePoolSlot(void)",
+        "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+        "worker_human_receiver_prototype": "void * __fastcall BSP_ParticleParameter_AllocatePoolSlot(unsigned int ignored_byte_count)"
+      },
+      {
+        "address": "00afb3a0",
+        "end_exclusive": "00afb544",
+        "end_inclusive": "00afb543",
+        "length": 420,
+        "sha256": "06b6d92922e809cb688b36e72e72619b6f62e7316a84c79b237c104a17f5ffcd",
+        "live_disk_equal": true,
+        "last_instruction": {
+          "address": "00afb541",
+          "length": 3,
+          "bytes": "c20400",
+          "text": "ret 4"
+        },
+        "cpp_symbol": "coefficients",
+        "ghidra_name": "BSP_ParticleKey_ComputeHermiteCoefficients",
+        "source": "src/native_particle_parameter_loading.cpp",
+        "header": "include/bsp/native_particle_parameter_loading.hpp",
+        "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+        "original_abi": "ECX actualfirst2Ch key; stack(actualnextkey); RET4",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void __thiscall BSP_ParticleKey_ComputeHermiteCoefficients(void * actual_next_key)",
+        "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+        "worker_human_receiver_prototype": "void __thiscall BSP_ParticleKey_ComputeHermiteCoefficients(void * actual_first_key, void * actual_next_key)"
+      },
+      {
+        "address": "00afb670",
+        "end_exclusive": "00afb6a8",
+        "end_inclusive": "00afb6a7",
+        "length": 56,
+        "sha256": "3a2233da3edb7b14453ff04fe86a074ebbde01c780fa4b487ff2d1070fbb080f",
+        "live_disk_equal": true,
+        "last_instruction": {
+          "address": "00afb6a7",
+          "length": 1,
+          "bytes": "c3",
+          "text": "ret "
+        },
+        "cpp_symbol": "key_construct",
+        "ghidra_name": "BSP_ParticleKey_ConstructSparse",
+        "source": "src/native_particle_parameter_loading.cpp",
+        "header": "include/bsp/native_particle_parameter_loading.hpp",
+        "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+        "original_abi": "ECX actual2Ch key; RET/EAX key; dormant tangent words copied from uninitialized frame scratch",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void * __thiscall BSP_ParticleKey_ConstructSparse(void)",
+        "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+        "worker_human_receiver_prototype": "void * __thiscall BSP_ParticleKey_ConstructSparse(void * actual_key)"
+      },
+      {
+        "address": "00affcb0",
+        "end_exclusive": "00affd1a",
+        "end_inclusive": "00affd19",
+        "length": 106,
+        "sha256": "952e5577aae6abce1f7cee64cf04108164b1468264d2b5ad360cfb234fb659c5",
+        "live_disk_equal": true,
+        "last_instruction": {
+          "address": "00affd17",
+          "length": 3,
+          "bytes": "c20400",
+          "text": "ret 4"
+        },
+        "cpp_symbol": "integral_hermite",
+        "ghidra_name": "BSP_ParticleParameter_IntegrateHermite",
+        "source": "src/native_particle_parameter_loading.cpp",
+        "header": "include/bsp/native_particle_parameter_loading.hpp",
+        "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+        "original_abi": "ECX actual parameter; stack(timefloat); RET4/ST0 float",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "float __thiscall BSP_ParticleParameter_IntegrateHermite(float time)",
+        "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+        "worker_human_receiver_prototype": "float __thiscall BSP_ParticleParameter_IntegrateHermite(void * actual_parameter, float time)"
+      },
+      {
+        "address": "00affd20",
+        "end_exclusive": "00affd70",
+        "end_inclusive": "00affd6f",
+        "length": 80,
+        "sha256": "563dfdf31e01e41e72defe0f51338eb39453f100256b3cbae1dd7d17b65196ad",
+        "live_disk_equal": true,
+        "last_instruction": {
+          "address": "00affd6d",
+          "length": 3,
+          "bytes": "c20400",
+          "text": "ret 4"
+        },
+        "cpp_symbol": "integral_linear",
+        "ghidra_name": "BSP_ParticleParameter_IntegrateLinear",
+        "source": "src/native_particle_parameter_loading.cpp",
+        "header": "include/bsp/native_particle_parameter_loading.hpp",
+        "coverage": "complete native body composed with canonical pool, pooled text and CRT services",
+        "original_abi": "ECX actual parameter; stack(timefloat); RET4/ST0 float",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "float __thiscall BSP_ParticleParameter_IntegrateLinear(float time)",
+        "prototype_note": "First explicit parameter describes original ECX receiver (or B004A0 ignored size hint); following parameters describe native stack words. No borrowed EDX binding belongs to the original ABI. Calling-convention spelling is inferred from the original register/stack behavior.",
+        "worker_human_receiver_prototype": "float __thiscall BSP_ParticleParameter_IntegrateLinear(void * actual_parameter, float time)"
+      }
+    ],
+    "native_signatures_readback_verified": true,
+    "saved_names_and_evidence": [
+      {
+        "address": "00af4110",
+        "before": {
+          "address": "00af4110",
+          "function_name": "FUN_00af4110"
+        },
+        "after": {
+          "address": "00af4110",
+          "name": "BSP_ParticleParameterBuilder_ReleaseKeys",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afb3a0",
+        "before": {
+          "address": "00afb3a0",
+          "function_name": "FUN_00afb3a0"
+        },
+        "after": {
+          "address": "00afb3a0",
+          "name": "BSP_ParticleKey_ComputeHermiteCoefficients",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afb670",
+        "before": {
+          "address": "00afb670",
+          "function_name": "FUN_00afb670"
+        },
+        "after": {
+          "address": "00afb670",
+          "name": "BSP_ParticleKey_ConstructSparse",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afbc90",
+        "before": {
+          "address": "00afbc90",
+          "function_name": "FUN_00afbc90"
+        },
+        "after": {
+          "address": "00afbc90",
+          "name": "BSP_ParticleKey_NormalizeIncomingTangent",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afbd10",
+        "before": {
+          "address": "00afbd10",
+          "function_name": "FUN_00afbd10"
+        },
+        "after": {
+          "address": "00afbd10",
+          "name": "BSP_ParticleKey_NormalizeOutgoingTangent",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afbdb0",
+        "before": {
+          "address": "00afbdb0",
+          "function_name": "CG_array_ctor_helper_00afbdb0"
+        },
+        "after": {
+          "address": "00afbdb0",
+          "name": "BSP_ParticleParameterBuilder_ReserveKeys",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afbed0",
+        "before": {
+          "address": "00afbed0",
+          "function_name": "FUN_00afbed0"
+        },
+        "after": {
+          "address": "00afbed0",
+          "name": "BSP_ParticleParameterBuilder_Construct",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afbf20",
+        "before": {
+          "address": "00afbf20",
+          "function_name": "FUN_00afbf20"
+        },
+        "after": {
+          "address": "00afbf20",
+          "name": "BSP_ParticleParameterBuilder_ComputeHermiteCoefficients",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afbf60",
+        "before": {
+          "address": "00afbf60",
+          "function_name": "FUN_00afbf60"
+        },
+        "after": {
+          "address": "00afbf60",
+          "name": "BSP_ParticleParameterBuilder_CreateRuntimeParameter",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afc1b0",
+        "before": {
+          "address": "00afc1b0",
+          "function_name": "FUN_00afc1b0"
+        },
+        "after": {
+          "address": "00afc1b0",
+          "name": "BSP_ParticleParameterBuilder_FirstValue",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afc260",
+        "before": {
+          "address": "00afc260",
+          "function_name": "FUN_00afc260"
+        },
+        "after": {
+          "address": "00afc260",
+          "name": "BSP_ParticleParameterBuilder_InsertSortedKey",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afc360",
+        "before": {
+          "address": "00afc360",
+          "function_name": "FUN_00afc360"
+        },
+        "after": {
+          "address": "00afc360",
+          "name": "BSP_ParticleParameterBuilder_InsertDefaultEndpoints",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afc470",
+        "before": {
+          "address": "00afc470",
+          "function_name": "FUN_00afc470"
+        },
+        "after": {
+          "address": "00afc470",
+          "name": "BSP_ParticleParameterBuilder_ParsePooledLine",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00aff9b0",
+        "before": {
+          "address": "00aff9b0",
+          "function_name": "FUN_00aff9b0"
+        },
+        "after": {
+          "address": "00aff9b0",
+          "name": "BSP_ParticleParameter_ConstructPayload",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00affcb0",
+        "before": {
+          "address": "00affcb0",
+          "function_name": "FUN_00affcb0"
+        },
+        "after": {
+          "address": "00affcb0",
+          "name": "BSP_ParticleParameter_IntegrateHermite",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00affd20",
+        "before": {
+          "address": "00affd20",
+          "function_name": "FUN_00affd20"
+        },
+        "after": {
+          "address": "00affd20",
+          "name": "BSP_ParticleParameter_IntegrateLinear",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00affd70",
+        "before": {
+          "address": "00affd70",
+          "function_name": "FUN_00affd70"
+        },
+        "after": {
+          "address": "00affd70",
+          "name": "BSP_ParticleParameter_AllocateSegments",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b000a0",
+        "before": {
+          "address": "00b000a0",
+          "function_name": "FUN_00b000a0"
+        },
+        "after": {
+          "address": "00b000a0",
+          "name": "BSP_ParticleParameter_AppendHermiteSegment",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b00120",
+        "before": {
+          "address": "00b00120",
+          "function_name": "FUN_00b00120"
+        },
+        "after": {
+          "address": "00b00120",
+          "name": "BSP_ParticleParameter_AppendLinearSegment",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b004a0",
+        "before": {
+          "address": "00b004a0",
+          "function_name": "CG_static_dtor_stub_00b004a0"
+        },
+        "after": {
+          "address": "00b004a0",
+          "name": "BSP_ParticleParameter_AllocatePoolSlot",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+        },
+        "status": "applied"
+      }
+    ],
+    "previous_comments": {
+      "00afc470": {
+        "address": "00afc470",
+        "function_name": "FUN_00afc470"
+      },
+      "00afbed0": {
+        "address": "00afbed0",
+        "function_name": "FUN_00afbed0"
+      },
+      "00afbc90": {
+        "address": "00afbc90",
+        "function_name": "FUN_00afbc90"
+      },
+      "00b000a0": {
+        "address": "00b000a0",
+        "function_name": "FUN_00b000a0"
+      },
+      "00afbd10": {
+        "address": "00afbd10",
+        "function_name": "FUN_00afbd10"
+      },
+      "00aff9b0": {
+        "address": "00aff9b0",
+        "function_name": "FUN_00aff9b0"
+      },
+      "00afb3a0": {
+        "address": "00afb3a0",
+        "function_name": "FUN_00afb3a0"
+      },
+      "00affd20": {
+        "address": "00affd20",
+        "function_name": "FUN_00affd20"
+      },
+      "00afbdb0": {
+        "address": "00afbdb0",
+        "function_name": "CG_array_ctor_helper_00afbdb0"
+      },
+      "00afc260": {
+        "address": "00afc260",
+        "function_name": "FUN_00afc260"
+      },
+      "00affd70": {
+        "address": "00affd70",
+        "function_name": "FUN_00affd70"
+      },
+      "00afbf20": {
+        "address": "00afbf20",
+        "function_name": "FUN_00afbf20"
+      },
+      "00afc1b0": {
+        "address": "00afc1b0",
+        "function_name": "FUN_00afc1b0"
+      },
+      "00afc360": {
+        "address": "00afc360",
+        "function_name": "FUN_00afc360"
+      },
+      "00afbf60": {
+        "address": "00afbf60",
+        "function_name": "FUN_00afbf60"
+      },
+      "00b00120": {
+        "address": "00b00120",
+        "function_name": "FUN_00b00120"
+      },
+      "00affcb0": {
+        "address": "00affcb0",
+        "function_name": "FUN_00affcb0"
+      },
+      "00af4110": {
+        "address": "00af4110",
+        "function_name": "FUN_00af4110"
+      },
+      "00afb670": {
+        "address": "00afb670",
+        "function_name": "FUN_00afb670"
+      },
+      "00b004a0": {
+        "address": "00b004a0",
+        "function_name": "CG_static_dtor_stub_00b004a0"
+      }
+    },
+    "current_comments": {
+      "00afc470": {
+        "address": "00afc470",
+        "function_name": "BSP_ParticleParameterBuilder_ParsePooledLine",
+        "comment": "[BSP reconstruction 00afc470]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+      },
+      "00afbed0": {
+        "address": "00afbed0",
+        "function_name": "BSP_ParticleParameterBuilder_Construct",
+        "comment": "[BSP reconstruction 00afbed0]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+      },
+      "00afbc90": {
+        "address": "00afbc90",
+        "function_name": "BSP_ParticleKey_NormalizeIncomingTangent",
+        "comment": "[BSP reconstruction 00afbc90]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+      },
+      "00b000a0": {
+        "address": "00b000a0",
+        "function_name": "BSP_ParticleParameter_AppendHermiteSegment",
+        "comment": "[BSP reconstruction 00b000a0]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+      },
+      "00afbd10": {
+        "address": "00afbd10",
+        "function_name": "BSP_ParticleKey_NormalizeOutgoingTangent",
+        "comment": "[BSP reconstruction 00afbd10]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+      },
+      "00aff9b0": {
+        "address": "00aff9b0",
+        "function_name": "BSP_ParticleParameter_ConstructPayload",
+        "comment": "[BSP reconstruction 00aff9b0]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+      },
+      "00afb3a0": {
+        "address": "00afb3a0",
+        "function_name": "BSP_ParticleKey_ComputeHermiteCoefficients",
+        "comment": "[BSP reconstruction 00afb3a0]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+      },
+      "00affd20": {
+        "address": "00affd20",
+        "function_name": "BSP_ParticleParameter_IntegrateLinear",
+        "comment": "[BSP reconstruction 00affd20]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+      },
+      "00afbdb0": {
+        "address": "00afbdb0",
+        "function_name": "BSP_ParticleParameterBuilder_ReserveKeys",
+        "comment": "[BSP reconstruction 00afbdb0]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+      },
+      "00afc260": {
+        "address": "00afc260",
+        "function_name": "BSP_ParticleParameterBuilder_InsertSortedKey",
+        "comment": "[BSP reconstruction 00afc260]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+      },
+      "00affd70": {
+        "address": "00affd70",
+        "function_name": "BSP_ParticleParameter_AllocateSegments",
+        "comment": "[BSP reconstruction 00affd70]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+      },
+      "00afbf20": {
+        "address": "00afbf20",
+        "function_name": "BSP_ParticleParameterBuilder_ComputeHermiteCoefficients",
+        "comment": "[BSP reconstruction 00afbf20]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+      },
+      "00afc1b0": {
+        "address": "00afc1b0",
+        "function_name": "BSP_ParticleParameterBuilder_FirstValue",
+        "comment": "[BSP reconstruction 00afc1b0]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+      },
+      "00afc360": {
+        "address": "00afc360",
+        "function_name": "BSP_ParticleParameterBuilder_InsertDefaultEndpoints",
+        "comment": "[BSP reconstruction 00afc360]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+      },
+      "00afbf60": {
+        "address": "00afbf60",
+        "function_name": "BSP_ParticleParameterBuilder_CreateRuntimeParameter",
+        "comment": "[BSP reconstruction 00afbf60]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+      },
+      "00b00120": {
+        "address": "00b00120",
+        "function_name": "BSP_ParticleParameter_AppendLinearSegment",
+        "comment": "[BSP reconstruction 00b00120]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+      },
+      "00affcb0": {
+        "address": "00affcb0",
+        "function_name": "BSP_ParticleParameter_IntegrateHermite",
+        "comment": "[BSP reconstruction 00affcb0]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+      },
+      "00af4110": {
+        "address": "00af4110",
+        "function_name": "BSP_ParticleParameterBuilder_ReleaseKeys",
+        "comment": "[BSP reconstruction 00af4110]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+      },
+      "00afb670": {
+        "address": "00afb670",
+        "function_name": "BSP_ParticleKey_ConstructSparse",
+        "comment": "[BSP reconstruction 00afb670]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+      },
+      "00b004a0": {
+        "address": "00b004a0",
+        "function_name": "BSP_ParticleParameter_AllocatePoolSlot",
+        "comment": "[BSP reconstruction 00b004a0]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+      }
+    },
+    "game_validated": false,
+    "original_fh3_abi_validated": false,
+    "analyzed_static_initializer": {
+      "address": "00cd78b0",
+      "end_inclusive": "00cd78c5",
+      "name": "BSP_ParticleParameterPool_StaticInitialize",
+      "evidence": "AO analyzed static initializer only, not an extra compiled function. Complete CD78B0..CD78C5 live/installed bytes verified: ECX=F8D344; CALLB004B0; PUSHCE0BE0; CALLBF6FF5; POP ECX; RET. Confirms this exact physical parameter pool uses the existing generic10h allocation/return mechanics; do not substitute0109CE94. Descriptive label is provisional, not a recovered symbol; existing CRT atexit wrapper BF6FF5 remains unchanged. See reports/native_particle_parameter_loading.json. Native startup/gameplay unvalidated.",
+      "status": "analyzed_static_initializer_only"
+    },
+    "function_repairs": {
+      "ao-parameter-flow.json": {
+        "repairs": [
+          {
+            "function": "00afc470",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T18:56:49Z",
+            "decompile_lines_before": 109,
+            "gaps": [
+              {
+                "site": "00afc56d",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00afc572",
+                "gap_end_exclusive": "00afc92f",
+                "bytes": 957,
+                "after_call": true,
+                "sha256": "b4ec81ac414bd235bd6144ca636be79c83a7f96ac12dce8637576d12181be3f6"
+              },
+              {
+                "site": "00afc9aa",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00afc9af",
+                "gap_end_exclusive": "00afcc0e",
+                "bytes": 607,
+                "after_call": true,
+                "sha256": "9b86585a95776146395fd465487094d3fe156d493ef994887ee211f79874e84f"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00afc56d",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00afc572",
+                  "gap_end_exclusive": "00afc92f",
+                  "bytes": 957,
+                  "after_call": true,
+                  "sha256": "b4ec81ac414bd235bd6144ca636be79c83a7f96ac12dce8637576d12181be3f6"
+                },
+                "clear": "Success: Cleared flow override at 00afc56d (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 957 byte(s)"
+              },
+              {
+                "gap": {
+                  "site": "00afc9aa",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00afc9af",
+                  "gap_end_exclusive": "00afcc0e",
+                  "bytes": 607,
+                  "after_call": true,
+                  "sha256": "9b86585a95776146395fd465487094d3fe156d493ef994887ee211f79874e84f"
+                },
+                "clear": "Success: Cleared flow override at 00afc9aa (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 607 byte(s)"
+              },
+              {
+                "explicit_tail_call": "00afc56d",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00afc56d (was: NONE, now: NONE)"
+                }
+              },
+              {
+                "explicit_tail_call": "00afc9aa",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00afc9aa (was: NONE, now: NONE)"
+                }
+              }
+            ],
+            "explicit_tail_end_exclusive": "00afcc9f",
+            "explicit_body_sha256": "1e0ccc85a3c849b93370b8b88541b585bd2f5643231e1e0a8dc57da42d29c623",
+            "body_before": "Function: FUN_00afc470 at 00afc470\nSignature: undefined FUN_00afc470(void)\nEntry: 00afc470\nBody: 00afc470 - 00afcc9e",
+            "decompile_lines_after": 417,
+            "gaps_remaining": 0,
+            "body_after": "Function: FUN_00afc470 at 00afc470\nSignature: undefined FUN_00afc470(void)\nEntry: 00afc470\nBody: 00afc470 - 00afcc9e",
+            "stored_body_tail_complete": true
+          },
+          {
+            "function": "00afbdb0",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T18:56:58Z",
+            "decompile_lines_before": 52,
+            "gaps": [
+              {
+                "site": "00afbe53",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00afbe58",
+                "gap_end_exclusive": "00afbe62",
+                "bytes": 10,
+                "after_call": true,
+                "sha256": "7988561ca0100f2b1affc1f2880b43ef7c54356edaf535f401a9f0eaaf3bf0e8"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00afbe53",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00afbe58",
+                  "gap_end_exclusive": "00afbe62",
+                  "bytes": 10,
+                  "after_call": true,
+                  "sha256": "7988561ca0100f2b1affc1f2880b43ef7c54356edaf535f401a9f0eaaf3bf0e8"
+                },
+                "clear": "Success: Cleared flow override at 00afbe53 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 10 byte(s)"
+              },
+              {
+                "explicit_tail_call": "00afbe53",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00afbe53 (was: NONE, now: NONE)"
+                }
+              }
+            ],
+            "explicit_tail_end_exclusive": "00afbe75",
+            "explicit_body_sha256": "49ec104d46852dd70291f9cda8a175360db2ea43ace7afa29add48b9204392f4",
+            "body_before": "Function: CG_array_ctor_helper_00afbdb0 at 00afbdb0\nSignature: undefined CG_array_ctor_helper_00afbdb0(void)\nEntry: 00afbdb0\nBody: 00afbdb0 - 00afbe74",
+            "decompile_lines_after": 54,
+            "gaps_remaining": 0,
+            "body_after": "Function: CG_array_ctor_helper_00afbdb0 at 00afbdb0\nSignature: undefined CG_array_ctor_helper_00afbdb0(void)\nEntry: 00afbdb0\nBody: 00afbdb0 - 00afbe74",
+            "stored_body_tail_complete": true
+          },
+          {
+            "function": "00affd70",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T18:57:07Z",
+            "decompile_lines_before": 30,
+            "gaps": [
+              {
+                "site": "00affd90",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00affd95",
+                "gap_end_exclusive": "00affd9f",
+                "bytes": 10,
+                "after_call": true,
+                "sha256": "cba55c2ca75c5f79e7687fcb36ba5b7be534e1322e47f8d980772255fb436344"
+              },
+              {
+                "site": "00affdae",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00affdb3",
+                "gap_end_exclusive": "00affdbd",
+                "bytes": 10,
+                "after_call": true,
+                "sha256": "cba55c2ca75c5f79e7687fcb36ba5b7be534e1322e47f8d980772255fb436344"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00affd90",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00affd95",
+                  "gap_end_exclusive": "00affd9f",
+                  "bytes": 10,
+                  "after_call": true,
+                  "sha256": "cba55c2ca75c5f79e7687fcb36ba5b7be534e1322e47f8d980772255fb436344"
+                },
+                "clear": "Success: Cleared flow override at 00affd90 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 10 byte(s)"
+              },
+              {
+                "gap": {
+                  "site": "00affdae",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00affdb3",
+                  "gap_end_exclusive": "00affdbd",
+                  "bytes": 10,
+                  "after_call": true,
+                  "sha256": "cba55c2ca75c5f79e7687fcb36ba5b7be534e1322e47f8d980772255fb436344"
+                },
+                "clear": "Success: Cleared flow override at 00affdae (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 10 byte(s)"
+              },
+              {
+                "explicit_tail_call": "00affd90",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00affd90 (was: NONE, now: NONE)"
+                }
+              },
+              {
+                "explicit_tail_call": "00affdae",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00affdae (was: NONE, now: NONE)"
+                }
+              }
+            ],
+            "explicit_tail_end_exclusive": "00affde1",
+            "explicit_body_sha256": "c73b154d716fc9b88cb86ee9b4759e1445a573eccc2bd7598bfa702f6c46e80a",
+            "body_before": "Function: FUN_00affd70 at 00affd70\nSignature: undefined FUN_00affd70(void)\nEntry: 00affd70\nBody: 00affd70 - 00affde0",
+            "decompile_lines_after": 30,
+            "gaps_remaining": 0,
+            "body_after": "Function: FUN_00affd70 at 00affd70\nSignature: undefined FUN_00affd70(void)\nEntry: 00affd70\nBody: 00affd70 - 00affde0",
+            "stored_body_tail_complete": true
+          }
+        ]
+      },
+      "ao-parameter-definitions.json": {
+        "events": [
+          {
+            "recreate": "00afc470",
+            "previous": "Function: FUN_00afc470 at 00afc470\nSignature: undefined FUN_00afc470(void)\nEntry: 00afc470\nBody: 00afc470 - 00afcc9e",
+            "plate": null
+          },
+          {
+            "endpoint": "delete_function",
+            "body": {
+              "address": "00afc470"
+            },
+            "result": {
+              "success": true,
+              "address": "00afc470",
+              "deleted_function": "FUN_00afc470",
+              "body_size": 531,
+              "message": "Function 'FUN_00afc470' deleted at 00afc470"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00afc470",
+              "end_address": "00afcc9f"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00afc470",
+              "end_address": "00afcc9e",
+              "bytes_disassembled": 2095,
+              "message": "Successfully disassembled 2095 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00afc470",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00afc470",
+              "function_name": "FUN_00afc470",
+              "entry_point": "00afc470",
+              "body_size": 2086,
+              "message": "Function created successfully at 00afc470"
+            }
+          },
+          {
+            "defined": "00afc470",
+            "end": "00afcc9f",
+            "name": null,
+            "after": "Function: FUN_00afc470 at 00afc470\nSignature: undefined FUN_00afc470(void)\nEntry: 00afc470\nBody: 00afc470 - 00afcc9e"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "recreate": "00afbdb0",
+            "previous": "Function: CG_array_ctor_helper_00afbdb0 at 00afbdb0\nSignature: undefined CG_array_ctor_helper_00afbdb0(void)\nEntry: 00afbdb0\nBody: 00afbdb0 - 00afbe74",
+            "plate": null
+          },
+          {
+            "endpoint": "delete_function",
+            "body": {
+              "address": "00afbdb0"
+            },
+            "result": {
+              "success": true,
+              "address": "00afbdb0",
+              "deleted_function": "CG_array_ctor_helper_00afbdb0",
+              "body_size": 187,
+              "message": "Function 'CG_array_ctor_helper_00afbdb0' deleted at 00afbdb0"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00afbdb0",
+              "end_address": "00afbe75"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00afbdb0",
+              "end_address": "00afbe74",
+              "bytes_disassembled": 197,
+              "message": "Successfully disassembled 197 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00afbdb0",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00afbdb0",
+              "function_name": "CG_array_ctor_helper_00afbdb0",
+              "entry_point": "00afbdb0",
+              "body_size": 197,
+              "message": "Function created successfully at 00afbdb0"
+            }
+          },
+          {
+            "defined": "00afbdb0",
+            "end": "00afbe75",
+            "name": null,
+            "after": "Function: CG_array_ctor_helper_00afbdb0 at 00afbdb0\nSignature: undefined CG_array_ctor_helper_00afbdb0(void)\nEntry: 00afbdb0\nBody: 00afbdb0 - 00afbe74"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "recreate": "00affd70",
+            "previous": "Function: FUN_00affd70 at 00affd70\nSignature: undefined FUN_00affd70(void)\nEntry: 00affd70\nBody: 00affd70 - 00affde0",
+            "plate": null
+          },
+          {
+            "endpoint": "delete_function",
+            "body": {
+              "address": "00affd70"
+            },
+            "result": {
+              "success": true,
+              "address": "00affd70",
+              "deleted_function": "FUN_00affd70",
+              "body_size": 93,
+              "message": "Function 'FUN_00affd70' deleted at 00affd70"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00affd70",
+              "end_address": "00affde1"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00affd70",
+              "end_address": "00affde0",
+              "bytes_disassembled": 113,
+              "message": "Successfully disassembled 113 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00affd70",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00affd70",
+              "function_name": "FUN_00affd70",
+              "entry_point": "00affd70",
+              "body_size": 113,
+              "message": "Function created successfully at 00affd70"
+            }
+          },
+          {
+            "defined": "00affd70",
+            "end": "00affde1",
+            "name": null,
+            "after": "Function: FUN_00affd70 at 00affd70\nSignature: undefined FUN_00affd70(void)\nEntry: 00affd70\nBody: 00affd70 - 00affde0"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      },
+      "ao-parameter-tail-flow.json": {
+        "repairs": [
+          {
+            "function": "00af4110",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T19:08:10Z",
+            "decompile_lines_before": 8,
+            "gaps": [
+              {
+                "site": "00af4116",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00af411b",
+                "gap_end_exclusive": "00af412a",
+                "bytes": 15,
+                "after_call": true,
+                "sha256": "924a076346132e6226b6ea438a7fafd4cd97f5a4f87cd66aaca1b9e01b667df7"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00af4116",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00af411b",
+                  "gap_end_exclusive": "00af412a",
+                  "bytes": 15,
+                  "after_call": true,
+                  "sha256": "924a076346132e6226b6ea438a7fafd4cd97f5a4f87cd66aaca1b9e01b667df7"
+                },
+                "clear": "Success: Cleared flow override at 00af4116 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 15 byte(s)"
+              },
+              {
+                "explicit_tail_call": "00af4116",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00af4116 (was: NONE, now: NONE)"
+                }
+              }
+            ],
+            "explicit_tail_end_exclusive": "00af412a",
+            "explicit_body_sha256": "48528fb6b6f080664c6d6c60618eec22bc5dd6060b9297c9069bdc9e886e6b19",
+            "body_before": "Function: FUN_00af4110 at 00af4110\nSignature: undefined FUN_00af4110(void)\nEntry: 00af4110\nBody: 00af4110 - 00af411a",
+            "decompile_lines_after": 11,
+            "gaps_remaining": 1,
+            "body_after": "Function: FUN_00af4110 at 00af4110\nSignature: undefined FUN_00af4110(void)\nEntry: 00af4110\nBody: 00af4110 - 00af411a",
+            "stored_body_tail_complete": false,
+            "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+          }
+        ]
+      },
+      "ao-parameter-tail-definitions.json": {
+        "events": [
+          {
+            "recreate": "00af4110",
+            "previous": "Function: FUN_00af4110 at 00af4110\nSignature: undefined FUN_00af4110(void)\nEntry: 00af4110\nBody: 00af4110 - 00af411a",
+            "plate": null
+          },
+          {
+            "endpoint": "delete_function",
+            "body": {
+              "address": "00af4110"
+            },
+            "result": {
+              "success": true,
+              "address": "00af4110",
+              "deleted_function": "FUN_00af4110",
+              "body_size": 11,
+              "message": "Function 'FUN_00af4110' deleted at 00af4110"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00af4110",
+              "end_address": "00af412a"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00af4110",
+              "end_address": "00af4129",
+              "bytes_disassembled": 26,
+              "message": "Successfully disassembled 26 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00af4110",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00af4110",
+              "function_name": "FUN_00af4110",
+              "entry_point": "00af4110",
+              "body_size": 26,
+              "message": "Function created successfully at 00af4110"
+            }
+          },
+          {
+            "defined": "00af4110",
+            "end": "00af412a",
+            "name": null,
+            "after": "Function: FUN_00af4110 at 00af4110\nSignature: undefined FUN_00af4110(void)\nEntry: 00af4110\nBody: 00af4110 - 00af4129"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00cd78b0",
+              "end_address": "00cd78c6"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00cd78b0",
+              "end_address": "00cd78c5",
+              "bytes_disassembled": 22,
+              "message": "Successfully disassembled 22 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00cd78b0",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00cd78b0",
+              "function_name": "FUN_00cd78b0",
+              "entry_point": "00cd78b0",
+              "body_size": 22,
+              "message": "Function created successfully at 00cd78b0"
+            }
+          },
+          {
+            "defined": "00cd78b0",
+            "end": "00cd78c6",
+            "name": null,
+            "after": "Function: FUN_00cd78b0 at 00cd78b0\nSignature: undefined FUN_00cd78b0(void)\nEntry: 00cd78b0\nBody: 00cd78b0 - 00cd78c5"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "final_merged_validation_ao": {
+    "tested_commit": "fe3ae2c51c2cd681a975c2e15db7092dc06f97cf",
+    "reviewed_source_commit": "89e23a18ccb60f8ec18cefb50e90ceb532783c65",
+    "build": "local/ao-final-combined-build.log: strict MSVC Win32 and both seeded CTests passed",
+    "all10_reviewed_source_header_hashes_preserved": true,
+    "all54_name_evidence_rows_preserved": true,
+    "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+    "current_library_replays": [
+      {
+        "label": "text",
+        "exit_code": 0,
+        "log": "local\\ao-text-current-replay.log",
+        "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+        "source_sha256": "9cad29f895a90fb0af2863f17e0f5485348770c31b8a5f5f020e91c3eb0da257",
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\text-current.cmd",
+        "executable_sha256": "f1e546aa348f230e99378114963a239de0d3f09202f57a801313d0d910c343c3"
+      },
+      {
+        "label": "parameters",
+        "exit_code": 0,
+        "log": "local\\ao-parameters-current-replay.log",
+        "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+        "source_sha256": "2c6bf74c361c624a9779945487b3e76f84aade6e2184c0b4319d5783d173aa6f",
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\parameters-current.cmd",
+        "executable_sha256": "15f890b0ba9179e5006f816069b0bfaf856354537cb92b02d7af5a36ad81604b"
+      },
+      {
+        "label": "definition-loading",
+        "exit_code": 0,
+        "log": "local\\ao-definition-loading-current-replay.log",
+        "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+        "source_sha256": "01fe7404a896ff634fd05e114351533b0146a66bcdd6025808217935a11809b6",
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\definition-loading-current.cmd",
+        "executable_sha256": "bbc30283999b97b67eb05cb8d53efee8b17bf737d8916f03b62bade2702cb0f5"
+      },
+      {
+        "label": "state",
+        "exit_code": 0,
+        "log": "local\\ao-state-current-replay.log",
+        "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+        "source_sha256": "7c50ba3fb0915561548435540ea4f1b2274cddd75018d471bb3ca3ffe5858f71",
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\state-current.cmd",
+        "executable_sha256": "35ab09a74173ac78d5b4a006cea89e525a1183dbc03be3f2e375b0d4a36d6394"
+      }
+    ],
+    "new_functions": 45,
+    "revised_spawn_functions": 1,
+    "native_signatures": 46,
+    "analyzed_bodies": 8,
+    "direct_call_rows": 484,
+    "failed_call_rows": 0,
+    "original_fh3_and_gameplay": false
+  }
+}

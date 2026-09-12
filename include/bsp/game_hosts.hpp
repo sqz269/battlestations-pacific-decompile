@@ -49,10 +49,14 @@ struct IGameExplorer;
 
 namespace bsp {
 struct NativeRendererParametersOwner;
+struct CameraAxesCrtAccess;
 class XLiveLibrary;
 }
 
 namespace bsp::game {
+
+// One process-owned CRT dispatch state, shared by sound and recovered geometry.
+const CameraAxesCrtAccess& application_camera_axes_crt() noexcept;
 
 // Milestone 2a, defined in bsp/game_hosts_vfs.hpp. Held by pointer so the milestone-1 header
 // stays independent of the VFS types.

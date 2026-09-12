@@ -1,0 +1,219 @@
+[
+  {
+    "address": "004260b0",
+    "before": {
+      "address": "004260b0",
+      "function_name": "BSP_NativeString_FromInt",
+      "comment": "[BSP reconstruction 004260b0]\nHypothesis, not a recovered symbol. __thiscall, ECX = the out native string, one int stack argument. Formats with _sprintf(buf, \"%d\", value) into a 52-byte stack buffer and assigns the result. Used by both lockit loaders to build the decimal suffixes 0..98 of the numbered table probes. Evidence: docs/APP_INIT_LOCALE.md; reports/app_init_locale.json."
+    },
+    "after": {
+      "address": "004260b0",
+      "name": "BSP_NativeString_FromInt",
+      "evidence": "Hypothesis, not a recovered symbol. __thiscall, ECX = the out native string, one int stack argument. Formats with _sprintf(buf, \"%d\", value) into a 52-byte stack buffer and assigns the result. Used by both lockit loaders to build the decimal suffixes 0..98 of the numbered table probes. Evidence: docs/APP_INIT_LOCALE.md; reports/app_init_locale.json. | Full normal native8h-header helper reconstructed, preserving nested integer-string allocation/copy/release order and output header clearing. Existing descriptive name retained. docs/MAIN_MENU_SELECTION_LISTENER.md; reports/main_menu_selection_listener.json; strict Win32 compile and focused native-allocation-order fixture passed; no native ABI/game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004263b0",
+    "before": {
+      "address": "004263b0",
+      "function_name": "BSP_NativeString_ConcatInt",
+      "comment": "[BSP reconstruction 004263b0]\nHypothesis, not a recovered symbol. __thiscall(NativeString source, out NativeString*, int value). Copies the source string into the output and appends the decimal text of the value from 004260B0 BSP_NativeString_FromInt. PrepareClass uses it at 008C9167 to build 'VehicleClass.<id>'. docs/LUA_BINDING_CORE.md."
+    },
+    "after": {
+      "address": "004263b0",
+      "name": "BSP_NativeString_ConcatInt",
+      "evidence": "Hypothesis, not a recovered symbol. __thiscall(NativeString source, out NativeString*, int value). Copies the source string into the output and appends the decimal text of the value from 004260B0 BSP_NativeString_FromInt. PrepareClass uses it at 008C9167 to build 'VehicleClass.<id>'. docs/LUA_BINDING_CORE.md. | Full normal native8h-header helper reconstructed, preserving nested integer-string allocation/copy/release order and output header clearing. Existing descriptive name retained. docs/MAIN_MENU_SELECTION_LISTENER.md; reports/main_menu_selection_listener.json; strict Win32 compile and focused native-allocation-order fixture passed; no native ABI/game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00584750",
+    "before": {
+      "address": "00584750",
+      "function_name": "FUN_00584750"
+    },
+    "after": {
+      "address": "00584750",
+      "name": "BSP_MainMenu_IsVehicleClassUnlocked",
+      "evidence": "Hypothesis, not a recovered symbol. Complete normal caller. Two DWORD stack operands/RET8, first and ECX unread. Actual Lua owner read then fresh profile read after second NativeString construction. Existing profile projection boundary. docs/MAIN_MENU_VEHICLE_UNLOCK.md; reports/main_menu_vehicle_unlock.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "005966f0",
+    "before": {
+      "address": "005966f0",
+      "function_name": "FUN_005966f0"
+    },
+    "after": {
+      "address": "005966f0",
+      "name": "BSP_MainMenuListboxListener_Current08",
+      "evidence": "Hypothesis, not a recovered symbol. CEFC48+08, ECX screen+8, RET8; both callback operands are unread. First A9C990 uses fresh screen1B8. Full normal caller over canonical menu/Text/Icon/Listbox/scroller/command owners; concrete resource/profile/objective providers remain required. Source/header/doc/report main_menu_selection_listener; strict Win32 compile and184 numeric call rows passed. No original ABI or game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "005c35d0",
+    "before": {
+      "address": "005c35d0",
+      "function_name": "FUN_005c35d0"
+    },
+    "after": {
+      "address": "005c35d0",
+      "name": "BSP_MissionTree_SelectById",
+      "evidence": "Hypothesis, not a recovered symbol. ECX same mission-tree owner, native id string stack, RET4. Existing5C3470 last-match lookup; unknown id preserves both selection fields, otherwise+C=mission then+10=group. Canonical MissionTreeTables composition main_menu_selection_listener.cpp. Native string/vector ABI excluded; no game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9b340",
+    "before": {
+      "address": "00a9b340",
+      "function_name": "FUN_00a9b340"
+    },
+    "after": {
+      "address": "00a9b340",
+      "name": "BSP_GuiListbox_ApplyWidgetState",
+      "evidence": "Live assembly A9B340..A9B3ED RET8 ECX unused. CurrentText3 uses current80 unless UTF16 lengthEC==1 and cachedsourceF4 case-insensitive globals.live, then color50 receives one live D7A24C read copied four times. Icon6 current88(stateLow16,0,literalFLD1); other current profiles inert. Current table targets verified. Actual companions; no second state. docs/GUI_LISTBOX_ROW_CONTROL.md; reports/gui_listbox_row_control.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9ba40",
+    "before": {
+      "address": "00a9ba40",
+      "function_name": "FUN_00a9ba40"
+    },
+    "after": {
+      "address": "00a9ba40",
+      "name": "BSP_GuiListbox_HasSelectableRow",
+      "evidence": "Raw installed PE 00A9BA40..00A9BA8D inclusive, ECX Listbox ALbool RET. Walk actual FC rows, return true iff row77==0; empty/allhidden false. Producer AA946C clears77. Canonical private rows_ API; no current38 or ancestor tests. docs/GUI_LISTBOX_ROW_CONTROL.md; reports/gui_listbox_row_control.json. Ghidra had no function on initial read; parent defines under write lock."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9ba90",
+    "before": {
+      "address": "00a9ba90",
+      "function_name": "FUN_00a9ba90"
+    },
+    "after": {
+      "address": "00a9ba90",
+      "name": "BSP_GuiListbox_ApplyRowState",
+      "evidence": "Live assembly A9BA90..A9BB24: ECX Listbox, checkedFCiterator container,node andstate stack RETC. CurrentGroup2 appliesA9B340 to actualdirectchildren; nonGroup appliesB340 to actualrow. No recursiveGroup walk. Canonical iterator/child owner lifetime required. docs/GUI_LISTBOX_ROW_CONTROL.md; reports/gui_listbox_row_control.json. | Correction: canonical GUI64/68 list is borrowed transform.children, including duplicate entries, not owning layout.children. Walk live ordinals only in explicit visited-prefix-preservation callback domain; child pointers do not prove native node identity. Partial callback-domain projection, strict Win32 and duplicate/different-owning-membership fixture passed. docs/GUI_LISTBOX_ROW_CONTROL.md; reports/gui_listbox_row_control.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9cd20",
+    "before": {
+      "address": "00a9cd20",
+      "function_name": "BSP_GuiListControl_SetActive",
+      "comment": "[BSP reconstruction 00a9cd20]\nHypothesis, not a recovered symbol. __thiscall(widget, char active), RET 4, widget vtable +60h in table 00d5bbf8. 00A9CD2C calls the base 00AA6A30 with ECX still holding this, which Ghidra drops. When the byte is being cleared and byte +11Eh is set, 00A9CD50 to 00A9CDA9 walks the item list at +FCh..+10Ch calling 00A9BA90(&list, node, node != [this+10Ch] ? 3 : 1), so the selected entry gets state 1 and the rest state 3. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md.\n\n[BSP reconstruction 00a9cd20] update\nHypothesis, not a recovered symbol. __thiscall(widget, char active), RET 4, widget vtable +60h in table 00d5bbf8. 00A9CD2C calls the base 00AA6A30 with ECX still holding this, which Ghidra drops. When the byte is being cleared and byte +11Eh is set, 00A9CD50 to 00A9CDA9 walks the item list at +FCh..+10Ch calling 00A9BA90(&list, node, node != [this+10Ch] ? 3 : 1), so the selected entry gets state 1 and the rest state 3. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md. | Hypothesis, not a recovered symbol. partial: active true or auto_control11E stays zero across base callback. ECX Listbox; low byte active on stack; RET4. reports/orch5_listbox_type_integration.json; reports/orch5_menu_listbox_group_batch.json. Combined Win32 build and scoped fixture validation recorded by parent; new C++ interface, not ABI/game validated."
+    },
+    "after": {
+      "address": "00a9cd20",
+      "name": "BSP_GuiListControl_SetActive",
+      "evidence": "Hypothesis, not a recovered symbol. __thiscall(widget, char active), RET 4, widget vtable +60h in table 00d5bbf8. 00A9CD2C calls the base 00AA6A30 with ECX still holding this, which Ghidra drops. When the byte is being cleared and byte +11Eh is set, 00A9CD50 to 00A9CDA9 walks the item list at +FCh..+10Ch calling 00A9BA90(&list, node, node != [this+10Ch] ? 3 : 1), so the selected entry gets state 1 and the rest state 3. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md. | Hypothesis, not a recovered symbol. partial: active true or auto_control11E stays zero across base callback. ECX Listbox; low byte active on stack; RET4. reports/orch5_listbox_type_integration.json; reports/orch5_menu_listbox_group_batch.json. Combined Win32 build and scoped fixture validation recorded by parent; new C++ interface, not ABI/game validated. | Hypothesis, not a recovered symbol. Complete normal caller sequencing over actual FC rows; BA90 borrowed-child callback-domain projection remains partial. ECX Listbox; low-byte active stack argument; RET4. reports/orch5_listbox_insertion_integration.json; reports/orch5_menu_selection_row_control_batch.json. New C++ transport; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9da30",
+    "before": {
+      "address": "00a9da30",
+      "function_name": "FUN_00a9da30"
+    },
+    "after": {
+      "address": "00a9da30",
+      "name": "BSP_GuiListbox_InsertRowWithData",
+      "evidence": "Hypothesis, not a recovered symbol. Partial: native null-position branch only; store same row D8 before existing A9D750 append. ECX Listbox; row, data, position, after stack arguments; RET10h. reports/orch5_listbox_insertion_integration.json; reports/orch5_menu_selection_row_control_batch.json. New C++ transport; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9e120",
+    "before": {
+      "address": "00a9e120",
+      "function_name": "BSP_GuiWidget_BaseBounds64",
+      "comment": "[BSP reconstruction 00a9e120]\nHypothesis, not a recovered symbol. Actual empty base current64 body, RET10h; caller initialized bounds remain unchanged. docs/ORCH5_SECTION_FRAME_LIGHT_BATCH.md; reports/orch5_section_frame_light_batch.json. MSVC Win32 build and scoped source fixtures passed; new C++ interfaces, not game validation."
+    },
+    "after": {
+      "address": "00a9e120",
+      "name": "BSP_GuiWidget_BaseBounds64",
+      "evidence": "Hypothesis, not a recovered symbol. Actual empty base current64 body, RET10h; caller initialized bounds remain unchanged. docs/ORCH5_SECTION_FRAME_LIGHT_BATCH.md; reports/orch5_section_frame_light_batch.json. MSVC Win32 build and scoped source fixtures passed; new C++ interfaces, not game validation. | Hypothesis, not a recovered symbol. Existing complete bare RET body accepted for actual Listbox current64; output remains unchanged. ECX GUI; four stack DWORDs; RET10h. reports/orch5_listbox_base_profiles.json; reports/orch5_menu_selection_row_control_batch.json. New C++ transport; no original ABI or game validation. | Hypothesis, not a recovered symbol. Existing complete bare RET body accepted for actual Listbox current64; output remains unchanged. ECX GUI; four stack DWORDs; RET10h. reports/orch5_listbox_base_profiles.json; reports/orch5_menu_selection_row_control_batch.json. New C++ transport; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00aaa3e0",
+    "before": {
+      "address": "00aaa3e0",
+      "function_name": "BSP_GuiWidget_RefreshClip",
+      "comment": "[BSP reconstruction 00aaa3e0]\nDescriptive hypothesis, not a recovered symbol. 2026-09-12 ownership batch: complete. Original ABI: See report and assembly. docs/GUI_WIDGET_CLIP_REFRESH.md; reports/gui_widget_clip_refresh.json and reports/orch5_timed_clip_batch.json. Combined Win32 build passed; new C++ owner interfaces, no game/visual proof.\n\n[BSP reconstruction 00aaa3e0] update\nDescriptive hypothesis, not a recovered symbol. 2026-09-12 ownership batch: complete. Original ABI: See report and assembly. docs/GUI_WIDGET_CLIP_REFRESH.md; reports/gui_widget_clip_refresh.json and reports/orch5_timed_clip_batch.json. Combined Win32 build passed; new C++ owner interfaces, no game/visual proof. | Hypothesis, not a recovered symbol. Section D5C8E8 current70 target verified; same existing base clip continuation now admits type17. docs/ORCH5_SECTION_FRAME_LIGHT_BATCH.md; reports/orch5_section_frame_light_batch.json. MSVC Win32 build and scoped source fixtures passed; new C++ interfaces, not game validation."
+    },
+    "after": {
+      "address": "00aaa3e0",
+      "name": "BSP_GuiWidget_RefreshClip",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. 2026-09-12 ownership batch: complete. Original ABI: See report and assembly. docs/GUI_WIDGET_CLIP_REFRESH.md; reports/gui_widget_clip_refresh.json and reports/orch5_timed_clip_batch.json. Combined Win32 build passed; new C++ owner interfaces, no game/visual proof. | Hypothesis, not a recovered symbol. Section D5C8E8 current70 target verified; same existing base clip continuation now admits type17. docs/ORCH5_SECTION_FRAME_LIGHT_BATCH.md; reports/orch5_section_frame_light_batch.json. MSVC Win32 build and scoped source fixtures passed; new C++ interfaces, not game validation. | Hypothesis, not a recovered symbol. Accept actual Listbox table current70 in existing canonical clip provider; no change to clip algorithm. ECX GUI; no stack arguments; RET. reports/orch5_listbox_base_profiles.json; reports/orch5_menu_selection_row_control_batch.json. New C++ transport; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ab6bd0",
+    "before": {
+      "address": "00ab6bd0",
+      "function_name": "BSP_TextContext_GetNormalizedTextHeight",
+      "comment": "[BSP reconstruction 00ab6bd0]\nProvisional descriptive name. ECX context, no stack args, RET, ST0 result after float32 store/reload. If context+FC nonzero return float(context+178/double720); else sign-extend font+14 and divide by720, or zero for null font. Does not multiply mutable vertical scale00e12fd4. docs/FONT_LAYOUT_BOUNDARY.md;88 bytes match PE.\n\n[BSP reconstruction 00ab6bd0] update\nProvisional descriptive name. ECX context, no stack args, RET, ST0 result after float32 store/reload. If context+FC nonzero return float(context+178/double720); else sign-extend font+14 and divide by720, or zero for null font. Does not multiply mutable vertical scale00e12fd4. docs/FONT_LAYOUT_BOUNDARY.md;88 bytes match PE. | Hypothesis, not a recovered symbol. Complete actual runtime helper uses current multiline+178 or actual font signed+14, live double720, float32 spill/ST0 return. Does not use descriptor scale or E12FD4. RET atAB6C27. docs/GUI_TEXT_RUNTIME_FACTORY.md; reports/gui_text_runtime_factory.json. Combined strict Win32 build and both existing tests passed."
+    },
+    "after": {
+      "address": "00ab6bd0",
+      "name": "BSP_TextContext_GetNormalizedTextHeight",
+      "evidence": "Provisional descriptive name. ECX context, no stack args, RET, ST0 result after float32 store/reload. If context+FC nonzero return float(context+178/double720); else sign-extend font+14 and divide by720, or zero for null font. Does not multiply mutable vertical scale00e12fd4. docs/FONT_LAYOUT_BOUNDARY.md;88 bytes match PE. | Hypothesis, not a recovered symbol. Complete actual runtime helper uses current multiline+178 or actual font signed+14, live double720, float32 spill/ST0 return. Does not use descriptor scale or E12FD4. RET atAB6C27. docs/GUI_TEXT_RUNTIME_FACTORY.md; reports/gui_text_runtime_factory.json. Combined strict Win32 build and both existing tests passed. | Hypothesis, not a recovered symbol. Expose existing canonical lifetime helper: multiline178 or signed font14, divided by live CEF1B8; no algorithm change. ECX Text context; no stack arguments; RET; ST0 after float32 store/reload. reports/orch5_menu_canonical_bindings.json; reports/orch5_menu_selection_row_control_batch.json. New C++ transport; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b65fb0",
+    "before": {
+      "address": "00b65fb0",
+      "function_name": "BSP_LuaObject_IsNil",
+      "comment": "[BSP reconstruction 00b65fb0]\nHypothesis, not a recovered symbol. __thiscall(LuaObject), RET, bool in AL. Kind 0 returns false; kind 2 calls lua_type (00A675A0) on the object's stack index and returns whether it is 0, LUA_TNIL. See docs/GUI_LUA_READER.md.\n\n[BSP reconstruction 00b65fb0] update\nHypothesis, not a recovered symbol. __thiscall(LuaObject), RET, bool in AL. Kind 0 returns false; kind 2 calls lua_type (00A675A0) on the object's stack index and returns whether it is 0, LUA_TNIL. See docs/GUI_LUA_READER.md. | Concrete host preserves unboundNone(-1) distinct from boundNil(0), including copiedunbound and absentpositive borrowedindex. Type queries for borrowed forms use the originalindex directly. Independent listing review and actualLua fixture passed. docs/DIALOG_CONFIG.md; src/gui_lua_runtime.cpp. Registry handles are semantic, not native14h tracking/SEH/GC timing. Lua errors may panic/longjmp; no error-path cleanup guarantee.\n\n[BSP reconstruction 00b65fb0] update\nHypothesis, not a recovered symbol. __thiscall(LuaObject), RET, bool in AL. Kind 0 returns false; kind 2 calls lua_type (00A675A0) on the object's stack index and returns whether it is 0, LUA_TNIL. See docs/GUI_LUA_READER.md. | Concrete host preserves unboundNone(-1) distinct from boundNil(0), including copiedunbound and absentpositive borrowedindex. Type queries for borrowed forms use the originalindex directly. Independent listing review and actualLua fixture passed. docs/DIALOG_CONFIG.md; src/gui_lua_runtime.cpp. Registry handles are semantic, not native14h tracking/SEH/GC timing. Lua errors may panic/longjmp; no error-path cleanup guarantee. | Independently reconfirmed by packet cc_mission_natives from the mission side: the default branch at 00B65FE2 loads the constant 5 (LUA_TTABLE) and so answers false for every kind other than 0 and 2. Used at 004E0225 as the guard before BSP_Game_LoadMissionScene creates the global thisTable, and at 00928AC2 before one entity's slot is replaced. docs/MISSION_LUA_SELF_TABLE.md."
+    },
+    "after": {
+      "address": "00b65fb0",
+      "name": "BSP_LuaObject_IsNil",
+      "evidence": "Hypothesis, not a recovered symbol. __thiscall(LuaObject), RET, bool in AL. Kind 0 returns false; kind 2 calls lua_type (00A675A0) on the object's stack index and returns whether it is 0, LUA_TNIL. See docs/GUI_LUA_READER.md. | Concrete host preserves unboundNone(-1) distinct from boundNil(0), including copiedunbound and absentpositive borrowedindex. Type queries for borrowed forms use the originalindex directly. Independent listing review and actualLua fixture passed. docs/DIALOG_CONFIG.md; src/gui_lua_runtime.cpp. Registry handles are semantic, not native14h tracking/SEH/GC timing. Lua errors may panic/longjmp; no error-path cleanup guarantee. | Independently reconfirmed by packet cc_mission_natives from the mission side: the default branch at 00B65FE2 loads the constant 5 (LUA_TTABLE) and so answers false for every kind other than 0 and 2. Used at 004E0225 as the guard before BSP_Game_LoadMissionScene creates the global thisTable, and at 00928AC2 before one entity's slot is replaced. docs/MISSION_LUA_SELF_TABLE.md. | Hypothesis, not a recovered symbol. Full actual-storage predicate: kind2 and lua_type==LUA_TNIL; unbound false. docs/MAIN_MENU_VEHICLE_UNLOCK.md."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b66250",
+    "before": {
+      "address": "00b66250",
+      "function_name": "BSP_LuaObject_GetBoolean",
+      "comment": "[BSP reconstruction 00b66250]\nHypothesis, not a recovered symbol. __thiscall(LuaObject), RET, bool in AL. lua_toboolean (00A677E0). See docs/GUI_LUA_READER.md."
+    },
+    "after": {
+      "address": "00b66250",
+      "name": "BSP_LuaObject_GetBoolean",
+      "evidence": "Hypothesis, not a recovered symbol. __thiscall(LuaObject), RET, bool in AL. lua_toboolean (00A677E0). See docs/GUI_LUA_READER.md. | Hypothesis, not a recovered symbol. Full actual-storage getter: unconditional lua_toboolean at current owner/index, normalize nonzero; no kind gate. docs/MAIN_MENU_VEHICLE_UNLOCK.md."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b67690",
+    "before": {
+      "address": "00b67690",
+      "function_name": "BSP_LuaObject_Assign",
+      "comment": "[BSP reconstruction 00b67690]\nHypothesis, not a recovered symbol. __thiscall(LuaObject, const LuaObject *source), RET 4. Copy assignment through the reference helper 00B66DE0. See docs/GUI_LUA_READER.md."
+    },
+    "after": {
+      "address": "00b67690",
+      "name": "BSP_LuaObject_Assign",
+      "evidence": "Hypothesis, not a recovered symbol. __thiscall(LuaObject, const LuaObject *source), RET 4. Copy assignment through the reference helper 00B66DE0. See docs/GUI_LUA_READER.md. | Hypothesis, not a recovered symbol. Actual-storage body reconstructed. Release destination before source reads, register actual address, preserve opaque0C/padding, no self-assignment guard. docs/MAIN_MENU_VEHICLE_UNLOCK.md."
+    },
+    "status": "applied"
+  }
+]

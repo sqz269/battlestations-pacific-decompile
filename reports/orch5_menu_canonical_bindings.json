@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "abi_compatible": false,
+  "game_validated": false,
+  "documentation": "docs/ORCH5_MENU_SELECTION_ROW_CONTROL_BATCH.md",
+  "packet": "orch5_menu_canonical_bindings",
+  "source": "src/gui_text_runtime_factory.cpp",
+  "status": "combined_win32_build_and_scoped_final_library_validation_recorded",
+  "functions": [
+    {
+      "address": "00ab6bd0",
+      "name": "GuiTextRuntimeImplementation::normalized_height_00ab6bd0",
+      "original_abi": "ECX Text context; no stack arguments; RET; ST0 after float32 store/reload",
+      "coverage": "Expose existing canonical lifetime helper: multiline178 or signed font14, divided by live CEF1B8; no algorithm change",
+      "ledger_kind": "fragment",
+      "body_inclusive": [
+        "00ab6bd0",
+        "00ab6c27"
+      ]
+    }
+  ],
+  "transport_sources": [
+    "src/gui_listbox_listener_binding.cpp",
+    "src/main_menu_runtime_listeners.cpp",
+    "src/main_menu_layout_native.cpp"
+  ],
+  "bindings": [
+    "Listbox114 actual identity maps to required current08 implementation; unknown identity throws",
+    "Same menu screen supplies widget listener+40 and selection listener+8 with shared arrow field aliases",
+    "Layout adapter resolves actual Listbox companion, Text lifetime, and current color54; Movie storage remains required",
+    "Seven command services bind actual Listbox, current profile, selected mission, vehicle unlock, tactical requests and current tactical screen fields",
+    "Actual Text normalized height reads same lifetime, font manager and live height divisor"
+  ],
+  "host_lifetime_fix": {
+    "issue": "Frame-first registration could leave dangling mapping when Listbox registration fails inside a different active frame callback because frame unbind rejects active frames",
+    "resolution": "Bind Listbox first; bind frame second; on failure unbind newly registered inactive Listbox listener. No callbacks occur between these registrations.",
+    "validation": "Independent review and combined build; focused dispatcher fixture tracked in batch report"
+  },
+  "limitations": [
+    "C++ borrowed registries are host transport, not recovered native object layout or ABI",
+    "Required abstract page/checkpoint/transform/prompt/texture and actual Movie providers remain open",
+    "Canonical profile is existing ProfileResetState projection; mission completion synchronization remains owner responsibility",
+    "No complete menu construction, Text/Icon resource effect, screen rendering or game validation"
+  ],
+  "validation_report": "reports/orch5_menu_selection_row_control_batch.json"
+}

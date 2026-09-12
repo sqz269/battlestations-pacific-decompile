@@ -1,0 +1,778 @@
+{
+  "packet": "orch2_native_vfs_request_list_at",
+  "base_commit": "8424a1b1",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "bridge": "http://127.0.0.1:8089",
+    "verified_by": "bsp.py CLI client.verify on every live request",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "ghidra_mutations": "none; worker read-only"
+  },
+  "status": "complete_actual_storage_with_explicit_service_and_exception_boundaries",
+  "routines": [
+    {
+      "address": "004d2640",
+      "bytes": 29,
+      "sha256": "58ae01c9e956349e0f0b6c04cf21854e2923be3357c915f8d4714ed64e093371",
+      "live_bytes_match": true,
+      "native": "004d2640",
+      "name": "destroy_native_vfs_string_list_004d2640",
+      "ghidra_name_hypothesis": "BSP_NativeStringList_DestroyStorage",
+      "old_ghidra_name": "FUN_004d2640",
+      "coverage": "complete",
+      "end_exclusive": "004d265d",
+      "abi": "ECX actual owner/payload; no stack arguments; RET0; no semantic EAX result",
+      "source": "src/native_vfs_request_list_lifetime.cpp",
+      "direct_calls": [
+        {
+          "address": "004d2643",
+          "native": "004d05e0",
+          "function": "004d2640"
+        },
+        {
+          "address": "004d264c",
+          "native": "00bf65ac",
+          "function": "004d2640"
+        }
+      ]
+    },
+    {
+      "address": "00be1220",
+      "bytes": 154,
+      "sha256": "e237619b020abe0b1c93b0b2b6ef5ae7a2bc225215ee51c0fe3684f4a9435b80",
+      "live_bytes_match": true,
+      "native": "00be1220",
+      "name": "destroy_native_vfs_request_payload_00be1220",
+      "ghidra_name_hypothesis": "BSP_VFSRequestPayload_DestroyStorage",
+      "old_ghidra_name": "FUN_00be1220",
+      "coverage": "complete",
+      "end_exclusive": "00be12ba",
+      "abi": "ECX actual owner/payload; no stack arguments; RET0; no semantic EAX result",
+      "source": "src/native_vfs_request_list_lifetime.cpp",
+      "direct_calls": [
+        {
+          "address": "00be124b",
+          "native": "004d05e0",
+          "function": "00be1220"
+        },
+        {
+          "address": "00be1254",
+          "native": "00bf65ac",
+          "function": "00be1220"
+        }
+      ]
+    },
+    {
+      "address": "00be19e0",
+      "bytes": 62,
+      "sha256": "125ae1c111d7bdbb5c88b67e47178acbef488f5e1536f5982cae1ed68900a2e7",
+      "live_bytes_match": true,
+      "native": "00be19e0",
+      "name": "clear_native_vfs_request_list_00be19e0",
+      "ghidra_name_hypothesis": "BSP_VFSRequestList_ClearStorage",
+      "old_ghidra_name": "FUN_00be19e0",
+      "coverage": "complete",
+      "end_exclusive": "00be1a1e",
+      "abi": "ECX actual owner/payload; no stack arguments; RET0; no semantic EAX result",
+      "source": "src/native_vfs_request_list_lifetime.cpp",
+      "direct_calls": [
+        {
+          "address": "00be1a05",
+          "native": "00be1220",
+          "function": "00be19e0"
+        },
+        {
+          "address": "00be1a0b",
+          "native": "00bf65ac",
+          "function": "00be19e0"
+        }
+      ]
+    },
+    {
+      "address": "00be1d60",
+      "bytes": 29,
+      "sha256": "5d35d12d81215451ebdca2be876b91663cdc3f9a849f97c73fd4a907df86bcf3",
+      "live_bytes_match": true,
+      "native": "00be1d60",
+      "name": "destroy_native_vfs_request_list_00be1d60",
+      "ghidra_name_hypothesis": "BSP_VFSRequestList_DestroyStorage",
+      "old_ghidra_name": "FUN_00be1d60",
+      "coverage": "complete",
+      "end_exclusive": "00be1d7d",
+      "abi": "ECX actual owner/payload; no stack arguments; RET0; no semantic EAX result",
+      "source": "src/native_vfs_request_list_lifetime.cpp",
+      "direct_calls": [
+        {
+          "address": "00be1d63",
+          "native": "00be19e0",
+          "function": "00be1d60"
+        },
+        {
+          "address": "00be1d6c",
+          "native": "00bf65ac",
+          "function": "00be1d60"
+        }
+      ]
+    }
+  ],
+  "raw_tail_calls": [
+    {
+      "raw_address": "00be126d",
+      "raw_native": "004d05e0",
+      "logical_routine": "00be1220",
+      "stored_body_attribution": "none; gap checked with live proto",
+      "evidence": "installed PE disassembly and identical Ghidra memory",
+      "abi": "4D05E0 ECX list RET0; BF65AC cdecl pointer with ADD ESP4"
+    },
+    {
+      "raw_address": "00be1276",
+      "raw_native": "00bf65ac",
+      "logical_routine": "00be1220",
+      "stored_body_attribution": "none; gap checked with live proto",
+      "evidence": "installed PE disassembly and identical Ghidra memory",
+      "abi": "4D05E0 ECX list RET0; BF65AC cdecl pointer with ADD ESP4"
+    },
+    {
+      "raw_address": "00be129d",
+      "raw_native": "00419cc0",
+      "logical_routine": "00be1220",
+      "stored_body_attribution": "none; gap checked with live proto",
+      "evidence": "installed PE disassembly and identical Ghidra memory",
+      "abi": "419CC0 consumes no stack arguments; the three pending words belong to BD1510 RET0C"
+    },
+    {
+      "raw_address": "00be12a4",
+      "raw_native": "00bd1510",
+      "logical_routine": "00be1220",
+      "stored_body_attribution": "none; gap checked with live proto",
+      "evidence": "installed PE disassembly and identical Ghidra memory",
+      "abi": "419CC0 consumes no stack arguments; the three pending words belong to BD1510 RET0C"
+    }
+  ],
+  "incoming_transfers": [
+    {
+      "address": "00c67570",
+      "native": "004d2640",
+      "function": "00c6756a",
+      "kind": "tail_jump",
+      "argument_evidence": [
+        "00c6756a: MOV ECX,dword ptr [EBP + -0x10] ",
+        "00c6756d: ADD ECX,0x48 ",
+        "00c67570: JMP 0x004d2640 "
+      ]
+    },
+    {
+      "address": "00c6757b",
+      "native": "004d2640",
+      "function": "00c67575",
+      "kind": "tail_jump",
+      "argument_evidence": [
+        "00c67575: MOV ECX,dword ptr [EBP + -0x10] ",
+        "00c67578: ADD ECX,0x54 ",
+        "00c6757b: JMP 0x004d2640 "
+      ]
+    },
+    {
+      "address": "00c67610",
+      "native": "004d2640",
+      "function": "00c6760a",
+      "kind": "tail_jump",
+      "argument_evidence": [
+        "00c6760a: MOV ECX,dword ptr [EBP + -0x18] ",
+        "00c6760d: ADD ECX,0x48 ",
+        "00c67610: JMP 0x004d2640 "
+      ]
+    },
+    {
+      "address": "00c6761b",
+      "native": "004d2640",
+      "function": "00c67615",
+      "kind": "tail_jump",
+      "argument_evidence": [
+        "00c67615: MOV ECX,dword ptr [EBP + -0x18] ",
+        "00c67618: ADD ECX,0x54 ",
+        "00c6761b: JMP 0x004d2640 "
+      ]
+    },
+    {
+      "address": "00c749f6",
+      "native": "004d2640",
+      "function": "00c749f0",
+      "kind": "tail_jump",
+      "argument_evidence": [
+        "00c749f0: LEA ECX,[EBP + 0xfffffea8] ",
+        "00c749f6: JMP 0x004d2640 "
+      ]
+    },
+    {
+      "address": "00c74a6c",
+      "native": "004d2640",
+      "function": "00c74a66",
+      "kind": "tail_jump",
+      "argument_evidence": [
+        "00c74a66: LEA ECX,[EBP + 0xfffffe28] ",
+        "00c74a6c: JMP 0x004d2640 "
+      ]
+    },
+    {
+      "address": "00c74b70",
+      "native": "004d2640",
+      "function": "00c74b6a",
+      "kind": "tail_jump",
+      "argument_evidence": [
+        "00c74b6a: LEA ECX,[EBP + 0xfffffe5c] ",
+        "00c74b70: JMP 0x004d2640 "
+      ]
+    },
+    {
+      "address": "00c76c01",
+      "native": "004d2640",
+      "function": "00c76bf8",
+      "kind": "tail_jump",
+      "argument_evidence": [
+        "00c76bf8: MOV ECX,dword ptr [EBP + -0x18] ",
+        "00c76bfb: ADD ECX,0x128 ",
+        "00c76c01: JMP 0x004d2640 "
+      ]
+    },
+    {
+      "address": "00c76cb3",
+      "native": "004d2640",
+      "function": "00c76cb0",
+      "kind": "tail_jump",
+      "argument_evidence": [
+        "00c76cb0: LEA ECX,[EBP + -0x2c] ",
+        "00c76cb3: JMP 0x004d2640 "
+      ]
+    },
+    {
+      "address": "00c76cec",
+      "native": "004d2640",
+      "function": "00c76ce6",
+      "kind": "tail_jump",
+      "argument_evidence": [
+        "00c76ce6: LEA ECX,[EBP + 0xfffffea4] ",
+        "00c76cec: JMP 0x004d2640 "
+      ]
+    },
+    {
+      "address": "00c76db2",
+      "native": "004d2640",
+      "function": "00c76dac",
+      "kind": "tail_jump",
+      "argument_evidence": [
+        "00c76dac: LEA ECX,[EBP + 0xfffffe28] ",
+        "00c76db2: JMP 0x004d2640 "
+      ]
+    },
+    {
+      "address": "00c76de9",
+      "native": "004d2640",
+      "function": "00c76de3",
+      "kind": "tail_jump",
+      "argument_evidence": [
+        "00c76de3: LEA ECX,[EBP + 0xfffffe7c] ",
+        "00c76de9: JMP 0x004d2640 "
+      ]
+    },
+    {
+      "address": "00c76fbc",
+      "native": "004d2640",
+      "function": "00c76fb6",
+      "kind": "tail_jump",
+      "argument_evidence": [
+        "00c76fb6: LEA ECX,[EBP + 0xfffffeb4] ",
+        "00c76fbc: JMP 0x004d2640 "
+      ]
+    },
+    {
+      "address": "00c7e173",
+      "native": "004d2640",
+      "function": "00c7e170",
+      "kind": "tail_jump",
+      "argument_evidence": [
+        "00c7e170: LEA ECX,[EBP + -0x1c] ",
+        "00c7e173: JMP 0x004d2640 "
+      ]
+    },
+    {
+      "address": "00c7e193",
+      "native": "004d2640",
+      "function": "00c7e190",
+      "kind": "tail_jump",
+      "argument_evidence": [
+        "00c7e190: LEA ECX,[EBP + -0x1c] ",
+        "00c7e193: JMP 0x004d2640 "
+      ]
+    },
+    {
+      "address": "00c7e5fb",
+      "native": "004d2640",
+      "function": "00c7e5f8",
+      "kind": "tail_jump",
+      "argument_evidence": [
+        "00c7e5f8: LEA ECX,[EBP + -0x1c] ",
+        "00c7e5fb: JMP 0x004d2640 "
+      ]
+    },
+    {
+      "address": "00c7e713",
+      "native": "004d2640",
+      "function": "00c7e70d",
+      "kind": "tail_jump",
+      "argument_evidence": [
+        "00c7e70d: LEA ECX,[EBP + 0xfffffd90] ",
+        "00c7e713: JMP 0x004d2640 "
+      ]
+    },
+    {
+      "address": "00c7e71e",
+      "native": "004d2640",
+      "function": "00c7e718",
+      "kind": "tail_jump",
+      "argument_evidence": [
+        "00c7e718: LEA ECX,[EBP + 0xfffffd84] ",
+        "00c7e71e: JMP 0x004d2640 "
+      ]
+    },
+    {
+      "address": "00c8fd56",
+      "native": "004d2640",
+      "function": "00c8fd50",
+      "kind": "tail_jump",
+      "argument_evidence": [
+        "00c8fd50: MOV ECX,dword ptr [EBP + -0x18] ",
+        "00c8fd53: ADD ECX,0x8 ",
+        "00c8fd56: JMP 0x004d2640 "
+      ]
+    },
+    {
+      "address": "00c8fdf7",
+      "native": "004d2640",
+      "function": "00c8fdee",
+      "kind": "tail_jump",
+      "argument_evidence": [
+        "00c8fdee: MOV ECX,dword ptr [EBP + -0x18] ",
+        "00c8fdf1: ADD ECX,0xcc ",
+        "00c8fdf7: JMP 0x004d2640 "
+      ]
+    },
+    {
+      "address": "00c8fed6",
+      "native": "004d2640",
+      "function": "00c8fed0",
+      "kind": "tail_jump",
+      "argument_evidence": [
+        "00c8fed0: MOV ECX,dword ptr [EBP + -0x10] ",
+        "00c8fed3: ADD ECX,0x8 ",
+        "00c8fed6: JMP 0x004d2640 "
+      ]
+    },
+    {
+      "address": "00c8ff77",
+      "native": "004d2640",
+      "function": "00c8ff6e",
+      "kind": "tail_jump",
+      "argument_evidence": [
+        "00c8ff6e: MOV ECX,dword ptr [EBP + -0x10] ",
+        "00c8ff71: ADD ECX,0xcc ",
+        "00c8ff77: JMP 0x004d2640 "
+      ]
+    },
+    {
+      "address": "00cc67ce",
+      "native": "004d2640",
+      "function": "00cc67c8",
+      "kind": "tail_jump",
+      "argument_evidence": [
+        "00cc67c8: MOV ECX,dword ptr [EBP + -0x10] ",
+        "00cc67cb: ADD ECX,0x8 ",
+        "00cc67ce: JMP 0x004d2640 "
+      ]
+    },
+    {
+      "address": "00cc680e",
+      "native": "004d2640",
+      "function": "00cc6808",
+      "kind": "tail_jump",
+      "argument_evidence": [
+        "00cc6808: MOV ECX,dword ptr [EBP + -0x10] ",
+        "00cc680b: ADD ECX,0x8 ",
+        "00cc680e: JMP 0x004d2640 "
+      ]
+    },
+    {
+      "address": "00cc682e",
+      "native": "004d2640",
+      "function": "00cc6828",
+      "kind": "tail_jump",
+      "argument_evidence": [
+        "00cc6828: MOV ECX,dword ptr [EBP + -0x10] ",
+        "00cc682b: ADD ECX,0x8 ",
+        "00cc682e: JMP 0x004d2640 "
+      ]
+    },
+    {
+      "address": "00be1a05",
+      "native": "00be1220",
+      "function": "00be19e0",
+      "kind": "call",
+      "argument_evidence": [
+        "00be19fe: MOV EDI,EDI ",
+        "00be1a00: MOV EBX,dword ptr [ESI] ",
+        "00be1a02: LEA ECX,[ESI + 0x8] ",
+        "00be1a05: CALL 0x00be1220 "
+      ]
+    },
+    {
+      "address": "00be24ae",
+      "native": "00be1220",
+      "function": "00be2310",
+      "kind": "call",
+      "argument_evidence": [
+        "00be24a3: LEA ECX,[ESP + 0x2c] ",
+        "00be24a7: MOV ESI,EAX ",
+        "00be24a9: MOV byte ptr [ESP + 0x54],0x1 ",
+        "00be24ae: CALL 0x00be1220 "
+      ]
+    },
+    {
+      "address": "00cc6a43",
+      "native": "00be1220",
+      "function": "00cc6a40",
+      "kind": "tail_jump",
+      "argument_evidence": [
+        "00cc6a40: LEA ECX,[EBP + -0x2c] ",
+        "00cc6a43: JMP 0x00be1220 "
+      ]
+    },
+    {
+      "address": "00be1696",
+      "native": "00be1220",
+      "function": "00be1690",
+      "kind": "call",
+      "argument_evidence": [
+        "00be1690: PUSH ESI ",
+        "00be1691: MOV ESI,ECX ",
+        "00be1693: LEA ECX,[ESI + 0x8] ",
+        "00be1696: CALL 0x00be1220 "
+      ]
+    },
+    {
+      "address": "00be1b01",
+      "native": "00be1220",
+      "function": "00be1ac0",
+      "kind": "call",
+      "argument_evidence": [
+        "00be1af8: MOV EAX,dword ptr [ESI + 0x4] ",
+        "00be1afb: LEA ECX,[ESI + 0x8] ",
+        "00be1afe: MOV dword ptr [EDX + 0x4],EAX ",
+        "00be1b01: CALL 0x00be1220 "
+      ]
+    },
+    {
+      "address": "00be1d63",
+      "native": "00be19e0",
+      "function": "00be1d60",
+      "kind": "call",
+      "argument_evidence": [
+        "00be1d60: PUSH ESI ",
+        "00be1d61: MOV ESI,ECX ",
+        "00be1d63: CALL 0x00be19e0 "
+      ]
+    },
+    {
+      "address": "00be1b73",
+      "native": "00be19e0",
+      "function": "00be1b70",
+      "kind": "call",
+      "argument_evidence": [
+        "00be1b70: PUSH ESI ",
+        "00be1b71: MOV ESI,ECX ",
+        "00be1b73: CALL 0x00be19e0 "
+      ]
+    },
+    {
+      "address": "00cc6955",
+      "native": "00be1d60",
+      "function": "00cc694f",
+      "kind": "tail_jump",
+      "argument_evidence": [
+        "00cc694f: MOV ECX,dword ptr [EBP + -0x10] ",
+        "00cc6952: ADD ECX,0x60 ",
+        "00cc6955: JMP 0x00be1d60 "
+      ]
+    },
+    {
+      "address": "00cc69d5",
+      "native": "00be1d60",
+      "function": "00cc69cf",
+      "kind": "tail_jump",
+      "argument_evidence": [
+        "00cc69cf: MOV ECX,dword ptr [EBP + -0x18] ",
+        "00cc69d2: ADD ECX,0x60 ",
+        "00cc69d5: JMP 0x00be1d60 "
+      ]
+    }
+  ],
+  "producers": [
+    {
+      "address": "00be10a0",
+      "scope": "complete live pseudocode",
+      "evidence": "base length/data zero and string copy;list+8 sentinel at+0C/count+10=0;list+14 sentinel at+18/count+1C=0;preserved+8/+14 words unwritten"
+    },
+    {
+      "address": "00be1a20",
+      "scope": "complete live pseudocode",
+      "evidence": "operator_new(28h),next+0,previous+4,BE13E0 payload construction at+8"
+    },
+    {
+      "address": "00be1dc0",
+      "scope": "manager constructor producer fields only; parent owns reconstruction",
+      "evidence": "BDA980 allocates28h list sentinel at manager+64;count+68=0;list owner manager+60"
+    },
+    {
+      "address": "00be13e0",
+      "scope": "complete live pseudocode read;caller assemblyBE1A6C/BE1A81 proves destination+8",
+      "evidence": "base string zero/copy;copy-construct lists from source+8 and+14;RET4 producer call observed"
+    }
+  ],
+  "flow_repairs_required": [
+    {
+      "address": "004d2640",
+      "end_exclusive": "004d265d",
+      "missing_start": "004d2651",
+      "missing_end_exclusive": "004d265d",
+      "reason": "false no-return CRT free hid native fallthrough; never define these gaps as new functions",
+      "worker_mutation": false
+    },
+    {
+      "address": "00be1220",
+      "end_exclusive": "00be12ba",
+      "missing_start": "00be1259",
+      "missing_end_exclusive": "00be12ba",
+      "reason": "false no-return CRT free hid native fallthrough; never define these gaps as new functions",
+      "worker_mutation": false
+    },
+    {
+      "address": "00be19e0",
+      "end_exclusive": "00be1a1e",
+      "missing_start": "00be1a10",
+      "missing_end_exclusive": "00be1a1b",
+      "reason": "false no-return CRT free hid native fallthrough; never define these gaps as new functions",
+      "worker_mutation": false
+    },
+    {
+      "address": "00be1d60",
+      "end_exclusive": "00be1d7d",
+      "missing_start": "00be1d71",
+      "missing_end_exclusive": "00be1d7d",
+      "reason": "false no-return CRT free hid native fallthrough; never define these gaps as new functions",
+      "worker_mutation": false
+    }
+  ],
+  "verification": {
+    "native_byte_evidence": {
+      "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "spans": [
+        {
+          "address": "004d2640",
+          "bytes": 29,
+          "sha256": "58ae01c9e956349e0f0b6c04cf21854e2923be3357c915f8d4714ed64e093371",
+          "live_bytes_match": true
+        },
+        {
+          "address": "00be1220",
+          "bytes": 154,
+          "sha256": "e237619b020abe0b1c93b0b2b6ef5ae7a2bc225215ee51c0fe3684f4a9435b80",
+          "live_bytes_match": true
+        },
+        {
+          "address": "00be19e0",
+          "bytes": 62,
+          "sha256": "125ae1c111d7bdbb5c88b67e47178acbef488f5e1536f5982cae1ed68900a2e7",
+          "live_bytes_match": true
+        },
+        {
+          "address": "00be1d60",
+          "bytes": 29,
+          "sha256": "5d35d12d81215451ebdca2be876b91663cdc3f9a849f97c73fd4a907df86bcf3",
+          "live_bytes_match": true
+        },
+        {
+          "address": "004d05e0",
+          "bytes": 83,
+          "sha256": "5ca7928c4a04fbc82dc7af332a3da235b13ce64f685dd7f5b97ad64fff1ed89a",
+          "live_bytes_match": true
+        },
+        {
+          "address": "00e00ec0",
+          "bytes": 48,
+          "sha256": "6abddffc0fef3d96d60738886ca9975b98f0f448ab484386483a224e2acb82ac",
+          "live_bytes_match": true
+        },
+        {
+          "address": "00cc6800",
+          "bytes": 29,
+          "sha256": "862cdb3831d8711a10ad6c72451df866b652745c0a7c72e3a406216a2e7139c8",
+          "live_bytes_match": true
+        }
+      ]
+    },
+    "static_scope": "274 packet bytes;83 bytes4D05E0;29 EH code bytes;48 EH data bytes;producer/callee/incoming-transfer evidence",
+    "fixture": {
+      "result": "passed",
+      "comparisons": 8,
+      "stdout": "PASS 8 native/source comparisons; empty/nonempty four routines, nested return order, raw fields, retained sentinel, shared actual pool/lifetime",
+      "directory": "J:/PROG/battlestations-pacific-decompile-orch2-request-list-at/local/request_list_fixture/attempt01",
+      "preexecution_manifest": "local/request_list_fixture/attempt01/preexecution_manifest.json",
+      "preexecution_manifest_sha256": "328a60df4eeec30b307c7d6154dd2a77c4b9f29f71507d5217a4d0f13303582f",
+      "postexecution_hash_check": "local/request_list_fixture/attempt01/postexecution_hash_check.json",
+      "pinned_files": 1932,
+      "postexecution_unchanged": true,
+      "execution_attempts": 1,
+      "failed_execution_attempts": 0,
+      "pins": [
+        {
+          "path": "frozen/src/native_vfs_request_list_lifetime.cpp",
+          "bytes": 3321,
+          "sha256": "87bca6417c84b33b06240b87e546118f5a11f154f7a2529d62fa508bc01262c6"
+        },
+        {
+          "path": "frozen/include/bsp/native_vfs_request_list_lifetime.hpp",
+          "bytes": 1809,
+          "sha256": "3b87dca4e06f206a049350cfdea8eee6f4d52155233ae4c2cc444ee8da18f5a9"
+        },
+        {
+          "path": "frozen/build/native_vfs_request_list_lifetime.obj",
+          "bytes": 7244,
+          "sha256": "2fad8e977d844cb5c75b0f16aedcbb02aad138cf843c3f60f24318a15e20e15a"
+        },
+        {
+          "path": "frozen/build/bsp_core.lib",
+          "bytes": 48403090,
+          "sha256": "3a6c1a7aebd3acf27bb2f3b000ec228e9894b3a87c3da661a92e059f3a37e8ba"
+        },
+        {
+          "path": "frozen/fixture/request_list_probe.cpp",
+          "bytes": 6683,
+          "sha256": "17788626613c0abda1344aaa8d0bd4b2df3a37325ff23df1c57a961efb551cca"
+        },
+        {
+          "path": "frozen/fixture/request_list_bytes.hpp",
+          "bytes": 2374,
+          "sha256": "ffccf8d7b25f605752043cb857dde6c3cb3e2e2bed73659d798f4a76d188acb5"
+        },
+        {
+          "path": "request_list_probe.obj",
+          "bytes": 61718,
+          "sha256": "544522c43796e1f502d2331e4e8a6a0eca0810413bbdbd671b19d437386ad428"
+        },
+        {
+          "path": "request_list_probe.exe",
+          "bytes": 25088,
+          "sha256": "0115ff345d34ab45b37c7eab01767c90982b3f87af93eef031ad31f1062e7673"
+        }
+      ],
+      "coverage": [
+        "Four original native bodies plus existing4D05E0 native instructions",
+        "Eight empty/nonempty native/source comparisons",
+        "Two payload-bearing request nodes with asymmetric populated inner lists",
+        "Real shared size2 ring return order DBCAHFGE;actual pool/lifetime getter/shutdown",
+        "Raw stale base header, preserved owner words, zero counts, retain/free/null sentinel"
+      ],
+      "relocations": "15 direct CALL relocations;between five native copies or existing actual pool getter/return and CRT free services. No emulated pool/private registry. Original EH handler immediate retained;throwing/SEH excluded.",
+      "limits": [
+        "No allocation-failure,returning invalid callback,callback field mutation,or native exception execution",
+        "Source ActualNativeStringPoolStorage is final;fixture uses canonical concrete storage directly",
+        "Normal source and native CRT frees execute;heap allocation addresses are not compared"
+      ]
+    },
+    "build": {
+      "command": "$env:MSBUILDDISABLENODEREUSE=1; ./scripts/build.ps1",
+      "result": "passed",
+      "compiler": "MSVC Win32 /W4 /WX /fp:strict",
+      "existing_ctests": [
+        "reconstructed_math",
+        "native_math_differential"
+      ],
+      "ctests_passed": 2,
+      "log": "local/request_list_build.log",
+      "verify_seeds": "passed live/disk verification before build; local/request_list_verify_seeds.log"
+    },
+    "no_new_permanent_tests": true,
+    "call_report": {
+      "command": "python tools/verify_report_calls.py reports/native_vfs_request_list_lifetime.json",
+      "checked": 44,
+      "failed": 0,
+      "log": "local/request_list_verify_calls.log"
+    },
+    "preparation_note": "Initial bytes-text parser rejected formatting before comparison;fixed parser. No native execution occurred during preparation; successful seven-span evidence retained."
+  },
+  "eh": {
+    "func_info": "00e00ed0",
+    "unwind_map": "00e00ec0",
+    "state_1": {
+      "next_state": 0,
+      "cleanup": "00cc6808 -> payload+8 ->004d2640"
+    },
+    "state_0": {
+      "next_state": -1,
+      "cleanup": "00cc6800 -> payload ->0041dd20"
+    },
+    "state_transitions": [
+      "BE1243 arm1 before+14 clear/free/null",
+      "BE1268 lower0 before+8 clear/free/null",
+      "BE1282 capture base data;BE128A lower-1 before base release"
+    ],
+    "transfers": [
+      {
+        "address": "00cc6803",
+        "native": "0041dd20",
+        "function": "00cc6800",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00cc680e",
+        "native": "004d2640",
+        "function": "00cc6808",
+        "kind": "tail_jump"
+      }
+    ],
+    "exception_boundary": "Existing ActualNativeStringPoolStorage::release is noexcept. Its returning getter domain is covered; native throwing getter/SEH identity is excluded. Source preserves explicit native cleanup states, but the actual service cannot propagate that original failure."
+  },
+  "dependencies": [
+    {
+      "native": "004d05e0",
+      "contract": "complete actual list clear83 bytes, existing ActualNativeStringPoolStorage overload;preserve current sentinel reloads and captured next/string",
+      "source": "src/native_render_resource_record.cpp"
+    },
+    {
+      "native": "0041dd20",
+      "contract": "capture nonnull data then length+1;release through NativeStringStorage;leave fields untouched",
+      "source": "src/native_string.cpp"
+    },
+    {
+      "native": "00419cc0",
+      "contract": "no native arguments,RET0,current canonical pool getter every return",
+      "source": "src/native_string_pool_owner.cpp"
+    },
+    {
+      "native": "00bd1510",
+      "contract": "ECX pool,stack block,size,unused,RET0C;actual shared pool/free/gate",
+      "source": "src/native_string_pool_storage.cpp"
+    },
+    {
+      "native": "00bf65ac",
+      "contract": "actual returning CRT free,one cdecl pointer,caller ADD ESP4",
+      "source": "src/singleton_lifetime.cpp"
+    }
+  ],
+  "limitations": [
+    "New typed C++ ABI;not a drop-in x86 binary replacement",
+    "No native throwing-getter,SEH,allocation failure or game/runtime claim",
+    "Source models all four logical bodies;stored Ghidra instruction/body gaps remain pending parent repairs",
+    "Original executable and saved Ghidra analysis remain unmodified"
+  ]
+}

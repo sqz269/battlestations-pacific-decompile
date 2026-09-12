@@ -6,7 +6,7 @@ The earlier `start_online` in `audio_online_startup.cpp` is a partial reconstruc
 
 ## Publication and ownership
 
-`XLiveManagerOwner` borrows the same online, flags, pump, sign-in, and runtime context used by the rest of the program. `XLiveManagerLifetimeAccess` uses the canonical `SingletonLifetimeDomain` and a single supplied `XLiveManagerOwner* volatile&` corresponding to F8ABE8. Current-manager consumers must derive `&published_owner->context` from that slot. They must not keep a second independently published context. The application supplies the actual allocation, stable owner identity and field preimages; construction here does not claim the allocator at caller `0073DC50`.
+`XLiveManagerOwner` borrows the same online, flags, pump, sign-in, and runtime context used by the rest of the program. `XLiveManagerLifetimeAccess` supports the original canonical `SingletonLifetimeDomain` or the application's borrowed raw `SoundLifetimeAccess`, with one supplied `XLiveManagerOwner* volatile&` corresponding to F8ABE8. Current-manager consumers derive `&published_owner->context` from that slot; there is no independently published context. Raw registration requires `XLiveOwnerAllocation`, whose first word is the canonical `storage.vtable_00` and whose owned projection refers to the same borrowed state. Semantic registration retains the legacy projection identity. See [XLIVE_OWNER_LIFETIME.md](XLIVE_OWNER_LIFETIME.md) for allocation/free and shared-domain contracts. This source allocation boundary does not claim the native 3F0h layout or allocator at caller `0073DC50`; field preimages remain required.
 
 Base construction writes vtable D24138, gets the lifetime manager, captures its +10 critical section, enters it and increments section+18, publishes the owner, gets the manager again, reloads the published slot, and registers that pointer. The captured section is decremented and released. Publication is observable before any derived member initialization. If registration throws, the slot is not rolled back: state1 first releases the captured lock via CB4128, then state0 restores root vtable CE3818 via CB4120. Unwind map DE9D90 contains {toState=-1, action=CB4120} and {toState=0, action=CB4128} in that order; unwinding visits state1 before state0.
 
@@ -34,7 +34,7 @@ Constructor unwind table DE9F50 has state0 -> base destructor CB4260 and state1 
 
 Derived teardown writes D2413C, closes the +3AC handle, frees and zeros storage +14C, frees/zeros the ID vector, and runs base destruction. It does not close the notification listener, uninitialize XLive/Winsock, free the achievement batch, or reset the remaining pump flags. The borrowed owners are not destroyed implicitly. If IPC teardown throws, DE9DF8 / CB4160 / CB4168 establish ID-vector and base cleanup while storage remains untouched. A second exception during unwind follows C++ termination semantics rather than a synthetic recovery.
 
-The deleting wrappers inspect only flag bit0, call the corresponding complete destructor before freeing the actual owner allocation, and return the original address even after free. Raw bytes after `_free` contradict the decompiler's undefined EAX return. The host's required `free_owner_storage` must release that allocation only; it must not add destruction of independently borrowed state.
+The deleting wrappers inspect only flag bit0 and call the corresponding complete destructor before freeing the captured owner allocation. The legacy projection overloads return `&owner`; the `XLiveOwnerAllocation&` overloads return the captured allocation identity even after free. Raw bytes after `_free` contradict the decompiler's undefined EAX return. The host's required `free_owner_storage` must release that allocation only; it must not add destruction of independently borrowed state. `XLiveOwnerAllocation::free_owner_storage` supplies this callback for the new source allocation and its projection without adding a second free.
 
 ## Ghidra flow corrections and validation
 
@@ -48,8 +48,16 @@ All nine function starts already exist. Final instructions and exact ends are re
 | A3FDC0 | A3FDD0 | A3FDD5..A3FDD7 | ADD ESP,4 |
 | A3F670 | A3F680 | A3F685..A3F687 | ADD ESP,4 |
 
-Parent can repair these with `bsp.py ghidra flow <function> --apply` under its write lock, then refresh exports. No missing function entries or invented interior entries are needed. Constructor/base/IPC bodies have no listed gaps.
+These are historical findings from the original owner packet. The AC lifetime packet rechecked both scalar functions: their post-free ADD ESP,4 instructions are now in the live bodies and both report zero gaps. It requests no additional Ghidra repair. No missing function entries or invented interior entries are needed. Constructor/base/IPC bodies had no listed gaps.
 
 MSVC Win32 Release `scripts/build.ps1` passed with both existing CTests (`reconstructed_math`, `native_math_differential`); `verify-seeds` matched all eight seeds. One ignored focused fixture, `local/xlive_owner_fixture.cpp`, passed publication/preimage checks, initial-pump storage visibility and nonfreeing overwrite, partial overlap initialization, current-global unregister, native destructor omissions, and constructor/destructor exception cleanup. Logs are `local/xlive-owner-final-build.log`, `local/xlive-owner-seeds.json`, and `local/xlive-owner-fixture.log`.
 
 Build/fixture evidence does not establish live DLL, asynchronous lifetime, binary ABI, or game validation.
+
+## Correction from docs/NATIVE_SINGLETON_INPUT_ONLINE.md
+
+The shared raw manager now admits the documented online/input profiles. Primary
+archive-only fixtures exercised actual BD0400 drain, including nonempty backend
+and action storage. See that document and reports/native_singleton_input_online.json
+for the executed profiles, artifact hashes and provider/application boundaries.
+Original packet validation above describes its earlier standalone state.

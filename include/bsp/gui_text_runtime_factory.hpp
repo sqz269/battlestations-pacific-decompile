@@ -64,6 +64,9 @@ public:
     void resize58_00abbf30(const GuiWidgetSize&);
     void align_bounds64_00ab6d70(float& left, float& top, float& right, float& bottom);
     void set_state80_00ab7200(std::int32_t);
+    // Same AB6BD0 kernel used by bounds64: live multiline178 or current font
+    // signed lowword14, divided by live CEF1B8 and narrowed once to float.
+    float normalized_height_00ab6bd0();
     void submit_utf16_00ab6ab0(std::u16string_view);
     void submit_source_00abaed0(const std::string&, bool localize);
     void submit_ellipsis_00abb000(const std::string&, float width, bool localize);

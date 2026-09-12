@@ -1,0 +1,287 @@
+{
+  "packet": "orch4_native_input_online_dispatch_ac",
+  "utc": "2026-09-12T19:46:46.339758+00:00",
+  "scope": "Six additional finite deletion profiles and concrete raw action-storage adapter; source application binding points only",
+  "native_routine_count_added_by_dispatch": 0,
+  "documentation": "docs/NATIVE_SINGLETON_INPUT_ONLINE.md",
+  "source_commit_at_initial_fixture": "4e7402154bd8b1f3ecf04d5675c3127e5fe484bc",
+  "initial_fixture_source_state": "Dispatch/adapter were reviewed uncommitted changes at this HEAD; exact compiled source hashes below bind that evidence. Final committed/promotion proof is separate.",
+  "source_sha256": {
+    "include/bsp/native_input_binding_storage.hpp": "25003dd7a0746a31e7b0ebd1e9ef74f76d5cfe97c86e9408424e0242fd5aeb72",
+    "src/native_input_binding_storage.cpp": "9d8ddb3a12f46ebd5431fd568762087dd9335a872c03ebdb7a74453bf81a77d7",
+    "include/bsp/native_input_action_records.hpp": "15fbb82a2f1391b27a17e7f522b74e4dc4075181ae7f35cd1b1b89b47798d494",
+    "src/native_input_action_records.cpp": "677c7fe0962afdc421a1c75a81c0b30498241e017083bfc45e4dcff45bff8129",
+    "include/bsp/native_input_action_owner.hpp": "897cf59eefbad78b8ad7d004fdf454c053eb6820fc1aacc8996bc020e387a0c7",
+    "src/native_input_action_owner.cpp": "9d97b7ddbd61e1364c8918a7c2b784231ddce4d64e1d345b1be84105886b719c",
+    "include/bsp/native_input_backend_owner.hpp": "d02d3fb84bdead89ca6b950f62d20058890e0b94505491a737d99fee91b54b98",
+    "src/native_input_backend_owner.cpp": "da5a9677e9f11b0fc3cdab8f48a05e3c61572269eb6bcdc8ba08453e1f9c0c81",
+    "include/bsp/xlive_owner_lifetime.hpp": "eb2966a7051a794ec6dfc5df3d0cd923509b91f736de7e47a68f008e6cae9075",
+    "src/xlive_owner_lifetime.cpp": "8a83b715dc0192d26dcb3974210cc9198d896eeeee5dd4fa2b0241a068118598",
+    "include/bsp/xlive_manager_owner.hpp": "207e88b01ef358176c4aff8f996c24b278c03fc255bc0cb2af3e58ed672890fc",
+    "src/xlive_manager_owner.cpp": "edbf95ee5f8e879f8e90dc2c2f95732960998b61d4ee8cd2076d9c1eb1f469c8",
+    "include/bsp/native_singleton_destruction.hpp": "e93102b015882eb0d664ec2595e8219d2276317a52d1a06b4785969588e9b06d",
+    "src/native_singleton_destruction.cpp": "ffd2cb6ad4a0ca32e30db1634867189c9803f588598548319d379c7e8b69f14c",
+    "include/bsp/game_hosts_singletons.hpp": "405ec6f7b7a34a89543ae3eed00ad9b2185c11b886c9dd6e79c8e70e2833d2ca",
+    "src/game_hosts_singletons.cpp": "f9f9f715d20e6b4506ea48fbdc1461e31fe6fdd238278a525221bf130e7be009"
+  },
+  "artifacts_sha256": {
+    "build/win32/Release/bsp_core.lib": "4ae5ce38c9bd1821de8af267f9af6844ac6508da9c31c3be2015a633c2ebcf83",
+    "build/win32/Release/bsp_lua511.lib": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+    "build/win32/Release/bsp_game.exe": "427f4def3e4a0e656100274dacbca6ed69ea2b393cf3173844c336d099446442"
+  },
+  "profiles": [
+    {
+      "profile": "00d24138",
+      "slot_zero_target": "00a3f670",
+      "live_slot_hex": "70f6a300"
+    },
+    {
+      "profile": "00d2413c",
+      "slot_zero_target": "00a3fdc0",
+      "live_slot_hex": "c0fda300"
+    },
+    {
+      "profile": "00d5b5f4",
+      "slot_zero_target": "00a909e0",
+      "live_slot_hex": "e009a900"
+    },
+    {
+      "profile": "00d5b5f8",
+      "slot_zero_target": "00a91150",
+      "live_slot_hex": "5011a900"
+    },
+    {
+      "profile": "00d5b72c",
+      "slot_zero_target": "00a97c00",
+      "live_slot_hex": "007ca900"
+    },
+    {
+      "profile": "00d5b630",
+      "slot_zero_target": "00a93e50",
+      "live_slot_hex": "503ea900"
+    }
+  ],
+  "build": {
+    "command": "scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "exit_code": 0,
+    "ctests_passed": 2,
+    "log": "local/native_input_online_ac_combined_build.log"
+  },
+  "fixtures": {
+    "xlive": {
+      "log": "J:\\PROG\\battlestations-pacific-decompile-orch4-xlive-owner-ac\\local\\xlive_owner_ac_primary_fixture.log",
+      "sha256": "835cad016b17903773d8cc58c873000862a67dd3cc5fb8d76710a931d37f3f13",
+      "exit_code": 0,
+      "linkage": "Primary headers/core and dependency archives only; no separately compiled reconstructed source; /MANIFEST:EMBED",
+      "profiles_executed": [
+        "00d24138",
+        "00d2413c"
+      ],
+      "drain_frees": 2,
+      "total_frees": 3,
+      "pop_before_free_checks": 2,
+      "remaining_slots": 0,
+      "invalid_callbacks": 1,
+      "borrowed_batch_retained": true
+    },
+    "backend": {
+      "log": "J:\\PROG\\battlestations-pacific-decompile-orch4-input-backend-ac\\local\\native-input-backend-primary-drain-probe.log",
+      "sha256": "dd320793a962997ebd9c76eac59b79f8fb1cf262c03b25f82e4fe08365724256",
+      "exit_code": 0,
+      "linkage": "Primary headers/core and dependency archives only; no separately compiled reconstructed source; /MANIFEST:EMBED",
+      "profiles_executed": [
+        "00d5b72c"
+      ],
+      "resets": 3,
+      "zero_reference_calls": 1,
+      "device_references": [
+        1,
+        0,
+        1,
+        1,
+        1
+      ],
+      "publication_cleared": true,
+      "manager_storage_cleared": true,
+      "real_DirectInput_HRESULT": 0,
+      "COM_references_after_native_drain": 2,
+      "COM_references_after_host_release": 0,
+      "hardware_enumeration": false,
+      "successful_full_constructor": false,
+      "base_and_groups_profile_runtime": false
+    },
+    "actions": {
+      "log": "J:\\PROG\\battlestations-pacific-decompile-orch4-input-actions-ac\\local\\input_action_owner_integrated_probe.log",
+      "sha256": "4ec850c903d96ca0d577f64c650fe70db3b9be22818e1a3ab7983de29dae8a30",
+      "exit_code": 0,
+      "linkage": "Primary headers/core and dependency archives only; no separately compiled reconstructed source; /MANIFEST:EMBED",
+      "profiles_executed": [
+        "00d5b630"
+      ],
+      "nonempty_nested_storage": true,
+      "original_owner_constructor_preimages": 4,
+      "original_record_constructor_preimages": 4,
+      "full_padding_and_fifth_word_checks": true,
+      "deepcopy_and_retain_balance": true,
+      "flags0_and_flags1_identity": true,
+      "listener_fault_cleanup": true,
+      "publications_cleared": true,
+      "external_listener_references": 1,
+      "normal_listener_slot0_executed": false
+    }
+  },
+  "native_seed_matches": 8,
+  "direct_call_audits": [
+    {
+      "report": "reports/native_input_binding_storage.json",
+      "checked": 34,
+      "failed": 0
+    },
+    {
+      "report": "reports/native_input_action_records.json",
+      "checked": 15,
+      "failed": 0
+    },
+    {
+      "report": "reports/native_input_backend_owner.json",
+      "checked": 39,
+      "failed": 0
+    },
+    {
+      "report": "reports/native_input_action_owner.json",
+      "checked": 17,
+      "failed": 0
+    },
+    {
+      "report": "reports/xlive_owner_lifetime.json",
+      "checked": 12,
+      "failed": 0
+    },
+    {
+      "report": "reports/xlive_manager_owner.json",
+      "checked": 0,
+      "failed": 0
+    }
+  ],
+  "indirect_call_boundary": "Manually qualified native imports and current-profile/no-stack-flags calls are not counted as mechanically checked direct calls.",
+  "application": {
+    "run": {
+      "command": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\build\\win32\\Release\\bsp_game.exe",
+        "--game-root",
+        "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+        "--settings-personal-root",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\input-online-ac-personal",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--frames",
+        "2",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\native_input_online_ac_game.log"
+      ],
+      "returncode": 0,
+      "seconds": 1.4885807037353516
+    },
+    "log_sha256": "2067ddb90dc1f48253572229c8b477f9ee9a3384d0494a498233ba1dfab55dd1",
+    "frames": 2,
+    "presents": 2,
+    "drained_existing_registrations": 3,
+    "new_raw_input_online_owners_instantiated": false
+  },
+  "analysis": {
+    "provider_body_count": 19,
+    "provider_bytes_match_live_and_disk": true,
+    "owner_and_provider_prototypes_saved": 38,
+    "new_EH_starts": [
+      "00c64d53",
+      "00cb6833"
+    ],
+    "final_cleanup_bodies": {
+      "00a93d80": {
+        "end_inclusive": "00a93d96",
+        "instructions": 10,
+        "gaps": 0
+      },
+      "00c64d48": {
+        "end_inclusive": "00c64d52",
+        "instructions": 5,
+        "gaps": 0
+      },
+      "00cb6a36": {
+        "end_inclusive": "00cb6a40",
+        "instructions": 5,
+        "gaps": 0
+      }
+    },
+    "receipt_files": [
+      "reports/native_input_ac_final_flow_repair.json",
+      "reports/native_input_ac_final_function_definitions.json",
+      "reports/native_input_backend_eh_flow_repair.json",
+      "reports/native_input_backend_eh_function_definitions.json",
+      "reports/native_input_storage_prototypes.json",
+      "reports/native_input_online_owner_prototypes.json"
+    ]
+  },
+  "native_abi_compatible": false,
+  "game_validated": false,
+  "permanent_tests_added": 0,
+  "remaining": [
+    "Actual raw device enumeration/producers A982B0/A98030/A9A5A0/A904E0",
+    "Canonical raw input/action storage bound to frame/focus consumers",
+    "Actual listener slot-zero bodies",
+    "Online application startup with mutable D3D/profile fields and process-lifetime IPC retention",
+    "Canonical menu music owner and MoviePlayer host"
+  ],
+  "promotion_validation": {
+    "validated_source_commit": "8afc372d207d468329e926d7ca60608b2a352580",
+    "build_log": "local/native_input_online_ac_promote.log",
+    "build_log_sha256": "d09151c29e047df24997ec8aa7a797550028563dac3873573eb8c7e59dd5e45a",
+    "ctests_passed": 2,
+    "no_main_move_after_build": true,
+    "owned_source_hashes_equal_initial_fixture": true,
+    "artifacts_sha256": {
+      "build/win32/Release/bsp_core.lib": "0cb313e71844fe3ee560c700971a4340f384d922e93e2e91378121ad1c53953e",
+      "build/win32/Release/bsp_lua511.lib": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+      "build/win32/Release/bsp_game.exe": "7ef64ffb065417296cd3f5081786bf332e2a6e0bbba2e3bd891c0504f6af973e"
+    },
+    "fixtures": {
+      "xlive": {
+        "log": "J:\\PROG\\battlestations-pacific-decompile-orch4-xlive-owner-ac\\local\\xlive_owner_ac_promoted_8afc372d_fixture.log",
+        "log_sha256": "835cad016b17903773d8cc58c873000862a67dd3cc5fb8d76710a931d37f3f13",
+        "exit_code": 0,
+        "counts_equal_initial": true,
+        "linkage": "Promoted primary headers and archives only; no reconstructed source compiled separately; /MANIFEST:EMBED"
+      },
+      "backend": {
+        "log": "J:\\PROG\\battlestations-pacific-decompile-orch4-input-backend-ac\\local\\native-input-backend-promoted-drain-probe.log",
+        "log_sha256": "dd320793a962997ebd9c76eac59b79f8fb1cf262c03b25f82e4fe08365724256",
+        "exit_code": 0,
+        "counts_equal_initial": true,
+        "linkage": "Promoted primary headers and archives only; no reconstructed source compiled separately; /MANIFEST:EMBED"
+      },
+      "actions": {
+        "log": "J:\\PROG\\battlestations-pacific-decompile-orch4-input-actions-ac\\local\\input_action_owner_promoted_probe.log",
+        "log_sha256": "4ec850c903d96ca0d577f64c650fe70db3b9be22818e1a3ab7983de29dae8a30",
+        "exit_code": 0,
+        "counts_equal_initial": true,
+        "linkage": "Promoted primary headers and archives only; no reconstructed source compiled separately; /MANIFEST:EMBED"
+      }
+    },
+    "application": {
+      "status": "blocked_by_existing_process_single_instance_check",
+      "log": "local\\native_input_online_ac_game_promoted.log",
+      "log_sha256": "84e98f944cb77de2e327cb314272efea58eb342de756a630a98e43c56a7062e7",
+      "runner_timeout_seconds": 180,
+      "our_test_process_terminated_by_runner": true,
+      "other_process_not_modified": true,
+      "evidence": "Own runtime log reaches create_single_instance_mutex, resolve_language and error_message_box only. winmain_startup.cpp214..222 identifies already_exists branch; user confirmed single-instance check.",
+      "source_runtime_validated": false,
+      "new_input_online_owners_instantiated": false,
+      "prior_two_frame_result": "Initial combined archive passed before merging current main; not final promoted application proof."
+    },
+    "final_publication_receipt": "local/native_input_online_ac_publish_receipt.json (ignored; final HEAD, source/artifact equivalence and remote containment)"
+  }
+}

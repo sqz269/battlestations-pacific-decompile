@@ -74,9 +74,19 @@ void release_native_lua_tracked_object_00b66de0(
 // Kind0 skips everything; otherwise release using captured owner/index and
 // then clear CURRENT kind04 only. The other16 bytes remain unchanged.
 void destroy_native_lua_object_00b67700(NativeLuaObjectStorage&);
+// B67690, ECX destination, stack source, EAX destination, RET4. Release a
+// bound destination BEFORE reading source; copy owner/kind/index/tracked only.
+// Register the destination's actual address when tracked. No self-copy guard:
+// self-assignment can clear kind and re-register stale tracked metadata.
+NativeLuaObjectStorage* assign_native_lua_object_00b67690(
+    NativeLuaObjectStorage& destination,const NativeLuaObjectStorage& source);
 // Full native predicates/getters over the actual stack object. B661B0 treats
 // every nonzero kind other than 2 as a table without accessing the interpreter.
 bool native_lua_is_boolean_00b66000(const NativeLuaObjectStorage&);
+// B65FB0 returns false for unbound/non-reference kinds, even unbound kind0.
+bool native_lua_is_nil_00b65fb0(const NativeLuaObjectStorage&);
+// B66250 always calls lua_toboolean at the current owner/index; no kind gate.
+bool native_lua_boolean_00b66250(const NativeLuaObjectStorage&);
 bool native_lua_is_table_00b661b0(const NativeLuaObjectStorage&);
 bool native_lua_is_integer_number_00b66a60(const NativeLuaObjectStorage&);
 const char* native_lua_string_00b662b0(const NativeLuaObjectStorage&);

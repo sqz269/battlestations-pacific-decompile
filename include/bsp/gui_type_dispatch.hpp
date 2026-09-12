@@ -3,6 +3,7 @@
 #include "bsp/gui_layer.hpp"
 #include "bsp/gui_widget_owner.hpp"
 #include "bsp/gui_section_runtime.hpp"
+#include "bsp/gui_listbox_runtime.hpp"
 
 namespace bsp {
 // Only the derived cGuiLayer fields. Base transform, tree, visibility propagation
@@ -45,6 +46,29 @@ public:
     bool is_visible38(GuiWidgetOwner&) override;
     void visibility_changed3c(GuiWidgetOwner&, bool) override;
     void set_visible34(GuiWidgetOwner&, bool) override;
+};
+// Actual type11 companion. Current60 uses canonical row-state dispatch;
+// current34 supports the unlinked highlight page domain. Full properties,
+// frame and scalar ABI remain open.
+class GuiListboxTypeImplementation final : public GuiGroupTypeImplementation {
+public:
+    GuiListboxTypeImplementation(GuiWidgetOwner&, GuiListboxRuntimeServices);
+    GuiListboxRuntime& runtime() noexcept { return runtime_; }
+    bool has_active_operation() const noexcept override;
+    void constructed74(GuiWidgetOwner&) override;
+    void before_properties(GuiWidgetOwner&, const GuiTable&) override;
+    void properties_bound(GuiWidgetOwner&, const GuiTable&) override;
+    void loaded78(GuiWidgetOwner&) override;
+    void set_visible34(GuiWidgetOwner&, bool) override;
+    void set_active60(GuiWidgetOwner&, bool) override;
+    void before_scene_release(GuiWidgetOwner&) override;
+    void before_host_tree_retirement(GuiWidgetOwner&) const override;
+    void before_scalar_deletion4(GuiWidgetOwner&) override;
+private:
+    class Operation;
+    void require_owner(GuiWidgetOwner&) const;
+    GuiListboxRuntime runtime_;
+    std::uint32_t active_calls_{};
 };
 class GuiIconTypeImplementation final : public GuiGroupTypeImplementation {
 public:
@@ -99,6 +123,7 @@ struct GuiTypeDispatchServices {
     std::function<GuiFrameBoxRuntimeServices(GuiWidgetOwner&)> framebox;
     std::function<GuiScreenLayerServices(GuiWidgetOwner&)> screen;
     std::function<GuiSectionRuntimeServices(GuiWidgetOwner&)> section;
+    std::function<GuiListboxRuntimeServices(GuiWidgetOwner&)> listbox;
 };
 class GuiTypeDispatchFactory {
 public:

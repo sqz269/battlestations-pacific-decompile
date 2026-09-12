@@ -1,0 +1,3400 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "bridge": "http://127.0.0.1:8089",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "packet": "orch3_definition_loading_ao",
+  "utc": "2026-09-12T19:21:25.123016+00:00",
+  "functions": [
+    {
+      "address": "00b03ec0",
+      "end_exclusive": "00b04824",
+      "end_inclusive": "00b04823",
+      "length": 2404,
+      "sha256": "18d11da33c20bfd3e52bff630d92c4f8a107c891e3abe613119ecba60a1adc67",
+      "live_disk_equal": true,
+      "cpp_symbol": "load_native_particle_cone_definition_00b03ec0",
+      "ghidra_name": "BSP_ConeEmissionDefinition_Load",
+      "source": "src/native_particle_definition_loading.cpp",
+      "header": "include/bsp/native_particle_definition_loading.hpp",
+      "coverage": "complete source body through concrete suffix/factory and required actual current child parser",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "bool __thiscall BSP_ConeEmissionDefinition_Load(void *text)",
+      "original_abi": "ECX actual definition; one stack argument; RET4; AL boolean, high EAX unspecified",
+      "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated. AP integration: suffix AF44C0 and particle factory B00CE0 now call concrete implementations in the same owner/string/parameter domain; actual current child parser08 remains the required application boundary.",
+      "last_instruction": {
+        "address": "00b04821",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      }
+    },
+    {
+      "address": "00b02fd0",
+      "end_exclusive": "00b03895",
+      "end_inclusive": "00b03894",
+      "length": 2245,
+      "sha256": "302cfa113269cdd3b09441dc6f0782694f3d1bf71ffa6412a524369d6a3ada80",
+      "live_disk_equal": true,
+      "cpp_symbol": "load_native_particle_sphere_definition_00b02fd0",
+      "ghidra_name": "BSP_SphereEmissionDefinition_Load",
+      "source": "src/native_particle_definition_loading.cpp",
+      "header": "include/bsp/native_particle_definition_loading.hpp",
+      "coverage": "complete source body through concrete suffix/factory and required actual current child parser",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "bool __thiscall BSP_SphereEmissionDefinition_Load(void *text)",
+      "original_abi": "ECX actual definition; one stack argument; RET4; AL boolean, high EAX unspecified",
+      "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated. AP integration: suffix AF44C0 and particle factory B00CE0 now call concrete implementations in the same owner/string/parameter domain; actual current child parser08 remains the required application boundary.",
+      "last_instruction": {
+        "address": "00b03892",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      }
+    },
+    {
+      "address": "00b02210",
+      "end_exclusive": "00b02b25",
+      "end_inclusive": "00b02b24",
+      "length": 2325,
+      "sha256": "9c8530f97e4767338706215e81f70802542faa27075d43d264b8c44a300b8e83",
+      "live_disk_equal": true,
+      "cpp_symbol": "load_native_particle_smartarea_definition_00b02210",
+      "ghidra_name": "BSP_SmartAreaEmissionDefinition_Load",
+      "source": "src/native_particle_definition_loading.cpp",
+      "header": "include/bsp/native_particle_definition_loading.hpp",
+      "coverage": "complete source body through concrete suffix/factory and required actual current child parser",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "bool __thiscall BSP_SmartAreaEmissionDefinition_Load(void *text)",
+      "original_abi": "ECX actual definition; one stack argument; RET4; AL boolean, high EAX unspecified",
+      "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated. AP integration: suffix AF44C0 and particle factory B00CE0 now call concrete implementations in the same owner/string/parameter domain; actual current child parser08 remains the required application boundary.",
+      "last_instruction": {
+        "address": "00b02b22",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      }
+    },
+    {
+      "address": "00af9d00",
+      "end_exclusive": "00af9e8f",
+      "end_inclusive": "00af9e8e",
+      "length": 399,
+      "sha256": "b4b6f66b530baaf60175ac0445312105150dce28c5fee6456ab07d52a184c7cc",
+      "live_disk_equal": true,
+      "cpp_symbol": "load_native_particle_base_parameter_00af9d00",
+      "ghidra_name": "BSP_ParticleDefinition_LoadBaseParameter",
+      "source": "src/native_particle_definition_loading.cpp",
+      "header": "include/bsp/native_particle_definition_loading.hpp",
+      "coverage": "complete native body through canonical reconstructed dependencies and two required actual application services",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "bool __thiscall BSP_ParticleDefinition_LoadBaseParameter(void *name, void *builder, float scalar)",
+      "original_abi": "ECX actual definition; stack pooled-name header, actual10h builder, float scalar; RET0C/AL boolean",
+      "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+      "last_instruction": {
+        "address": "00af9e8c",
+        "length": 3,
+        "bytes": "c20c00",
+        "text": "ret 0xc"
+      }
+    },
+    {
+      "address": "00af9f00",
+      "end_exclusive": "00af9f1f",
+      "end_inclusive": "00af9f1e",
+      "length": 31,
+      "sha256": "ce0ff7d460c2477c3519ba5ee0c2250d5097f76dc1a2e3a98e5c067a814ca26a",
+      "live_disk_equal": true,
+      "cpp_symbol": "publish_native_particle_emitter_member_00af9f00",
+      "ghidra_name": "BSP_ParticleDefinition_AppendEmitter",
+      "source": "src/native_particle_definition_loading.cpp",
+      "header": "include/bsp/native_particle_definition_loading.hpp",
+      "coverage": "complete native body through canonical reconstructed dependencies and two required actual application services",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleDefinition_AppendEmitter(void *child)",
+      "original_abi": "ECX actual definition; one stack argument; RET4; no defined return value",
+      "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+      "last_instruction": {
+        "address": "00af9f1c",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      }
+    },
+    {
+      "address": "00af9f20",
+      "end_exclusive": "00af9f42",
+      "end_inclusive": "00af9f41",
+      "length": 34,
+      "sha256": "16b5ce441a9569d25fc45661f159bc378258f4af8157d6eeec732d6fc4b4c136",
+      "live_disk_equal": true,
+      "cpp_symbol": "publish_native_particle_particle_member_00af9f20",
+      "ghidra_name": "BSP_ParticleDefinition_AppendParticle",
+      "source": "src/native_particle_definition_loading.cpp",
+      "header": "include/bsp/native_particle_definition_loading.hpp",
+      "coverage": "complete native body through canonical reconstructed dependencies and two required actual application services",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_ParticleDefinition_AppendParticle(void *child)",
+      "original_abi": "ECX actual definition; one stack argument; RET4; EAX current published address word",
+      "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+      "last_instruction": {
+        "address": "00af9f3f",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      }
+    },
+    {
+      "address": "00afa650",
+      "end_exclusive": "00afa9aa",
+      "end_inclusive": "00afa9a9",
+      "length": 858,
+      "sha256": "f588d7bdd8400ec942862742938fa707eb0ea5bfd3ffdf294a7d246201fd8247",
+      "live_disk_equal": true,
+      "cpp_symbol": "load_native_particle_definition_flag_00afa650",
+      "ghidra_name": "BSP_ParticleDefinition_LoadFlag",
+      "source": "src/native_particle_definition_loading.cpp",
+      "header": "include/bsp/native_particle_definition_loading.hpp",
+      "coverage": "complete native body through canonical reconstructed dependencies and two required actual application services",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "bool __thiscall BSP_ParticleDefinition_LoadFlag(void *line)",
+      "original_abi": "ECX actual definition; one stack argument; RET4; AL boolean, high EAX unspecified",
+      "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+      "last_instruction": {
+        "address": "00afa9a7",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      }
+    },
+    {
+      "address": "00afa370",
+      "end_exclusive": "00afa4dd",
+      "end_inclusive": "00afa4dc",
+      "length": 365,
+      "sha256": "7559368150f9f892cf1e353ffd67ab151586eb108a49f9645326b4bbd856475f",
+      "live_disk_equal": true,
+      "cpp_symbol": "set_native_particle_part_emission_type_00afa370",
+      "ghidra_name": "BSP_ParticleDefinition_SetPartEmissionType",
+      "source": "src/native_particle_definition_loading.cpp",
+      "header": "include/bsp/native_particle_definition_loading.hpp",
+      "coverage": "complete native body through canonical reconstructed dependencies and two required actual application services",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleDefinition_SetPartEmissionType(char *text)",
+      "original_abi": "ECX actual definition; one stack argument; RET4; no defined return value",
+      "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+      "last_instruction": {
+        "address": "00afa4da",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      }
+    },
+    {
+      "address": "00afa4e0",
+      "end_exclusive": "00afa64d",
+      "end_inclusive": "00afa64c",
+      "length": 365,
+      "sha256": "82d5b1e6731519545820dd81984d00d30a7aacd6582c60fdc620a32a8c89d783",
+      "live_disk_equal": true,
+      "cpp_symbol": "set_native_particle_emit_emission_type_00afa4e0",
+      "ghidra_name": "BSP_ParticleDefinition_SetEmitEmissionType",
+      "source": "src/native_particle_definition_loading.cpp",
+      "header": "include/bsp/native_particle_definition_loading.hpp",
+      "coverage": "complete native body through canonical reconstructed dependencies and two required actual application services",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleDefinition_SetEmitEmissionType(char *text)",
+      "original_abi": "ECX actual definition; one stack argument; RET4; no defined return value",
+      "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+      "last_instruction": {
+        "address": "00afa64a",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      }
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00b03efc",
+      "native": "00af5740",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b03f0f",
+      "native": "00bf7fbf",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b03f22",
+      "native": "00af5740",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b03f3a",
+      "native": "00bf7fbf",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b03f54",
+      "native": "00bf7fbf",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b03f6e",
+      "native": "00aee3c0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b03f7b",
+      "native": "00bf7fbf",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b03fa7",
+      "native": "00419cc0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b03fae",
+      "native": "00bd1510",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b03fca",
+      "native": "00af44c0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b03fda",
+      "native": "00afa650",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04008",
+      "native": "00419cc0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b0400f",
+      "native": "00bd1510",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b0402b",
+      "native": "00aee3c0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04043",
+      "native": "00af44c0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04058",
+      "native": "00aee3c0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04060",
+      "native": "00bfa66c",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04092",
+      "native": "00419cc0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04099",
+      "native": "00bd1510",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b040c9",
+      "native": "00419cc0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b040d0",
+      "native": "00bd1510",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b040dd",
+      "native": "00afbed0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b040fa",
+      "native": "00afc360",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b0410a",
+      "native": "00af44c0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04120",
+      "native": "00af44c0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04132",
+      "native": "00afc470",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04162",
+      "native": "00419cc0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04169",
+      "native": "00bd1510",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04199",
+      "native": "00419cc0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b041a0",
+      "native": "00bd1510",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b041bd",
+      "native": "00af9d00",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b041cb",
+      "native": "00bf6989",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b0420d",
+      "native": "00bf7fbf",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b0421d",
+      "native": "00afbf60",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04239",
+      "native": "00bf6989",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04274",
+      "native": "00419cc0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b0427b",
+      "native": "00bd1510",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04293",
+      "native": "00bf7fbf",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b042a3",
+      "native": "00afbf60",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b042cb",
+      "native": "00bf7fbf",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b042db",
+      "native": "00afbf60",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b042f7",
+      "native": "00bf6989",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04317",
+      "native": "00aee2a0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b0432b",
+      "native": "00bf7fbf",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b0433b",
+      "native": "00afbf60",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b0435e",
+      "native": "00bf7fbf",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b0436e",
+      "native": "00afbf60",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04389",
+      "native": "00af4110",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b0439a",
+      "native": "00aee2a0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b043a4",
+      "native": "00af4110",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b043b5",
+      "native": "00aee2a0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b043c4",
+      "native": "00aee3c0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b043d1",
+      "native": "00bf7fbf",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04402",
+      "native": "00419cc0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04409",
+      "native": "00bd1510",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04425",
+      "native": "00aee3c0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04453",
+      "native": "0041dd40",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b0446a",
+      "native": "00bf7680",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04485",
+      "native": "00aee3c0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b044b3",
+      "native": "0041dd40",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b044ca",
+      "native": "00bf7680",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b044f3",
+      "native": "00af9fb0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04515",
+      "native": "00419cc0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b0451c",
+      "native": "00bd1510",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04548",
+      "native": "00419cc0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b0454f",
+      "native": "00bd1510",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04573",
+      "native": "00419cc0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b0457a",
+      "native": "00bd1510",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b045a6",
+      "native": "00419cc0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b045ad",
+      "native": "00bd1510",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b045b9",
+      "native": "00af9f00",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b045ca",
+      "native": "00aee3c0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b045d7",
+      "native": "00bf7fbf",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04603",
+      "native": "00419cc0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b0460a",
+      "native": "00bd1510",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04626",
+      "native": "00aee3c0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04654",
+      "native": "0041dd40",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b0466b",
+      "native": "00bf7680",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04686",
+      "native": "00aee3c0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b046b4",
+      "native": "0041dd40",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b046cb",
+      "native": "00bf7680",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b046f0",
+      "native": "00b00ce0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04712",
+      "native": "00419cc0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04719",
+      "native": "00bd1510",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04745",
+      "native": "00419cc0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b0474c",
+      "native": "00bd1510",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04770",
+      "native": "00419cc0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04777",
+      "native": "00bd1510",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b047a3",
+      "native": "00419cc0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b047aa",
+      "native": "00bd1510",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b047b6",
+      "native": "00af9f20",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b047c9",
+      "native": "00af5740",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04802",
+      "native": "00419cc0",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b04809",
+      "native": "00bd1510",
+      "function": "00b03ec0"
+    },
+    {
+      "address": "00b0300c",
+      "native": "00af5740",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b0301f",
+      "native": "00bf7fbf",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b03032",
+      "native": "00af5740",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b0304a",
+      "native": "00bf7fbf",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b03064",
+      "native": "00bf7fbf",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b0307e",
+      "native": "00aee3c0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b0308b",
+      "native": "00bf7fbf",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b030b7",
+      "native": "00419cc0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b030be",
+      "native": "00bd1510",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b030da",
+      "native": "00af44c0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b030ea",
+      "native": "00afa650",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b03118",
+      "native": "00419cc0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b0311f",
+      "native": "00bd1510",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b0313b",
+      "native": "00aee3c0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b03153",
+      "native": "00af44c0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b03168",
+      "native": "00aee3c0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b03170",
+      "native": "00bfa66c",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b031a2",
+      "native": "00419cc0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b031a9",
+      "native": "00bd1510",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b031d9",
+      "native": "00419cc0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b031e0",
+      "native": "00bd1510",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b031ed",
+      "native": "00afbed0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b0320a",
+      "native": "00afc360",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b0321a",
+      "native": "00af44c0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b03230",
+      "native": "00af44c0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b03242",
+      "native": "00afc470",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b03272",
+      "native": "00419cc0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b03279",
+      "native": "00bd1510",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b032a9",
+      "native": "00419cc0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b032b0",
+      "native": "00bd1510",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b032cd",
+      "native": "00af9d00",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b032db",
+      "native": "00bf6989",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b0331d",
+      "native": "00bf7fbf",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b0332d",
+      "native": "00afbf60",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b03349",
+      "native": "00bf6989",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b03384",
+      "native": "00419cc0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b0338b",
+      "native": "00bd1510",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b033a3",
+      "native": "00bf7fbf",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b033b3",
+      "native": "00afbf60",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b033cf",
+      "native": "00bf6989",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b033ef",
+      "native": "00aee2a0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b03403",
+      "native": "00bf7fbf",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b03413",
+      "native": "00afbf60",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b0343b",
+      "native": "00aee3c0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b03448",
+      "native": "00bf7fbf",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b03474",
+      "native": "00419cc0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b0347b",
+      "native": "00bd1510",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b03497",
+      "native": "00aee3c0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b034c5",
+      "native": "0041dd40",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b034dc",
+      "native": "00bf7680",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b034f7",
+      "native": "00aee3c0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b03525",
+      "native": "0041dd40",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b0353c",
+      "native": "00bf7680",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b03565",
+      "native": "00af9fb0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b03587",
+      "native": "00419cc0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b0358e",
+      "native": "00bd1510",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b035ba",
+      "native": "00419cc0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b035c1",
+      "native": "00bd1510",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b035e5",
+      "native": "00419cc0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b035ec",
+      "native": "00bd1510",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b03618",
+      "native": "00419cc0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b0361f",
+      "native": "00bd1510",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b0362b",
+      "native": "00af9f00",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b0363c",
+      "native": "00aee3c0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b03649",
+      "native": "00bf7fbf",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b03675",
+      "native": "00419cc0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b0367c",
+      "native": "00bd1510",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b03698",
+      "native": "00aee3c0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b036c6",
+      "native": "0041dd40",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b036dd",
+      "native": "00bf7680",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b036f8",
+      "native": "00aee3c0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b03726",
+      "native": "0041dd40",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b0373d",
+      "native": "00bf7680",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b03762",
+      "native": "00b00ce0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b03784",
+      "native": "00419cc0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b0378b",
+      "native": "00bd1510",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b037b7",
+      "native": "00419cc0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b037be",
+      "native": "00bd1510",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b037e2",
+      "native": "00419cc0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b037e9",
+      "native": "00bd1510",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b03815",
+      "native": "00419cc0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b0381c",
+      "native": "00bd1510",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b03828",
+      "native": "00af9f20",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b0383b",
+      "native": "00af5740",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b03873",
+      "native": "00419cc0",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b0387a",
+      "native": "00bd1510",
+      "function": "00b02fd0"
+    },
+    {
+      "address": "00b0224c",
+      "native": "00af5740",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b0225f",
+      "native": "00bf7fbf",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02272",
+      "native": "00af5740",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b0228a",
+      "native": "00bf7fbf",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b022a4",
+      "native": "00bf7fbf",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b022be",
+      "native": "00aee3c0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b022cb",
+      "native": "00bf7fbf",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b022f7",
+      "native": "00419cc0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b022fe",
+      "native": "00bd1510",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b0231a",
+      "native": "00af44c0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b0232a",
+      "native": "00afa650",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02358",
+      "native": "00419cc0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b0235f",
+      "native": "00bd1510",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b0237b",
+      "native": "00aee3c0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02393",
+      "native": "00af44c0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b023a8",
+      "native": "00aee3c0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b023b0",
+      "native": "00bfa66c",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b023e2",
+      "native": "00419cc0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b023e9",
+      "native": "00bd1510",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02419",
+      "native": "00419cc0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02420",
+      "native": "00bd1510",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b0242d",
+      "native": "00afbed0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b0244a",
+      "native": "00afc360",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b0245a",
+      "native": "00af44c0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02470",
+      "native": "00af44c0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02482",
+      "native": "00afc470",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b024b2",
+      "native": "00419cc0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b024b9",
+      "native": "00bd1510",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b024e9",
+      "native": "00419cc0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b024f0",
+      "native": "00bd1510",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b0250d",
+      "native": "00af9d00",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b0251b",
+      "native": "00bf6989",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b0255d",
+      "native": "00bf7fbf",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b0256d",
+      "native": "00afbf60",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02589",
+      "native": "00bf6989",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b025c4",
+      "native": "00419cc0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b025cb",
+      "native": "00bd1510",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b025e3",
+      "native": "00bf7fbf",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b025f3",
+      "native": "00afbf60",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b0261b",
+      "native": "00bf7fbf",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b0262b",
+      "native": "00afbf60",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02647",
+      "native": "00bf6989",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02667",
+      "native": "00aee2a0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b0267b",
+      "native": "00bf7fbf",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b0268b",
+      "native": "00afbf60",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b026a6",
+      "native": "00af4110",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b026b7",
+      "native": "00aee2a0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b026cb",
+      "native": "00aee3c0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b026d8",
+      "native": "00bf7fbf",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02704",
+      "native": "00419cc0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b0270b",
+      "native": "00bd1510",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02727",
+      "native": "00aee3c0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02755",
+      "native": "0041dd40",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b0276c",
+      "native": "00bf7680",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02787",
+      "native": "00aee3c0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b027b5",
+      "native": "0041dd40",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b027cc",
+      "native": "00bf7680",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b027f5",
+      "native": "00af9fb0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02817",
+      "native": "00419cc0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b0281e",
+      "native": "00bd1510",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b0284a",
+      "native": "00419cc0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02851",
+      "native": "00bd1510",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02875",
+      "native": "00419cc0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b0287c",
+      "native": "00bd1510",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b028a8",
+      "native": "00419cc0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b028af",
+      "native": "00bd1510",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b028bb",
+      "native": "00af9f00",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b028cc",
+      "native": "00aee3c0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b028d9",
+      "native": "00bf7fbf",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02905",
+      "native": "00419cc0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b0290c",
+      "native": "00bd1510",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02928",
+      "native": "00aee3c0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02956",
+      "native": "0041dd40",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b0296d",
+      "native": "00bf7680",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02988",
+      "native": "00aee3c0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b029b6",
+      "native": "0041dd40",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b029cd",
+      "native": "00bf7680",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b029f2",
+      "native": "00b00ce0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02a14",
+      "native": "00419cc0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02a1b",
+      "native": "00bd1510",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02a47",
+      "native": "00419cc0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02a4e",
+      "native": "00bd1510",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02a72",
+      "native": "00419cc0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02a79",
+      "native": "00bd1510",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02aa5",
+      "native": "00419cc0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02aac",
+      "native": "00bd1510",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02ab8",
+      "native": "00af9f20",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02acb",
+      "native": "00af5740",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02b03",
+      "native": "00419cc0",
+      "function": "00b02210"
+    },
+    {
+      "address": "00b02b0a",
+      "native": "00bd1510",
+      "function": "00b02210"
+    },
+    {
+      "address": "00af9d10",
+      "native": "00bf7fbf",
+      "function": "00af9d00"
+    },
+    {
+      "address": "00af9d20",
+      "native": "00afc1b0",
+      "function": "00af9d00"
+    },
+    {
+      "address": "00af9d37",
+      "native": "00bf7fbf",
+      "function": "00af9d00"
+    },
+    {
+      "address": "00af9d47",
+      "native": "00afbf60",
+      "function": "00af9d00"
+    },
+    {
+      "address": "00af9d6a",
+      "native": "00bf7fbf",
+      "function": "00af9d00"
+    },
+    {
+      "address": "00af9d7a",
+      "native": "00afbf60",
+      "function": "00af9d00"
+    },
+    {
+      "address": "00af9d9d",
+      "native": "00bf7fbf",
+      "function": "00af9d00"
+    },
+    {
+      "address": "00af9dad",
+      "native": "00afbf60",
+      "function": "00af9d00"
+    },
+    {
+      "address": "00af9dd0",
+      "native": "00bf7fbf",
+      "function": "00af9d00"
+    },
+    {
+      "address": "00af9de0",
+      "native": "00afbf60",
+      "function": "00af9d00"
+    },
+    {
+      "address": "00af9e02",
+      "native": "00aedf80",
+      "function": "00af9d00"
+    },
+    {
+      "address": "00af9e0f",
+      "native": "00afbf60",
+      "function": "00af9d00"
+    },
+    {
+      "address": "00af9e31",
+      "native": "00aedf80",
+      "function": "00af9d00"
+    },
+    {
+      "address": "00af9e3e",
+      "native": "00afbf60",
+      "function": "00af9d00"
+    },
+    {
+      "address": "00af9e60",
+      "native": "00aedf80",
+      "function": "00af9d00"
+    },
+    {
+      "address": "00af9e6d",
+      "native": "00afbf60",
+      "function": "00af9d00"
+    },
+    {
+      "address": "00afa679",
+      "native": "00aee3c0",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa686",
+      "native": "00bf7fbf",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa6b2",
+      "native": "00419cc0",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa6b9",
+      "native": "00bd1510",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa6cf",
+      "native": "00aee3c0",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa6e1",
+      "native": "00af5660",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa70a",
+      "native": "00419cc0",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa711",
+      "native": "00bd1510",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa721",
+      "native": "00afa370",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa749",
+      "native": "00419cc0",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa750",
+      "native": "00bd1510",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa773",
+      "native": "00aee3c0",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa780",
+      "native": "00bf7fbf",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa7b2",
+      "native": "00419cc0",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa7b9",
+      "native": "00bd1510",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa7cf",
+      "native": "00aee3c0",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa7e3",
+      "native": "00af5660",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa812",
+      "native": "00419cc0",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa819",
+      "native": "00bd1510",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa82d",
+      "native": "00afa4e0",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa85c",
+      "native": "00aee3c0",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa869",
+      "native": "00bf7fbf",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa895",
+      "native": "00419cc0",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa89c",
+      "native": "00bd1510",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa8ae",
+      "native": "00aee3c0",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa8b6",
+      "native": "00bf8417",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa8d5",
+      "native": "00aee2a0",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa8e2",
+      "native": "00aee3c0",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa8ef",
+      "native": "00bf7fbf",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa900",
+      "native": "00aee2a0",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa912",
+      "native": "00aee3c0",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa91a",
+      "native": "00bf8417",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa92e",
+      "native": "00aee2a0",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa93d",
+      "native": "00aee3c0",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa94a",
+      "native": "00bf7fbf",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa95b",
+      "native": "00aee2a0",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa96d",
+      "native": "00aee3c0",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa975",
+      "native": "00bf8417",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa989",
+      "native": "00aee2a0",
+      "function": "00afa650"
+    },
+    {
+      "address": "00afa3a2",
+      "native": "0041dd40",
+      "function": "00afa370"
+    },
+    {
+      "address": "00afa3bd",
+      "native": "00bf7680",
+      "function": "00afa370"
+    },
+    {
+      "address": "00afa3d2",
+      "native": "0041e870",
+      "function": "00afa370"
+    },
+    {
+      "address": "00afa3de",
+      "native": "00435c40",
+      "function": "00afa370"
+    },
+    {
+      "address": "00afa3f8",
+      "native": "00419cc0",
+      "function": "00afa370"
+    },
+    {
+      "address": "00afa3ff",
+      "native": "00bd1510",
+      "function": "00afa370"
+    },
+    {
+      "address": "00afa41b",
+      "native": "00419cc0",
+      "function": "00afa370"
+    },
+    {
+      "address": "00afa422",
+      "native": "00bd1510",
+      "function": "00afa370"
+    },
+    {
+      "address": "00afa450",
+      "native": "0041e870",
+      "function": "00afa370"
+    },
+    {
+      "address": "00afa464",
+      "native": "0041e870",
+      "function": "00afa370"
+    },
+    {
+      "address": "00afa46c",
+      "native": "00435c40",
+      "function": "00afa370"
+    },
+    {
+      "address": "00afa486",
+      "native": "00419cc0",
+      "function": "00afa370"
+    },
+    {
+      "address": "00afa48d",
+      "native": "00bd1510",
+      "function": "00afa370"
+    },
+    {
+      "address": "00afa4ad",
+      "native": "00419cc0",
+      "function": "00afa370"
+    },
+    {
+      "address": "00afa4b4",
+      "native": "00bd1510",
+      "function": "00afa370"
+    },
+    {
+      "address": "00afa512",
+      "native": "0041dd40",
+      "function": "00afa4e0"
+    },
+    {
+      "address": "00afa52d",
+      "native": "00bf7680",
+      "function": "00afa4e0"
+    },
+    {
+      "address": "00afa542",
+      "native": "0041e870",
+      "function": "00afa4e0"
+    },
+    {
+      "address": "00afa54e",
+      "native": "00435c40",
+      "function": "00afa4e0"
+    },
+    {
+      "address": "00afa568",
+      "native": "00419cc0",
+      "function": "00afa4e0"
+    },
+    {
+      "address": "00afa56f",
+      "native": "00bd1510",
+      "function": "00afa4e0"
+    },
+    {
+      "address": "00afa58b",
+      "native": "00419cc0",
+      "function": "00afa4e0"
+    },
+    {
+      "address": "00afa592",
+      "native": "00bd1510",
+      "function": "00afa4e0"
+    },
+    {
+      "address": "00afa5c0",
+      "native": "0041e870",
+      "function": "00afa4e0"
+    },
+    {
+      "address": "00afa5d4",
+      "native": "0041e870",
+      "function": "00afa4e0"
+    },
+    {
+      "address": "00afa5dc",
+      "native": "00435c40",
+      "function": "00afa4e0"
+    },
+    {
+      "address": "00afa5f6",
+      "native": "00419cc0",
+      "function": "00afa4e0"
+    },
+    {
+      "address": "00afa5fd",
+      "native": "00bd1510",
+      "function": "00afa4e0"
+    },
+    {
+      "address": "00afa61d",
+      "native": "00419cc0",
+      "function": "00afa4e0"
+    },
+    {
+      "address": "00afa624",
+      "native": "00bd1510",
+      "function": "00afa4e0"
+    }
+  ],
+  "boundaries": [
+    {
+      "address": "00af44c0",
+      "end_exclusive": "00af45d0",
+      "bytes": 272,
+      "matches_disk": true,
+      "sha256": "8451d2badc4ac8adf3922a1d9805afa6eba282c9bb51de668f708c59e904d097",
+      "last_instruction": "00af45ce: jmp 0xaf457d"
+    },
+    {
+      "address": "00af4450",
+      "end_exclusive": "00af44bf",
+      "bytes": 111,
+      "matches_disk": true,
+      "sha256": "a9ce909ce3ee2a4fdf8398686250abb08281839eae2e3f0c3f7337d1fec06472",
+      "last_instruction": "00af44bc: ret 4"
+    },
+    {
+      "address": "00b00ce0",
+      "end_exclusive": "00b00ed9",
+      "bytes": 505,
+      "matches_disk": true,
+      "sha256": "7457b9fd12faeae3a6a8788c03da370dff4d70e15d1d11a44713942124300253",
+      "last_instruction": "00b00ed6: ret 8"
+    }
+  ],
+  "validation": {
+    "strict_compile": "passed MSVC Win32 /W4 /WX /fp:strict /MD /O2 /std:c++17",
+    "repository_build": "./scripts/build.ps1 passed; existing reconstructed_math and native_math_differential CTests 2/2; four owned files are not registered in CMake by worker",
+    "native_seeds": "python tools/ghidra_export.py verify-seeds passed (8 ranges)",
+    "live_disk_owned_spans": 9,
+    "live_disk_owned_bytes": 9026,
+    "call_rows": 355,
+    "call_verifier": "passed: 355 call rows checked, 0 failed",
+    "native_fixture": {
+      "result": "passed",
+      "text_observations": 4,
+      "member_observations": 1,
+      "pool_events_compared": 3879,
+      "fixture_files": [
+        "capture.py",
+        "generate_probe.py",
+        "probe_data.hpp",
+        "probe.cpp",
+        "probe.cmd",
+        "probe.log"
+      ],
+      "coverage": "Original copied nine owned routines and AF44C0/AF4450, patched real leaf dependencies; all 3 shape textual fields, all 8 base names, all 5 flag names, nested emitter ordering, unknown-property handling, repeated property, EOF, cursor, pool event order; AF9F20 member sum/count/slot/EAX and AF9F00 null no-op",
+      "limits": "Finite Const curves; parameter and pooled-text reconstructed dependencies shared by both sides; native FH3 exception unwind/application state/gameplay not validated; B00CE0 particle factory not executed"
+    },
+    "scratch": "C:\\Users\\sqz269\\bsp-ao-definition-loading",
+    "artifacts": [
+      {
+        "path": "C:\\Users\\sqz269\\bsp-ao-definition-loading\\capture.py",
+        "sha256": "32e3c512075818502f642bcd3d876a156a491dfbee4e7435a8985eb1ad60e2b3"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\bsp-ao-definition-loading\\generate_probe.py",
+        "sha256": "ae632a31d9bfd2ddbc9991a4d8c72387fab6d4a171bd5c122258bfe9e1b0c036",
+        "original_worker_sha256": "f9a123312a5d5752ba09e4329e9e2eb5818c79195190279d7c803c8b4856c485",
+        "original_preimage": "C:/Users/sqz269/bsp-ao-definition-replay-debug/original-generate_probe.py"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\bsp-ao-definition-loading\\report.py",
+        "sha256": "873f13f82832defd6a9bf2592c74b5c6e9238426cb31f1210025f3cd2a05ade1"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\bsp-ao-definition-loading\\probe_data.hpp",
+        "sha256": "fa74c9295b6a9c6ba1d130abd95159f24b7e9fabf718aa80677b9c407f7ceecf"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\bsp-ao-definition-loading\\probe.cpp",
+        "sha256": "01fe7404a896ff634fd05e114351533b0146a66bcdd6025808217935a11809b6",
+        "original_worker_sha256": "6540037c4672f0d7e4383e20168ac7ecf241be3c35597f471539ce5e9d99693a",
+        "original_preimage": "C:/Users/sqz269/bsp-ao-definition-replay-debug/original-probe.cpp"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\bsp-ao-definition-loading\\probe.cmd",
+        "sha256": "7253537dc20946bdc6c7b7bfaddfeb7a2eafdbc304b1d03cf744da5b7a9c1cbe"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\bsp-ao-definition-loading\\probe.log",
+        "sha256": "af4ba57cb7776b93dc7934682fe66b82735b356dd85dfd5e7bb3ad1b60ac568c"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\bsp-ao-definition-loading\\compile.cmd",
+        "sha256": "ae247467489eae920939cb9f7472f6bc30fac957c9beff000b6105a6800c5373"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\bsp-ao-definition-loading\\build.log",
+        "sha256": "1f955507354a9e7fb4447610bee1015e972057a799a3915d0e7cc434ca158b55"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\bsp-ao-definition-loading\\seeds.log",
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\bsp-ao-definition-loading\\calls.log",
+        "sha256": "43b49a82061ca534ed3a7062d14be58bac3447f65194f94b4ab933477194ac22"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\bsp-ao-definition-loading\\spans.json",
+        "sha256": "b5c897bf6c1a7492d7bf1afcaf8413c718ec5771ff5b0a6106c21510c00e6af3"
+      }
+    ],
+    "owned_file_hashes": [
+      {
+        "path": "include/bsp/native_particle_definition_loading.hpp",
+        "sha256": "7d2f54b361dbf7b242a7d6f11bab940eec6175da99f9f9bd610767888e27cab1"
+      },
+      {
+        "path": "src/native_particle_definition_loading.cpp",
+        "sha256": "774a868ae048d80cc8f59df411c1726b503c66fd1ca7434d704043c97c770b74"
+      },
+      {
+        "path": "docs/NATIVE_PARTICLE_DEFINITION_LOADING.md",
+        "sha256": "c3f8016699e291ac4ff531c32e81f002dfac8725d85d8baf4a59a2c7409b4f97"
+      }
+    ],
+    "dependency_file_hashes": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-pooled-text-ao\\include\\bsp\\native_pooled_text.hpp",
+        "sha256": "895c0034f209d7d13b177edc4c8efca1e6ada8b4800280c42e4acee06fec3f8b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-pooled-text-ao\\src\\native_pooled_text.cpp",
+        "sha256": "5d43f372663787882ba36f11f58544102b0bac6e293a6fed87aab83f5d78d63b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-parameter-loading-ao\\include\\bsp\\native_particle_parameter_loading.hpp",
+        "sha256": "fa890306dc96f8522a4644fdcf9369a8357687f389a52cd12586ac22e6002ab8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-parameter-loading-ao\\src\\native_particle_parameter_loading.cpp",
+        "sha256": "15bcfac96921fa2c4ab9bd8128b6aa7003447e5b5498f2ed0dba619ef1450861"
+      }
+    ]
+  },
+  "contracts": {
+    "base_parameters": {
+      "BornRatio": "+18 float = first key value",
+      "Lifetime": "+20",
+      "ParticleEmission": "+24",
+      "EmitterEmission": "+28",
+      "Speed": "+2c",
+      "VerticalSpeed": "+30",
+      "InheritedSpeed": "+34",
+      "WindSensitivity": "+38"
+    },
+    "cone_properties": {
+      "InnerEmitSpeed": "+80",
+      "OuterEmitSpeed": "+84",
+      "MaxAngle": "+88",
+      "InnerDistance": "+8c",
+      "OuterDistance": "+90"
+    },
+    "sphere_properties": {
+      "EmittedSpeed": "+80",
+      "InnerRadius": "+84",
+      "OuterRadius": "+88"
+    },
+    "smartarea_properties": {
+      "EmittedSpeed": "+80",
+      "Radius": "+84",
+      "RadiusSpeed": "+88",
+      "RadiusAngle": "+8c"
+    },
+    "scale": "atof returns double -> float stack spill -> convert builder -> FLD float scalar, FMUL current DOUBLE D7A358, FSTP curve+0 -> publish curve pointer",
+    "parser_failure": "flags return handled bool; curve-parser AL intentionally ignored; mutations retained; unknown properties ignored; all normal EOF/brace completion AL1; no fabricated null token, curve, child or success result",
+    "nested": "Emitter token1 name and token2 kind become interleaved actual8h NativeStrings; concrete AF9FB0 factory and current parser14; release temporaries before append; independent Particle token check afterward; B00CE0 required real factory with kind/name/parent/text",
+    "unknown_cone": "Only cone unknown Param runs Emitter and Particle token checks before next line; sphere and smartarea skip directly",
+    "storage": "owners and parameters.owners must be the same canonical service instance; child append adds no reference and checks no capacity; no automatic cleanup of repeated parameter properties"
+  },
+  "flow_repairs": {
+    "performed_by": "primary integrator under Ghidra write lock; worker read-only",
+    "functions": [
+      "00b03ec0",
+      "00b02fd0",
+      "00b02210"
+    ],
+    "reason": "False BF6989 no-return fallthrough gaps hid cleanup/calls/loop edges. Full raw instruction ranges restore calls and RET4 tails; no binary edits."
+  },
+  "required_application_boundaries": [
+    {
+      "native": "00af44c0",
+      "contract": "Required actual suffix constructor over four-byte pooled line/output,index; AF4450 accepts printable ASCII20..7e and tab within suffix; native copied slices used in scratch fixture only."
+    },
+    {
+      "native": "00b00ce0",
+      "contract": "Required actual particle child factory over kind/name NativeString8h, parent and current TextBuffer, including captured virtual08. Unknown kind reuses parent; allocation failure reaches dispatch. No substitute result."
+    },
+    {
+      "native": "00af9fb0+vtable14",
+      "contract": "Concrete AF9FB0 reused; owner parser dispatcher must invoke these actual shape parsers for current known targets or a required foreign application target; no shadow table/retained object."
+    }
+  ],
+  "integration_ao": {
+    "strict_win32_build_and_two_seeded_ctests": true,
+    "combined_library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+    "current_library_fixture": {
+      "label": "definition-loading",
+      "exit_code": 0,
+      "log": "local\\ao-definition-loading-current-replay.log",
+      "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+      "source_sha256": "01fe7404a896ff634fd05e114351533b0146a66bcdd6025808217935a11809b6",
+      "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\definition-loading-current.cmd",
+      "executable_sha256": "bbc30283999b97b67eb05cb8d53efee8b17bf737d8916f03b62bade2702cb0f5"
+    },
+    "source_hashes": {
+      "include/bsp/native_particle_definition_loading.hpp": "7d2f54b361dbf7b242a7d6f11bab940eec6175da99f9f9bd610767888e27cab1",
+      "src/native_particle_definition_loading.cpp": "774a868ae048d80cc8f59df411c1726b503c66fd1ca7434d704043c97c770b74"
+    },
+    "normalized_entries": [
+      {
+        "address": "00b03ec0",
+        "end_exclusive": "00b04824",
+        "end_inclusive": "00b04823",
+        "length": 2404,
+        "sha256": "18d11da33c20bfd3e52bff630d92c4f8a107c891e3abe613119ecba60a1adc67",
+        "live_disk_equal": true,
+        "cpp_symbol": "load_native_particle_cone_definition_00b03ec0",
+        "ghidra_name": "BSP_ConeEmissionDefinition_Load",
+        "source": "src/native_particle_definition_loading.cpp",
+        "header": "include/bsp/native_particle_definition_loading.hpp",
+        "coverage": "complete native body through canonical reconstructed dependencies and two required actual application services",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "bool __thiscall BSP_ConeEmissionDefinition_Load(void *text)",
+        "original_abi": "ECX actual definition; one stack argument; RET4; AL boolean, high EAX unspecified",
+        "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+        "last_instruction": {
+          "address": "00b04821",
+          "length": 3,
+          "bytes": "c20400",
+          "text": "ret 4"
+        }
+      },
+      {
+        "address": "00b02fd0",
+        "end_exclusive": "00b03895",
+        "end_inclusive": "00b03894",
+        "length": 2245,
+        "sha256": "302cfa113269cdd3b09441dc6f0782694f3d1bf71ffa6412a524369d6a3ada80",
+        "live_disk_equal": true,
+        "cpp_symbol": "load_native_particle_sphere_definition_00b02fd0",
+        "ghidra_name": "BSP_SphereEmissionDefinition_Load",
+        "source": "src/native_particle_definition_loading.cpp",
+        "header": "include/bsp/native_particle_definition_loading.hpp",
+        "coverage": "complete native body through canonical reconstructed dependencies and two required actual application services",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "bool __thiscall BSP_SphereEmissionDefinition_Load(void *text)",
+        "original_abi": "ECX actual definition; one stack argument; RET4; AL boolean, high EAX unspecified",
+        "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+        "last_instruction": {
+          "address": "00b03892",
+          "length": 3,
+          "bytes": "c20400",
+          "text": "ret 4"
+        }
+      },
+      {
+        "address": "00b02210",
+        "end_exclusive": "00b02b25",
+        "end_inclusive": "00b02b24",
+        "length": 2325,
+        "sha256": "9c8530f97e4767338706215e81f70802542faa27075d43d264b8c44a300b8e83",
+        "live_disk_equal": true,
+        "cpp_symbol": "load_native_particle_smartarea_definition_00b02210",
+        "ghidra_name": "BSP_SmartAreaEmissionDefinition_Load",
+        "source": "src/native_particle_definition_loading.cpp",
+        "header": "include/bsp/native_particle_definition_loading.hpp",
+        "coverage": "complete native body through canonical reconstructed dependencies and two required actual application services",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "bool __thiscall BSP_SmartAreaEmissionDefinition_Load(void *text)",
+        "original_abi": "ECX actual definition; one stack argument; RET4; AL boolean, high EAX unspecified",
+        "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+        "last_instruction": {
+          "address": "00b02b22",
+          "length": 3,
+          "bytes": "c20400",
+          "text": "ret 4"
+        }
+      },
+      {
+        "address": "00af9d00",
+        "end_exclusive": "00af9e8f",
+        "end_inclusive": "00af9e8e",
+        "length": 399,
+        "sha256": "b4b6f66b530baaf60175ac0445312105150dce28c5fee6456ab07d52a184c7cc",
+        "live_disk_equal": true,
+        "cpp_symbol": "load_native_particle_base_parameter_00af9d00",
+        "ghidra_name": "BSP_ParticleDefinition_LoadBaseParameter",
+        "source": "src/native_particle_definition_loading.cpp",
+        "header": "include/bsp/native_particle_definition_loading.hpp",
+        "coverage": "complete native body through canonical reconstructed dependencies and two required actual application services",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "bool __thiscall BSP_ParticleDefinition_LoadBaseParameter(void *name, void *builder, float scalar)",
+        "original_abi": "ECX actual definition; stack pooled-name header, actual10h builder, float scalar; RET0C/AL boolean",
+        "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+        "last_instruction": {
+          "address": "00af9e8c",
+          "length": 3,
+          "bytes": "c20c00",
+          "text": "ret 0xc"
+        }
+      },
+      {
+        "address": "00af9f00",
+        "end_exclusive": "00af9f1f",
+        "end_inclusive": "00af9f1e",
+        "length": 31,
+        "sha256": "ce0ff7d460c2477c3519ba5ee0c2250d5097f76dc1a2e3a98e5c067a814ca26a",
+        "live_disk_equal": true,
+        "cpp_symbol": "publish_native_particle_emitter_member_00af9f00",
+        "ghidra_name": "BSP_ParticleDefinition_AppendEmitter",
+        "source": "src/native_particle_definition_loading.cpp",
+        "header": "include/bsp/native_particle_definition_loading.hpp",
+        "coverage": "complete native body through canonical reconstructed dependencies and two required actual application services",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void __thiscall BSP_ParticleDefinition_AppendEmitter(void *child)",
+        "original_abi": "ECX actual definition; one stack argument; RET4; no defined return value",
+        "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+        "last_instruction": {
+          "address": "00af9f1c",
+          "length": 3,
+          "bytes": "c20400",
+          "text": "ret 4"
+        }
+      },
+      {
+        "address": "00af9f20",
+        "end_exclusive": "00af9f42",
+        "end_inclusive": "00af9f41",
+        "length": 34,
+        "sha256": "16b5ce441a9569d25fc45661f159bc378258f4af8157d6eeec732d6fc4b4c136",
+        "live_disk_equal": true,
+        "cpp_symbol": "publish_native_particle_particle_member_00af9f20",
+        "ghidra_name": "BSP_ParticleDefinition_AppendParticle",
+        "source": "src/native_particle_definition_loading.cpp",
+        "header": "include/bsp/native_particle_definition_loading.hpp",
+        "coverage": "complete native body through canonical reconstructed dependencies and two required actual application services",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void * __thiscall BSP_ParticleDefinition_AppendParticle(void *child)",
+        "original_abi": "ECX actual definition; one stack argument; RET4; EAX current published address word",
+        "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+        "last_instruction": {
+          "address": "00af9f3f",
+          "length": 3,
+          "bytes": "c20400",
+          "text": "ret 4"
+        }
+      },
+      {
+        "address": "00afa650",
+        "end_exclusive": "00afa9aa",
+        "end_inclusive": "00afa9a9",
+        "length": 858,
+        "sha256": "f588d7bdd8400ec942862742938fa707eb0ea5bfd3ffdf294a7d246201fd8247",
+        "live_disk_equal": true,
+        "cpp_symbol": "load_native_particle_definition_flag_00afa650",
+        "ghidra_name": "BSP_ParticleDefinition_LoadFlag",
+        "source": "src/native_particle_definition_loading.cpp",
+        "header": "include/bsp/native_particle_definition_loading.hpp",
+        "coverage": "complete native body through canonical reconstructed dependencies and two required actual application services",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "bool __thiscall BSP_ParticleDefinition_LoadFlag(void *line)",
+        "original_abi": "ECX actual definition; one stack argument; RET4; AL boolean, high EAX unspecified",
+        "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+        "last_instruction": {
+          "address": "00afa9a7",
+          "length": 3,
+          "bytes": "c20400",
+          "text": "ret 4"
+        }
+      },
+      {
+        "address": "00afa370",
+        "end_exclusive": "00afa4dd",
+        "end_inclusive": "00afa4dc",
+        "length": 365,
+        "sha256": "7559368150f9f892cf1e353ffd67ab151586eb108a49f9645326b4bbd856475f",
+        "live_disk_equal": true,
+        "cpp_symbol": "set_native_particle_part_emission_type_00afa370",
+        "ghidra_name": "BSP_ParticleDefinition_SetPartEmissionType",
+        "source": "src/native_particle_definition_loading.cpp",
+        "header": "include/bsp/native_particle_definition_loading.hpp",
+        "coverage": "complete native body through canonical reconstructed dependencies and two required actual application services",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void __thiscall BSP_ParticleDefinition_SetPartEmissionType(char *text)",
+        "original_abi": "ECX actual definition; one stack argument; RET4; no defined return value",
+        "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+        "last_instruction": {
+          "address": "00afa4da",
+          "length": 3,
+          "bytes": "c20400",
+          "text": "ret 4"
+        }
+      },
+      {
+        "address": "00afa4e0",
+        "end_exclusive": "00afa64d",
+        "end_inclusive": "00afa64c",
+        "length": 365,
+        "sha256": "82d5b1e6731519545820dd81984d00d30a7aacd6582c60fdc620a32a8c89d783",
+        "live_disk_equal": true,
+        "cpp_symbol": "set_native_particle_emit_emission_type_00afa4e0",
+        "ghidra_name": "BSP_ParticleDefinition_SetEmitEmissionType",
+        "source": "src/native_particle_definition_loading.cpp",
+        "header": "include/bsp/native_particle_definition_loading.hpp",
+        "coverage": "complete native body through canonical reconstructed dependencies and two required actual application services",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void __thiscall BSP_ParticleDefinition_SetEmitEmissionType(char *text)",
+        "original_abi": "ECX actual definition; one stack argument; RET4; no defined return value",
+        "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+        "last_instruction": {
+          "address": "00afa64a",
+          "length": 3,
+          "bytes": "c20400",
+          "text": "ret 4"
+        }
+      }
+    ],
+    "native_signatures_readback_verified": true,
+    "saved_names_and_evidence": [
+      {
+        "address": "00af9d00",
+        "before": {
+          "address": "00af9d00",
+          "function_name": "FUN_00af9d00"
+        },
+        "after": {
+          "address": "00af9d00",
+          "name": "BSP_ParticleDefinition_LoadBaseParameter",
+          "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af9f00",
+        "before": {
+          "address": "00af9f00",
+          "function_name": "FUN_00af9f00"
+        },
+        "after": {
+          "address": "00af9f00",
+          "name": "BSP_ParticleDefinition_AppendEmitter",
+          "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af9f20",
+        "before": {
+          "address": "00af9f20",
+          "function_name": "FUN_00af9f20"
+        },
+        "after": {
+          "address": "00af9f20",
+          "name": "BSP_ParticleDefinition_AppendParticle",
+          "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afa370",
+        "before": {
+          "address": "00afa370",
+          "function_name": "FUN_00afa370"
+        },
+        "after": {
+          "address": "00afa370",
+          "name": "BSP_ParticleDefinition_SetPartEmissionType",
+          "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afa4e0",
+        "before": {
+          "address": "00afa4e0",
+          "function_name": "FUN_00afa4e0"
+        },
+        "after": {
+          "address": "00afa4e0",
+          "name": "BSP_ParticleDefinition_SetEmitEmissionType",
+          "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afa650",
+        "before": {
+          "address": "00afa650",
+          "function_name": "FUN_00afa650"
+        },
+        "after": {
+          "address": "00afa650",
+          "name": "BSP_ParticleDefinition_LoadFlag",
+          "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b02210",
+        "before": {
+          "address": "00b02210",
+          "function_name": "FUN_00b02210"
+        },
+        "after": {
+          "address": "00b02210",
+          "name": "BSP_SmartAreaEmissionDefinition_Load",
+          "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b02fd0",
+        "before": {
+          "address": "00b02fd0",
+          "function_name": "FUN_00b02fd0"
+        },
+        "after": {
+          "address": "00b02fd0",
+          "name": "BSP_SphereEmissionDefinition_Load",
+          "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b03ec0",
+        "before": {
+          "address": "00b03ec0",
+          "function_name": "FUN_00b03ec0"
+        },
+        "after": {
+          "address": "00b03ec0",
+          "name": "BSP_ConeEmissionDefinition_Load",
+          "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+        },
+        "status": "applied"
+      }
+    ],
+    "previous_comments": {
+      "00b02210": {
+        "address": "00b02210",
+        "function_name": "FUN_00b02210"
+      },
+      "00af9f20": {
+        "address": "00af9f20",
+        "function_name": "FUN_00af9f20"
+      },
+      "00af9f00": {
+        "address": "00af9f00",
+        "function_name": "FUN_00af9f00"
+      },
+      "00afa370": {
+        "address": "00afa370",
+        "function_name": "FUN_00afa370"
+      },
+      "00afa4e0": {
+        "address": "00afa4e0",
+        "function_name": "FUN_00afa4e0"
+      },
+      "00b02fd0": {
+        "address": "00b02fd0",
+        "function_name": "FUN_00b02fd0"
+      },
+      "00afa650": {
+        "address": "00afa650",
+        "function_name": "FUN_00afa650"
+      },
+      "00b03ec0": {
+        "address": "00b03ec0",
+        "function_name": "FUN_00b03ec0"
+      },
+      "00af9d00": {
+        "address": "00af9d00",
+        "function_name": "FUN_00af9d00"
+      }
+    },
+    "current_comments": {
+      "00b02210": {
+        "address": "00b02210",
+        "function_name": "BSP_SmartAreaEmissionDefinition_Load",
+        "comment": "[BSP reconstruction 00b02210]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+      },
+      "00af9f20": {
+        "address": "00af9f20",
+        "function_name": "BSP_ParticleDefinition_AppendParticle",
+        "comment": "[BSP reconstruction 00af9f20]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+      },
+      "00af9f00": {
+        "address": "00af9f00",
+        "function_name": "BSP_ParticleDefinition_AppendEmitter",
+        "comment": "[BSP reconstruction 00af9f00]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+      },
+      "00afa370": {
+        "address": "00afa370",
+        "function_name": "BSP_ParticleDefinition_SetPartEmissionType",
+        "comment": "[BSP reconstruction 00afa370]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+      },
+      "00afa4e0": {
+        "address": "00afa4e0",
+        "function_name": "BSP_ParticleDefinition_SetEmitEmissionType",
+        "comment": "[BSP reconstruction 00afa4e0]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+      },
+      "00b02fd0": {
+        "address": "00b02fd0",
+        "function_name": "BSP_SphereEmissionDefinition_Load",
+        "comment": "[BSP reconstruction 00b02fd0]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+      },
+      "00afa650": {
+        "address": "00afa650",
+        "function_name": "BSP_ParticleDefinition_LoadFlag",
+        "comment": "[BSP reconstruction 00afa650]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+      },
+      "00b03ec0": {
+        "address": "00b03ec0",
+        "function_name": "BSP_ConeEmissionDefinition_Load",
+        "comment": "[BSP reconstruction 00b03ec0]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+      },
+      "00af9d00": {
+        "address": "00af9d00",
+        "function_name": "BSP_ParticleDefinition_LoadBaseParameter",
+        "comment": "[BSP reconstruction 00af9d00]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+      }
+    },
+    "game_validated": false,
+    "original_fh3_abi_validated": false,
+    "independent_review": "Parameter worker verified builder/parse/convert calls, ignored parser failure result, cleanup order,7base curve offsets and shape fields, currentD7A358 load after conversion and curve multiplier before pointer publication; no concrete mismatch.",
+    "worker_fixture_exit_correction": "Original worker fixture printed all matching observations but exited1; the shell subsequently printed its log and masked that status. Primary current-library replay caught it. MSVC19.51.36244.0/O2 main containing an inlined asm helper omitted implicit return0; minimal reproduction and executable disassembly confirmed it. Scratch probe now explicitly returns0, and corrected process exit is checked. No production-code change was required.",
+    "fixture_exit_diagnosis": "C:/Users/sqz269/bsp-ao-definition-replay-debug/DIAGNOSIS.md",
+    "function_repairs": {
+      "ao-loader-flow.json": {
+        "repairs": [
+          {
+            "function": "00b03ec0",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T18:59:56Z",
+            "decompile_lines_before": 436,
+            "gaps": [
+              {
+                "site": "00b041cb",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b041d0",
+                "gap_end_exclusive": "00b04203",
+                "bytes": 51,
+                "after_call": true,
+                "sha256": "7e1dbdfea776d9aa685852c398ff5566e2b7cc88ff5a71e7cb942233469f9797"
+              },
+              {
+                "site": "00b04239",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b0423e",
+                "gap_end_exclusive": "00b04289",
+                "bytes": 75,
+                "after_call": true,
+                "sha256": "8dad3cbbdf9c7635e31a00c2481451a2ae7b1eb0884596f5a85b5d8c4577e1d9"
+              },
+              {
+                "site": "00b042f7",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b042fc",
+                "gap_end_exclusive": "00b04321",
+                "bytes": 37,
+                "after_call": true,
+                "sha256": "84a732692d4d7fe136956b7661e922f560e2c870d38df5d89812076fbc8cb334"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00b041cb",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b041d0",
+                  "gap_end_exclusive": "00b04203",
+                  "bytes": 51,
+                  "after_call": true,
+                  "sha256": "7e1dbdfea776d9aa685852c398ff5566e2b7cc88ff5a71e7cb942233469f9797"
+                },
+                "clear": "Success: Cleared flow override at 00b041cb (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 51 byte(s)"
+              },
+              {
+                "gap": {
+                  "site": "00b04239",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b0423e",
+                  "gap_end_exclusive": "00b04289",
+                  "bytes": 75,
+                  "after_call": true,
+                  "sha256": "8dad3cbbdf9c7635e31a00c2481451a2ae7b1eb0884596f5a85b5d8c4577e1d9"
+                },
+                "clear": "Success: Cleared flow override at 00b04239 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 75 byte(s)"
+              },
+              {
+                "gap": {
+                  "site": "00b042f7",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b042fc",
+                  "gap_end_exclusive": "00b04321",
+                  "bytes": 37,
+                  "after_call": true,
+                  "sha256": "84a732692d4d7fe136956b7661e922f560e2c870d38df5d89812076fbc8cb334"
+                },
+                "clear": "Success: Cleared flow override at 00b042f7 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 37 byte(s)"
+              },
+              {
+                "explicit_tail_call": "00b041cb",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00b041cb (was: NONE, now: NONE)"
+                }
+              },
+              {
+                "explicit_tail_call": "00b04239",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00b04239 (was: NONE, now: NONE)"
+                }
+              },
+              {
+                "explicit_tail_call": "00b042f7",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00b042f7 (was: NONE, now: NONE)"
+                }
+              }
+            ],
+            "explicit_tail_end_exclusive": "00b04824",
+            "explicit_body_sha256": "18d11da33c20bfd3e52bff630d92c4f8a107c891e3abe613119ecba60a1adc67",
+            "body_before": "Function: FUN_00b03ec0 at 00b03ec0\nSignature: undefined FUN_00b03ec0(void)\nEntry: 00b03ec0\nBody: 00b03ec0 - 00b04823",
+            "decompile_lines_after": 476,
+            "gaps_remaining": 0,
+            "body_after": "Function: FUN_00b03ec0 at 00b03ec0\nSignature: undefined FUN_00b03ec0(void)\nEntry: 00b03ec0\nBody: 00b03ec0 - 00b04823",
+            "stored_body_tail_complete": true
+          },
+          {
+            "function": "00b02fd0",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T19:00:10Z",
+            "decompile_lines_before": 410,
+            "gaps": [
+              {
+                "site": "00b032db",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b032e0",
+                "gap_end_exclusive": "00b03313",
+                "bytes": 51,
+                "after_call": true,
+                "sha256": "7e1dbdfea776d9aa685852c398ff5566e2b7cc88ff5a71e7cb942233469f9797"
+              },
+              {
+                "site": "00b03349",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b0334e",
+                "gap_end_exclusive": "00b03399",
+                "bytes": 75,
+                "after_call": true,
+                "sha256": "e6c88361500b418328b6dcf3a0e5ea20d4509bd979f9e69a853be0bf285b9213"
+              },
+              {
+                "site": "00b033cf",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b033d4",
+                "gap_end_exclusive": "00b033f9",
+                "bytes": 37,
+                "after_call": true,
+                "sha256": "af6e8a80a4c85f0b15b189c17ca86b4cb56a717e7a5008f6d534b19cf92748ee"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00b032db",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b032e0",
+                  "gap_end_exclusive": "00b03313",
+                  "bytes": 51,
+                  "after_call": true,
+                  "sha256": "7e1dbdfea776d9aa685852c398ff5566e2b7cc88ff5a71e7cb942233469f9797"
+                },
+                "clear": "Success: Cleared flow override at 00b032db (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 51 byte(s)"
+              },
+              {
+                "gap": {
+                  "site": "00b03349",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b0334e",
+                  "gap_end_exclusive": "00b03399",
+                  "bytes": 75,
+                  "after_call": true,
+                  "sha256": "e6c88361500b418328b6dcf3a0e5ea20d4509bd979f9e69a853be0bf285b9213"
+                },
+                "clear": "Success: Cleared flow override at 00b03349 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 75 byte(s)"
+              },
+              {
+                "gap": {
+                  "site": "00b033cf",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b033d4",
+                  "gap_end_exclusive": "00b033f9",
+                  "bytes": 37,
+                  "after_call": true,
+                  "sha256": "af6e8a80a4c85f0b15b189c17ca86b4cb56a717e7a5008f6d534b19cf92748ee"
+                },
+                "clear": "Success: Cleared flow override at 00b033cf (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 37 byte(s)"
+              },
+              {
+                "explicit_tail_call": "00b032db",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00b032db (was: NONE, now: NONE)"
+                }
+              },
+              {
+                "explicit_tail_call": "00b03349",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00b03349 (was: NONE, now: NONE)"
+                }
+              },
+              {
+                "explicit_tail_call": "00b033cf",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00b033cf (was: NONE, now: NONE)"
+                }
+              }
+            ],
+            "explicit_tail_end_exclusive": "00b03895",
+            "explicit_body_sha256": "302cfa113269cdd3b09441dc6f0782694f3d1bf71ffa6412a524369d6a3ada80",
+            "body_before": "Function: FUN_00b02fd0 at 00b02fd0\nSignature: undefined FUN_00b02fd0(void)\nEntry: 00b02fd0\nBody: 00b02fd0 - 00b03894",
+            "decompile_lines_after": 453,
+            "gaps_remaining": 0,
+            "body_after": "Function: FUN_00b02fd0 at 00b02fd0\nSignature: undefined FUN_00b02fd0(void)\nEntry: 00b02fd0\nBody: 00b02fd0 - 00b03894",
+            "stored_body_tail_complete": true
+          },
+          {
+            "function": "00b02210",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T19:00:20Z",
+            "decompile_lines_before": 423,
+            "gaps": [
+              {
+                "site": "00b0251b",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b02520",
+                "gap_end_exclusive": "00b02553",
+                "bytes": 51,
+                "after_call": true,
+                "sha256": "7e1dbdfea776d9aa685852c398ff5566e2b7cc88ff5a71e7cb942233469f9797"
+              },
+              {
+                "site": "00b02589",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b0258e",
+                "gap_end_exclusive": "00b025d9",
+                "bytes": 75,
+                "after_call": true,
+                "sha256": "5bb6914555e2488fbb6a9b5a8787d351dd50a73902a85032dae9c8838a9f1d94"
+              },
+              {
+                "site": "00b02647",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b0264c",
+                "gap_end_exclusive": "00b02671",
+                "bytes": 37,
+                "after_call": true,
+                "sha256": "8687ba236f53cf3e18de16b8ffe97af449af5bd53d007ae7769bb7c88b3f746b"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00b0251b",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b02520",
+                  "gap_end_exclusive": "00b02553",
+                  "bytes": 51,
+                  "after_call": true,
+                  "sha256": "7e1dbdfea776d9aa685852c398ff5566e2b7cc88ff5a71e7cb942233469f9797"
+                },
+                "clear": "Success: Cleared flow override at 00b0251b (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 51 byte(s)"
+              },
+              {
+                "gap": {
+                  "site": "00b02589",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b0258e",
+                  "gap_end_exclusive": "00b025d9",
+                  "bytes": 75,
+                  "after_call": true,
+                  "sha256": "5bb6914555e2488fbb6a9b5a8787d351dd50a73902a85032dae9c8838a9f1d94"
+                },
+                "clear": "Success: Cleared flow override at 00b02589 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 75 byte(s)"
+              },
+              {
+                "gap": {
+                  "site": "00b02647",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b0264c",
+                  "gap_end_exclusive": "00b02671",
+                  "bytes": 37,
+                  "after_call": true,
+                  "sha256": "8687ba236f53cf3e18de16b8ffe97af449af5bd53d007ae7769bb7c88b3f746b"
+                },
+                "clear": "Success: Cleared flow override at 00b02647 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 37 byte(s)"
+              },
+              {
+                "explicit_tail_call": "00b0251b",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00b0251b (was: NONE, now: NONE)"
+                }
+              },
+              {
+                "explicit_tail_call": "00b02589",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00b02589 (was: NONE, now: NONE)"
+                }
+              },
+              {
+                "explicit_tail_call": "00b02647",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00b02647 (was: NONE, now: NONE)"
+                }
+              }
+            ],
+            "explicit_tail_end_exclusive": "00b02b25",
+            "explicit_body_sha256": "9c8530f97e4767338706215e81f70802542faa27075d43d264b8c44a300b8e83",
+            "body_before": "Function: FUN_00b02210 at 00b02210\nSignature: undefined FUN_00b02210(void)\nEntry: 00b02210\nBody: 00b02210 - 00b02b24",
+            "decompile_lines_after": 463,
+            "gaps_remaining": 0,
+            "body_after": "Function: FUN_00b02210 at 00b02210\nSignature: undefined FUN_00b02210(void)\nEntry: 00b02210\nBody: 00b02210 - 00b02b24",
+            "stored_body_tail_complete": true
+          }
+        ]
+      },
+      "ao-loader-definitions.json": {
+        "events": [
+          {
+            "recreate": "00b03ec0",
+            "previous": "Function: FUN_00b03ec0 at 00b03ec0\nSignature: undefined FUN_00b03ec0(void)\nEntry: 00b03ec0\nBody: 00b03ec0 - 00b04823",
+            "plate": null
+          },
+          {
+            "endpoint": "delete_function",
+            "body": {
+              "address": "00b03ec0"
+            },
+            "result": {
+              "success": true,
+              "address": "00b03ec0",
+              "deleted_function": "FUN_00b03ec0",
+              "body_size": 2238,
+              "message": "Function 'FUN_00b03ec0' deleted at 00b03ec0"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00b03ec0",
+              "end_address": "00b04824"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00b03ec0",
+              "end_address": "00b04823",
+              "bytes_disassembled": 2404,
+              "message": "Successfully disassembled 2404 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00b03ec0",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00b03ec0",
+              "function_name": "FUN_00b03ec0",
+              "entry_point": "00b03ec0",
+              "body_size": 2401,
+              "message": "Function created successfully at 00b03ec0"
+            }
+          },
+          {
+            "defined": "00b03ec0",
+            "end": "00b04824",
+            "name": null,
+            "after": "Function: FUN_00b03ec0 at 00b03ec0\nSignature: undefined FUN_00b03ec0(void)\nEntry: 00b03ec0\nBody: 00b03ec0 - 00b04823"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "recreate": "00b02fd0",
+            "previous": "Function: FUN_00b02fd0 at 00b02fd0\nSignature: undefined FUN_00b02fd0(void)\nEntry: 00b02fd0\nBody: 00b02fd0 - 00b03894",
+            "plate": null
+          },
+          {
+            "endpoint": "delete_function",
+            "body": {
+              "address": "00b02fd0"
+            },
+            "result": {
+              "success": true,
+              "address": "00b02fd0",
+              "deleted_function": "FUN_00b02fd0",
+              "body_size": 2082,
+              "message": "Function 'FUN_00b02fd0' deleted at 00b02fd0"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00b02fd0",
+              "end_address": "00b03895"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00b02fd0",
+              "end_address": "00b03894",
+              "bytes_disassembled": 2245,
+              "message": "Successfully disassembled 2245 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00b02fd0",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00b02fd0",
+              "function_name": "FUN_00b02fd0",
+              "entry_point": "00b02fd0",
+              "body_size": 2245,
+              "message": "Function created successfully at 00b02fd0"
+            }
+          },
+          {
+            "defined": "00b02fd0",
+            "end": "00b03895",
+            "name": null,
+            "after": "Function: FUN_00b02fd0 at 00b02fd0\nSignature: undefined FUN_00b02fd0(void)\nEntry: 00b02fd0\nBody: 00b02fd0 - 00b03894"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "recreate": "00b02210",
+            "previous": "Function: FUN_00b02210 at 00b02210\nSignature: undefined FUN_00b02210(void)\nEntry: 00b02210\nBody: 00b02210 - 00b02b24",
+            "plate": null
+          },
+          {
+            "endpoint": "delete_function",
+            "body": {
+              "address": "00b02210"
+            },
+            "result": {
+              "success": true,
+              "address": "00b02210",
+              "deleted_function": "FUN_00b02210",
+              "body_size": 2162,
+              "message": "Function 'FUN_00b02210' deleted at 00b02210"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00b02210",
+              "end_address": "00b02b25"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00b02210",
+              "end_address": "00b02b24",
+              "bytes_disassembled": 2325,
+              "message": "Successfully disassembled 2325 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00b02210",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00b02210",
+              "function_name": "FUN_00b02210",
+              "entry_point": "00b02210",
+              "body_size": 2325,
+              "message": "Function created successfully at 00b02210"
+            }
+          },
+          {
+            "defined": "00b02210",
+            "end": "00b02b25",
+            "name": null,
+            "after": "Function: FUN_00b02210 at 00b02210\nSignature: undefined FUN_00b02210(void)\nEntry: 00b02210\nBody: 00b02210 - 00b02b24"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "final_merged_validation_ao": {
+    "tested_commit": "fe3ae2c51c2cd681a975c2e15db7092dc06f97cf",
+    "reviewed_source_commit": "89e23a18ccb60f8ec18cefb50e90ceb532783c65",
+    "build": "local/ao-final-combined-build.log: strict MSVC Win32 and both seeded CTests passed",
+    "all10_reviewed_source_header_hashes_preserved": true,
+    "all54_name_evidence_rows_preserved": true,
+    "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+    "current_library_replays": [
+      {
+        "label": "text",
+        "exit_code": 0,
+        "log": "local\\ao-text-current-replay.log",
+        "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+        "source_sha256": "9cad29f895a90fb0af2863f17e0f5485348770c31b8a5f5f020e91c3eb0da257",
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\text-current.cmd",
+        "executable_sha256": "f1e546aa348f230e99378114963a239de0d3f09202f57a801313d0d910c343c3"
+      },
+      {
+        "label": "parameters",
+        "exit_code": 0,
+        "log": "local\\ao-parameters-current-replay.log",
+        "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+        "source_sha256": "2c6bf74c361c624a9779945487b3e76f84aade6e2184c0b4319d5783d173aa6f",
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\parameters-current.cmd",
+        "executable_sha256": "15f890b0ba9179e5006f816069b0bfaf856354537cb92b02d7af5a36ad81604b"
+      },
+      {
+        "label": "definition-loading",
+        "exit_code": 0,
+        "log": "local\\ao-definition-loading-current-replay.log",
+        "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+        "source_sha256": "01fe7404a896ff634fd05e114351533b0146a66bcdd6025808217935a11809b6",
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\definition-loading-current.cmd",
+        "executable_sha256": "bbc30283999b97b67eb05cb8d53efee8b17bf737d8916f03b62bade2702cb0f5"
+      },
+      {
+        "label": "state",
+        "exit_code": 0,
+        "log": "local\\ao-state-current-replay.log",
+        "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+        "source_sha256": "7c50ba3fb0915561548435540ea4f1b2274cddd75018d471bb3ca3ffe5858f71",
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\state-current.cmd",
+        "executable_sha256": "35ab09a74173ac78d5b4a006cea89e525a1183dbc03be3f2e375b0d4a36d6394"
+      }
+    ],
+    "new_functions": 45,
+    "revised_spawn_functions": 1,
+    "native_signatures": 46,
+    "analyzed_bodies": 8,
+    "direct_call_rows": 484,
+    "failed_call_rows": 0,
+    "original_fh3_and_gameplay": false
+  },
+  "integration_ap_wiring": {
+    "suffix": "concrete AF44C0 using owners.strings",
+    "particle_factory": "concrete B00CE0 using particle_types->base.owners; identity checked before selected Particle entry",
+    "removed_callbacks": [
+      "suffix_00af44c0",
+      "particle_factory_00b00ce0"
+    ],
+    "current_application_boundary": "five actual child parser08 targets",
+    "historical_sections": "AO validation remains historical; AP current-library validation is recorded separately"
+  },
+  "integration_ap": {
+    "native_signatures_readback_verified": true,
+    "names_and_comments_saved": true,
+    "old_prototypes": [
+      "00b03ec0 BSP_ConeEmissionDefinition_Load  bool __thiscall BSP_ConeEmissionDefinition_Load(void * this, void * text)  body 00b03ec0 - 00b04823",
+      "00b02fd0 BSP_SphereEmissionDefinition_Load  bool __thiscall BSP_SphereEmissionDefinition_Load(void * this, void * text)  body 00b02fd0 - 00b03894",
+      "00b02210 BSP_SmartAreaEmissionDefinition_Load  bool __thiscall BSP_SmartAreaEmissionDefinition_Load(void * this, void * text)  body 00b02210 - 00b02b24"
+    ],
+    "current_prototypes": [
+      "00b03ec0 BSP_ConeEmissionDefinition_Load  bool __thiscall BSP_ConeEmissionDefinition_Load(void * this, void * text)  body 00b03ec0 - 00b04823",
+      "00b02fd0 BSP_SphereEmissionDefinition_Load  bool __thiscall BSP_SphereEmissionDefinition_Load(void * this, void * text)  body 00b02fd0 - 00b03894",
+      "00b02210 BSP_SmartAreaEmissionDefinition_Load  bool __thiscall BSP_SmartAreaEmissionDefinition_Load(void * this, void * text)  body 00b02210 - 00b02b24"
+    ],
+    "previous_comments": [
+      {
+        "address": "00b03ec0",
+        "annotation": {
+          "address": "00b03ec0",
+          "function_name": "BSP_ConeEmissionDefinition_Load",
+          "comment": "[BSP reconstruction 00b03ec0]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+        }
+      },
+      {
+        "address": "00b02fd0",
+        "annotation": {
+          "address": "00b02fd0",
+          "function_name": "BSP_SphereEmissionDefinition_Load",
+          "comment": "[BSP reconstruction 00b02fd0]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+        }
+      },
+      {
+        "address": "00b02210",
+        "annotation": {
+          "address": "00b02210",
+          "function_name": "BSP_SmartAreaEmissionDefinition_Load",
+          "comment": "[BSP reconstruction 00b02210]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+        }
+      }
+    ],
+    "current_comments": [
+      {
+        "address": "00b03ec0",
+        "annotation": {
+          "address": "00b03ec0",
+          "function_name": "BSP_ConeEmissionDefinition_Load",
+          "comment": "[BSP reconstruction 00b03ec0]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.\n\n[BSP reconstruction 00b03ec0] update\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated. | Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated. AP integration: suffix AF44C0 and particle factory B00CE0 now call concrete implementations in the same owner/string/parameter domain; actual current child parser08 remains the required application boundary."
+        }
+      },
+      {
+        "address": "00b02fd0",
+        "annotation": {
+          "address": "00b02fd0",
+          "function_name": "BSP_SphereEmissionDefinition_Load",
+          "comment": "[BSP reconstruction 00b02fd0]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.\n\n[BSP reconstruction 00b02fd0] update\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated. | Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated. AP integration: suffix AF44C0 and particle factory B00CE0 now call concrete implementations in the same owner/string/parameter domain; actual current child parser08 remains the required application boundary."
+        }
+      },
+      {
+        "address": "00b02210",
+        "annotation": {
+          "address": "00b02210",
+          "function_name": "BSP_SmartAreaEmissionDefinition_Load",
+          "comment": "[BSP reconstruction 00b02210]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.\n\n[BSP reconstruction 00b02210] update\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated. | Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated. AP integration: suffix AF44C0 and particle factory B00CE0 now call concrete implementations in the same owner/string/parameter domain; actual current child parser08 remains the required application boundary."
+        }
+      }
+    ],
+    "direct_call_check": "local/ap-final-call-checks.log: all5 reports passed",
+    "combined_build_pending": false,
+    "combined_library_sha256": "f5ac82c0edf8718cd73db313bcc1d716092728bc19d0b28601da3050b881538c",
+    "current_library_fixture": {
+      "label": "loading",
+      "exit_code": 0,
+      "log": "local\\ap-loading-current-replay.log",
+      "library_sha256": "f5ac82c0edf8718cd73db313bcc1d716092728bc19d0b28601da3050b881538c",
+      "probe_input_hashes": {
+        "C:\\Users\\sqz269\\bsp-ap-loading\\probe.cpp": "522ba8dc90496cd4ba43a03db8526d033b86927c46e24dd83ff493cdeb5e62e8",
+        "C:\\Users\\sqz269\\bsp-ap-loading\\probe_data.hpp": "320f96f8e2dd70d0d50b5dc3310b45ac9a13a799b4f328053c717e9459e0a220"
+      },
+      "runner": "C:\\Users\\sqz269\\bsp-orch3-ap\\loading-current.cmd",
+      "executable_sha256": "970ba9ac42cda871e6e54318389a8af34bfcea463209d707e3ac94f4264b8c3c"
+    }
+  },
+  "final_merged_validation_ap": {
+    "tested_commit": "b6b68f13520e848d3f111393c19c9bba17192866",
+    "reviewed_source_commit": "c7a911003baa0d2933c41611696cfa809350c065",
+    "build": "local/ap-final-combined-build.log: strict MSVC Win32 and both seeded CTests passed",
+    "all10_reviewed_source_header_hashes_preserved": true,
+    "all26_name_evidence_rows_preserved": true,
+    "library_sha256": "f5ac82c0edf8718cd73db313bcc1d716092728bc19d0b28601da3050b881538c",
+    "current_library_replays": [
+      {
+        "label": "suffix",
+        "exit_code": 0,
+        "log": "local\\ap-suffix-current-replay.log",
+        "library_sha256": "f5ac82c0edf8718cd73db313bcc1d716092728bc19d0b28601da3050b881538c",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-ap-suffix\\probe.cpp": "04f393444c6bb18bb5f343145b839c3792c32c3f398c22c1cb636479eaa8de57",
+          "C:\\Users\\sqz269\\bsp-ap-suffix\\native_bytes.hpp": "1738d180e41a8bf4f4fee9bc71040bdc19c67b1fd6ad1844571a7c27688325c9",
+          "C:\\Users\\sqz269\\bsp-ap-suffix\\relocations.hpp": "d73415e87f4f87a215259d511099a866947ad03ba122b7bc153c9bd3ccfe0dc0"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ap\\suffix-current.cmd",
+        "executable_sha256": "f6dd8d0990c49144d821594f1a98cd94ebd5f8271856fbfc8829001eec52a04f"
+      },
+      {
+        "label": "base",
+        "exit_code": 0,
+        "log": "local\\ap-base-current-replay.log",
+        "library_sha256": "f5ac82c0edf8718cd73db313bcc1d716092728bc19d0b28601da3050b881538c",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-ap-base\\probe.cpp": "7acca887865dc22339456236336d0a720c3b99d71dcf4cf8ec65165ce6c17bfe",
+          "C:\\Users\\sqz269\\bsp-ap-base\\native_bytes.hpp": "e70dabafabbb48561d5155a0d102eb269bd8c8148b1852d91567f401a0c356b4"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ap\\base-current.cmd",
+        "executable_sha256": "f0b956b87f5594f8aadb95a7c17099e1452b0d8099777c48fa7b98d6742610c1"
+      },
+      {
+        "label": "state",
+        "exit_code": 0,
+        "log": "local\\ap-state-current-replay.log",
+        "library_sha256": "f5ac82c0edf8718cd73db313bcc1d716092728bc19d0b28601da3050b881538c",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-ap-state\\probe.cpp": "04cd9379b52aa9c9ef0b8da76612557cf91cd9d69804ff22ea53846a7507608b",
+          "C:\\Users\\sqz269\\bsp-ap-state\\original_bytes.hpp": "9d350efa3b9ad1c3d94af79e3bdca999b2f0641a0345e58fa9ab54a9016eb674"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ap\\state-current.cmd",
+        "executable_sha256": "4814104c8bb4a5c7e99b460ff7e40e896b6ef22c18ec0a09f74f1f800f781674"
+      },
+      {
+        "label": "factory",
+        "exit_code": 0,
+        "log": "local\\ap-factory-current-replay.log",
+        "library_sha256": "f5ac82c0edf8718cd73db313bcc1d716092728bc19d0b28601da3050b881538c",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-ap-factory\\probe.cpp": "10762cfddd5a492736a072262509a6503c088edcdb38e24eb1d4f01223924944",
+          "C:\\Users\\sqz269\\bsp-ap-factory\\native_bytes.hpp": "00be5632e62efbb7d6cbd1b2f828f1c89de94786910a0eae2d6f2b429d7bb742"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ap\\factory-current.cmd",
+        "executable_sha256": "c5c61b5ef886cb56c60b76c44bb835058a9eae385c6a23acd5295d47f027b967"
+      },
+      {
+        "label": "loading",
+        "exit_code": 0,
+        "log": "local\\ap-loading-current-replay.log",
+        "library_sha256": "f5ac82c0edf8718cd73db313bcc1d716092728bc19d0b28601da3050b881538c",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-ap-loading\\probe.cpp": "522ba8dc90496cd4ba43a03db8526d033b86927c46e24dd83ff493cdeb5e62e8",
+          "C:\\Users\\sqz269\\bsp-ap-loading\\probe_data.hpp": "320f96f8e2dd70d0d50b5dc3310b45ac9a13a799b4f328053c717e9459e0a220"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ap\\loading-current.cmd",
+        "executable_sha256": "970ba9ac42cda871e6e54318389a8af34bfcea463209d707e3ac94f4264b8c3c"
+      }
+    ],
+    "new_functions": 17,
+    "revised_loader_functions": 3,
+    "native_signatures": 20,
+    "analyzed_bodies": 6,
+    "direct_call_rows": 495,
+    "failed_call_rows": 0,
+    "original_fh3_and_gameplay": false,
+    "remaining_application_boundaries": [
+      "five actual particle text parsers",
+      "Sprite/Object/Tracer state initializers and their real resource dependencies"
+    ]
+  }
+}

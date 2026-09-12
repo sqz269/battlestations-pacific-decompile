@@ -339,3 +339,15 @@ are decoded from raw bytes but are already listed in `docs/DIRECTOR_TARGET_GATE.
 | `docs/MISSION_EVENTS_UPDATE.md` | `+104h`, `+105h`: "two bytes cleared by each channel dispatch" on the reporter | in `00984300` the clears at `00984380`/`00984386` are on the reporter (`EBP = ECX`), but the set at `0098473F` is on the channel: `EBP` is overwritten with `00980150`'s return at `009843CE` and restored only at `009847AF`, and the two undisassembled gaps at `0098472E` and `0098478D` contain no restore |
 | `docs/COMMAND_EXECUTION.md` | `00984300`, `00984800`, `0071F3B0`, `007788D0`, `005457C0` listed as unread | read; sections 3 and 5 |
 | `docs/CRUISE_COMMAND.md` | the `5Dh` senders are `0071E390`, `0071C7A0`, `0071C7E0`, `0071C770` | those may be further builders, but the three senders on the completion path are `0071C730` (from `0071D810` at `0071D852` and `0071D9E0`), `0071D880` and `0071D900`, and `0071E550` reaches `0071D900` at `0071E5AA`. Not a contradiction, an addition: the list was not exhaustive |
+
+## Correction from docs/GAMEPLAY_LOOSE_ENDS_2.md (packet cc2_gameplay_loose_ends_2)
+
+- **Was:** open question: which entity director+34h is, and why the two finished producers disagree with 0071F600
+  **Is:** +34h is the base constructor's only stack argument, the parent object the controller attaches to; the owning unit is a separate field per subclass (+24Ch on the weapon director, +224h on the FUN_0084D810 class), so both producers are correct about different fields
+  **Evidence:** 0072019E MOV EDI,[ESP+28h] and 00720219 MOV [ESI+34h],EDI in BSP_CommandControllerBase_Construct; 0084D839 LEA EAX,[EDI+310h] / 0084D843 PUSH EAX / 0084D844 CALL 00720180 and 0084D856 MOV [ESI+224h],EDI; 008363F6 MOV EAX,[ESP+14h] / 008363FE PUSH EAX / 00836403 CALL 00720180
+- **Was:** open question: whether anything reads the previous-command record at +16Ch. A targeted scan was not run
+  **Is:** one reader, BSP_CommandControllerBase_CopyStateFrom, and it is a wholesale state clone rather than a behavioural read
+  **Evidence:** 0072046B MOV EDX,[EDI+16Ch] with EDI = [ESP+44h] (the source) and EBP = ECX (the destination); 007204AB-007204D5 copy +178h, +17Ch, +180h and +184h; the only rel32 caller is 00836689 in BSP_WeaponDirector_CopyStateFrom
+- **Was:** open question: 0084E010's owner and its vtable slot
+  **Is:** slot +7Ch of the table based at 00D0BD98 that FUN_0084D810 installs at [this]; the owner keeps its unit at +224h and is built from 007F2070 and 007F5000
+  **Evidence:** the only reference to 0084E010 anywhere in the image is the dword at 00D0BE14, which lies in the code-pointer run starting at 00D0BD98; 0084D849 MOV dword ptr [ESI],0D0BD98h

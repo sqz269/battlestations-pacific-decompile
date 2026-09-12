@@ -16,6 +16,9 @@ struct NativePointLightPopulationRuntime {
     const CameraAxesCrtAccess& crt;
     const float* (*sphere_virtual48)(NativePointLightPopulationRuntime&,
         SceneNodeAttachment&);
+    // Borrow live D7A280 for dynamic Group merges only. Cached/static/empty
+    // and single-seed Group paths do not dereference this optional binding.
+    const volatile double* half_00d7a280{};
 };
 
 // Actual B6E8C0 storage adapter; reads local+08 and writes SAME cached+13C.
@@ -23,8 +26,9 @@ struct NativePointLightPopulationRuntime {
 // numerical boundary. No second live ModelBounds object or native sphere.
 const float* native_model_population_sphere_00b6e8c0(NativeNodeBinding&);
 // Concrete current-profile dispatch for Model D62DE8 and Group D634F8.
-// Group B8F100 is PARTIAL: cached branch or byte175==0 static sphere branch;
-// dynamic cache miss B8F118..B8F12E (B8EBE0 aggregation) is rejected explicitly.
+// Group B8F100 includes dynamic cache misses through the SAME actual Group
+// owner/attachment array. Static affine paths retain the kernel domain above;
+// dynamic merging requires actual current child48, CRT and live D7A280.
 // Other current profiles require their actual recovered virtual48 service.
 const float* native_point_light_supported_world_sphere(
     NativePointLightPopulationRuntime&, SceneNodeAttachment&);
