@@ -132,7 +132,7 @@ struct RepairTaskState {
 };
 
 // The five rate constants the steps read out of the settings singleton.
-struct RepairSettings {
+struct DamageControlSettings {
     float hull_repair_scale = 0.0f;       // +3B4h
     float subobject_repair_scale = 0.0f;  // +3B8h
     float fire_priority_divisor = 1.0f;   // +3C8h
@@ -159,7 +159,7 @@ float repair_modifier_factor(bool modifier_manager_present,
 
 // 0093C770. Returns the health to add this tick; the caller clamps to maximum.
 float hull_repair_amount_0093c770(const RepairTaskState& task,
-                                  const RepairSettings& settings,
+                                  const DamageControlSettings& settings,
                                   float unit_max_health,
                                   float modifier,
                                   float dt);
@@ -167,7 +167,7 @@ float hull_repair_amount_0093c770(const RepairTaskState& task,
 // 0093C860, one child. The child list walk and its three kind tests stay with
 // the host; this is only the per-child arithmetic.
 float subobject_repair_amount_0093c860(const RepairTaskState& task,
-                                       const RepairSettings& settings,
+                                       const DamageControlSettings& settings,
                                        float child_max_health,
                                        float modifier,
                                        float dt);
@@ -175,7 +175,7 @@ float subobject_repair_amount_0093c860(const RepairTaskState& task,
 // 0093C520. The per-tick decrement applied to every active failure's remaining
 // seconds; zero when failure repair is disabled.
 float failure_repair_step_0093c520(const RepairTaskState& task,
-                                   const RepairSettings& settings,
+                                   const DamageControlSettings& settings,
                                    float modifier,
                                    float dt);
 
@@ -186,11 +186,11 @@ struct TimerDamageResult {
     bool expired_this_tick = false;
 };
 TimerDamageResult fire_damage_step_0093c120(const RepairTaskState& task,
-                                            const RepairSettings& settings,
+                                            const DamageControlSettings& settings,
                                             float modifier,
                                             float dt);
 TimerDamageResult water_damage_step_0093c210(const RepairTaskState& task,
-                                             const RepairSettings& settings,
+                                             const DamageControlSettings& settings,
                                              float modifier,
                                              float dt);
 
@@ -202,7 +202,7 @@ bool repair_completion_ready_0093ca20(const RepairTaskState& task);
 // on the component descriptor falls back to the settings pair.
 float failure_chance_0093bed0(float component_numerator,
                               float component_denominator,
-                              const RepairSettings& settings,
+                              const DamageControlSettings& settings,
                               float damage);
 
 // 008ADA70. unit+114Ch = clamp(unit+114Ch + delay, 0, 1e10).
@@ -240,7 +240,7 @@ struct UnitFireFloodingHost {
     virtual ~UnitFireFloodingHost() = default;
 
     // The shared preamble. 00424C40 at 0093C553/0093C12C/0093C21C.
-    virtual const RepairSettings& game_settings() = 0;
+    virtual const DamageControlSettings& game_settings() = 0;
     // 008E6430 at 0093C592/0093C16A/0093C25A, arguments (3, unit).
     virtual bool modifier_manager_present() = 0;   // 00F88C30 non-null
     virtual bool modifier_manager_enabled() = 0;   // 00E0C978 and [00F88C30+ACh]

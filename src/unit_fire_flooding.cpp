@@ -44,7 +44,7 @@ float repair_modifier_factor(bool modifier_manager_present,
 }
 
 float hull_repair_amount_0093c770(const RepairTaskState& task,
-                                  const RepairSettings& settings,
+                                  const DamageControlSettings& settings,
                                   float unit_max_health,
                                   float modifier,
                                   float dt) {
@@ -58,7 +58,7 @@ float hull_repair_amount_0093c770(const RepairTaskState& task,
 }
 
 float subobject_repair_amount_0093c860(const RepairTaskState& task,
-                                       const RepairSettings& settings,
+                                       const DamageControlSettings& settings,
                                        float child_max_health,
                                        float modifier,
                                        float dt) {
@@ -70,7 +70,7 @@ float subobject_repair_amount_0093c860(const RepairTaskState& task,
 }
 
 float failure_repair_step_0093c520(const RepairTaskState& task,
-                                   const RepairSettings& settings,
+                                   const DamageControlSettings& settings,
                                    float modifier,
                                    float dt) {
     float base = 0.0f;
@@ -82,7 +82,7 @@ float failure_repair_step_0093c520(const RepairTaskState& task,
 }
 
 TimerDamageResult fire_damage_step_0093c120(const RepairTaskState& task,
-                                            const RepairSettings& settings,
+                                            const DamageControlSettings& settings,
                                             float modifier,
                                             float dt) {
     const float base = (task.priority == RepairPriority::kFire) ? settings.fire_priority_divisor
@@ -91,7 +91,7 @@ TimerDamageResult fire_damage_step_0093c120(const RepairTaskState& task,
 }
 
 TimerDamageResult water_damage_step_0093c210(const RepairTaskState& task,
-                                             const RepairSettings& settings,
+                                             const DamageControlSettings& settings,
                                              float modifier,
                                              float dt) {
     const float base = (task.priority == RepairPriority::kFlooding)
@@ -109,7 +109,7 @@ bool repair_completion_ready_0093ca20(const RepairTaskState& task) {
 
 float failure_chance_0093bed0(float component_numerator,
                               float component_denominator,
-                              const RepairSettings& settings,
+                              const DamageControlSettings& settings,
                               float damage) {
     if (component_numerator < 0.0f || component_denominator < 0.0f) {
         return (settings.failure_chance_numerator * damage) /
@@ -243,7 +243,7 @@ int repair_category_index_0081ad40(const std::string& name) {
 
 void repair_failures_0093c520(UnitFireFloodingHost& host, std::uint32_t unit,
                               RepairTaskState& task, float dt) {
-    const RepairSettings& settings = host.game_settings();
+    const DamageControlSettings& settings = host.game_settings();
     const float modifier = repair_modifier_factor(
         host.modifier_manager_present(), host.modifier_manager_enabled(),
         host.modifier_manager_present() ? host.gameplay_modifier_product(3, unit) : 1.0f);
@@ -269,7 +269,7 @@ void repair_failures_0093c520(UnitFireFloodingHost& host, std::uint32_t unit,
 
 void repair_task_update_0093ca20(UnitFireFloodingHost& host, std::uint32_t unit,
                                  RepairTaskState& task, float dt) {
-    const RepairSettings& settings = host.game_settings();
+    const DamageControlSettings& settings = host.game_settings();
     const float modifier = repair_modifier_factor(
         host.modifier_manager_present(), host.modifier_manager_enabled(),
         host.modifier_manager_present() ? host.gameplay_modifier_product(3, unit) : 1.0f);
@@ -331,7 +331,7 @@ void roll_component_failure_0093bed0(UnitFireFloodingHost& host, std::uint32_t u
     if (!host.resolve_component(owner, segment, &numerator, &denominator)) {
         return;
     }
-    const RepairSettings& settings = host.game_settings();
+    const DamageControlSettings& settings = host.game_settings();
     const float chance = failure_chance_0093bed0(numerator, denominator, settings, damage);
     if (host.random_unit_float() > chance) {
         return;
