@@ -1,0 +1,119 @@
+{
+  "reason": "Native registers, stack arguments and RET cleanup verified in original listings. unused EDX represents an unconsumed register, not an original argument; source contexts are excluded. Prior names and signatures are preserved in each receipt.",
+  "entries": [
+    {
+      "address": "00bd30e0",
+      "proposed": "void __fastcall BSP_RefCounted_InvokeDeletingDestructor(void* self)",
+      "before": "Function: BSP_RefCounted_InvokeDeletingDestructor at 00bd30e0\nSignature: undefined BSP_RefCounted_InvokeDeletingDestructor(void)\nEntry: 00bd30e0\nBody: 00bd30e0 - 00bd30ed",
+      "apply": "Successfully set prototype for function at 00bd30e0 with __fastcall calling convention",
+      "after": "Function: BSP_RefCounted_InvokeDeletingDestructor at 00bd30e0\nSignature: void __fastcall BSP_RefCounted_InvokeDeletingDestructor(void * self)\nEntry: 00bd30e0\nBody: 00bd30e0 - 00bd30ed",
+      "readback_verified": true
+    },
+    {
+      "address": "00bd30f0",
+      "proposed": "void __fastcall BSP_RefCounted_DestroyBase(void* self)",
+      "before": "Function: BSP_RefCounted_DestroyBase at 00bd30f0\nSignature: undefined BSP_RefCounted_DestroyBase(void)\nEntry: 00bd30f0\nBody: 00bd30f0 - 00bd30f6",
+      "apply": "Successfully set prototype for function at 00bd30f0 with __fastcall calling convention",
+      "after": "Function: BSP_RefCounted_DestroyBase at 00bd30f0\nSignature: void __fastcall BSP_RefCounted_DestroyBase(void * self)\nEntry: 00bd30f0\nBody: 00bd30f0 - 00bd30f6",
+      "readback_verified": true
+    },
+    {
+      "address": "00a93e70",
+      "proposed": "void __fastcall CG_adjustor_thunk_00a93e70(void* self)",
+      "before": "Function: CG_adjustor_thunk_00a93e70 at 00a93e70\nSignature: undefined CG_adjustor_thunk_00a93e70(void)\nEntry: 00a93e70\nBody: 00a93e70 - 00a93e7a",
+      "apply": "Successfully set prototype for function at 00a93e70 with __fastcall calling convention",
+      "after": "Function: CG_adjustor_thunk_00a93e70 at 00a93e70\nSignature: void __fastcall CG_adjustor_thunk_00a93e70(void * self)\nEntry: 00a93e70\nBody: 00a93e70 - 00a93e7a",
+      "readback_verified": true
+    },
+    {
+      "address": "00a904e0",
+      "proposed": "void __fastcall BSP_InputDeviceTable_AttachDevice(void* self, void* unused_edx, uint slot, void* device)",
+      "before": "Function: BSP_InputDeviceTable_AttachDevice at 00a904e0\nSignature: undefined BSP_InputDeviceTable_AttachDevice(void)\nEntry: 00a904e0\nBody: 00a904e0 - 00a90523",
+      "apply": "Successfully set prototype for function at 00a904e0 with __fastcall calling convention",
+      "after": "Function: BSP_InputDeviceTable_AttachDevice at 00a904e0\nSignature: void __fastcall BSP_InputDeviceTable_AttachDevice(void * self, void * unused_edx, uint slot, void * device)\nEntry: 00a904e0\nBody: 00a904e0 - 00a90523",
+      "readback_verified": true
+    },
+    {
+      "address": "00a98030",
+      "proposed": "int __stdcall BSP_InputDeviceManager_OnDeviceEnumerated(void* backend, void* instance)",
+      "before": "Function: BSP_InputDeviceManager_OnDeviceEnumerated at 00a98030\nSignature: undefined BSP_InputDeviceManager_OnDeviceEnumerated(void)\nEntry: 00a98030\nBody: 00a98030 - 00a982ac",
+      "apply": "Successfully set prototype for function at 00a98030 with __stdcall calling convention",
+      "after": "Function: BSP_InputDeviceManager_OnDeviceEnumerated at 00a98030\nSignature: int __stdcall BSP_InputDeviceManager_OnDeviceEnumerated(void * backend, void * instance)\nEntry: 00a98030\nBody: 00a98030 - 00a982ac",
+      "readback_verified": true
+    },
+    {
+      "address": "00a982b0",
+      "proposed": "int __stdcall BSP_InputDeviceManager_EnumDevicesCallbackA(void* instance, void* backend)",
+      "before": "Function: BSP_InputDeviceManager_EnumDevicesCallbackA at 00a982b0\nSignature: undefined BSP_InputDeviceManager_EnumDevicesCallbackA(void)\nEntry: 00a982b0\nBody: 00a982b0 - 00a982c1",
+      "apply": "Successfully set prototype for function at 00a982b0 with __stdcall calling convention",
+      "after": "Function: BSP_InputDeviceManager_EnumDevicesCallbackA at 00a982b0\nSignature: int __stdcall BSP_InputDeviceManager_EnumDevicesCallbackA(void * instance, void * backend)\nEntry: 00a982b0\nBody: 00a982b0 - 00a982c1",
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bd30e0",
+        "prototype": "void __fastcall BSP_RefCounted_InvokeDeletingDestructor(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bd30e0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bd30f0",
+        "prototype": "void __fastcall BSP_RefCounted_DestroyBase(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bd30f0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a93e70",
+        "prototype": "void __fastcall CG_adjustor_thunk_00a93e70(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a93e70 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a904e0",
+        "prototype": "void __fastcall BSP_InputDeviceTable_AttachDevice(void* self, void* unused_edx, uint slot, void* device)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a904e0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a98030",
+        "prototype": "int __stdcall BSP_InputDeviceManager_OnDeviceEnumerated(void* backend, void* instance)",
+        "calling_convention": "__stdcall"
+      },
+      "result": "Successfully set prototype for function at 00a98030 with __stdcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a982b0",
+        "prototype": "int __stdcall BSP_InputDeviceManager_EnumDevicesCallbackA(void* instance, void* backend)",
+        "calling_convention": "__stdcall"
+      },
+      "result": "Successfully set prototype for function at 00a982b0 with __stdcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

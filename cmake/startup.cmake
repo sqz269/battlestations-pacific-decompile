@@ -659,3 +659,4 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_cor
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/main_menu_layout_native.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_device_sdk.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_ref_counted.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_enumeration.cpp)
