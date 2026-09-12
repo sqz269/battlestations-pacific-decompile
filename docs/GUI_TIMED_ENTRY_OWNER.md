@@ -63,3 +63,16 @@ batch report. A focused local fixture uses actual canonical Group/Model owners
 and the real source allocator, exercising delayed alpha, inactive Section gate,
 flags0 storage, negative-capacity repair and one-time retirement. It is separate
 from native-byte execution, rendered UI and gameplay validation.
+
+## 2026-09-12 timed and clip ownership integration
+
+The combined library fixture now verifies producer indices, actual alpha dispatch,
+countdown/deletion, the non-Section gate, flags0 storage, negative-capacity repair
+and one-time header retirement. Active allocation/producer calls also block
+owner destruction; the currently executing entry cannot be deleted by its widget
+callback. A retained flags0 entry requires D5D204 before later final free.
+AD3A60..AD3A7E is now defined from matching disk/Ghidra bytes and proves that
+base deleting profile. These are host ownership guards, not native failure or
+arbitrary reentrancy parity. Per-owner preflights do not establish atomic tree
+retirement or protect every ancestor's borrowed continuation.
+See reports/orch5_timed_clip_batch.json for combined build and source-fixture evidence.

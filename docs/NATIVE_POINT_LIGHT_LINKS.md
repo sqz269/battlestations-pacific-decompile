@@ -93,3 +93,13 @@ with MSB3191 access denied creating the Lua/zlib tlog directories under this
 worktree's build/win32. The integrator registers the new source and runs the
 combined build. No CMake edit, broad test suite, native ABI replacement,
 native-byte differential result, gameplay or visual claim is included.
+
+## 2026-09-12 timed and clip ownership integration
+
+The combined Win32 library passes the physical-array fixture using raw
+identities, duplicate clone entries, swap-last removal, unlink/free, foreign
+growth rejection and +1E0 canaries. The Ghidra B7C770 body has been repaired
+through RET B7C7DF, including its B7C7CA base Light destructor call; this does
+not expand the C++ implementation beyond the backlink phase. Before-values and
+repair events are retained in reports/orch5_point_light_flow_repair.json and
+reports/orch5_point_light_body_definition.json. See the batch report for hashes.

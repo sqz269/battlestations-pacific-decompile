@@ -1,0 +1,66 @@
+{
+ "events": [
+  {
+   "recreate": "00b7c770",
+   "previous": "Function: FUN_00b7c770 at 00b7c770\nSignature: undefined FUN_00b7c770(void)\nEntry: 00b7c770\nBody: 00b7c770 - 00b7c7bc",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00b7c770"
+   },
+   "result": {
+    "success": true,
+    "address": "00b7c770",
+    "deleted_function": "FUN_00b7c770",
+    "body_size": 77,
+    "message": "Function 'FUN_00b7c770' deleted at 00b7c770"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b7c770",
+    "end_address": "00b7c7e0"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b7c770",
+    "end_address": "00b7c7df",
+    "bytes_disassembled": 112,
+    "message": "Successfully disassembled 112 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b7c770",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00b7c770",
+    "function_name": "FUN_00b7c770",
+    "entry_point": "00b7c770",
+    "body_size": 112,
+    "message": "Function created successfully at 00b7c770"
+   }
+  },
+  {
+   "defined": "00b7c770",
+   "end": "00b7c7e0",
+   "name": null,
+   "after": "Function: FUN_00b7c770 at 00b7c770\nSignature: undefined FUN_00b7c770(void)\nEntry: 00b7c770\nBody: 00b7c770 - 00b7c7df"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

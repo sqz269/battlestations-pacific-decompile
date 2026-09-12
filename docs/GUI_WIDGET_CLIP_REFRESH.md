@@ -133,3 +133,14 @@ No new tests were added. This worker does not edit owner integration or CMake;
 until those integrator changes land the executable cannot reach this module.
 No focused execution, native ABI differential or game/render validation is
 claimed, and no explanation about a particular game frame is inferred.
+
+## 2026-09-12 timed and clip ownership integration
+
+The parent registers this source in CMake and connects base current70 for the
+five established non-Text profiles. Both begin and resume require the same
+configured service storage and runtime. Active, suspended or terminally failed
+operations block this owner's destruction. The original stable membership and
+surviving-owner constraints still apply; these guards are not a whole-tree or
+ancestor-borrow preflight. The combined Win32 build passes both existing tests.
+No focused clip-operation execution or game/render proof is claimed. See
+reports/orch5_timed_clip_batch.json.

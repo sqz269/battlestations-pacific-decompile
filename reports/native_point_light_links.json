@@ -215,5 +215,12 @@
     "routine": "00b7c770",
     "live_body_end": "00b7c7bc",
     "disk_continuation": "B7C7BD ADD ESP,4; B7C7C0 MOV ECX,ESI; B7C7CA CALL B7C5B0 outside current Ghidra body; no Ghidra mutation or full destructor claim"
+  },
+  "parent_integration": {
+    "report": "reports/orch5_timed_clip_batch.json",
+    "combined_build": "Release MSVC Win32 build passed; 2/2 existing tests",
+    "canonical_runtime_reachable_in_game": false,
+    "abi_compatible": false,
+    "game_validated": false
   }
 }

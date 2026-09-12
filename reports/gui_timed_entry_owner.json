@@ -38,6 +38,13 @@
       "name": "GuiTimedEntryOwner::destroy_entries_00aa9730_fragment",
       "end_inclusive": "00aa9950",
       "coverage": "partial AA97F6..AA9950 only, live drain and backingretirement; negativecount outside backing domain"
+    },
+    {
+      "address": "00ad3a60",
+      "name": "GuiTimedEntryOwner::delete_entry",
+      "coverage": "base scalar delete reset and bit0 free within proven allocation ownership",
+      "end_inclusive": "00ad3a7e",
+      "original_abi": "ECX entry; flags stack; EAX entry; RET4"
     }
   ],
   "host_steps": [
@@ -148,12 +155,25 @@
       "native": "00bf6989",
       "function": "00aa9730",
       "evidence": "count0 before finalfree; backing andcapacity intentionally remain"
+    },
+    {
+      "address": "00ad3a71",
+      "native": "00bf65ac",
+      "function": "00ad3a60",
+      "binding": "base scalar delete flags bit0 free; reset D5D204 before branch; EAX original allocation RET4"
     }
   ],
   "header": "same GuiWidgetBaseExtraFields.pointers_88_90 words via DWORD memcpy",
   "allocation": "existing singleton_lifetime_allocate/free, only newly allocated provenance-tracked backing and14h entries",
-  "validation": "strict Win32 TU compilation passed; combined build and focused actual-owner fixture pending batch",
+  "validation": "Combined Release MSVC Win32 build and both existing tests passed; focused canonical owner/alpha/lifetime fixture passed against bsp_core.lib. See reports/orch5_timed_clip_batch.json.",
   "abi_compatible": false,
   "game_validated": false,
-  "new_permanent_tests": 0
+  "new_permanent_tests": 0,
+  "parent_integration": {
+    "report": "reports/orch5_timed_clip_batch.json",
+    "combined_build": "Release MSVC Win32 build passed; 2/2 existing tests",
+    "canonical_runtime_reachable_in_game": false,
+    "abi_compatible": false,
+    "game_validated": false
+  }
 }

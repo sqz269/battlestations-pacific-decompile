@@ -149,3 +149,14 @@ clone creation is not reachable in the rebuilt executable, so no runtime,
 native-byte differential or gameplay/visual claim is made. The parent handles
 combined build and integration. These are new C++ interfaces, not native ABI
 entry replacements.
+
+## 2026-09-12 timed and clip ownership integration
+
+Positive point-light lists no longer return the previous owner-required boundary
+when supplied with actual live light bindings and proven backing. The source
+array holds raw light identities; each light's actual +1E0 descriptor holds raw
+node identities. Clone copying uses the same physical lists and preserves live
+count/reload and captured-source ordering. Five actual node destruction adapters
+remove backlinks through this runtime. Full PointLight construction/type/pool
+ownership and other Model clone branches remain external. See
+NATIVE_POINT_LIGHT_LINKS.md and reports/orch5_timed_clip_batch.json.

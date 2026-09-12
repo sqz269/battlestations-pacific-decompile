@@ -20,6 +20,19 @@ public:
     ~Busy() { flag_ = false; }
 private: bool& flag_;
 };
+class AllocationCall {
+public:
+    explicit AllocationCall(std::size_t& count) noexcept : count_(count) { ++count_; }
+    ~AllocationCall() { --count_; }
+private: std::size_t& count_;
+};
+class BorrowedEntry {
+public:
+    BorrowedEntry(GuiTimedEntryStorage*& field, GuiTimedEntryStorage* entry) noexcept
+        : field_(field) { field_ = entry; }
+    ~BorrowedEntry() { field_ = nullptr; }
+private: GuiTimedEntryStorage*& field_;
+};
 float float_argument(float source) noexcept {
     float result;
     __asm {
@@ -36,7 +49,7 @@ GuiTimedEntryOwner::GuiTimedEntryOwner(GuiWidgetOwner& widget, const volatile fl
         require(word == nullptr, "timed-entry owner requires the original empty canonical header");
 }
 GuiTimedEntryOwner::~GuiTimedEntryOwner() noexcept {
-    if (!backing_.empty() || !entries_.empty() || draining_ || updating_) std::terminate();
+    if (!backing_.empty() || !entries_.empty() || operation_active()) std::terminate();
 }
 GuiTimedEntryStorage** GuiTimedEntryOwner::data() const noexcept {
     GuiTimedEntryStorage** result;
@@ -104,6 +117,7 @@ void GuiTimedEntryOwner::free_backing(GuiTimedEntryStorage** pointer) {
     singleton_lifetime_free(pointer);
 }
 void GuiTimedEntryOwner::reserve_00aa6f30(std::int32_t requested) {
+    AllocationCall active(active_calls_);
     validate_live();
     const auto target = requested < 1 ? 1 : requested;
     if (capacity() >= target) return;
@@ -121,6 +135,7 @@ void GuiTimedEntryOwner::reserve_00aa6f30(std::int32_t requested) {
     store_capacity(target);
 }
 void GuiTimedEntryOwner::resize_00aa77b0(std::int32_t requested) {
+    AllocationCall active(active_calls_);
     validate_live();
     require(requested >= 0, "negative timed resize is outside the physical backing domain");
     if (capacity() < requested) reserve_00aa6f30(requested);
@@ -129,6 +144,7 @@ void GuiTimedEntryOwner::resize_00aa77b0(std::int32_t requested) {
     store_count(requested);
 }
 GuiTimedEntryStorage* GuiTimedEntryOwner::create_by_index_00ad3a80(std::int32_t index) {
+    AllocationCall active(active_calls_);
     validate_live();
     if (index < 0 || index > 2) return nullptr;
     void* raw = singleton_lifetime_allocate({SingletonAllocationKind::object, 0x14, 0x14});
@@ -149,6 +165,7 @@ GuiTimedEntryStorage* GuiTimedEntryOwner::create_by_index_00ad3a80(std::int32_t 
     return entry;
 }
 GuiTimedEntryStorage* GuiTimedEntryOwner::get_or_create_00aa8b00(std::int32_t index) {
+    AllocationCall active(active_calls_);
     validate_live();
     require(index >= 0 && index < std::numeric_limits<std::int32_t>::max(),
         "native negative or wrapped timed index is outside the backing domain");
@@ -168,11 +185,15 @@ GuiTimedEntryStorage* GuiTimedEntryOwner::get_or_create_00aa8b00(std::int32_t in
     auto* result = slot(index); require_owned_entry(result); return result;
 }
 void GuiTimedEntryOwner::delete_entry(GuiTimedEntryStorage& entry, std::uint32_t flags) {
+    require(updating_entry_ != &entry, "cannot destroy the timed entry executing its current8 callback");
     require_owned_entry(&entry);
     auto& record = entries_.at(&entry);
     if (!record.base_destroyed) {
         destroy_gui_timed_entry_profile(entry);
         record.base_destroyed = true;
+    } else {
+        require(entry.profile_00 == kGuiTimedEntryBaseProfile,
+            "flags0 storage no longer carries its completed base profile");
     }
     if (flags & 1u) {
         entries_.erase(&entry); // consume provenance BEFORE terminal free
@@ -190,8 +211,12 @@ void GuiTimedEntryOwner::update_entries_00aa87b0_fragment(float seconds,
             if (i >= count()) resize_00aa77b0(i + 1);
             auto* entry = slot(i); require_owned_entry(entry);
             require(!entries_.at(entry).base_destroyed, "cannot update an ended timed lifetime");
-            const bool live = advance_gui_timed_entry_00ad39a0(*entry, widget_,
-                float_argument(seconds), &widget_.layout(), constants);
+            bool live;
+            {
+                BorrowedEntry borrowed(updating_entry_, entry);
+                live = advance_gui_timed_entry_00ad39a0(*entry, widget_,
+                    float_argument(seconds), &widget_.layout(), constants);
+            }
             if (!live) {
                 if (i >= count()) resize_00aa77b0(i + 1);
                 auto** captured_slot = &slot(i);
@@ -204,7 +229,9 @@ void GuiTimedEntryOwner::update_entries_00aa87b0_fragment(float seconds,
     }
 }
 void GuiTimedEntryOwner::destroy_entries_00aa9730_fragment() {
-    validate_live(); require(!updating_, "cannot destroy updating timed entries");
+    validate_live();
+    require(!updating_ && active_calls_ == 0,
+        "cannot destroy timed entries during update or allocation callbacks");
     Busy operation(draining_);
     for (std::int32_t i = 0; i < count(); ++i) {
         if (i >= count()) resize_00aa77b0(i + 1);

@@ -142,6 +142,9 @@ void GuiWidgetOwner::base_refresh_clip70_00aaa3e0() {
 }
 void GuiWidgetOwner::resume_base_clip_after_child70() {
     if (!base_clip_) throw std::logic_error("base clip70 has no pending child frame");
+    auto* services = runtime_.environment().clip;
+    if (!services || services != base_clip_services_ || &services->widgets != &runtime_)
+        throw std::logic_error("base clip70 resume requires the original configured services");
     base_clip_->resume_after_child70();
 }
 void GuiWidgetTypeImplementation::refresh_clip70(GuiWidgetOwner& owner) {

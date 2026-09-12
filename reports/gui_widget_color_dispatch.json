@@ -116,5 +116,12 @@
   "abi": "ECXwidget; float4output/floatarg stack; RET4; getterEAXoutput",
   "validation": "strict Win32 compilation passed; batch records combined build and actual-owner fixture",
   "abi_compatible": false,
-  "game_validated": false
+  "game_validated": false,
+  "parent_integration": {
+    "report": "reports/orch5_timed_clip_batch.json",
+    "combined_build": "Release MSVC Win32 build passed; 2/2 existing tests",
+    "canonical_runtime_reachable_in_game": false,
+    "abi_compatible": false,
+    "game_validated": false
+  }
 }

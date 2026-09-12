@@ -91,3 +91,11 @@ creation succeeded; retry failed writing MSBuild temporary tracking files.
 Logs remain under `local/gui_timed_entry_types_build*.log`; the parent must run
 the registered translation units in its normal integration build. There is no
 game runtime, native differential, original ABI or Section rendering claim.
+
+## 2026-09-12 timed and clip ownership integration
+
+The parent links these routines with the canonical allocation/widget owners.
+The combined Win32 build passes both existing tests. Separate linked-library
+fixtures cover actual alpha/countdown integration and the seven Section numeric
+cases, including NaN direction. This does not bind the active Section widget or
+execute original native bytes. See reports/orch5_timed_clip_batch.json.

@@ -34,7 +34,7 @@ public:
     // Provenance metadata prevents repeated final free. No automatic rollback.
     void destroy_entries_00aa9730_fragment();
     bool retired() const noexcept { return retired_; }
-    bool operation_active() const noexcept { return draining_ || updating_; }
+    bool operation_active() const noexcept { return active_calls_ || draining_ || updating_; }
     std::size_t retained_entry_allocations() const noexcept { return entries_.size(); }
 private:
     struct Entry { bool base_destroyed{}; };
@@ -45,6 +45,8 @@ private:
     bool retired_{};
     bool draining_{};
     bool updating_{};
+    std::size_t active_calls_{};
+    GuiTimedEntryStorage* updating_entry_{};
     void store_data(GuiTimedEntryStorage**) noexcept;
     void store_count(std::int32_t) noexcept;
     void store_capacity(std::int32_t) noexcept;
