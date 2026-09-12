@@ -234,3 +234,13 @@ Contracts named but not read: `00986B00`, `00986480` (telemetry), `00876D30`, `0
 - No run-time evidence supports any claim here: the `bsp_game.exe` harness does not load a mission,
   so the damage path is never reached in a run. Everything is from the live listing.
 - `0077D1A0`'s message id `4Eh` and the senders `0077C7B0`/`0077C980` were not followed.
+
+## Correction from docs/ENTITY_EVENT_QUEUES.md (packet cc2_entity_event_queues)
+
+The caveat above, that a second dispatch of `vtable[80h]` elsewhere could still run on-killed
+for a unit shot to death, is closed: the only other `vtable[80h]` site is `009263C0`, which
+has no reference of any kind in the image. Damage reaches `0077D1A0`, the sole caller of
+Destroy, so a damage death lands on the destroy list `00F899A8` only (drained through
+`vtable[74h]`); an explicit Kill additionally calls `vtable[70h]`, which for a unit is that same
+`0077D1A0`, so a Kill lands on both lists and is the only path that runs on-killed slot 32
+(`009273A0`, dispatched over the copied Kill list).
