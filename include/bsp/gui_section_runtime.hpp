@@ -48,6 +48,10 @@ struct GuiSectionRuntimeServices {
 // slots must be callable native-ABI bindings returning registered resources.
 // AC0280 property/texture loading, ABF5B0 copy, and native Section pool deletion
 // remain unsupported. No constructor/profile token is a callable native table.
+// Every callback must keep this companion, its widget/model/mesh and captured
+// streams alive until emission returns; no active-deletion continuation exists.
+// A later callback/profile error can leave an earlier mapping outstanding.
+// There is no implicit unlock/rollback on this exceptional boundary.
 class GuiSectionRuntimeImplementation final : public GuiWidgetTypeImplementation {
 public:
     GuiSectionRuntimeImplementation(GuiWidgetOwner&, GuiSectionRuntimeServices);

@@ -145,6 +145,12 @@ unmasked floating exceptions and original SEH cleanup are not modeled. A failed
 operation can retain preceding native publications/creator references; it is
 not safe to retry indiscriminately. Host CRT fmod is a library substitution,
 not verified binary equivalence to the shipped CRT's exceptional dispatch.
+In particular, a callback/profile error after a successful map can leave that
+mapping outstanding; no implicit unlock guard or rollback is supplied. Callbacks
+must also keep this Section companion, its canonical widget/model/mesh and the
+captured streams alive until emission returns. The companion has no active
+deletion gate or continuation that would make callback-triggered `retire_tree`
+safe during emission.
 
 Verification: the full translation unit compiled MSVC x86 `/W4 /WX /fp:strict`.
 A focused local executable compiled the exact staged kernel plus the existing
