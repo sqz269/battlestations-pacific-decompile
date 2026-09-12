@@ -18,6 +18,7 @@ public:
     MainMenuCanonicalSelectionServices(MainMenuCommandListenerBindings&,
         MainMenuMedalServices&, MainMenuDateBindings&,
         const GuiWidgetRelativeBoundsConstants&, const volatile double& extra_height_00cee4e8);
+    void* mission_picture_texture_0a0(const MissionRecordData&) override;
     void call_00ab2690(GuiWidgetOwner&, std::uint32_t, void*, const GuiUvRect&) override;
     void call_00ab27a0(GuiWidgetOwner&, GuiWidgetSize&, std::uint32_t) override;
     void call_00ac0820(GuiWidgetOwner&, GuiWidgetOwner&, float) override;

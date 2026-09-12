@@ -276,6 +276,8 @@ struct GameMissionHost::Impl {
     // 005CAAF0's tables, held for the run exactly as the mission-tree screen
     // holds them at +14h..+30h.
     MissionTreeTables tables;
+    const MissionPictureTextureServices* picture_services{};
+    bool tree_load_started{};
 
     // 005861B0's three page roots and the widget handles the detail page drives.
     GuiLayoutPage* main_page{nullptr};
@@ -1338,19 +1340,33 @@ const GameMissionSummary& GameMissionHost::summary() const noexcept {
     return impl_->summary;
 }
 
+void GameMissionHost::bind_mission_picture_services(const MissionPictureTextureServices& services) {
+    if (impl_->tree_load_started || impl_->picture_services)
+        throw std::logic_error("Mission picture services must bind once before tree loading");
+    validate_mission_picture_services(services);
+    impl_->picture_services = &services;
+}
 void GameMissionHost::load_mission_tree_005caaf0() {
     Impl& host = *impl_;
+    host.tree_load_started = true;
     MissionTreeScriptBinding binding(host);
     try {
-        host.tables = bsp::load_mission_tree_metadata(binding);
+        host.tables = host.picture_services
+            ? bsp::load_mission_tree_005caaf0(binding, *host.picture_services)
+            : bsp::load_mission_tree_metadata(binding);
         host.summary.tree_loaded = true;
+        host.summary.tree_pictures_loaded = host.picture_services != nullptr;
     } catch (const std::exception& error) {
         host.summary.tree_error = error.what();
         host.log.notef("mission tree did not load: %s", error.what());
         host.log.unimplemented("MissionTreeScreen::load_tables", "005caaf0");
         return;
     }
-    host.log.implemented("MissionTreeScreen::load_tables", "005caaf0");
+    if (host.picture_services) host.log.implemented("MissionTreeScreen::load_tables", "005caaf0");
+    else {
+        host.log.notef("mission-tree metadata loaded; native picture services are unbound");
+        host.log.unimplemented("MissionTreeScreen::picture_resources", "005c6a70");
+    }
 
     host.summary.tree_groups = host.tables.groups.size();
     host.summary.tree_multi = host.tables.multi.size();

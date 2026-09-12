@@ -38,6 +38,11 @@ GuiWidgetOwner& MainMenuCanonicalSelectionServices::require_owner(GuiWidgetOwner
         throw std::logic_error("Menu selection provider requires the same canonical widget owner domain");
     return owner;
 }
+void* MainMenuCanonicalSelectionServices::mission_picture_texture_0a0(const MissionRecordData& record) {
+    if (!record.picture)
+        throw std::logic_error("Mission picture requires the completed native texture producer");
+    return record.picture->texture_0a0();
+}
 void MainMenuCanonicalSelectionServices::call_00ab2690(GuiWidgetOwner& owner,
     std::uint32_t state, void* texture, const GuiUvRect& uv) {
     auto* icon = dynamic_cast<GuiIconTypeImplementation*>(&require_owner(owner).implementation());
