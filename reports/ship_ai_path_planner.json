@@ -1,0 +1,413 @@
+{
+  "packet": "cc_ai_path_planner",
+  "owner": "agent/cc-ai-path-planner",
+  "date": "2026-09-12",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "read-only: no renames, comments, prototypes, function creation or saves",
+  "docs": [
+    "docs/SHIP_AI_PATH_PLANNER.md"
+  ],
+  "sources": [
+    "include/bsp/ship_ai_path_planner.hpp",
+    "src/ship_ai_path_planner.cpp"
+  ],
+  "verification": {
+    "checklist": "docs/WORKER_VERIFICATION_CHECKLIST.md",
+    "argument_count": "009E3780 ends with RET 10h at 009E37C9, 009E399B, 009E39E2, 009E3A02, 009E3BCE, 009E3BE0 and 009E3BF9: four stack dwords plus ECX. The four call sites push them at 009ED510-009ED522, 009ED569-009ED587, 009ED5E3-009ED5FC and 009ED679-009ED691 with no ADD ESP after the call.",
+    "register_provenance": "Each argument slot was resolved by filtering the whole 009E3780 listing for ESP offsets: [ESP+30h] arg1 is read only at 009E37CC and 009E3904 (and at 009E3A57 with EBP pushed, where it is [ESP+34h]); [ESP+34h] arg2 at 009E37D4, 009E399E and 009E3A05; [ESP+38h] arg3 at 009E3792; [ESP+3Ch] arg4 is never read. Slots above the frame are reused as x87 scratch after their last read (009E38C8, 009E3982, 009E39C5, 009E3A2C, 009E3A9D).",
+    "vtable_slots": "The movetopos vtable is 00D21628 and the moveonpath vtable is 00D21688, both from the bytes at those addresses matched against the step targets 009E5770 and 009E59C0 that the ledger already records at slot +0Ch. Slot +2Ch is 009DAB10 in both.",
+    "unread_callees": [
+      "00416b50, 00416f30, 00414f50, 0041aea0, 00419ab0, 004f4b50, 00419260 (the avoid-zone polygon primitives under 00417580, 00417e40 and 0041b840; 0041aea0 was read from the decompiler for its return contract only)",
+      "owner->vtable[50h] at 009E3980 (contract unread; the float it returns is stored into the start node's +48h)",
+      "head->vtable[0](1) at 009D9D53 (contract unread; the node list's deleting destructor)",
+      "009ec280, 009e3330, 009d5a20, 009d9550, 009d96a0 (the search 009EC680 drives; states only)",
+      "009e3c00 tail past 009E3D81 (the path point and side code; ship_ai_path_follower owns it)"
+    ]
+  },
+  "routines": [
+    {
+      "address": "009e3780",
+      "name": "BSP_ShipAi_RequestPathPlan",
+      "abi": "__thiscall(plan)(const float2* pose, const float2* goal, int layer, float radius) -> bool in AL, RET 10h, body 009e3780-009e3bfb",
+      "coverage": "complete",
+      "reconstruction": "ship_ai_path_plan_request_009e3780"
+    },
+    {
+      "address": "009d9150",
+      "name": "BSP_ShipAiPathNode_Init",
+      "abi": "__thiscall(node)(const float2* xz, int layer) -> node in EAX, RET 8, body 009d9150-009d91be",
+      "coverage": "complete",
+      "reconstruction": "ship_ai_path_node_init_009d9150"
+    },
+    {
+      "address": "009d9230",
+      "name": "BSP_ShipAiPathNode_LinkNext",
+      "abi": "__thiscall(node)(node* next), RET 4, body 009d9230-009d92ce",
+      "coverage": "complete",
+      "reconstruction": "ship_ai_path_node_link_009d9230"
+    },
+    {
+      "address": "009d9d40",
+      "name": "BSP_ShipAiPathPlan_Reset",
+      "abi": "__thiscall(plan)(void), RET 0, body 009d9d40-009d9d73",
+      "coverage": "complete",
+      "reconstruction": "ship_ai_path_plan_reset_009d9d40"
+    },
+    {
+      "address": "009d9e50",
+      "name": "BSP_ShipAiPathPlan_RemainingLength",
+      "abi": "__thiscall(plan)(const float2* pose) -> float in ST0, RET 4, body 009d9e50-009d9f8c",
+      "coverage": "complete",
+      "reconstruction": "ship_ai_path_remaining_length_009d9e50"
+    },
+    {
+      "address": "009d9cc0",
+      "name": "BSP_ShipAiPathPlan_Init",
+      "abi": "__thiscall(plan)(void) -> plan in EAX, RET 0, body 009d9cc0-009d9d32, no Ghidra function",
+      "coverage": "complete",
+      "reconstruction": "the ShipAiPathPlanBlock member initialisers in include/bsp/ship_ai_path_planner.hpp"
+    },
+    {
+      "address": "009da590",
+      "name": "BSP_ShipAi_GoalReachedTest",
+      "abi": "__thiscall(navigator+8h)(const float2* goal) -> bool in AL, RET 4, body 009da590-009da604, no Ghidra function",
+      "coverage": "complete",
+      "reconstruction": "ship_ai_path_arrival_009da590"
+    },
+    {
+      "address": "009dab10",
+      "name": "BSP_ShipAiState_GoalReachedThunk",
+      "abi": "__thiscall(state)(const float2* goal) -> bool in AL, tail JMP, body 009dab10-009dab1a, no Ghidra function",
+      "coverage": "complete",
+      "reconstruction": "none: three instructions, folded into ship_ai_path_arrival_009da590's contract"
+    },
+    {
+      "address": "00417e40",
+      "name": "BSP_AvoidZoneManager_ZoneContainingPoint",
+      "abi": "__thiscall(manager)(const float2* pt, int layer) -> zone*, RET 8, body 00417e40-00417e58",
+      "coverage": "complete for 00417E40 itself; its two callees 00412120 (body 00412120-0041215e) and 004178f0 (body 004178f0-00417939) were read whole, and 00416b50 under 004178F0 was not",
+      "reconstruction": "none: host method zone_containing_point_00417e40"
+    },
+    {
+      "address": "00417580",
+      "name": "BSP_AvoidZone_PushPointOutside",
+      "abi": "__thiscall(zone)(float2* out, const float2* pt, float margin, bool test) -> out, RET 10h, body 00417580-004175fe",
+      "coverage": "complete for 00417580 itself; 00414f50, 00416b50 and 00416f30 are not read",
+      "reconstruction": "none: host method push_point_out_of_zone_00417580"
+    },
+    {
+      "address": "0041b840",
+      "name": "BSP_AvoidZoneGroup_NearestBoundaryPoint",
+      "abi": "__thiscall(group)(float2* out, const float2* pt, float slack, float push) -> out, RET 10h, body 0041b840-0041b957",
+      "coverage": "complete for 0041B840 itself; 0041aea0 (body 0041aea0-0041b114) was read from the decompiler for its return contract and outward direction only, and its callees 00419ab0, 004f4b50, 00419260, 00416b50 and 00416f30 are not read",
+      "reconstruction": "none: host method nearest_zone_boundary_0041b840"
+    },
+    {
+      "address": "004120d0",
+      "name": "unnamed: FUN_004120d0, not leased by this packet",
+      "abi": "__thiscall(manager)(int layer) -> group*, RET 4, body 004120d0-00412111",
+      "coverage": "complete (read, not named)",
+      "reconstruction": "none: host method zone_group_for_layer_004120d0"
+    },
+    {
+      "address": "009ec680",
+      "name": "unnamed: FUN_009ec680, owned by a follow-up packet",
+      "abi": "__thiscall(plan)(float seconds), RET 4, body 009ec680-009ec74c",
+      "coverage": "partial: read for the state transitions (009EC6B0, 009EC707, 009EC71A, 009EC73B, 009EC742) and the plan+14h countdown at 009EC683/009EC68F only. Its five callees 009EC280, 009E3330, 009D5A20, 009D9550 and 009D96A0, which are the search itself, are unread",
+      "reconstruction": "none: the ShipAiPathSearchState enum names its transitions"
+    },
+    {
+      "address": "009e3c00",
+      "name": "unnamed: FUN_009e3c00, owned by ship_ai_path_follower",
+      "abi": "__thiscall(plan)(record* out), body 009e3c00-009e432a",
+      "coverage": "partial: 009E3C00-009E3D81 read from the listing, the node walk this packet shares with 009D9E50 (009E3C6C-009E3D0E) and the plan fields it writes (+34h, +4Ch, +50h, +54h, +60h, +64h). 009E3D8C-009E4013 read from the decompiler for the point source, the 00811D80 call at 009E3DCD and the record+20h writes at 009E3D65, 009E3D88 and 009E3F88. Nothing past 009E3D81 is projected",
+      "reconstruction": "none"
+    }
+  ],
+  "host_steps": [
+    {
+      "step": "plan 1 the avoid-zone manager singleton, before the goal query",
+      "address": "009e3821",
+      "native": "004218e0",
+      "function": "009e3780",
+      "method": "avoid_zone_manager_004218e0"
+    },
+    {
+      "step": "plan 2 the zone containing the goal, in this layer",
+      "address": "009e3831",
+      "native": "00417e40",
+      "function": "009e3780",
+      "method": "zone_containing_point_00417e40",
+      "note": "ECX = the manager, arg1 = &goalCopy at ESP+0Ch, arg2 = plan+38h"
+    },
+    {
+      "step": "plan 3 push the goal out of that zone by 10 units",
+      "address": "009e3851",
+      "native": "00417580",
+      "function": "009e3780",
+      "method": "push_point_out_of_zone_00417580",
+      "note": "margin 00CE38B8 = 10.0f loaded at 009E383A; the fourth argument is EBX = 1. The result overwrites goalCopy at 009E3856 and plan+30h becomes 0"
+    },
+    {
+      "step": "plan 4 the manager again, for the group lookup",
+      "address": "009e3870",
+      "native": "004218e0",
+      "function": "009e3780",
+      "method": "avoid_zone_manager_004218e0"
+    },
+    {
+      "step": "plan 5 the zone group for this layer",
+      "address": "009e387b",
+      "native": "004120d0",
+      "function": "009e3780",
+      "method": "zone_group_for_layer_004120d0"
+    },
+    {
+      "step": "plan 6 the nearest zone boundary point to the goal",
+      "address": "009e38a2",
+      "native": "0041b840",
+      "function": "009e3780",
+      "method": "nearest_zone_boundary_0041b840",
+      "note": "slack 00CE4BC8 = 100000.0f at 009E3891, push FLD1 = 1.0f at 009E3884"
+    },
+    {
+      "step": "plan 7 the distance from the goal to that point becomes plan+30h",
+      "address": "009e38c3",
+      "native": "00414c60",
+      "function": "009e3780",
+      "method": "length_2d_00414c60",
+      "note": "reconstructed in src/vector_helpers.cpp, so the sequence calls it directly; stored at 009E38DE only when it is at least 1.0f"
+    },
+    {
+      "step": "plan 8 the manager again, for the pose query",
+      "address": "009e38e3",
+      "native": "004218e0",
+      "function": "009e3780",
+      "method": "avoid_zone_manager_004218e0"
+    },
+    {
+      "step": "plan 9 the zone containing the ship's own pose",
+      "address": "009e38ef",
+      "native": "00417e40",
+      "function": "009e3780",
+      "method": "zone_containing_point_00417e40",
+      "note": "EDI is the caller's pose pointer, not the local copy"
+    },
+    {
+      "step": "plan 10 push the pose out of that zone by 5 units",
+      "address": "009e390b",
+      "native": "00417580",
+      "function": "009e3780",
+      "method": "push_point_out_of_zone_00417580",
+      "note": "margin 00CE3850 = 5.0f loaded at 009E38F8"
+    },
+    {
+      "step": "plan 11 allocate the node at the ship",
+      "address": "009e3927",
+      "native": "00bf681b",
+      "function": "009e3780",
+      "method": "allocate_path_node_00bf681b",
+      "note": "PUSH 54h at 009E3925, ADD ESP,4 at 009E392C"
+    },
+    {
+      "step": "plan 12 construct it on the pose",
+      "address": "009e393e",
+      "native": "009d9150",
+      "function": "009e3780",
+      "method": "ship_ai_path_node_init_009d9150",
+      "note": "ECX = the allocation, arg1 = &poseCopy at ESP+1Ch, arg2 = plan+38h; the result lands in plan+20h at 009E3949"
+    },
+    {
+      "step": "plan 13 allocate the node at the goal",
+      "address": "009e394c",
+      "native": "00bf681b",
+      "function": "009e3780",
+      "method": "allocate_path_node_00bf681b"
+    },
+    {
+      "step": "plan 14 construct it on the goal",
+      "address": "009e3963",
+      "native": "009d9150",
+      "function": "009e3780",
+      "method": "ship_ai_path_node_init_009d9150",
+      "note": "the result lands in plan+24h at 009E3970"
+    },
+    {
+      "step": "plan 15 link the two nodes and measure the segment",
+      "address": "009e3973",
+      "native": "009d9230",
+      "function": "009e3780",
+      "method": "ship_ai_path_node_link_009d9230",
+      "note": "ECX = plan+20h loaded at 009E396C, argument = plan+24h. The decompiler drops the ECX and shows a one-argument call"
+    },
+    {
+      "step": "plan 16 seed the start node's +48h from the owner",
+      "address": "009e3980+vtable50",
+      "native": "indirect",
+      "function": "009e3780",
+      "method": "owner_seed_vtable50",
+      "note": "ECX = plan+3Ch at 009E3978, EDX = *ECX, EAX = [EDX+50h]. A float in ST0, stored at 009E398E into plan+20h's +48h; +45h is set to 1 at 009E3991. Callee body unread: contract unread"
+    },
+    {
+      "step": "plan 17 the goal drifted or the graph vanished, so drop the node list",
+      "address": "009e37b7",
+      "native": "009d9d40",
+      "function": "009e3780",
+      "method": "ship_ai_path_plan_reset_009d9d40",
+      "note": "the second site is 009E39F5, on the branch where plan+20h or its link is null"
+    },
+    {
+      "step": "plan 18 the same reset, on the graph-missing branch",
+      "address": "009e39f5",
+      "native": "009d9d40",
+      "function": "009e3780",
+      "method": "ship_ai_path_plan_reset_009d9d40"
+    },
+    {
+      "step": "plan 19 release the node list through its own vtable",
+      "address": "009d9d40+vtable00",
+      "native": "indirect",
+      "function": "009d9d40",
+      "method": "release_node_list_vtable0",
+      "note": "009D9D4D loads the head's vtable, 009D9D51 pushes 1 and 009D9D53 CALL EDX. 009ED649 is the same call inlined into 009ED3E0. Callee body unread: contract unread"
+    },
+    {
+      "step": "plan 20 the unit radius, capped at 100",
+      "address": "009e3aeb",
+      "native": "00415510",
+      "function": "009e3780",
+      "method": "owner_radius_09c8",
+      "note": "ECX = a stack slot holding 00CE3D08 = 100.0f, EDX = plan+3Ch's +9C8h at 009E3ADB. The host supplies the field, the minimum is the pure rule"
+    },
+    {
+      "step": "plan 21 divide by the class maximum speed and cap at 1.5 s",
+      "address": "009e3b06",
+      "native": "00415510",
+      "function": "009e3780",
+      "method": "owner_class_max_speed_0500",
+      "note": "009E3AF0 loads plan+3Ch's +538h and 009E3AF6 FDIVs by that object's +500h, which 00828F20 BSP_ShipClass_DeriveTurnFields writes as the class maximum speed. ECX = &plan+14h, which 009E3ACC set to 1.5f"
+    },
+    {
+      "step": "plan 22 the segment length for the corridor test",
+      "address": "009e3b12",
+      "native": "00414c60",
+      "function": "009e3780",
+      "method": "length_2d_00414c60",
+      "note": "ECX = the segment copy at ESP+10h; 009E3B25 and 009E3B2D then normalise in place"
+    },
+    {
+      "step": "walk 1 the segment length each link records",
+      "address": "009d9286",
+      "native": "00bf7030",
+      "function": "009d9230",
+      "method": "length_2d_00414c60",
+      "note": "009D9276 compares the rounded sum with the double 1e-10 at 00CE3820 before the CRT square root, the same kernel 00414C60 uses, so the reconstruction calls the reconstructed helper"
+    },
+    {
+      "step": "walk 2 the gap from the pose to the node the walk stopped on",
+      "address": "009d9f45",
+      "native": "00bf7030",
+      "function": "009d9e50",
+      "method": "length_2d_00414c60",
+      "note": "same kernel, 009D9F35 against the same double"
+    },
+    {
+      "step": "arrive 1 the state's arrival slot, both navigation states",
+      "address": "00d21628+vtable2c",
+      "native": "indirect",
+      "function": "009e5770",
+      "method": "ship_ai_path_arrival_009da590",
+      "note": "009E5817 loads state->vtable[2Ch] and 009E5821 calls it with ECX = the state and the goal on the stack. The slot holds 009DAB10 in the movetopos vtable 00D21628 and in the moveonpath vtable 00D21688; 009DAB10 tail-jumps to 009DA590 with ECX = [state+4h]+8h. Neither 009E5770 nor 009DAB10 is a Ghidra function, so this row is an indirect the verifier skips"
+    },
+    {
+      "step": "arrive 2 the latch the controls step sets",
+      "address": "009ef034",
+      "native": "none",
+      "function": "009ed6b0",
+      "method": "the latch_2fe argument of ship_ai_path_arrival_009da590",
+      "note": "MOV byte ptr [ESI+2FEh],1, reached only when nav+2FCh is clear (009EF022). 009DE0EF and 009ED779 are the two writes that clear it. Read for the latch only; the gate at 009EF00D-009EF028 is in the unprojected tail 009EEAAB-009EF228"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "the packet brief and docs/SHIP_AI_STATE_STEPS.md's follow-up row name 00D21634 and 00D21694 as the arrival slots of the movetopos and moveonpath vtables",
+      "is": "those two addresses are the step slots. 00D21634 holds 009E5770 and 00D21694 holds 009E59C0, which the ledger already records as the two state steps at vtable +0Ch, so the vtables start at 00D21628 and 00D21688 and the arrival slot +2Ch is 00D21654 and 00D216B4",
+      "evidence": "the 64 bytes at 00D21628 and at 00D21688; 00D21634 - 00D21628 = 0Ch"
+    },
+    {
+      "was": "implied by the same row: each navigation state has its own arrival predicate",
+      "is": "both slots hold the same address, 009DAB10, which tail-jumps to 009DA590. There is one predicate",
+      "evidence": "00D21654 and 00D216B4 both read B0 AB 9D 00; 009DAB16 JMP 009DA590"
+    },
+    {
+      "was": "the packet brief describes 009E3780 as the planner that builds a path around avoid zones",
+      "is": "009E3780 seeds and revalidates. It creates exactly two nodes, the ship and the goal, and moves the block to state 1. The search that fills in the nodes between them is 009EC680, one state transition per navigation tick, and it is the part this packet did not read",
+      "evidence": "009E3925 and 009E3947 are the only two allocations; 009EC685-009EC6C4 is the state machine"
+    },
+    {
+      "was": "include/bsp/ship_ai_state_steps.hpp models the navigator fields 240h-25Ch and 2A8h-2C4h that 009DA4E0 clears as ten independent uint32 values (path_object_244, cursor_240, count_248, index_258, limit_254, value_250, value_25c and the 2A8h mirror)",
+      "is": "they are two embedded 68h-byte plan blocks at navigator+224h and navigator+28Ch. +240h is the search state, +244h the head node, +248h the goal node, +250h the search context, +254h the goal clearance, +258h the node count and +25Ch the avoid-zone layer; the 2A8h set is the same fields 68h higher",
+      "evidence": "the constructor 009D9CC0 writes the same field set at plan+1Ch, +20h, +24h, +2Ch, +30h, +34h and +38h; 009DA4E0's two groups are 68h apart; 009ED5BD and 009ED5C3 swap nav+2F4h and nav+2F8h, which point at them"
+    },
+    {
+      "was": "the decompiler renders 009E3973 as FUN_009d9230(uVar6), a one-argument call on the goal node",
+      "is": "ECX is plan+20h, the head node, and the goal node is the argument. The link is written into the head",
+      "evidence": "009E396C MOV ECX,[ESI+20h]; 009E396F PUSH EAX"
+    },
+    {
+      "was": "the decompiler renders the owner call at 009E3980 as (**(code **)(**(int **)(param_1 + 0x3c) + 0x50))(), a double indirection on plan+3Ch",
+      "is": "plan+3Ch is the object itself; the extra load is its vtable",
+      "evidence": "009E3978 MOV ECX,[ESI+3Ch]; 009E397B MOV EDX,[ECX]; 009E397D MOV EAX,[EDX+50h]"
+    },
+    {
+      "was": "the decompiler shows only four parameters for 009E3780 and drops the fourth stack argument",
+      "is": "the routine takes four stack dwords (RET 10h) and never reads the fourth, the unit radius from [ship+9C8h]. 009E3ADB reads the same field through plan+3Ch instead",
+      "evidence": "the seven RET 10h sites; no instruction in the body touches [ESP+40h], the fourth slot's address once EBP is pushed"
+    },
+    {
+      "was": "the decompiler omits the divide between the two 00415510 calls at 009E3AEB and 009E3B06",
+      "is": "the capped radius is divided by [plan+3Ch's +538h]+500h before the second minimum",
+      "evidence": "009E3AF0 MOV ECX,[ESI+538h]; 009E3AF6 FDIV float ptr [ECX+500h]"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "009d9cc0",
+      "end": "009d9d32",
+      "evidence": "INT3 at 009D9CB7-009D9CBF after the RET at 009D9CB6 that ends the previous routine, and the RET at 009D9D32 followed by INT3 at 009D9D33-009D9D3F before the Ghidra function 009D9D40"
+    },
+    {
+      "start": "009da590",
+      "end": "009da604",
+      "evidence": "Ghidra reports the body 009DA590-009DA604 for FUN_009da590; listed here only because the two routines that reach it, 009DAB10 and 009E5770, are not Ghidra functions"
+    },
+    {
+      "start": "009dab10",
+      "end": "009dab1a",
+      "evidence": "INT3 at 009DAB07-009DAB0F after the RET at 009DAB06, and INT3 at 009DAB1B-009DAB1F after the JMP at 009DAB16; the enclosing candidate Ghidra reports is TRIV_body_009daab0"
+    }
+  ],
+  "coverage_summary": {
+    "complete": [
+      "009e3780",
+      "009d9150",
+      "009d9230",
+      "009d9d40",
+      "009d9e50",
+      "009d9cc0",
+      "009da590",
+      "009dab10",
+      "00417e40",
+      "00417580",
+      "0041b840",
+      "004120d0"
+    ],
+    "partial": [
+      "009ec680: state transitions only",
+      "009e3c00: 009E3C2E-009E3D81 and the plan fields it writes",
+      "0041aea0: return contract only",
+      "009ed6b0: 009EF022-009EF045 only, for the arrival latch"
+    ]
+  }
+}
