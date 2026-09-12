@@ -21,6 +21,7 @@
 #include "bsp/game_hosts.hpp"
 
 #include "bsp/entity_orders.hpp"
+#include "bsp/entity_command_arms.hpp"
 #include "bsp/weapon_director.hpp"
 
 #include <cstdio>
@@ -705,6 +706,105 @@ void SceneResolveBinding::issue_command(void* owner, void* command,
     ++chain_.owner.summary.issued;
 }
 
+// ---------------------------------------------------------------------------
+// bsp::EntityCommandArmsHost, one method per call site of 00816EA6..0081732E
+// ---------------------------------------------------------------------------
+
+class EntityCommandArmsBinding final : public bsp::EntityCommandArmsHost {
+public:
+    explicit EntityCommandArmsBinding(ChainState& chain) : chain_(chain) {}
+
+    std::uint32_t resolve_target_00521ea0() override {
+        // 00521EA0 returns 0 for a descriptor whose kind is 0 and otherwise
+        // resolves the uint16 id through the two handle tables at 00f89a54 and
+        // 00f89aa8. This process numbers its own entities, which is the
+        // substitution this header already declares for entity+174h, so the
+        // resolve is that numbering rather than the native tables.
+        chain_.owner.done("EntityCommandArm::resolve_target", 0x00521ea0u);
+        if (chain_.pending_target.kind == 0) return 0u;
+        return chain_.pending_target.object_id;
+    }
+    bool target_is_kind_of_vtable5c(std::uint32_t, int) override {
+        chain_.owner.record_slot("EntityCommandArm::target_is_kind_of", "00cfc3d0+vtable5c");
+        return false;
+    }
+    bool self_is_kind_of_vtable5c(int) override {
+        chain_.owner.record_slot("EntityCommandArm::self_is_kind_of", "00cfc3d0+vtable5c");
+        return false;
+    }
+    void request_join_formation_0077c8d0(std::uint32_t) override {
+        chain_.owner.record("EntityCommandArm::request_join_formation", 0x0077c8d0u);
+    }
+    void call_0064a8e0() override {
+        chain_.owner.record("EntityCommandArm::follow_tail", 0x0064a8e0u);
+    }
+    void call_0077c980(std::uint32_t) override {
+        chain_.owner.record("EntityCommandArm::leave", 0x0077c980u);
+    }
+    void call_0077ca60() override {
+        chain_.owner.record("EntityCommandArm::disband", 0x0077ca60u);
+    }
+    std::uint32_t path_interface_007ac9d0(std::uint32_t target) override {
+        // 007AC9D0 is complete in src/entity_command_arms.cpp; its own host is
+        // the entity's IsKindOf, which for a created ship this process answers
+        // through the recovered class chain only in GameUnitsHost. The command
+        // path holds no class id, so the four kind tests are records and the
+        // routine answers "no path interface", which is the ship case: 47h to
+        // 4Ah are the path-following kinds of docs/ENTITY_COMMAND_ARMS.md.
+        chain_.owner.record("EntityCommandArm::path_interface", 0x007ac9d0u);
+        static_cast<void>(target);
+        return 0u;
+    }
+    void set_fire_target_00835860(std::uint32_t, int) override {
+        chain_.owner.record("EntityCommandArm::set_fire_target", 0x00835860u);
+    }
+    bool controller_belongs_to_another_007788b0() override {
+        chain_.owner.record("EntityCommandArm::controller_belongs_to_another", 0x007788b0u);
+        return false;
+    }
+    void send_clear_commands_0071d880() override {
+        chain_.owner.record("EntityCommandArm::send_clear_commands", 0x0071d880u);
+    }
+    bool call_0080dc70() override {
+        chain_.owner.record("EntityCommandArm::free_fire_gate", 0x0080dc70u);
+        return false;
+    }
+    void free_fire_0071bf20() override {
+        chain_.owner.record("EntityCommandArm::free_fire", 0x0071bf20u);
+    }
+    void clear_target_block_00817023() override {
+        chain_.owner.record("EntityCommandArm::clear_target_block", 0x00817023u);
+    }
+    std::uint32_t allocate_zeroed_00470b80(std::uint32_t) override {
+        chain_.owner.record("EntityCommandArm::allocate_throwaway", 0x00470b80u);
+        return 0u;
+    }
+    std::uint32_t construct_entity_004e5980(std::uint32_t) override {
+        chain_.owner.record("EntityCommandArm::construct_throwaway", 0x004e5980u);
+        return 0u;
+    }
+    void place_entity_vtable98(std::uint32_t, std::uint32_t) override {
+        chain_.owner.record_slot("EntityCommandArm::place_throwaway", "00cfc3d0+vtable98");
+    }
+    std::uint32_t transform_from_position_0059bd20() override {
+        chain_.owner.record("EntityCommandArm::throwaway_transform", 0x0059bd20u);
+        return 0u;
+    }
+    void set_entity_transform_006e8040(std::uint32_t, std::uint32_t) override {
+        chain_.owner.record("EntityCommandArm::set_throwaway_transform", 0x006e8040u);
+    }
+    void set_descriptor_target_00464f70(std::uint32_t, float) override {
+        chain_.owner.record("EntityCommandArm::set_descriptor_target", 0x00464f70u);
+    }
+    std::uint32_t session_field_19cc() override {
+        chain_.owner.record("EntityCommandArm::session_world", 0x008172e9u);
+        return 0u;
+    }
+
+private:
+    ChainState& chain_;
+};
+
 void EntityIssueBinding::route_message(void* entity, const bsp::EntityOrderMessage& message) {
     static_cast<void>(entity);
     // 0077c2a0 at 0077d7bd. The router reads the default routing flags at
@@ -730,17 +830,43 @@ void EntityIssueBinding::route_message(void* entity, const bsp::EntityOrderMessa
     const bsp::EntityOrderCommandClass* klass
         = bsp::entity_order_command_class_by_ordinal(
             static_cast<int>(view.command_ordinal));
-    if (klass != nullptr && !command_takes_movement_fall_through(klass->object_address)) {
-        // 00816f7c..00817330 holds the `follow`, `land`, `disband`, `settarget`,
-        // `cleartarget`, `clearorders`, `moveto`, `attackmove` and `artillery`
-        // arms. docs/CRUISE_COMMAND.md reads them in pseudocode and projects
-        // none of them, so a command that selects one stops here.
-        chain_.owner.record("EntityCommand::non_movement_arm", 0x00816f7cu);
-        if (chain_.row != nullptr) {
-            chain_.row->blocked = "00816e30's own arm for this command "
-                "(00816f7c..00817330) is not projected";
+    // Milestone 2n: the arm cascade 00816ea6..0081732e, reconstructed by packet
+    // cc_ship_ai_arms in src/entity_command_arms.cpp. Milestone 2m recorded the
+    // whole block at 00816f7c and stopped every scripted moveto and attackmove
+    // there; the cascade decides which command singleton the order becomes and
+    // hands the survivors to the same tail, so the seven commands this
+    // mission's script issues now reach 0071ecf0.
+    if (klass != nullptr) {
+        EntityCommandArmsBinding arms(chain_);
+        const bsp::EntityCommandArmDecision decision
+            = bsp::entity_command_arm_cascade_00816ea6(
+                static_cast<bsp::EntityCommandArmId>(klass->object_address), view.target,
+                arms);
+        chain_.owner.done("EntityCommand::arm_cascade", 0x00816ea6u);
+        if (decision.result == bsp::EntityCommandArmResult::HandledWithoutQueueing) {
+            if (chain_.row != nullptr) {
+                chain_.row->blocked = "00816e30's arm for this command did its own work and "
+                    "returned; nothing is queued on the director";
+            }
+            return;
         }
-        return;
+        if (decision.command != bsp::EntityCommandArmId::None
+            && static_cast<std::uint32_t>(decision.command) != klass->object_address) {
+            // 00816fb4 (moveto -> moveonpath), 00816fd9 (land -> attackmove) and
+            // 00817238 (attackmove / artillery -> attackmove): the arm rewrote
+            // EBP, and the tail issues what EBP holds.
+            const bsp::EntityOrderCommandClass* substituted
+                = bsp::entity_order_command_class_by_address(
+                    static_cast<std::uint32_t>(decision.command));
+            if (substituted != nullptr) {
+                view.command_ordinal = static_cast<std::uint8_t>(substituted->ordinal);
+                if (chain_.row != nullptr) chain_.row->command = substituted->name;
+            }
+        }
+        if (decision.made_throwaway_target && chain_.row != nullptr) {
+            chain_.row->blocked = "00817243..0081732e manufactured a throwaway target entity; "
+                "its six call sites are records";
+        }
     }
     if (chain_.row != nullptr) chain_.row->projected_arm = true;
     DirectorBinding director(chain_);

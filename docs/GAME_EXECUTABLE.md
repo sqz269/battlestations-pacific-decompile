@@ -1,6 +1,6 @@
-# bsp_game.exe, milestones 1 through 2m
+# bsp_game.exe, milestones 1 through 2n
 
-Milestone 2m is the current state of the executable, and its section corrects the earlier
+Milestone 2n is the current state of the executable, and its section corrects the earlier
 ones. Milestone 1 is the spine it was all built on.
 
 Addresses added by milestone 2a: 0073d604-0073d899 (the phase-2 VFS block of Init), 00beda60
@@ -4655,6 +4655,337 @@ moved under anything but the player's own `--order`.
    every entity of every `.scn`, can now be deleted. That is milestone 2h's follow-up 2, and it
    is the largest stand-in this executable still carries.
 10. **`construct_world` 004de610**, unchanged from milestones 2h, 2i, 2j, 2k and 2l.
+
+## Milestone 2n: the ship AI controller, and the two hops that are left
+
+Addresses: 009f50e0 with its three gates 009f50e4 / 009f50f2 / 009f50fc and its sixteen steps
+009f5106, 009f5156, 009f516c, 009f5186, 009f519e, 009f51ae, 009f51b7, 009f51c6, 009f51d5,
+009f51e4, 009f51f3, 009f51fa, 009f5209, 009f5227, 009f5239 and 009f5248; 009f3dd0 with 009f3de2
+/ 009f3de6 / 009f3df3 / 009f3e12 / 009f3e1b and 009f3d00 with 009f3d7d / 00779aa0; the eight
+state command getters 009dac20, 009dac80, 009dadb0, 009dae20, 009daf50, 009db050, 009e8540 and
+009db350 and the two interval getters 009dac30 and 009daa90; 009ed6b0's direct-control arm with
+009ed8d1 / 0092d730, 009ed8ec, 009ed902, 009ed95d and 009ed9c1 / 00811940; 009f4d10 with
+009f4d2f, 009f4d48 / 00811960 and the three tails 009f0100 / 009ef350 / 009ef910; 00825f2c..
+00825f7c with 00811d10; 009f5da0 with 009f5610, 009f5d30, 009f5b70, 009f52f0, 009f65e0,
+008053c0, 0071df70, 0071d980 and 00835860; and 00816ea6..0081732e with 00521ea0, 007ac9d0,
+0077c8d0 and 00470b80. Packet `cc_exe_2n`, owner `agent/cc-exe-2n`. Sources:
+`src/game_hosts_ship_ai.cpp`, `include/bsp/game_hosts_ship_ai.hpp`, plus edits to
+`src/game_hosts_commands.cpp`, `src/game_hosts_units.cpp`, `src/game_hosts_mission_frame.cpp`,
+`src/game_hosts_mission.cpp`, `src/game_hosts.cpp`, `src/game_main.cpp` and their headers.
+Report: `reports/game_executable_milestone_2n.json`. Ghidra was read-only for this packet.
+
+Milestone 2m issued the mission's own `attackmove` and `moveto` commands through the game's own
+path and watched all seven stop at `00816e30`'s unprojected arm, and every one of the 32 ships
+held station. This milestone runs the ship AI controller over those ships. Four of the nine AI
+states are reached, six Japanese destroyers hold an `attackmove` their own mission script issued,
+every controller publishes an order into the unit's own order slot every step, and the ships
+still do not move, for two named reasons instead of three.
+
+### 1. The controller, 009F50E0, and what installs a state
+
+`GameShipAiHost` owns one controller per created instance and runs
+`bsp::ship_ai_controller_step_009f50e0` over `bsp::ShipAiControllerHost` once per unit per fixed
+simulation step. Where it runs is the executable's decision and is recorded as one: 009F50E0 has
+no caller in the call graph, exactly as 00825F20 and 00836920 do not.
+
+Its three gates all open. `[ai+0B00h]` is the created instance; `unit+5Dh` is the byte milestone
+2i holds clear for a live ship; and `unit+61h` is the byte `docs/UNIT_AUTOPILOT_PAIR.md` scanned
+`.text` for and found no writer of outside the constructor. All **15680** controller calls of the
+validation run passed all three, and none was gated.
+
+**Which state the controller installs is now read rather than guessed.** `009F3DD0` asks the
+director for its current command through `0071BE40`, substitutes the `cruise` singleton
+`00E08F70` when `unit+184h` is set, and hands the answer to `009F3D00`. That routine had not been
+read; this packet read it whole, body 009F3D00-009F3DCE, and it is a plain dispatch:
+
+| test | command | state object (ai offset) | state |
+| --- | --- | --- | --- |
+| `009F3D04` | `00E08F68` | `+0C5Ch` | `movetopos` |
+| `009F3D1A` | `00E08FA0` | `+0C38h` | `land` |
+| `009F3D29` | `00E08F88` | `+0BD8h` | `stop` |
+| `009F3D38` | `00E08F80` | `+0C64h` | `moveonpath` |
+| `009F3D47` | `00E08F60` | `+0BE4h` | `follow` |
+| `009F3D56` / `009F3D5D` | `00E08F10` `artillery` or `00E08F78` `attackmove` | `+2254h`, `+217Ch` or `+0C70h` | `kamikaze_attack`, `sub_attack` or `attackmove`, chosen by `[ai+0B0Ch]` and `00779AA0` |
+| `009F3D64` | `00E08F70` | `+0BC8h` | `cruise` |
+| otherwise | - | `+0BD8h` | `stop`, the default at `009F3DA0` |
+
+The ai offsets are the brain offsets of `docs/SHIP_AI_STATES.md` plus 58h, which is what settles
+the table. `009F3DAE` then calls the outgoing state's `vtable[8]`, stores the new one at
+`ai+2264h` and calls its `vtable[4]`; both are records. `[ai+0B0Ch]` is `brain+0AB4h` and has no
+producer here, so the attack arm always takes the plain `attackmove` object and `00779AA0` is
+never reached.
+
+The eight command getters behind `vtable[24h]` were read the same way, each a two-instruction
+`MOV EAX,<singleton>; RET`, and so were the two interval getters: `009DAC30` is
+`FLD [00CE3958]` = **2.0** for `cruise` and `009DAA90` is `FLD [00CE3850]` = **5.0** for every
+other leaf, both multiplied by the 0.05f at 00D0DE84. `kamikaze_attack`'s getter `009DB350`
+returns the same `00E08F78` as `attackmove`'s `009E8540`, which is why `009F3D00` separates those
+two on `[ai+0B0Ch]` and not on the command.
+
+### 2. Only one of the nine state steps has a body
+
+This is the correction that shapes the whole milestone. `docs/SHIP_AI_STATES.md`'s coverage table
+reads "`009E14C0`, `009E1610`, `009E1950`, `009E59C0`: not read. They are named here only as
+vtable slots", and the `attackmove` step `009E8820` and the `kamikaze_attack` step `009E2020` were
+not read either. **Eight of the nine leaves are records with their own addresses.** Only the
+`cruise` step `009E1170` has a reconstruction, and it runs.
+
+That step also moves. Milestone 2l ran `009E1170` once per unit per fixed step; `009F5186` calls
+it only on a re-plan tick, so a `cruise` ship steps 245 times in 490 fixed steps and a `stop` or
+`attackmove` ship 98 times. The three desired-value setters `009DBF90`, `009DFFB0` and `009E0040`
+are no longer records either: they run their reconstructions on the AI control block
+`blk = brain+8h`, so the clamped desired throttle, rudder and heading are the values `009ED6B0`
+then reads.
+
+`009ED6B0`'s direct-control arm runs whole for every unit every step. One of its inputs stops
+being a mystery: the `FDIV [ECX+508h]` at `009ED8EC` takes `ECX = [unit+538h]`, and that field is
+`Retardation` (`docs/SHIP_CLASS_FIELDS.md`, loader 00831882..00831998), which this process reads
+out of the installed `VehicleClass` row. So `blk+32Ch` in the stopped-direction branch is
+`v*v/(2a)` plus `unit+9C8h`: a **stopping distance**, which narrows uncertainty 1 of
+`docs/SHIP_AI_STATES.md` for that branch. The moving branch still reads `blk+3E0h`, which has no
+producer.
+
+### 3. The order slot fills, and the ring does not
+
+`009F4D10` publishes every step: `00811960` limits the heading target onto the slot's `+44h`, and
+`blk+32Ch` and `blk+330h` go to `+40h` and `+48h` with the valid flag set twice. The motion's own
+head then promotes it: `00825F2C` finds the flag set, clears it, flips `[unit+0B40h]` and copies
+the slot across through `00811D10`. **15680 publishes and 15680 promotions**, one per unit per
+step, with no step failing the flag test.
+
+What is missing is the reader. `docs/UNIT_AUTOPILOT_PAIR.md` scanned `00825F20`'s body for
+`slot+40h`, `+44h` and `+48h` and found only the promotion block, so whatever turns a heading
+target and two distances into the order ring's `+148h` / `+14Ch` has not been located. That is
+packet `cc_ai_order_hop`, worker `agent/cc-ai-order-hop`, which was not on main at the end of this
+packet's turn, and it is the record `ShipAiOrder::slot_to_order_ring [00825f7c]`.
+
+The same doc also corrects the brief this packet was given, and milestone 2l's follow-up 2 with
+it: there is no hop from the AI controller block to `unit+0FC4h` / `unit+0FDCh`, because
+`unit+61h` gates the AI off at `009F50FC` and selects that pair at `008266C1`. The two are
+mutually exclusive regimes, and the pair is a manual override.
+
+### 4. The mission's own orders reach a director, and put six ships into `attackmove`
+
+Packet `cc_ship_ai_arms` landed on main during this packet's turn and reconstructs
+`00816E30`'s arm cascade `00816EA6..0081732E`, which is milestone 2m's follow-up 1. The executable
+runs it through `bsp::entity_command_arm_cascade_00816ea6`, so milestone 2m's
+`blocked_at_00816f7c=7` becomes **`blocked_at_00816f7c=0` and `reached_director=7`**: the six
+`NavigatorAttackMove` calls and the one `NavigatorMoveToRange` call of `usn_2_java`'s own order
+function now push a command slot.
+
+The states the validation run ends with:
+
+| state | ships | why |
+| --- | --- | --- |
+| `cruise` | 13 | the twelve scene-authored `Cruise` tokens, plus the controlled DeRuyter, which `009F3DF3` forces into `cruise` whatever its director holds |
+| `stop` | 13 | the idle tail `00836DC9` of milestone 2m, for a ship with no orders |
+| `attackmove` | 6 | `Haguro`, `Jintsu`, `Yudachi`, `Samidare`, `Murasame` and `Harusame`, from their own script's `NavigatorAttackMove` |
+| `movetopos` | 0 here, 1 with `--order` | the Dutch `moveto` goes to the controlled ship, and the player arm overrides it |
+
+The `movetopos` row is why this milestone adds `--order-unit <name>`: `--order` issued a command
+to the controlled unit only, and a command issued there can never change an AI state.
+`--order moveto:Java --order-unit Kortenaer` puts `Kortenaer` into `movetopos` for 190 steps with
+39 re-plans, which is the fourth state a run reaches.
+
+**No ship moves.** Every unit's distance is `0.00` over 24.5 simulated seconds, and there are now
+two reasons rather than milestone 2m's three: the `attackmove` and `movetopos` state steps have no
+body to set a desired value with, and the promoted slot has no reader.
+
+### 5. The automatic target selector runs and chooses
+
+`bsp::auto_target_tick_009f5da0` runs beside the controller with the same step delta, so the
+selector's own countdown turns 15680 ticks into **812 thinks** over 24.5 s, which is the
+once-a-second interval `009F6A20` seeds. `009F5610`'s enable gate opens on the `allowMove` byte
+the director constructor `008363E0` sets for a ship, the priority list `009F65E0` builds comes
+from the owner's own `IsKindOf` answers over its real class id, and the score is
+`009F5B70`'s tier-times-10000 minus distance.
+
+**22 of the 32 ships chose a target**, by name and by the recovered rule: `Haguro`, `Jintsu`,
+`Yudachi`, `Samidare`, `Murasame` and `Harusame` all pick `Kortenaer`; `Exeter` picks `Kawakaze`;
+`Jupiter` and `Witte` pick `Naka`. The candidate list is the executable's stand-in and is recorded
+as one: `009F5D30` walks the recon slot `008053C0` returns for the owner's party and the
+intrusive chain at `slot+0DE8h`, which nothing here fills, so the scan is handed the created
+instances of the opposing party. That is the same substitution milestone 2i makes for walk 0 of
+`004C3CB0`.
+
+**Nothing reaches `00835860`.** The tick's last gate is `0071DF70`, which this packet read whole
+(body 0071DF70-0071DFCF): the float at `[director+40h]` must be greater than the 0.0f at
+`00D7A218`, and then none of the ten command slots at `director+54h` may answer 1 or 2 from its
+`vtable[0Ch]`. `director+40h` has no writer in this process, no recovered producer anywhere and is
+not written by the director constructor `008366D0`, so the predicate is a record, its neutral
+answer stops every think, and neither `BSP_WeaponDirector_SetFireTarget` nor the `attackmove`
+issue `0071D980` is reached. The gun-side ticks of `docs/BOT_FIRE_TARGET.md` and
+`BSP_TurningGun_SetTargetAngles` `0085ABA0` are a further boundary behind that one, and this
+process owns no gun.
+
+### What it looks like on screen
+
+Unchanged from milestone 2m, and for the same reason: what a mission would draw goes through
+`004CA440` and `004CA1F0`, both records, and no ship moves. The capture at in-mission frame 480 is
+the captain HUD over the cleared dark blue buffer: the repair wheel with its four quadrant icons
+in the middle, the engine telegraph with its `STOP` / `1/4` / `HALF` / `3/4` / `FULL` dial and the
+rudder indicator in the bottom right, the damage bar under them, the `Artillery`, `Repair` and
+`Fighter Ace` text runs, the one unit marker with its `Unit Name` label and `1254` distance, and
+the minimap cluster's authored `error.tga` island map in the top right. The sprite bridge holds
+the same 192 quads, 57 of them glyphs. The capture is at the validation machine's 2560x1440, where
+milestone 2k's wide-screen caveat still puts the minimap cluster half outside the window; it is
+written to the ignored `local/run.png` and is not committed.
+
+### Host methods
+
+`bsp_game.exe --frames 700 --press-start-frame 30 --menu-select USN02 --mission-frames 500
+--mission-frame-seconds 0.05 --mission-complete-frame 490 --trajectory-csv local/trajectory.csv
+--screenshot local/run.png --screenshot-mission-frame 480 --log local/game_run.log --game-root
+"<install>"`, exit 0: **464 concrete, 428 unimplemented**. Milestone 2m's published pair for the
+same shape of command is 434 and 402. Part of that move is not this packet's reading: it merged
+main twice, and the second merge brought `cc_ship_ai_arms`, which this packet then wired.
+
+The per-step table with the call site and callee of every row is
+`reports/game_executable_milestone_2n.json` (`controller_steps`, `state_selection_steps`,
+`cruise_state_steps`, `direct_control_steps`, `publish_steps`, `promotion_steps`,
+`auto_target_steps`, `entity_command_arm_steps`, `still_unimplemented`). The counts by group:
+
+| Group | Steps with a call site | Concrete | Records |
+| --- | --- | --- | --- |
+| The controller 009f50e0 | 20 | 8 | 12 |
+| The state selection 009f3dd0 and 009f3d00 | 8 | 3 | 5 |
+| The cruise state and its three setters | 7 | 4 | 3 |
+| The direct-control arm 009ed6b0 | 8 | 4 | 4 |
+| The publish 009f4d10 and the promotion 00825f2c | 10 | 7 | 3 |
+| The automatic target think 009f5da0 | 19 | 8 | 11 |
+| The entity command arms 00816ea6 | 7 | 2 | 5 |
+
+### Corrections
+
+1. **This packet's brief said the states' steps for `moveto`, `attackmove`, `follow` and `stop`
+   are reconstructed. They are not.** Section 2: `docs/SHIP_AI_STATES.md`'s own coverage table
+   says those four bodies were not read, and neither were the `attackmove` and `kamikaze_attack`
+   steps. Eight of the nine leaves are records.
+2. **This packet's brief, and `docs/CRUISE_COMMAND.md`'s follow-up `unit_autopilot_pair`, put the
+   last hop at `[state]+8` into `unit+0FC4h` / `unit+0FDCh`. There is no such hop.**
+   `docs/UNIT_AUTOPILOT_PAIR.md` settles it: `unit+61h` gates the AI controller off at `009F50FC`
+   and selects the pair at `008266C1`, so the two regimes are mutually exclusive. The AI's order
+   goes into the unit's own 84-byte slot, and the missing piece is that slot's reader.
+3. **Milestone 2l's "009e1170's AI arm runs once per unit per fixed simulation step" is
+   superseded**, as `docs/SHIP_AI_STATES.md`'s own correction says. It is a vtable `+0Ch` and
+   `009F5186` calls it on a re-plan tick, every 2.0 * 0.05 s for `cruise`.
+4. **Milestone 2m's `blocked_at_00816f7c=7` is superseded.** Packet `cc_ship_ai_arms` reconstructs
+   the cascade and the executable runs it; the seven scripted commands reach the director.
+   Milestone 2m's follow-up 1 is closed, and the three blocks between the mission's script and a
+   moving ship are two.
+5. **`docs/SHIP_AI_STATES.md`'s uncertainty 1 is narrowed for one branch.** The divisor at
+   `[unit+538h]+508h` is `Retardation`, so `009ED8EC..009ED910` builds a stopping distance rather
+   than an unnamed one. The branch that reads `blk+3E0h` is unchanged.
+6. **`009F3D00` and `0071DF70` had no reading and now have one**, both complete; so do the eight
+   `vtable[24h]` command getters, the two `vtable[28h]` interval getters and `00465080`. The
+   report's `read_for_this_packet` list carries each with its body range or its two instructions.
+7. **A single host-method name cannot carry both dispositions.** `GameHostLog` keeps the first
+   disposition it is given for a name, and this packet's own first pass recorded
+   `ShipAiState::cruise_step` for the player-controlled arm before the concrete path ran, which
+   marked all 3185 calls unimplemented. The player arm is recorded under its own address
+   `009E11E8`, which is where milestone 2l already put it.
+
+### no_ghidra_function
+
+| Start | End (inclusive) | Note |
+| --- | --- | --- |
+| - | - | none |
+
+Every address this packet touched has a Ghidra function: `009F50E0` and `009E5770`, the two the
+`cc_ship_ai_states` packet listed as undefined, were defined by the integrator in commit
+5ee5a720. Two names were added, both for routines this packet read whole and neither of which had
+one: `0071DF70` `BSP_WeaponDirector_AcceptsNewTarget` and `00465080`
+`BSP_CommandTarget_FromEntity`. Run-time evidence was appended to 009f50e0, 009f3dd0, 009f4d10,
+009f5da0 and 009f3d00.
+
+### Validation
+
+`scripts/build.ps1` Release Win32 with `/W4 /WX /fp:strict`, no warnings. The existing ctest case
+`reconstructed_math` passes, 1 of 1. No test cases were added.
+`python tools/verify_report_calls.py reports/game_executable_milestone_2n.json` checks 49 call
+rows and reports 0 failures; eight rows are reported as indirect because the native call goes
+through a vtable slot or a register.
+
+```
+ship AI controllers: 32 built, one per created instance. 009f50e0 has no Ghidra function and no
+        caller, and 009f5da0 is reached only through the derived vtable slot at 00d21b4c, so this
+        process runs both once per unit per fixed simulation step, before the motion pass whose
+        head at 00825f2c consumes the order slot 009f4d10 published
+cruise state step 009e1170 runs on a re-plan tick of the ship AI controller 009f50e0, not on
+        every step
+the promoted AI order slot reaches no order ring: 009f4d10 publishes the heading target and the
+        two distances into unit+0aech - 84*[unit+0b40h], 00825f2c flips the index and 00811d10
+        copies the slot across, and no reader of slot+40h / +44h / +48h was found. The last hop
+        is packet cc_ai_order_hop, worker agent/cc-ai-order-hop
+automatic target selection stops at 0071df70: its first test is the float at director+40h against
+        the 0.0f at 00d7a218, and that field has no writer in this process and no recovered
+        producer anywhere, so the chosen candidate never reaches 00835860
+        BSP_WeaponDirector_SetFireTarget and the attackmove issue at 0071d980 is not reached
+  Haguro               attackmove      490       98      490      490    3.1416      26      26 Kortenaer   0071df70 director+40h
+  Exeter               cruise          490      245      490      490    0.0000      25      25 Kawakaze    0071df70 director+40h
+summary mission script bindings calls=52 attackmove=6 moveto=1 issued=7 reached_director=7
+summary mission ship ai units=32 ai_owned=31 steps=15680 gated=0 replans=5047
+        state_steps{concrete=2940 records=2107} publishes=15680 promotions=15680
+summary mission ship ai states cruise=13 stop=13 attackmove=6 movetopos=0 other=0
+summary mission auto target thinks=812 scans=787 chose=22 fire_target_sets=0 attackmove_issues=0
+        blocked_at=0071df70
+summary mission director steps=15680 idle_reissues=14 stop=13 cruise=1 follow=0 script_issues=7
+        blocked_at_00816f7c=0 commanded_speeds=0
+summary mission world units=32 walked=15680 updated=15680 motion_ticks=15680 simulated=24.50 s
+        controlled=DeRuyter moved=0.00 total_path=0.00
+host methods 464 concrete, 428 unimplemented
+```
+
+and, from `--order moveto:Java --order-unit Kortenaer --order-frame 5 --mission-frames 200`:
+
+```
+player command issued to "Kortenaer": token="moveto" resolved="moveto" outcome=issued current=1
+  Kortenaer            movetopos       190       39      190      190    0.0000      10      10 Yudachi     0071df70 director+40h
+summary mission ship ai states cruise=13 stop=12 attackmove=6 movetopos=1 other=0
+```
+
+Every earlier switch was rechecked on the same binary. A 120 frame run with
+`--press-start-frame 30` and no `--menu-select` exits 0 and reports 155 concrete and 79
+unimplemented, a 40 frame title-only run reports 130 and 48, `--vfs-probe fonts/fonts.lua` exits 0
+and `--vfs-probe does/not/exist.lua` exits 3: all four match milestone 2m exactly. A
+`--mission-frames 60` run with no `--mission-complete-frame` still ends on the frame count with
+`summary mission exit reachable=0`, and the 500 frame run above still leaves state 0Dh through
+004d7970 and exits on the front-end request rather than on the frame count. The acceptance form
+`--order-frame 1 --order throttle=1,rudder=1` reproduces milestone 2j's published numbers exactly:
+`heading -41.253, fwd 16.430, yaw -0.06109` at t = 14 s, so the AI controller changes no
+trajectory: what it publishes reaches no ring.
+
+This remains a runtime-validated process, not a game-validated one. What it now proves, that
+milestone 2m did not, is that the recovered ship AI controller runs over the mission's own ships
+with its three gates open, that the recovered dispatch from a command object to a state puts six
+Japanese destroyers into the `attackmove` their own script asked for, that the recovered
+direct-control arm and publish fill the unit's own AI order slot every step and the motion head
+promotes it, and that the recovered automatic target selector picks a target for 22 of the 32
+ships by the game's own priority and distance rule. It proves nothing about what any of that would
+do: eight of the nine state steps have no body, the promoted slot has no reader, and the fire
+target stops at one unwritten field.
+
+### Follow-up packets
+
+1. **`unit_ai_order_slot_reader`**, packet `cc_ai_order_hop`: `unit+0A98h`, `unit+0AECh`, the
+   three fields `+40h` / `+44h` / `+48h`, and `00825F7C..00826D6B`. It is the last hop between a
+   published AI order and a moving ship, and every other piece of that chain now runs here.
+2. **`ship_ai_state_steps`**: `009E14C0` `stop`, `009E1610` `follow`, `009E1950` `land`,
+   `009E5770` `movetopos` beyond its arrival test, `009E59C0` `moveonpath`, `009E8820`
+   `attackmove` and its four sub-states, and `009E2020` `kamikaze_attack`. Six ships of this
+   mission sit in a state whose step has no body.
+3. **`director_new_target_gate`**: `director+40h`, the float `0071DF70` tests first. It is the one
+   field between a chosen target and `00835860`, and the director constructor `008366D0` does not
+   write it.
+4. **`ship_ai_navigation_arm`**, `009ED6B0` `009EDA26..009EF228` with `blk+3D0h` and `blk+3E0h`:
+   the bearing-to-waypoint rule, and the producer of the distance the moving branch publishes.
+5. **`ship_ai_goal_vector`**: `brain+0B2Ch`, `brain+0B34h`, `brain+0B38h`, `009DE050` and
+   `009F4DA0`. Without it `movetopos` has nothing to steer toward.
+6. **The recon party list**, `008053C0`'s slot and the intrusive chain at `slot+0DE8h`, so the
+   automatic target scan reads the list the game gives it instead of this milestone's stand-in.
+7. **The gun side of `docs/BOT_FIRE_TARGET.md`**: `008FFA20`, `008FFF20`, `00902920`, `009030C0`,
+   `006DF520` and `0085ABA0`, which is what turns a fire target into a shot.
+8. **`construct_world` 004de610**, unchanged from milestones 2h through 2m.
 
 ## Next milestones
 
