@@ -4,6 +4,7 @@
 #include "bsp/blocking_screen.hpp"
 #include "bsp/game_entry.hpp"
 #include "bsp/game_settings.hpp"
+#include "bsp/gun_aiming.hpp"
 #include "bsp/game_tuning_singleton.hpp"
 #include "bsp/gui_icon.hpp"
 #include "bsp/gui_layer.hpp"
@@ -2291,6 +2292,31 @@ int main() {
             bsp::kHudMinimapDepthSelf);
         check(std::fabs(turned.x) < 1e-4f && std::fabs(turned.y - 40.0f / 768.0f) < 1e-4f,
             "005C1B93 rotates by +heading in the mx*cos + my*sin sense");
+    }
+
+    {
+        // 0085AD80's per-axis rule. Constants: rate clamp at HorzRotSpeed * dt,
+        // then the 00419010 remap of the remaining angle from [0, 10deg] onto
+        // [0.5, 1.0], which every class except MRFSGun applies (0085AF76).
+        const float dt = 1.0f / 60.0f;
+        const float rate = 0.575f; // a shipped HorzRotSpeed from deviceclasses.lua
+        const float far_delta = 1.0f; // well beyond both the clamp and ten degrees
+        check(std::fabs(bsp::gun_step_axis_0085ad80(far_delta, rate, dt, true) - rate * dt) < 1e-6f,
+            "0085AD80 clamps a far target to rate*dt and MRFSGun takes it unscaled");
+        check(std::fabs(bsp::gun_step_axis_0085ad80(-far_delta, rate, dt, true) + rate * dt) < 1e-6f,
+            "0085AD80 keeps the sign of the delta in the clamp");
+        // Half of the ten-degree span leaves the scale at 0.75.
+        const float half_span = bsp::kGunAimSoftApproachSpan * 0.5f;
+        check(std::fabs(bsp::gun_soft_approach_scale_00419010(half_span) - 0.75f) < 1e-6f,
+            "00419010 remaps half of 00CE3990 onto the midpoint of 00CE3800..1.0");
+        // Inside the span and below the clamp the step is the delta times that scale.
+        const float near_delta = half_span;
+        check(std::fabs(bsp::gun_step_axis_0085ad80(near_delta, rate, 1.0f, false)
+                  - near_delta * 0.75f) < 1e-6f,
+            "0085AF76 scales a non-MRFSGun step by the soft approach");
+        check(std::fabs(bsp::gun_step_axis_0085ad80(near_delta, rate, 1.0f, true) - near_delta)
+                  < 1e-6f,
+            "MRFSGun skips the soft approach and turns at the full rate");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
