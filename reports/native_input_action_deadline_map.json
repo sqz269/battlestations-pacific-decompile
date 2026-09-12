@@ -1,0 +1,317 @@
+{
+  "packet": "orch4_native_input_action_deadline_map_ag",
+  "status": "static_instance_lifetime_reconstructed_lookup_insert_dependency_remaining",
+  "baseline_commit": "8387bfa0d25c981a94a9661cb2a2a4e8314b7799",
+  "source": [
+    "include/bsp/native_input_action_deadline_map.hpp",
+    "src/native_input_action_deadline_map.cpp"
+  ],
+  "document": "docs/NATIVE_INPUT_ACTION_DEADLINE_MAP.md",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "bsp.py ghidra verifies target before every live read; disasm-raw explicitlydiskonly"
+  },
+  "ghidra_mutations": false,
+  "functions": [
+    {
+      "address": "00cc9e30",
+      "implementation": "initialize_static_native_input_action_deadline_map_00cc9e30",
+      "coverage": "complete valid static-instance lifetime over sole borrowed actual12h header; insertion and game callback remain external",
+      "original_abi": "no register inputs or stack arguments; EAX real atexit result0/-1; RET0",
+      "last_instruction": "00cc9e6f",
+      "last_instruction_length": 1,
+      "end_inclusive": "00cc9e6f",
+      "end_exclusive": "00cc9e70",
+      "span": 64,
+      "sha256": "d60019c286bdca136da75bb45253f0d3fd78fa7dd12d9cb2a11cd0dd36c3c35c",
+      "disk_analysis_equal": true,
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00cd9ec0",
+      "implementation": "destroy_static_native_input_action_deadline_map_00cd9ec0",
+      "coverage": "complete valid static-instance lifetime over sole borrowed actual12h header; insertion and game callback remain external",
+      "original_abi": "no register inputs or stack arguments; native EAX0, sourcevoid; RET0",
+      "last_instruction": "00cd9eff",
+      "last_instruction_length": 1,
+      "end_inclusive": "00cd9eff",
+      "end_exclusive": "00cd9f00",
+      "span": 64,
+      "sha256": "b31f15ac6cad245d8ea3c7b2882d7840705dca0ad3d0d15a659d2b17d2c23ac2",
+      "disk_analysis_equal": true,
+      "native_abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00cd9ec0",
+      "address": "00cd9edb",
+      "native": "004d2000",
+      "contract": "ECXactualheader, output8h plus capturedbegin/endowner/node fiveDWORDs, RET14h; fullrange captures head/minimum beforecall"
+    },
+    {
+      "function": "00cd9ec0",
+      "address": "00cd9ee7",
+      "native": "00bf65ac",
+      "contract": "cdecl reloaded currenthead; ADDESP4 atCD9EEC; clearhead/count afterward"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00cc9e30",
+      "last_instruction": "00cc9e6f",
+      "last_instruction_length": 1,
+      "end_inclusive": "00cc9e6f",
+      "end_exclusive": "00cc9e70",
+      "span": 64,
+      "caller_reference": "CRT initializer table DWORD at00ce2828",
+      "manual_calls": [
+        {
+          "call_site": "00cc9e35",
+          "callee": "004c27a0",
+          "contract": "ECX=E18A7C although leaf consumes no input, EAXactual18h; no stack args",
+          "bytes": "e866897fff"
+        },
+        {
+          "call_site": "00cc9e69",
+          "callee": "00bf6ff5",
+          "contract": "cdecl realatexit callbackCD9EC0; POP ECXatCC9E6E cleans4; EAXreturn0/-1",
+          "bytes": "e887d1f2ff"
+        }
+      ],
+      "mechanical_audit": "two manual call rows not attributed to enclosing CC8930; primary will define after lease release and then promote these to address/native rows"
+    }
+  ],
+  "excluded_tail_calls": [],
+  "library_equivalence": [
+    {
+      "native": "004c27a0",
+      "reuse": "0086ac00",
+      "length": 55,
+      "equal_except_call_displacements": true,
+      "sha256": "f6b8543dee21f2e1d40338b89f9b2c97ac40c069abf39ae6b54ead3ca0064a96",
+      "reuse_sha256": "72e93bea65cb4f0cc6a67b12f44bd1edb7dc2f01241e8c0d52407815da81982b",
+      "call_sites": [
+        {
+          "function": "004c27a0",
+          "address": "004c27a2",
+          "native": "00bf681b"
+        },
+        {
+          "function": "0086ac00",
+          "address": "0086ac02",
+          "native": "00bf681b"
+        }
+      ]
+    },
+    {
+      "native": "004d2000",
+      "reuse": "0086ee50",
+      "length": 201,
+      "equal_except_call_displacements": true,
+      "sha256": "0569c1095f3b8b24b5e3f0463f3c56f5eed45b6a4be3c3dcb44dd315c90eb40f",
+      "reuse_sha256": "d54906fc02e0850e2b1742054193f262f4dd9d491830c722ee573220ec884bf5",
+      "call_sites": [
+        {
+          "function": "004d2000",
+          "address": "004d201a",
+          "native": "00bf6713"
+        },
+        {
+          "function": "004d2000",
+          "address": "004d2036",
+          "native": "00bf6713"
+        },
+        {
+          "function": "004d2000",
+          "address": "004d204a",
+          "native": "004c18d0"
+        },
+        {
+          "function": "004d2000",
+          "address": "004d208a",
+          "native": "00bf6713"
+        },
+        {
+          "function": "004d2000",
+          "address": "004d2099",
+          "native": "004b75b0"
+        },
+        {
+          "function": "004d2000",
+          "address": "004d20a7",
+          "native": "004cfb70"
+        },
+        {
+          "function": "0086ee50",
+          "address": "0086ee6a",
+          "native": "00bf6713"
+        },
+        {
+          "function": "0086ee50",
+          "address": "0086ee86",
+          "native": "00bf6713"
+        },
+        {
+          "function": "0086ee50",
+          "address": "0086ee9a",
+          "native": "0086aa60"
+        },
+        {
+          "function": "0086ee50",
+          "address": "0086eeda",
+          "native": "00bf6713"
+        },
+        {
+          "function": "0086ee50",
+          "address": "0086eee9",
+          "native": "00869a20"
+        },
+        {
+          "function": "0086ee50",
+          "address": "0086eef7",
+          "native": "0086e8a0"
+        }
+      ]
+    },
+    {
+      "native": "004c18d0",
+      "reuse": "0086aa60",
+      "length": 53,
+      "equal_except_call_displacements": true,
+      "sha256": "b92658468cb6a1b972e7596e71d8625f19d6875a0b32ac4e98de6f897aa34f43",
+      "reuse_sha256": "da289bbd106b1b525a8805157a5948f2ca4aec2a24ed0986a20cbbb5dcd8229a",
+      "call_sites": [
+        {
+          "function": "004c18d0",
+          "address": "004c18e7",
+          "native": "004c18d0"
+        },
+        {
+          "function": "004c18d0",
+          "address": "004c18ef",
+          "native": "00bf65ac"
+        },
+        {
+          "function": "0086aa60",
+          "address": "0086aa77",
+          "native": "0086aa60"
+        },
+        {
+          "function": "0086aa60",
+          "address": "0086aa7f",
+          "native": "00bf65ac"
+        }
+      ]
+    }
+  ],
+  "library_coverage": "No library reconstruction/name claims. Reused allocator and fullrange+recursive erase only.4CFB70 partial erase has distinct EH prolog and is not claimed equivalent to86E8A0; valid static fullrange never reaches it.",
+  "unowned_listing_gaps": [
+    {
+      "function": "004c18d0",
+      "gap_start": "004c18f4",
+      "gap_end_exclusive": "004c18ff",
+      "after_call": "004c18ef",
+      "continuation": "ADDESP4;CMPnil;MOV EDI,ESI;JE4C18E1",
+      "last_instruction": "004c1902",
+      "last_instruction_length": 3,
+      "end_inclusive": "004c1904",
+      "evidence": "full53-byte disk/live equality and reuse86AA60; worker made no repairs"
+    }
+  ],
+  "layout": {
+    "header": "actual12h atE18A7C; opaqueDWORD0 preserved; head+4/count+8",
+    "preimage": "analysis12bytes zero; source borrows caller storage; no second staticheader",
+    "sentinel": "18h allocation; null links0/4/8, color14=1,nil15=0, then initializer setsnil1/selflinks; key/valueC/10 and padding16/17 retain allocationpreimages",
+    "nodes": "18h key signedDWORD+C, mappedfloatbits+10; payloads not owningpointers"
+  },
+  "source_contract": {
+    "binding": "once before startup; borrowedheader must live through realCRTatexit; no standalone ownedmap or privatecallbacklist",
+    "registration": "real std::atexit(destroy callback), actual0/-1 result; failedregistration does not rollback",
+    "exceptions": "allocation failure beforepublication; erasure failure leaves laterfree/clearunexecuted; supported validfullrange has no throwingpayloaddestructor; originalFH3/SEH/concurrentmutation excluded",
+    "unknown_library": "no fake4D6900 insertion interface or successful empty substitute"
+  },
+  "corrections": [
+    {
+      "was": "CD9EC0 stopped at returningfreeCALL, hidingclears andRET",
+      "is": "primary completed23instructions0gaps throughCD9EFF, preserved oldname and savedexport",
+      "evidence": "reports/native_input_deadline_map_flow_repair.json preserves initialpartialrepair; reports/native_input_deadline_map_function_definitions.json records finalrecreate; workerreadback fullbody"
+    },
+    {
+      "was": "inventorylabelCG_static_init forCD9EC0",
+      "is": "body is destructor registered byCC9E30; name retained pendingprimary annotation",
+      "evidence": "CC9E5A pushesCD9EC0 beforeBF6FF5; CD9EDB erasesrange andCD9EE7 freeshead"
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 Win32 Release /W4 /WX exit0",
+    "ctest": "2/2 passed",
+    "seeds": "8/8 matched",
+    "fixture": "one ignored manifested archive-only process; realCRTatexit registration0; actual18h sentinel+3 manuallypopulated valid nodes; post-atexit observer seesheadnull/count0/opaqueDWORDunchanged",
+    "not_tested": "native differential, insertion, allocation/registrationfailures, partialerase, SDK, application or game execution",
+    "call_audit": "23 address/native rows checked,0failed;2 missinginitializer CALLs manually verified and explicitly separated"
+  },
+  "deferred_lookup": {
+    "address": "004d6900",
+    "native_abi": "ECXactualheader, stackkeypointer, EAXmappedaddress, RET4",
+    "covered": "read-only contract/caller discovery only; no implementation or fragmentclaim",
+    "calls": [
+      {
+        "function": "004d6900",
+        "address": "004d6957",
+        "native": "004d3cd0",
+        "contract": "missingkey output8h/hintowner/node/pairpointer; RET10h; copykey/+0mappedword beforecall"
+      },
+      {
+        "function": "004d6900",
+        "address": "004d6965",
+        "native": "00bf6713",
+        "contract": "nulloutputowner validationmayreturn; no inventedrepair"
+      },
+      {
+        "function": "004d6900",
+        "address": "004d696f",
+        "native": "00bf6713",
+        "contract": "outputnode vs currenthead validationmayreturn, thenreturnnode+10"
+      }
+    ],
+    "caller_instances": {
+      "E18A7C": "16 calls4D8CD0 plus4D9314/4D9351",
+      "game+5C8": "4D9431/4D9452/4D94B5/4D94D6"
+    },
+    "key_timing": "signedkey capturedonce for lowerboundloop4D6916, reread4D6935/4D693C beforepaircopy",
+    "missing_dependencies": [
+      "004d3cd0..004d3e8b hintedinsert",
+      "004d1f40..004d1ff8 uniqueinsert",
+      "004cf010..004cf1fb insertion/rebalance/lengtherror",
+      "004c27e0..004c281e allocation/paircopy",
+      "004b7520 decrement;004b75b0 increment;004b5ac0 validation/equality;004bdd00/004bdd50 rotations; real native length-error contracts"
+    ],
+    "handoff": "local/native_input_deadline_map_lookup_next_ag.md"
+  },
+  "artifacts": [
+    {
+      "path": "build\\win32\\Release\\bsp_core.lib",
+      "sha256": "d4edb3931b926c26bacbffad9ce51e17d0f4b7e0ecbf2a727016077926a4b4be"
+    },
+    {
+      "path": "local\\native_input_action_deadline_map_ag_build.log",
+      "sha256": "373b321beef1e557cef1017e69e445f7972c4cbdcb22d13dfd4750428d933008"
+    },
+    {
+      "path": "local\\native_input_action_deadline_map_ag_probe.log",
+      "sha256": "868d89b21466da0f31198a41fd640c18ceb2bdadaf7ba307e15a368b60866078"
+    },
+    {
+      "path": "local\\native_input_action_deadline_map_ag_seeds.json",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local\\deadline_map_equivalence.json",
+      "sha256": "d98f945f8a5ed48c6f8e8726a329a23c39a94554854007eece3d6e41ef4cae0a"
+    }
+  ]
+}
