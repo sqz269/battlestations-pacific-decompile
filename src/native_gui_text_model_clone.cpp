@@ -67,10 +67,8 @@ NativeGuiTextModelBaseCopyResult copy_native_gui_text_model_base_00b6f150_fragme
     require_pair(source, destination);
     auto& src = source.storage.node;
     auto& dst = destination.storage.node;
-    // Native signed comparison atB6F15C. Existing generated point-light
-    // vectors cannot stand in for the physical source/reverse-link owners.
-    if (src.point_lights_164.count > 0)
-        return NativeGuiTextModelBaseCopyResult::point_light_owners_required;
+    copy_native_node_point_light_links_00b6f150_fragment(
+        destination.environment.nodes.point_lights, src, dst);
 
     // Current50 is captured before the scalar stores; no native callback
     // occurs between these loads and its invocation.

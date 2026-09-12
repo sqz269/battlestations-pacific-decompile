@@ -29,9 +29,10 @@ using DiagnosticPointLights = std::vector<GeneratedModelPointLightLinks*>;
 std::uint32_t diagnostic_light_count(void* context) noexcept {
     return static_cast<std::uint32_t>(static_cast<DiagnosticPointLights*>(context)->size());
 }
-GeneratedModelPointLightLinks& diagnostic_light_element(void* context,
-    std::uint32_t index) noexcept {
-    return *(*static_cast<DiagnosticPointLights*>(context))[index];
+void remove_diagnostic_light_backlink(void* context,
+    std::uint32_t index, CameraTransform& node) noexcept {
+    remove_point_light_model_link_00b7c1a0(
+        *(*static_cast<DiagnosticPointLights*>(context))[index], node);
 }
 void shrink_diagnostic_lights_to_zero(void* context) noexcept {
     resize_generated_model_point_lights_00b6ec70(*static_cast<DiagnosticPointLights*>(context), 0);
@@ -183,8 +184,7 @@ void release_node_logical_00b6f310(NodeLogicalReleaseState state) noexcept {
     CameraTransform& node = state.transform;
     std::uint32_t index = 0;
     while (index < state.point_lights.live_count(state.point_lights.context)) {
-        auto& light = state.point_lights.live_element(state.point_lights.context, index);
-        remove_point_light_model_link_00b7c1a0(light, node);
+        state.point_lights.remove_live_backlink(state.point_lights.context, index, node);
         ++index;
     }
     state.point_lights.shrink_to_zero(state.point_lights.context);
@@ -214,7 +214,7 @@ void release_node_logical_00b6f310(NodeLogicalReleaseState state) noexcept {
 
 void release_generated_model_00b6f310(GeneratedModelLifetime& model) noexcept {
     release_node_logical_00b6f310({model.runtime, model.transform(), model.released_byte_44,
-        model, {&model.point_lights_164, diagnostic_light_count, diagnostic_light_element,
+        model, {&model.point_lights_164, diagnostic_light_count, remove_diagnostic_light_backlink,
             shrink_diagnostic_lights_to_zero}});
 }
 

@@ -10,6 +10,9 @@ class GuiWidgetOwner;
 class GuiWidgetOwnerRuntime;
 class GuiTextLifetime;
 class GuiTextChildDeletion;
+class GuiTimedEntryOwner;
+class GuiWidgetClipRefreshOperation;
+struct GuiWidgetClipRefreshServices;
 
 // Derived companions operate on the owner's SAME layout/transform. Factory
 // creation performs the derived constructor, before node binding/parenting.
@@ -26,6 +29,9 @@ public:
     // Current70 is required by recursive clip refresh. Profiles without an
     // established implementation fail explicitly, never silently complete it.
     virtual void refresh_clip70(GuiWidgetOwner&);
+    virtual float* read_color54(GuiWidgetOwner&, float (&)[4]);
+    virtual void set_alpha4c(GuiWidgetOwner&, float);
+    virtual std::int32_t type5c(GuiWidgetOwner&);
     // Host-only preflight for retained C++ continuations before scalar deletion
     // starts. Not another native slot or side effect. Types with pending frames
     // reject deletion here; existing types have no such continuation metadata.
@@ -58,6 +64,8 @@ struct GuiWidgetOwnerEnvironment {
     NativeModelEnvironment& models;
     GuiWidgetNativeCalls& native;
     GuiWidgetImplementationFactory make_type;
+    // Configure after building the SAME runtime/material service domain.
+    GuiWidgetClipRefreshServices* clip{};
 };
 
 // Reconstructed logical widget owner, not a raw100h ABI replacement. Existing
@@ -80,6 +88,7 @@ struct GuiWidgetBaseExtraFields {
 };
 class GuiWidgetOwner final {
 public:
+    ~GuiWidgetOwner() noexcept;
     GuiLayoutWidget& layout() noexcept { return layout_; }
     GuiWidgetSceneFlags& scene_flags() noexcept { return scene_; }
     GuiWidgetBaseExtraFields& extra_fields() noexcept { return extra_; }
@@ -89,6 +98,14 @@ public:
     // Not another Text state or factory registration. Null after typed teardown.
     GuiTextLifetime* text_lifetime() noexcept { return text_lifetime_; }
     GuiWidgetTypeImplementation& implementation();
+    GuiWidgetOwnerRuntime& runtime() noexcept { return runtime_; }
+    GuiTimedEntryOwner& timed_entries(const volatile float& one_00d7a24c);
+    void require_timed_entry_ownership() const;
+    void retire_timed_entries_00aa9730_fragment();
+    void base_refresh_clip70_00aaa3e0();
+    void resume_base_clip_after_child70();
+    bool has_pending_base_clip() const noexcept;
+    void require_no_active_owned_operation() const;
 
     void bind_scene_00aa6720(NativeNodeBinding*) noexcept;
     void base_constructed74_00a9ac00() noexcept; // proven single RET, no Ghidra function
@@ -116,6 +133,9 @@ private:
     NativeNodeBinding* node_{};
     GuiTextLifetime* text_lifetime_{};
     std::unique_ptr<GuiWidgetTypeImplementation> implementation_;
+    std::unique_ptr<GuiTimedEntryOwner> timed_entries_;
+    std::unique_ptr<GuiWidgetClipRefreshOperation> base_clip_;
+    GuiWidgetClipRefreshServices* base_clip_services_{};
 };
 
 // Lifetime associations only. GUI storage is owned by GuiLayoutPage; native

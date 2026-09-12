@@ -38,14 +38,12 @@ std::uint32_t NativeCameraReference::light_count(void* context) noexcept {
         std::terminate();
     return static_cast<std::uint32_t>(array.count);
 }
-GeneratedModelPointLightLinks& NativeCameraReference::light_element(void* context,
-    std::uint32_t index) noexcept {
-    const auto& array = static_cast<NativeCameraReference*>(context)->owner_.storage.node.point_lights_164;
-    // The shared forward loop obtained a valid live count; no callback occurs
-    // before this current begin/element load. Concurrent mutation is unsupported.
-    auto* light = array.begin[index];
-    if (!light) std::terminate();
-    return *light;
+void NativeCameraReference::remove_light_backlink(void* context,
+    std::uint32_t index, CameraTransform&) noexcept {
+    auto& reference = *static_cast<NativeCameraReference*>(context);
+    auto& node = reference.owner_.storage.node;
+    auto& light = reference.owner_.environment.nodes.point_lights.light(node.point_lights_164.begin[index]);
+    remove_native_point_light_backlink_00b7c1a0(light, node);
 }
 void NativeCameraReference::shrink_lights(void* context) noexcept {
     auto& array = static_cast<NativeCameraReference*>(context)->owner_.storage.node.point_lights_164;
@@ -57,7 +55,7 @@ void NativeCameraReference::release_model_virtual18_00b6f310() noexcept {
     require_camera_slot(owner_, 0x18, 0x00b6f310u);
     release_node_logical_00b6f310({runtime_, owner_.node.transform,
         owner_.storage.node.released_44, *this,
-        {this, light_count, light_element, shrink_lights}});
+        {this, light_count, remove_light_backlink, shrink_lights}});
     // The shared self release may have retired both companions.
 }
 void NativeCameraReference::remove_scene_virtual54(SceneResource* expected, bool recurse) noexcept {

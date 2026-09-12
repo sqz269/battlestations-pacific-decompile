@@ -1,0 +1,68 @@
+{
+  "reason": "Original ECX, stack cleanup and result verified in assembly; unused_edx records register storage only.",
+  "entries": [
+    {
+      "address": "00a88770",
+      "proposed": "void* __fastcall BSP_SoundSystem_Initialize(void* self, void* unused_edx, byte disabled, uint unused0, uint unused1)",
+      "before": "Function: BSP_SoundSystem_Initialize at 00a88770\nSignature: undefined BSP_SoundSystem_Initialize(void)\nEntry: 00a88770\nBody: 00a88770 - 00a88aa8",
+      "apply": "Successfully set prototype for function at 00a88770 with __fastcall calling convention",
+      "after": "Function: BSP_SoundSystem_Initialize at 00a88770\nSignature: void * __fastcall BSP_SoundSystem_Initialize(void * self, void * unused_edx, byte disabled, uint unused0, uint unused1)\nEntry: 00a88770\nBody: 00a88770 - 00a88aa8",
+      "readback_verified": true
+    },
+    {
+      "address": "00a7b190",
+      "proposed": "void* __fastcall BSP_SoundSystem_RegisterSingletonBase_Provisional(void* self)",
+      "before": "Function: BSP_SoundSystem_RegisterSingletonBase_Provisional at 00a7b190\nSignature: undefined BSP_SoundSystem_RegisterSingletonBase_Provisional(void)\nEntry: 00a7b190\nBody: 00a7b190 - 00a7b220",
+      "apply": "Successfully set prototype for function at 00a7b190 with __fastcall calling convention",
+      "after": "Function: BSP_SoundSystem_RegisterSingletonBase_Provisional at 00a7b190\nSignature: void * __fastcall BSP_SoundSystem_RegisterSingletonBase_Provisional(void * self)\nEntry: 00a7b190\nBody: 00a7b190 - 00a7b220",
+      "readback_verified": true
+    },
+    {
+      "address": "00a880e0",
+      "proposed": "void* __fastcall BSP_SoundAuxiliaryTree_RegisterSingletonBase_Provisional(void* self)",
+      "before": "Function: BSP_SoundAuxiliaryTree_RegisterSingletonBase_Provisional at 00a880e0\nSignature: undefined BSP_SoundAuxiliaryTree_RegisterSingletonBase_Provisional(void)\nEntry: 00a880e0\nBody: 00a880e0 - 00a88170",
+      "apply": "Successfully set prototype for function at 00a880e0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundAuxiliaryTree_RegisterSingletonBase_Provisional at 00a880e0\nSignature: void * __fastcall BSP_SoundAuxiliaryTree_RegisterSingletonBase_Provisional(void * self)\nEntry: 00a880e0\nBody: 00a880e0 - 00a88170",
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a88770",
+        "prototype": "void* __fastcall BSP_SoundSystem_Initialize(void* self, void* unused_edx, byte disabled, uint unused0, uint unused1)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a88770 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7b190",
+        "prototype": "void* __fastcall BSP_SoundSystem_RegisterSingletonBase_Provisional(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7b190 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a880e0",
+        "prototype": "void* __fastcall BSP_SoundAuxiliaryTree_RegisterSingletonBase_Provisional(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a880e0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

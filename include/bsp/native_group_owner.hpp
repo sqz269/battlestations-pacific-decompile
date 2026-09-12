@@ -102,7 +102,7 @@ private:
     NativeGroupCompanionDisposal disposal_;
     Phase phase_{Phase::bound};
     static std::uint32_t light_count(void*) noexcept;
-    static GeneratedModelPointLightLinks& light_element(void*, std::uint32_t) noexcept;
+    static void remove_light_backlink(void*, std::uint32_t, CameraTransform&) noexcept;
     static void shrink_lights(void*) noexcept;
 };
 } // namespace bsp

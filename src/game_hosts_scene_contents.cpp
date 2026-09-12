@@ -5,6 +5,7 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_vfs.hpp"
+#include "bsp/cruise_speed_setting.hpp"
 #include "bsp/scene_traffic_groups.hpp"
 #include "bsp/mission_scene_contents.hpp"
 #include "bsp/mission_scene_load.hpp"
@@ -970,9 +971,42 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
         ++tally.created;
         ++owner.summary.created;
         // 0046d5b0: operator new(0Ch) then 00922e20 wraps the bag and the holder
-        // is stored at entity+C0h. The holder is the native 0Ch record with the
-        // vtable at 00d03d94, which this process does not build.
-        owner.log.unimplemented("SceneContents::property_bag_holder", "00922e20");
+        // is stored at entity+C0h. The 0Ch record with vtable 00d03d94 is not
+        // built here, but milestone 2q keeps what 00822C20's slot-0A0h arm
+        // reads out of it: the holder's kind tag is 1 (00922e35 stores the
+        // literal next to the cloned bag) and the payload is this same merged
+        // bag, so the two finds 00823576 and 00823590 are answered from it.
+        owner.log.implemented("SceneContents::property_bag_holder", "00922e20");
+        const SceneProperty* launch_prop = bag.find(kSceneUnitShipYardLaunchKey);
+        if (launch_prop != nullptr && !launch_prop->values.empty()) {
+            std::int32_t flag = 0;
+            if (scene_scan_int(launch_prop->values.back(), flag)) {
+                stored.shipyard_launch = flag != 0;
+            } else {
+                stored.shipyard_launch = launch_prop->values.back() == "true";
+            }
+        }
+        const SceneProperty* speed_prop = bag.find(kSceneUnitStartSpeedKey);
+        if (speed_prop != nullptr && !speed_prop->values.empty()) {
+            stored.start_speed_present = true;
+            // 0082359C CMP [EAX+4h],EDI with EDI zero: type 0 (`I`) takes the
+            // CVTSI2SS at 0082359E, every other type the float32 load at
+            // 008235A5. The bag keeps the authored letter, so the letter is
+            // what selects the arm here.
+            stored.start_speed_type
+                = (speed_prop->type_letter == "I")
+                      ? static_cast<int>(ScenePropertyType::Int)
+                      : static_cast<int>(ScenePropertyType::Float);
+            std::int32_t as_int = 0;
+            if (scene_scan_int(speed_prop->values.back(), as_int)) {
+                stored.start_speed_int = as_int;
+            }
+            float as_float = 0.0f;
+            if (scene_scan_float(speed_prop->values.back(), as_float)) {
+                stored.start_speed_float = as_float;
+            }
+            ++owner.summary.start_speed_entities;
+        }
     } else {
         stored.skipped_because = "the creator returned no instance";
     }

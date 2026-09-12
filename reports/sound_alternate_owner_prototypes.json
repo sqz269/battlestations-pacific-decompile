@@ -1,0 +1,374 @@
+{
+  "reason": "Original ECX, stack cleanup and result verified in assembly; unused_edx records register storage only.",
+  "entries": [
+    {
+      "address": "00a778d0",
+      "proposed": "void* __fastcall BSP_StreamedDialogManager_ConstructBase(void* self)",
+      "before": "Function: FUN_00a778d0 at 00a778d0\nSignature: undefined FUN_00a778d0(void)\nEntry: 00a778d0\nBody: 00a778d0 - 00a77960",
+      "apply": "Successfully set prototype for function at 00a778d0 with __fastcall calling convention",
+      "after": "Function: BSP_StreamedDialogManager_ConstructBase at 00a778d0\nSignature: void * __fastcall BSP_StreamedDialogManager_ConstructBase(void * self)\nEntry: 00a778d0\nBody: 00a778d0 - 00a77960",
+      "readback_verified": true
+    },
+    {
+      "address": "00a77970",
+      "proposed": "void __fastcall BSP_StreamedDialogManager_DestroyBase(void* self)",
+      "before": "Function: FUN_00a77970 at 00a77970\nSignature: undefined FUN_00a77970(void)\nEntry: 00a77970\nBody: 00a77970 - 00a77a08",
+      "apply": "Successfully set prototype for function at 00a77970 with __fastcall calling convention",
+      "after": "Function: BSP_StreamedDialogManager_DestroyBase at 00a77970\nSignature: void __fastcall BSP_StreamedDialogManager_DestroyBase(void * self)\nEntry: 00a77970\nBody: 00a77970 - 00a77a08",
+      "readback_verified": true
+    },
+    {
+      "address": "00a79230",
+      "proposed": "void* __fastcall BSP_StreamedDialogManager_Construct(void* self)",
+      "before": "Function: BSP_DialogStreamTable_Load at 00a79230\nSignature: undefined BSP_DialogStreamTable_Load(void)\nEntry: 00a79230\nBody: 00a79230 - 00a79478",
+      "apply": "Successfully set prototype for function at 00a79230 with __fastcall calling convention",
+      "after": "Function: BSP_DialogStreamTable_Load at 00a79230\nSignature: void * __fastcall BSP_DialogStreamTable_Load(void * self)\nEntry: 00a79230\nBody: 00a79230 - 00a79478",
+      "readback_verified": true
+    },
+    {
+      "address": "00a790d0",
+      "proposed": "void* __fastcall BSP_StreamedDialogManager_ScalarDelete(void* self, void* unused_edx, byte flags)",
+      "before": "Function: FUN_00a790d0 at 00a790d0\nSignature: undefined FUN_00a790d0(void)\nEntry: 00a790d0\nBody: 00a790d0 - 00a790ed",
+      "apply": "Successfully set prototype for function at 00a790d0 with __fastcall calling convention",
+      "after": "Function: BSP_StreamedDialogManager_ScalarDelete at 00a790d0\nSignature: void * __fastcall BSP_StreamedDialogManager_ScalarDelete(void * self, void * unused_edx, byte flags)\nEntry: 00a790d0\nBody: 00a790d0 - 00a790ed",
+      "readback_verified": true
+    },
+    {
+      "address": "00a78fb0",
+      "proposed": "void __fastcall BSP_StreamedDialogManager_Destroy(void* self)",
+      "before": "Function: FUN_00a78fb0 at 00a78fb0\nSignature: undefined FUN_00a78fb0(void)\nEntry: 00a78fb0\nBody: 00a78fb0 - 00a790ba",
+      "apply": "Successfully set prototype for function at 00a78fb0 with __fastcall calling convention",
+      "after": "Function: BSP_StreamedDialogManager_Destroy at 00a78fb0\nSignature: void __fastcall BSP_StreamedDialogManager_Destroy(void * self)\nEntry: 00a78fb0\nBody: 00a78fb0 - 00a790ba",
+      "readback_verified": true
+    },
+    {
+      "address": "00a789c0",
+      "proposed": "void __fastcall BSP_StreamedDialogManager_Update(void* self, void* unused_edx, float dt)",
+      "before": "Function: FUN_00a789c0 at 00a789c0\nSignature: undefined FUN_00a789c0(void)\nEntry: 00a789c0\nBody: 00a789c0 - 00a78cdd",
+      "apply": "Successfully set prototype for function at 00a789c0 with __fastcall calling convention",
+      "after": "Function: BSP_StreamedDialogManager_Update at 00a789c0\nSignature: void __fastcall BSP_StreamedDialogManager_Update(void * self, void * unused_edx, float dt)\nEntry: 00a789c0\nBody: 00a789c0 - 00a78cdd",
+      "readback_verified": true
+    },
+    {
+      "address": "00a77c10",
+      "proposed": "void __fastcall BSP_StreamedDialogManager_ClearChannels(void* self)",
+      "before": "Function: FUN_00a77c10 at 00a77c10\nSignature: undefined FUN_00a77c10(void)\nEntry: 00a77c10\nBody: 00a77c10 - 00a77cfa",
+      "apply": "Successfully set prototype for function at 00a77c10 with __fastcall calling convention",
+      "after": "Function: BSP_StreamedDialogManager_ClearChannels at 00a77c10\nSignature: void __fastcall BSP_StreamedDialogManager_ClearChannels(void * self)\nEntry: 00a77c10\nBody: 00a77c10 - 00a77cfa",
+      "readback_verified": true
+    },
+    {
+      "address": "00a78150",
+      "proposed": "void* __fastcall BSP_StreamedDialogLogicalProfileA_Construct(void* self, void* unused_edx, uint category)",
+      "before": "Function: FUN_00a78150 at 00a78150\nSignature: undefined FUN_00a78150(void)\nEntry: 00a78150\nBody: 00a78150 - 00a781b4",
+      "apply": "Successfully set prototype for function at 00a78150 with __fastcall calling convention",
+      "after": "Function: BSP_StreamedDialogLogicalProfileA_Construct at 00a78150\nSignature: void * __fastcall BSP_StreamedDialogLogicalProfileA_Construct(void * self, void * unused_edx, uint category)\nEntry: 00a78150\nBody: 00a78150 - 00a781b4",
+      "readback_verified": true
+    },
+    {
+      "address": "00a781c0",
+      "proposed": "void* __fastcall BSP_StreamedDialogLogicalProfileB_Construct(void* self, void* unused_edx, uint category)",
+      "before": "Function: FUN_00a781c0 at 00a781c0\nSignature: undefined FUN_00a781c0(void)\nEntry: 00a781c0\nBody: 00a781c0 - 00a78223",
+      "apply": "Successfully set prototype for function at 00a781c0 with __fastcall calling convention",
+      "after": "Function: BSP_StreamedDialogLogicalProfileB_Construct at 00a781c0\nSignature: void * __fastcall BSP_StreamedDialogLogicalProfileB_Construct(void * self, void * unused_edx, uint category)\nEntry: 00a781c0\nBody: 00a781c0 - 00a78223",
+      "readback_verified": true
+    },
+    {
+      "address": "00a780b0",
+      "proposed": "void __fastcall BSP_StreamedDialogLogical_Destroy(void* self)",
+      "before": "Function: FUN_00a780b0 at 00a780b0\nSignature: undefined FUN_00a780b0(void)\nEntry: 00a780b0\nBody: 00a780b0 - 00a7814f",
+      "apply": "Successfully set prototype for function at 00a780b0 with __fastcall calling convention",
+      "after": "Function: BSP_StreamedDialogLogical_Destroy at 00a780b0\nSignature: void __fastcall BSP_StreamedDialogLogical_Destroy(void * self)\nEntry: 00a780b0\nBody: 00a780b0 - 00a7814f",
+      "readback_verified": true
+    },
+    {
+      "address": "00a77dd0",
+      "proposed": "void __fastcall BSP_StreamedDialogConfiguration_Destroy(void* self)",
+      "before": "Function: FUN_00a77dd0 at 00a77dd0\nSignature: undefined FUN_00a77dd0(void)\nEntry: 00a77dd0\nBody: 00a77dd0 - 00a77e39",
+      "apply": "Successfully set prototype for function at 00a77dd0 with __fastcall calling convention",
+      "after": "Function: BSP_StreamedDialogConfiguration_Destroy at 00a77dd0\nSignature: void __fastcall BSP_StreamedDialogConfiguration_Destroy(void * self)\nEntry: 00a77dd0\nBody: 00a77dd0 - 00a77e39",
+      "readback_verified": true
+    },
+    {
+      "address": "004c87d0",
+      "proposed": "void* __fastcall BSP_StreamedDialogRecord_Construct(void* self)",
+      "before": "Function: BSP_StreamedDialogRecord_Construct at 004c87d0\nSignature: undefined BSP_StreamedDialogRecord_Construct(void)\nEntry: 004c87d0\nBody: 004c87d0 - 004c87ef",
+      "apply": "Successfully set prototype for function at 004c87d0 with __fastcall calling convention",
+      "after": "Function: BSP_StreamedDialogRecord_Construct at 004c87d0\nSignature: void * __fastcall BSP_StreamedDialogRecord_Construct(void * self)\nEntry: 004c87d0\nBody: 004c87d0 - 004c87ef",
+      "readback_verified": true
+    },
+    {
+      "address": "004c87f0",
+      "proposed": "void __fastcall BSP_StreamedDialogRecord_Destroy(void* self)",
+      "before": "Function: FUN_004c87f0 at 004c87f0\nSignature: undefined FUN_004c87f0(void)\nEntry: 004c87f0\nBody: 004c87f0 - 004c8890",
+      "apply": "Successfully set prototype for function at 004c87f0 with __fastcall calling convention",
+      "after": "Function: BSP_StreamedDialogRecord_Destroy at 004c87f0\nSignature: void __fastcall BSP_StreamedDialogRecord_Destroy(void * self)\nEntry: 004c87f0\nBody: 004c87f0 - 004c8890",
+      "readback_verified": true
+    },
+    {
+      "address": "00a77d00",
+      "proposed": "void* __fastcall BSP_StreamedDialogPhysicalPair_Construct(void* self)",
+      "before": "Function: BSP_StreamedDialogPhysicalPair_Construct at 00a77d00\nSignature: undefined BSP_StreamedDialogPhysicalPair_Construct(void)\nEntry: 00a77d00\nBody: 00a77d00 - 00a77d0f",
+      "apply": "Successfully set prototype for function at 00a77d00 with __fastcall calling convention",
+      "after": "Function: BSP_StreamedDialogPhysicalPair_Construct at 00a77d00\nSignature: void * __fastcall BSP_StreamedDialogPhysicalPair_Construct(void * self)\nEntry: 00a77d00\nBody: 00a77d00 - 00a77d0f",
+      "readback_verified": true
+    },
+    {
+      "address": "00a77d10",
+      "proposed": "void __fastcall BSP_StreamedDialogPhysicalPair_Destroy(void* self)",
+      "before": "Function: FUN_00a77d10 at 00a77d10\nSignature: undefined FUN_00a77d10(void)\nEntry: 00a77d10\nBody: 00a77d10 - 00a77d94",
+      "apply": "Successfully set prototype for function at 00a77d10 with __fastcall calling convention",
+      "after": "Function: BSP_StreamedDialogPhysicalPair_Destroy at 00a77d10\nSignature: void __fastcall BSP_StreamedDialogPhysicalPair_Destroy(void * self)\nEntry: 00a77d10\nBody: 00a77d10 - 00a77d94",
+      "readback_verified": true
+    },
+    {
+      "address": "00a778c0",
+      "proposed": "void* __fastcall BSP_StreamedDialogReference_Construct(void* self)",
+      "before": "Function: BSP_StreamedDialogReference_Construct at 00a778c0\nSignature: undefined BSP_StreamedDialogReference_Construct(void)\nEntry: 00a778c0\nBody: 00a778c0 - 00a778c8",
+      "apply": "Successfully set prototype for function at 00a778c0 with __fastcall calling convention",
+      "after": "Function: BSP_StreamedDialogReference_Construct at 00a778c0\nSignature: void * __fastcall BSP_StreamedDialogReference_Construct(void * self)\nEntry: 00a778c0\nBody: 00a778c0 - 00a778c8",
+      "readback_verified": true
+    },
+    {
+      "address": "00a85c00",
+      "proposed": "void __fastcall BSP_SoundStream_RequestFade(void* self)",
+      "before": "Function: FUN_00a85c00 at 00a85c00\nSignature: undefined FUN_00a85c00(void)\nEntry: 00a85c00\nBody: 00a85c00 - 00a85c13",
+      "apply": "Successfully set prototype for function at 00a85c00 with __fastcall calling convention",
+      "after": "Function: BSP_SoundStream_RequestFade at 00a85c00\nSignature: void __fastcall BSP_SoundStream_RequestFade(void * self)\nEntry: 00a85c00\nBody: 00a85c00 - 00a85c13",
+      "readback_verified": true
+    },
+    {
+      "address": "00a86f40",
+      "proposed": "void __fastcall BSP_SoundStream_RequestStop(void* self)",
+      "before": "Function: FUN_00a86f40 at 00a86f40\nSignature: undefined FUN_00a86f40(void)\nEntry: 00a86f40\nBody: 00a86f40 - 00a86fa7",
+      "apply": "Successfully set prototype for function at 00a86f40 with __fastcall calling convention",
+      "after": "Function: BSP_SoundStream_RequestStop at 00a86f40\nSignature: void __fastcall BSP_SoundStream_RequestStop(void * self)\nEntry: 00a86f40\nBody: 00a86f40 - 00a86fa7",
+      "readback_verified": true
+    },
+    {
+      "address": "00a77ff0",
+      "proposed": "void* __fastcall BSP_SoundStream_CopyName(void* self, void* unused_edx, void* destination)",
+      "before": "Function: FUN_00a77ff0 at 00a77ff0\nSignature: undefined FUN_00a77ff0(void)\nEntry: 00a77ff0\nBody: 00a77ff0 - 00a7803e",
+      "apply": "Successfully set prototype for function at 00a77ff0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundStream_CopyName at 00a77ff0\nSignature: void * __fastcall BSP_SoundStream_CopyName(void * self, void * unused_edx, void * destination)\nEntry: 00a77ff0\nBody: 00a77ff0 - 00a7803e",
+      "readback_verified": true
+    },
+    {
+      "address": "00a791d0",
+      "proposed": "void __fastcall BSP_DialogStreamTable_Destroy(void* self)",
+      "before": "Function: FUN_00a791d0 at 00a791d0\nSignature: undefined FUN_00a791d0(void)\nEntry: 00a791d0\nBody: 00a791d0 - 00a79209",
+      "apply": "Successfully set prototype for function at 00a791d0 with __fastcall calling convention",
+      "after": "Function: BSP_DialogStreamTable_Destroy at 00a791d0\nSignature: void __fastcall BSP_DialogStreamTable_Destroy(void * self)\nEntry: 00a791d0\nBody: 00a791d0 - 00a79209",
+      "readback_verified": true
+    },
+    {
+      "address": "00a796f0",
+      "proposed": "void* __fastcall BSP_DialogStreamTable_ScalarDelete(void* self, void* unused_edx, byte flags)",
+      "before": "Function: FUN_00a796f0 at 00a796f0\nSignature: undefined FUN_00a796f0(void)\nEntry: 00a796f0\nBody: 00a796f0 - 00a7970d",
+      "apply": "Successfully set prototype for function at 00a796f0 with __fastcall calling convention",
+      "after": "Function: BSP_DialogStreamTable_ScalarDelete at 00a796f0\nSignature: void * __fastcall BSP_DialogStreamTable_ScalarDelete(void * self, void * unused_edx, byte flags)\nEntry: 00a796f0\nBody: 00a796f0 - 00a7970d",
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a778d0",
+        "prototype": "void* __fastcall BSP_StreamedDialogManager_ConstructBase(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a778d0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a77970",
+        "prototype": "void __fastcall BSP_StreamedDialogManager_DestroyBase(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a77970 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a79230",
+        "prototype": "void* __fastcall BSP_StreamedDialogManager_Construct(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a79230 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a790d0",
+        "prototype": "void* __fastcall BSP_StreamedDialogManager_ScalarDelete(void* self, void* unused_edx, byte flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a790d0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a78fb0",
+        "prototype": "void __fastcall BSP_StreamedDialogManager_Destroy(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a78fb0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a789c0",
+        "prototype": "void __fastcall BSP_StreamedDialogManager_Update(void* self, void* unused_edx, float dt)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a789c0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a77c10",
+        "prototype": "void __fastcall BSP_StreamedDialogManager_ClearChannels(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a77c10 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a78150",
+        "prototype": "void* __fastcall BSP_StreamedDialogLogicalProfileA_Construct(void* self, void* unused_edx, uint category)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a78150 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a781c0",
+        "prototype": "void* __fastcall BSP_StreamedDialogLogicalProfileB_Construct(void* self, void* unused_edx, uint category)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a781c0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a780b0",
+        "prototype": "void __fastcall BSP_StreamedDialogLogical_Destroy(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a780b0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a77dd0",
+        "prototype": "void __fastcall BSP_StreamedDialogConfiguration_Destroy(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a77dd0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "004c87d0",
+        "prototype": "void* __fastcall BSP_StreamedDialogRecord_Construct(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 004c87d0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "004c87f0",
+        "prototype": "void __fastcall BSP_StreamedDialogRecord_Destroy(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 004c87f0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a77d00",
+        "prototype": "void* __fastcall BSP_StreamedDialogPhysicalPair_Construct(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a77d00 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a77d10",
+        "prototype": "void __fastcall BSP_StreamedDialogPhysicalPair_Destroy(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a77d10 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a778c0",
+        "prototype": "void* __fastcall BSP_StreamedDialogReference_Construct(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a778c0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a85c00",
+        "prototype": "void __fastcall BSP_SoundStream_RequestFade(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a85c00 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a86f40",
+        "prototype": "void __fastcall BSP_SoundStream_RequestStop(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a86f40 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a77ff0",
+        "prototype": "void* __fastcall BSP_SoundStream_CopyName(void* self, void* unused_edx, void* destination)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a77ff0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a791d0",
+        "prototype": "void __fastcall BSP_DialogStreamTable_Destroy(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a791d0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a796f0",
+        "prototype": "void* __fastcall BSP_DialogStreamTable_ScalarDelete(void* self, void* unused_edx, byte flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a796f0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

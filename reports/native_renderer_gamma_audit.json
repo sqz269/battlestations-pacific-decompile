@@ -1,0 +1,594 @@
+{
+  "schema_version": 1,
+  "packet": "native_renderer_gamma_actual4",
+  "status": "complete_raw_gamma_source_build_and_qualified_original_source_ramp_fixture",
+  "base_commit": "b44ac4fae0d8cac994596163ce1ed84cc0ef5e9e",
+  "owned_files": [
+    "include/bsp/native_renderer_gamma.hpp",
+    "src/native_renderer_gamma.cpp",
+    "docs/NATIVE_RENDERER_GAMMA.md",
+    "reports/native_renderer_gamma_audit.json"
+  ],
+  "function": {
+    "kind": "function",
+    "address": "00b21960",
+    "name": "set_native_renderer_gamma_00b21960",
+    "cpp_symbol": "bsp::set_native_renderer_gamma_00b21960",
+    "source": "src/native_renderer_gamma.cpp",
+    "native_end_exclusive": "00b21b3a",
+    "status": "complete_raw_gamma_source_build_and_qualified_original_source_ramp_fixture",
+    "evidence": "reports/native_renderer_gamma_audit.json",
+    "original_and_source_abi": "Native ECX renderer; one actual float callee argument slot; RET4. New C++ interface borrows raw renderer, live requested-slot reference, actual synchronization/pow contexts and separate native literals.",
+    "original_gamma_normal_body_fixture_executed": true,
+    "original_guard_EH_fixture_executed": false,
+    "source_exception_cleanup_fixture_executed": true,
+    "source_SSE2_pow_fixture_executed": false,
+    "abi_compatible": false,
+    "monitor_gamma_modified": false,
+    "game_validated": false
+  },
+  "native_capture": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\native_captures.json",
+    "bytes": 2706,
+    "sha256": "c894c2c90940b83b5414583939ad04c23d47ef1d2ef10b3cf4b2e1e20f719f44"
+  },
+  "complete_emitted_proof": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\proof.json",
+    "bytes": 25225,
+    "sha256": "8a3353a4cc743894d20379b0bea3ea6ddaa503116a2cf804e97acc515c6dfcc0"
+  },
+  "native_function_bytes": 474,
+  "native_EH_bytes": 65,
+  "native_math_device_bytes": 302,
+  "emitted_math_helper_bytes": 330,
+  "emitted_CODE_bytes": 747,
+  "emitted_EH_SafeSEH_metadata_bytes": 80,
+  "source_entry_EH": {
+    "funcinfo": [
+      429065506,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "unwind": [
+      -1,
+      0
+    ],
+    "enabled_load_before_arm": true,
+    "current_mode_before_disarm": true,
+    "unwind_calls_actual_guard_provider": true,
+    "normal_leave_after_cleanup_disarm": true,
+    "cleanup_cpp_exception_terminates": true,
+    "private_FH3_frame_equivalence": false
+  },
+  "actual_source_provider_bindings": [
+    {
+      "symbol": "?destroy_native_renderer_optional_guard_00b21110@bsp@@YAXABUNativeRendererOptionalGuardStorage@1@AAUNativeRendererSynchronizationGlobals@1@@Z",
+      "member_sha256": "df2f8d2001e3c7f7000980988780853ce25bbdf7f1314166a123d94a760a61bf",
+      "archive_header_offset": 38783616
+    },
+    {
+      "symbol": "?dispatch_native_crt_pow_00bfeb10@bsp@@YAXABUNativeCrtPowDispatchContext@1@@Z",
+      "member_sha256": "c588a5d0e3b8616afb8cc9f5901687db88f3f0c5c8c263d873932ceeed3e1650",
+      "archive_header_offset": 38283046
+    },
+    {
+      "symbol": "?enter_native_renderer_optional_guard_00b33ad0@bsp@@YAEPBXAAUNativeRendererSynchronizationGlobals@1@@Z",
+      "member_sha256": "df2f8d2001e3c7f7000980988780853ce25bbdf7f1314166a123d94a760a61bf",
+      "archive_header_offset": 38783616
+    },
+    {
+      "symbol": "?leave_native_renderer_optional_guard_00b33b00@bsp@@YAXPBXIAAUNativeRendererSynchronizationGlobals@1@@Z",
+      "member_sha256": "df2f8d2001e3c7f7000980988780853ce25bbdf7f1314166a123d94a760a61bf",
+      "archive_header_offset": 38783616
+    }
+  ],
+  "power_chain_parity": [
+    {
+      "object": "native_crt_libm_error_support.obj",
+      "sha256": "7f68fc36ead55aa7215797a9e177e16492c15426ac5ded3a2eb47c83d43e407d",
+      "entire_object_unchanged": false,
+      "only_allowed_difference": "COFF header timestamp at offsets4..7",
+      "old_timestamp": 1789173452,
+      "new_timestamp": 1789229687,
+      "all_other_object_bytes_identical": true
+    },
+    {
+      "object": "native_crt_sse2_pow.obj",
+      "sha256": "ebaf640a69114768b05dfa8f2724598a5c009e23c77fc47a3fc36f66647e9a2f",
+      "entire_object_unchanged": true,
+      "only_allowed_difference": "COFF header timestamp at offsets4..7",
+      "old_timestamp": 1789173452,
+      "new_timestamp": 1789173452,
+      "all_other_object_bytes_identical": true
+    },
+    {
+      "object": "native_crt_pow_dispatch.obj",
+      "sha256": "c588a5d0e3b8616afb8cc9f5901687db88f3f0c5c8c263d873932ceeed3e1650",
+      "entire_object_unchanged": true,
+      "only_allowed_difference": "COFF header timestamp at offsets4..7",
+      "old_timestamp": 1789173452,
+      "new_timestamp": 1789173452,
+      "all_other_object_bytes_identical": true
+    },
+    {
+      "object": "native_crt_pow_fallback.obj",
+      "sha256": "a5b067ad25d5030d0fd4f879543e6d7cb7414cd63b24b2af8d867e0e3cf4e1a9",
+      "entire_object_unchanged": true,
+      "only_allowed_difference": "COFF header timestamp at offsets4..7",
+      "old_timestamp": 1789168802,
+      "new_timestamp": 1789168802,
+      "all_other_object_bytes_identical": true
+    },
+    {
+      "object": "native_crt_x87_control.obj",
+      "sha256": "d7ad035ad0e780b7850dea9cf3381d556b3110e523517c5526197fed56db4059",
+      "entire_object_unchanged": true,
+      "only_allowed_difference": "COFF header timestamp at offsets4..7",
+      "old_timestamp": 1789162592,
+      "new_timestamp": 1789162592,
+      "all_other_object_bytes_identical": true
+    },
+    {
+      "object": "native_crt_x87_double_load.obj",
+      "sha256": "abfc98e73d05c9f0c95e1e2bf3cfb6025188b915f858a22dab59e0c25b15721f",
+      "entire_object_unchanged": true,
+      "only_allowed_difference": "COFF header timestamp at offsets4..7",
+      "old_timestamp": 1789160599,
+      "new_timestamp": 1789160599,
+      "all_other_object_bytes_identical": true
+    },
+    {
+      "object": "native_crt_x87_power_leaves.obj",
+      "sha256": "f09949ff5274a43b765f47f660c769170c4fbfd949a48ab2d868e70ab4a7697d",
+      "entire_object_unchanged": true,
+      "only_allowed_difference": "COFF header timestamp at offsets4..7",
+      "old_timestamp": 1789160599,
+      "new_timestamp": 1789160599,
+      "all_other_object_bytes_identical": true
+    },
+    {
+      "object": "native_crt_x87_result_status.obj",
+      "sha256": "5b962e84347ee0d1224a191c9bdfcb9c82375c2e95978197b93a71fb39be991d",
+      "entire_object_unchanged": true,
+      "only_allowed_difference": "COFF header timestamp at offsets4..7",
+      "old_timestamp": 1789165690,
+      "new_timestamp": 1789165690,
+      "all_other_object_bytes_identical": true
+    },
+    {
+      "object": "native_crt_x87_error_dispatch.obj",
+      "sha256": "09a78f02621aee681d8b5af08cb9737c781f87d7d277fb96d5ffa44396845e44",
+      "entire_object_unchanged": false,
+      "only_allowed_difference": "COFF header timestamp at offsets4..7",
+      "old_timestamp": 1789164611,
+      "new_timestamp": 1789229687,
+      "all_other_object_bytes_identical": true
+    },
+    {
+      "object": "native_crt_pow_special.obj",
+      "sha256": "96987efe4a8285168e5223bd7b6b14b24758f6ce706470ceefd534649e276e32",
+      "entire_object_unchanged": true,
+      "only_allowed_difference": "COFF header timestamp at offsets4..7",
+      "old_timestamp": 1789164611,
+      "new_timestamp": 1789164611,
+      "all_other_object_bytes_identical": true
+    },
+    {
+      "object": "native_crt_double_classification.obj",
+      "sha256": "41ab27b8fe827ac13a93c69ae9f53f4ce42f15f2807dd481d2d8fd98b88eb7b1",
+      "entire_object_unchanged": true,
+      "only_allowed_difference": "COFF header timestamp at offsets4..7",
+      "old_timestamp": 1789162592,
+      "new_timestamp": 1789162592,
+      "all_other_object_bytes_identical": true
+    },
+    {
+      "object": "legacy_crt_math.obj",
+      "sha256": "6e0524027ebc5f9c6dad50571c897959d3d0583e6ebb36ee30715b7d31fe03b4",
+      "entire_object_unchanged": false,
+      "only_allowed_difference": "COFF header timestamp at offsets4..7",
+      "old_timestamp": 1789149689,
+      "new_timestamp": 1789229687,
+      "all_other_object_bytes_identical": true
+    },
+    {
+      "object": "native_crt_pointer_decode.obj",
+      "sha256": "6b7ea9e0c0039dd7766644790038d9ec946f74e7fce51cd80b23a8cc1470dce6",
+      "entire_object_unchanged": true,
+      "only_allowed_difference": "COFF header timestamp at offsets4..7",
+      "old_timestamp": 1789171626,
+      "new_timestamp": 1789171626,
+      "all_other_object_bytes_identical": true
+    },
+    {
+      "object": "native_crt_pointer_decode_support.obj",
+      "sha256": "9207b577732e9c9b929979928600587314ff81b923bcffa9cbc576e0cc4e7e81",
+      "entire_object_unchanged": false,
+      "only_allowed_difference": "COFF header timestamp at offsets4..7",
+      "old_timestamp": 1789169843,
+      "new_timestamp": 1789229687,
+      "all_other_object_bytes_identical": true
+    }
+  ],
+  "first_verified_library_sha256": "78b21dd0c5325e150e5ed5a40899b4519a5d78ec7207102ddda9f5403494b045",
+  "current_build": {
+    "current_build_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen_v2\\manifest.json",
+      "bytes": 100157,
+      "sha256": "ea9bbf71998904bd092c150a5f4d980d3bfed2783b13edf24e76c3a173668ee5"
+    },
+    "current_main_library": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen_v2\\build\\win32\\Release\\bsp_core.lib",
+      "bytes": 45574654,
+      "sha256": "019ce045f960989f36ef1bcd3fb58b709c0580a015ea33fa82ecf56f674d2212"
+    },
+    "strict_Win32": true,
+    "existing_CTests": 2,
+    "native_seeds": 8,
+    "unchanged_prebuild_inputs": 58,
+    "actual_compiler_commands": 16,
+    "compiler_dependencies": 272,
+    "review_correction": "Header wording now excludes enabled-but-equal requests from the power-generation claim. No executable code changed.",
+    "all_sixteen_objects_code_data_EH_symbols_and_relocations_equal_to_fixture_build": true,
+    "object_parity": [
+      {
+        "object": "native_renderer_gamma",
+        "all_symbols_and_relocations_equal": true,
+        "all_CODE_EH_link_data_equal": true,
+        "changed_noncode_sections": [],
+        "before": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen\\objects\\native_renderer_gamma.obj",
+          "bytes": 4496,
+          "sha256": "5d68f4e62a25dd56409e029df3b6bc77c8db93701ff7286f91ea3aa7df30552d"
+        },
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen_v2\\objects\\native_renderer_gamma.obj",
+          "bytes": 4496,
+          "sha256": "e442f132d69d9178b2e490fda1268fea9b2456a635ebae18f18f5df19579b046"
+        }
+      },
+      {
+        "object": "native_renderer_synchronization_actual",
+        "all_symbols_and_relocations_equal": true,
+        "all_CODE_EH_link_data_equal": true,
+        "changed_noncode_sections": [],
+        "before": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen\\objects\\native_renderer_synchronization_actual.obj",
+          "bytes": 2409,
+          "sha256": "df2f8d2001e3c7f7000980988780853ce25bbdf7f1314166a123d94a760a61bf"
+        },
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen_v2\\objects\\native_renderer_synchronization_actual.obj",
+          "bytes": 2409,
+          "sha256": "df2f8d2001e3c7f7000980988780853ce25bbdf7f1314166a123d94a760a61bf"
+        }
+      },
+      {
+        "object": "native_crt_libm_error_support",
+        "all_symbols_and_relocations_equal": true,
+        "all_CODE_EH_link_data_equal": true,
+        "changed_noncode_sections": [],
+        "before": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen\\objects\\native_crt_libm_error_support.obj",
+          "bytes": 3780,
+          "sha256": "7f68fc36ead55aa7215797a9e177e16492c15426ac5ded3a2eb47c83d43e407d"
+        },
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen_v2\\objects\\native_crt_libm_error_support.obj",
+          "bytes": 3780,
+          "sha256": "7f68fc36ead55aa7215797a9e177e16492c15426ac5ded3a2eb47c83d43e407d"
+        }
+      },
+      {
+        "object": "native_crt_sse2_pow",
+        "all_symbols_and_relocations_equal": true,
+        "all_CODE_EH_link_data_equal": true,
+        "changed_noncode_sections": [],
+        "before": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen\\objects\\native_crt_sse2_pow.obj",
+          "bytes": 20083,
+          "sha256": "ebaf640a69114768b05dfa8f2724598a5c009e23c77fc47a3fc36f66647e9a2f"
+        },
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen_v2\\objects\\native_crt_sse2_pow.obj",
+          "bytes": 20083,
+          "sha256": "ebaf640a69114768b05dfa8f2724598a5c009e23c77fc47a3fc36f66647e9a2f"
+        }
+      },
+      {
+        "object": "native_crt_pow_dispatch",
+        "all_symbols_and_relocations_equal": true,
+        "all_CODE_EH_link_data_equal": true,
+        "changed_noncode_sections": [],
+        "before": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen\\objects\\native_crt_pow_dispatch.obj",
+          "bytes": 1206,
+          "sha256": "c588a5d0e3b8616afb8cc9f5901687db88f3f0c5c8c263d873932ceeed3e1650"
+        },
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen_v2\\objects\\native_crt_pow_dispatch.obj",
+          "bytes": 1206,
+          "sha256": "c588a5d0e3b8616afb8cc9f5901687db88f3f0c5c8c263d873932ceeed3e1650"
+        }
+      },
+      {
+        "object": "native_crt_pow_fallback",
+        "all_symbols_and_relocations_equal": true,
+        "all_CODE_EH_link_data_equal": true,
+        "changed_noncode_sections": [],
+        "before": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen\\objects\\native_crt_pow_fallback.obj",
+          "bytes": 2078,
+          "sha256": "a5b067ad25d5030d0fd4f879543e6d7cb7414cd63b24b2af8d867e0e3cf4e1a9"
+        },
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen_v2\\objects\\native_crt_pow_fallback.obj",
+          "bytes": 2078,
+          "sha256": "a5b067ad25d5030d0fd4f879543e6d7cb7414cd63b24b2af8d867e0e3cf4e1a9"
+        }
+      },
+      {
+        "object": "native_crt_x87_control",
+        "all_symbols_and_relocations_equal": true,
+        "all_CODE_EH_link_data_equal": true,
+        "changed_noncode_sections": [],
+        "before": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen\\objects\\native_crt_x87_control.obj",
+          "bytes": 892,
+          "sha256": "d7ad035ad0e780b7850dea9cf3381d556b3110e523517c5526197fed56db4059"
+        },
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen_v2\\objects\\native_crt_x87_control.obj",
+          "bytes": 892,
+          "sha256": "d7ad035ad0e780b7850dea9cf3381d556b3110e523517c5526197fed56db4059"
+        }
+      },
+      {
+        "object": "native_crt_x87_double_load",
+        "all_symbols_and_relocations_equal": true,
+        "all_CODE_EH_link_data_equal": true,
+        "changed_noncode_sections": [],
+        "before": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen\\objects\\native_crt_x87_double_load.obj",
+          "bytes": 770,
+          "sha256": "abfc98e73d05c9f0c95e1e2bf3cfb6025188b915f858a22dab59e0c25b15721f"
+        },
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen_v2\\objects\\native_crt_x87_double_load.obj",
+          "bytes": 770,
+          "sha256": "abfc98e73d05c9f0c95e1e2bf3cfb6025188b915f858a22dab59e0c25b15721f"
+        }
+      },
+      {
+        "object": "native_crt_x87_power_leaves",
+        "all_symbols_and_relocations_equal": true,
+        "all_CODE_EH_link_data_equal": true,
+        "changed_noncode_sections": [],
+        "before": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen\\objects\\native_crt_x87_power_leaves.obj",
+          "bytes": 915,
+          "sha256": "f09949ff5274a43b765f47f660c769170c4fbfd949a48ab2d868e70ab4a7697d"
+        },
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen_v2\\objects\\native_crt_x87_power_leaves.obj",
+          "bytes": 915,
+          "sha256": "f09949ff5274a43b765f47f660c769170c4fbfd949a48ab2d868e70ab4a7697d"
+        }
+      },
+      {
+        "object": "native_crt_x87_result_status",
+        "all_symbols_and_relocations_equal": true,
+        "all_CODE_EH_link_data_equal": true,
+        "changed_noncode_sections": [],
+        "before": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen\\objects\\native_crt_x87_result_status.obj",
+          "bytes": 1037,
+          "sha256": "5b962e84347ee0d1224a191c9bdfcb9c82375c2e95978197b93a71fb39be991d"
+        },
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen_v2\\objects\\native_crt_x87_result_status.obj",
+          "bytes": 1037,
+          "sha256": "5b962e84347ee0d1224a191c9bdfcb9c82375c2e95978197b93a71fb39be991d"
+        }
+      },
+      {
+        "object": "native_crt_x87_error_dispatch",
+        "all_symbols_and_relocations_equal": true,
+        "all_CODE_EH_link_data_equal": true,
+        "changed_noncode_sections": [],
+        "before": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen\\objects\\native_crt_x87_error_dispatch.obj",
+          "bytes": 2673,
+          "sha256": "09a78f02621aee681d8b5af08cb9737c781f87d7d277fb96d5ffa44396845e44"
+        },
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen_v2\\objects\\native_crt_x87_error_dispatch.obj",
+          "bytes": 2673,
+          "sha256": "09a78f02621aee681d8b5af08cb9737c781f87d7d277fb96d5ffa44396845e44"
+        }
+      },
+      {
+        "object": "native_crt_pow_special",
+        "all_symbols_and_relocations_equal": true,
+        "all_CODE_EH_link_data_equal": true,
+        "changed_noncode_sections": [],
+        "before": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen\\objects\\native_crt_pow_special.obj",
+          "bytes": 1431,
+          "sha256": "96987efe4a8285168e5223bd7b6b14b24758f6ce706470ceefd534649e276e32"
+        },
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen_v2\\objects\\native_crt_pow_special.obj",
+          "bytes": 1431,
+          "sha256": "96987efe4a8285168e5223bd7b6b14b24758f6ce706470ceefd534649e276e32"
+        }
+      },
+      {
+        "object": "native_crt_double_classification",
+        "all_symbols_and_relocations_equal": true,
+        "all_CODE_EH_link_data_equal": true,
+        "changed_noncode_sections": [],
+        "before": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen\\objects\\native_crt_double_classification.obj",
+          "bytes": 1251,
+          "sha256": "41ab27b8fe827ac13a93c69ae9f53f4ce42f15f2807dd481d2d8fd98b88eb7b1"
+        },
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen_v2\\objects\\native_crt_double_classification.obj",
+          "bytes": 1251,
+          "sha256": "41ab27b8fe827ac13a93c69ae9f53f4ce42f15f2807dd481d2d8fd98b88eb7b1"
+        }
+      },
+      {
+        "object": "legacy_crt_math",
+        "all_symbols_and_relocations_equal": true,
+        "all_CODE_EH_link_data_equal": true,
+        "changed_noncode_sections": [],
+        "before": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen\\objects\\legacy_crt_math.obj",
+          "bytes": 18496,
+          "sha256": "6e0524027ebc5f9c6dad50571c897959d3d0583e6ebb36ee30715b7d31fe03b4"
+        },
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen_v2\\objects\\legacy_crt_math.obj",
+          "bytes": 18496,
+          "sha256": "6e0524027ebc5f9c6dad50571c897959d3d0583e6ebb36ee30715b7d31fe03b4"
+        }
+      },
+      {
+        "object": "native_crt_pointer_decode",
+        "all_symbols_and_relocations_equal": true,
+        "all_CODE_EH_link_data_equal": true,
+        "changed_noncode_sections": [],
+        "before": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen\\objects\\native_crt_pointer_decode.obj",
+          "bytes": 1348,
+          "sha256": "6b7ea9e0c0039dd7766644790038d9ec946f74e7fce51cd80b23a8cc1470dce6"
+        },
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen_v2\\objects\\native_crt_pointer_decode.obj",
+          "bytes": 1348,
+          "sha256": "6b7ea9e0c0039dd7766644790038d9ec946f74e7fce51cd80b23a8cc1470dce6"
+        }
+      },
+      {
+        "object": "native_crt_pointer_decode_support",
+        "all_symbols_and_relocations_equal": true,
+        "all_CODE_EH_link_data_equal": true,
+        "changed_noncode_sections": [],
+        "before": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen\\objects\\native_crt_pointer_decode_support.obj",
+          "bytes": 3702,
+          "sha256": "9207b577732e9c9b929979928600587314ff81b923bcffa9cbc576e0cc4e7e81"
+        },
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen_v2\\objects\\native_crt_pointer_decode_support.obj",
+          "bytes": 3702,
+          "sha256": "9207b577732e9c9b929979928600587314ff81b923bcffa9cbc576e0cc4e7e81"
+        }
+      }
+    ],
+    "actual_fixture_library": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\build_frozen\\build\\win32\\Release\\bsp_core.lib",
+      "bytes": 45500948,
+      "sha256": "78b21dd0c5325e150e5ed5a40899b4519a5d78ec7207102ddda9f5403494b045"
+    },
+    "fixture_run": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\probe_run.json",
+      "bytes": 552,
+      "sha256": "f5fa02cfc205cdc9fa06f42b719b8234e23d9e24b992534375b291e6c66c15b0"
+    }
+  },
+  "source_fixture": {
+    "executable": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\gamma_probe.exe",
+    "executable_sha256": "0e57fc5bc135ed0d575aca6d12d7a32ebf1460a0228d88f1061dd7bbc3345210",
+    "returncode": 0,
+    "stdout": "PASS: three complete256-entry/channel native/source ramp comparisons with actual raw fallback pow and FP status; calibration flags; equal/disabled skips; source device-exception guard cleanup. No monitor gamma call.\n",
+    "stderr": "",
+    "seconds": 0.038239199959207326,
+    "utc": "2026-09-12T16:17:55.796811+00:00"
+  },
+  "native_fixture": {
+    "original_gamma_body_bytes_executed": 474,
+    "relocated_data_operands": 8,
+    "relocated_pow_call": 1,
+    "original_guard_and_EH_paths_executed": false,
+    "raw_pow_dispatch_current_value": 0,
+    "raw_fallback_executed": true,
+    "SSE2_power_path_executed": false,
+    "compared_requests": [
+      0,
+      4,
+      -5
+    ],
+    "all_768_WORDs_compared_per_request": true,
+    "FP_status_compared": true,
+    "calibration_flags_compared": true,
+    "device": "local COM-ABI capture fixture; no monitor gamma call"
+  },
+  "source_only_fixture": {
+    "equal_and_disabled_skip": true,
+    "device_Cpp_exception_guard_cleanup": true,
+    "guard_mode": 1,
+    "guard_current_lock": null,
+    "cache_retained_after_device_exception": true
+  },
+  "independent_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\independent_review.md",
+    "bytes": 1037,
+    "sha256": "f6ba19e504135e62d88bcae84add73feabc9153a3bd7e037fa55e99b54151b28"
+  },
+  "limits": [
+    "Original native gamma normal math path executed with relocated literals and actual-source pow bridge; native guard/FH3 exception paths not executed.",
+    "Full x87/SSE2 source power providers retained; this fixture exercises selected raw fallback only, masked53-bit nearest environment and three finite requests.",
+    "New requested-slot reference/context and private frame/EH code are source ABI differences; no original drop-in/SEH/hardware-fault/gameplay or monitor gamma validation."
+  ],
+  "next_dependencies": [
+    "Full logical vertex retained-owner terminal for raw binding/reset",
+    "Full nonnull render-cache clearing and parent recreation integration",
+    "Original ABI/SEH and visual/gameplay validation"
+  ],
+  "persistent_tests_added": 0,
+  "ad_hoc_source_fixtures": 1,
+  "monitor_gamma_modified": false,
+  "full_gameplay_validated": false,
+  "primary_review": {
+    "utc": "2026-09-12T16:30:26.408163+00:00",
+    "integration_state": "complete_raw_gamma_current_main_build_and_qualified_original_source_ramp_fixture",
+    "current_main_library_sha256": "019ce045f960989f36ef1bcd3fb58b709c0580a015ea33fa82ecf56f674d2212",
+    "source_fixture_library_sha256": "78b21dd0c5325e150e5ed5a40899b4519a5d78ec7207102ddda9f5403494b045",
+    "source_fixture_PE_sha256": "0e57fc5bc135ed0d575aca6d12d7a32ebf1460a0228d88f1061dd7bbc3345210",
+    "saved_annotations": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_renderer_gamma_annotations.json",
+      "bytes": 2508,
+      "sha256": "2b21b475d8025c5ac73103c858c5a50f93026725c9c17569ea044cdad06a6c9c"
+    },
+    "refreshed_export": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b21960\\decompiled.c",
+      "bytes": 3908,
+      "sha256": "528aa415eff0f50877c66d599a83e079b35b88ca341c76ad4db3f207b156cf37"
+    },
+    "document": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_RENDERER_GAMMA.md",
+      "bytes": 4141,
+      "sha256": "b618a27abdf67fc71b099a092364552c3573f72def4fe3ac7737d4f8bbb8d791"
+    },
+    "independent_review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\independent_review.md",
+      "bytes": 1037,
+      "sha256": "f6ba19e504135e62d88bcae84add73feabc9153a3bd7e037fa55e99b54151b28"
+    },
+    "full_gameplay_validated": false,
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\gamma_actual4\\sealed.json",
+      "bytes": 202729,
+      "sha256": "31a2d8d3db483182830e2338e6b860cc7b3b84c8e9eecf1b9da1f7faa6223c62"
+    }
+  }
+}

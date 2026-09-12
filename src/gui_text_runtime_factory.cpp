@@ -227,8 +227,7 @@ void GuiTextRuntimeImplementation::before_scalar_deletion4(GuiWidgetOwner& owner
 }
 void GuiTextRuntimeImplementation::before_scene_release(GuiWidgetOwner& owner) {
     require_owner(owner); require_idle();
-    for (const auto word : owner.extra_fields().pointers_88_90)
-        require(word == nullptr, "Text page retirement supports only the empty native timed-entry header");
+    owner.require_timed_entry_ownership();
     lifetime_->destroy_derived_00ab8250_fragment();
 }
 void GuiTextRuntimeImplementation::release_secondary_scene_nodes(GuiWidgetOwner& owner) {
@@ -340,6 +339,10 @@ void GuiTextRuntimeImplementation::set_alpha4c_00ab6ad0(float alpha) {
             fstp dword ptr [eax]
         }
     }
+}
+void GuiTextRuntimeImplementation::set_alpha4c(GuiWidgetOwner& owner, float alpha) {
+    require_owner(owner);
+    set_alpha4c_00ab6ad0(alpha);
 }
 void GuiTextRuntimeImplementation::align_bounds64_00ab6d70(float& left, float& top,
     float& right, float& bottom) {
