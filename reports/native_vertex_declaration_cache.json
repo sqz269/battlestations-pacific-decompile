@@ -470,7 +470,7 @@
     "game_validated": false
   },
   "integration_at_review": {
-    "combined_validation": "pending final exact merged source commit",
+    "combined_validation": "passed exact merged Win32 build and four current-library-only probes within documented coverage",
     "game_validated": false,
     "saved_names_and_signatures": 50,
     "original_signature_readback": "00b2f910 BSP_NativeDeclarationRecord_Destroy  void __thiscall BSP_NativeDeclarationRecord_Destroy(void * this)  body 00b2f910 - 00b2f987\n00b2fbb0 BSP_NativeDeclarationRecord_CopyConstruct  void * __thiscall BSP_NativeDeclarationRecord_CopyConstruct(void * this, void * source)  body 00b2fbb0 - 00b2fc51\n00b2fe20 BSP_NativeDeclarationRecordArray_Reserve  void __thiscall BSP_NativeDeclarationRecordArray_Reserve(void * this, uint capacity)  body 00b2fe20 - 00b2fefc\n00b300c0 BSP_NativeDeclarationRecordArray_Append  void __thiscall BSP_NativeDeclarationRecordArray_Append(void * this, void * record)  body 00b300c0 - 00b3012e\n00b2c280 BSP_DeclarationRegistry_CopyResolvedName  void * __thiscall BSP_DeclarationRegistry_CopyResolvedName(void * this, void * output, void * name, uint word)  body 00b2c280 - 00b2c2cf\n00b31d20 BSP_DeclarationRegistry_Acquire  void * __thiscall BSP_DeclarationRegistry_Acquire(void * this, void * declaration)  body 00b31d20 - 00b31d34\n00b305f0 BSP_NativeDeclarationRegistry_Load  void * __thiscall BSP_NativeDeclarationRegistry_Load(void * this, void * name, uint word, uchar acquire_new, uchar allow_load)  body 00b305f0 - 00b30b36\n00b317e0 BSP_Renderer_LoadVertexDeclaration  void * __thiscall BSP_Renderer_LoadVertexDeclaration(void * this, void * name)  body 00b317e0 - 00b318a0\n00b2dbd0 BSP_VertexDeclaration_DecodeFormatName  void * __thiscall BSP_VertexDeclaration_DecodeFormatName(void * this, void * name, uint word)  body 00b2dbd0 - 00b2e93a\n00b47680 BSP_NativeVertexDeclarationSlab_Initialize  void * __thiscall BSP_NativeVertexDeclarationSlab_Initialize(void * this, uint index)  body 00b47680 - 00b476c2\n00b47d20 BSP_VertexDeclaration_RecomputeStride  void __thiscall BSP_VertexDeclaration_RecomputeStride(void * this)  body 00b47d20 - 00b47d5b\n00b47d90 BSP_NativeVertexElementArray_Append  void __thiscall BSP_NativeVertexElementArray_Append(void * this, void * record)  body 00b47d90 - 00b47de3\n00b48330 BSP_VertexDeclaration_AppendElement  void __thiscall BSP_VertexDeclaration_AppendElement(void * this, uint type, uint usage, uint offset)  body 00b48330 - 00b4839d\n00b48560 BSP_NativeVertexDeclarationPool_AllocateRawSlot  void * __thiscall BSP_NativeVertexDeclarationPool_AllocateRawSlot(void * this)  body 00b48560 - 00b4869b\n00b488c0 BSP_NativeVertexDeclaration_AllocateRawSlot  void * __thiscall BSP_NativeVertexDeclaration_AllocateRawSlot(void * this)  body 00b488c0 - 00b488c9\n00ce0c10 BSP_NativeVertexFormat_DestroyTypeTokens  void __cdecl BSP_NativeVertexFormat_DestroyTypeTokens(void)  body 00ce0c10 - 00ce0c23\n00ce0c30 BSP_NativeVertexFormat_DestroyUsageTokens  void __cdecl BSP_NativeVertexFormat_DestroyUsageTokens(void)  body 00ce0c30 - 00ce0c43\n00b287c0 BSP_Renderer_CreateRegisteredVertexStream  void * __thiscall BSP_Renderer_CreateRegisteredVertexStream(void * this, uint count, uint flags, void * declaration)  body 00b287c0 - 00b288a9\n00b4b370 BSP_LogicalVertexStream_AllocateCpuSlot  void * __thiscall BSP_LogicalVertexStream_AllocateCpuSlot(void * this)  body 00b4b370 - 00b4b379\n00b4bc00 BSP_D3D9LogicalVertexStream_Construct  void * __thiscall BSP_D3D9LogicalVertexStream_Construct(void * this, uint count, void * declaration, uint flags)  body 00b4bc00 - 00b4bef5\n00b61e20 BSP_LogicalVertexStreamBase_Construct  void * __thiscall BSP_LogicalVertexStreamBase_Construct(void * this, void * declaration)  body 00b61e20 - 00b61f83\n00b62010 BSP_DestroyNativeLogicalVertexBase  void __thiscall BSP_DestroyNativeLogicalVertexBase(void * this)  body 00b62010 - 00b62096\n00b4b5d0 BSP_LogicalVertexStream_Destruct  void __thiscall BSP_LogicalVertexStream_Destruct(void * this)  body 00b4b5d0 - 00b4b6e7\n00b4bf10 BSP_DeleteNativeLogicalVertexStream  void * __thiscall BSP_DeleteNativeLogicalVertexStream(void * this, uint flags)  body 00b4bf10 - 00b4bf2f\n00b4ae80 BSP_VertexStreamSlabPool_Allocate  void * __thiscall BSP_VertexStreamSlabPool_Allocate(void * this)  body 00b4ae80 - 00b4afbb\n00b48eb0 BSP_VertexStreamSlab_Initialize  void * __thiscall BSP_VertexStreamSlab_Initialize(void * this, uint index)  body 00b48eb0 - 00b48eef\n00b4b1e0 BSP_PhysicalBuffer_RegisterLogicalStream  void __thiscall BSP_PhysicalBuffer_RegisterLogicalStream(void * this, void * stream)  body 00b4b1e0 - 00b4b2b5\n00b22d10 BSP_PointerArray_Reserve_00b22d10  void __thiscall BSP_PointerArray_Reserve_00b22d10(void * this, uint capacity)  body 00b22d10 - 00b22d6e\n00b1fe50 BSP_Renderer_GetSecondaryStreamRegistrationByte  uchar __thiscall BSP_Renderer_GetSecondaryStreamRegistrationByte(void * this)  body 00b1fe50 - 00b1fe56\n00b47c90 BSP_VertexDeclaration_HasSemantic  uchar __thiscall BSP_VertexDeclaration_HasSemantic(void * this, uint usage, uint occurrence)  body 00b47c90 - 00b47cd4\n00b47c40 BSP_VertexDeclaration_GetSemanticOffset  uint __thiscall BSP_VertexDeclaration_GetSemanticOffset(void * this, uint usage, uint occurrence)  body 00b47c40 - 00b47c57\n00b47ce0 BSP_VertexDeclaration_FindSemantic  uint __thiscall BSP_VertexDeclaration_FindSemantic(void * this, uint usage, uint occurrence)  body 00b47ce0 - 00b47d1d\n00b47c20 BSP_VertexDeclaration_GetSemanticType  uint __thiscall BSP_VertexDeclaration_GetSemanticType(void * this, uint usage, uint occurrence)  body 00b47c20 - 00b47c38\n00b47c60 BSP_VertexDeclaration_GetSemanticSize  uint __thiscall BSP_VertexDeclaration_GetSemanticSize(void * this, uint usage, uint occurrence)  body 00b47c60 - 00b47c7f\n00af26a0 BSP_NativeTraceline_FillAndSubmitGeometry  void __thiscall BSP_NativeTraceline_FillAndSubmitGeometry(void * this, void * context, float lod, float visibility, uint flags)  body 00af26a0 - 00af3168\n00af1c20 BSP_NativeTracelineVertex_Copy  void * __thiscall BSP_NativeTracelineVertex_Copy(void * this, void * source)  body 00af1c20 - 00af1c6e\n00b71530 BSP_NativeCamera_ClassifySphere  uint __thiscall BSP_NativeCamera_ClassifySphere(void * this, void * sphere)  body 00b71530 - 00b71582\n00b651e0 BSP_NativePlaneSet_ClassifySphere  uint __thiscall BSP_NativePlaneSet_ClassifySphere(void * this, void * sphere, uint flags)  body 00b651e0 - 00b652cb\n00b748e0 BSP_NativeGeneratedModel_Render  void __thiscall BSP_NativeGeneratedModel_Render(void * this, void * context, float lod, float visibility, uint flags)  body 00b748e0 - 00b74b5a\n00b72f80 BSP_NativeMesh_CreateRenderEntries  void __thiscall BSP_NativeMesh_CreateRenderEntries(void * this, void * context, void * model, float lod, float visibility, uint flags)  body 00b72f80 - 00b7325a\n007c1180 BSP_Sphere_TransformAffine  void * __thiscall BSP_Sphere_TransformAffine(void * this, void * output, void * matrix)  body 007c1180 - 007c11d7\n007bb620 BSP_Matrix_GetMaximumBasisLengthSquared  float __thiscall BSP_Matrix_GetMaximumBasisLengthSquared(void * this)  body 007bb620 - 007bb6d6\n00b6e8c0 BSP_Model_GetWorldSphere  void * __thiscall BSP_Model_GetWorldSphere(void * this)  body 00b6e8c0 - 00b6e922\n00415550 BSP_Math_MaxFloatByRef  float __fastcall BSP_Math_MaxFloatByRef(float * left, float * right)  body 00415550 - 0041558d\n00b6d810 BSP_Node_GetNotificationContext  void * __thiscall BSP_Node_GetNotificationContext(void * this)  body 00b6d810 - 00b6d816\n00b6dcb0 BSP_Node_GetBoundsScalar  float __thiscall BSP_Node_GetBoundsScalar(void * this)  body 00b6dcb0 - 00b6dcb3\n006ef890 BSP_Model_AcceptRender  uchar __thiscall BSP_Model_AcceptRender(void * this, void * camera, float lod)  body 006ef890 - 006ef894\n004142e0 BSP_Vector3f_TransformAffinePoint  void * __thiscall BSP_Vector3f_TransformAffinePoint(void * this, void * output, void * matrix)  body 004142e0 - 00414363\n00b51a20 BSP_RenderEntry_Initialize  void __thiscall BSP_RenderEntry_Initialize(void * this, float leading, void * section, void * geometry, void * model, void * camera, float visibility, float depth_override, uint flags)  body 00b51a20 - 00b51aaa\n00bee050 BSP_FrameClock_GetCurrent  void * __thiscall BSP_FrameClock_GetCurrent(void * this)  body 00bee050 - 00bee053\n",
@@ -847,5 +847,123 @@
     "library_sha256": "85b27b52d44afbf8e6c471abe8397df9ff67452d09be9124aa2ff08904cca702",
     "output": "native_vertex_declaration_cache.cpp\nnative_vertex_declaration_loading.cpp\nprobe.cpp\nGenerating Code...\nPASS declaration cache 31 native/source comparisons; actual decoder plus empty VFS cold loads and canonical retirement; exceptional FH3 and gameplay excluded\n",
     "coverage": "31 comparisons; actual owning strings, actual decoder and empty VFS; second resolved scan static only; manual canonical ref draining is not B32210/B31D40 registry destruction"
+  },
+  "final_merged_validation_at": {
+    "tested_commit": "fc75138e04cb1a1d96ee14e8362112c3fcd56972",
+    "reviewed_source_commit": "6670db0513b7d1d67cd0d1af68e4517bd35ec2fd",
+    "build": "Strict MSVC Win32 passed; local/at-final-combined-build.log",
+    "existing_ctests_passed": 2,
+    "source_header_hashes": {
+      "include/bsp/native_vertex_declaration_cache.hpp": "14123aa649c71cae8c4c35bad989533402ae66daeaa25bff86dcfd017b2768d1",
+      "src/native_vertex_declaration_cache.cpp": "809bf7d8f598d0bdc9768c52e659146c88a9c64ce16e48a0d926dbb24e0ff8c6",
+      "include/bsp/native_vertex_declaration_loading.hpp": "2ecc818584a458fc22764338415e5881216697f1ae10b4447c7c438f489204b0",
+      "src/native_vertex_declaration_loading.cpp": "518cfecb27a27a43815377c02ce638878d3a8eb2ddeaead30377dc7cb460ef3d",
+      "include/bsp/native_logical_vertex_owner.hpp": "5a2cb578921e29eb266a94f4962272d46681b883a054a6226b3aae11bb92ef9f",
+      "src/native_logical_vertex_owner.cpp": "4c827759571860461aa523f2261bb9876a70813358b4dcbdae509c4cd6102617",
+      "include/bsp/native_traceline_render.hpp": "71c88e0aa16eacc035ddeec264b9cba33aacef845ba10cf549409a66473085f3",
+      "src/native_traceline_render.cpp": "409f4c679ff1aa635b9d347c8049600079e822649e3ec751b32ed9d5100fa627"
+    },
+    "library_sha256": {
+      "bsp_core": "8d8cc528217b1f302815efb6490092a08b4c05222471136d71920c3c7984d215",
+      "bsp_lua511": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "current_library_replays": [
+      {
+        "label": "cache",
+        "exit_code": 0,
+        "log": "local\\at-current-cache.log",
+        "library_sha256": {
+          "bsp_core": "8d8cc528217b1f302815efb6490092a08b4c05222471136d71920c3c7984d215",
+          "bsp_lua511": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+          "bsp_zlib121": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+        },
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-at-declaration-cache\\probe.cpp": "6669121f6d776c13929183fef84ca9d86ca29e3857d8b4a02f2fb2584dd36de6",
+          "C:\\Users\\sqz269\\bsp-at-declaration-cache\\original.hpp": "d9f5ee27e2ccf8e053169148f191a9e1809ca6b41104c8ea6d7a5fb7923dbc8e",
+          "C:\\Users\\sqz269\\bsp-at-declaration-cache\\00b2c280.bin": "040860b53dfd30e670b36ea53acaeb3048e23bd89757cc3ef36ad6bc4bc6f0a0",
+          "C:\\Users\\sqz269\\bsp-at-declaration-cache\\00b2f910.bin": "ca27c7e6c55f4eaea81008a00d800f6eb6974c2e1b651e623f4bf1edfc4ea776",
+          "C:\\Users\\sqz269\\bsp-at-declaration-cache\\00b2fbb0.bin": "32e840f2542ede1b6c231ff9bf09e3fa9b134cefa5833502ea86fa69c5827f03",
+          "C:\\Users\\sqz269\\bsp-at-declaration-cache\\00b2fe20.bin": "665583b9df15257515895c67a4f6fdc6901f4cb5bae4327ba43c0bda47b59cfd",
+          "C:\\Users\\sqz269\\bsp-at-declaration-cache\\00b300c0.bin": "8528d9ff2e9b0d930083f10bf31106fea80e4bd55892cc416a76bd9bc69f4343",
+          "C:\\Users\\sqz269\\bsp-at-declaration-cache\\00b305f0.bin": "84c6714da7d04cf2fcb15508e182f7870014b28c002671194e78193ba29e4945",
+          "C:\\Users\\sqz269\\bsp-at-declaration-cache\\00b317e0.bin": "9969ce4bb5d7837f4e047d3866e954ca501eb25f283774880d8213bff7ba5cf5",
+          "C:\\Users\\sqz269\\bsp-at-declaration-cache\\00b31d20.bin": "984d24bc0617becd91f8537f65986b285467e90f1695f65378b419b70861961c"
+        },
+        "probe_executable_sha256": "38000aee4d76019a9304303afc0ff1365b4aede502332dd97c79f4dd183e9a90",
+        "library_only": true
+      },
+      {
+        "label": "declaration",
+        "exit_code": 0,
+        "log": "local\\at-current-declaration.log",
+        "library_sha256": {
+          "bsp_core": "8d8cc528217b1f302815efb6490092a08b4c05222471136d71920c3c7984d215",
+          "bsp_lua511": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+          "bsp_zlib121": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+        },
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-orch3-at\\declaration\\local\\native_vertex_declaration_at\\probe.cpp": "9cea01ae7a188b9e69c82fa3773929035a7f4dbb0822c95a0fba38b0ec5f3343",
+          "C:\\Users\\sqz269\\bsp-orch3-at\\declaration\\local\\native_vertex_declaration_at\\names.txt": "84cc9e93fe83415afa5f6332038d1aeb0f3b75e1c8dd7021ae5da3fe0aa3f9cb",
+          "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+        },
+        "probe_executable_sha256": "ba07304b26d55f04248158ffbcb24e5adde546a50b94cb8365d7e975153eeb51",
+        "library_only": true
+      },
+      {
+        "label": "stream",
+        "exit_code": 0,
+        "log": "local\\at-current-stream.log",
+        "library_sha256": {
+          "bsp_core": "8d8cc528217b1f302815efb6490092a08b4c05222471136d71920c3c7984d215",
+          "bsp_lua511": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+          "bsp_zlib121": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+        },
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-orch3-at\\stream\\local\\vertex_owner_at\\probe.cpp": "764161b9e575195ffa54a1a62a15e5875785df6fe07b6d6a657bca43ecb13338",
+          "C:\\Users\\sqz269\\bsp-orch3-at\\stream\\local\\vertex_owner_at\\profile_cells.hpp": "06fb32b9d7169d10808db810bae2c89fab3cae1e4c9b41564948a00d244c7af4",
+          "C:\\Users\\sqz269\\bsp-orch3-at\\stream\\local\\vertex_owner_at\\image.bin": "9721bf146bb9ea9e290ccab5edda17f312d2294dbedbf194512973d9e68297be",
+          "C:\\Users\\sqz269\\bsp-orch3-at\\stream\\local\\vertex_owner_at\\relocated.bin": "6a6148fe7220721bb43c3e716dac7a0e5193d73c8c0d9929d507e38b5c8979b6"
+        },
+        "probe_executable_sha256": "7675bed4f23c69be6d02cc34010e8fef25d18b574e242c5cf11d41ee5ce4a1b6",
+        "library_only": true
+      },
+      {
+        "label": "render",
+        "exit_code": 0,
+        "log": "local\\at-current-render.log",
+        "library_sha256": {
+          "bsp_core": "8d8cc528217b1f302815efb6490092a08b4c05222471136d71920c3c7984d215",
+          "bsp_lua511": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+          "bsp_zlib121": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+        },
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-at-traceline-render\\probe.cpp": "71103af67646ce30eac86142ee2e269d860c97eba76732fc72bf1699747bd483",
+          "C:\\Users\\sqz269\\bsp-at-traceline-render\\original.hpp": "0d84a0563b25356dbd30c17349b3bde6890ffacef86671489c99ba9752e09d36"
+        },
+        "probe_executable_sha256": "86f9927de33c9ca6e7b4ba78cb7d4531f7654f07c7794dad874cc5907687c8f2",
+        "library_only": true
+      }
+    ],
+    "implemented_native_normal_bodies": 50,
+    "saved_names_and_original_signatures": 50,
+    "checked_numeric_report_call_rows": 281,
+    "failed_call_rows": 0,
+    "indirect_targets": "Mechanically unchecked; see individual current-profile, dependency and fixture evidence.",
+    "game_validated": false,
+    "complete_native_fh3_compatibility_validated": false,
+    "coverage": {
+      "cache": "31 original/source comparisons. Actual owning string pool, decoder, empty VFS date route, valid/null cache paths, growth and canonical actual+04 retirement. Second resolved-name scan static only; manual reference draining does not implement B32210/B31D40 registry lifetime.",
+      "declaration": "10 original-caller comparisons covering319960 bytes,54 aliases,17 types/eight usages, syntax/embedded-NUL behavior, seven injected allocation failure points and slab reuse; canonical companion terminal checked. Five-byte original virtual lookup adaptation and existing native/CRT boundaries remain explicit. Shutdown loops exercised through source, not independent original shutdown execution.",
+      "stream": "1012 DWORD/scalar comparisons,65 allocations per run, six factory variants per run and six real D3D9 HAL vertex buffers. Same raw registries, creator and actual+04 companion retirement. Counts are repeated observations, not1012 independent test cases.",
+      "render": "96 original-byte cases:40 AF26A0,32 B748E0,24 B72F80 over four x87 modes. Exact vertex/entry/cache writes and FP state; actual no-physical map/unmap branch. B1DFF0 records a fixture boundary, without establishing actual command collection."
+    },
+    "remaining_boundaries": [
+      "Full B1DFF0 visibility/group/batch collection and complete physical GPU/render composition remain required actual services.",
+      "Renderer B29670 device recreation and nonnull producer/runtime identity at vertex base+4C remain unproven application dependencies.",
+      "Actual declaration registry destruction/release B32210/B31D40 and canonical application companion registration remain separate reconstruction work.",
+      "Cache changed-resolution branch and mounted physical-file VFS date paths were not executed by this cache fixture.",
+      "New source interfaces are not drop-in original ABI replacements; complete FH3/SEH, concurrency, rendering and gameplay remain unvalidated."
+    ]
   }
 }
