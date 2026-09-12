@@ -1,0 +1,589 @@
+{
+  "packet": "orch3_particle_lifetime_al",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ghidra_read_only": true,
+  "functions": [
+    {
+      "address": "00af6c50",
+      "end_exclusive": "00af6d92",
+      "inclusive_end": "00af6d91",
+      "length": 322,
+      "sha256": "8971ab0c1d9430fe79fcb6ab9d50d28a4eebded6ae21cb931b6451edea16f1cc",
+      "live_disk_equal": true,
+      "cpp_symbol": "destroy_native_particle_model_00af6c50",
+      "source": "src/native_particle_model_lifetime.cpp",
+      "original_abi": "ECX actual2DCh model; RET; two-state FH3 member/base unwind",
+      "coverage": "complete through required canonical actual owner bindings",
+      "final_instruction_address": "00af6d91",
+      "final_instruction_length": 1,
+      "live_prototype": "00af6c50 FUN_00af6c50  undefined FUN_00af6c50(void)  body 00af6c50 - 00af6d6c",
+      "xrefs": [
+        "From 00af7f43 in FUN_00af7f40 [UNCONDITIONAL_CALL]"
+      ],
+      "descriptive_name_is_hypothesis": true,
+      "original_abi_compatible": false
+    },
+    {
+      "address": "00af7f40",
+      "end_exclusive": "00af7f60",
+      "inclusive_end": "00af7f5f",
+      "length": 32,
+      "sha256": "7ace72f7e5e4a69fea8dad9a7ea0359f6abe8279fcbb6df46fe884ffc436850f",
+      "live_disk_equal": true,
+      "cpp_symbol": "delete_native_particle_model_00af7f40",
+      "source": "src/native_particle_model_lifetime.cpp",
+      "original_abi": "ECX model; stack full flags; same EAX; RET4",
+      "coverage": "complete",
+      "final_instruction_address": "00af7f5d",
+      "final_instruction_length": 3,
+      "live_prototype": "00af7f40 FUN_00af7f40  undefined FUN_00af7f40(void)  body 00af7f40 - 00af7f5f",
+      "xrefs": [
+        "From 00d5da54 [DATA]"
+      ],
+      "descriptive_name_is_hypothesis": true,
+      "original_abi_compatible": false
+    },
+    {
+      "address": "00afd370",
+      "end_exclusive": "00afd406",
+      "inclusive_end": "00afd405",
+      "length": 150,
+      "sha256": "61b18f9ba99cadd20c4a1c32fbecea2e075597fcaadad7d482ffcb0bfde585b3",
+      "live_disk_equal": true,
+      "cpp_symbol": "destroy_native_particle_model_arrays_00afd370",
+      "source": "src/native_particle_model_lifetime.cpp",
+      "original_abi": "ECX actual18h owner; RET; one-state byte-member FH3 unwind",
+      "coverage": "complete",
+      "final_instruction_address": "00afd405",
+      "final_instruction_length": 1,
+      "live_prototype": "00afd370 CG_vector_deleting_dtor_00afd370  undefined CG_vector_deleting_dtor_00afd370(void)  body 00afd370 - 00afd405",
+      "xrefs": [
+        "From 00af5b33 in CG_scalar_deleting_dtor_00af5b30 [UNCONDITIONAL_CALL]",
+        "From 00af6c8c in FUN_00af6c50 [UNCONDITIONAL_CALL]"
+      ],
+      "descriptive_name_is_hypothesis": true,
+      "original_abi_compatible": false
+    },
+    {
+      "address": "00af6180",
+      "end_exclusive": "00af61d0",
+      "inclusive_end": "00af61cf",
+      "length": 80,
+      "sha256": "15de752aef3aad37775487213e3ecfa8464a719ec5107c7c7d19ac6fccb0ff56",
+      "live_disk_equal": true,
+      "cpp_symbol": "resize_native_particle_emitter_pointers_00af6180",
+      "source": "src/native_particle_model_lifetime.cpp",
+      "original_abi": "ECX actual0Ch header; stack signed count; RET4",
+      "coverage": "complete",
+      "final_instruction_address": "00af61cd",
+      "final_instruction_length": 3,
+      "live_prototype": "00af6180 FUN_00af6180  undefined FUN_00af6180(void)  body 00af6180 - 00af61cf",
+      "xrefs": [
+        "From 00af6b75 in FUN_00af6b70 [UNCONDITIONAL_CALL]",
+        "From 00af6d60 in FUN_00af6c50 [UNCONDITIONAL_CALL]"
+      ],
+      "descriptive_name_is_hypothesis": true,
+      "original_abi_compatible": false
+    },
+    {
+      "address": "00af6b70",
+      "end_exclusive": "00af6b87",
+      "inclusive_end": "00af6b86",
+      "length": 23,
+      "sha256": "6994177513b007de7f15942fb15c26ea13d0d2096a417f125e828743a6cc2b1b",
+      "live_disk_equal": true,
+      "cpp_symbol": "destroy_native_particle_emitter_pointers_00af6b70",
+      "source": "src/native_particle_model_lifetime.cpp",
+      "original_abi": "ECX actual0Ch header; RET",
+      "coverage": "complete",
+      "final_instruction_address": "00af6b86",
+      "final_instruction_length": 1,
+      "live_prototype": "00af6b70 FUN_00af6b70  undefined FUN_00af6b70(void)  body 00af6b70 - 00af6b86",
+      "xrefs": [
+        "From 00cbad91 in Unwind@00cbad88 [UNCONDITIONAL_CALL]",
+        "From 00cbadb1 in Unwind@00cbada8 [UNCONDITIONAL_CALL]"
+      ],
+      "descriptive_name_is_hypothesis": true,
+      "original_abi_compatible": false
+    },
+    {
+      "address": "00afd0f0",
+      "end_exclusive": "00afd127",
+      "inclusive_end": "00afd126",
+      "length": 55,
+      "sha256": "0d328e780bac06d8937a9105c5cbd072b37586c388287d027935b483f8764149",
+      "live_disk_equal": true,
+      "cpp_symbol": "destroy_native_particle_model_byte_array_00afd0f0",
+      "source": "src/native_particle_model_lifetime.cpp",
+      "original_abi": "ECX actual8h header; RET",
+      "coverage": "complete",
+      "final_instruction_address": "00afd126",
+      "final_instruction_length": 1,
+      "live_prototype": "00afd0f0 CG_vector_deleting_dtor_00afd0f0  undefined CG_vector_deleting_dtor_00afd0f0(void)  body 00afd0f0 - 00afd126",
+      "xrefs": [
+        "From 00cbb1f6 in Unwind@00cbb1f0 [UNCONDITIONAL_CALL]",
+        "From 00cbb216 in Unwind@00cbb210 [UNCONDITIONAL_CALL]"
+      ],
+      "descriptive_name_is_hypothesis": true,
+      "original_abi_compatible": false
+    },
+    {
+      "address": "00afd1e0",
+      "end_exclusive": "00afd21a",
+      "inclusive_end": "00afd219",
+      "length": 58,
+      "sha256": "393ab45806ed18eee63e3d78c1e873b1dbaff7b04a2eff798427d8316bf51f0b",
+      "live_disk_equal": true,
+      "cpp_symbol": "destroy_native_particle_model_record_array_00afd1e0",
+      "source": "src/native_particle_model_lifetime.cpp",
+      "original_abi": "ECX actual8h header; RET",
+      "coverage": "complete",
+      "final_instruction_address": "00afd219",
+      "final_instruction_length": 1,
+      "live_prototype": "00afd1e0 CG_vector_deleting_dtor_00afd1e0  undefined CG_vector_deleting_dtor_00afd1e0(void)  body 00afd1e0 - 00afd219",
+      "xrefs": [
+        "From 00cbb201 in Unwind@00cbb1fb [UNCONDITIONAL_CALL]"
+      ],
+      "descriptive_name_is_hypothesis": true,
+      "original_abi_compatible": false
+    },
+    {
+      "address": "00afcda0",
+      "end_exclusive": "00afcda1",
+      "inclusive_end": "00afcda0",
+      "length": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "live_disk_equal": true,
+      "cpp_symbol": "destroy_native_particle_array_byte_00afcda0",
+      "source": "src/native_particle_model_lifetime.cpp",
+      "original_abi": "ECX byte; literal RET",
+      "coverage": "complete",
+      "final_instruction_address": "00afcda0",
+      "final_instruction_length": 1,
+      "live_prototype": "00afcda0 FUN_00afcda0  undefined FUN_00afcda0(void)  body 00afcda0 - 00afcda0",
+      "xrefs": [
+        "From 00afd100 in CG_vector_deleting_dtor_00afd0f0 [DATA]",
+        "From 00afd156 in CG_vector_deleting_dtor_00afd130 [DATA]",
+        "From 00afd198 in CG_vector_deleting_dtor_00afd130 [DATA]",
+        "From 00afd3d7 in CG_vector_deleting_dtor_00afd370 [DATA]"
+      ],
+      "descriptive_name_is_hypothesis": true,
+      "original_abi_compatible": false
+    },
+    {
+      "address": "00af6da0",
+      "end_exclusive": "00af6dc8",
+      "inclusive_end": "00af6dc7",
+      "length": 40,
+      "sha256": "e764b07132d1fa9e9868cbe5e3dcee04bc3eecce08b32ffb38f2dd08150ba699",
+      "live_disk_equal": true,
+      "cpp_symbol": "native_particle_model_is_type_00af6da0",
+      "source": "src/native_particle_model_lifetime.cpp",
+      "original_abi": "ECX ignored; stack DWORD token; AL boolean; RET4",
+      "coverage": "complete",
+      "final_instruction_address": "00af6dc5",
+      "final_instruction_length": 3,
+      "live_prototype": "00af6da0 ?  ?  body ?",
+      "xrefs": [
+        "From 00d5da5c [DATA]"
+      ],
+      "descriptive_name_is_hypothesis": true,
+      "original_abi_compatible": false
+    },
+    {
+      "address": "00af5af0",
+      "end_exclusive": "00af5af6",
+      "inclusive_end": "00af5af5",
+      "length": 6,
+      "sha256": "774cdf03b1a5188d8f45d369e17d2fcd871d0f61dfed740057a8d6db065860cd",
+      "live_disk_equal": true,
+      "cpp_symbol": "native_particle_model_type_id_00af5af0",
+      "source": "src/native_particle_model_lifetime.cpp",
+      "original_abi": "ECX ignored; EAX current native ownID; RET",
+      "coverage": "complete",
+      "final_instruction_address": "00af5af5",
+      "final_instruction_length": 1,
+      "live_prototype": "00af5af0 ?  ?  body ?",
+      "xrefs": [
+        "From 00d5da58 [DATA]"
+      ],
+      "descriptive_name_is_hypothesis": true,
+      "original_abi_compatible": false
+    },
+    {
+      "address": "00af5b00",
+      "end_exclusive": "00af5b06",
+      "inclusive_end": "00af5b05",
+      "length": 6,
+      "sha256": "7ddf4037938211a6554cc34cbc3fe74fc5e0d5075e5ed79e54e7c64063397024",
+      "live_disk_equal": true,
+      "cpp_symbol": "native_particle_model_type_name_00af5b00",
+      "source": "src/native_particle_model_lifetime.cpp",
+      "original_abi": "ECX ignored; EAX current native name address; RET",
+      "coverage": "complete",
+      "final_instruction_address": "00af5b05",
+      "final_instruction_length": 1,
+      "live_prototype": "00af5b00 ?  ?  body ?",
+      "xrefs": [
+        "From 00d5da64 [DATA]"
+      ],
+      "descriptive_name_is_hypothesis": true,
+      "original_abi_compatible": false
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00af6c50",
+      "address": "00af6c8c",
+      "native": "00afd370"
+    },
+    {
+      "function": "00af6c50",
+      "address": "00af6c92",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "00af6c50",
+      "address": "00af6cbd",
+      "native": "indirect: ebx"
+    },
+    {
+      "function": "00af6c50",
+      "address": "00af6cca",
+      "native": "indirect: eax"
+    },
+    {
+      "function": "00af6c50",
+      "address": "00af6ce7",
+      "native": "indirect: ebx"
+    },
+    {
+      "function": "00af6c50",
+      "address": "00af6cf3",
+      "native": "indirect: eax"
+    },
+    {
+      "function": "00af6c50",
+      "address": "00af6d09",
+      "native": "indirect: ebx"
+    },
+    {
+      "function": "00af6c50",
+      "address": "00af6d15",
+      "native": "indirect: eax"
+    },
+    {
+      "function": "00af6c50",
+      "address": "00af6d2b",
+      "native": "indirect: ebx"
+    },
+    {
+      "function": "00af6c50",
+      "address": "00af6d37",
+      "native": "indirect: eax"
+    },
+    {
+      "function": "00af6c50",
+      "address": "00af6d4d",
+      "native": "00af0ae0"
+    },
+    {
+      "function": "00af6c50",
+      "address": "00af6d60",
+      "native": "00af6180"
+    },
+    {
+      "function": "00af6c50",
+      "address": "00af6d68",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00af6c50",
+      "address": "00af6d7a",
+      "native": "00b750c0"
+    },
+    {
+      "function": "00af7f40",
+      "address": "00af7f43",
+      "native": "00af6c50"
+    },
+    {
+      "function": "00af7f40",
+      "address": "00af7f55",
+      "native": "00af60b0"
+    },
+    {
+      "function": "00afd370",
+      "address": "00afd3ae",
+      "native": "00bf7c6e"
+    },
+    {
+      "function": "00afd370",
+      "address": "00afd3b4",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00afd370",
+      "address": "00afd3e0",
+      "native": "00bf7c6e"
+    },
+    {
+      "function": "00afd370",
+      "address": "00afd3e6",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00af6180",
+      "address": "00af618e",
+      "native": "00af6120"
+    },
+    {
+      "function": "00af6b70",
+      "address": "00af6b75",
+      "native": "00af6180"
+    },
+    {
+      "function": "00af6b70",
+      "address": "00af6b7d",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00afd0f0",
+      "address": "00afd109",
+      "native": "00bf7c6e"
+    },
+    {
+      "function": "00afd0f0",
+      "address": "00afd10f",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00afd1e0",
+      "address": "00afd1fc",
+      "native": "00bf7c6e"
+    },
+    {
+      "function": "00afd1e0",
+      "address": "00afd202",
+      "native": "00bf6989"
+    }
+  ],
+  "supporting_spans": [
+    {
+      "address": "00cbad80",
+      "end_exclusive": "00cbad88",
+      "inclusive_end": "00cbad87",
+      "length": 8,
+      "sha256": "e2456bcafaa783f24baa4880a029e3b53d8b3ea5d7f3e5eca60ea7e8a5ae887d",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00cbad88",
+      "end_exclusive": "00cbad96",
+      "inclusive_end": "00cbad95",
+      "length": 14,
+      "sha256": "c6e84894a1194a98d3ebe3d519ff7c6b2bead1e66f115740f2228ed1ff38b7c2",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00cbad96",
+      "end_exclusive": "00cbada0",
+      "inclusive_end": "00cbad9f",
+      "length": 10,
+      "sha256": "dce3dac329761899e3cdc3a06329333544dfcc86d1d4e5a4da2ee049952c5679",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00cbb210",
+      "end_exclusive": "00cbb21b",
+      "inclusive_end": "00cbb21a",
+      "length": 11,
+      "sha256": "6f0661b7451b7aba79afd9106f1ebcdc2f9d646de0bb726092c721f07d3145df",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00cbb21b",
+      "end_exclusive": "00cbb225",
+      "inclusive_end": "00cbb224",
+      "length": 10,
+      "sha256": "91c69a7a40beccf2f20b397fd7c64a0e2f4a5a01732a66f9f9932ab7acc445cf",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00df2c00",
+      "end_exclusive": "00df2c34",
+      "inclusive_end": "00df2c33",
+      "length": 52,
+      "sha256": "fc1a444413d13bf292283ba31948374bcc19ecf12a459ef2d6a9f22c5e885b23",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00df31dc",
+      "end_exclusive": "00df3208",
+      "inclusive_end": "00df3207",
+      "length": 44,
+      "sha256": "15a560dc197754299581f7f320b85161d9b95d66e5afc9076c7f6ef89f3f4615",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d5da50",
+      "end_exclusive": "00d5daac",
+      "inclusive_end": "00d5daab",
+      "length": 92,
+      "sha256": "4244a53dd489a5dab0d45fa9f32d4c2c59063c53e8e937090d6c8a522226bee6",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00cd7850",
+      "end_exclusive": "00cd78ab",
+      "inclusive_end": "00cd78aa",
+      "length": 91,
+      "sha256": "94108d1ba83fb352ec5f3d141931e8b8de3ccb9325f5b65463fcb769a7371f58",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00af6120",
+      "end_exclusive": "00af617f",
+      "inclusive_end": "00af617e",
+      "length": 95,
+      "sha256": "d2f55a3a028634277dd2db2dd0cef3480c60f4b0913df1f8779d5eedeb8d9122",
+      "live_disk_equal": true
+    }
+  ],
+  "evidence_date": "2026-09-12",
+  "storage_and_binding": {
+    "model": "SAME NativeModelOwner, sole actual04, canonical NativeNodeBinding and GeneratedModelLifetimeRuntime; no ordinary188h NativeModelReference",
+    "pool": "actual F8D2D0 payload2DC stride2E0 ID2DC; existing initialize/return/destroy",
+    "actual_owners": "base.environment.retained_owners; missing emitter/variant/mesh terminal bindings fail, never substituted",
+    "type_producer": "CD7850..CD78AA writes F8D308 own,30C model,310 node,314 root,318 native name; required canonical bootstrap is not implemented here",
+    "array_producer": "AFD2E0 actual18h owner, cookie arrays bytes04 and108h records0C; not emitter30h/particle6Ch",
+    "manager": "root unregister_native_particle_model_00af0ae0; caller captures current F8C274 BEFORE live count decrement",
+    "failure": "AF6C50 state1 emitter backing then base; state0 base only; state-1 no retry; array190 and skipped ownership remain per native"
+  },
+  "corrections": [
+    {
+      "was": "AF6C50 pseudocode returns after freeing nonnull model190; omits base cleanup after pointer backing free",
+      "is": "returning free resumes AF6C97..99 and AF6D6D..91; release remaining owners and manager, B750C0, normal RET",
+      "evidence": "all322 live/disk bytes equal; fixture executes both continuations; original RET AF6D91 length1",
+      "address": "00af6c50",
+      "repair_ranges_inclusive": [
+        "00af6c97-00af6c99",
+        "00af6d6d-00af6d91"
+      ],
+      "inclusive_end": "00af6d91",
+      "final_instruction_length": 1
+    },
+    {
+      "was": "AFD370 pseudocode returns after either nonnull cookie free",
+      "is": "both frees return; records then bytes cleared with native pointer/count store order",
+      "evidence": "all150 live/disk bytes equal; fixture exercises both cookie frees, descriptor counts deliberately differ from cookies",
+      "address": "00afd370",
+      "repair_ranges_inclusive": [
+        "00afd3b9-00afd3bb",
+        "00afd3eb-00afd3ed"
+      ],
+      "inclusive_end": "00afd405",
+      "final_instruction_length": 1
+    }
+  ],
+  "missing_definitions": [
+    {
+      "address": "00af6da0",
+      "inclusive_end": "00af6dc7",
+      "final_instruction": "RET4",
+      "final_instruction_address": "00af6dc5",
+      "final_instruction_length": 3
+    },
+    {
+      "address": "00af5af0",
+      "inclusive_end": "00af5af5",
+      "final_instruction": "RET",
+      "final_instruction_address": "00af5af5",
+      "final_instruction_length": 1
+    },
+    {
+      "address": "00af5b00",
+      "inclusive_end": "00af5b05",
+      "final_instruction": "RET",
+      "final_instruction_address": "00af5b05",
+      "final_instruction_length": 1
+    },
+    {
+      "address": "00cbad96",
+      "inclusive_end": "00cbad9f",
+      "final_instruction": "JMP BF6B43",
+      "final_instruction_address": "00cbad9b",
+      "final_instruction_length": 5
+    },
+    {
+      "address": "00cbb21b",
+      "inclusive_end": "00cbb224",
+      "final_instruction": "JMP BF6B43",
+      "final_instruction_address": "00cbb220",
+      "final_instruction_length": 5
+    }
+  ],
+  "compiler_unwind": [
+    {
+      "function": "00af6c50",
+      "handler": "00cbad96",
+      "descriptor": "00df2c10",
+      "map": "00df2c00",
+      "states": [
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00cbad88",
+          "native": "00af6b70",
+          "argument": "model194"
+        },
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cbad80",
+          "native": "00b750c0",
+          "argument": "same actual model"
+        }
+      ]
+    },
+    {
+      "function": "00afd370",
+      "handler": "00cbb21b",
+      "descriptor": "00df31e4",
+      "map": "00df31dc",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cbb210",
+          "native": "00afd0f0",
+          "argument": "owner04"
+        }
+      ]
+    }
+  ],
+  "validation": {
+    "seed_matches": "all8 matched via tools/ghidra_export.py verify-seeds",
+    "strict_compile": "PASS MSVC Win32 /std:c++20 /EHsc /MD /W4 /WX /O2 /Gy /fp:strict /permissive-; current integrator model_owner/manager compiled ahead of frozen library",
+    "fixture": "PASS original AF7F40/AF6C50/AFD370/AF6180 trajectory; all736 normalized slot bytes, both destructor returning-free continuations, two actual cookie frees, real base cleanup/manager erasure/F8D2D0 raw return, canonical modelzero dispatch/unbind/disposal, current type descriptor after mutation",
+    "fixture_boundaries": "Only two dangling pointer identities normalized. Cookie counts3/2 vs descriptor99 verify cookie ownership. Backed emitter/variant/mesh fixture headers count2to1; their unknown terminals fail if reached. Full base destructor is shared C++, not relocated native bytes. Vector adapter forwards concrete literal-RET element callbacks. No original exceptions executed. AF6120 growth not reached by this trajectory.",
+    "call_verifier": "19 numeric rows checked; 1 failure atAF6D7A outside truncatedGhidraAF6C50; 8 indirectrows explicitly notchecked. Root repairs and repeats audit.",
+    "repository_build": "Attempted scripts/build.ps1; MSB3191 access denied creating bsp_lua511.dir/Release/bsp_lua511.tlog. SharedJ drive capacity issue reported by integrator. Removed only verified own generated build/win32; strict build and fixture onC. Combined build/CTest remains root integration work.",
+    "fixture_source": "local/lifetime_probe.cpp",
+    "fixture_script": "local/build_lifetime_probe.ps1",
+    "fixture_source_sha256": "8e6be533623c5ce35fbfa2e42ae78d658c8c257fad9f61efda275500f2b3f4c1",
+    "fixture_executable_sha256": "5dcc20e6633de2823bb0077b51c60b2988d11950f4422d14b535ad589eed01fe",
+    "frozen_library_sha256": "019ce045f960989f36ef1bcd3fb58b709c0580a015ea33fa82ecf56f674d2212",
+    "integration_object_sources": {
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_model_owner.cpp": "94fe741d5d99b7e5f16721769241427ae14198b07440f4796348e78ca13b6882",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_particle_model_manager.cpp": "8f4333c6485f219eb4e523a731f69c2c7fd02505f6de4d48f47fd033d40195fc"
+    },
+    "source_sha256": "0c7289d37b3583f0f33eae8d699a99218db3c57e98fd2e35d17d1262cda93305",
+    "game_validated": false,
+    "render_validated": false,
+    "native_exception_abi_validated": false,
+    "complete_application_construction_and_terminal_bindings": false
+  }
+}
