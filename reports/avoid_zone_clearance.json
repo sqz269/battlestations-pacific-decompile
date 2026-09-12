@@ -1,0 +1,795 @@
+{
+  "packet": "orch6_avoid_zone_clearance",
+  "owner": "agent/orch6-corner-clearance",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "read-only; each bsp.py ghidra batch verifies project and program before query",
+  "doc": "docs/AVOID_ZONE_CLEARANCE.md",
+  "header": "include/bsp/avoid_zone_clearance.hpp",
+  "source": "src/avoid_zone_clearance.cpp",
+  "routines": [
+    {
+      "address": "00415190",
+      "body_start": "00415190",
+      "body_end_inclusive": "004151bf",
+      "body": "00415190-004151bf",
+      "byte_count": 48,
+      "coverage": "complete_normal_flow",
+      "original_abi": "ECX node; stack start,end; EAX node; RET8",
+      "reconstruction": "avoid_zone_segment_initialize_00415190",
+      "action": "reconstructed",
+      "source": "src/avoid_zone_clearance.cpp",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "004158a0",
+      "body_start": "004158a0",
+      "body_end_inclusive": "004158d3",
+      "body": "004158a0-004158d3",
+      "byte_count": 52,
+      "coverage": "complete_including_decoded_free_tail",
+      "original_abi": "ECX head slot; RET",
+      "reconstruction": "avoid_zone_selected_segments_clear_004158a0",
+      "action": "reconstructed",
+      "source": "src/avoid_zone_clearance.cpp",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "004158e0",
+      "body_start": "004158e0",
+      "body_end_inclusive": "00415963",
+      "body": "004158e0-00415963",
+      "byte_count": 132,
+      "coverage": "complete",
+      "original_abi": "ECX head slot; stack start,end,output; EAX hit node; RET0Ch",
+      "reconstruction": "avoid_zone_selected_segments_hit_004158e0",
+      "action": "reconstructed",
+      "source": "src/avoid_zone_clearance.cpp",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00417630",
+      "body_start": "00417630",
+      "body_end_inclusive": "00417884",
+      "body": "00417630-00417884",
+      "byte_count": 597,
+      "coverage": "complete_normal_flow",
+      "original_abi": "ECX zone; stack box; EAX head; RET4",
+      "reconstruction": "avoid_zone_select_segments_00417630",
+      "action": "reconstructed",
+      "source": "src/avoid_zone_clearance.cpp",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00417a40",
+      "body_start": "00417a40",
+      "body_end_inclusive": "00417ac1",
+      "body": "00417a40-00417ac1",
+      "byte_count": 130,
+      "coverage": "complete_normal_flow",
+      "original_abi": "ECX group; stack box; EAX head; RET4",
+      "reconstruction": "avoid_zone_group_select_segments_00417a40",
+      "action": "reconstructed",
+      "source": "src/avoid_zone_clearance.cpp",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00419fc0",
+      "body_start": "00419fc0",
+      "body_end_inclusive": "0041a02a",
+      "body": "00419fc0-0041a02a",
+      "byte_count": 107,
+      "coverage": "complete",
+      "original_abi": "ECX head slot; stack query; ST0 distance; RET4",
+      "reconstruction": "avoid_zone_selected_segments_distance_00419fc0",
+      "action": "reconstructed",
+      "source": "src/avoid_zone_clearance.cpp",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00423190",
+      "body_start": "00423190",
+      "body_end_inclusive": "004234f8",
+      "body": "00423190-004234f8",
+      "byte_count": 873,
+      "coverage": "complete_normal_flow_through_actual_boundaries",
+      "original_abi": "ECX zone; stack record; RET4",
+      "reconstruction": "avoid_zone_ensure_corner_clearance_00423190",
+      "action": "reconstructed",
+      "source": "src/avoid_zone_clearance.cpp",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "004f3730",
+      "body_start": "004f3730",
+      "body_end_inclusive": "004f3801",
+      "body": "004f3730-004f3801",
+      "byte_count": 210,
+      "coverage": "complete_instruction_schedule",
+      "original_abi": "ECX a0 EDX a1; stack b0,b1,output; AL result; RET0Ch",
+      "reconstruction": "native_segment_crossing_004f3730",
+      "action": "reconstructed",
+      "source": "src/avoid_zone_clearance.cpp",
+      "abi_compatible": true,
+      "game_validated": false
+    },
+    {
+      "address": "0085c910",
+      "body_start": "0085c910",
+      "body_end_inclusive": "0085cac7",
+      "body": "0085c910-0085cac7",
+      "byte_count": 440,
+      "coverage": "complete_instruction_schedule",
+      "original_abi": "ECX min EDX max; stack b0,b1; AL result; RET8",
+      "reconstruction": "native_box_meets_segment_0085c910",
+      "action": "reconstructed",
+      "source": "src/avoid_zone_clearance.cpp",
+      "abi_compatible": true,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "004231ca",
+      "native": "004218e0",
+      "function": "00423190",
+      "contract": "actual manager singleton, capture nullable tracked section+4"
+    },
+    {
+      "address": "00423298",
+      "native": "00415010",
+      "function": "00423190",
+      "contract": "include maximum point in initialized minimum bounds"
+    },
+    {
+      "address": "004232b9",
+      "native": "004158a0",
+      "function": "00423190",
+      "contract": "clear initially empty head on nonzero layer"
+    },
+    {
+      "address": "004232cd",
+      "native": "004158a0",
+      "function": "00423190",
+      "contract": "clear nonempty head before list rebuild"
+    },
+    {
+      "address": "004232d2",
+      "native": "004218e0",
+      "function": "00423190",
+      "contract": "second actual singleton lookup under captured gate"
+    },
+    {
+      "address": "004232de",
+      "native": "004120d0",
+      "function": "00423190",
+      "contract": "select actual group from zone+0Ch layer; RET4"
+    },
+    {
+      "address": "004232ee",
+      "native": "00417a40",
+      "function": "00423190",
+      "contract": "select actual group edges in query box; RET4"
+    },
+    {
+      "address": "00423362",
+      "native": "004158e0",
+      "function": "00423190",
+      "contract": "base to base+1600*d nearest selected crossing; RET0Ch"
+    },
+    {
+      "address": "00423387",
+      "native": "00414c60",
+      "function": "00423190",
+      "contract": "cutoff length of binary32 base-minus-hit; private actual CRT adaptation"
+    },
+    {
+      "address": "004233df",
+      "native": "00419fc0",
+      "function": "00423190",
+      "contract": "initial candidate minimum actual segment distance; RET4"
+    },
+    {
+      "address": "0042348d",
+      "native": "00419fc0",
+      "function": "00423190",
+      "contract": "refined candidate minimum actual segment distance; RET4"
+    },
+    {
+      "address": "004234c1",
+      "native": "004158a0",
+      "function": "00423190",
+      "contract": "destroy returned list after cache store and before unlock"
+    },
+    {
+      "address": "0041778f",
+      "native": "004f2b00",
+      "function": "00417630",
+      "contract": "actual query-box min/max adjustor, start/end stack; RET8"
+    },
+    {
+      "address": "0041779f",
+      "native": "00bf681b",
+      "function": "00417630",
+      "contract": "actual allocate20h; ADD ESP,4 at004177A4"
+    },
+    {
+      "address": "004177b7",
+      "native": "00415190",
+      "function": "00417630",
+      "contract": "initialize endpoints and run links; RET8"
+    },
+    {
+      "address": "00417a67",
+      "native": "00417630",
+      "function": "00417a40",
+      "contract": "select each zone in original group array order; RET4"
+    },
+    {
+      "address": "004158c3",
+      "native": "00bf65ac",
+      "function": "004158a0",
+      "contract": "matching free; ADD ESP,4 in decoded004158C8 gap"
+    },
+    {
+      "address": "00415920",
+      "native": "004f3730",
+      "function": "004158e0",
+      "contract": "ECX start EDX running-output; stack segment-start,segment-end,temp-output; RET0Ch"
+    },
+    {
+      "address": "00419fe6",
+      "native": "00419ab0",
+      "function": "00419fc0",
+      "contract": "ECX segment-start EDX segment-end; stack query; ST0 spilled before ordered minimum; RET4"
+    },
+    {
+      "address": "004f3781",
+      "native": "004f3630",
+      "function": "004f3730",
+      "contract": "existing native relative parameter solver; ECX a0 EDX da; stack b0,db,t,u; RET10h"
+    },
+    {
+      "address": "004f2b03",
+      "native": "0085c910",
+      "function": "004f2b00",
+      "contract": "LEA EDX,[ECX+8] before tail JMP; two stack endpoint pointers",
+      "kind": "tail_jump"
+    }
+  ],
+  "caller_sites": [
+    {
+      "address": "00423534",
+      "native": "00423190",
+      "function": "00423520",
+      "contract": "ensure indexed corner before requested offset clamp"
+    },
+    {
+      "address": "009d5923",
+      "native": "00423190",
+      "function": "009d58f0",
+      "contract": "ensure just-attached record, after node+10h store"
+    },
+    {
+      "address": "004224e8",
+      "native": "00417a40",
+      "function": "004224c0",
+      "contract": "group selected using owner layer then query-box pointer"
+    },
+    {
+      "address": "004224c8",
+      "native": "004158a0",
+      "function": "004224c0",
+      "contract": "clear previous head before replacement"
+    },
+    {
+      "address": "00419fad",
+      "native": "004158a0",
+      "function": "00419fa0",
+      "contract": "clear head before changing layer key"
+    },
+    {
+      "address": "009da033",
+      "native": "004158a0",
+      "function": "009da030",
+      "contract": "head-slot adjustor",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "009da724",
+      "native": "004158a0",
+      "function": "009da6e0",
+      "contract": "clear actual ship head slots on enabled-to-disabled transition"
+    },
+    {
+      "address": "009da76e",
+      "native": "004158a0",
+      "function": "009da6e0",
+      "contract": "clear actual ship head slots on enabled-to-disabled transition"
+    },
+    {
+      "address": "009da7bb",
+      "native": "004158a0",
+      "function": "009da6e0",
+      "contract": "clear actual ship head slots on enabled-to-disabled transition"
+    },
+    {
+      "address": "009e0218",
+      "native": "004158a0",
+      "function": "009e0130",
+      "contract": "destructor actual head slots+A7Ch,+A5Ch,+A3Ch"
+    },
+    {
+      "address": "009e0228",
+      "native": "004158a0",
+      "function": "009e0130",
+      "contract": "destructor actual head slots+A7Ch,+A5Ch,+A3Ch"
+    },
+    {
+      "address": "009e0238",
+      "native": "004158a0",
+      "function": "009e0130",
+      "contract": "destructor actual head slots+A7Ch,+A5Ch,+A3Ch"
+    },
+    {
+      "address": "009dc457",
+      "native": "004158e0",
+      "function": "009dc2e0",
+      "contract": "same ESI list owner; start/end/output pointer triples; EAX identity consumed"
+    },
+    {
+      "address": "009dc510",
+      "native": "004158e0",
+      "function": "009dc2e0",
+      "contract": "same ESI list owner; start/end/output pointer triples; EAX identity consumed"
+    },
+    {
+      "address": "009dc617",
+      "native": "004158e0",
+      "function": "009dc2e0",
+      "contract": "same ESI list owner; start/end/output pointer triples; EAX identity consumed"
+    },
+    {
+      "address": "009dc725",
+      "native": "004158e0",
+      "function": "009dc2e0",
+      "contract": "same ESI list owner; start/end/output pointer triples; EAX identity consumed"
+    },
+    {
+      "address": "009dc82c",
+      "native": "004158e0",
+      "function": "009dc2e0",
+      "contract": "same ESI list owner; start/end/output pointer triples; EAX identity consumed"
+    },
+    {
+      "address": "009dc984",
+      "native": "004158e0",
+      "function": "009dc2e0",
+      "contract": "same ESI list owner; start/end/output pointer triples; EAX identity consumed"
+    },
+    {
+      "address": "009eb819",
+      "native": "004158e0",
+      "function": "009eb660",
+      "contract": "ship+A3Ch list and sector ray endpoints/output"
+    },
+    {
+      "address": "00416d69",
+      "native": "004f3730",
+      "function": "00416cd0",
+      "contract": "polygon edge versus supplied segment, three stack pointers"
+    },
+    {
+      "address": "00416ea5",
+      "native": "004f3730",
+      "function": "00416dd0",
+      "contract": "moving segment endpoint versus polygon edge"
+    },
+    {
+      "address": "004f4a0a",
+      "native": "004f3730",
+      "function": "004f49f0",
+      "contract": "segment-pair distance early intersection"
+    },
+    {
+      "address": "0041a4fd",
+      "native": "004f3730",
+      "function": "0041a4e0",
+      "contract": "query result record receives crossing and found byte"
+    },
+    {
+      "address": "004b6795",
+      "native": "004f3730",
+      "function": "004b6720",
+      "contract": "float3 x/z wrapper packs float2 endpoints"
+    },
+    {
+      "address": "004bc1ee",
+      "native": "004f3730",
+      "function": "004bc120",
+      "contract": "two endpoint-pair crossing queries"
+    },
+    {
+      "address": "004bc2ca",
+      "native": "004f3730",
+      "function": "004bc120",
+      "contract": "two endpoint-pair crossing queries"
+    },
+    {
+      "address": "009006ee",
+      "native": "004f3730",
+      "function": "008fff20",
+      "contract": "gun-bot float2 crossing query"
+    },
+    {
+      "address": "00419c90",
+      "native": "004158a0",
+      "function": "00419c90",
+      "contract": "head-slot clear thunk",
+      "kind": "tail_jump"
+    }
+  ],
+  "no_ghidra_function": [],
+  "analysis_gaps": [
+    {
+      "start": "004158c8",
+      "end_inclusive": "004158d1",
+      "bytes": "83c40485ff893e75df5f",
+      "decoded": "ADD ESP,4; TEST EDI,EDI; MOV [ESI],EDI; JNZ004158B0; POP EDI",
+      "reconstruction": "included",
+      "ghidra_repair_applied": false
+    },
+    {
+      "start": "004176bd",
+      "end_inclusive": "004176bf",
+      "bytes": "8d4900",
+      "decoded": "LEA ECX,[ECX]; alignment after unconditional jump"
+    },
+    {
+      "start": "00419fdd",
+      "end_inclusive": "00419fdf",
+      "bytes": "8d4900",
+      "decoded": "LEA ECX,[ECX]; alignment after unconditional jump"
+    }
+  ],
+  "names": [
+    {
+      "address": "00415190",
+      "was": "FUN_00415190",
+      "is": "BSP_AvoidZoneSegment_Initialize",
+      "previous_ledger_record": null,
+      "existing_ghidra_comments_preserved": true,
+      "ghidra_mutation_applied": false,
+      "evidence": "Hypothesis, not a recovered symbol. Read-only orch6_avoid_zone_clearance; ECX node; stack start,end; EAX node; RET8; body00415190-004151bf; complete_normal_flow. Actual selected edge runs, native geometry kernels and lifetime; docs/AVOID_ZONE_CLEARANCE.md; reports/avoid_zone_clearance.json. Prior live name FUN_00415190; earlier evidence retained."
+    },
+    {
+      "address": "004158a0",
+      "was": "FUN_004158a0",
+      "is": "BSP_AvoidZoneSegmentList_Clear",
+      "previous_ledger_record": null,
+      "existing_ghidra_comments_preserved": true,
+      "ghidra_mutation_applied": false,
+      "evidence": "Hypothesis, not a recovered symbol. Read-only orch6_avoid_zone_clearance; ECX head slot; RET; body004158a0-004158d3; complete_including_decoded_free_tail. Actual selected edge runs, native geometry kernels and lifetime; docs/AVOID_ZONE_CLEARANCE.md; reports/avoid_zone_clearance.json. Prior live name FUN_004158a0; earlier evidence retained."
+    },
+    {
+      "address": "004158e0",
+      "was": "FUN_004158e0",
+      "is": "BSP_AvoidZoneSegmentList_NearestHit",
+      "previous_ledger_record": null,
+      "existing_ghidra_comments_preserved": true,
+      "ghidra_mutation_applied": false,
+      "evidence": "Hypothesis, not a recovered symbol. Read-only orch6_avoid_zone_clearance; ECX head slot; stack start,end,output; EAX hit node; RET0Ch; body004158e0-00415963; complete. Actual selected edge runs, native geometry kernels and lifetime; docs/AVOID_ZONE_CLEARANCE.md; reports/avoid_zone_clearance.json. Prior live name FUN_004158e0; earlier evidence retained."
+    },
+    {
+      "address": "00417630",
+      "was": "FUN_00417630",
+      "is": "BSP_AvoidZone_SelectSegmentRunsInBox",
+      "previous_ledger_record": null,
+      "existing_ghidra_comments_preserved": true,
+      "ghidra_mutation_applied": false,
+      "evidence": "Hypothesis, not a recovered symbol. Read-only orch6_avoid_zone_clearance; ECX zone; stack box; EAX head; RET4; body00417630-00417884; complete_normal_flow. Actual selected edge runs, native geometry kernels and lifetime; docs/AVOID_ZONE_CLEARANCE.md; reports/avoid_zone_clearance.json. Prior live name FUN_00417630; earlier evidence retained."
+    },
+    {
+      "address": "00417a40",
+      "was": "FUN_00417a40",
+      "is": "BSP_AvoidZoneGroup_SelectSegmentRunsInBox",
+      "previous_ledger_record": null,
+      "existing_ghidra_comments_preserved": true,
+      "ghidra_mutation_applied": false,
+      "evidence": "Hypothesis, not a recovered symbol. Read-only orch6_avoid_zone_clearance; ECX group; stack box; EAX head; RET4; body00417a40-00417ac1; complete_normal_flow. Actual selected edge runs, native geometry kernels and lifetime; docs/AVOID_ZONE_CLEARANCE.md; reports/avoid_zone_clearance.json. Prior live name FUN_00417a40; earlier evidence retained."
+    },
+    {
+      "address": "00419fc0",
+      "was": "FUN_00419fc0",
+      "is": "BSP_AvoidZoneSegmentList_PointDistance",
+      "previous_ledger_record": null,
+      "existing_ghidra_comments_preserved": true,
+      "ghidra_mutation_applied": false,
+      "evidence": "Hypothesis, not a recovered symbol. Read-only orch6_avoid_zone_clearance; ECX head slot; stack query; ST0 distance; RET4; body00419fc0-0041a02a; complete. Actual selected edge runs, native geometry kernels and lifetime; docs/AVOID_ZONE_CLEARANCE.md; reports/avoid_zone_clearance.json. Prior live name FUN_00419fc0; earlier evidence retained."
+    },
+    {
+      "address": "00423190",
+      "was": "BSP_AvoidZone_EnsureCornerClearanceScale",
+      "is": "BSP_AvoidZone_EnsureCornerClearanceScale",
+      "previous_ledger_record": {
+        "address": "00423190",
+        "name": "BSP_AvoidZone_EnsureCornerClearanceScale",
+        "evidence": "Hypothesis, not a recovered symbol. Read-only packet orch6_ship_ai_lateral_record. ECX zone; one stack record; RET4; body 00423190-004234f8. Coverage: complete top-level static read; no reconstruction; selected segment-list membership and lifetime dependencies are not recovered here. COMISS+JA cache guard004231B8/1C4; base=p+d; initial r800; ray1600; half hit-distance; nearest segment-distance refinement min(r-50,(r+q)/2), threshold25/fallback20; +20h store004234BC. Clearance interpretation is bounded to the selected geometry. docs/SHIP_AI_LATERAL_RECORD.md; reports/ship_ai_lateral_record.json. Prior live name: FUN_00423190; no Ghidra mutation applied."
+      },
+      "existing_ghidra_comments_preserved": true,
+      "ghidra_mutation_applied": false,
+      "evidence": "Hypothesis, not a recovered symbol. Read-only orch6_avoid_zone_clearance; ECX zone; stack record; RET4; body00423190-004234f8; complete_normal_flow_through_actual_boundaries. Actual selected edge runs, native geometry kernels and lifetime; docs/AVOID_ZONE_CLEARANCE.md; reports/avoid_zone_clearance.json. Prior live name BSP_AvoidZone_EnsureCornerClearanceScale; earlier evidence retained."
+    },
+    {
+      "address": "004f3730",
+      "was": "BSP_Math_SegmentCrossing2D",
+      "is": "BSP_Math_SegmentCrossing2D",
+      "previous_ledger_record": {
+        "address": "004f3730",
+        "name": "BSP_Math_SegmentCrossing2D",
+        "evidence": "Hypothesis, not a recovered symbol. Packet cc2_gun_bot_remainder, read-only analysis. __fastcall(ECX const float2* a0, EDX const float2* a1, const float2* b0, const float2* b1, float2* out) -> bool, RET 0Ch, body 004F3730-004F3801. Two dimensional: only [0] and [1] of every argument are read. Calls 004F3630 for the two segment parameters and accepts only when both land in [0, 1] (00D7A24C), then writes the crossing point on the first segment. TorpedoBot's friendly-fire scan calls it at 009006EE with (x, z) pairs. docs/GUN_BOT_REMAINDER.md"
+      },
+      "existing_ghidra_comments_preserved": true,
+      "ghidra_mutation_applied": false,
+      "evidence": "Hypothesis, not a recovered symbol. Read-only orch6_avoid_zone_clearance; ECX a0 EDX a1; stack b0,b1,output; AL result; RET0Ch; body004f3730-004f3801; complete_instruction_schedule. Actual selected edge runs, native geometry kernels and lifetime; docs/AVOID_ZONE_CLEARANCE.md; reports/avoid_zone_clearance.json. Prior live name BSP_Math_SegmentCrossing2D; earlier evidence retained."
+    },
+    {
+      "address": "0085c910",
+      "was": "BSP_Math_BoxMeetsSegment2D",
+      "is": "BSP_Math_BoxMeetsSegment2D",
+      "previous_ledger_record": {
+        "address": "0085c910",
+        "name": "BSP_Math_BoxMeetsSegment2D",
+        "evidence": "Hypothesis, not a recovered symbol. Packet cc_ai_avoid_zones, read-only analysis. bool __fastcall(ECX const float2* box_min, EDX const float2* box_max, const float2* b0, const float2* b1) in AL, RET 8, body 0085C910-0085CAC7, read whole. A 2D separating-axis test: the box half extent, the segment half vector and the half difference of the two centres (00D7A280 is 0.5), compared on the two box axes and on the segment's own perpendicular (0085CA8A). Only reached through the adjustor thunk 004F2B00, which turns an avoid zone's +14h into the min and max pair, from 00416DD0 at 00416DE9 and 00416CD0 and 00417630. docs/AVOID_ZONE_GEOMETRY.md; reports/avoid_zone_geometry.json."
+      },
+      "existing_ghidra_comments_preserved": true,
+      "ghidra_mutation_applied": false,
+      "evidence": "Hypothesis, not a recovered symbol. Read-only orch6_avoid_zone_clearance; ECX min EDX max; stack b0,b1; AL result; RET8; body0085c910-0085cac7; complete_instruction_schedule. Actual selected edge runs, native geometry kernels and lifetime; docs/AVOID_ZONE_CLEARANCE.md; reports/avoid_zone_clearance.json. Prior live name BSP_Math_BoxMeetsSegment2D; earlier evidence retained."
+    }
+  ],
+  "corrections": [
+    {
+      "was": "004158A0 pseudocode frees one head node then returns",
+      "is": "full free loop walks next/next_run and zeroes head",
+      "evidence": "bytes004158C8-D1 after false no-return _free"
+    },
+    {
+      "was": "segment tree node membership and lifetime unknown",
+      "is": "actual selected-layer polygon edges organized as contiguous runs",
+      "evidence": "00415190 producer;00417630 edge filters/run links;00417A40 group append"
+    },
+    {
+      "was": "gun_bot_remainder segment crossing substitutes exact-zero denominator",
+      "is": "new public kernel calls actual native_segment_parameters_004f3630 and retains native x87 schedule",
+      "evidence": "004F3781 and full004F3730-004F3801 body; old shared projection unchanged"
+    },
+    {
+      "was": "Ghidra abbreviated FMUL ST2/ST1 translated as ST0 destination",
+      "is": "native SAT writes ST2 at0085C93D and ST1 at0085C988",
+      "evidence": "DC CA/DC C9 raw bytes; focused original-byte list comparison found it, corrected before final2/2 build and passing differential"
+    }
+  ],
+  "validation": {
+    "build": "PASS ./scripts/build.ps1 after final SAT destination corrections; MSVC Win32 /W4 /WX /fp:strict; existing CTest2/2 reconstructed_math and native_math_differential",
+    "call_rows": "PASS tools/verify_report_calls.py:49 call rows checked,0 failed",
+    "probe": {
+      "file": "local/clearance_probe.cpp",
+      "ignored": true,
+      "manifest_embedded": true,
+      "name": "clearance_probe.exe",
+      "result": "PASS mapped-native differential: 17 selected edges across3 boxes; 12 complete corner-clearance computations; list topology/hit/distance/free; positive cache; lock-before-selection; allocations=226 frees=226",
+      "selected_edge_counts": [
+        12,
+        5,
+        0
+      ],
+      "complete_clearance_comparisons": 12,
+      "allocation_count": 226,
+      "free_count": 226,
+      "checks": [
+        "bitwise endpoints",
+        "full next/previous/next-run/close topology",
+        "nearest-hit identity and binary32 point",
+        "point-to-list distance binary32",
+        "native and reconstructed complete freeing",
+        "positive cache bypass",
+        "actual tracked critical-section lock before group selection",
+        "balanced allocation/free"
+      ],
+      "relocation": {
+        "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "spans": [
+          {
+            "start": "00415190",
+            "end_inclusive": "004151bf",
+            "length": 48,
+            "sha256": "2f906fe5d48dd7e30c7579e1a77dfdaabd1362691d4b8c2ad3c88f9a188e35c2",
+            "live_ghidra_matches_installed_before_fixture_relocation": true
+          },
+          {
+            "start": "004158a0",
+            "end_inclusive": "004158d3",
+            "length": 52,
+            "sha256": "c02234b6fa8d493f9087ed62fc4d6469487579fa1fe658479a59a1ac4372d64b",
+            "live_ghidra_matches_installed_before_fixture_relocation": true
+          },
+          {
+            "start": "004158e0",
+            "end_inclusive": "00415963",
+            "length": 132,
+            "sha256": "8c84d221e59bce0b31abe54d6d5ffe162dd30a33101ff790b1768aacfa597060",
+            "live_ghidra_matches_installed_before_fixture_relocation": true
+          },
+          {
+            "start": "00417630",
+            "end_inclusive": "00417884",
+            "length": 597,
+            "sha256": "860d799838a8d04e5dc64ef4a222efd67fd112da98cfa52660ca99f297cfff77",
+            "live_ghidra_matches_installed_before_fixture_relocation": true
+          },
+          {
+            "start": "00417a40",
+            "end_inclusive": "00417ac1",
+            "length": 130,
+            "sha256": "f6402364058590412b9a412afc3a19ca09475855a98292df04ebc67bd56e4b27",
+            "live_ghidra_matches_installed_before_fixture_relocation": true
+          },
+          {
+            "start": "00419fc0",
+            "end_inclusive": "0041a02a",
+            "length": 107,
+            "sha256": "160d1f1903a3c6e62f978ca462de8a179924ad19695eca511f6334eb4543761b",
+            "live_ghidra_matches_installed_before_fixture_relocation": true
+          },
+          {
+            "start": "00423190",
+            "end_inclusive": "004234f8",
+            "length": 873,
+            "sha256": "e04bf1d73ce01cce8cf28c3446bc4508c5f157ee7ed5878d547e2c9fd027df92",
+            "live_ghidra_matches_installed_before_fixture_relocation": true
+          },
+          {
+            "start": "004f3730",
+            "end_inclusive": "004f3801",
+            "length": 210,
+            "sha256": "121d6bf61d3a3770cab41d4d4e48773d6be54354af8e9f9db159b57c30d0be28",
+            "live_ghidra_matches_installed_before_fixture_relocation": true
+          },
+          {
+            "start": "0085c910",
+            "end_inclusive": "0085cac7",
+            "length": 440,
+            "sha256": "3af869de69794bef5daccaa473048a982b2fadea980cad6406590b6b83a1f862",
+            "live_ghidra_matches_installed_before_fixture_relocation": true
+          },
+          {
+            "start": "004f2b00",
+            "end_inclusive": "004f2b07",
+            "length": 8,
+            "sha256": "eb59c8b3d128dcb37d033e09067b07d830f48f341de062f1fb89cb29a17894a5",
+            "live_ghidra_matches_installed_before_fixture_relocation": true
+          },
+          {
+            "start": "004f3630",
+            "end_inclusive": "004f372e",
+            "length": 255,
+            "sha256": "9bb99bbce080b202b385b2bbcab10caf5ceb2a2d4122d90a0f63f5a876892d55",
+            "live_ghidra_matches_installed_before_fixture_relocation": true
+          },
+          {
+            "start": "004f3560",
+            "end_inclusive": "004f3626",
+            "length": 199,
+            "sha256": "a6ca2474e1a962bf20ae902331fedf59e6ab9dceac7a32f81fdcd62ae1eedd1e",
+            "live_ghidra_matches_installed_before_fixture_relocation": true
+          },
+          {
+            "start": "00419ab0",
+            "end_inclusive": "00419bed",
+            "length": 318,
+            "sha256": "f4fa347a86f74e85d451299ffa5903659e11f89581fdf4a5c2c295a32631dd1f",
+            "live_ghidra_matches_installed_before_fixture_relocation": true
+          },
+          {
+            "start": "00414c60",
+            "end_inclusive": "00414ca1",
+            "length": 66,
+            "sha256": "33ae787db85eab686aa928ac0452c6ad396e4947e4a7bf14be49bd3bb3158181",
+            "live_ghidra_matches_installed_before_fixture_relocation": true
+          },
+          {
+            "start": "00419260",
+            "end_inclusive": "004192d4",
+            "length": 117,
+            "sha256": "849731764d807ebf37050dfe0c941d1f1e2b40c7b333a95da105a02a185e4bba",
+            "live_ghidra_matches_installed_before_fixture_relocation": true
+          },
+          {
+            "start": "00415010",
+            "end_inclusive": "0041508e",
+            "length": 127,
+            "sha256": "a048cb7a4df0f7081e542c4ee039104bea4aa8da3aa347264dacb6c182643339",
+            "live_ghidra_matches_installed_before_fixture_relocation": true
+          },
+          {
+            "start": "004120d0",
+            "end_inclusive": "00412111",
+            "length": 66,
+            "sha256": "e7bfe94286f9b95d8acf01ace7114597ebda41abd3936b28a91397fdf299011f",
+            "live_ghidra_matches_installed_before_fixture_relocation": true
+          }
+        ],
+        "absolute_operand_offsets": [
+          "0x14c73",
+          "0x19b5a",
+          "0x19b9e",
+          "0x19fc5",
+          "0x23199",
+          "0x231bb",
+          "0x231da",
+          "0x231e7",
+          "0x231f8",
+          "0x23225",
+          "0x23302",
+          "0x2338e",
+          "0x233f2",
+          "0x23402",
+          "0x23410",
+          "0x23440",
+          "0x234a0",
+          "0x234d1",
+          "0x234ed",
+          "0xf357b",
+          "0xf35f6",
+          "0xf360a",
+          "0xf3798",
+          "0x45c939"
+        ],
+        "relative_control_flow": "unchanged; entire isolated image moves together",
+        "fixture_hooks": [
+          "00BF681B real malloc/throw allocation fixture; allocation failure/new-handler behavior untested",
+          "00BF65AC matching std::free fixture",
+          "004218E0 actual fixture manager singleton",
+          "00BF7030 same existing reconstructed native CRT access kernel",
+          "00CE2218 EnterCriticalSection",
+          "00CE2210 LeaveCriticalSection"
+        ],
+        "crt_scope": "borrowed mapped initial dispatch flag0; finite nonnegative square roots only; exception handler aborts if reached, so exceptional CRT behavior is not validated"
+      },
+      "bounds": "Two concrete polygons,12 derived corners,3 query boxes; shared reconstructed native CRT boundary with finite nonnegative roots only. No legacy CRT exception/new-handler/gameplay validation."
+    },
+    "seed_verification": "all8 seed byte ranges matched disk via tools/ghidra_export.py verify-seeds",
+    "tracked_tests_added": 0,
+    "game_validated": false,
+    "abi_compatible_whole_module": false
+  },
+  "limitations": [
+    "New clearance/list/producer source APIs are not native member-call replacements; only two exact math entrypoints preserve native register/stack ABI.",
+    "Original SEH/hardware-fault ABI and exceptional allocator/legacy CRT diagnostic parity remain unverified.",
+    "Actual singleton/group lookup/lock lifetime/allocator/CRT access are required; no default success or empty geometry substitutions.",
+    "Producer allocation failure retains native leak of unreturned prior nodes; native-valid positive corner counts required after zone-bounds gate.",
+    "No executable binding, installed-game modification or gameplay validation in this packet.",
+    "Ghidra names/comments/flow are unchanged; primary applies proposed annotation and refreshes exports separately."
+  ],
+  "system_calls": [
+    {
+      "site": "004231e5",
+      "iat_slot": "00ce2218",
+      "function": "00423190",
+      "contract": "EnterCriticalSection actual nonnull manager+4h"
+    },
+    {
+      "site": "004234cf",
+      "iat_slot": "00ce2210",
+      "function": "00423190",
+      "contract": "LeaveCriticalSection after depth decrement"
+    }
+  ]
+}
