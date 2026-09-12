@@ -536,18 +536,110 @@
   "validation": {
     "strict_tu": "passed local/strict_compile.log; MSVC Win32 /W4 /WX /fp:strict; parent dependency header",
     "call_report": "59 numeric rows checked,0 failures;6 symbolic virtual rows explicit",
-    "combined_build": "pending parent dependency integration",
-    "fixture": "prepared local/navigation_probe.cpp; pending combined library",
+    "combined_build": "Final parent scripts/build.ps1 Win32 Release passed; both existing CTests passed. These test existing math/native math, not navigation differential.",
+    "fixture": "PASS: final combined parent production libraries only, no replacement TUs; /W4 /WX /fp:strict /MANIFEST:EMBED; local/navigation_probe.log",
     "abi_compatible": false,
     "native_differential": false,
-    "game_validated": false
+    "game_validated": false,
+    "initial_fixture_inputs": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_probe.cpp",
+        "sha256": "45f274cba8f20aef7bcb6244c4e704b9c8ca606c646a67b40b53d1f44488a3ea"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\run_navigation_probe.ps1",
+        "sha256": "7fb0c7d6ee28b3f49c868c703a58c2c3b26e1f44fa8d79537e51870d17d57257"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_probe.exe",
+        "sha256": "3684599d696ce1644cf78d49b2459df27dc11321f5f77c7498f653d1b9a7a27f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\include\\bsp\\gui_listbox_runtime.hpp",
+        "sha256": "95d9e45cd81d65f76beb79e31f60c48dec8e7ea0541f65cf12254f5d950ba612"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\src\\gui_listbox_runtime.cpp",
+        "sha256": "f7bfb2fedcea75c6b8946ee17a3b07fd4efb96d33323e5211bf309aae18fe549"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\include\\bsp\\gui_widget_relative_bounds.hpp",
+        "sha256": "34d9ebb92fe07b5f1da083a10689a0f73796cdaa89cef60d347652bbb966277c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\src\\gui_widget_relative_bounds.cpp",
+        "sha256": "72ab4ebc4840577834242168b1ec3f1c44b8eb51b7db69ac724cf1eec9322633"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_core.lib",
+        "sha256": "7d7f36e5493ec6fce33cf6edc5239319f2b31a5def52eea536eb4d17459bc988"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_lua511.lib",
+        "sha256": "b6c19dd56bce2c86dcf1abf5c3044d48ddc2ac2c33ef04e3dc87f022413ee193"
+      }
+    ],
+    "fixture_scope": [
+      "canonical actual Listbox/Group owners; FC and14C duplicate identities with one GUI allocation",
+      "first selectable and all-hidden preserves selection",
+      "actual pooled native direct-child names, paging setup and repeated14C clear/assign",
+      "listener suppression/restoration and live page-size change during actual attachment world callback",
+      "actual native node hierarchy factor",
+      "C540 Group current34/current58 profile, null row and invalid selector; installed FrameBox/Text effects excluded"
+    ],
+    "export_archive": "local/navigation_evidence/manifest.json;16 per-function assembly/decompiled artifacts with SHA256",
+    "combined_build_log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\orch5-menu-providers-final-build.log",
+      "sha256": "996a8aee866f579a8ba4b3e670292248f6fad6917ca9723b9c6d0701b528456f"
+    },
+    "final_fixture_inputs": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_probe.cpp",
+        "sha256": "45f274cba8f20aef7bcb6244c4e704b9c8ca606c646a67b40b53d1f44488a3ea"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\run_navigation_probe.ps1",
+        "sha256": "7fb0c7d6ee28b3f49c868c703a58c2c3b26e1f44fa8d79537e51870d17d57257"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_probe.exe",
+        "sha256": "977c0ce1d65adf3101c941b94b3b43bfa0266cf02c3666f5f2feb0791f342d61"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\include\\bsp\\gui_listbox_runtime.hpp",
+        "sha256": "95d9e45cd81d65f76beb79e31f60c48dec8e7ea0541f65cf12254f5d950ba612"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\src\\gui_listbox_runtime.cpp",
+        "sha256": "f7bfb2fedcea75c6b8946ee17a3b07fd4efb96d33323e5211bf309aae18fe549"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\include\\bsp\\gui_widget_relative_bounds.hpp",
+        "sha256": "34d9ebb92fe07b5f1da083a10689a0f73796cdaa89cef60d347652bbb966277c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\src\\gui_widget_relative_bounds.cpp",
+        "sha256": "72ab4ebc4840577834242168b1ec3f1c44b8eb51b7db69ac724cf1eec9322633"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_core.lib",
+        "sha256": "9da645decb05dd4e1c799cb809f74fe9c5cb673c0731024b3a3b58a9ce8f8fc8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_lua511.lib",
+        "sha256": "b6c19dd56bce2c86dcf1abf5c3044d48ddc2ac2c33ef04e3dc87f022413ee193"
+      }
+    ],
+    "final_parent_head": "a6b54bfe2cc9629800ad9ebdddd9b1a472b71910",
+    "peer_review": "No new concrete source mismatch in independent Icon-worker C540/E230/D870 review; exact reviewed inputs at J:/PROG/battlestations-pacific-decompile-orch5-icon-state/local/listbox_navigation_review_manifest.json"
   },
   "open_boundaries": [
     "Full current40 A9D030, directional84 A9DA60, A9CF30 highlight width producer, full properties and native scalar/copy teardown remain external",
     "Non-null A9D750 insertion cross-list semantics remain excluded",
     "Raw node/list/SEH ABI, allocator callback reentry and invalid iterator behavior not reproduced",
     "Native 14C current node and captured selected row must survive rebuild callbacks; callback replacing14C fails host validity guard",
-    "Installed FrameBox resource/geometry and Text fit effects require parent concrete providers; Group probe does not prove them"
+    "Installed FrameBox resource/geometry and Text fit effects require parent concrete providers; Group probe does not prove them",
+    "Inherited resolved_position/local_position_for_resolved arithmetic is reused; native differential and parentless signaling-NaN load/store equivalence are unverified. C540 control/dispatch coverage is not a claim of all-float bit parity."
   ],
   "ghidra_mutation": false
 }
