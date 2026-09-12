@@ -197,6 +197,13 @@
       "compiled_commit": "4ee5f2ff0cce65d19f17d252a00a878a528d1d56",
       "build_log": "local/orch6_geometry_integration.log",
       "build_result": "MSVC Win32 Release, existing CTest2/2 passed after merging current main"
+    },
+    "later_main_merge_build": {
+      "compiled_commit": "f51654b84743852c2e2c25ee1c9f399dd635e56d",
+      "result": "MSVC Win32 Release and existing CTest2/2 passed",
+      "log": "local/orch6_geometry_final_head_build.log",
+      "exe_sha256": "3d3d0000544d55281fc9f7dd808b15f3c360ab70ce9fe1270ca8f7f212c74351",
+      "runtime_limit": "The120-frame runtime evidence above belongs to compiled commit4ee5f2ff; this later merge adds external unit-motion/UI changes and is build-tested here."
     }
   },
   "limits": [
