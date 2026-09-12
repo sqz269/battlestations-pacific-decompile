@@ -1,0 +1,616 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "native_spans": [
+    {
+      "address": "00af5c20",
+      "end_inclusive": "00af5c62",
+      "length": 67,
+      "sha256": "04b293c47a58187ef356f85aa8e5b48602be3393b69cf0c26d759ecbad65b2f5",
+      "live_disk_equal": true,
+      "coverage": "complete",
+      "cpp_symbol": "initialize_native_particle_model_slab_00af5c20",
+      "original_abi": "ECX actual slab; stack slab ID; EAX same slab; RET4",
+      "source": "src/native_particle_model_pool_allocate.cpp",
+      "ghidra_name": "BSP_NativeParticleModelPool_InitializeSlab",
+      "evidence": "Initialize32 slab IDs at payload2DC stride2E0 and WORD free indices31..0 at5C00; freecount5C40=32, payload/padding preserved. Complete original-body fixture with actual owner and OS lock passed, including1057 allocations, table32->66, full slabs, reuse, aliasing and real FFFFFFF8 allocation failure. docs/NATIVE_PARTICLE_MODEL_POOL_ALLOCATE.md."
+    },
+    {
+      "address": "00af69e0",
+      "end_inclusive": "00af6b1b",
+      "length": 316,
+      "sha256": "410941d2b40868b9ff012aefa99628585e2ccf75b258a78b0b18b3a046d16c4a",
+      "live_disk_equal": true,
+      "coverage": "complete",
+      "cpp_symbol": "allocate_native_particle_model_slot_00af69e0",
+      "original_abi": "ECX actual initialized38h pool; EAX raw2E0h slot; RET",
+      "source": "src/native_particle_model_pool_allocate.cpp",
+      "ghidra_name": "BSP_NativeParticleModelPool_AllocateSlot",
+      "evidence": "Actual F8D2D0 pool lock/depth, raw5C44 slab creation, wrapped2cap+2 table growth/publication, restored AF6A76 free continuation, free-stack pop and subsequent nonfull scan. Native allocation exceptions retain lock/depth and earlier publications, including cap; no rollback. Complete original-body fixture with actual owner and OS lock passed, including1057 allocations, table32->66, full slabs, reuse, aliasing and real FFFFFFF8 allocation failure. docs/NATIVE_PARTICLE_MODEL_POOL_ALLOCATE.md."
+    },
+    {
+      "address": "00af60b0",
+      "end_inclusive": "00af611b",
+      "length": 108,
+      "sha256": "1b6cfa285519e23a4b1421e0968f05ed302672001f0dc7816a21db33f328d892",
+      "live_disk_equal": true,
+      "coverage": "complete",
+      "cpp_symbol": "return_native_particle_model_slot_00af60b0",
+      "original_abi": "ECX actual initialized38h pool; stack raw slot; RET4",
+      "source": "src/native_particle_model_pool_allocate.cpp",
+      "ghidra_name": "BSP_NativeParticleModelPool_ReturnSlot",
+      "evidence": "Same actual pool lock; slot2DC ID, signed wrapped slot-minus-slab division by736, WORD stack push with aliased freecount reload, unsigned earliest minimum, decrement/leave. Complete original-body fixture with actual owner and OS lock passed, including1057 allocations, table32->66, full slabs, reuse, aliasing and real FFFFFFF8 allocation failure. docs/NATIVE_PARTICLE_MODEL_POOL_ALLOCATE.md."
+    },
+    {
+      "address": "00af6b60",
+      "end_inclusive": "00af6b69",
+      "length": 10,
+      "sha256": "14e3938eb044413582b6325cb2930e41a4ff59e19eee4eca388d09bd9a7e539b",
+      "live_disk_equal": true,
+      "coverage": "complete",
+      "cpp_symbol": "allocate_native_particle_model_00af6b60",
+      "original_abi": "overwrite ECX with00F8D2D0; tailJMP AF69E0; EAX slot",
+      "source": "src/native_particle_model_pool_allocate.cpp",
+      "ghidra_name": "BSP_ParticleModel_AllocateStorage",
+      "evidence": "Discard incoming ECX, select same actualF8D2D0, tail AF69E0 allocation. Corrects misleading static destructor stub name. Complete original-body fixture with actual owner and OS lock passed, including1057 allocations, table32->66, full slabs, reuse, aliasing and real FFFFFFF8 allocation failure. docs/NATIVE_PARTICLE_MODEL_POOL_ALLOCATE.md."
+    },
+    {
+      "address": "00af62f0",
+      "end_inclusive": "00af62fb",
+      "length": 12,
+      "sha256": "01b8aac164b4a642dd1a93f11562f86ef982ec89556affaa38ca3ac9b00b074c",
+      "live_disk_equal": true,
+      "coverage": "complete",
+      "cpp_symbol": "return_native_particle_model_00af62f0",
+      "original_abi": "ECX raw slot; select00F8D2D0; CALL AF60B0; RET",
+      "source": "src/native_particle_model_pool_allocate.cpp",
+      "ghidra_name": "BSP_ParticleModel_ReturnStorage",
+      "evidence": "Capture ECX raw slot, select actualF8D2D0, pass one stack word to AF60B0, RET. Constructor unwind raw storage return only, no payload destruction. Complete original-body fixture with actual owner and OS lock passed, including1057 allocations, table32->66, full slabs, reuse, aliasing and real FFFFFFF8 allocation failure. docs/NATIVE_PARTICLE_MODEL_POOL_ALLOCATE.md."
+    }
+  ],
+  "packet": "orch3_particle_pool_allocate_aj",
+  "source": "src/native_particle_model_pool_allocate.cpp",
+  "header": "include/bsp/native_particle_model_pool_allocate.hpp",
+  "documentation": "docs/NATIVE_PARTICLE_MODEL_POOL_ALLOCATE.md",
+  "status": "complete_source_strict_compiled_original_byte_fixture_passed",
+  "ghidra_mutations": false,
+  "physical_storage": {
+    "producer": "00af6860",
+    "slab_producer": "00af5c20",
+    "actual_global": "00f8d2d0",
+    "owner_bytes": "0x38",
+    "allocator_list_prefix": "0x00/0x04/0x08",
+    "critical_section": "0x0c",
+    "depth": "0x24",
+    "table": "0x28",
+    "count": "0x2c",
+    "capacity": "0x30",
+    "earliest": "0x34",
+    "slab_bytes": "0x5c44",
+    "slot_count": 32,
+    "slot_bytes": "0x2e0",
+    "payload_bytes": "0x2dc",
+    "slab_id": "slot+0x2dc",
+    "free_indices": "0x5c00",
+    "free_count_word": "0x5c40",
+    "untouched_padding_word": "0x5c42"
+  },
+  "host_steps": [
+    {
+      "address": "00af69ea",
+      "native": "IAT[00ce2218] EnterCriticalSection",
+      "function": "00af69e0",
+      "contract": "Enter real initialized embedded Win32 section",
+      "cleanup": "stdcall callee pops4"
+    },
+    {
+      "address": "00af6a0b",
+      "native": "00bf681b",
+      "function": "00af69e0",
+      "contract": "Actual shared CRT malloc/new-handler retry allocation;5C44h object",
+      "cleanup": "00af6a10 ADD ESP,4"
+    },
+    {
+      "address": "00af6a1d",
+      "native": "00af5c20",
+      "function": "00af69e0",
+      "contract": "Initialize32 raw slab IDs/free indices; EAX slab",
+      "cleanup": "00af5c60 RET4"
+    },
+    {
+      "address": "00af6a3f",
+      "native": "00bf55be",
+      "function": "00af69e0",
+      "contract": "Array allocator thunk JMP BF681B; wrapped table byte size",
+      "cleanup": "00af6a48 ADD ESP,4"
+    },
+    {
+      "address": "00af6a71",
+      "native": "00bf6989",
+      "function": "00af69e0",
+      "contract": "Returning ordinary CRT free thunk JMP BF65AC",
+      "cleanup": "00af6a76 ADD ESP,4; bytes83C404"
+    },
+    {
+      "address": "00af6afb",
+      "native": "IAT[00ce2210] LeaveCriticalSection",
+      "function": "00af69e0",
+      "contract": "Leave real section after decrementing depth",
+      "cleanup": "stdcall callee pops4"
+    },
+    {
+      "address": "00af6b0f",
+      "native": "IAT[00ce2210] LeaveCriticalSection",
+      "function": "00af69e0",
+      "contract": "Leave real section after decrementing depth",
+      "cleanup": "stdcall callee pops4"
+    },
+    {
+      "address": "00af60ba",
+      "native": "IAT[00ce2218] EnterCriticalSection",
+      "function": "00af60b0",
+      "contract": "Enter real initialized embedded Win32 section",
+      "cleanup": "stdcall callee pops4"
+    },
+    {
+      "address": "00af610f",
+      "native": "IAT[00ce2210] LeaveCriticalSection",
+      "function": "00af60b0",
+      "contract": "Leave real section after decrementing depth",
+      "cleanup": "stdcall callee pops4"
+    },
+    {
+      "address": "00af62f6",
+      "native": "00af60b0",
+      "function": "00af62f0",
+      "contract": "Return ECX raw slot through same canonical pool",
+      "cleanup": "00af6119 RET4"
+    },
+    {
+      "address": "00af6b65",
+      "native": "00af69e0",
+      "function": "00af6b60",
+      "contract": "Ignore incoming ECX; select00F8D2D0",
+      "cleanup": "no stack argument",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00874327",
+      "native": "00af6b60",
+      "function": "008742a0",
+      "contract": "Caller ECX2DC overwritten by allocation thunk",
+      "cleanup": "no stack argument"
+    },
+    {
+      "address": "00c9636b",
+      "native": "00af62f0",
+      "function": "00c96368",
+      "contract": "Forward saved raw slot for construction unwind",
+      "cleanup": "no stack argument",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00af7f55",
+      "native": "00af60b0",
+      "function": "00af7f40",
+      "contract": "Return captured raw slot after externalAF6C50 and flag-bit0 check",
+      "cleanup": "00af6119 RET4"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Saved AF69E0 pseudocode returns after freeAF6A71",
+      "is": "Return from free, ADD ESP4 atAF6A76, publish replacement atAF6A79, continue allocation",
+      "evidence": "live/diskAF6A76..78=83C404; full original-byte table-growth fixture passes; Ghidra remains read-only",
+      "repair_required": {
+        "call_site": "00af6a71",
+        "disassemble_start": "00af6a76",
+        "end_inclusive": "00af6a78",
+        "preserve_documentation": true,
+        "refresh_export": true
+      }
+    },
+    {
+      "was": "AF6AD9..DF undisassembled gap",
+      "is": "7-byte alignment LEA skipped by unconditional JMPAF6AD7, not missing call continuation",
+      "evidence": "8DA42400000000; native span includes gap"
+    },
+    {
+      "was": "AF5C20 saved void return",
+      "is": "EAX preserves actual slab through RET4",
+      "evidence": "AF5C26 MOV EAX,ECX andAF5C60 RET4; native/source whole-slab fixture"
+    },
+    {
+      "was": "CG_static_dtor_stub_00af6b60",
+      "is": "Raw particle-model allocation thunk",
+      "evidence": "AF6B60 MOV ECX,F8D2D0;AF6B65 JMPAF69E0"
+    },
+    {
+      "was": "Earlier proposal calledCD7830 a missing Ghidra start",
+      "is": "Currently definedCD7830..CD7845 inclusive",
+      "evidence": "current guarded bsp.py ghidra proto; no owned starts missing"
+    }
+  ],
+  "required_dependencies": [
+    {
+      "entry": "00af6860",
+      "end_inclusive": "00af6932",
+      "role": "actual38h pool owner producer",
+      "provider": "primary native_particle_model_pool_owner.cpp; consumed by fixture"
+    },
+    {
+      "entry": "00af6940",
+      "end_inclusive": "00af69df",
+      "role": "actual empty-slab trim and moved-slot ID rewrite",
+      "provider": "primary native_particle_model_pool_owner.cpp; real binding before fixture publication"
+    },
+    {
+      "entry": "00af5ff0",
+      "end_inclusive": "00af6079",
+      "role": "actual pool owner destruction",
+      "provider": "primary native_particle_model_pool_owner.cpp; consumed by fixture"
+    },
+    {
+      "entry": "00af5d00",
+      "role": "actual table cleanup",
+      "provider": "primary native_particle_model_pool_owner.cpp",
+      "end_inclusive": "00af5d0d"
+    },
+    {
+      "entry": "00cd7830",
+      "end_inclusive": "00cd7845",
+      "role": "actual static owner startup and atexit registration",
+      "provider": "primary native_particle_model_pool_owner.cpp; not executed by this fixture"
+    },
+    {
+      "entry": "00ce0b90",
+      "end_inclusive": "00ce0b99",
+      "role": "same actual owner exit thunk",
+      "provider": "primary native_particle_model_pool_owner.cpp; not executed by this fixture"
+    },
+    {
+      "entry": "00af74a0",
+      "role": "physical model construction in returned2DCh payload",
+      "provider": "separate packet; not implemented or executed here"
+    },
+    {
+      "entry": "00bf681b",
+      "role": "CRT allocation retry/new-handler service",
+      "provider": "existing singleton_lifetime_allocate; original CRT/EH ABI not replaced"
+    },
+    {
+      "entry": "00bf55be",
+      "role": "array allocation thunk JMPBF681B",
+      "provider": "existing singleton_lifetime_allocate"
+    },
+    {
+      "entry": "00bf6989",
+      "role": "CRT free thunk",
+      "provider": "existing singleton_lifetime_free"
+    }
+  ],
+  "validation": {
+    "strict_owned_compile": "PASS /std:c++17 /EHsc /O2 /W4 /WX /fp:strict /MD; local/compile_particle_pool_aj.cmd",
+    "compiled_assembly": "local/native_particle_model_pool_allocate.asm: signed IMUL/SAR9; no allocation EH handler",
+    "checkout_build": "PASS scripts/build.ps1; local/particle-pool-aj-build.log; both existing CTests pass. This module is separately strict-compiled until primary source registration.",
+    "existing_native_math_seeds": "PASS verify-seeds all8 ranges",
+    "fixture": "PASS local/particle-pool-aj-fixture.log",
+    "fixture_source": "local/particle_pool_probe_aj.cpp",
+    "fixture_reproduction": "local/run_particle_pool_probe_aj.cmd",
+    "owner_dependency": "local/particle_pool_owner_dependency_aj.lib frozen from primary build/win32/Release/bsp_core.lib",
+    "new_source_provider": "local/native_particle_model_pool_allocate.obj from unchanged owned source",
+    "cases": [
+      "whole5C44 slab byte equality and preserved2DC payload/padding",
+      "1057 initial allocations; tablecapacity32to66; old-table free continuation",
+      "full-slab skipping and LIFO raw-slot reuse",
+      "ignored incoming ECX and both canonical adapters",
+      "real nested section and depth",
+      "31 further allocations and exhausted later-slab scan",
+      "backed negative displacement -737 and free-index/free-count alias",
+      "actual malloc(FFFFFFF8) failure; CRT new handler returns0; bad_alloc; lock held from another thread inside handler and after catch; prior publications retained"
+    ],
+    "runtime_byte_postimage": "all513 original bytes equal outside declared4-byte relocations/bindings",
+    "rebindings": {
+      "00af5c20": [],
+      "00af69e0": [
+        "+0C Enter import cell",
+        "+2C CRT object relative target",
+        "+3E slab producer relative target",
+        "+60 CRT array relative target",
+        "+92 CRT free relative target",
+        "+11D Leave import cell",
+        "+131 Leave import cell"
+      ],
+      "00af60b0": [
+        "+0C Enter import cell",
+        "+61 Leave import cell"
+      ],
+      "00af6b60": [
+        "+1 actual fixture pool immediate",
+        "+6 raw allocation relative target"
+      ],
+      "00af62f0": [
+        "+2 actual fixture pool immediate",
+        "+7 raw return relative target"
+      ]
+    },
+    "failure_fixture_cleanup": "Only after observation, restore held section/depth/descriptor for real owner destruction; two intentionally unpublished slabs remain until process exit",
+    "permanent_tests_added": 0,
+    "game_executed": false,
+    "game_validated": false,
+    "abi_compatible": false,
+    "original_crt_eh_identity": false,
+    "ghidra_mutations": false,
+    "duplicate_public_names": "PASS all8 new public names unique across current include/bsp headers",
+    "report_call_verification": "PASS tools/verify_report_calls.py:7 direct call rows checked,0 failures;5 import and2 tail rows explicitly recorded and reviewed in assembly",
+    "existing_ctests": "2/2 pass: reconstructed_math and native_math_differential"
+  },
+  "artifact_pins": [
+    {
+      "path": "include/bsp/native_particle_model_pool_allocate.hpp",
+      "sha256": "c9ddf294260cc11c73c3ee936b1c3c6ae2ff682dddd139d6920eccff9164804d",
+      "bytes": 2420
+    },
+    {
+      "path": "src/native_particle_model_pool_allocate.cpp",
+      "sha256": "13073a299fb100f2ba0cd9ce0075dbc724d25423ac626ce78bd7a3a53ecab62c",
+      "bytes": 6803
+    },
+    {
+      "path": "local/compile_particle_pool_aj.cmd",
+      "sha256": "ce3cd0984f8ff2226204146c6be8290649be06477422e0b194d2156f87062155",
+      "bytes": 345
+    },
+    {
+      "path": "local/native_particle_model_pool_allocate.obj",
+      "sha256": "4f311f58037f408a9a4d814300d0d21c355afd94f448fcb88833dcc5033eec00",
+      "bytes": 6604
+    },
+    {
+      "path": "local/native_particle_model_pool_allocate.asm",
+      "sha256": "877ba45b94727deb27ee7f23aa56511579c178df1057b28d979c229d4a93c63a",
+      "bytes": 40291
+    },
+    {
+      "path": "local/prepare_particle_pool_aj.py",
+      "sha256": "dcae517e97dde795905b1d33571988a0afe35297ec2d6a100dfb427cee202c1e",
+      "bytes": 2437
+    },
+    {
+      "path": "local/particle_pool_native_bytes_aj.hpp",
+      "sha256": "fe88475faa7bd43287504998b89e762cacaa8b852fb3aac37f7bf5c86d3986be",
+      "bytes": 3129
+    },
+    {
+      "path": "local/particle_pool_probe_aj.cpp",
+      "sha256": "c40f808da645059d7b587e31d44e376b8cd68da625d89ca7d7b7e6a432709161",
+      "bytes": 12386
+    },
+    {
+      "path": "local/particle_pool_probe_aj.exe",
+      "sha256": "92aa322b49b74275f2ac51100e21ce7a3c651afd16430b38fe39ad58668c8da8",
+      "bytes": 24576
+    },
+    {
+      "path": "local/run_particle_pool_probe_aj.cmd",
+      "sha256": "ca1a1b6ea8d298a2fcf4f8081aafa23a33c519937b24724167fd5daedd10cc8d",
+      "bytes": 542
+    },
+    {
+      "path": "local/particle-pool-aj-fixture.log",
+      "sha256": "fc40dad124d2c48077280fd37dbdbd1092d447052a147a2c2d864826269d3fd7",
+      "bytes": 444
+    },
+    {
+      "path": "local/particle-pool-byte-evidence-aj.json",
+      "sha256": "07ac30a8f265f11c68fe9d1f906903150079fb8d819e461657fe4af6a93ba77a",
+      "bytes": 1399
+    },
+    {
+      "path": "local/particle_pool_owner_dependency_aj.lib",
+      "sha256": "97b5fe21fa53622fd6721068b082342997686ca6887a291972bdf52cf7b0e384",
+      "bytes": 43300250
+    },
+    {
+      "path": "local/particle-pool-aj-build.log",
+      "sha256": "8efb5d2dd598731d6f23adbf31d271bf891d43045a6690a3358d411449048bf9",
+      "bytes": 28214
+    },
+    {
+      "path": "docs/NATIVE_PARTICLE_MODEL_POOL_ALLOCATE.md",
+      "sha256": "4d2ee0e3271df8f15505be8d5a152d7b0e0706e9c633a1f7de127e768ba57f8c",
+      "bytes": 9588
+    }
+  ],
+  "primary_owner_source_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_particle_model_pool_owner.hpp",
+      "sha256": "ae2518ad34aaf6293186d9d2887461177c4003c14d11bd00c15053185d306e2f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_particle_model_pool_owner.cpp",
+      "sha256": "39e9d789d6d19d61e3b50ce8b26d4fe2c2fcdd30d99db07103be42417baf40ce"
+    }
+  ],
+  "integration_flow_repair": {
+    "repairs": [
+      {
+        "function": "00af69e0",
+        "owner": "agent/orch3-20260910",
+        "when": "2026-09-12T04:18:17Z",
+        "decompile_lines_before": 78,
+        "gaps": [
+          {
+            "site": "00af6a71",
+            "mnemonic": "CALL",
+            "operands": "0x00bf6989",
+            "gap_start": "00af6a76",
+            "gap_end_exclusive": "00af6a79",
+            "bytes": 3,
+            "after_call": true,
+            "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+          }
+        ],
+        "events": [
+          {
+            "gap": {
+              "site": "00af6a71",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00af6a76",
+              "gap_end_exclusive": "00af6a79",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            },
+            "clear": "Success: Cleared flow override at 00af6a71 (was: CALL_RETURN, now: NONE)",
+            "disassemble": "Successfully disassembled 3 byte(s)"
+          }
+        ],
+        "decompile_lines_after": 76,
+        "gaps_remaining": 0
+      }
+    ]
+  },
+  "integration_validation": {
+    "build": "local/particle-model-aj-final-build.log: strict MSVC Win32, all six AJ sources in bsp_core, both existing CTests passed",
+    "call_verification": "local/particle-model-aj-final-call-verification.log: all six reports passed68 rows; indirect IAT/current slots remain explicitly identified and are not validated as runtime bindings by this checker",
+    "game_validated": false,
+    "source_sha256": {
+      "src/native_particle_model_pool_allocate.cpp": "e9677140a01fc6b7d8ea00dfdf9a11048806145e03b27fa4348dcf6d3cf82086"
+    },
+    "newline_note": "Worker hashes retain their recorded raw CRLF preimages; integrated source is Git-normalized LF, compared after newline normalization.",
+    "fixtures": [
+      "local/particle_pool_probe_aj_merged.log"
+    ],
+    "original_binary_replacement": false,
+    "combined_library_sha256": "2beea73a28fcf6396a88d7b1256d56c48b2ccd03b2e2433f539ffc4ae36252d4",
+    "fixture_library_note": "Fixture replay passed against the integrated owner/allocation/model library before adding independent options/curve/type4 sources. Final six-module build passed; their relevant source implementations remain unchanged."
+  },
+  "ghidra_annotation_audit": {
+    "record": "local/ghidra-annotations-20260912T044640Z.json",
+    "readback": "local/particle-model-aj-comments.json",
+    "project_saved": true,
+    "names_and_evidence_verified": true,
+    "prior_comments_preserved": true,
+    "changes": [
+      {
+        "address": "00af5c20",
+        "before": {
+          "address": "00af5c20",
+          "function_name": "FUN_00af5c20"
+        },
+        "after": {
+          "address": "00af5c20",
+          "name": "BSP_NativeParticleModelPool_InitializeSlab",
+          "evidence": "Hypothesis, not a recovered symbol. Initialize32 slab IDs at payload2DC stride2E0 and WORD free indices31..0 at5C00; freecount5C40=32, payload/padding preserved. Complete original-body fixture with actual owner and OS lock passed, including1057 allocations, table32->66, full slabs, reuse, aliasing and real FFFFFFF8 allocation failure. docs/NATIVE_PARTICLE_MODEL_POOL_ALLOCATE.md. Parameters: ECX actual slab; stack slab ID; EAX same slab; RET4. Complete live/disk SHA256 04b293c47a58187ef356f85aa8e5b48602be3393b69cf0c26d759ecbad65b2f5. New C++ interface; required real application bindings, original exception ABI and gameplay unvalidated. reports/native_particle_model_pool_allocate.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af60b0",
+        "before": {
+          "address": "00af60b0",
+          "function_name": "FUN_00af60b0"
+        },
+        "after": {
+          "address": "00af60b0",
+          "name": "BSP_NativeParticleModelPool_ReturnSlot",
+          "evidence": "Hypothesis, not a recovered symbol. Same actual pool lock; slot2DC ID, signed wrapped slot-minus-slab division by736, WORD stack push with aliased freecount reload, unsigned earliest minimum, decrement/leave. Complete original-body fixture with actual owner and OS lock passed, including1057 allocations, table32->66, full slabs, reuse, aliasing and real FFFFFFF8 allocation failure. docs/NATIVE_PARTICLE_MODEL_POOL_ALLOCATE.md. Parameters: ECX actual initialized38h pool; stack raw slot; RET4. Complete live/disk SHA256 1b6cfa285519e23a4b1421e0968f05ed302672001f0dc7816a21db33f328d892. New C++ interface; required real application bindings, original exception ABI and gameplay unvalidated. reports/native_particle_model_pool_allocate.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af62f0",
+        "before": {
+          "address": "00af62f0",
+          "function_name": "FUN_00af62f0"
+        },
+        "after": {
+          "address": "00af62f0",
+          "name": "BSP_ParticleModel_ReturnStorage",
+          "evidence": "Hypothesis, not a recovered symbol. Capture ECX raw slot, select actualF8D2D0, pass one stack word to AF60B0, RET. Constructor unwind raw storage return only, no payload destruction. Complete original-body fixture with actual owner and OS lock passed, including1057 allocations, table32->66, full slabs, reuse, aliasing and real FFFFFFF8 allocation failure. docs/NATIVE_PARTICLE_MODEL_POOL_ALLOCATE.md. Parameters: ECX raw slot; select00F8D2D0; CALL AF60B0; RET. Complete live/disk SHA256 01b8aac164b4a642dd1a93f11562f86ef982ec89556affaa38ca3ac9b00b074c. New C++ interface; required real application bindings, original exception ABI and gameplay unvalidated. reports/native_particle_model_pool_allocate.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af69e0",
+        "before": {
+          "address": "00af69e0",
+          "function_name": "FUN_00af69e0"
+        },
+        "after": {
+          "address": "00af69e0",
+          "name": "BSP_NativeParticleModelPool_AllocateSlot",
+          "evidence": "Hypothesis, not a recovered symbol. Actual F8D2D0 pool lock/depth, raw5C44 slab creation, wrapped2cap+2 table growth/publication, restored AF6A76 free continuation, free-stack pop and subsequent nonfull scan. Native allocation exceptions retain lock/depth and earlier publications, including cap; no rollback. Complete original-body fixture with actual owner and OS lock passed, including1057 allocations, table32->66, full slabs, reuse, aliasing and real FFFFFFF8 allocation failure. docs/NATIVE_PARTICLE_MODEL_POOL_ALLOCATE.md. Parameters: ECX actual initialized38h pool; EAX raw2E0h slot; RET. Complete live/disk SHA256 410941d2b40868b9ff012aefa99628585e2ccf75b258a78b0b18b3a046d16c4a. New C++ interface; required real application bindings, original exception ABI and gameplay unvalidated. reports/native_particle_model_pool_allocate.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af6b60",
+        "before": {
+          "address": "00af6b60",
+          "function_name": "CG_static_dtor_stub_00af6b60"
+        },
+        "after": {
+          "address": "00af6b60",
+          "name": "BSP_ParticleModel_AllocateStorage",
+          "evidence": "Hypothesis, not a recovered symbol. Discard incoming ECX, select same actualF8D2D0, tail AF69E0 allocation. Corrects misleading static destructor stub name. Complete original-body fixture with actual owner and OS lock passed, including1057 allocations, table32->66, full slabs, reuse, aliasing and real FFFFFFF8 allocation failure. docs/NATIVE_PARTICLE_MODEL_POOL_ALLOCATE.md. Parameters: overwrite ECX with00F8D2D0; tailJMP AF69E0; EAX slot. Complete live/disk SHA256 14e3938eb044413582b6325cb2930e41a4ff59e19eee4eca388d09bd9a7e539b. New C++ interface; required real application bindings, original exception ABI and gameplay unvalidated. reports/native_particle_model_pool_allocate.json."
+        },
+        "status": "applied"
+      }
+    ]
+  },
+  "ghidra_signature_audit": {
+    "record": "local/particle-model-signatures-aj.json",
+    "project_saved": true,
+    "signatures_verified": true,
+    "before": {
+      "00af5c20": "00af5c20 BSP_NativeParticleModelPool_InitializeSlab  undefined BSP_NativeParticleModelPool_InitializeSlab(void)  body 00af5c20 - 00af5c62\n",
+      "00af69e0": "00af69e0 BSP_NativeParticleModelPool_AllocateSlot  undefined BSP_NativeParticleModelPool_AllocateSlot(void)  body 00af69e0 - 00af6b1b\n",
+      "00af60b0": "00af60b0 BSP_NativeParticleModelPool_ReturnSlot  undefined BSP_NativeParticleModelPool_ReturnSlot(void)  body 00af60b0 - 00af611b\n",
+      "00af6b60": "00af6b60 BSP_ParticleModel_AllocateStorage  undefined BSP_ParticleModel_AllocateStorage(void)  body 00af6b60 - 00af6b69\n",
+      "00af62f0": "00af62f0 BSP_ParticleModel_ReturnStorage  undefined BSP_ParticleModel_ReturnStorage(void)  body 00af62f0 - 00af62fb\n"
+    },
+    "changes": [
+      {
+        "address": "00af5c20",
+        "prototype": "void * __thiscall BSP_NativeParticleModelPool_InitializeSlab(uint slab_index)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af5c20 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af69e0",
+        "prototype": "void * __thiscall BSP_NativeParticleModelPool_AllocateSlot(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af69e0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af60b0",
+        "prototype": "void __thiscall BSP_NativeParticleModelPool_ReturnSlot(void * slot)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af60b0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af6b60",
+        "prototype": "void * __cdecl BSP_ParticleModel_AllocateStorage(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af6b60 with __cdecl calling convention"
+        }
+      },
+      {
+        "address": "00af62f0",
+        "prototype": "void __thiscall BSP_ParticleModel_ReturnStorage(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af62f0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ],
+    "parameter_note": "ECX this is supplied implicitly by Ghidra; only native stack arguments are written. AL booleans, x87 ST0 curve return, RET4 low-byte stack DWORD and RET8 ordered endpoint arguments retained. AF6B60 discards incoming ECX; compiler EH descriptors remain opaque and have name/evidence only."
+  }
+}

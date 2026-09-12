@@ -123,3 +123,20 @@ generated-model-derived7ACh `SkinedWaterTracer` with table `D63FA0`. Its real
 construction/update, original type4 machine-code execution, throwing unwind and
 gameplay remain unvalidated. `872060` and its47-byte `BA9820` callee form a small
 next deactivation packet over borrowed actual tracer storage.
+
+## Correction from docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md
+
+AJ reconstructs completion872020, deactivation872060/BA9820, all eleven direct
+tracer setters and the complete872790 entry control/state behavior through required
+real tracer bindings. TRACER_PARAMETER_CURVE.md adds the actual1Ch curve initialized
+state and BA9DA0 evaluator, preserving native x87/cache behavior. Direct MOVSS setters
+preserve signaling-NaN bits; reciprocalBA9900 and the update caller's x87 argument
+spills have separate rounding/quieting behavior.
+
+The combined strict Win32 build, both existing CTests and focused original-byte
+fixtures pass. Type4 update coverage includes13 nontracer branches and a required
+constructor failure boundary that returns raw storage while retaining the actual
+outer lock/depth. It does not establish successful BAC660/BAD6F0 construction,
+BAABB0 update, BAA510 predicate, native EH dispatch or gameplay. Actual derived-owner
+lifetime and current virtual family composition remain required. The earlier
+plain-node lifetime fixture remains limited to the ordering it actually exercised.

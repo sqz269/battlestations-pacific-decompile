@@ -1,0 +1,832 @@
+{
+  "packet": "cc2_scene_traffic_groups",
+  "worktree": "agent/cc2-scene-traffic-groups",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "read-only"
+  },
+  "names_are_hypotheses": true,
+  "recovered_symbols": [
+    {
+      "address": "008f67b0",
+      "name": "CPropTreeLibrary_Load",
+      "evidence": "the ASCII literal 'CPropTreeLibrary::Load ' at 00d1653c, pushed at 008f6812 as the routine's scope marker. Kept from docs/GAME_EXECUTABLE.md milestone 2h; not renamed by this packet."
+    }
+  ],
+  "docs": [
+    "docs/SCENE_TRAFFIC_BLOCK.md",
+    "docs/SCENE_BROWSER_GROUPS.md",
+    "docs/SCENE_PROPERTY_LIBRARY.md"
+  ],
+  "subject": "the scene file's `traffic` and `SceneBrowserGroups` tail blocks, the vehicle-class preload census behind them, and the property/enum library loader that supplies the class defaults",
+  "routines": [
+    {
+      "address": "009514b0",
+      "name": "BSP_SceneFile_ReadTrafficBlock",
+      "abi": "__thiscall(record vector /*ECX = 00F8A084*/, SceneTokenizer*), RET 4 at 00951555",
+      "coverage": "complete",
+      "evidence": "51 instructions read in full. this is the static 00F8A084, from MOV ECX,0xF8A084 at the sole call site 0046eb56. Not a fixed production: after ExpectToken('traffic','{') it runs a brace counter (00951518 increments on 00CE4D38 '{', 00951534 decrements on 00CE4CD4 '}') and only 00D19B80 'item' hands control to 009512f0. 009514ff JMP 0095153e skips the consume because the item reader consumes its own tokens."
+    },
+    {
+      "address": "009512f0",
+      "name": "BSP_SceneFile_ReadTrafficItem",
+      "abi": "__thiscall(record vector /*ECX*/, SceneTokenizer*), RET 4 at 00951449",
+      "coverage": "complete",
+      "evidence": "read in full. Fixed production: ExpectToken 'item', '{', 'path' (00D099C0), '=' (00CE55BC), an optional 'properties' branch gated on a peek against 00CE568C, then '}'. The item name is read at 00951324 and assigned at 0095132e, passed to 00951220 as argument 1, and never read there."
+    },
+    {
+      "address": "00951220",
+      "name": "BSP_TrafficRecordVector_CreateRecord",
+      "abi": "__thiscall(record vector /*ECX*/, NativeString* name, void* pathEntity), RET 8 at 009512ea",
+      "coverage": "complete",
+      "evidence": "operator new(0x4C) at 0095123c fixes the record size; 0049f9b0 at 00951258 is the base constructor; 00950fc0 at 009512d3 is the push_back. Argument identity from the frame: the prologue leaves ESP at entry-0x18, so [ESP+0x20] at 00951265 is entry+8 (argument 2, the path entity) and entry+4 (argument 1, the name) is never read by any of the 51 instructions."
+    },
+    {
+      "address": "00951160",
+      "name": "BSP_TrafficRecordVector_Clear",
+      "abi": "__thiscall(record vector /*ECX*/), RET 0 at 00951210",
+      "coverage": "complete",
+      "evidence": "walks [this+4h] to [this+8h] calling the element destructor 0049f910 (009511ab) then _free (009511b1), then erases and stores the new last at 00951209. The MSVC iterator-debug vector layout puts proxy at +0h, first +4h, last +8h, end +0Ch, which matches 00F8A084/88/8C/90."
+    },
+    {
+      "address": "0049cf80",
+      "name": "BSP_TrafficRecord_ApplyProperties",
+      "abi": "__thiscall(record /*ECX*/, ScenePropertyBag*), RET 4",
+      "coverage": "complete for the thirteen keys; the SoldierTypes arm's 004b1400 is a contract",
+      "evidence": "thirteen probe-and-fetch pairs (0048e9f0 then 008f2260) in the order startPt, endPt, cyclic, rowCount, columns, rowGap, columnGap, HP, speed, randomFactor, rowDev, columnDev, templates. Eight float fields test the 38h record's type code at +04h against 1 and otherwise CVTSI2SS the same dword; the five integer and boolean fields take +0Ch raw. ADD EBX,0x34 at 0049d244 with EBX = [ESP+14h] the record fixes the template map at +34h."
+    },
+    {
+      "address": "004a5620",
+      "name": "BSP_TrafficManager_BuildRuntime",
+      "abi": "__fastcall(traffic manager /*ECX = [[00E188A8]+21D0h]*/), RET 0",
+      "coverage": "complete for the walk; 004a50d0 and the 170h object are contracts",
+      "evidence": "walks DAT_00F8A088 to DAT_00F8A08C; 004a568b LEA ESI,[EBP+0x10] fixes the slot map at manager+10h; operator new(0x170) at 004a56a5 and 004a50d0([manager+8h], record) at 004a56c3 build the runtime object only when the slot is null."
+    },
+    {
+      "address": "0095ca10",
+      "name": "BSP_SceneFile_DrainStockClassQueue",
+      "abi": "__cdecl(), RET 0 at 0095ca3a",
+      "coverage": "complete",
+      "evidence": "14 instructions, no tokenizer reference at all. Walks the intrusive list whose sentinel pointer is 00F8A0B0 (next +0h, prev +4h, value +8h) and calls 0095c640 with ECX = [node+8h]. Corrects docs/SCENE_FILE_READER.md, which recorded it as the pass-2 traffic skip."
+    },
+    {
+      "address": "0095c640",
+      "name": "BSP_VehicleClass_RegisterPreload",
+      "abi": "__fastcall(int classId /*ECX*/), no stack arguments",
+      "coverage": "complete",
+      "evidence": "0095c665/0095c66a map the id through BSP_VehicleClassRegistry_GetSingleton()+10h+id*4, the forward index map of docs/VEHICLE_CLASS_DESCRIPTORS.md; 0095c66e rejects 2ACh. Reads VehicleClass[index].Type (00CE5880, 00CE4780), appends a non-zero LandingShip field and the class itself through 0095c550, and for the eight carrier Type strings resolves 'VehicleClass.' + index + '.Catapult.LaunchedClass' with default -1."
+    },
+    {
+      "address": "0095c550",
+      "name": "BSP_VehicleClassCensus_Append",
+      "abi": "__fastcall(int classIndex /*ECX*/)",
+      "coverage": "complete",
+      "evidence": "linear scan of [DAT_00F8A0A0, DAT_00F8A0A4) returning on a hit, otherwise a push_back. The census vector's four words are 00F8A09C proxy, 00F8A0A0 first, 00F8A0A4 last, 00F8A0A8 end, the array docs/MISSION_SCENE_CONTENTS.md records with readers 004c8aa0 and 004d4720."
+    },
+    {
+      "address": "0095c4d0",
+      "name": "BSP_VehicleClassStockQueue_Append",
+      "abi": "__fastcall(int classId /*ECX*/)",
+      "coverage": "complete",
+      "evidence": "maps the id through registry+10h+id*4, then a deduplicated link into the list at 00F8A0B0 comparing node[2]. Sole caller 0046bf70. Because it stores the already-mapped value and 0095c640 maps again, the second map relies on the forward map being the identity for anything not remapped."
+    },
+    {
+      "address": "00469e40",
+      "name": "BSP_SceneFile_ReadBrowserGroupsBlock",
+      "abi": "__thiscall(void* /*ECX, unused*/, SceneTokenizer*), RET 4 at 00469ea4",
+      "coverage": "complete",
+      "evidence": "33 instructions read in full. ExpectToken 00CE56A4 'SceneBrowserGroups' then 00CE4D38 '{', a peek loop against 00CE5654 'BrowserGroup' calling 004694f0, then 00CE4CD4 '}'. MOV EDI,ECX at 00469e46 is the only use of this, and its only consumer is the MOV ECX,EDI at 00469e78 that passes it to a callee that never reads ECX."
+    },
+    {
+      "address": "004694f0",
+      "name": "BSP_SceneFile_ReadBrowserGroupEntry",
+      "abi": "__thiscall(void* /*ECX, never read*/, SceneTokenizer*), RET 4 at 0046960d",
+      "coverage": "complete",
+      "evidence": "62 instructions read in full. Eleven ExpectToken calls in fixed order for 'BrowserGroup' '{' 'GroupName' '=' ... 'GroupID' '=' ... 'Parent' '=' ... '}'. The first instruction to touch ECX is MOV ECX,ESI at 00469512, after MOV ESI,[ESP+24h] loads the tokenizer. Nothing is stored: the two strings go to stack locals freed at 004695cc and 004695f3, and ReadInt's destination LEA EAX,[ESP+24h] at 0046956e is entry+4, the caller's dead tokenizer argument slot that the RET 4 pops."
+    },
+    {
+      "address": "008f67b0",
+      "name": "CPropTreeLibrary_Load",
+      "abi": "__thiscall(CPropTreeLibrary* /*ECX*/, const char* path), RET 4 at 008f6b95",
+      "coverage": "complete for the dispatch, both branches and the registry argument; the file-name prologue was read as pseudocode only",
+      "evidence": "recovered symbol. Tokenizer new(838h) at 008f68a2 and 008d9cf0 at 008f68da over 00D16534 ';{}=:()', one character short of the scene set 00CE4F40 ';{}=:(,)'. Two keywords: 00D1652C 'enum' at 008f693d and 00CE568C 'properties' at 008f6a27. this is saved to [ESP+28h] at 008f67d6 and reappears as 008f5a00's third argument at 008f6ad1 and as the insert base at 008f6b34 ADD ECX,0x4."
+    },
+    {
+      "address": "008f6fc0",
+      "name": "BSP_PropTreeLibrary_LoadExtension",
+      "abi": "__thiscall(CPropTreeLibrary* /*ECX*/, const char* folder, const char* extension), RET 8",
+      "coverage": "complete",
+      "evidence": "assigns argument 2 then argument 1, enumerates through 00886280, and calls 008f67b0 once per returned entry with entry+4h or the shared empty string 00F89450. Argument order from the caller: 008f7106 pushes the extension before 008f710b pushes the folder, so the folder is argument 1."
+    },
+    {
+      "address": "008f7100",
+      "name": "BSP_PropTreeLibrary_LoadFolder",
+      "abi": "__thiscall(CPropTreeLibrary* /*ECX*/, const char* folder), RET 4 at 008f7122",
+      "coverage": "complete",
+      "evidence": "14 instructions. Two calls to 008f6fc0 with 00D1655C '.enums' then 00D16554 '.props'. No caller stack cleanup after either call, so 008f6fc0 is RET 8."
+    },
+    {
+      "address": "0046bf70",
+      "name": "BSP_SceneEntity_RegisterMultiplayerStock",
+      "abi": "__thiscall(void* /*ECX*/, ScenePropertyBag*, const char* className), RET 4",
+      "coverage": "contract: documented in docs/SCENE_ENTITY_FACTORY.md; only the 0095c4d0 edge was re-read here",
+      "evidence": "this packet added no claim about the stock walk. Its 0095c4d0 callee was read in full because docs/SCENE_TRAFFIC_BLOCK.md needs the queue the pass-2 traffic keyword drains."
+    }
+  ],
+  "host_table": [
+    {
+      "address": "0046e9eb",
+      "native": "00951160",
+      "function": "0046df00",
+      "host_method": "clear_traffic_records",
+      "contract": "ECX = 0xF8A084 (MOV ECX,0xF8A084 at 0046e9e6)",
+      "gate": "0046e9d5: passes 2 and 3, before the entity loop"
+    },
+    {
+      "address": "0046eb5b",
+      "native": "009514b0",
+      "function": "0046df00",
+      "host_method": "read the traffic block",
+      "contract": "ECX = 0xF8A084 (0046eb56), push ESI = the tokenizer",
+      "gate": "keyword 'traffic' and the registration flag clear (0046eb3b TEST BL,BL)"
+    },
+    {
+      "address": "0046ebdd",
+      "native": "0095ca10",
+      "function": "0046df00",
+      "host_method": "drain_stock_class_queue",
+      "contract": "no arguments, no ECX",
+      "gate": "keyword 'traffic' and the registration flag set (0046eb3d JNZ)"
+    },
+    {
+      "address": "0046ebd3",
+      "native": "00469e40",
+      "function": "0046df00",
+      "host_method": "read the SceneBrowserGroups block",
+      "contract": "ECX = EDI (never read by the callee), push ESI = the tokenizer",
+      "gate": "keyword 'SceneBrowserGroups' and the registration flag clear (0046ebba)"
+    },
+    {
+      "address": "0046eefd",
+      "native": "0095c640",
+      "function": "0046df00",
+      "host_method": "register_vehicle_class_preload",
+      "contract": "ECX = *(00418140(EBX, EDI))",
+      "gate": "the Lua object's Type field is not CommandBuilding (00CE5870), LandFort (00CE5864) or LandVehicle (00CE5858); the string vector this walks is contract: unread"
+    },
+    {
+      "address": "0046d51a",
+      "native": "0095c640",
+      "function": "0046cf40",
+      "host_method": "register_vehicle_class_preload",
+      "contract": "ECX = [008f2260(bag, 'Type') + 0Ch], the entity's own class id",
+      "gate": "the registration pass's six class-id comparisons (docs/SCENE_ENTITY_FACTORY.md)"
+    },
+    {
+      "address": "0095ca23",
+      "native": "0095c640",
+      "function": "0095ca10",
+      "host_method": "register_vehicle_class_preload",
+      "contract": "ECX = [node+8h], an already-mapped class index",
+      "gate": "none, once per queued node"
+    },
+    {
+      "address": "009514b5",
+      "native": "00951160",
+      "function": "009514b0",
+      "host_method": "clear_traffic_records",
+      "contract": "ECX still the entry this (MOV EBX,ECX at 009514b3 does not disturb it)",
+      "gate": "none"
+    },
+    {
+      "address": "009514c5",
+      "native": "008d9930",
+      "function": "009514b0",
+      "host_method": "expect 'traffic'",
+      "contract": "ECX = tokenizer, push 00CE5890",
+      "gate": "none"
+    },
+    {
+      "address": "009514d1",
+      "native": "008d9930",
+      "function": "009514b0",
+      "host_method": "expect '{'",
+      "contract": "ECX = tokenizer, push 00CE4D38",
+      "gate": "none"
+    },
+    {
+      "address": "009514e2",
+      "native": "008d8a70",
+      "function": "009514b0",
+      "host_method": "peek",
+      "contract": "ECX = tokenizer, token in EAX",
+      "gate": "loop head"
+    },
+    {
+      "address": "009514ee",
+      "native": "00438e10",
+      "function": "009514b0",
+      "host_method": "compare against 'item'",
+      "contract": "ECX = token, EDX = 00D19B80",
+      "gate": "none"
+    },
+    {
+      "address": "009514fa",
+      "native": "009512f0",
+      "function": "009514b0",
+      "host_method": "read one traffic item",
+      "contract": "ECX = EBX = the record vector, push ESI = the tokenizer",
+      "gate": "the 'item' compare returned 0"
+    },
+    {
+      "address": "0095150f",
+      "native": "00438e10",
+      "function": "009514b0",
+      "host_method": "compare against '{'",
+      "contract": "ECX = token, EDX = 00CE4D38",
+      "gate": "the 'item' compare failed"
+    },
+    {
+      "address": "0095152b",
+      "native": "00438e10",
+      "function": "009514b0",
+      "host_method": "compare against '}'",
+      "contract": "ECX = token, EDX = 00CE4CD4",
+      "gate": "the '{' compare failed"
+    },
+    {
+      "address": "00951539",
+      "native": "008d8960",
+      "function": "009514b0",
+      "host_method": "consume",
+      "contract": "ECX = tokenizer",
+      "gate": "the 'item' compare failed"
+    },
+    {
+      "address": "0095154d",
+      "native": "004a5620",
+      "function": "009514b0",
+      "host_method": "commit_traffic_records",
+      "contract": "ECX = [[00E188A8]+21D0h], the traffic manager",
+      "gate": "after the brace loop"
+    },
+    {
+      "address": "0095131d",
+      "native": "008d9930",
+      "function": "009512f0",
+      "host_method": "expect 'item'",
+      "contract": "ECX = tokenizer, push 00D19B80",
+      "gate": "none"
+    },
+    {
+      "address": "00951324",
+      "native": "008d9980",
+      "function": "009512f0",
+      "host_method": "read the item name",
+      "contract": "ECX = tokenizer, char* in EAX",
+      "gate": "none"
+    },
+    {
+      "address": "0095132e",
+      "native": "0041e870",
+      "function": "009512f0",
+      "host_method": "assign the item name",
+      "contract": "ECX = a stack native string, push EAX",
+      "gate": "none"
+    },
+    {
+      "address": "00951351",
+      "native": "008d9930",
+      "function": "009512f0",
+      "host_method": "expect 'path'",
+      "contract": "ECX = tokenizer, push 00D099C0",
+      "gate": "none"
+    },
+    {
+      "address": "0095135d",
+      "native": "008d9930",
+      "function": "009512f0",
+      "host_method": "expect '='",
+      "contract": "ECX = tokenizer, push 00CE55BC",
+      "gate": "none"
+    },
+    {
+      "address": "00951364",
+      "native": "008d9980",
+      "function": "009512f0",
+      "host_method": "read the path value",
+      "contract": "ECX = tokenizer, char* in EAX",
+      "gate": "none"
+    },
+    {
+      "address": "0095137e",
+      "native": "00925a90",
+      "function": "009512f0",
+      "host_method": "resolve_path_entity",
+      "contract": "ECX = [[00E188A8]+19CCh], push the path name",
+      "gate": "EAX non-null and *EAX non-zero (00951369, 0095136d)"
+    },
+    {
+      "address": "00951385",
+      "native": "007ac9d0",
+      "function": "009512f0",
+      "host_method": "cast the entity to a path",
+      "contract": "ECX = the found entity, result in EAX",
+      "gate": "same as the lookup"
+    },
+    {
+      "address": "00951396",
+      "native": "00951220",
+      "function": "009512f0",
+      "host_method": "add_traffic_record",
+      "contract": "ECX = the record vector; push the path object (or 0 from 0095138c), then push &name; record in EAX",
+      "gate": "none"
+    },
+    {
+      "address": "0095139f",
+      "native": "008d8a70",
+      "function": "009512f0",
+      "host_method": "peek for 'properties'",
+      "contract": "ECX = tokenizer",
+      "gate": "none"
+    },
+    {
+      "address": "009513ab",
+      "native": "00438e10",
+      "function": "009512f0",
+      "host_method": "compare against 'properties'",
+      "contract": "ECX = token, EDX = 00CE568C",
+      "gate": "none"
+    },
+    {
+      "address": "009513c6",
+      "native": "008f41a0",
+      "function": "009512f0",
+      "host_method": "construct the property bag",
+      "contract": "ECX = a stack bag, push 0",
+      "gate": "the 'properties' compare returned 0"
+    },
+    {
+      "address": "009513dc",
+      "native": "008f5a00",
+      "function": "009512f0",
+      "host_method": "parse the property body",
+      "contract": "ECX = the bag; arg1 = the tokenizer (ESI), arg2 = 1, arg3 = 0 so no group registry",
+      "gate": "the 'properties' compare returned 0"
+    },
+    {
+      "address": "009513e8",
+      "native": "0049cf80",
+      "function": "009512f0",
+      "host_method": "apply_traffic_properties",
+      "contract": "ECX = EDI = the record 00951220 returned, push &bag",
+      "gate": "the 'properties' compare returned 0"
+    },
+    {
+      "address": "009513f9",
+      "native": "008f5410",
+      "function": "009512f0",
+      "host_method": "destruct the property bag",
+      "contract": "ECX = the stack bag",
+      "gate": "the 'properties' compare returned 0"
+    },
+    {
+      "address": "00951405",
+      "native": "008d9930",
+      "function": "009512f0",
+      "host_method": "expect '}'",
+      "contract": "ECX = tokenizer, push 00CE4CD4",
+      "gate": "none"
+    },
+    {
+      "address": "00951258",
+      "native": "0049f9b0",
+      "function": "00951220",
+      "host_method": "construct the traffic record",
+      "contract": "ECX = the 4Ch allocation from 0095123c",
+      "gate": "allocation non-null"
+    },
+    {
+      "address": "009512d3",
+      "native": "00950fc0",
+      "function": "00951220",
+      "host_method": "push the record into the vector",
+      "contract": "ECX = the vector, push &slot where the slot was just set to the record at 009512cf",
+      "gate": "none"
+    },
+    {
+      "address": "0049d25a",
+      "native": "0048e960",
+      "function": "0049cf80",
+      "host_method": "resolve_template_class (LandVehicleClasses)",
+      "contract": "ECX = [00E1867C], push 00CE6710; RET 4, so the name pushed at 0049d254 stays for the next call",
+      "gate": "per templates child"
+    },
+    {
+      "address": "0049d261",
+      "native": "0048e8d0",
+      "function": "0049cf80",
+      "host_method": "membership test",
+      "contract": "ECX = the table from 0048e960, the symbol still on the stack",
+      "gate": "per templates child"
+    },
+    {
+      "address": "0049d284",
+      "native": "0048e840",
+      "function": "0049cf80",
+      "host_method": "lookup the class id",
+      "contract": "ECX = the LandVehicleClasses table",
+      "gate": "the membership test returned non-zero"
+    },
+    {
+      "address": "0049d291",
+      "native": "00964790",
+      "function": "0049cf80",
+      "host_method": "ensure_vehicle_class",
+      "contract": "ECX = the class id, DL = 1",
+      "gate": "the membership test returned non-zero"
+    },
+    {
+      "address": "0049d2ac",
+      "native": "0048e960",
+      "function": "0049cf80",
+      "host_method": "resolve_template_class (SoldierTypes)",
+      "contract": "ECX = [00E1867C], push 00CE6700",
+      "gate": "the membership test returned zero"
+    },
+    {
+      "address": "0049d2b3",
+      "native": "0048e840",
+      "function": "0049cf80",
+      "host_method": "lookup the soldier type id",
+      "contract": "ECX = the SoldierTypes table",
+      "gate": "the membership test returned zero"
+    },
+    {
+      "address": "0049d311",
+      "native": "004b1400",
+      "function": "0049cf80",
+      "host_method": "ensure_soldier_type",
+      "contract": "contract: unread",
+      "gate": "the membership test returned zero"
+    },
+    {
+      "address": "0049d364",
+      "native": "00499030",
+      "function": "0049cf80",
+      "host_method": "template weight slot",
+      "contract": "ECX = EBX = record + 34h (ADD EBX,0x34 at 0049d244), push &id; float* in EAX, written at 0049d371",
+      "gate": "per templates child"
+    },
+    {
+      "address": "0049d375",
+      "native": "0047e480",
+      "function": "0049cf80",
+      "host_method": "advance the templates iterator",
+      "contract": "ECX = the iterator from 00480690",
+      "gate": "per templates child"
+    },
+    {
+      "address": "004a5695",
+      "native": "00499320",
+      "function": "004a5620",
+      "host_method": "traffic runtime slot",
+      "contract": "ECX = manager + 10h (004a568b LEA ESI,[EBP+0x10]), push &record",
+      "gate": "per record"
+    },
+    {
+      "address": "004a56c3",
+      "native": "004a50d0",
+      "function": "004a5620",
+      "host_method": "construct the runtime spawner",
+      "contract": "ECX = the 170h allocation, push [manager+8h], push the record",
+      "gate": "the slot was null"
+    },
+    {
+      "address": "004a56dd",
+      "native": "00499320",
+      "function": "004a5620",
+      "host_method": "traffic runtime slot, second lookup",
+      "contract": "ECX = manager + 10h, push &record; the constructed object is stored through the returned pointer",
+      "gate": "the slot was null"
+    },
+    {
+      "address": "00469e4f",
+      "native": "008d9930",
+      "function": "00469e40",
+      "host_method": "expect 'SceneBrowserGroups'",
+      "contract": "ECX = tokenizer, push 00CE56A4",
+      "gate": "none"
+    },
+    {
+      "address": "00469e5b",
+      "native": "008d9930",
+      "function": "00469e40",
+      "host_method": "expect '{'",
+      "contract": "ECX = tokenizer, push 00CE4D38",
+      "gate": "none"
+    },
+    {
+      "address": "00469e62",
+      "native": "008d8a70",
+      "function": "00469e40",
+      "host_method": "peek",
+      "contract": "ECX = tokenizer",
+      "gate": "loop head"
+    },
+    {
+      "address": "00469e6e",
+      "native": "00438e10",
+      "function": "00469e40",
+      "host_method": "compare against 'BrowserGroup'",
+      "contract": "ECX = token, EDX = 00CE5654",
+      "gate": "none"
+    },
+    {
+      "address": "00469e7a",
+      "native": "004694f0",
+      "function": "00469e40",
+      "host_method": "read one BrowserGroup entry",
+      "contract": "ECX = EDI, never read by the callee; push ESI = the tokenizer",
+      "gate": "the compare returned 0"
+    },
+    {
+      "address": "00469e9d",
+      "native": "008d9930",
+      "function": "00469e40",
+      "host_method": "expect '}'",
+      "contract": "ECX = tokenizer, push 00CE4CD4",
+      "gate": "loop exit"
+    },
+    {
+      "address": "00469514",
+      "native": "008d9930",
+      "function": "004694f0",
+      "host_method": "expect 'BrowserGroup'",
+      "contract": "ECX = ESI = the tokenizer from [ESP+24h], push 00CE5654",
+      "gate": "none"
+    },
+    {
+      "address": "0046952c",
+      "native": "008d9930",
+      "function": "004694f0",
+      "host_method": "expect 'GroupName'",
+      "contract": "ECX = tokenizer, push 00CE55C0",
+      "gate": "none"
+    },
+    {
+      "address": "0046953f",
+      "native": "008d9980",
+      "function": "004694f0",
+      "host_method": "read the group name",
+      "contract": "ECX = tokenizer, char* in EAX",
+      "gate": "none"
+    },
+    {
+      "address": "00469549",
+      "native": "0041e870",
+      "function": "004694f0",
+      "host_method": "assign the group name to a stack string",
+      "contract": "ECX = [ESP+10h], push EAX; freed at 004695cc before the return",
+      "gate": "none"
+    },
+    {
+      "address": "0046955d",
+      "native": "008d9930",
+      "function": "004694f0",
+      "host_method": "expect 'GroupID'",
+      "contract": "ECX = tokenizer, push 00CE564C",
+      "gate": "none"
+    },
+    {
+      "address": "00469575",
+      "native": "008d9ad0",
+      "function": "004694f0",
+      "host_method": "read the group id",
+      "contract": "ECX = tokenizer, push LEA EAX,[ESP+24h] = entry+4, the caller's dead argument slot",
+      "gate": "none"
+    },
+    {
+      "address": "00469581",
+      "native": "008d9930",
+      "function": "004694f0",
+      "host_method": "expect 'Parent'",
+      "contract": "ECX = tokenizer, push 00CE5644",
+      "gate": "none"
+    },
+    {
+      "address": "00469594",
+      "native": "008d9980",
+      "function": "004694f0",
+      "host_method": "read the parent name",
+      "contract": "ECX = tokenizer, char* in EAX",
+      "gate": "none"
+    },
+    {
+      "address": "0046959e",
+      "native": "0041e870",
+      "function": "004694f0",
+      "host_method": "assign the parent name to a stack string",
+      "contract": "ECX = [ESP+8h], push EAX; freed at 004695f3 before the return",
+      "gate": "none"
+    },
+    {
+      "address": "004695af",
+      "native": "008d9930",
+      "function": "004694f0",
+      "host_method": "expect '}'",
+      "contract": "ECX = tokenizer, push 00CE4CD4",
+      "gate": "none"
+    },
+    {
+      "address": "008f710e",
+      "native": "008f6fc0",
+      "function": "008f7100",
+      "host_method": "load the .enums files",
+      "contract": "ECX = the library, push EDI = the folder, push 00D1655C",
+      "gate": "none"
+    },
+    {
+      "address": "008f711b",
+      "native": "008f6fc0",
+      "function": "008f7100",
+      "host_method": "load the .props files",
+      "contract": "ECX = the library, push EDI = the folder, push 00D16554",
+      "gate": "after the .enums pass"
+    },
+    {
+      "address": "004d30d0",
+      "native": "008f7100",
+      "function": "004d3040",
+      "host_method": "load_prop_library",
+      "contract": "ECX = EAX = the library 008f5670 just built and 004d30cb stored into 00E18678; push 00CE78E0 'universe\\Library\\'",
+      "gate": "none"
+    },
+    {
+      "address": "008f68da",
+      "native": "008d9cf0",
+      "function": "008f67b0",
+      "host_method": "construct the library tokenizer",
+      "contract": "ECX = the 838h allocation from 008f68a2, delimiters 00D16534 ';{}=:()'",
+      "gate": "allocation non-null"
+    },
+    {
+      "address": "008f6944",
+      "native": "00438e10",
+      "function": "008f67b0",
+      "host_method": "compare against 'enum'",
+      "contract": "ECX = the peeked token, EDX = 00D1652C",
+      "gate": "loop head"
+    },
+    {
+      "address": "008f697c",
+      "native": "008f2c10",
+      "function": "008f67b0",
+      "host_method": "has_enum_table",
+      "contract": "ECX = [00E1867C], push &name; BL = present",
+      "gate": "the 'enum' compare returned 0"
+    },
+    {
+      "address": "008f698a",
+      "native": "008d9930",
+      "function": "008f67b0",
+      "host_method": "expect '{'",
+      "contract": "ECX = tokenizer, push 00CE4D38",
+      "gate": "the 'enum' compare returned 0"
+    },
+    {
+      "address": "008f699e",
+      "native": "0048e960",
+      "function": "008f67b0",
+      "host_method": "fetch the existing enum table",
+      "contract": "ECX = [00E1867C], push &name",
+      "gate": "BL non-zero"
+    },
+    {
+      "address": "008f69ff",
+      "native": "008f31a0",
+      "function": "008f67b0",
+      "host_method": "parse_enum_body",
+      "contract": "contract: unread",
+      "gate": "none"
+    },
+    {
+      "address": "008f6a18",
+      "native": "008f2b90",
+      "function": "008f67b0",
+      "host_method": "register_enum_table",
+      "contract": "contract: unread",
+      "gate": "BL zero, the table was newly allocated"
+    },
+    {
+      "address": "008f6a2e",
+      "native": "00438e10",
+      "function": "008f67b0",
+      "host_method": "compare against 'properties'",
+      "contract": "ECX = the peeked token, EDX = 00CE568C",
+      "gate": "the 'enum' compare failed"
+    },
+    {
+      "address": "008f6a69",
+      "native": "008f2db0",
+      "function": "008f67b0",
+      "host_method": "has_group",
+      "contract": "ECX = [00E18678], push &name; BL = present",
+      "gate": "the 'properties' compare returned 0"
+    },
+    {
+      "address": "008f6a7f",
+      "native": "00469b60",
+      "function": "008f67b0",
+      "host_method": "fetch the existing group bag",
+      "contract": "ECX = [00E18678], push &name; bag in EAX",
+      "gate": "BL non-zero"
+    },
+    {
+      "address": "008f6ad7",
+      "native": "008f5a00",
+      "function": "008f67b0",
+      "host_method": "parse the group body",
+      "contract": "ECX = EDI = the bag; arg1 = the tokenizer (EBP), arg2 = 0, arg3 = [ESP+28h] = this, the group registry",
+      "gate": "none"
+    },
+    {
+      "address": "008f6b42",
+      "native": "008f29a0",
+      "function": "008f67b0",
+      "host_method": "register_group",
+      "contract": "ECX = this + 4h (008f6b34 ADD ECX,0x4), push &name, push EDI = the bag",
+      "gate": "BL zero, the bag was newly allocated"
+    },
+    {
+      "address": "008f701b",
+      "native": "00886280",
+      "function": "008f6fc0",
+      "host_method": "enumerate_library_files",
+      "contract": "(out, &folder, &extension, 1)",
+      "gate": "none"
+    }
+  ],
+  "no_ghidra_function": [],
+  "corrections": [
+    {
+      "doc": "docs/SCENE_FILE_READER.md",
+      "was": "`traffic` | 00CE5890 | 009514B0 (pass 3) / 0095CA10 (pass 2, then stop) | not read | not decoded",
+      "is": "009514B0 is a brace counter around the single production `item`; 0095CA10 skips nothing. It is 14 instructions with no tokenizer reference that drain the intrusive list at 00F8A0B0 into 0095C640. In the registration pass the traffic body is never tokenized at all.",
+      "evidence": "the full listings of 009514B0 and 0095CA10; 0046eb3d JNZ 0046ebdd is the pass gate."
+    },
+    {
+      "doc": "docs/SCENE_FILE_READER.md",
+      "was": "`SceneBrowserGroups` | 00CE56A4 | 00469E40 | repeats 004694F0, one entry per iteration; the entry layout was not read",
+      "is": "the entry is `BrowserGroup { GroupName = TOKEN GroupID = INT Parent = TOKEN }` and neither routine stores it. 004694F0 never reads ECX, frees both strings before returning, and writes the parsed GroupID into the caller's dead argument slot.",
+      "evidence": "004694F0's 62 instructions; the ReadInt destination LEA EAX,[ESP+24h] at 0046956e resolves to entry+4 with the frame at entry-0x20."
+    },
+    {
+      "doc": "docs/SCENE_PROPERTY_BAG_MERGE.md",
+      "was": "the .props library loader 008F67B0 is what supplies a registry, for the parenthesised parent in `properties Ship(Common)` (stated as the expected answer, not read)",
+      "is": "confirmed, and the registry it supplies is the CPropTreeLibrary itself: 008f6ad1 pushes [ESP+28h], which 008f67d6 set from the entry ECX. Argument 2 is 0 where an entity block passes 1, so a parent loses to the child.",
+      "evidence": "008f67d6, 008f6ad1..008f6ad7."
+    },
+    {
+      "doc": "docs/SCENE_PROPERTY_BAG.md",
+      "was": "008F5A00's remaining callers 008F67B0 and 009512F0 were not read",
+      "is": "both are read here. 009512F0 is the traffic item reader, not an entity block reader; its bag is applied to a 4Ch traffic record by 0049CF80 and destroyed.",
+      "evidence": "the full listings of 009512F0 and 0049CF80."
+    }
+  ],
+  "installed_game_validation": {
+    "tool": "local/census_traffic_groups.py",
+    "scope": "all 259 .scn files under universe/scenes, tokenized with the reader's delimiter set",
+    "traffic_blocks": 251,
+    "traffic_items": 172,
+    "item_children_other_than_path_and_properties": 0,
+    "items_without_a_properties_section": 0,
+    "distinct_template_names": 12,
+    "scenebrowsergroups_blocks": 249,
+    "browsergroup_entries": 927,
+    "distinct_browsergroup_key_orders": 1,
+    "grammar_errors": 0,
+    "library_files": "15 under universe/Library: 14 .props and 1 .enums; template names resolve in global.enums as LandVehicleClasses (Us_truck = 464, Jap_tank = 479) and SoldierTypes (USMarine_shiptraffic = 4)"
+  },
+  "uncertainties": [
+    "004A50D0 and the 170h runtime spawner are the whole simulation side of traffic and were not opened.",
+    "`anims` is authored by all 172 items and read by nothing this packet opened.",
+    "The producer of the string vector 0046DF00's stop epilogue walks at 0046ED5D is unknown, so 0095C640's second call site has a gate but no established source.",
+    "004B1400, the SoldierTypes arm of the templates loop, was not opened.",
+    "The 19Ch enum-table layout is unread beyond the name at +11Ch; 008F31A0 is where the symbol pairs are parsed.",
+    "00E1867C's construction site was not found; only 00E18678's is, in 004D3040 and 004DC664."
+  ],
+  "reconstruction": {
+    "header": "include/bsp/scene_traffic_groups.hpp",
+    "source": "src/scene_traffic_groups.cpp",
+    "build": "scripts/build.ps1 from the worktree, Win32 Release, warnings as errors: succeeded",
+    "tests": "ctest reconstructed_math: 1/1 passed. No new test was added; the grammar risk is covered by the installed-file census instead.",
+    "divergences": [
+      "read_traffic_item hands the host a finished record where the native creates it at 00951396 and applies properties to it at 009513e8, so a bag that failed mid-parse would leave a half-applied record in the native's vector.",
+      "apply_traffic_properties drops a templates child whose name is in neither enum table; the native has no miss arm and takes whatever 0048E840 returns.",
+      "load_prop_library_file consumes an unrecognised top-level token; 008F67B0 consumes nothing there and would spin. No shipped file has one.",
+      "The float type test uses the authored type letter because a ScenePropertyBlock carries the letter, not the resolved type code the native compares against 1."
+    ]
+  }
+}

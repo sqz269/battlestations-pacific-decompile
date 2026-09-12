@@ -1,0 +1,916 @@
+{
+  "packet": "orch3_type4_behavior_aj",
+  "source": "src/registered_type4_effect_behavior.cpp",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "ghidra": "read_only; no mutations or save"
+  },
+  "routines": [
+    {
+      "end_inclusive": "0087205b",
+      "size": 60,
+      "sha256": "4e8a9bc22d1529e990b7c40f5c18065a7027c3d2a9d8973550d605b9fdb37573",
+      "live_disk_equal": true,
+      "address": "00872020",
+      "coverage": "complete",
+      "original_abi": "ECX actual type4 event; AL completion result; RET",
+      "ghidra_name": "BSP_RegisteredType4Effect_Complete_Provisional",
+      "cpp_symbol": "complete_registered_type4_effect_00872020",
+      "source": "src/registered_type4_effect_behavior.cpp",
+      "length": 60,
+      "evidence": "Pending1C blocks; timer28 versus definition80 then nullable actual tracer34/current201 and exact inactive0C gate. AL result; no ownership change. Focused original-byte tests passed for completion/deactivation/setters and nontracer update branches. docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md."
+    },
+    {
+      "end_inclusive": "00872073",
+      "size": 20,
+      "sha256": "bf219500ce4608254c147de5a7f3c1b6f59c0b5a30c77ebf6be8c346a09bda62",
+      "address": "00872060",
+      "coverage": "complete",
+      "original_abi": "ECX actual owner; RET",
+      "ghidra_name": "BSP_RegisteredType4Effect_Deactivate_Provisional",
+      "cpp_symbol": "deactivate_registered_type4_effect_00872060",
+      "source": "src/registered_type4_effect_behavior.cpp",
+      "length": 20,
+      "evidence": "Clear pending1C then current tracer34 conditional tailBA9820; current-slot dispatcher, not this entry, clears active0C. Focused original-byte tests passed for completion/deactivation/setters and nontracer update branches. docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md."
+    },
+    {
+      "end_inclusive": "00872bc0",
+      "size": 1073,
+      "sha256": "ca2b5f22cdb919dfbba0f9b18e8d742e17ae89aaedca23d56e65af88afd3ffa9",
+      "live_disk_equal": true,
+      "address": "00872790",
+      "coverage": "complete entry control/state behavior; required real pool/constructor/current curve/update/predicate bindings; nonnull actual tracer update unvalidated",
+      "original_abi": "ECX event; stack(float delta, reference); RET8 at00872BBE",
+      "scope": "complete entry control/state behavior; real allocator/constructor/curve/update/predicate bindings required",
+      "ghidra_name": "BSP_RegisteredType4Effect_Update_Provisional",
+      "cpp_symbol": "update_registered_type4_effect_00872790",
+      "source": "src/registered_type4_effect_behavior.cpp",
+      "length": 1073,
+      "evidence": "Complete entry control/state behavior through required actual tracer pool/constructor/update/predicate and current curve08. Real outer CS/depth, native constructor failure returns raw slot without unlock. Refresh/reload actual subject node110 twice, two16-word worlds, ordered x87 argument spills subject58->scaled speed->current age24 then current tracer34. Nonnull real tracer update remains unvalidated. Focused original-byte tests passed for completion/deactivation/setters and nontracer update branches. docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md."
+    },
+    {
+      "end_inclusive": "00ba984e",
+      "size": 47,
+      "sha256": "9652a41f5bc56fcd523bf1fba0d5f014d3ff9e3a174441739f8899afa078da56",
+      "address": "00ba9820",
+      "coverage": "complete",
+      "original_abi": "ECX actual owner; RET",
+      "ghidra_name": "BSP_RegisteredType4Tracer_Deactivate",
+      "cpp_symbol": "deactivate_registered_type4_tracer_00ba9820",
+      "source": "src/registered_type4_effect_behavior.cpp",
+      "length": 47,
+      "evidence": "Actual7ACh generated-model-derived tracer: byte200=0,float7A8=1, reload nullable linked1B8 then linked24=0.1; no unlink/release. Focused original-byte tests passed for completion/deactivation/setters and nontracer update branches. docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md."
+    },
+    {
+      "end_inclusive": "00ba9910",
+      "size": 17,
+      "sha256": "772eef7c9f6d111577c25f71f48c95ccb440fd51b9210d8995fbc4acaf10469c",
+      "address": "00ba9900",
+      "coverage": "complete",
+      "original_abi": "ECX actual owner; one float stack word; RET4",
+      "ghidra_name": "BSP_RegisteredType4Tracer_SetReciprocal",
+      "cpp_symbol": "set_registered_type4_tracer_reciprocal_00ba9900",
+      "source": "src/registered_type4_effect_behavior.cpp",
+      "length": 17,
+      "evidence": "FLD stackword, FLD1, FDIVRP, FSTP actual1EC. Field meanings are descriptive hypotheses grounded in the tracer body and row consumer. Focused original-byte tests passed for completion/deactivation/setters and nontracer update branches. docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md."
+    },
+    {
+      "end_inclusive": "00ba9930",
+      "size": 17,
+      "sha256": "8cac4bef7f977686501eb379453600ffc6ddbe88a842c0dc14aa7307c03e72dd",
+      "address": "00ba9920",
+      "coverage": "complete",
+      "original_abi": "ECX actual owner; one float stack word; RET4",
+      "ghidra_name": "BSP_RegisteredType4Tracer_SetTextureRate",
+      "cpp_symbol": "set_registered_type4_tracer_texture_rate_00ba9920",
+      "source": "src/registered_type4_effect_behavior.cpp",
+      "length": 17,
+      "evidence": "MOVSS raw float argument to1F0. Field meanings are descriptive hypotheses grounded in the tracer body and row consumer. Focused original-byte tests passed for completion/deactivation/setters and nontracer update branches. docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md. Root original-byte SNaN fixture confirms these MOVSS setters preserve input bits; reciprocalBA9900 alone quiets through x87."
+    },
+    {
+      "end_inclusive": "00ba9950",
+      "size": 17,
+      "sha256": "45b5a85761340e00fa89163265b039bf01bcdfcdb23b63587c3f6d8c1be11709",
+      "address": "00ba9940",
+      "coverage": "complete",
+      "original_abi": "ECX actual owner; one float stack word; RET4",
+      "ghidra_name": "BSP_RegisteredType4Tracer_SetAlphaScale",
+      "cpp_symbol": "set_registered_type4_tracer_alpha_scale_00ba9940",
+      "source": "src/registered_type4_effect_behavior.cpp",
+      "length": 17,
+      "evidence": "MOVSS raw float argument to1F4. Field meanings are descriptive hypotheses grounded in the tracer body and row consumer. Focused original-byte tests passed for completion/deactivation/setters and nontracer update branches. docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md. Root original-byte SNaN fixture confirms these MOVSS setters preserve input bits; reciprocalBA9900 alone quiets through x87."
+    },
+    {
+      "end_inclusive": "00ba99d0",
+      "size": 17,
+      "sha256": "07f1f88ade0a22d7a8ca8197702932ef6a08e4742129fcfdbc952fcd19b902c6",
+      "address": "00ba99c0",
+      "coverage": "complete",
+      "original_abi": "ECX actual owner; one float stack word; RET4",
+      "ghidra_name": "BSP_RegisteredType4Tracer_SetWidthScale",
+      "cpp_symbol": "set_registered_type4_tracer_width_scale_00ba99c0",
+      "source": "src/registered_type4_effect_behavior.cpp",
+      "length": 17,
+      "evidence": "MOVSS raw float argument to1E0. Field meanings are descriptive hypotheses grounded in the tracer body and row consumer. Focused original-byte tests passed for completion/deactivation/setters and nontracer update branches. docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md. Root original-byte SNaN fixture confirms these MOVSS setters preserve input bits; reciprocalBA9900 alone quiets through x87."
+    },
+    {
+      "end_inclusive": "00ba99f0",
+      "size": 17,
+      "sha256": "ad907abfb42c5b496446c62dae4361261e38c3c57c3b27a4cbdad79b9f90b56c",
+      "address": "00ba99e0",
+      "coverage": "complete",
+      "original_abi": "ECX actual owner; one float stack word; RET4",
+      "ghidra_name": "BSP_RegisteredType4Tracer_SetWidthScaler",
+      "cpp_symbol": "set_registered_type4_tracer_width_scaler_00ba99e0",
+      "source": "src/registered_type4_effect_behavior.cpp",
+      "length": 17,
+      "evidence": "MOVSS raw float argument to1E4. Field meanings are descriptive hypotheses grounded in the tracer body and row consumer. Focused original-byte tests passed for completion/deactivation/setters and nontracer update branches. docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md. Root original-byte SNaN fixture confirms these MOVSS setters preserve input bits; reciprocalBA9900 alone quiets through x87."
+    },
+    {
+      "end_inclusive": "00ba9a10",
+      "size": 17,
+      "sha256": "2d518620af9e42adb1a09b39a1da619b8843d28b1cba9407238595ac26c81ce4",
+      "address": "00ba9a00",
+      "coverage": "complete",
+      "original_abi": "ECX actual owner; one float stack word; RET4",
+      "ghidra_name": "BSP_RegisteredType4Tracer_SetWidthOffset",
+      "cpp_symbol": "set_registered_type4_tracer_width_offset_00ba9a00",
+      "source": "src/registered_type4_effect_behavior.cpp",
+      "length": 17,
+      "evidence": "MOVSS raw float argument to1E8. Field meanings are descriptive hypotheses grounded in the tracer body and row consumer. Focused original-byte tests passed for completion/deactivation/setters and nontracer update branches. docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md. Root original-byte SNaN fixture confirms these MOVSS setters preserve input bits; reciprocalBA9900 alone quiets through x87."
+    },
+    {
+      "end_inclusive": "00ba9a30",
+      "size": 17,
+      "sha256": "2066a765d40dafae3daa19852c7fa05d3ef17a4a674f014f065882543d6b3e2d",
+      "address": "00ba9a20",
+      "coverage": "complete",
+      "original_abi": "ECX actual owner; one float stack word; RET4",
+      "ghidra_name": "BSP_RegisteredType4Tracer_SetBoneLength",
+      "cpp_symbol": "set_registered_type4_tracer_bone_length_00ba9a20",
+      "source": "src/registered_type4_effect_behavior.cpp",
+      "length": 17,
+      "evidence": "MOVSS raw float argument to1D8. Field meanings are descriptive hypotheses grounded in the tracer body and row consumer. Focused original-byte tests passed for completion/deactivation/setters and nontracer update branches. docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md. Root original-byte SNaN fixture confirms these MOVSS setters preserve input bits; reciprocalBA9900 alone quiets through x87."
+    },
+    {
+      "end_inclusive": "00ba9a50",
+      "size": 17,
+      "sha256": "8b1f46cc2ffedfc9f249696b6e49f1555f493c54d15ac8ceab6d5fdc1626d84a",
+      "address": "00ba9a40",
+      "coverage": "complete",
+      "original_abi": "ECX actual owner; one float stack word; RET4",
+      "ghidra_name": "BSP_RegisteredType4Tracer_SetHeightScale",
+      "cpp_symbol": "set_registered_type4_tracer_height_scale_00ba9a40",
+      "source": "src/registered_type4_effect_behavior.cpp",
+      "length": 17,
+      "evidence": "MOVSS raw float argument to1FC. Field meanings are descriptive hypotheses grounded in the tracer body and row consumer. Focused original-byte tests passed for completion/deactivation/setters and nontracer update branches. docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md. Root original-byte SNaN fixture confirms these MOVSS setters preserve input bits; reciprocalBA9900 alone quiets through x87."
+    },
+    {
+      "end_inclusive": "00ba9a6c",
+      "size": 13,
+      "sha256": "d2bde254c8aa966104015ea3832bb0a38cbf36db95429c7bb386b852deb4820c",
+      "address": "00ba9a60",
+      "coverage": "complete",
+      "original_abi": "ECX tracer; low byte of stack DWORD; RET4",
+      "ghidra_name": "BSP_RegisteredType4Tracer_SetLocalSpace",
+      "cpp_symbol": "set_registered_type4_tracer_local_space_00ba9a60",
+      "source": "src/registered_type4_effect_behavior.cpp",
+      "length": 13,
+      "evidence": "low byte of DWORD argument to202. Field meanings are descriptive hypotheses grounded in the tracer body and row consumer. Focused original-byte tests passed for completion/deactivation/setters and nontracer update branches. docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md."
+    },
+    {
+      "end_inclusive": "00ba9a80",
+      "size": 17,
+      "sha256": "61594300898508a2078a12f702f4c21eaf45ea1c158985a621f9a5365469f8c6",
+      "address": "00ba9a70",
+      "coverage": "complete",
+      "original_abi": "ECX actual owner; one float stack word; RET4",
+      "ghidra_name": "BSP_RegisteredType4Tracer_SetFadeIn",
+      "cpp_symbol": "set_registered_type4_tracer_fade_in_00ba9a70",
+      "source": "src/registered_type4_effect_behavior.cpp",
+      "length": 17,
+      "evidence": "MOVSS raw float argument to210. Field meanings are descriptive hypotheses grounded in the tracer body and row consumer. Focused original-byte tests passed for completion/deactivation/setters and nontracer update branches. docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md. Root original-byte SNaN fixture confirms these MOVSS setters preserve input bits; reciprocalBA9900 alone quiets through x87."
+    },
+    {
+      "end_inclusive": "00ba9aae",
+      "size": 31,
+      "sha256": "2b4cee04a1209695724a15e09e2bfcf001b2d8a46692fca0418de37ce4a97475",
+      "address": "00ba9a90",
+      "coverage": "complete",
+      "original_abi": "ECX tracer; two float stack words; RET8 at00BA9AAC",
+      "ghidra_name": "BSP_RegisteredType4Tracer_SetWidthEndpoints",
+      "cpp_symbol": "set_registered_type4_tracer_width_endpoints_00ba9a90",
+      "source": "src/registered_type4_effect_behavior.cpp",
+      "length": 31,
+      "evidence": "ordered MOVSS raw float arguments to184 then188. Field meanings are descriptive hypotheses grounded in the tracer body and row consumer. Focused original-byte tests passed for completion/deactivation/setters and nontracer update branches. docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md. Root original-byte SNaN fixture confirms these MOVSS setters preserve input bits; reciprocalBA9900 alone quiets through x87."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "008728c8",
+      "native": "00bac660",
+      "function": "00872790",
+      "contract": "actual pool0109049C allocation"
+    },
+    {
+      "address": "0087290d",
+      "native": "00bad6f0",
+      "function": "00872790",
+      "contract": "real generated-model-derived constructor; five words RET14"
+    },
+    {
+      "address": "0087295c",
+      "native": "00ba9900",
+      "function": "00872790",
+      "contract": "reciprocal into1EC"
+    },
+    {
+      "address": "0087296c",
+      "native": "00ba9a60",
+      "function": "00872790",
+      "contract": "byteA0 to202"
+    },
+    {
+      "address": "0087297b",
+      "native": "00ba9920",
+      "function": "00872790",
+      "contract": "float44 to1F0"
+    },
+    {
+      "address": "0087298a",
+      "native": "00ba9940",
+      "function": "00872790",
+      "contract": "float58 to1F4"
+    },
+    {
+      "address": "00872999",
+      "native": "00ba99c0",
+      "function": "00872790",
+      "contract": "float5C to1E0"
+    },
+    {
+      "address": "008729ab",
+      "native": "00ba99e0",
+      "function": "00872790",
+      "contract": "floatAC to1E4"
+    },
+    {
+      "address": "008729bd",
+      "native": "00ba9a00",
+      "function": "00872790",
+      "contract": "floatA8 to1E8"
+    },
+    {
+      "address": "008729cf",
+      "native": "00ba9a20",
+      "function": "00872790",
+      "contract": "floatB0 to1D8"
+    },
+    {
+      "address": "008729de",
+      "native": "00ba9a40",
+      "function": "00872790",
+      "contract": "float60 to1FC"
+    },
+    {
+      "address": "008729ed",
+      "native": "00ba9a70",
+      "function": "00872790",
+      "contract": "float74 to210"
+    },
+    {
+      "address": "00872a23",
+      "native": "00ba9a90",
+      "function": "00872790",
+      "contract": "sample0 then sample1 to184/188; RET8"
+    },
+    {
+      "address": "00872a90",
+      "native": "00b6db70",
+      "function": "00872790",
+      "contract": "first current node world refresh"
+    },
+    {
+      "address": "00872ab7",
+      "native": "00b6db70",
+      "function": "00872790",
+      "contract": "reloaded current node world refresh"
+    },
+    {
+      "address": "00872af8",
+      "native": "00baabb0",
+      "function": "00872790",
+      "contract": "actual tracer update six stack words RET18"
+    },
+    {
+      "address": "00872b82",
+      "native": "00baa510",
+      "function": "00872790",
+      "contract": "real live clock/fade predicate"
+    },
+    {
+      "address": "008728b2",
+      "native": "EnterCriticalSection via00CE2218",
+      "function": "00872790",
+      "contract": "actualF87684; increment depth after"
+    },
+    {
+      "address": "0087292f",
+      "native": "LeaveCriticalSection via00CE2210",
+      "function": "00872790",
+      "contract": "publish34/decrement depth before"
+    },
+    {
+      "address": "00872a05",
+      "native": "curve+vtable08",
+      "function": "00872790",
+      "contract": "captured curve; current slot; sample1 RET4"
+    },
+    {
+      "address": "00872a1a",
+      "native": "curve+vtable08",
+      "function": "00872790",
+      "contract": "same captured curve; current slot; sample0 RET4"
+    },
+    {
+      "address": "00872b61",
+      "native": "event+vtable30",
+      "function": "00872790",
+      "contract": "capture current slot; clear0C; invoke"
+    },
+    {
+      "address": "00872b75",
+      "native": "event+vtable30",
+      "function": "00872790",
+      "contract": "capture current slot; clear0C; invoke"
+    }
+  ],
+  "tail_steps": [
+    {
+      "address": "0087206e",
+      "native": "00ba9820",
+      "function": "00872060",
+      "contract": "clear1C then reload actual34",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c96176",
+      "native": "00bac2b0",
+      "function": "00c96170",
+      "contract": "state0 return actual raw pool slot; no outer unlock",
+      "kind": "tail_jump"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "C++ passed raw current age24 to BAABB0 while subject58 used a spill inside the argument list",
+      "is": "explicit ordered x87 spills for captured subject58, cached scaled speed, then current age24; reload current34 afterwards",
+      "evidence": "native872ABC/872ADC,872AE0/872AE4,872AE8/872AF1, then872AF5; strict compiled assembly FLD/FSTP pairs precede current34 MOV; internal SNaN7F812345 becomes7FC12345 with source unchanged"
+    },
+    {
+      "was": "single immediately preceding push implies one BA9A90 argument",
+      "is": "two float words: sample0, preserved sample1",
+      "evidence": "872A0C SUB ESP8; curve BA9E48 RET4; BA9AAC RET8"
+    },
+    {
+      "was": "BAC660 incomingECX7AC is allocator size",
+      "is": "BAC660 overwritesECX with0109049C; fixed pool7B0 stride and trailing ID7AC",
+      "evidence": "BAC660 MOV ECX109049C; BAC665 JMP BAC4A0; BABF70 reads slot7AC"
+    },
+    {
+      "was": "constructor failure unlocks outer F87684",
+      "is": "state0 returns raw slot only and preserves incrementedF8769C/heldF87684",
+      "evidence": "DC8190 -> DC8188 -> C96170 -> BAC2B0; no lock cleanup"
+    },
+    {
+      "was": "BAABB0 decompile exposes only five stack inputs",
+      "is": "six stack words; first matrix and sixth subject58 unread by current body",
+      "evidence": "872AD1..872AF8 pushes; BAB3E4 RET18; full EBP-argument listing"
+    }
+  ],
+  "required_real_bindings": [
+    "BAC660/BAC2B0 actual pool0109049C",
+    "BAD6F0 complete constructor/member unwind and existing canonical actual-owner/node/lifetime associations",
+    "captured curve current08, producer defaultBA9DA0",
+    "BAABB0 complete tracer update",
+    "BAA510 actual clock/fade predicate",
+    "NativeEffectJobEvents and PointEffectChildEvents current30"
+  ],
+  "missing_live_functions": [
+    {
+      "address": "00872020",
+      "end_inclusive": "0087205b",
+      "last_instruction_address": "0087205B",
+      "last_instruction": "RET",
+      "last_instruction_length": 1
+    },
+    {
+      "address": "00ba9da0",
+      "end_inclusive": "00ba9e4a",
+      "last_instruction_address": "00BA9E48",
+      "last_instruction": "RET4",
+      "last_instruction_length": 3,
+      "ownership": "consumed only; not reconstructed/leased"
+    }
+  ],
+  "validation": {
+    "strict_compile": "passed MSVC Win32 /std:c++17 /MD /O2 /W4 /WX /EHsc /fp:strict",
+    "repository_build": "scripts/build.ps1 passed existing targets; verify-seeds passed; reconstructed_math and native_math_differential passed; source registration integrator-owned",
+    "fixture": "local/type4_probe_aj.log: PASS13 original full-body872790 paths without tracer creation/update; actual3Ch equality inclNaN/direction/timers/current30; original completion/deactivation and11 setters compare actual7AC/link bytes and native RET cleanup",
+    "live_disk_hashes": "update1073/completion60/consumed curve171 equal; local/type4_body_evidence_aj.json",
+    "constructor_fault": "passed injected required-binding constructor throw: five current args, raw-slot return before propagation, actual04 unchanged, no34 publication, cleared1C/set20, actual OS section held/depth1; real allocator/constructor/member unwind not exercised and no successful tracer owner made",
+    "scalar_argument_spill": "passed focused internal production-helper check SNaN7F812345 ->7FC12345, source unchanged; compiled assembly confirms subject58/speed/current-age24 FLD/FSTP order then current34 reload; nonnull actual node/tracer update still unvalidated",
+    "unvalidated": [
+      "real tracer creation/update/predicate",
+      "nonnull node110 update path",
+      "original SEH",
+      "family dispatch integration",
+      "game behavior"
+    ]
+  },
+  "artifacts": [
+    "local/type4_probe_aj.cpp",
+    "local/type4_probe_aj.log",
+    "local/type4_body_evidence_aj.json",
+    "local/type4_build_aj.log",
+    "local/type4_definition_aj.txt",
+    "local/type4_tracer_update_aj.asm"
+  ],
+  "status": "complete_entry_behavior_required_real_tracer_bindings_strict_win32_focused_native_fixture_passed",
+  "integration_definitions": {
+    "events": [
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00872020",
+          "end_address": "0087205c"
+        },
+        "result": {
+          "success": true,
+          "start_address": "00872020",
+          "end_address": "0087205b",
+          "bytes_disassembled": 60,
+          "message": "Successfully disassembled 60 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00872020",
+          "disassemble_first": false
+        },
+        "result": {
+          "success": true,
+          "address": "00872020",
+          "function_name": "FUN_00872020",
+          "entry_point": "00872020",
+          "body_size": 60,
+          "message": "Function created successfully at 00872020"
+        }
+      },
+      {
+        "defined": "00872020",
+        "end": "0087205c",
+        "name": null,
+        "after": "Function: FUN_00872020 at 00872020\nSignature: undefined FUN_00872020(void)\nEntry: 00872020\nBody: 00872020 - 0087205b"
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00ba9da0",
+          "end_address": "00ba9e4b"
+        },
+        "result": {
+          "success": true,
+          "start_address": "00ba9da0",
+          "end_address": "00ba9e4a",
+          "bytes_disassembled": 171,
+          "message": "Successfully disassembled 171 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00ba9da0",
+          "disassemble_first": false
+        },
+        "result": {
+          "success": true,
+          "address": "00ba9da0",
+          "function_name": "FUN_00ba9da0",
+          "entry_point": "00ba9da0",
+          "body_size": 171,
+          "message": "Function created successfully at 00ba9da0"
+        }
+      },
+      {
+        "defined": "00ba9da0",
+        "end": "00ba9e4b",
+        "name": null,
+        "after": "Function: FUN_00ba9da0 at 00ba9da0\nSignature: undefined FUN_00ba9da0(void)\nEntry: 00ba9da0\nBody: 00ba9da0 - 00ba9e4a"
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00c6afa8",
+          "end_address": "00c6afb2"
+        },
+        "result": {
+          "success": true,
+          "start_address": "00c6afa8",
+          "end_address": "00c6afb1",
+          "bytes_disassembled": 10,
+          "message": "Successfully disassembled 10 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00c6afa8",
+          "disassemble_first": false
+        },
+        "result": {
+          "success": true,
+          "address": "00c6afa8",
+          "function_name": "FUN_00c6afa8",
+          "entry_point": "00c6afa8",
+          "body_size": 10,
+          "message": "Function created successfully at 00c6afa8"
+        }
+      },
+      {
+        "defined": "00c6afa8",
+        "end": "00c6afb2",
+        "name": null,
+        "after": "Function: FUN_00c6afa8 at 00c6afa8\nSignature: undefined FUN_00c6afa8(void)\nEntry: 00c6afa8\nBody: 00c6afa8 - 00c6afb1"
+      },
+      {
+        "endpoint": "save_program",
+        "body": {},
+        "result": {
+          "error": "Unable to lock due to active transaction"
+        }
+      },
+      {
+        "endpoint": "save_program",
+        "body": {},
+        "result": {
+          "success": true,
+          "program": "battlestationspacific.exe",
+          "message": "Program saved successfully"
+        }
+      }
+    ]
+  },
+  "integration_validation": {
+    "source_sha256": {
+      "src/registered_type4_effect_behavior.cpp": "0b7ec6b728ba236f225a257196a061cb7002e506366aed3f6cb185983c8ad46a"
+    },
+    "source_matches_reviewed_worker_after_newline_normalization": true,
+    "build": "local/particle-model-aj-final-build.log: strict MSVC Win32, all six AJ sources in bsp_core, both existing CTests passed",
+    "call_verification": "local/particle-model-aj-final-call-verification.log: all six reports passed68 rows; indirect IAT/current slots remain explicitly identified and are not validated as runtime bindings by this checker",
+    "game_validated": false,
+    "original_binary_replacement": false,
+    "additional_fixture": "local/type4-probe-aj-merged.log: one SNaN input added to existing setter loop/endpoints confirms reciprocal x87 quieting and raw MOVSS bit preservation; production source unchanged.",
+    "fixtures": [
+      "local/type4-probe-aj-merged.log"
+    ],
+    "combined_library_sha256": "2beea73a28fcf6396a88d7b1256d56c48b2ccd03b2e2433f539ffc4ae36252d4",
+    "fixture_library_note": "Focused fixture replay passed with this combined library; options failure instrumentation recompiles only the reviewed module allocation/free boundaries, and the type4 fixture includes its source to reach the internal spill helper."
+  },
+  "ghidra_annotation_audit": {
+    "record": "local/ghidra-annotations-20260912T044640Z.json",
+    "readback": "local/particle-model-aj-comments.json",
+    "project_saved": true,
+    "names_and_evidence_verified": true,
+    "prior_comments_preserved": true,
+    "changes": [
+      {
+        "address": "00872020",
+        "before": {
+          "address": "00872020",
+          "function_name": "FUN_00872020"
+        },
+        "after": {
+          "address": "00872020",
+          "name": "BSP_RegisteredType4Effect_Complete_Provisional",
+          "evidence": "Hypothesis, not a recovered symbol. Pending1C blocks; timer28 versus definition80 then nullable actual tracer34/current201 and exact inactive0C gate. AL result; no ownership change. Focused original-byte tests passed for completion/deactivation/setters and nontracer update branches. docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md. Parameters: ECX actual type4 event; AL completion result; RET. Complete live/disk SHA256 4e8a9bc22d1529e990b7c40f5c18065a7027c3d2a9d8973550d605b9fdb37573. New C++ interfaces; original exception/object/vtable ABI and gameplay unvalidated. reports/registered_type4_effect_behavior.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00872060",
+        "before": {
+          "address": "00872060",
+          "function_name": "FUN_00872060"
+        },
+        "after": {
+          "address": "00872060",
+          "name": "BSP_RegisteredType4Effect_Deactivate_Provisional",
+          "evidence": "Hypothesis, not a recovered symbol. Clear pending1C then current tracer34 conditional tailBA9820; current-slot dispatcher, not this entry, clears active0C. Focused original-byte tests passed for completion/deactivation/setters and nontracer update branches. docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md. Parameters: ECX actual owner; RET. Complete live/disk SHA256 bf219500ce4608254c147de5a7f3c1b6f59c0b5a30c77ebf6be8c346a09bda62. New C++ interfaces; original exception/object/vtable ABI and gameplay unvalidated. reports/registered_type4_effect_behavior.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00872790",
+        "before": {
+          "address": "00872790",
+          "function_name": "FUN_00872790"
+        },
+        "after": {
+          "address": "00872790",
+          "name": "BSP_RegisteredType4Effect_Update_Provisional",
+          "evidence": "Hypothesis, not a recovered symbol. Complete entry control/state behavior through required actual tracer pool/constructor/update/predicate and current curve08. Real outer CS/depth, native constructor failure returns raw slot without unlock. Refresh/reload actual subject node110 twice, two16-word worlds, ordered x87 argument spills subject58->scaled speed->current age24 then current tracer34. Nonnull real tracer update remains unvalidated. Focused original-byte tests passed for completion/deactivation/setters and nontracer update branches. docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md. Parameters: ECX event; stack(float delta, reference); RET8 at00872BBE. Complete live/disk SHA256 ca2b5f22cdb919dfbba0f9b18e8d742e17ae89aaedca23d56e65af88afd3ffa9. New C++ interfaces; original exception/object/vtable ABI and gameplay unvalidated. reports/registered_type4_effect_behavior.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00ba9820",
+        "before": {
+          "address": "00ba9820",
+          "function_name": "FUN_00ba9820"
+        },
+        "after": {
+          "address": "00ba9820",
+          "name": "BSP_RegisteredType4Tracer_Deactivate",
+          "evidence": "Hypothesis, not a recovered symbol. Actual7ACh generated-model-derived tracer: byte200=0,float7A8=1, reload nullable linked1B8 then linked24=0.1; no unlink/release. Focused original-byte tests passed for completion/deactivation/setters and nontracer update branches. docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md. Parameters: ECX actual owner; RET. Complete live/disk SHA256 9652a41f5bc56fcd523bf1fba0d5f014d3ff9e3a174441739f8899afa078da56. New C++ interfaces; original exception/object/vtable ABI and gameplay unvalidated. reports/registered_type4_effect_behavior.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00ba9900",
+        "before": {
+          "address": "00ba9900",
+          "function_name": "FUN_00ba9900"
+        },
+        "after": {
+          "address": "00ba9900",
+          "name": "BSP_RegisteredType4Tracer_SetReciprocal",
+          "evidence": "Hypothesis, not a recovered symbol. FLD stackword, FLD1, FDIVRP, FSTP actual1EC. Field meanings are descriptive hypotheses grounded in the tracer body and row consumer. Focused original-byte tests passed for completion/deactivation/setters and nontracer update branches. docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md. Parameters: ECX actual owner; one float stack word; RET4. Complete live/disk SHA256 772eef7c9f6d111577c25f71f48c95ccb440fd51b9210d8995fbc4acaf10469c. New C++ interfaces; original exception/object/vtable ABI and gameplay unvalidated. reports/registered_type4_effect_behavior.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00ba9920",
+        "before": {
+          "address": "00ba9920",
+          "function_name": "FUN_00ba9920"
+        },
+        "after": {
+          "address": "00ba9920",
+          "name": "BSP_RegisteredType4Tracer_SetTextureRate",
+          "evidence": "Hypothesis, not a recovered symbol. MOVSS raw float argument to1F0. Field meanings are descriptive hypotheses grounded in the tracer body and row consumer. Focused original-byte tests passed for completion/deactivation/setters and nontracer update branches. docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md. Root original-byte SNaN fixture confirms these MOVSS setters preserve input bits; reciprocalBA9900 alone quiets through x87. Parameters: ECX actual owner; one float stack word; RET4. Complete live/disk SHA256 8cac4bef7f977686501eb379453600ffc6ddbe88a842c0dc14aa7307c03e72dd. New C++ interfaces; native exception/object/vtable ABI and gameplay unvalidated. reports/registered_type4_effect_behavior.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00ba9940",
+        "before": {
+          "address": "00ba9940",
+          "function_name": "FUN_00ba9940"
+        },
+        "after": {
+          "address": "00ba9940",
+          "name": "BSP_RegisteredType4Tracer_SetAlphaScale",
+          "evidence": "Hypothesis, not a recovered symbol. MOVSS raw float argument to1F4. Field meanings are descriptive hypotheses grounded in the tracer body and row consumer. Focused original-byte tests passed for completion/deactivation/setters and nontracer update branches. docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md. Root original-byte SNaN fixture confirms these MOVSS setters preserve input bits; reciprocalBA9900 alone quiets through x87. Parameters: ECX actual owner; one float stack word; RET4. Complete live/disk SHA256 45b5a85761340e00fa89163265b039bf01bcdfcdb23b63587c3f6d8c1be11709. New C++ interfaces; native exception/object/vtable ABI and gameplay unvalidated. reports/registered_type4_effect_behavior.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00ba99c0",
+        "before": {
+          "address": "00ba99c0",
+          "function_name": "FUN_00ba99c0"
+        },
+        "after": {
+          "address": "00ba99c0",
+          "name": "BSP_RegisteredType4Tracer_SetWidthScale",
+          "evidence": "Hypothesis, not a recovered symbol. MOVSS raw float argument to1E0. Field meanings are descriptive hypotheses grounded in the tracer body and row consumer. Focused original-byte tests passed for completion/deactivation/setters and nontracer update branches. docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md. Root original-byte SNaN fixture confirms these MOVSS setters preserve input bits; reciprocalBA9900 alone quiets through x87. Parameters: ECX actual owner; one float stack word; RET4. Complete live/disk SHA256 07f1f88ade0a22d7a8ca8197702932ef6a08e4742129fcfdbc952fcd19b902c6. New C++ interfaces; native exception/object/vtable ABI and gameplay unvalidated. reports/registered_type4_effect_behavior.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00ba99e0",
+        "before": {
+          "address": "00ba99e0",
+          "function_name": "FUN_00ba99e0"
+        },
+        "after": {
+          "address": "00ba99e0",
+          "name": "BSP_RegisteredType4Tracer_SetWidthScaler",
+          "evidence": "Hypothesis, not a recovered symbol. MOVSS raw float argument to1E4. Field meanings are descriptive hypotheses grounded in the tracer body and row consumer. Focused original-byte tests passed for completion/deactivation/setters and nontracer update branches. docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md. Root original-byte SNaN fixture confirms these MOVSS setters preserve input bits; reciprocalBA9900 alone quiets through x87. Parameters: ECX actual owner; one float stack word; RET4. Complete live/disk SHA256 ad907abfb42c5b496446c62dae4361261e38c3c57c3b27a4cbdad79b9f90b56c. New C++ interfaces; native exception/object/vtable ABI and gameplay unvalidated. reports/registered_type4_effect_behavior.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00ba9a00",
+        "before": {
+          "address": "00ba9a00",
+          "function_name": "FUN_00ba9a00"
+        },
+        "after": {
+          "address": "00ba9a00",
+          "name": "BSP_RegisteredType4Tracer_SetWidthOffset",
+          "evidence": "Hypothesis, not a recovered symbol. MOVSS raw float argument to1E8. Field meanings are descriptive hypotheses grounded in the tracer body and row consumer. Focused original-byte tests passed for completion/deactivation/setters and nontracer update branches. docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md. Root original-byte SNaN fixture confirms these MOVSS setters preserve input bits; reciprocalBA9900 alone quiets through x87. Parameters: ECX actual owner; one float stack word; RET4. Complete live/disk SHA256 2d518620af9e42adb1a09b39a1da619b8843d28b1cba9407238595ac26c81ce4. New C++ interfaces; native exception/object/vtable ABI and gameplay unvalidated. reports/registered_type4_effect_behavior.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00ba9a20",
+        "before": {
+          "address": "00ba9a20",
+          "function_name": "FUN_00ba9a20"
+        },
+        "after": {
+          "address": "00ba9a20",
+          "name": "BSP_RegisteredType4Tracer_SetBoneLength",
+          "evidence": "Hypothesis, not a recovered symbol. MOVSS raw float argument to1D8. Field meanings are descriptive hypotheses grounded in the tracer body and row consumer. Focused original-byte tests passed for completion/deactivation/setters and nontracer update branches. docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md. Root original-byte SNaN fixture confirms these MOVSS setters preserve input bits; reciprocalBA9900 alone quiets through x87. Parameters: ECX actual owner; one float stack word; RET4. Complete live/disk SHA256 2066a765d40dafae3daa19852c7fa05d3ef17a4a674f014f065882543d6b3e2d. New C++ interfaces; native exception/object/vtable ABI and gameplay unvalidated. reports/registered_type4_effect_behavior.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00ba9a40",
+        "before": {
+          "address": "00ba9a40",
+          "function_name": "FUN_00ba9a40"
+        },
+        "after": {
+          "address": "00ba9a40",
+          "name": "BSP_RegisteredType4Tracer_SetHeightScale",
+          "evidence": "Hypothesis, not a recovered symbol. MOVSS raw float argument to1FC. Field meanings are descriptive hypotheses grounded in the tracer body and row consumer. Focused original-byte tests passed for completion/deactivation/setters and nontracer update branches. docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md. Root original-byte SNaN fixture confirms these MOVSS setters preserve input bits; reciprocalBA9900 alone quiets through x87. Parameters: ECX actual owner; one float stack word; RET4. Complete live/disk SHA256 8b1f46cc2ffedfc9f249696b6e49f1555f493c54d15ac8ceab6d5fdc1626d84a. New C++ interfaces; native exception/object/vtable ABI and gameplay unvalidated. reports/registered_type4_effect_behavior.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00ba9a60",
+        "before": {
+          "address": "00ba9a60",
+          "function_name": "FUN_00ba9a60"
+        },
+        "after": {
+          "address": "00ba9a60",
+          "name": "BSP_RegisteredType4Tracer_SetLocalSpace",
+          "evidence": "Hypothesis, not a recovered symbol. low byte of DWORD argument to202. Field meanings are descriptive hypotheses grounded in the tracer body and row consumer. Focused original-byte tests passed for completion/deactivation/setters and nontracer update branches. docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md. Parameters: ECX tracer; low byte of stack DWORD; RET4. Complete live/disk SHA256 d2bde254c8aa966104015ea3832bb0a38cbf36db95429c7bb386b852deb4820c. New C++ interfaces; original exception/object/vtable ABI and gameplay unvalidated. reports/registered_type4_effect_behavior.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00ba9a70",
+        "before": {
+          "address": "00ba9a70",
+          "function_name": "FUN_00ba9a70"
+        },
+        "after": {
+          "address": "00ba9a70",
+          "name": "BSP_RegisteredType4Tracer_SetFadeIn",
+          "evidence": "Hypothesis, not a recovered symbol. MOVSS raw float argument to210. Field meanings are descriptive hypotheses grounded in the tracer body and row consumer. Focused original-byte tests passed for completion/deactivation/setters and nontracer update branches. docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md. Root original-byte SNaN fixture confirms these MOVSS setters preserve input bits; reciprocalBA9900 alone quiets through x87. Parameters: ECX actual owner; one float stack word; RET4. Complete live/disk SHA256 61594300898508a2078a12f702f4c21eaf45ea1c158985a621f9a5365469f8c6. New C++ interfaces; native exception/object/vtable ABI and gameplay unvalidated. reports/registered_type4_effect_behavior.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00ba9a90",
+        "before": {
+          "address": "00ba9a90",
+          "function_name": "FUN_00ba9a90"
+        },
+        "after": {
+          "address": "00ba9a90",
+          "name": "BSP_RegisteredType4Tracer_SetWidthEndpoints",
+          "evidence": "Hypothesis, not a recovered symbol. ordered MOVSS raw float arguments to184 then188. Field meanings are descriptive hypotheses grounded in the tracer body and row consumer. Focused original-byte tests passed for completion/deactivation/setters and nontracer update branches. docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md. Root original-byte SNaN fixture confirms these MOVSS setters preserve input bits; reciprocalBA9900 alone quiets through x87. Parameters: ECX tracer; two float stack words; RET8 at00BA9AAC. Complete live/disk SHA256 2b4cee04a1209695724a15e09e2bfcf001b2d8a46692fca0418de37ce4a97475. New C++ interfaces; native exception/object/vtable ABI and gameplay unvalidated. reports/registered_type4_effect_behavior.json."
+        },
+        "status": "applied"
+      }
+    ]
+  },
+  "ghidra_signature_audit": {
+    "record": "local/particle-model-signatures-aj.json",
+    "project_saved": true,
+    "signatures_verified": true,
+    "before": {
+      "00872020": "00872020 BSP_RegisteredType4Effect_Complete_Provisional  undefined BSP_RegisteredType4Effect_Complete_Provisional(void)  body 00872020 - 0087205b\n",
+      "00872060": "00872060 BSP_RegisteredType4Effect_Deactivate_Provisional  undefined BSP_RegisteredType4Effect_Deactivate_Provisional(void)  body 00872060 - 00872073\n",
+      "00872790": "00872790 BSP_RegisteredType4Effect_Update_Provisional  undefined BSP_RegisteredType4Effect_Update_Provisional(void)  body 00872790 - 00872bc0\n",
+      "00ba9820": "00ba9820 BSP_RegisteredType4Tracer_Deactivate  undefined BSP_RegisteredType4Tracer_Deactivate(void)  body 00ba9820 - 00ba984e\n",
+      "00ba9900": "00ba9900 BSP_RegisteredType4Tracer_SetReciprocal  undefined BSP_RegisteredType4Tracer_SetReciprocal(void)  body 00ba9900 - 00ba9910\n",
+      "00ba9920": "00ba9920 BSP_RegisteredType4Tracer_SetTextureRate  undefined BSP_RegisteredType4Tracer_SetTextureRate(void)  body 00ba9920 - 00ba9930\n",
+      "00ba9940": "00ba9940 BSP_RegisteredType4Tracer_SetAlphaScale  undefined BSP_RegisteredType4Tracer_SetAlphaScale(void)  body 00ba9940 - 00ba9950\n",
+      "00ba99c0": "00ba99c0 BSP_RegisteredType4Tracer_SetWidthScale  undefined BSP_RegisteredType4Tracer_SetWidthScale(void)  body 00ba99c0 - 00ba99d0\n",
+      "00ba99e0": "00ba99e0 BSP_RegisteredType4Tracer_SetWidthScaler  undefined BSP_RegisteredType4Tracer_SetWidthScaler(void)  body 00ba99e0 - 00ba99f0\n",
+      "00ba9a00": "00ba9a00 BSP_RegisteredType4Tracer_SetWidthOffset  undefined BSP_RegisteredType4Tracer_SetWidthOffset(void)  body 00ba9a00 - 00ba9a10\n",
+      "00ba9a20": "00ba9a20 BSP_RegisteredType4Tracer_SetBoneLength  undefined BSP_RegisteredType4Tracer_SetBoneLength(void)  body 00ba9a20 - 00ba9a30\n",
+      "00ba9a40": "00ba9a40 BSP_RegisteredType4Tracer_SetHeightScale  undefined BSP_RegisteredType4Tracer_SetHeightScale(void)  body 00ba9a40 - 00ba9a50\n",
+      "00ba9a70": "00ba9a70 BSP_RegisteredType4Tracer_SetFadeIn  undefined BSP_RegisteredType4Tracer_SetFadeIn(void)  body 00ba9a70 - 00ba9a80\n",
+      "00ba9a60": "00ba9a60 BSP_RegisteredType4Tracer_SetLocalSpace  undefined BSP_RegisteredType4Tracer_SetLocalSpace(void)  body 00ba9a60 - 00ba9a6c\n",
+      "00ba9a90": "00ba9a90 BSP_RegisteredType4Tracer_SetWidthEndpoints  undefined BSP_RegisteredType4Tracer_SetWidthEndpoints(void)  body 00ba9a90 - 00ba9aae\n"
+    },
+    "changes": [
+      {
+        "address": "00872020",
+        "prototype": "byte __thiscall BSP_RegisteredType4Effect_Complete_Provisional(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00872020 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00872060",
+        "prototype": "void __thiscall BSP_RegisteredType4Effect_Deactivate_Provisional(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00872060 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00872790",
+        "prototype": "void __thiscall BSP_RegisteredType4Effect_Update_Provisional(float delta, void * reference)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00872790 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00ba9820",
+        "prototype": "void __thiscall BSP_RegisteredType4Tracer_Deactivate(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00ba9820 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00ba9900",
+        "prototype": "void __thiscall BSP_RegisteredType4Tracer_SetReciprocal(float value)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00ba9900 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00ba9920",
+        "prototype": "void __thiscall BSP_RegisteredType4Tracer_SetTextureRate(float value)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00ba9920 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00ba9940",
+        "prototype": "void __thiscall BSP_RegisteredType4Tracer_SetAlphaScale(float value)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00ba9940 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00ba99c0",
+        "prototype": "void __thiscall BSP_RegisteredType4Tracer_SetWidthScale(float value)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00ba99c0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00ba99e0",
+        "prototype": "void __thiscall BSP_RegisteredType4Tracer_SetWidthScaler(float value)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00ba99e0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00ba9a00",
+        "prototype": "void __thiscall BSP_RegisteredType4Tracer_SetWidthOffset(float value)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00ba9a00 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00ba9a20",
+        "prototype": "void __thiscall BSP_RegisteredType4Tracer_SetBoneLength(float value)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00ba9a20 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00ba9a40",
+        "prototype": "void __thiscall BSP_RegisteredType4Tracer_SetHeightScale(float value)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00ba9a40 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00ba9a70",
+        "prototype": "void __thiscall BSP_RegisteredType4Tracer_SetFadeIn(float value)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00ba9a70 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00ba9a60",
+        "prototype": "void __thiscall BSP_RegisteredType4Tracer_SetLocalSpace(uint low_byte_argument)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00ba9a60 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00ba9a90",
+        "prototype": "void __thiscall BSP_RegisteredType4Tracer_SetWidthEndpoints(float at_zero, float at_one)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00ba9a90 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ],
+    "parameter_note": "ECX this is supplied implicitly by Ghidra; only native stack arguments are written. AL booleans, x87 ST0 curve return, RET4 low-byte stack DWORD and RET8 ordered endpoint arguments retained. AF6B60 discards incoming ECX; compiler EH descriptors remain opaque and have name/evidence only."
+  }
+}

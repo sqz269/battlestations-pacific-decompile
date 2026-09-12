@@ -1,0 +1,531 @@
+{
+  "packet": "cc2_projectile_kinds",
+  "owner": "agent/cc2-projectile-kinds",
+  "doc": "docs/WEAPON_CLASS_DESCRIPTOR.md, docs/PROJECTILE_KINDS.md",
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "summary": "The projectile (bullet) class descriptor, its registry, its Lua field reader chain and the thirteen projectile kinds. The registry 006EA910 maps the Lua Type key to one of thirteen constructors, each of which stores its own sub-type at +8h; that settles the sub-type enum the gun and the impact path switch on. The base reader 006E8770 has 32 keys, cross-checked against the installed arcade bulletclasses.lua. The family splits into two record layouts: MBullet and MFlakBullet keep the shot interface at +170h, and the eight classes under MBomb keep it at +310h. The factory 006E8430 was re-read from the listing for its seven arguments; two of them are never read and two of them were attributed to the wrong record fields in docs/PROJECTILE_IMPACT.md.",
+  "routines": [
+    {
+      "address": "006ea910",
+      "native": "006ea910",
+      "name": "BSP_BulletClass_GetOrCreate",
+      "body": "006ea910-006eae7d",
+      "abi": "__fastcall(int* out, int bulletId), SEH frame",
+      "coverage": "complete",
+      "evidence": "Cache singleton 006E9B70 with growth through 006E86F0; Lua globals -> Bullets[id] -> the entry's Type string (00CE4780). Thirteen BSP_NativeString_EqualsCStringInsensitive tests at 006EAAE6..006EACE0 in the order Bullet, Artillery, Kamikaze, Bomb, Torpedo, DepthCharge, DummyTarget, DummyKamikazePlane, DummySubmarine, Paratrooper, Flak, Rocket, WaterMine. Allocation sizes are the ECX constants before the 00470B80 calls: 0D8h bomb (006EAB38), 0FCh torpedo (006EAB68), 0F8h depth charge (006EAB98), 0E4h dummy target (006EABC8), 0E0h dummy kamikaze plane (006EABF8) and dummy submarine (006EAC28), 100h paratrooper (006EAC58), 0DCh flak (006EAC88), 0E8h rocket (006EACB1), 0ECh water mine (006EACDE); Bullet, Artillery and Kamikaze use operator_new(0D4h) at 006EAA62, 006EAAA4 and 006EAAF6. Step 6 calls class->vtable[18h] with the Lua entry, then class[+0Ch] = id."
+    },
+    {
+      "address": "006e8320",
+      "native": "006e8320",
+      "name": "BSP_BulletClass_Construct",
+      "body": "006e8320-006e83xx",
+      "abi": "__fastcall(void* descriptor)",
+      "coverage": "complete",
+      "evidence": "Writes 00CEB130 then 00CFA138, so 00CFA138 is the MBullet vtable and 00CEB130 its ref-counted base. Non-zero defaults: +4h = 1 (ref count), +8h = 1 (sub-type), +54h = 00D7A248, and +5Ch, +88h, +8Ch, +98h, +9Ch = 00D7A24C. 00D7A24C is 1.0f: 006E8493-006E84C9 reuses the same dword for the four diagonal entries of the scale-1 matrix handed to 00923870."
+    },
+    {
+      "address": "006e8770",
+      "native": "006e8770",
+      "name": "BSP_BulletClass_ReadLuaFields",
+      "body": "006e8770-006e8dxx",
+      "abi": "__fastcall(void* descriptor, void* luaEntry), SEH frame",
+      "coverage": "complete for the key table; the storage-pool release blocks between keys are library code and are not modelled",
+      "evidence": "Thirty-two keys with their offsets and defaults are tabulated in docs/WEAPON_CLASS_DESCRIPTOR.md. The three fallback chains are at 006E8A0C (ExplLightArmorEfx -> ExplArmorEfx), 006E8A9B (ExplUnderWaterArmorEfx -> ExplArmorEfx) and its successor (ExplDeepUnderWaterArmorEfx -> ExplUnderWaterArmorEfx). Blast is a sub-table whose presence sets the byte at +6Ch; Decals absent stores -1 in +CCh and +D0h. Every key name matches a key in the installed scripts/datatables/classtables/arcade/bulletclasses.lua."
+    },
+    {
+      "address": "006e1be0",
+      "native": "006e1be0",
+      "name": "BSP_BombClass_ReadLuaFields",
+      "body": "006e1be0-006e1cxx",
+      "abi": "__thiscall(void* descriptor, void* luaEntry)",
+      "coverage": "complete",
+      "evidence": "Calls the base reader 006E8770 at 006E1BF9, then reads TimeOutEfx into +D4h. It is the parent of every reader below MBomb."
+    },
+    {
+      "address": "008566b0",
+      "native": "008566b0",
+      "name": "BSP_TorpedoClass_ReadLuaFields",
+      "body": "008566b0-008567xx",
+      "abi": "__thiscall(void* descriptor, void* luaEntry)",
+      "coverage": "complete",
+      "evidence": "Calls 006E1BE0 at 008566D7, then MaxWaterHitVel +DCh, MaxFall +E0h, WaterTravelSpeed +E4h, HeadingTurn +E8h, WaterSplashEfx +D8h, HomingHorzTurnSpeed +F0h, HomingVertTurnSpeed +F4h. All seven fit the 0FCh descriptor size."
+    },
+    {
+      "address": "006fd400",
+      "native": "006fd400",
+      "name": "BSP_DepthChargeClass_ReadLuaFields",
+      "body": "006fd400-006fd5xx",
+      "abi": "__thiscall(void* descriptor, void* luaEntry)",
+      "coverage": "partial: the computed +F0h (a LIBCRT_unmatched_00BF7030 result) is unread",
+      "evidence": "Calls 006E1BE0 at 006FD41B, then MaxWaterHitVel +ECh, MaxFall +F4h, V0RandomFactor +D8h, DiveSpeed +DCh, DiveMinDepth +E0h and DiveMaxDepth +E4h (both defaulting to 00D7A248), WaterSplashEfx +E8h."
+    },
+    {
+      "address": "00809cb0",
+      "native": "00809cb0",
+      "name": "BSP_RocketClass_ReadLuaFields",
+      "body": "00809cb0-00809dxx",
+      "abi": "__thiscall(void* descriptor, void* luaEntry)",
+      "coverage": "complete",
+      "evidence": "Calls 006E1BE0 at 00809CC6, then VMax (DAT_00D09058) +D8h, Acceleration +DCh, IgnitionDelay +E0h, AntiAir (boolean) +E4h."
+    },
+    {
+      "address": "0070c030",
+      "native": "0070c030",
+      "name": "BSP_FlakBulletClass_ReadLuaFields",
+      "body": "0070c030-0070c0xx",
+      "abi": "__thiscall(void* descriptor, void* luaEntry)",
+      "coverage": "complete",
+      "evidence": "Calls the base reader 006E8770 at 0070C046, not the bomb reader, then clears +D4h and reads the integer MinRange into +58h as a float. Nothing writes the flak fuse time at +D8h that 0070C3E2 reads, and 00470B80 zeroes the allocation."
+    },
+    {
+      "address": "006e8430",
+      "native": "006e8430",
+      "name": "BSP_ProjectileClass_CreateProjectile",
+      "body": "006e8430-006e86e4",
+      "abi": "__thiscall(classDesc, arg1, ownerId, float* pos, float* dir, char spawnFlag, char nearCamera, int arg7), RET 1Ch at 006E86E2, SEH frame",
+      "coverage": "complete for the argument handling, record writes, launch velocity and water-entry branch; the stack matrix build and the child-node walk are host contracts",
+      "evidence": "Frame: PUSH -1 / PUSH 0xc82978 / PUSH EAX, SUB ESP,0x50, PUSH EBX/ESI/EDI, so the return address is at [ESP+68h] and argument n at [ESP+68h+4n]. The only argument slots the body reads are [ESP+70h] at 006E8516 (-> +54h), [ESP+74h] at 006E851D (position), [ESP+78h] at 006E8523 (direction), [ESP+7Ch] at 006E86A0 (-> +278h at 006E86B8) and [ESP+80h] at 006E86A6 (-> +1CCh at 006E86BE). [ESP+6Ch] and [ESP+84h] are never read. The branch at 006E86C4 tests AL, which came from [ESP+7Ch]. The launch bias test at 006E85B4 is the four-way compare against 4, 5, 6 and 7."
+    },
+    {
+      "address": "0070cc30",
+      "native": "0070cc30",
+      "name": "BSP_FlakBulletClass_CreateProjectile",
+      "body": "0070cc30-0070cexx",
+      "abi": "__thiscall, the same seven stack arguments as 006E8430",
+      "coverage": "partial: read for the allocation size, the entity constructor and the absence of the launch bias; the tail after 0085DC80 is unread",
+      "evidence": "operator_new(298h) and memset at 0070CC7x, entity constructor 0070CAE0, the same +174h / +54h / position / +1D0h / +1DCh writes as 006E8430, and a velocity write at 0070CC9x with no sub-type compare because 10h is outside 4..7."
+    },
+    {
+      "address": "0070cae0",
+      "native": "0070cae0",
+      "name": "BSP_FlakProjectile_Construct",
+      "body": "0070cae0-0070cbxx",
+      "abi": "__fastcall(void* storage)",
+      "coverage": "complete",
+      "evidence": "Calls BSP_ProjectileTickableEntity_Construct, then writes 00CFD5D0 at +0h, 00CFD5B8 at +10h, 00CFD5B0 at +24h, 00CFD570 at +170h (the shot interface) and 00CFD554 at +244h (the tick element), and 32h at +C4h, the class id."
+    },
+    {
+      "address": "006e6410",
+      "native": "006e6410",
+      "name": "BSP_ProjectileShot_SetAirMode",
+      "body": "006e6410-006e644x",
+      "abi": "__fastcall(void* shotInterface)",
+      "coverage": "complete",
+      "evidence": "If the byte at +44h is set, clear it, resume the effect at +24h through 00866B70 and stop the children of the effect at +28h. It is slot 24h of the shot interface vtable 00CF9D90 (the dword at 00CF9DB4)."
+    },
+    {
+      "address": "006e6450",
+      "native": "006e6450",
+      "name": "BSP_ProjectileShot_SetWaterMode",
+      "body": "006e6450-006e648x",
+      "abi": "__fastcall(void* shotInterface)",
+      "coverage": "complete",
+      "evidence": "The mirror of 006E6410: if +44h is clear, set it, stop the children of +24h and resume +28h. It is slot 28h of 00CF9D90 (the dword at 00CF9DB8)."
+    },
+    {
+      "address": "008a2710",
+      "native": "008a2710",
+      "name": "BSP_LuaBinding_SetTorpedoSwimDepth",
+      "body": "008a2710-008a28xx",
+      "abi": "__fastcall(lua_State*) Lua binding, SEH frame",
+      "coverage": "complete",
+      "evidence": "Argument 0 through BSP_LuaTable_GetPtrField gives the entity; argument 1 through BSP_LuaObject_GetNumber gives the depth; the write is *(float*)(entity+47Ch). 47Ch is inside the 51Ch torpedo record and outside the 468h bomb record."
+    },
+    {
+      "address": "0089bb70",
+      "native": "0089bb70",
+      "name": "BSP_LuaBinding_KillTorpedoesFromUnit",
+      "body": "0089bb70-0089bcxx",
+      "abi": "__fastcall(lua_State*) Lua binding, SEH frame",
+      "coverage": "complete",
+      "evidence": "Walks the world entity registry [00E188A8+19CCh]: head *[registry+8h], next link at node+44h. For each node it calls entity->vtable[5Ch](2Bh) and compares entity[+3BCh] with the handle from argument 0 before BSP_MissionEntity_Kill(2). The same registry is the one 006E8430 registers into at 006E8511."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "006e8452",
+      "native": "00bf55be",
+      "function": "006e8430",
+      "method": "allocate_zeroed",
+      "this": "none",
+      "args": "PUSH 284h at 006E844B; the memset follows at 006E8462",
+      "gate": "none; a null result is tolerated"
+    },
+    {
+      "address": "006e8478",
+      "native": "006e7b00",
+      "function": "006e8430",
+      "method": "construct_tickable_entity",
+      "this": "the new storage in ECX",
+      "args": "none",
+      "gate": "the allocation succeeded"
+    },
+    {
+      "address": "006e8511",
+      "native": "00923870",
+      "function": "006e8430",
+      "method": "register_in_world",
+      "this": "the projectile in ECX",
+      "args": "PUSH EAX = &matrix, PUSH EDX = [00E188A8+19CCh], PUSH EBX = 0",
+      "gate": "none"
+    },
+    {
+      "address": "006ea942",
+      "native": "006e9b70",
+      "function": "006ea910",
+      "method": "class_cache_singleton",
+      "this": "none",
+      "args": "none",
+      "gate": "none"
+    },
+    {
+      "address": "006eacfd",
+      "native": "vtable[18h]",
+      "function": "006ea910",
+      "method": "read_lua_fields",
+      "this": "the new descriptor in ECX",
+      "args": "the Lua entry",
+      "gate": "a Type string matched one of the thirteen names"
+    },
+    {
+      "address": "006e1c02",
+      "native": "006e8770",
+      "function": "006e1be0",
+      "method": "load_weapon_class_base_fields",
+      "this": "the descriptor in ECX",
+      "args": "the Lua entry",
+      "gate": "none"
+    },
+    {
+      "address": "008566d3",
+      "native": "006e1be0",
+      "function": "008566b0",
+      "method": "load_bomb_class_fields",
+      "this": "the descriptor in ECX",
+      "args": "the Lua entry",
+      "gate": "none"
+    },
+    {
+      "address": "006fd422",
+      "native": "006e1be0",
+      "function": "006fd400",
+      "method": "load_bomb_class_fields",
+      "this": "the descriptor in ECX",
+      "args": "the Lua entry",
+      "gate": "none"
+    },
+    {
+      "address": "00809cd2",
+      "native": "006e1be0",
+      "function": "00809cb0",
+      "method": "load_bomb_class_fields",
+      "this": "the descriptor in ECX",
+      "args": "the Lua entry",
+      "gate": "none"
+    },
+    {
+      "address": "0070c051",
+      "native": "006e8770",
+      "function": "0070c030",
+      "method": "load_weapon_class_base_fields",
+      "this": "the descriptor in ECX",
+      "args": "the Lua entry",
+      "gate": "none"
+    },
+    {
+      "address": "006eaa88",
+      "native": "006e8320",
+      "function": "006ea910",
+      "method": "construct_bullet_class",
+      "this": "the 0D4h allocation in ECX",
+      "args": "none",
+      "gate": "Type is \"Bullet\""
+    },
+    {
+      "address": "006eab1c",
+      "native": "006ea200",
+      "function": "006ea910",
+      "method": "construct_kamikaze_class",
+      "this": "the 0D4h allocation in ECX",
+      "args": "none",
+      "gate": "Type is \"Kamikaze\""
+    },
+    {
+      "address": "006eab4c",
+      "native": "006ea260",
+      "function": "006ea910",
+      "method": "construct_bomb_class",
+      "this": "the 0D8h allocation in ECX",
+      "args": "none",
+      "gate": "Type is \"Bomb\""
+    },
+    {
+      "address": "006eab7c",
+      "native": "006ea4f0",
+      "function": "006ea910",
+      "method": "construct_torpedo_class",
+      "this": "the 0FCh allocation in ECX",
+      "args": "none",
+      "gate": "Type is \"Torpedo\""
+    },
+    {
+      "address": "006eabac",
+      "native": "006ea3a0",
+      "function": "006ea910",
+      "method": "construct_depth_charge_class",
+      "this": "the 0F8h allocation in ECX",
+      "args": "none",
+      "gate": "Type is \"DepthCharge\""
+    },
+    {
+      "address": "006eabdc",
+      "native": "006ea6b0",
+      "function": "006ea910",
+      "method": "construct_dummy_target_class",
+      "this": "the 0E4h allocation in ECX",
+      "args": "none",
+      "gate": "Type is \"DummyTarget\""
+    },
+    {
+      "address": "006eac0c",
+      "native": "006ea7f0",
+      "function": "006ea910",
+      "method": "construct_dummy_kamikaze_plane_class",
+      "this": "the 0E0h allocation in ECX",
+      "args": "none",
+      "gate": "Type is \"DummyKamikazePlane\""
+    },
+    {
+      "address": "006eac3c",
+      "native": "006ea870",
+      "function": "006ea910",
+      "method": "construct_dummy_submarine_class",
+      "this": "the 0E0h allocation in ECX",
+      "args": "none",
+      "gate": "Type is \"DummySubmarine\""
+    },
+    {
+      "address": "006eac6c",
+      "native": "006ea720",
+      "function": "006ea910",
+      "method": "construct_paratrooper_class",
+      "this": "the 100h allocation in ECX",
+      "args": "none",
+      "gate": "Type is \"Paratrooper\""
+    },
+    {
+      "address": "006eac98",
+      "native": "006ea470",
+      "function": "006ea910",
+      "method": "construct_flak_class",
+      "this": "the 0DCh allocation in ECX",
+      "args": "none",
+      "gate": "Type is \"Flak\""
+    },
+    {
+      "address": "006eacc1",
+      "native": "006ea330",
+      "function": "006ea910",
+      "method": "construct_rocket_class",
+      "this": "the 0E8h allocation in ECX",
+      "args": "none",
+      "gate": "Type is \"Rocket\""
+    },
+    {
+      "address": "006eacee",
+      "native": "006ea5e0",
+      "function": "006ea910",
+      "method": "construct_water_mine_class",
+      "this": "the 0ECh allocation in ECX",
+      "args": "none",
+      "gate": "Type is \"WaterMine\""
+    },
+    {
+      "address": "0070cae3",
+      "native": "006e7b00",
+      "function": "0070cae0",
+      "method": "construct_tickable_entity",
+      "this": "the flak storage in ECX",
+      "args": "none",
+      "gate": "none"
+    },
+    {
+      "address": "0070cc7d",
+      "native": "0070cae0",
+      "function": "0070cc30",
+      "method": "construct_tickable_entity",
+      "this": "the 298h allocation in ECX",
+      "args": "none",
+      "gate": "the allocation succeeded"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00cfa138",
+      "body": "00cfa138-00cfa15b",
+      "name": "MBullet vtable",
+      "abi": "data, nine dwords",
+      "evidence": "Read from .rdata bytes: 00BD30E0 scalar deleting destructor, 006EA8F0, 006E8400, 006E8410, 006E9890, 006E97F0, 006E8770 (slot 18h, the reader), 006E8420, 006E8430 (slot 20h, the create). The string MBullet follows at 00CFA15C. ghidra xrefs sees only the two writers 006E8333 and 006E9E9F, so the slots had to come from the bytes."
+    },
+    {
+      "address": "00cfa440",
+      "body": "00cfa440-00cfa463",
+      "name": "MArtilleryBullet vtable",
+      "abi": "data, nine dwords",
+      "evidence": "00BD30E0, 006EAE80, 006E8400, 006EA1E0, 006E9890, 006E97F0, 006E8770, 006E8420, 006E8430; the name string follows at 00CFA464. Slots 18h and 20h are the base class's, so artillery and bullet share both the reader and the create."
+    },
+    {
+      "address": "00cfa478",
+      "body": "00cfa478-00cfa49f",
+      "name": "MKamikazePlane vtable",
+      "abi": "data, ten dwords",
+      "evidence": "00BD30E0, 006EAEA0, 006E8400, 006EA220, 006E9890, 006E97F0, 006E8770, 006E8420, 006EA230 (create), 006EA240; MKamikazePlane follows at 00CFA4A0."
+    },
+    {
+      "address": "00cfa4b0",
+      "body": "00cfa4b0-00cfa4d3",
+      "name": "MBomb vtable",
+      "abi": "data, nine dwords",
+      "evidence": "00BD30E0, 006EAEC0, 006EA2A0, 006EA290, 006E9890, 006E97F0, 006E1BE0 (reader), 006E8420, 006E2C00 (create); MBomb follows at 00CFA4D4."
+    },
+    {
+      "address": "00cfa4dc",
+      "body": "00cfa4dc-00cfa4ff",
+      "name": "MRocket vtable",
+      "abi": "data, nine dwords",
+      "evidence": "00BD30E0, 006EAEE0, 006EA370, 006EA360, 006E9890, 006E97F0, 00809CB0 (reader), 006E8420, 0080ADE0 (create); MRocket follows at 00CFA500."
+    },
+    {
+      "address": "00cfa508",
+      "body": "00cfa508-00cfa52b",
+      "name": "MDepthCharge vtable",
+      "abi": "data, nine dwords",
+      "evidence": "00BD30E0, 006EAF00, 006EA3E0, 006EA3D0, 006E9890, 006E97F0, 006FD400 (reader), 006E8420, 006FD210 (create); MDepthCharge follows at 00CFA52C."
+    },
+    {
+      "address": "00cfa53c",
+      "body": "00cfa53c-00cfa55f",
+      "name": "MFlakBullet vtable",
+      "abi": "data, nine dwords",
+      "evidence": "00BD30E0, 006EA4C0, 006E8400, 006EA4A0, 0070C0B0, 006E97F0, 0070C030 (reader), 006E8420, 0070CC30 (create); MFlakBullet follows at 00CFA560."
+    },
+    {
+      "address": "00cfa56c",
+      "body": "00cfa56c-00cfa58f",
+      "name": "MTorpedo vtable",
+      "abi": "data, nine dwords",
+      "evidence": "00BD30E0, 006EAF20, 006EA550, 006EA520, 00855A90, 006E97F0, 008566B0 (reader), 006EA530, 00856420 (create); MTorpedo follows at 00CFA590."
+    },
+    {
+      "address": "00cfa59c",
+      "body": "00cfa59c-00cfa5bf",
+      "name": "MWaterMine vtable",
+      "abi": "data, nine dwords",
+      "evidence": "00BD30E0, 006EAF40, 006EA620, 006EA610, 006E9890, 006E97F0, 0085F500 (reader), 006E8420, 0085F310 (create); MWaterMine follows at 00CFA5C0."
+    },
+    {
+      "address": "00cfa5cc",
+      "body": "00cfa5cc-00cfa5f3",
+      "name": "MDummyTarget vtable",
+      "abi": "data, ten dwords",
+      "evidence": "00BD30E0, 006EAF60, 006EA6F0, 006EA6E0, 006E9890, 00700150, 00701060 (reader), 006E8420, 00700BE0 (create), 00700DD0; MDummyTarget follows at 00CFA5F4."
+    },
+    {
+      "address": "00cfa604",
+      "body": "00cfa604-00cfa62b",
+      "name": "MParatrooper vtable",
+      "abi": "data, ten dwords",
+      "evidence": "00BD30E0, 006EAF80, 006EA760, 006EA750, 006E9890, 006E97F0, 007AC780 (reader), 006E8420, 007AC2C0 (create), 007AC4C0; MParatrooper follows at 00CFA62C."
+    },
+    {
+      "address": "00cfa63c",
+      "body": "00cfa63c-00cfa663",
+      "name": "MDummyKamikazePlane vtable",
+      "abi": "data, ten dwords",
+      "evidence": "00BD30E0, 006EAFA0, 006EA830, 006EA820, 006E9890, 006FE730, 006FF170 (reader), 006E8420, 006FEF10 (create), 006FF100; MDummyKamikazePlane follows at 00CFA664."
+    },
+    {
+      "address": "00cfa678",
+      "body": "00cfa678-00cfa6a3",
+      "name": "MDummySubmarine vtable",
+      "abi": "data, eleven dwords",
+      "evidence": "00BD30E0, 006EAFC0, 006EA8B0, 006EA8A0, 006E9890, 006E97F0, 00700050 (reader), 006E8420, 006FFDF0 (create), 006FFFE0, 006FF6A0; MDummySubmarine follows at 00CFA6A4."
+    },
+    {
+      "address": "00cf9d78",
+      "body": "00cf9d78-00cf9d8b",
+      "name": "MBullet tick element vtable",
+      "abi": "data",
+      "evidence": "006E7BF0, 006E6750 (place pose), 006E6490 (tick advance), 006E7D50. It is the subobject at projectile+244h that 006E7B00 writes, and the two middle slots are the routines docs/PROJECTILE_IMPACT.md already names."
+    },
+    {
+      "address": "00cfd554",
+      "body": "00cfd554-00cfd567",
+      "name": "MFlakBullet tick element vtable",
+      "abi": "data",
+      "evidence": "0070CB70, 006E6750, 0070C370 (the flak tick), 006E7D50. Only the tick differs from MBullet's."
+    },
+    {
+      "address": "00cf93f0",
+      "body": "00cf93f0-00cf9403",
+      "name": "MBomb tick element vtable",
+      "abi": "data",
+      "evidence": "006E2750, 006E1060 (place pose), 006E1300 (tick advance), 006E1010. The depth charge (00CFB9F8) and the rocket (00D09060) repeat the same three tail slots and change only the first; the torpedo (00D0C35C) also changes the fourth to 00855B00."
+    },
+    {
+      "address": "00cf9d90",
+      "body": "00cf9d90-00cf9dcf",
+      "name": "MBullet shot interface vtable",
+      "abi": "data, sixteen dwords",
+      "evidence": "Slot 20h = 006E2550, slot 24h = 006E6410 (air mode), slot 28h = 006E6450 (water mode), slot 34h = 006E2590, slot 3Ch = 006E6C20. These are the slots 0072BF10 and 006E8430 call on the value the create returns."
+    }
+  ],
+  "corrections": [
+    {
+      "subject": "006e8430 arguments 5 and 6",
+      "was": "+1CCh is the gun's spawn flag and +278h the near-camera flag, with vtable[3Ch] firing on the near-camera flag (docs/PROJECTILE_IMPACT.md, the factory's step 9)",
+      "is": "+278h takes argument 5, the gun's spawn flag; +1CCh takes argument 6, the near-camera flag; vtable[3Ch] fires on argument 5",
+      "evidence": "The frame puts argument n at [ESP+68h+4n]. 006E86A0 reads [ESP+7Ch] (argument 5) into AL and 006E86B8 stores AL at +278h; 006E86A6 reads [ESP+80h] (argument 6) into CL and 006E86BE stores CL at +1CCh. The conditional at 006E86C4 follows CMP AL,BL at 006E86A4, so it tests argument 5. On the caller side 0072BF10 pushes the literal 1 for argument 6 on its near-camera path at 0072BFC5 and the literal 0 at 0072BFE8 on the normal path, while argument 5 comes from 0072BF10's own fourth parameter."
+    },
+    {
+      "subject": "006e8430 arguments 1 and 7",
+      "was": "seven arguments, all consumed",
+      "is": "arguments 1 and 7 are pushed and never read",
+      "evidence": "Filtering the whole 006E8430 listing for ESP-relative reads gives only [ESP+5Ch] (the SEH link), [ESP+64h] (the local sentinel), [ESP+70h], [ESP+74h], [ESP+78h], [ESP+7Ch] and [ESP+80h]. [ESP+6Ch] (argument 1, the literal 0 pushed at 0072C004) and [ESP+84h] (argument 7, gun[+41Ch] pushed at 0072BFE3) never appear. RET 1Ch still pops all seven."
+    },
+    {
+      "subject": "the sub-type table of docs/UNIT_WEAPON_DEVICES.md step 7",
+      "was": "gun[+3F8h][+34h][+8h] selecting 2, 3, 4, 5 or 7, left contract: unread",
+      "is": "the gun class descriptor's weapon type gun[+3F4h][+80h], a different enum",
+      "evidence": "007302E4 loads ECX from gun[+3F4h] and 007302EA loads EAX from [ECX+80h], then compares 1, 5 and 6. The projectile sub-type is loaded separately at 0073039D through gun[+3F8h]+34h and compared with 0Ah, 0Bh, 10h and the group 4..7. 007327B0 is the only producer of +80h and stores 0..0Bh from the Function key: 0 none, 1 AAMACHINEGUN, 2 LIGHTARTILLERY, 3 MEDIUMARTILLERY, 4 HEAVYARTILLERY, 5 FLAK, 6 LIGHTARTILLERYFLAK, 7 TORPEDO, 8 DEPTHCHARGE, 9 DEPTHCHARGELAUNCHER, 0Ah BOMBPLATFORM, 0Bh CATAPULT."
+    },
+    {
+      "subject": "the descriptor's +88h and +8Ch",
+      "was": "the projectile class descriptor's rotation rates, read from the Lua stores 00732A30 and 00732A6C (docs/GUN_AIMING.md)",
+      "is": "fields of the gun class descriptor gun[+3F4h], written by its own reader 007327B0 from HorzRotSpeed and VertRotSpeed",
+      "evidence": "007327B0 writes [param+88h] at 00732836 and [param+8Ch] at 0073284C, and the same routine writes the weapon type at +80h, which 0072F830 and 00730160 read through gun[+3F4h]. On the projectile class descriptor 006E8770 gives +80h..+8Fh and +90h..+9Fh to the two BSP_GUI_ResolveTextureAndAtlasUV calls at 006E8AFF and 006E8B4E, so the same offsets there are payload-icon atlas rectangles."
+    },
+    {
+      "subject": "kProjectileClassOffTraceVariant = 0x74 in include/bsp/projectile_impact.hpp",
+      "was": "a trace variant read at 0084BF00",
+      "is": "the ExplWaterHit boolean",
+      "evidence": "006E89EA: BSP_LuaObject_GetByName(entry, \"ExplWaterHit\") then BSP_LuaReference_GetBooleanOrDefault(0), stored as a byte at +74h. No other routine writes +74h of this object. The consumer at 0084BF00 was not re-read, so the name is corrected but the header of the other packet is left alone."
+    },
+    {
+      "subject": "kProjectileClassOffScoringId = 0xCC in include/bsp/projectile_impact.hpp",
+      "was": "a scoring id read at 00923A2C",
+      "is": "the Decals.Landscape decal id, -1 when the row has no Decals table; +D0h next to it is Decals.Other",
+      "evidence": "006E8C6D resolves the Landscape string into +CCh and 006E8CD9 the Other string into +D0h; 006E8D0C stores -1 in both when Decals is nil. Provisional: the consumer at 00923A2C was not re-read and may be reading +CCh of a different object."
+    }
+  ],
+  "unread": [
+    "006EA230, 00700BE0, 006FEF10, 006FFDF0, 007AC2C0 and 0085F310: the creates of the kamikaze plane, the three dummies, the paratrooper and the water mine",
+    "0085F500, 00701060, 007AC780, 006FF170 and 00700050: those five readers past their call to 006E1BE0, so their extra keys are unknown",
+    "006E1300, 006E1060 and 00855B00: the bomb family's tick advance, pose placement and the torpedo's slot +Ch override; identified from the vtable bytes only",
+    "0070C4A4-0070C795, the flak tick's proximity search, as docs/PROJECTILE_IMPACT.md already records",
+    "The bomb-family entity constructors past their subobject vtable writes: 006E2670, 00856050, 006FC960 and 0080AB40, including the observer pair 00856594-008565D8 that is the torpedo's homing binding",
+    "006FD400's computed +F0h, a LIBCRT_unmatched_00BF7030 result",
+    "The producer of the flak fuse time at descriptor +D8h, which 0070C3E2 reads and no reader writes"
+  ]
+}
