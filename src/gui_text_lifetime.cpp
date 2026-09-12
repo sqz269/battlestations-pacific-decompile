@@ -1,8 +1,27 @@
 #include "bsp/gui_text_lifetime.hpp"
 #include "bsp/native_render_context.hpp"
+#include <cstring>
+#include <limits>
 #include <stdexcept>
 
 namespace bsp {
+namespace {
+void copy_x87(float& destination, const float& source) noexcept {
+    auto* to = &destination;
+    const auto* from = &source;
+    __asm {
+        mov eax, from
+        mov ecx, to
+        fld dword ptr [eax]
+        fstp dword ptr [ecx]
+    }
+}
+template<class String> void require_copy_string(const String& value) {
+    if (value.size() > static_cast<std::size_t>((std::numeric_limits<std::int32_t>::max)()) ||
+        value.find(typename String::value_type{}) != String::npos)
+        throw std::invalid_argument("Text copy requires the native terminated-string domain");
+}
+} // namespace
 bool gui_text_matches_type0c_00ab83d0(std::uint32_t descriptor,
     const volatile std::uint32_t (&lineage)[3]) noexcept {
     for (std::size_t i = 0; i != 3; ++i)
@@ -73,7 +92,73 @@ GuiTextLifetime::GuiTextLifetime(GuiWidgetOwner& widget, GuiTextBufferServices& 
     phase_ = Phase::live;
 }
 
+GuiTextLifetime::GuiTextLifetime(GuiTextAfterBaseCopy00aa9520,
+    GuiWidgetOwner& widget, GuiTextBufferServices& buffers,
+    GuiTextGlyphChildCalls& children, const GuiTextLifetime& source)
+    : widget_(widget), buffers_(buffers), child_calls_(children) {
+    require_owner();
+    source.require_owner();
+    if (&widget == &source.widget_ || widget.text_lifetime_ ||
+        source.phase_ != Phase::live || source.widget_.text_lifetime_ != &source ||
+        source.scalar_phase_ != GuiTextScalarDeletionPhase::not_started ||
+        source.has_incomplete_copy() ||
+        &buffers != &source.buffers_ || &children != &source.child_calls_ ||
+        !widget.node_binding() || !source.widget_.node_binding() ||
+        widget.node_binding() == source.widget_.node_binding())
+        throw std::logic_error("Text copy admission requires distinct already-copied owners and the same live source domain");
+    // These guards check identity only. They cannot establish that AA9520's
+    // copied base fields/list and current primary-node virtual10 have run.
+    // The tag explicitly requires that upstream producer; no base is created.
+    require_copy_string(source.text_.text);
+    require_copy_string(source.text_.source);
+    require_copy_string(source.text_.shader_name);
+    require_copy_string(source.text_.font_name);
+    text_.size = widget.layout().transform.size;
+    const auto* color = widget.layout().color;
+    text_.color = {color[0], color[1], color[2], color[3]};
+
+    text_.text = source.text_.text; // 4C8DD0, distinct zeroed destination header.
+    text_.source = source.text_.source; // 41DD40 terminates, then length-byte memcpy.
+    text_.multiline = source.text_.multiline;
+    text_.align = source.text_.align;
+    text_.vertical_align = source.text_.vertical_align;
+    text_.font = source.text_.font;
+    copy_x87(text_.distance_between_lines, source.text_.distance_between_lines);
+    text_.line_count = source.text_.line_count;
+    copy_x87(text_.measured_width, source.text_.measured_width);
+    text_.has_state_colors = source.text_.has_state_colors;
+    text_.shadowed = source.text_.shadowed;
+    text_.shadow_pos = source.text_.shadow_pos;
+    copy_x87(text_.shadow_offset, source.text_.shadow_offset);
+    std::memcpy(&text_.shadow_color, &source.text_.shadow_color, sizeof(text_.shadow_color));
+    copy_x87(fields_.field_178, source.fields_.field_178);
+    fields_.field_17c = source.fields_.field_17c;
+    fields_.pointer_180 = source.fields_.pointer_180;
+    // +184/+188 and the glyph vector start empty, never shared from source.
+    copy_x87(fields_.field_18c, source.fields_.field_18c);
+    copy_x87(fields_.field_190, source.fields_.field_190);
+    // +1A4/+1A8/+1AC/+1B0 are zero/empty in their canonical fields.
+    fields_.byte_1b4 = source.fields_.byte_1b4;
+    text_.shader_name = source.text_.shader_name;
+    text_.font_name = source.text_.font_name;
+    text_.default_shadow = source.text_.default_shadow;
+    copy_x87(text_.font_scale, source.text_.font_scale);
+    text_.has_cached_shader = false; // Same empty actual +1EC slot.
+    fields_.byte_1f0 = source.fields_.byte_1f0;
+    std::memcpy(&text_.state_colors, &source.text_.state_colors, sizeof(text_.state_colors));
+    // No read/copy of +1B8/+1BC/+1D4/+1DC..1E8; glyph validity remains false.
+    // Typed string allocation/cleanup is a new C++ ABI, not native pool/SEH.
+    after_base_copy_ = true;
+    widget_.text_lifetime_ = this;
+    // Native derived construction has not returned yet. Existing scalar
+    // deletion rejects constructing BEFORE its phase/flag stores. Only the
+    // final successful ABB1D0 continuation may make this companion live.
+}
+
 GuiTextLifetime::~GuiTextLifetime() noexcept {
+    // A failed/pending copy still owns native caller effects/continuations.
+    // Destroying this canonical companion cannot silently discard them.
+    if (has_incomplete_copy()) std::terminate();
     // Explicit scalar completion already removed the borrowed association and
     // may have erased the owner record; an externally embedded companion must
     // not dereference that dead owner during its later C++ member destruction.
@@ -128,6 +213,8 @@ void GuiTextLifetime::release_secondary_scene_nodes_00aa8320_fragment(
 }
 
 void GuiTextLifetime::destroy_derived_00ab8250_fragment() {
+    if (has_incomplete_copy())
+        throw std::logic_error("Text copy must complete before derived retirement");
     if (phase_ == Phase::destroyed) return; // C++ destructor after explicit teardown.
     if (phase_ != Phase::live)
         throw std::logic_error("Text destruction requires a live, non-reentrant companion");
