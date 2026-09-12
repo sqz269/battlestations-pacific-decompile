@@ -28,6 +28,7 @@
 #include "bsp/game_hosts_menu.hpp"
 #include "bsp/game_hosts_mission_result.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
+#include "bsp/game_hosts_trajectory.hpp"
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/game_hosts_world.hpp"
@@ -153,6 +154,10 @@ struct GameMissionFrameHost::Impl {
     float order_rudder{0.0f};
     bool order_issued{false};
     float mission_frame_seconds{0.0f};  // --mission-frame-seconds S
+    // Milestone 2j, --trajectory-csv <path>: one row per unit per fixed step.
+    std::string trajectory_csv_path;
+    bool trajectory_csv_tried{false};
+    GameTrajectoryCsv trajectory_csv;
     // Milestone 2h: the in-mission HUD, owned by GameMenuHost because its
     // screens register into that object's copy of the registry at 00e18b60.
     GameHudHost* hud{nullptr};
@@ -328,7 +333,22 @@ public:
         // ring is written for the fixed step's 0.05 s period
         // (kUnitStateMessageTickSeconds == kFixedSimulationStepFloat), which is
         // the step this call receives.
-        if (owner_.units != nullptr) owner_.units->motion_step_00825f20(step);
+        if (owner_.units != nullptr) {
+            owner_.units->motion_step_00825f20(step);
+            // Milestone 2j, --trajectory-csv: the trace is taken here, where the
+            // step the motion ran in is unambiguous. Executable plumbing; it
+            // reads what the motion path already wrote and changes nothing.
+            if (!owner_.trajectory_csv_path.empty() && !owner_.trajectory_csv_tried
+                && owner_.units->count() > 0) {
+                owner_.trajectory_csv_tried = true;
+                owner_.trajectory_csv.open(owner_.trajectory_csv_path, owner_.log);
+            }
+            if (owner_.trajectory_csv.is_open()) {
+                const GameUnitsSummary& units = owner_.units->summary();
+                owner_.trajectory_csv.append_step(units.motion_steps,
+                    units.simulated_seconds, owner_.units->units());
+            }
+        }
     }
     void run_interpolation_wave_00875670(float leftover, std::uint8_t run_pass) override {
         owner_.fixed_step->run_interpolation_wave_00875670(leftover, run_pass);
@@ -672,12 +692,15 @@ public:
         owner_.record("MissionEntry::set_audio_environment_level", 0x00a7a440u);
     }
     void apply_in_game_interface(bool loading) override {
-        // 004c9ca0 with 0 on this path: the entry arm tears the loading element
-        // down, releases interface/textures/allbutingame.ats, selects front-end
-        // layout set 3 and writes the engine-movie latch at game+1EE0h. All
-        // four belong to the GUI and renderer owners.
+        // 004c9ca0 with 0 on this path. Milestone 2j runs the arm rather than
+        // recording it: its front-end frame step is the committing 00518250 the
+        // load's own row is not.
         owner_.entry.interface_request = loading ? "allocate (1)" : "tear down (0)";
-        owner_.record("MissionEntry::apply_in_game_interface", 0x004c9ca0u);
+        if (owner_.hud != nullptr) {
+            owner_.hud->apply_in_game_interface_004c9ca0(loading);
+        } else {
+            owner_.record("MissionEntry::apply_in_game_interface", 0x004c9ca0u);
+        }
     }
     void check_multiplayer_player_count() override {
         owner_.record("MissionEntry::check_player_count", 0x004d87b0u);
@@ -1174,11 +1197,30 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             // authored `Command` token is then queued, and the first created
             // instance becomes the controlled unit through 004c0890.
             host.units = std::make_unique<GameUnitsHost>(host.log, host.lua);
+            // Milestone 2j: the gameplay settings singleton's rudder curve block
+            // is filled before any unit exists, because 0083b5e0 runs from the
+            // settings object's own construction and every ship reads the one
+            // block. This process has one Lua state, so it runs the script into
+            // the mission machine and says so.
+            host.units->load_gameplay_settings_0083b5e0();
             host.units->create_units(host.scene_contents->entities());
             host.world_host = std::make_unique<GameWorldHost>(host.log, *host.units);
             host.world_host->build_entity_chains_009037f0();
             host.units->issue_authored_commands();
             if (host.units->count() > 0) host.units->set_controlled_unit_004c0890(0);
+            continue;
+        }
+        if (method == "apply_in_game_interface") {
+            // 004c9ca0(1) at 004e1873, the load's own row: the arm that puts the
+            // loading element up. It exists here so the entry's 004c9ca0(0) has
+            // the element the native teardown reads without a null check.
+            if (host.hud != nullptr) {
+                host.hud->apply_in_game_interface_004c9ca0(true);
+                ++host.load.concrete;
+            } else {
+                host.record(label, step.address);
+                ++host.load.records;
+            }
             continue;
         }
         if (method == "select_front_end_layout") {
@@ -1367,6 +1409,10 @@ void GameMissionFrameHost::set_player_order(long frame, float throttle,
     impl_->order_rudder = rudder;
 }
 
+void GameMissionFrameHost::set_trajectory_csv(std::string path) {
+    impl_->trajectory_csv_path = std::move(path);
+}
+
 void GameMissionFrameHost::set_mission_frame_seconds(float seconds) noexcept {
     impl_->mission_frame_seconds = seconds;
 }
@@ -1538,6 +1584,11 @@ void GameMissionFrameHost::report(long requested_frames) {
     if (host.hud != nullptr) host.hud->report();
     if (host.world_host != nullptr) host.world_host->report();
     if (host.units != nullptr) host.units->report();
+    if (!host.trajectory_csv_path.empty()) {
+        host.log.notef("summary mission trajectory csv=%s rows=%llu",
+            host.trajectory_csv_path.c_str(), host.trajectory_csv.rows());
+        host.trajectory_csv.close();
+    }
     if (host.scene_contents) {
         // Milestone 2h. The scene contents pass created unit records, and the
         // frame's unit passes ticked none of them. That is not an empty scene:

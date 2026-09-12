@@ -1,6 +1,6 @@
-# bsp_game.exe, milestones 1 through 2i
+# bsp_game.exe, milestones 1 through 2j
 
-Milestone 2i is the current state of the executable, and its section corrects the earlier
+Milestone 2j is the current state of the executable, and its section corrects the earlier
 ones. Milestone 1 is the spine it was all built on.
 
 Addresses added by milestone 2a: 0073d604-0073d899 (the phase-2 VFS block of Init), 00beda60
@@ -3220,6 +3220,295 @@ physics the stand-in integrator replaces, or about what a running game would dra
    addresses step 11 calls, so the three stay records here.
 6. **The local player's unit registry**, so walk 0 of 004C3CB0 has its real source and walks 1
    and 2 have one at all.
+
+## Milestone 2j: the game's own motion inputs, a trajectory dump and an honest mission picture
+
+Addresses: 0078cf20 with its two leaves 0078c890 at 0078cf3e and 00b9cf50 at 0078cf5f, and its
+call sites 00826985 (in 00825f20) and 00825972 / 0082599f (in 008255b0); 008e6430 at 00826a21;
+00424c40 at 0082e893 with its producer 0083b5e0 at 00424bfc, the script run 00b69d40 at
+0083b6e6, the global lookup 00b67800 at 0083b73d and the fragment 0083ce56..0083d10d with
+00b67690 at 0083ce84, 00b67700 at 0083ce98, 00b67800 at 0083ceb1, 00b67720 at 0083ceca and
+00b66270 at 0083ced9; 00c41550 at 00c5bb5a, 00c5b1b0 at 00c5c491 and 00c5bb30 at 00c5c66d;
+004c9ca0 with its two call sites 004e1873 and 004da746 and its own calls 00bf681b at 004c9cd7,
+00636d90 at 004c9ced, the three vtable dispatches at 004c9d11 / 004c9d7e / 004c9daa, 004f83b0
+at 004c9d88, 00aefa30 at 004c9dcf, 004c1ac0 at 004c9dff, 00518250 at 004c9e06 and 007f8d60 at
+004c9e1d; and 004c1ac0 at 004e04e7. Packet `cc_exe_2j`, owner `agent/cc-exe-2j`. Sources:
+`src/game_hosts_units.cpp`, `src/game_hosts_trajectory.cpp`,
+`include/bsp/game_hosts_trajectory.hpp`, plus edits to `src/game_hosts_lua.cpp`,
+`src/game_hosts_hud.cpp`, `src/game_hosts_menu.cpp`, `src/game_hosts_mission.cpp`,
+`src/game_hosts_mission_frame.cpp`, `src/game_hosts.cpp`, `src/game_main.cpp` and their
+headers. Report: `reports/game_executable_milestone_2j.json`. Ghidra was read-only.
+
+Milestone 2i moved 32 destroyers with four labelled stand-ins in the motion path. Packet
+`cc_ship_inputs` then recovered the producer of each of them. This milestone replaces all four
+in the executable, adds a trajectory dump so the result can be compared against the running
+game, and makes the mission frame stop drawing the main menu.
+
+### The new switch
+
+`--trajectory-csv <path>` writes one row per unit per fixed simulation step, with the header
+row `step,t,unit,class,x,y,z,heading,forward_speed,throttle,rudder,yaw_rate`. The path is
+resolved before `--game-root` changes the current directory, for the same reason `--screenshot`
+is: the run enters the installed game's read-only directory. Every earlier switch is unchanged.
+
+### 1. The four stand-ins, replaced
+
+**The rudder curve.** Milestone 2i forced the three denominator knots to 1, because
+`docs/SHIP_MOTION.md` had never located the block at `00424C40()+438h..+44Ch`.
+`docs/UNIT_RUDDER_CURVE.md` located it: the block is on the gameplay settings singleton and its
+only writer is the Lua-driven loader `0083B5E0`, which the singleton's constructor `00424A10`
+tails into at `00424BFC`. The executable now runs that loader's head and its curve fragment.
+`0083B6C3` formats the literal `Scripts\datatables\ShipGlobals.lua` at `00D0B67C` into a path
+and `00B69D40` runs it; this process has one Lua state, the mission machine's, so the file is
+run through the recovered file runner `00885110` on that state and `00B69D40` is a record.
+`00B67980` then `00B67800` at `0083B73D` take the `ShipGlobals` global, and the fragment
+`0083CE56..0083D10D` runs through `bsp::unit_rudder_curve_load_0083ce56` over the live
+interpreter, with its five `00B67xxx` calls as host methods. The run reads
+
+```
+rudder curve loaded from ShipGlobals["Navigator"]["TurnMultipliers"]: min (0.000, 0.400)
+        med (0.500, 1.500) max (1.000, 2.000)
+```
+
+which is the installed `shipglobals.lua` exactly, read out of the game's own data rather than
+transcribed into the source. `00424C40` is a singleton, so the block is one table shared by
+every ship of the mission; the executable holds one and hands it to all 32.
+
+**The ocean sampler.** `0078CF20` runs whole: the wave field `0078C890` times the coverage mask
+`00B9CF50`, formed at x87 precision and rounded once at `0078CF69`. Only the two leaves are
+records, and they answer the routine's own values rather than invented ones: `docs/OCEAN_HEIGHT.md`
+evidences that the field returns exactly `0.0f` when `field+F9h` is set or the amplitude at
+`field+24h` is zero, and that the mask returns exactly `1.0f` when no region covers the point,
+which is the open-sea case. So the flat sea is a stated contract with a reachable state behind
+it. **The receiver is a renderer-owner record**: `0078CF20` takes `[[00E188A8]+19F0h]` and hands
+`[world+A8h]` to both leaves, and that object is the renderer/scene owner's, the same pointer
+`00AF0C50`'s foliage builder takes its camera from; `construct_world` `004DE610` is still a load
+record. The unit update's own two samples at `00825972` and `0082599F` take the same host.
+
+**The gameplay scale.** `008E6430` runs over an empty category list. The accumulator starts at
+the `1.0f` at `00D7A24C` and no modifier record is registered in this process, so the filter
+`008E4680` is never reached and the `1.0` is the routine's own value, not a literal a host
+returns.
+
+**The integrator.** `bsp::ship_integrate_stand_in` is gone. Every motion step now runs
+`00C41550` then `00C5B1B0`, the Dyn library's two integration phases, in the order `00C5BB30`
+runs them. The motion tick has just written both velocities onto the body through `00C37E50` /
+`00C37E20`, so the velocity phase sees no force, no gravity and no damping and only rebuilds the
+world inverse inertia, and the position phase is what turns the velocities into a pose. Three
+things stay records or stated contracts, because no producer was found for them: the substep
+schedule `00C5BB30` at `00C5C66D` (world+00h, the substep size, is unknown, so one substep of
+the whole 0.05 s game step is taken), the hull body's mass, inertia and damping (`00C37F40`,
+`00C37E70`, `00C37E00` and `00C37DE0` have no caller on the hull path, so they are never called
+and the body carries none), and `M+18h` / `M+1Ch`, the two speed clamps the position phase
+applies, which are set out of range so the clamps never fire. A zero there would zero the
+velocity on the first substep, which is why leaving them at the default was not an option.
+
+**What it did to the trajectory.** The same command, measured on this worktree before and after,
+on the controlled `DeRuyter` (`VehicleClass[20]`, `MaxSpeed 16.4622`, `MaxRotAngle 0.122173`):
+
+| at t = 14 s | before (2i stand-ins) | after (2j producers) |
+| --- | --- | --- |
+| forward speed | 16.431 | 16.454 |
+| heading, degrees | -38.591 | -20.302 |
+| yaw rate, rad/s | -0.06109 | -0.03054 |
+| straight-line distance, m | 195.17 | 187.81 |
+
+The yaw rate halves, and the reason is the shipped curve: at full throttle the denominator is
+`2.0`, so `0082ECB0` returns `MaxRotAngle / 2` before the rudder scales it, and a rudder of 0.5
+settles at `MaxRotAngle / 4`. The forward speed rises slightly for the reason
+`docs/UNIT_RUDDER_CURVE.md` gives for the probe: a slower turn keeps more of the velocity on the
+hull's forward axis, and `0092D300` rewrites only the axial component. The before row was taken
+by stashing this packet's changes and rebuilding, and it reproduces milestone 2i's published
+numbers exactly.
+
+### 2. The trajectory dump
+
+`--trajectory-csv` writes from the fixed step, immediately after `00825F20` has run for every
+unit, where the step the motion ran in is unambiguous. The 300 frame run writes **8960 rows**,
+32 units by 280 steps. `t` is simulated seconds, `x, y, z` is pose row 3 (`unit+FCh`), `heading`
+is degrees of `atan2(row2.x, row2.z)`, `forward_speed` is `0092D730` over the body axis and the
+linear velocity, `throttle` and `rudder` are `unit+980h` and `unit+984h` as the order ring
+published them, and `yaw_rate` is the body angular velocity's y. Packet `cc_motion_trace` owns
+the comparison against a trace taken from the running game; this is the file it reads.
+
+### 3. The picture: the front end comes down
+
+Milestone 2i asked whether the front-end frame pages come down when the mission starts and
+answered no, because the load's own `004C1AC0` / `00518250` row at `004E04E4` does not commit.
+That reading of the row was right and its conclusion was too early. **The committing call is in
+`BSP_Game_ApplyInGameInterface` `004C9CA0`**, which milestone 2i recorded.
+
+`004C9CA0` is two routines sharing a frame. `004C9CC0` tests its one byte argument: non-zero
+takes `004C9CCD..004C9D68`, which allocates the loading element at `[00E198C4]+D4h` and sets its
+`+4h` byte, and zero takes `004C9D6B..004C9EA2`, which tears that element down, releases
+`interface/textures/allbutingame.ats` through the atlas manager, and runs
+`00518250(set 3, commit 1)` at `004C9E06`. The load calls it with **1** at `004E1873` and the
+mission-state entry calls it with **0** at `004DA746`. The executable now runs both arms. The
+committing call releases every other set's backdrop, panel and title layouts, which is exactly
+the `FE_frame` / `FE_frame_title` pair the title bring-up acquired, and acquires set 3's
+`GUI_pause` pair hidden. The run log reads
+
+```
+front-end frame set 3 selected with commit=1: 00518250 released every other set's backdrop,
+        panel and title layouts and made 3 the active set (it was 0)
+```
+
+One bridge-side change was needed with it. `GuiPageRegistry` in this process owns every page for
+the whole run and has no destroy path, so releasing the handle left the sprite bridge drawing
+`FE_frame` from widget records that outlive the page. The substitute for the native destruction
+is to push the page hidden before releasing it, in `MenuFrameLayoutHost::gui_manager_release_layout`,
+and it is labelled there as the substitute it is.
+
+**The minimap's `error.tga` is not an atlas miss and not a missing material texture.**
+`minimap_terrain.mshd` is the installed `shaderfx/gui/minimap_terrain.shfx`, a GUI
+post-pipeline shader effect with two samplers, `RadarMap` at texture register 0 with clamped
+addressing and `FadeBorder` at index 1, and it names **no texture file at all**. Sampler 0 is
+the widget's own texture slot, which is why the authored `error.tga` reaches it, and the icon is
+therefore already on the same texture path every other HUD texture takes. What replaces it at
+run time is the mission's own radar map, which `BSP_HudMinimapScreen_Register` `005BEC50` binds
+after taking the widget by name at `005BED21` through `00AA7E00`, and which the renderer owner
+produces. There is nothing more for this process to load, so the renderer-owner host is
+recorded and no texture is invented.
+
+### What it looks like on screen
+
+**The flag, the two rails and the winged `MAIN MENU` plate are gone.** The capture at in-mission
+frame 200 shows the cleared dark blue buffer with the HUD's own level-1 pages over it and
+nothing else: the minimap cluster in the top right, its island-map icon filled by the authored
+`error.tga` (the green `Err` run and the blue `Err` run of the two stacked icons) with the
+compass ring and the tick marks beside it, the two text runs `Artillery` and `Fighter Ace`, the
+white powerup template between them, a small round icon at the top left, and a status bar with
+a medal at the bottom right that milestone 2i's picture had hidden behind the front-end frame's
+bottom rail. The sprite bridge drops from **70 quads to 57**. Thirty-two ships are still under
+way behind a picture that does not show them, for milestone 2f's unchanged reason: what the
+mission would draw goes through `004CA440` and `004CA1F0`, both records. The capture is written
+to the ignored `local/run_2j.png` and is not committed.
+
+### Host methods
+
+`bsp_game.exe --frames 600 --press-start-frame 30 --menu-select USN02 --mission-frames 300
+--mission-frame-seconds 0.05 --order-frame 20 --order throttle=1,rudder=0.5
+--mission-complete-frame 280 --trajectory-csv local/trajectory.csv --screenshot local/run.png
+--screenshot-mission-frame 200 --log local/game_run.log --game-root "<install>"`, exit 0:
+**321 concrete, 338 unimplemented**. The same command on this tree before this packet reports
+305 and 331, which is milestone 2i's published pair. The wall-clock form of the same command
+(no `--mission-frame-seconds`) reports 322 and 338, and a `--mission-frames 60` run with no
+`--mission-complete-frame` reports 317 and 329.
+
+The per-step table with the call site and callee of every row this packet adds is
+`reports/game_executable_milestone_2j.json` (`rudder_curve_steps`, `ocean_steps`,
+`rigid_body_steps`, `mission_entry_steps`, `minimap`). The counts by group:
+
+| Group | Steps | Concrete | Records |
+| --- | --- | --- | --- |
+| The rudder curve and its producer | 10 | 8 | 2 |
+| The ocean sampler and the gameplay scale | 5 | 3 | 2 |
+| The rigid-body substep | 3 | 2 | 1 |
+| `004C9CA0`, both arms | 13 | 5 | 8 |
+| The minimap's radar map | 1 | 0 | 1 |
+
+**No stand-in is left in the unit motion path.** What used to be four stand-ins is now two host
+records with evidenced return values (the two ocean leaves), three uncalled body setters and two
+out-of-range clamp fields, each named above with the follow-up that would settle it.
+
+### Corrections
+
+1. **Milestone 2i read the load's front-end layout row as `004C1AC0(3,0)` followed by
+   `00518250(3,0)`.** The row at `004E04E4` is `PUSH EBX; PUSH 3; CALL 004C1AC0; MOV ECX,EAX;
+   CALL 00518250`. The two pushes are `00518250`'s arguments, not `004C1AC0`'s: `004C1AC0` is
+   `BSP_FrontEndFrame_GetOrCreate`, the lazy getter for the `164h` object at `00E18D80`, and it
+   takes none and only supplies `ECX`. The executable's record
+   `MissionLoad::select_menu_layout 004c1ac0`, which called it "the menu-layout selector on a
+   second singleton", is replaced by a concrete `MissionLoad::front_end_frame_get`: the
+   executable owns that object.
+2. **Milestone 2i's "do the front-end frame pages come down when the mission starts: no" is
+   superseded.** They do, one step later, in `004C9CA0`'s zero arm at `004DA746`. Milestone 2i's
+   statement about the load's own row stands; its conclusion about the mission did not.
+3. **Milestone 2i's four stand-ins are gone.** `docs/SHIP_MOTION.md`'s stand-in list was already
+   corrected by `docs/UNIT_RUDDER_CURVE.md` for the probe; this is the same correction applied
+   to the executable.
+4. **Milestone 2h's and 2i's reading of the minimap `error.tga` as the page's authored texture
+   is right, and is now explained.** The material names no texture, so `error.tga` is sampler
+   0's own authored value and no other texture exists to load. Milestone 2i's correction 3 said
+   resolving a different atlas would not change it; the reason is the shader effect's two
+   samplers, not the atlas.
+5. **A released GUI page was still drawn.** Not a native reading but a bridge defect this packet
+   found by releasing pages for the first time: `release_screen_page` erased the page from the
+   screen-page set and left its widget records in the bridge. The release path now pushes the
+   page hidden first.
+
+### Code with no Ghidra function
+
+| Start | End (inclusive) | Note |
+| --- | --- | --- |
+| — | — | none |
+
+Every address this packet touched already has a Ghidra function. No name was added; run-time
+evidence was appended to 0078cf20, 008e6430, 00424c40, 0083b5e0, 00c41550, 00c5b1b0, 004c9ca0
+and 00518250.
+
+### Validation
+
+`scripts/build.ps1` Release Win32 with `/W4 /WX /fp:strict`, no warnings. The existing ctest
+case `reconstructed_math` passes, 1 of 1. No test cases were added.
+`python tools/verify_report_calls.py reports/game_executable_milestone_2j.json` checks 27 call
+rows and reports 0 failures; three rows are reported as indirect because the native call goes
+through the loading element's vtable.
+
+```
+gameplay settings: Scripts/datatables/ShipGlobals.lua run through 00885110 (the owner's own
+        runner 00b69d40 at 0083b6e6 is a record), chunk ok=1, `ShipGlobals` is a table
+rudder curve loaded from ShipGlobals["Navigator"]["TurnMultipliers"]: min (0.000, 0.400)
+        med (0.500, 1.500) max (1.000, 2.000)
+ocean sampler 0078cf20 runs, both of its leaves are records: its receiver is
+        [[00e188a8]+19F0h] and both calls take [world+A8h], the renderer/scene owner's field
+        object, so the wave field answers its own disabled value 0.0f and the coverage mask its
+        own open-sea value 1.0f, and the product 0078cf64 is exactly 0.0f
+gameplay scale 008e6430 runs over an empty category list: no modifier record is registered in
+        this process, so the product is the 1.0f the accumulator starts at (00d7a24c)
+rigid body: 00c41550 then 00c5b1b0, one substep of the whole 0.0500 s game step
+in-game interface applied with 0: the loading element is torn down and 00518250(3, commit=1)
+        at 004c9e06 releases every other set's layouts
+  controlled unit frame 280  t=  14.00  x= 244.36 z= -2812.28  heading= -20.302  fwd= 16.454
+        throttle= 1.000 rudder= 0.500  yaw=-0.03054
+summary mission world units=32 walked=8960 updated=8960 motion_ticks=8960 simulated=14.00 s
+        controlled=DeRuyter moved=187.81 total_path=6202.64
+summary mission trajectory csv=local\trajectory.csv rows=8960
+summary bridge_open=1 atlas=interface/textures/allbutingame_dxt1.ats atlas_items=678
+        textures=14 quads=57 frames=320
+host methods 321 concrete, 338 unimplemented
+```
+
+Every earlier switch was rechecked on the same binary. A 120 frame run with
+`--press-start-frame 30` and no `--menu-select` exits 0 and reports 154 concrete and 80
+unimplemented, a 40 frame title-only run reports 129 and 49, `--vfs-probe fonts/fonts.lua` exits
+0 and `--vfs-probe does/not/exist.lua` exits 3: all four match milestones 2d and 2i exactly. A
+`--mission-frames 60` run with no `--mission-complete-frame` still ends on the frame count with
+`summary mission exit reachable=0`, and the 300 frame run above still leaves state 0Dh through
+004d7970 and exits on the front-end request rather than on the frame count.
+
+This remains a runtime-validated process, not a game-validated one. What it now proves, that
+milestone 2i did not, is that the mission's ships are driven by the game's own authored turn
+curve read from the game's own data file, by the game's own water sampler, by the game's own
+modifier product and by the game's own two integration phases, and that the recovered mission
+entry takes the front end off the screen. It still proves nothing about the hull body's mass,
+inertia and damping, about the forces nothing pushes onto it, about the library's substep size,
+or about what a running game would draw.
+
+### Follow-up packets
+
+1. **`dyn_world_construction`**: `world+00h`, `world+34h` and `world+3Ch..+44h`. The substep
+   size is the last unknown between this executable's integration and the game's own.
+2. **`ship_hull_body_creation`**: the writer of `controller+2Ch`, and `M+18h` / `M+1Ch`, which
+   this milestone had to set out of range so the position phase's clamps never fire.
+3. **`unit_force_channel`**: `0074F2E0` and `unit+10D4h`. Nothing pushes force onto a body here,
+   so the velocity phase integrates only what the motion tick wrote directly.
+4. **`ocean_wave_field_sample` and `ocean_coverage_regions`**, the two leaves this milestone
+   records, and the producer of `[[00E188A8]+19F0h]+A8h`.
+5. **`construct_world` 004DE610**, unchanged from milestones 2h and 2i.
+6. **The minimap's own scale**, unchanged from milestone 2i follow-up 2, and the radar map the
+   renderer owner would put into sampler 0.
+7. **The `Cruise` command object**, unchanged from milestone 2i follow-up 3.
 
 ## Next milestones
 

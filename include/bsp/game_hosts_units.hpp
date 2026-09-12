@@ -15,13 +15,27 @@
 // bsp::SetControlledUnitHost, satisfied either by a reconstruction already on
 // main or by the explicit unimplemented policy in GameHostLog.
 //
-// Four things this file supplies are stand-ins, each recorded as a host method
-// that says so. They are the four docs/SHIP_MOTION.md names for the probe
-// src/ship_motion_probe.cpp: the ocean sampler 0078cf20 (a flat sea at y = 0),
-// the gameplay scale 008e6430 (the literal 1.0f), the rudder curve settings at
-// 00424c40()+438h..+44Ch (the denominator forced to 1) and the rigid-body
-// integrator the game reaches through the 00C3xxxx physics imports (an explicit
-// Euler step). A fifth is this milestone's own: the authored
+// Milestone 2j replaced the four stand-ins milestone 2i carried with the
+// producers packet cc_ship_inputs recovered, which are the same four
+// src/ship_motion_probe.cpp now uses:
+//
+//   0078cf20  the ocean sampler, run as the recovered product of the wave field
+//             0078c890 and the coverage mask 00b9cf50. The two leaves are host
+//             records: their receiver is [[game+19F0h]+A8h], which belongs to
+//             the renderer/scene owner this process does not build, and their
+//             flat-sea pair (wave 0.0f, mask 1.0f) is the evidenced open-sea
+//             state of the real routine (docs/OCEAN_HEIGHT.md).
+//   008e6430  the gameplay-modifier product, run over an empty category list,
+//             which is the routine's own exact 1.0f rather than a literal.
+//   00424c40()+438h..+44Ch  the rudder curve settings, read out of the live Lua
+//             state through the reconstructed loader fragment 0083ce56 of
+//             0083b5e0 over ShipGlobals["Navigator"]["TurnMultipliers"].
+//   00c41550 / 00c5b1b0  the Dyn library's own two integration phases, in place
+//             of the explicit Euler step. The hull body's mass, inertia and
+//             damping have no recovered producer, so the body carries none and
+//             the substep schedule 00c5c540 stays a record.
+//
+// What remains this file's own decision, and is recorded as one: the authored
 // `Command = E CommandType : Cruise` token is turned into one order-ring order,
 // because the command object 0046aab0 resolves has no reconstruction.
 //
@@ -65,6 +79,7 @@ struct GameUnitRow {
     float heading_degrees{0.0f};
     float forward_speed{0.0f};
     float throttle{0.0f};     // unit+980h, what the ring published
+    float ordered_rudder{0.0f};  // unit+984h, what the ring published
     float rudder{0.0f};       // controller+80h, the slewed rudder
     float yaw_rate{0.0f};
     float distance{0.0f};     // straight-line, start to current
@@ -97,6 +112,13 @@ public:
     ~GameUnitsHost();
     GameUnitsHost(const GameUnitsHost&) = delete;
     GameUnitsHost& operator=(const GameUnitsHost&) = delete;
+
+    // Milestone 2j. The head of 0083b5e0 on the live Lua state: run
+    // Scripts\datatables\ShipGlobals.lua and read
+    // ShipGlobals["Navigator"]["TurnMultipliers"] through the reconstructed
+    // loader fragment, which is the producer of the six curve fields at
+    // 00424c40()+438h..+44Ch. Called once, before the units are created.
+    void load_gameplay_settings_0083b5e0();
 
     // One record per entity the instantiate pass created, in scene order. The
     // class-descriptor floats come from the installed `VehicleClass` global that

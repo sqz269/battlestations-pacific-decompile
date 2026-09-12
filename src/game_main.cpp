@@ -154,6 +154,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
             " [--press-start-frame N] [--menu-select <mission id>] [--mission-frames N]"
             " [--mission-complete-frame N] [--order throttle=<f>,rudder=<f>]"
             " [--order-frame N] [--mission-frame-seconds S]"
+            " [--trajectory-csv <path>]"
             " [--screenshot <path>] [--screenshot-frame N]"
             " [--screenshot-mission-frame N] [--hardware-probe-commit]\n");
         return 2;
@@ -164,10 +165,10 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         std::fprintf(stderr, "bsp_game: cannot write log %s\n", options.log_path.c_str());
         return 2;
     }
-    log.notef("bsp_game milestone 2i, frames=%ld press_start_frame=%ld screenshot_frame=%ld "
+    log.notef("bsp_game milestone 2j, frames=%ld press_start_frame=%ld screenshot_frame=%ld "
         "screenshot_mission_frame=%ld menu_select=%s mission_frames=%ld "
         "mission_complete_frame=%ld order_frame=%ld order=throttle %.3f rudder %.3f "
-        "mission_frame_seconds=%.4f log=%s",
+        "mission_frame_seconds=%.4f trajectory_csv=%s log=%s",
         options.frame_limit, options.press_start_frame, options.screenshot_frame,
         options.screenshot_mission_frame,
         options.menu_select.empty() ? "(none)" : options.menu_select.c_str(),
@@ -175,6 +176,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         static_cast<double>(options.order_throttle),
         static_cast<double>(options.order_rudder),
         static_cast<double>(options.mission_frame_seconds),
+        options.trajectory_csv.empty() ? "(none)" : options.trajectory_csv.c_str(),
         options.log_path.empty() ? "(stdout only)" : options.log_path.c_str());
 
     // The phase-2 mounts use GetCurrentDirectoryA at 0073d697, so pointing the run at an

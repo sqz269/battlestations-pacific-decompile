@@ -348,6 +348,26 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
                 error = "--mission-frame-seconds needs a non-negative duration";
                 return false;
             }
+        } else if (std::strcmp(argument, "--trajectory-csv") == 0) {
+            // Milestone 2j: where to write the per-step per-unit trace.
+            if (index + 1 >= argc) {
+                error = "--trajectory-csv needs a path";
+                return false;
+            }
+            // Resolved here for the same reason --screenshot is: the run enters
+            // the installed game's directory, which is read-only, so a relative
+            // output path would be refused there.
+            const char* input = argv[++index];
+            const DWORD required = GetFullPathNameA(input, 0, nullptr, nullptr);
+            if (!required) { error = "cannot resolve the trajectory csv path"; return false; }
+            trajectory_csv.resize(required);
+            const DWORD length = GetFullPathNameA(input, required, trajectory_csv.data(),
+                nullptr);
+            if (!length || length >= required) {
+                error = "cannot resolve the trajectory csv path";
+                return false;
+            }
+            trajectory_csv.resize(length);
         } else if (std::strcmp(argument, "--hardware-probe-commit") == 0) {
             hardware_probe_commit = true;
         } else {
@@ -1190,7 +1210,8 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     menu_ = new GameMenuHost(log_, *frontend_, game_state_, options_.press_start_frame,
         *vfs_, *scripts_, locale_->tables(), options_.menu_select, options_.mission_frames,
         profiler_, summary_.language, options_.mission_complete_frame, options_.order_frame,
-        options_.order_throttle, options_.order_rudder, options_.mission_frame_seconds);
+        options_.order_throttle, options_.order_rudder, options_.mission_frame_seconds,
+        options_.trajectory_csv);
     menu_->run_title_init_004c9a70();
     const GameFrontendSummary& frontend = frontend_->summary();
     summary_.gui_pages_loaded = frontend.pages_loaded;

@@ -162,6 +162,8 @@ target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene
   src/native_resource_registry_erase.cpp
   src/native_resource_registry_destroy.cpp
   src/native_resource_registry_construction.cpp
+  src/native_singleton_vector_leaves.cpp
+  src/native_tracked_critical_section_release.cpp
   src/native_resource_registry_scalar_delete.cpp
   src/native_resource_registry_base.cpp
   src/native_renderer_capability_array_reserves.cpp

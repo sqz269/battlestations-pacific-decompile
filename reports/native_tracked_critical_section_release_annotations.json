@@ -1,0 +1,16 @@
+[
+  {
+    "address": "0041cc80",
+    "before": {
+      "address": "0041cc80",
+      "function_name": "BSP_CriticalSection_DestroyOwned",
+      "comment": "[BSP reconstruction 0041cc80]\nECX points to lock pointer. Drains positive depth at +18h via LeaveCriticalSection; DeleteCriticalSection then free. Shutdown requires owning/quiescent thread.\nRecovered fallthrough bytes 0041ccb3..0041ccbc: ADD ESP,4; MOV dword ptr [EBP],0. Clears the owner's lock pointer after free. These instructions were undefined under the old noreturn annotation; restored disassembly, but decompiler function-body recovery remains incomplete.\n\n[BSP reconstruction 0041cc80] update\nECX points to lock pointer. Drains positive depth at +18h via LeaveCriticalSection; DeleteCriticalSection then free, followed by owner-pointer clear at 0041ccb6. Shutdown requires owning/quiescent thread. Pointer-clear bytes were undefined under the old free noreturn annotation. | While signed depth>0 decrement then LeaveCriticalSection; DeleteCriticalSection; free; clear owner pointer after free per raw0041CCB3..BC. Original ABI: ECX address of section pointer; RET. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_function_win32_services; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation."
+    },
+    "after": {
+      "address": "0041cc80",
+      "name": "BSP_CriticalSection_DestroyOwned",
+      "evidence": "Complete 64-byte original function. Capture original owner slot and section once. Null section returns without a write. Signed positive depth is decremented before each captured Leave call and reread after return. Delete and free captured section, then clear original slot. Full64 bytes/25 instructions retain all52 nonrelocation bytes and exactly3bindings; no added helper. One raw TrackedCriticalSection** in ECX, no additional context. Exact1Ch layout; actual Win32 Leave/Delete imports and existing paired source CRT free boundary. Strict main Win32 build, both existing CTests and8 reference seeds passed. Actual final main archive SHA256 8e1737daf051ec94a3d69ab5d0a73aac7ae925a5223f5c6474dfb63c993f5b40; prior complete sixleaf objects occur unchanged in this final archive. Native post-free flow gaps repaired with prior CALL_RETURN values recorded, exact native bytes retained. No new routine execution, original static-CRT/SEH/catch-domain identity or game validation. Descriptive names are hypotheses. reports/native_tracked_critical_section_release_audit.json"
+    },
+    "status": "applied"
+  }
+]

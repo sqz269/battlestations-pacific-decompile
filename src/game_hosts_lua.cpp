@@ -169,6 +169,136 @@ GameVehicleClassRow GameMissionLuaHost::read_vehicle_class_row(int index) {
     return row;
 }
 
+// ---------------------------------------------------------------------------
+// Milestone 2j: the rudder curve's own producer
+// ---------------------------------------------------------------------------
+
+namespace {
+
+// 00d0b67c, the literal the loader formats into its path buffer at 0083b6c3.
+// The VFS takes forward slashes, which is the same spelling every other script
+// path in this process uses.
+constexpr const char* kShipGlobalsScriptPath = "Scripts/datatables/ShipGlobals.lua";
+constexpr const char* kShipGlobalsGlobal = "ShipGlobals";   // 00d0b670
+// The table 0083ce56 runs against. docs/UNIT_RUDDER_CURVE.md: the reads that
+// bracket the fragment (0083cdd7, 0083ce19) are the AutoThrust fields, so the
+// wrapper the fragment holds at [ESP+0BCh] is ShipGlobals["Navigator"].
+constexpr const char* kNavigatorKey = "Navigator";
+
+// bsp::UnitRudderCurveLoaderHost over the live interpreter. A handle is a Lua
+// stack index; the four native helpers become the four stack operations they
+// are. 00b67700's release is the wrapper's destructor, which the executable
+// answers by leaving the value on the stack until the whole block is popped:
+// the fragment never reads a released temporary.
+class LuaRudderCurveLoader final : public bsp::UnitRudderCurveLoaderHost {
+public:
+    LuaRudderCurveLoader(lua_State* state, int navigator_index, GameHostLog& log)
+        : state_(state), current_(navigator_index), log_(log) {}
+
+    void release_temporary_00b67700(int handle) override {
+        static_cast<void>(handle);
+        ++releases_;
+        log_.implemented("GameSettings::release_lua_temporary", "00b67700");
+    }
+    int get_by_name_00b67800(int table, const char* key) override {
+        log_.implemented("GameSettings::lua_get_by_name", "00b67800");
+        if (state_ == nullptr) return 0;
+        if (lua_type(state_, table) != LUA_TTABLE) {
+            lua_pushnil(state_);
+            return ::lua_gettop(state_);
+        }
+        ::lua_getfield(state_, table, key);
+        return ::lua_gettop(state_);
+    }
+    void assign_current_table_00b67690(int handle) override {
+        // 0083ce84: the returned wrapper is assigned into the fragment's
+        // current-table slot, which is what makes the three key lookups run
+        // against TurnMultipliers instead of its parent.
+        current_ = handle;
+        log_.implemented("GameSettings::lua_assign_current_table", "00b67690");
+    }
+    int get_by_index_00b67720(int table, int index) override {
+        log_.implemented("GameSettings::lua_get_by_index", "00b67720");
+        if (state_ == nullptr) return 0;
+        if (lua_type(state_, table) != LUA_TTABLE) {
+            lua_pushnil(state_);
+            return ::lua_gettop(state_);
+        }
+        lua_pushinteger(state_, index);
+        ::lua_gettable(state_, table);
+        return ::lua_gettop(state_);
+    }
+    float get_number_00b66270(int handle) override {
+        log_.implemented("GameSettings::lua_get_number", "00b66270");
+        if (state_ == nullptr) return 0.0f;
+        if (lua_type(state_, handle) != LUA_TNUMBER) {
+            ++misses_;
+            return 0.0f;
+        }
+        return static_cast<float>(::lua_tonumber(state_, handle));
+    }
+    int current_table() override { return current_; }
+
+    std::size_t misses() const noexcept { return misses_; }
+    std::size_t releases() const noexcept { return releases_; }
+
+private:
+    lua_State* state_;
+    int current_;
+    GameHostLog& log_;
+    std::size_t misses_{0};
+    std::size_t releases_{0};
+};
+
+}  // namespace
+
+bool GameMissionLuaHost::load_ship_globals_0083b6e6() {
+    if (state_ == nullptr) {
+        log_.unimplemented("GameSettings::run_ship_globals_script", "00b69d40");
+        return false;
+    }
+    // The native runner is the Lua state owner's, with its own override list;
+    // this process has one state and one recovered file runner, so the call
+    // itself stays a record and the file is run through 00885110.
+    log_.unimplemented("GameSettings::run_ship_globals_script", "00b69d40");
+    set_phase("ship globals");
+    const bsp::LuaChunkResult result = bsp::run_script_file(*this, kShipGlobalsScriptPath);
+    const bool ok = result.status == bsp::LuaChunkStatus::Ok;
+    const int top = ::lua_gettop(state_);
+    lua_getfield(state_, LUA_GLOBALSINDEX, kShipGlobalsGlobal);
+    const bool table = lua_type(state_, -1) == LUA_TTABLE;
+    ::lua_settop(state_, top);
+    log_.implemented("GameSettings::get_ship_globals_table", "00b67800");
+    log_.notef("gameplay settings: %s run through 00885110 (the owner's own runner 00b69d40 "
+        "at 0083b6e6 is a record), chunk ok=%d, `%s` is %s", kShipGlobalsScriptPath,
+        ok ? 1 : 0, kShipGlobalsGlobal, table ? "a table" : "absent");
+    return table;
+}
+
+bool GameMissionLuaHost::read_turn_multipliers_0083ce56(bsp::UnitRudderCurveSettings& out) {
+    if (state_ == nullptr) return false;
+    const int top = ::lua_gettop(state_);
+    lua_getfield(state_, LUA_GLOBALSINDEX, kShipGlobalsGlobal);
+    if (lua_type(state_, -1) != LUA_TTABLE) {
+        ::lua_settop(state_, top);
+        return false;
+    }
+    ::lua_getfield(state_, -1, kNavigatorKey);
+    if (lua_type(state_, -1) != LUA_TTABLE) {
+        ::lua_settop(state_, top);
+        return false;
+    }
+    const int navigator = ::lua_gettop(state_);
+    LuaRudderCurveLoader loader(state_, navigator, log_);
+    const bsp::UnitRudderCurveSettings settings
+        = bsp::unit_rudder_curve_load_0083ce56(loader);
+    const bool complete = loader.misses() == 0;
+    ::lua_settop(state_, top);
+    if (!complete) return false;
+    out = settings;
+    return true;
+}
+
 bool GameMissionLuaHost::started() const noexcept { return state_ != nullptr; }
 
 const GameMissionLuaSummary& GameMissionLuaHost::summary() const noexcept { return summary_; }
