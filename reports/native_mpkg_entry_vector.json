@@ -1,0 +1,292 @@
+{
+  "packet": "orch2_native_mpkg_entry_vector_ax",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_mpkg_entry_vector.cpp",
+  "complete_routine_count": 5,
+  "complete_body_bytes": 619,
+  "cleanup_fragment_bytes": 51,
+  "routines": [
+    {
+      "label": "copy",
+      "entry": "00bb9330",
+      "end_inclusive": "00bb939d",
+      "bytes": 110,
+      "sha256": "582a7e96b22451ca2935b7f0e1c921cfed2d5e01e4ddb30a3ddded8fe300c73c",
+      "live_equal_disk": true,
+      "source_function": "copy_native_mpkg_entry_00bb9330",
+      "coverage": "complete"
+    },
+    {
+      "label": "reserve",
+      "entry": "00bb93a0",
+      "end_inclusive": "00bb9494",
+      "bytes": 245,
+      "sha256": "bbb775c46b8f39493033de76841529bfbe6a87a9a02617008025372f3ddadb7b",
+      "live_equal_disk": true,
+      "source_function": "reserve_native_mpkg_entries_00bb93a0",
+      "coverage": "complete"
+    },
+    {
+      "label": "resize",
+      "entry": "00bb94a0",
+      "end_inclusive": "00bb951c",
+      "bytes": 125,
+      "sha256": "c3ef3172e34ed58e9bfdde479c4a79a5d8b69f3cccfca295ed8c11d5ad224a29",
+      "live_equal_disk": true,
+      "source_function": "resize_native_mpkg_entries_00bb94a0",
+      "coverage": "complete"
+    },
+    {
+      "label": "append",
+      "entry": "00bb9520",
+      "end_inclusive": "00bb9593",
+      "bytes": 116,
+      "sha256": "241d606f458b1ec561e0b7ac3eec25c5ebea588ec648ce62f6d7672e3bd01100",
+      "live_equal_disk": true,
+      "source_function": "append_native_mpkg_entry_00bb9520",
+      "coverage": "complete"
+    },
+    {
+      "label": "destroy",
+      "entry": "00bb9900",
+      "end_inclusive": "00bb9916",
+      "bytes": 23,
+      "sha256": "2785a7946b73c22fcd05af8d57eeb74b147f36012a38a3eb0cca6e4df773b753",
+      "live_equal_disk": true,
+      "source_function": "destroy_native_mpkg_entries_00bb9900",
+      "coverage": "complete"
+    },
+    {
+      "label": "reserve_cleanup",
+      "entry": "00cc47c0",
+      "end_inclusive": "00cc47d6",
+      "bytes": 23,
+      "sha256": "86b042a416d1e15a1b6a7b9cee928502033b034e7f20167e0bbb182f84f953b1",
+      "live_equal_disk": true,
+      "source_function": "mpkg_reserve_placement_cleanup_fragment_00cc47c0",
+      "coverage": "partial: cleanup fragment only; enclosing body listed separately"
+    },
+    {
+      "label": "append_cleanup",
+      "entry": "00cc47f0",
+      "end_inclusive": "00cc480b",
+      "bytes": 28,
+      "sha256": "7542987c38f8a072e7823d8e7d77c92da4a924d6a8364734aa54c5d6c908e09e",
+      "live_equal_disk": true,
+      "source_function": "mpkg_append_placement_cleanup_fragment_00cc47f0",
+      "coverage": "partial: cleanup fragment only; enclosing body listed separately"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00bb934e",
+      "native": "0041dd40",
+      "function": "00bb9330",
+      "contract": "ECX actual string header; desired DWORD length and preserve low-byte1; RET8. Existing NativeStringStorage source provider."
+    },
+    {
+      "address": "00bb9363",
+      "native": "00bf7680",
+      "function": "00bb9330",
+      "contract": "cdecl destination/source/byte count; caller ADD ESP0Ch. Existing overlap-capable CRT body; preserve saved library name."
+    },
+    {
+      "address": "00bb93e4",
+      "native": "00bf55be",
+      "function": "00bb93a0",
+      "contract": "cdecl lowDWORD(capacity*24h) allocation size; caller ADD ESP4; existing allocation service."
+    },
+    {
+      "address": "00bb941f",
+      "native": "00bb9330",
+      "function": "00bb93a0",
+      "contract": "ECX actual destination entry; source pointer stacked; RET4/EAX destination."
+    },
+    {
+      "address": "00bb9455",
+      "native": "00419cc0",
+      "function": "00bb93a0",
+      "contract": "No native arguments; returns current/lazy pool in EAX while following return arguments remain stacked. Adapter is NativeStringStorage release; throwing getter excluded by noexcept."
+    },
+    {
+      "address": "00bb945c",
+      "native": "00bd1510",
+      "function": "00bb93a0",
+      "contract": "ECX pool; captured data, length+1,1 stacked; RET0Ch. Existing storage release boundary."
+    },
+    {
+      "address": "00bb946f",
+      "native": "00bf6989",
+      "function": "00bb93a0",
+      "contract": "cdecl current base; thunk JMPBF65AC; caller ADD ESP4. No additional ownership policy."
+    },
+    {
+      "address": "00bb94ae",
+      "native": "00bb93a0",
+      "function": "00bb94a0",
+      "contract": "ECX vector; signed capacity stacked; RET4; complete current-storage reserve."
+    },
+    {
+      "address": "00bb9504",
+      "native": "00419cc0",
+      "function": "00bb94a0",
+      "contract": "No native arguments; returns current/lazy pool in EAX while following return arguments remain stacked. Adapter is NativeStringStorage release; throwing getter excluded by noexcept."
+    },
+    {
+      "address": "00bb950b",
+      "native": "00bd1510",
+      "function": "00bb94a0",
+      "contract": "ECX pool; captured data, length+1,1 stacked; RET0Ch. Existing storage release boundary."
+    },
+    {
+      "address": "00bb9554",
+      "native": "00bb93a0",
+      "function": "00bb9520",
+      "contract": "ECX vector; signed capacity stacked; RET4; complete current-storage reserve."
+    },
+    {
+      "address": "00bb9579",
+      "native": "00bb9330",
+      "function": "00bb9520",
+      "contract": "ECX actual destination entry; source pointer stacked; RET4/EAX destination."
+    },
+    {
+      "address": "00bb9905",
+      "native": "00bb94a0",
+      "function": "00bb9900",
+      "contract": "ECX vector; zero count stacked at BB9905; RET4."
+    },
+    {
+      "address": "00bb990d",
+      "native": "00bf6989",
+      "function": "00bb9900",
+      "contract": "cdecl current base; thunk JMPBF65AC; caller ADD ESP4. No additional ownership policy."
+    },
+    {
+      "address": "00cc47ce",
+      "native": "00401130",
+      "function": "00cc47c0",
+      "contract": "RET-only placement-delete leaf; two stacked computed arguments; caller ADD ESP8."
+    },
+    {
+      "address": "00cc4803",
+      "native": "00401130",
+      "function": "00cc47f0",
+      "contract": "RET-only placement-delete leaf; two stacked computed arguments; caller ADD ESP8."
+    }
+  ],
+  "supporting_spans": [
+    {
+      "label": "reserve_handler",
+      "entry": "00cc47d7",
+      "end_inclusive": "00cc47e0",
+      "bytes": 10,
+      "sha256": "15210a37cd5a84cd6a48cafa7e94bbb1de70bfba81096975c98e244040ab7dbf",
+      "live_equal_disk": true
+    },
+    {
+      "label": "append_handler",
+      "entry": "00cc480c",
+      "end_inclusive": "00cc4815",
+      "bytes": 10,
+      "sha256": "48aac80ee7586264f397f6c962856f9a31a78f07989421725e83a911eef7d23d",
+      "live_equal_disk": true
+    },
+    {
+      "label": "reserve_map_and_info",
+      "entry": "00dfe3d8",
+      "end_inclusive": "00dfe403",
+      "bytes": 44,
+      "sha256": "2e9ab7f8291f166a5e8ed8e6da3d1323435f2469058e0625b3686e463030b183",
+      "live_equal_disk": true
+    },
+    {
+      "label": "append_map_and_info",
+      "entry": "00dfe404",
+      "end_inclusive": "00dfe42f",
+      "bytes": 44,
+      "sha256": "81a0066a4dbdf2222dd5628b3d7f7ce8709d04c07a4bef256b0b55235413dd17",
+      "live_equal_disk": true
+    },
+    {
+      "label": "placement_delete",
+      "entry": "00401130",
+      "end_inclusive": "00401130",
+      "bytes": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "live_equal_disk": true
+    },
+    {
+      "label": "entry_producer",
+      "entry": "00bb95b0",
+      "end_inclusive": "00bb96f5",
+      "bytes": 326,
+      "sha256": "3531d85cea3db288df36d21cc9c92ab982f3170d545a4349a967dcc32d8910b3",
+      "live_equal_disk": true
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "00cc47d7",
+      "end_inclusive": "00cc47e0",
+      "coverage": "support only: raw FH3 registration thunk, not a new entry body"
+    },
+    {
+      "start": "00cc480c",
+      "end_inclusive": "00cc4815",
+      "coverage": "support only: raw FH3 registration thunk, not a new entry body"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "BB946F free call incorrectly ended flow; BB9474..BB9482 omitted",
+      "is": "Returning free followed by requested-capacity reload and new-base/capacity publication",
+      "evidence": "245 live/PE-equal bytes; primary locked repair saved/refreshed export."
+    },
+    {
+      "was": "BB990D free call incorrectly ended body at BB9911",
+      "is": "Body continues ADD ESP4/POP ESI/RET through BB9916",
+      "evidence": "23 live/PE-equal bytes; primary locked repair saved/refreshed export."
+    }
+  ],
+  "original_abi": "Copy/reserve/resize/append ECX owner plus one stack arg, RET4; copy EAX original destination. Destructor ECX vector, RET0. Explicit source services, not binary replacements.",
+  "layout": "Producer BB95B0 actual24h entry; BB9984/87/8A initialize vector at archive+28/+2C/+30. Padding D..F/16..17 untouched.",
+  "validation": {
+    "strict_build": "local/mpkg_entry_vector_ax/build02.log; both CTests passed after verify-seeds",
+    "fixture": "local/mpkg_entry_vector_ax/attempt02",
+    "native_source_states": 10,
+    "checks": 86,
+    "source_only_copy_failure_cases": 1,
+    "frozen_files": 88,
+    "compiler_observed_project_headers": 10,
+    "linked_archive_members": 3,
+    "manifest_sha256": "5fa86b8411d9102bd42eab52e54c557c3c1b8f7b171696ebdee257b976f2ca37",
+    "library_sha256": "3a01681c043fc25cb799af6bed0598b5d1fe93ecec1c2d188782431d46adc376",
+    "exe_sha256": "9e304d3fd151c9b4798f54a5b2a9988a441bfb483cc4309d737872bb0646f883",
+    "source_sha256": "ccc30fbe58f9f77cbfa1e36dea27219cd87714bbf20d5b3e3f6ce80f1b0156b8",
+    "header_sha256": "ba2603a0e491d94c2cf7a0e80582031c3baaf89a9848c79d98b81ae8b9b44d48",
+    "all_frozen_inputs_unchanged": true,
+    "all_execution_outputs_accounted": true
+  },
+  "limits": [
+    "Native original bytes execute with rebuilt string/storage and CRT allocation bridges; original pool publication is not exercised.",
+    "Five complete source bodies and two partial cleanup fragments; original FH3/SEH and C++ exception identity remain unproven.",
+    "NativeStringStorage release is noexcept; throwing lazy-pool recreation remains excluded.",
+    "No invalid-memory, overflow, negative-count recovery or safe aliasing across growth is invented.",
+    "Source-only second-copy failure intentionally leaves new allocation/completed prefix orphaned, then fixture cleanup reclaims it.",
+    "No gameplay validation."
+  ],
+  "abi_compatible": false,
+  "game_validated": false
+}
