@@ -1,0 +1,168 @@
+{
+  "packet": "orch2_native_mpkg_composition_ax",
+  "source_head": "9be685a1ed110b290766f66e7398a848bb78800e",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "coverage": {
+    "complete_actual_storage_bodies": 22,
+    "complete_body_bytes": 3615,
+    "strengthened_existing_memory_leaf_bytes": 7,
+    "vector_cleanup_fragment_bytes": 51,
+    "application_callback_installation_fragment_bytes": 32,
+    "additional_runtime_adapter_routines": 0
+  },
+  "build": {
+    "source_head": "9be685a1ed110b290766f66e7398a848bb78800e",
+    "strict_win32": true,
+    "ctests_passed": 2,
+    "proof": "local/native-ax-build01-proof.json",
+    "proof_sha256": "59f04b88f4f63ea69aa8f247be6516b175423964a91a51c1bd09c0b3fa3df584",
+    "log": "local/native-ax-integrated-build01.log",
+    "log_sha256": "a294fec69fe17a588635498d8d16fe4e5f27328e4222540f09dee4346d93ce7b",
+    "bsp_core_sha256": "2742ad80671a76d7ee665b88e15f083da50c3623a817dd47b735ba816b1b9713",
+    "scope": "Merged source in own worktree, temporary sibling include removed; final promoted HEAD independently rebuilt and gated."
+  },
+  "fixtures": [
+    {
+      "family": "vector",
+      "attempt": "local/native-ax-integrated/vector/attempt01",
+      "execution_head": "9be685a1ed110b290766f66e7398a848bb78800e",
+      "native_source_comparisons": 10,
+      "checks": 86,
+      "source_only_checks": 1,
+      "frozen_input_files": 88,
+      "linked_archive_equal_objects": 3,
+      "before_sha256": "09a44fe91b2e6b192b84f03e7a46ccb4567debc5af80b70c494c4eaaca95608c",
+      "after_sha256": "9d5eee6ca5ee4f22796cdbd0ecf345cb6d932a433c1b4b7a5afcbf19e96ca232"
+    },
+    {
+      "family": "directory",
+      "attempt": "local/native-ax-integrated/directory/attempt02",
+      "execution_head": "9be685a1ed110b290766f66e7398a848bb78800e",
+      "native_source_comparisons": 5,
+      "checks": 1162,
+      "source_only_checks": 1,
+      "frozen_input_files": 561,
+      "linked_archive_equal_objects": 125,
+      "before_sha256": "4888c52658aa5201cb72a1c74658c4b57c417b7bf9421ca4297b9d840d0f1552",
+      "after_sha256": "01d54b1f04628fa1ef74f944509bd7270a12336d559dacc7f8306be39d7effac"
+    },
+    {
+      "family": "provider",
+      "attempt": "local/native-ax-integrated/provider/attempt01",
+      "execution_head": "9be685a1ed110b290766f66e7398a848bb78800e",
+      "native_source_comparisons": 3,
+      "checks": 1297,
+      "source_only_checks": 2,
+      "frozen_input_files": 509,
+      "linked_archive_equal_objects": 123,
+      "before_sha256": "ff41e9a30d532ac6bd7abde82efc43d7dc844c99c6675c785949afb77608640c",
+      "after_sha256": "1a99e46b28e2232b8a1db861e8f096750dcb9a19e9e0d7536c639dda156da09c"
+    },
+    {
+      "family": "archive",
+      "attempt": "local/native-ax-integrated/archive/attempt05",
+      "execution_head": "9be685a1ed110b290766f66e7398a848bb78800e",
+      "native_source_comparisons": 1,
+      "checks": 4566,
+      "source_only_checks": 2,
+      "frozen_input_files": 622,
+      "linked_archive_equal_objects": 152,
+      "before_sha256": "24d0280b4500dd19768bb5107362e25580ea99aac51952b66568e939c8c10a11",
+      "after_sha256": "46f091ca662bfeccb58fa7f5e0c89daee9441e77c70415f9924033e010c03280"
+    }
+  ],
+  "native_source_comparisons": 19,
+  "checks": 7111,
+  "source_only_checks": 6,
+  "report_call_checks": {
+    "numeric_rows": 94,
+    "failed": 0,
+    "indirect_profile_rows_not_resolved_by_checker": 5,
+    "iat_rows_explicitly_not_checked": 2,
+    "log": "local/native-ax-all-calls01.log",
+    "log_sha256": "6196199cd8653e05c8e5087f4a0420bd31af5091e63a51d1383b961ac97c8349",
+    "final_log": "local/native-ax-all-calls-final.log",
+    "final_log_sha256": "6196199cd8653e05c8e5087f4a0420bd31af5091e63a51d1383b961ac97c8349"
+  },
+  "archive_fixture": {
+    "generated_decoded_bytes": 1002,
+    "full_blocks": 1,
+    "short_final_block_bytes": 249,
+    "full_boundary_modulo_short": 6,
+    "entries": 2,
+    "compression": "ZIP_STORED",
+    "native_comparison_bodies": 11,
+    "native_comparison_body_bytes": 2824,
+    "equal_binary_pair_bytes": 32772,
+    "pair_sha256": "2ba8fe6e6b3d720f4c8efcff6d85df4cd5f06d11f3515505e16103c8ce9aa5fe",
+    "native_00bb9900_executed_in_archive_comparison": false,
+    "callback_ret_bodies_execute_in_source_only_wiring_case": true,
+    "canonical_pool_and_memory_counters_drained": true
+  },
+  "reviews": {
+    "archive": {
+      "manifest_sha256": "2ef58aed2f44fe814b9fb95f11ee450a6b6bfc24e375a5087467f5cce312a9d1",
+      "source_sha256": "da4dc6298b01885aa8fa00be7b2166e551e1bbdc1ea7b32e1201d0ef506ea843",
+      "retained": "local/native-ax-worker-deliveries/archive_review/lab"
+    },
+    "runtime": {
+      "manifest_sha256": "4dc9a05c1610e6b0294d10f4cbb39661bcb077250da33bd386e70bf1f4936072",
+      "retained": "local/native-ax-worker-deliveries/runtime_review/lab"
+    }
+  },
+  "ghidra": {
+    "annotations": "Applied under write lock; project saved; previous comments retained; readback captured and affected exports force-refreshed.",
+    "owned_addresses": "local/native-ax-owned-addresses.json",
+    "before_comments": "local/native-ax-comments-before.json",
+    "flow_repairs": "reports/native_ax_flow_repairs.json",
+    "function_definitions": "reports/native_ax_function_definitions.json",
+    "annotation_log": "local/ghidra-annotations-20260912T235234Z.json",
+    "annotation_log_sha256": "ca7e82c36fd73ad3fd71c1c0d3fbaf22ee2e87866fedb673eb8a26f5af1f82c3",
+    "after_comments": "local/native-ax-comments-after.json",
+    "after_comments_sha256": "b108f304494aea681a856628658900509cd5092ce949d6a1876877ae1ddd8f64",
+    "readback_verification": {
+      "reviewed_names": 25,
+      "all_expected_names_and_evidence_read_back": true,
+      "all_nonempty_previous_comments_preserved": true,
+      "after_sha256": "b108f304494aea681a856628658900509cd5092ce949d6a1876877ae1ddd8f64"
+    },
+    "count_gated_snapshot": "Skipped because current saved snapshot already reports63830 functions; affected25 exports were force-refreshed separately."
+  },
+  "promotion": "Require a fresh exact-HEAD begin/build/finish proof and immutable four-family input manifest immediately before every main fast-forward. Gate compares tested current sources, dependent headers, linked objects and archive members. Results retained under local/native-ax-promotion-checks.",
+  "preserved_failures": [
+    "Directory integrated attempt01: missing replay-support evidence directory, before execution; unchanged84-file copy repaired support for attempt02.",
+    "Archive attempts01/02: probe-only SDK overloaded InterlockedDecrement address-taking errors, before execution.",
+    "Archive attempts03/04: full archive comparison and early opener cleanup passed; unused auxiliary lifetime context rejected empty callbacks before runtime operation.",
+    "Archive attempt05: failure-only callbacks satisfy the unused auxiliary constructor; empty/unpublished state verified. No production source change was needed."
+  ],
+  "limits": [
+    "New C++ service interfaces over actual storage; original FH3/SEH, arbitrary native stack aliases and simultaneous cleanup failures remain unproven.",
+    "Whole-archive opener is an explicit boundary returning a genuine encoded memory stream; existing memory/string dependencies use recorded source ABI bridges.",
+    "Runtime factory/provider/archive/directory/stream destruction wiring is source-only; runtime manager-open and physical-open paths are not covered by this fixture.",
+    "Auxiliary physical context remains empty/unpublished; all reached archive/string/memory work uses the existing actual publication/pool/counter domain.",
+    "Composition owner must supply consistent borrowed contexts; adapters do not independently enforce shared graph identity.",
+    "Memory type-ID startup was not executed; borrowed native BSS descriptor words remain zero.",
+    "MPKG provider entry-open/compression dispatch remains unsupported. No installed .mpkg, .mpak or .pak extension was found by the current unignored recursive scan.",
+    "No game startup, gameplay, full application or binary replacement claim."
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "promotion_gate_source_head_validation": {
+    "head": "9be685a1ed110b290766f66e7398a848bb78800e",
+    "current_source_header_object_pins": 533,
+    "unique_linked_objects": 155,
+    "all_frozen_files_rehashed": 1814,
+    "helper_hashes": {
+      "prepare_inputs.py": "2f967273dc287dfaa50d08f92de05e4deb0ca96bd5ec4e964cfeef8653ec1421",
+      "validate.py": "3775d67b692267b3c6f5bf615bb20aaab7af7a12108a741b4c694388892aadeb",
+      "build_proof.py": "45f40d54f995443ece19e193ec97d2a9921bce261676115b5632ec81dac9a9ad"
+    },
+    "result": "local/native-ax-validator/result01.json",
+    "sha256": "d84d90fa549adfd02c8eef673d3115e00219bf2928c1301f5bd99617cd29c64a",
+    "scope": "Historical all-four-family public gate pass at the fixture source HEAD; publication repeats sealed strict build and gate for the final integration HEAD."
+  }
+}

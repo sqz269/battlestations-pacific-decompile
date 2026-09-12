@@ -9,8 +9,8 @@ raw string pool, memory conversion and retained memory owners. The prior
 
 | Routine | Original ABI | Source coverage |
 |---|---|---|
-| BB9920, 747 bytes | ECX archive, stacked original string header, EAX archive, RET4 | Complete source body; independent review and combined fixture pending |
-| BB9C10, 145 bytes | ECX archive, no stacked arguments, RET | Complete source body including the restored post-free tail; fixture pending |
+| BB9920, 747 bytes | ECX archive, stacked original string header, EAX archive, RET4 | Complete source body; independent review and combined fixture passed |
+| BB9C10, 145 bytes | ECX archive, no stacked arguments, RET | Complete source body including the restored post-free tail; fixture passed |
 | BEF610, 7 bytes | ECX memory stream, EAX backing data, RET | Existing semantic implementation strengthened with the exact raw-owner leaf ABI |
 
 Construction zeroes the embedded string before its self-header test, then
@@ -56,10 +56,11 @@ These are new C++ service interfaces over actual storage. Native FH3/SEH identit
 arbitrary aliases into native stack spills and simultaneous cleanup failures
 remain outside their proof. Nested `NativeStringStorage::release` retains its
 existing noexcept contract. No installed `.mpkg` archive was found in the current
-installation, so the planned comparison uses explicitly generated archive bytes.
+installation, so the completed comparison uses explicitly generated archive bytes.
 No original-game startup or gameplay claim follows from it.
 
 Evidence is in `reports/native_mpkg_archive.json`,
 `reports/native_ax_flow_repairs.json` and
-`reports/native_ax_function_definitions.json`. Final integrated build and fixture
-results will be recorded after the worker sources are merged.
+`reports/native_ax_function_definitions.json`. The merged strict Win32 build, both
+CTests and full generated-archive comparison passed. See
+`reports/native_ax_integration.json` for exact source-head pins and proof limits.

@@ -479,5 +479,31 @@
     "No archive load, native archive parser, installed archive, concurrency, application runtime or game proof",
     "Explicit source interfaces do not preserve native stack/EH spill aliases"
   ],
-  "ghidra_mutations": "none by worker; only primary locked body repairs described above"
+  "ghidra_mutations": "none by worker; only primary locked body repairs described above",
+  "integrated_primary_validation": {
+    "build": {
+      "source_head": "9be685a1ed110b290766f66e7398a848bb78800e",
+      "strict_win32": true,
+      "ctests_passed": 2,
+      "proof": "local/native-ax-build01-proof.json",
+      "proof_sha256": "59f04b88f4f63ea69aa8f247be6516b175423964a91a51c1bd09c0b3fa3df584",
+      "log": "local/native-ax-integrated-build01.log",
+      "log_sha256": "a294fec69fe17a588635498d8d16fe4e5f27328e4222540f09dee4346d93ce7b",
+      "bsp_core_sha256": "2742ad80671a76d7ee665b88e15f083da50c3623a817dd47b735ba816b1b9713",
+      "scope": "Merged source in own worktree, temporary sibling include removed; final promoted HEAD independently rebuilt and gated."
+    },
+    "fixture": {
+      "family": "provider",
+      "attempt": "local/native-ax-integrated/provider/attempt01",
+      "execution_head": "9be685a1ed110b290766f66e7398a848bb78800e",
+      "native_source_comparisons": 3,
+      "checks": 1297,
+      "source_only_checks": 2,
+      "frozen_input_files": 509,
+      "linked_archive_equal_objects": 123,
+      "before_sha256": "ff41e9a30d532ac6bd7abde82efc43d7dc844c99c6675c785949afb77608640c",
+      "after_sha256": "1a99e46b28e2232b8a1db861e8f096750dcb9a19e9e0d7536c639dda156da09c"
+    },
+    "integration_report": "reports/native_ax_integration.json"
+  }
 }

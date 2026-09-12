@@ -14,10 +14,36 @@
   ],
   "validation": {
     "preliminary_strict_win32_build": "local/native-ax-preliminary-build02.log; passed with both CTests using actual sibling source paths through a temporary ignored CMake include",
-    "integrated_build": "pending committed worker merge and removal of temporary CMake include",
-    "independent_review": "pending",
-    "source_binding_fixture": "pending",
-    "game_validated": false
+    "integrated_build": {
+      "source_head": "9be685a1ed110b290766f66e7398a848bb78800e",
+      "strict_win32": true,
+      "ctests_passed": 2,
+      "proof": "local/native-ax-build01-proof.json",
+      "proof_sha256": "59f04b88f4f63ea69aa8f247be6516b175423964a91a51c1bd09c0b3fa3df584",
+      "log": "local/native-ax-integrated-build01.log",
+      "log_sha256": "a294fec69fe17a588635498d8d16fe4e5f27328e4222540f09dee4346d93ce7b",
+      "bsp_core_sha256": "2742ad80671a76d7ee665b88e15f083da50c3623a817dd47b735ba816b1b9713",
+      "scope": "Merged source in own worktree, temporary sibling include removed; final promoted HEAD independently rebuilt and gated."
+    },
+    "independent_review": {
+      "manifest_sha256": "4dc9a05c1610e6b0294d10f4cbb39661bcb077250da33bd386e70bf1f4936072",
+      "retained": "local/native-ax-worker-deliveries/runtime_review/lab"
+    },
+    "source_binding_fixture": {
+      "family": "archive",
+      "attempt": "local/native-ax-integrated/archive/attempt05",
+      "execution_head": "9be685a1ed110b290766f66e7398a848bb78800e",
+      "native_source_comparisons": 1,
+      "checks": 4566,
+      "source_only_checks": 2,
+      "frozen_input_files": 622,
+      "linked_archive_equal_objects": 152,
+      "before_sha256": "24d0280b4500dd19768bb5107362e25580ea99aac51952b66568e939c8c10a11",
+      "after_sha256": "46f091ca662bfeccb58fa7f5e0c89daee9441e77c70415f9924033e010c03280"
+    },
+    "game_validated": false,
+    "strict_win32_build": "passed",
+    "integration_report": "reports/native_ax_integration.json"
   },
   "limits": [
     "These bindings are new source interfaces, not recovered native ABI bodies.",

@@ -37,8 +37,8 @@
   "scope": "Read current manager/store530620 at+90; read current manager again/store735B30 at+8C. Enclosing application gate, allocation and calls are separate.",
   "dispatch": "BE18B8 consumes captured target530620 and current publication; verified callback ignores registers and returns. Unknown targets have an explicit source error.",
   "validation": {
-    "strict_win32_build": "pending",
-    "native_fixture": "pending combined composition",
+    "strict_win32_build": "passed",
+    "native_fixture": "Both original RET bodies executed in source-only wiring case; stores and current failure dispatch checked in archive attempt05.",
     "game_validated": false,
     "preliminary_strict_win32_build": {
       "log": "local/native-ax-preliminary-build02.log",
@@ -46,6 +46,18 @@
       "passed": true,
       "ctests_passed": 2,
       "scope": "Actual sibling source paths via temporary ignored CMake include; final integrated build and native fixture pending."
-    }
+    },
+    "integrated_build": {
+      "source_head": "9be685a1ed110b290766f66e7398a848bb78800e",
+      "strict_win32": true,
+      "ctests_passed": 2,
+      "proof": "local/native-ax-build01-proof.json",
+      "proof_sha256": "59f04b88f4f63ea69aa8f247be6516b175423964a91a51c1bd09c0b3fa3df584",
+      "log": "local/native-ax-integrated-build01.log",
+      "log_sha256": "a294fec69fe17a588635498d8d16fe4e5f27328e4222540f09dee4346d93ce7b",
+      "bsp_core_sha256": "2742ad80671a76d7ee665b88e15f083da50c3623a817dd47b735ba816b1b9713",
+      "scope": "Merged source in own worktree, temporary sibling include removed; final promoted HEAD independently rebuilt and gated."
+    },
+    "integration_report": "reports/native_ax_integration.json"
   }
 }

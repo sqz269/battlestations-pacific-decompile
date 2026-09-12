@@ -18,5 +18,6 @@ application callback contract used by the previous mount-registration packet.
 The missing 735B30 function was defined from its exact byte under the Ghidra
 write lock. No new semantic behavior was inferred from its descriptive name.
 See `reports/native_vfs_startup_callbacks.json` and the definition history in
-`reports/native_ax_function_definitions.json`. Combined build/fixture validation
-is pending; this fragment does not establish whole application startup.
+`reports/native_ax_function_definitions.json`. The merged strict Win32 build and both CTests passed. Archive attempt05 checks
+the source installation/dispatch and executes both original RET bodies; this
+fragment does not establish whole application startup.

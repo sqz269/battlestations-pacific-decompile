@@ -322,7 +322,7 @@
       "live_equal_installed_pe": true
     }
   ],
-  "coverage": "Complete actual-storage source bodies; independent assembly review accepted, integrated native fixture pending.",
+  "coverage": "Complete actual-storage bodies; independent assembly review and full generated-archive native/source fixture passed.",
   "original_abi": {
     "00bb9920": "ECX raw34h archive; original8h name-header pointer stacked; EAX owner; RET4.",
     "00bb9c10": "ECX raw34h archive; no stacked arguments; RET; no semantic result.",
@@ -347,8 +347,19 @@
     "The legacy semantic memory_stream.cpp implementation remains historical evidence; the new7-byte raw leaf strengthens its actual-owner ABI."
   ],
   "validation": {
-    "strict_win32_build": "pending integrated build",
-    "native_fixture": "pending",
+    "strict_win32_build": "passed",
+    "native_fixture": {
+      "family": "archive",
+      "attempt": "local/native-ax-integrated/archive/attempt05",
+      "execution_head": "9be685a1ed110b290766f66e7398a848bb78800e",
+      "native_source_comparisons": 1,
+      "checks": 4566,
+      "source_only_checks": 2,
+      "frozen_input_files": 622,
+      "linked_archive_equal_objects": 152,
+      "before_sha256": "24d0280b4500dd19768bb5107362e25580ea99aac51952b66568e939c8c10a11",
+      "after_sha256": "46f091ca662bfeccb58fa7f5e0c89daee9441e77c70415f9924033e010c03280"
+    },
     "game_validated": false,
     "preliminary_strict_win32_build": {
       "log": "local/native-ax-preliminary-build02.log",
@@ -362,7 +373,19 @@
       "manifest_sha256": "2ef58aed2f44fe814b9fb95f11ee450a6b6bfc24e375a5087467f5cce312a9d1",
       "worker_path": "battlestations-pacific-decompile-orch2-mpkg-entry-vector-ax/local/native-ax-archive-review",
       "scope": "BB9920, BB9C10, BEF610 and consumed EH/data evidence; source-interface scope, no native execution."
-    }
+    },
+    "integrated_build": {
+      "source_head": "9be685a1ed110b290766f66e7398a848bb78800e",
+      "strict_win32": true,
+      "ctests_passed": 2,
+      "proof": "local/native-ax-build01-proof.json",
+      "proof_sha256": "59f04b88f4f63ea69aa8f247be6516b175423964a91a51c1bd09c0b3fa3df584",
+      "log": "local/native-ax-integrated-build01.log",
+      "log_sha256": "a294fec69fe17a588635498d8d16fe4e5f27328e4222540f09dee4346d93ce7b",
+      "bsp_core_sha256": "2742ad80671a76d7ee665b88e15f083da50c3623a817dd47b735ba816b1b9713",
+      "scope": "Merged source in own worktree, temporary sibling include removed; final promoted HEAD independently rebuilt and gated."
+    },
+    "integration_report": "reports/native_ax_integration.json"
   },
   "flow_repairs": "reports/native_ax_flow_repairs.json",
   "function_definitions": "reports/native_ax_function_definitions.json",

@@ -30,11 +30,11 @@ unsupported numeric targets remain explicit source errors.
 
 The MPKG entry-open/compression route is still separate work. Successful archive
 construction and mount registration do not prove entry-open runtime dispatch or
-a runnable application. The planned native/source archive fixture and source-only
-binding checks will be recorded in `reports/native_ax_integration.json`; they do
+a runnable application. The native/source archive fixture and source-only binding checks passed and
+are recorded in `reports/native_ax_integration.json`; they do
 not establish original FH3/SEH compatibility or gameplay.
 
 Follow-up packets: recover the remaining actual MPKG entry-open/stream route,
-then the MPAK factory/provider path used by installed archives, with their real
+then assess the MPAK factory/provider path and its startup registry, with their real
 container and stream dependencies. Recheck current leases and packet evidence
 before assigning those addresses.

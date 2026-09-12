@@ -288,5 +288,31 @@
     "No gameplay validation."
   ],
   "abi_compatible": false,
-  "game_validated": false
+  "game_validated": false,
+  "integrated_primary_validation": {
+    "build": {
+      "source_head": "9be685a1ed110b290766f66e7398a848bb78800e",
+      "strict_win32": true,
+      "ctests_passed": 2,
+      "proof": "local/native-ax-build01-proof.json",
+      "proof_sha256": "59f04b88f4f63ea69aa8f247be6516b175423964a91a51c1bd09c0b3fa3df584",
+      "log": "local/native-ax-integrated-build01.log",
+      "log_sha256": "a294fec69fe17a588635498d8d16fe4e5f27328e4222540f09dee4346d93ce7b",
+      "bsp_core_sha256": "2742ad80671a76d7ee665b88e15f083da50c3623a817dd47b735ba816b1b9713",
+      "scope": "Merged source in own worktree, temporary sibling include removed; final promoted HEAD independently rebuilt and gated."
+    },
+    "fixture": {
+      "family": "vector",
+      "attempt": "local/native-ax-integrated/vector/attempt01",
+      "execution_head": "9be685a1ed110b290766f66e7398a848bb78800e",
+      "native_source_comparisons": 10,
+      "checks": 86,
+      "source_only_checks": 1,
+      "frozen_input_files": 88,
+      "linked_archive_equal_objects": 3,
+      "before_sha256": "09a44fe91b2e6b192b84f03e7a46ccb4567debc5af80b70c494c4eaaca95608c",
+      "after_sha256": "9d5eee6ca5ee4f22796cdbd0ecf345cb6d932a433c1b4b7a5afcbf19e96ca232"
+    },
+    "integration_report": "reports/native_ax_integration.json"
+  }
 }
