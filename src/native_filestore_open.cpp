@@ -1,4 +1,5 @@
 #include "bsp/native_filestore_open.hpp"
+#include "bsp/native_adopted_substream.hpp"
 
 #include "bsp/native_memory_stream.hpp"
 #include "bsp/native_physical_stream_conversion.hpp"
@@ -53,6 +54,13 @@ void require_physical_slot(std::uint32_t profile, std::uint32_t offset,
     if (word(reinterpret_cast<const void*>(profile), offset) != identity)
         throw std::invalid_argument("Unimplemented native physical stream conversion method");
 }
+void require_substream_slot(std::uint32_t profile, std::uint32_t offset,
+    std::uint32_t identity, const NativeStoredStreamConversionContext& context) {
+    if (!context.adopted_substreams || !context.actual_file_type_ids_0109db58)
+        throw std::invalid_argument("Native adopted substream conversion requires dispatch and file IDs");
+    if (word(reinterpret_cast<const void*>(profile), offset) != identity)
+        throw std::invalid_argument("Unimplemented native adopted substream conversion method");
+}
 
 bool current_type_query(void* owner, std::uint32_t token,
     NativeStoredStreamConversionContext& context) {
@@ -63,6 +71,11 @@ bool current_type_query(void* owner, std::uint32_t token,
         require_physical_slot(profile, 0x0c, 0x00bf4ff0, context);
         return query_native_physical_stream_type_00bf4ff0(token,
             context.actual_physical_type_ids_0109dc30);
+    }
+    if (profile == 0x00d68db0) {
+        require_substream_slot(profile, 0x0c, 0x00bb8b80, context);
+        return query_native_file_stream_type_00bb8b80(token,
+            context.actual_file_type_ids_0109db58);
     }
     auto* const target = pointer(reinterpret_cast<void*>(profile), 0x0c);
     return reinterpret_cast<TypeEntry>(target)(owner, target, token);
@@ -78,6 +91,12 @@ void current_seek_zero(void* owner, NativeStoredStreamConversionContext& context
         (void)seek_native_physical_stream_00bf4f20(owner, 0, 0, 0);
         return;
     }
+    if (profile == 0x00d68db0) {
+        require_substream_slot(profile, 0x1c, 0x00bf10e0, context);
+        (void)seek_native_adopted_substream_00bf10e0(owner, 0, 0, 0,
+            *context.adopted_substreams);
+        return;
+    }
     auto* const target = pointer(reinterpret_cast<void*>(profile), 0x1c);
     reinterpret_cast<SeekEntry>(target)(owner, target, 0, 0, 0);
 }
@@ -90,6 +109,10 @@ std::uint32_t current_length_low(void* owner,
     if (profile == 0x00d691b0) {
         require_physical_slot(profile, 0x30, 0x00bf4f90, context);
         return static_cast<std::uint32_t>(size_native_physical_stream_00bf4f90(owner));
+    }
+    if (profile == 0x00d68db0) {
+        require_substream_slot(profile, 0x30, 0x00bf10a0, context);
+        return static_cast<std::uint32_t>(length_native_adopted_substream_00bf10a0(owner));
     }
     auto* const target = pointer(reinterpret_cast<void*>(profile), 0x30);
     return static_cast<std::uint32_t>(reinterpret_cast<LengthEntry>(target)(owner, target));
@@ -105,6 +128,12 @@ void current_read_once(void* owner, void* data, std::uint32_t count,
         require_physical_slot(profile, 0x24, 0x00bf5030, context);
         (void)read_native_physical_stream_00bf5030(owner, data, count, nullptr,
             *context.physical);
+        return;
+    }
+    if (profile == 0x00d68db0) {
+        require_substream_slot(profile, 0x24, 0x00bf1000, context);
+        (void)read_native_adopted_substream_00bf1000(owner, data, count, nullptr,
+            *context.adopted_substreams);
         return;
     }
     auto* const target = pointer(reinterpret_cast<void*>(profile), 0x24);
