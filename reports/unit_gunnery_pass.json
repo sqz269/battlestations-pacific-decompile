@@ -1,0 +1,313 @@
+{
+  "packet": "cc2_unit_gunnery_pass",
+  "owner": "agent/cc2-unit-gunnery-pass",
+  "docs": [
+    "docs/UNIT_GUNNERY_PASS.md"
+  ],
+  "sources": [
+    "include/bsp/unit_gunnery_pass.hpp",
+    "src/unit_gunnery_pass.cpp"
+  ],
+  "subject": "The unit-side gunnery pass 00864FE0: the tick sub-node at unit+6DCh that carries the weapon director's stance and its two targets, plus the side's recon contacts, down to every gun the unit owns through 00727F10.",
+  "reuses": [
+    "docs/GUN_BOT_TICKS.md for the gun-bot base 0072BBD0, the attach 008FBC80, the six gun bot slots and the 00727F10 / 00728000 fan-outs",
+    "docs/WEAPON_DIRECTOR.md for director+3Ch allowFire, +220h..+223h, +238h fireTarget, vtable[2Ch] = 008364E0 and the ten command slots at +54h",
+    "docs/FIXED_STEP_JOB_WAVES.md for 008759B0, the sub-list walker that calls slot +0Ch with 0.05f",
+    "docs/ENTITY_CLASS_IDS.md for class id 06h the ship base, 0Fh the plane base, and the 0..60h class-id space that makes 61h a full row",
+    "docs/ROBOT_CONFIG.md for load_robot_config_00901610, the producer of the five gun-bot skill descriptors",
+    "docs/PROJECTILE_KINDS.md for projectile kind 0Ah Torpedo and 0Bh DepthCharge"
+  ],
+  "answers": {
+    "caller_and_cadence": "00864FE0 is vtable slot +0Ch of the primary vtable 00D0D360, overriding the gun-bot base's 0071C490 (a bare RET 4). The object is constructed by 00864580 (operator_new(558h)), stored at unit+6DCh and attached to the unit's tick element unit+310h by vtable[+4h] = 00864BD0. docs/FIXED_STEP_JOB_WAVES.md wave 2 has 00875B90 call 008759B0(element, 0.05f), which walks element+1Ch and calls sub->vtable[+0Ch](0.05f). So it runs on every fixed step at dt = 0.05f and self-throttles on this+6Ch >= [GlobalConfig+88h]. Ghidra reports no caller for either the tick or the constructor; the tick is reached only through 00D0D36C and the constructor only through seven direct E8 call sites found by scanning .text.",
+    "unit_gun_enumeration": "Neither the +48h device list nor the +3D0h/+3CCh root array. The pass reads twelve 0Ch-byte records at unit+394h: +0h is the gate it tests at 0086516D and +4h is the head of a singly linked list (next at +4h, gun at +8h) walked at 00865773. The third word at +39Ch is not read.",
+    "what_it_takes_from_the_director": "Four things and no others. (1) director+3Ch allowFire and director+3Dh, through the bridge 008624C0 at 008624CB and 008624F4. (2) director+220h..+223h, the four sub-kind flags, through 008624C0 steps 4 to 7 and the four category lists at 00E0A4F8, 00E0A510, 00E0A520 and 00E0A528. (3) director+238h fireTarget, reached through the this+5Ch policy object's slot +4h = 00863640 -> director->vtable[2Ch] = 008364E0, with a fallback to [director+34h]'s ship's own director. (4) the newest of the ten command slots at director+54h, through 0071EBF0 and 00521EA0, and only while [director+30h] == 1. The packet's guess that it reads the +23Ch gate or the +54h command slots directly is wrong: +23Ch is never read here, and the command slots are reached only through 0071EBF0.",
+    "party_slot_gate_00927f10": "Renamed. 00927F10 is __stdcall(int slot), RET 4, body 00927F10-00927F26, returning the byte at [[00E188A8] + 18CCh + slot*4] + 9. The record is a party slot, not a side, and +9h is 1 when the slot is AI- or mission-held and 0 when a human player holds it. Sole writer found: 004BB220 inside 004BB160. The gate is more often flipped by repointing the slot: FUN_004BB630 points it at a player record (+9 = 0) and FUN_004BB660 points it back at the mission pool (+9 = 1). [gun+1ACh] is the entity's party slot index, defaulted to 8 by BSP_GameEntity_Construct at 00928718; 8 is the no-party sentinel.",
+    "gun_634h_bits": "Refuted the 'a human is aiming this gun' reading. [gun+3F0h] is the owning unit and +634h is a per-unit scripted fire-inhibit mask: bit 0 AA_Flak, bit 1 Artillery, bit 2 Torpedo, bit 3 DC, from the parameter descriptor literal \"All|AA_Flak|Artillery|Torpedo|DC\" at 00CE5214. A set bit means hold fire. Every writer is the constructor (0095CE0B, zero) or the two mission-script actions aSetGunFireEnabled 00465290 (clears at 004652E2, 004652FE, 0046531A, 00465336) and aSetGunFireDisabled 00465350 (sets at 004653A5, 004653C1, 004653DD, 004653F9). No player-input, camera or seat-occupancy context appears in any writer.",
+    "skill_arrays": "Each robot class descriptor is a 0Ch-byte header (vtable, NoTargetTimeUntilRest float written at 00901423, class name pointer) followed by six skill records; every allocation equals 0Ch + 6*stride. The producer is load_robot_config_00901610, which runs Scripts\\datatables\\Robots.lua and stores the descriptors at 009019EB..00901A53. The six skill levels are Stun 0, SPNormal 1, SPVeteran 2, MPNormal 3, MPVeteran 4, Elite 5 from the key literals at 00D18398..00D183CC. The index reaching a bot is unit+390h through unit->vtable[12Ch] = 006D1EC0, defaulted to 1 at 0095CCCC. Who writes unit+390h from the authored scene property is not established."
+  },
+  "functions": [
+    {
+      "address": "00864fe0",
+      "name": "BSP_UnitGunneryAi_Tick",
+      "abi": "__thiscall(this)(float dt), RET 4 at 0086589E, body 00864fe0-008658b8; primary vtable 00d0d360 slot +0ch",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {"address": "0086501d", "native": "00432650", "role": "the global config singleton; +88h is the throttle threshold"},
+        {"address": "0086505d", "native": "00862c30", "role": "age the visibility cache at this+68h by the elapsed time"},
+        {"address": "00865073", "native": "008624c0", "role": "pull the weapon director's stance through the this+64h bridge"},
+        {"address": "008650dd", "native": "00862cd0", "role": "update one live per-target engagement record"},
+        {"address": "008650e6", "native": "00862110", "role": "advance the this+B0h list iterator"},
+        {"address": "0086511a", "native": "00862110", "role": "advance past an erased node"},
+        {"address": "0086512a", "native": "00863bf0", "role": "erase the record whose +18h or +1Ch went null"},
+        {"address": "0086514d", "native": "00403560", "role": "construct the eighty-entry stack candidate array"},
+        {"address": "00865201", "native": "008053c0", "role": "the side's recon slot; +DE8h is the contact list"},
+        {"address": "00865237", "native": "00863990", "role": "score a recon contact for this category, filling the distance"},
+        {"address": "00865248", "native": "00862440", "role": "veto a contact whose unit AI sets +1D4h"},
+        {"address": "0086525d", "native": "00864d90", "role": "the cached visibility test on a recon contact"},
+        {"address": "0086549c", "native": "0071ebf0", "role": "the newest of the director's ten command slots"},
+        {"address": "008654a3", "native": "00521ea0", "role": "resolve that command's target to an entity"},
+        {"address": "008654d4", "native": "00863990", "role": "score the command target before expanding it"},
+        {"address": "008654e5", "native": "00427eb0", "role": "the unit's refreshed world position, the distance origin"},
+        {"address": "00865516", "native": "0063bcd0", "role": "clear the sub-entity scratch list at this+BCh"},
+        {"address": "00865531", "native": "0042ee00", "role": "begin the scratch list"},
+        {"address": "0086553d", "native": "0042edd0", "role": "end the scratch list"},
+        {"address": "00865584", "native": "00864d90", "role": "the visibility test on a command-target sub-entity"},
+        {"address": "0086559f", "native": "00414db0", "role": "refresh a sub-entity's pose before reading +0FCh"},
+        {"address": "008655d5", "native": "0042b2f0", "role": "the distance from the unit to that sub-entity"},
+        {"address": "00865626", "native": "00863990", "role": "score the director's fire target before expanding it"},
+        {"address": "00865642", "native": "00414db0", "role": "refresh the unit's own pose for the second origin"},
+        {"address": "00865679", "native": "0063bcd0", "role": "clear the scratch list again"},
+        {"address": "00865692", "native": "0042ee00", "role": "begin the scratch list"},
+        {"address": "0086569e", "native": "0042edd0", "role": "end the scratch list"},
+        {"address": "008656e5", "native": "00864d90", "role": "the visibility test on a fire-target sub-entity"},
+        {"address": "00865700", "native": "00414db0", "role": "refresh that sub-entity's pose"},
+        {"address": "0086573f", "native": "0042b2f0", "role": "the distance from the unit to that sub-entity"},
+        {"address": "008657c0", "native": "005459e0", "role": "is this gun a torpedo-class launcher, weapon kind 5 or 6"},
+        {"address": "008657e1", "native": "00729b90", "role": "the ammunition's minimum range, applied only against a plane"},
+        {"address": "008657f7", "native": "00729bc0", "role": "does one of the gun's six bot slots accept this target"},
+        {"address": "00865833", "native": "00727f10", "role": "hand the target to the gun, with the is-fire-target flag"},
+        {"address": "00865860", "native": "00864ca0", "role": "add the gun to the target's engagement record, sub-types 2,3,4,6"},
+        {"address": "0086586c", "native": "00728000", "role": "no candidate survived; clear the gun's bots"}
+      ]
+    },
+    {
+      "address": "00864580",
+      "name": "BSP_UnitGunneryAi_Construct",
+      "abi": "__thiscall(this)(), RET 0 at 0086465e, body 00864580-0086465e; returns this in EAX",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {"address": "008645a5", "native": "0072bbd0", "role": "the gun-bot base constructor, argument 0; this class is a gun-bot family node"},
+        {"address": "008645da", "native": "00863570", "role": "allocate the this+B0h list sentinel"},
+        {"address": "00864610", "native": "00864220", "role": "initialise the this+BCh scratch container, element size 28h"},
+        {"address": "00864628", "native": "00bf79f0", "role": "memset one row of the this+0CCh allow table to 1, twelve times"}
+      ]
+    },
+    {
+      "address": "008624c0",
+      "name": "BSP_UnitGunneryDirectorBridge_Apply",
+      "abi": "__thiscall(adapter)(char force), RET 4 at 008625f3, body 008624c0-008625f3",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {"address": "00862581", "native": "00861d70", "role": "push director+222h, the torpedo group, category list 00E0A520"},
+        {"address": "008625a6", "native": "00861cd0", "role": "push director+220h, the artillery group, category list 00E0A4F8"},
+        {"address": "008625cb", "native": "00861d20", "role": "push director+221h, the AA flak group, category list 00E0A510"},
+        {"address": "008625ec", "native": "00861dc0", "role": "push director+223h, the depth-charge group, category list 00E0A528"}
+      ]
+    },
+    {
+      "address": "00863a80",
+      "name": "BSP_UnitGunneryAi_CreateDirectorBridge",
+      "abi": "__thiscall(this)(), RET 0, body 00863a80-00863afe",
+      "coverage": "complete for the allocation and the field writes; the tail after 00863ae0 read as the 008624C0(force = 1) call only",
+      "no_ghidra_function": false,
+      "calls": [
+        {"address": "00863abd", "native": "00bf681b", "role": "operator_new(14h) for the adapter: +0h owner, +4h director, +8h countdown, +0Ch..+10h caches"}
+      ]
+    },
+    {
+      "address": "008636a0",
+      "name": "BSP_UnitGunneryAi_InstallPolicies",
+      "abi": "__thiscall(this)(Entity* unit), RET 4 at 0086376f and 00863765, body 008636a0-0086376f",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {"address": "008636db", "native": "00bf681b", "role": "operator_new(8) for the director-backed fire-target policy, vtable 00D0D324"},
+        {"address": "00863700", "native": "00bf681b", "role": "operator_new(4) for the null fire-target policy, vtable 00D0D314"},
+        {"address": "0086372a", "native": "00bf681b", "role": "operator_new(8) for the class-8 category gate, vtable 00D0D32C"},
+        {"address": "0086374e", "native": "00bf681b", "role": "operator_new(4) for the allow-everything category gate, vtable 00D0D31C"}
+      ]
+    },
+    {
+      "address": "00863990",
+      "name": "BSP_UnitGunneryAi_ScoreCandidate",
+      "abi": "__thiscall(this)(int category, Entity* target, float* outDistance), RET 0Ch at 008639b3, body 00863990-00863a7e",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {"address": "008639a2", "native": "008633d0", "role": "the class and mask admission test"},
+        {"address": "008639d7", "native": "00414db0", "role": "refresh the target's pose"},
+        {"address": "008639e7", "native": "00414db0", "role": "refresh the unit's pose"},
+        {"address": "00863a21", "native": "0042b2f0", "role": "the unit-to-target distance, written through outDistance"},
+        {"address": "00863a60", "native": "007b8ad0", "role": "a plane with no follow target takes the 100.0 penalty at 00D7A220"}
+      ]
+    },
+    {
+      "address": "008633d0",
+      "name": "BSP_UnitGunneryAi_CategoryAcceptsTarget",
+      "abi": "__thiscall(this)(int category, Entity* target), RET 8 at 008633ed and 00863427, body 008633d0-00863427",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {"address": "008633df", "native": "00862820", "role": "the liveness, allow-table and rank-table test"}
+      ]
+    },
+    {
+      "address": "00862820",
+      "name": "BSP_UnitGunneryAi_TargetClassAllowed",
+      "abi": "__thiscall(this)(int category, Entity* target), RET 8 at 00862840, 008628b4 and 008628cb, body 00862820-008628cb",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {"address": "008628a7", "native": "00852820", "role": "categories 8 and 9 need a class-8 target shallow enough"},
+        {"address": "008628be", "native": "00852820", "role": "the same depth test for every category except 7"}
+      ]
+    },
+    {
+      "address": "00864d90",
+      "name": "BSP_UnitGunneryVisibility_Test",
+      "abi": "__thiscall(cache)(Entity* target), RET 4 at 00864dd5 and 00864fc7, body 00864d90-00864fc7",
+      "coverage": "partial: the cache lookup, the aim point and the append; 00864680 and the 00862C00 height term unread",
+      "no_ghidra_function": false,
+      "calls": [
+        {"address": "00864de3", "native": "00414db0", "role": "refresh the target's pose on a cache miss"},
+        {"address": "00864e12", "native": "00432650", "role": "GlobalConfig+90h, the base probe height"},
+        {"address": "00864e48", "native": "00862c00", "role": "a predicate on [[target+538h]+50h] selecting the height term"},
+        {"address": "00864e6d", "native": "00432650", "role": "GlobalConfig+98h, the height scale"},
+        {"address": "00864e80", "native": "00432650", "role": "GlobalConfig+90h again, as the clamp base"},
+        {"address": "00864e8f", "native": "00415550", "role": "clamp the height term"},
+        {"address": "00864ed3", "native": "00864680", "role": "the visibility test itself, against the computed aim point"},
+        {"address": "00864ede", "native": "00432650", "role": "GlobalConfig+0A0h on a hit, +0A4h on a miss: the entry's TTL"},
+        {"address": "00864f1e", "native": "00bd2f10", "role": "jitter the TTL"},
+        {"address": "00864f42", "native": "00bf55be", "role": "grow the entry array when it is full"},
+        {"address": "00864f8b", "native": "00bf6989", "role": "free the old entry array"}
+      ]
+    },
+    {
+      "address": "00864ca0",
+      "name": "BSP_UnitGunneryAi_AddGunToTargetRecord",
+      "abi": "__thiscall(this)(Entity* target, Gun* gun), RET 8 at 00864d7d, body 00864ca0-00864d83",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {"address": "00864cd0", "native": "00863b10", "role": "find the target's record in the this+B0h list"},
+        {"address": "00864cf4", "native": "00bf681b", "role": "operator_new(8Ch) for a new record"},
+        {"address": "00864d17", "native": "00864880", "role": "build the record from the unit and the target"},
+        {"address": "00864d3e", "native": "00864160", "role": "insert the record into the list"},
+        {"address": "00864d6a", "native": "00862660", "role": "register the gun with the record"}
+      ]
+    },
+    {
+      "address": "00729bc0",
+      "name": "BSP_Gun_BotSlotAcceptsTarget",
+      "abi": "__thiscall(gun)(Entity* target), RET 4 at 00729bfd, 00729d13 and 00729d25, body 00729bc0-00729d27",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {"address": "00729c20", "native": "00414db0", "role": "refresh the target's pose"},
+        {"address": "00729c30", "native": "00414db0", "role": "refresh the gun's pose"},
+        {"address": "00729c7a", "native": "0042b2f0", "role": "the gun-to-target distance, tested against the ammunition's +60h maximum range"}
+      ]
+    },
+    {
+      "address": "00863640",
+      "name": "BSP_UnitGunneryTarget_DirectorFireTarget",
+      "abi": "__thiscall(policy)(), RET 0 at 00863691 and 00863695, body 00863640-00863695; vtable 00D0D324 slot +4h",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {"address": "00863664", "native": "007788d0", "role": "resolve [director+34h] to an entity for the leader fallback"}
+      ]
+    },
+    {
+      "address": "00727bd0",
+      "name": "BSP_GunneryTargetRanks_Build",
+      "abi": "__cdecl(), RET 0, body 00727bd0-00727c24; sole caller 004DDB90, the game singleton constructor",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": []
+    },
+    {
+      "address": "00864380",
+      "name": "BSP_UnitGunneryAi_Destruct",
+      "abi": "__thiscall(this)(), body 00864380-0086454f; re-installs 00D0D360 and 00D0D348 then destroys +5Ch, +60h, +68h and +64h",
+      "coverage": "partial: the vtable re-install and the four member destructions",
+      "no_ghidra_function": false,
+      "calls": [
+        {"address": "008643eb", "native": "00bf6989", "role": "free the visibility cache's entry array at [this+68h]+4h"},
+        {"address": "008643f4", "native": "00bf65ac", "role": "free the visibility cache itself"},
+        {"address": "00864400", "native": "00bf65ac", "role": "free the director bridge at this+64h"}
+      ]
+    },
+    {
+      "address": "00927f10",
+      "name": "BSP_PartySlot_IsAiHeld",
+      "abi": "__stdcall(int slot), RET 4 at 00927f24, body 00927f10-00927f26; returns the byte at [[00E188A8]+18CCh+slot*4]+9 in AL",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": []
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00864bd0",
+      "name": "BSP_UnitGunneryAi_AttachToTickElement",
+      "end_address": "00864c9c",
+      "note": "__thiscall(this)(TickNode* node), RET 4 at 00864c9a. Primary vtable 00D0D360 slot +4h. Calls 008FBC80 at 00864bd8, operator_new(24h) at 00864bdf, 008636A0 at 00864c18, 00432650 at 00864c1d and 00863A80 at 00864c94. Read from disk bytes; Ghidra lists no function here."
+    },
+    {
+      "address": "008627a0",
+      "name": "BSP_UnitGunneryCategoryGate_Class8",
+      "end_address": "008627ef",
+      "note": "__thiscall(policy)(int category), RET 4 at 008627ed. Vtable 00D0D32C slot +4h. Category 7 requires 008527E0([policy+4]) at 008627af; categories 1, 2, 5 and 6 require 008527A0 at 008627df; every other category is refused. Read from disk bytes; Ghidra lists no function here."
+    }
+  ],
+  "corrections": [
+    {
+      "document": "docs/GUN_BOT_TICKS.md open question 5",
+      "was": "Whether bit 1 of [unit+634h] really means a human is aiming this gun; three ticks read three different bits of the same dword.",
+      "is": "The four bits are a scripted per-category fire inhibit, set meaning hold fire: bit 0 AA_Flak, bit 1 Artillery, bit 2 Torpedo, bit 3 DC. No writer has any player-input, camera or seat-occupancy context.",
+      "evidence": "The parameter descriptor literal \"All|AA_Flak|Artillery|Torpedo|DC\" at 00CE5214 with the four name literals at 00CE5448..00CE5460; the constructor's zero at 0095CE0B; aSetGunFireEnabled 00465290 clearing at 004652E2, 004652FE, 0046531A and 00465336; aSetGunFireDisabled 00465350 setting at 004653A5, 004653C1, 004653DD and 004653F9; the action names proven from the registration chain at 00462655 and 0046285C."
+    },
+    {
+      "document": "docs/GUN_BOT_TICKS.md section 5 step 4 and the ledger name for 00927F10",
+      "was": "00927F10 named BSP_Side_AutoEngageEnabled, described as a per-side auto-engage byte.",
+      "is": "The expression is right and the meaning is not. The record is a party slot, and +9h is 1 when the slot is AI- or mission-held and 0 when a human player holds it. The gate therefore means the gun's party is not player-controlled.",
+      "evidence": "004BB220 writes 1 inside 004BB160, one iteration per mission-party entry; 0076C86F requires the joining player's record to have +9 == 0 before a claim; FUN_004BB630 and FUN_004BB660 flip the pointer at [game+18CC+slot*4] between the player pool and the mission pool."
+    },
+    {
+      "document": "docs/HUD_CENTRAL_UPDATES.md line 238",
+      "was": "00927F10(unit, [unit+1ACh]) - two arguments.",
+      "is": "00927F10 is __stdcall with one stack argument and no ECX input, RET 4.",
+      "evidence": "Body 00927F10-00927F26 is five instructions: MOV EAX,[ESP+4]; MOV ECX,[00E188A8]; MOV EDX,[ECX+EAX*4+18CCh]; MOV AL,[EDX+9]; RET 4. The call site 008FFA98 is push eax; call 0x927f10 with ECX never loaded."
+    },
+    {
+      "document": "docs/GUN_BOT_TICKS.md section 8 item 2",
+      "was": "00864FE0, the unit-side gunnery pass, which reads the director through entity->vtable[114h]().",
+      "is": "It reads the director through unit->vtable[140h]() first, which is 0047F320, an identity cast, and then vtable[114h](). It reads two different targets from the director: the standing fire target through the this+5Ch policy, and the newest command slot through 0071EBF0. director+23Ch and director+3Ch are never read by the tick itself; +3Ch reaches it through the 008624C0 bridge instead.",
+      "evidence": "00865456..0086549C for the chain, 00865442 for the policy call, 0047F320 is mov eax,ecx; ret, and 00863640 is the policy's slot +4h."
+    },
+    {
+      "document": "docs/GUN_BOT_TICKS.md section 4, the skill records",
+      "was": "Offsets stated against the descriptor pointer because no producer for the array base was read.",
+      "is": "The descriptor is a 0Ch-byte header (vtable, NoTargetTimeUntilRest, class name) followed by exactly six skill records, so every documented offset is 0Ch + field. The producer is load_robot_config_00901610 reading Scripts\\datatables\\Robots.lua.",
+      "evidence": "00901423 writes the +4h float; every allocation equals 0Ch + 6*stride (E4h = 0Ch + 6*24h, 6Ch = 0Ch + 6*10h, B4h = 0Ch + 6*1Ch, 84h = 0Ch + 6*14h); the stores at 009019EB..00901A53 are the only writes to the five globals; the reader 008FCA10 indexes desc + index*24h at 008FCA4C."
+    },
+    {
+      "document": "docs/GUN_BOT_TICKS.md section 4, the 008FFA20 class row",
+      "was": "+20h, +24h, +28h, +2Ch are the four lead scalars.",
+      "is": "They are SectionTargetChance, EngineRoomWeight, MagazineWeight and FueltankWeight, subsystem target weights fed to target->vtable[100h].",
+      "evidence": "The Lua key literals at 00D17E90, 00D17E7C, 00D17E6C and 00D17E5C, and the stores at 008FCA65..008FCC0C."
+    },
+    {
+      "document": "docs/GUN_BOT_TICKS.md section 10, the routine table",
+      "was": "00864FE0 contract: partially read - the director lookup and the two bot arms.",
+      "is": "Complete. Body 00864FE0-008658B8, 631 instructions, read in full from the listing.",
+      "evidence": "docs/UNIT_GUNNERY_PASS.md sections 1, 2 and 5."
+    }
+  ],
+  "open_questions": [
+    "The producer of 00E092C8, the twelve authored preference lists 00727BD0 inverts into the rank table, and of GlobalConfig+88h, +90h, +98h, +0A0h and +0A4h. Neither is written anywhere in 00432650-00434500.",
+    "unit+1D4h, the flag 00862440 uses to veto a recon candidate.",
+    "The third word of each category record, unit+39Ch+i*0Ch, and the producer of the twelve engagement ranges at unit+430h.",
+    "00862CD0 and the 8Ch-byte per-target engagement record 00864880 builds. The pass keeps them alive and hands guns to them, but nothing read here consumes one.",
+    "Whether the class-8 category gate 008627A0 really is the submarine. 008527A0 and 008527E0 are unread and no string literal names them.",
+    "The relationship between the category index 0..0Bh used by the pass and the weapon descriptor sub-type [gun+3F4h]+80h used by 00729BC0 and 0072C6A0. They are different enumerations and the mapping was not established.",
+    "Who writes unit+390h, the gun-bot skill index, from the authored scene property. The constructor default at 0095CCCC is the only literal-displacement store found.",
+    "Category 0's authored preference list holds the single value 61h, which is one past the class-id space and lands in category 1's slot 0. Recorded as read; no explanation established."
+  ],
+  "build": "scripts/build.ps1 clean, Win32 Release, warnings as errors. ctest: 1/1 reconstructed_math passed. No new test case added.",
+  "verification": "python tools/verify_report_calls.py reports/unit_gunnery_pass.json"
+}

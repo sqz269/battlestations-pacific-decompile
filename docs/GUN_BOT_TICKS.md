@@ -504,3 +504,26 @@ Both start after `int3` padding (`006DF4B3`-`006DF4BF` and `008FC07F`) and end a
 - `gun+474h` and `008FDBE0`, the `009030C0` step 8 pair.
 - Whether bit `1` of `[unit+634h]` really means "a human is aiming this gun"; three ticks
   read three different bits of the same dword.
+
+## Correction from docs/DIRECTOR_UPDATE_ARMS.md (packet cc2_director_update_arms)
+
+- **Was:** director+221h described as the artillery flag: 'the owning unit's weapon director must have its artillery flag set'
+  **Is:** +221h is aaEnabled; artilleryEnabled is +220h. The gun bot's block also runs when the byte is clear, not set
+  **Evidence:** 008FFAD5 CMP byte ptr [EAX+221h],0 followed by JNZ 008FFAE9, which skips the block when the byte is non-zero
+
+## Correction from docs/UNIT_GUNNERY_PASS.md (packet cc2_unit_gunnery_pass)
+
+## Correction from docs/GUN_BOT_REMAINDER.md (packet cc2_gun_bot_remainder)
+
+- **Was:** 00902C86, 00902CAC, 00902CC7 and 00902CD0 are a second vtable[100h] sample
+  **Is:** those four sites are 008FDAF0, 00438B10, 00438B10 and 00438AA0; the only vtable[100h] call in 00902920 is at 00902BFD
+  **Evidence:** the Ghidra listing of 00902920 contains exactly one [EDX+0x100] load, at 00902bf0, and its CALL EDX is at 00902bfd
+- **Was:** the four lead scalars vtable[100h] takes and the (0.6, 0.6, 0.6) direction every caller passes are open questions
+  **Is:** they are SectionTargetChance, EngineRoomWeight, MagazineWeight and FueltankWeight, and the third argument is a fraction of the hull half-extents rather than a direction
+  **Evidence:** 008FCA10 stores those four Lua keys at TailGunnerBot descriptor +20h, +24h, +28h and +2Ch, which are the four floats 008ffb8c-008ffbaa push; 00816820-008168d5 draws the box against [ship+538h]+0A0h/+0A4h/+0A8h
+- **Was:** 008FBB00(runSpeed, targetVelocity, out) solves the torpedo intercept
+  **Is:** it also takes the shooter and target points in ECX and EDX, and what it solves is an intercept whose linear coefficient is half the exact one, so it under-leads every target that is not stationary and not exactly abeam
+  **Evidence:** 008fbb00's RET 0Ch leaves two register arguments; 008fb8d0 builds b = dot(d, v) at 008fb949-008fb96b, disc = b*b - 4*a*c at 008fba02 and divides by a + a at 008fba40, where the exact form needs 2*dot(d, v)
+- **Was:** the friendly entity is projected forward by 1000 seconds of its own velocity and 004F3730 tests it against the torpedo run
+  **Is:** the projection scales the entity's +94h/+9Ch forward vector, and 004F3730 is a two-dimensional segment crossing that reads only the x and z components
+  **Evidence:** 00900630 and 00900647 read [EDI+0x94] and [EDI+0x9c]; 004f3730 and 004f3630 index only [0] and [1] of all their float arguments

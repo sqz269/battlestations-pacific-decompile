@@ -212,3 +212,18 @@ listing read; their prologue variant is in the trace, their record row is their 
   the report but not read.
 - `Scoring_GetPlayerShotDown` (008bc9b0) and `Scoring_GetUnitTypeShotDown` (008d0140) read the
   kill trees at `+B4h`/`+C0h`, a different family.
+
+## Correction from docs/SCORING_BODIES.md (packet cc2_scoring_bodies)
+
+- **Was:** Scoring_GetUnitTypeShotDown (008d0140) reads the kill trees at +B4h/+C0h
+  **Is:** 008d0140 reads neither kill tree; it copy-assigns one of the commit record's name -> int loss maps at +1ECh (Lua argument 0 true, allied) or +1F8h (false, Japanese) and looks up Lua argument 1 with 004c8b80
+  **Evidence:** 008d0140's body takes its record from 004b4750, selects +1ECh or +1F8h on the boolean and joins at LAB_008d02f0; the two offsets are the archive doc's objective/allied_losses and japanese_losses
+- **Was:** Scoring_GrantBonus (008bb770) writes outside the keyed maps of the 284h scoring record
+  **Is:** 008bb770 writes no part of the scoring record; both callees take ECX = [00e188a8]+650h, the player profile, and append to its vectors at +ACh and +BCh
+  **Evidence:** 008bbb07 MOV ESI,[00e188a8]; 008bbb17 ADD ESI,0x650; 008bbb32 MOV ECX,ESI before 008bbb34 CALL 007fc9f0, and 008bb964/008bb974 before 008bb982 CALL 007fcbc0
+- **Was:** the multiplier table's contents are contract: unread
+  **Is:** the vector at GlobalConfig+2Ch is Globals.Difficulty.ScoreMultipliers, length 3, values 0.25, 0.5, 1.0
+  **Evidence:** 0087d7b0 push_backs the second named sub-table into 0087dc08 LEA EBP,[ESI+0x2c]; the name string is 00d0e50c ScoreMultipliers; the installed scripts/datatables/globals.lua line 11 is { 1/4, 1/2, 1, }
+- **Was:** every keyed binding defaults its slot to the local player index at game+18ECh
+  **Is:** Scoring_GetPlayerShotDown (008bc9b0) is not a keyed binding and defaults its slot to 0, not to game+18ECh
+  **Evidence:** 008bc9b0 initialises the slot local to 0 and only overwrites it when the argument count is 1 and argument 0 is an integer; it never reads game+18ECh

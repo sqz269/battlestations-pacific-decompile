@@ -182,3 +182,15 @@ override send at step 14.
 - `0071F290`'s other arms: what `[+1A4h]` is, and what `vtable[78h]` answers for `0` and `1`.
 - The fourth vtable holding `0071F290` at `00D0BDA4`, and whether `FUN_0084D810`'s subclass also
   uses the hold.
+
+## Correction from docs/DIRECTOR_UPDATE_ARMS.md (packet cc2_director_update_arms)
+
+- **Was:** 0071F290: 'Ghidra has no function here'
+  **Is:** Ghidra has BSP_CommandControllerBase_Update with body 0071F290-0071F3A4
+  **Evidence:** tools/bsp.py ghidra proto 0071F290 returns that body range
+- **Was:** 0071F290 'sends 0071D9E0(2) and 0071D810(2) behind the +4Ch and +44h accepted flags'
+  **Is:** the accepted flag only decides whether the arm runs; the raise happens when vtable[78h] refuses to begin the command
+  **Evidence:** 0071F342 TEST AL,AL / JNZ 0071F34F skips the raise when the begin succeeded; the same shape at 0071F366
+- **Was:** open question: what [+1A4h] is and what vtable[78h] answers for 0 and 1
+  **Is:** +1A4h is the array of ten pointers to the 50h-byte path objects 00720180 allocates; vtable[78h] is 0071F600, argument 0 selects the override pair and non-zero the queue-head pair
+  **Evidence:** 007203AB LEA EDI,[ESI+1A4h] with EDI += 4 per iteration and a count of 10; the ledger entry on 0071F600

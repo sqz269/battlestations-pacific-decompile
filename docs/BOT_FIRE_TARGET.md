@@ -230,3 +230,9 @@ selector in turn refuses to overwrite a locked target at step 15.
 - **Was:** docs/FIXED_STEP_JOB_WAVES.md: '008759B0's sub-list is covered as a rule but its vtable[+0Ch] callee is not'
   **Is:** for a gun's tick node the sub-list holds these bots, so the callee is one of the five ticks and dt is the wave's 0.05f
   **Evidence:** 008fbc8b links the bot into the node at gun+310h with 00876020; the tick is slot +0Ch of every bot vtable (00d1814c, 00d180ac, 00d18244, 00d182bc, 00cfe00c)
+
+## Correction from docs/GUN_BOT_REMAINDER.md (packet cc2_gun_bot_remainder)
+
+- **Was:** the lead-point predictor is called at 008FFBC6
+  **Is:** 008FFBC6 is CALL EAX with EAX = bot->vtable[44h], the call that fetches the fire target; the slot 100h call is the CALL EDX at 008FFC03 on that target
+  **Evidence:** 008ffbad loads [EDX+44h] into EAX, 008ffbc6 calls it, 008ffbcc-008ffbce load [EAX] then [+100h] from the RETURNED object's vtable, and 008ffc01 moves that object into ECX before the CALL EDX at 008ffc03

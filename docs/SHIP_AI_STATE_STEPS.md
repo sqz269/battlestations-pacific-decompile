@@ -407,3 +407,16 @@ corrects two claims above:
 
 `009E23B0`'s two arms are selected by the latch byte at `sub+8h`, and `brain+3FCh` follows the
 arm: 1 on the goal arm (`009E2669`), 0 on the heading arm (`009E25CC`).
+
+## Correction from docs/SHIP_AI_PATH_PLANNER.md
+
+Packet `cc_ai_path_planner` (main 878325ba) read the arrival predicate and corrects the follow-up
+row `ship_ai_arrival_test` above: `00D21634` and `00D21694` are the step slots, not the arrival
+slots. The vtables start at `00D21628` (`movetopos`) and `00D21688` (`moveonpath`) and slot `+2Ch`
+holds `009DAB10` in both, which tail-jumps to `009DA590`, one shared arrival predicate: a moveto
+ends when the controls step has latched `nav+2FEh` and the goal asked for now is within 80 units
+of the goal the active plan was built for. `009E3780` is the plan request-and-revalidate gate
+(two seed nodes, state 1), not the search; the search is `009EC680`, one state transition per
+navigation tick, and the ten independent navigation fields `include/bsp/ship_ai_state_steps.hpp`
+models are the two 68h-byte plan blocks at `nav+224h` and `nav+28Ch` swapped through `nav+2F4h`
+and `nav+2F8h`.
