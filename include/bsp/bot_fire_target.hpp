@@ -154,7 +154,9 @@ inline constexpr float kGunBotHorzAngleNegateBase = -0.0f; // 00D7A208
 inline constexpr std::size_t kGunBotOffFireStateCommitted = 0x58; // 008FEF40 param_1[0x16]
 inline constexpr std::size_t kGunBotOffFireStateRequested = 0x59; // 008FEF40
 inline constexpr std::size_t kGunBotOffTriggerTimer = 0x5c;       // 008FEF40 param_1[0x17]
-inline constexpr std::size_t kGunBotOffGun = 0x68;                // param_1[0x1a]
+inline constexpr std::size_t kGunBotOffGunTurretClasses = 0x68;   // gun cache of the 008FFA20 and 009030C0 classes only;
+                                                                  // 00902920 caches at +5Ch, 008FFF20/006DF520 at +58h; the field
+                                                                  // every gun-bot class shares is bot+50h (docs/GUN_BOT_TICKS.md)
 inline constexpr std::size_t kGunBotOffThinkCountdown = 0x6c;     // param_1[0x1b]
 inline constexpr std::size_t kGunBotOffAimHorz = 0x70;            // param_1[0x1c]
 inline constexpr std::size_t kGunBotOffAimVert = 0x74;            // param_1[0x1d]

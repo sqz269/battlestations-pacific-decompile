@@ -209,3 +209,24 @@ selector in turn refuses to overwrite a locked target at step 15.
 - `009F5290`, the base vtable's first slot, has no Ghidra function and was not decoded.
 - `008053C0 BSP_Recon_EnsureSlot` is recorded as returning `void`; `009F5D30` uses its
   `EAX` as the list owner, so that prototype needs a correction in its own packet.
+
+## Correction from docs/GUN_BOT_TICKS.md (packet cc2_gun_bot_ticks)
+
+- **Was:** docs/BOT_FIRE_TARGET.md section 3: 008FFA20 takes 'a lead point from gun->vtable[100h](out, spread, 00F87574, p0..p3)'
+  **Is:** the predictor is a virtual of the FIRE TARGET entity, not the gun
+  **Evidence:** 008ffaf5 and 008ffb04 fetch the object with bot->vtable[44h] (= 0072bd30, which resolves bot+38h); 008ffbad loads its vtable slot +44h again and 008ffbc6 calls [thatObject + 100h]
+- **Was:** docs/BOT_FIRE_TARGET.md section 3: 009030C0 'takes a different branch when [[gun+3F4h]+95h] is set and the unit answers IsKindOf(5)'
+  **Is:** the object asked IsKindOf(5) is bot+50h, which is the gun, not the unit
+  **Evidence:** 00903154 CALL EAX with ECX from [ESI+0x50]; 008fbc90 sets bot+50h from the tick node's payload, and each class copies it into the field every tick dereferences at gun offsets (008fbec0, 008fbdc0, 006df1f0)
+- **Was:** docs/BOT_FIRE_TARGET.md section 3: 00959C20's '0095A1C4 arm is unread'
+  **Is:** 0095a1c4 is the loop advance of the kind-4 arm, which begins at 0095a1cc; that arm's aim call is 0095a28f and its filter is 0085ab50 at 0095a238
+  **Evidence:** the jump table at 0095a5c0 read through 00959c69-00959c8a
+- **Was:** docs/BOT_FIRE_TARGET.md section 3: 0085ABA0 is called 'at 00959E06 and 0095A0F4'
+  **Is:** those are the return addresses; the CALL instructions are at 00959e01 and 0095a0ef
+  **Evidence:** the listing of 00959c20
+- **Was:** include/bsp/bot_fire_target.hpp: kGunBotOffGun = 0x68 as a shared bot field
+  **Is:** +68h is the gun cache of the 008FFA20 and 009030C0 classes only; 00902920 caches at +5Ch and 008FFF20 and 006DF520 at +58h. The field every class shares is bot+50h
+  **Evidence:** the five slot +4h overrides: 008fbec0, 008fbdc0, 008ff040, 008ff310, 006df1f0
+- **Was:** docs/FIXED_STEP_JOB_WAVES.md: '008759B0's sub-list is covered as a rule but its vtable[+0Ch] callee is not'
+  **Is:** for a gun's tick node the sub-list holds these bots, so the callee is one of the five ticks and dt is the wave's 0.05f
+  **Evidence:** 008fbc8b links the bot into the node at gun+310h with 00876020; the tick is slot +0Ch of every bot vtable (00d1814c, 00d180ac, 00d18244, 00d182bc, 00cfe00c)
