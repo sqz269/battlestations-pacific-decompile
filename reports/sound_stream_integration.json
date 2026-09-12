@@ -1,0 +1,147 @@
+{
+  "packet": "orch4_sound_stream_library_z",
+  "source": [
+    "include/bsp/fmod_configuration_library.hpp",
+    "src/fmod_configuration_library.cpp"
+  ],
+  "document": "docs/SOUND_STREAM_INTEGRATION.md",
+  "new_library_bindings": 6,
+  "dll": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+  "dll_sha256": "31e7451aef6115b0aec353e4e508ff9f0fc14ea3a8957e5ddb805ede911700e8",
+  "installed_exports": [
+    {
+      "export": "FMOD_Sound_GetOpenState",
+      "loaded_address": "1005F7E8",
+      "loaded_prefix_length": 128,
+      "loaded_prefix_bytes": "558bec837d080075056a2558eb278d450b50ff7510ff750cff7508e874eefbff85c075118b4d1485c9740a33d238550b0f95c289115dc21000558bec837d080075056a2558eb11ff7514ff7510ff750cff7508e866eefbff5dc21000837c24040075066a2558c20800e98eeefbff837c24040075066a2558c20800e9b4eefbff",
+      "inspection": "Loaded installed DLL; prefix inspection, not a game-body CALL attribution"
+    },
+    {
+      "export": "FMOD_Sound_GetFormat",
+      "loaded_address": "1005F77B",
+      "loaded_prefix_length": 128,
+      "loaded_prefix_bytes": "558bec837d080075056a2558eb14ff7518ff7514ff7510ff750cff7508e8ededfbff5dc21400837c24040075066a2558c20800e918eefbff837c24040075066a2558c20c00e93eeefbff558bec837d080075056a2558eb11ff7514ff7510ff750cff7508e85aeefbff5dc21000558bec837d080075056a2558eb278d450b50ff",
+      "inspection": "Loaded installed DLL; prefix inspection, not a game-body CALL attribution"
+    },
+    {
+      "export": "FMOD_Channel_SetSpeakerLevels",
+      "loaded_address": "1005FBD5",
+      "loaded_prefix_length": 128,
+      "loaded_prefix_bytes": "558bec837d080075056a2558eb11ff7514ff7510ff750cff7508e8b5ccfbff5dc21000558bec837d080075056a2558eb11ff7514ff7510ff750cff7508e8beccfbff5dc21000837c24040075066a2558c20c00e9dfccfbff837c24040075066a2558c20c00e9f4ccfbff837c24040075056a2558eb12837c2408000f95c050ff",
+      "inspection": "Loaded installed DLL; prefix inspection, not a game-body CALL attribution"
+    },
+    {
+      "export": "FMOD_Channel_SetPriority",
+      "loaded_address": "1005FC8F",
+      "loaded_prefix_length": 128,
+      "loaded_prefix_bytes": "837c24040075066a2558c20800e91acdfbff837c24040075066a2558c20800e92ccdfbff837c24040075066a2558c20c00e94acdfbff837c24040075066a2558c20c00e95fcdfbff837c24040075066a2558c20800e980cdfbff837c24040075066a2558c20800e992cdfbff837c24040075066a2558c20800e9a4cdfbff837c",
+      "inspection": "Loaded installed DLL; prefix inspection, not a game-body CALL attribution"
+    },
+    {
+      "export": "FMOD_Channel_SetPosition",
+      "loaded_address": "1005FCB3",
+      "loaded_prefix_length": 128,
+      "loaded_prefix_bytes": "837c24040075066a2558c20c00e94acdfbff837c24040075066a2558c20c00e95fcdfbff837c24040075066a2558c20800e980cdfbff837c24040075066a2558c20800e992cdfbff837c24040075066a2558c20800e9a4cdfbff837c24040075066a2558c20800e9b6cdfbff558bec837d080075056a2558eb11ff7514ff7510",
+      "inspection": "Loaded installed DLL; prefix inspection, not a game-body CALL attribution"
+    },
+    {
+      "export": "FMOD_Channel_IsPlaying",
+      "loaded_address": "1005FF32",
+      "loaded_prefix_length": 128,
+      "loaded_prefix_bytes": "558bec837d080075056a2558eb1d8d450b50ff7508e8e5cffbff8b4d0c85c9740a33d238550b0f95c289115dc20800558bec837d080075056a2558eb1d8d450b50ff7508e8e6cffbff8b4d0c85c9740a33d238550b0f95c289115dc20800837c24040075066a2558c20800e9efcffbff837c24040075066a2558c20800e90ed0",
+      "inspection": "Loaded installed DLL; prefix inspection, not a game-body CALL attribution"
+    },
+    {
+      "export": "?isPlaying@Channel@FMOD@@QAG?AW4FMOD_RESULT@@PA_N@Z",
+      "loaded_address": "1001CF31",
+      "loaded_prefix_length": 128,
+      "loaded_prefix_bytes": "558bec8d450850ff7508e80ba304005985c059740c8b4d0c85c97410802100eb0bff750c8b4d08e8b6d804005dc20800558bec8d450850ff7508e8dba204005985c059740c8b4d0c85c97410802100eb0bff750c8b4d08e848d904005dc20800558bec8d450850ff7508e8aba204005985c059740d8b4d0c85c97411d9eed919",
+      "inspection": "Loaded installed DLL; prefix inspection, not a game-body CALL attribution"
+    },
+    {
+      "export": "?getOpenState@Sound@FMOD@@QAG?AW4FMOD_RESULT@@PAW4FMOD_OPENSTATE@@PAIPA_N@Z",
+      "loaded_address": "1001E67C",
+      "loaded_prefix_length": 128,
+      "loaded_prefix_bytes": "558bec8d450850ff7508e80f6805005985c0597511ff75148b4d08ff75108b01ff750cff50685dc21000558bec8d450850ff7508e8e56705005985c05975258b4d088b810c01000085c0740a83f80574056a3758eb0eff75148b01ff7510ff750cff506c5dc21000558bec8d450850ff7508e8a76705005985c059751f8b4d08",
+      "inspection": "Loaded installed DLL; prefix inspection, not a game-body CALL attribution"
+    }
+  ],
+  "byte_output_exports": {
+    "is_playing": {
+      "rva": "0001cf31",
+      "stack_bytes": 8,
+      "calling_convention": "stdcall explicit this and byte output"
+    },
+    "get_open_state": {
+      "rva": "0001e67c",
+      "stack_bytes": 16,
+      "calling_convention": "stdcall explicit this,state,percentage,byte output"
+    }
+  },
+  "validation": {
+    "loaded_export_inspection": true,
+    "strict_win32_release": true,
+    "byte_output_fixture": true,
+    "installed_stream_lifecycle": true,
+    "game_validated": false,
+    "game_installation_modified": false,
+    "existing_ctests_passed": 2,
+    "byte_output_results": {
+      "is_playing": 36,
+      "get_open_state": 36,
+      "canaries_preserved": true,
+      "unused_outputs_preserved": true
+    },
+    "integrated_source_commit": "bc82c02b844f2dacec795d67ac7d89057949a905",
+    "stream_asset": "sound/music/chance.fsb",
+    "stream_length_ms": 163272,
+    "stream_ownership": {
+      "stop_restart": {
+        "opens": 2,
+        "sdk_closes": 2,
+        "host_reclaims": 0,
+        "pending": 0
+      },
+      "raw_manager_drain": {
+        "opens": 2,
+        "sdk_closes": 2,
+        "host_reclaims": 0,
+        "pending": 0
+      },
+      "eof": {
+        "opens": 2,
+        "sdk_closes": 1,
+        "host_reclaims": 1,
+        "pending": 0
+      },
+      "strings_after_each": 0,
+      "fmod_errors_after_each": 0
+    },
+    "table_vfs_failure_cleanup": true
+  },
+  "remaining": [
+    "GameStartupHost phase5 composition with actual load/platform services and shared raw lifetime",
+    "Application render/load sound calls with actual listener storage and current virtual dispatch",
+    "Title music request construction and game/audio validation"
+  ],
+  "host_eof_cleanup": {
+    "source": [
+      "include/bsp/game_sound_runtime.hpp",
+      "src/game_sound_runtime.cpp"
+    ],
+    "policy": "Application-only ownership of host VFS adapters. Capture the actual EventSystem release result and reclaim adapters left after successful shutdown through A7B750; count separately from SDK close callbacks. Native A874D0, A86BF0, A87390 and A7E240 behavior is unchanged.",
+    "failure_policy": "A non-OK EventSystem release takes the existing failed teardown path even when the registry is empty; no unbind is permitted. Registry entries detach before free to avoid address reuse races.",
+    "sdk_evidence": {
+      "event_dll_sha256": "4b6ae7ba8d3da780c23abb5e72a65ea50e5348a60a1b4aef43196e09ae771890",
+      "event_release_virtual_rva": "0001ec10",
+      "c_release_export_rva": "000096e0",
+      "post_release_system_get_version": 37,
+      "post_release_system_get_channels_playing": 37,
+      "callback_count_after_two_seconds_without_host_cleanup": {
+        "opens": 2,
+        "closes": 1
+      },
+      "isolated_post_release_sound_release": "Probe crashed; exception code was not captured. No such call exists in cleanup. Cached Sound_GetLength success after shutdown is not ownership evidence."
+    }
+  }
+}

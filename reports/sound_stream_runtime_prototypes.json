@@ -1,0 +1,221 @@
+{
+  "reason": "Native ABI from verified listing; unused_edx represents an unconsumed register, not an original argument. Stream ctor uses three owned stack DWORDs (8h name plus retained pointer), RET0C.",
+  "entries": [
+    {
+      "address": "00a874d0",
+      "proposed": "void __fastcall BSP_SoundStream_Update(void* self, void* unused_edx, float dt)",
+      "before": "Function: FUN_00a874d0 at 00a874d0\nSignature: undefined FUN_00a874d0(void)\nEntry: 00a874d0\nBody: 00a874d0 - 00a877c8",
+      "apply": "Successfully set prototype for function at 00a874d0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundStream_Update at 00a874d0\nSignature: void __fastcall BSP_SoundStream_Update(void * self, void * unused_edx, float dt)\nEntry: 00a874d0\nBody: 00a874d0 - 00a877c8",
+      "readback_verified": true
+    },
+    {
+      "address": "00a86150",
+      "proposed": "void __fastcall BSP_SoundStream_UpdateLevels(void* self, void* unused_edx, float dt)",
+      "before": "Function: FUN_00a86150 at 00a86150\nSignature: undefined FUN_00a86150(void)\nEntry: 00a86150\nBody: 00a86150 - 00a864eb",
+      "apply": "Successfully set prototype for function at 00a86150 with __fastcall calling convention",
+      "after": "Function: BSP_SoundStream_UpdateLevels at 00a86150\nSignature: void __fastcall BSP_SoundStream_UpdateLevels(void * self, void * unused_edx, float dt)\nEntry: 00a86150\nBody: 00a86150 - 00a864eb",
+      "readback_verified": true
+    },
+    {
+      "address": "00a86b40",
+      "proposed": "int __fastcall BSP_SoundStream_QueryOpenState(void* self)",
+      "before": "Function: FUN_00a86b40 at 00a86b40\nSignature: undefined FUN_00a86b40(void)\nEntry: 00a86b40\nBody: 00a86b40 - 00a86bec",
+      "apply": "Successfully set prototype for function at 00a86b40 with __fastcall calling convention",
+      "after": "Function: BSP_SoundStream_QueryOpenState at 00a86b40\nSignature: int __fastcall BSP_SoundStream_QueryOpenState(void * self)\nEntry: 00a86b40\nBody: 00a86b40 - 00a86bec",
+      "readback_verified": true
+    },
+    {
+      "address": "00a86bf0",
+      "proposed": "void __fastcall BSP_SoundStream_Stop(void* self)",
+      "before": "Function: FUN_00a86bf0 at 00a86bf0\nSignature: undefined FUN_00a86bf0(void)\nEntry: 00a86bf0\nBody: 00a86bf0 - 00a86dd7",
+      "apply": "Successfully set prototype for function at 00a86bf0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundStream_Stop at 00a86bf0\nSignature: void __fastcall BSP_SoundStream_Stop(void * self)\nEntry: 00a86bf0\nBody: 00a86bf0 - 00a86dd7",
+      "readback_verified": true
+    },
+    {
+      "address": "00a86de0",
+      "proposed": "void __fastcall BSP_SoundStream_OnReady(void* self)",
+      "before": "Function: FUN_00a86de0 at 00a86de0\nSignature: undefined FUN_00a86de0(void)\nEntry: 00a86de0\nBody: 00a86de0 - 00a86f30",
+      "apply": "Successfully set prototype for function at 00a86de0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundStream_OnReady at 00a86de0\nSignature: void __fastcall BSP_SoundStream_OnReady(void * self)\nEntry: 00a86de0\nBody: 00a86de0 - 00a86f30",
+      "readback_verified": true
+    },
+    {
+      "address": "00a864f0",
+      "proposed": "void __fastcall BSP_SoundStream_SetGain(void* self, void* unused_edx, float gain)",
+      "before": "Function: FUN_00a864f0 at 00a864f0\nSignature: undefined FUN_00a864f0(void)\nEntry: 00a864f0\nBody: 00a864f0 - 00a864fd",
+      "apply": "Successfully set prototype for function at 00a864f0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundStream_SetGain at 00a864f0\nSignature: void __fastcall BSP_SoundStream_SetGain(void * self, void * unused_edx, float gain)\nEntry: 00a864f0\nBody: 00a864f0 - 00a864fd",
+      "readback_verified": true
+    },
+    {
+      "address": "00a86670",
+      "proposed": "void __fastcall BSP_SoundStream_SetRowGain(void* self, void* unused_edx, int index, float gain)",
+      "before": "Function: FUN_00a86670 at 00a86670\nSignature: undefined FUN_00a86670(void)\nEntry: 00a86670\nBody: 00a86670 - 00a8668e",
+      "apply": "Successfully set prototype for function at 00a86670 with __fastcall calling convention",
+      "after": "Function: BSP_SoundStream_SetRowGain at 00a86670\nSignature: void __fastcall BSP_SoundStream_SetRowGain(void * self, void * unused_edx, int index, float gain)\nEntry: 00a86670\nBody: 00a86670 - 00a8668e",
+      "readback_verified": true
+    },
+    {
+      "address": "00a867b0",
+      "proposed": "void __fastcall BSP_SoundStream_Start(void* self, void* unused_edx, void* name)",
+      "before": "Function: FUN_00a867b0 at 00a867b0\nSignature: undefined FUN_00a867b0(void)\nEntry: 00a867b0\nBody: 00a867b0 - 00a868ac",
+      "apply": "Successfully set prototype for function at 00a867b0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundStream_Start at 00a867b0\nSignature: void __fastcall BSP_SoundStream_Start(void * self, void * unused_edx, void * name)\nEntry: 00a867b0\nBody: 00a867b0 - 00a868ac",
+      "readback_verified": true
+    },
+    {
+      "address": "00a85b50",
+      "proposed": "byte __fastcall BSP_SoundStream_AdvanceRow(void* self, void* unused_edx, float dt)",
+      "before": "Function: FUN_00a85b50 at 00a85b50\nSignature: undefined FUN_00a85b50(void)\nEntry: 00a85b50\nBody: 00a85b50 - 00a85bf0",
+      "apply": "Successfully set prototype for function at 00a85b50 with __fastcall calling convention",
+      "after": "Function: BSP_SoundStream_AdvanceRow at 00a85b50\nSignature: byte __fastcall BSP_SoundStream_AdvanceRow(void * self, void * unused_edx, float dt)\nEntry: 00a85b50\nBody: 00a85b50 - 00a85bf0",
+      "readback_verified": true
+    },
+    {
+      "address": "00a87b60",
+      "proposed": "uint __fastcall BSP_SoundSystem_GetStreamSpeakerLayout(void* self)",
+      "before": "Function: BSP_SoundSystem_GetStreamSpeakerLayout at 00a87b60\nSignature: undefined BSP_SoundSystem_GetStreamSpeakerLayout(void)\nEntry: 00a87b60\nBody: 00a87b60 - 00a87b66",
+      "apply": "Successfully set prototype for function at 00a87b60 with __fastcall calling convention",
+      "after": "Function: BSP_SoundSystem_GetStreamSpeakerLayout at 00a87b60\nSignature: uint __fastcall BSP_SoundSystem_GetStreamSpeakerLayout(void * self)\nEntry: 00a87b60\nBody: 00a87b60 - 00a87b66",
+      "readback_verified": true
+    },
+    {
+      "address": "00bd1bb0",
+      "proposed": "void* __fastcall BSP_StringBuilder_AppendInt(void* self, void* unused_edx, int value)",
+      "before": "Function: FUN_00bd1bb0 at 00bd1bb0\nSignature: undefined FUN_00bd1bb0(void)\nEntry: 00bd1bb0\nBody: 00bd1bb0 - 00bd1c93",
+      "apply": "Successfully set prototype for function at 00bd1bb0 with __fastcall calling convention",
+      "after": "Function: BSP_StringBuilder_AppendInt at 00bd1bb0\nSignature: void * __fastcall BSP_StringBuilder_AppendInt(void * self, void * unused_edx, int value)\nEntry: 00bd1bb0\nBody: 00bd1bb0 - 00bd1c93",
+      "readback_verified": true
+    },
+    {
+      "address": "00bd1ca0",
+      "proposed": "void* __fastcall BSP_StringBuilder_AppendUnsignedBits(void* self, void* unused_edx, uint value)",
+      "before": "Function: FUN_00bd1ca0 at 00bd1ca0\nSignature: undefined FUN_00bd1ca0(void)\nEntry: 00bd1ca0\nBody: 00bd1ca0 - 00bd1d83",
+      "apply": "Successfully set prototype for function at 00bd1ca0 with __fastcall calling convention",
+      "after": "Function: BSP_StringBuilder_AppendUnsignedBits at 00bd1ca0\nSignature: void * __fastcall BSP_StringBuilder_AppendUnsignedBits(void * self, void * unused_edx, uint value)\nEntry: 00bd1ca0\nBody: 00bd1ca0 - 00bd1d83",
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a874d0",
+        "prototype": "void __fastcall BSP_SoundStream_Update(void* self, void* unused_edx, float dt)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a874d0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a86150",
+        "prototype": "void __fastcall BSP_SoundStream_UpdateLevels(void* self, void* unused_edx, float dt)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a86150 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a86b40",
+        "prototype": "int __fastcall BSP_SoundStream_QueryOpenState(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a86b40 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a86bf0",
+        "prototype": "void __fastcall BSP_SoundStream_Stop(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a86bf0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a86de0",
+        "prototype": "void __fastcall BSP_SoundStream_OnReady(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a86de0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a864f0",
+        "prototype": "void __fastcall BSP_SoundStream_SetGain(void* self, void* unused_edx, float gain)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a864f0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a86670",
+        "prototype": "void __fastcall BSP_SoundStream_SetRowGain(void* self, void* unused_edx, int index, float gain)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a86670 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a867b0",
+        "prototype": "void __fastcall BSP_SoundStream_Start(void* self, void* unused_edx, void* name)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a867b0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a85b50",
+        "prototype": "byte __fastcall BSP_SoundStream_AdvanceRow(void* self, void* unused_edx, float dt)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a85b50 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a87b60",
+        "prototype": "uint __fastcall BSP_SoundSystem_GetStreamSpeakerLayout(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a87b60 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bd1bb0",
+        "prototype": "void* __fastcall BSP_StringBuilder_AppendInt(void* self, void* unused_edx, int value)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bd1bb0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bd1ca0",
+        "prototype": "void* __fastcall BSP_StringBuilder_AppendUnsignedBits(void* self, void* unused_edx, uint value)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bd1ca0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

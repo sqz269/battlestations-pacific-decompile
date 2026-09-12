@@ -8309,6 +8309,111 @@
       "qualification": "Discovery only. No logical+4C nonnull writer/profile/final-zero terminal established; no source or readiness promotion."
     },
     {
+      "id": "orch4_sound_logical_z",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reconstructed_build_and_focused_fixture_verified",
+      "function_addresses": [
+        "00a77820",
+        "00a77830",
+        "00a77bb0",
+        "00a78230",
+        "00a783f0",
+        "00a785d0",
+        "00a78820",
+        "00a865f0"
+      ],
+      "code_ownership": [
+        "include/bsp/sound_dialog_logical.hpp",
+        "src/sound_dialog_logical.cpp"
+      ],
+      "integration_report": "reports/sound_dialog_logical.json",
+      "discovery_evidence": "docs/SOUND_DIALOG_LOGICAL.md",
+      "qualification": "Source API has explicit external contracts; no drop-in native ABI or gameplay validation. See report for boundary/flow qualifications."
+    },
+    {
+      "id": "orch4_sound_stream_owner_z",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reconstructed_build_and_focused_fixture_verified",
+      "function_addresses": [
+        "00a877d0",
+        "00a87390",
+        "00a87b30",
+        "00a79150",
+        "00a86540",
+        "00a868b0",
+        "00a86990"
+      ],
+      "code_ownership": [
+        "include/bsp/sound_stream_owner.hpp",
+        "src/sound_stream_owner.cpp"
+      ],
+      "integration_report": "reports/sound_stream_owner.json",
+      "discovery_evidence": "docs/SOUND_STREAM_OWNER.md",
+      "qualification": "Source API has explicit external contracts; no drop-in native ABI or gameplay validation. See report for boundary/flow qualifications."
+    },
+    {
+      "id": "orch4_sound_stream_runtime_z",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reconstructed_build_and_focused_fixture_verified",
+      "function_addresses": [
+        "00a874d0",
+        "00a86150",
+        "00a86b40",
+        "00a86bf0",
+        "00a86de0",
+        "00a864f0",
+        "00a86670",
+        "00a867b0",
+        "00a85b50",
+        "00a87b60",
+        "00bd1bb0",
+        "00bd1ca0"
+      ],
+      "code_ownership": [
+        "include/bsp/sound_stream_runtime.hpp",
+        "src/sound_stream_runtime.cpp"
+      ],
+      "integration_report": "reports/sound_stream_runtime.json",
+      "discovery_evidence": "docs/SOUND_STREAM_RUNTIME.md",
+      "qualification": "Source API has explicit external contracts; no drop-in native ABI or gameplay validation. See report for boundary/flow qualifications."
+    },
+    {
+      "id": "orch4_interface_sound_listener_aa",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reconstructed_build_and_focused_fixture_verified",
+      "function_addresses": [
+        "0068a670"
+      ],
+      "code_ownership": [
+        "include/bsp/interface_sound_listener.hpp",
+        "src/interface_sound_listener.cpp"
+      ],
+      "integration_report": "reports/interface_sound_listener.json",
+      "discovery_evidence": "docs/INTERFACE_SOUND_LISTENER.md",
+      "qualification": "Source API has explicit external contracts; no drop-in native ABI or gameplay validation. See report for boundary/flow qualifications."
+    },
+    {
+      "id": "orch4_sound_shared_stream_integration_z",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_shared_raw_lifetime_and_installed_stream_fixture_verified_application_wiring_pending",
+      "function_addresses": [],
+      "code_ownership": [
+        "include/bsp/sound_lifetime_access.hpp",
+        "src/sound_lifetime_access.cpp",
+        "include/bsp/game_sound_dialog_runtime.hpp",
+        "src/game_sound_dialog_runtime.cpp",
+        "include/bsp/game_sound_runtime.hpp",
+        "src/game_sound_runtime.cpp"
+      ],
+      "integration_report": "reports/sound_z_aa_integration.json",
+      "discovery_evidence": "docs/SOUND_STREAM_INTEGRATION.md"
+    },
+    {
       "id": "gui_widget_shared_base_lifetime",
       "packet": "gui_widget_shared_base_lifetime",
       "state": "integrated_bounded_source_build_and_scoped_fixture_evidence",

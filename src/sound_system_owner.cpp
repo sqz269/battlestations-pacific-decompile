@@ -8,24 +8,7 @@ namespace {
 
 // Capture the first manager's section, while native registration gets the
 // manager again. Adjust the native recursion word once around the OS lock.
-class CapturedSoundSection final {
-public:
-    explicit CapturedSoundSection(SingletonLifetimeDomain& domain)
-        : section_(domain.get_manager_00415350()->system_owner().section_10) {
-        if (section_) {
-            singleton_enter_critical_section(*section_);
-            ++section_->recursion_18;
-        }
-    }
-    ~CapturedSoundSection() {
-        if (section_) {
-            --section_->recursion_18;
-            singleton_leave_critical_section(*section_);
-        }
-    }
-private:
-    SystemSingletonCriticalSection* section_;
-};
+using CapturedSoundSection = CapturedSoundLifetimeSection;
 
 class TemporarySoundPath final {
 public:

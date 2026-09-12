@@ -1,0 +1,352 @@
+{
+  "packet": "orch4_game_sound_dialog_z",
+  "status": "composition_build_and_installed_lifecycle_verified_with_host_adapter_recovery",
+  "kind": "application_composition_of_existing_recovered_functions",
+  "source": [
+    "include/bsp/game_sound_dialog_runtime.hpp",
+    "src/game_sound_dialog_runtime.cpp"
+  ],
+  "document": "docs/GAME_SOUND_DIALOG_RUNTIME.md",
+  "analysis_project": "C:/Users/sqz269/bsp.gpr",
+  "analysis_program": "/battlestationspacific.exe",
+  "new_native_addresses": [],
+  "ghidra_mutations": false,
+  "native_abi_compatible": false,
+  "game_validated": false,
+  "dependencies": {
+    "logical": "821149b7",
+    "stream_owner": "33606628",
+    "stream_runtime": "fd7ab818",
+    "shared_lifetime": "1cfc67ad",
+    "installed_fmod_adapter_and_primary_annotations": "9d641559"
+  },
+  "borrowed_services": [
+    "GameSoundRuntime current sound owner, installed FMOD library and F8BBEC live null-data storage",
+    "Existing VFS normalization/candidate resolver and actual VFS-backed sample scanner",
+    "NativeStringStorage from the shared core sample context",
+    "SoundLifetimeAccess from the shared core lifetime bindings, with no private domain",
+    "Same externally supplied alternate publication word used by core and facade",
+    "Caller format-count array, volatile one/rate constants and fallback string",
+    "Strict mission callback translation required only when actual callback230 is nonnull"
+  ],
+  "constant_evidence": {
+    "00e12ef0": {
+      "initial_counts": [
+        0,
+        1,
+        2,
+        6
+      ],
+      "borrowed_reference": true
+    },
+    "00d7a24c": {
+      "initial_bits": "3f800000",
+      "borrowed_volatile_reference": true
+    },
+    "00ce3dc8": {
+      "bytes": "000000403333d33f",
+      "double": 0.30000001192092896,
+      "borrowed_volatile_reference": true
+    },
+    "01090ab4": {
+      "initial_byte": "00",
+      "source": "verified PE zero-filled section extent",
+      "borrowed_cstring": true
+    },
+    "00f8bbee": {
+      "alias": "GameSoundRuntime.words.null_data_00f8bbec + 2",
+      "live": true
+    },
+    "table_temporary_first_channel": "Unobservable scratch zero: appended copy is overwritten before any further external call; not an invented global"
+  },
+  "concrete_routes": [
+    {
+      "service": "alternate construction",
+      "native_entry": "00a79230",
+      "implementation": "construct_sound_alternate_owner_00a79230",
+      "abi": "ECX actual234h; no stack args"
+    },
+    {
+      "service": "alternate update",
+      "native_entry": "00a789c0",
+      "implementation": "update_sound_alternate_owner_00a789c0",
+      "abi": "ECX actual234h; float dt; RET4"
+    },
+    {
+      "service": "alternate scalar deletion",
+      "native_entry": "00a790d0",
+      "implementation": "scalar_delete_sound_alternate_owner_00a790d0",
+      "abi": "ECX actual234h; flags byte; RET4"
+    },
+    {
+      "service": "logical update",
+      "native_entry": "00a78820",
+      "implementation": "update_sound_dialog_logical_00a78820",
+      "abi": "ECX actual5Ch; float dt/gain; RET8"
+    },
+    {
+      "service": "logical start",
+      "native_entry": "00a783f0",
+      "implementation": "start_sound_dialog_logical_00a783f0",
+      "abi": "ECX actual5Ch; no stack args"
+    },
+    {
+      "service": "consuming stream constructor",
+      "native_entry": "00a877d0",
+      "implementation": "construct_sound_stream_00a877d0",
+      "abi": "ECX actual54h; by-value owned8h name then retained table pointer; RET0C",
+      "ownership": "No additional argument copies, retains or cleanup"
+    },
+    {
+      "service": "stream start",
+      "native_entry": "00a867b0",
+      "implementation": "start_sound_stream_00a867b0"
+    },
+    {
+      "service": "stream row gain",
+      "native_entry": "00a86670",
+      "implementation": "set_sound_stream_row_gain_00a86670"
+    },
+    {
+      "service": "stream gain",
+      "native_entry": "00a864f0",
+      "implementation": "set_sound_stream_gain_00a864f0"
+    },
+    {
+      "service": "stream tick",
+      "native_entry": "00a874d0",
+      "implementation": "update_sound_stream_00a874d0"
+    },
+    {
+      "service": "stream stop",
+      "native_entry": "00a86bf0",
+      "implementation": "stop_sound_stream_00a86bf0"
+    },
+    {
+      "service": "stream name resolution",
+      "native_entry": "00bdf4c0",
+      "implementation": "SoundSampleRuntime::resolve_name_00bdf4c0",
+      "coverage": "Existing VFS normalization/ordered-candidate fragment; mutates actual8h name even on false; ignores native AL; diagnostic logging omitted"
+    },
+    {
+      "service": "table load",
+      "native_entry": "00a87060",
+      "implementation": "load_sound_dialog_table_00a87060"
+    }
+  ],
+  "zero_reference_profiles": {
+    "00d5b360": "Actual stream scalar delete A87B30 with flags1",
+    "00d58f80": "Actual table scalar delete A796F0 with flags1",
+    "00d5b074": "Existing actual sample runtime final-reference service; producer evidence 004ED2D0 to A83FD0 to 004E7BB0",
+    "other": "Reached unknown current profile throws; no default success"
+  },
+  "ownership": {
+    "identity": "Captured allocation is tracked separately from current alternate publication",
+    "explicit_shutdown": "Unregister captured allocation, then actual A790D0 deleting call",
+    "flags0": "Run native member teardown once; retain raw234h allocation until facade frees it without another destructor",
+    "startup_failure": "Allow native unwind, remove only captured registration, clear publication only if equal to allocation, free raw234h without incomplete derived destructor",
+    "late_native_allocation_failure": "A79230 has no EH ownership state for completed physical-pair/first-logical allocations before a later raw allocation fails; retains the native leak boundary and cannot safely inspect unwritten tail fields",
+    "teardown_exception": "Poison facade and prevent duplicate native teardown; host destructor terminates on outstanding cleanup failure"
+  },
+  "verification": {
+    "seed_bytes": "8 standard spans match installed executable",
+    "build": "scripts/build.ps1 Release Win32 /W4 /WX passed after merging9d641559",
+    "build_environment": "MSBUILDDISABLENODEREUSE=1",
+    "ctest": {
+      "passed": 2,
+      "failed": 0,
+      "native_math_comparisons": 456
+    },
+    "new_permanent_tests": 0,
+    "report_calls": "Source-only application routes have no original CALL sites; no new native address claim. Existing dependency reports retain native caller/site/callee evidence.",
+    "fixture": {
+      "source": "local/sound_dialog_fixture_z.cpp",
+      "runner": "local/run_sound_dialog_fixture_z.ps1",
+      "generator": "local/make_sound_dialog_fixture_z.py",
+      "body": "local/sound_dialog_fixture_body_z.inc",
+      "build_inputs": "Primary9d641559 bsp_core.lib and bsp_lua511.lib plus direct actual facade source object; no stub library adapter",
+      "link": "/MD /link /MANIFEST:EMBED",
+      "real_services": "Installed FMOD, VFS/Lua, XLive, QPC FrameClock and shared raw singleton manager",
+      "tick": "Actual A87BF0 to GameSoundRuntime alternate update service to facade A789C0",
+      "logical_request": "Stage constructor-produced actual logical configuration fields; mission request producer is not reconstructed here",
+      "audio": "Core startup(true) selects original no-sound output",
+      "asset": "sound/music/Chance.fsb and installed Chance.def",
+      "length_ms": 163272,
+      "normal_runs": [
+        {
+          "shutdown": "explicit_core",
+          "ready_sound_and_channel": true,
+          "successful_initial_stereo_routes": 4,
+          "stop_and_same_stream_restart": true,
+          "fmod_calls": 236,
+          "fmod_errors": 0,
+          "opens": 2,
+          "closes": 2,
+          "tracked_strings": 0
+        },
+        {
+          "shutdown": "actual_raw_singleton_drain",
+          "ready_sound_and_channel": true,
+          "successful_initial_stereo_routes": 4,
+          "stop_and_same_stream_restart": true,
+          "fmod_calls": 236,
+          "fmod_errors": 0,
+          "opens": 2,
+          "closes": 2,
+          "tracked_strings": 0
+        }
+      ],
+      "table_load_failure": {
+        "injection": "existing VFS open for sound/streamed_dialogs.def throws",
+        "passed": true,
+        "result": "Original exception surfaced; alternate publication cleared; registration count and string count return to core baseline; core shutdown empties strings"
+      },
+      "eof_refinement": {
+        "passed": false,
+        "log": "local/sound_dialog_fixture_eof_failure_z.log",
+        "seek_ms": 163172,
+        "state3_keeps_handle_words": true,
+        "manager_releases_logical_and_physical_references": true,
+        "extra_fixture_reference": "Retain one actual reference for observation, then transfer into actual logical slot for native dialog teardown",
+        "sound_get_length_after_dialog_teardown": {
+          "result": 0,
+          "length_ms": 163272
+        },
+        "sound_get_length_after_core_eventsystem_release": {
+          "result": 0,
+          "length_ms": 163272,
+          "qualification": "Diagnostic only: stale freed storage may return cached metadata; not proof of a live sound allocation after release"
+        },
+        "fixture_explicit_sound_release": false,
+        "final_samples": 0,
+        "final_resources": 0,
+        "final_classes": 0,
+        "final_tracked_strings": 0,
+        "final_fmod_errors": 0,
+        "opens": 2,
+        "closes": 1,
+        "remaining": "Native EOF retention produces a 2-open/1-close callback-count imbalance after EventSystemRelease. Post-release metadata query is diagnostic only. Primary/runtime worker investigating SDK ownership and callback attribution; no facade workaround.",
+        "evidence_phase": "historical before host adapter recovery; superseded by integrated_eof_correction"
+      }
+    },
+    "artifact_sha256": {
+      "local/sound_dialog_fixture_z.cpp": "9dbcd9aaaaf0055ccccf0e378f66d678dbffa08b4259c3e109c0acff62f5425f",
+      "local/run_sound_dialog_fixture_z.ps1": "e7a7b14d2368c08f860635e310d40ee84f7e7064a182855aa7e3c1bbbda0d9ba",
+      "local/sound_dialog_fixture_eof_failure_z.log": "972dcf3430718dbc130c88fb95a3db8a888660db18b2b0d6e630a7c02f67f8a2",
+      "local/sound_dialog_fixture_table_failure_z.log": "320b70c7dbcf8b106475957b75f712531594f935bba9061b957471f0154f9d98",
+      "local/game_sound_dialog_build_z.log": "ffce5a088e987b5c25bb42b4783653f7fc4bde635a0262e80a23d98e53b17e7c"
+    }
+  },
+  "limitations": [
+    "Host adapter recovery is an additional application ownership policy after successful SDK release; native EOF Sound/Channel retention remains unchanged",
+    "Mission request producers and nonnull callback230 implementation remain required integration",
+    "Existing BDF4C0 resolver is a documented fragment",
+    "Native late raw allocation failure retains its original leak boundary",
+    "C++ source composition is not original ABI/SEH compatibility or gameplay validation",
+    "Application startup/render-loop wiring and gameplay validation are not established by the installed core/facade fixture"
+  ],
+  "installed_inputs": [
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+      "sha256": "31e7451aef6115b0aec353e4e508ff9f0fc14ea3a8957e5ddb805ede911700e8"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+      "sha256": "4b6ae7ba8d3da780c23abb5e72a65ea50e5348a60a1b4aef43196e09ae771890"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\sound\\streamed_dialogs.def",
+      "sha256": "ed9fedb69f6c45ab4b23e8b822c59e50b5849c3759d0b6e6458c233977b10584"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\sound\\music\\Chance.def",
+      "sha256": "58fcf62c7eb73e24a643552dbd4cb0058dc58014bbb57e424f27eb77cfd62379"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\sound\\music\\Chance.fsb",
+      "sha256": "2a94b23fa8ebc24685de1524feb7b581200d07b193edd2286578c0bcaa72852c"
+    }
+  ],
+  "integrated_eof_correction": {
+    "evidence_checkout": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910",
+    "evidence_head": "79dc6a83",
+    "source_state": "Primary integration source changes reviewed before its commit; exact reviewed bytes identified by hashes",
+    "artifact_sha256": {
+      "src/game_sound_runtime.cpp": "2f47d95ba7d638db0b07d9045fc5248d5cc155b05445902e62aae5032403c648",
+      "include/bsp/game_sound_runtime.hpp": "025085df643a470d2484274270a1ad9a2385b553a9727ec437b7788918ac0bae",
+      "local/sound_dialog_fixture_z.cpp": "c09f9a7835869867ff721e52d00573bc5870fecb6618f7f302fd1b2471c4eb02",
+      "local/sound_dialog_facade_integrated_z.log": "1493de5d124bd59c1eeeb149ca9e517c57474e1e645577ac4049869f5f477295"
+    },
+    "native_behavior": "State3 retains Sound and Channel words; native stream destruction remains unchanged",
+    "sdk_observation": "Real EventSystem release returns OK but produces only one SDK Close callback for two successful Opens in the EOF case",
+    "host_policy": {
+      "tracked_objects": "Only host-owned VFS adapters created by successful GameSoundRuntime open callbacks; never SDK Sound or Channel pointers",
+      "release": "Forward real EventSystem release and capture result without changing native call order",
+      "reclaim": "After successful release returns, remove each remaining tracked adapter and call sound_file_close_00a7b750(handle,nullptr)",
+      "failed_release": "Do not reclaim adapters or dispose callback/library lifetime when SDK release fails",
+      "sdk_sound_release_after_teardown": false,
+      "native_stream_stop_modified": false,
+      "accounting": "file_closes counts actual SDK callbacks; file_reclaims counts host recovery separately; file_handles_pending counts remaining owned adapters",
+      "ownership_invariant": "file_opens == file_closes + file_reclaims and file_handles_pending == 0"
+    },
+    "fixture": {
+      "passed": true,
+      "source": "local/sound_dialog_fixture_z.cpp",
+      "log": "local/sound_dialog_facade_integrated_z.log",
+      "real_services": "Installed FMOD DLLs and Chance.fsb/.def, VFS/Lua, QPC clock, XLive services, actual raw singleton lifetime and concrete core/facade update route",
+      "before_sdk_release": "Assert native state3 handle words and valid Sound_GetLength after native stream destruction",
+      "after_sdk_release": "No stale Sound query or Sound release; inspect host ownership counters",
+      "normal_runs": [
+        {
+          "shutdown": "explicit_core",
+          "opens": 2,
+          "sdk_closes": 2,
+          "host_reclaims": 0,
+          "pending": 0,
+          "tracked_strings": 0,
+          "samples": 0,
+          "resources": 0,
+          "classes": 0,
+          "fmod_errors": 0,
+          "fmod_calls": 236
+        },
+        {
+          "shutdown": "actual_raw_singleton_drain",
+          "opens": 2,
+          "sdk_closes": 2,
+          "host_reclaims": 0,
+          "pending": 0,
+          "tracked_strings": 0,
+          "samples": 0,
+          "resources": 0,
+          "classes": 0,
+          "fmod_errors": 0,
+          "fmod_calls": 236
+        },
+        {
+          "shutdown": "explicit_core_after_native_eof",
+          "opens": 2,
+          "sdk_closes": 1,
+          "host_reclaims": 1,
+          "pending": 0,
+          "tracked_strings": 0,
+          "samples": 0,
+          "resources": 0,
+          "classes": 0,
+          "fmod_errors": 0,
+          "fmod_calls": 379
+        }
+      ]
+    },
+    "historical_evidence": "Original failing eof_refinement and artifact hashes retained; its post-EventSystemRelease GetLength success was cached-metadata diagnostic only, not proof of a live SDK allocation",
+    "coverage": "Installed-library fixture proof for concrete core/facade composition and host adapter recovery; no application startup/render-loop, mission callback or gameplay validation claim",
+    "documentation_only": true,
+    "new_native_addresses": [],
+    "ghidra_mutations": false,
+    "new_build_run_by_documentation_worker": false
+  }
+}
