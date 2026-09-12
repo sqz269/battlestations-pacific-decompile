@@ -70,3 +70,8 @@ The reconstructed interfaces are new C++ interfaces. Populated menu registry
 execution, the enabled pointer/cursor path, renderer presentation, full copied
 Text ownership and gameplay remain unvalidated. Exported bodies, reconstructed
 callers, compilation and scoped fixtures are separate evidence levels.
+
+Exact built/promoted code commit: `c2d0ce5cb02d90c93321055876ec5afe08ab9ab1`. Both CTests
+and all six scoped fixtures passed against its production headers and libraries.
+The final report pins the source, library, fixture and log hashes; initial
+working-tree evidence remains separately archived.
