@@ -1,0 +1,425 @@
+{
+  "packet": "orch3_particle_state_ap",
+  "status": "complete_reconstruction_isolated_compile_and_installed_native_differential_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "read_only_ghidra": true,
+  "routines": [
+    {
+      "address": "00b059c0",
+      "size": 795,
+      "end_inclusive": "00b05cda",
+      "sha256": "dcba5dc547945ac49bac4d8b8cef2df13d7a695997e43225e88f740b05b87a1e",
+      "last_instruction": {
+        "address": "00b05cd8",
+        "size": 3,
+        "text": "ret 8"
+      },
+      "live_disk_equal": true,
+      "name": "BSP_ParticleAxial_InitializeState",
+      "cpp_name": "initialize_native_particle_axial_state_00b059c0",
+      "coverage": "complete",
+      "original_abi": "ECX actual definition; stack(actual6Ch state,actual108h record); RET8; record unread; incidental EAX",
+      "new_abi": "fastcall with required borrowed NativeParticleTypeStateAccess in EDX; void return",
+      "uncertainty": "Descriptive names are hypotheses; original return type is not established (EAX is incidental and caller ignores it); void is a side-effect annotation choice. ECX definition is implicit in original thiscall; native_prototype lists only the two stack arguments. New borrowed EDX means no drop-in binary replacement.",
+      "cpp_symbol": "initialize_native_particle_axial_state_00b059c0",
+      "ghidra_name": "BSP_ParticleAxial_InitializeState",
+      "native_prototype": "void BSP_ParticleAxial_InitializeState(void *state, const void *record)",
+      "native_calling_convention": "__thiscall",
+      "source": "src/native_particle_type_state.cpp",
+      "header": "include/bsp/native_particle_type_state.hpp",
+      "evidence": [
+        "docs/NATIVE_PARTICLE_TYPE_STATE.md",
+        "exports/bsp/functions/00b059c0/assembly.txt",
+        "C:/Users/sqz269/bsp-ap-state/byte_evidence.json",
+        "C:/Users/sqz269/bsp-ap-state/results.json"
+      ]
+    },
+    {
+      "address": "00b077d0",
+      "size": 1045,
+      "end_inclusive": "00b07be4",
+      "sha256": "91c5585303fa4583b7dbd9c4fc8f07797499130455d0c639c3d8a36737ba64fc",
+      "last_instruction": {
+        "address": "00b07be2",
+        "size": 3,
+        "text": "ret 8"
+      },
+      "live_disk_equal": true,
+      "name": "BSP_ParticleFloating_InitializeState",
+      "cpp_name": "initialize_native_particle_floating_state_00b077d0",
+      "coverage": "complete",
+      "original_abi": "ECX actual definition; stack(actual6Ch state,actual108h record); RET8; record unread; incidental EAX",
+      "new_abi": "fastcall with required borrowed NativeParticleTypeStateAccess in EDX; void return",
+      "uncertainty": "Descriptive names are hypotheses; original return type is not established (EAX is incidental and caller ignores it); void is a side-effect annotation choice. ECX definition is implicit in original thiscall; native_prototype lists only the two stack arguments. New borrowed EDX means no drop-in binary replacement.",
+      "cpp_symbol": "initialize_native_particle_floating_state_00b077d0",
+      "ghidra_name": "BSP_ParticleFloating_InitializeState",
+      "native_prototype": "void BSP_ParticleFloating_InitializeState(void *state, const void *record)",
+      "native_calling_convention": "__thiscall",
+      "source": "src/native_particle_type_state.cpp",
+      "header": "include/bsp/native_particle_type_state.hpp",
+      "evidence": [
+        "docs/NATIVE_PARTICLE_TYPE_STATE.md",
+        "exports/bsp/functions/00b077d0/assembly.txt",
+        "C:/Users/sqz269/bsp-ap-state/byte_evidence.json",
+        "C:/Users/sqz269/bsp-ap-state/results.json"
+      ]
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b059f4",
+      "native": "00bd2fc0",
+      "function": "00b059c0",
+      "binding": "same application RandomThreads::next_00bd2fc0, stream primary"
+    },
+    {
+      "address": "00b05a3a",
+      "native": "00affa70",
+      "function": "00b059c0",
+      "binding": "existing exact linear curve evaluator, time zero"
+    },
+    {
+      "address": "00b05a41",
+      "native": "00affae0",
+      "function": "00b059c0",
+      "binding": "existing exact cubic curve evaluator, time zero"
+    },
+    {
+      "address": "00b05a85",
+      "native": "00bd2fc0",
+      "function": "00b059c0",
+      "binding": "same application RandomThreads::next_00bd2fc0, stream primary"
+    },
+    {
+      "address": "00b05aea",
+      "native": "00bd2fc0",
+      "function": "00b059c0",
+      "binding": "same application RandomThreads::next_00bd2fc0, stream primary"
+    },
+    {
+      "address": "00b05b3c",
+      "native": "00bd2fc0",
+      "function": "00b059c0",
+      "binding": "same application RandomThreads::next_00bd2fc0, stream primary"
+    },
+    {
+      "address": "00b05b91",
+      "native": "00bd2fc0",
+      "function": "00b059c0",
+      "binding": "same application RandomThreads::next_00bd2fc0, stream primary"
+    },
+    {
+      "address": "00b05be3",
+      "native": "00bd2fc0",
+      "function": "00b059c0",
+      "binding": "same application RandomThreads::next_00bd2fc0, stream primary"
+    },
+    {
+      "address": "00b05c35",
+      "native": "00bd2fc0",
+      "function": "00b059c0",
+      "binding": "same application RandomThreads::next_00bd2fc0, stream primary"
+    },
+    {
+      "address": "00b05c70",
+      "native": "00bd2fc0",
+      "function": "00b059c0",
+      "binding": "same application RandomThreads::next_00bd2fc0, stream primary"
+    },
+    {
+      "address": "00b05ca4",
+      "native": "00bd2fc0",
+      "function": "00b059c0",
+      "binding": "same application RandomThreads::next_00bd2fc0, stream primary"
+    },
+    {
+      "address": "00b07804",
+      "native": "00bd2fc0",
+      "function": "00b077d0",
+      "binding": "same application RandomThreads::next_00bd2fc0, stream primary"
+    },
+    {
+      "address": "00b0784c",
+      "native": "00affa70",
+      "function": "00b077d0",
+      "binding": "existing exact linear curve evaluator, time zero"
+    },
+    {
+      "address": "00b07853",
+      "native": "00affae0",
+      "function": "00b077d0",
+      "binding": "existing exact cubic curve evaluator, time zero"
+    },
+    {
+      "address": "00b0789a",
+      "native": "00bd2fc0",
+      "function": "00b077d0",
+      "binding": "same application RandomThreads::next_00bd2fc0, stream primary"
+    },
+    {
+      "address": "00b078e3",
+      "native": "00affa70",
+      "function": "00b077d0",
+      "binding": "existing exact linear curve evaluator, time zero"
+    },
+    {
+      "address": "00b078ea",
+      "native": "00affae0",
+      "function": "00b077d0",
+      "binding": "existing exact cubic curve evaluator, time zero"
+    },
+    {
+      "address": "00b07930",
+      "native": "00bd2fc0",
+      "function": "00b077d0",
+      "binding": "same application RandomThreads::next_00bd2fc0, stream primary"
+    },
+    {
+      "address": "00b07991",
+      "native": "00bd2fc0",
+      "function": "00b077d0",
+      "binding": "same application RandomThreads::next_00bd2fc0, stream primary"
+    },
+    {
+      "address": "00b079e3",
+      "native": "00bd2fc0",
+      "function": "00b077d0",
+      "binding": "same application RandomThreads::next_00bd2fc0, stream primary"
+    },
+    {
+      "address": "00b07a38",
+      "native": "00bd2fc0",
+      "function": "00b077d0",
+      "binding": "same application RandomThreads::next_00bd2fc0, stream primary"
+    },
+    {
+      "address": "00b07a8d",
+      "native": "00bd2fc0",
+      "function": "00b077d0",
+      "binding": "same application RandomThreads::next_00bd2fc0, stream primary"
+    },
+    {
+      "address": "00b07adf",
+      "native": "00bd2fc0",
+      "function": "00b077d0",
+      "binding": "same application RandomThreads::next_00bd2fc0, stream primary"
+    },
+    {
+      "address": "00b07b31",
+      "native": "00bd2fc0",
+      "function": "00b077d0",
+      "binding": "same application RandomThreads::next_00bd2fc0, stream primary"
+    },
+    {
+      "address": "00b07b6c",
+      "native": "00bd2fc0",
+      "function": "00b077d0",
+      "binding": "same application RandomThreads::next_00bd2fc0, stream primary"
+    },
+    {
+      "address": "00b07ba0",
+      "native": "00bd2fc0",
+      "function": "00b077d0",
+      "binding": "same application RandomThreads::next_00bd2fc0, stream primary"
+    }
+  ],
+  "table_slots": [
+    {
+      "table": "00d5dcc0",
+      "slot": "18",
+      "target": "00b059c0"
+    },
+    {
+      "table": "00d5df30",
+      "slot": "18",
+      "target": "00b059c0"
+    },
+    {
+      "table": "00d5dcec",
+      "slot": "18",
+      "target": "00b077d0"
+    },
+    {
+      "table": "00d5dfb0",
+      "slot": "18",
+      "target": "00b077d0"
+    }
+  ],
+  "caller_evidence": {
+    "common_call_site": "00b0cadf",
+    "containing_function": "00b0ca40",
+    "setup": "B0CAD5 current state64 definition; B0CAD8 table; B0CADA PUSH record; B0CADB captured table18; B0CADE PUSH state; B0CADF CALL EAX",
+    "direct_callers": [],
+    "all_target_xrefs": [
+      "00d5dcd8",
+      "00d5df48",
+      "00d5dd04",
+      "00d5dfc8"
+    ]
+  },
+  "producer_evidence": [
+    "00b01150 common curve/frame/flag definition slots",
+    "00b058e0 Axial base table and +8C",
+    "00b076f0 Floating base table and +80/+84/+88",
+    "00b00ce0 actual family factory",
+    "00b00770 Floating actual table installation",
+    "00b0ca40 actual 6Ch state initialization and record vector copies"
+  ],
+  "corrections": [
+    {
+      "was": "Decompiler presents one float stack argument and omits the record argument.",
+      "is": "Two pointer stack arguments; first is actual6Ch state and second is accepted/unread actual108h record.",
+      "evidence": "B0CADA PUSH record; B0CADE PUSH state; initializer reads first argument as ESI; both exit branches RET8."
+    },
+    {
+      "was": "An unsigned RandomThreads return could be modeled as unsigned-to-float conversion.",
+      "is": "Raw uint32 next bits undergo signed FILD dword.",
+      "evidence": "B059F9 MOV scratch,EAX; B059FD FILD dword scratch; every factor uses same signed FILD pattern."
+    },
+    {
+      "was": "A reconstructed integer result might replace incidental decompiler uint return.",
+      "is": "Void interface retains native incidental EAX rather than adding a synthetic return.",
+      "evidence": "LAHF modifies AH; frame DIV leaves quotient in EAX; no common explicit native result assignment."
+    }
+  ],
+  "validation": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "relocation_directory_size": 0,
+    "original_curve_spans": [
+      {
+        "address": "00affa70",
+        "size": 99,
+        "end_inclusive": "00affad2",
+        "sha256": "03ded3de90d7bba2632b36e57d10ac6ac4da7a259f94340287bea90e82686224",
+        "last_instruction": {
+          "address": "00affad0",
+          "size": 3,
+          "text": "ret 4"
+        },
+        "live_disk_equal": true,
+        "calls": []
+      },
+      {
+        "address": "00affae0",
+        "size": 119,
+        "end_inclusive": "00affb56",
+        "sha256": "6b80757fff83b19b32d13272e4b85f48476062f424b3b299456f305b128ee85d",
+        "last_instruction": {
+          "address": "00affb54",
+          "size": 3,
+          "text": "ret 4"
+        },
+        "live_disk_equal": true,
+        "calls": []
+      }
+    ],
+    "globals_and_tables": [
+      {
+        "address": "00d7a218",
+        "size": 4,
+        "bytes": "00000000",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00d7a24c",
+        "size": 4,
+        "bytes": "0000803f",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00d5da30",
+        "size": 8,
+        "bytes": "000000000000003e",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00d7a210",
+        "size": 8,
+        "bytes": "000000000000f03f",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00d5daf8",
+        "size": 8,
+        "bytes": "0000006046df913f",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00f8d384",
+        "size": 4,
+        "bytes": "00000000",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00d5dcc0",
+        "size": 44,
+        "bytes": "e030bd00c008b000a064b0002009b0001062b0006076b000c059b0005007b0004007b000d05db000106bb000",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00d5dcec",
+        "size": 44,
+        "bytes": "e030bd00e008b000607db0002009b000807cb000b087b000d077b000a007b0004007b000f07bb0001082b000",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00d5df30",
+        "size": 44,
+        "bytes": "e030bd00e05cb000a064b0002009b0001062b0008e69bf00c059b0005007b0004007b000d05db0008e69bf00",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00d5dfb0",
+        "size": 44,
+        "bytes": "e030bd00607cb000607db0002009b000807cb0008e69bf00d077b000a007b0004007b000f07bb0008e69bf00",
+        "live_disk_equal": true
+      }
+    ],
+    "fixture_folder": "C:\\Users\\sqz269\\bsp-ap-state",
+    "cases": 72,
+    "risk_scenarios": 12,
+    "x87_precision_bits": [
+      24,
+      53,
+      64
+    ],
+    "checked": "All state/record/definition bytes, complete primary RandomState, current counter, incidental EAX, native DIV exception, x87 status/control/preexisting sentinel",
+    "original_execution": "Installed-byte initializers and curve kernels; decoded absolute operands and rel32 calls rebound; one real RandomThreads domain restored between runs",
+    "compiler_flags": "MSVC Win32 /O2 /MD /W4 /WX /fp:strict /link /MANIFEST:EMBED",
+    "commands": [
+      "python C:/Users/sqz269/bsp-ap-state/make_fixture.py",
+      "powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/sqz269/bsp-ap-state/build.ps1",
+      "python C:/Users/sqz269/bsp-ap-state/record_results.py",
+      "python tools/verify_report_calls.py reports/native_particle_type_state.json"
+    ],
+    "captured_subprocess": {
+      "exit_code": 0,
+      "stdout": "PASS 72 full-state native differential cases; 48 first draws have sign bit set; all record bytes, RandomState, counter, incidental EAX, x87 status/control/sentinel match\n",
+      "stderr": "",
+      "source_sha256": {
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-particle-state-ap\\include\\bsp\\native_particle_type_state.hpp": "6dde9c3d68b5325bf994c4cf4a983e992eb371252f665451d7358c0cf949f777",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-particle-state-ap\\src\\native_particle_type_state.cpp": "8ca59c6a94c626cf91cc1bf275f3bf7c970cc6d75a54ec4d3cc2fa8386a703df",
+        "C:\\Users\\sqz269\\bsp-ap-state\\probe.cpp": "04cd9379b52aa9c9ef0b8da76612557cf91cd9d69804ff22ea53846a7507608b",
+        "C:\\Users\\sqz269\\bsp-ap-state\\make_fixture.py": "ed35d618b0967462fec70a09811056ee3912f27c3136299d27cf9d64ea238b0d",
+        "C:\\Users\\sqz269\\bsp-ap-state\\make_source.py": "7ce833f9a5fdad32913ff80e966af921d55565b1b39f3c7cccef16d58b8afd2d",
+        "C:\\Users\\sqz269\\bsp-ap-state\\build.ps1": "daba58223b84370d7a52469c918d60d3abccc74593825ee33725230c0465d0cc",
+        "C:\\Users\\sqz269\\bsp-ap-state\\original_bytes.hpp": "9d350efa3b9ad1c3d94af79e3bdca999b2f0641a0345e58fa9ab54a9016eb674",
+        "C:\\Users\\sqz269\\bsp-ap-state\\bind_original.inl": "04eafa4e295b9fe09dd0ba78c9a9f393aea1aad120aefbc6b77ec586d4f9a054",
+        "C:\\Users\\sqz269\\bsp-ap-state\\probe.exe": "45fe4cdfb9eb070eaef2836f91c08cd4f592e677fd3d499a262875ac5a4ef97b",
+        "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib": "4f9bccfb266252d2318918e11718abf3cda1109fb944249a1bab95fd15977913"
+      }
+    },
+    "call_rows_expected": 26,
+    "call_row_check": "26 call rows checked, 0 failed"
+  },
+  "not_claimed": [
+    "Full project build pending primary integration",
+    "Composed B0CA40 actual-target dispatcher replay pending primary integration",
+    "Original ABI drop-in compatibility",
+    "Game or visual validation",
+    "Sprite, Tracer, Object or other actual particle initializers",
+    "Reconstruction of reused library/service callees"
+  ]
+}
