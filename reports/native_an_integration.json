@@ -2524,5 +2524,38 @@
     "root_wrapper_indirect_rows": 1,
     "boundary": "Verifier skips indirect targets; numeric slots separately pinned by PE data bytes and original instruction fixtures",
     "artifact": "local/native-lua-vfs-binding-calls-verification.log"
+  },
+  "publication_validation": {
+    "integrated_and_build_tested_head": "5881000897969d50b2e689efa9c9ea02695a49dc",
+    "own_source_commit": "be940072",
+    "reviewed_evidence_commit": "250bc7b7",
+    "full_build": "Win32 strict build and both existing CTests pass after concurrent main merges",
+    "scope_hash_verification": {
+      "utc": "2026-09-12T04:16:44.218481+00:00",
+      "checked_head": "5881000897969d50b2e689efa9c9ea02695a49dc",
+      "passed": true,
+      "counts": {
+        "source_sha256": 148,
+        "artifacts_sha256": 93,
+        "worker_artifacts": 235
+      },
+      "installed_assets": 4,
+      "frozen_libraries": 3,
+      "fixture_tested_source_commit": "4ddfd7e4973e1551e489890ed367c83a9e06888b"
+    },
+    "coordination": "Waited for uncommitted shared source registry, then merged committed main. One retry registry conflict resolved by repository registry union; local wrapper now resolves retry conflicts and rebuilds before fast-forward.",
+    "integration_log": "local/native-an-publication-retry.log",
+    "annotation_log": "local/native-an-integration-annotations.json",
+    "push": "Recorded before final evidence commit push; remote publication is checked separately"
+  },
+  "publication_artifacts_sha256": {
+    "local/native-an-publication-integration.log": "657aa746248831aa4537c7b1b471a93ef5e14596127841150502c4a9c5ec4701",
+    "local/native-an-publication-retry.log": "f23f88e8036ca7bc54c3cfd07e741ecc9718625a042a2e4b22d24c1109e15adf",
+    "local/native-an-artifact-verification.json": "f14e2cb8b17572437a9cbdcc598bfd06320cba80c0ae065b0b8204f6b6d31323",
+    "local/native-an-installed-pe-verification.json": "8c949c99b084c86089c8b268674f157b3d2a137186ca0d97af6f3858319f23e9",
+    "local/native-an-integration-annotations.json": "c82d5f977ce619714e7ac9126f5d251e515eeb31daedba3d6b23e08a7e4a4813",
+    "local/integrate_startup_workers.py": "28e87d4fa6e5b3bdc1185deab35b54363910f5581b6d464486f6f4b12f7695a2",
+    "local/check_integrator_retry_guard.py": "f4ea2a5c048949cd8fe6db949774a52cb4ba28f91967f607b354332ae2d6cb68",
+    "local/record_native_an_publication.py": "5559127714258dfd49a5d49a1b87584bc1272907f8a3e482a049076b6186b451"
   }
 }
