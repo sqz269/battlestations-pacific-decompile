@@ -57,6 +57,8 @@ with no active devices reaches no output. Lazy action creation and raw BD0400
 drain still clear all publications, followed by explicit COM reference release.
 Its HWND remains hidden and nonactivating. Source/archive hashes and precise
 validation revisions are recorded in reports/game_input_startup_settings.json.
+The subsequent combined archive, seven focused fixtures and listener-equipped
+facade drain are recorded separately in reports/game_input_actions.json.
 
 The running game and single-instance check are untouched. No device polling,
 ShowCursor, hardware force, game launch or gameplay validation is claimed.
