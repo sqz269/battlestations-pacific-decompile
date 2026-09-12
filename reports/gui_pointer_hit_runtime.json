@@ -1,0 +1,70 @@
+{
+  "packet": "orch5_pointer_hit",
+  "source": "src/gui_pointer_hit_runtime.cpp",
+  "header": "include/bsp/gui_pointer_hit_runtime.hpp",
+  "ghidra": {"project": "C:/Users/sqz269/bsp.gpr", "program": "/battlestationspacific.exe", "read_only": true},
+  "routines": [
+    {"address": "00aa2f10", "name": "GuiPointerHitRuntime::hit_test_00aa2f10", "end_inclusive": "00aa3054", "length": 325, "instructions": 102, "flow_gaps": 0, "original_abi": "ECX manager; no stack arguments; RET", "coverage": "complete normal caller on the canonical owner domain"},
+    {"address": "00aa8bd0", "name": "GuiPointerHitRuntime::hit_test_widget_00aa8bd0", "end_inclusive": "00aa8e32", "length": 611, "instructions": 206, "flow_gaps": 0, "original_abi": "ECX widget; borrowed float[3] origin stack argument; RET4", "coverage": "complete normal caller on the canonical owner domain with stable child membership/order"}
+  ],
+  "corrections": [
+    {"was": "GUI_LAYER_MANAGER.md says horizontal half extent is the winning score and Z is not read", "is": "strict smallest child-origin Z wins; equal depth keeps the first hit", "evidence": "AA8BE6 productX frame+1C; AA8C36 child-originZ frame+2C; current64 AA8CDA RET10; AA8DD3/AA8DE3 load frame+2C"},
+    {"was": "GUI_LAYER_MANAGER.md calls widget18/1C size and20/24 scale", "is": "actual properties are Pivot18/1C and Size20/24", "evidence": "existing GuiWidgetTransform and AAA710/AAAED0 property producers"},
+    {"was": "manager current28 is described as a click/button predicate", "is": "actual A9AAB0 tests query20 codes0..16 and returns on first activity", "evidence": "A9AAB0 full callee body; actual NativeInputDeviceRuntime activity_vslot28"}
+  ],
+  "current68_profile_words": [
+    {"type": "Screen1", "table": "00d5be38", "word": "00d5bea0", "target": "00aa7190"},
+    {"type": "Group2", "table": "00d5cb80", "word": "00d5cbe8", "target": "00aa7190"},
+    {"type": "Text3", "table": "00d5c6c8", "word": "00d5c730", "target": "00aa7190"},
+    {"type": "ClipBox16", "table": "00d5d058", "word": "00d5d0c0", "target": "00aa7190"},
+    {"type": "Section17", "table": "00d5c8e8", "word": "00d5c950", "target": "00aa7190"},
+    {"type": "FrameBox18", "table": "00d5d130", "word": "00d5d198", "target": "00aa7190"},
+    {"type": "Icon6", "table": "00d5c4c0", "word": "00d5c528", "target": "00aa7190"},
+    {"type": "Listbox", "table": "00d5bbf8", "word": "00d5bc60", "target": "00a9ca60", "coverage": "explicit unreconstructed current68 boundary, not inherited base"}
+  ],
+  "host_steps": [
+    {"address": "00aa2f8b", "native": "00aa38e0", "function": "00aa2f10", "contract": "actual page current38 before exclusive filter"},
+    {"address": "00aa2fce", "native": "00aa8bd0", "function": "00aa2f10", "contract": "fresh page payload and zero origin"},
+    {"address": "00aa3038", "native": "00a9aab0", "function": "00aa2f10", "contract": "fresh actual backend first mouse current28"},
+    {"address": "00aa304b", "native": "00aa7190", "function": "00aa2f10", "contract": "fresh hover current68 with null argument; actual shared frame dispatcher"},
+    {"address": "00aa304b", "native": "00a9ca60", "function": "00aa2f10", "contract": "Listbox current68 is a separate unreconstructed body; explicit dispatcher failure"},
+    {"address": "00aa8c62", "native": "00a9e0d0", "function": "00aa8bd0", "contract": "actual child current38 for supported non-Screen profiles"},
+    {"address": "00aa8c62", "native": "00aa38e0", "function": "00aa8bd0", "contract": "actual Screen child current38"},
+    {"address": "00aa8c7a", "native": "00aa8bd0", "function": "00aa8bd0", "contract": "fresh child payload with captured child origin"},
+    {"address": "00aa8cda", "native": "00a9e120", "function": "00aa8bd0", "contract": "supported base current64; left top right bottom pointers; RET10"},
+    {"address": "00aa8cda", "native": "00ab6d70", "function": "00aa8bd0", "contract": "actual Text current64 with same bounds pointers; RET10"}
+  ],
+  "checked_iterator_calls": [
+    {"address": "00aa2f58", "native": "00bf6713", "function": "00aa2f10"},
+    {"address": "00aa2f68", "native": "00bf6713", "function": "00aa2f10"},
+    {"address": "00aa2f71", "native": "00bf6713", "function": "00aa2f10", "unreachable_owner_self_check": true},
+    {"address": "00aa2f7f", "native": "00bf6713", "function": "00aa2f10"},
+    {"address": "00aa2f9c", "native": "00bf6713", "function": "00aa2f10"},
+    {"address": "00aa2fc2", "native": "00bf6713", "function": "00aa2f10"},
+    {"address": "00aa2fd8", "native": "00bf6713", "function": "00aa2f10"},
+    {"address": "00aa3029", "native": "00bf6713", "function": "00aa2f10"},
+    {"address": "00aa8c47", "native": "00bf6713", "function": "00aa8bd0", "unreachable_owner_self_check": true},
+    {"address": "00aa8c55", "native": "00bf6713", "function": "00aa8bd0"},
+    {"address": "00aa8c6d", "native": "00bf6713", "function": "00aa8bd0"},
+    {"address": "00aa8c84", "native": "00bf6713", "function": "00aa8bd0"}
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 Release Win32 /W4 /WX /fp:strict passed; reconstructed_math1/1 passed in the fresh cache",
+    "shared_api_commits": ["c86727bf", "0b0b8e4b"],
+    "shared_api_local_cherry_picks": ["2f961477", "29b41698"],
+    "report_calls": "22 rows covering all19 native CALL sites;0 failed;14 direct rows verified and8 profile-alternative indirect rows require recorded table evidence",
+    "fixture": "ignored local/pointer_hit_fixture.cpp compiled as one TU against built production libraries; actual Group owners: resolved depth8 beats smaller pivot product, equal depth11 keeps first child, live field38 rejects first child; actual empty-registry AA2F10 XY/hover/depth publications passed",
+    "fixture_flags": "MSVC Win32 /W4 /WX /fp:strict /MANIFEST:EMBED",
+    "fixture_unresolved_providers_reached": [],
+    "fixture_limitations": ["explicit child-tree publication, native attachment producer unexercised", "manager nonempty page walk and exclusive filter unexercised", "Text bounds and activity/current68 paths unexercised", "enabled AA3910 and game not exercised"],
+    "fixture_source_sha256": "B13E8089DDF1BE844A5A0DD8412A6A71DF6E947D9F7CA1CEDDAB134B30E2BEB6",
+    "library_sha256": "FBCD1228C3DDAEF3CE486032C6FFECC5DC12E0DB7D9CE5E6819D3FFB6926709E",
+    "object_sha256": "9B36A03DDACEDAAF7F016CC5E82AA32729C03733A9D37BB74961318BD3896468",
+    "source_sha256": "2AC6D5EF888D6DE2AF523C541D194B15F084E776004CAE112DD87A826D744C54",
+    "object_review": "manager function offsets+1F/+29 X MOVSS,+32/+3A Y MOVSS,+41 seed MOVSS,+48 hover clear,+51 depth MOVSS; recursive+3AB hover then+3B0/+3B5 MOVSS depth; mixed comparison and cleanup instructions retained",
+    "fixture_production_map": "local/pointer_hit_fixture.map resolves both callers to bsp_core:gui_pointer_hit_runtime.obj; no shadow production implementation or separate worker production objects",
+    "local_artifacts": ["local/run_pointer_hit_fixture.ps1", "local/pointer_hit_fixture-build.log", "local/pointer_hit_fixture-run.log", "local/pointer_hit-build.log", "local/pointer_hit-object-disasm.txt"],
+    "game": "not run"
+  },
+  "uncertainty": ["semantic C++ API, not native ABI", "native child-list mutation outside stable canonical vector-tree domain", "Listbox current68 A9CA60 is unreconstructed and explicitly rejected, including when reached by parent bubbling", "actual listener/current68 and derived bounds implementations remain shared production dependencies", "checked-STL corruption and native EH not ported"]
+}
