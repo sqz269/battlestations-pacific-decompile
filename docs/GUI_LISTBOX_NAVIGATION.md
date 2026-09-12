@@ -106,10 +106,20 @@ The report records all65 CALL sites:59 numeric rows pass the live verifier,
 with6 explicit symbolic virtual rows. Strict MSVC Win32 `/W4 /WX /fp:strict`
 translation-unit compilation passed. The parent's new resolved-position,
 relative-fitting and current58 providers are required link dependencies.
-Combined build and the focused `local/navigation_probe.cpp` are pending parent
-integration at this implementation snapshot. The fixture extends actual owner
-rows and pooled names; its highlight portion uses actual Group current34/58,
-so it does not claim installed FrameBox texture/geometry or Text rendering.
+The final parent `scripts/build.ps1` Win32 Release build passed both existing
+CTests. The focused `local/navigation_probe.cpp` passed against those production
+libraries with no replacement TUs. It covers actual FC/14C duplicate identities,
+first-selectable/all-hidden preservation, pooled direct-child names, repeated
+nonempty14C replacement, listener suppression/restoration, a page-size change
+during a real attachment callback, native node hierarchy factors, and C540
+Group current34/58 plus null-row/invalid-selector behavior. The report pins the
+build log, library, source, runner and executable hashes. Its Group highlight
+profile does not claim installed FrameBox texture/geometry or Text rendering.
+The existing CTests are math tests, not a navigation native differential.
+
+The inherited resolved-position kernels are reused. Native differential and
+parentless signaling-NaN load/store equivalence remain unverified; the normal
+control/dispatch coverage is not a claim of all-float bit parity.
 
 Full frame40 A9D030, directional84 A9DA60, CF30 width discovery, full properties,
 non-null row insertion and native scalar/copy/teardown remain separate work.
