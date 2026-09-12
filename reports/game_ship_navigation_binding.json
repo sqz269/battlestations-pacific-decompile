@@ -39,6 +39,11 @@
       "address": "009ebf67",
       "native": "009d84e0",
       "function": "009eb660"
+    },
+    {
+      "address": "009e45f3",
+      "native": "00bf7030",
+      "function": "009e4330"
     }
   ],
   "no_ghidra_function": [],
@@ -89,11 +94,89 @@
       "seconds": 16.156280517578125
     },
     "runtime_result": "Startup existing-instance error path, no mission frames; concurrent PID102168 in cc-exe-2s worktree independently confirmed live and left untouched",
-    "new_tracked_tests": 0
+    "new_tracked_tests": 0,
+    "integrated_build": {
+      "result": "MSVC Win32 Release and existing CTest2/2 passed",
+      "log": "local/orch6_final_geometry_build.log",
+      "source_sha256": "9c1f97354417c4db2d800b0f6b01a72bbe0dc06686fe1d3fe5a6abfdacaf0155"
+    },
+    "mission_runtime": {
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\build\\win32\\Release\\bsp_game.exe",
+        "--frames",
+        "360",
+        "--press-start-frame",
+        "3",
+        "--menu-select",
+        "USN01",
+        "--mission-frames",
+        "120",
+        "--mission-frame-seconds",
+        "0.1",
+        "--game-root",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+        "--fmod-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "--fmod-event-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_navigation_geometry.log",
+        "--order-frame",
+        "0",
+        "--order-unit",
+        "Enterprise",
+        "--order",
+        "moveto:Airfield2"
+      ],
+      "exe_sha256": "ef4c308c9bc3fd922191c87441f99c76e88ec8505159cc5f2a887325bdad1b17",
+      "exit": 0,
+      "seconds": 12.674929857254028,
+      "log": "local/orch6_navigation_geometry.log",
+      "frames_requested": 120,
+      "frames_ran": 120,
+      "frames_simulated": 120,
+      "frames_paused": 0,
+      "hull_geometry_updates": 18557,
+      "controls_extent_reads": 17520,
+      "goal_position_reads": 48,
+      "corner_arms": 0,
+      "fmod_errors": 0,
+      "clean_shutdown": true
+    },
+    "independent_review": "Geometry cache lanes, local constructor handoff, order and consumers accepted. Identified sqrt clamp corrected; width remains placeholder."
   },
   "limits": [
-    "No mission runtime proof for these new bindings yet; previous120-frame evidence predates this change.",
-    "Model-box extent path, class+A4 width source, target+7A0 range and neighbour population remain unresolved.",
-    "Ship hull geometry, actual class+570 avoidance-depth input and full pre-step binding are separate dependencies."
-  ]
+    "Runtime proves geometry production and represented consumers during120 USN01 frames, not original gameplay parity.",
+    "Model-present and dirty-pose branches were not exercised; unsupported dirty cache is rejected.",
+    "Unit width remains a placeholder (currently1.0f); model-box extent path, class+A4 producer, target+7A0 range and neighbour population remain unresolved.",
+    "Full009E0270 implementation exists in the core, but actual class+570 depth and other pre-step/profile inputs remain unbound in the executable.",
+    "Zero corner arms in this run; no corner-detour or world collision gameplay validation."
+  ],
+  "hull_geometry_binding": {
+    "implementation": "ship_ai_hull_geometry_009de2f0",
+    "core_evidence": "reports/ship_ai_hull_geometry.json",
+    "inputs": "actual cache-valid unit world pose, constructor local hull scale and shoulder offset, actual application CRT access; represented absent-model path",
+    "order": "constructor uses its local fields before assignment; each controller pre-step refreshes the same persistent geometry before navigation consumers",
+    "consumers": {
+      "goal": "position184",
+      "sector_scan": "position184, forward1AC, beam19C/opposite1A4",
+      "throttle": "position184, forward1AC, beam19C",
+      "clearance": "shoulder18C/194 and forward1AC"
+    },
+    "constant": "00CF1748 bits3FDCCCCCC0000000 are widened0.45f, not double0.45",
+    "sqrt": "009E45F3 now uses recovered CRT sqrt with actual application CRT state; removed positive-only clamp",
+    "full_pre_step_runtime_bound": false
+  },
+  "ghidra_integration": {
+    "applied_functions": 1,
+    "prior_values": "local/ghidra-annotations-20260912T204234Z.json",
+    "existing_comments_preserved": true,
+    "project_saved": true,
+    "exports_refreshed": true,
+    "export_log": "local/orch6_dyn_geometry_exports.log"
+  }
 }

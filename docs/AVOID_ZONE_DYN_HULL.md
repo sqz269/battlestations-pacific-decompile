@@ -112,7 +112,7 @@ Win32 critical-section bindings are explicit fixture boundaries.
 
 All 719 cases passed:13 finite geometric cases and all 706 actual Marshall
 partition pieces supplied by the polygon reconstruction worker. The latter
-come from 21 installed USN01 paths and 2193 native-constructed zone corners.
+come from 21 installed USN01 paths and 2193 zone corners produced by the existing reconstructed scene/zone code.
 The scene SHA256 is
 `9235d9a6364b08cbd5cf3c6735ba9828aba5a6e7b2569300dc2eecf6d8dac17b`;
 the extrusion-input JSON SHA256 is
@@ -124,7 +124,8 @@ reconstructed retain copies were verified after destroying their source
 handles. The serialized retained data matched SHA256
 `069001ff313745494c7d8c6323a3cdda09278e6b3caf68b40bfc4120af50644f`.
 The fixture initializes allocations to A5 to verify that native-unspecified
-vertex 0Eh, seed 13 and padding remain untouched; A5 is not a recovered value
+vertex 0Eh and seed 13 remain untouched. Data padding66h..67h is excluded
+from comparison; A5 is not a recovered value
 or a runtime initializer. Five allocations remain owned by the two native
 pools and the global triangle-array capacity, with no retained hull handles.
 

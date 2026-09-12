@@ -127,3 +127,12 @@ The final `./scripts/build.ps1` MSVC Win32 Release build passed both existing
 CTests after native seed verification. The fixture was relinked against that
 worktree's final `bsp_core.lib` and exited zero with the same 939-case result.
 The live call-report check passed 91/91 rows. No tracked tests were added.
+
+## Installed-data integration evidence
+
+The actual USN01 Marshall scene supplied21 zones in6 groups and2193 points.
+Existing scene/zone reconstruction produced the input corners; the native
+partition comparison produced706 pieces and685 cuts with no unfinished zone.
+All706 extruded pieces also passed the original-byte Dyn hull/copy fixture.
+This validates the installed-data kernels, not scene-runtime collision behavior.
+Input hashes and coordinate boundaries are in reports/avoid_zone_installed_geometry.json.

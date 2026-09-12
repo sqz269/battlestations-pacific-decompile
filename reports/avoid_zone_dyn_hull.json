@@ -1330,7 +1330,23 @@
     ],
     "actual_probe_exit_code": 0,
     "probe_executable_sha256": "5e818dad3e0ec8ff0ba3c7555cbddc28b500be2e9eed0be8fc999cebadf95002",
-    "release_library_sha256": "397b6e69dc94549cb3b7a157e4b9c33355def900ab891c2c94cace55f97e8781"
+    "release_library_sha256": "397b6e69dc94549cb3b7a157e4b9c33355def900ab891c2c94cace55f97e8781",
+    "integrator_reproduction": {
+      "build": "local/orch6_final_geometry_build.log",
+      "probe_log": "local/orch6_integrated_dyn_hull_probe.log",
+      "cases": 719,
+      "retained_copies_after_source_destruction": 719,
+      "release_library_sha256": "264d3d7a574ec158d6b062352ec9d4785274867bcd4c585b4521dcb6c9237be5",
+      "probe_executable_sha256": "956ed8e094fde13d66473a6cb2eb4e864b6ef417110d65a336775cd8899c01aa",
+      "records_sha256": "069001ff313745494c7d8c6323a3cdda09278e6b3caf68b40bfc4120af50644f",
+      "native_calls_checked": 139,
+      "failed_calls": 0
+    },
+    "independent_review": {
+      "result": "accepted",
+      "compared": "all16 vertex bytes, adjacency, counters/capacities, data18h..65h including support seed13; independent copied storage and single destruction",
+      "excluded": "pointer identities and data66h..67h padding; pool ABI, OOM/unwind, alternate flags and collision gameplay"
+    }
   },
   "limitations": [
     "finite coordinates and finite representable intermediates only",
@@ -1340,5 +1356,14 @@
     "manager retained-list insertion and Dyn body creation are separate integration work",
     "no game runtime or collision validation"
   ],
-  "source_sha256": "e4be35881ddd46bcbf3110b05309745df565951e1f41656080aea3c1777edf45"
+  "source_sha256": "e4be35881ddd46bcbf3110b05309745df565951e1f41656080aea3c1777edf45",
+  "installed_data_report": "reports/avoid_zone_installed_geometry.json",
+  "ghidra_integration": {
+    "applied_functions": 27,
+    "prior_values": "local/ghidra-annotations-20260912T204234Z.json",
+    "existing_comments_preserved": true,
+    "project_saved": true,
+    "exports_refreshed": true,
+    "export_log": "local/orch6_dyn_geometry_exports.log"
+  }
 }

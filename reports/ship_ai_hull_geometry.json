@@ -249,5 +249,20 @@
     "Cache-only world binding must reject dirty unsupported state.",
     "Model-present path requires actual cached node world bounds.",
     "Runtime integration owned by primary, not edited or claimed here."
-  ]
+  ],
+  "integrator_verification": {
+    "whole_block_cases": 4,
+    "failures": 0,
+    "log": "local/orch6_hull_geometry_integrated_probe.log",
+    "runtime_binding": "reports/game_ship_navigation_binding.json"
+  },
+  "installed_geometry_report": "reports/avoid_zone_installed_geometry.json",
+  "ghidra_integration": {
+    "applied_functions": 3,
+    "prior_values": "local/ghidra-annotations-20260912T204234Z.json",
+    "existing_comments_preserved": true,
+    "project_saved": true,
+    "exports_refreshed": true,
+    "export_log": "local/orch6_dyn_geometry_exports.log"
+  }
 }

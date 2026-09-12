@@ -48,7 +48,7 @@ inline constexpr double kShipAiNavBlockStopHullShare = 0.4; // 00CE65D0
 
 // 009E44DB, the double at 00CF1748.  blk+3E4h, the half-hull scale the sector
 // shapes divide (docs/SHIP_AI_SECTOR_SCAN.md calls it `E`).
-inline constexpr double kShipAiNavBlockHullScale = 0.45; // 00CF1748
+inline constexpr double kShipAiNavBlockHullScale = static_cast<double>(0.45f); // 00CF1748=3FDCCCCCC0000000
 
 // 009E45E3, the double at 00D7A348.  Quarter of the squared hull length in the
 // shoulder-offset square root.

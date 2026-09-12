@@ -26,12 +26,30 @@ unimplemented-call record for the opposite case, including an empty list.
 It now records the concrete call only when the scan took that branch.
 This correction does not create neighbours or claim corner-detour coverage.
 
-Win32 Release and the two existing CTests passed after the code change.
-A subsequent USN01 runtime attempt reached the existing-instance error path;
-another orchestrator's executable was confirmed live and left untouched.
-That attempt provides no mission-frame validation of this change. Exact
-hashes and the attempted command are in `reports/game_ship_navigation_binding.json`.
+The executable now calls recovered `009DE2F0` during navigation construction
+and each controller pre-step. Construction passes its local fields before
+assigning them to the controller. Each call reads the unit's actual cached
+world transform, rejecting an unsupported dirty cache. The represented owner
+creates no model/parts: native `0087BCC0` and getter `006D1E30` establish the
+absent-model branch. This is a scoped binding, not a claim about every model.
 
-The parallel dependency packets reconstruct polygon partitioning, Dyn hull
-production, and the ship hull-geometry pre-step. Their contracts and validation
-are recorded in their individual reports before runtime integration.
+The persistent output supplies goal position `+184h`, sector/throttle position
+and axes, and clearance shoulders `+18Ch/+194h`. The constant at `00CF1748`
+is widened `0.45f`, with double bits `3FDCCCCCC0000000`; the constructor now
+uses that exact value. Its `009E45F3` square-root adapter invokes the recovered
+CRT kernel with actual application CRT access. Review caught and removed the
+old positive-only guard, which incorrectly converted negative/NaN inputs to zero.
+
+Win32 Release and both existing CTests passed. The corrected executable then
+completed120 USN01 mission frames with18557 hull-geometry updates,17520 concrete
+controls extent reads,48 goal-position reads, no FMOD errors and clean shutdown.
+The earlier existing-instance attempt remains recorded separately; the other
+orchestrator's process was left untouched. Commands, hashes and logs are in
+`reports/game_ship_navigation_binding.json`.
+
+The complete `009E0270` core implementation exists, but the executable still
+records its parent pre-step as partial: actual class `+570h` depth, canonical
+profile/flag inputs and real width remain unbound. The width getter currently
+returns a placeholder `1.0f`. Model-present and dirty-pose branches were not
+exercised by this runtime, which also produced zero corner arms. These checks
+do not establish corner-detour, collision-world or original gameplay parity.
