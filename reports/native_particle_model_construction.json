@@ -1,50 +1,74 @@
 {
   "packet": "orch3_model_construction_ak",
-  "status": "complete_constructor_bodies_through_required_real_dependencies",
+  "status": "reconstructed_strict_win32_build_tested_bounded_original_byte_fixture_tested_saved_analysis_verified",
   "project_file": "C:/Users/sqz269/bsp.gpr",
   "program_path": "/battlestationspacific.exe",
   "target": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
   "ghidra_mutations": false,
   "routines": [
     {
-      "address": 11498656,
+      "address": "00af74a0",
       "end_inclusive": 11501361,
       "bytes": 2706,
       "name": "construct_native_particle_model_00af74a0",
       "coverage": "complete through required real application callees",
       "disk_sha256": "7ba597374bc60291f2c7a7f7cc72d3c819e19a797688c691d9d18800cfab8b7c",
       "live_sha256": "7ba597374bc60291f2c7a7f7cc72d3c819e19a797688c691d9d18800cfab8b7c",
-      "live_equals_installed": true
+      "live_equals_installed": true,
+      "ghidra_name": "BSP_NativeParticleModel_Construct",
+      "cpp_symbol": "construct_native_particle_model_00af74a0",
+      "source": "src/native_particle_model_construction.cpp",
+      "header": "include/bsp/native_particle_model_construction.hpp",
+      "original_abi": "ECX raw2DCh, stack selected variant, EAX same, RET4 atAF7F2F len3",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete through required real application callees; ECX raw2DCh, stack selected variant, EAX same, RET4 atAF7F2F len3. See docs/NATIVE_PARTICLE_MODEL_CONSTRUCTION.md and reports/native_particle_model_construction.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
     },
     {
-      "address": 11531760,
+      "address": "00aff5f0",
       "end_inclusive": 11531828,
       "bytes": 69,
       "name": "construct_native_particle_emitter_00aff5f0",
       "coverage": "complete",
       "disk_sha256": "716f871bc0b6789b706249dce45224455c1a3d3cbc3a614cf52ffeca7b79646c",
       "live_sha256": "716f871bc0b6789b706249dce45224455c1a3d3cbc3a614cf52ffeca7b79646c",
-      "live_equals_installed": true
+      "live_equals_installed": true,
+      "ghidra_name": "BSP_NativeParticleEmitter_Construct",
+      "cpp_symbol": "construct_native_particle_emitter_00aff5f0",
+      "source": "src/native_particle_model_construction.cpp",
+      "header": "include/bsp/native_particle_model_construction.hpp",
+      "original_abi": "ECX raw28h, stack model then definition, EAX same, RET8 atAFF632 len3",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX raw28h, stack model then definition, EAX same, RET8 atAFF632 len3. See docs/NATIVE_PARTICLE_MODEL_CONSTRUCTION.md and reports/native_particle_model_construction.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
     },
     {
-      "address": 11522784,
+      "address": "00afd2e0",
       "end_inclusive": 11522917,
       "bytes": 134,
       "name": "construct_native_particle_model_arrays_00afd2e0",
       "coverage": "complete through required real array element constructors and destructors",
       "disk_sha256": "26d203c704ff26b26cbc484456e359305480ba4088c039dcacb536d8b62c0322",
       "live_sha256": "26d203c704ff26b26cbc484456e359305480ba4088c039dcacb536d8b62c0322",
-      "live_equals_installed": true
+      "live_equals_installed": true,
+      "ghidra_name": "BSP_NativeParticleModelArrays_Construct",
+      "cpp_symbol": "construct_native_particle_model_arrays_00afd2e0",
+      "source": "src/native_particle_model_construction.cpp",
+      "header": "include/bsp/native_particle_model_construction.hpp",
+      "original_abi": "ECX raw18h, stack model then signed count, EAX same, RET8 atAFD363 len3",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete through required real array element constructors and destructors; ECX raw18h, stack model then signed count, EAX same, RET8 atAFD363 len3. See docs/NATIVE_PARTICLE_MODEL_CONSTRUCTION.md and reports/native_particle_model_construction.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
     },
     {
-      "address": 11493664,
+      "address": "00af6120",
       "end_inclusive": 11493758,
       "bytes": 95,
       "name": "reserve_native_particle_emitter_pointers_00af6120",
       "coverage": "complete supported native array domain",
       "disk_sha256": "d2f55a3a028634277dd2db2dd0cef3480c60f4b0913df1f8779d5eedeb8d9122",
       "live_sha256": "d2f55a3a028634277dd2db2dd0cef3480c60f4b0913df1f8779d5eedeb8d9122",
-      "live_equals_installed": true
+      "live_equals_installed": true,
+      "ghidra_name": "BSP_NativeParticleEmitterPointers_Reserve",
+      "cpp_symbol": "reserve_native_particle_emitter_pointers_00af6120",
+      "source": "src/native_particle_model_construction.cpp",
+      "header": "include/bsp/native_particle_model_construction.hpp",
+      "original_abi": "ECX actual12h header, stack signed capacity, RET4 atAF617C len3",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete supported native array domain; ECX actual12h header, stack signed capacity, RET4 atAF617C len3. See docs/NATIVE_PARTICLE_MODEL_CONSTRUCTION.md and reports/native_particle_model_construction.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
     }
   ],
   "host_steps": [
@@ -887,5 +911,199 @@
       "final_instruction_start": 13348379,
       "final_instruction_length": 1
     }
-  ]
+  ],
+  "functions": [
+    {
+      "address": "00af74a0",
+      "end_inclusive": 11501361,
+      "bytes": 2706,
+      "name": "construct_native_particle_model_00af74a0",
+      "coverage": "complete through required real application callees",
+      "disk_sha256": "7ba597374bc60291f2c7a7f7cc72d3c819e19a797688c691d9d18800cfab8b7c",
+      "live_sha256": "7ba597374bc60291f2c7a7f7cc72d3c819e19a797688c691d9d18800cfab8b7c",
+      "live_equals_installed": true,
+      "ghidra_name": "BSP_NativeParticleModel_Construct",
+      "cpp_symbol": "construct_native_particle_model_00af74a0",
+      "source": "src/native_particle_model_construction.cpp",
+      "header": "include/bsp/native_particle_model_construction.hpp",
+      "original_abi": "ECX raw2DCh, stack selected variant, EAX same, RET4 atAF7F2F len3",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete through required real application callees; ECX raw2DCh, stack selected variant, EAX same, RET4 atAF7F2F len3. See docs/NATIVE_PARTICLE_MODEL_CONSTRUCTION.md and reports/native_particle_model_construction.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "native_prototype": "void * __thiscall BSP_NativeParticleModel_Construct(void * variant)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "address": "00aff5f0",
+      "end_inclusive": 11531828,
+      "bytes": 69,
+      "name": "construct_native_particle_emitter_00aff5f0",
+      "coverage": "complete",
+      "disk_sha256": "716f871bc0b6789b706249dce45224455c1a3d3cbc3a614cf52ffeca7b79646c",
+      "live_sha256": "716f871bc0b6789b706249dce45224455c1a3d3cbc3a614cf52ffeca7b79646c",
+      "live_equals_installed": true,
+      "ghidra_name": "BSP_NativeParticleEmitter_Construct",
+      "cpp_symbol": "construct_native_particle_emitter_00aff5f0",
+      "source": "src/native_particle_model_construction.cpp",
+      "header": "include/bsp/native_particle_model_construction.hpp",
+      "original_abi": "ECX raw28h, stack model then definition, EAX same, RET8 atAFF632 len3",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX raw28h, stack model then definition, EAX same, RET8 atAFF632 len3. See docs/NATIVE_PARTICLE_MODEL_CONSTRUCTION.md and reports/native_particle_model_construction.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "native_prototype": "void * __thiscall BSP_NativeParticleEmitter_Construct(void * model, void * definition)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "address": "00afd2e0",
+      "end_inclusive": 11522917,
+      "bytes": 134,
+      "name": "construct_native_particle_model_arrays_00afd2e0",
+      "coverage": "complete through required real array element constructors and destructors",
+      "disk_sha256": "26d203c704ff26b26cbc484456e359305480ba4088c039dcacb536d8b62c0322",
+      "live_sha256": "26d203c704ff26b26cbc484456e359305480ba4088c039dcacb536d8b62c0322",
+      "live_equals_installed": true,
+      "ghidra_name": "BSP_NativeParticleModelArrays_Construct",
+      "cpp_symbol": "construct_native_particle_model_arrays_00afd2e0",
+      "source": "src/native_particle_model_construction.cpp",
+      "header": "include/bsp/native_particle_model_construction.hpp",
+      "original_abi": "ECX raw18h, stack model then signed count, EAX same, RET8 atAFD363 len3",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete through required real array element constructors and destructors; ECX raw18h, stack model then signed count, EAX same, RET8 atAFD363 len3. See docs/NATIVE_PARTICLE_MODEL_CONSTRUCTION.md and reports/native_particle_model_construction.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "native_prototype": "void * __thiscall BSP_NativeParticleModelArrays_Construct(void * model, int count)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "address": "00af6120",
+      "end_inclusive": 11493758,
+      "bytes": 95,
+      "name": "reserve_native_particle_emitter_pointers_00af6120",
+      "coverage": "complete supported native array domain",
+      "disk_sha256": "d2f55a3a028634277dd2db2dd0cef3480c60f4b0913df1f8779d5eedeb8d9122",
+      "live_sha256": "d2f55a3a028634277dd2db2dd0cef3480c60f4b0913df1f8779d5eedeb8d9122",
+      "live_equals_installed": true,
+      "ghidra_name": "BSP_NativeParticleEmitterPointers_Reserve",
+      "cpp_symbol": "reserve_native_particle_emitter_pointers_00af6120",
+      "source": "src/native_particle_model_construction.cpp",
+      "header": "include/bsp/native_particle_model_construction.hpp",
+      "original_abi": "ECX actual0Ch header, stack signed capacity, RET4 atAF617C len3",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete supported native array domain; ECX actual0Ch header, stack signed capacity, RET4 atAF617C len3. See docs/NATIVE_PARTICLE_MODEL_CONSTRUCTION.md and reports/native_particle_model_construction.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "native_prototype": "void __thiscall BSP_NativeParticleEmitterPointers_Reserve(int capacity)",
+      "native_calling_convention": "__thiscall"
+    }
+  ],
+  "integration_validation": {
+    "build": "local/ak-final-build.log: all7 AK modules in strict MSVC Win32 bsp_core; serial --parallel 1 workaround for parallel MSBuild MSB3491",
+    "tests": "local/ak-final-ctest.log: both existing seeded CTests passed",
+    "call_checks": "local/ak-final-call-checks.log: 245 rows across7 reports, zero failures; indirect IAT/current-slot behavior remains outside mechanical checker",
+    "fixtures": [
+      "local/model-construction-merged-ak.log"
+    ],
+    "fixture_note": "Focused native/source comparison within original worker/root reports limits; all fixture source compilations use /fp:strict and root combined-library linking. Root tracer and earlier pool/curve fixtures were replayed before adding independent emitter/model-update sources; relevant source unchanged. Exact final merged-head replay is recorded separately.",
+    "combined_library_sha256": "d7393d8246d01614b1ce3f0de3ea7a0fc25e567d9ca79218070d07d11ede603a",
+    "source_sha256": {
+      "src/native_particle_model_construction.cpp": "b9daba357f16783185049ac815054415e2e19db6d90932e6b3f9e4d5666b7144"
+    },
+    "game_validated": false,
+    "original_binary_replacement": false,
+    "worker_historical_note": "Earlier worker read-only/Ghidra repair/CMake pending observations describe the pre-integration snapshot; this section and saved audits are the current result.",
+    "flow_repairs": "reports/native_particle_model_construction_flow_repairs.json",
+    "function_definitions": "reports/native_particle_model_construction_function_definitions.json"
+  },
+  "ghidra_annotation_audit": {
+    "record": "local/ghidra-annotations-20260912T160551Z.json",
+    "readback": "local/ak-comment-readback.json",
+    "project_saved": true,
+    "old_comments_preserved": true,
+    "changes": [
+      {
+        "address": "00af6120",
+        "before": {
+          "address": "00af6120",
+          "function_name": "FUN_00af6120"
+        },
+        "after": {
+          "address": "00af6120",
+          "name": "BSP_NativeParticleEmitterPointers_Reserve",
+          "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete supported native array domain; ECX actual0Ch header, stack signed capacity, RET4 atAF617C len3. See docs/NATIVE_PARTICLE_MODEL_CONSTRUCTION.md and reports/native_particle_model_construction.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af74a0",
+        "before": {
+          "address": "00af74a0",
+          "function_name": "FUN_00af74a0"
+        },
+        "after": {
+          "address": "00af74a0",
+          "name": "BSP_NativeParticleModel_Construct",
+          "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete through required real application callees; ECX raw2DCh, stack selected variant, EAX same, RET4 atAF7F2F len3. See docs/NATIVE_PARTICLE_MODEL_CONSTRUCTION.md and reports/native_particle_model_construction.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afd2e0",
+        "before": {
+          "address": "00afd2e0",
+          "function_name": "FUN_00afd2e0"
+        },
+        "after": {
+          "address": "00afd2e0",
+          "name": "BSP_NativeParticleModelArrays_Construct",
+          "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete through required real array element constructors and destructors; ECX raw18h, stack model then signed count, EAX same, RET8 atAFD363 len3. See docs/NATIVE_PARTICLE_MODEL_CONSTRUCTION.md and reports/native_particle_model_construction.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00aff5f0",
+        "before": {
+          "address": "00aff5f0",
+          "function_name": "FUN_00aff5f0"
+        },
+        "after": {
+          "address": "00aff5f0",
+          "name": "BSP_NativeParticleEmitter_Construct",
+          "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX raw28h, stack model then definition, EAX same, RET8 atAFF632 len3. See docs/NATIVE_PARTICLE_MODEL_CONSTRUCTION.md and reports/native_particle_model_construction.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      }
+    ]
+  },
+  "ghidra_signature_audit": {
+    "record": "local/ak-signature-audit.json",
+    "project_saved": true,
+    "readback_verified": true,
+    "before": {
+      "00af74a0": "00af74a0 BSP_NativeParticleModel_Construct  undefined BSP_NativeParticleModel_Construct(void)  body 00af74a0 - 00af7f31\n",
+      "00aff5f0": "00aff5f0 BSP_NativeParticleEmitter_Construct  undefined BSP_NativeParticleEmitter_Construct(void)  body 00aff5f0 - 00aff634\n",
+      "00afd2e0": "00afd2e0 BSP_NativeParticleModelArrays_Construct  undefined BSP_NativeParticleModelArrays_Construct(void)  body 00afd2e0 - 00afd365\n",
+      "00af6120": "00af6120 BSP_NativeParticleEmitterPointers_Reserve  undefined BSP_NativeParticleEmitterPointers_Reserve(void)  body 00af6120 - 00af617e\n"
+    },
+    "changes": [
+      {
+        "address": "00af74a0",
+        "prototype": "void * __thiscall BSP_NativeParticleModel_Construct(void * variant)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af74a0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00aff5f0",
+        "prototype": "void * __thiscall BSP_NativeParticleEmitter_Construct(void * model, void * definition)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00aff5f0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00afd2e0",
+        "prototype": "void * __thiscall BSP_NativeParticleModelArrays_Construct(void * model, int count)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00afd2e0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af6120",
+        "prototype": "void __thiscall BSP_NativeParticleEmitterPointers_Reserve(int capacity)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af6120 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ],
+    "note": "Original native calling convention/arguments only; implicit this is ECX. Added C++ bindings do not change this recovered native signature. Compiler handler remains opaque."
+  }
 }

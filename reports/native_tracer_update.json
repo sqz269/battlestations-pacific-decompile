@@ -1,0 +1,495 @@
+{
+  "packet": "orch3_tracer_kernels_ak",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00b74390",
+      "end_exclusive": "00b743c0",
+      "length": 48,
+      "sha256": "e5badce9e8efac292d266c2a9dfd5f2cefaa833659b39658fd2ba0346b7388c2",
+      "live_disk_equal": true,
+      "signature": "void __fastcall bounds_kernel(void*,void*,const float*) noexcept",
+      "instruction_count": 14,
+      "last_instruction": "00b743bd",
+      "ghidra_name": "BSP_GeneratedModel_SetLocalBounds",
+      "cpp_symbol": "set_native_generated_model_bounds_00b74390",
+      "source": "src/native_tracer_update.cpp",
+      "header": "include/bsp/native_tracer_update.hpp",
+      "coverage": "complete native body through required explicit bindings",
+      "original_abi": "ECX actual model, stack four-word pointer; RET4",
+      "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Four forward x87 stores to08/0C/10/14 followed by flags138 & FFFFFFCF | B. Exact live/installed bytes match; strict Win32 and original-byte fixture passed. New C++ interfaces; required CRT/current-slot bindings, native exception ABI and gameplay remain unvalidated as described in report. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete native body through required explicit bindings; ECX actual model, stack four-word pointer; RET4. See docs/NATIVE_TRACER_UPDATE.md and reports/native_tracer_update.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "native_prototype": "void __thiscall BSP_GeneratedModel_SetLocalBounds(float * four_words)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "address": "00ba9960",
+      "end_exclusive": "00ba99b4",
+      "length": 84,
+      "sha256": "9f389c9d2600625bc26693af9e1f121a1088bc4c8fa0de041849a81163e56ee7",
+      "live_disk_equal": true,
+      "signature": "void __fastcall alpha_kernel(void*,void*,float) noexcept",
+      "instruction_count": 25,
+      "last_instruction": "00ba99b1",
+      "ghidra_name": "BSP_SkinedWaterTracer_SetAlpha",
+      "cpp_symbol": "set_native_tracer_alpha_00ba9960",
+      "source": "src/native_tracer_update.cpp",
+      "header": "include/bsp/native_tracer_update.hpp",
+      "coverage": "complete native body through required explicit bindings",
+      "original_abi": "ECX actual7ACh tracer, stack alpha; RET4",
+      "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Current material1BC diffuse38+0C raw MOVSS, then reload optional child254, actual geometry180/element0/material20 and its diffuse alpha. No dirty flag. Exact live/installed bytes match; strict Win32 and original-byte fixture passed. New C++ interfaces; required CRT/current-slot bindings, native exception ABI and gameplay remain unvalidated as described in report. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete native body through required explicit bindings; ECX actual7ACh tracer, stack alpha; RET4. See docs/NATIVE_TRACER_UPDATE.md and reports/native_tracer_update.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "native_prototype": "void __thiscall BSP_SkinedWaterTracer_SetAlpha(float alpha)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "address": "00baa510",
+      "end_exclusive": "00baa5db",
+      "length": 203,
+      "sha256": "b8511a4a48b3611055730fce76ffd6ea27d1a8949ab11b3d3f00bcc82e1d6aeb",
+      "live_disk_equal": true,
+      "signature": "std::uint8_t __fastcall predicate_kernel(void*,const CameraAxesCrtAccess*)",
+      "instruction_count": 56,
+      "last_instruction": "00baa5da",
+      "ghidra_name": "BSP_SkinedWaterTracer_IsComplete",
+      "cpp_symbol": "predicate_native_tracer_00baa510",
+      "source": "src/native_tracer_update.cpp",
+      "header": "include/bsp/native_tracer_update.hpp",
+      "coverage": "complete native body through required explicit bindings",
+      "original_abi": "ECX actual7ACh tracer; AL result; RET",
+      "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Native201/200 short paths, local202 inactive7A8 comparison including unordered, or actual linked1B8 time10/currentage1C4/reciprocal1EC sqrt fade and current linked alpha24 threshold CE9BAC. Exact live/installed bytes match; strict Win32 and original-byte fixture passed. New C++ interfaces; required CRT/current-slot bindings, native exception ABI and gameplay remain unvalidated as described in report. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete native body through required explicit bindings; ECX actual7ACh tracer; AL result; RET. See docs/NATIVE_TRACER_UPDATE.md and reports/native_tracer_update.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "native_prototype": "byte __thiscall BSP_SkinedWaterTracer_IsComplete(void)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "address": "00baa670",
+      "end_exclusive": "00baa8e4",
+      "length": 628,
+      "sha256": "2f3c22ab71678d4debc8601e9ec9d4d0632e7273d655e53f3560402b524b638c",
+      "live_disk_equal": true,
+      "signature": "void __fastcall append_kernel(void*,void*,const float*,const float*,const CameraAxesCrtAccess*)",
+      "instruction_count": 170,
+      "last_instruction": "00baa8e1",
+      "ghidra_name": "BSP_SkinedWaterTracer_AppendPoint",
+      "cpp_symbol": "append_native_tracer_point_00baa670",
+      "source": "src/native_tracer_update.cpp",
+      "header": "include/bsp/native_tracer_update.hpp",
+      "coverage": "complete native body through required explicit bindings",
+      "original_abi": "ECX actual7ACh tracer, stack position/direction pointers; RET8",
+      "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Mutates actual30h ring194/index1AC/count198, cuts reused next backlink, publishes current1B8/indices/count, width184/188 and alpha spills, linked lengths and cumulative distance. No allocation or substitute ring. Exact live/installed bytes match; strict Win32 and original-byte fixture passed. New C++ interfaces; required CRT/current-slot bindings, native exception ABI and gameplay remain unvalidated as described in report. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete native body through required explicit bindings; ECX actual7ACh tracer, stack position/direction pointers; RET8. See docs/NATIVE_TRACER_UPDATE.md and reports/native_tracer_update.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "native_prototype": "void __thiscall BSP_SkinedWaterTracer_AppendPoint(float * position, float * direction)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "address": "00baabb0",
+      "end_exclusive": "00bab3e7",
+      "length": 2103,
+      "sha256": "ba0032e7072b1519b61e21d87d3884959f4b0e4e46cd8075efe347b726d3ca2f",
+      "live_disk_equal": true,
+      "signature": "void __fastcall update_kernel(void*,void*,const CameraMatrix*,float,const float*,const float*,float,float,TracerUpdateFrame*)",
+      "instruction_count": 517,
+      "last_instruction": "00bab3e4",
+      "ghidra_name": "BSP_SkinedWaterTracer_Update",
+      "cpp_symbol": "update_native_tracer_00baabb0",
+      "source": "src/native_tracer_update.cpp",
+      "header": "include/bsp/native_tracer_update.hpp",
+      "coverage": "complete native body through required explicit bindings",
+      "original_abi": "ECX actual7ACh tracer; six stack words matrix/age/position/direction/speed/subject58; RET18",
+      "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Complete world/local update, normalized direction/projection, current34 capture/matrix dispatch, ring insertion and all-chain bounds, actual geometry description counts, fade-in, visibility and stop alpha. Matrix argument and final subject58 are marshalled but unread. Exact live/installed bytes match; strict Win32 and original-byte fixture passed. New C++ interfaces; required CRT/current-slot bindings, native exception ABI and gameplay remain unvalidated as described in report. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete native body through required explicit bindings; ECX actual7ACh tracer; six stack words matrix/age/position/direction/speed/subject58; RET18. See docs/NATIVE_TRACER_UPDATE.md and reports/native_tracer_update.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "native_prototype": "void __thiscall BSP_SkinedWaterTracer_Update(float * matrix, float age, float * position, float * direction, float speed, float subject58)",
+      "native_calling_convention": "__thiscall"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00ba9960",
+      "address": "00ba996f",
+      "native": "00b179f0"
+    },
+    {
+      "function": "00ba9960",
+      "address": "00ba998e",
+      "native": "00b74640"
+    },
+    {
+      "function": "00ba9960",
+      "address": "00ba9995",
+      "native": "00b732c0"
+    },
+    {
+      "function": "00ba9960",
+      "address": "00ba99a1",
+      "native": "00b179f0"
+    },
+    {
+      "function": "00baa510",
+      "address": "00baa58d",
+      "native": "00bf7030"
+    },
+    {
+      "function": "00baa510",
+      "address": "00baa5ab",
+      "native": "004155b0"
+    },
+    {
+      "function": "00baa670",
+      "address": "00baa7d8",
+      "native": "00419260"
+    },
+    {
+      "function": "00baa670",
+      "address": "00baa857",
+      "native": "00bf7030"
+    },
+    {
+      "function": "00baa670",
+      "address": "00baa8a7",
+      "native": "00bf7030"
+    },
+    {
+      "function": "00baabb0",
+      "address": "00baac15",
+      "native": "00419260"
+    },
+    {
+      "function": "00baabb0",
+      "address": "00baac57",
+      "native": "00419510"
+    },
+    {
+      "function": "00baabb0",
+      "address": "00baac78",
+      "native": "00419440"
+    },
+    {
+      "function": "00baabb0",
+      "address": "00baacf8",
+      "native": "00419440"
+    },
+    {
+      "function": "00baabb0",
+      "address": "00baad6e",
+      "native": "00b6da70"
+    },
+    {
+      "function": "00baabb0",
+      "address": "00baadcc",
+      "native": "00419210"
+    },
+    {
+      "function": "00baabb0",
+      "address": "00baaea5",
+      "native": "00419510"
+    },
+    {
+      "function": "00baabb0",
+      "address": "00baaf12",
+      "native": "EDX"
+    },
+    {
+      "function": "00baabb0",
+      "address": "00baaf3d",
+      "native": "00419260"
+    },
+    {
+      "function": "00baabb0",
+      "address": "00baaf93",
+      "native": "00419210"
+    },
+    {
+      "function": "00baabb0",
+      "address": "00bab012",
+      "native": "00b74390"
+    },
+    {
+      "function": "00baabb0",
+      "address": "00bab043",
+      "native": "00419510"
+    },
+    {
+      "function": "00baabb0",
+      "address": "00bab04c",
+      "native": "00baa670"
+    },
+    {
+      "function": "00baabb0",
+      "address": "00bab0af",
+      "native": "00419440"
+    },
+    {
+      "function": "00baabb0",
+      "address": "00bab111",
+      "native": "00419210"
+    },
+    {
+      "function": "00baabb0",
+      "address": "00bab145",
+      "native": "00419510"
+    },
+    {
+      "function": "00baabb0",
+      "address": "00bab14e",
+      "native": "00baa670"
+    },
+    {
+      "function": "00baabb0",
+      "address": "00bab164",
+      "native": "00419260"
+    },
+    {
+      "function": "00baabb0",
+      "address": "00bab20e",
+      "native": "00b9a7a0"
+    },
+    {
+      "function": "00baabb0",
+      "address": "00bab231",
+      "native": "00b9a820"
+    },
+    {
+      "function": "00baabb0",
+      "address": "00bab2b3",
+      "native": "00419210"
+    },
+    {
+      "function": "00baabb0",
+      "address": "00bab2c9",
+      "native": "00b74390"
+    },
+    {
+      "function": "00baabb0",
+      "address": "00bab2e3",
+      "native": "00b74640"
+    },
+    {
+      "function": "00baabb0",
+      "address": "00bab2ea",
+      "native": "00b732c0"
+    },
+    {
+      "function": "00baabb0",
+      "address": "00bab369",
+      "native": "00b74640"
+    },
+    {
+      "function": "00baabb0",
+      "address": "00bab370",
+      "native": "00b732c0"
+    },
+    {
+      "function": "00baabb0",
+      "address": "00bab38b",
+      "native": "00b6da70"
+    },
+    {
+      "function": "00baabb0",
+      "address": "00bab3c0",
+      "native": "00ba9960"
+    },
+    {
+      "function": "00baabb0",
+      "address": "00bab3d9",
+      "native": "00b6da70"
+    }
+  ],
+  "immutable_constants": {
+    "00d7a24c": {
+      "size": 4,
+      "bits": "0000803f",
+      "unsigned": 1065353216,
+      "live_disk_equal": true
+    },
+    "00ce9bac": {
+      "size": 4,
+      "bits": "0ad7a33c",
+      "unsigned": 1017370378,
+      "live_disk_equal": true
+    },
+    "00d7a2f0": {
+      "size": 4,
+      "bits": "cdcccc3d",
+      "unsigned": 1036831949,
+      "live_disk_equal": true
+    },
+    "00d7a208": {
+      "size": 4,
+      "bits": "00000080",
+      "unsigned": 2147483648,
+      "live_disk_equal": true
+    },
+    "00ce4970": {
+      "size": 4,
+      "bits": "f9021550",
+      "unsigned": 1343554297,
+      "live_disk_equal": true
+    },
+    "00ce4adc": {
+      "size": 4,
+      "bits": "f90215d0",
+      "unsigned": 3491037945,
+      "live_disk_equal": true
+    },
+    "00d7a280": {
+      "size": 8,
+      "bits": "000000000000e03f",
+      "unsigned": 4602678819172646912,
+      "live_disk_equal": true
+    }
+  },
+  "verification": {
+    "original_byte_fixture": "local/tracer_probe_ak.cpp; local/tracer-probe-ak.log",
+    "pairs": 3000,
+    "complete_update_pairs": 864,
+    "x87_control_words": 12,
+    "comparison": "identical-address restored owner/ring/mesh/material/child storage; selected NaN and aliased min/max/clamp words; x87 sticky flags/TOP/CW and MXCSR, not every x87 register/condition bit",
+    "build": "Combined strict MSVC Win32 library and both seeded CTests passed via explicit --parallel 1. scripts/build.ps1 parallel MSBuild encountered MSB3491 tlog access-denied before C++ compilation.",
+    "review": "Independent read-only review reverified16 original fixture spans, ten kernel spans/constants and reran3000 pairs successfully."
+  },
+  "limits": [
+    "Production requires already constructed actual7ACh BAD6F0 owner, actual ring and geometry/material graph; no synthetic production owner is allocated.",
+    "Both fixture sides share existing actual CRT sqrt boundary; its exception dispatch is not independently revalidated here.",
+    "Current native virtual34 is captured at BAAEBA and invoked at BAAF12 through required pure canonical lookup. Fixture records dispatch and matrix; actual scene setter/application binding remains required.",
+    "Full recursive B6DA70 is not claimed: all four consumed calls use recurse0 and the bridge implements that exact branch.",
+    "New C++ parameter/return adapters are not binary-compatible replacements; native EH, construction/geometry production, application lifetime and gameplay remain unvalidated."
+  ],
+  "integration_validation": {
+    "build": "local/ak-final-build.log: all7 AK modules in strict MSVC Win32 bsp_core; serial --parallel 1 workaround for parallel MSBuild MSB3491",
+    "tests": "local/ak-final-ctest.log: both existing seeded CTests passed",
+    "call_checks": "local/ak-final-call-checks.log: 245 rows across7 reports, zero failures; indirect IAT/current-slot behavior remains outside mechanical checker",
+    "fixtures": [
+      "local/tracer-probe-ak.log"
+    ],
+    "fixture_note": "Focused native/source comparison within original worker/root reports limits; all fixture source compilations use /fp:strict and root combined-library linking. Root tracer and earlier pool/curve fixtures were replayed before adding independent emitter/model-update sources; relevant source unchanged. Exact final merged-head replay is recorded separately.",
+    "combined_library_sha256": "d7393d8246d01614b1ce3f0de3ea7a0fc25e567d9ca79218070d07d11ede603a",
+    "source_sha256": {
+      "src/native_tracer_update.cpp": "af4ddf6b08647587e1c037f4f2c2bfebe01896aa63f6b05ceba18eda46263a85"
+    },
+    "game_validated": false,
+    "original_binary_replacement": false,
+    "worker_historical_note": "Earlier worker read-only/Ghidra repair/CMake pending observations describe the pre-integration snapshot; this section and saved audits are the current result."
+  },
+  "status": "reconstructed_strict_win32_build_tested_bounded_original_byte_fixture_tested_saved_analysis_verified",
+  "ghidra_annotation_audit": {
+    "record": "local/ghidra-annotations-20260912T160551Z.json",
+    "readback": "local/ak-comment-readback.json",
+    "project_saved": true,
+    "old_comments_preserved": true,
+    "changes": [
+      {
+        "address": "00b74390",
+        "before": {
+          "address": "00b74390",
+          "function_name": "FUN_00b74390"
+        },
+        "after": {
+          "address": "00b74390",
+          "name": "BSP_GeneratedModel_SetLocalBounds",
+          "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Four forward x87 stores to08/0C/10/14 followed by flags138 & FFFFFFCF | B. Exact live/installed bytes match; strict Win32 and original-byte fixture passed. New C++ interfaces; required CRT/current-slot bindings, native exception ABI and gameplay remain unvalidated as described in report. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete native body through required explicit bindings; ECX actual model, stack four-word pointer; RET4. See docs/NATIVE_TRACER_UPDATE.md and reports/native_tracer_update.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00ba9960",
+        "before": {
+          "address": "00ba9960",
+          "function_name": "FUN_00ba9960"
+        },
+        "after": {
+          "address": "00ba9960",
+          "name": "BSP_SkinedWaterTracer_SetAlpha",
+          "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Current material1BC diffuse38+0C raw MOVSS, then reload optional child254, actual geometry180/element0/material20 and its diffuse alpha. No dirty flag. Exact live/installed bytes match; strict Win32 and original-byte fixture passed. New C++ interfaces; required CRT/current-slot bindings, native exception ABI and gameplay remain unvalidated as described in report. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete native body through required explicit bindings; ECX actual7ACh tracer, stack alpha; RET4. See docs/NATIVE_TRACER_UPDATE.md and reports/native_tracer_update.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00baa510",
+        "before": {
+          "address": "00baa510",
+          "function_name": "FUN_00baa510"
+        },
+        "after": {
+          "address": "00baa510",
+          "name": "BSP_SkinedWaterTracer_IsComplete",
+          "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Native201/200 short paths, local202 inactive7A8 comparison including unordered, or actual linked1B8 time10/currentage1C4/reciprocal1EC sqrt fade and current linked alpha24 threshold CE9BAC. Exact live/installed bytes match; strict Win32 and original-byte fixture passed. New C++ interfaces; required CRT/current-slot bindings, native exception ABI and gameplay remain unvalidated as described in report. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete native body through required explicit bindings; ECX actual7ACh tracer; AL result; RET. See docs/NATIVE_TRACER_UPDATE.md and reports/native_tracer_update.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00baa670",
+        "before": {
+          "address": "00baa670",
+          "function_name": "FUN_00baa670"
+        },
+        "after": {
+          "address": "00baa670",
+          "name": "BSP_SkinedWaterTracer_AppendPoint",
+          "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Mutates actual30h ring194/index1AC/count198, cuts reused next backlink, publishes current1B8/indices/count, width184/188 and alpha spills, linked lengths and cumulative distance. No allocation or substitute ring. Exact live/installed bytes match; strict Win32 and original-byte fixture passed. New C++ interfaces; required CRT/current-slot bindings, native exception ABI and gameplay remain unvalidated as described in report. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete native body through required explicit bindings; ECX actual7ACh tracer, stack position/direction pointers; RET8. See docs/NATIVE_TRACER_UPDATE.md and reports/native_tracer_update.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00baabb0",
+        "before": {
+          "address": "00baabb0",
+          "function_name": "FUN_00baabb0"
+        },
+        "after": {
+          "address": "00baabb0",
+          "name": "BSP_SkinedWaterTracer_Update",
+          "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Complete world/local update, normalized direction/projection, current34 capture/matrix dispatch, ring insertion and all-chain bounds, actual geometry description counts, fade-in, visibility and stop alpha. Matrix argument and final subject58 are marshalled but unread. Exact live/installed bytes match; strict Win32 and original-byte fixture passed. New C++ interfaces; required CRT/current-slot bindings, native exception ABI and gameplay remain unvalidated as described in report. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete native body through required explicit bindings; ECX actual7ACh tracer; six stack words matrix/age/position/direction/speed/subject58; RET18. See docs/NATIVE_TRACER_UPDATE.md and reports/native_tracer_update.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      }
+    ]
+  },
+  "ghidra_signature_audit": {
+    "record": "local/ak-signature-audit.json",
+    "project_saved": true,
+    "readback_verified": true,
+    "before": {
+      "00b74390": "00b74390 BSP_GeneratedModel_SetLocalBounds  undefined BSP_GeneratedModel_SetLocalBounds(void)  body 00b74390 - 00b743bf\n",
+      "00ba9960": "00ba9960 BSP_SkinedWaterTracer_SetAlpha  undefined BSP_SkinedWaterTracer_SetAlpha(void)  body 00ba9960 - 00ba99b3\n",
+      "00baa510": "00baa510 BSP_SkinedWaterTracer_IsComplete  undefined BSP_SkinedWaterTracer_IsComplete(void)  body 00baa510 - 00baa5da\n",
+      "00baa670": "00baa670 BSP_SkinedWaterTracer_AppendPoint  undefined BSP_SkinedWaterTracer_AppendPoint(void)  body 00baa670 - 00baa8e3\n",
+      "00baabb0": "00baabb0 BSP_SkinedWaterTracer_Update  undefined BSP_SkinedWaterTracer_Update(void)  body 00baabb0 - 00bab3e6\n"
+    },
+    "changes": [
+      {
+        "address": "00b74390",
+        "prototype": "void __thiscall BSP_GeneratedModel_SetLocalBounds(float * four_words)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b74390 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00ba9960",
+        "prototype": "void __thiscall BSP_SkinedWaterTracer_SetAlpha(float alpha)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00ba9960 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00baa510",
+        "prototype": "byte __thiscall BSP_SkinedWaterTracer_IsComplete(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00baa510 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00baa670",
+        "prototype": "void __thiscall BSP_SkinedWaterTracer_AppendPoint(float * position, float * direction)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00baa670 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00baabb0",
+        "prototype": "void __thiscall BSP_SkinedWaterTracer_Update(float * matrix, float age, float * position, float * direction, float speed, float subject58)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00baabb0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ],
+    "note": "Original native calling convention/arguments only; implicit this is ECX. Added C++ bindings do not change this recovered native signature. Compiler handler remains opaque."
+  }
+}

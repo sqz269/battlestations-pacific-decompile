@@ -1,6 +1,6 @@
 {
   "packet": "orch3_emitter_lifetime_ak",
-  "status": "complete_bounded_actual_storage_through_required_real_current_cleanup_bindings",
+  "status": "reconstructed_strict_win32_build_tested_bounded_original_byte_fixture_tested_saved_analysis_verified",
   "source": [
     "include/bsp/native_particle_emitter_lifetime.hpp",
     "src/native_particle_emitter_lifetime.cpp"
@@ -19,55 +19,118 @@
       "entry": "00aff690",
       "end_exclusive": "00aff6f6",
       "coverage": "complete",
-      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface"
+      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface",
+      "address": "00aff690",
+      "ghidra_name": "BSP_NativeParticleEmitter_AcquireContainer",
+      "cpp_symbol": "acquire_native_particle_emitter_container_00aff690",
+      "source": "src/native_particle_emitter_lifetime.cpp",
+      "header": "include/bsp/native_particle_emitter_lifetime.hpp",
+      "original_abi": "existing canonical CRT service; actual raw storage; new C++ interface",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; existing canonical CRT service; actual raw storage; new C++ interface. See docs/NATIVE_PARTICLE_EMITTER_LIFETIME.md and reports/native_particle_emitter_lifetime.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
     },
     {
       "entry": "00b04f00",
       "end_exclusive": "00b04fb1",
       "coverage": "complete",
-      "boundary": "required current definition1C, actual72B740/B7C160/B6DFA0 bindings"
+      "boundary": "required current definition1C, actual72B740/B7C160/B6DFA0 bindings",
+      "address": "00b04f00",
+      "ghidra_name": "BSP_NativeParticleState_Cleanup",
+      "cpp_symbol": "cleanup_native_particle_emitter_state_00b04f00",
+      "source": "src/native_particle_emitter_lifetime.cpp",
+      "header": "include/bsp/native_particle_emitter_lifetime.hpp",
+      "original_abi": "required current definition1C, actual72B740/B7C160/B6DFA0 bindings",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; required current definition1C, actual72B740/B7C160/B6DFA0 bindings. See docs/NATIVE_PARTICLE_EMITTER_LIFETIME.md and reports/native_particle_emitter_lifetime.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
     },
     {
       "entry": "00b053d0",
       "end_exclusive": "00b053fc",
       "coverage": "complete",
-      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface"
+      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface",
+      "address": "00b053d0",
+      "ghidra_name": "BSP_NativeParticleEmitterContainer_Construct",
+      "cpp_symbol": "construct_native_particle_emitter_container_00b053d0",
+      "source": "src/native_particle_emitter_lifetime.cpp",
+      "header": "include/bsp/native_particle_emitter_lifetime.hpp",
+      "original_abi": "existing canonical CRT service; actual raw storage; new C++ interface",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; existing canonical CRT service; actual raw storage; new C++ interface. See docs/NATIVE_PARTICLE_EMITTER_LIFETIME.md and reports/native_particle_emitter_lifetime.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
     },
     {
       "entry": "00b04e30",
       "end_exclusive": "00b04ef6",
       "coverage": "complete",
-      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface"
+      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface",
+      "address": "00b04e30",
+      "ghidra_name": "BSP_NativeParticleEmitterContainer_ConstructBase",
+      "cpp_symbol": "construct_native_particle_emitter_base_00b04e30",
+      "source": "src/native_particle_emitter_lifetime.cpp",
+      "header": "include/bsp/native_particle_emitter_lifetime.hpp",
+      "original_abi": "existing canonical CRT service; actual raw storage; new C++ interface",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; existing canonical CRT service; actual raw storage; new C++ interface. See docs/NATIVE_PARTICLE_EMITTER_LIFETIME.md and reports/native_particle_emitter_lifetime.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
     },
     {
       "entry": "00b04b50",
       "end_exclusive": "00b04bff",
       "coverage": "complete",
-      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface"
+      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface",
+      "address": "00b04b50",
+      "ghidra_name": "BSP_NativeParticleEmitterRows_Resize",
+      "cpp_symbol": "replace_native_particle_emitter_rows_00b04b50",
+      "source": "src/native_particle_emitter_lifetime.cpp",
+      "header": "include/bsp/native_particle_emitter_lifetime.hpp",
+      "original_abi": "existing canonical CRT service; actual raw storage; new C++ interface",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; existing canonical CRT service; actual raw storage; new C++ interface. See docs/NATIVE_PARTICLE_EMITTER_LIFETIME.md and reports/native_particle_emitter_lifetime.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
     },
     {
       "entry": "00b04900",
       "end_exclusive": "00b04910",
       "coverage": "complete",
-      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface"
+      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface",
+      "address": "00b04900",
+      "ghidra_name": "BSP_NativeParticleEmitterRow_Initialize",
+      "cpp_symbol": "initialize_native_particle_emitter_row_00b04900",
+      "source": "src/native_particle_emitter_lifetime.cpp",
+      "header": "include/bsp/native_particle_emitter_lifetime.hpp",
+      "original_abi": "existing canonical CRT service; actual raw storage; new C++ interface",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; existing canonical CRT service; actual raw storage; new C++ interface. See docs/NATIVE_PARTICLE_EMITTER_LIFETIME.md and reports/native_particle_emitter_lifetime.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
     },
     {
       "entry": "00b04910",
       "end_exclusive": "00b04911",
       "coverage": "complete",
-      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface"
+      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface",
+      "address": "00b04910",
+      "ghidra_name": "BSP_NativeParticleEmitterRow_Destroy",
+      "cpp_symbol": "destroy_native_particle_emitter_row_00b04910",
+      "source": "src/native_particle_emitter_lifetime.cpp",
+      "header": "include/bsp/native_particle_emitter_lifetime.hpp",
+      "original_abi": "existing canonical CRT service; actual raw storage; new C++ interface",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; existing canonical CRT service; actual raw storage; new C++ interface. See docs/NATIVE_PARTICLE_EMITTER_LIFETIME.md and reports/native_particle_emitter_lifetime.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
     },
     {
       "entry": "00b04a80",
       "end_exclusive": "00b04aa1",
       "coverage": "complete",
-      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface"
+      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface",
+      "address": "00b04a80",
+      "ghidra_name": "BSP_NativeParticleEmitterRows_Destroy",
+      "cpp_symbol": "destroy_native_particle_emitter_states_00b04a80",
+      "source": "src/native_particle_emitter_lifetime.cpp",
+      "header": "include/bsp/native_particle_emitter_lifetime.hpp",
+      "original_abi": "existing canonical CRT service; actual raw storage; new C++ interface",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; existing canonical CRT service; actual raw storage; new C++ interface. See docs/NATIVE_PARTICLE_EMITTER_LIFETIME.md and reports/native_particle_emitter_lifetime.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
     },
     {
       "entry": "00b04c40",
       "end_exclusive": "00b04c77",
       "coverage": "complete",
-      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface"
+      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface",
+      "address": "00b04c40",
+      "ghidra_name": "BSP_NativeParticleEmitterStates_Destroy",
+      "cpp_symbol": "destroy_native_particle_emitter_rows_00b04c40",
+      "source": "src/native_particle_emitter_lifetime.cpp",
+      "header": "include/bsp/native_particle_emitter_lifetime.hpp",
+      "original_abi": "existing canonical CRT service; actual raw storage; new C++ interface",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; existing canonical CRT service; actual raw storage; new C++ interface. See docs/NATIVE_PARTICLE_EMITTER_LIFETIME.md and reports/native_particle_emitter_lifetime.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
     }
   ],
   "host_steps": [
@@ -541,5 +604,367 @@
     "actual native light/node provider code is fixture evidence; full application runtime bindings remain explicit requirements",
     "no AF6DD0 update, AF74A0 construction, application game or visual validation",
     "CMake/ledger/Ghidra integration owned by root"
-  ]
+  ],
+  "functions": [
+    {
+      "entry": "00aff690",
+      "end_exclusive": "00aff6f6",
+      "coverage": "complete",
+      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface",
+      "address": "00aff690",
+      "ghidra_name": "BSP_NativeParticleEmitter_AcquireContainer",
+      "cpp_symbol": "acquire_native_particle_emitter_container_00aff690",
+      "source": "src/native_particle_emitter_lifetime.cpp",
+      "header": "include/bsp/native_particle_emitter_lifetime.hpp",
+      "original_abi": "void * __thiscall BSP_NativeParticleEmitter_AcquireContainer(void); ECX actual backing, stack cleanup from native listing.",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; existing canonical CRT service; actual raw storage; new C++ interface. See docs/NATIVE_PARTICLE_EMITTER_LIFETIME.md and reports/native_particle_emitter_lifetime.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated. Exact native signature: void * __thiscall BSP_NativeParticleEmitter_AcquireContainer(void).",
+      "native_prototype": "void * __thiscall BSP_NativeParticleEmitter_AcquireContainer(void)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "entry": "00b04f00",
+      "end_exclusive": "00b04fb1",
+      "coverage": "complete",
+      "boundary": "required current definition1C, actual72B740/B7C160/B6DFA0 bindings",
+      "address": "00b04f00",
+      "ghidra_name": "BSP_NativeParticleState_Cleanup",
+      "cpp_symbol": "cleanup_native_particle_emitter_state_00b04f00",
+      "source": "src/native_particle_emitter_lifetime.cpp",
+      "header": "include/bsp/native_particle_emitter_lifetime.hpp",
+      "original_abi": "byte __thiscall BSP_NativeParticleState_Cleanup(uint argument); ECX actual backing, stack cleanup from native listing.",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; required current definition1C, actual72B740/B7C160/B6DFA0 bindings. See docs/NATIVE_PARTICLE_EMITTER_LIFETIME.md and reports/native_particle_emitter_lifetime.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated. Exact native signature: byte __thiscall BSP_NativeParticleState_Cleanup(uint argument).",
+      "native_prototype": "byte __thiscall BSP_NativeParticleState_Cleanup(uint argument)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "entry": "00b053d0",
+      "end_exclusive": "00b053fc",
+      "coverage": "complete",
+      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface",
+      "address": "00b053d0",
+      "ghidra_name": "BSP_NativeParticleEmitterContainer_Construct",
+      "cpp_symbol": "construct_native_particle_emitter_container_00b053d0",
+      "source": "src/native_particle_emitter_lifetime.cpp",
+      "header": "include/bsp/native_particle_emitter_lifetime.hpp",
+      "original_abi": "void * __thiscall BSP_NativeParticleEmitterContainer_Construct(void * model, void * emitter, uint capacity); ECX actual backing, stack cleanup from native listing.",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; existing canonical CRT service; actual raw storage; new C++ interface. See docs/NATIVE_PARTICLE_EMITTER_LIFETIME.md and reports/native_particle_emitter_lifetime.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated. Exact native signature: void * __thiscall BSP_NativeParticleEmitterContainer_Construct(void * model, void * emitter, uint capacity).",
+      "native_prototype": "void * __thiscall BSP_NativeParticleEmitterContainer_Construct(void * model, void * emitter, uint capacity)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "entry": "00b04e30",
+      "end_exclusive": "00b04ef6",
+      "coverage": "complete",
+      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface",
+      "address": "00b04e30",
+      "ghidra_name": "BSP_NativeParticleEmitterContainer_ConstructBase",
+      "cpp_symbol": "construct_native_particle_emitter_base_00b04e30",
+      "source": "src/native_particle_emitter_lifetime.cpp",
+      "header": "include/bsp/native_particle_emitter_lifetime.hpp",
+      "original_abi": "void * __thiscall BSP_NativeParticleEmitterContainer_ConstructBase(void * model, void * emitter, uint capacity); ECX actual backing, stack cleanup from native listing.",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; existing canonical CRT service; actual raw storage; new C++ interface. See docs/NATIVE_PARTICLE_EMITTER_LIFETIME.md and reports/native_particle_emitter_lifetime.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated. Exact native signature: void * __thiscall BSP_NativeParticleEmitterContainer_ConstructBase(void * model, void * emitter, uint capacity).",
+      "native_prototype": "void * __thiscall BSP_NativeParticleEmitterContainer_ConstructBase(void * model, void * emitter, uint capacity)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "entry": "00b04b50",
+      "end_exclusive": "00b04bff",
+      "coverage": "complete",
+      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface",
+      "address": "00b04b50",
+      "ghidra_name": "BSP_NativeParticleEmitterRows_Resize",
+      "cpp_symbol": "replace_native_particle_emitter_rows_00b04b50",
+      "source": "src/native_particle_emitter_lifetime.cpp",
+      "header": "include/bsp/native_particle_emitter_lifetime.hpp",
+      "original_abi": "void __thiscall BSP_NativeParticleEmitterRows_Resize(uint capacity); ECX actual backing, stack cleanup from native listing.",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; existing canonical CRT service; actual raw storage; new C++ interface. See docs/NATIVE_PARTICLE_EMITTER_LIFETIME.md and reports/native_particle_emitter_lifetime.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated. Exact native signature: void __thiscall BSP_NativeParticleEmitterRows_Resize(uint capacity).",
+      "native_prototype": "void __thiscall BSP_NativeParticleEmitterRows_Resize(uint capacity)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "entry": "00b04900",
+      "end_exclusive": "00b04910",
+      "coverage": "complete",
+      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface",
+      "address": "00b04900",
+      "ghidra_name": "BSP_NativeParticleEmitterRow_Initialize",
+      "cpp_symbol": "initialize_native_particle_emitter_row_00b04900",
+      "source": "src/native_particle_emitter_lifetime.cpp",
+      "header": "include/bsp/native_particle_emitter_lifetime.hpp",
+      "original_abi": "void * __thiscall BSP_NativeParticleEmitterRow_Initialize(void); ECX actual backing, stack cleanup from native listing.",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; existing canonical CRT service; actual raw storage; new C++ interface. See docs/NATIVE_PARTICLE_EMITTER_LIFETIME.md and reports/native_particle_emitter_lifetime.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated. Exact native signature: void * __thiscall BSP_NativeParticleEmitterRow_Initialize(void).",
+      "native_prototype": "void * __thiscall BSP_NativeParticleEmitterRow_Initialize(void)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "entry": "00b04910",
+      "end_exclusive": "00b04911",
+      "coverage": "complete",
+      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface",
+      "address": "00b04910",
+      "ghidra_name": "BSP_NativeParticleEmitterRow_Destroy",
+      "cpp_symbol": "destroy_native_particle_emitter_row_00b04910",
+      "source": "src/native_particle_emitter_lifetime.cpp",
+      "header": "include/bsp/native_particle_emitter_lifetime.hpp",
+      "original_abi": "void __thiscall BSP_NativeParticleEmitterRow_Destroy(void); ECX actual backing, stack cleanup from native listing.",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; existing canonical CRT service; actual raw storage; new C++ interface. See docs/NATIVE_PARTICLE_EMITTER_LIFETIME.md and reports/native_particle_emitter_lifetime.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated. Exact native signature: void __thiscall BSP_NativeParticleEmitterRow_Destroy(void).",
+      "native_prototype": "void __thiscall BSP_NativeParticleEmitterRow_Destroy(void)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "entry": "00b04a80",
+      "end_exclusive": "00b04aa1",
+      "coverage": "complete",
+      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface",
+      "address": "00b04a80",
+      "ghidra_name": "BSP_NativeParticleEmitterStates_Destroy",
+      "cpp_symbol": "destroy_native_particle_emitter_states_00b04a80",
+      "source": "src/native_particle_emitter_lifetime.cpp",
+      "header": "include/bsp/native_particle_emitter_lifetime.hpp",
+      "original_abi": "void __thiscall BSP_NativeParticleEmitterStates_Destroy(void); ECX actual backing, stack cleanup from native listing.",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; existing canonical CRT service; actual raw storage; new C++ interface. See docs/NATIVE_PARTICLE_EMITTER_LIFETIME.md and reports/native_particle_emitter_lifetime.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated. Exact native signature: void __thiscall BSP_NativeParticleEmitterStates_Destroy(void).",
+      "native_prototype": "void __thiscall BSP_NativeParticleEmitterStates_Destroy(void)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "entry": "00b04c40",
+      "end_exclusive": "00b04c77",
+      "coverage": "complete",
+      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface",
+      "address": "00b04c40",
+      "ghidra_name": "BSP_NativeParticleEmitterRows_Destroy",
+      "cpp_symbol": "destroy_native_particle_emitter_rows_00b04c40",
+      "source": "src/native_particle_emitter_lifetime.cpp",
+      "header": "include/bsp/native_particle_emitter_lifetime.hpp",
+      "original_abi": "void __thiscall BSP_NativeParticleEmitterRows_Destroy(void); ECX actual backing, stack cleanup from native listing.",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; existing canonical CRT service; actual raw storage; new C++ interface. See docs/NATIVE_PARTICLE_EMITTER_LIFETIME.md and reports/native_particle_emitter_lifetime.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated. Exact native signature: void __thiscall BSP_NativeParticleEmitterRows_Destroy(void).",
+      "native_prototype": "void __thiscall BSP_NativeParticleEmitterRows_Destroy(void)",
+      "native_calling_convention": "__thiscall"
+    }
+  ],
+  "integration_validation": {
+    "build": "local/ak-final-build.log: all7 AK modules in strict MSVC Win32 bsp_core; serial --parallel 1 workaround for parallel MSBuild MSB3491",
+    "tests": "local/ak-final-ctest.log: both existing seeded CTests passed",
+    "call_checks": "local/ak-final-call-checks.log: 245 rows across7 reports, zero failures; indirect IAT/current-slot behavior remains outside mechanical checker",
+    "fixtures": [
+      "local/emitter-lifetime-merged-ak.log"
+    ],
+    "fixture_note": "Focused native/source comparison within original worker/root reports limits; all fixture source compilations use /fp:strict and root combined-library linking. Root tracer and earlier pool/curve fixtures were replayed before adding independent emitter/model-update sources; relevant source unchanged. Exact final merged-head replay is recorded separately.",
+    "combined_library_sha256": "d7393d8246d01614b1ce3f0de3ea7a0fc25e567d9ca79218070d07d11ede603a",
+    "source_sha256": {
+      "src/native_particle_emitter_lifetime.cpp": "06b57339e51b5c3b8875dfefc94c1ef884ada778ceecd9ebe17e8bfd1102d3c7"
+    },
+    "game_validated": false,
+    "original_binary_replacement": false,
+    "worker_historical_note": "Earlier worker read-only/Ghidra repair/CMake pending observations describe the pre-integration snapshot; this section and saved audits are the current result.",
+    "flow_repairs": "reports/native_particle_emitter_lifetime_flow_repairs.json",
+    "function_definitions": "reports/native_particle_emitter_lifetime_function_definitions.json"
+  },
+  "ghidra_annotation_audit": {
+    "record": "local/ghidra-annotations-20260912T160551Z.json",
+    "readback": "local/ak-comment-readback.json",
+    "project_saved": true,
+    "old_comments_preserved": true,
+    "changes": [
+      {
+        "address": "00aff690",
+        "before": {
+          "address": "00aff690",
+          "function_name": "FUN_00aff690"
+        },
+        "after": {
+          "address": "00aff690",
+          "name": "BSP_NativeParticleEmitter_AcquireContainer",
+          "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; existing canonical CRT service; actual raw storage; new C++ interface. See docs/NATIVE_PARTICLE_EMITTER_LIFETIME.md and reports/native_particle_emitter_lifetime.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated. Exact native signature: void * __thiscall BSP_NativeParticleEmitter_AcquireContainer(void)."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b04900",
+        "before": {
+          "address": "00b04900",
+          "function_name": "FUN_00b04900"
+        },
+        "after": {
+          "address": "00b04900",
+          "name": "BSP_NativeParticleEmitterRow_Initialize",
+          "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; existing canonical CRT service; actual raw storage; new C++ interface. See docs/NATIVE_PARTICLE_EMITTER_LIFETIME.md and reports/native_particle_emitter_lifetime.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated. Exact native signature: void * __thiscall BSP_NativeParticleEmitterRow_Initialize(void)."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b04910",
+        "before": {
+          "address": "00b04910",
+          "function_name": "FUN_00b04910"
+        },
+        "after": {
+          "address": "00b04910",
+          "name": "BSP_NativeParticleEmitterRow_Destroy",
+          "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; existing canonical CRT service; actual raw storage; new C++ interface. See docs/NATIVE_PARTICLE_EMITTER_LIFETIME.md and reports/native_particle_emitter_lifetime.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated. Exact native signature: void __thiscall BSP_NativeParticleEmitterRow_Destroy(void)."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b04a80",
+        "before": {
+          "address": "00b04a80",
+          "function_name": "FUN_00b04a80"
+        },
+        "after": {
+          "address": "00b04a80",
+          "name": "BSP_NativeParticleEmitterStates_Destroy",
+          "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; existing canonical CRT service; actual raw storage; new C++ interface. See docs/NATIVE_PARTICLE_EMITTER_LIFETIME.md and reports/native_particle_emitter_lifetime.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated. Exact native signature: void __thiscall BSP_NativeParticleEmitterStates_Destroy(void)."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b04b50",
+        "before": {
+          "address": "00b04b50",
+          "function_name": "CG_vector_deleting_dtor_00b04b50"
+        },
+        "after": {
+          "address": "00b04b50",
+          "name": "BSP_NativeParticleEmitterRows_Resize",
+          "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; existing canonical CRT service; actual raw storage; new C++ interface. See docs/NATIVE_PARTICLE_EMITTER_LIFETIME.md and reports/native_particle_emitter_lifetime.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated. Exact native signature: void __thiscall BSP_NativeParticleEmitterRows_Resize(uint capacity)."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b04c40",
+        "before": {
+          "address": "00b04c40",
+          "function_name": "CG_vector_deleting_dtor_00b04c40"
+        },
+        "after": {
+          "address": "00b04c40",
+          "name": "BSP_NativeParticleEmitterRows_Destroy",
+          "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; existing canonical CRT service; actual raw storage; new C++ interface. See docs/NATIVE_PARTICLE_EMITTER_LIFETIME.md and reports/native_particle_emitter_lifetime.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated. Exact native signature: void __thiscall BSP_NativeParticleEmitterRows_Destroy(void)."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b04e30",
+        "before": {
+          "address": "00b04e30",
+          "function_name": "FUN_00b04e30"
+        },
+        "after": {
+          "address": "00b04e30",
+          "name": "BSP_NativeParticleEmitterContainer_ConstructBase",
+          "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; existing canonical CRT service; actual raw storage; new C++ interface. See docs/NATIVE_PARTICLE_EMITTER_LIFETIME.md and reports/native_particle_emitter_lifetime.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated. Exact native signature: void * __thiscall BSP_NativeParticleEmitterContainer_ConstructBase(void * model, void * emitter, uint capacity)."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b04f00",
+        "before": {
+          "address": "00b04f00",
+          "function_name": "FUN_00b04f00"
+        },
+        "after": {
+          "address": "00b04f00",
+          "name": "BSP_NativeParticleState_Cleanup",
+          "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; required current definition1C, actual72B740/B7C160/B6DFA0 bindings. See docs/NATIVE_PARTICLE_EMITTER_LIFETIME.md and reports/native_particle_emitter_lifetime.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated. Exact native signature: byte __thiscall BSP_NativeParticleState_Cleanup(uint argument)."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b053d0",
+        "before": {
+          "address": "00b053d0",
+          "function_name": "FUN_00b053d0"
+        },
+        "after": {
+          "address": "00b053d0",
+          "name": "BSP_NativeParticleEmitterContainer_Construct",
+          "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; existing canonical CRT service; actual raw storage; new C++ interface. See docs/NATIVE_PARTICLE_EMITTER_LIFETIME.md and reports/native_particle_emitter_lifetime.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated. Exact native signature: void * __thiscall BSP_NativeParticleEmitterContainer_Construct(void * model, void * emitter, uint capacity)."
+        },
+        "status": "applied"
+      }
+    ]
+  },
+  "ghidra_signature_audit": {
+    "record": "local/ak-signature-audit.json",
+    "project_saved": true,
+    "readback_verified": true,
+    "before": {
+      "00aff690": "00aff690 BSP_NativeParticleEmitter_AcquireContainer  undefined BSP_NativeParticleEmitter_AcquireContainer(void)  body 00aff690 - 00aff6f5\n",
+      "00b04f00": "00b04f00 BSP_NativeParticleState_Cleanup  undefined BSP_NativeParticleState_Cleanup(void)  body 00b04f00 - 00b04fb0\n",
+      "00b053d0": "00b053d0 BSP_NativeParticleEmitterContainer_Construct  undefined BSP_NativeParticleEmitterContainer_Construct(void)  body 00b053d0 - 00b053fb\n",
+      "00b04e30": "00b04e30 BSP_NativeParticleEmitterContainer_ConstructBase  undefined BSP_NativeParticleEmitterContainer_ConstructBase(void)  body 00b04e30 - 00b04ef5\n",
+      "00b04b50": "00b04b50 BSP_NativeParticleEmitterRows_Resize  undefined BSP_NativeParticleEmitterRows_Resize(void)  body 00b04b50 - 00b04bfe\n",
+      "00b04900": "00b04900 BSP_NativeParticleEmitterRow_Initialize  undefined BSP_NativeParticleEmitterRow_Initialize(void)  body 00b04900 - 00b0490f\n",
+      "00b04910": "00b04910 BSP_NativeParticleEmitterRow_Destroy  undefined BSP_NativeParticleEmitterRow_Destroy(void)  body 00b04910 - 00b04910\n",
+      "00b04a80": "00b04a80 BSP_NativeParticleEmitterStates_Destroy  undefined BSP_NativeParticleEmitterStates_Destroy(void)  body 00b04a80 - 00b04aa0\n",
+      "00b04c40": "00b04c40 BSP_NativeParticleEmitterRows_Destroy  undefined BSP_NativeParticleEmitterRows_Destroy(void)  body 00b04c40 - 00b04c76\n"
+    },
+    "changes": [
+      {
+        "address": "00aff690",
+        "prototype": "void * __thiscall BSP_NativeParticleEmitter_AcquireContainer(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00aff690 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b04f00",
+        "prototype": "byte __thiscall BSP_NativeParticleState_Cleanup(uint argument)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b04f00 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b053d0",
+        "prototype": "void * __thiscall BSP_NativeParticleEmitterContainer_Construct(void * model, void * emitter, uint capacity)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b053d0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b04e30",
+        "prototype": "void * __thiscall BSP_NativeParticleEmitterContainer_ConstructBase(void * model, void * emitter, uint capacity)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b04e30 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b04b50",
+        "prototype": "void __thiscall BSP_NativeParticleEmitterRows_Resize(uint capacity)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b04b50 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b04900",
+        "prototype": "void * __thiscall BSP_NativeParticleEmitterRow_Initialize(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b04900 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b04910",
+        "prototype": "void __thiscall BSP_NativeParticleEmitterRow_Destroy(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b04910 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b04a80",
+        "prototype": "void __thiscall BSP_NativeParticleEmitterStates_Destroy(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b04a80 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b04c40",
+        "prototype": "void __thiscall BSP_NativeParticleEmitterRows_Destroy(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b04c40 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ],
+    "note": "Original native calling convention/arguments only; implicit this is ECX. Added C++ bindings do not change this recovered native signature. Compiler handler remains opaque."
+  }
 }

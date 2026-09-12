@@ -3,7 +3,7 @@
   "source": "src/tracer_parameter_curve_loading.cpp",
   "header": "include/bsp/tracer_parameter_curve_loading.hpp",
   "documentation": "docs/TRACER_PARAMETER_CURVE_LOADING.md",
-  "status": "reconstructed_strict_win32_compiled_original_byte_and_actual_lua_fixtures_passed_pending_live_body_repair_and_build_registration",
+  "status": "reconstructed_strict_win32_build_tested_bounded_original_byte_fixture_tested_saved_analysis_verified",
   "names_are_hypotheses": true,
   "ghidra": {
     "project_file": "C:/Users/sqz269/bsp.gpr",
@@ -49,7 +49,9 @@
       "length": 130,
       "sha256": "f3dde530c0a9e98dac888f8548a3639f8e4d976637d3fe896fc72d9317e4f389",
       "live_disk_equal": true,
-      "evidence": "docs/TRACER_PARAMETER_CURVE_LOADING.md; original-byte fixture with actual storage and bindings"
+      "evidence": "docs/TRACER_PARAMETER_CURVE_LOADING.md; original-byte fixture with actual storage and bindings AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX owner+08, one signed capacity stack argument, RET4. See docs/TRACER_PARAMETER_CURVE_LOADING.md and reports/tracer_parameter_curve_loading.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_TracerParameterCurve_ReserveRecords",
+      "header": "include/bsp/tracer_parameter_curve_loading.hpp"
     },
     {
       "address": "00bac5e0",
@@ -67,7 +69,9 @@
       "length": 87,
       "sha256": "670abeebe6701d42e733ccde791698ee2ee3715c44f8020bd4d667d73eee0347",
       "live_disk_equal": true,
-      "evidence": "docs/TRACER_PARAMETER_CURVE_LOADING.md; original-byte fixture with actual storage and bindings"
+      "evidence": "docs/TRACER_PARAMETER_CURVE_LOADING.md; original-byte fixture with actual storage and bindings AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX owner+08, one signed size stack argument, RET4. See docs/TRACER_PARAMETER_CURVE_LOADING.md and reports/tracer_parameter_curve_loading.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_TracerParameterCurve_ResizeRecords",
+      "header": "include/bsp/tracer_parameter_curve_loading.hpp"
     },
     {
       "address": "00bac670",
@@ -85,7 +89,9 @@
       "length": 186,
       "sha256": "d71c15c1b62aca7fb28a902e5906370c1532944bb7a7be8d835dca5f4907d0e2",
       "live_disk_equal": true,
-      "evidence": "docs/TRACER_PARAMETER_CURVE_LOADING.md; original-byte fixture with actual storage and bindings"
+      "evidence": "docs/TRACER_PARAMETER_CURVE_LOADING.md; original-byte fixture with actual storage and bindings AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX actual owner, binary32 coordinate/value stack arguments, RET8. See docs/TRACER_PARAMETER_CURVE_LOADING.md and reports/tracer_parameter_curve_loading.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_TracerParameterCurve_AppendPoint",
+      "header": "include/bsp/tracer_parameter_curve_loading.hpp"
     },
     {
       "address": "00869e40",
@@ -103,7 +109,9 @@
       "length": 396,
       "sha256": "2e9f0fb07a27b07e3172ab3bcc87f0b903ef9c40d2d57815988f2022315f481e",
       "live_disk_equal": true,
-      "evidence": "docs/TRACER_PARAMETER_CURVE_LOADING.md; original-byte fixture with actual storage and bindings"
+      "evidence": "docs/TRACER_PARAMETER_CURVE_LOADING.md; original-byte fixture with actual storage and bindings AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete normal-return behavior; original SEH/unwind excluded; ECX unused, LuaObject pointer/output-owner pointer/binary32 scale stack arguments, RET0C. See docs/TRACER_PARAMETER_CURVE_LOADING.md and reports/tracer_parameter_curve_loading.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_TracerParameterCurve_LoadLua",
+      "header": "include/bsp/tracer_parameter_curve_loading.hpp"
     },
     {
       "address": "00bacb10",
@@ -121,7 +129,9 @@
       "length": 93,
       "sha256": "98bbcfeb35fafec2a162859b10c95e16988f661a4e0ed3b05ba72300a79ac08e",
       "live_disk_equal": true,
-      "evidence": "docs/TRACER_PARAMETER_CURVE_LOADING.md; original-byte fixture with actual storage and bindings"
+      "evidence": "docs/TRACER_PARAMETER_CURVE_LOADING.md; original-byte fixture with actual storage and bindings AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete normal-return behavior; original SEH/unwind excluded; ECX actual owner, no stack arguments, RET. See docs/TRACER_PARAMETER_CURVE_LOADING.md and reports/tracer_parameter_curve_loading.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_TracerParameterCurve_Destroy",
+      "header": "include/bsp/tracer_parameter_curve_loading.hpp"
     },
     {
       "address": "00bacbb0",
@@ -139,7 +149,9 @@
       "length": 30,
       "sha256": "3a0cad1f95ac93e8d86b269b2cb3c2e3177eb24bb4b2d727af7ecf2da7377faf",
       "live_disk_equal": true,
-      "evidence": "docs/TRACER_PARAMETER_CURVE_LOADING.md; original-byte fixture with actual storage and bindings"
+      "evidence": "docs/TRACER_PARAMETER_CURVE_LOADING.md; original-byte fixture with actual storage and bindings AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete normal-return behavior; original SEH/unwind excluded; ECX actual owner, stack flags, EAX same address, RET4. See docs/TRACER_PARAMETER_CURVE_LOADING.md and reports/tracer_parameter_curve_loading.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_TracerParameterCurve_ScalarDestroy",
+      "header": "include/bsp/tracer_parameter_curve_loading.hpp"
     }
   ],
   "host_steps": [
@@ -484,5 +496,302 @@
       "native": "00869e40",
       "contract": "read all five argument setups: stack table/output/scale; firstfour local float scale, last FLD1; ECX EDI passed but not read by callee; RET0C"
     }
-  ]
+  ],
+  "functions": [
+    {
+      "address": "00babfe0",
+      "native": "00babfe0",
+      "function": "00babfe0",
+      "name": "reserve_tracer_curve_records_00babfe0",
+      "cpp_symbol": "reserve_tracer_curve_records_00babfe0",
+      "source": "src/tracer_parameter_curve_loading.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX owner+08, one signed capacity stack argument, RET4",
+      "inclusive_end": "00bac061",
+      "last_instruction": "00bac05f",
+      "last_instruction_length": 3,
+      "last_instruction_text": "RET4",
+      "length": 130,
+      "sha256": "f3dde530c0a9e98dac888f8548a3639f8e4d976637d3fe896fc72d9317e4f389",
+      "live_disk_equal": true,
+      "evidence": "docs/TRACER_PARAMETER_CURVE_LOADING.md; original-byte fixture with actual storage and bindings AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX owner+08, one signed capacity stack argument, RET4. See docs/TRACER_PARAMETER_CURVE_LOADING.md and reports/tracer_parameter_curve_loading.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_TracerParameterCurve_ReserveRecords",
+      "header": "include/bsp/tracer_parameter_curve_loading.hpp",
+      "native_prototype": "void __thiscall BSP_TracerParameterCurve_ReserveRecords(int capacity)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "address": "00bac5e0",
+      "native": "00bac5e0",
+      "function": "00bac5e0",
+      "name": "resize_tracer_curve_records_00bac5e0",
+      "cpp_symbol": "resize_tracer_curve_records_00bac5e0",
+      "source": "src/tracer_parameter_curve_loading.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX owner+08, one signed size stack argument, RET4",
+      "inclusive_end": "00bac636",
+      "last_instruction": "00bac634",
+      "last_instruction_length": 3,
+      "last_instruction_text": "RET4",
+      "length": 87,
+      "sha256": "670abeebe6701d42e733ccde791698ee2ee3715c44f8020bd4d667d73eee0347",
+      "live_disk_equal": true,
+      "evidence": "docs/TRACER_PARAMETER_CURVE_LOADING.md; original-byte fixture with actual storage and bindings AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX owner+08, one signed size stack argument, RET4. See docs/TRACER_PARAMETER_CURVE_LOADING.md and reports/tracer_parameter_curve_loading.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_TracerParameterCurve_ResizeRecords",
+      "header": "include/bsp/tracer_parameter_curve_loading.hpp",
+      "native_prototype": "void __thiscall BSP_TracerParameterCurve_ResizeRecords(int count)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "address": "00bac670",
+      "native": "00bac670",
+      "function": "00bac670",
+      "name": "append_tracer_curve_point_00bac670",
+      "cpp_symbol": "append_tracer_curve_point_00bac670",
+      "source": "src/tracer_parameter_curve_loading.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX actual owner, binary32 coordinate/value stack arguments, RET8",
+      "inclusive_end": "00bac729",
+      "last_instruction": "00bac727",
+      "last_instruction_length": 3,
+      "last_instruction_text": "RET8",
+      "length": 186,
+      "sha256": "d71c15c1b62aca7fb28a902e5906370c1532944bb7a7be8d835dca5f4907d0e2",
+      "live_disk_equal": true,
+      "evidence": "docs/TRACER_PARAMETER_CURVE_LOADING.md; original-byte fixture with actual storage and bindings AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX actual owner, binary32 coordinate/value stack arguments, RET8. See docs/TRACER_PARAMETER_CURVE_LOADING.md and reports/tracer_parameter_curve_loading.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_TracerParameterCurve_AppendPoint",
+      "header": "include/bsp/tracer_parameter_curve_loading.hpp",
+      "native_prototype": "void __thiscall BSP_TracerParameterCurve_AppendPoint(float coordinate, float value)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "address": "00869e40",
+      "native": "00869e40",
+      "function": "00869e40",
+      "name": "load_tracer_parameter_curve_00869e40",
+      "cpp_symbol": "load_tracer_parameter_curve_00869e40",
+      "source": "src/tracer_parameter_curve_loading.cpp",
+      "coverage": "complete normal-return behavior; original SEH/unwind excluded",
+      "original_abi": "ECX unused, LuaObject pointer/output-owner pointer/binary32 scale stack arguments, RET0C",
+      "inclusive_end": "00869fcb",
+      "last_instruction": "00869fc9",
+      "last_instruction_length": 3,
+      "last_instruction_text": "RET0C",
+      "length": 396,
+      "sha256": "2e9f0fb07a27b07e3172ab3bcc87f0b903ef9c40d2d57815988f2022315f481e",
+      "live_disk_equal": true,
+      "evidence": "docs/TRACER_PARAMETER_CURVE_LOADING.md; original-byte fixture with actual storage and bindings AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete normal-return behavior; original SEH/unwind excluded; ECX unused, LuaObject pointer/output-owner pointer/binary32 scale stack arguments, RET0C. See docs/TRACER_PARAMETER_CURVE_LOADING.md and reports/tracer_parameter_curve_loading.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_TracerParameterCurve_LoadLua",
+      "header": "include/bsp/tracer_parameter_curve_loading.hpp",
+      "native_prototype": "void __stdcall BSP_TracerParameterCurve_LoadLua(void * lua_object, void ** output, float scale)",
+      "native_calling_convention": "__stdcall"
+    },
+    {
+      "address": "00bacb10",
+      "native": "00bacb10",
+      "function": "00bacb10",
+      "name": "destroy_tracer_parameter_curve_00bacb10",
+      "cpp_symbol": "destroy_tracer_parameter_curve_00bacb10",
+      "source": "src/tracer_parameter_curve_loading.cpp",
+      "coverage": "complete normal-return behavior; original SEH/unwind excluded",
+      "original_abi": "ECX actual owner, no stack arguments, RET",
+      "inclusive_end": "00bacb6c",
+      "last_instruction": "00bacb6c",
+      "last_instruction_length": 1,
+      "last_instruction_text": "RET",
+      "length": 93,
+      "sha256": "98bbcfeb35fafec2a162859b10c95e16988f661a4e0ed3b05ba72300a79ac08e",
+      "live_disk_equal": true,
+      "evidence": "docs/TRACER_PARAMETER_CURVE_LOADING.md; original-byte fixture with actual storage and bindings AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete normal-return behavior; original SEH/unwind excluded; ECX actual owner, no stack arguments, RET. See docs/TRACER_PARAMETER_CURVE_LOADING.md and reports/tracer_parameter_curve_loading.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_TracerParameterCurve_Destroy",
+      "header": "include/bsp/tracer_parameter_curve_loading.hpp",
+      "native_prototype": "void __thiscall BSP_TracerParameterCurve_Destroy(void)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "address": "00bacbb0",
+      "native": "00bacbb0",
+      "function": "00bacbb0",
+      "name": "scalar_destroy_tracer_parameter_curve_00bacbb0",
+      "cpp_symbol": "scalar_destroy_tracer_parameter_curve_00bacbb0",
+      "source": "src/tracer_parameter_curve_loading.cpp",
+      "coverage": "complete normal-return behavior; original SEH/unwind excluded",
+      "original_abi": "ECX actual owner, stack flags, EAX same address, RET4",
+      "inclusive_end": "00bacbcd",
+      "last_instruction": "00bacbcb",
+      "last_instruction_length": 3,
+      "last_instruction_text": "RET4",
+      "length": 30,
+      "sha256": "3a0cad1f95ac93e8d86b269b2cb3c2e3177eb24bb4b2d727af7ecf2da7377faf",
+      "live_disk_equal": true,
+      "evidence": "docs/TRACER_PARAMETER_CURVE_LOADING.md; original-byte fixture with actual storage and bindings AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete normal-return behavior; original SEH/unwind excluded; ECX actual owner, stack flags, EAX same address, RET4. See docs/TRACER_PARAMETER_CURVE_LOADING.md and reports/tracer_parameter_curve_loading.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_TracerParameterCurve_ScalarDestroy",
+      "header": "include/bsp/tracer_parameter_curve_loading.hpp",
+      "native_prototype": "void * __thiscall BSP_TracerParameterCurve_ScalarDestroy(uint flags)",
+      "native_calling_convention": "__thiscall"
+    }
+  ],
+  "integration_validation": {
+    "build": "local/ak-final-build.log: all7 AK modules in strict MSVC Win32 bsp_core; serial --parallel 1 workaround for parallel MSBuild MSB3491",
+    "tests": "local/ak-final-ctest.log: both existing seeded CTests passed",
+    "call_checks": "local/ak-final-call-checks.log: 245 rows across7 reports, zero failures; indirect IAT/current-slot behavior remains outside mechanical checker",
+    "fixtures": [
+      "local/curve-loading-merged-ak.log"
+    ],
+    "fixture_note": "Focused native/source comparison within original worker/root reports limits; all fixture source compilations use /fp:strict and root combined-library linking. Root tracer and earlier pool/curve fixtures were replayed before adding independent emitter/model-update sources; relevant source unchanged. Exact final merged-head replay is recorded separately.",
+    "combined_library_sha256": "d7393d8246d01614b1ce3f0de3ea7a0fc25e567d9ca79218070d07d11ede603a",
+    "source_sha256": {
+      "src/tracer_parameter_curve_loading.cpp": "dc95b9cc939a577bdd3aa02797aeee6ab64d5f9f966b38b0ac67eebfde47b0b2"
+    },
+    "game_validated": false,
+    "original_binary_replacement": false,
+    "worker_historical_note": "Earlier worker read-only/Ghidra repair/CMake pending observations describe the pre-integration snapshot; this section and saved audits are the current result.",
+    "flow_repairs": "reports/tracer_parameter_curve_loading_flow_repairs.json",
+    "function_definitions": "reports/tracer_parameter_curve_loading_function_definitions.json",
+    "strict_replay_note": "Worker standalone fixture lacked /fp:strict. Root rebuilt fixture and linked strict combined core;3072 curve pairs and84 actual Lua comparisons passed."
+  },
+  "ghidra_annotation_audit": {
+    "record": "local/ghidra-annotations-20260912T160551Z.json",
+    "readback": "local/ak-comment-readback.json",
+    "project_saved": true,
+    "old_comments_preserved": true,
+    "changes": [
+      {
+        "address": "00869e40",
+        "before": {
+          "address": "00869e40",
+          "function_name": "FUN_00869e40"
+        },
+        "after": {
+          "address": "00869e40",
+          "name": "BSP_TracerParameterCurve_LoadLua",
+          "evidence": "docs/TRACER_PARAMETER_CURVE_LOADING.md; original-byte fixture with actual storage and bindings AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete normal-return behavior; original SEH/unwind excluded; ECX unused, LuaObject pointer/output-owner pointer/binary32 scale stack arguments, RET0C. See docs/TRACER_PARAMETER_CURVE_LOADING.md and reports/tracer_parameter_curve_loading.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00babfe0",
+        "before": {
+          "address": "00babfe0",
+          "function_name": "FUN_00babfe0"
+        },
+        "after": {
+          "address": "00babfe0",
+          "name": "BSP_TracerParameterCurve_ReserveRecords",
+          "evidence": "docs/TRACER_PARAMETER_CURVE_LOADING.md; original-byte fixture with actual storage and bindings AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX owner+08, one signed capacity stack argument, RET4. See docs/TRACER_PARAMETER_CURVE_LOADING.md and reports/tracer_parameter_curve_loading.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bac5e0",
+        "before": {
+          "address": "00bac5e0",
+          "function_name": "FUN_00bac5e0"
+        },
+        "after": {
+          "address": "00bac5e0",
+          "name": "BSP_TracerParameterCurve_ResizeRecords",
+          "evidence": "docs/TRACER_PARAMETER_CURVE_LOADING.md; original-byte fixture with actual storage and bindings AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX owner+08, one signed size stack argument, RET4. See docs/TRACER_PARAMETER_CURVE_LOADING.md and reports/tracer_parameter_curve_loading.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bac670",
+        "before": {
+          "address": "00bac670",
+          "function_name": "FUN_00bac670"
+        },
+        "after": {
+          "address": "00bac670",
+          "name": "BSP_TracerParameterCurve_AppendPoint",
+          "evidence": "docs/TRACER_PARAMETER_CURVE_LOADING.md; original-byte fixture with actual storage and bindings AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX actual owner, binary32 coordinate/value stack arguments, RET8. See docs/TRACER_PARAMETER_CURVE_LOADING.md and reports/tracer_parameter_curve_loading.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bacb10",
+        "before": {
+          "address": "00bacb10",
+          "function_name": "FUN_00bacb10"
+        },
+        "after": {
+          "address": "00bacb10",
+          "name": "BSP_TracerParameterCurve_Destroy",
+          "evidence": "docs/TRACER_PARAMETER_CURVE_LOADING.md; original-byte fixture with actual storage and bindings AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete normal-return behavior; original SEH/unwind excluded; ECX actual owner, no stack arguments, RET. See docs/TRACER_PARAMETER_CURVE_LOADING.md and reports/tracer_parameter_curve_loading.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bacbb0",
+        "before": {
+          "address": "00bacbb0",
+          "function_name": "CG_scalar_deleting_dtor_00bacbb0"
+        },
+        "after": {
+          "address": "00bacbb0",
+          "name": "BSP_TracerParameterCurve_ScalarDestroy",
+          "evidence": "docs/TRACER_PARAMETER_CURVE_LOADING.md; original-byte fixture with actual storage and bindings AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete normal-return behavior; original SEH/unwind excluded; ECX actual owner, stack flags, EAX same address, RET4. See docs/TRACER_PARAMETER_CURVE_LOADING.md and reports/tracer_parameter_curve_loading.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      }
+    ]
+  },
+  "ghidra_signature_audit": {
+    "record": "local/ak-signature-audit.json",
+    "project_saved": true,
+    "readback_verified": true,
+    "before": {
+      "00babfe0": "00babfe0 BSP_TracerParameterCurve_ReserveRecords  undefined BSP_TracerParameterCurve_ReserveRecords(void)  body 00babfe0 - 00bac061\n",
+      "00bac5e0": "00bac5e0 BSP_TracerParameterCurve_ResizeRecords  undefined BSP_TracerParameterCurve_ResizeRecords(void)  body 00bac5e0 - 00bac636\n",
+      "00bac670": "00bac670 BSP_TracerParameterCurve_AppendPoint  undefined BSP_TracerParameterCurve_AppendPoint(void)  body 00bac670 - 00bac729\n",
+      "00869e40": "00869e40 BSP_TracerParameterCurve_LoadLua  undefined BSP_TracerParameterCurve_LoadLua(void)  body 00869e40 - 00869fcb\n",
+      "00bacb10": "00bacb10 BSP_TracerParameterCurve_Destroy  undefined BSP_TracerParameterCurve_Destroy(void)  body 00bacb10 - 00bacb6c\n",
+      "00bacbb0": "00bacbb0 BSP_TracerParameterCurve_ScalarDestroy  undefined BSP_TracerParameterCurve_ScalarDestroy(void)  body 00bacbb0 - 00bacbcd\n"
+    },
+    "changes": [
+      {
+        "address": "00babfe0",
+        "prototype": "void __thiscall BSP_TracerParameterCurve_ReserveRecords(int capacity)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00babfe0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00bac5e0",
+        "prototype": "void __thiscall BSP_TracerParameterCurve_ResizeRecords(int count)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00bac5e0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00bac670",
+        "prototype": "void __thiscall BSP_TracerParameterCurve_AppendPoint(float coordinate, float value)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00bac670 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00869e40",
+        "prototype": "void __stdcall BSP_TracerParameterCurve_LoadLua(void * lua_object, void ** output, float scale)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00869e40 with __stdcall calling convention"
+        }
+      },
+      {
+        "address": "00bacb10",
+        "prototype": "void __thiscall BSP_TracerParameterCurve_Destroy(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00bacb10 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00bacbb0",
+        "prototype": "void * __thiscall BSP_TracerParameterCurve_ScalarDestroy(uint flags)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00bacbb0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ],
+    "note": "Original native calling convention/arguments only; implicit this is ECX. Added C++ bindings do not change this recovered native signature. Compiler handler remains opaque."
+  }
 }

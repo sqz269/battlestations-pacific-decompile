@@ -136,3 +136,15 @@ registration. `verify_report_calls.py` identifies the expected missing live
 `BACB57 -> BD30F0` call row; all other reported call/tail rows pass.
 The game's current application flow is not wired to this new default-curve
 binding. Loaded-curve fixture evidence is not gameplay or rendered-tracer proof.
+
+## AK saved-analysis and combined-build integration
+
+The seven-module AK batch is registered in bsp_core. Strict MSVC Win32
+compilation and both seeded CTests passed with explicit `--parallel 1`; the
+standard parallel script hit environment MSB3491 before compiling C++.
+The report records saved Ghidra name/signature preimages, prior-comment
+preservation and readback, original-byte fixture coverage and exact call checks.
+Reported returning-free continuations and missing definitions are now repaired
+and saved; worker-era pending-integration notes above describe the earlier snapshot.
+New C++ interfaces and required real runtime bindings remain as documented.
+Successful full construction, native EH compatibility and gameplay are not implied.

@@ -172,3 +172,15 @@ The live call checker reviewed22 numeric call/tail rows. Nineteen passed;
 three are blocked only by the missing startup/dispatcher function definitions
 (CD88D5, CD88DF, CC3D43). The report retains those rows for the primary to
 recheck after definitions, plus eight explicitly recorded indirect OS sites.
+
+## AK saved-analysis and combined-build integration
+
+The seven-module AK batch is registered in bsp_core. Strict MSVC Win32
+compilation and both seeded CTests passed with explicit `--parallel 1`; the
+standard parallel script hit environment MSB3491 before compiling C++.
+The report records saved Ghidra name/signature preimages, prior-comment
+preservation and readback, original-byte fixture coverage and exact call checks.
+Reported returning-free continuations and missing definitions are now repaired
+and saved; worker-era pending-integration notes above describe the earlier snapshot.
+New C++ interfaces and required real runtime bindings remain as documented.
+Successful full construction, native EH compatibility and gameplay are not implied.

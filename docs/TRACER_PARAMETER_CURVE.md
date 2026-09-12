@@ -119,3 +119,7 @@ both existing CTests passed. The report records the focused fixture replay, exac
 call/tail checks, saved Ghidra name/signature preimages and comment readback.
 Required external runtime bindings, original exception ABI and gameplay remain
 limited as described above; this integration does not extend the fixture coverage.
+
+## Correction from docs/TRACER_PARAMETER_CURVE_LOADING.md
+
+AK reconstructs reserve/resize/append, real Lua loading and destructor/scalar lifetime over existing1Ch storage. Returning-free Ghidra gaps are repaired. Strict combined-library fixtures pass3072 curve pairs and84 actual Lua comparisons. Current family-slot composition, original exception ABI and gameplay remain unvalidated.

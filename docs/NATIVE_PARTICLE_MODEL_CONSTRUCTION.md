@@ -200,3 +200,15 @@ import relocation goes through a WINAPI wrapper over the same atomic intrinsic.
 It does not supply a fake
 successful AF74A0 dependency or claim model rendering. The source is intentionally
 not added to shared CMake/ledgers by this worker; root integration owns that step.
+
+## AK saved-analysis and combined-build integration
+
+The seven-module AK batch is registered in bsp_core. Strict MSVC Win32
+compilation and both seeded CTests passed with explicit `--parallel 1`; the
+standard parallel script hit environment MSB3491 before compiling C++.
+The report records saved Ghidra name/signature preimages, prior-comment
+preservation and readback, original-byte fixture coverage and exact call checks.
+Reported returning-free continuations and missing definitions are now repaired
+and saved; worker-era pending-integration notes above describe the earlier snapshot.
+New C++ interfaces and required real runtime bindings remain as documented.
+Successful full construction, native EH compatibility and gameplay are not implied.

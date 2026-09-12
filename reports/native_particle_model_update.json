@@ -4,7 +4,7 @@
   "program": "/battlestationspacific.exe",
   "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
   "verified_utc_date": "2026-09-12",
-  "status": "complete_instruction_paths_with_required_services_strict_win32_and_bounded_native_fixture_passed",
+  "status": "reconstructed_strict_win32_build_tested_bounded_original_byte_fixture_tested_saved_analysis_verified",
   "headers": [
     "include/bsp/native_particle_model_update.hpp"
   ],
@@ -33,7 +33,11 @@
       "instructions": 375,
       "end_inclusive": "00af7391",
       "uncertainty": "Descriptive symbol is a hypothesis. Main routine requires actual application services and an added EDX access pointer. Original object/EH ABI and game behavior unvalidated.",
-      "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain."
+      "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain. Descriptive name is a provisional hypothesis, not a recovered symbol. thiscall: ECX actual 2DCh model; stack(float delta, low mode byte); RET8. See docs/NATIVE_PARTICLE_MODEL_UPDATE.md for required real services and bounded fixture coverage. New interface; native object/EH ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_ParticleModel_Update",
+      "header": "include/bsp/native_particle_model_update.hpp",
+      "native_prototype": "void __thiscall BSP_ParticleModel_Update(float delta, uint mode)",
+      "native_calling_convention": "__thiscall"
     },
     {
       "address": "00b6e0a0",
@@ -55,7 +59,11 @@
       "instructions": 8,
       "end_inclusive": "00b6e0c0",
       "uncertainty": "Descriptive symbol is a hypothesis. Main routine requires actual application services and an added EDX access pointer. Original object/EH ABI and game behavior unvalidated.",
-      "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain."
+      "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain. Descriptive name is a provisional hypothesis, not a recovered symbol. thiscall: ECX node; stack destination; EAX destination; RET4. See docs/NATIVE_PARTICLE_MODEL_UPDATE.md for required real services and bounded fixture coverage. New interface; native object/EH ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_Node_CopyLocalPosition",
+      "header": "include/bsp/native_particle_model_update.hpp",
+      "native_prototype": "float * __thiscall BSP_Node_CopyLocalPosition(float * destination)",
+      "native_calling_convention": "__thiscall"
     },
     {
       "address": "00b6db60",
@@ -77,7 +85,11 @@
       "instructions": 2,
       "end_inclusive": "00b6db66",
       "uncertainty": "Descriptive symbol is a hypothesis. Main routine requires actual application services and an added EDX access pointer. Original object/EH ABI and game behavior unvalidated.",
-      "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain."
+      "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain. Descriptive name is a provisional hypothesis, not a recovered symbol. thiscall: ECX node; EAX node+B0h; RET. See docs/NATIVE_PARTICLE_MODEL_UPDATE.md for required real services and bounded fixture coverage. New interface; native object/EH ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_Node_GetLocalMatrix",
+      "header": "include/bsp/native_particle_model_update.hpp",
+      "native_prototype": "float * __thiscall BSP_Node_GetLocalMatrix(void)",
+      "native_calling_convention": "__thiscall"
     },
     {
       "address": "00af3f50",
@@ -99,7 +111,11 @@
       "instructions": 11,
       "end_inclusive": "00af3f7c",
       "uncertainty": "Descriptive symbol is a hypothesis. Main routine requires actual application services and an added EDX access pointer. Original object/EH ABI and game behavior unvalidated.",
-      "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain."
+      "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain. Descriptive name is a provisional hypothesis, not a recovered symbol. thiscall: ECX definition; stack destination; EAX destination; RET4. See docs/NATIVE_PARTICLE_MODEL_UPDATE.md for required real services and bounded fixture coverage. New interface; native object/EH ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_ParticleDefinition_CopyBounds",
+      "header": "include/bsp/native_particle_model_update.hpp",
+      "native_prototype": "float * __thiscall BSP_ParticleDefinition_CopyBounds(float * destination)",
+      "native_calling_convention": "__thiscall"
     },
     {
       "address": "00afd9f0",
@@ -121,7 +137,11 @@
       "instructions": 1,
       "end_inclusive": "00afd9f0",
       "uncertainty": "Descriptive symbol is a hypothesis. Main routine requires actual application services and an added EDX access pointer. Original object/EH ABI and game behavior unvalidated.",
-      "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain."
+      "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain. Descriptive name is a provisional hypothesis, not a recovered symbol. thiscall: ECX temporary; RET. See docs/NATIVE_PARTICLE_MODEL_UPDATE.md for required real services and bounded fixture coverage. New interface; native object/EH ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_ParticleTemporary_Destroy",
+      "header": "include/bsp/native_particle_model_update.hpp",
+      "native_prototype": "void __thiscall BSP_ParticleTemporary_Destroy(void)",
+      "native_calling_convention": "__thiscall"
     },
     {
       "address": "00affa70",
@@ -143,7 +163,11 @@
       "instructions": 38,
       "end_inclusive": "00affad2",
       "uncertainty": "Descriptive symbol is a hypothesis. Main routine requires actual application services and an added EDX access pointer. Original object/EH ABI and game behavior unvalidated.",
-      "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain."
+      "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain. Descriptive name is a provisional hypothesis, not a recovered symbol. thiscall: ECX curve; stack float time; ST0 float; RET4. See docs/NATIVE_PARTICLE_MODEL_UPDATE.md for required real services and bounded fixture coverage. New interface; native object/EH ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_ParticleCurve_EvaluateLinear",
+      "header": "include/bsp/native_particle_model_update.hpp",
+      "native_prototype": "float __thiscall BSP_ParticleCurve_EvaluateLinear(float time)",
+      "native_calling_convention": "__thiscall"
     },
     {
       "address": "00affae0",
@@ -165,7 +189,11 @@
       "instructions": 47,
       "end_inclusive": "00affb56",
       "uncertainty": "Descriptive symbol is a hypothesis. Main routine requires actual application services and an added EDX access pointer. Original object/EH ABI and game behavior unvalidated.",
-      "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain."
+      "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain. Descriptive name is a provisional hypothesis, not a recovered symbol. thiscall: ECX curve; stack float time; ST0 float; RET4. See docs/NATIVE_PARTICLE_MODEL_UPDATE.md for required real services and bounded fixture coverage. New interface; native object/EH ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_ParticleCurve_EvaluateCubic",
+      "header": "include/bsp/native_particle_model_update.hpp",
+      "native_prototype": "float __thiscall BSP_ParticleCurve_EvaluateCubic(float time)",
+      "native_calling_convention": "__thiscall"
     }
   ],
   "host_steps": [
@@ -539,5 +567,187 @@
     "local/model_update_relocations.hpp": "9c3311b4fefa58652d5d292fd760e2345bed8a681ac8480475a5178be8bbcea3",
     "include/bsp/native_particle_model_update.hpp": "4f74655c49fa07749f9882a38a157b85565dce74de0bf17758c5b6e90c1d3652",
     "src/native_particle_model_update.cpp": "c860da2df80928b93d7312d17428a02c0160b595544a1d0c4afb47da3c821444"
+  },
+  "ghidra_annotation_audit": {
+    "record": "local/ghidra-annotations-20260912T160551Z.json",
+    "readback": "local/ak-comment-readback.json",
+    "project_saved": true,
+    "old_comments_preserved": true,
+    "changes": [
+      {
+        "address": "00af3f50",
+        "before": {
+          "address": "00af3f50",
+          "function_name": "FUN_00af3f50"
+        },
+        "after": {
+          "address": "00af3f50",
+          "name": "BSP_ParticleDefinition_CopyBounds",
+          "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain. Descriptive name is a provisional hypothesis, not a recovered symbol. thiscall: ECX definition; stack destination; EAX destination; RET4. See docs/NATIVE_PARTICLE_MODEL_UPDATE.md for required real services and bounded fixture coverage. New interface; native object/EH ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af6dd0",
+        "before": {
+          "address": "00af6dd0",
+          "function_name": "FUN_00af6dd0"
+        },
+        "after": {
+          "address": "00af6dd0",
+          "name": "BSP_ParticleModel_Update",
+          "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain. Descriptive name is a provisional hypothesis, not a recovered symbol. thiscall: ECX actual 2DCh model; stack(float delta, low mode byte); RET8. See docs/NATIVE_PARTICLE_MODEL_UPDATE.md for required real services and bounded fixture coverage. New interface; native object/EH ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afd9f0",
+        "before": {
+          "address": "00afd9f0",
+          "function_name": "TRIV_body_00afd9f0"
+        },
+        "after": {
+          "address": "00afd9f0",
+          "name": "BSP_ParticleTemporary_Destroy",
+          "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain. Descriptive name is a provisional hypothesis, not a recovered symbol. thiscall: ECX temporary; RET. See docs/NATIVE_PARTICLE_MODEL_UPDATE.md for required real services and bounded fixture coverage. New interface; native object/EH ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00affa70",
+        "before": {
+          "address": "00affa70",
+          "function_name": "FUN_00affa70"
+        },
+        "after": {
+          "address": "00affa70",
+          "name": "BSP_ParticleCurve_EvaluateLinear",
+          "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain. Descriptive name is a provisional hypothesis, not a recovered symbol. thiscall: ECX curve; stack float time; ST0 float; RET4. See docs/NATIVE_PARTICLE_MODEL_UPDATE.md for required real services and bounded fixture coverage. New interface; native object/EH ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00affae0",
+        "before": {
+          "address": "00affae0",
+          "function_name": "FUN_00affae0"
+        },
+        "after": {
+          "address": "00affae0",
+          "name": "BSP_ParticleCurve_EvaluateCubic",
+          "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain. Descriptive name is a provisional hypothesis, not a recovered symbol. thiscall: ECX curve; stack float time; ST0 float; RET4. See docs/NATIVE_PARTICLE_MODEL_UPDATE.md for required real services and bounded fixture coverage. New interface; native object/EH ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b6db60",
+        "before": {
+          "address": "00b6db60",
+          "function_name": "TRIV_body_00b6db60"
+        },
+        "after": {
+          "address": "00b6db60",
+          "name": "BSP_Node_GetLocalMatrix",
+          "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain. Descriptive name is a provisional hypothesis, not a recovered symbol. thiscall: ECX node; EAX node+B0h; RET. See docs/NATIVE_PARTICLE_MODEL_UPDATE.md for required real services and bounded fixture coverage. New interface; native object/EH ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b6e0a0",
+        "before": {
+          "address": "00b6e0a0",
+          "function_name": "FUN_00b6e0a0"
+        },
+        "after": {
+          "address": "00b6e0a0",
+          "name": "BSP_Node_CopyLocalPosition",
+          "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain. Descriptive name is a provisional hypothesis, not a recovered symbol. thiscall: ECX node; stack destination; EAX destination; RET4. See docs/NATIVE_PARTICLE_MODEL_UPDATE.md for required real services and bounded fixture coverage. New interface; native object/EH ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      }
+    ]
+  },
+  "ghidra_signature_audit": {
+    "record": "local/ak-signature-audit.json",
+    "project_saved": true,
+    "readback_verified": true,
+    "before": {
+      "00af6dd0": "00af6dd0 BSP_ParticleModel_Update  undefined BSP_ParticleModel_Update(void)  body 00af6dd0 - 00af7391\n",
+      "00b6e0a0": "00b6e0a0 BSP_Node_CopyLocalPosition  undefined BSP_Node_CopyLocalPosition(void)  body 00b6e0a0 - 00b6e0c0\n",
+      "00b6db60": "00b6db60 BSP_Node_GetLocalMatrix  undefined BSP_Node_GetLocalMatrix(void)  body 00b6db60 - 00b6db66\n",
+      "00af3f50": "00af3f50 BSP_ParticleDefinition_CopyBounds  undefined BSP_ParticleDefinition_CopyBounds(void)  body 00af3f50 - 00af3f7c\n",
+      "00afd9f0": "00afd9f0 BSP_ParticleTemporary_Destroy  undefined BSP_ParticleTemporary_Destroy(void)  body 00afd9f0 - 00afd9f0\n",
+      "00affa70": "00affa70 BSP_ParticleCurve_EvaluateLinear  undefined BSP_ParticleCurve_EvaluateLinear(void)  body 00affa70 - 00affad2\n",
+      "00affae0": "00affae0 BSP_ParticleCurve_EvaluateCubic  undefined BSP_ParticleCurve_EvaluateCubic(void)  body 00affae0 - 00affb56\n"
+    },
+    "changes": [
+      {
+        "address": "00af6dd0",
+        "prototype": "void __thiscall BSP_ParticleModel_Update(float delta, uint mode)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af6dd0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b6e0a0",
+        "prototype": "float * __thiscall BSP_Node_CopyLocalPosition(float * destination)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b6e0a0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b6db60",
+        "prototype": "float * __thiscall BSP_Node_GetLocalMatrix(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b6db60 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af3f50",
+        "prototype": "float * __thiscall BSP_ParticleDefinition_CopyBounds(float * destination)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af3f50 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00afd9f0",
+        "prototype": "void __thiscall BSP_ParticleTemporary_Destroy(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00afd9f0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00affa70",
+        "prototype": "float __thiscall BSP_ParticleCurve_EvaluateLinear(float time)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00affa70 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00affae0",
+        "prototype": "float __thiscall BSP_ParticleCurve_EvaluateCubic(float time)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00affae0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ],
+    "note": "Original native calling convention/arguments only; implicit this is ECX. Added C++ bindings do not change this recovered native signature. Compiler handler remains opaque."
+  },
+  "integration_validation": {
+    "build": "local/ak-final-build.log: all7 AK modules in strict MSVC Win32 bsp_core; serial --parallel 1 workaround for parallel MSBuild MSB3491",
+    "tests": "local/ak-final-ctest.log: both existing seeded CTests passed",
+    "call_checks": "local/ak-final-call-checks.log: 245 rows across7 reports, zero failures; indirect IAT/current-slot behavior remains outside mechanical checker",
+    "fixtures": [
+      "local/model-update-merged-ak.log"
+    ],
+    "fixture_note": "Focused native/source comparison within original worker/root reports limits; all fixture source compilations use /fp:strict and root combined-library linking. Root tracer and earlier pool/curve fixtures were replayed before adding independent emitter/model-update sources; relevant source unchanged. Exact final merged-head replay is recorded separately.",
+    "combined_library_sha256": "d7393d8246d01614b1ce3f0de3ea7a0fc25e567d9ca79218070d07d11ede603a",
+    "source_sha256": {
+      "src/native_particle_model_update.cpp": "73e1e28b31a59f02c4c3b1d0d86cccdf439cf2c1440477730b2e0cb5039477c3"
+    },
+    "game_validated": false,
+    "original_binary_replacement": false,
+    "worker_historical_note": "Earlier worker read-only/Ghidra repair/CMake pending observations describe the pre-integration snapshot; this section and saved audits are the current result.",
+    "flow_repairs": "reports/native_particle_model_update_flow_repairs.json"
   }
 }

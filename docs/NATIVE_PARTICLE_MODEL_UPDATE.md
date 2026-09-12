@@ -135,3 +135,15 @@ The standard parallel build encountered MSB3491 access failures creating Lua/zli
 `.tlog` temporary files; serial build and existing CTest results are recorded
 separately in the report. Neither fixture nor compilation establishes original
 object/EH ABI compatibility or game validation.
+
+## AK saved-analysis and combined-build integration
+
+The seven-module AK batch is registered in bsp_core. Strict MSVC Win32
+compilation and both seeded CTests passed with explicit `--parallel 1`; the
+standard parallel script hit environment MSB3491 before compiling C++.
+The report records saved Ghidra name/signature preimages, prior-comment
+preservation and readback, original-byte fixture coverage and exact call checks.
+Reported returning-free continuations and missing definitions are now repaired
+and saved; worker-era pending-integration notes above describe the earlier snapshot.
+New C++ interfaces and required real runtime bindings remain as documented.
+Successful full construction, native EH compatibility and gameplay are not implied.
