@@ -184,3 +184,7 @@ the five operating-system import rows have independent import-directory evidence
 The report-call checker covers ordinary saved-body CALL rows; raw undefined
 CALL sites and unconditional JMP tails are recorded separately, without passing
 them off as checked calls. No source, ABI, fixture or game validation is claimed.
+
+## AQ parent integration, 2026-09-12
+
+Correction from docs/NATIVE_PHYSICAL_FACTORY_PRIMITIVES.md: seven factory publication, adjustment/deletion and provider-pool primitive bodies now have source reconstructions and bounded native comparisons. The full pool initialization/link/trim lifecycle and complete physical-provider construction are still dependency boundaries. This closes only the corresponding primitive entries of this discovery map.

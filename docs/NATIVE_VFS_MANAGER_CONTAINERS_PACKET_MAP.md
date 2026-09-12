@@ -212,3 +212,7 @@ in particular BE2029-BE21E2 does not acquire a stored-function attribution from
 its contiguous disk location. Tail thunks and EH jumps have distinct transfer
 records. No build or tests were needed for this documentation-only discovery.
 Full-manager source, binary ABI and game validation remain unclaimed.
+
+## AQ parent integration, 2026-09-12
+
+Correction from docs/NATIVE_VFS_SEQUENCE_LIFETIME.md: the four plain-list wrappers/lifetimes and five string-pair/vector lifetime bodies are reconstructed and bounded-fixture checked. Root review corrected the second string data-pointer read order. Manager tree ownership and the complete BE1F60 tail remain open; discovery readiness does not establish their independence. Three stored Ghidra sequence tails remain incomplete after supported flow repair.

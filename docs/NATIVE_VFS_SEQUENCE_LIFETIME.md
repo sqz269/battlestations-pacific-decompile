@@ -164,3 +164,9 @@ matched their sealed hashes before any build; no C++ or build input changed
 and no rebuild overwrote the passing logs. The 18 captured original/support
 spans were compared again through the verified read-only BSP CLI against
 the installed PE. Full hashes and local provenance paths are in the report.
+
+## AQ parent integration, 2026-09-12
+
+The parent corrected a source read-order mismatch in BDCC60: first destination/source data reads match BDCCA5/A9, while second source/destination reads match BDCCE8/EB. Independent inspection confirmed the corrected compiled instructions. Existing 17 native/source cases, three source EH cases and CRT/lifetime smoke passed; the fixture does not instrument individual header reads. Original worker source/object/probe hashes remain historical and unchanged, with the corrected proof recorded separately in reports/native_aq_integration.json.
+
+All nine names/comments were saved and exports refreshed. Standard locked flow repair restored the internal gaps in BDAED0, 7F8310 and BDCD10. Although all six reported intervals were decoded, stored body metadata still omits BDAF0C..BDAF17, 7F834C..7F8357 and BE0362..BE0366. No full tail repair is claimed. All 21 CALL rows pass. Original FH3 execution and game validation remain unclaimed.

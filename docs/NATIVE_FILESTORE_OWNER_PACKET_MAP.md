@@ -156,3 +156,7 @@ missing continuation cannot pass live function-membership verification before a
 primary repair. The mechanical check examined 66 direct rows: 63 passed and those
 three failed; two indirect call rows were retained and explicitly not checked.
 This discovery adds no tests and makes no runtime/startup claim.
+
+## AQ parent integration, 2026-09-12
+
+Correction from docs/NATIVE_FILESTORE_FOUNDATIONS.md and docs/NATIVE_ADOPTED_SUBSTREAM.md: the two FileStore node allocators, provider-base construction/destruction, and adopted-substream body/dispatch are reconstructed with bounded native evidence. Full owner tree operations, pending-tree teardown and the native canonicalizer remain open. The discovery report still has three expected BE7BF0 tail CALL coverage failures; the passing source-packet checks do not erase that discovery limitation.

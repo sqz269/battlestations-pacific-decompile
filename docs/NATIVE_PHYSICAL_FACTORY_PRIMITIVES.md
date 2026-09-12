@@ -188,3 +188,7 @@ work. Pool lifecycle/startup/trim, factory numeric-table shutdown binding,
 BF4DF0/BF4D30 provider construction, and the external BB5590/BB5380 base remain
 separate integration work. Build and fixture success do not establish those
 contracts or game execution.
+
+## AQ parent integration, 2026-09-12
+
+All seven functions are now defined and named. BED910 was created over the verified eight-byte body ending at exclusive BED918. Standard locked flow repair restored BED981..BED983 and BF3566..BF3568; both listings now have zero call gaps. Ten direct CALL rows passed; seven import rows retain their separate import evidence. The 38 original proof files were frozen in full before further validation. Earlier statements that Ghidra was unchanged or BED910 was missing describe the worker capture, not the integrated state. Pool startup/trim, complete physical provider construction and original FH3 execution remain outside this packet.

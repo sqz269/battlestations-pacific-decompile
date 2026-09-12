@@ -127,3 +127,7 @@ and before executing** the retained fixture. It pins 24 source, object, archive,
 probe and preparation artifacts. All 24 hashes were checked again after the
 completed build and probe. The report embeds the essential hashes and the manifest
 hash so the primary agent can freeze these exact artifacts before other builds.
+
+## AQ parent integration, 2026-09-12
+
+All four functions were reviewed, named, commented, saved and force-exported by the parent integrator. The 24 direct CALL rows passed live verification. The original 24-file before-execution manifest and 34 parent-frozen artifacts remain preserved. The combined strict Win32 build and both existing CTests passed; these checks do not establish game validation.

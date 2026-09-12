@@ -55,7 +55,7 @@ void destroy_plain_list(void* owner) noexcept {
 }
 
 void copy_pair_string(void* destination, const void* source,
-    NativeStringStorage& storage) {
+    NativeStringStorage& storage, bool second_string) {
     put(destination, 0, 0);
     put(destination, 4, 0);
     if (destination == source) return;
@@ -65,8 +65,17 @@ void copy_pair_string(void* destination, const void* source,
         // BF7694/98 selects the backward path BF7844 when source<destination
         // <source+length. A standard memcpy call would introduce overlap UB.
         // Zero count performs no memory access; the raw pointers are still read.
-        void* const data = pointer(destination, 4);
-        const void* const input = pointer(source, 4);
+        // BDCCA5 reads first destination data before source; BDCCE8/EB
+        // reads second source data before destination. Retain both orders.
+        void* data;
+        const void* input;
+        if (second_string) {
+            input = pointer(source, 4);
+            data = pointer(destination, 4);
+        } else {
+            data = pointer(destination, 4);
+            input = pointer(source, 4);
+        }
         if (length != 0) std::memmove(data, input, length);
     }
 }
@@ -97,9 +106,9 @@ void destroy_native_vfs_string_pair_00bdb850(void* pair,
 
 void* copy_construct_native_vfs_string_pair_00bdcc60(void* destination,
     const void* source, NativeStringStorage& storage) {
-    copy_pair_string(destination, source, storage);
+    copy_pair_string(destination, source, storage, false);
     try {
-        copy_pair_string(at(destination, 8), at(source, 8), storage);
+        copy_pair_string(at(destination, 8), at(source, 8), storage, true);
     } catch (...) {
         // FuncInfo E006A8 state0 -> CC6250 ->41DD20 on captured destination+0.
         // Do not destroy the partially constructed second string.
