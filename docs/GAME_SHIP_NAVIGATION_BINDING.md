@@ -53,3 +53,23 @@ profile/flag inputs and real width remain unbound. The width getter currently
 returns a placeholder `1.0f`. Model-present and dirty-pose branches were not
 exercised by this runtime, which also produced zero corner arms. These checks
 do not establish corner-detour, collision-world or original gameplay parity.
+
+## Follow-up packet: actual avoidance-depth and complete pre-step binding
+
+`GameMissionLuaHost` already owns the loaded ShipGlobals tables. A typed reader
+can use actual `GameUnitRow.type_id` to select the VehicleClass row, its
+`HeavyCruiser`/`BigLandingShip` flags, and the existing
+`kShipLeafTuningSources` mapping. Native `0083B5E0` loads the flat
+`ShipGlobals.AvoidZoneDepthsSingle/Multi` arrays; `00837DE0` selects Single
+only for actual session mode zero. Retain the selected first array value as
+class `+570h` before AI construction. Do not use the later controller's legacy
+hardcoded session value or wait for the later avoid-zone load.
+
+Existing unit APIs provide reference speed and turn circle at0.5 under the
+represented empty modifier lists. Complete binding also requires real `+9CCh`
+width, canonical byte flags/profile storage, and removal of the later raw
+reference-speed assignment that would overwrite the pre-step's floor. The
+existing bool fields must not be reinterpreted as borrowed uint8 references.
+The65 profile bins and12 sectors already have process-owned storage. Recheck
+leases before editing: the Units files belonged to another active packet
+when this follow-up was assessed.
