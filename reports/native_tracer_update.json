@@ -491,5 +491,22 @@
       }
     ],
     "note": "Original native calling convention/arguments only; implicit this is ECX. Added C++ bindings do not change this recovered native signature. Compiler handler remains opaque."
+  },
+  "final_merged_validation": {
+    "tested_commit": "aab1373abde21d9a8d03ad113f8a53317cfd8ff5",
+    "build": "local/ak-integrate.log: repository standard scripts/build.ps1 completed successfully after merge with current main; strict MSVC Win32 and both existing seeded CTests passed",
+    "earlier_parallel_issue": "Intermittent MSB3491 creating Lua/zlib tlog temporary files occurred before C++ compilation, including a later documentation-only integration rerun. Standard integration build at the pinned source commit passed. Serial final full build and both CTests passed again; no ACL/global workaround installed.",
+    "original_byte_fixture": "local/tracer-probe-final-merged-ak.log",
+    "fixture_compiler": "MSVC Win32 /std:c++20 /W4 /WX /O2 /fp:strict /MD; /link /MANIFEST:EMBED",
+    "combined_library_sha256": "3ca30054b3287e5612c4b6fc9c684a8927805b4591db28a95d9367a4e05977ef",
+    "owned_sources_unchanged_from_review": "local/ak-merged-source-audit.json: all14 source/header files unchanged from020d8f85",
+    "game_validated": false,
+    "native_binary_replacement": false,
+    "documentation_only_retry": {
+      "build": "local/ak-documentation-final-build.log: serial strict Win32 full build passed",
+      "tests": "local/ak-documentation-final-ctest.log: both seeded tests passed",
+      "source_unchanged": true,
+      "library_sha256": "3ca30054b3287e5612c4b6fc9c684a8927805b4591db28a95d9367a4e05977ef"
+    }
   }
 }

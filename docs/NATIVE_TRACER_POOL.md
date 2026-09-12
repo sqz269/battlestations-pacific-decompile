@@ -184,3 +184,19 @@ Reported returning-free continuations and missing definitions are now repaired
 and saved; worker-era pending-integration notes above describe the earlier snapshot.
 New C++ interfaces and required real runtime bindings remain as documented.
 Successful full construction, native EH compatibility and gameplay are not implied.
+
+## AK final merged validation
+
+After merging current main at `aab1373abde21d9a8d03ad113f8a53317cfd8ff5`, the repository standard
+`./scripts/build.ps1` completed successfully and both existing seeded CTests
+passed. The focused original-byte fixture was rebuilt with `/fp:strict` and
+replayed against that combined library; it passed. The report pins its log and
+library hash. Earlier parallel MSBuild failures and worker-pending notes above
+are historical; the final build required no global configuration change.
+All stated constructor, simulation, current-slot, native EH and gameplay limits
+remain in force.
+
+The parallel MSBuild invocation remains intermittent: a later documentation-only
+rerun again hit MSB3491 before C++ compilation. The final serial full build and
+both existing CTests passed again on unchanged source. This environment issue
+was recorded rather than changing global permissions or build configuration.
