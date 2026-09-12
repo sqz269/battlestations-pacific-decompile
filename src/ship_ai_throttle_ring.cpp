@@ -130,6 +130,52 @@ float ship_ai_rudder_from_heading_error_009da250(ShipAiThrottleDirection latched
 }
 
 // ---------------------------------------------------------------------------
+// 00828F20, bool __thiscall(descriptor)(void)
+// RET at 00828F79, body 00828F20-00828F79, complete.
+// ---------------------------------------------------------------------------
+// 00828F23 MOVSS XMM0,[ECX+4FCh]; 00828F2B XORPS XMM1,XMM1; 00828F2E COMISS
+// XMM1,XMM0; 00828F37 JNC 00828F74. The fall-through needs CF = 1, which an
+// ordered COMISS sets only for 0 < value but which an unordered pair also sets,
+// so a NaN key passes the gate in the image. 00828F39..00828F49 repeats the
+// test on [ECX+4F8h]. Both failures reach 00828F74 XOR AL,AL and return without
+// storing anything.
+//
+// The arithmetic is one x87 stack:
+//   00828F4B FLD    [ESP]            ; MaxRotAngle, spilled at 00828F44
+//   00828F4E FLD    ST0              ; a second copy
+//   00828F50 FDIV   [ESP+4]          ; ST0 = MaxRotAngle / MaxRotAngleChangeRatio
+//   00828F54 FMUL   double 00D7A280  ; * 0.5
+//   00828F5A FSTP   [ECX+524h]       ; stores and pops, leaving MaxRotAngle
+//   00828F60 FDIVR  [ECX+500h]       ; ST0 = MaxSpeed / MaxRotAngle
+//   00828F66 FSTP   [ECX+520h]
+// FDIVR divides the memory operand by ST0, not the other way round. Both
+// quotients are computed at the x87 working precision and only the two stores
+// round to float32, which is what the doubles below reproduce. 00828F6F tail
+// jumps to 00951F20, a two-line `return 00876180() != 0`, so the returned bool
+// is that call's result, not the derivation's; 0096515D ignores it either way.
+ShipClassAiDerivedMotion ship_class_ai_derived_motion_00828f20(
+    float max_rot_angle_04f8, float max_rot_angle_change_ratio_04fc, float max_speed_0500) {
+    ShipClassAiDerivedMotion out{};
+
+    // COMISS + JNC: continue on `0 < value`, and on an unordered pair.
+    const auto passes_gate = [](float value) {
+        return (0.0f < value) || std::isnan(value);
+    };
+    if (!passes_gate(max_rot_angle_change_ratio_04fc) || !passes_gate(max_rot_angle_04f8)) {
+        return out;
+    }
+
+    const double max_rot_angle = static_cast<double>(max_rot_angle_04f8);
+    out.yaw_authority_0524 = static_cast<float>(
+        (max_rot_angle / static_cast<double>(max_rot_angle_change_ratio_04fc)) *
+        kShipClassYawAuthorityHalf);
+    out.turn_radius_0520 =
+        static_cast<float>(static_cast<double>(max_speed_0500) / max_rot_angle);
+    out.derived = true;
+    return out;
+}
+
+// ---------------------------------------------------------------------------
 // 009F4C0E..009F4C78 and 009F4C86..009F4CDA, the slew
 // ---------------------------------------------------------------------------
 // Both copies are the same six-instruction shape. The compare is

@@ -569,10 +569,15 @@ struct TrajectoryInputs {
     float moveto_x{0.0f};
     float moveto_z{0.0f};
     // The ship-class float 009DA268 loads for the division, [unit+538h]
-    // +524h. 00831840 does not write that offset, so the Lua key is unknown and
-    // the run uses MaxRotAngle (class+4F8h) unless --yaw-authority overrides it.
+    // +524h. It has no Lua key: 00828F20, the descriptor's virtual slot +14h,
+    // derives it once per class as
+    // 0.5 * MaxRotAngle / MaxRotAngleChangeRatio. The run computes it from the
+    // installed class row unless --yaw-authority overrides it.
     float yaw_authority_0524{0.0f};
     bool yaw_authority_overridden{false};
+    // False when 00828F20's two gates reject the row, which leaves the field
+    // uninitialised in the image; the run header says so.
+    bool yaw_authority_derived{false};
 };
 
 struct TrajectoryResult {
@@ -1142,11 +1147,22 @@ int main(int argc, char** argv) {
     run_in.moveto = moveto;
     run_in.moveto_x = moveto_x;
     run_in.moveto_z = moveto_z;
-    // class+524h. 00831840 writes +4F8h..+51Bh and then +538h, so +524h is in a
-    // gap no reader this packet read fills; MaxRotAngle stands in for it and the
-    // run header says so.
-    run_in.yaw_authority_0524 = have_yaw_authority ? yaw_authority : chosen->max_rot_angle;
+    // class+524h, recovered: 00828F20 derives it from the same class row this
+    // probe already reads, so the run no longer substitutes MaxRotAngle for it.
+    const bsp::ShipClassAiDerivedMotion derived_0524 = bsp::ship_class_ai_derived_motion_00828f20(
+        chosen->max_rot_angle, chosen->max_rot_angle_change_ratio, chosen->max_speed);
+    run_in.yaw_authority_0524 =
+        have_yaw_authority ? yaw_authority : derived_0524.yaw_authority_0524;
     run_in.yaw_authority_overridden = have_yaw_authority;
+    run_in.yaw_authority_derived = derived_0524.derived;
+    if (!have_yaw_authority && !derived_0524.derived) {
+        std::printf("  warning: 00828F20's gates reject this class row"
+                    " (MaxRotAngle %.6f, MaxRotAngleChangeRatio %.6f);\n"
+                    "           class+524h stays 0 and the rudder law saturates."
+                    " Pass --yaw-authority to override.\n",
+                    static_cast<double>(chosen->max_rot_angle),
+                    static_cast<double>(chosen->max_rot_angle_change_ratio));
+    }
 
     HullBodySetup stand_in = stand_in_body();
     HullBodySetup real = class_body(*chosen, hull_extent);
@@ -1231,8 +1247,11 @@ int main(int argc, char** argv) {
                     static_cast<double>(b.moveto_bearing), b.moveto_turn_leads,
                     static_cast<double>(b.moveto_heading_error),
                     static_cast<double>(run_in.yaw_authority_0524),
-                    run_in.yaw_authority_overridden ? "--yaw-authority"
-                                                   : "MaxRotAngle, a stand-in",
+                    run_in.yaw_authority_overridden
+                        ? "--yaw-authority"
+                        : (run_in.yaw_authority_derived
+                               ? "00828F20, 0.5 * MaxRotAngle / MaxRotAngleChangeRatio"
+                               : "00828F20 rejected the row, field left at 0"),
                     static_cast<double>(b.moveto_ring_throttle),
                     static_cast<double>(b.moveto_ring_rudder),
                     b.moveto_rudder_deadbands, run_in.steps);
@@ -1243,15 +1262,17 @@ int main(int argc, char** argv) {
         std::printf("    The slot-to-rudder stand-in is gone. The ring is fed by\n"
                     "    009F3F80's tail through 0080E170 / 0080E190 and the\n"
                     "    rudder by 009DA250, both reconstructed operation for\n"
-                    "    operation. One stand-in is left, the ship-class float at\n"
-                    "    class+524h that 009DA268 loads for the division:\n"
-                    "    00831840 never writes that offset, so the Lua key behind\n"
-                    "    it is unknown and MaxRotAngle stands in for it. The\n"
-                    "    branches of 009F3F80 before 009F4B99 that also write\n"
-                    "    blk+1D0h are unprojected, so this run exercises the hop\n"
-                    "    and the rudder law, not the collision arms before them.\n"
+                    "    operation. The class+524h stand-in is gone too: the\n"
+                    "    field has no Lua key, and 00828F20, the descriptor's\n"
+                    "    virtual slot +14h, derives it once per class as\n"
+                    "    0.5 * MaxRotAngle / MaxRotAngleChangeRatio, which this\n"
+                    "    run computes from the same class row. The branches of\n"
+                    "    009F3F80 before 009F4B99 that also write blk+1D0h are\n"
+                    "    unprojected, so this run exercises the hop and the\n"
+                    "    rudder law, not the collision arms before them.\n"
                     "    blk+3C8h and blk+3D0h remain run inputs.\n"
-                    "    docs/SHIP_AI_THROTTLE_TO_RING.md.\n");
+                    "    docs/SHIP_AI_THROTTLE_TO_RING.md and\n"
+                    "    docs/SHIP_AI_CLASS_FIELD_0524.md.\n");
     }
 
     if (b.cruise) {

@@ -88,6 +88,11 @@ struct ShipAiRudderLawHost {
 
 // 009DA276, FMUL by 00CEC160: the ship-class yaw authority at
 // [[blk+3FCh]+538h]+524h is scaled by this before it divides the error.
+// `class+524h` is not a Lua key. It is derived once per class by 00828F20,
+// the descriptor's virtual slot +14h, out of `MaxRotAngle` (`class+4F8h`) and
+// `MaxRotAngleChangeRatio` (`class+4FCh`); see
+// ship_class_ai_derived_motion_00828f20 below and
+// docs/SHIP_AI_CLASS_FIELD_0524.md.
 inline constexpr double kShipAiRudderAuthorityScale = 1.2; // 00CEC160
 // 009DA2FA and 009DA31F, 00CE65D0: below this speed the rudder is zero, and
 // above it the demand ramps in over one unit of speed.
@@ -100,6 +105,45 @@ float ship_ai_rudder_from_heading_error_009da250(ShipAiThrottleDirection latched
                                                  float heading_error,
                                                  float ship_class_yaw_authority_0524,
                                                  ShipAiRudderLawHost& host);
+
+// ---------------------------------------------------------------------------
+// 00828F20: where class+520h and class+524h come from
+// ---------------------------------------------------------------------------
+// bool __thiscall(descriptor)(void), RET at 00828F79, body 00828F20-00828F79,
+// complete. It is virtual slot +14h of the ship-class descriptor vtable at
+// 00D1ACC4 (00963380 installs that vtable at 009633C0; 00828F20 is the value at
+// 00D1ACD8 = 00D1ACC4 + 14h) and it is reached once per class from 0096515D in
+// BSP_VehicleClass_GetOrCreate, after the Lua load pass on slot +10h and before
+// the query on slot +18h. 00758140 and 00852200 are one-instruction
+// `JMP 00828F20` thunks that other descriptor vtables point at, so this body is
+// the only implementation. Its return value is ignored at 0096515D.
+//
+// Neither field is a Lua key: 00831840 (docs/SHIP_CLASS_FIELDS.md) writes
+// +4F8h..+51Ch and then +538h onward, and the byte scan for every store form at
+// displacement 520h and 524h finds 00828F5A and 00828F66 as the only writers of
+// a descriptor. So both are derived, once, from three keys the ship rows do
+// author:
+//   class+520h = MaxSpeed (+500h) / MaxRotAngle (+4F8h)          -- metres
+//   class+524h = 0.5 * MaxRotAngle (+4F8h) / MaxRotAngleChangeRatio (+4FCh)
+// 00828F54 folds the 0.5 in as the double at 00D7A280. +520h is the hull's
+// turn radius at full speed; 0082E850 is its only reader and multiplies it by
+// the tuning float at singleton+438h when a virtual query says so. +524h has
+// exactly one reader in the image, 009DA268, the rudder law above.
+// MaxRotAngleChangeRatio has no other reader anywhere: 00828F23 is its only
+// load, so the whole effect of that key on the game is this one product.
+struct ShipClassAiDerivedMotion {
+    float turn_radius_0520{0.0f};   // 00828F66
+    float yaw_authority_0524{0.0f}; // 00828F5A
+    // AL at 00828F79. False leaves both fields at whatever the constructor
+    // left; 00963380 does not clear either of them.
+    bool derived{false};
+};
+
+// 00828F54, FMUL by the double at 00D7A280.
+inline constexpr double kShipClassYawAuthorityHalf = 0.5; // 00D7A280
+
+ShipClassAiDerivedMotion ship_class_ai_derived_motion_00828f20(
+    float max_rot_angle_04f8, float max_rot_angle_change_ratio_04fc, float max_speed_0500);
 
 // ---------------------------------------------------------------------------
 // 009F4B99..009F4D04: the hop itself
