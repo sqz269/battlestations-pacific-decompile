@@ -1,0 +1,32 @@
+{
+  "packet": "orch6_avoid_zone_query_binding",
+  "kind": "cpp_integration_adapter",
+  "new_native_addresses": [],
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/avoid_zone_query_binding.cpp",
+  "documentation": "docs/AVOID_ZONE_QUERY_BINDING.md",
+  "native_evidence_reports": [
+    "reports/avoid_zone_boundary.json",
+    "reports/avoid_zone_geometry.json",
+    "reports/avoid_zone_offset.json",
+    "reports/avoid_zone_segment_math.json",
+    "reports/avoid_zone_owner.json"
+  ],
+  "concrete_bindings": [
+    {"callee": "00416b50", "implementation": "avoid_zone_contains_point_00416b50"},
+    {"callee": "00416f30", "implementation": "avoid_zone_closest_offset_point_00416f30"},
+    {"callee": "00419ab0", "implementation": "avoid_zone_segment_distance_00419ab0"},
+    {"callee": "004f4b50", "implementation": "avoid_zone_segment_closest_point_004f4b50"},
+    {"callee": "00419260", "implementation": "native_vector2_reciprocal_length_00419260"}
+  ],
+  "storage_policy": "Owned snapshots preserve source order, all nine corner words, layer bits and stored bounds; source allocations may be released after construction. Actual CRT access remains borrowed.",
+  "verification": {
+    "build": "pending integration",
+    "fixture": "pending integration",
+    "new_tracked_tests": 0,
+    "whole_query_native_differential": false,
+    "abi_compatible": false,
+    "game_validated": false
+  }
+}
