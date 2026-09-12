@@ -257,12 +257,24 @@
   "caller_contract": "All direct xrefs inspected: mutator states0/2/3 or forwarded DWORD; UVs from stack/atlas records. Both state-size callers request state0. All pixel-size callers pass output, captured texture and resolved UV.",
   "producer": "Existing GuiIconState reconciled with00AB66C0; one adopt per appended record. No duplicate native-layout struct.",
   "ordering": "All input UV DWORDs read after old release, before stores; UCOMISS ordered flips retain FLD/FSTP versus MOVSS. Width store precedes vertical UV reads. No vector element reference retained across ownership-slot replacement.",
+  "live_constants": {
+    "binding": "Optional GuiIconRuntimeServices::state_texture_constants pointer; required only when new methods reach constant reads; no numeric fallbacks.",
+    "00d7a24c": "Load once after old release and four borrowed UV reads, before first resolved-UV store; reused by both authored flips.",
+    "00ce3978": "Volatile float correction read only after a negative signed FILD input, separately for each dimension.",
+    "00cec380": "Volatile double width divisor read after width callback, before width float spill and height callback.",
+    "00cef1b8": "Volatile double height divisor read after height callback."
+  },
   "limits": [
     "Retain/release must not throw; logical lookup is observational. Callbacks preserve runtime/texture lifetimes. Reload cannot invalidate borrowed state storage.",
     "Native OOM/SEH, malformed pointers and unsupported derived vtables excluded; failures can expose partial state.",
     "Active current80 delegates existing retained geometry; fixture will cover inactive states only."
   ],
   "corrections": [
+    {
+      "was": "Initial runtime used fixed ONE, unsigned correction and logical-page dimensions.",
+      "is": "Required live aliases read at the native phases; callback changes are observed.",
+      "evidence": "00AB270B follows old release;00AB17CE/00AB17D4 precede height callback;00AB17F3/00AB17F9 follow it. Actual-resource fixture mutates ONE during release and divisors during height."
+    },
     {
       "was": "00AB27A0 named STL_inst_00ab27a0",
       "is": "Provisional Icon state texture sizing wrapper",
@@ -272,11 +284,12 @@
   "validation": {
     "build": "MSVC Win32 Release /W4 /WX /fp:strict; both existing CTests passed.",
     "strict_compile": "Standalone optimized /W4 /WX /fp:strict compile passed; x87 callback/spill and output alias instructions inspected.",
-    "fixture": "Actual D3D9 COM textures/cache plus evaluated Lua5.1 Icon; inactive ownership, duplicate/equal/null, release UV mutation, record guard, captured width/height resource and output alias passed.",
+    "fixture": "Actual D3D9 COM textures/cache plus evaluated Lua5.1 Icon; inactive ownership, duplicate/equal/null, release UV/ONE mutation, record guard, captured width/height resource, divisor timing and output alias passed. High-bit correction branch assembly-checked only.",
     "report_calls": "38 checked, zero failed; indirect calls explicitly distinguished.",
     "seed_bytes": "8/8 matched",
     "rerun": "local/run_gui_icon_state_probe.ps1",
-    "logs": ["local/gui_icon_state_probe.log", "local/gui_icon_state_build.log"],
-    "assembly": "local/gui_icon_runtime_strict.asm"
+    "logs": ["local/gui_icon_state_constants_probe.log", "local/gui_icon_state_constants_build.log"],
+    "assembly": "local/gui_icon_runtime_strict.asm",
+    "parent_rerun": "local/run_gui_icon_state_parent_probe.ps1 -ParentRoot J:/PROG/battlestations-pacific-decompile-orch5-20260911; fixture-only compile, parent headers/libraries, manifest hashes."
   }
 }

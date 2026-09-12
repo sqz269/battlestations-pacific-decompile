@@ -25,20 +25,31 @@ void copy_size_pair(GuiWidgetSize& destination, const GuiWidgetSize& source) {
 }
 // AB26F7..AB2775 first reads all four input DWORDs; flips use one x87
 // load/store and one MOVSS, including their different signalling-NaN effects.
-void copy_state_uv_00ab2690(GuiIconState& state, const GuiUvRect& source) {
+void copy_state_uv_00ab2690(GuiIconState& state, const GuiUvRect& source,
+    const volatile float& live_one) {
     std::uint32_t words[4];
     std::memcpy(words, &source, sizeof(words));
-    std::memcpy(&state.resolved_uv, words, sizeof(words));
     auto* resolved = &state.resolved_uv;
     const auto* authored = &state.authored_uv;
-    const float one = 1.0f;
+    const auto* one_pointer = &live_one;
+    const auto* input = words;
     __asm {
         mov ecx, authored
         mov edx, resolved
         movss xmm0, dword ptr [ecx + 4]
-        movss xmm1, one
+        mov eax, one_pointer
+        movss xmm1, dword ptr [eax]
         xorps xmm2, xmm2
+        mov eax, input
+        movss xmm3, dword ptr [eax]
+        movss dword ptr [edx], xmm3
+        movss xmm3, dword ptr [eax + 4]
+        movss dword ptr [edx + 4], xmm3
+        movss xmm3, dword ptr [eax + 8]
+        movss dword ptr [edx + 8], xmm3
         ucomiss xmm0, xmm1
+        movss xmm3, dword ptr [eax + 12]
+        movss dword ptr [edx + 12], xmm3
         lahf
         test ah, 044h
         jp horizontal
@@ -71,16 +82,18 @@ void copy_state_uv_00ab2690(GuiIconState& state, const GuiUvRect& source) {
 }
 // AB17C2..AB17E1 / AB17E7..AB1803. Preserve the x87 conversion and float
 // spill BEFORE the next dimension callback, which may change FP control.
-float texture_dimension_scale_00ab17b0(std::uint32_t pixels, const double& divisor) {
+float texture_dimension_scale_00ab17b0(std::uint32_t pixels,
+    const volatile double& divisor, const volatile float& unsigned_correction) {
     const auto* divisor_pointer = &divisor;
-    const float unsigned_correction = 4294967296.0f;
+    const auto* correction_pointer = &unsigned_correction;
     float result;
     __asm {
         mov eax, pixels
         test eax, eax
         fild pixels
         jge nonnegative_pixels
-        fadd unsigned_correction
+        mov edx, correction_pointer
+        fadd dword ptr [edx]
     nonnegative_pixels:
         mov edx, divisor_pointer
         fdiv qword ptr [edx]
@@ -387,6 +400,11 @@ struct GuiIconRuntime::Impl final : GuiIconHost {
     GuiIconWidget icon;
     std::size_t borrowed_states{};
     bool reading_properties{};
+    const GuiIconStateTextureConstants& state_texture_constants() const {
+        require(services.state_texture_constants != nullptr,
+            "Icon state texture operation requires its live native constant aliases.");
+        return *services.state_texture_constants;
+    }
     Impl(GuiLayoutWidget& base, float& brightness, GuiIconRuntimeServices supplied)
         : widget(base), overbright(brightness), services(std::move(supplied)) {
         require(widget.type == GuiWidgetType::Icon && widget.transform.type_id == kGuiIconTypeId,
@@ -513,7 +531,9 @@ void GuiIconRuntime::set_state_texture_00ab2690(std::uint32_t index, void* textu
         old_reference.native_reference.reset(); // AB26E5; zero invokes current00
         old_reference.logical.reset();
     }
-    copy_state_uv_00ab2690(state, uv); // borrowed input is first read here
+    // Native loads ONE only after the release callback and all four UV reads.
+    copy_state_uv_00ab2690(state, uv,
+        self.state_texture_constants().one_00d7a24c);
     if (index == static_cast<std::uint32_t>(static_cast<std::int32_t>(self.icon.current_state)))
         rebuild_00ab3cb0(self.icon.current_state); // AB278D actual Icon current80
 }
@@ -527,9 +547,12 @@ GuiWidgetSize& GuiIconRuntime::state_texture_size_00ab27a0(GuiWidgetSize& output
     void* texture = state.texture; // AB27CF -> EDX, captured by AB17B4 ESI
     require(texture != nullptr, "Icon native texture sizing cannot dereference a null texture.");
     const auto width = self.texture_width(texture); // AB17C0 current48
-    const auto width_scale = texture_dimension_scale_00ab17b0(width, kGuiLogicalPageWidth);
+    const auto& constants = self.state_texture_constants();
+    const auto width_scale = texture_dimension_scale_00ab17b0(width,
+        constants.width_divisor_00cec380, constants.unsigned_correction_00ce3978);
     const auto height = self.texture_height(texture); // AB17E5 current4C, same ESI
-    const auto height_scale = texture_dimension_scale_00ab17b0(height, kGuiLogicalPageHeight);
+    const auto height_scale = texture_dimension_scale_00ab17b0(height,
+        constants.height_divisor_00cef1b8, constants.unsigned_correction_00ce3978);
     write_texture_size_00ab17b0(output, state.resolved_uv, width_scale, height_scale);
     return output;
 }

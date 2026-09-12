@@ -69,6 +69,12 @@ struct GuiIconTextureServices {
     std::function<void(void*)> release;
     std::function<std::shared_ptr<LogicalTexture>(void*)> logical_texture;
 };
+struct GuiIconStateTextureConstants {
+    const volatile float& one_00d7a24c;
+    const volatile float& unsigned_correction_00ce3978;
+    const volatile double& width_divisor_00cec380;
+    const volatile double& height_divisor_00cef1b8;
+};
 struct GuiIconRuntimeServices {
     const bool& crt_sse2_conversion; // required live0109EEA4 alias
     GuiGeometryRuntimeServices geometry;
@@ -76,6 +82,9 @@ struct GuiIconRuntimeServices {
     std::function<bool()> platform_allows_point_filter;
     std::function<void()> base_loaded78_00aa7170;
     std::function<void(const GuiWidgetPoint&)> set_position_00aa7dc0;
+    // Required only by reached00AB2690/00AB27A0 constant reads. All aliases
+    // remain live across texture callbacks; there are no numeric fallbacks.
+    const GuiIconStateTextureConstants* state_texture_constants{};
 };
 // Owns Icon-derived fields and every state texture reference over the existing
 // base layout. Base reader/children must finish BEFORE read_properties; the
@@ -95,7 +104,8 @@ public:
     // and authored flips, then SAME current80 only when this state is active.
     // Equal pointers skip reference changes; null is allowed (later textured
     // geometry/size still needs a real texture). UV remains borrowed across
-    // release callbacks. Callbacks must preserve the runtime/record storage.
+    // release callbacks; reads live D7A24C afterwards. Callbacks must preserve
+    // the runtime/record storage and bind state_texture_constants when reached.
     void set_state_texture_00ab2690(std::uint32_t state_index, void* texture,
         const GuiUvRect& uv);
     // Complete00AB27A0 ->00AB17B0, ECX Icon; out pointer/state DWORD; RET8.
@@ -103,6 +113,7 @@ public:
     // after both callbacks. Returns the SAME output; stores width before
     // reading vertical UVs, preserving overlap. No native ABI is claimed.
     // Dimension callbacks must preserve captured texture and record storage.
+    // Divisor/correction aliases are read at their native x87 phases.
     GuiWidgetSize& state_texture_size_00ab27a0(GuiWidgetSize& output,
         std::uint32_t state_index);
     // Complete current84, ECX Icon; immediate index DWORD (low16 consumed),
