@@ -8,36 +8,31 @@ extern "C" {
 }
 namespace bsp {
 namespace {
-using Open=void*(__fastcall*)(void*,void*,const NativeString*,std::uint32_t);
-using IsOpen=std::uint8_t(__fastcall*)(void*,void*);
-using Length=std::uint64_t(__fastcall*)(void*,void*);
-using Read=void(__fastcall*)(void*,void*,void*,std::uint32_t,std::uint32_t*);
-using Release=void(__fastcall*)(void*,void*);
-std::uintptr_t* table(void* object){return *static_cast<std::uintptr_t**>(object);}
-std::uint64_t length(void* stream){return reinterpret_cast<Length>(table(stream)[0x30/4])(stream,nullptr);}
+std::uint64_t length(void* stream,NativeLuaVfsDispatch& dispatch){return dispatch.length(capture_native_lua_vfs_table(stream),stream);}
 }
 void load_native_lua_chunk_00b66ca0(NativeLuaStateStorage& owner,const NativeString& path,std::uint32_t obfuscated,const NativeLuaFileServices& services){
     void* const manager=services.manager_0109ceec;
-    void* const stream=reinterpret_cast<Open>(table(manager)[1])(manager,nullptr,&path,2);
-    if(!stream || !reinterpret_cast<IsOpen>(table(stream)[0x18/4])(stream,nullptr) || !length(stream))return;
-    const auto allocated=static_cast<std::uint32_t>(length(stream));
+    auto& dispatch=services.vfs;
+    void* const stream=dispatch.open(capture_native_lua_vfs_table(manager),manager,path,2);
+    if(!stream || !dispatch.is_open(capture_native_lua_vfs_table(stream),stream) || !length(stream,dispatch))return;
+    const auto allocated=static_cast<std::uint32_t>(length(stream,dispatch));
     auto* const bytes=static_cast<unsigned char*>(singleton_lifetime_allocate({SingletonAllocationKind::object,allocated,allocated}));
-    auto* const read_table=table(stream);std::uint32_t ignored_read_count;
-    const auto requested=static_cast<std::uint32_t>(reinterpret_cast<Length>(read_table[0x30/4])(stream,nullptr));
-    reinterpret_cast<Read>(read_table[0x24/4])(stream,nullptr,bytes,requested,&ignored_read_count);
+    const auto read_table=capture_native_lua_vfs_table(stream);std::uint32_t ignored_read_count;
+    const auto requested=static_cast<std::uint32_t>(dispatch.length(read_table,stream));
+    dispatch.read(read_table,stream,bytes,requested,&ignored_read_count);
     if(static_cast<std::uint8_t>(obfuscated)){
         bool prefix=true;std::uint32_t index=0;
-        if(length(stream))do {
+        if(length(stream,dispatch))do {
             if(prefix){if(bytes[index]==1)prefix=false;bytes[index]=0x20;}
             else bytes[index]=static_cast<unsigned char>((bytes[index]<<4)|(bytes[index]>>4));
             ++index;
-        }while(static_cast<std::uint64_t>(static_cast<std::int64_t>(static_cast<std::int32_t>(index)))<length(stream));
+        }while(static_cast<std::uint64_t>(static_cast<std::int64_t>(static_cast<std::int32_t>(index)))<length(stream,dispatch));
     }
     const char* const chunk_name=path.data()?path.data():"";
-    const auto chunk_size=static_cast<std::uint32_t>(length(stream));
+    const auto chunk_size=static_cast<std::uint32_t>(length(stream,dispatch));
     (void)luaL_loadbuffer(owner.state_04,reinterpret_cast<const char*>(bytes),chunk_size,chunk_name);
     if(InterlockedDecrement(reinterpret_cast<volatile LONG*>(static_cast<char*>(stream)+4))==0)
-        reinterpret_cast<Release>(table(stream)[0])(stream,nullptr);
+        dispatch.zero_reference(capture_native_lua_vfs_table(stream),stream);
     lua_call(owner.state_04,0,LUA_MULTRET);singleton_lifetime_free(bytes);
 }
 void run_native_lua_file_00b69d40(NativeLuaStateStorage& owner,const NativeString& path,std::uint32_t obfuscated,NativeStringStorage& strings,const NativeLuaFileServices& services){

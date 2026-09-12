@@ -35,7 +35,8 @@ public class RepairListingDefects extends GhidraScript {
         {"004e4a40", "004e5537", "BSP_Game_OnMove"},                    // body stopped after MOV EAX,FS:[0]
         {"00643c0c", "00643c18", ""},                                   // one-byte-late decode inside the HUD marker routine
         {"004c9800", "004c981d", "BSP_SceneRecordPlayerSlot_Construct"}, // defined data blocked create_function
-        {"00643c1c", "00643c68", ""},                                   // hole left inside 006435d0 after the first repair (target-group member loop)
+        {"00643c1c", "00643c68", ""},
+        {"004ceca1", "004cecab", ""},                                   // eleven-byte hole inside 004cec60 (erase loop back edge)                                   // hole left inside 006435d0 after the first repair (target-group member loop)
     };
 
     @Override

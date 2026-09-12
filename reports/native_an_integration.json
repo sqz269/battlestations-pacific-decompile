@@ -1,0 +1,2561 @@
+{
+  "packet": "native_an_integration",
+  "utc": "2026-09-12T04:00:31.380487+00:00",
+  "tested_source_commit": "4ddfd7e4973e1551e489890ed367c83a9e06888b",
+  "worker_packets": [
+    {
+      "packet": "physical_stream",
+      "commit": "8532f58e8a00c2c27fa4647e06272267537a9885",
+      "report": "reports/native_physical_stream_open.json",
+      "verified_worker_artifacts": [
+        {
+          "path": "include/bsp/native_physical_stream_open.hpp",
+          "bytes": 4711,
+          "sha256": "ffbceae195d62c626fcce2bc120b86b662a8489a8d239f8db3cd5f6bfb313d58"
+        },
+        {
+          "path": "src/native_physical_stream_open.cpp",
+          "bytes": 14025,
+          "sha256": "c2be9674386b55e5f3afab8e46feeb6c2703ccba590b4f964cbcba92b61f196d"
+        },
+        {
+          "path": "docs/NATIVE_PHYSICAL_STREAM_OPEN.md",
+          "bytes": 10706,
+          "sha256": "4607ad078c662b20816733229faf26ddc3369c8ffa0770c6f91be124250923ae"
+        },
+        {
+          "path": "cmake/startup.cmake",
+          "bytes": 52287,
+          "sha256": "28304af1937ca7e3e30aeb83d5933e8e644341645e839bc7f80db65b567b6599"
+        },
+        {
+          "path": "build/win32/Release/bsp_core.lib",
+          "bytes": 43201944,
+          "sha256": "89e207d809bcbc3b278981a2f1f11dcb3621d574dc09303fd69e7f581aff897a"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_physical_stream_open.obj",
+          "bytes": 21088,
+          "sha256": "0f79ae41d3ee05fe1edc2d2939d86669d85d2df026a99db03f0f5ce44779f7bb"
+        },
+        {
+          "path": "local/physical_stream_an/probe.cpp",
+          "bytes": 13163,
+          "sha256": "ebb8d042c2054c602828c797766918c0baf524666d541f4d2e9b2241cb66eaa2"
+        },
+        {
+          "path": "local/physical_stream_an/build_probe.cmd",
+          "bytes": 577,
+          "sha256": "557be474e8ed0316a0207d2150cead3ff6d37cdccdc79f7c6e6e6ebbc5ff3bf2"
+        },
+        {
+          "path": "local/physical_stream_an/physical_probe.exe",
+          "bytes": 13676032,
+          "sha256": "5ef44508485672c25bad72bcbe1f93afea23187bf3c1e69e9fce2395d5d92730"
+        },
+        {
+          "path": "local/physical_stream_an/physical_probe.map",
+          "bytes": 86642,
+          "sha256": "ed7941b51d313d164d22ac03f37a5d58352c1321a59b944a240845cd43bcc4eb"
+        },
+        {
+          "path": "local/physical_stream_an/probe_result.json",
+          "bytes": 154,
+          "sha256": "1baa14c4b1e6f45703d0f7b1c87606588dafc0defeaf9508fac877d30d7c6c54"
+        },
+        {
+          "path": "local/physical_stream_an/probe_build.log",
+          "bytes": 308,
+          "sha256": "6cd7c69e8a94521205f93f3573ebc344a98b76fd8449cf85b580c8abe4b7b80f"
+        },
+        {
+          "path": "local/physical_stream_an/build.log",
+          "bytes": 4070,
+          "sha256": "d4e95ba6f3b5c894cc4f059c087baa6ac58450869862ba9024e1f9c82f68dbbb"
+        },
+        {
+          "path": "local/physical_stream_an/bytes.json",
+          "bytes": 15743,
+          "sha256": "c695856cd362703631ac5b74c3fd4063b6bc7afefc9c94625b326dbe7cf87a8b"
+        },
+        {
+          "path": "src/native_physical_file_date.cpp",
+          "bytes": 15465,
+          "sha256": "6c7671a3b07969df77952f3a7338fc1e5e6369120944bdb67c045e2cd304905f"
+        },
+        {
+          "path": "src/native_pooled_string_substring.cpp",
+          "bytes": 5004,
+          "sha256": "3310d48a69a0a20f1d7466fcba1688d8dcc856c7bf4a8048700ccd1fa02db4bc"
+        },
+        {
+          "path": "src/native_string.cpp",
+          "bytes": 6430,
+          "sha256": "766956ef99c0d3cd30cada7e9942ac8147172812aede18dd689d5f28fb00707a"
+        },
+        {
+          "path": "src/native_string_pool_owner.cpp",
+          "bytes": 6295,
+          "sha256": "622c833e2ebc66dde76b36603d9e5391099e6af078bd3b3169c133dd6884b66c"
+        },
+        {
+          "path": "src/native_string_pool_storage.cpp",
+          "bytes": 4579,
+          "sha256": "7c5abc18b5d19a362b18614b74912baa29e5076b9370808da82b804724c846f8"
+        },
+        {
+          "path": "src/native_render_batch_lifetime.cpp",
+          "bytes": 10883,
+          "sha256": "f032e95d64804b970b623c9d364e37b8badf65d6eaae9e8955f8629e073ef8dc"
+        },
+        {
+          "path": "src/singleton_lifetime.cpp",
+          "bytes": 13257,
+          "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+        }
+      ],
+      "frozen_artifacts": [
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/build/win32/bsp_core.dir/Release/native_physical_stream_open.obj",
+          "bytes": 21088,
+          "sha256": "0f79ae41d3ee05fe1edc2d2939d86669d85d2df026a99db03f0f5ce44779f7bb"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/build/win32/Release/bsp_core.lib",
+          "bytes": 43201944,
+          "sha256": "89e207d809bcbc3b278981a2f1f11dcb3621d574dc09303fd69e7f581aff897a"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/cmake/startup.cmake",
+          "bytes": 52287,
+          "sha256": "28304af1937ca7e3e30aeb83d5933e8e644341645e839bc7f80db65b567b6599"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/docs/NATIVE_PHYSICAL_STREAM_OPEN.md",
+          "bytes": 10706,
+          "sha256": "4607ad078c662b20816733229faf26ddc3369c8ffa0770c6f91be124250923ae"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/include/bsp/native_physical_stream_open.hpp",
+          "bytes": 4711,
+          "sha256": "ffbceae195d62c626fcce2bc120b86b662a8489a8d239f8db3cd5f6bfb313d58"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00401130.bin",
+          "bytes": 1,
+          "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00401130.txt",
+          "bytes": 17,
+          "sha256": "e2047fc967fda44e95c2166da84c09f7e2cbd6a9d36b76d38e29235712de5fe8"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/004254b0.bin",
+          "bytes": 1,
+          "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/004254b0.txt",
+          "bytes": 17,
+          "sha256": "e6d6d0b4e488364531bd906fefa2055dd5f7e0ec3aa7682a4896ad489ba52f57"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bd30f0.bin",
+          "bytes": 7,
+          "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bd30f0.txt",
+          "bytes": 41,
+          "sha256": "d149296eaa70886958deab82ed0f56710a49d0fd05255bf152da01b4bb23c889"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bd9e30.bin",
+          "bytes": 11,
+          "sha256": "58246cba1d89a1a17a59328d7a44e07142d11b9540850343ee031982143d014c"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bd9e30.txt",
+          "bytes": 57,
+          "sha256": "528cf7894089cca456c9bf63f93bafbb153f2412b930753cf68bf302d2b37a31"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf30c0.bin",
+          "bytes": 95,
+          "sha256": "2449616d18f6efb0d50444910c5ff6f2bee34d6ccf909d5baf494e9ec0ce8e68"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf30c0.txt",
+          "bytes": 458,
+          "sha256": "18817c17ac0c8550b6ae220b02e1eb0c26f32ac95dc7177e7d51e27a6f1cfee2"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf30c0_before.txt",
+          "bytes": 329,
+          "sha256": "f4c7c2a45834b6b1f748495da733bf73e3502851db863b56d1fbad6608be9f04"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf3670.bin",
+          "bytes": 80,
+          "sha256": "7ca6983d6fd3ad94824b6bfdc4769fa050be0de85746f9d2ac44c71c0d9c5618"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf3670.txt",
+          "bytes": 385,
+          "sha256": "2dbc398bd8d81e91f82e6f683824842ed9d3c4b8c69f8ce9ed1f6014a539f6c0"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf3670_before.txt",
+          "bytes": 309,
+          "sha256": "33ed121bcebc1f56d6ca8c49b9f708f425df5f32056e6efede6bdd8b4f096388"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf3770.bin",
+          "bytes": 189,
+          "sha256": "0366c89562989ddc4e497bc8d3fce346f0767f63879418777c9d98f4e2ad9f81"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf3770.txt",
+          "bytes": 912,
+          "sha256": "a994fa317f21e2a706ec0fa69dfdb967a314c81eed0c90883d936595b632d4da"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf3770_before.txt",
+          "bytes": 526,
+          "sha256": "4c1b02aa8de146f5e4e993f5ef58a3dbcfb2215f0e6895c3f2a55cc3cc8b2bb6"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf3930.bin",
+          "bytes": 61,
+          "sha256": "bf468735d266c46ed5c5a91cd90dc9562307b60921eaefc12af7d53994aa5e61"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf3930.txt",
+          "bytes": 296,
+          "sha256": "6b088fca091f8ec08db54a478b6cba2dec76eb6f01363e262d4020e48a14af8b"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf3930_before.txt",
+          "bytes": 332,
+          "sha256": "c0548302a6763d63125180b439260957bb8e34c6c8bc9af51ba182e14d3d1f7a"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf42a0.bin",
+          "bytes": 178,
+          "sha256": "f95ac7971b5be29b1272c83639e4d3ce315576d8e09b8f1499907c5b911156e8"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf42a0.txt",
+          "bytes": 868,
+          "sha256": "db466b9a8df78268f2ce8b9a0d4fe26014de88b4779af9c57033434f6becb5f7"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf42a0_before.txt",
+          "bytes": 589,
+          "sha256": "fbd739e7ea70dc2ce921170a86c585972da133a26193b76f680b590c42f97743"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf4370.bin",
+          "bytes": 49,
+          "sha256": "25367142788dac71aa3c1c4c92e3c356c0fc7c8a7d4261115362255291604ad9"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf4370.txt",
+          "bytes": 248,
+          "sha256": "20773297a1c43f9706b240c669f25d0617bdd93537eb45d4c023ea163cf4e962"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf4370_before.txt",
+          "bytes": 307,
+          "sha256": "e6ec98c8767fe1cf5b70bd26dafac8e2fd8e91ff066bbc81f56f65b4065ec2fa"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf4ba0.bin",
+          "bytes": 199,
+          "sha256": "416d4e8a211ca26833ffe57980ceb468aa3f3f10cfebc98977b34f3133ff45a9"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf4ba0.txt",
+          "bytes": 965,
+          "sha256": "f77b4f355ec4a472d62608bd1b4b4805038018598e1933399ea46bea2451e212"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf4ba0_before.txt",
+          "bytes": 860,
+          "sha256": "0384aec3b381b2145493b8f77b164bdc7511971c8a9d95b3cf7963b8c1f0df16"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf4f90.bin",
+          "bytes": 7,
+          "sha256": "72499fbb5b630d058b85fc2bb7b6d50c4febbb4fc23621cf4bf05b073999a9dd"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf4f90.txt",
+          "bytes": 41,
+          "sha256": "e9d6cb7c21ef6f2ba3a59d074da1e9a1f01a614f7c445852df0a2c390525ff03"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf4f90_before.txt",
+          "bytes": 686,
+          "sha256": "c5736f0a511eec4f6d197e2962cb84dda81cd87926daeac9f2f63a37999557f5"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf4fa0.bin",
+          "bytes": 27,
+          "sha256": "3b99fbb0a728f37801fc80c56d24686b0aa5c922fc050b59cd8e9264071f534e"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf4fa0.txt",
+          "bytes": 134,
+          "sha256": "dd578c61543fd9e483e37d75caea1bc82b80b5ccf861035bc2a2151b7016a649"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf4fa0_before.txt",
+          "bytes": 92,
+          "sha256": "a10b9152cf8f4d33e9089b283e8814123b285cc68b7ca1727188d30b20c35010"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf5020.bin",
+          "bytes": 10,
+          "sha256": "0a032cb89a32866d6ebcd61d725e5a5cf50356630344759f0d564fd74cd57636"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf5020.txt",
+          "bytes": 53,
+          "sha256": "5d8eeed9b0d792ebda1bd0ff22c1a98232c4cd22c077c38b536cdabc591829cb"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf5020_before.txt",
+          "bytes": 700,
+          "sha256": "a1c51c06252c721b7a787c4d48580af90c7b77427049105b275aeb16ce40a3bc"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf5030.bin",
+          "bytes": 84,
+          "sha256": "d0b1d2fd5e3863f9e82af8f94b038bb84c2fc189c683fd5f3a31fd92397ad48d"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf5030.txt",
+          "bytes": 414,
+          "sha256": "258bae4f9f16136f57d0ec50a30b69bc566c4661479eb41f34c7d16dd052e5a2"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf5030_before.txt",
+          "bytes": 856,
+          "sha256": "8827458f9daff39b0d2caff58a18a3e14b6430c869ea8f9fcbd3980c1bbcd1b2"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf5090.bin",
+          "bytes": 61,
+          "sha256": "0de76ba2958c0356eed853c963f3ffcf835038045adc7aa6b63c7f54da2933da"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf5090.txt",
+          "bytes": 296,
+          "sha256": "c752972d2b60a036373b461cb9f75bc937bc5916c79b21191bf44719ecdb96d1"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf5090_before.txt",
+          "bytes": 898,
+          "sha256": "2fb39ce92e3d13023965491eea231723e6477f6d9ee65c125686cab7c5eb96be"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf50d0.bin",
+          "bytes": 43,
+          "sha256": "9f0a1e587ebcc5e8f5a5447de34adc30be4a0d7bc3ffdcbb605769ed4eb28716"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf50d0.txt",
+          "bytes": 211,
+          "sha256": "db4778405b4205ada58efd09b3884176af7d0705c257c10d6eb68ea17db2bbf8"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf50d0_before.txt",
+          "bytes": 449,
+          "sha256": "22d9ccab1f589d16cbfe1748124abea187329dd76f02e3d4ecbc0952d41ff9f1"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf5190.bin",
+          "bytes": 155,
+          "sha256": "c6736ed0cd8d3e6090c6190089abd6b7f43443bea15a3c42ba529a2956a53efd"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf5190.txt",
+          "bytes": 750,
+          "sha256": "6a4c330f3f5e37e1e22c23280e4459787ff716d1edb7bb7f1afba4558f1c7f55"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf5190_before.txt",
+          "bytes": 436,
+          "sha256": "1a2edbed0b91792487bf73e3cf6a2e6fa7b3849aff736c67236effe76140a625"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf52a0.bin",
+          "bytes": 589,
+          "sha256": "c861932ca72ee94f3f4895b4d540754537c94c9716e97ef0ec130d6f5093687c"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf52a0.txt",
+          "bytes": 2837,
+          "sha256": "f0b967770b9fc3c8e256e44993495b66716a988da61b9f243ba2948ee70c9fc4"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf52a0_before.txt",
+          "bytes": 1117,
+          "sha256": "b5f88a893d31cc729cdce5994cfc9673f892593871220d0b1bda087c79c6fb36"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf54f0.bin",
+          "bytes": 36,
+          "sha256": "0add47ccd000078955a5523649106caae4bd2d7f2876b08d5d62789636e1b9ce"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf54f0.txt",
+          "bytes": 183,
+          "sha256": "c549acb6632d18b72e052f72d80b8979aa0347cdf96375a982f82c30c04ccc12"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf5590.bin",
+          "bytes": 5,
+          "sha256": "291fdcdb023385c50627470233c93a15f98b39c54fd9ae96793635ac3693bb73"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf5590.txt",
+          "bytes": 33,
+          "sha256": "ee0ef81376ebe0402577686ba9b999d7986b13db216df73ed86edfbe0ef68094"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf5590_before.txt",
+          "bytes": 491,
+          "sha256": "0e11ccd189aed8cfd919bafce1846cd86384501f7ced67df75bd4fc59e2ef97e"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf55a0.bin",
+          "bytes": 30,
+          "sha256": "cace622e7a8516c941d2ed3e39d4c264cdf16957dd618e952d74cc7198183572"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf55a0.txt",
+          "bytes": 146,
+          "sha256": "9dd7de64c4d842167b570692b927eeda4c1cec180abc5f5688d3a53d15a06442"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf55a0_before.txt",
+          "bytes": 472,
+          "sha256": "5f24a2a2165291da1e2e4bda44eec9af4ef7b645e5c70ec61340db0475359ca9"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf55be.bin",
+          "bytes": 5,
+          "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf55be.txt",
+          "bytes": 33,
+          "sha256": "12e4584cbf26902371286877778079ed8854f2533126f9311a49939026c63245"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf6989.bin",
+          "bytes": 5,
+          "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00bf6989.txt",
+          "bytes": 33,
+          "sha256": "b138fb7180fd8addcf3fbbf119e0507cbf06e17cc05937cd4e52998f3fb0b5f0"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00cc7a80.bin",
+          "bytes": 46,
+          "sha256": "3d7fff26ddc4a54dff084b1127d971c7568b5a9ed377cee05c1da551e8b8fba7"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00cc7a80.txt",
+          "bytes": 223,
+          "sha256": "e310d44a9dd3485b59bd47bc7960a7888b0f80f1e361d792ab1d32e66c75cfd3"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00cc7bb0.bin",
+          "bytes": 18,
+          "sha256": "4aa89456deb0672b628029fc29f61a26bfdda313adb3a3cc875ee14c4610b3df"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00cc7bb0.txt",
+          "bytes": 98,
+          "sha256": "2f24b983b4ff799c4b64e0ff66a8e80f748852f27213d5fb97fc6e3025238b12"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00cc7c50.bin",
+          "bytes": 18,
+          "sha256": "a58b748ac95b8b34638a29a015389caa4e42ce7a4620618c8aac2b1da20be083"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00cc7c50.txt",
+          "bytes": 98,
+          "sha256": "6fbab797951f4f101d8ff2e85f4cef9f294223b561d8e0ae465ab4f44d445eac"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00cc7cf0.bin",
+          "bytes": 18,
+          "sha256": "9e69987fac8219c6760dc026d1176b1756e802b2533dc73a0ada148ddd997b1e"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00cc7cf0.txt",
+          "bytes": 98,
+          "sha256": "a5b78236479cb6c9c1bb06338f992047299d3ed6b539a121091f352379671f2f"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00cc7d10.bin",
+          "bytes": 18,
+          "sha256": "c19baf2ae14471d7e24d1954de5da1cbb6f310335149358d29221254ce0d47ac"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00cc7d10.txt",
+          "bytes": 98,
+          "sha256": "e636b1c4f7e98a314a177cd03593ee6ffb9f8730b943212f198e8e086f5d8ed2"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00ce7894.bin",
+          "bytes": 2,
+          "sha256": "1472d0645f552820b5472b91341c2d9a118c8a96f4a72758d6aeeb14c10a1107"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00ce7894.txt",
+          "bytes": 21,
+          "sha256": "9fa658659584755b76e46e6accfb0a42ac8dac620ff9125ace82c189f3dc395c"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00d68ec0.bin",
+          "bytes": 4,
+          "sha256": "22451a030ad1640a9e99dd9450350168c28220b0f17b5d6e482972fac3a5d958"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00d68ec0.txt",
+          "bytes": 29,
+          "sha256": "b0ee9ee1f91f2fa1ca58afde0ef3bde1780a5d1eac21f30abfc0b07a667b1e9e"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00d69168.bin",
+          "bytes": 32,
+          "sha256": "6b21a21c2d8990f489196816f2dac1691a9140d2087c16eb754985a3fc76c736"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00d69168.txt",
+          "bytes": 154,
+          "sha256": "c743df8c353bbec6b8507dee214b4a24871166c276fd5332b8c514c1e552893d"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00d691b0.bin",
+          "bytes": 52,
+          "sha256": "505e0357703c7ae51672dd9b1cc7a1ce59fc8346783760d7e9f32fd697306fff"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00d691b0.txt",
+          "bytes": 260,
+          "sha256": "e6b5dda969bb1a158336cb01f48381c09a538cb54d27fddfd76fde69c25b3571"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00e027b8.bin",
+          "bytes": 60,
+          "sha256": "53c396db625fd4683c3e8b9f171f273f3cce3af55069282cbc53bedc60b514f8"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00e027b8.txt",
+          "bytes": 292,
+          "sha256": "f2fd327e7272ee06a87e7f42b928c2d3a27c19a1879b4ae2411259a278ec32dd"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00e02930.bin",
+          "bytes": 44,
+          "sha256": "3c217a58124d41f9de1a253a9ee0bb0a4c23b263752ea3bea6ec96a60618bb23"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00e02930.txt",
+          "bytes": 215,
+          "sha256": "eb3ee5be2391022e7a05a10ac82a57d720f154a32182f8ffaa12bd78b908d473"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00e029e4.bin",
+          "bytes": 44,
+          "sha256": "b579517392a117c9ffe1fc27329b1e4abc69825eab2ddfa8be073e3027f72440"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00e029e4.txt",
+          "bytes": 215,
+          "sha256": "b72255bdcf1ec957a229d39518d1a91ef8ca9edcdccd99b696f47db009e44e2c"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00e02abc.bin",
+          "bytes": 44,
+          "sha256": "693d51e5b91b76ff80f0929972d5949d02abd8967d4db24602dfcdcdba011d51"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00e02abc.txt",
+          "bytes": 215,
+          "sha256": "bb751a1821a1c427e684fa6ad302fff48e0dfc209ae83c62d90ee5ab1857bf95"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00e02ae8.bin",
+          "bytes": 44,
+          "sha256": "15529d747b2df94bbfef3cf8c5b457cfee571533ae778e4c41bb899dd510fd86"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/00e02ae8.txt",
+          "bytes": 215,
+          "sha256": "dca7ac910049a3bbe947fa926e9a06553efda5a46981e7fb1eec9fb2f5cdf3ce"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/build.log",
+          "bytes": 4070,
+          "sha256": "d4e95ba6f3b5c894cc4f059c087baa6ac58450869862ba9024e1f9c82f68dbbb"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/build_probe.cmd",
+          "bytes": 577,
+          "sha256": "557be474e8ed0316a0207d2150cead3ff6d37cdccdc79f7c6e6e6ebbc5ff3bf2"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/bytes.json",
+          "bytes": 15743,
+          "sha256": "c695856cd362703631ac5b74c3fd4063b6bc7afefc9c94625b326dbe7cf87a8b"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/capture.py",
+          "bytes": 1977,
+          "sha256": "615ed646e6cefa58bd87f404f5e3d56a3015c43afd780d33dbb717f485467106"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/commit.txt",
+          "bytes": 699,
+          "sha256": "48026d46d4a537a5ed24a383a87fb1991aea57a2f8ffd025caab0f4eebe06a51"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/ledger_records.py",
+          "bytes": 2703,
+          "sha256": "050b35d255e4cab44031def70687608c243b83995a57ddce779fd81c0adf4426"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/ledger_specs.json",
+          "bytes": 4835,
+          "sha256": "5aa5e747aae03964a6a4a3181c76d39e33074c094445627e4f48b0a506665091"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/ledger_updates.log",
+          "bytes": 4860,
+          "sha256": "1271e08d4efe95286597008c54f1ddc71422b1b7ebb67ca153d0c020d97d1a55"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/physical_probe.exe",
+          "bytes": 13676032,
+          "sha256": "5ef44508485672c25bad72bcbe1f93afea23187bf3c1e69e9fce2395d5d92730"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/physical_probe.map",
+          "bytes": 86642,
+          "sha256": "ed7941b51d313d164d22ac03f37a5d58352c1321a59b944a240845cd43bcc4eb"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/probe.cpp",
+          "bytes": 13163,
+          "sha256": "ebb8d042c2054c602828c797766918c0baf524666d541f4d2e9b2241cb66eaa2"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/probe.obj",
+          "bytes": 13805680,
+          "sha256": "c5b683bfe05cf0641ce1f9e0f719603a6f638ea28473cbc86e9d601ce400d8cd"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/probe_build.log",
+          "bytes": 308,
+          "sha256": "6cd7c69e8a94521205f93f3573ebc344a98b76fd8449cf85b580c8abe4b7b80f"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/probe_result.json",
+          "bytes": 154,
+          "sha256": "1baa14c4b1e6f45703d0f7b1c87606588dafc0defeaf9508fac877d30d7c6c54"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/probe_stderr.log",
+          "bytes": 34,
+          "sha256": "b2c61cacc5ce55d61310c75039dbb9a3b7324b2b30597108c4a63ccf3a8c3f1a"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/report.py",
+          "bytes": 13135,
+          "sha256": "c7d084015c7cfcb080cd72f8867dd06ac7eeefeb492be7d03289632f56fe1fc0"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/local/physical_stream_an/report_calls.log",
+          "bytes": 2154,
+          "sha256": "14bab33ec44020f24be47c26b15f9da36413e283127fc118c06c98c8b9b4b1ef"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/src/native_physical_file_date.cpp",
+          "bytes": 15465,
+          "sha256": "6c7671a3b07969df77952f3a7338fc1e5e6369120944bdb67c045e2cd304905f"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/src/native_physical_stream_open.cpp",
+          "bytes": 14025,
+          "sha256": "c2be9674386b55e5f3afab8e46feeb6c2703ccba590b4f964cbcba92b61f196d"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/src/native_pooled_string_substring.cpp",
+          "bytes": 5004,
+          "sha256": "3310d48a69a0a20f1d7466fcba1688d8dcc856c7bf4a8048700ccd1fa02db4bc"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/src/native_render_batch_lifetime.cpp",
+          "bytes": 10883,
+          "sha256": "f032e95d64804b970b623c9d364e37b8badf65d6eaae9e8955f8629e073ef8dc"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/src/native_string.cpp",
+          "bytes": 6430,
+          "sha256": "766956ef99c0d3cd30cada7e9942ac8147172812aede18dd689d5f28fb00707a"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/src/native_string_pool_owner.cpp",
+          "bytes": 6295,
+          "sha256": "622c833e2ebc66dde76b36603d9e5391099e6af078bd3b3169c133dd6884b66c"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/src/native_string_pool_storage.cpp",
+          "bytes": 4579,
+          "sha256": "7c5abc18b5d19a362b18614b74912baa29e5076b9370808da82b804724c846f8"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/src/singleton_lifetime.cpp",
+          "bytes": 13257,
+          "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+        },
+        {
+          "path": "local/native-an-worker-evidence/physical_stream/worker-report.json",
+          "bytes": 62632,
+          "sha256": "730a5737adcb94df469552f43a4043d2014d696166c92efb3dc07edcac7fd9ea"
+        }
+      ],
+      "validation": {
+        "build": "MSVC Win32 Release /W4 /WX passes",
+        "existing_ctests": [
+          "reconstructed_math passed",
+          "native_math_differential passed"
+        ],
+        "seed_verification": "8 spans match installed PE",
+        "verify_report_calls": "passed: 40 address/native rows checked, zero failures; 17 IAT rows separately pinned to PE imports, four numeric profile call rows reported indirect",
+        "differential": {
+          "passed": true,
+          "compared_words": 73,
+          "open_flag_cases": 9,
+          "directory_retry_variants": 2,
+          "actual_pool_reuse_variants": 2,
+          "actual_failure_callback_variants": 2
+        },
+        "differential_boundary": "Original owned instructions execute with real Win32 I/O; allocator, canonical lifetime registration/lock, string/path dependencies use instrumented existing actual implementations. No native exception/OOM/profile mutation/>4GB or game runtime coverage.",
+        "peer_review": "FileStore worker independently inspected BF4BA0/BF52A0/BF5030/BF55A0 and pool ordering; no concrete mismatch",
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    },
+    {
+      "packet": "filestore",
+      "commit": "1ac1bed00d022b2f48ab5c7acd415c0472609526",
+      "report": "reports/native_filestore_open.json",
+      "verified_worker_artifacts": [
+        {
+          "sha256": "db494e8cb9db3dee2cdb28f04c002999aaff219cc729ff44ccc141d99f29ed3e",
+          "size": 3480,
+          "path": "include/bsp/native_filestore_open.hpp"
+        },
+        {
+          "sha256": "886c39b448b2af38f564be02e7a3ac8bb6119f562395a3fd353aafc0fac527de",
+          "size": 8602,
+          "path": "src/native_filestore_open.cpp"
+        },
+        {
+          "sha256": "87b4044fccc503411def4fc775cad02aa178e95965854add2d124efa9ffaee7f",
+          "size": 7085,
+          "path": "docs/NATIVE_FILESTORE_OPEN.md"
+        },
+        {
+          "sha256": "c559f53cca95dd93ba9133740e0570b2705c9b4cb9593ab1d050404d8470708c",
+          "size": 3829,
+          "path": "include/bsp/native_retained_memory_owners.hpp"
+        },
+        {
+          "sha256": "f069566ab280cb05fbdaa55474a6174bd143c52d6cbbaa0f0795511770932e93",
+          "size": 6850,
+          "path": "src/native_retained_memory_owners.cpp"
+        },
+        {
+          "sha256": "0c673ab73fe7cc5c900dd7f0d746f5b048334706c16242f32eb94a8e95eeaa42",
+          "size": 3018,
+          "path": "include/bsp/native_memory_stream.hpp"
+        },
+        {
+          "sha256": "5b40e8f8d11255a9389805c81386458db8b06c0b3c34f12a314653dda7d370d5",
+          "size": 6286,
+          "path": "src/native_memory_stream.cpp"
+        },
+        {
+          "sha256": "ab6ba39ac240f79db04b7eb083eec54b58e27a93973c421d4fb03147b7a0a3e0",
+          "size": 3083,
+          "path": "include/bsp/native_vfs_date_leaf_providers.hpp"
+        },
+        {
+          "sha256": "8a3615bec143538b10b50448e9e44948f3f36374b33cdc6878ad50de27f36559",
+          "size": 4749,
+          "path": "src/native_vfs_date_leaf_providers.cpp"
+        },
+        {
+          "sha256": "0de40b2115de5393c1e338da572b10723a2f6fc164c9b0c201578885ba1b6ef3",
+          "size": 52313,
+          "path": "cmake/startup.cmake"
+        },
+        {
+          "sha256": "6ab853e58030bc3c0873985ac7f3295382601db5da611afe4206824550b79839",
+          "size": 1785,
+          "path": "local/native_filestore_evidence.py"
+        },
+        {
+          "sha256": "986e515cd3e1ea389a746ec36b4ccbb9c672f6601c319937b13c69eba6d6403b",
+          "size": 3893,
+          "path": "local/native_filestore_evidence/manifest.json"
+        },
+        {
+          "sha256": "38dca28585bda8fd5cd5cad66fd0e885dc79b7a05637a605d27a880eb5c3e659",
+          "size": 11066,
+          "path": "local/native_filestore_probe.cpp"
+        },
+        {
+          "sha256": "29afd32e90fe4e5deebfabd2bb931d5febf730e06062d550b1b42ab763a21980",
+          "size": 514,
+          "path": "local/build_native_filestore_probe.cmd"
+        },
+        {
+          "sha256": "7b29ecf51f32b327c6a5f34269ae51fcd6bdf22dda5ea3573b9dc8f8a45ef8a0",
+          "size": 36352,
+          "path": "local/native_filestore_probe.exe"
+        },
+        {
+          "sha256": "8527cbd918419060c69bd4fe44c2248f9671b4611dec1eab57183701c2c185fc",
+          "size": 72879,
+          "path": "local/native_filestore_probe.map"
+        },
+        {
+          "sha256": "c5b92f6be3af2022c51ddee917c180e8d32ad051f881d4d36150fa8992ea14dc",
+          "size": 28,
+          "path": "local/native_filestore_probe_build.log"
+        },
+        {
+          "sha256": "e585c753295abd7e78ed99e1d0acf63d44dbadb9ddf4325e41a0f11d02a250be",
+          "size": 115,
+          "path": "local/native_filestore_probe_run.log"
+        },
+        {
+          "sha256": "0b3d1437f1ccbbb412f9a770d88dda1f477b329d4464e3d8feab4daad5123d2b",
+          "size": 4099,
+          "path": "local/native_filestore_build.log"
+        },
+        {
+          "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+          "size": 3034,
+          "path": "local/native_filestore_seeds.log"
+        },
+        {
+          "sha256": "a0f1c8474c692d5bcfde3705642213d60aebbced494acac8114f10b6c64998e4",
+          "size": 43187464,
+          "path": "build/win32/Release/bsp_core.lib"
+        },
+        {
+          "sha256": "1f554e0ac085baab227e6c18ade94314ca81bcb0394236ad8bf3e65e3a587e1b",
+          "size": 7557,
+          "path": "build/win32/bsp_core.dir/Release/native_filestore_open.obj"
+        },
+        {
+          "sha256": "79ed8377254a959b0404daf5e142ecc343b24558b924601ba341a22aaf3c7565",
+          "size": 518,
+          "path": "local/native_filestore_report_calls.log"
+        }
+      ],
+      "frozen_artifacts": [
+        {
+          "path": "local/native-an-worker-evidence/filestore/build/win32/bsp_core.dir/Release/native_filestore_open.obj",
+          "bytes": 7557,
+          "sha256": "1f554e0ac085baab227e6c18ade94314ca81bcb0394236ad8bf3e65e3a587e1b"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/build/win32/Release/bsp_core.lib",
+          "bytes": 43187464,
+          "sha256": "a0f1c8474c692d5bcfde3705642213d60aebbced494acac8114f10b6c64998e4"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/cmake/startup.cmake",
+          "bytes": 52313,
+          "sha256": "0de40b2115de5393c1e338da572b10723a2f6fc164c9b0c201578885ba1b6ef3"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/docs/NATIVE_FILESTORE_OPEN.md",
+          "bytes": 7085,
+          "sha256": "87b4044fccc503411def4fc775cad02aa178e95965854add2d124efa9ffaee7f"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/include/bsp/native_filestore_open.hpp",
+          "bytes": 3480,
+          "sha256": "db494e8cb9db3dee2cdb28f04c002999aaff219cc729ff44ccc141d99f29ed3e"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/include/bsp/native_memory_stream.hpp",
+          "bytes": 3018,
+          "sha256": "0c673ab73fe7cc5c900dd7f0d746f5b048334706c16242f32eb94a8e95eeaa42"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/include/bsp/native_retained_memory_owners.hpp",
+          "bytes": 3829,
+          "sha256": "c559f53cca95dd93ba9133740e0570b2705c9b4cb9593ab1d050404d8470708c"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/include/bsp/native_vfs_date_leaf_providers.hpp",
+          "bytes": 3083,
+          "sha256": "ab6ba39ac240f79db04b7eb083eec54b58e27a93973c421d4fb03147b7a0a3e0"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/build_native_filestore_probe.cmd",
+          "bytes": 514,
+          "sha256": "29afd32e90fe4e5deebfabd2bb931d5febf730e06062d550b1b42ab763a21980"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_build.log",
+          "bytes": 4099,
+          "sha256": "0b3d1437f1ccbbb412f9a770d88dda1f477b329d4464e3d8feab4daad5123d2b"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_evidence/004254b0.bin",
+          "bytes": 1,
+          "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_evidence/004254b0.txt",
+          "bytes": 17,
+          "sha256": "e6d6d0b4e488364531bd906fefa2055dd5f7e0ec3aa7682a4896ad489ba52f57"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_evidence/00443d00.bin",
+          "bytes": 81,
+          "sha256": "27301d40c436429db8b8537a7d62d230661837d45c3197510469311e73823ec6"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_evidence/00443d00.txt",
+          "bytes": 402,
+          "sha256": "097a76761789041c35ef6b290ce655b26a669f998ac931e36ca7ea16bcbc3cf9"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_evidence/00bb8f60.bin",
+          "bytes": 40,
+          "sha256": "64c5a84c1c5b6f4a323798dd704246d49ddfdbc722aa0c1d8c20f520abe7f5b0"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_evidence/00bb8f60.txt",
+          "bytes": 199,
+          "sha256": "85362da11abaf9c05da65c53fa780e6ee034bce3ce3cd2532c0ccd8e758b100a"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_evidence/00be54d0.bin",
+          "bytes": 83,
+          "sha256": "5bdcf1cde7eca209d12843f8b773035de68ccef488273a8e44ef4cc61b9a0da7"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_evidence/00be54d0.txt",
+          "bytes": 410,
+          "sha256": "5a7f26bbd573bf3d544303769c548ed738692809823a487136f6e36c8d6b8703"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_evidence/00be5e90.bin",
+          "bytes": 102,
+          "sha256": "87348a58ef49e878f958279f2e268cac8eb346b3c78a777dab39f13a02958255"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_evidence/00be5e90.txt",
+          "bytes": 499,
+          "sha256": "6c7c154db4a4210ebe464c23e3df5d074a67e286deb78d4de9d953c64a2e3d72"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_evidence/00be5fa0.bin",
+          "bytes": 145,
+          "sha256": "af1d92ebe37c905bda5adbc73e0f396f7355edacbee07d8b9d8a4c1866d99ac9"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_evidence/00be5fa0.txt",
+          "bytes": 710,
+          "sha256": "b2f0c36b72a2b524012b19e35e2b23da491f1b84a0d0b4c7755ef1811f2cbe36"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_evidence/00bef540.bin",
+          "bytes": 61,
+          "sha256": "daf89af22b34c985f1a54071d85eb03e08045470122e29fb766ecbd04657eac0"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_evidence/00bef540.txt",
+          "bytes": 296,
+          "sha256": "8db552521dd884a6209fee046a794da09ee0cce6f42fefe3127b83cafdeffb12"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_evidence/00bef750.bin",
+          "bytes": 240,
+          "sha256": "696afedd7e769bad800086544926b2ea51da1cf17ed5606fc16497b8a90b80e5"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_evidence/00bef750.txt",
+          "bytes": 1155,
+          "sha256": "92248b3a78a1897f038cf172e7859bd693f4b73ba6c9d0d6df9a8780f1320230"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_evidence/00cc7650.bin",
+          "bytes": 11,
+          "sha256": "21e83456f45a9cb18ffd6292ba3baab2421d04c61c0a1311ae8e71ebefb70881"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_evidence/00cc7650.txt",
+          "bytes": 57,
+          "sha256": "2c732f4298f3e7ed9d03227faebeead21c9872788630808436890f23a72760e9"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_evidence/00cd8fc0.bin",
+          "bytes": 79,
+          "sha256": "d9b00e5d6d070e6d5f769b822941350b4b9e417dce9e01ed94e8b39db5b04d68"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_evidence/00cd8fc0.txt",
+          "bytes": 381,
+          "sha256": "77dd4aa6d61c77e68f84e8da9cd77c9775f7231b311f297259c029abc7387ac8"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_evidence/00d15ad8.bin",
+          "bytes": 8,
+          "sha256": "4961e9832015a124713cd4e85d58bfc0ab3700c1bb84d137d4cee67ebfdfc319"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_evidence/00d15ad8.txt",
+          "bytes": 45,
+          "sha256": "1865440048b5a66da33c48daaa1266a965a51d1715cb8470f204890857835be9"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_evidence/00d642c0.bin",
+          "bytes": 64,
+          "sha256": "885d969af38e468d152a5a25f9d539573fbbbba29b68c513c536b4db12358ed7"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_evidence/00d642c0.txt",
+          "bytes": 308,
+          "sha256": "25d2be023db0cf374a2cae08d03280b4ffb32e93c2969f633253b692086e712b"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_evidence/00d689e8.bin",
+          "bytes": 40,
+          "sha256": "dc8713d0a9ff8ca29a85ed7b55c0ee37fc2103bb00ce717b4b8fb725c0fdf92c"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_evidence/00d689e8.txt",
+          "bytes": 199,
+          "sha256": "7512b751553ec6d017ee457323d391631d2f949e6d87cbb7176c3dec15a20ef7"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_evidence/00e02220.bin",
+          "bytes": 40,
+          "sha256": "7797f3f1ef988108e60bc19651c2272a6b82a5e6355ee2abab8d2724929b49b2"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_evidence/00e02220.txt",
+          "bytes": 199,
+          "sha256": "839ce1f665611933f8cd3430ec57855febf72a2b453d56fe03918bf0cdea5f3d"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_evidence/manifest.json",
+          "bytes": 3893,
+          "sha256": "986e515cd3e1ea389a746ec36b4ccbb9c672f6601c319937b13c69eba6d6403b"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_evidence.py",
+          "bytes": 1785,
+          "sha256": "6ab853e58030bc3c0873985ac7f3295382601db5da611afe4206824550b79839"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_probe.cpp",
+          "bytes": 11066,
+          "sha256": "38dca28585bda8fd5cd5cad66fd0e885dc79b7a05637a605d27a880eb5c3e659"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_probe.exe",
+          "bytes": 36352,
+          "sha256": "7b29ecf51f32b327c6a5f34269ae51fcd6bdf22dda5ea3573b9dc8f8a45ef8a0"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_probe.map",
+          "bytes": 72879,
+          "sha256": "8527cbd918419060c69bd4fe44c2248f9671b4611dec1eab57183701c2c185fc"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_probe_build.log",
+          "bytes": 28,
+          "sha256": "c5b92f6be3af2022c51ddee917c180e8d32ad051f881d4d36150fa8992ea14dc"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_probe_run.log",
+          "bytes": 115,
+          "sha256": "e585c753295abd7e78ed99e1d0acf63d44dbadb9ddf4325e41a0f11d02a250be"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_report_calls.log",
+          "bytes": 518,
+          "sha256": "79ed8377254a959b0404daf5e142ecc343b24558b924601ba341a22aaf3c7565"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/local/native_filestore_seeds.log",
+          "bytes": 3034,
+          "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/src/native_filestore_open.cpp",
+          "bytes": 8602,
+          "sha256": "886c39b448b2af38f564be02e7a3ac8bb6119f562395a3fd353aafc0fac527de"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/src/native_memory_stream.cpp",
+          "bytes": 6286,
+          "sha256": "5b40e8f8d11255a9389805c81386458db8b06c0b3c34f12a314653dda7d370d5"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/src/native_retained_memory_owners.cpp",
+          "bytes": 6850,
+          "sha256": "f069566ab280cb05fbdaa55474a6174bd143c52d6cbbaa0f0795511770932e93"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/src/native_vfs_date_leaf_providers.cpp",
+          "bytes": 4749,
+          "sha256": "8a3615bec143538b10b50448e9e44948f3f36374b33cdc6878ad50de27f36559"
+        },
+        {
+          "path": "local/native-an-worker-evidence/filestore/worker-report.json",
+          "bytes": 20710,
+          "sha256": "2034f76ff5afc1e77f0d7471ec249c60b070aba70d6cea29ed82f525ebe02887"
+        }
+      ],
+      "validation": {
+        "build": "MSVC Win32 Release /W4 /WX; scripts/build.ps1 passed",
+        "seeds": "verify-seeds: eight current spans match installed PE",
+        "tests": [
+          "reconstructed_math passed",
+          "native_math_differential passed"
+        ],
+        "report_calls": "17 direct CALL rows checked, 0 failed; six indirect rows explicitly marked",
+        "fixture": "PASS 32 original/source comparisons; five complete original bodies unchanged at common translation; counters zero",
+        "fixture_translation": "0x30000000 for copied code and direct helper targets; absolute type/counter/profile data at original numeric locations",
+        "fixture_original_bodies": [
+          "00be5e90",
+          "00be5fa0",
+          "00bef750",
+          "00bb8f60",
+          "00bef540"
+        ],
+        "fixture_patches": [
+          "translated BF681B allocation",
+          "translated 8D43C0 existing backing constructor",
+          "translated BEF6D0 existing wrapper producer",
+          "translated BF7FBF shared CRT stricmp",
+          "translated BF6713 instrumentation invalid handler",
+          "original CE2220 IAT InterlockedDecrement"
+        ],
+        "fixture_scope": "All five complete owned code preimages and postimages compare byte-for-byte. Compare full raw lookup arenas, iterator aliases, shared ownership/cursor fields, type/seek results, source event/current-table state, initialized copied prefix and final actual counters.",
+        "fixture_exclusions": "No invalid-handler runtime, constructor/read exceptions, arbitrary negative read count, physical/archive method implementation, source-wide binary ABI or game execution.",
+        "permanent_tests_added": 0
+      }
+    },
+    {
+      "packet": "logging",
+      "commit": "d02771f8634c0c18152204dbd3c23f40f4094e42",
+      "report": "reports/native_vfs_open_logging.json",
+      "verified_worker_artifacts": [
+        {
+          "path": "local/native_vfs_logging/probe.cpp",
+          "bytes": 6927,
+          "sha256": "d7ab7699b0524d877517f1fa4712cf6414439b2b27788d4f4ee384a1d2f33aa9"
+        },
+        {
+          "path": "local/native_vfs_logging/probe.exe",
+          "bytes": 21504,
+          "sha256": "07a747efdf6c17d3ba599ac6fd52bdd3ebc0c9f7b5bd2667cb13a7fdf1998650"
+        },
+        {
+          "path": "local/native_vfs_logging/probe.obj",
+          "bytes": 41225,
+          "sha256": "3e40f6966b27491507ef70ead2e1374159e2aa59abd623702e78ee0ea705ca85"
+        },
+        {
+          "path": "local/native_vfs_logging/probe_run.log",
+          "bytes": 869,
+          "sha256": "ce56841a36f87aedb879e3fe1436e1f935bd2331eed97a6198ad697e501ec57a"
+        },
+        {
+          "path": "local/native_vfs_logging/probe_build.log",
+          "bytes": 11,
+          "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+        },
+        {
+          "path": "local/native_vfs_logging/build_probe.ps1",
+          "bytes": 1124,
+          "sha256": "999e31cb3e757d5e9a229fffd4e4154d278277665a522cfd33976e464e6775d0"
+        },
+        {
+          "path": "local/native_vfs_logging/build_probe.cmd",
+          "bytes": 501,
+          "sha256": "f45c7b6c8b93a0422aeabd10213a1eed847bf173b149da353646be4ece2b3932"
+        },
+        {
+          "path": "local/native_vfs_logging/calls_verification.log",
+          "bytes": 70,
+          "sha256": "6cbdb1393454816118102563a5bf7b30daffe5d9cbd7608f3d5cf521234b7d68"
+        },
+        {
+          "path": "local/native_vfs_logging_build.log",
+          "bytes": 27414,
+          "sha256": "5d63e36ff5a12b546784cab87de0a265bbb4aa2d3a42b635b88a34563fcfa391"
+        },
+        {
+          "path": "local/native_vfs_logging/old_comments.json",
+          "bytes": 1271,
+          "sha256": "7e64d9dabbdc76b0a38d03af8f73c70a305cb1566d25d37a33b5888467e5e83e"
+        }
+      ],
+      "frozen_artifacts": [
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00425f80.bin",
+          "bytes": 152,
+          "sha256": "afbe2fc98e606d8a4798b6cf036f385508301c454bf97cf3e92c739d87350847"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00425f80.txt",
+          "bytes": 815,
+          "sha256": "56e2fa0859a07d28eaeb5736bf6095523e0a2a1ec81be67ac07347c374782d63"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00425f80_ledger.json",
+          "bytes": 567,
+          "sha256": "b84312451f28eff9233e8ae5355bd8570b826094a166d701b54d70aec9818bf9"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/004264a0.bin",
+          "bytes": 89,
+          "sha256": "d5c1d1b2754bc8fcb77c978d1570bddda957f6bbab113b8782ef64a2ae72d399"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/004264a0.txt",
+          "bytes": 511,
+          "sha256": "675d2c03c5ed62ca2a57faf88fe71f0f40a5078856325defe87b8783b9bc955f"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/004264a0_ledger.json",
+          "bytes": 567,
+          "sha256": "11b0b271e35b6951e35438da692dc642b9e094d39585a8862f96d74ac76356a7"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00426500.bin",
+          "bytes": 22,
+          "sha256": "72bdbe21919cbb08fd2c9daab618b2f6152ff1739ad27b8b2ddfec1964395bc0"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00426500.txt",
+          "bytes": 191,
+          "sha256": "55eda1080ef76020a4376807f817717fbee283aca869be002bf89c7d4226f570"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00426500_ledger.json",
+          "bytes": 567,
+          "sha256": "38b2711b342876065be3dc6f51df5c389bd566b6a17adae1d35270d03afe02fc"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00bd1a20.bin",
+          "bytes": 58,
+          "sha256": "62c455f93f482c4e06bc1f451a6f78838d15cf3f5a13f01a1bdd0fefc62db065"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00bd1a20.txt",
+          "bytes": 361,
+          "sha256": "72c4bc0ed6ef09b357eebdf5a2c3ba48f0d913df4d3ac61d7135025cf9087544"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00bd1a20_ledger.json",
+          "bytes": 590,
+          "sha256": "cf925ab075287b2f89f701dd2cc1758610e5f895d78b844463a4964c01a5fd17"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00bd1a60.bin",
+          "bytes": 173,
+          "sha256": "5a0c7aab86f63629aa885acd4bf8c096bee0fd2f9c2269b783159475fd5747b9"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00bd1a60.txt",
+          "bytes": 912,
+          "sha256": "d248d6349f4b7e27f10a3630259a7bcf5def5eb31e3847226a134fa92c17ebbe"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00bd1a60_ledger.json",
+          "bytes": 589,
+          "sha256": "09693d26deac2409b4f1162d6db204fe9cd5fefcc57663bd96a2faa0782e8103"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00bde9c0.bin",
+          "bytes": 377,
+          "sha256": "dbab7cc9478aab0e0b2e85391cf1ec6946539c7aff40303cfe964f5c1d8085a8"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00bde9c0.txt",
+          "bytes": 1897,
+          "sha256": "af38c0f0de1aba1775eb52ab68f91bf610d956dbe1d16b290e78095a1e114e64"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00bde9c0_ledger.json",
+          "bytes": 602,
+          "sha256": "7de2caa65c877d9f96fd50727a86e8a485b222d3d47314ceca8ca8c6861bb553"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00c5e7f0.bin",
+          "bytes": 29,
+          "sha256": "d304f57683b2c6375e1c8dfffc9269865fd0741d95121542554d4e9f9e9f334f"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00c5e7f0.txt",
+          "bytes": 142,
+          "sha256": "3051d7da8e4b97ad53463cb33bb6655b7ef823a2bdcf3fd4a3c7369e8690e832"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00c5e8b0.bin",
+          "bytes": 29,
+          "sha256": "0f1e2579a56f16c85d5d275a0326568fc853531f2bb35b363a433751a601e45e"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00c5e8b0.txt",
+          "bytes": 142,
+          "sha256": "a45e33de9ce88cee97de72858f2c6085e7242f909fcbfc3bc4c560c5b2cda898"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00cc54d0.bin",
+          "bytes": 18,
+          "sha256": "8638695778050fdeb457cf19ca6d82665d1f8fa0a6f52ae3b7d81dce7bcffe7a"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00cc54d0.txt",
+          "bytes": 98,
+          "sha256": "fe851335770cda618577f831b023fd3a420e9c3eea410cacbc93b6963eb961f0"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00cc6470.bin",
+          "bytes": 18,
+          "sha256": "978550f19763bbca80c04c75118a91b08075f6681676c937dac5a60c2dbd6e34"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00cc6470.txt",
+          "bytes": 98,
+          "sha256": "2c848fe2b1011ce798ac039c7c3d2c6dc4c0f4b148661c697213cd95b8abf666"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00ce3a34.bin",
+          "bytes": 3,
+          "sha256": "0b782fc3030dbdf3756f17e7adf2ce5808dfc513ca7589adeb679c7d25eaef6f"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00ce3a34.txt",
+          "bytes": 25,
+          "sha256": "cb65fdb22b55a009df34103c49cac20785514b66acf210013f160abe864f776f"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00ce3a48.bin",
+          "bytes": 5,
+          "sha256": "8c682849632f1fc2d34710586db5350177711f1d6785cf3afd082f49b7cf9c3b"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00ce3a48.txt",
+          "bytes": 33,
+          "sha256": "91356c76324eb690d4107dfb26f939bb97d1e5ef95b151bbdb6df31acabeba17"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00ce3a70.bin",
+          "bytes": 2,
+          "sha256": "075d3ddf5a3a826e13a92288e853bc4b2cb17fb05367ae865f401a4bb11f05ce"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00ce3a70.txt",
+          "bytes": 21,
+          "sha256": "4fd2958f9272e176f92cb6f75187329d0965db596e277ba48939f402d8a17fa8"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00ce7890.bin",
+          "bytes": 2,
+          "sha256": "090c554bb6a344300e5690ce6f80c4ef6ee6cf5bd0fef3fde87a079dee2fa70c"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00ce7890.txt",
+          "bytes": 21,
+          "sha256": "9c3bc7a7dacaa82f6270c96fe7d9ff2f9e83f29165d5b8d62198bd37947dc2f2"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00cfd358.bin",
+          "bytes": 2,
+          "sha256": "0d549a9e1389098a9e7c5d1e01e30a361da49f46c8f166e55d8a7f18e063b3c3"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00cfd358.txt",
+          "bytes": 21,
+          "sha256": "d057b9c4dc737c3ccf93ae22bf686ee6e9b15b1def8cdf8ed9875e9d1944e9a2"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00d684c4.bin",
+          "bytes": 8,
+          "sha256": "94d0e7ee26aa67424a337bc3d4fc17e82d6389a7fc997998dc4570f626be4254"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00d684c4.txt",
+          "bytes": 45,
+          "sha256": "80d6be703770052bf644d4ce6ab519286d77ff6a4b78a98068a86028828c276f"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00d84ce8.bin",
+          "bytes": 56,
+          "sha256": "3e9814b025205f0f16d2db1efeeb14226e29f0247b3f03a97c2a01609bb72bd5"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00d84ce8.txt",
+          "bytes": 276,
+          "sha256": "95dc8cc81353db92dd798a55dddeea8d0f99efdaf5ef04f37c26a4eb91cbd3c3"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00d84dd4.bin",
+          "bytes": 56,
+          "sha256": "cc44487a2269acd55a2bea74b249b8c9e284eea407fb445b884c89af44894246"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00d84dd4.txt",
+          "bytes": 276,
+          "sha256": "a84590a79d49c1f376476cea70247a2571a8e4fc848ef1713a36520b9d5f6e5e"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00dff538.bin",
+          "bytes": 48,
+          "sha256": "b502aefad5baf1e795fae7d2f2a06a13da4e646a0b1c9586439db041f9c72c47"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00dff538.txt",
+          "bytes": 231,
+          "sha256": "2676242201120e7a436b34877afab4752291557f4405180093c13db599557d34"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00e00980.bin",
+          "bytes": 48,
+          "sha256": "5b9e1d54b5e4db845cbea8c034a6ed3da5068104ffe8ac2fe5f121155c55c49e"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/00e00980.txt",
+          "bytes": 231,
+          "sha256": "4b045cfc79fe987182b16053f20bee28a503ec96b4954a47011e72a653018500"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/build_probe.cmd",
+          "bytes": 501,
+          "sha256": "f45c7b6c8b93a0422aeabd10213a1eed847bf173b149da353646be4ece2b3932"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/build_probe.ps1",
+          "bytes": 1124,
+          "sha256": "999e31cb3e757d5e9a229fffd4e4154d278277665a522cfd33976e464e6775d0"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/calls_verification.log",
+          "bytes": 70,
+          "sha256": "6cbdb1393454816118102563a5bf7b30daffe5d9cbd7608f3d5cf521234b7d68"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/commit_message.txt",
+          "bytes": 520,
+          "sha256": "0050851c0a41dd1de6ef083e6c41031244fff22ebeebdbc065715705086c4e06"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/old_comments.json",
+          "bytes": 1271,
+          "sha256": "7e64d9dabbdc76b0a38d03af8f73c70a305cb1566d25d37a33b5888467e5e83e"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/probe.cpp",
+          "bytes": 6927,
+          "sha256": "d7ab7699b0524d877517f1fa4712cf6414439b2b27788d4f4ee384a1d2f33aa9"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/probe.exe",
+          "bytes": 21504,
+          "sha256": "07a747efdf6c17d3ba599ac6fd52bdd3ebc0c9f7b5bd2667cb13a7fdf1998650"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/probe.obj",
+          "bytes": 41225,
+          "sha256": "3e40f6966b27491507ef70ead2e1374159e2aa59abd623702e78ee0ea705ca85"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/probe_build.log",
+          "bytes": 11,
+          "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/probe_run.log",
+          "bytes": 869,
+          "sha256": "ce56841a36f87aedb879e3fe1436e1f935bd2331eed97a6198ad697e501ec57a"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging/spans.json",
+          "bytes": 9568,
+          "sha256": "6d0216d933d4d71d9b788dd1254cbbb04ca1f4b0140a2f6534f6844755284f0a"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/local/native_vfs_logging_build.log",
+          "bytes": 27414,
+          "sha256": "5d63e36ff5a12b546784cab87de0a265bbb4aa2d3a42b635b88a34563fcfa391"
+        },
+        {
+          "path": "local/native-an-worker-evidence/logging/worker-report.json",
+          "bytes": 28928,
+          "sha256": "1b83e9c3aa29a38924e129263952987b673a54e70ff969cfbed1ca76021abccd"
+        }
+      ],
+      "validation": {
+        "byte_spans": 20,
+        "matched_bytes": 1195,
+        "additional_body_tail_bytes": 96,
+        "strict_win32_build": "passed scripts/build.ps1 Release MSVC Win32",
+        "existing_ctests": "2/2 passed, including native_math_differential after verify-seeds",
+        "native_differential": "16/16 passed; each full actual pool prefix 9098372 bytes identical",
+        "game_validated": false,
+        "exception_execution": false,
+        "calls_verification": "30 direct call rows checked, 0 failed"
+      }
+    }
+  ],
+  "root_report": "reports/native_lua_vfs_binding.json",
+  "ghidra": {
+    "definitions": {
+      "local/native-lua-vfs-binding-memory-type-definition.json": {
+        "events": [
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00bb8f60",
+              "end_address": "00bb8f88"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00bb8f60",
+              "end_address": "00bb8f87",
+              "bytes_disassembled": 40,
+              "message": "Successfully disassembled 40 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00bb8f60",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00bb8f60",
+              "function_name": "FUN_00bb8f60",
+              "entry_point": "00bb8f60",
+              "body_size": 40,
+              "message": "Function created successfully at 00bb8f60"
+            }
+          },
+          {
+            "defined": "00bb8f60",
+            "end": "00bb8f88",
+            "name": null,
+            "after": "Function: FUN_00bb8f60 at 00bb8f60\nSignature: undefined FUN_00bb8f60(void)\nEntry: 00bb8f60\nBody: 00bb8f60 - 00bb8f87"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      },
+      "local/native-lua-vfs-binding-physical-size-definition.json": {
+        "events": [
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00bf4fa0",
+              "end_address": "00bf4fbb"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00bf4fa0",
+              "end_address": "00bf4fba",
+              "bytes_disassembled": 27,
+              "message": "Successfully disassembled 27 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00bf4fa0",
+              "disassemble_first": false,
+              "name": "BSP_PhysicalStream_QueryFileSizeLow"
+            },
+            "result": {
+              "success": true,
+              "address": "00bf4fa0",
+              "function_name": "BSP_PhysicalStream_QueryFileSizeLow",
+              "entry_point": "00bf4fa0",
+              "body_size": 27,
+              "message": "Function created successfully at 00bf4fa0",
+              "warnings": [
+                "Function name 'BSP_PhysicalStream_QueryFileSizeLow' \u2014 main part 'PhysicalStream_QueryFileSizeLow' is not PascalCase. Expected: PhysicalstreamQueryfilesizelow",
+                "Function name 'BSP_PhysicalStream_QueryFileSizeLow' \u2014 main part 'PhysicalStream_QueryFileSizeLow' contains underscores. Use PascalCase after the module prefix.",
+                "Function name 'BSP_PhysicalStream_QueryFileSizeLow' does not start with a recognized verb. First word 'Physical' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+              ]
+            }
+          },
+          {
+            "defined": "00bf4fa0",
+            "end": "00bf4fbb",
+            "name": "BSP_PhysicalStream_QueryFileSizeLow",
+            "after": "Function: BSP_PhysicalStream_QueryFileSizeLow at 00bf4fa0\nSignature: undefined BSP_PhysicalStream_QueryFileSizeLow(void)\nEntry: 00bf4fa0\nBody: 00bf4fa0 - 00bf4fba"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      }
+    },
+    "flow_repairs": {
+      "local/native-lua-vfs-binding-conversion-unwind-flow.json": {
+        "repairs": [
+          {
+            "function": "00cc7650",
+            "owner": "agent/orch2-20260910",
+            "when": "2026-09-12T03:39:10Z",
+            "decompile_lines_before": 10,
+            "gaps": [
+              {
+                "site": "00cc7654",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00cc7659",
+                "gap_end_exclusive": "00cc765b",
+                "bytes": 2,
+                "after_call": true,
+                "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00cc7654",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf65ac",
+                  "gap_start": "00cc7659",
+                  "gap_end_exclusive": "00cc765b",
+                  "bytes": 2,
+                  "after_call": true,
+                  "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+                },
+                "clear": "Success: Cleared flow override at 00cc7654 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 2 byte(s)"
+              },
+              {
+                "explicit_tail_call": "00cc7654",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00cc7654 (was: NONE, now: NONE)"
+                }
+              }
+            ],
+            "explicit_tail_end_exclusive": "00cc765b",
+            "explicit_body_sha256": "21e83456f45a9cb18ffd6292ba3baab2421d04c61c0a1311ae8e71ebefb70881",
+            "body_before": "Function: Unwind@00cc7650 at 00cc7650\nSignature: undefined Unwind@00cc7650(void)\nEntry: 00cc7650\nBody: 00cc7650 - 00cc7658",
+            "decompile_lines_after": 10,
+            "gaps_remaining": 1,
+            "body_after": "Function: Unwind@00cc7650 at 00cc7650\nSignature: undefined Unwind@00cc7650(void)\nEntry: 00cc7650\nBody: 00cc7650 - 00cc7658",
+            "stored_body_tail_complete": false,
+            "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+          }
+        ]
+      },
+      "local/native-lua-vfs-binding-physical-flow.json": {
+        "repairs": [
+          {
+            "function": "00bf30c0",
+            "owner": "agent/orch2-20260910",
+            "when": "2026-09-12T03:53:29Z",
+            "decompile_lines_before": 28,
+            "gaps": [
+              {
+                "site": "00bf310c",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00bf3111",
+                "gap_end_exclusive": "00bf311a",
+                "bytes": 9,
+                "after_call": true,
+                "sha256": "2a7ea53e1544290f2c14148fed51666fe04b900860ff3e8162ed21c93caee7c1"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00bf310c",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00bf3111",
+                  "gap_end_exclusive": "00bf311a",
+                  "bytes": 9,
+                  "after_call": true,
+                  "sha256": "2a7ea53e1544290f2c14148fed51666fe04b900860ff3e8162ed21c93caee7c1"
+                },
+                "clear": "Success: Cleared flow override at 00bf310c (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 9 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 31,
+            "gaps_remaining": 0
+          },
+          {
+            "function": "00bf4370",
+            "owner": "agent/orch2-20260910",
+            "when": "2026-09-12T03:53:30Z",
+            "decompile_lines_before": 16,
+            "gaps": [
+              {
+                "site": "00bf4393",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00bf4398",
+                "gap_end_exclusive": "00bf439b",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00bf4393",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf65ac",
+                  "gap_start": "00bf4398",
+                  "gap_end_exclusive": "00bf439b",
+                  "bytes": 3,
+                  "after_call": true,
+                  "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+                },
+                "clear": "Success: Cleared flow override at 00bf4393 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 3 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 13,
+            "gaps_remaining": 0
+          },
+          {
+            "function": "00bf5090",
+            "owner": "agent/orch2-20260910",
+            "when": "2026-09-12T03:53:31Z",
+            "decompile_lines_before": 23,
+            "gaps": [
+              {
+                "site": "00bf50bf",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00bf50c4",
+                "gap_end_exclusive": "00bf50c7",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00bf50bf",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf65ac",
+                  "gap_start": "00bf50c4",
+                  "gap_end_exclusive": "00bf50c7",
+                  "bytes": 3,
+                  "after_call": true,
+                  "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+                },
+                "clear": "Success: Cleared flow override at 00bf50bf (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 3 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 20,
+            "gaps_remaining": 0
+          }
+        ]
+      },
+      "local/native-lua-vfs-binding-physical-pool-tail-flow.json": {
+        "repairs": [
+          {
+            "function": "00bf3930",
+            "owner": "agent/orch2-20260910",
+            "when": "2026-09-12T03:53:39Z",
+            "decompile_lines_before": 13,
+            "gaps": [
+              {
+                "site": "00bf3946",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00bf394b",
+                "gap_end_exclusive": "00bf3956",
+                "bytes": 11,
+                "after_call": true,
+                "sha256": "cc74d109c2453d327dda5acd61c700e5068dc6ed2784cd33cd1214963869d67f"
+              },
+              {
+                "site": "00bf3962",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00bf3967",
+                "gap_end_exclusive": "00bf396d",
+                "bytes": 6,
+                "after_call": true,
+                "sha256": "f00a809ebda24e5f9f6a06a9a5879976f4ceb2077b4aa399deb8b278b6ff0ec0"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00bf3946",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf65ac",
+                  "gap_start": "00bf394b",
+                  "gap_end_exclusive": "00bf3956",
+                  "bytes": 11,
+                  "after_call": true,
+                  "sha256": "cc74d109c2453d327dda5acd61c700e5068dc6ed2784cd33cd1214963869d67f"
+                },
+                "clear": "Success: Cleared flow override at 00bf3946 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 11 byte(s)"
+              },
+              {
+                "gap": {
+                  "site": "00bf3962",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00bf3967",
+                  "gap_end_exclusive": "00bf396d",
+                  "bytes": 6,
+                  "after_call": true,
+                  "sha256": "f00a809ebda24e5f9f6a06a9a5879976f4ceb2077b4aa399deb8b278b6ff0ec0"
+                },
+                "clear": "Success: Cleared flow override at 00bf3962 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 6 byte(s)"
+              },
+              {
+                "explicit_tail_call": "00bf3946",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00bf3946 (was: NONE, now: NONE)"
+                }
+              },
+              {
+                "explicit_tail_call": "00bf3962",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00bf3962 (was: NONE, now: NONE)"
+                }
+              }
+            ],
+            "explicit_tail_end_exclusive": "00bf396d",
+            "explicit_body_sha256": "bf468735d266c46ed5c5a91cd90dc9562307b60921eaefc12af7d53994aa5e61",
+            "body_before": "Function: FUN_00bf3930 at 00bf3930\nSignature: undefined FUN_00bf3930(void)\nEntry: 00bf3930\nBody: 00bf3930 - 00bf3966",
+            "decompile_lines_after": 18,
+            "gaps_remaining": 1,
+            "body_after": "Function: FUN_00bf3930 at 00bf3930\nSignature: undefined FUN_00bf3930(void)\nEntry: 00bf3930\nBody: 00bf3930 - 00bf3966",
+            "stored_body_tail_complete": false,
+            "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+          }
+        ]
+      }
+    },
+    "stored_tail_limit": "CC7650 and BF3930 final instructions decoded but stored body tails remain incomplete; no full stored flow-repair claim",
+    "annotations": {
+      "verified_names": 36,
+      "prior_nonempty_comments": 18,
+      "before": {
+        "00be41a0": {
+          "address": "00be41a0",
+          "function_name": "BSP_Stream_GetSizeLowAndOptionalHigh",
+          "comment": "[BSP reconstruction 00be41a0]\nHypothesis, not recovered symbol. __thiscall(ECX stream, uint32* optional_high), EAX low size, RET4; native EDX retains high bits. Call CURRENT stream+30h for EDX:EAX size; optional argument receives EDX; return low EAX. New C++ interface plus host callback bridge. Partial callable stream table invokes genuine existing typed physical/memory size methods; no complete stream ABI claim. docs/SOUND_FILE_CALLBACKS.md; reports/sound_file_callbacks.json."
+        },
+        "00b66ca0": {
+          "address": "00b66ca0",
+          "function_name": "BSP_LuaStateOwner_LoadAndCallChunk",
+          "comment": "[BSP reconstruction 00b66ca0]\nHypothesis, not a recovered symbol. __thiscall(owner, const NativeString *path, char obfuscated), RET 8. Opens the path on the VFS singleton at 0109CEEC with mode 2 and returns silently when the stream is null, not open, or zero length. Reads the file into a malloc buffer, applies a nibble-rotation transform when the second argument is set (the GUI passes 0), then luaL_loadbuffer (00A6A160) with the path text as the chunk name and lua_call(L, 0, LUA_MULTRET) (00A68090). The load result is never tested and the call is UNPROTECTED, so a script that fails to compile has its error message called as a function and any raise reaches the panic handler and terminates the process. See docs/GUI_LUA_READER.md.\n\n[BSP reconstruction 00b66ca0] update\nHypothesis, not a recovered symbol. __thiscall(owner, const NativeString *path, char obfuscated), RET 8. Opens the path on the VFS singleton at 0109CEEC with mode 2 and returns silently when the stream is null, not open, or zero length. Reads the file into a malloc buffer, applies a nibble-rotation transform when the second argument is set (the GUI passes 0), then luaL_loadbuffer (00A6A160) with the path text as the chunk name and lua_call(L, 0, LUA_MULTRET) (00A68090). The load result is never tested and the call is UNPROTECTED, so a script that fails to compile has its error message called as a function and any raise reaches the panic handler and terminates the process. See docs/GUI_LUA_READER.md. | Actual-Lua follow-up: 00b66d40..d61 replaces prefix including first 01h with 20h, then rotates remaining bytes ROL4; no marker yields whitespace. Existing gui chunk now implements flag. Live runtime calls error string after ignored compile failure via protected host pcall; preserves successful MULTRET; not native recovery. Internal free gap 00b66dcf..dd3 restored/saved; native end exclusive 00b66ddc. Build and actual Lua installed-script fixture pass. docs/LUA_SCRIPT_RUNTIME.md; reports/lua_script_runtime.json.\n\n[BSP reconstruction 00b66ca0] update\nHypothesis, not a recovered symbol. __thiscall(owner, const NativeString *path, char obfuscated), RET 8. Opens the path on the VFS singleton at 0109CEEC with mode 2 and returns silently when the stream is null, not open, or zero length. Reads the file into a malloc buffer, applies a nibble-rotation transform when the second argument is set (the GUI passes 0), then luaL_loadbuffer (00A6A160) with the path text as the chunk name and lua_call(L, 0, LUA_MULTRET) (00A68090). The load result is never tested and the call is UNPROTECTED, so a script that fails to compile has its error message called as a function and any raise reaches the panic handler and terminates the process. See docs/GUI_LUA_READER.md. | Actual-Lua follow-up: 00b66d40..d61 replaces prefix including first 01h with 20h, then rotates remaining bytes ROL4; no marker yields whitespace. Existing gui chunk now implements flag. Live runtime calls error string after ignored compile failure via protected host pcall; preserves successful MULTRET; not native recovery. Internal free gap 00b66dcf..dd3 restored/saved; native end exclusive 00b66ddc. Build and actual Lua installed-script fixture pass. docs/LUA_SCRIPT_RUNTIME.md; reports/lua_script_runtime.json. | Descriptive hypothesis, not a recovered symbol. Full316-byte actual consumer. Current manager virtual04(mode2), stream18/64bit30 gates; earlyclosed/empty returns retain stream. Repeatedlength lowDWORD allocation/read/load; captured read-table pointer before thirdlengthcall. Ignore readcount/loadstatus, live-length prefix/nibble decode, InterlockedDecrement(stream+4), currentvirtual00 atzero, rereadownerstate then unprotected Lua call/free. Actual callable VFS/stream ownership remains external. Four native/rebuilt fatal childcases exit1 afterrelease. docs/NATIVE_LUA_FILE_LOADING.md; reports/native_lua_file_loading.json."
+        },
+        "00b69d40": {
+          "address": "00b69d40",
+          "function_name": "BSP_LuaStateOwner_RunScriptWithOverrides",
+          "comment": "[BSP reconstruction 00b69d40]\nHypothesis, not a recovered symbol. __thiscall(owner, const NativeString *path, char obfuscated), RET 8. Runs 00B66CA0 on the path, then asks the VFS singleton at 0109CEEC through 00BDEF90 for the other files matching it and runs 00B66CA0 on each in search order, so a mounted package can override or extend a script. The 8-byte list is released with 00427110 and then free. 00AC6600 calls it twice with the flag clear, for interface/_Common.lua and interface/<page>.lua. See docs/GUI_LUA_READER.md.\n\n[BSP reconstruction 00b69d40] update\nHypothesis, not a recovered symbol. __thiscall(owner, const NativeString *path, char obfuscated), RET 8. Runs 00B66CA0 on the path, then asks the VFS singleton at 0109CEEC through 00BDEF90 for the other files matching it and runs 00B66CA0 on each in search order, so a mounted package can override or extend a script. The 8-byte list is released with 00427110 and then free. 00AC6600 calls it twice with the flag clear, for interface/_Common.lua and interface/<page>.lua. See docs/GUI_LUA_READER.md. | Actual-Lua follow-up reuses existing gui loop, propagates same flag to variants and preserves Lua MULTRET; runtime errors stop before later search/calls. 00bdef90 is ordered manager+48/+4c content suffix construction and exists, not generic directory enumeration. Disk-verified 24-byte free-tail ends RET8 at 00b69de2; end exclusive 00b69de5; saved Ghidra body remains short 00b69dcc despite decoded tail. Build and real Lua installed scripts pass; not ABI/game validated. docs/LUA_SCRIPT_RUNTIME.md; reports/lua_script_runtime.json.\n\n[BSP reconstruction 00b69d40] update\nHypothesis, not a recovered symbol. __thiscall(owner, const NativeString *path, char obfuscated), RET 8. Runs 00B66CA0 on the path, then asks the VFS singleton at 0109CEEC through 00BDEF90 for the other files matching it and runs 00B66CA0 on each in search order, so a mounted package can override or extend a script. The 8-byte list is released with 00427110 and then free. 00AC6600 calls it twice with the flag clear, for interface/_Common.lua and interface/<page>.lua. See docs/GUI_LUA_READER.md. | Actual-Lua follow-up reuses existing gui loop, propagates same flag to variants and preserves Lua MULTRET; runtime errors stop before later search/calls. 00bdef90 is ordered manager+48/+4c content suffix construction and exists, not generic directory enumeration. Disk-verified 24-byte free-tail ends RET8 at 00b69de2; end exclusive 00b69de5; saved Ghidra body remains short 00b69dcc despite decoded tail. Build and real Lua installed scripts pass; not ABI/game validated. docs/LUA_SCRIPT_RUNTIME.md; reports/lua_script_runtime.json. | Descriptive hypothesis, not a recovered symbol. Full165-byte disk extent. Initial chunk BEFORE empty0Ch vector; rereadlive0109CEEC manager, requiredBDEF90 actual-header append service, capturedbegin/end with8byte paths andduplicates. Fullvector cleanup onnormal/EH. Storedbody stillendsB69DCC;24-byte tailthroughB69DE4 captured/executed but lockedrepair didnotextendbody. No full-flow-repair claim. docs/NATIVE_LUA_FILE_LOADING.md; reports/native_lua_file_loading.json."
+        },
+        "00b69e00": {
+          "address": "00b69e00",
+          "function_name": "BSP_LuaStateOwner_DoFileCallback",
+          "comment": "[BSP reconstruction 00b69e00]\nHypothesis, not recovered symbol. ECX incoming Lua state; RET, EAX0. Non-owning 00b66c00 wrapper reinstalls DoFile; 00b679b0 range start1 and 00b677e0/index0 select arg1; lua_tolstring plus unchecked strlen 0041e870 copies path; 00b69e6f flag0; 00b69e82 runs 00b69d40 variants. Ends 00b69f17 inclusive. Host callback binds real Lua5.1.1, adapts native panic/null-string fault to Lua error; not ABI compatible/game validated. See docs/LUA_SCRIPT_RUNTIME.md and reports/lua_script_runtime.json.\n\n[BSP reconstruction 00b69e00] update\nHypothesis, not recovered symbol. ECX incoming Lua state; RET, EAX0. Non-owning 00b66c00 wrapper reinstalls DoFile; 00b679b0 range start1 and 00b677e0/index0 select arg1; lua_tolstring plus unchecked strlen 0041e870 copies path; 00b69e6f flag0; 00b69e82 runs 00b69d40 variants. Ends 00b69f17 inclusive. Host callback binds real Lua5.1.1, adapts native panic/null-string fault to Lua error; not ABI compatible/game validated. See docs/LUA_SCRIPT_RUNTIME.md and reports/lua_script_runtime.json. | Descriptive hypothesis, not a recovered symbol. Full280-byte callback composition: actual borrowed4C8h owner reinstalls zero-upvalue appcallback, kind3 callframe and argument0, uncheckedtolstring/NativeStringconstructor, runfileflag0, native local cleanup distinction andzeroresults. Four-state unwind owner/frame/argument/path checked, not originalEH-executed. Installed nestedshaderincludes execute original/rebuilt actualpath through externalfixturestreams. docs/NATIVE_LUA_FILE_LOADING.md; reports/native_lua_file_loading.json."
+        },
+        "00bdef90": {
+          "address": "00bdef90",
+          "function_name": "BSP_VfsManager_AppendLuaScriptOverrides",
+          "comment": "[BSP reconstruction 00bdef90]\nHypothesis, not a recovered symbol. ECX=VFS manager, stack path NativeString* and output vector*, RET8; body00bdef90..00bdf306. Rightmost forward slash then first dot splits stem/extension; append existing stem_+suffix+extension for ordered manager+48/+4C suffixes, preserving duplicates and prior output. Assembly00bdefc9/00bdf227/00bdf22d/00bdf235. docs/SCRIPT_RUNTIME_INTEGRATION.md. Host allocator, diagnostics and invalid-string behavior differ; not native ABI or gameplay validation.\n\n[BSP reconstruction 00bdef90] update\nHypothesis, not a recovered symbol. ECX=VFS manager, stack path NativeString* and output vector*, RET8; body00bdef90..00bdf306. Rightmost forward slash then first dot splits stem/extension; append existing stem_+suffix+extension for ordered manager+48/+4C suffixes, preserving duplicates and prior output. Assembly00bdefc9/00bdf227/00bdf22d/00bdf235. docs/SCRIPT_RUNTIME_INTEGRATION.md. Host allocator, diagnostics and invalid-string behavior differ; not native ABI or gameplay validation. | Descriptive hypothesis, not a recovered symbol. Full887-byte original. Last slash then first dot split; actual native temporary strings/ten EH states. Captured suffix range at manager48/4C; current virtual08 per candidate; append mutable accepted candidate with duplicates and prior output preserved. Diagnostic4254B0 bareRET. Full original/rebuilt nestedDoFile and installedshaderbytes fixture; actual VFS existence/stream owners external. docs/NATIVE_LUA_SCRIPT_OVERRIDES.md; reports/native_lua_script_overrides.json."
+        },
+        "00b68340": {
+          "address": "00b68340",
+          "function_name": "BSP_LuaFundamentals_Construct",
+          "comment": "[BSP reconstruction 00b68340]\nHypothesis, not a recovered symbol. Evidence docs/LUA_STATE_OWNER.md; reports/lua_state_owner.json. ECX=this,EAX=this,RET; body00b68340..00b68458. Vtable00d62c18; bytes+4,size+8. Opens Scripts\\fundamentals.lua via VFS0109ceec+4 mode2, checks stream+18h, size+30h, allocate/read+24h, release ref. Cache is VFS-backed, not executable embedded data. Failed-open does not initialize valid members and read result is unchecked.\n\n[BSP reconstruction 00b68340] update\nHypothesis, not a recovered symbol. Evidence docs/LUA_STATE_OWNER.md; reports/lua_state_owner.json. ECX=this,EAX=this,RET; body00b68340..00b68458. Vtable00d62c18; bytes+4,size+8. Opens Scripts\\fundamentals.lua via VFS0109ceec+4 mode2, checks stream+18h, size+30h, allocate/read+24h, release ref. Cache is VFS-backed, not executable embedded data. Failed-open does not initialize valid members and read result is unchecked. | Normal-flow VFS cache composition in bsp::VfsLuaScriptFiles::cached_fundamentals_00884770, src/vfs_lua_scripts.cpp. Successful zero-size stream is cached:00b683e1..00b6840a has no nonzero-size gate. Missing/incomplete reads throw; application-owned serialized cache omits native singleton locking/lifetime registry/allocator ABI. docs/SCRIPT_RUNTIME_INTEGRATION.md.\n\n[BSP reconstruction 00b68340] update\nHypothesis, not a recovered symbol. Evidence docs/LUA_STATE_OWNER.md; reports/lua_state_owner.json. ECX=this,EAX=this,RET; body00b68340..00b68458. Vtable00d62c18; bytes+4,size+8. Opens Scripts\\fundamentals.lua via VFS0109ceec+4 mode2, checks stream+18h, size+30h, allocate/read+24h, release ref. Cache is VFS-backed, not executable embedded data. Failed-open does not initialize valid members and read result is unchecked. | Normal-flow VFS cache composition in bsp::VfsLuaScriptFiles::cached_fundamentals_00884770, src/vfs_lua_scripts.cpp. Successful zero-size stream is cached:00b683e1..00b6840a has no nonzero-size gate. Missing/incomplete reads throw; application-owned serialized cache omits native singleton locking/lifetime registry/allocator ABI. docs/SCRIPT_RUNTIME_INTEGRATION.md. | Producer writes D62C18/data04/lowDWORD size08. Native path length18h mode2. Closed gate leaves payload preimage and stream ref. Success allocates exact low length includingzero, ignores read result/count, actual ref decrement then current slot00. Two-state unwind releases path/base only; byte allocation/stream retained. Evidence docs/NATIVE_LUA_FUNDAMENTALS.md; reports/native_lua_fundamentals.json. Actual0Ch owner aliases existing bootstrap view, shared singleton lifetime domain and existing string storage; callable native VFS/streams external. Complete body coverage, new C++ interface, no original FH3/game validation. Worker Ghidra read-only."
+        },
+        "00bdf310": {
+          "address": "00bdf310",
+          "function_name": "BSP_VFS_OpenResource",
+          "comment": "[BSP reconstruction 00bdf310]\nECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native stream tracking 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity.\n\n[BSP reconstruction 00bdf310] update\nECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native opened-resource logging 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity. Follow-up establishes 00bde9c0 as gated name logging, not a retained stream registry or cache selection mechanism.\n\n[BSP reconstruction 00bdf310] update\nECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native opened-resource logging 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity. Follow-up establishes 00bde9c0 as gated name logging, not a retained stream registry or cache selection mechanism. Bounded synchronous mounted/FileStore host integration now accepts exact flags2 and32h and forwards original mode to inspected providers. Five native startup script selections pass installed disk-byte/cache checks, alongside separate diagnostic font priming. Preserve exact-name open-before-duplicate behavior; host memory ownership/failure guards differ native. docs/STARTUP_SCRIPT_PRELOAD.md; docs/MOUNTED_RESOURCE_STREAMS.md.\n\n[BSP reconstruction 00bdf310] update\nECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native opened-resource logging 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity. Follow-up establishes 00bde9c0 as gated name logging, not a retained stream registry or cache selection mechanism. Bounded synchronous mounted/FileStore host integration now accepts exact flags2 and32h and forwards original mode to inspected providers. Five native startup script selections pass installed disk-byte/cache checks, alongside separate diagnostic font priming. Preserve exact-name open-before-duplicate behavior; host memory ownership/failure guards differ native. docs/STARTUP_SCRIPT_PRELOAD.md; docs/MOUNTED_RESOURCE_STREAMS.md. ECX manager; stack logical_path,flags; EAX stream/null; RET8 Normalize copy, one alias, current mounted traversal; no reentry/source pinning guard. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 00bdf310] update\nECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native opened-resource logging 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity. Follow-up establishes 00bde9c0 as gated name logging, not a retained stream registry or cache selection mechanism. Bounded synchronous mounted/FileStore host integration now accepts exact flags2 and32h and forwards original mode to inspected providers. Five native startup script selections pass installed disk-byte/cache checks, alongside separate diagnostic font priming. Preserve exact-name open-before-duplicate behavior; host memory ownership/failure guards differ native. docs/STARTUP_SCRIPT_PRELOAD.md; docs/MOUNTED_RESOURCE_STREAMS.md. ECX manager; stack logical_path,flags; EAX stream/null; RET8 Normalize copy, one alias, current mounted traversal; no reentry/source pinning guard. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json | Complete actual-storage consumer at 00bdf310; source src/native_vfs_open_route.cpp; explicit callable original-ABI provider/stream/failure dependencies and required BDE9C0 service, no new owners. Eight original-instruction compositions match full arena, actual string-pool prefix, return and service events. Win32 Release build and configured CTest pass; 37 direct report call rows verified. Qualified D6838C visitor/current BDA690 and BD9040 slots. Not native provider I/O, original FH3 unwind, binary ABI or game validation. reports/native_vfs_open_route.json; docs/NATIVE_VFS_OPEN_ROUTE.md."
+        },
+        "00bda690": {
+          "address": "00bda690",
+          "function_name": "BSP_VFS_OpenMountCallback",
+          "comment": "[BSP reconstruction 00bda690]\nECX callback, mount and relative-name stack, RET8. Provider at mount+8 receives name and callback flags+8 through virtual+8. Stores returned stream at callback+4; if non-null copies mount byte+C into callback+C. Optional diagnostic gate observes manager+20, mount byte+C and flags bit0. Raw 96-byte table target recovered; callback return value is not a boolean success contract. Host mounted-stream binding projects flags2 and omits native diagnostics/ownership byte.\n\n[BSP reconstruction 00bda690] update\nECX callback, mount and relative-name stack, RET8. Provider at mount+8 receives name and callback flags+8 through virtual+8. Stores returned stream at callback+4; if non-null copies mount byte+C into callback+C. Optional diagnostic gate observes manager+20, mount byte+C and flags bit0. Raw 96-byte table target recovered; callback return value is not a boolean success contract. Host mounted-stream binding projects flags2 and omits native diagnostics/ownership byte. ECX open callback; stack mount_record,suffix; RET8 Dispatch provider+8 flags unchanged; save returned stream, no existence precheck. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 00bda690] update\nECX callback, mount and relative-name stack, RET8. Provider at mount+8 receives name and callback flags+8 through virtual+8. Stores returned stream at callback+4; if non-null copies mount byte+C into callback+C. Optional diagnostic gate observes manager+20, mount byte+C and flags bit0. Raw 96-byte table target recovered; callback return value is not a boolean success contract. Host mounted-stream binding projects flags2 and omits native diagnostics/ownership byte. ECX open callback; stack mount_record,suffix; RET8 Dispatch provider+8 flags unchanged; save returned stream, no existence precheck. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json | Complete actual-storage consumer at 00bda690; source src/native_vfs_open_route.cpp; explicit callable original-ABI provider/stream/failure dependencies and required BDE9C0 service, no new owners. Eight original-instruction compositions match full arena, actual string-pool prefix, return and service events. Win32 Release build and configured CTest pass; 37 direct report call rows verified. Qualified D6838C visitor/current BDA690 and BD9040 slots. Not native provider I/O, original FH3 unwind, binary ABI or game validation. reports/native_vfs_open_route.json; docs/NATIVE_VFS_OPEN_ROUTE.md."
+        },
+        "00bb8f60": {
+          "address": "00bb8f60",
+          "function_name": "FUN_00bb8f60"
+        },
+        "00be5e90": {
+          "address": "00be5e90",
+          "function_name": "FUN_00be5e90"
+        },
+        "00be5fa0": {
+          "address": "00be5fa0",
+          "function_name": "BSP_FileStore_Open",
+          "comment": "[BSP reconstruction 00be5fa0]\nECX store; name/flags stack RET8 EAXstream. Rejectflagsbit0, primarytree+14 lookup withoutnormalizing. Hitnode+14 storedstream->00bef750. Supportedmemorydomain returnsnewcursor0 wrapper sharedbacking, leavesstoredcursor. Full145bytes throughRET00be602e; typedFileStore openinstalledDATfixture.\n\n[BSP reconstruction 00be5fa0] update\nECX store; name/flags stack RET8 EAXstream. Rejectflagsbit0, primarytree+14 lookup withoutnormalizing. Hitnode+14 storedstream->00bef750. Supportedmemorydomain returnsnewcursor0 wrapper sharedbacking, leavesstoredcursor. Full145bytes throughRET00be602e; typedFileStore openinstalledDATfixture. Bounded synchronous mounted/FileStore host integration now accepts exact flags2 and32h and forwards original mode to inspected providers. Five native startup script selections pass installed disk-byte/cache checks, alongside separate diagnostic font priming. Preserve exact-name open-before-duplicate behavior; host memory ownership/failure guards differ native. docs/STARTUP_SCRIPT_PRELOAD.md; docs/MOUNTED_RESOURCE_STREAMS.md."
+        },
+        "00bef750": {
+          "address": "00bef750",
+          "function_name": "BSP_Stream_ConvertToMemory",
+          "comment": "[BSP reconstruction 00bef750]\nECX source,RET,newmemorywrapperEAX. Nullsource null; memorysource sharesbacking resetscursor; other seek0,size lowDWORD,uninitializedbacking,oneuncheckedread,wrap and release temporarybacking. Typedphysicalfragment positive1..INT32MAX, requestedlength retained onshortread, hostinitializedprefix/errorreport; VFS/typequery/nativeallocator absent.\n\n[BSP reconstruction 00bef750] update\nECX source,RET,newmemorywrapperEAX. Nullsource null; memorysource sharesbacking resetscursor; other seek0,size lowDWORD,uninitializedbacking,oneuncheckedread,wrap and release temporarybacking. Typedphysicalfragment positive1..INT32MAX, requestedlength retained onshortread, hostinitializedprefix/errorreport; VFS/typequery/nativeallocator absent.\n\nBorrows source without source retain/release. Memory path shares backing and resets only returned cursor. Other path seeks source0, takes low sizeDWORD, makes one unchecked read with null actual pointer, creates wrapper then releases temporary backing. Zero length uses one-byte allocation with logical0 and read0. Physical host projection now accepts0..INT32_MAX; other domains unchanged. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX borrowed source; no stack args; EAX new memory wrapper or null for null source; RET. Evidence: docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+        },
+        "00bef540": {
+          "address": "00bef540",
+          "function_name": "BSP_MemoryStream_Seek",
+          "comment": "[BSP reconstruction 00bef540]\nECX stream; low/high offset and origin stack,RET0C. Ignore highDWORD; lowDWORD modular add to begin/current/end for origin0/1/other. Typedinterface rejects resulting outofbounds cursor and missingbacking; nativeunchecked."
+        },
+        "00bde9c0": {
+          "address": "00bde9c0",
+          "function_name": "BSP_VFS_LogOpenedResource",
+          "comment": "[BSP reconstruction 00bde9c0]\nECX manager, name/stream/ownership byte stack, RET0C. Stream argument unused in body. Applies filename exclusion, then gates <FILE><name> logging on global0109cee8, manager+79 and ownership byte. No stream-retain/list insertion or cache selection in this routine. Corrects earlier broad stream-tracking description of caller00bdf310. Complete377-byte body matches installed PE; static analysis only. docs/VFS_PRELOAD_BOUNDARY.md."
+        },
+        "004264a0": {
+          "address": "004264a0",
+          "function_name": "FUN_004264a0"
+        },
+        "00426500": {
+          "address": "00426500",
+          "function_name": "FUN_00426500"
+        },
+        "00bd1a20": {
+          "address": "00bd1a20",
+          "function_name": "FUN_00bd1a20"
+        },
+        "00bd1a60": {
+          "address": "00bd1a60",
+          "function_name": "FUN_00bd1a60"
+        },
+        "00425f80": {
+          "address": "00425f80",
+          "function_name": "FUN_00425f80"
+        },
+        "00bf30c0": {
+          "address": "00bf30c0",
+          "function_name": "FUN_00bf30c0"
+        },
+        "00bf3670": {
+          "address": "00bf3670",
+          "function_name": "FUN_00bf3670"
+        },
+        "00bf3770": {
+          "address": "00bf3770",
+          "function_name": "FUN_00bf3770"
+        },
+        "00bf3930": {
+          "address": "00bf3930",
+          "function_name": "FUN_00bf3930"
+        },
+        "00bf42a0": {
+          "address": "00bf42a0",
+          "function_name": "FUN_00bf42a0"
+        },
+        "00bf4370": {
+          "address": "00bf4370",
+          "function_name": "FUN_00bf4370"
+        },
+        "00bf4ba0": {
+          "address": "00bf4ba0",
+          "function_name": "BSP_PhysicalDirectory_Open",
+          "comment": "[BSP reconstruction 00bf4ba0]\nECX provider; suffix and flags stack; EAX stream/null; RET 8. Physical provider table 00d69168 virtual +8. Allocates/reuses a physical stream, builds its full physical path through provider +1Ch, forwards incoming flags unchanged via 00bf5590, checks stream validity and releases a failed result. The 00bf5590 body is only JMP 00bf52a0. Flags 2 and 0x32 therefore reach the same physical open mode; native lifecycle/errors remain distinct from guarded host adapters. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json."
+        },
+        "00bf4f90": {
+          "address": "00bf4f90",
+          "function_name": "BSP_PhysicalStream_GetSize",
+          "comment": "[BSP reconstruction 00bf4f90]\nECX stream,RET; EDX:EAX cached64-bit size+18. Typed projection returns samebits; no size refresh."
+        },
+        "00bf4fa0": {
+          "address": "00bf4fa0",
+          "function_name": "BSP_PhysicalStream_QueryFileSizeLow"
+        },
+        "00bf5020": {
+          "address": "00bf5020",
+          "function_name": "BSP_PhysicalStream_IsValid",
+          "comment": "[BSP reconstruction 00bf5020]\nECX stream,RET; AL tests handle+8 != INVALID_HANDLE_VALUE. Typed owning stream reconstruction; no VFS/pool ABI."
+        },
+        "00bf5030": {
+          "address": "00bf5030",
+          "function_name": "BSP_PhysicalStream_Read",
+          "comment": "[BSP reconstruction 00bf5030]\nECX stream,destination/requested/optionalactualcount stack,RET0Ch. One synchronous ReadFile, actualcount initiallyzero; add countto64-bit position and returncount. Native failure callback unported; typed host reports Win32 error. InstalledDDS path checked."
+        },
+        "00bf5090": {
+          "address": "00bf5090",
+          "function_name": "BSP_PhysicalStream_DeletingDestructor",
+          "comment": "[BSP reconstruction 00bf5090]\nNative deleting destructor installs vtable, CloseHandle, invalidates handle, optionally frees. Typed fragment owns handle uniquely and releases it; pool/recycling/referencecount/vtable and allocator ABI unported."
+        },
+        "00bf50d0": {
+          "address": "00bf50d0",
+          "function_name": "FUN_00bf50d0"
+        },
+        "00bf5190": {
+          "address": "00bf5190",
+          "function_name": "FUN_00bf5190"
+        },
+        "00bf52a0": {
+          "address": "00bf52a0",
+          "function_name": "BSP_PhysicalStream_Open",
+          "comment": "[BSP reconstruction 00bf52a0]\nECX stream,pathstring/flags stack,RET8. Typed fragment supports flags2 only: GENERIC_READ,FILE_SHARE_READ,OPEN_EXISTING,attributes0; cache GetFileSizeEx and zero position. Other modes/directorycreation/logging/nativeownership unported.\n\n[BSP reconstruction 00bf52a0] update\nECX stream,pathstring/flags stack,RET8. Typed fragment supports flags2 only: GENERIC_READ,FILE_SHARE_READ,OPEN_EXISTING,attributes0; cache GetFileSizeEx and zero position. Other modes/directorycreation/logging/nativeownership unported. ECX stream; path and flags stack; RET 8. Flags 2 and 0x32 both select desired access 80000000h, share mode 1, and creation disposition 3 with zero attributes/security/template. The flags & 0Eh index 2 jumps through verified table 00bf54f0 to 00bf530c, overwriting disposition with 3. Extra bits 10h/20h are neither consulted further nor stored in this inspected pair of native paths. This does not establish arbitrary flag semantics, other providers, native failure parity or an implemented public host flags API. Existing typed host read-only API remains restricted as documented. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json."
+        },
+        "00bf5590": {
+          "address": "00bf5590",
+          "function_name": "BSP_PhysicalStream_Open"
+        },
+        "00bf55a0": {
+          "address": "00bf55a0",
+          "function_name": "FUN_00bf55a0"
+        }
+      },
+      "after": {
+        "00be41a0": {
+          "address": "00be41a0",
+          "function_name": "BSP_Stream_GetSizeLowAndOptionalHigh",
+          "comment": "[BSP reconstruction 00be41a0]\nHypothesis, not recovered symbol. __thiscall(ECX stream, uint32* optional_high), EAX low size, RET4; native EDX retains high bits. Call CURRENT stream+30h for EDX:EAX size; optional argument receives EDX; return low EAX. New C++ interface plus host callback bridge. Partial callable stream table invokes genuine existing typed physical/memory size methods; no complete stream ABI claim. docs/SOUND_FILE_CALLBACKS.md; reports/sound_file_callbacks.json.\n\n[BSP reconstruction 00be41a0] update\nHypothesis, not recovered symbol. __thiscall(ECX stream, uint32* optional_high), EAX low size, RET4; native EDX retains high bits. Call CURRENT stream+30h for EDX:EAX size; optional argument receives EDX; return low EAX. New C++ interface plus host callback bridge. Partial callable stream table invokes genuine existing typed physical/memory size methods; no complete stream ABI claim. docs/SOUND_FILE_CALLBACKS.md; reports/sound_file_callbacks.json. | Hypothesis, not a recovered symbol. NativeLuaVfsDispatch preserves captured table versus current owner loads; NativeVfsRuntimeBindings composes original readable numeric manager/provider/physical and memory stream profiles with reconstructed methods, without changing owner vtable words or refcounts. Combined Win32 build, prior original-instruction Lua regressions, and seeded actual-record physical/FileStore Lua composition pass; installed scripts read through real HANDLEs, nested duplicate overrides execute MCPP, canonical shutdown clears publications and counters. Tree population/type registration, archive bindings, arbitrary slot mutation, original SEH/ABI and game execution remain excluded. docs/NATIVE_LUA_VFS_BINDING.md; reports/native_lua_vfs_binding.json."
+        },
+        "00b66ca0": {
+          "address": "00b66ca0",
+          "function_name": "BSP_LuaStateOwner_LoadAndCallChunk",
+          "comment": "[BSP reconstruction 00b66ca0]\nHypothesis, not a recovered symbol. __thiscall(owner, const NativeString *path, char obfuscated), RET 8. Opens the path on the VFS singleton at 0109CEEC with mode 2 and returns silently when the stream is null, not open, or zero length. Reads the file into a malloc buffer, applies a nibble-rotation transform when the second argument is set (the GUI passes 0), then luaL_loadbuffer (00A6A160) with the path text as the chunk name and lua_call(L, 0, LUA_MULTRET) (00A68090). The load result is never tested and the call is UNPROTECTED, so a script that fails to compile has its error message called as a function and any raise reaches the panic handler and terminates the process. See docs/GUI_LUA_READER.md.\n\n[BSP reconstruction 00b66ca0] update\nHypothesis, not a recovered symbol. __thiscall(owner, const NativeString *path, char obfuscated), RET 8. Opens the path on the VFS singleton at 0109CEEC with mode 2 and returns silently when the stream is null, not open, or zero length. Reads the file into a malloc buffer, applies a nibble-rotation transform when the second argument is set (the GUI passes 0), then luaL_loadbuffer (00A6A160) with the path text as the chunk name and lua_call(L, 0, LUA_MULTRET) (00A68090). The load result is never tested and the call is UNPROTECTED, so a script that fails to compile has its error message called as a function and any raise reaches the panic handler and terminates the process. See docs/GUI_LUA_READER.md. | Actual-Lua follow-up: 00b66d40..d61 replaces prefix including first 01h with 20h, then rotates remaining bytes ROL4; no marker yields whitespace. Existing gui chunk now implements flag. Live runtime calls error string after ignored compile failure via protected host pcall; preserves successful MULTRET; not native recovery. Internal free gap 00b66dcf..dd3 restored/saved; native end exclusive 00b66ddc. Build and actual Lua installed-script fixture pass. docs/LUA_SCRIPT_RUNTIME.md; reports/lua_script_runtime.json.\n\n[BSP reconstruction 00b66ca0] update\nHypothesis, not a recovered symbol. __thiscall(owner, const NativeString *path, char obfuscated), RET 8. Opens the path on the VFS singleton at 0109CEEC with mode 2 and returns silently when the stream is null, not open, or zero length. Reads the file into a malloc buffer, applies a nibble-rotation transform when the second argument is set (the GUI passes 0), then luaL_loadbuffer (00A6A160) with the path text as the chunk name and lua_call(L, 0, LUA_MULTRET) (00A68090). The load result is never tested and the call is UNPROTECTED, so a script that fails to compile has its error message called as a function and any raise reaches the panic handler and terminates the process. See docs/GUI_LUA_READER.md. | Actual-Lua follow-up: 00b66d40..d61 replaces prefix including first 01h with 20h, then rotates remaining bytes ROL4; no marker yields whitespace. Existing gui chunk now implements flag. Live runtime calls error string after ignored compile failure via protected host pcall; preserves successful MULTRET; not native recovery. Internal free gap 00b66dcf..dd3 restored/saved; native end exclusive 00b66ddc. Build and actual Lua installed-script fixture pass. docs/LUA_SCRIPT_RUNTIME.md; reports/lua_script_runtime.json. | Descriptive hypothesis, not a recovered symbol. Full316-byte actual consumer. Current manager virtual04(mode2), stream18/64bit30 gates; earlyclosed/empty returns retain stream. Repeatedlength lowDWORD allocation/read/load; captured read-table pointer before thirdlengthcall. Ignore readcount/loadstatus, live-length prefix/nibble decode, InterlockedDecrement(stream+4), currentvirtual00 atzero, rereadownerstate then unprotected Lua call/free. Actual callable VFS/stream ownership remains external. Four native/rebuilt fatal childcases exit1 afterrelease. docs/NATIVE_LUA_FILE_LOADING.md; reports/native_lua_file_loading.json.\n\n[BSP reconstruction 00b66ca0] update\nHypothesis, not a recovered symbol. __thiscall(owner, const NativeString *path, char obfuscated), RET 8. Opens the path on the VFS singleton at 0109CEEC with mode 2 and returns silently when the stream is null, not open, or zero length. Reads the file into a malloc buffer, applies a nibble-rotation transform when the second argument is set (the GUI passes 0), then luaL_loadbuffer (00A6A160) with the path text as the chunk name and lua_call(L, 0, LUA_MULTRET) (00A68090). The load result is never tested and the call is UNPROTECTED, so a script that fails to compile has its error message called as a function and any raise reaches the panic handler and terminates the process. See docs/GUI_LUA_READER.md. | Actual-Lua follow-up: 00b66d40..d61 replaces prefix including first 01h with 20h, then rotates remaining bytes ROL4; no marker yields whitespace. Existing gui chunk now implements flag. Live runtime calls error string after ignored compile failure via protected host pcall; preserves successful MULTRET; not native recovery. Internal free gap 00b66dcf..dd3 restored/saved; native end exclusive 00b66ddc. Build and actual Lua installed-script fixture pass. docs/LUA_SCRIPT_RUNTIME.md; reports/lua_script_runtime.json. | Descriptive hypothesis, not a recovered symbol. Full316-byte actual consumer. Current manager virtual04(mode2), stream18/64bit30 gates; earlyclosed/empty returns retain stream. Repeatedlength lowDWORD allocation/read/load; captured read-table pointer before thirdlengthcall. Ignore readcount/loadstatus, live-length prefix/nibble decode, InterlockedDecrement(stream+4), currentvirtual00 atzero, rereadownerstate then unprotected Lua call/free. Actual callable VFS/stream ownership remains external. Four native/rebuilt fatal childcases exit1 afterrelease. docs/NATIVE_LUA_FILE_LOADING.md; reports/native_lua_file_loading.json. | Hypothesis, not a recovered symbol. NativeLuaVfsDispatch preserves captured table versus current owner loads; NativeVfsRuntimeBindings composes original readable numeric manager/provider/physical and memory stream profiles with reconstructed methods, without changing owner vtable words or refcounts. Combined Win32 build, prior original-instruction Lua regressions, and seeded actual-record physical/FileStore Lua composition pass; installed scripts read through real HANDLEs, nested duplicate overrides execute MCPP, canonical shutdown clears publications and counters. Tree population/type registration, archive bindings, arbitrary slot mutation, original SEH/ABI and game execution remain excluded. docs/NATIVE_LUA_VFS_BINDING.md; reports/native_lua_vfs_binding.json."
+        },
+        "00b69d40": {
+          "address": "00b69d40",
+          "function_name": "BSP_LuaStateOwner_RunScriptWithOverrides",
+          "comment": "[BSP reconstruction 00b69d40]\nHypothesis, not a recovered symbol. __thiscall(owner, const NativeString *path, char obfuscated), RET 8. Runs 00B66CA0 on the path, then asks the VFS singleton at 0109CEEC through 00BDEF90 for the other files matching it and runs 00B66CA0 on each in search order, so a mounted package can override or extend a script. The 8-byte list is released with 00427110 and then free. 00AC6600 calls it twice with the flag clear, for interface/_Common.lua and interface/<page>.lua. See docs/GUI_LUA_READER.md.\n\n[BSP reconstruction 00b69d40] update\nHypothesis, not a recovered symbol. __thiscall(owner, const NativeString *path, char obfuscated), RET 8. Runs 00B66CA0 on the path, then asks the VFS singleton at 0109CEEC through 00BDEF90 for the other files matching it and runs 00B66CA0 on each in search order, so a mounted package can override or extend a script. The 8-byte list is released with 00427110 and then free. 00AC6600 calls it twice with the flag clear, for interface/_Common.lua and interface/<page>.lua. See docs/GUI_LUA_READER.md. | Actual-Lua follow-up reuses existing gui loop, propagates same flag to variants and preserves Lua MULTRET; runtime errors stop before later search/calls. 00bdef90 is ordered manager+48/+4c content suffix construction and exists, not generic directory enumeration. Disk-verified 24-byte free-tail ends RET8 at 00b69de2; end exclusive 00b69de5; saved Ghidra body remains short 00b69dcc despite decoded tail. Build and real Lua installed scripts pass; not ABI/game validated. docs/LUA_SCRIPT_RUNTIME.md; reports/lua_script_runtime.json.\n\n[BSP reconstruction 00b69d40] update\nHypothesis, not a recovered symbol. __thiscall(owner, const NativeString *path, char obfuscated), RET 8. Runs 00B66CA0 on the path, then asks the VFS singleton at 0109CEEC through 00BDEF90 for the other files matching it and runs 00B66CA0 on each in search order, so a mounted package can override or extend a script. The 8-byte list is released with 00427110 and then free. 00AC6600 calls it twice with the flag clear, for interface/_Common.lua and interface/<page>.lua. See docs/GUI_LUA_READER.md. | Actual-Lua follow-up reuses existing gui loop, propagates same flag to variants and preserves Lua MULTRET; runtime errors stop before later search/calls. 00bdef90 is ordered manager+48/+4c content suffix construction and exists, not generic directory enumeration. Disk-verified 24-byte free-tail ends RET8 at 00b69de2; end exclusive 00b69de5; saved Ghidra body remains short 00b69dcc despite decoded tail. Build and real Lua installed scripts pass; not ABI/game validated. docs/LUA_SCRIPT_RUNTIME.md; reports/lua_script_runtime.json. | Descriptive hypothesis, not a recovered symbol. Full165-byte disk extent. Initial chunk BEFORE empty0Ch vector; rereadlive0109CEEC manager, requiredBDEF90 actual-header append service, capturedbegin/end with8byte paths andduplicates. Fullvector cleanup onnormal/EH. Storedbody stillendsB69DCC;24-byte tailthroughB69DE4 captured/executed but lockedrepair didnotextendbody. No full-flow-repair claim. docs/NATIVE_LUA_FILE_LOADING.md; reports/native_lua_file_loading.json.\n\n[BSP reconstruction 00b69d40] update\nHypothesis, not a recovered symbol. __thiscall(owner, const NativeString *path, char obfuscated), RET 8. Runs 00B66CA0 on the path, then asks the VFS singleton at 0109CEEC through 00BDEF90 for the other files matching it and runs 00B66CA0 on each in search order, so a mounted package can override or extend a script. The 8-byte list is released with 00427110 and then free. 00AC6600 calls it twice with the flag clear, for interface/_Common.lua and interface/<page>.lua. See docs/GUI_LUA_READER.md. | Actual-Lua follow-up reuses existing gui loop, propagates same flag to variants and preserves Lua MULTRET; runtime errors stop before later search/calls. 00bdef90 is ordered manager+48/+4c content suffix construction and exists, not generic directory enumeration. Disk-verified 24-byte free-tail ends RET8 at 00b69de2; end exclusive 00b69de5; saved Ghidra body remains short 00b69dcc despite decoded tail. Build and real Lua installed scripts pass; not ABI/game validated. docs/LUA_SCRIPT_RUNTIME.md; reports/lua_script_runtime.json. | Descriptive hypothesis, not a recovered symbol. Full165-byte disk extent. Initial chunk BEFORE empty0Ch vector; rereadlive0109CEEC manager, requiredBDEF90 actual-header append service, capturedbegin/end with8byte paths andduplicates. Fullvector cleanup onnormal/EH. Storedbody stillendsB69DCC;24-byte tailthroughB69DE4 captured/executed but lockedrepair didnotextendbody. No full-flow-repair claim. docs/NATIVE_LUA_FILE_LOADING.md; reports/native_lua_file_loading.json. | Hypothesis, not a recovered symbol. NativeLuaVfsDispatch preserves captured table versus current owner loads; NativeVfsRuntimeBindings composes original readable numeric manager/provider/physical and memory stream profiles with reconstructed methods, without changing owner vtable words or refcounts. Combined Win32 build, prior original-instruction Lua regressions, and seeded actual-record physical/FileStore Lua composition pass; installed scripts read through real HANDLEs, nested duplicate overrides execute MCPP, canonical shutdown clears publications and counters. Tree population/type registration, archive bindings, arbitrary slot mutation, original SEH/ABI and game execution remain excluded. docs/NATIVE_LUA_VFS_BINDING.md; reports/native_lua_vfs_binding.json."
+        },
+        "00b69e00": {
+          "address": "00b69e00",
+          "function_name": "BSP_LuaStateOwner_DoFileCallback",
+          "comment": "[BSP reconstruction 00b69e00]\nHypothesis, not recovered symbol. ECX incoming Lua state; RET, EAX0. Non-owning 00b66c00 wrapper reinstalls DoFile; 00b679b0 range start1 and 00b677e0/index0 select arg1; lua_tolstring plus unchecked strlen 0041e870 copies path; 00b69e6f flag0; 00b69e82 runs 00b69d40 variants. Ends 00b69f17 inclusive. Host callback binds real Lua5.1.1, adapts native panic/null-string fault to Lua error; not ABI compatible/game validated. See docs/LUA_SCRIPT_RUNTIME.md and reports/lua_script_runtime.json.\n\n[BSP reconstruction 00b69e00] update\nHypothesis, not recovered symbol. ECX incoming Lua state; RET, EAX0. Non-owning 00b66c00 wrapper reinstalls DoFile; 00b679b0 range start1 and 00b677e0/index0 select arg1; lua_tolstring plus unchecked strlen 0041e870 copies path; 00b69e6f flag0; 00b69e82 runs 00b69d40 variants. Ends 00b69f17 inclusive. Host callback binds real Lua5.1.1, adapts native panic/null-string fault to Lua error; not ABI compatible/game validated. See docs/LUA_SCRIPT_RUNTIME.md and reports/lua_script_runtime.json. | Descriptive hypothesis, not a recovered symbol. Full280-byte callback composition: actual borrowed4C8h owner reinstalls zero-upvalue appcallback, kind3 callframe and argument0, uncheckedtolstring/NativeStringconstructor, runfileflag0, native local cleanup distinction andzeroresults. Four-state unwind owner/frame/argument/path checked, not originalEH-executed. Installed nestedshaderincludes execute original/rebuilt actualpath through externalfixturestreams. docs/NATIVE_LUA_FILE_LOADING.md; reports/native_lua_file_loading.json.\n\n[BSP reconstruction 00b69e00] update\nHypothesis, not recovered symbol. ECX incoming Lua state; RET, EAX0. Non-owning 00b66c00 wrapper reinstalls DoFile; 00b679b0 range start1 and 00b677e0/index0 select arg1; lua_tolstring plus unchecked strlen 0041e870 copies path; 00b69e6f flag0; 00b69e82 runs 00b69d40 variants. Ends 00b69f17 inclusive. Host callback binds real Lua5.1.1, adapts native panic/null-string fault to Lua error; not ABI compatible/game validated. See docs/LUA_SCRIPT_RUNTIME.md and reports/lua_script_runtime.json. | Descriptive hypothesis, not a recovered symbol. Full280-byte callback composition: actual borrowed4C8h owner reinstalls zero-upvalue appcallback, kind3 callframe and argument0, uncheckedtolstring/NativeStringconstructor, runfileflag0, native local cleanup distinction andzeroresults. Four-state unwind owner/frame/argument/path checked, not originalEH-executed. Installed nestedshaderincludes execute original/rebuilt actualpath through externalfixturestreams. docs/NATIVE_LUA_FILE_LOADING.md; reports/native_lua_file_loading.json. | Hypothesis, not a recovered symbol. NativeLuaVfsDispatch preserves captured table versus current owner loads; NativeVfsRuntimeBindings composes original readable numeric manager/provider/physical and memory stream profiles with reconstructed methods, without changing owner vtable words or refcounts. Combined Win32 build, prior original-instruction Lua regressions, and seeded actual-record physical/FileStore Lua composition pass; installed scripts read through real HANDLEs, nested duplicate overrides execute MCPP, canonical shutdown clears publications and counters. Tree population/type registration, archive bindings, arbitrary slot mutation, original SEH/ABI and game execution remain excluded. docs/NATIVE_LUA_VFS_BINDING.md; reports/native_lua_vfs_binding.json."
+        },
+        "00bdef90": {
+          "address": "00bdef90",
+          "function_name": "BSP_VfsManager_AppendLuaScriptOverrides",
+          "comment": "[BSP reconstruction 00bdef90]\nHypothesis, not a recovered symbol. ECX=VFS manager, stack path NativeString* and output vector*, RET8; body00bdef90..00bdf306. Rightmost forward slash then first dot splits stem/extension; append existing stem_+suffix+extension for ordered manager+48/+4C suffixes, preserving duplicates and prior output. Assembly00bdefc9/00bdf227/00bdf22d/00bdf235. docs/SCRIPT_RUNTIME_INTEGRATION.md. Host allocator, diagnostics and invalid-string behavior differ; not native ABI or gameplay validation.\n\n[BSP reconstruction 00bdef90] update\nHypothesis, not a recovered symbol. ECX=VFS manager, stack path NativeString* and output vector*, RET8; body00bdef90..00bdf306. Rightmost forward slash then first dot splits stem/extension; append existing stem_+suffix+extension for ordered manager+48/+4C suffixes, preserving duplicates and prior output. Assembly00bdefc9/00bdf227/00bdf22d/00bdf235. docs/SCRIPT_RUNTIME_INTEGRATION.md. Host allocator, diagnostics and invalid-string behavior differ; not native ABI or gameplay validation. | Descriptive hypothesis, not a recovered symbol. Full887-byte original. Last slash then first dot split; actual native temporary strings/ten EH states. Captured suffix range at manager48/4C; current virtual08 per candidate; append mutable accepted candidate with duplicates and prior output preserved. Diagnostic4254B0 bareRET. Full original/rebuilt nestedDoFile and installedshaderbytes fixture; actual VFS existence/stream owners external. docs/NATIVE_LUA_SCRIPT_OVERRIDES.md; reports/native_lua_script_overrides.json.\n\n[BSP reconstruction 00bdef90] update\nHypothesis, not a recovered symbol. ECX=VFS manager, stack path NativeString* and output vector*, RET8; body00bdef90..00bdf306. Rightmost forward slash then first dot splits stem/extension; append existing stem_+suffix+extension for ordered manager+48/+4C suffixes, preserving duplicates and prior output. Assembly00bdefc9/00bdf227/00bdf22d/00bdf235. docs/SCRIPT_RUNTIME_INTEGRATION.md. Host allocator, diagnostics and invalid-string behavior differ; not native ABI or gameplay validation. | Descriptive hypothesis, not a recovered symbol. Full887-byte original. Last slash then first dot split; actual native temporary strings/ten EH states. Captured suffix range at manager48/4C; current virtual08 per candidate; append mutable accepted candidate with duplicates and prior output preserved. Diagnostic4254B0 bareRET. Full original/rebuilt nestedDoFile and installedshaderbytes fixture; actual VFS existence/stream owners external. docs/NATIVE_LUA_SCRIPT_OVERRIDES.md; reports/native_lua_script_overrides.json. | Hypothesis, not a recovered symbol. NativeLuaVfsDispatch preserves captured table versus current owner loads; NativeVfsRuntimeBindings composes original readable numeric manager/provider/physical and memory stream profiles with reconstructed methods, without changing owner vtable words or refcounts. Combined Win32 build, prior original-instruction Lua regressions, and seeded actual-record physical/FileStore Lua composition pass; installed scripts read through real HANDLEs, nested duplicate overrides execute MCPP, canonical shutdown clears publications and counters. Tree population/type registration, archive bindings, arbitrary slot mutation, original SEH/ABI and game execution remain excluded. docs/NATIVE_LUA_VFS_BINDING.md; reports/native_lua_vfs_binding.json."
+        },
+        "00b68340": {
+          "address": "00b68340",
+          "function_name": "BSP_LuaFundamentals_Construct",
+          "comment": "[BSP reconstruction 00b68340]\nHypothesis, not a recovered symbol. Evidence docs/LUA_STATE_OWNER.md; reports/lua_state_owner.json. ECX=this,EAX=this,RET; body00b68340..00b68458. Vtable00d62c18; bytes+4,size+8. Opens Scripts\\fundamentals.lua via VFS0109ceec+4 mode2, checks stream+18h, size+30h, allocate/read+24h, release ref. Cache is VFS-backed, not executable embedded data. Failed-open does not initialize valid members and read result is unchecked.\n\n[BSP reconstruction 00b68340] update\nHypothesis, not a recovered symbol. Evidence docs/LUA_STATE_OWNER.md; reports/lua_state_owner.json. ECX=this,EAX=this,RET; body00b68340..00b68458. Vtable00d62c18; bytes+4,size+8. Opens Scripts\\fundamentals.lua via VFS0109ceec+4 mode2, checks stream+18h, size+30h, allocate/read+24h, release ref. Cache is VFS-backed, not executable embedded data. Failed-open does not initialize valid members and read result is unchecked. | Normal-flow VFS cache composition in bsp::VfsLuaScriptFiles::cached_fundamentals_00884770, src/vfs_lua_scripts.cpp. Successful zero-size stream is cached:00b683e1..00b6840a has no nonzero-size gate. Missing/incomplete reads throw; application-owned serialized cache omits native singleton locking/lifetime registry/allocator ABI. docs/SCRIPT_RUNTIME_INTEGRATION.md.\n\n[BSP reconstruction 00b68340] update\nHypothesis, not a recovered symbol. Evidence docs/LUA_STATE_OWNER.md; reports/lua_state_owner.json. ECX=this,EAX=this,RET; body00b68340..00b68458. Vtable00d62c18; bytes+4,size+8. Opens Scripts\\fundamentals.lua via VFS0109ceec+4 mode2, checks stream+18h, size+30h, allocate/read+24h, release ref. Cache is VFS-backed, not executable embedded data. Failed-open does not initialize valid members and read result is unchecked. | Normal-flow VFS cache composition in bsp::VfsLuaScriptFiles::cached_fundamentals_00884770, src/vfs_lua_scripts.cpp. Successful zero-size stream is cached:00b683e1..00b6840a has no nonzero-size gate. Missing/incomplete reads throw; application-owned serialized cache omits native singleton locking/lifetime registry/allocator ABI. docs/SCRIPT_RUNTIME_INTEGRATION.md. | Producer writes D62C18/data04/lowDWORD size08. Native path length18h mode2. Closed gate leaves payload preimage and stream ref. Success allocates exact low length includingzero, ignores read result/count, actual ref decrement then current slot00. Two-state unwind releases path/base only; byte allocation/stream retained. Evidence docs/NATIVE_LUA_FUNDAMENTALS.md; reports/native_lua_fundamentals.json. Actual0Ch owner aliases existing bootstrap view, shared singleton lifetime domain and existing string storage; callable native VFS/streams external. Complete body coverage, new C++ interface, no original FH3/game validation. Worker Ghidra read-only.\n\n[BSP reconstruction 00b68340] update\nHypothesis, not a recovered symbol. Evidence docs/LUA_STATE_OWNER.md; reports/lua_state_owner.json. ECX=this,EAX=this,RET; body00b68340..00b68458. Vtable00d62c18; bytes+4,size+8. Opens Scripts\\fundamentals.lua via VFS0109ceec+4 mode2, checks stream+18h, size+30h, allocate/read+24h, release ref. Cache is VFS-backed, not executable embedded data. Failed-open does not initialize valid members and read result is unchecked. | Normal-flow VFS cache composition in bsp::VfsLuaScriptFiles::cached_fundamentals_00884770, src/vfs_lua_scripts.cpp. Successful zero-size stream is cached:00b683e1..00b6840a has no nonzero-size gate. Missing/incomplete reads throw; application-owned serialized cache omits native singleton locking/lifetime registry/allocator ABI. docs/SCRIPT_RUNTIME_INTEGRATION.md. | Producer writes D62C18/data04/lowDWORD size08. Native path length18h mode2. Closed gate leaves payload preimage and stream ref. Success allocates exact low length includingzero, ignores read result/count, actual ref decrement then current slot00. Two-state unwind releases path/base only; byte allocation/stream retained. Evidence docs/NATIVE_LUA_FUNDAMENTALS.md; reports/native_lua_fundamentals.json. Actual0Ch owner aliases existing bootstrap view, shared singleton lifetime domain and existing string storage; callable native VFS/streams external. Complete body coverage, new C++ interface, no original FH3/game validation. Worker Ghidra read-only. | Hypothesis, not a recovered symbol. NativeLuaVfsDispatch preserves captured table versus current owner loads; NativeVfsRuntimeBindings composes original readable numeric manager/provider/physical and memory stream profiles with reconstructed methods, without changing owner vtable words or refcounts. Combined Win32 build, prior original-instruction Lua regressions, and seeded actual-record physical/FileStore Lua composition pass; installed scripts read through real HANDLEs, nested duplicate overrides execute MCPP, canonical shutdown clears publications and counters. Tree population/type registration, archive bindings, arbitrary slot mutation, original SEH/ABI and game execution remain excluded. docs/NATIVE_LUA_VFS_BINDING.md; reports/native_lua_vfs_binding.json."
+        },
+        "00bdf310": {
+          "address": "00bdf310",
+          "function_name": "BSP_VFS_OpenResource",
+          "comment": "[BSP reconstruction 00bdf310]\nECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native stream tracking 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity.\n\n[BSP reconstruction 00bdf310] update\nECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native opened-resource logging 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity. Follow-up establishes 00bde9c0 as gated name logging, not a retained stream registry or cache selection mechanism.\n\n[BSP reconstruction 00bdf310] update\nECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native opened-resource logging 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity. Follow-up establishes 00bde9c0 as gated name logging, not a retained stream registry or cache selection mechanism. Bounded synchronous mounted/FileStore host integration now accepts exact flags2 and32h and forwards original mode to inspected providers. Five native startup script selections pass installed disk-byte/cache checks, alongside separate diagnostic font priming. Preserve exact-name open-before-duplicate behavior; host memory ownership/failure guards differ native. docs/STARTUP_SCRIPT_PRELOAD.md; docs/MOUNTED_RESOURCE_STREAMS.md.\n\n[BSP reconstruction 00bdf310] update\nECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native opened-resource logging 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity. Follow-up establishes 00bde9c0 as gated name logging, not a retained stream registry or cache selection mechanism. Bounded synchronous mounted/FileStore host integration now accepts exact flags2 and32h and forwards original mode to inspected providers. Five native startup script selections pass installed disk-byte/cache checks, alongside separate diagnostic font priming. Preserve exact-name open-before-duplicate behavior; host memory ownership/failure guards differ native. docs/STARTUP_SCRIPT_PRELOAD.md; docs/MOUNTED_RESOURCE_STREAMS.md. ECX manager; stack logical_path,flags; EAX stream/null; RET8 Normalize copy, one alias, current mounted traversal; no reentry/source pinning guard. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 00bdf310] update\nECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native opened-resource logging 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity. Follow-up establishes 00bde9c0 as gated name logging, not a retained stream registry or cache selection mechanism. Bounded synchronous mounted/FileStore host integration now accepts exact flags2 and32h and forwards original mode to inspected providers. Five native startup script selections pass installed disk-byte/cache checks, alongside separate diagnostic font priming. Preserve exact-name open-before-duplicate behavior; host memory ownership/failure guards differ native. docs/STARTUP_SCRIPT_PRELOAD.md; docs/MOUNTED_RESOURCE_STREAMS.md. ECX manager; stack logical_path,flags; EAX stream/null; RET8 Normalize copy, one alias, current mounted traversal; no reentry/source pinning guard. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json | Complete actual-storage consumer at 00bdf310; source src/native_vfs_open_route.cpp; explicit callable original-ABI provider/stream/failure dependencies and required BDE9C0 service, no new owners. Eight original-instruction compositions match full arena, actual string-pool prefix, return and service events. Win32 Release build and configured CTest pass; 37 direct report call rows verified. Qualified D6838C visitor/current BDA690 and BD9040 slots. Not native provider I/O, original FH3 unwind, binary ABI or game validation. reports/native_vfs_open_route.json; docs/NATIVE_VFS_OPEN_ROUTE.md.\n\n[BSP reconstruction 00bdf310] update\nECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native opened-resource logging 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity. Follow-up establishes 00bde9c0 as gated name logging, not a retained stream registry or cache selection mechanism. Bounded synchronous mounted/FileStore host integration now accepts exact flags2 and32h and forwards original mode to inspected providers. Five native startup script selections pass installed disk-byte/cache checks, alongside separate diagnostic font priming. Preserve exact-name open-before-duplicate behavior; host memory ownership/failure guards differ native. docs/STARTUP_SCRIPT_PRELOAD.md; docs/MOUNTED_RESOURCE_STREAMS.md. ECX manager; stack logical_path,flags; EAX stream/null; RET8 Normalize copy, one alias, current mounted traversal; no reentry/source pinning guard. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json | Complete actual-storage consumer at 00bdf310; source src/native_vfs_open_route.cpp; explicit callable original-ABI provider/stream/failure dependencies and required BDE9C0 service, no new owners. Eight original-instruction compositions match full arena, actual string-pool prefix, return and service events. Win32 Release build and configured CTest pass; 37 direct report call rows verified. Qualified D6838C visitor/current BDA690 and BD9040 slots. Not native provider I/O, original FH3 unwind, binary ABI or game validation. reports/native_vfs_open_route.json; docs/NATIVE_VFS_OPEN_ROUTE.md. | Hypothesis, not a recovered symbol. NativeLuaVfsDispatch preserves captured table versus current owner loads; NativeVfsRuntimeBindings composes original readable numeric manager/provider/physical and memory stream profiles with reconstructed methods, without changing owner vtable words or refcounts. Combined Win32 build, prior original-instruction Lua regressions, and seeded actual-record physical/FileStore Lua composition pass; installed scripts read through real HANDLEs, nested duplicate overrides execute MCPP, canonical shutdown clears publications and counters. Tree population/type registration, archive bindings, arbitrary slot mutation, original SEH/ABI and game execution remain excluded. docs/NATIVE_LUA_VFS_BINDING.md; reports/native_lua_vfs_binding.json."
+        },
+        "00bda690": {
+          "address": "00bda690",
+          "function_name": "BSP_VFS_OpenMountCallback",
+          "comment": "[BSP reconstruction 00bda690]\nECX callback, mount and relative-name stack, RET8. Provider at mount+8 receives name and callback flags+8 through virtual+8. Stores returned stream at callback+4; if non-null copies mount byte+C into callback+C. Optional diagnostic gate observes manager+20, mount byte+C and flags bit0. Raw 96-byte table target recovered; callback return value is not a boolean success contract. Host mounted-stream binding projects flags2 and omits native diagnostics/ownership byte.\n\n[BSP reconstruction 00bda690] update\nECX callback, mount and relative-name stack, RET8. Provider at mount+8 receives name and callback flags+8 through virtual+8. Stores returned stream at callback+4; if non-null copies mount byte+C into callback+C. Optional diagnostic gate observes manager+20, mount byte+C and flags bit0. Raw 96-byte table target recovered; callback return value is not a boolean success contract. Host mounted-stream binding projects flags2 and omits native diagnostics/ownership byte. ECX open callback; stack mount_record,suffix; RET8 Dispatch provider+8 flags unchanged; save returned stream, no existence precheck. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 00bda690] update\nECX callback, mount and relative-name stack, RET8. Provider at mount+8 receives name and callback flags+8 through virtual+8. Stores returned stream at callback+4; if non-null copies mount byte+C into callback+C. Optional diagnostic gate observes manager+20, mount byte+C and flags bit0. Raw 96-byte table target recovered; callback return value is not a boolean success contract. Host mounted-stream binding projects flags2 and omits native diagnostics/ownership byte. ECX open callback; stack mount_record,suffix; RET8 Dispatch provider+8 flags unchanged; save returned stream, no existence precheck. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json | Complete actual-storage consumer at 00bda690; source src/native_vfs_open_route.cpp; explicit callable original-ABI provider/stream/failure dependencies and required BDE9C0 service, no new owners. Eight original-instruction compositions match full arena, actual string-pool prefix, return and service events. Win32 Release build and configured CTest pass; 37 direct report call rows verified. Qualified D6838C visitor/current BDA690 and BD9040 slots. Not native provider I/O, original FH3 unwind, binary ABI or game validation. reports/native_vfs_open_route.json; docs/NATIVE_VFS_OPEN_ROUTE.md.\n\n[BSP reconstruction 00bda690] update\nECX callback, mount and relative-name stack, RET8. Provider at mount+8 receives name and callback flags+8 through virtual+8. Stores returned stream at callback+4; if non-null copies mount byte+C into callback+C. Optional diagnostic gate observes manager+20, mount byte+C and flags bit0. Raw 96-byte table target recovered; callback return value is not a boolean success contract. Host mounted-stream binding projects flags2 and omits native diagnostics/ownership byte. ECX open callback; stack mount_record,suffix; RET8 Dispatch provider+8 flags unchanged; save returned stream, no existence precheck. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json | Complete actual-storage consumer at 00bda690; source src/native_vfs_open_route.cpp; explicit callable original-ABI provider/stream/failure dependencies and required BDE9C0 service, no new owners. Eight original-instruction compositions match full arena, actual string-pool prefix, return and service events. Win32 Release build and configured CTest pass; 37 direct report call rows verified. Qualified D6838C visitor/current BDA690 and BD9040 slots. Not native provider I/O, original FH3 unwind, binary ABI or game validation. reports/native_vfs_open_route.json; docs/NATIVE_VFS_OPEN_ROUTE.md. | Hypothesis, not a recovered symbol. NativeLuaVfsDispatch preserves captured table versus current owner loads; NativeVfsRuntimeBindings composes original readable numeric manager/provider/physical and memory stream profiles with reconstructed methods, without changing owner vtable words or refcounts. Combined Win32 build, prior original-instruction Lua regressions, and seeded actual-record physical/FileStore Lua composition pass; installed scripts read through real HANDLEs, nested duplicate overrides execute MCPP, canonical shutdown clears publications and counters. Tree population/type registration, archive bindings, arbitrary slot mutation, original SEH/ABI and game execution remain excluded. docs/NATIVE_LUA_VFS_BINDING.md; reports/native_lua_vfs_binding.json."
+        },
+        "00bb8f60": {
+          "address": "00bb8f60",
+          "function_name": "BSP_MemoryStream_IsType",
+          "comment": "[BSP reconstruction 00bb8f60]\nComplete actual storage 40-byte body; ECX ignored; token stack; AL result; RET4. Existing native owners and explicit current numeric/callable stream methods. Strict Win32/two existing tests/32 original-instruction comparisons pass. docs/NATIVE_FILESTORE_OPEN.md; reports/native_filestore_open.json. Descriptive hypothesis; no game validation."
+        },
+        "00be5e90": {
+          "address": "00be5e90",
+          "function_name": "BSP_FileStore_FindNativeOpenName",
+          "comment": "[BSP reconstruction 00be5e90]\nComplete actual storage 102-byte body; ECX tree; output/name stack; EAX output; RET8. Existing native owners and explicit current numeric/callable stream methods. Strict Win32/two existing tests/32 original-instruction comparisons pass. docs/NATIVE_FILESTORE_OPEN.md; reports/native_filestore_open.json. Descriptive hypothesis; no game validation."
+        },
+        "00be5fa0": {
+          "address": "00be5fa0",
+          "function_name": "BSP_FileStore_Open",
+          "comment": "[BSP reconstruction 00be5fa0]\nECX store; name/flags stack RET8 EAXstream. Rejectflagsbit0, primarytree+14 lookup withoutnormalizing. Hitnode+14 storedstream->00bef750. Supportedmemorydomain returnsnewcursor0 wrapper sharedbacking, leavesstoredcursor. Full145bytes throughRET00be602e; typedFileStore openinstalledDATfixture.\n\n[BSP reconstruction 00be5fa0] update\nECX store; name/flags stack RET8 EAXstream. Rejectflagsbit0, primarytree+14 lookup withoutnormalizing. Hitnode+14 storedstream->00bef750. Supportedmemorydomain returnsnewcursor0 wrapper sharedbacking, leavesstoredcursor. Full145bytes throughRET00be602e; typedFileStore openinstalledDATfixture. Bounded synchronous mounted/FileStore host integration now accepts exact flags2 and32h and forwards original mode to inspected providers. Five native startup script selections pass installed disk-byte/cache checks, alongside separate diagnostic font priming. Preserve exact-name open-before-duplicate behavior; host memory ownership/failure guards differ native. docs/STARTUP_SCRIPT_PRELOAD.md; docs/MOUNTED_RESOURCE_STREAMS.md.\n\n[BSP reconstruction 00be5fa0] update\nECX store; name/flags stack RET8 EAXstream. Rejectflagsbit0, primarytree+14 lookup withoutnormalizing. Hitnode+14 storedstream->00bef750. Supportedmemorydomain returnsnewcursor0 wrapper sharedbacking, leavesstoredcursor. Full145bytes throughRET00be602e; typedFileStore openinstalledDATfixture. Bounded synchronous mounted/FileStore host integration now accepts exact flags2 and32h and forwards original mode to inspected providers. Five native startup script selections pass installed disk-byte/cache checks, alongside separate diagnostic font priming. Preserve exact-name open-before-duplicate behavior; host memory ownership/failure guards differ native. docs/STARTUP_SCRIPT_PRELOAD.md; docs/MOUNTED_RESOURCE_STREAMS.md. | Complete actual storage 145-byte body; ECX provider; name/full flags stack; EAX stream; RET8. Existing native owners and explicit current numeric/callable stream methods. Strict Win32/two existing tests/32 original-instruction comparisons pass. docs/NATIVE_FILESTORE_OPEN.md; reports/native_filestore_open.json. Descriptive hypothesis; no game validation."
+        },
+        "00bef750": {
+          "address": "00bef750",
+          "function_name": "BSP_Stream_ConvertToMemory",
+          "comment": "[BSP reconstruction 00bef750]\nECX source,RET,newmemorywrapperEAX. Nullsource null; memorysource sharesbacking resetscursor; other seek0,size lowDWORD,uninitializedbacking,oneuncheckedread,wrap and release temporarybacking. Typedphysicalfragment positive1..INT32MAX, requestedlength retained onshortread, hostinitializedprefix/errorreport; VFS/typequery/nativeallocator absent.\n\n[BSP reconstruction 00bef750] update\nECX source,RET,newmemorywrapperEAX. Nullsource null; memorysource sharesbacking resetscursor; other seek0,size lowDWORD,uninitializedbacking,oneuncheckedread,wrap and release temporarybacking. Typedphysicalfragment positive1..INT32MAX, requestedlength retained onshortread, hostinitializedprefix/errorreport; VFS/typequery/nativeallocator absent.\n\nBorrows source without source retain/release. Memory path shares backing and resets only returned cursor. Other path seeks source0, takes low sizeDWORD, makes one unchecked read with null actual pointer, creates wrapper then releases temporary backing. Zero length uses one-byte allocation with logical0 and read0. Physical host projection now accepts0..INT32_MAX; other domains unchanged. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX borrowed source; no stack args; EAX new memory wrapper or null for null source; RET. Evidence: docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00bef750] update\nECX source,RET,newmemorywrapperEAX. Nullsource null; memorysource sharesbacking resetscursor; other seek0,size lowDWORD,uninitializedbacking,oneuncheckedread,wrap and release temporarybacking. Typedphysicalfragment positive1..INT32MAX, requestedlength retained onshortread, hostinitializedprefix/errorreport; VFS/typequery/nativeallocator absent.\n\nBorrows source without source retain/release. Memory path shares backing and resets only returned cursor. Other path seeks source0, takes low sizeDWORD, makes one unchecked read with null actual pointer, creates wrapper then releases temporary backing. Zero length uses one-byte allocation with logical0 and read0. Physical host projection now accepts0..INT32_MAX; other domains unchanged. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX borrowed source; no stack args; EAX new memory wrapper or null for null source; RET. Evidence: docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim. | Complete actual storage 240-byte body; ECX source; EAX stream; RET. Existing native owners and explicit current numeric/callable stream methods. Strict Win32/two existing tests/32 original-instruction comparisons pass. docs/NATIVE_FILESTORE_OPEN.md; reports/native_filestore_open.json. Descriptive hypothesis; no game validation."
+        },
+        "00bef540": {
+          "address": "00bef540",
+          "function_name": "BSP_MemoryStream_Seek",
+          "comment": "[BSP reconstruction 00bef540]\nECX stream; low/high offset and origin stack,RET0C. Ignore highDWORD; lowDWORD modular add to begin/current/end for origin0/1/other. Typedinterface rejects resulting outofbounds cursor and missingbacking; nativeunchecked.\n\n[BSP reconstruction 00bef540] update\nECX stream; low/high offset and origin stack,RET0C. Ignore highDWORD; lowDWORD modular add to begin/current/end for origin0/1/other. Typedinterface rejects resulting outofbounds cursor and missingbacking; nativeunchecked. | Complete actual storage 61-byte body; ECX stream; low/high/origin stack; RET0C; high ignored. Existing native owners and explicit current numeric/callable stream methods. Strict Win32/two existing tests/32 original-instruction comparisons pass. docs/NATIVE_FILESTORE_OPEN.md; reports/native_filestore_open.json. Descriptive hypothesis; no game validation."
+        },
+        "00bde9c0": {
+          "address": "00bde9c0",
+          "function_name": "BSP_VFS_LogOpenedResource",
+          "comment": "[BSP reconstruction 00bde9c0]\nECX manager, name/stream/ownership byte stack, RET0C. Stream argument unused in body. Applies filename exclusion, then gates <FILE><name> logging on global0109cee8, manager+79 and ownership byte. No stream-retain/list insertion or cache selection in this routine. Corrects earlier broad stream-tracking description of caller00bdf310. Complete377-byte body matches installed PE; static analysis only. docs/VFS_PRELOAD_BOUNDARY.md.\n\n[BSP reconstruction 00bde9c0] update\nECX manager, name/stream/ownership byte stack, RET0C. Stream argument unused in body. Applies filename exclusion, then gates <FILE><name> logging on global0109cee8, manager+79 and ownership byte. No stream-retain/list insertion or cache selection in this routine. Corrects earlier broad stream-tracking description of caller00bdf310. Complete377-byte body matches installed PE; static analysis only. docs/VFS_PRELOAD_BOUNDARY.md. | Complete body and native ABI: docs/NATIVE_VFS_OPEN_LOGGING.md, reports/native_vfs_open_logging.json. Names are hypotheses. Actual pooled strings; all30 calls verified, no output/sink call, no stream use or global pointee read. Six full bodies and tails match installed PE; Win32 build/2CTests/16 rebased-instruction cases pass. Worker readonly Ghidra; annotation pending primary."
+        },
+        "004264a0": {
+          "address": "004264a0",
+          "function_name": "BSP_StringBuilder_ConstructFormats",
+          "comment": "[BSP reconstruction 004264a0]\nComplete body and native ABI: docs/NATIVE_VFS_OPEN_LOGGING.md, reports/native_vfs_open_logging.json. Names are hypotheses. Actual pooled strings; all30 calls verified, no output/sink call, no stream use or global pointee read. Six full bodies and tails match installed PE; Win32 build/2CTests/16 rebased-instruction cases pass. Worker readonly Ghidra; annotation pending primary."
+        },
+        "00426500": {
+          "address": "00426500",
+          "function_name": "BSP_StringBuilder_Construct",
+          "comment": "[BSP reconstruction 00426500]\nComplete body and native ABI: docs/NATIVE_VFS_OPEN_LOGGING.md, reports/native_vfs_open_logging.json. Names are hypotheses. Actual pooled strings; all30 calls verified, no output/sink call, no stream use or global pointee read. Six full bodies and tails match installed PE; Win32 build/2CTests/16 rebased-instruction cases pass. Worker readonly Ghidra; annotation pending primary."
+        },
+        "00bd1a20": {
+          "address": "00bd1a20",
+          "function_name": "BSP_StringBuilder_AppendHeader",
+          "comment": "[BSP reconstruction 00bd1a20]\nComplete body and native ABI: docs/NATIVE_VFS_OPEN_LOGGING.md, reports/native_vfs_open_logging.json. Names are hypotheses. Actual pooled strings; all30 calls verified, no output/sink call, no stream use or global pointee read. Six full bodies and tails match installed PE; Win32 build/2CTests/16 rebased-instruction cases pass. Worker readonly Ghidra; annotation pending primary."
+        },
+        "00bd1a60": {
+          "address": "00bd1a60",
+          "function_name": "BSP_StringBuilder_AppendCString",
+          "comment": "[BSP reconstruction 00bd1a60]\nComplete body and native ABI: docs/NATIVE_VFS_OPEN_LOGGING.md, reports/native_vfs_open_logging.json. Names are hypotheses. Actual pooled strings; all30 calls verified, no output/sink call, no stream use or global pointee read. Six full bodies and tails match installed PE; Win32 build/2CTests/16 rebased-instruction cases pass. Worker readonly Ghidra; annotation pending primary."
+        },
+        "00425f80": {
+          "address": "00425f80",
+          "function_name": "BSP_StringBuilder_Destroy",
+          "comment": "[BSP reconstruction 00425f80]\nComplete body and native ABI: docs/NATIVE_VFS_OPEN_LOGGING.md, reports/native_vfs_open_logging.json. Names are hypotheses. Actual pooled strings; all30 calls verified, no output/sink call, no stream use or global pointee read. Six full bodies and tails match installed PE; Win32 build/2CTests/16 rebased-instruction cases pass. Worker readonly Ghidra; annotation pending primary."
+        },
+        "00bf30c0": {
+          "address": "00bf30c0",
+          "function_name": "BSP_PhysicalStreamPool_ReserveSlots",
+          "comment": "[BSP reconstruction 00bf30c0]\nDescriptive hypothesis; complete actual-storage body 00bf30c0..00bf311e (95 bytes). ECX header, stack requested, RET4. Actual physical pool/open/read ownership; current numeric profiles retained. docs/NATIVE_PHYSICAL_STREAM_OPEN.md; reports/native_physical_stream_open.json. Strict Win32 build and focused original-instruction fixture pass; no binary ABI or game validation."
+        },
+        "00bf3670": {
+          "address": "00bf3670",
+          "function_name": "BSP_PhysicalStreamPool_ResizeSlots",
+          "comment": "[BSP reconstruction 00bf3670]\nDescriptive hypothesis; complete actual-storage body 00bf3670..00bf36bf (80 bytes). ECX header, stack requested, RET4. Actual physical pool/open/read ownership; current numeric profiles retained. docs/NATIVE_PHYSICAL_STREAM_OPEN.md; reports/native_physical_stream_open.json. Strict Win32 build and focused original-instruction fixture pass; no binary ABI or game validation."
+        },
+        "00bf3770": {
+          "address": "00bf3770",
+          "function_name": "BSP_PhysicalStreamPool_Acquire",
+          "comment": "[BSP reconstruction 00bf3770]\nDescriptive hypothesis; complete actual-storage body 00bf3770..00bf382c (189 bytes). ECX header, EAX stream, RET. Actual physical pool/open/read ownership; current numeric profiles retained. docs/NATIVE_PHYSICAL_STREAM_OPEN.md; reports/native_physical_stream_open.json. Strict Win32 build and focused original-instruction fixture pass; no binary ABI or game validation."
+        },
+        "00bf3930": {
+          "address": "00bf3930",
+          "function_name": "BSP_PhysicalStreamPool_DestroySlots",
+          "comment": "[BSP reconstruction 00bf3930]\nDescriptive hypothesis; complete actual-storage body 00bf3930..00bf396c (61 bytes). ECX header, RET. Actual physical pool/open/read ownership; current numeric profiles retained. docs/NATIVE_PHYSICAL_STREAM_OPEN.md; reports/native_physical_stream_open.json. Strict Win32 build and focused original-instruction fixture pass; no binary ABI or game validation."
+        },
+        "00bf42a0": {
+          "address": "00bf42a0",
+          "function_name": "BSP_PhysicalStreamPool_GetSingleton",
+          "comment": "[BSP reconstruction 00bf42a0]\nDescriptive hypothesis; complete actual-storage body 00bf42a0..00bf4351 (178 bytes). No arguments, EAX current publication, RET. Actual physical pool/open/read ownership; current numeric profiles retained. docs/NATIVE_PHYSICAL_STREAM_OPEN.md; reports/native_physical_stream_open.json. Strict Win32 build and focused original-instruction fixture pass; no binary ABI or game validation."
+        },
+        "00bf4370": {
+          "address": "00bf4370",
+          "function_name": "BSP_PhysicalStreamPool_DeletingDestructor",
+          "comment": "[BSP reconstruction 00bf4370]\nDescriptive hypothesis; complete actual-storage body 00bf4370..00bf43a0 (49 bytes). ECX pool, stack flags, EAX original pool, RET4. Actual physical pool/open/read ownership; current numeric profiles retained. docs/NATIVE_PHYSICAL_STREAM_OPEN.md; reports/native_physical_stream_open.json. Strict Win32 build and focused original-instruction fixture pass; no binary ABI or game validation."
+        },
+        "00bf4ba0": {
+          "address": "00bf4ba0",
+          "function_name": "BSP_PhysicalDirectory_Open",
+          "comment": "[BSP reconstruction 00bf4ba0]\nECX provider; suffix and flags stack; EAX stream/null; RET 8. Physical provider table 00d69168 virtual +8. Allocates/reuses a physical stream, builds its full physical path through provider +1Ch, forwards incoming flags unchanged via 00bf5590, checks stream validity and releases a failed result. The 00bf5590 body is only JMP 00bf52a0. Flags 2 and 0x32 therefore reach the same physical open mode; native lifecycle/errors remain distinct from guarded host adapters. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json.\n\n[BSP reconstruction 00bf4ba0] update\nECX provider; suffix and flags stack; EAX stream/null; RET 8. Physical provider table 00d69168 virtual +8. Allocates/reuses a physical stream, builds its full physical path through provider +1Ch, forwards incoming flags unchanged via 00bf5590, checks stream validity and releases a failed result. The 00bf5590 body is only JMP 00bf52a0. Flags 2 and 0x32 therefore reach the same physical open mode; native lifecycle/errors remain distinct from guarded host adapters. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json. | Descriptive hypothesis; complete actual-storage body 00bf4ba0..00bf4c66 (199 bytes). ECX provider, suffix/full flags stack, EAX stream/null, RET8. Actual physical pool/open/read ownership; current numeric profiles retained. docs/NATIVE_PHYSICAL_STREAM_OPEN.md; reports/native_physical_stream_open.json. Strict Win32 build and focused original-instruction fixture pass; no binary ABI or game validation."
+        },
+        "00bf4f90": {
+          "address": "00bf4f90",
+          "function_name": "BSP_PhysicalStream_GetSize",
+          "comment": "[BSP reconstruction 00bf4f90]\nECX stream,RET; EDX:EAX cached64-bit size+18. Typed projection returns samebits; no size refresh.\n\n[BSP reconstruction 00bf4f90] update\nECX stream,RET; EDX:EAX cached64-bit size+18. Typed projection returns samebits; no size refresh. | Descriptive hypothesis; complete actual-storage body 00bf4f90..00bf4f96 (7 bytes). ECX stream, EDX:EAX cached64 size, RET. Actual physical pool/open/read ownership; current numeric profiles retained. docs/NATIVE_PHYSICAL_STREAM_OPEN.md; reports/native_physical_stream_open.json. Strict Win32 build and focused original-instruction fixture pass; no binary ABI or game validation."
+        },
+        "00bf4fa0": {
+          "address": "00bf4fa0",
+          "function_name": "BSP_PhysicalStream_QueryFileSizeLow",
+          "comment": "[BSP reconstruction 00bf4fa0]\nDescriptive hypothesis; complete actual-storage body 00bf4fa0..00bf4fba (27 bytes). ECX stream, unused DWORD stack, EAX GetFileSize low, RET4. Actual physical pool/open/read ownership; current numeric profiles retained. docs/NATIVE_PHYSICAL_STREAM_OPEN.md; reports/native_physical_stream_open.json. Strict Win32 build and focused original-instruction fixture pass; no binary ABI or game validation. Initially absent from saved Ghidra; raw body definition is primary integration work."
+        },
+        "00bf5020": {
+          "address": "00bf5020",
+          "function_name": "BSP_PhysicalStream_IsValid",
+          "comment": "[BSP reconstruction 00bf5020]\nECX stream,RET; AL tests handle+8 != INVALID_HANDLE_VALUE. Typed owning stream reconstruction; no VFS/pool ABI.\n\n[BSP reconstruction 00bf5020] update\nECX stream,RET; AL tests handle+8 != INVALID_HANDLE_VALUE. Typed owning stream reconstruction; no VFS/pool ABI. | Descriptive hypothesis; complete actual-storage body 00bf5020..00bf5029 (10 bytes). ECX stream, AL Boolean, RET. Actual physical pool/open/read ownership; current numeric profiles retained. docs/NATIVE_PHYSICAL_STREAM_OPEN.md; reports/native_physical_stream_open.json. Strict Win32 build and focused original-instruction fixture pass; no binary ABI or game validation."
+        },
+        "00bf5030": {
+          "address": "00bf5030",
+          "function_name": "BSP_PhysicalStream_Read",
+          "comment": "[BSP reconstruction 00bf5030]\nECX stream,destination/requested/optionalactualcount stack,RET0Ch. One synchronous ReadFile, actualcount initiallyzero; add countto64-bit position and returncount. Native failure callback unported; typed host reports Win32 error. InstalledDDS path checked.\n\n[BSP reconstruction 00bf5030] update\nECX stream,destination/requested/optionalactualcount stack,RET0Ch. One synchronous ReadFile, actualcount initiallyzero; add countto64-bit position and returncount. Native failure callback unported; typed host reports Win32 error. InstalledDDS path checked. | Descriptive hypothesis; complete actual-storage body 00bf5030..00bf5083 (84 bytes). ECX stream, dst/requested/optional output stack, EAX actual, RET0C. Actual physical pool/open/read ownership; current numeric profiles retained. docs/NATIVE_PHYSICAL_STREAM_OPEN.md; reports/native_physical_stream_open.json. Strict Win32 build and focused original-instruction fixture pass; no binary ABI or game validation."
+        },
+        "00bf5090": {
+          "address": "00bf5090",
+          "function_name": "BSP_PhysicalStream_DeletingDestructor",
+          "comment": "[BSP reconstruction 00bf5090]\nNative deleting destructor installs vtable, CloseHandle, invalidates handle, optionally frees. Typed fragment owns handle uniquely and releases it; pool/recycling/referencecount/vtable and allocator ABI unported.\n\n[BSP reconstruction 00bf5090] update\nNative deleting destructor installs vtable, CloseHandle, invalidates handle, optionally frees. Typed fragment owns handle uniquely and releases it; pool/recycling/referencecount/vtable and allocator ABI unported. | Descriptive hypothesis; complete actual-storage body 00bf5090..00bf50cc (61 bytes). ECX stream, flags stack, EAX original address, RET4. Actual physical pool/open/read ownership; current numeric profiles retained. docs/NATIVE_PHYSICAL_STREAM_OPEN.md; reports/native_physical_stream_open.json. Strict Win32 build and focused original-instruction fixture pass; no binary ABI or game validation."
+        },
+        "00bf50d0": {
+          "address": "00bf50d0",
+          "function_name": "BSP_PhysicalStream_Construct",
+          "comment": "[BSP reconstruction 00bf50d0]\nDescriptive hypothesis; complete actual-storage body 00bf50d0..00bf50fa (43 bytes). ECX raw20h stream, EAX same stream, RET. Actual physical pool/open/read ownership; current numeric profiles retained. docs/NATIVE_PHYSICAL_STREAM_OPEN.md; reports/native_physical_stream_open.json. Strict Win32 build and focused original-instruction fixture pass; no binary ABI or game validation."
+        },
+        "00bf5190": {
+          "address": "00bf5190",
+          "function_name": "BSP_PhysicalStreamPool_AppendDeadSlot",
+          "comment": "[BSP reconstruction 00bf5190]\nDescriptive hypothesis; complete actual-storage body 00bf5190..00bf522a (155 bytes). ECX header, stack dead stream, RET4. Actual physical pool/open/read ownership; current numeric profiles retained. docs/NATIVE_PHYSICAL_STREAM_OPEN.md; reports/native_physical_stream_open.json. Strict Win32 build and focused original-instruction fixture pass; no binary ABI or game validation."
+        },
+        "00bf52a0": {
+          "address": "00bf52a0",
+          "function_name": "BSP_PhysicalStream_Open",
+          "comment": "[BSP reconstruction 00bf52a0]\nECX stream,pathstring/flags stack,RET8. Typed fragment supports flags2 only: GENERIC_READ,FILE_SHARE_READ,OPEN_EXISTING,attributes0; cache GetFileSizeEx and zero position. Other modes/directorycreation/logging/nativeownership unported.\n\n[BSP reconstruction 00bf52a0] update\nECX stream,pathstring/flags stack,RET8. Typed fragment supports flags2 only: GENERIC_READ,FILE_SHARE_READ,OPEN_EXISTING,attributes0; cache GetFileSizeEx and zero position. Other modes/directorycreation/logging/nativeownership unported. ECX stream; path and flags stack; RET 8. Flags 2 and 0x32 both select desired access 80000000h, share mode 1, and creation disposition 3 with zero attributes/security/template. The flags & 0Eh index 2 jumps through verified table 00bf54f0 to 00bf530c, overwriting disposition with 3. Extra bits 10h/20h are neither consulted further nor stored in this inspected pair of native paths. This does not establish arbitrary flag semantics, other providers, native failure parity or an implemented public host flags API. Existing typed host read-only API remains restricted as documented. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json.\n\n[BSP reconstruction 00bf52a0] update\nECX stream,pathstring/flags stack,RET8. Typed fragment supports flags2 only: GENERIC_READ,FILE_SHARE_READ,OPEN_EXISTING,attributes0; cache GetFileSizeEx and zero position. Other modes/directorycreation/logging/nativeownership unported. ECX stream; path and flags stack; RET 8. Flags 2 and 0x32 both select desired access 80000000h, share mode 1, and creation disposition 3 with zero attributes/security/template. The flags & 0Eh index 2 jumps through verified table 00bf54f0 to 00bf530c, overwriting disposition with 3. Extra bits 10h/20h are neither consulted further nor stored in this inspected pair of native paths. This does not establish arbitrary flag semantics, other providers, native failure parity or an implemented public host flags API. Existing typed host read-only API remains restricted as documented. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json. | Descriptive hypothesis; complete actual-storage body 00bf52a0..00bf54ec (589 bytes). ECX stream, actual path/full flags stack, RET8. Actual physical pool/open/read ownership; current numeric profiles retained. docs/NATIVE_PHYSICAL_STREAM_OPEN.md; reports/native_physical_stream_open.json. Strict Win32 build and focused original-instruction fixture pass; no binary ABI or game validation."
+        },
+        "00bf5590": {
+          "address": "00bf5590",
+          "function_name": "BSP_PhysicalStream_OpenThunk",
+          "comment": "[BSP reconstruction 00bf5590]\nDescriptive hypothesis; complete actual-storage body 00bf5590..00bf5594 (5 bytes). JMP BF52A0; retains ECX/path/flags and target RET8. Actual physical pool/open/read ownership; current numeric profiles retained. docs/NATIVE_PHYSICAL_STREAM_OPEN.md; reports/native_physical_stream_open.json. Strict Win32 build and focused original-instruction fixture pass; no binary ABI or game validation."
+        },
+        "00bf55a0": {
+          "address": "00bf55a0",
+          "function_name": "BSP_PhysicalStream_RecycleZeroReference",
+          "comment": "[BSP reconstruction 00bf55a0]\nDescriptive hypothesis; complete actual-storage body 00bf55a0..00bf55bd (30 bytes). ECX stream with count already zero, RET. Actual physical pool/open/read ownership; current numeric profiles retained. docs/NATIVE_PHYSICAL_STREAM_OPEN.md; reports/native_physical_stream_open.json. Strict Win32 build and focused original-instruction fixture pass; no binary ABI or game validation."
+        }
+      },
+      "checks": [
+        {
+          "address": "00be41a0",
+          "old_name": "BSP_Stream_GetSizeLowAndOptionalHigh",
+          "new_name": "BSP_Stream_GetSizeLowAndOptionalHigh",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00b66ca0",
+          "old_name": "BSP_LuaStateOwner_LoadAndCallChunk",
+          "new_name": "BSP_LuaStateOwner_LoadAndCallChunk",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00b69d40",
+          "old_name": "BSP_LuaStateOwner_RunScriptWithOverrides",
+          "new_name": "BSP_LuaStateOwner_RunScriptWithOverrides",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00b69e00",
+          "old_name": "BSP_LuaStateOwner_DoFileCallback",
+          "new_name": "BSP_LuaStateOwner_DoFileCallback",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00bdef90",
+          "old_name": "BSP_VfsManager_AppendLuaScriptOverrides",
+          "new_name": "BSP_VfsManager_AppendLuaScriptOverrides",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00b68340",
+          "old_name": "BSP_LuaFundamentals_Construct",
+          "new_name": "BSP_LuaFundamentals_Construct",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00bdf310",
+          "old_name": "BSP_VFS_OpenResource",
+          "new_name": "BSP_VFS_OpenResource",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00bda690",
+          "old_name": "BSP_VFS_OpenMountCallback",
+          "new_name": "BSP_VFS_OpenMountCallback",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00bb8f60",
+          "old_name": "FUN_00bb8f60",
+          "new_name": "BSP_MemoryStream_IsType",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00be5e90",
+          "old_name": "FUN_00be5e90",
+          "new_name": "BSP_FileStore_FindNativeOpenName",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00be5fa0",
+          "old_name": "BSP_FileStore_Open",
+          "new_name": "BSP_FileStore_Open",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00bef750",
+          "old_name": "BSP_Stream_ConvertToMemory",
+          "new_name": "BSP_Stream_ConvertToMemory",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00bef540",
+          "old_name": "BSP_MemoryStream_Seek",
+          "new_name": "BSP_MemoryStream_Seek",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00bde9c0",
+          "old_name": "BSP_VFS_LogOpenedResource",
+          "new_name": "BSP_VFS_LogOpenedResource",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "004264a0",
+          "old_name": "FUN_004264a0",
+          "new_name": "BSP_StringBuilder_ConstructFormats",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00426500",
+          "old_name": "FUN_00426500",
+          "new_name": "BSP_StringBuilder_Construct",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00bd1a20",
+          "old_name": "FUN_00bd1a20",
+          "new_name": "BSP_StringBuilder_AppendHeader",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00bd1a60",
+          "old_name": "FUN_00bd1a60",
+          "new_name": "BSP_StringBuilder_AppendCString",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00425f80",
+          "old_name": "FUN_00425f80",
+          "new_name": "BSP_StringBuilder_Destroy",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00bf30c0",
+          "old_name": "FUN_00bf30c0",
+          "new_name": "BSP_PhysicalStreamPool_ReserveSlots",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00bf3670",
+          "old_name": "FUN_00bf3670",
+          "new_name": "BSP_PhysicalStreamPool_ResizeSlots",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00bf3770",
+          "old_name": "FUN_00bf3770",
+          "new_name": "BSP_PhysicalStreamPool_Acquire",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00bf3930",
+          "old_name": "FUN_00bf3930",
+          "new_name": "BSP_PhysicalStreamPool_DestroySlots",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00bf42a0",
+          "old_name": "FUN_00bf42a0",
+          "new_name": "BSP_PhysicalStreamPool_GetSingleton",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00bf4370",
+          "old_name": "FUN_00bf4370",
+          "new_name": "BSP_PhysicalStreamPool_DeletingDestructor",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00bf4ba0",
+          "old_name": "BSP_PhysicalDirectory_Open",
+          "new_name": "BSP_PhysicalDirectory_Open",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00bf4f90",
+          "old_name": "BSP_PhysicalStream_GetSize",
+          "new_name": "BSP_PhysicalStream_GetSize",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00bf4fa0",
+          "old_name": "BSP_PhysicalStream_QueryFileSizeLow",
+          "new_name": "BSP_PhysicalStream_QueryFileSizeLow",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00bf5020",
+          "old_name": "BSP_PhysicalStream_IsValid",
+          "new_name": "BSP_PhysicalStream_IsValid",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00bf5030",
+          "old_name": "BSP_PhysicalStream_Read",
+          "new_name": "BSP_PhysicalStream_Read",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00bf5090",
+          "old_name": "BSP_PhysicalStream_DeletingDestructor",
+          "new_name": "BSP_PhysicalStream_DeletingDestructor",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00bf50d0",
+          "old_name": "FUN_00bf50d0",
+          "new_name": "BSP_PhysicalStream_Construct",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00bf5190",
+          "old_name": "FUN_00bf5190",
+          "new_name": "BSP_PhysicalStreamPool_AppendDeadSlot",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00bf52a0",
+          "old_name": "BSP_PhysicalStream_Open",
+          "new_name": "BSP_PhysicalStream_Open",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00bf5590",
+          "old_name": "BSP_PhysicalStream_Open",
+          "new_name": "BSP_PhysicalStream_OpenThunk",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        },
+        {
+          "address": "00bf55a0",
+          "old_name": "FUN_00bf55a0",
+          "new_name": "BSP_PhysicalStream_RecycleZeroReference",
+          "previous_comment_preserved": true,
+          "current_evidence_present": true
+        }
+      ],
+      "saved_annotation_log": "local/ghidra-annotations-20260912T040121Z.json",
+      "exports": "36 affected exports force-refreshed after saved annotation; shared main exports/bsp via workspace.py"
+    }
+  },
+  "validation": {
+    "build": "Combined Win32 Release /W4 /WX, both existing CTests passed",
+    "composition": "PASS actual Lua bootstrap/fundamentals, physical HANDLE shader reads, FileStore shared backing, nested DoFile and duplicate suffix MCPP, unchanged stored cursors/refs, canonical shutdown and zero memory counters",
+    "original_wrapper": "six original/source BE41A0 comparisons including nonzero high DWORD and null output",
+    "regressions": "Prior original-instruction Lua file9 routines, override5 routines and fundamentals5 paired cases pass against combined library",
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "remaining": [
+    "New C++ interfaces are not binary replacements",
+    "Native manager/provider/mount/FileStore construction and current game type registration unimplemented here",
+    "General archive and numeric physical-to-memory conversion remain external",
+    "Arbitrary method-table mutation/cross-profile targets excluded",
+    "Original SEH/FH3/OOM and gameplay not validated; fundamentals invalid-table SEH load timing differs",
+    "Active logging and read failure exercised by separate worker fixtures, not this whole-path composition"
+  ],
+  "call_verification": {
+    "direct_rows": 87,
+    "failed": 0,
+    "root_wrapper_indirect_rows": 1,
+    "boundary": "Verifier skips indirect targets; numeric slots separately pinned by PE data bytes and original instruction fixtures",
+    "artifact": "local/native-lua-vfs-binding-calls-verification.log"
+  },
+  "publication_validation": {
+    "integrated_and_build_tested_head": "5881000897969d50b2e689efa9c9ea02695a49dc",
+    "own_source_commit": "be940072",
+    "reviewed_evidence_commit": "250bc7b7",
+    "full_build": "Win32 strict build and both existing CTests pass after concurrent main merges",
+    "scope_hash_verification": {
+      "utc": "2026-09-12T04:16:44.218481+00:00",
+      "checked_head": "5881000897969d50b2e689efa9c9ea02695a49dc",
+      "passed": true,
+      "counts": {
+        "source_sha256": 148,
+        "artifacts_sha256": 93,
+        "worker_artifacts": 235
+      },
+      "installed_assets": 4,
+      "frozen_libraries": 3,
+      "fixture_tested_source_commit": "4ddfd7e4973e1551e489890ed367c83a9e06888b"
+    },
+    "coordination": "Waited for uncommitted shared source registry, then merged committed main. One retry registry conflict resolved by repository registry union; local wrapper now resolves retry conflicts and rebuilds before fast-forward.",
+    "integration_log": "local/native-an-publication-retry.log",
+    "annotation_log": "local/native-an-integration-annotations.json",
+    "push": "Recorded before final evidence commit push; remote publication is checked separately"
+  },
+  "publication_artifacts_sha256": {
+    "local/native-an-publication-integration.log": "657aa746248831aa4537c7b1b471a93ef5e14596127841150502c4a9c5ec4701",
+    "local/native-an-publication-retry.log": "f23f88e8036ca7bc54c3cfd07e741ecc9718625a042a2e4b22d24c1109e15adf",
+    "local/native-an-artifact-verification.json": "f14e2cb8b17572437a9cbdcc598bfd06320cba80c0ae065b0b8204f6b6d31323",
+    "local/native-an-installed-pe-verification.json": "8c949c99b084c86089c8b268674f157b3d2a137186ca0d97af6f3858319f23e9",
+    "local/native-an-integration-annotations.json": "c82d5f977ce619714e7ac9126f5d251e515eeb31daedba3d6b23e08a7e4a4813",
+    "local/integrate_startup_workers.py": "28e87d4fa6e5b3bdc1185deab35b54363910f5581b6d464486f6f4b12f7695a2",
+    "local/check_integrator_retry_guard.py": "f4ea2a5c048949cd8fe6db949774a52cb4ba28f91967f607b354332ae2d6cb68",
+    "local/record_native_an_publication.py": "5559127714258dfd49a5d49a1b87584bc1272907f8a3e482a049076b6186b451"
+  }
+}

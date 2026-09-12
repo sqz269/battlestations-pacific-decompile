@@ -21,7 +21,7 @@ void register_native_lua_script_suffix_00bdef80(void* manager,const NativeString
 }
 namespace {
 void append_candidate(void* manager,const NativeString& stem,const NativeString& extension,const NativeString& suffix,
-    NativeStringVectorStorage& output,NativeStringStorage& strings){
+    NativeStringVectorStorage& output,NativeStringStorage& strings,NativeLuaVfsDispatch& dispatch){
     NativeString underscore;underscore.assign_0041e870(strings,"_");
     char* const underscore_data=underscore.data();const auto underscore_length=underscore.length();
     NativeString prefix,with_suffix,candidate;
@@ -33,9 +33,8 @@ void append_candidate(void* manager,const NativeString& stem,const NativeString&
         suffix_live=false;destroy_native_string_header_0041dd20(&with_suffix,strings);
         prefix_live=false;destroy_native_string_header_0041dd20(&prefix,strings);
         underscore_live=false;if(underscore_data)strings.release(underscore_data,underscore_length+1u);
-        using Exists=std::uint8_t(__fastcall*)(void*,void*,NativeString*);
-        const auto method=(*static_cast<std::uintptr_t**>(manager))[2];
-        if(reinterpret_cast<Exists>(method)(manager,nullptr,&candidate))append_native_string_vector_004cdc20(output,candidate,strings);
+        const auto captured_table=capture_native_lua_vfs_table(manager);
+        if(dispatch.exists(captured_table,manager,candidate))append_native_string_vector_004cdc20(output,candidate,strings);
     } __finally {
         if(candidate_live)destroy_native_string_header_0041dd20(&candidate,strings);
         if(suffix_live)destroy_native_string_header_0041dd20(&with_suffix,strings);
@@ -44,7 +43,7 @@ void append_candidate(void* manager,const NativeString& stem,const NativeString&
     }
 }
 }
-void append_native_lua_script_overrides_00bdef90(void* manager,const NativeString& path,NativeStringVectorStorage& output,NativeStringStorage& strings){
+void append_native_lua_script_overrides_00bdef90(void* manager,const NativeString& path,NativeStringVectorStorage& output,NativeStringStorage& strings,NativeLuaVfsDispatch& dispatch){
     const auto slash=reverse_find_native_string_bytes_004bcb80(path,"/",0x7fffffff);
     auto start=slash==0xffffffffu?0u:slash;std::uint32_t dot=0xffffffffu;
     const char* const data=path.data();
@@ -72,7 +71,7 @@ void append_native_lua_script_overrides_00bdef90(void* manager,const NativeStrin
             auto& suffixes=*reinterpret_cast<NativeStringVectorStorage*>(static_cast<char*>(manager)+0x48);
             auto cursor=reinterpret_cast<std::uintptr_t>(suffixes.data_00);
             const auto end=reinterpret_cast<std::uintptr_t>(suffixes.data_00)+static_cast<std::uint32_t>(suffixes.count_04)*8u;
-            while(cursor!=end){append_candidate(manager,stem,extension,*reinterpret_cast<NativeString*>(cursor),output,strings);cursor+=8u;}
+            while(cursor!=end){append_candidate(manager,stem,extension,*reinterpret_cast<NativeString*>(cursor),output,strings,dispatch);cursor+=8u;}
         } __finally {destroy_native_string_header_0041dd20(&extension,strings);}
     } __finally {destroy_native_string_header_0041dd20(&stem,strings);}
 }

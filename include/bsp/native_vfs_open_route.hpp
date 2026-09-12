@@ -5,9 +5,11 @@
 namespace bsp {
 struct NativePhysicalFileDateContext;
 class ActualNativeStringPoolStorage;
+class NativeVfsRuntimeBindings;
 
-// Borrow initialized actual storage. Provider/stream tables and manager+90
-// must contain CALLABLE original-ABI functions, as in NativeLuaFileServices.
+// Borrow initialized actual storage. Without an explicit native binding,
+// provider/stream tables contain CALLABLE original-ABI functions. The manager
+// failure field+90 retains its required callable original-ABI contract.
 // This context creates no provider, stream, table, manager or pool owner.
 // The visitor profile is the actual three-word D6838C identity table, whose
 // numeric +04/+08 targets select the reconstructed BDA690/BD9040 bodies.
@@ -17,6 +19,9 @@ struct NativeVfsOpenRouteContext {
     NativePhysicalFileDateContext& physical;
     const void* actual_open_profile_00d6838c;
     NativeVfsOpenedResourceLog log_opened_resource_00bde9c0;
+    // Optional explicit native method composition. Constructor/destructor of
+    // the binding install/restore this source context pointer, never owner data.
+    NativeVfsRuntimeBindings* native_bindings=nullptr;
 };
 
 // Complete BDCA80: ECX manager, stack mutable raw name header, RET4.

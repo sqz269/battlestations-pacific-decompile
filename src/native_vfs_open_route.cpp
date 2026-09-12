@@ -1,4 +1,5 @@
 #include "bsp/native_vfs_open_route.hpp"
+#include "bsp/native_vfs_runtime_bindings.hpp"
 
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/native_pooled_resource_path.hpp"
@@ -91,8 +92,12 @@ void open_native_vfs_mount_00bda690(void* visitor, const void* payload,
         evaluate_diagnostic_name(name);
     auto* provider = pointer(payload, 8);
     const auto flags = word(visitor, 8);
-    auto* selected = pointer(pointer(provider), 8);
-    void* result = reinterpret_cast<Open>(selected)(provider, selected, name, flags);
+    void* result;
+    if(context.native_bindings)result=context.native_bindings->provider_open(provider,name,flags);
+    else {
+        auto* selected = pointer(pointer(provider), 8);
+        result = reinterpret_cast<Open>(selected)(provider, selected, name, flags);
+    }
     put(visitor, 4, reinterpret_cast<std::uint32_t>(result));
     if (result) put_byte(visitor, 0x0c, byte(payload, 0x0c));
 }
@@ -211,15 +216,17 @@ void* open_native_vfs_resource_00bdf310(void* manager, const void* name,
             if (flags & 1u) {
                 put(manager, 0x24, word(manager, 0x24) + 1u);
             } else {
-                if (!context.log_opened_resource_00bde9c0)
+                if (!context.native_bindings && !context.log_opened_resource_00bde9c0)
                     throw std::invalid_argument("Native VFS open requires actual BDE9C0 log service");
                 const auto mount_byte = byte(visitor, 0x0c);
                 auto* current_manager = context.physical.manager_0109ceec;
-                context.log_opened_resource_00bde9c0(current_manager, copied_name,
+                if(context.native_bindings)context.native_bindings->log_open(current_manager,copied_name,result,mount_byte);
+                else context.log_opened_resource_00bde9c0(current_manager, copied_name,
                     copied_name, result, mount_byte);
                 put(manager, 0x28, word(manager, 0x28) + 1u);
-                auto* selected = pointer(pointer(result), 0x2c);
-                const auto size = reinterpret_cast<Size>(selected)(result, selected, 0);
+                std::uint32_t size;
+                if(context.native_bindings)size=context.native_bindings->stream_size_low(result,0);
+                else {auto* selected = pointer(pointer(result), 0x2c);size=reinterpret_cast<Size>(selected)(result, selected, 0);}
                 put(manager, 0x2c, word(manager, 0x2c) + size);
             }
         }

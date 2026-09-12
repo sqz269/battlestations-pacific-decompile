@@ -1,0 +1,214 @@
+{
+  "packet": "cc2_mission_load_hosts",
+  "owner": "agent/cc2-mission-load-hosts",
+  "date": "2026-09-11",
+  "kind": "analysis+reconstruction",
+  "doc": "docs/MISSION_LOAD_HOSTS.md",
+  "anchor": "004c3840",
+  "headline": "Of the seven MissionSceneLoadHost methods the executable still reports unimplemented, two already had reconstructions (00447060 and 004d87b0 in include/bsp/mission_state_frame.hpp) and are reused, and three of the remaining five were misnamed by the interface: 004cec60 is an MSVC _Tree node eraser and not a network-slot reset, the 004e0754 block resets the avoid-zone table and not an objective list, and the scripted-name list is the set of Lua global FUNCTION names captured at state 0Ch so that teardown can nil every function the mission scripts added.",
+  "abi": {
+    "004c3840": {
+      "convention": "__thiscall void(GGame* this, char skipMarkedCandidates)",
+      "ecx": "game; 004c387c MOV EBP,ECX",
+      "stack_args": 1,
+      "stack_arg_site": "004c38ed CMP byte ptr [ESP+0xcc],0",
+      "ret": "RET 4",
+      "seh": "handler 00c650eb",
+      "body": "004c3840-004c3a6b",
+      "callers": ["004c6ba0", "004c6be0", "004d56e0", "004dfb70", "008ab850"]
+    },
+    "004cec60": {
+      "convention": "__thiscall void(Tree* this, Node* node)",
+      "ecx": "the owning tree; only propagated to the recursive call, never dereferenced",
+      "stack_args": 1,
+      "ret": "RET 4",
+      "body": "004cec60-004cecaf",
+      "note": "MSVC std::_Tree::_Erase: recursive on node+8h, iterative on node+0h, value is a native string at node+0Ch (length) / node+10h (buffer). The loop back edge at 004cec9c..004cecab is raw bytes in Ghidra's listing and had to be decoded from 83 c4 04 80 7e 15 00 8b fe 74 c5."
+    },
+    "004218e0": {
+      "convention": "__cdecl AvoidZoneManager*()",
+      "stack_args": 0,
+      "ret": "RET, returns [00e17624]",
+      "body": "004218e0-00421995",
+      "note": "Thread-safe lazy singleton: critical section from BSP_SingletonLifetime_GetManager, operator new(0x78) at 0042193a, constructor 00421500, registration through 00bd0c30."
+    },
+    "00424d00": {
+      "convention": "__thiscall void(AvoidZoneManager* this)",
+      "ecx": "the 004218e0 singleton; 004e07bc MOV ECX,EAX",
+      "stack_args": 0,
+      "body": "00424d00-...",
+      "note": "Scans [[00e188a8]+19cch]+370h, an intrusive list walked through node+4h with the element at node+8h and its name at element+154h/+158h. Literals AvoidZone, AvoidZoneG and 'AvoidZoneG %*s %d #%03d'."
+    },
+    "004d30f0": {
+      "convention": "__fastcall void(GGame* this)",
+      "ecx": "game; 004d3110 MOV EDI,ECX",
+      "stack_args": 0,
+      "ret": "RET",
+      "seh": "handler 00c65f50",
+      "body": "004d30f0-004d3299",
+      "callers": ["004dfb70"]
+    },
+    "004d32a0": {
+      "convention": "__fastcall void(GGame* this)",
+      "ecx": "game; 004d32c2 MOV EBP,ECX",
+      "stack_args": 0,
+      "seh": "handler 00c65f98",
+      "callers": ["004da780"],
+      "note": "The reader of the set 004d30f0 fills. Returns at 004d32d2 when game+1938h is 0."
+    },
+    "00b66200": {
+      "convention": "__thiscall bool(LuaObject* this)",
+      "ecx": "the Lua object",
+      "stack_args": 0,
+      "ret": "RET",
+      "body": "00b66200-00b6623e",
+      "note": "lua_type(...) == 6 (LUA_TFUNCTION); the unbound arm at 00b66209 forces -1 and compares it to 6, so an unbound object is not a function."
+    },
+    "004c9ca0": {
+      "convention": "__thiscall void(GGame* this, char loading)",
+      "stack_args": 1,
+      "ret": "RET 4",
+      "body": "004c9ca0-004c9eb5",
+      "note": "Already read in full by packet cc_exe_2j; only the load arm's loading element was added here."
+    }
+  },
+  "steps": [
+    {
+      "step": "assign_party_player_slots",
+      "native": "004c3840",
+      "coverage": "complete, 004c3840-004c3a6b",
+      "reconstruction": "run_assign_party_player_slots_004c3840, src/mission_load_hosts.cpp",
+      "gate": "004e0446 CMP dword [game+1fe4h],1: the load path calls it only in session mode 1, with argument 0",
+      "calls": [
+        {"address": "004c3918", "native": "vtable+5ch", "name": "IsKindOf(1ch)", "this": "candidate", "args": 1, "ret": "bool", "gate": "argument non-zero and [candidate+304h] == [00d7a218]"},
+        {"address": "004c3927", "native": "vtable+5ch", "name": "IsKindOf(9)", "this": "candidate", "args": 1, "ret": "bool", "gate": "the 1ch test returned false"},
+        {"address": "004c39a9", "native": "vtable+148h", "name": "unbind_candidate_owner", "this": "candidate", "args": 2, "ret": "void", "gate": "the vacated slot's party has no bound player", "note": "contract: unread"},
+        {"address": "004c39ca", "native": "vtable+10h", "name": "candidate_name", "this": "candidate", "args": 0, "ret": "const char*", "gate": "reassignment", "note": "contract: unread; the %s of the log format"},
+        {"address": "004c39d2", "native": "004254b0", "name": "log_reassignment", "this": null, "args": 5, "ret": "void", "gate": "reassignment", "cleanup": "004c39d7 ADD ESP,0x14 = format + name + party + old slot + new slot"},
+        {"address": "004c39e0", "native": "0075b430", "name": "BSP_SessionMessage_ConstructBase", "this": "the stack message at ESP+38h", "args": 1, "ret": "void", "gate": "reassignment"},
+        {"address": "004c3a18", "native": "0077c2a0", "name": "route_owner_change", "this": "candidate", "args": 3, "ret": "void", "gate": "reassignment", "note": "RET 0ch; in a local session 0077c2a0 forces the route flags to 1 and only 0076e520 runs (docs/SESSION_MESSAGE_DISPATCH.md)"},
+        {"address": "004c3a4a", "native": "00bf6713", "name": "CRT trap", "this": null, "args": 0, "ret": "void", "gate": "the walk reached the list header mid-iteration"}
+      ]
+    },
+    {
+      "step": "reset_network_slots",
+      "native": "004cec60",
+      "containing_function": "004dfb70",
+      "coverage": "complete for 004cec60 (004cec60-004cecaf) and for the branch 004dfc13-004dfd18; the two global trees' producers unread",
+      "reconstruction": "run_reset_network_slots_004dfc13, src/mission_load_hosts.cpp",
+      "gate": "004dfc13 CMP dword [game+1fe4h],0 / JZ 004dfd16: the whole reset is the network arm; a local session runs 004bb160 instead",
+      "calls": [
+        {"address": "004dfc2d", "native": "004cec60", "name": "erase the 00e18a60 string tree", "this": "00e18a60", "args": 1, "ret": "void", "gate": "session mode non-zero"},
+        {"address": "004dfc5e", "native": "004c1ff0", "name": "erase the 00e18a6c record tree", "this": "00e18a6c", "args": 1, "ret": "void", "gate": "session mode non-zero", "note": "contract: unread"},
+        {"address": "004dfccf", "native": "005d7070", "name": "select_menu_record", "this": "game+60ch", "args": 0, "ret": "int", "gate": "session mode non-zero", "note": "contract: unread"},
+        {"address": "004dfcf7", "native": "00bf6713", "name": "CRT trap", "this": null, "args": 0, "ret": "void", "gate": "the record index is not below ([esi+8]-[esi+4])/434h"},
+        {"address": "004dfd0a", "native": "00626930", "name": "apply_menu_record", "this": "the 434h record", "args": 0, "ret": "void", "gate": "index in range; EDX carries the local slot's party", "note": "contract: unread"},
+        {"address": "004dfd18", "native": "004bb160", "name": "reset_single_player_slots", "this": "game", "args": 0, "ret": "void", "gate": "session mode 0"}
+      ]
+    },
+    {
+      "step": "check_multiplayer_player_count",
+      "native": "004d87b0",
+      "coverage": "complete, reused from docs/MISSION_STATE_FRAME.md",
+      "reconstruction": "run_mission_player_count_check_004d87b0, include/bsp/mission_state_frame.hpp (existing)",
+      "gate": "004d87c9 returns when game+1fe4h is 0, so a local session gets MissionPlayerCountOutcome::kNotRun",
+      "calls": [
+        {"address": "004da755", "native": "004d87b0", "name": "check_multiplayer_player_count", "this": "game", "args": 0, "ret": "void", "gate": "networked session; it can move game+5d4h, which is why 004da6c0 re-reads the state at 004da75a", "containing_function": "004da6c0"}
+      ]
+    },
+    {
+      "step": "reset_objective_list",
+      "native": "004218e0",
+      "containing_function": "004dfb70",
+      "coverage": "complete for the block 004e0754-004e07c2 and for 004218e0; 00424d00's body read for its scan shape and literals only",
+      "reconstruction": "run_reset_avoid_zone_state_004e0754, src/mission_load_hosts.cpp",
+      "gate": "none; the block is unconditional inside 004dfb70",
+      "correction": {
+        "was": "reset_objective_list, the objective list at game+5cch/5d0h",
+        "is": "clears a tree at game+5c8h whose element type was not identified and rebuilds the avoid-zone table; the objective sets live at game+21a4h + slot*4",
+        "evidence": "004218e0 is a lazy singleton getter (operator new(0x78) at 0042193a, constructor 00421500, registration 00bd0c30) and 00424d00 carries only the literals AvoidZone, AvoidZoneG and 'AvoidZoneG %*s %d #%03d'; docs/OBJECTIVE_UNIT_LIST.md places the objective sets at game+21a4h + slot*4"
+      },
+      "calls": [
+        {"address": "004e0789", "native": "004c18d0", "name": "erase a scene tree subtree", "this": "game+5c8h", "args": 1, "ret": "void", "gate": "per non-nil node", "note": "contract: unread"},
+        {"address": "004e0791", "native": "00bf65ac", "name": "_free", "this": null, "args": 1, "ret": "void", "gate": "per node"},
+        {"address": "004e07b7", "native": "004218e0", "name": "BSP_AvoidZoneManager_GetSingleton", "this": null, "args": 0, "ret": "AvoidZoneManager*", "gate": "unconditional"},
+        {"address": "004e07be", "native": "00424d00", "name": "BSP_AvoidZoneManager_RebuildFromScene", "this": "the singleton", "args": 0, "ret": "void", "gate": "unconditional"}
+      ]
+    },
+    {
+      "step": "rebuild_scripted_name_list",
+      "native": "004d30f0",
+      "coverage": "complete, 004d30f0-004d3299; the reader 004d32a0 read for its find-and-nil shape",
+      "reconstruction": "run_rebuild_scripted_name_list_004d30f0 and scripted_globals_to_nil, src/mission_load_hosts.cpp",
+      "gate": "004e08e4, immediately after game+5d4h becomes 0ch",
+      "correction": {
+        "was": "the container at game+1934h was not identified (docs/MISSION_SCENE_LOAD.md uncertainty)",
+        "is": "game+1930h is an MSVC _Tree of native strings, _Myhead at +1934h and _Mysize at +1938h, holding the NAME of every Lua global whose value is a function",
+        "evidence": "004cec60's node layout (value string at node+0ch/+10h, colour +14h, isnil +15h), 004d31a4 00b66200 = lua_type(value) == 6, 004d31b1 00b662b0 GetString on the key, 004d320b 004d0640 BSP_NativeStringSet_Insert; the reader 004d32a0 nils every function global the set does not carry"
+      },
+      "calls": [
+        {"address": "004d3126", "native": "004cec60", "name": "erase the scripted-name set", "this": "game+1930h", "args": 1, "ret": "void", "gate": "unconditional"},
+        {"address": "004d3145", "native": "00b65f50", "name": "BSP_LuaObject_Construct", "this": "the key object", "args": 0, "ret": "void", "gate": "unconditional"},
+        {"address": "004d3152", "native": "00b65f50", "name": "BSP_LuaObject_Construct", "this": "the value object", "args": 0, "ret": "void", "gate": "unconditional"},
+        {"address": "004d3167", "native": "00b67980", "name": "BSP_LuaStateOwner_GetGlobals", "this": "game+1a0ch", "args": 1, "ret": "void", "gate": "unconditional"},
+        {"address": "004d317f", "native": "00b67080", "name": "IterateFirst", "this": "the globals object", "args": 2, "ret": "void", "gate": "unconditional"},
+        {"address": "004d318d", "native": "00b66420", "name": "IsUnbound", "this": "the globals object", "args": 1, "ret": "bool", "gate": "loop test on the key"},
+        {"address": "004d31a4", "native": "00b66200", "name": "BSP_LuaObject_IsFunction", "this": "the value object", "args": 0, "ret": "bool", "gate": "per entry"},
+        {"address": "004d31b1", "native": "00b662b0", "name": "BSP_LuaObject_GetString", "this": "the key object", "args": 0, "ret": "const char*", "gate": "the value is a function"},
+        {"address": "004d31d7", "native": "0041dd40", "name": "BSP_NativeString_Resize", "this": "the local string", "args": 2, "ret": "void", "gate": "the value is a function"},
+        {"address": "004d320b", "native": "004d0640", "name": "BSP_NativeStringSet_Insert", "this": "game+1930h", "args": 1, "ret": "void", "gate": "the value is a function"},
+        {"address": "004d323a", "native": "00b67190", "name": "IterateNext", "this": "the globals object", "args": 2, "ret": "void", "gate": "per entry"},
+        {"address": "004d33c5", "native": "004c7f10", "name": "BSP_NativeStringSet_Find", "this": "game+1930h", "args": 2, "ret": "iterator*", "gate": "teardown only", "containing_function": "004d32a0"},
+        {"address": "004d33e9", "native": "004cdc20", "name": "BSP_NativeStringVector_Append", "this": "the local vector", "args": 1, "ret": "void", "gate": "004d33db, the iterator equals the tree head (end)", "containing_function": "004d32a0"}
+      ]
+    },
+    {
+      "step": "release_deferred_dynamics",
+      "native": "00447060",
+      "coverage": "complete, reused from docs/GAME_DYNAMICS_LIST.md and docs/MISSION_STATE_FRAME.md",
+      "reconstruction": "release_all_dynamics_00447060, include/bsp/mission_state_frame.hpp (existing)",
+      "gate": "004da6df with ECX = game+30h; nothing new was added by this packet",
+      "calls": []
+    },
+    {
+      "step": "apply_in_game_interface",
+      "native": "004c9ca0",
+      "coverage": "partial: the load arm 004c9ccd-004c9d23 only; the entry arm 004c9d6b-004c9ea2 and the network tail 004c9d2f-004c9ea2 are covered by packet cc_exe_2j and src/game_hosts_hud.cpp",
+      "reconstruction": "run_apply_in_game_interface_load_arm_004c9ccd, src/mission_load_hosts.cpp",
+      "gate": "004c9cc0 CMP byte [ESP+1ch],0: argument 1 (the 004e1873 load call) takes the load arm; 004c9d23 ends it for a local session",
+      "calls": [
+        {"address": "004c9cd7", "native": "00bf681b", "name": "operator new(0x34)", "this": null, "args": 1, "ret": "void*", "gate": "[00e198c4]+d4h is null"},
+        {"address": "004c9ced", "native": "00636d90", "name": "construct the loading element", "this": "the new element", "args": 0, "ret": "void*", "gate": "the allocation succeeded", "note": "installs vtable 00cf569c at +0h and 00cf5684 at +8h over the BSP_FrontEndScreen base 004f7180"},
+        {"address": "004c9d11", "native": "vtable+10h", "name": "loading_element_init", "this": "the element", "args": 0, "ret": "void", "gate": "the allocation succeeded", "resolved": "00636f30 BSP_HudSceneInitScreen_Register: loads the GUI page FE_sceneinit and binds Message_Text (docs/HUD_SCREEN_PAGES.md)"}
+      ]
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "range": "004ceca1-004cecab",
+      "inclusive_end": "004cecab",
+      "why": "Ghidra's listing skips these eleven bytes inside 004cec60's body; they are the erase loop's back edge",
+      "bytes": "83 c4 04 80 7e 15 00 8b fe 74 c5",
+      "decoded": "ADD ESP,4 / CMP byte ptr [ESI+0x15],0 / MOV EDI,ESI / JZ 0x004cec71"
+    }
+  ],
+  "ledger_names": [
+    {"address": "004cec60", "name": "BSP_NativeStringSet_EraseSubtree", "status": "new"},
+    {"address": "004218e0", "name": "BSP_AvoidZoneManager_GetSingleton", "status": "new"},
+    {"address": "00421500", "name": "BSP_AvoidZoneManager_Construct", "status": "new"},
+    {"address": "00424d00", "name": "BSP_AvoidZoneManager_RebuildFromScene", "status": "new"},
+    {"address": "00b66200", "name": "BSP_LuaObject_IsFunction", "status": "new"},
+    {"address": "004d32a0", "name": "BSP_Game_NilScriptAddedGlobals", "status": "new"},
+    {"address": "004c3840", "name": "BSP_Game_AssignPartyPlayerSlots", "status": "evidence appended"},
+    {"address": "004d30f0", "name": "BSP_Game_RefillScriptedNameList", "status": "evidence appended"}
+  ],
+  "open_questions": [
+    "The list at 00f87198 that 004c3840 walks has no writer in its xref set: 004c3840, 004c3a80, 004d56e0, 0076f2b0, 0077c540, 0077e4c0, 0077f0e0 and 0077f5e0 all read it. Its element type is a unit-like object (+5ch/+5dh/+5eh as docs/UNIT_INSTANCE_LAYOUT.md, an owner slot at +188h, a float at +304h) but the producer is unread.",
+    "The candidate vtable slots +10h and +148h were not opened; only their argument shape and the log's use of +10h's result are established.",
+    "The two global trees 00e18a60 and 00e18a6c that the network-slot reset clears are referenced only by 004dfb70, 004da780 and their static constructors, so nothing in the xref set inserts into them.",
+    "The tree at game+5c8h that the avoid-zone step clears has a POD element (no value destructor in the inlined erase) and no identified producer.",
+    "004c3840 keeps three party rosters while docs/VEHICLE_CLASS_DESCRIPTORS.md reports the party bitmap row as stride 3 with the third byte unexplained, and 004d87b0's side counters are likewise a three-slot array indexed by slot+28h. The third party is consistent across all three but nothing was found that fills it."
+  ],
+  "build": "scripts/build.ps1 in the worktree: Win32 Release, warnings as errors, bsp_game.exe linked; ctest reconstructed_math 1/1 passed",
+  "tests_added": "one case in tests/math_tests.cpp over the 004c3840 roster and round-robin cursor"
+}
