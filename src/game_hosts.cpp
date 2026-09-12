@@ -408,18 +408,32 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
             if (text.find("throttle=") == std::string::npos
                 && text.find("rudder=") == std::string::npos
                 && text.find("speed=") == std::string::npos) {
-                if (text.find('=') != std::string::npos) {
-                    // `moveto=x,z` and every other parameterised form. 0046aab0
-                    // builds only two descriptors, a named target or the
-                    // owner's own world position, and 00816e30's arms for the
-                    // commands that take a position (00816f7c..00817330) are
-                    // not projected, so there is nothing here to carry an
-                    // authored coordinate through.
-                    error = "--order <command>=<args> is not supported: 0046aab0 builds "
-                        "only a named-target or owner-position descriptor and 00816e30's "
-                        "arm for such a command is not projected. Use --order <command> "
-                        "or --order <command>:<entity>";
-                    return false;
+                const std::size_t equals = text.find('=');
+                if (equals != std::string::npos) {
+                    // Milestone 2s: `<command>=<x>,<z>`, a fixed world point.
+                    // Milestone 2l's refusal here was right about 0046AAB0,
+                    // which builds only a named-target or owner-position
+                    // descriptor, and wrong to conclude that nothing could
+                    // carry a coordinate: the mission script's own navigator
+                    // bindings do not go through 0046AAB0 at all. 008A2BC0
+                    // NavigatorMoveToPos hands 0077D600 a fixed command object
+                    // and the descriptor 0088A810's Vector3 branch built, and
+                    // milestone 2m wired that entry. The point is passed on as
+                    // the target token and GameUnitsHost::issue_player_command
+                    // turns it into that descriptor.
+                    order_command = text.substr(0, equals);
+                    order_command_target = text.substr(equals + 1);
+                    if (order_command.empty()) {
+                        error = "--order needs a command name before the '='";
+                        return false;
+                    }
+                    if (order_command_target.find(',') == std::string::npos) {
+                        error = "--order <command>=<args> carries a fixed world point and "
+                            "nothing else: use --order <command>=<x>,<z>. A named target "
+                            "goes through 0046aab0 instead, as --order <command>:<entity>";
+                        return false;
+                    }
+                    continue;
                 }
                 const std::size_t colon = text.find(':');
                 order_command = text.substr(0, colon);

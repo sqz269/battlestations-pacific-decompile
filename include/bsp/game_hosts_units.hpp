@@ -117,6 +117,21 @@ struct GameUnitRow {
     float start_speed{0.0f};           // the authored value, m/s
     float start_speed_ratio{0.0f};     // 008235CA, the float32 ring throttle
     float start_speed_axial{0.0f};     // 008235EC, the hull's axial velocity
+    // Milestone 2s: what 009329C0 staged on this unit's last substep, read back
+    // off the two accumulators controller+378h and controller+384h before the
+    // AddForce / AddTorque flush at 00933B01 / 00933B38.
+    unsigned long long hydro_calls{0};
+    int hydro_elements{0};      // (class+530h - class+52Ch) / 24h
+    int hydro_submerged{0};     // elements whose depth was > 0 on the last call
+    float hydro_force[3]{};     // controller+378h..+380h
+    float hydro_torque[3]{};    // controller+384h..+38Ch
+    // The trajectory the run measures against the bow: the angle between the
+    // per-step displacement and the hull's own forward axis, and the speed
+    // along that displacement. 0092D300 rewrites only the axial component, so
+    // these two diverge from forward_speed exactly as far as the drag lets them.
+    float drift_degrees{0.0f};
+    float trajectory_speed{0.0f};
+    float peak_drift_degrees{0.0f};
 };
 
 struct GameUnitsSummary {
@@ -135,6 +150,21 @@ struct GameUnitsSummary {
     float simulated_seconds{0.0f};
     float total_path_length{0.0f};
     float controlled_distance{0.0f};
+    // Milestone 2s: the hydrodynamic callback 009329C0, run where 00937440 tail
+    // calls it at 00937622. `element_steps` counts element iterations, not
+    // calls, and `submerged_steps` the subset that produced drag.
+    unsigned long long hydro_calls{0};
+    unsigned long long hydro_element_steps{0};
+    unsigned long long hydro_submerged_steps{0};
+    unsigned long long hydro_force_flushes{0};   // 00C35360 AddForce
+    unsigned long long hydro_torque_flushes{0};  // 00C35330 AddTorque
+    // Milestone 2s: the world registry at [[00E188A8]+19CCh]. `registrations`
+    // counts calls of the +130h virtual, `list_pushes` the 00484540 push-backs
+    // those made, and `class_6_list` the length of the one list the ship AI's
+    // brain pre-pass walks for neighbour candidates.
+    unsigned long long world_registrations{0};
+    unsigned long long world_list_pushes{0};
+    std::size_t world_class_6_list{0};
 };
 
 // The units the instantiate pass of 004d4df0 created, owned for the whole run.
@@ -358,6 +388,26 @@ public:
     void raise_secondary_load_1034(std::size_t index, float value);
     float turn_assist_load_102c(std::size_t index) const;
     float secondary_load_1034(std::size_t index) const;
+
+    // ---- milestone 2s: the world's per-class unit lists -------------------
+    // [[00E188A8]+19CCh] holds 97 {count, head, tail} triples at
+    // registry+18h + id*0Ch (004CB076's vector-constructor iterator inside
+    // 004CB030). A created unit joins them through its entity virtual slot
+    // +130h: 006FE620 BSP_UnitInstance_RegisterInWorldLists, whose body is
+    // 00928560 (which pushes id 1) followed by five 00484540 push-backs onto
+    // ids 2, 4, 5, 6 and 7 (ADD ECX,0x30/0x48/0x54/0x60/0x6C at
+    // 006FE62C..006FE65C). docs/GAMEPLAY_LOOSE_ENDS_1.md section 2.
+    //
+    // Id 6 is the list BSP_ShipAi_BrainPrePass reads at 009F1877: it loads
+    // [00E188A8], then +19CCh, then the head at +64h and the count at +60h,
+    // and 0x60 == 0x18 + 6*0xC. This host builds and fills those lists; the
+    // consumer that walks id 6 into the neighbour list at blk+608h lives in
+    // GameShipAiHost and is not wired here.
+    std::size_t world_list_size(int class_id) const noexcept;
+    // The unit index at `position` of the class-`class_id` list, or the unit
+    // count when the position is past the end. The order is 00484540's own:
+    // appended at the tail, walked from the head.
+    std::size_t world_list_entry(int class_id, std::size_t position) const noexcept;
 
     std::size_t count() const noexcept;
     bool unit_active(std::size_t index) const noexcept;
