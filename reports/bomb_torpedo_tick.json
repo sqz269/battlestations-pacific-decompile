@@ -1,0 +1,764 @@
+{
+ "packet": "cc2_bomb_torpedo_tick",
+ "owner": "agent/cc2-bomb-torpedo-tick",
+ "doc": [
+  "docs/BOMB_FAMILY_TICK.md",
+  "docs/TORPEDO_TICK.md"
+ ],
+ "program": "/battlestationspacific.exe",
+ "project": "C:/Users/sqz269/bsp.gpr",
+ "summary": "The bomb, the depth charge, the rocket and the torpedo run one tick, 006E1300, and differ only in two entity vtable slots: +19Ch for air and +1A0h for water. The shared air flight 006E1510 is gravity 9.81 gated on the class NoGravity flag plus a fixed 0.9/0.1 blend of the forward row toward the velocity; the bomb's and the rocket's water advance 006E27F0 is a single RET. The depth charge dives with linear drag on all three axes and gravity still on, scans a 25 m sphere below 5 m of depth and fires the blast site 006FD032 that docs/EXPLOSION_RADIAL_DAMAGE.md already records. The rocket lights after IgnitionDelay and then accelerates along its own world forward axis to VMax. The torpedo levels its nose, damps its velocity with separate axial and lateral coefficients, holds a depth relative to the sampled wave surface and turns toward a commanded heading at HeadingTurn degrees per second; its homing re-scans on an interval for the nearest entity answering vtable[5Ch](8) and turns with two clamped rates. The arming gate record+45Ch is a time, not a distance.",
+ "routines": [
+  {
+   "address": "006e1300",
+   "native": "006e1300",
+   "name": "BSP_BombProjectile_TickAdvance",
+   "body": "006e1300-006e1500",
+   "abi": "__thiscall(MBombTickElement* this = record+3E4h, float step), RET 4",
+   "coverage": "complete",
+   "evidence": "Slot +8h of the tick element vtables 00CF93F0 (MBomb), 00CFB9F8 (MDepthCharge), 00D09060 (MRocket) and 00D0C35C (MTorpedo), read from .rdata. Negative launch delay at [this+2Ch] counts up and returns (006E130B, XORPS/COMISS/JBE so the test is strict 0 > value). Active byte [this+74h] at 006E1331. Step rescaled by classDesc[+5Ch] at 006E133B and written back over the argument slot [ESP+20h]. Water query shot->vtable[+2Ch] at 006E1361 picks record->vtable[19Ch] or [1A0h] at 006E138B. Sweep gated on byte record+5Ch (ESI-388h) and on the arming countdown [this+78h] against 00D7A218 = 0.0f. Expiry at 006E1464 compares record+364h against classDesc[+54h]. RET 4 with the float at [ESP+20h] after SUB ESP,0Ch and four pushes."
+  },
+  {
+   "address": "006e1060",
+   "native": "006e1060",
+   "name": "BSP_BombProjectile_PlaceStepPose",
+   "body": "006e1060-006e1290",
+   "abi": "__thiscall(MBombTickElement* this, float step), RET 4",
+   "coverage": "partial: 006E1236-006E127D, the water-trail branch, unread",
+   "evidence": "Slot +4h of the same four vtables. Same classDesc[+5Ch] rescale at 006E1067 and the same launch-delay gate at 006E1075. Picks record->vtable[194h]/[198h] at 006E10C9, one slot pair below the tick's, matching the bullet's [114h]/[118h] against [11Ch]/[120h] in docs/TICK_ELEMENT_OVERRIDES.md. The air trail at record+338h builds a matrix whose forward row is the step displacement, gated on |d|^2 > 00D7A268 = 1.0e-4f."
+  },
+  {
+   "address": "006e1010",
+   "native": "006e1010",
+   "name": "BSP_BombProjectile_CommitStepPose",
+   "body": "006e1010-006e105f",
+   "abi": "__thiscall(MBombTickElement* this), RET",
+   "coverage": "complete",
+   "evidence": "Slot +0Ch of 00CF93F0, 00CFB9F8 and 00D09060; MTorpedo replaces it with 00855B00. record+37Ch..384h <- record+370h..378h at 006E1013, then record+370h..378h <- [this+64h..6Ch] at 006E102C, which is the translation row (34h + 30h) of the matrix cached by the previous commit, and only then 004134F0(this+34h, record+0CCh) re-caches. The bullet's 006E7D50 takes current straight from record+FCh, so the bomb family's sweep segment lags one commit."
+  },
+  {
+   "address": "006e1510",
+   "native": "006e1510",
+   "name": "BSP_BombProjectile_AdvanceInAir",
+   "body": "006e1510-006e163d",
+   "abi": "__thiscall(record, float dt), RET 4",
+   "coverage": "complete",
+   "evidence": "Entity vtable slot +19Ch at 00CF95D4 (MBomb), 00CFBC1C (MDepthCharge) and 00D0C584 (MTorpedo). Gravity 00CF9058 = 9.8103800773621 subtracted from record+31Ch only when byte classDesc[+20h] (NoGravity) is clear, together with record+348h..350h times dt inside the same branch. 00419440 on a stack copy of the velocity, reciprocal only for a strictly positive length (006E15CD FCOMI/JBE). Forward row record+94h blended with 00D7A390 = 0.9f and 00D7A3A0 = 0.1f; the +94h and +9Ch stores at 006E160D and 006E1618 write back the values just loaded. 0085DC80(record+74h) rebuilds the basis."
+  },
+  {
+   "address": "006e27f0",
+   "native": "006e27f0",
+   "name": "BSP_BombProjectile_AdvanceInWater",
+   "body": "006e27f0-006e27f2",
+   "abi": "__thiscall(record, float dt), RET 4",
+   "coverage": "complete",
+   "evidence": "Entity vtable slot +1A0h for MBomb (00CF95D8) and MRocket (00D09288). One instruction, RET 4: a bomb in the water stops integrating velocity. Read from raw bytes with capstone; Ghidra has no function here."
+  },
+  {
+   "address": "006e2800",
+   "native": "006e2800",
+   "name": "BSP_BombProjectile_SweepFlags",
+   "body": "006e2800-006e280e",
+   "abi": "__stdcall(char* a, char* b), RET 8",
+   "coverage": "complete",
+   "evidence": "Entity vtable slot +1A4h in all four tables (00CF95DC, 00CFBC24, 00D0928C, 00D0C58C). MOV byte [EAX],1; MOV byte [ECX],1. So the bomb family passes CL = DL = 1, and 006E13D5 forces both to 0 in world mode 2; the bullet instead passes CL = (worldMode != 2), DL = 1 (docs/PROJECTILE_IMPACT.md). Read from raw bytes; no Ghidra function."
+  },
+  {
+   "address": "006e2570",
+   "native": "006e2570",
+   "name": "BSP_BombProjectileShot_IsUnderWater",
+   "body": "006e2570-006e2578",
+   "abi": "__thiscall(shot), RET",
+   "coverage": "complete",
+   "evidence": "Shot interface vtable slot +2Ch at 00CF960C (MBomb), 00CFBA3C (MDepthCharge) and 00D090A4 (MRocket). XOR EAX,EAX; CMP byte [ECX+44h],AL; SETNZ AL. +44h is the underwater flag docs/PROJECTILE_KINDS.md records for 006E6410/006E6450. Read from raw bytes; no Ghidra function."
+  },
+  {
+   "address": "006e6900",
+   "native": "006e6900",
+   "name": "BSP_ProjectileShot_AdvanceOwnerGrace",
+   "body": "006e6900-006e6935",
+   "abi": "__thiscall(shot, float dt), RET 4",
+   "coverage": "complete",
+   "evidence": "Called at 006E14F4 with ECX = record+310h. shot[+94h] -= dt; once negative and shot[+C8h] is non-zero it calls BSP_Observer_UnregisterPair and clears shot[+C8h]. shot+C8h is record+3D8h, the owner the sweep passes, so this is the own-fire grace period."
+  },
+  {
+   "address": "006fcd20",
+   "native": "006fcd20",
+   "name": "BSP_DepthChargeProjectile_AdvanceInWater",
+   "body": "006fcd20-006fd0c5",
+   "abi": "__thiscall(record, float dt), RET 4",
+   "coverage": "partial: 006FCE8D-006FCF8B read only for its transform calls; after 006FD0AA unread",
+   "evidence": "Entity vtable slot +1A0h at 00CFBC20. 006FCD28 negates record+468h once and applies it to all three velocity components, keeping gravity 00CF9058 on the vertical, so the terminal sink rate is -9.81/k. Scan gated on worldMode != 2 and record+100h < 00CFBC84 = -5.0f; the per-candidate squared distance is built inline at 006FCE59 and compared with 00CFBC80 = 625.0f, a 25 m radius. Detonation at 006FCFA6 when record+100h < -|record+470h| (AND 7FFFFFFFh)."
+  },
+  {
+   "address": "006fd660",
+   "native": "006fd660",
+   "name": "BSP_DepthChargeProjectileShot_EnterWater",
+   "body": "006fd660-006fd743",
+   "abi": "__thiscall(shot, float), RET 4",
+   "coverage": "partial: the break-up branch 006FD746-006FD89A unread",
+   "evidence": "Shot interface vtable slot +28h at 00CFBA38, against 006E6450 in the other three tables. Tests 0042B2F0(shot+8h) > classDesc[+ECh] (MaxWaterHitVel) and shot[+0Ch] < -classDesc[+F0h], the field docs/WEAPON_CLASS_DESCRIPTOR.md calls computed; 00855A90 shows the formula is sqrt(2*MaxFall*9.81). Otherwise calls the base 006E6450 and spawns classDesc[+E8h] WaterSplashEfx. Read from raw bytes; no Ghidra function."
+  },
+  {
+   "address": "0080a000",
+   "native": "0080a000",
+   "name": "BSP_RocketProjectile_AdvanceWithIgnition",
+   "body": "0080a000-0080a56f",
+   "abi": "__thiscall(record, float dt), RET 4, SEH frame at 00C90928",
+   "coverage": "partial: read to 0080A26A; the trail block from record+47Ch unread",
+   "evidence": "Entity vtable slot +19Ch at 00D09284, the only kind that replaces the air slot; its water slot is the no-op 006E27F0. record+494h is the ignited flag and record+490h the timer against classDesc[+E0h] IgnitionDelay; the ignition event is shot->vtable[+3Ch] = 00809F20 at 00D090B4, against 006E1CD0 in the other three tables. Thrust at 0080A17C takes the dot of the velocity with the world forward row record+0ECh..0F4h and steps it toward classDesc[+D8h] VMax by classDesc[+DCh] Acceleration times dt. The argument is at [ESP+0ECh] after PUSH -1/PUSH handler/PUSH EAX, SUB ESP,0D4h and two pushes. Read from raw bytes; no Ghidra function."
+  },
+  {
+   "address": "00855b00",
+   "native": "00855b00",
+   "name": "BSP_TorpedoProjectile_CommitStepPose",
+   "body": "00855b00-00855b22",
+   "abi": "__thiscall(MBombTickElement* this), RET",
+   "coverage": "complete",
+   "evidence": "Tick element vtable 00D0C35C slot +0Ch, read from .rdata; the base is 006E1010. Calls 006E1010 then, when [this+0BCh] (record+4A0h) is non-null, 004134F0(this+0C0h, [this+0BCh]+74h). 004134F0's destination is ECX, settled by 00857518 where the stack matrix is copied into record+74h."
+  },
+  {
+   "address": "00855a90",
+   "native": "00855a90",
+   "name": "BSP_TorpedoClass_FinaliseDerivedFields",
+   "body": "00855a90-00855af5",
+   "abi": "__thiscall(classDesc), RET",
+   "coverage": "complete",
+   "evidence": "Class descriptor vtable 00CFA56C slot +0Ch, read from .rdata; 00CFA56C+1Ch holds 00856420, the create docs/PROJECTILE_KINDS.md identified, and the table begins right after the MFlakBullet string at 00CFA560. Calls the base 006E9890, writes classDesc+60h = classDesc[+E4h] * classDesc[+54h] * 00CEFF98 (0.6f) and classDesc+0ECh = sqrt(2 * classDesc[+E0h] * 9.81) through the CRT sqrt at 00BF7030, and returns base && classDesc+0ECh > 0. Read from raw bytes; no Ghidra function."
+  },
+  {
+   "address": "00855f00",
+   "native": "00855f00",
+   "name": "BSP_TorpedoProjectileShot_IsUnderWater",
+   "body": "00855f00-00855f46",
+   "abi": "__thiscall(shot), RET",
+   "coverage": "complete",
+   "evidence": "Shot interface vtable 00D0C378 slot +2Ch. Refreshes the pose when record+0C8h is clear, returns 2 when 2 * record+47Ch > record+100h and otherwise record+354h != 0. record+47Ch is [shot+16Ch], the swim depth 008A2710 writes. Both 006E1300 and 006E1060 test with TEST EAX,EAX so 2 and 1 select the same slot. Read from raw bytes; no Ghidra function."
+  },
+  {
+   "address": "00857480",
+   "native": "00857480",
+   "name": "BSP_TorpedoProjectile_AdvanceSwim",
+   "body": "00857480-008577a0",
+   "abi": "__thiscall(record, float dt), RET 4",
+   "coverage": "partial: 00857480-00857679 complete; the wake tail from 00857679 unread",
+   "evidence": "Entity vtable 00D0C3E8 slot +1A0h at 00D0C588. record+488h += dt; the heading at record+46Ch is seeded from 00521370 when it equals 00D0C310 = 10000.0f, tested with the UCOMISS/LAHF/TEST AH,44h/JP equality idiom. m.forward.y *= (1 - 00D7A2B0 * dt) with 00D7A2B0 a true double 3.0, then 0085DC80 and 004134F0 back into record+74h. After 00856BB0 the matrix is re-read and the velocity is split with the dot product at 0085753E: v = par*(1 - record+474h*dt) + perp*(1 - record+478h*dt). No thrust term, so classDesc[+E4h] WaterTravelSpeed does not reach the swim. The argument is at [ESP+80h] after FLD [ESP+4], SUB ESP,6Ch and four pushes. Read from raw bytes; no Ghidra function."
+  },
+  {
+   "address": "00856bb0",
+   "native": "00856bb0",
+   "name": "BSP_TorpedoProjectile_Steer",
+   "body": "00856bb0-00857155",
+   "abi": "__thiscall(record, float dt), RET 4",
+   "coverage": "partial: complete except the candidate list container 00856C28-00856C63",
+   "evidence": "Called only from 00857531. Gated on classDesc[+F0h] HomingHorzTurnSpeed > 0 against 00D7A218 = 0.0f. record+518h is the re-scan countdown and record+514h the interval. The scan keeps the smallest 004193E0, which returns a squared length, and binds through 00694A60 into the observer at record+4FCh with the target at record+510h. 00521370 is __fastcall(row, float* pitch, float* yaw) with pitch = asin(clamp(row.y)) in EDX and yaw = atan2 on the stack. Both 00438B10 calls read the same two slots: taking E as ESP at 00856E6C, the first pushes [E+0Ch] and [E+8h] and, because 0085E880 is RET 8, ESP is E-8 at 00856EE8 and the second pushes [E-8+1Ch] = [E+0Ch] and [E-8+10h] = [E+8h]. Those are the two pitch outputs; the yaw outputs at [E+14h] and [E+10h] are not read there. The depth controller at 00856FA9 uses 0078CF20 and clamps record+31Ch to 00CFBC84 = -5.0f and 00CE3850 = +5.0f. The heading controller at 00857061 scales classDesc[+E8h] by 00CE3D28/00CE3D20 = pi/180."
+  },
+  {
+   "address": "008568e0",
+   "native": "008568e0",
+   "name": "BSP_TorpedoProjectileShot_EnterWater",
+   "body": "008568e0-00856b4f",
+   "abi": "__fastcall(shot)",
+   "coverage": "partial: the two limits and both branches; the effect construction is a contract",
+   "evidence": "Shot interface vtable 00D0C378 slot +28h, against 006E6450 in the base. Breaks up when the impact speed exceeds classDesc[+DCh] MaxWaterHitVel or shot[+0Ch] < -classDesc[+ECh], the fall speed 00855A90 derives from MaxFall; the same pair as the depth charge's 006FD660 at +ECh/+F0h. In world mode 2 it enters water instead of dying. shot[+44h] is param_1[0x11] and record+0C8h is param_1[-0x92]."
+  },
+  {
+   "address": "008561f0",
+   "native": "008561f0",
+   "name": "BSP_TorpedoProjectileShot_GetFlag148",
+   "body": "008561f0-008561f6",
+   "abi": "__thiscall(shot), RET",
+   "coverage": "complete",
+   "evidence": "Shot interface vtable 00D0C378 slot +38h. MOV AL,[ECX+148h]; RET, byte for byte the same as the base 006E2910 at 00CF9618, so the table entry differs but the behaviour does not. Read from raw bytes; no Ghidra function."
+  }
+ ],
+ "host_steps": [
+  {
+   "address": "006e1361",
+   "native_unregistered": "006e2570",
+   "function": "006e1300",
+   "method": "query_water_mode",
+   "this": "record+310h",
+   "args": "none",
+   "gate": "byte record+458h set; the MTorpedo table routes this to 00855F00"
+  },
+  {
+   "address": "006e138b",
+   "native": "006e1510",
+   "function": "006e1300",
+   "method": "advance_in_air",
+   "this": "record",
+   "args": "the scaled step",
+   "gate": "the water query returned 0; MRocket routes this to 0080A000"
+  },
+  {
+   "address": "006e13d3",
+   "native_unregistered": "006e2800",
+   "function": "006e1300",
+   "method": "query_sweep_flags",
+   "this": "record",
+   "args": "two char* out, ESP+13h and ESP+12h",
+   "gate": "byte record+5Ch set and the arming countdown expired"
+  },
+  {
+   "address": "006e1407",
+   "native": "00414db0",
+   "function": "006e1300",
+   "method": "refresh_world_pose",
+   "this": "record",
+   "args": "none",
+   "gate": "byte record+0C8h clear"
+  },
+  {
+   "address": "006e145b",
+   "native": "0084c430",
+   "function": "006e1300",
+   "method": "sweep_step_segment",
+   "this": "none",
+   "args": "previous record+37Ch and world record+0FCh by value, record+310h null-guarded, record+3D8h, record+314h, 00F87574, record+368h; CL and DL from 006E2800; RET 2Ch",
+   "gate": "byte record+5Ch set; contract, docs/PROJECTILE_IMPACT.md"
+  },
+  {
+   "address": "006e14a9",
+   "native": "0042d7e0",
+   "function": "006e1300",
+   "method": "world_matrix",
+   "this": "record",
+   "args": "none",
+   "gate": "flight time over FlyTime and classDesc[+D4h] non-zero"
+  },
+  {
+   "address": "006e14ba",
+   "native": "00427eb0",
+   "function": "006e1300",
+   "method": "world_position_refreshed",
+   "this": "record",
+   "args": "the matrix plus 20h",
+   "gate": "same"
+  },
+  {
+   "address": "006e14c7",
+   "native": "0084b6f0",
+   "function": "006e1300",
+   "method": "spawn_timeout_effect",
+   "this": "classDesc+0D4h",
+   "args": "the position in EDX",
+   "gate": "same; contract"
+  },
+  {
+   "address": "006e14d2",
+   "native": "00696350",
+   "function": "006e1300",
+   "method": "expire_projectile",
+   "this": "record",
+   "args": "0, EDX = 0",
+   "gate": "flight time over classDesc[+54h]"
+  },
+  {
+   "address": "006e14db",
+   "native": "00926d90",
+   "function": "006e1300",
+   "method": "release_projectile",
+   "this": "record",
+   "args": "2",
+   "gate": "same; contract"
+  },
+  {
+   "address": "006e14f4",
+   "native": "006e6900",
+   "function": "006e1300",
+   "method": "advance_owner_grace",
+   "this": "record+310h",
+   "args": "the scaled step",
+   "gate": "not expired"
+  },
+  {
+   "address": "006e10a1",
+   "native_unregistered": "006e2570",
+   "function": "006e1060",
+   "method": "query_water_mode",
+   "this": "record+310h",
+   "args": "none",
+   "gate": "byte record+458h set"
+  },
+  {
+   "address": "006e1101",
+   "native": "006e0cd0",
+   "function": "006e1060",
+   "method": "trail_last_point",
+   "this": "record+338h",
+   "args": "a float[3] out at ESP+1Ch",
+   "gate": "air mode and record+338h non-null; contract"
+  },
+  {
+   "address": "006e1129",
+   "native": "004842c0",
+   "function": "006e1060",
+   "method": "effect_set_world_point",
+   "this": "record+338h",
+   "args": "record+0FCh",
+   "gate": "same"
+  },
+  {
+   "address": "006e11e5",
+   "native": "0085dc80",
+   "function": "006e1060",
+   "method": "orthonormalize",
+   "this": "the stack matrix",
+   "args": "none",
+   "gate": "segment longer than 1.0e-4; contract"
+  },
+  {
+   "address": "006e122f",
+   "native": "0053d9c0",
+   "function": "006e1060",
+   "method": "effect_set_world_matrix",
+   "this": "record+338h",
+   "args": "the stack matrix",
+   "gate": "same"
+  },
+  {
+   "address": "006e1117",
+   "native": "00414db0",
+   "function": "006e1060",
+   "method": "refresh_world_pose",
+   "this": "record",
+   "args": "none",
+   "gate": "byte record+0C8h clear"
+  },
+  {
+   "address": "006e1049",
+   "native": "00414db0",
+   "function": "006e1010",
+   "method": "refresh_world_pose",
+   "this": "record",
+   "args": "none",
+   "gate": "byte record+0C8h clear"
+  },
+  {
+   "address": "006e1058",
+   "native": "004134f0",
+   "function": "006e1010",
+   "method": "cache_world_matrix",
+   "this": "record+418h",
+   "args": "record+0CCh",
+   "gate": "none"
+  },
+  {
+   "address": "006e15be",
+   "native": "00419440",
+   "function": "006e1510",
+   "method": "vector_length",
+   "this": "the stack copy of the velocity",
+   "args": "none",
+   "gate": "none"
+  },
+  {
+   "address": "006e1634",
+   "native": "0085dc80",
+   "function": "006e1510",
+   "method": "orthonormalize",
+   "this": "record+74h",
+   "args": "none",
+   "gate": "none; contract"
+  },
+  {
+   "address": "006fcdd8",
+   "native": "00414db0",
+   "function": "006fcd20",
+   "method": "refresh_world_pose",
+   "this": "record",
+   "args": "none",
+   "gate": "world mode not 2, byte record+0C8h clear"
+  },
+  {
+   "address": "006fceb0",
+   "native": "00b63d50",
+   "function": "006fcd20",
+   "method": "build_inverse_transform",
+   "this": "target+110h",
+   "args": "target+0CCh in EDX",
+   "gate": "byte target+10Ch clear"
+  },
+  {
+   "address": "006fced3",
+   "native": "004142e0",
+   "function": "006fcd20",
+   "method": "transform_point",
+   "this": "record+0FCh",
+   "args": "an out point, target+110h",
+   "gate": "the candidate is inside 625.0f"
+  },
+  {
+   "address": "006fcff9",
+   "native": "00bd2f10",
+   "function": "006fcd20",
+   "method": "random_blast_radius",
+   "this": "ECX = 1",
+   "args": "classDesc+0B4h, classDesc+0B8h",
+   "gate": "at detonation depth"
+  },
+  {
+   "address": "006fd032",
+   "native": "0084bad0",
+   "function": "006fcd20",
+   "method": "radial_blast",
+   "this": "record+0FCh",
+   "args": "classDesc+70h in EDX; the radius, 0, record+3D8h, record",
+   "gate": "same; docs/EXPLOSION_RADIAL_DAMAGE.md records this site"
+  },
+  {
+   "address": "006fd08c",
+   "native": "0078d1b0",
+   "function": "006fcd20",
+   "method": "project_to_water_surface",
+   "this": "[[00E188A8]+19F0h]",
+   "args": "an out point, record+0FCh and record+370h by value",
+   "gate": "same"
+  },
+  {
+   "address": "00855b03",
+   "native": "006e1010",
+   "function": "00855b00",
+   "method": "commit_base",
+   "this": "record+3E4h",
+   "args": "none",
+   "gate": "none"
+  },
+  {
+   "address": "00855b1c",
+   "native": "004134f0",
+   "function": "00855b00",
+   "method": "mirror_local_matrix",
+   "this": "record+4A4h",
+   "args": "[record+4A0h] plus 74h",
+   "gate": "record+4A0h non-null"
+  },
+  {
+   "address": "00856d24",
+   "native": "004193e0",
+   "function": "00856bb0",
+   "method": "distance_squared",
+   "this": "a stack float[3]",
+   "args": "none",
+   "gate": "a target is already held"
+  },
+  {
+   "address": "00856d9f",
+   "native": "00521370",
+   "function": "00856bb0",
+   "method": "direction_to_pitch_yaw",
+   "this": "record+0ECh",
+   "args": "&ownPitch in EDX, &ownYaw on the stack",
+   "gate": "a target is held"
+  },
+  {
+   "address": "00856e02",
+   "native": "00419510",
+   "function": "00856bb0",
+   "method": "normalize",
+   "this": "the target delta",
+   "args": "none",
+   "gate": "same"
+  },
+  {
+   "address": "00856e14",
+   "native": "00521370",
+   "function": "00856bb0",
+   "method": "direction_to_pitch_yaw",
+   "this": "the normalized delta",
+   "args": "&targetPitch in EDX, &targetYaw on the stack",
+   "gate": "same"
+  },
+  {
+   "address": "00856e5f",
+   "native": "00852820",
+   "function": "00856bb0",
+   "method": "target_suppresses_homing",
+   "this": "the target",
+   "args": "none",
+   "gate": "HomingVertTurnSpeed > 0 and the kind test passed; contract"
+  },
+  {
+   "address": "00856e7e",
+   "native": "00438b10",
+   "function": "00856bb0",
+   "method": "subtract_wrapped_angle",
+   "this": "none",
+   "args": "ownPitch at [E+0Ch], targetPitch at [E+8h]",
+   "gate": "same"
+  },
+  {
+   "address": "00856ee3",
+   "native": "0085e880",
+   "function": "00856bb0",
+   "method": "rotate_about_right",
+   "this": "record+74h",
+   "args": "EDX = record+74h; the axis record+74h and the clamped pitch error",
+   "gate": "same"
+  },
+  {
+   "address": "00856efa",
+   "native": "00438b10",
+   "function": "00856bb0",
+   "method": "subtract_wrapped_angle",
+   "this": "none",
+   "args": "the same two slots as 00856E7E",
+   "gate": "same"
+  },
+  {
+   "address": "00856f7a",
+   "native": "0085e880",
+   "function": "00856bb0",
+   "method": "rotate_about_right",
+   "this": "record+74h",
+   "args": "the axis record+74h and the hull's own pitch",
+   "gate": "a target is held but the vertical turn was skipped"
+  },
+  {
+   "address": "00857149",
+   "native": "0085e880",
+   "function": "00856bb0",
+   "method": "rotate_about_up",
+   "this": "record+74h",
+   "args": "the axis record+84h and the clamped angle",
+   "gate": "reached from the homing tail at 00856F5A and from the heading tail"
+  },
+  {
+   "address": "00856fc6",
+   "native": "0078cf20",
+   "function": "00856bb0",
+   "method": "sample_water_height",
+   "this": "[[00E188A8]+19F0h]",
+   "args": "the world x at +30h and z at +38h by value",
+   "gate": "the homing tail did not return early"
+  },
+  {
+   "address": "00857092",
+   "native": "00438b10",
+   "function": "00856bb0",
+   "method": "subtract_wrapped_angle",
+   "this": "none",
+   "args": "the atan2 yaw and record+46Ch",
+   "gate": "same"
+  },
+  {
+   "address": "008570b8",
+   "native": "008e6430",
+   "function": "00856bb0",
+   "method": "gameplay_modifier",
+   "this": "none",
+   "args": "0Fh, record",
+   "gate": "byte 00E0C978 set and [[00F88C30]+13Ch] non-zero"
+  },
+  {
+   "address": "00856c31",
+   "native": "008053c0",
+   "function": "00856bb0",
+   "method": "recon_slot",
+   "this": "[record+3BCh]+54h",
+   "args": "none",
+   "gate": "the scan is due and record+3BCh is non-null; contract"
+  },
+  {
+   "address": "00856c1c",
+   "native": "006952a0",
+   "function": "00856bb0",
+   "method": "unbind_target",
+   "this": "the held target",
+   "args": "record+4FCh in EDX",
+   "gate": "a target is held; contract"
+  },
+  {
+   "address": "00856d59",
+   "native": "00694a60",
+   "function": "00856bb0",
+   "method": "bind_target",
+   "this": "the winning candidate",
+   "args": "record+4FCh in EDX",
+   "gate": "the candidate is nearer than the held target; contract"
+  },
+  {
+   "address": "00856c85",
+   "native": "00414db0",
+   "function": "00856bb0",
+   "method": "refresh_world_pose",
+   "this": "record",
+   "args": "none",
+   "gate": "byte record+0C8h clear"
+  }
+ ],
+ "no_ghidra_function": [
+  {
+   "address": "00cf93f0",
+   "body": "00cf93f0-00cf9407",
+   "name": "MBomb tick element vtable",
+   "abi": "data, six dwords",
+   "evidence": "006E2750 scalar deleting destructor, 006E1060 place pose, 006E1300 tick advance, 006E1010 commit, 0042BBA0 and 006E2920. The string owner follows at 00CF9620."
+  },
+  {
+   "address": "00cfb9f8",
+   "body": "00cfb9f8-00cfba0f",
+   "name": "MDepthCharge tick element vtable",
+   "abi": "data, six dwords",
+   "evidence": "006FCA10, then 006E1060, 006E1300, 006E1010, 0042BBA0, 006E2920, identical to MBomb below the destructor."
+  },
+  {
+   "address": "00d09060",
+   "body": "00d09060-00d09077",
+   "name": "MRocket tick element vtable",
+   "abi": "data, six dwords",
+   "evidence": "0080AC90, then 006E1060, 006E1300, 006E1010, 0042BBA0, 006E2920. The string VMax precedes it at 00D09058."
+  },
+  {
+   "address": "00d0c35c",
+   "body": "00d0c35c-00d0c373",
+   "name": "MTorpedo tick element vtable",
+   "abi": "data, six dwords",
+   "evidence": "00856240, 006E1060, 006E1300, then 00855B00 in place of 006E1010, 0042BBA0, 006E2920. The string ...pedo precedes it at 00D0C354 and the shot interface table 00D0C378 follows."
+  },
+  {
+   "address": "00cf95d4",
+   "body": "00cf95d4-00cf95df",
+   "name": "MBomb entity vtable slots 19Ch-1A4h",
+   "abi": "data, three dwords",
+   "evidence": "006E1510 air, 006E27F0 water, 006E2800 sweep flags. The table base 00CF9438 is the value 006E26D6 stores at [ESI]."
+  },
+  {
+   "address": "00cfbc1c",
+   "body": "00cfbc1c-00cfbc27",
+   "name": "MDepthCharge entity vtable slots 19Ch-1A4h",
+   "abi": "data, three dwords",
+   "evidence": "006E1510 air, 006FCD20 water, 006E2800. Table base 00CFBA80 from 006FC96D."
+  },
+  {
+   "address": "00d09284",
+   "body": "00d09284-00d0928f",
+   "name": "MRocket entity vtable slots 19Ch-1A4h",
+   "abi": "data, three dwords",
+   "evidence": "0080A000 air, 006E27F0 water, 006E2800. Table base 00D090E8 from 0080AB65. The dword after +1A4h is 42480000h, so the table ends there."
+  },
+  {
+   "address": "00d0c584",
+   "body": "00d0c584-00d0c58f",
+   "name": "MTorpedo entity vtable slots 19Ch-1A4h",
+   "abi": "data, three dwords",
+   "evidence": "006E1510 air, 00857480 water, 006E2800. Table base 00D0C3E8 from 0085607A. The bytes after +1A4h begin the string Homing..., so the table ends there."
+  },
+  {
+   "address": "00cfa56c",
+   "body": "00cfa56c-00cfa58b",
+   "name": "MTorpedo class descriptor vtable",
+   "abi": "data, eight dwords",
+   "evidence": "006EAF20, 006EA550, 006EA520, 00855A90 at +0Ch, 006E97F0, 008566B0 (the reader docs/WEAPON_CLASS_DESCRIPTOR.md names), 006EA530, 00856420 (the create). It begins immediately after the string MFlakBullet at 00CFA560, which is why the packet brief read it as a tick table."
+  },
+  {
+   "address": "00d0c378",
+   "body": "00d0c378-00d0c3bf",
+   "name": "MTorpedo shot interface vtable",
+   "abi": "data, eighteen dwords",
+   "evidence": "Diffed against MBomb's 00CF95E0, MDepthCharge's 00CFBA10 and MRocket's 00D09078. Only +0h, +28h (008568E0 against 006E6450), +2Ch (00855F00 against 006E2570) and +38h (008561F0, byte-identical to 006E2910) differ. The rocket's only override is +3Ch = 00809F20, the ignition event 0080A0FE calls; the depth charge's only override is +28h = 006FD660."
+  },
+  {
+   "address": "006e2570",
+   "body": "006e2570-006e2578",
+   "name": "BSP_BombProjectileShot_IsUnderWater",
+   "abi": "__thiscall(shot), RET",
+   "evidence": "Nine bytes decoded with capstone from the bridge's byte reader: XOR EAX,EAX; CMP byte [ECX+44h],AL; SETNZ AL; RET. Ghidra's nearest preceding function start is 006E22D0."
+  },
+  {
+   "address": "006e27f0",
+   "body": "006e27f0-006e27f2",
+   "name": "BSP_BombProjectile_AdvanceInWater",
+   "abi": "__thiscall(record, float dt), RET 4",
+   "evidence": "Three bytes, C2 04 00. Ghidra's nearest preceding function start is 006E2790."
+  },
+  {
+   "address": "006e2800",
+   "body": "006e2800-006e280e",
+   "name": "BSP_BombProjectile_SweepFlags",
+   "abi": "__stdcall(char* a, char* b), RET 8",
+   "evidence": "Fifteen bytes decoded with capstone: the two stack arguments are loaded into EAX and ECX and both pointed-to bytes are set to 1."
+  },
+  {
+   "address": "0080a000",
+   "body": "0080a000-0080a56f",
+   "name": "BSP_RocketProjectile_AdvanceWithIgnition",
+   "abi": "__thiscall(record, float dt), RET 4",
+   "evidence": "Read from raw bytes; Ghidra's nearest preceding function start is 00809FB0. The body end is the inclusive extent this packet read plus the unread trail; only 0080A000-0080A26A is covered."
+  },
+  {
+   "address": "006fd660",
+   "body": "006fd660-006fd743",
+   "name": "BSP_DepthChargeProjectileShot_EnterWater",
+   "abi": "__thiscall(shot, float), RET 4",
+   "evidence": "Read from raw bytes; Ghidra's nearest preceding function start is 006FD400. The RET 4 at 006FD743 is the inclusive end of the path read; the break-up branch at 006FD746 is a separate tail."
+  },
+  {
+   "address": "00855a90",
+   "body": "00855a90-00855af5",
+   "name": "BSP_TorpedoClass_FinaliseDerivedFields",
+   "abi": "__thiscall(classDesc), RET",
+   "evidence": "Read from raw bytes; the three INT3 fillers at 00855AF6-00855AF8 confirm the inclusive end. Ghidra's nearest preceding function start is 00855250."
+  },
+  {
+   "address": "00855f00",
+   "body": "00855f00-00855f46",
+   "name": "BSP_TorpedoProjectileShot_IsUnderWater",
+   "abi": "__thiscall(shot), RET",
+   "evidence": "Read from raw bytes; both returns are in range and the second RET at 00855F46 is the inclusive end."
+  },
+  {
+   "address": "00857480",
+   "body": "00857480-008577a0",
+   "name": "BSP_TorpedoProjectile_AdvanceSwim",
+   "abi": "__thiscall(record, float dt), RET 4",
+   "evidence": "Read from raw bytes; Ghidra's nearest preceding function start is 00856BB0, whose body ends at 00857155, so 00857480 is outside it. The end given is the extent of the bytes fetched; only 00857480-00857679 is covered and the wake tail beyond 008576D6 is unread."
+  },
+  {
+   "address": "008561f0",
+   "body": "008561f0-008561f6",
+   "name": "BSP_TorpedoProjectileShot_GetFlag148",
+   "abi": "__thiscall(shot), RET",
+   "evidence": "Seven bytes, MOV AL,[ECX+148h]; RET, byte for byte the base 006E2910."
+  }
+ ],
+ "corrections": [
+  {
+   "what": "MTorpedo vtable 00CFA56C overrides one extra slot with 00855A90 (packet brief)",
+   "is": "00CFA56C is the MTorpedo class descriptor vtable, not a tick table, and 00855A90 is its +0Ch finalise hook; the torpedo's tick element table is 00D0C35C and its only tick override is 00855B00 at +0Ch",
+   "evidence": "00CFA56C+1Ch holds 00856420, the create; 00CFA56C begins right after the string MFlakBullet at 00CFA560. 00D0C35C reads 00856240, 006E1060, 006E1300, 00855B00."
+  },
+  {
+   "what": "the torpedo's model lives at 00855B00 (packet brief)",
+   "is": "00855B00 is the commit slot; the torpedo's motion model is the entity vtable slot +1A0h at 00D0C588, which is 00857480, and its steering is 00856BB0",
+   "evidence": "00855B00 is 34 bytes that call 006E1010 and copy one matrix. 00D0C584 holds 006E1510, 00857480, 006E2800."
+  },
+  {
+   "what": "the arming distance (packet brief)",
+   "is": "the sweep gate record+45Ch is a countdown in seconds decremented by the scaled step at 006E13AF; nothing in the tick measures travelled distance",
+   "evidence": "006E139B compares [this+78h] against 00D7A218, whose four bytes are zero, and the else branch is FSUB of the step."
+  },
+  {
+   "what": "docs/PROJECTILE_KINDS.md lists 006E1300, 006E1060 and 00855B00 as contract: unread",
+   "is": "all three are read here; 006E1300 and 006E1010 are complete, 006E1060 is partial",
+   "evidence": "docs/BOMB_FAMILY_TICK.md and docs/TORPEDO_TICK.md coverage tables."
+  },
+  {
+   "what": "docs/WEAPON_CLASS_DESCRIPTOR.md records the depth charge's +F0h as computed, not read, without the formula",
+   "is": "the formula is sqrt(2 * MaxFall * 9.81), the impact speed of a fall of MaxFall metres, and the torpedo has the same derived field at +ECh",
+   "evidence": "00855AAE-00855AD3 computes it for the torpedo through the CRT sqrt at 00BF7030; 006FD6A6 and 008568E0 both compare the projectile's vertical velocity against its negation."
+  }
+ ],
+ "unread": [
+  "006E1236-006E127D, the water-trail branch of the place pose",
+  "006FCE8D-006FCF8B beyond its transform calls, and 006FCD20 after 006FD0AA",
+  "006FD746-006FD89A, the depth charge's water break-up branch",
+  "0080A26A onward, the rocket's trail block from record+47Ch",
+  "008576D6 onward, the torpedo's wake and sound tail",
+  "00856C28-00856C63, the container the homing scan walks",
+  "the producers of record+468h and record+470h on the depth charge and of record+474h, +478h, +480h, +484h, +514h and +4A0h on the torpedo; the record is memset to zero by the create and no writer was found",
+  "the producer of record+348h..350h, the acceleration 006E1510 adds inside the gravity branch",
+  "0085DC80, 0085E880's rotation body, 006E0CD0, 008053C0, 00694A60, 006952A0, 00852820, 008E6430, 0084B6F0, 00696350, 0078D1B0, 0042B2F0"
+ ]
+}
