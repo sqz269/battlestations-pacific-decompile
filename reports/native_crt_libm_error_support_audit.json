@@ -1,0 +1,926 @@
+{
+  "schema": 1,
+  "packet": "native_crt_libm_error_support2",
+  "utc": "2026-09-12T00:26:34.432627+00:00",
+  "base_commit": "a90f7a0a",
+  "owned_files": [
+    "src/native_crt_libm_error_support.cpp",
+    "include/bsp/native_crt_libm_error_support.hpp",
+    "docs/NATIVE_CRT_LIBM_ERROR_SUPPORT.md",
+    "reports/native_crt_libm_error_support_audit.json"
+  ],
+  "functions": [
+    {
+      "address": "00c0f0e4",
+      "end_exclusive": "00c0f35e",
+      "original_name": "___libm_error_support",
+      "source_name": "bsp::native_crt_libm_error_support_00c0f0e4",
+      "native_bytes": 634,
+      "native_instructions": 176,
+      "source_complete": true,
+      "compiled_bytes": 784,
+      "compiled_instructions": 255
+    },
+    {
+      "address": "00c28545",
+      "end_exclusive": "00c28548",
+      "original_name": "_matherr",
+      "source_name": "bsp::native_crt_default_matherr_00c28545",
+      "native_bytes": 3,
+      "native_instructions": 2,
+      "source_complete": true,
+      "compiled_bytes": 3,
+      "compiled_instructions": 2,
+      "name_basis": "default CRT callback call role; primary owns saved annotation"
+    }
+  ],
+  "status": {
+    "exported": true,
+    "reconstructed_full_owned_bodies": true,
+    "strict_build_tested": true,
+    "existing_ctests_passed": true,
+    "all_eight_native_seeds_matched": true,
+    "complete_static_object_and_link_proof": true,
+    "service_fixture_tested": false,
+    "drop_in_original_abi_compatible": false,
+    "game_validated": false,
+    "probe_executed": false,
+    "ghidra_mutated": false,
+    "shared_build_or_ledgers_edited": false
+  },
+  "native_evidence": {
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00c0f0e4",
+        "length": 634,
+        "role": "owned_full_libm_error_service",
+        "bytes_hex": "558bec83ec2833c03905b8e10901538b5d0c568b7510578b7d088845f88845f98845fa8845fb8845fc8845fd8845fe8845ff740eff3580ed0901e8bb5effff59eb05b84585c2008b4d14baa60000003bca0f8f740100000f845b01000083f9190f8ff80000000f84e90000008bd16a02592bd10f84cd0000004a0f84bd00000083ea050f84a50000004a0f848600000083ea0574714a744583ea090f85d4010000c745d803000000c745dcc471d500dd078d4dd8dd5de051dd03dd5de8dd06dd5df0ffd085c0590f85a3010000e8d509ffffc70022000000e993010000c745dcfc71d500dd078d4dd8dd5de051dd03c745d804000000dd5de8dd06dd5df0ffd059e96a010000c745d803000000c745dcfc71d500eb99c745dcd471d500dd07dd5de0dd03dd5de8dd06e922010000894dd8c745dcd471d500e972ffffffc745dcd071d500ebd7894dd8c745dcd071d500e95affffffc745dcc471d500eb8683e91a744e49743f49743049742083e91d741283e9030f85fb000000c745dc2872d500eb9ac745dc3072d500eb91c745dcc471d500dd07dd1eeb84c745dcc471d500e978ffffffc745d802000000e9f7feffffd9e8e9bb000000c745d803000000c745dc68a9d600e9e4feffff81c118fcffff83f90c0f879b000000ff248d60f3c000c745dcd071d500eba9c745dcd471d500eba0c745dcfc71d500eb97c745dc1872d500eb8ec745dc1072d500eb85c745dcf471d500e979ffffffc745dcc871d500e96dffffffc745dcb471d500eb10c745dc0472d500eb07c745dca071d500dd07dc4df8dd16dd07dd5de0dd03dd5de88d4dd8dd5df051c745d801000000ffd085c059750be83d08ffffc70021000000dd45f0dd1e5f5e5bc9c3",
+        "sha256": "65c2d8637092d38568bf2b700b2645106e08bbdfb3842edf4d30f213178388cd",
+        "instructions": 176,
+        "disk_backed": true,
+        "section": ".text",
+        "section_characteristics": "60000020",
+        "section_base": "00401000",
+        "section_raw_size": 9310208,
+        "section_virtual_size": 9306422,
+        "observed": "guarded_saved_program_bytes_match_disk_PE",
+        "fresh_saved_matches_prior": true,
+        "fresh_disk_match": true
+      },
+      {
+        "address": "00c28545",
+        "length": 3,
+        "role": "owned_full_default_callback",
+        "bytes_hex": "33c0c3",
+        "sha256": "4bc724f3b1d0caf4fe369c18cba3102e6c4ea057f63fe1587e3973134a7f755e",
+        "instructions": 2,
+        "disk_backed": true,
+        "section": ".text",
+        "section_characteristics": "60000020",
+        "section_base": "00401000",
+        "section_raw_size": 9310208,
+        "section_virtual_size": 9306422,
+        "observed": "guarded_saved_program_bytes_match_disk_PE",
+        "fresh_saved_matches_prior": true,
+        "fresh_disk_match": true
+      },
+      {
+        "address": "00c0f0bb",
+        "length": 41,
+        "role": "owned_discovery_full_uncreated_registration_candidate",
+        "bytes_hex": "837c24040075088325b8e1090100c3ff742404e8945effff59a380ed0901c705b8e1090101000000c3",
+        "sha256": "0f9b0a0d7207567de7e5bafbfacffb458e6978ea7fbf127aa445e37abfc4a77a",
+        "instructions": 10,
+        "disk_backed": true,
+        "section": ".text",
+        "section_characteristics": "60000020",
+        "section_base": "00401000",
+        "section_raw_size": 9310208,
+        "section_virtual_size": 9306422,
+        "observed": "guarded_saved_program_bytes_match_disk_PE",
+        "fresh_saved_matches_prior": true,
+        "fresh_disk_match": true
+      },
+      {
+        "address": "00c04fde",
+        "length": 110,
+        "role": "unowned_full_decoder_dependency",
+        "bytes_hex": "56ff35005be1008b35bc20ce00ffd685c07421a1fc5ae10083f8ff741750ff35005be100ffd6ffd085c074088b80fc010000eb2668d09fd600ff155c21ce008bf085f67423e8d3feffff85c0741a68e09fd60056ff15f420ce0085c0740aff742408ffd0894424088b4424085ec3",
+        "sha256": "eb47f22d9b2b8faa38544703069e34befb7aafc724f67b5d1e15fcf1058fcaa5",
+        "instructions": 36,
+        "disk_backed": true,
+        "section": ".text",
+        "section_characteristics": "60000020",
+        "section_base": "00401000",
+        "section_raw_size": 9310208,
+        "section_virtual_size": 9306422,
+        "observed": "guarded_saved_program_bytes_match_disk_PE",
+        "fresh_saved_matches_prior": true,
+        "fresh_disk_match": true
+      },
+      {
+        "address": "00bffb8b",
+        "length": 19,
+        "role": "complete_errno_accessor_unresolved_PTD_provider",
+        "bytes_hex": "e82756000085c07506b8e859e100c383c008c3",
+        "sha256": "84aca6584c13d6f07ced37568fc45be0c65f51583ba9a70f7cc98d62b2d94a5c",
+        "instructions": 7,
+        "disk_backed": true,
+        "section": ".text",
+        "section_characteristics": "60000020",
+        "section_base": "00401000",
+        "section_raw_size": 9310208,
+        "section_virtual_size": 9306422,
+        "observed": "guarded_saved_program_bytes_match_disk_PE",
+        "fresh_saved_matches_prior": true,
+        "fresh_disk_match": true
+      },
+      {
+        "address": "00c0f360",
+        "length": 52,
+        "role": "complete_selector_1000_table",
+        "bytes_hex": "c5f2c000cef2c000d7f2c000e0f2c000e9f2c000f2f2c0007df2c000fef2c00067f2c0005ef2c0000af3c00013f3c0001cf3c000",
+        "sha256": "1acd052ee55de323cd88f86775fb54eec65954ddeb6b285d6305d9c2cb79b823",
+        "instructions": 0,
+        "disk_backed": true,
+        "section": ".text",
+        "section_characteristics": "60000020",
+        "section_base": "00401000",
+        "section_raw_size": 9310208,
+        "section_virtual_size": 9306422,
+        "observed": "guarded_saved_program_bytes_match_disk_PE",
+        "fresh_saved_matches_prior": true,
+        "fresh_disk_match": true
+      },
+      {
+        "address": "00d571a0",
+        "length": 4,
+        "role": "canonical_name_tan",
+        "bytes_hex": "74616e00",
+        "sha256": "74eeda8ba39b4090b624abe262f6d2558218dab6397fe5464aec1fffaee6c65e",
+        "instructions": 0,
+        "disk_backed": true,
+        "section": ".rdata",
+        "section_characteristics": "40000040",
+        "section_base": "00ce2000",
+        "section_raw_size": 1204224,
+        "section_virtual_size": 1202980,
+        "observed": "guarded_saved_program_bytes_match_disk_PE",
+        "fresh_saved_matches_prior": true,
+        "fresh_disk_match": true
+      },
+      {
+        "address": "00d571b4",
+        "length": 4,
+        "role": "canonical_name_sin",
+        "bytes_hex": "73696e00",
+        "sha256": "c1fda1459a424b9edba8acd1af626d6507a32d93238d9d25f5ff7983cb640633",
+        "instructions": 0,
+        "disk_backed": true,
+        "section": ".rdata",
+        "section_characteristics": "40000040",
+        "section_base": "00ce2000",
+        "section_raw_size": 1204224,
+        "section_virtual_size": 1202980,
+        "observed": "guarded_saved_program_bytes_match_disk_PE",
+        "fresh_saved_matches_prior": true,
+        "fresh_disk_match": true
+      },
+      {
+        "address": "00d571c4",
+        "length": 4,
+        "role": "canonical_name_pow",
+        "bytes_hex": "706f7700",
+        "sha256": "7dd2720d66f19802f4900bf81bea03552039d5deef989f52869f9eb6902b15e1",
+        "instructions": 0,
+        "disk_backed": true,
+        "section": ".rdata",
+        "section_characteristics": "40000040",
+        "section_base": "00ce2000",
+        "section_raw_size": 1204224,
+        "section_virtual_size": 1202980,
+        "observed": "guarded_saved_program_bytes_match_disk_PE",
+        "fresh_saved_matches_prior": true,
+        "fresh_disk_match": true
+      },
+      {
+        "address": "00d571c8",
+        "length": 5,
+        "role": "canonical_name_modf",
+        "bytes_hex": "6d6f646600",
+        "sha256": "3365e9b1f229154612c07d1ebb7d104f5b99dfc6b77bfbf8772e8df936764e77",
+        "instructions": 0,
+        "disk_backed": true,
+        "section": ".rdata",
+        "section_characteristics": "40000040",
+        "section_base": "00ce2000",
+        "section_raw_size": 1204224,
+        "section_virtual_size": 1202980,
+        "observed": "guarded_saved_program_bytes_match_disk_PE",
+        "fresh_saved_matches_prior": true,
+        "fresh_disk_match": true
+      },
+      {
+        "address": "00d571d0",
+        "length": 4,
+        "role": "canonical_name_log",
+        "bytes_hex": "6c6f6700",
+        "sha256": "8b701f465117fc4a1d6f3ecee15260f226c65b0918e518e6e005400df8bc36fa",
+        "instructions": 0,
+        "disk_backed": true,
+        "section": ".rdata",
+        "section_characteristics": "40000040",
+        "section_base": "00ce2000",
+        "section_raw_size": 1204224,
+        "section_virtual_size": 1202980,
+        "observed": "guarded_saved_program_bytes_match_disk_PE",
+        "fresh_saved_matches_prior": true,
+        "fresh_disk_match": true
+      },
+      {
+        "address": "00d571d4",
+        "length": 6,
+        "role": "canonical_name_log10",
+        "bytes_hex": "6c6f67313000",
+        "sha256": "190b2d8f49be558271a7c9f4b95f211d1f7d9e2db57e48cf2449f791a81a32d7",
+        "instructions": 0,
+        "disk_backed": true,
+        "section": ".rdata",
+        "section_characteristics": "40000040",
+        "section_base": "00ce2000",
+        "section_raw_size": 1204224,
+        "section_virtual_size": 1202980,
+        "observed": "guarded_saved_program_bytes_match_disk_PE",
+        "fresh_saved_matches_prior": true,
+        "fresh_disk_match": true
+      },
+      {
+        "address": "00d571f4",
+        "length": 6,
+        "role": "canonical_name_floor",
+        "bytes_hex": "666c6f6f7200",
+        "sha256": "9b72c27df6b3709f7e8bddcd2bc39a8b860939a71097b6f61468157e6b3fa2ec",
+        "instructions": 0,
+        "disk_backed": true,
+        "section": ".rdata",
+        "section_characteristics": "40000040",
+        "section_base": "00ce2000",
+        "section_raw_size": 1204224,
+        "section_virtual_size": 1202980,
+        "observed": "guarded_saved_program_bytes_match_disk_PE",
+        "fresh_saved_matches_prior": true,
+        "fresh_disk_match": true
+      },
+      {
+        "address": "00d571fc",
+        "length": 4,
+        "role": "canonical_name_exp",
+        "bytes_hex": "65787000",
+        "sha256": "2d3a30b5b3c2c01858a34a73387bf673239544b1acba3a607b77cfc874ddaa7a",
+        "instructions": 0,
+        "disk_backed": true,
+        "section": ".rdata",
+        "section_characteristics": "40000040",
+        "section_base": "00ce2000",
+        "section_raw_size": 1204224,
+        "section_virtual_size": 1202980,
+        "observed": "guarded_saved_program_bytes_match_disk_PE",
+        "fresh_saved_matches_prior": true,
+        "fresh_disk_match": true
+      },
+      {
+        "address": "00d57204",
+        "length": 4,
+        "role": "canonical_name_cos",
+        "bytes_hex": "636f7300",
+        "sha256": "bfb6df77d64fc71c90203ce8fef26376ce576e8ff111e16a06cb905d24138814",
+        "instructions": 0,
+        "disk_backed": true,
+        "section": ".rdata",
+        "section_characteristics": "40000040",
+        "section_base": "00ce2000",
+        "section_raw_size": 1204224,
+        "section_virtual_size": 1202980,
+        "observed": "guarded_saved_program_bytes_match_disk_PE",
+        "fresh_saved_matches_prior": true,
+        "fresh_disk_match": true
+      },
+      {
+        "address": "00d57210",
+        "length": 5,
+        "role": "canonical_name_ceil",
+        "bytes_hex": "6365696c00",
+        "sha256": "a0619fbd2ec06b6574e8da6dfa18c191fc23d19c6fc47ca404cb1599e707c21c",
+        "instructions": 0,
+        "disk_backed": true,
+        "section": ".rdata",
+        "section_characteristics": "40000040",
+        "section_base": "00ce2000",
+        "section_raw_size": 1204224,
+        "section_virtual_size": 1202980,
+        "observed": "guarded_saved_program_bytes_match_disk_PE",
+        "fresh_saved_matches_prior": true,
+        "fresh_disk_match": true
+      },
+      {
+        "address": "00d57218",
+        "length": 5,
+        "role": "canonical_name_atan",
+        "bytes_hex": "6174616e00",
+        "sha256": "464bebb5283a5701008381f3abc306b09c570a441a072c1f32c23c41974e0910",
+        "instructions": 0,
+        "disk_backed": true,
+        "section": ".rdata",
+        "section_characteristics": "40000040",
+        "section_base": "00ce2000",
+        "section_raw_size": 1204224,
+        "section_virtual_size": 1202980,
+        "observed": "guarded_saved_program_bytes_match_disk_PE",
+        "fresh_saved_matches_prior": true,
+        "fresh_disk_match": true
+      },
+      {
+        "address": "00d57228",
+        "length": 5,
+        "role": "canonical_name_asin",
+        "bytes_hex": "6173696e00",
+        "sha256": "6d316e06bdb4a700e29ec99c8694e52cd715fcaaddcbb5ba4948949605f4111d",
+        "instructions": 0,
+        "disk_backed": true,
+        "section": ".rdata",
+        "section_characteristics": "40000040",
+        "section_base": "00ce2000",
+        "section_raw_size": 1204224,
+        "section_virtual_size": 1202980,
+        "observed": "guarded_saved_program_bytes_match_disk_PE",
+        "fresh_saved_matches_prior": true,
+        "fresh_disk_match": true
+      },
+      {
+        "address": "00d57230",
+        "length": 5,
+        "role": "canonical_name_acos",
+        "bytes_hex": "61636f7300",
+        "sha256": "f9be389ee97a0bfbc0335c547ed63972a14a0e074fc88f54852da56a51be2d82",
+        "instructions": 0,
+        "disk_backed": true,
+        "section": ".rdata",
+        "section_characteristics": "40000040",
+        "section_base": "00ce2000",
+        "section_raw_size": 1204224,
+        "section_virtual_size": 1202980,
+        "observed": "guarded_saved_program_bytes_match_disk_PE",
+        "fresh_saved_matches_prior": true,
+        "fresh_disk_match": true
+      },
+      {
+        "address": "00d6a968",
+        "length": 6,
+        "role": "canonical_name_exp10",
+        "bytes_hex": "657870313000",
+        "sha256": "b0aef657676facc669222fb0f740ce8ad838b5abe4cea5411133db14c172d978",
+        "instructions": 0,
+        "disk_backed": true,
+        "section": ".rdata",
+        "section_characteristics": "40000040",
+        "section_base": "00ce2000",
+        "section_raw_size": 1204224,
+        "section_virtual_size": 1202980,
+        "observed": "guarded_saved_program_bytes_match_disk_PE",
+        "fresh_saved_matches_prior": true,
+        "fresh_disk_match": true
+      },
+      {
+        "address": "0109e1b8",
+        "length": 4,
+        "role": "actual_callback_present",
+        "bytes_hex": "00000000",
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "instructions": 0,
+        "disk_backed": false,
+        "section": ".data",
+        "section_characteristics": "c0000040",
+        "section_base": "00e08000",
+        "section_raw_size": 65536,
+        "section_virtual_size": 2719452,
+        "observed": "guarded_saved_program_virtual_zero_fill_NOT_disk_or_live_process_value",
+        "fresh_saved_matches_prior": true,
+        "fresh_disk_match": false
+      },
+      {
+        "address": "0109ed80",
+        "length": 4,
+        "role": "actual_encoded_callback",
+        "bytes_hex": "00000000",
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "instructions": 0,
+        "disk_backed": false,
+        "section": ".data",
+        "section_characteristics": "c0000040",
+        "section_base": "00e08000",
+        "section_raw_size": 65536,
+        "section_virtual_size": 2719452,
+        "observed": "guarded_saved_program_virtual_zero_fill_NOT_disk_or_live_process_value",
+        "fresh_saved_matches_prior": true,
+        "fresh_disk_match": false
+      }
+    ],
+    "guard": "Each byte request uses tools/bsp.py ghidra, verifying existing bsp.gpr and /battlestationspacific.exe; no saved-program mutation or process execution."
+  },
+  "original_abi": {
+    "entry": "cdecl four original argument words; first/second/output pointers then signed selector; plain RET",
+    "exception_record": {
+      "bytes": 32,
+      "type": 0,
+      "name": 4,
+      "argument1": 8,
+      "argument2": 16,
+      "result": 24
+    },
+    "actual_callback": "int __cdecl(CameraAxesCrtException*); exact mutable record, preserved nonvolatiles, balanced cdecl stack and required net x87 depth",
+    "default": "XOR EAX,EAX; RET; no argument read"
+  },
+  "qualified_source_context": {
+    "additional_argument": "stable context reference at entry ESP+14h; all four original argument slots retain offsets",
+    "five_reference_offsets": {
+      "callback_present_0109e1b8": 0,
+      "encoded_callback_0109ed80": 4,
+      "decoder": 8,
+      "owning_crt": 12,
+      "names": 16
+    },
+    "layout_proof": "local/libm_error_support/context_proof.json",
+    "errno_member_offset": 4,
+    "names_mapping": "14 immutable pointers at offsets0..52, exact bytes/identities captured; actual original or one explicitly shared rebuilt canonical domain; no mutable __umatherr table lookup",
+    "lifetime": "added context, mappings and binding identities remain readable and stable, separate from mutable native state; actual callbacks/providers and code/data remain valid through captured uses"
+  },
+  "preserved_schedule": [
+    "Flag CMP precedes second/output/first captures; original comparison flags survive MOVs and all eight positive-zero byte stores to JZ.",
+    "Nonzero flag reads current encoded word, invokes full actual decoder with actual outgoing argument slot; no forced flag0, decoded-null guard or substitute callback.",
+    "Current selector slot is read after decoding, including unknown/no-callback26 routes; no early selector snapshot.",
+    "All native signed166/unsigned13-way branches and actual indexed DWORD dispatch retained; static readonly symbol+observed-offset table; no initializer or table publication.",
+    "Every callback gets both x87-loaded argument qwords and exact mutable32byte record; route errno policy is fixed despite record.type edits.",
+    "Early FLDfirst/FSTPoutput precedes argument reloads. sin/cos/tan FLDfirst/FMULpositivezero/FSToutput retains extended result while arguments reload before FSTPrecord.result.",
+    "Final FLDrecord.result/FSTPoutput follows callback and any owning errno accessor/store; no FP-control/status or EH policy added."
+  ],
+  "complete_provider_closure": {
+    "actual_source_providers": [
+      "native_crt_decode_pointer_00c04fde",
+      "native_crt_pointer_decode_module_gate_00c04efb",
+      "get_native_crt_winmajor_00bfbb61",
+      "native_crt_strcmp_00c05920"
+    ],
+    "external_existing_boundaries": [
+      "LegacyCrtMathRuntime actual owning-CRT errno accessor",
+      "NativeCrtPointerDecodeContext real current IAT/TLS/PTD/DecodePointer",
+      "module gate actual Win32 imports and existing invalid-parameter boundary"
+    ],
+    "qualified_incomplete_dependencies": [
+      "CRT startup, PTD allocation/getter C051B7, locale and locks, invalid-handler runtime, actual registered callback ownership/lifetime"
+    ],
+    "no_fabricated_provider_or_host_math": true
+  },
+  "validation": {
+    "source_review": "Primary reviewed all complete source/header before strict build; static readonly table approved from observed compiler layout.",
+    "strict_command": "./scripts/build.ps1 (Release), invoked by ignored local strict_build.ps1",
+    "hook": "local/libm_error_support/build_hook.cmake adds only actual existing decoder.cpp and owned service.cpp; module support already in base CMake.",
+    "tests": [
+      {
+        "name": "reconstructed_math",
+        "passed": true
+      },
+      {
+        "name": "native_math_differential",
+        "passed": true
+      }
+    ],
+    "native_seeds": [
+      {
+        "address": "00401170",
+        "length": 28,
+        "matches_disk": true
+      },
+      {
+        "address": "00401c20",
+        "length": 47,
+        "matches_disk": true
+      },
+      {
+        "address": "00401cb0",
+        "length": 25,
+        "matches_disk": true
+      },
+      {
+        "address": "00401cd0",
+        "length": 29,
+        "matches_disk": true
+      },
+      {
+        "address": "00401cf0",
+        "length": 25,
+        "matches_disk": true
+      },
+      {
+        "address": "00bf0cf0",
+        "length": 46,
+        "matches_disk": true
+      },
+      {
+        "address": "00bf0d20",
+        "length": 207,
+        "matches_disk": true
+      },
+      {
+        "address": "00ba2c20",
+        "length": 94,
+        "matches_disk": true
+      }
+    ],
+    "no_new_tests": true,
+    "service_runtime_coverage": "No callback fixture, FP fault experiment or service execution; existing tests do not exercise the new service.",
+    "compile_only_layouts": [
+      "Release /O2 /Ob2 /DNDEBUG",
+      "Debug /Od /Ob0 /D_DEBUG /RTC1 /MDd"
+    ],
+    "both_layouts_full_proof": true
+  },
+  "object_proof": {
+    "file": "local/libm_error_support/final_proof.json",
+    "all_176_native_instructions_mapped": true,
+    "compiled_instruction_count": 255,
+    "compiled_service_bytes": 784,
+    "default_exact": "33c0c3",
+    "all_branches_mapped": true,
+    "canonical_name_expansions_checked": true,
+    "three_exact_code_relocations": [
+      {
+        "offset": 65,
+        "symbol": "?native_crt_decode_pointer_00c04fde@bsp@@YAPAXPAXABUNativeCrtPointerDecodeContext@1@@Z",
+        "type": 20
+      },
+      {
+        "offset": 74,
+        "symbol": "?native_crt_default_matherr_00c28545@bsp@@YAHPAUCameraAxesCrtException@1@@Z",
+        "type": 6
+      },
+      {
+        "offset": 565,
+        "symbol": "?libm_selector_table@bsp@@3QBQBEB",
+        "type": 6
+      }
+    ],
+    "table": [
+      {
+        "selector": 1000,
+        "original": "00c0f2c5",
+        "offset": 569
+      },
+      {
+        "selector": 1001,
+        "original": "00c0f2ce",
+        "offset": 583
+      },
+      {
+        "selector": 1002,
+        "original": "00c0f2d7",
+        "offset": 597
+      },
+      {
+        "selector": 1003,
+        "original": "00c0f2e0",
+        "offset": 614
+      },
+      {
+        "selector": 1004,
+        "original": "00c0f2e9",
+        "offset": 631
+      },
+      {
+        "selector": 1005,
+        "original": "00c0f2f2",
+        "offset": 648
+      },
+      {
+        "selector": 1006,
+        "original": "00c0f27d",
+        "offset": 487
+      },
+      {
+        "selector": 1007,
+        "original": "00c0f2fe",
+        "offset": 665
+      },
+      {
+        "selector": 1008,
+        "original": "00c0f267",
+        "offset": 449
+      },
+      {
+        "selector": 1009,
+        "original": "00c0f25e",
+        "offset": 432
+      },
+      {
+        "selector": 1010,
+        "original": "00c0f30a",
+        "offset": 682
+      },
+      {
+        "selector": 1011,
+        "original": "00c0f313",
+        "offset": 696
+      },
+      {
+        "selector": 1012,
+        "original": "00c0f31c",
+        "offset": 710
+      }
+    ],
+    "readonly_static_no_CRT_initializer": true
+  },
+  "actual_archive": {
+    "archive_sha256": "eb85ce860318faf2a91ebe6694aaaf05068cef1914b2cf42de5cdb97506f2148",
+    "members": [
+      {
+        "member": "bsp_core.dir\\Release\\native_crt_libm_error_support.obj",
+        "bytes": 3812,
+        "sha256": "897143db94c217b2810fd8464ad5b58fe735878c0ce871e8c173ce65bbd0b1e9",
+        "path": "native_crt_libm_error_support.archive.obj"
+      },
+      {
+        "member": "bsp_core.dir\\Release\\native_crt_pointer_decode.obj",
+        "bytes": 1380,
+        "sha256": "c103208f554838d9ecf9572b389b8010d4b4954488fa2f1bfbe73bf766e82e8e",
+        "path": "native_crt_pointer_decode.archive.obj"
+      },
+      {
+        "member": "bsp_core.dir\\Release\\native_crt_pointer_decode_support.obj",
+        "bytes": 3734,
+        "sha256": "45099f49e776ed74cb6642b4f72de35f2bc8ffd4c8e4543fb458c0d7dd4352e4",
+        "path": "native_crt_pointer_decode_support.archive.obj"
+      }
+    ]
+  },
+  "linked_proof": {
+    "executable_sha256": "641ba180d80dce5de5b38e3247a93f4914e8ce4d5227a542b66479b885025e69",
+    "executed": false,
+    "full_functions": [
+      {
+        "function": "native_crt_libm_error_support_00c0f0e4",
+        "address": "00401020",
+        "bytes": 784,
+        "coff_normalized_full_body_matches": true,
+        "relocations": [
+          {
+            "offset": 65,
+            "symbol": "?native_crt_decode_pointer_00c04fde@bsp@@YAPAXPAXABUNativeCrtPointerDecodeContext@1@@Z",
+            "type": 20,
+            "target": "00401370",
+            "evidence": "exact link-map symbol plus object addend"
+          },
+          {
+            "offset": 74,
+            "symbol": "?native_crt_default_matherr_00c28545@bsp@@YAHPAUCameraAxesCrtException@1@@Z",
+            "type": 6,
+            "target": "00401360",
+            "evidence": "exact link-map symbol plus object addend"
+          },
+          {
+            "offset": 565,
+            "symbol": "?libm_selector_table@bsp@@3QBQBEB",
+            "type": 6,
+            "target": "00403100",
+            "evidence": "exact link-map symbol plus object addend"
+          }
+        ]
+      },
+      {
+        "function": "native_crt_default_matherr_00c28545",
+        "address": "00401360",
+        "bytes": 3,
+        "coff_normalized_full_body_matches": true,
+        "relocations": []
+      },
+      {
+        "function": "native_crt_decode_pointer_00c04fde",
+        "address": "00401370",
+        "bytes": 127,
+        "coff_normalized_full_body_matches": true,
+        "relocations": [
+          {
+            "offset": 60,
+            "symbol": "?kernel32_name@?A0x418d162e@bsp@@3QBDB",
+            "type": 6,
+            "target": "00403390",
+            "evidence": "exact link-map symbol plus object addend"
+          },
+          {
+            "offset": 66,
+            "symbol": "__imp__GetModuleHandleA@4",
+            "type": 6,
+            "target": "00403000",
+            "evidence": "exact link-map symbol plus object addend; actual PE import GetModuleHandleA"
+          },
+          {
+            "offset": 84,
+            "symbol": "?native_crt_pointer_decode_module_gate_00c04efb@bsp@@YAHABUNativeCrtPointerDecodeSupportContext@1@@Z",
+            "type": 20,
+            "target": "00401480",
+            "evidence": "exact link-map symbol plus object addend"
+          },
+          {
+            "offset": 96,
+            "symbol": "?decode_pointer_name@?A0x418d162e@bsp@@3QBDB",
+            "type": 6,
+            "target": "004033a0",
+            "evidence": "exact link-map symbol plus object addend"
+          },
+          {
+            "offset": 103,
+            "symbol": "__imp__GetProcAddress@8",
+            "type": 6,
+            "target": "00403004",
+            "evidence": "exact link-map symbol plus object addend; actual PE import GetProcAddress"
+          }
+        ]
+      },
+      {
+        "function": "native_crt_strcmp_00c05920",
+        "address": "00401570",
+        "bytes": 136,
+        "coff_normalized_full_body_matches": true,
+        "relocations": []
+      },
+      {
+        "function": "get_native_crt_winmajor_00bfbb61",
+        "address": "004013f0",
+        "bytes": 68,
+        "coff_normalized_full_body_matches": true,
+        "relocations": []
+      },
+      {
+        "function": "native_crt_pointer_decode_module_gate_00c04efb",
+        "address": "00401480",
+        "bytes": 230,
+        "coff_normalized_full_body_matches": true,
+        "relocations": [
+          {
+            "offset": 74,
+            "symbol": "__imp__GetModuleHandleA@4",
+            "type": 6,
+            "target": "00403000",
+            "evidence": "exact link-map symbol plus object addend; actual PE import GetModuleHandleA"
+          },
+          {
+            "offset": 150,
+            "symbol": "?mixcrt_name@?A0x0be26ce9@bsp@@3QBDB",
+            "type": 6,
+            "target": "004033b0",
+            "evidence": "exact link-map symbol plus object addend"
+          },
+          {
+            "offset": 155,
+            "symbol": "?native_crt_strcmp_00c05920@bsp@@YAHPBD0@Z",
+            "type": 20,
+            "target": "00401570",
+            "evidence": "exact link-map symbol plus object addend"
+          },
+          {
+            "offset": 193,
+            "symbol": "?mixcrt_name@?A0x0be26ce9@bsp@@3QBDB",
+            "type": 6,
+            "target": "004033b0",
+            "evidence": "exact link-map symbol plus object addend"
+          },
+          {
+            "offset": 198,
+            "symbol": "?native_crt_strcmp_00c05920@bsp@@YAHPBD0@Z",
+            "type": 20,
+            "target": "00401570",
+            "evidence": "exact link-map symbol plus object addend"
+          }
+        ]
+      }
+    ],
+    "readonly_table_address": "00403100",
+    "all13_table_targets_match": true,
+    "strict_archive_matches_full_reviewed_service_object": true,
+    "embedded_manifest": true
+  },
+  "build_provenance": {
+    "file": "local/libm_error_support/build_provenance.json",
+    "project_inputs_frozen": 34,
+    "external_toolchain_inputs_path_and_hash": 210,
+    "selected_TLog_records": true
+  },
+  "source_input_pins": [
+    {
+      "path": "src/native_crt_libm_error_support.cpp",
+      "bytes": 18681,
+      "sha256": "08a29de2083cf8b5f896ae9e28261b3def34966e1c3d7fd63e18ec728ecdead5"
+    },
+    {
+      "path": "include/bsp/native_crt_libm_error_support.hpp",
+      "bytes": 3702,
+      "sha256": "351b5db188bea468f861b1d55b8cde492aa0908852831c939ca6cfaa1f78c1c9"
+    },
+    {
+      "path": "src/native_crt_pointer_decode.cpp",
+      "bytes": 2271,
+      "sha256": "7a689a80bea666aa0941662a1bbde17500c92d1f7fd671c364aa2b3e0bf365c7"
+    },
+    {
+      "path": "include/bsp/native_crt_pointer_decode.hpp",
+      "bytes": 2327,
+      "sha256": "b1e901d739c07419b55441988bf42177b0e6ace3ef27ef1251ecb3b36fb48a7f"
+    },
+    {
+      "path": "src/native_crt_pointer_decode_support.cpp",
+      "bytes": 4315,
+      "sha256": "ac0eab56cd6a829cecb42157b0b3ff83124725fa0bead4aac2c29bc334fc9f37"
+    },
+    {
+      "path": "include/bsp/native_crt_pointer_decode_support.hpp",
+      "bytes": 2673,
+      "sha256": "dfc566daa6960a69680ea6897fce1b94127f3df0972cdaf645cf67a9f128e722"
+    },
+    {
+      "path": "src/native_crt_libm_callback_registration.cpp",
+      "bytes": 4120,
+      "sha256": "cacc140a243569c0d0828a309cf84c079fa12e30b1fc5124e703c44ed1716c32"
+    },
+    {
+      "path": "include/bsp/native_crt_libm_callback_registration.hpp",
+      "bytes": 4064,
+      "sha256": "96b1bf767f1b4de73a578f178de025f2c9199082e404ad3bf45e0ff695f58746"
+    },
+    {
+      "path": "include/bsp/legacy_crt_math.hpp",
+      "bytes": 1108,
+      "sha256": "52f6b22f16ee3fda8d8ee6d8a14e3bbabcf24e72393418579fab6204523efe39"
+    },
+    {
+      "path": "include/bsp/system_camera_axes.hpp",
+      "bytes": 3143,
+      "sha256": "1dec465a388fb93eefdd89558774db4097f4b397b9ce5b49674b0b0e6fbed594"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "docs/NATIVE_CRT_LIBM_ERROR_CALLBACK_DISCOVERY.md",
+      "bytes": 17175,
+      "sha256": "ac9da9b889fbb618f2973cb426525a30c45ecc7c6e17d4f3c0b719faa2f57e35"
+    },
+    {
+      "path": "docs/NATIVE_CRT_SSE2_POW_SUPPORT_DISCOVERY.md",
+      "bytes": 21595,
+      "sha256": "755e0e1ab4917ceb2de598bc2130d4b90d268439ce68765213f06e2c87a2e2d6"
+    },
+    {
+      "path": "reports/native_crt_libm_error_callback_discovery.json",
+      "bytes": 108883,
+      "sha256": "55d3f57669e0d5697ff8e8e8300a2132bfc1746154a6e1234947799b4a9b5baf"
+    },
+    {
+      "path": "reports/native_crt_pointer_decode_audit.json",
+      "bytes": 61981,
+      "sha256": "9d4ff8c791e54b10b1ce018a5a5b73744978d7c198a3cdc9d7eda97a19bbcd0c"
+    }
+  ],
+  "uncertainty": [
+    "Added context/name reads and code/frame addresses exclude original private-frame aliases, fault-site/native-SEH continuations and incidental volatile registers/EFLAGS identity.",
+    "Name mapping identity must be shared with every admitted callback/consumer; this does not discover a current live callback.",
+    "Readonly table label offsets require full emitted-layout verification after toolchain or function changes.",
+    "Saved virtual-zero callback words do not prove live flag0 or encoded-null bits.",
+    "Source is a qualified new ABI, not a binary replacement or whole CRT/SSE2 pow closure."
+  ],
+  "metadata_handoff": {
+    "primary_owned": true,
+    "retain_library_name": "___libm_error_support",
+    "default_name_proposal": "_matherr",
+    "requested_reconstruction_records": [
+      "00c0f0e4",
+      "00c28545"
+    ]
+  },
+  "immutable_handoff": {
+    "manifest": "local/libm_error_support_handoff/manifest.json",
+    "hash_delivered_externally": true,
+    "contains": "exact sources/headers/docs/audit, complete proof scripts/artifacts, frozen strict archive and extracted members, nonexecuted manifested executable/map, project compiler input closure and selected TLogs; external toolchain headers retain path+hash only"
+  }
+}
