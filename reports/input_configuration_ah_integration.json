@@ -1,0 +1,248 @@
+{
+  "packet": "orch4_input_configuration_closeout_ah",
+  "utc": "2026-09-12T23:58:29.100543+00:00",
+  "status": "existing_work_integrated_build_and_component_fixtures_passed_parser_and_gameplay_pending",
+  "user_boundary": "Finish previous session work; no new worker or follow-on packet dispatched.",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910",
+  "branch": "agent/orch4-20260910",
+  "validated_source_revision": "6404acb1c806b64072af0b8858a25f05b7dcb428",
+  "merged_main_revision": "a76b3c8f",
+  "code_manifest": "local\\input_configuration_ah_source_manifest.json",
+  "code_manifest_sha256": "9bc2418af9d989e961cc0d6823df61e1d7f16d9a4836bdcf341ac28531f9f8e5",
+  "code_file_count": 2125,
+  "core_archive_sha256": "b9b2e4eb1e91288a608ec762355ae5edd04b4b0572cf4e43ea4fd330d22a503b",
+  "game_executable_sha256": "be71306a73fe9821035642835377be4903104108e818ae7c2a057a092eee1370",
+  "worker_commits": {
+    "action_configuration": "7c42037631df91589b58929dca22838b3e327fe5",
+    "deadline_callback": "67248e261642bad9169dbbfc9483ba709cbc5584",
+    "map_lookup_assessment": "195722afcc611187182bae5bd4b41fc7b55bf1b8",
+    "map_storage": "c8c01c9f2bdeae385e8c7f83d256c5256d872c75",
+    "cleanup": "535703ffa74eac313e81a09c937268f5e18fa511",
+    "configuration_owner": "5e5d66f7f5c9f93be9be3f102c78b21b96d32d54",
+    "configuration_storage": "1b6f3a79e9f9f13a111d3d4a6efce634303b3c1c",
+    "map_subscript": "4fd31f795facfab77f7bea84d8a49961d09d6914"
+  },
+  "source_composition": "GameInputActions uses same raw owner/record/context services for configure/set_context_level. GameInputDeadlineCallback defaults to the concrete signed-map adapter; the borrowed canonical game/map owner still must be wired by application setup.",
+  "validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "seeds_matched": 8,
+    "build_logs": {
+      "input_configuration_ah_final_build.log": "3965d5f6e4a20e7dd717811b3d3795471c730343828dcf81df3ca6bb82d10a8f",
+      "input_configuration_ah_bound_build.log": "2878c6bf275e2aaa3eb922670d95187a9bb29501f5539df60b755c387fddf0ae"
+    },
+    "seed_log_sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+    "call_audits": {
+      "native_input_action_configuration": {
+        "rows": 171,
+        "failures": 0,
+        "log": "local\\input_configuration_ah_audit_native_input_action_configuration.log",
+        "sha256": "473b2079aa81dd1700b187aadc652b9cc52178a61775f38bc24be85f6bf77d1b"
+      },
+      "native_input_action_deadlines": {
+        "rows": 39,
+        "failures": 0,
+        "log": "local\\input_configuration_ah_audit_native_input_action_deadlines.log",
+        "sha256": "6cc41684f71e4c0dc5b493acd3f1000a75e8a8b8c0e010e765e0e78541fb6a02"
+      },
+      "native_input_action_contexts": {
+        "rows": 35,
+        "failures": 0,
+        "log": "local\\input_configuration_ah_audit_native_input_action_contexts.log",
+        "sha256": "8b9345659fed6f1d69594d708d1d4ba9b7834d05713bcb5df349c44053d6ea01"
+      },
+      "native_input_deadline_map_lookup": {
+        "rows": 30,
+        "failures": 0,
+        "log": "local\\input_configuration_ah_audit_native_input_deadline_map_lookup.log",
+        "sha256": "2fb2650501fd0b307df0b4d9171bc229fae538b36ebdb8a08edc85abfd116933"
+      },
+      "native_input_deadline_map_storage": {
+        "rows": 22,
+        "failures": 0,
+        "log": "local\\input_configuration_ah_audit_native_input_deadline_map_storage.log",
+        "sha256": "f76bd7705b6d7c211e7cfd1e8440f62ad1a1c5355021483b7f8032df50dde8c8"
+      },
+      "native_input_deadline_map_lookup_adapter": {
+        "rows": 52,
+        "failures": 0,
+        "log": "local\\input_configuration_ah_audit_native_input_deadline_map_lookup_adapter.log",
+        "sha256": "19a8e2fdbc5b134c7b6a920afff82e0775a2442e84784da100e69f805e8e62ce"
+      },
+      "native_input_configuration_cleanup": {
+        "rows": 29,
+        "failures": 0,
+        "log": "local\\input_configuration_ah_audit_native_input_configuration_cleanup.log",
+        "sha256": "31145015e9ba2675acc591bcb77b76b0b9088a0765636118f9e07bd54f92d6ed"
+      },
+      "native_input_configuration_owner": {
+        "rows": 13,
+        "failures": 0,
+        "log": "local\\input_configuration_ah_audit_native_input_configuration_owner.log",
+        "sha256": "9b129183ec65cba75573e2caa93f58b5c32989b8d9b7b11b1b09865a0e509681"
+      },
+      "native_input_configuration_storage": {
+        "rows": 23,
+        "failures": 0,
+        "log": "local\\input_configuration_ah_audit_native_input_configuration_storage.log",
+        "sha256": "1766b8d3b808d83f98162af52b7b2627234816544ceca70bb22d43b5e1920e2b"
+      }
+    },
+    "fixtures": {
+      "context": {
+        "log": "local\\input_configuration_ah_context.log",
+        "sha256": "8b6fc6f2e632f2df0d670e70cd58f9bc7e169ff3f21888282178d152e8e9ce35",
+        "passed": true,
+        "core_archive_sha256": "b9b2e4eb1e91288a608ec762355ae5edd04b4b0572cf4e43ea4fd330d22a503b",
+        "output": [
+          "input_context_probe_ah.cpp",
+          "native/source actual-storage differential: spans=4 direct_relocations=9 phases=7 unsigned_maximum=80000000 floor=1 endpoint_mutation=1 unchanged_level_still_activates=1 action_count=3 context_count=5 listener_release_mutation=1 device_calls=9 active_value_bits=3f000000 disabled_listener_clear=1 self_alias_context_clear=1",
+          "real recovered storage/poll/listener providers; controlled fixture device callbacks; no SDK, window, hardware or game run",
+          "CoreArchiveSHA256=B9B2E4EB1E91288A608EC762355AE5EDD04B4B0572CF4E43EA4FD330D22A503B"
+        ]
+      },
+      "deadlines": {
+        "log": "local\\input_configuration_ah_deadlines.log",
+        "sha256": "a7c77901466feba0f1a6816fe238196351f784d77ba10472b43d3969e87d402a",
+        "passed": true,
+        "core_archive_sha256": "b9b2e4eb1e91288a608ec762355ae5edd04b4b0572cf4e43ea4fd330d22a503b",
+        "output": [
+          "native_deadlines_probe.cpp",
+          "PASS native mode=all_edges getters=16 map_calls=16 whole_storage_equal=1 wrapper_receiver_captured=1 action_owner_and_base_reloaded=1 pre_call_rounding=1 returned_cell_store=1",
+          "PASS native mode=nan_mixed getters=16 map_calls=8 whole_storage_equal=1 wrapper_receiver_captured=1 action_owner_and_base_reloaded=1 pre_call_rounding=1 returned_cell_store=1",
+          "PASS source_exception prior_write_preserved=1 failed_cell_unwritten=1 remaining_schedule_skipped=1",
+          "BOUNDARY copied native wrapper11/body1499 bytes; controlled map contract only, real source getter fast path; no map insertion, SDK, device polling, force, ShowCursor or game; exception case is source-only"
+        ],
+        "runner_receipt": "local\\input_configuration_ah_deadlines.json"
+      },
+      "owner": {
+        "log": "local\\input_configuration_ah_owner.log",
+        "sha256": "a7b0337d2f0e79e6d8a579624c63583627b72e8523e91b55aaf84f592c66bd9d",
+        "passed": true,
+        "core_archive_sha256": "b9b2e4eb1e91288a608ec762355ae5edd04b4b0572cf4e43ea4fd330d22a503b",
+        "output": [
+          "GameSourcesCompiledSeparately=False",
+          "native_config_owner_probe.cpp",
+          "PASS constructor native patterns=2 bytes_compared=524h Lua_prefix_at_zero=1 tracking_preimages=1 opaque4CC_and_vector_words=1 tail_padding=1",
+          "PASS destructor nonempty_native_free_order=3,2,1,0,4,5,6 nested_opaque_preserved=1 source_whole_storage_equal=1 real_owned_Lua_finalizers=1,1 Lua_live_blocks_after_close=0,0 empty_close_no_repeat=1",
+          "BOUNDARY one copied-native actual-storage probe; CRT buffers and Lua allocator are real, native free trace observed; no scripts, configuration loading, action reset, SDK, device poll or game; native FH3 exception path unexercised"
+        ],
+        "runner_receipt": "local\\input_configuration_ah_owner.json"
+      },
+      "storage": {
+        "log": "local\\input_configuration_ah_storage.log",
+        "sha256": "96c38605f4db26a9087ce41595f23939c754df93a78a7164a25049321770fcec",
+        "passed": true,
+        "core_archive_sha256": "b9b2e4eb1e91288a608ec762355ae5edd04b4b0572cf4e43ea4fd330d22a503b",
+        "output": [
+          "verified native spans 5 direct relocations 24 absolute relocations 1",
+          "native_input_storage_probe_ag.cpp",
+          "native/source actual-storage differential: spans=5 direct_relocations=24 IAT_relocations=1 cleanup_passes=2 native_lazy_gets=597 listener_releases=2 publication_switch=1 returning_CRT_repairs=1 vector_assignments=2 vector_erases=8 nested_headers_cleared=3 preserved_flags_values_capacity=1",
+          "production extracted checked-vector adapter; direct erase returning_CRT=1 mismatched_owners=1 output_header_alias=1; shared raw publication fast path; no SDK, window, input polling, force or game run"
+        ]
+      },
+      "class": {
+        "log": "local\\input_configuration_ah_class.log",
+        "sha256": "687024f3c8efa50ae8bccb8f45ab0ef4101e3de333e374842eab06b34e19cbd8",
+        "passed": true,
+        "core_archive_sha256": "b9b2e4eb1e91288a608ec762355ae5edd04b4b0572cf4e43ea4fd330d22a503b",
+        "output": [
+          "native_input_class_configuration_probe.cpp",
+          "raw class configuration: invalid_returns=1 requested_before_validation=1 captured_erase_suffix=1 wildcard_words=3 explicit_ids=3 copy_reuse=1 self_alias_clear=1 fixed_slots_unchanged=1 dirty_callback_unchanged=1 class_buffers=0",
+          "actual storage only; SDK/window/input polling/force/gameplay not exercised"
+        ]
+      },
+      "map_storage": {
+        "log": "local\\input_configuration_ah_map_storage.log",
+        "sha256": "5e440b102894f2f8a60e699659ba4beb10d656dbcd1ff45c3fd4b1b12484b29d",
+        "passed": true,
+        "core_archive_sha256": "b9b2e4eb1e91288a608ec762355ae5edd04b4b0572cf4e43ea4fd330d22a503b",
+        "output": [
+          "native_input_deadline_map_storage_probe.cpp",
+          "PASS deadline storage: linked_nodes=6 scalar_payloads=6 signed_order_and_red_black_invariants=pass aliased_output=1 returning_CRT_handlers=2 owning_length_error=1 cleanup=pass",
+          "LIMIT fixture selects insertion sites; no hinted insertion/subscript, native differential, allocation-failure injection, SDK or game execution"
+        ]
+      },
+      "map_lookup": {
+        "log": "local\\input_configuration_ah_map_lookup.log",
+        "sha256": "ef2dada94e589655c7237e38cc5978a19b8db2ce1b84c3955b527e88c4828c54",
+        "passed": true,
+        "core_archive_sha256": "b9b2e4eb1e91288a608ec762355ae5edd04b4b0572cf4e43ea4fd330d22a503b",
+        "output": [
+          "phase invalid return",
+          "phase new throw",
+          "phase length throw",
+          "PASS deadline subscript: words=15055 permutations=120 hint_paths=5/5 insertions=605 duplicates=600 key_aliases=602 new_handlers=2 returning_CRT=1 errors=2 allocations=730 frees=730 per_run; native/source equal",
+          "BOUNDARY original 4D6900/4D3CD0/4B7520 instructions; shared concrete link/rebalance/CRT source at 4CF010; no arbitrary-hint ABI or SDK/game execution"
+        ]
+      },
+      "hardware": {
+        "log": "local\\input_configuration_ah_hardware.log",
+        "sha256": "db68d793142d34e1b81550b9fe76ab12a502c08808dca80a38a71c1ae03c73d7",
+        "passed": true,
+        "core_archive_sha256": "b9b2e4eb1e91288a608ec762355ae5edd04b4b0572cf4e43ea4fd330d22a503b",
+        "output": [
+          "fixture.cpp",
+          "PASS: 8582 behavior words; 56 native and 56 host output stores; 5 actual CRT throw events each."
+        ]
+      }
+    },
+    "same_archive_verified_after_all_fixtures": true,
+    "new_tracked_tests": 0,
+    "game_sources_separately_compiled_in_fixtures": false,
+    "sdk_calls": 0,
+    "game_launches": 0,
+    "single_instance_bypass": false,
+    "original_abi_compatible": false,
+    "game_validated": false
+  },
+  "native_metadata": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "signatures_and_names_saved_readback_exported": 12,
+    "receipts": {
+      "reports\\native_input_action_configuration_ah_prototypes.json": {
+        "verified_signatures": 2,
+        "sha256": "4d42e44a74635554d20a8ff6ae57cfb06084232e7fbd6f216ba9088977089226"
+      },
+      "reports\\native_input_action_deadlines_ah_prototypes.json": {
+        "verified_signatures": 2,
+        "sha256": "b697e63cefe5abfd6961b1feda52fd72de662e099342ecba549947985fbeb750"
+      },
+      "reports\\native_input_action_contexts_ah_prototypes.json": {
+        "verified_signatures": 2,
+        "sha256": "47e4ae311c54e7308eefea7d4427a137a9267c36ca3a3d5d71fc7c458259093d"
+      },
+      "reports\\native_input_configuration_cleanup_ah_prototypes.json": {
+        "verified_signatures": 4,
+        "sha256": "c4e620d35d3c2be99532be5892c09a3ead07e7732cc9ec030cf0e49a1150d8c9"
+      },
+      "reports\\native_input_configuration_owner_ah_prototypes.json": {
+        "verified_signatures": 2,
+        "sha256": "054a8d99a67c2bb4ead90a7d569516c1bdf37f280b0863035de7bff0b10f8ea3"
+      }
+    },
+    "new_function_definitions": [
+      "reports/native_input_action_deadline_callback_definitions.json",
+      "reports/native_input_configuration_owner_function_definitions.json"
+    ],
+    "flow_repairs": [
+      "reports/native_input_configuration_cleanup_flow_repair.json",
+      "reports/native_input_configuration_owner_flow_repair.json",
+      "reports/native_input_configuration_load_flow_repair.json",
+      "reports/native_input_configuration_load_function_definitions.json"
+    ]
+  },
+  "limits": [
+    "Component fixtures are not end-to-end application/frame or gameplay validation; composition forwarding is build-tested.",
+    "Deadline callback fixture uses a controlled map contract; separate map differential runs original subscript/hint instructions with the shared concrete link boundary.",
+    "The actual698A10 parser and6974F0 descriptor remain unimplemented. Checked nested-row append and complete first-time action population remain.",
+    "Source APIs are not original native ABI/FH3/SEH replacements; component valid-storage domains and exception boundaries remain explicit."
+  ],
+  "closed_exploration": {
+    "path": "local/native_input_configuration_load_closeout_ah.md",
+    "sha256": "3e49ca0cd7e525f6e83a1ecf5df8f92bcf00b285a2ff1c5149bdd37234c2f79b",
+    "new_source_implementation": false
+  },
+  "documentation": "docs/INPUT_CONFIGURATION_AH_CLOSEOUT.md"
+}
