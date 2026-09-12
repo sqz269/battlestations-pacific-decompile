@@ -1,0 +1,534 @@
+{
+  "schema_version": 1,
+  "packet": "native_singleton_vector_leaves6",
+  "status": "complete_six_raw_functions_built_with_explicit_actual_source_crt_service_boundaries",
+  "base_commit": "01819e99",
+  "owned_files": [
+    "src/native_singleton_vector_leaves.cpp",
+    "include/bsp/native_singleton_vector_leaves.hpp",
+    "docs/NATIVE_SINGLETON_VECTOR_LEAVES.md",
+    "reports/native_singleton_vector_leaves_audit.json"
+  ],
+  "accounting": {
+    "complete_functions": 6,
+    "complete_original_bytes": 232,
+    "fresh_service_spans": 4,
+    "fresh_service_bytes": 282,
+    "fresh_total_spans": 10,
+    "fresh_total_bytes": 514,
+    "coff_exact_bytes_except_three_named_call_relocations": 232,
+    "all_owned_nonempty_code_sections": 7,
+    "all_owned_code_bytes": 326,
+    "all_owned_code_classified": true,
+    "new_tests": 0,
+    "new_runtime_or_address_only_executables": 0
+  },
+  "evidence": {
+    "directory": "J:\\PROG\\battlestations-pacific-decompile-native-singleton-vector-leaves\\local\\singleton_vector_leaves",
+    "seal_path": "J:\\PROG\\battlestations-pacific-decompile-native-singleton-vector-leaves\\local\\singleton_vector_leaves\\sealed.json",
+    "seal_sha256": "6158dc70a574c2e7b73344b0b22d85c97c42afdca7ea1d5d00f2ed9a1bc99095",
+    "artifact_count": 276,
+    "source_input_records": 14,
+    "actual_cl_dependency_pins": 182,
+    "reviewed_sdk_provider_sources": 4,
+    "early_build_inputs_unchanged": true,
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "installed_pe_machine": "0x14c",
+    "prior_discovery_seal_sha256": "d992c6b6d68ae04a03e4be9a8b3d09657e8e5a0dd3482d56f9171ef127ad2d8d",
+    "prior_discovery_pins_rehashed": 276,
+    "guard": "Each tools/bsp.py ghidra analysis batch verifies existing project/program/language/image base; no re-import or Ghidra write."
+  },
+  "functions": [
+    {
+      "address": "00bcf910",
+      "end_inclusive": "00bcf922",
+      "length": 19,
+      "decoded_bytes": 19,
+      "sha256": "ae43e511423ed41f29d85edaf2f02b5a752e32ebbe45dd99456242b3c196c50d",
+      "disk_matches_saved_ghidra": true,
+      "suggested_or_retained_ghidra_name": "BSP_PointerVector_Count",
+      "name_status": "descriptive reconstruction hypothesis or retained existing name, not recovered symbol",
+      "source_symbol": "count_native_singleton_slots_00bcf910",
+      "original_abi": "ECX raw owner; EDX unconsumed; EAX uint32 SAR2 result; RET",
+      "complete_behavior": "Capture begin+4; null skips end read and returns0; otherwise raw32 end+8 minus begin, SAR2.",
+      "coff": {
+        "address": "00bcf910",
+        "symbol": "?count_native_singleton_slots_00bcf910@bsp@@YIIPBXPAX@Z",
+        "length": 19,
+        "section": 8,
+        "symbol_offset": 0,
+        "isolated_code_section_exact_length": true,
+        "exact_bytes_except_named_call_relocations": true,
+        "expected_call_sites_targets_and_count_verified": true,
+        "coff_sha256": "ae43e511423ed41f29d85edaf2f02b5a752e32ebbe45dd99456242b3c196c50d",
+        "relocations": []
+      }
+    },
+    {
+      "address": "00bd0160",
+      "end_inclusive": "00bd017d",
+      "length": 30,
+      "decoded_bytes": 30,
+      "sha256": "fe5e96b5969e5ae6c7b3311b02a5760fbe387efaa07f367300af69fce91960e0",
+      "disk_matches_saved_ghidra": true,
+      "suggested_or_retained_ghidra_name": "BSP_PointerVector_AssignRange",
+      "name_status": "descriptive reconstruction hypothesis or retained existing name, not recovered symbol",
+      "source_symbol": "assign_native_singleton_slots_00bd0160",
+      "original_abi": "cdecl stack first,last,value_slot; plain RET; ESI preserved",
+      "complete_behavior": "Address-equality loop, current DWORD value-slot reload per four-byte store; no ordering or count-one restriction. EAX incidentally finishes at last; source returns void.",
+      "coff": {
+        "address": "00bd0160",
+        "symbol": "?assign_native_singleton_slots_00bd0160@bsp@@YAXPAXPBX1@Z",
+        "length": 30,
+        "section": 4,
+        "symbol_offset": 0,
+        "isolated_code_section_exact_length": true,
+        "exact_bytes_except_named_call_relocations": true,
+        "expected_call_sites_targets_and_count_verified": true,
+        "coff_sha256": "fe5e96b5969e5ae6c7b3311b02a5760fbe387efaa07f367300af69fce91960e0",
+        "relocations": []
+      }
+    },
+    {
+      "address": "00bd0180",
+      "end_inclusive": "00bd01ae",
+      "length": 47,
+      "decoded_bytes": 47,
+      "sha256": "4b8c14b908de6c06ebaeb098155441c2a640bcf7fc20578eecd9bf8580a8a58d",
+      "disk_matches_saved_ghidra": true,
+      "suggested_or_retained_ghidra_name": "BSP_PointerVector_CopyBackward",
+      "name_status": "descriptive reconstruction hypothesis or retained existing name, not recovered symbol",
+      "source_symbol": "copy_backward_native_singleton_slots_00bd0180",
+      "original_abi": "cdecl stack first,last,destination_end; EAX derived begin; RET; ESI preserved",
+      "complete_behavior": "raw32 SUB/SAR2; derive destination begin before signed-positive test; memmove_s arguments derived_begin,bytes,first,bytes; ignore status and return retained begin for every path.",
+      "coff": {
+        "address": "00bd0180",
+        "symbol": "?copy_backward_native_singleton_slots_00bd0180@bsp@@YAPAXPBX0PAX@Z",
+        "length": 47,
+        "section": 6,
+        "symbol_offset": 0,
+        "isolated_code_section_exact_length": true,
+        "exact_bytes_except_named_call_relocations": true,
+        "expected_call_sites_targets_and_count_verified": true,
+        "coff_sha256": "e2bcf6a37680753a3e1b09e9dbac7c17eb7531d48a786e76824147bf50e8dcde",
+        "relocations": [
+          {
+            "offset": 36,
+            "symbol": "_memmove_s",
+            "type": 20,
+            "function_offset": 36
+          }
+        ]
+      }
+    },
+    {
+      "address": "00bd0220",
+      "end_inclusive": "00bd0249",
+      "length": 42,
+      "decoded_bytes": 42,
+      "sha256": "eaec52792da9825f9c23415d3dead28e291139dc954199823b0b3c37db7ae7f3",
+      "disk_matches_saved_ghidra": true,
+      "suggested_or_retained_ghidra_name": "BSP_PointerVector_ClearStorage",
+      "name_status": "descriptive reconstruction hypothesis or retained existing name, not recovered symbol",
+      "source_symbol": "clear_native_singleton_storage_00bd0220",
+      "original_abi": "ECX raw owner; EDX unconsumed; RET; ESI preserved",
+      "complete_behavior": "Capture current begin+4, free nonnull capture, returning ADD ESP,4, then ordered zero stores +4,+8,+C; preserve+0,+10.",
+      "coff": {
+        "address": "00bd0220",
+        "symbol": "?clear_native_singleton_storage_00bd0220@bsp@@YIXPAX0@Z",
+        "length": 42,
+        "section": 5,
+        "symbol_offset": 0,
+        "isolated_code_section_exact_length": true,
+        "exact_bytes_except_named_call_relocations": true,
+        "expected_call_sites_targets_and_count_verified": true,
+        "coff_sha256": "8d190b99f3d745f3d64b0a568d8694656971dac5480015166e206d50c937117f",
+        "relocations": [
+          {
+            "offset": 12,
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "type": 20,
+            "function_offset": 12
+          }
+        ]
+      }
+    },
+    {
+      "address": "00bd0500",
+      "end_inclusive": "00bd052f",
+      "length": 48,
+      "decoded_bytes": 48,
+      "sha256": "aaf6ebf1932295279fc1abd2df5897017f0ca40663e737300063d062019c057e",
+      "disk_matches_saved_ghidra": true,
+      "suggested_or_retained_ghidra_name": "BSP_PointerVector_CopyRange",
+      "name_status": "descriptive reconstruction hypothesis or retained existing name, not recovered symbol",
+      "source_symbol": "copy_native_singleton_slots_00bd0500",
+      "original_abi": "stdcall stack first,last,destination; ECX unconsumed; EAX advanced destination; RET0C; ESI preserved",
+      "complete_behavior": "raw32 SUB/SAR2; preserve SAR zero flags across LEAs/PUSH; nonzero including negative distance reaches memmove_s; size=count=distance*4; ignore status, return pre-call advanced destination.",
+      "coff": {
+        "address": "00bd0500",
+        "symbol": "?copy_native_singleton_slots_00bd0500@bsp@@YGPAXPBX0PAX@Z",
+        "length": 48,
+        "section": 7,
+        "symbol_offset": 0,
+        "isolated_code_section_exact_length": true,
+        "exact_bytes_except_named_call_relocations": true,
+        "expected_call_sites_targets_and_count_verified": true,
+        "coff_sha256": "63dabfc173270cd1e1ef7b378b1d90a2a5fc6c43a28f771ddca28ff15a10d7f3",
+        "relocations": [
+          {
+            "offset": 35,
+            "symbol": "_memmove_s",
+            "type": 20,
+            "function_offset": 35
+          }
+        ]
+      }
+    },
+    {
+      "address": "00bd0560",
+      "end_inclusive": "00bd058d",
+      "length": 46,
+      "decoded_bytes": 46,
+      "sha256": "e6d4b9ce8c62170127c124969eb0a3018f99c8e4d1308e5f259b14bdce15995e",
+      "disk_matches_saved_ghidra": true,
+      "suggested_or_retained_ghidra_name": "BSP_PointerVector_FillRange",
+      "name_status": "descriptive reconstruction hypothesis or retained existing name, not recovered symbol",
+      "source_symbol": "fill_native_singleton_slots_00bd0560",
+      "original_abi": "stdcall stack destination,uint32 count,value_slot; ECX unconsumed; EAX initial destination+count*4; RET0C; ESI/EDI preserved, EBX preserved when used",
+      "complete_behavior": "Full unsigned count; zero skips value-slot load; each store reloads current DWORD; modulo32 addresses and return. No aliasing restriction.",
+      "coff": {
+        "address": "00bd0560",
+        "symbol": "?fill_native_singleton_slots_00bd0560@bsp@@YGPAXPAXIPBX@Z",
+        "length": 46,
+        "section": 9,
+        "symbol_offset": 0,
+        "isolated_code_section_exact_length": true,
+        "exact_bytes_except_named_call_relocations": true,
+        "expected_call_sites_targets_and_count_verified": true,
+        "coff_sha256": "e6d4b9ce8c62170127c124969eb0a3018f99c8e4d1308e5f259b14bdce15995e",
+        "relocations": []
+      }
+    }
+  ],
+  "owned_coff_code_inventory": [
+    {
+      "section": 4,
+      "bytes": 30,
+      "sha256": "fe5e96b5969e5ae6c7b3311b02a5760fbe387efaa07f367300af69fce91960e0",
+      "classification": "00bd0160"
+    },
+    {
+      "section": 5,
+      "bytes": 42,
+      "sha256": "8d190b99f3d745f3d64b0a568d8694656971dac5480015166e206d50c937117f",
+      "classification": "00bd0220"
+    },
+    {
+      "section": 6,
+      "bytes": 47,
+      "sha256": "e2bcf6a37680753a3e1b09e9dbac7c17eb7531d48a786e76824147bf50e8dcde",
+      "classification": "00bd0180"
+    },
+    {
+      "section": 7,
+      "bytes": 48,
+      "sha256": "63dabfc173270cd1e1ef7b378b1d90a2a5fc6c43a28f771ddca28ff15a10d7f3",
+      "classification": "00bd0500"
+    },
+    {
+      "section": 8,
+      "bytes": 19,
+      "sha256": "ae43e511423ed41f29d85edaf2f02b5a752e32ebbe45dd99456242b3c196c50d",
+      "classification": "00bcf910"
+    },
+    {
+      "section": 9,
+      "bytes": 46,
+      "sha256": "e6d4b9ce8c62170127c124969eb0a3018f99c8e4d1308e5f259b14bdce15995e",
+      "classification": "00bd0560"
+    },
+    {
+      "section": 10,
+      "bytes": 94,
+      "sha256": "c39db1afc660ae8a7ccdc6fbe45df3f6069778e55189789f59eb75d0c64200f5",
+      "classification": "actual SDK memmove_s"
+    }
+  ],
+  "owned_coff_empty_code_sections": [],
+  "full_native_service_spans": [
+    {
+      "address": "00bf67a7",
+      "end_inclusive": "00bf6809",
+      "length": 99,
+      "decoded_bytes": 99,
+      "sha256": "b8ae9eb62ae5ddd047fd0c3220d6e996f2aa8dee2db7c0ce013db8066952dc95",
+      "disk_matches_saved_ghidra": true
+    },
+    {
+      "address": "00bf65ac",
+      "end_inclusive": "00bf65b0",
+      "length": 5,
+      "decoded_bytes": 5,
+      "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "disk_matches_saved_ghidra": true
+    },
+    {
+      "address": "00bf9dc8",
+      "end_inclusive": "00bf9e55",
+      "length": 142,
+      "decoded_bytes": 142,
+      "sha256": "d5bec1353d11880b9ac19e7aa0648037b7000906a0c9ba7754084429d0735955",
+      "disk_matches_saved_ghidra": true
+    },
+    {
+      "address": "00bf66ef",
+      "end_inclusive": "00bf6712",
+      "length": 36,
+      "decoded_bytes": 36,
+      "sha256": "0e1f2416d2f25c96b8d07f18d401ef61528110d4b452a1b3a7336bb1cad0e4b3",
+      "disk_matches_saved_ghidra": true
+    }
+  ],
+  "important_machine_evidence": {
+    "00bd0230": "Complete fresh saved bytes and installed PE contain83c404 ADD ESP,4. Existing Ghidra listing skips the instruction. Worker source and COFF retain it and all three subsequent stores; integrator owns listing repair.",
+    "00bd051c": "JE consumes SAR-at-BD050E flags; LEA/PUSH/LEA preserve them. Negative SAR results still call memmove_s.",
+    "00bd019d": "JLE consumes TEST of SAR result and skips memory service for negative/zero, while derived return address is retained.",
+    "value_aliases": "Exact machine DWORD loads atBD0171 andBD0577 occur once per store; value is never captured once by a C++ helper."
+  },
+  "fixed_providers": {
+    "memmove_s": {
+      "symbol": {
+        "name": "_memmove_s",
+        "value": 0,
+        "section": 10,
+        "type": 32,
+        "storage": 3
+      },
+      "complete_body_bytes": 94,
+      "body_sha256": "c39db1afc660ae8a7ccdc6fbe45df3f6069778e55189789f59eb75d0c64200f5",
+      "full_instruction_schedule_asserted": true,
+      "instruction_count": 33,
+      "reviewed_full_listing": "local/singleton_vector_leaves/memmove_s.coff.asm",
+      "relocations": [
+        {
+          "offset": 19,
+          "symbol": "__imp___errno",
+          "type": 6
+        },
+        {
+          "offset": 31,
+          "symbol": "__imp___invalid_parameter_noinfo",
+          "type": 6
+        },
+        {
+          "offset": 56,
+          "symbol": "__imp___errno",
+          "type": 6
+        },
+        {
+          "offset": 68,
+          "symbol": "__imp___invalid_parameter_noinfo",
+          "type": 6
+        },
+        {
+          "offset": 83,
+          "symbol": "_memmove",
+          "type": 20
+        }
+      ],
+      "service": "Actual SDK static-inline memmove_s; current source CRT errno/invalid handler, actual memmove",
+      "compiled_complete_helper_bytes": 94,
+      "native_original": "BF67A7[99]",
+      "validation": "zero count success; destination/source null EINVAL; destination-size<count ERANGE; actual memmove for valid inputs. Both source/native error paths leave destination unchanged except actual service side effects. Leaf status is ignored.",
+      "ownership_qualification": "Original BFFB8B errno and BF66EF current encoded109DD64 handler are not bound here. SDK source owns errno and _invalid_parameter_noinfo, including UCRT thread-local/global handler choice. Malformed calls and returning-handler continuations remain present; original static CRT/Watson/FH3/SEH internals are not claimed."
+    },
+    "free": {
+      "symbol": {
+        "name": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "value": 0,
+        "section": 77,
+        "type": 32,
+        "storage": 2
+      },
+      "complete_body_bytes": 6,
+      "body_sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb",
+      "full_body_and_exact_free_relocation_asserted": true,
+      "reviewed_full_listing": "local/singleton_vector_leaves/singleton_lifetime_free.coff.asm",
+      "relocations": [
+        {
+          "offset": 2,
+          "symbol": "__imp__free",
+          "type": 6
+        }
+      ],
+      "service": "Existing actual std::free boundary",
+      "compiled_complete_provider_bytes": 6,
+      "reviewed_source": "src/singleton_lifetime.cpp:65-67",
+      "source_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "allocation_pairing": "Existing singleton_lifetime_allocate calls actual std::malloc and new-handler retry. Source raw storage is owned by that source CRT; original game private-heap storage cannot be passed across this allocation boundary.",
+      "native_original": "BF65AC[5] returning JMP to BF9DC8[142], including small-block-heap and HeapFree branches; original internals are not replaced by a claimed reconstruction."
+    }
+  },
+  "actual_crt_bindings": {
+    "actual_build_link_read_log": "build\\win32\\bsp_game.dir\\Release\\bsp_game.tlog\\link.read.1.tlog",
+    "link_read_sha256": "e0d6be8762c905c3703015ee7a2319d6b19ff6edf1646b5e532806af13215691",
+    "libraries": [
+      {
+        "path": "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\LIB\\X86\\MSVCRT.LIB",
+        "bytes": 8263656,
+        "sha256": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918"
+      },
+      {
+        "path": "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\LIB\\X86\\OLDNAMES.LIB",
+        "bytes": 158090,
+        "sha256": "3af0bc33f96a74105b9a83eea9238b7191885764b36bec144ec783a8fba59457"
+      },
+      {
+        "path": "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\LIB\\X86\\VCRUNTIME.LIB",
+        "bytes": 400312,
+        "sha256": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c"
+      },
+      {
+        "path": "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\LIB\\10.0.26100.0\\UCRT\\X86\\UCRT.LIB",
+        "bytes": 299244,
+        "sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d"
+      }
+    ],
+    "exact_import_members": [
+      {
+        "symbol": "_memmove",
+        "library": "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\LIB\\X86\\VCRUNTIME.LIB",
+        "dll": "VCRUNTIME140.dll",
+        "member_offset": 394632,
+        "bytes": 46,
+        "sha256": "e975b7b376409ba4b2d3b3d0f32213813b9afb484dd8250563c60cbd16612286",
+        "hint": 71,
+        "type_info": 8
+      },
+      {
+        "symbol": "_free",
+        "library": "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\LIB\\10.0.26100.0\\UCRT\\X86\\UCRT.LIB",
+        "dll": "api-ms-win-crt-heap-l1-1-0.dll",
+        "member_offset": 146630,
+        "bytes": 57,
+        "sha256": "48bd23599bf1b3cd3277f7ffdaa3c088768cbc483dd1df15e246d65c96c3d325",
+        "hint": 24,
+        "type_info": 8
+      },
+      {
+        "symbol": "__errno",
+        "library": "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\LIB\\10.0.26100.0\\UCRT\\X86\\UCRT.LIB",
+        "dll": "api-ms-win-crt-runtime-l1-1-0.dll",
+        "member_offset": 229558,
+        "bytes": 62,
+        "sha256": "486ea5a6f2b3657e58e5e1bbb24c8bc25460ea03d4633aa749910b4e91d3542f",
+        "hint": 35,
+        "type_info": 8
+      },
+      {
+        "symbol": "__invalid_parameter_noinfo",
+        "library": "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\LIB\\10.0.26100.0\\UCRT\\X86\\UCRT.LIB",
+        "dll": "api-ms-win-crt-runtime-l1-1-0.dll",
+        "member_offset": 232668,
+        "bytes": 81,
+        "sha256": "a811148541bd1425836378d4b5f936fb1ae31ac22056cf45ef48588dea4dd934",
+        "hint": 58,
+        "type_info": 8
+      }
+    ],
+    "existing_bsp_game_imports": [
+      {
+        "name": "memmove",
+        "dll": "VCRUNTIME140.dll"
+      },
+      {
+        "name": "_invalid_parameter_noinfo",
+        "dll": "api-ms-win-crt-runtime-l1-1-0.dll"
+      },
+      {
+        "name": "_errno",
+        "dll": "api-ms-win-crt-runtime-l1-1-0.dll"
+      },
+      {
+        "name": "free",
+        "dll": "api-ms-win-crt-heap-l1-1-0.dll"
+      }
+    ],
+    "existing_bsp_game_sha256": "88e97bf30c52156046b9f2090176e833e6ecce5efd8e80bf200b6b8632590c45",
+    "qualification": "Import-library and existing executable evidence only. The unreferenced new leaves remain in bsp_core.lib; no claim that bsp_game links or executes them."
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "configuration": "Release",
+    "platform": "Win32",
+    "toolset": "MSVC 14.51.36231",
+    "sdk": "10.0.26100.0",
+    "strict_flags": [
+      "/W4",
+      "/WX",
+      "/fp:strict"
+    ],
+    "source_crt": "/MD",
+    "source_standard": "/std:c++17",
+    "exit_code": 0,
+    "registration": "Ignored local/singleton_vector_leaves/worker_sources.cmake via CMAKE_PROJECT_INCLUDE_BEFORE adds only own CPP; shared CMake unchanged.",
+    "cl_records": "Immutable selected CL.command/read/write records and182 current dependency hashes are sealed. Actual standalone objects exactly match members of the built library.",
+    "source_review": "Parent reviewed and approved complete CPP/HPP before strict build; approved naked bodies remained unchanged.",
+    "object": "build\\win32\\bsp_core.dir\\Release\\native_singleton_vector_leaves.obj",
+    "object_sha256": "86fbf18db14d95d78f759645f375954ca754ae5b24385110c3e66c6a46b2cab6",
+    "archive": "build\\win32\\Release\\bsp_core.lib",
+    "archive_sha256": "4cf82b5db9144d44067e4807f346ece4d4beff47e2c530c3808f9f0e8d2618c0",
+    "archive_members": [
+      {
+        "object": "build\\win32\\bsp_core.dir\\Release\\native_singleton_vector_leaves.obj",
+        "member_header_offset": 33403256,
+        "member_size": 2608,
+        "exact_object_match": true,
+        "sha256": "86fbf18db14d95d78f759645f375954ca754ae5b24385110c3e66c6a46b2cab6"
+      },
+      {
+        "object": "build\\win32\\bsp_core.dir\\Release\\singleton_lifetime.obj",
+        "member_header_offset": 36949366,
+        "member_size": 32971,
+        "exact_object_match": true,
+        "sha256": "72024be3d335ac763a7365f56c45c89bd91e6a8b2d60141005a027643d7dee4a"
+      }
+    ]
+  },
+  "validation": {
+    "ctests": [
+      {
+        "name": "reconstructed_math",
+        "result": "passed"
+      },
+      {
+        "name": "native_math_differential",
+        "result": "passed"
+      }
+    ],
+    "seed_ranges": 8,
+    "seed_ranges_match_installed": 8,
+    "full_function_instruction_equivalence": "All232 bytes agree after masking only 3 fixed provider call relocations; original instruction boundaries, register operands, branches, raw arithmetic and RET forms retained.",
+    "fixture_limit": "Existing CTests and seeds do not execute these vector leaves.",
+    "runtime": "No game or ad hoc executable run; no runtime/game validation claim. New leaves remain unreferenced bsp_core.lib members, not an executable reachability claim."
+  },
+  "remaining_frontier": [
+    "Integrator owns shared CMake, ledgers, name annotations, Ghidra comments/save/export and BD0230 listing repair.",
+    "Full raw manager reserve/general insertion/checked insertion/append/register and getter/constructor/destructor/unregister/reorder remain separate reconstruction packets.",
+    "Canonical mixed registered-owner dispatch and registry getter integration remain open. No private manager, typed-layout cast, generic callback or no-op boundary is introduced.",
+    "Original CRT errno/encoded-handler ownership, service internals, fault sites, FH3/SEH frames and service-internal register/flag effects remain explicitly qualified source boundaries.",
+    "This packet does not complete the continuing game reconstruction goal."
+  ]
+}
