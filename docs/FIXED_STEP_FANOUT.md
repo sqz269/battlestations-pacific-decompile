@@ -281,3 +281,15 @@ The deferred queue holds one event kind (the 54h hit record plus the impact dire
 68h nodes), expiry ages `+6Ch` and releases at 3; a damage death lands only on the destroy list, an
 explicit Kill on both. `include/bsp/entity_event_queues.hpp` replaces the `drain_deferred_entity_events`,
 `flush_pending_entity_queues` and `release_expired_world_objects` records of the fan-out host.
+
+## Correction from docs/SPATIAL_INDEX.md
+
+Packet `cc2-spatial-index` corrects row 4: nobody marks a node "moved". `0098BA10` links a root
+node into the list at `singleton+16014h` at attach time, only when its AABB fits 2x2 cells (the node
+holds exactly four 12-byte cell links at `+0Ch`; larger nodes go to the loose array at `+8h`, children go
+to the parent), and `0098BDB0` re-derives every registered root's bucket each step; `node+8h`, written
+from the attach call's fourth argument, means "never refresh this root". The 0x16018 singleton: `+0h`
+vtable `00CE3CEC`, `+8h` loose array of 30 node pointers, `+80h` loose count, `+84h` the 150x150 cell heads
+indexed `(x*96h+z)*4`, `+16014h` the root list head; the node key at `+3Ch` is
+`minX | minZ<<8 | maxX<<16 | maxZ<<24` over the cells `0098AD60` returns for the AABB corners.
+`include/bsp/spatial_index.hpp` replaces the `refresh_moved_spatial_nodes` record.
