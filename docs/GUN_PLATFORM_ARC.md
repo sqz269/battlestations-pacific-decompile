@@ -229,3 +229,9 @@ read at `0085B4A0`), always writes `gun+494h`/`gun+498h` (`0085B7A3`, `0085B7B3`
 
 Nothing here was run: `bsp_game.exe` does not reach the gun fire chain, so there is no run-time
 evidence in this packet and none is claimed.
+
+## Correction from docs/GUN_BOT_TICKS.md (packet cc2_gun_bot_ticks)
+
+`0072D2C0`, called `BSP_Gun_SetFireRequest` above, is named `BSP_Gun_SetTriggerHeld` in the ledger
+and in Ghidra: `__thiscall(gun)(char wantFire)`, body `0072D2C0-0072D3A8`, gun vtable slot `1E8h`,
+the trigger every gun bot drives. The behaviour described above is unchanged.
