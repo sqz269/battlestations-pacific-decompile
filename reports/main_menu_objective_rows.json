@@ -1,0 +1,2030 @@
+{
+  "packet": "orch5_objective_rows",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "port": 8089,
+    "worker_mutations": false
+  },
+  "source": "src/main_menu_objective_rows.cpp",
+  "header": "include/bsp/main_menu_objective_rows.hpp",
+  "documentation": "docs/MAIN_MENU_OBJECTIVE_ROWS.md",
+  "routines": [
+    {
+      "address": "00594bf0",
+      "name_hypothesis": "BSP_MainMenu_BuildObjectiveRows",
+      "old_name": "FUN_00594bf0",
+      "coverage": "complete ordinary synchronous caller; native ABI/SEH/allocator reentry and pending resource domains excluded",
+      "original_abi": "ECX screen; no stack arguments; RET",
+      "stored_end": "005966cb",
+      "inclusive_end": "005966e4",
+      "last_instruction": "005966e4",
+      "last_instruction_length": 1
+    },
+    {
+      "address": "00582280",
+      "name_hypothesis": "STL_ObjectiveWidgetList_AllocateSentinel_00582280",
+      "old_name": "FUN_00582280",
+      "coverage": "complete ordinary successful allocation",
+      "original_abi": "ECX unused; no stack args; EAX node",
+      "inclusive_end": "00582299",
+      "last_instruction": "00582299",
+      "last_instruction_length": 1
+    },
+    {
+      "address": "005823b0",
+      "name_hypothesis": "STL_ObjectiveWidgetList_AllocateNode_005823b0",
+      "old_name": "FUN_005823b0",
+      "coverage": "complete ordinary successful allocation",
+      "original_abi": "ECX unused; stack next previous payload-address; RET0C",
+      "inclusive_end": "005823e2",
+      "last_instruction": "005823e0",
+      "last_instruction_length": 3
+    },
+    {
+      "address": "005896f0",
+      "name_hypothesis": "STL_xlen_throw_005896f0",
+      "old_name": "STL_xlen_throw_005896f0",
+      "coverage": "complete ordinary arithmetic and throw decision; native exception object and SEH ABI replaced",
+      "original_abi": "ECX list; increment stack; RET4",
+      "inclusive_end": "00589782",
+      "last_instruction": "00589780",
+      "last_instruction_length": 3
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00594c1e",
+      "native": "005806a0",
+      "function": "00594bf0",
+      "status": "reused_provider",
+      "contract": "actual selected mission via current tree and global indices"
+    },
+    {
+      "address": "00594c35",
+      "native": "00594a70",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "existing MissionProgress record index by mission id00"
+    },
+    {
+      "address": "00594c4c",
+      "native": "00518d60",
+      "function": "00594bf0",
+      "status": "required_addressed_provider",
+      "contract": "ECX10 EDX0 stack0/title08; frame518C80 and title5189B0 remain required"
+    },
+    {
+      "address": "00594c6f",
+      "native": "00594bf0+vtable34",
+      "function": "00594bf0",
+      "status": "actual_current_type_dispatch",
+      "contract": "same live widget current34",
+      "setup": "00594c45: MOV dword ptr [ESP + 0xcc],EAX ; 00594c4c: CALL 0x00518d60 ; 00594c51: MOV dword ptr [0x00e08874],0xc ; 00594c5b: MOV ECX,dword ptr [ESI + 0x2f0] ; 00594c61: MOV dword ptr [ESI + 0x60],0x0 ; 00594c68: MOV EDX,dword ptr [ECX] ; 00594c6a: MOV EAX,dword ptr [EDX + 0x34] ; 00594c6d: PUSH 0x0 "
+    },
+    {
+      "address": "00594c7e",
+      "native": "00594bf0+vtable34",
+      "function": "00594bf0",
+      "status": "actual_current_type_dispatch",
+      "contract": "same live widget current34",
+      "setup": "00594c68: MOV EDX,dword ptr [ECX] ; 00594c6a: MOV EAX,dword ptr [EDX + 0x34] ; 00594c6d: PUSH 0x0 ; 00594c6f: CALL EAX ; 00594c71: MOV ECX,dword ptr [ESI + 0x244] ; 00594c77: MOV EDX,dword ptr [ECX] ; 00594c79: MOV EAX,dword ptr [EDX + 0x34] ; 00594c7c: PUSH 0x1 "
+    },
+    {
+      "address": "00594c8d",
+      "native": "00594bf0+vtable34",
+      "function": "00594bf0",
+      "status": "actual_current_type_dispatch",
+      "contract": "same live widget current34",
+      "setup": "00594c77: MOV EDX,dword ptr [ECX] ; 00594c79: MOV EAX,dword ptr [EDX + 0x34] ; 00594c7c: PUSH 0x1 ; 00594c7e: CALL EAX ; 00594c80: MOV ECX,dword ptr [ESI + 0x248] ; 00594c86: MOV EDX,dword ptr [ECX] ; 00594c88: MOV EAX,dword ptr [EDX + 0x34] ; 00594c8b: PUSH 0x1 "
+    },
+    {
+      "address": "00594c91",
+      "native": "0058f5b0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "existing authored objective Group vector/page producer"
+    },
+    {
+      "address": "00594ca3",
+      "native": "00594bf0+vtable34",
+      "function": "00594bf0",
+      "status": "actual_current_type_dispatch",
+      "contract": "same live widget current34",
+      "setup": "00594c8b: PUSH 0x1 ; 00594c8d: CALL EAX ; 00594c8f: MOV ECX,ESI ; 00594c91: CALL 0x0058f5b0 ; 00594c96: MOV ECX,dword ptr [ESI + 0x2ec] ; 00594c9c: MOV EDX,dword ptr [ECX] ; 00594c9e: MOV EAX,dword ptr [EDX + 0x34] ; 00594ca1: PUSH 0x1 "
+    },
+    {
+      "address": "00594ca7",
+      "native": "005c27e0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "current side enabled lowbyte selects zero or one"
+    },
+    {
+      "address": "00594cc3",
+      "native": "00aac8e0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual current decoder completed20 inversion or nullfalse"
+    },
+    {
+      "address": "00594cd2",
+      "native": "00aac870",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual movie decoder runningfalse then close"
+    },
+    {
+      "address": "00594ceb",
+      "native": "00bf6713",
+      "function": "00594bf0",
+      "status": "excluded_native_invalid_domain",
+      "contract": "invalid native iterators/corrupt containers; C++ exceptions at corresponding access"
+    },
+    {
+      "address": "00594cf8",
+      "native": "00bf6713",
+      "function": "00594bf0",
+      "status": "excluded_native_invalid_domain",
+      "contract": "invalid native iterators/corrupt containers; C++ exceptions at corresponding access"
+    },
+    {
+      "address": "00594d01",
+      "native": "00bf6713",
+      "function": "00594bf0",
+      "status": "excluded_native_invalid_domain",
+      "contract": "invalid native iterators/corrupt containers; C++ exceptions at corresponding access"
+    },
+    {
+      "address": "00594d0f",
+      "native": "00bf6713",
+      "function": "00594bf0",
+      "status": "excluded_native_invalid_domain",
+      "contract": "invalid native iterators/corrupt containers; C++ exceptions at corresponding access"
+    },
+    {
+      "address": "00594d25",
+      "native": "00b6da70",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual node recursive visibility factor; dim CE3800 then selected1"
+    },
+    {
+      "address": "00594d2f",
+      "native": "00bf6713",
+      "function": "00594bf0",
+      "status": "excluded_native_invalid_domain",
+      "contract": "invalid native iterators/corrupt containers; C++ exceptions at corresponding access"
+    },
+    {
+      "address": "00594d4d",
+      "native": "00bf6713",
+      "function": "00594bf0",
+      "status": "excluded_native_invalid_domain",
+      "contract": "invalid native iterators/corrupt containers; C++ exceptions at corresponding access"
+    },
+    {
+      "address": "00594d5e",
+      "native": "00bf6713",
+      "function": "00594bf0",
+      "status": "excluded_native_invalid_domain",
+      "contract": "invalid native iterators/corrupt containers; C++ exceptions at corresponding access"
+    },
+    {
+      "address": "00594d67",
+      "native": "00bf6713",
+      "function": "00594bf0",
+      "status": "excluded_native_invalid_domain",
+      "contract": "invalid native iterators/corrupt containers; C++ exceptions at corresponding access"
+    },
+    {
+      "address": "00594d77",
+      "native": "00bf6713",
+      "function": "00594bf0",
+      "status": "excluded_native_invalid_domain",
+      "contract": "invalid native iterators/corrupt containers; C++ exceptions at corresponding access"
+    },
+    {
+      "address": "00594d8e",
+      "native": "00b6da70",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual node recursive visibility factor; dim CE3800 then selected1"
+    },
+    {
+      "address": "00594d98",
+      "native": "00bf6713",
+      "function": "00594bf0",
+      "status": "excluded_native_invalid_domain",
+      "contract": "invalid native iterators/corrupt containers; C++ exceptions at corresponding access"
+    },
+    {
+      "address": "00594db8",
+      "native": "00bf6713",
+      "function": "00594bf0",
+      "status": "excluded_native_invalid_domain",
+      "contract": "invalid native iterators/corrupt containers; C++ exceptions at corresponding access"
+    },
+    {
+      "address": "00594dca",
+      "native": "00594bf0+vtable34",
+      "function": "00594bf0",
+      "status": "actual_current_type_dispatch",
+      "contract": "same live widget current34",
+      "setup": "00594db4: CMP EBP,EAX ; 00594db6: JC 0x00594dbd ; 00594db8: CALL 0x00bf6713 ; 00594dbd: MOV ECX,dword ptr [EBX + 0x4] ; 00594dc0: MOV ECX,dword ptr [ECX + EBP*0x4] ; 00594dc3: MOV EDX,dword ptr [ECX] ; 00594dc5: MOV EAX,dword ptr [EDX + 0x34] ; 00594dc8: PUSH 0x1 "
+    },
+    {
+      "address": "00594de2",
+      "native": "00bf6713",
+      "function": "00594bf0",
+      "status": "excluded_native_invalid_domain",
+      "contract": "invalid native iterators/corrupt containers; C++ exceptions at corresponding access"
+    },
+    {
+      "address": "00594df4",
+      "native": "00594bf0+vtable34",
+      "function": "00594bf0",
+      "status": "actual_current_type_dispatch",
+      "contract": "same live widget current34",
+      "setup": "00594dde: CMP EBP,ECX ; 00594de0: JC 0x00594de7 ; 00594de2: CALL 0x00bf6713 ; 00594de7: MOV ECX,dword ptr [EDI + 0x4] ; 00594dea: MOV ECX,dword ptr [ECX + EBP*0x4] ; 00594ded: MOV EDX,dword ptr [ECX] ; 00594def: MOV EAX,dword ptr [EDX + 0x34] ; 00594df2: PUSH 0x1 "
+    },
+    {
+      "address": "00594e0c",
+      "native": "00bf6713",
+      "function": "00594bf0",
+      "status": "excluded_native_invalid_domain",
+      "contract": "invalid native iterators/corrupt containers; C++ exceptions at corresponding access"
+    },
+    {
+      "address": "00594e22",
+      "native": "00b6da70",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual node recursive visibility factor; dim CE3800 then selected1"
+    },
+    {
+      "address": "00594e3f",
+      "native": "00bf6713",
+      "function": "00594bf0",
+      "status": "excluded_native_invalid_domain",
+      "contract": "invalid native iterators/corrupt containers; C++ exceptions at corresponding access"
+    },
+    {
+      "address": "00594e55",
+      "native": "00b6da70",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual node recursive visibility factor; dim CE3800 then selected1"
+    },
+    {
+      "address": "00594e69",
+      "native": "0041dd40",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString resize and temporary ownership"
+    },
+    {
+      "address": "00594e84",
+      "native": "00bf7680",
+      "function": "00594bf0",
+      "status": "reused_or_typed_transport",
+      "contract": "NativeString memory copies and C++ typed string transport"
+    },
+    {
+      "address": "00594ea3",
+      "native": "0041dd40",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString resize and temporary ownership"
+    },
+    {
+      "address": "00594ebe",
+      "native": "00bf7680",
+      "function": "00594bf0",
+      "status": "reused_or_typed_transport",
+      "contract": "NativeString memory copies and C++ typed string transport"
+    },
+    {
+      "address": "00594ede",
+      "native": "0041dd40",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString resize and temporary ownership"
+    },
+    {
+      "address": "00594ef9",
+      "native": "00bf7680",
+      "function": "00594bf0",
+      "status": "reused_or_typed_transport",
+      "contract": "NativeString memory copies and C++ typed string transport"
+    },
+    {
+      "address": "00594f1d",
+      "native": "0041dd40",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString resize and temporary ownership"
+    },
+    {
+      "address": "00594f38",
+      "native": "00bf7680",
+      "function": "00594bf0",
+      "status": "reused_or_typed_transport",
+      "contract": "NativeString memory copies and C++ typed string transport"
+    },
+    {
+      "address": "00594f58",
+      "native": "0041dd40",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString resize and temporary ownership"
+    },
+    {
+      "address": "00594f73",
+      "native": "00bf7680",
+      "function": "00594bf0",
+      "status": "reused_or_typed_transport",
+      "contract": "NativeString memory copies and C++ typed string transport"
+    },
+    {
+      "address": "00594fb3",
+      "native": "0054b530",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "existing command owner, five triples, RET3C"
+    },
+    {
+      "address": "00594fd3",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "00594fda",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "00594ff9",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "00595000",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "00595020",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "00595027",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "00595047",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "0059504e",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "00595070",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "00595077",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "00595088",
+      "native": "00594bf0+vtable34",
+      "function": "00594bf0",
+      "status": "actual_current_type_dispatch",
+      "contract": "same live widget current34",
+      "setup": "0059506f: PUSH ECX ; 00595070: CALL 0x00419cc0 ; 00595075: MOV ECX,EAX ; 00595077: CALL 0x00bd1510 ; 0059507c: MOV ECX,dword ptr [ESI + 0x3dc] ; 00595082: MOV EDX,dword ptr [ECX] ; 00595084: MOV EAX,dword ptr [EDX + 0x34] ; 00595087: PUSH EBP "
+    },
+    {
+      "address": "00595096",
+      "native": "00594bf0+vtable34",
+      "function": "00594bf0",
+      "status": "actual_current_type_dispatch",
+      "contract": "same live widget current34",
+      "setup": "00595082: MOV EDX,dword ptr [ECX] ; 00595084: MOV EAX,dword ptr [EDX + 0x34] ; 00595087: PUSH EBP ; 00595088: CALL EAX ; 0059508a: MOV ECX,dword ptr [ESI + 0x1b8] ; 00595090: MOV EDX,dword ptr [ECX] ; 00595092: MOV EAX,dword ptr [EDX + 0x34] ; 00595095: PUSH EBP "
+    },
+    {
+      "address": "005950a4",
+      "native": "00594bf0+vtable34",
+      "function": "00594bf0",
+      "status": "actual_current_type_dispatch",
+      "contract": "same live widget current34",
+      "setup": "00595090: MOV EDX,dword ptr [ECX] ; 00595092: MOV EAX,dword ptr [EDX + 0x34] ; 00595095: PUSH EBP ; 00595096: CALL EAX ; 00595098: MOV ECX,dword ptr [ESI + 0x41c] ; 0059509e: MOV EDX,dword ptr [ECX] ; 005950a0: MOV EAX,dword ptr [EDX + 0x34] ; 005950a3: PUSH EBP "
+    },
+    {
+      "address": "005950b3",
+      "native": "00594bf0+vtable34",
+      "function": "00594bf0",
+      "status": "actual_current_type_dispatch",
+      "contract": "same live widget current34",
+      "setup": "0059509e: MOV EDX,dword ptr [ECX] ; 005950a0: MOV EAX,dword ptr [EDX + 0x34] ; 005950a3: PUSH EBP ; 005950a4: CALL EAX ; 005950a6: MOV ECX,dword ptr [ESI + 0x1b8] ; 005950ac: MOV EDX,dword ptr [ECX] ; 005950ae: MOV EAX,dword ptr [EDX + 0x34] ; 005950b1: PUSH 0x1 "
+    },
+    {
+      "address": "005950bb",
+      "native": "00a9bec0",
+      "function": "00594bf0",
+      "status": "parent_owned_integration",
+      "contract": "actual GuiListboxRuntime.clear_rows_00a9bec0 and GuiTextChildDeletion"
+    },
+    {
+      "address": "005950cd",
+      "native": "00594bf0+vtable60",
+      "function": "00594bf0",
+      "status": "actual_current_type_dispatch",
+      "contract": "same live widget current60",
+      "setup": "005950b1: PUSH 0x1 ; 005950b3: CALL EAX ; 005950b5: MOV ECX,dword ptr [ESI + 0x1b8] ; 005950bb: CALL 0x00a9bec0 ; 005950c0: MOV ECX,dword ptr [ESI + 0x1b8] ; 005950c6: MOV EDX,dword ptr [ECX] ; 005950c8: MOV EAX,dword ptr [EDX + 0x60] ; 005950cb: PUSH 0x1 "
+    },
+    {
+      "address": "005950d6",
+      "native": "00aab4c0",
+      "function": "00594bf0",
+      "status": "required_resource_domain",
+      "contract": "existing clone_subtree actual scene/type host; Text copy construction remains incomplete"
+    },
+    {
+      "address": "005950f1",
+      "native": "0041dd40",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString resize and temporary ownership"
+    },
+    {
+      "address": "0059510c",
+      "native": "00bf7680",
+      "function": "00594bf0",
+      "status": "reused_or_typed_transport",
+      "contract": "NativeString memory copies and C++ typed string transport"
+    },
+    {
+      "address": "0059512a",
+      "native": "00ab8e70",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual Text shader name and retained raw shader release"
+    },
+    {
+      "address": "00595149",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "00595150",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "00595162",
+      "native": "00abbe50",
+      "function": "00594bf0",
+      "status": "composed_supported_domain",
+      "contract": "outer current native C-string compare gate, temporary NativeString, actual ABAED0"
+    },
+    {
+      "address": "00595174",
+      "native": "00594bf0+vtable34",
+      "function": "00594bf0",
+      "status": "actual_current_type_dispatch",
+      "contract": "same live widget current34",
+      "setup": "00595155: MOV ECX,dword ptr [ESI + 0x2b8] ; 0059515b: PUSH 0x1 ; 0059515d: PUSH 0xcefd68 ; 00595162: CALL 0x00abbe50 ; 00595167: MOV ECX,dword ptr [ESI + 0x2b8] ; 0059516d: MOV EAX,dword ptr [ECX] ; 0059516f: MOV EDX,dword ptr [EAX + 0x34] ; 00595172: PUSH 0x1 "
+    },
+    {
+      "address": "00595198",
+      "native": "00aab4c0",
+      "function": "00594bf0",
+      "status": "required_resource_domain",
+      "contract": "existing clone_subtree actual scene/type host; Text copy construction remains incomplete"
+    },
+    {
+      "address": "005951b8",
+      "native": "00a9d750",
+      "function": "00594bf0",
+      "status": "reused_partial_callee_satisfying_all_sites",
+      "contract": "row/position-null/after0; RET0C; nonnull insertion dependency remains incomplete but unreached here"
+    },
+    {
+      "address": "005951c5",
+      "native": "00aab4c0",
+      "function": "00594bf0",
+      "status": "required_resource_domain",
+      "contract": "existing clone_subtree actual scene/type host; Text copy construction remains incomplete"
+    },
+    {
+      "address": "005951da",
+      "native": "00594bf0+vtable34",
+      "function": "00594bf0",
+      "status": "actual_current_type_dispatch",
+      "contract": "same live widget current34",
+      "setup": "005951c3: PUSH 0x0 ; 005951c5: CALL 0x00aab4c0 ; 005951ca: MOV EBP,EAX ; 005951cc: MOV EDX,dword ptr [EBP] ; 005951cf: MOV EAX,dword ptr [EDX + 0x34] ; 005951d2: PUSH 0x1 ; 005951d4: MOV ECX,EBP ; 005951d6: MOV dword ptr [ESP + 0x24],EBP "
+    },
+    {
+      "address": "005951e8",
+      "native": "00aa6bc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "same widget DC then raw79 store; RET8"
+    },
+    {
+      "address": "00595218",
+      "native": "005823b0",
+      "function": "00594bf0",
+      "status": "implemented",
+      "contract": "sole linked-list element next/previous/payload, successful allocation"
+    },
+    {
+      "address": "00595229",
+      "native": "005896f0",
+      "function": "00594bf0",
+      "status": "implemented",
+      "contract": "increment1 ordinary count check before links, native exception ABI excluded"
+    },
+    {
+      "address": "0059526f",
+      "native": "0041dd40",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString resize and temporary ownership"
+    },
+    {
+      "address": "0059528d",
+      "native": "00bf7680",
+      "function": "00594bf0",
+      "status": "reused_or_typed_transport",
+      "contract": "NativeString memory copies and C++ typed string transport"
+    },
+    {
+      "address": "005952b3",
+      "native": "004260b0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "native_string_from_int_004260b0 signed decimal output"
+    },
+    {
+      "address": "005952cf",
+      "native": "004261a0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "concatenate_native_string_headers_004261a0"
+    },
+    {
+      "address": "005952f5",
+      "native": "00bf6713",
+      "function": "00594bf0",
+      "status": "excluded_native_invalid_domain",
+      "contract": "invalid native iterators/corrupt containers; C++ exceptions at corresponding access"
+    },
+    {
+      "address": "00595313",
+      "native": "004261a0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "concatenate_native_string_headers_004261a0"
+    },
+    {
+      "address": "00595325",
+      "native": "00abaed0",
+      "function": "00594bf0",
+      "status": "reused_supported_domain",
+      "contract": "actual Text runtime source and synchronous completed content; pending stops caller"
+    },
+    {
+      "address": "00595345",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "0059534c",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "00595374",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "0059537b",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "005953a1",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "005953a8",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "005953cb",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "005953d2",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "005953e7",
+      "native": "0041dd40",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString resize and temporary ownership"
+    },
+    {
+      "address": "00595402",
+      "native": "00bf7680",
+      "function": "00594bf0",
+      "status": "reused_or_typed_transport",
+      "contract": "NativeString memory copies and C++ typed string transport"
+    },
+    {
+      "address": "00595421",
+      "native": "004260b0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "native_string_from_int_004260b0 signed decimal output"
+    },
+    {
+      "address": "0059543d",
+      "native": "004261a0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "concatenate_native_string_headers_004261a0"
+    },
+    {
+      "address": "00595461",
+      "native": "00bf6713",
+      "function": "00594bf0",
+      "status": "excluded_native_invalid_domain",
+      "contract": "invalid native iterators/corrupt containers; C++ exceptions at corresponding access"
+    },
+    {
+      "address": "00595480",
+      "native": "004261a0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "concatenate_native_string_headers_004261a0"
+    },
+    {
+      "address": "00595492",
+      "native": "00abaed0",
+      "function": "00594bf0",
+      "status": "reused_supported_domain",
+      "contract": "actual Text runtime source and synchronous completed content; pending stops caller"
+    },
+    {
+      "address": "005954b8",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "005954bf",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "005954e5",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "005954ec",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "00595512",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "00595519",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "0059553c",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "00595543",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "00595553",
+      "native": "00aa6750",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual resolved_position, three live template reads Z then Y then X"
+    },
+    {
+      "address": "00595571",
+      "native": "00aa6750",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual resolved_position, three live template reads Z then Y then X"
+    },
+    {
+      "address": "0059558b",
+      "native": "00aa6750",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual resolved_position, three live template reads Z then Y then X"
+    },
+    {
+      "address": "005955da",
+      "native": "0041dd40",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString resize and temporary ownership"
+    },
+    {
+      "address": "005955f5",
+      "native": "00bf7680",
+      "function": "00594bf0",
+      "status": "reused_or_typed_transport",
+      "contract": "NativeString memory copies and C++ typed string transport"
+    },
+    {
+      "address": "0059561b",
+      "native": "004260b0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "native_string_from_int_004260b0 signed decimal output"
+    },
+    {
+      "address": "00595637",
+      "native": "004261a0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "concatenate_native_string_headers_004261a0"
+    },
+    {
+      "address": "00595649",
+      "native": "00abaed0",
+      "function": "00594bf0",
+      "status": "reused_supported_domain",
+      "contract": "actual Text runtime source and synchronous completed content; pending stops caller"
+    },
+    {
+      "address": "0059566f",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "00595676",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "0059569c",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "005956a3",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "005956c2",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "005956c9",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "005956d7",
+      "native": "00abbe50",
+      "function": "00594bf0",
+      "status": "composed_supported_domain",
+      "contract": "outer current native C-string compare gate, temporary NativeString, actual ABAED0"
+    },
+    {
+      "address": "005956ea",
+      "native": "00aa6750",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual resolved_position, three live template reads Z then Y then X"
+    },
+    {
+      "address": "00595708",
+      "native": "00aa6750",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual resolved_position, three live template reads Z then Y then X"
+    },
+    {
+      "address": "00595722",
+      "native": "00aa6750",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual resolved_position, three live template reads Z then Y then X"
+    },
+    {
+      "address": "00595750",
+      "native": "00aa8240",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual canonical resolved-position setter and scene publications"
+    },
+    {
+      "address": "00595757",
+      "native": "00ab6bd0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual Text companion normalized height, float32 ST0 result"
+    },
+    {
+      "address": "00595776",
+      "native": "00580820",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual canonical highlight layout via selection services"
+    },
+    {
+      "address": "00595799",
+      "native": "00594bf0+vtable50",
+      "function": "00594bf0",
+      "status": "actual_current_type_dispatch",
+      "contract": "same live widget current50",
+      "setup": "00595781: LEA EAX,[ESI + 0x270] ; 00595787: PUSH EAX ; 00595788: JMP 0x00595797 ; 0059578a: MOV EAX,dword ptr [EBP] ; 0059578d: MOV EDX,dword ptr [EAX + 0x50] ; 00595790: LEA ECX,[ESI + 0x260] ; 00595796: PUSH ECX ; 00595797: MOV ECX,EBP "
+    },
+    {
+      "address": "005957c2",
+      "native": "00aab4c0",
+      "function": "00594bf0",
+      "status": "required_resource_domain",
+      "contract": "existing clone_subtree actual scene/type host; Text copy construction remains incomplete"
+    },
+    {
+      "address": "005957db",
+      "native": "00aa6750",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual resolved_position, three live template reads Z then Y then X"
+    },
+    {
+      "address": "005957f9",
+      "native": "00aa6750",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual resolved_position, three live template reads Z then Y then X"
+    },
+    {
+      "address": "00595813",
+      "native": "00aa6750",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual resolved_position, three live template reads Z then Y then X"
+    },
+    {
+      "address": "00595848",
+      "native": "00aa8240",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual canonical resolved-position setter and scene publications"
+    },
+    {
+      "address": "0059585a",
+      "native": "00abbe50",
+      "function": "00594bf0",
+      "status": "composed_supported_domain",
+      "contract": "outer current native C-string compare gate, temporary NativeString, actual ABAED0"
+    },
+    {
+      "address": "0059586c",
+      "native": "00594bf0+vtable34",
+      "function": "00594bf0",
+      "status": "actual_current_type_dispatch",
+      "contract": "same live widget current34",
+      "setup": "0059584d: MOV ECX,dword ptr [ESI + 0x2bc] ; 00595853: PUSH 0x1 ; 00595855: PUSH 0xcefd24 ; 0059585a: CALL 0x00abbe50 ; 0059585f: MOV ECX,dword ptr [ESI + 0x2bc] ; 00595865: MOV EDX,dword ptr [ECX] ; 00595867: MOV EAX,dword ptr [EDX + 0x34] ; 0059586a: PUSH 0x1 "
+    },
+    {
+      "address": "00595874",
+      "native": "00ab6bd0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual Text companion normalized height, float32 ST0 result"
+    },
+    {
+      "address": "005958a8",
+      "native": "00aab4c0",
+      "function": "00594bf0",
+      "status": "required_resource_domain",
+      "contract": "existing clone_subtree actual scene/type host; Text copy construction remains incomplete"
+    },
+    {
+      "address": "005958cb",
+      "native": "00a9d750",
+      "function": "00594bf0",
+      "status": "reused_partial_callee_satisfying_all_sites",
+      "contract": "row/position-null/after0; RET0C; nonnull insertion dependency remains incomplete but unreached here"
+    },
+    {
+      "address": "005958d8",
+      "native": "00aab4c0",
+      "function": "00594bf0",
+      "status": "required_resource_domain",
+      "contract": "existing clone_subtree actual scene/type host; Text copy construction remains incomplete"
+    },
+    {
+      "address": "005958ef",
+      "native": "00aa6bc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "same widget DC then raw79 store; RET8"
+    },
+    {
+      "address": "00595912",
+      "native": "00594bf0+vtable34",
+      "function": "00594bf0",
+      "status": "actual_current_type_dispatch",
+      "contract": "same live widget current34",
+      "setup": "005958f4: MOV ECX,dword ptr [ESI + 0x1b8] ; 005958fa: MOV EAX,dword ptr [ECX + 0x104] ; 00595900: ADD EAX,-0x1 ; 00595903: MOV dword ptr [EDI + 0xd8],EAX ; 00595909: MOV EDX,dword ptr [EDI] ; 0059590b: MOV EAX,dword ptr [EDX + 0x34] ; 0059590e: PUSH 0x1 ; 00595910: MOV ECX,EDI "
+    },
+    {
+      "address": "00595922",
+      "native": "00594bf0+vtable50",
+      "function": "00594bf0",
+      "status": "actual_current_type_dispatch",
+      "contract": "same live widget current50",
+      "setup": "0059590e: PUSH 0x1 ; 00595910: MOV ECX,EDI ; 00595912: CALL EAX ; 00595914: MOV EDX,dword ptr [EDI] ; 00595916: LEA EAX,[ESI + 0x260] ; 0059591c: PUSH EAX ; 0059591d: MOV EAX,dword ptr [EDX + 0x50] ; 00595920: MOV ECX,EDI "
+    },
+    {
+      "address": "0059593a",
+      "native": "005823b0",
+      "function": "00594bf0",
+      "status": "implemented",
+      "contract": "sole linked-list element next/previous/payload, successful allocation"
+    },
+    {
+      "address": "0059594b",
+      "native": "005896f0",
+      "function": "00594bf0",
+      "status": "implemented",
+      "contract": "increment1 ordinary count check before links, native exception ABI excluded"
+    },
+    {
+      "address": "00595993",
+      "native": "0041dd40",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString resize and temporary ownership"
+    },
+    {
+      "address": "005959b1",
+      "native": "00bf7680",
+      "function": "00594bf0",
+      "status": "reused_or_typed_transport",
+      "contract": "NativeString memory copies and C++ typed string transport"
+    },
+    {
+      "address": "005959d7",
+      "native": "004260b0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "native_string_from_int_004260b0 signed decimal output"
+    },
+    {
+      "address": "005959f3",
+      "native": "004261a0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "concatenate_native_string_headers_004261a0"
+    },
+    {
+      "address": "00595a19",
+      "native": "00bf6713",
+      "function": "00594bf0",
+      "status": "excluded_native_invalid_domain",
+      "contract": "invalid native iterators/corrupt containers; C++ exceptions at corresponding access"
+    },
+    {
+      "address": "00595a3e",
+      "native": "004261a0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "concatenate_native_string_headers_004261a0"
+    },
+    {
+      "address": "00595a50",
+      "native": "00abaed0",
+      "function": "00594bf0",
+      "status": "reused_supported_domain",
+      "contract": "actual Text runtime source and synchronous completed content; pending stops caller"
+    },
+    {
+      "address": "00595a76",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "00595a7d",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "00595aa5",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "00595aac",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "00595ad2",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "00595ad9",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "00595afc",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "00595b03",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "00595b18",
+      "native": "0041dd40",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString resize and temporary ownership"
+    },
+    {
+      "address": "00595b33",
+      "native": "00bf7680",
+      "function": "00594bf0",
+      "status": "reused_or_typed_transport",
+      "contract": "NativeString memory copies and C++ typed string transport"
+    },
+    {
+      "address": "00595b52",
+      "native": "004260b0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "native_string_from_int_004260b0 signed decimal output"
+    },
+    {
+      "address": "00595b6e",
+      "native": "004261a0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "concatenate_native_string_headers_004261a0"
+    },
+    {
+      "address": "00595b92",
+      "native": "00bf6713",
+      "function": "00594bf0",
+      "status": "excluded_native_invalid_domain",
+      "contract": "invalid native iterators/corrupt containers; C++ exceptions at corresponding access"
+    },
+    {
+      "address": "00595ba9",
+      "native": "004261a0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "concatenate_native_string_headers_004261a0"
+    },
+    {
+      "address": "00595bbb",
+      "native": "00abaed0",
+      "function": "00594bf0",
+      "status": "reused_supported_domain",
+      "contract": "actual Text runtime source and synchronous completed content; pending stops caller"
+    },
+    {
+      "address": "00595be1",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "00595be8",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "00595c0e",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "00595c15",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "00595c3b",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "00595c42",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "00595c65",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "00595c6c",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "00595c7f",
+      "native": "00aa6750",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual resolved_position, three live template reads Z then Y then X"
+    },
+    {
+      "address": "00595c9d",
+      "native": "00aa6750",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual resolved_position, three live template reads Z then Y then X"
+    },
+    {
+      "address": "00595cb7",
+      "native": "00aa6750",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual resolved_position, three live template reads Z then Y then X"
+    },
+    {
+      "address": "00595cf1",
+      "native": "00abbe50",
+      "function": "00594bf0",
+      "status": "composed_supported_domain",
+      "contract": "outer current native C-string compare gate, temporary NativeString, actual ABAED0"
+    },
+    {
+      "address": "00595d08",
+      "native": "0041dd40",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString resize and temporary ownership"
+    },
+    {
+      "address": "00595d23",
+      "native": "00bf7680",
+      "function": "00594bf0",
+      "status": "reused_or_typed_transport",
+      "contract": "NativeString memory copies and C++ typed string transport"
+    },
+    {
+      "address": "00595d49",
+      "native": "004260b0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "native_string_from_int_004260b0 signed decimal output"
+    },
+    {
+      "address": "00595d65",
+      "native": "004261a0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "concatenate_native_string_headers_004261a0"
+    },
+    {
+      "address": "00595d77",
+      "native": "00abaed0",
+      "function": "00594bf0",
+      "status": "reused_supported_domain",
+      "contract": "actual Text runtime source and synchronous completed content; pending stops caller"
+    },
+    {
+      "address": "00595d9d",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "00595da4",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "00595dca",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "00595dd1",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "00595df0",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "00595df7",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "00595e0a",
+      "native": "00aa6750",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual resolved_position, three live template reads Z then Y then X"
+    },
+    {
+      "address": "00595e28",
+      "native": "00aa6750",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual resolved_position, three live template reads Z then Y then X"
+    },
+    {
+      "address": "00595e42",
+      "native": "00aa6750",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual resolved_position, three live template reads Z then Y then X"
+    },
+    {
+      "address": "00595e70",
+      "native": "00aa8240",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual canonical resolved-position setter and scene publications"
+    },
+    {
+      "address": "00595e77",
+      "native": "00ab6bd0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual Text companion normalized height, float32 ST0 result"
+    },
+    {
+      "address": "00595eb4",
+      "native": "00aab4c0",
+      "function": "00594bf0",
+      "status": "required_resource_domain",
+      "contract": "existing clone_subtree actual scene/type host; Text copy construction remains incomplete"
+    },
+    {
+      "address": "00595ecd",
+      "native": "00aa6750",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual resolved_position, three live template reads Z then Y then X"
+    },
+    {
+      "address": "00595eeb",
+      "native": "00aa6750",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual resolved_position, three live template reads Z then Y then X"
+    },
+    {
+      "address": "00595f05",
+      "native": "00aa6750",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual resolved_position, three live template reads Z then Y then X"
+    },
+    {
+      "address": "00595f37",
+      "native": "00aa8240",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual canonical resolved-position setter and scene publications"
+    },
+    {
+      "address": "00595f49",
+      "native": "00abbe50",
+      "function": "00594bf0",
+      "status": "composed_supported_domain",
+      "contract": "outer current native C-string compare gate, temporary NativeString, actual ABAED0"
+    },
+    {
+      "address": "00595f5b",
+      "native": "00594bf0+vtable34",
+      "function": "00594bf0",
+      "status": "actual_current_type_dispatch",
+      "contract": "same live widget current34",
+      "setup": "00595f3c: MOV ECX,dword ptr [ESI + 0x2c0] ; 00595f42: PUSH 0x1 ; 00595f44: PUSH 0xcefce8 ; 00595f49: CALL 0x00abbe50 ; 00595f4e: MOV ECX,dword ptr [ESI + 0x2c0] ; 00595f54: MOV EDX,dword ptr [ECX] ; 00595f56: MOV EAX,dword ptr [EDX + 0x34] ; 00595f59: PUSH 0x1 "
+    },
+    {
+      "address": "00595f63",
+      "native": "00ab6bd0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual Text companion normalized height, float32 ST0 result"
+    },
+    {
+      "address": "00595f7c",
+      "native": "00582630",
+      "function": "00594bf0",
+      "status": "standard_container_projection",
+      "contract": "temporary score-map sentinel allocation; replaced by existing MissionObjectiveMap copy"
+    },
+    {
+      "address": "00595fb0",
+      "native": "005c27e0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "current side enabled lowbyte selects zero or one"
+    },
+    {
+      "address": "0059600e",
+      "native": "0058f100",
+      "function": "00594bf0",
+      "status": "standard_container_projection",
+      "contract": "temporary score map clear, initial empty and final complete-range sites"
+    },
+    {
+      "address": "00596018",
+      "native": "0058f1d0",
+      "function": "00594bf0",
+      "status": "standard_container_projection",
+      "contract": "deep copy of captured score record side hidden map"
+    },
+    {
+      "address": "00596048",
+      "native": "00aab4c0",
+      "function": "00594bf0",
+      "status": "required_resource_domain",
+      "contract": "existing clone_subtree actual scene/type host; Text copy construction remains incomplete"
+    },
+    {
+      "address": "0059606e",
+      "native": "00a9d750",
+      "function": "00594bf0",
+      "status": "reused_partial_callee_satisfying_all_sites",
+      "contract": "row/position-null/after0; RET0C; nonnull insertion dependency remains incomplete but unreached here"
+    },
+    {
+      "address": "0059607b",
+      "native": "00aab4c0",
+      "function": "00594bf0",
+      "status": "required_resource_domain",
+      "contract": "existing clone_subtree actual scene/type host; Text copy construction remains incomplete"
+    },
+    {
+      "address": "0059608f",
+      "native": "00594bf0+vtable34",
+      "function": "00594bf0",
+      "status": "actual_current_type_dispatch",
+      "contract": "same live widget current34",
+      "setup": "00596079: PUSH 0x0 ; 0059607b: CALL 0x00aab4c0 ; 00596080: MOV EDI,EAX ; 00596082: MOV EDX,dword ptr [EDI] ; 00596084: MOV EAX,dword ptr [EDX + 0x34] ; 00596087: PUSH 0x1 ; 00596089: MOV ECX,EDI ; 0059608b: MOV dword ptr [ESP + 0x28],EDI "
+    },
+    {
+      "address": "0059609d",
+      "native": "00aa6bc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "same widget DC then raw79 store; RET8"
+    },
+    {
+      "address": "005960c5",
+      "native": "00594bf0+vtable50",
+      "function": "00594bf0",
+      "status": "actual_current_type_dispatch",
+      "contract": "same live widget current50",
+      "setup": "005960a8: MOV EAX,dword ptr [ECX + 0x104] ; 005960ae: ADD EAX,-0x1 ; 005960b1: MOV dword ptr [EDI + 0xd8],EAX ; 005960b7: MOV EDX,dword ptr [EDI] ; 005960b9: LEA EAX,[ESI + 0x260] ; 005960bf: PUSH EAX ; 005960c0: MOV EAX,dword ptr [EDX + 0x50] ; 005960c3: MOV ECX,EDI "
+    },
+    {
+      "address": "005960dd",
+      "native": "005823b0",
+      "function": "00594bf0",
+      "status": "implemented",
+      "contract": "sole linked-list element next/previous/payload, successful allocation"
+    },
+    {
+      "address": "005960ee",
+      "native": "005896f0",
+      "function": "00594bf0",
+      "status": "implemented",
+      "contract": "increment1 ordinary count check before links, native exception ABI excluded"
+    },
+    {
+      "address": "00596139",
+      "native": "00bf6713",
+      "function": "00594bf0",
+      "status": "excluded_native_invalid_domain",
+      "contract": "invalid native iterators/corrupt containers; C++ exceptions at corresponding access"
+    },
+    {
+      "address": "00596152",
+      "native": "00abaed0",
+      "function": "00594bf0",
+      "status": "reused_supported_domain",
+      "contract": "actual Text runtime source and synchronous completed content; pending stops caller"
+    },
+    {
+      "address": "00596174",
+      "native": "0041dd40",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString resize and temporary ownership"
+    },
+    {
+      "address": "0059618f",
+      "native": "00bf7680",
+      "function": "00594bf0",
+      "status": "reused_or_typed_transport",
+      "contract": "NativeString memory copies and C++ typed string transport"
+    },
+    {
+      "address": "005961ae",
+      "native": "004260b0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "native_string_from_int_004260b0 signed decimal output"
+    },
+    {
+      "address": "005961ca",
+      "native": "004261a0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "concatenate_native_string_headers_004261a0"
+    },
+    {
+      "address": "005961dc",
+      "native": "00abaed0",
+      "function": "00594bf0",
+      "status": "reused_supported_domain",
+      "contract": "actual Text runtime source and synchronous completed content; pending stops caller"
+    },
+    {
+      "address": "00596202",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "00596209",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "0059622f",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "00596236",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "00596268",
+      "native": "00bf6713",
+      "function": "00594bf0",
+      "status": "excluded_native_invalid_domain",
+      "contract": "invalid native iterators/corrupt containers; C++ exceptions at corresponding access"
+    },
+    {
+      "address": "0059628f",
+      "native": "0041dd40",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString resize and temporary ownership"
+    },
+    {
+      "address": "005962aa",
+      "native": "00bf7680",
+      "function": "00594bf0",
+      "status": "reused_or_typed_transport",
+      "contract": "NativeString memory copies and C++ typed string transport"
+    },
+    {
+      "address": "005962c9",
+      "native": "004260b0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "native_string_from_int_004260b0 signed decimal output"
+    },
+    {
+      "address": "005962e5",
+      "native": "004261a0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "concatenate_native_string_headers_004261a0"
+    },
+    {
+      "address": "005962f7",
+      "native": "00abaed0",
+      "function": "00594bf0",
+      "status": "reused_supported_domain",
+      "contract": "actual Text runtime source and synchronous completed content; pending stops caller"
+    },
+    {
+      "address": "0059631d",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "00596324",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "0059634a",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "00596351",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "00596384",
+      "native": "0041dd40",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString resize and temporary ownership"
+    },
+    {
+      "address": "0059639f",
+      "native": "00bf7680",
+      "function": "00594bf0",
+      "status": "reused_or_typed_transport",
+      "contract": "NativeString memory copies and C++ typed string transport"
+    },
+    {
+      "address": "005963be",
+      "native": "004260b0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "native_string_from_int_004260b0 signed decimal output"
+    },
+    {
+      "address": "005963da",
+      "native": "004261a0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "concatenate_native_string_headers_004261a0"
+    },
+    {
+      "address": "005963fe",
+      "native": "00bf6713",
+      "function": "00594bf0",
+      "status": "excluded_native_invalid_domain",
+      "contract": "invalid native iterators/corrupt containers; C++ exceptions at corresponding access"
+    },
+    {
+      "address": "0059641c",
+      "native": "004261a0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "concatenate_native_string_headers_004261a0"
+    },
+    {
+      "address": "0059642e",
+      "native": "00abaed0",
+      "function": "00594bf0",
+      "status": "reused_supported_domain",
+      "contract": "actual Text runtime source and synchronous completed content; pending stops caller"
+    },
+    {
+      "address": "00596454",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "0059645b",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "00596481",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "00596488",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "005964ae",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "005964b5",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "005964d5",
+      "native": "00419cc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString storage owner selection; new interface supplies actual storage"
+    },
+    {
+      "address": "005964dc",
+      "native": "00bd1510",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "NativeString actual sized storage release"
+    },
+    {
+      "address": "005964ef",
+      "native": "00aa6750",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual resolved_position, three live template reads Z then Y then X"
+    },
+    {
+      "address": "0059650d",
+      "native": "00aa6750",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual resolved_position, three live template reads Z then Y then X"
+    },
+    {
+      "address": "00596527",
+      "native": "00aa6750",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual resolved_position, three live template reads Z then Y then X"
+    },
+    {
+      "address": "00596561",
+      "native": "00abbe50",
+      "function": "00594bf0",
+      "status": "composed_supported_domain",
+      "contract": "outer current native C-string compare gate, temporary NativeString, actual ABAED0"
+    },
+    {
+      "address": "0059656f",
+      "native": "00abbe50",
+      "function": "00594bf0",
+      "status": "composed_supported_domain",
+      "contract": "outer current native C-string compare gate, temporary NativeString, actual ABAED0"
+    },
+    {
+      "address": "00596582",
+      "native": "00aa6750",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual resolved_position, three live template reads Z then Y then X"
+    },
+    {
+      "address": "005965a0",
+      "native": "00aa6750",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual resolved_position, three live template reads Z then Y then X"
+    },
+    {
+      "address": "005965ba",
+      "native": "00aa6750",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual resolved_position, three live template reads Z then Y then X"
+    },
+    {
+      "address": "005965e8",
+      "native": "00aa8240",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual canonical resolved-position setter and scene publications"
+    },
+    {
+      "address": "005965ef",
+      "native": "00ab6bd0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual Text companion normalized height, float32 ST0 result"
+    },
+    {
+      "address": "00596620",
+      "native": "00a9c7c0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual select_index0 then current80false"
+    },
+    {
+      "address": "00596635",
+      "native": "00594bf0+vtable80",
+      "function": "00594bf0",
+      "status": "actual_current_type_dispatch",
+      "contract": "same live widget current80",
+      "setup": "00596612: JL 0x00596040 ; 00596618: MOV ECX,dword ptr [ESI + 0x1b8] ; 0059661e: PUSH 0x0 ; 00596620: CALL 0x00a9c7c0 ; 00596625: MOV ECX,dword ptr [ESI + 0x1b8] ; 0059662b: MOV EAX,dword ptr [ECX] ; 0059662d: MOV EDX,dword ptr [EAX + 0x80] ; 00596633: PUSH 0x1 "
+    },
+    {
+      "address": "00596684",
+      "native": "00aa8240",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "actual canonical resolved-position setter and scene publications"
+    },
+    {
+      "address": "00596693",
+      "native": "00aa6bc0",
+      "function": "00594bf0",
+      "status": "reused",
+      "contract": "same widget DC then raw79 store; RET8"
+    },
+    {
+      "address": "005966bd",
+      "native": "0058f100",
+      "function": "00594bf0",
+      "status": "standard_container_projection",
+      "contract": "temporary score map clear, initial empty and final complete-range sites"
+    },
+    {
+      "address": "005966c7",
+      "native": "00bf65ac",
+      "function": "00594bf0",
+      "status": "standard_container_projection",
+      "contract": "temporary score-map node storage lifetime; real epilogue after this call"
+    },
+    {
+      "address": "00582282",
+      "native": "00bf681b",
+      "function": "00582280",
+      "status": "standard_allocation_projection",
+      "contract": "ordinary operator new12 for sole list sentinel/elements"
+    },
+    {
+      "address": "005823b2",
+      "native": "00bf681b",
+      "function": "005823b0",
+      "status": "standard_allocation_projection",
+      "contract": "ordinary operator new12 for sole list sentinel/elements"
+    },
+    {
+      "address": "0058973c",
+      "native": "00408720",
+      "function": "005896f0",
+      "status": "exception_projection",
+      "contract": "native exception string construction replaced by std::length_error"
+    },
+    {
+      "address": "00589751",
+      "native": "00411700",
+      "function": "005896f0",
+      "status": "exception_projection",
+      "contract": "native exception construction replaced by std::length_error"
+    },
+    {
+      "address": "00589768",
+      "native": "00bf6885",
+      "function": "005896f0",
+      "status": "exception_projection",
+      "contract": "native throw replaced by std::length_error"
+    }
+  ],
+  "gaps": [
+    {
+      "start": "0059589d",
+      "inclusive_end": "0059589f",
+      "bytes": "8d4900",
+      "no_ghidra_function": true,
+      "classification": "bypassed alignment",
+      "evidence": "59589B jumps5958A0"
+    },
+    {
+      "start": "00596039",
+      "inclusive_end": "0059603f",
+      "bytes": "8da42400000000",
+      "no_ghidra_function": true,
+      "classification": "bypassed alignment",
+      "evidence": "596037 jumps596040"
+    },
+    {
+      "start": "005966cc",
+      "inclusive_end": "005966e4",
+      "bytes": "8b8c241801000083c4045f64890d000000005e5d5b8be55dc3",
+      "no_ghidra_function": true,
+      "classification": "executed fall-through post-free epilogue",
+      "evidence": "live bytes and disk decode; RET5966E4 length1"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "function ending at5966CB after free",
+      "evidence": "5966CC25-byte epilogue; live get_function reports no containing function there",
+      "is": "actual ordinary return5966E4"
+    },
+    {
+      "was": "decompiler +1E write on description int pointer",
+      "evidence": "5951E4,5958EB,596099 direct byte stores",
+      "is": "actual byte+78 MouseHit"
+    },
+    {
+      "was": "decompiler command bar call missing arguments",
+      "evidence": "594F7B..594FB3 pushes;54B530 RET3C",
+      "is": "five triples including globals.continue and empty fifth"
+    },
+    {
+      "was": "hidden saved status might match index/key",
+      "evidence": "596026 only post-copy stack+A4 write;59625B/26D reads; no advance",
+      "is": "captured first copied-map node repeatedly read"
+    },
+    {
+      "was": "temporary copied Text color lanes",
+      "is": "same live screen quartet passed to canonical Text setter",
+      "evidence": "AB6BA5 reloads source alpha after base/material callbacks; matches established main_menu_selection_listener carrier"
+    }
+  ],
+  "producer_evidence": {
+    "lists": "590423/3B/53->582280, sole head/countzero; all five582280 xrefs checked",
+    "spacing": "constructor5902E0 does not write2B0/2B4; required supplied references, producer unresolved",
+    "mission": "mission_tree_data.hpp schema: id00 name08 sidesB8 stride154; objectives14/24/34",
+    "scores": "mission_progress.hpp objectives_204[2/5] maps21C/240; value native node1C"
+  },
+  "boundaries": [
+    "native Text copy factory/clone scene resource support",
+    "518D60 frame/subtitle children518C80/5189B0 provider",
+    "actual producer of spacing2B0/2B4",
+    "all Text content/clip/deletion calls must complete synchronously; pending child does not resume outer builder",
+    "screen entry/exit description list and prior header destruction",
+    "C++ typed strings require stable null-free DWORD length names; native allocator callbacks and SEH not reproduced"
+  ],
+  "validation": {
+    "call_report": "247 direct native call rows verified live,0 failures;21 indirect sites have native listing setup and actual canonical type dispatch",
+    "win32_build": "scripts/build.ps1 final build passed; reconstructed_math and native_math_differential 2/2 passed after verify-seeds matched8/8",
+    "fixture": "local/objective_nodes_probe.cpp passed: same head/count view, duplicate pointer order and count limit; current source linked against parent751ebc29 build dependencies, no GUI execution",
+    "executable_reachability": "src/game_hosts_mission.cpp763 logs unimplemented mission_detail_accept00594BF0; no execution of this new caller bound",
+    "abi_compatible": false,
+    "game_validated": false,
+    "strict_tu": "MSVC Win32 /W4 /WX /fp:strict source compilation passed"
+  }
+}

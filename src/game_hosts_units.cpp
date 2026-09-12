@@ -35,6 +35,7 @@
 #include "bsp/unit_controller.hpp"
 #include "bsp/unit_forces.hpp"
 #include "bsp/unit_instance.hpp"
+#include "bsp/unit_kind_query.hpp"
 #include "bsp/unit_order_record.hpp"
 #include "bsp/unit_rudder.hpp"
 #include "bsp/unit_rudder_curve.hpp"
@@ -147,7 +148,9 @@ struct GameUnitSlot {
     // holds it at zero.
     float leak_water_mass_10fc{0.0f};
 
-    int class_id{bsp::kUnitDestroyerClassId};  // unit+C4h, the descriptor's kind
+    // unit+C4h is the most-derived instance class selected by VehicleClass.Type.
+    // -1 means its identity is unresolved; it is not a native class-id stamp.
+    int class_id{bsp::kVehicleClassKindUnknown};
     // Milestone 2p: the two load latches the middle of 009F3F80 raises with the
     // inlined bodies of 009D4FB0 (unit+102Ch) and 009D4FE0 (unit+1034h). Their
     // consumers are not in this process; the fields exist so the raise is a
@@ -590,13 +593,21 @@ public:
         return m;
     }
     // 00932A42 and 00932E2F, the unit's vtable slot 5Ch with the literal 8. The
-    // callee's body is unread (docs/SHIP_HYDRO_FORCES.md follow-up
-    // `unit_vtable_5c`), so this answers the same way 00937D09's hull-body site
-    // does: the recovered IsKindOf table, which gives MSubmarine for category 8.
+    // compiled predicate belongs to the loaded instance class, as at the
+    // hull-body call 00937CFD. docs/GAME_UNIT_KIND_BINDING.md.
     bool unit_category_8_vtable5c() override {
-        owner_.record_slot("ShipHydro::unit_category_8", "00cfc3d0+vtable5c");
-        return bsp::unit_is_kind_of_006fe530(bsp::kUnitForceSubmarineClassId,
-            slot_.class_id);
+        const bsp::UnitKindClassBody* body = bsp::unit_kind_body_for_class(slot_.class_id);
+        if (body != nullptr) {
+            // GameHostLog groups by method name; keep distinct vtable owners
+            // distinct so the first unit cannot label every later call.
+            char method[64];
+            std::snprintf(method, sizeof(method), "ShipHydro::unit_category_8_class_%02x",
+                static_cast<unsigned int>(slot_.class_id));
+            owner_.done(method, body->test_address);
+        } else {
+            owner_.record("ShipHydro::unit_category_8_unresolved_identity", 0x00932a42u);
+        }
+        return bsp::unit_is_kind_of(slot_.class_id, bsp::kUnitForceSubmarineClassId);
     }
     float water_height_0078cf20(float x, float z) override {
         OceanFieldBinding sea(owner_);
@@ -905,16 +916,7 @@ class ControlledUnitQueryBinding final : public bsp::ControlledUnitQuery {
 public:
     explicit ControlledUnitQueryBinding(int class_id) : class_id_(class_id) {}
     bool unit_is_kind_of(int query) override {
-        // 006fe530 is MDestroyer's implementation of vtable +5Ch. A ship leaf
-        // that is not MDestroyer shares every ancestor but the literal 7
-        // (docs/LOCAL_PLAYER_UNIT_LISTS.md: every ship descriptor chain
-        // contains 6), so the executable answers the same chain with that one
-        // literal removed rather than inventing a second table.
-        if (query == bsp::kUnitDestroyerClassId
-            && class_id_ != bsp::kUnitDestroyerClassId) {
-            return false;
-        }
-        return bsp::unit_is_kind_of_006fe530(query, class_id_);
+        return bsp::unit_is_kind_of(class_id_, query);
     }
     bool has_driven_sub_unit() override { return false; }   // unit+3D0h
     bool sub_unit_is_kind_of(int) override { return false; }
@@ -931,7 +933,7 @@ public:
         owner_.done("ControlledUnit::store_global", 0x004c0893u);
     }
     bool driven_listener_handle() override {
-        owner_.record("ControlledUnit::driven_listener_handle", 0x004c08f2u);
+        owner_.record("ControlledUnit::driven_listener_handle", 0x004c08f7u);
         return false;
     }
     void publish_listener(bool) override {
@@ -1178,11 +1180,19 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
             slot->fields.max_speed = lua_row.max_speed;
             slot->fields.max_rot_angle = lua_row.max_rot_angle;
             slot->fields.max_rot_angle_change_ratio = lua_row.max_rot_angle_change_ratio;
-            // The descriptor kind is the recovered map from the row's `Type`
-            // literal to the leaf class the factory's string chain selects.
+            // 00964790 maps VehicleClass.Type to a descriptor whose +28h
+            // allocator constructs the instance. Its constructor stamps +C4h:
+            // e.g. 006FE590 -> 006FE460, store 7 at 006FE4B3. The recovered
+            // descriptor kind and instance class id coincide for these leaves.
             const bsp::VehicleClassDescriptorRow* kind
                 = bsp::vehicle_class_kind_row(lua_row.type.c_str());
             if (kind != nullptr) slot->class_id = static_cast<int>(kind->kind);
+        }
+        if (slot->class_id == bsp::kVehicleClassKindUnknown) {
+            host.log.notef("unit identity unresolved: unit=%s type_id=%d class_row_found=%d "
+                "VehicleClass.Type=\"%s\"; class_id=-1, kind queries return false",
+                row.name.c_str(), row.type_id, row.class_row_found ? 1 : 0,
+                lua_row.type.c_str());
         }
         // Milestone 2r. class+A0h, class+A8h and class+B0h are the `Length`,
         // `Height` and `Mass` keys 00960230 writes into the descriptor, and the
@@ -1263,10 +1273,10 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         {
             bsp::ShipHullBodyInputs hull{};
             hull.mass = slot->motion_class.hull_mass;             // 009399F7
-            // 00937D09, the unit's answer to virtual slot 5Ch with category 8
-            // (MSubmarine): it picks the third physics record.
-            hull.unit_category_8 = bsp::unit_is_kind_of_006fe530(
-                bsp::kUnitForceSubmarineClassId, slot->class_id);
+            // 00937CFD calls virtual slot 5Ch with category 8 (MSubmarine);
+            // the accepting branch picks the third physics record at 00937D09.
+            hull.unit_category_8 = bsp::unit_is_kind_of(
+                slot->class_id, bsp::kUnitForceSubmarineClassId);
             for (int i = 0; i < 3; ++i) {
                 hull.row0[i] = slot->motion.pose_row0[i];
                 hull.row1[i] = slot->motion.pose_row1[i];
@@ -1560,10 +1570,13 @@ void GameUnitsHost::set_controlled_unit_004c0890(std::size_t index) {
     host.summary.controlled_bound = globals.unit_present;
     host.summary.controlled_index = index;
     host.summary.controlled_name = slot.row.name;
-    host.log.notef("controlled unit: 00e188d8 = \"%s\" (%s %s, party %d); 00e188dc %s, "
-        "because the resolved object answers neither IsKindOf(0Fh) nor IsKindOf(18h)",
+    host.log.notef("controlled unit: 00e188d8 = \"%s\" (%s %s, party %d); 00e188dc %s; "
+        "class_id=%d IsKindOf(0Fh)=%d IsKindOf(18h)=%d; "
+        "listener handle/publication adapters remain unimplemented",
         slot.row.name.c_str(), slot.row.class_name.c_str(), slot.row.type_symbol.c_str(),
-        slot.row.party, globals.listener_present ? "published a handle" : "was cleared");
+        slot.row.party, globals.listener_present ? "published a handle" : "was cleared",
+        slot.class_id, query.unit_is_kind_of(0x0f) ? 1 : 0,
+        query.unit_is_kind_of(0x18) ? 1 : 0);
 }
 
 void GameUnitsHost::issue_player_order(float throttle, float rudder) {
@@ -1965,11 +1978,7 @@ bool GameUnitsHost::unit_active(std::size_t index) const noexcept {
 
 bool GameUnitsHost::unit_is_kind_of(std::size_t index, int class_id) const {
     if (index >= impl_->slots.size()) return false;
-    const int own = impl_->slots[index]->class_id;
-    if (class_id == bsp::kUnitDestroyerClassId && own != bsp::kUnitDestroyerClassId) {
-        return false;
-    }
-    return bsp::unit_is_kind_of_006fe530(class_id, own);
+    return bsp::unit_is_kind_of(impl_->slots[index]->class_id, class_id);
 }
 
 int GameUnitsHost::unit_class_id(std::size_t index) const noexcept {

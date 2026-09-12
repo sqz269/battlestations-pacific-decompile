@@ -1,5 +1,6 @@
 #include "bsp/gui_listbox_runtime.hpp"
 #include "bsp/gui_text_lifetime.hpp"
+#include "bsp/gui_text_child_lifetime.hpp"
 #include "bsp/gui_listbox_row_control.hpp"
 #include "bsp/gui_resources.hpp"
 #include "bsp/gui_text_type_dispatch.hpp"
@@ -385,16 +386,10 @@ void GuiListboxRuntime::update40_00a9d030(float seconds,
         : services.input_callback_f8bc08;
     const auto input = callback();
     if (input.activate_4a) {
-        const auto get_device = [&](std::int32_t type) {
-            auto* const groups = services.input_groups_00f8bbf4;
-            if (!groups || static_cast<std::size_t>(type) >= groups->size())
-                throw std::logic_error("Listbox40 requires its actual input backend class vectors");
-            return get_input_class_device_004ba6d0(*groups, type, 0);
-        };
-        auto* const keyboard = get_device(0);
-        auto* const gamepad = get_device(2); // Both getters before either2C.
-        if ((keyboard && services.calls.device_current2c(*keyboard)) ||
-            (gamepad && services.calls.device_current2c(*gamepad))) {
+        const auto keyboard = services.input_groups_00f8bbf4.device(0);
+        const auto gamepad = services.input_groups_00f8bbf4.device(2); // Both before either2C.
+        if ((keyboard && keyboard.buttons_active(services.calls)) ||
+            (gamepad && gamepad.buttons_active(services.calls))) {
             if (listener_114_ && selected_row_00425e50() &&
                 !selected_row_00425e50()->scene_flags().hidden)
                 services.calls.listener_current04(listener_114_,
@@ -621,6 +616,21 @@ void GuiListboxRuntime::append_row_with_data_00a9da30(GuiWidgetOwner& row,
     std::uint32_t data, std::unique_ptr<GuiLayoutWidget>& detached) {
     row.extra_fields().pointer_d8 = reinterpret_cast<void*>(static_cast<std::uintptr_t>(data));
     append_row_00a9d750(row, detached);
+}
+void GuiListboxRuntime::clear_rows_00a9bec0(GuiTextChildDeletion& deletion) {
+    Operation operation(*this);
+    void* const captured_listener=listener_114_;
+    listener_114_=nullptr;
+    for(auto it=rows_.begin();it!=rows_.end();++it) {
+        auto* const row=*it;
+        if(row) deletion.delete_widget_virtual4(row->layout(),1);
+        // Advance the same FC node after deletion; never read the retired row.
+    }
+    rows_.clear();
+    selected_=rows_.end();
+    listener_114_=captured_listener;
+    previous_110_=nullptr;
+    refresh80_00a9c220(false);
 }
 void GuiListboxRuntime::set_active60_00a9cd20(bool active) {
     Operation operation(*this);

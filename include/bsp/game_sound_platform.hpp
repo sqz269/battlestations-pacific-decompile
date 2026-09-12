@@ -4,21 +4,23 @@
 #include "bsp/xlive_library.hpp"
 
 namespace bsp::game {
+class GameSoundCursorCalls {
+public:
+    virtual ~GameSoundCursorCalls() = default;
+    virtual void update_cursor_focus_00becb20(bool loading) = 0;
+};
 // Load-time platform adapter. This borrows the application's existing cursor,
 // input/online publication services, and actual selected XLive DLL. It creates
 // no input or online owners and has no substitute pretranslation result.
 class GameSoundLoadEvents final : public ResourceLoadEventHost {
 public:
-    GameSoundLoadEvents(Win32PlatformState&, PlatformCursorGlobals,
-        PlatformCursorHost&, XLiveLibrary&) noexcept;
+    GameSoundLoadEvents(GameSoundCursorCalls&, XLiveLibrary&) noexcept;
     bool pretranslate(MSG&) override;
     void update_cursor_focus_00becb20(bool loading) override;
     std::uint64_t pretranslation_calls() const noexcept { return pretranslation_calls_; }
     std::uint64_t focus_calls() const noexcept { return focus_calls_; }
 private:
-    Win32PlatformState& platform_;
-    PlatformCursorGlobals globals_;
-    PlatformCursorHost& cursor_;
+    GameSoundCursorCalls& cursor_;
     XLiveLibrary& xlive_;
     std::uint64_t pretranslation_calls_{};
     std::uint64_t focus_calls_{};

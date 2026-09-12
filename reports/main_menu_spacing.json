@@ -1,0 +1,96 @@
+{
+  "packet": "orch5_objective_spacing",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "ghidra_mode": "read_only_verified_bsp_wrappers"
+  },
+  "source": "src/main_menu_spacing.cpp",
+  "header": "include/bsp/main_menu_spacing.hpp",
+  "documentation": "docs/MAIN_MENU_SPACING.md",
+  "routine": {
+    "address": "00582f30",
+    "end_inclusive": "00583091",
+    "last_instruction": "00583091",
+    "last_instruction_length": 1,
+    "length": 354,
+    "body_read": "complete stored assembly, no unrepresented post-return epilogue",
+    "abi": "ECX main-menu screen; no stack arguments; bare RET",
+    "coverage": "partial containing function: only after-current14 spacing producer",
+    "no_ghidra_function": false,
+    "alignment_gaps": []
+  },
+  "fragment": {
+    "start": "00582f45",
+    "last_instruction": "00582fe6",
+    "last_instruction_length": 6,
+    "end_inclusive": "00582feb",
+    "length": 167,
+    "name": "compute_main_menu_spacing_00582f45_fragment",
+    "domain": "same canonical layout/owners; actual live idle Text companions; synchronous existing position and normalized-height kernels",
+    "continuation": "returns the actual +470 pointer captured at00582FDD for current34(false) at00582FF1; does not dispatch it"
+  },
+  "field_producers": [
+    {
+      "offset": "2b0",
+      "store": "00582f99",
+      "bytes": "d99eb0020000",
+      "inputs": "resolved Y of current +258, resolved Y of current +24C, normalized height of reloaded +24C",
+      "arithmetic": "x87 FLD binary32 first Y; FSUB binary32 second Y; FSTP binary64 at582F81 before height call; FSUBR binary64 at582F8A against ST0 height; FSTP binary32 at582F99",
+      "before_publish": "capture current +25C at582F8E",
+      "storage": "existing MainMenuLayoutBindings.field_2b0 optional cell"
+    },
+    {
+      "offset": "2b4",
+      "store": "00582fe6",
+      "bytes": "d99eb4020000",
+      "inputs": "resolved Y of captured +25C, resolved Y of current +258, normalized height of reloaded +258",
+      "arithmetic": "x87 FLD binary32 first Y; FSUB binary32 second Y; FSTP binary64 at582FD0 before height call; FSUBR binary64 at582FD9 against ST0 height; FSTP binary32 at582FE6",
+      "before_publish": "capture current +470 at582FDD",
+      "storage": "existing MainMenuLayoutBindings.field_2b4 optional cell"
+    }
+  ],
+  "callee_evidence": [
+    {
+      "entry": "00aa6750",
+      "body_read": "complete assembly00AA6750..00AA67E1 including recursive parent path",
+      "abi": "ECX widget; output vector pointer at stack+4; EAX output vector; RET4",
+      "reuse": "resolved_position on same owner.layout().transform"
+    },
+    {
+      "entry": "00ab6bd0",
+      "body_read": "complete assembly00AB6BD0..00AB6C27; all three return paths checked",
+      "abi": "ECX Text; no stack arguments; bare RET; ST0 is binary32 spilled then reloaded",
+      "return_spills": ["00ab6be6/00ab6be9", "00ab6c08/00ab6c0b", "00ab6c20/00ab6c23"],
+      "reuse": "GuiTextRuntimeImplementation::normalized_height_00ab6bd0 uses current font signed word+14 or multiline+178 and live doubleCEF1B8",
+      "boundary": "requires actual matching owner/text lifetime and idle Text; pending/unsupported resource boundary throws, retaining prior stores"
+    }
+  ],
+  "host_steps": [
+    {"address": "00582f50", "native": "00aa6750", "function": "00582f30", "contract": "resolved Y of actual +258; output pointer; RET4"},
+    {"address": "00582f67", "native": "00aa6750", "function": "00582f30", "contract": "resolved Y of actual +24C; output pointer; RET4"},
+    {"address": "00582f85", "native": "00ab6bd0", "function": "00582f30", "contract": "reload +24C at582F6F; store difference binary64 before call; returned height binary32 in ST0"},
+    {"address": "00582f9f", "native": "00aa6750", "function": "00582f30", "contract": "resolved Y of +25C captured582F8E; field2B0 already published"},
+    {"address": "00582fb6", "native": "00aa6750", "function": "00582f30", "contract": "resolved Y of +258 reloaded582FA7"},
+    {"address": "00582fd4", "native": "00ab6bd0", "function": "00582f30", "contract": "reload +258 at582FBE; binary64 difference stored before height; ST0 binary32 height"}
+  ],
+  "remaining_registration_steps": [
+    {"address": "00582f37", "native": "004f71d0", "function": "00582f30", "coverage": "outside fragment; actual base register dependency remains required; no implementation claim here"},
+    {"address": "00582f43", "native": "00582f30+vtable14", "function": "00582f30", "coverage": "outside fragment; ECX screen, CALL EDX; current table slot normally5861B0, tableCEFC6C bytes302F5800B0615800"},
+    {"address": "00582ff1", "native": "00582f30+vtable34", "function": "00582f30", "coverage": "outside fragment; captured+470 receiver, current slot34, argument0 pushed582FE5"},
+    {"range": "00582ff3..00583054", "coverage": "outside fragment", "writes_in_order": ["capture liveCE54A0", "64=0", "68=0", "2C8=null", "2EC=0", "190=capturedCE54A0", "194=liveCEF7BC", "198=positivezero", "1A4=positivezero", "1A8=positivezero", "1AC=positivezero", "110=0", "byte565=0", "byte564=0"]},
+    {"address": "00583087", "native": "00b29e60", "function": "00582f30", "coverage": "outside fragment; named renderer callee not assumed ready", "caller_operands": "ECX=[F8D394]; first-to-last stack arguments [F88994],[F88998],zero-extended byte[F8899E],[F889D8],zero-extended byte[F889E0],1; callee implementation/ABI closure left to parent"}
+  ],
+  "producer_search": {
+    "positive": "00582F30 complete listing and live bytes00582F45..00582FEB",
+    "bounded_negative": ["005902E0 constructor does not write2B0/2B4", "005861B0 binds source slots but has no spacing stores", "0058F100 actual map range erase has no screen spacing operands", "005987F0 targeted operands reveal no spacing writes"],
+    "not_claimed": "global scan of all executable writers"
+  },
+  "verification": {
+    "call_report": "python tools/verify_report_calls.py reports/main_menu_spacing.json: 8 direct call rows checked, 0 failed; 2 explicit indirect rows checked manually against listing/table",
+    "win32_build": "scripts/build.ps1 Release Win32 passed; main_menu_spacing.cpp compiled; CTest reconstructed_math and native_math_differential passed 2/2; local/spacing-build.log",
+    "game_validated": false,
+    "full_registration_runtime_validated": false,
+    "new_permanent_tests": false
+  }
+}

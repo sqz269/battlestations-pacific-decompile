@@ -1,0 +1,25 @@
+{
+  "scope": "GUI actual input publication adapter and Listbox A9BEC0 row clear prelude",
+  "baseline_commit": "3081db70a39c77eaf29cf4275f630c4c7be257c1",
+  "input": {
+    "lookup": "004ba6d0",
+    "original_abi": "ECX backend; class/index stack; RET8",
+    "storage": "actual 24h class records at6C; vector begin/end at+4/+8; live publication borrowed",
+    "device_calls": "existing NativeInputDeviceRuntime finite actual-owner dispatcher; no raw-to-typed device cast",
+    "consumers": ["AA87B0 listener mouse history", "A9D030 keyboard/gamepad current2C activation"],
+    "typed_compatibility": "existing typed fixture interface remains a separate borrowed domain"
+  },
+  "clear": {
+    "address": "00a9bec0",
+    "original_abi": "ECX Listbox; RET",
+    "effects": "suppress114; delete each nonnull FC payload via current4(flags1); clear same FC nodes; selected=end; restore114; clear110; refresh80(false)",
+    "contract": "actual Text/Group/Section deletion provider required; unsupported native destruction phases throw; FC nodes survive payload callbacks",
+    "flow_repair": "orch5_listbox_clear_flow_repair.json; ten-byte post-free gap repaired, zero remaining gaps"
+  },
+  "validation": {
+    "release_win32_build": "passed before final publication-identity guard; full integrated build required",
+    "existing_ctest": "2/2 passed",
+    "game_validated": false,
+    "drop_in_native_abi": false
+  }
+}

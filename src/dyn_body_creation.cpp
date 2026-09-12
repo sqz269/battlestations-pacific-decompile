@@ -165,6 +165,10 @@ void dyn_world_body_pool_fragment_00c41ad0(void* world,const AvoidZoneDynHullMem
     dyn_body_pool_construct_00409170(plus(world,0x4c),m);
     dyn_body_pool_construct_00409170(plus(world,0x170),m);
     dyn_motion_pool_construct_00409450(plus(world,0x294),m);
+    dyn_world_allocate_shared_motion_00c41fa4(world,m);
+}
+
+void dyn_world_allocate_shared_motion_00c41fa4(void* world,const AvoidZoneDynHullMemory& m) {
     void* shared=take_pool_slot(plus(world,0x294),0xc8,m);
     std::memset(shared,0,0xc0);
 }

@@ -48,12 +48,14 @@ struct IGameExplorer;
 #include "bsp/winmain_startup.hpp"
 
 namespace bsp {
+struct NativeInputActionRecordCalls;
 struct NativeRendererParametersOwner;
 struct CameraAxesCrtAccess;
 class XLiveLibrary;
 }
 
 namespace bsp::game {
+class GameInputRuntime;
 
 // One process-owned CRT dispatch state, shared by sound and recovered geometry.
 const CameraAxesCrtAccess& application_camera_axes_crt() noexcept;
@@ -143,6 +145,7 @@ struct GameExecutableOptions {
     std::wstring fmod_dll;
     std::wstring fmod_event_dll;
     std::wstring xlive_dll;
+    std::wstring xinput_dll; // --xinput-dll; empty selects system XINPUT1_3.dll
     std::vector<std::wstring> xlive_dependencies;
     // --vfs-probe <virtual path>, repeatable: resolve and read one path after phase 2 and
     // print its byte count.
@@ -579,12 +582,21 @@ public:
     GameDecalTable* decal_table() const noexcept { return decals_; }
     const ObjectHandleResolverSlots& object_handle_resolvers() const noexcept { return object_resolvers_; }
     NativeRendererParametersOwner* renderer_parameters() const noexcept { return renderer_parameters_; }
+    GameInputRuntime* input_runtime() const noexcept { return input_runtime_; }
+    void* volatile& input_backend_publication() noexcept { return input_backend_00f8bbf4_; }
 
 private:
     void run_initialize_phases(const char* mode);
     void release_platform_window() noexcept;
     struct SoundServices;
     std::unique_ptr<SoundServices> sound_;
+    struct InputServices;
+    std::unique_ptr<InputServices> input_;
+    void* volatile input_backend_00f8bbf4_{};
+    void* volatile input_actions_00f8bbf8_{};
+    GameInputRuntime* volatile input_runtime_{}; // nonowning source service publication
+    NativeInputActionRecordCalls* volatile input_listener_calls_{};
+    FrameClock* volatile clock_publication_01090ab0_{};
 
     GameHostLog& log_;
     HINSTANCE instance_{};

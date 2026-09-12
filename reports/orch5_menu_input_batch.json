@@ -1,0 +1,461 @@
+{
+  "schema_version": 1,
+  "status": "exact_promoted_win32_build_and_seven_scoped_fixtures_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "initial_baseline": "3081db70a39c77eaf29cf4275f630c4c7be257c1",
+  "source_capture_head": "1999f9abeb05d47aec64100427c1f1c726d694cc",
+  "source_sha256_lf": {
+    "cmake/startup.cmake": "4dfc312ff55d1cf95822fb6a881452f01620d761eaf4fa7fec49b9ec4521885a",
+    "include/bsp/game_hosts_mission.hpp": "5e8f1324854f895b13a1fb2719e0902654e32181e850eac6a073d8ac2846a978",
+    "include/bsp/gui_input_runtime.hpp": "35b8750062890419abf8881c374a74a709f2c3c49dedba84072bf6f9bdbc366b",
+    "include/bsp/gui_listbox_runtime.hpp": "c744933460679dd09b63eb9fb3cde8d0efb577fd20d311a685fa4e677f673daa",
+    "include/bsp/gui_manager_frame.hpp": "a9605b1c25e13397f9a1c0b77efca607b6d627ac197099c028f28cbd68d17ebc",
+    "include/bsp/gui_pointer_runtime.hpp": "9c5818cfc9ccdbabd29bfa6ffe6c5610c75bd200eb207c9455adcaaf7c1eaa62",
+    "include/bsp/gui_resources.hpp": "92967940a90e9590c5cd90bd6d3897115d8cf6e7dc395a198241028417bfd33a",
+    "include/bsp/gui_widget_frame_runtime.hpp": "e110360a809b7fe960a97156e2d1244929289ed0f74b475d0ee75e404e2bac29",
+    "include/bsp/main_menu_activation_runtime.hpp": "f70fde0b3a30712db405258aa0d06dd32d3fe6ddbee883f78f0c2f28dc769ed4",
+    "include/bsp/main_menu_command_listener.hpp": "9a4be4346abd5b4dcac4ff8a3cf9fd22036b2acb61eb4f7abeba0873179d3bd9",
+    "include/bsp/main_menu_layout_binding.hpp": "7f1d92bad673fb1541755bfe53cf28b43c43c4688941dad48979950642bf0df3",
+    "include/bsp/main_menu_objective_rows.hpp": "ca7676096d7d162cb868f43c1bb586571a0d58eb0a94abc20b912050d146b0e4",
+    "include/bsp/main_menu_runtime_listeners.hpp": "4e8c4dad67cf6b4e4b6e996ecb9b02c3ffb73d37d1181886a2fbd62804948205",
+    "include/bsp/main_menu_selection_listener.hpp": "095f1c4ec2c6d77770ecfdd19ead30af002d2c6927964aa0f70bc6755aa7e8bf",
+    "include/bsp/main_menu_selection_services.hpp": "001d8b3ee72b9bdf1c4b36c66bdbfe6cfb4d6393b948d8c43efb55f7f4d25a20",
+    "include/bsp/main_menu_spacing.hpp": "754f89bc23b398b622dd8afb8c9e90bbe1650f7da91f31a91c81bfb2170afc11",
+    "include/bsp/main_menu_widget_lists.hpp": "774dee80be0df93dae57f3bc28633b2cc95d1cad4a8c53472709a7ea1f13e7a9",
+    "include/bsp/mission_picture_owner.hpp": "d40d2f7e725518c646eed9e91c1ae73da7602cede6d3316e10093e401019c1b1",
+    "include/bsp/mission_tree_data.hpp": "1d26422211fd7745343cd955bf1f79ad3256b420e2c6d471d228a77f4ad4ce7e",
+    "src/game_hosts_mission.cpp": "b0d432f12f20721c8ddf82772d95d09f816c8c1ad5c4ddadb48b59623bb3b66d",
+    "src/gui_input_runtime.cpp": "922deebe7d674c8b042d5c0e1508bffd89665ca7e057fe8bc225d3a84a3b3b4b",
+    "src/gui_listbox_runtime.cpp": "58fd095346705097e9d96785ece5e9b8744208b34164f1add24ce824aed3bd76",
+    "src/gui_pointer_runtime.cpp": "3b0ebbca0277015560106c4f16041dce6b6b3ccd6f94c4430728b30c7668bbc7",
+    "src/gui_widget_frame_runtime.cpp": "1ae26767da4565a270f8bf68265364ac0d2a6a7e2282871488eec6309eeec114",
+    "src/main_menu_activation_runtime.cpp": "77c52269ddbd9826eec8503167ed2c7bdc808eb5009fbe4111959c347012cfe4",
+    "src/main_menu_objective_rows.cpp": "e6e5dca52d02eec2bae4118f399e2f1da127e5cd92d15c64f96a37e91023fe49",
+    "src/main_menu_runtime_listeners.cpp": "97bf4e9ff4766a91ff4c8240e780fb8c5531fc53d1b71f2bdaf2fb9008311694",
+    "src/main_menu_selection_services.cpp": "94f0c2792b5e7fca3f5c4309afac292362363bc547ee92d7afbaf1e5b13536c4",
+    "src/main_menu_spacing.cpp": "28dd94acd38b655a685bf62460f648277056b6a6f9ac64b811c77d6b6fe1ed35",
+    "src/mission_picture_owner.cpp": "0cdbd1bc272c046b72af1f2826bc0593e292e33e83f22a43677d646764d12a1e",
+    "src/mission_tree_data.cpp": "0e45f4bac3317ddf3f118fcdc5efc525045c08f1d08a762a3f41eead9220899e"
+  },
+  "worker_commits": {
+    "activation": "b6085ec941c4acb6f8fbe286942757e9ed1c30dc",
+    "objective_rows": "ace37a73f733f8bed88f259ba18d4fe7369724b0",
+    "picture": "f8359d5916841cbb474c7b7c6cc134cbc86f05ec",
+    "spacing": "e916f9463146c3c62f6d2f88ed1e3414f744ef89"
+  },
+  "build": {
+    "target": "MSVC Win32 Release /W4 /WX",
+    "passed": 2,
+    "failed": 0,
+    "log": "local/orch5-menu-input-build-final.log",
+    "sha256": "6270ff4a8cdf7df56e2578390973ea22cc8bbfa256c64029b0aef1567d184d26"
+  },
+  "fixtures": {
+    "libraries": [
+      {
+        "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_core.lib",
+        "Hash": "75574CDC346CEC1421C6029B410B4C092BAF1B9097ECE9FE3CEE74606E157AD4"
+      },
+      {
+        "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_lua511.lib",
+        "Hash": "B6C19DD56BCE2C86DCF1ABF5C3044D48DDC2AC2C33EF04E3DC87F022413EE193"
+      },
+      {
+        "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_zlib121.lib",
+        "Hash": "2C89BD9AE83D791564EA847C75E8E5EE025E40810C1DF8D55E5799E0C7B8C471"
+      }
+    ],
+    "commit": "1999f9abeb05d47aec64100427c1f1c726d694cc",
+    "compile_scope": "fixture translation units only; same primary production libraries",
+    "fixtures": [
+      {
+        "log_sha256": "055BB66B97BE98410AE93878C6D04B1A8DED3AB6E7E64B4AA6D8068543CC86D7",
+        "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\menu-input-validation\\activation-run.log",
+        "name": "activation",
+        "source": "local/orch5-menu-input-workers/menu-activation/original/menu_activation_fixture.cpp",
+        "source_sha256": "5A63CF18482D1789F47EB4C8996FA399A9C3C08FF4350C10368F9437EC0502EF",
+        "exit_code": 0
+      },
+      {
+        "log_sha256": "B8CB2D1503EC9CF44F51F925066376F8B58681FAA908203C8A2282A902FE06C9",
+        "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\menu-input-validation\\input_pointer-run.log",
+        "name": "input_pointer",
+        "source": "local/orch5-menu-input-workers/menu-activation/original/gui_input_pointer_fixture.cpp",
+        "source_sha256": "E624AD2CD8E4B6DA19517849B5A9E7B7ADB468861F910573F37A67A8E72EC029",
+        "exit_code": 0
+      },
+      {
+        "log_sha256": "7118FCF6BBBB349048734F099205CBAB291797727FA2EECC00DA69CD3FEFD91C",
+        "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\menu-input-validation\\picture-run.log",
+        "name": "picture",
+        "source": "local/orch5-menu-input-workers/mission-picture/original/mission_picture_probe.cpp",
+        "source_sha256": "A0B12CCBF34F1D2D74DB7432E0AD5A35ED9FEB493D153E8C2562674E590F1D94",
+        "exit_code": 0
+      },
+      {
+        "log_sha256": "BD7FF0ACF29E2FCEA8C00B8ED4DD12B8A679DF7D968C6DE8EA8DF484F792403C",
+        "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\menu-input-validation\\objective_nodes-run.log",
+        "name": "objective_nodes",
+        "source": "local/orch5-menu-input-workers/objective-rows/original/objective_nodes_probe.cpp",
+        "source_sha256": "F9353E1D497A19D7186D89F12E4EAA74F1BF0F6DB25F1D68E77B0BB9EBE15488",
+        "exit_code": 0
+      }
+    ],
+    "game_validated": false
+  },
+  "regressions": [
+    {
+      "log": "local/orch5-menu-input-listbox-initial.log",
+      "sha256": "e44e0aabc1213e7f432ff496c95bd432a951240ecb75a5305297b042a3c2fad9",
+      "passed": true
+    },
+    {
+      "log": "local/orch5-menu-input-base-initial.log",
+      "sha256": "924de5b82db64422039f70bf004ffde993771d44e3adbca6de369d39c54535bf",
+      "passed": true
+    },
+    {
+      "log": "local/orch5-menu-input-sides-initial.log",
+      "sha256": "36f32847722c97b6a8378feb12a6c396cda9fb836949024cb7deefb9f0505307",
+      "passed": true
+    }
+  ],
+  "library_sha256": "75574cdc346cec1421c6029b410b4c092baf1b9097ece9fe3cee74606e157ad4",
+  "mechanical_calls": {
+    "direct_rows": 402,
+    "failed": 0,
+    "indirect_rows": 50,
+    "log": "local/orch5-menu-input-calls-final.log",
+    "sha256": "4a8764f3e5973888e93cf5ea8b2f2102057322a3739a724a48ab3a3ea1435953",
+    "note": "Direct numeric targets checked live; indirect/IAT operand and table evidence separate"
+  },
+  "annotations": {
+    "count": 19,
+    "saved": true,
+    "archive": "reports/orch5_menu_input_annotations.json",
+    "sha256": "b4c4a17da55be7826d3af63092baf1ab5276654491ca4e5445b1780d1e9334a9",
+    "old_values_preserved": true,
+    "exports_refreshed": true
+  },
+  "repairs": [
+    "reports/orch5_listbox_clear_flow_repair.json",
+    "reports/orch5_objective_rows_flow_repair.json",
+    "reports/orch5_objective_rows_function_recreated.json",
+    "reports/orch5_mission_picture_flow_repair.json",
+    "reports/orch5_mission_picture_function_recreated.json"
+  ],
+  "documentation_preservation": {
+    "objectives": {
+      "checks": {
+        "function_name": true,
+        "return_type": true,
+        "calling_convention": true,
+        "parameters": true,
+        "plate_comment": true,
+        "comments": true,
+        "existing_labels": true,
+        "local_variable_descriptions": false
+      },
+      "previous_labels": 105,
+      "current_labels": 105,
+      "previous_locals": 82,
+      "current_locals": 83,
+      "previous_only_variables": [
+        {
+          "name": "auStack_58",
+          "type": "undefined1[16]"
+        }
+      ],
+      "current_only_variables": [
+        {
+          "name": "auStack_58",
+          "type": "undefined1[8]"
+        },
+        {
+          "name": "pvStack_50",
+          "storage": "(stack, 0xffffffffffffffb0, 4)",
+          "type": "void *"
+        }
+      ]
+    },
+    "picture": {
+      "function_name": true,
+      "return_type": true,
+      "calling_convention": true,
+      "parameters": true,
+      "plate_comment": true,
+      "comments": true,
+      "labels": true
+    },
+    "note": "One generated objective local split after body repair; comments and labels preserved"
+  },
+  "review": {
+    "pointer": "independent native/object review corrected reversed widescreen bounds; D5BEC0 upper read first, D5BEBC lower second; corrected source1999f9ab built and disabled-path fixture passed",
+    "spacing": "actual582F30 register fragment after5861B0; native double-spill/returned Text height verified",
+    "picture": "independent parent binding audit found no blocking issues;5966F0 unitUV unchanged"
+  },
+  "archived_worker_evidence": "local/orch5-menu-input-workers/manifest.json",
+  "archive_sha256": "4918bc2fe5d689d0816aef67cd6d6197f312c841d3bc1dca801ab7d752964061",
+  "installed_metadata": {
+    "campaign_records": 143,
+    "multiplayer_records": 34,
+    "populated_ic_lists": 102,
+    "adapter": "actual Lua511 and parent GameMissionHost LiveMissionTreeView",
+    "pictures_exercised": false
+  },
+  "abi_compatible": false,
+  "game_validated": false,
+  "render_validated": false,
+  "new_permanent_test_cases": 0,
+  "limits": [
+    "Enabled Icon movement/clamp andAA2F10/AA8BD0 not runtime tested",
+    "Native class-vector and SDK sample producers not exercised by constructor-backed input fixture",
+    "Full594BF0 GUI/Text cloning, content/resources and full582F30 registration remain open",
+    "Real picture manager/atlas/renderer startup binding remains external; no COM-as-native casts",
+    "Existing session/page/profile/prompt and executable canonical-menu integration remain required",
+    "Worker game attempt failed C0000005 in settings before mission loading; no picture gameplay proof"
+  ],
+  "promotion": {
+    "source_commit": "1eedbbeb86f7eed995ee865c8ab14f241cebba5c",
+    "built_commit": "e242b220c8e6f1f795c20364cb09d3f41777159d",
+    "exit_code": 0,
+    "promoted_commit": "e242b220c8e6f1f795c20364cb09d3f41777159d",
+    "main_commit": "e242b220c8e6f1f795c20364cb09d3f41777159d",
+    "build_log": "local/orch5-menu-input-integration.log",
+    "build_log_sha256": "08b8cdc3930eac7c36876375f9752388c577a56f1050b9264fc30e7b4d751897",
+    "tests_passed": 2,
+    "tests_failed": 0,
+    "library_sha256": "d74760d6ab6a835df549b3f7041953ed7d5eb76515237f747a36930c31692a4d",
+    "fixtures": {
+      "compile_scope": "fixture translation units only; same primary production libraries",
+      "fixtures": [
+        {
+          "log_sha256": "055BB66B97BE98410AE93878C6D04B1A8DED3AB6E7E64B4AA6D8068543CC86D7",
+          "exit_code": 0,
+          "source_sha256": "5A63CF18482D1789F47EB4C8996FA399A9C3C08FF4350C10368F9437EC0502EF",
+          "source": "local/orch5-menu-input-workers/menu-activation/original/menu_activation_fixture.cpp",
+          "name": "activation",
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\menu-input-validation\\activation-run.log"
+        },
+        {
+          "log_sha256": "B8CB2D1503EC9CF44F51F925066376F8B58681FAA908203C8A2282A902FE06C9",
+          "exit_code": 0,
+          "source_sha256": "E624AD2CD8E4B6DA19517849B5A9E7B7ADB468861F910573F37A67A8E72EC029",
+          "source": "local/orch5-menu-input-workers/menu-activation/original/gui_input_pointer_fixture.cpp",
+          "name": "input_pointer",
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\menu-input-validation\\input_pointer-run.log"
+        },
+        {
+          "log_sha256": "7118FCF6BBBB349048734F099205CBAB291797727FA2EECC00DA69CD3FEFD91C",
+          "exit_code": 0,
+          "source_sha256": "A0B12CCBF34F1D2D74DB7432E0AD5A35ED9FEB493D153E8C2562674E590F1D94",
+          "source": "local/orch5-menu-input-workers/mission-picture/original/mission_picture_probe.cpp",
+          "name": "picture",
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\menu-input-validation\\picture-run.log"
+        },
+        {
+          "log_sha256": "BD7FF0ACF29E2FCEA8C00B8ED4DD12B8A679DF7D968C6DE8EA8DF484F792403C",
+          "exit_code": 0,
+          "source_sha256": "F9353E1D497A19D7186D89F12E4EAA74F1BF0F6DB25F1D68E77B0BB9EBE15488",
+          "source": "local/orch5-menu-input-workers/objective-rows/original/objective_nodes_probe.cpp",
+          "name": "objective_nodes",
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\menu-input-validation\\objective_nodes-run.log"
+        }
+      ],
+      "commit": "e242b220c8e6f1f795c20364cb09d3f41777159d",
+      "game_validated": false,
+      "libraries": [
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_core.lib",
+          "Hash": "D74760D6AB6A835DF549B3F7041953ED7D5EB76515237F747A36930C31692A4D"
+        },
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_lua511.lib",
+          "Hash": "B6C19DD56BCE2C86DCF1ABF5C3044D48DDC2AC2C33EF04E3DC87F022413EE193"
+        },
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_zlib121.lib",
+          "Hash": "2C89BD9AE83D791564EA847C75E8E5EE025E40810C1DF8D55E5799E0C7B8C471"
+        }
+      ]
+    },
+    "regressions": [
+      {
+        "log": "local/orch5-menu-input-listbox-promoted.log",
+        "sha256": "e44e0aabc1213e7f432ff496c95bd432a951240ecb75a5305297b042a3c2fad9",
+        "passed": true
+      },
+      {
+        "log": "local/orch5-menu-input-base-promoted.log",
+        "sha256": "924de5b82db64422039f70bf004ffde993771d44e3adbca6de369d39c54535bf",
+        "passed": true
+      },
+      {
+        "log": "local/orch5-menu-input-sides-promoted.log",
+        "sha256": "743b6dbe53da8743f648b9cc34b96d2a212d8bb865f502fdc09382595105e538",
+        "passed": true
+      }
+    ],
+    "merged_compiled_inputs": [
+      "cmake/startup.cmake",
+      "include/bsp/dyn_body_creation.hpp",
+      "include/bsp/dyn_scene_runtime.hpp",
+      "include/bsp/dyn_world_runtime.hpp",
+      "include/bsp/dyn_world_settings.hpp",
+      "include/bsp/game_hosts_lua.hpp",
+      "include/bsp/game_hosts_units.hpp",
+      "include/bsp/ship_ai_layer_selection.hpp",
+      "src/dyn_body_creation.cpp",
+      "src/dyn_scene_runtime.cpp",
+      "src/dyn_world_runtime.cpp",
+      "src/game_hosts_lua.cpp",
+      "src/game_hosts_units.cpp",
+      "src/ship_ai_layer_selection.cpp"
+    ],
+    "initial_validation_archive": "local/menu-input-initial-validation/manifest.json",
+    "note": "Build and promoted code commit identical. All7 scoped fixtures recompiled against promoted production headers/libraries; legacy side fixture compiles the exact parent GameMissionHost TU for its internal Lua adapter. No worker production objects used."
+  },
+  "previous_promotions": [
+    {
+      "source_commit": "54eb8fb7d9d0cbd2de2ebc73ca4dd1c98c689bea",
+      "built_commit": "81f877d2f5dfefde08473ff30000bb9491a40afb",
+      "exit_code": 0,
+      "promoted_commit": "81f877d2f5dfefde08473ff30000bb9491a40afb",
+      "main_commit": "81f877d2f5dfefde08473ff30000bb9491a40afb",
+      "build_log": "local/orch5-menu-input-first-integration.log",
+      "build_log_sha256": "8385d4a4a59c5af40c5c2345c821e3e69c78f692507f5fc67d518041cc930afc",
+      "tests_passed": 2,
+      "tests_failed": 0,
+      "library_sha256": "2b3959015c865f961abf1c680e1bd87b0866301215c435d4aaac0e29aee512c7",
+      "fixtures": {
+        "libraries": [
+          {
+            "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_core.lib",
+            "Hash": "2B3959015C865F961ABF1C680E1BD87B0866301215C435D4AAAC0E29AEE512C7"
+          },
+          {
+            "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_lua511.lib",
+            "Hash": "B6C19DD56BCE2C86DCF1ABF5C3044D48DDC2AC2C33EF04E3DC87F022413EE193"
+          },
+          {
+            "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_zlib121.lib",
+            "Hash": "2C89BD9AE83D791564EA847C75E8E5EE025E40810C1DF8D55E5799E0C7B8C471"
+          }
+        ],
+        "compile_scope": "fixture translation units only; same primary production libraries",
+        "commit": "81f877d2f5dfefde08473ff30000bb9491a40afb",
+        "fixtures": [
+          {
+            "exit_code": 0,
+            "source": "local/orch5-menu-input-workers/menu-activation/original/menu_activation_fixture.cpp",
+            "log_sha256": "055BB66B97BE98410AE93878C6D04B1A8DED3AB6E7E64B4AA6D8068543CC86D7",
+            "name": "activation",
+            "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\menu-input-validation\\activation-run.log",
+            "source_sha256": "5A63CF18482D1789F47EB4C8996FA399A9C3C08FF4350C10368F9437EC0502EF"
+          },
+          {
+            "exit_code": 0,
+            "source": "local/orch5-menu-input-workers/menu-activation/original/gui_input_pointer_fixture.cpp",
+            "log_sha256": "B8CB2D1503EC9CF44F51F925066376F8B58681FAA908203C8A2282A902FE06C9",
+            "name": "input_pointer",
+            "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\menu-input-validation\\input_pointer-run.log",
+            "source_sha256": "E624AD2CD8E4B6DA19517849B5A9E7B7ADB468861F910573F37A67A8E72EC029"
+          },
+          {
+            "exit_code": 0,
+            "source": "local/orch5-menu-input-workers/mission-picture/original/mission_picture_probe.cpp",
+            "log_sha256": "7118FCF6BBBB349048734F099205CBAB291797727FA2EECC00DA69CD3FEFD91C",
+            "name": "picture",
+            "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\menu-input-validation\\picture-run.log",
+            "source_sha256": "A0B12CCBF34F1D2D74DB7432E0AD5A35ED9FEB493D153E8C2562674E590F1D94"
+          },
+          {
+            "exit_code": 0,
+            "source": "local/orch5-menu-input-workers/objective-rows/original/objective_nodes_probe.cpp",
+            "log_sha256": "BD7FF0ACF29E2FCEA8C00B8ED4DD12B8A679DF7D968C6DE8EA8DF484F792403C",
+            "name": "objective_nodes",
+            "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\menu-input-validation\\objective_nodes-run.log",
+            "source_sha256": "F9353E1D497A19D7186D89F12E4EAA74F1BF0F6DB25F1D68E77B0BB9EBE15488"
+          }
+        ],
+        "game_validated": false
+      },
+      "regressions": [
+        {
+          "log": "local/orch5-menu-input-listbox-promoted.log",
+          "sha256": "e44e0aabc1213e7f432ff496c95bd432a951240ecb75a5305297b042a3c2fad9",
+          "passed": true
+        },
+        {
+          "log": "local/orch5-menu-input-base-promoted.log",
+          "sha256": "924de5b82db64422039f70bf004ffde993771d44e3adbca6de369d39c54535bf",
+          "passed": true
+        },
+        {
+          "log": "local/orch5-menu-input-sides-promoted.log",
+          "sha256": "30ad9afc8ae228c9b09846db104dc31dee2c04f9767ce5e14c186f66f42a0a08",
+          "passed": true
+        }
+      ],
+      "merged_compiled_inputs": [
+        "cmake/startup.cmake",
+        "include/bsp/dyn_body_creation.hpp",
+        "include/bsp/game_hosts.hpp",
+        "include/bsp/game_hosts_lua.hpp",
+        "include/bsp/game_hosts_script_orders.hpp",
+        "include/bsp/game_hosts_ship_ai.hpp",
+        "include/bsp/game_hosts_units.hpp",
+        "include/bsp/game_input_runtime.hpp",
+        "include/bsp/game_platform_services.hpp",
+        "include/bsp/game_sound_platform.hpp",
+        "include/bsp/lua_binding_mission.hpp",
+        "include/bsp/native_input_backend_bindings.hpp",
+        "include/bsp/native_input_backend_startup.hpp",
+        "include/bsp/native_input_cursor.hpp",
+        "include/bsp/native_input_device_runtime.hpp",
+        "include/bsp/native_particle_emission_state.hpp",
+        "include/bsp/native_particle_object_state.hpp",
+        "include/bsp/native_particle_sprite_state.hpp",
+        "include/bsp/native_particle_tracer_state.hpp",
+        "include/bsp/native_particle_type_property.hpp",
+        "include/bsp/native_particle_type_resources.hpp",
+        "include/bsp/native_particle_type_state_dispatch.hpp",
+        "include/bsp/native_point_light_owner.hpp",
+        "include/bsp/ship_ai_formation.hpp",
+        "include/bsp/ship_ai_nav_block_ctor.hpp",
+        "include/bsp/ship_ai_obstacle_tables.hpp",
+        "include/bsp/unit_hull_extents.hpp",
+        "src/dyn_body_creation.cpp",
+        "src/game_hosts.cpp",
+        "src/game_hosts_lua.cpp",
+        "src/game_hosts_mission_frame.cpp",
+        "src/game_hosts_script_orders.cpp",
+        "src/game_hosts_ship_ai.cpp",
+        "src/game_hosts_units.cpp",
+        "src/game_input_runtime.cpp",
+        "src/game_platform_services.cpp",
+        "src/game_sound_platform.cpp",
+        "src/lua_binding_mission.cpp",
+        "src/native_input_backend_bindings.cpp",
+        "src/native_input_backend_startup.cpp",
+        "src/native_input_cursor.cpp",
+        "src/native_input_device_runtime.cpp",
+        "src/native_keyboard_mouse.cpp",
+        "src/native_particle_emission_state.cpp",
+        "src/native_particle_object_state.cpp",
+        "src/native_particle_object_tracer_loading.cpp",
+        "src/native_particle_sprite_state.cpp",
+        "src/native_particle_tracer_state.cpp",
+        "src/native_particle_type_property.cpp",
+        "src/native_particle_type_resources.cpp",
+        "src/native_particle_type_state_dispatch.cpp",
+        "src/native_point_light_owner.cpp",
+        "src/ship_ai_formation.cpp",
+        "src/unit_hull_extents.cpp"
+      ],
+      "initial_validation_archive": "local/menu-input-initial-validation/manifest.json",
+      "note": "Build and promoted code commit identical. All7 scoped fixtures recompiled against promoted production headers/libraries; legacy side fixture compiles the exact parent GameMissionHost TU for its internal Lua adapter. No worker production objects used."
+    }
+  ]
+}

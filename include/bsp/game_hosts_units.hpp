@@ -411,8 +411,11 @@ public:
 
     std::size_t count() const noexcept;
     bool unit_active(std::size_t index) const noexcept;
-    // The unit whose 5Ch/5Dh/5Eh/60h bytes the list filter reads.
+    // Instance vtable+5Ch dispatch using the class selected by VehicleClass.Type
+    // and the compiled predicates in unit_kind_query.hpp. Missing/unrecognized
+    // identity and invalid indices answer false. docs/GAME_UNIT_KIND_BINDING.md.
     bool unit_is_kind_of(std::size_t index, int class_id) const;
+    // Native instance+C4h class id, or -1 for an unresolved identity/invalid index.
     int unit_class_id(std::size_t index) const noexcept;
 
     // ---- milestone 2k: what the two HUD world screens read off a unit ------
