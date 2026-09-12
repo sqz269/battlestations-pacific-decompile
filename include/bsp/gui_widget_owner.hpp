@@ -15,6 +15,9 @@ class GuiTimedEntryOwner;
 class GuiWidgetClipRefreshOperation;
 class GuiWidgetFrameRuntime;
 struct GuiWidgetClipRefreshServices;
+struct GuiWidgetBaseCopyPreimage;
+struct GuiWidgetCopyServices;
+struct NativeGuiTextModelCloneAcquired;
 
 // Derived companions operate on the owner's SAME layout/transform. Factory
 // creation performs the derived constructor, before node binding/parenting.
@@ -117,6 +120,7 @@ public:
     void resume_base_clip_after_child70();
     bool has_pending_base_clip() const noexcept;
     void require_no_active_owned_operation() const;
+    bool base_copy_complete_00aa9520() const noexcept { return base_copy_complete_; }
 
     void bind_scene_00aa6720(NativeNodeBinding*) noexcept;
     void base_constructed74_00a9ac00() noexcept; // proven single RET, no Ghidra function
@@ -142,6 +146,7 @@ private:
     friend class GuiWidgetFrameRuntime;
     friend void destroy_gui_widget_base_00aa9730(GuiWidgetOwner&, GuiTextChildDeletion&);
     GuiWidgetOwner(GuiLayoutWidget&, GuiWidgetOwnerRuntime&);
+    GuiWidgetOwner(GuiLayoutWidget&, GuiWidgetOwnerRuntime&, const GuiWidgetBaseCopyPreimage&);
     GuiLayoutWidget& layout_;
     GuiWidgetOwnerRuntime& runtime_;
     GuiWidgetSceneFlags scene_;
@@ -154,6 +159,9 @@ private:
     GuiWidgetClipRefreshServices* base_clip_services_{};
     GuiWidgetBaseLifetimeState base_lifetime_;
     bool scene_release_active_{};
+    bool base_copy_untyped_{}; // host admission only, never a native widget flag
+    bool base_copy_active_{};
+    bool base_copy_complete_{};
 };
 
 // Lifetime associations only. GUI storage is owned by GuiLayoutPage; native
@@ -171,6 +179,20 @@ public:
     // Creates the SAME base/type companion, leaving the primary model null;
     // does not allocate an ordinary named model, attach, or invoke74/78.
     GuiWidgetOwner& construct_unbound_text_00ab9650(GuiLayoutWidget&);
+    // Complete AA9520 caller over the SAME owner/tree and actual Model domain.
+    // Fresh destination keeps its unwritten allocation preimages. No AA9390
+    // default constructor or make_type call. Successful base admission has no
+    // derived implementation/lifetime: the concrete derived copy supplies it.
+    // A provider exception leaves an incomplete registered owner and acquired
+    // creators with the caller; inspect/retire it, never restart the copy.
+    GuiWidgetOwner& construct_base_copy_00aa9520(GuiLayoutWidget& destination,
+        GuiWidgetOwner& source, const GuiWidgetBaseCopyPreimage&,
+        const GuiWidgetCopyServices&, NativeGuiTextModelCloneAcquired&);
+    void finish_base_copy_type_admission(GuiWidgetOwner&,
+        std::unique_ptr<GuiWidgetTypeImplementation>&);
+    // Host cleanup before derived admission, not reconstructed native EH.
+    // Caller must first retire any attached derived lifetime/continuation.
+    void retire_base_copy_admission(GuiWidgetOwner&);
     // Root native node belongs to the parent page owner, and can be188h group.
     GuiWidgetOwner& construct_root(GuiLayoutWidget&, NativeNodeBinding&);
     //00AA6640 standalone sequence; loader calls construct_child then74 only
@@ -224,6 +246,7 @@ private:
     void bind_frame_runtime(GuiWidgetFrameRuntime&);
     void unbind_frame_runtime(GuiWidgetFrameRuntime&) noexcept;
     GuiWidgetOwner& construct_base(GuiLayoutWidget&);
+    void require_model_copy_reference(NativeModelReference&) const;
     NativeNodeBinding* create_model(const std::string&,
         NativeNodeBinding** publication_before_name_release = nullptr);
     void stamp_visibility(NativeNodeBinding&, float, bool);

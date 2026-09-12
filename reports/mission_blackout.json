@@ -1,0 +1,59 @@
+{
+  "packet": "cc_mission_blackout",
+  "doc": "docs/MISSION_BLACKOUT.md",
+  "owner": "agent/cc-mission-blackout",
+  "summary": "The Blackout fade at *(00E198C4 + A4h) + C0h, its per-frame update, and the completion callback that re-enters the mission script by name. Wiring the three routines into bsp_game.exe carries usn_2_java.lua through luaIngameMovieBOStart, luaIn (MissionPhase = 1) and luaMoveToPh2 (phase 2); the script then stops on FindEntity 00898E30 returning nil for Mission.EscapePoint.",
+  "coverage": [
+    {"routine": "mission_blackout_binding_008d1340", "native": "008d1340", "address": "008d1340", "coverage": "complete", "note": "Argument decode 008D142F..008D1612 and the arm call at 008D1635. The Lua call-frame marshalling (00B66C00, 00B679B0, 00B677E0, 00B67700, 00B669A0) and the guarded luakod log category stay in the executable's binding trampoline, as they do for every other reconstructed binding."},
+    {"routine": "mission_blackout_arm_005b9ba0", "native": "005b9ba0", "address": "005b9ba0", "coverage": "complete", "note": "Whole body 005B9BA0-005B9C3D."},
+    {"routine": "mission_blackout_update_005b9800", "native": "005b9800", "address": "005b9800", "coverage": "complete", "note": "Whole body 005B9800-005B9A78: all three arms and the paint tail."},
+    {"routine": "BSP_HudNarrativeScreen_Update", "native": "005bc920", "coverage": "partial: fade sub-pass only", "unread": ["005bbf10", "005bc640", "00735100", "005b8c30", "the four child screens at screen+34h..+40h"], "note": "Read for the fade path: the delta reload at 005BC9A5, the zero gate at 005BC9B0 and the 005B9800 call at 005BC9FC. No Ghidra function; see no_ghidra_function."},
+    {"routine": "BSP_Session_BroadcastBlackout", "native": "0076d310", "address": "0076d310", "coverage": "read, not reconstructed", "note": "Body 0076D310-0076D389, session message kind 2Bh. Offline runs never reach it."},
+    {"routine": "BSP_InGameInterfaceManager_TransitionPending", "native": "005b66d0", "address": "005b66d0", "coverage": "complete", "note": "Body 005B66D0-005B66EF, a four-way compare on manager+20h."},
+    {"routine": "BSP_InGameInterface_StoreField1C", "native": "00644220", "address": "00644220", "coverage": "complete", "note": "Whole body 00644220-00644229, a single store to this+1Ch."}
+  ],
+  "host_steps": [
+    {"step": 1, "method": "GameScriptOrdersHost::dispatch(\"Blackout\")", "address": "008d1635", "native": "005b9ba0", "function": "008d1340", "note": "The binding hands the arm (level, duration, &name) with ECX = *(00E198C4 + A4h)."},
+    {"step": 2, "method": "NativeString::resize (the callback name copy)", "address": "005b9bd8", "native": "0041dd40", "function": "005b9ba0", "note": "Modelled by std::string assignment, not a host method."},
+    {"step": 3, "method": "mission_blackout_update_005b9800 (the arm-time step)", "address": "005b9c01", "native": "005b9800", "function": "005b9ba0", "note": "One update with the float 1.0e-4 at 00CE3C68."},
+    {"step": 4, "method": "MissionBlackoutHost::session_broadcast_blackout_0076d310", "address": "005b9c36", "native": "0076d310", "function": "005b9ba0", "note": "Only when *(00E188A8)+1FE4h is exactly 1. Unimplemented in the executable; offline."},
+    {"step": 5, "method": "Game::UpdateInterfaceOnly ticks the screen", "address": "004c429a", "native": "004f71f0", "function": "004c40f0", "note": "BSP_FrontEndScreen_Update(*(00E198C4+A4h), game+21F0h), gated on the screen bytes +5h and +4h at 004C4286 and 004C428B."},
+    {"step": 6, "method": "the screen's update virtual", "address": "004f71fd", "native": "00cf0ed8+vtable20", "function": "004f71f0", "note": "Vtable 00CF0ED8 slot +20h is 00CF0EF8 = 005BC920. Indirect by construction."},
+    {"step": 7, "method": "MissionBlackoutHost::mission_lua_call_named_00887e50", "address": "005b9969", "native": "00887e50", "function": "005b9800", "note": "Self key 0, no argument record, no stack range, so the call is _G[name]() with zero arguments. The only route from the fade into the mission script."},
+    {"step": 8, "method": "NativeString compare against the empty literal", "address": "005b9908", "native": "00449af0", "function": "005b9800", "note": "Case-insensitive inequality against 00CE3A0C. Modelled as std::string::empty()."},
+    {"step": 9, "method": "NativeString copy-construct of the name", "address": "005b9938", "native": "00426060", "function": "005b9800"},
+    {"step": 10, "method": "NativeString assign the empty literal to +CCh", "address": "005b994c", "native": "0041e350", "function": "005b9800", "note": "Clears the callback before the call, which is what lets the callback arm the next fade."},
+    {"step": 11, "method": "MissionBlackoutHost::interface_request_pending_005b66d0", "address": "005b987c", "native": "005b66d0", "function": "005b9800"},
+    {"step": 12, "method": "MissionBlackoutHost::ingame_interface_store_1c_00644220", "address": "005b988e", "native": "00644220", "function": "005b9800"},
+    {"step": 13, "method": "MissionBlackoutHost::push_interface_request_004cc460", "address": "005b98a1", "native": "004cc460", "function": "005b9800", "note": "Interface id 20h with the local player unit. Never reached offline: 00E188D8 is null in this executable."},
+    {"step": 14, "method": "BlackoutOverlayHost::blackout_icon_set_visible (true)", "address": "005b99b7", "native": "blackout_icon_vtable+34", "function": "005b9800"},
+    {"step": 15, "method": "MissionBlackoutHost::blackout_icon_get_colour", "address": "005b99c9", "native": "blackout_icon_vtable+54", "function": "005b9800"},
+    {"step": 16, "method": "MissionBlackoutHost::force_show_please_wait_screen_00e19698", "address": "005b9a14", "native": "004f83b0", "function": "005b9800", "note": "Only on the game+1FE4h arm with the level above 0.75f. Followed by the screen's virtual +18h at 005B9A20."},
+    {"step": 17, "method": "BlackoutOverlayHost::blackout_icon_set_colour", "address": "005b9a3b", "native": "blackout_icon_vtable+50", "function": "005b9800", "note": "The same instruction is the set-visible(false) call on the level <= 0 path, reached by the JMP at 005B9A32 and the fall-through at 005B9A39."}
+  ],
+  "undefined_call_sites": [
+    {"call_site": "005bc9fc", "callee": "005b9800", "containing": "005bc920", "note": "Not given as an address/native row because 005BC920 is not a Ghidra function, so tools/verify_report_calls.py cannot bind the site to a body. Boundary evidence is in the doc's no_ghidra_function table; once the integrator defines 005BC920-005BCA17 the row becomes checkable."}
+  ],
+  "run_time_evidence": {
+    "command": "build/win32/Release/bsp_game.exe --frames 2700 --press-start-frame 30 --menu-select USN02 --mission-frames 2500 --mission-frame-seconds 0.05 --log local/blackout_run.log --xlive-dll build/win32/Release/xlive_stub.dll --game-root \"I:/SteamLibrary/steamapps/common/Battlestations Pacific\"",
+    "blackout_summary": "arms=8 updates=2500 completions=7 callbacks=4 interface_requests=0 last_callback=luaIngameMovieBOStart level=0.000 remaining=0.000 configured_default_used=0",
+    "script_timers": "created=11 think_registrations=11 waits=10 clears=0 deletes=9 passes=2500 fires=79 failures=29",
+    "callbacks_fired": ["luaIngameMovieBOStart", "luaIn", "luaMoveToPh2", "luaIngameMovieBOStart"],
+    "bindings_newly_reached": ["SetSelectedUnit", "Objectives_Add", "DisplayUnitHP", "GetHpPercentage", "HideUnitHP", "Objectives_Completed", "GenerateObject", "AddDamage", "GetPosition"],
+    "stop": "usn_2_java.lua:563, luaGetDistance's second param is a non-table parameter: Mission.EscapePoint is nil because FindEntity 00898E30 is a record (38 calls, all neutral).",
+    "long_variant": "--frames 3200 --mission-frames 3000 reaches the same state: arms=8 updates=3000 completions=7 callbacks=4.",
+    "short_variant": "--frames 400 --mission-frames 120 reaches only the luaStageInit arm: arms=1 updates=120 callbacks=0 level=1.000."
+  },
+  "corrections": [
+    {"was": "docs/LUA_BINDING_MISSION.md: the fade object's `+C8h` holds `duration + [00D7A268]`, and 'nothing in this process advances that object'.", "is": "+C8h is the seconds remaining, not a deadline. 00D7A268 is the double 1.0e-4, an epsilon so a zero duration still arms. 005B9800 decrements it by the step, and the native advance is 004C40F0 at 004C429A through the screen's vtable +20h. The executable did not advance it because the binding was a record, not because the routine was missing.", "evidence": "005B981E..005B98D5 and 004C4273..004C429A."},
+    {"was": "docs/LUA_BINDING_MISSION.md follow-up 2: `ingame_movie_listener`, the camera-movie completion that calls luaIngameMovie's cb, is 'the second gate, immediately after the first'.", "is": "There is no native camera-movie completion. commandhelpers.lua:7728 ends luaCamIngameMovieAuto with luaDelay(luaCamOnTargetExt, callbackTime, \"CB\", callback, ...), so the completion is the already reconstructed delayed-call scheduler and the think walk 00929460. AddListener(\"input\", \"IngameMovieInputListenerID\") is only the skip-with-a-button path, and IsListenerActive answering false makes luaCamOnTargetExt skip the RemoveListener. A headless run satisfies it, and did.", "evidence": "commandhelpers.lua:7719-7732 and 7824-7856; the run fired luaIntroMovieEnd 19 simulated seconds after luaIngameMovieBOStart."},
+    {"was": "docs/INTERFACE_RUNTIME_TAIL.md: the Blackout_Icon widget has two virtuals, set-visible +34h and set-colour +50h.", "is": "Three. 005B99C9 calls +54h to read the colour back before the level is written into its alpha and +50h writes it again.", "evidence": "005B99B9..005B99C9 and 005B9A22..005B9A3B."},
+    {"was": "The vtable that carries 005BC920 is 00CF0ED4 (the address 005B917E and 005BABD7 store).", "is": "00CF0ED4 is a different, one-slot vtable belonging to the class those two routines build. The HUD narrative screen's own vtable is 00CF0ED8, stored at 005BA7EF, and the derived slots line up with the base table in docs/FRONTEND_STATE_MACHINE.md only under that base: +20h update, +24h collect children.", "evidence": "005BA7EF MOV dword ptr [ESI],0xcf0ed8; slot +20h = 00CF0EF8 = 005BC920; slot +24h = 00CF0EFC = 005BB0F0."}
+  ],
+  "follow_ups": [
+    {"packet": "mission_find_entity", "addresses": ["00898e30"], "why": "FindEntity returns nil, so Mission.EscapePoint, Mission.Witte and 36 other lookups are nil. It is the single gate between the current run and phase 2's victory test."},
+    {"packet": "unit_health_accessor", "addresses": ["00923be0", "the unit vtable +110h"], "why": "GetHpPercentage answers 0, so phase 1 closed on De Ruyter being 'destroyed'. The transition is real but the reason is wrong."},
+    {"packet": "hud_narrative_screen_update", "addresses": ["005bc920", "005bbf10", "005bc640", "00735100", "005b8c30"], "why": "The other four sub-updates of the screen's per-frame pass, and the four child screens it forces visible."},
+    {"packet": "blackout_other_callers", "addresses": ["0045db40", "004660b0", "0076f4c0"], "why": "The three non-Lua callers of the arm, which decide the fades the front end and the session driver run."}
+  ]
+}

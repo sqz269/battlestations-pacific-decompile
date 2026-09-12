@@ -93,3 +93,13 @@ SEH, visual/render parity, or complete gameplay validation is claimed.
 
 Evidence: `reports/game_avoid_zone_runtime.json`, the five dependency reports
 it references, and the preserved ignored runtime/probe artifacts.
+
+## Addition from docs/SHIP_AI_AVOID_ZONE_SEARCH.md
+
+The geometry owner now exposes the actual009D7050 cache refresh,004158A0
+selected-list cleanup and004158E0 crossing through explicit caller-owned cache
+and list records. Its semantic/native group identity and zone order are shared
+with the existing loaded map. The adapter rejects an empty manager table.
+This supplies a concrete cache dependency; the ship controller's sector gates
+remain pending persistent director state and00415970 arc clipping. No new
+runtime steering or native singleton-ABI claim follows from these methods.

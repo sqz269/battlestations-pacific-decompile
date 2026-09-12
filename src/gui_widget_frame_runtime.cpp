@@ -1,4 +1,5 @@
 #include "bsp/gui_widget_frame_runtime.hpp"
+#include "bsp/gui_listbox_pointer_runtime.hpp"
 #include "bsp/gui_text_runtime_factory.hpp"
 #include "bsp/gui_type_dispatch.hpp"
 #include "bsp/gui_timed_entry_owner.hpp"
@@ -221,6 +222,17 @@ void GuiWidgetFrameRuntime::unbind_listbox_frames(const GuiListboxFrameServices&
         "Listbox frame services must own the binding and survive active frames");
     listbox_frames_ = nullptr;
 }
+void GuiWidgetFrameRuntime::bind_listbox_pointer(const GuiListboxPointerServices& services) {
+    require(!active_ && !listbox_pointer_ && &services.frame.base_frames == this &&
+        services.frame.input_groups_00f8bbf4.same_publication(services_.input_groups_00f8bbf4),
+        "Listbox pointer binding requires its idle same runtime and input publication");
+    listbox_pointer_ = &services;
+}
+void GuiWidgetFrameRuntime::unbind_listbox_pointer(const GuiListboxPointerServices& services) {
+    require(!active_ && listbox_pointer_ == &services,
+        "Listbox pointer services must own the binding and survive active callbacks");
+    listbox_pointer_ = nullptr;
+}
 bool gui_widget_uses_base_frame40_profile(GuiWidgetType type) noexcept {
     switch (type) {
     case GuiWidgetType::Screen:
@@ -240,6 +252,12 @@ float gui_mouse_double_click_seconds_00a9a380(const MouseInputDevice& mouse) noe
 void gui_widget_base_bounds64_00a9e120(float&, float&, float&, float&) noexcept {}
 void GuiWidgetFrameRuntime::align_bounds64(GuiWidgetOwner& widget,
     float& left, float& top, float& right, float& bottom) {
+    require(&widget.runtime() == &services_.widgets,
+        "GUI bounds require the same widget runtime");
+    require(widget.base_lifetime_.phase == GuiWidgetBaseDeletionPhase::not_started &&
+        !widget.scene_release_active_, "GUI bounds cannot borrow a retiring widget");
+    std::optional<ActiveFrame> bounds_frame;
+    if (!operation_active(widget)) bounds_frame.emplace(*this, widget);
     if (widget.layout().type == GuiWidgetType::Text) {
         auto* text = dynamic_cast<GuiTextRuntimeImplementation*>(&widget.implementation());
         require(text && widget.text_lifetime(), "GUI hit test requires its actual Text owner");
@@ -280,6 +298,40 @@ GuiWidgetFrameListenerOwner& GuiWidgetFrameRuntime::listener(GuiWidgetOwner& wid
     const auto found = listeners_.find(widget.extra_fields().layout_listener_dc);
     require(found != listeners_.end(), "GUI current listener has no actual owner adapter");
     return *found->second;
+}
+void GuiWidgetFrameRuntime::dispatch_current68(GuiWidgetOwner& widget, GuiWidgetOwner* incoming_child) {
+    require(&widget.runtime() == &services_.widgets,
+        "GUI current68 requires the same widget runtime");
+    if (widget.layout().type == GuiWidgetType::Listbox) {
+        require(listbox_pointer_ != nullptr,
+            "Listbox current68 requires its same bound pointer services");
+        auto* listbox = dynamic_cast<GuiListboxTypeImplementation*>(&widget.implementation());
+        require(listbox && &listbox->runtime().owner() == &widget,
+            "Listbox current68 requires its canonical companion");
+        widget.require_no_active_owned_operation();
+        ActiveFrame call(*this, widget);
+        listbox->runtime().pointer68_00a9ca60(incoming_child, *listbox_pointer_);
+        return;
+    }
+    require(gui_widget_uses_base_frame40_profile(widget.layout().type) ||
+        widget.layout().type == GuiWidgetType::Icon,
+        "GUI current68 profile has no established implementation");
+    widget.require_no_active_owned_operation();
+    ActiveFrame call(*this, widget);
+    auto& fields = widget.extra_fields();
+    if (!fields.layout_listener_dc || fields.byte_79) {
+        if (auto* parent = widget.layout().transform.parent)
+            dispatch_current68(services_.widgets.owner(*parent), &widget);
+        return;
+    }
+    listener(widget).call_current00(widget);
+    const auto mouse = services_.input_groups_00f8bbf4.device(1);
+    if (!mouse) return;
+    mouse.require_mouse();
+    if (mouse.mouse_current_down(0) && !mouse.mouse_previous_down(0))
+        listener(widget).call_current04(widget);
+    if (mouse.mouse_current_down(1) && !mouse.mouse_previous_down(1))
+        listener(widget).call_current08(widget);
 }
 void GuiWidgetFrameRuntime::listener_tail(GuiWidgetOwner& widget) {
     auto& fields = widget.extra_fields();

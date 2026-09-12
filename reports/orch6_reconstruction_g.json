@@ -1,0 +1,168 @@
+{
+  "packet": "orch6_reconstruction_g",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "orchestrator_worktree": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912",
+  "reconstructed_normal_bodies": 16,
+  "modules": [
+    "ship_ai_avoid_zone_search",
+    "dyn_engine_runtime",
+    "dyn_task_manager",
+    "dyn_dispatch_initialization"
+  ],
+  "proof_reports": [
+    "ship_ai_avoid_zone_search_proof",
+    "dyn_task_native_proof",
+    "dyn_world_owner_connection"
+  ],
+  "worker_commits": {
+    "engine": "afd9a1bd564fa8d7c0bb8b0edc559e4de7b5a9b4",
+    "tasks": "7d0f80fe333af0bab0ea645fececee0f610380f3",
+    "dispatch": "d0c048c0e951dd33712cbe72d3c5d9f309f72cb1",
+    "task_proof": "8b17e601c9fd9813daa76084d1bb9755a5f6cb25",
+    "world_proof": "7db3dee25f5441b66a2796f86d3944eca2cf1e87",
+    "query_proof": "bf7e6fcfbcd212ec06fa334736642c74f005af96"
+  },
+  "validation": {
+    "build": "MSVC Win32 Release, existing CTest2/2 passed",
+    "build_record": {
+      "compiled_commit": "f826496eef36bca534907ecaed705f7de0e9da85",
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "-u",
+        "tools/integrate_workers.py",
+        "agent/orch6-20260912",
+        "--no-push"
+      ],
+      "log": "local\\orch6_integrate_g_20260912T164637.log"
+    },
+    "mission_run": {
+      "compiled_commit": "f826496eef36bca534907ecaed705f7de0e9da85",
+      "run_commit": "6e5cddbb6f0e5a011d89d5990176bf94ab206efc",
+      "compiled_input_drift": [],
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\build\\win32\\Release\\bsp_game.exe",
+        "--frames",
+        "360",
+        "--press-start-frame",
+        "3",
+        "--menu-select",
+        "USN01",
+        "--mission-frames",
+        "120",
+        "--mission-frame-seconds",
+        "0.1",
+        "--game-root",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+        "--fmod-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "--fmod-event-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_g.log",
+        "--order-frame",
+        "0",
+        "--order-unit",
+        "Enterprise",
+        "--order",
+        "moveto:Airfield2"
+      ],
+      "exe_sha256": "95fc6f8b5f6c362a8fab47036c6380c1baed22ee93f04fe8e9dcf005217751f4",
+      "source_sha256": {
+        "src/game_hosts_ship_ai.cpp": "0d5825986f7b88cf05ccdc46388a77db406820bcda8bc9444900ed9624be1b5a",
+        "src/game_hosts_units.cpp": "d0c61dd178d6975825c1b29ce0349d3efe08e4cec27a979444f5b224fa108a56",
+        "src/game_hosts_lua.cpp": "5aa002cfdd1c051f81c7a890d35d9fc89e7ad6c35afc1c19f640aeb2e1346f09",
+        "src/dyn_world_runtime.cpp": "e4ab60cdd8ed206c82c77eaf44f383de90f868826388d11fb5ea5ca6d97c8399",
+        "src/dyn_engine_runtime.cpp": "7b2608638c893d8135993072ed01ae1e8fbdd0070db8fc31242e227d0ace8360",
+        "src/dyn_task_manager.cpp": "0160749d351494d2ac34a08a0c4d98322a6a4aa54ab5db8c35e23931591d75d0",
+        "src/dyn_dispatch_initialization.cpp": "75829e5d8da162c35cf29ac9f083e76a881c8b08ba808aba7d3c25b9e764302a",
+        "src/ship_ai_avoid_zone_search.cpp": "042879872a8373214422eece7f47454486f6cf4a1e77782e19860dad026f15b3",
+        "src/game_avoid_zone_runtime.cpp": "19e3052abb72e47b214ba22a016312e738d67b7025614e4c5a39eb6c0762efcc"
+      },
+      "exit": 0,
+      "seconds": 14.137897253036499,
+      "preserved_executable": "local/orch6_combined_f826496e.exe"
+    },
+    "compiled_input_drift_at_record": [],
+    "final_source_validation_complete": true,
+    "mission_frames": 120,
+    "created_units": 77,
+    "ship_navigation_controllers": 14,
+    "ship_pre_step_calls": 3374,
+    "query_native_cases": 1536,
+    "task_native_snapshots": 6,
+    "task_canonical_words": 1316,
+    "combined_world_paired_buffers": 29,
+    "combined_world_serialized_bytes": 938692,
+    "combined_world_record_sha256": "3b79446a5134056b5293b78c40e3fa6509ca95eb67dccea0309ad922d0260478",
+    "loaded_geometry_query": {
+      "scene": "universe/Scenes/missions/USN/usn_1_marshall.scn",
+      "game_root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+      "mode": 0,
+      "forced": false,
+      "multiplayer": false,
+      "query_layer": 3,
+      "query": [
+        0,
+        0,
+        100000,
+        100000
+      ],
+      "initial_cache_bounds": [
+        -1,
+        -1,
+        1,
+        1
+      ],
+      "explicit_fixture_inputs": true,
+      "groups": 6,
+      "zones": 21,
+      "corners": 2193,
+      "selected_segments": 426,
+      "cache_reused": true,
+      "crossing": true,
+      "clear_and_empty_output_preservation": true,
+      "exit": 0,
+      "scope": "actual installed scene data through existing projected scene/geometry owners; no gameplay steering"
+    },
+    "archived_worker_files": 171,
+    "archive_manifest": "local/orch6_worker_archive_g.json",
+    "archive_manifest_sha256": "4d4319ab0a4fd5cc3db6a8ab579f18d485d19c265f567f7dda506bead22414d4"
+  },
+  "ghidra": {
+    "reviewed_names_saved": 16,
+    "refreshed_exports": 16,
+    "prior_annotations": "main local/ghidra-annotations-20260912T232647Z.json",
+    "repairs": [
+      "reports/dyn_dispatch_initializer_definition.json",
+      "reports/dyn_task_manager_flow_repairs.json",
+      "reports/dyn_scheduler_flow_repair.json",
+      "reports/dyn_task_manager_destructor_body_repair.json",
+      "reports/dyn_task_manager_destructor_flow_repair.json"
+    ],
+    "next_packet_flow_repair": "reports/dyn_world_factory_flow_repair.json"
+  },
+  "runtime_history": [
+    "First launch stopped at native single-instance guard while another orchestrator ran bsp_game; preserved local/orch6_single_instance_g.json/log.",
+    "Subsequent2195d2f5 run reached120 missionframes andexit0.",
+    "The mission movement summary reports NaN for controlled Airfield2; the prior F runtime log has the same value. This run is not finite-motion or gameplay validation."
+  ],
+  "limits": [
+    "Engine/profile/task/dispatch/world ownership composes in an isolated fixture; application physics startup and stepping remain unbound.",
+    "Actual collision/solver methods were not executed by world construction proof; task proof uses callable fixture payloads.",
+    "Allocator/CRT/Win32 boundaries and native handle retention are documented per module; no native failure/SEH guarantee.",
+    "Query proof compares bits/state/callbacks under masked exceptions, not final x87CW/status/TOP/MXCSR or unmasked fault order.",
+    "Sector gates remain pending actual director/request/bounds ownership and00415970 arc clipping.",
+    "No binary drop-in, visual parity, complete motion or gameplay validation."
+  ],
+  "continuing_packets": [
+    "orch6_avoid_arc_h",
+    "orch6_dyn_world_factory_h",
+    "orch6_ship_avoidance_owners_h"
+  ],
+  "goal_status": "active; runnable game fidelity and gameplay validation remain incomplete"
+}

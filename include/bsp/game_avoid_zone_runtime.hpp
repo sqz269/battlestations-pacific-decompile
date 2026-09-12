@@ -1,6 +1,7 @@
 #pragma once
 
 #include "bsp/avoid_zone_geometry.hpp"
+#include "bsp/ship_ai_avoid_zone_search.hpp"
 #include "bsp/world_map_bounds.hpp"
 #include <memory>
 
@@ -44,6 +45,15 @@ public:
     void ensure_clearance(std::uint32_t zone, std::uint32_t corner);
     const ShipAiPathLateralAnchor* anchor(std::uint32_t corner);
     float corner_clearance(std::uint32_t corner) const;
+    // The caller supplies the initial cache bounds and owns the selected list.
+    // Clear it before this geometry/allocator owner disappears. These methods
+    // do not manufacture the director flags required by 009DA6E0.
+    bool refresh_search(ShipAiAvoidZoneSearcher&, ShipAiAvoidZoneSegmentList&,
+        const ShipAiAvoidZoneQuery&);
+    void clear_search(ShipAiAvoidZoneSegmentList&) noexcept;
+    bool search_segment(const ShipAiAvoidZoneSegmentList&,
+        const std::array<float, 2>& from, const std::array<float, 2>& toward,
+        std::array<float, 2>& hit) const;
 private:
     struct Impl;
     std::unique_ptr<Impl> impl_;

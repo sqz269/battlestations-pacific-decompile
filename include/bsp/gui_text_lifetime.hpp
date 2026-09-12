@@ -20,6 +20,11 @@ struct GuiTextConstructorConstants {
     const volatile float& disabled_alpha_00ce3800;
 };
 
+// Selects derived admission after AA9520 on this SAME destination owner.
+// Admission checks canonical base-copy completion, including the actual
+// primary-node virtual10 return. A default-constructed owner is insufficient.
+struct GuiTextAfterBaseCopy00aa9520 final {};
+
 // Fields absent from the existing Text projection; unwritten words are marked.
 // Address names intentionally avoid assigning an unverified ownership role.
 // The +180/+184 and +1AC/+1B0 pointers are borrowed:00AB8250 does not release
@@ -28,7 +33,9 @@ struct GuiTextLifetimeFields {
     float field_178{};
     std::int32_t field_17c{2};
     void* pointer_180{};
-    void* pointer_184{};
+    // Borrowed cursor association. AB8910 parents this canonical Model under
+    // the primary node; AB8250 does not independently release this slot.
+    NativeNodeBinding* pointer_184{};
     float field_18c{};
     float field_190{};
     std::u16string string_1a4;
@@ -71,6 +78,14 @@ public:
     // default must not be treated as a native value before font resolution.
     GuiTextLifetime(GuiWidgetOwner&, GuiTextBufferServices&,
         GuiTextGlyphChildCalls&, const GuiTextConstructorConstants&);
+    // ABB2FD..ABB5F8 only, AFTER the required AA9520 base copy. Copies the
+    // source's constructor-written derived values in native order; resets
+    // cursor/shadow/glyph/cache fields. Does not call AB8910/AB8530/ABB1D0.
+    // Distinct owners in the same domain, completed distinct primary Model
+    // copy, stable null-free strings and a live source lifetime are required.
+    // GuiTextCopyContinuation supplies the following three native calls.
+    GuiTextLifetime(GuiTextAfterBaseCopy00aa9520, GuiWidgetOwner&,
+        GuiTextBufferServices&, GuiTextGlyphChildCalls&, const GuiTextLifetime& source);
     ~GuiTextLifetime() noexcept;
     GuiTextLifetime(const GuiTextLifetime&) = delete;
     GuiTextLifetime& operator=(const GuiTextLifetime&) = delete;
@@ -87,6 +102,12 @@ public:
     GuiTextStyleBinding style_binding(const GuiMaterialBindingServices&);
     GuiTextScalarDeletionPhase scalar_deletion_phase() const noexcept { return scalar_phase_; }
     std::uint32_t scalar_deletion_flags() const noexcept { return scalar_flags_; }
+    // Host preflight for the SAME owner/implementation: must reject ordinary
+    // retirement, scalar deletion and copy reuse BEFORE native phase stores
+    // while this is true, including failed cursor calls and pending content.
+    bool has_incomplete_copy() const noexcept {
+        return after_base_copy_ && !copy_continuation_complete_;
+    }
 
     // Complete00AB73B0: capture current shadow; actual unlink/release; clear
     // slot AFTER callback, even if callback rebinds it. Null is a no-op.
@@ -111,6 +132,7 @@ public:
     void destroy_derived_00ab8250_fragment();
 private:
     friend class GuiTextChildDeletion;
+    friend class GuiTextCopyContinuation;
     void require_owner() const;
     GuiWidgetOwner& widget_;
     GuiTextBufferServices& buffers_;
@@ -124,5 +146,8 @@ private:
     Phase phase_{Phase::constructing};
     GuiTextScalarDeletionPhase scalar_phase_{GuiTextScalarDeletionPhase::not_started};
     std::uint32_t scalar_flags_{};
+    bool after_base_copy_{}; // C++ admission/one-shot guards, not native fields.
+    bool copy_continuation_claimed_{};
+    bool copy_continuation_complete_{};
 };
 } // namespace bsp

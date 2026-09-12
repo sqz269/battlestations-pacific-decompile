@@ -7736,3 +7736,474 @@ read by `009ED6B0` and `009F3F80`. `blk+3F5h`, which the milestone 2o section ab
 having no writer, is written by `009E1170`'s arm 1: it is the whole-controller bypass for a helm a
 person is holding. The request never changes which ships enter the neighbour list (`009F0D20`
 reads none of the four bytes); the filter only sets `node+69h` through `009EAFC0`.
+
+## Milestone 2t: the guns fire
+
+Addresses: 00810e3d / 00864580 and the attach slot 00d0d360+vtable04 / 00864bd0, with 00864c18 /
+008636a0 and 00864c94 / 00863a80; inside 00864fe0 the sites 00865073 / 008624c0, 0086505d /
+00862c30, 008650dd / 00862cd0, 00865201 / 008053c0, 00865237 / 00863990, 00865248 / 00862440,
+0086525d / 00864d90, 0086549c / 0071ebf0, 00865833 / 00727f10, 00865860 / 00864ca0 and 0086586c /
+00728000, plus 008639a2 / 008633d0 and 008633df / 00862820 behind the first of them and the
+policy slot 00d0d324+vtable04 / 00863640; the two table producers 004de075 / 00727bd0 and
+0095e5f5 / 00956c20 with 00956d9f / 00731020 and 00956c98 / 00729f10; the authored arc insert
+0096185e / 007f6b10; the aim chain 006dfb54 / 0085aba0, 006df8bf, 006dfad4 / 00955630, 0085aeda /
+007f6530, 00cfbce0+vtable / 0085ad80, 0085a887 / 007f60a0 and the latch 00cfbf08+vtable1e8 /
+0072d2c0; the fire chain 00cfbce4+vtable0c / 0072d130 with 0072d21b / 0072cf00 and 0072d290,
+0084c4e3 / 00727e30, 00cfbef0+vtable1d0 / 0085a830, 00cfbef8+vtable1d8 / 00730160, 007302c4 /
+007298d0 and 00730042 / 0072bf10; the projectile 00cfa158+vtable / 006e8430, 00cf9f04+vtable114 /
+006e7670, 0084c4c8 / 0084bf00, 0098b3eb / 0098add0, 0084c0c3 / 00470350, 00cf9df0+vtable54 /
+006e7c60, 0084c314 / 0084bc60 and 0084be20 / 00926e80; and the damage tail 00926750 / 009239a0,
+00cf919c+vtableec / 00826f10, 0082703e / 0092d1f0, 008277fc / 008777d0, 00879824 / 00879070,
+0087914b / 00877b90, 00923ada / 0077ce60 and 00959519 / 0091bda0.
+
+Packet `cc_exe_2t`, worker `agent/cc-exe-2t`. Sources: `src/game_hosts_gunnery.cpp`,
+`include/bsp/game_hosts_gunnery.hpp`, `src/game_hosts_units.cpp`,
+`include/bsp/game_hosts_units.hpp` and `cmake/startup.cmake`.
+Report: `reports/game_executable_milestone_2t.json`.
+Ghidra was read-only: no name added, no comment written, no snapshot taken. Every descriptive
+name here is a hypothesis, not a recovered symbol.
+
+Milestone 2s ended with 32 ships that go where they are sent and a weapon director on each of
+them holding a chosen fire target that reached nothing. This milestone runs the chain from that target to a sunk hull.
+It fires 215 shells, lands 161 of them, deals 14730 points of damage and sinks two destroyers,
+both credited to `Kortenaer`.
+
+### 1. Where the guns come from, because there is no model
+
+No gun device exists in this process. A gun is a node of the ship's model hierarchy and
+`construct_world` and the model loader are both load records, so `00956C20`'s device walk over
+`unit+48h` has nothing to walk.
+
+The authored producer is reachable instead. `BSP_VehicleClass_ReadLuaFields` reads
+`VehicleClass[id].Platforms` into the vector at `class+94h` / `+98h`
+(`docs/VEHICLE_CLASS_FIELDS.md` line 111), each platform carrying a `Gun` list of `DeviceClass`
+ids, a `Windows` list of firing arcs that `007F6B10` inserts at `0096185E`, and `RestAngles`. The
+device row's `Function` key is the weapon category `007327B0` writes to `[gun+3F4h]+80h`, and its
+`Bullet[1].Bullet` names the `BulletClass` row that carries `V0`, `Range`, `DamageMin`,
+`DamageMax`, `WaterDamage`, `FireDamage` and `FireChance`.
+
+All of that is already in the live Lua state: the autoload folder `00886900` runs
+`vehicleclasses.lua`, `deviceclasses.lua` and `bulletclasses.lua` before the mission script does
+anything. This host reads it back through the interpreter the mission machine already owns: one
+chunk through `luaL_loadbuffer` and `lua_pcall` flattens the three tables into an integer
+sub-table per class row, and `GameMissionLuaHost::read_vehicle_class_integer` reads each value.
+The twelve `Function` spellings the chunk compares against are emitted from
+`bsp::gunnery_category_function_name`, so `007327B0`'s literal list stays on the reconstruction's
+side and the chunk performs only the compare. Nothing is invented and no Lua host method was
+added.
+
+**32 units carry 464 guns from 33 distinct device class rows and 18 bullet class rows.** The
+installation's `Globals.WeaponSystems.WeaponDirectorThinkTime` is 2 s, which is `GlobalConfig+88h`
+and the throttle every gunnery pass runs on.
+
+Two things a model would supply and this does not. A platform has no authored position, so every
+gun fires from its unit's own pose translation raised by the class `Height` and its traverse
+angles are hull relative; a battery has no spread across the hull. And a ship answers
+`vtable[0FCh]` with no sub-entity, which matters in section 4.
+
+### 2. The pass runs where the game runs it
+
+`00810DD0`'s creation block puts a `558h`-byte object at `unit+6DCh` and attaches it to the unit's
+own tick element `unit+310h` through its vtable `+4h`, which is `00864BD0`. `00875B90` runs a tick
+element's sub-nodes in wave 2 of the fixed step at 0.05 s, so the pass is a fixed-step sub-node and
+it is run here beside the motion pass. Its position relative to the motion pass is this
+executable's decision and is recorded as one: the guns read the pose the previous step left, which
+is what a sub-node of `unit+310h` does.
+
+The attach primes the throttle to the think time so the first tick after attachment runs at once,
+installs the two policy objects through `008636A0`, and builds the director bridge `00863A80`,
+whose first act is `008624C0` with `force = 1`.
+
+**The director's stance is the constructed one and this is evidence, not an assumption.**
+`008363E0` leaves `director+3Ch` `allowFire` and `+3Dh` at 1 for a unit of neither class `0Bh` nor
+class `9`, and `00720208` / `007202FD` leave all four of `+220h`..`+223h` at 1
+(`docs/DIRECTOR_UPDATE_ARMS.md` sections on the reset and the permission bytes). No producer in
+this process moves any of the six, so `008624C0` pushes twelve enabled categories with mask 3, and
+that is the same state `00864580`'s constructor starts from.
+
+Over 3000 mission frames the pass ticks 96000 times and runs 2307 bodies, which is the 2 s
+throttle against a 0.05 s step for the units that were alive throughout.
+
+### 3. The window list is seeded with flags 0, and the authored data proves it
+
+`docs/GUN_PLATFORM_ARC.md` established that `007F5A10` treats a platform's window list as a
+partition of the circle and dereferences its search result with no null guard, so the list must
+already hold a covering window before the first authored insert, and it recorded that seed as
+"somewhere this packet did not find".
+
+The seed exists and **its flags are 0: neither traverse nor fire**. `VehicleClass[265]`, which is
+`Kortenaer`'s own class, authors `Platforms[1]` "Turret A" with the two windows `[-145, 0]` and
+`[0, 145]` and `Platforms[4]` "Turret D" with `[30, 180]` and `[-180, -30]`. Each leaves exactly
+the sector its own superstructure blocks uncovered: the forward turret cannot bear aft and the
+after turret cannot bear forward. If the seed carried either flag, an uncovered heading would pass
+`007F5FC0` or `007F60A0` and a forward turret could fire over its own bridge.
+
+A `Nofire` window is the other half of the same reading: it is a sector the mount may traverse
+into but not shoot from, and the authored rows put them adjacent to the firing sector, as
+`[140, 180]` and `[-180, -165]` beside a `[-140, 140]` main arc.
+
+The run measures the consequence. `0085ABA0` refused 163447 of 1354800 SetTargetAngles calls
+because no traverse window contained the wanted pair, and `007F60A0` blocked 5940 shots that were
+already settled on their target.
+
+### 4. What the think decides, and the categories that never fire
+
+The think runs the reconstruction `bsp::unit_gunnery_pass_tick_00864fe0` whole. Per category:
+
+| step | what this process supplies |
+| --- | --- |
+| 8.1 | the twelve records `00956C20` filled from the authored platforms |
+| 8.2 / 8.3 | the enable bytes and masks the bridge pushed, all set |
+| 8.4 | the default gate `00D0D31C`, whose `vtable[4h]` is `00861BE0`, `mov al,1` |
+| 8.5 | the recon sweep, over the stand-in below |
+| 8.6 | the fire target off the ship AI row, and `0071EBF0`'s newest command target |
+| 8.7 | nothing, because `vtable[0FCh]` answers with no sub-entity |
+| 8.8 | the per-gun assignment through `00727F10` or the clear `00728000` |
+
+`[recon + DE8h]`, the side's published enemy contact list, has no producer here: this process
+builds no recon slot object. The stand-in is `docs/RECON_SLOT_LISTS.md`'s own membership rule,
+applied as far as it can be: rule (a), the twenty-two scanned class ids, and rule (b), the four
+gate bytes. **Rule (c), the per-observer detection value, is not applied**, so every enemy in class
+scope is a contact whether or not anything has seen it. Every figure below is a figure about that
+list.
+
+Over the 3000-frame run: 6921 sweeps, 3150 candidates accepted by `00863990` and 43406 refused,
+1373 assignments and 32048 clears.
+
+Two groups are silent and both are correct:
+
+* **Category 7, torpedo, 71 guns, zero assignments.** Step 8.5 never sweeps the recon list for
+  category 7 - the native code excludes it - so a torpedo mount can only be handed a target by
+  step 8.7, and step 8.7 appends sub-entities and never the target itself. A ship with an empty
+  sub-entity list therefore contributes nothing at all.
+* **Categories 1, 5, 8 and 11, 259 guns between them, zero assignments.** Their authored
+  preference rows at `00E0944C`, `00E09A5C`, `00E09EE8` and `00E0A374` list plane classes, air
+  classes, the submarine and nothing at all. No plane and no submarine exists on this mission, so
+  `00862820` step 3 refuses every candidate on a zero rank. That is the table doing its job.
+
+| cat | Function | guns | assigns | shots | no traverse window | arc blocked |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | AAMACHINEGUN | 204 | 0 | 0 | 0 | 0 |
+| 2 | LIGHTARTILLERY | 38 | 490 | 34 | 7908 | 3316 |
+| 3 | MEDIUMARTILLERY | 20 | 240 | 28 | 13934 | 1934 |
+| 5 | FLAK | 8 | 0 | 0 | 0 | 0 |
+| 6 | LIGHTARTILLERYFLAK | 76 | 643 | 153 | 11565 | 690 |
+| 7 | TORPEDO | 71 | 0 | 0 | 0 | 0 |
+| 8 | DEPTHCHARGE | 41 | 0 | 0 | 118040 | 0 |
+| 11 | CATAPULT | 6 | 0 | 0 | 12000 | 0 |
+
+Category 6, the dual-purpose row that puts air first and then the whole surface list, is the one
+that does the killing.
+
+### 5. The elevation is the muzzle bot's own pre-estimate, and it is the whole of the gun's reach
+
+`00955630`, the gravity arc solver every artillery bot ends at, is a record here:
+`docs/GUN_BOT_TICKS.md` marks its body complete but publishes no expression and no header exports
+one. What the same document does publish is `006DF520` step 6, the pre-estimate the solver refines:
+
+```
+s     = distance * 9.81 (00CF9058) / v^2                      006DF8BF
+pitch = min(asin(s) * 0.5, pi/4)                              00CEB5A8 clamps
+aim  += targetVelocity * distance / (v * cos(pitch) * [muzzle+5Ch])
+gate: s <= 1.0                                                006DFA60
+```
+
+That is the low-angle root of the flat-fire ballistic equation, and running it is the difference
+between a gun that reaches and one that does not. `[muzzle+5Ch]` has no recovered producer and is
+taken as one, which makes the push-out the plain time of flight. The torpedo category keeps its
+own solver `008FBB00` and adds no gravity term, because a torpedo does not fall.
+
+The measurement that makes the point. On a first pass that aimed straight at the lead point with
+no elevation, a 300 m/s shell leaving a muzzle 4 m above the sea reaches the water after 0.9 s and
+271 m: **265 of 274 shells splashed and 8 hit**. With the pre-estimate, of 215 shells **161 hit a
+hull, 42 crossed the water and 2 expired**. The remaining gap is the solver.
+
+### 6. The shot, and what stops one
+
+`0072D2C0` latches `gun+454h` when the aim has settled inside a firing window, and `0072D130`
+sends the opcode `0ADh` message every fixed step the latch is set and `unit+720h`, `gun+3B8h` and
+`gun+5Dh` are all clear. The rate limiting is entirely in `CanFire`, exactly as
+`docs/GUN_PLATFORM_ARC.md` says: **10730 sends produced 215 shots, and `0085A830` refused 10515 of
+them**, almost all on the barrel reload timers of 2.5 to 2.7 s against a 0.05 s step.
+
+47 rising edges of the latch produced those 10730 sends, each edge seeding the stagger `gun+478h`
+from `00BD2F10(0, 0.12)`.
+
+The first shot: **t = 43.45 s, `Java` platform 2, a LIGHTARTILLERY mount firing bullet class 13 at
+`Harusame`, range 1863 m, horizontal 0.0 deg, vertical 5.7 deg.** The elevation is the
+pre-estimate; 5.7 degrees at 1863 m is what the shell needs.
+
+The busiest guns:
+
+| gun | platform | cat | range | assigns | shots | first shot | last target |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Kortenaer | 1 | 6 | 1700 | 34 | 49 | 63.95 s | Murasame |
+| Kortenaer | 2 | 6 | 1700 | 34 | 49 | 63.95 s | Murasame |
+| Electra | 1 | 6 | 1700 | 35 | 18 | 78.30 s | Murasame |
+| Electra | 2 | 6 | 1700 | 35 | 18 | 78.35 s | Murasame |
+| Haguro | 1 | 3 | 2200 | 48 | 14 | 54.05 s | Electra |
+| Haguro | 2 | 3 | 2200 | 48 | 14 | 54.10 s | Electra |
+| Jintsu | 1 | 2 | 1700 | 38 | 8 | 74.30 s | Electra |
+| Samidare | 1 | 6 | 1500 | 10 | 8 | 61.95 s | Java |
+| Java | 1 | 2 | 1900 | 53 | 5 | 43.55 s | Harusame |
+
+**No shot was refused by the reach gate**: `arc_unsolved` is 0 over the whole run, so `s <= 1`
+held everywhere and no target was beyond `v^2 / g`.
+
+### 7. The hit, and the pass of `00826F10` that never runs
+
+A shell integrates through `006E7670` and `006E65C0` one fixed step at a time and its segment is
+swept by `bsp::query_segment_0098add0`. The spatial grid is empty in this process, so every unit
+is a loose entity and each carries one shape: its hull box from the class `Length`, `Width` and
+`Height`, solved as a slab test in the hull's own frame.
+
+On a hit, `00470350` writes `record+14h = shot->vtable[54h]()`. That virtual is `006E7C60`:
+
+```
+MOV EAX,[ECX+174h]        ; the weapon class descriptor
+FLD [EAX+0B0h]            ; DamageMax
+FLD [EAX+0ACh]            ; DamageMin
+CALL 00BD2F10             ; a uniform draw between them
+```
+
+unscaled, and `docs/HIT_NARROWPHASE.md` establishes it is the only damage field a direct segment
+hit gets: `+28h`, the part damage base, stays zero.
+
+**`00826F10`'s hull-segment pass never runs on a shell hit.** `00826F62` gates the whole block -
+the per-part subtraction `0092D1F0`, the roll torque, the difficulty scaling, the fire roll and
+the flooding rate - on `hit+34h != -1`, and all three known shapes write `-1`. All 161 hits of
+this run took the tail `008777D0` instead, and the run reports `hull=161 part=0 fires=0 floods=0`.
+That is not a gap in this executable; it is what the listing says happens.
+
+Damage therefore reaches the hull through `00470510`'s formula with the unit's own `Armour`, then
+`00879070`'s rule and `00877B90`'s write. Per ship over 150 s:
+
+| unit | side | guns | range | shots | hits taken | damage dealt | damage taken | health | sunk |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Kortenaer | 0 | 9 | 1700 | 98 | 8 | 6733 | 1074 | 1426 | |
+| Electra | 0 | 9 | 1700 | 38 | 16 | 2201 | 2023 | 477 | |
+| Java | 0 | 9 | 1900 | 11 | 27 | 802 | 1897 | 4103 | |
+| DeRuyter | 0 | 9 | 1900 | 2 | 0 | 0 | 0 | 6000 | |
+| Haguro | 1 | 25 | 2200 | 29 | 0 | 3103 | 0 | 7000 | |
+| Jintsu | 1 | 18 | 1700 | 21 | 36 | 1365 | 2339 | 3661 | |
+| Samidare | 1 | 15 | 1500 | 8 | 27 | 525 | 2700 | 0 | 80.55 s |
+| Yudachi | 1 | 15 | 1500 | 4 | 27 | 0 | 2700 | 0 | 95.45 s |
+| Murasame | 1 | 15 | 1500 | 0 | 20 | 0 | 1997 | 703 | |
+| Harusame | 1 | 15 | 1500 | 4 | 0 | 0 | 0 | 2700 | |
+
+The twenty-two ships not listed neither fired nor were fired at: they are the rear columns, still
+2300 to 3800 m from the nearest enemy at the end of 150 s and outside every gun's range.
+
+### 8. The sinking, and who gets the credit
+
+`0077CE60` runs as step 7 of `009239A0` on all 161 hits and leaves the attacker's side, class,
+ordnance kind and slot on the victim's `+2C4h`..`+2E8h` block. When a hull reaches zero,
+`BSP_Unit_OnDestroyed`'s kill writer `0091BDA0` runs over `bsp::KillCreditHost`.
+
+**Samidare sinks at t = 80.55 s and Yudachi at t = 95.45 s, both to Kortenaer**, whose two
+category-6 turrets fired 98 of the run's 215 shells. Two kill credits, two loss entries, two type
+tallies and two kill-list entries. The award thresholds are a record: `0050FC30` reads the
+achievement registry this process does not build, so no award is granted.
+
+### Host methods
+
+In call order. `address` is the native call site and `native` the callee;
+`reports/game_executable_milestone_2t.json` carries the same rows and
+`tools/verify_report_calls.py` checks each against the live bodies.
+
+| step | address | native | disposition |
+| --- | --- | --- | --- |
+| the pass constructor | 00810e3d | 00864580 | concrete |
+| attach to the tick element | 00d0d360+vtable04 | 00864bd0 | concrete, indirect |
+| install the two policies | 00864c18 | 008636a0 | concrete |
+| build the director bridge | 00864c94 | 00863a80 | concrete |
+| the bridge's forced push | 00863ae7 | 008624c0 | concrete |
+| the bridge, per think | 00865073 | 008624c0 | concrete |
+| age the visibility cache | 0086505d | 00862c30 | concrete |
+| the per-target engagement list | 008650dd | 00862cd0 | record, 00864880 unread |
+| the side's contact list | 00865201 | 008053c0 | record, no recon slot object |
+| score a candidate | 00865237 | 00863990 | concrete |
+| the category mask | 008639a2 | 008633d0 | concrete |
+| the class allow table | 008633df | 00862820 | concrete |
+| the untouchable gate | 00865248 | 00862440 | concrete |
+| the visibility cache | 0086525d | 00864d90 | concrete; 00864680 a record |
+| the newest command target | 0086549c | 0071ebf0 | concrete |
+| the director's fire target | 00d0d324+vtable04 | 00863640 | concrete, indirect |
+| assign a gun its target | 00865833 | 00727f10 | concrete |
+| the engagement record | 00865860 | 00864ca0 | record |
+| clear a gun's target | 0086586c | 00728000 | concrete |
+| the target rank table | 004de075 | 00727bd0 | concrete |
+| the per-category gun lists | 0095e5f5 | 00956c20 | concrete |
+| a gun's weapon range | 00956d9f | 00731020 | concrete |
+| a gun is operational | 00956c98 | 00729f10 | concrete |
+| insert an authored arc | 0096185e | 007f6b10 | concrete |
+| SetTargetAngles | 006dfb54 | 0085aba0 | concrete |
+| the gravity pre-estimate | 006df8bf | not a call | concrete |
+| the gravity arc solver | 006dfad4 | 00955630 | record |
+| the arc-aware step deltas | 0085aeda | 007f6530 | concrete |
+| the aim slew | 00cfbce0+vtable | 0085ad80 | concrete, indirect |
+| the firing window | 0085a887 | 007f60a0 | concrete |
+| the trigger latch | 00cfbf08+vtable1e8 | 0072d2c0 | concrete, indirect |
+| the gun's fixed-step tick | 00cfbce4+vtable0c | 0072d130 | concrete, indirect |
+| the barrel reload countdown | 0072d21b | 0072cf00 | concrete |
+| the 0ADh fire message | 0072d290 | not a call row | concrete |
+| FireIfReady | 0084c4e3 | 00727e30 | concrete |
+| CanFire | 00cfbef0+vtable1d0 | 0085a830 | concrete, indirect |
+| BSP_Gun_Fire | 00cfbef8+vtable1d8 | 00730160 | concrete, indirect |
+| the next ready barrel | 007302c4 | 007298d0 | concrete |
+| the projectile spawn | 00730042 | 0072bf10 | concrete |
+| the launch velocity | 00cfa158+vtable | 006e8430 | concrete, indirect |
+| the flight step | 00cf9f04+vtable114 | 006e7670 | concrete, indirect |
+| the segment sweep | 0084c4c8 | 0084bf00 | concrete |
+| the entity query | 0098b3eb | 0098add0 | concrete, one hull box per unit |
+| HitRecord::SetShot | 0084c0c3 | 00470350 | concrete |
+| the shot's damage base | 00cf9df0+vtable54 | 006e7c60 | concrete, indirect |
+| the impact | 0084c314 | 0084bc60 | concrete |
+| queue the hit | 0084be20 | 00926e80 | concrete |
+| dispatch the queued hit | 00926750 | 009239a0 | concrete |
+| the ship's hit handler | 00cf919c+vtableec | 00826f10 | concrete, indirect |
+| the per-part health | 0082703e | 0092d1f0 | unreached, see section 7 |
+| the base hit record | 008277fc | 008777d0 | concrete |
+| the damage rule | 00879824 | 00879070 | concrete |
+| the health write | 0087914b | 00877b90 | concrete |
+| the damage attribution | 00923ada | 0077ce60 | concrete |
+| the kill credit | 00959519 | 0091bda0 | concrete |
+
+### Corrections
+
+1. **`docs/GUN_PLATFORM_ARC.md`'s "the platform is seeded with one full-circle window somewhere
+   this packet did not find" is answered.** Was: the seed's flags were unknown. Is: they are 0,
+   neither traverse nor fire. Evidence: `VehicleClass[265].Platforms[1]` authors `[-145, 0]` and
+   `[0, 145]` and `Platforms[4]` authors `[30, 180]` and `[-180, -30]`, each leaving the sector its
+   own superstructure blocks uncovered; either flag on the seed would let a forward turret fire
+   aft. The run's 163447 SetTargetAngles refusals and 5940 blocked shots are that partition being
+   enforced.
+
+2. **`docs/UNIT_GUNNERY_PASS.md` section 8.7's "the director's targets are tried before anything
+   the recon sweep found" is true of the order and not of the fact.** Was: read as the director's
+   targets reaching a gun first. Is: both arms append sub-entities and never the target itself, so
+   a target that answers `vtable[0FCh]` with an empty list contributes nothing at all. Evidence:
+   `src/unit_gunnery_pass.cpp`'s projection of `008654AC`..`0086576B`; the run's 1373 assignments
+   with zero sub-entities offered and 3150 accepted recon candidates, and category 7's 71 guns
+   with no target on any think.
+
+3. **`docs/SHIP_HIT_RECORD.md` describes a pass a shell never reaches.** Was: the per-part damage,
+   the roll torque, the difficulty scaling and the fire and flooding arms read as the ship's hit
+   handling. Is: `00826F62` gates all of them on `hit+34h != -1` and `docs/HIT_NARROWPHASE.md`
+   establishes that all three known shapes write `-1`, so a direct segment hit takes only the tail
+   `008777D0`. Evidence: `src/ship_hit_record.cpp` line 188; the run's `hull=161 part=0 fires=0
+   floods=0`.
+
+### no_ghidra_function
+
+none. Every address cited above lies inside an existing Ghidra function body.
+`python tools/verify_report_calls.py reports/game_executable_milestone_2t.json` reports
+**42 call rows checked, 0 failed**; the rows written as `<addr>+vtableNN` are reported as
+`indirect` and skipped, and every one of them is a genuine vtable dispatch.
+
+### Validation
+
+`scripts/build.ps1` Release Win32 with `/W4 /WX /fp:strict`, no warnings, every target built.
+`ctest -C Release`: `reconstructed_math` passes, 1 of 1. **No test cases were added.**
+`origin/main` was merged at the start of the turn and was already up to date at `fa74f3e9`.
+Every run passes `--xlive-dll build/win32/Release/xlive_stub.dll`, the stub target registered in
+`cmake/startup.cmake` (`docs/XLIVE_STUB.md`), because the installed `xlive.dll` access-violates at
+startup (milestone 2s correction 6). Runs are sequential: `bsp_game.exe` takes a single-instance
+mutex at `008F8301` and a second process exits at the error message box, which happened twice
+during this turn while another agent's run held it.
+
+```
+bsp_game.exe --frames 3200 --press-start-frame 30 --menu-select USN02 --mission-frames 3000
+  --mission-frame-seconds 0.05 --log local/v_run_long.log
+  --xlive-dll build/win32/Release/xlive_stub.dll --game-root "<install>"
+
+summary mission gunnery units=32 guns=464 passes=32 ticks=96000 bodies=2307 bridge=2307
+        sweeps=6921 candidates=3150 rejected=43406 assignment_passes=9006
+        gun_evaluations=1373 slot_rejects=0 assigns=1373 clears=32048
+summary mission gunnery aim angle_sets=1191353 refusals=163447 steps=24546 arc_blocks=5940
+        arc_unsolved=0 trigger_rises=47 fire_messages=10730 fire_if_ready=10730
+        can_fire_refusals=10515 shots=215 first_shot=43.45 s
+summary mission gunnery projectiles created=215 steps=22121 sweeps=22121 entity_impacts=161
+        water=42 expired=2 in_flight=10
+summary mission gunnery damage queued_hits=161 dispatched=161 hit_records=161 hull=161 part=0
+        fires=0 floods=0 attributions=161 deaths=2 kill_credits=2 total_damage=14729.8
+        first_hit=49.55 s
+host methods 669 concrete, 471 unimplemented
+```
+
+The regression line is milestone 2s's own, run on the same binary:
+
+```
+bsp_game.exe --frames 700 --press-start-frame 30 --menu-select USN02 --mission-frames 500
+  --mission-frame-seconds 0.05 --mission-complete-frame 490 --order moveto:Java
+  --order-unit Kortenaer --order-frame 5 --trajectory-csv local/v_traj_all.csv
+  --log local/v_run_all.log --xlive-dll build/win32/Release/xlive_stub.dll --game-root "<install>"
+```
+
+`local/v_traj_all.csv` is **byte-identical** to the baseline `local/base_traj_all.csv` taken on the
+same tree before the first edit, so the ships still move exactly as milestone 2s left them. Every
+counter that should not move does not: `ship ai units=32 ai_owned=31 steps=15680 gated=0
+replans=5048 state_steps{concrete=4803 records=245}`, `states cruise=13 stop=12 attackmove=6
+movetopos=1 other=0`, `arm tail bodies=3426 latched=3425 stops=6 arrival_latches=0`, `ring
+hops=15680 writes=15680 rudder_law=15190 deadbands=6275 live_pair_changes=1691`, `world lists
+registrations=32 pushes=192 lists{1=32 2=32 4=32 5=32 6=32 7=32}`, `hydrodynamics calls=15680
+element_steps=125440 submerged_steps=93928 add_force=15680 add_torque=15680 gravity_y=-10.0`,
+`director completion end_commands=0 stage_raises=2 clear_messages=2 clear_receives=2
+queue_advances=2` and `world units=32 walked=15680 updated=15680 motion_ticks=15680
+simulated=24.50 s moved=33.43 total_path=5007.14`. The one figure that moves is `host methods`,
+636 concrete / 476 unimplemented to **660 / 480**: twenty-four new concrete host methods and four
+new records, which are the engagement list `00862CD0`, the contact list `008053C0`, the
+line-of-sight test `00864680` and the engagement record `00864CA0`.
+
+On the 500-frame line the guns fire nothing: at 25 s the nearest enemy pair is 1854 m apart and the
+longest gun on either side reaches 2300 m, and that one is on a cruiser further out still. The
+3000-frame line is what closes the range, and that is why the milestone's numbers come from it.
+
+Every earlier switch was rechecked on this binary. A 120-frame run with `--press-start-frame 30`
+and no `--menu-select` exits 0 and reports **158 concrete and 79 unimplemented**; a 40-frame
+title-only run exits 0 and reports **133 and 48**; `--vfs-probe fonts/fonts.lua` exits 0 with
+`probes=4/4` and `--vfs-probe does/not/exist.lua` exits 3 with `probes=3/4`. All four match
+milestone 2s exactly, because no gun is created on a path that creates no unit.
+
+This remains a runtime-validated process, not a game-validated one. What it proves that milestone
+2s did not: that a created unit's gunnery pass attaches to its own tick element and runs the
+game's two-second think; that the twelve authored preference rows and the twelve per-category gun
+lists decide which of 464 guns may engage which of 32 hulls, and refuse 259 of them for the right
+reason; that a gun traverses inside its authored windows and refuses a heading none covers; that
+the trigger latch, the 0ADh message, `CanFire`'s timers and `BSP_Gun_Fire`'s barrel selection turn
+47 trigger edges into 215 shells; that those shells fly, sweep, hit and take `00470350`'s uniform
+draw between the authored `DamageMin` and `DamageMax` into the hull; and that two destroyers reach
+zero health and are credited to the ship that shot them. What it does not prove is anything about
+the gravity arc `00955630`, about dispersion, about a gun's position on its hull, or about the
+detection value that decides what a side can see.
+
+### Follow-up packets
+
+1. **`gun_gravity_arc_00955630`**, body `00955630..0095581F`. `docs/GUN_BOT_TICKS.md` marks it
+   complete but publishes no expression and no header exports one. Until one does, every elevation
+   in this milestone is `006DF520` step 6's pre-estimate, and the difference between the two is the
+   whole of a gun's accuracy at range.
+
+2. **`gun_dispersion`**, `0072F830` and `006DF520` step 10. Two producers of miss, neither applied:
+   the per-pellet perturbation `0072F830` builds from the class `Throw` (0.01 on the 133 mm
+   turret), and the per-bot error pair `006DEFF0` rerolls from the robot skill descriptor that
+   `load_robot_config_00901610` reads out of `Robots.lua`. The run's 161 hits in 215 shots is an
+   upper bound, not a measurement.
+
+3. **`ship_sub_entity_list_0fc`**, entity vtable `+0FCh`. The sub-entity enumeration step 8.7
+   expands both director targets into. It is what would let the director's own fire target reach a
+   gun without going through the recon sweep, and it is why no torpedo fires on this mission.
+
+4. **`hit_shape_hull_segment`**. A shape whose `vtable[0]` writes a real hull segment into
+   `hit+34h`. Without one, `00826F10`'s part damage, roll torque, fire and flooding are all
+   unreachable from a shell, which section 7 measures.
+
+5. **`gunnery_recon_detection`**, `docs/RECON_SLOT_LISTS.md` rule (c) and the sensor tables behind
+   it. This run applies rules (a) and (b) only.
+
+6. **`gun_platform_mount_positions`**. A platform's mount point is a model node. Every gun here
+   fires from the hull centre raised by the class `Height`, so a battery has no spread and a
+   blocked arc is measured from the wrong origin.
+
+7. **`ship_ai_neighbour_walk`** and **`ship_ai_follow_land_hosts`** are carried over from milestone
+   2s unchanged; neither was touched here.

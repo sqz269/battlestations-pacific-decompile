@@ -1,0 +1,150 @@
+{
+  "packet": "orch6_avoid_search_runtime_g",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/ship_ai_avoid_zone_search.cpp",
+  "coverage": "three complete normal bodies; process geometry adapter; controller connection pending",
+  "functions": [
+    {
+      "address": "009d7050",
+      "name": "BSP_ShipAiAvoidZoneSearcher_RefreshCachedQuery",
+      "end_inclusive": "009d724e",
+      "original_abi": "ECX receiver, one stack argument, RET4"
+    },
+    {
+      "address": "00419fa0",
+      "name": "BSP_AvoidZoneSegmentList_SetLayerAndClear",
+      "end_inclusive": "00419fb9",
+      "original_abi": "ECX receiver, one stack argument, RET4"
+    },
+    {
+      "address": "004224c0",
+      "name": "BSP_AvoidZoneSegmentList_RefillFromManager",
+      "end_inclusive": "004224f2",
+      "original_abi": "ECX receiver, one stack argument, RET4"
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "009d70dc",
+      "native": "00414f50",
+      "contract": "existing complete callee; native listing call verified"
+    },
+    {
+      "address": "009d70ec",
+      "native": "00414f50",
+      "contract": "existing complete callee; native listing call verified"
+    },
+    {
+      "address": "009d7239",
+      "native": "00419fa0",
+      "contract": "existing complete callee; native listing call verified"
+    },
+    {
+      "address": "009d7241",
+      "native": "004224c0",
+      "contract": "existing complete callee; native listing call verified"
+    },
+    {
+      "address": "00419fad",
+      "native": "004158a0",
+      "contract": "existing complete callee; native listing call verified"
+    },
+    {
+      "address": "004224c8",
+      "native": "004158a0",
+      "contract": "existing complete callee; native listing call verified"
+    },
+    {
+      "address": "004224cd",
+      "native": "004218e0",
+      "contract": "existing complete callee; native listing call verified"
+    },
+    {
+      "address": "004224d8",
+      "native": "004120d0",
+      "contract": "existing complete callee; native listing call verified"
+    },
+    {
+      "address": "004224e8",
+      "native": "00417a40",
+      "contract": "existing complete callee; native listing call verified"
+    }
+  ],
+  "no_ghidra_function": [],
+  "validation": {
+    "build": "MSVC Win32 Release and existing CTest 2/2 passed",
+    "native_differential": {
+      "report": "reports/ship_ai_avoid_zone_search_proof.json",
+      "cases": 1536,
+      "failures": 0,
+      "callback_records": 8484,
+      "selected_node_records": 4296,
+      "serialized_bytes": 567744,
+      "compiled_source_sha256": "6d5b1b7433553803def4ca656ad737f1f5257e926cb85c320892c33858f3f958",
+      "later_source_change": "5b888d82 changes exactly one z-load/spill comment; no executable logic changed",
+      "current_source_sha256": "042879872a8373214422eece7f47454486f6cf4a1e77782e19860dad026f15b3",
+      "final_fp_control_status_top_mxcsr_compared": false
+    },
+    "loaded_map": {
+      "scene": "universe/Scenes/missions/USN/usn_1_marshall.scn",
+      "game_root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+      "mode": 0,
+      "forced": false,
+      "multiplayer": false,
+      "query_layer": 3,
+      "query": [
+        0,
+        0,
+        100000,
+        100000
+      ],
+      "initial_cache_bounds": [
+        -1,
+        -1,
+        1,
+        1
+      ],
+      "explicit_fixture_inputs": true,
+      "groups": 6,
+      "zones": 21,
+      "corners": 2193,
+      "selected_segments": 426,
+      "cache_reused": true,
+      "crossing": true,
+      "clear_and_empty_output_preservation": true,
+      "exit": 0,
+      "scope": "actual installed scene data through existing projected scene/geometry owners; no gameplay steering"
+    },
+    "compiled_source_sha256": {
+      "src/ship_ai_avoid_zone_search.cpp": "6d5b1b7433553803def4ca656ad737f1f5257e926cb85c320892c33858f3f958",
+      "include/bsp/ship_ai_avoid_zone_search.hpp": "033b114071d83bd68fcbc917fa9daf0c0cc78b7895431d2df8d46f837d518c17",
+      "src/game_avoid_zone_runtime.cpp": "19e3052abb72e47b214ba22a016312e738d67b7025614e4c5a39eb6c0762efcc",
+      "include/bsp/game_avoid_zone_runtime.hpp": "035e91c07e2eea3926a7e033d2b3615475e52080b7447e562490ffec1f604362"
+    },
+    "artifacts": {
+      "local/avoid_search_map_probe_g.cpp": "ccd65da9a8c9c1cc3ec35f00f29453b3a786294efa1d4e190f1ea2d2f09a101b",
+      "local/build_avoid_search_map_probe_g.ps1": "e99fd65e47c517a5a24de56cb310a5d5e416bfd3cd18e35009f447f7960d8daa",
+      "local/avoid_search_map_probe_g.exe": "ed6e0489e774a3433778857ffbee837053630eea5edd1e4557cbf4a66bf078f7",
+      "local/avoid_search_map_probe_g.log": "8651ebf57382069ef74652e31be92601dc2c9f66a4afec7c829f9829c7d2abcd",
+      "local/avoid_search_map_probe_stdout_g.log": "0129e3451a907ea17fe1419dce2efbfd427773a56dd366560a740c8ca74c4fa8",
+      "local/avoid_search_map_probe_build_g.log": "a6412aa70f3b41042388c9fe0bb88b8eb3b42933f04fc1e110723cdcce74ab2e",
+      "local/orch6_avoid_search_build_g.log": "4eb7304d68a02f3a1d4ebdf233d452167d7f4f19304a431509b0aff9caa0aa40"
+    }
+  },
+  "corrections": [
+    "009D7068 compares integer keys, not floats.",
+    "CEC160 is widened binary32 1.2, not a double literal1.2.",
+    "Two callers009DA6E0 and009DC2E0 supply disjoint stack queries.",
+    "Initial bounds are caller inputs;009E4330 leaves them untouched.",
+    "The list layer+1C differs from cached query key+14.",
+    "An initial map probe used the empty default layer0 and incorrectly followed cyclic next links; fixture corrected to layer3 and closes_run traversal without product changes."
+  ],
+  "limits": [
+    "MSVC Win32 C++ interfaces are not original ABI replacements.",
+    "Native nullable group slots, allocation failure and SEH are outside this semantic representation.",
+    "Loaded map uses existing explicit scene reconstruction boundaries.",
+    "Controller/director persistent flags,00415970 arc clipping, remaining query producer and native initial bounds ownership remain unbound.",
+    "No native singleton publication, binary drop-in, complete steering or gameplay claim."
+  ]
+}

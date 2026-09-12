@@ -72,7 +72,7 @@ private:
 };
 } // namespace
 
-struct GameAvoidZoneRuntime::Impl final : AvoidZoneClearanceAccess {
+struct GameAvoidZoneRuntime::Impl final : AvoidZoneClearanceAccess, ShipAiAvoidZoneSearchAccess {
     Impl(GameHostLog& output, const CameraAxesCrtAccess& math) : log(output), crt(math) {}
     ~Impl() { release_native_tracked_critical_section_0041cc80(&section); }
     GameHostLog& log;
@@ -102,6 +102,22 @@ struct GameAvoidZoneRuntime::Impl final : AvoidZoneClearanceAccess {
         return table.groups.at(zone.identity.group_index).zones.at(zone.identity.zone_index);
     }
     TrackedCriticalSection* manager_critical_section_004218e0() override { return section; }
+    const AvoidZoneTable& manager_004218e0() override {
+        require_ready();
+        return table;
+    }
+    AvoidZoneClearanceGroupView native_group(const AvoidZoneLayerGroup& semantic) override {
+        // Preserve the identity and zone order of the selected semantic group.
+        for (std::size_t index = 0; index < table.groups.size(); ++index) {
+            if (&semantic != &table.groups[index]) continue;
+            const auto& group = groups.at(index);
+            return {group.native.data(), static_cast<std::uint32_t>(group.native.size())};
+        }
+        throw std::logic_error("Avoid-zone search group belongs to another manager");
+    }
+    const AvoidZoneAllocationAccess& allocation() const noexcept override {
+        return bsp::game::allocation;
+    }
     AvoidZoneClearanceGroupView selected_group_004120d0(std::uint32_t layer) override {
         const auto index = avoid_zone_group_for_layer_004120d0(table,
             static_cast<std::int32_t>(layer));
@@ -255,5 +271,19 @@ const ShipAiPathLateralAnchor* GameAvoidZoneRuntime::anchor(std::uint32_t corner
     auto& result = impl_->anchors[corner];
     result = ship_ai_lateral_anchor_projection(*impl_->corners.at(corner));
     return &result;
+}
+bool GameAvoidZoneRuntime::refresh_search(ShipAiAvoidZoneSearcher& cache,
+    ShipAiAvoidZoneSegmentList& list, const ShipAiAvoidZoneQuery& query) {
+    impl_->require_ready();
+    return ship_ai_avoid_query_refresh_009d7050(cache, list, query, *impl_);
+}
+void GameAvoidZoneRuntime::clear_search(ShipAiAvoidZoneSegmentList& list) noexcept {
+    avoid_zone_selected_segments_clear_004158a0(list.head, allocation);
+}
+bool GameAvoidZoneRuntime::search_segment(const ShipAiAvoidZoneSegmentList& list,
+    const std::array<float, 2>& from, const std::array<float, 2>& toward,
+    std::array<float, 2>& hit) const {
+    impl_->require_ready();
+    return avoid_zone_selected_segments_hit_004158e0(list.head, from, toward, hit);
 }
 } // namespace bsp::game

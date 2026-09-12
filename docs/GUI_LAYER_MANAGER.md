@@ -592,3 +592,13 @@ assembly removes a matching page from manager+14h's vector, calls current
 virtual20(), then current virtual04(1), with RET4 at00AA327C. It performs
 direct deletion rather than a page-reference decrement. See
 `docs/GUI_NATIVE_SCENE.md` for the disposal fragment, evidence and fixture.
+
+## Correction from docs/GUI_POINTER_HIT_RUNTIME.md
+
+AA8BD0 selects the smallest child-origin Z, with equal depth preserving the
+first hit. Its native AA8DD3 and AA8DE3 stack reads address the original +2C
+child-origin Z after current64 RET10, not the +1C pivot product. Fields+18/+1C
+are pivot coordinates and +20/+24 are size. The canonical runtime traverses
+the existing page registry and widget owners and uses the actual Text bounds.
+The manager's final current68 uses AA7190 for seven supported base profiles;
+Listbox has a distinct A9CA60 target at D5BC60.
