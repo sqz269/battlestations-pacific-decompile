@@ -1,0 +1,280 @@
+{
+  "packet": "orch6_ship_ai_path_turn_ramp",
+  "worker": "agent/orch6-zone-wrappers",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "source": "src/ship_ai_path_turn_ramp.cpp",
+  "documentation": "docs/SHIP_AI_PATH_TURN_RAMP.md",
+  "routines": [
+    {
+      "address": "00424c40",
+      "body_end_inclusive": "00424cff",
+      "coverage": "complete body read; existing singleton only, no new singleton reconstruction",
+      "original_abi": "cdecl, EAX pointer, plain RET"
+    },
+    {
+      "address": "0083d492",
+      "function": "0083b5e0",
+      "body_end_inclusive": "0083d575",
+      "coverage": "partial_projection: complete three-field read/store/release sequence only",
+      "uncovered_ranges": [
+        "0083b5e0-0083d491",
+        "0083d576-00842951"
+      ],
+      "implementation": "load_ship_ai_path_turn_ramp_0083d492",
+      "original_context": "ESI settings; ECX selected PathFinderParams object at each lookup; fragment has no RET"
+    },
+    {
+      "address": "009ec280",
+      "body_end_inclusive": "009ec67e",
+      "coverage": "bounded correction009ec3be-009ec43d to existing reconstructed cost pass; rest retained",
+      "implementation": "ship_ai_path_search_cost_009ec280",
+      "original_abi": "ECX node, stack side-switch penalty; ST0 cost, RET4"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0083d4a6",
+      "native": "00b67800",
+      "function": "0083b5e0"
+    },
+    {
+      "address": "0083d4bf",
+      "native": "00b66330",
+      "function": "0083b5e0"
+    },
+    {
+      "address": "0083d4d9",
+      "native": "00b67700",
+      "function": "0083b5e0"
+    },
+    {
+      "address": "0083d4f2",
+      "native": "00b67800",
+      "function": "0083b5e0"
+    },
+    {
+      "address": "0083d50b",
+      "native": "00b66330",
+      "function": "0083b5e0"
+    },
+    {
+      "address": "0083d525",
+      "native": "00b67700",
+      "function": "0083b5e0"
+    },
+    {
+      "address": "0083d53e",
+      "native": "00b67800",
+      "function": "0083b5e0"
+    },
+    {
+      "address": "0083d557",
+      "native": "00b66330",
+      "function": "0083b5e0"
+    },
+    {
+      "address": "0083d571",
+      "native": "00b67700",
+      "function": "0083b5e0"
+    },
+    {
+      "address": "0083d464",
+      "native": "00b67800",
+      "function": "0083b5e0"
+    },
+    {
+      "address": "0083d479",
+      "native": "00b67690",
+      "function": "0083b5e0"
+    },
+    {
+      "address": "0083d48d",
+      "native": "00b67700",
+      "function": "0083b5e0"
+    },
+    {
+      "address": "0083cb57",
+      "native": "00b67800",
+      "function": "0083b5e0"
+    },
+    {
+      "address": "0083b721",
+      "native": "00b67980",
+      "function": "0083b5e0"
+    },
+    {
+      "address": "0083b73d",
+      "native": "00b67800",
+      "function": "0083b5e0"
+    },
+    {
+      "address": "009ec30b",
+      "native": "00424c40",
+      "function": "009ec280"
+    },
+    {
+      "address": "009ec31e",
+      "native": "00424c40",
+      "function": "009ec280"
+    },
+    {
+      "address": "009ec331",
+      "native": "00424c40",
+      "function": "009ec280"
+    },
+    {
+      "address": "009ec370",
+      "native": "00414eb0",
+      "function": "009ec280"
+    },
+    {
+      "address": "009ec379",
+      "native": "00438b10",
+      "function": "009ec280"
+    },
+    {
+      "address": "009ec3b7",
+      "native": "00419010",
+      "function": "009ec280"
+    },
+    {
+      "address": "009ec3f0",
+      "native": "00414eb0",
+      "function": "009ec280"
+    },
+    {
+      "address": "009ec3f9",
+      "native": "00438b10",
+      "function": "009ec280"
+    },
+    {
+      "address": "009ec438",
+      "native": "00419010",
+      "function": "009ec280"
+    },
+    {
+      "address": "00424c9f",
+      "native": "00bf681b",
+      "function": "00424c40"
+    },
+    {
+      "address": "00424cb6",
+      "native": "00424a10",
+      "function": "00424c40"
+    },
+    {
+      "address": "00424bfc",
+      "native": "0083b5e0",
+      "function": "00424a10"
+    }
+  ],
+  "no_ghidra_function": [],
+  "fragment_identity": "0083d492 is inside0083b5e0, not a new function; do not create a Ghidra function here",
+  "flow": {
+    "00424c40": 0,
+    "009ec280": 0,
+    "0083d492-0083d575": "contiguous selected listing"
+  },
+  "fields": [
+    {
+      "key": "LengthModifier_DirDiffMin",
+      "offset": "6f0",
+      "store": "0083d4c4",
+      "fallback_address": "00d05aa8",
+      "fallback_bits": "3e860a92",
+      "installed_bits": "3e860a92"
+    },
+    {
+      "key": "LengthModifier_DirDiffMax",
+      "offset": "6f4",
+      "store": "0083d510",
+      "fallback_address": "00ce3c64",
+      "fallback_bits": "3fc90fdb",
+      "installed_bits": "3fb2b8c2"
+    },
+    {
+      "key": "LengthModifier_LengthAddon",
+      "offset": "6f8",
+      "store": "0083d55c",
+      "fallback_address": "00ced724",
+      "fallback_bits": "44bb8000",
+      "installed_bits": "44960000"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "GameShipAiHost returns zero ramp as assumed fresh-object default",
+      "is": "Actual0083B5E0 loader reads ShipGlobals.Navigator.PathFinderParams; native non-number fallbacks are DEG15,DEG90,1500",
+      "evidence": "00424A10 does not initialize6F0/6F4/6F8;00424BFC invokes loader;0083D4BF/50B/557 and stores"
+    },
+    {
+      "was": "Broad gameplay_settings.cpp fallbacks0.261799f and1.5708f",
+      "is": "Dedicated fragment uses bits3E860A92 and3FC90FDB; broad loader remains unchanged",
+      "evidence": "Live bytes00D05AA8=920A863E,00CE3C64=DB0FC93F"
+    },
+    {
+      "was": "009EC280 plus-cost source uses node.link_plus position",
+      "is": "Use node.link_minus position after retaining the plus-child gate",
+      "evidence": "009EC3BE/C5 test+24 child;009EC3CB MOV EAX,[ESI+20h];009EC3CE/E0 position loads;009EC438 interpolation;009EC43D writes+50 cost"
+    }
+  ],
+  "adapter": {
+    "interface": "bool read_ship_ai_path_turn_ramp_lua(lua_State&,ShipAiPathSearchTurnRamp&,std::string&)",
+    "game_host": "GameMissionLuaHost::read_path_turn_ramp(out,error) uses actual private state_",
+    "actual_dependencies": [
+      "construct_native_lua_state_00b66bd0",
+      "native_lua_globals_00b67980",
+      "native_lua_get_by_name_00b67800",
+      "native_lua_number_or_00b66330",
+      "destroy_native_lua_object_00b67700",
+      "linked Lua5.1.1"
+    ],
+    "semantics": "Exact NUMBER only; numeric strings/non-numbers use fallback. Metamethods honored; stores occur before temporary release/next lookup; no finite check, clamping or unit conversion.",
+    "lifetime": "Temporary native tracking owner borrows same interpreter inside isolated zero-argument C-call frame; at most4 tracked stack positions; no second interpreter, DoFile replacement, script run or cached authored values.",
+    "error_boundary": "lua_pcall returns false/error text; restores caller stack; earlier field stores retained. Caller rejects failed load. No native SEH ABI claim.",
+    "remaining_inputs": [
+      "already-loaded actual ShipGlobals environment",
+      "runtime load timing and stable storage owned by primary",
+      "valid link_minus when plus-cost arm activates"
+    ]
+  },
+  "installed_scripts": [
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/scripts/datatables/shipglobals.lua",
+      "sha256": "5a5df16493c8d27d08ea2c74860a59a81dd97e7c24ab6f6f6713ba79ef60ef80",
+      "lines": "345-350",
+      "authored": "DEG15,DEG80,1200"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/scripts/global/luaMW_init.lua",
+      "sha256": "3a807d3cb53d6e753901ab378a3b10311b2aa6dec5e99b05f5d63d4b98ea7533",
+      "lines": "434-436",
+      "definition": "DEG(a)=a*math.pi/180"
+    }
+  ],
+  "verification": {
+    "build": "PASS scripts/build.ps1 MSVC Win32 Release, bsp_game.exe, existing CTest2/2",
+    "build_log": "local/ship_ai_path_turn_ramp_build.log",
+    "fixture": "PASS7 installed-script/turn-ramp integration checks",
+    "fixture_source": "local/ship_ai_turn_ramp_probe.cpp",
+    "fixture_runner": "local/run_ship_ai_turn_ramp_probe.ps1",
+    "fixture_log": "local/ship_ai_turn_ramp_probe.log",
+    "fixture_manifest": "/link /MANIFEST:EMBED",
+    "live_call_rows": {
+      "checked": 27,
+      "failed": 0
+    },
+    "new_tracked_tests": 0,
+    "whole_native_differential": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "runtime_host_wrapper_compiled": true,
+    "runtime_host_wrapper_exercised": false,
+    "scope": "Installed Lua files executed in fixture; actual loader fragment and search correction exercised. Primary owns executable call-site wiring/runtime evidence."
+  },
+  "completed_utc": "2026-09-12T19:12:45.132466+00:00",
+  "ledger_previous_values_log": "local/ship_ai_path_turn_ramp_ledger.log",
+  "ghidra_annotation_application": "Deferred to primary integrator; current names retained, prior evidence appended, no Ghidra writes"
+}
