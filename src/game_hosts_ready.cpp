@@ -451,7 +451,9 @@ private:
 // GameStepSubsystemsHost
 // ---------------------------------------------------------------------------
 
-GameStepSubsystemsHost::GameStepSubsystemsHost(GameHostLog& log) : log_(log) {}
+GameStepSubsystemsHost::GameStepSubsystemsHost(GameHostLog& log) : log_(log) {
+    bsp::fixed_step_callback_list_init(callbacks_);
+}
 
 void GameStepSubsystemsHost::attach_units(GameUnitsHost* units) noexcept {
     units_ = units;
@@ -473,6 +475,23 @@ void GameStepSubsystemsHost::refresh_moved_spatial_nodes_0098bdb0(float step) {
             "entity is pending destroy or kill (00922fd0 is a record). The sixth, the "
             "world expiry 00903610, walks this mission's 32 created instances");
     }
+}
+
+void GameStepSubsystemsHost::run_fixed_step_callbacks_00874de0(float step) {
+    struct CallbackBinding final : bsp::FixedStepCallbackHost {
+        explicit CallbackBinding(GameHostLog& log_in) : log(log_in) {}
+        void invoke_step_callback(bsp::FixedStepCallbackNode& node, float delta) override {
+            static_cast<void>(node);
+            static_cast<void>(delta);
+            log.unimplemented("FixedStepCallbacks::invoke", "00874e0b");
+        }
+        GameHostLog& log;
+    };
+    CallbackBinding binding(log_);
+    const std::int32_t run
+        = bsp::fixed_step_callback_list_run_00874de0(callbacks_, step, binding);
+    summary_.callbacks_run += static_cast<std::size_t>(run < 0 ? 0 : run);
+    ++summary_.callback_passes;
 }
 
 void GameStepSubsystemsHost::drain_deferred_entity_events_00926700() {
@@ -517,9 +536,11 @@ void GameStepSubsystemsHost::release_expired_world_objects_00903610() {
 
 void GameStepSubsystemsHost::report() {
     if (summary_.spatial_passes == 0 && summary_.expiry_passes == 0) return;
-    log_.notef("summary fixed step subsystems spatial=%llu/%zu deferred_events=%llu/%zu "
+    log_.notef("summary fixed step subsystems spatial=%llu/%zu callbacks=%llu/%zu "
+        "deferred_events=%llu/%zu "
         "lua_calls=%llu/%zu think=%llu/%zu pending_queues=%llu expiry=%llu/%llu released=%zu",
         summary_.spatial_passes, summary_.spatial_nodes,
+        summary_.callback_passes, summary_.callbacks_run,
         summary_.deferred_event_passes, summary_.deferred_events,
         summary_.lua_call_passes, summary_.lua_calls_drained,
         summary_.think_passes, summary_.thinks_run,

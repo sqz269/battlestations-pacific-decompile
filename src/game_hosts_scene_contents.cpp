@@ -3,7 +3,9 @@
 #include "bsp/game_hosts_scene_contents.hpp"
 
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_vfs.hpp"
+#include "bsp/scene_traffic_groups.hpp"
 #include "bsp/mission_scene_contents.hpp"
 #include "bsp/mission_scene_load.hpp"
 #include "bsp/pose_refresh.hpp"
@@ -221,6 +223,11 @@ struct GameSceneContentsHost::Impl {
 
     GameHostLog& log;
     GameVfsHost& vfs;
+    // Milestone 2m: the mission Lua host, for 0095c640's three table reads.
+    GameMissionLuaHost* lua{nullptr};
+    // 00f8a09c, the deduplicated preload census, and 00f8a0b0, the stock queue.
+    std::vector<std::int32_t> preload_census;
+    std::vector<std::int32_t> stock_queue;
     GameSceneContentsSummary summary;
     std::vector<GameSceneEntityRecord> entities;
     PropertyLibrary library;
@@ -393,6 +400,64 @@ void GameSceneContentsHost::Impl::load_property_library() {
 }
 
 namespace {
+
+// ---------------------------------------------------------------------------
+// Milestone 2m: 0095c640's own host, over the live VehicleClass table
+// ---------------------------------------------------------------------------
+class VehicleClassPreloadBinding final : public bsp::VehicleClassPreloadHost {
+public:
+    explicit VehicleClassPreloadBinding(GameSceneContentsHost::Impl& owner)
+        : owner_(owner) {}
+
+    std::int32_t map_class_index(std::int32_t class_id) override {
+        // registry+10h+id*4, the forward index map the executable fills with
+        // the identity (milestone 2h's own note on 00592640 and 00506550).
+        const std::size_t id = static_cast<std::size_t>(class_id);
+        if (class_id < 0 || id >= owner_.vehicle_registry.type_to_class_index.size()) {
+            return class_id;
+        }
+        return static_cast<std::int32_t>(owner_.vehicle_registry.type_to_class_index[id]);
+    }
+    bool read_class_type(std::int32_t class_index, std::string& type) override {
+        if (owner_.lua == nullptr) return false;
+        const GameVehicleClassRow row
+            = owner_.lua->read_vehicle_class_row(static_cast<int>(class_index));
+        if (!row.found) return false;
+        type = row.type;
+        return !type.empty();
+    }
+    std::int32_t read_landing_ship_class(std::int32_t class_index) override {
+        if (owner_.lua == nullptr) return 0;
+        return static_cast<std::int32_t>(owner_.lua->read_vehicle_class_integer(
+            static_cast<int>(class_index), "LandingShip", nullptr, 0));
+    }
+    std::int32_t read_catapult_launched_class(std::int32_t class_index) override {
+        if (owner_.lua == nullptr) return -1;
+        return static_cast<std::int32_t>(owner_.lua->read_vehicle_class_integer(
+            static_cast<int>(class_index), "Catapult", "LaunchedClass", -1));
+    }
+    void append_census(std::int32_t class_index) override {
+        for (std::int32_t existing : owner_.preload_census) {
+            if (existing == class_index) return;
+        }
+        owner_.preload_census.push_back(class_index);
+    }
+    bool pop_stock_queue(std::int32_t& class_index) override {
+        if (owner_.stock_queue.empty()) return false;
+        class_index = owner_.stock_queue.front();
+        owner_.stock_queue.erase(owner_.stock_queue.begin());
+        return true;
+    }
+    void push_stock_queue(std::int32_t class_index) override {
+        for (std::int32_t existing : owner_.stock_queue) {
+            if (existing == class_index) return;
+        }
+        owner_.stock_queue.push_back(class_index);
+    }
+
+private:
+    GameSceneContentsHost::Impl& owner_;
+};
 
 // ---------------------------------------------------------------------------
 // 0046c550's remaining services
@@ -773,8 +838,22 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
             && scene_registration_fallback_class(klass->class_id);
         if (!main_body && !fallback) return;
         if (main_body) {
-            owner.log.unimplemented("SceneContents::register_vehicle_class_preload",
-                "0095c640");
+            // 0095c640 at 0046d51a, with the property's +0Ch, which is the
+            // resolved `Type` id. Packet cc2_scene_traffic_groups reconstructed
+            // it while this packet was open; it reads
+            // `VehicleClass[index].Type` and two further fields out of the live
+            // table the recovered global-script step already loaded.
+            if (owner.lua != nullptr) {
+                VehicleClassPreloadBinding preload(owner);
+                const int appends = bsp::register_vehicle_class_preload(
+                    static_cast<std::int32_t>(type_id), preload);
+                static_cast<void>(appends);
+                owner.log.implemented("SceneContents::register_vehicle_class_preload",
+                    "0095c640");
+            } else {
+                owner.log.unimplemented("SceneContents::register_vehicle_class_preload",
+                    "0095c640");
+            }
         }
         owner.log.unimplemented("SceneContents::register_multiplayer_stock", "0046bf70");
 
@@ -1484,6 +1563,10 @@ void SceneContentsBinding::scatter_clouds() {
 // ---------------------------------------------------------------------------
 // GameSceneContentsHost
 // ---------------------------------------------------------------------------
+
+void GameSceneContentsHost::attach_lua(GameMissionLuaHost* lua) noexcept {
+    impl_->lua = lua;
+}
 
 GameSceneContentsHost::GameSceneContentsHost(GameHostLog& log, GameVfsHost& vfs)
     : impl_(std::make_unique<Impl>(log, vfs)) {}

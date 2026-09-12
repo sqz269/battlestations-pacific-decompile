@@ -44,6 +44,7 @@
 #include <vector>
 
 #include "bsp/entity_think_dispatch.hpp"
+#include "bsp/fixed_step_callbacks.hpp"
 #include "bsp/mission_named_call_args.hpp"
 
 namespace bsp::game {
@@ -55,6 +56,8 @@ class GameUnitsHost;
 struct GameStepSubsystemsSummary {
     unsigned long long spatial_passes{0};
     std::size_t spatial_nodes{0};
+    unsigned long long callback_passes{0};
+    std::size_t callbacks_run{0};
     unsigned long long deferred_event_passes{0};
     std::size_t deferred_events{0};
     unsigned long long lua_call_passes{0};
@@ -81,6 +84,9 @@ public:
     void attach_units(GameUnitsHost* units) noexcept;
 
     void refresh_moved_spatial_nodes_0098bdb0(float step);
+    // Fan-out row 5, 00874de0 at 00875e3f. Packet cc2_fixed_step_callbacks
+    // landed while this packet was open.
+    void run_fixed_step_callbacks_00874de0(float step);
     void drain_deferred_entity_events_00926700();
     void drain_queued_lua_calls_00888230();
     void run_due_entity_think_00929460(float step);
@@ -101,6 +107,9 @@ private:
     bsp::EntityThinkList think_pending_{};
     // The deferred call list at [game+1A08h]+8h.
     bsp::MissionLuaCallQueue lua_queue_{};
+    // The per-step callback list at 00F87680. Its only registrant is 00875a80,
+    // whose callers are the engine's own subsystems, so the list stays empty.
+    bsp::FixedStepCallbackList callbacks_{};
     // entity+6Ch per created instance, the expiry counter 00922fd0 writes.
     std::vector<int> expiry_counters_{};
     bool logged_empty_{false};

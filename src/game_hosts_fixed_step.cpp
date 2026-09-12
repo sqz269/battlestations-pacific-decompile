@@ -236,9 +236,13 @@ void GameFixedStepHost::refresh_moved_spatial_nodes_0098bdb0(float step) {
 }
 
 void GameFixedStepHost::run_fixed_step_callbacks_00874de0(float step) {
-    static_cast<void>(step);
     ++summary_.fanout_calls;
-    record("FixedStepFanout::run_step_callbacks", 0x00875e3fu);
+    if (subsystems_ == nullptr) {
+        record("FixedStepFanout::run_step_callbacks", 0x00875e3fu);
+        return;
+    }
+    subsystems_->run_fixed_step_callbacks_00874de0(step);
+    done("FixedStepFanout::run_step_callbacks", 0x00875e3fu);
 }
 
 void GameFixedStepHost::drain_deferred_entity_events_00926700() {

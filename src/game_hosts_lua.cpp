@@ -488,6 +488,33 @@ void GameMissionLuaHost::note_native_call(std::size_t row, int argument_count,
     log_.unimplemented(method, address);
 }
 
+int GameMissionLuaHost::read_vehicle_class_integer(int index, const char* key,
+    const char* nested_key, int fallback) {
+    if (state_ == nullptr || index < 0 || key == nullptr) return fallback;
+    const int top = ::lua_gettop(state_);
+    int value = fallback;
+    ::lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
+    if (::lua_type(state_, -1) == LUA_TTABLE) {
+        ::lua_pushinteger(state_, index);
+        ::lua_gettable(state_, -2);
+        if (::lua_type(state_, -1) == LUA_TTABLE) {
+            ::lua_getfield(state_, -1, key);
+            if (nested_key != nullptr) {
+                if (::lua_type(state_, -1) == LUA_TTABLE) {
+                    ::lua_getfield(state_, -1, nested_key);
+                } else {
+                    ::lua_pushnil(state_);
+                }
+            }
+            if (::lua_type(state_, -1) == LUA_TNUMBER) {
+                value = static_cast<int>(::lua_tonumber(state_, -1));
+            }
+        }
+    }
+    ::lua_settop(state_, top);
+    return value;
+}
+
 std::vector<bsp::LuaGlobalEntry> GameMissionLuaHost::lua_global_entries() {
     std::vector<bsp::LuaGlobalEntry> entries;
     if (state_ == nullptr) return entries;

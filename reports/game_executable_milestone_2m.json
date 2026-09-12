@@ -31,10 +31,11 @@
   "run": {
     "command": "bsp_game.exe --frames 600 --press-start-frame 30 --menu-select USN02 --mission-frames 400 --mission-frame-seconds 0.05 --mission-complete-frame 390 --trajectory-csv local/trajectory.csv --screenshot local/run.png --screenshot-mission-frame 380 --log local/game_run.log --game-root \"<install>\"",
     "exit_code": 0,
-    "host_methods_concrete": 432,
-    "host_methods_unimplemented": 404,
+    "host_methods_concrete": 434,
+    "host_methods_unimplemented": 402,
     "baseline_concrete": 375,
-    "baseline_unimplemented": 411
+    "baseline_unimplemented": 411,
+    "note": "the baseline is the same command on the tree this packet branched from; main was merged in mid-packet and brought packets cc2_fixed_step_callbacks and cc2_scene_traffic_groups, which this packet then wired"
   },
 
   "script_order_steps": [
@@ -161,6 +162,9 @@
     {"method": "FixedStepFanout::refresh_moved_spatial_nodes", "address": "00875e3a",
      "native": "0098bdb0", "status": "concrete",
      "note": "the root list is empty: nothing registers a spatial node here"},
+    {"method": "FixedStepFanout::run_step_callbacks", "address": "00875e3f",
+     "native": "00874de0", "status": "concrete",
+     "note": "packet cc2_fixed_step_callbacks landed on main mid-packet; the list at 00f87680 is empty because its only registrant 00875a80 is the engine's"},
     {"method": "FixedStepFanout::drain_deferred_entity_events", "address": "00875e44",
      "native": "00926700", "status": "concrete", "note": "the queue is empty"},
     {"method": "FixedStepFanout::drain_queued_lua_calls", "address": "00875e55",
@@ -201,6 +205,9 @@
   ],
 
   "scene_contents_steps": [
+    {"method": "SceneContents::register_vehicle_class_preload", "address": "0046d51a",
+     "native": "0095c640", "function": "0046cf40", "status": "concrete",
+     "note": "packet cc2_scene_traffic_groups landed on main mid-packet; the three table reads go to the live VehicleClass global"},
     {"method": "SceneContents::clear_effect_handles", "address": "004d0f05", "native": "004cb160",
      "function": "004d0ee0", "status": "concrete"},
     {"method": "SceneContents::preload_acquire_effect", "address": "004d0f24", "native": "00871ba0",
@@ -252,8 +259,6 @@
      "reason": "acquire_gameplay_effect_by_name_00871ba0 takes a GameplayEffectAcquisitionContext: a manager context, a native string storage, a name-index host and a scalar-component dispatcher. Nothing in this process builds that composition."},
     {"method": "SceneContents::property_bag_holder", "native": "00922e20",
      "reason": "the 0Ch holder {vtable, refs, bag} of scene_entity_create.hpp is a host method of SceneEntityCreateHost, not a routine; no reconstruction of 00922e20 itself exists."},
-    {"method": "SceneContents::register_vehicle_class_preload", "native": "0095c640",
-     "reason": "no reconstruction on main. Ghidra still carries FUN_0095c640 and the address is leased to agent/cc2-scene-traffic-groups for packet cc2_scene_traffic_groups."},
     {"method": "MissionLoad(session)::assign_party_player_slots", "native": "004c3840",
      "reason": "run_assign_party_player_slots_004c3840 exists, but 004e044d gates the call on game+1FE4h == 1 and this session's field is 0, so the step stays an arm the load never takes."},
     {"method": "EntityCommand::non_movement_arm", "native": "00816f7c",
@@ -267,8 +272,11 @@
      "is": "the bindings run and the orders are real MT_COMMAND messages with the right command object, ordinal, flags and descriptor, but they stop at 00816e30's own arm 00816f7c, which is projected nowhere. No scripted order reaches a weapon director slot and no ship moves under one.",
      "evidence": "src/cruise_command.cpp's command_takes_movement_fall_through selects cruise, stop and moveonpath only; docs/CRUISE_COMMAND.md reads 00816f7c..00817330 in pseudocode and projects none of it; milestone 2l follow-up 6 names the packet entity_command_arms."},
     {"was": "the packet brief: vehicle class preload 0095c640 has a reconstruction on main",
-     "is": "it does not. python tools/bsp.py lookup 0095c640 answers FUN_0095c640 with no ledger name, and the address is leased to agent/cc2-scene-traffic-groups.",
-     "evidence": "the ledger lookup and python tools/bsp.py lease list"},
+     "is": "it did not when the packet opened; python tools/bsp.py lookup 0095c640 answered FUN_0095c640 with no ledger name and the address was leased to agent/cc2-scene-traffic-groups. The packet landed on main mid-packet and the merge brought include/bsp/scene_traffic_groups.hpp, so the step is wired after all. Packet cc2_fixed_step_callbacks arrived in the same merge and made fan-out row 5 (00874de0) wireable too.",
+     "evidence": "the merge of main at ccf56196, include/bsp/scene_traffic_groups.hpp and include/bsp/fixed_step_callbacks.hpp"},
+    {"was": "docs/MISSION_LOAD_HOSTS.md's reset_objective_list",
+     "is": "main renamed the host method to reset_avoid_zone_state, not to rebuild_avoid_zone_table. The load walk accepts all three spellings.",
+     "evidence": "include/bsp/mission_scene_load.hpp on main"},
     {"was": "milestone 2l: the mission's own order function addresses 21 of the 32 created instances through ten bindings that are all host records",
      "is": "six of the ten now run their reconstructed bodies (SetSkillLevel, SetRoleAvailable, JoinFormation, NavigatorMoveToRange, RepairEnable, NavigatorAttackMove). The other four rows of the mission's ten, NavigatorSetTorpedoEvasion, NavigatorSetAvoidLandCollision, SetInvincible and SetFireTarget, are other packets' and keep the record.",
      "evidence": "the run log's `binding <name> ... (reconstructed body)` lines and summary mission script bindings"},

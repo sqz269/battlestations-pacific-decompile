@@ -1147,7 +1147,8 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             ++host.load.concrete;
             continue;
         }
-        if (method == "reset_objective_list" || method == "rebuild_avoid_zone_table") {
+        if (method == "reset_objective_list" || method == "rebuild_avoid_zone_table"
+            || method == "reset_avoid_zone_state") {
             run_load_avoid_zone_state_004e0754(host.log);
             host.done(label, step.address);
             ++host.load.concrete;
@@ -1234,6 +1235,9 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                 host.scene_contents = std::make_unique<GameSceneContentsHost>(host.log,
                     host.vfs);
             }
+            // Milestone 2m: 0095c640's three reads of the live VehicleClass
+            // table, which the recovered global-script step already loaded.
+            host.scene_contents->attach_lua(&host.lua);
             // game+614h and game+61Ch are the two fields 004bca50 reads as the
             // raw game mode and its forced flag; MissionSceneLoadState names the
             // same pair script_slot / script_slot_forced, because 004e087b picks

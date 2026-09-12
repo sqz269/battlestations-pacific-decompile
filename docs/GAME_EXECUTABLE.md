@@ -4323,8 +4323,9 @@ vtable 16Ch and 00905300 / 0075b430 / 0077c2a0, 00895250 with vtable 128h, 008ad
 5Ch, 008ab850 with 00888d20 / 004bca50 / vtable 148h / 004c3840; 00836920's stage spine
 (00836941, 00836a8b, 00836dc9) with 0071be60 / 0071d810 / 0071d9e0 / 00465080 / 0071ecf0 /
 007788b0 / 007788d0 and the stage reset 00835bf0 with 0071c130 / 00822b70, and the
-commanded-speed store 00890e6f; the six fan-out rows 00875e3a / 0098bdb0, 00875e44 / 00926700,
-00875e55 / 00888230, 00875e64 / 00929460, 00875ec9 / 009273a0 and 00875eda / 00903610; the
+commanded-speed store 00890e6f; the seven fan-out rows 00875e3a / 0098bdb0, 00875e3f / 00874de0,
+00875e44 / 00926700, 00875e55 / 00888230, 00875e64 / 00929460, 00875ec9 / 009273a0 and
+00875eda / 00903610; 0046d51a / 0095c640 (the vehicle-class preload); the
 mission-load rows 004dfc13 with 004cec60 and 004bb160, 004e0754 with 004218e0 and 00424d00, and
 004d30f0 with 004cec60 / 00b67980 / 00b66200 / 004d0640; and the four scene-contents steps
 004d0ee0 with 004cb160 / 004caf50, 004c17d0 with 004248a0 / 004239e0, 004ba870, and 0046df00's
@@ -4447,12 +4448,16 @@ the block, and on this mission it changes no trajectory.
 
 ### 4. The hosts that only needed wiring
 
-Six fan-out rows, three mission-load rows and four scene-contents steps had reconstructions on
-main and were still records. All thirteen now run.
+Seven fan-out rows, three mission-load rows and five scene-contents steps had reconstructions on
+main and were still records. All fifteen now run. Two of the fifteen arrived in the merge of main
+this packet took before finishing: packet `cc2_fixed_step_callbacks` made fan-out row 5 (00874de0)
+wireable and packet `cc2_scene_traffic_groups` made the vehicle-class preload (0095c640) wireable,
+after this packet had already recorded both as unavailable.
 
 | Row | Native | What it did here |
 | --- | --- | --- |
 | `refresh_moved_spatial_nodes` | 0098bdb0 | the walk runs over an empty root list: nothing registers a spatial node, 0098a310's callers are the scene graph's |
+| `run_step_callbacks` | 00874de0 | the list at 00f87680 is empty: its only registrant 00875a80 belongs to the engine's own subsystems |
 | `drain_deferred_entity_events` | 00926700 | the queue is empty; 780 passes over 390 steps, because rows 6 and 14 are the same callee |
 | `drain_queued_lua_calls` | 00888230 | the deferred call list is empty: its producer 00887560 only runs for a named call made off the main thread |
 | `run_due_entity_think` | 00929460 | both think lists are empty: 0088a240 is the `SetThink` binding's |
@@ -4465,14 +4470,13 @@ main and were still records. All thirteen now run.
 | `load_avoid_zones` | 004c17d0 | **172939 bytes of the mission's `.nav` parsed into 3 TerrainGridLayers**, 240x240 at 100.0 m per cell |
 | `scatter_clouds` | 004ba870 | returns at its own gate 004ba879, because record+C84h is zero |
 | `select_weather_descriptor` | 0046df00 | the whole `Weathers` walk on a private Lua state; see the corrections |
+| `register_vehicle_class_preload` | 0095c640 | its three reads go to the live `VehicleClass` global the recovered global-script step loaded, once per registration body |
 
-Three that the packet brief listed as ready could not be wired, and the report says why for each:
-`00871ba0` (the effect acquire needs a `GameplayEffectAcquisitionContext` nothing here builds),
+Two that the packet brief listed as ready could not be wired, and the report says why for each:
+`00871ba0` (the effect acquire needs a `GameplayEffectAcquisitionContext` nothing here builds) and
 `00922e20` (the 0Ch property-bag holder is a host method of `SceneEntityCreateHost`, not a
-routine, and 00922e20 itself has no reconstruction) and `0095c640` (no reconstruction on main at
-all: Ghidra still carries `FUN_0095c640`, and the address is leased to
-`agent/cc2-scene-traffic-groups`). `004c3840` has a reconstruction and stays an arm the load
-never takes, because `004e044d` gates it on `game+1FE4h == 1`.
+routine, and 00922e20 itself has no reconstruction). `004c3840` has a reconstruction and stays an
+arm the load never takes, because `004e044d` gates it on `game+1FE4h == 1`.
 
 ### What it looks like on screen
 
@@ -4492,8 +4496,9 @@ written to the ignored `local/run.png` and is not committed.
 `bsp_game.exe --frames 600 --press-start-frame 30 --menu-select USN02 --mission-frames 400
 --mission-frame-seconds 0.05 --mission-complete-frame 390 --trajectory-csv local/trajectory.csv
 --screenshot local/run.png --screenshot-mission-frame 380 --log local/game_run.log --game-root
-"<install>"`, exit 0: **432 concrete, 404 unimplemented**. The same command on this tree before
-this packet reports **375 and 411**.
+"<install>"`, exit 0: **434 concrete, 402 unimplemented**. The same command on the tree this
+packet branched from reports **375 and 411**. Two of the 59 the packet added arrived with the
+merge of main it took before finishing, not with its own reading; the corrections say which.
 
 The per-step table with the call site and callee of every row is
 `reports/game_executable_milestone_2m.json` (`script_order_steps`, `script_order_indirect`,
@@ -4504,11 +4509,11 @@ The per-step table with the call site and callee of every row is
 | --- | --- | --- | --- |
 | The eight binding bodies | 27 | 19 | 8 |
 | The director's stage ladder 00836920 | 13 | 11 | 2 |
-| The six fan-out rows | 6 | 6 | 0 |
+| The seven fan-out rows | 7 | 7 | 0 |
 | The three mission-load rows | 10 | 9 | 1 |
-| The four scene-contents steps | 21 | 20 | 1 |
+| The five scene-contents steps | 22 | 21 | 1 |
 
-Twenty-four records the run reached before are gone, and sixteen new ones appeared, each a native
+Twenty-six records the run reached before are gone, and sixteen new ones appeared, each a native
 call site this executable had never reached: `00816f7c` (the entity command arms), `0077c8fe`
 (the availability predicate), `0089539a`, `008ad4cd`, `008aba51`, `0088a88e`, `00836adc`
 (the director's step arms), `0071c730` (the stage completion message), `007788b0`, `00424d00`,
@@ -4522,9 +4527,14 @@ call site this executable had never reached: `00816f7c` (the entity command arms
    scripted order reaches a weapon director slot. That block is milestone 2l's follow-up 6,
    `entity_command_arms`, and it is now the first of three steps between the mission's script and
    a ship that obeys it.
-2. **This packet's brief listed `0095c640` among the hosts with a reconstruction on main. It has
-   none.** `python tools/bsp.py lookup 0095c640` answers `FUN_0095c640` with no ledger name, and
-   the address is leased to `agent/cc2-scene-traffic-groups`.
+2. **This packet's brief listed `0095c640` among the hosts with a reconstruction on main. It had
+   none when the packet opened, and it has one now.** `python tools/bsp.py lookup 0095c640`
+   answered `FUN_0095c640` with no ledger name and the address was leased to
+   `agent/cc2-scene-traffic-groups`; that packet landed while this one was open, and the merge of
+   main this packet took before finishing brought `include/bsp/scene_traffic_groups.hpp`, so the
+   step is wired after all. The same merge brought `cc2_fixed_step_callbacks`, which made fan-out
+   row 5 (00874de0) wireable, and renamed `reset_objective_list` to `reset_avoid_zone_state`
+   rather than to the `rebuild_avoid_zone_table` this packet had been told to expect.
 3. **`00871ba0` and `00922e20` are reconstructed and still not wireable.** The effect acquire
    takes a `GameplayEffectAcquisitionContext` (a manager context, a native string storage, a
    name-index host and a scalar-component dispatcher) that nothing in this process builds, and
@@ -4540,11 +4550,11 @@ call site this executable had never reached: `00816f7c` (the entity command arms
 5. **Milestone 2h's "all 32 author `Cruise`" was corrected by 2l, and the consequence is now
    visible.** Nineteen ships author `None`, so their directors are idle and the recovered idle
    tail issues `stop` to every one of them. No milestone before this ran that tail.
-6. **`docs/MISSION_LOAD_HOSTS.md`'s three renamed host methods.** The executable's load walk
-   accepts both the old spellings (`reset_network_slots`, `reset_objective_list`,
-   `rebuild_scripted_name_list`) and the corrected ones (`erase_native_string_set`,
-   `rebuild_avoid_zone_table`, `record_script_function_baseline`), because that rename is landing
-   on main while this packet is open.
+6. **`docs/MISSION_LOAD_HOSTS.md`'s renamed host methods.** The executable's load walk accepts the
+   old spellings (`reset_network_slots`, `reset_objective_list`, `rebuild_scripted_name_list`),
+   the ones this packet was told to expect (`erase_native_string_set`,
+   `rebuild_avoid_zone_table`, `record_script_function_baseline`) and the one main actually
+   carries (`reset_avoid_zone_state`), because that rename landed while this packet was open.
 7. **A 120 frame run now reports 155 concrete and 79 unimplemented**, one more concrete than
    milestone 2l published, and the move is not this packet's: every record that run reaches has
    the same status it had on the tree this packet branched from.
@@ -4562,7 +4572,7 @@ Ghidra annotation was made: the packet is a wiring of reconstructions other pack
 
 `scripts/build.ps1` Release Win32 with `/W4 /WX /fp:strict`, no warnings. The existing ctest case
 `reconstructed_math` passes, 1 of 1. No test cases were added.
-`python tools/verify_report_calls.py reports/game_executable_milestone_2m.json` checks 79 call
+`python tools/verify_report_calls.py reports/game_executable_milestone_2m.json` checks 81 call
 rows and reports 0 failures; five rows are reported as indirect because the native call goes
 through a vtable slot.
 
@@ -4586,13 +4596,15 @@ mission load session-slot reset: 004dfc13 tests game+1FE4h and this session is l
         routine takes 004dfd18, the single-player reset 004bb160
 mission load scripted-name baseline: 004d30f0 walked 1178 Lua global(s) and recorded 878
         function-valued name(s) into the set at game+1930h
-summary fixed step subsystems spatial=390/0 deferred_events=780/0 lua_calls=390/0 think=390/0
-        pending_queues=390 expiry=390/12480 released=0
+summary fixed step subsystems spatial=390/0 callbacks=390/0 deferred_events=780/0 lua_calls=390/0
+        think=390/0 pending_queues=390 expiry=390/12480 released=0
 summary mission director steps=12480 idle_reissues=20 stop=19 cruise=1 follow=0 script_issues=7
         blocked_at_00816f7c=7 commanded_speeds=0
+summary mission scene contents mode=8 entities=34 generated=34 rejected=0 created=32
+        registration_bodies=32 party_class_marks=32 property_groups=22 enum_tables=33
 summary mission world units=32 walked=12480 updated=12480 motion_ticks=12480 simulated=19.50 s
         controlled=DeRuyter moved=0.00 total_path=0.00
-host methods 432 concrete, 404 unimplemented
+host methods 434 concrete, 402 unimplemented
 ```
 
 Every earlier switch was rechecked on the same binary. A 120 frame run with
@@ -4637,7 +4649,12 @@ moved under anything but the player's own `--order`.
    holder rather than a record.
 8. **`00424d00`**, the avoid-zone table rebuild, which needs `construct_world` 004de610's list at
    `[[00e188a8]+19CCh]+370h`.
-9. **`construct_world` 004de610**, unchanged from milestones 2h, 2i, 2j, 2k and 2l.
+9. **`load_prop_library` over `008F67B0`.** Packet `cc2_scene_traffic_groups` reconstructed the
+   property-group and enum library loader in the same merge that brought the vehicle-class
+   preload, so milestone 2h's own reader, the one stand-in that decides the generation gate for
+   every entity of every `.scn`, can now be deleted. That is milestone 2h's follow-up 2, and it
+   is the largest stand-in this executable still carries.
+10. **`construct_world` 004de610**, unchanged from milestones 2h, 2i, 2j, 2k and 2l.
 
 ## Next milestones
 

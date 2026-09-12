@@ -154,6 +154,13 @@ public:
     // the installed table indexes its rows by.
     GameVehicleClassRow read_vehicle_class_row(int index);
 
+    // Milestone 2m. One integer field of `VehicleClass[index]`, optionally one
+    // level down, for the two reads 0095c640 makes that the row above does not
+    // carry: `LandingShip` (default 0) and `Catapult.LaunchedClass` (default
+    // -1). The same plain table lookup against the live interpreter.
+    int read_vehicle_class_integer(int index, const char* key, const char* nested_key,
+        int fallback);
+
     // Milestone 2j. The head of the gameplay settings loader 0083b5e0: it
     // formats `Scripts\datatables\ShipGlobals.lua` (the literal at 00d0b67c)
     // into a path at 0083b6c3, runs it through the Lua state owner's own runner
