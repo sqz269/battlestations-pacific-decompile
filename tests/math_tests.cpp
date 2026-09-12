@@ -80,6 +80,7 @@
 #include "bsp/unit_parts.hpp"
 #include "bsp/projectile_impact.hpp"
 #include "bsp/blast_damage.hpp"
+#include "bsp/bot_fire_target.hpp"
 #include "bsp/collision_shapes.hpp"
 #include <algorithm>
 #include <cmath>
@@ -2525,6 +2526,28 @@ int main() {
             "0098AB62 keeps a sphere whose max exactly meets the node min");
         check(!bsp::collision_node_sphere_aabb_overlap(node_min, node_max, clear, 2.0f),
             "0098AB62 rejects once the sphere clears the node min");
+    }
+
+    {
+        // 009F5B70's score, 009F5CB2-009F5CD5. The tier is worth 10000 metres
+        // (00CE4BD8) and the running best starts at 0.0f (009F5D49), so the
+        // bottom tier of any list is unreachable however close the candidate
+        // is. Getting the 1-based counter wrong by one would silently shift
+        // every priority list by a tier, which is why this case exists.
+        const int count = 7;
+        check(bsp::auto_target_score_009f5b70(count, 0, 500.0f) == 59500.0f,
+            "009F5CBE gives the top tier six tier weights minus the distance");
+        check(bsp::auto_target_score_009f5b70(count, 6, 1.0f) == -1.0f,
+            "the bottom tier scores minus the distance");
+        check(!bsp::auto_target_score_beats_best_009f5b70(
+                  bsp::auto_target_score_009f5b70(count, 6, 1.0f), 0.0f),
+            "009F5CD5 rejects the bottom tier against the 0.0f start");
+        // 009F52F0 against the FLT_MAX seed and against a held target.
+        check(bsp::auto_target_switch_allowed_009f52f0(
+                  59500.0f, bsp::kAutoTargetRetainedScoreReset),
+            "the FLT_MAX seed lets the first candidate through");
+        check(!bsp::auto_target_switch_allowed_009f52f0(59500.0f, 59500.0f),
+            "009F52F8 keeps the held target against an equal score");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
