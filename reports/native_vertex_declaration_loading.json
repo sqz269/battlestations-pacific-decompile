@@ -1,0 +1,1060 @@
+{
+  "packet": "orch3_vertex_declaration_at",
+  "status": "reconstructed_actual_storage_strict_compiled_original_caller_fixture_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "native_bytes": 4122,
+  "functions": [
+    {
+      "address": "00b2dbd0",
+      "end_inclusive": "00b2e93a",
+      "end_exclusive": "00b2e93b",
+      "last_instruction": "00b2e938",
+      "last_instruction_length": 3,
+      "byte_count": 3435,
+      "sha256": "27b1857d4849d65807b1773805d6f6455507597d0959a76243e85e1df512165e",
+      "matches_live_ghidra": true,
+      "cpp_symbol": "bsp::decode_native_vertex_declaration_00b2dbd0",
+      "proposed_ghidra_name": "BSP_NativeVertexDeclaration_DecodeFormatName",
+      "native_abi": "incoming ECX unused; stack actual name header and ignored DWORD; EAX actual creator owner or null; RET8",
+      "coverage": "complete_control_flow_with_explicit_callee_boundaries",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00b47680",
+      "end_inclusive": "00b476c2",
+      "end_exclusive": "00b476c3",
+      "last_instruction": "00b476c0",
+      "last_instruction_length": 3,
+      "byte_count": 67,
+      "sha256": "b7ac5c31e7afecfb6c0cb797db602b866ed2efd06d2f6fb7175efdbb19893f31",
+      "matches_live_ghidra": true,
+      "cpp_symbol": "bsp::initialize_native_vertex_declaration_slab_00b47680",
+      "proposed_ghidra_name": "BSP_NativeVertexDeclarationSlab_Initialize",
+      "native_abi": "ECX raw1AC4h slab; stack slab index; EAX slab; RET4",
+      "coverage": "complete_control_flow_with_explicit_callee_boundaries",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00b47d20",
+      "end_inclusive": "00b47d5b",
+      "end_exclusive": "00b47d5c",
+      "last_instruction": "00b47d5b",
+      "last_instruction_length": 1,
+      "byte_count": 60,
+      "sha256": "7c3c65d1a42f3293db3cc20db18eba1f9dbfc4ab211660e7a122e62f548f1fbd",
+      "matches_live_ghidra": true,
+      "cpp_symbol": "bsp::recompute_native_vertex_declaration_stride_00b47d20",
+      "proposed_ghidra_name": "BSP_VertexDeclaration_RecomputeStride",
+      "native_abi": "ECX actual declaration; RET; no semantic result",
+      "coverage": "complete_control_flow_with_explicit_callee_boundaries",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00b47d90",
+      "end_inclusive": "00b47de3",
+      "end_exclusive": "00b47de4",
+      "last_instruction": "00b47de1",
+      "last_instruction_length": 3,
+      "byte_count": 84,
+      "sha256": "db6e9f3cde3d32d4a3c7095f146b8a0e6cff9f39732cc1e2d26ed8fde6bdfdf7",
+      "matches_live_ghidra": true,
+      "cpp_symbol": "bsp::append_native_vertex_element_00b47d90",
+      "proposed_ghidra_name": "BSP_NativeVertexElementArray_Append",
+      "native_abi": "ECX actual0Ch header; stack actual20-byte record pointer; RET4",
+      "coverage": "complete_control_flow_with_explicit_callee_boundaries",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00b48330",
+      "end_inclusive": "00b4839d",
+      "end_exclusive": "00b4839e",
+      "last_instruction": "00b4839b",
+      "last_instruction_length": 3,
+      "byte_count": 110,
+      "sha256": "e63eb7ae39d80cdb7068ad5cea1da3b814a0cd414b7cbeef96514f155bd71489",
+      "matches_live_ghidra": true,
+      "cpp_symbol": "bsp::append_native_vertex_declaration_00b48330",
+      "proposed_ghidra_name": "BSP_VertexDeclaration_AppendElement",
+      "native_abi": "ECX actual declaration; stack type,usage,offset; RET0Ch",
+      "coverage": "complete_control_flow_with_explicit_callee_boundaries",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00b48560",
+      "end_inclusive": "00b4869b",
+      "end_exclusive": "00b4869c",
+      "last_instruction": "00b4869b",
+      "last_instruction_length": 1,
+      "byte_count": 316,
+      "sha256": "a7712efc485b291a9c9d7915949314513488f8fdb2cda81e85bd6d8fb3b03913",
+      "matches_live_ghidra": true,
+      "cpp_symbol": "bsp::allocate_native_vertex_declaration_slot_00b48560",
+      "proposed_ghidra_name": "BSP_NativeVertexDeclarationPool_AllocateRawSlot",
+      "native_abi": "ECX actual initialized pool; EAX rawD4h slot; RET",
+      "coverage": "complete_control_flow_with_explicit_callee_boundaries",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00b488c0",
+      "end_inclusive": "00b488c9",
+      "end_exclusive": "00b488ca",
+      "last_instruction": "00b488c5",
+      "last_instruction_length": 5,
+      "byte_count": 10,
+      "sha256": "28cff81c8298ed6bf66d7e80a53dafb606e67f182af5dca8e9a45dbbfe1f6fce",
+      "matches_live_ghidra": true,
+      "cpp_symbol": "bsp::allocate_native_vertex_declaration_slot_00b488c0",
+      "proposed_ghidra_name": "BSP_NativeVertexDeclaration_AllocateRawSlot",
+      "native_abi": "incoming ECX ignored; MOV ECX,108FD38 then JMP B48560; tail return",
+      "coverage": "complete_control_flow_with_explicit_callee_boundaries",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00ce0c10",
+      "end_inclusive": "00ce0c23",
+      "end_exclusive": "00ce0c24",
+      "last_instruction": "00ce0c23",
+      "last_instruction_length": 1,
+      "byte_count": 20,
+      "sha256": "8c164289c8d157d20b70e82c0024d3b5774b716484a2e921ea03a171f5cc579a",
+      "matches_live_ghidra": true,
+      "cpp_symbol": "bsp::destroy_native_vertex_format_types_00ce0c10",
+      "proposed_ghidra_name": "BSP_NativeVertexFormat_DestroyTypeTokens",
+      "native_abi": "no arguments; reverse17 records via BF7C6E iterator; RET",
+      "coverage": "complete_control_flow_with_explicit_callee_boundaries",
+      "no_ghidra_function": true,
+      "raw_callee": {
+        "raw_call_site": "00ce0c1e",
+        "native_target": "00bf7c6e",
+        "instruction": "CALL BF7C6E",
+        "iterator_element_target": "00b2abb0",
+        "ret_site": "00ce0c23",
+        "call_verifier_scope": "not indexed: no Ghidra containing function exists; raw PE and live bytes verified"
+      }
+    },
+    {
+      "address": "00ce0c30",
+      "end_inclusive": "00ce0c43",
+      "end_exclusive": "00ce0c44",
+      "last_instruction": "00ce0c43",
+      "last_instruction_length": 1,
+      "byte_count": 20,
+      "sha256": "17f64532784c1143418047d43261eeeba5d28321b4f52fefea38ae0a8fd100f7",
+      "matches_live_ghidra": true,
+      "cpp_symbol": "bsp::destroy_native_vertex_format_usages_00ce0c30",
+      "proposed_ghidra_name": "BSP_NativeVertexFormat_DestroyUsageTokens",
+      "native_abi": "no arguments; reverse8 records via BF7C6E iterator; RET",
+      "coverage": "complete_control_flow_with_explicit_callee_boundaries",
+      "no_ghidra_function": true,
+      "raw_callee": {
+        "raw_call_site": "00ce0c3e",
+        "native_target": "00bf7c6e",
+        "instruction": "CALL BF7C6E",
+        "iterator_element_target": "00b2abb0",
+        "ret_site": "00ce0c43",
+        "call_verifier_scope": "not indexed: no Ghidra containing function exists; raw PE and live bytes verified"
+      }
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b2dc13",
+      "native": "0041dd40",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2dc2a",
+      "native": "00bf7680",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2dc44",
+      "native": "00bf7fbf",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2dc5c",
+      "native": "0041dd40",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2dc78",
+      "native": "00bf7680",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2dc8e",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2dcaa",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2dcc6",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2dce2",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2dcfe",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2dd1a",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2dd36",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2dd52",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2dd6e",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2dd8a",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2dda6",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2ddc2",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2ddde",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2ddfa",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2de16",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2de32",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2de4e",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2de6a",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2de86",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2dea2",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2debe",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2deda",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2def6",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2df12",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2df2e",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2df4a",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2df66",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2df82",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2df9e",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2dfba",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2dfd6",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2dff2",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e00e",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e02a",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e046",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e062",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e07e",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e09a",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e0b6",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e0d2",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e0ee",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e107",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e120",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e139",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e152",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e16b",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e17d",
+      "native": "0041e350",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e194",
+      "native": "00bf7fbf",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e1ac",
+      "native": "0041dd40",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e1c8",
+      "native": "00bf7680",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e1d6",
+      "native": "00bf7fbf",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e1ee",
+      "native": "0041dd40",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e206",
+      "native": "00bf7680",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e214",
+      "native": "00bf7fbf",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e22c",
+      "native": "0041dd40",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e248",
+      "native": "00bf7680",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e25b",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e274",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e28d",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e2a6",
+      "native": "00425850",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e2b8",
+      "native": "0041e350",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e2eb",
+      "native": "0041e870",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e309",
+      "native": "0041e870",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e327",
+      "native": "0041e870",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e341",
+      "native": "0041e870",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e35f",
+      "native": "0041e870",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e37d",
+      "native": "0041e870",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e397",
+      "native": "0041e870",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e3b5",
+      "native": "0041e870",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e3c5",
+      "native": "00bf6ff5",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e3f4",
+      "native": "0041e870",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e411",
+      "native": "0041e870",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e42f",
+      "native": "0041e870",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e449",
+      "native": "0041e870",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e467",
+      "native": "0041e870",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e485",
+      "native": "0041e870",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e4a3",
+      "native": "0041e870",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e4bd",
+      "native": "0041e870",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e4db",
+      "native": "0041e870",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e4f9",
+      "native": "0041e870",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e517",
+      "native": "0041e870",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e531",
+      "native": "0041e870",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e54f",
+      "native": "0041e870",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e56d",
+      "native": "0041e870",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e58b",
+      "native": "0041e870",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e5a9",
+      "native": "0041e870",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e5c7",
+      "native": "0041e870",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e5db",
+      "native": "00bf6ff5",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e5ed",
+      "native": "00b488c0",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e603",
+      "native": "00b48af0",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e661",
+      "native": "00469840",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e68f",
+      "native": "00bf7fbf",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e6af",
+      "native": "00419cc0",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e6b6",
+      "native": "00bd1510",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e70d",
+      "native": "00419cc0",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e714",
+      "native": "00bd1510",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e731",
+      "native": "00419cc0",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e738",
+      "native": "00bd1510",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e7a1",
+      "native": "00469840",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e7cf",
+      "native": "00bf7fbf",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e7ef",
+      "native": "00419cc0",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e7f6",
+      "native": "00bd1510",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e83b",
+      "native": "00b48330",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e85c",
+      "native": "0041dd40",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e877",
+      "native": "00bf7680",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e89f",
+      "native": "00469840",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e8cf",
+      "native": "00bf7fbf",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e8e3",
+      "native": "00b47900",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e919",
+      "native": "00419cc0",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b2e920",
+      "native": "00bd1510",
+      "function": "00b2dbd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b47da8",
+      "native": "00b47a30",
+      "function": "00b47d90",
+      "kind": "call"
+    },
+    {
+      "address": "00b48379",
+      "native": "00b47d90",
+      "function": "00b48330",
+      "kind": "call"
+    },
+    {
+      "address": "00b4838a",
+      "native": "00b47d90",
+      "function": "00b48330",
+      "kind": "call"
+    },
+    {
+      "address": "00b48391",
+      "native": "00b47d20",
+      "function": "00b48330",
+      "kind": "call"
+    },
+    {
+      "address": "00b4858b",
+      "native": "00bf681b",
+      "function": "00b48560",
+      "kind": "call"
+    },
+    {
+      "address": "00b4859d",
+      "native": "00b47680",
+      "function": "00b48560",
+      "kind": "call"
+    },
+    {
+      "address": "00b485bf",
+      "native": "00bf55be",
+      "function": "00b48560",
+      "kind": "call"
+    },
+    {
+      "address": "00b485f1",
+      "native": "00bf6989",
+      "function": "00b48560",
+      "kind": "call"
+    },
+    {
+      "address": "00b488c5",
+      "native": "00b48560",
+      "function": "00b488c0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00b2e757",
+      "native": "00b48ca0",
+      "function": "00b2dbd0",
+      "kind": "indirect_call",
+      "resolution": "CURRENT actual D61D1C+04; flags1; separate profile/companion check"
+    },
+    {
+      "address": "00b4856a",
+      "native": "IAT:00ce2218",
+      "function": "00b48560",
+      "kind": "indirect_call",
+      "resolution": "EnterCriticalSection"
+    },
+    {
+      "address": "00b4867b",
+      "native": "IAT:00ce2210",
+      "function": "00b48560",
+      "kind": "indirect_call",
+      "resolution": "LeaveCriticalSection"
+    },
+    {
+      "address": "00b4868f",
+      "native": "IAT:00ce2210",
+      "function": "00b48560",
+      "kind": "indirect_call",
+      "resolution": "LeaveCriticalSection"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "B488C0 CG_static_dtor_stub, sometimes reported as five bytes",
+      "is": "TEN-byte raw-slot allocation thunk MOV ECX,108FD38; JMP B48560",
+      "evidence": "B488C0..B488C9 live and installed bytes, sole caller B2E5ED supplies unused ECX=D0"
+    },
+    {
+      "was": "B48560 decompilation returned at free",
+      "is": "returning free continues at B485F6 ADD ESP,4 then B485F9 table publication",
+      "evidence": "full installed/live B48560..B4869B; gap B485F6..B485F8"
+    },
+    {
+      "was": "semantic decoder rejects counted embedded NUL and uses semantic vectors",
+      "is": "actual loader uses native counted-string/_stricmp rules and realD0h owners; embedded-NUL aliases/suffixes can succeed",
+      "evidence": "B2DC44 alias compare; B2E8CF suffix compare omits length equality; fixture counted-NUL inputs"
+    }
+  ],
+  "original_caller_fixture": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-vertex-declaration-at\\local\\native_vertex_declaration_at\\probe.cpp",
+    "build_command": "J:\\PROG\\battlestations-pacific-decompile-orch3-vertex-declaration-at\\local\\native_vertex_declaration_at\\build_probe.cmd",
+    "names_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-vertex-declaration-at\\local\\native_vertex_declaration_at\\names.txt",
+    "comparisons": 10,
+    "compared_bytes": 319960,
+    "alias_names": 54,
+    "total_name_inputs": 66,
+    "allocation_failure_ordinals": [
+      2,
+      5,
+      11,
+      28,
+      31,
+      60,
+      90
+    ],
+    "pool_failure_ordinal": 5,
+    "pool_fresh_allocations": 97,
+    "absolute_operand_preimages_checked": 265,
+    "compiled_flags": "/std:c++17 /EHsc /fp:strict /O2 /Oy- /MD /Gy /Gw /W4 /WX; /link /MANIFEST:EMBED /BASE:0x18000000 /DYNAMICBASE:NO /SAFESEH:NO /OPT:REF /OPT:NOICF /INCREMENTAL:NO",
+    "native_executed_functions": [
+      "00b2dbd0",
+      "00b47680",
+      "00b47d20",
+      "00b47d90",
+      "00b48330",
+      "00b48560",
+      "00b488c0"
+    ],
+    "existing_native_callees_executed": [
+      "00b47a30",
+      "00b47900"
+    ],
+    "callee_boundaries": [
+      "existing actual string resize/constructor/assignment/comparison/substring/destruction",
+      "existing actual owner construction and scalar deletion",
+      "BF681B/BF55BE/BF6989 shared allocation/free observed through same deterministic raw arena",
+      "host CRT memcpy/_stricmp; explicit atexit integer result -1 ignored; real Win32 critical section",
+      "original FH3 metadata and cleanup actions with registered host entry trampoline to original handler and host __CxxFrameHandler3"
+    ],
+    "dispatch_adaptation": {
+      "site": "00b2e750",
+      "bytes": 5,
+      "original": "MOV EDX,[ECX]; MOV EAX,[EDX+4]",
+      "fixture": "MOV EAX,actual_delete_owner_bridge",
+      "scope": "explicit scalar-delete callee boundary; native virtual dispatch not proven"
+    },
+    "source_companion_check": "canonical actual+04 retain2/release1/final0; current profile; real scalar destructor and same pool return; caller binding removed by retirement",
+    "shutdown_runtime": "source shutdown loops run on both sides; not independent original-body execution",
+    "result": "PASS"
+  },
+  "validation": {
+    "seeds": "all8 existing verify-seeds match",
+    "live_byte_ranges": "all9 complete ranges match installed PE",
+    "strict_new_source_compile": "PASS",
+    "worker_repository_build": "PASS unchanged retry of scripts/build.ps1; reconstructed_math and native_math_differential both pass; initial fresh parallel CMake generate.stamp timestamp-access failure retained in build.log",
+    "new_source_in_cmake": "integrator owns CMake; separately compiled new source in private fixture against current root bsp_core.lib",
+    "call_rows": "125 indexed rows checked, 0 failed; 3 Win32 IAT rows skipped; scalar-delete row indirect; 2 unindexed shutdown entries recorded separately"
+  },
+  "ownership": {
+    "files_owned": [
+      "src/native_vertex_declaration_loading.cpp",
+      "include/bsp/native_vertex_declaration_loading.hpp",
+      "docs/NATIVE_VERTEX_DECLARATION_LOADING.md",
+      "reports/native_vertex_declaration_loading.json"
+    ],
+    "ghidra_mutations": "none; integrator owns names/comments/function definitions/exports/save",
+    "canonical_pool": "borrowed0108FD38 existing storage, lock and return routine; no private pool",
+    "canonical_references": "NativeVertexDeclarationReference borrows actual+04; caller-owned NativeRenderActualOwners registration; no private registry",
+    "parser_exception": "declaration remains allocated after successful ctor; name cleanup only; syntax rejection uses scalar-delete flags1 without decrement"
+  },
+  "limits": [
+    "new source interfaces, not native ABI replacements or game validation",
+    "NativeStringStorage noexcept release and explicit nonthrowing atexit registration boundaries",
+    "no original CRT locale/runtime identity proof",
+    "no hardware-fault unwind or secondary-cleanup-exception search fidelity claim",
+    "no unbound/changed virtual profile fallback",
+    "no arbitrary stack/header aliases or concurrent mutation proof",
+    "no canonical pool startup/shutdown implementation",
+    "shutdown entries have no current Ghidra function and their call sites are not mechanically verified until integration defines them"
+  ],
+  "file_sha256": {
+    "src/native_vertex_declaration_loading.cpp": "518cfecb27a27a43815377c02ce638878d3a8eb2ddeaead30377dc7cb460ef3d",
+    "include/bsp/native_vertex_declaration_loading.hpp": "2ecc818584a458fc22764338415e5881216697f1ae10b4447c7c438f489204b0",
+    "docs/NATIVE_VERTEX_DECLARATION_LOADING.md": "5be30f449dc63067f0db13ffd6b7c326fe3521de46e18047da66cb7c04077cf4",
+    "local/native_vertex_declaration_at/probe.cpp": "9cea01ae7a188b9e69c82fa3773929035a7f4dbb0822c95a0fba38b0ec5f3343",
+    "local/native_vertex_declaration_at/build_probe.cmd": "3495ae48d1e1153cd9f67f23fc008607aafc1f847927fc97b37e6fb9db5e3761",
+    "local/native_vertex_declaration_at/names.txt": "84cc9e93fe83415afa5f6332038d1aeb0f3b75e1c8dd7021ae5da3fe0aa3f9cb",
+    "local/native_vertex_declaration_at/probe.exe": "70a6477606af61a061242d49a278fcc2d080bf0bdac002ffa90b6518d96a4d7d",
+    "local/native_vertex_declaration_at/probe.map": "cde9c0d2fcb85811791750a3d179448afce9afcb432323566e97857cca3d973a",
+    "local/native_vertex_declaration_at/run.log": "6c504fa68437af1447b129844aefae5ab2097b6cfa8c9f4748131f59cc9b0c9a",
+    "local/native_vertex_declaration_at/probe_build.log": "8c639776409216061aea02389a0a4862058410edecd245a3abb1e9ca89b14312",
+    "local/native_vertex_declaration_at/build_retry.log": "f27c9c33590bf63085ca20a338547c759f1e93125526a8b8a7015d3dc36e3f44",
+    "local/native_vertex_declaration_at/report_calls.log": "220dcdb57078bd3c14d20badeb04898cc5b76b907a567d7d4892e6b42a911386",
+    "J:/PROG/battlestations-pacific-decompile-orch3-20260910/build/win32/Release/bsp_core.lib": "85b27b52d44afbf8e6c471abe8397df9ff67452d09be9124aa2ff08904cca702",
+    "src/native_vertex_declaration_owner.cpp": "b2ba105ed138ff054858bee7999e424bdb6902e18fbe954153316af81241466c",
+    "include/bsp/native_vertex_declaration_owner.hpp": "8d247b03c4a954a71025c0a57bba407f47faf2d095fc8026233ce1b3f3f9c96f",
+    "src/native_string.cpp": "766956ef99c0d3cd30cada7e9942ac8147172812aede18dd689d5f28fb00707a",
+    "src/native_pooled_string_substring.cpp": "3310d48a69a0a20f1d7466fcba1688d8dcc856c7bf4a8048700ccd1fa02db4bc",
+    "src/native_physical_file_date.cpp": "6c7671a3b07969df77952f3a7338fc1e5e6369120944bdb67c045e2cd304905f",
+    "src/native_string_compare.cpp": "35634c0ef48044d79dd58c6aecfc854da34b5f0739e0de367ce5040cdef97718",
+    "include/bsp/native_string.hpp": "da175f7edd3aa2228c4fecae76bb637f92ee1377618957e5987e6c0add104f72",
+    "include/bsp/native_pooled_string_substring.hpp": "1ab8439842d42ad82c129a30ed5d80867fb6ec6175bc7fdf5a4c585dd628905f",
+    "include/bsp/native_physical_file_date.hpp": "78fa2bd31ebe6c8b786ecdf4dcfdaafbfb577aa7b529e5a6cc53320798787939",
+    "include/bsp/native_string_compare.hpp": "f069d7eb5da2ab8b7c319c883a69b7da8f9cb23dd87bf11caa65fba52e3e69c8"
+  }
+}
