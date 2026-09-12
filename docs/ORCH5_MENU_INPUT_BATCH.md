@@ -76,3 +76,7 @@ Follow-up work:
 - Supply remaining session/page/profile/prompt providers and actual texture startup.
 - Route the executable through the canonical menu owners and validate the full
   rendered menu, mission startup and gameplay.
+
+Exact built/promoted code commit: `e242b220c8e6f1f795c20364cb09d3f41777159d`. Both CTests
+and all seven scoped fixtures passed against those production libraries.
+Initial and promoted evidence remain separately pinned in the batch report.
