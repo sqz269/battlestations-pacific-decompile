@@ -1,0 +1,577 @@
+{
+  "packet": "orch3_emitter_update_am",
+  "status": "complete_source_strict_compiled_focused_original_byte_fixture_passed_pending_parent_integration",
+  "source": [
+    "include/bsp/native_particle_emitter_update.hpp",
+    "src/native_particle_emitter_update.cpp"
+  ],
+  "documentation": "docs/NATIVE_PARTICLE_EMITTER_UPDATE.md",
+  "names": "Descriptive hypotheses, not recovered symbols.",
+  "routines": [
+    {
+      "entry": "00aff640",
+      "name": "update_native_particle_emitter_00aff640",
+      "original_abi": "ECX actual28h emitter; float delta stack; EAX count; RET4",
+      "coverage": "complete",
+      "span": {
+        "address": "00aff640",
+        "end_inclusive": "00aff689",
+        "length": 74,
+        "matches_disk": true,
+        "sha256": "1b18b644f22807ae5a962bb579122ca37ca94b559e1549c4b92605519824d585"
+      },
+      "final_instruction": "00aff687",
+      "final_instruction_length": 3
+    },
+    {
+      "entry": "00b05110",
+      "name": "update_native_particle_emitter_container_00b05110",
+      "original_abi": "ECX actual30h container; float delta stack; EAX count; RET4",
+      "coverage": "complete",
+      "span": {
+        "address": "00b05110",
+        "end_inclusive": "00b05206",
+        "length": 247,
+        "matches_disk": true,
+        "sha256": "186213ab30afdb6fb2ad7971c343e9540ee3207335cf5ee128ead81612e31205"
+      },
+      "final_instruction": "00b05204",
+      "final_instruction_length": 3
+    },
+    {
+      "entry": "00b04990",
+      "name": "rotate_native_particle_emitter_row_00b04990",
+      "original_abi": "ECX row header; first,last stack; RET8",
+      "coverage": "complete",
+      "span": {
+        "address": "00b04990",
+        "end_inclusive": "00b04a6b",
+        "length": 220,
+        "matches_disk": true,
+        "sha256": "10c274d7a024160efe84afde9916977c098b9c1998494f774c20c3971644604e"
+      },
+      "final_instruction": "00b04a69",
+      "final_instruction_length": 3
+    },
+    {
+      "entry": "00af1eb0",
+      "name": "update_native_particle_submodel_00af1eb0",
+      "original_abi": "ECX actual submodel; float delta stack; RET4",
+      "coverage": "complete",
+      "span": {
+        "address": "00af1eb0",
+        "end_inclusive": "00af22ac",
+        "length": 1021,
+        "matches_disk": true,
+        "sha256": "0ca324882bea9e659dda453ad5520cad9d92f5fca44d34c325213cf0d4655cfd"
+      },
+      "final_instruction": "00af22aa",
+      "final_instruction_length": 3
+    },
+    {
+      "entry": "00b72650",
+      "name": "set_native_particle_geometry_bounds_00b72650",
+      "original_abi": "ECX actual geometry; float pointer stack; RET4",
+      "coverage": "complete",
+      "span": {
+        "address": "00b72650",
+        "end_inclusive": "00b72680",
+        "length": 49,
+        "matches_disk": true,
+        "sha256": "2b2578584ba152f2e705b149fce4508f58404ae17f60a366ef2653d4bd0bb9ce"
+      },
+      "final_instruction": "00b7267e",
+      "final_instruction_length": 3
+    },
+    {
+      "entry": "00b04fc0",
+      "name": "destroy_native_particle_emitter_base_00b04fc0",
+      "original_abi": "ECX actual30h container; no flags; RET",
+      "coverage": "complete",
+      "span": {
+        "address": "00b04fc0",
+        "end_inclusive": "00b0506e",
+        "length": 175,
+        "matches_disk": true,
+        "sha256": "3395e46ea0358f0d28fa2a250c2be516bf790a94f94fb7c06a66d1766a523802"
+      },
+      "final_instruction": "00b0506e",
+      "final_instruction_length": 1
+    },
+    {
+      "entry": "00b05730",
+      "name": "destroy_native_particle_emitter_container_00b05730",
+      "original_abi": "ECX actual30h container; RET",
+      "coverage": "complete",
+      "span": {
+        "address": "00b05730",
+        "end_inclusive": "00b0579f",
+        "length": 112,
+        "matches_disk": true,
+        "sha256": "a8979396f96e2092241bffadfca4b474447b2a9b84ba20a901b757330d805e93"
+      },
+      "final_instruction": "00b0579f",
+      "final_instruction_length": 1
+    },
+    {
+      "entry": "00b057a0",
+      "name": "delete_native_particle_emitter_container_00b057a0",
+      "original_abi": "ECX actual30h container; flags stack; EAX original address; RET4",
+      "coverage": "complete",
+      "span": {
+        "address": "00b057a0",
+        "end_inclusive": "00b057bd",
+        "length": 30,
+        "matches_disk": true,
+        "sha256": "dfecf9c5314f08311bbfccc4fb4e2caa5ee89245c1a9d58c4d496943957d9b24"
+      },
+      "final_instruction": "00b057bb",
+      "final_instruction_length": 3
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00aff652",
+      "native": "00b05110",
+      "function": "00aff640",
+      "contract": "Concrete container simulation, float delta; RET4"
+    },
+    {
+      "address": "00b05150",
+      "native": "00af1eb0",
+      "function": "00b05110",
+      "contract": "Type3 actual state30 submodel; float delta; RET4"
+    },
+    {
+      "address": "00b05185",
+      "native": "00b04f00",
+      "function": "00b05110",
+      "contract": "Current6Ch state cleanup argument0; RET4; actual AL used"
+    },
+    {
+      "address": "00b051ac",
+      "native": "00b04990",
+      "function": "00b05110",
+      "contract": "Actual row header, signed first/last; RET8"
+    },
+    {
+      "address": "00af1ff3",
+      "native": "00b74640",
+      "function": "00af1eb0",
+      "contract": "Actual model geometry getter, unused stack0; RET4"
+    },
+    {
+      "address": "00af225b",
+      "native": "00bf7030",
+      "function": "00af1eb0",
+      "contract": "Existing actual CRT sqrt, operand/result ST0, no stack arguments"
+    },
+    {
+      "address": "00af227d",
+      "native": "00b72650",
+      "function": "00af1eb0",
+      "contract": "Actual geometry dirty/sphere stores, bounds pointer; RET4"
+    },
+    {
+      "address": "00af2289",
+      "native": "00b74390",
+      "function": "00af1eb0",
+      "contract": "Actual model sphere/flags stores, bounds pointer; RET4"
+    },
+    {
+      "address": "00af2292",
+      "native": "00b732c0",
+      "function": "00af1eb0",
+      "contract": "Actual geometry element index0; RET4"
+    },
+    {
+      "address": "00af229e",
+      "native": "00b855b0",
+      "function": "00af1eb0",
+      "contract": "Actual element bounds, bounds pointer; RET4"
+    },
+    {
+      "address": "00b05008",
+      "native": "00b04f00",
+      "function": "00b04fc0",
+      "contract": "Current6Ch state cleanup argument1; RET4; AL ignored"
+    },
+    {
+      "address": "00b0501d",
+      "native": "00bf6989",
+      "function": "00b04fc0",
+      "contract": "Free state backing; returning ADD ESP4 atB05022"
+    },
+    {
+      "address": "00b05049",
+      "native": "00bf7c6e",
+      "function": "00b04fc0",
+      "contract": "Reverse cookie-count8byte row destruction, targetB04910; RET10h"
+    },
+    {
+      "address": "00b0504f",
+      "native": "00bf6989",
+      "function": "00b04fc0",
+      "contract": "Free row allocation atdata-4; ADD ESP4 atB05054"
+    },
+    {
+      "address": "00b0578a",
+      "native": "00b04fc0",
+      "function": "00b05730",
+      "contract": "Complete base destructor, native state-1 before call"
+    },
+    {
+      "address": "00b057a3",
+      "native": "00b05730",
+      "function": "00b057a0",
+      "contract": "Full derived destruction before physical free"
+    },
+    {
+      "address": "00b057b0",
+      "native": "00bf65ac",
+      "function": "00b057a0",
+      "contract": "Actual CRT free iff flags&1; ADD ESP4 atB057B5"
+    },
+    {
+      "address": "00aff66c",
+      "native": "current_container+vtable04",
+      "function": "00aff640",
+      "contract": "Captured currentD5DF24 targetB057A0; stackflags1; no reference count on container"
+    },
+    {
+      "address": "00b05767",
+      "native": "00ce2220+iat",
+      "function": "00b05730",
+      "contract": "Actual InterlockedDecrement captured2C+04"
+    },
+    {
+      "address": "00b05777",
+      "native": "captured2c+vtable00",
+      "function": "00b05730",
+      "contract": "Current retained-owner virtual0 only when actual atomic reaches zero"
+    },
+    {
+      "address": "00cbb7a6",
+      "native": "00b04c40",
+      "function": "00cbb7a0",
+      "contract": "Base unwind state0: actual+0C rows",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cbb7b1",
+      "native": "00b04a80",
+      "function": "00cbb7ab",
+      "contract": "Base unwind state1: actual+14 states",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cbb7c3",
+      "native": "00b04fc0",
+      "function": "00cbb7c0",
+      "contract": "Derived unwind state0: same container base",
+      "kind": "tail_jump"
+    }
+  ],
+  "analyzed_leaves": [
+    {
+      "entry": "00b05400",
+      "coverage": "analyzed literal RET4; no C++ entry needed",
+      "span": {
+        "address": "00b05400",
+        "end_inclusive": "00b05402",
+        "length": 3,
+        "matches_disk": true,
+        "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99"
+      },
+      "original_abi": "ECX container, one unread stack word, RET4; D5DF24 virtual0"
+    }
+  ],
+  "producers": [
+    {
+      "native": "00b04e30/00b053d0/00aff690",
+      "evidence": "Existing canonical NativeParticleEmitterContainer producer/storage: actual30h independent container, borrowed model04/emitter08, actual8byte rows,6Ch states, no refcount; AFF690 publication into emitter10. Reused header/lifetime code."
+    },
+    {
+      "native": "00af1eb0",
+      "evidence": "This packet consumes established submodel backing at184..1B4 and14h point records. No new typed owner layout or successful submodel constructor is claimed."
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Ghidra AF21ED prints FMUL ST1 without destination distinction",
+      "is": "DC C9 multiplies ST1 by ST0; source fmul st(1),st(0)",
+      "evidence": "Disk/raw disassembly AF21E3..AF21FF plus focused original-byte fixture exposed and resolved center/bounds difference."
+    },
+    {
+      "was": "B04FC0 named vector deleting destructor",
+      "is": "Direct base destructor with no flags/owner free, RET atB0506E",
+      "evidence": "Full live/disk B04FC0..B0506E; row/state member free and native EH map."
+    },
+    {
+      "was": "Three returning-free stack cleanup gaps absent in saved functions",
+      "is": "Define B05022..B05024,B05054..B05056,B057B5..B057B7 as ADD ESP4",
+      "evidence": "All complete spans match live/disk; following original instructions and final RETs included."
+    }
+  ],
+  "required_actual_contracts": [
+    "SAME actual container/model/emitter/state/row backing and current table view. Supported deleting profile D5DF24/current04=B057A0; unknown profiles are explicit errors.",
+    "Existing B04F00 definition-current1C capture and72B740 singleton/physical lock; no default callbacks.",
+    "NativeParticleEmitterActualCleanupBindings uses SAME NativePointLightLinksRuntime and GeneratedModelLifetimeRuntime for actual B7C160/B6DFA0.",
+    "Retained2C uses SAME NativeRenderActualOwners/actual+04/current0 companion.",
+    "AF1EB0 uses actual geometry/model/element accessors, verified immutable image constants and existing CameraAxesCrtAccess with native ST0 sqrt."
+  ],
+  "eh": {
+    "base_descriptor": "00df38d8",
+    "base_map": "00df38c8",
+    "base_states": [
+      "1->0:CBB7AB->B04A80(+14)",
+      "0->-1:CBB7A0->B04C40(+0C)"
+    ],
+    "derived_descriptor": "00df3904",
+    "derived_map": "00df38fc",
+    "derived_states": [
+      "0->-1:CBB7C0->B04FC0"
+    ],
+    "source_boundary": "C++ cleanup order; no original FH3/SEH ABI or asynchronous-fault equivalence claim."
+  },
+  "byte_evidence": {
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "Every read goes through bsp.py ghidra and its Client.verify.",
+    "spans": [
+      {
+        "address": "00aff640",
+        "end_inclusive": "00aff689",
+        "length": 74,
+        "matches_disk": true,
+        "sha256": "1b18b644f22807ae5a962bb579122ca37ca94b559e1549c4b92605519824d585"
+      },
+      {
+        "address": "00b05110",
+        "end_inclusive": "00b05206",
+        "length": 247,
+        "matches_disk": true,
+        "sha256": "186213ab30afdb6fb2ad7971c343e9540ee3207335cf5ee128ead81612e31205"
+      },
+      {
+        "address": "00b04990",
+        "end_inclusive": "00b04a6b",
+        "length": 220,
+        "matches_disk": true,
+        "sha256": "10c274d7a024160efe84afde9916977c098b9c1998494f774c20c3971644604e"
+      },
+      {
+        "address": "00af1eb0",
+        "end_inclusive": "00af22ac",
+        "length": 1021,
+        "matches_disk": true,
+        "sha256": "0ca324882bea9e659dda453ad5520cad9d92f5fca44d34c325213cf0d4655cfd"
+      },
+      {
+        "address": "00b72650",
+        "end_inclusive": "00b72680",
+        "length": 49,
+        "matches_disk": true,
+        "sha256": "2b2578584ba152f2e705b149fce4508f58404ae17f60a366ef2653d4bd0bb9ce"
+      },
+      {
+        "address": "00b04fc0",
+        "end_inclusive": "00b0506e",
+        "length": 175,
+        "matches_disk": true,
+        "sha256": "3395e46ea0358f0d28fa2a250c2be516bf790a94f94fb7c06a66d1766a523802"
+      },
+      {
+        "address": "00b05730",
+        "end_inclusive": "00b0579f",
+        "length": 112,
+        "matches_disk": true,
+        "sha256": "a8979396f96e2092241bffadfca4b474447b2a9b84ba20a901b757330d805e93"
+      },
+      {
+        "address": "00b057a0",
+        "end_inclusive": "00b057bd",
+        "length": 30,
+        "matches_disk": true,
+        "sha256": "dfecf9c5314f08311bbfccc4fb4e2caa5ee89245c1a9d58c4d496943957d9b24"
+      },
+      {
+        "address": "00b05400",
+        "end_inclusive": "00b05402",
+        "length": 3,
+        "matches_disk": true,
+        "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99"
+      },
+      {
+        "address": "00b74640",
+        "end_inclusive": "00b74648",
+        "length": 9,
+        "matches_disk": true,
+        "sha256": "b7ff20e1db5330d3267e90ab2878843cad302c39fc4734af86a8a8bf08b133f2"
+      },
+      {
+        "address": "00b732c0",
+        "end_inclusive": "00b732cc",
+        "length": 13,
+        "matches_disk": true,
+        "sha256": "8dcf736751986acd75e000be99dc03d547d44ca694c404cd7e0d82d5302d3e00"
+      },
+      {
+        "address": "00b855b0",
+        "end_inclusive": "00b855cd",
+        "length": 30,
+        "matches_disk": true,
+        "sha256": "a868a3552c9d409150b80913cc45797670df600a424d5afa652df46c867fed0f"
+      },
+      {
+        "address": "00b74390",
+        "end_inclusive": "00b743bf",
+        "length": 48,
+        "matches_disk": true,
+        "sha256": "e5badce9e8efac292d266c2a9dfd5f2cefaa833659b39658fd2ba0346b7388c2"
+      },
+      {
+        "address": "00d5df20",
+        "end_inclusive": "00d5df2b",
+        "length": 12,
+        "matches_disk": true,
+        "sha256": "1167c9d1f4a978e2d025b1ba90a61346f0b9806d9cf834787f5c869c03695807"
+      },
+      {
+        "address": "00d7a270",
+        "end_inclusive": "00d7a277",
+        "length": 8,
+        "matches_disk": true,
+        "sha256": "f6695ce73944e91633628832ea0c0f88a3ea4f28087ed24fa862b40ffeec8154"
+      },
+      {
+        "address": "00d7a280",
+        "end_inclusive": "00d7a287",
+        "length": 8,
+        "matches_disk": true,
+        "sha256": "4cfa5b42ca669328764e67cd9a34bb8f90b16ed7ca8d85e8443783d7ccce15ed"
+      },
+      {
+        "address": "00d7a318",
+        "end_inclusive": "00d7a31f",
+        "length": 8,
+        "matches_disk": true,
+        "sha256": "47d27faeed819a8e5abdfdc96bde21ce4860a85d231dd1cf75c935253b1030e8"
+      },
+      {
+        "address": "00ce7638",
+        "end_inclusive": "00ce763b",
+        "length": 4,
+        "matches_disk": true,
+        "sha256": "0b9d79ff0fc4d0a77ef398763bbe45c445501e826219f2b6a1aa709411ab631d"
+      },
+      {
+        "address": "00ce4970",
+        "end_inclusive": "00ce4973",
+        "length": 4,
+        "matches_disk": true,
+        "sha256": "ab4e8d057ab9af39d56883aa7165c05694e2f53e2541b0dd0051c3d6cef8b4b1"
+      },
+      {
+        "address": "00ce4adc",
+        "end_inclusive": "00ce4adf",
+        "length": 4,
+        "matches_disk": true,
+        "sha256": "f2fd9ea166402d72c9bc92a67f077d8e90813cafac7f60a270d899daacb8f7da"
+      },
+      {
+        "address": "00cbb7a0",
+        "end_inclusive": "00cbb7d1",
+        "length": 50,
+        "matches_disk": true,
+        "sha256": "95b1182501dca8d24c612c599e0158e828261ce7d558f36d0b1c3a8264dc36e6"
+      },
+      {
+        "address": "00df38c8",
+        "end_inclusive": "00df3927",
+        "length": 96,
+        "matches_disk": true,
+        "sha256": "8d3d7b5f6dd88396c174eaafbfacb65e35360b98a4379dc700a847cea71646a7"
+      }
+    ]
+  },
+  "flow_repairs": [
+    {
+      "owner": "00b04fc0",
+      "start": "00b05022",
+      "end_inclusive": "00b05024",
+      "instruction_length": 3,
+      "instruction": "ADD ESP,4"
+    },
+    {
+      "owner": "00b04fc0",
+      "start": "00b05054",
+      "end_inclusive": "00b05056",
+      "instruction_length": 3,
+      "instruction": "ADD ESP,4"
+    },
+    {
+      "owner": "00b057a0",
+      "start": "00b057b5",
+      "end_inclusive": "00b057b7",
+      "instruction_length": 3,
+      "instruction": "ADD ESP,4"
+    }
+  ],
+  "no_ghidra": [
+    {
+      "start": "00b05400",
+      "end_inclusive": "00b05402",
+      "final_instruction": "00b05400",
+      "final_instruction_length": 3,
+      "body": "RET4"
+    },
+    {
+      "start": "00cbb7b6",
+      "end_inclusive": "00cbb7bf",
+      "final_instruction": "00cbb7bb",
+      "final_instruction_length": 5,
+      "body": "MOV EAX,DF38D8; JMP BF6B43"
+    },
+    {
+      "start": "00cbb7c8",
+      "end_inclusive": "00cbb7d1",
+      "final_instruction": "00cbb7cd",
+      "final_instruction_length": 5,
+      "body": "MOV EAX,DF3904; JMP BF6B43"
+    }
+  ],
+  "validation": {
+    "strict_compile": "passed Win32 /W4 /WX /EHsc /fp:strict /O2 /Gy; C:/Users/sqz269/bsp-am-emitter-update/compile.log",
+    "fixture": "passed original/source active emitter4state types across2updates; full type3 animation/wrapped-point expiry/bounds; signaling-NaN row rotation with padding preserved; real empty-container derived/base destructor/free and null-container path.",
+    "fixture_mapping": "22 verified spans;23 absolute DWORD relocations; relative native calls/jumps retained. Initial fixed original-image reservation failed before native execution; final fixture reserves available address range. Reconstructed actual CRT sqrt/free shared at only3 external jump hooks.",
+    "fixture_fail_closed": "Definition cleanup, retained-owner and point-light callbacks throw/terminate if reached; none reached in this fixture.",
+    "unexercised": [
+      "Container state-expiry cleanup/removal callback branch",
+      "Nonempty container destructor/retained2C callbacks",
+      "Point-light singleton/current definition virtual1C dispatch",
+      "Native FH3/SEH and C++ cleanup exception trajectories",
+      "Other FP modes and nonfinite submodel inputs",
+      "Successful submodel construction and gameplay"
+    ],
+    "build": "No fresh worktree full build per initial J:space constraint; parent runs combined scripts/build.ps1/existing checks.",
+    "artifacts": {
+      "C:\\Users\\sqz269\\bsp-am-emitter-update\\native_particle_emitter_update.obj": "a45e209375d5bd45985f5c8b11033e4109e4eae6b467b08052b52d321cbf0db5",
+      "C:\\Users\\sqz269\\bsp-am-emitter-update\\emitter_update_probe.exe": "becb78a6057af6010248b70d70289302dfdb77e2dc49c11d57a2fa370f19f0e2",
+      "C:\\Users\\sqz269\\bsp-am-emitter-update\\probe.cpp": "d00dd85ba616876f6898f8321a1fae423a2a5c8113c4b7bb170f966da9b9f424",
+      "C:\\Users\\sqz269\\bsp-am-emitter-update\\probe.log": "e7b7568d6925cd546b1f3b310e8e7066bd60d2c9ab10b6f31e09970442548ffd",
+      "C:\\Users\\sqz269\\bsp-am-emitter-update\\relocations.json": "0d3c69bb0caa9129b6d2ab0a146b0f077537a3236ca4272f363f8d5763f6d3da",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib": "4f9bccfb266252d2318918e11718abf3cda1109fb944249a1bab95fd15977913"
+    },
+    "call_check": "passed:20 numeric direct/tail rows checked,0 failed;3 explicit indirect rows documented. C:/Users/sqz269/bsp-am-emitter-update/call_check.log"
+  },
+  "ghidra_mutations": "none; read-only worker",
+  "parent_integration": [
+    "Flow and missing-function repairs listed above with preserved documentation, names/comments/save/exports",
+    "CMake/model-update access wiring and sharded metadata",
+    "Combined standard Win32 build/existing checks"
+  ]
+}
