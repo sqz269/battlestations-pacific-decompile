@@ -1,0 +1,446 @@
+{
+  "packet": "orch4_title_sound_ab",
+  "status": "reconstructed_actual_title_stream_composition_build_and_focused_installed_fixture_verified",
+  "source": [
+    "include/bsp/game_title_sound.hpp",
+    "src/game_title_sound.cpp"
+  ],
+  "document": "docs/GAME_TITLE_SOUND.md",
+  "analysis_project": "C:/Users/sqz269/bsp.gpr",
+  "analysis_program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "functions": [
+    {
+      "address": "005884a0",
+      "name": "BSP_MainMenu_StartTitleMusic",
+      "implementation": "GameTitleSound::start_005884a0",
+      "source": "src/game_title_sound.cpp",
+      "document": "docs/GAME_TITLE_SOUND.md",
+      "coverage": "complete normal control flow in documented actual-storage/existing-GUI-projection and C++ exception service domain",
+      "original_abi": "ECX ignored; no stack arguments; RET; no result",
+      "last_instruction": "005885c1",
+      "last_instruction_length": 1,
+      "end_inclusive": "005885c1",
+      "end_exclusive": "005885c2",
+      "span": 290,
+      "sha256": "d82942537590537c251fa6b6b226735742e9dc27b592d76a8642ecce9805eced",
+      "disk_analysis_equal": true,
+      "name_is_hypothesis": true,
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00584a30",
+      "name": "BSP_FrontEnd_IsIntroMovieActive",
+      "implementation": "intro_movie_is_active_00584a30",
+      "source": "src/game_title_sound.cpp",
+      "document": "docs/GAME_TITLE_SOUND.md",
+      "coverage": "complete normal control flow in documented actual-storage/existing-GUI-projection and C++ exception service domain",
+      "original_abi": "No native arguments; AL Boolean; RET",
+      "last_instruction": "00584ad5",
+      "last_instruction_length": 1,
+      "end_inclusive": "00584ad5",
+      "end_exclusive": "00584ad6",
+      "span": 166,
+      "sha256": "3959eb5ea42329a6cbcf48ecdf2a7316d4a563347e5a14574c960e47b0ed3519",
+      "disk_analysis_equal": true,
+      "name_is_hypothesis": true,
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "004f8ba0",
+      "name": "BSP_MoviePlayer_IsNamedClipPlaying",
+      "implementation": "movie_named_clip_is_playing_004f8ba0",
+      "source": "src/game_title_sound.cpp",
+      "document": "docs/GAME_TITLE_SOUND.md",
+      "coverage": "complete normal control flow in documented actual-storage/existing-GUI-projection and C++ exception service domain",
+      "original_abi": "ECX actual34h MoviePlayer; borrowed8h name pointer on stack; AL Boolean; RET4",
+      "last_instruction": "004f8bd0",
+      "last_instruction_length": 3,
+      "end_inclusive": "004f8bd2",
+      "end_exclusive": "004f8bd3",
+      "span": 51,
+      "sha256": "642f99877ac9a31774187b223e0203292bceb28bac4107894e2e37466ae6b807",
+      "disk_analysis_equal": true,
+      "name_is_hypothesis": true,
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a85c20",
+      "name": "BSP_SoundStream_RequestFadeIn",
+      "implementation": "request_sound_stream_fade_in_00a85c20",
+      "source": "src/game_title_sound.cpp",
+      "document": "docs/GAME_TITLE_SOUND.md",
+      "coverage": "complete normal control flow in documented actual-storage/existing-GUI-projection and C++ exception service domain",
+      "original_abi": "ECX actual54h stream; no stack arguments; RET; no result",
+      "last_instruction": "00a85c38",
+      "last_instruction_length": 1,
+      "end_inclusive": "00a85c38",
+      "end_exclusive": "00a85c39",
+      "span": 25,
+      "sha256": "86073c5c3f7454348c7de0f205e8306a232de742e51b0159e2ec55f0096fb95b",
+      "disk_analysis_equal": true,
+      "name_is_hypothesis": true,
+      "native_abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "005884b9",
+      "native": "00584a30",
+      "caller": "005884a0",
+      "service": "Constructed intro-name movie gate before existing-stream check"
+    },
+    {
+      "address": "005884d7",
+      "native": "00bf681b",
+      "caller": "005884a0",
+      "service": "Allocate54h; cdecl size; ADD ESP4 at005884DE"
+    },
+    {
+      "address": "0058851c",
+      "native": "00426060",
+      "caller": "005884a0",
+      "service": "Copy-construct actual8h by-value path after current-menu reload; RET4"
+    },
+    {
+      "address": "00588528",
+      "native": "00a877d0",
+      "caller": "005884a0",
+      "service": "ECX allocated stream; owned8h name plus owned-null table; RET0C"
+    },
+    {
+      "address": "0058854a",
+      "native": "0041e870",
+      "caller": "005884a0",
+      "service": "Actual8h temporary constructed from E19504 C-string; RET4"
+    },
+    {
+      "address": "00588564",
+      "native": "00a867b0",
+      "caller": "005884a0",
+      "service": "Reloaded current stream plus selected temporary pointer; RET4"
+    },
+    {
+      "address": "00588580",
+      "native": "00419cc0",
+      "caller": "005884a0",
+      "service": "Pool getter takes no args; three following release arguments remain pending"
+    },
+    {
+      "address": "00588587",
+      "native": "00bd1510",
+      "caller": "005884a0",
+      "service": "Release captured temporary data,length+1,unused1; RET0C"
+    },
+    {
+      "address": "0058859f",
+      "native": "00a864f0",
+      "caller": "005884a0",
+      "service": "FLD F889A8/FSTP stack, then reloaded stream; RET4"
+    },
+    {
+      "address": "005885ad",
+      "native": "00a85c20",
+      "caller": "005884a0",
+      "service": "Reload current stream for fade-in request; RET"
+    },
+    {
+      "address": "00584a60",
+      "native": "0041dd40",
+      "caller": "00584a30",
+      "service": "Resize actual8h temporary22,preserve1; RET8"
+    },
+    {
+      "address": "00584a7a",
+      "native": "00bf7680",
+      "caller": "00584a30",
+      "service": "Copy literal length+1; cdecl threeargs,ADD ESP0C at00584A7F"
+    },
+    {
+      "address": "00584a96",
+      "native": "004f8ba0",
+      "caller": "00584a30",
+      "service": "Current E18D48 player loaded after literal creation, temporaryname pointer; RET4"
+    },
+    {
+      "address": "00584ab8",
+      "native": "00419cc0",
+      "caller": "00584a30",
+      "service": "Pool getter with following release arguments pending"
+    },
+    {
+      "address": "00584abf",
+      "native": "00bd1510",
+      "caller": "00584a30",
+      "service": "Release temporary, preserving predicate AL in saved BL; RET0C"
+    },
+    {
+      "address": "004f8bb3",
+      "native": "00435c40",
+      "caller": "004f8ba0",
+      "service": "ECX requested name; stack captured widget+FC header; RET4"
+    },
+    {
+      "address": "004f8bbe",
+      "native": "00aac8e0",
+      "caller": "004f8ba0",
+      "service": "ECX same captured selected widget, only after equal name; RET"
+    },
+    {
+      "address": "004e4274",
+      "native": "005884a0",
+      "caller": "004e4000",
+      "service": "ECX current E198AC+58; no stack args"
+    },
+    {
+      "address": "005887bf",
+      "native": "005884a0",
+      "caller": "005886f0",
+      "service": "ECX incoming screen captured in ESI; no stack args"
+    },
+    {
+      "address": "0067df03",
+      "native": "005884a0",
+      "caller": "0067ded0",
+      "service": "ECX current E198AC+58 after movie stop; no stack args"
+    },
+    {
+      "address": "0067e606",
+      "native": "005884a0",
+      "caller": "0067e580",
+      "service": "ECX current E198AC+58 after movie stop; no stack args"
+    },
+    {
+      "address": "004fe85c",
+      "native": "00a85c20",
+      "caller": "004fe7a0",
+      "service": "ECX current menu+50; no stack args"
+    },
+    {
+      "address": "0051641f",
+      "native": "00a85c20",
+      "caller": "005162b0",
+      "service": "ECX current menu+50; no stack args"
+    },
+    {
+      "address": "0052e211",
+      "native": "00a85c20",
+      "caller": "0052e150",
+      "service": "ECX current menu+50; no stack args"
+    },
+    {
+      "address": "0052ef75",
+      "native": "00a85c20",
+      "caller": "0052ee30",
+      "service": "ECX current menu+54 credits stream; no stack args"
+    },
+    {
+      "address": "00c6fdd4",
+      "native": "00bf65ac",
+      "caller": "00c6fdd0",
+      "service": "Exception state0 frees captured allocation; POP ECX/RET lie outside saved body"
+    },
+    {
+      "address": "00c6fdde",
+      "native": "0052e020",
+      "caller": "00c6fddb",
+      "service": "Exception state1 clears owned-null table argument",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c6fde6",
+      "native": "0041dd20",
+      "caller": "00c6fde3",
+      "service": "Exception state2 destroys completed selected temporary",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c6f9d3",
+      "native": "0041dd20",
+      "caller": "00c6f9d0",
+      "service": "Movie gate state0 destroys completed name temporary",
+      "kind": "tail_jump"
+    }
+  ],
+  "callee_body_review": [
+    "00426060 actual copy constructor",
+    "0041E870 cstring constructor",
+    "0041DD20 storage destructor",
+    "00419CC0 getter noargs",
+    "BD1510 sized release RET0C",
+    "BF681B new-handler allocator",
+    "BF65AC realfree",
+    "BF7680 original CRT memcpy",
+    "00435C40 equal actualheaders",
+    "AAC8E0 decoder-not-completed",
+    "A877D0 consuming stream owner",
+    "A867B0 streamstart",
+    "A864F0 rawgain store",
+    "0052E020 clearreference"
+  ],
+  "producer_evidence": [
+    {
+      "producer": "00686170",
+      "meaning": "Actual menu zero8h strings+40/+48 and owning stream words+50/+54"
+    },
+    {
+      "producer": "00686380",
+      "meaning": "Actual path+40 filled with sound/music/titlescreen.fsb; existing actual string format"
+    },
+    {
+      "producer": "004F8AF0",
+      "meaning": "Actual34h MoviePlayer selected widget+20 initializednull"
+    },
+    {
+      "producer": "004F8A20",
+      "meaning": "Chooses+24/+28 widget and writes+20 before existingAAE320 filename/loop store"
+    },
+    {
+      "producer": "A877D0 and A79150",
+      "meaning": "Existing actual54h stream and20h table storage/refcounts; reused unchanged"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "E19504 is an8h native string and0058BE63/6F,0059A16B write selected track",
+      "is": "E19504 is a C-string passed to A41E870; cited sites read/use a fallback, no producer established",
+      "evidence": [
+        "0058853D PUSH E19504,0058854A CALL0041E870",
+        "0058BE63 MOV EAX,E19504 followedby0058BE6F PUSH EAX",
+        "0059A16B MOV EDX,E19504 thenbyte strlen loop0059A175"
+      ]
+    },
+    {
+      "was": "0073DB76 writes F889A8",
+      "is": "MOVSS reads F889A8, then writes alternate+218;00685CA2/C8 also reads",
+      "evidence": [
+        "0073DB76 MOVSS XMM1,[F889A8]",
+        "0073DB7E MOVSS[EAX+218],XMM1"
+      ]
+    },
+    {
+      "was": "A85C20 play_stream starts playback",
+      "is": "Requests fade-in for unsigned state<=2 and no fade-out; byteB1 and positivezeroC only",
+      "evidence": "Original25bytes;18native-byte fixture cases"
+    }
+  ],
+  "eh": {
+    "005884a0": {
+      "handler": "00c6fdeb",
+      "map": "00d9b16c",
+      "unwind_map": "00d9b14c",
+      "states": {
+        "0": "allocationfreeC6FDD0",
+        "1": "owned-null argument clearC6FDDB thenstate0",
+        "2": "selected-string cleanupC6FDE3 to-1",
+        "3": "unusedentry"
+      },
+      "schedule": "Allocation armed beforecopy;namecopycompleted thenstate0beforeconsumingA877D0;selectedcopyarmsstate2onlyafterreturn"
+    },
+    "00584a30": {
+      "handler": "00c6f9d8",
+      "map": "00d9acbc",
+      "unwind_map": "00d9acb4",
+      "state0": "stringcleanupC6F9D0 armed afterliteral copy"
+    }
+  },
+  "excluded_tails": [
+    {
+      "function": "00c6fdd0",
+      "saved_body_end_inclusive": "00c6fdd8",
+      "tail_site": "00c6fdd9",
+      "callee": null,
+      "instructions": "POP ECX; RET atC6FDDA",
+      "last_instruction": "00c6fdda",
+      "last_instruction_length": 1,
+      "end_exclusive": "00c6fddb"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00c6fdeb",
+      "role": "unowned EH handler thunk read for metadata only",
+      "last_instruction": "00c6fdf0",
+      "last_instruction_length": 5,
+      "end_exclusive": "00c6fdf5",
+      "tail_site": "00c6fdf0",
+      "callee": "00bf6b43",
+      "reconstructed": false
+    },
+    {
+      "address": "00c6f9d8",
+      "role": "unowned EH handler thunk read for metadata only",
+      "last_instruction": "00c6f9dd",
+      "last_instruction_length": 5,
+      "end_exclusive": "00c6f9e2",
+      "tail_site": "00c6f9dd",
+      "callee": "00bf6b43",
+      "reconstructed": false
+    }
+  ],
+  "verification": {
+    "build": "scripts/build.ps1 Release Win32 /W4 /WX",
+    "build_environment": "MSBUILDDISABLENODEREUSE=1",
+    "ctest": {
+      "passed": 2,
+      "failed": 0
+    },
+    "seed_bytes": "8standardspans verified",
+    "new_permanent_tests": 0,
+    "fixture": "local/title_fixture_ab.cpp",
+    "fixture_runner": "local/run_title_fixture_ab.ps1",
+    "fixture_log": "local/title_fixture_ab.log",
+    "fixture_compile": "/MD /link /MANIFEST:EMBED; concrete title source plus real existing core library",
+    "native_fade": {
+      "cases": 18,
+      "span": 25,
+      "all_stream_bytes_compared": 84,
+      "failures": 0
+    },
+    "installed_title": {
+      "asset": "sound/music/titlescreen.fsb",
+      "table": "sound/music/titlescreen.def",
+      "length_ms": 138032,
+      "channels": 2,
+      "loop": true,
+      "speaker_routes": 4,
+      "live_fixture_volume": 0.375,
+      "fade_after_tick": 0.006,
+      "fmod_calls": 185,
+      "file_opens": 1,
+      "file_closes": 1,
+      "file_reclaims": 0,
+      "file_handles_pending": 0,
+      "tracked_strings": 0
+    },
+    "sequence_checks": [
+      "Six currentmenu loads onfullpath",
+      "Repeatedstart stillconstructs/releases intro temporary thenreturns withoutFMODcalls",
+      "Injected byvaluepathcopy failure keepsnullslot andstringbaseline"
+    ],
+    "movie_gate_domain": "Actual MoviePlayer constructor selectednull; all unreachedcodec/UI hostmethods throw. No invented false callback; active decoder branch notfixturevalidated",
+    "game_binding": "No shared game_hosts_menu.cpp edit; primary tobindfullhelper entry andcurrentcanonicalmenu/movie/volume inputs; no gameplay claim",
+    "fixture_core_library": "Final run uses this worktree build/win32/Release/bsp_core.lib; helper source supplied directly as object, same code as archive; no stubs",
+    "sha256": {
+      "local/title_fixture_ab.cpp": "19e459f9fa3bec8d4b8f59376e33c15b334d809d88f1f31b14b5c18445eb6a9d",
+      "local/title_fixture_ab.log": "4001240df7e6e613e04c6941b699ee24d7e597a5b4306e83277fa8c555bc0100",
+      "local/title_sound_build_ab.log": "37a3207a541524ee27b5d1bf509b3aabee279363f4df9f355a35a8aad01c6e0d",
+      "local/title_seed_verification_ab.json": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    }
+  },
+  "limitations": [
+    "ExistingGUI movie-state projection and real MoviePlayerHost required",
+    "Current menu path/slot references and F889A8/E19504 publication supplied externally; producer of selected input unresolved",
+    "VFS resolverBDF4C0 remains documentedfragment",
+    "C++throwingallocation/noexceptstringrelease domain, notoriginalSEH/ABI",
+    "Existingsemantic TitleMusicHost wrapper remains untilprimarybinding; no mainapplication runtime claim"
+  ],
+  "native_abi_compatible": false,
+  "game_validated": false,
+  "metadata_repairs": "Corrected E19504 header/producer, F889A8 producer and A85C20 playback interpretations; ledger tool also sorted five byte-identical existing A8-band records without semantic edits",
+  "installed_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+}
