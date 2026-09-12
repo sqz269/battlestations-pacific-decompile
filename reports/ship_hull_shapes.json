@@ -1,0 +1,337 @@
+{
+  "packet": "cc_hull_shapes",
+  "owner": "agent/cc-hull-shapes",
+  "date": "2026-09-12",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "read-only; this worker made no Ghidra mutation",
+  "docs": [
+    "docs/SHIP_HULL_SHAPES.md"
+  ],
+  "sources": [
+    "include/bsp/ship_hull_shapes.hpp",
+    "src/ship_hull_shapes.cpp",
+    "cmake/startup.cmake (one appended registry line)"
+  ],
+  "answer": {
+    "which_nodes": "The hull body's collision shapes come from the model's collision-record list at model+4Ch, restricted to records whose owning node is one of four: the node named firstnode (00D1968C), the node pointer at model+0Ch, the node named front (00D196A0) or the node named back (00D19698). The fizika_%02d and hajobelso node walks in the same function produce no hull shape at all.",
+    "what_each_contributes": "One 48h-byte Dyn shape descriptor of type 4, Dyn::ConvexMeshShape (00C57F50, vtable 00D7A0AC). Not a box, not a capsule. The rotation is the identity from the default record 00931A10 stamps and the translation is the record's float3 at record+14h.",
+    "how_attached": "Dyn::World::CreateBody walks desc+78h/desc+7Ch and calls 00C5C940 with the descriptor in ECX and the body in EDX (00C5D8D4). 00C5C940 allocates for the type and links the shape at B+70h through shape+208h.",
+    "aabb": "Per shape 00C57C40 takes the convex mesh's local box at mesh+18h..+2Ch, expands it by the double 0.02 at 00D7A2F8, halves it against 0.5 at 00D7A280, pushes the centre through the shape's 4x3 and the half extent through its magnitudes, and stores shape+0Ch/shape+18h. Per body 00C55FC0 seeds B+38h from 00D7A248 and B+44h from 00D7A244 and merges both corners of every shape into both ends.",
+    "to_inertia": "00C31F90 returns B+38h as the minimum and B+44h as the maximum (RET 8), so the extent 00939A8E squares is max - min per axis, and the inertia is mul * (Mass/12) * the extent sums as docs/SHIP_HULL_BODY.md records.",
+    "centre_of_mass": "None is computed. Nothing in 00937D3F..009399BF or in 00C5C940, 00C57C40 or 00C55FC0 writes a centre of mass; the box inertia is taken about the body origin whatever the AABB's centre is."
+  },
+  "routines": [
+    {
+      "address": "00c5c940",
+      "name": "Dyn_Body_AttachShapeFromDescriptor",
+      "abi": "__fastcall(ECX = shape descriptor, EDX = body), RET, new shape in EAX",
+      "body": "00c5c940-00c5cab8",
+      "coverage": "complete for the dispatch, the intrusive list link and the two tail calls. The sphere, box, cylinder and terrain constructors are identified by the vtable they install; their bodies past that store are unread.",
+      "reconstruction": "contract only; the shape objects are not reconstructed storage"
+    },
+    {
+      "address": "00c57f50",
+      "name": "Dyn_ConvexMeshShape_Construct",
+      "abi": "__thiscall(ECX = body, Shape* self, const ShapeDesc* desc), RET 8 at 00C57FE6",
+      "body": "00c57f50-00c57fe6",
+      "coverage": "complete: every field it writes is attributed to a descriptor field",
+      "reconstruction": "contract only; it settles the descriptor layout"
+    },
+    {
+      "address": "00c57c40",
+      "name": "Dyn_ConvexMeshShape_vslot0",
+      "abi": "__thiscall(shape), RET, no stack arguments; slot 0 of vtable 00D7A0AC",
+      "body": "00c57c40-00c57f46",
+      "coverage": "complete for 00C57C40..00C57F37; the tail hop into 00C55FC0 is modelled as a separate call",
+      "reconstruction": "bsp::dyn_convex_mesh_shape_bounds_00c57c40 in src/ship_hull_shapes.cpp"
+    },
+    {
+      "address": "00c55fc0",
+      "name": "Dyn_Body_RecomputeLocalAABB",
+      "abi": "body in ESI, no stack arguments, RET",
+      "body": "00c55fc0-00c56441",
+      "coverage": "partial: 00C55FC0..00C5617C projected; 00C56182..00C56441, the broad-phase proxy refresh gated on B+50h bit 3, read and described but not reconstructed (docs/DYN_COLLISION_PASS.md covers the same math at 00C5715C)",
+      "reconstruction": "bsp::dyn_body_local_bounds_00c55fc0 in src/ship_hull_shapes.cpp"
+    },
+    {
+      "address": "00931a10",
+      "name": "BSP_DynShapeDescVector_ResizeWithDefault",
+      "abi": "__thiscall(vector), one stack argument (the new size), tail call 00931610",
+      "body": "00931a10-00931a9f",
+      "coverage": "partial: only the 48h-byte prototype at 00931A18..00931A8C; the resize and 00931610 are ordinary vector growth and are not reconstructed",
+      "reconstruction": "bsp::dyn_shape_descriptor_default_00931a10 in src/ship_hull_shapes.cpp"
+    },
+    {
+      "address": "00937c90",
+      "name": "BSP_UnitController_BuildSubObjectsAndHullBody",
+      "abi": "void __fastcall(controller)",
+      "body": "00937c90-00939c8f",
+      "coverage": "partial, and NOT annotated: 00937C90 is leased to cc_exe_2r. 00938F61..009399BF (the hull collision-record walk, the shape fill loop and the periscope block) is projected as a sequence over a host. 00937D3F..00938F60 (the displacement sum, the rope collection, the health vector and the twenty-slot fizika_%02d part loop) is read and its destinations attributed but only its shape-relevant conclusion is reconstructed. 00939C06..00939C8F is untouched.",
+      "reconstruction": "bsp::ship_hull_shapes_collect_00938f61 in src/ship_hull_shapes.cpp"
+    }
+  ],
+  "host_steps": [
+    {
+      "step": "find the model node named \"front\" -> controller+370h",
+      "address": "00938db9",
+      "native": "0071ad50",
+      "function": "00937c90",
+      "method": "model_find_node_by_name; __thiscall(model, const char*), string 00D196A0. Codex owns the model routines; contract only."
+    },
+    {
+      "step": "find the model node named \"back\" -> controller+374h",
+      "address": "00938de2",
+      "native": "0071ad50",
+      "function": "00937c90",
+      "method": "model_find_node_by_name; string 00D19698."
+    },
+    {
+      "step": "collect every node named \"hajobelso\"",
+      "address": "00938e13",
+      "native": "0071ba20",
+      "function": "00937c90",
+      "method": "__thiscall(model, out_vector*, const char*), string 00CEB8F4. Walks the model's name index at model+7Ch. Not a shape source."
+    },
+    {
+      "step": "hide one hajobelso node",
+      "address": "00938e5d",
+      "native": "00b6da70",
+      "function": "00937c90",
+      "method": "BSP_SceneNode_SetVisibilityFactor(node, 0.0f, 0)."
+    },
+    {
+      "step": "read one hajobelso node's local position",
+      "address": "00938eb9",
+      "native": "00b6e0a0",
+      "function": "00937c90",
+      "method": "BSP_Node_CopyLocalPosition; each component then gets +100000.0 (00CF81F0)."
+    },
+    {
+      "step": "move that node out of the world",
+      "address": "00938f0c",
+      "native": "node+vtable2C",
+      "function": "00937c90",
+      "method": "indirect: node vtable slot 2Ch with the shifted float3. Recorded as indirect; the callee was not read."
+    },
+    {
+      "step": "find the model node named \"firstnode\"",
+      "address": "00938f4e",
+      "native": "0071ad50",
+      "function": "00937c90",
+      "method": "model_find_node_by_name; string 00D1968C. Returns null when absent, and the comparison at 00939026 is then a plain null test."
+    },
+    {
+      "step": "clear the hull collision-record vector at controller+30h",
+      "address": "00938f5c",
+      "native": "00931300",
+      "function": "00937c90",
+      "method": "BSP_UnitController_NodePtrVector_Resize(controller+30h, 0, 0)."
+    },
+    {
+      "step": "read the model's own node pointer at model+0Ch",
+      "address": "00938f9d",
+      "native": "none",
+      "function": "00937c90",
+      "method": "MOV ECX,[ECX+0Ch]: not a call, the fourth owner the walk compares against. Its producer is the model loader, unread."
+    },
+    {
+      "step": "push a matched record's +0Ch into controller+30h, reallocating arm",
+      "address": "009390f3",
+      "native": "009313c0",
+      "function": "00937c90",
+      "method": "BSP_UnitController_NodePtrVector_InsertOne. The non-reallocating arm is the inline store at 009390C9."
+    },
+    {
+      "step": "resize the 48h-byte shape-descriptor vector",
+      "address": "009391bd",
+      "native": "00931a10",
+      "function": "00937c90",
+      "method": "BSP_DynShapeDescVector_ResizeWithDefault to hull nodes + controller+330h groups. Its prototype supplies the type 4 and the identity rotation."
+    },
+    {
+      "step": "game settings singleton for the shape friction",
+      "address": "00939322",
+      "native": "00424c40",
+      "function": "00937c90",
+      "method": "BSP_GameSettings_GetSingleton; the friction is settings+514h + material*38h, loaded at 00939365 and stored to desc+04h at 00939370."
+    },
+    {
+      "step": "vehicle class category for the collision mask",
+      "address": "009394f9",
+      "native": "vehicleclass+vtable1C",
+      "function": "00937c90",
+      "method": "indirect: class vtable slot 1Ch with the class from unit+538h in ECX. The jump table is at 00939C90; the callee was not read, so the id stays raw."
+    },
+    {
+      "step": "grow the body descriptor's shape-pointer vector",
+      "address": "0093963b",
+      "native": "00bf55be",
+      "function": "00937c90",
+      "method": "operator new for capacity*2+2 pointers (00939628); the old block is freed at 0093967D and the entry stored at 009396A1."
+    },
+    {
+      "step": "find the model node named \"periszkop\"",
+      "address": "009396d8",
+      "native": "0071ad50",
+      "function": "00937c90",
+      "method": "model_find_node_by_name; string 00D0C1F0. The periscope shape needs it plus class+510h <= 0 and class+514h <= 0."
+    },
+    {
+      "step": "read the periscope node's local matrix",
+      "address": "0093988d",
+      "native": "00b6db60",
+      "function": "00937c90",
+      "method": "BSP_Node_GetLocalMatrix."
+    },
+    {
+      "step": "copy that matrix into the periscope descriptor's transform",
+      "address": "0093989a",
+      "native": "00c336c0",
+      "function": "00937c90",
+      "method": "4x4 to 4x3; the destination LEA ECX,[ESP+1D4h] is taken after the PUSH EAX, so it is desc+18h."
+    },
+    {
+      "step": "grow the shape-pointer vector for the periscope entry",
+      "address": "00939942",
+      "native": "00bf55be",
+      "function": "00937c90",
+      "method": "same growth as 0093963B; the entry is stored at 009399B6."
+    },
+    {
+      "step": "create the body from the descriptor",
+      "address": "00939a6f",
+      "native": "00c5d580",
+      "function": "00937c90",
+      "method": "Dyn_World_CreateBody. docs/SHIP_HULL_BODY.md owns this step; listed because it is what consumes the shape vector."
+    },
+    {
+      "step": "attach one shape descriptor to the new body",
+      "address": "00c5d8d4",
+      "native": "00c5c940",
+      "function": "00c5d580",
+      "method": "ECX = *ESI, one entry of desc+78h; EDX = EDI, the body. The loop bound is LEA ECX,[EAX+EDX*4] at 00C5D8C8, so desc+7Ch is a count."
+    },
+    {
+      "step": "allocate a convex mesh shape from the pool",
+      "address": "00c5ca20",
+      "native": "00407ed0",
+      "function": "00c5c940",
+      "method": "critical-section-guarded fixed-size pool over operator new(10D04h) blocks; the element size is not visible here."
+    },
+    {
+      "step": "construct the convex mesh shape",
+      "address": "00c5ca39",
+      "native": "00c57f50",
+      "function": "00c5c940",
+      "method": "PUSH EDI (desc), PUSH EAX (shape), MOV ECX,ESI (body); RET 8."
+    },
+    {
+      "step": "fill the shape's own AABB",
+      "address": "00c57fce",
+      "native": "00c57c40",
+      "function": "00c57f50",
+      "method": "ECX = the new shape. Writes shape+0Ch and shape+18h."
+    },
+    {
+      "step": "magnitude of one basis element",
+      "address": "00c57dd5",
+      "native": "00401170",
+      "function": "00c57c40",
+      "method": "BSP_Math_AbsFloat, the first of nine; the others at 00C57DE6, 00C57DF7, 00C57E07, 00C57E17, 00C57E27, 00C57E37, 00C57E47, 00C57E57."
+    },
+    {
+      "step": "recompute the body AABB after the shape's bounds",
+      "address": "00c57f3d",
+      "native": "00c55fc0",
+      "function": "00c57c40",
+      "method": "ESI = shape+04h, the body 00C57F7C stored."
+    },
+    {
+      "step": "recompute the body AABB after the link",
+      "address": "00c5ca8d",
+      "native": "00c55fc0",
+      "function": "00c5c940",
+      "method": "ESI still the body argument from 00C5C961."
+    },
+    {
+      "step": "add the body to the broad phase on its first shape",
+      "address": "00c5ca9f",
+      "native": "00c50470",
+      "function": "00c5c940",
+      "method": "only when [body+70h] was null before the attach (EBP from 00C5C963); the argument is [[body]+444h]. The callee was not read."
+    },
+    {
+      "step": "read the body AABB back for the inertia",
+      "address": "00939a89",
+      "native": "00c31f90",
+      "function": "00937c90",
+      "method": "__thiscall(body, float3* out_min, float3* out_max), RET 8; copies B+38h..+40h then B+44h..+4Ch. Confirms extent = max - min."
+    }
+  ],
+  "constants": {
+    "00D7A2F8": "double 0.02, the convex mesh bounds expansion at 00C57C63",
+    "00D7A280": "double 0.5, the centre and half extent at 00C57D01",
+    "00D7A248": "float 7F7FFFFF, the AABB minimum seed at 00C55FC0",
+    "00D7A244": "float FF7FFFFF, the AABB maximum seed at 00C55FD7",
+    "00D7A24C": "float 1.0f; the identity entries of the default shape record and the periscope friction at 0093987A",
+    "00CF81F0": "double 100000.0, added to a banished node's local position",
+    "00CE3958": "double 2.0, the square branch of the displacement exponent at 00937EA5",
+    "00CE3800": "float 0.5, the sqrt branch at 00937EBA",
+    "00CE3DC0": "double 10.0, the displacement divisor at 00937F19",
+    "00D1968C": "\"firstnode\"",
+    "00D196A0": "\"front\"",
+    "00D19698": "\"back\"",
+    "00CEB8F4": "\"hajobelso\"",
+    "00D0C1F0": "\"periszkop\"",
+    "00CEB90C": "\"fizika_%02d\"",
+    "00CEB900": "\"ep_fizika\"",
+    "00D196DC": "\"roncs_fizika\"",
+    "00D09494": "\"rope\""
+  },
+  "model_data": {
+    "source": "I:/SteamLibrary/steamapps/common/Battlestations Pacific, read-only",
+    "class": "VehicleClass[20], the DeRuyter",
+    "file": "models/ships/us/deruyter.mmod, 46865813 bytes",
+    "firstnode": 0,
+    "front": 0,
+    "back": 0,
+    "hajobelso": 0,
+    "periszkop": 0,
+    "ConvexObject_chunks": 9,
+    "GeomMesh_table": "magazine->3, body->0, fizika->0, engineroom->1, fueltank->2, fizika->1",
+    "node_names": "De_Ruyter:bridge-ep_fizika_00, De_Ruyter:bridge-roncs_fizika_00, De_Ruyter:smoke-ep_fizika_01, De_Ruyter:smoke00-fizika_01 and similar; 9 ep_fizika, 2 roncs_fizika",
+    "conclusion": "Owners 1, 3 and 4 resolve to null for this model, so its hull shapes are exactly the records owned by the node at model+0Ch; the hajobelso loop and the periscope block do nothing.",
+    "not_read": "The numeric extent of the DeRuyter's `body` convex object, and therefore its exact inertia. It needs the ConvexObject chunk payload and the model loader that writes model+4Ch and model+0Ch, both Codex's packets.",
+    "tree_scan": "196 of the models/ships tree carry at least one of these names; periszkop only on I-54, I-56, I-58, i-400, kaiten, minisub, type7, type_b."
+  },
+  "corrections": [
+    {
+      "was": "docs/SHIP_HULL_BODY.md descriptor table: `+78h`/`+7Ch`/`+80h` | vector<shape*> | attached one by one | 00C5D8C0",
+      "is": "desc+78h is the data pointer, desc+7Ch a COUNT and desc+80h the capacity, not a begin/end/capacity triple.",
+      "evidence": "00C5D8C0..00C5D8C8 computes the end as LEA ECX,[EAX + EDX*4] from desc+78h and desc+7Ch. The growth at 00939628 is capacity*2+2 and desc+7Ch is incremented by one per push at 009396A3."
+    },
+    {
+      "was": "docs/SHIP_HULL_BODY.md follow-up row ship_hull_shapes: \"the fizika_%02d and hajobelso node walks\" decide which model nodes become collision shapes",
+      "is": "Neither walk produces a hull collision shape. The producers are the records owned by the firstnode / model+0Ch / front / back nodes.",
+      "evidence": "The descriptors pushed into desc+78h come only from controller+34h, filled by 00938F61..0093918C. The fizika_%02d lists go to controller+320h (0093874E), +330h (00938991) and +340h (00938CB5) and the hajobelso nodes are hidden and moved at 00938E30..00938F17."
+    },
+    {
+      "was": "docs/UNIT_PARTS.md: `+8h`/`+Ch` | vector of node ptr | every hull node | 00937C90",
+      "is": "controller+8h/+Ch is the vector of nodes whose NAME CONTAINS \"rope\", not every hull node.",
+      "evidence": "00937F7A..00937F9A builds the string from 00D09494 (\"rope\") and 00937FB6 calls 00B6F9A0(unit+4A4h, controller+4h, &s); 00B6F9A0 keeps a node only when strstr(name, pattern) succeeds."
+    },
+    {
+      "was": "docs/DYN_COLLISION_PASS.md line 215 and docs/DYN_LCP_IMPULSE_MATH.md line 295: the collision AABB producer 00C5C940 is unread",
+      "is": "00C5C940 is read here. The AABB itself is produced by 00C57C40 per shape and 00C55FC0 per body.",
+      "evidence": "docs/SHIP_HULL_SHAPES.md; ledger records at 00c5c940, 00c57c40, 00c55fc0."
+    }
+  ],
+  "left_out": [
+    "No new test case. tests/math_tests.cpp is leased to agent/cc-hydro-forces, so the change is covered by the strict Win32 build and the existing reconstructed_math test only.",
+    "No Ghidra annotation of 00937C90 or anything inside its body: it is leased to cc_exe_2r. Its evidence is in docs/SHIP_HULL_SHAPES.md under \"Evidence for 00937C90 (apply later)\".",
+    "0071AD50, 0071BA20, 00B6F9A0, 00B6D800, 00B6DB60, 00B6E0A0 and the model structures they read are Codex's; read for their contracts, never renamed or re-documented.",
+    "The model collision record's producer and the identity of model+0Ch are unread."
+  ],
+  "no_ghidra_function": "none. Every address named, documented or reconstructed lies inside an existing Ghidra function body, checked with `python tools/bsp.py ghidra proto <addr> --brief`."
+}
