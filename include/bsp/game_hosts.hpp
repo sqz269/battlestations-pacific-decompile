@@ -30,6 +30,7 @@ struct IGameExplorer;
 
 #include <cstdio>
 #include <functional>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -48,6 +49,7 @@ struct IGameExplorer;
 
 namespace bsp {
 struct NativeRendererParametersOwner;
+class XLiveLibrary;
 }
 
 namespace bsp::game {
@@ -132,6 +134,12 @@ struct GameExecutableOptions {
     std::string game_root;
     // Explicit CSIDL_PERSONAL substitute for isolated settings runs.
     std::string settings_personal_root;
+    // Optional absolute library selections, resolved before --game-root changes
+    // CWD. Empty DLL paths select the original names in the current game root.
+    std::wstring fmod_dll;
+    std::wstring fmod_event_dll;
+    std::wstring xlive_dll;
+    std::vector<std::wstring> xlive_dependencies;
     // --vfs-probe <virtual path>, repeatable: resolve and read one path after phase 2 and
     // print its byte count.
     std::vector<std::string> vfs_probes;
@@ -357,17 +365,17 @@ private:
 };
 
 // PlatformLoopCallbacks for 00bec1a0. The frame callback is the reconstructed application
-// frame followed by the device clear and present; pretranslation stands in for
-// XLivePreTranslateMessage.
+// frame followed by the device clear and present. Pretranslation calls the
+// same selected XLive library used by the load-time message service.
 class GameLoopCallbacks final : public PlatformLoopCallbacks {
 public:
     GameLoopCallbacks(GameHostLog& log, ApplicationFrameState& frame_state,
         FrameMarkerColor& color, GameFrameHost& frame_host, GameDeviceHost& device,
-        PlatformLoopState& loop, long frame_limit,
+        PlatformLoopState& loop, long frame_limit, XLiveLibrary& xlive,
         std::function<void(IDirect3DDevice9&)> capture = {}, long screenshot_frame = -1,
         long screenshot_mission_frame = -1)
         : log_(log), frame_state_(frame_state), color_(color), frame_host_(frame_host),
-          device_(device), loop_(loop), frame_limit_(frame_limit),
+          device_(device), loop_(loop), frame_limit_(frame_limit), xlive_(xlive),
           capture_(std::move(capture)), screenshot_frame_(screenshot_frame),
           screenshot_mission_frame_(screenshot_mission_frame) {}
 
@@ -384,6 +392,7 @@ private:
     GameDeviceHost& device_;
     PlatformLoopState& loop_;
     long frame_limit_{-1};
+    XLiveLibrary& xlive_;
     std::function<void(IDirect3DDevice9&)> capture_;
     // --screenshot-frame N, milestone 2d: the frame index to capture. Negative keeps the
     // last-frame (or close-request) rule the switch shipped with.
@@ -570,6 +579,8 @@ public:
 private:
     void run_initialize_phases(const char* mode);
     void release_platform_window() noexcept;
+    struct SoundServices;
+    std::unique_ptr<SoundServices> sound_;
 
     GameHostLog& log_;
     HINSTANCE instance_{};

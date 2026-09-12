@@ -1,0 +1,60 @@
+{
+ "repairs": [
+  {
+   "function": "00bf4c70",
+   "owner": "agent/orch2-20260910",
+   "when": "2026-09-12T18:13:04Z",
+   "decompile_lines_before": 28,
+   "gaps": [
+    {
+     "site": "00bf4cba",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "00bf4cbf",
+     "gap_end_exclusive": "00bf4d2e",
+     "bytes": 111,
+     "after_call": true,
+     "sha256": "928fe2d4cfb57a4327d34e9012269b28cd534e3f50a800d6a9f5c2442c402032"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00bf4cba",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "00bf4cbf",
+      "gap_end_exclusive": "00bf4d2e",
+      "bytes": 111,
+      "after_call": true,
+      "sha256": "928fe2d4cfb57a4327d34e9012269b28cd534e3f50a800d6a9f5c2442c402032"
+     },
+     "clear": "Success: Cleared flow override at 00bf4cba (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 111 byte(s)"
+    },
+    {
+     "explicit_tail_call": "00bf4cba",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00bf4cba (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00bf4d06",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00bf4d06 (was: NONE, now: NONE)"
+     }
+    }
+   ],
+   "explicit_tail_end_exclusive": "00bf4d2e",
+   "explicit_body_sha256": "517e3e32cf7f2b1b7d34965001f4a30b712fb3d73fe3b9d26388d4105dee76df",
+   "body_before": "Function: BSP_PhysicalDirectory_Destroy at 00bf4c70\nSignature: undefined BSP_PhysicalDirectory_Destroy(void)\nEntry: 00bf4c70\nBody: 00bf4c70 - 00bf4cbe",
+   "decompile_lines_after": 47,
+   "gaps_remaining": 1,
+   "body_after": "Function: BSP_PhysicalDirectory_Destroy at 00bf4c70\nSignature: undefined BSP_PhysicalDirectory_Destroy(void)\nEntry: 00bf4c70\nBody: 00bf4c70 - 00bf4cbe",
+   "stored_body_tail_complete": false,
+   "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+  }
+ ]
+}

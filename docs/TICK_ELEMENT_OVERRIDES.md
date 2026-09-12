@@ -323,3 +323,9 @@ squadron's one slot, for the unit's `+0Ch` and level-4 `+8h`, and for the entity
 - **Was:** "finally, while that byte is set, unit->vtable[+1D8h](step)"
   **Is:** the slot runs only when unit+520h is clear
   **Evidence:** 00953D7D CMP byte ptr [ESI+210h],0 then 00953D84 JNZ 0x00953D9A, which jumps past the 00953D98 CALL EDX; ESI is the node at unit+310h, so [ESI+210h] is unit+520h.
+
+## Correction from docs/LAND_AND_STRUCTURES.md (packet cc2_land_and_structures)
+
+- **Was:** element slot +10h: wave 'none', 'no override in any of the seven tables'
+  **Is:** slot +10h is the fixed-step-callback entry of the element interface, and MCommandBuilding's element table 00CFAFE0 overrides it with 006F7360. The claim is true of the seven tables that packet read; 00CFAFE0 is an eighth.
+  **Evidence:** 00CFAFE0 bytes at +10h are 60 73 6f 00; 00874DE0 BSP_FixedStepCallbackList_Run calls node->vtable[10h](DAT_00D0DE84); the registration is 00875A80(this+310h, 1) at 006F5767.

@@ -1,0 +1,85 @@
+{
+  "reason": "Native ABI from verified listing; unused_edx represents an unconsumed register, not an original argument. Title start and intro predicate have no native arguments and RET; zero-argument cdecl/stdcall are indistinguishable by cleanup. Both predicates return AL Boolean. Named-clip predicate uses ECX receiver plus one borrowed pointer and RET4. Fade-in uses ECX only and RET.",
+  "entries": [
+    {
+      "address": "005884a0",
+      "proposed": "void __cdecl BSP_MainMenu_StartTitleMusic()",
+      "before": "Function: BSP_MainMenu_StartTitleMusic at 005884a0\nSignature: undefined BSP_MainMenu_StartTitleMusic(void)\nEntry: 005884a0\nBody: 005884a0 - 005885c1",
+      "apply": "Successfully set prototype for function at 005884a0 with __cdecl calling convention",
+      "after": "Function: BSP_MainMenu_StartTitleMusic at 005884a0\nSignature: void __cdecl BSP_MainMenu_StartTitleMusic(void)\nEntry: 005884a0\nBody: 005884a0 - 005885c1",
+      "readback_verified": true
+    },
+    {
+      "address": "00584a30",
+      "proposed": "bool __cdecl BSP_FrontEnd_IsIntroMovieActive()",
+      "before": "Function: BSP_FrontEnd_IsIntroMovieActive at 00584a30\nSignature: undefined BSP_FrontEnd_IsIntroMovieActive(void)\nEntry: 00584a30\nBody: 00584a30 - 00584ad5",
+      "apply": "Successfully set prototype for function at 00584a30 with __cdecl calling convention",
+      "after": "Function: BSP_FrontEnd_IsIntroMovieActive at 00584a30\nSignature: bool __cdecl BSP_FrontEnd_IsIntroMovieActive(void)\nEntry: 00584a30\nBody: 00584a30 - 00584ad5",
+      "readback_verified": true
+    },
+    {
+      "address": "004f8ba0",
+      "proposed": "bool __fastcall BSP_MoviePlayer_IsNamedClipPlaying(void* self, void* unused_edx, void* borrowed_name)",
+      "before": "Function: BSP_MoviePlayer_IsNamedClipPlaying at 004f8ba0\nSignature: undefined BSP_MoviePlayer_IsNamedClipPlaying(void)\nEntry: 004f8ba0\nBody: 004f8ba0 - 004f8bd2",
+      "apply": "Successfully set prototype for function at 004f8ba0 with __fastcall calling convention",
+      "after": "Function: BSP_MoviePlayer_IsNamedClipPlaying at 004f8ba0\nSignature: bool __fastcall BSP_MoviePlayer_IsNamedClipPlaying(void * self, void * unused_edx, void * borrowed_name)\nEntry: 004f8ba0\nBody: 004f8ba0 - 004f8bd2",
+      "readback_verified": true
+    },
+    {
+      "address": "00a85c20",
+      "proposed": "void __fastcall BSP_SoundStream_RequestFadeIn(void* self)",
+      "before": "Function: BSP_SoundStream_RequestFadeIn at 00a85c20\nSignature: undefined BSP_SoundStream_RequestFadeIn(void)\nEntry: 00a85c20\nBody: 00a85c20 - 00a85c38",
+      "apply": "Successfully set prototype for function at 00a85c20 with __fastcall calling convention",
+      "after": "Function: BSP_SoundStream_RequestFadeIn at 00a85c20\nSignature: void __fastcall BSP_SoundStream_RequestFadeIn(void * self)\nEntry: 00a85c20\nBody: 00a85c20 - 00a85c38",
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "005884a0",
+        "prototype": "void __cdecl BSP_MainMenu_StartTitleMusic()",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 005884a0 with __cdecl calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00584a30",
+        "prototype": "bool __cdecl BSP_FrontEnd_IsIntroMovieActive()",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 00584a30 with __cdecl calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "004f8ba0",
+        "prototype": "bool __fastcall BSP_MoviePlayer_IsNamedClipPlaying(void* self, void* unused_edx, void* borrowed_name)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 004f8ba0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a85c20",
+        "prototype": "void __fastcall BSP_SoundStream_RequestFadeIn(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a85c20 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

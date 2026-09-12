@@ -53,6 +53,7 @@
 #include "bsp/dyn_world_settings.hpp"
 #include "bsp/ship_class_fields.hpp"
 #include "bsp/ship_hull_body.hpp"
+#include "bsp/ship_hydro_forces.hpp"
 #include "bsp/ship_motion.hpp"
 #include "bsp/ocean_height.hpp"
 #include "bsp/rigid_body_integration.hpp"
@@ -473,6 +474,90 @@ struct HullBodySetup {
     bsp::DynWorldSettings settings{};
 };
 
+// 009329C0's host over the one body this probe owns. docs/SHIP_HYDRO_FORCES.md.
+//
+// Three of its twelve methods are inert here and say so: the probe's unit is a destroyer
+// so the category-8 answer is no, and it takes no damage so the leak model at unit+10D4h
+// has no leak points, which makes 0074F930's tick and 0074F2E0's heeling torque both
+// nothing. The disabled path is never taken because controller+14h is clear.
+struct ProbeHydroHost final : bsp::ShipHydroHost {
+    bsp::DynBody* body{nullptr};
+    bsp::FlatSeaOceanHost sea{};
+    int force_flushes{0};
+
+    bsp::OceanVec3 body_linear_velocity_00c31f40() override {
+        return body->motion->linear_velocity;
+    }
+    bsp::OceanVec3 body_angular_velocity_00c31f20() override {
+        return body->motion->angular_velocity;
+    }
+    bsp::ShipHydroTransform body_world_transform_00c33650() override {
+        bsp::ShipHydroTransform m{};
+        m.row0 = {body->row0[0], body->row0[1], body->row0[2]};
+        m.row1 = {body->row1[0], body->row1[1], body->row1[2]};
+        m.row2 = {body->row2[0], body->row2[1], body->row2[2]};
+        m.position = {body->position[0], body->position[1], body->position[2]};
+        return m;
+    }
+    bool unit_category_8_vtable5c() override { return false; }
+    float water_height_0078cf20(float x, float z) override {
+        return bsp::ocean_water_height_0078cf20(x, z, sea);
+    }
+    void leak_tick_0074f930(float) override {}
+    bsp::OceanVec3 leak_heel_torque_0074f2e0() override { return bsp::OceanVec3{}; }
+    void add_force_00c35360(const bsp::OceanVec3& force) override {
+        force_flushes += 1;
+        bsp::dyn_body_add_force_00c35360(*body, force);
+    }
+    void add_torque_00c35330(const bsp::OceanVec3& torque) override {
+        bsp::dyn_body_add_torque_00c35330(*body, torque);
+    }
+    void set_linear_velocity_00c37e50(const bsp::OceanVec3& v) override {
+        bsp::dyn_body_set_linear_velocity_00c37e50(*body, v);
+    }
+    void set_angular_velocity_00c37e20(const bsp::OceanVec3& w) override {
+        bsp::dyn_body_set_angular_velocity_00c37e20(*body, w);
+    }
+    void set_body_no_gravity_flag_00932a16() override {
+        body->flags |= bsp::kDynBodyFlagNoGravity;
+    }
+};
+
+// The buoyancy element list at class+52Ch is a STAND-IN, not a recovered one: no packet
+// has read its producer, so this probe builds a list the class row can justify instead of
+// pretending to the game's own. `count` elements are spread evenly along the hull's
+// Length at the local Y = 0 plane, each with level_base = 0, level_draft = draft and
+// level_top = the class Height, and the shared coefficient is solved so that a hull
+// floating at that draft displaces exactly its own weight against the world's gravity of
+// 10 (bsp/dyn_world_settings.hpp). That makes the buoyancy neutral at the waterline, so
+// what the run measures is the drag, which is what the packet is about.
+std::vector<bsp::ShipBuoyancyElement> stand_in_buoyancy_elements(const LuaVehicleClass& c,
+                                                                 int count) {
+    std::vector<bsp::ShipBuoyancyElement> list;
+    if (count <= 0) {
+        return list;
+    }
+    const float length = (c.length > 0.0f) ? c.length : 100.0f;
+    const float height = (c.height > 0.0f) ? c.height : (length * 0.1f);
+    const float draft = height * 0.5f;
+    // ship_hydro_buoyancy_00932e44 with depth == draft and the surface mix of 0.5.
+    const float shape = 0.5f * (draft / height) + 0.5f;
+    const float per_element = (c.mass * bsp::kShipHydroDragGravity) / static_cast<float>(count);
+    const float coefficient = per_element / (draft * shape);
+    for (int i = 0; i < count; ++i) {
+        bsp::ShipBuoyancyElement e{};
+        e.coefficient = coefficient;
+        e.level_base = 0.0f;
+        e.level_draft = draft;
+        e.level_top = height;
+        e.position.x = 0.0f;
+        e.position.y = 0.0f;
+        e.position.z = length * ((static_cast<float>(i) + 0.5f) / static_cast<float>(count) - 0.5f);
+        list.push_back(e);
+    }
+    return list;
+}
+
 // 00C5C540's schedule driven over the one hull body this probe owns.
 //
 // The probe sails in open water, so the rest of 00C5BB30 is inert: the collision pass
@@ -505,8 +590,20 @@ struct ProbeSimulateHost final : bsp::DynSimulateHost {
         return bsp::DynRegisteredBody{};
     }
 
+    // --hydro: 009329C0 is slot 0 of the controller vtable, which the library calls
+    // inside the substep before the velocity phase 00C41550 consumes M+38h. That is the
+    // hook, so the call goes here and not in the outer game step.
+    const bsp::ShipHydroInputs* hydro{nullptr};
+    ProbeHydroHost* hydro_host{nullptr};
+    int hydro_calls{0};
+    bsp::ShipHydroResult last_hydro{};
+
     void run_substep_00c5bb30(float dt) override {
         substeps += 1;
+        if (hydro != nullptr && hydro_host != nullptr) {
+            hydro_calls += 1;
+            last_hydro = bsp::ship_hydro_apply_forces_009329c0(*hydro, dt, *hydro_host);
+        }
         bsp::dyn_body_substep(*body, *world, dt);
     }
 };
@@ -578,6 +675,10 @@ struct TrajectoryInputs {
     // False when 00828F20's two gates reject the row, which leaves the field
     // uninitialised in the image; the run header says so.
     bool yaw_authority_derived{false};
+    // --hydro: run 009329C0 inside every substep, over the stand-in buoyancy element
+    // list stand_in_buoyancy_elements builds. docs/SHIP_HYDRO_FORCES.md.
+    bool hydro{false};
+    int hydro_elements{8};
 };
 
 struct TrajectoryResult {
@@ -588,6 +689,11 @@ struct TrajectoryResult {
     float final_speed{0.0f};
     float peak_speed{0.0f};
     float peak_yaw{0.0f};
+    // --hydro: the peak drift angle in degrees, how many times 009329C0 ran, and the
+    // force and torque it staged on the last substep of the run.
+    float peak_drift{0.0f};
+    int hydro_calls{0};
+    bsp::ShipHydroResult hydro_last{};
     float reference{0.0f};
     // Filled only under --cruise: what 00835AC0 latched at the latch step.
     bool cruise{false};
@@ -694,6 +800,26 @@ TrajectoryResult run_trajectory(const TrajectoryInputs& in, HullBodySetup& setup
     sim_host.world = &setup.world;
     float sim_accumulator = 0.0f;
     std::int32_t sim_step_counter = 0;
+
+    // --hydro: 009329C0 over the stand-in element list. The material is the one
+    // 00937CF1 and 00932A53 both select from the class Mass, and the record is the
+    // installed shipglobals.lua row for it.
+    const std::vector<bsp::ShipBuoyancyElement> elements =
+        stand_in_buoyancy_elements(chosen, in.hydro_elements);
+    ProbeHydroHost hydro_host{};
+    hydro_host.body = &body;
+    bsp::ShipHydroInputs hydro{};
+    hydro.material = bsp::ship_hull_material_00937cf1(false, chosen.mass);
+    hydro.record = bsp::ship_physics_material_shipped(hydro.material);
+    hydro.class_mass = chosen.mass;
+    hydro.class_length = chosen.length;
+    hydro.class_width = 0.0f;  // class+A4h `Width`; the probe's loader does not read it
+    hydro.elements = elements.empty() ? nullptr : elements.data();
+    hydro.element_count = static_cast<int>(elements.size());
+    if (in.hydro && hydro.element_count > 0) {
+        sim_host.hydro = &hydro;
+        sim_host.hydro_host = &hydro_host;
+    }
 
     // --- the run --------------------------------------------------------------
     TrajectoryResult result{};
@@ -951,6 +1077,21 @@ TrajectoryResult run_trajectory(const TrajectoryInputs& in, HullBodySetup& setup
         if (yaw > result.peak_yaw) {
             result.peak_yaw = yaw;
         }
+        // The drift angle: how far the trajectory in the XZ plane has swung away from the
+        // hull's own forward axis. It is the number milestone 2r's table reports, and it
+        // is what a hull with no lateral drag accumulates without bound.
+        const float track = std::sqrt(state.linear_velocity.x * state.linear_velocity.x +
+                                      state.linear_velocity.z * state.linear_velocity.z);
+        if (track > 1.0f) {
+            const float along = (state.linear_velocity.x * state.pose_row2[0] +
+                                 state.linear_velocity.z * state.pose_row2[2]) /
+                                track;
+            const float clamped = (along > 1.0f) ? 1.0f : ((along < -1.0f) ? -1.0f : along);
+            const float drift = std::acos(clamped) * 57.2957795f;
+            if (drift > result.peak_drift) {
+                result.peak_drift = drift;
+            }
+        }
     }
 
     if (in.moveto) {
@@ -965,6 +1106,8 @@ TrajectoryResult run_trajectory(const TrajectoryInputs& in, HullBodySetup& setup
     result.final_speed = host.forward_speed();
     result.schedule_calls = sim_step_counter;
     result.substeps = sim_host.substeps;
+    result.hydro_calls = sim_host.hydro_calls;
+    result.hydro_last = sim_host.last_hydro;
     return result;
 }
 
@@ -997,6 +1140,11 @@ int main(int argc, char** argv) {
     // The hull's collision AABB span. Its producer is the shape attach 00C5C940, which
     // this packet does not read, so it defaults to zero rather than to an invented box.
     bsp::OceanVec3 hull_extent{};
+    // --hydro: run 009329C0 inside every substep, over the stand-in buoyancy element
+    // list. Off by default so the run before the change stays reproducible.
+    // docs/SHIP_HYDRO_FORCES.md.
+    bool hydro = false;
+    int hydro_elements = 8;
 
     for (int i = 1; i < argc; ++i) {
         const std::string arg = argv[i];
@@ -1035,6 +1183,10 @@ int main(int argc, char** argv) {
         } else if (arg == "--commanded-speed" && has_next) {
             commanded_speed = static_cast<float>(std::atof(argv[++i]));
             have_commanded_speed = true;
+        } else if (arg == "--hydro") {
+            hydro = true;
+        } else if (arg == "--hydro-elements" && has_next) {
+            hydro_elements = std::atoi(argv[++i]);
         } else if (arg == "--hull-extent" && (i + 3) < argc) {
             hull_extent.x = static_cast<float>(std::atof(argv[++i]));
             hull_extent.y = static_cast<float>(std::atof(argv[++i]));
@@ -1045,7 +1197,8 @@ int main(int argc, char** argv) {
                         "          [--moveto X,Z] [--yaw-authority RAD]\n"
                         "          [--cruise] [--cruise-frame N]"
                         " [--commanded-speed M_PER_S]\n"
-                        "          [--hull-extent DX DY DZ]\n",
+                        "          [--hull-extent DX DY DZ]"
+                        " [--hydro] [--hydro-elements N]\n",
                         argv[0]);
             return 2;
         }
@@ -1154,6 +1307,8 @@ int main(int argc, char** argv) {
     run_in.yaw_authority_0524 =
         have_yaw_authority ? yaw_authority : derived_0524.yaw_authority_0524;
     run_in.yaw_authority_overridden = have_yaw_authority;
+    run_in.hydro = hydro;
+    run_in.hydro_elements = hydro_elements;
     run_in.yaw_authority_derived = derived_0524.derived;
     if (!have_yaw_authority && !derived_0524.derived) {
         std::printf("  warning: 00828F20's gates reject this class row"
@@ -1213,6 +1368,22 @@ int main(int argc, char** argv) {
                 static_cast<double>(b.peak_yaw));
     std::printf("  00C5C540 calls   %12d %22d\n", a.schedule_calls, b.schedule_calls);
     std::printf("  00C5BB30 substeps%12d %22d\n", a.substeps, b.substeps);
+    std::printf("  peak drift (deg) %12.4f %22.4f\n", static_cast<double>(a.peak_drift),
+                static_cast<double>(b.peak_drift));
+    if (run_in.hydro) {
+        std::printf("\n  009329C0 ran %d times per body over %d steps, on a stand-in list of"
+                    " %d\n  buoyancy elements (class+52Ch has no read producer). On the last"
+                    "\n  substep of B it staged force (%.2f %.2f %.2f) and torque"
+                    " (%.2f %.2f %.2f),\n  with %d of %d elements submerged.\n",
+                    b.hydro_calls, run_in.steps, run_in.hydro_elements,
+                    static_cast<double>(b.hydro_last.force.x),
+                    static_cast<double>(b.hydro_last.force.y),
+                    static_cast<double>(b.hydro_last.force.z),
+                    static_cast<double>(b.hydro_last.torque.x),
+                    static_cast<double>(b.hydro_last.torque.y),
+                    static_cast<double>(b.hydro_last.torque.z),
+                    b.hydro_last.submerged_elements, run_in.hydro_elements);
+    }
     std::printf("  B's y falls because 00C41550 adds the world's gravity and nothing here\n"
                 "  cancels it: 009329C0's buoyancy is not reconstructed.\n");
 

@@ -1,0 +1,311 @@
+{
+  "packet": "cc2_land_and_structures",
+  "owner": "agent/cc2-land-and-structures",
+  "document": "docs/LAND_AND_STRUCTURES.md",
+  "method": "read-only static analysis of C:/Users/sqz269/bsp.gpr program /battlestationspacific.exe plus read-only PE scans of the on-disk image; no Ghidra mutation of any kind",
+  "headline": [
+    "None of the six classes is a ship: MLandVehicle 0x740, LandConvoy 0x3CC, MLandFort 0x758, MCommandBuilding 0x7E8, MShipyard 0x7A4, MAirfield 0x8E4, against the 0x1188 ship instance.",
+    "MLandVehicle has no motion of its own: it overrides neither the tick element per-step slot (+8h stays the inherited 00953CC0) nor the per-frame update (+0DCh stays 00956600), and never reaches the ship motion controller 00825F20. Its pose is written every step by its LandConvoy from 00742400.",
+    "The shipyard does not receive message 7Ah, it sends it: 00844FC0 sets the scene property ShipYardLaunch on the new ship's bag at 008450AA, and that becomes the launched ship's +1130h."
+  ],
+
+  "classes": [
+    {
+      "class": "MLandVehicle", "class_id": "19h", "parent_class_id": "05",
+      "address": "0074df5d", "native": "0074dcc0",
+      "note": "allocator 0074DF10 calls the leaf constructor; operator new(740h) at 0074DF2F, memset at 0074DF3E, 009553D0 at 0074DF73, [+354h] = descriptor",
+      "instance_size": "0x740", "main_vtable": "00CFFDE0", "element_vtable": "00CFFD9C",
+      "own_fields": "+72Ch/+730h/+734h zeroed vector triple, +738h convoy, +73Ch slot index",
+      "extra_vtable_slots": 0, "coverage": "complete"
+    },
+    {
+      "class": "LandConvoy", "class_id": "1Ah", "parent_class_id": "02",
+      "address": "004f274b", "native": "004f2410",
+      "note": "scene-entity creator, not a unit creator: no 009553D0 and no +354h descriptor write; operator new(3CCh) at 004F2720",
+      "instance_size": "0x3CC", "main_vtable": "00CEA570", "element_vtable": "00CEA528",
+      "own_fields": "+310h tick node, +344h route record, +398h member vector, +3A8h..+3C8h motion state",
+      "extra_vtable_slots": 0, "coverage": "complete"
+    },
+    {
+      "class": "MLandFort", "class_id": "1Bh", "parent_class_id": "05",
+      "address": "0074704d", "native": "00745940",
+      "note": "operator new(758h) at 0074701F, 009553D0 at 00747063",
+      "instance_size": "0x758", "main_vtable": "00CFF3F8", "element_vtable": "00CFF3B4",
+      "own_fields": "+72Ch owned-ref slot, +738h master fort, +73Ch section, +740h/+744h retained effects, +748h effect life, +750h roll clock",
+      "extra_vtable_slots": 3, "coverage": "complete for the constructor; vtable[0A0h] 007482B0 interior 007482D0-00748986 unread"
+    },
+    {
+      "class": "MCommandBuilding", "class_id": "1Ch", "parent_class_id": "1Bh",
+      "address": "006f5c5d", "native": "006f5610",
+      "note": "operator new(7E8h) at 006F5C2F, 009553D0 at 006F5C73",
+      "instance_size": "0x7E8", "main_vtable": "00CFB028", "element_vtable": "00CFAFE0",
+      "own_fields": "+758h listener node, +764h critical section, +778h garrison slot array stride 64h, +784h std::list, +7BCh/+7C0h capture countdown, +7D8h damage window",
+      "extra_vtable_slots": 6, "coverage": "complete for the constructor and the +10h fixed step"
+    },
+    {
+      "class": "MAirfield", "class_id": "45h", "parent_class_id": "05",
+      "address": "006d1c47", "native": "0095cc90",
+      "note": "the leaf constructor 006D1C20 calls the level-4 base; the allocator is 006D3110, operator new(8E4h)",
+      "instance_size": "0x8E4", "main_vtable": "00CF8C08", "element_vtable": "00CF8BC0",
+      "own_fields": "+72Ch air-ops block, +828h collision node, +830h hangar vector stride 0Ch, +83Ch six inline vec3 slots with count +884h, +8A8h/+8CCh marker pairs",
+      "extra_vtable_slots": 2, "coverage": "complete for the constructor and the per-step tick; vtable[0A4h] 006D5220 tail 006D5EA0-006D600E unread"
+    },
+    {
+      "class": "MShipyard", "class_id": "46h", "parent_class_id": "05",
+      "address": "008483cd", "native": "00848080",
+      "note": "operator new(7A4h) at 00848398, memset at 008483AE, 009553D0 at 008483E3, [+354h] = descriptor at 008483EC",
+      "instance_size": "0x7A4", "main_vtable": "00D0B770", "element_vtable": "00D0B728",
+      "own_fields": "+72Ch, three vectors at +770h, +780h (slot vector, stride 10h) and +790h",
+      "extra_vtable_slots": 0, "coverage": "complete for the constructor and the launch path; vtable[0A0h] 00849A30 past 00849AB3 and vtable[0A4h] 00849F70 unread"
+    }
+  ],
+
+  "subobject_constructors": [
+    {"address": "0074dcca", "native": "0095cc90", "function": "0074dcc0", "what": "MLandVehicle leaf calls the level-4 base BSP_UnitGameObject_Construct(flag, 0)"},
+    {"address": "00745967", "native": "0095cc90", "function": "00745940", "what": "MLandFort leaf calls the same base"},
+    {"address": "00745978", "native": "00809270", "function": "00745940", "what": "MLandFort builds an owned-ref slot at this+72Ch, the same subobject the ship builds at 0081ED7B"},
+    {"address": "006f5635", "native": "00745940", "function": "006f5610", "what": "MCommandBuilding derives from MLandFort"},
+    {"address": "006f5649", "native": "008e35d0", "function": "006f5610", "what": "listener node at this+758h, owner pushed"},
+    {"address": "006f56bc", "native": "0059fd60", "function": "006f5610", "what": "std::list head node at this+784h, return stored at +788h"},
+    {"address": "006f56ff", "native": "00bd2f10", "function": "006f5610", "what": "BSP_Random_UniformFloatRange(0, 1), negated into +7C0h: a phase stagger for the capture countdown"},
+    {"address": "006f572d", "native": "00bd1860", "function": "006f5610", "what": "BSP_CriticalSection_Create into +764h"},
+    {"address": "006f5767", "native": "00875a80", "function": "006f5610", "what": "BSP_FixedStepCallback_Register(this+310h, repeating = 1)"},
+    {"address": "004f2434", "native": "0077eed0", "function": "004f2410", "what": "LandConvoy leaf calls the level-2 base BSP_UnitOwnerEntity_Construct"},
+    {"address": "004f2449", "native": "00875890", "function": "004f2410", "what": "BSP_TickRegistration_Construct(this+310h, owner, 0)"},
+    {"address": "004f2459", "native": "0049f9b0", "function": "004f2410", "what": "the route/formation record at this+344h, whose +0h is the path pointer"},
+    {"address": "006d1c59", "native": "006cac00", "function": "006d1c20", "what": "MAirfield builds the air-operations block at this+72Ch; block+7Ch = owner"}
+  ],
+
+  "element_tables": [
+    {"class": "ship reference", "vtable": "00CFC38C", "slot_4": "00811AB0", "slot_8": "00825F20", "slot_C": "006D1FC0", "slot_10": "0042BBA0"},
+    {"class": "level-4 base", "vtable": "00D1A654", "slot_4": "0042BB70", "slot_8": "00953CC0", "slot_C": "006D1FC0", "slot_10": "0042BBA0"},
+    {"class": "MLandVehicle", "vtable": "00CFFD9C", "slot_4": "0042BB70", "slot_8": "00953CC0", "slot_C": "006D1FC0", "slot_10": "0042BBA0", "verdict": "no override in any pose slot"},
+    {"class": "MLandFort", "vtable": "00CFF3B4", "slot_4": "0042BB70", "slot_8": "00953CC0", "slot_C": "006D1FC0", "slot_10": "0042BBA0", "verdict": "no override in any pose slot"},
+    {"class": "MCommandBuilding", "vtable": "00CFAFE0", "slot_4": "0042BB70", "slot_8": "00953CC0", "slot_C": "006D1FC0", "slot_10": "006F7360", "verdict": "the only +10h override in the image"},
+    {"class": "MAirfield", "vtable": "00CF8BC0", "slot_4": "0042BB70", "slot_8": "006D2510", "slot_C": "006D1FC0", "slot_10": "0042BBA0", "verdict": "overrides the per-step slot"},
+    {"class": "MShipyard", "vtable": "00D0B728", "slot_4": "0042BB70", "slot_8": "00846320", "slot_C": "006D1FC0", "slot_10": "0042BBA0", "verdict": "overrides the per-step slot"},
+    {"class": "LandConvoy", "vtable": "00CEA528", "slot_4": "00743060", "slot_8": "007410C0", "slot_C": "007410B0", "slot_10": "0042BBA0", "verdict": "overrides all three pose slots"}
+  ],
+
+  "gun_holder_proxies": [
+    {"address": "0074cda0", "native": "0074cda0", "class": "MLandVehicle", "slot": "vtable[140h]", "body": "EAX = [ECX+738h]; RET", "what": "the convoy is the gun holder, with no fallback: a land vehicle outside a convoy returns null to the gunnery pass", "coverage": "complete"},
+    {"address": "006f57a0", "native": "006f57a0", "class": "MLandFort, MCommandBuilding", "slot": "vtable[140h]", "body": "EAX = [ECX+738h]; if (!EAX) EAX = ECX; RET", "what": "the master fort, else itself", "coverage": "complete"}
+  ],
+
+  "convoy_motion_steps": [
+    {"address": "0074314a", "native": "00742400", "function": "00743060", "step": "element slot +4h advances the live arc, wraps it with two loops (007430DB add, 007430FE subtract), adds t*|speed| to the odometer, then re-places every member", "coverage": "complete"},
+    {"address": "007425b9", "native": "007b03c0", "function": "00742400", "step": "sample the path at the group arc: position into matrix+30h (row 3), tangent into matrix+20h (row 2)", "coverage": "complete"},
+    {"address": "0074260e", "native": "0085dc80", "function": "00742400", "step": "complete the orthonormal frame after row 1 is set from the global up triple 00F8758C", "coverage": "complete"},
+    {"address": "007426bd", "native": "0085dad0", "function": "00742400", "step": "world-pose law: rebuild the frame after row 1 is set to the literal (0,1,0) at 00742666-0074268B", "coverage": "complete"},
+    {"address": "007426c9", "native": "00741e90", "function": "00742400", "step": "world-pose law: set the member's world pose, the shared setter 00929CB0 also uses", "coverage": "complete"},
+    {"address": "007426dd", "native": "indirect+38h", "function": "00742400", "step": "[member+4A4h]->vtable[38h](member+74h) after the world-pose law", "coverage": "complete"},
+    {"address": "00742734", "native": "00414db0", "function": "00742400", "step": "terrain law: refresh the parent's world pose before reading it", "coverage": "complete"},
+    {"address": "00742751", "native": "00413920", "function": "00742400", "step": "terrain law: multiply by the parent's matrix at parent+CCh", "coverage": "complete"},
+    {"address": "00742762", "native": "004134f0", "function": "00742400", "step": "terrain law: cache the result into parent+CCh and set parent+C8h", "coverage": "complete"},
+    {"address": "0074278d", "native": "0087fa20", "function": "00742400", "step": "terrain law: height sample, [parent+3D0h]->vtable[24h](x, z); 00742792 subtracts parent+100h to land in parent space", "coverage": "complete"},
+    {"address": "007427bc", "native": "0087fb90", "function": "00742400", "step": "terrain law: surface normal, the matching [parent+3D0h] forwarder, written into matrix row 1", "coverage": "complete"},
+    {"address": "007427e5", "native": "0085dad0", "function": "00742400", "step": "terrain law: rebuild the frame against the surface normal", "coverage": "complete"},
+    {"address": "007428b3", "native": "0042ed50", "function": "00742400", "step": "terrain law: walk the member's child chain +48h/+44h with BSP_SceneNode_InvalidateSubtreePose after the direct write of member+74h..+B0h", "coverage": "complete"},
+    {"address": "007428cd", "native": "indirect+38h", "function": "00742400", "step": "[member+4A4h]->vtable[38h](member+74h) after the terrain law", "coverage": "complete"},
+    {"address": "00742908", "native": "00bf65ac", "function": "00742400", "step": "free one group matrix; the ten bytes Ghidra drops after it are what make the loop free every entry", "coverage": "complete"},
+    {"address": "00742923", "native": "00bf6989", "function": "00742400", "step": "free the group-matrix pointer array", "coverage": "complete"}
+  ],
+
+  "convoy_scene_properties": [
+    {"address": "007434ab", "native": "008f2260", "function": "00743450", "key": "Reverse", "field": "+3A9h byte", "what": "direction scale -1.0f (00D7A260) instead of +1.0f (00D7A24C)"},
+    {"address": "007434c7", "native": "008f2260", "function": "00743450", "key": "Speed", "field": "+368h float", "what": "path units per second"},
+    {"address": "007434f3", "native": "008f2260", "function": "00743450", "key": "Columns", "field": "+358h int", "what": "files across the path"},
+    {"address": "0074350f", "native": "008f2260", "function": "00743450", "key": "Rows (00CFF344)", "field": "+354h int", "what": "ranks along the path"},
+    {"address": "0074352b", "native": "008f2260", "function": "00743450", "key": "ColumnGap", "field": "+360h float", "what": "lateral spacing"},
+    {"address": "00743557", "native": "008f2260", "function": "00743450", "key": "HP (00CE6750)", "field": "+364h float", "what": "authored hit points"},
+    {"address": "00743583", "native": "008f2260", "function": "00743450", "key": "RowGap", "field": "+35Ch float", "what": "longitudinal spacing between ranks"},
+    {"address": "007435af", "native": "008f2260", "function": "00743450", "key": "Offset", "field": "+3ACh float", "what": "the initial arc position"},
+    {"address": "0074369d", "native": "008f2260", "function": "00743450", "key": "Type + n", "field": "-", "what": "per-slot authored type, accepted only at property type tag 6"},
+    {"address": "00743707", "native": "008f2260", "function": "00743450", "key": "Type", "field": "-", "what": "the plain type key read once per outer entry"},
+    {"address": "0074378c", "native": "008f2260", "function": "00743450", "key": "Position + n", "field": "-", "what": "the grid index each authored type occupies"},
+    {"address": "007420dc", "native": "008f2260", "function": "007420b0", "key": "Path (00CEA738)", "field": "+344h pointer", "what": "the deferred-reference pass resolves the path entity"}
+  ],
+
+  "convoy_roster_steps": [
+    {"address": "007420b3", "native": "0077f0e0", "function": "007420b0", "step": "the base deferred-reference pass runs first"},
+    {"address": "007420e3", "native": "008f0df0", "function": "007420b0", "step": "take the Path property's string value"},
+    {"address": "007420ec", "native": "00925a90", "function": "007420b0", "step": "BSP_EntityRegistry_FindEntityByName on that name"},
+    {"address": "007420f7", "native": "007ac9d0", "function": "007420b0", "step": "BSP_Entity_PathInterfaceForKind, stored at convoy+344h; the arc length is [[+344h]+28h]"},
+    {"address": "0074210a", "native": "00927a80", "function": "007420b0", "step": "the value then broadcast to every member through member->vtable[128h]"},
+    {"address": "00743891", "native": "00964790", "function": "00743450", "step": "BSP_VehicleClass_GetOrCreate resolves the authored type to a descriptor"},
+    {"address": "0074389f", "native": "indirect+28h", "function": "00743450", "step": "descriptor->vtable[28h](0) allocates the member instance"},
+    {"address": "007438bd", "native": "indirect+98h", "function": "00743450", "step": "member->vtable[98h](convoy+3Ch, convoy+30h, convoy+74h) parents the member to the convoy's parent and seeds its pose"},
+    {"address": "007438c6", "native": "indirect+10h", "function": "00743450", "step": "convoy->vtable[10h]() gives the convoy's name"},
+    {"address": "00743904", "native": "00742a70", "function": "00743450", "step": "build the member's name from the convoy name and the index"},
+    {"address": "00743a1f", "native": "00922de0", "function": "00743450", "step": "give the member its own property-bag reference at +30h from convoy+C0h"},
+    {"address": "00743a92", "native": "00743350", "function": "00743450", "step": "grow the member vector at +398h and push the member"},
+    {"address": "00743b20", "native": "00743350", "function": "00743450", "step": "the second push arm"}
+  ],
+
+  "convoy_death": [
+    {"address": "0074cd1e", "native": "007422a0", "function": "0074cd10", "step": "a member's vtable[080h] loads ECX = [member+738h] at 0074CD13 and calls 007422A0(convoy, member) when it is non-null", "coverage": "complete"},
+    {"address": "0074cd26", "native": "00951fb0", "function": "0074cd10", "kind": "tail_jump", "step": "then tail-jumps the base with ECX = the member", "coverage": "complete"},
+    {"address": "00742312", "native": "00742312", "function": "007422a0", "step": "null the member's slot in +398h, decrement +3BCh, and when it reaches zero kill the convoy with BSP_MissionEntity_Kill(2)", "coverage": "complete"}
+  ],
+
+  "shipyard_launch": [
+    {"address": "0082226f", "native": "0082226f", "function": "00821e80", "step": "the 7Ah arm: NEG CL; SBB ECX,ECX; AND ECX,5; MOV [EDI+1130h],ECX. +1130h is a ship offset and lies past every land layout", "coverage": "complete"},
+    {"address": "0081de31", "native": "0081de31", "step": "reader: the ship motion body returns immediately when +1130h is positive", "coverage": "reader identified, body not read"},
+    {"address": "008450aa", "native": "008f3940", "function": "00844fc0", "step": "the shipyard's creator sets the scene property ShipYardLaunch on the NEW ship's bag: this is the producer of the launched ship's +1130h", "coverage": "complete"},
+    {"address": "0084507f", "native": "008f3710", "function": "00844fc0", "step": "the child bag's Party (key 00CE5804) is set from the shipyard's own +54h, pushed at 00845072", "coverage": "complete"},
+    {"address": "008451fb", "native": "0078cf20", "function": "00844fc0", "step": "the launch pose is snapped with BSP_GameWorld_SampleWaterHeight(x, z)", "coverage": "complete"},
+    {"address": "00846612", "native": "00844fc0", "function": "00846320", "step": "the per-step tick spawns through the creator after counting free slots in the +780h vector", "coverage": "complete for the spawn call; the tick's interval gating past 00846612 unread"},
+    {"address": "00846f89", "native": "00844fc0", "function": "00846d90", "step": "the second spawn path, reached from vtable[164h] 00847030", "coverage": "complete for the spawn call"}
+  ],
+
+  "no_ghidra_function": [
+    {"address": "007410b0", "name": "BSP_LandConvoy_CommitArc", "end_address": "007410bc", "what": "element slot +0Ch: +3B0h = +3ACh, plain RET"},
+    {"address": "007410c0", "name": "BSP_LandConvoy_RestoreArcStep", "end_address": "00741103", "what": "element slot +8h: +3ACh = +3B0h + dt*speed*dir behind the +3A8h gate, RET 4"},
+    {"address": "00742c10", "name": "BSP_LandConvoy_CacheParentAndPlacementLaw", "end_address": "0074305c", "what": "vtable +0A4h: zeroes +3B4h/+3C0h/+3C4h, sets +3C8h from the parent comparison at 00742C70, caches the parent at +3A4h; plain RET"},
+    {"address": "0074cda0", "name": "BSP_LandVehicle_GunHolder", "end_address": "0074cda6", "what": "vtable +140h: return [this+738h], the convoy"},
+    {"address": "006d2510", "name": "BSP_AirField_TickAdvance", "end_address": "006d2553", "what": "element slot +8h: 00953CC0(dt), then vtable[1A8h](), then 006CDC70(unit+72Ch, dt) when byte[unit+5Dh] is clear; RET 4"},
+    {"address": "006f7360", "name": "BSP_CommandBuilding_FixedStep", "end_address": "006f7665", "what": "element slot +10h, the fixed-step callback body; RET 4"},
+    {"address": "006f57f0", "name": "BSP_LandFort_MasterIsKindOf", "end_address": "006f580a", "what": "added slot +204h: forwards IsKindOf to [this+738h], RET 4 (end address from the peer analysis)"},
+    {"address": "006f1f80", "name": "BSP_CommandBuilding_Die", "end_address": "006f1f80", "what": "vtable +1A8h: a single RET, so a command building does not die (end address from the peer analysis)"},
+    {"address": "006f1f20", "name": "BSP_CommandBuilding_TakeCriticalHit", "end_address": "006f1f72", "what": "vtable +1ACh: gated on +7D8h, wraps the fort body in the +764h critical section (end address from the peer analysis)"},
+    {"address": "006f5960", "name": "BSP_CommandBuilding_CaptureRangeSquared", "end_address": "006f5973", "what": "added slot +218h: returns +7A0h squared (end address from the peer analysis)"},
+    {"address": "00745be0", "name": "BSP_LandFort_FrameUpdate", "end_address": "00745f9f", "what": "vtable +0DCh, the fort's per-frame update; RET 4 at 00745F9D, resynced from the function start, and 00745FA0 is the next routine (which does have a Ghidra function)"},
+    {"address": "00747400", "name": "BSP_LandFort_Die", "end_address": "007474db", "what": "vtable +1A8h, the destruction rule; plain RET at 007474DB"},
+    {"address": "006d3250", "name": "BSP_AirField_PickParkSlot", "end_address": "006d32a8", "what": "vtable +100h: uniform index over +884h into the inline vec3 array at +83Ch (partial: read 006D3250-006D32A8 only)"},
+    {"address": "006d40f0", "name": "BSP_AirField_UpdateState", "end_address": "unknown", "what": "vtable +1A8h, called from the per-step tick; read only to 006D41F1, end not established"},
+    {"address": "00849a30", "name": "BSP_Shipyard_SceneAttach", "end_address": "00849f64", "what": "vtable +0A0h; only the prologue was read (end address from the peer analysis)"},
+    {"address": "00847030", "name": "BSP_Shipyard_HandleLaunchRequest", "end_address": "0084708e", "what": "vtable +164h: calls 00846D90, which spawns at 00846F89 (end address from the peer analysis)"},
+    {"address": "00846640", "name": "BSP_Shipyard_ReadStockProperties", "end_address": "00846847", "what": "vtable +138h: reads stock, classid, count (end address from the peer analysis)"}
+  ],
+
+  "flow_gaps": [
+    {
+      "call_site": "00742908",
+      "callee": "00bf65ac",
+      "function": "00742400",
+      "gap": "0074290d-00742916",
+      "bytes": 10,
+      "listing_resumes": "00742917",
+      "recovered": "ADD ESP,4 at 0074290D and MOV dword ptr [EDI+ESI*4],0 at 00742910",
+      "why_it_matters": "without those ten bytes the decompiler renders a return inside the cleanup loop, which reads as a shipped memory leak (one group matrix freed, the rest and the pointer array leaked, every step). The raw bytes show the loop frees every entry and then frees the array at 00742923, so there is no leak."
+    },
+    {
+      "call_site": "0082226c",
+      "callee": "unknown",
+      "function": "00821e80",
+      "gap": "ghidra disasm refuses a start at 00822240",
+      "listing_resumes": "0082226f",
+      "recovered": "read with disasm-raw by the peer analysis",
+      "why_it_matters": "the 7Ah arm body at 0082226F is only visible through disasm-raw"
+    },
+    {
+      "call_site": "00823510",
+      "callee": "unknown",
+      "function": "00822c20",
+      "gap": "ghidra disasm refuses starts at 00823510 and 00823730",
+      "listing_resumes": "00823521 and 00823742",
+      "recovered": "read with disasm-raw by the peer analysis",
+      "why_it_matters": "the two other writers of the ship's +1130h are only visible through disasm-raw"
+    }
+  ],
+
+  "corrections": [
+    {
+      "document": "docs/TICK_ELEMENT_OVERRIDES.md",
+      "was": "element slot +10h: wave 'none', 'no override in any of the seven tables'",
+      "is": "slot +10h is the fixed-step-callback entry of the element interface, and MCommandBuilding's element table 00CFAFE0 overrides it with 006F7360. The claim is true of the seven tables that packet read; 00CFAFE0 is an eighth.",
+      "evidence": "00CFAFE0 bytes at +10h are 60 73 6f 00; 00874DE0 BSP_FixedStepCallbackList_Run calls node->vtable[10h](DAT_00D0DE84); the registration is 00875A80(this+310h, 1) at 006F5767."
+    },
+    {
+      "document": "docs/SCENE_ENTITY_FACTORY.md",
+      "was": "the multiplayer stock walk 0046BF70 reads NumSlots, Slot %d, Stock %d and AlliedList for Shipyard",
+      "is": "the Shipyard branch reads only Stock %d, Type and Hidden; NumSlots and Slot %d belong to the AirField/MotherShipGen branch and AlliedList/JapanList to the SpawnPoint branch",
+      "evidence": "branch string refs Shipyard 0046C1D7 with 0046C215, 0046C247, 0046C259, 0046C268; AirField 0046BFB8 with 0046C0E9, 0046C10A, 0046C065; SpawnPoint 0046C2DA with 0046C3A6, 0046C30C"
+    },
+    {
+      "document": "docs/UNIT_MESSAGE_ARMS.md",
+      "was": "message 7Ah senders 00813830 and 009CFBA4",
+      "is": "three senders: 0081386D, 009CFC1B and 00760511 inside FUN_007604C0, which sets the message target from DAT_00E188A8+18CCh + idx*4, the local player's own unit slot",
+      "evidence": "all four references to the arm vptr 00D03310 are 0081386D, 009CFC1B, 0080F984 (the constructor itself) and 00760511"
+    },
+    {
+      "document": "docs/AIR_OPERATIONS.md",
+      "was": "the +72Ch caution names two cases, the ship's owned-ref slot and MAirfield's air-operations block",
+      "is": "three cases. MLandFort's +72Ch is an owned-ref slot built by the same 00809270 as the ship's, so the ship and the fort share that subobject and the airfield does not.",
+      "evidence": "00745978 calls 00809270 with ECX = this+72Ch (LEA at 0074596C), against 0081ED7B for the ship; MCommandBuilding re-vptrs the same offset to 00CFAFD8 at 006F568D, which proves it is a base subobject and not a member"
+    }
+  ],
+
+  "reconstruction": {
+    "header": "include/bsp/land_and_structures.hpp",
+    "source": "src/land_and_structures.cpp",
+    "registered": "cmake/startup.cmake, one appended line, target bsp_core (the math test links bsp_core, not bsp_game)",
+    "status": "reconstructed_build_tested_explicit_host_boundaries",
+    "covers": [
+      "the six class layouts as a table with instance size, class id, parent level, allocator, leaf constructor, vtables and extra slot count",
+      "the two gun-holder proxies 0074CDA0 and 006F57A0 as pure rules",
+      "the shipyard-launch sentinel 0082226F and its control-suppression gate",
+      "the convoy's arc rules 00743060, 007410C0 and 007410B0, with the loop-versus-conditional difference against 00742400 preserved",
+      "the convoy's formation arithmetic from 00742400 (group arc, centred lateral offset, slot split)",
+      "the placement law selector 00742C70",
+      "the member-death rule 007422A0",
+      "00742400 as a sequence over LandConvoyPlacementHost, one method per native call site, both placement laws"
+    ],
+    "does_not_cover": [
+      "MLandFort's per-frame update 00745BE0 and its damage-effect roll (documented, not reconstructed)",
+      "MCommandBuilding's fixed-step body 006F7360 (documented, not reconstructed)",
+      "MAirfield's per-step tick 006D2510 and its hangar list (documented, not reconstructed)",
+      "the shipyard creator 00844FC0 (documented, not reconstructed)"
+    ],
+    "test": "tests/math_tests.cpp, one block: the two convoy wraps and the centred lateral offset"
+  },
+
+  "build": {
+    "command": "./scripts/build.ps1 from the worktree, Win32 Release, /W4 /WX",
+    "result": "passed",
+    "tests": "ctest reconstructed_math 1/1 passed, including the new convoy block"
+  },
+
+  "names_added_note": "24 ledger name hypotheses, all through tools/bsp.py ledger add-name, none refused; no Ghidra rename, comment, prototype or save. The routines Ghidra has no function for are recorded in no_ghidra_function instead of the name ledger.",
+  "names_added": [
+    {"address": "0074dcc0", "name": "BSP_LandVehicle_Construct"},
+    {"address": "0074df10", "name": "BSP_LandVehicle_Allocate"},
+    {"address": "00747000", "name": "BSP_LandFort_Allocate"},
+    {"address": "00745940", "name": "BSP_LandFort_Construct"},
+    {"address": "006f5c10", "name": "BSP_CommandBuilding_Allocate"},
+    {"address": "006f5610", "name": "BSP_CommandBuilding_Construct"},
+    {"address": "004f2410", "name": "BSP_LandConvoy_Construct"},
+    {"address": "00743060", "name": "BSP_LandConvoy_AdvanceArc"},
+    {"address": "00742400", "name": "BSP_LandConvoy_PlaceMembers"},
+    {"address": "00743450", "name": "BSP_LandConvoy_AttachAndBuildRoster"},
+    {"address": "007420b0", "name": "BSP_LandConvoy_ResolvePathReference"},
+    {"address": "007422a0", "name": "BSP_LandConvoy_OnMemberDeath"},
+    {"address": "0074cd10", "name": "BSP_LandVehicle_OnDeath"},
+    {"address": "00742180", "name": "BSP_LandConvoy_DisbandAndKillMembers"},
+    {"address": "00848080", "name": "BSP_Shipyard_Construct"},
+    {"address": "00848380", "name": "BSP_Shipyard_Allocate"},
+    {"address": "00844fc0", "name": "BSP_Shipyard_CreateLaunchedUnit"},
+    {"address": "00844a10", "name": "BSP_Shipyard_PickLaunchSlotPose"},
+    {"address": "00846320", "name": "BSP_Shipyard_TickAdvance"},
+    {"address": "006d1c20", "name": "BSP_AirField_Construct"},
+    {"address": "006d3110", "name": "BSP_AirField_Allocate"},
+    {"address": "006d3c10", "name": "BSP_AirField_ReadRunwayProperties"},
+    {"address": "006d5220", "name": "BSP_AirField_ReadHangarAndMarkerProperties"},
+    {"address": "00748c40", "name": "BSP_LandFort_AllocateStationaryProp"}
+  ],
+
+  "open_questions": [
+    "Who consumes the airfield's EntryPath/ExitPath hangar list built at 006D5D71/006D5D96. It is the obvious producer for the plane's 'Runway on Path' taxi state, but docs/PLANE_GROUND_OPS.md has the plane reach its surface through (unit+BF4h)->+4h->+3Ch->vtable[28h] instead, and no airfield accessor call was found on that path.",
+    "Whether a LandConvoy is ever authored under a parent that is not a Landscape. The terrain law reaches the height field through parent+3D0h with no class test, so a non-landscape parent would fault.",
+    "MLandFort vtable[0A0h] 007482B0 interior 007482D0-00748986, the only place a repair or crew rule could still be hiding. No health regeneration and no crew field appears in any fort routine this packet read.",
+    "Which of the shipyard's three vectors (+770h, +780h, +790h) is the stock list and which the hangar list; only +780h is proven to be the slot vector.",
+    "MAirfield's +748h/+749h: which is the runway failure flag and which the hangar failure flag."
+  ],
+
+  "tool_problems": [
+    "ghidra decompile renders a return inside 00742400's cleanup loop because ghidra disasm drops ten bytes after the _free at 00742908. Read as a leak from the pseudocode alone.",
+    "Ghidra has no function at 00742C10, 007410B0, 007410C0, 0074CDA0, 006D2510 or 006F7360, all of which are live vtable slots; disasm-raw was needed for each.",
+    "bsp.py show --asm --start rejects an address that is not a listing line start, and the error does not say which nearby address would work.",
+    "ghidra xrefs does not find the writers of a field, so PE displacement scans (local/scanimm.py, bsp.py scan-bytes with wildcarded modrm) were needed to find the producers of MLandVehicle's +72Ch..+734h and the convoy's +354h/+358h/+3BCh."
+  ]
+}

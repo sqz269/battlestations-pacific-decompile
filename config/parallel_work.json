@@ -8875,6 +8875,160 @@
       "validation": "Combined Win322/2 tests and3final-library probes passed;132numericCALLrows/29savedGhidraannotations acrossbatch; worker93,600native sphere comparisons.",
       "annotation_status": "Applied under write lock; saved old names/comments; affected exports refreshed.",
       "next_work": "Other concrete child48 profiles and complete particle/Text spatial providers remain dependencies; static affine numerical domain unchanged."
+    },
+    {
+      "id": "orch4_sound_platform_ab",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_concrete_platform_load_adapter_and_preonline_guard_fixture_verified",
+      "function_addresses": [
+        "00beca40",
+        "00becb20",
+        "00a409f0"
+      ],
+      "code_ownership": [
+        "include/bsp/game_platform_services.hpp",
+        "src/game_platform_services.cpp"
+      ],
+      "integration_report": "reports/game_platform_services.json",
+      "discovery_evidence": "docs/GAME_PLATFORM_SERVICES.md",
+      "game_validated": false
+    },
+    {
+      "id": "orch4_sound_frame_ab",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reconstructed_native_callers_and_actual_null_interface_frame_fixture_verified",
+      "function_addresses": [
+        "00735b50",
+        "004bbd00",
+        "004cd610"
+      ],
+      "code_ownership": [
+        "include/bsp/sound_frame_service.hpp",
+        "src/sound_frame_service.cpp"
+      ],
+      "integration_report": "reports/sound_frame_service.json",
+      "discovery_evidence": "docs/SOUND_FRAME_SERVICE.md",
+      "game_validated": false
+    },
+    {
+      "id": "orch4_title_sound_ab",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reconstructed_title_composition_and_installed_stream_fixture_verified",
+      "function_addresses": [
+        "005884a0",
+        "00584a30",
+        "004f8ba0",
+        "00a85c20"
+      ],
+      "code_ownership": [
+        "include/bsp/game_title_sound.hpp",
+        "src/game_title_sound.cpp"
+      ],
+      "integration_report": "reports/game_title_sound.json",
+      "discovery_evidence": "docs/GAME_TITLE_SOUND.md",
+      "game_validated": false
+    },
+    {
+      "id": "orch4_sound_application_ab",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_partial_application_startup_and_actual_two_frame_run_verified",
+      "function_addresses": [
+        "0073d410"
+      ],
+      "code_ownership": [
+        "include/bsp/game_hosts.hpp",
+        "src/game_hosts.cpp"
+      ],
+      "integration_report": "reports/sound_application_wiring.json",
+      "discovery_evidence": "docs/SOUND_APPLICATION_WIRING.md",
+      "game_validated": false
+    },
+    {
+      "id": "orch6_avoid_zone_segment_math",
+      "packet": "orch6_avoid_zone_segment_math",
+      "done": true,
+      "source_ready": true,
+      "state": "bounded_reconstruction_integrated_build_checked",
+      "worker": "orch6-segment-queries",
+      "function_addresses": [
+        "004f3630",
+        "00419ab0",
+        "004f4b50",
+        "00414c60"
+      ],
+      "output_files": [
+        "docs/AVOID_ZONE_SEGMENT_MATH.md",
+        "reports/avoid_zone_segment_math.json",
+        "include/bsp/avoid_zone_segment_math.hpp",
+        "src/avoid_zone_segment_math.cpp"
+      ],
+      "evidence": "reports/avoid_zone_segment_math.json",
+      "integration_report": "reports/avoid_zone_query_binding.json",
+      "qualification": "Three full native geometry schedules plus a private cutoff-length adaptation with explicit CRT access. Game behavior remains unvalidated."
+    },
+    {
+      "id": "orch6_avoid_zone_offset",
+      "packet": "orch6_avoid_zone_offset",
+      "done": true,
+      "source_ready": true,
+      "state": "bounded_reconstruction_integrated_build_checked",
+      "worker": "orch6-zone-offset",
+      "function_addresses": [
+        "00416f30"
+      ],
+      "output_files": [
+        "docs/AVOID_ZONE_OFFSET.md",
+        "reports/avoid_zone_offset.json",
+        "include/bsp/avoid_zone_offset.hpp",
+        "src/avoid_zone_offset.cpp"
+      ],
+      "evidence": "reports/avoid_zone_offset.json",
+      "integration_report": "reports/avoid_zone_query_binding.json",
+      "qualification": "Complete closest offset boundary point using the native record layout and floating-point instruction stages. Game behavior remains unvalidated."
+    },
+    {
+      "id": "orch6_avoid_zone_owner",
+      "packet": "orch6_avoid_zone_owner",
+      "done": true,
+      "source_ready": true,
+      "state": "bounded_reconstruction_integrated_build_checked",
+      "worker": "orch6-zone-owner",
+      "function_addresses": [
+        "0041ccd0",
+        "0041a540",
+        "004167c0",
+        "007af800"
+      ],
+      "output_files": [
+        "docs/AVOID_ZONE_OWNER.md",
+        "reports/avoid_zone_owner.json",
+        "include/bsp/avoid_zone_owner.hpp",
+        "src/avoid_zone_owner.cpp"
+      ],
+      "evidence": "reports/avoid_zone_owner.json",
+      "integration_report": "reports/avoid_zone_query_binding.json",
+      "qualification": "Complete constructor, clip/rebuild, clear and world-point control flow through actual scene/allocator/CRT services; native SEH ABI remains external. Game behavior remains unvalidated."
+    },
+    {
+      "id": "orch6_avoid_zone_query_binding",
+      "packet": "orch6_avoid_zone_query_binding",
+      "done": true,
+      "source_ready": true,
+      "state": "concrete_binding_integrated_build_fixture_checked",
+      "worker": "orch6-20260912",
+      "function_addresses": [],
+      "output_files": [
+        "docs/AVOID_ZONE_QUERY_BINDING.md",
+        "reports/avoid_zone_query_binding.json",
+        "include/bsp/avoid_zone_query_binding.hpp",
+        "src/avoid_zone_query_binding.cpp"
+      ],
+      "evidence": "reports/avoid_zone_query_binding.json",
+      "qualification": "Owned native storage snapshots bind all five boundary geometry callees. Constructor-to-query fixture passes; executable registration and gameplay remain separate."
     }
   ],
   "snapshot_after_analysis": {

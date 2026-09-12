@@ -1,4 +1,6 @@
+#include "bsp/land_and_structures.hpp"
 #include "bsp/air_operations.hpp"
+#include "bsp/ship_hydro_forces.hpp"
 #include "bsp/submarine_model.hpp"
 #include "bsp/plane_flight.hpp"
 #include "bsp/pilot_controls.hpp"
@@ -3142,6 +3144,114 @@ int main() {
         check(bsp::submarine_air_breathing_line_00855250(-20.0f) ==
                   bsp::kSubAirBreathingLineFallback,
             "00855250: a -20 periscope band gives the -4.0 breathing line, not -17.0");
+    }
+
+    {
+        // The LandConvoy's two wraps, 00743060 and 00742400. Worth pinning because
+        // the two are deliberately different: the element slot wraps with loops
+        // (007430DB, 007430FE) while the placement pass wraps with one conditional
+        // each way (00742581-007425A9), so a row gap wider than the path leaves the
+        // group arc outside [0, length). The lateral centring on
+        // (columns - 1) * 0.5 is the other silent-failure candidate.
+        bsp::LandConvoyFormation f;
+        f.rows = 3;
+        f.columns = 4;
+        f.row_gap = 30.0f;
+        f.column_gap = 10.0f;
+        f.speed = 100.0f;
+        f.path_length = 50.0f;
+
+        const bsp::LandConvoyArcStep stepped =
+            bsp::land_convoy_advance_arc_00743060(f, 40.0f, 0.0f, 0.05f);
+        check(std::fabs(stepped.live_arc - 45.0f) < 1e-4f,
+            "00743060: 40 + 0.05*100 = 45 stays inside [0, 50) with no wrap");
+        const bsp::LandConvoyArcStep wrapped =
+            bsp::land_convoy_advance_arc_00743060(f, 48.0f, 0.0f, 0.05f);
+        check(std::fabs(wrapped.live_arc - 3.0f) < 1e-4f,
+            "00743060: the subtract loop brings 53 back to 3");
+
+        f.reverse = true;
+        const bsp::LandConvoyArcStep reversed =
+            bsp::land_convoy_advance_arc_00743060(f, 2.0f, 7.0f, 0.05f);
+        check(std::fabs(reversed.live_arc - 47.0f) < 1e-4f,
+            "00743060: 00D7A260 = -1 sends 2 to -3, and the add loop lifts it to 47");
+        check(std::fabs(reversed.odometer - 12.0f) < 1e-4f,
+            "00743126: the odometer takes |speed|, so a reversed convoy still counts up");
+        f.reverse = false;
+
+        // One conditional only: 0 + 2*30 = 60 wraps once to 10, but group 3 would
+        // reach 90 and wrap only to 40; the loop version would not agree.
+        check(std::fabs(bsp::land_convoy_group_arc_00742400(f, 0.0f, 2) - 10.0f) < 1e-4f,
+            "00742400: the single subtract takes group 2's arc 60 to 10");
+
+        check(std::fabs(bsp::land_convoy_lateral_offset_00742400(f, 0) + 15.0f) < 1e-4f,
+            "00742400: file 0 of four sits at -(4-1)*0.5*10 = -15, the formation is centred");
+        check(std::fabs(bsp::land_convoy_lateral_offset_00742400(f, 3) - 15.0f) < 1e-4f,
+            "00742400: file 3 of four mirrors it at +15");
+
+        const bsp::LandConvoySlot slot = bsp::land_convoy_slot_00742400(f, 9);
+        check(slot.group == 2 && slot.lane == 1,
+            "00742400: index 9 of a 3x4 block is rank 2, file 1");
+    }
+
+    {
+        // 009329C0: a hull carrying pure lateral velocity must lose it while a hull
+        // carrying the same speed forward keeps almost all of it. That asymmetry is the
+        // whole point of the routine and it rests on two readings of the listing that a
+        // sign or an axis swap would silently break: the lateral pair at settings+4F0h
+        // and +4F4h drives the body's row-0 axis (00933199) while the forward axis takes
+        // the linear term at +4F8h alone (0093324E). With the shipped `Ship` row the
+        // lateral coefficients are a hundred times the forward one.
+        struct Host final : bsp::ShipHydroHost {
+            bsp::OceanVec3 velocity{};
+            bsp::OceanVec3 force{};
+            bsp::OceanVec3 body_linear_velocity_00c31f40() override { return velocity; }
+            bsp::OceanVec3 body_angular_velocity_00c31f20() override { return {}; }
+            bsp::ShipHydroTransform body_world_transform_00c33650() override { return {}; }
+            bool unit_category_8_vtable5c() override { return false; }
+            float water_height_0078cf20(float, float) override { return 0.0f; }
+            void leak_tick_0074f930(float) override {}
+            bsp::OceanVec3 leak_heel_torque_0074f2e0() override { return {}; }
+            void add_force_00c35360(const bsp::OceanVec3& f) override { force = f; }
+            void add_torque_00c35330(const bsp::OceanVec3&) override {}
+            void set_linear_velocity_00c37e50(const bsp::OceanVec3&) override {}
+            void set_angular_velocity_00c37e20(const bsp::OceanVec3&) override {}
+            void set_body_no_gravity_flag_00932a16() override {}
+        };
+
+        bsp::ShipBuoyancyElement element{};
+        element.coefficient = 0.0f;   // no buoyancy, so only the drag shows
+        element.level_base = 0.0f;
+        element.level_draft = 4.0f;   // fully submerged: the point sits at the waterline
+        element.level_top = 8.0f;
+
+        bsp::ShipHydroInputs in{};
+        in.material = bsp::ShipPhysicsMaterial::kShip;
+        in.record = bsp::ship_physics_material_shipped(in.material);
+        in.class_mass = 1000.0f;
+        in.elements = &element;
+        in.element_count = 1;
+
+        Host lateral{};
+        lateral.velocity.x = 10.0f;  // pure row-0 motion
+        const auto lateral_result = bsp::ship_hydro_apply_forces_009329c0(in, 0.05f, lateral);
+        Host forward{};
+        forward.velocity.z = 10.0f;  // pure row-2 motion, same speed
+        const auto forward_result = bsp::ship_hydro_apply_forces_009329c0(in, 0.05f, forward);
+
+        check(lateral_result.force.x < -1.0f,
+            "009329C0: lateral velocity meets a drag force opposing it");
+        check(forward_result.force.z < 0.0f,
+            "009329C0: forward velocity meets a drag force opposing it too");
+        check(-lateral_result.force.x > -forward_result.force.z * 10.0f,
+            "009329C0: the lateral axis takes KozegellenallasiEgyutthatoLOldalra/NOldalra "
+            "and the forward axis only the linear LElore, so lateral drag dominates");
+        // dv = F * dt / mass. The clamp at 009335DD caps a single element at the whole
+        // component, never past it, so the lateral speed falls toward zero and never
+        // reverses.
+        const float lateral_dv = lateral_result.force.x * 0.05f / in.class_mass;
+        check(lateral_dv < 0.0f && lateral_dv >= -10.0f,
+            "009335DD: one element's impulse cannot reverse the velocity it opposes");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

@@ -220,3 +220,19 @@ Correction from docs/NATIVE_VFS_SEQUENCE_LIFETIME.md: the four plain-list wrappe
 ## AR parent integration, 2026-09-12
 
 Correction from docs/NATIVE_PATH_CANONICALIZER.md: actual BEE390 and the149-byte BDB970 discard wrapper are reconstructed with raw headers, signed lowercase arguments, allocation/reload timing and temporary cleanup. The locale-active library callee remains an explicit binding; the actual native257-byte terminal-parent case writes its NUL one byte beyond the requested scratch extent, which the source preserves and the slack-backed fixture records. This closes the canonicalizer dependency identified here. The complete manager base, tree ownership, partial erase/rebalancing and BE1F60 tail remain open; previous sequence-tail metadata limitations are unchanged.
+
+## AS parent integration, 2026-09-12
+
+Correction from docs/NATIVE_VFS_MOUNT_TREE.md and docs/NATIVE_VFS_STRING_TREE.md:
+the actual24h mount tree and18h manager string tree now have complete subtree,
+iterator erase with both rebalancing directions, partial/full range erase and
+owner destruction. Their min/max/rotation helpers and the string successor are
+also implemented; the existing mount successor is reused. Ownership preserves
+current-field reloads and explicit returning-validation/owning-exception boundaries.
+The analogous20h physical-index tree is complete in docs/NATIVE_PHYSICAL_INDEX_TREE.md.
+All three families passed bounded native/source comparisons and shared-library
+integration checks. These source closures supersede the tree-ownership and partial
+erase prerequisites in the preceding discovery notes. Manager base BDA6F0/BDA790,
+request-list4D2640/BE1220/BE19E0/BE1D60, and complete BE1DC0/BE1F60 composition remain
+open. Six stored tree tails remain shortened after supported local flow repairs;
+full logical source coverage is not a claim that Ghidra body metadata is complete.
