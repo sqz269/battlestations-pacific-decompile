@@ -1,0 +1,266 @@
+{
+  "packet": "orch4_sound_frame_ab",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "status": "reconstructed_build_tested_with_required_host_boundaries",
+  "functions": [
+    {
+      "address": "00735b50",
+      "end_inclusive": "00735c20",
+      "original_name": "FUN_00735b50",
+      "name": "BSP_SoundFrame_ServiceInline",
+      "implementation": "service_sound_frame_00735b50",
+      "source": "src/sound_frame_service.cpp",
+      "abi": "No effective inputs; ECX ignored; RET",
+      "coverage": "complete",
+      "behavior": "Initial identity/zero, optional listener, reload current sound and dispatch.",
+      "byte_length": 209,
+      "sha256": "b41a6a94678b5c821eaeead43af3206b0fa782ccddf2c7f6367fd04573d792ec",
+      "native_abi_replacement": false,
+      "missing_start": false,
+      "missing_tail": false
+    },
+    {
+      "address": "004bbd00",
+      "end_inclusive": "004bbdcf",
+      "original_name": "FUN_004bbd00",
+      "name": "BSP_SoundFrame_RunJob",
+      "implementation": "run_sound_frame_job_004bbd00",
+      "source": "src/sound_frame_service.cpp",
+      "abi": "ECX job ignored; unused stackDWORD; RET4",
+      "coverage": "complete",
+      "behavior": "Initial identity/zero, mandatory listener, reload current sound and dispatch.",
+      "byte_length": 208,
+      "sha256": "b9143631f3f11fd6b74fd0bb33a284173733d5df5b35d0b23f84eaf81b6e86f5",
+      "native_abi_replacement": false,
+      "missing_start": false,
+      "missing_tail": false
+    },
+    {
+      "address": "004cd610",
+      "end_inclusive": "004cd6cc",
+      "original_name": "FUN_004cd610",
+      "name": "BSP_Game_PrepareSoundTransition",
+      "implementation": "prepare_game_sound_transition_004cd610",
+      "source": "src/sound_frame_service.cpp",
+      "abi": "ECX rawgame; stackbyte; RET4",
+      "coverage": "complete_control_flow_with_required_dependencies",
+      "behavior": "Publish actualgame+7184 and capturedscreen+4/+5; commit/enter; conditionalinput; cinematic; five listener/update/Sleep10 iterations.",
+      "byte_length": 189,
+      "sha256": "bb60db4d98c6eeb3c26cfd911aa67254aaec98163be82b093f057586fdff916b",
+      "native_abi_replacement": false,
+      "missing_start": false,
+      "missing_tail": false
+    }
+  ],
+  "direct_calls": [
+    {
+      "address": "00735be2",
+      "native": "0068a670",
+      "function": "00735b50",
+      "contract": "ECX=capturedE198C4; push velocity12 then matrix64; callee RET8; conditional on captured pointer"
+    },
+    {
+      "address": "004bbd8f",
+      "native": "0068a670",
+      "function": "004bbd00",
+      "contract": "ECX=currentE198C4; push velocity12 then matrix64; RET8; unconditional"
+    },
+    {
+      "address": "004cd62e",
+      "native": "004f83b0",
+      "function": "004cd610",
+      "contract": "ECX=ESI capturedE18D48; no arguments/RET; +4/+5 set1 before call"
+    },
+    {
+      "address": "004cd647",
+      "native": "004bec00",
+      "function": "004cd610",
+      "contract": "No actual arguments; EAX manager; RET leaves pending stack10h,5 for next call"
+    },
+    {
+      "address": "004cd64e",
+      "native": "00a933f0",
+      "function": "004cd610",
+      "contract": "ECX=getter EAX; stack10h,5; callee RET8"
+    },
+    {
+      "address": "004cd65b",
+      "native": "004cd0f0",
+      "function": "004cd610",
+      "contract": "ECX=EDI originalgame; stack1,0,1; callee RET0C at CD165 andCD37E"
+    },
+    {
+      "address": "004cd680",
+      "native": "0068a670",
+      "function": "004cd610",
+      "contract": "ECX=currentE198C4 each loop; stackmatrix64,velocity12; RET8; five calls"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "address": "00735c1b",
+      "native": "00f8bbd8+vtable04",
+      "function": "00735b50",
+      "contract": "EAX current slot4 after listener; stackmatrix64,float3; concrete A87BF0/A7E630 RET10"
+    },
+    {
+      "address": "004bbdc8",
+      "native": "00f8bbd8+vtable04",
+      "function": "004bbd00",
+      "contract": "EDX current slot4 after listener; stackmatrix64,float3; concrete A87BF0/A7E630 RET10"
+    },
+    {
+      "address": "004cd63a",
+      "native": "00e18d48+vtable18",
+      "function": "004cd610",
+      "contract": "EDX from CURRENT vtable of capturedESI, ECXsameESI; CEAE94+18 ->004F8940 C3, no Ghidra function start"
+    },
+    {
+      "address": "004cd6ba",
+      "native": "00f8bbd8+vtable04",
+      "function": "004cd610",
+      "contract": "EDX current slot4 after each listener; stackmatrix64,float3; RET10"
+    },
+    {
+      "address": "004cd6be",
+      "native": "00ce2230+import",
+      "function": "004cd610",
+      "contract": "EDI captures Sleep IAT once at004CD660; push10; stdcallRET4; five sleeps"
+    }
+  ],
+  "incoming_call_sites": [
+    {
+      "address": "0045f684",
+      "native": "00735b50",
+      "function": "0045f600",
+      "contract": "ECX=E1AE90 ignored; RET; after preceding virtual float call"
+    },
+    {
+      "address": "004ca5d4",
+      "native": "00735b50",
+      "function": "004ca440",
+      "contract": "ECX=E1AE90 ignored; RET; inline render arm"
+    },
+    {
+      "address": "004d7f72",
+      "native": "004cd610",
+      "function": "004d7ea0",
+      "contract": "PUSH1; ECX=ESI capturedgame; RET4"
+    },
+    {
+      "address": "004e476c",
+      "native": "004cd610",
+      "function": "004e4430",
+      "contract": "PUSH1; ECX=ESI capturedgame; RET4"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "004BBD00 decompiler lists fastcall ECX/EDX arguments and no stack parameter.",
+      "is": "ECX/EDX are not consumed; one unused stackDWORD is discarded by RET4.",
+      "evidence": "Complete listing004BBD00..004BBDCF; RET4 at004BBDCD; native queued slot stores object plus DWORD."
+    },
+    {
+      "was": "004CD610 pseudocode shows 10h,5 as arguments to singleton getter.",
+      "is": "Getter004BEC00 takes none andRET; pending values feedA933F0 on returnedECX, RET8.",
+      "evidence": "004CD643..004CD64E; 004BECBC RET; A93435 RET8."
+    },
+    {
+      "was": "Potentially treating all three frame callers as null-interface identity fallbacks.",
+      "is": "Only735B50 skips listener for null;4BBD00 alwayscalls;4CD610 uses initially unwritten buffers and alwayscallsfive times.",
+      "evidence": "735BD7 JZ; 4BBD8F unconditionalCALL; full4CD610 listing has no buffer initialization or interface null test."
+    }
+  ],
+  "producers": [
+    {
+      "address": "004c0960",
+      "record": "actual8h sound frame job",
+      "evidence": "Writes primaryCE753C, secondaryCE7538; E18AD8publication; registers receiver+4. CE753C firstword004BBD00. Existing frame-job drain supplies ignored stackDWORD."
+    },
+    {
+      "address": "004f8af0",
+      "record": "actual34h MoviePlayer",
+      "evidence": "Installs primaryCEAE94 and secondaryCEAE7C; nativevisibility bytes+4/+5. CEAE94+18 is004F8940."
+    },
+    {
+      "address": "00a93da0",
+      "record": "actual24h inputmanager",
+      "evidence": "InstallsD5B630; vector+10/+14/+18 zero; +1C byte1 and+20word1. A933F0 writes indexedvector andunsignedmax; A93020 walks30h records."
+    },
+    {
+      "address": "004cd610",
+      "record": "rawgame+7184 flag",
+      "evidence": "Owned body itself is the writer at004CD617; existing frame/movie code names the flag mission_end_suspended/movie_request_active. No companion storage introduced."
+    }
+  ],
+  "missing_native_entries": [
+    {
+      "address": "004f8940",
+      "classification": "dependency_only_unleased_missing_start",
+      "evidence": "CurrentGhidra proto:No function; bytesC3CCCCCCCCCCCCCC; actualCEAE94+18 points here; one-byte RET bounded byCC padding. No annotation or source stub introduced."
+    }
+  ],
+  "raw_gaps": [
+    {
+      "start": "004cd66d",
+      "end_inclusive": "004cd66f",
+      "bytes": "8d4900",
+      "classification": "unreachable alignment",
+      "evidence": "004CD66B JMP004CD670 skips LEAECX,[ECX]; no executable tail omitted."
+    }
+  ],
+  "register_provenance": [
+    "735B50 snapshotsone at56, interfaceECXat5E; EDX is later the matrixaddress, not an entry argument. F8BBD8 reloadedatBE7.",
+    "4BBD00 snapshotsone at06, interfaceECXat17; EDX unused until listener returns then receives manager vslot4. F8BBD8 reloadatBD94.",
+    "4CD610 EDI captures originalgame at615 through cinematic call; ESI captures screenat61E through virtual18. After cinematic, EDI capturesSleepat660 andESIbecomes5. Caller byteatESP58 beforecallback loop. ESI/EDI saved/restored; no EH cleanup.",
+    "CD610 callerESI provenance reviewed in both containing listings: gameECX is saved inESI at4D7EA2 and4E4434, before PUSH1 and calls4D7F72/4E476C."
+  ],
+  "all_sites_scope": "All CALLs in the three owned bodies and both direct incomingCD610 sites reviewed. Shared input/screen/cinematic dependencies retain generic rawreceiver andfullargument signatures; their many unrelated callers were enumerated where relevant, not reconstructed by this packet.",
+  "integration": {
+    "factory": "bind_game_sound_frame_service",
+    "core": "GameSoundRuntime existing lifetime publication/update context",
+    "raw_input": "actualE198C4 plus InterfaceSoundListenerContext actualgame/camera/unit publications",
+    "clock": "existing FrameClock current+20 viaBEE050; no callerclock advancement or invented dt",
+    "manager_profiles": {
+      "00d5b44c": "00a87bf0",
+      "00d5b000": "00a7e630"
+    },
+    "required_transition_host": [
+      "004f83b0 actualscreen visibility/EH",
+      "current capturedscreen virtual18",
+      "004bec00 native input singleton/lifetime",
+      "00a933f0 native input context+record processing",
+      "004cd0f0 cinematic sound-class/input effects"
+    ]
+  },
+  "remaining_boundaries": [
+    "Unknown sound profiles and missing current source manager rejected by typedbinding.",
+    "Actual raw interface/game/camera/unit storage andtheir virtual120/34 providers remain required.",
+    "A92D40 innerinput-record behavior unread here; no substitute implemented.",
+    "Transition screen/input/cinematic dependencies remain explicit.",
+    "No application host/render/menu wiring changed; no executable frame/audible/nativeABI claim."
+  ],
+  "verification": {
+    "build": "scripts/build.ps1 Win32Release MSBUILDDISABLENODEREUSE=1",
+    "seed_command": "python tools/ghidra_export.py verify-seeds",
+    "ctests": {
+      "passed": 2,
+      "failed": 0
+    },
+    "report_call_verifier": {
+      "checked_direct_rows": 11,
+      "owned_direct_calls": 7,
+      "incoming_direct_calls": 4,
+      "indirect_rows": 5,
+      "failed": 0
+    },
+    "new_permanent_tests": 0,
+    "new_ignored_probes": 0,
+    "game_validated": false,
+    "seed_spans_verified": 8,
+    "build_log": "local/sound-frame-build.log",
+    "call_audit_log": "local/sound-frame-call-audit.log"
+  }
+}
