@@ -1,0 +1,29 @@
+[
+  {
+    "address": "00415350",
+    "before": {
+      "address": "00415350",
+      "function_name": "BSP_SingletonLifetime_GetManager",
+      "comment": "[BSP reconstruction 00415350]\nNo input consumed; EAX manager, RET. Lazily allocate20 bytes, construct00bd0960, publish01090aa0. Getter has no explicit lock. Native allocation failure leaves null; unported lifetime dependency.\n\n[BSP reconstruction 00415350] update\nNo input consumed; EAX manager, RET. Lazily allocate20 bytes, construct00bd0960, publish01090aa0. Getter has no explicit lock. Native allocation failure leaves null; unported lifetime dependency. | One captured global01090AA0 read on fastpath; allocate14h, construct, publish captured result; no publication lock. Original ABI: No input consumed; EAX manager; RET. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_function; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation."
+    },
+    "after": {
+      "address": "00415350",
+      "name": "BSP_SingletonLifetime_GetManager",
+      "evidence": "Complete raw 105-byte getter source under explicit borrowed-publication and source C++ EH/CRT/Win32 contracts. Capture01090AA0 once; raw14h allocation before cleanup state; fullBD0960 construction; publish/return captured result without a reload or lock. Constructor failure frees captured raw allocation after its own cleanup. New cdecl with stable borrowed reference to actual volatile01090AA0 publication; original consumed no input, EAX pointer, plain RET. Fresh full305 owned bytes plus146 EH bytes match saved BSP and disk. Compiled561 CODE plus236 EH/SafeSEH bytes reviewed; five entire existing provider objects unchanged; all6 source-provider archive bindings resolved. Strict Win32/2 existing CTests/8 seeds passed. Main library SHA256 747c25074329cb942f627d75a0b7e7c86219aaad5b1c46c10b5f805c2b888f6e. No private domain or typed raw-owner cast. Original no-input caller ABI, native FH3/SEH identity and gameplay unproved; raw mixed-owner destruction/canonical executable migration remain open. Descriptive names are hypotheses. reports/native_singleton_publication_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1b730",
+    "before": {
+      "address": "00b1b730",
+      "function_name": "FUN_00b1b730"
+    },
+    "after": {
+      "address": "00b1b730",
+      "name": "BSP_ResourceRegistry_GetSingleton",
+      "evidence": "Complete raw 200-byte getter source under explicit borrowed-publication and source C++ EH/CRT/Win32 contracts. Fast captured registry return; first manager lookup/captured rawsection+10; Enter and physical+18 increment before guard cleanup. Recheck registry; allocate10h/baseB1AA70/storeD5E59C; end allocation cleanup, publish, second manager lookup, current registry reread then fullBD0C30 registration. Release original captured section before final registry reread. Construction failures free captured allocation; subsequent lookup/registration failures retain publication and invoke411EE0 guard cleanup. New cdecl with distinct stable borrowed references to actual volatile01090AA0 andF8D41C publications; original consumed no input, EAX pointer, plain RET. Fresh full305 owned bytes plus146 EH bytes match saved BSP and disk. Compiled561 CODE plus236 EH/SafeSEH bytes reviewed; five entire existing provider objects unchanged; all6 source-provider archive bindings resolved. Strict Win32/2 existing CTests/8 seeds passed. Main library SHA256 747c25074329cb942f627d75a0b7e7c86219aaad5b1c46c10b5f805c2b888f6e. No private domain or typed raw-owner cast. Original no-input caller ABI, native FH3/SEH identity and gameplay unproved; raw mixed-owner destruction/canonical executable migration remain open. Descriptive names are hypotheses. reports/native_singleton_publication_audit.json"
+    },
+    "status": "applied"
+  }
+]
