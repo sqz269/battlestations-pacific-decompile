@@ -27,7 +27,7 @@ struct SoundSpatialChannelContext {
     SoundLevelNameHost& names;
     const CameraAxesCrtAccess& crt;
 };
-// Same 10/14 virtual implementations in D5ABF8 and D5B510. Other tables reject.
+// Same slot10/14 methods in D5ABF8/D5B510 and retained D5AD58/D5ADA0/D5ADE8.
 class BankSoundChannelVirtuals final : public SoundChannelVirtualHost {
 public:
     bool query_slot_14(SoundChannelInstance&, SoundInstanceContext&) override;

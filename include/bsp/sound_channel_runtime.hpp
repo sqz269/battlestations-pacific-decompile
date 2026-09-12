@@ -5,7 +5,8 @@
 #include "bsp/sound_gameplay_methods.hpp"
 
 namespace bsp {
-// Active-entry/lifetime binding for D5ABF8 and optional D5B510/D5B4C8 projections.
+// Active-entry/lifetime binding for D5ABF8, retained D5AD58/D5ADA0/D5ADE8,
+// and optional D5B510/D5B4C8 projections. Retained slots use their full destructor.
 // All incoming void pointers must be the canonical SoundLevelEntry subobject,
 // never a native bank/sample pointer. The context and services outlive entries.
 // Does not own a parallel list. Factory returns one reference; tracked creation

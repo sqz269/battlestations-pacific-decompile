@@ -34,7 +34,8 @@ struct Text {
     ~Text() { destroy_native_string_header_0041dd20(&value, storage); }
 };
 void require_bank(const SoundChannelInstance& s) {
-    if (s.native_vtable_00 != 0x00d5abf8 && s.native_vtable_00 != 0x00d5b510)
+    if (s.native_vtable_00 != 0x00d5abf8 && s.native_vtable_00 != 0x00d5b510 &&
+        s.native_vtable_00 != 0x00d5ad58 && s.native_vtable_00 != 0x00d5ada0 && s.native_vtable_00 != 0x00d5ade8)
         throw std::logic_error("Unbound bank sound-channel virtual table");
 }
 }

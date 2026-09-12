@@ -1,0 +1,397 @@
+{
+  "reason": "Original ECX/stack storage and return values verified in assembly. Fastcall unused_edx describes storage only, not an original extra argument.",
+  "entries": [
+    {
+      "address": "00a7f2f0",
+      "name": "BSP_SoundSystem_SetRetainedChannel",
+      "proposed": "void __fastcall BSP_SoundSystem_SetRetainedChannel(void* self, void* unused_edx, void* source, int index)",
+      "before": "Function: FUN_00a7f2f0 at 00a7f2f0\nSignature: undefined FUN_00a7f2f0(void)\nEntry: 00a7f2f0\nBody: 00a7f2f0 - 00a7f558",
+      "apply": "Successfully set prototype for function at 00a7f2f0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundSystem_SetRetainedChannel at 00a7f2f0\nSignature: void __fastcall BSP_SoundSystem_SetRetainedChannel(void * self, void * unused_edx, void * source, int index)\nEntry: 00a7f2f0\nBody: 00a7f2f0 - 00a7f558",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundSystem_SetRetainedChannel at 00a7f2f0\nSignature: void __fastcall BSP_SoundSystem_SetRetainedChannel(void * self, void * unused_edx, void * source, int index)\nEntry: 00a7f2f0\nBody: 00a7f2f0 - 00a7f558",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7f0f0",
+      "name": "BSP_SoundClassArray_GetGrowingSlot",
+      "proposed": "void* __fastcall BSP_SoundClassArray_GetGrowingSlot(void* self, void* unused_edx, int index)",
+      "before": "Function: FUN_00a7f0f0 at 00a7f0f0\nSignature: undefined FUN_00a7f0f0(void)\nEntry: 00a7f0f0\nBody: 00a7f0f0 - 00a7f10f",
+      "apply": "Successfully set prototype for function at 00a7f0f0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundClassArray_GetGrowingSlot at 00a7f0f0\nSignature: void * __fastcall BSP_SoundClassArray_GetGrowingSlot(void * self, void * unused_edx, int index)\nEntry: 00a7f0f0\nBody: 00a7f0f0 - 00a7f10f",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundClassArray_GetGrowingSlot at 00a7f0f0\nSignature: void * __fastcall BSP_SoundClassArray_GetGrowingSlot(void * self, void * unused_edx, int index)\nEntry: 00a7f0f0\nBody: 00a7f0f0 - 00a7f10f",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "0054d510",
+      "name": "BSP_SoundReference_Adopt",
+      "proposed": "void* __fastcall BSP_SoundReference_Adopt(void* self, void* unused_edx, void* replacement)",
+      "before": "Function: FUN_0054d510 at 0054d510\nSignature: undefined FUN_0054d510(void)\nEntry: 0054d510\nBody: 0054d510 - 0054d54f",
+      "apply": "Successfully set prototype for function at 0054d510 with __fastcall calling convention",
+      "after": "Function: BSP_SoundReference_Adopt at 0054d510\nSignature: void * __fastcall BSP_SoundReference_Adopt(void * self, void * unused_edx, void * replacement)\nEntry: 0054d510\nBody: 0054d510 - 0054d54f",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundReference_Adopt at 0054d510\nSignature: void * __fastcall BSP_SoundReference_Adopt(void * self, void * unused_edx, void * replacement)\nEntry: 0054d510\nBody: 0054d510 - 0054d54f",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "0054d4c0",
+      "name": "BSP_VoiceSoundReference_Assign",
+      "proposed": "void* __fastcall BSP_VoiceSoundReference_Assign(void* self, void* unused_edx, void* source_slot)",
+      "before": "Function: BSP_VoiceSoundReference_Assign at 0054d4c0\nSignature: undefined BSP_VoiceSoundReference_Assign(void)\nEntry: 0054d4c0\nBody: 0054d4c0 - 0054d500",
+      "apply": "Successfully set prototype for function at 0054d4c0 with __fastcall calling convention",
+      "after": "Function: BSP_VoiceSoundReference_Assign at 0054d4c0\nSignature: void * __fastcall BSP_VoiceSoundReference_Assign(void * self, void * unused_edx, void * source_slot)\nEntry: 0054d4c0\nBody: 0054d4c0 - 0054d500",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_VoiceSoundReference_Assign at 0054d4c0\nSignature: void * __fastcall BSP_VoiceSoundReference_Assign(void * self, void * unused_edx, void * source_slot)\nEntry: 0054d4c0\nBody: 0054d4c0 - 0054d500",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7c5f0",
+      "name": "BSP_SoundRetainedSourceRecord_CopyConstruct",
+      "proposed": "void* __fastcall BSP_SoundRetainedSourceRecord_CopyConstruct(void* self, void* unused_edx, void* source)",
+      "before": "Function: FUN_00a7c5f0 at 00a7c5f0\nSignature: undefined FUN_00a7c5f0(void)\nEntry: 00a7c5f0\nBody: 00a7c5f0 - 00a7c692",
+      "apply": "Successfully set prototype for function at 00a7c5f0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundRetainedSourceRecord_CopyConstruct at 00a7c5f0\nSignature: void * __fastcall BSP_SoundRetainedSourceRecord_CopyConstruct(void * self, void * unused_edx, void * source)\nEntry: 00a7c5f0\nBody: 00a7c5f0 - 00a7c692",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundRetainedSourceRecord_CopyConstruct at 00a7c5f0\nSignature: void * __fastcall BSP_SoundRetainedSourceRecord_CopyConstruct(void * self, void * unused_edx, void * source)\nEntry: 00a7c5f0\nBody: 00a7c5f0 - 00a7c692",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "004c7fa0",
+      "name": "BSP_SoundRetainedSourceRecord_Destruct",
+      "proposed": "void __fastcall BSP_SoundRetainedSourceRecord_Destruct(void* self)",
+      "before": "Function: FUN_004c7fa0 at 004c7fa0\nSignature: undefined FUN_004c7fa0(void)\nEntry: 004c7fa0\nBody: 004c7fa0 - 004c801d",
+      "apply": "Successfully set prototype for function at 004c7fa0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundRetainedSourceRecord_Destruct at 004c7fa0\nSignature: void __fastcall BSP_SoundRetainedSourceRecord_Destruct(void * self)\nEntry: 004c7fa0\nBody: 004c7fa0 - 004c801d",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundRetainedSourceRecord_Destruct at 004c7fa0\nSignature: void __fastcall BSP_SoundRetainedSourceRecord_Destruct(void * self)\nEntry: 004c7fa0\nBody: 004c7fa0 - 004c801d",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "004e7bb0",
+      "name": "BSP_SoundSampleReference_Assign",
+      "proposed": "void* __fastcall BSP_SoundSampleReference_Assign(void* self, void* unused_edx, void* source)",
+      "before": "Function: FUN_004e7bb0 at 004e7bb0\nSignature: undefined FUN_004e7bb0(void)\nEntry: 004e7bb0\nBody: 004e7bb0 - 004e7bf0",
+      "apply": "Successfully set prototype for function at 004e7bb0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundSampleReference_Assign at 004e7bb0\nSignature: void * __fastcall BSP_SoundSampleReference_Assign(void * self, void * unused_edx, void * source)\nEntry: 004e7bb0\nBody: 004e7bb0 - 004e7bf0",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundSampleReference_Assign at 004e7bb0\nSignature: void * __fastcall BSP_SoundSampleReference_Assign(void * self, void * unused_edx, void * source)\nEntry: 004e7bb0\nBody: 004e7bb0 - 004e7bf0",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7b520",
+      "name": "BSP_RetainedSoundChannel_UpdateRamp",
+      "proposed": "void __fastcall BSP_RetainedSoundChannel_UpdateRamp(void* self, void* unused_edx, float dt, uint listener)",
+      "before": "Function: FUN_00a7b520 at 00a7b520\nSignature: undefined FUN_00a7b520(void)\nEntry: 00a7b520\nBody: 00a7b520 - 00a7b5cd",
+      "apply": "Successfully set prototype for function at 00a7b520 with __fastcall calling convention",
+      "after": "Function: BSP_RetainedSoundChannel_UpdateRamp at 00a7b520\nSignature: void __fastcall BSP_RetainedSoundChannel_UpdateRamp(void * self, void * unused_edx, float dt, uint listener)\nEntry: 00a7b520\nBody: 00a7b520 - 00a7b5cd",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_RetainedSoundChannel_UpdateRamp at 00a7b520\nSignature: void __fastcall BSP_RetainedSoundChannel_UpdateRamp(void * self, void * unused_edx, float dt, uint listener)\nEntry: 00a7b520\nBody: 00a7b520 - 00a7b5cd",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7b5d0",
+      "name": "BSP_RetainedSoundChannel_UpdateScaledRamp",
+      "proposed": "void __fastcall BSP_RetainedSoundChannel_UpdateScaledRamp(void* self, void* unused_edx, float dt, uint listener)",
+      "before": "Function: FUN_00a7b5d0 at 00a7b5d0\nSignature: undefined FUN_00a7b5d0(void)\nEntry: 00a7b5d0\nBody: 00a7b5d0 - 00a7b688",
+      "apply": "Successfully set prototype for function at 00a7b5d0 with __fastcall calling convention",
+      "after": "Function: BSP_RetainedSoundChannel_UpdateScaledRamp at 00a7b5d0\nSignature: void __fastcall BSP_RetainedSoundChannel_UpdateScaledRamp(void * self, void * unused_edx, float dt, uint listener)\nEntry: 00a7b5d0\nBody: 00a7b5d0 - 00a7b688",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_RetainedSoundChannel_UpdateScaledRamp at 00a7b5d0\nSignature: void __fastcall BSP_RetainedSoundChannel_UpdateScaledRamp(void * self, void * unused_edx, float dt, uint listener)\nEntry: 00a7b5d0\nBody: 00a7b5d0 - 00a7b688",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7b690",
+      "name": "BSP_RetainedSoundChannel_UpdateNonpositive",
+      "proposed": "void __fastcall BSP_RetainedSoundChannel_UpdateNonpositive(void* self, void* unused_edx, float dt, uint listener)",
+      "before": "Function: FUN_00a7b690 at 00a7b690\nSignature: undefined FUN_00a7b690(void)\nEntry: 00a7b690\nBody: 00a7b690 - 00a7b707",
+      "apply": "Successfully set prototype for function at 00a7b690 with __fastcall calling convention",
+      "after": "Function: BSP_RetainedSoundChannel_UpdateNonpositive at 00a7b690\nSignature: void __fastcall BSP_RetainedSoundChannel_UpdateNonpositive(void * self, void * unused_edx, float dt, uint listener)\nEntry: 00a7b690\nBody: 00a7b690 - 00a7b707",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_RetainedSoundChannel_UpdateNonpositive at 00a7b690\nSignature: void __fastcall BSP_RetainedSoundChannel_UpdateNonpositive(void * self, void * unused_edx, float dt, uint listener)\nEntry: 00a7b690\nBody: 00a7b690 - 00a7b707",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7da40",
+      "name": "BSP_RetainedSoundChannel_ConstructAir",
+      "proposed": "void* __fastcall BSP_RetainedSoundChannel_ConstructAir(void* self, void* unused_edx, void* source, void* class_slot)",
+      "before": "Function: FUN_00a7da40 at 00a7da40\nSignature: undefined FUN_00a7da40(void)\nEntry: 00a7da40\nBody: 00a7da40 - 00a7dac6",
+      "apply": "Successfully set prototype for function at 00a7da40 with __fastcall calling convention",
+      "after": "Function: BSP_RetainedSoundChannel_ConstructAir at 00a7da40\nSignature: void * __fastcall BSP_RetainedSoundChannel_ConstructAir(void * self, void * unused_edx, void * source, void * class_slot)\nEntry: 00a7da40\nBody: 00a7da40 - 00a7dac6",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_RetainedSoundChannel_ConstructAir at 00a7da40\nSignature: void * __fastcall BSP_RetainedSoundChannel_ConstructAir(void * self, void * unused_edx, void * source, void * class_slot)\nEntry: 00a7da40\nBody: 00a7da40 - 00a7dac6",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7dad0",
+      "name": "BSP_RetainedSoundChannel_DestroyAir",
+      "proposed": "void __fastcall BSP_RetainedSoundChannel_DestroyAir(void* self)",
+      "before": "Function: FUN_00a7dad0 at 00a7dad0\nSignature: undefined FUN_00a7dad0(void)\nEntry: 00a7dad0\nBody: 00a7dad0 - 00a7db1b",
+      "apply": "Successfully set prototype for function at 00a7dad0 with __fastcall calling convention",
+      "after": "Function: BSP_RetainedSoundChannel_DestroyAir at 00a7dad0\nSignature: void __fastcall BSP_RetainedSoundChannel_DestroyAir(void * self)\nEntry: 00a7dad0\nBody: 00a7dad0 - 00a7db1b",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_RetainedSoundChannel_DestroyAir at 00a7dad0\nSignature: void __fastcall BSP_RetainedSoundChannel_DestroyAir(void * self)\nEntry: 00a7dad0\nBody: 00a7dad0 - 00a7db1b",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7db20",
+      "name": "BSP_RetainedSoundChannel_ScalarDeleteAir",
+      "proposed": "void* __fastcall BSP_RetainedSoundChannel_ScalarDeleteAir(void* self, void* unused_edx, uint flags)",
+      "before": "Function: FUN_00a7db20 at 00a7db20\nSignature: undefined FUN_00a7db20(void)\nEntry: 00a7db20\nBody: 00a7db20 - 00a7db7f",
+      "apply": "Successfully set prototype for function at 00a7db20 with __fastcall calling convention",
+      "after": "Function: BSP_RetainedSoundChannel_ScalarDeleteAir at 00a7db20\nSignature: void * __fastcall BSP_RetainedSoundChannel_ScalarDeleteAir(void * self, void * unused_edx, uint flags)\nEntry: 00a7db20\nBody: 00a7db20 - 00a7db7f",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_RetainedSoundChannel_ScalarDeleteAir at 00a7db20\nSignature: void * __fastcall BSP_RetainedSoundChannel_ScalarDeleteAir(void * self, void * unused_edx, uint flags)\nEntry: 00a7db20\nBody: 00a7db20 - 00a7db7f",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7db80",
+      "name": "BSP_RetainedSoundChannel_ConstructScaledAir",
+      "proposed": "void* __fastcall BSP_RetainedSoundChannel_ConstructScaledAir(void* self, void* unused_edx, void* source, void* class_slot)",
+      "before": "Function: FUN_00a7db80 at 00a7db80\nSignature: undefined FUN_00a7db80(void)\nEntry: 00a7db80\nBody: 00a7db80 - 00a7dc13",
+      "apply": "Successfully set prototype for function at 00a7db80 with __fastcall calling convention",
+      "after": "Function: BSP_RetainedSoundChannel_ConstructScaledAir at 00a7db80\nSignature: void * __fastcall BSP_RetainedSoundChannel_ConstructScaledAir(void * self, void * unused_edx, void * source, void * class_slot)\nEntry: 00a7db80\nBody: 00a7db80 - 00a7dc13",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_RetainedSoundChannel_ConstructScaledAir at 00a7db80\nSignature: void * __fastcall BSP_RetainedSoundChannel_ConstructScaledAir(void * self, void * unused_edx, void * source, void * class_slot)\nEntry: 00a7db80\nBody: 00a7db80 - 00a7dc13",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7dc20",
+      "name": "BSP_RetainedSoundChannel_DestroyScaledAir",
+      "proposed": "void __fastcall BSP_RetainedSoundChannel_DestroyScaledAir(void* self)",
+      "before": "Function: FUN_00a7dc20 at 00a7dc20\nSignature: undefined FUN_00a7dc20(void)\nEntry: 00a7dc20\nBody: 00a7dc20 - 00a7dc6b",
+      "apply": "Successfully set prototype for function at 00a7dc20 with __fastcall calling convention",
+      "after": "Function: BSP_RetainedSoundChannel_DestroyScaledAir at 00a7dc20\nSignature: void __fastcall BSP_RetainedSoundChannel_DestroyScaledAir(void * self)\nEntry: 00a7dc20\nBody: 00a7dc20 - 00a7dc6b",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_RetainedSoundChannel_DestroyScaledAir at 00a7dc20\nSignature: void __fastcall BSP_RetainedSoundChannel_DestroyScaledAir(void * self)\nEntry: 00a7dc20\nBody: 00a7dc20 - 00a7dc6b",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7dc70",
+      "name": "BSP_RetainedSoundChannel_ScalarDeleteScaledAir",
+      "proposed": "void* __fastcall BSP_RetainedSoundChannel_ScalarDeleteScaledAir(void* self, void* unused_edx, uint flags)",
+      "before": "Function: FUN_00a7dc70 at 00a7dc70\nSignature: undefined FUN_00a7dc70(void)\nEntry: 00a7dc70\nBody: 00a7dc70 - 00a7dccf",
+      "apply": "Successfully set prototype for function at 00a7dc70 with __fastcall calling convention",
+      "after": "Function: BSP_RetainedSoundChannel_ScalarDeleteScaledAir at 00a7dc70\nSignature: void * __fastcall BSP_RetainedSoundChannel_ScalarDeleteScaledAir(void * self, void * unused_edx, uint flags)\nEntry: 00a7dc70\nBody: 00a7dc70 - 00a7dccf",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_RetainedSoundChannel_ScalarDeleteScaledAir at 00a7dc70\nSignature: void * __fastcall BSP_RetainedSoundChannel_ScalarDeleteScaledAir(void * self, void * unused_edx, uint flags)\nEntry: 00a7dc70\nBody: 00a7dc70 - 00a7dccf",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7dcd0",
+      "name": "BSP_RetainedSoundChannel_ConstructUnderwater",
+      "proposed": "void* __fastcall BSP_RetainedSoundChannel_ConstructUnderwater(void* self, void* unused_edx, void* source, void* class_slot)",
+      "before": "Function: FUN_00a7dcd0 at 00a7dcd0\nSignature: undefined FUN_00a7dcd0(void)\nEntry: 00a7dcd0\nBody: 00a7dcd0 - 00a7dd56",
+      "apply": "Successfully set prototype for function at 00a7dcd0 with __fastcall calling convention",
+      "after": "Function: BSP_RetainedSoundChannel_ConstructUnderwater at 00a7dcd0\nSignature: void * __fastcall BSP_RetainedSoundChannel_ConstructUnderwater(void * self, void * unused_edx, void * source, void * class_slot)\nEntry: 00a7dcd0\nBody: 00a7dcd0 - 00a7dd56",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_RetainedSoundChannel_ConstructUnderwater at 00a7dcd0\nSignature: void * __fastcall BSP_RetainedSoundChannel_ConstructUnderwater(void * self, void * unused_edx, void * source, void * class_slot)\nEntry: 00a7dcd0\nBody: 00a7dcd0 - 00a7dd56",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7dd60",
+      "name": "BSP_RetainedSoundChannel_DestroyUnderwater",
+      "proposed": "void __fastcall BSP_RetainedSoundChannel_DestroyUnderwater(void* self)",
+      "before": "Function: FUN_00a7dd60 at 00a7dd60\nSignature: undefined FUN_00a7dd60(void)\nEntry: 00a7dd60\nBody: 00a7dd60 - 00a7ddab",
+      "apply": "Successfully set prototype for function at 00a7dd60 with __fastcall calling convention",
+      "after": "Function: BSP_RetainedSoundChannel_DestroyUnderwater at 00a7dd60\nSignature: void __fastcall BSP_RetainedSoundChannel_DestroyUnderwater(void * self)\nEntry: 00a7dd60\nBody: 00a7dd60 - 00a7ddab",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_RetainedSoundChannel_DestroyUnderwater at 00a7dd60\nSignature: void __fastcall BSP_RetainedSoundChannel_DestroyUnderwater(void * self)\nEntry: 00a7dd60\nBody: 00a7dd60 - 00a7ddab",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7ddb0",
+      "name": "BSP_RetainedSoundChannel_ScalarDeleteUnderwater",
+      "proposed": "void* __fastcall BSP_RetainedSoundChannel_ScalarDeleteUnderwater(void* self, void* unused_edx, uint flags)",
+      "before": "Function: FUN_00a7ddb0 at 00a7ddb0\nSignature: undefined FUN_00a7ddb0(void)\nEntry: 00a7ddb0\nBody: 00a7ddb0 - 00a7de0f",
+      "apply": "Successfully set prototype for function at 00a7ddb0 with __fastcall calling convention",
+      "after": "Function: BSP_RetainedSoundChannel_ScalarDeleteUnderwater at 00a7ddb0\nSignature: void * __fastcall BSP_RetainedSoundChannel_ScalarDeleteUnderwater(void * self, void * unused_edx, uint flags)\nEntry: 00a7ddb0\nBody: 00a7ddb0 - 00a7de0f",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_RetainedSoundChannel_ScalarDeleteUnderwater at 00a7ddb0\nSignature: void * __fastcall BSP_RetainedSoundChannel_ScalarDeleteUnderwater(void * self, void * unused_edx, uint flags)\nEntry: 00a7ddb0\nBody: 00a7ddb0 - 00a7de0f",
+      "verified_after_annotation": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7f2f0",
+        "prototype": "void __fastcall BSP_SoundSystem_SetRetainedChannel(void* self, void* unused_edx, void* source, int index)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7f2f0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7f0f0",
+        "prototype": "void* __fastcall BSP_SoundClassArray_GetGrowingSlot(void* self, void* unused_edx, int index)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7f0f0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0054d510",
+        "prototype": "void* __fastcall BSP_SoundReference_Adopt(void* self, void* unused_edx, void* replacement)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0054d510 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0054d4c0",
+        "prototype": "void* __fastcall BSP_VoiceSoundReference_Assign(void* self, void* unused_edx, void* source_slot)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0054d4c0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7c5f0",
+        "prototype": "void* __fastcall BSP_SoundRetainedSourceRecord_CopyConstruct(void* self, void* unused_edx, void* source)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7c5f0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "004c7fa0",
+        "prototype": "void __fastcall BSP_SoundRetainedSourceRecord_Destruct(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 004c7fa0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "004e7bb0",
+        "prototype": "void* __fastcall BSP_SoundSampleReference_Assign(void* self, void* unused_edx, void* source)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 004e7bb0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7b520",
+        "prototype": "void __fastcall BSP_RetainedSoundChannel_UpdateRamp(void* self, void* unused_edx, float dt, uint listener)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7b520 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7b5d0",
+        "prototype": "void __fastcall BSP_RetainedSoundChannel_UpdateScaledRamp(void* self, void* unused_edx, float dt, uint listener)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7b5d0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7b690",
+        "prototype": "void __fastcall BSP_RetainedSoundChannel_UpdateNonpositive(void* self, void* unused_edx, float dt, uint listener)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7b690 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7da40",
+        "prototype": "void* __fastcall BSP_RetainedSoundChannel_ConstructAir(void* self, void* unused_edx, void* source, void* class_slot)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7da40 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7dad0",
+        "prototype": "void __fastcall BSP_RetainedSoundChannel_DestroyAir(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7dad0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7db20",
+        "prototype": "void* __fastcall BSP_RetainedSoundChannel_ScalarDeleteAir(void* self, void* unused_edx, uint flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7db20 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7db80",
+        "prototype": "void* __fastcall BSP_RetainedSoundChannel_ConstructScaledAir(void* self, void* unused_edx, void* source, void* class_slot)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7db80 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7dc20",
+        "prototype": "void __fastcall BSP_RetainedSoundChannel_DestroyScaledAir(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7dc20 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7dc70",
+        "prototype": "void* __fastcall BSP_RetainedSoundChannel_ScalarDeleteScaledAir(void* self, void* unused_edx, uint flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7dc70 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7dcd0",
+        "prototype": "void* __fastcall BSP_RetainedSoundChannel_ConstructUnderwater(void* self, void* unused_edx, void* source, void* class_slot)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7dcd0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7dd60",
+        "prototype": "void __fastcall BSP_RetainedSoundChannel_DestroyUnderwater(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7dd60 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7ddb0",
+        "prototype": "void* __fastcall BSP_RetainedSoundChannel_ScalarDeleteUnderwater(void* self, void* unused_edx, uint flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7ddb0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}
