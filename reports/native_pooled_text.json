@@ -1,0 +1,352 @@
+{
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "bridge": "http://127.0.0.1:8089",
+  "functions": [
+    {
+      "address": "00aee1e0",
+      "end_inclusive": "00aee211",
+      "byte_count": 50,
+      "sha256": "bd63b1bd715dd384ce48e07319578fd02fa01b5b65435b4493a526abf83f8f8e",
+      "bytes_hex": "8b5424048bc2568d70018d9b000000008a0883c00184c975f72bc66a0183c0015052e8b9ba92ff8bc8e802330e005ec20400",
+      "last_instruction": "00aee20f: RET 4",
+      "native_call_rows": [
+        {
+          "address": "00aee202",
+          "native": "00419cc0",
+          "function": "00aee1e0"
+        },
+        {
+          "address": "00aee209",
+          "native": "00bd1510",
+          "function": "00aee1e0"
+        }
+      ],
+      "cpp_function": "release_native_pooled_text_bytes_00aee1e0",
+      "original_abi": "stack char*; RET4",
+      "coverage": "complete body; native calling convention and external pool/CRT/scratch identities explicitly bound"
+    },
+    {
+      "address": "00aee2a0",
+      "end_inclusive": "00aee2d6",
+      "byte_count": 55,
+      "sha256": "2ba588048d71bfd3a508a9ce493a1cca7df1f9d19c54ad38c93b6a33676b5ad2",
+      "bytes_hex": "568bf18b1685d274268bc2578d7801908a0883c00184c975f72bc76a0183c0015052e8f9b992ff8bc8e842320e005fc706000000005ec3",
+      "last_instruction": "00aee2d6: RET",
+      "native_call_rows": [
+        {
+          "address": "00aee2c2",
+          "native": "00419cc0",
+          "function": "00aee2a0"
+        },
+        {
+          "address": "00aee2c9",
+          "native": "00bd1510",
+          "function": "00aee2a0"
+        }
+      ],
+      "cpp_function": "destroy_native_pooled_text_00aee2a0",
+      "original_abi": "ECX header; RET",
+      "coverage": "complete body; native calling convention and external pool/CRT/scratch identities explicitly bound"
+    },
+    {
+      "address": "00aee2e0",
+      "end_inclusive": "00aee339",
+      "byte_count": 90,
+      "sha256": "cfcd9a84c05e42c433a4a1cddb94326bf6e44b6cfc44cb2b885a20872cd07dda",
+      "bytes_hex": "538b5c24088b0385c0578bf9743f8d50018a0883c00184c975f72bc2568bf0e8bcb992ff6a0183c601568bc8e80f2e0e0089078b0b8bd05e8a01880283c10183c20184c075f28bc75f5bc20400c707000000008bc75f5bc20400",
+      "last_instruction": "00aee337: RET 4",
+      "native_call_rows": [
+        {
+          "address": "00aee2ff",
+          "native": "00419cc0",
+          "function": "00aee2e0"
+        },
+        {
+          "address": "00aee30c",
+          "native": "00bd1120",
+          "function": "00aee2e0"
+        }
+      ],
+      "cpp_function": "copy_construct_native_pooled_text_00aee2e0",
+      "original_abi": "ECX destination; stack source header; RET4; EAX destination",
+      "coverage": "complete body; native calling convention and external pool/CRT/scratch identities explicitly bound"
+    },
+    {
+      "address": "00aee340",
+      "end_inclusive": "00aee3b3",
+      "byte_count": 116,
+      "sha256": "d274f694ddf8d91f503dfa5ce90cb7fa386d5c25dc65d578397be8eefe5e108d",
+      "bytes_hex": "53578b7c240c85ff8bd975075f33c05bc204008a075633f63c207e178d6424003c7f7d0b8a443e0183c6013c207ff185f675085e5f33c05bc204008b0385c0740650e859feffffe834b992ff6a018d4e01518bc8e8872d0e005657508903e8ddae10008b1383c40cc60416008bc65e5f5bc20400",
+      "last_instruction": "00aee3b1: RET 4",
+      "native_call_rows": [
+        {
+          "address": "00aee382",
+          "native": "00aee1e0",
+          "function": "00aee340"
+        },
+        {
+          "address": "00aee387",
+          "native": "00419cc0",
+          "function": "00aee340"
+        },
+        {
+          "address": "00aee394",
+          "native": "00bd1120",
+          "function": "00aee340"
+        },
+        {
+          "address": "00aee39e",
+          "native": "00bf9280",
+          "function": "00aee340"
+        }
+      ],
+      "cpp_function": "assign_native_pooled_text_prefix_00aee340",
+      "original_abi": "ECX destination; stack char*; RET4; EAX length",
+      "coverage": "complete body; native calling convention and external pool/CRT/scratch identities explicitly bound"
+    },
+    {
+      "address": "00aee3c0",
+      "end_inclusive": "00aee4cf",
+      "byte_count": 272,
+      "sha256": "785c0df978c492950194314425dcdb22737b817d7bc6a911ca490d39cae2450c",
+      "bytes_hex": "6aff6851a6cb0064a100000000506489250000000083ec0833c08944240456894424048b313bf0c74424140100000075248b74241c8d442404508bcee8dffeffff8bc65e8b4c240864890d0000000083c414c20800558bce5783cdff8d7901908a1183c10184d275f72bcf85c97e3e8a1680fa207c0780fa7f7d0233ed8b7c24288a140680fa207c2480fa7f7d1f3bef744a80fa20753c83c5013bc17d0f8bff803c0620753083c0013bc17cf38b7424248d54240c528bcee863feffff8b4c24145f5d8bc65e64890d0000000083c414c2080083c0013bc17ca7ebd103f0568d4c2410e898feffff8b7424248d4c240c518bcee828feffff8d4c240cc744241001000000c644241c00e8d2fdffffebad",
+      "last_instruction": "00aee4ce: JMP 0xaee47d",
+      "native_call_rows": [
+        {
+          "address": "00aee3fc",
+          "native": "00aee2e0",
+          "function": "00aee3c0"
+        },
+        {
+          "address": "00aee478",
+          "native": "00aee2e0",
+          "function": "00aee3c0"
+        },
+        {
+          "address": "00aee4a3",
+          "native": "00aee340",
+          "function": "00aee3c0"
+        },
+        {
+          "address": "00aee4b3",
+          "native": "00aee2e0",
+          "function": "00aee3c0"
+        },
+        {
+          "address": "00aee4c9",
+          "native": "00aee2a0",
+          "function": "00aee3c0"
+        }
+      ],
+      "cpp_function": "get_native_pooled_text_token_00aee3c0",
+      "original_abi": "ECX line; stack output,index; RET8; EAX output",
+      "coverage": "complete body; native calling convention and external pool/CRT/scratch identities explicitly bound"
+    },
+    {
+      "address": "00aedf80",
+      "end_inclusive": "00aedf97",
+      "byte_count": 24,
+      "sha256": "2d5236de7d86a3b76ba36e9670223b6467afe15a468c00f908e7a19c59d1e115",
+      "bytes_hex": "8b4424048b095051e832a0100083c40885c00f94c0c20400",
+      "last_instruction": "00aedf95: RET 4",
+      "native_call_rows": [
+        {
+          "address": "00aedf88",
+          "native": "00bf7fbf",
+          "function": "00aedf80"
+        }
+      ],
+      "cpp_function": "equal_native_pooled_text_00aedf80",
+      "original_abi": "ECX header; stack char*; RET4; AL bool",
+      "coverage": "complete body; native calling convention and external pool/CRT/scratch identities explicitly bound"
+    },
+    {
+      "address": "00af55f0",
+      "end_inclusive": "00af55f8",
+      "byte_count": 9,
+      "sha256": "2ad283f71c03640fe0a9a3d28b3b48770594921725505784359a5fef9010dcee",
+      "bytes_hex": "33c0894104894118c3",
+      "last_instruction": "00af55f8: RET",
+      "native_call_rows": [],
+      "cpp_function": "rewind_native_text_buffer_00af55f0",
+      "original_abi": "ECX buffer; RET; EAX zero is incidental",
+      "coverage": "complete body; native calling convention and external pool/CRT/scratch identities explicitly bound"
+    },
+    {
+      "address": "00af5600",
+      "end_inclusive": "00af5615",
+      "byte_count": 22,
+      "sha256": "03e70b7764c2d7ed1512999eac11388e5d896949f25a80a7bf23edd57bffd8c2",
+      "bytes_hex": "8bc133c989480c8948108948048908894814894818c3",
+      "last_instruction": "00af5615: RET",
+      "native_call_rows": [],
+      "cpp_function": "initialize_native_text_buffer_00af5600",
+      "original_abi": "ECX buffer; RET; EAX buffer",
+      "coverage": "complete body; native calling convention and external pool/CRT/scratch identities explicitly bound"
+    },
+    {
+      "address": "00af5660",
+      "end_inclusive": "00af56bb",
+      "byte_count": 92,
+      "sha256": "3d9bd80dbeef910f88ceb539161f8b831cc25d0c167e664d0566ecabc0c65eb8",
+      "bytes_hex": "53578b7c240c85ff8bd97509893b5f8bc35bc204008bc78d50018d9b000000008a0883c00184c975f72bc2568bf0e82d4692ff6a0183c601568bc8e880ba0d0089038bcf8bd05e8a01880283c10183c20184c075f25f8bc35bc20400",
+      "last_instruction": "00af56b9: RET 4",
+      "native_call_rows": [
+        {
+          "address": "00af568e",
+          "native": "00419cc0",
+          "function": "00af5660"
+        },
+        {
+          "address": "00af569b",
+          "native": "00bd1120",
+          "function": "00af5660"
+        }
+      ],
+      "cpp_function": "construct_native_pooled_text_00af5660",
+      "original_abi": "ECX destination; stack char*; RET4; EAX destination",
+      "coverage": "complete body; native calling convention and external pool/CRT/scratch identities explicitly bound"
+    },
+    {
+      "address": "00af56c0",
+      "end_inclusive": "00af573a",
+      "byte_count": 123,
+      "sha256": "6df196f7c24a910c06c421f551f2696c16bcb4782e6dd247b24e99f5aa66025a",
+      "bytes_hex": "538bd98b0b85c9565774238bc18d70018a1083c00184d275f72bc66a0183c0015051e8d94592ff8bc8e822be0d008b7c24108b0785c0743b8d5001eb038d49008a0883c00184c975f72bc28bf0e8ae4592ff6a0183c601568bc8e801ba0d0089038b0f8bd08a01880283c10183c20184c075f25f5e8bc35bc20400",
+      "last_instruction": "00af5738: RET 4",
+      "native_call_rows": [
+        {
+          "address": "00af56e2",
+          "native": "00419cc0",
+          "function": "00af56c0"
+        },
+        {
+          "address": "00af56e9",
+          "native": "00bd1510",
+          "function": "00af56c0"
+        },
+        {
+          "address": "00af570d",
+          "native": "00419cc0",
+          "function": "00af56c0"
+        },
+        {
+          "address": "00af571a",
+          "native": "00bd1120",
+          "function": "00af56c0"
+        }
+      ],
+      "cpp_function": "assign_native_pooled_text_00af56c0",
+      "original_abi": "ECX destination; stack source header; RET4; EAX destination",
+      "coverage": "complete body; native calling convention and external pool/CRT/scratch identities explicitly bound"
+    },
+    {
+      "address": "00af5740",
+      "end_inclusive": "00af5841",
+      "byte_count": 258,
+      "sha256": "07d0a6f295d8ab1aeec2098ddce4c6dd318d9da389056e301fafd4ef7f488f5c",
+      "bytes_hex": "6aff68f8accb0064a100000000506489250000000051568b711485f6751432c05e8b4c240464890d0000000083c410c204008b41043b41087de48d9b000000008b5104803c320a740b83c2018951043b51087cec8b51043bc27d12eb038d4900803c06207f0783c0013bc27cf333f63bc2731c8b51148a141080fa207c098896c8c2f80083c60183c0013b410472e4c686c8c2f800008341040168c8c2f8008d4c2408e878feffff8b4c241850c744241400000000e8c6feffff8b54240485d2c7442410ffffffff74248bc28d7001908a0883c00184c975f72bc66a0183c0015052e8994492ff8bc8e8e2bc0d008b4c2408b0015e64890d0000000083c410c20400",
+      "last_instruction": "00af583f: RET 4",
+      "native_call_rows": [
+        {
+          "address": "00af57e3",
+          "native": "00af5660",
+          "function": "00af5740"
+        },
+        {
+          "address": "00af57f5",
+          "native": "00af56c0",
+          "function": "00af5740"
+        },
+        {
+          "address": "00af5822",
+          "native": "00419cc0",
+          "function": "00af5740"
+        },
+        {
+          "address": "00af5829",
+          "native": "00bd1510",
+          "function": "00af5740"
+        }
+      ],
+      "cpp_function": "read_native_text_buffer_line_00af5740",
+      "original_abi": "ECX buffer; stack output header; RET4; AL bool",
+      "coverage": "complete body; native calling convention and external pool/CRT/scratch identities explicitly bound"
+    }
+  ],
+  "packet": "orch3_pooled_text_ao",
+  "implementation": "src/native_pooled_text.cpp",
+  "header": "include/bsp/native_pooled_text.hpp",
+  "documentation": "docs/NATIVE_POOLED_TEXT.md",
+  "coverage": "11 complete native bodies; actual 4-byte pooled text headers and raw TextBuffer accessed fields; explicit canonical pool and scratch bindings",
+  "previous_semantic_helpers_preserved": [
+    "src/texture_atlas.cpp AEE340/AEE3C0/AF55F0/AF5740"
+  ],
+  "storage_contract": {
+    "canonical_interface": "NativeStringStorage",
+    "canonical_actual_bridge": "ActualNativeStringPoolStorage",
+    "allocation": "00419CC0 then BD1120(strlen+1,1)",
+    "release": "00419CC0 then BD1510(pointer,strlen+1,1)",
+    "no_second_allocator": true
+  },
+  "scratch_binding": "caller supplies current shared F8C2C8 char*; adequate writable capacity is a precondition",
+  "buffer_producer_evidence": {
+    "function": "00af5850",
+    "size_stores": [
+      "00af58ba",
+      "00af58bc"
+    ],
+    "data_store": "00af58dc",
+    "accessed_offsets": {
+      "00": "stream size",
+      "04": "cursor",
+      "08": "extent",
+      "0c": "NativeString length",
+      "10": "NativeString data",
+      "14": "loaded bytes",
+      "18": "auxiliary cursor field"
+    },
+    "unimplemented_gap": "00af58fb..00af590c after 00bf6989 free; root notified"
+  },
+  "non_executable_listing_gaps": [
+    {
+      "start": "00af56fd",
+      "end_inclusive": "00af56ff",
+      "bytes": "8d4900",
+      "decoded": "LEA ECX,[ECX]"
+    },
+    {
+      "start": "00af579d",
+      "end_inclusive": "00af579f",
+      "bytes": "8d4900",
+      "decoded": "LEA ECX,[ECX]"
+    }
+  ],
+  "verification": {
+    "capture": "all live Ghidra bytes equal installed PE for all complete bodies",
+    "differential": "PASS 42 observations and 67 pool events",
+    "compiler": "MSVC Win32 /std:c++17 /W4 /WX /fp:strict /MD /EHsc",
+    "linker": "/MANIFEST:EMBED",
+    "scratch_directory": "C:\\Users\\sqz269\\bsp-ao-text",
+    "commands": [
+      "python capture.py",
+      "python relocations.py",
+      "powershell -File build.ps1",
+      "python report.py",
+      "python tools/verify_report_calls.py reports/native_pooled_text.json"
+    ],
+    "repository_build": "primary integrator responsibility",
+    "permanent_tests_added": false
+  },
+  "limitations": [
+    "New C++ interfaces do not preserve original calling conventions.",
+    "Native SEH/unwind and allocation failure untested.",
+    "Native byte fixture uses returning pool and CRT hooks, not live game services.",
+    "Unsafe self/null assignment probed with retained returned blocks and zero-filled new blocks.",
+    "AF5850 buffer loading/destruction and shared scratch capacity not reconstructed.",
+    "Current host CRT case comparison; exercised ASCII domain only."
+  ]
+}
