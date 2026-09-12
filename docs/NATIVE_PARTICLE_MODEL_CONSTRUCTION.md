@@ -228,3 +228,14 @@ The parallel MSBuild invocation remains intermittent: a later documentation-only
 rerun again hit MSB3491 before C++ compilation. The final serial full build and
 both existing CTests passed again on unchanged source. This environment issue
 was recorded rather than changing global permissions or build configuration.
+
+## Correction from AL manager and lifetime reconstruction
+
+AF74A0 now directly calls the concrete AF0950 weak-pointer registration in
+native_particle_model_manager.cpp. Constructor unwind directly uses concrete
+AF6B70, AFD0F0 and AFD1E0 from native_particle_model_lifetime.cpp. Those three
+required host methods were removed; array resize AFD130/AFD220 remains required.
+The model environment must bind the same actual_names storage as material
+parameter names so its node-name destruction returns storage to the same pool.
+See NATIVE_PARTICLE_MODEL_MANAGER.md, NATIVE_PARTICLE_MODEL_LIFETIME.md and
+reports/native_model_actual_names.json. Full AF74A0 execution remains unvalidated.

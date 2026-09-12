@@ -1,0 +1,937 @@
+{
+  "schema_version": 1,
+  "packet": "renderer_reset_readiness5",
+  "kind": "read_only_current_source_dependency_audit",
+  "base_commit": "d24bf877ebd6d3c44c2ebc813ccc86ec3ab989dd",
+  "captured_utc": "2026-09-12T16:53:45.434505+00:00",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "identity_verification": "Each bsp ghidra invocation constructs ghidra_export.Client and calls verify() before its supported query; no direct server scripts or Ghidra mutations used.",
+  "native_spans": [
+    {
+      "address": "00b29670",
+      "length": 1191,
+      "end_exclusive": "00b29b17",
+      "sha256": "40bcbd2182d3da8c7ed3b77394c30d595c65a95cfa896432e76cd063afaa65e4",
+      "saved_ghidra_equals_installed_pe": true,
+      "query_output": "local/renderer_reset_readiness5/00b29670.txt",
+      "query_output_sha256": "86eb83791dd84b7a6d7d8f8212b1e90023ddc8bd6fc3474f85e8a77c34b5bbc4"
+    },
+    {
+      "address": "00b262c0",
+      "length": 468,
+      "end_exclusive": "00b26494",
+      "sha256": "b267293435d48a5841ad373e91ab258f36260557523c1afd72031fd06673b83a",
+      "saved_ghidra_equals_installed_pe": true,
+      "query_output": "local/renderer_reset_readiness5/00b262c0.txt",
+      "query_output_sha256": "1bfe9ccd1a2c2aaee447c1cc2eae32b4eac719cc0a3f59e0eecf9b587527603f"
+    },
+    {
+      "address": "00b241c0",
+      "length": 664,
+      "end_exclusive": "00b24458",
+      "sha256": "7e2cd8817943cddb628ec0e38b6e5747cf5f238f2556f06844f5c950d8e92f65",
+      "saved_ghidra_equals_installed_pe": true,
+      "query_output": "local/renderer_reset_readiness5/00b241c0.txt",
+      "query_output_sha256": "58816c33bb406d772423184767326ebf51cd418cdaf614a4ac785c182acd7695"
+    },
+    {
+      "address": "00b24bf0",
+      "length": 453,
+      "end_exclusive": "00b24db5",
+      "sha256": "9f8f41242778b5c0fa78eb890e032cd8eca416046ed989f69d7b232757f5e195",
+      "saved_ghidra_equals_installed_pe": true,
+      "query_output": "local/renderer_reset_readiness5/00b24bf0.txt",
+      "query_output_sha256": "600e63e75fa12b4b2a0ee1585aa3da365954c2bfcc5875c848e06d7d443844b1"
+    },
+    {
+      "address": "00b27b00",
+      "length": 130,
+      "end_exclusive": "00b27b82",
+      "sha256": "910f722862a6acb252559d61b693c0593e447bc8b162b5eec3f56f1fe8e33052",
+      "saved_ghidra_equals_installed_pe": true,
+      "query_output": "local/renderer_reset_readiness5/00b27b00.txt",
+      "query_output_sha256": "2fe429304a868e9428d88ab451b098fd47b07b3dcf634ac73b8a5f5101366e0c"
+    },
+    {
+      "address": "00b2992c",
+      "length": 57,
+      "end_exclusive": "00b29965",
+      "sha256": "ac81c69cfcec744ec39a37af61f187f96e1455eed16fc216f08314dd12cbd3c2",
+      "saved_ghidra_equals_installed_pe": true,
+      "query_output": "local/renderer_reset_readiness5/00b2992c.txt",
+      "query_output_sha256": "abd54891f683d9457d9f7bca91a8214caa25ad25a40630b64f471ed413e975c4"
+    }
+  ],
+  "total_compared_bytes": 2963,
+  "current_lookups": {
+    "00b29670": [
+      "ledger name: BSP_D3D9Renderer_RecreateDevice - Holds tracked lock pointer+199Ch through release resources/device, HAL CreateDevice, default states and resource restore callbacks. Separate from Reset processor00b2abd0. Increments/decrements lock+18h depth; worker polls this depth. Full routine unported."
+    ],
+    "00b262c0": [
+      "ledger name: BSP_D3D9Renderer_ReleaseResourcesForReset - Optional guard, enabled byte+1d8bh. Unbinds textures/streams/index via virtual calls; invokes surface release +3ch and other registered resource callbacks; finally clears cache subobject at this+34h using 00b241c0. Full dependency graph not ported. Surface loop00b263FF..00b26432 retains rawcursor an",
+      "reconstruction: fragment release_default_surfaces status=real_device_default_and_registered_surface_reset_checked source=src/d3d9_resources.cpp",
+      "reconstruction: fragment release_query_list status=real_query_reset_probe_checked source=src/d3d9_query.cpp",
+      "reconstruction: fragment release_registered_surfaces status=device_reset_probe_checked source=src/d3d9_resources.cpp"
+    ],
+    "00b241c0": [
+      "ledger name: BSP_D3D9Renderer_ClearBindingCache - Receives cache subobject at renderer+34h, not renderer base. Releases intrusive references, clears 210 render-valid bytes, twenty sampler-valid banks and other binding caches. Full cache layout and port remain incomplete. | Correction to earlier twenty-sampler wording: general reset visits16 banks; ",
+      "reconstruction: fragment clear_constructed_cache_all_null_00b241c0_fragment status=private_all_null_constructor_control_flow_slice_original_caller_fixture_and_build_checked source=src/native_render_cache_construction.cpp"
+    ],
+    "00b24bf0": [
+      "ledger name: BSP_D3D9Renderer_ResetBindingsBeforeRecreation - Complete453-byte B24BF0 binding-reset discovery; originalECXrenderer/noargs/RET. Current D5F0A8 table reload before eachcall:20texture+130(sampler,0),fourvertex+134(0,0),index+138(0,0). Three independent FH3 states reuseactualguard; clearcached pixel+176C andvertex+1770 beforecurrentdevice SetPixelS"
+    ],
+    "00b24840": [
+      "ledger name: BSP_D3D9Renderer_BindVertexStream - Vtable+134h. Caches logical stream object and intrusive ref; compares underlying COM buffer, stride from declaration+cc and offset to skip redundant SetStreamSource. Same logical object returns early. Device slot190h, counter+1bb4h. Wrapper-based path not yet ported. Update: semantic binding/draw pr",
+      "reconstruction: function bind_vertex_stream status=semantic_logical_stream_indexed_pixel_readback_checked source=src/d3d9_states.cpp"
+    ],
+    "00b23710": [],
+    "00b62010": [],
+    "00b24710": [
+      "ledger name: BSP_D3D9Renderer_BindTexture - Recovered missing function, ECX renderer stack sampler/logical RET8. Guard precedes identity check, retains new/releases old logical; texture via virtual+1Ch; sampler>=16 addsF1h; SetTexture including null, attempted counter+1BC4h. Typed shared logical/borrowedCOM port; real atlas draw and null unbi",
+      "reconstruction: function bind_native_renderer_texture_00b24710 status=complete_actual_storage_primary_library_real_D3D9_original_EH_fixture_and_strict_Win32_checked source=src/native_renderer_texture_binding.cpp",
+      "reconstruction: function bind_texture status=semantic_real_atlas_texture_binding_checked source=src/d3d9_states.cpp"
+    ],
+    "00b24b00": [
+      "ledger name: BSP_D3D9Renderer_BindIndexStream - Recovered vtable+138h. Always writes base vertex+17bch; only changes SetIndices when logical index wrapper+17b8h changes, managing intrusive ref and obtaining COM pointer through wrapper+28h. Counter+1bb8h. Not ported. Update: semantic binding/draw projection now ported with shared logical ownership",
+      "reconstruction: function bind_index_stream status=semantic_logical_stream_indexed_pixel_readback_checked source=src/d3d9_states.cpp",
+      "reconstruction: function bind_native_renderer_index_stream_00b24b00 status=complete_actual_storage_primary_library_real_D3D9_original_EH_fixture_and_strict_Win32_checked source=src/native_renderer_index_binding.cpp"
+    ],
+    "00b23f20": [
+      "ledger name: BSP_D3D9Renderer_BindVertexLayout - Thiscall RET4. Renderer+17B4h logical identity check before optional guard. Retain new/release old layout; nonnull virtual+8 returns COM declaration then device+15Ch SetVertexDeclaration. Null replacement releases cached layout without API unbind. Renderer+1BACh increments for replacements including",
+      "reconstruction: function bind_native_renderer_vertex_layout_00b23f20 status=complete_actual_storage_primary_library_real_D3D9_original_EH_fixture_and_strict_Win32_checked source=src/native_renderer_vertex_layout_binding.cpp",
+      "reconstruction: function bind_vertex_layout status=semantic_logical_stream_atlas_draw_identity_null_readback_checked source=src/d3d9_states.cpp"
+    ],
+    "00b24e70": [
+      "ledger name: BSP_D3D9Renderer_BindFrameTargets - Optional guard before identity comparison. Publish and retain new renderer+1908 target group before releasing old. Null changes no GPU state. Nonnull optionally writes render state194 from exact group+3C byte, unbinds color slots1..3, binds all four color slots from group+8..14, then depth from+18. ",
+      "reconstruction: fragment renderer_retained_frame_targets status=typed_fragment_build_checked source=src/d3d9_states.cpp",
+      "reconstruction: function bind_native_renderer_frame_targets_00b24e70 status=complete_actual_renderer_primary_library_original_parent_fixture_and_strict_Win32_checked source=src/native_renderer_frame_targets.cpp"
+    ],
+    "00b237d0": [
+      "ledger name: BSP_D3D9Renderer_ReleaseDynamicBuffersForReset - Optional guard. If +1d8ch enabled, clears flag, releases and nulls COM pointers +28h in wrappers at renderer+1974h/+1978h, vertex before index. Wrapper objects survive. Guardedtyped implementation now composes bodyfragment; guard precedes readinessskip, ready cleared before vertex/index COMoperation",
+      "reconstruction: function release_dynamic_buffers status=real_device_reset_readiness_metadata_guard_checked source=src/d3d9_states.cpp",
+      "reconstruction: function release_native_dynamic_buffers_for_reset_00b237d0 status=complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked source=src/native_dynamic_buffer_device_release.cpp"
+    ],
+    "00b23b10": [
+      "ledger name: BSP_D3D9Renderer_RestoreResourcesAfterReset - Runs when resources not ready (+1d8bh=0) and device not marked lost (+1d8ah=0). Reacquires default render/depth surfaces through GetRenderTarget/GetDepthStencilSurface and wrapper+14h initialize; invokes registered restore callbacks, including surface+40h recreation. Fullroutine not ported. Surface ",
+      "reconstruction: fragment recreate_registered_surfaces status=device_reset_probe_checked source=src/d3d9_resources.cpp",
+      "reconstruction: fragment restore_default_surfaces status=real_device_default_and_registered_surface_reset_checked source=src/d3d9_resources.cpp",
+      "reconstruction: fragment restore_query_list status=real_query_reset_probe_checked source=src/d3d9_query.cpp",
+      "reconstruction: function restore_native_renderer_resources_00b23b10 status=complete_actual_storage_primary_library_real_D3D9_original_fixture_and_strict_Win32_checked source=src/native_renderer_resource_restore.cpp"
+    ],
+    "00b24460": [
+      "ledger name: BSP_D3D9Renderer_SetRenderStateCached - thiscall RET 8h. Valid byte at this+40h+state, value at this+114h+4*state. Writes cache before device virtual E4h SetRenderState, increments +1ba0h even on API failure; skips unchanged valid entries. Optional renderer guard. | Full169byte render setter. Rawvalidbyte renderer40+state read BEFORE clea",
+      "reconstruction: function BSP_D3D9Renderer_SetRenderStateCached status=real_device_defaults_and_cache_probe_checked_single_thread source=src/d3d9_states.cpp",
+      "reconstruction: function set_native_renderer_render_state_00b24460 status=complete_actual_storage_primary_library_original_code_fixture_and_strict_Win32_checked source=src/native_renderer_cached_states.cpp"
+    ],
+    "00b24610": [
+      "ledger name: BSP_D3D9Renderer_SetSamplerStateCached - thiscall RET Ch. Twenty internal sampler banks; samplers >=16 map to API sampler+F1h (vertex samplers 257..260). Cache validity at +11cch+72*sampler+state, DWORD value at +11dch+72*sampler+4*state. Device virtual 114h SetSamplerState; counter +1ba4h; cache updated even on failure. | Full245byte samp",
+      "reconstruction: function BSP_D3D9Renderer_SetSamplerStateCached status=real_device_defaults_and_cache_probe_checked_single_thread source=src/d3d9_states.cpp",
+      "reconstruction: function set_native_renderer_sampler_state_00b24610 status=complete_actual_storage_primary_library_original_code_fixture_and_strict_Win32_checked source=src/native_renderer_cached_states.cpp"
+    ],
+    "00b26170": [
+      "ledger name: BSP_D3D9Renderer_InitializeDefaultStates - thiscall no stack args. Calls cached setter for 19 ordered render states, then seven sampler defaults on each of twenty banks. Defaults include ZFUNC LESS, CULL CCW, linear min/mag, point mip and wrap UVW. Invoked at startup and after successful device reset. | Full335byte default initializer. Exact",
+      "reconstruction: function BSP_D3D9Renderer_InitializeDefaultStates status=real_device_defaults_and_cache_probe_checked_single_thread source=src/d3d9_states.cpp",
+      "reconstruction: function initialize_native_renderer_default_states_00b26170 status=complete_actual_storage_primary_library_original_code_fixture_and_strict_Win32_checked source=src/native_renderer_cached_states.cpp"
+    ],
+    "00b24510": [
+      "ledger name: FUN_00b24510 - Complete241byte renderer texture-stage state setter in src/native_renderer_texture_stage_state.cpp. Actualoptionalguardbeforecache; validityBYTE45C+stageAC+state readB24562 BEFORE EHarmB24571. Ifvalid read currentvalue480+4*(stage2B+state); hit preserves noncanonical validbyte. Invalid/changed write",
+      "reconstruction: function set_native_renderer_texture_stage_state_00b24510 status=complete_actual_storage_primary_library_real_D3D9_original_EH_fixture_and_strict_Win32_checked source=src/native_renderer_texture_stage_state.cpp"
+    ],
+    "00b21960": [
+      "ledger name: BSP_D3D9Renderer_SetGammaRamp - Complete474-byte renderer gamma setter discovered at B21960..B21B3A; original ECX renderer, actual callee float slot, RET4. Optional full synchronization guard, enabled1B53 gate before EH arm, ordered x87 cached equality skip, retained first requested x87 load FADD10 while later MOVSS rereads raw ca",
+      "reconstruction: function set_native_renderer_gamma_00b21960 status=complete_raw_gamma_source_build_and_qualified_original_source_ramp_fixture source=src/native_renderer_gamma.cpp"
+    ],
+    "00b1fd90": [
+      "ledger name: BSP_D3D9Renderer_RestoreDynamicBuffers - If dynamic-ready+1d8ch false and device-lost+1d8ah false, sets ready then invokes vertex/index wrapper virtual20h recreation with renderer device+1a10h. Full renderer orchestration not ported. Typedstableowner/device implementation now composes verified vtable+20 targets00b492b0/00b49180. Ready0andl",
+      "reconstruction: function restore_dynamic_buffers status=real_device_reset_readiness_metadata_guard_checked source=src/d3d9_buffers.cpp",
+      "reconstruction: function restore_native_renderer_dynamic_buffers_00b1fd90 status=four_profile_parent_and_two_exact_private_leaves_main_Win32_original_COM_and_COFF_verified source=src/native_renderer_reset_readiness.cpp"
+    ],
+    "00b49180": [
+      "ledger name: BSP_D3D9IndexBuffer_Recreate - Same metadata decoding and COM replacement sequence as vertex 00b492b0, but CreateIndexBuffer with INDEX16. New interface returns HRESULT and preserves old binding on failure; original ignores failures. | Full276-byte physical index recreation plus16-byte pooltableB49294. Nakedfastcall ECXwrapper, u",
+      "reconstruction: function BSP_D3D9IndexBuffer_Recreate status=real_buffer_upload_probe_checked source=src/d3d9_buffers.cpp",
+      "reconstruction: function recreate_native_physical_index_buffer_00b49180 status=complete_raw_reset_readiness_main_Win32_original_full_provider_COM_and_COFF_verified source=src/native_renderer_reset_readiness.cpp"
+    ],
+    "00b492b0": [
+      "ledger name: BSP_D3D9VertexBuffer_Recreate - thiscall RET4. Decodes wrapper flags+14h into pool and usage; pool0 implies WRITEONLY, dynamic nibble1000h adds DYNAMIC. Creates capacity+18h FVF0 buffer, retains new before releasing old +28h, drops temporary reference. Invalid pool nibble>3 uses device pointer as pool in native assembly; new inter",
+      "reconstruction: function BSP_D3D9VertexBuffer_Recreate status=real_buffer_upload_probe_checked source=src/d3d9_buffers.cpp",
+      "reconstruction: function recreate_native_physical_vertex_buffer_00b492b0 status=complete_raw_reset_readiness_main_Win32_original_full_provider_COM_and_COFF_verified source=src/native_renderer_reset_readiness.cpp"
+    ],
+    "00b4b810": [
+      "ledger name: BSP_PrivateIndexBuffer_RecreateNoOp - Complete3-byte private index recreation leafC20400/RET4 followed13CC padding. ECXreceiver/unusedEDX/stackdevice, neitherargumentread. Exact register/EFLAGS/FP preservation; noCOM,allocation,ownership orsuccesspolicy. New saved3bytefunction only. Private profile+20 atD61E30 targetsit; constructors an",
+      "reconstruction: function recreate_native_private_index_buffer_00b4b810 status=four_profile_parent_and_two_exact_private_leaves_main_Win32_original_COM_and_COFF_verified source=src/native_renderer_reset_readiness.cpp"
+    ],
+    "00b4b9c0": [
+      "ledger name: BSP_PrivateVertexBuffer_RecreateNoOp - Complete3-byte private vertex recreation leafC20400/RET4 followed13CC padding. ECXreceiver/unusedEDX/stackdevice, neitherargumentread. Exact register/EFLAGS/FP preservation; noCOM,allocation,ownership orsuccesspolicy. New saved3bytefunction only. Private profile+20 atD61E54 targetsit; profile doesno",
+      "reconstruction: function recreate_native_private_vertex_buffer_00b4b9c0 status=four_profile_parent_and_two_exact_private_leaves_main_Win32_original_COM_and_COFF_verified source=src/native_renderer_reset_readiness.cpp"
+    ],
+    "00b49d00": [
+      "ledger name: BSP_LogicalVertexBuffer_SaveForDeviceReset - Complete190-byte logical vertex buffer device Save in src/native_logical_buffer_device_save.cpp. Dynamic flag/null physical/null current COM guards. Capture COM/table AddRef then captured-table Release, separately observe capacity for actual CRT new[], Lock and memcpy. Load current physical BEFORE s",
+      "reconstruction: function save_native_logical_vertex_buffer_for_device_reset_00b49d00 status=complete_actual_storage_primary_library_real_D3D9_CRT_original_fixture_and_strict_Win32_checked source=src/native_logical_buffer_device_save.cpp"
+    ],
+    "00b49dc0": [
+      "ledger name: BSP_LogicalVertexBuffer_RestoreAfterDeviceReset - Complete432-byte logical vertex buffer device Restore in src/native_logical_buffer_device_restore.cpp, including verified returning-free tail removed by erroneous Ghidra CALL_RETURN override. Original labels/comments retained, full definitions repaired and project saved. Dynamic/null physical/existi",
+      "reconstruction: function restore_native_logical_vertex_buffer_after_device_reset_00b49dc0 status=complete_actual_storage_primary_library_real_D3D9_CRT_original_fixture_and_strict_Win32_checked source=src/native_logical_buffer_device_restore.cpp"
+    ],
+    "00b49f80": [
+      "ledger name: BSP_LogicalIndexBuffer_SaveForDeviceReset - Complete190-byte logical index buffer device Save in src/native_logical_buffer_device_save.cpp. Dynamic flag/null physical/null current COM guards. Capture COM/table AddRef then captured-table Release, separately observe capacity for actual CRT new[], Lock and memcpy. Load current physical BEFORE sh",
+      "reconstruction: function save_native_logical_index_buffer_for_device_reset_00b49f80 status=complete_actual_storage_primary_library_real_D3D9_CRT_original_fixture_and_strict_Win32_checked source=src/native_logical_buffer_device_save.cpp"
+    ],
+    "00b4a040": [
+      "ledger name: BSP_LogicalIndexBuffer_RestoreAfterDeviceReset - Complete322-byte logical index buffer device Restore in src/native_logical_buffer_device_restore.cpp, including verified returning-free tail removed by erroneous Ghidra CALL_RETURN override. Original labels/comments retained, full definitions repaired and project saved. Dynamic/null physical/existin",
+      "reconstruction: function restore_native_logical_index_buffer_after_device_reset_00b4a040 status=complete_actual_storage_primary_library_real_D3D9_CRT_original_fixture_and_strict_Win32_checked source=src/native_logical_buffer_device_restore.cpp"
+    ],
+    "00b5e750": [
+      "ledger name: BSP_PixelShader_SaveBytecodeAndRelease - Complete105byte pixel shader bytecode save/release. NativePUSHECX initializes sizeDWORD withownerpointerbits. CaptureCOM+8; nullskipsall. ActualcapturedAddRef/Release pair rereadsitscurrenttable. Reloadcurrentowner+8 GetFunction(NULL,&size); exactsize actualBF55BE allocation. CaptureCURRENTshader af",
+      "reconstruction: function save_release_native_pixel_shader_00b5e750 status=complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked source=src/native_shader_device_reset.cpp"
+    ],
+    "00b5e810": [
+      "ledger name: BSP_VertexShader_SaveBytecodeAndRelease - Complete105byte vertex shader bytecode save/release. NativePUSHECX initializes sizeDWORD withownerpointerbits. CaptureCOM+8; nullskipsall. ActualcapturedAddRef/Release pair rereadsitscurrenttable. Reloadcurrentowner+8 GetFunction(NULL,&size); exactsize actualBF55BE allocation. CaptureCURRENTshader a",
+      "reconstruction: function save_release_native_vertex_shader_00b5e810 status=complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked source=src/native_shader_device_reset.cpp"
+    ],
+    "00b5e890": [
+      "ledger name: BSP_PixelShader_RestoreDeviceObject - Complete68byte pixel shader restore. ActualownerCOM+8 nonnullorbytecode+0Cnull returnsbeforeglobalaccess. ThenreadactualF8D394 storage, callactualB1FEF0; reloadbytecode, actualdevice CreatePixelShader+1A8 withactualowner+8output. IgnoreHRESULT, freeCURRENTbytecode+0C viaBF6989, thenzero+0C afterretu",
+      "reconstruction: function restore_native_pixel_shader_00b5e890 status=complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked source=src/native_shader_device_reset.cpp"
+    ],
+    "00b5e8e0": [
+      "ledger name: BSP_VertexShader_RestoreDeviceObject - Complete68byte vertex shader restore. ActualownerCOM+8 nonnullorbytecode+0Cnull returnsbeforeglobalaccess. ThenreadactualF8D394 storage, callactualB1FEF0; reloadbytecode, actualdevice CreateVertexShader+16C withactualowner+8output. IgnoreHRESULT, freeCURRENTbytecode+0C viaBF6989, thenzero+0C afterre",
+      "reconstruction: function restore_native_vertex_shader_00b5e8e0 status=complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked source=src/native_shader_device_reset.cpp"
+    ],
+    "00b600b0": [
+      "ledger name: BSP_HardwareLayout_ReleaseDeviceDeclaration - Complete52byte actual hardware-layout device declaration release. Capture initialowner+40. Ifnonnull, actualcurrenttable+4 AddRef then reload SAMEcaptured declarationtable+8 Release. Independently reload CURRENTowner+40; ifnonnull call itscurrenttable+8 Release then clearowner+40 only afterreturn. C",
+      "reconstruction: function release_native_hardware_layout_device_resource_00b600b0 status=complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked source=src/native_hardware_layout_device_release.cpp"
+    ],
+    "00b60a10": [
+      "ledger name: BSP_D3D9VertexLayout_CreateIfMissing - If COM pointer+40h null, converts stored stream declarations with same cross-stream usage counters and END as00b60790, calls CreateVertexDeclaration then recomputes total stride. Conversion/API/stride path ported; diagnostics omitted and new API returns HRESULT/S_FALSE. | Full666-byte B60A10 includi",
+      "reconstruction: fragment create_if_missing status=hardware_declaration_and_pixel_readback_checked source=src/d3d9_vertex_layout.cpp",
+      "reconstruction: function create_native_hardware_layout_if_missing_00b60a10 status=complete_raw_hardware_create_if_missing_primary_main_Win32_original_COM_composition_and_COFF_verified source=src/native_hardware_layout_create_if_missing.cpp"
+    ],
+    "00b20dc0": [
+      "ledger name: BSP_HardwareVertexLayoutTree_AdvanceIterator - Null owner handler then reload node; sentinel handler returns without advance; publish every climbed parent. Original ABI: ECX actual eight-byte iterator; RET or BF6713 tail; no semantic result. Complete actual-storage implementation in src/native_hardware_layout_tree.cpp; reports/native_hardware_la",
+      "reconstruction: function increment_native_hardware_layout_iterator_00b20dc0 status=integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked source=src/native_hardware_layout_tree.cpp"
+    ],
+    "00b33ad0": [
+      "ledger name: BSP_Renderer_EnterOptionalGuard - Increments non-atomic global nesting 0108d6e0; if mode 0108d6dc enabled and this+4 lock nonnull, enters tracked critical section and increments depth+18h, returns true; otherwise false. | wrapping non-atomic nesting increment first; current mode; capture actual renderer+04; actual EnterCriticalSecti",
+      "reconstruction: function enter_native_renderer_optional_guard_00b33ad0 status=complete_actual_storage_original_caller_real_Win32_fixture_and_strict_build_checked source=src/native_renderer_synchronization_actual.cpp"
+    ],
+    "00b33b00": [
+      "ledger name: BSP_Renderer_LeaveOptionalGuard - thiscall RET 4h; ignores saved enter-result stack argument. Decrements nesting 0108d6e0, conditionally decrements depth/leaves this+4 lock using CURRENT mode 0108d6dc, and when nesting zero copies mode to observed byte 0108d6dd. Concurrent mode transitions not validated. | capture mode before wrappi",
+      "reconstruction: function leave_native_renderer_optional_guard_00b33b00 status=complete_actual_storage_original_caller_real_Win32_fixture_and_strict_build_checked source=src/native_renderer_synchronization_actual.cpp"
+    ],
+    "00b21110": [
+      "ledger name: BSP_Renderer_DestroyOptionalGuard - check current mode before any guard read; enabled loads byte+00 then renderer+04 and calls 00B33B00; no writes, initialization or skipped-entry repair Complete actual8-byte global/guard storage and borrowed renderer/actual1Ch tracked locks, preserving raw byte/DWORD fields and actual Windows operati",
+      "reconstruction: function destroy_native_renderer_optional_guard_00b21110 status=complete_actual_storage_original_caller_real_Win32_fixture_and_strict_build_checked source=src/native_renderer_synchronization_actual.cpp"
+    ],
+    "00b3dd30": [
+      "ledger name: BSP_D3D9Texture_ReleaseCachedLevelsForReset - ECX2Dwrapper RET. Signedindexcached8byterecords+40/+44, eachsurfacevirtual3C; thenbalancedtextureAddRef/Release and ownedCOMdrop/null+10. Typedstableborrowedlevels port; realResetverified existing64/32mipowners. | Full86-byte actual texture2D reset release. Current signed +44 level count/current +40",
+      "reconstruction: function BSP_D3D9Texture_ReleaseCachedLevelsForReset status=installed_font_and_real_device_cached_mip_reset_checked source=src/d3d9_reset_texture.cpp",
+      "reconstruction: function release_native_texture_2d_for_reset_00b3dd30 status=complete_actual_storage_primary_library_real_D3D9_original_fixture_and_strict_Win32_checked source=src/native_texture_device_reset.cpp"
+    ],
+    "00b33f10": [
+      "ledger name: BSP_Texture_ResetNoOp - Complete genuine native RET one-byte reset callback for actual cube D61870 and volume D618B0 profiles; no owner/device/application-storage access. Missing saved-analysis function has now been defined exactly, without inventing behavior. New source interface in src/native_texture_device_reset.cpp bor",
+      "reconstruction: function native_texture_reset_noop_00b33f10 status=complete_actual_storage_primary_library_real_D3D9_original_fixture_and_strict_Win32_checked source=src/native_texture_device_reset.cpp"
+    ],
+    "00b33f20": [
+      "ledger name: BSP_Texture_RestoreNoOp - Complete genuine native RET4 three-byte restore callback for actual cube D61870 and volume D618B0 profiles; no owner/device/application-storage access. Missing saved-analysis function has now been defined exactly, without inventing behavior. New source interface in src/native_texture_device_reset.cp",
+      "reconstruction: function native_texture_restore_noop_00b33f20 status=complete_actual_storage_primary_library_real_D3D9_original_fixture_and_strict_Win32_checked source=src/native_texture_device_reset.cpp"
+    ],
+    "00b3d510": [
+      "ledger name: BSP_D3D9Surface_ReleaseForReset - Surface vtable +3ch. Balanced AddRef/Release pair then releases and nulls +2ch, preserving dimensions/format/multisample and depth flag for recreation. | Native [00b3d510,00b3d544); ECX owner; RET. Captured COM AddRef/Release pair followed by reloaded owner COM Release.. Complete native owner behavi",
+      "reconstruction: function BSP_D3D9Surface_ReleaseForReset status=typed_implementation_integrated_strict_win32_build_and_bounded_lifetime_evidence_checked source=src/native_surface_owner.cpp"
+    ],
+    "00b5fe20": [
+      "ledger name: BSP_OcclusionQuery_ReleaseForReset - ECXwrapper RET. Ifquery+10nonnull Releaseonce thennull; no balancedpair, fields+8/+C preserved, noguard/unregister. Realquery resetrelease verified. | Complete 27-byte actual occlusion query reset entry. Capture actual owner+10 query; initial null returns without writes, otherwise current captured-q",
+      "reconstruction: function BSP_OcclusionQuery_ReleaseForReset status=complete_native_actual_storage_primary_library_real_D3D9_original_fixture_and_strict_Win32_checked source=src/native_occlusion_query_device_reset.cpp"
+    ],
+    "00b422f0": [
+      "ledger name: BSP_MaterialRenderStates_ScalarDeletingDestroy - Descriptive hypothesis, not a recovered symbol. Full repaired wrapper: B420C0 then scalar free iff flags&1. Original flags2 keeps storage; rebuilt final-zero flags1 frees. docs/NATIVE_MATERIAL_PASS_STATES.md; reports/native_material_pass_states.json.",
+      "reconstruction: function delete_native_material_render_states_00b422f0 status=actual_storage_reconstructed_build_and_original_instruction_fixture_tested source=src/native_material_pass_states.cpp"
+    ],
+    "00b42310": [
+      "ledger name: BSP_MaterialSamplerStates_ScalarDeletingDestroy - Descriptive hypothesis, not a recovered symbol. Full repaired wrapper: B42140 then scalar free iff flags&1. Original flags2 keeps storage; rebuilt final-zero flags1 frees. docs/NATIVE_MATERIAL_PASS_STATES.md; reports/native_material_pass_states.json.",
+      "reconstruction: function delete_native_material_sampler_states_00b42310 status=actual_storage_reconstructed_build_and_original_instruction_fixture_tested source=src/native_material_pass_states.cpp"
+    ],
+    "00b42330": [
+      "ledger name: BSP_MaterialThirdStates_ScalarDeletingDestroy_Provisional - Descriptive hypothesis, not a recovered symbol. Full repaired wrapper: B421C0 then scalar free iff flags&1. D61A3C row semantics unresolved. Original flags2 and rebuilt flags1 checked. docs/NATIVE_MATERIAL_PASS_STATES.md; reports/native_material_pass_states.json.",
+      "reconstruction: function delete_native_material_third_states_00b42330 status=actual_storage_reconstructed_build_and_original_instruction_fixture_tested source=src/native_material_pass_states.cpp"
+    ],
+    "00c2f1c0": [
+      "ledger name: XLiveOnCreateDevice - Complete six-byte 00c2f1c0 JMP import thunk through 00ce25d0, executable ordinal word for xlive.dll ordinal5005. Existing SDK name preserved. New C++ NativeXLiveDeviceAdapter borrows caller-owned XLiveLibrary module and resolves actual Win32 stdcall export; forwards unchanged device and presentation",
+      "reconstruction: function NativeXLiveDeviceAdapter::on_create_device_00c2f1c0 status=external_import_forwarders_main_Win32_complete_COFF_checked_no_SDK_runtime_claim source=src/native_xlive_device_adapter.cpp"
+    ],
+    "00c2f1c6": [
+      "ledger name: XLiveOnDestroyDevice - Complete six-byte 00c2f1c6 JMP import thunk through 00ce25d4, executable ordinal word for xlive.dll ordinal5006. Existing SDK name preserved. New C++ NativeXLiveDeviceAdapter borrows caller-owned XLiveLibrary module and resolves actual Win32 stdcall export; forwards no arguments, exposes full EAX. M",
+      "reconstruction: function NativeXLiveDeviceAdapter::on_destroy_device_00c2f1c6 status=external_import_forwarders_main_Win32_complete_COFF_checked_no_SDK_runtime_claim source=src/native_xlive_device_adapter.cpp"
+    ],
+    "00bf6713": []
+  },
+  "source_and_provenance_pins": [
+    {
+      "path": "src/native_renderer_texture_binding.cpp",
+      "bytes": 6109,
+      "sha256": "426edcb14ec67173d50e5b103d2e3b392d76e5aeb7c1ad76548ef69d9b00f179"
+    },
+    {
+      "path": "include/bsp/native_renderer_texture_binding.hpp",
+      "bytes": 3102,
+      "sha256": "745b9102600bbdec5c1d350c7dd5f9db69c3b7cb1bf15e465721c25cd38ea762"
+    },
+    {
+      "path": "src/native_renderer_index_binding.cpp",
+      "bytes": 5552,
+      "sha256": "3d1ac30f49516977dfae1452d4d69a94c85086f1d87dc6ac9a73877897f6d2c0"
+    },
+    {
+      "path": "include/bsp/native_renderer_index_binding.hpp",
+      "bytes": 2927,
+      "sha256": "86aa477085b1dce3d029177714ac26a752199e6300dc979331810a8a97563135"
+    },
+    {
+      "path": "src/native_renderer_vertex_layout_binding.cpp",
+      "bytes": 4890,
+      "sha256": "c016e2d22c0d1ff84f2ff1aebcd79a2b50c865619f8683fe1bceb6dcad69c78e"
+    },
+    {
+      "path": "include/bsp/native_renderer_vertex_layout_binding.hpp",
+      "bytes": 1675,
+      "sha256": "ebf9d62dea25edfdeb5703b110533afd1ab9d71f975fb313f847701e48169939"
+    },
+    {
+      "path": "src/native_renderer_frame_targets.cpp",
+      "bytes": 4898,
+      "sha256": "ba7feaa2314821a96bfe3ea6cd0737c23d13a72a7df6d7b4abacfcf1be1abb7d"
+    },
+    {
+      "path": "include/bsp/native_renderer_frame_targets.hpp",
+      "bytes": 1747,
+      "sha256": "c5943bfdd2f2963405fccd29ab98ce088d917db29666ca989d2a5f6899a6c8a6"
+    },
+    {
+      "path": "src/native_renderer_material_state_binding.cpp",
+      "bytes": 6727,
+      "sha256": "de595df8962dcab7cf5c38afd4113f67cfe57c43e02b601e5ec15b4ec39a18aa"
+    },
+    {
+      "path": "include/bsp/native_renderer_material_state_binding.hpp",
+      "bytes": 2965,
+      "sha256": "68bb8fbe9fd8a6b51fa75ed3f320cfecb34db64309307b5e96025f3b186a91f2"
+    },
+    {
+      "path": "src/native_material_pass_states.cpp",
+      "bytes": 9379,
+      "sha256": "0404bc1ad539e8d65c83470e78b63a67332b8a55d0676632869182a89454a62c"
+    },
+    {
+      "path": "include/bsp/native_material_pass_states.hpp",
+      "bytes": 5387,
+      "sha256": "4b0b577fb905790cbfa2c47dcddeef2ba7c111667a3b4d3cdf770c85ea52cab9"
+    },
+    {
+      "path": "src/native_render_cache_construction.cpp",
+      "bytes": 5022,
+      "sha256": "de64124e56f3bcc1f10c961ad0d47b7f5651898184c9c39cc175eac2f29325f8"
+    },
+    {
+      "path": "include/bsp/native_render_cache_construction.hpp",
+      "bytes": 1678,
+      "sha256": "1f06df1915de85f8ff6b112179338bcdad2882d3ab3e8049b8301f10c47d303c"
+    },
+    {
+      "path": "src/native_renderer_resource_restore.cpp",
+      "bytes": 7240,
+      "sha256": "05a765b85d3c3ccd7f0d23cb30ecae1679e1f827394048755bcbbdeaf3737c47"
+    },
+    {
+      "path": "include/bsp/native_renderer_resource_restore.hpp",
+      "bytes": 2097,
+      "sha256": "0198b3f63a67ef9379888fbddb5cb2308990d6fffac40e97484facce5a59e01d"
+    },
+    {
+      "path": "src/native_texture_device_reset.cpp",
+      "bytes": 7309,
+      "sha256": "93afa828328f5cc177186765c6c7e92327d71d5612b4bfbf4858748a38295249"
+    },
+    {
+      "path": "include/bsp/native_texture_device_reset.hpp",
+      "bytes": 2970,
+      "sha256": "1121a8a641e56894fc6564545a2d3291dbe39241ce608ef657b8a05adbac64bf"
+    },
+    {
+      "path": "src/native_occlusion_query_device_reset.cpp",
+      "bytes": 1870,
+      "sha256": "d3dd29ed58286326a4f63a49bd87f83eb814db9d7c0c284328d3a5dd2953178e"
+    },
+    {
+      "path": "include/bsp/native_occlusion_query_device_reset.hpp",
+      "bytes": 731,
+      "sha256": "c701d1b86601ed377485629c416cea31621609fabfe23c762e6b6b4e56c16d52"
+    },
+    {
+      "path": "src/native_surface_owner.cpp",
+      "bytes": 8402,
+      "sha256": "3ac9f459ba8a99ea72cd5c3d655fa8e93f247667026772e4a58131903b7707fd"
+    },
+    {
+      "path": "include/bsp/native_surface_owner.hpp",
+      "bytes": 4221,
+      "sha256": "947feec7e98a6b1fa04502588e262e7812df34247eeddbb7b25554b3d3564e38"
+    },
+    {
+      "path": "src/native_texture_2d_owner.cpp",
+      "bytes": 11544,
+      "sha256": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada"
+    },
+    {
+      "path": "include/bsp/native_texture_2d_owner.hpp",
+      "bytes": 3247,
+      "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc"
+    },
+    {
+      "path": "src/native_cube_texture_owner.cpp",
+      "bytes": 6420,
+      "sha256": "ede6de9f1b41f358ee94e661d395696845eab91556e640e9ea36073bd45d2d0e"
+    },
+    {
+      "path": "include/bsp/native_cube_texture_owner.hpp",
+      "bytes": 2750,
+      "sha256": "d770a6d64fdbc2dbb6770bfca5cbadcb501cc39abbcdc6053e717abcb8095645"
+    },
+    {
+      "path": "src/native_volume_texture_owner.cpp",
+      "bytes": 5380,
+      "sha256": "f17e5c2634b9ef4d53cedcd1f0868bf1befe71ab79aca01c5d8b1496a7f2e29f"
+    },
+    {
+      "path": "include/bsp/native_volume_texture_owner.hpp",
+      "bytes": 2610,
+      "sha256": "fa2f4f8cebe11eb431dfec3a399080d114c0a5ecc260320f23682adff5fab28f"
+    },
+    {
+      "path": "src/native_logical_index_owner.cpp",
+      "bytes": 7095,
+      "sha256": "73376e74c792c18fd8ed87d7345e49d7324d8e962882710c812180309ac5a0cf"
+    },
+    {
+      "path": "include/bsp/native_logical_index_owner.hpp",
+      "bytes": 2661,
+      "sha256": "0daa4671a276d7f523c1122478ce9b88923cec31486ef736bde14980eb484f17"
+    },
+    {
+      "path": "src/native_hardware_layout_owner.cpp",
+      "bytes": 8337,
+      "sha256": "de90f39f9b5f1f4a3ab9dc5f16293edf857f7f3174e9e0b927524ffbf94d8b51"
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_owner.hpp",
+      "bytes": 3673,
+      "sha256": "c542dbc6a596ac44e0d422fb4b4ba8382ff2c663e874fcbb48d3d896ebb3e89e"
+    },
+    {
+      "path": "src/native_frame_target_owner.cpp",
+      "bytes": 6858,
+      "sha256": "60485ba070a77e9de497bff352b16ab664ac4d051e02e671897d2c3082224c60"
+    },
+    {
+      "path": "include/bsp/native_frame_target_owner.hpp",
+      "bytes": 3495,
+      "sha256": "5bcab0e6bf05a51b8e8a215117ca5621f3c5a51a1aec131eb4b7f86b33246ca8"
+    },
+    {
+      "path": "src/native_renderer_reset_readiness.cpp",
+      "bytes": 11569,
+      "sha256": "d155d185bcd1583e17bcd101d9adc77b9cef6431b4e5d46b0737eb12a52bbc50"
+    },
+    {
+      "path": "include/bsp/native_renderer_reset_readiness.hpp",
+      "bytes": 3402,
+      "sha256": "5cb42380989032741ff8835d3d37cef4ac57b32fa2595a107a77ffea43dadb19"
+    },
+    {
+      "path": "src/native_xlive_device_adapter.cpp",
+      "bytes": 1405,
+      "sha256": "634eeb944ec1ef31db0364b8f564711071be93d9acc4dd6b45c7050f0074a703"
+    },
+    {
+      "path": "include/bsp/native_xlive_device_adapter.hpp",
+      "bytes": 1392,
+      "sha256": "b7b65d34a167ee2ea18dddb3c23e4b962c00dbd1e687260d376989d39d1a124b"
+    },
+    {
+      "path": "src/native_hardware_layout_tree.cpp",
+      "bytes": 13258,
+      "sha256": "90f288aedf45cc251175c1d2883c6bc4aeb466daba8af85c0a6390f5c4d183a6"
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_tree.hpp",
+      "bytes": 3491,
+      "sha256": "3c8b2c3a5e762a557fbbc5da3d825801c6d60a5b89c636c3ba379420c109c9d5"
+    },
+    {
+      "path": "src/native_singleton_vector_reserve_construct.cpp",
+      "bytes": 3731,
+      "sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_reserve_construct.hpp",
+      "bytes": 1845,
+      "sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d"
+    },
+    {
+      "path": "src/native_renderer_gamma.cpp",
+      "bytes": 5524,
+      "sha256": "e741208a329062fd8664702cd981c4e392f57a446e6d17163a34e8cbbf3d0847"
+    },
+    {
+      "path": "include/bsp/native_renderer_gamma.hpp",
+      "bytes": 2145,
+      "sha256": "bdf4eff66fec707b16101473e14f09955cc8f9a469dce76e72ca2c8d140d5738"
+    },
+    {
+      "path": "src/native_renderer_cached_states.cpp",
+      "bytes": 5702,
+      "sha256": "1f59014cce73ade28bda43c65e222711a15ccef8bb6e666473fff728d10b98c4"
+    },
+    {
+      "path": "include/bsp/native_renderer_cached_states.hpp",
+      "bytes": 2075,
+      "sha256": "0110b089dcfaabadee32b902a486cec6e4640849c502fa164190bd04c42b2295"
+    },
+    {
+      "path": "src/native_renderer_texture_stage_state.cpp",
+      "bytes": 3412,
+      "sha256": "b304f58b02865f7274cb23eeca287cc9a76bea05dc1acdf6c8eb95948eda1703"
+    },
+    {
+      "path": "include/bsp/native_renderer_texture_stage_state.hpp",
+      "bytes": 1247,
+      "sha256": "e2cd6dc34e77959d83e8d3ab28d0f6f64019874c4cbc0924043b3f7a3c7249a4"
+    },
+    {
+      "path": "src/native_shader_device_reset.cpp",
+      "bytes": 3154,
+      "sha256": "21a2631b1cdecf365bd93bcfdefbb9cd371eec46865921197a6dc6ecfb9cdcce"
+    },
+    {
+      "path": "include/bsp/native_shader_device_reset.hpp",
+      "bytes": 1356,
+      "sha256": "347056dafcbfe3a29f6d109c4f79914f583e4976327bf9c61b51e4d88ee01590"
+    },
+    {
+      "path": "src/native_dynamic_buffer_device_release.cpp",
+      "bytes": 3780,
+      "sha256": "fa5831aba9f17409663e65536fd01f4199d86ef1f45d118b5f3e08534e438b3e"
+    },
+    {
+      "path": "include/bsp/native_dynamic_buffer_device_release.hpp",
+      "bytes": 637,
+      "sha256": "babfdf147351f9157c834933c1f0c4b25b747f98c96350da8b13cfcb5070dba1"
+    },
+    {
+      "path": "src/native_renderer_synchronization_actual.cpp",
+      "bytes": 3242,
+      "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a"
+    },
+    {
+      "path": "include/bsp/native_renderer_synchronization_actual.hpp",
+      "bytes": 2877,
+      "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0"
+    },
+    {
+      "path": "docs/NATIVE_RENDERER_RECREATE_DEVICE_NEXT.md",
+      "bytes": 6917,
+      "sha256": "c0f333b389238091d6b03ab917d9ed849b0f2c521bf8d7e75ac19217042a742e"
+    },
+    {
+      "path": "docs/NATIVE_RENDERER_RESET_ROUTES_NEXT.md",
+      "bytes": 15547,
+      "sha256": "17223f1af9981f2310ad7e9e7cd8a94087f7a65af4e9f6ae5b149452ec3a53a7"
+    },
+    {
+      "path": "docs/NATIVE_RENDERER_STOP_PIPELINE_NEXT.md",
+      "bytes": 15402,
+      "sha256": "0d6e52883a3c122d74df4478bb35ea9ea2b7b8dd4106b153700bd13543307679"
+    },
+    {
+      "path": "docs/LOGICAL_VERTEX_ALIAS_FACTORY.md",
+      "bytes": 9000,
+      "sha256": "64af9b7c54bab2e1baf70ea21b8616791957e0d160c67e5f766ab1b45e830b77"
+    },
+    {
+      "path": "docs/LOGICAL_VERTEX_ALIAS_GEOMETRY.md",
+      "bytes": 6837,
+      "sha256": "ce076c441527ab8dea939b4f7371cdb6f07f95cb0871d8e04f08b2d1cc60ba17"
+    },
+    {
+      "path": "docs/NATIVE_RENDERER_MATERIAL_STATE_BINDING.md",
+      "bytes": 9794,
+      "sha256": "bf1f5d2222e66eab315fda47a2b241f6cde36d0af9e460a37056f65e1cd9068a"
+    },
+    {
+      "path": "docs/NATIVE_MATERIAL_PASS_STATES.md",
+      "bytes": 6390,
+      "sha256": "470481455657dca1fbc3750acda96f4f5b179bcf1a18c0926eb033adc739fdc7"
+    },
+    {
+      "path": "docs/NATIVE_RENDERER_RESET_READINESS.md",
+      "bytes": 12732,
+      "sha256": "a695ef6660b989f71f2597c3b40e9735013a018cf7cce8775507409af9841443"
+    },
+    {
+      "path": "config/target.json",
+      "bytes": 405,
+      "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2"
+    },
+    {
+      "path": "tools/bsp.py",
+      "bytes": 57309,
+      "sha256": "9517ff8cafa293f5918c82abd927655315d9468e79d61d70e65da80ae62d10d7"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "bytes": 13401,
+      "sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee"
+    },
+    {
+      "path": "src/d3d9_resources.cpp",
+      "bytes": 5796,
+      "sha256": "f99bedc31baf65009085e09f7e98932fc278fa19b7bc951d16a246a148d65f2a"
+    },
+    {
+      "path": "include/bsp/d3d9_resources.hpp",
+      "bytes": 3382,
+      "sha256": "5703cd93356283a5032d4a075ced05542ce5505cbe9c87ec44ed722a9b3dd176"
+    },
+    {
+      "path": "src/d3d9_query.cpp",
+      "bytes": 3163,
+      "sha256": "a7a4ca80d084acb3241ff9229d258dcd1b0085503db452af3798e055a1813b58"
+    },
+    {
+      "path": "include/bsp/d3d9_query.hpp",
+      "bytes": 2960,
+      "sha256": "eed94276982e03c602fb1fda17559e3d26426350ef587637b9525c03a5f44d44"
+    },
+    {
+      "path": "src/d3d9_states.cpp",
+      "bytes": 19554,
+      "sha256": "0482129429656ed126106ffed85c1a504b0f2bc6dcccc2d2afc54706cce02e9f"
+    },
+    {
+      "path": "include/bsp/d3d9_states.hpp",
+      "bytes": 15076,
+      "sha256": "d6f143ad718a3d931f4371ac14235a41006cb616c9b9df4cdd9c3faaf6c91288"
+    },
+    {
+      "path": "src/d3d9_buffers.cpp",
+      "bytes": 4980,
+      "sha256": "cae2266baec93413bcc2fb98e033f0aab21d12d38fd4f2e1049aa790c88225fb"
+    },
+    {
+      "path": "include/bsp/d3d9_buffers.hpp",
+      "bytes": 3262,
+      "sha256": "e8bc19c4630661b83969b53cac94134748f3c9af2a98002f1f2906ed93dedc83"
+    },
+    {
+      "path": "src/native_logical_buffer_device_save.cpp",
+      "bytes": 5983,
+      "sha256": "393f59b03ed29bf0e935fe2d285d75bd092c2dad02cbe8334bbf13fe03d71d39"
+    },
+    {
+      "path": "include/bsp/native_logical_buffer_device_save.hpp",
+      "bytes": 1770,
+      "sha256": "ecc2d7f9b7092cf13b70f9652275e6eb60dbec89d5f91908f7d934e423439ad3"
+    },
+    {
+      "path": "src/native_logical_buffer_device_restore.cpp",
+      "bytes": 10316,
+      "sha256": "aa1db11b86a016620d3445f957c002765a65b2aa026494cdfa00cf01f7d8f2c7"
+    },
+    {
+      "path": "include/bsp/native_logical_buffer_device_restore.hpp",
+      "bytes": 2649,
+      "sha256": "2e79708e49c1559f706602b9fe761791776f11fee1c5b3efa69d7fbb2bd57c45"
+    },
+    {
+      "path": "src/native_hardware_layout_device_release.cpp",
+      "bytes": 1499,
+      "sha256": "434478666ac6eadbfdfcaf98e8ab6309c13b3c180a74aae6f77fb8633ed0a255"
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_device_release.hpp",
+      "bytes": 754,
+      "sha256": "5c6d878016589af41526421e52b8eeaa01c58c781c0835a547ed55f01cce684c"
+    },
+    {
+      "path": "src/d3d9_vertex_layout.cpp",
+      "bytes": 1722,
+      "sha256": "018b8ebc46702a6c7b005c899ccdeea066065b3661d64c5a6c9fdad7c8335718"
+    },
+    {
+      "path": "include/bsp/d3d9_vertex_layout.hpp",
+      "bytes": 1257,
+      "sha256": "b20c6b94d7bb3128e0315780a1a9693d110b45703a9c7396ae23a7bb223792ef"
+    },
+    {
+      "path": "src/native_hardware_layout_create_if_missing.cpp",
+      "bytes": 7674,
+      "sha256": "c5075148caecadc8952083d56c5b741fe47222fc27ae8aa2c9b6d7ee53163270"
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_create_if_missing.hpp",
+      "bytes": 1574,
+      "sha256": "6d53435f294658743c34d8997e3e3864ea3618e0516c046efa1ef97b9e101697"
+    },
+    {
+      "path": "src/d3d9_reset_texture.cpp",
+      "bytes": 2905,
+      "sha256": "c4a2bf15a8179d4d94f82eef5a8a7fa2ee2221dd5848246d531161e142c2b611"
+    },
+    {
+      "path": "include/bsp/d3d9_reset_texture.hpp",
+      "bytes": 1832,
+      "sha256": "ff895e3e8b0654839ed979ef0ed7f44f9f360e2e0f316ef9d0671d266b0b615d"
+    }
+  ],
+  "lookup_log": {
+    "path": "local/renderer_reset_readiness5/lookups.json",
+    "sha256": "ccb5594bd06291486760c63b941725335ab74a4cfb641a78d4b4deb64e74551b"
+  },
+  "validation": {
+    "source_modified": false,
+    "ghidra_modified": false,
+    "shared_metadata_modified": false,
+    "tests_added": 0,
+    "build_run": false,
+    "native_execution": false,
+    "game_execution": false,
+    "parent_composition_proved": false
+  },
+  "parent_graph": [
+    {
+      "address": "00b24bf0",
+      "source_ready": false,
+      "actual_complete": [
+        "00b24710",
+        "00b24b00",
+        "00b23f20",
+        "00b23d80",
+        "00b33ad0",
+        "00b33b00",
+        "00b21110"
+      ],
+      "incomplete": [
+        "00b24840",
+        "00b23710",
+        "00b4bf10",
+        "00b4b5d0",
+        "00b62010"
+      ],
+      "constraint": "Four stream zero calls, three separate optional-guard scopes, current table reads and real COM clearing remain full-parent work."
+    },
+    {
+      "address": "00b241c0",
+      "source_ready": false,
+      "existing_fragment": "clear_constructed_cache_all_null_00b241c0_fragment",
+      "owner_cells": 26,
+      "texture_owner_cells": 16,
+      "incomplete": [
+        "logical stream +4C pointee profile",
+        "cache+04 positive profile provenance",
+        "complete current-slot terminal composition"
+      ],
+      "constraint": "Actual cache receiver=renderer+34; captured old release precedes clear, null does not write, throwing terminal aborts before clear."
+    },
+    {
+      "address": "00b262c0",
+      "source_ready": false,
+      "actual_callback_targets": [
+        "00b3d510",
+        "00b5fe20",
+        "00b3dd30",
+        "00b33f10"
+      ],
+      "incomplete": [
+        "00b24840",
+        "00b241c0",
+        "full actual parent composition"
+      ],
+      "constraint": "Guard/ready-byte/current-cursor scheduling; +1A78 loop is empty and must not acquire invented callbacks."
+    },
+    {
+      "address": "00b29670",
+      "source_ready": false,
+      "actual_complete_groups": [
+        "dynamic release",
+        "logical buffer save/restore",
+        "shader save/restore",
+        "cached/default states",
+        "full hardware layout device operations",
+        "resource restore",
+        "frame-target/texture/index/layout bindings",
+        "full gamma/pow",
+        "four auxiliary buffer profiles",
+        "explicit XLive stdcall forwarding"
+      ],
+      "incomplete": [
+        "00b24bf0",
+        "00b262c0",
+        "record +1A78/+1A7C owner+28 virtual+28/+2C profile composition",
+        "actual CRT invalid-parameter binding and documented source boundary",
+        "full parent tracked-lock and FH3 composition"
+      ],
+      "constraint": "Optional-only exceptional cleanup does not release tracked critical section; complete leaf code is not original parent ABI or runtime proof."
+    }
+  ],
+  "cache_profiles": [
+    {
+      "cache_offsets": [
+        "00",
+        "08"
+      ],
+      "profiles": [
+        "00d61a2c",
+        "00d61a34"
+      ],
+      "providers": [
+        "00b422f0",
+        "00b42310"
+      ],
+      "ready": "actual raw provider and positive existing binder provenance"
+    },
+    {
+      "cache_offsets": [
+        "04"
+      ],
+      "profiles_provisional": [
+        "00d61a3c"
+      ],
+      "providers_available": [
+        "00b42330",
+        "00b24510"
+      ],
+      "ready": false,
+      "boundary": "B27B00 exact actual-stage-state binder body exists; positive caller/current owner-profile mapping is not established by this audit."
+    },
+    {
+      "cache_offsets": [
+        "1780"
+      ],
+      "profiles": [
+        "00d62af4"
+      ],
+      "providers": [
+        "00b60770"
+      ],
+      "ready": "actual full hardware lifetime available"
+    },
+    {
+      "cache_offsets": [
+        "1784"
+      ],
+      "profiles": [
+        "00d61de0"
+      ],
+      "providers": [
+        "00b4c1f0"
+      ],
+      "ready": "actual full logical index lifetime available"
+    },
+    {
+      "cache_offsets": [
+        "1740",
+        "1750",
+        "1760",
+        "1770"
+      ],
+      "profiles": [
+        "00d61d6c"
+      ],
+      "ready": false,
+      "boundary": "Independent logical+4C retained pointee profile and terminal remain unclosed."
+    },
+    {
+      "cache_offsets_expression": "4D0+i*AC for i=0..15",
+      "profiles": [
+        "00d61948",
+        "00d61870",
+        "00d618b0"
+      ],
+      "providers": [
+        "00b3f590",
+        "00b3f410",
+        "00b3f430"
+      ],
+      "ready": "actual full admitted texture lifetimes available"
+    },
+    {
+      "cache_offsets": [
+        "18d4"
+      ],
+      "profiles": [
+        "00d5e600"
+      ],
+      "providers": [
+        "00b1fcf0"
+      ],
+      "ready": "actual full frame-target lifetime available"
+    }
+  ],
+  "next_bounded_candidates": [
+    {
+      "kind": "read_only_provenance",
+      "name": "logical_vertex_independent_owner",
+      "source_ready": false,
+      "required_result": "Positive actual nonnull +4C writer/pointee/current final-zero terminal"
+    },
+    {
+      "kind": "read_only_provenance",
+      "name": "recreate_record_callbacks",
+      "source_ready": false,
+      "required_result": "Actual +1A78 registry producer and owner+28 current +28/+2C profiles; distinguish +1A9C shader texture unload registry"
+    },
+    {
+      "kind": "read_only_provenance_then_possible_implementation",
+      "name": "material_third_state_binding_b27b00",
+      "source_ready": false,
+      "body_length": 130,
+      "ready_dependencies": [
+        "00b24510",
+        "00b42330"
+      ],
+      "required_result": "Positive cache+04 incoming profile mapping and separate leased saved-function creation before promotion"
+    }
+  ],
+  "independent_b27b00_observation": {
+    "current_saved_function_start": false,
+    "current_ghidra_xrefs_result": "No references found to address: 00b27b00",
+    "original_abi": "ECX renderer, stack owner, RET4",
+    "cache_renderer_offset": "38",
+    "row_layout_in_this_binder": [
+      "stage+00",
+      "state+04",
+      "value+08"
+    ],
+    "row_stride": 12,
+    "callee": "00b24510",
+    "counter_renderer_offset": "1b98",
+    "counter_schedule": "Increment only after changed binding and returning row work, including changed null input",
+    "profile_provenance_proved": false,
+    "not_claimed": "No row-producer semantics or arbitrary owner admission inferred from structural similarity."
+  },
+  "inherited_evidence_boundaries": [
+    "Source API availability is separate from actual application context wiring.",
+    "New C++ interfaces inherit admitted profile/storage/CRT/exception domains; no original parent ABI equivalence.",
+    "No new repeat of geometry/factory alias exclusion scans; those documents are pinned provenance.",
+    "XLive leaves forward external SDK imports, not reconstructed SDK internals or runtime tests.",
+    "B1FD90 same inlined schedule supports auxiliary provider readiness, not a promoted B29670 reconstruction fragment."
+  ]
+}

@@ -1,0 +1,759 @@
+{
+  "packet": "orch3_tracer_lifetime_al",
+  "status": "reconstructed_strict_win32_build_tested_bounded_fixture_tested_saved_analysis_verified",
+  "source": [
+    "include/bsp/native_tracer_lifetime.hpp",
+    "src/native_tracer_lifetime.cpp"
+  ],
+  "documentation": "docs/NATIVE_TRACER_LIFETIME.md",
+  "names": "Descriptive hypotheses, not recovered symbols.",
+  "routines": [
+    {
+      "entry": "00bac130",
+      "name": "reserve_native_tracer_pointer_array_00bac130",
+      "original_abi": "ECX actual0Ch pointer header; signed capacity stack; RET4",
+      "coverage": "complete",
+      "span": {
+        "start": "00bac130",
+        "length": 95,
+        "end_inclusive": "00bac18e",
+        "matches_disk": true,
+        "sha256": "46ba50095adc6323127a1cd3f086180f8a367feb1a5739cecd24a4f3d19d5997"
+      }
+    },
+    {
+      "entry": "00bac370",
+      "name": "resize_native_tracer_pointer_array_00bac370",
+      "original_abi": "ECX actual0Ch pointer header; signed count stack; RET4",
+      "coverage": "complete",
+      "span": {
+        "start": "00bac370",
+        "length": 80,
+        "end_inclusive": "00bac3bf",
+        "matches_disk": true,
+        "sha256": "8a0420c46bc6e3509a51c4485576cc3016b1c71b4eee4b547437e88654ab4a91"
+      }
+    },
+    {
+      "entry": "00bac860",
+      "name": "destroy_native_tracer_point_array_00bac860",
+      "original_abi": "ECX actual+194 header; RET",
+      "coverage": "complete",
+      "span": {
+        "start": "00bac860",
+        "length": 23,
+        "end_inclusive": "00bac876",
+        "matches_disk": true,
+        "sha256": "898fcae208d925720195389a453e03d1ad8eeb6e24a24c5651fe934384a0ab79"
+      }
+    },
+    {
+      "entry": "00bac880",
+      "name": "destroy_native_tracer_pointer_array_00bac880",
+      "original_abi": "ECX actual+1A0 header; RET",
+      "coverage": "complete",
+      "span": {
+        "start": "00bac880",
+        "length": 23,
+        "end_inclusive": "00bac896",
+        "matches_disk": true,
+        "sha256": "e80c7838f15132d218e8fd2725c8bbfc7cde038fb495345005b1aca820a2ef06"
+      }
+    },
+    {
+      "entry": "00bac970",
+      "name": "destroy_native_tracer_00bac970",
+      "original_abi": "ECX actual7ACh tracer payload; RET",
+      "coverage": "complete",
+      "span": {
+        "start": "00bac970",
+        "length": 270,
+        "end_inclusive": "00baca7d",
+        "matches_disk": true,
+        "sha256": "8f5df17a0db99604fe7c0722aebedbadb1da4094d858921bc2da4e683f47d197"
+      }
+    },
+    {
+      "entry": "00bacb90",
+      "name": "delete_native_tracer_00bacb90",
+      "original_abi": "ECX actual tracer; flags stack; EAX original slot; RET4",
+      "coverage": "complete",
+      "span": {
+        "start": "00bacb90",
+        "length": 32,
+        "end_inclusive": "00bacbaf",
+        "matches_disk": true,
+        "sha256": "9bf24705a13d661b11dfe4305f1ee51edcea6d6dd2d78a2ef7437405346d214f"
+      }
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00bac150",
+      "native": "00bf55be",
+      "function": "00bac130",
+      "contract": "Allocate wrapped capacity*4 through existing CRT/new-handler boundary; ADD ESP4"
+    },
+    {
+      "address": "00bac17c",
+      "native": "00bf6989",
+      "function": "00bac130",
+      "contract": "Free current old backing; ADD ESP4, then publish replacement/capacity"
+    },
+    {
+      "address": "00bac37e",
+      "native": "00bac130",
+      "function": "00bac370",
+      "contract": "Reserve signed requested count; RET4"
+    },
+    {
+      "address": "00bac865",
+      "native": "00bac310",
+      "function": "00bac860",
+      "contract": "Resize same point-array header to0; RET4"
+    },
+    {
+      "address": "00bac86d",
+      "native": "00bf6989",
+      "function": "00bac860",
+      "contract": "Free current point backing; ADD ESP4, POP ESI, RET"
+    },
+    {
+      "address": "00bac885",
+      "native": "00bac370",
+      "function": "00bac880",
+      "contract": "Resize same pointer-array header to0; RET4"
+    },
+    {
+      "address": "00bac88d",
+      "native": "00bf6989",
+      "function": "00bac880",
+      "contract": "Free current pointer backing; ADD ESP4, POP ESI, RET"
+    },
+    {
+      "address": "00baca16",
+      "native": "00b6dfa0",
+      "function": "00bac970",
+      "contract": "Unlink/release current254 through canonical actual node lifetime; no stack args"
+    },
+    {
+      "address": "00baca2f",
+      "native": "00bac370",
+      "function": "00bac970",
+      "contract": "State1, resize actual+1A0 to0; RET4"
+    },
+    {
+      "address": "00baca37",
+      "native": "00bf6989",
+      "function": "00bac970",
+      "contract": "Free current+1A0 backing; ADD ESP4"
+    },
+    {
+      "address": "00baca4c",
+      "native": "00bac310",
+      "function": "00bac970",
+      "contract": "Recovered continuation: state0, resize actual+194 to0; RET4"
+    },
+    {
+      "address": "00baca54",
+      "native": "00bf6989",
+      "function": "00bac970",
+      "contract": "Recovered continuation: free current+194 backing; ADD ESP4"
+    },
+    {
+      "address": "00baca66",
+      "native": "00b750c0",
+      "function": "00bac970",
+      "contract": "Recovered continuation: state-1 full canonical model/node base; RET"
+    },
+    {
+      "address": "00bacb93",
+      "native": "00bac970",
+      "function": "00bacb90",
+      "contract": "Full derived destruction before optional physical return"
+    },
+    {
+      "address": "00bacba5",
+      "native": "00babf70",
+      "function": "00bacb90",
+      "contract": "ECX actual0109049C pool, stack original actual slot; RET4"
+    },
+    {
+      "address": "00bac9b4",
+      "native": "00ce2220+iat",
+      "function": "00bac970",
+      "contract": "InterlockedDecrement captured248+04"
+    },
+    {
+      "address": "00bac9c0",
+      "native": "captured248+vtable00",
+      "function": "00bac970",
+      "contract": "Current virtual0 only when actual count reached zero; clear248 after callback"
+    },
+    {
+      "address": "00bac9d6",
+      "native": "00ce2220+iat",
+      "function": "00bac970",
+      "contract": "InterlockedDecrement then-current1BC+04"
+    },
+    {
+      "address": "00bac9e2",
+      "native": "captured1bc+vtable00",
+      "function": "00bac970",
+      "contract": "Current virtual0 only on zero; clear1BC after callback"
+    },
+    {
+      "address": "00bac9f8",
+      "native": "00ce2220+iat",
+      "function": "00bac970",
+      "contract": "InterlockedDecrement then-current190+04"
+    },
+    {
+      "address": "00baca04",
+      "native": "captured190+vtable00",
+      "function": "00bac970",
+      "contract": "Current virtual0 only on zero; clear190 after callback"
+    }
+  ],
+  "producers": [
+    {
+      "function": "00bad6f0",
+      "sites": "00bad780..00bad7a2",
+      "produces": "D63FA0; point header194/198/19C=0 and pointer header1A0/1A4/1A8=0"
+    },
+    {
+      "function": "00bac730",
+      "site": "00bac749",
+      "produces": "Pointer array length from retained190+10, then linked-point identities from1B8 via+28"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "BAC970 pseudocode ended after BACA37 free",
+      "is": "Complete body through BACA7D; second member cleanup and full model base",
+      "evidence": "Live/disk BACA3C..BACA7D identical; state stores before BACA4C/BACA66; original FS restore and RET"
+    },
+    {
+      "was": "BAC130 returning-free gap BAC181..BAC189 missing",
+      "is": "ADD ESP4; publish replacement, capacity; POP EBX before existing RET4",
+      "evidence": "Live/disk BAC130..BAC18E; gap must be defined by parent"
+    },
+    {
+      "was": "BAC860/BAC880 ended at free",
+      "is": "Returning ADD ESP4, POP ESI, RET tails",
+      "evidence": "Live/disk tails BAC872..BAC876 and BAC892..BAC896"
+    },
+    {
+      "was": "Ordinary NativeModelReference could describe tracer lifetime",
+      "is": "NativeTracerReference borrows same model/node/count/runtime but selects actual tracer D63FA0/BACB90 and0109049C pool",
+      "evidence": "Live D63FA0 slots0/4 and BACB90 ECX0109049C, BACBA5 BABF70"
+    }
+  ],
+  "eh": {
+    "descriptor": "00dfd5a8",
+    "map": "00dfd590",
+    "states": [
+      {
+        "state": 2,
+        "next": 1,
+        "thunk": "00cc3d96",
+        "native_target": "00bac880",
+        "actual_offset": "0x1a0"
+      },
+      {
+        "state": 1,
+        "next": 0,
+        "thunk": "00cc3d88",
+        "native_target": "00bac860",
+        "actual_offset": "0x194"
+      },
+      {
+        "state": 0,
+        "next": -1,
+        "thunk": "00cc3d80",
+        "native_target": "00b750c0",
+        "actual_offset": "0"
+      }
+    ],
+    "source": "C++ exception cleanup order preserved; original FH3/SEH and asynchronous faults not reproduced or tested."
+  },
+  "byte_evidence": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Each read uses bsp.py ghidra, which calls Client.verify before the read.",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "start": "00bac130",
+        "length": 95,
+        "end_inclusive": "00bac18e",
+        "matches_disk": true,
+        "sha256": "46ba50095adc6323127a1cd3f086180f8a367feb1a5739cecd24a4f3d19d5997"
+      },
+      {
+        "start": "00bac370",
+        "length": 80,
+        "end_inclusive": "00bac3bf",
+        "matches_disk": true,
+        "sha256": "8a0420c46bc6e3509a51c4485576cc3016b1c71b4eee4b547437e88654ab4a91"
+      },
+      {
+        "start": "00bac860",
+        "length": 23,
+        "end_inclusive": "00bac876",
+        "matches_disk": true,
+        "sha256": "898fcae208d925720195389a453e03d1ad8eeb6e24a24c5651fe934384a0ab79"
+      },
+      {
+        "start": "00bac880",
+        "length": 23,
+        "end_inclusive": "00bac896",
+        "matches_disk": true,
+        "sha256": "e80c7838f15132d218e8fd2725c8bbfc7cde038fb495345005b1aca820a2ef06"
+      },
+      {
+        "start": "00bac970",
+        "length": 270,
+        "end_inclusive": "00baca7d",
+        "matches_disk": true,
+        "sha256": "8f5df17a0db99604fe7c0722aebedbadb1da4094d858921bc2da4e683f47d197"
+      },
+      {
+        "start": "00bacb90",
+        "length": 32,
+        "end_inclusive": "00bacbaf",
+        "matches_disk": true,
+        "sha256": "9bf24705a13d661b11dfe4305f1ee51edcea6d6dd2d78a2ef7437405346d214f"
+      },
+      {
+        "start": "00cc3d80",
+        "length": 46,
+        "end_inclusive": "00cc3dad",
+        "matches_disk": true,
+        "sha256": "b32e36c64b687c63eedd21f5bc67d151ece59f94eb1b03d3d939d2bb160df07f"
+      },
+      {
+        "start": "00dfd590",
+        "length": 60,
+        "end_inclusive": "00dfd5cb",
+        "matches_disk": true,
+        "sha256": "4d93605bf1e7cfad66702ce09fc41a667a2dba53b4a45b1b92e1edf5308bdc24"
+      },
+      {
+        "start": "00d63fa0",
+        "length": 92,
+        "end_inclusive": "00d63ffb",
+        "matches_disk": true,
+        "sha256": "22c7a8a6cdffad036e231c0c0d738e3b31fee6c43d9483f58c96057861122dd7"
+      }
+    ]
+  },
+  "required_actual_contracts": [
+    "One NativeModelOwner with the SAME actual7B0h tracer slot, actual model/node environment and initialized scene/type/retained bindings.",
+    "Stable NativeTracerProfileBindings with actual0109049C pool and current D63FA0 table; restore host context before B750C0 on every path.",
+    "Only after complete BAD6F0, one NativeTracerReference in same GeneratedModelLifetimeRuntime and existing actual-owner resolver; no NativeModelReference beside it.",
+    "Every reached retained248/1BC/190/174/180 identity has its concrete canonical current native virtual0 reference, using SAME raw+04.",
+    "Optional254 child has its actual existing node lifetime/current18 and concrete scene/hierarchy bindings.",
+    "Concrete BAC310 comes directly from native_tracer_construction.cpp; no reserve/resize callback or no-op substitute."
+  ],
+  "validation": {
+    "strict_compile": "passed MSVC Win32 /W4 /WX /EHsc /fp:strict /O2; local/tracer_lifetime_compile.log",
+    "fixture": "passed one original-byte BAC130/BAC370/BAC880 grow/shrink/free comparison; actual shared reconstructed CRT allocation/free boundary",
+    "fixture_build": "Includes both new lifetime and constructor source, linked existing main bsp_core.lib; /MANIFEST:EMBED, local/tracer_lifetime_probe_build.log",
+    "fixture_run": "local/tracer_lifetime_probe_run.log",
+    "standard_build": "scripts/build.ps1 attempted; fresh worktree build filled J: and failed MSB6003. Removed only verified generated build/win32 to recover space; local/tracer_lifetime_build.log preserved.",
+    "dynamic_boundaries": [
+      "Full derived-reference teardown not exercised",
+      "Retained/child callback and exception trajectories not exercised",
+      "Native FH3/SEH ABI not exercised",
+      "Full BAD6F0 construction/rendering/gameplay not exercised"
+    ],
+    "artifacts": {
+      "local\\native_tracer_lifetime.obj": "768ef24cee813abe9b3ee338716a5a02131c368de7f2830709adf90c63cd49b1",
+      "local\\tracer_lifetime_probe.exe": "b05b173044a2accda6cf0dcdd1e7a12c09dc326d91f604d08ad2da4364371d3a",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib": "019ce045f960989f36ef1bcd3fb58b709c0580a015ea33fa82ecf56f674d2212",
+      "local/native_tracer_lifetime.obj": "ad073489f1f21f68023d394fa05778e1d9005ebe08e747bf53e154de4659751e"
+    },
+    "call_check": "15 numeric call rows checked, 3 fail only because saved BAC970 omits BACA4C/BACA54/BACA66; 6 indirect rows documented. local/tracer_lifetime_call_check.log"
+  },
+  "parent_integration": [
+    "CMake registration and combined strict Win32 build/existing CTests",
+    "Ghidra flow repairs BAC130 gap181..189, BAC860 tail872..876, BAC880 tail892..896, BAC970 tailBACA3C..BACA7D",
+    "Address/name/function ledger metadata, evidence comments, saved project and refreshed exports",
+    "Run verify_report_calls.py after saved boundary repairs; numeric continuation rows intentionally remain present"
+  ],
+  "ghidra_mutations": "none; read-only worker",
+  "functions": [
+    {
+      "entry": "00bac130",
+      "name": "reserve_native_tracer_pointer_array_00bac130",
+      "original_abi": "ECX actual0Ch pointer header; signed capacity stack; RET4",
+      "coverage": "complete",
+      "span": {
+        "start": "00bac130",
+        "length": 95,
+        "end_inclusive": "00bac18e",
+        "matches_disk": true,
+        "sha256": "46ba50095adc6323127a1cd3f086180f8a367feb1a5739cecd24a4f3d19d5997"
+      },
+      "address": "00bac130",
+      "cpp_symbol": "reserve_native_tracer_pointer_array_00bac130",
+      "source": "src/native_tracer_lifetime.cpp",
+      "header": "include/bsp/native_tracer_lifetime.hpp",
+      "ghidra_name": "BSP_NativeTracerPointers_Reserve",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_NativeTracerPointers_Reserve(int capacity)",
+      "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX actual0Ch pointer header; signed capacity stack; RET4. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_tracer_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+    },
+    {
+      "entry": "00bac370",
+      "name": "resize_native_tracer_pointer_array_00bac370",
+      "original_abi": "ECX actual0Ch pointer header; signed count stack; RET4",
+      "coverage": "complete",
+      "span": {
+        "start": "00bac370",
+        "length": 80,
+        "end_inclusive": "00bac3bf",
+        "matches_disk": true,
+        "sha256": "8a0420c46bc6e3509a51c4485576cc3016b1c71b4eee4b547437e88654ab4a91"
+      },
+      "address": "00bac370",
+      "cpp_symbol": "resize_native_tracer_pointer_array_00bac370",
+      "source": "src/native_tracer_lifetime.cpp",
+      "header": "include/bsp/native_tracer_lifetime.hpp",
+      "ghidra_name": "BSP_NativeTracerPointers_Resize",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_NativeTracerPointers_Resize(int count)",
+      "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX actual0Ch pointer header; signed count stack; RET4. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_tracer_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+    },
+    {
+      "entry": "00bac860",
+      "name": "destroy_native_tracer_point_array_00bac860",
+      "original_abi": "ECX actual+194 header; RET",
+      "coverage": "complete",
+      "span": {
+        "start": "00bac860",
+        "length": 23,
+        "end_inclusive": "00bac876",
+        "matches_disk": true,
+        "sha256": "898fcae208d925720195389a453e03d1ad8eeb6e24a24c5651fe934384a0ab79"
+      },
+      "address": "00bac860",
+      "cpp_symbol": "destroy_native_tracer_point_array_00bac860",
+      "source": "src/native_tracer_lifetime.cpp",
+      "header": "include/bsp/native_tracer_lifetime.hpp",
+      "ghidra_name": "BSP_NativeTracerPoints_Destroy",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_NativeTracerPoints_Destroy(void)",
+      "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX actual+194 header; RET. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_tracer_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+    },
+    {
+      "entry": "00bac880",
+      "name": "destroy_native_tracer_pointer_array_00bac880",
+      "original_abi": "ECX actual+1A0 header; RET",
+      "coverage": "complete",
+      "span": {
+        "start": "00bac880",
+        "length": 23,
+        "end_inclusive": "00bac896",
+        "matches_disk": true,
+        "sha256": "e80c7838f15132d218e8fd2725c8bbfc7cde038fb495345005b1aca820a2ef06"
+      },
+      "address": "00bac880",
+      "cpp_symbol": "destroy_native_tracer_pointer_array_00bac880",
+      "source": "src/native_tracer_lifetime.cpp",
+      "header": "include/bsp/native_tracer_lifetime.hpp",
+      "ghidra_name": "BSP_NativeTracerPointers_Destroy",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_NativeTracerPointers_Destroy(void)",
+      "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX actual+1A0 header; RET. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_tracer_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+    },
+    {
+      "entry": "00bac970",
+      "name": "destroy_native_tracer_00bac970",
+      "original_abi": "ECX actual7ACh tracer payload; RET",
+      "coverage": "complete",
+      "span": {
+        "start": "00bac970",
+        "length": 270,
+        "end_inclusive": "00baca7d",
+        "matches_disk": true,
+        "sha256": "8f5df17a0db99604fe7c0722aebedbadb1da4094d858921bc2da4e683f47d197"
+      },
+      "address": "00bac970",
+      "cpp_symbol": "destroy_native_tracer_00bac970",
+      "source": "src/native_tracer_lifetime.cpp",
+      "header": "include/bsp/native_tracer_lifetime.hpp",
+      "ghidra_name": "BSP_NativeTracer_Destroy",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_NativeTracer_Destroy(void)",
+      "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX actual7ACh tracer payload; RET. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_tracer_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+    },
+    {
+      "entry": "00bacb90",
+      "name": "delete_native_tracer_00bacb90",
+      "original_abi": "ECX actual tracer; flags stack; EAX original slot; RET4",
+      "coverage": "complete",
+      "span": {
+        "start": "00bacb90",
+        "length": 32,
+        "end_inclusive": "00bacbaf",
+        "matches_disk": true,
+        "sha256": "9bf24705a13d661b11dfe4305f1ee51edcea6d6dd2d78a2ef7437405346d214f"
+      },
+      "address": "00bacb90",
+      "cpp_symbol": "delete_native_tracer_00bacb90",
+      "source": "src/native_tracer_lifetime.cpp",
+      "header": "include/bsp/native_tracer_lifetime.hpp",
+      "ghidra_name": "BSP_NativeTracer_ScalarDelete",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_NativeTracer_ScalarDelete(uint flags)",
+      "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX actual tracer; flags stack; EAX original slot; RET4. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_tracer_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+    }
+  ],
+  "integration_al": {
+    "full_build": "local/al-standard-build-fixed.log; standard scripts/build.ps1 passed, strict Win32 and both seeded CTests",
+    "source_review": "complete",
+    "code_sha256": {
+      "src/native_tracer_lifetime.cpp": "5955b8d4e8563f12bc29c64a132b2df80987656cd5438944c9bcc1ed8e51686b",
+      "include/bsp/native_tracer_lifetime.hpp": "cd9382acf7d4b524416b97a68c8a788410e41d7db7ecf58cb3b23408865d112a"
+    },
+    "library_sha256": "764c03f8480e2e9053daba197aeaa04e5a8c464c5af4818360c8822b52e25b7d",
+    "call_checks": "local/al-call-checks.log; 204 direct rows across5 reports,0 failures; indirect slots/imports retain documented manual-evidence limits",
+    "fixture_log": "local/al-current-fixtures.log",
+    "fixture_scope": "Original-byte and source-runtime scope remains exactly as documented; current combined-library replay passed. Full tracer constructor/teardown and original EH/gameplay are not implied.",
+    "body_ranges": [
+      {
+        "address": "00bac130",
+        "end_exclusive": "00bac18f",
+        "verified": true
+      },
+      {
+        "address": "00bac370",
+        "end_exclusive": "00bac3c0",
+        "verified": true
+      },
+      {
+        "address": "00bac860",
+        "end_exclusive": "00bac877",
+        "verified": true
+      },
+      {
+        "address": "00bac880",
+        "end_exclusive": "00bac897",
+        "verified": true
+      },
+      {
+        "address": "00bac970",
+        "end_exclusive": "00baca7e",
+        "verified": true
+      },
+      {
+        "address": "00bacb90",
+        "end_exclusive": "00bacbb0",
+        "verified": true
+      }
+    ],
+    "repair_records": [
+      "local/al-manager-flow-repairs.json",
+      "local/al-tracer_lifetime-flow-repairs.json",
+      "local/al-remaining-flow-repairs.json",
+      "local/al-manager-definitions.json",
+      "local/al-tracer_lifetime-definitions.json",
+      "local/al-remaining-definitions.json",
+      "local/al-missing-definitions.json"
+    ],
+    "gameplay": false,
+    "historical_note": "Worker pending-repair/build observations above describe earlier isolated snapshots; this section records current root integration."
+  },
+  "ghidra_annotation_audit": {
+    "record": "local/ghidra-annotations-20260912T165027Z.json",
+    "project_saved": true,
+    "old_comments_preserved": true,
+    "readback_verified": true,
+    "changes": [
+      {
+        "address": "00bac130",
+        "before": {
+          "address": "00bac130",
+          "function_name": "FUN_00bac130"
+        },
+        "after": {
+          "address": "00bac130",
+          "name": "BSP_NativeTracerPointers_Reserve",
+          "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX actual0Ch pointer header; signed capacity stack; RET4. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_tracer_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bac370",
+        "before": {
+          "address": "00bac370",
+          "function_name": "FUN_00bac370"
+        },
+        "after": {
+          "address": "00bac370",
+          "name": "BSP_NativeTracerPointers_Resize",
+          "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX actual0Ch pointer header; signed count stack; RET4. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_tracer_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bac860",
+        "before": {
+          "address": "00bac860",
+          "function_name": "FUN_00bac860"
+        },
+        "after": {
+          "address": "00bac860",
+          "name": "BSP_NativeTracerPoints_Destroy",
+          "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX actual+194 header; RET. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_tracer_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bac880",
+        "before": {
+          "address": "00bac880",
+          "function_name": "FUN_00bac880"
+        },
+        "after": {
+          "address": "00bac880",
+          "name": "BSP_NativeTracerPointers_Destroy",
+          "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX actual+1A0 header; RET. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_tracer_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bac970",
+        "before": {
+          "address": "00bac970",
+          "function_name": "FUN_00bac970"
+        },
+        "after": {
+          "address": "00bac970",
+          "name": "BSP_NativeTracer_Destroy",
+          "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX actual7ACh tracer payload; RET. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_tracer_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bacb90",
+        "before": {
+          "address": "00bacb90",
+          "function_name": "FUN_00bacb90"
+        },
+        "after": {
+          "address": "00bacb90",
+          "name": "BSP_NativeTracer_ScalarDelete",
+          "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX actual tracer; flags stack; EAX original slot; RET4. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_tracer_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      }
+    ]
+  },
+  "ghidra_signature_audit": {
+    "record": "local/al-signature-audit.json",
+    "project_saved": true,
+    "readback_verified": true,
+    "before": {
+      "00bac130": "00bac130 BSP_NativeTracerPointers_Reserve  undefined BSP_NativeTracerPointers_Reserve(void)  body 00bac130 - 00bac18e\n",
+      "00bac370": "00bac370 BSP_NativeTracerPointers_Resize  undefined BSP_NativeTracerPointers_Resize(void)  body 00bac370 - 00bac3bf\n",
+      "00bac860": "00bac860 BSP_NativeTracerPoints_Destroy  undefined BSP_NativeTracerPoints_Destroy(void)  body 00bac860 - 00bac876\n",
+      "00bac880": "00bac880 BSP_NativeTracerPointers_Destroy  undefined BSP_NativeTracerPointers_Destroy(void)  body 00bac880 - 00bac896\n",
+      "00bac970": "00bac970 BSP_NativeTracer_Destroy  undefined BSP_NativeTracer_Destroy(void)  body 00bac970 - 00baca7d\n",
+      "00bacb90": "00bacb90 BSP_NativeTracer_ScalarDelete  undefined BSP_NativeTracer_ScalarDelete(void)  body 00bacb90 - 00bacbaf\n"
+    },
+    "changes": [
+      {
+        "address": "00bac130",
+        "prototype": "void __thiscall BSP_NativeTracerPointers_Reserve(int capacity)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00bac130 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00bac370",
+        "prototype": "void __thiscall BSP_NativeTracerPointers_Resize(int count)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00bac370 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00bac860",
+        "prototype": "void __thiscall BSP_NativeTracerPoints_Destroy(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00bac860 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00bac880",
+        "prototype": "void __thiscall BSP_NativeTracerPointers_Destroy(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00bac880 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00bac970",
+        "prototype": "void __thiscall BSP_NativeTracer_Destroy(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00bac970 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00bacb90",
+        "prototype": "void * __thiscall BSP_NativeTracer_ScalarDelete(uint flags)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00bacb90 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ]
+  },
+  "main_merge_validation": {
+    "merged_base": "31ea5b1a78820b039f1d000c99894f555c8a6433",
+    "adaptation": "Current main replaced modeled point-light companions with actual raw node/light arrays. Both new lifetime references now remove backlinks through NativePointLightLinksRuntime and concrete B7C1A0, matching canonical NativeModelReference. actual_names routing is preserved.",
+    "code_sha256": {
+      "include/bsp/native_tracer_lifetime.hpp": "e4a6b0c57a3e8e210b397023106e575f3c5850d69c2fca043cffb25d8b286e3e",
+      "src/native_tracer_lifetime.cpp": "9ac1a10fdcc3cf1edb6ee3c10e7776148140b4476459a05af7e9733027bf7adf"
+    },
+    "combined_library_sha256": "5675ba1eb32c06451c04ab5299c0834e6ab3c803ce61a8a23cf4c0a7f7db033c",
+    "standard_build_and_both_seeded_ctests": "local/al-merge-adapted-build.log: passed",
+    "current_library_fixtures": [
+      "local/al-merge-adapted-fixtures.log",
+      "local/al-merge-manager-fixture.log"
+    ],
+    "additional_source_case": "Particle logical release with one actual light verifies removal of the raw-node backlink, physical model return, and cleanup of both actual array backings. Tracer uses the same reviewed callback pattern and compiles; nonempty tracer logical release not executed.",
+    "original_EH_and_gameplay": false
+  },
+  "final_merged_validation": {
+    "tested_commit": "bf1f317a9e894d71f3f646249b97e9158c7b42f5",
+    "reviewed_implementation": "ead4bce6f8e148bbb61223864707aab3cbb21bab",
+    "source_hashes": {
+      "include/bsp/native_particle_model_manager.hpp": "2575deb3981060303320cf0c51eaed2a6659dc7686ec1243c23375064c20005d",
+      "include/bsp/native_tracer_construction.hpp": "800696c0606a51e39c25dda3b5120f6bf3dd56d8036e34ae07e47ca6833168b9",
+      "include/bsp/native_tracer_lifetime.hpp": "e4a6b0c57a3e8e210b397023106e575f3c5850d69c2fca043cffb25d8b286e3e",
+      "include/bsp/native_particle_model_lifetime.hpp": "16f364973a92950a0405423eaa90f062bef05716842f87b93bf52915b44a7a96",
+      "include/bsp/native_model_owner.hpp": "8ad5bc6167d9fa913583b1cbd19fb9f944d9fc5552d224848c4e0ef113996326",
+      "include/bsp/native_particle_model_construction.hpp": "3d7fb5c745fde8c07d4fa7dd3820380fd4848cc737040371c1ea0c548141dc60",
+      "src/native_particle_model_manager.cpp": "8f4333c6485f219eb4e523a731f69c2c7fd02505f6de4d48f47fd033d40195fc",
+      "src/native_tracer_construction.cpp": "d5fc641f753ef4b6e5f1fa125771f0ecc960d0276ebd753ea37e67b84888d72b",
+      "src/native_tracer_lifetime.cpp": "9ac1a10fdcc3cf1edb6ee3c10e7776148140b4476459a05af7e9733027bf7adf",
+      "src/native_particle_model_lifetime.cpp": "47e60f2fed80e33afbdefec4bccd721b6d7b20a75e45944984b9c1e1cc360e67",
+      "src/native_model_owner.cpp": "8a0e4e81df6331933be4d21749d6ec4096da96ab5d060fc8e84ecf22e971e9a2",
+      "src/native_particle_model_construction.cpp": "91b2663f0aeab94186ea72f3572bb731087c9a1e907ff3b4dd7119461a8bf746"
+    },
+    "build": "local/al-final-merged-build.log",
+    "fixtures": [
+      "local/al-final-merged-fixtures.log",
+      "local/al-final-merged-manager.log"
+    ],
+    "library_sha256": "5c19fe9fc4ca4b98a663f608fe42e1e0c1bb32e7cca38195121372cf7c82eb0b",
+    "promoted_commit": "bf1f317a9e894d71f3f646249b97e9158c7b42f5",
+    "standard_build_and_two_seeded_ctests": "passed",
+    "focused_fixtures": "passed within documented coverage",
+    "promotion_rule": "Only the exact immutable tested commit was fast-forwarded; no untested main remerge. This follow-up changes report metadata only.",
+    "original_EH_and_gameplay": false
+  }
+}
