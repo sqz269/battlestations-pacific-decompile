@@ -1,5 +1,6 @@
 #pragma once
 #include "bsp/native_input_binding_storage.hpp"
+#include "bsp/native_input_action_owner.hpp"
 
 namespace bsp {
 struct NativeInputActionRecordCalls {
@@ -32,6 +33,18 @@ void* copy_native_input_action_record_00a93a80(void*, const void*, NativeInputAc
 // each reverse destruction; reserve deep-copies then destroys old rows forward.
 void reserve_native_input_actions_00a93b30(void*, std::int32_t, NativeInputActionRecordsContext&);
 void resize_native_input_actions_00a93c10(void*, std::int32_t, NativeInputActionRecordsContext&);
+
+// Concrete owner-to-storage calls. The context and actual listener provider
+// remain borrowed through owner destruction; no private arrays or lifetime.
+class NativeInputActionStorageCalls final : public NativeInputActionOwnerCalls {
+public:
+    explicit NativeInputActionStorageCalls(NativeInputActionRecordsContext& context) noexcept
+        : context_(context) {}
+    void call_0086a430(void* header, std::int32_t count) override;
+    void call_00a93c10(void* header, std::int32_t count) override;
+private:
+    NativeInputActionRecordsContext& context_;
+};
 
 // Complete normal schedules and supported C++ unwinds over valid native ranges.
 // FH3/SEH, hardware-fault behavior, original ABI and arbitrary listener profiles

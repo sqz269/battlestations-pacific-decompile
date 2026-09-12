@@ -185,3 +185,11 @@ The corrected primary library passed its strict build and both CTests before
 the split fixture was linked. Application record producers, canonical frame
 consumers, finite action-owner deletion dispatch and device/game validation
 remain outside this packet.
+
+## Correction from docs/NATIVE_SINGLETON_INPUT_ONLINE.md
+
+The shared raw manager now admits the documented online/input profiles. Primary
+archive-only fixtures exercised actual BD0400 drain, including nonempty backend
+and action storage. See that document and reports/native_singleton_input_online.json
+for the executed profiles, artifact hashes and provider/application boundaries.
+Original packet validation above describes its earlier standalone state.

@@ -1,0 +1,71 @@
+{
+ "events": [
+  {
+   "recreate": "00cb6a36",
+   "previous": "Function: Unwind@00cb6a36 at 00cb6a36\nSignature: undefined Unwind@00cb6a36(void)\nEntry: 00cb6a36\nBody: 00cb6a36 - 00cb6a3e",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00cb6a36"
+   },
+   "result": {
+    "success": true,
+    "address": "00cb6a36",
+    "deleted_function": "Unwind@00cb6a36",
+    "body_size": 9,
+    "message": "Function 'Unwind@00cb6a36' deleted at 00cb6a36"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00cb6a36",
+    "end_address": "00cb6a41"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00cb6a36",
+    "end_address": "00cb6a40",
+    "bytes_disassembled": 11,
+    "message": "Successfully disassembled 11 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00cb6a36",
+    "disassemble_first": false,
+    "name": "Unwind@00cb6a36"
+   },
+   "result": {
+    "success": true,
+    "address": "00cb6a36",
+    "function_name": "Unwind@00cb6a36",
+    "entry_point": "00cb6a36",
+    "body_size": 11,
+    "message": "Function created successfully at 00cb6a36",
+    "warnings": [
+     "Function name 'Unwind@00cb6a36' \u2014 main part 'Unwind@00cb6a36' is not PascalCase. Expected: Unwind@00cb6a36",
+     "Function name 'Unwind@00cb6a36' does not start with a recognized verb. First word 'Unwind@00cb6a36' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00cb6a36",
+   "end": "00cb6a41",
+   "name": "Unwind@00cb6a36",
+   "after": "Function: Unwind@00cb6a36 at 00cb6a36\nSignature: undefined Unwind@00cb6a36(void)\nEntry: 00cb6a36\nBody: 00cb6a36 - 00cb6a40"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

@@ -118,3 +118,11 @@ operation; full BD0400 XLive dispatch belongs to primary integration. The existi
 raw BD0400 drains the remaining null holes. The fixture records three actual
 scalar frees, one CRT invalid callback, and a retained borrowed achievement batch.
 No live SDK or application startup claim is made by this packet.
+
+## Correction from docs/NATIVE_SINGLETON_INPUT_ONLINE.md
+
+The shared raw manager now admits the documented online/input profiles. Primary
+archive-only fixtures exercised actual BD0400 drain, including nonempty backend
+and action storage. See that document and reports/native_singleton_input_online.json
+for the executed profiles, artifact hashes and provider/application boundaries.
+Original packet validation above describes its earlier standalone state.

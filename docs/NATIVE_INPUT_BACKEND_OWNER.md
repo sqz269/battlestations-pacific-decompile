@@ -140,3 +140,11 @@ reference release, slot replacement and exceptional cleanup. Its SDK arm uses
 actual DirectInput Create/AddRef but deliberately fails before enumeration.
 No successful full raw-device startup, hardware enumeration, controller sample,
 application execution, or game behavior is claimed.
+
+## Correction from docs/NATIVE_SINGLETON_INPUT_ONLINE.md
+
+The shared raw manager now admits the documented online/input profiles. Primary
+archive-only fixtures exercised actual BD0400 drain, including nonempty backend
+and action storage. See that document and reports/native_singleton_input_online.json
+for the executed profiles, artifact hashes and provider/application boundaries.
+Original packet validation above describes its earlier standalone state.

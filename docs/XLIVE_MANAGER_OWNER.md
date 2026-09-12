@@ -53,3 +53,11 @@ These are historical findings from the original owner packet. The AC lifetime pa
 MSVC Win32 Release `scripts/build.ps1` passed with both existing CTests (`reconstructed_math`, `native_math_differential`); `verify-seeds` matched all eight seeds. One ignored focused fixture, `local/xlive_owner_fixture.cpp`, passed publication/preimage checks, initial-pump storage visibility and nonfreeing overwrite, partial overlap initialization, current-global unregister, native destructor omissions, and constructor/destructor exception cleanup. Logs are `local/xlive-owner-final-build.log`, `local/xlive-owner-seeds.json`, and `local/xlive-owner-fixture.log`.
 
 Build/fixture evidence does not establish live DLL, asynchronous lifetime, binary ABI, or game validation.
+
+## Correction from docs/NATIVE_SINGLETON_INPUT_ONLINE.md
+
+The shared raw manager now admits the documented online/input profiles. Primary
+archive-only fixtures exercised actual BD0400 drain, including nonempty backend
+and action storage. See that document and reports/native_singleton_input_online.json
+for the executed profiles, artifact hashes and provider/application boundaries.
+Original packet validation above describes its earlier standalone state.

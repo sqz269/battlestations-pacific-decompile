@@ -8,6 +8,12 @@
 #endif
 
 namespace bsp {
+void NativeInputActionStorageCalls::call_0086a430(void* header, std::int32_t count) {
+    resize_native_input_dwords_0086a430(header, count);
+}
+void NativeInputActionStorageCalls::call_00a93c10(void* header, std::int32_t count) {
+    resize_native_input_actions_00a93c10(header, count, context_);
+}
 namespace {
 template<class T> T get(const void* p, std::size_t offset) noexcept {
     T value;

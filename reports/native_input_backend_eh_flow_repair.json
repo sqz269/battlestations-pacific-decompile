@@ -1,0 +1,53 @@
+{
+ "repairs": [
+  {
+   "function": "00cb6a36",
+   "owner": "agent/orch4-20260910",
+   "when": "2026-09-12T19:39:28Z",
+   "decompile_lines_before": 10,
+   "gaps": [
+    {
+     "site": "00cb6a3a",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "00cb6a3f",
+     "gap_end_exclusive": "00cb6a41",
+     "bytes": 2,
+     "after_call": true,
+     "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00cb6a3a",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "00cb6a3f",
+      "gap_end_exclusive": "00cb6a41",
+      "bytes": 2,
+      "after_call": true,
+      "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+     },
+     "clear": "Success: Cleared flow override at 00cb6a3a (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 2 byte(s)"
+    },
+    {
+     "explicit_tail_call": "00cb6a3a",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00cb6a3a (was: NONE, now: NONE)"
+     }
+    }
+   ],
+   "explicit_tail_end_exclusive": "00cb6a41",
+   "explicit_body_sha256": "a081a793583ae3ccb95092d02d5ba67ef85778c8dadf94aad8521528485985e8",
+   "body_before": "Function: Unwind@00cb6a36 at 00cb6a36\nSignature: undefined Unwind@00cb6a36(void)\nEntry: 00cb6a36\nBody: 00cb6a36 - 00cb6a3e",
+   "decompile_lines_after": 10,
+   "gaps_remaining": 1,
+   "body_after": "Function: Unwind@00cb6a36 at 00cb6a36\nSignature: undefined Unwind@00cb6a36(void)\nEntry: 00cb6a36\nBody: 00cb6a36 - 00cb6a3e",
+   "stored_body_tail_complete": false,
+   "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+  }
+ ]
+}
