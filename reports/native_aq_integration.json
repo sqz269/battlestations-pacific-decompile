@@ -4367,5 +4367,96 @@
       "bytes": 13726,
       "sha256": "ff1fb48f45518451e088f75077784eb6dc2c3a2758a736dda9cd3ff39aa3ea87"
     }
-  ]
+  ],
+  "main_integration_build": {
+    "checked_head": "cd2f72e9925f61cc10f48cc7dfa52dbafc1271f8",
+    "recorded_utc": "2026-09-12T16:21:48.290619+00:00",
+    "strict_win32_build_passed": true,
+    "existing_ctests_passed": 2,
+    "fixture_input_count": 171,
+    "changed_since_fixture_build": [
+      "build/win32/Release/bsp_core.lib",
+      "cmake/startup.cmake"
+    ],
+    "interpretation": "Concurrent main adds registry entries and library members. All 167 recorded source/header/build-script inputs and the Lua/zlib libraries remain identical to the combined fixture inputs. Fixture results remain tied to their preserved earlier archive; latest main build and CTests are separate evidence.",
+    "installed_pe_hash_reverified": true,
+    "artifacts": [
+      {
+        "path": "local/native-aq-main-build/integration.log",
+        "sha256": "c7b6afd545a10fddc78a376d01e0a2d8184ea4d5e7afd408fa187e03e8d3dfd6",
+        "bytes": 1073
+      },
+      {
+        "path": "local/native-aq-main-build/bsp_core.lib",
+        "sha256": "2d2312ccf56c609c7768204dff9381bc836e7409ff27d5dfe63b70ae679e4c12",
+        "bytes": 45581968
+      },
+      {
+        "path": "local/native-aq-main-build/bsp_lua511.lib",
+        "sha256": "3152f1378e15bb0eea5391d3d9b8b2dbaed92e9355f6676cc5f05222a0aaac24",
+        "bytes": 455244
+      },
+      {
+        "path": "local/native-aq-main-build/bsp_zlib121.lib",
+        "sha256": "c0b4c9ec00ae9019ea191da4cc2177d694fcd0b84886df725bffee8c9ca564ed",
+        "bytes": 71906
+      },
+      {
+        "path": "local/native-aq-main-build/scripts/build.ps1",
+        "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c",
+        "bytes": 1657
+      },
+      {
+        "path": "local/native-aq-main-build/cmake/startup.cmake",
+        "sha256": "d84832925eeb9b41fe51991265db028c7755afa3ad9a51700a9ec520ba3431fb",
+        "bytes": 64323
+      },
+      {
+        "path": "local/native-aq-main-build/build/win32/bsp_core.dir/Release/native_vfs_sequence_lifetime.obj",
+        "sha256": "d3a4bf11955f7b4d85cb31eba337fb45455f54569be5161dd96991f040a0a65c",
+        "bytes": 7417
+      },
+      {
+        "path": "local/native-aq-main-build/local/integrate_startup_workers.py",
+        "sha256": "28e87d4fa6e5b3bdc1185deab35b54363910f5581b6d464486f6f4b12f7695a2",
+        "bytes": 3033
+      },
+      {
+        "path": "local/native-aq-main-build/local/check_integrator_retry_guard.py",
+        "sha256": "f4ea2a5c048949cd8fe6db949774a52cb4ba28f91967f607b354332ae2d6cb68",
+        "bytes": 744
+      },
+      {
+        "path": "local/native-aq-main-build/local/record_native_aq_integration.py",
+        "sha256": "a6a7d784e5a5c79860b0af7de1fb797e7cf9de7c934673d4e51ccfe984b57b70",
+        "bytes": 9680
+      },
+      {
+        "path": "local/native-aq-main-build/local/finish_native_aq_annotations.py",
+        "sha256": "a291c6677b498ddfe170cf1bc8aacd6d81fb155f534731063d59649919ede79d",
+        "bytes": 2735
+      },
+      {
+        "path": "local/native-aq-main-build/local/document_native_aq_parent.py",
+        "sha256": "bf5517a2d2aeeabcb16b5750017e5d3fce44f210be4fce121fd2c5f05a71bab9",
+        "bytes": 7414
+      },
+      {
+        "path": "local/native-aq-main-build/local/prepare_native_aq_combined_probes.py",
+        "sha256": "c52e31ffb156320fc7ff69ab308b9cd4487187c61b9373487b2e1ca368fd7dc0",
+        "bytes": 2794
+      },
+      {
+        "path": "local/native-aq-main-build/local/pin_native_aq_main_build.py",
+        "sha256": "e5818d32cacf9cc278e27b61ed9d7f39c77a6e55ba5e08fc4970c79a013ff7c2",
+        "bytes": 3083
+      },
+      {
+        "path": "local/native-aq-main-build/main-annotation-before.json",
+        "sha256": "f24e844223a5f8e497e8a6766ce4b0fe61b41fa71f32ee470ba31b982b0f65f7",
+        "bytes": 72657
+      }
+    ],
+    "remote_publication": "Remote ancestry is recorded separately in local/native-aq-remote-publication.json after commit and normal push; this record establishes the checked build."
+  }
 }
