@@ -1,0 +1,310 @@
+{
+  "packet": "cc_ai_nav_block_ctor",
+  "owner": "agent/cc-ai-nav-block-ctor",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "read-only",
+  "doc": "docs/SHIP_AI_NAV_BLOCK_CTOR.md",
+  "header": "include/bsp/ship_ai_nav_block_ctor.hpp",
+  "source": "src/ship_ai_nav_block_ctor.cpp",
+  "build": "scripts/build.ps1, Win32 MSVC /W4 /WX, bsp_core; ctest reconstructed_math passed",
+  "note": "009E4330, the navigation control block's constructor, and the five tuning fields the navigation arm tail reads. Every descriptive name is a hypothesis, not a recovered symbol. The pseudocode of 009E4330 is not usable on its own: five of its six calls take register inputs the decompiler drops and every float is x87, so the stored Ghidra listing was read instruction by instruction over 009E4330-009E46C2. bsp_game.exe does not construct a ship AI brain, so no run log bears on this packet and docs/WORKER_VERIFICATION_CHECKLIST.md rule 6 does not bind. Question 3 of the brief (009E6A90) was already complete before this packet: see the `already_complete` block.",
+  "already_complete": {
+    "address": "009e6a90",
+    "claim": "The brief asked for 009E6A90 whole only if its existing projection was incomplete. It is complete and was verified twice.",
+    "evidence": [
+      "docs/SHIP_AI_APPROACH_UPDATE.md line 299: '__thiscall(nested)(), RET 0, body 009E6A90-009E6E78, complete', with the whole slow-down rule transcribed at lines 301-325 and the routine table at line 358 recording 'complete (009E6A90-009E6E78)'.",
+      "docs/SHIP_AI_RING_SCAN.md line 263: '009E6A90 | 009E6A90-009E6E78 | complete, verified only; projected by the previous packet', and line 222 names the sentinel arm 009E6AC8..009E6B17 that replaces the 9999.0f commanded throttle.",
+      "python tools/bsp.py lookup 009e6a90 reports reconstruction function ship_ai_approach_limit_throttle_009e6a90 status=semantic_build_tested source=src/ship_ai_approach_update.cpp."
+    ],
+    "answer": "The commanded heading at nested+120Ch becomes the commanded throttle at nested+1210h: 009E6AB5/009E6ABB take the wrapped heading error, 009E6ADE tests the 9999.0f sentinel and 009E6B12 replaces it with interp(pi/6 -> 1.0, 70deg -> 0.5) of the absolute error, and the final clamp at 009E6BC7..009E6E78 bounds it to +/- the mode limit. Nothing was re-reconstructed here."
+  },
+  "routines": [
+    {
+      "address": "009e4330",
+      "native": "009e4330",
+      "name": "BSP_ShipAi_NavigationBlockConstruct",
+      "abi": "__thiscall(blk)(unit*) returning blk, RET 4 at 009E46C0",
+      "body": "body 009e4330-009e46c2",
+      "coverage": "complete"
+    },
+    {
+      "address": "0082e960",
+      "native": "0082e960",
+      "name": "BSP_ShipClass_TurnCircleRadiusAtThrottle",
+      "abi": "__thiscall(descriptor)(float throttle), RET 4 at 0082E97F, ST0 result",
+      "body": "body 0082e960-0082e981",
+      "coverage": "complete"
+    },
+    {
+      "address": "009dfcb0",
+      "native": "009dfcb0",
+      "name": "BSP_ShipAi_NavigationBlockSeedDefaults",
+      "abi": "__fastcall(blk+1C4h) returning its argument, RET at 009DFEB4",
+      "body": "body 009dfcb0-009dfeb4",
+      "coverage": "partial: only the blk+3C4h..blk+3E4h window (009DFE50, 009DFE60, 009DFE70, 009DFE78, 009DFE88, 009DFE90, 009DFE98, 009DFEA0, 009DFEA8) is projected. 009DFCB0-009DFE4F and 009DFEB0-009DFEB4 are not projected; they seed blk+1C4h..blk+3C3h, which docs/SHIP_AI_STATES.md and docs/SHIP_AI_NAVIGATION_ARM_TAIL.md own."
+    }
+  ],
+  "host_steps": [
+    {
+      "routine": "009e4330",
+      "address": "009e4363",
+      "native": "00bf79f0",
+      "function": "009e4330",
+      "method": "none, folded into the struct's member initialisers",
+      "note": "_memset(blk+4h, 0, 41h). The byte at blk+45h is written at 009E435F, one instruction before the call, so it survives the clear."
+    },
+    {
+      "routine": "009e4330",
+      "address": "009e4379",
+      "native": "00bf79f0",
+      "function": "009e4330",
+      "method": "none, folded into the struct's member initialisers",
+      "note": "_memset(blk+46h, 0, 100h). The byte at blk+146h is written at 009E4372, before the call."
+    },
+    {
+      "routine": "009e4330",
+      "address": "009e43cc",
+      "native": "009dfcb0",
+      "function": "009e4330",
+      "method": "seed_steering_009dfcb0",
+      "note": "ECX = blk+1C4h from 009E43A4 LEA ECX,[ESI+1C4h]. Seeds blk+3C4h..blk+3E4h with authored defaults; every one of them except blk+3DCh and blk+3E0h is overwritten later in this routine or by 009E0270."
+    },
+    {
+      "routine": "009e4330",
+      "address": "009e448e",
+      "native": "vtable[5Ch]",
+      "function": "009e4330",
+      "method": "unit_answers_class_5c",
+      "note": "CALL EDX with EDX = [[unit]+5Ch] loaded at 009E4487, ECX = unit, PUSH 8 at 009E448A. Class id 8 is MSubmarine (docs/ENTITY_CLASS_IDS.md line 179). Reached only when the unit argument is non-null (009E4483 JZ)."
+    },
+    {
+      "routine": "009e4330",
+      "address": "009e44c4",
+      "native": "0082e960",
+      "function": "009e4330",
+      "method": "class_turn_circle_radius_0082e960",
+      "note": "ECX = [unit+538h] from 009E44BA. The PUSH ECX at 009E44C0 only makes room: 009E44C1 FSTP float ptr [ESP] overwrites that dword with ST0 = 1.0f from 009E44A0 FLD1. Result stored to blk+3C8h at 009E44CF."
+    },
+    {
+      "routine": "009e4330",
+      "address": "009e4555",
+      "native": "0082e960",
+      "function": "009e4330",
+      "method": "class_turn_circle_radius_0082e960",
+      "note": "Same shape with the float 0.9f at 00CE3860 (009E454B FLD, 009E4552 FSTP into the pushed slot), ECX = [unit+538h] from 009E4545. Result stored to blk+3CCh at 009E4568 by FST, without popping."
+    },
+    {
+      "routine": "009e4330",
+      "address": "009e45f3",
+      "native": "00bf7030",
+      "function": "009e4330",
+      "method": "sqrt_00bf7030",
+      "note": "The CRT square-root helper; the argument is in ST0 from 009E45EF. No domain guard: blk+3CCh^2 - 0.25*[unit+9C8h]^2 is negative whenever the hull is longer than twice the cruise turning circle."
+    },
+    {
+      "routine": "009e4330",
+      "address": "009e465f",
+      "native": "00bd2f10",
+      "function": "009e4330",
+      "method": "uniform_float_00bd2f10",
+      "note": "BSP_Random_UniformFloatRange with 0.0f (009E4646 FLDZ, 009E4650) and 1.0f (009E463B FLD1, 009E4640) on the stack. 009E4664 FCHS negates the result before 009E4669 stores it at blk+148h."
+    },
+    {
+      "routine": "009e4330",
+      "address": "009e46a9",
+      "native": "009e0270",
+      "function": "009e4330",
+      "method": "build_sector_shapes_009e0270",
+      "note": "ECX = blk from 009E4671. 009E466F PUSH 1 supplies the stack argument; 009E0270 takes a float (docs/SHIP_AI_SECTOR_SCAN.md section 7), so the value seen is the raw dword 1, the denormal 1.4e-45, not 1.0f. Rewrites blk+168h, blk+3C4h and the twelve sector shapes, and reaches 009DE2F0 at 009E02C2, which is what first writes blk+19Ch and blk+1A0h."
+    },
+    {
+      "routine": "0082e960",
+      "address": "0082e96b",
+      "native": "0082e890",
+      "function": "0082e960",
+      "method": "unit_rudder_denominator_0082e890 (existing, include/bsp/unit_rudder.hpp)",
+      "note": "0082E970 FMUL float ptr [ESI+520h] multiplies the curve by the descriptor's derived turn radius; ESI = ECX = the descriptor from 0082E969."
+    }
+  ],
+  "host_fields": [
+    {
+      "field": "blk+3C8h",
+      "meaning": "the class turning-circle radius in metres at full throttle, 0082E960(class, 1.0f)",
+      "writer": "009e4537 is the neighbouring field; this one is written at 009e44cf",
+      "value_deruyter": 269.48999,
+      "value_fubuki": 280.01807
+    },
+    {
+      "field": "blk+3CCh",
+      "meaning": "the same at 0.9 throttle, 0082E960(class, 0.9f)",
+      "writer": "009e4568",
+      "value_deruyter": 256.01547,
+      "value_fubuki": 266.01715
+    },
+    {
+      "field": "blk+3D0h",
+      "meaning": "max(class MaxRotAngle, 4 degrees per second)",
+      "writer": "009e45a9",
+      "value_deruyter": 0.122173,
+      "value_fubuki": 0.139626
+    },
+    {
+      "field": "blk+3D4h",
+      "meaning": "the stop radius, max(1.5 * class MaxSpeed, 0.4 * [unit+9C8h])",
+      "writer": "009e4537",
+      "value_deruyter": 68.4,
+      "value_fubuki": 47.2
+    },
+    {
+      "field": "blk+3D8h",
+      "meaning": "the restart radius, 1.5 * blk+3D4h",
+      "writer": "009e453f",
+      "value_deruyter": 102.60001,
+      "value_fubuki": 70.8
+    },
+    {
+      "field": "blk+604h",
+      "meaning": "the inline neighbour count; the constructor starts it at zero",
+      "writer": "009e4659",
+      "value_deruyter": 0,
+      "value_fubuki": 0
+    }
+  ],
+  "field_writer_scan": {
+    "method": "python tools/bsp.py scan-bytes over .text for every store-shaped opcode family (F3 0F 11 /r, D9 /2 and D9 /3, 89 /r, C7 /0, 88 /r, C6 /0, FF /0 and /1, 01 /r, 29 /r, 83 /0, F2 0F 11 /r, 0F 29 /r, 0F 11 /r) at the disp32 forms of 3C8h, 3CCh, 3D4h, 3D8h and 604h, then again at 204h, 208h, 20Ch, 210h, 214h and 440h for the blk+1C4h sub-object base that 009DFCB0 uses. local/blk_field_scan.txt holds the raw output.",
+    "scope_limit": "A disp32 scan cannot see a store through a base that is neither blk nor blk+1C4h (a LEA to blk+3C0h and a disp8 store, say), nor a bulk memcpy over the block. The two bases enumerated are the only ones any read routine uses.",
+    "results": [
+      {
+        "field": "blk+3C8h",
+        "writers": ["009e44cf in 009e4330 (FSTP)", "009dfe88 in 009dfcb0 (MOVSS, base blk+1C4h disp 204h)"],
+        "note": "Every other hit in the ship AI band 009D0000-009F6060 is D9 /0 FLD, a read: 009DA7EB, 009DDE70, 009DDF04, 009DE7FB, 009E45A3, 009ED356, 009ED368, 009ED761. 009EEA8F is LEA ECX,[ESI+3C8h] feeding 00415510 BSP_Math_MinFloatByRef, whose body writes only its own stack frame, so it is also a read."
+      },
+      {
+        "field": "blk+3CCh",
+        "writers": ["009e4568 in 009e4330 (FST)", "009dfe90 in 009dfcb0 (MOVSS, base blk+1C4h disp 208h)"],
+        "note": "The other AI-band hits are all FLD reads in 009ED6B0, 009EF910 and 009F0100."
+      },
+      {
+        "field": "blk+3D4h",
+        "writers": ["009e4537 in 009e4330 (MOVSS)", "009dfe78 in 009dfcb0 (MOVSS, disp 210h)"],
+        "note": "One read, 009EEF62 in 009ED6B0."
+      },
+      {
+        "field": "blk+3D8h",
+        "writers": ["009e453f in 009e4330 (FSTP)", "009dfe70 in 009dfcb0 (MOVSS, disp 214h)"],
+        "note": "One read, 009EEF28 in 009ED6B0."
+      },
+      {
+        "field": "blk+604h",
+        "writers": [
+          "009e4659 in 009e4330 (MOV [ESI+604h], EBX with EBX = 0)",
+          "009f0e69 in 009f0d20 BSP_ShipAi_NeighbourListAdd (83 /0, ADD dword ptr [ESI+604h], imm8)",
+          "009f114e in 009f0ea0 BSP_ShipAi_NeighbourListRefresh (29 /r, SUB [ESI+604h], EBP)"
+        ],
+        "note": "The last two are the producer docs/SHIP_AI_SECTOR_SCAN.md section 9 already established. 009DFCB0 does not reach this field: its base blk+1C4h would need disp 440h and the scan finds none."
+      }
+    ]
+  },
+  "corrections": [
+    {
+      "was": "docs/SHIP_AI_CLEARANCE_PROFILE.md line 57 annotates blk+3CCh = 0082E960(unit->538h, 0.9f) as 'the hull radius'.",
+      "is": "It is the class turning-circle radius in metres at 0.9 throttle. 0082E960 multiplies the curve 0082E890 by class+520h = MaxSpeed / MaxRotAngle.",
+      "evidence": "0082E970 FMUL float ptr [ESI+520h] with ESI = the descriptor; docs/SHIP_AI_CLASS_FIELD_0524.md line 102 ('class+520h is metres ... the quotient is the'); docs/UNIT_RUDDER_CURVE.md lines 244-248 quote the authors' Hungarian comment on the three Lua rows, 'at what throttle setting the turning-circle radius given in the vehicleclass is multiplied by how much'. docs/SHIP_AI_NAVIGATION_ARM_TAIL.md line 156 already calls the same field 'the class turn distance', so the two docs disagreed."
+    },
+    {
+      "was": "docs/SHIP_AI_CLASS_FIELD_0524.md line 104 and its table row for +520h, and include/bsp/ship_ai_throttle_ring.hpp line 129, all say 0082E850 is class+520h's only reader.",
+      "is": "There are two. 0082E853 MOVSS XMM0,[ECX+520h] in BSP_ShipClass_GetTurnRadius (body 0082E850-0082E881) and 0082E970 FMUL float ptr [ESI+520h] in FUN_0082E960 (body 0082E960-0082E981), whose ESI is the descriptor at both of its call sites.",
+      "evidence": "python tools/bsp.py ghidra proto 0082e970 --brief reports the containing function as 0082e960; 009E44BA and 009E4545 load ECX = [unit+538h] before each call, and 00811A45 loads ESI = [EAX+538h] before the third."
+    },
+    {
+      "was": "docs/GAME_EXECUTABLE.md line 6124 calls [plan+3Ch]+9C8h 'the unit radius that has no producer anywhere'; docs/SHIP_AI_PATH_PLANNER.md line 40 and include/bsp/ship_ai_navigation_arm_tail.hpp's hull_radius_9c8 repeat 'radius'.",
+      "is": "It has two producers and it is a full hull length in metres, not a radius. 0081106E in FUN_00810F60 (body 00810F60-008110CF) and 0081FA4D in FUN_0081F980 (body 0081F980-008206EB) both write unit+9C8h = 2.0 * max([box+3Ch], -[box+30h]) from the model box at [class+50h], and unit+9CCh = 2.0 * max(-[box+28h], [box+34h]).",
+      "evidence": "The double at 00D7A308 is 2.0. 00810F60's no-box branch assigns the descriptor's +A0h straight into unit+9C8h and +A4h into unit+9CCh, and descriptor+A0h is the Lua key Length (docs/SHIP_CLASS_FIELDS.md line 73), a full length: 171 for the DeRuyter, 118 for the Fubuki. A half-extent doubled and a full Length cannot both be correct unless the field is a full extent."
+    },
+    {
+      "was": "docs/SHIP_AI_SECTOR_SCAN.md section 7 calls w = unit+9CCh 'the hull half width'.",
+      "is": "By the same producer it is the full beam. The sector lateral offsets w/2.2 and w/4 are unchanged as arithmetic; only their reading changes.",
+      "evidence": "0081FA07 stores 2.0 * max(-[box+28h], [box+34h]) into unit+9CCh, and 00810F60's no-box branch assigns descriptor+A4h, the neighbour of the full Length at +A0h."
+    },
+    {
+      "was": "The packet brief, quoting docs/GAME_EXECUTABLE.md milestone 2q, says of blk+3C8h, +3CCh, +3D4h, +3D8h and +604h that 'every one of them is an input the arm tail reads and nothing writes'.",
+      "is": "True of the four float fields once construction is over, but two routines write blk+604h at run time, and 009DFCB0 writes all four float fields before 009E4330 overwrites them.",
+      "evidence": "009F0E69 ADD and 009F114E SUB on [ESI+604h]; 009DFE50, 009DFE70, 009DFE78, 009DFE88 and 009DFE90 through the blk+1C4h base."
+    },
+    {
+      "was": "docs/SHIP_AI_NAVIGATION_ARM.md's follow-up ship_ai_nav_block_fields asks 009E4330 for real initial values for blk+19Ch, blk+3C8h, blk+3D0h and blk+1F0h.",
+      "is": "Two of the four are answered here and one more is answered indirectly. blk+3C8h and blk+3D0h are 009E44CF and 009E45A9. blk+19Ch is written during construction, but by 009DE2F0 at 009DE465, reached through 009E46A9 -> 009E0270 -> 009E02C2. blk+1F0h is written by nothing in the construct chain: neither memset range covers it, no store in 009E4330 or 009DFCB0 targets it, and its first writers are 009DE198 in BSP_ShipAi_SetNavigationGoal, 009EE6CB in BSP_ShipAi_ControlsStep and 009DA1C9 in FUN_009DA0D0, all at run time.",
+      "evidence": "The memsets cover blk+4h..blk+44h (009E4363) and blk+46h..blk+145h (009E4379). 009DFCB0's param_1[0xb], the dword at blk+1F0h, is absent from its body. 009F1160 and 009F39C0 call no memset."
+    }
+  ],
+  "class_inputs": {
+    "source": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/scripts/datatables/autoload/vehicleclasses.lua, read-only",
+    "settings": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/scripts/datatables/shipglobals.lua, ShipGlobals Navigator TurnMultipliers: (0.0, 0.4), (0.5, 1.5), (1.0, 2.0). 0082E890 evaluates them at 1.0 -> 2.0 and at 0.9 -> 1.9.",
+    "rows": [
+      {
+        "row": "VehicleClass[20] DeRuyter 1935",
+        "MaxSpeed": 16.4622,
+        "MaxRotAngle": 0.122173,
+        "Length": 171,
+        "class_520h_turn_radius": 134.745,
+        "blk_3c8h": 269.48999,
+        "blk_3cch": 256.01547,
+        "blk_3d0h": 0.122173,
+        "blk_3d4h": 68.4,
+        "blk_3d8h": 102.60001,
+        "blk_3e4h": 76.95,
+        "blk_340h": 538.97998,
+        "blk_318h": 538.97998,
+        "blk_1b4h": 0.20038,
+        "blk_1b8h": 241.31654,
+        "blk_604h": 0
+      },
+      {
+        "row": "VehicleClass[73] Fubuki 1944",
+        "MaxSpeed": 19.5489,
+        "MaxRotAngle": 0.139626,
+        "Length": 118,
+        "class_520h_turn_radius": 140.00903,
+        "blk_3c8h": 280.01807,
+        "blk_3cch": 266.01715,
+        "blk_3d0h": 0.139626,
+        "blk_3d4h": 47.2,
+        "blk_3d8h": 70.8,
+        "blk_3e4h": 53.1,
+        "blk_340h": 560.03613,
+        "blk_318h": 560.03613,
+        "blk_1b4h": 0.13307,
+        "blk_1b8h": 259.39185,
+        "blk_604h": 0
+      }
+    ],
+    "caveat": "Every value that depends on [unit+9C8h] uses the Lua Length, which is what the fallback branch of 00810F60 assigns. The shipped value comes from the model bounding box at [class+50h] when the class has one, and this packet did not read the model files, so blk+3D4h, blk+3D8h, blk+3E4h and blk+1B8h are the fallback-branch numbers, not necessarily the numbers a running game produces."
+  },
+  "no_ghidra_function": [],
+  "follow_up_packets": [
+    {
+      "id": "ship_ai_nav_block_seed_defaults",
+      "scope": "009DFCB0 whole, 009DFCB0-009DFEB4. Only its blk+3C4h..blk+3E4h window is projected here; the rest seeds blk+1C4h..blk+3C3h, the steering and pose fields docs/SHIP_AI_STATES.md models by hand, and would settle their authored defaults in one pass."
+    },
+    {
+      "id": "unit_hull_extents_00810f60",
+      "scope": "FUN_00810F60 and FUN_0081F980 whole, and the record at [class+50h]. This packet established that they produce unit+9C8h and unit+9CCh and that the no-box branch copies descriptor+A0h and +A4h, but did not read the box's own producer, so the +28h..+3Ch layout is a hypothesis. Closing it fixes the 'radius' wording in four docs and one header."
+    },
+    {
+      "id": "ship_ai_nav_block_memo_records",
+      "scope": "The three 20h-byte records at blk+0A24h, blk+0A44h and blk+0A64h that 009E4330 seeds with byte +0h = 1 and dword +14h = -1. docs/SHIP_AI_CLEARANCE_PROFILE.md reads the first two back through 009D57E0 and 00415D70 without naming the record."
+    },
+    {
+      "id": "ship_ai_nav_block_ctor_runtime",
+      "scope": "Wire ship_ai_nav_block_ctor_009e4330 into bsp_game.exe. Nothing in the executable constructs a ship AI brain today, so no run log covers this packet."
+    }
+  ],
+  "uncertainties": [
+    "The null test at 009E4483 guards only the vtable call. 009E44A8 and 009E44BA dereference the unit pointer unconditionally, so the native routine faults on a null unit; the projection records the null case only in blk+3F8h.",
+    "009E466F pushes the raw dword 1 into a float parameter of 009E0270. Read as a float that is the denormal 1.4e-45, not 1.0f. Whether the other call site 009F5156 passes a real float was not checked here; docs/SHIP_AI_SECTOR_SCAN.md section 7 owns 009E0270.",
+    "The field-writer scan is a disp32 scan over .text from the two bases any reader uses. It cannot see a store through a third base with a short displacement, nor a bulk copy over the block.",
+    "The names of the fields this packet does not trace to a reader (blk+14Ch, blk+164h, blk+170h, blk+400h, blk+0A18h, blk+0A1Ch, blk+0A84h..blk+0A8Ch, blk+0A90h) are placeholders carrying only their offset.",
+    "class+520h is taken from the existing ShipClassAiDerivedMotion projection rather than re-derived; 00828F20 is on another packet's reconstructed list and was only read, not re-checked."
+  ]
+}
