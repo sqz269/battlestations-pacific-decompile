@@ -159,3 +159,13 @@ are resolved indirect calls needing the profile evidence above. Eight symbolic
 rows (including raw A9A380) remain separately evidenced dependencies.
 There is no new native-byte differential, drop-in ABI, game execution, or
 rendering claim. The existing executable does not configure this new runtime.
+
+## Correction from docs/ORCH5_TEXTURE_ICON_LISTENER_BATCH.md
+
+The earlier unsupported Icon40 entry is historical. Canonical Icon40 now runs
+AA87B0 followed by the actual AB1150 tail under one active owner guard. The base
+gets the native outgoing x87 float copy; the tail retains the original delta.
+AutoRotate, rotation44 and temporary-state84 are reconstructed. Delayed texture
+loading and complete resource-backed Icon frame validation remain open. The
+combined Win32 build and scoped numeric/frame probes passed. See
+`reports/gui_icon_frame_runtime.json` and the batch report for exact limits.

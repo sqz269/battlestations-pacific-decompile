@@ -310,5 +310,27 @@
     "full native SEH/base unwind and rollback",
     "actual production GUI singleton/atlas/current renderer/callable texture profiles supplied by existing domains",
     "full Section owner runtime/gameplay/visual proof"
-  ]
+  ],
+  "parent_validation": {
+    "build": {
+      "result": "passed",
+      "target": "MSVC Win32 Release",
+      "existing_tests": "2/2 passed",
+      "log": "local/orch5-texture-icon-point-listener-combined-build.log",
+      "log_sha256": "82483326b5d5d218a349daf7e64211b717846933d8b7fd6c97bee21dcedfd206",
+      "source_parent_before_primary_commit": "cbea62dc2219fa835b61aa3aec33f340562a3b0f"
+    },
+    "fixture": {
+      "source": "local/section_texture_probe.cpp",
+      "source_sha256": "f32106e7f539bfb0e1a2344ee7318a6e291fe482a2dc1a74e12a381e2d59e1fe",
+      "log": "local/orch5-section-texture-probe.log",
+      "log_sha256": "54bf39fd9b5ff697f2cc779b439b3eae1e4e611fe4c64aec9243a13a8575ef9d",
+      "result": "passed",
+      "scope": "Actual resolver/canonical atlas storage only; no full property/setter/emitter/retirement fixture"
+    },
+    "independent_review": "Icon worker: no blocking finding",
+    "game_validated": false,
+    "abi_compatible": false,
+    "supersedes_worker_pending_build_only": true
+  }
 }

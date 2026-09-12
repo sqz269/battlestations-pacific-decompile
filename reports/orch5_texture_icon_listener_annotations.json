@@ -1,0 +1,413 @@
+[
+  {
+    "address": "004fa100",
+    "before": {
+      "address": "004fa100",
+      "function_name": "FUN_004fa100"
+    },
+    "after": {
+      "address": "004fa100",
+      "name": "BSP_GuiWidgetListener_Empty00",
+      "evidence": "Hypothesis, not a recovered symbol. CEB110 base listener has seven actual three-byte empty methods: slots00..14 RET4 and18 RET8. Five exposed callbacks implemented in canonical C++ interface;00/08 analyzed only. Existing same-owner AA6BC0 binder retained. docs/GUI_WIDGET_LISTENER_BINDING.md; reports/gui_widget_listener_binding_definitions.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004fa110",
+    "before": {
+      "address": "004fa110",
+      "function_name": "FUN_004fa110"
+    },
+    "after": {
+      "address": "004fa110",
+      "name": "BSP_GuiWidgetListener_Empty04",
+      "evidence": "Hypothesis, not a recovered symbol. CEB110 base listener has seven actual three-byte empty methods: slots00..14 RET4 and18 RET8. Five exposed callbacks implemented in canonical C++ interface;00/08 analyzed only. Existing same-owner AA6BC0 binder retained. docs/GUI_WIDGET_LISTENER_BINDING.md; reports/gui_widget_listener_binding_definitions.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004fa120",
+    "before": {
+      "address": "004fa120",
+      "function_name": "FUN_004fa120"
+    },
+    "after": {
+      "address": "004fa120",
+      "name": "BSP_GuiWidgetListener_Empty08",
+      "evidence": "Hypothesis, not a recovered symbol. CEB110 base listener has seven actual three-byte empty methods: slots00..14 RET4 and18 RET8. Five exposed callbacks implemented in canonical C++ interface;00/08 analyzed only. Existing same-owner AA6BC0 binder retained. docs/GUI_WIDGET_LISTENER_BINDING.md; reports/gui_widget_listener_binding_definitions.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004fa130",
+    "before": {
+      "address": "004fa130",
+      "function_name": "FUN_004fa130"
+    },
+    "after": {
+      "address": "004fa130",
+      "name": "BSP_GuiWidgetListener_Empty0C",
+      "evidence": "Hypothesis, not a recovered symbol. CEB110 base listener has seven actual three-byte empty methods: slots00..14 RET4 and18 RET8. Five exposed callbacks implemented in canonical C++ interface;00/08 analyzed only. Existing same-owner AA6BC0 binder retained. docs/GUI_WIDGET_LISTENER_BINDING.md; reports/gui_widget_listener_binding_definitions.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004fa140",
+    "before": {
+      "address": "004fa140",
+      "function_name": "FUN_004fa140"
+    },
+    "after": {
+      "address": "004fa140",
+      "name": "BSP_GuiWidgetListener_Empty10",
+      "evidence": "Hypothesis, not a recovered symbol. CEB110 base listener has seven actual three-byte empty methods: slots00..14 RET4 and18 RET8. Five exposed callbacks implemented in canonical C++ interface;00/08 analyzed only. Existing same-owner AA6BC0 binder retained. docs/GUI_WIDGET_LISTENER_BINDING.md; reports/gui_widget_listener_binding_definitions.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004fa150",
+    "before": {
+      "address": "004fa150",
+      "function_name": "FUN_004fa150"
+    },
+    "after": {
+      "address": "004fa150",
+      "name": "BSP_GuiWidgetListener_Empty14",
+      "evidence": "Hypothesis, not a recovered symbol. CEB110 base listener has seven actual three-byte empty methods: slots00..14 RET4 and18 RET8. Five exposed callbacks implemented in canonical C++ interface;00/08 analyzed only. Existing same-owner AA6BC0 binder retained. docs/GUI_WIDGET_LISTENER_BINDING.md; reports/gui_widget_listener_binding_definitions.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004fa160",
+    "before": {
+      "address": "004fa160",
+      "function_name": "FUN_004fa160"
+    },
+    "after": {
+      "address": "004fa160",
+      "name": "BSP_GuiWidgetListener_Empty18",
+      "evidence": "Hypothesis, not a recovered symbol. CEB110 base listener has seven actual three-byte empty methods: slots00..14 RET4 and18 RET8. Five exposed callbacks implemented in canonical C++ interface;00/08 analyzed only. Existing same-owner AA6BC0 binder retained. docs/GUI_WIDGET_LISTENER_BINDING.md; reports/gui_widget_listener_binding_definitions.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00581970",
+    "before": {
+      "address": "00581970",
+      "function_name": "FUN_00581970"
+    },
+    "after": {
+      "address": "00581970",
+      "name": "BSP_MainMenuWidgetListener_Current0C",
+      "evidence": "Hypothesis, not a recovered symbol. Same screen+40 CEFC04 listener: complete normal current0C/current18 over canonical widgets; current04 5993A0 is analyzed only and remains abstract. Native RET4/RET8, Text low-byte gate, live D4 reload after type callbacks, same screen/scrollers. docs/MAIN_MENU_WIDGET_LISTENER.md; reports/main_menu_widget_listener.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00581b20",
+    "before": {
+      "address": "00581b20",
+      "function_name": "FUN_00581b20"
+    },
+    "after": {
+      "address": "00581b20",
+      "name": "BSP_MainMenuWidgetListener_Current18",
+      "evidence": "Hypothesis, not a recovered symbol. Same screen+40 CEFC04 listener: complete normal current0C/current18 over canonical widgets; current04 5993A0 is analyzed only and remains abstract. Native RET4/RET8, Text low-byte gate, live D4 reload after type callbacks, same screen/scrollers. docs/MAIN_MENU_WIDGET_LISTENER.md; reports/main_menu_widget_listener.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "005861b0",
+    "before": {
+      "address": "005861b0",
+      "function_name": "BSP_MainMenuScreen_BindLayout",
+      "comment": "[BSP reconstruction 005861b0]\nHypothesis, not a recovered symbol. Vtable +14h of the main-menu screen at 00E198AC+58h, __thiscall(this), bare RET (epilogue 00588275..0058827B). Read only for the handles it binds through 00AA7E00: the five mission groups missions_US_Group at +310h, missions_JP_Group at +314h, missions_US_DLC_Group at +318h, missions_JP_DLC_Group at +31Ch and training_Group at +320h, the backdrops bg_01_Icon at +328h and background_Icon at +32Ch, and the top-level list box at +1B8h; it also stores the 00AA6740 pair at +11Ch/+120h, the 00AA6750 float3 at +124h and clears +330h. 8 KB body; the rest, including FE_briefing and FE_worldmap_historical, was not read. docs/MAIN_MENU_SCREEN_UPDATE.md.\n\n[BSP reconstruction 005861b0] update\nHypothesis, not a recovered symbol. Vtable +14h of the main-menu screen at 00E198AC+58h, __thiscall(this), bare RET (epilogue 00588275..0058827B). Read only for the handles it binds through 00AA7E00: the five mission groups missions_US_Group at +310h, missions_JP_Group at +314h, missions_US_DLC_Group at +318h, missions_JP_DLC_Group at +31Ch and training_Group at +320h, the backdrops bg_01_Icon at +328h and background_Icon at +32Ch, and the top-level list box at +1B8h; it also stores the 00AA6740 pair at +11Ch/+120h, the 00AA6750 float3 at +124h and clears +330h. 8 KB body; the rest, including FE_briefing and FE_worldmap_historical, was not read. docs/MAIN_MENU_SCREEN_UPDATE.md. | ADDENDUM (packet cc_menu_detail): the three roots loaded with 00AA5840 are FE_worldmap_historical into +2F0h (0058629C), FE_briefing_grid into +244h (0058641A) and FE_briefing into +248h (005864A0); every 00AA7E00 lookup in this routine runs against +2F0h. Name-to-field pairs the mission-detail page then drives: +1B8h Main_Listbox (00587D3B), +310h missions_US_Group (0058775E), +314h missions_JP_Group (005877D4), +318h missions_US_DLC_Group (0058784A), +31Ch missions_JP_DLC_Group (005878C0), +320h training_Group (00587936), +324h mission_pic_Group (00586E8B), +328h bg_01_Icon (005879AC), +32Ch background_Icon (00587A48), +33Ch video_Movie (00586963), +344h historical_Group (005868ED), +3B0h test_Clipbox (00586A4F), +3B8h content_main_Text (00586B4F), +114h mission_mappoint_template_Icon (00587000), +118h mission_mapflag_template_Icon (00587084). +330h is set to null at 00587AC8 and filled only by 0058C010. No store into +2ECh, +3DCh or +41Ch was found here although 0058C010 hides all three. See docs/MAIN_MENU_MISSION_DETAIL.md.\n\n[BSP reconstruction 005861b0] update\nHypothesis, not a recovered symbol. Vtable +14h of the main-menu screen at 00E198AC+58h, __thiscall(this), bare RET (epilogue 00588275..0058827B). Read only for the handles it binds through 00AA7E00: the five mission groups missions_US_Group at +310h, missions_JP_Group at +314h, missions_US_DLC_Group at +318h, missions_JP_DLC_Group at +31Ch and training_Group at +320h, the backdrops bg_01_Icon at +328h and background_Icon at +32Ch, and the top-level list box at +1B8h; it also stores the 00AA6740 pair at +11Ch/+120h, the 00AA6750 float3 at +124h and clears +330h. 8 KB body; the rest, including FE_briefing and FE_worldmap_historical, was not read. docs/MAIN_MENU_SCREEN_UPDATE.md. | ADDENDUM (packet cc_menu_detail): the three roots loaded with 00AA5840 are FE_worldmap_historical into +2F0h (0058629C), FE_briefing_grid into +244h (0058641A) and FE_briefing into +248h (005864A0); every 00AA7E00 lookup in this routine runs against +2F0h. Name-to-field pairs the mission-detail page then drives: +1B8h Main_Listbox (00587D3B), +310h missions_US_Group (0058775E), +314h missions_JP_Group (005877D4), +318h missions_US_DLC_Group (0058784A), +31Ch missions_JP_DLC_Group (005878C0), +320h training_Group (00587936), +324h mission_pic_Group (00586E8B), +328h bg_01_Icon (005879AC), +32Ch background_Icon (00587A48), +33Ch video_Movie (00586963), +344h historical_Group (005868ED), +3B0h test_Clipbox (00586A4F), +3B8h content_main_Text (00586B4F), +114h mission_mappoint_template_Icon (00587000), +118h mission_mapflag_template_Icon (00587084). +330h is set to null at 00587AC8 and filled only by 0058C010. No store into +2ECh, +3DCh or +41Ch was found here although 0058C010 hides all three. See docs/MAIN_MENU_MISSION_DETAIL.md. | SUPERSEDES earlier partial-root claim: complete normal-path caller sequence005861B0..0058827B reconstructed over canonical GUI types. Five page loads and55 direct child lookups with distinct nested roots; not every lookup uses+2F0. +338=worldmap selector_Icon; +568 first bigtextbg_FrameBox then overwritten textbackground_FrameBox. Two scrollers, geometry/color captures, and concrete helper initializers00541B80/00543710. Actual derived callbacks remain required, with Icon+48 raw00AB2820 preserved. Native __thiscall RET, no ABI/game/render claim. docs/MAIN_MENU_LAYOUT_BINDING.md;reports/main_menu_layout_binding.json."
+    },
+    "after": {
+      "address": "005861b0",
+      "name": "BSP_MainMenuScreen_BindLayout",
+      "evidence": "Hypothesis, not a recovered symbol. Vtable +14h of the main-menu screen at 00E198AC+58h, __thiscall(this), bare RET (epilogue 00588275..0058827B). Read only for the handles it binds through 00AA7E00: the five mission groups missions_US_Group at +310h, missions_JP_Group at +314h, missions_US_DLC_Group at +318h, missions_JP_DLC_Group at +31Ch and training_Group at +320h, the backdrops bg_01_Icon at +328h and background_Icon at +32Ch, and the top-level list box at +1B8h; it also stores the 00AA6740 pair at +11Ch/+120h, the 00AA6750 float3 at +124h and clears +330h. 8 KB body; the rest, including FE_briefing and FE_worldmap_historical, was not read. docs/MAIN_MENU_SCREEN_UPDATE.md. | ADDENDUM (packet cc_menu_detail): the three roots loaded with 00AA5840 are FE_worldmap_historical into +2F0h (0058629C), FE_briefing_grid into +244h (0058641A) and FE_briefing into +248h (005864A0); every 00AA7E00 lookup in this routine runs against +2F0h. Name-to-field pairs the mission-detail page then drives: +1B8h Main_Listbox (00587D3B), +310h missions_US_Group (0058775E), +314h missions_JP_Group (005877D4), +318h missions_US_DLC_Group (0058784A), +31Ch missions_JP_DLC_Group (005878C0), +320h training_Group (00587936), +324h mission_pic_Group (00586E8B), +328h bg_01_Icon (005879AC), +32Ch background_Icon (00587A48), +33Ch video_Movie (00586963), +344h historical_Group (005868ED), +3B0h test_Clipbox (00586A4F), +3B8h content_main_Text (00586B4F), +114h mission_mappoint_template_Icon (00587000), +118h mission_mapflag_template_Icon (00587084). +330h is set to null at 00587AC8 and filled only by 0058C010. No store into +2ECh, +3DCh or +41Ch was found here although 0058C010 hides all three. See docs/MAIN_MENU_MISSION_DETAIL.md. | SUPERSEDES earlier partial-root claim: complete normal-path caller sequence005861B0..0058827B reconstructed over canonical GUI types. Five page loads and55 direct child lookups with distinct nested roots; not every lookup uses+2F0. +338=worldmap selector_Icon; +568 first bigtextbg_FrameBox then overwritten textbackground_FrameBox. Two scrollers, geometry/color captures, and concrete helper initializers00541B80/00543710. Actual derived callbacks remain required, with Icon+48 raw00AB2820 preserved. Native __thiscall RET, no ABI/game/render claim. docs/MAIN_MENU_LAYOUT_BINDING.md;reports/main_menu_layout_binding.json. | Hypothesis, not a recovered symbol. Same screen+40 CEFC04 listener: complete normal current0C/current18 over canonical widgets; current04 5993A0 is analyzed only and remains abstract. Native RET4/RET8, Text low-byte gate, live D4 reload after type callbacks, same screen/scrollers. docs/MAIN_MENU_WIDGET_LISTENER.md; reports/main_menu_widget_listener.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "005902e0",
+    "before": {
+      "address": "005902e0",
+      "function_name": "BSP_MainMenuScreen_Construct",
+      "comment": "[BSP reconstruction 005902e0]\nHypothesis, not a recovered symbol. __fastcall(this) returning this, SEH frame, RET. The 578h screen at 00E198AC+58h, built first by 00686380. Chains BSP_FrontEndScreen_Construct (004F7180), then installs primary vtable 00CEFC5C at +00h and secondary vtables 00CEFC48 at +08h, 00CEFC24 at +0Ch and 00CEFC04 at +40h, zeroes the field runs from +74h to +510h, builds a five-element eh_vector array at +134h, and closes by clearing 00E194C4..00E194D0 and setting 00E08874 (the main-menu page) to 1. Slot +00h of 00CEFC5C is 00590570, a 'mov eax,1; ret' leaf, so the screen id is 1 = INTF_MAINMENU in the 00E08CD8 table. Virtuals: +0Ch 00590D60, +10h 00582F30 (register, chains 004F71D0), +14h 005861B0 (binds FE_main and FE_main_listbox), +18h 005987F0, +1Ch 0058F560, +20h 00599DB0, +24h 005905E0. The existing 'cg_array_ctor_helper' tag on this address is wrong: this is a class constructor, not a compiler array-construction helper. See docs/MAIN_MENU_SCREENS.md."
+    },
+    "after": {
+      "address": "005902e0",
+      "name": "BSP_MainMenuScreen_Construct",
+      "evidence": "Hypothesis, not a recovered symbol. __fastcall(this) returning this, SEH frame, RET. The 578h screen at 00E198AC+58h, built first by 00686380. Chains BSP_FrontEndScreen_Construct (004F7180), then installs primary vtable 00CEFC5C at +00h and secondary vtables 00CEFC48 at +08h, 00CEFC24 at +0Ch and 00CEFC04 at +40h, zeroes the field runs from +74h to +510h, builds a five-element eh_vector array at +134h, and closes by clearing 00E194C4..00E194D0 and setting 00E08874 (the main-menu page) to 1. Slot +00h of 00CEFC5C is 00590570, a 'mov eax,1; ret' leaf, so the screen id is 1 = INTF_MAINMENU in the 00E08CD8 table. Virtuals: +0Ch 00590D60, +10h 00582F30 (register, chains 004F71D0), +14h 005861B0 (binds FE_main and FE_main_listbox), +18h 005987F0, +1Ch 0058F560, +20h 00599DB0, +24h 005905E0. The existing 'cg_array_ctor_helper' tag on this address is wrong: this is a class constructor, not a compiler array-construction helper. See docs/MAIN_MENU_SCREENS.md. | Hypothesis, not a recovered symbol. Same screen+40 CEFC04 listener: complete normal current0C/current18 over canonical widgets; current04 5993A0 is analyzed only and remains abstract. Native RET4/RET8, Text low-byte gate, live D4 reload after type callbacks, same screen/scrollers. docs/MAIN_MENU_WIDGET_LISTENER.md; reports/main_menu_widget_listener.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "005993a0",
+    "before": {
+      "address": "005993a0",
+      "function_name": "FUN_005993a0"
+    },
+    "after": {
+      "address": "005993a0",
+      "name": "FUN_005993a0",
+      "evidence": "Hypothesis, not a recovered symbol. Same screen+40 CEFC04 listener: complete normal current0C/current18 over canonical widgets; current04 5993A0 is analyzed only and remains abstract. Native RET4/RET8, Text low-byte gate, live D4 reload after type callbacks, same screen/scrollers. docs/MAIN_MENU_WIDGET_LISTENER.md; reports/main_menu_widget_listener.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "008721a0",
+    "before": {
+      "address": "008721a0",
+      "function_name": "FUN_008721a0"
+    },
+    "after": {
+      "address": "008721a0",
+      "name": "BSP_EffectNode_IsNonpositive20",
+      "evidence": "Hypothesis, not a recovered symbol. Analyzed only: complete008721A0..008721B1 tests field20 with XORPS/COMISS/JB, true for ordered nonpositive and false for positive or unordered. Dynamic-effect table D0DBF0+08. No C++ body or Text-provider claim. reports/orch5_point_provider_definitions.json; docs/NATIVE_POINT_LIGHT_PROVIDER.md. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00aa6bc0",
+    "before": {
+      "address": "00aa6bc0",
+      "function_name": "BSP_GuiWidget_SetListenerFields",
+      "comment": "[BSP reconstruction 00aa6bc0]\nHypothesis, not a recovered symbol. Previous FUN_00aa6bc0. ECX widget,listener/lowbyte stack,RET8 atAA6BD1. Store borrowedDC then rawbyte79; no retain/call/propagation. Exact source now in gui_widget_attach.cpp; docs/GUI_WIDGET_ATTACH_ACTUAL.md."
+    },
+    "after": {
+      "address": "00aa6bc0",
+      "name": "BSP_GuiWidget_SetListenerFields",
+      "evidence": "Hypothesis, not a recovered symbol. Previous FUN_00aa6bc0. ECX widget,listener/lowbyte stack,RET8 atAA6BD1. Store borrowedDC then rawbyte79; no retain/call/propagation. Exact source now in gui_widget_attach.cpp; docs/GUI_WIDGET_ATTACH_ACTUAL.md. | Hypothesis, not a recovered symbol. CEB110 base listener has seven actual three-byte empty methods: slots00..14 RET4 and18 RET8. Five exposed callbacks implemented in canonical C++ interface;00/08 analyzed only. Existing same-owner AA6BC0 binder retained. docs/GUI_WIDGET_LISTENER_BINDING.md; reports/gui_widget_listener_binding_definitions.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00aa87b0",
+    "before": {
+      "address": "00aa87b0",
+      "function_name": "BSP_GuiWidget_Update",
+      "comment": "[BSP reconstruction 00aa87b0]\nHypothesis, not a recovered symbol. Packet gui_layer_manager, read-only analysis. __thiscall(ECX = widget, float seconds), RET 4; class vtable 00D5BE38 slot +40h, which the layer does NOT override -- it is the same target the sibling widget vtable at 00D5BECC carries, so the manager's per-page update and a widget's per-child update are one routine. Advances the elapsed accumulator at +80h first, before the child walk and regardless of the widget's own visibility. Walks the child list at +68h (count at +6Ch) in list order and calls each child's vtable +40h with the same delta under the same gate BSP_GuiManager_Update applies to pages: child vtable +38h, or any non-null slot in the child's +88h/+8Ch entry array. Then steps its own +88h/+8Ch entries through 00AD39A0, growing the array through 00AA6F30.\n\n[BSP reconstruction 00aa87b0] update\nHypothesis, not a recovered symbol. Packet gui_layer_manager, read-only analysis. __thiscall(ECX = widget, float seconds), RET 4; class vtable 00D5BE38 slot +40h, which the layer does NOT override -- it is the same target the sibling widget vtable at 00D5BECC carries, so the manager's per-page update and a widget's per-child update are one routine. Advances the elapsed accumulator at +80h first, before the child walk and regardless of the widget's own visibility. Walks the child list at +68h (count at +6Ch) in list order and calls each child's vtable +40h with the same delta under the same gate BSP_GuiManager_Update applies to pages: child vtable +38h, or any non-null slot in the child's +88h/+8Ch entry array. Then steps its own +88h/+8Ch entries through 00AD39A0, growing the array through 00AA6F30. | Descriptive hypothesis, not a recovered symbol. 2026-09-12 ownership batch: partial AA884D..AA892C only, actual update/deletion; no elapsed/child/listener sequence. Original ABI: See report and assembly. docs/GUI_TIMED_ENTRY_OWNER.md; reports/gui_timed_entry_owner.json and reports/orch5_timed_clip_batch.json. Combined Win32 build passed; new C++ owner interfaces, no game/visual proof.\n\n[BSP reconstruction 00aa87b0] update\nHypothesis, not a recovered symbol. Packet gui_layer_manager, read-only analysis. __thiscall(ECX = widget, float seconds), RET 4; class vtable 00D5BE38 slot +40h, which the layer does NOT override -- it is the same target the sibling widget vtable at 00D5BECC carries, so the manager's per-page update and a widget's per-child update are one routine. Advances the elapsed accumulator at +80h first, before the child walk and regardless of the widget's own visibility. Walks the child list at +68h (count at +6Ch) in list order and calls each child's vtable +40h with the same delta under the same gate BSP_GuiManager_Update applies to pages: child vtable +38h, or any non-null slot in the child's +88h/+8Ch entry array. Then steps its own +88h/+8Ch entries through 00AD39A0, growing the array through 00AA6F30. | Descriptive hypothesis, not a recovered symbol. 2026-09-12 ownership batch: partial AA884D..AA892C only, actual update/deletion; no elapsed/child/listener sequence. Original ABI: See report and assembly. docs/GUI_TIMED_ENTRY_OWNER.md; reports/gui_timed_entry_owner.json and reports/orch5_timed_clip_batch.json. Combined Win32 build passed; new C++ owner interfaces, no game/visual proof. | Hypothesis, not a recovered symbol. Canonical child-before-own-entry current40 and live listener/mouse tail. Runtime registers with the same widget owner registry; original delta and x87 clock semantics retained. Mandatory listener adapters and stable owner tree; no native listener body or game runtime configuration. docs/ORCH5_SECTION_FRAME_LIGHT_BATCH.md; reports/orch5_section_frame_light_batch.json. MSVC Win32 build and scoped source fixtures passed; new C++ interfaces, not game validation."
+    },
+    "after": {
+      "address": "00aa87b0",
+      "name": "BSP_GuiWidget_Update",
+      "evidence": "Hypothesis, not a recovered symbol. Packet gui_layer_manager, read-only analysis. __thiscall(ECX = widget, float seconds), RET 4; class vtable 00D5BE38 slot +40h, which the layer does NOT override -- it is the same target the sibling widget vtable at 00D5BECC carries, so the manager's per-page update and a widget's per-child update are one routine. Advances the elapsed accumulator at +80h first, before the child walk and regardless of the widget's own visibility. Walks the child list at +68h (count at +6Ch) in list order and calls each child's vtable +40h with the same delta under the same gate BSP_GuiManager_Update applies to pages: child vtable +38h, or any non-null slot in the child's +88h/+8Ch entry array. Then steps its own +88h/+8Ch entries through 00AD39A0, growing the array through 00AA6F30. | Descriptive hypothesis, not a recovered symbol. 2026-09-12 ownership batch: partial AA884D..AA892C only, actual update/deletion; no elapsed/child/listener sequence. Original ABI: See report and assembly. docs/GUI_TIMED_ENTRY_OWNER.md; reports/gui_timed_entry_owner.json and reports/orch5_timed_clip_batch.json. Combined Win32 build passed; new C++ owner interfaces, no game/visual proof. | Hypothesis, not a recovered symbol. Canonical child-before-own-entry current40 and live listener/mouse tail. Runtime registers with the same widget owner registry; original delta and x87 clock semantics retained. Mandatory listener adapters and stable owner tree; no native listener body or game runtime configuration. docs/ORCH5_SECTION_FRAME_LIGHT_BATCH.md; reports/orch5_section_frame_light_batch.json. MSVC Win32 build and scoped source fixtures passed; new C++ interfaces, not game validation. | Hypothesis, not a recovered symbol. Actual Icon rotation44, temporary-state84 and frame40 composed over the same owner; one active guard spans base outgoing x87 copy and derived original-delta tail. AutoRotate accepted; delayed texture loading and full resource-backed frame validation remain open. docs/GUI_ICON_FRAME_RUNTIME.md; reports/gui_icon_frame_runtime.json; reports/orch5_frame_section_scalar_integration.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00aa9730",
+    "before": {
+      "address": "00aa9730",
+      "function_name": "BSP_GuiWidget_DestroyBase",
+      "comment": "[BSP reconstruction 00aa9730]\nECX base context; no stack args; actual RET00aa99b8. Base teardown detaches and forwards main drawable+4C to00b6dfa0, clears field. Saved body ends00aa9950 after false noreturn_free; verified continuation through real RET includes list/base cleanup. Preserve global library identities and no-return annotations in this read-only packet. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json\n\n[BSP reconstruction 00aa9730] update\nECX base context; no stack args; actual RET00aa99b8. Base teardown detaches and forwards main drawable+4C to00b6dfa0, clears field. Saved body ends00aa9950 after false noreturn_free; verified continuation through real RET includes list/base cleanup. Preserve global library identities and no-return annotations in this read-only packet. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json | Scene half, from packet gui_widget_scene_visibility: 00AA9752 restores vtable 00d5c130 and 00AA9760 calls 00AA8320, which releases the scene node of this widget and of every descendant and clears each +4Ch. The block at 00AA97AC..00AA97D2 that re-tests [ESI+4Ch] and would call 00B6E680, 00B6D890 and 00B6D940 is therefore unreachable; it reads as an inlined base-class body the compiler could not prove dead. Name deliberately left as FUN_ per the existing record. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md.\n\n[BSP reconstruction 00aa9730] update\nECX base context; no stack args; actual RET00aa99b8. Base teardown detaches and forwards main drawable+4C to00b6dfa0, clears field. Saved body ends00aa9950 after false noreturn_free; verified continuation through real RET includes list/base cleanup. Preserve global library identities and no-return annotations in this read-only packet. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json | Scene half, from packet gui_widget_scene_visibility: 00AA9752 restores vtable 00d5c130 and 00AA9760 calls 00AA8320, which releases the scene node of this widget and of every descendant and clears each +4Ch. The block at 00AA97AC..00AA97D2 that re-tests [ESI+4Ch] and would call 00B6E680, 00B6D890 and 00B6D940 is therefore unreachable; it reads as an inlined base-class body the compiler could not prove dead. Name deliberately left as FUN_ per the existing record. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md. | Hypothesis, not a recovered symbol. Base widget destructor sets base tableD5C130, calls AA8320, then deletes child widgets through current04(1). Native manager AA31F0 already calls20 before derived deletion. Saved body tail remains separately audited; no full raw-widget destructor reconstruction claim. docs/GUI_NATIVE_SCENE.md; reports/gui_native_scene.json.\n\n[BSP reconstruction 00aa9730] update\nECX base context; no stack args; actual RET00aa99b8. Base teardown detaches and forwards main drawable+4C to00b6dfa0, clears field. Saved body ends00aa9950 after false noreturn_free; verified continuation through real RET includes list/base cleanup. Preserve global library identities and no-return annotations in this read-only packet. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json | Scene half, from packet gui_widget_scene_visibility: 00AA9752 restores vtable 00d5c130 and 00AA9760 calls 00AA8320, which releases the scene node of this widget and of every descendant and clears each +4Ch. The block at 00AA97AC..00AA97D2 that re-tests [ESI+4Ch] and would call 00B6E680, 00B6D890 and 00B6D940 is therefore unreachable; it reads as an inlined base-class body the compiler could not prove dead. Name deliberately left as FUN_ per the existing record. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md. | Hypothesis, not a recovered symbol. Base widget destructor sets base tableD5C130, calls AA8320, then deletes child widgets through current04(1). Native manager AA31F0 already calls20 before derived deletion. Saved body tail remains separately audited; no full raw-widget destructor reconstruction claim. docs/GUI_NATIVE_SCENE.md; reports/gui_native_scene.json. | Analysis-only retention audit2026-09-11; name hypothesis, not recovered symbol. Actual table00d5c130 virtual04=00aa9a90 calls destructor00aa9730 then iff flags&1 returns through00aa75f0 at pool00f8bc94. Direct managerAA31F0 and parentAA9730 deleting04 bypass widget reference count; no shared_ptr deferral justified. Base realRETAA99B8 beyond saved free truncation. A9E130 is derived destructor, not deleting wrapper. docs/GUI_WIDGET_RETENTION.md; reports/gui_widget_retention.json preserves old names/comments and byte parity. Ghidra read-only; no C++ implementation, runtime or ABI claim.\n\n[BSP reconstruction 00aa9730] update\nECX base context; no stack args; actual RET00aa99b8. Base teardown detaches and forwards main drawable+4C to00b6dfa0, clears field. Saved body ends00aa9950 after false noreturn_free; verified continuation through real RET includes list/base cleanup. Preserve global library identities and no-return annotations in this read-only packet. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json | Scene half, from packet gui_widget_scene_visibility: 00AA9752 restores vtable 00d5c130 and 00AA9760 calls 00AA8320, which releases the scene node of this widget and of every descendant and clears each +4Ch. The block at 00AA97AC..00AA97D2 that re-tests [ESI+4Ch] and would call 00B6E680, 00B6D890 and 00B6D940 is therefore unreachable; it reads as an inlined base-class body the compiler could not prove dead. Name deliberately left as FUN_ per the existing record. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md. | Hypothesis, not a recovered symbol. Base widget destructor sets base tableD5C130, calls AA8320, then deletes child widgets through current04(1). Native manager AA31F0 already calls20 before derived deletion. Saved body tail remains separately audited; no full raw-widget destructor reconstruction claim. docs/GUI_NATIVE_SCENE.md; reports/gui_native_scene.json. | Analysis-only retention audit2026-09-11; name hypothesis, not recovered symbol. Actual table00d5c130 virtual04=00aa9a90 calls destructor00aa9730 then iff flags&1 returns through00aa75f0 at pool00f8bc94. Direct managerAA31F0 and parentAA9730 deleting04 bypass widget reference count; no shared_ptr deferral justified. Base realRETAA99B8 beyond saved free truncation. A9E130 is derived destructor, not deleting wrapper. docs/GUI_WIDGET_RETENTION.md; reports/gui_widget_retention.json preserves old names/comments and byte parity. Ghidra read-only; no C++ implementation, runtime or ABI claim. | Direct same-owner base phase: child20/main release after derived cleanup, currentTextchilddelete4 while attached then childselfdetach, selfdetach/main release, zero timed-entry header and semantic child-list allocation destruction. Nonzero +88/+8C/+90 and unbound/nonText remaining child throw while preserving owner/companion/wrapper; not resumable whole-destructor claim. Exact rawtailAA9951..AA99B8 endsRET AA99B8 length1; savedbody endsAA9950. docs/GUI_TEXT_CHILD_LIFETIME.md; reports/gui_text_child_lifetime.json. Hypothesis names, Ghidra unchanged. | Integrator repaired local false-free fallthrough after AA994C and recreated reviewed body AA9730..AA99B8 inclusive. Final204 instructions,0 gaps; prior name/signature/parameters/comments,27 labels and12 local-variable descriptions preserved. Tail calls AA9973,AA9986,AA99A1 now verify. reports/orch5_text_base_function_recreated.json; docs/ORCH5_TEXT_BUILDERS_BATCH.md\n\n[BSP reconstruction 00aa9730] update\nECX base context; no stack args; actual RET00aa99b8. Base teardown detaches and forwards main drawable+4C to00b6dfa0, clears field. Saved body ends00aa9950 after false noreturn_free; verified continuation through real RET includes list/base cleanup. Preserve global library identities and no-return annotations in this read-only packet. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json | Scene half, from packet gui_widget_scene_visibility: 00AA9752 restores vtable 00d5c130 and 00AA9760 calls 00AA8320, which releases the scene node of this widget and of every descendant and clears each +4Ch. The block at 00AA97AC..00AA97D2 that re-tests [ESI+4Ch] and would call 00B6E680, 00B6D890 and 00B6D940 is therefore unreachable; it reads as an inlined base-class body the compiler could not prove dead. Name deliberately left as FUN_ per the existing record. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md. | Hypothesis, not a recovered symbol. Base widget destructor sets base tableD5C130, calls AA8320, then deletes child widgets through current04(1). Native manager AA31F0 already calls20 before derived deletion. Saved body tail remains separately audited; no full raw-widget destructor reconstruction claim. docs/GUI_NATIVE_SCENE.md; reports/gui_native_scene.json. | Analysis-only retention audit2026-09-11; name hypothesis, not recovered symbol. Actual table00d5c130 virtual04=00aa9a90 calls destructor00aa9730 then iff flags&1 returns through00aa75f0 at pool00f8bc94. Direct managerAA31F0 and parentAA9730 deleting04 bypass widget reference count; no shared_ptr deferral justified. Base realRETAA99B8 beyond saved free truncation. A9E130 is derived destructor, not deleting wrapper. docs/GUI_WIDGET_RETENTION.md; reports/gui_widget_retention.json preserves old names/comments and byte parity. Ghidra read-only; no C++ implementation, runtime or ABI claim. | Direct same-owner base phase: child20/main release after derived cleanup, currentTextchilddelete4 while attached then childselfdetach, selfdetach/main release, zero timed-entry header and semantic child-list allocation destruction. Nonzero +88/+8C/+90 and unbound/nonText remaining child throw while preserving owner/companion/wrapper; not resumable whole-destructor claim. Exact rawtailAA9951..AA99B8 endsRET AA99B8 length1; savedbody endsAA9950. docs/GUI_TEXT_CHILD_LIFETIME.md; reports/gui_text_child_lifetime.json. Hypothesis names, Ghidra unchanged. | Integrator repaired local false-free fallthrough after AA994C and recreated reviewed body AA9730..AA99B8 inclusive. Final204 instructions,0 gaps; prior name/signature/parameters/comments,27 labels and12 local-variable descriptions preserved. Tail calls AA9973,AA9986,AA99A1 now verify. reports/orch5_text_base_function_recreated.json; docs/ORCH5_TEXT_BUILDERS_BATCH.md | Descriptive hypothesis, not a recovered symbol. 2026-09-12 ownership batch: partial AA97F6..AA9950 only, live drain and backingretirement; negativecount outside backing domain. Original ABI: See report and assembly. docs/GUI_TIMED_ENTRY_OWNER.md; reports/gui_timed_entry_owner.json and reports/orch5_timed_clip_batch.json. Combined Win32 build passed; new C++ owner interfaces, no game/visual proof.\n\n[BSP reconstruction 00aa9730] update\nECX base context; no stack args; actual RET00aa99b8. Base teardown detaches and forwards main drawable+4C to00b6dfa0, clears field. Saved body ends00aa9950 after false noreturn_free; verified continuation through real RET includes list/base cleanup. Preserve global library identities and no-return annotations in this read-only packet. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json | Scene half, from packet gui_widget_scene_visibility: 00AA9752 restores vtable 00d5c130 and 00AA9760 calls 00AA8320, which releases the scene node of this widget and of every descendant and clears each +4Ch. The block at 00AA97AC..00AA97D2 that re-tests [ESI+4Ch] and would call 00B6E680, 00B6D890 and 00B6D940 is therefore unreachable; it reads as an inlined base-class body the compiler could not prove dead. Name deliberately left as FUN_ per the existing record. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md. | Hypothesis, not a recovered symbol. Base widget destructor sets base tableD5C130, calls AA8320, then deletes child widgets through current04(1). Native manager AA31F0 already calls20 before derived deletion. Saved body tail remains separately audited; no full raw-widget destructor reconstruction claim. docs/GUI_NATIVE_SCENE.md; reports/gui_native_scene.json. | Analysis-only retention audit2026-09-11; name hypothesis, not recovered symbol. Actual table00d5c130 virtual04=00aa9a90 calls destructor00aa9730 then iff flags&1 returns through00aa75f0 at pool00f8bc94. Direct managerAA31F0 and parentAA9730 deleting04 bypass widget reference count; no shared_ptr deferral justified. Base realRETAA99B8 beyond saved free truncation. A9E130 is derived destructor, not deleting wrapper. docs/GUI_WIDGET_RETENTION.md; reports/gui_widget_retention.json preserves old names/comments and byte parity. Ghidra read-only; no C++ implementation, runtime or ABI claim. | Direct same-owner base phase: child20/main release after derived cleanup, currentTextchilddelete4 while attached then childselfdetach, selfdetach/main release, zero timed-entry header and semantic child-list allocation destruction. Nonzero +88/+8C/+90 and unbound/nonText remaining child throw while preserving owner/companion/wrapper; not resumable whole-destructor claim. Exact rawtailAA9951..AA99B8 endsRET AA99B8 length1; savedbody endsAA9950. docs/GUI_TEXT_CHILD_LIFETIME.md; reports/gui_text_child_lifetime.json. Hypothesis names, Ghidra unchanged. | Integrator repaired local false-free fallthrough after AA994C and recreated reviewed body AA9730..AA99B8 inclusive. Final204 instructions,0 gaps; prior name/signature/parameters/comments,27 labels and12 local-variable descriptions preserved. Tail calls AA9973,AA9986,AA99A1 now verify. reports/orch5_text_base_function_recreated.json; docs/ORCH5_TEXT_BUILDERS_BATCH.md | Descriptive hypothesis, not a recovered symbol. 2026-09-12 ownership batch: partial AA97F6..AA9950 only, live drain and backingretirement; negativecount outside backing domain. Original ABI: See report and assembly. docs/GUI_TIMED_ENTRY_OWNER.md; reports/gui_timed_entry_owner.json and reports/orch5_timed_clip_batch.json. Combined Win32 build passed; new C++ owner interfaces, no game/visual proof. | Hypothesis, not a recovered symbol. Shared normal base sequence now accepts same canonical Group/Text children, preserves attachment until each child base self-detach, retires actual timed backing, and drops typed containers before companion/allocation disposal. Partial C++ projection; no source widget pool/list allocator/SEH ABI. docs/GUI_WIDGET_BASE_LIFETIME.md; reports/gui_widget_base_lifetime.json. Win32 build/Group source fixture passed; no game validation."
+    },
+    "after": {
+      "address": "00aa9730",
+      "name": "BSP_GuiWidget_DestroyBase",
+      "evidence": "ECX base context; no stack args; actual RET00aa99b8. Base teardown detaches and forwards main drawable+4C to00b6dfa0, clears field. Saved body ends00aa9950 after false noreturn_free; verified continuation through real RET includes list/base cleanup. Preserve global library identities and no-return annotations in this read-only packet. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json | Scene half, from packet gui_widget_scene_visibility: 00AA9752 restores vtable 00d5c130 and 00AA9760 calls 00AA8320, which releases the scene node of this widget and of every descendant and clears each +4Ch. The block at 00AA97AC..00AA97D2 that re-tests [ESI+4Ch] and would call 00B6E680, 00B6D890 and 00B6D940 is therefore unreachable; it reads as an inlined base-class body the compiler could not prove dead. Name deliberately left as FUN_ per the existing record. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md. | Hypothesis, not a recovered symbol. Base widget destructor sets base tableD5C130, calls AA8320, then deletes child widgets through current04(1). Native manager AA31F0 already calls20 before derived deletion. Saved body tail remains separately audited; no full raw-widget destructor reconstruction claim. docs/GUI_NATIVE_SCENE.md; reports/gui_native_scene.json. | Analysis-only retention audit2026-09-11; name hypothesis, not recovered symbol. Actual table00d5c130 virtual04=00aa9a90 calls destructor00aa9730 then iff flags&1 returns through00aa75f0 at pool00f8bc94. Direct managerAA31F0 and parentAA9730 deleting04 bypass widget reference count; no shared_ptr deferral justified. Base realRETAA99B8 beyond saved free truncation. A9E130 is derived destructor, not deleting wrapper. docs/GUI_WIDGET_RETENTION.md; reports/gui_widget_retention.json preserves old names/comments and byte parity. Ghidra read-only; no C++ implementation, runtime or ABI claim. | Direct same-owner base phase: child20/main release after derived cleanup, currentTextchilddelete4 while attached then childselfdetach, selfdetach/main release, zero timed-entry header and semantic child-list allocation destruction. Nonzero +88/+8C/+90 and unbound/nonText remaining child throw while preserving owner/companion/wrapper; not resumable whole-destructor claim. Exact rawtailAA9951..AA99B8 endsRET AA99B8 length1; savedbody endsAA9950. docs/GUI_TEXT_CHILD_LIFETIME.md; reports/gui_text_child_lifetime.json. Hypothesis names, Ghidra unchanged. | Integrator repaired local false-free fallthrough after AA994C and recreated reviewed body AA9730..AA99B8 inclusive. Final204 instructions,0 gaps; prior name/signature/parameters/comments,27 labels and12 local-variable descriptions preserved. Tail calls AA9973,AA9986,AA99A1 now verify. reports/orch5_text_base_function_recreated.json; docs/ORCH5_TEXT_BUILDERS_BATCH.md | Descriptive hypothesis, not a recovered symbol. 2026-09-12 ownership batch: partial AA97F6..AA9950 only, live drain and backingretirement; negativecount outside backing domain. Original ABI: See report and assembly. docs/GUI_TIMED_ENTRY_OWNER.md; reports/gui_timed_entry_owner.json and reports/orch5_timed_clip_batch.json. Combined Win32 build passed; new C++ owner interfaces, no game/visual proof. | Hypothesis, not a recovered symbol. Shared normal base sequence now accepts same canonical Group/Text children, preserves attachment until each child base self-detach, retires actual timed backing, and drops typed containers before companion/allocation disposal. Partial C++ projection; no source widget pool/list allocator/SEH ABI. docs/GUI_WIDGET_BASE_LIFETIME.md; reports/gui_widget_base_lifetime.json. Win32 build/Group source fixture passed; no game validation. | Hypothesis, not a recovered symbol. Canonical Section properties and texture setter plus derived texture/string cleanup before common AA9730. Native replacement overwrites texture114 without releasing old; caller supplies the two unwritten scratch DWORDs. Section current4 shares base retirement; native pool/SEH ABI excluded. docs/GUI_SECTION_TEXTURE_OWNERSHIP.md; reports/orch5_frame_section_scalar_integration.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ab1110",
+    "before": {
+      "address": "00ab1110",
+      "function_name": "BSP_GuiIcon_SelectStateAndStorePair",
+      "comment": "[BSP reconstruction 00ab1110]\nHypothesis, not a recovered symbol. Listing-only routine (00ab1110..00ab1147 inclusive); Ghidra has no function here, define it before applying the name. Icon vtable 00d5c4c0 slot +84h. __thiscall(this, int32 index, int16, float), RET 0ch. Forwards the index to vtable +88h (00ab1710) with PartialDisplayType 0 and ratio 1.0, then stores its third argument into widget +128h and its second into widget +12ch. Nothing reached in this packet reads either field. See docs/GUI_ICON_WIDGET.md."
+    },
+    "after": {
+      "address": "00ab1110",
+      "name": "BSP_GuiIcon_SelectStateAndStorePair",
+      "evidence": "Hypothesis, not a recovered symbol. Listing-only routine (00ab1110..00ab1147 inclusive); Ghidra has no function here, define it before applying the name. Icon vtable 00d5c4c0 slot +84h. __thiscall(this, int32 index, int16, float), RET 0ch. Forwards the index to vtable +88h (00ab1710) with PartialDisplayType 0 and ratio 1.0, then stores its third argument into widget +128h and its second into widget +12ch. Nothing reached in this packet reads either field. See docs/GUI_ICON_WIDGET.md. | Current revalidation: saved bodyAB1110..AB1149 now defined, RET0Ch atAB1147. Actual current88=AB1710 runs first with low16 immediate index,mode0,ratio1, then MOVSS third stack argument to+128 atAB1137 and second argument low16 to+12C atAB113F. AB1150 proves these are countdown seconds and expiry state. Complete retained GuiIconRuntime::select_temporary84_00ab1110 uses the existing state/rebuild. docs/GUI_ICON_FRAME_RUNTIME.md;reports/gui_icon_frame_runtime.json; strict Win32 compile and numeric fixture passed; physical native ABI/game unverified. | Hypothesis, not a recovered symbol. Actual Icon rotation44, temporary-state84 and frame40 composed over the same owner; one active guard spans base outgoing x87 copy and derived original-delta tail. AutoRotate accepted; delayed texture loading and full resource-backed frame validation remain open. docs/GUI_ICON_FRAME_RUNTIME.md; reports/gui_icon_frame_runtime.json; reports/orch5_frame_section_scalar_integration.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ab1150",
+    "before": {
+      "address": "00ab1150",
+      "function_name": "FUN_00ab1150"
+    },
+    "after": {
+      "address": "00ab1150",
+      "name": "BSP_GuiIcon_Update",
+      "evidence": "Hypothesis, not a recovered symbol. Icon current40 at D5C500. ECX Icon,float seconds stack,RET4 at AB11FA (end AB11FC). AB115C calls baseAA87B0 once, then AB1161..AB11FC reloads AutoRotate+130 and current44=AB27F0 with x87 unspilled multiply/add; positive +128 countdown decrements original seconds and ordered expiry dispatches current88=AB1710 with +12C,0,1 before clearing countdown. Same retained GuiIconRuntime tail; canonical frame guard/base composition required. docs/GUI_ICON_FRAME_RUNTIME.md; reports/gui_icon_frame_runtime.json; strict Win32 compile and focused production-kernel numeric fixture passed; no full resource runtime, native ABI, render or game proof. | Hypothesis, not a recovered symbol. Actual Icon rotation44, temporary-state84 and frame40 composed over the same owner; one active guard spans base outgoing x87 copy and derived original-delta tail. AutoRotate accepted; delayed texture loading and full resource-backed frame validation remain open. docs/GUI_ICON_FRAME_RUNTIME.md; reports/gui_icon_frame_runtime.json; reports/orch5_frame_section_scalar_integration.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ab27f0",
+    "before": {
+      "address": "00ab27f0",
+      "function_name": "FUN_00ab27f0"
+    },
+    "after": {
+      "address": "00ab27f0",
+      "name": "BSP_GuiIcon_SetRotateAndRefreshFilter",
+      "evidence": "Hypothesis, not a recovered symbol. Actual Icon rotation44, temporary-state84 and frame40 composed over the same owner; one active guard spans base outgoing x87 copy and derived original-delta tail. AutoRotate accepted; delayed texture loading and full resource-backed frame validation remain open. docs/GUI_ICON_FRAME_RUNTIME.md; reports/gui_icon_frame_runtime.json; reports/orch5_frame_section_scalar_integration.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00abf4f0",
+    "before": {
+      "address": "00abf4f0",
+      "function_name": "FUN_00abf4f0"
+    },
+    "after": {
+      "address": "00abf4f0",
+      "name": "BSP_GuiSection_Destroy",
+      "evidence": "Hypothesis, not a recovered symbol. Canonical Section properties and texture setter plus derived texture/string cleanup before common AA9730. Native replacement overwrites texture114 without releasing old; caller supplies the two unwritten scratch DWORDs. Section current4 shares base retirement; native pool/SEH ABI excluded. docs/GUI_SECTION_TEXTURE_OWNERSHIP.md; reports/orch5_frame_section_scalar_integration.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00abf590",
+    "before": {
+      "address": "00abf590",
+      "function_name": "FUN_00abf590"
+    },
+    "after": {
+      "address": "00abf590",
+      "name": "BSP_GuiSection_ScalarDeletingDestructor",
+      "evidence": "Hypothesis, not a recovered symbol. Canonical Section properties and texture setter plus derived texture/string cleanup before common AA9730. Native replacement overwrites texture114 without releasing old; caller supplies the two unwritten scratch DWORDs. Section current4 shares base retirement; native pool/SEH ABI excluded. docs/GUI_SECTION_TEXTURE_OWNERSHIP.md; reports/orch5_frame_section_scalar_integration.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00abf6f0",
+    "before": {
+      "address": "00abf6f0",
+      "function_name": "FUN_00abf6f0"
+    },
+    "after": {
+      "address": "00abf6f0",
+      "name": "BSP_GuiSection_SetTexture",
+      "evidence": "Hypothesis, not recovered symbol. ECX Section, native8h name stack, RET4. ABF6F0..ABF76C: 435C40 equality skips; actual string resize/copy then4C12B0 andAA2660; overwrite114 WITHOUT release-old, actual7C. AA2660 writes canonical118 UVs; discarded float2 is UNWRITTEN native stack input modeled as required two DWORD seed. Actual renderer64 and texture3C/40/+04 references; destructor only releases current114. Strict MSVC Win32 TU and focused resolver/canonical-field fixture passed. docs/GUI_SECTION_TEXTURE_OWNERSHIP.md; reports/gui_section_texture_ownership.json. Worker Ghidra readonly; primary annotation pending. | Hypothesis, not a recovered symbol. Canonical Section properties and texture setter plus derived texture/string cleanup before common AA9730. Native replacement overwrites texture114 without releasing old; caller supplies the two unwritten scratch DWORDs. Section current4 shares base retirement; native pool/SEH ABI excluded. docs/GUI_SECTION_TEXTURE_OWNERSHIP.md; reports/orch5_frame_section_scalar_integration.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ac0280",
+    "before": {
+      "address": "00ac0280",
+      "function_name": "FUN_00ac0280"
+    },
+    "after": {
+      "address": "00ac0280",
+      "name": "BSP_GuiSection_ReadProperties",
+      "evidence": "Hypothesis, not recovered symbol. ECX Section, reader stack, RET4. AC0280..AC058B: after existing AAA710 base/children pass, read Value,StartAngle,Texture,ClockWise,TextureAngle,U0,U1,RimWidthPercent,TextureMode then ABF6F0. Canonical evaluated-table companion and actual native string/temp cleanup; original Lua visitor/SEH ABI external. Strict MSVC Win32 TU and focused existing resolver/canonical-field fixture passed. docs/GUI_SECTION_TEXTURE_OWNERSHIP.md; reports/gui_section_texture_ownership.json. Worker Ghidra readonly; primary annotation pending. | Hypothesis, not a recovered symbol. Canonical Section properties and texture setter plus derived texture/string cleanup before common AA9730. Native replacement overwrites texture114 without releasing old; caller supplies the two unwritten scratch DWORDs. Section current4 shares base retirement; native pool/SEH ABI excluded. docs/GUI_SECTION_TEXTURE_OWNERSHIP.md; reports/orch5_frame_section_scalar_integration.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00acf070",
+    "before": {
+      "address": "00acf070",
+      "function_name": "BSP_GuiFrameBox_SelectState",
+      "comment": "[BSP reconstruction 00acf070]\ndocs/GUI_FRAMEBOX_WIDGET.md; inclusive final-instruction range00acf070..00acf0bd; original ABI ECX widget; stack signed16 state; RET4; virtual+84; semantic name hypothesis; Ghidra read-only, annotation pending."
+    },
+    "after": {
+      "address": "00acf070",
+      "name": "BSP_GuiFrameBox_SelectState",
+      "evidence": "docs/GUI_FRAMEBOX_WIDGET.md; inclusive final-instruction range00acf070..00acf0bd; original ABI ECX widget; stack signed16 state; RET4; virtual+84; semantic name hypothesis; Ghidra read-only, annotation pending. | Hypothesis, not a recovered symbol. Same screen+40 CEFC04 listener: complete normal current0C/current18 over canonical widgets; current04 5993A0 is analyzed only and remains abstract. Native RET4/RET8, Text low-byte gate, live D4 reload after type callbacks, same screen/scrollers. docs/MAIN_MENU_WIDGET_LISTENER.md; reports/main_menu_widget_listener.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b0ca40",
+    "before": {
+      "address": "00b0ca40",
+      "function_name": "FUN_00b0ca40"
+    },
+    "after": {
+      "address": "00b0ca40",
+      "name": "FUN_00b0ca40",
+      "evidence": "Hypothesis, not a recovered symbol. Actual raw PointLight population chain and particle volume-producer fragment B0CAE1..B0CBA6 preserve raw identity, alias-sensitive loads/stores, strict sphere comparisons and duplicate reciprocal backlinks. Model/cache-static Group paths supported; dynamic Group and complete particle/Text providers remain open. docs/NATIVE_POINT_LIGHT_PROVIDER.md; reports/native_point_light_provider.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b6e8c0",
+    "before": {
+      "address": "00b6e8c0",
+      "function_name": "BSP_Model_GetWorldSphere",
+      "comment": "[BSP reconstruction 00b6e8c0]\n[BSP reconstruction] Model+8 local float4, +F0 world matrix, +5C world-valid bit2, +138 auxiliary flags, +13C cached world float4. If either auxiliary bit0x30 is set, return cache without refreshing world. Otherwise refresh world only when bit2 clear, call007C1180, copy all four floats with FLD/FSTP, OR0x30, return cache. New typed API shares CameraTransform state; local-sphere producer and native constructor/lifetime remain caller contracts. Original ABI: ECX=model; no stack arguments; EAX=model+13C; RET. Native virtual+48. Evidence: docs/MODEL_WORLD_BOUNDS.md; reports/model_world_bounds_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b6e8c0",
+      "name": "BSP_Model_GetWorldSphere",
+      "evidence": "[BSP reconstruction] Model+8 local float4, +F0 world matrix, +5C world-valid bit2, +138 auxiliary flags, +13C cached world float4. If either auxiliary bit0x30 is set, return cache without refreshing world. Otherwise refresh world only when bit2 clear, call007C1180, copy all four floats with FLD/FSTP, OR0x30, return cache. New typed API shares CameraTransform state; local-sphere producer and native constructor/lifetime remain caller contracts. Original ABI: ECX=model; no stack arguments; EAX=model+13C; RET. Native virtual+48. Evidence: docs/MODEL_WORLD_BOUNDS.md; reports/model_world_bounds_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation. | Hypothesis, not a recovered symbol. Actual raw PointLight population chain and particle volume-producer fragment B0CAE1..B0CBA6 preserve raw identity, alias-sensitive loads/stores, strict sphere comparisons and duplicate reciprocal backlinks. Model/cache-static Group paths supported; dynamic Group and complete particle/Text providers remain open. docs/NATIVE_POINT_LIGHT_PROVIDER.md; reports/native_point_light_provider.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b6ef20",
+    "before": {
+      "address": "00b6ef20",
+      "function_name": "FUN_00b6ef20"
+    },
+    "after": {
+      "address": "00b6ef20",
+      "name": "BSP_Node_PopulateIntersectingPointLight",
+      "evidence": "ECX node, stack raw light, RET4. Group strict outside prunes; accepted other type strict inside appends B6EED0; current children recurse. Opposite x87 comparison orders and live getter reloads. Actual canonical PointLight/Model population and partial spatial producer. New C++ ABI; no Text provider, render or game claim. Evidence docs/NATIVE_POINT_LIGHT_PROVIDER.md; reports/native_point_light_provider.json. Ghidra read-only; parent owns annotations. | Hypothesis, not a recovered symbol. Actual raw PointLight population chain and particle volume-producer fragment B0CAE1..B0CBA6 preserve raw identity, alias-sensitive loads/stores, strict sphere comparisons and duplicate reciprocal backlinks. Model/cache-static Group paths supported; dynamic Group and complete particle/Text providers remain open. docs/NATIVE_POINT_LIGHT_PROVIDER.md; reports/native_point_light_provider.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b72140",
+    "before": {
+      "address": "00b72140",
+      "function_name": "FUN_00b72140"
+    },
+    "after": {
+      "address": "00b72140",
+      "name": "BSP_RenderRoot_PopulatePointLight",
+      "evidence": "ECX root list, stack raw light, RET4. Actual root0C then current next3C after recursive B6EF20. Actual canonical PointLight/Model population and partial spatial producer. New C++ ABI; no Text provider, render or game claim. Evidence docs/NATIVE_POINT_LIGHT_PROVIDER.md; reports/native_point_light_provider.json. Ghidra read-only; parent owns annotations. | Hypothesis, not a recovered symbol. Actual raw PointLight population chain and particle volume-producer fragment B0CAE1..B0CBA6 preserve raw identity, alias-sensitive loads/stores, strict sphere comparisons and duplicate reciprocal backlinks. Model/cache-static Group paths supported; dynamic Group and complete particle/Text providers remain open. docs/NATIVE_POINT_LIGHT_PROVIDER.md; reports/native_point_light_provider.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b7ab50",
+    "before": {
+      "address": "00b7ab50",
+      "function_name": "FUN_00b7ab50"
+    },
+    "after": {
+      "address": "00b7ab50",
+      "name": "BSP_PointLight_GetTypeNameWord",
+      "evidence": "Hypothesis, not a recovered symbol. Analyzed only: complete00B7AB50..00B7AB55 loads the current010901C0 type-name word into EAX and returns; PointLight table+14. No C++ body claim. reports/orch5_point_provider_definitions.json; docs/NATIVE_POINT_LIGHT_PROVIDER.md. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b7b090",
+    "before": {
+      "address": "00b7b090",
+      "function_name": "FUN_00b7b090"
+    },
+    "after": {
+      "address": "00b7b090",
+      "name": "BSP_PointLight_PopulateIfUnlinked",
+      "evidence": "ECX light, stack root list, RET4. Count1E4==0 calls B72140; any nonzero value skips. Actual canonical PointLight/Model population and partial spatial producer. New C++ ABI; no Text provider, render or game claim. Evidence docs/NATIVE_POINT_LIGHT_PROVIDER.md; reports/native_point_light_provider.json. Ghidra read-only; parent owns annotations. | Hypothesis, not a recovered symbol. Actual raw PointLight population chain and particle volume-producer fragment B0CAE1..B0CBA6 preserve raw identity, alias-sensitive loads/stores, strict sphere comparisons and duplicate reciprocal backlinks. Model/cache-static Group paths supported; dynamic Group and complete particle/Text providers remain open. docs/NATIVE_POINT_LIGHT_PROVIDER.md; reports/native_point_light_provider.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b8f100",
+    "before": {
+      "address": "00b8f100",
+      "function_name": "FUN_00b8f100"
+    },
+    "after": {
+      "address": "00b8f100",
+      "name": "BSP_Group_GetWorldSphere",
+      "evidence": "ECX group, EAX group13C, RET. Static byte175==0 affine sphere; otherwise cached or B8EBE0 aggregation. C++ only static/cached branches; dynamic cache miss remains partial. Actual canonical PointLight/Model population and partial spatial producer. New C++ ABI; no Text provider, render or game claim. Evidence docs/NATIVE_POINT_LIGHT_PROVIDER.md; reports/native_point_light_provider.json. Ghidra read-only; parent owns annotations. | Hypothesis, not a recovered symbol. Actual raw PointLight population chain and particle volume-producer fragment B0CAE1..B0CBA6 preserve raw identity, alias-sensitive loads/stores, strict sphere comparisons and duplicate reciprocal backlinks. Model/cache-static Group paths supported; dynamic Group and complete particle/Text providers remain open. docs/NATIVE_POINT_LIGHT_PROVIDER.md; reports/native_point_light_provider.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  }
+]

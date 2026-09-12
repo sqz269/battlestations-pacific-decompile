@@ -1,0 +1,172 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "abi_compatible": false,
+  "game_validated": false,
+  "render_validated": false,
+  "native_byte_differential": false,
+  "new_permanent_tests": 0,
+  "packet": "orch5_texture_icon_listener_batch",
+  "base_commit": "95d2e955",
+  "worker_commits": [
+    "077f7255f35e873ad260670f393d4a03cfff1f27",
+    "0d4dead07dfa27604b2a4dda99cd4c528288d3bb",
+    "0e08f8e0"
+  ],
+  "reports": [
+    "reports/gui_icon_frame_runtime.json",
+    "reports/gui_section_texture_ownership.json",
+    "reports/native_point_light_provider.json",
+    "reports/gui_widget_listener_binding.json",
+    "reports/main_menu_widget_listener.json",
+    "reports/orch5_frame_section_scalar_integration.json"
+  ],
+  "build": {
+    "result": "passed",
+    "target": "MSVC Win32 Release",
+    "existing_tests": "2/2 passed",
+    "log": "local/orch5-texture-icon-point-listener-combined-build.log",
+    "log_sha256": "82483326b5d5d218a349daf7e64211b717846933d8b7fd6c97bee21dcedfd206",
+    "source_parent_before_primary_commit": "cbea62dc2219fa835b61aa3aec33f340562a3b0f"
+  },
+  "fixtures": {
+    "menu": {
+      "source": "local/menu_listener_probe.cpp",
+      "source_sha256": "10e175b837b44425e506b26e4e921f58847a16d74344e11c652f06d5b7bc5bb5",
+      "log": "local/orch5-menu-listener-probe.log",
+      "log_sha256": "25b85e76a18ba4d25b382aeab53fb99478900e5e23e5bcc9d44aa96d0d75c597",
+      "result": "passed",
+      "scope": "Canonical Group/frame owners and actual same screen/scroller storage only"
+    },
+    "base": {
+      "source": "local/gui_widget_base_probe.cpp",
+      "source_sha256": "a2d862f8e97690a5bf2e91fdc1172c8f8ba6f5a1f3fbb065e1f88f38797d855c",
+      "log": "local/orch5-texture-icon-listener-base-probe.log",
+      "log_sha256": "6498a83341b5b5bd4d78ab7296faa0c136ab5294e687ba340e7fc69a6e692aac",
+      "result": "passed",
+      "scope": "Existing recursive Group teardown regression only; no full Section texture/resource lifetime fixture"
+    },
+    "section": {
+      "source": "local/section_texture_probe.cpp",
+      "source_sha256": "f32106e7f539bfb0e1a2344ee7318a6e291fe482a2dc1a74e12a381e2d59e1fe",
+      "log": "local/orch5-section-texture-probe.log",
+      "log_sha256": "54bf39fd9b5ff697f2cc779b439b3eae1e4e611fe4c64aec9243a13a8575ef9d",
+      "result": "passed",
+      "scope": "Actual resolver/canonical atlas storage only; no full property/setter/emitter/retirement fixture"
+    },
+    "icon": {
+      "source": "local/icon_frame/numeric_probe.cpp",
+      "source_sha256": "90ebd22d9f1da8f5a79b95e7f86261a538ce1a9fd0c751e9e289025177736f6d",
+      "log": "local/orch5-icon-numeric-probe.log",
+      "log_sha256": "159d9563df8789ae22c2b963c75762c5923ec47b520bf796a71d952418383a7d",
+      "result": "passed",
+      "scope": "Includes actual production numeric kernels; no full resource-backed Icon frame fixture"
+    },
+    "point": {
+      "source": "local/point_provider_probe.cpp",
+      "source_sha256": "26e7e102190cda16bebf20b1513c9e4d95c8a7acd852abd67449b3d30d0225ba",
+      "log": "local/orch5-point-provider-final-probe.log",
+      "log_sha256": "116e2fefbe8c488a07d05f1e03d6b810ecc2ac505ef17995519a536e9e1d3fea",
+      "result": "passed",
+      "scope": "Actual raw pool owners, spatial population, strict tangent, duplicate backlinks, radius producer and both teardown orders; links final combined library"
+    }
+  },
+  "source_sha256_lf": {
+    "include/bsp/gui_widget_listener_binding.hpp": "19c7fd5b80d95004240bce07e0ebc026b39a809d1bb2b0dec77923d62d52d48e",
+    "src/gui_widget_listener_binding.cpp": "b319a7be009b34658413ac8dc45fd36220733f0a0afb14486f98930be16292e2",
+    "include/bsp/main_menu_widget_listener.hpp": "eaa7d135cd46985c16d290c9d2d4330355a2903b5eb03c17627ece359b76a5a9",
+    "src/main_menu_widget_listener.cpp": "e3dc1e3ce6d6d589a1fea70cace1cab889c7b0aa5391855d7c1618c128261b51",
+    "include/bsp/gui_icon_runtime.hpp": "bc49bb9b6c8cfd08c8045698e1810fd168b87161bcd6f4f4bc2efb3b3e50140a",
+    "src/gui_icon_runtime.cpp": "c824dd033dec2c48caa6cf215342533d51a2a993c811d2e177e90bb766257af6",
+    "include/bsp/gui_section_runtime.hpp": "6ada5676f1a447ee9246fb694532ff6af072d4dd0dc82af6f0c4552550d6713a",
+    "src/gui_section_runtime.cpp": "61520133226d112cbc427b1e4778291dca8dcce328e3c6c2e80777c1ea4bbf84",
+    "include/bsp/native_point_light_provider.hpp": "0868cc17ee0e50857bc87a954c778748e39eb2ea41fd4b70796f696a3daa2356",
+    "src/native_point_light_provider.cpp": "ea9c83c470db8fb1a4260244d63934a4889fd6cff90429a3f2ac08d99f35d9ac",
+    "include/bsp/gui_widget_base_lifetime.hpp": "4921656c4f8b2b84d4b6b1b8b2e6ed9fc44286c8a04423e639001b9dc5ee6d4f",
+    "src/gui_widget_base_lifetime.cpp": "e1906073ac509129433616a6c96674344a68b751943d113169f01c1a31a04bb4",
+    "include/bsp/gui_widget_frame_runtime.hpp": "29754928cf9d2521838e38814c8fd0a221e0d4d82d335747cb7809a5b0b6745a",
+    "src/gui_widget_frame_runtime.cpp": "dc9668fb64961c85dca28cb88a7cbc50bb2ee31c73a5b22b325550c6594c9d68",
+    "include/bsp/gui_text_child_lifetime.hpp": "7157a446ddb738d71ecec8bb6b5b4990454583d7a44034d61bc54c524a44e44f",
+    "include/bsp/gui_type_dispatch.hpp": "bdad421beadae4b85c5548dfced84db4546c04546305a5000aa242c5f0c00b56",
+    "src/gui_type_dispatch.cpp": "b412bf5884f07732d4f1b0d92cdd705bd0f4f37e36d1e96cc060009465337758"
+  },
+  "hash_normalization": "CRLF replaced with LF; git source identity is checked again after integration",
+  "definitions": [
+    "reports/orch5_texture_icon_definitions.json",
+    "reports/gui_widget_listener_binding_definitions.json",
+    "reports/orch5_point_provider_definitions.json"
+  ],
+  "definition_note": "ABF4F0 was already a saved function when the definition batch checked it. Newly defined: Icon44, seven empty listener leaves, two analyzed provider leaves.",
+  "annotation_archive": "reports/orch5_texture_icon_listener_annotations.json",
+  "follow_up_candidates": [
+    {
+      "packet": "Actual main-menu command listener",
+      "addresses": [
+        "005993a0"
+      ],
+      "source_ready": false,
+      "gates": [
+        "Actual listbox/prompt/mission/service owners and every call ABI",
+        "Same screen construction/configuration",
+        "Resource-backed listener fixture"
+      ]
+    },
+    {
+      "packet": "Actual Text PointLight provider",
+      "addresses": [
+        "00b0ca40",
+        "00b8f100"
+      ],
+      "source_ready": false,
+      "gates": [
+        "Text provider route remains unproven; analyzed candidates are particle/dynamic-effect routes",
+        "Dynamic Group aggregate and complete particle synchronization still excluded"
+      ]
+    },
+    {
+      "packet": "Section native copy and retirement transport",
+      "addresses": [
+        "00abf5b0",
+        "00abec40"
+      ],
+      "source_ready": false,
+      "gates": [
+        "Actual copy/texture ownership, pool and SEH contracts",
+        "Full resource-backed property/setter/retirement fixture"
+      ]
+    },
+    {
+      "packet": "Resource-backed Icon frame runtime",
+      "addresses": [
+        "00ab1150",
+        "00ab6430"
+      ],
+      "source_ready": false,
+      "gates": [
+        "Actual complete geometry/texture/service configuration",
+        "Delayed texture loading remains unsupported",
+        "Game render/frame validation"
+      ]
+    }
+  ],
+  "mechanical_calls": {
+    "numeric_rows": 70,
+    "failed": 0,
+    "resolved_indirect_rows": 18,
+    "direct_rows": 52,
+    "symbolic_contract_rows": 18,
+    "log": "local/orch5-texture-icon-listener-report-calls.log",
+    "log_sha256": "6faa4cdba990c1a99d508fc1cb06874d7860e5dcfe70c17456950fd4856642a6",
+    "limitation": "Indirect target resolution comes from independently reviewed dispatch-table evidence, not the mechanical checker; repeated call sites across reports count as separate rows"
+  },
+  "annotations": {
+    "count": 31,
+    "saved": true,
+    "archive": "reports/orch5_texture_icon_listener_annotations.json",
+    "archive_sha256": "bee536697e38173cb3a671be328921b0875294413a19b2e1cf386640ab057068",
+    "log": "local/orch5-texture-icon-listener-annotations.log",
+    "log_sha256": "ae917ba11e173fa9cfb721164aa70f1651ed8dc2070840bc31bd8e61a2e6df61",
+    "old_names_and_comments_preserved": true,
+    "exports_refreshed": true
+  }
+}

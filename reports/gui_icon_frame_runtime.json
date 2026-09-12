@@ -222,5 +222,27 @@
       "following_padding": "00ab281f CC",
       "resolved": "Primary locked definition read back successfully"
     }
-  ]
+  ],
+  "parent_validation": {
+    "build": {
+      "result": "passed",
+      "target": "MSVC Win32 Release",
+      "existing_tests": "2/2 passed",
+      "log": "local/orch5-texture-icon-point-listener-combined-build.log",
+      "log_sha256": "82483326b5d5d218a349daf7e64211b717846933d8b7fd6c97bee21dcedfd206",
+      "source_parent_before_primary_commit": "cbea62dc2219fa835b61aa3aec33f340562a3b0f"
+    },
+    "fixture": {
+      "source": "local/icon_frame/numeric_probe.cpp",
+      "source_sha256": "90ebd22d9f1da8f5a79b95e7f86261a538ce1a9fd0c751e9e289025177736f6d",
+      "log": "local/orch5-icon-numeric-probe.log",
+      "log_sha256": "159d9563df8789ae22c2b963c75762c5923ec47b520bf796a71d952418383a7d",
+      "result": "passed",
+      "scope": "Includes actual production numeric kernels; no full resource-backed Icon frame fixture"
+    },
+    "independent_review": "Section worker: no blocking finding",
+    "game_validated": false,
+    "abi_compatible": false,
+    "supersedes_worker_pending_build_only": true
+  }
 }

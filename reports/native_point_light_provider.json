@@ -453,5 +453,28 @@
       "was": "FUN_00b8f100",
       "is": "BSP_Group_GetWorldSphere"
     }
-  ]
+  ],
+  "parent_validation": {
+    "build": {
+      "result": "passed",
+      "target": "MSVC Win32 Release",
+      "existing_tests": "2/2 passed",
+      "log": "local/orch5-texture-icon-point-listener-combined-build.log",
+      "log_sha256": "82483326b5d5d218a349daf7e64211b717846933d8b7fd6c97bee21dcedfd206",
+      "source_parent_before_primary_commit": "cbea62dc2219fa835b61aa3aec33f340562a3b0f"
+    },
+    "fixture": {
+      "source": "local/point_provider_probe.cpp",
+      "source_sha256": "26e7e102190cda16bebf20b1513c9e4d95c8a7acd852abd67449b3d30d0225ba",
+      "log": "local/orch5-point-provider-final-probe.log",
+      "log_sha256": "116e2fefbe8c488a07d05f1e03d6b810ecc2ac505ef17995519a536e9e1d3fea",
+      "result": "passed",
+      "scope": "Actual raw pool owners, spatial population, strict tangent, duplicate backlinks, radius producer and both teardown orders; links final combined library"
+    },
+    "independent_review": "Section worker: no blocking finding; checked native aliases and reciprocal backlinks",
+    "game_validated": false,
+    "abi_compatible": false,
+    "supersedes_worker_pending_build_only": true,
+    "defined_analysis_only_leaves": "reports/orch5_point_provider_definitions.json; 008721a0 and00b7ab50"
+  }
 }

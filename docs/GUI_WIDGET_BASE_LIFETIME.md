@@ -51,3 +51,13 @@ machine-code differential. No permanent tests were added. Exact call-site checks
 and final integration evidence are recorded in reports/gui_widget_base_lifetime.json.
 The executable does not yet reach this complete canonical runtime; no game or
 rendering validation is claimed.
+
+## Correction from docs/ORCH5_TEXTURE_ICON_LISTENER_BATCH.md
+
+Canonical scalar deletion now also accepts Section17, performs its actual
+derived texture/string cleanup, and enters the same AA9730 common base. Group,
+Text and Section preserve the existing active-operation and storage guards.
+Native ABF590/ABEC40 pool disposition is a separate ABI from the C++ wrapper.
+The existing recursive Group regression and combined Win32 build passed; a
+complete resource-backed Section retirement fixture is still absent. See
+`reports/orch5_frame_section_scalar_integration.json`.
