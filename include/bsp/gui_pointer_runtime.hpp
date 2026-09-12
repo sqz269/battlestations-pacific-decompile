@@ -23,8 +23,8 @@ struct GuiPointerRuntimeServices {
     const volatile double& scale_00d7a308;
     const volatile float& lower_00d7a238;
     const volatile float& upper_00ce4e0c;
-    const volatile float& wide_lower_00d5bec0;
-    const volatile float& wide_upper_00d5bebc;
+    const volatile float& wide_upper_00d5bec0;
+    const volatile float& wide_lower_00d5bebc;
     const volatile double& vertical_upper_00ced5d0;
 };
 // AA5DE4/5DF9..5E06 only: current CE3800 captured once for both coordinates,

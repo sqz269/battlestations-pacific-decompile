@@ -176,8 +176,10 @@ void GuiPointerRuntime::update_pointer_00aa3910(GuiResourceOwner& resources) {
     const bool wide = platform->widescreen;
     float upper = services_.upper_00ce4e0c;
     if (wide) {
-        lower = services_.wide_lower_00d5bec0;
-        upper = services_.wide_upper_00d5bebc;
+        // AA3B0B pushes the earlier D5BEC0 load as UPPER; AA3B12 then
+        // points EDX at the later D5BEBC load as LOWER after ESP changes.
+        upper = services_.wide_upper_00d5bec0;
+        lower = services_.wide_lower_00d5bebc;
     }
     clamp_x(&position[0], &lower, &upper);
     float selected_y;
