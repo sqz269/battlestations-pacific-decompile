@@ -4,6 +4,8 @@
 #include "bsp/gui_resources.hpp"
 #include "bsp/gui_text_type_dispatch.hpp"
 #include "bsp/gui_widget_relative_bounds.hpp"
+#include "bsp/gui_widget_frame_runtime.hpp"
+#include "bsp/platform_cursor.hpp"
 #include <cstring>
 #include <exception>
 #include <stdexcept>
@@ -81,7 +83,44 @@ float multiply_float(float a, const std::uint32_t* b) {
     }
     return a;
 }
+void subtract_positive_delay(float& delay, float seconds, const volatile float& zero) {
+    const volatile float* const threshold = &zero;
+    float* const destination = &delay;
+    float saved;
+    __asm {
+        mov eax, destination
+        movss xmm0, dword ptr [eax]
+        mov eax, threshold
+        comiss xmm0, dword ptr [eax]
+        movss saved, xmm0
+        jbe finished
+        fld saved
+        fsub seconds
+        mov eax, destination
+        fstp dword ptr [eax]
+    finished:
+    }
+}
+template<class T> T& produced(std::optional<T>& field, const char* message) {
+    if (!field) throw std::logic_error(message);
+    return *field;
+}
+std::int32_t signed_word(std::uint32_t bits) {
+    std::int32_t value;
+    std::memcpy(&value, &bits, sizeof(value));
+    return value;
+}
 } // namespace
+
+GuiListboxInputSample read_gui_listbox_input_00696470(
+    const std::function<std::uint8_t(std::int32_t)>& action) {
+    // Reload the actual game binding inside the required4D92B0 service for
+    // EACH call, including its live deadline map and sound request side effects.
+    const auto previous = action(0x46);
+    const auto next = action(0x47);
+    const auto activate = action(0x4a);
+    return {previous, next, activate};
+}
 
 GuiLayoutWidget* select_gui_highlight_widget_00aa0f50(
     const GuiResourceState& manager, std::int32_t selector) noexcept {
@@ -199,6 +238,205 @@ void GuiListboxRuntime::select_first_selectable_00a9c310() {
         selected_ = it;
         refresh80_00a9c220(false);
         return;
+    }
+}
+void GuiListboxRuntime::navigate88_00a9c400(std::uint8_t forward) {
+    Operation operation(*this);
+    if (!has_selectable_gui_listbox_row_00a9ba40(*this)) {
+        selected_ = rows_.end();
+        refresh80_00a9c220(false);
+        return;
+    }
+    if (forward) {
+        // A9C45D compares row identities, not the iterators. With duplicate
+        // rows an earlier entry can equal the last row and stop here.
+        if (selected_row_00425e50() == row_at_00a9be00(
+            signed_word(row_count_104() - 1u))) return;
+        if (selected_ == rows_.end())
+            throw std::logic_error("A9C46D cannot increment the native end iterator");
+        ++selected_;
+        if (selected_ == rows_.end())
+            throw std::logic_error("A9C486 cannot dereference the native end iterator");
+        if ((*selected_)->scene_flags().hidden) { --selected_; return; }
+    } else {
+        if (selected_ == rows_.begin()) return;
+        --selected_; // Native permits decrementing end for a nonempty list.
+        if ((*selected_)->scene_flags().hidden) { ++selected_; return; }
+    }
+    refresh80_00a9c220(false);
+}
+void GuiListboxRuntime::navigate84_00a9da60(std::uint8_t forward,
+    GuiListboxFrameCalls& calls) {
+    Operation operation(*this);
+    if (!fields_.wrap_navigation_149) {
+        navigate88_00a9c400(forward);
+        return;
+    }
+    if (!has_selectable_gui_listbox_row_00a9ba40(*this)) {
+        selected_ = rows_.end();
+        refresh80_00a9c220(false);
+        return;
+    }
+    const auto require_row = [&]() -> GuiWidgetOwner& {
+        if (selected_ == rows_.end())
+            throw std::logic_error("A9DA60 cannot dereference the native end iterator");
+        return **selected_;
+    };
+    const auto increment = [&]() {
+        (void)require_row();
+        ++selected_;
+    };
+    const auto decrement = [&]() {
+        if (rows_.empty() || selected_ == rows_.begin()) {
+            selected_ = rows_.end(); // Native writes sentinel before reporting.
+            throw std::logic_error("A9DA60 native decrement reached the end sentinel");
+        }
+        --selected_;
+    };
+    const auto hidden_disallowed = [&]() {
+        return require_row().scene_flags().hidden && !fields_.allow_hidden_121;
+    };
+    if (forward) {
+        // Native end->begin precedes an increment, so this visits the second
+        // node when selection starts at end; it is not SelectFirstSelectable.
+        if (selected_ == rows_.end()) selected_ = rows_.begin();
+        for (;;) {
+            increment();
+            if (selected_ == rows_.end()) {
+                const auto page_size = static_cast<std::uint32_t>(produced(
+                    fields_.page_size_158, "A9DB3C reads native unwritten158"));
+                const auto total = paging_row_count_154();
+                const auto remaining = total - page_size; // wrapping SUB.
+                if (page_size < total) {
+                    auto& raw = produced(fields_.raw_ec, "A9DB4C reads native unwrittenEC");
+                    if (raw != remaining) ++raw;
+                }
+                if (!fields_.paging_148) selected_ = rows_.begin();
+                else {
+                    auto& start = produced(fields_.page_start_164, "A9DB6C reads native unwritten164");
+                    if (start >= signed_word(remaining)) {
+                        decrement(); // actual postfix-decrement A9AF90.
+                        if (listener_114_)
+                            calls.listener_current0c(listener_114_, false, true, owner_);
+                        break;
+                    }
+                    start = signed_word(static_cast<std::uint32_t>(start) + 1u);
+                    rebuild_page_00a9d870();
+                    selected_ = rows_.end();
+                    decrement();
+                }
+            }
+            if (!hidden_disallowed()) break;
+        }
+        if (fields_.paging_148)
+            while (hidden_disallowed()) decrement();
+    } else {
+        for (;;) {
+            if (selected_ == rows_.begin()) {
+                auto& raw = produced(fields_.raw_ec, "A9DCA4 reads native unwrittenEC");
+                if (raw) --raw;
+                if (!fields_.paging_148) selected_ = rows_.end();
+                else {
+                    auto& start = produced(fields_.page_start_164, "A9DCC0 reads native unwritten164");
+                    if (start <= 0) {
+                        if (listener_114_)
+                            calls.listener_current0c(listener_114_, true, false, owner_);
+                        break;
+                    }
+                    start = signed_word(static_cast<std::uint32_t>(start) - 1u);
+                    rebuild_page_00a9d870();
+                    selected_ = rows_.begin();
+                    increment(); // Native advances first, then common decrement.
+                }
+            }
+            decrement();
+            if (!hidden_disallowed()) break;
+        }
+        if (fields_.paging_148)
+            while (hidden_disallowed()) increment();
+    }
+    refresh80_00a9c220(false);
+}
+void GuiListboxRuntime::update40_00a9d030(float seconds,
+    const GuiListboxFrameServices& services) {
+    Operation operation(*this);
+    if (&services.base_frames.widgets() != &owner_.runtime() ||
+        !services.base_frames.operation_active(owner_))
+        throw std::logic_error("Listbox40 requires its actual frame runtime owner borrow");
+    if (owner_.scene_flags().hidden || !owner_.scene_flags().active) return;
+    if (!owner_.implementation().is_visible38(owner_)) return;
+    const auto& manager = services.highlight.get_manager_004c12b0();
+    if (!manager.blocked_70)
+        throw std::logic_error("A9D069 reads native constructor-unwritten manager70");
+    if (*manager.blocked_70) return;
+    services.base_frames.update_base_from_active_00aa87b0(owner_, x87_argument(seconds));
+    if (fields_.paging_148)
+        subtract_positive_delay(produced(fields_.page_delay_168,
+            "A9D08A reads native unwritten168"), seconds, services.zero_00d7a218);
+    if (!has_selectable_gui_listbox_row_00a9ba40(*this)) {
+        selected_ = rows_.end();
+        refresh80_00a9c220(false);
+    } else if (selected_ == rows_.end()) select_first_selectable_00a9c310();
+
+    // Copy the chosen function pointer transport so native144 may be replaced
+    // during the call without destroying a currently executing std::function.
+    // Only this immediate callback is captured; global08 is reloaded on each frame.
+    const auto callback = fields_.input_callback_144 ? fields_.input_callback_144
+        : services.input_callback_f8bc08;
+    const auto input = callback();
+    if (input.activate_4a) {
+        const auto get_device = [&](std::int32_t type) {
+            auto* const groups = services.input_groups_00f8bbf4;
+            if (!groups || static_cast<std::size_t>(type) >= groups->size())
+                throw std::logic_error("Listbox40 requires its actual input backend class vectors");
+            return get_input_class_device_004ba6d0(*groups, type, 0);
+        };
+        auto* const keyboard = get_device(0);
+        auto* const gamepad = get_device(2); // Both getters before either2C.
+        if ((keyboard && services.calls.device_current2c(*keyboard)) ||
+            (gamepad && services.calls.device_current2c(*gamepad))) {
+            if (listener_114_ && selected_row_00425e50() &&
+                !selected_row_00425e50()->scene_flags().hidden)
+                services.calls.listener_current04(listener_114_,
+                    *selected_row_00425e50(), owner_);
+            services_.sound_callback_f8bc0c(false, true);
+        }
+    } else if (input.next_47 != input.previous_46 && selected_ != rows_.end()) {
+        // Native tests next47 first when the raw bytes differ. Two distinct
+        // nonzero bytes therefore navigate forward, rather than cancelling.
+        if (input.next_47 || input.previous_46) {
+            navigate84_00a9da60(input.next_47 ? 1 : 0, services.calls);
+            refresh80_00a9c220(false); // Deliberate second notification.
+        }
+    }
+    if (fields_.auto_control_11e && owner_.scene_flags().active &&
+        !owner_.scene_flags().hidden) {
+        for (auto it = rows_.begin(); it != rows_.end(); ++it) {
+            const auto state = it == selected_ ? 1 : ((*it)->scene_flags().hidden ? 3 : 0);
+            apply_gui_listbox_row_state_00a9ba90(**it, state, services_.row_state_one_00d7a24c);
+            // Same existing FC lifetime contract: current node survives until
+            // native519E00 advances it. Re-read the selection on the next row.
+        }
+    }
+    auto* const selected = selected_row_00425e50();
+    if (fields_.new_highlight_120) {
+        const auto& current_manager = services.highlight.get_manager_004c12b0();
+        auto* const layout = select_gui_highlight_widget_00aa0f50(
+            current_manager, fields_.highlight_index_118);
+        if (!layout)
+            throw std::logic_error("A9D2F9 requires its actual selector1/2 highlight");
+        const float depth = x87_argument(resolved_position(layout->transform).z);
+        update_highlight_00a9c540(selected, fields_.paging_148, depth, services.highlight);
+    } else {
+        const auto& current_manager = services.highlight.get_manager_004c12b0();
+        auto* const layout = select_gui_highlight_widget_00aa0f50(current_manager, 0);
+        if (!layout)
+            throw std::logic_error("A9D333 native selector0 returns null before current34 dereference");
+        auto& highlight = owner_.runtime().owner(*layout);
+        highlight.set_visible34(selected != nullptr);
+        if (selected)
+            fit_gui_widget_to_source_00ac0820(*selected, highlight, 0.0f,
+                services.highlight.relative_bounds);
     }
 }
 void GuiListboxRuntime::update_highlight_00a9c540(GuiWidgetOwner* row,
