@@ -1,0 +1,317 @@
+{
+  "packet": "orch6_avoid_zone_query_binding",
+  "kind": "cpp_integration_adapter",
+  "new_native_addresses": [],
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/avoid_zone_query_binding.cpp",
+  "documentation": "docs/AVOID_ZONE_QUERY_BINDING.md",
+  "native_evidence_reports": [
+    "reports/avoid_zone_boundary.json",
+    "reports/avoid_zone_geometry.json",
+    "reports/avoid_zone_offset.json",
+    "reports/avoid_zone_segment_math.json",
+    "reports/avoid_zone_owner.json"
+  ],
+  "concrete_bindings": [
+    {
+      "callee": "00416b50",
+      "implementation": "avoid_zone_contains_point_00416b50"
+    },
+    {
+      "callee": "00416f30",
+      "implementation": "avoid_zone_closest_offset_point_00416f30"
+    },
+    {
+      "callee": "00419ab0",
+      "implementation": "avoid_zone_segment_distance_00419ab0"
+    },
+    {
+      "callee": "004f4b50",
+      "implementation": "avoid_zone_segment_closest_point_004f4b50"
+    },
+    {
+      "callee": "00419260",
+      "implementation": "native_vector2_reciprocal_length_00419260"
+    }
+  ],
+  "storage_policy": "Owned snapshots preserve source order, all nine corner words, layer bits and stored bounds; source allocations may be released after construction. Actual CRT access remains borrowed.",
+  "verification": {
+    "build": "PASS standalone scripts/build.ps1, MSVC Win32 Release; bsp_game.exe built; existing CTest 2/2 passed",
+    "fixture": "PASS 12 checks: translated scene points -> real constructor/pose/derive -> owned snapshot -> release original allocations -> five concrete boundary bindings",
+    "new_tracked_tests": 0,
+    "whole_query_native_differential": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "build_log": "local/orch6_zone_adapter_build.log",
+    "fixture_source": "local/avoid_zone_query_probe.cpp",
+    "fixture_runner": "local/run_avoid_zone_query_probe.ps1",
+    "fixture_log": "local/orch6_zone_query_probe.log",
+    "fixture_scope": "Synthetic actual scene/allocator services exercise the recovered implementation. Finite inside normalization uses tolerance2e-7; this is an integration fixture, not whole-query native differential or game validation.",
+    "component_differential": [
+      {
+        "routine": "00416f30",
+        "comparisons": 96000,
+        "failures": 0,
+        "log": "local/orch6_zone_offset_probe.log",
+        "scope": "Original installed/live matching645-byte body; two constant relocations; PC24/53/64, four rounding modes, DAZ/FTZ on/off; point/edge/endpoint bits"
+      },
+      {
+        "routines": [
+          "00419ab0",
+          "004f4b50",
+          "004f3630"
+        ],
+        "checks": 3027,
+        "failures": 0,
+        "log": "local/orch6_zone_segment_probe.log",
+        "scope": "Six original installed/live matching code ranges; relocated calls/constants; same reconstructed CRT boundary; includes no-write and alias behavior"
+      }
+    ],
+    "clip_fixture": "PASS diamond4->octagon8, expanded100 planes, capacity4->10, original bounds and identity retained, touching rejected, records12/12 and arrays6/6 released",
+    "clip_log": "local/orch6_zone_clip_probe.log",
+    "live_call_rows": {
+      "checked": 65,
+      "failed": 0,
+      "unresolved_indirect": 1,
+      "indirect_contract": "actual parent entity vtable5C(code44), explicit required access"
+    },
+    "integration_log": "local/orch6_zone_integration.log",
+    "executable_query_wiring": false
+  },
+  "completed_utc": "2026-09-12T18:31:25.800746+00:00",
+  "branch": "agent/orch6-20260912",
+  "source_integration_commit": "2b1e5aeedd7de9373a78f0d46b65c4bfcf4e3552",
+  "adapter_build_input_commit": "29486c4959b5c6c9b8ce85e324ec639e41c1699f",
+  "build_inputs_unchanged_since_checked_commit": true,
+  "ghidra": {
+    "project_saved": true,
+    "reviewed_annotation_addresses": 9,
+    "renamed_functions": 6,
+    "prior_comments_preserved": true,
+    "annotations": [
+      {
+        "address": "004167c0",
+        "before": {
+          "address": "004167c0",
+          "function_name": "FUN_004167c0"
+        },
+        "after": {
+          "address": "004167c0",
+          "function_name": "BSP_AvoidZone_ClearOwnedCornerRecords",
+          "comment": "[BSP reconstruction 004167c0]\nHypothesis, not recovered symbol. Read-only packet orch6_avoid_zone_owner. ECX zone; no stack arguments; RET; body004167c0-004167f7. Coverage: complete including missing004167DB-004167F1 continuation and return. Actual24h native zone prefix, pointer ownership and record type reused; source filter squared distance>25; clip planes expanded100, strict positive inside, original bounds retained. World minimum711C,7120,7130; maximum7128,712C,7124. docs/AVOID_ZONE_OWNER.md; reports/avoid_zone_owner.json. Prior live name: FUN_004167c0. No Ghidra mutation; Win32 build/CTest passed, focused clip allocation probe passed; no native differential/gameplay claim."
+        }
+      },
+      {
+        "address": "0041a540",
+        "before": {
+          "address": "0041a540",
+          "function_name": "FUN_0041a540"
+        },
+        "after": {
+          "address": "0041a540",
+          "function_name": "BSP_AvoidZone_ClipWorldBoundsAndRebuildCorners",
+          "comment": "[BSP reconstruction 0041a540]\nHypothesis, not recovered symbol. Read-only packet orch6_avoid_zone_owner. ECX zone; stack minimumXYZ,maximumXYZ; RET8; body0041a540-0041ac53. Coverage: complete clipping and scratch/record ownership. Actual24h native zone prefix, pointer ownership and record type reused; source filter squared distance>25; clip planes expanded100, strict positive inside, original bounds retained. World minimum711C,7120,7130; maximum7128,712C,7124. docs/AVOID_ZONE_OWNER.md; reports/avoid_zone_owner.json. Prior live name: FUN_0041a540. No Ghidra mutation; Win32 build/CTest passed, focused clip allocation probe passed; no native differential/gameplay claim."
+        }
+      },
+      {
+        "address": "0041ccd0",
+        "before": {
+          "address": "0041ccd0",
+          "function_name": "BSP_AvoidZone_ConstructFromScenePath",
+          "comment": "[BSP reconstruction 0041ccd0]\nHypothesis, not a recovered symbol. Read-only packet orch6_ship_ai_lateral_record. ECX zone storage; stack scene path, layer; EAX zone; RET8; body 0041ccd0-0041d0b1. Coverage: partial producer evidence: 0041CCD0-0041CE02, 0041CE62-0041CF47, 0041D058-0041D063; remaining growth, clipping and association branches are not reconstructed. 24h allocation at0041CD7D/0041CEF1; x/z stores0041CD92/0041CD9C and0041CF03/0041CF0D; all six derived fields zero; +20h=-1. New C++ record default initializers only, no constructor routine reconstruction. docs/SHIP_AI_LATERAL_RECORD.md; reports/ship_ai_lateral_record.json. Prior live name: FUN_0041ccd0; no Ghidra mutation applied."
+        },
+        "after": {
+          "address": "0041ccd0",
+          "function_name": "BSP_AvoidZone_ConstructFromScenePath",
+          "comment": "[BSP reconstruction 0041ccd0]\nHypothesis, not a recovered symbol. Read-only packet orch6_ship_ai_lateral_record. ECX zone storage; stack scene path, layer; EAX zone; RET8; body 0041ccd0-0041d0b1. Coverage: partial producer evidence: 0041CCD0-0041CE02, 0041CE62-0041CF47, 0041D058-0041D063; remaining growth, clipping and association branches are not reconstructed. 24h allocation at0041CD7D/0041CEF1; x/z stores0041CD92/0041CD9C and0041CF03/0041CF0D; all six derived fields zero; +20h=-1. New C++ record default initializers only, no constructor routine reconstruction. docs/SHIP_AI_LATERAL_RECORD.md; reports/ship_ai_lateral_record.json. Prior live name: FUN_0041ccd0; no Ghidra mutation applied.\n\n[BSP reconstruction 0041ccd0] update\nHypothesis, not a recovered symbol. Read-only packet orch6_ship_ai_lateral_record. ECX zone storage; stack scene path, layer; EAX zone; RET8; body 0041ccd0-0041d0b1. Coverage: partial producer evidence: 0041CCD0-0041CE02, 0041CE62-0041CF47, 0041D058-0041D063; remaining growth, clipping and association branches are not reconstructed. 24h allocation at0041CD7D/0041CEF1; x/z stores0041CD92/0041CD9C and0041CF03/0041CF0D; all six derived fields zero; +20h=-1. New C++ record default initializers only, no constructor routine reconstruction. docs/SHIP_AI_LATERAL_RECORD.md; reports/ship_ai_lateral_record.json. Prior live name: FUN_0041ccd0; no Ghidra mutation applied. | Hypothesis, not recovered symbol. Read-only packet orch6_avoid_zone_owner. ECX zone; stack scene path,layer; EAX zone; RET8; body0041ccd0-0041d0b1. Coverage: complete body control flow and ownership through explicit real scene, allocation and CRT services. Actual24h native zone prefix, pointer ownership and record type reused; source filter squared distance>25; clip planes expanded100, strict positive inside, original bounds retained. World minimum711C,7120,7130; maximum7128,712C,7124. docs/AVOID_ZONE_OWNER.md; reports/avoid_zone_owner.json. Prior live name: BSP_AvoidZone_ConstructFromScenePath. No Ghidra mutation; Win32 build/CTest passed, focused clip allocation probe passed; no native differential/gameplay claim."
+        }
+      },
+      {
+        "address": "007af800",
+        "before": {
+          "address": "007af800",
+          "function_name": "FUN_007af800"
+        },
+        "after": {
+          "address": "007af800",
+          "function_name": "BSP_ScenePath_TransformPointToWorld",
+          "comment": "[BSP reconstruction 007af800]\nHypothesis, not recovered symbol. Read-only packet orch6_avoid_zone_owner. ECX scene path; stack output,index; EAX output; RET8; body007af800-007af8d2. Coverage: complete body through canonical pose/vector transform and explicit invalid-parameter service. Actual24h native zone prefix, pointer ownership and record type reused; source filter squared distance>25; clip planes expanded100, strict positive inside, original bounds retained. World minimum711C,7120,7130; maximum7128,712C,7124. docs/AVOID_ZONE_OWNER.md; reports/avoid_zone_owner.json. Prior live name: FUN_007af800. No Ghidra mutation; Win32 build/CTest passed, focused clip allocation probe passed; no native differential/gameplay claim."
+        }
+      },
+      {
+        "address": "00416f30",
+        "before": {
+          "address": "00416f30",
+          "function_name": "FUN_00416f30"
+        },
+        "after": {
+          "address": "00416f30",
+          "function_name": "BSP_AvoidZone_ClosestOffsetBoundaryPoint",
+          "comment": "[BSP reconstruction 00416f30]\nHypothesis, not a recovered symbol. Read-only packet orch6_avoid_zone_offset. Complete body00416F30-004171B4; ECX zone; stack point/out_point/out_edge/out_endpoint/push; RET14h at004171B2. Closest unshifted clamped projection from stored outgoing-unit dot divided by length; closing edge first; strict squared-distance ranking preserves first ties. Interpolated producer-backed corner offsets applied only to new best, with all original binary32 spills. Empty/no-candidate preserves every output; NaN parameter follows unordered JC into interpolation. Reuses ShipAiPathLateralRecord/List. Docs/AVOID_ZONE_OFFSET.md and reports/avoid_zone_offset.json; 96000 native point/edge/endpoint bit comparisons passed. No saved Ghidra mutation, native ABI replacement or game validation."
+        }
+      },
+      {
+        "address": "00419ab0",
+        "before": {
+          "address": "00419ab0",
+          "function_name": "FUN_00419ab0"
+        },
+        "after": {
+          "address": "00419ab0",
+          "function_name": "BSP_Segment2f_PointDistance",
+          "comment": "[BSP reconstruction 00419ab0]\nRead-only packet orch6_avoid_zone_segment_math; descriptive names are hypotheses. 00419ab0-00419bed; ECX=start EDX=end; stack query; ST0 distance; RET4; complete schedule in src/avoid_zone_segment_math.cpp. docs/AVOID_ZONE_SEGMENT_MATH.md; reports/avoid_zone_segment_math.json. Standalone Win32 build and 3027 focused native differential checks passed; shared actual CRT boundary. New typed consumer ABI; no gameplay validation. Ignored solver failure deliberately retains query pointer bits as t and normalized dx as u."
+        }
+      },
+      {
+        "address": "004f4b50",
+        "before": {
+          "address": "004f4b50",
+          "function_name": "FUN_004f4b50"
+        },
+        "after": {
+          "address": "004f4b50",
+          "function_name": "BSP_Segment2f_ClampedClosestPoint",
+          "comment": "[BSP reconstruction 004f4b50]\nRead-only packet orch6_avoid_zone_segment_math; descriptive names are hypotheses. 004f4b50-004f4c50; ECX=endpoints; stack output query; EAX=output; RET8; complete schedule in src/avoid_zone_segment_math.cpp. docs/AVOID_ZONE_SEGMENT_MATH.md; reports/avoid_zone_segment_math.json. Standalone Win32 build and 3027 focused native differential checks passed; shared actual CRT boundary. New typed consumer ABI; no gameplay validation. Ignored solver failure deliberately retains query pointer bits as t and normalized dx as u."
+        }
+      },
+      {
+        "address": "004f3630",
+        "before": {
+          "address": "004f3630",
+          "function_name": "BSP_Math_SegmentParameters2D",
+          "comment": "[BSP reconstruction 004f3630]\nHypothesis, not a recovered symbol. Packet cc2_gun_bot_remainder, read-only analysis. __fastcall(ECX const float2* a0, EDX const float2* da, const float2* b0, const float2* db, float* t, float* u) -> bool, RET 10h, body 004F3630-004F372E. Denominator db.x*da.y - db.y*da.x; t is the parameter along a0 -> a1 and u the one along b0 -> b1. A parallel pair is rejected at 004F36A5 by 004F3560(denominator, 0), a relative near-equality test whose tolerance rule was not read. docs/GUN_BOT_REMAINDER.md"
+        },
+        "after": {
+          "address": "004f3630",
+          "function_name": "BSP_Math_SegmentParameters2D",
+          "comment": "[BSP reconstruction 004f3630]\nHypothesis, not a recovered symbol. Packet cc2_gun_bot_remainder, read-only analysis. __fastcall(ECX const float2* a0, EDX const float2* da, const float2* b0, const float2* db, float* t, float* u) -> bool, RET 10h, body 004F3630-004F372E. Denominator db.x*da.y - db.y*da.x; t is the parameter along a0 -> a1 and u the one along b0 -> b1. A parallel pair is rejected at 004F36A5 by 004F3560(denominator, 0), a relative near-equality test whose tolerance rule was not read. docs/GUN_BOT_REMAINDER.md\n\n[BSP reconstruction 004f3630] update\nHypothesis, not a recovered symbol. Packet cc2_gun_bot_remainder, read-only analysis. __fastcall(ECX const float2* a0, EDX const float2* da, const float2* b0, const float2* db, float* t, float* u) -> bool, RET 10h, body 004F3630-004F372E. Denominator db.x*da.y - db.y*da.x; t is the parameter along a0 -> a1 and u the one along b0 -> b1. A parallel pair is rejected at 004F36A5 by 004F3560(denominator, 0), a relative near-equality test whose tolerance rule was not read. docs/GUN_BOT_REMAINDER.md | Read-only packet orch6_avoid_zone_segment_math; descriptive names are hypotheses. 004f3630-004f372e; ECX=a0 EDX=da; stack b0 db t u; AL success; RET10h; complete schedule in src/avoid_zone_segment_math.cpp. docs/AVOID_ZONE_SEGMENT_MATH.md; reports/avoid_zone_segment_math.json. Standalone Win32 build and 3027 focused native differential checks passed; shared actual CRT boundary. New typed consumer ABI; no gameplay validation."
+        }
+      },
+      {
+        "address": "00414c60",
+        "before": {
+          "address": "00414c60",
+          "function_name": "BSP_Vector2f_LengthWithCutoff",
+          "comment": "[BSP reconstruction 00414c60]\nx87 x*x+y*y rounded to float before FCOMI against CE3820 double 1e-10. JBE returns positive zero for below/equal/unordered; ordered-above calls genuine CRT BF7030 with rounded sum in ST0, then two float store/reload pairs. See docs/VECTOR_HELPERS.md and reports/vector_helpers.json. Names are hypotheses; original CRT remains external."
+        },
+        "after": {
+          "address": "00414c60",
+          "function_name": "BSP_Vector2f_LengthWithCutoff",
+          "comment": "[BSP reconstruction 00414c60]\nx87 x*x+y*y rounded to float before FCOMI against CE3820 double 1e-10. JBE returns positive zero for below/equal/unordered; ordered-above calls genuine CRT BF7030 with rounded sum in ST0, then two float store/reload pairs. See docs/VECTOR_HELPERS.md and reports/vector_helpers.json. Names are hypotheses; original CRT remains external.\n\n[BSP reconstruction 00414c60] update\nx87 x*x+y*y rounded to float before FCOMI against CE3820 double 1e-10. JBE returns positive zero for below/equal/unordered; ordered-above calls genuine CRT BF7030 with rounded sum in ST0, then two float store/reload pairs. See docs/VECTOR_HELPERS.md and reports/vector_helpers.json. Names are hypotheses; original CRT remains external. | Read-only packet orch6_avoid_zone_segment_math; descriptive names are hypotheses. 00414c60-00414ca1; ECX=delta; ST0 length; RET; complete schedule in src/avoid_zone_segment_math.cpp. docs/AVOID_ZONE_SEGMENT_MATH.md; reports/avoid_zone_segment_math.json. Standalone Win32 build and 3027 focused native differential checks passed; shared actual CRT boundary. New typed consumer ABI; no gameplay validation. Private consumed-callee bridge adds CameraAxesCrtAccess; existing public current-host CRT helper unchanged."
+        }
+      }
+    ],
+    "flow_repairs": {
+      "count": 11,
+      "remaining_call_gaps": 0,
+      "record": "reports/avoid_zone_owner_flow_repair.json"
+    },
+    "supporting_function_definitions": {
+      "addresses": [
+        "00c5e198",
+        "00c5e163"
+      ],
+      "record": "reports/avoid_zone_owner_function_definitions.json",
+      "scope": "Verified10-byte compiler SEH dispatchers defined from existing instructions; no SEH/CRT port"
+    },
+    "refreshed_exports": [
+      "004167c0",
+      "0041a540",
+      "0041ccd0",
+      "007af800",
+      "00416f30",
+      "00419ab0",
+      "004f4b50",
+      "004f3630",
+      "00414c60",
+      "00412dc0",
+      "00c5e198",
+      "00c5e163"
+    ],
+    "export_log": "local/orch6_zone_export_refresh.log"
+  },
+  "workers": [
+    {
+      "packet": "orch6_avoid_zone_segment_math",
+      "branch": "agent/orch6-segment-queries",
+      "commit": "ba36681694e3e8a0fba232d94c45d8a2543827ed",
+      "report": "reports/avoid_zone_segment_math.json",
+      "checked_call_rows": 21,
+      "qualification": "Three full native geometry schedules plus a private cutoff-length adaptation with explicit CRT access.",
+      "worker_verification": {
+        "report_calls": "21 call rows checked, 0 failed",
+        "build": "Standalone scripts/build.ps1 passed: MSVC Win32 Release and existing reconstructed_math CTest 1/1.",
+        "native_differential": "local/run_segment_probe.ps1 passed: 3027 checks, 0 failures. Six original installed/live machine-code routines; calls/constants relocated; CRT boundary shared.",
+        "byte_comparison": "Six complete installed/live ranges match; local/segment-byte-comparison.json",
+        "build_log": "local/segment-build.log",
+        "probe_source": "local/segment_geometry_probe.cpp",
+        "probe_runner": "local/run_segment_probe.ps1",
+        "probe_log": "local/segment-probe.log",
+        "probe_manifest": "/MANIFEST:EMBED",
+        "game_validated": false
+      }
+    },
+    {
+      "packet": "orch6_avoid_zone_offset",
+      "branch": "agent/orch6-zone-offset",
+      "commit": "9daa6f58ce8be63f289bd27ff0a004b5ab3a19a3",
+      "report": "reports/avoid_zone_offset.json",
+      "checked_call_rows": 5,
+      "qualification": "Complete closest offset boundary point using the native record layout and floating-point instruction stages.",
+      "worker_verification": {
+        "ghidra_target_verification": "Every bsp.py ghidra call constructs Client(config/target.json) and runs verify() before the query; target bsp.gpr and /battlestationspacific.exe.",
+        "report_call_rows": "python tools/verify_report_calls.py reports/avoid_zone_offset.json: 5 call rows checked, 0 failed",
+        "build_and_existing_ctest": "./scripts/build.ps1 Release Win32 succeeded; reconstructed_math and native_math_differential both passed (2/2, CTest0.16sec); no compiler warnings/errors",
+        "build_log": "local/avoid_zone_offset-build.log",
+        "new_committed_tests": 0,
+        "native_seed_verification": "python tools/ghidra_export.py verify-seeds passed; all eight seed spans match disk",
+        "native_differential_fixture": {
+          "passed": true,
+          "comparisons": 96000,
+          "source": "local/avoid_zone_offset_probe.cpp",
+          "runner": "local/run_avoid_zone_offset_probe.ps1",
+          "preparation": "local/prepare_avoid_zone_offset_probe.py",
+          "log": "local/avoid_zone_offset-probe.log",
+          "native_bytes": 645,
+          "native_sha256": "1d9d8f7671b11b4e716bd8133784b3a8bcdf7377d2770685fdeb8709cdf8eadc",
+          "matches_installed_binary": true,
+          "relocations": [
+            "00D7A248 FLT_MAX",
+            "00D7A24C float1"
+          ],
+          "domain": "Counts0-4; finite/arbitrary float patterns; zero/NaN length; NaN/signed-zero push; endpoints; closing-edge first-on-tie square. PC24/53/64, four rounding modes, DAZ/FTZ off/on. Exact bit comparison of point, edge and endpoint including prior sentinels."
+        },
+        "abi_compatible": false,
+        "game_validated": false,
+        "runtime_boundary": "Module is not wired into the worktree's bsp_game.exe. Current ship AI planner host still returns zero group/input point at src/game_hosts_ship_ai.cpp:1684-1692. Primary integrator owns native zone query adapter.",
+        "known_limits": [
+          "Valid nonnegative count and readable stable records required; no malformed-pointer or concurrent mutation model.",
+          "Outputs must not alias inputs or each other; native object aliasing behavior is not projected.",
+          "Native differential checks cover the recorded samples, not all float inputs; exception status flags and traps were not compared.",
+          "No native ABI replacement or installed-game validation is claimed."
+        ]
+      }
+    },
+    {
+      "packet": "orch6_avoid_zone_owner",
+      "branch": "agent/orch6-zone-owner",
+      "commit": "03abf37f9e5d4299880e6df3a2499ed111bf12c7",
+      "report": "reports/avoid_zone_owner.json",
+      "checked_call_rows": 39,
+      "qualification": "Complete constructor, clip/rebuild, clear and world-point control flow through actual scene/allocator/CRT services; native SEH ABI remains external.",
+      "worker_verification": {
+        "build": "PASS standalone ./scripts/build.ps1 Release MSVC Win32, existing CTest1/1; local/avoid-zone-owner-build.log",
+        "report_calls": "PASS39 direct native call rows,0 failed;1 entity-specific vtable row unresolved; local/avoid-zone-owner-calls.log",
+        "local_probe": "PASS local/avoid_zone_clip_probe.cpp and local/run_avoid_zone_clip_probe.ps1; /MANIFEST:EMBED; diamond4->octagon8, capacity4->10, original bounds retained, touching rejected, records12/12 arrays6/6 released; local/avoid-zone-clip-probe.log",
+        "new_tracked_tests": false,
+        "native_differential_fixture": false,
+        "abi_compatible": false,
+        "game_validated": false,
+        "ghidra_mutated": false,
+        "runtime_path": "not wired to bsp_game by this packet; no frame claims",
+        "constructor_runtime_probe": "not run by worker; separate whole-path integration fixture owned by primary"
+      }
+    }
+  ]
+}
