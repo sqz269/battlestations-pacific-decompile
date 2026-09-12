@@ -27,6 +27,7 @@
 #include "bsp/game_render_frame.hpp"
 #include "bsp/lua_binding_entity_lookup.hpp"
 #include "bsp/mission_lobby_settings.hpp"
+#include "bsp/attack_commands.hpp"
 #include "bsp/command_execution.hpp"
 #include "bsp/math.hpp"
 #include "bsp/simulation_gate.hpp"
@@ -2540,6 +2541,48 @@ int main() {
             "00836A76 completes the command just inside the radius");
         check(bsp::command_arrival_reached(0.0f, 0.0f, 0.0f, 1999.0f),
             "the arrival distance is built from x and z, not x and y");
+    }
+
+    {
+        // 007EEC50's preference order. A unit that carries every ordnance and
+        // has guns matches seven classes at once, so only the order decides
+        // which one it flies. The chain is levelbomb, dropkamikaze, divebomb,
+        // torpedo, rocket, kamikaze, depthcharge (007EECCE..007EED5C), and the
+        // gun pass runs only when the ordnance pass found nothing or the caller
+        // cleared prefer_ordnance (007EED84..007EEDB2). A reordering would be
+        // silent: every candidate is individually applicable.
+        bsp::AttackFeasibilityInputs in;
+        in.unit_has_weapon_controller = true;
+        in.target_present = true;
+        in.unit_side = 1;
+        in.target_side = 3;
+        in.target_is_surface = true;
+        in.self_is_level_bomber = true;
+        in.target_is_structure = true;
+        in.has_level_bomb_ordnance = true;
+        in.has_general_bomb_ordnance = true;
+        in.has_drop_kamikaze_ordnance = true;
+        in.has_torpedo_ordnance = true;
+        in.has_rocket_ordnance = true;
+        in.has_depth_charge_ordnance = true;
+        in.target_is_submarine = true;
+        in.guns_available = true;
+        check(bsp::attack_command_choose(in, true, true) == bsp::kAttackCmdLevelBomb,
+            "007EEC50 tries levelbomb before every other ordnance class");
+        in.has_level_bomb_ordnance = false;
+        in.self_is_level_bomber = false;
+        check(bsp::attack_command_choose(in, true, true) == bsp::kAttackCmdDropKamikaze,
+            "dropkamikaze is tried before divebomb and torpedo");
+        in.has_drop_kamikaze_ordnance = false;
+        check(bsp::attack_command_choose(in, true, true) == bsp::kAttackCmdDiveBomb,
+            "divebomb is tried before torpedo and rocket");
+        // With prefer_ordnance clear the gun pass wins even though divebomb
+        // still applies, and strafe is the fallback because the target is not
+        // airborne so dogfight cannot match.
+        check(bsp::attack_command_choose(in, false, true) == bsp::kAttackCmdStrafe,
+            "a cleared prefer_ordnance sends 007EEC50 to the gun pass");
+        check(bsp::attack_command_choose(in, false, false) == 0u,
+            "a cleared allow_guns discards the gun-only answer");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
