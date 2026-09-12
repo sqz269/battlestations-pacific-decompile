@@ -103,3 +103,15 @@ cursor bytes, invokes ordinal5030 once, and balances a real ShowCursor pair.
 It creates no fake input/action/online owner and leaves original SDK files alone.
 Later live-backend focus reset, online initialization and application runtime
 composition are not exercised by that focused probe; no gameplay claim is made.
+
+## Correction from docs/GAME_INPUT_RUNTIME.md
+
+AF replaces the typed input adapter described above with the application's
+shared raw F8BBF4 publication and `GameInputRuntime`. `GameSoundLoadEvents`
+borrows a `GameSoundCursorCalls` service; its XLive pretranslation behavior and
+counters are unchanged. The facade calls the raw cursor/focus and device bodies,
+using the committed GUI raw active-vector getter and actual lazy action owner.
+The original pre-online null guard still applies. The old fixture above records
+the earlier typed composition, not validation of the new constructor signature.
+Current construction, ownership, failure boundaries and validation are recorded
+in `docs/GAME_INPUT_RUNTIME.md` and `reports/game_input_runtime.json`.

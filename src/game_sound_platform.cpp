@@ -1,9 +1,8 @@
 #include "bsp/game_sound_platform.hpp"
 
 namespace bsp::game {
-GameSoundLoadEvents::GameSoundLoadEvents(Win32PlatformState& platform,
-    PlatformCursorGlobals globals, PlatformCursorHost& cursor, XLiveLibrary& xlive) noexcept
-    : platform_(platform), globals_(globals), cursor_(cursor), xlive_(xlive) {}
+GameSoundLoadEvents::GameSoundLoadEvents(GameSoundCursorCalls& cursor, XLiveLibrary& xlive) noexcept
+    : cursor_(cursor), xlive_(xlive) {}
 
 bool GameSoundLoadEvents::pretranslate(MSG& message) {
     ++pretranslation_calls_;
@@ -11,6 +10,6 @@ bool GameSoundLoadEvents::pretranslate(MSG& message) {
 }
 void GameSoundLoadEvents::update_cursor_focus_00becb20(bool loading) {
     ++focus_calls_;
-    update_platform_cursor_focus_00becb20(platform_, loading, globals_, cursor_);
+    cursor_.update_cursor_focus_00becb20(loading);
 }
 } // namespace bsp::game
