@@ -67,6 +67,7 @@
 #include "bsp/scene_property_bag_merge.hpp"
 #include "bsp/scene_record_map.hpp"
 #include "bsp/entity_think_dispatch.hpp"
+#include "bsp/unit_damage.hpp"
 #include <algorithm>
 #include <cmath>
 #include <memory>
@@ -2136,6 +2137,36 @@ int main() {
             "005D5500 offers TimeLimit_IC in Island Capture and TimeLimit in mode 4, "
             "and PlayerCount and GameMode publish in every mode");
     }
+
+    {
+        // 00879070 at 008790D8..0087911F: a partial invincibility is a floor on
+        // health, not a flag. A quarter-invincible unit at full health takes a
+        // damage clamped to the headroom and stops exactly at the floor, and the
+        // next call is refused. docs/UNIT_DAMAGE_AND_DEATH.md.
+        bsp::UnitHealth health;
+        health.max_health = 1000.0f;
+        health.current_health = 1000.0f;
+        health.invincibility = 0.25f;
+        const bsp::UnitDamageGates gates;
+
+        const bsp::UnitDamageOutcome first = bsp::apply_damage_00879070(health, gates, 900.0f);
+        health.current_health = first.new_health;
+        const bsp::UnitDamageOutcome second = bsp::apply_damage_00879070(health, gates, 1.0f);
+        check(!first.refused && first.clamped_amount == 750.0f && first.new_health == 250.0f
+                  && second.refused,
+            "00879070 clamps damage to current - invincibility * max and then refuses");
+
+        bsp::UnitHealth mortal;
+        mortal.max_health = 1000.0f;
+        mortal.current_health = 40.0f;
+        mortal.invincibility = 0.0f;
+        const bsp::UnitDamageOutcome lethal = bsp::apply_damage_00879070(mortal, gates, 40.0f);
+        mortal.current_health = lethal.new_health;
+        check(!lethal.refused && bsp::unit_is_dead(mortal)
+                  && bsp::apply_damage_00879070(mortal, gates, 10.0f).refused,
+            "00958DAA treats exactly zero health as dead and 008790C1 refuses further damage");
+    }
+
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
     return failures ? 1 : 0;

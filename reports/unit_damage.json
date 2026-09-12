@@ -1,0 +1,917 @@
+{
+  "packet": "cc2_unit_damage",
+  "worktree": "agent/cc2-unit-damage",
+  "ghidra": "read-only",
+  "names_are_hypotheses": true,
+  "doc": "docs/UNIT_DAMAGE_AND_DEATH.md",
+  "subject": "How a unit takes damage and dies: the six mission Lua bindings AddDamage/Kill/Sink/SetInvincible/IsInvincible/ExplodeToParts, the entity health pair at +36Ch/+370h, the invincibility floor at +150h, and the two pending queues that end in the on-killed dispatch at 0092751F.",
+  "headline": {
+    "was": "No document covered how a unit takes damage or dies; the on-killed slot 00CE6290+80h (00928C80) had no known dispatcher.",
+    "is": "Health is the float pair max +36Ch / current +370h on the entity. Damage flows AddDamage binding 0088E000 -> vtable +1ACh (unit 0095DA00) -> 0087D730 -> 00879070 (the rule) -> 00877B90 (the clamped setter) -> vtable +1B0h (ship 00827A90) -> 00958A30, which calls vtable +70h (Destroy) when a root unit's health reaches 0. Destroy 00926C80 queues the entity on the std::list at 00F899A8 and Kill 00926D90 queues it on the one at 00F899B4; BSP_EntityEventQueues_FlushPending 009273A0 drains the first through vtable +74h and the second through vtable +80h at 0092751F, which is the only on-killed dispatch.",
+    "evidence": "0087626 0 is float GetHealthFraction = [this+370h]/[this+36Ch], RET 0, and is 00CFC3D0+110h. 00958DB7-00958DBE: MOV EAX,[ESI] / MOV EDX,[EAX+70h] / PUSH 1 / CALL EDX on the [ESI+71Ch]==0 branch. 00927515-0092751F: MOV EDX,[ESI] / MOV EAX,[EDX+80h] / MOV ECX,ESI / CALL EAX, inside body 009273A0-009275D1, over the container built from 00F899B4 at 009273E4."
+  },
+  "corrections": [
+    {
+      "doc": "include/bsp/lua_binding_entity_lookup.hpp",
+      "was": "kEntityFlagUnreadGate = 0x60, 'required zero, meaning unread'.",
+      "is": "+60h is the entity's destroyed flag: 00926C80 returns at once when it is already 1, sets it to 1, and only then fills +70h and recurses. +5Fh is the matching killed flag set by 00926D90. Neither name is changed here; the header constant keeps its name and this report records the meaning.",
+      "evidence": "00926C80 decompiles to `if (*(char *)(param_1 + 0x60) == '\\0') { *(undefined1 *)(param_1 + 0x60) = 1; ... }`; 00926D90 to the same shape on +5Fh."
+    }
+  ],
+  "calls": [
+    {
+      "routine": "0088e000",
+      "step": "AddDamage: read the entity handle from Lua argument 0",
+      "address": "0088e0ff",
+      "native": "00888aa0",
+      "this": "LuaObject argument 0",
+      "args": "none",
+      "ret": "entity or 0",
+      "gate": "none"
+    },
+    {
+      "routine": "0095da00",
+      "step": "is this unit the local player's role",
+      "address": "0095da2d",
+      "native": "00927f30",
+      "this": "-",
+      "args": "0 (RET 4)",
+      "ret": "bool",
+      "gate": "session mode [00E188A8+1FE4h] == 0"
+    },
+    {
+      "routine": "0095da00",
+      "step": "global config singleton for the difficulty tables",
+      "address": "0095da51",
+      "native": "00432650",
+      "this": "-",
+      "args": "none",
+      "ret": "config",
+      "gate": "local player role only"
+    },
+    {
+      "routine": "0095da00",
+      "step": "vector range check throw",
+      "address": "0095da6e",
+      "native": "00bf6713",
+      "this": "-",
+      "args": "none",
+      "ret": "no return",
+      "gate": "index out of range"
+    },
+    {
+      "routine": "0095da00",
+      "step": "apply the player-scaled amount",
+      "address": "0095da8d",
+      "native": "0087d730",
+      "this": "entity (EBX)",
+      "args": "float amount",
+      "ret": "void",
+      "gate": "none"
+    },
+    {
+      "routine": "0087d730",
+      "step": "global config singleton for the second difficulty table",
+      "address": "0087d768",
+      "native": "00432650",
+      "this": "-",
+      "args": "none",
+      "ret": "config",
+      "gate": "campaign mode, or the entity is the current player's unit"
+    },
+    {
+      "routine": "0087d730",
+      "step": "vector range check throw",
+      "address": "0087d785",
+      "native": "00bf6713",
+      "this": "-",
+      "args": "none",
+      "ret": "no return",
+      "gate": "index out of range"
+    },
+    {
+      "routine": "0087d730",
+      "step": "apply the twice-scaled amount",
+      "address": "0087d7a3",
+      "native": "00879070",
+      "this": "entity",
+      "args": "float amount",
+      "ret": "void",
+      "gate": "none"
+    },
+    {
+      "routine": "00879070",
+      "step": "write the new health",
+      "address": "0087914b",
+      "native": "00877b90",
+      "this": "entity (ESI)",
+      "args": "float current - amount",
+      "ret": "void",
+      "gate": "none"
+    },
+    {
+      "routine": "00879070",
+      "step": "assign the literal 'damage' or 'repair' into a native string",
+      "address": "0087919a",
+      "native": "0041e870",
+      "this": "stack string",
+      "args": "const char*",
+      "ret": "string",
+      "gate": "telemetry flag 00F8A0C4 non-zero and the health changed"
+    },
+    {
+      "routine": "00879070",
+      "step": "telemetry record with the old and new health fractions",
+      "address": "008791eb",
+      "native": "00986b00",
+      "this": "stack record",
+      "args": "entity, out, old/36Ch, new/36Ch",
+      "ret": "void",
+      "gate": "same"
+    },
+    {
+      "routine": "00879070",
+      "step": "sized storage pool release of the telemetry string",
+      "address": "0087920b",
+      "native": "00419cc0",
+      "this": "-",
+      "args": "block, size+1, 1 (cdecl)",
+      "ret": "pool",
+      "gate": "same"
+    },
+    {
+      "routine": "00877b90",
+      "step": "health fraction for the network byte",
+      "address": "00877c53",
+      "native": "00923be0",
+      "this": "entity (ESI)",
+      "args": "none",
+      "ret": "float 0..1 in ST0",
+      "gate": "session mode == 1 (host)"
+    },
+    {
+      "routine": "00877b90",
+      "step": "float to int of fraction * 256.0",
+      "address": "00877c5e",
+      "native": "00bf7420",
+      "this": "-",
+      "args": "ST0",
+      "ret": "int",
+      "gate": "same"
+    },
+    {
+      "routine": "00877b90",
+      "step": "build the health session message",
+      "address": "00877c8a",
+      "native": "00876d30",
+      "this": "stack message",
+      "args": "health byte",
+      "ret": "message",
+      "gate": "the byte at +374h changed"
+    },
+    {
+      "routine": "00877b90",
+      "step": "route the health message",
+      "address": "00877c9e",
+      "native": "0077c2a0",
+      "this": "entity (ESI)",
+      "args": "message, 4, 0",
+      "ret": "void",
+      "gate": "same"
+    },
+    {
+      "routine": "00827a90",
+      "step": "local reaction to the health change",
+      "address": "00827aab",
+      "native": "00958a30",
+      "this": "entity",
+      "args": "none",
+      "ret": "void",
+      "gate": "none, runs before the health test"
+    },
+    {
+      "routine": "00827a90",
+      "step": "session message base constructor, id 9Ah",
+      "address": "00827ae5",
+      "native": "0075b430",
+      "this": "stack message",
+      "args": "9Ah",
+      "ret": "message",
+      "gate": "health <= 0 and class descriptor +B0h < 0.0"
+    },
+    {
+      "routine": "00827a90",
+      "step": "world/session availability test A",
+      "address": "00827b1a",
+      "native": "0092bea0",
+      "this": "-",
+      "args": "none",
+      "ret": "int",
+      "gate": "health <= 0 and class descriptor +B0h >= 0.0"
+    },
+    {
+      "routine": "00827a90",
+      "step": "world/session availability test B",
+      "address": "00827b29",
+      "native": "0092be90",
+      "this": "-",
+      "args": "none",
+      "ret": "int",
+      "gate": "A non-zero"
+    },
+    {
+      "routine": "00827a90",
+      "step": "tuning record for the breakup probability",
+      "address": "00827b33",
+      "native": "00424c40",
+      "this": "-",
+      "args": "none",
+      "ret": "record",
+      "gate": "B non-zero"
+    },
+    {
+      "routine": "00827a90",
+      "step": "uniform random in [0,1)",
+      "address": "00827b4d",
+      "native": "00bd2f10",
+      "this": "-",
+      "args": "0, 1.0f",
+      "ret": "float10",
+      "gate": "same"
+    },
+    {
+      "routine": "00827a90",
+      "step": "build the breakup message",
+      "address": "00827b63",
+      "native": "00761310",
+      "this": "stack message",
+      "args": "unread",
+      "ret": "message",
+      "gate": "roll < [record+65Ch]"
+    },
+    {
+      "routine": "00827a90",
+      "step": "route the death message on channel 7",
+      "address": "00827b77",
+      "native": "0077c2a0",
+      "this": "entity",
+      "args": "message, 7, 0",
+      "ret": "void",
+      "gate": "either branch"
+    },
+    {
+      "routine": "00926c80",
+      "step": "entity lock owner",
+      "address": "00926c9c",
+      "native": "009248d0",
+      "this": "-",
+      "args": "none",
+      "ret": "lock holder",
+      "gate": "none"
+    },
+    {
+      "routine": "00926c80",
+      "step": "list node allocation for the pending-destroy list 00F899A8",
+      "address": "00926d4e",
+      "native": "00924b10",
+      "this": "-",
+      "args": "list, head, &entity",
+      "ret": "node",
+      "gate": "the destroyed flag +60h was 0"
+    },
+    {
+      "routine": "00926d90",
+      "step": "entity lock owner",
+      "address": "00926dbe",
+      "native": "009248d0",
+      "this": "-",
+      "args": "none",
+      "ret": "lock holder",
+      "gate": "none"
+    },
+    {
+      "routine": "00926d90",
+      "step": "kill every child entity with the same cause",
+      "address": "00926e19",
+      "native": "00926d90",
+      "this": "child (+48h list, +44h next)",
+      "args": "int cause",
+      "ret": "void",
+      "gate": "the killed flag +5Fh was 0"
+    },
+    {
+      "routine": "00926d90",
+      "step": "list node allocation for the pending-kill list 00F899B4",
+      "address": "00926e40",
+      "native": "00924b10",
+      "this": "-",
+      "args": "list, head, &entity",
+      "ret": "node",
+      "gate": "same"
+    },
+    {
+      "routine": "007ed380",
+      "step": "kill member i of the fixed array at +3D0h",
+      "address": "007ed3a3",
+      "native": "00926d90",
+      "this": "[this+3D0h+i*4]",
+      "args": "int cause (EBX)",
+      "ret": "void",
+      "gate": "i from [this+3CCh]-1 down to 0"
+    },
+    {
+      "routine": "00742210",
+      "step": "kill each non-null member of the vector [+398h,+39Ch)",
+      "address": "00742275",
+      "native": "00926d90",
+      "this": "*it",
+      "args": "int cause 1 or 2",
+      "ret": "void",
+      "gate": "*it != 0"
+    },
+    {
+      "routine": "00935c70",
+      "step": "detach part i with a zero impulse",
+      "address": "00935d16",
+      "native": "00934150",
+      "this": "parts object",
+      "args": "index, &{0,0,0}",
+      "ret": "void",
+      "gate": "part health [+310h][i] > 0"
+    },
+    {
+      "routine": "008ac5c0",
+      "step": "Kill: group kill for class id 18h",
+      "address": "008ac732",
+      "native": "007ed380",
+      "this": "entity (EDI)",
+      "args": "int cause (ESI)",
+      "ret": "void",
+      "gate": "vtable[5Ch](18h)"
+    },
+    {
+      "routine": "008ac5c0",
+      "step": "Kill: group kill for class id 1Ah",
+      "address": "008ac74e",
+      "native": "00742210",
+      "this": "entity (EDI)",
+      "args": "bool (EAX)",
+      "ret": "void",
+      "gate": "vtable[5Ch](18h) false and vtable[5Ch](1Ah) true"
+    },
+    {
+      "routine": "008ac5c0",
+      "step": "Kill: plain entity kill",
+      "address": "008ac756",
+      "native": "00926d90",
+      "this": "entity (EDI)",
+      "args": "int cause (ESI)",
+      "ret": "void",
+      "gate": "neither class test"
+    },
+    {
+      "routine": "00891b20",
+      "step": "Sink: native sink with the computed pivot",
+      "address": "00891cfd",
+      "native": "008110f0",
+      "this": "entity",
+      "args": "const float pivot[3]",
+      "ret": "void",
+      "gate": "none"
+    },
+    {
+      "routine": "0088e1b0",
+      "step": "ExplodeToParts: fetch the breakable-parts object",
+      "address": "0088e2c8",
+      "native": "0080e490",
+      "this": "entity (ESI)",
+      "args": "none",
+      "ret": "[entity+1018h]",
+      "gate": "none"
+    },
+    {
+      "routine": "0088e1b0",
+      "step": "ExplodeToParts: detach every live part",
+      "address": "0088e2cf",
+      "native": "00935c70",
+      "this": "parts object (EAX)",
+      "args": "none",
+      "ret": "void",
+      "gate": "none"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "site": "0088e15b",
+      "through": "[entity vtable+1ACh]",
+      "meaning": "AddDamage on the entity; the unit implementation is 00CFC3D0+1ACh = 0095DA00",
+      "routine": "0088e000"
+    },
+    {
+      "site": "00897c63",
+      "through": "[entity vtable+F4h]",
+      "meaning": "SetInvincible(float); 00CE6290+F4h and 00CFC3D0+F4h are both 0042ED80, so it is not overridden by the unit class",
+      "routine": "00897a50"
+    },
+    {
+      "site": "0042edb4",
+      "through": "[child vtable+F4h]",
+      "meaning": "0042ED80 recurses over the child list at +48h/+44h with the same value",
+      "routine": "0042ed80"
+    },
+    {
+      "site": "00877c40",
+      "through": "[entity vtable+1B0h]",
+      "meaning": "health-changed hook; the ship implementation is 00CFC3D0+1B0h = 00827A90",
+      "routine": "00877b90"
+    },
+    {
+      "site": "00958dbe",
+      "through": "[entity vtable+70h]",
+      "meaning": "Destroy(1) when a root unit's health reaches 0; base 00926C80, unit override 00CFC3D0+70h = 0077D1A0",
+      "routine": "00958a30"
+    },
+    {
+      "site": "00811111",
+      "through": "[entity vtable+70h]",
+      "meaning": "Destroy(1) from the sink path",
+      "routine": "008110f0"
+    },
+    {
+      "site": "00811135",
+      "through": "[[entity+740h] vtable+10h]",
+      "meaning": "release of the object at +740h before it is nulled",
+      "routine": "008110f0"
+    },
+    {
+      "site": "00926d0e",
+      "through": "[child vtable+78h]",
+      "meaning": "per-child predicate before recursing Destroy",
+      "routine": "00926c80"
+    },
+    {
+      "site": "00926d2a",
+      "through": "[child vtable+70h]",
+      "meaning": "Destroy(1) on each child that passed the predicate",
+      "routine": "00926c80"
+    },
+    {
+      "site": "00926e05",
+      "through": "[entity vtable+70h]",
+      "meaning": "Kill calls Destroy(1) first when the destroyed flag +60h is still 0",
+      "routine": "00926d90"
+    },
+    {
+      "site": "0092747f",
+      "through": "[entity vtable+74h]",
+      "meaning": "the pending-destroy dispatch, over the container copied from 00F899A8 at 009273D6",
+      "routine": "009273a0"
+    },
+    {
+      "site": "0092751f",
+      "through": "[entity vtable+80h]",
+      "meaning": "the on-killed dispatch, over the container copied from 00F899B4 at 009273E4; base 00928C80, unit adjustor 00951FB0, player override 00779AF0. ECX = entity, no stack argument",
+      "routine": "009273a0"
+    },
+    {
+      "site": "00923bf7",
+      "through": "[entity vtable+110h]",
+      "meaning": "health fraction; the unit implementation is 00CFC3D0+110h = 00876260 = [this+370h]/[this+36Ch]",
+      "routine": "00923be0"
+    },
+    {
+      "site": "008ac729",
+      "through": "[entity vtable+5Ch]",
+      "meaning": "class-id test, called with 18h then 1Ah to pick the Kill implementation",
+      "routine": "008ac5c0"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "0077d1a0",
+      "inclusive_end": "0077d26a",
+      "enclosing_candidate": "0077ce60",
+      "state": "read in full from the raw bytes with capstone; __thiscall(this, int recurse), RET 4, tail at 0077D268"
+    },
+    {
+      "address": "00876260",
+      "inclusive_end": "00876274",
+      "enclosing_candidate": "008761e0",
+      "state": "read in full from the raw bytes with capstone; __thiscall float(this), RET 0"
+    },
+    {
+      "address": "0042b130",
+      "inclusive_end": "0042b130",
+      "enclosing_candidate": "none",
+      "state": "not read; only its address as the base 00CE6290+1ACh is recorded"
+    },
+    {
+      "address": "0042b140",
+      "inclusive_end": "0042b140",
+      "enclosing_candidate": "none",
+      "state": "not read; only its address as the base 00CE6290+1B0h is recorded"
+    }
+  ],
+  "routines": [
+    {
+      "address": "0088e000",
+      "name": "BSP_LuaBinding_AddDamage",
+      "abi": "__fastcall(lua_State*), returns the Lua result count",
+      "body": "0088e000-0088e1a3",
+      "coverage": "complete"
+    },
+    {
+      "address": "008ac5c0",
+      "name": "BSP_LuaBinding_Kill",
+      "abi": "__fastcall(lua_State*), returns the Lua result count",
+      "body": "008ac5c0-008ac7a5",
+      "coverage": "complete"
+    },
+    {
+      "address": "00891b20",
+      "name": "BSP_LuaBinding_Sink",
+      "abi": "__fastcall(lua_State*), returns the Lua result count",
+      "body": "00891b20-00891d4b",
+      "coverage": "complete"
+    },
+    {
+      "address": "00897a50",
+      "name": "BSP_LuaBinding_SetInvincible",
+      "abi": "__fastcall(lua_State*), returns the Lua result count",
+      "body": "00897a50-00897cae",
+      "coverage": "complete"
+    },
+    {
+      "address": "00897cb0",
+      "name": "BSP_LuaBinding_IsInvincible",
+      "abi": "__fastcall(lua_State*), returns the Lua result count",
+      "body": "00897cb0-00897e30",
+      "coverage": "complete"
+    },
+    {
+      "address": "0088e1b0",
+      "name": "BSP_LuaBinding_ExplodeToParts",
+      "abi": "__fastcall(lua_State*), returns the Lua result count",
+      "body": "0088e1b0-0088e31a",
+      "coverage": "complete"
+    },
+    {
+      "address": "0095da00",
+      "name": "BSP_UnitInstance_AddDamage",
+      "abi": "__thiscall(entity, float amount), RET 4",
+      "body": "0095da00-0095da95",
+      "coverage": "complete"
+    },
+    {
+      "address": "0087d730",
+      "name": "BSP_UnitInstance_ScaleDamageForPlayerUnit",
+      "abi": "__thiscall(entity, float amount), RET 4",
+      "body": "0087d730-0087d7ac",
+      "coverage": "complete"
+    },
+    {
+      "address": "00879070",
+      "name": "BSP_UnitInstance_ApplyDamage",
+      "abi": "__thiscall(entity, float amount), RET 4",
+      "body": "00879070-0087923e",
+      "coverage": "complete for the damage rule; the telemetry record 00986B00 is a contract"
+    },
+    {
+      "address": "00877b90",
+      "name": "BSP_UnitInstance_SetHealth",
+      "abi": "__thiscall(entity, float health), RET 4",
+      "body": "00877b90-00877cc8",
+      "coverage": "complete; 00876D30 and 0077C2A0 are contracts"
+    },
+    {
+      "address": "00827a90",
+      "name": "BSP_ShipInstance_OnHealthChanged",
+      "abi": "__fastcall(entity), RET 0",
+      "body": "00827a90-00827b8b",
+      "coverage": "complete for the branch structure; 00761310, 0092BEA0, 0092BE90 and 00424C40 are contracts"
+    },
+    {
+      "address": "00958a30",
+      "name": "BSP_UnitInstance_ReactToHealthChange",
+      "abi": "__fastcall(entity), RET 0",
+      "body": "00958a30-00958dcf",
+      "coverage": "partial: the root-unit branch 00958DA7-00958DCF is read in full; the subobject branch 00958A58-00958DA6 is summarised only"
+    },
+    {
+      "address": "0042ed80",
+      "name": "BSP_MissionEntity_SetInvincible",
+      "abi": "__thiscall(entity, float fraction), RET 4",
+      "body": "0042ed80-0042edc1",
+      "coverage": "complete"
+    },
+    {
+      "address": "008110f0",
+      "name": "BSP_UnitInstance_Sink",
+      "abi": "__thiscall(entity, const float pivot[3]), RET 4",
+      "body": "008110f0-00811144",
+      "coverage": "complete"
+    },
+    {
+      "address": "00926c80",
+      "name": "BSP_MissionEntity_Destroy",
+      "abi": "__thiscall(entity, int recurse), RET 4",
+      "body": "00926c80-00926d8c",
+      "coverage": "complete"
+    },
+    {
+      "address": "00926d90",
+      "name": "BSP_MissionEntity_Kill",
+      "abi": "__thiscall(entity, int cause), RET 4",
+      "body": "00926d90-00926e7d",
+      "coverage": "complete"
+    },
+    {
+      "address": "0077d1a0",
+      "name": "BSP_UnitInstance_DestroyAndBroadcast",
+      "abi": "__thiscall(entity, int recurse), RET 4",
+      "body": "0077d1a0-0077d26a",
+      "coverage": "complete; 0077C7B0 and 0077C980 are contracts"
+    },
+    {
+      "address": "007ed380",
+      "name": "BSP_EntityGroup_KillMembersArray",
+      "abi": "__thiscall(group, int cause), RET 4",
+      "body": "007ed380-007ed3b7",
+      "coverage": "complete"
+    },
+    {
+      "address": "00742210",
+      "name": "BSP_EntityGroup_KillMembersVector",
+      "abi": "__thiscall(group, char flag), RET 4",
+      "body": "00742210-00742295",
+      "coverage": "complete"
+    },
+    {
+      "address": "00876260",
+      "name": "BSP_UnitInstance_GetHealthFraction",
+      "abi": "__thiscall float(entity), RET 0",
+      "body": "00876260-00876274",
+      "coverage": "complete"
+    },
+    {
+      "address": "00935c70",
+      "name": "BSP_UnitParts_DetachAllLiveParts",
+      "abi": "__fastcall(parts object), RET 0",
+      "body": "00935c70-00935d2b",
+      "coverage": "complete; 00934150 is a contract"
+    },
+    {
+      "address": "0080e490",
+      "name": "BSP_UnitInstance_GetPartsObject",
+      "abi": "__thiscall(entity), RET 0",
+      "body": "0080e490-0080e496",
+      "coverage": "complete"
+    }
+  ],
+  "layout": [
+    {
+      "offset": "+150h",
+      "type": "float",
+      "name": "invincibility fraction",
+      "writers": "0042ED80 at 0042ED8F",
+      "readers": "00879070 at 008790D0, 008110F0 at 008110F9, 00897CB0 at 00897DC6",
+      "meaning": "the fraction of maximum health that damage may not cross; 0 means not invincible"
+    },
+    {
+      "offset": "+2E8h",
+      "type": "int",
+      "name": "reset marker",
+      "writers": "00877B90 at 00877C20, value -1",
+      "readers": "none found in this packet",
+      "meaning": "set whenever the new health is above max - 1.0"
+    },
+    {
+      "offset": "+36Ch",
+      "type": "float",
+      "name": "maximum health",
+      "writers": "none found in this packet",
+      "readers": "00877B90 at 00877BD9 and 00877C0C, 00879070 at 008790F7, 00876260 at 00876267",
+      "meaning": "the clamp ceiling and the divisor of the health fraction"
+    },
+    {
+      "offset": "+370h",
+      "type": "float",
+      "name": "current health",
+      "writers": "00877B90 at 00877C04 only",
+      "readers": "00879070 at 008790B9 and 00879123, 00827A90 at 00827AB0, 00958A30 at 00958A58 and 00958DAA, 00876260 at 00876261",
+      "meaning": "hit points; <= 0 is dead"
+    },
+    {
+      "offset": "+374h",
+      "type": "int",
+      "name": "last replicated health byte",
+      "writers": "00877B90 at 00877C84",
+      "readers": "00877B90 at 00877C77",
+      "meaning": "clamp((int)(fraction * 256.0), 0, 255); a change sends the health message"
+    },
+    {
+      "offset": "+5Ch",
+      "type": "byte",
+      "name": "active (kEntityFlagActive)",
+      "writers": "009273A0 at 009274DA, cleared",
+      "readers": "docs/LUA_BINDING_ENTITY.md",
+      "meaning": "cleared in the pending-kill drain"
+    },
+    {
+      "offset": "+5Dh",
+      "type": "byte",
+      "name": "released (kEntityFlagReleased)",
+      "writers": "009273A0 at 009274CE",
+      "readers": "008110F0 at 008110F3, 00923BE0 at 00923BE4",
+      "meaning": "a released entity cannot be sunk and reports health fraction 0"
+    },
+    {
+      "offset": "+5Eh",
+      "type": "byte",
+      "name": "release requested (kEntityFlagReleaseRequested)",
+      "writers": "009273A0 at 009274D2",
+      "readers": "00879070 at 008790A1",
+      "meaning": "damage and repair are both refused once it is set"
+    },
+    {
+      "offset": "+5Fh",
+      "type": "byte",
+      "name": "killed flag",
+      "writers": "00926D90 at its +5Fh store, 009273A0 at 009274D6",
+      "readers": "00926D90",
+      "meaning": "makes Kill idempotent"
+    },
+    {
+      "offset": "+60h",
+      "type": "byte",
+      "name": "destroyed flag (kEntityFlagUnreadGate)",
+      "writers": "00926C80",
+      "readers": "00926C80, 00926D90",
+      "meaning": "makes Destroy idempotent and gates the Destroy call inside Kill"
+    },
+    {
+      "offset": "+70h",
+      "type": "int",
+      "name": "death cause",
+      "writers": "00926C80 (1 or the parent's value), 00926D90 (the Kill argument)",
+      "readers": "0077D1A0 at 0077D1DB, where it goes into the destroy message",
+      "meaning": "cause code; the Kill binding passes 1 or 2 and the value 7 is remapped to 2"
+    },
+    {
+      "offset": "+538h",
+      "type": "pointer",
+      "name": "vehicle class descriptor",
+      "writers": "docs/UNIT_INSTANCE_LAYOUT.md",
+      "readers": "00891B20 at 00891CAF, 00827A90 at 00827AC4",
+      "meaning": "+A0h and +A4h are the sink pivot half-extents, +B0h selects the death message branch"
+    },
+    {
+      "offset": "+71Ch",
+      "type": "pointer",
+      "name": "owning unit of a subobject",
+      "writers": "not found in this packet",
+      "readers": "0095DA00 at 0095DA03, 00958A30 at 00958A4B",
+      "meaning": "non-null on a damageable subobject, null on a root unit"
+    },
+    {
+      "offset": "+728h",
+      "type": "float",
+      "name": "subobject damage lockout",
+      "writers": "00958A30",
+      "readers": "0095DA00 at 0095DA0C",
+      "meaning": "a subobject with a positive value takes no damage"
+    },
+    {
+      "offset": "+1018h",
+      "type": "pointer",
+      "name": "breakable parts object",
+      "writers": "not found in this packet",
+      "readers": "0080E490",
+      "meaning": "holds the per-part health vector at +310h/+314h"
+    }
+  ],
+  "death_sequence": [
+    {
+      "order": 1,
+      "site": "0087914b",
+      "what": "00879070 computes current - amount and calls the setter"
+    },
+    {
+      "order": 2,
+      "site": "00877c04",
+      "what": "00877B90 clamps to [0, max] and stores +370h"
+    },
+    {
+      "order": 3,
+      "site": "00877c40",
+      "what": "00877B90 calls vtable+1B0h unless the session mode is 2"
+    },
+    {
+      "order": 4,
+      "site": "00827aab",
+      "what": "00827A90 calls 00958A30 before testing the health"
+    },
+    {
+      "order": 5,
+      "site": "00958dbe",
+      "what": "00958A30 sees +71Ch == 0 and health <= 0 and calls vtable+70h with 1"
+    },
+    {
+      "order": 6,
+      "site": "0077d243",
+      "what": "0077D1A0 broadcasts the destroy message and calls the base Destroy"
+    },
+    {
+      "order": 7,
+      "site": "00926d4e",
+      "what": "00926C80 sets +60h, fills +70h, recurses over the children and queues the entity on 00F899A8"
+    },
+    {
+      "order": 8,
+      "site": "00827b77",
+      "what": "back in 00827A90, the death session message (id 9Ah, or the breakup message) goes out on channel 7"
+    },
+    {
+      "order": 9,
+      "site": "0092747f",
+      "what": "on a later frame BSP_EntityEventQueues_FlushPending dispatches vtable+74h for every queued destroy"
+    },
+    {
+      "order": 10,
+      "site": "0092751f",
+      "what": "the same flush dispatches vtable+80h (on-killed) for every entity that Kill queued on 00F899B4"
+    }
+  ],
+  "open_questions": [
+    "Who writes +36Ch (maximum health) at spawn. No writer was found in this packet, so the ceiling's producer is unread.",
+    "Whether the damage-death path ever reaches vtable+80h. It calls Destroy, which queues on 00F899A8 and dispatches vtable+74h; only 00926D90 (the Lua Kill binding and the two group kills) queues on 00F899B4, which is the list the on-killed dispatch at 0092751F walks.",
+    "The Lua self table's Dead field still has no writer. 00928C80 sets Ptr to lightuserdata(0) and LastPosition and does not touch Dead; nothing on the destroy path does either.",
+    "The pivot vector 00891B20 computes for Sink is passed to 008110F0 and never read: the body is 85 bytes, RET 4, and no instruction touches [ESP+8].",
+    "AddDamage has no type, source or part argument. The binding reads exactly two Lua arguments and 0095DA00 is __thiscall(this, float), RET 4, so there is no armour or part model on this path.",
+    "0077D1A0's message id 4Eh and the two senders 0077C7B0 / 0077C980 were not followed.",
+    "00958A30's subobject branch (00958A58-00958DA6) drives the per-part destruction sequence through vtable+1B4h, +19Ch and +204h and was only summarised."
+  ],
+  "run_time_evidence": "none. The damage path is not reached by the frames the bsp_game.exe harness runs (no mission is loaded), so no run log supports these claims; every claim above is from the live listing.",
+  "build": "scripts/build.ps1, Win32 MSVC, warnings as errors",
+  "files": [
+    "docs/UNIT_DAMAGE_AND_DEATH.md",
+    "include/bsp/unit_damage.hpp",
+    "src/unit_damage.cpp",
+    "reports/unit_damage.json"
+  ],
+  "raw_listing_calls": {
+    "note": "0077D1A0 has no Ghidra function, so these rows carry site/callee instead of address/native and tools/verify_report_calls.py cannot check them. Read with capstone from the raw bytes.",
+    "rows": [
+      {
+        "routine": "0077d1a0",
+        "step": "session message base constructor, id 4Eh",
+        "this": "stack message",
+        "args": "4Eh",
+        "ret": "message",
+        "gate": "00E0AF20 set and session mode 0 or 1",
+        "site": "0077d1e4",
+        "callee": "0075b430"
+      },
+      {
+        "routine": "0077d1a0",
+        "step": "fill the destroy message from the entity",
+        "this": "entity (ESI)",
+        "args": "&message, 0",
+        "ret": "void",
+        "gate": "same",
+        "site": "0077d21e",
+        "callee": "0077c7b0"
+      },
+      {
+        "routine": "0077d1a0",
+        "step": "send the destroy message",
+        "this": "entity (ESI)",
+        "args": "0",
+        "ret": "void",
+        "gate": "same",
+        "site": "0077d236",
+        "callee": "0077c980"
+      },
+      {
+        "routine": "0077d1a0",
+        "step": "base Destroy",
+        "this": "entity (ESI)",
+        "args": "int recurse",
+        "ret": "void",
+        "gate": "none",
+        "site": "0077d243",
+        "callee": "00926c80"
+      },
+      {
+        "routine": "0077d1a0",
+        "step": "destroy telemetry",
+        "this": "-",
+        "args": "entity",
+        "ret": "void",
+        "gate": "telemetry flag 00F8A0C4 non-zero",
+        "site": "0077d253",
+        "callee": "00986480"
+      }
+    ]
+  }
+}
