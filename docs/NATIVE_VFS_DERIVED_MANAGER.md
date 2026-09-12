@@ -17,9 +17,9 @@ BEDA98 passes the captured result to BE0660 with ECX restored to the original
 owner. No extra manager or factory publication is created by this wrapper.
 
 Both contexts must use the application's same actual 01090AA0 publication.
-The string-pool adapter also needs this raw lifetime domain. Its bridge and the
-corresponding shutdown bindings are being composed separately; the source review
-and standalone compilation do not establish that runtime composition.
+The string-pool adapter now accepts this same raw lifetime domain, and the
+finite singleton deleter has explicit pool and physical-factory bindings. See
+docs/NATIVE_STRING_POOL_ACTUAL_DOMAIN.md for these adapter extensions.
 
 FuncInfo E02044 points to the preceding unwind map E0203C: state0 has previous
 state -1 and action CC74E0. That action loads ECX from EBP-10h and jumps to
@@ -41,7 +41,21 @@ word. An independent review checked five direct call rows and 37 physical input
 pins. Its sealed 59-file manifest is
 df6be41cb97361b86b8066a24c3f7e82062c91e6449cd68f9713d07a2cb2c41a.
 The integrated source passes the strict MSVC Win32 build and both existing
-CTests. A composed original/source fixture is pending in this report revision.
+CTests. Five composed native/source comparisons and two source-only unwind
+checks pass with 13,280 assertions, using the combined library. All 1,193 native
+body bytes remain unchanged (109 derived and 1,084 base). The fixture verifies
+the actual factory list and singleton vector, populated ownership cleanup,
+flags0/1/80000000/80000001, and one shared native lifetime domain.
+
+The new derived state0 check throws on physical-factory allocation only after
+the D68D04 write. Full BE1F60 cleanup unregisters VFS, clears all six heads and
+releases the locks; the caller still owns the allocation, and the canonical pool
+remains available to drain. The inherited base state9 failure is separate.
+These are C++ source unwind checks, not execution of the original FH3 handlers.
+
+VFS is explicitly deleted before raw singleton shutdown in the fixture.
+D68D04 remains unsupported by that finite dispatch; arbitrary whole-process
+shutdown and publication races are outside this validation.
 Game behavior remains unvalidated. See reports/native_vfs_derived_manager.json
 for the exact native spans, calls, source hashes and validation boundaries.
 

@@ -12,7 +12,7 @@
     "coordination_dir": "C:/Users/sqz269/.bsp"
   },
   "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
-  "status": "complete_actual_source_strict_Win32_build_and_existing_tests_checked_composition_pending",
+  "status": "complete_actual_source_strict_Win32_and_frozen_native_source_composition_checked",
   "routines": [
     {
       "entry": "00beda60",
@@ -201,7 +201,7 @@
     ],
     "unwind": "CC74E0 loads owner from EBP-10h and jumps to BE1F60. No owner free, publication rollback, or factory-registration rollback is added.",
     "deleting": "Always BE1F60, then CRT free only for bit0; return original owner even after free.",
-    "actual_domain_composition": "Requires raw singleton-manager publication shared by manager lifetime access, string pool and physical factory. A focused adapter extension is in progress; no runtime composition claim yet."
+    "actual_domain_composition": "Raw pool getter/storage overloads and finite pool/physical-factory shutdown bindings share the actual manager with VFS/log lifetime access and canonicalizer services. The fixture explicitly deletes VFS before the raw manager drain."
   },
   "validation": {
     "owned_native_bytes": 109,
@@ -214,9 +214,18 @@
     "standalone_strict_Win32_object_sha256": "95a6051ddb4001ba5a80e5ac5d38050957745cf80c85605e238be1ca5a2d0034",
     "core_build": "passed MSVC Win32 /W4 /WX /fp:strict",
     "existing_tests": "both existing CTests passed",
-    "native_source_composition": "pending",
+    "native_source_composition": "five normal native/source comparisons, two source-only unwind cases; 13280 checks passed",
     "build_log": "local/native-au-root-build.log",
-    "build_log_sha256": "0448f1a0878416d934c68619a606a316ab3edae2243afddf200bcf4199d4cc29"
+    "build_log_sha256": "0448f1a0878416d934c68619a606a316ab3edae2243afddf200bcf4199d4cc29",
+    "current_fixture": "local/native-au-current-derived/integrated01/summary.json",
+    "current_fixture_sha256": "cb94b2ee85ea5cc95d287dbcafd42b6a1c7d7b1314419ed954d0860a711845b0",
+    "current_library_sha256": "2971e393d2f7270e6e72e4a7054afec7a69fbe5bb06c2e0e91c51394ccc82b5b",
+    "current_fixture_native_body_bytes": 1193,
+    "own_native_body_bytes": 109,
+    "current_linked_objects": 131,
+    "current_preexecution_pins": 529,
+    "all_postexecution_pins_unchanged": true,
+    "source_only_derived_failure": "8-byte physical factory allocation throws after D68D04. BE1F60 cleans members/unregisters VFS, locks release, caller-owned allocation retained and canonical pool drains."
   },
   "corrections": [
     {
@@ -228,7 +237,9 @@
   "uncertainty": [
     "Descriptive source interfaces are not drop-in original ABI/FH3/SEH replacements.",
     "Native FH3/SEH execution, simultaneous cleanup failures and game behavior remain unvalidated.",
-    "Constructor caller allocator failure policy remains the caller contract; no new null-owner behavior is introduced."
+    "Constructor caller allocator failure policy remains the caller contract; no new null-owner behavior is introduced.",
+    "D68D04 is not supported by raw singleton finite deletion dispatch; fixture explicitly deletes VFS first.",
+    "Original raw pool getter and raw singleton destructor are source dependencies here; their original instructions are not differentially executed in this composition."
   ],
   "listing_repair": {
     "report": "reports/native_au_flow_repair.json",
