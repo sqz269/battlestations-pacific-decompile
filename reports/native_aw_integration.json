@@ -1,0 +1,310 @@
+{
+  "packet": "orch2_native_vfs_mount_composition_aw",
+  "generated_utc": "2026-09-12T22:26:28.445054+00:00",
+  "validated_source_commit": "04ff2710ea2ef9f1d42d3569884db32eca8d06ce",
+  "worker_commits": {
+    "selector": "008eeaec",
+    "records": "9a0a0ab756b32472c7af5545d9a21ffb19818852",
+    "insertion": "2b10579d925ea18d76c799cd2955217fdb3fc04e"
+  },
+  "reconstruction": {
+    "complete_functions": 11,
+    "owned_native_bytes": 1761,
+    "functions": [
+      {
+        "address": "00bdb040",
+        "bytes": 85,
+        "source": "src/native_vfs_factory_selection.cpp",
+        "report": "reports/native_vfs_factory_selection.json"
+      },
+      {
+        "address": "00584110",
+        "bytes": 86,
+        "source": "src/native_vfs_mount_records.cpp",
+        "report": "reports/native_vfs_mount_records.json"
+      },
+      {
+        "address": "00bdce40",
+        "bytes": 92,
+        "source": "src/native_vfs_mount_records.cpp",
+        "report": "reports/native_vfs_mount_records.json"
+      },
+      {
+        "address": "00bdcfc0",
+        "bytes": 93,
+        "source": "src/native_vfs_mount_records.cpp",
+        "report": "reports/native_vfs_mount_records.json"
+      },
+      {
+        "address": "00bdeec0",
+        "bytes": 132,
+        "source": "src/native_vfs_mount_records.cpp",
+        "report": "reports/native_vfs_mount_records.json"
+      },
+      {
+        "address": "00be1330",
+        "bytes": 107,
+        "source": "src/native_vfs_mount_insert.cpp",
+        "report": "reports/native_vfs_mount_insert.json"
+      },
+      {
+        "address": "00be0dd0",
+        "bytes": 492,
+        "source": "src/native_vfs_mount_insert.cpp",
+        "report": "reports/native_vfs_mount_insert.json"
+      },
+      {
+        "address": "00be05c0",
+        "bytes": 126,
+        "source": "src/native_vfs_mount_insert.cpp",
+        "report": "reports/native_vfs_mount_insert.json"
+      },
+      {
+        "address": "00bdee60",
+        "bytes": 92,
+        "source": "src/native_vfs_mount_insert.cpp",
+        "report": "reports/native_vfs_mount_insert.json"
+      },
+      {
+        "address": "00be1740",
+        "bytes": 329,
+        "source": "src/native_vfs_mount_registration.cpp",
+        "report": "reports/native_vfs_mount_registration.json"
+      },
+      {
+        "address": "00be1890",
+        "bytes": 127,
+        "source": "src/native_vfs_mount_registration.cpp",
+        "report": "reports/native_vfs_mount_registration.json"
+      }
+    ],
+    "catch_fragments": [
+      {
+        "address": "00be063e",
+        "bytes": 21,
+        "source": "src/native_vfs_mount_insert.cpp",
+        "report": "reports/native_vfs_mount_insert.json"
+      }
+    ],
+    "catch_fragment_bytes": 21,
+    "additional_native_routines_for_runtime_bindings_or_checker": 0
+  },
+  "build": {
+    "strict_msvc_win32": "passed",
+    "existing_ctests": 2,
+    "log": "local/native-aw-integrated-build01.log",
+    "core_sha256": "164b27c8f6406e12c6546362a36ba3937b2bbb6a8bb3ee0a8c42c64dbe37c8ed"
+  },
+  "fixtures": {
+    "selector": {
+      "attempt": "local/native-aw-worker-deliveries/selector/lab/integrated01",
+      "before_sha256": "2afb986e9b70044c51d7e02341bcb21b83e8a428747125fd6e8d829c6732acda",
+      "after_sha256": "6ee45eab0c148ba3db6da57c54ba166546785765d40097dcdfe879b9166765a6",
+      "library_sha256": "164b27c8f6406e12c6546362a36ba3937b2bbb6a8bb3ee0a8c42c64dbe37c8ed",
+      "physical_inputs": 119,
+      "linked_objects": 28,
+      "scope": {
+        "recorded_states": 5,
+        "recorded_checks": 67
+      }
+    },
+    "insertion": {
+      "attempt": "local/native-aw-worker-deliveries/insertion/lab/integrated01",
+      "before_sha256": "149bf71765557e6ed49ffbf37271bcf34817191b54ba654ebf74faef0098766e",
+      "after_sha256": "ccf7071214c24d45c6bddc1e40a37fe165eae282a111894c26d527c2dfcdc116",
+      "library_sha256": "164b27c8f6406e12c6546362a36ba3937b2bbb6a8bb3ee0a8c42c64dbe37c8ed",
+      "physical_inputs": 1072,
+      "linked_objects": 8,
+      "scope": {
+        "recorded_states": 29,
+        "recorded_checks": 281,
+        "source_only_scope": "allocation/copy failures and length errors"
+      }
+    },
+    "records": {
+      "attempt": "local/native-aw-worker-deliveries/records/lab/integrated01",
+      "before_sha256": "4685652839a5ff98dea5ead54bb18190664545047be6de232f2efb6fff320613",
+      "after_sha256": "0259a3ec8f3c9daf5fd3186d34e19856239a12f95e639f6e38d11414f2ad85bb",
+      "library_sha256": "164b27c8f6406e12c6546362a36ba3937b2bbb6a8bb3ee0a8c42c64dbe37c8ed",
+      "physical_inputs": 519,
+      "linked_objects": 120,
+      "scope": {
+        "recorded_states": 9,
+        "recorded_checks": 711,
+        "source_only_unwind_cases": 1
+      }
+    },
+    "mount": {
+      "attempt": "local/native-aw-worker-deliveries/mount_final/lab/attempt05",
+      "before_sha256": "e552d631cfa95331b5c0149631ad659a497de1eefbc54e5cb079b8ced194bd4c",
+      "after_sha256": "2f269417eb16f15364b285bddffb908ea3f292c38c60e0a62c2f518934932160",
+      "library_sha256": "164b27c8f6406e12c6546362a36ba3937b2bbb6a8bb3ee0a8c42c64dbe37c8ed",
+      "physical_inputs": 629,
+      "linked_objects": 156,
+      "scope": {
+        "recorded_comparisons": 3,
+        "recorded_binary_pairs": 3,
+        "source_only_checks": 2,
+        "source_only_result_files": 1,
+        "recorded_checks": 7866
+      }
+    }
+  },
+  "native_source_comparisons": 46,
+  "assertions": 8925,
+  "source_only_coverage": [
+    "Insertion raw allocation/string-copy failures and length-error branches.",
+    "BDEEC0 consumed-argument construction failure cleanup.",
+    "BE1740 first wrapper return-getter failure after insertion; mount/provider remain, lower-state strings released.",
+    "Concrete FileStore/physical factory and manager provider deletion bindings; auxiliary semantic lifetime stays unmaterialized."
+  ],
+  "mount_fixture_original_bytes": {
+    "captured_owned_and_existing_routines": 1735,
+    "actually_executed_routine_bytes": 1675,
+    "explanation": "Includes unchanged original BE1740/BE1890/BDB040, RET-only diagnostic and existing base/derived manager construction/destruction. Actual-source dependency bridges remain separate from original-body execution. Not added to reconstruction counts."
+  },
+  "mechanical_calls": {
+    "numeric_report_rows_checked": 63,
+    "failed": 0,
+    "indirect_rows_not_automatically_checked": 8,
+    "unique_indirect_sites": 6,
+    "log": "local/native-aw-all-calls01.log",
+    "indirect_evidence": "Captured slots/registers and actual table bytes inspected; source/native fixture dispatch and read-only reviews."
+  },
+  "reviews": {
+    "wrapper": {
+      "manifest": "local/native-aw-worker-deliveries/wrapper_review/lab/manifest.json",
+      "sha256": "d5acf0bffb0742f8ad1df43c3f1d9a3b0092a83a71463388b1e2f4d6897ccf62",
+      "accepted": true
+    },
+    "runtime": {
+      "manifest": "local/native-aw-worker-deliveries/runtime_review/lab/manifest.json",
+      "sha256": "c00c2ef94628537aa86be84eb4cc18be83bdfdc7e21dffd240fbcd95491506ba",
+      "accepted": true
+    },
+    "mount_fixture": {
+      "manifest": "local/native-aw-worker-deliveries/mount_review/lab/manifest.json",
+      "sha256": "1bcef5db2173d9184b0bf62ddd7c7a4b0612d8d59588b6db14a8fd4ae5be30c2",
+      "accepted": true,
+      "qualification": "Review covered unchanged attempt04 probe and native inputs. Attempt05 preserves probe/launcher bytes and adds explicit source-only output metadata; all-four gate validates05."
+    }
+  },
+  "promotion_gate": {
+    "status": "passed at source commit; rechecked immediately before final promotion",
+    "inputs": "local/native-aw-promotion-inputs.json",
+    "inputs_sha256": "30fdd92a7d4eca8c558e07c4c615379a81d0e87465343d9af0e4f3a8186f4734",
+    "source_proof": "local/native-aw-promotion-checks/20260912T222403361865Z-04ff2710.json",
+    "current_source_header_object_pins": 1306,
+    "unique_linked_objects": 158,
+    "frozen_files": 2378,
+    "validator_sha256": "e0dc890a951cb90d06b1bb7dcfaf9663f64dbe64102f711c65e7dd45da3de908",
+    "preparer_sha256": "c1692dafea15a1759969162f3621367a9c83a6d14e5ed443b6582f389be89f12",
+    "whole_library_hash_drift": "Informational for unrelated unlinked members; tested current objects must equal frozen and current archive members.",
+    "final_publication_audit": "local/native-aw-remote-publication.json"
+  },
+  "corrections": [
+    "Full BE063E catch restored under the Ghidra write lock; initial recreation alone and successful override/recreation both recorded.",
+    "Function entry is distinct from body minimum; _strchr entryBF86F0 and earlier return blockBF86E0 remain unchanged in Ghidra.",
+    "Mount04 execution passed but final manifest omitted a source-only output. Strict gate rejected it;05 changes driver metadata and records that result without adding a native pair."
+  ],
+  "preserved_attempts": {
+    "insertion01": "Incorrect fixture assertion about priority reload; source/native snapshots agreed. Immutable before corrected02.",
+    "mount01": "Preparation failure copying a page crossing PE sections; no successful fixture execution.",
+    "mount02": "Teardown expected original-owner unregistration while replacement was published; native uses current publication. Fixture teardown corrected, source unchanged.",
+    "mount03": "Passed; superseded by04 explicit pre-teardown failure observation.",
+    "mount04": "Passed execution; output-manifest omission caught by strict physical-file gate. Preserved before05 correction.",
+    "mount05": "Final fully accounted successful attempt; source/native probe and library unchanged."
+  },
+  "ghidra": {
+    "flow_report": "reports/native_aw_flow_repairs.json",
+    "reviewed_names": 12,
+    "annotations": "applied, saved, names/evidence/old comments verified;12exports force-refreshed",
+    "global_no_return_modified": false,
+    "annotation_log": "local/ghidra-annotations-20260912T222721Z.json",
+    "readback_proof": "local/native-aw-annotation-review-readback.json",
+    "readback_sha256": "0d849bf95e34899eaad94942bb41ef86dd7be902a54ebf856cacc9c191b20ed9"
+  },
+  "limits": [
+    "Reconstructed source and isolated fixtures are not a runnable-game or gameplay proof.",
+    "Original stack ABI/FH3/SEH and arbitrary compiler stack-spill aliases remain unvalidated.",
+    "Nested NativeStringStorage release is noexcept; simultaneous unwind failures remain outside the source contract.",
+    "Finite factory/selector/deletion targets; missing required borrowed contexts are explicit source errors.",
+    "Failure callback application installation, remaining factories, raw physical-stream-open and full application composition remain open.",
+    "Native repeated cached-provider mount hazards and stale factory cache are preserved; no invented ownership or rollback."
+  ],
+  "merged_head_validation": {
+    "validated_merged_head": "2df89bcedb479bdfc928bbd19e795aeee0575a80",
+    "merged_main_commit": "fa74f3e9",
+    "reason": "The first promotion build passed, but its gate rejected changed insertion fixture header pins after concurrent main was merged. No fast-forward occurred. Only the affected insertion family was replayed into a fresh immutable attempt.",
+    "changed_sealed_headers": [
+      "include/bsp/native_particle_emission_state.hpp",
+      "include/bsp/native_particle_type_property.hpp",
+      "include/bsp/native_point_light_owner.hpp"
+    ],
+    "strict_win32_build": "passed",
+    "existing_ctests": 2,
+    "build_and_rejection_log": "local/native-aw-promotion.log",
+    "core_sha256": "5552d8097328874329f5984879795a66243797106d83cbfa1a53732b470bed0a",
+    "insertion_replay": {
+      "attempt": "local/native-aw-worker-deliveries/insertion/lab/integrated02",
+      "family": "mount_insert_aw",
+      "physical_inputs": 1078,
+      "linked_objects": 8,
+      "before_sha256": "489532d966ecdd13942142eb4fd46c346596c2a7d2b4cb1c6eef7f69eddccadd",
+      "after_sha256": "1ef6a0664fac65d23f5ac3df123a3b07c629511126f587146778f52a86d65fc5",
+      "recorded_states": 29,
+      "recorded_checks": 281,
+      "source_only_scope": "allocation/copy failures and length errors",
+      "library_sha256": "5552d8097328874329f5984879795a66243797106d83cbfa1a53732b470bed0a"
+    },
+    "replay_log": "local/native-aw-insertion-integrated02.log",
+    "unreplayed_families": "Selector, records and mounted manager retain their original execution evidence. The gate verified that their tested source, headers and linked object bytes still match the merged checkout and current archive members.",
+    "promotion_gate": {
+      "status": "passed at the recorded merged head; checked again before publication",
+      "inputs": "local/native-aw-promotion-inputs02.json",
+      "inputs_sha256": "a0ae785c7322cbdac9b4d8d4d4c242ddba1ba09b9170011e57a60599af879dfc",
+      "proof": "local/native-aw-promotion-checks/20260912T223313582482Z-2df89bce.json",
+      "current_source_header_object_pins": 1312,
+      "unique_linked_objects": 158,
+      "frozen_files": 2384,
+      "final_publication_audit": "local/native-aw-remote-publication.json"
+    },
+    "original_source_validation_preserved": true,
+    "new_native_source_comparisons_added": 0,
+    "limits": "Replay supersedes the insertion evidence for the merged checkout; it adds no reconstructed routines or new fixture cases. Gameplay and binary replacement remain unvalidated."
+  },
+  "additional_merged_replays_aw": [
+    {
+      "validated_merged_head": "42909f1cdbc488741037953583d326b14efde3bd",
+      "merged_main_commit": "cea0edb9",
+      "strict_win32_build": "passed",
+      "existing_ctests": 2,
+      "build_and_rejection_log": "local/native-aw-promotion02.log",
+      "reason": "The second promotion merged newer main. Twenty sealed insertion headers changed; the gate stopped before fast-forward. The insertion family alone was replayed; all other tested pins and linked objects remained equal.",
+      "insertion_replay": {
+        "attempt": "local/native-aw-worker-deliveries/insertion/lab/integrated03",
+        "family": "mount_insert_aw",
+        "physical_inputs": 1094,
+        "linked_objects": 8,
+        "before_sha256": "e744c9f139d99fa3bfe91fe237c98ebea0748d0dfe23c98bf764f865fedbf6c6",
+        "after_sha256": "c0121e30321b845baec5d95e2fbeafd8be1dda9df1093634049c7e5ab9f2f353",
+        "recorded_states": 29,
+        "recorded_checks": 281,
+        "source_only_scope": "allocation/copy failures and length errors"
+      },
+      "core_sha256": "81c07cb5f02a17424a92399db844a345f2dd2cf959f22f994d5c90ca9db33dc5",
+      "replay_log": "local/native-aw-insertion-integrated03.log",
+      "promotion_gate": {
+        "inputs": "local/native-aw-promotion-inputs03.json",
+        "inputs_sha256": "c0a73859cc6c9e82258b4dbaa9a0f062e792ae614371ef0d5ee75f0c588c9246",
+        "proof": "local/native-aw-promotion-checks/20260912T224159760009Z-42909f1c.json",
+        "current_source_header_object_pins": 1327,
+        "unique_linked_objects": 158,
+        "frozen_files": 2400,
+        "final_publication_audit": "local/native-aw-remote-publication.json"
+      },
+      "original_source_and_first_merged_validation_preserved": true,
+      "new_native_source_comparisons_added": 0
+    }
+  ]
+}

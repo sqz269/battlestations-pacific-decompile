@@ -95,6 +95,17 @@ whole step in one substep. Two consequences for `docs/RIGID_BODY_INTEGRATION.md`
 | `004DDB90` world block `004DE13E..004DE1DB` | reconstructed | partial: the rest of the game constructor is not this packet's |
 | `00C5C540` | the schedule re-read to settle the budget's type | as in `docs/RIGID_BODY_INTEGRATION.md`, plus the correction below |
 
+## Correction from docs/DYN_WORLD_RUNTIME.md (2026-09-12)
+
+The original `00C41AD0` ends with `RET 8` at `00C420D9`, so its two-stack-argument
+ABI is `__stdcall`, correcting the earlier `__cdecl` hypothesis above. The new
+`dyn_world_storage_construct_00c41ad0` covers the complete normal fresh successful-
+allocation storage sequence, including all three pools, scene, four task vectors
+and the late shared motion. Its four original-byte fixtures matched 118 owned
+buffers. The existing settings projection remains partial; the new full storage
+interface still requires initialized engine/dispatch/task owners and does not
+claim native exception ABI, task execution or game physics validation.
+
 ## Corrections
 
 **To `docs/RIGID_BODY_INTEGRATION.md`, "`world+00h` itself is not established".** It is

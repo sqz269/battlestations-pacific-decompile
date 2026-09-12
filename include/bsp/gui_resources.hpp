@@ -3,6 +3,7 @@
 // Original ABI: ECX = manager, no stack arguments, RET. New C++ API only.
 // Names are hypotheses; evidence and ownership limits: docs/GUI_RESOURCE_OWNER.md.
 #include <cstdint>
+#include <array>
 #include <functional>
 #include <optional>
 #include <string>
@@ -33,7 +34,17 @@ struct GuiResourceCallbacks {
     std::function<void(GuiLayoutWidget&, bool)> set_visibility;
 };
 
+// One canonical manager pointer-field owner. Disengaged values record native
+// storage that has not yet been produced; zero is not a substitute preimage.
+struct GuiManagerPointerFields {
+    std::uint8_t enabled_48{};
+    std::optional<std::array<float, 2>> position_5c;
+    std::optional<std::array<float, 2>> delta_64;
+    GuiLayoutWidget* exclusive_page_6c{};
+};
+
 struct GuiResourceState {
+    GuiManagerPointerFields pointer;
     GuiResourceTexture white_gui{};        // manager +28h; raw assignment
     GuiResourceTexture transparent{};      // +2Ch; old reference released on replace
     GuiLayoutPage* mouse_page{nullptr};    // +4Ch; borrowed from page registry
@@ -71,6 +82,7 @@ public:
     // Missing callback contracts are rejected by the constructor before work.
     void initialize_00aa5e20();
     const GuiResourceState& state() const noexcept { return state_; }
+    GuiManagerPointerFields& pointer_fields() noexcept { return state_.pointer; }
     bool initialization_completed() const noexcept { return initialized_; }
     GuiPageRegistry& pages() noexcept { return registry_; }
 

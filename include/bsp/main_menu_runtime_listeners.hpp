@@ -3,8 +3,15 @@
 #include "bsp/main_menu_selection_listener.hpp"
 #include "bsp/main_menu_tactical_library.hpp"
 #include "bsp/main_menu_vehicle_unlock.hpp"
+#include "bsp/main_menu_activation_runtime.hpp"
 
 namespace bsp {
+struct MainMenuObjectiveRowsBindings;
+// C8/CC alias the selection listener; D0/D4 borrow their existing globals.
+MainMenuActivationBindings make_main_menu_activation_bindings(
+    MainMenuSelectionListenerBindings&, MainMenuActivationServices&,
+    MainMenuTacticalLibraryBindings&, volatile std::uint32_t& selected_00e194d0,
+    volatile std::uint32_t& selected_00e194d4);
 // Actual implementations of established command services. The remaining
 // page/profile/checkpoint/transform/prompt methods stay abstract until their
 // real providers are supplied; this class never supplies successful defaults.
@@ -20,11 +27,23 @@ public:
     void call_005885d0() override;
     void call_005886c0() override;
     void tactical_selection_fields(const MissionRecordData&, std::int32_t side, bool flag) override;
+    // Late binding closes the screen/service construction cycle. The binding
+    // must outlive this association and cannot be replaced during a callback.
+    void bind_activation(MainMenuActivationBindings&);
+    void unbind_activation(MainMenuActivationBindings&);
+    void call_00598b60(GuiWidgetOwner*, GuiWidgetOwner&) override;
+    void bind_objective_rows(MainMenuObjectiveRowsBindings&);
+    void unbind_objective_rows(MainMenuObjectiveRowsBindings&);
+    void call_00594bf0() override;
 private:
     GuiWidgetOwnerRuntime& owners_;
     MainMenuVehicleUnlockStorage& game_;
     NativeStringStorage& strings_;
     MainMenuTacticalLibraryBindings& tactical_;
+    MainMenuActivationBindings* activation_{};
+    std::uint32_t active_activation_calls_{};
+    MainMenuObjectiveRowsBindings* objective_rows_{};
+    std::uint32_t active_objective_calls_{};
 };
 
 // Two native subobjects, one canonical screen binding: CEFC04 at+40 supplies

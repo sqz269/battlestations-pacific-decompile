@@ -1,0 +1,298 @@
+{
+  "packet": "orch6_dyn_world_runtime_f",
+  "owner": "agent/orch6-20260912",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/dyn_world_runtime.cpp",
+  "documentation": "docs/DYN_WORLD_RUNTIME.md",
+  "status": "Reconstructed normal fresh successful-allocation world storage; Win32 build and 2 CTests passed; four original-byte differential cases and 118 owned buffers matched.",
+  "abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {
+      "address": "00c41ad0",
+      "body_end_inclusive": "00c420db",
+      "implementation": "dyn_world_storage_construct_00c41ad0",
+      "proposed_name": "Dyn_World_Construct",
+      "name_provisional": true,
+      "original_abi": "stack world*, descriptor*; EAX world*; RET8 at00C420D9, therefore __stdcall (corrects earlier __cdecl hypothesis).",
+      "coverage": "Complete normal-path storage sequence with explicit initialized engine, dispatch objects, allocator and task vtables; new C++ boundary excludes native SEH/OOM/destructor ABI.",
+      "unresolved_success_path_ranges": []
+    }
+  ],
+  "no_ghidra_function": [],
+  "native_calls": [
+    {
+      "address": "00c41b4d",
+      "native": "00409170",
+      "function": "00c41ad0",
+      "contract": "Existing body pool constructor; called for world+4C and +170."
+    },
+    {
+      "address": "00c41b5f",
+      "native": "00409170",
+      "function": "00c41ad0",
+      "contract": "Existing body pool constructor; called for world+4C and +170."
+    },
+    {
+      "address": "00c41b70",
+      "native": "00409450",
+      "function": "00c41ad0",
+      "contract": "Existing motion pool constructor for world+294."
+    },
+    {
+      "address": "00c41bf2",
+      "native": "00bf681b",
+      "function": "00c41ad0",
+      "contract": "Native operator new: scene storage size E8h."
+    },
+    {
+      "address": "00c41c09",
+      "native": "00c38070",
+      "function": "00c41ad0",
+      "contract": "Complete scene constructor; separate scene report verifies its own calls and owned buffers."
+    },
+    {
+      "address": "00c41c5d",
+      "native": "00bf55be",
+      "function": "00c41ad0",
+      "contract": "Native allocation helper for task arrays/pointer arrays or inlined pool growth."
+    },
+    {
+      "address": "00c41cd8",
+      "native": "00bf6989",
+      "function": "00c41ad0",
+      "contract": "Native free helper; old-buffer branches are unreachable for fresh zero-count construction."
+    },
+    {
+      "address": "00c41d40",
+      "native": "00bf55be",
+      "function": "00c41ad0",
+      "contract": "Native allocation helper for task arrays/pointer arrays or inlined pool growth."
+    },
+    {
+      "address": "00c41d7e",
+      "native": "00bf6989",
+      "function": "00c41ad0",
+      "contract": "Native free helper; old-buffer branches are unreachable for fresh zero-count construction."
+    },
+    {
+      "address": "00c41df1",
+      "native": "00bf55be",
+      "function": "00c41ad0",
+      "contract": "Native allocation helper for task arrays/pointer arrays or inlined pool growth."
+    },
+    {
+      "address": "00c41e6b",
+      "native": "00bf6989",
+      "function": "00c41ad0",
+      "contract": "Native free helper; old-buffer branches are unreachable for fresh zero-count construction."
+    },
+    {
+      "address": "00c41ed2",
+      "native": "00bf55be",
+      "function": "00c41ad0",
+      "contract": "Native allocation helper for task arrays/pointer arrays or inlined pool growth."
+    },
+    {
+      "address": "00c41f10",
+      "native": "00bf6989",
+      "function": "00c41ad0",
+      "contract": "Native free helper; old-buffer branches are unreachable for fresh zero-count construction."
+    },
+    {
+      "address": "00c41fb6",
+      "native": "00bf9f1a",
+      "function": "00c41ad0",
+      "contract": "Existing CRT assert boundary for native shared-motion pool invariant; not a fabricated physics call."
+    },
+    {
+      "address": "00c42008",
+      "native": "00bf55be",
+      "function": "00c41ad0",
+      "contract": "Native allocation helper for task arrays/pointer arrays or inlined pool growth."
+    },
+    {
+      "address": "00c42048",
+      "native": "00bf6989",
+      "function": "00c41ad0",
+      "contract": "Native free helper; old-buffer branches are unreachable for fresh zero-count construction."
+    },
+    {
+      "address": "00c420bd",
+      "native": "00bf79f0",
+      "function": "00c41ad0",
+      "contract": "CRT memset of exactly C0h bytes in the shared motion allocated from the C8h pool."
+    }
+  ],
+  "descriptor_copies": {
+    "total": 15,
+    "x87_fld_fstp": 8,
+    "raw_dword": 7,
+    "x87_source_to_world": [
+      [
+        "00",
+        "00"
+      ],
+      [
+        "28",
+        "14"
+      ],
+      [
+        "2C",
+        "18"
+      ],
+      [
+        "30",
+        "1C"
+      ],
+      [
+        "34",
+        "20"
+      ],
+      [
+        "3C",
+        "28"
+      ],
+      [
+        "14",
+        "3C"
+      ],
+      [
+        "18",
+        "40"
+      ]
+    ],
+    "raw_source_to_world": [
+      [
+        "04",
+        "04"
+      ],
+      [
+        "08",
+        "08"
+      ],
+      [
+        "0C",
+        "0C"
+      ],
+      [
+        "20",
+        "10"
+      ],
+      [
+        "10",
+        "34"
+      ],
+      [
+        "24",
+        "38"
+      ],
+      [
+        "1C",
+        "44"
+      ]
+    ],
+    "gravity": "descriptor+04/08/0C uses raw MOV words, including signaling NaN bits; x87 fields use actual Win32 FLD/FSTP instructions."
+  },
+  "storage_sequence": [
+    "Fifteen descriptor copies; body pools at4C/170; motion pool at294.",
+    "Zero438/43C/440/44C/450/454; self link448; zero four vector triples45C..488.",
+    "Allocate E8h scene, fully construct with world, store scene pointer444.",
+    "Capture engine global0109E9FC; zero world48/2C/24; read engine+10 manager+4.",
+    "Resize LCP tasks45C and pointers468; reread engine/count; resize LCP2 tasks474 and pointers480.",
+    "For world460 entries, publish each task world+8 and corresponding pointer vector entry.",
+    "Allocate shared motion from world294 at native00C41FA4..00C420C5; zero C0h bytes; return world with RET8."
+  ],
+  "task_tables": {
+    "00d7a080": "one callable slot00BF698E",
+    "00d7a088": "one callable slot00403720",
+    "00d7a090": "one callable slot00403850",
+    "adjacent_words": "D7A084/08C/094 are next-class RTTI COL pointers, not extra task methods; fixture relocates only the three callable slots."
+  },
+  "verification": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "log": "local/orch6_world_first_build_f.log",
+      "win32_release": "passed",
+      "existing_ctests": "2/2 passed",
+      "base_commit": "12d8cf473bcfe6f60d383a38a4c1b6de7817956b",
+      "uncommitted_cpp": "The listed source hashes identify the root world changes already present in this build."
+    },
+    "native_code_bytes": {
+      "address": "00c41ad0",
+      "length": 1548,
+      "matches": true,
+      "sha256": "91c473adbd0f168c4b0158d33b2dd7d8a41e632ec3a6b3e83134bb48f5b0d5f9"
+    },
+    "native_fixture": {
+      "command": "./local/build_dyn_world_probe_f.ps1",
+      "log": "local/orch6_world_native_probe_f.log",
+      "generator": "local/make_dyn_world_probe_f.py",
+      "source": "local/dyn_world_probe_f.cpp",
+      "cases": 4,
+      "owned_buffers_compared": 118,
+      "worker_counts": [
+        0,
+        1,
+        4,
+        64
+      ],
+      "paired_x87_control_words": [
+        "027F",
+        "0C7F",
+        "0A7F",
+        "077F"
+      ],
+      "paired_x87_status": [
+        "0000",
+        "0003",
+        "0003",
+        "0002"
+      ],
+      "descriptor_variants": "finite, signed zero, subnormal, infinities, quiet/signaling NaNs; four paired cases, not a Cartesian sweep.",
+      "compared": "EAX world return, all48Ch world bytes, every owned allocation byte after pointer normalization, x87 exception flags and TOP mask383F.",
+      "native_execution": "Original00C41AD0 calls original pools, scene and actual late shared-motion tail; original GeneralConvex initialization00C48FD0 also executes.",
+      "borrowed_projection": "Engine14h/thread-manager358h fixture storage initializes only actual engine+10 and manager+4 inputs; original engine/thread startup does not execute.",
+      "normalization": "World and allocator identities normalized; task/vtable/dispatch pointers normalized. Only OS-dependent manifold DebugInfo pointer at allocation121+1D8 is excluded; all other critical-section fields and untouched bytes compared.",
+      "cleanup": "Fixture Enter/LeaveCriticalSection and disposal, not original world/scene destruction; zero tracked allocations remaining.",
+      "records_sha256": "95a22368cff0536cacc8f568611d43e4022320d3f2110c1d4d171abbffa008ce",
+      "reproduced_after_one_slot_vtable_correction": true
+    },
+    "independent_review": "Separate read-only agent checked descriptor instruction schedule, RET8, untouched world30/458, task order, two engine reads, shared-motion tail and normalization; no constructor blocker. Corrected fixture RTTI relocation.",
+    "call_rows": {
+      "checked": 17,
+      "failed": 0,
+      "log": "local/orch6_world_calls_f.log"
+    },
+    "ghidra": {
+      "applied_and_saved": true,
+      "old_values": "local/ghidra-annotations-20260912T222424Z.json",
+      "log": "local/orch6_world_scene_unit_annotations_f.log",
+      "refreshed_exports": "local/orch6_world_scene_unit_exports_f.log"
+    }
+  },
+  "artifact_sha256": {
+    "src/dyn_world_runtime.cpp": "e4ab60cdd8ed206c82c77eaf44f383de90f868826388d11fb5ea5ca6d97c8399",
+    "include/bsp/dyn_world_runtime.hpp": "fe53091179272be0d15c1e69a80174d69f9c9e5199a5bc61329be0490ba18a19",
+    "src/dyn_body_creation.cpp": "e915e3325ceca411c14df2424129c7e82bebf6bc272921205e62d43744d4c93c",
+    "include/bsp/dyn_body_creation.hpp": "771890801179db08b6ec963a2145cb05c4346da8f79d402514770aae2210535b",
+    "src/dyn_scene_runtime.cpp": "6efa488d22e05beb310164dd2633e102caab5b07c4ba96b6c7030333beeec32a",
+    "include/bsp/dyn_scene_runtime.hpp": "55bbd6bda1cbdde923b48381c85998db05f4db9ce96e60d9f964c2d2b6be378c",
+    "local/make_dyn_world_probe_f.py": "f653f4bb2ee3c13a03677aa4733e3ffd17b5e40d0469902f707061f91f9c6aa9",
+    "local/dyn_world_probe_f.cpp": "f50981c06d2cd2b8040f318eb38505409307dc7a1a5b3320b90f7842fca8492e",
+    "local/build_dyn_world_probe_f.ps1": "198b0de857dd688acfbad5ae672405ca3382132422acd4bc4170d77bf7186136",
+    "local/dyn_scene_probe.cpp": "515278ea0a22fe8f08f11d469f24fc5f75b11b23bd1fed8ad6f970d18882e5dc",
+    "local/dyn_scene_native_image.bin": "86f0f456d654ba64cf421f073ba2aa95d7dbef99fa324b42c7e29a6ad3f1728e",
+    "local/dyn_world_native_records_f.bin": "95a22368cff0536cacc8f568611d43e4022320d3f2110c1d4d171abbffa008ce",
+    "local/dyn_world_rebuilt_records_f.bin": "95a22368cff0536cacc8f568611d43e4022320d3f2110c1d4d171abbffa008ce"
+  },
+  "limitations": [
+    "New C++ interfaces are not binary drop-in replacements; native exception and out-of-memory behavior is not reproduced.",
+    "Requires fresh disjoint descriptor/world storage and successful allocations, with initialized real engine/dispatch/task owners supplied by the runtime.",
+    "Four fixed count/FPU cases do not exercise changes between the two count reads; a shrinking second count is rejected at the C++ boundary because the native link loop would overrun.",
+    "Fresh constructor does not exercise old-task copying or late pool-growth branches; those listing branches are represented but not claimed fixture-tested.",
+    "No task execution, full engine startup, collision stepping, native destruction or whole-game physics validation.",
+    "The installed mission run in this batch validates the separate unit-kind binding; this full world constructor is not bound into that runtime yet."
+  ]
+}

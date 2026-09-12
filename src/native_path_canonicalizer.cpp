@@ -50,7 +50,11 @@ NativePathCanonicalizerRuntimeServices::NativePathCanonicalizerRuntimeServices(
     NativeStringPoolStorage* volatile& publication,
     volatile std::uint32_t& disabled, SingletonLifetimeDomain& lifetime,
     Lowercase lower) noexcept
-    : publication_(publication), returns_disabled_(disabled), lifetime_(lifetime), lower_(lower) {}
+    : publication_(publication), returns_disabled_(disabled), lifetime_(&lifetime), lower_(lower) {}
+NativePathCanonicalizerRuntimeServices::NativePathCanonicalizerRuntimeServices(
+    NativeStringPoolStorage* volatile& publication,
+    volatile std::uint32_t& disabled, void* volatile& actual_manager, Lowercase lower) noexcept
+    : publication_(publication), returns_disabled_(disabled), actual_manager_(&actual_manager), lower_(lower) {}
 void* NativePathCanonicalizerRuntimeServices::allocate_scratch_00bf55be(std::uint32_t bytes) {
     return singleton_lifetime_allocate({SingletonAllocationKind::object, bytes, bytes});
 }
@@ -61,7 +65,9 @@ void NativePathCanonicalizerRuntimeServices::free_scratch_00bf65ac(void* value) 
     singleton_lifetime_free(value);
 }
 NativeStringPoolStorage* NativePathCanonicalizerRuntimeServices::string_pool_00419cc0() {
-    return native_string_pool_get_or_create_00419cc0(publication_, lifetime_);
+    if(actual_manager_)
+        return native_string_pool_get_or_create_00419cc0(publication_, *actual_manager_);
+    return native_string_pool_get_or_create_00419cc0(publication_, *lifetime_);
 }
 void NativePathCanonicalizerRuntimeServices::return_string_00bd1510(
     NativeStringPoolStorage* pool, void* block, std::uint32_t bytes,

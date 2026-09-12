@@ -1,0 +1,481 @@
+{
+  "packet": "native_vfs_mount_insert_aw",
+  "generated_utc": "2026-09-12T21:59:10.799592+00:00",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program_path": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ghidra_mutations": "none; read-only worker. Primary will repair BE063E tail after lease release and perform locked annotation/export.",
+  "functions": [
+    {
+      "label": "insert",
+      "entry": "00be1330",
+      "end_inclusive": "00be139a",
+      "bytes": 107,
+      "sha256": "1bf48a301d14e17f3f10320b5f39638b1d80d29b24608078cf84f1e91124767e",
+      "live_equal_disk": true,
+      "name": "insert_native_vfs_mount_record_00be1330",
+      "proposed_name": "BSP_VFS_InsertMountDescendingPriority",
+      "previous_name": "BSP_VFS_InsertMountDescendingPriority",
+      "original_abi": "ECX tree; stack output/record; EAX output; RET8",
+      "coverage": "complete_logical_body_in_stated_source_domain",
+      "source": "src/native_vfs_mount_insert.cpp",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "link",
+      "entry": "00be0dd0",
+      "end_inclusive": "00be0fbb",
+      "bytes": 492,
+      "sha256": "ae8a1b3fd9702f3568041c9cf5bfaed03a5a44495359a0e41666b2b392485b72",
+      "live_equal_disk": true,
+      "name": "link_native_vfs_mount_node_00be0dd0",
+      "proposed_name": "BSP_VfsMountTree_LinkAndRebalance",
+      "previous_name": "FUN_00be0dd0",
+      "original_abi": "ECX tree; stack output/left-byte/parent/record; EAX output; RET10",
+      "coverage": "complete_logical_body_in_stated_source_domain",
+      "source": "src/native_vfs_mount_insert.cpp",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "allocate",
+      "entry": "00be05c0",
+      "end_inclusive": "00be063d",
+      "bytes": 126,
+      "sha256": "73db55c71abdcd7f24ef6417b711b3a3e8933d43b7f6288e420d944921a98188",
+      "live_equal_disk": true,
+      "name": "allocate_native_vfs_mount_node_00be05c0",
+      "proposed_name": "BSP_VfsMountTree_AllocateRecordNode",
+      "previous_name": "FUN_00be05c0",
+      "original_abi": "No consumed ECX; stack left/parent/right/record/color-byte; EAX node; RET14",
+      "coverage": "complete_logical_body_in_stated_source_domain",
+      "source": "src/native_vfs_mount_insert.cpp",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "record",
+      "entry": "00bdee60",
+      "end_inclusive": "00bdeebb",
+      "bytes": 92,
+      "sha256": "1a863371c9005f22a29d3afdfbf931d020aca07f06f31c8c927a4a1937648fcb",
+      "live_equal_disk": true,
+      "name": "copy_native_vfs_mount_record_00bdee60",
+      "proposed_name": "BSP_VfsMountRecord_CopyForNode",
+      "previous_name": "FUN_00bdee60",
+      "original_abi": "ECX destination; stack source; EAX captured destination; RET4",
+      "coverage": "complete_logical_body_in_stated_source_domain",
+      "source": "src/native_vfs_mount_insert.cpp",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "fragments": [
+    {
+      "label": "catch",
+      "entry": "00be063e",
+      "end_inclusive": "00be0652",
+      "bytes": 21,
+      "sha256": "9f0f1bb281b4a954facb176fc165f8f1134a452830878ee00a8127c63706d8d8",
+      "live_equal_disk": true,
+      "name": "allocate_native_vfs_mount_node_00be05c0_catch",
+      "proposed_name": "Catch_All@00be063e",
+      "previous_name": "Catch_All@00be063e",
+      "original_abi": "Captured allocation EBP-14; cdecl free then stdcall rethrow(0,0); no normal return",
+      "coverage": "complete_logical_body_in_stated_source_domain",
+      "source": "src/native_vfs_mount_insert.cpp",
+      "abi_compatible": false,
+      "game_validated": false,
+      "source_function": "allocate_native_vfs_mount_node_00be05c0"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00be137a",
+      "native": "00be0dd0",
+      "function": "00be1330"
+    },
+    {
+      "address": "00be0e13",
+      "native": "00408720",
+      "function": "00be0dd0"
+    },
+    {
+      "address": "00be0e25",
+      "native": "00411700",
+      "function": "00be0dd0"
+    },
+    {
+      "address": "00be0e3c",
+      "native": "00bf6885",
+      "function": "00be0dd0"
+    },
+    {
+      "address": "00be0e54",
+      "native": "00be05c0",
+      "function": "00be0dd0"
+    },
+    {
+      "address": "00be0ee5",
+      "native": "00bda0e0",
+      "function": "00be0dd0"
+    },
+    {
+      "address": "00be0f03",
+      "native": "00bd9530",
+      "function": "00be0dd0"
+    },
+    {
+      "address": "00be0f31",
+      "native": "00bd9530",
+      "function": "00be0dd0"
+    },
+    {
+      "address": "00be05e3",
+      "native": "00bf681b",
+      "function": "00be05c0"
+    },
+    {
+      "address": "00be061a",
+      "native": "00bdee60",
+      "function": "00be05c0"
+    },
+    {
+      "address": "00bdee8b",
+      "native": "0041dd40",
+      "function": "00bdee60"
+    },
+    {
+      "address": "00bdeea0",
+      "native": "00bf7680",
+      "function": "00bdee60"
+    },
+    {
+      "address": "00be0642",
+      "native": "00bf65ac",
+      "function": "00be063e"
+    },
+    {
+      "address": "00be064e",
+      "native": "00bf6885",
+      "function": "00be063e"
+    },
+    {
+      "address": "00be1802",
+      "native": "00be1330",
+      "function": "00be1740",
+      "contract": "ECX captured manager EDI+3C; record pushBE17F4, output pushBE17F9; RET8"
+    },
+    {
+      "address": "00cc6708",
+      "native": "00401130",
+      "function": "00cc6700",
+      "contract": "Captured allocation words EBP-14/-18; cdecl ADD ESP8; exact RET-only placement cleanup"
+    },
+    {
+      "address": "00cc6783",
+      "native": "004072d0",
+      "function": "00cc6780",
+      "kind": "tail_jump",
+      "contract": "ECX completed diagnostic at EBP-50"
+    }
+  ],
+  "eh_support": [
+    {
+      "label": "allocation_funcinfo",
+      "entry": "00e00d50",
+      "end_inclusive": "00e00d73",
+      "bytes": 36,
+      "sha256": "8e7e2a44fdaf210133f65158730045a2602901c5ddb44109cd7b85e234e9656e",
+      "live_equal_disk": true
+    },
+    {
+      "label": "allocation_maps",
+      "entry": "00e00d14",
+      "end_inclusive": "00e00d4f",
+      "bytes": 60,
+      "sha256": "4ee01892a50784fbb4a8ba74681d5e62332c8c4da4ef936ca22a2418253bb9fd",
+      "live_equal_disk": true
+    },
+    {
+      "label": "allocation_handler",
+      "entry": "00cc6711",
+      "end_inclusive": "00cc671a",
+      "bytes": 10,
+      "sha256": "f20190433bb5d339bcf954b5971bdb9d5800be328c185d23a6b75fbb7dae6595",
+      "live_equal_disk": true
+    },
+    {
+      "label": "placement_cleanup",
+      "entry": "00cc6700",
+      "end_inclusive": "00cc6710",
+      "bytes": 17,
+      "sha256": "4d712bf68e4e35d1ad3a462a1fd2b1b3bc70b2be1bd1ecb709c994536bfd9e71",
+      "live_equal_disk": true
+    },
+    {
+      "label": "placement_delete",
+      "entry": "00401130",
+      "end_inclusive": "00401130",
+      "bytes": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "live_equal_disk": true
+    },
+    {
+      "label": "link_funcinfo",
+      "entry": "00e00e10",
+      "end_inclusive": "00e00e33",
+      "bytes": 36,
+      "sha256": "09f2962c8226bdcaeed6c40a3f131b34ce6152c63dc8be37c1561ba94d180a80",
+      "live_equal_disk": true
+    },
+    {
+      "label": "link_map",
+      "entry": "00e00e08",
+      "end_inclusive": "00e00e0f",
+      "bytes": 8,
+      "sha256": "95b79d3905c8f1e6bdead27d797cc8b8adeb5a11a04eb26254b363d274395040",
+      "live_equal_disk": true
+    },
+    {
+      "label": "link_handler",
+      "entry": "00cc6788",
+      "end_inclusive": "00cc6791",
+      "bytes": 10,
+      "sha256": "85cdbbcb10a894ca65fd1ccafa3bc74a46123f78821658e41ea3a3ea7926d196",
+      "live_equal_disk": true
+    },
+    {
+      "label": "length_cleanup",
+      "entry": "00cc6780",
+      "end_inclusive": "00cc6787",
+      "bytes": 8,
+      "sha256": "0979600bac67c8838288d04e0637e9b5891e656486122f2dfdf2915f652b8b64",
+      "live_equal_disk": true
+    },
+    {
+      "label": "length_literal",
+      "entry": "00ce47bc",
+      "end_inclusive": "00ce47ce",
+      "bytes": 19,
+      "sha256": "a9f39e3a871f83a52768ea6df66168ce9478998f7fc7cf6486325d19720d4201",
+      "live_equal_disk": true
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "00be0647",
+      "end": "00be0652",
+      "end_inclusive": "00be0652",
+      "logical_owner": "00be063e",
+      "bytes": 12,
+      "coverage": "complete raw catch continuation implemented in source try/catch",
+      "note": "ADD ESP4; push0,push0,CALL BF6885; integrator repair required"
+    },
+    {
+      "start": "00cc6711",
+      "end": "00cc671a",
+      "end_inclusive": "00cc671a",
+      "bytes": 10,
+      "coverage": "static EH metadata only; originalFH3 not reconstructed",
+      "note": "MOV EAX,E00D50; JMP BF6B43"
+    },
+    {
+      "start": "00cc6788",
+      "end": "00cc6791",
+      "end_inclusive": "00cc6791",
+      "bytes": 10,
+      "coverage": "static EH metadata only; originalFH3 not reconstructed",
+      "note": "MOV EAX,E00E10; JMP BF6B43"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "BE1330 only had a semantic vector-level insertion account",
+      "is": "actual24h red-black node allocation/copy, linking, fixup and12-byte result are reconstructed",
+      "evidence": "Four817-byte bodies plus21-byte catch;29 native/source fixture states"
+    },
+    {
+      "was": "A record copy could be assumed to reload all fields after string allocation",
+      "is": "priority is captured before allocation, while provider and flag independently reload afterward",
+      "evidence": "BDEE68 capture/store atBDEE73; resizeBDEE8B; providerBDEEA8 andflagBDEEAE; immutableattempt01 retained failed expectation andattempt02 correction"
+    },
+    {
+      "was": "Placement-construction unwind could imply a payload destructor",
+      "is": "CC6700 calls exactRET-only401130; BE063E frees raw allocation then rethrows",
+      "evidence": "E00D38 unwindmap/E00D24 tryMap/E00D14 catch record; rawcatch21 bytes"
+    },
+    {
+      "was": "BE063E saved body stops after free",
+      "is": "rawBE0647..BE0652 belongs to catch and contains mandatory rethrow",
+      "evidence": "handlerE00D20 pointsBE063E; live/diskbytesmatch; strictreportcheck intentionally retains failing raw CALL row until locked repair"
+    }
+  ],
+  "layout_evidence": [
+    "BDABF0 allocates24h, writes links0/4/8 and color20/nil21",
+    "BE1DC0 BE1E34..BE1E51 forms manager+3C sentinel, head+4/count+8",
+    "BDEE60 actual14h record priority0,length4,data8,providerC,flag10;padding11..13 untouched; matches independentBDCE40 producer"
+  ],
+  "behavior": [
+    "Signed captured-new > current-old comparison selectsleft; tiesright retainstableexisting-before-new order",
+    "BE0DD0 unsignedcount>=0CCCCCCB throws before allocation; currentcountincrementsafter allocation withDWORDwrap",
+    "Node allocation capturesheadonce forleft/right; postcallbackhead iscaptured separately; currentroot/extrema are reloaded as native",
+    "Link output nodebeforeowner; outeroutputowner,node,insertedbyte1; padding untouched",
+    "Recordselfalias zerosstring withoutold release; provider/flag merelycopied; noAddRef orproviderdestruction"
+  ],
+  "validation": {
+    "strict_win32_build": "local/mount_insert_aw/build01.log",
+    "ctests": "2/2 passed: reconstructed_math,native_math_differential",
+    "seeds": "local/mount_insert_aw/verify_seeds01.log",
+    "fixture": {
+      "exit_code": 0,
+      "all_preexecution_hashes_unchanged": true,
+      "files_rechecked": 1063,
+      "states": 29,
+      "checks": 281,
+      "manifest_sha256": "7490a19e3daceea59cccd8c54d2fe50bdf92902e11158800a56f800c923a9181",
+      "library_sha256": "3e24a1ea599b85ccb549bf27d7a29de5d66be95d19cc112bc80d6b33f36a7497",
+      "exe_sha256": "a68016b16c13545dc6c981944e6aff8eded38f9acd5db7506118e0766b0a9465",
+      "original_FH3_SEH_executed": false,
+      "attempt": "local/mount_insert_aw/attempt02",
+      "driver": "local/mount_insert_aw/run_fixture.py",
+      "preserved_failure": "local/mount_insert_aw/attempt01; onlywrongpriority-reload assertion failed after native/source snapshotsagreed"
+    },
+    "fixture_pin_layout": {
+      "before_manifest": "manifest_before.json",
+      "array_key": "linked_objects_verified_equal_to_current_and_archive_members",
+      "entry_keys": [
+        "library",
+        "object",
+        "object_sha256",
+        "source",
+        "source_sha256"
+      ],
+      "library": "bsp_core",
+      "files_map": "relative frozen file path -> SHA256"
+    },
+    "fixture_boundaries": [
+      "Only listed direct CALL displacement relocations; original fourbodies andcatch bytes preserved before relocation",
+      "Existing source stringresize/mountrotation dependencies; actual sourceCRT allocation/free andallocator imports observed fordirtynode/free evidence",
+      "Native catch/length-exception routes excluded; raw-allocation/string-copy exceptions andlength-error cases sourceonly",
+      "Currentheadmutation comparesbytes, does notpromise callback-mutated topology isvalid"
+    ],
+    "report_calls": {
+      "log": "local/mount_insert_aw/report_calls01.log",
+      "rows": 17,
+      "failed": 1,
+      "expected_failure": "00BE064E has no containing Ghidra function; primary-approved repair after lease release"
+    }
+  },
+  "remaining": [
+    "Primary locked BE063E tail repair through BE0652, export refresh and strict report-call verification",
+    "Lockedproposedannotations; preserveexistingBE1330name andcompilerCatch_All identity",
+    "OriginalCRT/FH3/SEH exceptionidentity, throwinglazypool release, arbitrary stackaliases, concurrentmutation, binaryreplacement andgameplay"
+  ],
+  "tool_problems": [
+    "Newworktree indexbuilt beforelookup",
+    "Oldresidentfixtureworktree no longer existed; authoredself-containedAWrelinkdriver",
+    "Attempt01 preservedimmutable withwrongtestpriorityexpectation; sourceunchanged forattempt02",
+    "Strictcallownership cannotpass BE064E until parent-approvedstoredbodyrepair afterlease release"
+  ],
+  "integration_aw": {
+    "source_commit": "04ff2710ea2ef9f1d42d3569884db32eca8d06ce",
+    "strict_win32_build": "passed",
+    "existing_ctests": 2,
+    "fixture": {
+      "attempt": "local/native-aw-worker-deliveries/insertion/lab/integrated01",
+      "before_sha256": "149bf71765557e6ed49ffbf37271bcf34817191b54ba654ebf74faef0098766e",
+      "after_sha256": "ccf7071214c24d45c6bddc1e40a37fe165eae282a111894c26d527c2dfcdc116",
+      "library_sha256": "164b27c8f6406e12c6546362a36ba3937b2bbb6a8bb3ee0a8c42c64dbe37c8ed",
+      "physical_inputs": 1072,
+      "linked_objects": 8,
+      "scope": {
+        "recorded_states": 29,
+        "recorded_checks": 281,
+        "source_only_scope": "allocation/copy failures and length errors"
+      }
+    },
+    "current_numeric_call_rows": 17,
+    "current_failed_call_rows": 0,
+    "historical_worker_evidence_preserved": true,
+    "aggregate_report": "reports/native_aw_integration.json",
+    "correction": "BE063E body now includes BE064E rethrow throughBE0652 after a locked local free override repair; all17 rows pass."
+  },
+  "merged_head_replay_aw": {
+    "validated_merged_head": "2df89bcedb479bdfc928bbd19e795aeee0575a80",
+    "merged_main_commit": "fa74f3e9",
+    "reason": "The first promotion build passed, but its gate rejected changed insertion fixture header pins after concurrent main was merged. No fast-forward occurred. Only the affected insertion family was replayed into a fresh immutable attempt.",
+    "changed_sealed_headers": [
+      "include/bsp/native_particle_emission_state.hpp",
+      "include/bsp/native_particle_type_property.hpp",
+      "include/bsp/native_point_light_owner.hpp"
+    ],
+    "strict_win32_build": "passed",
+    "existing_ctests": 2,
+    "build_and_rejection_log": "local/native-aw-promotion.log",
+    "core_sha256": "5552d8097328874329f5984879795a66243797106d83cbfa1a53732b470bed0a",
+    "insertion_replay": {
+      "attempt": "local/native-aw-worker-deliveries/insertion/lab/integrated02",
+      "family": "mount_insert_aw",
+      "physical_inputs": 1078,
+      "linked_objects": 8,
+      "before_sha256": "489532d966ecdd13942142eb4fd46c346596c2a7d2b4cb1c6eef7f69eddccadd",
+      "after_sha256": "1ef6a0664fac65d23f5ac3df123a3b07c629511126f587146778f52a86d65fc5",
+      "recorded_states": 29,
+      "recorded_checks": 281,
+      "source_only_scope": "allocation/copy failures and length errors",
+      "library_sha256": "5552d8097328874329f5984879795a66243797106d83cbfa1a53732b470bed0a"
+    },
+    "replay_log": "local/native-aw-insertion-integrated02.log",
+    "unreplayed_families": "Selector, records and mounted manager retain their original execution evidence. The gate verified that their tested source, headers and linked object bytes still match the merged checkout and current archive members.",
+    "promotion_gate": {
+      "status": "passed at the recorded merged head; checked again before publication",
+      "inputs": "local/native-aw-promotion-inputs02.json",
+      "inputs_sha256": "a0ae785c7322cbdac9b4d8d4d4c242ddba1ba09b9170011e57a60599af879dfc",
+      "proof": "local/native-aw-promotion-checks/20260912T223313582482Z-2df89bce.json",
+      "current_source_header_object_pins": 1312,
+      "unique_linked_objects": 158,
+      "frozen_files": 2384,
+      "final_publication_audit": "local/native-aw-remote-publication.json"
+    },
+    "original_source_validation_preserved": true,
+    "new_native_source_comparisons_added": 0,
+    "limits": "Replay supersedes the insertion evidence for the merged checkout; it adds no reconstructed routines or new fixture cases. Gameplay and binary replacement remain unvalidated."
+  },
+  "additional_merged_replays_aw": [
+    {
+      "validated_merged_head": "42909f1cdbc488741037953583d326b14efde3bd",
+      "merged_main_commit": "cea0edb9",
+      "strict_win32_build": "passed",
+      "existing_ctests": 2,
+      "build_and_rejection_log": "local/native-aw-promotion02.log",
+      "reason": "The second promotion merged newer main. Twenty sealed insertion headers changed; the gate stopped before fast-forward. The insertion family alone was replayed; all other tested pins and linked objects remained equal.",
+      "insertion_replay": {
+        "attempt": "local/native-aw-worker-deliveries/insertion/lab/integrated03",
+        "family": "mount_insert_aw",
+        "physical_inputs": 1094,
+        "linked_objects": 8,
+        "before_sha256": "e744c9f139d99fa3bfe91fe237c98ebea0748d0dfe23c98bf764f865fedbf6c6",
+        "after_sha256": "c0121e30321b845baec5d95e2fbeafd8be1dda9df1093634049c7e5ab9f2f353",
+        "recorded_states": 29,
+        "recorded_checks": 281,
+        "source_only_scope": "allocation/copy failures and length errors"
+      },
+      "core_sha256": "81c07cb5f02a17424a92399db844a345f2dd2cf959f22f994d5c90ca9db33dc5",
+      "replay_log": "local/native-aw-insertion-integrated03.log",
+      "promotion_gate": {
+        "inputs": "local/native-aw-promotion-inputs03.json",
+        "inputs_sha256": "c0a73859cc6c9e82258b4dbaa9a0f062e792ae614371ef0d5ee75f0c588c9246",
+        "proof": "local/native-aw-promotion-checks/20260912T224159760009Z-42909f1c.json",
+        "current_source_header_object_pins": 1327,
+        "unique_linked_objects": 158,
+        "frozen_files": 2400,
+        "final_publication_audit": "local/native-aw-remote-publication.json"
+      },
+      "original_source_and_first_merged_validation_preserved": true,
+      "new_native_source_comparisons_added": 0
+    }
+  ]
+}

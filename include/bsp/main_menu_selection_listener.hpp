@@ -15,7 +15,7 @@ struct MainMenuSelectionServices {
     virtual MainMenuCommandOwner& command_owner_00e1930c() = 0;
     virtual MainMenuCommandBarHost& command_host(MainMenuCommandOwner&) = 0;
     virtual const MainMenuCommandBarEnvironment& command_environment(MainMenuCommandOwner&) = 0;
-    // Mission reader5C75CC resolves picture into retained texture+A0 and UV+A4.
+    // Mission reader5C75C7 calls AA2660, producing retained texture+A0 and UV+A4.
     // extra.picture is its authored NAME, not the resulting texture identity.
     virtual void* mission_picture_texture_0a0(const MissionRecordData&) = 0;
     // ECX Icon; state, retained texture pointer, UV pointer; RET0C.
