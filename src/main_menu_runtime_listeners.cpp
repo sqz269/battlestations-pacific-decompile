@@ -184,4 +184,12 @@ void MainMenuRuntimeListeners::call_current0c(bool, bool, GuiWidgetOwner& listbo
         throw std::logic_error("Menu Listbox0C requires its canonical Listbox");
     // CEFC48+C -> 4F8F20 is exactly C2 0C 00 (RET0C): no native effects.
 }
+void MainMenuRuntimeListeners::call_current10(GuiWidgetOwner& row, GuiWidgetOwner& listbox) {
+    Operation operation(*this);
+    auto& owners = selection_.command.widget.owners;
+    if (&row.runtime() != &owners || &listbox.runtime() != &owners ||
+        listbox.layout().type != GuiWidgetType::Listbox)
+        throw std::logic_error("Menu Listbox10 requires its canonical row and Listbox");
+    // CEFC48+10 -> 4F8F30: exact live bytes C2 08 00 (RET8), no effects.
+}
 } // namespace bsp

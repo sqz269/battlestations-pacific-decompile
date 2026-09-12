@@ -1,0 +1,301 @@
+{
+  "packet": "orch5_menu_pointer_batch",
+  "status": "source_integrated_exact_promotion_validation_pending",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911",
+  "branch": "agent/orch5-20260911",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "worker_commits": {
+    "registration": {
+      "source": "ef3781ab",
+      "integrated": "34922404"
+    },
+    "pointer_hit": {
+      "source": "0a6f08c152d6a712528d46ca4e5d347c91f7e286",
+      "integrated": "f4bd3cf5"
+    },
+    "text_copy": {
+      "source": "7ce12ea2971f7104f44e8fc751f94850bf3b0b6b",
+      "integrated": "18b07504"
+    },
+    "listbox_pointer": {
+      "source": "a69db6be",
+      "integrated": "528e635c"
+    },
+    "widget_copy": {
+      "source": "500e1bf45a2a0ed7be71b6bd72b892c48d6cac8e",
+      "integrated": "35733569"
+    }
+  },
+  "primary_source_commits": [
+    "c86727bf",
+    "0b0b8e4b",
+    "7b26e357",
+    "310392d9",
+    "b942d3a8"
+  ],
+  "integration_changes": [
+    "Shared owner preflight rejects an incomplete copied Text before update, retirement and type admission effects.",
+    "Tagged Text derived admission requires base_copy_complete_00aa9520 before field/string effects or companion publication.",
+    "Listbox current68 binds the actual A9CA60 companion using the same frame runtime and input publication.",
+    "Removed four unrelated Traceline CMake context lines copied from a newer worker baseline; those sources will arrive only with their complete main commits."
+  ],
+  "packets": [
+    {
+      "packet": "orch5_pointer_listener",
+      "addresses": [
+        "004fa100",
+        "004fa120",
+        "00aa7190"
+      ],
+      "report": "reports/gui_pointer_listener_runtime.json",
+      "scope": "Complete base pointer caller on seven established profiles; distinct Listbox dispatch bound separately."
+    },
+    {
+      "packet": "orch5_menu_register",
+      "addresses": [
+        "00582f30"
+      ],
+      "report": "reports/main_menu_registration.json",
+      "scope": "Complete normal registration caller over actual required screen/layout/renderer services; executable manual attachment remains separate."
+    },
+    {
+      "packet": "orch5_pointer_hit",
+      "addresses": [
+        "00aa2f10",
+        "00aa8bd0"
+      ],
+      "report": "reports/gui_pointer_hit_runtime.json",
+      "scope": "Canonical manager and recursive hit caller; smallest child-origin Z and first equal-depth hit. Populated registry/enabled cursor path unexercised."
+    },
+    {
+      "packet": "orch5_listbox_pointer",
+      "addresses": [
+        "004f8f30",
+        "00696430",
+        "00a9ca60",
+        "00a9df40"
+      ],
+      "report": "reports/gui_listbox_pointer_runtime.json",
+      "scope": "Actual A9CA60 entry with live input/callback reloads and constructor bytes; native action55 and sound providers required."
+    },
+    {
+      "packet": "orch5_text_copy",
+      "addresses": [
+        "00ab8910",
+        "00abb2c0"
+      ],
+      "report": "reports/gui_text_copy.json",
+      "scope": "Partial derived copy after verified canonical base completion, normal cursor caller and retained continuation. Full copied Text factory/adoption and raw Text retention remain open."
+    },
+    {
+      "packet": "orch5_widget_copy",
+      "addresses": [
+        "00aa9520"
+      ],
+      "report": "reports/gui_widget_copy_runtime.json",
+      "scope": "Complete normal base caller/admission with allocation preimages; required actual Model clone flags3E provider, no26 substitution."
+    }
+  ],
+  "call_verification": {
+    "numeric_rows": 81,
+    "failed": 0,
+    "direct_rows": 72,
+    "resolved_indirect_rows": 9,
+    "qualification": "Numeric row counts include resolved indirect alternatives. Indirect CALL targets are not mechanically proved; table/assembly evidence remains in the individual reports.",
+    "log": "local/menu-pointer-all-calls.log",
+    "sha256": "fa068a3634b1f0f00e8d1c9c75327f90c5d54740b1eae34c256dc0369cba0382",
+    "reports": [
+      {
+        "path": "reports/gui_pointer_listener_runtime.json",
+        "count": 1,
+        "failed": 0
+      },
+      {
+        "path": "reports/main_menu_registration.json",
+        "count": 8,
+        "failed": 0
+      },
+      {
+        "path": "reports/gui_pointer_hit_runtime.json",
+        "count": 22,
+        "failed": 0
+      },
+      {
+        "path": "reports/gui_listbox_pointer_runtime.json",
+        "count": 12,
+        "failed": 0
+      },
+      {
+        "path": "reports/gui_text_copy.json",
+        "count": 36,
+        "failed": 0
+      },
+      {
+        "path": "reports/gui_widget_copy_runtime.json",
+        "count": 2,
+        "failed": 0
+      }
+    ]
+  },
+  "annotations": {
+    "count": 13,
+    "saved": true,
+    "exports_refreshed": true,
+    "preimages": "reports/orch5_menu_pointer_annotations.json",
+    "function_definition": "reports/orch5_listbox_pointer_function_definitions.json",
+    "definition_note": "004F8F30 C2 08 00 defined as RET8; following CC bytes excluded. Worker report no_ghidra_function reflects its earlier read-only baseline."
+  },
+  "worker_evidence_archives": [
+    "local/menu-pointer-workers/listbox-pointer-manifest.json",
+    "local/menu-pointer-workers/pointer-hit-manifest.json",
+    "local/menu-pointer-workers/text-clone-close-manifest.json",
+    "local/menu-pointer-workers/widget-copy-manifest.json"
+  ],
+  "validation": {
+    "combined_build": "initial combined Win32 build and two CTests passed; exact promotion pending",
+    "scoped_fixtures": "six initial production-library fixtures passed; exact promotion pending",
+    "new_permanent_tests": 0,
+    "copied_text_fixture": false,
+    "successful_flags3e_fixture": false,
+    "binary_abi_compatible": false,
+    "game_validated": false
+  },
+  "remaining_contracts": [
+    "Canonical executable menu construction and full registration instead of the manual attachment path.",
+    "Populated page registry and enabled pointer/cursor execution; installed game and rendering validation.",
+    "Model3E stream-copy callers B729A0/B72A70/B73F50, backed by actual renderer logical stream factories and terminal owners.",
+    "Same copied GuiTextLifetime adoption into a concrete GuiTextRuntimeImplementation and actual Text factory allocation/retention.",
+    "Actual raw Text identity/+04/current0 for B18A40 cursor material retention.",
+    "Required renderer presentation B29E60 and actual game action55/sound providers in the complete menu path."
+  ],
+  "next_packet_assessment": {
+    "candidate": "native_stream_clone_3e",
+    "addresses": [
+      "00b729a0",
+      "00b72a70"
+    ],
+    "existing_composition_addresses": [
+      "00b73f50",
+      "00b742a0",
+      "00b752b0"
+    ],
+    "suggested_files": [
+      "include/bsp/native_stream_clone.hpp",
+      "src/native_stream_clone.cpp",
+      "include/bsp/native_mesh_clone.hpp",
+      "src/native_mesh_clone.cpp",
+      "include/bsp/gui_native_geometry.hpp",
+      "src/gui_native_geometry.cpp",
+      "include/bsp/native_gui_text_model_clone.hpp",
+      "src/native_gui_text_model_clone.cpp"
+    ],
+    "required_dependencies": [
+      "actual renderer current5C B287C0 and vertex constructor B4BC00/terminal lifetime (separately leased at assessment)",
+      "actual renderer current60 B288B0 and index constructor B4BF30",
+      "actual logical stream registration and creator tracking"
+    ],
+    "recheck_leases": true,
+    "boundary": "Clone caller composition only; renderer factories, copied Text implementation adoption and Text raw retention are distinct ownership packets."
+  },
+  "initial_validation": {
+    "head": "35733569d2299b0a940be176d7402583e0e594e2",
+    "working_tree_production_changes": [
+      {
+        "path": "cmake/startup.cmake",
+        "sha256": "39c1d38065729e07c6becc7a2c72925367a3bc7e0af3af099f26517e77fb3e32"
+      },
+      {
+        "path": "include/bsp/gui_text_lifetime.hpp",
+        "sha256": "7aa3485fc8525c4e28fd082f53869888126a329153225cebdb8f0dc33b1db3fe"
+      },
+      {
+        "path": "src/gui_text_lifetime.cpp",
+        "sha256": "b330d36be7f005b08cb80b46d6e3be418f5415a4be6c4422a6ac24c1b93f94a9"
+      },
+      {
+        "path": "src/gui_widget_owner.cpp",
+        "sha256": "0c5fae1a2f75b709a8922f6e0b2ff5b9470d9fb18675c1d3a9bc547264f93207"
+      }
+    ],
+    "note": "Initial build used these uncommitted integration guards/CMake corrections. This is not a claim that the displayed HEAD alone was tested; exact promoted validation follows.",
+    "build_log": "local/menu-pointer-combined-build-final.log",
+    "build_log_sha256": "bd821c3efaae1a2c22adddf9b6aabbbb557f58e3079bdccab3b161cf3c76c1a1",
+    "ctest_passed": 2,
+    "ctest_failed": 0,
+    "fixtures": {
+      "game_validated": false,
+      "fixtures": [
+        {
+          "exit_code": 0,
+          "name": "base_listener",
+          "source": "local/gui_frame_probe.cpp",
+          "log_sha256": "9C6824EB4C6B66FD1F1A09A35F1D55F94117000DE8F99C383F44E626E671B9BE",
+          "source_sha256": "446561C8192832F41394BEA61C00AAB5FDBC044FC950A06EC69BEC37BD7D3A74",
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\menu-pointer-validation\\base_listener-run.log"
+        },
+        {
+          "exit_code": 0,
+          "name": "input_pointer",
+          "source": "local/gui_pointer_input_probe.cpp",
+          "log_sha256": "046AB977453D6D98A3683148C01E82FBBF775EA71498901A6EEECA964810ED13",
+          "source_sha256": "CFD597824D7C98D26F94D5A4345AD993E865BBF3DB77274F5821B6E56AD514A2",
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\menu-pointer-validation\\input_pointer-run.log"
+        },
+        {
+          "exit_code": 0,
+          "name": "pointer_hit",
+          "source": "local/menu-pointer-workers/pointer-hit/pointer_hit_fixture.cpp",
+          "log_sha256": "7B47CE3556674F0B4ABE6395EB24FE6FA561BC1466C1D5EB6ABF592B4C8D437B",
+          "source_sha256": "B13E8089DDF1BE844A5A0DD8412A6A71DF6E947D9F7CA1CEDDAB134B30E2BEB6",
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\menu-pointer-validation\\pointer_hit-run.log"
+        },
+        {
+          "exit_code": 0,
+          "name": "listbox_frame",
+          "source": "local/listbox_frame_probe.cpp",
+          "log_sha256": "B677D394DD2C42741223F8F16446DA7123441BCAD7199A9D2739F60E27EDE2E9",
+          "source_sha256": "517EB00572941A9492A303AF2D6D0D4FEE576BADB615B2FB10B198D18863A45D",
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\menu-pointer-validation\\listbox_frame-run.log"
+        },
+        {
+          "exit_code": 0,
+          "name": "listbox_pointer",
+          "source": "local/menu-pointer-workers/listbox-pointer/listbox_pointer_probe.cpp",
+          "log_sha256": "CD5AD43DCB4AE078FEE751E414A584A076FB46F032F35BA536DA181BF5BAA954",
+          "source_sha256": "F2A79D3E924C37E054BC83903501D32D84D27FE0EE2E4A953C2EF112562156C1",
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\menu-pointer-validation\\listbox_pointer-run.log"
+        },
+        {
+          "exit_code": 0,
+          "name": "widget_copy",
+          "source": "local/menu-pointer-workers/widget-copy/widget_copy_probe.cpp",
+          "log_sha256": "F678E7F4ACCB32F52F3008B16E6F85812B5A0556C950CB23DF72827F536B9AB6",
+          "source_sha256": "97179258B7308BA4F4CA07CBF8CEE5383F75352431CC34BE3C19D5C0FC6C0B67",
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\menu-pointer-validation\\widget_copy-run.log"
+        }
+      ],
+      "compile_scope": "fixture translation units only; same primary production libraries",
+      "libraries": [
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_core.lib",
+          "Hash": "FBCAE474D45B4A71031F1AF82FA630BF60FF9B68B442237BFD522469D1038FE7"
+        },
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_lua511.lib",
+          "Hash": "B6C19DD56BCE2C86DCF1ABF5C3044D48DDC2AC2C33EF04E3DC87F022413EE193"
+        },
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_zlib121.lib",
+          "Hash": "2C89BD9AE83D791564EA847C75E8E5EE025E40810C1DF8D55E5799E0C7B8C471"
+        }
+      ],
+      "commit": "35733569d2299b0a940be176d7402583e0e594e2"
+    },
+    "archive": "local/menu-pointer-initial-validation/manifest.json",
+    "input_constants": {
+      "path": "local/menu-pointer-workers/input/input_device_runtime_constants.hpp",
+      "sha256": "ccf1ca024a9ba91d7f647b2ab22b88b1626502b3b191ecd8765ff3d7d0d68c76"
+    }
+  }
+}

@@ -25,6 +25,7 @@ class GuiListboxFrameListener : public GuiListboxSelectionListener {
 public:
     using GuiListboxSelectionListener::GuiListboxSelectionListener;
     virtual void call_current04(GuiWidgetOwner& row, GuiWidgetOwner& listbox) = 0;
+    virtual void call_current10(GuiWidgetOwner& row, GuiWidgetOwner& listbox) = 0;
     virtual void call_current0c(bool first, bool second, GuiWidgetOwner& listbox) = 0;
 };
 class GuiListboxDeviceActivityCalls {
@@ -51,6 +52,7 @@ public:
     void listener_current08(void* listener, GuiWidgetOwner* selected_row,
         GuiWidgetOwner& listbox) override;
     void listener_current04(void*, GuiWidgetOwner& row, GuiWidgetOwner& listbox) override;
+    void listener_current10(void*, GuiWidgetOwner& row, GuiWidgetOwner& listbox) override;
     void listener_current0c(void*, bool first, bool second, GuiWidgetOwner& listbox) override;
     std::uint8_t device_current2c(InputDevice&) override;
 private:

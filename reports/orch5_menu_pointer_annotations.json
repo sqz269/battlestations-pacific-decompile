@@ -1,0 +1,178 @@
+[
+  {
+    "address": "004fa100",
+    "before": {
+      "address": "004fa100",
+      "function_name": "BSP_GuiWidgetListener_Empty00",
+      "comment": "[BSP reconstruction 004fa100]\nHypothesis, not a recovered symbol. CEB110 base listener has seven actual three-byte empty methods: slots00..14 RET4 and18 RET8. Five exposed callbacks implemented in canonical C++ interface;00/08 analyzed only. Existing same-owner AA6BC0 binder retained. docs/GUI_WIDGET_LISTENER_BINDING.md; reports/gui_widget_listener_binding_definitions.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "after": {
+      "address": "004fa100",
+      "name": "BSP_GuiWidgetListener_Empty00",
+      "evidence": "Hypothesis, not a recovered symbol. CEB110 base listener has seven actual three-byte empty methods: slots00..14 RET4 and18 RET8. Five exposed callbacks implemented in canonical C++ interface;00/08 analyzed only. Existing same-owner AA6BC0 binder retained. docs/GUI_WIDGET_LISTENER_BINDING.md; reports/gui_widget_listener_binding_definitions.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation. | Hypothesis, not a recovered symbol. Complete RET4 empty body now supplied by canonical GuiBaseWidgetListener current00. Both CEB110 and CEFC04 table words verified. Original ABI: ECX owner, one stack argument, RET4. New C++ owner interface; Win32 build and canonical fixture passed, not ABI or game validated. docs/GUI_POINTER_LISTENER_RUNTIME.md"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004fa120",
+    "before": {
+      "address": "004fa120",
+      "function_name": "BSP_GuiWidgetListener_Empty08",
+      "comment": "[BSP reconstruction 004fa120]\nHypothesis, not a recovered symbol. CEB110 base listener has seven actual three-byte empty methods: slots00..14 RET4 and18 RET8. Five exposed callbacks implemented in canonical C++ interface;00/08 analyzed only. Existing same-owner AA6BC0 binder retained. docs/GUI_WIDGET_LISTENER_BINDING.md; reports/gui_widget_listener_binding_definitions.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "after": {
+      "address": "004fa120",
+      "name": "BSP_GuiWidgetListener_Empty08",
+      "evidence": "Hypothesis, not a recovered symbol. CEB110 base listener has seven actual three-byte empty methods: slots00..14 RET4 and18 RET8. Five exposed callbacks implemented in canonical C++ interface;00/08 analyzed only. Existing same-owner AA6BC0 binder retained. docs/GUI_WIDGET_LISTENER_BINDING.md; reports/gui_widget_listener_binding_definitions.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation. | Hypothesis, not a recovered symbol. Complete RET4 empty body now supplied by canonical GuiBaseWidgetListener current08. Both CEB110 and CEFC04 table words verified. Original ABI: ECX owner, one stack argument, RET4. New C++ owner interface; Win32 build and canonical fixture passed, not ABI or game validated. docs/GUI_POINTER_LISTENER_RUNTIME.md"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00582f30",
+    "before": {
+      "address": "00582f30",
+      "function_name": "BSP_MainMenu_Register_Provisional",
+      "comment": "[BSP reconstruction 00582f30]\nHypothesis, not a recovered symbol. Vtable +10h of the main-menu screen at 00E198AC+58h. __thiscall(this), bare RET. Chains BSP_FrontEndScreen_Register (004F71D0), then calls its own virtual +14h (the layout binder 005861B0), writes two text-height derived floats into +2B0h and +2B4h from BSP_TextContext_GetNormalizedTextHeight and two 00AA6750 extents, hides the +470h sub-object through its virtual +34h, clears the map handle +110h and the float3 at +1A4h, sets +190h/+194h to 0.2 and 0.39, clears the campaign bytes +564h and +565h, and finally calls BSP_D3D9Renderer_ChangePresentationMode. docs/MAIN_MENU_SCREEN_UPDATE.md.\n\n[BSP reconstruction 00582f30] update\nHypothesis, not a recovered symbol. Vtable +10h of the main-menu screen at 00E198AC+58h. __thiscall(this), bare RET. Chains BSP_FrontEndScreen_Register (004F71D0), then calls its own virtual +14h (the layout binder 005861B0), writes two text-height derived floats into +2B0h and +2B4h from BSP_TextContext_GetNormalizedTextHeight and two 00AA6750 extents, hides the +470h sub-object through its virtual +34h, clears the map handle +110h and the float3 at +1A4h, sets +190h/+194h to 0.2 and 0.39, clears the campaign bytes +564h and +565h, and finally calls BSP_D3D9Renderer_ChangePresentationMode. docs/MAIN_MENU_SCREEN_UPDATE.md. | Hypothesis, not a recovered symbol. Actual 582F45..582FE6 spacing stores from canonical authored Text positions/heights with FLOAT64 difference spills; capture470 before second field store; remaining registration phases external. Original ABI: ECX main-menu screen; no stack arguments; RET; reconstructed post-current14 spacing fragment only. docs/MAIN_MENU_SPACING.md; docs/ORCH5_MENU_INPUT_BATCH.md. Supersedes prior incomplete-provider or heuristic category descriptions for this coverage. New C++ interfaces; no original ABI or game validation."
+    },
+    "after": {
+      "address": "00582f30",
+      "name": "BSP_MainMenu_Register_Provisional",
+      "evidence": "Hypothesis, not a recovered symbol. Vtable +10h of the main-menu screen at 00E198AC+58h. __thiscall(this), bare RET. Chains BSP_FrontEndScreen_Register (004F71D0), then calls its own virtual +14h (the layout binder 005861B0), writes two text-height derived floats into +2B0h and +2B4h from BSP_TextContext_GetNormalizedTextHeight and two 00AA6750 extents, hides the +470h sub-object through its virtual +34h, clears the map handle +110h and the float3 at +1A4h, sets +190h/+194h to 0.2 and 0.39, clears the campaign bytes +564h and +565h, and finally calls BSP_D3D9Renderer_ChangePresentationMode. docs/MAIN_MENU_SCREEN_UPDATE.md. | Hypothesis, not a recovered symbol. Actual 582F45..582FE6 spacing stores from canonical authored Text positions/heights with FLOAT64 difference spills; capture470 before second field store; remaining registration phases external. Original ABI: ECX main-menu screen; no stack arguments; RET; reconstructed post-current14 spacing fragment only. docs/MAIN_MENU_SPACING.md; docs/ORCH5_MENU_INPUT_BATCH.md. Supersedes prior incomplete-provider or heuristic category descriptions for this coverage. New C++ interfaces; no original ABI or game validation. | Hypothesis, not a recovered symbol. Full ordinary registration caller now composes base registration, fresh current14, existing spacing, captured470 visibility, ordered screen reset stores and six-operand renderer service. Same canonical screen/layout/geometry/settings; required renderer remains an external runtime boundary. ECX screen, no stack arguments, RET. docs/MAIN_MENU_REGISTRATION.md; new C++ ABI, build tested, no game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00aa2f10",
+    "before": {
+      "address": "00aa2f10",
+      "function_name": "BSP_GuiManager_HitTestPointer",
+      "comment": "[BSP reconstruction 00aa2f10]\nHypothesis, not a recovered symbol. Packet gui_layer_manager, read-only analysis. __fastcall(ECX = manager), RET 0, sole caller 00AA3910 at 00AA3B7E. Publishes the pointer position from manager+5Ch/+60h to 00F8BC74/00F8BC78, clears the hit widget at 00F8BC70 and seeds the score at 00F8BC7C with 1e10f (00CE4970), then walks the page vector at manager+18h..+1Ch in ascending Priority order. A page is descended into with 00AA8BD0 only when its vtable +38h reports visible and, when manager+6Ch is non-null, only when it is that one page -- an exclusive-page filter whose writers were not found. After the walk, if a widget was hit and its byte +84h is clear and the cursor device's vtable +28h returns true, calls the hit widget's vtable +68h(0)."
+    },
+    "after": {
+      "address": "00aa2f10",
+      "name": "BSP_GuiManager_HitTestPointer",
+      "evidence": "Hypothesis, not a recovered symbol. Read-only packet orch5_pointer_hit. Complete normal AA2F10..AA3054, ECX manager, RET; 102 instructions, zero flow gaps. Publishes manager5C/60 to same F8BC74/78, clears F8BC70, seeds depthF8BC7C from live CE4970, walks current registry with fresh end/payload and exclusive6C checks, then fresh backend mouse current28 activity and fresh hover current68(null). Actual A9AAB0 activity is query20 scan0..16. AA7190 current68 is shared supported base dispatch; Listbox current68 A9CA60 remains explicit unrecovered boundary. Canonical tree-domain limits and evidence: docs/GUI_POINTER_HIT_RUNTIME.md; reports/gui_pointer_hit_runtime.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00aa7190",
+    "before": {
+      "address": "00aa7190",
+      "function_name": "FUN_00aa7190"
+    },
+    "after": {
+      "address": "00aa7190",
+      "name": "BSP_GuiWidget_DispatchPointerActivity",
+      "evidence": "Hypothesis, not a recovered symbol. Complete normal AA7190..AA7218 caller: parent current68 bubbling or fresh listener00, fresh backend class1/index0, captured mouse rising button0/current04 and button1/current08. Seven verified base profiles only; Listbox current68 is A9CA60 and remains separate. Original ABI: ECX owner, one stack argument, RET4. New C++ owner interface; Win32 build and canonical fixture passed, not ABI or game validated. docs/GUI_POINTER_LISTENER_RUNTIME.md"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00aa8bd0",
+    "before": {
+      "address": "00aa8bd0",
+      "function_name": "BSP_GuiWidget_HitTestRecursive",
+      "comment": "[BSP reconstruction 00aa8bd0]\nHypothesis, not a recovered symbol. Packet gui_layer_manager, read-only analysis. __thiscall(ECX = widget, const float origin[3]), RET 4, called by 00AA2F10 and by itself. Half extents are size.x*scale.x (+18h * +20h) and size.y*scale.y; the absolute position is pos (+0Ch..+14h) plus the origin; the child origin drops the half extents in X and Y and subtracts the double at 00D7A258 (+0.0) in Z. Children are walked FIRST, in list order and only when their vtable +38h reports visible, then the widget itself is tested: byte +78h set and byte +77h clear, four limit fields at +38h..+44h each disabled by an exact +0.0f compare, then box containment against 00F8BC74/00F8BC78. THE WINNER RULE at 00AA8E0C is half_extent_x < the score at 00F8BC7C, strict: the SMALLEST horizontal half extent wins, not the deepest widget, not the nearest in Z, not the last in the list, and a tie keeps the first candidate. Z is never read here, so the Pos Z that orders drawing does not affect hit testing."
+    },
+    "after": {
+      "address": "00aa8bd0",
+      "name": "BSP_GuiWidget_HitTestRecursive",
+      "evidence": "Hypothesis, not a recovered symbol. Read-only packet orch5_pointer_hit. Complete normal AA8BD0..AA8E32, ECX widget, borrowed float[3] origin stack argument, RET4; 206 instructions, zero flow gaps. Corrects older half-extent winner interpretation: Pivot18/1C times Size20/24 spills at frame1C/20, but child-origin Z spills at frame2C and AA8DD3/AA8DE3 read frame2C after current64 RET10. Strict smallest resolved Z wins; ties keep first. Existing canonical owners and live child vectors, current64 dispatcher and F8BC70/74/78/7C references. Native list mutation/ABI/EH outside host domain. See docs/GUI_POINTER_HIT_RUNTIME.md and reports/gui_pointer_hit_runtime.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004f8f30",
+    "before": {
+      "address": "004f8f30",
+      "function_name": "FUN_004f8f30"
+    },
+    "after": {
+      "address": "004f8f30",
+      "name": "BSP_GuiListboxListener_Empty10",
+      "evidence": "Hypothesis, not a recovered symbol. Verified three-byte C2 08 00 empty body, main-menu CEFC48 current10 word CEFC58. ECX listener, row/Listbox stack arguments unread, RET8. Official function definition excludes following CC alignment. docs/GUI_LISTBOX_POINTER_RUNTIME.md. Win32 build and canonical frame-entry fixture passed; new C++ interface, no binary ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00696430",
+    "before": {
+      "address": "00696430",
+      "function_name": "FUN_00696430"
+    },
+    "after": {
+      "address": "00696430",
+      "name": "BSP_GuiInput_ReadPointerActivation",
+      "evidence": "Hypothesis, not a recovered symbol. Complete pointer activation output caller: fresh E188A8 game action55 through required004C43C0 provider, write raw AL to ECX output byte, bare RET. Registered into F8BC84 by4DD6DB/E0 through AA6BE0. docs/GUI_LISTBOX_POINTER_RUNTIME.md. Win32 build and canonical frame-entry fixture passed; new C++ interface, no binary ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9ca60",
+    "before": {
+      "address": "00a9ca60",
+      "function_name": "FUN_00a9ca60"
+    },
+    "after": {
+      "address": "00a9ca60",
+      "name": "BSP_GuiListbox_HandlePointerActivity",
+      "evidence": "Hypothesis, not a recovered symbol. Complete ordinary Listbox current68 caller with incoming child, ordered-zero wheel gate, paging/navigation, exact repeated selection refresh, current F8BC84 action callback, fresh listener04/10 and sound callbacks; same owners/input publications. ECX Listbox, child stack, RET4. docs/GUI_LISTBOX_POINTER_RUNTIME.md. Win32 build and canonical frame-entry fixture passed; new C++ interface, no binary ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9df40",
+    "before": {
+      "address": "00a9df40",
+      "function_name": "BSP_GuiListbox_Construct",
+      "comment": "[BSP reconstruction 00a9df40]\nHypothesis, not a recovered symbol. ECX storage, EAX this, RET. partial_projection: only constructor-established FC row/selection/cache/listener and layout fields; base, remaining derived fields, raw pools/SEH excluded. Canonical Listbox/state evidence: docs/GUI_LISTBOX_RUNTIME.md; reports/gui_listbox_runtime.json. Parent actual type11 owner fixture passed; MSVC Win32 TU passed. New C++ interface, no native ABI/game claim."
+    },
+    "after": {
+      "address": "00a9df40",
+      "name": "BSP_GuiListbox_Construct",
+      "evidence": "Hypothesis, not a recovered symbol. ECX storage, EAX this, RET. partial_projection: only constructor-established FC row/selection/cache/listener and layout fields; base, remaining derived fields, raw pools/SEH excluded. Canonical Listbox/state evidence: docs/GUI_LISTBOX_RUNTIME.md; reports/gui_listbox_runtime.json. Parent actual type11 owner fixture passed; MSVC Win32 TU passed. New C++ interface, no native ABI/game claim. | Hypothesis, not a recovered symbol. Additional constructor-backed canonical fields now retained on same GuiListboxFields: byte14A=1 atA9E002, byte138=0 atA9E010, byte140=0 atA9E01E, byte141=0 atA9E024. Remaining native constructor allocation/ABI coverage stays partial. docs/GUI_LISTBOX_POINTER_RUNTIME.md. Win32 build and canonical frame-entry fixture passed; new C++ interface, no binary ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00aa9520",
+    "before": {
+      "address": "00aa9520",
+      "function_name": "BSP_GuiWidget_CopyConstruct",
+      "comment": "[BSP reconstruction 00aa9520]\nHypothesis, not a recovered symbol. __thiscall(widget, const GuiWidget* source) -> widget in EAX, RET 4, SEH handler 00cb73f1. Stores vtables 00ceb130 then 00d5c130, sets the reference count to 1, copies +0Ch..+E0h, clears +4Ch, builds a fresh empty child list through 00A9B720, forces +76h to 1 and leaves +8h, +85h and +E4h untouched. 00AA96E4 then clones the source's node through the node's own virtual +10h with the per-type name from 00d5c0b8[type_tag] and clears node+138h bits 1h and 2h. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md."
+    },
+    "after": {
+      "address": "00aa9520",
+      "name": "BSP_GuiWidget_CopyConstruct",
+      "evidence": "Hypothesis, not a recovered symbol. __thiscall(widget, const GuiWidget* source) -> widget in EAX, RET 4, SEH handler 00cb73f1. Stores vtables 00ceb130 then 00d5c130, sets the reference count to 1, copies +0Ch..+E0h, clears +4Ch, builds a fresh empty child list through 00A9B720, forces +76h to 1 and leaves +8h, +85h and +E4h untouched. 00AA96E4 then clones the source's node through the node's own virtual +10h with the per-type name from 00d5c0b8[type_tag] and clears node+138h bits 1h and 2h. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ab8910",
+    "before": {
+      "address": "00ab8910",
+      "function_name": "FUN_00ab8910"
+    },
+    "after": {
+      "address": "00ab8910",
+      "name": "BSP_GuiText_EnsureCursorModel",
+      "evidence": "Hypothesis, not a recovered symbol; previously FUN_00ab8910. ECX Text/no stack args/RET atAB8C24;236 listed instructions/zero gaps. Skip existing184; same canonical gui_cursor Model publishes before name release; parent current4C; current38 matrix; zero visibility; actual mesh/declaration4vertex stream; release declaration before vertex; primitive5 ranges0,4,0,2; GuiCursor.mshd; required actual B18A40 Text retain; layout,append,release creators. Complete supported normal caller sequence with actual services, no synthetic Text raw identity; native failure/SEH ABI and game rendering untested. docs/GUI_TEXT_COPY.md; reports/gui_text_copy.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00abb2c0",
+    "before": {
+      "address": "00abb2c0",
+      "function_name": "FUN_00abb2c0"
+    },
+    "after": {
+      "address": "00abb2c0",
+      "name": "BSP_GuiText_CopyConstruct",
+      "evidence": "Hypothesis, not a recovered symbol; previously FUN_00abb2c0. ECX destination/source stack/EAX destination/RET4 atABB621, endABB623. CallsAA9520 then copies derived fields, clears cursor/shadow/glyph/aux/cache slots, copies state colors last, callsAB8910/AB8530/ABB1D0. Explicit after-base C++ lifetime admission and pending continuation only; canonical AA9520 flags3E base copy and copied type/factory admission remain required upstream. Native header/SEH ABI excluded. docs/GUI_TEXT_COPY.md; reports/gui_text_copy.json. Read-only worker, no Ghidra mutation; 195 listed instructions/zero gaps. | Integration now requires the same canonical destination base_copy_complete_00aa9520 predicate before derived string or field effects. Shared owner operations and retirement reject has_incomplete_copy until the ordered AB8910/AB8530/ABB1D0 continuation finishes. Default Text owners cannot pass tagged copy admission. Full copied runtime adoption and actual Text retention remain required; no copied Text fixture or game claim. docs/ORCH5_MENU_POINTER_BATCH.md"
+    },
+    "status": "applied"
+  }
+]
