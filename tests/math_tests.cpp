@@ -34,6 +34,7 @@
 #include "bsp/world_deferred_destroy.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/renderer_startup.hpp"
+#include "bsp/scene_contents_hosts.hpp"
 #include "bsp/scene_entity_factory.hpp"
 #include "bsp/scene_file.hpp"
 #include "bsp/scene_unit_creators.hpp"
@@ -2350,6 +2351,46 @@ int main() {
         check(std::fabs(bsp::gun_step_axis_0085ad80(near_delta, rate, 1.0f, true) - near_delta)
                   < 1e-6f,
             "MRFSGun skips the soft approach and turns at the full rate");
+    }
+
+    {
+        // 004239E0's field order over a synthetic two-cell layer. The risk is a
+        // silent offset slip: the four scalars and the count are all four bytes
+        // wide, so a swapped pair still parses and still consumes every byte.
+        const unsigned char nav[] = {
+            0x0B, 0x00, 0x00, 0x00, 'T', 'e', 'r', 'r', 'a', 'i', 'n', 'G', 'r', 'i', 'd',
+            0x01, 0x00, 0x00, 0x00, // one layer
+            0x10, 0x00, 0x00, 0x00, 'T', 'e', 'r', 'r', 'a', 'i', 'n', 'G', 'r', 'i', 'd',
+            'L', 'a', 'y', 'e', 'r',
+            0x00, 0x80, 0x3B, 0x46, // +04h half extent 12000.0
+            0x02, 0x00, 0x00, 0x00, // +08h n = 2
+            0x00, 0x00, 0xC8, 0x42, // +0Ch cell size 100.0
+            0x00, 0x00, 0x00, 0x40, // +10h file scalar 2.0
+            0x10, 0x8F, 0x34, 0x3E, // +14h slope limit tan(10deg)
+            0x01, 0x02, 0x03, 0x04, // the 2x2 grid
+        };
+        const bsp::TerrainGridNavFile nav_file = bsp::parse_terrain_grid_nav(nav, sizeof nav);
+        check(nav_file.ok && nav_file.bytes_consumed == sizeof nav,
+            "004248A0's grammar consumes a .nav file exactly");
+        check(nav_file.class_name == "TerrainGrid" && nav_file.layers.size() == 1,
+            "004248D9 reads the root name and 004248E7 the layer count");
+        const bsp::TerrainGridLayerRecord& layer = nav_file.layers.front();
+        check(layer.dimension == 2 && layer.grid.size() == 4 && layer.grid[3] == 4,
+            "00423A30 is the dimension and 00423A9D reads n*n grid bytes");
+        check(std::fabs(layer.half_extent - 12000.0f) < 1e-3f
+                  && std::fabs(layer.cell_size - 100.0f) < 1e-3f
+                  && std::fabs(layer.file_scalar - 2.0f) < 1e-6f
+                  && std::fabs(layer.slope_limit - 0.176327f) < 1e-6f,
+            "the four scalars land in 004239E0's order");
+        // 0041DF40 keeps the largest limit strictly below the requested slope.
+        std::vector<bsp::TerrainGridLayerRecord> layers(3);
+        layers[0].slope_limit = 0.176327f;
+        layers[1].slope_limit = 0.363970f;
+        layers[2].slope_limit = 2.747478f;
+        check(bsp::select_terrain_grid_layer(layers, 1.0f, false) == 1,
+            "0041DF40 picks the coarsest layer a slope of 1.0 still clears");
+        check(bsp::select_terrain_grid_layer(layers, 0.0f, false) == 0,
+            "0041DF88 leaves the first layer in EBX when nothing qualifies");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
