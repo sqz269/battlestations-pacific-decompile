@@ -922,5 +922,104 @@
     "manifest": "local/libm_error_support_handoff/manifest.json",
     "hash_delivered_externally": true,
     "contains": "exact sources/headers/docs/audit, complete proof scripts/artifacts, frozen strict archive and extracted members, nonexecuted manifested executable/map, project compiler input closure and selected TLogs; external toolchain headers retain path+hash only"
+  },
+  "primary_review": {
+    "utc": "2026-09-12T00:47:15.437470+00:00",
+    "integration_state": "complete_source_main_build_static_proof_saved_and_registered",
+    "main_build_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pow_chain_build_frozen\\manifest.json",
+      "bytes": 112821,
+      "sha256": "95072fb6ddac8d77c163742fc922b5d66a8661e860e5d86cea0dd908c4294950"
+    },
+    "main_library_sha256": "ee40de7eb2d015338922c4d67b6d561098f55260519061bd3652973f741fa9af",
+    "strict_Win32": true,
+    "unchanged_prebuild_inputs": 56,
+    "actual_compiler_commands": 14,
+    "compiler_read_dependencies": 266,
+    "existing_CTests": 2,
+    "fresh_seed_matches": 8,
+    "exact_archived_objects": 14,
+    "summary": "Complete 634-byte/176-instruction service maps to 784 bytes/255 instructions; exact three-byte default callback. All 13 selector targets, five compiled reference offsets, full decoder/default/strcmp/OS-major/module-gate linked bodies and canonical identity/errno scheduling checked.",
+    "dispatch_proof": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pow_chain_primary\\dispatch_proof\\object_proof.json",
+      "bytes": 32957,
+      "sha256": "225355929d21a06088242794c4b6983f0f6f5bc3312f2d5edb5d5fca6d6d2d14"
+    },
+    "full_SSE2_libm_decoder_replay": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pow_chain_primary\\sse2_replay\\result.json",
+      "bytes": 41302,
+      "sha256": "1c36553b604d2b3198cb7d6ecfba7c8f751250ae73fd5f513e46c50bab4a742d"
+    },
+    "saved_annotations": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_crt_libm_error_support_annotations.json",
+      "bytes": 3253,
+      "sha256": "59f1bdef4fd5a74d6905c3a5f289940fa93370d68e3230dfa30d7641977c00ad"
+    },
+    "registered_records": [
+      {
+        "kind": "function",
+        "address": "00c0f0e4",
+        "name": "native_crt_libm_error_support_00c0f0e4",
+        "cpp_symbol": "bsp::native_crt_libm_error_support_00c0f0e4",
+        "source": "src/native_crt_libm_error_support.cpp",
+        "native_end_exclusive": "00c0f35e",
+        "status": "complete_source_main_archive_static_proof_checked",
+        "evidence": "reports/native_crt_libm_error_support_audit.json",
+        "original_abi": "cdecl first*, second*, output*, selector at entry ESP+4/+8/+Ch/+10h; no general EAX/FP return contract.",
+        "source_abi": "Fifth stable context at ESP+14h borrows current callback flag/encoded word, full decoder, actual owning CRT errno runtime and shared canonical name identities.",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00c28545",
+        "name": "native_crt_default_matherr_00c28545",
+        "cpp_symbol": "bsp::native_crt_default_matherr_00c28545",
+        "source": "src/native_crt_libm_error_support.cpp",
+        "native_end_exclusive": "00c28548",
+        "status": "complete_source_main_archive_static_proof_checked",
+        "evidence": "reports/native_crt_libm_error_support_audit.json",
+        "original_abi": "cdecl callback with exception-record pointer; XOR EAX,EAX and plain RET.",
+        "source_abi": "Same fixed default callback body under the rebuilt service ABI.",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "refreshed_exports": [
+      {
+        "address": "00c0f0e4",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c0f0e4\\decompiled.c",
+        "bytes": 5919,
+        "sha256": "30c3a1a5ab82b7af1c16c07306e9e0794c31b57601935bb927b496bbe792f993"
+      },
+      {
+        "address": "00c28545",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c28545\\decompiled.c",
+        "bytes": 1758,
+        "sha256": "65f112fc4e8213beaa5012f4741357d17ecdf3e052d2e5365e7b40d6aa6ca31b"
+      }
+    ],
+    "new_routine_runtime_executed": false,
+    "native_SEH_compatible": false,
+    "original_caller_ABI_compatible": false,
+    "game_validated": false,
+    "current_document": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_CRT_LIBM_ERROR_SUPPORT.md",
+      "bytes": 9420,
+      "sha256": "9ba3f42cd982b52f4e7990e1d0fd70a52cd87f5050fd1408186bf9c8f9413c4f"
+    },
+    "fallback_provenance_supplement": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pow_chain_primary\\fallback_parity\\fallback_parity.json",
+      "bytes": 110957,
+      "sha256": "6673d4bafd2258f85773af83d38de4cb81c8b15bf8c3cd9f8961a21bb6305871"
+    },
+    "fallback_boundary": "All nine actual fallback objects, all 121 COFF sections and 51 CODE sections/5,028 bytes are identical to reviewed baseline; all 32 compiler-read repository inputs LF-equal. Unchanged 13-function/1,537-native-byte verifier passed. This fallback relocation proof is synthetic, separate from actual dispatcher linked evidence.",
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pow_chain_primary\\sealed.json",
+      "bytes": 232372,
+      "sha256": "57016f4430c6faf7672fc4a06a782c86b6cd74d02eb6499e5bf313a0c34bcf66"
+    }
   }
 }

@@ -1,0 +1,205 @@
+{
+  "packet": "native_crt_pow_dispatch1",
+  "status": "complete_source_main_build_static_proof_saved_and_registered",
+  "owned_files": [
+    "src/native_crt_pow_dispatch.cpp",
+    "include/bsp/native_crt_pow_dispatch.hpp",
+    "docs/NATIVE_CRT_POW_DISPATCH.md",
+    "reports/native_crt_pow_dispatch_audit.json"
+  ],
+  "owned_function": {
+    "address": "00bfeb10",
+    "end_exclusive": "00bfeb64",
+    "original_bytes": 84,
+    "original_instructions": 23,
+    "cpp_symbol": "bsp::dispatch_native_crt_pow_00bfeb10"
+  },
+  "native_evidence": {
+    "utc": "2026-09-12T00:27:23.284954+00:00",
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00bfeb10",
+        "length": 84,
+        "end_exclusive": "00bfeb64",
+        "role": "complete_owned_dispatch",
+        "bytes_hex": "833da0ee090100743283ec080fae5c24048b44240425801f00003d801f0000750fd93c24668b04246683e07f6683f87f8d6424087505e915a7010083ec14d9c9dd1c24dd5424088b44240ce80d00000083c414c3",
+        "sha256": "b3beb57cc454f176724b8b08a07f64930e11c1f4cc2178a697a31fa3aeb67b1c",
+        "disk_backed": true,
+        "instruction_count": 23
+      },
+      {
+        "address": "00bfeb64",
+        "length": 9,
+        "end_exclusive": "00bfeb6d",
+        "role": "separate_unowned_alternate_entry_prefix",
+        "bytes_hex": "8d54240ce868980000",
+        "sha256": "eebdb67adbc4a72995c0db2e9fc5fa7d4cd43ef8a2c47013f47425ab7e9a88f5",
+        "disk_backed": true,
+        "instruction_count": 2
+      },
+      {
+        "address": "00bfeb6d",
+        "length": 453,
+        "end_exclusive": "00bfed32",
+        "role": "complete_existing_fallback_provider",
+        "bytes_hex": "8bc8509bd93c2466813c247f027405e82498000081e10000f07f8d54240881f90000f07f0f849d000000e8399800000f848e000000a90000f07f0f84f60000008a4c240f80e1800f8553010000d9f1e8cf97000080f9017502d9e0833d78dd0901000f85599800008d0d5858e100ba1d000000e994980000833d78dd0901000f853c9800008d0d5858e100ba1d000000e82e9700005ac38d542408e8c8970000f644241608750341eb33dec1b801000000ebc5f644240e0875f0dec1b807000000ebb533c9eb1633c925ffff0f000b44241075c38d542408e88b9700008b44240c8bd0250000f07f81e2ffff0f003d0000f07f75060b54240875b885c975bb83ec748bcc5183ec10dd1c24dd5c24089bdd7108e89fb1010083c41059dd6108dd0183c47485c00f8495970000b801000000e942ffffff8b44240c25ffff0f000b4424080f85f7feffffddd88b44241425ffffff7f0b442410743de8660000008a6c240fc0ed07f7442417800000007416db2dd066e10084cd7402d9e0b802000000e9f2feffffd9ee84cd0f8431970000d9e0e92a970000ddd8d9e8e921970000d9c1e81e000000d9e084c90f859cfeffffddd8ddd8db2d705ce100b801000000e9b3feffff",
+        "sha256": "ae19f7cb6cf7dd3a9b92571af200a59255b12bf08189887f696833197e4f8596",
+        "disk_backed": true,
+        "instruction_count": 123
+      },
+      {
+        "address": "00c19260",
+        "length": 25,
+        "end_exclusive": "00c19279",
+        "role": "complete_SSE2_wrapper_provider",
+        "bytes_hex": "558bec83ec1083e4f0d9c9dd1c24dd5c2408e802000000c9c3",
+        "sha256": "e4a6378ddfeae050ac73aedab430795bad2103d132257fa2e3c6477c01f71a4d",
+        "disk_backed": true,
+        "instruction_count": 10
+      },
+      {
+        "address": "00c19279",
+        "length": 2872,
+        "end_exclusive": "00c19db1",
+        "role": "complete_SSE2_core_provider",
+        "bytes_hex": "660f12442404660f123da043d700660f1215b043d700660f54f8f20f10e0660f73d02c660fc5c000660f56fa660fc5cc0325ff00000083c00125fe010000f20f593c85100bd700660f122c85100bd70003c0660f283485200fd700baef7f00002bd183e9100bca81f9000000800f83db020000b900000000ba7ffe0300660f6eca660ffbc1660f73d008f30fe6c0660f120df843d700f20f10df660f73d726660fc5c700660f5425a043d70025ff00000083c00125fe010000f20f591c853017d700f20f592c853017d70003c0660f583485401bd700660f5625b043d700f20f58f0660f54ccf20f10d3660f73d31f660fc5c300660f1205f843d700f20f5ce1660f123d0044d70025ff01000083c00125fe030000f20f592c855023d700f20f5914855023d700660f5834c5602bd700660f54c5f20f5ce8f20f58faf20f10d8f20f59c1f20f59cdf20f59dcf20f5cd0f20f59e5f20f10c6f20f5cd1f20f58f7660f124c240c660fc5c103f20f5cd3f20f5cc6660f121df843d700660fc5d603f20f5cd4f20f10e6f20f58c7f20f5cfaf20f5cf2660f14ff25f07f00003df07f00000f831705000081e2f07f00002df03f000003c2baa04000002bd02d703c00000bd081fa000000800f83e4080000f20f5ce6f20f5cd4660f1225f843d700660f54d9660f54e6f20f5cc2660f57d2ba60400000660fc4d203f20f10ebf20f59dcf20f5cf4f20f5ccdf20f59daf20f59ee660f2815703bd700f20f59e1f20f2dc3f20f59f1660f280d803bd700f20f58ec660f70e6eef20f58eeba7fff01002bd005ffe101000bd02dffe1010083fa000f8ee105000003c883e07f83e18081c180ff0100f20f58e0f20f10c3f20f581d9043d700660f59d7f20f5c1d9043d700660f59fff20f5cc303c003c003c003c0660f2898903bd700660f2835d043d700660f59cf660f58d1660f70caeef20f59d7660f57ffba803f0000f20f58d1660fc4fa03f20f58d4660f1225f043d700660f6ec9f20f5954240cf20f59c7660f73f12d660f70c944660f283de043d700f20f58ea660f59d9f20f58c5660f14c0660f59f0f20f59e0660f59c0660f58fe660f59f8f20f59c3660f70f7eef20f59c7660f70ebeef20f59f3f20f59e3f20f58c583ec10f20f58c6f20f58c4f20f58c3660f13442404dd44240483c410c3660f124c240c660f121dc043d700660f7ec8f20f10d1660f54cb660f73d120660f7ec981f90000f07f0f83da0000000bc183f8000f841c04000083fa000f8d05010000f7da81c2ef7f0000660f73f334660f56d3b9f3030000660f6ed9660f73d114660ffacb660fefdb660feecb660ff3d1660f76d3660fd7c28bca81e2ff7f000081faf07f00000f83a301000025ff0000003dff0000000f858c020000660f124c240c660f1254240cb9f4030000660f6ed9660f540dc043d700660f73d134660ffacb660f121d2044d700660ff3d1660f76d3660fd7c225ff000000b901ff030003c881e10000040083fa10725eba7ffe0b00660f121da043d700660f1215b043d700e926fcffff660f127c2404660f12642404660f7efa660f73d720660f7ef88bc825ffffff7f3d0000f07f0f829a0200000f87de01000083fa000f87d5010000e986020000b900000000660f57c0b8f0430000660fc4c003660f123da043d700660f1215b043d700f20f59c4660f7ee2660f73d420660f7ee083fa007452660f54f8f20f10e0660f5405c043d700660f73d02c660fc5c000660f56fa25ff00000083c00125fe010000f20f593c85100bd700660f122c85100bd70003c0660f283485200fd700ba7f3e0400e95cfbffff8bd081e2ffffff7f83fa0075a18b54241081e20000008083fa007431c1e10d23c1ba0000f07f0bd0660f6ec2660f73f020660f120db043d700660f12542404f20f5ecaba1b000000e999020000c1e10d23c183f8000f85a4000000d9eec3660f121da043d700660f57c9660f54dc660f76cb660fd7c981e1ff00000081f9ff0000000f85bd000000660fc5cc0381e10080000083f9000f848d00000025ff0000003dff0000007565660f124c240c660f1254240cb9f4030000660f6ed9660f540dc043d700660f73d134660ffacb660fefdb660ff3d1660f76d3660fd7c225ff0000003dff0000007423660f124c240c660fc5c103250080000083f8007407dd052044d700c3dd051844d700c3660f124c240c660fc5c103250080000083f8000f8447010000d9eec3660f124c240c660fc5c103250080000083f8000f842b010000d9eec3f20f58e4f20f10c4baee030000e98f010000660f12542404660f7ed0660f73d220660f7ed281e2ffffff7f0bc2b90000000083f8000f8480feffff660f120d0844d700660f12054044d700f20f59c9ba1c000000e948010000660f12642404660f1254240c660f121da043d700660f57c9660f54da660f76cb660fd7c125ff0000003dff0000000f85a2000000660f7ee083f8007520660f73d420660f7ee281fa0000f03f0f84e900000081fa0000f0bf7503d9e8c3660f121da043d700660f57c9660f54da660f76cb660fd7c125ff0000003dff0000007555660fc5c203660f12642404250080000081f10000f0bf0bd183fa000f849900000083f8007414660fc5c40325f07f00003df03f00007217d9eec3660fc5c40325f07f00003df03f00007303d9eec3dd051044d700c3f20f58d2f20f10c2baee030000eb63660f7ee0660f73d420660f7ee281e2ffffff7f8bc80bc2660f1205b043d700ba1a00000083f800743a660f7ee0ba1d00000025ffffff7f3d0000f07f7725720583f900771e83ec10660f13442404dd44240483c410c3660f1205100bd700ba1c00000083ec1c660f134424108954240c8bd483c2108954240883c2188954240483ea08891424e83c56ffffdd44241083c41cc383f8007e283d000004000f833c020000568bd083e07f81c100ff030081ea8000000083e28057bff03f0000eb263d0002fcff0f8ef1010000568bd083e07f81c18000000083e28081c280fe030057bf00000000f20f58e0f20f10c3f20f581d9043d7008bf281ee80ff0100660f59d7f20f5c1d9043d700660f59fff20f5cc303c003c003c003c0660f2898903bd700660f2835d043d700660f59cf660f58d1660f70caeef20f59d7f20f58d1f20f58d4660f1225f043d700660f6eca81ea80ff0100f7dac1fa0783c2028bc283e02003d0660f57ffb8803f0000660fc4f803f20f59542414f20f59c7660f73f12d660f70c944660f283de043d700f20f58ea660f59d9f20f58c5660f14c0660f59f0f20f59e0660f59c0660f58fe660f59f8f20f59c3660f70f7eef20f59c7660f70ebeef20f59f3f20f59e3660f6ef9660f73f72d660f6ed2660f76c9660ff3caf20f58c5f20f58c6660f54cbf20f58c4660f57f6660f76e4660ff3e2f20f5cd9f20f10d1f20f58c8660f54cc660fc4f7035ff20f5cd1f20f58c2f20f58c383fe007f4e5ef20f59c7f20f59cff20f58c1f20f59f0f20f58c6660fc5c00325f07f0000ba180000003df07f00000f8410feffffba1900000083f8000f8402feffff83ec10660f13442404dd44240483c410c35ef20f58c1f20f59c7f20f59f0f20f58c6660fc5c00325f07f0000ba180000003df07f00000f84c6fdffffba1900000083f8000f84b8fdffff83ec10660f13442404dd44240483c410c3660f12053844d700660f6ec9f20f59c0660f73f12d660f56c1ba19000000e984fdffffba1800000083f9007415660f12052844d700f20f59053044d700e965fdffff660f12053044d700f20f59c0e954fdffff660f70e144660f59e6660fc5c40325f07f0000baa04000002bd02d703c00000bd081fa000000800f82eff6ffff3d00000080722081c980ff0100660f6ec1660f73f02d83ec10660f13442404dd44240483c410c3660f12642404660fc5d40381e2f07f000081eaf03f0000660fc5c10333c2250080000083f8000f852dffffffe94bffffff",
+        "sha256": "b17d9265f4cc6849cab37e4621388997aa7794fbb99fd6787b79a784198b7e3f",
+        "disk_backed": true,
+        "instruction_count": 645
+      },
+      {
+        "address": "00c0f0e4",
+        "length": 634,
+        "end_exclusive": "00c0f35e",
+        "role": "complete_libm_error_provider",
+        "bytes_hex": "558bec83ec2833c03905b8e10901538b5d0c568b7510578b7d088845f88845f98845fa8845fb8845fc8845fd8845fe8845ff740eff3580ed0901e8bb5effff59eb05b84585c2008b4d14baa60000003bca0f8f740100000f845b01000083f9190f8ff80000000f84e90000008bd16a02592bd10f84cd0000004a0f84bd00000083ea050f84a50000004a0f848600000083ea0574714a744583ea090f85d4010000c745d803000000c745dcc471d500dd078d4dd8dd5de051dd03dd5de8dd06dd5df0ffd085c0590f85a3010000e8d509ffffc70022000000e993010000c745dcfc71d500dd078d4dd8dd5de051dd03c745d804000000dd5de8dd06dd5df0ffd059e96a010000c745d803000000c745dcfc71d500eb99c745dcd471d500dd07dd5de0dd03dd5de8dd06e922010000894dd8c745dcd471d500e972ffffffc745dcd071d500ebd7894dd8c745dcd071d500e95affffffc745dcc471d500eb8683e91a744e49743f49743049742083e91d741283e9030f85fb000000c745dc2872d500eb9ac745dc3072d500eb91c745dcc471d500dd07dd1eeb84c745dcc471d500e978ffffffc745d802000000e9f7feffffd9e8e9bb000000c745d803000000c745dc68a9d600e9e4feffff81c118fcffff83f90c0f879b000000ff248d60f3c000c745dcd071d500eba9c745dcd471d500eba0c745dcfc71d500eb97c745dc1872d500eb8ec745dc1072d500eb85c745dcf471d500e979ffffffc745dcc871d500e96dffffffc745dcb471d500eb10c745dc0472d500eb07c745dca071d500dd07dc4df8dd16dd07dd5de0dd03dd5de88d4dd8dd5df051c745d801000000ffd085c059750be83d08ffffc70021000000dd45f0dd1e5f5e5bc9c3",
+        "sha256": "65c2d8637092d38568bf2b700b2645106e08bbdfb3842edf4d30f213178388cd",
+        "disk_backed": true,
+        "instruction_count": 176
+      },
+      {
+        "address": "00c28545",
+        "length": 3,
+        "end_exclusive": "00c28548",
+        "role": "complete_default_matherr_provider",
+        "bytes_hex": "33c0c3",
+        "sha256": "4bc724f3b1d0caf4fe369c18cba3102e6c4ea057f63fe1587e3973134a7f755e",
+        "disk_backed": true,
+        "instruction_count": 2
+      },
+      {
+        "address": "0109eea0",
+        "length": 4,
+        "end_exclusive": "0109eea4",
+        "role": "current_dispatch_saved_virtual_initialization",
+        "bytes_hex": "00000000",
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "disk_backed": false
+      }
+    ],
+    "guard": "Each bsp.py ghidra call verifies existing project/program. Saved virtual zeros are not current runtime values."
+  },
+  "original_abi": "Two x87 inputs ST0=y/ST1=x, normal oneST0 result, plainRET, no consumed stack arguments.",
+  "source_abi": "Added stablecontext atentryESP+4; SSE2 fixed forwarding bridge, fallback4registersave/bind/restore with original20-byte input/scratch generation. Assembly-only void declaration.",
+  "source_boundaries": [
+    "Current109EEA0 read once; nonzero masksMXCSR1F80 thenFNSTCW7F only afterfirstcompareequal. OriginalLEA cleanup preservesselectedflags.",
+    "Fallbackonly readsactual four borrowed rawbindings; SSE2only readsactual errorcontext. No hostpow/forcedflag/extraFPnormalization.",
+    "Newprivateframe/code/volatile/fault/nativeSEH/abnormalregisterrestore differences qualified. OriginalalternateentryBFEB64 notowned.",
+    "Incidental final EFLAGS equality excluded: original final ADD ESP operates at shifted source address. Independent complete source review passed before strict build."
+  ],
+  "reconstructed": true,
+  "build_tested": true,
+  "static_compiled_proof": true,
+  "runtime_tested": false,
+  "game_validated": false,
+  "primary_review": {
+    "utc": "2026-09-12T00:47:15.391959+00:00",
+    "integration_state": "complete_source_main_build_static_proof_saved_and_registered",
+    "main_build_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pow_chain_build_frozen\\manifest.json",
+      "bytes": 112821,
+      "sha256": "95072fb6ddac8d77c163742fc922b5d66a8661e860e5d86cea0dd908c4294950"
+    },
+    "main_library_sha256": "ee40de7eb2d015338922c4d67b6d561098f55260519061bd3652973f741fa9af",
+    "strict_Win32": true,
+    "unchanged_prebuild_inputs": 56,
+    "actual_compiler_commands": 14,
+    "compiler_read_dependencies": 266,
+    "existing_CTests": 2,
+    "fresh_seed_matches": 8,
+    "exact_archived_objects": 14,
+    "summary": "Complete 84-byte/23-instruction dispatcher maps to 112 bytes/39 instructions plus the exact 17-byte/five-instruction context helper. All original operands, branches, current-control tests, context offsets and three actual bindings checked.",
+    "dispatch_proof": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pow_chain_primary\\dispatch_proof\\object_proof.json",
+      "bytes": 32957,
+      "sha256": "225355929d21a06088242794c4b6983f0f6f5bc3312f2d5edb5d5fca6d6d2d14"
+    },
+    "full_SSE2_libm_decoder_replay": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pow_chain_primary\\sse2_replay\\result.json",
+      "bytes": 41302,
+      "sha256": "1c36553b604d2b3198cb7d6ecfba7c8f751250ae73fd5f513e46c50bab4a742d"
+    },
+    "saved_annotations": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_crt_pow_dispatch_annotations.json",
+      "bytes": 1511,
+      "sha256": "e51e24f0421465bd95ff7225c9d6bf8eb52fc52dd41ea25f0a0b8b370ee6f713"
+    },
+    "registered_records": [
+      {
+        "kind": "function",
+        "address": "00bfeb10",
+        "name": "dispatch_native_crt_pow_00bfeb10",
+        "cpp_symbol": "bsp::dispatch_native_crt_pow_00bfeb10",
+        "source": "src/native_crt_pow_dispatch.cpp",
+        "native_end_exclusive": "00bfeb64",
+        "status": "complete_source_main_archive_static_proof_checked",
+        "evidence": "reports/native_crt_pow_dispatch_audit.json",
+        "original_abi": "ST0=y, ST1=x; normal one ST0 result; plain RET, no consumed stack arguments.",
+        "source_abi": "Added stable context at entry ESP+4; actual current dispatch pointer and only selected complete provider context. Four fallback binding registers saved/restored; fixed five-instruction SSE2 forwarding helper.",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "refreshed_exports": [
+      {
+        "address": "00bfeb10",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bfeb10\\decompiled.c",
+        "bytes": 1600,
+        "sha256": "c29ff26231967a6ca75caa52e38100298dbfa8a2a0f4f539a158fd2f09efa17e"
+      }
+    ],
+    "new_routine_runtime_executed": false,
+    "native_SEH_compatible": false,
+    "original_caller_ABI_compatible": false,
+    "game_validated": false,
+    "current_document": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_CRT_POW_DISPATCH.md",
+      "bytes": 3298,
+      "sha256": "0b321bea574a9ca0904e31e603fe9b0e32cca3c0a0657a2c3fb59ad79e332d2b"
+    },
+    "fallback_provenance_supplement": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pow_chain_primary\\fallback_parity\\fallback_parity.json",
+      "bytes": 110957,
+      "sha256": "6673d4bafd2258f85773af83d38de4cb81c8b15bf8c3cd9f8961a21bb6305871"
+    },
+    "fallback_boundary": "All nine actual fallback objects, all 121 COFF sections and 51 CODE sections/5,028 bytes are identical to reviewed baseline; all 32 compiler-read repository inputs LF-equal. Unchanged 13-function/1,537-native-byte verifier passed. This fallback relocation proof is synthetic, separate from actual dispatcher linked evidence.",
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pow_chain_primary\\sealed.json",
+      "bytes": 232372,
+      "sha256": "57016f4430c6faf7672fc4a06a782c86b6cd74d02eb6499e5bf313a0c34bcf66"
+    }
+  }
+}

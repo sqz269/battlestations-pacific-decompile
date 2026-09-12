@@ -113,3 +113,13 @@ Then complete raw BCFEB0/reserve/general insertion/checked insertion/append/regi
 Full B1B730 remains200 bytes. Its verified native path obtains raw manager+10h, enters the actual section and increments physical+18h, rechecks currentF8D41C, allocates/constructs, publishes, **calls415350 again**, then reloads currentF8D41C for BD0C30. It decrements/leaves captured section and returns publication reloaded after Leave. A registration exception leaves publication in place. Its existing full registry constructor and raw guard providers can be reused after the manager and terminal ownership contracts are concrete. No second private manager or typed-object cast is a valid shortcut.
 
 This packet establishes finite native/source evidence and a ready complete-function leaf packet. It makes no build, fixture, original caller-ABI, hardware-fault, runtime or game-validation claim.
+
+
+Primary revalidation checked all 242 sealed artifacts and 34 source pins, then
+reread all 46 finite spans through the guarded BSP client: 43 disk-backed spans
+(3,884 bytes) and three separate saved virtual DWORDs. Every captured span
+remains equal. The only current source drift is unrelated mission/menu wiring
+in game_hosts_menu.cpp; its inspected no-op lifetime invalid-parameter callback
+and registration remain unchanged, so it still does not close native CRT
+ownership. The immutable primary evidence is local/singleton_raw_primary/.
+This is completed discovery, not completion of the raw manager family.

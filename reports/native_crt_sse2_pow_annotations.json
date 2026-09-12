@@ -1,0 +1,30 @@
+[
+  {
+    "address": "00c19260",
+    "before": {
+      "address": "00c19260",
+      "function_name": "LIBCRT_unmatched_00c19260",
+      "comment": "[BSP inventory 00c19260] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+    },
+    "after": {
+      "address": "00c19260",
+      "name": "BSP_CRT_PowSSE2X87Entry",
+      "evidence": "Complete 25-byte original function. All 10 native instructions map to 12 emitted instructions. Original alignment, x87 consumption, core input offsets, EBP/ESP restoration and full actual core target checked. Added context at entry ESP+4; original reservation enlarged from 10h to 20h and two integer MOVs forward it to the full core. Strict main Win32 /W4 /WX /fp:strict, 2 existing CTests and 8 reference seeds passed; 56 unchanged prebuild inputs and 14 exact archived members. Actual library SHA256 ee40de7eb2d015338922c4d67b6d561098f55260519061bd3652973f741fa9af. Address-only link artifacts were never executed. New qualified source ABI; no drop-in ABI, native SEH or game validation. Descriptive BSP names are hypotheses. reports/native_crt_sse2_pow_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00c19279",
+    "before": {
+      "address": "00c19279",
+      "function_name": "LIBCRT_unmatched_00c19279",
+      "comment": "[BSP inventory 00c19279] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+    },
+    "after": {
+      "address": "00c19279",
+      "name": "BSP_CRT_PowSSE2Core",
+      "evidence": "Complete 2872-byte original function. All 645 instructions, 15 returns, internal branches, 59 data reads and exact 14,616 readonly bytes checked. Every original byte outside 60 relocation words is identical. All 62 owned bindings and complete six linked libm/decoder providers verified. Added context at entry ESP+14h; all original core offsets remain. Fixed eight-instruction bridge reaches the complete libm service. Strict main Win32 /W4 /WX /fp:strict, 2 existing CTests and 8 reference seeds passed; 56 unchanged prebuild inputs and 14 exact archived members. Actual library SHA256 ee40de7eb2d015338922c4d67b6d561098f55260519061bd3652973f741fa9af. Address-only link artifacts were never executed. New qualified source ABI; no drop-in ABI, native SEH or game validation. Descriptive BSP names are hypotheses. reports/native_crt_sse2_pow_audit.json"
+    },
+    "status": "applied"
+  }
+]

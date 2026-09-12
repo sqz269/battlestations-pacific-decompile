@@ -155,6 +155,9 @@ target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene
   src/native_crt_pointer_decode_support.cpp
   src/native_crt_pointer_decode.cpp
   src/native_crt_libm_callback_registration.cpp
+  src/native_crt_libm_error_support.cpp
+  src/native_crt_sse2_pow.cpp
+  src/native_crt_pow_dispatch.cpp
   src/native_resource_registry_tree_leaves.cpp
   src/native_resource_registry_erase.cpp
   src/native_resource_registry_destroy.cpp

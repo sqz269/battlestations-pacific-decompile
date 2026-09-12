@@ -1,0 +1,30 @@
+[
+  {
+    "address": "00c0f0e4",
+    "before": {
+      "address": "00c0f0e4",
+      "function_name": "___libm_error_support",
+      "comment": "Library Function - Single Match\n ___libm_error_support\n\nLibrary: Visual Studio 2005 Release"
+    },
+    "after": {
+      "address": "00c0f0e4",
+      "name": "___libm_error_support",
+      "evidence": "Complete 634-byte original function. All 176 native instructions map to 255 emitted instructions/784 bytes. All 13 readonly selector targets, five compiled reference offsets, current selection schedule, mutable 32-byte callback record, x87 alias-sensitive stores and post-callback/errno result reloads checked. Correct library name retained. Fifth stable context at ESP+14h borrows current callback flag/encoded word, full decoder, actual owning CRT errno runtime and shared canonical name identities. Strict main Win32 /W4 /WX /fp:strict, 2 existing CTests and 8 reference seeds passed; 56 unchanged prebuild inputs and 14 exact archived members. Actual library SHA256 ee40de7eb2d015338922c4d67b6d561098f55260519061bd3652973f741fa9af. Address-only link artifacts were never executed. New qualified source ABI; no drop-in ABI, native SEH or game validation. Descriptive BSP names are hypotheses. reports/native_crt_libm_error_support_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00c28545",
+    "before": {
+      "address": "00c28545",
+      "function_name": "LIBCRT_unmatched_00c28545",
+      "comment": "[BSP inventory 00c28545] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)\n\n[BSP reconstruction 00c28545]\n[BSP reconstruction 00c28545] Installed matherr call target body is exactly33C0C3, return0 with no indirect callback or mutation; consistent with default _matherr. Symbol interpretation remains provisional. Evidence: docs/LEGACY_CRT_MATH.md; reports/legacy_crt_math_audit.json. Bounded native differential passed; no gameplay or drop-in binary replacement validation. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation."
+    },
+    "after": {
+      "address": "00c28545",
+      "name": "_matherr",
+      "evidence": "Complete 3-byte original function. Exact original 33 C0 C3 body checked in the actual object and linked image. Library name follows concrete default callback role and native body; old saved label retained in annotation journal. Same fixed default callback body under the rebuilt service ABI. Strict main Win32 /W4 /WX /fp:strict, 2 existing CTests and 8 reference seeds passed; 56 unchanged prebuild inputs and 14 exact archived members. Actual library SHA256 ee40de7eb2d015338922c4d67b6d561098f55260519061bd3652973f741fa9af. Address-only link artifacts were never executed. New qualified source ABI; no drop-in ABI, native SEH or game validation. Descriptive BSP names are hypotheses. reports/native_crt_libm_error_support_audit.json"
+    },
+    "status": "applied"
+  }
+]

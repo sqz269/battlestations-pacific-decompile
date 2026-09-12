@@ -1,0 +1,16 @@
+[
+  {
+    "address": "00bfeb10",
+    "before": {
+      "address": "00bfeb10",
+      "function_name": "LIBCRT_unmatched_00bfeb10",
+      "comment": "[BSP inventory 00bfeb10] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+    },
+    "after": {
+      "address": "00bfeb10",
+      "name": "BSP_CRT_PowDispatchCurrentControls",
+      "evidence": "Complete 84-byte original function. All 23 original instructions map to 39 emitted instructions, with every original operand, branch, mask cleanup and three fixed bindings checked. FXCH/FSTP x/FST y/current stored y-high input order retained. Adjacent BFEB64 excluded. Incidental final EFLAGS and native private-frame/SEH identity are not equivalent. Added stable context at entry ESP+4; actual current dispatch pointer and only selected complete provider context. Four fallback binding registers saved/restored; fixed five-instruction SSE2 forwarding helper. Strict main Win32 /W4 /WX /fp:strict, 2 existing CTests and 8 reference seeds passed; 56 unchanged prebuild inputs and 14 exact archived members. Actual library SHA256 ee40de7eb2d015338922c4d67b6d561098f55260519061bd3652973f741fa9af. Address-only link artifacts were never executed. New qualified source ABI; no drop-in ABI, native SEH or game validation. Descriptive BSP names are hypotheses. reports/native_crt_pow_dispatch_audit.json"
+    },
+    "status": "applied"
+  }
+]

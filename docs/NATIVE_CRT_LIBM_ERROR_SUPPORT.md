@@ -143,3 +143,6 @@ comparisons and the final archive/link proof are recorded in the audit.
 The address-only link artifact is not executed. Existing tests do not exercise
 this service; compilation and static instruction evidence are not a callback
 fixture, hardware-exception experiment, binary replacement or game validation.
+
+
+Primary integration passed against the frozen main library. Complete 634-byte/176-instruction service maps to 784 bytes/255 instructions; exact three-byte default callback. All 13 selector targets, five compiled reference offsets, full decoder/default/strcmp/OS-major/module-gate linked bodies and canonical identity/errno scheduling checked. The strict Win32 build passed both existing CTests and eight reference seeds with 56 unchanged source/header/build inputs. Fourteen actual archive members, 14 compiler commands and 266 read dependencies are frozen under `local/pow_chain_build_frozen/`; reviewed proof replays are under `local/pow_chain_primary/`. Ghidra names/comments are saved, prior values retained, reconstruction records registered and all affected exports refreshed. These static checks do not establish runtime, original caller ABI, native SEH or game behavior.

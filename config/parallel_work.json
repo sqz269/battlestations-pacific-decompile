@@ -7742,6 +7742,76 @@
         "reports/native_crt_libm_callback_registration_audit.json"
       ],
       "evidence": "reports/native_crt_libm_callback_registration_audit.json"
+    },
+    {
+      "id": "native_crt_pow_dispatch1",
+      "packet": "native_crt_pow_dispatch1",
+      "state": "complete_source_main_build_static_proof_saved_and_registered",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00bfeb10"
+      ],
+      "code_ownership": [
+        "src/native_crt_pow_dispatch.cpp",
+        "include/bsp/native_crt_pow_dispatch.hpp",
+        "docs/NATIVE_CRT_POW_DISPATCH.md",
+        "reports/native_crt_pow_dispatch_audit.json"
+      ],
+      "evidence": "reports/native_crt_pow_dispatch_audit.json"
+    },
+    {
+      "id": "native_crt_sse2_pow_body2",
+      "packet": "native_crt_sse2_pow_body2",
+      "state": "complete_source_main_build_static_proof_saved_and_registered",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00c19260",
+        "00c19279"
+      ],
+      "code_ownership": [
+        "src/native_crt_sse2_pow.cpp",
+        "include/bsp/native_crt_sse2_pow.hpp",
+        "docs/NATIVE_CRT_SSE2_POW.md",
+        "reports/native_crt_sse2_pow_audit.json"
+      ],
+      "evidence": "reports/native_crt_sse2_pow_audit.json"
+    },
+    {
+      "id": "native_crt_libm_error_support2",
+      "packet": "native_crt_libm_error_support2",
+      "state": "complete_source_main_build_static_proof_saved_and_registered",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00c0f0e4",
+        "00c28545"
+      ],
+      "code_ownership": [
+        "src/native_crt_libm_error_support.cpp",
+        "include/bsp/native_crt_libm_error_support.hpp",
+        "docs/NATIVE_CRT_LIBM_ERROR_SUPPORT.md",
+        "reports/native_crt_libm_error_support_audit.json"
+      ],
+      "evidence": "reports/native_crt_libm_error_support_audit.json"
+    },
+    {
+      "id": "native_singleton_manager_raw_discovery",
+      "packet": "native_singleton_manager_raw_discovery",
+      "state": "complete_read_only_discovery_primary_revalidated",
+      "done": true,
+      "source_ready": false,
+      "worker": "main",
+      "function_addresses": [],
+      "code_ownership": [
+        "docs/NATIVE_SINGLETON_MANAGER_RAW_DISCOVERY.md",
+        "reports/native_singleton_manager_raw_discovery.json"
+      ],
+      "evidence": "reports/native_singleton_manager_raw_discovery.json"
     }
   ],
   "snapshot_after_analysis": {

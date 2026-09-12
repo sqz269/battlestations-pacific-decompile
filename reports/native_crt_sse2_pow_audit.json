@@ -7289,5 +7289,104 @@
     "current_source_header_LF_equal_prior_reviewed_inputs": true,
     "raw_namespace_hash_spellings_retained": true,
     "actual_import_and_literal_bindings_verified": true
+  },
+  "primary_review": {
+    "utc": "2026-09-12T00:47:15.413809+00:00",
+    "integration_state": "complete_source_main_build_static_proof_saved_and_registered",
+    "main_build_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pow_chain_build_frozen\\manifest.json",
+      "bytes": 112821,
+      "sha256": "95072fb6ddac8d77c163742fc922b5d66a8661e860e5d86cea0dd908c4294950"
+    },
+    "main_library_sha256": "ee40de7eb2d015338922c4d67b6d561098f55260519061bd3652973f741fa9af",
+    "strict_Win32": true,
+    "unchanged_prebuild_inputs": 56,
+    "actual_compiler_commands": 14,
+    "compiler_read_dependencies": 266,
+    "existing_CTests": 2,
+    "fresh_seed_matches": 8,
+    "exact_archived_objects": 14,
+    "summary": "Complete 25-byte wrapper and 2,872-byte core: 645 core instructions, 15 returns, 59 reads, exact 14,616 readonly data bytes, all 62 relocations and complete provider/decoder replay checked. Wrapper has 12 instructions/32 bytes; fixed libm bridge has eight instructions/30 bytes.",
+    "dispatch_proof": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pow_chain_primary\\dispatch_proof\\object_proof.json",
+      "bytes": 32957,
+      "sha256": "225355929d21a06088242794c4b6983f0f6f5bc3312f2d5edb5d5fca6d6d2d14"
+    },
+    "full_SSE2_libm_decoder_replay": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pow_chain_primary\\sse2_replay\\result.json",
+      "bytes": 41302,
+      "sha256": "1c36553b604d2b3198cb7d6ecfba7c8f751250ae73fd5f513e46c50bab4a742d"
+    },
+    "saved_annotations": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_crt_sse2_pow_annotations.json",
+      "bytes": 2617,
+      "sha256": "e2a73c42c5f4f642aae7fc0fccbec96a919298df78423dfb1c7a9115701d579d"
+    },
+    "registered_records": [
+      {
+        "kind": "function",
+        "address": "00c19260",
+        "name": "native_crt_sse2_pow_x87_00c19260",
+        "cpp_symbol": "bsp::native_crt_sse2_pow_x87_00c19260",
+        "source": "src/native_crt_sse2_pow.cpp",
+        "native_end_exclusive": "00c19279",
+        "status": "complete_source_main_archive_static_proof_checked",
+        "evidence": "reports/native_crt_sse2_pow_audit.json",
+        "original_abi": "ST0=y, ST1=x; original aligned x/y stores, plain RET and one ST0 result.",
+        "source_abi": "Added context at entry ESP+4; original reservation enlarged from 10h to 20h and two integer MOVs forward it to the full core.",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00c19279",
+        "name": "native_crt_sse2_pow_00c19279",
+        "cpp_symbol": "bsp::native_crt_sse2_pow_00c19279",
+        "source": "src/native_crt_sse2_pow.cpp",
+        "native_end_exclusive": "00c19db1",
+        "status": "complete_source_main_archive_static_proof_checked",
+        "evidence": "reports/native_crt_sse2_pow_audit.json",
+        "original_abi": "x at entry ESP+4, y at ESP+Ch; original 15 plain RETs, result ST0, current MXCSR/x87 controls.",
+        "source_abi": "Added context at entry ESP+14h; all original core offsets remain. Fixed eight-instruction bridge reaches the complete libm service.",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "refreshed_exports": [
+      {
+        "address": "00c19260",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c19260\\decompiled.c",
+        "bytes": 1176,
+        "sha256": "401d65b4c390e2ce3fcd04109f10d78a469392deb38cbdcc3868866a998e29c7"
+      },
+      {
+        "address": "00c19279",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c19279\\decompiled.c",
+        "bytes": 18729,
+        "sha256": "1ce22a20e3cb4024cb8ef940aac5dde341a8b813e265289eee8755e6223a0447"
+      }
+    ],
+    "new_routine_runtime_executed": false,
+    "native_SEH_compatible": false,
+    "original_caller_ABI_compatible": false,
+    "game_validated": false,
+    "current_document": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_CRT_SSE2_POW.md",
+      "bytes": 10928,
+      "sha256": "1958b19e96678250fd87ecf13a5b34831a139489b0f935bb38102d02c749f853"
+    },
+    "fallback_provenance_supplement": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pow_chain_primary\\fallback_parity\\fallback_parity.json",
+      "bytes": 110957,
+      "sha256": "6673d4bafd2258f85773af83d38de4cb81c8b15bf8c3cd9f8961a21bb6305871"
+    },
+    "fallback_boundary": "All nine actual fallback objects, all 121 COFF sections and 51 CODE sections/5,028 bytes are identical to reviewed baseline; all 32 compiler-read repository inputs LF-equal. Unchanged 13-function/1,537-native-byte verifier passed. This fallback relocation proof is synthetic, separate from actual dispatcher linked evidence.",
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pow_chain_primary\\sealed.json",
+      "bytes": 232372,
+      "sha256": "57016f4430c6faf7672fc4a06a782c86b6cd74d02eb6499e5bf313a0c34bcf66"
+    }
   }
 }

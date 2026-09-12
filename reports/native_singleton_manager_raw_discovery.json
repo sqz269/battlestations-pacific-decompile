@@ -978,5 +978,44 @@
     "Actual registered-owner population and terminal bindings across the whole game remain an integration obligation; registry-specific dispatch alone does not close all manager users.",
     "Host CRT services are concrete and reusable but are not byte-for-byte static native CRT ownership or exceptional-state reconstruction.",
     "Saved virtual globals are analysis-image bytes, not observed live game publication or encoded-handler values."
-  ]
+  ],
+  "primary_review": {
+    "utc": "2026-09-12T00:39:58.399240+00:00",
+    "verified": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\singleton_raw_primary\\verified.json",
+      "bytes": 12279,
+      "sha256": "5bc1e979148e95c6178f2cb29c5f9ba00f055c611f3246346ac25b676f12c57b"
+    },
+    "worker_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\singleton_raw_primary\\worker\\worker_sealed.json",
+      "bytes": 54496,
+      "sha256": "d992c6b6d68ae04a03e4be9a8b3d09657e8e5a0dd3482d56f9171ef127ad2d8d"
+    },
+    "source_drift": {
+      "path": "src/game_hosts_menu.cpp",
+      "impact": "Unrelated mission/menu wiring; actual inspected no-op callback and registration unchanged.",
+      "diff": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\singleton_raw_primary\\current_menu_source_diff.patch",
+        "bytes": 4219,
+        "sha256": "1deea316a686b9e12f5aaa42b4e166118551ace66e7e2238a6a83db0140d5c4a"
+      },
+      "current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\singleton_raw_primary\\current_game_hosts_menu.cpp",
+        "bytes": 81931,
+        "sha256": "a48744ad687f31f0fbdd46bf5de5aa61b8e6b73f5514028f71e75063b29fe878"
+      }
+    },
+    "current_document": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_SINGLETON_MANAGER_RAW_DISCOVERY.md",
+      "bytes": 20715,
+      "sha256": "d7d8eae7ba755c2c20830509910277333ad8d7a96c0ecd6f5a78f39ed93ffdc5"
+    },
+    "source_reconstructed": false,
+    "game_validated": false,
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\singleton_raw_primary\\sealed.json",
+      "bytes": 86764,
+      "sha256": "7d524e92d51171f2af365aa39056cc887eae78d10be4abda1abdb078cd397357"
+    }
+  }
 }
