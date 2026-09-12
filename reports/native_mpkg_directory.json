@@ -1,0 +1,644 @@
+{
+  "packet": "orch2_native_mpkg_directory_ax",
+  "status": "five_complete_actual_source_bodies_strict_win32_and_frozen_native_composition_passed",
+  "new_complete_routine_count": 5,
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "routines": [
+    {
+      "label": "scan",
+      "entry": "00bb87a0",
+      "inclusive_end": "00bb8841",
+      "bytes": 162,
+      "kind": "body",
+      "sha256": "311e0e0e28f92d9d7a84cddd7a9ff7703956127f3cd5e1f45b762b44d911e052",
+      "live_equals_installed_PE": true,
+      "source": "src/native_mpkg_directory.cpp",
+      "source_symbol": "find_native_mpkg_end_record_00bb87a0",
+      "name": "BSP_MPKG_FindEndOfCentralDirectory",
+      "name_status": "hypothesis, not recovered symbol",
+      "coverage": "complete stored body and logical cleanup; explicit source interface",
+      "original_abi": "ECX actual34h archive; no stacked arguments; RET; no stable return."
+    },
+    {
+      "label": "header",
+      "entry": "00bb8850",
+      "inclusive_end": "00bb8a8d",
+      "bytes": 574,
+      "kind": "body",
+      "sha256": "ad1888bd97ca2e71c7d2df0400f8dd6fc8c4306ca14beb224053aa3e983b3b5f",
+      "live_equals_installed_PE": true,
+      "source": "src/native_mpkg_directory.cpp",
+      "source_symbol": "read_native_mpkg_header_00bb8850",
+      "name": "BSP_MPKG_ReadFixedHeaderFields",
+      "name_status": "hypothesis, not recovered symbol",
+      "coverage": "complete stored body and logical cleanup; explicit source interface",
+      "original_abi": "Three stacked arguments reader/header/kind; RET0Ch; ECX ignored."
+    },
+    {
+      "label": "name",
+      "entry": "00bb9090",
+      "inclusive_end": "00bb90fe",
+      "bytes": 111,
+      "kind": "body",
+      "sha256": "8ef187b709ce302f44fb325c260ed9f91c51d94ff99d5035c2523a4990451093",
+      "live_equals_installed_PE": true,
+      "source": "src/native_mpkg_directory.cpp",
+      "source_symbol": "read_native_mpkg_name_00bb9090",
+      "name": "BSP_MPKG_ReadEntryName",
+      "name_status": "hypothesis, not recovered symbol",
+      "coverage": "complete stored body and logical cleanup; explicit source interface",
+      "original_abi": "ECX actual0Ch reader; stacked actual8h output/count; EAX output; RET8."
+    },
+    {
+      "label": "entry",
+      "entry": "00bb95b0",
+      "inclusive_end": "00bb96f5",
+      "bytes": 326,
+      "kind": "body",
+      "sha256": "3531d85cea3db288df36d21cc9c92ab982f3170d545a4349a967dcc32d8910b3",
+      "live_equals_installed_PE": true,
+      "source": "src/native_mpkg_directory.cpp",
+      "source_symbol": "parse_native_mpkg_directory_entry_00bb95b0",
+      "name": "BSP_MPKG_ParseDirectoryEntry",
+      "name_status": "hypothesis, not recovered symbol",
+      "coverage": "complete stored body and logical cleanup; explicit source interface",
+      "original_abi": "ECX actual34h archive; stacked actual0Ch reader; RET4."
+    },
+    {
+      "label": "directory",
+      "entry": "00bb9700",
+      "inclusive_end": "00bb97a2",
+      "bytes": 163,
+      "kind": "body",
+      "sha256": "077d2ab92e0f8cf7a5757b5be7a243a57f384edc8c3a09ae75949e77450b00c6",
+      "live_equals_installed_PE": true,
+      "source": "src/native_mpkg_directory.cpp",
+      "source_symbol": "load_native_mpkg_directory_00bb9700",
+      "name": "BSP_MPKG_LoadDirectoryEntries",
+      "name_status": "hypothesis, not recovered symbol",
+      "coverage": "complete stored body and logical cleanup; explicit source interface",
+      "original_abi": "ECX actual34h archive; no stacked arguments; RET."
+    }
+  ],
+  "layout": {
+    "archive_bytes": 52,
+    "archive": "pathname length/data4/8; stream C; low length10; entry count14; prefix adjustment18; EOCD offset1C; directory size20/offset24; vector base28/count2C/capacity30",
+    "reader_bytes": 12,
+    "reader": "base0, reported actual count4, current8",
+    "header_bytes": 52,
+    "header": "kind0, signature4; optional central WORD8; WORDs A/C/E; DWORDs10/14/18/1C; WORDs20/22; central WORDs24/26/28,DWORDs2C/30; padding2A/2B untouched",
+    "entry_bytes": 36,
+    "entry": "name length/data0/4; local offset8; resolved BYTE C; provisional data offset10; method WORD14; compressed DWORD18; decoded DWORD1C; CRC20; padding D..F and16..17 untouched",
+    "producer_evidence": "Complete BB95B0 projection before sibling BB9520 actual vector append; no semantic vector or array."
+  },
+  "host_steps": [
+    {
+      "address": "00bb87c2",
+      "native": "00bf55be",
+      "function": "00bb87a0",
+      "contract": "Allocate min(low length,FFFFh); stacked byte count, caller pops4; no added rollback."
+    },
+    {
+      "address": "00bb8821",
+      "native": "00bf65ac",
+      "function": "00bb87a0",
+      "contract": "No-hit/free path uses captured scratch; caller pops4; returning CRT free."
+    },
+    {
+      "address": "00bb8836",
+      "native": "00bf65ac",
+      "function": "00bb87a0",
+      "contract": "Hit path first stores current archive length minus scan distance, then frees captured scratch; caller pops4."
+    },
+    {
+      "address": "00bb90b8",
+      "native": "0041dd40",
+      "function": "00bb9090",
+      "contract": "Zero output length/data, ECX output, captured count/preserve1 stacked; actual resize RET8."
+    },
+    {
+      "address": "00bb90ca",
+      "native": "00bf79f0",
+      "function": "00bb9090",
+      "contract": "Current output data captured before current length; fill with spaces; three stacked arguments, caller pops0Ch."
+    },
+    {
+      "address": "00bb95db",
+      "native": "00bb8850",
+      "function": "00bb95b0",
+      "contract": "Stack reader, local parsed header, zero kind; callee RET0Ch; ECX ignored."
+    },
+    {
+      "address": "00bb95fc",
+      "native": "00bb9090",
+      "function": "00bb95b0",
+      "contract": "Arm state0; ECX reader, stacked temporary output/count from parsed WORD20; callee RET8, EAX output."
+    },
+    {
+      "address": "00bb9617",
+      "native": "0041dd40",
+      "function": "00bb95b0",
+      "contract": "State1; ECX local entry string; current temporary length and preserve1; actual resize RET8."
+    },
+    {
+      "address": "00bb962f",
+      "native": "00bf7680",
+      "function": "00bb95b0",
+      "contract": "Reload temporary length, capture EBX entry data after resize. If nonzero temporary length, copy current entry length from current temporary data to captured entry data; overlap-capable CRT, caller pops0Ch."
+    },
+    {
+      "address": "00bb964f",
+      "native": "00419cc0",
+      "function": "00bb95b0",
+      "contract": "State0 before getter; capture current temporary data and length+1, push1/size/block before getter."
+    },
+    {
+      "address": "00bb9656",
+      "native": "00bd1510",
+      "function": "00bb95b0",
+      "contract": "ECX getter result; return captured temporary block/size/1; RET0Ch."
+    },
+    {
+      "address": "00bb96b9",
+      "native": "00bb9520",
+      "function": "00bb95b0",
+      "contract": "ECX archive+28, stacked local actual24h entry; actual sibling vector append RET4; projection/reader skip complete first."
+    },
+    {
+      "address": "00bb96d5",
+      "native": "00419cc0",
+      "function": "00bb95b0",
+      "contract": "State-1 after append; test EBX captured entry data; capture CURRENT entry length+1 before getter. No cleanup rollback if getter throws."
+    },
+    {
+      "address": "00bb96dc",
+      "native": "00bd1510",
+      "function": "00bb95b0",
+      "contract": "ECX getter result; captured EBX block, current captured size,1; RET0Ch."
+    },
+    {
+      "address": "00bb9739",
+      "native": "00bf55be",
+      "function": "00bb9700",
+      "contract": "Compute current length-current directory offset; capture EBX stream BEFORE allocation. Caller pops4; scratch cleanup not armed yet."
+    },
+    {
+      "address": "00bb9777",
+      "native": "00bb95b0",
+      "function": "00bb9700",
+      "contract": "ECX captured archive, stacked current reader; RET4; loop rereads archive count after each entry."
+    },
+    {
+      "address": "00bb9789",
+      "native": "00bf65ac",
+      "function": "00bb9700",
+      "contract": "State0 normal free of current reader base; caller pops4; preserved restoring tail ends RET BB97A2."
+    }
+  ],
+  "virtual_sites": [
+    {
+      "address": "00bb87ad",
+      "native": "00bef600",
+      "function": "00bb87a0",
+      "contract": "Generic current stream slot30 target and captured owner. Numeric BEF600 resolution applies ONLY to fixture original D642C0 profile; actual memory length source returns EDX:EAX, RET."
+    },
+    {
+      "address": "00bb87de",
+      "native": "00bef540",
+      "function": "00bb87a0",
+      "contract": "Reload current stream, current stored low length and seek slot1C after allocation; stack low(length-count),high0,origin0; ignore return. Numeric BEF540 only for fixture D642C0."
+    },
+    {
+      "address": "00bb87ec",
+      "native": "00bef590",
+      "function": "00bb87a0",
+      "contract": "Reload current stream and read slot24 after seek; stack captured scratch,count,null actual; ignore return. Numeric BEF590 only for fixture D642C0."
+    },
+    {
+      "address": "00bb972d",
+      "native": "00bef540",
+      "function": "00bb9700",
+      "contract": "Capture current stream/table and current directory offset before slot1C dispatch; stack offset,0,0; ignore return. Numeric BEF540 only for fixture D642C0."
+    },
+    {
+      "address": "00bb9753",
+      "native": "00bef590",
+      "function": "00bb9700",
+      "contract": "Use stream captured before allocation; reload its current slot24 after allocation. Captured allocation/count, uninitialized actual-count slot address; ignore read result. Numeric BEF590 only for fixture D642C0."
+    }
+  ],
+  "consumed_call_evidence": [
+    {
+      "address": "00bb9040",
+      "native": "00419cc0",
+      "function": "00bb9030",
+      "contract": "Current entry cleanup data/length+1 captured before getter."
+    },
+    {
+      "address": "00bb9047",
+      "native": "00bd1510",
+      "function": "00bb9030",
+      "contract": "Return captured entry block/size/1 through current getter result; no string writes."
+    },
+    {
+      "address": "0041dd30",
+      "native": "00419cc0",
+      "function": "0041dd20",
+      "contract": "Current temporary cleanup data/length+1 captured before getter."
+    },
+    {
+      "address": "0041dd37",
+      "native": "00bd1510",
+      "function": "0041dd20",
+      "contract": "Return captured temporary block/size/1; original RET follows."
+    },
+    {
+      "address": "00bb8573",
+      "native": "00bf65ac",
+      "function": "00bb8570",
+      "contract": "Free current reader base. Stored body endsBB8577; qualified raw POP ECX/RET extends throughBB8579 inclusive."
+    },
+    {
+      "address": "00cc4823",
+      "native": "00bb9030",
+      "function": "00cc4820",
+      "contract": "State0->-1, ECX=EBP-64h current entry header.",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cc482b",
+      "native": "0041dd20",
+      "function": "00cc4828",
+      "contract": "State1->0, ECX=EBP-6Ch current temporary header.",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cc4843",
+      "native": "00bb8570",
+      "function": "00cc4840",
+      "contract": "Loader state0->-1, ECX=EBP-18h current scratch reader.",
+      "kind": "tail_jump"
+    }
+  ],
+  "callsite_contract_evidence": [
+    {
+      "address": "00bb9ad6",
+      "native": "00bb87a0",
+      "function": "00bb9920",
+      "contract": "Complete owning caller setup publishes decoded stream at archive+C before scanner."
+    },
+    {
+      "address": "00bb8af7",
+      "native": "00bb8850",
+      "function": "00bb8a90",
+      "contract": "Owning body provides stack reader/header/nonzero local kind; no incoming ECX contract."
+    },
+    {
+      "address": "00bb95db",
+      "native": "00bb8850",
+      "function": "00bb95b0",
+      "contract": "Second and final direct header caller: kind0 central fields."
+    },
+    {
+      "address": "00bb95fc",
+      "native": "00bb9090",
+      "function": "00bb95b0",
+      "contract": "Only direct name caller passes local output header and parsed name WORD20."
+    },
+    {
+      "address": "00bb9777",
+      "native": "00bb95b0",
+      "function": "00bb9700",
+      "contract": "Only direct parser caller passes current scratch reader; current count loop."
+    },
+    {
+      "address": "00bb9bef",
+      "native": "00bb9700",
+      "function": "00bb9920",
+      "contract": "Complete caller loads count/size/offset from EOCD and computes prefix=EOCDoffset-directoryoffset-directorysize before loader."
+    }
+  ],
+  "exception_maps": [
+    {
+      "function": "00bb95b0",
+      "funcinfo": "00dfe440",
+      "unwind_map": "00dfe430",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "cleanup": "00cc4820",
+          "meaning": "current entry string via BB9030"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "cleanup": "00cc4828",
+          "meaning": "current temporary string via41DD20"
+        }
+      ],
+      "schedule": "state0 before name call; state1 after returned temporary; state0 before normal temporary getter; state-1 after append before normal captured-entry getter."
+    },
+    {
+      "function": "00bb9700",
+      "funcinfo": "00dfe46c",
+      "unwind_map": "00dfe464",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "cleanup": "00cc4840",
+          "meaning": "current scratch base via BB8570"
+        }
+      ],
+      "schedule": "state0 only after read and cursor initialization; no rollback around allocate/read."
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "00cc4830",
+      "inclusive_end": "00cc4839",
+      "bytes": 10,
+      "no_ghidra_function": true,
+      "instruction_site": "00cc4835",
+      "instruction": "JMP 00bf6b43",
+      "native_target": "00bf6b43",
+      "meaning": "Load EAX=DFE440; entry native FH3 handler; raw evidence, not counted/reconstructed function."
+    },
+    {
+      "start": "00cc4848",
+      "inclusive_end": "00cc4851",
+      "bytes": 10,
+      "no_ghidra_function": true,
+      "instruction_site": "00cc484d",
+      "instruction": "JMP 00bf6b43",
+      "native_target": "00bf6b43",
+      "meaning": "Load EAX=DFE46C; loader native FH3 handler; raw evidence, not counted/reconstructed function."
+    },
+    {
+      "start": "00bb8578",
+      "inclusive_end": "00bb8579",
+      "bytes": 2,
+      "no_ghidra_function": true,
+      "instruction_site": "00bb8578",
+      "instruction": "POP ECX; RET",
+      "meaning": "Raw continuation beyond consumed BB8570 stored inclusive end8577; not new helper source/count."
+    }
+  ],
+  "flow_repairs": {
+    "primary_repaired_and_saved": [
+      "00bb87a0..00bb8841 inclusive",
+      "00bb9700..00bb97a2 inclusive"
+    ],
+    "initial_metadata": [
+      "00bb87a0..00bb883a inclusive",
+      "00bb9700..00bb978d inclusive"
+    ],
+    "worker_ghidra_mutations": false,
+    "consumed_unrepaired": "BB8570 stored end8577; native complete tail8579 inclusive separately qualified."
+  },
+  "native_capture": {
+    "path": "local/mpkg-directory-ax/evidence",
+    "spans": [
+      {
+        "label": "scan",
+        "entry": "00bb87a0",
+        "inclusive_end": "00bb8841",
+        "bytes": 162,
+        "kind": "body",
+        "sha256": "311e0e0e28f92d9d7a84cddd7a9ff7703956127f3cd5e1f45b762b44d911e052",
+        "live_equals_installed_PE": true
+      },
+      {
+        "label": "header",
+        "entry": "00bb8850",
+        "inclusive_end": "00bb8a8d",
+        "bytes": 574,
+        "kind": "body",
+        "sha256": "ad1888bd97ca2e71c7d2df0400f8dd6fc8c4306ca14beb224053aa3e983b3b5f",
+        "live_equals_installed_PE": true
+      },
+      {
+        "label": "name",
+        "entry": "00bb9090",
+        "inclusive_end": "00bb90fe",
+        "bytes": 111,
+        "kind": "body",
+        "sha256": "8ef187b709ce302f44fb325c260ed9f91c51d94ff99d5035c2523a4990451093",
+        "live_equals_installed_PE": true
+      },
+      {
+        "label": "entry",
+        "entry": "00bb95b0",
+        "inclusive_end": "00bb96f5",
+        "bytes": 326,
+        "kind": "body",
+        "sha256": "3531d85cea3db288df36d21cc9c92ab982f3170d545a4349a967dcc32d8910b3",
+        "live_equals_installed_PE": true
+      },
+      {
+        "label": "directory",
+        "entry": "00bb9700",
+        "inclusive_end": "00bb97a2",
+        "bytes": 163,
+        "kind": "body",
+        "sha256": "077d2ab92e0f8cf7a5757b5be7a243a57f384edc8c3a09ae75949e77450b00c6",
+        "live_equals_installed_PE": true
+      },
+      {
+        "label": "entry_cleanup",
+        "entry": "00bb9030",
+        "inclusive_end": "00bb904c",
+        "bytes": 29,
+        "kind": "dependency",
+        "sha256": "cecd51d3faa19891d37108ff395eb6e38341ef4b10c9f983bda48d883edbc094",
+        "live_equals_installed_PE": true
+      },
+      {
+        "label": "scratch_cleanup",
+        "entry": "00bb8570",
+        "inclusive_end": "00bb8579",
+        "bytes": 10,
+        "kind": "dependency_raw_tail",
+        "sha256": "89a6277c215534ce53636fe747ae2fe83f80891e138234387ae9cf5b00b601c3",
+        "live_equals_installed_PE": true
+      },
+      {
+        "label": "entry_unwind0",
+        "entry": "00cc4820",
+        "inclusive_end": "00cc4827",
+        "bytes": 8,
+        "kind": "eh",
+        "sha256": "7698a743196c4f46f360fbaebd1f627551b74e22e4cc8cb608e77ece37cdc2a2",
+        "live_equals_installed_PE": true
+      },
+      {
+        "label": "entry_unwind1",
+        "entry": "00cc4828",
+        "inclusive_end": "00cc482f",
+        "bytes": 8,
+        "kind": "eh",
+        "sha256": "6c70cad6b53eb19a4d44678e0a7a779753819dd2d4b8b7e1f7f9f0168a140b00",
+        "live_equals_installed_PE": true
+      },
+      {
+        "label": "entry_handler",
+        "entry": "00cc4830",
+        "inclusive_end": "00cc4839",
+        "bytes": 10,
+        "kind": "raw_eh",
+        "sha256": "418b5191d9c721d74c9f52650a8d69820b3688f31c4b50e4d6f158ba0b3200e6",
+        "live_equals_installed_PE": true
+      },
+      {
+        "label": "directory_unwind",
+        "entry": "00cc4840",
+        "inclusive_end": "00cc4847",
+        "bytes": 8,
+        "kind": "eh",
+        "sha256": "d8ce2a39717d45a8480e3abdf0082342273ea8428224b47ca19735d2b4850ede",
+        "live_equals_installed_PE": true
+      },
+      {
+        "label": "directory_handler",
+        "entry": "00cc4848",
+        "inclusive_end": "00cc4851",
+        "bytes": 10,
+        "kind": "raw_eh",
+        "sha256": "6b7cbd31c66729ec4431bb99b10dbb103d41f13719c55f2953970196b900b286",
+        "live_equals_installed_PE": true
+      },
+      {
+        "label": "entry_map",
+        "entry": "00dfe430",
+        "inclusive_end": "00dfe43f",
+        "bytes": 16,
+        "kind": "data",
+        "sha256": "09ae1fe2b82106a9318d926c5344e871cbe406c4de3de3de7d46889fc9d15d08",
+        "live_equals_installed_PE": true
+      },
+      {
+        "label": "entry_funcinfo",
+        "entry": "00dfe440",
+        "inclusive_end": "00dfe463",
+        "bytes": 36,
+        "kind": "data",
+        "sha256": "c6ac32dfe6ae21d201d40a5234da49410c3708296bad20ad8daeec546706cf41",
+        "live_equals_installed_PE": true
+      },
+      {
+        "label": "directory_map",
+        "entry": "00dfe464",
+        "inclusive_end": "00dfe46b",
+        "bytes": 8,
+        "kind": "data",
+        "sha256": "95bd6dfca88ab386d7bd96b2d4b2d8fd3807073100519c693466c4bc1897007d",
+        "live_equals_installed_PE": true
+      },
+      {
+        "label": "directory_funcinfo",
+        "entry": "00dfe46c",
+        "inclusive_end": "00dfe48f",
+        "bytes": 36,
+        "kind": "data",
+        "sha256": "c47d27fd9bde11c04d9dbeb954734a5f13c7acdad7de4d0b91afd134000b17eb",
+        "live_equals_installed_PE": true
+      },
+      {
+        "label": "backing_profile",
+        "entry": "00d15ad8",
+        "inclusive_end": "00d15ae7",
+        "bytes": 16,
+        "kind": "data",
+        "sha256": "b0c699e8f1eb2d9ab4672e3c096b0bbe9392a5ace8c38691d2bbe50ee7ec8f53",
+        "live_equals_installed_PE": true
+      },
+      {
+        "label": "stream_profile",
+        "entry": "00d642c0",
+        "inclusive_end": "00d642ff",
+        "bytes": 64,
+        "kind": "data",
+        "sha256": "885d969af38e468d152a5a25f9d539573fbbbba29b68c513c536b4db12358ed7",
+        "live_equals_installed_PE": true
+      }
+    ],
+    "total_bytes": 1595,
+    "complete_body_bytes": 1336,
+    "whole_listing_register_provenance": true,
+    "ghidra_mutations": false
+  },
+  "verification": {
+    "build": "scripts/build.ps1 with MSBUILDDISABLENODEREUSE=1, MSVC Win32 Release /W4 /WX /fp:strict; verify-seeds and both existing CTests passed.",
+    "build_log": "local/mpkg-directory-ax/build01.log",
+    "borrowed_dependency": "Stable sibling native_mpkg_entry_vector.cpp/.hpp consumed through ignored CMake include; actual linked object/source physically frozen and archive-equality verified.",
+    "permanent_tests_added": 0,
+    "fixture": {
+      "passed": true,
+      "exit_code": 0,
+      "case_pairs": 5,
+      "source_only_unwind": true,
+      "native_FH3_SEH_game_validated": false,
+      "frozen_inputs": 553,
+      "linked_archive_members": 125,
+      "native_body_bytes": 1336,
+      "native_spans": 18,
+      "native_capture_bytes": 1595,
+      "manifest_before_sha256": "cc47a5c8181b9885befac390cb640495e4c715264b56a6cac1b475919e205fbb",
+      "exe_sha256": "ed7a16c7a8862c102a7e77091017063e6bd31da02a3070dbaba898aaa89b2291",
+      "head": "c73005714e2cbd923c4b7f6d098461c4e4f34718",
+      "execution_pass_line": "PASS 5 native/source states; 1162 checks; real memory streams, entry-vector source and canonical pool; original FH3/SEH and game unvalidated.",
+      "attempt": "local/mpkg-directory-ax/attempt01",
+      "before": "local/mpkg-directory-ax/attempt01/manifest_before.json",
+      "after": "local/mpkg-directory-ax/attempt01/manifest_after.json",
+      "cases": "local/mpkg-directory-ax/attempt01/cases.json",
+      "source_only": "local/mpkg-directory-ax/attempt01/source_only.json",
+      "after_sha256": "a455263587d5db8602b21e145e565fbc22252ad98fdc1fb92838ccad9ab7bf0c",
+      "cases_sha256": "387518e01c7ef81ec87230e6363d4c3bcac2186b83143773c725d859da08491b",
+      "source_only_sha256": "e92f9a21bb78f41f0b9893892840ce181d6bb1745796c0bbefad72fbdc1c33cb",
+      "core_library_sha256": "e32624ea3a957f3b3ddb4c63637c87d1c446eeaf8a638176499995a5f2d80c0c",
+      "source_sha256": "2f3f7e11acaefb61ae108111b7278d86ba6fd9ec7c1b6bff9e9c9dc37d73702b",
+      "header_sha256": "fabfa5bd1bf4a34e98e95516dbdb8378c6486a3bc1e49ea039699f372469aa48",
+      "checks": 1162,
+      "relative_transfers": 36,
+      "external_direct_bridges": 8,
+      "virtual_source_bridges": 3,
+      "normal_original_bodies_unchanged": true
+    },
+    "case_scope": [
+      "two ordered central entries and nearest EOCD; actual string/vector ownership",
+      "scanner count4 and offset0 exclusion, unchanged miss field",
+      "central and nonzero-kind local headers with untouched absent/padding bytes",
+      "name allocation callback replaces current reader; embeddedNUL/high bytes",
+      "short read: stream replacement after owner capture, original captured stream read; actual count ignored"
+    ],
+    "source_only_case": "Final entry cleanup getter throws after append/state-1; no local block return; outer loader state0 frees current scratch; owned vector remains. Canonical pool shutdown ultimately reclaims unreturned embedded slice.",
+    "freeze": "Dependency-only BSP headers, all125 actual linked source/object pairs equal current archive members, libraries, probe/launcher objects/exes, native/driver physically sealed before execution. All553 before hashes rechecked; all result files accounted by after manifest.",
+    "driver": "python local/mpkg-directory-ax/run.py --repo <exact-checkout> --attempt <new-absolute-directory>",
+    "linked_pin_key": "linked_objects_verified_equal_to_current_and_archive_members",
+    "linked_physical_layout": "current/objects/<library>/<object>; current/src/<library>/<source>; dependency_header_origins maps include/bsp files to original absolute paths.",
+    "retained_attempts": "First fixture attempt passed. All preparation/final-readback evidence retained; no attempt overwritten.",
+    "report_call_check": {
+      "command": "python tools/verify_report_calls.py reports/native_mpkg_directory.json",
+      "checked": 36,
+      "failed": 0,
+      "direct_call_or_tail_jump_rows": 31,
+      "indirect_rows": 5,
+      "indirect_boundary": "Checker verifies owning current function and indirect instruction; numeric D642C0 targets are separately checked by original profile bytes and fixture captured-target assertions.",
+      "log": "local/mpkg-directory-ax/verify-report-calls01.log"
+    }
+  },
+  "limitations": [
+    "Explicit C++ storage/service interfaces are not original binary ABI, mutable native compiler spill identity, FH3 or SEH replacements.",
+    "Actual malformed memory/bounds, allocation failure inside noexcept nested string release, simultaneous unwind failures and zero-byte CRT edge preconditions remain outside the comparison domain.",
+    "Original owned bodies execute unchanged with eight external direct dependency bridges and three original numeric virtual-target bridges to actual reviewed source/CRT; dependency machine bodies behind bridges are not replayed here.",
+    "The one cleanup exception case is source-only; native FH3/SEH handler paths are read and byte-reviewed but not executed.",
+    "No invented pool/publication, semantic vector/stream or rollback; borrowed actual canonical services and original profile words.",
+    "No unlinked object, bsp_game reachability, real installed archive parsing, gameplay, binary replacement or other stream-profile proof."
+  ],
+  "documentation": "docs/NATIVE_MPKG_DIRECTORY.md"
+}
