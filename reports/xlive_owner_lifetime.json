@@ -1,0 +1,282 @@
+{
+  "packet": "orch4_xlive_owner_lifetime_ac",
+  "source": [
+    "include/bsp/xlive_owner_lifetime.hpp",
+    "src/xlive_owner_lifetime.cpp",
+    "include/bsp/xlive_manager_owner.hpp",
+    "src/xlive_manager_owner.cpp"
+  ],
+  "analysis": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "language": "x86:LE:32:default",
+    "mode": "read-only; bsp.py ghidra client.verify before every live batch"
+  },
+  "routines": [
+    {
+      "address": "00a3f530",
+      "name": "construct_xlive_manager_base_00a3f530",
+      "coverage": "complete existing normal body and C++ unwind where present; source allocation/shared-lifetime binding added",
+      "abi": "ECX owner; RET; EAX captured owner",
+      "final_instruction": "00a3f5c0",
+      "final_instruction_length": 1,
+      "end_exclusive": "00a3f5c1"
+    },
+    {
+      "address": "00a3f5d0",
+      "name": "destroy_xlive_manager_base_00a3f5d0",
+      "coverage": "complete existing normal body and C++ unwind where present; source allocation/shared-lifetime binding added",
+      "abi": "ECX owner; RET",
+      "final_instruction": "00a3f668",
+      "final_instruction_length": 1,
+      "end_exclusive": "00a3f669"
+    },
+    {
+      "address": "00a3f670",
+      "name": "delete_xlive_manager_base_00a3f670",
+      "coverage": "complete existing normal body and C++ unwind where present; source allocation/shared-lifetime binding added",
+      "abi": "ECX owner; flag byte in DWORD stack slot; RET4; EAX captured allocation",
+      "final_instruction": "00a3f68b",
+      "final_instruction_length": 3,
+      "end_exclusive": "00a3f68e"
+    },
+    {
+      "address": "00a3fdc0",
+      "name": "delete_xlive_manager_00a3fdc0",
+      "coverage": "complete existing normal body and C++ unwind where present; source allocation/shared-lifetime binding added",
+      "abi": "ECX owner; flag byte in DWORD stack slot; RET4; EAX captured allocation",
+      "final_instruction": "00a3fddb",
+      "final_instruction_length": 3,
+      "end_exclusive": "00a3fdde"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00a3f55e",
+      "native": "00415350",
+      "caller": "00a3f530",
+      "contract": "first manager getter; capture section+10"
+    },
+    {
+      "address": "00a3f58c",
+      "native": "00415350",
+      "caller": "00a3f530",
+      "contract": "second manager getter before publication reload A3F591"
+    },
+    {
+      "address": "00a3f59a",
+      "native": "00bd0c30",
+      "caller": "00a3f530",
+      "contract": "register reloaded current owner identity; RET4"
+    },
+    {
+      "address": "00a3f5fe",
+      "native": "00415350",
+      "caller": "00a3f5d0",
+      "contract": "first manager getter; capture section+10"
+    },
+    {
+      "address": "00a3f626",
+      "native": "00415350",
+      "caller": "00a3f5d0",
+      "contract": "second manager getter before publication reload A3F62B"
+    },
+    {
+      "address": "00a3f634",
+      "native": "00bcfca0",
+      "caller": "00a3f5d0",
+      "contract": "unregister reloaded current identity, which need not be this; RET4"
+    },
+    {
+      "address": "00a3f673",
+      "native": "00a3f5d0",
+      "caller": "00a3f670",
+      "contract": "base destructor before flag-bit0 test"
+    },
+    {
+      "address": "00a3f680",
+      "native": "00bf65ac",
+      "caller": "00a3f670",
+      "contract": "free captured ESI; ADD ESP4 at A3F685"
+    },
+    {
+      "address": "00a3fdc3",
+      "native": "00a3f9d0",
+      "caller": "00a3fdc0",
+      "contract": "derived destructor before flag-bit0 test"
+    },
+    {
+      "address": "00a3fdd0",
+      "native": "00bf65ac",
+      "caller": "00a3fdc0",
+      "contract": "free captured ESI; ADD ESP4 at A3FDD5"
+    }
+  ],
+  "caller_steps": [
+    {
+      "address": "00a40e13",
+      "native": "00a3f530",
+      "caller": "00a40df0",
+      "contract": "sole incoming base-constructor CALL; ESI captured ECX at A40E0D"
+    },
+    {
+      "address": "00a3fa59",
+      "native": "00a3f5d0",
+      "caller": "00a3f9d0",
+      "contract": "derived destructor invokes base with captured ESI"
+    }
+  ],
+  "indirect_steps": [
+    {
+      "address": "00a3f577",
+      "native": "EnterCriticalSection [IAT 00ce2218]",
+      "caller": "00a3f530",
+      "contract": "captured ESI; stdcall pointer, increment ESI+18 after return"
+    },
+    {
+      "address": "00a3f5a8",
+      "native": "LeaveCriticalSection [IAT 00ce2210]",
+      "caller": "00a3f530",
+      "contract": "decrement captured ESI+18 before call"
+    },
+    {
+      "address": "00a3f617",
+      "native": "EnterCriticalSection [IAT 00ce2218]",
+      "caller": "00a3f5d0",
+      "contract": "captured ESI; stdcall pointer, increment ESI+18 after return"
+    },
+    {
+      "address": "00a3f64c",
+      "native": "LeaveCriticalSection [IAT 00ce2210]",
+      "caller": "00a3f5d0",
+      "contract": "decrement captured ESI+18 before call"
+    }
+  ],
+  "vtables": [
+    {
+      "data_address": "00d24138",
+      "scalar_callee": "00a3f670",
+      "slot": 0
+    },
+    {
+      "data_address": "00d2413c",
+      "scalar_callee": "00a3fdc0",
+      "slot": 0
+    }
+  ],
+  "eh_maps": [
+    {
+      "owner": "00a3f530",
+      "map": "00de9d90",
+      "bytes": "ffffffff2041cb00000000002841cb00",
+      "states": [
+        {
+          "state": 0,
+          "to": -1,
+          "action": "00cb4120"
+        },
+        {
+          "state": 1,
+          "to": 0,
+          "action": "00cb4128"
+        }
+      ],
+      "order": "state1 release captured section, then state0 CE3818; no publication rollback"
+    },
+    {
+      "owner": "00a3f5d0",
+      "map": "00de9dc4",
+      "bytes": "ffffffff4041cb00000000004841cb00",
+      "states": [
+        {
+          "state": 0,
+          "to": -1,
+          "action": "00cb4140"
+        },
+        {
+          "state": 1,
+          "to": 0,
+          "action": "00cb4148"
+        }
+      ],
+      "order": "state1 release captured section, then state0 CE3818"
+    }
+  ],
+  "eh_tail_steps": [
+    {
+      "eh_tail_site": "00cb4123",
+      "callee": "00412430",
+      "caller": "00cb4120",
+      "contract": "root vtable write using captured object spill EBP-18"
+    },
+    {
+      "eh_tail_site": "00cb412b",
+      "callee": "00411ee0",
+      "caller": "00cb4128",
+      "contract": "captured section guard at EBP-14"
+    },
+    {
+      "eh_tail_site": "00cb4143",
+      "callee": "00412430",
+      "caller": "00cb4140",
+      "contract": "root vtable write using captured object spill EBP-18"
+    },
+    {
+      "eh_tail_site": "00cb414b",
+      "callee": "00411ee0",
+      "caller": "00cb4148",
+      "contract": "captured section guard at EBP-14"
+    },
+    {
+      "eh_tail_site": "00cb4163",
+      "callee": "00a3f5d0",
+      "caller": "00cb4160",
+      "contract": "derived destructor unwind incoming base-destruction tail"
+    },
+    {
+      "eh_tail_site": "00cb4266",
+      "callee": "00a3f5d0",
+      "caller": "00cb4260",
+      "contract": "derived constructor unwind incoming base-destruction tail"
+    }
+  ],
+  "missing_functions": [],
+  "owned_flow_gaps": [],
+  "flow_note": "Both scalar complete live listings include their ADD ESP4 post-free paths; no repair requested.",
+  "corrections": [
+    {
+      "was": "XLiveManagerLifetimeAccess admits only a semantic SingletonLifetimeDomain and registers &projection.",
+      "is": "Old semantic API remains; a borrowed SoundLifetimeAccess admits raw registration using the current published owner's canonical allocation identity.",
+      "evidence": "A3F58C getter then A3F591 publication reload; raw BD0400 reads [registered pointer]."
+    },
+    {
+      "was": "Projection first word is the context reference while canonical vtable is a separate borrowed field.",
+      "is": "XLiveOwnerAllocation owns canonical storage at allocation+0 and its projection; compile-time standard-layout/offsetof checks tie identity first word to the existing vtable field.",
+      "evidence": "Native A3F558/A3F5F0 write [incoming owner]; D24138/D2413C slot0 scalar targets verified."
+    },
+    {
+      "was": "Only scalar source overloads returning projection identity were available.",
+      "is": "Allocation overloads capture actual identity before invoking legacy scalar bodies; they return that address after flag-bit0 deletion and add no extra free.",
+      "evidence": "A3F671/A3FDC1 capture ESI; A3F688/A3FDD8 return ESI after optional free."
+    }
+  ],
+  "validation": {
+    "build": "MSVC Win32 Release scripts/build.ps1 passed; both existing CTests passed; local/xlive_owner_ac_build.log",
+    "seeds": "8/8 matched; local/xlive_owner_ac_seeds.json",
+    "fixture": "local/run_xlive_owner_ac_fixture.cmd passed with /W4 /WX and /MANIFEST:EMBED, linked to this worktree bsp_core; local/xlive_owner_ac_fixture.log. Existing semantic owner cases plus canonical raw allocation registration/current-owner removal, fixture vector pop, flags2 retention, base/derived flags1 actual free, and real CRT validation-throw unwind. Three actual scalar frees, one invalid callback, borrowed achievement batch retained. Raw BD0400 drains only the remaining null holes; full XLive dispatch is not yet integrated.",
+    "calls": "verify_report_calls.py: 12 direct-call rows checked, 0 failures; local/xlive_owner_ac_calls.log. Four Win32 indirect calls and six EH tail sites documented separately.",
+    "application_wired": false,
+    "live_sdk": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "remaining_contracts": [
+    "Primary owns finite D24138/D2413C raw deletion routing and exact retained allocation checks.",
+    "Caller retains binding and borrowed services through scalar deletion/raw drain and relinquishes owning pointer exactly once after flags1.",
+    "Native constructor failure may leave publication/partial registration with CE3818; explicit host recovery must remove it before allocation disposal.",
+    "Allocation preimages and other borrowed state are required; this is not native3F0 storage or a constructor-default claim.",
+    "Native derived/IPC cleanup omissions are unchanged; real SDK/IPC process lifetime and complete application wiring remain separate."
+  ]
+}
