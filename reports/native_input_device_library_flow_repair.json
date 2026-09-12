@@ -148,7 +148,7 @@
     }
   ],
   "final_verification": {
-    "utc": "2026-09-12T20:40:54.717848+00:00",
+    "utc": "2026-09-12T20:55:56.464978+00:00",
     "body_recreation_receipt": "reports/native_input_device_library_definitions.json",
     "functions": [
       {
@@ -168,5 +168,12 @@
       }
     ],
     "qualification": "Original flow-only records are preserved above; subsequent supported body re-creation/definition resolved their stored-body warnings. These live checks verify the final saved bodies."
-  }
+  },
+  "library_name_correction": {
+    "address": "00a94e90",
+    "old": "STL_xlen_throw_00a94e90",
+    "new": "STL_tree_erase_00a94e90",
+    "reason": "Full body includes erase/transplant/count/output iterator and normal RET0C; xlen_throw described only an invalid iterator arm. Recognized library contract, not ported."
+  },
+  "remaining_decompiler_warning": "A94E90 pseudocode still removes A94F9F..A94FF5 transplant arm. Final body gap checks prove instruction membership; source adapter comparisons used the live branch/listing, not complete pseudocode coverage."
 }

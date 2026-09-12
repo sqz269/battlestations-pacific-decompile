@@ -599,6 +599,63 @@
     "program": "battlestationspacific.exe",
     "message": "Program saved successfully"
    }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a992e0",
+    "end_address": "00a992f0"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a992e0",
+    "end_address": "00a992ef",
+    "bytes_disassembled": 16,
+    "message": "Successfully disassembled 16 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a992e0",
+    "disassemble_first": false,
+    "name": "BSP_JoystickInputDevice_ProductName_Provisional"
+   },
+   "result": {
+    "success": true,
+    "address": "00a992e0",
+    "function_name": "BSP_JoystickInputDevice_ProductName_Provisional",
+    "entry_point": "00a992e0",
+    "body_size": 16,
+    "message": "Function created successfully at 00a992e0",
+    "warnings": [
+     "Function name 'BSP_JoystickInputDevice_ProductName_Provisional' \u2014 main part 'JoystickInputDevice_ProductName_Provisional' is not PascalCase. Expected: JoystickinputdeviceProductnameProvisional",
+     "Function name 'BSP_JoystickInputDevice_ProductName_Provisional' \u2014 main part 'JoystickInputDevice_ProductName_Provisional' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_JoystickInputDevice_ProductName_Provisional' does not start with a recognized verb. First word 'Joystick' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a992e0",
+   "end": "00a992f0",
+   "name": "BSP_JoystickInputDevice_ProductName_Provisional",
+   "after": "Function: BSP_JoystickInputDevice_ProductName_Provisional at 00a992e0\nSignature: undefined BSP_JoystickInputDevice_ProductName_Provisional(void)\nEntry: 00a992e0\nBody: 00a992e0 - 00a992ef"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
   }
  ]
 }

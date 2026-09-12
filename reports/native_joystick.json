@@ -1,5 +1,11 @@
 {
   "packet": "orch4_native_joystick_ad",
+  "primary_integration_review": {
+    "reviewer": "gamepad/XInput worker; read-only native listing/EH review",
+    "correction": "A99940 captures old vtable slot34 address before BEC230, reloads device receiver at A99CFB, then loads function from saved slot at A99CFD. Integrated source corrected early function-value capture.",
+    "evidence": "A99CE7..A99D02 live listing; exact 5 flags preserved",
+    "remaining_limits": "Focused joystick probe does not execute full constructor or mutable COM vtable path; correction is source/listing verified. No new hardware claim."
+  },
   "status": "actual_storage_reconstructed_strict_build_and_bounded_fixture_verified_required_base_dispatch",
   "analysis": {
     "project": "C:/Users/sqz269/bsp.gpr",

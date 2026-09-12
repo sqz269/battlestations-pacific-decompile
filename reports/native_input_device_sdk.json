@@ -1,15 +1,36 @@
 {
   "packet": "orch4_native_input_device_sdk_ad",
   "kind": "source_sdk_acquisition_adapter_not_new_native_routine",
-  "source": ["include/bsp/native_input_device_sdk.hpp", "src/native_input_device_sdk.cpp"],
+  "source": [
+    "include/bsp/native_input_device_sdk.hpp",
+    "src/native_input_device_sdk.cpp"
+  ],
   "documentation": "docs/NATIVE_INPUT_DEVICE_SDK.md",
   "functions": [],
   "contract": "Actual COM CreateDevice/CreateEffect output slots; return original HRESULT; record every valid nonnull returned reference immediately before any later constructor step; no added AddRef",
   "bookkeeping": "Append null tracking slot before SDK call; stable numeric index supports nested acquisitions without allocating after SDK return; prohibit release while acquisition active",
   "cleanup": "Explicit final reverse release after all raw owners, member cleanup and callbacks; no destructor Release",
-  "build": {"command": "scripts/build.ps1", "configuration": "MSVC Win32 Release", "exit_code": 0, "ctests_passed": 2, "log": "local/native_input_device_sdk_ad_build.log"},
+  "build": {
+    "command": "scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "exit_code": 0,
+    "ctests_passed": 2,
+    "log": "local/native_input_device_sdk_ad_build.log"
+  },
   "runtime_validation": "pending raw device integration",
   "native_abi_compatible": false,
   "game_validated": false,
-  "boundaries": ["Normal COM return/output contract required", "No C++ exceptions crossing COM boundary", "Host tracking allocation can throw before SDK call", "Input interface acquisition remains separately tracked by NativeInputBackendDirectInput"]
+  "boundaries": [
+    "Normal COM return/output contract required",
+    "No C++ exceptions crossing COM boundary",
+    "Host tracking allocation can throw before SDK call",
+    "Input interface acquisition remains separately tracked by NativeInputBackendDirectInput"
+  ],
+  "integrated_validation": {
+    "report": "reports/native_input_device_integration.json",
+    "real_device_acquisitions": 4,
+    "final_sdk_references": 0,
+    "constructor_failure_after_acquisition": true,
+    "effect_hardware_acquisition_verified": false
+  }
 }

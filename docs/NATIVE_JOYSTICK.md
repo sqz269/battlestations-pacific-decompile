@@ -58,6 +58,12 @@ Generated descriptors are the canonical +288 array, with null GUID, index*4, and
 the SDK's current type/flags. The method for SetCooperativeLevel is captured before
 the window getter, while its receiver is reloaded after the getter, matching assembly.
 
+Correction from primary integration review: the preceding method-capture statement
+is superseded. A99CE9/A99CF3 capture the old vtable's slot34 address before BEC230;
+A99CFB reloads the receiver, then A99CFD loads the function from that saved slot
+after the getter returns. The integrated source preserves all three operations
+in that order. The original worker source loaded the function too early.
+
 Poll clears validity, handles failed Poll by reloading the device and calling Acquire,
 then copies current bytes to previous before GetDeviceState. The signed object scan
 preserves deadzone and detection branches. Each virtual value query reloads the

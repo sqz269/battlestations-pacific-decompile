@@ -321,10 +321,46 @@
       "body_after": "Function: Unwind@00cb69fe at 00cb69fe\nSignature: undefined Unwind@00cb69fe(void)\nEntry: 00cb69fe\nBody: 00cb69fe - 00cb6a06",
       "stored_body_tail_complete": false,
       "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+    },
+    {
+      "function": "00a95e40",
+      "owner": "agent/orch4-20260910",
+      "when": "2026-09-12T20:47:22Z",
+      "decompile_lines_before": 14,
+      "gaps": [
+        {
+          "site": "00a95e50",
+          "mnemonic": "CALL",
+          "operands": "0x00bf65ac",
+          "gap_start": "00a95e55",
+          "gap_end_exclusive": "00a95e58",
+          "bytes": 3,
+          "after_call": true,
+          "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+        }
+      ],
+      "events": [
+        {
+          "gap": {
+            "site": "00a95e50",
+            "mnemonic": "CALL",
+            "operands": "0x00bf65ac",
+            "gap_start": "00a95e55",
+            "gap_end_exclusive": "00a95e58",
+            "bytes": 3,
+            "after_call": true,
+            "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+          },
+          "clear": "Success: Cleared flow override at 00a95e50 (was: CALL_RETURN, now: NONE)",
+          "disassemble": "Successfully disassembled 3 byte(s)"
+        }
+      ],
+      "decompile_lines_after": 11,
+      "gaps_remaining": 0
     }
   ],
   "final_verification": {
-    "utc": "2026-09-12T20:40:53.924917+00:00",
+    "utc": "2026-09-12T20:55:55.741017+00:00",
     "body_recreation_receipt": "reports/native_input_device_function_definitions.json",
     "functions": [
       {
@@ -380,6 +416,16 @@
       {
         "address": "00cb6a09",
         "instructions": 2,
+        "remaining_gaps": 0
+      },
+      {
+        "address": "00a95e40",
+        "instructions": 11,
+        "remaining_gaps": 0
+      },
+      {
+        "address": "00a992e0",
+        "instructions": 5,
         "remaining_gaps": 0
       }
     ],

@@ -317,9 +317,11 @@ void* construct_native_joystick_00a99940(void* p, IDirectInput8A& input,
         }
     }
     using Cooperate = HRESULT (WINAPI*)(IDirectInputDevice8A*, HWND, DWORD);
-    const auto cooperate = get<Cooperate>(get<void*>(device(p), 0), 0x34);
+    void* const cooperate_slot = at(get<void*>(device(p), 0), 0x34);
     const HWND window = context.calls.call_00bec230();
-    cooperate(device(p), window, 5); // saved method, freshly loaded receiver
+    auto* const cooperate_receiver = device(p);
+    const auto cooperate = get<Cooperate>(cooperate_slot, 0);
+    cooperate(cooperate_receiver, window, 5);
     if (get<std::uint32_t>(p, 0xb18) != 0) {
         DIPROPDWORD center{{0x14, 0x10, 0, 0}, 0};
         device(p)->SetProperty(DIPROP_AUTOCENTER, &center.diph);
