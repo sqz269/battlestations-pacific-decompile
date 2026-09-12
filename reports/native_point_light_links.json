@@ -1,0 +1,219 @@
+{
+  "packet": "orch5_point_links",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "document": "docs/NATIVE_POINT_LIGHT_LINKS.md",
+  "routines": [
+    {
+      "address": "00b6e500",
+      "name": "BSP_PointLightPointers_Reserve",
+      "coverage": "complete_valid_extent",
+      "abi": "ECX descriptor; capacity stack; RET4"
+    },
+    {
+      "address": "00b6eed0",
+      "name": "BSP_Node_AppendRawPointLight",
+      "coverage": "complete_valid_extent",
+      "abi": "ECX node; raw light stack; RET4"
+    },
+    {
+      "address": "00b6f090",
+      "name": "BSP_PointLightPointers_EraseFirstSwapLast",
+      "coverage": "complete_valid_extent",
+      "abi": "ECX descriptor; address of light stack; AL bool; RET4"
+    },
+    {
+      "address": "00b6f150",
+      "name": "BSP_Node_CopyCloneBaseState",
+      "coverage": "partial_projection_Text_flags26_parent0",
+      "abi": "ECX source; destination,flags,parent stack; RET0C"
+    },
+    {
+      "address": "00b6f3c0",
+      "name": "BSP_Node_RemovePointLight",
+      "coverage": "complete_valid_extent",
+      "abi": "ECX node; raw light stack; RET4"
+    },
+    {
+      "address": "00b7be40",
+      "name": "BSP_PointLight_AppendRawNodeBacklink",
+      "coverage": "complete_valid_extent",
+      "abi": "ECX light; raw node stack; RET4"
+    },
+    {
+      "address": "00b7bed0",
+      "name": "BSP_ModelPointers_EraseFirstSwapLast",
+      "coverage": "complete_valid_extent",
+      "abi": "ECX descriptor; address of node stack; AL bool; RET4"
+    },
+    {
+      "address": "00b7c160",
+      "name": "BSP_PointLight_UnlinkAllModels",
+      "coverage": "complete_valid_extent",
+      "abi": "ECX light; RET"
+    },
+    {
+      "address": "00b7c1a0",
+      "name": "BSP_PointLight_RemoveModelBacklink",
+      "coverage": "complete_valid_extent",
+      "abi": "ECX light; raw node stack; RET4"
+    },
+    {
+      "address": "00b7c710",
+      "name": "BSP_PointLight_InitializeActualBacklinkDescriptorFragment",
+      "coverage": "partial_projection_B7C725_B7C737",
+      "abi": "native ECX light; name stack; EAX light; RET4"
+    },
+    {
+      "address": "00b7c770",
+      "name": "BSP_PointLight_DestroyActualBacklinksFragment",
+      "coverage": "partial_projection_B7C79C_B7C7BD",
+      "abi": "ECX light; native direct destructor"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b6e520",
+      "native": "00bf55be",
+      "function": "00b6e500"
+    },
+    {
+      "address": "00b6e54c",
+      "native": "00bf6989",
+      "function": "00b6e500"
+    },
+    {
+      "address": "00b6eef7",
+      "native": "00b6e500",
+      "function": "00b6eed0"
+    },
+    {
+      "address": "00b6ef13",
+      "native": "00b7be40",
+      "function": "00b6eed0"
+    },
+    {
+      "address": "00b6f194",
+      "native": "00b6e500",
+      "function": "00b6f150"
+    },
+    {
+      "address": "00b6f1b0",
+      "native": "00b7be40",
+      "function": "00b6f150"
+    },
+    {
+      "address": "00b6f3cb",
+      "native": "00b6f090",
+      "function": "00b6f3c0"
+    },
+    {
+      "address": "00b7be64",
+      "native": "0059e5e0",
+      "function": "00b7be40"
+    },
+    {
+      "address": "00b7c17a",
+      "native": "00b6f3c0",
+      "function": "00b7c160"
+    },
+    {
+      "address": "00b7c192",
+      "native": "0059fce0",
+      "function": "00b7c160"
+    },
+    {
+      "address": "00b7c1ab",
+      "native": "00b7bed0",
+      "function": "00b7c1a0"
+    },
+    {
+      "address": "00b7c79c",
+      "native": "00b7c160",
+      "function": "00b7c770"
+    },
+    {
+      "address": "00b7c7b0",
+      "native": "0059fce0",
+      "function": "00b7c770"
+    },
+    {
+      "address": "00b7c7b8",
+      "native": "00bf6989",
+      "function": "00b7c770"
+    },
+    {
+      "address": "00b6f32b",
+      "native": "00b7c1a0",
+      "function": "00b6f310"
+    },
+    {
+      "address": "00b6f342",
+      "native": "00b6ec70",
+      "function": "00b6f310"
+    },
+    {
+      "address": "00b6f3e5",
+      "native": "00b6ec70",
+      "function": "00b6f3e0"
+    },
+    {
+      "address": "00b6f3ed",
+      "native": "00bf6989",
+      "function": "00b6f3e0"
+    },
+    {
+      "address": "0059e600",
+      "native": "00bf55be",
+      "function": "0059e5e0"
+    },
+    {
+      "address": "0059e62c",
+      "native": "00bf6989",
+      "function": "0059e5e0"
+    },
+    {
+      "address": "00b7c718",
+      "native": "00b7c4c0",
+      "function": "00b7c710"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "NativeNodePointLightArray.begin held GeneratedModelPointLightLinks companion addresses",
+      "is": "actual raw light addresses; actual reverse array holds raw node addresses",
+      "evidence": "B6F170..B6F1B0, B7BE69..B7BE7B, B7C725..B7C731"
+    },
+    {
+      "was": "positive source count returns point_light_owners_required",
+      "is": "actual positive list copy runs when live light bindings/backing provenance are supplied",
+      "evidence": "B6F150 signed live count loop B6F15C..B6F1BE"
+    },
+    {
+      "was": "point-light constructor earlier note claimed RET0",
+      "is": "name argument and RET4",
+      "evidence": "B7C710 MOV EAX,[ESP+4]; B7C73A RET4"
+    }
+  ],
+  "validation": {
+    "strict_win32": "all ten affected TUs passed /std:c++17 /W4 /WX /O2 /MD /EHsc /fp:strict",
+    "physical_fixture": "local/point_links_probe.exe passed raw identities, duplicate clone, swap-last, unlink/free, foreign growth rejection, 1E0 descriptor canaries; real singleton CRT allocator; embedded manifest",
+    "normal_build": "scripts/build.ps1 configure passed, MSB3191 access denied making Lua/zlib Release tlog dirs before C++ compilation; parent registration and combined build pending",
+    "game_runtime": "not reached; no game or visual claim",
+    "native_abi": "new C++ interfaces, not binary entry replacements"
+  },
+  "bounds": [
+    "valid live Win32 descriptors and binding lifetime",
+    "new backing uses same recorded CRT domain; no foreign free/adoption",
+    "negative clone source count takes native skip, release adapters require nonnegative extent",
+    "malformed allocation overflow/new-handler descriptor corruption diagnostic boundaries",
+    "point-light base constructor/type/profile/destructor/pool owner remain external",
+    "no mutation of constructor-empty node light backing by string provider"
+  ],
+  "raw_tail_evidence": {
+    "routine": "00b7c770",
+    "live_body_end": "00b7c7bc",
+    "disk_continuation": "B7C7BD ADD ESP,4; B7C7C0 MOV ECX,ESI; B7C7CA CALL B7C5B0 outside current Ghidra body; no Ghidra mutation or full destructor claim"
+  }
+}

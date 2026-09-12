@@ -255,10 +255,12 @@ std::uint32_t NativeGroupReference::light_count(void* context) noexcept {
     if (array.count < 0 || array.capacity < array.count || (array.count && !array.begin)) std::terminate();
     return static_cast<std::uint32_t>(array.count);
 }
-GeneratedModelPointLightLinks& NativeGroupReference::light_element(void* context, std::uint32_t index) noexcept {
-    auto* light = static_cast<NativeGroupReference*>(context)->owner_.storage.node.point_lights_164.begin[index];
-    if (!light) std::terminate();
-    return *light;
+void NativeGroupReference::remove_light_backlink(void* context,
+    std::uint32_t index, CameraTransform&) noexcept {
+    auto& reference = *static_cast<NativeGroupReference*>(context);
+    auto& node = reference.owner_.storage.node;
+    auto& light = reference.owner_.environment.nodes.point_lights.light(node.point_lights_164.begin[index]);
+    remove_native_point_light_backlink_00b7c1a0(light, node);
 }
 void NativeGroupReference::shrink_lights(void* context) noexcept {
     shrink_native_node_point_lights_to_zero_00b6ec70(
@@ -277,7 +279,7 @@ void NativeGroupReference::release_model_virtual18_00b6f310() noexcept {
         child->notify_changed = nullptr;
     }
     release_node_logical_00b6f310({runtime_, owner_.node.transform, owner_.storage.node.released_44,
-        *this, {this, light_count, light_element, shrink_lights}});
+        *this, {this, light_count, remove_light_backlink, shrink_lights}});
 }
 void NativeGroupReference::remove_scene_virtual54(SceneResource* scene, bool recurse) noexcept {
     if (phase_ == Phase::retired || owner_.phase == NativeGroupOwner::Phase::dead) std::terminate();
