@@ -21,7 +21,7 @@ struct GuiTextGlyphChildTailServices {
 };
 
 enum class GuiTextGlyphChildTailStatus {
-    ready, complete, pending_content, point_light_owners_required, domain_required
+    ready, complete, pending_content, domain_required
 };
 
 // This is the retained native caller frame, not another Text/model owner.

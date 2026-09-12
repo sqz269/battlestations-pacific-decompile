@@ -124,3 +124,12 @@ nonzero header. No C++ owner/header files or tests were added, so compilation
 is not applicable to this evidence-only packet. The machine-readable report
 records exact direct/indirect call rows and verification. No runtime,
 native differential, ABI or nonzero-array deletion completion is claimed.
+
+## 2026-09-12 timed and clip ownership integration
+
+The earlier missing allocation/type-owner status is historical. The canonical
+three-word widget header now uses GuiTimedEntryOwner with real CRT allocation
+provenance, actual 14h entries, alpha/countdown routines, and bounded update/drain
+fragments. Section type17's consumer and the complete widget current40/current20
+sequence remain open. See GUI_TIMED_ENTRY_OWNER.md and GUI_TIMED_ENTRY_TYPES.md;
+reports/orch5_timed_clip_batch.json records combined build and focused fixtures.

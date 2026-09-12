@@ -1,0 +1,1544 @@
+{
+  "packet": "cc2_unit_message_arms",
+  "worker": "agent/cc2-unit-message-arms",
+  "date": "2026-09-12",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program_path": "/battlestationspacific.exe",
+  "ghidra_writes": "none: read-only packet, no renames, comments, prototypes, function creation or saves",
+  "run_time_evidence": "none: the bsp_game.exe harness does not load a mission, so no arm was observed on a frame (docs/WORKER_VERIFICATION_CHECKLIST.md rule 6)",
+  "headline": {
+    "unit_switch": "00821E80 BSP_UnitInstance_HandleMessage, vtable slot 164h, kind - 4Bh, range 0..55h, byte table 00822400 (86 entries), 27 target dwords at 00822394. 29 kinds take a non-default target.",
+    "base_switch": "0095ABE0 BSP_Unit_HandleMessage, kind - 4Bh, range 0..35h, byte table 0095AE40 (54 entries), 8 targets at 0095AE20. 7 kinds take a non-default target, 5 of them not also armed by 00821E80.",
+    "third_level": "0095ABE0's default 0095AE06 is not `return false`: it calls 00878350(this, msg), which answers 4Bh, 4Ch, 56h and D2h and returns 0 for everything else.",
+    "kinds_handled": 34,
+    "kinds_with_local_producer": 30,
+    "kind_names": "recovered, not hypotheses: the pointer table at 00E0AB68 indexed by the kind byte holds one MT_* literal per kind. 58h -> MT_COMMAND matches docs/ENTITY_ORDER_MESSAGE.md, 8Ch -> MT_SHIP_SYNC matches docs/UNIT_STATE_MESSAGE.md and 99h -> MT_SHIP_EXPLODEONEPART matches docs/UNIT_PARTS.md, which fixes the index arithmetic independently.",
+    "kinds_without_verified_producer": [
+      "6Ch",
+      "98h",
+      "9Dh",
+      "91h (producer identified as vtable slot 23Ch, trigger unread)"
+    ]
+  },
+  "message_base_layout": {
+    "producer": "0075B430 BSP_SessionMessage_ConstructBase, __thiscall(msg, kind), RET 4, body 0075B430-0075B47F",
+    "coverage": "complete",
+    "fields": [
+      {
+        "offset": "+0h",
+        "written_at": "0075B44B",
+        "value": "vptr 00D02C68"
+      },
+      {
+        "offset": "+4h",
+        "written_at": "0075B436",
+        "value": "3"
+      },
+      {
+        "offset": "+8h",
+        "written_at": "0075B43D",
+        "value": "0"
+      },
+      {
+        "offset": "+Ch",
+        "written_at": "0075B444",
+        "value": "0; the send path stamps the tick here at 0076E5C6"
+      },
+      {
+        "offset": "+10h",
+        "written_at": "0075B451",
+        "value": "the kind byte"
+      },
+      {
+        "offset": "+14h",
+        "written_at": "0075B470 / 0075B476",
+        "value": "the sender player object: [00E188A8]+18ECh is an index, checked against 0..7, into the eight-entry array at [00E188A8]+18CCh; 0 when out of range"
+      }
+    ]
+  },
+  "unit_switch_kinds": [
+    {
+      "kind": "4Bh",
+      "name": "MT_ROLEOWNER",
+      "arm": "00821EEA",
+      "target_index": "00h",
+      "fields": "none read here",
+      "effect": "calls the base 0095ABE0 then MOV AL,1 at 00821EF1, so the base's answer is discarded and the arm always reports handled",
+      "producer": "008A6060 (Lua, string \"luaMW_EnterPlayerToRole failed:\"), 0077C470 (HUD/interface, 23 call sites), 007796F0 (engine, from 00780120), 00A31C20 (AI coordinator), 00927D20",
+      "producer_class": "LuaBinding",
+      "coverage": "complete"
+    },
+    {
+      "kind": "4Ch",
+      "name": "MT_ROLEAVAILABLE",
+      "arm": "00821ED5",
+      "target_index": "01h",
+      "fields": "none",
+      "effect": "the shared return-true epilogue; the unit does no work and does not consult the base, unlike the default arm",
+      "producer": "008AB850 BSP_LuaBinding_SetRoleAvailable",
+      "producer_class": "LuaBinding",
+      "coverage": "complete"
+    },
+    {
+      "kind": "4Dh-69h",
+      "name": "MT_MULTISELECTUNIT .. MT_GUN_CLEAR_DESTROYEDFAILURE",
+      "arm": "0082237B",
+      "target_index": "1Ah",
+      "fields": "none",
+      "effect": "default: calls the base and returns its value",
+      "producer": "varies, outside this packet",
+      "producer_class": "n/a",
+      "coverage": "table decoding complete"
+    },
+    {
+      "kind": "6Ah",
+      "name": "MT_SHIP_SET_EXPLOSIONFAILURE",
+      "arm": "00822120",
+      "target_index": "02h",
+      "fields": "the whole message",
+      "effect": "unit->vtable[220h](msg), the shared set-failure virtual",
+      "producer": "008132C0 (Lua: reads its arguments through BSP_LuaObject_GetNumber/GetInteger), 0080FE10, 00827B90",
+      "producer_class": "LuaBinding",
+      "coverage": "complete for the arm; vtable[220h]'s owner unread"
+    },
+    {
+      "kind": "6Bh",
+      "name": "MT_SHIP_SET_STEERINGJAMFAILURE",
+      "arm": "00822120",
+      "target_index": "02h",
+      "fields": "the whole message",
+      "effect": "unit->vtable[220h](msg)",
+      "producer": "008132C0, 00827B90",
+      "producer_class": "LuaBinding",
+      "coverage": "complete for the arm"
+    },
+    {
+      "kind": "6Ch",
+      "name": "MT_SHIP_SET_ENGINEJAMFAILURE",
+      "arm": "00822120",
+      "target_index": "02h",
+      "fields": "the whole message",
+      "effect": "unit->vtable[220h](msg)",
+      "producer": "unresolved: no `PUSH 6Ch` immediately before a call to 0075B430 anywhere in .text, so the kind is computed at its constructor site. 008132C0 and 00813660 build the neighbouring failure kinds and are the likely hosts.",
+      "producer_class": "Unresolved",
+      "coverage": "complete for the arm"
+    },
+    {
+      "kind": "6Dh",
+      "name": "MT_SHIP_CLEAR_STEERINGJAMFAILURE",
+      "arm": "00822140",
+      "target_index": "03h",
+      "fields": "the whole message",
+      "effect": "unit->vtable[224h](msg), the shared clear-failure virtual",
+      "producer": "00813660 (builds 6Dh at 008136A7 and 6Eh at 00813705)",
+      "producer_class": "EngineInternal",
+      "coverage": "complete for the arm; vtable[224h]'s owner unread"
+    },
+    {
+      "kind": "6Eh",
+      "name": "MT_SHIP_CLEAR_ENGINEJAMFAILURE",
+      "arm": "00822140",
+      "target_index": "03h",
+      "fields": "the whole message",
+      "effect": "unit->vtable[224h](msg)",
+      "producer": "00813660",
+      "producer_class": "EngineInternal",
+      "coverage": "complete for the arm"
+    },
+    {
+      "kind": "6Fh",
+      "name": "MT_SHIP_REPAIR_SETTINGS",
+      "arm": "00822160",
+      "target_index": "04h",
+      "fields": "msg+20h..msg+34h, six dwords",
+      "effect": "the only inverted arm: ECX is the message, not the unit (00822161 MOV ECX,ESI), and 0080DC10 copies the six dwords into unit+1134h..unit+1148h, which unit_fire_flooding.hpp already names kUnitRepairLevelArrayOffset",
+      "producer": "0080FEC0, called by 00812A70 BSP_UnitInstance_LowerRepairLevel and 00827960 BSP_UnitInstance_RaiseRepairLevel",
+      "producer_class": "EngineInternal",
+      "coverage": "complete"
+    },
+    {
+      "kind": "70h",
+      "name": "MT_SHIP_KAMIKAZE_DETONATE",
+      "arm": "0082217D",
+      "target_index": "05h",
+      "fields": "word msg+1Ch (entity id), &msg+20h (a float3)",
+      "effect": "00521E30 resolves the id, then 00819A20(unit, entity, &msg+20h) sets unit+100Ah = 1 and gates on the target's flag bytes and a float at unit+538h+510h",
+      "producer": "0080FF30",
+      "producer_class": "EngineInternal",
+      "coverage": "arm complete; 00819A20 partial, head 00819A20-00819A7F only"
+    },
+    {
+      "kind": "71h-79h",
+      "name": "MT_PARATROOPER_LANDINGPOS .. MT_VEHICLE_GUN_CONTROL",
+      "arm": "0082237B",
+      "target_index": "1Ah",
+      "fields": "none",
+      "effect": "default: the base handles 79h itself",
+      "producer": "n/a",
+      "producer_class": "n/a",
+      "coverage": "table decoding complete"
+    },
+    {
+      "kind": "7Ah",
+      "name": "MT_VEHICLE_SHIPYARD_LAUNCH",
+      "arm": "0082226F",
+      "target_index": "06h",
+      "fields": "byte msg+20h",
+      "effect": "unit+1130h = byte ? 5 : 0, branchless via NEG CL / SBB ECX,ECX / AND ECX,5 at 0082227B",
+      "producer": "00813830, whose caller is 00825F20 BSP_UnitInstance_UpdateShipMotion, and 009CFBA4. The 0080F960 wrapper also builds 7Ah but Ghidra has no function there.",
+      "producer_class": "EngineInternal",
+      "coverage": "complete"
+    },
+    {
+      "kind": "7Bh",
+      "name": "MT_VEHICLE_UNIT_LAUNCH",
+      "arm": "00821F05",
+      "target_index": "07h",
+      "fields": "msg+14h via 0080F710, float msg+20h",
+      "effect": "unit->vtable[208h](senderControlSlot, float msg+20h); the slot is 8 when the message has no sender",
+      "producer": "00891D50 BSP_LuaBinding_ShipUseCatapult, 00651800 BSP_HudUnitView_UpdateOrderAndView, 00464710, 00464E50",
+      "producer_class": "LuaBinding",
+      "coverage": "complete for the arm; vtable[208h]'s owner unread"
+    },
+    {
+      "kind": "7Ch",
+      "name": "MT_VEHICLE_ADD_LAUNCHED",
+      "arm": "00821F37",
+      "target_index": "08h",
+      "fields": "word msg+20h (entity id)",
+      "effect": "00521E30 resolves the id; a non-null entity goes to 00957450, which fills the first free slot of the ten 18h-byte slots at unit+550h, swaps the observer registration, sets unit+630h to the slot index, clears unit+62Ch and decrements unit+638h when positive",
+      "producer": "006EB9C0",
+      "producer_class": "EngineInternal",
+      "coverage": "complete"
+    },
+    {
+      "kind": "7Dh-8Dh",
+      "name": "MT_VEHICLE_SET_INFERIORFAILURE .. MT_SHIP_GUNS_SYNC",
+      "arm": "0082237B",
+      "target_index": "1Ah",
+      "fields": "none",
+      "effect": "default: the base handles 7Dh-80h itself; 8Ch MT_SHIP_SYNC is slot 18Ch (00816C80), not this switch",
+      "producer": "n/a",
+      "producer_class": "n/a",
+      "coverage": "table decoding complete"
+    },
+    {
+      "kind": "8Eh",
+      "name": "MT_SHIP_HELMSMAN_CONTROL",
+      "arm": "00821EBE",
+      "target_index": "09h",
+      "fields": "msg+14h via 0080F710, msg+0Ch (tick stamp), msg+1Ch, msg+20h, byte msg+38h",
+      "effect": "applies the order only when unit+1B0h equals the sender's control slot (00821EC5 CMP / JNZ); a mismatch still returns true, so a rejected helm message is silently dropped. 008141A0 then back-dates it: age = [00F876B0] - msg+0Ch clamped to [00E0B51C], and BSP_UnitOrderRing_BackfillOrder(msg+1Ch, msg+20h, byte msg+38h, age)",
+      "producer": "00816A40 BSP_UnitInstance_IssueOrder, 0080FD90",
+      "producer_class": "ScriptOrAi",
+      "coverage": "complete"
+    },
+    {
+      "kind": "8Fh",
+      "name": "MT_SHIP_AVOIDSIDE",
+      "arm": "00822294",
+      "target_index": "0Ah",
+      "fields": "word msg+1Ch (entity id), msg+20h",
+      "effect": "00521E30 resolves the id, 00815010 narrows it to class 6 (returns 0 when IsKindOf(6) fails), and when unit+740h is non-null (*(unit+740h))->vtable[28h](narrowed, msg+20h) runs. The narrowed pointer may be null and is passed anyway.",
+      "producer": "009D66B0, in the ship AI address band; its callers were not enumerated, so the trigger is unread.",
+      "producer_class": "EngineInternal",
+      "coverage": "complete for the arm; vtable[28h]'s owner unread"
+    },
+    {
+      "kind": "90h",
+      "name": "MT_SHIP_LEAK",
+      "arm": "008221A7",
+      "target_index": "0Bh",
+      "fields": "dword msg+1Ch (unsigned), &msg+20h (a float3)",
+      "effect": "amount = (float)(uint32)msg+1Ch * 10.0 -- FILD with the `if (signed < 0) add 2^32` fixup at 008221B5 against the 2^32 float at 00CE3978, then FMUL by the double 10.0 at 00CE3DC0 -- and 0074F440(unit+10D4h, amount, &msg+20h) refreshes the owner pose at leakManager+10h when its +C8h byte is 0, transforms the point through the matrix at pose+0CCh and forwards (amount, transformed) to 0074F090",
+      "producer": "0080FF80 BSP_UnitMessage_HullImpactEffect_Construct, 00826F10 BSP_ShipEntity_ApplyHitRecord",
+      "producer_class": "EngineInternal",
+      "coverage": "complete for the arm and 0074F440; 0074F090 unread"
+    },
+    {
+      "kind": "91h",
+      "name": "MT_SHIP_LEAKCHEATWATER",
+      "arm": "008221ED",
+      "target_index": "0Ch",
+      "fields": "none",
+      "effect": "0074E830(unit+10D4h) memsets both leak-manager arrays -- +1Ch and +18h, each +14h entries of 4 bytes -- so the cheat clears all flooding at once",
+      "producer": "008144A0, a unit virtual at vtable slot 23Ch (the dword appears in nine .rdata vtables). Ghidra has no function there; the callers of slot 23Ch were not enumerated.",
+      "producer_class": "EngineInternal",
+      "coverage": "complete"
+    },
+    {
+      "kind": "92h",
+      "name": "MT_SHIP_SINK",
+      "arm": "0082220D",
+      "target_index": "0Dh",
+      "fields": "dword msg+1Ch (count), &msg+20h (source block)",
+      "effect": "0074E860(unit+10D4h, count, src) bulk-loads the leak array at +18h four dwords per iteration for counts above 3",
+      "producer": "0074EC50, whose caller is 00824B60 BSP_UnitInstance_OnWrecked. The 0074EAB0 wrapper also builds 92h but Ghidra has no function there.",
+      "producer_class": "EngineInternal",
+      "coverage": "arm complete; 0074E860 partial, the copy loop 0074E860-0074E8B0 read and the tail 0074E8B0-0074E8E3 unread"
+    },
+    {
+      "kind": "93h",
+      "name": "MT_SHIP_ADDTORQUE",
+      "arm": "00822235",
+      "target_index": "0Eh",
+      "fields": "msg+1Ch, msg+20h, msg+24h",
+      "effect": "copies the three dwords into a stack float3 and calls 0092BF30 BSP_UnitController_AddHullTorque with ECX = the pointer at unit+1018h",
+      "producer": "0080FFD0 BSP_UnitMessage_AddHullTorque_Construct",
+      "producer_class": "EngineInternal",
+      "coverage": "complete"
+    },
+    {
+      "kind": "94h",
+      "name": "MT_SHIP_STARTLANDING",
+      "arm": "00821F61",
+      "target_index": "0Fh",
+      "fields": "none",
+      "effect": "unit->vtable[238h]() with no arguments",
+      "producer": "0064A820 (called by 00768530 BSP_SessionMessage_CreateFromStream and 009F3240 BSP_ShipAi_AttackMoveApproachSubStateStep), 00A11B80",
+      "producer_class": "ScriptOrAi",
+      "coverage": "complete for the arm; vtable[238h]'s owner unread"
+    },
+    {
+      "kind": "95h",
+      "name": "MT_SHIP_LANDINGSHIPSLAUNCHED",
+      "arm": "00821F80",
+      "target_index": "10h",
+      "fields": "float msg+1Ch",
+      "effect": "unit+1124h = float msg+1Ch, a plain store with no call",
+      "producer": "008206F0. The 0080FDD0 wrapper also builds 95h but Ghidra has no function there.",
+      "producer_class": "EngineInternal",
+      "coverage": "complete"
+    },
+    {
+      "kind": "96h",
+      "name": "MT_SHIP_SET_TORPEDOSTOCK",
+      "arm": "00821F9E",
+      "target_index": "11h",
+      "fields": "dword msg+20h",
+      "effect": "0081F8B0 BSP_UnitInstance_SetTorpedoStock(unit, msg+20h)",
+      "producer": "0080FE10 (also builds 6Ah)",
+      "producer_class": "EngineInternal",
+      "coverage": "complete"
+    },
+    {
+      "kind": "97h",
+      "name": "MT_ENTITY_RELOCATE",
+      "arm": "0082237B",
+      "target_index": "1Ah",
+      "fields": "none",
+      "effect": "default, even though it sits inside the armed 8Eh-9Bh run",
+      "producer": "n/a",
+      "producer_class": "n/a",
+      "coverage": "table decoding complete"
+    },
+    {
+      "kind": "98h",
+      "name": "MT_SHIP_WRECKED",
+      "arm": "00821FBC",
+      "target_index": "12h",
+      "fields": "none",
+      "effect": "00814520 BSP_UnitInstance_OnBreakupMessage(unit)",
+      "producer": "unresolved: no `PUSH 98h` immediately before a call to 0075B430",
+      "producer_class": "Unresolved",
+      "coverage": "arm complete; callee already documented by docs/UNIT_DEATH_MESSAGE_AND_SINK.md"
+    },
+    {
+      "kind": "99h",
+      "name": "MT_SHIP_EXPLODEONEPART",
+      "arm": "00821FF0",
+      "target_index": "13h",
+      "fields": "msg+20h",
+      "effect": "0080E440 BSP_UnitInstance_DetachPart(unit, msg+20h); already read in docs/UNIT_PARTS.md",
+      "producer": "0092CED0 BSP_UnitMessage_PartDestroyed_Construct",
+      "producer_class": "EngineInternal",
+      "coverage": "complete"
+    },
+    {
+      "kind": "9Ah",
+      "name": "MT_SHIP_EXPLODETOPARTS",
+      "arm": "00821FD6",
+      "target_index": "14h",
+      "fields": "none",
+      "effect": "00814560 BSP_UnitInstance_OnDeathMessage(unit); already read in docs/UNIT_DEATH_MESSAGE_AND_SINK.md",
+      "producer": "00827A90 BSP_ShipInstance_OnHealthChanged",
+      "producer_class": "EngineInternal",
+      "coverage": "complete"
+    },
+    {
+      "kind": "9Bh",
+      "name": "MT_SHIP_SECTIONFAILUREEFX",
+      "arm": "00822010",
+      "target_index": "15h",
+      "fields": "msg+20h (section index), msg+24h, byte msg+28h (on/off)",
+      "effect": "0093AA90(unit+A20h, section, msg+24h, on). A zero flag stops the point effect already in the vector slot at repairTask+8h/+Ch and sets its +9h byte to 1; a non-zero flag creates a new point effect when the slot is empty and repairTask+0h+4A4h is non-null. Both paths bounds-check the slot index against the vector extent.",
+      "producer": "0093A2C0 (called by 0093BED0 BSP_ShipSystems_RollComponentFailure), 0093C520 BSP_RepairTask_RepairFailures",
+      "producer_class": "ScriptOrAi",
+      "coverage": "complete for both branches"
+    },
+    {
+      "kind": "9Ch",
+      "name": "MT_SHIP_ERASEWRECK",
+      "arm": "0082237B",
+      "target_index": "1Ah",
+      "fields": "none",
+      "effect": "default",
+      "producer": "n/a",
+      "producer_class": "n/a",
+      "coverage": "table decoding complete"
+    },
+    {
+      "kind": "9Dh",
+      "name": "MT_SHIP_TORPEDOGENERATE_HACK",
+      "arm": "008222CF",
+      "target_index": "16h",
+      "fields": "dword msg+1Ch (spawn type), float msg+20h (heading), &msg+24h (a float3 position)",
+      "effect": "007BA2E0 builds the direction {cos a, 0, sin a} with a = [00CE3830] - heading wrapped by [00CE3828]; 006EAFE0 fetches class 3Fh through the class registry; class->vtable[20h](0, msg+1Ch, &msg+24h, &direction, 1, 0, 0) spawns; the result is the object's +310h subobject so 00822317 LEA ESI,[EAX-310h] backs up to the object base; 004404F0 releases the registry holder; then 006E0B40(obj, 1) sets obj+459h and the scene visibility, (obj+310h)->vtable[34h](00F87574, 00F87574) zeroes two vectors from the read-only zero vector, and obj+32Ch = unit+180h carries the owner across",
+      "producer": "009D6650, a constructor Ghidra has no function for and into which no CALL rel32 and no aligned dword pointer resolves, so the trigger is unresolved.",
+      "producer_class": "Unresolved",
+      "coverage": "complete for the arm; the class 3Fh vtable[20h] and vtable[34h] owners unread"
+    },
+    {
+      "kind": "9Eh",
+      "name": "MT_SHIPREPAIR_ADDDAMAGE",
+      "arm": "0082203D",
+      "target_index": "17h",
+      "fields": "float msg+1Ch (seconds), byte msg+20h (add vs set), dword msg+24h (channel)",
+      "effect": "msg+24h == 0 is the fire channel and msg+24h == 1 the leak channel; anything above 1 falls into the plain return-true epilogue at 008220C2 and does nothing. Inside each channel byte msg+20h != 0 selects the accumulating setter. Channel 0 -> 0093A470 AddFireSeconds / 00939F90 SetFireSeconds, both on repairTask+38h; channel 1 -> 0093A4F0 AddWaterSeconds / 00939FA0 SetWaterSeconds, both on repairTask+34h.",
+      "producer": "0080FA50 BSP_UnitMessage_SetFireOrWaterDamage_Construct, 0088E320 BSP_LuaBinding_SetFireDamage, 0088E790 BSP_LuaBinding_SetWaterDamage",
+      "producer_class": "LuaBinding",
+      "coverage": "complete"
+    },
+    {
+      "kind": "9Fh",
+      "name": "MT_SHIPREPAIR_BODYREPAIR",
+      "arm": "008220D7",
+      "target_index": "18h",
+      "fields": "byte msg+1Ch",
+      "effect": "00939FD0(unit+A20h, byte) writes repairTask+45h, which unit_fire_flooding.hpp already names kRepairTaskOffHullRepairEnabled, so the message's 'body repair' is the hull-repair enable byte",
+      "producer": "008AD330 BSP_LuaBinding_RepairEnable, 008898C0",
+      "producer_class": "LuaBinding",
+      "coverage": "complete"
+    },
+    {
+      "kind": "A0h",
+      "name": "MT_SHIPREPAIR_REPAIRPRIORITY",
+      "arm": "008220FC",
+      "target_index": "19h",
+      "fields": "dword msg+1Ch",
+      "effect": "0064A270(unit+A20h, value) writes repairTask+24h (kRepairTaskOffPriority in unit_fire_flooding.hpp) and forwards the same value to 00983C10 with the owner at repairTask+0h",
+      "producer": "008AD6F0 BSP_LuaBinding_SetRepairPriority, 0064A770",
+      "producer_class": "LuaBinding",
+      "coverage": "complete"
+    }
+  ],
+  "base_switch_kinds": [
+    {
+      "kind": "4Bh",
+      "name": "MT_ROLEOWNER",
+      "arm": "0095AC1D",
+      "target_index": "0h",
+      "fields": "byte msg+20h, dword msg+24h (device-group mask), msg+28h (control slot), msg+2Ch (1 take / 0 release)",
+      "effect": "a non-zero msg+20h takes the single-device path this->vtable[144h](msg+28h) and returns. Otherwise bit 0 of msg+24h with msg+2Ch == 1 sets unit+6E8h, then the mask picks one walker: (mask & 4) or mask == 8 -> 00953F60, mask & 10h -> 00954000, mask & 20h -> 009540D0, mask & 80h -> 00954170, no bit -> nothing. 00953F60 and 00954000 walk the device list at unit+48h (next at +44h), test device->vtable[5Ch](20h) and filter the descriptor kind at device+3F4h+80h on the sets {1,5,6} and {2,3,4,6}; 009540D0 and 00954170 walk the global collections 00E0A520 and 00E0A528 through the iterator pair 00952080/009520E0 and call element->vtable[154h](0, msg+28h) on a take or element->vtable[154h](0, 8) followed by element->vtable[1E8h](0) on a release. The 8 there is the same 'no player' sentinel 0080F710 returns.",
+      "producer": "008A6060 (Lua), 0077C470 (HUD), 007796F0, 00A31C20, 00927D20",
+      "producer_class": "LuaBinding",
+      "coverage": "complete for the arm and all four walkers' filters; 00729F70 and 0072D5B0 inside the walkers unread"
+    },
+    {
+      "kind": "4Ch",
+      "name": "MT_ROLEAVAILABLE",
+      "arm": "0095ACD1",
+      "target_index": "1h",
+      "fields": "none",
+      "effect": "the shared return-true epilogue; no work",
+      "producer": "008AB850 BSP_LuaBinding_SetRoleAvailable",
+      "producer_class": "LuaBinding",
+      "coverage": "complete"
+    },
+    {
+      "kind": "4Dh-78h",
+      "name": "various",
+      "arm": "0095AE06",
+      "target_index": "7h",
+      "fields": "none",
+      "effect": "default: 00878350(this, msg)",
+      "producer": "n/a",
+      "producer_class": "n/a",
+      "coverage": "table decoding complete"
+    },
+    {
+      "kind": "79h",
+      "name": "MT_VEHICLE_GUN_CONTROL",
+      "arm": "0095ACE5",
+      "target_index": "2h",
+      "fields": "the whole message",
+      "effect": "00959C20 BSP_Unit_ApplyGunAimMessage(this, msg); already read in docs/GUN_BOT_TICKS.md",
+      "producer": "00954A10",
+      "producer_class": "EngineInternal",
+      "coverage": "complete for the arm"
+    },
+    {
+      "kind": "7Ah-7Ch",
+      "name": "MT_VEHICLE_SHIPYARD_LAUNCH .. MT_VEHICLE_ADD_LAUNCHED",
+      "arm": "0095AE06",
+      "target_index": "7h",
+      "fields": "none",
+      "effect": "default here; 00821E80 arms all three",
+      "producer": "n/a",
+      "producer_class": "n/a",
+      "coverage": "table decoding complete"
+    },
+    {
+      "kind": "7Dh",
+      "name": "MT_VEHICLE_SET_INFERIORFAILURE",
+      "arm": "0095AD01",
+      "target_index": "3h",
+      "fields": "none from the message; reads this+728h",
+      "effect": "sets unit+720h = 1 unconditionally at 0095AD0A, then raises a warning only when this->vtable[5Ch](45h) or this->vtable[5Ch](46h) is true: 0041E870 builds a pooled string from the literal \"InferiorFailure\" at 00CF0B74, 00982C50 BSP_WarningManager_FireFailure([00F8A0C4], this, &name, float this+728h) fires it and 0041DD20 frees the string",
+      "producer": "00953DC4. The 009532E0 wrapper also builds 7Dh but Ghidra has no function there.",
+      "producer_class": "EngineInternal",
+      "coverage": "complete"
+    },
+    {
+      "kind": "7Eh",
+      "name": "MT_VEHICLE_CLEAR_INFERIORFAILURE",
+      "arm": "0095AD7C",
+      "target_index": "4h",
+      "fields": "none",
+      "effect": "unit+720h = 0 and unit+728h = 0.0f via XORPS; no call",
+      "producer": "00953320, 00953EC4",
+      "producer_class": "EngineInternal",
+      "coverage": "complete"
+    },
+    {
+      "kind": "7Fh",
+      "name": "MT_VEHICLE_SET_PARTY",
+      "arm": "0095ADA2",
+      "target_index": "5h",
+      "fields": "dword msg+1Ch; reads this+58h",
+      "effect": "this->vtable[2Ch](msg+1Ch, this+58h, &stackOut) with a zeroed out slot. Paired with the 80h arm this fixes the virtual's signature as (party, race, out): 7Fh passes the new value first and the existing this+58h second, 80h passes the existing this+54h first and the new value second, so this+54h is the party and this+58h the race.",
+      "producer": "008A8930 BSP_LuaBinding_SetParty, 008A8B40, 00889150",
+      "producer_class": "LuaBinding",
+      "coverage": "complete for the arm; vtable[2Ch]'s owner unread"
+    },
+    {
+      "kind": "80h",
+      "name": "MT_VEHICLE_SET_RACE",
+      "arm": "0095ADD4",
+      "target_index": "6h",
+      "fields": "dword msg+1Ch; reads this+54h",
+      "effect": "this->vtable[2Ch](this+54h, msg+1Ch, &stackOut)",
+      "producer": "008A8720 (Lua: reads its arguments through BSP_ObjectHandle_FromLuaTable and BSP_LuaObject_GetInteger), 00889150",
+      "producer_class": "LuaBinding",
+      "coverage": "complete for the arm"
+    },
+    {
+      "kind": "81h-9Eh",
+      "name": "various",
+      "arm": "0095AE06",
+      "target_index": "7h",
+      "fields": "none",
+      "effect": "default, though the table only extends to 9Eh; 9Fh and A0h are past the CMP ECX,35h bound and take the same default through the JA",
+      "producer": "n/a",
+      "producer_class": "n/a",
+      "coverage": "table decoding complete"
+    }
+  ],
+  "third_level": {
+    "native": "00878350",
+    "abi": "undefined4 __thiscall(entity, msg), body 00878350-0087839A",
+    "coverage": "complete",
+    "kinds": [
+      {
+        "kind": "4Bh",
+        "effect": "return 1, no work"
+      },
+      {
+        "kind": "4Ch",
+        "effect": "return 1, no work"
+      },
+      {
+        "kind": "56h",
+        "name": "MT_DAMAGEDGFXLEVEL",
+        "effect": "entity->vtable[1B4h](msg+20h), return 1"
+      },
+      {
+        "kind": "D2h",
+        "effect": "00877CD0(msg+1Ch), return 1"
+      },
+      {
+        "kind": "default",
+        "effect": "return 0 -- the only false in the whole chain"
+      }
+    ]
+  },
+  "single_player_reachability": {
+    "question": "which kinds the executable must be able to build locally for a single-player mission",
+    "armed_kinds": 34,
+    "verified_local_producer": 30,
+    "answer": "30 of the 34 armed kinds have a construction site inside a defined Ghidra function, so a local session needs almost the whole table rather than a network-only subset. Ten of the 30 are reached from a Lua binding, which is what a mission script drives. None of the 34 is network-only in the sense of having no local construction site at all except 6Ch and 98h, whose kind bytes are computed rather than pushed.",
+    "lua_producible": [
+      "4Bh",
+      "4Ch",
+      "6Ah",
+      "6Bh",
+      "7Bh",
+      "7Fh",
+      "80h",
+      "9Eh",
+      "9Fh",
+      "A0h"
+    ],
+    "hud_or_interface_producible": [
+      "4Bh",
+      "7Bh",
+      "94h",
+      "A0h"
+    ],
+    "script_or_ai_producible": [
+      "8Eh",
+      "8Fh",
+      "9Bh"
+    ],
+    "engine_producible": [
+      "6Dh",
+      "6Eh",
+      "6Fh",
+      "70h",
+      "79h",
+      "7Ah",
+      "7Ch",
+      "7Dh",
+      "7Eh",
+      "90h",
+      "92h",
+      "93h",
+      "94h",
+      "95h",
+      "96h",
+      "99h",
+      "9Ah"
+    ],
+    "producer_in_undefined_code": {
+      "91h": "008144A0, a unit virtual at slot 23Ch in nine vtables. The producer is identified; the callers of slot 23Ch were not enumerated.",
+      "9Dh": "009D6650. No reference of any kind resolves into it, so the trigger is unresolved."
+    },
+    "no_construction_site": [
+      "6Ch",
+      "98h"
+    ],
+    "method": "the base constructor 0075B430 stores its one stack argument at msg+10h, so scanning .text for the last PUSH imm before a CALL to 0075B430 names the kind at every direct construction site: 426 sites, 25 of which compute the kind. Containing functions came from the live Ghidra bodies via tools/verify_report_calls.py, not from the index's nearest-start approximation, which is what exposed the six undefined-code sites.",
+    "caveat": "A linear byte scan for callers of the five unreferenced constructors is not proof of absence: it resyncs from arbitrary offsets and cannot establish provenance. The claim here is that no CALL rel32 and no aligned dword pointer in any section resolves into those ranges, not that the game never builds those kinds."
+  },
+  "host_steps": [
+    {
+      "address": "00821ec0",
+      "native": "0080f710",
+      "function": "00821e80",
+      "kind_byte": "8Eh",
+      "note": "sender control slot"
+    },
+    {
+      "address": "00821ed0",
+      "native": "008141a0",
+      "function": "00821e80",
+      "kind_byte": "8Eh",
+      "note": "backfill the helm order"
+    },
+    {
+      "address": "00821eeb",
+      "native": "0095abe0",
+      "function": "00821e80",
+      "kind_byte": "4Bh",
+      "note": "base call, result discarded"
+    },
+    {
+      "address": "00821f0a",
+      "native": "0080f710",
+      "function": "00821e80",
+      "kind_byte": "7Bh",
+      "note": "sender control slot"
+    },
+    {
+      "address": "00821f3b",
+      "native": "00521e30",
+      "function": "00821e80",
+      "kind_byte": "7Ch",
+      "note": "resolve word msg+20h"
+    },
+    {
+      "address": "00821f47",
+      "native": "00957450",
+      "function": "00821e80",
+      "kind_byte": "7Ch",
+      "note": "add the launched child"
+    },
+    {
+      "address": "00821fa2",
+      "native": "0081f8b0",
+      "function": "00821e80",
+      "kind_byte": "96h",
+      "note": "set the torpedo stock"
+    },
+    {
+      "address": "00821fbc",
+      "native": "00814520",
+      "function": "00821e80",
+      "kind_byte": "98h",
+      "note": "breakup message"
+    },
+    {
+      "address": "00821fd6",
+      "native": "00814560",
+      "function": "00821e80",
+      "kind_byte": "9Ah",
+      "note": "death message"
+    },
+    {
+      "address": "00821ff6",
+      "native": "0080e440",
+      "function": "00821e80",
+      "kind_byte": "99h",
+      "note": "detach one part"
+    },
+    {
+      "address": "00822023",
+      "native": "0093aa90",
+      "function": "00821e80",
+      "kind_byte": "9Bh",
+      "note": "section failure effect"
+    },
+    {
+      "address": "0082205c",
+      "native": "0093a4f0",
+      "function": "00821e80",
+      "kind_byte": "9Eh",
+      "note": "channel 1, accumulate"
+    },
+    {
+      "address": "00822076",
+      "native": "00939fa0",
+      "function": "00821e80",
+      "kind_byte": "9Eh",
+      "note": "channel 1, set"
+    },
+    {
+      "address": "008220a3",
+      "native": "0093a470",
+      "function": "00821e80",
+      "kind_byte": "9Eh",
+      "note": "channel 0, accumulate"
+    },
+    {
+      "address": "008220bd",
+      "native": "00939f90",
+      "function": "00821e80",
+      "kind_byte": "9Eh",
+      "note": "channel 0, set"
+    },
+    {
+      "address": "008220e2",
+      "native": "00939fd0",
+      "function": "00821e80",
+      "kind_byte": "9Fh",
+      "note": "hull repair enable"
+    },
+    {
+      "address": "00822106",
+      "native": "0064a270",
+      "function": "00821e80",
+      "kind_byte": "A0h",
+      "note": "repair priority"
+    },
+    {
+      "address": "00822163",
+      "native": "0080dc10",
+      "function": "00821e80",
+      "kind_byte": "6Fh",
+      "note": "ECX is the message here"
+    },
+    {
+      "address": "00822185",
+      "native": "00521e30",
+      "function": "00821e80",
+      "kind_byte": "70h",
+      "note": "resolve word msg+1Ch"
+    },
+    {
+      "address": "0082218d",
+      "native": "00819a20",
+      "function": "00821e80",
+      "kind_byte": "70h",
+      "note": "kamikaze detonate"
+    },
+    {
+      "address": "008221d3",
+      "native": "0074f440",
+      "function": "00821e80",
+      "kind_byte": "90h",
+      "note": "add a leak"
+    },
+    {
+      "address": "008221f3",
+      "native": "0074e830",
+      "function": "00821e80",
+      "kind_byte": "91h",
+      "note": "clear all leak zones"
+    },
+    {
+      "address": "0082221b",
+      "native": "0074e860",
+      "function": "00821e80",
+      "kind_byte": "92h",
+      "note": "load the leak zone array"
+    },
+    {
+      "address": "00822255",
+      "native": "0092bf30",
+      "function": "00821e80",
+      "kind_byte": "93h",
+      "note": "ECX is unit+1018h"
+    },
+    {
+      "address": "00822298",
+      "native": "00521e30",
+      "function": "00821e80",
+      "kind_byte": "8Fh",
+      "note": "resolve word msg+1Ch"
+    },
+    {
+      "address": "0082229f",
+      "native": "00815010",
+      "function": "00821e80",
+      "kind_byte": "8Fh",
+      "note": "narrow to class 6"
+    },
+    {
+      "address": "008222da",
+      "native": "007ba2e0",
+      "function": "00821e80",
+      "kind_byte": "9Dh",
+      "note": "heading to direction"
+    },
+    {
+      "address": "008222e8",
+      "native": "006eafe0",
+      "function": "00821e80",
+      "kind_byte": "9Dh",
+      "note": "class registry, id 3Fh"
+    },
+    {
+      "address": "0082232d",
+      "native": "004404f0",
+      "function": "00821e80",
+      "kind_byte": "9Dh",
+      "note": "release the holder"
+    },
+    {
+      "address": "0082233a",
+      "native": "006e0b40",
+      "function": "00821e80",
+      "kind_byte": "9Dh",
+      "note": "set visible"
+    },
+    {
+      "address": "0082237c",
+      "native": "0095abe0",
+      "function": "00821e80",
+      "kind_byte": "default",
+      "note": "base call, result returned"
+    },
+    {
+      "address": "0095ac6f",
+      "native": "00954000",
+      "function": "0095abe0",
+      "kind_byte": "4Bh",
+      "note": "mask 10h walker"
+    },
+    {
+      "address": "0095ac90",
+      "native": "009540d0",
+      "function": "0095abe0",
+      "kind_byte": "4Bh",
+      "note": "mask 20h walker"
+    },
+    {
+      "address": "0095acb0",
+      "native": "00954170",
+      "function": "0095abe0",
+      "kind_byte": "4Bh",
+      "note": "mask 80h walker"
+    },
+    {
+      "address": "0095accc",
+      "native": "00953f60",
+      "function": "0095abe0",
+      "kind_byte": "4Bh",
+      "note": "mask 4 or == 8 walker"
+    },
+    {
+      "address": "0095ace8",
+      "native": "00959c20",
+      "function": "0095abe0",
+      "kind_byte": "79h",
+      "note": "gun aim message"
+    },
+    {
+      "address": "0095ad2f",
+      "native": "0041e870",
+      "function": "0095abe0",
+      "kind_byte": "7Dh",
+      "note": "pooled string \"InferiorFailure\""
+    },
+    {
+      "address": "0095ad52",
+      "native": "00982c50",
+      "function": "0095abe0",
+      "kind_byte": "7Dh",
+      "note": "fire the warning"
+    },
+    {
+      "address": "0095ad63",
+      "native": "0041dd20",
+      "function": "0095abe0",
+      "kind_byte": "7Dh",
+      "note": "free the string"
+    },
+    {
+      "address": "0095ae09",
+      "native": "00878350",
+      "function": "0095abe0",
+      "kind_byte": "default",
+      "note": "third dispatch level"
+    }
+  ],
+  "indirect_steps": [
+    {
+      "site": "00821f1f",
+      "slot": "00821f1f+vtable208",
+      "kind_byte": "7Bh",
+      "note": "unit vtable[208h](slot, float)"
+    },
+    {
+      "site": "00821f69",
+      "slot": "00821f69+vtable238",
+      "kind_byte": "94h",
+      "note": "unit vtable[238h]()"
+    },
+    {
+      "site": "00822129",
+      "slot": "00822129+vtable220",
+      "kind_byte": "6Ah/6Bh/6Ch",
+      "note": "unit vtable[220h](msg), set failure"
+    },
+    {
+      "site": "00822149",
+      "slot": "00822149+vtable224",
+      "kind_byte": "6Dh/6Eh",
+      "note": "unit vtable[224h](msg), clear failure"
+    },
+    {
+      "site": "008222b8",
+      "slot": "008222b8+vtable28",
+      "kind_byte": "8Fh",
+      "note": "(*(unit+740h))->vtable[28h](target, msg+20h)"
+    },
+    {
+      "site": "00822311",
+      "slot": "00822311+vtable20",
+      "kind_byte": "9Dh",
+      "note": "class 3Fh vtable[20h], the spawn"
+    },
+    {
+      "site": "00822358",
+      "slot": "00822358+vtable34",
+      "kind_byte": "9Dh",
+      "note": "(obj+310h)->vtable[34h](zero, zero)"
+    },
+    {
+      "site": "0095ac31",
+      "slot": "0095ac31+vtable144",
+      "kind_byte": "4Bh",
+      "note": "unit vtable[144h](msg+28h), single device"
+    },
+    {
+      "site": "0095ad11",
+      "slot": "0095ad11+vtable5c",
+      "kind_byte": "7Dh",
+      "note": "IsKindOf(45h)"
+    },
+    {
+      "site": "0095ad20",
+      "slot": "0095ad20+vtable5c",
+      "kind_byte": "7Dh",
+      "note": "IsKindOf(46h)"
+    },
+    {
+      "site": "0095adbe",
+      "slot": "0095adbe+vtable2c",
+      "kind_byte": "7Fh",
+      "note": "vtable[2Ch](party, race, out)"
+    },
+    {
+      "site": "0095adf0",
+      "slot": "0095adf0+vtable2c",
+      "kind_byte": "80h",
+      "note": "vtable[2Ch](party, race, out)"
+    }
+  ],
+  "producer_steps": [
+    {
+      "address": "0064a828",
+      "native": "0075b430",
+      "function": "0064a820",
+      "kind_byte": "94h",
+      "push": "0064a821"
+    },
+    {
+      "address": "006eb9c5",
+      "native": "0075b430",
+      "function": "006eb9c0",
+      "kind_byte": "7Ch",
+      "push": "006eb9c1"
+    },
+    {
+      "address": "0074ed21",
+      "native": "0075b430",
+      "function": "0074ec50",
+      "kind_byte": "92h",
+      "push": "0074ed18"
+    },
+    {
+      "address": "007796f5",
+      "native": "0075b430",
+      "function": "007796f0",
+      "kind_byte": "4Bh",
+      "push": "007796f1"
+    },
+    {
+      "address": "0080fe18",
+      "native": "0075b430",
+      "function": "0080fe10",
+      "kind_byte": "96h",
+      "push": "0080fe11"
+    },
+    {
+      "address": "0080fec5",
+      "native": "0075b430",
+      "function": "0080fec0",
+      "kind_byte": "6Fh",
+      "push": "0080fec1"
+    },
+    {
+      "address": "0080ff35",
+      "native": "0075b430",
+      "function": "0080ff30",
+      "kind_byte": "70h",
+      "push": "0080ff31"
+    },
+    {
+      "address": "0080ffd8",
+      "native": "0075b430",
+      "function": "0080ffd0",
+      "kind_byte": "93h",
+      "push": "0080ffd1"
+    },
+    {
+      "address": "008134ca",
+      "native": "0075b430",
+      "function": "008132c0",
+      "kind_byte": "6Bh",
+      "push": "008134c4"
+    },
+    {
+      "address": "008136a7",
+      "native": "0075b430",
+      "function": "00813660",
+      "kind_byte": "6Dh",
+      "push": "008136a1"
+    },
+    {
+      "address": "00813705",
+      "native": "0075b430",
+      "function": "00813660",
+      "kind_byte": "6Eh",
+      "push": "008136ff"
+    },
+    {
+      "address": "00813851",
+      "native": "0075b430",
+      "function": "00813830",
+      "kind_byte": "7Ah",
+      "push": "0081384b"
+    },
+    {
+      "address": "00813cc6",
+      "native": "0075b430",
+      "function": "00813ca0",
+      "kind_byte": "8Ch",
+      "push": "00813cbd"
+    },
+    {
+      "address": "00816aa1",
+      "native": "0075b430",
+      "function": "00816a40",
+      "kind_byte": "8Eh",
+      "push": "00816a98"
+    },
+    {
+      "address": "00821dd5",
+      "native": "0075b430",
+      "function": "008206f0",
+      "kind_byte": "95h",
+      "push": "00821db3"
+    },
+    {
+      "address": "00827762",
+      "native": "0075b430",
+      "function": "00826f10",
+      "kind_byte": "90h",
+      "push": "00827757"
+    },
+    {
+      "address": "00827ae5",
+      "native": "0075b430",
+      "function": "00827a90",
+      "kind_byte": "9Ah",
+      "push": "00827adc"
+    },
+    {
+      "address": "0088e4b5",
+      "native": "0075b430",
+      "function": "0088e320",
+      "kind_byte": "9Eh",
+      "push": "0088e4ac"
+    },
+    {
+      "address": "0088e922",
+      "native": "0075b430",
+      "function": "0088e790",
+      "kind_byte": "9Eh",
+      "push": "0088e919"
+    },
+    {
+      "address": "00891f0b",
+      "native": "0075b430",
+      "function": "00891d50",
+      "kind_byte": "7Bh",
+      "push": "00891f05"
+    },
+    {
+      "address": "008a61e7",
+      "native": "0075b430",
+      "function": "008a6060",
+      "kind_byte": "4Bh",
+      "push": "008a61e1",
+      "note": "Lua binding, string \"luaMW_EnterPlayerToRole failed:\""
+    },
+    {
+      "address": "008a8882",
+      "native": "0075b430",
+      "function": "008a8720",
+      "kind_byte": "80h",
+      "push": "008a8879"
+    },
+    {
+      "address": "008a8a8f",
+      "native": "0075b430",
+      "function": "008a8930",
+      "kind_byte": "7Fh",
+      "push": "008a8a89"
+    },
+    {
+      "address": "008ab9ee",
+      "native": "0075b430",
+      "function": "008ab850",
+      "kind_byte": "4Ch",
+      "push": "008ab9e8"
+    },
+    {
+      "address": "008ad494",
+      "native": "0075b430",
+      "function": "008ad330",
+      "kind_byte": "9Fh",
+      "push": "008ad48b"
+    },
+    {
+      "address": "008ad831",
+      "native": "0075b430",
+      "function": "008ad6f0",
+      "kind_byte": "A0h",
+      "push": "008ad826"
+    },
+    {
+      "address": "0092ced8",
+      "native": "0075b430",
+      "function": "0092ced0",
+      "kind_byte": "99h",
+      "push": "0092ced1"
+    },
+    {
+      "address": "0093c63b",
+      "native": "0075b430",
+      "function": "0093c520",
+      "kind_byte": "9Bh",
+      "push": "0093c632"
+    },
+    {
+      "address": "00953de6",
+      "native": "0075b430",
+      "function": "00953dc4",
+      "kind_byte": "7Dh",
+      "push": "00953de0"
+    },
+    {
+      "address": "00953ee6",
+      "native": "0075b430",
+      "function": "00953ec4",
+      "kind_byte": "7Eh",
+      "push": "00953ee0"
+    },
+    {
+      "address": "00954a15",
+      "native": "0075b430",
+      "function": "00954a10",
+      "kind_byte": "79h",
+      "push": "00954a11"
+    },
+    {
+      "address": "009d66b8",
+      "native": "0075b430",
+      "function": "009d66b0",
+      "kind_byte": "8Fh",
+      "push": "009d66b1"
+    }
+  ],
+  "routines": [
+    {
+      "address": "00821e80",
+      "native": "00821e80",
+      "name": "BSP_UnitInstance_HandleMessage",
+      "abi": "undefined1 __thiscall(unit, msg), RET 4 at 0082226C and every other arm epilogue",
+      "body": "00821e80-00822393",
+      "coverage": "complete: all 27 targets read"
+    },
+    {
+      "address": "0095abe0",
+      "native": "0095abe0",
+      "name": "BSP_Unit_HandleMessage",
+      "abi": "undefined1 __thiscall(unit, msg), RET 4",
+      "body": "0095abe0-0095ae1f",
+      "coverage": "complete: all 8 targets read"
+    },
+    {
+      "address": "00878350",
+      "native": "00878350",
+      "name": "BSP_Entity_HandleMessageFallback",
+      "abi": "undefined4 __thiscall(entity, msg)",
+      "body": "00878350-0087839a",
+      "coverage": "complete"
+    },
+    {
+      "address": "0075b430",
+      "native": "0075b430",
+      "name": "BSP_SessionMessage_ConstructBase",
+      "abi": "__thiscall(msg, kind), RET 4",
+      "body": "0075b430-0075b47f",
+      "coverage": "complete"
+    },
+    {
+      "address": "0080f710",
+      "native": "0080f710",
+      "name": "BSP_SessionMessage_SenderControlSlot",
+      "abi": "int __fastcall(msg)",
+      "body": "0080f710-0080f720",
+      "coverage": "complete"
+    },
+    {
+      "address": "008141a0",
+      "native": "008141a0",
+      "name": "BSP_UnitInstance_BackfillHelmOrder",
+      "abi": "void __thiscall(unit /*unused in the body*/, msg)",
+      "body": "008141a0-008141dd",
+      "coverage": "complete"
+    },
+    {
+      "address": "00957450",
+      "native": "00957450",
+      "name": "BSP_UnitInstance_AddLaunchedChild",
+      "abi": "void __thiscall(unit, entity)",
+      "body": "00957450-009574ce",
+      "coverage": "complete"
+    },
+    {
+      "address": "0080dc10",
+      "native": "0080dc10",
+      "name": "BSP_ShipRepairSettingsMessage_ApplyToUnit",
+      "abi": "void __thiscall(msg, unit)",
+      "body": "0080dc10-0080dc4c",
+      "coverage": "complete"
+    },
+    {
+      "address": "00815010",
+      "native": "00815010",
+      "name": "BSP_Entity_NarrowToClass6",
+      "abi": "void* __fastcall(entity)",
+      "body": "00815010-0081502b",
+      "coverage": "complete"
+    },
+    {
+      "address": "0093aa90",
+      "native": "0093aa90",
+      "name": "BSP_RepairTask_SetSectionFailureEffect",
+      "abi": "void __thiscall(repairTask, uint sectionIndex, undefined4, char on)",
+      "body": "0093aa90-0093ac1a",
+      "coverage": "complete for both branches"
+    },
+    {
+      "address": "00939fd0",
+      "native": "00939fd0",
+      "name": "BSP_RepairTask_SetHullRepairEnabled",
+      "abi": "void __thiscall(repairTask, bool)",
+      "body": "00939fd0-00939fd9",
+      "coverage": "complete"
+    },
+    {
+      "address": "0064a270",
+      "native": "0064a270",
+      "name": "BSP_RepairTask_SetRepairPriority",
+      "abi": "void __thiscall(repairTask, uint priority)",
+      "body": "0064a270-0064a288",
+      "coverage": "complete"
+    },
+    {
+      "address": "0074f440",
+      "native": "0074f440",
+      "name": "BSP_LeakManager_AddLeakAtPoint",
+      "abi": "void __thiscall(leakManager, float amount, const float3* point), RET 8 at 0074f484",
+      "body": "0074f440-0074f486",
+      "coverage": "complete; 0074F090 unread"
+    },
+    {
+      "address": "0074e830",
+      "native": "0074e830",
+      "name": "BSP_LeakManager_ClearAllZones",
+      "abi": "void __fastcall(leakManager)",
+      "body": "0074e830-0074e85d",
+      "coverage": "complete"
+    },
+    {
+      "address": "0074e860",
+      "native": "0074e860",
+      "name": "BSP_LeakManager_LoadZoneArray",
+      "abi": "void __thiscall(leakManager, int count, const void* src)",
+      "body": "0074e860-0074e8e3",
+      "coverage": "partial: the strided copy loop 0074e860-0074e8b0; the tail unread"
+    },
+    {
+      "address": "00819a20",
+      "native": "00819a20",
+      "name": "BSP_UnitInstance_KamikazeDetonate",
+      "abi": "void __thiscall(unit, entity* target, const float3* point)",
+      "body": "00819a20-00819cb7",
+      "coverage": "partial: the entry gate 00819a20-00819a7f; the effect body unread"
+    },
+    {
+      "address": "00953f60",
+      "native": "00953f60",
+      "name": "BSP_Unit_AssignRoleOwnerDeviceSet156",
+      "abi": "void __thiscall(unit, msg)",
+      "body": "00953f60-00953ff2",
+      "coverage": "complete for the walk and the filter; 00729F70 unread"
+    },
+    {
+      "address": "00954000",
+      "native": "00954000",
+      "name": "BSP_Unit_AssignRoleOwnerDeviceSet2346",
+      "abi": "void __thiscall(unit, msg)",
+      "body": "00954000-009540c3",
+      "coverage": "complete for both branches; 00729F70 and 0072D5B0 unread"
+    },
+    {
+      "address": "009540d0",
+      "native": "009540d0",
+      "name": "BSP_Unit_AssignRoleOwnerCollectionA",
+      "abi": "void __thiscall(unit /*unused in the body*/, msg), collection 00E0A520",
+      "body": "009540d0-00954167",
+      "coverage": "complete"
+    },
+    {
+      "address": "00954170",
+      "native": "00954170",
+      "name": "BSP_Unit_AssignRoleOwnerCollectionB",
+      "abi": "void __thiscall(unit /*unused in the body*/, msg), collection 00E0A528",
+      "body": "00954170-00954207",
+      "coverage": "complete"
+    },
+    {
+      "address": "007ba2e0",
+      "native": "007ba2e0",
+      "name": "BSP_Math_HeadingToDirectionXZ",
+      "abi": "float3* __thiscall(float3* out, float heading)",
+      "body": "007ba2e0-007ba339",
+      "coverage": "complete"
+    },
+    {
+      "address": "006e0b40",
+      "native": "006e0b40",
+      "name": "BSP_SceneObject_SetVisible",
+      "abi": "void __thiscall(obj, char visible)",
+      "body": "006e0b40-006e0b7f",
+      "coverage": "complete"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "0080f960",
+      "end_address": "0080f98f",
+      "name": "BSP_UnitMessage_ShipyardLaunch_Construct",
+      "evidence": "PUSH ESI / PUSH 7Ah / MOV ESI,ECX / CALL 0075B430 at 0080F965. 48 bytes, ends at the RET before the padding at 0080F990. No CALL rel32 and no data pointer anywhere in the image resolves into it."
+    },
+    {
+      "address": "009532e0",
+      "end_address": "00953313",
+      "name": "BSP_UnitMessage_SetInferiorFailure_Construct",
+      "evidence": "PUSH ESI / PUSH 7Dh / MOV ESI,ECX / CALL 0075B430 at 009532E5. 52 bytes. No CALL rel32 or data pointer resolves into it."
+    },
+    {
+      "address": "008144a0",
+      "end_address": "00814514",
+      "name": "BSP_UnitInstance_SendLeakCheatWater",
+      "evidence": "MSVC EH prologue (MOV EAX,FS:[0] / PUSH -1 / PUSH 00C90C18) then PUSH 91h at 008144C9 before CALL 0075B430 at 008144D2. 117 bytes. Unlike the other five it is referenced: the dword 008144A0 appears in nine .rdata vtables (00CF92EC, 00CFA9B4, 00CFB974, 00CFC60C, 00CFFC6C, 00D0186C, 00D098B4, 00D0C1BC, 00D0C884), so it is a virtual. Taking 00821E80 at 00CF9214 as slot 164h (docs/SESSION_MESSAGE_DISPATCH.md) puts the vtable base at 00CF90B0 and 00CF92EC at slot 23Ch; 00CFA9B4 against base 00CFA778 gives the same 23Ch."
+    },
+    {
+      "address": "0074eab0",
+      "end_address": "0074eafa",
+      "name": "BSP_UnitMessage_ShipSink_Construct",
+      "evidence": "PUSH ESI / PUSH 92h (imm32) / MOV ESI,ECX / CALL 0075B430 at 0074EAB8. 75 bytes. No CALL rel32 or data pointer resolves into it."
+    },
+    {
+      "address": "0080fdd0",
+      "end_address": "0080fe03",
+      "name": "BSP_UnitMessage_LandingShipsLaunched_Construct",
+      "evidence": "PUSH ESI / PUSH 95h (imm32) / MOV ESI,ECX / CALL 0075B430 at 0080FDD8. 52 bytes. No CALL rel32 or data pointer resolves into it."
+    },
+    {
+      "address": "009d6650",
+      "end_address": "009d66ab",
+      "name": "BSP_UnitMessage_TorpedoGenerateHack_Construct",
+      "evidence": "PUSH ESI / PUSH 9Dh (imm32) / MOV ESI,ECX / CALL 0075B430 at 009D6658. 92 bytes. No CALL rel32 or data pointer resolves into it, so the routine that builds MT_SHIP_TORPEDOGENERATE_HACK has no established trigger."
+    }
+  ],
+  "flow_gaps": [],
+  "flow_gap_check": "both listings were paged in full and checked for holes: 00821E80 has 411 consecutive instructions from 00821E80 to 00822391 and 0095ABE0 has 177 from 0095ABE0 to 0095AE1D, with no step above 10 bytes. The 9Dh arm's `_free`-class call at 0082232D (004404F0) and the string free at 0095AD63 (0041DD20) are both followed by listed instructions, so neither produced a dropped run.",
+  "corrections": [
+    {
+      "document": "docs/SESSION_MESSAGE_DISPATCH.md",
+      "was": "`0095ABE0`'s own switch covers `4Bh`, `4Ch`, `79h`, `7Dh`-`80h` and returns false for the rest (`0095AE06`).",
+      "is": "the kind list is right, but 0095AE06 is not a false return: it calls 00878350(this, msg) with ECX = this and returns that callee's result. 00878350 answers 4Bh, 4Ch, 56h MT_DAMAGEDGFXLEVEL and D2h with 1, and only its own default returns 0. A caller of vtable[164h] therefore sees true for three more kinds than the two switches alone explain.",
+      "evidence": "0095AE06 PUSH EAX / 0095AE07 MOV ECX,ESI / 0095AE09 CALL 0x00878350, then the epilogue at 0095AE0E-0095AE1D with no MOV AL, so AL is the callee's. 00878350's body 00878350-0087839A is a four-case switch on byte [msg+10h] returning 1 for 4Bh/4Ch/56h/D2h and 0 by default. The pre-existing ledger record for 0095ABE0 already said \"the default to the base handler 00878350\", so the dispatch doc contradicted a record already in config/names/00950000.jsonl."
+    },
+    {
+      "document": "docs/SESSION_MESSAGE_DISPATCH.md",
+      "was": "Kinds with a real target are `4Bh`, `4Ch`, ... ; every other index selects target `1Ah` = `0082237B`, the base call.",
+      "is": "true as far as it goes, but three of the 27 targets do no unit work and the difference between them matters. Target 00h (4Bh, arm 00821EEA) calls the base and then forces AL to 1, discarding the base's answer. Target 01h (4Ch, arm 00821ED5) is the shared return-true epilogue and never reaches the base at all. Only target 1Ah (0082237B) returns the base's value. So 4Ch is swallowed by the unit rather than handled by it.",
+      "evidence": "00821EEA PUSH ESI / CALL 0095ABE0 / 00821EF1 MOV AL,1 versus 0082237B PUSH ESI / CALL 0095ABE0 / 00822381 MOV ECX,[ESP+20h] with no MOV AL. The byte table at 00822400 gives index 00h to offset 0 and index 01h to offset 1, and the target dwords at 00822394 are 00821EEA and 00821ED5."
+    },
+    {
+      "document": "docs/SESSION_MESSAGE_DISPATCH.md",
+      "was": "`99h` -> `00821FF0` ... `9Ah` -> `00821FD6` -> `00814560`. ... the `4Bh` arm at `00821EEB`",
+      "is": "the arm entry for 4Bh is 00821EEA; 00821EEB is the CALL instruction inside it. The 99h and 9Ah rows are correct.",
+      "evidence": "target dword index 00h at 00822394 is 00821EEA, and the instruction at 00821EEA is PUSH ESI with the CALL at 00821EEB."
+    },
+    {
+      "document": "include/bsp/unit_fire_flooding.hpp",
+      "was": "kRepairTaskOffFireSeconds = 0x34 (cited to 0093C120), kRepairTaskOffWaterSeconds = 0x38 (cited to 0093C210), kRepairTaskOffWaterExpiredSlot = 0x3C (0093C210), kRepairTaskOffFireExpiredSlot = 0x40 (0093C120), kSettingsOffFirePriorityDivisor = 0x3C8 (0093C120), kSettingsOffWaterPriorityDivisor = 0x3CC (0093C210)",
+      "is": "every fire/water label in that group is on the wrong offset; the routine citations themselves are right. Fire is repairTask+38h with its expired slot at +3Ch and its divisor at settings+3CCh, ticked by 0093C210. Leak/water is repairTask+34h with its expired slot at +40h and its divisor at settings+3C8h, ticked by 0093C120. The six constants should swap their fire and water names in place.",
+      "evidence": "0093A470, which reads and writes repairTask+38h (0093A489 FLD [ESI+38h]), calls 00983780 at 0093A484, and 00983780's body carries the string immediate \"fire\". 0093A4F0, which reads and writes repairTask+34h (0093A518, 0093A52D) and also writes +40h (0093A530), calls 009832F0 at 0093A513, and 009832F0's body carries \"leak\". The one-line setters agree: 00939F90 writes +38h and is already named BSP_RepairTask_SetFireSeconds, 00939FA0 writes +34h and is BSP_RepairTask_SetWaterSeconds. The tick routines group the same way: 0093C120 works on +34h, writes +40h and reads settings+3C8h; 0093C210 works on +38h, writes +3Ch and reads settings+3CCh."
+    },
+    {
+      "document": "docs/SESSION_MESSAGE_DISPATCH.md",
+      "was": "| `4Eh` destroy | `00780120` -> `IsA(4Eh)` | `entity+70h = msg[24h]`; `entity->vtable[70h](msg[20h])` | complete |",
+      "is": "the route and the effect are right; the label is not. Kind 4Eh is MT_DEADMEAT and kind 4Fh is MT_DESTROY. Since the ladder's is-a ids and the message kind bytes coincide where both are known (the 58h test is MT_COMMAND), the arm read there is the MT_DEADMEAT one, not a destroy.",
+      "evidence": "the name pointer table at 00E0AB68 gives index 4Eh the pointer 00D02710 -> \"MT_DEADMEAT\" and index 4Fh 00D02704 -> \"MT_DESTROY\". The same table's index 58h is 00D0267C -> \"MT_COMMAND\", which docs/ENTITY_ORDER_MESSAGE.md already fixed as the 58h message class, and index 8Ch is \"MT_SHIP_SYNC\", matching docs/UNIT_STATE_MESSAGE.md's kind 8Ch."
+    },
+    {
+      "document": "reports/unit_message_arms.json (this report, first pass)",
+      "was": "the producers of 7Ah, 7Dh, 91h, 92h, 95h and 9Dh were attributed to 0080F750, 009531A0, 00814390, 0074E9C0, 0080FD90 and 009D6550",
+      "is": "all six attributions were artefacts of resolving the containing function by nearest function start in local/bsp_index.sqlite, which has no end_address column. The six construction sites lie past the end of those functions, in code Ghidra has no function for. Four of the kinds have a second, verified site elsewhere; 91h's producer is the virtual at 008144A0 and 9Dh's is 009D6650, neither a Ghidra function.",
+      "evidence": "tools/verify_report_calls.py rejected all six with 'call site is in no Ghidra function', and `bsp.py ghidra proto <site> --brief` returns no body for each. The routines were then bounded from the disk bytes; see no_ghidra_function."
+    }
+  ],
+  "open_questions": [
+    "6Ch MT_SHIP_SET_ENGINEJAMFAILURE and 98h MT_SHIP_WRECKED have no `PUSH <kind>` construction site. Their producers build the kind in a register, so finding them needs a data-flow pass over the 25 unattributable 0075B430 call sites rather than an immediate scan.",
+    "The vtable owners behind slots 144h, 208h, 220h, 224h, 238h and 2Ch were not resolved to functions: the six shared unit vtables would each have to be read at those displacements. 220h/224h in particular are the whole of the five SET/CLEAR failure kinds.",
+    "00819A20 (kamikaze) and 0074E860 (leak zone load) are covered only at their heads; both are on the armed path and would repay a full read.",
+    "0093AA90's middle argument (msg+24h) is passed through to the point-effect creation but its use was not isolated.",
+    "00953F60 and 00954000 filter devices on the descriptor kind word at device+3F4h+80h with the sets {1,5,6} and {2,3,4,6}. Which device classes those numbers are was not established, so the two walkers are named by their sets rather than by a device name.",
+    "No run-time evidence: the harness does not load a mission, so none of these arms was observed executing."
+  ],
+  "tool_problems": [
+    "`bsp.py ghidra xrefs` under-reports the kind immediates, as the packet brief warned, so every producer here comes from a byte scan of the PE's .text rather than from Ghidra references.",
+    "The index database at local/bsp_index.sqlite has no end_address column, so a containing-function lookup had to fall back to the nearest function start at or below the site. Every row cited in host_steps and producer_steps was re-checked by tools/verify_report_calls.py, which uses the live bodies.",
+    "`bsp.py ghidra export <addr> --asm` is not a valid flag combination; the assembly listing comes from `bsp.py ghidra export` followed by `bsp.py show <addr> --asm`.",
+    "Ghidra's decompiler dropped the second stack argument of 0074F440 and the ECX of 008141A0, 009540D0 and 00954170; the argument counts came from the RET imm and the listing instead."
+  ],
+  "limitations": [
+    "Ghidra was not modified. Names recorded in the ledger are hypotheses except the MT_* kind literals, which are image strings.",
+    "Coverage is per-routine in the `routines` block; two callees are partial and say which range was read.",
+    "The producer classification answers 'can the image build this kind locally', not 'does a given mission build it'. A Lua binding existing does not prove any shipped mission script calls it."
+  ],
+  "producer_steps_in_undefined_code": {
+    "why": "These six 0075B430 construction sites lie in code Ghidra has no function for, so tools/verify_report_calls.py rule 2 cannot bind them to a caller. Each site's routine was bounded from the disk bytes instead (see no_ghidra_function). Four of the six kinds also have a second site inside a defined function, which is the row kept in producer_steps; 91h and 9Dh do not.",
+    "sites": [
+      {
+        "native": "0075b430",
+        "kind_byte": "7Ah",
+        "push": "0080f961",
+        "address_note": "site in undefined code",
+        "site": "0080f965",
+        "function_claim_withdrawn": "0080f750"
+      },
+      {
+        "native": "0075b430",
+        "kind_byte": "7Dh",
+        "push": "009532e1",
+        "address_note": "site in undefined code",
+        "site": "009532e5",
+        "function_claim_withdrawn": "009531a0"
+      },
+      {
+        "native": "0075b430",
+        "kind_byte": "91h",
+        "push": "008144c9",
+        "address_note": "site in undefined code",
+        "site": "008144d2",
+        "function_claim_withdrawn": "00814390"
+      },
+      {
+        "native": "0075b430",
+        "kind_byte": "92h",
+        "push": "0074eab1",
+        "address_note": "site in undefined code",
+        "site": "0074eab8",
+        "function_claim_withdrawn": "0074e9c0"
+      },
+      {
+        "native": "0075b430",
+        "kind_byte": "95h",
+        "push": "0080fdd1",
+        "address_note": "site in undefined code",
+        "site": "0080fdd8",
+        "function_claim_withdrawn": "0080fd90"
+      },
+      {
+        "native": "0075b430",
+        "kind_byte": "9Dh",
+        "push": "009d6651",
+        "address_note": "site in undefined code",
+        "site": "009d6658",
+        "function_claim_withdrawn": "009d6550"
+      }
+    ]
+  }
+}

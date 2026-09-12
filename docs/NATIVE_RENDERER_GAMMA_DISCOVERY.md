@@ -1,5 +1,10 @@
 # Native renderer gamma discovery
 
+Historical discovery: the raw power prerequisites described below have since
+been reconstructed. The complete gamma source, current evidence and qualified
+native/source fixture are recorded in [NATIVE_RENDERER_GAMMA.md](NATIVE_RENDERER_GAMMA.md).
+The original discovery and its pinned checkout limitations remain below.
+
 The complete gamma setter at `00B21960..00B21B3A` is 474 bytes. Its renderer/guard/ramp schedule is recoverable, but **an original-equivalent full source interface remains blocked by the power helper**. No complete raw pow provider exists in the pinned checkout. A modern host `pow` could support an explicitly different, restricted numerical interface; its existence is not evidence that it reproduces the original WORD ramp or floating-point side effects. The one independent exact source packet proposed below is the 67-byte CRT double loader C083D5.
 
 This is read-only discovery. No source, Ghidra, ledger, installed game, monitor gamma, window, focus, build or runtime operation was changed or exercised. [The audit](../reports/native_renderer_gamma_discovery.json) pins the two-file packet and ignored `local/gamma/` evidence in worktree `J:/PROG/battlestations-pacific-decompile-native_renderer_gamma_discovery`.

@@ -63,7 +63,8 @@ private:
 
 // Borrowed access to the SAME native +164/+168/+16C list or diagnostic vector.
 // All callbacks are required and nonthrowing. Each query reads the current
-// count or current begin/element; it must not cache a copied list. Counts use
+// count or current begin/element; removal acts on that light's actual backlink
+// array for native owners, or the separate diagnostic vector. Counts use
 // the native unsigned comparison domain, with an actual valid array extent.
 // Native signed descriptors must be validated nonnegative by their adapter.
 // shrink_to_zero implements B6EC70(0), retaining backing pointer/capacity and
@@ -71,7 +72,7 @@ private:
 struct NodePointLightReleaseView {
     void* context;
     std::uint32_t (*live_count)(void*) noexcept;
-    GeneratedModelPointLightLinks& (*live_element)(void*, std::uint32_t) noexcept;
+    void (*remove_live_backlink)(void*, std::uint32_t, CameraTransform&) noexcept;
     void (*shrink_to_zero)(void*) noexcept;
 };
 

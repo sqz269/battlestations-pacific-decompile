@@ -456,3 +456,18 @@ block starts were not established, so they are listed as sites rather than routi
 Each end address is the inclusive last byte of the `RET` that is followed by `INT3` padding,
 taken from the disk bytes; the next referenced entry point begins at `007C6760`, `007C6E10` and
 `007CB440` respectively, so the three blocks are bounded on both sides.
+
+## Correction from docs/PILOT_CONTROLS.md (packet cc2_pilot_controls)
+
+- **Was:** "The write-back into unit+9E4h was not found"; 007BB6E0 is "the signed-byte round trip q = ftol(v*127 + 128.5) ... stored back into unit+9E4h..+9F4h", source and destination the same fields
+  **Is:** 007BB6E0 is the write-back. Its source is a separate pilot command block at unit+9FCh..+A10h and its destination is unit+9E4h..+9F4h; the round trip is a transform between two blocks, not an in-place projection
+  **Evidence:** 007BB982 LEA EAX,[ESI+9FCh]; 007BB988 PUSH EAX; 007BB989 MOV ECX,ESI; 007BB98B CALL 007BB6E0, with ESI the unit from 007BB921 MOV ESI,ECX. Inside the callee 007BB6E2 MOV EDI,[ESP+0Ch]; 007BB6E6 FLD [EDI] -> 007BB72A FSTP [ESI+9E4h]; 007BB730 FLD [EDI+4] -> 007BB75D [ESI+9E8h]; 007BB763 FLD [EDI+8] -> 007BB798 [ESI+9ECh]; 007BB83A FLD [EDI+0Ch] -> 007BB877 [ESI+9F0h]; 007BB87D FLD [EDI+10h] -> 007BB8EE [ESI+9F4h]
+- **Was:** "At 007CB161-007CB1B3 it clamps each of +9E4h, +9E8h and +9ECh between an upper bound in XMM1 and a lower bound in XMM2, a per-axis control limiter"
+  **Is:** the clamp block runs to 007CB1EB and covers all five axes, with two different lower bounds: +9E4h, +9E8h and +9ECh are clamped to [-1.0f, 1.0f] and +9F0h and +9F4h to [0.0f, 1.0f] with an immediate zero as the lower bound
+  **Evidence:** stores 007CB161, 007CB183 and 007CB1A5 against 00D7A260 = -1.0f and 00D7A24C = 1.0f; 007CB1C7 and 007CB1EB take the 0.0 immediate path (the decompiled form is if (0.0 <= v) { if (1.0f < v) v = 1.0f; } else v = 0.0;). 007CB1F3 CALL 007B9770 follows
+- **Was:** "What unit+900h's six values mean. 4 and 5 take the ground arm, 6 is tested inside 007DA710"
+  **Is:** unit+900h has at least eight values, 0 through 7, all seven non-zero ones written as immediates or through the setter
+  **Evidence:** a .text scan for MOV dword [reg+900h],imm32 gives 007C1697 = 4, 007C171E = 5, 007C63F4 = 6, 007C6481 = 7, 007C7183 = 7, 007C7488 = 4, 007CBA12 = 6, 007CC7E2 = 2, 007CC857 = 1, 007D6600 = 7; the setter 007C1430 has switch arms for 3, 4, 5, 6 and 7 and zeroes the throttle for 2
+- **Was:** 007D1676 and 007D1333 belong to "a block Ghidra has no function for; start not established"
+  **Is:** both starts are established. 007D1333 is in the raw block 007D0B80-007D1353, whose SEH prologue 6A FF / 64 A1 00000000 begins at 007D0B80 right after the two int3 at 007D0B7E; 007D1676 is in the raw block 007D1360-007D1B4B, which follows the twelve int3 at 007D1354
+  **Evidence:** ghidra bytes 007D0B78 gives 00 00 83 C4 3C C3 CC CC 6A FF 64 A1 00 00 00 00; disasm-raw 007D1354 gives twelve int3 then 007D1360 MOV EAX,[00E188A8]; SUB ESP,8Ch; the next int3 run after each block is at 007D1354 and 007D1B4C, and the byte before each is C2 04 00, RET 4

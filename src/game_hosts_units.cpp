@@ -19,6 +19,7 @@
 #include "bsp/camera_affine.hpp"
 #include "bsp/camera_projection.hpp"
 #include "bsp/controlled_unit.hpp"
+#include "bsp/cruise_speed_setting.hpp"
 #include "bsp/ocean_height.hpp"
 #include "bsp/pose_refresh.hpp"
 #include "bsp/rigid_body_integration.hpp"
@@ -663,6 +664,82 @@ void GameUnitsHost::Impl::issue_into_ring(GameUnitSlot& slot, float throttle, fl
     done("ShipMotion::issue_order_record", 0x00816a40u);
 }
 
+namespace {
+
+// ---------------------------------------------------------------------------
+// Milestone 2q: bsp::CruiseSpeedSettingHost, the five call sites of 00822C20's
+// property-bag arm (0082356C..008235FB).
+// ---------------------------------------------------------------------------
+//
+// 00822C20 is slot 0A0h of the game-unit vtable family and the executable
+// reaches it where the native does, from BSP_SEntity_InitAll's slot call at
+// 00926110, which in this process is the per-entity pass create_units makes
+// over the records the instantiate pass left. The two finds are answered from
+// the merged property bag the scene-contents host kept on the entity record
+// (docs/CRUISE_SPEED_SETTING.md); the three setters are the reconstructions
+// already on main.
+class StartSpeedSeedBinding final : public bsp::CruiseSpeedSettingHost {
+public:
+    StartSpeedSeedBinding(GameUnitsHost::Impl& owner, GameUnitSlot& slot,
+                          const GameSceneEntityRecord& entity)
+        : owner_(owner), slot_(slot), entity_(entity) {}
+
+    bool find_shipyard_launch_00823576(std::uint32_t, const char*) override {
+        owner_.done("SceneStartSpeed::find_shipyard_launch", 0x00823576u);
+        return entity_.shipyard_launch;
+    }
+
+    bsp::SceneStartSpeedProperty find_start_speed_00823590(std::uint32_t,
+                                                           const char*) override {
+        owner_.done("SceneStartSpeed::find_start_speed", 0x00823590u);
+        bsp::SceneStartSpeedProperty record;
+        record.present = entity_.start_speed_present;
+        record.type = static_cast<bsp::ScenePropertyType>(entity_.start_speed_type);
+        record.value_int = entity_.start_speed_int;
+        record.value_float = entity_.start_speed_float;
+        return record;
+    }
+
+    float unit_reference_speed_0080fc30(std::uint32_t) override {
+        // 008235BA and 008235DC, the same callee at two sites. unit+9C0h is
+        // the class `MaxSpeed` 00822C4F/00822C65 set earlier in this same
+        // routine, which create_units copies out of the VehicleClass row.
+        ++reference_calls;
+        owner_.done("SceneStartSpeed::unit_reference_speed", 0x0080fc30u);
+        return bsp::unit_reference_speed_0080fc30(slot_.motion.max_speed,
+            bsp::kUnitReferenceSpeedUnscaled);
+    }
+
+    void set_order_ring_throttle_0080d9b0(std::uint32_t, float throttle) override {
+        // 008235D5 with ECX = unit+838h. The reconstruction fills the pending
+        // span and writes the live field, which is ring+148h.
+        bsp::set_unit_order_ring_param_a_0080d9b0(slot_.ring, throttle);
+        owner_.done("SceneStartSpeed::set_order_ring_throttle", 0x0080d9b0u);
+    }
+
+    void set_controller_axial_speed_0092d770(std::uint32_t, float speed) override {
+        // 008235F7 with ECX = [unit+1018h]. The body axis is the pose's row 2,
+        // the same forward vector 0092D730 projects onto.
+        bsp::OceanVec3 axis{};
+        axis.x = slot_.motion.pose_row2[0];
+        axis.y = slot_.motion.pose_row2[1];
+        axis.z = slot_.motion.pose_row2[2];
+        slot_.motion.linear_velocity
+            = bsp::unit_set_axial_speed_0092d770(slot_.motion.linear_velocity, axis, speed);
+        slot_.motion_state.linear_velocity = slot_.motion.linear_velocity;
+        owner_.done("SceneStartSpeed::set_controller_axial_speed", 0x0092d770u);
+    }
+
+    int reference_calls{0};
+
+private:
+    GameUnitsHost::Impl& owner_;
+    GameUnitSlot& slot_;
+    const GameSceneEntityRecord& entity_;
+};
+
+}  // namespace
+
 // ---------------------------------------------------------------------------
 // GameUnitsHost
 // ---------------------------------------------------------------------------
@@ -792,6 +869,35 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         slot->motion.class_id = slot->class_id;
 
         bsp::construct_unit_order_ring_00812d40(slot->ring);
+
+        // Milestone 2q: 00926110, BSP_SEntity_InitAll's call of the entity's
+        // vtable slot 0A0h, which for this class family is 00822C20. Only that
+        // routine's property-bag arm 0082356C..008235FB is run here, and only
+        // its kind-1 branch: 0046d5b0 built the holder over a cloned scene
+        // property bag, so 00823537's tag is 1 and 0082353D takes the arm.
+        // The seed has to happen here, before issue_authored_commands latches
+        // the scene's queued `Cruise` at 00835E17, because the latch captures
+        // the ring's live throttle (docs/CRUISE_SPEED_SETTING.md).
+        {
+            StartSpeedSeedBinding seed_host(host, *slot, entity);
+            const bsp::SceneStartSpeedSeed seed = bsp::run_start_speed_arm_0082356c(
+                seed_host, static_cast<std::uint32_t>(host.slots.size()) + 1u,
+                static_cast<std::uint32_t>(host.slots.size()) + 1u,
+                bsp::kSceneEntityBagRefKindPropertyBag);
+            host.done("SceneStartSpeed::init_slot_00a0", 0x00926110u);
+            row.start_speed_authored = seed.authored;
+            row.start_speed = seed.start_speed;
+            row.start_speed_ratio = seed.ring_throttle;
+            row.start_speed_axial = seed.axial_speed;
+            if (seed.authored) {
+                ++host.summary.start_speed_seeds;
+                // ring.current_param_a and motion.throttle are two projections
+                // of the one native field unit+980h, which 0080D9E8 has just
+                // written; the ring tick copies it every step, so this only
+                // keeps the two in step before the first tick runs.
+                slot->motion.throttle = slot->ring.current_param_a;
+            }
+        }
 
         // M+18h and M+1Ch, the two speed clamps 00c5b1b0 applies at the end of
         // every substep. Their producer was not found either, and a zero there
@@ -1151,6 +1257,20 @@ void GameUnitsHost::set_ship_ai(GameShipAiHost* ai) noexcept { impl_->ship_ai = 
 
 std::uint32_t GameUnitsHost::director_current_command_0071be40(std::size_t index) const {
     return impl_->commands.current_command_0071be40(index);
+}
+
+std::size_t GameUnitsHost::report_command_event_00984300(std::size_t index,
+    std::uint32_t command_object, const char* status) {
+    return impl_->commands.report_command_event_00984300(index, command_object, status);
+}
+
+GameCommandCompletion GameUnitsHost::end_command_0071e430(std::size_t index,
+    std::uint32_t command_object, bool terminal) {
+    Impl& host = *impl_;
+    if (index >= host.slots.size()) return GameCommandCompletion{};
+    GameUnitSlot& slot = *host.slots[index];
+    return host.commands.end_command_0071e430(index, command_object, terminal,
+        unit_player_controlled_0184(index), slot.ring, Impl::pose_heading_radians(slot));
 }
 
 bool GameUnitsHost::unit_player_controlled_0184(std::size_t index) const {
@@ -1556,6 +1676,31 @@ void GameUnitsHost::report() {
             static_cast<double>(row.distance), row.command_applied ? 1 : 0,
             row.controlled ? "  <- controlled" : "");
     }
+    // Milestone 2q: what 00822C20's property-bag arm seeded at creation.
+    // `ratio` is the float32 008235CA stored into ring+148h and `axial` the
+    // float32 008235EC handed to 0092D770; `expected` is ratio times the class
+    // reference speed times the seconds simulated, the straight-run distance a
+    // cruise ship that never changes throttle should cover.
+    host.log.notef("  %-20s %10s %10s %8s %9s %10s %10s %10s", "unit", "StartSpeed",
+        "reference", "ratio", "axial", "expected", "moved", "delta");
+    std::size_t seeded = 0;
+    for (const std::unique_ptr<GameUnitSlot>& owned : host.slots) {
+        const GameUnitRow& row = owned->row;
+        if (!row.start_speed_authored || row.start_speed == 0.0f) continue;
+        ++seeded;
+        const double expected = static_cast<double>(row.start_speed_ratio)
+            * static_cast<double>(row.max_speed)
+            * static_cast<double>(host.summary.simulated_seconds);
+        host.log.notef("  %-20s %10.4f %10.4f %8.4f %9.4f %10.2f %10.2f %10.2f",
+            row.name.c_str(), static_cast<double>(row.start_speed),
+            static_cast<double>(row.max_speed),
+            static_cast<double>(row.start_speed_ratio),
+            static_cast<double>(row.start_speed_axial), expected,
+            static_cast<double>(row.distance),
+            static_cast<double>(row.distance) - expected);
+    }
+    host.log.notef("summary mission start speed seeds=%zu non_zero=%zu key=%s",
+        host.summary.start_speed_seeds, seeded, bsp::kSceneUnitStartSpeedKey);
     host.commands.report();
 }
 

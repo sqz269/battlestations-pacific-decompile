@@ -60,7 +60,7 @@ private:
     Phase phase_{Phase::bound};
     void require_slot(std::uint32_t offset, std::uint32_t address) const noexcept;
     static std::uint32_t light_count(void*) noexcept;
-    static GeneratedModelPointLightLinks& light_element(void*, std::uint32_t) noexcept;
+    static void remove_light_backlink(void*, std::uint32_t, CameraTransform&) noexcept;
     static void shrink_lights(void*) noexcept;
 };
 

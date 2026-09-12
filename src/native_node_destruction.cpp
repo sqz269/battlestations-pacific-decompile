@@ -18,9 +18,9 @@ void unregister_current_attachment(NativeNodeDestructionRuntime& runtime,
         node.notify_changed = nullptr; // host projection of absent A0 virtual+3C
     }
 }
-void destroy_point_light_array(NativeNodeStorage& node) noexcept {
+void destroy_point_light_array(NativeNodeDestructionRuntime& runtime, NativeNodeStorage& node) noexcept {
     shrink_native_node_point_lights_to_zero_00b6ec70(node.point_lights_164);
-    singleton_lifetime_free(node.point_lights_164.begin);
+    runtime.point_lights.free_backing(node.point_lights_164.begin);
     // Native leaves the freed pointer and capacity words unchanged.
 }
 void destroy_name(NativeStringStorage& strings, NativeNodeStorage& node) noexcept {
@@ -211,13 +211,13 @@ void destroy_native_node_00b6f440(NativeNodeDestructionRuntime& runtime, NativeN
     } catch (...) {
         // CC1A01 / DFA900 / DFA8E8 state 2 ->1 ->0: B6F3E0 array,
         // 41DD20 name, AA6E10/BD30F0 reference base. No physical slot return.
-        destroy_point_light_array(node);
+        destroy_point_light_array(runtime, node);
         destroy_name(strings, node);
         destroy_reference_base(node);
         throw;
     }
     // These three recovered cleanup operations cannot throw in this interface.
-    destroy_point_light_array(node);
+    destroy_point_light_array(runtime, node);
     destroy_name(strings, node);
     destroy_reference_base(node);
 }

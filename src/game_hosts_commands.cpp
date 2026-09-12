@@ -20,6 +20,8 @@
 
 #include "bsp/game_hosts.hpp"
 
+#include "bsp/command_completion.hpp"
+#include "bsp/command_execution.hpp"
 #include "bsp/entity_orders.hpp"
 #include "bsp/entity_command_arms.hpp"
 #include "bsp/weapon_director.hpp"
@@ -105,6 +107,11 @@ struct GameCommandsHost::Impl {
     std::vector<bsp::CruiseSpeedSetting> navigator_params;
     std::vector<GameCommandRow> rows;
     bsp::SceneCommandRegistry registry;
+    // Milestone 2q: the `command` event channel's subscriptions, the list
+    // 0097C8A0 builds for every `command` event block 0097E360 parses. That
+    // parser is not reconstructed and this mission authors no such block, so
+    // the list is empty and 00984300 takes its own early return at 009843D8.
+    std::vector<bsp::CommandEventSubscription> command_event_subscriptions;
     GameCommandsSummary summary{};
     bool logged_path{false};
     bool logged_block{false};
@@ -163,6 +170,10 @@ struct GameCommandsHost::Impl {
         if (index >= navigator_params.size()) return;
         navigator_params[index].enable = value;
     }
+
+    // Milestone 2q: 0071D810's stage-2 consequence, for both of its call sites.
+    // Defined below the two bindings it needs.
+    bool route_clear_command(std::size_t unit_index, bool player_controlled);
 
     int command_count(const GameDirector& director) const noexcept {
         // 0071d780, __fastcall(director), body 0071d780-0071d807: the index of
@@ -1122,22 +1133,34 @@ namespace {
 // reset are docs/UNIT_COMMANDED_SPEED.md's routines.
 class DirectorStageBinding final : public bsp::WeaponDirectorStageHost {
 public:
-    DirectorStageBinding(ChainState& chain, float mission_clock)
-        : chain_(chain), clock_(mission_clock),
+    DirectorStageBinding(ChainState& chain, float mission_clock, bool player_controlled)
+        : chain_(chain), clock_(mission_clock), player_(player_controlled),
           post_reset(chain.owner.params_of(chain.unit.index)) {}
+
+    bool queue_advanced{false};
 
     int director_filled_command_slots_0071be60() override {
         chain_.owner.done("WeaponDirector::filled_command_slots", 0x0071be60u);
         return chain_.owner.command_count(chain_.director);
     }
     void director_raise_primary_stage_0071d810(int stage) override {
-        if (stage > chain_.director.stage) chain_.director.stage = stage;
-        // The stage-2 completion message 0071c730 builds and 0077c2a0 routes is
-        // the same session boundary every other hop in this file records.
-        if (stage == bsp::kDirectorCommandStageFinished) {
-            chain_.owner.record("WeaponDirector::route_stage_completion", 0x0071c730u);
+        // 0071D810 is monotonic (0071D818 returns when the stored stage is
+        // already at least the requested one).
+        if (!bsp::stage_raise_applies(chain_.director.stage, stage)) {
+            chain_.owner.done("WeaponDirector::raise_primary_stage", 0x0071d810u);
+            return;
         }
+        chain_.director.stage = stage;
         chain_.owner.done("WeaponDirector::raise_primary_stage", 0x0071d810u);
+        ++chain_.owner.summary.stage_raises;
+        // Milestone 2q: reaching stage 2 is what sends MT_GAMEUNIT_CLEARCMD,
+        // and the queue only advances when that message is received. In a local
+        // session this process is both ends, so it routes its own message back
+        // into 00721A40's 5Dh arm here rather than recording the send.
+        if (!bsp::stage_raise_sends_message(stage, kSessionModeSinglePlayer)) return;
+        if (chain_.owner.route_clear_command(chain_.unit.index, player_)) {
+            queue_advanced = true;
+        }
     }
     void director_raise_secondary_stage_0071d9e0(int stage) override {
         if (stage > secondary_stage_) secondary_stage_ = stage;
@@ -1201,11 +1224,431 @@ public:
 private:
     ChainState& chain_;
     float clock_{0.0f};
+    bool player_{false};
     int secondary_stage_{0};
     bsp::SceneCommandTarget target_{};
 };
 
 }  // namespace
+
+namespace {
+
+// ---------------------------------------------------------------------------
+// Milestone 2q: the controller's command state, as the two reconstructions see
+// it
+// ---------------------------------------------------------------------------
+//
+// GameDirector is milestone 2l's lighter projection of the same native storage:
+// slot_command[i] is the slot's +0h command object and slot_target[i] its
+// 18h-byte parameter record, which 00720850 and 0071E430 know as
+// CommandParams. The two records have the same shape and the same offsets, so
+// the copy is field for field, not a conversion.
+bsp::CommandParams params_of_target(const bsp::SceneCommandTarget& target) noexcept {
+    bsp::CommandParams params{};
+    params.has_target_entity = target.kind != 0;
+    params.has_position = target.position_valid != 0;
+    params.target_entity_id = target.object_id;
+    params.target_entity = target.object != nullptr ? 1u : 0u;
+    params.position_x = target.position[0];
+    params.position_y = target.position[1];
+    params.position_z = target.position[2];
+    return params;
+}
+
+bsp::SceneCommandTarget target_of_params(const bsp::CommandParams& params,
+                                         void* object) noexcept {
+    bsp::SceneCommandTarget target{};
+    target.kind = params.has_target_entity ? 1u : 0u;
+    target.position_valid = params.has_position ? 1u : 0u;
+    target.object_id = params.target_entity_id;
+    target.object = params.target_entity != 0 ? object : nullptr;
+    target.position[0] = params.position_x;
+    target.position[1] = params.position_y;
+    target.position[2] = params.position_z;
+    return target;
+}
+
+bsp::CommandQueueState queue_state_of(const GameDirector& director) {
+    bsp::CommandQueueState state{};
+    state.mode = static_cast<bsp::CommandMode>(static_cast<int>(director.mode));
+    state.queue_stage = director.stage;
+    state.queue_accepted = director.latched;
+    for (int i = 0; i < bsp::kDirectorCommandSlotCount; ++i) {
+        state.slots[i].command = director.slot_command[i];
+        state.slots[i].params = params_of_target(director.slot_target[i]);
+    }
+    return state;
+}
+
+void queue_state_back(const bsp::CommandQueueState& state, GameDirector& director) {
+    director.mode = static_cast<bsp::CruiseCommandMode>(static_cast<int>(state.mode));
+    director.stage = state.queue_stage;
+    director.latched = state.queue_accepted;
+    for (int i = 0; i < bsp::kDirectorCommandSlotCount; ++i) {
+        void* const object = director.slot_target[i].object;
+        director.slot_command[i] = state.slots[i].command;
+        director.slot_target[i] = target_of_params(state.slots[i].params, object);
+    }
+}
+
+// bsp::CommandExecutionHost, for 00720850 only. Every method that the clear
+// path does not reach on this mission records its own address; the ones it does
+// reach are concrete.
+class QueueClearBinding final : public bsp::CommandExecutionHost {
+public:
+    QueueClearBinding(GameCommandsHost::Impl& owner, GameCommandUnit& unit,
+                      GameDirector& director, bool player_controlled)
+        : owner_(owner), unit_(unit), director_(director), player_(player_controlled) {}
+
+    const char* command_name(std::uint32_t command) override {
+        const bsp::EntityOrderCommandClass* klass = owner_.class_of(command);
+        owner_.done("WeaponDirector::command_name", 0x00720889u);
+        return klass != nullptr ? klass->name : "EmptyCommand";
+    }
+    int command_category(std::uint32_t command) override {
+        const bsp::EntityOrderCommandClass* klass = owner_.class_of(command);
+        owner_.done("WeaponDirector::command_category", 0x008358f0u);
+        return klass != nullptr ? klass->category : 0;
+    }
+    bool command_accepts_target(std::uint32_t, const bsp::CommandParams&) override {
+        owner_.record("WeaponDirector::command_accepts_target", 0x0071d6d0u);
+        return false;
+    }
+    std::uint32_t resolve_target(const bsp::CommandParams& params) override {
+        owner_.done("WeaponDirector::resolve_target", 0x00521ea0u);
+        if (!params.has_target_entity || params.target_entity_id == 0) return 0u;
+        for (const GameCommandUnit& unit : owner_.units) {
+            if (unit.object_id == params.target_entity_id) {
+                return static_cast<std::uint32_t>(unit.index) + 1u;
+            }
+        }
+        return 0u;
+    }
+    void refresh_target_pose(std::uint32_t) override {
+        owner_.record("WeaponDirector::refresh_target_pose", 0x00414db0u);
+    }
+    void read_target_position(std::uint32_t target, float& x, float& y, float& z) override {
+        x = 0.0f;
+        y = 0.0f;
+        z = 0.0f;
+        if (target == 0u) return;
+        const std::size_t index = static_cast<std::size_t>(target - 1u);
+        if (index >= owner_.units.size()) return;
+        x = owner_.units[index].position[0];
+        y = owner_.units[index].position[1];
+        z = owner_.units[index].position[2];
+        owner_.done("WeaponDirector::read_target_position", 0x00720949u);
+    }
+    void register_target_observer(std::uint32_t) override {
+        owner_.record("WeaponDirector::register_target_observer", 0x00694a60u);
+    }
+    void unregister_target_observer(std::uint32_t) override {
+        owner_.record("WeaponDirector::unregister_target_observer", 0x006952a0u);
+    }
+    std::uint32_t create_path_object() override {
+        owner_.record("WeaponDirector::create_path_object", 0x0071fb90u);
+        return 0u;
+    }
+    void destroy_path_object(std::uint32_t) override {
+        owner_.record("WeaponDirector::destroy_path_object", 0x00720aa1u);
+    }
+    void invalidate_path_object(std::uint32_t) override {
+        owner_.record("WeaponDirector::invalidate_path_object", 0x0071bdb0u);
+    }
+    std::uint32_t session_trace_value() override {
+        owner_.record("WeaponDirector::session_trace_value", 0x007208a3u);
+        return 0u;
+    }
+    void trace_clear_primary_command(const char* command_name_in, int index, int mode,
+                                     std::uint32_t) override {
+        // 004254B0's varargs trace. The executable keeps the three values the
+        // literal prints rather than formatting a native trace line.
+        cleared_command = command_name_in != nullptr ? command_name_in : "";
+        cleared_index = index;
+        cleared_mode = mode;
+        owner_.done("WeaponDirector::trace_clear_primary_command", 0x004254b0u);
+    }
+    void send_command_message(const char*, std::uint32_t, const bsp::CommandParams&) override {
+        owner_.record("WeaponDirector::send_command_message", 0x00984300u);
+    }
+    void notify_command_target(std::uint32_t) override {
+        owner_.record("WeaponDirector::notify_command_target", 0x00984800u);
+    }
+    void raise_queue_stage(int stage) override {
+        if (stage > director_.stage) director_.stage = stage;
+        owner_.done("WeaponDirector::raise_primary_stage", 0x0071d810u);
+    }
+    void raise_override_stage(int) override {
+        owner_.record("WeaponDirector::raise_secondary_stage", 0x0071d9e0u);
+    }
+    void set_fire_target(std::uint32_t, bool) override {
+        owner_.record("WeaponDirector::set_fire_target", 0x00835860u);
+    }
+    std::uint32_t fire_target() override {
+        owner_.record("WeaponDirector::fire_target", 0x008364e0u);
+        return 0u;
+    }
+    void on_command_changed(bool) override {
+        // 00720B56, vtable[6Ch] = 00835BF0, whose head is 0071C130.
+        director_.stage = 0;
+        director_.latched = false;
+        owner_.done("WeaponDirector::clear_command_stage_pair", 0x0071c130u);
+    }
+    std::uint32_t group_leader() override {
+        owner_.record("WeaponDirector::group_leader", 0x007788d0u);
+        return 0u;
+    }
+    bool attack_move_gate() override {
+        owner_.record("WeaponDirector::attack_move_gate", 0x00521e70u);
+        return false;
+    }
+    bool controller_belongs_to_another() override {
+        owner_.record("WeaponDirector::controller_belongs_to_another", 0x007788b0u);
+        return false;
+    }
+    bool begin_command_base(bool) override {
+        owner_.record("WeaponDirector::begin_command_base", 0x0071f600u);
+        return false;
+    }
+    bool push_command_slot(std::uint32_t, const bsp::CommandParams&) override {
+        owner_.record("WeaponDirector::push_command_slot", 0x0071e6c0u);
+        return false;
+    }
+    bool set_command(std::uint32_t, const bsp::CommandParams&) override {
+        owner_.record("WeaponDirector::set_command", 0x008358d0u);
+        return false;
+    }
+    void default_command_position(float& x, float& y, float& z) override {
+        // 00F87574, past .data's raw size, so three zeroes at load.
+        x = 0.0f;
+        y = 0.0f;
+        z = 0.0f;
+        owner_.done("WeaponDirector::default_command_position", 0x00f87574u);
+    }
+    int session_mode() override { return kSessionModeSinglePlayer; }
+    bool unit_flag_184h() override {
+        static_cast<void>(unit_);
+        return player_;
+    }
+
+    std::string cleared_command;
+    int cleared_index{-1};
+    int cleared_mode{-1};
+
+private:
+    GameCommandsHost::Impl& owner_;
+    GameCommandUnit& unit_;
+    GameDirector& director_;
+    bool player_{false};
+};
+
+// bsp::CommandCompletionHost, the six methods 0071E430 and its stage ladder
+// reach. The one that matters is raise_queue_stage: reaching stage 2 is what
+// sends MT_GAMEUNIT_CLEARCMD, and in a local session this process is both the
+// sender and the receiver, so the message is routed straight back into
+// 00721A40's 5Dh arm here.
+class CompletionBinding final : public bsp::CommandCompletionHost {
+public:
+    CompletionBinding(GameCommandsHost::Impl& owner, std::size_t unit_index,
+                      GameDirector& director, bsp::CommandQueueState& state,
+                      QueueClearBinding& exec, bool player_controlled)
+        : owner_(owner), unit_index_(unit_index), director_(director), state_(state),
+          exec_(exec), player_(player_controlled) {}
+
+    int command_category(std::uint32_t command) override {
+        const bsp::EntityOrderCommandClass* klass = owner_.class_of(command);
+        owner_.done("WeaponDirector::command_category", 0x0071e440u);
+        return klass != nullptr ? klass->category : 0;
+    }
+
+    void raise_queue_stage(int stage) override {
+        // 0071D810: monotonic, then the message when the new stage is 2 and
+        // this machine originates it. The send itself is deferred by one
+        // statement to the caller, which is where 0071E430 returns anyway: arm
+        // B is CALL 0071D810 followed by RET 8.
+        if (!bsp::stage_raise_applies(state_.queue_stage, stage)) {
+            owner_.done("WeaponDirector::raise_primary_stage", 0x0071d810u);
+            return;
+        }
+        state_.queue_stage = stage;
+        director_.stage = stage;
+        owner_.done("WeaponDirector::raise_primary_stage", 0x0071d810u);
+        if (bsp::stage_raise_sends_message(stage, kSessionModeSinglePlayer)) {
+            sends_clear_command = true;
+        }
+    }
+
+    void raise_override_stage(int stage) override {
+        if (!bsp::stage_raise_applies(override_stage_, stage)) return;
+        override_stage_ = stage;
+        owner_.done("WeaponDirector::raise_secondary_stage", 0x0071d9e0u);
+        if (bsp::stage_raise_sends_message(stage, kSessionModeSinglePlayer)) {
+            owner_.record("WeaponDirector::clear_override_command", 0x0071e610u);
+        }
+    }
+
+    void route_clear_command_message(const bsp::ClearCommandMessage&) override {
+        sends_clear_command = true;
+    }
+
+    void assign_status_text(const char*) override {
+        owner_.record("WeaponDirector::assign_status_text", 0x0041e870u);
+    }
+    std::uint32_t make_command_target(std::uint32_t) override {
+        owner_.record("WeaponDirector::make_command_target", 0x004f1830u);
+        return 0u;
+    }
+    void report_command_event(std::uint32_t, std::uint32_t, std::uint32_t,
+                              const char*) override {
+        owner_.record("WeaponDirector::report_command_event", 0x00984300u);
+    }
+    void report_target_event(std::uint32_t, std::uint32_t) override {
+        owner_.record("WeaponDirector::report_target_event", 0x00984800u);
+    }
+    bool controller_belongs_to_another() override {
+        owner_.record("WeaponDirector::controller_belongs_to_another", 0x007788b0u);
+        return false;
+    }
+    std::uint32_t controlling_entity() override {
+        owner_.record("WeaponDirector::controlling_entity", 0x007788d0u);
+        return 0u;
+    }
+    void issue_command(std::uint32_t, std::uint32_t) override {
+        owner_.record("WeaponDirector::issue_command", 0x0071ecf0u);
+    }
+    void on_command_changed(bool primary) override {
+        const bsp::StageResetResult reset = bsp::reset_command_stage_0071c130(state_, primary);
+        static_cast<void>(reset);
+        director_.stage = state_.queue_stage;
+        owner_.done("WeaponDirector::clear_command_stage_pair", 0x0071c130u);
+    }
+
+    bool sends_clear_command{false};
+
+private:
+    GameCommandsHost::Impl& owner_;
+    std::size_t unit_index_{0};
+    GameDirector& director_;
+    bsp::CommandQueueState& state_;
+    QueueClearBinding& exec_;
+    bool player_{false};
+    int override_stage_{0};
+};
+
+}  // namespace
+
+// 0071D810's stage-2 tail, shared by both of its call sites: 0071C730 builds
+// MT_GAMEUNIT_CLEARCMD(1, 0), the router hands it to the session, and in a local
+// session this process is the receiver, so 00721A40's 5Dh arm runs here and
+// takes the 00721BB7 branch into 00720850 with index 0.
+bool GameCommandsHost::Impl::route_clear_command(std::size_t unit_index,
+    bool player_controlled) {
+    if (unit_index >= units.size()) return false;
+    GameDirector& director = directors[unit_index];
+    const bsp::ClearCommandMessage message
+        = bsp::clear_command_message_for_queue_stage_done();
+    done("WeaponDirector::build_clear_command", 0x0071c730u);
+    ++summary.clear_messages;
+    ++summary.clear_receives;
+    done("GameUnitMessage::apply_clear_command", 0x00721a40u);
+    if (bsp::clear_command_action(message) != bsp::ClearCommandAction::kClearSlot) {
+        return false;
+    }
+    bsp::CommandQueueState state = queue_state_of(director);
+    QueueClearBinding exec(*this, units[unit_index], director, player_controlled);
+    bsp::clear_command_slot_00720850(state, message.index, exec);
+    done("WeaponDirector::clear_primary_command", 0x00720850u);
+    queue_state_back(state, director);
+    ++summary.queue_advances;
+    if (summary.queue_advances <= 8) {
+        const bsp::EntityOrderCommandClass* promoted = class_of(director.slot_command[0]);
+        log.notef("  command finished: %s cleared `%s` from slot %d (mode %d); the queue now "
+            "holds `%s` and 0071c130 left the stage pair at 0",
+            units[unit_index].name.c_str(),
+            exec.cleared_command.empty() ? "EmptyCommand" : exec.cleared_command.c_str(),
+            exec.cleared_index, exec.cleared_mode,
+            promoted != nullptr ? promoted->name : "(none)");
+    }
+    return true;
+}
+
+std::size_t GameCommandsHost::report_command_event_00984300(std::size_t unit_index,
+    std::uint32_t command_object, const char* status) {
+    Impl& host = *impl_;
+    if (unit_index >= host.units.size()) return 0;
+    ++host.summary.command_events;
+    const bsp::EntityOrderCommandClass* klass = host.class_of(command_object);
+    bsp::CommandEventParameters params;
+    params.unit_id = host.units[unit_index].object_id;
+    params.target_id = 0;
+    params.command_name = (klass != nullptr) ? klass->name : "";
+    params.status = (status != nullptr) ? status : "";
+    // 00984394..009843D8: the channel named `command` is looked up on the
+    // mission event director's map at reporter+F8h and the body returns at once
+    // when the channel holds no subscription. 0097E360, the parser that would
+    // put one there, is not reconstructed, and this mission authors none:
+    // usn_2_java.scn declares no event block and usn_2_java.lua registers no
+    // `command` handler. The lookup therefore finds an empty channel, which is
+    // the native's own early return, not a substitution for it.
+    host.record("MissionEvents::command_event_block", 0x0097e360u);
+    const std::vector<std::string> callbacks
+        = bsp::command_event_callbacks(host.command_event_subscriptions, params);
+    host.done("MissionEvents::report_command", 0x00984300u);
+    host.summary.command_event_callbacks += callbacks.size();
+    if (!callbacks.empty()) {
+        // 00984710, 00887E50 BSP_MissionLuaHost_CallNamedThreadSafe on the host
+        // at *(00E188A8)+1A08h. No subscription exists, so no name is ever
+        // queued; the hop is recorded with its address rather than being left
+        // unmentioned.
+        host.record("MissionEvents::call_named_threadsafe", 0x00887e50u);
+    }
+    return callbacks.size();
+}
+
+GameCommandCompletion GameCommandsHost::end_command_0071e430(std::size_t unit_index,
+    std::uint32_t command_object, bool terminal, bool player_controlled,
+    const bsp::UnitOrderRing& ring, float heading_radians) {
+    Impl& host = *impl_;
+    GameCommandCompletion out;
+    if (unit_index >= host.units.size()) return out;
+    GameDirector& director = host.directors[unit_index];
+    GameCommandUnit& unit = host.units[unit_index];
+
+    bsp::CommandQueueState state = queue_state_of(director);
+    const int stage_before = state.queue_stage;
+
+    QueueClearBinding exec(host, unit, director, player_controlled);
+    CompletionBinding completion(host, unit_index, director, state, exec, player_controlled);
+    const bsp::EndCommandTrace trace
+        = bsp::run_end_command_0071e430(state, command_object, terminal, completion);
+    host.done("WeaponDirector::end_command", 0x0071e430u);
+    ++host.summary.end_commands;
+
+    out.ran = true;
+    out.requested_stage = trace.requested_stage;
+    out.raised_queue_stage = trace.raised_queue_stage;
+    out.restarted_head = trace.restart.applies;
+    switch (trace.arm) {
+    case bsp::EndCommandArm::kQueueStageByCategory: out.arm = "queue_stage_by_category"; break;
+    case bsp::EndCommandArm::kQueueStageByMode: out.arm = "queue_stage_by_mode"; break;
+    case bsp::EndCommandArm::kOverrideStageByMode: out.arm = "override_stage_by_mode"; break;
+    case bsp::EndCommandArm::kRestartQueueHead: out.arm = "restart_queue_head"; break;
+    case bsp::EndCommandArm::kNothing: out.arm = "nothing"; break;
+    }
+    if (trace.restart.applies) ++host.summary.restarts;
+
+    queue_state_back(state, director);
+    if (director.stage > stage_before) ++host.summary.stage_raises;
+    if (completion.sends_clear_command) {
+        out.message_routed = true;
+        out.queue_advanced = host.route_clear_command(unit_index, player_controlled);
+    }
+    out.promoted_command = director.slot_command[0];
+    out.stage_after = director.stage;
+    static_cast<void>(ring);
+    static_cast<void>(heading_radians);
+    return out;
+}
 
 GameDirectorStepOutcome GameCommandsHost::director_step_00836920(std::size_t unit_index,
     bool player_controlled, float mission_clock, const bsp::UnitOrderRing& ring,
@@ -1234,7 +1677,7 @@ GameDirectorStepOutcome GameCommandsHost::director_step_00836920(std::size_t uni
 
     ChainState chain{host, host.units[unit_index], director, &row, &ring, heading_radians,
         bsp::SceneCommandTarget{}, 0u, 0u};
-    DirectorStageBinding stage(chain, mission_clock);
+    DirectorStageBinding stage(chain, mission_clock, player_controlled);
 
     bsp::WeaponDirectorCommandState state;
     state.primary_stage = director.stage;
@@ -1504,6 +1947,13 @@ void GameCommandsHost::report() {
         host.summary.director_steps, host.summary.idle_reissues, host.summary.idle_stop,
         host.summary.idle_cruise, host.summary.idle_follow, host.summary.script_issues,
         host.summary.script_blocked, host.summary.commanded_speeds);
+    // Milestone 2q: the completion round trip, counted at every hop.
+    host.log.notef("summary mission director completion end_commands=%llu stage_raises=%llu "
+        "clear_messages=%llu clear_receives=%llu queue_advances=%llu restarts=%llu "
+        "command_events=%llu event_callbacks=%llu",
+        host.summary.end_commands, host.summary.stage_raises, host.summary.clear_messages,
+        host.summary.clear_receives, host.summary.queue_advances, host.summary.restarts,
+        host.summary.command_events, host.summary.command_event_callbacks);
 }
 
 }  // namespace bsp::game

@@ -61,6 +61,7 @@ void GuiTextChildDeletion::delete_text_child_virtual4(GuiLayoutWidget& child,
     // A canonical type implementation may retain mapped content or child70
     // continuations. Reject their destruction before native phase/flag stores,
     // resource release or child traversal; destructor-time detection is too late.
+    owner.require_no_active_owned_operation();
     owner.implementation().before_scalar_deletion4(owner);
     // Flag1 must have real C++ ownership transport BEFORE running effects.
     // Attached storage stays in its parent's one list until native self-detach.
@@ -102,11 +103,7 @@ void GuiTextChildDeletion::delete_text_child_virtual4(GuiLayoutWidget& child,
     release_primary(owner); // AA97EE, only if a live node remains after callbacks.
 
     lifetime->scalar_phase_ = GuiTextScalarDeletionPhase::base_entries;
-    for (const auto word : owner.extra_.pointers_88_90)
-        if (word)
-            throw GuiTextDeletionBoundary("AA97F6 timed-entry storage requires its actual allocation/deletion owner");
-    // Zero data/count/capacity takes native null-free/empty-vector path. Do not
-    // reset or free any nonzero native header using a C++ allocator.
+    owner.retire_timed_entries_00aa9730_fragment();
 
     lifetime->scalar_phase_ = GuiTextScalarDeletionPhase::base_containers;
     if ((flags & 1u) && find_storage(child) == detached_.end())

@@ -135,12 +135,9 @@ GuiTextGlyphChildTailStatus begin_gui_text_glyph_child_tail_00ab98f0_fragment(
         require(reference_model && reference_owner.node_binding() == &reference_model->model_owner().node,
             "current reference Text requires its canonical actual Model");
         frame.pending_native_address = 0x00ab9d87;
-        if (clone_native_gui_text_model_00b752b0(reference_model->model_owner(),
+        (void)clone_native_gui_text_model_00b752b0(reference_model->model_owner(),
             b.widgets, b.geometry, b.materials, b.material_vtable_00d5e520,
-            s.mesh_vtable_00d62d60, frame.acquired) != NativeGuiTextModelBaseCopyResult::copied) {
-            frame.status = GuiTextGlyphChildTailStatus::point_light_owners_required;
-            return frame.status;
-        }
+            s.mesh_vtable_00d62d60, frame.acquired);
         frame.pending_native_address = 0x00ab9d8c;
         require(frame.acquired.model != nullptr, "completed glyph Model clone requires its creator reference");
         owner.bind_scene_00aa6720(&frame.acquired.model->model_owner().node);

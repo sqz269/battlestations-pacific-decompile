@@ -10,16 +10,14 @@ class GuiNativeGeometryOwners;
 struct NativeMaterialDestructionAccess;
 
 enum class NativeGuiTextModelBaseCopyResult {
-    copied,
-    point_light_owners_required
+    copied
 };
 
 // Partial B6F150 for the Text caller's flags26h,parent=null branch. Source and
 // destination are distinct LIVE canonical Models in the SAME environment; the
 // destination has already been pool-allocated and constructed from the current
-// source name. No new allocation, default Model, alternate tree or binding.
-// Positive source+168 returns point_light_owners_required BEFORE base effects.
-// Otherwise executes the complete no-light branch, including current50,
+// source name. Positive lists append each actual light and raw node backlink
+// through the same NativeNodeDestructionRuntime.point_lights domain, then current50,
 // retained130 twice, null parenting, root registration, current38, and final
 // stores. Flags20 skips source child clones; no child-recursion API is invented.
 // Every nonnull retained130 needs the existing actual node retained binding.
@@ -62,9 +60,9 @@ struct NativeGuiTextModelCloneAcquired {
 // constructs a Model from the live source name, performs base copy, clones
 // current mesh geometry into the same actual owner domain, associates it,
 // releases the geometry creator, then executes the retained174/pose tail.
-// Positive point-light lists return the explicit boundary AFTER destination
-// construction and before base effects, keeping acquired.model. Do not restart
-// this call on that partial result. Other exceptions are not resumable.
+// Positive lists require live actual light descriptor bindings; array growth
+// requires matching backing provenance. Exceptions preserve acquired.model
+// and prior native effects; they are diagnostic and cannot be resumed/restarted.
 // Only successful return with copied means the complete supported clone path.
 NativeGuiTextModelBaseCopyResult clone_native_gui_text_model_00b752b0(
     NativeModelOwner& source, GuiWidgetOwnerRuntime&, GuiNativeGeometryOwners&,
@@ -73,7 +71,6 @@ NativeGuiTextModelBaseCopyResult clone_native_gui_text_model_00b752b0(
     const volatile std::uint32_t* mesh_current_vtable_00d62d60,
     NativeGuiTextModelCloneAcquired& acquired);
 
-// Other flags/parent combinations and positive point-light ownership remain
-// outside the composed Text route. Raw slots cannot be cast to C++ owners.
+// Other flags/parent combinations remain outside the composed Text route. Raw slots cannot be cast to C++ owners.
 // New MSVC Win32 interfaces, not native binary entry replacements.
 } // namespace bsp

@@ -1,0 +1,612 @@
+{
+  "packet": "cc2_pilot_controls",
+  "owner": "agent/cc2-pilot-controls",
+  "date": "2026-09-12",
+  "ghidra": "read-only: no rename, no comment, no function creation, no prototype, no save",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "doc": "docs/PILOT_CONTROLS.md",
+  "headline": "The pilot control block unit+9E4h is written by 007BB6E0, which quantises a second block, the pilot command block at unit+9FCh, once per plane step. 007B8C90 is the only per-frame writer of that command block and 00519520 its only producer: the local pilot's commands are aim-tracking errors, not a raw stick, and the roll slot is never written by the player at all.",
+  "routines": [
+    {
+      "address": "007BB6E0",
+      "native": "none",
+      "name": "BSP_Plane_QuantizeControlAxes",
+      "convention": "__thiscall(unit, const float* cmd), RET 4",
+      "body": "007BB6E0-007BB91E",
+      "role": "turns the pilot command block unit+9FCh..+A10h into the five axes unit+9E4h..+9F4h and the boost byte +9F8h; per axis q = ftol(cmd*127.0 + 128.5), q >= 0FFh gives 1.0f, q <= 1 gives -1.0f, else (q - 128)/127.0",
+      "coverage": "complete: all five axes and the boost byte; 007BB88E-007BB91C, the tail after the fifth axis, unread",
+      "state": "reconstructed",
+      "evidence": "007BB6E2 MOV EDI,[ESP+0Ch]; 007BB6E6 FLD [EDI]; 007BB72A FSTP [ESI+9E4h]; 007BB730 FLD [EDI+4] -> 007BB75D [ESI+9E8h]; 007BB763 FLD [EDI+8] -> 007BB798 [ESI+9ECh]; 007BB83A FLD [EDI+0Ch] -> 007BB877 [ESI+9F0h]; 007BB87D FLD [EDI+10h] -> 007BB8EE [ESI+9F4h]; constants 00CFD408 = 127.0, 00D05998 = 128.5, 00D7A250 = -1.0",
+      "representative_callee": "00BF7420"
+    },
+    {
+      "address": "007BB920",
+      "native": "none",
+      "name": "BSP_Plane_CommitPilotCommand",
+      "convention": "__thiscall(unit), RET 0",
+      "body": "007BB920-007BB998",
+      "role": "the per-step commit: gate on byte +61h clear and the pending byte +A14h set, force +A0Ch to 1.0f unless unit+900h is in {4,5,6,7}, force +A08h to 1.0f when vtable[+5Ch](17h) and +C24h is clear, call the quantiser with unit+9FCh, clear +A14h",
+      "coverage": "complete",
+      "state": "reconstructed",
+      "evidence": "007BB982 LEA EAX,[ESI+9FCh]; 007BB988 PUSH EAX; 007BB989 MOV ECX,ESI; 007BB98B CALL 007BB6E0; 007BB990 MOV byte [ESI+A14h],0",
+      "representative_callee": "007BB6E0"
+    },
+    {
+      "address": "007B8C90",
+      "native": "none",
+      "name": "BSP_Plane_SetPilotCommandBlock",
+      "convention": "__thiscall(unit, const void* cmd), RET 4",
+      "body": "007B8C90-007B8CD2 (raw block, Ghidra function present)",
+      "role": "copies six dwords from cmd into unit+9FCh, +A00h, +A04h, +A08h, +A0Ch, +A10h and sets the pending byte +A14h to 1",
+      "coverage": "complete",
+      "state": "reconstructed",
+      "evidence": "007B8C96, 007B8C9F, 007B8CA8, 007B8CB1, 007B8CBA, 007B8CC3 stores; 007B8CC9 MOV byte [ECX+A14h],1; 007B8CD0 RET 4"
+    },
+    {
+      "address": "00519520",
+      "native": "none",
+      "name": "BSP_PlanePilotView_BuildPlayerCommand",
+      "convention": "__fastcall(view), view+1Ch is the unit, view+24h caches the throttle",
+      "body": "00519520-00519823",
+      "role": "the local pilot's command producer: zeroes the six-dword block, computes the pitch command from the vertical aim error and the horizontal command from the azimuth error, interpolates the throttle, and pushes the block through 007B8C90 only when BSP_UnitInstance_IsLocalPlayerRole(1) is true",
+      "coverage": "partial: the block initialisation, the two aim-error rules, the role gate and the command push; the throttle chain through 007C47F0 / 007C4810 is contract: unread, and 0077C470 / 004C5070 unread",
+      "state": "reconstructed",
+      "caller": "unestablished: no Ghidra xref, and a whole-image scan for the bytes 20 95 51 00 finds no vtable entry",
+      "evidence": "00519526 MOV EAX,[ESI+1Ch]; 00519561 MOV EDI,[EAX+538h]; 00519569-00519575 zero the block; 00519807 CALL 00927F30 with 1; 00519813 LEA EDX,[ESP+14h]; 00519818 CALL 007B8C90; 005197F9 FLD [ECX+9F0h] -> 005197FF FSTP [ESI+24h]",
+      "representative_callee": "007B8C90"
+    },
+    {
+      "address": "007CAF10",
+      "native": "none",
+      "name": "BSP_Plane_LimitAndResetControls",
+      "convention": "__thiscall(unit, float step), RET 4",
+      "body": "007CAF10-007CB431",
+      "role": "the plane's vtable[+1ECh]: clamps all five axes, calls the latch, computes the effective-control trio +BE8h/+BECh/+BF0h, then the override block",
+      "coverage": "partial: the clamp 007CB143-007CB1F3, the trio 007CB1F9-007CB2E1 and the override 007CB2E7-007CB431; 007CAF10-007CB143 read only as pseudocode",
+      "state": "reconstructed",
+      "evidence": "clamp stores 007CB161, 007CB183, 007CB1A5 against 00D7A260 = -1.0f and 00D7A24C = 1.0f; 007CB1C7 and 007CB1EB against an immediate 0.0 and 1.0f; 007CB1F3 CALL 007B9770; trio stores 007CB24F, 007CB2A9, 007CB2E1",
+      "representative_callee": "007B9770"
+    },
+    {
+      "address": "007C1430",
+      "native": "none",
+      "name": "BSP_Plane_SetFlightState",
+      "convention": "__thiscall(unit, int state), returns 0 when unchanged",
+      "body": "007C1430-007C156C",
+      "role": "the guarded writer of unit+900h: stores the state at 007C145B, stamps +C04h with -1.0f, notifies 007C11E0(0); state 2 zeroes the throttle at 007C143C and state 3 forces it to 1.0f at 007C153A",
+      "coverage": "complete for the switch arms 2, 3, 4, 5, 6, 7 and the guard",
+      "state": "reconstructed",
+      "evidence": "007C1444 MOV EDX,[ECX+900h]; 007C145B MOV [ECX+900h],EAX; case 4/5 gate on classDesc+198h with 00CE3850 = 5.0f; case 7 uses 00CFDEB0 = 3600.0f",
+      "representative_callee": "007C11E0"
+    },
+    {
+      "address": "0099B450",
+      "native": "none",
+      "name": "BSP_PilotBot_SeedPlanSlots",
+      "convention": "__thiscall(bot), RET 0 (C3 at 0099B588)",
+      "body": "0099B450-0099B588",
+      "role": "a reader of the unit, not a writer: seeds five {current, desired, active} triples of stride 0Ch at bot+274h from unit+9F0h/+9E4h/+9ECh/+9E8h/+9F4h with both halves equal and active cleared, then sets +2B4h from descriptor+190h and the constants +2C8h = 20.0f, +2E8h = 1.0f, +2ECh = 0.24f and the mode words +2CCh = 1, +2D0h = 2, +2D4h = 1, +2D8h = 1",
+      "coverage": "complete",
+      "state": "reconstructed",
+      "evidence": "0099B450 MOV EAX,[ECX+2F0h] then five MOVSS loads at 0099B456, 0099B476, 0099B494, 0099B4B2, 0099B4D0 each stored twice into ECX-relative slots; 0099B4F1 MOV EAX,[ECX+2F4h]; 0099B503 FLD [EAX+190h]; 0099B511 FSTP [ECX+2B4h]"
+    },
+    {
+      "address": "0099B590",
+      "native": "none",
+      "name": "BSP_PilotBot_SeedPlanSlotsHeld",
+      "convention": "__thiscall(bot), RET 0 (POP ESI; RET at 0099B628)",
+      "body": "0099B590-0099B629",
+      "role": "calls 0099B450, then rewrites only the five desired halves from the live axes, sets all five active bytes to 1 and zeroes the four mode words",
+      "coverage": "complete",
+      "state": "reconstructed",
+      "no_ghidra_function": true,
+      "evidence": "0099B591 CALL 0099B450; 0099B59C FLD [EAX+9E4h]; 0099B5A4 FSTP [ECX+284h]; 0099B5AA MOV byte [ECX+288h],DL with DL = 1 from 0099B5A2",
+      "representative_callee": "0099B450"
+    },
+    {
+      "address": "0099B2A0",
+      "native": "none",
+      "name": "BSP_PilotBot_SeedSlotArrayFromUnit",
+      "convention": "__thiscall(slots, unit), RET 4",
+      "body": "0099B2A0-0099B310",
+      "role": "the same seed on a bare five-triple array at slots+0h..+38h, active cleared",
+      "coverage": "complete",
+      "state": "reconstructed",
+      "no_ghidra_function": true,
+      "evidence": "0099B2A0 MOV EAX,[ESP+4]; 0099B2A4 MOVSS XMM0,[EAX+9F0h]; 0099B2AC/0099B2B1 store to [ECX+4] and [ECX]; 0099B2B7 MOV byte [ECX+8],DL"
+    },
+    {
+      "address": "0099BEE0",
+      "native": "none",
+      "name": "BSP_PilotBot_EvaluatePlanSlots",
+      "convention": "__thiscall(bot, void* out, float, float), RET 0Ch",
+      "body": "0099BEE0-0099BF25",
+      "role": "hands the slot array bot+274h to 0099BC00 with the two floats and the out pointer, then copies bot+2DCh, bot+2E5h and bot+2E4h into out+16h, out+15h, out+14h",
+      "coverage": "complete for the body; 0099BC00 (body 0099BC00-0099BDA0) and 0099BB40 are analysed only",
+      "state": "analysed",
+      "caller": "unestablished: no Ghidra xref and no vtable entry for the bytes E0 BE 99 00",
+      "evidence": "0099BEF7 LEA ECX,[ESI+274h]; 0099BF01 CALL 0099BC00; 0099BF23 RET 0Ch; 0099BC1C-0099BC44 clamps the 0099BB40 result to [0, 1.0f]",
+      "representative_callee": "0099BC00"
+    },
+    {
+      "address": "0099D300",
+      "native": "none",
+      "name": "BSP_PilotBot_PlanControls",
+      "convention": "unread",
+      "body": "0099D300-0099EBAB",
+      "role": "the only reader of a plan slot's desired half, which is why the slots are not the direct path into the unit",
+      "coverage": "partial: only the slot-1 accesses",
+      "state": "analysed",
+      "evidence": "0099E782, 0099E99F and 0099EAC8 read +284h; 0099E77A tests the +288h flag; a .text scan for reads of +284h finds no other owner in the plane or bot code"
+    },
+    {
+      "address": "007CCFA0",
+      "native": "none",
+      "name": "BSP_Plane_HandleMessage",
+      "convention": "__thiscall(unit, msg)",
+      "body": "007CCFA0-007CD1AB",
+      "role": "the plane's message handler; its second switch on *(byte*)(msg+21h) - 1 requests the flight state of the same number",
+      "coverage": "partial: the second switch only; the first switch on msg+10h is analysed only",
+      "state": "analysed",
+      "evidence": "sub-kind 1 -> 007CC820, 2 -> 007CC7A0, 6 -> 007CB9E0, 7 -> 007C7110, 4 and 5 -> 007CA3F0(0) / 007CA3F0(1) when msg+20h != 7 and 0042A7E0() is false, else 007C7430",
+      "representative_callee": "007CA3F0"
+    },
+    {
+      "address": "007CA3F0",
+      "native": "none",
+      "name": "BSP_Plane_HandleTouchdownOrCrash",
+      "convention": "__thiscall(unit, bool), Ghidra body 007CA3F0-007CA5E6",
+      "body": "007CA3F0-007CA5E6",
+      "role": "when unit+900h is 1..5 it raises the \"explosion\" effect through vtable[+194h]; otherwise it enters flight state 4 + bool and resets the controls to zero with the fifth axis at 1.0f",
+      "coverage": "partial: the state gate, the reset stores and the effect arm; the storage-pool tail unread",
+      "state": "analysed",
+      "evidence": "007CA4C4 label; the five stores 007CA4E7 (+9F0h = 0), 007CA4EF (+9F4h = 1.0f), 007CA4F7 (+9ECh), 007CA4FF (+9E4h), 007CA507 (+9E8h)",
+      "representative_callee": "007C1430"
+    },
+    {
+      "address": "007B8C30",
+      "native": "none",
+      "name": "BSP_Plane_SetControlEnabled",
+      "convention": "__thiscall(unit, bool), RET 4",
+      "body": "007B8C30-007B8C8F",
+      "role": "when the bool is set and unit+C0Ch is clear, queries (*(unit+72Ch))->vtable[+38h]() and writes unit+9F0h = 1.0f or 0.0f; always stores the bool into unit+C0Ch",
+      "coverage": "complete",
+      "state": "reconstructed",
+      "evidence": "007B8C3C CMP byte [ESI+C0Ch],0; 007B8C54 CALL EDX; 007B8C68 MOVSS [ESI+9F0h] from 00D7A24C; 007B8C78 the XORPS path; its one caller 008A5BD0 is unread"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "007BB923",
+      "native": "none",
+      "method": "suppressed",
+      "containing": "007BB920",
+      "signature": "void / bool",
+      "note": "CMP byte [ESI+61h],0; the whole commit is skipped when set"
+    },
+    {
+      "address": "007BB929",
+      "native": "none",
+      "method": "command_pending",
+      "containing": "007BB920",
+      "signature": "void / bool",
+      "note": "CMP byte [ESI+A14h],0"
+    },
+    {
+      "address": "007BB932",
+      "native": "none",
+      "method": "flight_state",
+      "containing": "007BB920",
+      "signature": "void / int",
+      "note": "MOV EAX,[ESI+900h], compared against 7, 6, 4 and 5"
+    },
+    {
+      "address": "007BB954",
+      "native": "none",
+      "method": "set_fifth_command",
+      "containing": "007BB920",
+      "signature": "float / void",
+      "note": "MOVSS [ESI+A0Ch] from 00D7A24C = 1.0f, only when the state is not in {4,5,6,7}"
+    },
+    {
+      "address": "007BB963",
+      "native": "vtable+5Ch",
+      "method": "unit_capability_17h",
+      "containing": "007BB920",
+      "signature": "int / bool",
+      "note": "MOV EAX,[ESI]; MOV EDX,[EAX+5Ch]; PUSH 17h; CALL EDX"
+    },
+    {
+      "address": "007BB969",
+      "native": "none",
+      "method": "boost_locked",
+      "containing": "007BB920",
+      "signature": "void / bool",
+      "note": "CMP byte [ESI+C24h],0"
+    },
+    {
+      "address": "007BB97A",
+      "native": "none",
+      "method": "set_throttle_command",
+      "containing": "007BB920",
+      "signature": "float / void",
+      "note": "MOVSS [ESI+A08h] from 00D7A24C = 1.0f"
+    },
+    {
+      "address": "007BB98B",
+      "native": "007BB6E0",
+      "method": "quantize_commands_into_axes",
+      "containing": "007BB920",
+      "signature": "const float* / void",
+      "note": "LEA EAX,[ESI+9FCh]; PUSH EAX; MOV ECX,ESI; CALL 007BB6E0"
+    },
+    {
+      "address": "007BB990",
+      "native": "none",
+      "method": "clear_command_pending",
+      "containing": "007BB920",
+      "signature": "void / void",
+      "note": "MOV byte [ESI+A14h],0"
+    }
+  ],
+  "pilot_command_block": {
+    "base": "unit+9FCh",
+    "fields": [
+      {
+        "offset": "9FCh",
+        "becomes": "unit+9E4h",
+        "producer_value": "0.0f, never assigned by 00519520"
+      },
+      {
+        "offset": "A00h",
+        "becomes": "unit+9E8h",
+        "producer_value": "the vertical aim error term"
+      },
+      {
+        "offset": "A04h",
+        "becomes": "unit+9ECh",
+        "producer_value": "the horizontal aim error term"
+      },
+      {
+        "offset": "A08h",
+        "becomes": "unit+9F0h throttle",
+        "producer_value": "the throttle interpolation, seeded 1.0f"
+      },
+      {
+        "offset": "A0Ch",
+        "becomes": "unit+9F4h",
+        "producer_value": "0.0f from 00519520, forced to 1.0f by 007BB954 while airborne"
+      },
+      {
+        "offset": "A10h",
+        "becomes": "the boost byte unit+9F8h",
+        "producer_value": "0"
+      },
+      {
+        "offset": "A14h",
+        "becomes": "the pending gate",
+        "producer_value": "1, set by 007B8C90 at 007B8CC9"
+      }
+    ],
+    "every_writer": [
+      {
+        "address": "007B8C90",
+        "native": "none",
+        "role": "the per-frame setter, all six dwords plus the pending byte"
+      },
+      {
+        "address": "007CFEB8",
+        "native": "none",
+        "role": "zero init inside the plane unit constructor 007CFD20, through 007CFED6"
+      },
+      {
+        "address": "007D16A3",
+        "native": "none",
+        "role": "the network restore inside the raw block 007D1360, through 007D16D4"
+      },
+      {
+        "address": "007D178D",
+        "native": "none",
+        "role": "the second restore in the same block, through 007D17C1"
+      },
+      {
+        "address": "007BB954",
+        "native": "none",
+        "role": "the fifth-command override"
+      },
+      {
+        "address": "007BB97A",
+        "native": "none",
+        "role": "the throttle-command override"
+      },
+      {
+        "address": "004ECB17",
+        "native": "none",
+        "role": "in 004ECA30 under BSP_SceneRecord_ApplyHeaderProperties; base register not traced, another orchestrator's area"
+      }
+    ]
+  },
+  "plan_slots": {
+    "base": "bot+274h",
+    "layout": "five {float current; float desired; bool active;} triples, stride 0Ch",
+    "unit_pointer": "bot+2F0h (0099B450 MOV EAX,[ECX+2F0h])",
+    "descriptor_pointer": "bot+2F4h (0099B4F1)",
+    "slots": [
+      {
+        "slot": 0,
+        "fields": "274h/278h/27Ch",
+        "axis": "unit+9F0h throttle",
+        "site": "0099B456-0099B470"
+      },
+      {
+        "slot": 1,
+        "fields": "280h/284h/288h",
+        "axis": "unit+9E4h",
+        "site": "0099B476-0099B48E"
+      },
+      {
+        "slot": 2,
+        "fields": "28Ch/290h/294h",
+        "axis": "unit+9ECh",
+        "site": "0099B494-0099B4AC"
+      },
+      {
+        "slot": 3,
+        "fields": "298h/29Ch/2A0h",
+        "axis": "unit+9E8h",
+        "site": "0099B4B2-0099B4CA"
+      },
+      {
+        "slot": 4,
+        "fields": "2A4h/2A8h/2ACh",
+        "axis": "unit+9F4h",
+        "site": "0099B4D0-0099B4D8"
+      }
+    ],
+    "mode_words": "+2CCh = 1, +2D0h = 2, +2D4h = 1, +2D8h = 1 in 0099B450, all zero in 0099B590; the slot each belongs to is provisional, from the interleaving at 0099B5B8, 0099B5D6, 0099B5F4 and 0099B622"
+  },
+  "flight_state_900h": {
+    "setter": "007C1430, the only guarded writer; store at 007C145B",
+    "values": [
+      {
+        "state": 1,
+        "writers": [
+          "007CC857 in 007CC820"
+        ],
+        "effect": "+C04h = -1.0f, then a vtable[+ACh] call with unit+9D4h's +404h or the bot's +7Ch"
+      },
+      {
+        "state": 2,
+        "writers": [
+          "007CC7E2 in 007CC7A0"
+        ],
+        "effect": "the throttle is zeroed, at 007C143C in the setter and 007CC7CC in the caller"
+      },
+      {
+        "state": 3,
+        "writers": [
+          "the setter's case 3 only"
+        ],
+        "effect": "the throttle is forced to 1.0f at 007C153A"
+      },
+      {
+        "state": 4,
+        "writers": [
+          "007C1697 in 007C1680, from state 5 only",
+          "007C7488 in 007C7430",
+          "007CA3F0(0)"
+        ],
+        "effect": "when classDesc+198h != 0: +904h = (unit+908h > 5.0f) and +C18h = 3"
+      },
+      {
+        "state": 5,
+        "writers": [
+          "007C171E in 007C16F0, from state 4 only",
+          "007CA3F0(1)"
+        ],
+        "effect": "the same arm as 4, plus 0090F6C0(unit, 1) under a role and carrier check"
+      },
+      {
+        "state": 6,
+        "writers": [
+          "007CBA12 in 007CB9E0",
+          "007C63F4 in 007C6340",
+          "007CB9BD in 007CB7F0 when the state is 4 or 5"
+        ],
+        "effect": "clears +910h, +904h, +90Ch"
+      },
+      {
+        "state": 7,
+        "writers": [
+          "007C7183 in 007C7110",
+          "007C6481 in 007C6340",
+          "007D6600",
+          "007C70F2 in 007C6F50 when the state is 4 or 5"
+        ],
+        "effect": "clears +910h and +904h; +908h = 0 when the previous state was 4 or 3, else 3600.0f"
+      }
+    ],
+    "note": "at least eight values, 0..7. Only 2 and 3 are named by their side effects (throttle zero, throttle full). 4 and 5 are a toggling ground pair and are the pair the free-flight dispatch routes to the ground arm; 007BB920 treats {4,5,6,7} as one class. The remaining labels were not established."
+  },
+  "constants": [
+    {
+      "address": "00D7A24C",
+      "value": "1.0f"
+    },
+    {
+      "address": "00D7A260",
+      "value": "-1.0f"
+    },
+    {
+      "address": "00D7A208",
+      "value": "-0.0f"
+    },
+    {
+      "address": "00D7A218",
+      "value": "0.0f"
+    },
+    {
+      "address": "00D7A238",
+      "value": "0.01f"
+    },
+    {
+      "address": "00CE3850",
+      "value": "5.0f"
+    },
+    {
+      "address": "00CE3930",
+      "value": "20.0f"
+    },
+    {
+      "address": "00CE54A0",
+      "value": "0.2f"
+    },
+    {
+      "address": "00CE69C8",
+      "value": "0.3f"
+    },
+    {
+      "address": "00CE74F8",
+      "value": "0.8f"
+    },
+    {
+      "address": "00D05E14",
+      "value": "-0.8f"
+    },
+    {
+      "address": "00CF8AAC",
+      "value": "1.3888889f, 5 km/h in m/s"
+    },
+    {
+      "address": "00CFDEB0",
+      "value": "3600.0f"
+    },
+    {
+      "address": "00E0E2EC",
+      "value": "0.24f"
+    },
+    {
+      "address": "00CEC724",
+      "value": "0.5236f, 30 degrees"
+    },
+    {
+      "address": "00CEC728",
+      "value": "-0.5236f"
+    },
+    {
+      "address": "00CEC730",
+      "value": "2.0 (double)"
+    },
+    {
+      "address": "00CFD408",
+      "value": "127.0 (double)"
+    },
+    {
+      "address": "00D05998",
+      "value": "128.5 (double)"
+    },
+    {
+      "address": "00D7A250",
+      "value": "-1.0 (double)"
+    },
+    {
+      "address": "00D7A258",
+      "value": "0.0 (double), which makes the tangent term of the pitch rule dead"
+    },
+    {
+      "address": "00CE3D10",
+      "value": "0.2 (double)"
+    }
+  ],
+  "corrections": [
+    {
+      "document": "docs/PLANE_FLIGHT.md",
+      "was": "\"The write-back into unit+9E4h was not found\"; 007BB6E0 is \"the signed-byte round trip q = ftol(v*127 + 128.5) ... stored back into unit+9E4h..+9F4h\", source and destination the same fields",
+      "is": "007BB6E0 is the write-back. Its source is a separate pilot command block at unit+9FCh..+A10h and its destination is unit+9E4h..+9F4h; the round trip is a transform between two blocks, not an in-place projection",
+      "evidence": "007BB982 LEA EAX,[ESI+9FCh]; 007BB988 PUSH EAX; 007BB989 MOV ECX,ESI; 007BB98B CALL 007BB6E0, with ESI the unit from 007BB921 MOV ESI,ECX. Inside the callee 007BB6E2 MOV EDI,[ESP+0Ch]; 007BB6E6 FLD [EDI] -> 007BB72A FSTP [ESI+9E4h]; 007BB730 FLD [EDI+4] -> 007BB75D [ESI+9E8h]; 007BB763 FLD [EDI+8] -> 007BB798 [ESI+9ECh]; 007BB83A FLD [EDI+0Ch] -> 007BB877 [ESI+9F0h]; 007BB87D FLD [EDI+10h] -> 007BB8EE [ESI+9F4h]"
+    },
+    {
+      "document": "docs/PLANE_FLIGHT.md",
+      "was": "\"At 007CB161-007CB1B3 it clamps each of +9E4h, +9E8h and +9ECh between an upper bound in XMM1 and a lower bound in XMM2, a per-axis control limiter\"",
+      "is": "the clamp block runs to 007CB1EB and covers all five axes, with two different lower bounds: +9E4h, +9E8h and +9ECh are clamped to [-1.0f, 1.0f] and +9F0h and +9F4h to [0.0f, 1.0f] with an immediate zero as the lower bound",
+      "evidence": "stores 007CB161, 007CB183 and 007CB1A5 against 00D7A260 = -1.0f and 00D7A24C = 1.0f; 007CB1C7 and 007CB1EB take the 0.0 immediate path (the decompiled form is if (0.0 <= v) { if (1.0f < v) v = 1.0f; } else v = 0.0;). 007CB1F3 CALL 007B9770 follows"
+    },
+    {
+      "document": "docs/PLANE_FLIGHT.md",
+      "was": "\"What unit+900h's six values mean. 4 and 5 take the ground arm, 6 is tested inside 007DA710\"",
+      "is": "unit+900h has at least eight values, 0 through 7, all seven non-zero ones written as immediates or through the setter",
+      "evidence": "a .text scan for MOV dword [reg+900h],imm32 gives 007C1697 = 4, 007C171E = 5, 007C63F4 = 6, 007C6481 = 7, 007C7183 = 7, 007C7488 = 4, 007CBA12 = 6, 007CC7E2 = 2, 007CC857 = 1, 007D6600 = 7; the setter 007C1430 has switch arms for 3, 4, 5, 6 and 7 and zeroes the throttle for 2"
+    },
+    {
+      "document": "docs/PLANE_FLIGHT.md",
+      "was": "007D1676 and 007D1333 belong to \"a block Ghidra has no function for; start not established\"",
+      "is": "both starts are established. 007D1333 is in the raw block 007D0B80-007D1353, whose SEH prologue 6A FF / 64 A1 00000000 begins at 007D0B80 right after the two int3 at 007D0B7E; 007D1676 is in the raw block 007D1360-007D1B4B, which follows the twelve int3 at 007D1354",
+      "evidence": "ghidra bytes 007D0B78 gives 00 00 83 C4 3C C3 CC CC 6A FF 64 A1 00 00 00 00; disasm-raw 007D1354 gives twelve int3 then 007D1360 MOV EAX,[00E188A8]; SUB ESP,8Ch; the next int3 run after each block is at 007D1354 and 007D1B4C, and the byte before each is C2 04 00, RET 4"
+    },
+    {
+      "document": "packet brief cc2_pilot_controls",
+      "was": "\"the AI writer of the roll axis as 0099B476-0099B48E, inside 0099B450 ... reading pilot-state fields +280h/+284h and the flag +288h\"",
+      "is": "inverted in both directions: 0099B476-0099B48E reads unit+9E4h and writes bot+280h, bot+284h and the flag bot+288h. 0099B450 has no store to the unit at all. docs/PLANE_FLIGHT.md's own table already lists it as a consumer",
+      "evidence": "0099B450 MOV EAX,[ECX+2F0h]; 0099B476 MOVSS XMM0,[EAX+9E4h]; 0099B47E MOVSS [ECX+284h],XMM0; 0099B486 MOVSS [ECX+280h],XMM0; 0099B48E MOV byte [ECX+288h],DL with DL zeroed at 0099B46E"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "0099B290",
+      "name": "BSP_PilotBot_ReadFloatAtThis",
+      "end_address": "0099B292"
+    },
+    {
+      "address": "0099B2A0",
+      "name": "BSP_PilotBot_SeedSlotArrayFromUnit",
+      "end_address": "0099B310"
+    },
+    {
+      "address": "0099B590",
+      "name": "BSP_PilotBot_SeedPlanSlotsHeld",
+      "end_address": "0099B629"
+    },
+    {
+      "address": "007D0B80",
+      "name": "unnamed: RET 4, writes unit+9E8h at 007D1331 and unit+9F0h at 007D134E; start established, role unread",
+      "end_address": "007D1353"
+    },
+    {
+      "address": "007D1360",
+      "name": "unnamed: RET 4, the network restore that writes record+38h..+4Ch into unit+9E4h..+9F8h at 007D166A-007D169D and the command block at 007D16A3-007D16D4; start established, rest unread",
+      "end_address": "007D1B4B"
+    }
+  ],
+  "flow_gaps": [
+    {
+      "call_site": "007D6983",
+      "function": "007D5AC0",
+      "note": "the stored Ghidra body of 007D5AC0 is truncated: ghidra disasm --start 007D6960 is refused as outside it while the index attributes 007D6983 LEA reg,[unit+9F0h] and 007D69BA LEA reg,[unit+9E4h] to it. The routine takes a pointer to the control block and was not read"
+    },
+    {
+      "call_site": "007BB6FC",
+      "function": "007BB6E0",
+      "note": "ghidra disasm --start 007BB782 is refused although 007BB781 is listed, a boundary discontinuity after the 00BF7420 ftol calls. Paging the stored listing recovers every instruction; nothing is missing from the reading in the doc"
+    }
+  ],
+  "uncertainties": [
+    "the call site of 00519520: no Ghidra xref and no vtable entry anywhere in the image for the bytes 20 95 51 00, so the caller is in code Ghidra has not disassembled",
+    "the call site of 0099BEE0, same situation for the bytes E0 BE 99 00; without it the bot's path from the plan slots to unit+9E4h is not closed",
+    "whether 0099BEE0's out pointer is the 0x84-byte record 007C2810 allocates. The shapes match (five floats then three bytes at +14h..+16h, with the field at +0Ch seeded 1.0f exactly as the plane constructor seeds unit+9F0h) but the identity is a hypothesis",
+    "what the fifth axis unit+9F4h is: unipolar, 1.0f while airborne (007BB954) and after the ground reset (007CA4EF), 0.0f in the 007CAF10 override",
+    "which physical control each of unit+9E4h and unit+9ECh is. The producer says +9E4h is never written by the pilot and +9ECh carries the horizontal aim error, while docs/PLANE_FLIGHT.md's rate law scales YawSpd by the latched +BB0h (from +9E4h) and leaves +BB8h (from +9ECh) to 007DA380. Both labels stay provisional",
+    "the per-slot ownership of the mode words +2CCh..+2D8h, taken from instruction interleaving",
+    "007C47F0, 007C4810, 0077C470, 004C5070, 008A5BD0, 007C11E0, 0099BB40 and 0090F6C0: contract: unread",
+    "classDesc+25Ch, +274h and +190h have no producer in this packet's reading"
+  ],
+  "run_time_evidence": "none. The commit path runs only inside a live mission with a plane under local control, which bsp_game.exe does not reach.",
+  "reconstruction": {
+    "header": "include/bsp/pilot_controls.hpp",
+    "source": "src/pilot_controls.cpp",
+    "cmake": "one appended line in cmake/startup.cmake",
+    "reuses": "bsp::PlaneControlInput and the plane_control_off offsets from include/bsp/plane_flight.hpp",
+    "note": "pure rules plus one sequence routine over an injected host; new offset constants are prefixed kPilot. Not a binary-compatible layout and not a drop-in replacement."
+  },
+  "state": "complete"
+}
