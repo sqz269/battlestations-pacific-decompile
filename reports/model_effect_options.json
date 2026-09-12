@@ -1,0 +1,497 @@
+{
+  "packet": "orch3_model_options_aj",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "status": "complete_cpp_strict_win32_build_original_body_actual_singleton_fixture_passed",
+  "headers": [
+    "include/bsp/model_effect_options.hpp"
+  ],
+  "sources": [
+    "src/model_effect_options.cpp"
+  ],
+  "documentation": "docs/MODEL_EFFECT_OPTIONS.md",
+  "functions": [
+    {
+      "name": "getter",
+      "address": "0051f6b0",
+      "end_inclusive": "0051f765",
+      "end_exclusive": "0051f766",
+      "length": 182,
+      "sha256": "bb320ee47b11f7ee15f21690092ebe0bace023594ac7ddf47df3ca7a02dbbf25",
+      "live_disk_equal": true,
+      "instructions": 49,
+      "gaps": [],
+      "last_instruction": {
+        "address": "0051f765",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      },
+      "calls": [
+        {
+          "address": "0051f6d6",
+          "target": "0x415350",
+          "bytes": "e8755cefff"
+        },
+        {
+          "address": "0051f6ef",
+          "target": "dword ptr [0xce2218]",
+          "bytes": "ff151822ce00"
+        },
+        {
+          "address": "0051f70c",
+          "target": "0xbf681b",
+          "bytes": "e80a716d00"
+        },
+        {
+          "address": "0051f72f",
+          "target": "0x415350",
+          "bytes": "e81c5cefff"
+        },
+        {
+          "address": "0051f73d",
+          "target": "0xbd0c30",
+          "bytes": "e8ee146b00"
+        },
+        {
+          "address": "0051f74b",
+          "target": "dword ptr [0xce2210]",
+          "bytes": "ff151022ce00"
+        }
+      ],
+      "cpp_symbol": "model_effect_options_singleton_0051f6b0",
+      "ghidra_name": "BSP_ModelEffectOptions_GetSingleton",
+      "original_abi": "cdecl(), EAX actual current00F8C27C; RET",
+      "source": "src/model_effect_options.cpp",
+      "coverage": "complete",
+      "uncertainty": "Descriptive names are hypotheses; neutral option fields retain unresolved nonzero producer; new C++ ABI and host CRT/EH boundary.",
+      "evidence": "Live and installed PE full body/last instruction match; original complete-byte focused actual-lifetime fixture and separate strict MSVC Win32 source compile pass. See docs/MODEL_EFFECT_OPTIONS.md and this report host/caller/EH records."
+    },
+    {
+      "name": "scalar",
+      "address": "0051f770",
+      "end_inclusive": "0051f798",
+      "end_exclusive": "0051f799",
+      "length": 41,
+      "sha256": "62fcac5b7f25230e3d9b96c6fa51f7db027f28b90ec38470edaaa74036b3ce96",
+      "live_disk_equal": true,
+      "instructions": 12,
+      "gaps": [],
+      "last_instruction": {
+        "address": "0051f796",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      },
+      "calls": [
+        {
+          "address": "0051f78b",
+          "target": "0xbf65ac",
+          "bytes": "e81c6e6d00"
+        }
+      ],
+      "cpp_symbol": "delete_model_effect_options_0051f770",
+      "ghidra_name": "BSP_ModelEffectOptions_ScalarDelete",
+      "original_abi": "ECX primary owner; stack uint32 flags (low byte bit0 tested); EAX original owner; RET4",
+      "source": "src/model_effect_options.cpp",
+      "coverage": "complete",
+      "uncertainty": "Descriptive names are hypotheses; neutral option fields retain unresolved nonzero producer; new C++ ABI and host CRT/EH boundary.",
+      "evidence": "Live and installed PE full body/last instruction match; original complete-byte focused actual-lifetime fixture and separate strict MSVC Win32 source compile pass. See docs/MODEL_EFFECT_OPTIONS.md and this report host/caller/EH records."
+    }
+  ],
+  "native_spans": [
+    {
+      "name": "getter",
+      "address": "0051f6b0",
+      "end_inclusive": "0051f765",
+      "end_exclusive": "0051f766",
+      "length": 182,
+      "sha256": "bb320ee47b11f7ee15f21690092ebe0bace023594ac7ddf47df3ca7a02dbbf25",
+      "live_disk_equal": true,
+      "instructions": 49,
+      "gaps": [],
+      "last_instruction": {
+        "address": "0051f765",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      },
+      "calls": [
+        {
+          "address": "0051f6d6",
+          "target": "0x415350",
+          "bytes": "e8755cefff"
+        },
+        {
+          "address": "0051f6ef",
+          "target": "dword ptr [0xce2218]",
+          "bytes": "ff151822ce00"
+        },
+        {
+          "address": "0051f70c",
+          "target": "0xbf681b",
+          "bytes": "e80a716d00"
+        },
+        {
+          "address": "0051f72f",
+          "target": "0x415350",
+          "bytes": "e81c5cefff"
+        },
+        {
+          "address": "0051f73d",
+          "target": "0xbd0c30",
+          "bytes": "e8ee146b00"
+        },
+        {
+          "address": "0051f74b",
+          "target": "dword ptr [0xce2210]",
+          "bytes": "ff151022ce00"
+        }
+      ]
+    },
+    {
+      "name": "scalar",
+      "address": "0051f770",
+      "end_inclusive": "0051f798",
+      "end_exclusive": "0051f799",
+      "length": 41,
+      "sha256": "62fcac5b7f25230e3d9b96c6fa51f7db027f28b90ec38470edaaa74036b3ce96",
+      "live_disk_equal": true,
+      "instructions": 12,
+      "gaps": [],
+      "last_instruction": {
+        "address": "0051f796",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      },
+      "calls": [
+        {
+          "address": "0051f78b",
+          "target": "0xbf65ac",
+          "bytes": "e81c6e6d00"
+        }
+      ]
+    },
+    {
+      "name": "cleanup",
+      "address": "00c6afa0",
+      "end_inclusive": "00c6afa7",
+      "end_exclusive": "00c6afa8",
+      "length": 8,
+      "sha256": "884e3a76c3b9a639e84d8e50075c414bec5ece86b5e18c291d9a71f70dbe71c5",
+      "live_disk_equal": true,
+      "instructions": 2,
+      "gaps": [],
+      "last_instruction": {
+        "address": "00c6afa3",
+        "length": 5,
+        "bytes": "e9386f7aff",
+        "text": "jmp 0x411ee0"
+      },
+      "calls": []
+    },
+    {
+      "name": "handler",
+      "address": "00c6afa8",
+      "end_inclusive": "00c6afb1",
+      "end_exclusive": "00c6afb2",
+      "length": 10,
+      "sha256": "f03eff0a75575d38ff71bb14e91b0e96fac520a2727fa5125620778b9c9883c4",
+      "live_disk_equal": true,
+      "instructions": 2,
+      "gaps": [],
+      "last_instruction": {
+        "address": "00c6afad",
+        "length": 5,
+        "bytes": "e991bbf8ff",
+        "text": "jmp 0xbf6b43"
+      },
+      "calls": []
+    },
+    {
+      "name": "eh",
+      "address": "00d9455c",
+      "end_inclusive": "00d94587",
+      "end_exclusive": "00d94588",
+      "length": 44,
+      "sha256": "581ffc433d8b0a09373fa0b007ea1b47e5590dd679f86515add3fce38651991f",
+      "live_disk_equal": true
+    },
+    {
+      "name": "table",
+      "address": "00ceca14",
+      "end_inclusive": "00ceca17",
+      "end_exclusive": "00ceca18",
+      "length": 4,
+      "sha256": "b85d4f3c1b2aa5e00ce09ae852d5ebd66a01cc408742afe36dd25bf59cc463e7",
+      "live_disk_equal": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0051f6d6",
+      "native": "00415350",
+      "function": "0051f6b0",
+      "contract": "Actual shared01090AA0 domain manager; capture section+10."
+    },
+    {
+      "address": "0051f6ef",
+      "native": "IAT00CE2218:EnterCriticalSection",
+      "function": "0051f6b0",
+      "contract": "Actual physical OS section; subsequent increment+18."
+    },
+    {
+      "address": "0051f70c",
+      "native": "00bf681b",
+      "function": "0051f6b0",
+      "contract": "Actual allocation8 via matching existing host CRT service; ADD ESP4 at51F711."
+    },
+    {
+      "address": "0051f72f",
+      "native": "00415350",
+      "function": "0051f6b0",
+      "contract": "Actual shared manager after publication; then reload current global at51F734."
+    },
+    {
+      "address": "0051f73d",
+      "native": "00bd0c30",
+      "function": "0051f6b0",
+      "contract": "Actual register primary; validate before null-ignore; no additional domain, count, wrapper or unregister."
+    },
+    {
+      "address": "0051f74b",
+      "native": "IAT00CE2210:LeaveCriticalSection",
+      "function": "0051f6b0",
+      "contract": "Captured physical OS section; preceded by counter decrement+18."
+    },
+    {
+      "address": "0051f78b",
+      "native": "00bf65ac",
+      "function": "0051f770",
+      "contract": "Actual free iff flags&1; ADD ESP4 at51F790; EAX restored from capturedESI."
+    },
+    {
+      "address": "00c6afa3",
+      "native": "00411ee0",
+      "function": "00c6afa0",
+      "contract": "Read-only native EH dependency; actual guard section release.",
+      "kind": "tail_jump"
+    }
+  ],
+  "caller_steps": [
+    {
+      "address": "00520521",
+      "native": "0051f6b0",
+      "function": "0051fa50",
+      "contract": "Read05; native Hide particles label atCECB3C."
+    },
+    {
+      "address": "005205e2",
+      "native": "0051f6b0",
+      "function": "0051fa50",
+      "contract": "Read04; native Dont update particles label atCECB20."
+    },
+    {
+      "address": "0086b1d9",
+      "native": "0051f6b0",
+      "function": "0086b1c0",
+      "contract": "Read04; suppress20h registered-model event allocation when nonzero."
+    },
+    {
+      "address": "00af6be3",
+      "native": "0051f6b0",
+      "function": "00af6be0",
+      "contract": "Read04; returnAL1 when nonzero before completion state."
+    },
+    {
+      "address": "00af6e0f",
+      "native": "0051f6b0",
+      "function": "00af6dd0",
+      "contract": "Read04; skip update body when nonzero."
+    },
+    {
+      "address": "00af73e9",
+      "native": "0051f6b0",
+      "function": "00af73a0",
+      "contract": "Read05; skip subsequent submission branch when nonzero."
+    }
+  ],
+  "layout": {
+    "native_bytes": 8,
+    "global_address": "00f8c27c",
+    "table_address": "00ceca14",
+    "table_slot0": "0051f770",
+    "base_table": "00ce3818",
+    "initialized_offsets": [
+      "00..03:table",
+      "04:zero",
+      "05:zero"
+    ],
+    "preserved_offsets": [
+      "06",
+      "07"
+    ],
+    "nonzero_option_producers": "unresolved; all six getter call references inspected; cheat-menu references are reads"
+  },
+  "corrections": [
+    {
+      "was": "0051F6CA erroneously represented as separate function splitting getter at51F6C9.",
+      "evidence": "Live function bodies and flow:49 instructions,0 gaps; parent local/model-options-boundary-aj.json and model-options-definitions-aj.json.",
+      "is": "One complete182-byte getter0051F6B0..0051F765; primary repaired before worker."
+    },
+    {
+      "was": "Decompiler scalar free path returns extraout_EAX.",
+      "evidence": "51F776 MOV ESI,ECX;51F793 MOV EAX,ESI after optional51F78B free.",
+      "is": "Both paths return captured original owner."
+    }
+  ],
+  "eh": {
+    "handler": "00c6afa8",
+    "end_inclusive": "00c6afb1",
+    "length": 10,
+    "last_instruction_address": "00c6afad",
+    "last_instruction_length": 5,
+    "target": "00bf6b43",
+    "ghidra_function_defined": false,
+    "raw_instruction_gaps": [],
+    "map": "00d94564",
+    "unwind_map": "00d9455c",
+    "unwind_entries": [
+      [
+        -1,
+        "00c6afa0"
+      ]
+    ],
+    "cleanup": "00c6afa0..00c6afa7, LEA ECX,[EBP-14h]; tail00411EE0",
+    "missing_function_action": "Primary notified; worker read only."
+  },
+  "validation": {
+    "status": "passed",
+    "original_bytes_header": "local/model_options_bytes_aj.hpp",
+    "fixture": "local/model_options_probe_aj.cpp",
+    "run_script": "local/run_model_options_probe_aj.cmd",
+    "build_log": "local/model-options-build-aj.log",
+    "fixture_log": "local/model-options-probe-aj.log",
+    "production_compile": "MSVC Win32 /std:c++17 /EHsc /O2 /W4 /WX /fp:strict /MD; separate actual source object; fixture /link /MANIFEST:EMBED",
+    "build_result": "scripts/build.ps1 passed;1 existing reconstructed_math CTest passed. New source separately strict-compiled because CMake is integrator-owned.",
+    "fixture_result": "Complete native182-byte getter and41-byte scalar vs C++; actual SingletonLifetimeDomain, physical critical section and counter, actual primary registration/pop/current-table destruction;06/07 preservation; warm modified flags; null section; structural null allocation; flags0/2/3/100h; unconditional clear of unrelated publication; native ESP balance; C++ allocation/registration unwind.",
+    "call_report_result": "Primary tools/verify_report_calls.py:12 concrete address/native/function rows checked,0 failed;2 named IAT bindings explicitly skipped.",
+    "call_report_log": "J:/PROG/battlestations-pacific-decompile-orch3-20260910/local/model-options-call-check-aj.log",
+    "source_head": "55c9a22fdbad2d1d653266f1c8eb20761ecf3317",
+    "fixture_boundary": "Native getter/scalar only; direct services forward to actual manager, register, host allocation/free. Actual manager section exposed through20-byte native-layout carrier. Allocator instrumentation poisons8 actual bytes; free instrumentation records then frees. Nullable section fixture temporarily changes actual nonconst slot through its const-reference projection. Native FH3 exceptions deliberately excluded.",
+    "rebound_operands": {
+      "getter": {
+        "global_00f8c27c": 5,
+        "enter_IAT_00ce2218": 1,
+        "leave_IAT_00ce2210": 1,
+        "manager_00415350_calls": [
+          "0051f6d6",
+          "0051f72f"
+        ],
+        "allocator_00bf681b_call": "0051f70c",
+        "register_00bd0c30_call": "0051f73d"
+      },
+      "scalar": {
+        "global_00f8c27c": 1,
+        "free_00bf65ac_call": "0051f78b"
+      }
+    },
+    "artifacts": [
+      {
+        "path": "include/bsp/model_effect_options.hpp",
+        "sha256": "09629c4eff1758bcbec6e9ae487432a908bf5e251de385f2a1dbb63d99a7b5b2",
+        "bytes": 2375
+      },
+      {
+        "path": "src/model_effect_options.cpp",
+        "sha256": "9af0e34d14808f12266e30a756b47dffef4ed35921af0d12f95eae846a2d6399",
+        "bytes": 2225
+      },
+      {
+        "path": "docs/MODEL_EFFECT_OPTIONS.md",
+        "sha256": "fa12b2a9d5e846d92accf8511f501beb42dc3d80a3dd2b5bc7cea62c7043f9d1",
+        "bytes": 8404
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "bytes": 4372
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "bytes": 13257
+      },
+      {
+        "path": "include/bsp/system_time_constants.hpp",
+        "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9",
+        "bytes": 4800
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "5651d0d9155b19a71733c14ee4a3a50905420dda338b97fedda5aae997ca6846",
+        "bytes": 43470014
+      },
+      {
+        "path": "local/model_options_probe_aj.cpp",
+        "sha256": "69d8914d733c640216cac2fae15b180880fbc5618c61414c5d834fa480e8c230",
+        "bytes": 9332
+      },
+      {
+        "path": "local/model_options_probe_aj.exe",
+        "sha256": "1fc7f44d32a2a9f92242e4f09a583013d5684e91c952073e32d55d6f844b09c0",
+        "bytes": 20480
+      },
+      {
+        "path": "local/model_effect_options_production_aj.obj",
+        "sha256": "96dc5bb3d83474f4d9586a0d31e9caa8ef5fd79612b0bd384a96354bb19ddc5b",
+        "bytes": 4724
+      },
+      {
+        "path": "local/model_effect_options_fixture_aj.obj",
+        "sha256": "c81e1a5674fc6ed5eecee2ecff220b9b3c47065b0be93336b3cec28fff4f9914",
+        "bytes": 4726
+      },
+      {
+        "path": "local/model_options_bytes_aj.hpp",
+        "sha256": "a3074bd6de1e3448fc21f696a8e2d72073095dfa4054abbfa160e0a0f5042283",
+        "bytes": 1653
+      },
+      {
+        "path": "local/extract_model_options_aj.py",
+        "sha256": "9946b5192a059c093f786cadd9514c7c216790a7042955f538c6bc0de0ced125",
+        "bytes": 2107
+      },
+      {
+        "path": "local/run_model_options_probe_aj.cmd",
+        "sha256": "079aa953bfc1f0179b2459a9d2e44881f4b528206d5f1e430414c42929408d4c",
+        "bytes": 942
+      },
+      {
+        "path": "local/model-options-native-evidence-aj.json",
+        "sha256": "4e954ac75b1582e23d84103227dac13b63f6ebc3efff7af5e6aa94f3d02b2106",
+        "bytes": 3548
+      },
+      {
+        "path": "local/model-options-build-aj.log",
+        "sha256": "81d43d17c534c80f5c82e2762a14da01a13d34b50f8ea1a75df57f1bbbb20590",
+        "bytes": 27694
+      },
+      {
+        "path": "local/model-options-probe-aj.log",
+        "sha256": "c1c7ce82d043fdf5b3a4838a0c56e09e3518d33022658204a1c9f975f8547d3e",
+        "bytes": 396
+      }
+    ]
+  },
+  "limits": [
+    "New C++ APIs; actual owner storage but no drop-in original ABI.",
+    "Original FH3/CRT exception handler not executed; C++ unwind checked separately.",
+    "Nonzero option writer unresolved; native cheat labels and all direct getter consumers recorded.",
+    "Forced null allocation is a fixture branch, not actual CRT exhaustion behavior.",
+    "Native stack-guard table write, asynchronous publication/fault order, broad app callback integration and gameplay unvalidated.",
+    "No shared CMake or ledger edits; strict standalone compilation covers new source."
+  ]
+}
