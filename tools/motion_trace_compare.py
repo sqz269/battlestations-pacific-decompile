@@ -24,8 +24,8 @@ landed: it divides the *probe* side's yaw rate by the curve of
 `MaxRotAngle` by. Applying it to a current probe run double-counts the
 denominator. Check the probe header before using it.
 
-It does not correct the trace side. A `bsp_game.exe` milestone-2i log still
-forces the three knots to 1 and so reports a yaw rate a full denominator too
+It does not correct the trace side. A `bsp_game.exe` milestone-2i (or earlier) log
+forced the three knots to 1 (milestone 2j loads the authored knots) and so reports a yaw rate a full denominator too
 high; fed in as a trace it will diverge from a current probe run by exactly
 that factor, which is the point of comparing them.
 

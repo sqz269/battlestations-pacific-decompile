@@ -136,7 +136,7 @@
     },
     "cause": {
       "which_is_right": "the probe",
-      "why": "0082ECB0 divides MaxRotAngle by the curve 0082E890 interpolates from the gameplay settings singleton [00F8753C] at +438h..+44Ch. The knots are authored in <install>/scripts/datatables/shipglobals.lua under ShipGlobals[\"Navigator\"][\"TurnMultipliers\"], lines 340-342, and give 2.0 at full throttle. The probe reads them; bsp_game.exe still forces all three to 1.",
+      "why": "0082ECB0 divides MaxRotAngle by the curve 0082E890 interpolates from the gameplay settings singleton [00F8753C] at +438h..+44Ch. The knots are authored in <install>/scripts/datatables/shipglobals.lua under ShipGlobals[\"Navigator\"][\"TurnMultipliers\"], lines 340-342, and give 2.0 at full throttle. The probe reads them; bsp_game.exe forced all three to 1 at milestone 2i (closed by milestone 2j, main c1e9691e: the comparison passes on bf9dae41).",
       "knots": [
         {"key": "TurnMultiplierMinSpeed", "speed": 0.0, "denominator": 0.4, "fields": ["+444h", "+440h"]},
         {"key": "TurnMultiplierMedSpeed", "speed": 0.5, "denominator": 1.5, "fields": ["+44Ch", "+448h"]},
@@ -267,7 +267,7 @@
     {
       "packet": "game_harness_rudder_curve",
       "addresses_files": ["src/game_hosts_units.cpp yaw_rate_target", "0082ECB0", "0082E890"],
-      "why": "give bsp_game.exe the authored knots the probe already reads, then re-run milestone 2i. The one follow-up that changes shipped numbers."
+      "why": "CLOSED by milestone 2j (main c1e9691e): bsp_game.exe loads the authored knots and the comparison passes. Original: give bsp_game.exe the authored knots the probe already reads, then re-run milestone 2i."
     },
     {
       "packet": "motion_live_trace",
