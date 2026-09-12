@@ -382,5 +382,72 @@
     "Objective fixture verifies actual container/key transport, not full58F5B0 GUI resource traversal or594BF0 Text/Listbox construction",
     "Mission picture texture owner, full598B60 activation, command-bar/menu providers and gameplay remain open",
     "New C++ owner/container interfaces do not reproduce native allocator/SEH/debug iterator ABI"
-  ]
+  ],
+  "promotion": {
+    "source_commit": "12d48cd75a5ca4d00b0ffe7e9112f97250b3905b",
+    "built_commit": "2c0cba7f7b0a52a07788bfba03d895f7fde37caa",
+    "exit_code": 0,
+    "promoted_commit": "2c0cba7f7b0a52a07788bfba03d895f7fde37caa",
+    "main_commit": "2c0cba7f7b0a52a07788bfba03d895f7fde37caa",
+    "build_log": "local/orch5-menu-frame-integration.log",
+    "build_log_sha256": "937a9e97fe56face0452bc4ed2016fe3b394284dad6384ca00348210cf48cb24",
+    "tests_passed": 2,
+    "tests_failed": 0,
+    "library_sha256": "0f5ac309e1c1f102b2cb0248e2403b59b99f7e836c8fe7d966860a07ccdbffc9",
+    "probes": [
+      {
+        "log": "local/orch5-menu-frame-promoted-listbox.log",
+        "sha256": "e44e0aabc1213e7f432ff496c95bd432a951240ecb75a5305297b042a3c2fad9",
+        "passed": true
+      },
+      {
+        "log": "local/orch5-menu-frame-promoted-manager.log",
+        "sha256": "336a20411914889bb9320d680b2f2e0f86480951540307a20b0f862942cf4ff7",
+        "passed": true
+      },
+      {
+        "log": "local/orch5-menu-frame-promoted-base.log",
+        "sha256": "924de5b82db64422039f70bf004ffde993771d44e3adbca6de369d39c54535bf",
+        "passed": true
+      },
+      {
+        "log": "local/orch5-menu-frame-promoted-sides.log",
+        "sha256": "07bf114c5912021d58eb7289cc0b94682b51bb7b6a18eb1a09b178dcac9263a9",
+        "passed": true
+      },
+      {
+        "log": "local/orch5-menu-frame-promoted-objectives.log",
+        "sha256": "73c5d60e205d40128be5e34a713e1c9a74169650f9976a4224d6e3e6c04776ac",
+        "passed": true
+      }
+    ],
+    "merged_compiled_inputs": [
+      "cmake/startup.cmake",
+      "include/bsp/native_filestore_pending_tree.hpp",
+      "include/bsp/native_filestore_provider_lifetime.hpp",
+      "include/bsp/native_filestore_resident_tree.hpp",
+      "include/bsp/native_particle_axial_loading.hpp",
+      "include/bsp/native_particle_object_tracer_loading.hpp",
+      "include/bsp/native_particle_type_factory.hpp",
+      "include/bsp/native_particle_type_loading.hpp",
+      "include/bsp/native_particle_type_property.hpp",
+      "include/bsp/native_singleton_destruction.hpp",
+      "include/bsp/ship_ai_avoidance_request.hpp",
+      "include/bsp/unit_kind_query.hpp",
+      "src/native_filestore_pending_tree.cpp",
+      "src/native_filestore_provider_lifetime.cpp",
+      "src/native_filestore_resident_tree.cpp",
+      "src/native_particle_axial_loading.cpp",
+      "src/native_particle_object_tracer_loading.cpp",
+      "src/native_particle_type_factory.cpp",
+      "src/native_particle_type_loading.cpp",
+      "src/native_particle_type_property.cpp",
+      "src/native_singleton_destruction.cpp",
+      "src/ship_ai_avoidance_request.cpp",
+      "src/unit_kind_query.cpp"
+    ],
+    "note": "Build and promoted code commit identical. Five fixtures recompiled from fixture TUs against these parent headers/libraries; side fixture includes the exact parent GameMissionHost TU for its internal adapter. No worker production objects used.",
+    "initial_probe_archive": "local/orch5-menu-frame-initial-probes",
+    "initial_worker_archive": "local/orch5-menu-frame-worker-archives.json"
+  }
 }

@@ -55,3 +55,7 @@ Follow-up packets:
 
 Build, fixture and installed-table evidence do not establish original ABI,
 complete menu execution, rendering or game equivalence.
+
+Exact built/promoted code commit: `2c0cba7f7b0a52a07788bfba03d895f7fde37caa`. Both existing
+tests and all five scoped fixtures passed against that production library.
+Initial and promoted logs/hashes are retained separately in the batch report.
