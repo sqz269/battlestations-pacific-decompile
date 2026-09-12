@@ -281,24 +281,28 @@
     ],
     "build_artifacts": [
       {
-        "path": "build/win32/Release/bsp_core.lib",
+        "path": "local/native-provider-as-evidence/before-execution/build/win32/Release/bsp_core.lib",
         "bytes": 46914504,
-        "sha256": "29da9eeea559e389d5b18caa14e2fe11adf6a10aeb589a07660041930cf0b1ee"
+        "sha256": "29da9eeea559e389d5b18caa14e2fe11adf6a10aeb589a07660041930cf0b1ee",
+        "original_path": "build/win32/Release/bsp_core.lib"
       },
       {
-        "path": "build/win32/bsp_core.dir/Release/native_physical_provider.obj",
+        "path": "local/native-provider-as-evidence/before-execution/build/win32/bsp_core.dir/Release/native_physical_provider.obj",
         "bytes": 9667,
-        "sha256": "5597d5df9fcf2442055c9b92e64e5352a54e7d5bb3740a25ca3bf39fc92c5c93"
+        "sha256": "5597d5df9fcf2442055c9b92e64e5352a54e7d5bb3740a25ca3bf39fc92c5c93",
+        "original_path": "build/win32/bsp_core.dir/Release/native_physical_provider.obj"
       },
       {
-        "path": "local/native-provider-as-initial-build.log",
+        "path": "local/native-provider-as-evidence/before-execution/local/native-provider-as-initial-build.log",
         "bytes": 2428,
-        "sha256": "d8107fcec336acef086889bda86994eb56e38caf1618efd8a82de9bb84ab5f8e"
+        "sha256": "d8107fcec336acef086889bda86994eb56e38caf1618efd8a82de9bb84ab5f8e",
+        "original_path": "local/native-provider-as-initial-build.log"
       },
       {
-        "path": "local/native-provider-as-evidence/probe.exe",
+        "path": "local/native-provider-as-evidence/before-execution/local/native-provider-as-evidence/probe.exe",
         "bytes": 41984,
-        "sha256": "78a7ae2d03462a4c4b845107108c3d8615b69a8c8105a67e403ece80f1e61e4d"
+        "sha256": "78a7ae2d03462a4c4b845107108c3d8615b69a8c8105a67e403ece80f1e61e4d",
+        "original_path": "local/native-provider-as-evidence/probe.exe"
       }
     ],
     "independent_review": {
@@ -306,17 +310,80 @@
       "status": "accepted; no blocking defects",
       "original_artifact": "J:/PROG/battlestations-pacific-decompile-orch2-physical-index-tree-as/local/provider_as_parent_review/review.json",
       "source_sha256": "7b8670babf13b89cac98cb6844afdf8801a7a20ddab8796e7ae7f4b4ebae7b8c",
-      "header_sha256": "ed89add3153c7c0c1b80ba77addfab88e82f20ba48c8670e937ff21a49d2b2aa"
+      "header_sha256": "ed89add3153c7c0c1b80ba77addfab88e82f20ba48c8670e937ff21a49d2b2aa",
+      "retained_artifact": {
+        "path": "local/native-as-worker-deliveries/physical_index/provider_as_parent_review/review.json",
+        "bytes": 10928,
+        "sha256": "6f24f0b354a92aed24a20549eced8cf6c93835fcecf44493430a7ebf60afcac0"
+      }
     },
     "game_validated": false,
-    "native_abi_compatible": false
+    "native_abi_compatible": false,
+    "real_file_composition": {
+      "artifact": {
+        "path": "local/native-as-provider-composition/composition_report.json",
+        "bytes": 7573,
+        "sha256": "85cc2cee4f2287cb857461e6edb807014a2dac383b4587a7602c179677693772"
+      },
+      "parent_copy_manifest": {
+        "path": "local/native-as-provider-composition/parent_copy_manifest.json",
+        "bytes": 330568,
+        "sha256": "4c6d56807ac1b85e9bd1145fd6c0c816fc451aa7cef1cc6a1ac20195700ee0b4"
+      },
+      "captured_core_sha256": "29da9eeea559e389d5b18caa14e2fe11adf6a10aeb589a07660041930cf0b1ee",
+      "successful_cycles": 2,
+      "bytes_per_cycle": 38,
+      "stream_and_provider_slot_reuse": true,
+      "canonical_shutdown": true,
+      "frozen_inputs_unchanged": 1767,
+      "original_instructions_executed": false,
+      "original_FH3_or_game_executed": false
+    },
+    "combined_fixture": {
+      "artifact": {
+        "path": "local/native-as-combined/provider/result.json",
+        "bytes": 1000,
+        "sha256": "9930380a611a6986a4e35509116812a998f28b035fc0d4305a06a2d381dc4890"
+      },
+      "before": {
+        "path": "local/native-as-combined/provider/before.json",
+        "bytes": 387564,
+        "sha256": "eb39a90b6eebe5869e1b241425abb131c862e72bed847bd1e85bf0b7e3208eb9"
+      },
+      "core_sha256": "fde58a6299871dae206759cde4c2273771409b5314d2e17c78a3a41415124e68",
+      "head": "f0e188f21b9db3e326fd0afa20894bc818296af7",
+      "probe_source_unchanged": true,
+      "frozen_input_count": 1838,
+      "input_mismatches": 0,
+      "exit_code": 0
+    }
   },
   "ghidra": {
     "flow_record": "reports/native_physical_provider_flow_repair.json",
     "stored_destructor_body": "00bf4c70..00bf4cbe inclusive",
     "full_destructor_end_exclusive": "00bf4d2e",
     "stored_body_tail_complete": false,
-    "repair": "Cleared local CALL_RETURN and decoded111-byte tail under lock; stored body remains truncated. Keep full-tail evidence separately. No global no-return mutation or body extension."
+    "repair": "Cleared local CALL_RETURN and decoded111-byte tail under lock; stored body remains truncated. Keep full-tail evidence separately. No global no-return mutation or body extension.",
+    "names_saved_and_read_back": 4,
+    "prior_comments_preserved": true,
+    "forced_exports": 4,
+    "annotation_log": {
+      "path": "local/ghidra-annotations-20260912T181624Z.json",
+      "bytes": 4206,
+      "sha256": "63d7abfc641ceda76a62b54399d5e42fca089a2c3c043d077196666dab969017"
+    },
+    "readback": {
+      "path": "local/native-provider-as-comments-after.json",
+      "bytes": 3862,
+      "sha256": "065248eb701d93babde8651e3e7bae388de0c7d7d06afe04ff886282f6728e73"
+    },
+    "call_verification": {
+      "path": "local/native-provider-as-report-calls.log",
+      "bytes": 71,
+      "sha256": "4c28e6c2422f36ea128803997bd3f1e964216e4be81acba0b165fe4fa5108ac8"
+    },
+    "body_call_rows": 12,
+    "failed_call_rows": 0
   },
   "corrections": [
     {
@@ -335,7 +402,6 @@
     "Complete manager ownership/startup remains open."
   ],
   "next": [
-    "Compose new provider factory with actual BF4BA0 opening and real local file I/O.",
     "Recover manager base BDA6F0/BDA790 and request-list ownership before full manager BE1DC0/BE1F60 composition."
   ]
 }

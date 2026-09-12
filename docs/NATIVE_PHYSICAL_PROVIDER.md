@@ -77,7 +77,12 @@ unsupported body extension was applied. See reports/native_physical_provider_flo
 
 ## Follow-up packets
 
-Compose this owner with actual BF4BA0 stream opening and real local fixture I/O.
+The isolated source composition now passed two actual BF4BA0 open/read/EOF/close
+cycles on a38-byte local file, with both stream/provider slots reused and canonical
+lifetime shutdown. Its captured pre-combined library and both attempts are retained
+under local/native-as-provider-composition. This is source composition evidence;
+it does not execute the original binary.
+
 Manager base BDA6F0/BDA790, request-list ownership and complete BE1DC0/BE1F60 remain
 separate prerequisites for manager/startup ownership. This packet makes no claim
 that the game rebuild or gameplay validation is complete.
