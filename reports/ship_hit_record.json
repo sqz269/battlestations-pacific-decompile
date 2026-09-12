@@ -1,0 +1,262 @@
+{
+  "packet": "cc2_ship_hit_record",
+  "owner": "agent/cc2-ship-hit-record",
+  "mode": "read-only Ghidra analysis; every name is a hypothesis, not a recovered symbol",
+  "document": "docs/SHIP_HIT_RECORD.md",
+  "reconstruction": ["include/bsp/ship_hit_record.hpp", "src/ship_hit_record.cpp"],
+  "build": "scripts/build.ps1, Win32 Release, warnings as errors: clean",
+  "tests": "ctest reconstructed_math: 1/1 passed; no test added",
+
+  "vtable_ownership": {
+    "method": "python tools/bsp.py scan-bytes \"<addr LE>\" --section .rdata, then base = hit - 0xEC; every base is a vtable docs/ENTITY_CLASS_IDS.md already names, and ghidra xrefs 00826F10 returns the same nine DATA refs and no code ref",
+    "slot": "vtable[ECh], the hit handler 009239A0 calls at 00923A70",
+    "handlers": [
+      {
+        "native": "0042baf0",
+        "name": "BSP_Entity_HitNotHandledStub",
+        "body": "0042baf0-0042baf4",
+        "vtable_count": 54,
+        "introduced_at_class": "00",
+        "example_vtables": ["00d19120", "00d03e80", "00d11138", "00ce3c14 (hit addr)"],
+        "family": "non-unit entities: projectiles, effects, scene nodes",
+        "behaviour": "XOR AL,AL; RET 4 - returns false so the dispatcher walks entity+3Ch"
+      },
+      {
+        "native": "008777d0",
+        "name": "BSP_UnitInstance_ApplyHitRecord",
+        "body": "008777d0-00877a43",
+        "vtable_count": 7,
+        "introduced_at_class": "04",
+        "vtables": ["00cf8c08", "00cfb028", "00cff3f8", "00cffde0", "00d0b770", "00d0df70", "00d1a698"],
+        "classes": ["04", "05", "19 MLandVehicle", "1B MLandFort", "1C MCommandBuilding", "45 MAirfield", "46 MShipyard"],
+        "family": "land units and structures"
+      },
+      {
+        "native": "00826f10",
+        "name": "BSP_ShipEntity_ApplyHitRecord",
+        "body": "00826f10-0082781b",
+        "vtable_count": 9,
+        "introduced_at_class": "06",
+        "vtables": ["00cf90b0", "00cfa778", "00cfb738", "00cfc3d0", "00cffa30", "00d01630", "00d09678", "00d0bf80", "00d0c648"],
+        "classes": ["06", "07 MDestroyer", "08 MSubmarine", "09 MMothership", "0A MCruiser", "0B MCargo", "0C MLandingShip", "0D MBattleship", "0E MTorpedoBoat"],
+        "family": "the ship family"
+      },
+      {
+        "native": "007bbcf0",
+        "name": "BSP_PlaneEntity_ApplyHitRecord",
+        "previous_name": "BSP_UnitInstance_OnHit",
+        "body": "007bbcf0-007bbdbc",
+        "vtable_count": 9,
+        "introduced_at_class": "0F",
+        "vtables": ["00d00070", "00d00308", "00d05f20", "00d06638", "00d06920", "00d0ba80", "00d19d28", "00d1a000", "00d1a2d8"],
+        "classes": ["0F", "10 MPlaneBomber", "11 MPlaneTorpedoBomber", "12 MPlaneDiveBomber", "13 MPlaneFighter", "14 MReconPlane", "15 MSmallReconPlane", "16 MLargeReconPlane", "17 MPlaneKamikaze"],
+        "family": "the plane family"
+      }
+    ]
+  },
+
+  "routines": [
+    {
+      "native": "00826f10",
+      "dispatch": "00cfc4bc+vtableEC",
+      "name": "BSP_ShipEntity_ApplyHitRecord",
+      "abi": "__thiscall bool(ShipEntity* this /*ECX->EDI*/, HitRecord* hit /*[ESP+4]->ESI*/), RET 4 at 00827819",
+      "body": "00826f10-0082781b",
+      "coverage": "complete",
+      "note": "no direct call site exists: the handler is reached only through vtable[ECh], so `dispatch` names one of the nine slots instead of an `address`. The listing is contiguous, 624 instructions 00826f10..00827819, checked with an address-delta scan"
+    },
+    {
+      "native": "0092d1f0",
+      "name": "BSP_UnitParts_ApplyPartDamage",
+      "abi": "__thiscall(parts, uint index, const float dir[3], float damage), RET 0Ch at 0092d2e8",
+      "body": "0092d1f0-0092d2ea",
+      "coverage": "complete",
+      "note": "the dir argument is never read; three arguments on the cleanup, two used"
+    },
+    {"native": "0092ced0", "name": "BSP_UnitMessage_PartDestroyed_Construct", "abi": "__thiscall(msg, int partIndex), RET 4", "body": "0092ced0-0092cf02", "coverage": "complete"},
+    {"native": "0080fa50", "name": "BSP_UnitMessage_SetFireOrWaterDamage_Construct", "abi": "__thiscall(msg, int channel, float amount, char flag), RET 0Ch", "body": "0080fa50-0080fa91", "coverage": "complete"},
+    {"native": "0080ff80", "name": "BSP_UnitMessage_HullImpactEffect_Construct", "abi": "__thiscall(msg, int count, const float point[3]), RET 8", "body": "0080ff80-0080ffc4", "coverage": "complete"},
+    {"native": "0080ffd0", "name": "BSP_UnitMessage_AddHullTorque_Construct", "abi": "__thiscall(msg, float x, float y, float z), RET 0Ch", "body": "0080ffd0-0081000d", "coverage": "complete", "note": "name already in the ledger; this packet adds the ABI and the message id 93h"},
+    {"native": "004155b0", "name": "BSP_Float_ClampByPointer", "abi": "__fastcall(const float* v /*ECX*/, const float* lo /*EDX*/, const float* hi /*stack*/), RET 4, returns ST0", "body": "004155b0-004155ee", "coverage": "complete", "note": "max(lo, min(v, hi))"},
+    {"native": "00bd2f10", "name": "BSP_Random_UniformFloatRange", "abi": "(float lo, float hi), RET 8, returns ST0", "body": "00bd2f10-00bd2f30", "coverage": "partial: 00bd2ed0 and 00bd2e60 are contract: unread"},
+    {"native": "0064b170", "name": "BSP_HudDamageDirection_Register", "abi": "__thiscall(widget, const float worldPoint[3]), RET 4", "body": "0064b170-0064b315", "coverage": "partial: the sector arithmetic 0064b1be..0064b28f read for shape only"},
+    {"native": "009553d0", "name": "BSP_Unit_SetVehicleClass", "abi": "__thiscall(unit, descriptor)", "coverage": "already recorded; read only to confirm the field", "note": "the ledger and docs/UNIT_INSTANCE_LAYOUT.md already establish unit+538h as the ref-counted vehicle-class descriptor and unit+354h as the non-owning back-pointer to the same object; no name was added. This packet adds only that the handler reads descriptor+B0h, docs/VEHICLE_CLASS_FIELDS.md's Mass, through it"}
+  ],
+
+  "host_steps": [
+    {"rule": "R0 depth-charge veto (shot class test)", "address": "00826f46", "native": "vtable5Ch+indirect", "function": "00826f10", "note": "MOV EDX,[EAX+5Ch]; PUSH 2Ch; CALL EDX - indirect, class id 2Ch MDepthCharge"},
+    {"rule": "R0 depth-charge veto (hull class test)", "address": "00826f55", "native": "vtable5Ch+indirect", "function": "00826f10", "note": "PUSH 8; MOV ECX,EDI; CALL EDX - class id 8 MSubmarine; AL=0 returns 0 at 00827801"},
+    {"rule": "R2 class-descriptor virtual armour", "address": "00826f83", "native": "vtable24h+indirect", "function": "00826f10", "note": "[this+538h]->vtable[24h](); taken only when hit+0Ch < 0"},
+    {"rule": "R3 hull damage", "address": "00826fa3", "native": "00470510", "function": "00826f10"},
+    {"rule": "R4 impact direction for the hull segment", "address": "00826ff0", "native": "vtable34h+indirect", "function": "00826f10", "note": "shot->vtable[34h](&buf) returns float[3]; zeros when hit+4h is null"},
+    {"rule": "R4 hull-segment part damage", "address": "0082703e", "native": "0092d1f0", "function": "00826f10", "note": "ECX = this+1018h; args (hit+34h, &dir, unscaled hullDamage); gated on hit+30h==0Dh and Mass>=100.0"},
+    {"rule": "R5 hull damage recomputed", "address": "0082704d", "native": "00470510", "function": "00826f10"},
+    {"rule": "R5 difficulty table singleton", "address": "0082708b", "native": "00432650", "function": "00826f10"},
+    {"rule": "R5 bounds-check abort", "address": "008270a5", "native": "00bf6713", "function": "00826f10"},
+    {"rule": "R7 weapon descriptor", "address": "008270d9", "native": "vtable108h+indirect", "function": "00826f10", "note": "shot->vtable[108h]() -> EBP; kept for R7b/R7c"},
+    {"rule": "R7a torpedo class test", "address": "008270e7", "native": "vtable5Ch+indirect", "function": "00826f10", "note": "PUSH 2Bh, MTorpedo"},
+    {"rule": "R7a hull damage with no armour", "address": "0082712e", "native": "00470510", "function": "00826f10"},
+    {"rule": "R7a impact direction", "address": "00827144", "native": "vtable34h+indirect", "function": "00826f10"},
+    {"rule": "R7a direction length", "address": "0082717e", "native": "00bf7030", "function": "00826f10", "note": "sqrtf; only x and z are divided by the result"},
+    {"rule": "R7a roll axis", "address": "008271b2", "native": "00c32000", "function": "00826f10", "note": "LEA EAX,[ECX+8]; RET with ECX = [[this+1018h]+2Ch]; the axis is EAX+18h..20h"},
+    {"rule": "R7a settings singleton", "address": "008271cc", "native": "00424c40", "function": "00826f10"},
+    {"rule": "R7a settings singleton (second call)", "address": "008271d3", "native": "00424c40", "function": "00826f10"},
+    {"rule": "R7a torque message", "address": "00827312", "native": "0080ffd0", "function": "00826f10"},
+    {"rule": "R7a route torque", "address": "00827329", "native": "0077c2a0", "function": "00826f10", "note": "(this, msg, 7, 0); EH state 0"},
+    {"rule": "R7b weapon water rate (record write)", "address": "0082734c", "native": "vtable10h+indirect", "function": "00826f10", "note": "result stored to hit+50h at 00827358"},
+    {"rule": "R7b weapon water rate (message)", "address": "00827363", "native": "vtable10h+indirect", "function": "00826f10"},
+    {"rule": "R7b water message", "address": "00827372", "native": "0080fa50", "function": "00826f10", "note": "channel 1 = water; pushes 1, float, 1"},
+    {"rule": "R7b route water", "address": "00827389", "native": "0077c2a0", "function": "00826f10", "note": "EH state 1"},
+    {"rule": "R7c fire chance", "address": "008273b1", "native": "vtable18h+indirect", "function": "00826f10", "note": "zero when hullDamage <= 0"},
+    {"rule": "R7c random draw", "address": "008273ca", "native": "00bd2f10", "function": "00826f10", "note": "(0.0f, 1.0f) with ECX = 1; fires when chance > draw"},
+    {"rule": "R7c weapon fire rate (record write)", "address": "008273e9", "native": "vtable14h+indirect", "function": "00826f10", "note": "result stored to hit+4Ch at 008273f5"},
+    {"rule": "R7c weapon fire rate (message)", "address": "00827400", "native": "vtable14h+indirect", "function": "00826f10"},
+    {"rule": "R7c fire message", "address": "0082740f", "native": "0080fa50", "function": "00826f10", "note": "channel 0 = fire"},
+    {"rule": "R7c route fire", "address": "00827426", "native": "0077c2a0", "function": "00826f10", "note": "EH state 2"},
+    {"rule": "R8 component-failure roll", "address": "00827450", "native": "0093bed0", "function": "00826f10", "note": "ECX = this+A20h, the repair task; args (hit, hullDamage)"},
+    {"rule": "R9 shooter lookup", "address": "0082745f", "native": "004704e0", "function": "00826f10"},
+    {"rule": "R9 shooter lookup (second call)", "address": "0082746a", "native": "004704e0", "function": "00826f10"},
+    {"rule": "R9 shooter pose refresh", "address": "0082747c", "native": "00414db0", "function": "00826f10", "note": "only when owner+C8h is clear"},
+    {"rule": "R9 damage arrow", "address": "00827497", "native": "0064b170", "function": "00826f10", "note": "ECX = [[00E198C4]+78h]+18Ch; arg owner+FCh, the world-matrix translation"},
+    {"rule": "R10 effect-count clamp", "address": "008274f4", "native": "004155b0", "function": "00826f10"},
+    {"rule": "R10 derived affine inverse", "address": "00827542", "native": "00414e10", "function": "00826f10"},
+    {"rule": "R10 impact point to local", "address": "00827551", "native": "004142e0", "function": "00826f10"},
+    {"rule": "R10 hull impact message", "address": "0082755f", "native": "0080ff80", "function": "00826f10"},
+    {"rule": "R10 route hull impact", "address": "00827576", "native": "0077c2a0", "function": "00826f10", "note": "EH state 3"},
+    {"rule": "R11a part damage", "address": "008275b5", "native": "004705c0", "function": "00826f10", "note": "ECX = hit; args (this+368h armour, i); i comes from EAX = [ESP+24h], the loop counter"},
+    {"rule": "R11b impact direction", "address": "0082760d", "native": "vtable34h+indirect", "function": "00826f10"},
+    {"rule": "R11b part health subtraction", "address": "0082765b", "native": "0092d1f0", "function": "00826f10", "note": "args (entry+4h part index, &dir, partDamage)"},
+    {"rule": "R11c submarine class test", "address": "0082767b", "native": "vtable5Ch+indirect", "function": "00826f10", "note": "PUSH 8"},
+    {"rule": "R11c pose refresh for the cached inverse", "address": "00827701", "native": "00414db0", "function": "00826f10"},
+    {"rule": "R11c build the cached inverse", "address": "00827719", "native": "00b63d50", "function": "00826f10", "note": "ECX = this+110h, EDX = this+CCh; guarded by the this+10Ch flag"},
+    {"rule": "R11c impact point to local", "address": "00827752", "native": "004142e0", "function": "00826f10", "note": "uses the cached this+110h, not 00414E10"},
+    {"rule": "R11c inline 90h message base", "address": "00827762", "native": "0075b430", "function": "00826f10", "note": "the 90h message 0080FF80 builds is inlined here"},
+    {"rule": "R11c route part impact", "address": "008277c1", "native": "0077c2a0", "function": "00826f10", "note": "EH state 4; vtable restored to 00CE4974 at 008277d5"},
+    {"rule": "R12 base handler", "address": "008277fc", "native": "008777d0", "function": "00826f10", "note": "PUSH ESI; MOV ECX,EDI; its return value is the handler's"}
+  ],
+
+  "part_damage_steps": [
+    {"rule": "0092D1F0 bounds-check abort", "address": "0092d23b", "native": "00bf6713", "function": "0092d1f0"},
+    {"rule": "0092D1F0 vector element", "address": "0092d2a7", "native": "0043f880", "function": "0092d1f0", "note": "ECX = parts+30Ch, the health vector object"},
+    {"rule": "0092D1F0 part-destroyed message", "address": "0092d2bd", "native": "0092ced0", "function": "0092d1f0"},
+    {"rule": "0092D1F0 route part destroyed", "address": "0092d2d2", "native": "0077c2a0", "function": "0092d1f0", "note": "ECX = [parts+1Ch], the owning entity"}
+  ],
+
+  "message_9e_producers": [
+    {"address": "0080fa58", "native": "0075b430", "function": "0080fa50", "push_site": "0080fa51", "channel_field": "the caller's argument", "note": "called only from 00826f10 (twice) and 00827b90"},
+    {"address": "0088e4b5", "native": "0075b430", "function": "0088e320", "channel_field": "0 (XOR EBP,EBP at 0088e343)", "note": "BSP_LuaBinding_SetFireDamage: channel 0 is fire"},
+    {"address": "0088e922", "native": "0075b430", "function": "0088e790", "channel_field": "1 (MOV EBP,1 at 0088e7af)", "note": "BSP_LuaBinding_SetWaterDamage: channel 1 is water"}
+  ],
+
+  "constants": [
+    {"address": "00d7a218", "type": "float", "value": "0.0", "use": "the > 0 damage tests"},
+    {"address": "00d7a220", "type": "double", "value": "100.0", "use": "class Mass floor for part damage"},
+    {"address": "00ce3840", "type": "double", "value": "500.0", "use": "class Mass floor for roll torque"},
+    {"address": "00ce3dc0", "type": "double", "value": "10.0", "use": "damage per impact-effect unit"},
+    {"address": "00d099a0", "type": "double", "value": "63.0", "use": "effect-count ceiling, part loop"},
+    {"address": "00d099a8", "type": "float", "value": "63.0", "use": "effect-count ceiling, both paths"},
+    {"address": "00d19620", "type": "float", "value": "-10000.0", "use": "destroyed-part sentinel in 0092d1f0"},
+    {"address": "00d7a208", "type": "float", "value": "-0.0", "use": "the |mass| negation in the torque formula"}
+  ],
+
+  "message_ids": [
+    {"id": "0x9E", "vtable": "00d0334c", "constructor": "0080fa50", "what": "set fire or water damage"},
+    {"id": "0x90", "vtable": "00d034a0", "constructor": "0080ff80", "what": "hull or part impact effect, count plus local point"},
+    {"id": "0x93", "vtable": "00d034c8", "constructor": "0080ffd0", "what": "add hull torque"},
+    {"id": "0x99", "vtable": "00d033ec", "constructor": "0092ced0", "what": "part destroyed"}
+  ],
+
+  "names": [
+    {"native": "00826f10", "dispatch": "00cfc4bc+vtableEC", "name": "BSP_ShipEntity_ApplyHitRecord", "action": "kept, evidence appended"},
+    {"address": "007bbcf0", "name": "BSP_PlaneEntity_ApplyHitRecord", "action": "replaced BSP_UnitInstance_OnHit: the vtable scan puts it on the plane family, class ids 0F..17"},
+    {"address": "0042baf0", "name": "BSP_Entity_HitNotHandledStub", "action": "kept, evidence appended (54 vtables)"},
+    {"address": "008777d0", "name": "BSP_UnitInstance_ApplyHitRecord", "action": "kept, evidence appended (7 vtables, introduced at class 04)"},
+    {"address": "0092d1f0", "name": "BSP_UnitParts_ApplyPartDamage", "action": "added"},
+    {"address": "0092ced0", "name": "BSP_UnitMessage_PartDestroyed_Construct", "action": "added"},
+    {"address": "0080fa50", "name": "BSP_UnitMessage_SetFireOrWaterDamage_Construct", "action": "added"},
+    {"address": "0080ff80", "name": "BSP_UnitMessage_HullImpactEffect_Construct", "action": "added"},
+    {"address": "004155b0", "name": "BSP_Float_ClampByPointer", "action": "added"},
+    {"address": "00bd2f10", "name": "BSP_Random_UniformFloatRange", "action": "added"},
+    {"address": "0064b170", "name": "BSP_HudDamageDirection_Register", "action": "added"},
+    {"address": "0080ffd0", "name": "BSP_UnitMessage_AddHullTorque_Construct", "action": "kept, evidence appended with the ABI, the message id and the roll-torque formula"},
+    {"address": "00c32000", "name": "BSP_ThisPlusEightAccessor", "action": "replaced DYN_physics_00c32000: the four bytes are LEA EAX,[ECX+8]; RET, not an import thunk. Provisional, the owning class is unread"},
+    {"address": "009553d0", "name": "BSP_Unit_SetVehicleClass", "action": "not added; the existing record already says unit+538h is the ref-counted vehicle-class descriptor"}
+  ],
+
+  "corrections": [
+    {
+      "document": "docs/UNIT_HIT_PATH.md",
+      "was": "level 0 of the impact-to-damage chain is 007BBCF0, the unit instance's entity-side hit response, producer unread",
+      "is": "007BBCF0 is the plane family's vtable[ECh] override (nine vtables, class ids 0F..17). The unit instance vtable 00CFC3D0 that docs/UNIT_INSTANCE_LAYOUT.md gives for MDestroyer carries 00826F10 at +ECh, so a shell hit on a destroyer never enters 007BBCF0",
+      "evidence": "scan-bytes of .rdata for each handler address; hit - 0xEC lands on a named vtable base every time, and ghidra xrefs 00826F10 returns exactly the nine ship vtables as DATA refs with no code ref"
+    },
+    {
+      "document": "docs/UNIT_HIT_PATH.md",
+      "was": "level 1: 008777D0 is reached from 007BBCF0 at 007BBDB1",
+      "is": "that holds for planes only; for a ship 008777D0 is the tail call of 00826F10 at 008277FC (PUSH ESI; MOV ECX,EDI; CALL 0x008777D0), so the base handler has two producers",
+      "evidence": "the listing at 008277F9..008277FC, and 00826F10's Ghidra body 00826F10-0082781B contains it"
+    },
+    {
+      "document": "docs/UNIT_HIT_PATH.md",
+      "was": "hit+0Ch: negative selects the [unit+354h]->vtable[24h]() armour source",
+      "is": "008777D0 also gates that branch on this->vtable[5Ch](6) at 008777ED, so it applies only to class-06-derived entities; 00826F10 makes the same selection from [this+538h], the ref-counted pointer to the same descriptor, with no class test",
+      "evidence": "008777E8..00877819 in the listing, and 009553D0's setter MOV [ECX+0x538],EAX with the addref through [00CE221C]"
+    },
+    {
+      "document": "docs/UNIT_FIRE_AND_REPAIR.md",
+      "was": "the call site 00827450 has no Ghidra function; the enclosing candidate is 00826D70",
+      "is": "the site is inside 00826F10, whose Ghidra body is 00826F10-0082781B",
+      "evidence": "python tools/bsp.py ghidra proto 00826f10 --brief"
+    },
+    {
+      "document": "docs/UNIT_FIRE_AND_REPAIR.md",
+      "was": "no in-engine producer of the fire or water timers was found; whether a hit can ignite a fire without script is an open question",
+      "is": "00826F10 sends message 9Eh on every hit that carries a weapon (channel 1, water) and on a probability roll (channel 0, fire). The channel mapping comes from the two Lua setters, which build the identical message: 0088E320 SetFireDamage loads 0 with XOR EBP,EBP at 0088E343 and 0088E790 SetWaterDamage loads 1 with MOV EBP,1 at 0088E7AF. The 9Eh handler itself is still contract: unread",
+      "evidence": "scan-bytes \"68 9e 00 00 00\" --section .text returns exactly 0080FA51, 0088E4AC, 0088E919 (plus 00548AA7 in unrelated code); all three write vtable 00D0334C and the same field layout"
+    },
+    {
+      "document": "docs/UNIT_FORCE_CHANNEL.md",
+      "was": "0080FFD0 is the local constructor for the message class whose vtable is 00D034C8. It has no callers in the image ... nothing in this image produces such a message locally; a hull body's only force and torque come from 009329C0's hydrodynamic model and 00937440's rudder term",
+      "is": "00826F10 produces one: 0080FFD0 at 00827312, routed by 0077C2A0(this, &msg, 7, 0) at 00827329. The producer is the torpedo roll torque, gated on the shot being 2Bh MTorpedo, the class Mass being above 500.0 and the session mode being 0 or 1. The earlier reading predates Ghidra having a function at 00826F10, so the call site sat in unrecognised bytes and no caller scan could see it",
+      "evidence": "the listing 00827304..00827329 inside the Ghidra body 00826F10-0082781B, and python tools/bsp.py callees 00826f10, which lists 0080ffd0"
+    },
+    {
+      "document": "config/names (ledger record for 00C32000)",
+      "was": "DYN_physics_00c32000, tag block_dyn: a dynamic physics import",
+      "is": "four bytes on disk, 8D 41 08 C3 = LEA EAX,[ECX+8]; RET - an inline accessor, not an import thunk",
+      "evidence": "python tools/bsp.py disasm-raw 00c32000 --length 8 and ghidra bytes 00c32000"
+    },
+    {
+      "document": "config/tags (tag on 0092D1F0)",
+      "was": "stl_probable",
+      "is": "the per-part health subtraction; only its three inlined vector bounds checks look like container code",
+      "evidence": "the body 0092D1F0-0092D2EA: FSUB at 0092D275 against the float vector at parts+310h, the -10000.0f sentinel store and the 99h message route"
+    },
+    {
+      "document": "docs/PROJECTILE_IMPACT.md",
+      "was": "scope note only, not an error: 0077CE60 was listed in this packet's brief as part of the handler",
+      "is": "0077CE60 is not called by 00826F10 at all; it is step 7 of the dispatcher 009239A0, which runs after the handler returns",
+      "evidence": "python tools/bsp.py callees 00826f10 lists 23 callees and 0077CE60 is not among them"
+    }
+  ],
+
+  "no_ghidra_function": [],
+  "flow_gaps": [],
+
+  "open_questions": [
+    "the 9Eh message handler: until it is read, the fire and flood claim is about the message, not about repairTask+34h/+38h",
+    "the concrete class of weapon = shot->vtable[108h](), and whether its +10h/+14h/+18h floats are side-effect-free getters (the handler calls +10h and +14h twice each)",
+    "this+10D0h, cleared at 008270BE and never read in this packet",
+    "[[this+1018h]+2Ch]+20h, the roll axis: the producer of that field was not read, so 'the hull's forward axis' is inference from the cross product's shape",
+    "00827B90, the other caller of 0080FA50, was not read",
+    "no run-time evidence: bsp_game.exe has no host that reaches a hit record, so checklist rule 6 does not apply"
+  ],
+
+  "tool_problems": [
+    "python tools/bsp.py ghidra export <addr> --asm is not accepted; the assembly listing is produced by the plain export and reached through show --asm or the shared exports/bsp/functions/<addr>/assembly.txt",
+    "ghidra decompile caps near 80 lines, so the 2.3 KB body needed show --start paging plus the full 624-line listing copied to local/ and paged with sed",
+    "the pseudocode drops the ECX argument of every __thiscall helper: 0092D1F0's parts object (this+1018h), 0093BED0's repair task (this+A20h) and 0064B170's HUD widget all appear as free functions. Every ABI here was taken from the listing and the callee's RET n"
+  ],
+
+  "tool_calls": 68
+}
