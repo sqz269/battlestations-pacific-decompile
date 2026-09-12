@@ -1,0 +1,275 @@
+{
+  "packet": "orch3_smartarea_definition_an",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "status": "reconstructed_strict_win32_compile_tested_bounded_original_byte_fixture_tested",
+  "headers": [
+    "include/bsp/native_particle_smartarea_definition.hpp"
+  ],
+  "sources": [
+    "src/native_particle_smartarea_definition.cpp"
+  ],
+  "documentation": "docs/NATIVE_PARTICLE_SMARTAREA_DEFINITION.md",
+  "functions": [
+    {
+      "address": "00b01ce0",
+      "end_inclusive": "00b01d50",
+      "end_exclusive": "00b01d51",
+      "size": 113,
+      "instructions": 34,
+      "sha256": "2f63c55df4e4100b31a96a63d869ce43103750dfecf64b325d66526594d392e8",
+      "last_instruction": {
+        "address": "00b01d4e",
+        "size": 3,
+        "text": "ret 8",
+        "bytes": "c20800"
+      },
+      "live_disk_equal": true,
+      "coverage": "complete through required real application services",
+      "cpp_symbol": "create_native_particle_smartarea_record_00b01ce0",
+      "proposed_ghidra_name": "BSP_CreateNativeParticleSmartareaRecord",
+      "original_abi": "ECX actual definition; stack(actual model,time); EAX actual108h allocation/null; RET8",
+      "original_abi_compatible": false,
+      "header": "include/bsp/native_particle_smartarea_definition.hpp",
+      "source": "src/native_particle_smartarea_definition.cpp",
+      "evidence": "Verified full live and installed span, assembly and final RET; original-byte fixture over actual108h record, canonical model and primary RandomThreads; see docs/NATIVE_PARTICLE_SMARTAREA_DEFINITION.md.",
+      "uncertainty": "Descriptive names are hypotheses. Added EDX access and C++ exception ABI are new interfaces. Native EH, loader/application bindings, exceptional CRT inputs and gameplay unvalidated."
+    },
+    {
+      "address": "00b01ec0",
+      "end_inclusive": "00b0220e",
+      "end_exclusive": "00b0220f",
+      "size": 847,
+      "instructions": 234,
+      "sha256": "ead6114ad20a0224557549eb9cb4e56e5a0fd9ac13630d5942b9426b6cd05205",
+      "last_instruction": {
+        "address": "00b0220c",
+        "size": 3,
+        "text": "ret 0xc",
+        "bytes": "c20c00"
+      },
+      "live_disk_equal": true,
+      "coverage": "complete through required real application services",
+      "cpp_symbol": "generate_native_particle_smartarea_00b01ec0",
+      "proposed_ghidra_name": "BSP_GenerateNativeParticleSmartarea",
+      "original_abi": "ECX actual definition; stack(actual parent108h,position,velocity); RET0C",
+      "original_abi_compatible": false,
+      "header": "include/bsp/native_particle_smartarea_definition.hpp",
+      "source": "src/native_particle_smartarea_definition.cpp",
+      "evidence": "Verified full live and installed span, assembly and final RET; original-byte fixture over actual108h record, canonical model and primary RandomThreads; see docs/NATIVE_PARTICLE_SMARTAREA_DEFINITION.md.",
+      "uncertainty": "Descriptive names are hypotheses. Added EDX access and C++ exception ABI are new interfaces. Native EH, loader/application bindings, exceptional CRT inputs and gameplay unvalidated."
+    },
+    {
+      "address": "00b01e20",
+      "end_inclusive": "00b01e98",
+      "end_exclusive": "00b01e99",
+      "size": 121,
+      "instructions": 39,
+      "sha256": "23c6882e2d47611351512e200337e5fb253b2396a091de69eb6ef403c8fb1dcc",
+      "last_instruction": {
+        "address": "00b01e96",
+        "size": 3,
+        "text": "ret 0x10",
+        "bytes": "c21000"
+      },
+      "live_disk_equal": true,
+      "coverage": "complete through required real application services",
+      "cpp_symbol": "generate_native_particle_smartarea_with_matrix_00b01e20",
+      "proposed_ghidra_name": "BSP_GenerateNativeParticleSmartareaWithMatrix",
+      "original_abi": "ECX actual definition; stack(actual parent108h,position,velocity,matrix); RET10",
+      "original_abi_compatible": false,
+      "header": "include/bsp/native_particle_smartarea_definition.hpp",
+      "source": "src/native_particle_smartarea_definition.cpp",
+      "evidence": "Verified full live and installed span, assembly and final RET; original-byte fixture over actual108h record, canonical model and primary RandomThreads; see docs/NATIVE_PARTICLE_SMARTAREA_DEFINITION.md.",
+      "uncertainty": "Descriptive names are hypotheses. Added EDX access and C++ exception ABI are new interfaces. Native EH, loader/application bindings, exceptional CRT inputs and gameplay unvalidated."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b01cfe",
+      "native": "00bf681b",
+      "function": "00b01ce0",
+      "contract": "callee body and each setup inspected; original stack cleanup preserved; see documentation dependency table"
+    },
+    {
+      "address": "00b01d26",
+      "native": "00afe0a0",
+      "function": "00b01ce0",
+      "contract": "callee body and each setup inspected; original stack cleanup preserved; see documentation dependency table"
+    },
+    {
+      "address": "00b01f27",
+      "native": "00affa70",
+      "function": "00b01ec0",
+      "contract": "callee body and each setup inspected; original stack cleanup preserved; see documentation dependency table"
+    },
+    {
+      "address": "00b01f2e",
+      "native": "00affae0",
+      "function": "00b01ec0",
+      "contract": "callee body and each setup inspected; original stack cleanup preserved; see documentation dependency table"
+    },
+    {
+      "address": "00b01f39",
+      "native": "00bd2f40",
+      "function": "00b01ec0",
+      "contract": "callee body and each setup inspected; original stack cleanup preserved; see documentation dependency table"
+    },
+    {
+      "address": "00b01f44",
+      "native": "00bd2f40",
+      "function": "00b01ec0",
+      "contract": "callee body and each setup inspected; original stack cleanup preserved; see documentation dependency table"
+    },
+    {
+      "address": "00b01f8d",
+      "native": "00affa70",
+      "function": "00b01ec0",
+      "contract": "callee body and each setup inspected; original stack cleanup preserved; see documentation dependency table"
+    },
+    {
+      "address": "00b01f9f",
+      "native": "00affae0",
+      "function": "00b01ec0",
+      "contract": "callee body and each setup inspected; original stack cleanup preserved; see documentation dependency table"
+    },
+    {
+      "address": "00b0203d",
+      "native": "00b6db60",
+      "function": "00b01ec0",
+      "contract": "callee body and each setup inspected; original stack cleanup preserved; see documentation dependency table"
+    },
+    {
+      "address": "00b0204c",
+      "native": "00b6db70",
+      "function": "00b01ec0",
+      "contract": "callee body and each setup inspected; original stack cleanup preserved; see documentation dependency table"
+    },
+    {
+      "address": "00b02063",
+      "native": "0042d0d0",
+      "function": "00b01ec0",
+      "contract": "callee body and each setup inspected; original stack cleanup preserved; see documentation dependency table"
+    },
+    {
+      "address": "00b0208c",
+      "native": "00bf7030",
+      "function": "00b01ec0",
+      "contract": "callee body and each setup inspected; original stack cleanup preserved; see documentation dependency table"
+    },
+    {
+      "address": "00b02157",
+      "native": "00affa70",
+      "function": "00b01ec0",
+      "contract": "callee body and each setup inspected; original stack cleanup preserved; see documentation dependency table"
+    },
+    {
+      "address": "00b02169",
+      "native": "00affae0",
+      "function": "00b01ec0",
+      "contract": "callee body and each setup inspected; original stack cleanup preserved; see documentation dependency table"
+    },
+    {
+      "address": "00b0219d",
+      "native": "00affa70",
+      "function": "00b01ec0",
+      "contract": "callee body and each setup inspected; original stack cleanup preserved; see documentation dependency table"
+    },
+    {
+      "address": "00b021a4",
+      "native": "00affae0",
+      "function": "00b01ec0",
+      "contract": "callee body and each setup inspected; original stack cleanup preserved; see documentation dependency table"
+    },
+    {
+      "address": "00b01e35",
+      "native": "actual_definition+vtable0C",
+      "function": "00b01e20",
+      "contract": "captured ECX definition, stack parent/position/velocity RET0C"
+    },
+    {
+      "address": "00b01e4b",
+      "native": "004134f0",
+      "function": "00b01e20",
+      "contract": "callee body and each setup inspected; original stack cleanup preserved; see documentation dependency table"
+    },
+    {
+      "address": "00b01e65",
+      "native": "00b6db60",
+      "function": "00b01e20",
+      "contract": "callee body and each setup inspected; original stack cleanup preserved; see documentation dependency table"
+    },
+    {
+      "address": "00b01e6f",
+      "native": "004134f0",
+      "function": "00b01e20",
+      "contract": "callee body and each setup inspected; original stack cleanup preserved; see documentation dependency table"
+    },
+    {
+      "address": "00b01e80",
+      "native": "00b6db70",
+      "function": "00b01e20",
+      "contract": "callee body and each setup inspected; original stack cleanup preserved; see documentation dependency table"
+    },
+    {
+      "address": "00b01e90",
+      "native": "004134f0",
+      "function": "00b01e20",
+      "contract": "callee body and each setup inspected; original stack cleanup preserved; see documentation dependency table"
+    },
+    {
+      "address": "00cbb4d4",
+      "native": "00bf65ac",
+      "function": "00cbb4d0",
+      "contract": "allocation unwind frees [EBP-10]; CBB4D9 POP ECX, CBB4DA RET disk continuation verified"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "B01E20 absent from live Ghidra function table",
+      "is": "Integrator created B01E20..B01E98 after raw verified-byte boundary handoff",
+      "evidence": "121 bytes; final B01E96 C21000; saved live export has39 instructions"
+    },
+    {
+      "was": "B01CE0 pseudocode suggests three explicit stack inputs",
+      "is": "Two native inputs(model,time), with actual definition carried by ECX; RET8",
+      "evidence": "B01D16/B01D1B loads and B01D4E RET8; constructor receives model,definition,time and RET0C"
+    },
+    {
+      "was": "B01EC0 pseudocode omits direction x87 results and mis-types curve values as pointers",
+      "is": "Preserved FCOS/FSIN direction construction and raw float32 curve spills",
+      "evidence": "B01FC4..B02020 x87 direction; B02172..B0220C final scalar/vector products"
+    }
+  ],
+  "validation": {
+    "strict_win32_compile": "passed /O2 /MD /EHsc /W4 /WX /fp:strict",
+    "full_repository_build": "primary integrator registers CMake then runs scripts/build.ps1",
+    "original_byte_fixture": {
+      "scratch": "C:/Users/sqz269/bsp-an-smartarea",
+      "log": "cases=9 allocation_paths=2 callback_calls=18 failures=0",
+      "coverage": [
+        "constant, linear and cubic curves",
+        "parent60, localB0 and refreshed worldF0 paths",
+        "post-callback mode70 mutation in three scenarios",
+        "bitwise position/velocity/matrix and model cache equality",
+        "full108h constructor sparse writes and null branch",
+        "canonical primary RandomThreads advancement"
+      ],
+      "limitations": [
+        "external call targets and absolute globals relocated; internal branches unchanged",
+        "same shared downstream helpers used on both sides",
+        "native EH, exceptional inputs, NaN curves and arbitrary aliases unvalidated"
+      ]
+    }
+  },
+  "flow_gaps": [
+    {
+      "address": "00cbb4d0",
+      "saved_body_end_inclusive": "00cbb4d8",
+      "verified_disk_continuation": "00cbb4d9 POP ECX; 00cbb4da RET",
+      "scope": "consumed native allocation unwind; worker did not mutate it"
+    }
+  ],
+  "runtime_validation": "none; no gameplay or successful loader/application binding supplied",
+  "ownership": "Four owned files only; common AFE0A0 owned by primary, BD2F40 owned by sphere worker; Ghidra writes performed only by primary."
+}
