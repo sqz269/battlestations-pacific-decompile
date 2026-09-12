@@ -1,0 +1,725 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "bridge": "http://127.0.0.1:8089",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "packet": "orch3_pooled_suffix_ap",
+  "source": "src/native_pooled_text_suffix.cpp",
+  "header": "include/bsp/native_pooled_text_suffix.hpp",
+  "functions": [
+    {
+      "address": "00af4450",
+      "end_inclusive": "00af44be",
+      "end_exclusive": "00af44bf",
+      "byte_count": 111,
+      "live_matches_installed": true,
+      "sha256": "a9ce909ce3ee2a4fdf8398686250abb08281839eae2e3f0c3f7337d1fec06472",
+      "bytes_hex": "538b5c240885db578bf975075f33c05bc204005633f68a041e3c0974043c207c093c7f7d0583c601ebec85f675085e5f33c05bc204008b0785c0740650e84e9dffffe8295892ff6a018d4e01518bc8e87ccc0d005653508907e8d24d10008b1783c40cc60416008bc65e5f5bc20400",
+      "observed_prototype": "00af4450 FUN_00af4450  undefined FUN_00af4450(void)  body 00af4450 - 00af44be",
+      "last_instruction": "00af44bc: ret 4",
+      "native_call_rows": [
+        {
+          "address": "00af448d",
+          "native": "00aee1e0",
+          "function": "00af4450"
+        },
+        {
+          "address": "00af4492",
+          "native": "00419cc0",
+          "function": "00af4450"
+        },
+        {
+          "address": "00af449f",
+          "native": "00bd1120",
+          "function": "00af4450"
+        },
+        {
+          "address": "00af44a9",
+          "native": "00bf9280",
+          "function": "00af4450"
+        }
+      ],
+      "cpp_function": "assign_native_pooled_text_suffix_00af4450",
+      "ghidra_name": "BSP_NativePooledText_AssignSuffix",
+      "native_prototype": "uint __thiscall BSP_NativePooledText_AssignSuffix(char * text)",
+      "original_abi": "ECX actual4h header; stack text; EAX scanned count; RET4 at00AF4460/00AF4483/00AF44BC",
+      "coverage": "complete",
+      "native_calling_convention": "__thiscall",
+      "source": "src/native_pooled_text_suffix.cpp",
+      "header": "include/bsp/native_pooled_text_suffix.hpp",
+      "doc": "docs/NATIVE_POOLED_TEXT_SUFFIX.md",
+      "evidence": "Complete AP pooled suffix body from live/installed-equal bytes. Actual4h NativePooledTextStorage and same canonical NativeStringStorage; signed ASCII, selection-before-space-skip, source capture/publication/reloads, scanned-count padding and allocation/copy/cleanup order retained. Descriptive symbol is a hypothesis. Genuine CRT dependency excludes overlapping byte ranges. Strict Win32 probe passed386 observations/449 pool events; native FH3, allocation failure and gameplay unvalidated. See docs/NATIVE_POOLED_TEXT_SUFFIX.md.",
+      "annotation_status": "proposed only; Ghidra read-only worker",
+      "cpp_symbol": "assign_native_pooled_text_suffix_00af4450"
+    },
+    {
+      "address": "00af44c0",
+      "end_inclusive": "00af45cf",
+      "end_exclusive": "00af45d0",
+      "byte_count": 272,
+      "live_matches_installed": true,
+      "sha256": "8451d2badc4ac8adf3922a1d9805afa6eba282c9bb51de668f708c59e904d097",
+      "bytes_hex": "6aff68d1abcb0064a100000000506489250000000083ec0833c08944240456894424048b313bf0c74424140100000075248b74241c8d442404508bcee8df9dffff8bc65e8b4c240864890d0000000083c414c20800558bce5783cdff8d7901908a1183c10184d275f72bcf85c97e3e8a1680fa207c0780fa7f7d0233ed8b7c24288a140680fa207c2480fa7f7d1f3bef744a80fa20753c83c5013bc17d0f8bff803c0620753083c0013bc17cf38b7424248d54240c528bcee8639dffff8b4c24145f5d8bc65e64890d0000000083c414c2080083c0013bc17ca7ebd103f0568d4c2410e8a8feffff8b7424248d4c240c518bcee8289dffff8d4c240cc744241001000000c644241c00e8d29cffffebad",
+      "observed_prototype": "00af44c0 FUN_00af44c0  undefined FUN_00af44c0(void)  body 00af44c0 - 00af45cf",
+      "last_instruction": "00af45ce: jmp 0xaf457d",
+      "native_call_rows": [
+        {
+          "address": "00af44fc",
+          "native": "00aee2e0",
+          "function": "00af44c0"
+        },
+        {
+          "address": "00af4578",
+          "native": "00aee2e0",
+          "function": "00af44c0"
+        },
+        {
+          "address": "00af45a3",
+          "native": "00af4450",
+          "function": "00af44c0"
+        },
+        {
+          "address": "00af45b3",
+          "native": "00aee2e0",
+          "function": "00af44c0"
+        },
+        {
+          "address": "00af45c9",
+          "native": "00aee2a0",
+          "function": "00af44c0"
+        }
+      ],
+      "cpp_function": "get_native_pooled_text_suffix_00af44c0",
+      "ghidra_name": "BSP_NativePooledText_GetSuffix",
+      "native_prototype": "void * __thiscall BSP_NativePooledText_GetSuffix(void * output, int index)",
+      "original_abi": "ECX actual4h line; stack output/index; EAX output; RET8 at00AF4512/00AF4590; finalJMP00AF45CE to00AF457D",
+      "coverage": "complete",
+      "native_calling_convention": "__thiscall",
+      "source": "src/native_pooled_text_suffix.cpp",
+      "header": "include/bsp/native_pooled_text_suffix.hpp",
+      "doc": "docs/NATIVE_POOLED_TEXT_SUFFIX.md",
+      "evidence": "Complete AP pooled suffix body from live/installed-equal bytes. Actual4h NativePooledTextStorage and same canonical NativeStringStorage; signed ASCII, selection-before-space-skip, source capture/publication/reloads, scanned-count padding and allocation/copy/cleanup order retained. Descriptive symbol is a hypothesis. Genuine CRT dependency excludes overlapping byte ranges. Strict Win32 probe passed386 observations/449 pool events; native FH3, allocation failure and gameplay unvalidated. See docs/NATIVE_POOLED_TEXT_SUFFIX.md.",
+      "annotation_status": "proposed only; Ghidra read-only worker",
+      "cpp_symbol": "get_native_pooled_text_suffix_00af44c0"
+    }
+  ],
+  "native_probe_dependencies": [
+    {
+      "address": "00bf9280",
+      "end_inclusive": "00bf93a3",
+      "end_exclusive": "00bf93a4",
+      "byte_count": 292,
+      "live_matches_installed": true,
+      "sha256": "22006e25651e484a1c6be63bde03c539bb04291083659ef03adadd480f32d18e",
+      "bytes_hex": "8b4c240c5785c90f849200000056538bd98b742414f7c6030000008b7c2410750bc1e9020f8585000000eb278a0683c601880783c70183e901742b84c0742ff7c60300000075e58bd9c1e902756183e30374138a0683c601880783c70184c0743783eb0175ed8b4424105b5e5fc3f7c7030000007416880783c70183e9010f8498000000f7c70300000075ea8bd9c1e9027574880783c70183eb0175f65b5e8b4424085fc3891783c70483e901749fbafffefe7e8b0603d083f0ff33c28b1683c604a90001018174dc84d2742c84f6741ef7c20000ff00740cf7c2000000ff75c48917eb1881e2ffff00008917eb0e81e2ff0000008917eb0433d2891783c70433c083e901740c33c0890783c70483e90175f683e3030f8577ffffff8b4424105b5e5fc3",
+      "observed_prototype": "00bf9280 _strncpy  char * __cdecl _strncpy(char * _Dest, char * _Source, size_t _Count)  body 00bf9280 - 00bf93a3",
+      "last_instruction": "00bf93a3: ret ",
+      "native_call_rows": [],
+      "coverage": "complete captured native dependency; no new reconstruction or annotation",
+      "contract": "genuine CRT _strncpy dependency; C++ provider contract excludes overlapping source/destination byte ranges"
+    },
+    {
+      "address": "00aee1e0",
+      "end_inclusive": "00aee211",
+      "end_exclusive": "00aee212",
+      "byte_count": 50,
+      "live_matches_installed": true,
+      "sha256": "bd63b1bd715dd384ce48e07319578fd02fa01b5b65435b4493a526abf83f8f8e",
+      "bytes_hex": "8b5424048bc2568d70018d9b000000008a0883c00184c975f72bc66a0183c0015052e8b9ba92ff8bc8e802330e005ec20400",
+      "observed_prototype": "00aee1e0 BSP_NativePooledText_ReleaseBytes  void __stdcall BSP_NativePooledText_ReleaseBytes(char * text)  body 00aee1e0 - 00aee211",
+      "last_instruction": "00aee20f: ret 4",
+      "native_call_rows": [
+        {
+          "address": "00aee202",
+          "native": "00419cc0",
+          "function": "00aee1e0"
+        },
+        {
+          "address": "00aee209",
+          "native": "00bd1510",
+          "function": "00aee1e0"
+        }
+      ],
+      "coverage": "complete captured native dependency; no new reconstruction or annotation",
+      "contract": "existing native_pooled_text.hpp implementation; exact same NativeStringStorage"
+    },
+    {
+      "address": "00aee2a0",
+      "end_inclusive": "00aee2d6",
+      "end_exclusive": "00aee2d7",
+      "byte_count": 55,
+      "live_matches_installed": true,
+      "sha256": "2ba588048d71bfd3a508a9ce493a1cca7df1f9d19c54ad38c93b6a33676b5ad2",
+      "bytes_hex": "568bf18b1685d274268bc2578d7801908a0883c00184c975f72bc76a0183c0015052e8f9b992ff8bc8e842320e005fc706000000005ec3",
+      "observed_prototype": "00aee2a0 BSP_NativePooledText_Clear  void __thiscall BSP_NativePooledText_Clear(void * this)  body 00aee2a0 - 00aee2d6",
+      "last_instruction": "00aee2d6: ret ",
+      "native_call_rows": [
+        {
+          "address": "00aee2c2",
+          "native": "00419cc0",
+          "function": "00aee2a0"
+        },
+        {
+          "address": "00aee2c9",
+          "native": "00bd1510",
+          "function": "00aee2a0"
+        }
+      ],
+      "coverage": "complete captured native dependency; no new reconstruction or annotation",
+      "contract": "existing native_pooled_text.hpp implementation; exact same NativeStringStorage"
+    },
+    {
+      "address": "00aee2e0",
+      "end_inclusive": "00aee339",
+      "end_exclusive": "00aee33a",
+      "byte_count": 90,
+      "live_matches_installed": true,
+      "sha256": "cfcd9a84c05e42c433a4a1cddb94326bf6e44b6cfc44cb2b885a20872cd07dda",
+      "bytes_hex": "538b5c24088b0385c0578bf9743f8d50018a0883c00184c975f72bc2568bf0e8bcb992ff6a0183c601568bc8e80f2e0e0089078b0b8bd05e8a01880283c10183c20184c075f28bc75f5bc20400c707000000008bc75f5bc20400",
+      "observed_prototype": "00aee2e0 BSP_NativePooledText_CopyConstruct  void * __thiscall BSP_NativePooledText_CopyConstruct(void * this, void * source)  body 00aee2e0 - 00aee339",
+      "last_instruction": "00aee337: ret 4",
+      "native_call_rows": [
+        {
+          "address": "00aee2ff",
+          "native": "00419cc0",
+          "function": "00aee2e0"
+        },
+        {
+          "address": "00aee30c",
+          "native": "00bd1120",
+          "function": "00aee2e0"
+        }
+      ],
+      "coverage": "complete captured native dependency; no new reconstruction or annotation",
+      "contract": "existing native_pooled_text.hpp implementation; exact same NativeStringStorage"
+    }
+  ],
+  "counts": {
+    "reconstructed_complete": 2,
+    "analyzed_suffix_routines": 2,
+    "analyzed_captured_dependencies": 4,
+    "direct_body_calls": 9,
+    "incoming_suffix_sites": 39,
+    "incoming_containing_functions": 11
+  },
+  "incoming_call_sites": [
+    {
+      "address": "00af50b6",
+      "native": "00af44c0",
+      "function": "00af4ba0",
+      "index": 2,
+      "index_setup": "00af506e: PUSH 2 before conditional transfer to the suffix call block",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00af512a",
+      "native": "00af44c0",
+      "function": "00af4ba0",
+      "index": 2,
+      "index_setup": "00af511f: PUSH 0x2",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00af5140",
+      "native": "00af44c0",
+      "function": "00af4ba0",
+      "index": 1,
+      "index_setup": "00af512f: PUSH 0x1",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00af4921",
+      "native": "00af44c0",
+      "function": "00af4700",
+      "index": 2,
+      "index_setup": "00af4911: PUSH 0x2",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00afaea3",
+      "native": "00af44c0",
+      "function": "00afad00",
+      "index": 2,
+      "index_setup": "00afae23: PUSH 2 before conditional transfer to the suffix call block",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00afaf58",
+      "native": "00af44c0",
+      "function": "00afad00",
+      "index": 2,
+      "index_setup": "00afaf4d: PUSH 0x2",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00afaf6b",
+      "native": "00af44c0",
+      "function": "00afad00",
+      "index": 1,
+      "index_setup": "00afaf5d: PUSH 0x1",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00af8cda",
+      "native": "00af44c0",
+      "function": "00af8bd0",
+      "index": 1,
+      "index_setup": "00af8ccf: PUSH 0x1",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00af8ddf",
+      "native": "00af44c0",
+      "function": "00af8bd0",
+      "index": 2,
+      "index_setup": "00af8d53: PUSH 2 before conditional transfer to the suffix call block",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00af8e96",
+      "native": "00af44c0",
+      "function": "00af8bd0",
+      "index": 2,
+      "index_setup": "00af8e8b: PUSH 0x2",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00af8ea9",
+      "native": "00af44c0",
+      "function": "00af8bd0",
+      "index": 1,
+      "index_setup": "00af8e9b: PUSH 0x1",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00b0231a",
+      "native": "00af44c0",
+      "function": "00b02210",
+      "index": 1,
+      "index_setup": "00b0230f: PUSH 0x1",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00b02393",
+      "native": "00af44c0",
+      "function": "00b02210",
+      "index": 2,
+      "index_setup": "00b02380: PUSH 0x2",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00b0245a",
+      "native": "00af44c0",
+      "function": "00b02210",
+      "index": 2,
+      "index_setup": "00b0244f: PUSH 0x2",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00b02470",
+      "native": "00af44c0",
+      "function": "00b02210",
+      "index": 1,
+      "index_setup": "00b0245f: PUSH 0x1",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00b030da",
+      "native": "00af44c0",
+      "function": "00b02fd0",
+      "index": 1,
+      "index_setup": "00b030cf: PUSH 0x1",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00b03153",
+      "native": "00af44c0",
+      "function": "00b02fd0",
+      "index": 2,
+      "index_setup": "00b03140: PUSH 0x2",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00b0321a",
+      "native": "00af44c0",
+      "function": "00b02fd0",
+      "index": 2,
+      "index_setup": "00b0320f: PUSH 0x2",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00b03230",
+      "native": "00af44c0",
+      "function": "00b02fd0",
+      "index": 1,
+      "index_setup": "00b0321f: PUSH 0x1",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00b03fca",
+      "native": "00af44c0",
+      "function": "00b03ec0",
+      "index": 1,
+      "index_setup": "00b03fbf: PUSH 0x1",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00b04043",
+      "native": "00af44c0",
+      "function": "00b03ec0",
+      "index": 2,
+      "index_setup": "00b04030: PUSH 0x2",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00b0410a",
+      "native": "00af44c0",
+      "function": "00b03ec0",
+      "index": 2,
+      "index_setup": "00b040ff: PUSH 0x2",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00b04120",
+      "native": "00af44c0",
+      "function": "00b03ec0",
+      "index": 1,
+      "index_setup": "00b0410f: PUSH 0x1",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00b065a5",
+      "native": "00af44c0",
+      "function": "00b064a0",
+      "index": 1,
+      "index_setup": "00b0659a: PUSH 0x1",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00b06754",
+      "native": "00af44c0",
+      "function": "00b064a0",
+      "index": 2,
+      "index_setup": "00b066b2: PUSH 2 before conditional transfer to the suffix call block",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00b06810",
+      "native": "00af44c0",
+      "function": "00b064a0",
+      "index": 2,
+      "index_setup": "00b06805: PUSH 0x2",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00b06823",
+      "native": "00af44c0",
+      "function": "00b064a0",
+      "index": 1,
+      "index_setup": "00b06815: PUSH 0x1",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00b07e65",
+      "native": "00af44c0",
+      "function": "00b07d60",
+      "index": 1,
+      "index_setup": "00b07e5a: PUSH 0x1",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00b07eda",
+      "native": "00af44c0",
+      "function": "00b07d60",
+      "index": 2,
+      "index_setup": "00b07eca: PUSH 0x2",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00b07f94",
+      "native": "00af44c0",
+      "function": "00b07d60",
+      "index": 2,
+      "index_setup": "00b07f89: PUSH 0x2",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00b07fa7",
+      "native": "00af44c0",
+      "function": "00b07d60",
+      "index": 1,
+      "index_setup": "00b07f99: PUSH 0x1",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00b08bce",
+      "native": "00af44c0",
+      "function": "00b08ac0",
+      "index": 1,
+      "index_setup": "00b08bc3: PUSH 0x1",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00b08c41",
+      "native": "00af44c0",
+      "function": "00b08ac0",
+      "index": 2,
+      "index_setup": "00b08c31: PUSH 0x2",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00b08cf8",
+      "native": "00af44c0",
+      "function": "00b08ac0",
+      "index": 2,
+      "index_setup": "00b08ced: PUSH 0x2",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00b08d0b",
+      "native": "00af44c0",
+      "function": "00b08ac0",
+      "index": 1,
+      "index_setup": "00b08cfd: PUSH 0x1",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00b0ae5a",
+      "native": "00af44c0",
+      "function": "00b0ad50",
+      "index": 1,
+      "index_setup": "00b0ae4f: PUSH 0x1",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00b0b0a1",
+      "native": "00af44c0",
+      "function": "00b0ad50",
+      "index": 2,
+      "index_setup": "00b0b064: PUSH 2 before conditional transfer to the suffix call block",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00b0b10c",
+      "native": "00af44c0",
+      "function": "00b0ad50",
+      "index": 2,
+      "index_setup": "00b0b101: PUSH 0x2",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    },
+    {
+      "address": "00b0b11f",
+      "native": "00af44c0",
+      "function": "00b0ad50",
+      "index": 1,
+      "index_setup": "00b0b111: PUSH 0x1",
+      "line": "ECX actual4h line, or EAX result of preceding suffix when MOV ECX,EAX",
+      "output": "stack output header; constructed, not assigned"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Live Ghidra FUN_00AF4450(void) and FUN_00AF44C0(void) omit register/stack inputs",
+      "evidence": "AF4451/AF4458/AF44BC; AF44E3/AF44F1/AF453D/AF4512/AF4590; all39 incoming setups",
+      "is": "Both are thiscall; AF4450 takes stack text and RET4; AF44C0 stack output/index and RET8. Proposed prototypes exclude implicit ECX."
+    },
+    {
+      "was": "Applying AEE3C0 token behavior would give a null token for leading spaces at index0",
+      "evidence": "AF454E precedes AF4552; AF4469..AF4473; native-byte differential",
+      "is": "AF44C0 selects before skipping spaces and AF4450 accepts TAB/space; index0 copies the full leading-space suffix."
+    },
+    {
+      "was": "Treating the pooled text owner as NativeString8h or assigning an owned output",
+      "evidence": "AF44E3 single DWORD; AF45A3/AF45B3/AF45C9; native_pooled_text.hpp producer; line/output alias fixture",
+      "is": "Actual4h pointer header; AF44C0 constructs output through temporary and AEE2E0 without releasing old output."
+    },
+    {
+      "was": "Bytewise copying or memmove would preserve all original CRT overlap behavior",
+      "evidence": "BF9295 source alignment; BF9334/BF933D DWORD reads; BF9325 store; BF9280..BF93A3 inspected but not reconstructed",
+      "is": "Original BF9280 aligns source and copies DWORDs; remains genuine CRT dependency, with overlapping byte ranges outside host provider contract."
+    }
+  ],
+  "verification": {
+    "ghidra": "Every bsp.py ghidra query and verify_report_calls.py use Client.verify against exact configured BSP project/program; no Ghidra mutations",
+    "strict_compile": {
+      "status": "passed",
+      "exit_code": 0,
+      "flags": "/O2 /std:c++17 /EHsc /MD /W4 /WX /fp:strict /link /MANIFEST:EMBED",
+      "compiler": "MSVC19.51.36244 Win32",
+      "source_registered_with_cmake": false,
+      "log": "C:\\Users\\sqz269\\bsp-ap-suffix\\compile.log"
+    },
+    "native_differential": {
+      "status": "passed",
+      "exit_code": 0,
+      "observations": 386,
+      "pool_events": 449,
+      "native_bodies": 6,
+      "original_crt_body_executed": true,
+      "hooks": [
+        "00419CC0 returning singleton identity",
+        "00BD1120 allocation into same probe storage",
+        "00BD1510 release into same probe storage"
+      ],
+      "coverage": [
+        "all256 first-byte values",
+        "null/empty input",
+        "indices-1..4",
+        "leading/consecutive/trailing spaces",
+        "tabs/control/DEL/high bytes",
+        "source alignments0..3 with source shortened after scan and NUL padding",
+        "old release before allocation and callback-mutated header/source",
+        "line/output header alias plus callback-mutated line pointer",
+        "output copy before temporary release with changed temporary size"
+      ],
+      "log": "C:\\Users\\sqz269\\bsp-ap-suffix\\probe.log"
+    },
+    "cpp_exception_cleanup": {
+      "status": "passed; separate from native differential",
+      "case": "second allocation throws; temporary released; unconstructed output stays unchanged"
+    },
+    "baseline_build": {
+      "status": "passed",
+      "exit_code": 0,
+      "command": "./scripts/build.ps1",
+      "log": "C:\\Users\\sqz269\\bsp-ap-suffix\\build-seeded.log",
+      "earlier_log": "C:\\Users\\sqz269\\bsp-ap-suffix\\build.log",
+      "tests_passed": 2,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential"
+      ],
+      "scope": "existing registered worktree targets only; AP object compiled separately; second build after verify-seeds enabled native math differential"
+    },
+    "seed_verification": {
+      "status": "passed",
+      "exit_code": 0,
+      "log": "C:\\Users\\sqz269\\bsp-ap-suffix\\seeds.log"
+    },
+    "report_calls": {
+      "status": "passed",
+      "exit_code": 0,
+      "rows_checked": 54,
+      "failed": 0,
+      "command": "python tools/verify_report_calls.py reports/native_pooled_text_suffix.json",
+      "log": "C:\\Users\\sqz269\\bsp-ap-suffix\\calls.log"
+    }
+  },
+  "limits": [
+    "New C++ storage-argument ABI is not an original binary replacement",
+    "Genuine host CRT strncpy excludes source/destination byte-range overlap; supported header aliasing is separate",
+    "No native FH3/SEH dispatch or original allocation-failure differential",
+    "No gameplay, original allocator concurrency, or native executable integration validation",
+    "No permanent tests, CMake registration, game writes, shared ledger edits or Ghidra mutations in worker packet"
+  ],
+  "scratch_directory": "C:\\Users\\sqz269\\bsp-ap-suffix",
+  "scratch_artifacts": [
+    {
+      "path": "C:\\Users\\sqz269\\bsp-ap-suffix\\capture.py",
+      "sha256": "8ebee00fa94a928eedb0fdbfc25dd6940020fab7ada4f572f1e6d78daf39a7d3"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-ap-suffix\\capture.json",
+      "sha256": "6ac07eb96f294c15c64d7bd3b7321030706c272bd26101491a907e3fd74e4d25"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-ap-suffix\\callers.py",
+      "sha256": "a73dd2f26e377dda358c6ff98ba1e43b288fecf9d52120d56586f6e342f3ea95"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-ap-suffix\\incoming-contexts.txt",
+      "sha256": "517aa4ea285f52e5f2bbb1e757f7d9ee30be4ca9cbfc8d3bfd218378d26debff"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-ap-suffix\\incoming-protos.txt",
+      "sha256": "bcff6468c0e4528d0e9c56187530387d79c8d995ee50187536908e1f2bea19f5"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-ap-suffix\\probe.cpp",
+      "sha256": "04f393444c6bb18bb5f343145b839c3792c32c3f398c22c1cb636479eaa8de57"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-ap-suffix\\native_bytes.hpp",
+      "sha256": "1738d180e41a8bf4f4fee9bc71040bdc19c67b1fd6ad1844571a7c27688325c9"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-ap-suffix\\relocations.hpp",
+      "sha256": "d73415e87f4f87a215259d511099a866947ad03ba122b7bc153c9bd3ccfe0dc0"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-ap-suffix\\compile.cmd",
+      "sha256": "323ab0de2a47a94fc37aeb390900c374174874221453a7cc852f8e03bd59a4bf"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-ap-suffix\\compile.log",
+      "sha256": "b623e2fac05e6d192dd0a1266a02141e112952d55cb86e5e9c03eeae8e99d809"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-ap-suffix\\suffix_probe.exe",
+      "sha256": "f6206e8847550529227b1fcf40a36aa001f7953ea734476c83d082ddd286aa47"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-ap-suffix\\native_pooled_text_suffix.obj",
+      "sha256": "9da02d0487f7a5102ecada943c05fac1349d98315962c1262512715bb8b9d6b7"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-ap-suffix\\probe.log",
+      "sha256": "eaf9a56386b168055f175b046e853cad05529e38f9e345325b2b8a2c5d54c8df"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-ap-suffix\\seeds.log",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-ap-suffix\\calls.log",
+      "sha256": "d56e71894d3552e5541f6376826ee009faf442585bd53266236d02dda4ff3651"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-ap-suffix\\build.log",
+      "sha256": "317496db12abf9061a08825137515b89dc96fd447bfe95d3f7d495b02e29ef94"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-ap-suffix\\build-seeded.log",
+      "sha256": "918cd40c1dd16172975af2873621498d33930ca3f793a11482b59e9639c4f78f"
+    }
+  ]
+}
