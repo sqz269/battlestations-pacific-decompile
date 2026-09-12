@@ -1,0 +1,306 @@
+{
+  "packet": "orch4_native_input_tail_virtuals_ae",
+  "source": [
+    "include/bsp/native_input_device_tail_virtuals.hpp",
+    "src/native_input_device_tail_virtuals.cpp"
+  ],
+  "analysis": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mode": "read-only verified CLI queries and one A99710 export refresh",
+    "ghidra_writes": false
+  },
+  "routines": [
+    {
+      "address": "00a99f10",
+      "name": "native_mouse_accumulated_x_00a99f10",
+      "coverage": "complete aligned native bytes; missing Ghidra function start",
+      "end_inclusive": "00a99f16",
+      "end_exclusive": "00a99f17",
+      "last_instruction": "00a99f16",
+      "last_instruction_length": 1,
+      "abi": "ECX actual23Ch mouse; no stack arguments; EAX raw DWORD; RET",
+      "edx": "not an input",
+      "ret_argument_bytes": 0,
+      "field_offset": "228",
+      "native_slot": "3c",
+      "cc_padding_starts": "00a99f17"
+    },
+    {
+      "address": "00a99f20",
+      "name": "native_mouse_accumulated_y_00a99f20",
+      "coverage": "complete aligned native bytes; missing Ghidra function start",
+      "end_inclusive": "00a99f26",
+      "end_exclusive": "00a99f27",
+      "last_instruction": "00a99f26",
+      "last_instruction_length": 1,
+      "abi": "ECX actual23Ch mouse; no stack arguments; EAX raw DWORD; RET",
+      "edx": "not an input",
+      "ret_argument_bytes": 0,
+      "field_offset": "22c",
+      "native_slot": "40",
+      "cc_padding_starts": "00a99f27"
+    },
+    {
+      "address": "00a99f30",
+      "name": "native_mouse_accumulated_z_00a99f30",
+      "coverage": "complete aligned native bytes; missing Ghidra function start",
+      "end_inclusive": "00a99f36",
+      "end_exclusive": "00a99f37",
+      "last_instruction": "00a99f36",
+      "last_instruction_length": 1,
+      "abi": "ECX actual23Ch mouse; no stack arguments; EAX raw DWORD; RET",
+      "edx": "not an input",
+      "ret_argument_bytes": 0,
+      "field_offset": "230",
+      "native_slot": "44",
+      "cc_padding_starts": "00a99f37"
+    },
+    {
+      "address": "00a99f40",
+      "name": "set_native_mouse_accumulated_x_00a99f40",
+      "coverage": "complete aligned native bytes; missing Ghidra function start",
+      "end_inclusive": "00a99f4c",
+      "end_exclusive": "00a99f4d",
+      "last_instruction": "00a99f4a",
+      "last_instruction_length": 3,
+      "abi": "ECX actual23Ch mouse; one raw DWORD stack argument; RET4; semantic void, EAX retains argument",
+      "edx": "not an input",
+      "ret_argument_bytes": 4,
+      "field_offset": "228",
+      "native_slot": "48",
+      "cc_padding_starts": "00a99f4d"
+    },
+    {
+      "address": "00a99f50",
+      "name": "set_native_mouse_accumulated_y_00a99f50",
+      "coverage": "complete aligned native bytes; missing Ghidra function start",
+      "end_inclusive": "00a99f5c",
+      "end_exclusive": "00a99f5d",
+      "last_instruction": "00a99f5a",
+      "last_instruction_length": 3,
+      "abi": "ECX actual23Ch mouse; one raw DWORD stack argument; RET4; semantic void, EAX retains argument",
+      "edx": "not an input",
+      "ret_argument_bytes": 4,
+      "field_offset": "22c",
+      "native_slot": "4c",
+      "cc_padding_starts": "00a99f5d"
+    },
+    {
+      "address": "00a99f60",
+      "name": "set_native_mouse_accumulated_z_00a99f60",
+      "coverage": "complete aligned native bytes; missing Ghidra function start",
+      "end_inclusive": "00a99f6c",
+      "end_exclusive": "00a99f6d",
+      "last_instruction": "00a99f6a",
+      "last_instruction_length": 3,
+      "abi": "ECX actual23Ch mouse; one raw DWORD stack argument; RET4; semantic void, EAX retains argument",
+      "edx": "not an input",
+      "ret_argument_bytes": 4,
+      "field_offset": "230",
+      "native_slot": "50",
+      "cc_padding_starts": "00a99f6d"
+    },
+    {
+      "address": "00a99710",
+      "name": "native_joystick_control_name_00a99710",
+      "coverage": "complete normal valid-storage body and recovered C++ cleanup actions",
+      "end_inclusive": "00a998f1",
+      "end_exclusive": "00a998f2",
+      "last_instruction": "00a998ef",
+      "last_instruction_length": 3,
+      "abi": "ECX actualB48h joystick; actual8h output and DWORD code stack; EAX output; RET8",
+      "edx": "not an input",
+      "ret_argument_bytes": 8,
+      "native_slot": "3c"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00a99743",
+      "native": "0041e870",
+      "function": "00a99710",
+      "contract": "Actual8h string constructor; ECX header, stack C string, RET4; zero header before native resize/copy"
+    },
+    {
+      "address": "00a9978f",
+      "native": "0041dd40",
+      "function": "00a99710",
+      "contract": "Actual8h resize; ECX header, new length and preserve DWORDs stack, RET8; live header reads across storage calls"
+    },
+    {
+      "address": "00a997a3",
+      "native": "00bf7680",
+      "function": "00a99710",
+      "contract": "Recognized CRT memcpy; dest/source/byte-count stack; caller ADD ESP,0Ch"
+    },
+    {
+      "address": "00a997d8",
+      "native": "0041e870",
+      "function": "00a99710",
+      "contract": "Actual8h string constructor; ECX header, stack C string, RET4; zero header before native resize/copy"
+    },
+    {
+      "address": "00a997ec",
+      "native": "00425e10",
+      "function": "00a99710",
+      "contract": "Append; ECX output, source header stack, RET4; source length/old output length captured, pointers reloaded after resize"
+    },
+    {
+      "address": "00a997fa",
+      "native": "0041dd20",
+      "function": "00a99710",
+      "contract": "Destroy actual string storage; ECX header, no stack args; RET; header remains unchanged"
+    },
+    {
+      "address": "00a99816",
+      "native": "0041e870",
+      "function": "00a99710",
+      "contract": "Actual8h string constructor; ECX header, stack C string, RET4; zero header before native resize/copy"
+    },
+    {
+      "address": "00a9982a",
+      "native": "00425e10",
+      "function": "00a99710",
+      "contract": "Append; ECX output, source header stack, RET4; source length/old output length captured, pointers reloaded after resize"
+    },
+    {
+      "address": "00a99838",
+      "native": "0041dd20",
+      "function": "00a99710",
+      "contract": "Destroy actual string storage; ECX header, no stack args; RET; header remains unchanged"
+    },
+    {
+      "address": "00a9984b",
+      "native": "0041e870",
+      "function": "00a99710",
+      "contract": "Actual8h string constructor; ECX header, stack C string, RET4; zero header before native resize/copy"
+    },
+    {
+      "address": "00a9985f",
+      "native": "00425e10",
+      "function": "00a99710",
+      "contract": "Append; ECX output, source header stack, RET4; source length/old output length captured, pointers reloaded after resize"
+    },
+    {
+      "address": "00a99887",
+      "native": "0041e870",
+      "function": "00a99710",
+      "contract": "Actual8h string constructor; ECX header, stack C string, RET4; zero header before native resize/copy"
+    },
+    {
+      "address": "00a998aa",
+      "native": "0041dd40",
+      "function": "00a99710",
+      "contract": "Actual8h resize; ECX header, new length and preserve DWORDs stack, RET8; live header reads across storage calls"
+    },
+    {
+      "address": "00a998b7",
+      "native": "00bf7680",
+      "function": "00a99710",
+      "contract": "Recognized CRT memcpy; dest/source/byte-count stack; caller ADD ESP,0Ch"
+    },
+    {
+      "address": "00a998cf",
+      "native": "00419cc0",
+      "function": "00a99710",
+      "contract": "Get existing sized pool; no own stack args; caller has prepared data/length+1/unused1 for following BD1510"
+    },
+    {
+      "address": "00a998d6",
+      "native": "00bd1510",
+      "function": "00a99710",
+      "contract": "Sized release; ECX returned pool; data,length+1,unused1 stack; RET0Ch; composed by supplied NativeStringStorage.release"
+    },
+    {
+      "address": "00cb6a83",
+      "native": "0041dd20",
+      "function": "00cb6a70",
+      "kind": "tail_jump",
+      "contract": "Compiler EH action: actual output or suffix header in ECX; native string storage destructor; RET"
+    },
+    {
+      "address": "00cb6aa4",
+      "native": "0041dd20",
+      "function": "00cb6aa1",
+      "kind": "tail_jump",
+      "contract": "Compiler EH action: actual output or suffix header in ECX; native string storage destructor; RET"
+    },
+    {
+      "address": "00cb6a9c",
+      "native": "0041dd20",
+      "function": "00cb6a99",
+      "kind": "tail_jump",
+      "contract": "Compiler EH action: actual output or suffix header in ECX; native string storage destructor; RET"
+    },
+    {
+      "address": "00cb6a8c",
+      "native": "0041dd20",
+      "function": "00cb6a89",
+      "kind": "tail_jump",
+      "contract": "Compiler EH action: actual output or suffix header in ECX; native string storage destructor; RET"
+    },
+    {
+      "address": "00cb6a94",
+      "native": "0041dd20",
+      "function": "00cb6a91",
+      "kind": "tail_jump",
+      "contract": "Compiler EH action: actual output or suffix header in ECX; native string storage destructor; RET"
+    }
+  ],
+  "call_audit": {
+    "direct_CALLs": 16,
+    "EH_tail_JMPs": 5,
+    "mouse_CALLs": 0,
+    "all_sites": "A99710 refreshed listing exact CALL set plus live EH funclet membership; verify_report_calls.py"
+  },
+  "producer_layout": {
+    "mouse": "A9A290 initializes accumulated DWORD228/22C/230; A9A180 adds sample axes including retained failure bytes",
+    "joystick": "A99940 actualB48h; +290 points to actual1Ch metadata with leading8h string; +29C 0Ch bindings kind/index/relative; no copied arrays or index guards"
+  },
+  "dependencies": [
+    "construct_native_string_cstring_0041e870 existing actual-header body",
+    "copy_native_string_header_00be0a30_fragment existing current-header copy",
+    "resize_native_string_header_0041dd40 existing current-header resize",
+    "append_native_string_00425e10 existing exact8h string append",
+    "destroy_native_string_header_0041dd20 existing actual-header destructor",
+    "NativeStringStorage caller-composed actual pool bridge; no new allocator/STL/provider boundary"
+  ],
+  "register_provenance": "A99732 output ESI, A99736 receiver EDI; A99748 code from stack, LEA scales12; A99772 current metadata pointer; name index scales28. EBP binding pointer is retained across copy then kind reloaded at A997AB. Left captures EDI temporary length and EBX pointer before output resize and uses them for normal release. Existing source scalar/header calls add C++ ABI only.",
+  "exception_map": {
+    "handler": "00cb6aa9",
+    "func_info": "00deceec",
+    "magic": "19930522",
+    "max_state": 5,
+    "unwind_map": "00decf10",
+    "state0": "CB6A70 checks constructed bit; frees output header storage without clearing header",
+    "states1_4": "CB6AA1/CB6A99/CB6A89/CB6A91 free suffix then state0 output; failed suffix construction never arms suffix",
+    "compatibility": "recovered C++ actions; no original FH3/SEH frame or saved-stack alias compatibility"
+  },
+  "corrections": [
+    {
+      "was": "Runtime readiness surface stopped mouse/XInput/joystick at38",
+      "is": "Mouse extends through50; XInput and joystick through3C; all five tables total82 entries",
+      "evidence": "Live D5B8EC..D5B900 six mouse targets, D5BB84 A9AA40, D5B82C A99710. Worker local/native_input_runtime_review_ae.md; existing74 mappings correct."
+    }
+  ],
+  "validation": {
+    "build": "Win32 Release scripts/build.ps1 exit0, MSBUILDDISABLENODEREUSE=1",
+    "seed_count": 8,
+    "all_seeds_match": true,
+    "ctests": "2/2 passed",
+    "probe": "one ignored manifested raw label/mouse fixture; callback-driven kind reload and result-resize exception",
+    "results": "Axis/Up after kind3->7 during copy; suffix6 then output5 released; stale result header preserved; live0; 3 raw DWORD roundtrips",
+    "probe_runner": "local/run_native_input_tail_probe.ps1 [-PrimaryWorktree path]",
+    "probe_log": "local/native_input_tail_probe.log",
+    "build_log": "local/native_input_tail_build.log",
+    "core_archive_sha256": "c80b0b8ec58196ba44b568b44e8f771059b8f9d84c599f928824dfa6828e658f",
+    "probe_log_sha256": "67b9bed0773f4a028091e9f636f41888da867b62c3791f5c6f5507ac8e215902"
+  },
+  "limitations": [
+    "Six mouse starts need primary Ghidra definitions after lease release; aligned native bytes are qualified, not containing-function evidence",
+    "New source ABI and caller-composed NativeStringStorage; native null/invalid pointer and wrapped/nonoverlapping memcpy domains not expanded",
+    "No hardware, complete runtime binding, constructor, SDK or gameplay claim; primary source untouched",
+    "Existing typed joystick label record preserved using add-fragment"
+  ]
+}
