@@ -1,0 +1,792 @@
+{
+  "packet": "orch4_native_input_action_tick_ag",
+  "sources": [
+    "include/bsp/native_input_action_tick.hpp",
+    "src/native_input_action_tick.cpp"
+  ],
+  "documentation": "docs/NATIVE_INPUT_ACTION_TICK.md",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verified_each_live_batch": true,
+    "worker_ghidra_mutations": 0,
+    "analysis": "Capped bsp.py show/disasm/proto/xrefs/flow/bytes; individual missing cached caller exports refreshed read-only; no whole-program export or metadata mutation"
+  },
+  "functions": [
+    {
+      "address": "00a92c40",
+      "name": "update_native_input_action_owner_00a92c40",
+      "original_name": "BSP_InputManager_Update",
+      "end_inclusive": "00a92d11",
+      "end_exclusive": "00a92d12",
+      "instruction_count": 70,
+      "instruction_gaps": [],
+      "final_instruction": {
+        "address": "00a92d0f",
+        "length": 3,
+        "mnemonic": "RET 4"
+      },
+      "native_abi": {
+        "ecx": "Actual24h action owner",
+        "edx": "Not an incoming argument",
+        "stack": [
+          "float seconds"
+        ],
+        "ret_cleanup_bytes": 4,
+        "result": "No semantic result used by callers; tail callback may leave EAX"
+      },
+      "coverage": "complete within documented raw storage/provider domain",
+      "no_ghidra_function": false,
+      "source": "src/native_input_action_tick.cpp",
+      "source_abi_is_original": false
+    },
+    {
+      "address": "00a91a50",
+      "name": "update_native_input_action_listener_00a91a50",
+      "original_name": "BSP_InputAction_UpdateListenerState",
+      "end_inclusive": "00a91bbd",
+      "end_exclusive": "00a91bbe",
+      "instruction_count": 129,
+      "instruction_gaps": [],
+      "final_instruction": {
+        "address": "00a91bbb",
+        "length": 3,
+        "mnemonic": "RET 0C"
+      },
+      "additional_return": {
+        "address": "00a91bb2",
+        "length": 3,
+        "mnemonic": "RET 0C"
+      },
+      "native_abi": {
+        "ecx": "Actual24h listener allocation",
+        "edx": "Overwritten with zero; not an incoming argument",
+        "stack": [
+          "float seconds",
+          "DWORD previous, low byte consumed",
+          "DWORD current, low byte consumed"
+        ],
+        "ret_cleanup_bytes": 12,
+        "result": "No semantic result used; final EAX incidentally mirrors byte+0C"
+      },
+      "coverage": "complete within documented raw storage/provider domain",
+      "no_ghidra_function": false,
+      "source": "src/native_input_action_tick.cpp",
+      "source_abi_is_original": false
+    }
+  ],
+  "calls": [
+    {
+      "address": "00a92c57",
+      "native": "00a918a0",
+      "function": "00a92c40",
+      "contract": "Captured raw backend/profile slot04, one float stack word. FLD original seconds before publication/profile capture; FSTP before call.",
+      "resolution": "Indirect fixed target for actual D5B5F8/D5B72C profiles; supplied raw provider"
+    },
+    {
+      "address": "00a92c71",
+      "native": "00a922a0",
+      "function": "00a92c40",
+      "contract": "ECX original action owner, no stack args; clear reloaded backend BYTE+D4 before optional call",
+      "binding": "Separate raw binding packet"
+    },
+    {
+      "address": "00a92c90",
+      "native": "00a92370",
+      "function": "00a92c40",
+      "contract": "ECX captured30h record, no stack args; preserve this pointer across callback",
+      "binding": "Separate raw binding packet"
+    },
+    {
+      "address": "00a92cea",
+      "native": "00a91a50",
+      "function": "00a92c40",
+      "contract": "ECX listener reloaded after poll; PUSH current, PUSH previous, x87-spill original seconds; callee RET0C"
+    },
+    {
+      "address": "00a92d0d",
+      "native": "callback_00f8bbfc",
+      "function": "00a92c40",
+      "contract": "Load/test callback once atA92D02/A92D07; no semantic arguments/result",
+      "known_identity": "006965a0",
+      "binding": "Required actual game post-tick callback; missing wrapper body recorded separately"
+    },
+    {
+      "address": "00a92a79",
+      "native": "00a91a50",
+      "function": "00a92a20",
+      "contract": "ECX record+2C; caller float delta x87-spilled; previous1,current computed; RET0C"
+    },
+    {
+      "address": "00a92a8e",
+      "native": "00a91a50",
+      "function": "00a92a20",
+      "contract": "ECX record+2C; caller float delta x87-spilled; previous0,current computed; RET0C"
+    },
+    {
+      "address": "00a92e54",
+      "native": "00a91a50",
+      "function": "00a92d40",
+      "contract": "ECX record+2C; FLD1 atA92E4C gives seconds1; ordered latch/hold previous/current; RET0C"
+    },
+    {
+      "address": "00a92b78",
+      "native": "00bf681b",
+      "function": "00a92b70",
+      "contract": "Producer PUSH24h atA92B74, ADD ESP4 atA92B7F; existing allocation library contract, not implemented here"
+    },
+    {
+      "address": "005d6819",
+      "native": "00a92c40",
+      "function": "005d67e0",
+      "contract": "ECX freshly returned4BEC00 owner; FLDZ zero; one x87-spilled stack float consumed by RET4"
+    },
+    {
+      "address": "004cebec",
+      "native": "00a92c40",
+      "function": "004ceb40",
+      "contract": "ECX freshly returned4BEC00 owner; FLDZ zero; one x87-spilled stack float consumed by RET4"
+    },
+    {
+      "address": "0058bfa0",
+      "native": "00a92c40",
+      "function": "0058bdf0",
+      "contract": "ECX freshly returned4BEC00 owner; FLDZ zero; one x87-spilled stack float consumed by RET4"
+    },
+    {
+      "address": "0051b883",
+      "native": "00a92c40",
+      "function": "0051b7b0",
+      "contract": "ECX freshly returned4BEC00 owner; FLDZ zero; one x87-spilled stack float consumed by RET4"
+    },
+    {
+      "address": "0055e3dd",
+      "native": "00a92c40",
+      "function": "0055e3a0",
+      "contract": "ECX freshly returned4BEC00 owner; FLDZ zero; one x87-spilled stack float consumed by RET4"
+    },
+    {
+      "address": "0056aa80",
+      "native": "00a92c40",
+      "function": "0056aa70",
+      "contract": "ECX freshly returned4BEC00 owner; FLDZ zero; one x87-spilled stack float consumed by RET4"
+    },
+    {
+      "address": "0057a120",
+      "native": "00a92c40",
+      "function": "0057a0f0",
+      "contract": "ECX freshly returned4BEC00 owner; FLDZ zero; one x87-spilled stack float consumed by RET4"
+    },
+    {
+      "address": "0057a884",
+      "native": "00a92c40",
+      "function": "0057a680",
+      "contract": "ECX freshly returned4BEC00 owner; FLDZ zero; one x87-spilled stack float consumed by RET4"
+    },
+    {
+      "address": "00a9670b",
+      "native": "00a92c40",
+      "function": "00a966e0",
+      "contract": "ECX freshly returned4BEC00 owner; FLDZ zero; one x87-spilled stack float consumed by RET4"
+    },
+    {
+      "address": "005c57a5",
+      "native": "00a92c40",
+      "function": "005c5600",
+      "contract": "ECX freshly returned4BEC00 owner; FLDZ zero; one x87-spilled stack float consumed by RET4"
+    },
+    {
+      "address": "004db040",
+      "native": "00a92c40",
+      "function": "004db030",
+      "contract": "ECX freshly returned4BEC00 owner; FLDZ zero; one x87-spilled stack float consumed by RET4"
+    },
+    {
+      "address": "005da174",
+      "native": "00a92c40",
+      "function": "005da000",
+      "contract": "ECX freshly returned4BEC00 owner; FLDZ zero; one x87-spilled stack float consumed by RET4"
+    },
+    {
+      "address": "005e61df",
+      "native": "00a92c40",
+      "function": "005e5b30",
+      "contract": "ECX freshly returned4BEC00 owner; FLDZ zero; one x87-spilled stack float consumed by RET4"
+    },
+    {
+      "address": "005ecb1e",
+      "native": "00a92c40",
+      "function": "005eca90",
+      "contract": "ECX freshly returned4BEC00 owner; FLDZ zero; one x87-spilled stack float consumed by RET4"
+    },
+    {
+      "address": "0060421b",
+      "native": "00a92c40",
+      "function": "00604190",
+      "contract": "ECX freshly returned4BEC00 owner; FLDZ zero; one x87-spilled stack float consumed by RET4"
+    },
+    {
+      "address": "0060d3a7",
+      "native": "00a92c40",
+      "function": "0060d390",
+      "contract": "ECX freshly returned4BEC00 owner; FLDZ zero; one x87-spilled stack float consumed by RET4"
+    },
+    {
+      "address": "0060dd3a",
+      "native": "00a92c40",
+      "function": "0060dd10",
+      "contract": "ECX freshly returned4BEC00 owner; FLDZ zero; one x87-spilled stack float consumed by RET4"
+    },
+    {
+      "address": "0060dd73",
+      "native": "00a92c40",
+      "function": "0060dd10",
+      "contract": "ECX freshly returned4BEC00 owner; FLDZ zero; one x87-spilled stack float consumed by RET4"
+    },
+    {
+      "address": "0067affa",
+      "native": "00a92c40",
+      "function": "0067afd0",
+      "contract": "ECX freshly returned4BEC00 owner; FLDZ zero; one x87-spilled stack float consumed by RET4"
+    },
+    {
+      "address": "0067b033",
+      "native": "00a92c40",
+      "function": "0067afd0",
+      "contract": "ECX freshly returned4BEC00 owner; FLDZ zero; one x87-spilled stack float consumed by RET4"
+    },
+    {
+      "address": "0068c6f9",
+      "native": "00a92c40",
+      "function": "0068c1f0",
+      "contract": "ECX freshly returned4BEC00 owner; FLDZ zero; one x87-spilled stack float consumed by RET4"
+    },
+    {
+      "address": "008acc6a",
+      "native": "00a92c40",
+      "function": "008acb70",
+      "contract": "ECX freshly returned4BEC00 owner; FLDZ zero; one x87-spilled stack float consumed by RET4"
+    },
+    {
+      "address": "00532c8f",
+      "native": "00a92c40",
+      "function": "00532c50",
+      "contract": "ECX freshly returned4BEC00 owner; FLDZ zero; one x87-spilled stack float consumed by RET4"
+    },
+    {
+      "address": "005e45b8",
+      "native": "00a92c40",
+      "function": "005e4490",
+      "contract": "ECX freshly returned4BEC00 owner; FLDZ zero; one x87-spilled stack float consumed by RET4"
+    },
+    {
+      "address": "005ec5a2",
+      "native": "00a92c40",
+      "function": "005ec4c0",
+      "contract": "ECX freshly returned4BEC00 owner; FLDZ zero; one x87-spilled stack float consumed by RET4"
+    },
+    {
+      "address": "004db9b4",
+      "native": "00a92c40",
+      "function": "004db920",
+      "contract": "ECX freshly returned4BEC00 owner; FLDZ zero; one x87-spilled stack float consumed by RET4"
+    },
+    {
+      "address": "004e07dd",
+      "native": "00a92c40",
+      "function": "004dfb70",
+      "contract": "ECX freshly returned4BEC00 owner; Live float CE7628, inspected bytes8988083D; one x87-spilled stack float consumed by RET4"
+    },
+    {
+      "address": "004e07f3",
+      "native": "00a92c40",
+      "function": "004dfb70",
+      "contract": "ECX freshly returned4BEC00 owner; Live float CE7628, inspected bytes8988083D; one x87-spilled stack float consumed by RET4"
+    },
+    {
+      "address": "004e1885",
+      "native": "00a92c40",
+      "function": "004dfb70",
+      "contract": "ECX freshly returned4BEC00 owner; FLDZ zero; one x87-spilled stack float consumed by RET4"
+    },
+    {
+      "address": "004e4a72",
+      "native": "00a92c40",
+      "function": "004e4a40",
+      "contract": "ECX freshly returned4BEC00 owner; Incoming float at original stack+4; current stack+48 after verified prologue; FLD at4E4A68; one x87-spilled stack float consumed by RET4"
+    }
+  ],
+  "producer_evidence": {
+    "action_owner": {
+      "address": "00a93da0",
+      "size": "24h",
+      "profile": "00d5b630",
+      "fields": "Action base+4,count+8,capacity+C; constructor verified stores",
+      "existing_source": "src/native_input_action_owner.cpp"
+    },
+    "action_record": {
+      "address": "00a93940",
+      "stride": "30h",
+      "fields": "Enabled BYTE+1; previous float+1C/latch BYTE+20; current float+24/latch BYTE+28; listener pointer+2C. Constructor fields/stores verified; padding preserved.",
+      "existing_source": "src/native_input_action_records.cpp"
+    },
+    "listener": {
+      "address": "00a92b70",
+      "body_end_inclusive": "00a92bfe",
+      "allocation_bytes": 36,
+      "profile": "00d5b610",
+      "reference_count_offset": 4,
+      "reference_count_initial": 1,
+      "initialization": "A92B89 rootCEB130, A92B8F ref1, A92B96 derivedD5B610; exact byte zeros8..13 and float zeros14/18/1C/20; old listener captured/released before replacement atA92BF8",
+      "vtable": [
+        "00bd30e0",
+        "00a92150"
+      ],
+      "implementation": "Separate raw listener owner packet; no ownership operation in this packet"
+    }
+  },
+  "native_globals": {
+    "backend": "Borrowed actual F8BBF4 publication; captured before backend call and reloaded after it for dirty byte",
+    "callback": "Borrowed DWORD F8BBFC; load/test only at tick tail",
+    "zero": "Borrowed live float D7A218; each enabled-latch comparison reads it",
+    "timings": {
+      "00e12f20": {
+        "default_bits": "3e800000",
+        "reads": [
+          "00a91a8f",
+          "00a91af4",
+          "00a91b34",
+          "00a91b74"
+        ]
+      },
+      "00e12f24": {
+        "default_bits": "3f000000",
+        "reads": [
+          "00a91b16"
+        ]
+      },
+      "00e12f28": {
+        "default_bits": "3dcccccd",
+        "reads": [
+          "00a91b27"
+        ]
+      }
+    },
+    "not_a_global_read": "A92C9E TEST EDX,F8BC00 after NEG/SBB is a nonnull-pointer test only"
+  },
+  "instruction_order": {
+    "listener": "Original x87 instructions/stores/comparisons translated with live address operands. Source compiler handles EBX preservation; private float replaces overwritten native parameter-slot spills. Raw flag bytes and header/refcount preimages retained.",
+    "tick": "FLD seconds -> backend publication/profile -> float spill -> backend call -> reload publication -> capture/clear BYTE+D4 -> optional rebind -> initial count/base -> per enabled record poll -> post-poll listener -> current then previous COMISS tests -> original delta spill/state update -> count/base endpoint reload -> retained pointer +=30h -> captured optional tail callback",
+    "exceptions": "Neither owned body has a native cleanup frame; provider exceptions propagate with prior effects intact and skip remaining work. No native allocation/release/register operation added."
+  },
+  "caller_evidence": {
+    "tick_live_xrefs": 33,
+    "attributed_caller_sites": 30,
+    "attributed": [
+      {
+        "call_site": "005d6819",
+        "containing_function": "005d67e0",
+        "function_end_inclusive": "005d6903",
+        "delta": "FLDZ zero",
+        "argument_evidence": "Capped stored-listing excerpt around site; main4E4A40 read live because cached export was stale"
+      },
+      {
+        "call_site": "004cebec",
+        "containing_function": "004ceb40",
+        "function_end_inclusive": "004cebf8",
+        "delta": "FLDZ zero",
+        "argument_evidence": "Capped stored-listing excerpt around site; main4E4A40 read live because cached export was stale"
+      },
+      {
+        "call_site": "0058bfa0",
+        "containing_function": "0058bdf0",
+        "function_end_inclusive": "0058c006",
+        "delta": "FLDZ zero",
+        "argument_evidence": "Capped stored-listing excerpt around site; main4E4A40 read live because cached export was stale"
+      },
+      {
+        "call_site": "0051b883",
+        "containing_function": "0051b7b0",
+        "function_end_inclusive": "0051b88c",
+        "delta": "FLDZ zero",
+        "argument_evidence": "Capped stored-listing excerpt around site; main4E4A40 read live because cached export was stale"
+      },
+      {
+        "call_site": "0055e3dd",
+        "containing_function": "0055e3a0",
+        "function_end_inclusive": "0055f706",
+        "delta": "FLDZ zero",
+        "argument_evidence": "Capped stored-listing excerpt around site; main4E4A40 read live because cached export was stale"
+      },
+      {
+        "call_site": "0056aa80",
+        "containing_function": "0056aa70",
+        "function_end_inclusive": "0056aacb",
+        "delta": "FLDZ zero",
+        "argument_evidence": "Capped stored-listing excerpt around site; main4E4A40 read live because cached export was stale"
+      },
+      {
+        "call_site": "0057a120",
+        "containing_function": "0057a0f0",
+        "function_end_inclusive": "0057a676",
+        "delta": "FLDZ zero",
+        "argument_evidence": "Capped stored-listing excerpt around site; main4E4A40 read live because cached export was stale"
+      },
+      {
+        "call_site": "0057a884",
+        "containing_function": "0057a680",
+        "function_end_inclusive": "0057a901",
+        "delta": "FLDZ zero",
+        "argument_evidence": "Capped stored-listing excerpt around site; main4E4A40 read live because cached export was stale"
+      },
+      {
+        "call_site": "00a9670b",
+        "containing_function": "00a966e0",
+        "function_end_inclusive": "00a96747",
+        "delta": "FLDZ zero",
+        "argument_evidence": "Capped stored-listing excerpt around site; main4E4A40 read live because cached export was stale"
+      },
+      {
+        "call_site": "005c57a5",
+        "containing_function": "005c5600",
+        "function_end_inclusive": "005c57cd",
+        "delta": "FLDZ zero",
+        "argument_evidence": "Capped stored-listing excerpt around site; main4E4A40 read live because cached export was stale"
+      },
+      {
+        "call_site": "004db040",
+        "containing_function": "004db030",
+        "function_end_inclusive": "004db183",
+        "delta": "FLDZ zero",
+        "argument_evidence": "Capped stored-listing excerpt around site; main4E4A40 read live because cached export was stale"
+      },
+      {
+        "call_site": "005da174",
+        "containing_function": "005da000",
+        "function_end_inclusive": "005da206",
+        "delta": "FLDZ zero",
+        "argument_evidence": "Capped stored-listing excerpt around site; main4E4A40 read live because cached export was stale"
+      },
+      {
+        "call_site": "005e61df",
+        "containing_function": "005e5b30",
+        "function_end_inclusive": "005e6b04",
+        "delta": "FLDZ zero",
+        "argument_evidence": "Capped stored-listing excerpt around site; main4E4A40 read live because cached export was stale"
+      },
+      {
+        "call_site": "005ecb1e",
+        "containing_function": "005eca90",
+        "function_end_inclusive": "005ecb6a",
+        "delta": "FLDZ zero",
+        "argument_evidence": "Capped stored-listing excerpt around site; main4E4A40 read live because cached export was stale"
+      },
+      {
+        "call_site": "0060421b",
+        "containing_function": "00604190",
+        "function_end_inclusive": "00604777",
+        "delta": "FLDZ zero",
+        "argument_evidence": "Capped stored-listing excerpt around site; main4E4A40 read live because cached export was stale"
+      },
+      {
+        "call_site": "0060d3a7",
+        "containing_function": "0060d390",
+        "function_end_inclusive": "0060d3d4",
+        "delta": "FLDZ zero",
+        "argument_evidence": "Capped stored-listing excerpt around site; main4E4A40 read live because cached export was stale"
+      },
+      {
+        "call_site": "0060dd3a",
+        "containing_function": "0060dd10",
+        "function_end_inclusive": "0060dd78",
+        "delta": "FLDZ zero",
+        "argument_evidence": "Capped stored-listing excerpt around site; main4E4A40 read live because cached export was stale"
+      },
+      {
+        "call_site": "0060dd73",
+        "containing_function": "0060dd10",
+        "function_end_inclusive": "0060dd78",
+        "delta": "FLDZ zero",
+        "argument_evidence": "Capped stored-listing excerpt around site; main4E4A40 read live because cached export was stale"
+      },
+      {
+        "call_site": "0067affa",
+        "containing_function": "0067afd0",
+        "function_end_inclusive": "0067b038",
+        "delta": "FLDZ zero",
+        "argument_evidence": "Capped stored-listing excerpt around site; main4E4A40 read live because cached export was stale"
+      },
+      {
+        "call_site": "0067b033",
+        "containing_function": "0067afd0",
+        "function_end_inclusive": "0067b038",
+        "delta": "FLDZ zero",
+        "argument_evidence": "Capped stored-listing excerpt around site; main4E4A40 read live because cached export was stale"
+      },
+      {
+        "call_site": "0068c6f9",
+        "containing_function": "0068c1f0",
+        "function_end_inclusive": "0068cc68",
+        "delta": "FLDZ zero",
+        "argument_evidence": "Capped stored-listing excerpt around site; main4E4A40 read live because cached export was stale"
+      },
+      {
+        "call_site": "008acc6a",
+        "containing_function": "008acb70",
+        "function_end_inclusive": "008acd03",
+        "delta": "FLDZ zero",
+        "argument_evidence": "Capped stored-listing excerpt around site; main4E4A40 read live because cached export was stale"
+      },
+      {
+        "call_site": "00532c8f",
+        "containing_function": "00532c50",
+        "function_end_inclusive": "00532caa",
+        "delta": "FLDZ zero",
+        "argument_evidence": "Capped stored-listing excerpt around site; main4E4A40 read live because cached export was stale"
+      },
+      {
+        "call_site": "005e45b8",
+        "containing_function": "005e4490",
+        "function_end_inclusive": "005e4f80",
+        "delta": "FLDZ zero",
+        "argument_evidence": "Capped stored-listing excerpt around site; main4E4A40 read live because cached export was stale"
+      },
+      {
+        "call_site": "005ec5a2",
+        "containing_function": "005ec4c0",
+        "function_end_inclusive": "005ec5ac",
+        "delta": "FLDZ zero",
+        "argument_evidence": "Capped stored-listing excerpt around site; main4E4A40 read live because cached export was stale"
+      },
+      {
+        "call_site": "004db9b4",
+        "containing_function": "004db920",
+        "function_end_inclusive": "004dbaac",
+        "delta": "FLDZ zero",
+        "argument_evidence": "Capped stored-listing excerpt around site; main4E4A40 read live because cached export was stale"
+      },
+      {
+        "call_site": "004e07dd",
+        "containing_function": "004dfb70",
+        "function_end_inclusive": "004e18d9",
+        "delta": "Live float CE7628, inspected bytes8988083D",
+        "argument_evidence": "Capped stored-listing excerpt around site; main4E4A40 read live because cached export was stale"
+      },
+      {
+        "call_site": "004e07f3",
+        "containing_function": "004dfb70",
+        "function_end_inclusive": "004e18d9",
+        "delta": "Live float CE7628, inspected bytes8988083D",
+        "argument_evidence": "Capped stored-listing excerpt around site; main4E4A40 read live because cached export was stale"
+      },
+      {
+        "call_site": "004e1885",
+        "containing_function": "004dfb70",
+        "function_end_inclusive": "004e18d9",
+        "delta": "FLDZ zero",
+        "argument_evidence": "Capped stored-listing excerpt around site; main4E4A40 read live because cached export was stale"
+      },
+      {
+        "call_site": "004e4a72",
+        "containing_function": "004e4a40",
+        "function_end_inclusive": "004e5537",
+        "delta": "Incoming float at original stack+4; current stack+48 after verified prologue; FLD at4E4A68",
+        "argument_evidence": "Capped stored-listing excerpt around site; main4E4A40 read live because cached export was stale"
+      }
+    ],
+    "unattributed_native_byte_sites": [
+      {
+        "call_site": "005e737a",
+        "callee": "00a92c40",
+        "prefix_start": "005e736d",
+        "prefix_end_exclusive": "005e737f",
+        "bytes": "d9ee51d91c24e88878edff8bc8e8c1b84a00",
+        "decoded": "FLDZ; PUSH ECX; FSTP[ESP]; CALL4BEC00; MOV ECX,EAX; CALLA92C40",
+        "callee_argument_contract_verified": true,
+        "containing_function": null,
+        "analysis_gap": "Live Ghidra proto reports no containing function; no invented start/end or caller name. Unowned native-byte evidence excluded from containing-function call audit."
+      },
+      {
+        "call_site": "005ec84c",
+        "callee": "00a92c40",
+        "prefix_start": "005ec83f",
+        "prefix_end_exclusive": "005ec851",
+        "bytes": "d9ee51d91c24e8b623edff8bc8e8ef634a00",
+        "decoded": "FLDZ; PUSH ECX; FSTP[ESP]; CALL4BEC00; MOV ECX,EAX; CALLA92C40",
+        "callee_argument_contract_verified": true,
+        "containing_function": null,
+        "analysis_gap": "Live Ghidra proto reports no containing function; no invented start/end or caller name. Unowned native-byte evidence excluded from containing-function call audit."
+      },
+      {
+        "call_site": "005ec921",
+        "callee": "00a92c40",
+        "prefix_start": "005ec914",
+        "prefix_end_exclusive": "005ec926",
+        "bytes": "d9ee51d91c24e8e122edff8bc8e81a634a00",
+        "decoded": "FLDZ; PUSH ECX; FSTP[ESP]; CALL4BEC00; MOV ECX,EAX; CALLA92C40",
+        "callee_argument_contract_verified": true,
+        "containing_function": null,
+        "analysis_gap": "Live Ghidra proto reports no containing function; no invented start/end or caller name. Unowned native-byte evidence excluded from containing-function call audit."
+      }
+    ],
+    "listener_direct_sites": [
+      "00a92a79",
+      "00a92a8e",
+      "00a92cea",
+      "00a92e54"
+    ],
+    "listener_caller_bodies": {
+      "00a92a20": "00a92a96",
+      "00a92c40": "00a92d11",
+      "00a92d40": "00a92e6a"
+    },
+    "all_sites_argument_contracts_checked": true,
+    "raw_tick_is_not_frame_only": "Most call sites use zero delta; two mission-load sites read CE7628; Game_OnMove forwards its input float"
+  },
+  "missing_dependency_functions": [
+    {
+      "address": "006965a0",
+      "no_ghidra_function": true,
+      "body_end_inclusive": "006965aa",
+      "body_end_exclusive": "006965ab",
+      "bytes": "8b0da888e100e92527e4ff",
+      "instruction_count": 2,
+      "final_instruction": {
+        "address": "006965a6",
+        "length": 5,
+        "mnemonic": "JMP 004D8CD0"
+      },
+      "tail_site": "006965a6",
+      "callee": "004d8cd0",
+      "original_abi": "No stack arguments. Incoming ECX/EDX not semantic inputs; reload ECX from E188A8 then tail-call existing game action-deadline body.",
+      "producer": {
+        "address": "004dd71b",
+        "containing_function": "004dd5b0",
+        "body_end_inclusive": "004dd7b0",
+        "store": "DWORD[F8BBFC]=6965A0"
+      },
+      "source_status": "Required post-tick game provider; not implemented, leased, annotated or assumed empty in this packet"
+    }
+  ],
+  "dependencies": {
+    "backend": "Parent can route captured raw slot04 to existing raw A918A0",
+    "rebind_poll": "Separate native_input_action_binding_runtime provider packet A922A0/A92370; same actual allocations/publication",
+    "listener_lifetime": "Separate A92B70/A92150 packet; caller retains valid storage and references",
+    "post_tick": "Real6965A0/4D8CD0 game deadline service required whenever captured callback is nonzero"
+  },
+  "corrections": [
+    {
+      "was": "Prior typed InputTickState/InputActionListener APIs do not expose the original storage layout",
+      "is": "Additive raw owner/listener variants retain actual addresses, bytes and callbacks",
+      "evidence": "A93DA0/A93940/A92B70 producers and both complete owned assembly bodies"
+    },
+    {
+      "was": "Decompiled NEG/SBB/TEST expression mentions F8BC00 as if it could be a global flag",
+      "is": "No memory read occurs; it is a nonnull listener-pointer test",
+      "evidence": "A92C95..A92CA4; immediate TEST opcode verified"
+    }
+  ],
+  "validation": {
+    "seeds": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "passed": 8,
+      "failed": 0,
+      "before_native_execution": true,
+      "receipt": "local/native_input_action_tick_ag_seeds.json",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    "build": {
+      "command": "MSBUILDDISABLENODEREUSE=1; ./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "exit_code": 0,
+      "ctests_passed": [
+        "reconstructed_math",
+        "native_math_differential"
+      ],
+      "ctests_failed": 0,
+      "log": "local/native_input_action_tick_ag_build.log",
+      "log_sha256": "ba092132897e00da00abacf4283b2e1e3feeb00673baac0cf5ebe1ec7b658534"
+    },
+    "focused_fixture": {
+      "command": "./local/native_action_tick_probe.ps1 -CoreWorktree J:/PROG/battlestations-pacific-decompile-orch4-input-startup-af -LogPath J:/PROG/battlestations-pacific-decompile-orch4-input-startup-af/local/native_action_tick_ag_probe.log",
+      "receipt": {
+        "core_worktree": "J:\\PROG\\battlestations-pacific-decompile-orch4-input-startup-af",
+        "source_commit": "32210b048e6db4c56ffb42dece43ea4e5e5d6609",
+        "core_archive": "J:\\PROG\\battlestations-pacific-decompile-orch4-input-startup-af\\build\\win32\\Release\\bsp_core.lib",
+        "core_archive_sha256": "117b5ce5e9c25b8678ddae196bba4fa2bf498948b754f06ea61e91b1855a47e2",
+        "archive_stable": true,
+        "fixture_source_sha256": "a6a1e604043d901139d658c050aa8d514be583f124cab7ce870ca520b404cb1d",
+        "runner_sha256": "4e729c1e1fabc2e98cb6938bdb9361a0a7aa046f900ceac78a2205002336a1c7",
+        "project_include_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-input-startup-af\\include",
+        "game_sources_compiled_separately": false,
+        "manifest_embedded": true,
+        "log": "J:\\PROG\\battlestations-pacific-decompile-orch4-input-startup-af\\local\\native_action_tick_ag_probe.log",
+        "log_sha256": "48434190749d23a958e58915bad4e513c1601d90bd0cc950c71c586cf31701ca",
+        "exit_code": 0,
+        "sdk_calls": 0,
+        "real_activation_calls": 0,
+        "game_launches": 0
+      },
+      "native_bytes": {
+        "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+        "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "ranges": [
+          {
+            "address": "00a91a50",
+            "end_exclusive": "00a91bbe",
+            "length": 366,
+            "sha256": "78e0df2eae9a7252372c28150caa1687b50c609e98b5af2627962b4d0ccc006f"
+          },
+          {
+            "address": "00a92c40",
+            "end_exclusive": "00a92d12",
+            "length": 210,
+            "sha256": "f346159529a172ace874c995dafe3f9d10ddc9367c44e14902541f280b6ec510"
+          }
+        ],
+        "source": "Exact bytes read from unchanged installed executable; eight seeds verified before native execution"
+      },
+      "source_snapshot_note": "Receipt HEAD is the parent commit at build; new packet code was present but uncommitted. Exact new source hashes below identify the compiled code.",
+      "compiled_source_sha256": "261ee28cfdd84b6c67724423477f09d2fef3a9bab67ec6ab778d3dbef126a8bd",
+      "compiled_header_sha256": "12e16974bb7b6bd35fb046736049362843ecf4b4b024372c6d64d8085b0a1be1",
+      "native_listener_comparisons": 32,
+      "native_tick_cases": 2,
+      "coverage": "Raw whole-listener storage versus exact copied original366 bytes, low-byte argument semantics, signed zero/finite/infinity/quiet NaN; two raw owner schedules versus original210 bytes with controlled mutable callbacks and null-tail/empty-table path.",
+      "relocations": "Listener six absolute threshold operands bound to live fixture cells. Tick backend/callback/zero operands relocated, A922A0/A92370 calls bound to controlled providers, A91A50 call targets copied original listener; backend fixture vtable/tail pointer supply controlled callbacks.",
+      "expected_nonempty_trace": [
+        1,
+        2,
+        10,
+        11,
+        12,
+        29
+      ],
+      "expected_empty_trace": [
+        1
+      ],
+      "sdk_calls": 0,
+      "real_device_poll_calls": 0,
+      "force_calls": 0,
+      "show_cursor_calls": 0,
+      "game_launches": 0
+    },
+    "call_audit": {
+      "command": "python tools/verify_report_calls.py reports/native_input_action_tick.json",
+      "status": "passed",
+      "scope": "38 numeric call rows; callback identity unresolved by checker; three no-body external call sites explicitly recorded outside containing-function rows",
+      "numeric_call_rows_checked": 38,
+      "failures": 0,
+      "log": "local/native_action_tick_ag_call_audit.log",
+      "log_sha256": "6ff55c042f06d974242fb1f9a26b76796dd210ca5799f4c528a7cec07d9fb09a"
+    }
+  },
+  "limitations": [
+    "New C++ source ABI; original callable/FH3/SEH ABI not claimed.",
+    "Full application/frame/game action-deadline provider and live device binding remain external.",
+    "Three external caller bodies and6965A0 start are absent from current Ghidra analysis; bounded byte/stack evidence recorded without invented function definitions.",
+    "Controlled callbacks in one ignored probe do not establish hardware, SDK, force, ShowCursor or game behavior.",
+    "Asynchronous mutation, hardware faults and unmasked floating-point exception equivalence are outside this source domain."
+  ]
+}
