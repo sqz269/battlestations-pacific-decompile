@@ -1,0 +1,1039 @@
+{
+  "packet": "orch2_filestore_owner_ap",
+  "base_commit": "116987ab234b419074226c5b49e98c844ed38500",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "verification": "Every live BSP CLI batch invokes Client.verify; installed PE only read."
+  },
+  "read_only": true,
+  "owned_addresses": [
+    "00be7fa0",
+    "00bb5590",
+    "00be55e0",
+    "00be5690",
+    "00be80b0",
+    "00be8090",
+    "00be7bf0"
+  ],
+  "ghidra_mutations": [],
+  "document": "docs/NATIVE_FILESTORE_OWNER_PACKET_MAP.md",
+  "routines": [
+    {
+      "address": "00be7fa0",
+      "end_inclusive": "00be808d",
+      "end_exclusive": "00be808e",
+      "bytes": 238,
+      "coverage": "complete normal bytes and four-state unwind map; dependency closure incomplete",
+      "original_abi": "ECX raw2Ch owner; EAX owner; RET",
+      "status": "read_only_discovery_no_source_implementation",
+      "sha256": "ca1ebfa3644d33ca4377a8b23aa70f064f10019c33efaef5ae0c2d92e6499ad2",
+      "live_bytes_match_installed": true,
+      "hex": "6aff686b6ecc0064a100000000506489250000000083ec0c55565733ed8bf96a01558d4c2418897c2414896c2418896c241ce8695d83ff8b7424143bf574168b44241083c00150680c3ace0056e88ef6000083c40c8d4c2410518bcf896c2424e88bd5fcff3bf5c64424200274178b4424106a0183c0015056e8a21c83ff8bc8e8eb94feff8d77148bcec707e889d600e8abd5ffff894604c64019018b46048940048b460489008b4604894008896e088d77208bcec644242003e831d6ffff8b4c2418894604c64019018b46048940048b460489008b4604894008896e088bc75f5e5d64890d0000000083c418c3"
+    },
+    {
+      "address": "00bb5590",
+      "end_inclusive": "00bb5622",
+      "end_exclusive": "00bb5623",
+      "bytes": 147,
+      "coverage": "complete normal bytes and one-state unwind map",
+      "original_abi": "ECX raw provider base; source header stack; EAX owner; RET4",
+      "status": "read_only_discovery_no_source_implementation",
+      "sha256": "440590ad78a3993c1fe7fadbc73e4894a747c62af87a557bc7c3cd72f1009a26",
+      "live_bytes_match_installed": true,
+      "hex": "6aff68a843cc0064a10000000050648925000000005153568bf1c70630b1ce00578974240cc74604010000008b5c24208d7e083bfbc706a041d600c744241800000000c70700000000c747040000000074248b036a01508bcfe8528786ff833b0074138b0f8b53048b4704515250e87d20040083c40c8b4c24105fc74610ffffffff8bc65e5b64890d0000000083c410c20400"
+    },
+    {
+      "address": "00be55e0",
+      "end_inclusive": "00be5616",
+      "end_exclusive": "00be5617",
+      "bytes": 55,
+      "coverage": "complete",
+      "original_abi": "No consumed incoming register/stack inputs; EAX allocation; RET",
+      "status": "read_only_discovery_no_source_implementation",
+      "sha256": "000469259393936cb7038073311e577824d82276dec61ffa781827f37465c1b9",
+      "live_bytes_match_installed": true,
+      "hex": "6a1ce83412010083c40485c07406c700000000008d480485c97406c701000000008d480885c97406c70100000000c6401801c6401900c3"
+    },
+    {
+      "address": "00be5690",
+      "end_inclusive": "00be56c6",
+      "end_exclusive": "00be56c7",
+      "bytes": 55,
+      "coverage": "complete",
+      "original_abi": "No consumed incoming register/stack inputs; EAX allocation; RET",
+      "status": "read_only_discovery_no_source_implementation",
+      "sha256": "0b834747db83a68aec1d0459d171f6df0e1d67887e19531a61e54d273299803e",
+      "live_bytes_match_installed": true,
+      "hex": "6a1ce88411010083c40485c07406c700000000008d480485c97406c701000000008d480885c97406c70100000000c6401801c6401900c3"
+    },
+    {
+      "address": "00be80b0",
+      "end_inclusive": "00be8118",
+      "end_exclusive": "00be8119",
+      "bytes": 105,
+      "coverage": "complete normal bytes and raw-allocation unwind action",
+      "original_abi": "ECX actual factory; EAX first cached/new provider; RET",
+      "status": "read_only_discovery_no_source_implementation",
+      "sha256": "7ccbd70886a44c579ae9b92e65a164e4cf73985736d748bb81934c343678d2f4",
+      "live_bytes_match_installed": true,
+      "hex": "6aff688b6ecc0064a100000000506489250000000051568bf18b460885c075396a2ce844e7000083c4048944240485c0c744241000000000741a8bc8e8affeffff8946085e8b4c240464890d0000000083c410c333c08946088b4c24085e64890d0000000083c410c3"
+    },
+    {
+      "address": "00be8090",
+      "end_inclusive": "00be80ad",
+      "end_exclusive": "00be80ae",
+      "bytes": 30,
+      "coverage": "complete including raw ADD ESP4 gap",
+      "original_abi": "ECX owner; flags stack; EAX original owner; RET4",
+      "status": "read_only_discovery_no_source_implementation",
+      "sha256": "1609cb2f5679352b4d526c0ffb08f1a96a084a8ec8a22287b14766e331ee7a41",
+      "live_bytes_match_installed": true,
+      "hex": "568bf1e858fbfffff644240801740956e807e5000083c4048bc65ec20400"
+    },
+    {
+      "address": "00be7bf0",
+      "end_inclusive": "00be7ca3",
+      "end_exclusive": "00be7ca4",
+      "bytes": 180,
+      "coverage": "complete normal bytes and three-state unwind map; dependency closure incomplete",
+      "original_abi": "ECX actual owner; no stack args; RET",
+      "status": "read_only_discovery_no_source_implementation",
+      "sha256": "f2f30e2d28ef6d94fc5b470b31097d9ce22032659d38929bf8038a82776730c3",
+      "live_bytes_match_installed": true,
+      "hex": "6aff680e6ecc0064a100000000506489250000000083ec0c5356578bf9897c240cc707e889d600c744242002000000e89cf6ffff8b47248b088d7720505651568d442420508bcec644243401e83ff9ffff8b460450e862e9000033db895e04895e088b47188b0883c4048d7714505651568d4c2420518bce885c2434e81ffaffff8b460450e832e9000083c4048bcf895e04895e08c7442420ffffffffe8eed6fcff8b4c24185f5e5b64890d0000000083c418c3"
+    }
+  ],
+  "smallest_source_ready_packet": {
+    "id": "native_filestore_container_allocation2",
+    "addresses": [
+      "00be55e0",
+      "00be5690"
+    ],
+    "bytes": 110,
+    "new_files": [
+      "include/bsp/native_filestore_container_allocation.hpp",
+      "src/native_filestore_container_allocation.cpp"
+    ],
+    "contract": "Two complete1Ch allocation leaves; separate address tests before zeroing links; +18=1,+19=0; no payload/padding initialization; caller forms sentinel; no incoming arguments, EAX result, RET.",
+    "reuse": "singleton_lifetime_allocate/free and existing native_vfs_container_allocation convention",
+    "owner_ready": false
+  },
+  "followup_packets": [
+    {
+      "addresses": [
+        "00bb5590",
+        "00bb5380"
+      ],
+      "bytes": 250,
+      "readiness": "Shared base normal/EH schedule established; source-ready within current NativeStringStorage returning-release domain. Physical worker consumes BB5590 externally. Explicit original getter-exception/SEH boundary remains."
+    },
+    {
+      "addresses": [
+        "00be72c0",
+        "00be7580",
+        "00be7690",
+        "00be66c0",
+        "00be6720",
+        "00be5d70",
+        "00be6760",
+        "00be6a20",
+        "00be4c30",
+        "00be4e40",
+        "00be7a70",
+        "00be7bb0"
+      ],
+      "readiness": "Not ready as a combined full owner: mutation/iterator bodies and payload EH/current-owner domains remain; normal cleanup gaps must be restored. No address-matched source for these was found."
+    }
+  ],
+  "storage": [
+    {
+      "offset": "00",
+      "writes": [
+        "CEB130",
+        "D641A0",
+        "D689E8"
+      ]
+    },
+    {
+      "offset": "04",
+      "write": "1 intrusive count"
+    },
+    {
+      "offset": "08/0C",
+      "write": "zero actual string header, then copy from source with current reloads"
+    },
+    {
+      "offset": "10",
+      "write": "FFFFFFFF after successful copy"
+    },
+    {
+      "offset": "14/18/1C",
+      "write": "owner word untouched / first head / zero count"
+    },
+    {
+      "offset": "20/24/28",
+      "write": "owner word untouched / second head / zero count"
+    }
+  ],
+  "eh_maps": [
+    {
+      "function": "00bb5590",
+      "func_info": "00dfdc90",
+      "unwind_map": "00dfdc88",
+      "states": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00cc43a0",
+          "target": "00bd30f0",
+          "contract": "captured owner atEBP-10; restoreCEB130 only"
+        }
+      ]
+    },
+    {
+      "function": "00bb5380",
+      "func_info": "00dfdc64",
+      "unwind_map": "00dfdc5c",
+      "states": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00cc4380",
+          "target": "00bd30f0",
+          "contract": "captured owner atEBP-10; restoreCEB130 only"
+        }
+      ]
+    },
+    {
+      "function": "00be7fa0",
+      "func_info": "00e017b8",
+      "unwind_map": "00e01798",
+      "states": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00cc6e50",
+          "target": "0041dd20",
+          "contract": "temporary header EBP-14"
+        },
+        {
+          "state": 1,
+          "previous": 0,
+          "action": "00cc6e58",
+          "target": "00bb5380",
+          "contract": "captured owner EBP-18; state not assigned on inspected normal path"
+        },
+        {
+          "state": 2,
+          "previous": -1,
+          "action": "00cc6e58",
+          "target": "00bb5380",
+          "contract": "base only after temporary cleanup transition"
+        },
+        {
+          "state": 3,
+          "previous": 2,
+          "action": "00cc6e60",
+          "target": "00be7bb0",
+          "contract": "captured owner+14; resident tree cleanup"
+        }
+      ]
+    },
+    {
+      "function": "00be7bf0",
+      "func_info": "00e01738",
+      "unwind_map": "00e01720",
+      "states": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00cc6df0",
+          "target": "00bb5380"
+        },
+        {
+          "state": 1,
+          "previous": 0,
+          "action": "00cc6df8",
+          "target": "00be7bb0",
+          "contract": "owner+14"
+        },
+        {
+          "state": 2,
+          "previous": 1,
+          "action": "00cc6e03",
+          "target": "00be7a70",
+          "contract": "owner+20"
+        }
+      ]
+    },
+    {
+      "function": "00be80b0",
+      "func_info": "00e017e4",
+      "unwind_map": "00e017dc",
+      "states": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00cc6e80",
+          "target": "00bf65ac",
+          "contract": "free captured raw allocation EBP-10; normal tailPOP ECX/RET"
+        }
+      ]
+    }
+  ],
+  "no_ghidra_function_ranges": [
+    {
+      "start": "00be7c4a",
+      "end_inclusive": "00be7ca3",
+      "end_exclusive": "00be7ca4",
+      "bytes": 90,
+      "containing_native_routine": "00be7bf0",
+      "no_ghidra_function": true,
+      "evidence": "Stored owner body endsBE7C49; missing continuation contains three real CALLs."
+    },
+    {
+      "start": "00be80a5",
+      "end_inclusive": "00be80a7",
+      "end_exclusive": "00be80a8",
+      "bytes": 3,
+      "containing_native_routine": "00be8090",
+      "no_ghidra_function": true,
+      "evidence": "Required ADD ESP4 after returning free."
+    },
+    {
+      "start": "00be7a94",
+      "end_inclusive": "00be7aa3",
+      "end_exclusive": "00be7aa4",
+      "bytes": 16,
+      "containing_native_routine": "00be7a70",
+      "no_ghidra_function": true,
+      "evidence": "Required clear head/count, stack restoration and RET."
+    },
+    {
+      "start": "00be7bd4",
+      "end_inclusive": "00be7be3",
+      "end_exclusive": "00be7be4",
+      "bytes": 16,
+      "containing_native_routine": "00be7bb0",
+      "no_ghidra_function": true,
+      "evidence": "Required clear head/count, stack restoration and RET."
+    },
+    {
+      "start": "00be6701",
+      "end_inclusive": "00be670b",
+      "end_exclusive": "00be670c",
+      "bytes": 11,
+      "containing_native_routine": "00be66c0",
+      "no_ghidra_function": true,
+      "evidence": "Required free stack cleanup and left-subtree loop."
+    },
+    {
+      "start": "00be674c",
+      "end_inclusive": "00be6756",
+      "end_exclusive": "00be6757",
+      "bytes": 11,
+      "containing_native_routine": "00be6720",
+      "no_ghidra_function": true,
+      "evidence": "Required free stack cleanup and left-subtree loop."
+    },
+    {
+      "start": "00cc6e89",
+      "end_inclusive": "00cc6e8a",
+      "end_exclusive": "00cc6e8b",
+      "bytes": 2,
+      "containing_native_routine": "00cc6e80",
+      "no_ghidra_function": true,
+      "evidence": "Required POP ECX and RET after unwind free."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00be7fd2",
+      "native": "0041dd40",
+      "function": "00be7fa0",
+      "instruction": "call 0x41dd40",
+      "contract": "Body and complete asm checked: actual header resize, stack(length,preserve), RET8; reuse existing actual-header API."
+    },
+    {
+      "address": "00be7fed",
+      "native": "00bf7680",
+      "function": "00be7fa0",
+      "instruction": "call 0xbf7680",
+      "contract": "Retain CRT name; prototype cdecl(dst,src,size), caller ADD ESP0C. Native overlap branch atBF7844 read; broader optimized paths not re-audited."
+    },
+    {
+      "address": "00be8000",
+      "native": "00bb5590",
+      "function": "00be7fa0",
+      "instruction": "call 0xbb5590",
+      "contract": "Whole producer checked, all five callers checked; ECX owner, source header stack, RET4."
+    },
+    {
+      "address": "00be8019",
+      "native": "00419cc0",
+      "function": "00be7fa0",
+      "instruction": "call 0x419cc0",
+      "contract": "Body checked: no explicit arguments, EAX current/lazy pool, RET; pre-pushed words belong to following BD1510 call."
+    },
+    {
+      "address": "00be8020",
+      "native": "00bd1510",
+      "function": "00be7fa0",
+      "instruction": "call 0xbd1510",
+      "contract": "Body and asm checked: ECX pool, stack(block,size,unused), RET0C; returning shared pool-release service."
+    },
+    {
+      "address": "00be8030",
+      "native": "00be55e0",
+      "function": "00be7fa0",
+      "instruction": "call 0xbe55e0",
+      "contract": "Whole leaf/asm checked: no inputs, allocate1Ch, return pointer EAX, RET."
+    },
+    {
+      "address": "00be805a",
+      "native": "00be5690",
+      "function": "00be7fa0",
+      "instruction": "call 0xbe5690",
+      "contract": "Whole leaf/asm checked: no inputs, allocate1Ch, return pointer EAX, RET."
+    },
+    {
+      "address": "00bb55e9",
+      "native": "0041dd40",
+      "function": "00bb5590",
+      "instruction": "call 0x41dd40",
+      "contract": "Body and complete asm checked: actual header resize, stack(length,preserve), RET8; reuse existing actual-header API."
+    },
+    {
+      "address": "00bb55fe",
+      "native": "00bf7680",
+      "function": "00bb5590",
+      "instruction": "call 0xbf7680",
+      "contract": "Retain CRT name; prototype cdecl(dst,src,size), caller ADD ESP0C. Native overlap branch atBF7844 read; broader optimized paths not re-audited."
+    },
+    {
+      "address": "00be55e2",
+      "native": "00bf681b",
+      "function": "00be55e0",
+      "instruction": "call 0xbf681b",
+      "contract": "Body and asm checked: cdecl size, caller ADD ESP4, EAX allocation; existing source CRT service boundary."
+    },
+    {
+      "address": "00be5692",
+      "native": "00bf681b",
+      "function": "00be5690",
+      "instruction": "call 0xbf681b",
+      "contract": "Body and asm checked: cdecl size, caller ADD ESP4, EAX allocation; existing source CRT service boundary."
+    },
+    {
+      "address": "00be80d2",
+      "native": "00bf681b",
+      "function": "00be80b0",
+      "instruction": "call 0xbf681b",
+      "contract": "Body and asm checked: cdecl size, caller ADD ESP4, EAX allocation; existing source CRT service boundary."
+    },
+    {
+      "address": "00be80ec",
+      "native": "00be7fa0",
+      "function": "00be80b0",
+      "instruction": "call 0xbe7fa0",
+      "contract": "Whole normal body/asm and unwind map checked: ECX raw2Ch, EAX owner, RET."
+    },
+    {
+      "address": "00be8093",
+      "native": "00be7bf0",
+      "function": "00be8090",
+      "instruction": "call 0xbe7bf0",
+      "contract": "Whole normal body including raw90-byte tail and unwind map checked; ECX owner, RET."
+    },
+    {
+      "address": "00be80a0",
+      "native": "00bf65ac",
+      "function": "00be8090",
+      "instruction": "call 0xbf65ac",
+      "contract": "Returning CRT free thunk/body checked; cdecl pointer, caller cleans one DWORD."
+    },
+    {
+      "address": "00be7c1f",
+      "native": "00be72c0",
+      "function": "00be7bf0",
+      "instruction": "call 0xbe72c0",
+      "contract": "Whole normal body checked: ECX FileStore; current resident loop, refcount reads, warning RET leaf, calls unported BE6760."
+    },
+    {
+      "address": "00be7c3c",
+      "native": "00be7580",
+      "function": "00be7bf0",
+      "instruction": "call 0xbe7580",
+      "contract": "Whole normal body checked: ECX pending tree; stack(output,first_owner,first_node,last_owner,last_node); EAX output; RET14."
+    },
+    {
+      "address": "00be7c45",
+      "native": "00bf65ac",
+      "function": "00be7bf0",
+      "instruction": "call 0xbf65ac",
+      "contract": "Returning CRT free thunk/body checked; cdecl pointer, caller cleans one DWORD."
+    },
+    {
+      "address": "00be7c6c",
+      "native": "00be7690",
+      "function": "00be7bf0",
+      "instruction": "call 0xbe7690",
+      "contract": "Whole normal body checked: ECX resident tree; stack(output,first_owner,first_node,last_owner,last_node); EAX output; RET14.",
+      "raw_tail": true,
+      "no_ghidra_function": true,
+      "containing_native_range": "[00BE7BF0,00BE7CA4)",
+      "evidence": "Disk disassembly and live-memory match; Ghidra body endsBE7C49."
+    },
+    {
+      "address": "00be7c75",
+      "native": "00bf65ac",
+      "function": "00be7bf0",
+      "instruction": "call 0xbf65ac",
+      "contract": "Returning CRT free thunk/body checked; cdecl pointer, caller cleans one DWORD.",
+      "raw_tail": true,
+      "no_ghidra_function": true,
+      "containing_native_range": "[00BE7BF0,00BE7CA4)",
+      "evidence": "Disk disassembly and live-memory match; Ghidra body endsBE7C49."
+    },
+    {
+      "address": "00be7c8d",
+      "native": "00bb5380",
+      "function": "00be7bf0",
+      "instruction": "call 0xbb5380",
+      "contract": "Whole body/asm and unwind map checked: ECX provider base, current name release, CEB130 reset, RET.",
+      "raw_tail": true,
+      "no_ghidra_function": true,
+      "containing_native_range": "[00BE7BF0,00BE7CA4)",
+      "evidence": "Disk disassembly and live-memory match; Ghidra body endsBE7C49."
+    }
+  ],
+  "dependency_steps": [
+    {
+      "address": "00bb53bc",
+      "native": "00419cc0",
+      "function": "00bb5380",
+      "instruction": "call 0x419cc0",
+      "contract": "Body checked: no explicit arguments, EAX current/lazy pool, RET; pre-pushed words belong to following BD1510 call."
+    },
+    {
+      "address": "00bb53c3",
+      "native": "00bd1510",
+      "function": "00bb5380",
+      "instruction": "call 0xbd1510",
+      "contract": "Body and asm checked: ECX pool, stack(block,size,unused), RET0C; returning shared pool-release service."
+    },
+    {
+      "address": "00bb53d2",
+      "native": "00bd30f0",
+      "function": "00bb5380",
+      "instruction": "call 0xbd30f0",
+      "contract": "Whole7-byte body checked: ECX owner, writeCEB130, RET."
+    },
+    {
+      "address": "00be72db",
+      "native": "00bf6713",
+      "function": "00be72c0",
+      "instruction": "call 0xbf6713",
+      "contract": "Body checked: calls current CRT invalid-parameter route with zero fields then returns; do not turn it into no-return."
+    },
+    {
+      "address": "00be72f0",
+      "native": "00bf6713",
+      "function": "00be72c0",
+      "instruction": "call 0xbf6713",
+      "contract": "Body checked: calls current CRT invalid-parameter route with zero fields then returns; do not turn it into no-return."
+    },
+    {
+      "address": "00be7300",
+      "native": "00bf6713",
+      "function": "00be72c0",
+      "instruction": "call 0xbf6713",
+      "contract": "Body checked: calls current CRT invalid-parameter route with zero fields then returns; do not turn it into no-return."
+    },
+    {
+      "address": "00be7318",
+      "native": "004254b0",
+      "function": "00be72c0",
+      "instruction": "call 0x4254b0",
+      "contract": "Whole1-byte body checked: RET; warning call still prepares three cdecl words and ADD ESP0C."
+    },
+    {
+      "address": "00be7329",
+      "native": "00be6760",
+      "function": "00be72c0",
+      "instruction": "call 0xbe6760",
+      "contract": "unread; retain address-only boundary; no method-name hypothesis accepted"
+    },
+    {
+      "address": "00be759a",
+      "native": "00bf6713",
+      "function": "00be7580",
+      "instruction": "call 0xbf6713",
+      "contract": "Body checked: calls current CRT invalid-parameter route with zero fields then returns; do not turn it into no-return."
+    },
+    {
+      "address": "00be75b6",
+      "native": "00bf6713",
+      "function": "00be7580",
+      "instruction": "call 0xbf6713",
+      "contract": "Body checked: calls current CRT invalid-parameter route with zero fields then returns; do not turn it into no-return."
+    },
+    {
+      "address": "00be75ca",
+      "native": "00be66c0",
+      "function": "00be7580",
+      "instruction": "call 0xbe66c0",
+      "contract": "Whole82-byte normal flow checked including11-byte loop gap: ECX tree, stack node, RET4; right recursion then left loop, pooled key release/free."
+    },
+    {
+      "address": "00be760a",
+      "native": "00bf6713",
+      "function": "00be7580",
+      "instruction": "call 0xbf6713",
+      "contract": "Body checked: calls current CRT invalid-parameter route with zero fields then returns; do not turn it into no-return."
+    },
+    {
+      "address": "00be7619",
+      "native": "00be4e40",
+      "function": "00be7580",
+      "instruction": "call 0xbe4e40",
+      "contract": "unread; retain address-only boundary; no method-name hypothesis accepted"
+    },
+    {
+      "address": "00be7627",
+      "native": "00be6a20",
+      "function": "00be7580",
+      "instruction": "call 0xbe6a20",
+      "contract": "unread; retain address-only boundary; no method-name hypothesis accepted"
+    },
+    {
+      "address": "00be76aa",
+      "native": "00bf6713",
+      "function": "00be7690",
+      "instruction": "call 0xbf6713",
+      "contract": "Body checked: calls current CRT invalid-parameter route with zero fields then returns; do not turn it into no-return."
+    },
+    {
+      "address": "00be76c6",
+      "native": "00bf6713",
+      "function": "00be7690",
+      "instruction": "call 0xbf6713",
+      "contract": "Body checked: calls current CRT invalid-parameter route with zero fields then returns; do not turn it into no-return."
+    },
+    {
+      "address": "00be76da",
+      "native": "00be6720",
+      "function": "00be7690",
+      "instruction": "call 0xbe6720",
+      "contract": "Whole61-byte normal flow checked including11-byte loop gap: ECX tree, stack node, RET4; right recursion then left loop, BE5D70 payload cleanup/free."
+    },
+    {
+      "address": "00be771a",
+      "native": "00bf6713",
+      "function": "00be7690",
+      "instruction": "call 0xbf6713",
+      "contract": "Body checked: calls current CRT invalid-parameter route with zero fields then returns; do not turn it into no-return."
+    },
+    {
+      "address": "00be7729",
+      "native": "00be4c30",
+      "function": "00be7690",
+      "instruction": "call 0xbe4c30",
+      "contract": "unread; retain address-only boundary; no method-name hypothesis accepted"
+    },
+    {
+      "address": "00be7737",
+      "native": "00be6760",
+      "function": "00be7690",
+      "instruction": "call 0xbe6760",
+      "contract": "unread; retain address-only boundary; no method-name hypothesis accepted"
+    },
+    {
+      "address": "00be7a86",
+      "native": "00be7580",
+      "function": "00be7a70",
+      "instruction": "call 0xbe7580",
+      "contract": "Whole normal body checked: ECX pending tree; stack(output,first_owner,first_node,last_owner,last_node); EAX output; RET14."
+    },
+    {
+      "address": "00be7a8f",
+      "native": "00bf65ac",
+      "function": "00be7a70",
+      "instruction": "call 0xbf65ac",
+      "contract": "Returning CRT free thunk/body checked; cdecl pointer, caller cleans one DWORD."
+    },
+    {
+      "address": "00be7bc6",
+      "native": "00be7690",
+      "function": "00be7bb0",
+      "instruction": "call 0xbe7690",
+      "contract": "Whole normal body checked: ECX resident tree; stack(output,first_owner,first_node,last_owner,last_node); EAX output; RET14."
+    },
+    {
+      "address": "00be7bcf",
+      "native": "00bf65ac",
+      "function": "00be7bb0",
+      "instruction": "call 0xbf65ac",
+      "contract": "Returning CRT free thunk/body checked; cdecl pointer, caller cleans one DWORD."
+    },
+    {
+      "address": "00be66d7",
+      "native": "00be66c0",
+      "function": "00be66c0",
+      "instruction": "call 0xbe66c0",
+      "contract": "Whole82-byte normal flow checked including11-byte loop gap: ECX tree, stack node, RET4; right recursion then left loop, pooled key release/free."
+    },
+    {
+      "address": "00be66ef",
+      "native": "00419cc0",
+      "function": "00be66c0",
+      "instruction": "call 0x419cc0",
+      "contract": "Body checked: no explicit arguments, EAX current/lazy pool, RET; pre-pushed words belong to following BD1510 call."
+    },
+    {
+      "address": "00be66f6",
+      "native": "00bd1510",
+      "function": "00be66c0",
+      "instruction": "call 0xbd1510",
+      "contract": "Body and asm checked: ECX pool, stack(block,size,unused), RET0C; returning shared pool-release service."
+    },
+    {
+      "address": "00be66fc",
+      "native": "00bf65ac",
+      "function": "00be66c0",
+      "instruction": "call 0xbf65ac",
+      "contract": "Returning CRT free thunk/body checked; cdecl pointer, caller cleans one DWORD."
+    },
+    {
+      "address": "00be6737",
+      "native": "00be6720",
+      "function": "00be6720",
+      "instruction": "call 0xbe6720",
+      "contract": "Whole61-byte normal flow checked including11-byte loop gap: ECX tree, stack node, RET4; right recursion then left loop, BE5D70 payload cleanup/free."
+    },
+    {
+      "address": "00be6741",
+      "native": "00be5d70",
+      "function": "00be6720",
+      "instruction": "call 0xbe5d70",
+      "contract": "Whole127-byte normal body/asm checked; ECX12-byte payload, current owner+8 retained release and pooled key cleanup; EH map unread."
+    },
+    {
+      "address": "00be6747",
+      "native": "00bf65ac",
+      "function": "00be6720",
+      "instruction": "call 0xbf65ac",
+      "contract": "Returning CRT free thunk/body checked; cdecl pointer, caller cleans one DWORD."
+    },
+    {
+      "address": "00be5da1",
+      "native": "IAT00CE2220:InterlockedDecrement",
+      "function": "00be5d70",
+      "instruction": "call dword ptr [0xce2220]",
+      "contract": "unread; retain address-only boundary; no method-name hypothesis accepted"
+    },
+    {
+      "address": "00be5db1",
+      "native": "current resident profile+vtable00",
+      "function": "00be5d70",
+      "instruction": "call eax",
+      "contract": "unread; retain address-only boundary; no method-name hypothesis accepted"
+    },
+    {
+      "address": "00be5dd2",
+      "native": "00419cc0",
+      "function": "00be5d70",
+      "instruction": "call 0x419cc0",
+      "contract": "Body checked: no explicit arguments, EAX current/lazy pool, RET; pre-pushed words belong to following BD1510 call."
+    },
+    {
+      "address": "00be5dd9",
+      "native": "00bd1510",
+      "function": "00be5d70",
+      "instruction": "call 0xbd1510",
+      "contract": "Body and asm checked: ECX pool, stack(block,size,unused), RET0C; returning shared pool-release service."
+    },
+    {
+      "address": "00cc6e84",
+      "native": "00bf65ac",
+      "function": "00cc6e80",
+      "instruction": "call 0xbf65ac",
+      "contract": "Returning CRT free thunk/body checked; cdecl pointer, caller cleans one DWORD."
+    }
+  ],
+  "incoming_sites": [
+    {
+      "address": "00bb8264",
+      "native": "00bb5590",
+      "function": "00bb8240",
+      "contract": "Whole producer checked, all five callers checked; ECX owner, source header stack, RET4.",
+      "argument_setup_checked": true
+    },
+    {
+      "address": "00bb9cd3",
+      "native": "00bb5590",
+      "function": "00bb9cb0",
+      "contract": "Whole producer checked, all five callers checked; ECX owner, source header stack, RET4.",
+      "argument_setup_checked": true
+    },
+    {
+      "address": "00bbb5d2",
+      "native": "00bb5590",
+      "function": "00bbb5b0",
+      "contract": "Whole producer checked, all five callers checked; ECX owner, source header stack, RET4.",
+      "argument_setup_checked": true
+    },
+    {
+      "address": "00bf4d54",
+      "native": "00bb5590",
+      "function": "00bf4d30",
+      "contract": "Whole producer checked, all five callers checked; ECX owner, source header stack, RET4.",
+      "argument_setup_checked": true
+    },
+    {
+      "address": "00be58e3",
+      "native": "00be55e0",
+      "function": "00be58e0",
+      "contract": "Whole leaf/asm checked: no inputs, allocate1Ch, return pointer EAX, RET.",
+      "argument_setup_checked": true
+    },
+    {
+      "address": "00be5ad3",
+      "native": "00be55e0",
+      "function": "00be5ad0",
+      "contract": "Whole leaf/asm checked: no inputs, allocate1Ch, return pointer EAX, RET.",
+      "argument_setup_checked": true
+    },
+    {
+      "address": "00be7f73",
+      "native": "00be55e0",
+      "function": "00be7f70",
+      "contract": "Whole leaf/asm checked: no inputs, allocate1Ch, return pointer EAX, RET.",
+      "argument_setup_checked": true
+    },
+    {
+      "address": "00be5953",
+      "native": "00be5690",
+      "function": "00be5950",
+      "contract": "Whole leaf/asm checked: no inputs, allocate1Ch, return pointer EAX, RET.",
+      "argument_setup_checked": true
+    },
+    {
+      "address": "00be5b33",
+      "native": "00be5690",
+      "function": "00be5b30",
+      "contract": "Whole leaf/asm checked: no inputs, allocate1Ch, return pointer EAX, RET.",
+      "argument_setup_checked": true
+    },
+    {
+      "address": "00be7b83",
+      "native": "00be5690",
+      "function": "00be7b80",
+      "contract": "Whole leaf/asm checked: no inputs, allocate1Ch, return pointer EAX, RET.",
+      "argument_setup_checked": true
+    },
+    {
+      "address": "00be813c",
+      "native": "00be80b0",
+      "function": "00be8120",
+      "contract": "Whole normal body and raw-allocation unwind checked; ECX actual factory, no stack args, EAX provider, RET.",
+      "argument_setup_checked": true
+    }
+  ],
+  "current_source_inventory": [
+    {
+      "module": "src/native_filestore_open.cpp",
+      "status": "Actual tree+14/open/conversion implemented; FileStore tree population and lifetime explicitly external."
+    },
+    {
+      "module": "src/native_retained_memory_owners.cpp",
+      "status": "Actual memory/backing owner APIs; numeric D642C0/D15AD8 domains only. General resident current-vtable domain not established here."
+    },
+    {
+      "module": "src/vfs_provider_manager.cpp",
+      "status": "BE80B0 fragment uses shared_ptr<FileStore> plus semantic identity; not actual factory+8/2Ch ownership."
+    },
+    {
+      "module": "src/native_string.cpp",
+      "status": "41DD40 resize and41DD20 cleanup actual-header APIs; explicit NativeStringStorage boundary."
+    },
+    {
+      "module": "src/native_string_pool_storage.cpp",
+      "status": "ActualNativeStringPoolStorage repeats actual getter with shared publication/gate/lifetime. release is noexcept; throwing lazy getter is not native EH-equivalent."
+    },
+    {
+      "module": "src/native_vfs_container_allocation.cpp",
+      "status": "Six separate existing allocation leaves; use convention/service, do not duplicate or call wrong-sized node helpers."
+    }
+  ],
+  "corrections": [
+    {
+      "was": "FileStore destructor live body ends after the first free atBE7C49",
+      "is": "Full180-byte body endsBE7CA3 with three further calls, two head/count resets and base cleanup",
+      "evidence": "Exact installed/Ghidra-memory span, raw continuation and complete adjacent return boundary"
+    },
+    {
+      "was": "BE8090 pseudocode returns extraout_EAX after free",
+      "is": "BE80A8 reloads captured ESI intoEAX; flags bit0 controls free; RET4",
+      "evidence": "Full30-byte span includes missingADD ESP4 atBE80A5"
+    },
+    {
+      "was": "BE55E0/BE5690 pseudocode declares void",
+      "is": "Both retain allocation pointer inEAX and RET",
+      "evidence": "Complete55-byte bodies and all eight caller sites"
+    },
+    {
+      "was": "Calling a warning-labelled routine proves a warning is emitted",
+      "is": "4254B0 is a one-byte RET; caller still reads/prepares three arguments",
+      "evidence": "Whole callee plusBE7318/BE731D stack evidence"
+    }
+  ],
+  "verification": {
+    "build_or_tests": "Not run: read-only discovery; no C++ changes.",
+    "report_call_check": {
+      "command": "python tools/verify_report_calls.py reports/native_filestore_owner_packet_map.json",
+      "rows_total": 68,
+      "direct_checked": 66,
+      "direct_passed": 63,
+      "direct_failed": 3,
+      "indirect_not_checked": 2,
+      "expected_missing_body_failures": [
+        "00be7c6c",
+        "00be7c75",
+        "00be7c8d"
+      ],
+      "reason": "All three direct failures are real calls in the90-byte BE7BF0 continuation absent from stored Ghidra function bodies. Read-only task leaves repairs to primary."
+    },
+    "runtime": "No startup execution, cancellation, callbacks, gameplay or native ABI compatibility claimed."
+  },
+  "limitations": [
+    "Factory creation/destruction and current startup owner publication outside this packet; all27 getter xrefs recorded locally but only representative factory-create setup inspected, since the getter body consumes ECX only.",
+    "BE6760/BE6A20/BE4C30/BE4E40 bodies unread; no fabricated full helper contract.",
+    "BE5D70 EH map and universal current-resident profile ownership unresolved.",
+    "Correct CRT library names retained; overlapping memcpy domain and pool throwing-release boundary must survive future composition."
+  ],
+  "cleanup_dependency_scope": [
+    {
+      "address": "00bb5380",
+      "end_inclusive": "00bb53e6",
+      "bytes": 103,
+      "coverage": "complete normal body inspected; no implementation claimed"
+    },
+    {
+      "address": "00be72c0",
+      "end_inclusive": "00be733b",
+      "bytes": 124,
+      "coverage": "complete normal body inspected; no implementation claimed"
+    },
+    {
+      "address": "00be7580",
+      "end_inclusive": "00be7648",
+      "bytes": 201,
+      "coverage": "complete normal body inspected; no implementation claimed"
+    },
+    {
+      "address": "00be7690",
+      "end_inclusive": "00be7758",
+      "bytes": 201,
+      "coverage": "complete normal body inspected; no implementation claimed"
+    },
+    {
+      "address": "00be7a70",
+      "end_inclusive": "00be7aa3",
+      "bytes": 52,
+      "coverage": "complete normal body inspected; no implementation claimed"
+    },
+    {
+      "address": "00be7bb0",
+      "end_inclusive": "00be7be3",
+      "bytes": 52,
+      "coverage": "complete normal body inspected; no implementation claimed"
+    },
+    {
+      "address": "00be66c0",
+      "end_inclusive": "00be6711",
+      "bytes": 82,
+      "coverage": "complete normal body inspected; no implementation claimed"
+    },
+    {
+      "address": "00be6720",
+      "end_inclusive": "00be675c",
+      "bytes": 61,
+      "coverage": "complete normal body inspected; no implementation claimed"
+    },
+    {
+      "address": "00be5d70",
+      "end_inclusive": "00be5dee",
+      "bytes": 127,
+      "coverage": "complete normal body only; BE5D70 EH remains unread"
+    }
+  ],
+  "raw_eh_dispatchers": [
+    {
+      "start": "00cc43a8",
+      "end_inclusive": "00cc43b1",
+      "end_exclusive": "00cc43b2",
+      "bytes": 10,
+      "no_ghidra_function": true,
+      "function": "00bb5590",
+      "func_info": "00dfdc90",
+      "transfer": "MOV EAX,FuncInfo; JMP00BF6B43; exact10-byte dispatcher beforeINT3 padding"
+    },
+    {
+      "start": "00cc4388",
+      "end_inclusive": "00cc4391",
+      "end_exclusive": "00cc4392",
+      "bytes": 10,
+      "no_ghidra_function": true,
+      "function": "00bb5380",
+      "func_info": "00dfdc64",
+      "transfer": "MOV EAX,FuncInfo; JMP00BF6B43; exact10-byte dispatcher beforeINT3 padding"
+    },
+    {
+      "start": "00cc6e6b",
+      "end_inclusive": "00cc6e74",
+      "end_exclusive": "00cc6e75",
+      "bytes": 10,
+      "no_ghidra_function": true,
+      "function": "00be7fa0",
+      "func_info": "00e017b8",
+      "transfer": "MOV EAX,FuncInfo; JMP00BF6B43; exact10-byte dispatcher beforeINT3 padding"
+    },
+    {
+      "start": "00cc6e8b",
+      "end_inclusive": "00cc6e94",
+      "end_exclusive": "00cc6e95",
+      "bytes": 10,
+      "no_ghidra_function": true,
+      "function": "00be80b0",
+      "func_info": "00e017e4",
+      "transfer": "MOV EAX,FuncInfo; JMP00BF6B43; exact10-byte dispatcher beforeINT3 padding"
+    },
+    {
+      "start": "00cc6e0e",
+      "end_inclusive": "00cc6e17",
+      "end_exclusive": "00cc6e18",
+      "bytes": 10,
+      "no_ghidra_function": true,
+      "function": "00be7bf0",
+      "func_info": "00e01738",
+      "transfer": "MOV EAX,FuncInfo; JMP00BF6B43; exact10-byte dispatcher beforeINT3 padding"
+    }
+  ],
+  "checklist": {
+    "read": "docs/WORKER_VERIFICATION_CHECKLIST.md, all10 rules",
+    "callee_before_contract": "Whole selected bodies and listed cleanup helpers inspected. Unread mutation/iterator callees kept as address-only contracts. Correct CRT names retained.",
+    "boundary_before_attribution": "Current prototypes and mechanical call checks, with exact inclusive/exclusive raw gaps and dispatcher ranges.",
+    "all_call_sites": "All five BB5590 and all eight allocation-leaf caller setups checked. Getter xrefs inventoried; remaining external caller setup explicitly outside scope.",
+    "producer_before_layout": "BB5590 and BE7FA0 writes establish owner words, untouched tree owner fields and1Ch node layout.",
+    "partial_projection": "No source implemented; complete/partial/unread analysis coverage and unresolved EH closure stated.",
+    "runtime_evidence": "No runtime causal claim or execution; this task is discovery only.",
+    "argument_counts": "RET4, RET8, RET14h, RET0Ch and callerADD ESP4/0Ch stated beside relevant contracts.",
+    "register_provenance": "Complete scoped listings establish EDI/ESI owner captures and EBX/EBP zero/captured values; no raw mid-body guess used for provenance.",
+    "lease": "Only seven requested addresses/two output files claimed; dependencies merely read, no annotations or ledger edits.",
+    "report_evidence": "68 call rows including three real raw-tail calls and two explicit indirect calls; correction rows carry was/is/evidence."
+  }
+}
