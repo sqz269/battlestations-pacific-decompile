@@ -139,3 +139,13 @@ That fixture compiles the final source and links existing parent build
 dependencies. It does not execute the complete resource-backed builder.
 `src/game_hosts_mission.cpp:763` still reports this action as unimplemented,
 so this packet does not claim executable menu, render or gameplay validation.
+
+
+## Correction from docs/ORCH5_MENU_INPUT_BATCH.md
+
+The spacing producer described as unresolved above has now been found in
+00582F30, after its current14 layout-binding call. The bounded582F45 fragment
+writes the same optional2B0/2B4 fields with the original double difference
+spills. It is separate from5861B0. The layout also owns the sole intrusive
+description lists; command views and row bindings alias those cells. The
+remaining registration phases and limits are in MAIN_MENU_SPACING.md.
