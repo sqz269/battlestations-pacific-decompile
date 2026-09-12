@@ -149,3 +149,11 @@ Ignored reproduction is under this worktree's `local/`: `prepare_particle_pool_a
 `particle-pool-byte-evidence-aj.json`. Full checkout build results and exact
 artifact hashes are recorded in the audit; compiling this new module is
 separately verified until primary source registration is integrated.
+
+## AJ combined integration verification
+
+The source is registered in bsp_core. The combined strict MSVC Win32 build and
+both existing CTests passed. The report records the focused fixture replay, exact
+call/tail checks, saved Ghidra name/signature preimages and comment readback.
+Required external runtime bindings, original exception ABI and gameplay remain
+limited as described above; this integration does not extend the fixture coverage.

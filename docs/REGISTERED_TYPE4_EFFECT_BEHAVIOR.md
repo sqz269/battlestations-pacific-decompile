@@ -206,3 +206,11 @@ for every query batch. No names/comments/signatures/definitions/saves changed.
 Missing live definitions are872020..87205B (last RET87205B, length1) and
 consumed curveBA9DA0..BA9E4A (last RET4 BA9E48, length3). The integrator owns
 any annotation/definition repair and refreshed exports.
+
+## AJ combined integration verification
+
+The source is registered in bsp_core. The combined strict MSVC Win32 build and
+both existing CTests passed. The report records the focused fixture replay, exact
+call/tail checks, saved Ghidra name/signature preimages and comment readback.
+Required external runtime bindings, original exception ABI and gameplay remain
+limited as described above; this integration does not extend the fixture coverage.

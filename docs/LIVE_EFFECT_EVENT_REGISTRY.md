@@ -98,3 +98,15 @@ Concrete event producer integration is recorded in the type-1/type-4 reports.
 Their model/particle runtime callees, native vtable compatibility, physical output,
 and gameplay remain separate requirements; this registry alone does not make
 those paths runnable.
+
+## Correction from docs/REGISTERED_MODEL_EFFECT_BEHAVIOR.md and docs/REGISTERED_TYPE4_EFFECT_BEHAVIOR.md
+
+AJ supplies the registered families' completion/deactivation entries and update
+entry sequencing, actual particle-model pool behavior, option singleton and default
+tracer curve evaluation. These routines pass the combined strict Win32 build and
+focused fixtures within their individual reports' coverage.
+
+Registry membership still borrows actual events. Successful physical model/tracer
+construction, canonical companions installed before registration, current virtual
+family dispatch and terminal owner teardown must be composed before these families
+can run through the application. No frame or gameplay validation is implied.

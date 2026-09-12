@@ -111,3 +111,11 @@ Native exception/unwind registration is not ABI-replaced, and allocation,
 Lua loading, refcount destruction, live dispatch wiring and game validation
 remain outside this packet. The evaluator is native-byte fixture tested;
 this is not a claim that the tracer effect has run in the game.
+
+## AJ combined integration verification
+
+The source is registered in bsp_core. The combined strict MSVC Win32 build and
+both existing CTests passed. The report records the focused fixture replay, exact
+call/tail checks, saved Ghidra name/signature preimages and comment readback.
+Required external runtime bindings, original exception ABI and gameplay remain
+limited as described above; this integration does not extend the fixture coverage.

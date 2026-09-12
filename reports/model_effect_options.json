@@ -278,6 +278,13 @@
       "function": "00c6afa0",
       "contract": "Read-only native EH dependency; actual guard section release.",
       "kind": "tail_jump"
+    },
+    {
+      "address": "00c6afad",
+      "native": "00bf6b43",
+      "function": "00c6afa8",
+      "kind": "tail_jump",
+      "contract": "Compiler EH dispatcher, analyzed only"
     }
   ],
   "caller_steps": [
@@ -493,5 +500,369 @@
     "Forced null allocation is a fixture branch, not actual CRT exhaustion behavior.",
     "Native stack-guard table write, asynchronous publication/fault order, broad app callback integration and gameplay unvalidated.",
     "No shared CMake or ledger edits; strict standalone compilation covers new source."
-  ]
+  ],
+  "source": "src/model_effect_options.cpp",
+  "integration_getter_boundary_repair": {
+    "reason": "51F6CA is an interior SUB ESP8 after51F6C5 global load in one complete51F6B0..51F765 getter; no xrefs target the interior. Its separate definition truncates native containing-function evidence.",
+    "before": {
+      "0051f6b0": {
+        "function": "Function: FUN_0051f6b0 at 0051f6b0\nSignature: undefined FUN_0051f6b0(void)\nEntry: 0051f6b0\nBody: 0051f6b0 - 0051f6c9",
+        "plate": {
+          "address": "0051f6b0",
+          "function_name": "FUN_0051f6b0"
+        }
+      },
+      "0051f6ca": {
+        "function": "Function: FUN_0051f6ca at 0051f6ca\nSignature: undefined FUN_0051f6ca(void)\nEntry: 0051f6ca\nBody: 0051f6ca - 0051f765",
+        "plate": {
+          "address": "0051f6ca",
+          "function_name": "FUN_0051f6ca"
+        }
+      }
+    },
+    "changes": [
+      {
+        "endpoint": "delete_function",
+        "address": "0051f6ca",
+        "result": {
+          "success": true,
+          "address": "0051f6ca",
+          "deleted_function": "FUN_0051f6ca",
+          "body_size": 156,
+          "message": "Function 'FUN_0051f6ca' deleted at 0051f6ca"
+        }
+      }
+    ],
+    "after": "0051f6b0 FUN_0051f6b0  undefined FUN_0051f6b0(void)  body 0051f6b0 - 0051f765\n0051f6ca FUN_0051f6b0  undefined FUN_0051f6b0(void)  body 0051f6b0 - 0051f765\n0051f770 FUN_0051f770  undefined FUN_0051f770(void)  body 0051f770 - 0051f798\n"
+  },
+  "integration_getter_definitions": {
+    "events": [
+      {
+        "recreate": "0051f6b0",
+        "previous": "Function: FUN_0051f6b0 at 0051f6b0\nSignature: undefined FUN_0051f6b0(void)\nEntry: 0051f6b0\nBody: 0051f6b0 - 0051f6c9",
+        "plate": null
+      },
+      {
+        "endpoint": "delete_function",
+        "body": {
+          "address": "0051f6b0"
+        },
+        "result": {
+          "success": true,
+          "address": "0051f6b0",
+          "deleted_function": "FUN_0051f6b0",
+          "body_size": 26,
+          "message": "Function 'FUN_0051f6b0' deleted at 0051f6b0"
+        }
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "0051f6b0",
+          "end_address": "0051f766"
+        },
+        "result": {
+          "success": true,
+          "start_address": "0051f6b0",
+          "end_address": "0051f765",
+          "bytes_disassembled": 182,
+          "message": "Successfully disassembled 182 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "0051f6b0",
+          "disassemble_first": false
+        },
+        "result": {
+          "success": true,
+          "address": "0051f6b0",
+          "function_name": "FUN_0051f6b0",
+          "entry_point": "0051f6b0",
+          "body_size": 182,
+          "message": "Function created successfully at 0051f6b0"
+        }
+      },
+      {
+        "defined": "0051f6b0",
+        "end": "0051f766",
+        "name": null,
+        "after": "Function: FUN_0051f6b0 at 0051f6b0\nSignature: undefined FUN_0051f6b0(void)\nEntry: 0051f6b0\nBody: 0051f6b0 - 0051f765"
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "0051f770",
+          "end_address": "0051f799"
+        },
+        "result": {
+          "success": true,
+          "start_address": "0051f770",
+          "end_address": "0051f798",
+          "bytes_disassembled": 41,
+          "message": "Successfully disassembled 41 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "0051f770",
+          "disassemble_first": false
+        },
+        "result": {
+          "success": true,
+          "address": "0051f770",
+          "function_name": "FUN_0051f770",
+          "entry_point": "0051f770",
+          "body_size": 38,
+          "message": "Function created successfully at 0051f770"
+        }
+      },
+      {
+        "defined": "0051f770",
+        "end": "0051f799",
+        "name": null,
+        "after": "Function: FUN_0051f770 at 0051f770\nSignature: undefined FUN_0051f770(void)\nEntry: 0051f770\nBody: 0051f770 - 0051f798"
+      },
+      {
+        "endpoint": "save_program",
+        "body": {},
+        "result": {
+          "error": "Unable to lock due to active transaction"
+        }
+      },
+      {
+        "endpoint": "save_program",
+        "body": {},
+        "result": {
+          "success": true,
+          "program": "battlestationspacific.exe",
+          "message": "Program saved successfully"
+        }
+      }
+    ]
+  },
+  "compiler_handlers": [
+    {
+      "address": "00c6afa8",
+      "name": "BSP_ModelEffectOptions_GetSingleton_ExceptionHandler",
+      "evidence": "Hypothesis, not a recovered symbol. Complete10-byte FH3 dispatcher C6AFA8..C6AFB1 loads EAX D94564 then tail BF6B43 atC6AFAD. MapD9455C state0->-1 C6AFA0 invokes captured-section cleanup411EE0. Same actual singleton section and depth. Live/disk SHA256 f03eff0a75575d38ff71bb14e91b0e96fac520a2727fa5125620778b9c9883c4. docs/MODEL_EFFECT_OPTIONS.md. Analyzed compiler support only, no reconstructed handler or original FH3 execution.",
+      "cpp_reconstructed": false
+    }
+  ],
+  "integration_definitions": {
+    "events": [
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00872020",
+          "end_address": "0087205c"
+        },
+        "result": {
+          "success": true,
+          "start_address": "00872020",
+          "end_address": "0087205b",
+          "bytes_disassembled": 60,
+          "message": "Successfully disassembled 60 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00872020",
+          "disassemble_first": false
+        },
+        "result": {
+          "success": true,
+          "address": "00872020",
+          "function_name": "FUN_00872020",
+          "entry_point": "00872020",
+          "body_size": 60,
+          "message": "Function created successfully at 00872020"
+        }
+      },
+      {
+        "defined": "00872020",
+        "end": "0087205c",
+        "name": null,
+        "after": "Function: FUN_00872020 at 00872020\nSignature: undefined FUN_00872020(void)\nEntry: 00872020\nBody: 00872020 - 0087205b"
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00ba9da0",
+          "end_address": "00ba9e4b"
+        },
+        "result": {
+          "success": true,
+          "start_address": "00ba9da0",
+          "end_address": "00ba9e4a",
+          "bytes_disassembled": 171,
+          "message": "Successfully disassembled 171 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00ba9da0",
+          "disassemble_first": false
+        },
+        "result": {
+          "success": true,
+          "address": "00ba9da0",
+          "function_name": "FUN_00ba9da0",
+          "entry_point": "00ba9da0",
+          "body_size": 171,
+          "message": "Function created successfully at 00ba9da0"
+        }
+      },
+      {
+        "defined": "00ba9da0",
+        "end": "00ba9e4b",
+        "name": null,
+        "after": "Function: FUN_00ba9da0 at 00ba9da0\nSignature: undefined FUN_00ba9da0(void)\nEntry: 00ba9da0\nBody: 00ba9da0 - 00ba9e4a"
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00c6afa8",
+          "end_address": "00c6afb2"
+        },
+        "result": {
+          "success": true,
+          "start_address": "00c6afa8",
+          "end_address": "00c6afb1",
+          "bytes_disassembled": 10,
+          "message": "Successfully disassembled 10 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00c6afa8",
+          "disassemble_first": false
+        },
+        "result": {
+          "success": true,
+          "address": "00c6afa8",
+          "function_name": "FUN_00c6afa8",
+          "entry_point": "00c6afa8",
+          "body_size": 10,
+          "message": "Function created successfully at 00c6afa8"
+        }
+      },
+      {
+        "defined": "00c6afa8",
+        "end": "00c6afb2",
+        "name": null,
+        "after": "Function: FUN_00c6afa8 at 00c6afa8\nSignature: undefined FUN_00c6afa8(void)\nEntry: 00c6afa8\nBody: 00c6afa8 - 00c6afb1"
+      },
+      {
+        "endpoint": "save_program",
+        "body": {},
+        "result": {
+          "error": "Unable to lock due to active transaction"
+        }
+      },
+      {
+        "endpoint": "save_program",
+        "body": {},
+        "result": {
+          "success": true,
+          "program": "battlestationspacific.exe",
+          "message": "Program saved successfully"
+        }
+      }
+    ]
+  },
+  "integration_validation": {
+    "source_sha256": {
+      "src/model_effect_options.cpp": "9af0e34d14808f12266e30a756b47dffef4ed35921af0d12f95eae846a2d6399"
+    },
+    "source_matches_reviewed_worker_after_newline_normalization": true,
+    "build": "local/particle-model-aj-final-build.log: strict MSVC Win32, all six AJ sources in bsp_core, both existing CTests passed",
+    "call_verification": "local/particle-model-aj-final-call-verification.log: all six reports passed68 rows; indirect IAT/current slots remain explicitly identified and are not validated as runtime bindings by this checker",
+    "game_validated": false,
+    "original_binary_replacement": false,
+    "fixtures": [
+      "local/model-options-probe-aj-merged.log"
+    ],
+    "combined_library_sha256": "2beea73a28fcf6396a88d7b1256d56c48b2ccd03b2e2433f539ffc4ae36252d4",
+    "fixture_library_note": "Focused fixture replay passed with this combined library; options failure instrumentation recompiles only the reviewed module allocation/free boundaries, and the type4 fixture includes its source to reach the internal spill helper."
+  },
+  "ghidra_annotation_audit": {
+    "record": "local/ghidra-annotations-20260912T044640Z.json",
+    "readback": "local/particle-model-aj-comments.json",
+    "project_saved": true,
+    "names_and_evidence_verified": true,
+    "prior_comments_preserved": true,
+    "changes": [
+      {
+        "address": "0051f6b0",
+        "before": {
+          "address": "0051f6b0",
+          "function_name": "FUN_0051f6b0"
+        },
+        "after": {
+          "address": "0051f6b0",
+          "name": "BSP_ModelEffectOptions_GetSingleton",
+          "evidence": "Hypothesis, not a recovered symbol. Live and installed PE full body/last instruction match; original complete-byte focused actual-lifetime fixture and separate strict MSVC Win32 source compile pass. See docs/MODEL_EFFECT_OPTIONS.md and this report host/caller/EH records. Parameters: cdecl(), EAX actual current00F8C27C; RET. Complete live/disk SHA256 bb320ee47b11f7ee15f21690092ebe0bace023594ac7ddf47df3ca7a02dbbf25. New C++ interfaces; original exception/object/vtable ABI and gameplay unvalidated. reports/model_effect_options.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0051f770",
+        "before": {
+          "address": "0051f770",
+          "function_name": "FUN_0051f770"
+        },
+        "after": {
+          "address": "0051f770",
+          "name": "BSP_ModelEffectOptions_ScalarDelete",
+          "evidence": "Hypothesis, not a recovered symbol. Live and installed PE full body/last instruction match; original complete-byte focused actual-lifetime fixture and separate strict MSVC Win32 source compile pass. See docs/MODEL_EFFECT_OPTIONS.md and this report host/caller/EH records. Parameters: ECX primary owner; stack uint32 flags (low byte bit0 tested); EAX original owner; RET4. Complete live/disk SHA256 62fcac5b7f25230e3d9b96c6fa51f7db027f28b90ec38470edaaa74036b3ce96. New C++ interfaces; original exception/object/vtable ABI and gameplay unvalidated. reports/model_effect_options.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00c6afa8",
+        "before": {
+          "address": "00c6afa8",
+          "function_name": "FUN_00c6afa8"
+        },
+        "after": {
+          "address": "00c6afa8",
+          "name": "BSP_ModelEffectOptions_GetSingleton_ExceptionHandler",
+          "evidence": "Hypothesis, not a recovered symbol. Complete10-byte FH3 dispatcher C6AFA8..C6AFB1 loads EAX D94564 then tail BF6B43 atC6AFAD. MapD9455C state0->-1 C6AFA0 invokes captured-section cleanup411EE0. Same actual singleton section and depth. Live/disk SHA256 f03eff0a75575d38ff71bb14e91b0e96fac520a2727fa5125620778b9c9883c4. docs/MODEL_EFFECT_OPTIONS.md. Analyzed compiler support only, no reconstructed handler or original FH3 execution."
+        },
+        "status": "applied"
+      }
+    ]
+  },
+  "ghidra_signature_audit": {
+    "record": "local/particle-model-signatures-aj.json",
+    "project_saved": true,
+    "signatures_verified": true,
+    "before": {
+      "0051f6b0": "0051f6b0 BSP_ModelEffectOptions_GetSingleton  undefined BSP_ModelEffectOptions_GetSingleton(void)  body 0051f6b0 - 0051f765\n",
+      "0051f770": "0051f770 BSP_ModelEffectOptions_ScalarDelete  undefined BSP_ModelEffectOptions_ScalarDelete(void)  body 0051f770 - 0051f798\n"
+    },
+    "changes": [
+      {
+        "address": "0051f6b0",
+        "prototype": "void * __cdecl BSP_ModelEffectOptions_GetSingleton(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 0051f6b0 with __cdecl calling convention"
+        }
+      },
+      {
+        "address": "0051f770",
+        "prototype": "void * __thiscall BSP_ModelEffectOptions_ScalarDelete(uint flags)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 0051f770 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ],
+    "parameter_note": "ECX this is supplied implicitly by Ghidra; only native stack arguments are written. AL booleans, x87 ST0 curve return, RET4 low-byte stack DWORD and RET8 ordered endpoint arguments retained. AF6B60 discards incoming ECX; compiler EH descriptors remain opaque and have name/evidence only."
+  }
 }

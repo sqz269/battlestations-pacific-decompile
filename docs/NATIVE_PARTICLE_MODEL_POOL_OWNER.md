@@ -65,3 +65,11 @@ and reconstructed static callbacks passed in separate processes through real
 CRT exit. Allocation in this fixture uses the worker's actual pool implementation.
 No permanent tests were added. Native ABI substitution, exception dispatch,
 successful particle-model construction, rendering and gameplay remain unvalidated.
+
+## AJ combined integration verification
+
+The source is registered in bsp_core. The combined strict MSVC Win32 build and
+both existing CTests passed. The report records the focused fixture replay, exact
+call/tail checks, saved Ghidra name/signature preimages and comment readback.
+Required external runtime bindings, original exception ABI and gameplay remain
+limited as described above; this integration does not extend the fixture coverage.

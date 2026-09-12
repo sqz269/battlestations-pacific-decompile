@@ -475,10 +475,142 @@
     ]
   },
   "integration_validation": {
-    "build": "local/particle-model-aj-combined-build.log: strict MSVC Win32 and both existing CTests passed",
-    "call_verification": "Pending final combined check",
+    "build": "local/particle-model-aj-final-build.log: strict MSVC Win32, all six AJ sources in bsp_core, both existing CTests passed",
+    "call_verification": "local/particle-model-aj-final-call-verification.log: all six reports passed68 rows; indirect IAT/current slots remain explicitly identified and are not validated as runtime bindings by this checker",
     "game_validated": false,
-    "source_sha256": "e9677140a01fc6b7d8ea00dfdf9a11048806145e03b27fa4348dcf6d3cf82086",
-    "newline_note": "Worker hashes retain their recorded raw CRLF preimages; integrated source is Git-normalized LF, compared after newline normalization."
+    "source_sha256": {
+      "src/native_particle_model_pool_allocate.cpp": "e9677140a01fc6b7d8ea00dfdf9a11048806145e03b27fa4348dcf6d3cf82086"
+    },
+    "newline_note": "Worker hashes retain their recorded raw CRLF preimages; integrated source is Git-normalized LF, compared after newline normalization.",
+    "fixtures": [
+      "local/particle_pool_probe_aj_merged.log"
+    ],
+    "original_binary_replacement": false,
+    "combined_library_sha256": "2beea73a28fcf6396a88d7b1256d56c48b2ccd03b2e2433f539ffc4ae36252d4",
+    "fixture_library_note": "Fixture replay passed against the integrated owner/allocation/model library before adding independent options/curve/type4 sources. Final six-module build passed; their relevant source implementations remain unchanged."
+  },
+  "ghidra_annotation_audit": {
+    "record": "local/ghidra-annotations-20260912T044640Z.json",
+    "readback": "local/particle-model-aj-comments.json",
+    "project_saved": true,
+    "names_and_evidence_verified": true,
+    "prior_comments_preserved": true,
+    "changes": [
+      {
+        "address": "00af5c20",
+        "before": {
+          "address": "00af5c20",
+          "function_name": "FUN_00af5c20"
+        },
+        "after": {
+          "address": "00af5c20",
+          "name": "BSP_NativeParticleModelPool_InitializeSlab",
+          "evidence": "Hypothesis, not a recovered symbol. Initialize32 slab IDs at payload2DC stride2E0 and WORD free indices31..0 at5C00; freecount5C40=32, payload/padding preserved. Complete original-body fixture with actual owner and OS lock passed, including1057 allocations, table32->66, full slabs, reuse, aliasing and real FFFFFFF8 allocation failure. docs/NATIVE_PARTICLE_MODEL_POOL_ALLOCATE.md. Parameters: ECX actual slab; stack slab ID; EAX same slab; RET4. Complete live/disk SHA256 04b293c47a58187ef356f85aa8e5b48602be3393b69cf0c26d759ecbad65b2f5. New C++ interface; required real application bindings, original exception ABI and gameplay unvalidated. reports/native_particle_model_pool_allocate.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af60b0",
+        "before": {
+          "address": "00af60b0",
+          "function_name": "FUN_00af60b0"
+        },
+        "after": {
+          "address": "00af60b0",
+          "name": "BSP_NativeParticleModelPool_ReturnSlot",
+          "evidence": "Hypothesis, not a recovered symbol. Same actual pool lock; slot2DC ID, signed wrapped slot-minus-slab division by736, WORD stack push with aliased freecount reload, unsigned earliest minimum, decrement/leave. Complete original-body fixture with actual owner and OS lock passed, including1057 allocations, table32->66, full slabs, reuse, aliasing and real FFFFFFF8 allocation failure. docs/NATIVE_PARTICLE_MODEL_POOL_ALLOCATE.md. Parameters: ECX actual initialized38h pool; stack raw slot; RET4. Complete live/disk SHA256 1b6cfa285519e23a4b1421e0968f05ed302672001f0dc7816a21db33f328d892. New C++ interface; required real application bindings, original exception ABI and gameplay unvalidated. reports/native_particle_model_pool_allocate.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af62f0",
+        "before": {
+          "address": "00af62f0",
+          "function_name": "FUN_00af62f0"
+        },
+        "after": {
+          "address": "00af62f0",
+          "name": "BSP_ParticleModel_ReturnStorage",
+          "evidence": "Hypothesis, not a recovered symbol. Capture ECX raw slot, select actualF8D2D0, pass one stack word to AF60B0, RET. Constructor unwind raw storage return only, no payload destruction. Complete original-body fixture with actual owner and OS lock passed, including1057 allocations, table32->66, full slabs, reuse, aliasing and real FFFFFFF8 allocation failure. docs/NATIVE_PARTICLE_MODEL_POOL_ALLOCATE.md. Parameters: ECX raw slot; select00F8D2D0; CALL AF60B0; RET. Complete live/disk SHA256 01b8aac164b4a642dd1a93f11562f86ef982ec89556affaa38ca3ac9b00b074c. New C++ interface; required real application bindings, original exception ABI and gameplay unvalidated. reports/native_particle_model_pool_allocate.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af69e0",
+        "before": {
+          "address": "00af69e0",
+          "function_name": "FUN_00af69e0"
+        },
+        "after": {
+          "address": "00af69e0",
+          "name": "BSP_NativeParticleModelPool_AllocateSlot",
+          "evidence": "Hypothesis, not a recovered symbol. Actual F8D2D0 pool lock/depth, raw5C44 slab creation, wrapped2cap+2 table growth/publication, restored AF6A76 free continuation, free-stack pop and subsequent nonfull scan. Native allocation exceptions retain lock/depth and earlier publications, including cap; no rollback. Complete original-body fixture with actual owner and OS lock passed, including1057 allocations, table32->66, full slabs, reuse, aliasing and real FFFFFFF8 allocation failure. docs/NATIVE_PARTICLE_MODEL_POOL_ALLOCATE.md. Parameters: ECX actual initialized38h pool; EAX raw2E0h slot; RET. Complete live/disk SHA256 410941d2b40868b9ff012aefa99628585e2ccf75b258a78b0b18b3a046d16c4a. New C++ interface; required real application bindings, original exception ABI and gameplay unvalidated. reports/native_particle_model_pool_allocate.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af6b60",
+        "before": {
+          "address": "00af6b60",
+          "function_name": "CG_static_dtor_stub_00af6b60"
+        },
+        "after": {
+          "address": "00af6b60",
+          "name": "BSP_ParticleModel_AllocateStorage",
+          "evidence": "Hypothesis, not a recovered symbol. Discard incoming ECX, select same actualF8D2D0, tail AF69E0 allocation. Corrects misleading static destructor stub name. Complete original-body fixture with actual owner and OS lock passed, including1057 allocations, table32->66, full slabs, reuse, aliasing and real FFFFFFF8 allocation failure. docs/NATIVE_PARTICLE_MODEL_POOL_ALLOCATE.md. Parameters: overwrite ECX with00F8D2D0; tailJMP AF69E0; EAX slot. Complete live/disk SHA256 14e3938eb044413582b6325cb2930e41a4ff59e19eee4eca388d09bd9a7e539b. New C++ interface; required real application bindings, original exception ABI and gameplay unvalidated. reports/native_particle_model_pool_allocate.json."
+        },
+        "status": "applied"
+      }
+    ]
+  },
+  "ghidra_signature_audit": {
+    "record": "local/particle-model-signatures-aj.json",
+    "project_saved": true,
+    "signatures_verified": true,
+    "before": {
+      "00af5c20": "00af5c20 BSP_NativeParticleModelPool_InitializeSlab  undefined BSP_NativeParticleModelPool_InitializeSlab(void)  body 00af5c20 - 00af5c62\n",
+      "00af69e0": "00af69e0 BSP_NativeParticleModelPool_AllocateSlot  undefined BSP_NativeParticleModelPool_AllocateSlot(void)  body 00af69e0 - 00af6b1b\n",
+      "00af60b0": "00af60b0 BSP_NativeParticleModelPool_ReturnSlot  undefined BSP_NativeParticleModelPool_ReturnSlot(void)  body 00af60b0 - 00af611b\n",
+      "00af6b60": "00af6b60 BSP_ParticleModel_AllocateStorage  undefined BSP_ParticleModel_AllocateStorage(void)  body 00af6b60 - 00af6b69\n",
+      "00af62f0": "00af62f0 BSP_ParticleModel_ReturnStorage  undefined BSP_ParticleModel_ReturnStorage(void)  body 00af62f0 - 00af62fb\n"
+    },
+    "changes": [
+      {
+        "address": "00af5c20",
+        "prototype": "void * __thiscall BSP_NativeParticleModelPool_InitializeSlab(uint slab_index)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af5c20 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af69e0",
+        "prototype": "void * __thiscall BSP_NativeParticleModelPool_AllocateSlot(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af69e0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af60b0",
+        "prototype": "void __thiscall BSP_NativeParticleModelPool_ReturnSlot(void * slot)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af60b0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af6b60",
+        "prototype": "void * __cdecl BSP_ParticleModel_AllocateStorage(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af6b60 with __cdecl calling convention"
+        }
+      },
+      {
+        "address": "00af62f0",
+        "prototype": "void __thiscall BSP_ParticleModel_ReturnStorage(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af62f0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ],
+    "parameter_note": "ECX this is supplied implicitly by Ghidra; only native stack arguments are written. AL booleans, x87 ST0 curve return, RET4 low-byte stack DWORD and RET8 ordered endpoint arguments retained. AF6B60 discards incoming ECX; compiler EH descriptors remain opaque and have name/evidence only."
   }
 }

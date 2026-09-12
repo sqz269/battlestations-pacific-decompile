@@ -321,5 +321,19 @@
         "status": "applied"
       }
     ]
+  },
+  "aj_followup": {
+    "reports": [
+      "reports/native_particle_model_pool_owner.json",
+      "reports/native_particle_model_pool_allocate.json",
+      "reports/registered_model_effect_behavior.json",
+      "reports/registered_type4_effect_behavior.json",
+      "reports/model_effect_options.json",
+      "reports/tracer_parameter_curve.json"
+    ],
+    "build": "local/particle-model-aj-final-build.log: strict Win32 and2 existing CTests passed",
+    "established": "Actual particle-model pool ownership/allocation/return/trim/static hooks, registered model/type4 callback entry sequencing, actual options singleton and default curve evaluator. Individual reports retain required runtime contracts and fixture boundaries.",
+    "remaining": "Real model/tracer construction and full lower-level updates; canonical family/owner/current-slot application composition; native exception ABI and gameplay.",
+    "game_validated": false
   }
 }

@@ -123,3 +123,11 @@ Validation results, hashes and exact callable rows are recorded in
 includes this newly added source; the existing CMake build is also run but does
 not yet include this source because shared build metadata is integrator-owned.
 No native original-ABI replacement, game execution or visual validation is claimed.
+
+## AJ combined integration verification
+
+The source is registered in bsp_core. The combined strict MSVC Win32 build and
+both existing CTests passed. The report records the focused fixture replay, exact
+call/tail checks, saved Ghidra name/signature preimages and comment readback.
+Required external runtime bindings, original exception ABI and gameplay remain
+limited as described above; this integration does not extend the fixture coverage.

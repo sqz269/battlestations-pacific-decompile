@@ -35,7 +35,15 @@
       "inclusive_end": "00ba9e4a",
       "abi": "MSVC x86 __thiscall; ECX owner; one binary32 stack argument; RET 4; x87 ST0 result",
       "rounding": "exact x87 comparisons and FSUB/FMUL/FADD; interpolation FSTP32/FLD32 retained",
-      "mutates": "owner+18 current segment only"
+      "mutates": "owner+18 current segment only",
+      "source": "src/tracer_parameter_curve.cpp",
+      "cpp_symbol": "TracerParameterCurveStorage::sample_00ba9da0",
+      "original_abi": "MSVC x86 __thiscall; ECX owner; one binary32 stack argument; RET 4; x87 ST0 result",
+      "length": 171,
+      "sha256": "d7ad8f9a4e072bc1e1646ccbb260f17f7fde0691a1103dff976a2e858ae3964a",
+      "live_disk_equal": true,
+      "ghidra_name": "BSP_TracerParameterCurve_Sample",
+      "evidence": "Complete cached piecewise-linear evaluator preserves native x87 comparisons, unordered branches, cache traversal and FSTP32/FLD32 interpolation result; actual1Ch owner and12-byte records from BAC670 producer. 66816 original-byte calls across12 x87 control words passed. docs/TRACER_PARAMETER_CURVE.md. Real Lua loading, lifetime and current virtual dispatch remain external."
     },
     {
       "address": "00bacaa0",
@@ -45,7 +53,15 @@
       "coverage": "complete normal-return initialized state; native SEH/unwind scaffolding omitted",
       "inclusive_end": "00bacb05",
       "abi": "MSVC x86 __thiscall; ECX fresh storage; no stack arguments; RET; EAX same storage",
-      "folded_effects": "unobserved transient base vtable CEB130 and BAC5E0(0) on freshly zeroed storage"
+      "folded_effects": "unobserved transient base vtable CEB130 and BAC5E0(0) on freshly zeroed storage",
+      "source": "src/tracer_parameter_curve.cpp",
+      "cpp_symbol": "TracerParameterCurveStorage::initialize_00bacaa0",
+      "original_abi": "MSVC x86 __thiscall; ECX fresh storage; no stack arguments; RET; EAX same storage",
+      "length": 102,
+      "sha256": "94cd074b533e1a88b1e8b4eb20166dc14e4a93c10374febfbaec79a87c095126",
+      "live_disk_equal": true,
+      "ghidra_name": "BSP_TracerParameterCurve_Construct",
+      "evidence": "Complete normal-return initialized state of fresh1Ch owner: D63FFC/count1/null storage,size/capacity/pointcount/cache0. Native transient base publication and resize(0) folded, EH scaffolding omitted; constructor initialized-state check only, not original-constructor differential. docs/TRACER_PARAMETER_CURVE.md. Real Lua loading, lifetime and current virtual dispatch remain external."
     }
   ],
   "host_steps": [
@@ -107,10 +123,27 @@
   "validation": {
     "strict_compile": "passed MSVC Win32 /std:c++17 /EHsc /W4 /WX /O2",
     "original_byte_differential": "passed 66816 calls across 12 x87 precision/rounding control words",
-    "compared": ["full owner state", "80-bit ST0", "FSTP32 result", "x87 status/control", "existing x87 sentinel", "EBX/EDI", "RET4 stack balance"],
+    "compared": [
+      "full owner state",
+      "80-bit ST0",
+      "FSTP32 result",
+      "x87 status/control",
+      "existing x87 sentinel",
+      "EBX/EDI",
+      "RET4 stack balance"
+    ],
     "constructor_state": "passed returned pointer and all 1Ch owner fields after filling with A5 bytes",
     "fixture_directory": "local/tracer_curve_probe",
-    "fixture_files": ["extract.py", "original.inc", "original.bin", "bytes.json", "probe.cpp", "build.cmd", "probe.exe", "result.log"],
+    "fixture_files": [
+      "extract.py",
+      "original.inc",
+      "original.bin",
+      "bytes.json",
+      "probe.cpp",
+      "build.cmd",
+      "probe.exe",
+      "result.log"
+    ],
     "manifest": "probe links /MANIFEST:EMBED",
     "repository_build": "scripts/build.ps1 passed Release Win32; 1/1 configured test passed (reconstructed_math). CMake unchanged, so the new curve source was compiled separately by the strict fixture build, not added to the baseline target.",
     "call_report_checker": "6 call rows checked; 4 direct rows pass; 2 consumer rows fail only because BA9DA0 has no live function definition; indirect CALL instructions and containing function872790 verified",
@@ -122,5 +155,213 @@
     "current virtual-slot dispatch binding in type4 runtime, including non-BA9DA0 slots",
     "constructor native exception/unwind ABI is omitted",
     "BABFE0 live body omits BAC053..BAC05C after _free; disk tail inspected only"
+  ],
+  "integration_definitions": {
+    "events": [
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00872020",
+          "end_address": "0087205c"
+        },
+        "result": {
+          "success": true,
+          "start_address": "00872020",
+          "end_address": "0087205b",
+          "bytes_disassembled": 60,
+          "message": "Successfully disassembled 60 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00872020",
+          "disassemble_first": false
+        },
+        "result": {
+          "success": true,
+          "address": "00872020",
+          "function_name": "FUN_00872020",
+          "entry_point": "00872020",
+          "body_size": 60,
+          "message": "Function created successfully at 00872020"
+        }
+      },
+      {
+        "defined": "00872020",
+        "end": "0087205c",
+        "name": null,
+        "after": "Function: FUN_00872020 at 00872020\nSignature: undefined FUN_00872020(void)\nEntry: 00872020\nBody: 00872020 - 0087205b"
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00ba9da0",
+          "end_address": "00ba9e4b"
+        },
+        "result": {
+          "success": true,
+          "start_address": "00ba9da0",
+          "end_address": "00ba9e4a",
+          "bytes_disassembled": 171,
+          "message": "Successfully disassembled 171 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00ba9da0",
+          "disassemble_first": false
+        },
+        "result": {
+          "success": true,
+          "address": "00ba9da0",
+          "function_name": "FUN_00ba9da0",
+          "entry_point": "00ba9da0",
+          "body_size": 171,
+          "message": "Function created successfully at 00ba9da0"
+        }
+      },
+      {
+        "defined": "00ba9da0",
+        "end": "00ba9e4b",
+        "name": null,
+        "after": "Function: FUN_00ba9da0 at 00ba9da0\nSignature: undefined FUN_00ba9da0(void)\nEntry: 00ba9da0\nBody: 00ba9da0 - 00ba9e4a"
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00c6afa8",
+          "end_address": "00c6afb2"
+        },
+        "result": {
+          "success": true,
+          "start_address": "00c6afa8",
+          "end_address": "00c6afb1",
+          "bytes_disassembled": 10,
+          "message": "Successfully disassembled 10 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00c6afa8",
+          "disassemble_first": false
+        },
+        "result": {
+          "success": true,
+          "address": "00c6afa8",
+          "function_name": "FUN_00c6afa8",
+          "entry_point": "00c6afa8",
+          "body_size": 10,
+          "message": "Function created successfully at 00c6afa8"
+        }
+      },
+      {
+        "defined": "00c6afa8",
+        "end": "00c6afb2",
+        "name": null,
+        "after": "Function: FUN_00c6afa8 at 00c6afa8\nSignature: undefined FUN_00c6afa8(void)\nEntry: 00c6afa8\nBody: 00c6afa8 - 00c6afb1"
+      },
+      {
+        "endpoint": "save_program",
+        "body": {},
+        "result": {
+          "error": "Unable to lock due to active transaction"
+        }
+      },
+      {
+        "endpoint": "save_program",
+        "body": {},
+        "result": {
+          "success": true,
+          "program": "battlestationspacific.exe",
+          "message": "Program saved successfully"
+        }
+      }
+    ]
+  },
+  "integration_validation": {
+    "source_sha256": {
+      "src/tracer_parameter_curve.cpp": "cb74d5453fe449df25bd98c98cec2be0ab290d54ad04534facb6be601c46d201"
+    },
+    "source_matches_reviewed_worker_after_newline_normalization": true,
+    "build": "local/particle-model-aj-final-build.log: strict MSVC Win32, all six AJ sources in bsp_core, both existing CTests passed",
+    "call_verification": "local/particle-model-aj-final-call-verification.log: all six reports passed68 rows; indirect IAT/current slots remain explicitly identified and are not validated as runtime bindings by this checker",
+    "game_validated": false,
+    "original_binary_replacement": false,
+    "fixtures": [
+      "local/tracer-curve-probe-aj-merged.log"
+    ],
+    "combined_library_sha256": "2beea73a28fcf6396a88d7b1256d56c48b2ccd03b2e2433f539ffc4ae36252d4",
+    "fixture_library_note": "Focused fixture replay passed with this combined library; options failure instrumentation recompiles only the reviewed module allocation/free boundaries, and the type4 fixture includes its source to reach the internal spill helper.",
+    "constructor_fixture_note": "All1Ch fields and EAX state checked on reconstructed constructor; only BA9DA0 evaluator executes complete original bytes in this fixture."
+  },
+  "ghidra_annotation_audit": {
+    "record": "local/ghidra-annotations-20260912T044640Z.json",
+    "readback": "local/particle-model-aj-comments.json",
+    "project_saved": true,
+    "names_and_evidence_verified": true,
+    "prior_comments_preserved": true,
+    "changes": [
+      {
+        "address": "00ba9da0",
+        "before": {
+          "address": "00ba9da0",
+          "function_name": "FUN_00ba9da0"
+        },
+        "after": {
+          "address": "00ba9da0",
+          "name": "BSP_TracerParameterCurve_Sample",
+          "evidence": "Hypothesis, not a recovered symbol. Complete cached piecewise-linear evaluator preserves native x87 comparisons, unordered branches, cache traversal and FSTP32/FLD32 interpolation result; actual1Ch owner and12-byte records from BAC670 producer. 66816 original-byte calls across12 x87 control words passed. docs/TRACER_PARAMETER_CURVE.md. Real Lua loading, lifetime and current virtual dispatch remain external. Parameters: MSVC x86 __thiscall; ECX owner; one binary32 stack argument; RET 4; x87 ST0 result. Complete live/disk SHA256 d7ad8f9a4e072bc1e1646ccbb260f17f7fde0691a1103dff976a2e858ae3964a. New C++ interfaces; original exception/object/vtable ABI and gameplay unvalidated. reports/tracer_parameter_curve.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bacaa0",
+        "before": {
+          "address": "00bacaa0",
+          "function_name": "FUN_00bacaa0"
+        },
+        "after": {
+          "address": "00bacaa0",
+          "name": "BSP_TracerParameterCurve_Construct",
+          "evidence": "Hypothesis, not a recovered symbol. Complete normal-return initialized state of fresh1Ch owner: D63FFC/count1/null storage,size/capacity/pointcount/cache0. Native transient base publication and resize(0) folded, EH scaffolding omitted; constructor initialized-state check only, not original-constructor differential. docs/TRACER_PARAMETER_CURVE.md. Real Lua loading, lifetime and current virtual dispatch remain external. Parameters: MSVC x86 __thiscall; ECX fresh storage; no stack arguments; RET; EAX same storage. Complete live/disk SHA256 94cd074b533e1a88b1e8b4eb20166dc14e4a93c10374febfbaec79a87c095126. New C++ interfaces; original exception/object/vtable ABI and gameplay unvalidated. reports/tracer_parameter_curve.json."
+        },
+        "status": "applied"
+      }
+    ]
+  },
+  "ghidra_signature_audit": {
+    "record": "local/particle-model-signatures-aj.json",
+    "project_saved": true,
+    "signatures_verified": true,
+    "before": {
+      "00ba9da0": "00ba9da0 BSP_TracerParameterCurve_Sample  undefined BSP_TracerParameterCurve_Sample(void)  body 00ba9da0 - 00ba9e4a\n",
+      "00bacaa0": "00bacaa0 BSP_TracerParameterCurve_Construct  undefined BSP_TracerParameterCurve_Construct(void)  body 00bacaa0 - 00bacb05\n"
+    },
+    "changes": [
+      {
+        "address": "00ba9da0",
+        "prototype": "float __thiscall BSP_TracerParameterCurve_Sample(float argument)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00ba9da0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00bacaa0",
+        "prototype": "void * __thiscall BSP_TracerParameterCurve_Construct(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00bacaa0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ],
+    "parameter_note": "ECX this is supplied implicitly by Ghidra; only native stack arguments are written. AL booleans, x87 ST0 curve return, RET4 low-byte stack DWORD and RET8 ordered endpoint arguments retained. AF6B60 discards incoming ECX; compiler EH descriptors remain opaque and have name/evidence only."
+  },
+  "remaining_after_aj": [
+    "Real Lua loader, record allocation/growth and lifetime binding.",
+    "Current virtual-slot dispatch, including non-BA9DA0 replacements.",
+    "Native constructor exception ABI and gameplay validation.",
+    "BABFE0 post-free publication gap BAC053..BAC05C remains evidence-only and awaits its separately leased loader/storage packet."
   ]
 }

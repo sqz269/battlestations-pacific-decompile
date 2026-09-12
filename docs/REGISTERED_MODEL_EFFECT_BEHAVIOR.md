@@ -129,3 +129,11 @@ three current type-1 virtuals to existing event owners, and supply the required
 callees. AF74A0 construction and the F8D2D0 pool lifetime remain separate work.
 The repository build/check outcome and exact call-row verifier status are recorded
 in the report; they do not replace validation of the required application path.
+
+## AJ combined integration verification
+
+The source is registered in bsp_core. The combined strict MSVC Win32 build and
+both existing CTests passed. The report records the focused fixture replay, exact
+call/tail checks, saved Ghidra name/signature preimages and comment readback.
+Required external runtime bindings, original exception ABI and gameplay remain
+limited as described above; this integration does not extend the fixture coverage.
