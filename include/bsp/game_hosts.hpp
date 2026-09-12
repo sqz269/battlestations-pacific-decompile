@@ -61,6 +61,7 @@ class GameLocaleHost;
 class GameFontHost;
 // Milestone 2b, defined in bsp/game_hosts_frontend.hpp.
 class GameFrontendHost;
+class GameSingletonHost;
 // Milestone 2c, defined in bsp/game_hosts_menu.hpp and
 // bsp/game_hosts_init_tail.hpp.
 class GameMenuHost;
@@ -579,6 +580,7 @@ private:
     GameStateSlot game_state_;          // *(00e188a8)+5D4h
     GameFrameProfiler* profiler_{};     // 004c1dd0's counter arrays
     GameMenuHost* menu_{};              // the front-end registry and the main-menu path
+    GameSingletonHost* singletons_{};   // survives menu teardown through 008F8449
     GameDecalTable* decals_{};          // phase 9, 00740840
     IDirect3D9* renderer_api_{};
     NativeRendererParametersOwner* renderer_parameters_{};
