@@ -45,6 +45,10 @@ public:
     virtual void before_properties(GuiWidgetOwner&, const GuiTable&) {}
     // Derived destruction precedes the base00AA9730 node/tree release.
     virtual void before_scene_release(GuiWidgetOwner&) {}
+    // Pure host preflight, run for the entire retained tree before any node
+    // release. It must not mutate state or call game callbacks. Distinct from
+    // the actual derived teardown above, whose native order is preserved.
+    virtual void before_host_tree_retirement(GuiWidgetOwner&) const {}
     //00AA8372/00AA837B derived type-query branch, after child+20 and before
     // primary unlink. Text supplies the live descriptor predicate and AB73B0.
     // Existing supported profiles own no secondary scene nodes.
