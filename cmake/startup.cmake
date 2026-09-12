@@ -13,6 +13,7 @@
 #
 # The integrator folds entries into CMakeLists.txt when the owning packet closes.
 cmake_minimum_required(VERSION 3.19)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_vfs_factory_registration.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_file_access_log_owner.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/air_operations.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/avoid_zone_owner.cpp)
