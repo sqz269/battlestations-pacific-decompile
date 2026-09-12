@@ -1,0 +1,357 @@
+{
+  "packet": "cc_ai_arm_tail",
+  "owner": "agent/cc-ai-arm-tail",
+  "date": "2026-09-12",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "http://127.0.0.1:8089 (read-only for this packet; no Ghidra mutation was made)",
+  "range": "009EEAAB-009EF226, the tail of BSP_ShipAi_ControlsStep 009ED6B0",
+  "docs": ["docs/SHIP_AI_NAVIGATION_ARM_TAIL.md"],
+  "sources": [
+    "include/bsp/ship_ai_navigation_arm_tail.hpp",
+    "src/ship_ai_navigation_arm_tail.cpp"
+  ],
+  "verification": {
+    "build": "scripts/build.ps1, MSVC Win32 Release, /W4 /WX, clean; ship_ai_navigation_arm_tail.obj is in bsp_core",
+    "tests": "existing reconstructed_math suite passed, 1/1; no new test case added",
+    "runtime": "not exercised: bsp_game.exe has no host for this range yet, so no run log backs any claim here",
+    "listing": "every instruction of 009EEAAB..009EF226 read from the stored Ghidra listing; 009D5240-009D5293 read from the disk bytes"
+  },
+
+  "routines": [
+    {
+      "name": "ship_ai_navigation_arm_tail_009eeaab",
+      "address": "009eeaab",
+      "native": "009eeaab",
+      "function": "009ed6b0",
+      "range": "009EEAAB-009EF226",
+      "abi": "part of __thiscall(blk)(float seconds), RET 4",
+      "coverage": "complete",
+      "note": "Every instruction in the range is projected. The bodies behind the host boundaries (009DE5B0, vtable[50h], vtable[5Ch]) are outside the range and stay unread."
+    },
+    {
+      "name": "ship_ai_traffic_clearance_009eec15",
+      "address": "009eec15",
+      "native": "009eec15",
+      "function": "009ed6b0",
+      "range": "009EEBE0-009EEC3D",
+      "coverage": "complete"
+    },
+    {
+      "name": "ship_ai_traffic_setback_step_009eed62",
+      "address": "009eed62",
+      "native": "009eed62",
+      "function": "009ed6b0",
+      "range": "009EED62-009EEEDC",
+      "coverage": "complete"
+    },
+    {
+      "name": "ship_ai_approach_ceiling_009eecdb",
+      "address": "009eecdb",
+      "native": "009eecdb",
+      "function": "009ed6b0",
+      "range": "009EECDB-009EED5D",
+      "coverage": "complete"
+    },
+    {
+      "name": "ship_ai_astern_choice_009ef0a8",
+      "address": "009ef0a8",
+      "native": "009ef0a8",
+      "function": "009ed6b0",
+      "range": "009EF112-009EF19A",
+      "coverage": "complete"
+    },
+    {
+      "name": "ship_ai_set_direction_latch_009d5240",
+      "address": "009d5240",
+      "range": "009D5240-009D5293",
+      "abi": "__thiscall(blk)(int direction, char force), RET 8",
+      "coverage": "complete",
+      "note": "No Ghidra function starts here; read from the disk bytes. Not given a `native` row because nothing in the image calls it: 009EEFE4, 009EF087, 009EF1B2 and 009EF1D4 are inlined copies."
+    }
+  ],
+
+  "host_steps": [
+    {
+      "step": "tail 1 the direction the traffic walk backs along",
+      "address": "009eeb63",
+      "native": "004192e0",
+      "function": "009ed6b0",
+      "method": "ShipAiArmTailHost::normalize_004192e0_009eeb63",
+      "note": "ECX = &[ESP+68h] out, EDX = &[ESP+70h] in = (goal - pose). 004192E0 scales `in` by 00419260(in) = 1/sqrt(x*x+z*z), +0.0f for a zero vector."
+    },
+    {
+      "step": "tail 2 one entity out of the global list",
+      "address": "009eebb0",
+      "native": "009dbbc0",
+      "function": "009ed6b0",
+      "method": "ShipAiArmTailHost::list_element_009dbbc0",
+      "note": "ECX = [[00E188A8]+19CCh]+60h, PUSH EBP = the index, RET 4."
+    },
+    {
+      "step": "tail 3 is this entity one the walk considers",
+      "address": "009eebc8",
+      "native": null,
+      "function": "009ed6b0",
+      "method": "ShipAiArmTailHost::entity_is_kind_009eebc8",
+      "note": "CALL EDX with EDX = [[entity]+5Ch], PUSH 6 at 009EEBC4. The site tests AL only. Indirect: the concrete target is not resolved here."
+    },
+    {
+      "step": "tail 4 the zero floor under the leftover turn allowance",
+      "address": "009eec21",
+      "native": "00415550",
+      "function": "009ed6b0",
+      "method": "pure rule ship_ai_traffic_clearance_009eec15",
+      "note": "max(0.0f, allowance - walked)."
+    },
+    {
+      "step": "tail 5 the 60.0 floor under the two hull radii",
+      "address": "009eec32",
+      "native": "00415550",
+      "function": "009ed6b0",
+      "method": "pure rule ship_ai_traffic_clearance_009eec15",
+      "note": "max(00CEB4B0 = 60.0f, (own + other) * 0.5)."
+    },
+    {
+      "step": "tail 6 the neighbour's world position",
+      "address": "009eec41",
+      "native": "00427eb0",
+      "function": "009ed6b0",
+      "method": "ShipAiArmTailHost::entity_position_00427eb0_009eec41",
+      "note": "ECX = the entity; the site takes [EAX] and [EAX+8h], the x and z of the translation row."
+    },
+    {
+      "step": "tail 7 the perpendicular offset from the ray to the neighbour",
+      "address": "009eee00",
+      "native": "00414c60",
+      "function": "009ed6b0",
+      "method": "pure rule length_2d_00414c60 (src/vector_helpers.cpp)",
+      "note": "ECX = &[ESP+68h], the two floats stored at 009EEDF6 and 009EEDFC."
+    },
+    {
+      "step": "tail 8 the half chord back out of the neighbour's circle",
+      "address": "009eee25",
+      "native": "00bf7030",
+      "function": "009ed6b0",
+      "method": "std::sqrt in the reconstruction",
+      "note": "ST0 = clearance*clearance - perp*perp, stored to a float at 009EEE1D before the call."
+    },
+    {
+      "step": "tail 9 the approach throttle ceiling",
+      "address": "009eed4b",
+      "native": "00415620",
+      "function": "009ed6b0",
+      "method": "pure rule ship_ai_approach_ceiling_009eecdb, clamp_float_by_ref_00415620",
+      "note": "ECX = &ratio, EDX = &00CE3868 = 0.25f, PUSH &00D7A24C = 1.0f at 009EED28; RET 4."
+    },
+    {
+      "step": "tail 10 the floor the look-ahead radius must not fall under",
+      "address": "009eefbf",
+      "native": "00415510",
+      "function": "009ed6b0",
+      "method": "pure rule in ship_ai_navigation_arm_tail_009eeaab",
+      "note": "ECX = &(blk+3CCh * 0.25), EDX = &(blk+1F0h * 0.1); compared against blk+340h at 009EEFCD."
+    },
+    {
+      "step": "tail 11 the unit's own heading for the astern test",
+      "address": "009ef0d6",
+      "native": null,
+      "function": "009ed6b0",
+      "method": "ShipAiArmTailHost::unit_heading_vtable_0050_009ef0d6",
+      "note": "CALL EDX with EDX = [[blk+3FCh]+50h], no argument, result taken as a float. The same slot 009ED95D and 009EE8C7 call. Indirect: not resolved here."
+    },
+    {
+      "step": "tail 12 the heading error against the arm's own target",
+      "address": "009ef0f0",
+      "native": "00438b10",
+      "function": "009ed6b0",
+      "method": "pure rule wrapped_angle_subtract_00438b10 (src/unit_rudder.cpp)",
+      "note": "Two stack floats, blk+324h first at 009EF0ED and the heading second at 009EF0E3; RET 8. 009EF109 takes the absolute value with AND 7FFFFFFFh."
+    },
+    {
+      "step": "tail 13 the class turn radius",
+      "address": "009ef112",
+      "native": "0082e850",
+      "function": "009ed6b0",
+      "method": "ShipAiArmTailHost::ship_class_turn_radius_0082e850_009ef112",
+      "note": "ECX = [[blk+3FCh]+538h]; 009EF117 FADD ST0,ST0 doubles it."
+    },
+    {
+      "step": "tail 14 the astern distance threshold",
+      "address": "009ef13b",
+      "native": "00415550",
+      "function": "009ed6b0",
+      "method": "pure rule ship_ai_astern_choice_009ef0a8",
+      "note": "max([blk+3FCh]+9C8h * 3.0, 2 * turn radius)."
+    },
+    {
+      "step": "tail 15 the unconditional last step of every arm of 009ED6B0",
+      "address": "009ef213",
+      "native": "009de5b0",
+      "function": "009ed6b0",
+      "method": "ShipAiArmTailHost::after_arm_009de5b0",
+      "note": "ECX = blk, one stack float = the seconds argument read back from [ESP+0D0h]; RET 4. Body 009DE5B0-009DF117, contract: unread."
+    }
+  ],
+
+  "field_reads": [
+    {
+      "address": "009eeab7",
+      "field": "[[blk+3FCh]+73Ch]+21h",
+      "method": "ShipAiArmTailTuning::keep_clear_of_traffic_21",
+      "note": "The navigatorParams byte. docs/UNIT_COMMANDED_SPEED.md has the producers; 008A35A4 writes the inverse of the Lua argument."
+    },
+    {
+      "address": "009eead5",
+      "field": "blk+604h",
+      "method": "ShipAiArmTailTuning::neighbour_count_604",
+      "note": "Only the sign is used. Written at 009E4659 inside FUN_009E4330."
+    },
+    {
+      "address": "009eeb8b",
+      "field": "[[00E188A8]+19CCh]+60h",
+      "method": "ShipAiArmTailHost::neighbour_list_count_009eeb8b",
+      "note": "MOV EBX,[ECX+60h]; re-read at the top of every walk pass."
+    },
+    {
+      "address": "009eebd2",
+      "field": "blk+3FCh",
+      "method": "ShipAiArmTailHost::own_unit_009eebd2",
+      "note": "The identity the walk compares against at 009EEBD8 to skip the ship itself."
+    },
+    {
+      "address": "009eebe0",
+      "field": "entity+9C8h",
+      "method": "ShipAiArmTailHost::entity_hull_radius_009eebe0",
+      "note": "009EEBE0 on the neighbour, 009EEBEE on [blk+3FCh]."
+    },
+    {
+      "address": "009ef02e",
+      "field": "[blk+2F4h]+1Ch",
+      "method": "ShipAiArmTailState::plan_search_state_1c",
+      "note": "The plan search state of docs/SHIP_AI_PATH_PLANNER.md; 009EF03B requires it above 3."
+    }
+  ],
+
+  "block_writes": [
+    {"address": "009eef0a", "field": "blk+344h", "value": "the approach throttle ceiling, 1.0f when [ESP+43h] is clear"},
+    {"address": "009eefe4", "field": "blk+35Ch", "value": "0, the stopped latch (inlined 009D5240 with force = false)"},
+    {"address": "009eefea", "field": "blk+360h", "value": "0.0f"},
+    {"address": "009eeff2", "field": "blk+384h", "value": "0.0f"},
+    {"address": "009eeffa", "field": "blk+374h", "value": "-1.0f, 00D7A260"},
+    {"address": "009ef034", "field": "blk+2FEh", "value": "1, the arrival latch 009DA590 requires"},
+    {"address": "009ef045", "field": "blk+2FDh", "value": "1, the parked byte 009DA610 requires"},
+    {"address": "009ef087", "field": "blk+35Ch", "value": "the gear blk+1CCh asked for"},
+    {"address": "009ef08d", "field": "blk+374h", "value": "-1.0f"},
+    {"address": "009ef095", "field": "blk+384h", "value": "0.0f"},
+    {"address": "009ef1b2", "field": "blk+35Ch", "value": "2, astern"},
+    {"address": "009ef1d4", "field": "blk+35Ch", "value": "1, ahead"},
+    {"address": "009ef1e6", "field": "blk+384h", "value": "0.0f"},
+    {"address": "009ef1ee", "field": "blk+374h", "value": "-1.0f"},
+    {"address": "009ef1fe", "field": "blk+360h", "value": "1.0f for a non-zero latch, 0.0f for the stopped code"}
+  ],
+
+  "latch_35c_writers_image_wide": {
+    "method": "the .text section of the PE on disk scanned for the displacement 5C 03 00 00 with a mod=10 modrm, then each site classified and its containing function checked",
+    "on_the_ship_ai_control_block": [
+      {"address": "009d5269", "function": "009D5240 (no Ghidra function)", "note": "the canonical setter this range inlines"},
+      {"address": "009ed849", "function": "009ed6b0", "note": "direct-control arm, ahead"},
+      {"address": "009ed861", "function": "009ed6b0", "note": "direct-control arm, stopped"},
+      {"address": "009ed89f", "function": "009ed6b0", "note": "direct-control arm, astern"},
+      {"address": "009edb49", "function": "009ed6b0", "note": "station-keeping arm"},
+      {"address": "009edb65", "function": "009ed6b0", "note": "station-keeping arm"},
+      {"address": "009eefe4", "function": "009ed6b0", "note": "this range"},
+      {"address": "009ef087", "function": "009ed6b0", "note": "this range"},
+      {"address": "009ef1b2", "function": "009ed6b0", "note": "this range"},
+      {"address": "009ef1d4", "function": "009ed6b0", "note": "this range"}
+    ],
+    "other_structs_sharing_the_displacement": [
+      "007f2ce7 BSP_PlaneSquadronTickableEntity_Construct",
+      "007f4652 / 007f46e1 / 007f4783 BSP_PlaneSquadron_AttachLuaSelfAndSpawnPlanes",
+      "008761f7 FUN_008761e0",
+      "0087b6fa BSP_UnitTickableEntity_Construct",
+      "0087bf16",
+      "009c7594 FUN_009c73a0 (a vtable pointer, 00D20CC8)",
+      "00a3eee6 BSP_XLiveSystem_DownloadStorage",
+      "00a3f4c7 FUN_00a3f4a0",
+      "00a40079 BSP_XenonSystemManager_ResetSignInState",
+      "00acc010"
+    ],
+    "conclusion": "Outside 009ED6B0 the only writer of the ship AI control block's +35Ch is 009D5240, and 009D5240 has no decoded caller in the image, so the four writes in this range plus the five earlier in 009ED6B0 are the whole picture for a Navigate ship."
+  },
+
+  "no_ghidra_function": [
+    {
+      "start": "009d5240",
+      "end": "009d5293",
+      "start_evidence": "009D5238..009D523F are the tail of the previous routine: 81 68 03 00 00 (the end of a +368h displacement) then C2 08 00, a RET 8 at 009D523D. 009D5240 is 8B 44 24 04, MOV EAX,[ESP+4h], the first instruction of the new frame; there is no padding between them.",
+      "end_evidence": "009D5291 is C2 08 00, RET 8, and 009D5294 onwards is CC padding (009D5294..009D5299 all read CC)."
+    }
+  ],
+
+  "corrections": [
+    {
+      "was": "docs/GAME_EXECUTABLE.md milestone 2p follow-up 1: 009EEAAB.. is 'the only code that can latch blk+35Ch and form a desired throttle for a ship in Navigate'.",
+      "is": "The range is the only code that latches blk+35Ch for a ship in Navigate, and it is the only writer of blk+344h on that path. It does not write blk+1D0h or blk+1D4h at all: the desired throttle and rudder stay whatever the setters left, and 009F3F80 forms the ring command from blk+35Ch, blk+344h and the heading target.",
+      "evidence": "no store to +1D0h or +1D4h exists anywhere in 009EEAAB..009EF226; the only float store into blk in the range other than the latch bookkeeping is 009EEF0A MOVSS [ESI+344h],XMM1"
+    },
+    {
+      "was": "implied by the packet brief: the tail forms 'a desired throttle'.",
+      "is": "It forms a throttle *ceiling*. blk+344h is a fraction in [0.25, 1.0] that 009F4439 and 009F4462 limit the AI's throttle against; the sign and the magnitude come from 009F3F80 and the ring.",
+      "evidence": "009EED31 the 0.25f floor at 00CE3868, 009EED14 the 1.0f cap at 00D7A24C; docs/SHIP_AI_THROTTLE_TO_RING.md rows 009F4439 and 009F4462"
+    },
+    {
+      "was": "not previously recorded: what sets blk+2FEh, the byte BSP_ShipAi_GoalReachedTest 009DA590 requires before a movetopos can finish.",
+      "is": "009EF034 in this range is its only writer after 009ED779 clears it at the top of every tick, and it needs the ship stopped, not releasing the stop, the path point valid and blk+2FCh clear. blk+2FDh at 009EF045 additionally needs the plan search state above 3.",
+      "evidence": "the PE scan for the +2FEh displacement inside 00996120-009F6060 finds writers only at 009DA575, 009DA5F6, 009DE0EF, 009ED779 and 009EF034; 009ED779 is the per-tick clear at the top of 009ED6B0"
+    },
+    {
+      "was": "the four latch writes in this range look like four separate pieces of code.",
+      "is": "All four are inlined copies of 009D5240, a 82-byte routine with no Ghidra function and no decoded caller, whose shape (early out on no change, the 009D524F timer test, the four stores, the 1.0f/0.0f timer reload) they reproduce exactly.",
+      "evidence": "009D5240-009D5293 from the disk bytes against 009EEFD3..009EF002, 009EF068..009EF0A3, 009EF19C..009EF1FE and 009EF1BE..009EF1FE"
+    },
+    {
+      "was": "docs/UNIT_COMMANDED_SPEED.md reads navigatorParams+21h as the byte luaMW_NavigatorForceMoveCloseToTarget writes.",
+      "is": "Correct, and the binding writes the inverse of its argument: 008A359B TEST AL,AL, 008A359D SETE AL, 008A35A4 MOV [ESI+21h],AL. Set on the block it means 'keep clear of traffic', and clearing it through the binding switches the whole setback walk off, which is what the binding name asks for.",
+      "evidence": "008A359B..008A35A4 from the disk bytes; the gate at 009EEAB7"
+    }
+  ],
+
+  "uncertainties": [
+    "x87 intermediates are modelled as double with a float store at each native FSTP. The native uses 80-bit registers between those points, so a value that is exactly representable at neither width can differ in the last bits.",
+    "The walk at 009EEB80..009EEEEC has no iteration bound in the image: it leaves only on a clear pass or when the setback reaches blk+330h. The reconstruction adds a 1024-step guard that is not in the native routine and reports the step count.",
+    "Entity kind 6 at 009EEBC8 is the argument, not a decoded meaning: vtable[5Ch]'s body was not read and the site tests AL only.",
+    "The unit heading behind vtable[50h] at 009EF0D6 is the same provisional reading docs/SHIP_AI_NAVIGATION_ARM.md carries for 009EE8C7.",
+    "009DE5B0 at 009EF213 is contract: unread; it is 0B67h bytes and is also one of the writers of blk+3A5h.",
+    "blk+3C4h is taken as the reference speed on docs/SHIP_AI_OBSTACLE_TABLES.md's word; blk+3D4h, blk+3D8h and blk+3CCh are read from their producer FUN_009E4330 (009E4537, 009E453F, 009E4568) but that routine as a whole was not projected.",
+    "No run log backs anything here: bsp_game.exe has no host for this range yet."
+  ],
+
+  "follow_ups": [
+    {
+      "packet": "ship_ai_arm_tail_host",
+      "addresses": ["009eeaab", "009ef213", "009de5b0"],
+      "what": "Give bsp_game.exe a ShipAiArmTailHost over the existing ship AI hosts and run a movetopos ship end to end, so the start radius, the stop radius and the astern flip get run-time evidence instead of a static reading."
+    },
+    {
+      "packet": "ship_ai_arm_final_step_009de5b0",
+      "addresses": ["009de5b0"],
+      "what": "009DE5B0, the unconditional last step of every arm of 009ED6B0 and a writer of blk+3A5h. Until it is read the tick has an unread tail."
+    },
+    {
+      "packet": "ship_ai_nav_tuning_009e4330",
+      "addresses": ["009e4330", "009e4537", "009e453f", "009e4568", "009e4659", "0082e960"],
+      "what": "FUN_009E4330, the per-ship derivation that fills blk+3C8h, blk+3CCh, blk+3D4h, blk+3D8h, blk+3E4h and blk+604h. Four of them are inputs to this range and only their two store sites were read."
+    },
+    {
+      "packet": "ship_ai_neighbour_world_list",
+      "addresses": ["009eeb8b", "00e188a8"],
+      "what": "The global at [[00E188A8]+19CCh]+60h the walk iterates, and what entity kind 6 selects. The walk's cost is O(list) per step and the list is re-read every pass."
+    },
+    {
+      "packet": "ship_ai_station_keeping_arm",
+      "addresses": ["009eda28"],
+      "what": "009EDA28..009EE57B, now the only unread range of 009ED6B0. It has its own copies of the latch writes at 009EDB49 and 009EDB65."
+    }
+  ]
+}
