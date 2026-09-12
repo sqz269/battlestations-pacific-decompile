@@ -24,7 +24,9 @@
 #include "bsp/pose_refresh.hpp"
 #include "bsp/rigid_body_integration.hpp"
 #include "bsp/ship_ai_throttle_ring.hpp"
+#include "bsp/ship_ai_nav_block_ctor.hpp"
 #include "bsp/ship_class_fields.hpp"
+#include "bsp/ship_hull_body.hpp"
 #include "bsp/ship_motion.hpp"
 #include "bsp/unit_controller.hpp"
 #include "bsp/unit_forces.hpp"
@@ -86,13 +88,14 @@ struct GameUnitSlot {
     bsp::UnitControllerState controller{};
 
     // The hull's rigid body. `motion_state` is M = *(B+4h) and `body` is B, which
-    // the unit's force-model controller holds at controller+2Ch. No producer for
-    // the mass, the inertia or either damping rate was found
-    // (docs/RIGID_BODY_INTEGRATION.md, follow-up `ship_hull_body_creation`), so
-    // 00c37f40, 00c37e70, 00c37e00 and 00c37de0 are never called here and the
-    // fields keep the values a freshly constructed body has.
+    // the unit's force-model controller holds at controller+2Ch. Milestone 2r
+    // builds both through the tail of 00937C90 (docs/SHIP_HULL_BODY.md), so the
+    // mass, the box inertia, the row-1 torque lock, both damping rates and both
+    // speed clamps are the game's own; `hull_material` is the record 00937CF1
+    // selects for this hull.
     bsp::DynMotionState motion_state{};
     bsp::DynBody body{};
+    bsp::ShipPhysicsMaterial hull_material{bsp::ShipPhysicsMaterial::kShip};
 
     int class_id{bsp::kUnitDestroyerClassId};  // unit+C4h, the descriptor's kind
     // Milestone 2p: the two load latches the middle of 009F3F80 raises with the
@@ -856,13 +859,21 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
                 = bsp::vehicle_class_kind_row(lua_row.type.c_str());
             if (kind != nullptr) slot->class_id = static_cast<int>(kind->kind);
         }
-        // class+A0h and class+A8h place the keel sample point. Only +A0h has a
-        // recovered Lua key (bsp/ship_class_fields.hpp: 00960230 writes it from
-        // `Length`), and with a flat sea at y = 0 and an upright hull the gate
-        // at 00826994 passes either way, which is what the probe reports.
-        slot->motion_class.hull_length = 0.0f;
-        slot->motion_class.hull_height = 0.0f;
-        slot->motion_class.hull_mass = 0.0f;   // class+B0h, only 00937440 reads it
+        // Milestone 2r. class+A0h, class+A8h and class+B0h are the `Length`,
+        // `Height` and `Mass` keys 00960230 writes into the descriptor, and the
+        // installed `VehicleClass` row carries all three (DeRuyter row 20:
+        // 171, 5, 7688). Milestone 2q left them at zero because the keel gate
+        // passes either way on a flat sea; they are read now because
+        // 00937C90's hull body needs the mass and 00937440 needs it squared,
+        // and because 00826866 places the keel sample point half a hull length
+        // astern and half a hull height below the pose. A missing key leaves
+        // the zero the reader stores, except `Mass`, whose reader default is
+        // the 1.0f at 0096043A.
+        slot->motion_class.hull_length = lua_row.length;   // class+A0h
+        slot->motion_class.hull_height = lua_row.height;   // class+A8h
+        constexpr float kClassMassReaderDefault = 1.0f;  // 0096043A
+        slot->motion_class.hull_mass
+            = lua_row.mass > 0.0f ? lua_row.mass : kClassMassReaderDefault;
         slot->motion_class.boost_refill_time = 1.0f;
         slot->motion.thrust_mod = 1.0f;        // 00823714
         slot->motion.turn_efficiency = 1.0f;   // 0082371c
@@ -899,13 +910,40 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
             }
         }
 
-        // M+18h and M+1Ch, the two speed clamps 00c5b1b0 applies at the end of
-        // every substep. Their producer was not found either, and a zero there
-        // would zero the velocity on the first substep, so they are set out of
-        // range and the clamps never fire. That is a stated contract, not a
-        // recovered value.
-        slot->motion_state.max_linear_speed = 1.0e30f;
-        slot->motion_state.max_angular_speed = 1.0e30f;
+        // Milestone 2r: the hull body the game builds, replacing milestone 2h's
+        // freshly constructed one and the 1.0e30f speed clamps that stood in
+        // for M+18h / M+1Ch. 00939E2A calls 00937C90 last in the controller
+        // constructor 00939CB0 and its tail 009399C0..00939C05 is the writer:
+        // the descriptor default 009391C2, the mass at 009399F7, the zeroed
+        // inertia diagonal, the angular damping 1.0f at 00939A2F, the row-1
+        // torque lock when the mass is under 100.0 (00939A57), then
+        // 00C5D580 CreateBody and 00C37E70 with the box inertia at 00939C05.
+        // The linear damping stays the descriptor's own 0.0f (00939295); it is
+        // not a gap, and docs/SHIP_HULL_BODY.md says so.
+        //
+        // The collision AABB is the one input this cannot supply: its producer
+        // is the shape attach 00C5C940 behind 00937D3F..009399BF, which no
+        // packet has read, so the span is zero and the box inertia with it,
+        // which 00C37E70 turns into a zero inverse inertia. Nothing here
+        // applies a torque, so that decides nothing this run measures; it is
+        // the same default the probe takes.
+        {
+            bsp::ShipHullBodyInputs hull{};
+            hull.mass = slot->motion_class.hull_mass;             // 009399F7
+            // 00937D09, the unit's answer to virtual slot 5Ch with category 8
+            // (MSubmarine): it picks the third physics record.
+            hull.unit_category_8 = bsp::unit_is_kind_of_006fe530(
+                bsp::kUnitForceSubmarineClassId, slot->class_id);
+            for (int i = 0; i < 3; ++i) {
+                hull.row0[i] = slot->motion.pose_row0[i];
+                hull.row1[i] = slot->motion.pose_row1[i];
+                hull.row2[i] = slot->motion.pose_row2[i];
+                hull.position[i] = slot->motion.position[i];
+            }
+            bsp::ship_hull_body_create_00937c90(hull, slot->body, slot->motion_state);
+            slot->hull_material = bsp::ship_hull_material_00937cf1(hull.unit_category_8,
+                hull.mass);
+        }
         slot->body.motion = &slot->motion_state;
 
         slot->parent = nullptr;
@@ -1183,10 +1221,21 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
         if (!host.logged_integrator) {
             host.logged_integrator = true;
             host.log.notef("rigid body: 00c41550 then 00c5b1b0, one substep of the whole "
-                "%.4f s game step. The substep schedule 00c5c540 is a record because "
-                "world+00h has no recovered producer, and the hull body carries no mass, "
-                "inertia or damping because 00c37f40 / 00c37e70 / 00c37e00 / 00c37de0 have "
-                "no caller on the hull path", static_cast<double>(step_seconds));
+                "%.4f s game step. Milestone 2r builds the hull body through the tail of "
+                "00937c90, so \"%s\" carries mass %.1f (inverse %.8f), angular damping "
+                "%.1f, linear damping %.1f, both speed clamps at %.1f, torque-lock=%d and "
+                "physics material %d; the box inertia is zero because the collision AABB's "
+                "producer 00c5c940 is unread. The linear damping of 0.0f is the game's own "
+                "descriptor default (00939295), not a gap: the only routine that resists a "
+                "hull's lateral velocity is 009329c0, the hydrodynamic tail of 00937440",
+                static_cast<double>(step_seconds), slot.row.name.c_str(),
+                static_cast<double>(slot.motion_class.hull_mass),
+                static_cast<double>(slot.motion_state.inverse_mass),
+                static_cast<double>(slot.motion_state.angular_damping),
+                static_cast<double>(slot.motion_state.linear_damping),
+                static_cast<double>(slot.motion_state.max_linear_speed),
+                slot.motion_state.lock_torque_to_row1 ? 1 : 0,
+                static_cast<int>(slot.hull_material));
         }
         host.record("ShipMotion::rigid_body_substep_schedule", 0x00c5bb30u);
         slot.motion_state.linear_velocity = slot.motion.linear_velocity;
@@ -1569,6 +1618,69 @@ float GameUnitsHost::unit_half_width_09cc(std::size_t index) const {
 float GameUnitsHost::unit_class_max_speed_0500(std::size_t index) const {
     if (index >= impl_->slots.size()) return 0.0f;
     return impl_->slots[index]->fields.max_speed;
+}
+
+float GameUnitsHost::unit_class_max_rot_angle_04f8(std::size_t index) const {
+    if (index >= impl_->slots.size()) return 0.0f;
+    return impl_->slots[index]->fields.max_rot_angle;
+}
+
+float GameUnitsHost::unit_class_max_accel_0504(std::size_t index) const {
+    if (index >= impl_->slots.size()) return 0.0f;
+    return impl_->slots[index]->motion_class.max_accel;
+}
+
+float GameUnitsHost::unit_class_turn_radius_0520(std::size_t index) const {
+    if (index >= impl_->slots.size()) return 0.0f;
+    // class+520h, the field 00828F20 derives once per class at 00828F66 from
+    // MaxSpeed and MaxRotAngle. 0082E970 is its second reader, beside 0082E850.
+    const bsp::ShipClassFields& fields = impl_->slots[index]->fields;
+    const bsp::ShipClassAiDerivedMotion out = bsp::ship_class_ai_derived_motion_00828f20(
+        fields.max_rot_angle, fields.max_rot_angle_change_ratio, fields.max_speed);
+    return out.derived ? out.turn_radius_0520 : 0.0f;
+}
+
+float GameUnitsHost::unit_class_turn_circle_radius_0082e960(std::size_t index,
+    float throttle) {
+    Impl& host = *impl_;
+    if (index >= host.slots.size()) return 0.0f;
+    GameUnitSlot& slot = *host.slots[index];
+    bsp::ShipAiNavBlockClassInputs in{};
+    in.max_rot_angle_04f8 = slot.fields.max_rot_angle;
+    in.max_speed_0500 = slot.fields.max_speed;
+    in.turn_radius_0520 = unit_class_turn_radius_0520(index);
+    UnitRudderBinding rudder(host, slot);
+    const float radius = bsp::ship_class_turn_circle_radius_0082e960(in, throttle, rudder);
+    host.done("ShipAiNavBlock::class_turn_circle_0082e960", 0x0082e960u);
+    return radius;
+}
+
+float GameUnitsHost::unit_hull_length_09c8(std::size_t index) const {
+    if (index >= impl_->slots.size()) return 0.0f;
+    // 0081106E and 0081FA4D: twice the larger half-extent of the model box at
+    // [class+50h], or the descriptor's +A0h `Length` when the class carries no
+    // box. This process builds no box, so the fallback is the whole answer.
+    return impl_->slots[index]->motion_class.hull_length;
+}
+
+float GameUnitsHost::unit_hull_mass_00b0(std::size_t index) const {
+    if (index >= impl_->slots.size()) return 0.0f;
+    return impl_->slots[index]->motion_class.hull_mass;
+}
+
+int GameUnitsHost::unit_hull_material(std::size_t index) const {
+    if (index >= impl_->slots.size()) return 0;
+    return static_cast<int>(impl_->slots[index]->hull_material);
+}
+
+float GameUnitsHost::unit_hull_linear_damping(std::size_t index) const {
+    if (index >= impl_->slots.size()) return 0.0f;
+    return impl_->slots[index]->motion_state.linear_damping;
+}
+
+float GameUnitsHost::unit_hull_angular_damping(std::size_t index) const {
+    if (index >= impl_->slots.size()) return 0.0f;
+    return impl_->slots[index]->motion_state.angular_damping;
 }
 
 void GameUnitsHost::raise_turn_assist_load_102c(std::size_t index, float value) {
