@@ -2908,7 +2908,10 @@ runs each in-mission frame with a fixed delta instead of the wall clock, so a he
 accumulates simulated time deterministically and the fixed-step driver's own clock does not
 depend on how fast the machine presents; zero, the default, keeps the wall clock, which is what
 every earlier milestone's run used. Every earlier switch is unchanged, and a run without
-`--menu-select` is still byte-for-byte the milestone 2d run.
+`--menu-select` should still be byte-for-byte the milestone 2d run: every change this packet
+makes to a path a run without a mission reaches is the option parse and the first log line,
+which now names the three new switches. That is by construction and was **not** rechecked,
+because no run was possible; see the validation section.
 
 ### 1. The world walk
 
@@ -2926,6 +2929,15 @@ Each entity's `vtable[0DCh]` is `008255B0` for a unit, and it runs: `GameUnitsHo
 body is one RET) and the rest are records with their own addresses. The recovered timer
 fragments inside the routine do real work: the age at +524h, the two countdowns at +6D8h and
 +728h, the bubble timer at +BC8h and the hit latch at +1010h/+1011h all advance.
+
+One field had to be decided rather than read. `bsp/unit_instance.hpp` names the byte at
+unit+5Dh `simulate` and defaults it to **true**, and gates steps 2 and 8 of 008255B0 on it;
+docs/LOCAL_PLAYER_UNIT_LISTS.md's filter requires the same byte **clear** for a unit to reach
+any of the eight lists, and `ship_throttle_gate_00826994` zeroes the throttle when it is set.
+Two of the three readings say a live ship has it clear, so the executable holds it clear. The
+cost is that the reconstruction's steps 2 and 8 are skipped, and neither could run here anyway:
+step 2 also needs the ocean's world Y below zero and step 8 also needs the settings byte at
+00424C40()+680h. The contradiction is that header's to resolve, not this packet's.
 
 The walk closes with `00904600` at 00904C2B. The list at world+4B0h is **empty**, and the
 reason is recovered: its only producer is `00905080`, the `AddMatrixInterpolator` Lua binding,
