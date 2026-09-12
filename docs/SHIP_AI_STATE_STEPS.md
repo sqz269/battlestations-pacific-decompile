@@ -394,3 +394,16 @@ constant getters followed by `INT3` padding and are read from the disk bytes.
 6. The x87 chains in `009DE050` and `009E86F0` are reconstructed with a single rounding at each
    named store, as `docs/X87_CONTROL_WORD.md` requires. The C++ projection uses float variables,
    which rounds each operation; the two agree on every value read here but are not identical.
+
+## Correction from docs/SHIP_AI_ATTACKMOVE_SUBSTATES.md
+
+Packet `cc_ai_attackmove_substates` (main 7db7b9d3) read the five sub-state steps whole and
+corrects two claims above:
+
+| what this doc said | what is true | evidence |
+| --- | --- | --- |
+| three of the five sub-state steps call `009DE050` (`009F3240`, `009E23B0`, `009E26C0`) | four do: `009F3670` calls it at `009F3920`. `007B3DD0`, the initial member, is a COMDAT-folded empty virtual (`RET 4`) shared by twenty vtables, never usefully stepped | `009F3920`, `007B3DD0` |
+| `009F3240`'s `009DE050` call passes `final_leg = 1` | it passes `keep_mode = 1` and `final_leg = 0` at `009F332B`: `009DE050` reads its first stack argument as the goal (`009DE063`, `009DE0A0`) and its second as the keep byte (`009DE087`), and the `PUSH 1` at `009F3308` is the middle argument | `009F3308`, `009F332B`, `009DE087` |
+
+`009E23B0`'s two arms are selected by the latch byte at `sub+8h`, and `brain+3FCh` follows the
+arm: 1 on the goal arm (`009E2669`), 0 on the heading arm (`009E25CC`).
