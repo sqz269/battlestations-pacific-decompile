@@ -1,0 +1,1326 @@
+{
+  "packet": "orch6_depth_input_e",
+  "status": "partial_scalar_projection_build_and_installed_lua_fixture_tested",
+  "source": "src/game_hosts_lua.cpp",
+  "header": "include/bsp/game_hosts_lua.hpp",
+  "doc": "docs/GAME_SHIP_DEPTH_INPUT.md",
+  "api": {
+    "member": "GameMissionLuaHost::read_ship_depth_input(int type_id, int32_t session_mode, GameShipDepthInput&, string& error)",
+    "borrowed_reader": "read_ship_depth_input_lua(lua_State&, int type_id, int32_t session_mode, const bool& crt_sse2_conversion, GameShipDepthInput&, string& error)",
+    "inputs": [
+      "actual live mission Lua state",
+      "actual VehicleClass table index",
+      "actual game session mode (zero Single, every nonzero Multi)",
+      "borrowed CRT conversion mode; member represents current process SSE2 capability using the established Windows capability binding"
+    ],
+    "output": [
+      "uint32 class_reference_0570 preserving converted signed integer bits",
+      "settings_block_offset 80h/F0h",
+      "scalar_source offset in existing kShipLeafTuningSources",
+      "static class_key string"
+    ],
+    "failure": "false with error, unchanged output, restored caller stack; includes unavailable state/type/parent lookups and non-string Lua errors",
+    "final_scalar_conversion": "bare native GetInteger: tonumber, float32 spill, CRT conversion; numeric strings accepted; nil/nonnumeric final value converts to native zero"
+  },
+  "coverage": [
+    {
+      "entry": "0083b5e0",
+      "inclusive_body": [
+        "0083b5e0",
+        "00842951"
+      ],
+      "native_abi": "__thiscall ECX=settings, zero stack arguments, plain RET",
+      "scope": "partial selected scalar stores in depth producer region 00841B7B..008425A1; no claim to full loader or two whole 70h records"
+    },
+    {
+      "entry": "00837de0",
+      "inclusive_body": [
+        "00837de0",
+        "00837dfa"
+      ],
+      "native_abi": "ECX=settings, EDX unused, zero stack arguments, pointer EAX, plain RET; existing descriptive ledger uses __fastcall",
+      "scope": "complete selector rule reused via ship_tuning_block_offset; game singleton 00E188A8 -> session field +1FE4"
+    },
+    {
+      "entry": "006fb550",
+      "inclusive_body": [
+        "006fb550",
+        "006fb655"
+      ],
+      "native_abi": "__thiscall ECX=descriptor, Lua-object stack argument, RET 4",
+      "scope": "Cruiser HeavyCruiser exact Boolean default and selected scalar source only; stores class570 at 006FB5EF/006FB641"
+    },
+    {
+      "entry": "0074c630",
+      "inclusive_body": [
+        "0074c630",
+        "0074cc46"
+      ],
+      "native_abi": "__thiscall ECX=descriptor, Lua-object stack argument, RET 4",
+      "scope": "LandingShip BigLandingShip exact Boolean default and selected scalar source only; stores class570 at 0074CA9D/0074CADB"
+    }
+  ],
+  "producer_registers": {
+    "00841b81": "EDI=settings+80h for pass zero; selected key pointer 00D0A228",
+    "00841b8e": "EDI=settings+F0h for pass one; selected key pointer 00D0A210",
+    "scalar_record": "first numeric element [1] writes the offsets below; second/following entries feed a separate class560..56C array and are not substituted for class570",
+    "variant_abi": "GetByName RET 8; BooleanOrDefault RET 4 with pushed zero (Cruiser immediate zero; Landing EBX zeroed at 0074C66F)",
+    "numeric_abi": "GetByIndex RET 8; GetInteger no stack args and tail JMP 00BF7420 after internal scratch stack restore"
+  },
+  "scalar_stores": [
+    {
+      "store": "00841bee",
+      "scalar_source": "28",
+      "calls": [
+        "00841bc0",
+        "00841bd6",
+        "00841be5"
+      ]
+    },
+    {
+      "store": "00841ca6",
+      "scalar_source": "00",
+      "calls": [
+        "00841c78",
+        "00841c8e",
+        "00841c9d"
+      ]
+    },
+    {
+      "store": "00841d5d",
+      "scalar_source": "08",
+      "calls": [
+        "00841d2f",
+        "00841d45",
+        "00841d54"
+      ]
+    },
+    {
+      "store": "00841e11",
+      "scalar_source": "10",
+      "calls": [
+        "00841de7",
+        "00841dfd",
+        "00841e0c"
+      ]
+    },
+    {
+      "store": "00841ecd",
+      "scalar_source": "18",
+      "calls": [
+        "00841e9f",
+        "00841eb5",
+        "00841ec4"
+      ]
+    },
+    {
+      "store": "00841f85",
+      "scalar_source": "20",
+      "calls": [
+        "00841f57",
+        "00841f6d",
+        "00841f7c"
+      ]
+    },
+    {
+      "store": "0084203d",
+      "scalar_source": "30",
+      "calls": [
+        "0084200f",
+        "00842025",
+        "00842034"
+      ]
+    },
+    {
+      "store": "008420f5",
+      "scalar_source": "38",
+      "calls": [
+        "008420c7",
+        "008420dd",
+        "008420ec"
+      ]
+    },
+    {
+      "store": "008421ad",
+      "scalar_source": "40",
+      "calls": [
+        "0084217f",
+        "00842195",
+        "008421a4"
+      ]
+    },
+    {
+      "store": "00842431",
+      "scalar_source": "5c",
+      "calls": [
+        "00842403",
+        "00842419",
+        "00842428"
+      ]
+    }
+  ],
+  "calls": [
+    {
+      "address": "00841bc0",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "scalar_source": "28"
+    },
+    {
+      "address": "00841bd6",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "scalar_source": "28"
+    },
+    {
+      "address": "00841be5",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "scalar_source": "28"
+    },
+    {
+      "address": "00841c78",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "scalar_source": "00"
+    },
+    {
+      "address": "00841c8e",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "scalar_source": "00"
+    },
+    {
+      "address": "00841c9d",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "scalar_source": "00"
+    },
+    {
+      "address": "00841d2f",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "scalar_source": "08"
+    },
+    {
+      "address": "00841d45",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "scalar_source": "08"
+    },
+    {
+      "address": "00841d54",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "scalar_source": "08"
+    },
+    {
+      "address": "00841de7",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "scalar_source": "10"
+    },
+    {
+      "address": "00841dfd",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "scalar_source": "10"
+    },
+    {
+      "address": "00841e0c",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "scalar_source": "10"
+    },
+    {
+      "address": "00841e9f",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "scalar_source": "18"
+    },
+    {
+      "address": "00841eb5",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "scalar_source": "18"
+    },
+    {
+      "address": "00841ec4",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "scalar_source": "18"
+    },
+    {
+      "address": "00841f57",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "scalar_source": "20"
+    },
+    {
+      "address": "00841f6d",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "scalar_source": "20"
+    },
+    {
+      "address": "00841f7c",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "scalar_source": "20"
+    },
+    {
+      "address": "0084200f",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "scalar_source": "30"
+    },
+    {
+      "address": "00842025",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "scalar_source": "30"
+    },
+    {
+      "address": "00842034",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "scalar_source": "30"
+    },
+    {
+      "address": "008420c7",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "scalar_source": "38"
+    },
+    {
+      "address": "008420dd",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "scalar_source": "38"
+    },
+    {
+      "address": "008420ec",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "scalar_source": "38"
+    },
+    {
+      "address": "0084217f",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "scalar_source": "40"
+    },
+    {
+      "address": "00842195",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "scalar_source": "40"
+    },
+    {
+      "address": "008421a4",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "scalar_source": "40"
+    },
+    {
+      "address": "00842403",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "scalar_source": "5c"
+    },
+    {
+      "address": "00842419",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "scalar_source": "5c"
+    },
+    {
+      "address": "00842428",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "scalar_source": "5c"
+    },
+    {
+      "address": "00424df6",
+      "native": "00837de0",
+      "function": "00424d00",
+      "register_evidence": [
+        [
+          "00424df0",
+          "MOV ECX,EAX"
+        ],
+        [
+          "00424df2",
+          "MOV dword ptr [ESP + 0x38],ESI"
+        ]
+      ],
+      "result_reads": [
+        [
+          "00424dfb",
+          "LEA ECX,[ESP + 0x18]"
+        ],
+        [
+          "00424dff",
+          "MOV EBP,EAX"
+        ]
+      ]
+    },
+    {
+      "address": "006e0156",
+      "native": "00837de0",
+      "function": "006e00f0",
+      "register_evidence": [
+        [
+          "006e014f",
+          "CALL 0x00424c40"
+        ],
+        [
+          "006e0154",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "006e015b",
+          "MOV EAX,dword ptr [EAX + 0x2c]"
+        ],
+        [
+          "006e015e",
+          "MOV dword ptr [ESI + 0x56c],EAX"
+        ]
+      ]
+    },
+    {
+      "address": "006e017d",
+      "native": "00837de0",
+      "function": "006e00f0",
+      "register_evidence": [
+        [
+          "006e0176",
+          "CALL 0x00424c40"
+        ],
+        [
+          "006e017b",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "006e0182",
+          "MOV ECX,dword ptr [EAX + 0x28]"
+        ],
+        [
+          "006e0185",
+          "MOV dword ptr [ESI + 0x570],ECX"
+        ]
+      ]
+    },
+    {
+      "address": "006eb4cd",
+      "native": "00837de0",
+      "function": "006eb4a0",
+      "register_evidence": [
+        [
+          "006eb4c6",
+          "CALL 0x00424c40"
+        ],
+        [
+          "006eb4cb",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "006eb4d2",
+          "MOV EAX,dword ptr [EAX + 0x34]"
+        ],
+        [
+          "006eb4d5",
+          "MOV dword ptr [ESI + 0x56c],EAX"
+        ]
+      ]
+    },
+    {
+      "address": "006eb4f4",
+      "native": "00837de0",
+      "function": "006eb4a0",
+      "register_evidence": [
+        [
+          "006eb4ed",
+          "CALL 0x00424c40"
+        ],
+        [
+          "006eb4f2",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "006eb4f9",
+          "MOV EAX,dword ptr [EAX + 0x30]"
+        ],
+        [
+          "006eb4fc",
+          "PUSH 0xcfa9d0"
+        ]
+      ]
+    },
+    {
+      "address": "006fb5bf",
+      "native": "00837de0",
+      "function": "006fb550",
+      "register_evidence": [
+        [
+          "006fb5b8",
+          "CALL 0x00424c40"
+        ],
+        [
+          "006fb5bd",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "006fb5c4",
+          "MOV EAX,dword ptr [EAX + 0x44]"
+        ],
+        [
+          "006fb5c7",
+          "MOV dword ptr [ESI + 0x56c],EAX"
+        ]
+      ]
+    },
+    {
+      "address": "006fb5e6",
+      "native": "00837de0",
+      "function": "006fb550",
+      "register_evidence": [
+        [
+          "006fb5df",
+          "CALL 0x00424c40"
+        ],
+        [
+          "006fb5e4",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "006fb5eb",
+          "MOV ECX,dword ptr [EAX + 0x40]"
+        ],
+        [
+          "006fb5ee",
+          "POP EDI"
+        ]
+      ]
+    },
+    {
+      "address": "006fb60e",
+      "native": "00837de0",
+      "function": "006fb550",
+      "register_evidence": [
+        [
+          "006fb607",
+          "CALL 0x00424c40"
+        ],
+        [
+          "006fb60c",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "006fb613",
+          "MOV EAX,dword ptr [EAX + 0x3c]"
+        ],
+        [
+          "006fb616",
+          "MOV dword ptr [ESI + 0x56c],EAX"
+        ]
+      ]
+    },
+    {
+      "address": "006fb635",
+      "native": "00837de0",
+      "function": "006fb550",
+      "register_evidence": [
+        [
+          "006fb62e",
+          "CALL 0x00424c40"
+        ],
+        [
+          "006fb633",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "006fb63a",
+          "MOV EDX,dword ptr [EAX + 0x38]"
+        ],
+        [
+          "006fb63d",
+          "MOV ECX,dword ptr [ESP + 0x1c]"
+        ]
+      ]
+    },
+    {
+      "address": "006fe6b4",
+      "native": "00837de0",
+      "function": "006fe6a0",
+      "register_evidence": [
+        [
+          "006fe6ad",
+          "CALL 0x00424c40"
+        ],
+        [
+          "006fe6b2",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "006fe6b9",
+          "MOV EAX,dword ptr [EAX + 0xc]"
+        ],
+        [
+          "006fe6bc",
+          "MOV dword ptr [ESI + 0x56c],EAX"
+        ]
+      ]
+    },
+    {
+      "address": "006fe6db",
+      "native": "00837de0",
+      "function": "006fe6a0",
+      "register_evidence": [
+        [
+          "006fe6d4",
+          "CALL 0x00424c40"
+        ],
+        [
+          "006fe6d9",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "006fe6e0",
+          "MOV ECX,dword ptr [EAX + 0x8]"
+        ],
+        [
+          "006fe6e3",
+          "MOV dword ptr [ESI + 0x570],ECX"
+        ]
+      ]
+    },
+    {
+      "address": "0074ca6e",
+      "native": "00837de0",
+      "function": "0074c630",
+      "register_evidence": [
+        [
+          "0074ca67",
+          "CALL 0x00424c40"
+        ],
+        [
+          "0074ca6c",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "0074ca73",
+          "MOV EAX,dword ptr [EAX + 0x24]"
+        ],
+        [
+          "0074ca76",
+          "MOV dword ptr [ESI + 0x56c],EAX"
+        ]
+      ]
+    },
+    {
+      "address": "0074ca95",
+      "native": "00837de0",
+      "function": "0074c630",
+      "register_evidence": [
+        [
+          "0074ca8e",
+          "CALL 0x00424c40"
+        ],
+        [
+          "0074ca93",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "0074ca9a",
+          "MOV EAX,dword ptr [EAX + 0x20]"
+        ],
+        [
+          "0074ca9d",
+          "MOV dword ptr [ESI + 0x570],EAX"
+        ]
+      ]
+    },
+    {
+      "address": "0074caac",
+      "native": "00837de0",
+      "function": "0074c630",
+      "register_evidence": [
+        [
+          "0074caa5",
+          "CALL 0x00424c40"
+        ],
+        [
+          "0074caaa",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "0074cab1",
+          "MOV EAX,dword ptr [EAX + 0x1c]"
+        ],
+        [
+          "0074cab4",
+          "MOV dword ptr [ESI + 0x56c],EAX"
+        ]
+      ]
+    },
+    {
+      "address": "0074cad3",
+      "native": "00837de0",
+      "function": "0074c630",
+      "register_evidence": [
+        [
+          "0074cacc",
+          "CALL 0x00424c40"
+        ],
+        [
+          "0074cad1",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "0074cad8",
+          "MOV ECX,dword ptr [EAX + 0x18]"
+        ],
+        [
+          "0074cadb",
+          "MOV dword ptr [ESI + 0x570],ECX"
+        ]
+      ]
+    },
+    {
+      "address": "0075983c",
+      "native": "00837de0",
+      "function": "00759590",
+      "register_evidence": [
+        [
+          "00759835",
+          "CALL 0x00424c40"
+        ],
+        [
+          "0075983a",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "00759841",
+          "MOV EAX,dword ptr [EAX + 0x4]"
+        ],
+        [
+          "00759844",
+          "MOV dword ptr [ESI + 0x56c],EAX"
+        ]
+      ]
+    },
+    {
+      "address": "00759863",
+      "native": "00837de0",
+      "function": "00759590",
+      "register_evidence": [
+        [
+          "0075985c",
+          "CALL 0x00424c40"
+        ],
+        [
+          "00759861",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "00759868",
+          "MOV EAX,dword ptr [EAX]"
+        ],
+        [
+          "0075986a",
+          "LEA ECX,[ESP + 0x4c]"
+        ]
+      ]
+    },
+    {
+      "address": "008545c3",
+      "native": "00837de0",
+      "function": "00854230",
+      "register_evidence": [
+        [
+          "008545bc",
+          "CALL 0x00424c40"
+        ],
+        [
+          "008545c1",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "008545c8",
+          "MOV ECX,dword ptr [EAX + 0x60]"
+        ],
+        [
+          "008545cb",
+          "MOV dword ptr [ESI + 0x560],ECX"
+        ]
+      ]
+    },
+    {
+      "address": "008545d8",
+      "native": "00837de0",
+      "function": "00854230",
+      "register_evidence": [
+        [
+          "008545d1",
+          "CALL 0x00424c40"
+        ],
+        [
+          "008545d6",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "008545dd",
+          "MOV EDX,dword ptr [EAX + 0x64]"
+        ],
+        [
+          "008545e0",
+          "MOV dword ptr [ESI + 0x564],EDX"
+        ]
+      ]
+    },
+    {
+      "address": "008545ed",
+      "native": "00837de0",
+      "function": "00854230",
+      "register_evidence": [
+        [
+          "008545e6",
+          "CALL 0x00424c40"
+        ],
+        [
+          "008545eb",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "008545f2",
+          "MOV EAX,dword ptr [EAX + 0x68]"
+        ],
+        [
+          "008545f5",
+          "MOV dword ptr [ESI + 0x568],EAX"
+        ]
+      ]
+    },
+    {
+      "address": "00854602",
+      "native": "00837de0",
+      "function": "00854230",
+      "register_evidence": [
+        [
+          "008545fb",
+          "CALL 0x00424c40"
+        ],
+        [
+          "00854600",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "00854607",
+          "MOV ECX,dword ptr [EAX + 0x6c]"
+        ],
+        [
+          "0085460a",
+          "MOV dword ptr [ESI + 0x56c],ECX"
+        ]
+      ]
+    },
+    {
+      "address": "00854617",
+      "native": "00837de0",
+      "function": "00854230",
+      "register_evidence": [
+        [
+          "00854610",
+          "CALL 0x00424c40"
+        ],
+        [
+          "00854615",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "0085461c",
+          "MOV EDX,dword ptr [EAX + 0x5c]"
+        ],
+        [
+          "0085461f",
+          "LEA ECX,[ESP + 0xc]"
+        ]
+      ]
+    },
+    {
+      "address": "00858030",
+      "native": "00837de0",
+      "function": "00857f40",
+      "register_evidence": [
+        [
+          "00858029",
+          "CALL 0x00424c40"
+        ],
+        [
+          "0085802e",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "00858035",
+          "MOV EAX,dword ptr [EAX + 0x14]"
+        ],
+        [
+          "00858038",
+          "MOV dword ptr [ESI + 0x56c],EAX"
+        ]
+      ]
+    },
+    {
+      "address": "00858057",
+      "native": "00837de0",
+      "function": "00857f40",
+      "register_evidence": [
+        [
+          "00858050",
+          "CALL 0x00424c40"
+        ],
+        [
+          "00858055",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "0085805c",
+          "MOV EAX,dword ptr [EAX + 0x10]"
+        ],
+        [
+          "0085805f",
+          "MOV ECX,dword ptr [ESP + 0x30]"
+        ]
+      ]
+    },
+    {
+      "address": "006fb582",
+      "native": "00b67800",
+      "function": "006fb550"
+    },
+    {
+      "address": "006fb593",
+      "native": "00b662f0",
+      "function": "006fb550"
+    },
+    {
+      "address": "0074c66a",
+      "native": "00b67800",
+      "function": "0074c630"
+    },
+    {
+      "address": "0074c67b",
+      "native": "00b662f0",
+      "function": "0074c630"
+    },
+    {
+      "address": "00424bfc",
+      "native": "0083b5e0",
+      "function": "00424a10",
+      "purpose": "settings construction; ECX=ESI set at 00424BF5"
+    },
+    {
+      "address": "00841ba6",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "purpose": "Single/Multi table selected by the two producer loop passes"
+    },
+    {
+      "address": "00960354",
+      "native": "00b67800",
+      "function": "00960230",
+      "purpose": "coordinated Width projection; annotation owned by hull-extents worker"
+    },
+    {
+      "address": "00960363",
+      "native": "00b66270",
+      "function": "00960230",
+      "purpose": "bare Width GetNumber; float32 result stored to class+A4 at 00960368"
+    },
+    {
+      "address": "0096037a",
+      "native": "00b67700",
+      "function": "00960230",
+      "purpose": "Width object destruction"
+    },
+    {
+      "address": "00b6629b",
+      "native": "00a67770",
+      "function": "00b66290",
+      "purpose": "GetInteger tonumber before float32 spill at 00B662A0"
+    },
+    {
+      "address": "00b662a9",
+      "native": "00bf7420",
+      "function": "00b66290",
+      "kind": "tail_jump",
+      "purpose": "GetInteger CRT conversion after float32 reload and stack restore"
+    }
+  ],
+  "reused_sources": [
+    "src/vehicle_class_lua_load.cpp kShipLeafClasses/kShipLeafTuningSources and ship_tuning_block_offset",
+    "src/vehicle_class.cpp vehicle_class_kind_row and native case-insensitive Type factory mapping",
+    "include/bsp/gameplay_settings.hpp AvoidZoneDepthSlot",
+    "src/native_lua_objects.cpp actual Lua state/object tracking wrappers and access behavior",
+    "src/lua_numeric.cpp float32/native CRT numeric conversion"
+  ],
+  "leased_annotated_entries": [
+    "0083b5e0",
+    "00837de0",
+    "006fb550",
+    "0074c630"
+  ],
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mode": "read-only verified wrappers; no mutations",
+    "no_ghidra_function": []
+  },
+  "flow_gaps": [
+    {
+      "function": "0083b5e0",
+      "inclusive_start": "0083bd5d",
+      "inclusive_end": "0083bd5f",
+      "reason": "after jump; outside selected depth region"
+    },
+    {
+      "function": "0083b5e0",
+      "inclusive_start": "0083be15",
+      "inclusive_end": "0083be1f",
+      "reason": "after jump; outside selected depth region"
+    },
+    {
+      "function": "0083b5e0",
+      "inclusive_start": "00840474",
+      "inclusive_end": "00840507",
+      "reason": "after jump; outside selected depth region"
+    },
+    {
+      "function": "0083b5e0",
+      "inclusive_start": "0084139a",
+      "inclusive_end": "0084139f",
+      "reason": "after jump; outside selected depth region"
+    },
+    {
+      "function": "0074c630",
+      "inclusive_start": "0074c865",
+      "inclusive_end": "0074c86f",
+      "reason": "after jump; outside flag/selected scalar projection"
+    }
+  ],
+  "adjacent_width_binding": {
+    "class_field": "A4h",
+    "lua_key": "Width",
+    "store": "00960368",
+    "annotation_owner": "orch6_unit_extents_e",
+    "behavior": "bare lua_tonumber then lua_number_float32_00b66270; no TNUMBER-only gate",
+    "verification": "build-tested; not exercised by the depth excerpt probe"
+  },
+  "installed_rows": [
+    {
+      "type": "MotherShip",
+      "variant": "",
+      "key": "MotherShip",
+      "scalar_source": "00",
+      "sample_type_id": 1,
+      "single": 0,
+      "multi": 3
+    },
+    {
+      "type": "Destroyer",
+      "variant": "",
+      "key": "Destroyer",
+      "scalar_source": "08",
+      "sample_type_id": 11,
+      "single": 0,
+      "multi": 1
+    },
+    {
+      "type": "TorpedoBoat",
+      "variant": "",
+      "key": "TBoat",
+      "scalar_source": "10",
+      "sample_type_id": 27,
+      "single": 0,
+      "multi": 1
+    },
+    {
+      "type": "LandingShip",
+      "variant": "BigLandingShip false",
+      "key": "SmallLandingShip",
+      "scalar_source": "18",
+      "sample_type_id": 40,
+      "single": 0,
+      "multi": 1
+    },
+    {
+      "type": "LandingShip",
+      "variant": "BigLandingShip true",
+      "key": "LargeLandingShip",
+      "scalar_source": "20",
+      "sample_type_id": 12,
+      "single": 0,
+      "multi": 3
+    },
+    {
+      "type": "BattleShip",
+      "variant": "",
+      "key": "BattleShip",
+      "scalar_source": "28",
+      "sample_type_id": 7,
+      "single": 0,
+      "multi": 3
+    },
+    {
+      "type": "Cargo",
+      "variant": "",
+      "key": "CargoShip",
+      "scalar_source": "30",
+      "sample_type_id": 35,
+      "single": 0,
+      "multi": 3
+    },
+    {
+      "type": "Cruiser",
+      "variant": "HeavyCruiser false",
+      "key": "LightCruiser",
+      "scalar_source": "38",
+      "sample_type_id": 17,
+      "single": 0,
+      "multi": 3
+    },
+    {
+      "type": "Cruiser",
+      "variant": "HeavyCruiser true",
+      "key": "HeavyCruiser",
+      "scalar_source": "40",
+      "sample_type_id": 19,
+      "single": 0,
+      "multi": 3
+    },
+    {
+      "type": "Submarine",
+      "variant": "",
+      "key": "Submarine",
+      "scalar_source": "5c",
+      "sample_type_id": 4,
+      "single": 0,
+      "multi": 1
+    }
+  ],
+  "installed_domain": {
+    "supported_ship_rows": 160,
+    "unsupported_rows": 473,
+    "supported_kind_ids": [
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ],
+    "unsupported_by_type": {
+      "AirField": 2,
+      "CommandBuilding": 7,
+      "DiveBomber": 9,
+      "DummyTargetVehicle": 1,
+      "Fighter": 28,
+      "Kamikaze": 6,
+      "LandFort": 368,
+      "LandVehicle": 21,
+      "LargeReconPlane": 4,
+      "LevelBomber": 11,
+      "Shipyard": 2,
+      "SmallReconPlane": 5,
+      "TorpedoBomber": 9
+    },
+    "nonship_storage_evidence": "Existing factory sizes AirField140h, LandFort180h, CommandBuilding1ACh, Shipyard138h exclude offset570h; do not fabricate zero or construct ship navigation from a missing row default.",
+    "minisub": "producer key at48h exists but no existing ship leaf scalar selects it; no invented MiniSub Type"
+  },
+  "validation": {
+    "build": "./scripts/build.ps1 Win32 passed after verify-seeds; CTest reconstructed_math and native_math_differential 2/2 passed",
+    "build_log": "local/game_ship_depth_input_build.log",
+    "probe": "local/game_ship_depth_probe.exe /MANIFEST:EMBED exit0; compiled exact reader excerpt against local bsp_core and Lua5.1.1",
+    "probe_log": "local/game_ship_depth_probe.log",
+    "installed_checks": "160 supported rows with mode0 and mode-1; 10 selected keys; all Single0; Multi1/3; stack restoration; unsupported Type errors",
+    "boundary_checks": "failures0: mixed-case Type, numeric-string 16777217->16777216 float32 rounding, non-Boolean variant default, final nil->native0, missing parent failure with unchanged output, non-string Lua error, stack restoration",
+    "fixture_scope": "actual physical Lua files; concrete DoFile reads ScriptOptions; actual DEG/KMH/MPH/KTS/isUnlock definitions extracted from luamw_init; PC=true from existing native platform bootstrap; no VFS or mission execution claim",
+    "tracked_tests_added": 0,
+    "report_calls": "python tools/verify_report_calls.py reports/game_ship_depth_input.json: 65 checked, 0 failed (live read-only verification)"
+  },
+  "limits": [
+    "Selected scalar adapter does not allocate or populate settings singleton, class descriptor, both full depth records, or class560..56C array.",
+    "Access ordering is the selected read at binding time; full native settings-loader side effects and mutation between singleton creation and descriptor loading are outside scope.",
+    "Host member forwarder and Width binding were build-tested; focused probe exercised the exact extracted borrowed reader only.",
+    "Game AI/Units binding, ship-brain native virtual allocation domain, mutable descriptor storage, and full009E0270 runtime execution belong to the integrator.",
+    "Native process global0109EEA4 is represented by current Windows SSE2 capability in the member; helper accepts explicit mode."
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "installed_inputs": [
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/scripts/datatables/ShipGlobals.lua",
+      "bytes": 44442,
+      "sha256": "5a5df16493c8d27d08ea2c74860a59a81dd97e7c24ab6f6f6713ba79ef60ef80"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/scripts/datatables/autoload/vehicleclasses.lua",
+      "bytes": 3349364,
+      "sha256": "0649dddf3a765a8340db2e6d545d04ac86503b4f8ba2e867c88ecbd2d2983650"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/scripts/fundamentals.lua",
+      "bytes": 657,
+      "sha256": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/scripts/global/luamw_init.lua",
+      "bytes": 13549,
+      "sha256": "3a807d3cb53d6e753901ab378a3b10311b2aa6dec5e99b05f5d63d4b98ea7533"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/scripts/datatables/ScriptOptions.lua",
+      "bytes": 238,
+      "sha256": "386ac4dc83a36f2521c5219289b7d16b588a94696af0f1564eefdedbe3f1b7a7"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/unlocks.lua",
+      "bytes": 20,
+      "sha256": "62fd3055a3449c7112aae59e09b6f48258f9b34843dfb13031dfd08b6468fa6c"
+    }
+  ],
+  "local_evidence": [
+    {
+      "path": "local/game_ship_depth_probe.cpp",
+      "sha256": "8a560bdfaf2f525fd853aaed29d715288a057ca3bc3e1f90ab3b1ed85e63775f"
+    },
+    {
+      "path": "local/game_ship_depth_reader_probe.cpp",
+      "sha256": "0803a9ab79791e2b5520af2ac64d0d910e6f795ea029900662406392919f46fb"
+    },
+    {
+      "path": "local/extract_game_ship_depth_probe.py",
+      "sha256": "791dc1ed7ad5b5394efa2b2cf48c28739a8e038d1cc3ce352552597ee8a6f075"
+    },
+    {
+      "path": "local/build_game_ship_depth_probe.cmd",
+      "sha256": "dcafe228dc443b4d3557f2ab48cd0ad23c5e6b6dfea9fb172720c65cf059c9ba"
+    },
+    {
+      "path": "local/ship_depth_degree.lua",
+      "sha256": "d6cb5545d8beffa6a6307a9a5acd16ed293d1fe64741a3918e22fb4e9311d39b"
+    },
+    {
+      "path": "local/game_ship_depth_probe.log",
+      "sha256": "d4524c9818f7b8312c4b39bf3b406649f1c9ff61faa0d053a9e10325da5d4bed"
+    },
+    {
+      "path": "local/game_ship_depth_probe_compile.log",
+      "sha256": "27d66007ae4434bd7767e0eaa37a1d756a6fac729f5244c4964536897c68281c"
+    },
+    {
+      "path": "local/game_ship_depth_input_build.log",
+      "sha256": "707a9bbdecfd833d971afabbed7c7d7fbc13fa1f218acbb9ca1ef99522a20b3d"
+    },
+    {
+      "path": "local/game_ship_depth_verify_seeds.log",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/ship_depth_call_evidence.json",
+      "sha256": "20e3c29687a9b4254bc3e7e395243b2cef20a373efea5056b73f468418e115df"
+    },
+    {
+      "path": "local/game_ship_depth_report_calls.log"
+    }
+  ],
+  "integrator_verification": {
+    "reader_excerpt_fixture": {
+      "supported_rows": 160,
+      "rejected_non_ship_rows": 473,
+      "keys": 10,
+      "boundary_failures": 0,
+      "log": "local/orch6_depth_probe_run.log"
+    },
+    "call_check": {
+      "checked": 65,
+      "failed": 0,
+      "log": "local/orch6_depth_calls.log"
+    },
+    "runtime": {
+      "report": "reports/game_ship_navigation_binding.json",
+      "log": "local/orch6_pre_step_e.log",
+      "actual_ship_rows": 14,
+      "session_mode": 0,
+      "depth_scalar": 0,
+      "mission_frames": 120,
+      "width_host_rows": 77
+    },
+    "ghidra": {
+      "prior_values": "local/ghidra-annotations-20260912T213900Z.json",
+      "existing_comments_preserved": true,
+      "project_saved": true,
+      "exports_refreshed": true,
+      "annotation_log": "local/orch6_worker_annotations_e.log",
+      "export_log": "local/orch6_worker_exports_e.log"
+    },
+    "post_main_merge_runtime": {
+      "compiled_commit": "784e09fc61501c8cce6dd1c0d25be8c6e6defbac",
+      "exe_sha256": "d31e0d7ca6334807a51b10a81ce27920a7b92e2ed7a64ba0fc157204dcf8bd1c",
+      "log": "local/orch6_pre_step_final_e.log",
+      "mission_frames": 120,
+      "registered_extent_rows": 77,
+      "ship_nav_blocks": 14,
+      "scope": "Same represented inputs and counts confirmed after merging main; full evidence in game_ship_navigation_binding.json."
+    }
+  }
+}

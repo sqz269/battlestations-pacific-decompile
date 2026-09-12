@@ -34,6 +34,8 @@
 #include "bsp/game_platform_services.hpp"
 #include "bsp/game_sound_runtime.hpp"
 #include "bsp/game_sound_dialog_runtime.hpp"
+#include "bsp/game_input_runtime.hpp"
+#include "bsp/gui_input_runtime.hpp"
 #include "bsp/fmod_configuration_library.hpp"
 #include "bsp/sound_alternate_owner.hpp"
 #include "bsp/legacy_crt_math.hpp"
@@ -54,9 +56,24 @@ std::wstring selected_library_path(const std::wstring& selected, const wchar_t* 
     return selected.empty() ? std::filesystem::absolute(name).wstring() : selected;
 }
 
+std::wstring selected_xinput_path(const std::wstring& selected) {
+    if (!selected.empty()) return selected;
+    wchar_t directory[MAX_PATH];
+    const UINT length = GetSystemDirectoryW(directory, MAX_PATH);
+    if (!length || length >= MAX_PATH)
+        throw std::runtime_error("cannot resolve the system XINPUT1_3.dll directory");
+    return (std::filesystem::path(directory) / L"XINPUT1_3.dll").wstring();
+}
+
+double input_image_double(std::uint64_t bits) noexcept {
+    double value;
+    std::memcpy(&value, &bits, sizeof value);
+    return value;
+}
+
 // 00bed3b0 keeps the platform object in window-extra offset zero. The extra-bytes layout
 // of the native object is not recovered, so the milestone binds one process-wide pointer.
-Win32PlatformState* g_active_platform = nullptr;
+Win32PlatformState* volatile g_active_platform = nullptr;
 
 // Window title and class name, the temporary string 00becee0 receives as argument 2.
 const char kWindowName[] = "Battlestations Pacific";
@@ -266,7 +283,8 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
         } else if (std::strcmp(argument, "--fmod-dll") == 0
             || std::strcmp(argument, "--fmod-event-dll") == 0
             || std::strcmp(argument, "--xlive-dll") == 0
-            || std::strcmp(argument, "--xlive-dependency") == 0) {
+            || std::strcmp(argument, "--xlive-dependency") == 0
+            || std::strcmp(argument, "--xinput-dll") == 0) {
             if (index + 1 >= argc) {
                 error = std::string(argument) + " needs a DLL path";
                 return false;
@@ -280,6 +298,7 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
             if (std::strcmp(argument, "--fmod-dll") == 0) fmod_dll = path.wstring();
             else if (std::strcmp(argument, "--fmod-event-dll") == 0) fmod_event_dll = path.wstring();
             else if (std::strcmp(argument, "--xlive-dll") == 0) xlive_dll = path.wstring();
+            else if (std::strcmp(argument, "--xinput-dll") == 0) xinput_dll = path.wstring();
             else xlive_dependencies.push_back(path.wstring());
         } else if (std::strcmp(argument, "--vfs-probe") == 0) {
             if (index + 1 >= argc) {
@@ -875,9 +894,7 @@ struct GameStartupHost::SoundServices {
     // at73DC7C and input backend construction at73DD8E, after sound/window.
     // Until those owners exist, these verified loader-zero slots stay null.
     // No independent online/input/action owner is constructed for sound loads.
-    InputFocusBackendState* volatile input_00f8bbf4{};
     XLiveManagerOwner* volatile online_00f8abe8{};
-    InputFocusResetHost* volatile actions_provider{};
     std::uint8_t cursor_shown_0109db8e{}, focus_reset_pending_0109db8f{}, previous_ui_0109db90{};
     XLiveLibrary xlive;
     GamePlatformServices platform;
@@ -893,8 +910,7 @@ struct GameStartupHost::SoundServices {
     explicit SoundServices(GameStartupHost& app)
         : xlive(selected_library_path(app.options_.xlive_dll, L"xlive.dll"),
               app.options_.xlive_dependencies),
-          platform(app.platform_, {cursor_shown_0109db8e, focus_reset_pending_0109db8f,
-              previous_ui_0109db90}, input_00f8bbf4, online_00f8abe8, actions_provider, xlive),
+          platform(app.input_backend_00f8bbf4_, app.input_runtime_, online_00f8abe8, xlive),
           dialog({alternate_00f8bbcc, format_counts_00e12ef0, one_00d7a24c,
               fade_00ce3dc8, &null_integer_format_01090ab4}),
           core({app.vfs_->manager()->context(), app.vfs_->search_registrations(),
@@ -908,6 +924,66 @@ struct GameStartupHost::SoundServices {
         // Registration happens in startup, after the raw deletion dispatcher
         // has this exact core allocation available.
         app.singletons_->bind_sound_runtime(&core);
+    }
+};
+
+struct GameStartupHost::InputServices {
+    // Source storage initialized from the verified image words. Mutable settings
+    // producers are still required; these cells are not snapshots of settings_.
+    NativeInputDeviceSdk sdk;
+    XInputLibrary xinput;
+    bool rumble_00e12f2c{true};
+    // Source binding to the OS CPU+OS SSE2 capability service. The original CRT
+    // initializer C27B7C calls __get_sse2_info, then writes this mode DWORD.
+    const bool sse2_available{IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE};
+    const volatile std::uint32_t sse2_0109eea4{sse2_available ? 1u : 0u};
+    XInputDeviceGlobals tables{rumble_00e12f2c, sse2_available};
+    volatile float one_00d7a24c{1.0f}, negative_zero_00d7a208{-0.0f};
+    volatile float mouse_scale_00e12fb0{1.0f};
+    volatile std::uint8_t invert_y_00f8bc04{};
+    volatile double axis_divisor_00d7a220{100.0};
+    volatile float unsigned_bias_00ce3978{4294967296.0f};
+    volatile double milliseconds_00ce47a0{1000.0};
+    const volatile double one_00d7a210{1.0};
+    const volatile float trigger_threshold_00ce3800{0.5f}, activity_threshold_00ce3868{0.25f};
+    const volatile double deadzone_00ce3d10{input_image_double(0x3fc99999a0000000ULL)};
+    const volatile double deadzone_gain_00d5b7e8{input_image_double(0x3ff4000001400000ULL)};
+    const volatile double activity_seconds_00ce3d68{60.0};
+    const volatile double trigger_maximum_00ce4b48{255.0}, force_scale_00ce4bd8{10000.0};
+    const volatile float zero_00d7a218{0.0f}, loading_step_00d7a2f0{0.1f};
+    const volatile double infinite_remaining_00d7a278{input_image_double(0x47efffffe0000000ULL)};
+    const char empty_00f8bc03{};
+    // Explicit source stack baseline for the ignored-HRESULT Xbox joystick
+    // branch. Arbitrary native uninitialized-stack failure behavior is unproven.
+    const XINPUT_STATE joystick_stack_preimage{};
+    NativeInputShowCursorCall const show_cursor{&::ShowCursor};
+    GameInputRuntime core;
+
+    explicit InputServices(GameStartupHost& app)
+        : xinput(selected_xinput_path(app.options_.xinput_dll)),
+          core({{crt_string_storage(), sdk, xinput, tables, g_active_platform,
+              app.clock_publication_01090ab0_,
+              {one_00d7a24c, negative_zero_00d7a208, mouse_scale_00e12fb0,
+                  invert_y_00f8bc04, axis_divisor_00d7a220, unsigned_bias_00ce3978,
+                  milliseconds_00ce47a0},
+              {one_00d7a24c, one_00d7a210, trigger_threshold_00ce3800,
+                  activity_threshold_00ce3868, deadzone_00ce3d10, deadzone_gain_00d5b7e8,
+                  activity_seconds_00ce3d68, trigger_maximum_00ce4b48,
+                  force_scale_00ce4bd8, sse2_0109eea4},
+              {negative_zero_00d7a208, zero_00d7a218},
+              {"Keyboard", "Mouse", "GameController"}, &empty_00f8bc03,
+              infinite_remaining_00d7a278, joystick_stack_preimage},
+              app.singletons_->sound_lifetime(), app.input_backend_00f8bbf4_,
+              app.input_actions_00f8bbf8_,
+              // Immutable D7A24C bits already used by sound's storage provider.
+              // This is a literal representation, not an aliasing float cast.
+              app.sound_->one_00d7a24c, app.input_listener_calls_,
+              {app.sound_->cursor_shown_0109db8e, app.sound_->focus_reset_pending_0109db8f,
+                  app.sound_->previous_ui_0109db90},
+              app.sound_->online_00f8abe8, loading_step_00d7a2f0, show_cursor,
+              &gui_raw_input_device_004ba6d0}) {
+        app.singletons_->bind_input_backend(&core.backend_context());
+        app.singletons_->bind_input_actions(&core.action_context());
     }
 };
 
@@ -927,6 +1003,18 @@ GameStartupHost::~GameStartupHost() {
     // Retain sound callbacks, DLLs, VFS/Lua and lifetime publication cells
     // through the actual raw singleton drain, including exceptional startup.
     if (singletons_) singletons_->shutdown();
+    if (input_) {
+        try { input_->core.release_sdk_after_native_drain(); }
+        catch (const std::exception& error) {
+            // Native registration failure can leave an unpublished-to-manager
+            // allocation (or a freed backend publication). Do not dereference
+            // or repair that cell, and do not terminate exceptional startup
+            // merely because the explicit SDK-release precondition fails.
+            log_.notef("input SDK final release incomplete: %s", error.what());
+        }
+    }
+    input_runtime_ = nullptr;
+    input_.reset();
     sound_.reset();
     delete singletons_;
     delete profiler_;
@@ -1143,6 +1231,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     log_.implemented("Phase 0 construct_allocation_stats", "00be2900");
 
     construct_frame_clock_singleton_00bedfb0(clock_);
+    clock_publication_01090ab0_ = &clock_;
     log_.implemented("Phase 0 construct_frame_clock_singleton", "00bedfb0");
 
     install_object_handle_resolvers_006ad0d0(object_resolvers_);
@@ -1360,7 +1449,11 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         }
     }
     log_.unimplemented("Phase 4 renderer_resources", "00b14a10");
-    log_.unimplemented("Phase 5 input_backend_initialize", "0073dd8e");
+    input_ = std::make_unique<InputServices>(*this);
+    input_runtime_ = &input_->core;
+    input_runtime_->startup();
+    log_.implemented("Phase 5 input_backend_initialize", "0073dd8e");
+    log_.implemented("Phase 5 input_backend_callback_and_reset", "0073dd98");
 
     // Locale construction and exact setter/register/reload order0073e057..e135.
     locale_ = new GameLocaleHost(log_);
@@ -1606,7 +1699,6 @@ void GameStartupHost::application_shutdown() {
     delete frontend_;
     frontend_ = nullptr;
     if (device_ != nullptr) device_->release();
-    release_platform_window();
 }
 
 void GameStartupHost::application_destruct() {
@@ -1617,6 +1709,7 @@ void GameStartupHost::application_destruct() {
 void GameStartupHost::destroy_singleton_lifetime_manager() {
     log_.implemented("StartupHost::destroy_singleton_lifetime_manager", "008f8449");
     singletons_->shutdown();
+    if (input_) input_->core.release_sdk_after_native_drain();
     if (sound_) {
         const auto state = sound_->core.summary();
         log_.notef("sound after raw singleton drain: started=%d samples=%zu resources=%zu "
@@ -1625,6 +1718,7 @@ void GameStartupHost::destroy_singleton_lifetime_manager() {
             state.file_opens, state.file_closes, state.file_reclaims,
             state.file_handles_pending, state.fmod_errors);
     }
+    release_platform_window();
 }
 
 }  // namespace bsp::game

@@ -1,0 +1,332 @@
+{
+ "packet": "cc_lua_binding_audit",
+ "owner": "agent/cc-lua-binding-audit",
+ "doc": "docs/LUA_BINDING_MISSION.md",
+ "header": "include/bsp/lua_binding_mission.hpp",
+ "source": "src/lua_binding_mission.cpp",
+ "host": "src/game_hosts_script_orders.cpp",
+ "ghidra": "read-only",
+ "summary": "Which mission Lua bindings Scripts/missions/usn/usn_2_java.lua reaches, which of them the executable runs and which it records, and the nine it now runs: the delayed-call scheduler (CreateScript, SetThink, SetWait, ClearThink, DeleteScript) that re-enters the objective checker, the three state queries the checker reads (GetHpPercentage, GetPosition, GetMeasure) with GameTime, and `random`, without which luaInit cannot finish.",
+ "audit": {
+  "mission_script": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/scripts/missions/usn/usn_2_java.lua",
+  "binding_table": "config/lua_bindings.json",
+  "rows_in_table": 560,
+  "reachable_from_the_mission_script": 179,
+  "called_directly_by_the_mission_file": 41,
+  "reachable_only_through_the_helper_library": 138,
+  "called_at_least_once_in_the_125_second_run": 28,
+  "reconstructed_rows_that_ran": 12,
+  "record_rows_that_ran": 16
+ },
+ "routines": [
+  {
+   "name": "lua_binding_create_script",
+   "address": "00898750",
+   "ghidra_name": "BSP_LuaBinding_CreateScript",
+   "body": "00898750-00898ab8",
+   "abi": "__fastcall(lua_State* in ECX), result count in EAX",
+   "coverage": "complete for the binding's own work: the allocation and construct, the four word writes with [+0C4h]=3, the vtable+98h placement, 00927610, the stack_first rule, the named call and the thisTable return. The 16-float matrix staged at 008988BA-00898914 is passed through as one host call and its element meanings are not modelled; the shared machine prologue and epilogue are docs/MISSION_LUA_MACHINE.md's."
+  },
+  {
+   "name": "lua_binding_set_wait",
+   "address": "00898150",
+   "ghidra_name": "BSP_LuaBinding_SetThinkDelay",
+   "body": "00898150-0089831a",
+   "abi": "__fastcall(lua_State* in ECX), result count in EAX, zero results",
+   "coverage": "complete"
+  },
+  {
+   "name": "lua_binding_clear_think",
+   "address": "00898490",
+   "ghidra_name": "BSP_LuaBinding_ClearThink",
+   "body": "00898490-0089860c",
+   "abi": "__fastcall(lua_State* in ECX), result count in EAX, zero results",
+   "coverage": "complete. The 008985B6-008985BE bytes are undisassembled in Ghidra because of the CALL_RETURN override on the CRT free helper and were read from the disk image: 83 C4 04 89 AE D8 01 00 00, ADD ESP,4 then MOV [ESI+1D8h],EBP."
+  },
+  {
+   "name": "lua_binding_delete_script",
+   "address": "00898ac0",
+   "ghidra_name": "BSP_LuaBinding_DeleteScript",
+   "body": "00898ac0-00898c52",
+   "abi": "__fastcall(lua_State* in ECX), result count in EAX, zero results on both arms",
+   "coverage": "complete"
+  },
+  {
+   "name": "lua_binding_get_hp_percentage",
+   "address": "0088e9d0",
+   "ghidra_name": "BSP_LuaBinding_GetHpPercentage",
+   "body": "0088e9d0-0088eb40",
+   "abi": "__fastcall(lua_State* in ECX), result count in EAX, one result",
+   "coverage": "complete. 00923BE0's own value rule is carried as bsp::unit_health_value_00923be0 over that routine's existing reconstruction record; the virtual at the unit vtable +110h is a host method and is unread."
+  },
+  {
+   "name": "lua_binding_get_position",
+   "address": "008a7b00",
+   "ghidra_name": "BSP_LuaBinding_GetPosition",
+   "body": "008a7b00-008a7ca1",
+   "abi": "__fastcall(lua_State* in ECX), result count in EAX, one result",
+   "coverage": "complete"
+  },
+  {
+   "name": "lua_binding_get_measure",
+   "address": "0088d8e0",
+   "ghidra_name": "BSP_LuaBinding_GetMeasure",
+   "body": "0088d8e0-0088da90",
+   "abi": "__fastcall(lua_State* in ECX), result count in EAX, one result",
+   "coverage": "complete"
+  },
+  {
+   "name": "lua_binding_game_time",
+   "address": "008a9320",
+   "ghidra_name": "BSP_LuaBinding_GameTime",
+   "body": "008a9320-008a945e",
+   "abi": "__fastcall(lua_State* in ECX), result count in EAX, one result",
+   "coverage": "complete"
+  },
+  {
+   "name": "lua_binding_random",
+   "address": "0088c160",
+   "ghidra_name": "BSP_LuaBinding_Random",
+   "body": "0088c160-0088c3d5",
+   "abi": "__fastcall(lua_State* in ECX), result count in EAX, one result on the three argument-count arms and zero above two arguments",
+   "coverage": "complete"
+  }
+ ],
+ "host_methods": [
+  {
+   "method": "LuaBindingMissionHost::unit_health_gate_5d_00923be4 and unit_health_vtable_110_00923bf6",
+   "address": "0088eacf",
+   "native": "00888aa0",
+   "containing_function": "0088e9d0",
+   "note": "the entity read that precedes them; 00888AA0 BSP_ObjectHandle_FromLuaTable, already reused through include/bsp/object_handle_resolvers.hpp"
+  },
+  {
+   "method": "LuaBindingMissionHost::unit_health_vtable_110_00923bf6",
+   "address": "0088eae8",
+   "native": "00923be0",
+   "containing_function": "0088e9d0",
+   "note": "BSP_UnitInstance_GetHealth, already reconstructed; the host supplies its vtable +110h call, which no packet has read"
+  },
+  {
+   "method": "LuaBindingMissionHost::push_number_float_00b66480 (GetHpPercentage)",
+   "address": "0088eaf5",
+   "native": "00b66480",
+   "containing_function": "0088e9d0"
+  },
+  {
+   "method": "LuaBindingMissionHost::entity_pose_refresh_00414db0",
+   "address": "008a7c37",
+   "native": "00414db0",
+   "containing_function": "008a7b00",
+   "note": "BSP_EntityPose_RefreshWorld, already reconstructed; reached only while entity+0C8h is clear"
+  },
+  {
+   "method": "LuaBindingMissionHost::push_vector3_table_0088ba30 (the fresh table)",
+   "address": "008a7c1f",
+   "native": "00b67930",
+   "containing_function": "008a7b00"
+  },
+  {
+   "method": "LuaBindingMissionHost::push_vector3_table_0088ba30 (the three keys)",
+   "address": "008a7c46",
+   "native": "0088ba30",
+   "containing_function": "008a7b00",
+   "note": "writes x, y and z from the world matrix translation row at entity+0FCh"
+  },
+  {
+   "method": "LuaBindingMissionHost::push_global_path_value_00b672b0",
+   "address": "0088d9ea",
+   "native": "00b672b0",
+   "containing_function": "0088d8e0",
+   "note": "the imperial arm; the metric arm is the same callee from the 0088DA04 branch"
+  },
+  {
+   "method": "LuaBindingMissionHost::push_number_float_00b66480 (GameTime)",
+   "address": "008a9414",
+   "native": "00b66480",
+   "containing_function": "008a9320"
+  },
+  {
+   "method": "LuaBindingMissionHost::script_entity_create_00898841",
+   "address": "00898841",
+   "native": "00bf55be",
+   "containing_function": "00898750",
+   "note": "operator new(0x1E4); the zero fill is 0089884F / 00BF79F0 and the construct 0089886F / 00928630"
+  },
+  {
+   "method": "LuaBindingMissionHost::script_entity_create_00898841 (construct)",
+   "address": "0089886f",
+   "native": "00928630",
+   "containing_function": "00898750",
+   "note": "BSP_GameEntity_Construct"
+  },
+  {
+   "method": "LuaBindingMissionHost::script_entity_call_00927610_00898932",
+   "address": "00898932",
+   "native": "00927610",
+   "containing_function": "00898750",
+   "note": "called with DL = 0 (0089892E XOR DL,DL); body not read, so the method is named by address"
+  },
+  {
+   "method": "LuaBindingMissionHost::lua_stack_top_00b65eb0",
+   "address": "00898940",
+   "native": "00b65eb0",
+   "containing_function": "00898750",
+   "note": "BSP_LuaStateOwner_GetTop; its result decides stack_first at 00898945"
+  },
+  {
+   "method": "LuaBindingMissionHost::entity_call_named_009290a0",
+   "address": "0089898b",
+   "native": "009290a0",
+   "containing_function": "00898750",
+   "note": "BSP_MissionEntity_RegisterLuaScript; forwards the self key at entity+178h, docs/MISSION_NAMED_CALL_ARGS.md"
+  },
+  {
+   "method": "LuaBindingMissionHost::push_self_table_slot_008989f6",
+   "address": "008989f6",
+   "native": "00b67910",
+   "containing_function": "00898750",
+   "note": "BSP_LuaObject_GetByLiteral with 00CE7494 'thisTable'; the per-entity key then goes through 00898A0C / 00B678E0 and the push at 00898A1B / 00B663D0"
+  },
+  {
+   "method": "LuaBindingMissionHost::entity_arm_think_delay_008982c9 (the delay read)",
+   "address": "00898280",
+   "native": "00b66270",
+   "containing_function": "00898150",
+   "note": "BSP_LuaObject_GetNumber; narrowed to float32 by the FSTP at 00898285 before the clamp"
+  },
+  {
+   "method": "LuaBindingMissionHost::entity_clear_think_name_008985a6",
+   "address": "008985b1",
+   "native": "00bf6989",
+   "containing_function": "00898490",
+   "note": "_free on the strdup'd think name; the null store follows at 008985B9"
+  },
+  {
+   "method": "LuaBindingMissionHost::entity_kill_00926d90",
+   "address": "00898c07",
+   "native": "00926d90",
+   "containing_function": "00898ac0",
+   "note": "BSP_MissionEntity_Kill, already reconstructed; the cause is the literal 2"
+  },
+  {
+   "method": "LuaBindingMissionHost::random_uniform_00bd2f10 (no argument)",
+   "address": "0088c377",
+   "native": "00bd2f10",
+   "containing_function": "0088c160",
+   "note": "BSP_Random_UniformFloatRange, already reconstructed; bounds 0.0f and 00D11318 = 32767.0f"
+  },
+  {
+   "method": "LuaBindingMissionHost::random_uniform_00bd2f10 (one argument)",
+   "address": "0088c339",
+   "native": "00bd2f10",
+   "containing_function": "0088c160"
+  },
+  {
+   "method": "LuaBindingMissionHost::random_uniform_00bd2f10 (two arguments)",
+   "address": "0088c2c7",
+   "native": "00bd2f10",
+   "containing_function": "0088c160"
+  },
+  {
+   "method": "LuaBindingResultWriter::push_number (random)",
+   "address": "0088c386",
+   "native": "00b664b0",
+   "containing_function": "0088c160",
+   "note": "preceded by the CRT float-to-long 0088C37C / 00BF7420"
+  },
+  {
+   "method": "GameScriptOrdersHost::entity_set_think_script_name_0088a330",
+   "address": "008980e8",
+   "native": "0088a330",
+   "containing_function": "00897fb0",
+   "note": "SetThink's one callee; BSP_Entity_SetThinkScriptName, whose 0088A34B appends to the pending think list only on the null-to-name edge"
+  }
+ ],
+ "names_added": [
+  {
+   "address": "0088e9d0",
+   "name": "BSP_LuaBinding_GetHpPercentage"
+  },
+  {
+   "address": "008a7b00",
+   "name": "BSP_LuaBinding_GetPosition"
+  },
+  {
+   "address": "0088d8e0",
+   "name": "BSP_LuaBinding_GetMeasure"
+  },
+  {
+   "address": "008a9320",
+   "name": "BSP_LuaBinding_GameTime"
+  },
+  {
+   "address": "00898490",
+   "name": "BSP_LuaBinding_ClearThink"
+  },
+  {
+   "address": "00898ac0",
+   "name": "BSP_LuaBinding_DeleteScript"
+  },
+  {
+   "address": "0088ba30",
+   "name": "BSP_LuaObject_SetVector3Fields"
+  },
+  {
+   "address": "0088c160",
+   "name": "BSP_LuaBinding_Random"
+  }
+ ],
+ "corrections": [
+  {
+   "subject": "config/lua_bindings.json ghidra_function column",
+   "was": "AddPowerup 008EE410 and Spawn 00944680 exported with ghidra_function null, and docs/LUA_BINDING_TABLE.md counted 24 handlers with no Ghidra function",
+   "is": "both have a Ghidra function today: BSP_LuaBinding_AddPowerup body 008EE410-008EE5AA and BSP_LuaBinding_Spawn body 00944680-00944FC0",
+   "evidence": "python tools/bsp.py ghidra proto 008ee410 --brief and 00944680 --brief. The exported table is a snapshot and later packets defined these two; regenerate with tools/lua_bindings_export.py before quoting that column."
+  },
+  {
+   "subject": "the objective state usn_2_java tracks",
+   "was": "the brief expected the Objectives_* bindings to answer the script's objective and victory queries",
+   "is": "they answer nothing. Objectives_Add, Objectives_Completed, Objectives_Failed, Objectives_AddUnit and Objectives_RemoveUnit push no result at all; the script's own Mission.Objectives[level][num].Active and .Success fields are the state, read by luaObj_IsActive and luaObj_GetSuccess in Lua only",
+   "evidence": "Scripts/global/commandhelpers.lua lines 5741-6027 and the bodies 008CD440, 008BD340, 008BD900, which marshal into 008E1F80 / 008E20D0 / 008E2200 and return zero results. So no Objectives_* reconstruction can change what the script decides; they drive the display."
+  },
+  {
+   "subject": "what decides usn_2_java's flow",
+   "was": "the brief ordered the work by objectives, victory/defeat and unit-state queries",
+   "is": "the delayed-call scheduler is upstream of all three. The objective checker is re-entered only by luaDelay -> CreateScript(\"luaDoTimeTable\") -> SetThink/SetWait and the think walk 00929460; with those five rows as records the checker ran exactly once per mission",
+   "evidence": "usn_2_java.lua:415 and :603, Scripts/global/timetable.lua, and local/audit_long.log: 27 script entities, 26 SetWait arms, 25 DeleteScript kills and 106 think fires over 125 s"
+  },
+  {
+   "subject": "milestone 2l's created-script stand-in",
+   "was": "GameMissionLuaHost::run_created_scripts called each name CreateScript was handed, once, on the frame the mission entered state 0Dh",
+   "is": "00898750 now calls the named global from inside its own body at 0089898B, so the stand-in would run luaInit twice; src/game_hosts_mission_frame.cpp runs it only while timers().scripts_created is zero",
+   "evidence": "local/audit_long.log line 'script objects: CreateScript 00898750 ran its own body 27 time(s)...'"
+  },
+  {
+   "subject": "the host's erase timing inside the think walk",
+   "was": "GameScriptOrdersHost::entity_kill_00926d90 erased the entity from the live think list immediately, as 00929800 does",
+   "is": "the erase is deferred until bsp::run_entity_think_list_00929460 returns, because that reconstruction walks a std::vector and the kill arrives from inside a think function",
+   "evidence": "the native unlinks under a cursor that captured its successor at 0092948B, so it is safe there. Applying it during the vector walk mis-counted the pass: the same 125 s line reported 81 lua_Think heartbeats and 106 fires before the fix and 41 and 66 after, and 41 is the 125 s / 3 s the countdown rule predicts."
+  }
+ ],
+ "run": {
+  "command": "build/win32/Release/bsp_game.exe --frames 2700 --press-start-frame 30 --menu-select USN02 --mission-frames 2500 --mission-frame-seconds 0.05 --log local/audit_long.log --xlive-dll build/win32/Release/xlive_stub.dll --game-root \"I:/SteamLibrary/steamapps/common/Battlestations Pacific\"",
+  "mission_seconds": 125.0,
+  "script_entities_created": 27,
+  "think_registrations": 27,
+  "waits_armed": 26,
+  "deletes": 25,
+  "think_passes": 2500,
+  "think_fires": 66,
+  "lua_call_failures": 0,
+  "lua_think_heartbeats": 41,
+  "objective_checker_reschedules": 25,
+  "objective_checker_interval_seconds": 5.0,
+  "host_methods": "622 concrete, 464 unimplemented",
+  "objectives_updated": 0,
+  "mission_complete_or_failed_reached": false,
+  "stopped_at": "Blackout 008D1340, whose completion callback name reaches the fade object at [[00E198C4]+0A4h] through 005B9BA0 and is never called back in this process. usn_2_java reaches MissionPhase 1 only through Blackout(true, \"luaIngameMovieBOStart\", 1) and then Blackout(true, \"luaIn\", 3); with MissionPhase 0 the checker returns before every objective test it has."
+ },
+ "build": "scripts/build.ps1, Win32 Release, /W4 /WX clean; ctest reconstructed_math passed",
+ "no_ghidra_function": []
+}

@@ -1,0 +1,464 @@
+{
+  "packet": "orch4_native_input_backend_startup_af",
+  "sources": [
+    "include/bsp/native_input_backend_startup.hpp",
+    "src/native_input_backend_startup.cpp"
+  ],
+  "documentation": "docs/NATIVE_INPUT_BACKEND_STARTUP.md",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "bsp.py ghidra client verifies project/program before each live batch; report CALL audit also verifies target",
+    "worker_ghidra_mutations": 0
+  },
+  "functions": [
+    {
+      "address": "00a900f0",
+      "name": "reset_native_input_backend_00a900f0",
+      "original_name": "BSP_InputDeviceTable_ResetSlots",
+      "end_inclusive": "00a90123",
+      "end_exclusive": "00a90124",
+      "instruction_count": 22,
+      "final_instruction": {
+        "address": "00a90123",
+        "length": 1,
+        "instruction": "RET"
+      },
+      "native_abi": {
+        "return_value": "No semantic result",
+        "ecx": "Actual backend",
+        "edx": "Scratch; not an input",
+        "stack": [],
+        "ret_cleanup_bytes": 0
+      },
+      "instruction_gaps": [
+        {
+          "start": "00a900fd",
+          "end_exclusive": "00a90100",
+          "bytes": "8d4900",
+          "instruction": "LEA ECX,[ECX]",
+          "explanation": "Skipped alignment after unconditional JMP A900FB -> A90100; no missing execution path"
+        }
+      ],
+      "behavior": "Three classes x eight owning slots; null-test then reload nonnull slot before current-profile slot14; no own reference or cleanup changes",
+      "coverage": "complete within documented raw source domain",
+      "no_ghidra_function": false,
+      "source": "src/native_input_backend_startup.cpp",
+      "original_callable_abi_claimed": false
+    },
+    {
+      "address": "004b4630",
+      "name": "native_input_startup_callback_004b4630",
+      "original_name": "FUN_004b4630",
+      "end_inclusive": "004b4630",
+      "end_exclusive": "004b4631",
+      "instruction_count": 1,
+      "final_instruction": {
+        "address": "004b4630",
+        "length": 1,
+        "instruction": "RET"
+      },
+      "native_abi": {
+        "return_value": "No semantic result; consumers ignore result",
+        "ecx": "Unsigned original class",
+        "edx": "Signed index; removal supplies -1",
+        "stack": [],
+        "ret_cleanup_bytes": 0
+      },
+      "instruction_gaps": [],
+      "behavior": "Verified C3; supported identity dispatcher accepts only this exact captured nonzero identity",
+      "coverage": "complete within documented raw source domain",
+      "no_ghidra_function": false,
+      "source": "src/native_input_backend_startup.cpp",
+      "original_callable_abi_claimed": false
+    },
+    {
+      "address": "00a90490",
+      "name": "native_input_backend_at_requested_count_00a90490",
+      "original_name": "BSP_InputBackend_AtRequestedActiveCount_Provisional",
+      "end_inclusive": "00a904d3",
+      "end_exclusive": "00a904d4",
+      "instruction_count": 28,
+      "final_instruction": {
+        "address": "00a904d1",
+        "length": 3,
+        "instruction": "RET 4"
+      },
+      "native_abi": {
+        "return_value": "AL 0 or 1; no full-EAX bool promise",
+        "ecx": "Actual backend",
+        "edx": "Scratch; not an input",
+        "stack": [
+          "DWORD class"
+        ],
+        "ret_cleanup_bytes": 4
+      },
+      "instruction_gaps": [],
+      "behavior": "Requested DWORD +68+class*24h equals active vector count; null begin skips end read; DWORD end-begin then signed SAR2",
+      "coverage": "complete within documented raw source domain",
+      "no_ghidra_function": false,
+      "source": "src/native_input_backend_startup.cpp",
+      "original_callable_abi_claimed": false
+    },
+    {
+      "address": "00a918a0",
+      "name": "update_native_input_backend_00a918a0",
+      "original_name": "BSP_InputBackend_UpdateDevices_Provisional",
+      "end_inclusive": "00a91923",
+      "end_exclusive": "00a91924",
+      "instruction_count": 58,
+      "final_instruction": {
+        "address": "00a91921",
+        "length": 3,
+        "instruction": "RET 4"
+      },
+      "native_abi": {
+        "return_value": "No semantic result",
+        "ecx": "Actual backend",
+        "edx": "Scratch; not an input",
+        "stack": [
+          "float seconds"
+        ],
+        "ret_cleanup_bytes": 4
+      },
+      "instruction_gaps": [],
+      "behavior": "Live backend slot10 prepass, then class-major poll; x87 float argument per poll; reread requested count and policy byte; retained polled device for class2 activity; pass current slot index to A91620",
+      "coverage": "complete within documented raw source domain",
+      "no_ghidra_function": false,
+      "source": "src/native_input_backend_startup.cpp",
+      "original_callable_abi_claimed": false
+    }
+  ],
+  "missing_functions": [],
+  "tail_sites": [],
+  "producer_evidence": {
+    "existing_source": "src/native_input_backend_owner.cpp",
+    "native_producers": [
+      "00a908a0",
+      "00a914c0",
+      "00a91570",
+      "00a982d0"
+    ],
+    "canonical_size": "F8h derived backend; inherited schedule uses fields through +D8",
+    "fixed_slots": "Raw+4+class*20h+slot*4, class0..2/slot0..7",
+    "requested_count": "DWORD raw+68+class*24h",
+    "active_vector": "Header raw+6C+class*24h, begin/header+4 and end/header+8",
+    "policy": "Single BYTE raw+64, adjacent padding untouched",
+    "callback": "DWORD raw+D8, constructor writes zero, startup writes4B4630",
+    "profile_evidence": {
+      "00d5b5f8": {
+        "slot04": "00a918a0",
+        "slot10": "00bf698e"
+      },
+      "00d5b72c": {
+        "slot04": "00a918a0",
+        "slot10": "00a97390"
+      }
+    },
+    "no_new_storage_or_ownership": true
+  },
+  "caller_evidence": {
+    "direct_callers": {
+      "00a900f0": [
+        "0073ddaf",
+        "004daa8f"
+      ],
+      "00a90490": [
+        "00a918de"
+      ],
+      "004b4630": [],
+      "00a918a0": []
+    },
+    "data_xrefs": {
+      "004b4630": [
+        "0073dd98"
+      ],
+      "00a918a0": [
+        "00d5b5fc",
+        "00d5b730"
+      ]
+    },
+    "known_indirect_callers": [
+      "00a917ca",
+      "00a90f86",
+      "00a92c57",
+      "00becbd8",
+      "00becc1f",
+      "00becc9b"
+    ],
+    "complete_containing_bodies": {
+      "0073d410": "0073e52c",
+      "004da780": "004db02c",
+      "00a91620": "00a917d5",
+      "00a90ee0": "00a90f8f"
+    },
+    "evidence": "Each direct site and known callback/outer-slot consumer argument setup inspected in saved listings; live containing functions checked before attribution"
+  },
+  "calls": [
+    {
+      "address": "00a90111",
+      "native": "device+vtable14",
+      "function": "00a900f0",
+      "contract": "ECX freshly reloaded slot device; no stack arguments",
+      "binding": "NativeInputBackendStartupDeviceRuntime forwards existing finite raw runtime"
+    },
+    {
+      "address": "00a918ad",
+      "native": "00a97390",
+      "function": "00a918a0",
+      "contract": "ECX backend, no stack arguments; derived D5B72C slot10 is existing bare RET",
+      "resolution": "indirect; table bytes and producer establish target"
+    },
+    {
+      "address": "00a918ad",
+      "native": "00bf698e",
+      "function": "00a918a0",
+      "contract": "Groups D5B5F8 slot10 is real CRT purecall",
+      "resolution": "indirect; table bytes and producer establish target"
+    },
+    {
+      "address": "00a918d9",
+      "native": "device+vtable10",
+      "function": "00a918a0",
+      "contract": "ECX captured device; one x87-spilled float seconds on stack; ignored result",
+      "binding": "NativeInputBackendStartupDeviceRuntime forwards existing finite raw runtime"
+    },
+    {
+      "address": "00a918de",
+      "native": "00a90490",
+      "function": "00a918a0",
+      "contract": "ECX backend, PUSH EBX class; callee RET4; test AL"
+    },
+    {
+      "address": "00a918f8",
+      "native": "device+vtable28",
+      "function": "00a918a0",
+      "contract": "ECX retained polled device, freshly reloaded profile; no stack arguments; test AL",
+      "binding": "NativeInputBackendStartupDeviceRuntime forwards existing finite raw runtime"
+    },
+    {
+      "address": "00a91902",
+      "native": "00a91620",
+      "function": "00a918a0",
+      "contract": "ECX backend; PUSH fixed slot EDI then class EBX; callee RET8",
+      "binding": "Required NativeInputBackendSlotActivation, separately recovered raw binding operation"
+    },
+    {
+      "address": "0073dd71",
+      "native": "00bf681b",
+      "function": "0073d410",
+      "contract": "PUSH F8h; allocator call; ADD ESP4 at73DD76",
+      "scope": "Consumed startup fragment only"
+    },
+    {
+      "address": "0073dd8e",
+      "native": "00a982d0",
+      "function": "0073d410",
+      "contract": "ECX captured allocation; no stack arguments; native null-allocation arm skips constructor",
+      "scope": "Consumed startup fragment only"
+    },
+    {
+      "address": "0073ddaf",
+      "native": "00a900f0",
+      "function": "0073d410",
+      "contract": "ECX publication reloaded at73DDA2; no stack arguments; completed constructor EH state restored at73DDA8",
+      "scope": "Consumed startup fragment only"
+    },
+    {
+      "address": "004daa8f",
+      "native": "00a900f0",
+      "function": "004da780",
+      "contract": "ECX publication reloaded at4DAA89; no stack arguments"
+    },
+    {
+      "address": "00a917ca",
+      "native": "004b4630",
+      "function": "00a91620",
+      "contract": "Captured nonnull +D8 identity after mutation; ECX original class, EDX old active count captured before append allocation; no stack arguments",
+      "resolution": "indirect; exact selected startup identity"
+    },
+    {
+      "address": "00a90f86",
+      "native": "004b4630",
+      "function": "00a90ee0",
+      "contract": "Captured nonnull +D8 identity after mutation; ECX captured class, EDX -1; no stack arguments",
+      "resolution": "indirect; exact selected startup identity"
+    },
+    {
+      "address": "00a92c57",
+      "native": "00a918a0",
+      "function": "00a92c40",
+      "contract": "Reload F8BBF4, current profile slot04; caller seconds FLD/FSTP into one float stack word",
+      "resolution": "indirect; D5B5F8/D5B72C both select A918A0"
+    },
+    {
+      "address": "00becbd8",
+      "native": "00a918a0",
+      "function": "00becb20",
+      "contract": "Reload F8BBF4, live D7A2F0 FLD, profile/slot04 capture, FSTP one float stack word",
+      "resolution": "indirect; admitted backend profiles"
+    },
+    {
+      "address": "00becc1f",
+      "native": "00a918a0",
+      "function": "00becb20",
+      "contract": "Reload F8BBF4, live D7A2F0 FLD, profile/slot04 capture, FSTP one float stack word",
+      "resolution": "indirect; admitted backend profiles"
+    },
+    {
+      "address": "00becc9b",
+      "native": "00a918a0",
+      "function": "00becb20",
+      "contract": "Reload F8BBF4, live D7A2F0 FLD, profile/slot04 capture, FSTP one float stack word",
+      "resolution": "indirect; admitted backend profiles"
+    }
+  ],
+  "source_composition": {
+    "name": "create_and_reset_native_input_backend",
+    "native_fragment_start": "0073dd6c",
+    "native_fragment_end_inclusive": "0073ddb3",
+    "native_fragment_end_exclusive": "0073ddb4",
+    "whole_0073d410_reconstruction_claimed": false,
+    "sequence": [
+      "Reuse create_native_input_backend allocation/constructor",
+      "Reload genuine F8BBF4 publication; store4B4630 at+D8",
+      "Reload genuine F8BBF4 publication again; reset via A900F0"
+    ],
+    "failure_order": "Existing wrapper handles constructor failure. After completion, reset failure leaves registered allocation live; no extra destructor/free/unregister is introduced.",
+    "ownership": "Returns exact allocation identity for source bookkeeping only. Shared raw domain and borrowed services must remain valid through drain.",
+    "factory_fixture_executed": false
+  },
+  "dependencies": {
+    "concrete_device_adapter": "NativeInputBackendStartupDeviceRuntime -> existing NativeInputDeviceRuntime reset/poll/activity operations on actual storage; see reports/native_input_device_runtime.json",
+    "required_activation": "NativeInputBackendSlotActivation::activate_slot_00a91620(raw backend, unsigned class, unsigned fixed slot); provided by separate raw binding packet",
+    "supported_callback": "invoke_native_input_startup_callback_004b4630(captured identity, unsigned class, signed index); consumers perform native null-test before entry",
+    "backend_outer_dispatch": "invoke_native_input_backend_update_vslot04 consumes captured profile; A918A0 separately reloads current profile for its prepass",
+    "existing_bare_ret": "input_backend_pre_tick_00a97390 reused; not reimplemented or leased",
+    "library_contract": "Existing CRT purecall is used for D5B5F8 prepass; no no-return metadata edit"
+  },
+  "corrections": [
+    {
+      "was": "Only prior typed reset/update/count contracts were available for this composition",
+      "is": "Additive raw operations over actual canonical backend storage; existing typed ledger/function records retained",
+      "evidence": "A900F0/A90490/A918A0 listings and existing A91570/A982D0 raw producers"
+    },
+    {
+      "was": "A900F0 flow listing has an apparent three-byte hole",
+      "is": "Skipped alignment LEA, not missing body behavior",
+      "evidence": "A900FB unconditional JMP toA90100; bytes8D4900 atA900FD..A900FF"
+    }
+  ],
+  "validation": {
+    "build": {
+      "command": "MSBUILDDISABLENODEREUSE=1; ./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "exit_code": 0,
+      "log": "local/native_input_startup_af_build.log",
+      "log_sha256": "b63efa3ecae25ffb7a1a866e174b50127cdef301093f24286904dd4a7a26c204",
+      "ctests_passed": [
+        "reconstructed_math",
+        "native_math_differential"
+      ],
+      "ctests_failed": 0
+    },
+    "seeds": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "passed": 8,
+      "failed": 0,
+      "before_native_execution": true,
+      "receipt": "local/native_input_startup_af_seeds.json",
+      "receipt_sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    "fixture": {
+      "command": "./local/native_input_startup_probe.ps1 -CoreWorktree J:/PROG/battlestations-pacific-decompile-orch4-input-startup-af -LogPath J:/PROG/battlestations-pacific-decompile-orch4-input-startup-af/local/native_input_startup_af_probe.log",
+      "receipt": {
+        "core_worktree": "J:\\PROG\\battlestations-pacific-decompile-orch4-input-startup-af",
+        "source_commit": "9730292d7cae59390a07bfd2d44bf956b9ee7977",
+        "core_archive": "J:\\PROG\\battlestations-pacific-decompile-orch4-input-startup-af\\build\\win32\\Release\\bsp_core.lib",
+        "core_archive_sha256": "727b415486f71e928b1afd58d839364956d7231de78da5931e9ff1f7e919218e",
+        "archive_stable": true,
+        "fixture_source_sha256": "966184e6c764858a003ee0c6fe053625171c77560edec5ecacbf1eefc6eb66e9",
+        "runner_sha256": "ec1a64a906b5a82e09269b259342596846a628cc185dbdfe2b429daf316fe7fc",
+        "project_include_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-input-startup-af\\include",
+        "game_sources_compiled_separately": false,
+        "manifest_embedded": true,
+        "log": "J:\\PROG\\battlestations-pacific-decompile-orch4-input-startup-af\\local\\native_input_startup_af_probe.log",
+        "log_sha256": "f0ca3972d692255d50aa29e7bde1280b9a7e031594849b80c1b580d737af5944",
+        "exit_code": 0,
+        "sdk_calls": 0,
+        "real_activation_calls": 0,
+        "game_launches": 0
+      },
+      "checkout_note": "Receipt source_commit is parent checkout HEAD at build; the new source/header were present as uncommitted packet changes. Exact compiled-source hashes below identify them.",
+      "compiled_source_sha256": "b7abbe8ace78e86cf34542345b5f6344ac8a8e9de676cd25f9e6a4b24e33e27a",
+      "compiled_header_sha256": "7a1358271b5f3c7fe1c2506231c97e255f6e2c68b137945393b9c72b1948ae9e",
+      "native_bytes": {
+        "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+        "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "ranges": [
+          {
+            "address": "00a900f0",
+            "length": 52,
+            "end_exclusive": "00a90124",
+            "fixture_matches_disk": true,
+            "sha256": "8a246f2e24ed59dec06034ebbae72176eb297a03aa5c668ce56b9cd762e29981"
+          },
+          {
+            "address": "00a90490",
+            "length": 68,
+            "end_exclusive": "00a904d4",
+            "fixture_matches_disk": true,
+            "sha256": "3851515e1502217305d5ad72b08e00fde061fb07926f8e28f7c3490b3f5274f9"
+          },
+          {
+            "address": "00a918a0",
+            "length": 132,
+            "end_exclusive": "00a91924",
+            "fixture_matches_disk": true,
+            "sha256": "966e7044bee9ddf086abe2969673c97064d4850062b975eb8f53231473234654"
+          }
+        ],
+        "relocations": "Poll CALL A918DE targets copied original A90490; CALL A91902 targets controlled activation service. Device/backend fixture vtables supply controlled callbacks, no real SDK/activation.",
+        "whole_image_identity_claimed": false
+      },
+      "counts": {
+        "reset_calls": 2,
+        "poll_calls": 6,
+        "activity_calls": 1,
+        "activation_provider_calls": 3,
+        "supported_callback_calls": 2
+      },
+      "assertions": [
+        "Mutable callback traces equal native bytes",
+        "Canonical backend/device output equal",
+        "Activity uses captured polled device after slot replacement",
+        "Activation provider observes current replacement slot",
+        "Later slots, counts and policy byte reread",
+        "Null begin skips end read",
+        "Wrapped DWORD difference and SAR2 preserved",
+        "Unknown callback identity rejected",
+        "Captured outer profile differs from reloaded prepass profile"
+      ]
+    },
+    "call_audit": {
+      "command": "python tools/verify_report_calls.py reports/native_input_backend_startup.json",
+      "status": "passed",
+      "note": "Numeric indirect resolutions require manual table/producer evidence; three generic device virtual rows are explicitly unresolved by this mechanical checker",
+      "numeric_call_rows_checked": 14,
+      "failures": 0,
+      "generic_virtual_rows_not_mechanically_checked": 3,
+      "log": "local/native_input_startup_af_call_audit.log",
+      "log_sha256": "61cf6fe59e3a2043282a0eaa822594065567fa2f940537a9f7574d110005b6c2"
+    }
+  },
+  "limitations": [
+    "New C++ ABI over valid raw storage; no original callable-vtable/FH3/SEH ABI claim.",
+    "No asynchronous mutation or hardware-fault compatibility claim.",
+    "No SDK calls, real activation calls, game launches, hardware input or gameplay validation in the probe.",
+    "Source factory and global-publication order are build/source checked, not fixture-executed.",
+    "Application ownership, construction/frame bindings and concrete A91620 service composition remain integration work.",
+    "Unknown runtime profiles/callback identities are explicit source binding errors, not fake native success."
+  ]
+}

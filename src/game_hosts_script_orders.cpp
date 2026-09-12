@@ -9,6 +9,7 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/mission_lua_bindings.hpp"
+#include "bsp/mission_lua_host.hpp"
 
 extern "C" {
 #include "lua.h"
@@ -37,6 +38,63 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     {"SetSkillLevel", 0x00895250u},
     {"RepairEnable", 0x008ad330u},
     {"SetRoleAvailable", 0x008ab850u},
+    // Packet cc_lua_binding_audit: the delayed-call scheduler and the four state
+    // queries usn_2_java's objective checker reads. src/lua_binding_mission.cpp
+    // and, for SetThink, src/lua_binding_core.cpp.
+    {"CreateScript", 0x00898750u},
+    {"SetThink", 0x00897fb0u},
+    {"SetWait", 0x00898150u},
+    {"ClearThink", 0x00898490u},
+    {"DeleteScript", 0x00898ac0u},
+    {"GetHpPercentage", 0x0088e9d0u},
+    {"GetPosition", 0x008a7b00u},
+    {"GetMeasure", 0x0088d8e0u},
+    {"GameTime", 0x008a9320u},
+    {"random", 0x0088c160u},
+};
+
+// The id the first script entity takes. The created scene instances number from 1
+// (milestone 2l), so the script entities start past any plausible instance count
+// and a `Ptr` from one family is never mistaken for the other.
+constexpr std::uint32_t kScriptEntityIdBase = 100000u;
+
+// The records are handed to Lua as light userdata, so the storage must not move
+// under a live `Ptr`. The capacity is taken once and creation stops at it; the
+// native has no such bound, which is why the cap is reported rather than silent.
+constexpr std::size_t kScriptEntityCapacity = 512;
+
+// The one call site of SetThink's reconstructed body, 008980E8 / 0088A330. Every
+// other method of bsp::LuaBindingCoreHost belongs to a different binding and is
+// not reached from here; each records itself if it ever is.
+class SetThinkCoreHost final : public bsp::LuaBindingCoreHost {
+public:
+    explicit SetThinkCoreHost(GameScriptOrdersHost& owner) : owner_(owner) {}
+
+    void entity_set_think_script_name(void* entity, const std::string& name) override {
+        owner_.entity_set_think_script_name_0088a330(entity, name);
+    }
+
+    int game_non_campaign_flag() override { return 0; }
+    int game_effective_difficulty() override { return 0; }
+    void log_prepare_class(int) override {}
+    bool resolve_global_integer(const std::string&, int&) override { return false; }
+    void vehicle_class_mark_party_required(int, int) override {}
+    void vehicle_class_get_or_create(int, bool) override {}
+    void music_director_set_level(int) override {}
+    void session_send_music_level(int) override {}
+    bool entity_vcall_5c(void*, int) override { return false; }
+    void entity_vcall_2c(void*, int, std::uint32_t) override {}
+    void session_route_party_message(void*, int) override {}
+    void scoring_set_real_play_time_running(bool) override {}
+    void scoring_set_final_scoring_function_name(const std::string&) override {}
+    void message_map_load(const std::string&, int) override {}
+    void call_0088b6d0_0076a9f0_00765590(const std::string&, int) override {}
+    void set_entity_message_suppression(void*, bool) override {}
+    void set_global_message_suppression(bool) override {}
+    void message_system_drain_queue() override {}
+
+private:
+    GameScriptOrdersHost& owner_;
 };
 
 const ScriptOrderBinding* find_binding(const char* name) noexcept {
@@ -361,7 +419,14 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
     int argument_count) {
     const ScriptOrderBinding* binding = find_binding(binding_name);
     if (binding == nullptr) return 0;
+    // CreateScript runs the named global inside its own body, and that global
+    // calls further bindings, so a dispatch can re-enter this function. The three
+    // per-call fields are saved and restored rather than cleared at the end.
+    lua_State* const outer_state = state_;
+    const int outer_argument_count = argument_count_;
+    GameScriptOrderRow* const outer_row = row_;
     state_ = state;
+    machine_state_ = state;
     argument_count_ = argument_count;
 
     GameScriptOrderRow row;
@@ -398,20 +463,571 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
     } else if (std::strcmp(binding->name, "SetRoleAvailable") == 0) {
         bsp::SetRoleAvailableArm arm = bsp::SetRoleAvailableArm::kDirectCall;
         results = bsp::lua_binding_set_role_available(*this, arm);
+    } else if (std::strcmp(binding->name, "CreateScript") == 0) {
+        results = bsp::lua_binding_create_script(*this, *this);
+    } else if (std::strcmp(binding->name, "SetThink") == 0) {
+        // 00897FB0's body is bsp::lua_binding_set_think (docs/LUA_BINDING_CORE.md);
+        // this file supplies its one callee rather than restating the binding.
+        SetThinkCoreHost core(*this);
+        results = bsp::lua_binding_set_think(*this, core);
+    } else if (std::strcmp(binding->name, "SetWait") == 0) {
+        results = bsp::lua_binding_set_wait(*this, *this);
+    } else if (std::strcmp(binding->name, "ClearThink") == 0) {
+        results = bsp::lua_binding_clear_think(*this, *this);
+    } else if (std::strcmp(binding->name, "DeleteScript") == 0) {
+        results = bsp::lua_binding_delete_script(*this, *this, nullptr);
+    } else if (std::strcmp(binding->name, "GetHpPercentage") == 0) {
+        results = bsp::lua_binding_get_hp_percentage(*this, *this);
+    } else if (std::strcmp(binding->name, "GetPosition") == 0) {
+        results = bsp::lua_binding_get_position(*this, *this);
+    } else if (std::strcmp(binding->name, "GetMeasure") == 0) {
+        results = bsp::lua_binding_get_measure(*this);
+    } else if (std::strcmp(binding->name, "GameTime") == 0) {
+        results = bsp::lua_binding_game_time(*this);
+    } else if (std::strcmp(binding->name, "random") == 0) {
+        results = bsp::lua_binding_random(*this, *this, *this);
     } else {
         // 008a2f20, 008a2bc0 and 008a2d70 are one body with one command object.
         results = bsp::lua_binding_navigator_move_to(*this, *this);
     }
 
     ++summary_.calls;
-    row_ = nullptr;
     rows_.push_back(row);
-    state_ = nullptr;
-    argument_count_ = 0;
+    row_ = outer_row;
+    state_ = outer_state;
+    argument_count_ = outer_argument_count;
     return results;
 }
 
+// ---------------------------------------------------------------------------
+// Packet cc_lua_binding_audit: the argument reader
+// ---------------------------------------------------------------------------
+
+int GameScriptOrdersHost::count() { return argument_count_; }
+
+int GameScriptOrdersHost::get_integer(int index) { return argument_integer(index); }
+
+double GameScriptOrdersHost::get_number(int index) {
+    if (state_ == nullptr) return 0.0;
+    const int slot = stack_slot(index);
+    if (slot > argument_count_) return 0.0;
+    if (lua_type(state_, slot) != LUA_TNUMBER) return 0.0;
+    return static_cast<double>(lua_tonumber(state_, slot));
+}
+
+bool GameScriptOrdersHost::get_boolean(int index) { return argument_boolean(index); }
+
+std::string GameScriptOrdersHost::get_string(int index) {
+    if (state_ == nullptr) return std::string();
+    const int slot = stack_slot(index);
+    if (slot > argument_count_) return std::string();
+    if (lua_type(state_, slot) != LUA_TSTRING) return std::string();
+    const char* text = lua_tolstring(state_, slot, nullptr);
+    return text != nullptr ? std::string(text) : std::string();
+}
+
+bool GameScriptOrdersHost::is_string(int index) {
+    if (state_ == nullptr) return false;
+    const int slot = stack_slot(index);
+    return slot <= argument_count_ && lua_type(state_, slot) == LUA_TSTRING;
+}
+
+bool GameScriptOrdersHost::is_nil(int index) {
+    if (state_ == nullptr) return true;
+    const int slot = stack_slot(index);
+    return slot > argument_count_ || lua_type(state_, slot) == LUA_TNIL;
+}
+
+bool GameScriptOrdersHost::is_entity_table(int index) {
+    if (state_ == nullptr) return false;
+    const int slot = stack_slot(index);
+    if (slot > argument_count_ || lua_type(state_, slot) != LUA_TTABLE) return false;
+    lua_getfield(state_, slot, "Ptr");
+    const bool has_ptr = lua_type(state_, -1) == LUA_TLIGHTUSERDATA;
+    lua_settop(state_, argument_count_);
+    if (has_ptr) return true;
+    lua_getfield(state_, slot, "ID");
+    const bool has_id = lua_type(state_, -1) == LUA_TNUMBER;
+    lua_settop(state_, argument_count_);
+    return has_id;
+}
+
+void* GameScriptOrdersHost::entity_at(int index) {
+    // 00888AA0 reads `Ptr`, the light userdata 00928A00 seeded. A script entity
+    // this process created carries its own record pointer there; a created scene
+    // instance carries the `ID`-derived pointer game_hosts_lua.cpp seeds, which
+    // entity_from_argument already resolves.
+    if (state_ != nullptr) {
+        const int slot = stack_slot(index);
+        if (slot <= argument_count_ && lua_type(state_, slot) == LUA_TTABLE) {
+            lua_getfield(state_, slot, "Ptr");
+            void* raw = (lua_type(state_, -1) == LUA_TLIGHTUSERDATA)
+                ? lua_touserdata(state_, -1) : nullptr;
+            lua_settop(state_, argument_count_);
+            if (raw != nullptr && script_entity(raw) != nullptr) return raw;
+        }
+    }
+    return entity_from_argument(index);
+}
+
+// ---------------------------------------------------------------------------
+// Packet cc_lua_binding_audit: the script entities
+// ---------------------------------------------------------------------------
+
+GameScriptEntity* GameScriptOrdersHost::script_entity(void* handle) noexcept {
+    for (GameScriptEntity& entity : script_entities_) {
+        if (static_cast<void*>(&entity) == handle) return &entity;
+    }
+    return nullptr;
+}
+
+const GameScriptEntity* GameScriptOrdersHost::script_entity(void* handle) const noexcept {
+    for (const GameScriptEntity& entity : script_entities_) {
+        if (static_cast<const void*>(&entity) == handle) return &entity;
+    }
+    return nullptr;
+}
+
+bool GameScriptOrdersHost::build_script_self_table(const GameScriptEntity& entity) {
+    // 00928A00's three seeded fields, the same shape game_hosts_lua.cpp builds for
+    // the created scene instances: `ID` as a value, `Dead` false, `Ptr` as light
+    // userdata. Here `Ptr` is the record's own address, which entity_at resolves.
+    if (state_ == nullptr) return false;
+    lua_getfield(state_, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
+    if (!lua_istable(state_, -1)) {
+        lua_settop(state_, lua_gettop(state_) - 1);
+        return false;
+    }
+    char key[16];
+    std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat,
+        static_cast<int>(entity.id));
+    lua_createtable(state_, 0, 3);
+    lua_pushnumber(state_, static_cast<lua_Number>(entity.id));
+    lua_setfield(state_, -2, "ID");
+    lua_pushboolean(state_, entity.dead ? 1 : 0);
+    lua_setfield(state_, -2, "Dead");
+    lua_pushlightuserdata(state_, const_cast<GameScriptEntity*>(&entity));
+    lua_setfield(state_, -2, "Ptr");
+    lua_setfield(state_, -2, key);
+    lua_settop(state_, lua_gettop(state_) - 1);
+    return true;
+}
+
+bool GameScriptOrdersHost::push_script_self_table(const GameScriptEntity& entity) {
+    if (state_ == nullptr) return false;
+    lua_getfield(state_, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
+    if (!lua_istable(state_, -1)) {
+        lua_settop(state_, lua_gettop(state_) - 1);
+        return false;
+    }
+    char key[16];
+    std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat,
+        static_cast<int>(entity.id));
+    lua_getfield(state_, -1, key);
+    if (!lua_istable(state_, -1)) {
+        lua_settop(state_, lua_gettop(state_) - 2);
+        return false;
+    }
+    // Leave the slot on the stack and drop the table it came from.
+    lua_insert(state_, -2);
+    lua_settop(state_, lua_gettop(state_) - 1);
+    return true;
+}
+
+void GameScriptOrdersHost::call_script_global(const GameScriptEntity& entity,
+    const std::string& name, int stack_first, int stack_last) {
+    // 009290A0 -> 00887E50 -> 00887750. The self-key block pushes
+    // thisTable[entity+178h] as argument 1 (00887750 nargs starts at 1 only on this
+    // path, docs/MISSION_NAMED_CALL_ARGS.md); a non-zero stack_first then appends
+    // the caller's own Lua stack slots stack_first..stack_last.
+    if (state_ == nullptr || name.empty()) return;
+    const int base = lua_gettop(state_);
+    lua_getfield(state_, LUA_GLOBALSINDEX, name.c_str());
+    if (!lua_isfunction(state_, -1)) {
+        lua_settop(state_, base);
+        return;
+    }
+    int pushed = 0;
+    if (push_script_self_table(entity)) {
+        ++pushed;
+    } else {
+        lua_createtable(state_, 0, 0);
+        ++pushed;
+    }
+    if (stack_first != 0) {
+        const int last = (stack_last < 0) ? base : stack_last;
+        for (int slot = stack_first; slot <= last; ++slot) {
+            lua_pushvalue(state_, slot);
+            ++pushed;
+        }
+    }
+    if (lua_pcall(state_, pushed, 0, 0) != 0) {
+        ++timers_.call_failures;
+        const char* message = lua_tolstring(state_, -1, nullptr);
+        if (timers_.first_error.empty() && message != nullptr) {
+            timers_.first_error = message;
+        }
+        log_.notef("  script call %s failed: %s", name.c_str(),
+            message != nullptr ? message : "(no message)");
+    }
+    lua_settop(state_, base);
+}
+
+// ---------------------------------------------------------------------------
+// Packet cc_lua_binding_audit: bsp::LuaBindingMissionHost
+// ---------------------------------------------------------------------------
+
+void GameScriptOrdersHost::push_number(int value) {
+    if (state_ == nullptr) return;
+    lua_pushnumber(state_, static_cast<lua_Number>(value));
+}
+
+void GameScriptOrdersHost::push_boolean(bool value) {
+    if (state_ == nullptr) return;
+    lua_pushboolean(state_, value ? 1 : 0);
+}
+
+void GameScriptOrdersHost::push_nil() {
+    if (state_ == nullptr) return;
+    lua_pushnil(state_);
+}
+
+void GameScriptOrdersHost::push_number_float_00b66480(float value) {
+    if (state_ == nullptr) return;
+    lua_pushnumber(state_, static_cast<lua_Number>(value));
+}
+
+float GameScriptOrdersHost::random_uniform_00bd2f10(float minimum, float maximum) {
+    // 00BD2F10 draws from the thread's random state object (00BD2ED0). This
+    // process has no such object, so the draw is this generator's: a 32-bit
+    // linear congruential sequence with a fixed seed, which makes a headless run
+    // reproducible. The distribution and the half-open bounds are the native's.
+    ++random_draws_;
+    random_state_ = random_state_ * 1664525u + 1013904223u;
+    const float unit = static_cast<float>(random_state_ >> 8) / 16777216.0f;
+    return minimum + (maximum - minimum) * unit;
+}
+
+bool GameScriptOrdersHost::unit_health_gate_5d_00923be4(void* entity) {
+    // include/bsp/game_hosts_units.hpp carries +5Ch but not +5Dh, so the gate is
+    // the neutral clear and the record is the health itself, below.
+    static_cast<void>(entity);
+    return false;
+}
+
+float GameScriptOrdersHost::unit_health_vtable_110_00923bf6(void* entity) {
+    // The virtual at the unit's vtable +110h. No concrete vtable is resolved in
+    // this process and no created instance carries a health field, so this is a
+    // record and the binding answers the unclamped zero the rule then returns.
+    static_cast<void>(entity);
+    log_.unimplemented("UnitInstance::health_vtable_110", "00923bf6");
+    return 0.0f;
+}
+
+void GameScriptOrdersHost::unit_health_cache_store_00923c16(void* entity, float value) {
+    static_cast<void>(entity);
+    static_cast<void>(value);
+}
+
+bool GameScriptOrdersHost::entity_pose_stale_008a7c24(void* entity) {
+    // This process's instances publish their position every motion tick, so the
+    // pose is never stale here and the refresh at 008A7C37 is not reached.
+    static_cast<void>(entity);
+    return false;
+}
+
+void GameScriptOrdersHost::entity_pose_refresh_00414db0(void* entity) {
+    static_cast<void>(entity);
+    log_.unimplemented("EntityPose::refresh_world", "00414db0");
+}
+
+bool GameScriptOrdersHost::entity_pose_translation_008a7c3c(void* entity, float out[3]) {
+    out[0] = 0.0f;
+    out[1] = 0.0f;
+    out[2] = 0.0f;
+    const std::size_t index = index_of(entity);
+    const GameUnitRow* row = (index < units_.count()) ? units_.unit_row(index) : nullptr;
+    if (row == nullptr) return false;
+    out[0] = row->position[0];
+    out[1] = row->position[1];
+    out[2] = row->position[2];
+    return true;
+}
+
+void GameScriptOrdersHost::push_vector3_table_0088ba30(const float xyz[3]) {
+    if (state_ == nullptr) return;
+    lua_createtable(state_, 0, 3);
+    lua_pushnumber(state_, static_cast<lua_Number>(xyz[0]));
+    lua_setfield(state_, -2, bsp::kPositionTableKeyX);
+    lua_pushnumber(state_, static_cast<lua_Number>(xyz[1]));
+    lua_setfield(state_, -2, bsp::kPositionTableKeyY);
+    lua_pushnumber(state_, static_cast<lua_Number>(xyz[2]));
+    lua_setfield(state_, -2, bsp::kPositionTableKeyZ);
+}
+
+bool GameScriptOrdersHost::measure_is_imperial_0088d9bd() {
+    // 00F88988. Nothing in this process writes it, so it keeps its zero and the
+    // binding takes the metric arm, which is the executable's own state and not a
+    // substitute for one.
+    return measure_imperial_;
+}
+
+void GameScriptOrdersHost::push_global_path_value_00b672b0(const char* dotted_path) {
+    // 00B672B0 walks the dotted path over the globals table and pushes what it
+    // finds, nil included. `globals` is an installed script's table, so this
+    // resolves for real whenever the autoload folder loaded it.
+    if (state_ == nullptr || dotted_path == nullptr) return;
+    std::string path(dotted_path);
+    int depth = 0;
+    std::size_t start = 0;
+    lua_pushvalue(state_, LUA_GLOBALSINDEX);
+    ++depth;
+    while (start <= path.size()) {
+        const std::size_t dot = path.find('.', start);
+        const std::string part = path.substr(start,
+            dot == std::string::npos ? std::string::npos : dot - start);
+        if (!lua_istable(state_, -1)) {
+            lua_settop(state_, lua_gettop(state_) - depth);
+            lua_pushnil(state_);
+            return;
+        }
+        lua_getfield(state_, -1, part.c_str());
+        ++depth;
+        if (dot == std::string::npos) break;
+        start = dot + 1;
+    }
+    // Keep the resolved value, drop every table on the way to it.
+    lua_insert(state_, -depth);
+    lua_settop(state_, lua_gettop(state_) - (depth - 1));
+}
+
+float GameScriptOrdersHost::game_clock_seconds_008a93fe() { return mission_clock_; }
+
+void* GameScriptOrdersHost::script_entity_create_00898841() {
+    // The 0x1E4-byte allocation and 00928630's construct. This process keeps only
+    // the fields the five script bindings and 00929460 read; every other byte of
+    // the native block has no reader here.
+    if (script_entities_.capacity() < kScriptEntityCapacity) {
+        script_entities_.reserve(kScriptEntityCapacity);
+    }
+    if (script_entities_.size() >= kScriptEntityCapacity) {
+        // 00898841 has no bound; this process does, because the records are handed
+        // to Lua as light userdata and must not move.
+        log_.notef("script entity cap %zu reached; CreateScript answers no entity "
+            "from here on, which the native never does", kScriptEntityCapacity);
+        return nullptr;
+    }
+    GameScriptEntity entity;
+    entity.id = kScriptEntityIdBase + static_cast<std::uint32_t>(script_entities_.size());
+    script_entities_.push_back(entity);
+    ++timers_.scripts_created;
+    return static_cast<void*>(&script_entities_.back());
+}
+
+void GameScriptOrdersHost::entity_set_think_script_name_0088a330(void* entity,
+    const std::string& name) {
+    GameScriptEntity* script = script_entity(entity);
+    if (script == nullptr) {
+        // A created scene instance, not a script entity: this process has no
+        // think slot on those, so the registration is a record.
+        log_.unimplemented("Entity::set_think_script_name", "0088a330");
+        return;
+    }
+    // 0088A35B/0088A363 free and null the old name first; 0088A373 strdups the new
+    // one; 0088A34B appends to the pending list only on the null-to-name edge.
+    const bool was_null = script->think_name.empty();
+    script->think_name = name;
+    if (was_null && !name.empty()) {
+        bsp::register_pending_think_entity_0088a240(think_pending_, script->id);
+        ++timers_.think_registrations;
+    }
+    if (name.empty()) script->delay_armed = false;  // 0088A37F
+}
+
+void GameScriptOrdersHost::script_entity_vcall_98_0089892c(void* entity) {
+    static_cast<void>(entity);
+    log_.unimplemented("ScriptEntity::place_vtable_98", "0089892c");
+}
+
+void GameScriptOrdersHost::script_entity_call_00927610_00898932(void* entity) {
+    static_cast<void>(entity);
+    log_.unimplemented("ScriptEntity::call_00927610", "00898932");
+}
+
+int GameScriptOrdersHost::lua_stack_top_00b65eb0() {
+    return state_ != nullptr ? lua_gettop(state_) : 0;
+}
+
+void GameScriptOrdersHost::entity_call_named_009290a0(void* entity,
+    const std::string& name, int stack_first, int stack_last) {
+    GameScriptEntity* script = script_entity(entity);
+    if (script == nullptr) return;
+    script->created_for = name;
+    build_script_self_table(*script);
+    call_script_global(*script, name, stack_first, stack_last);
+}
+
+bool GameScriptOrdersHost::push_self_table_slot_008989f6(void* entity) {
+    const GameScriptEntity* script = script_entity(entity);
+    if (script == nullptr) return false;
+    return push_script_self_table(*script);
+}
+
+void GameScriptOrdersHost::entity_arm_think_delay_008982c9(void* entity, float seconds) {
+    GameScriptEntity* script = script_entity(entity);
+    if (script == nullptr) {
+        log_.unimplemented("Entity::arm_think_delay", "008982c9");
+        return;
+    }
+    script->delay_seconds = seconds;
+    script->delay_armed = true;
+    ++timers_.waits_armed;
+}
+
+void GameScriptOrdersHost::entity_clear_think_name_008985a6(void* entity) {
+    GameScriptEntity* script = script_entity(entity);
+    if (script == nullptr) {
+        log_.unimplemented("Entity::clear_think_name", "008985a6");
+        return;
+    }
+    script->think_name.clear();
+    script->delay_armed = false;
+    ++timers_.clears;
+}
+
+bool GameScriptOrdersHost::entity_flag_5e_00898bd9(void* entity) {
+    const GameScriptEntity* script = script_entity(entity);
+    return script != nullptr ? script->blocked_5e : false;
+}
+
+void GameScriptOrdersHost::entity_kill_00926d90(void* entity, int cause) {
+    GameScriptEntity* script = script_entity(entity);
+    if (script == nullptr) {
+        log_.unimplemented("MissionEntity::kill", "00926d90");
+        return;
+    }
+    static_cast<void>(cause);
+    // 00926D90 sets +5Fh and queues the entity for the on-killed dispatch at
+    // 009273A0, which is where 00929800 sets thisTable[key].Dead and erases the
+    // entity from both think lists (00929AA7, 00929AB2). The queue and the
+    // dispatch are not run here; the three observable effects are.
+    script->dead = true;
+    script->blocked_5e = true;
+    if (in_think_walk_) {
+        // The kill reaches here from inside a think function, so the walk is
+        // iterating the live list. The native unlinks a node under a cursor that
+        // already captured its successor; this reconstruction walks a vector, so
+        // the erase is held until the walk returns and the end state is the same.
+        think_erase_after_walk_.push_back(script->id);
+    } else {
+        bsp::erase_think_entity_00928300(think_live_, script->id);
+        bsp::erase_think_entity_00928300(think_pending_, script->id);
+    }
+    build_script_self_table(*script);
+    ++timers_.deletes;
+}
+
+// ---------------------------------------------------------------------------
+// Packet cc_lua_binding_audit: bsp::EntityThinkHost
+// ---------------------------------------------------------------------------
+
+void GameScriptOrdersHost::run_entity_think_00929150(std::uint32_t entity) {
+    for (GameScriptEntity& script : script_entities_) {
+        if (script.id != entity) continue;
+        ++script.thinks;
+        // 00929194: args = 0 and stack_first = 0, so the think function receives
+        // only the self table the key resolves.
+        call_script_global(script, script.think_name, 0, -1);
+        return;
+    }
+}
+
+void GameScriptOrdersHost::free_think_node_0092952c(const bsp::EntityThinkNode& node) {
+    static_cast<void>(node);
+}
+
+bool GameScriptOrdersHost::gc_gate_predicate_0109cefc_vtable0c() {
+    // The predicate's body was not read by the packet that recovered the walk, and
+    // this process has no such object. A false answer only skips collectgarbage().
+    return false;
+}
+
+void GameScriptOrdersHost::lua_run_string_006b8ad0(const char* chunk, int mode) {
+    static_cast<void>(chunk);
+    static_cast<void>(mode);
+}
+
+void GameScriptOrdersHost::splice_pending_into_live_00928380(bsp::EntityThinkList& live,
+    const bsp::EntityThinkList& pending) {
+    for (const bsp::EntityThinkNode& node : pending.nodes) live.nodes.push_back(node);
+}
+
+void GameScriptOrdersHost::clear_pending_00928330(bsp::EntityThinkList& pending) {
+    pending.nodes.clear();
+}
+
+void GameScriptOrdersHost::run_script_timers(float step) {
+    if (machine_state_ == nullptr || script_entities_.empty()) return;
+    state_ = machine_state_;
+    argument_count_ = 0;
+    mission_clock_ += step;
+    std::vector<bsp::EntityThinkFields> fields;
+    fields.reserve(script_entities_.size());
+    for (const GameScriptEntity& script : script_entities_) {
+        bsp::EntityThinkFields row;
+        row.entity = script.id;
+        row.initialised = script.initialised;
+        row.blocked_5d = script.blocked_5d;
+        row.blocked_5e = script.blocked_5e;
+        row.blocked_60 = script.blocked_60;
+        row.has_think_name = !script.think_name.empty();
+        row.delay_armed = script.delay_armed;
+        row.delay_seconds = script.delay_seconds;
+        fields.push_back(row);
+    }
+    in_think_walk_ = true;
+    const bsp::EntityThinkRunSummary run = bsp::run_entity_think_list_00929460(step,
+        think_countdown_, think_live_, think_pending_, fields, *this);
+    in_think_walk_ = false;
+    for (std::uint32_t id : think_erase_after_walk_) {
+        bsp::erase_think_entity_00928300(think_live_, id);
+        bsp::erase_think_entity_00928300(think_pending_, id);
+    }
+    think_erase_after_walk_.clear();
+    // 009294C7-009294D7 updates +1E0h in place and never re-arms the flag; the
+    // rule's own helpers own both, so the entity records follow them here.
+    for (GameScriptEntity& script : script_entities_) {
+        if (!script.delay_armed) continue;
+        if (script.delay_seconds <= 0.0f) continue;
+        script.delay_seconds = bsp::entity_think_delay_after_step(script.delay_seconds,
+            step);
+    }
+    ++timers_.passes;
+    timers_.timed_fires += run.thinks_run;
+    state_ = nullptr;
+}
+
 void GameScriptOrdersHost::report() {
+    if (timers_.scripts_created != 0) {
+        log_.notef("mission script timers (packet cc_lua_binding_audit): the delayed-call "
+            "scheduler luaDelay -> CreateScript(\"luaDoTimeTable\") -> SetThink/SetWait, "
+            "re-entered by the reconstructed think walk 00929460 once per mission frame");
+        for (const GameScriptEntity& script : script_entities_) {
+            log_.notef("  script entity %u created_for=%-20s think=%-16s armed=%d "
+                "delay=%.2f thinks=%llu dead=%d", script.id,
+                script.created_for.empty() ? "(none)" : script.created_for.c_str(),
+                script.think_name.empty() ? "(none)" : script.think_name.c_str(),
+                script.delay_armed ? 1 : 0,
+                static_cast<double>(script.delay_seconds), script.thinks,
+                script.dead ? 1 : 0);
+        }
+        log_.notef("summary mission script timers created=%zu think_registrations=%zu "
+            "waits=%zu clears=%zu deletes=%zu passes=%zu fires=%llu failures=%llu %s",
+            timers_.scripts_created, timers_.think_registrations, timers_.waits_armed,
+            timers_.clears, timers_.deletes, timers_.passes, timers_.timed_fires,
+            timers_.call_failures,
+            timers_.first_error.empty() ? "" : timers_.first_error.c_str());
+    }
     if (rows_.empty()) return;
     log_.notef("the mission script's own orders, run through the eight reconstructed "
         "binding bodies (docs/LUA_BINDING_NAVIGATOR.md):");

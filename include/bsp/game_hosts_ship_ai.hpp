@@ -19,20 +19,18 @@
 // bsp::BotFireTargetHost, satisfied either by a reconstruction already on main
 // or by the explicit unimplemented policy in GameHostLog.
 //
-// What this file supplies rather than recovers, each labelled at its site:
-//   - where 009f50e0 and 009f5da0 run in a frame. Neither has a caller in the
-//     call graph (009f50e0 has no Ghidra function at all and 009f5da0 is reached
-//     only through the derived vtable slot 00d21b4c), so the executable runs the
-//     controller once per unit per fixed simulation step, before the motion pass
-//     whose head consumes what the controller published, and the target think
-//     beside it with the same step delta.
+// Runtime ownership remains a C++ representation. Ship navigation now exists
+// only for the actual ship-family descriptor kinds: their virtual+210 reaches
+//00810DD0/009F3F20. The recovered009F50E0 sequence runs before the represented
+// motion pass. Its complete009E0270 pre-step borrows actual depth, extents,
+// cached pose and persistent byte/profile storage. Generic command/director
+// updates remain separate; individual adapters record unresolved state.
+// One existing runtime boundary is:
 //   - the party list 009f5d30 scans. Its source is the recon slot 008053c0
 //     returns for the owner's party and the intrusive list at slot+0de8h, which
 //     nothing in this process fills, so the executable hands the recovered scan
 //     the created instances of the opposing party and records 008053c0. This is
 //     the same substitution milestone 2i makes for walk 0 of 004c3cb0.
-//   - the AI's own goal vector at brain+0b2ch / +0b34h / +0b38h has no recovered
-//     writer, so every state step but `cruise` is a record with its own address.
 //
 // Evidence: docs/SHIP_AI_STATES.md, docs/UNIT_AUTOPILOT_PAIR.md,
 // docs/BOT_FIRE_TARGET.md, docs/CRUISE_COMMAND.md, docs/UNIT_RUDDER_CURVE.md,
@@ -301,7 +299,7 @@ struct GameShipAiSummary {
     std::size_t states_movetopos{0};
     std::size_t states_other{0};
     // Milestone 2r.
-    std::size_t nav_blocks{0};                  // 009E4330 bodies, one per unit
+    std::size_t nav_blocks{0};                  //009E4330 bodies, actual ship classes only
     unsigned long long clearance_refreshes{0};  // 009EF910
     unsigned long long throttle_profiles{0};    // 009E04E0
     unsigned long long sector_scans{0};         // 009EB660
@@ -324,7 +322,7 @@ public:
 
     // One controller per created instance, in creation order. Called once,
     // after the instantiate pass and after the authored commands were issued.
-    void register_units();
+    void register_units(GameMissionLuaHost& lua, std::int32_t session_mode);
     void load_avoid_zone_geometry(const GameSceneContentsHost&, GameMissionLuaHost&,
         std::int32_t mode, std::uint8_t forced, std::int32_t session);
 

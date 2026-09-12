@@ -1,4 +1,5 @@
 #include "bsp/native_particle_emission_state.hpp"
+#include "bsp/native_particle_type_state_dispatch.hpp"
 #include "bsp/native_singleton_publication.hpp"
 #include "bsp/native_singleton_vector_registration_wrappers.hpp"
 #include "bsp/native_renderer_worker_lifetime.hpp"
@@ -121,8 +122,11 @@ void __fastcall initialize_native_particle_emission_state_00b0ca40(void* state,
     void* current_definition=load<void*>(state,0x64);
     const void* table=load<const void*>(current_definition);
     const auto target=load<std::uint32_t>(table,0x18);
-    if (!access->particle_virtual18) throw std::logic_error("particle state requires actual captured particle virtual18");
-    access->particle_virtual18(access->context,current_definition,target,state,record);
+    if (!access->type_states || !dispatch_known_native_particle_type_state(
+            *access->type_states,*access,current_definition,target,state,record)) {
+        if (!access->particle_virtual18) throw std::logic_error("particle state requires actual captured particle virtual18");
+        access->particle_virtual18(access->context,current_definition,target,state,record);
+    }
     if (!load<void*>(state,0x60)) return;
     void* current_emitter=load<void*>(state,0x68);
     current_definition=load<void*>(state,0x64);

@@ -21,6 +21,11 @@
 #include "bsp/mission_lua_machine.hpp"
 #include "bsp/mission_scene_load.hpp"
 #include "bsp/ship_ai_path_turn_ramp.hpp"
+#include "bsp/gameplay_settings.hpp"
+#include "bsp/native_lua_objects.hpp"
+#include "bsp/lua_numeric.hpp"
+#include "bsp/vehicle_class_lua_load.hpp"
+#include "bsp/vehicle_class.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/vfs_locale_runtime.hpp"
 #include "bsp/vfs_provider_manager.hpp"
@@ -205,6 +210,11 @@ GameVehicleClassRow GameMissionLuaHost::read_vehicle_class_row(int index) {
             row.max_rot_angle = number("MaxRotAngle");
             row.max_rot_angle_change_ratio = number("MaxRotAngleChangeRatio");
             row.length = number("Length");
+            // 00960363 uses bare GetNumber, including numeric strings and
+            // the native float32 spill. Other row readers keep their scope.
+            ::lua_getfield(state_, -1, "Width");
+            row.width = lua_number_float32_00b66270(::lua_tonumber(state_, -1));
+            ::lua_settop(state_, ::lua_gettop(state_) - 1);
             row.height = number("Height");
             row.mass = number("Mass");
         }
@@ -434,6 +444,153 @@ bool GameMissionLuaHost::read_path_turn_ramp(ShipAiPathSearchTurnRamp& out,
         return false;
     }
     return read_ship_ai_path_turn_ramp_lua(*state_, out, error);
+}
+
+namespace {
+struct ShipDepthReadContext {
+    int type_id;
+    std::int32_t session_mode;
+    const bool* crt_sse2_conversion;
+    GameShipDepthInput result;
+};
+
+// Key-to-record relation established by 00841B7B..008425A1. Offsets reuse the
+// existing producer enum; which scalar a leaf consumes comes from the existing
+// kShipLeafTuningSources table, not a second mapping of class depth values.
+const char* depth_key(std::uint32_t offset) noexcept {
+    switch (static_cast<AvoidZoneDepthSlot>(offset)) {
+    case AvoidZoneDepthSlot::kMotherShip: return "MotherShip";
+    case AvoidZoneDepthSlot::kDestroyer: return "Destroyer";
+    case AvoidZoneDepthSlot::kTBoat: return "TBoat";
+    case AvoidZoneDepthSlot::kSmallLandingShip: return "SmallLandingShip";
+    case AvoidZoneDepthSlot::kLargeLandingShip: return "LargeLandingShip";
+    case AvoidZoneDepthSlot::kBattleShip: return "BattleShip";
+    case AvoidZoneDepthSlot::kCargoShip: return "CargoShip";
+    case AvoidZoneDepthSlot::kLightCruiser: return "LightCruiser";
+    case AvoidZoneDepthSlot::kHeavyCruiser: return "HeavyCruiser";
+    case AvoidZoneDepthSlot::kMiniSub: return "MiniSub";
+    case AvoidZoneDepthSlot::kSubmarine: return "Submarine";
+    }
+    return nullptr;
+}
+
+int read_ship_depth_protected(lua_State* state) {
+    auto& context = *static_cast<ShipDepthReadContext*>(
+        lua_touserdata(state, lua_upvalueindex(1)));
+    // This C frame has no arguments. Every automatic object is trivial, so
+    // a Lua error crosses no C++ destructor. At most six tracked slots live;
+    // each contains one reference, inside the actual owner's 50/5 capacities.
+    NativeLuaStateStorage owner;
+    construct_native_lua_state_00b66bd0(&owner);
+    owner.state_04 = state;
+    NativeLuaObjectStorage globals, classes, row, type;
+    native_lua_globals_00b67980(owner, &globals);
+    native_lua_get_by_name_00b67800(globals, &classes, "VehicleClass");
+    native_lua_get_by_index_00b67720(classes, &row, context.type_id);
+    native_lua_get_by_name_00b67800(row, &type, "Type");
+    const char* type_name = native_lua_string_00b662b0(type);
+    const auto* native_kind = vehicle_class_kind_row(type_name);
+    const ShipLeafClassInfo* leaf = nullptr;
+    if (native_kind != nullptr) {
+        for (std::size_t i = 0; i < ship_leaf_class_count(); ++i) {
+            if (std::strcmp(native_kind->lua_type, kShipLeafClasses[i].lua_type) == 0) {
+                leaf = &kShipLeafClasses[i];
+                break;
+            }
+        }
+    }
+    if (leaf == nullptr)
+        return luaL_error(state, "VehicleClass[%d].Type '%s' has no supported ship depth producer",
+            context.type_id, type_name != nullptr ? type_name : "<unavailable>");
+    destroy_native_lua_object_00b67700(type);
+
+    const char* variant = nullptr;
+    if (leaf->leaf == ShipLeafClass::Cruiser || leaf->leaf == ShipLeafClass::LandingShip) {
+        NativeLuaObjectStorage flag;
+        const bool cruiser = leaf->leaf == ShipLeafClass::Cruiser;
+        native_lua_get_by_name_00b67800(row, &flag,
+            cruiser ? "HeavyCruiser" : "BigLandingShip");
+        const bool alternate = native_lua_boolean_or_00b662f0(flag, 0) != 0;
+        destroy_native_lua_object_00b67700(flag);
+        variant = cruiser
+            ? (alternate ? "HeavyCruiser true" : "HeavyCruiser false")
+            : (alternate ? "BigLandingShip true" : "BigLandingShip false");
+    }
+    const ShipLeafTuningSource* source = nullptr;
+    for (std::size_t i = 0; i < ship_leaf_tuning_source_count(); ++i) {
+        const auto& candidate = kShipLeafTuningSources[i];
+        if (candidate.leaf == leaf->leaf
+            && (variant == nullptr || std::strcmp(candidate.variant, variant) == 0)) {
+            source = &candidate;
+            break;
+        }
+    }
+    if (source == nullptr)
+        return luaL_error(state, "ship leaf has no established class+570 source");
+    const char* key = depth_key(source->scalar_source);
+    if (key == nullptr)
+        return luaL_error(state, "ship depth source has no established Lua key");
+    destroy_native_lua_object_00b67700(row);
+    destroy_native_lua_object_00b67700(classes);
+
+    const auto settings_offset = ship_tuning_block_offset(context.session_mode);
+    NativeLuaObjectStorage ship_globals, depths, values, first;
+    native_lua_get_by_name_00b67800(globals, &ship_globals, "ShipGlobals");
+    native_lua_get_by_name_00b67800(ship_globals, &depths,
+        settings_offset == kAvoidZoneDepthsSingleOffset
+            ? "AvoidZoneDepthsSingle" : "AvoidZoneDepthsMulti");
+    native_lua_get_by_name_00b67800(depths, &values, key);
+    native_lua_get_by_index_00b67720(values, &first, 1);
+    // The producer uses bare GetInteger, not GetIntegerOrDefault or IsNumber.
+    // Preserve tonumber -> float32 spill -> selected CRT conversion, including
+    // final nil/nonnumeric values becoming the native zero conversion result.
+    const auto scalar = native_lua_integer_00b66290(first, *context.crt_sse2_conversion);
+    context.result = {static_cast<std::uint32_t>(scalar), settings_offset,
+        source->scalar_source, key};
+    destroy_native_lua_object_00b67700(first);
+    destroy_native_lua_object_00b67700(values);
+    destroy_native_lua_object_00b67700(depths);
+    destroy_native_lua_object_00b67700(ship_globals);
+    destroy_native_lua_object_00b67700(globals);
+    return 0;
+}
+} // namespace
+
+bool read_ship_depth_input_lua(lua_State& state, int type_id, std::int32_t session_mode,
+    const bool& crt_sse2_conversion, GameShipDepthInput& output, std::string& error) {
+    if (type_id < 0) {
+        error = "ship depth requires an actual VehicleClass index";
+        return false;
+    }
+    ShipDepthReadContext context{type_id, session_mode, &crt_sse2_conversion, {}};
+    const int top = lua_gettop(&state);
+    lua_pushlightuserdata(&state, &context);
+    lua_pushcclosure(&state, &read_ship_depth_protected, 1);
+    const int status = lua_pcall(&state, 0, 0, 0);
+    if (status != 0) {
+        const char* message = lua_tostring(&state, -1);
+        error = message != nullptr ? message : "ship depth lookup raised a non-string Lua error";
+        lua_settop(&state, top);
+        return false;
+    }
+    lua_settop(&state, top);
+    output = context.result;
+    error.clear();
+    return true;
+}
+
+bool GameMissionLuaHost::read_ship_depth_input(int type_id, std::int32_t session_mode,
+    GameShipDepthInput& output, std::string& error) {
+    if (state_ == nullptr) {
+        error = "ship depth requires the live mission Lua state";
+        return false;
+    }
+    // Same represented CRT capability selection used by the existing decal
+    // loader. The pure reader accepts the borrowed conversion mode explicitly.
+    const bool sse2_conversion =
+        IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE;
+    return read_ship_depth_input_lua(*state_, type_id, session_mode,
+        sse2_conversion, output, error);
 }
 
 bool GameMissionLuaHost::read_turn_multipliers_0083ce56(bsp::UnitRudderCurveSettings& out) {

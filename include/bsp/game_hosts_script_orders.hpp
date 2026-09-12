@@ -49,6 +49,8 @@
 #include <string>
 #include <vector>
 
+#include "bsp/entity_think_dispatch.hpp"
+#include "bsp/lua_binding_mission.hpp"
 #include "bsp/lua_binding_navigator.hpp"
 
 struct lua_State;
@@ -90,21 +92,72 @@ struct GameScriptOrdersSummary {
     std::size_t units_ordered{0};      // distinct instances a command reached
 };
 
-// The host the eight reconstructed binding bodies run over. Owned for the whole
-// run because the rows are per run and the units it addresses are the created
-// scene instances.
+// Packet cc_lua_binding_audit. This process's stand-in for the 0x1E4-byte script
+// entity CreateScript allocates at 00898841. It carries only the fields the five
+// script bindings and the think walk 00929460 read; every other byte of the native
+// allocation is untouched here and nothing depends on its layout.
+struct GameScriptEntity {
+    std::uint32_t id{0};          // entity+174h, the u16 the self-table key formats
+    std::string created_for;      // the global CreateScript called
+    std::string think_name;       // +1D8h, null when empty
+    bool delay_armed{false};      // +1DCh
+    float delay_seconds{0.0f};    // +1E0h
+    bool initialised{true};       // +5Ch, set by the construct at 0089886F
+    bool blocked_5d{false};       // +5Dh
+    bool blocked_5e{false};       // +5Eh, the byte DeleteScript tests at 00898BD9
+    bool blocked_60{false};       // +60h
+    bool dead{false};             // thisTable[key].Dead, set by 00929800 on the kill
+    unsigned long long thinks{0};
+};
+
+struct GameScriptTimerSummary {
+    std::size_t scripts_created{0};
+    std::size_t think_registrations{0};
+    std::size_t waits_armed{0};
+    std::size_t clears{0};
+    std::size_t deletes{0};
+    std::size_t passes{0};
+    unsigned long long timed_fires{0};
+    unsigned long long untimed_fires{0};
+    unsigned long long call_failures{0};
+    std::string first_error;
+};
+
+// The host the reconstructed binding bodies run over. Owned for the whole run
+// because the rows are per run and the units it addresses are the created scene
+// instances.
 class GameScriptOrdersHost final : public bsp::LuaBindingNavigatorHost,
-                                   public bsp::LuaCommandTargetSource {
+                                   public bsp::LuaCommandTargetSource,
+                                   public bsp::LuaBindingArgumentReader,
+                                   public bsp::LuaBindingResultWriter,
+                                   public bsp::LuaBindingMissionHost,
+                                   public bsp::EntityThinkHost {
 public:
     GameScriptOrdersHost(GameHostLog& log, GameUnitsHost& units);
 
-    // The eight rows src/lua_binding_navigator.cpp reconstructs. A row this
-    // answers false for keeps milestone 2l's record.
+    // The eight navigator rows src/lua_binding_navigator.cpp reconstructs plus the
+    // nine rows src/lua_binding_mission.cpp reconstructs. A row this answers false
+    // for keeps milestone 2l's record.
     static bool handles(const char* binding_name) noexcept;
 
     // Runs the named binding's recovered body over `state`'s call frame and
-    // returns its Lua result count, which for all eight is zero.
+    // returns its Lua result count.
     int dispatch(lua_State* state, const char* binding_name, int argument_count);
+
+    // Packet cc_lua_binding_audit: one call of 00929460 with this process's script
+    // entities, driven once per mission frame by the caller that owns the step.
+    // The machine is the one the first dispatch arrived on; before any binding has
+    // been dispatched the pass is a no-op, exactly as the native walk is with an
+    // empty list.
+    void run_script_timers(float step);
+    const GameScriptTimerSummary& timers() const noexcept { return timers_; }
+
+    // 008980E8 / 0088A330, the single callee of SetThink's reconstructed body
+    // (bsp::lua_binding_set_think). Public so the small bsp::LuaBindingCoreHost
+    // adapter in the .cpp can reach it without this file growing a second copy of
+    // the binding. 0088A34B appends to the pending list only on the null-to-name
+    // transition, which bsp::register_pending_think_entity_0088a240 carries.
+    void entity_set_think_script_name_0088a330(void* entity, const std::string& name);
 
     void report();
     const GameScriptOrdersSummary& summary() const noexcept { return summary_; }
@@ -139,15 +192,81 @@ private:
     void session_route_role_message(void* owner, int role, int value) override;
     void game_assign_party_player_slots(int value) override;
 
+    // --- bsp::LuaBindingArgumentReader, the reads the nine rows of packet
+    // cc_lua_binding_audit make through 00B677E0 --------------------------------
+    int count() override;
+    int get_integer(int index) override;
+    double get_number(int index) override;
+    bool get_boolean(int index) override;
+    std::string get_string(int index) override;
+    bool is_string(int index) override;
+    bool is_nil(int index) override;
+    bool is_entity_table(int index) override;
+    void* entity_at(int index) override;
+
+    // --- bsp::LuaBindingResultWriter, the three pushes of 00B664B0/50/30 --------
+    void push_number(int value) override;
+    void push_boolean(bool value) override;
+    void push_nil() override;
+
+    // --- bsp::LuaBindingMissionHost, one method per native call site ------------
+    void push_number_float_00b66480(float value) override;
+    float random_uniform_00bd2f10(float minimum, float maximum) override;
+    bool unit_health_gate_5d_00923be4(void* entity) override;
+    float unit_health_vtable_110_00923bf6(void* entity) override;
+    void unit_health_cache_store_00923c16(void* entity, float value) override;
+    bool entity_pose_stale_008a7c24(void* entity) override;
+    void entity_pose_refresh_00414db0(void* entity) override;
+    bool entity_pose_translation_008a7c3c(void* entity, float out[3]) override;
+    void push_vector3_table_0088ba30(const float xyz[3]) override;
+    bool measure_is_imperial_0088d9bd() override;
+    void push_global_path_value_00b672b0(const char* dotted_path) override;
+    float game_clock_seconds_008a93fe() override;
+    void* script_entity_create_00898841() override;
+    void script_entity_vcall_98_0089892c(void* entity) override;
+    void script_entity_call_00927610_00898932(void* entity) override;
+    int lua_stack_top_00b65eb0() override;
+    void entity_call_named_009290a0(void* entity, const std::string& name,
+        int stack_first, int stack_last) override;
+    bool push_self_table_slot_008989f6(void* entity) override;
+    void entity_arm_think_delay_008982c9(void* entity, float seconds) override;
+    void entity_clear_think_name_008985a6(void* entity) override;
+    bool entity_flag_5e_00898bd9(void* entity) override;
+    void entity_kill_00926d90(void* entity, int cause) override;
+
+    // --- bsp::EntityThinkHost, the walk 00929460 makes over those entities ------
+    void run_entity_think_00929150(std::uint32_t entity) override;
+    void free_think_node_0092952c(const bsp::EntityThinkNode& node) override;
+    bool gc_gate_predicate_0109cefc_vtable0c() override;
+    void lua_run_string_006b8ad0(const char* chunk, int mode) override;
+    void splice_pending_into_live_00928380(bsp::EntityThinkList& live,
+        const bsp::EntityThinkList& pending) override;
+    void clear_pending_00928330(bsp::EntityThinkList& pending) override;
+
     // The `ID` field 00928a00 seeds, turned into a created instance. Null when
     // the argument is not one of this process's entity tables.
     void* entity_from_argument(int index);
     std::size_t index_of(void* entity) const noexcept;
     std::string name_of(void* entity) const;
 
+    // The script entities CreateScript made. Not a native structure: it is this
+    // process's stand-in for the 0x1E4-byte allocation at 00898841, carrying only
+    // the fields 00929460 and the five script bindings read.
+    GameScriptEntity* script_entity(void* handle) noexcept;
+    const GameScriptEntity* script_entity(void* handle) const noexcept;
+    bool build_script_self_table(const GameScriptEntity& entity);
+    bool push_script_self_table(const GameScriptEntity& entity);
+    void call_script_global(const GameScriptEntity& entity, const std::string& name,
+        int stack_first, int stack_last);
+
     GameHostLog& log_;
     GameUnitsHost& units_;
     lua_State* state_{nullptr};
+    // The mission machine, kept past a dispatch so the per-frame timer pass can
+    // call the think globals on it. The native reaches the same machine through
+    // *(*(00E188A8)+1A08h)+4h; this process has no such chain and keeps the
+    // pointer the trampoline handed it.
+    lua_State* machine_state_{nullptr};
     int argument_count_{0};
     GameScriptOrderRow* row_{nullptr};
     GameScriptOrdersSummary summary_{};
@@ -155,6 +274,25 @@ private:
     std::vector<std::size_t> ordered_units_;
     bool logged_path_{false};
     bool logged_predicate_{false};
+
+    // Packet cc_lua_binding_audit.
+    std::vector<GameScriptEntity> script_entities_;
+    bsp::EntityThinkList think_live_{};
+    bsp::EntityThinkList think_pending_{};
+    float think_countdown_{0.0f};   // 00F89A04, zero at process start
+    // A DeleteScript from inside a think function would erase from the live list
+    // while the walk is iterating it. The native's cursor captured its successor
+    // first; this reconstruction holds the erase until the walk returns.
+    bool in_think_walk_{false};
+    std::vector<std::uint32_t> think_erase_after_walk_{};
+    float mission_clock_{0.0f};     // 00F876A4, advanced by the caller's step
+    bool measure_imperial_{false};  // 00F88988, untouched by this process
+    // The stream 00BD2ED0 hands 00BD2F10. This process has no thread-local random
+    // state object, so the sequence is this generator's and not the game's; a run
+    // is reproducible, which is what a headless comparison needs.
+    std::uint32_t random_state_{0x13579BDFu};
+    unsigned long long random_draws_{0};
+    GameScriptTimerSummary timers_{};
 };
 
 }  // namespace bsp::game

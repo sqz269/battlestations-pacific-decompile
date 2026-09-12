@@ -1,5 +1,5 @@
 {
-  "packet": "orch6_navigation_runtime_d",
+  "packet": "orch6_full_pre_step_e",
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
   "source": "src/game_hosts_ship_ai.cpp",
@@ -22,7 +22,11 @@
   ],
   "original_abi": {
     "009ed6b0": "ECX navigation block, stack float seconds, RET4; stored body009ED6B0..009EF228",
-    "009e5770": "ECX state, stack delta, RET4 at009E59B5; body009E5770..009E59B7"
+    "009e5770": "ECX state, stack delta, RET4 at009E59B5; body009E5770..009E59B7",
+    "009e0270": "ECX navigation block, one UNUSED stack word, RET4 at009E04D7; body009E0270..009E04D9. No original object-layout or register ABI replacement claim.",
+    "009e4330": "ECX navigation block, stack owner pointer, RET4 at009E46C0; body009E4330..009E46C2.",
+    "00810dd0": "ECX ship, no stack arguments, RET; body00810DD0..00810E8A; owner allocation chain analyzed only.",
+    "009f3f20": "ECX owner, no stack arguments, EAX brain/null, RET; body009F3F20..009F3F7F; owner allocation chain analyzed only."
   },
   "native_calls": [
     {
@@ -44,6 +48,46 @@
       "address": "009e45f3",
       "native": "00bf7030",
       "function": "009e4330"
+    },
+    {
+      "address": "009e028f",
+      "native": "0080fc30",
+      "function": "009e0270"
+    },
+    {
+      "address": "009e02c2",
+      "native": "009de2f0",
+      "function": "009e0270"
+    },
+    {
+      "address": "009e02d7",
+      "native": "00811a30",
+      "function": "009e0270"
+    },
+    {
+      "address": "009e04cc",
+      "native": "00bf79f0",
+      "function": "009e0270"
+    },
+    {
+      "address": "009e46a9",
+      "native": "009e0270",
+      "function": "009e4330"
+    },
+    {
+      "address": "00810df2",
+      "native": "009f3f20",
+      "function": "00810dd0"
+    },
+    {
+      "address": "009f3f3e",
+      "native": "00bf681b",
+      "function": "009f3f20"
+    },
+    {
+      "address": "009f3f59",
+      "native": "009f3ba0",
+      "function": "009f3f20"
     }
   ],
   "no_ghidra_function": [],
@@ -53,7 +97,59 @@
     "00811068 FLD[class+A0h];0081106E FSTP[unit+9C8h] on absent model-box branch"
   ],
   "diagnostic_correction": "Passing-corner concrete call counted only when blocking_node>=0; empty-neighbour scan no longer fabricates an unimplemented call count.",
-  "verification": {
+  "limits": [
+    "Runtime covers the represented absent-model/cache-valid-pose owner and empty gameplay modifier lists; model-present and dirty-pose branches were not runtime exercised.",
+    "All USN01 runtime depth inputs selected Single mode0 and scalar0; Multi mode and variants are installed-data fixture checks, not this runtime.",
+    "Original ship owner allocation prefix/gates and complete generic unit/command object ABI are not reconstructed by this binding.",
+    "Zero corner arms: neighbour population, target7A0 range, adaptive layer30C, collision-world integration and original gameplay parity remain unvalidated."
+  ],
+  "hull_geometry_binding": {
+    "implementation": "ship_ai_hull_geometry_009de2f0",
+    "core_evidence": "reports/ship_ai_hull_geometry.json",
+    "inputs": "actual cache-valid unit world pose, constructor local hull scale and shoulder offset, actual application CRT access; represented absent-model path",
+    "order": "constructor uses its local fields before assignment; each controller pre-step refreshes the same persistent geometry before navigation consumers",
+    "consumers": {
+      "goal": "position184",
+      "sector_scan": "position184, forward1AC, beam19C/opposite1A4",
+      "throttle": "position184, forward1AC, beam19C",
+      "clearance": "shoulder18C/194 and forward1AC"
+    },
+    "constant": "00CF1748 bits3FDCCCCCC0000000 are widened0.45f, not double0.45",
+    "sqrt": "009E45F3 now uses recovered CRT sqrt with actual application CRT state; removed positive-only clamp",
+    "full_pre_step_runtime_bound": true
+  },
+  "ghidra_integration": {
+    "applied_functions": 1,
+    "prior_values": "local/ghidra-annotations-20260912T204234Z.json",
+    "existing_comments_preserved": true,
+    "project_saved": true,
+    "exports_refreshed": true,
+    "export_log": "local/orch6_dyn_geometry_exports.log",
+    "full_pre_step": {
+      "renamed": "009e0270 BSP_ShipAi_BuildObstacleSectorShapes -> BSP_ShipAi_HullPreStep",
+      "addresses": [
+        "009e0270",
+        "009e4330"
+      ],
+      "prior_values": "local/ghidra-annotations-20260912T213350Z.json",
+      "existing_comments_preserved": true,
+      "project_saved": true,
+      "exports_refreshed": true,
+      "export_log": "local/orch6_pre_step_exports.log"
+    },
+    "ship_owner_analysis": {
+      "addresses": [
+        "00810dd0",
+        "009f3f20"
+      ],
+      "prior_values": "local/ghidra-annotations-20260912T210921Z.json",
+      "existing_comments_preserved": true,
+      "project_saved": true,
+      "exports_refreshed": true,
+      "export_log": "local/orch6_ship_domain_exports.log"
+    }
+  },
+  "prior_verification": {
     "build": "MSVC Win32 Release and existing CTest2/2 passed",
     "log": "local/orch6_navigation_initial_build.log",
     "source_sha256": "3a76cd5a7c3f04f57fe576a81e98dae7f3265ebf67e96010e656329278cb78c3",
@@ -206,34 +302,938 @@
       "runtime_limit": "The120-frame runtime evidence above belongs to compiled commit4ee5f2ff; this later merge adds external unit-motion/UI changes and is build-tested here."
     }
   },
-  "limits": [
-    "Runtime proves geometry production and represented consumers during120 USN01 frames, not original gameplay parity.",
-    "Model-present and dirty-pose branches were not exercised; unsupported dirty cache is rejected.",
-    "Unit width remains a placeholder (currently1.0f); model-box extent path, class+A4 producer, target+7A0 range and neighbour population remain unresolved.",
-    "Full009E0270 implementation exists in the core, but actual class+570 depth and other pre-step/profile inputs remain unbound in the executable.",
-    "Zero corner arms in this run; no corner-detour or world collision gameplay validation."
-  ],
-  "hull_geometry_binding": {
-    "implementation": "ship_ai_hull_geometry_009de2f0",
-    "core_evidence": "reports/ship_ai_hull_geometry.json",
-    "inputs": "actual cache-valid unit world pose, constructor local hull scale and shoulder offset, actual application CRT access; represented absent-model path",
-    "order": "constructor uses its local fields before assignment; each controller pre-step refreshes the same persistent geometry before navigation consumers",
-    "consumers": {
-      "goal": "position184",
-      "sector_scan": "position184, forward1AC, beam19C/opposite1A4",
-      "throttle": "position184, forward1AC, beam19C",
-      "clearance": "shoulder18C/194 and forward1AC"
+  "verification": {
+    "build": "MSVC Win32 Release, existing CTest2/2 passed",
+    "build_log": "local/orch6_pre_step_e_build.log",
+    "post_dyn_merge_build_log": "local/orch6_dyn_body_e_build.log",
+    "runtime": {
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\build\\win32\\Release\\bsp_game.exe",
+        "--frames",
+        "360",
+        "--press-start-frame",
+        "3",
+        "--menu-select",
+        "USN01",
+        "--mission-frames",
+        "120",
+        "--mission-frame-seconds",
+        "0.1",
+        "--game-root",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+        "--fmod-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "--fmod-event-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_pre_step_e.log",
+        "--order-frame",
+        "0",
+        "--order-unit",
+        "Enterprise",
+        "--order",
+        "moveto:Airfield2"
+      ],
+      "exe_sha256": "7ef097acf56e9f42d8331e7b55d2e33ba074aa58ff50809b30df406dc46b8976",
+      "source_sha256": "0d5825986f7b88cf05ccdc46388a77db406820bcda8bc9444900ed9624be1b5a",
+      "exit": 0,
+      "seconds": 10.92691421508789,
+      "log": "local/orch6_pre_step_e.log",
+      "compiled_base": "b4da70a1",
+      "source_state": "Uncommitted root pre-step changes recorded by source/header hashes below; subsequent metadata and Dyn-only merge are separate.",
+      "mission_frames": 120,
+      "registered_unit_rows": 77,
+      "ship_nav_blocks": 14,
+      "full_pre_steps": 3374,
+      "controller_steps": 3360,
+      "controls_extent_reads": 2400,
+      "goal_position_reads": 48,
+      "generic_controller_updates": 18480,
+      "corner_arms": 0,
+      "fmod_errors": 0,
+      "clean_shutdown": true,
+      "implementation_commit": "69d3c9d6482f31b5fb80a5e74b0fe58092d5ac13"
     },
-    "constant": "00CF1748 bits3FDCCCCCC0000000 are widened0.45f, not double0.45",
-    "sqrt": "009E45F3 now uses recovered CRT sqrt with actual application CRT state; removed positive-only clamp",
-    "full_pre_step_runtime_bound": false
+    "native_extent_fixture": {
+      "comparisons": 1449,
+      "edge_and_control": 816,
+      "installed_rows": 633,
+      "mismatches": 0,
+      "log": "local/orch6_extent_probe_run.log",
+      "report": "reports/unit_hull_extents.json"
+    },
+    "installed_depth_fixture": {
+      "supported_rows": 160,
+      "rejected_non_ship_rows": 473,
+      "selected_keys": 10,
+      "boundary_failures": 0,
+      "log": "local/orch6_depth_probe_run.log",
+      "report": "reports/game_ship_depth_input.json",
+      "scope": "Exact compiled reader excerpt using native Lua primitives; not original-byte execution of the entire reader."
+    },
+    "native_full_pre_step_fixture": {
+      "cases": 4,
+      "failures": 0,
+      "log": "local/orch6_hull_probe_run_e.log",
+      "report": "reports/ship_ai_hull_geometry.json"
+    },
+    "independent_review": "unit-extents-e worker accepted constructor-local storage, persistent byte/profile fields, actual class domain and session mode; caught downstream raw reference speed overwrite, fixed before final build/runtime.",
+    "source_sha256": {
+      "src/game_hosts_ship_ai.cpp": "0d5825986f7b88cf05ccdc46388a77db406820bcda8bc9444900ed9624be1b5a",
+      "src/game_hosts_mission_frame.cpp": "c6687c0d26b8a6be1495d856a40c7d7f80e99f5cc393c3f3f2a8880740e359ac",
+      "src/game_hosts_units.cpp": "6760825beecb9a85abf53c28f8b0e822c7772ee92f57b2be71f041236b85a2c3",
+      "src/game_hosts_lua.cpp": "fdcc0c1a43621e0a8fccbf048ea1c138ca53b5745aa845c50c9d65d4af4880e1",
+      "include/bsp/ship_ai_nav_block_ctor.hpp": "ae7075e7f12e9e183e0601231d158a4945ea1eb65be964388c81787d3c737a32",
+      "include/bsp/ship_ai_obstacle_tables.hpp": "b3ae1b34931fedae54f91403cb393fb9150f6a2554b5a201a9f70a44a8a66f9f"
+    },
+    "post_main_merge_runtime": {
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\build\\win32\\Release\\bsp_game.exe",
+        "--frames",
+        "360",
+        "--press-start-frame",
+        "3",
+        "--menu-select",
+        "USN01",
+        "--mission-frames",
+        "120",
+        "--mission-frame-seconds",
+        "0.1",
+        "--game-root",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+        "--fmod-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "--fmod-event-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_pre_step_final_e.log",
+        "--order-frame",
+        "0",
+        "--order-unit",
+        "Enterprise",
+        "--order",
+        "moveto:Airfield2"
+      ],
+      "exe_sha256": "d31e0d7ca6334807a51b10a81ce27920a7b92e2ed7a64ba0fc157204dcf8bd1c",
+      "source_sha256": "0d5825986f7b88cf05ccdc46388a77db406820bcda8bc9444900ed9624be1b5a",
+      "exit": 0,
+      "seconds": 10.17856502532959,
+      "compiled_commit": "784e09fc61501c8cce6dd1c0d25be8c6e6defbac",
+      "build_log": "local/orch6_pre_step_integration.log",
+      "log": "local/orch6_pre_step_final_e.log",
+      "mission_frames": 120,
+      "registered_unit_rows": 77,
+      "ship_nav_blocks": 14,
+      "full_pre_steps": 3374,
+      "controller_steps": 3360,
+      "controls_extent_reads": 2400,
+      "goal_position_reads": 48,
+      "corner_arms": 0,
+      "fmod_errors": 0,
+      "clean_shutdown": true,
+      "preserved_executable": "local/orch6_pre_step_784e09fc.exe"
+    },
+    "build_at_main_merge": "Win32 Release and existing CTest2/2 passed; merged main3081db70 and root69d3c9d6 into784e09fc."
   },
-  "ghidra_integration": {
-    "applied_functions": 1,
-    "prior_values": "local/ghidra-annotations-20260912T204234Z.json",
-    "existing_comments_preserved": true,
-    "project_saved": true,
-    "exports_refreshed": true,
-    "export_log": "local/orch6_dyn_geometry_exports.log"
+  "full_pre_step_binding": {
+    "implementation": "ship_ai_hull_pre_step_009e0270",
+    "storage": "Borrowed constructor-local nav fields before assignment; persistent controller geometry,12 sectors, reference_speed3C4,65 profile bins and uint8 flag45. Nav flags3E8/3E9/3EA are uint8, without bool reinterpretation.",
+    "input_order": "GameMissionFrameHost passes actual scene_state.session_mode and loaded Lua owner. Class570 is selected from actual VehicleClass.Type and variant flags before009E4330 runs.",
+    "width": "Actual class+A4 Width and model-local box producer in reports/unit_hull_extents.json; fullbeam9CC, despite historical unit_half_width_09cc API spelling.",
+    "reference_speed": "Native pre-step floor is retained in block3C4 and in the explicit009EC7C0 input consumed at009EC9AB. Later raw unit reads no longer overwrite it.",
+    "mode": "Actual session mode also replaces the former hardcoded generic CommandController update input.",
+    "ship_domain": {
+      "concrete_kinds": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "native_vtables": [
+        {
+          "kind": 6,
+          "name": "ShipBase",
+          "primary_vtable": "00d09678",
+          "slot_210": "00d09888",
+          "target": "00810dd0",
+          "live_bytes": "00d09888  d0 0d 81 00  ...."
+        },
+        {
+          "kind": 7,
+          "name": "Destroyer",
+          "primary_vtable": "00cfc3d0",
+          "slot_210": "00cfc5e0",
+          "target": "00810dd0",
+          "live_bytes": "00cfc5e0  d0 0d 81 00  ...."
+        },
+        {
+          "kind": 8,
+          "name": "Submarine",
+          "primary_vtable": "00d0bf80",
+          "slot_210": "00d0c190",
+          "target": "00810dd0",
+          "live_bytes": "00d0c190  d0 0d 81 00  ...."
+        },
+        {
+          "kind": 9,
+          "name": "MotherShip",
+          "primary_vtable": "00d01630",
+          "slot_210": "00d01840",
+          "target": "00810dd0",
+          "live_bytes": "00d01840  d0 0d 81 00  ...."
+        },
+        {
+          "kind": 10,
+          "name": "Cruiser",
+          "primary_vtable": "00cfb738",
+          "slot_210": "00cfb948",
+          "target": "00810dd0",
+          "live_bytes": "00cfb948  d0 0d 81 00  ...."
+        },
+        {
+          "kind": 11,
+          "name": "Cargo",
+          "primary_vtable": "00cfa778",
+          "slot_210": "00cfa988",
+          "target": "00810dd0",
+          "live_bytes": "00cfa988  d0 0d 81 00  ...."
+        },
+        {
+          "kind": 12,
+          "name": "LandingShip",
+          "primary_vtable": "00cffa30",
+          "slot_210": "00cffc40",
+          "target": "00810dd0",
+          "live_bytes": "00cffc40  d0 0d 81 00  ...."
+        },
+        {
+          "kind": 13,
+          "name": "BattleShip",
+          "primary_vtable": "00cf90b0",
+          "slot_210": "00cf92c0",
+          "target": "00810dd0",
+          "live_bytes": "00cf92c0  d0 0d 81 00  ...."
+        },
+        {
+          "kind": 14,
+          "name": "TorpedoBoat",
+          "primary_vtable": "00d0c648",
+          "slot_210": "00d0c858",
+          "target": "00810dd0",
+          "live_bytes": "00d0c858  d0 0d 81 00  ...."
+        }
+      ],
+      "allocation_chain": "vtable+210 ->00810DD0 ->009F3F20 ->009F3BA0; factory requests2268h bytes. Abstractkind6 excluded from concrete descriptor guard. Parent allocation gates remain outside this binding.",
+      "runtime": "14 actual ship rows receive nav blocks; other63 keep generic command/director updates."
+    },
+    "runtime_ship_inputs": [
+      {
+        "unit": "Northampton",
+        "type_id": 19,
+        "session": 0,
+        "depth": 0,
+        "key": "HeavyCruiser",
+        "settings_offset": "0080",
+        "scalar_source": "0040",
+        "reference_speed": 16.7194405,
+        "width": 16.0
+      },
+      {
+        "unit": "Dunlap",
+        "type_id": 309,
+        "session": 0,
+        "depth": 0,
+        "key": "Destroyer",
+        "settings_offset": "0080",
+        "scalar_source": "0008",
+        "reference_speed": 19.2402191,
+        "width": 10.0
+      },
+      {
+        "unit": "SaltLakeCity",
+        "type_id": 297,
+        "session": 0,
+        "depth": 0,
+        "key": "HeavyCruiser",
+        "settings_offset": "0080",
+        "scalar_source": "0040",
+        "reference_speed": 16.7194405,
+        "width": 16.0
+      },
+      {
+        "unit": "Enterprise",
+        "type_id": 2,
+        "session": 0,
+        "depth": 0,
+        "key": "MotherShip",
+        "settings_offset": "0080",
+        "scalar_source": "0000",
+        "reference_speed": 16.7194405,
+        "width": 30.0
+      },
+      {
+        "unit": "Ralph",
+        "type_id": 309,
+        "session": 0,
+        "depth": 0,
+        "key": "Destroyer",
+        "settings_offset": "0080",
+        "scalar_source": "0008",
+        "reference_speed": 19.2402191,
+        "width": 10.0
+      },
+      {
+        "unit": "McCall",
+        "type_id": 309,
+        "session": 0,
+        "depth": 0,
+        "key": "Destroyer",
+        "settings_offset": "0080",
+        "scalar_source": "0008",
+        "reference_speed": 19.2402191,
+        "width": 10.0
+      },
+      {
+        "unit": "Blue",
+        "type_id": 366,
+        "session": 0,
+        "depth": 0,
+        "key": "Destroyer",
+        "settings_offset": "0080",
+        "scalar_source": "0008",
+        "reference_speed": 18.7772198,
+        "width": 10.0
+      },
+      {
+        "unit": "Convoy1",
+        "type_id": 85,
+        "session": 0,
+        "depth": 0,
+        "key": "CargoShip",
+        "settings_offset": "0080",
+        "scalar_source": "0030",
+        "reference_speed": 14.0,
+        "width": 16.0
+      },
+      {
+        "unit": "Convoy2",
+        "type_id": 87,
+        "session": 0,
+        "depth": 0,
+        "key": "CargoShip",
+        "settings_offset": "0080",
+        "scalar_source": "0030",
+        "reference_speed": 8.23110962,
+        "width": 16.0
+      },
+      {
+        "unit": "Convoy3",
+        "type_id": 85,
+        "session": 0,
+        "depth": 0,
+        "key": "CargoShip",
+        "settings_offset": "0080",
+        "scalar_source": "0030",
+        "reference_speed": 14.0,
+        "width": 16.0
+      },
+      {
+        "unit": "Convoy4",
+        "type_id": 87,
+        "session": 0,
+        "depth": 0,
+        "key": "CargoShip",
+        "settings_offset": "0080",
+        "scalar_source": "0030",
+        "reference_speed": 8.23110962,
+        "width": 16.0
+      },
+      {
+        "unit": "Convoy5",
+        "type_id": 87,
+        "session": 0,
+        "depth": 0,
+        "key": "CargoShip",
+        "settings_offset": "0080",
+        "scalar_source": "0030",
+        "reference_speed": 8.23110962,
+        "width": 16.0
+      },
+      {
+        "unit": "Convoy6",
+        "type_id": 85,
+        "session": 0,
+        "depth": 0,
+        "key": "CargoShip",
+        "settings_offset": "0080",
+        "scalar_source": "0030",
+        "reference_speed": 14.0,
+        "width": 16.0
+      },
+      {
+        "unit": "Katori",
+        "type_id": 71,
+        "session": 0,
+        "depth": 0,
+        "key": "LightCruiser",
+        "settings_offset": "0080",
+        "scalar_source": "0038",
+        "reference_speed": 18.0056,
+        "width": 16.0
+      }
+    ],
+    "runtime_unit_extents": [
+      {
+        "unit": "Airfield2",
+        "type_id": 207,
+        "kind": 69,
+        "length": 100.0,
+        "width": 10.0
+      },
+      {
+        "unit": "Multi Hangar 1",
+        "type_id": 593,
+        "kind": 27,
+        "length": 80.0,
+        "width": 40.0
+      },
+      {
+        "unit": "CB2",
+        "type_id": 6,
+        "kind": 28,
+        "length": 40.0,
+        "width": 40.0
+      },
+      {
+        "unit": "Coastal Gun 03",
+        "type_id": 460,
+        "kind": 27,
+        "length": 25.0,
+        "width": 25.0
+      },
+      {
+        "unit": "Coastal Gun 02",
+        "type_id": 460,
+        "kind": 27,
+        "length": 25.0,
+        "width": 25.0
+      },
+      {
+        "unit": "Heavy AA 03",
+        "type_id": 462,
+        "kind": 27,
+        "length": 22.0,
+        "width": 22.0
+      },
+      {
+        "unit": "Heavy AA 02",
+        "type_id": 462,
+        "kind": 27,
+        "length": 22.0,
+        "width": 22.0
+      },
+      {
+        "unit": "Coastal Gun 01",
+        "type_id": 460,
+        "kind": 27,
+        "length": 25.0,
+        "width": 25.0
+      },
+      {
+        "unit": "Heavy AA 01",
+        "type_id": 462,
+        "kind": 27,
+        "length": 22.0,
+        "width": 22.0
+      },
+      {
+        "unit": "Containers, 01 01",
+        "type_id": 576,
+        "kind": 27,
+        "length": 4.0,
+        "width": 4.0
+      },
+      {
+        "unit": "Containers, 04 01",
+        "type_id": 202,
+        "kind": 27,
+        "length": 4.0,
+        "width": 4.0
+      },
+      {
+        "unit": "Containers, 01 02",
+        "type_id": 576,
+        "kind": 27,
+        "length": 4.0,
+        "width": 4.0
+      },
+      {
+        "unit": "Containers, 02 01",
+        "type_id": 577,
+        "kind": 27,
+        "length": 4.0,
+        "width": 4.0
+      },
+      {
+        "unit": "Containers, 03 01",
+        "type_id": 201,
+        "kind": 27,
+        "length": 4.0,
+        "width": 4.0
+      },
+      {
+        "unit": "US Barracks, Quonset Hut, Grey 02",
+        "type_id": 513,
+        "kind": 27,
+        "length": 18.0,
+        "width": 13.0
+      },
+      {
+        "unit": "Storage, 02 02",
+        "type_id": 555,
+        "kind": 27,
+        "length": 15.0,
+        "width": 15.0
+      },
+      {
+        "unit": "Storage, 02 03",
+        "type_id": 555,
+        "kind": 27,
+        "length": 15.0,
+        "width": 15.0
+      },
+      {
+        "unit": "Storage, 02 04",
+        "type_id": 555,
+        "kind": 27,
+        "length": 15.0,
+        "width": 15.0
+      },
+      {
+        "unit": "Water Tank, Small 01",
+        "type_id": 524,
+        "kind": 27,
+        "length": 4.0,
+        "width": 4.0
+      },
+      {
+        "unit": "Hangar, Small, 01 01",
+        "type_id": 544,
+        "kind": 27,
+        "length": 4.0,
+        "width": 4.0
+      },
+      {
+        "unit": "Storage, 05 01",
+        "type_id": 682,
+        "kind": 27,
+        "length": 20.0,
+        "width": 20.0
+      },
+      {
+        "unit": "Storage, 04 01",
+        "type_id": 557,
+        "kind": 27,
+        "length": 15.0,
+        "width": 15.0
+      },
+      {
+        "unit": "Building, Small, 01 01",
+        "type_id": 545,
+        "kind": 27,
+        "length": 4.0,
+        "width": 4.0
+      },
+      {
+        "unit": "Storage, 02 05",
+        "type_id": 555,
+        "kind": 27,
+        "length": 15.0,
+        "width": 15.0
+      },
+      {
+        "unit": "Storage, 02 06",
+        "type_id": 555,
+        "kind": 27,
+        "length": 15.0,
+        "width": 15.0
+      },
+      {
+        "unit": "Containers, 03 02",
+        "type_id": 201,
+        "kind": 27,
+        "length": 4.0,
+        "width": 4.0
+      },
+      {
+        "unit": "kontener_borithato 01",
+        "type_id": 751,
+        "kind": 27,
+        "length": 2.0,
+        "width": 1.0
+      },
+      {
+        "unit": "lada_nagy 01",
+        "type_id": 748,
+        "kind": 27,
+        "length": 2.0,
+        "width": 1.0
+      },
+      {
+        "unit": "Static wildcat, closed 01",
+        "type_id": 762,
+        "kind": 27,
+        "length": 7.0,
+        "width": 7.0
+      },
+      {
+        "unit": "Static wildcat, closed 02",
+        "type_id": 762,
+        "kind": 27,
+        "length": 7.0,
+        "width": 7.0
+      },
+      {
+        "unit": "Static wildcat, closed 03",
+        "type_id": 762,
+        "kind": 27,
+        "length": 7.0,
+        "width": 7.0
+      },
+      {
+        "unit": "Static wildcat, closed 04",
+        "type_id": 762,
+        "kind": 27,
+        "length": 7.0,
+        "width": 7.0
+      },
+      {
+        "unit": "Static avenger 01",
+        "type_id": 753,
+        "kind": 27,
+        "length": 7.0,
+        "width": 7.0
+      },
+      {
+        "unit": "Hangar, Small, 04 01",
+        "type_id": 720,
+        "kind": 27,
+        "length": 30.0,
+        "width": 21.0
+      },
+      {
+        "unit": "Multi Hangar CB9",
+        "type_id": 593,
+        "kind": 27,
+        "length": 80.0,
+        "width": 40.0
+      },
+      {
+        "unit": "Hangar, Small, 04 02",
+        "type_id": 720,
+        "kind": 27,
+        "length": 30.0,
+        "width": 21.0
+      },
+      {
+        "unit": "Hangar, Small, 04 03",
+        "type_id": 720,
+        "kind": 27,
+        "length": 30.0,
+        "width": 21.0
+      },
+      {
+        "unit": "lada_nagy 02",
+        "type_id": 748,
+        "kind": 27,
+        "length": 2.0,
+        "width": 1.0
+      },
+      {
+        "unit": "kontener_borithato 02",
+        "type_id": 751,
+        "kind": 27,
+        "length": 2.0,
+        "width": 1.0
+      },
+      {
+        "unit": "Watchtower, 01 01",
+        "type_id": 564,
+        "kind": 27,
+        "length": 5.0,
+        "width": 5.0
+      },
+      {
+        "unit": "Oil Tank, Big 01",
+        "type_id": 571,
+        "kind": 27,
+        "length": 42.0,
+        "width": 42.0
+      },
+      {
+        "unit": "Storage, 03 01",
+        "type_id": 556,
+        "kind": 27,
+        "length": 15.0,
+        "width": 15.0
+      },
+      {
+        "unit": "Barrel lotz 01",
+        "type_id": 735,
+        "kind": 27,
+        "length": 2.0,
+        "width": 1.0
+      },
+      {
+        "unit": "Northampton",
+        "type_id": 19,
+        "kind": 10,
+        "length": 180.0,
+        "width": 16.0
+      },
+      {
+        "unit": "Dunlap",
+        "type_id": 309,
+        "kind": 7,
+        "length": 110.0,
+        "width": 10.0
+      },
+      {
+        "unit": "SaltLakeCity",
+        "type_id": 297,
+        "kind": 10,
+        "length": 180.0,
+        "width": 16.0
+      },
+      {
+        "unit": "Mav1",
+        "type_id": 174,
+        "kind": 22,
+        "length": 22.0,
+        "width": 40.0
+      },
+      {
+        "unit": "Mav2",
+        "type_id": 174,
+        "kind": 22,
+        "length": 22.0,
+        "width": 40.0
+      },
+      {
+        "unit": "Mav3",
+        "type_id": 174,
+        "kind": 22,
+        "length": 22.0,
+        "width": 40.0
+      },
+      {
+        "unit": "Mav4",
+        "type_id": 174,
+        "kind": 22,
+        "length": 22.0,
+        "width": 40.0
+      },
+      {
+        "unit": "Mav5",
+        "type_id": 174,
+        "kind": 22,
+        "length": 22.0,
+        "width": 40.0
+      },
+      {
+        "unit": "Enterprise",
+        "type_id": 2,
+        "kind": 9,
+        "length": 250.0,
+        "width": 30.0
+      },
+      {
+        "unit": "Ralph",
+        "type_id": 309,
+        "kind": 7,
+        "length": 110.0,
+        "width": 10.0
+      },
+      {
+        "unit": "McCall",
+        "type_id": 309,
+        "kind": 7,
+        "length": 110.0,
+        "width": 10.0
+      },
+      {
+        "unit": "Blue",
+        "type_id": 366,
+        "kind": 7,
+        "length": 110.0,
+        "width": 10.0
+      },
+      {
+        "unit": "ScoutDauntless",
+        "type_id": 108,
+        "kind": 18,
+        "length": 11.0,
+        "width": 13.0
+      },
+      {
+        "unit": "ConTBD1",
+        "type_id": 112,
+        "kind": 17,
+        "length": 16.5,
+        "width": 15.0
+      },
+      {
+        "unit": "ConTBD2",
+        "type_id": 112,
+        "kind": 17,
+        "length": 16.5,
+        "width": 15.0
+      },
+      {
+        "unit": "ConTBD3",
+        "type_id": 112,
+        "kind": 17,
+        "length": 16.5,
+        "width": 15.0
+      },
+      {
+        "unit": "ConSBD1",
+        "type_id": 108,
+        "kind": 18,
+        "length": 11.0,
+        "width": 13.0
+      },
+      {
+        "unit": "ConSBD2",
+        "type_id": 108,
+        "kind": 18,
+        "length": 11.0,
+        "width": 13.0
+      },
+      {
+        "unit": "ConSBD3",
+        "type_id": 108,
+        "kind": 18,
+        "length": 11.0,
+        "width": 13.0
+      },
+      {
+        "unit": "Convoy1",
+        "type_id": 85,
+        "kind": 11,
+        "length": 180.0,
+        "width": 16.0
+      },
+      {
+        "unit": "Convoy2",
+        "type_id": 87,
+        "kind": 11,
+        "length": 180.0,
+        "width": 16.0
+      },
+      {
+        "unit": "Convoy3",
+        "type_id": 85,
+        "kind": 11,
+        "length": 180.0,
+        "width": 16.0
+      },
+      {
+        "unit": "Convoy4",
+        "type_id": 87,
+        "kind": 11,
+        "length": 180.0,
+        "width": 16.0
+      },
+      {
+        "unit": "Convoy5",
+        "type_id": 87,
+        "kind": 11,
+        "length": 180.0,
+        "width": 16.0
+      },
+      {
+        "unit": "Convoy6",
+        "type_id": 85,
+        "kind": 11,
+        "length": 180.0,
+        "width": 16.0
+      },
+      {
+        "unit": "KatTBD",
+        "type_id": 112,
+        "kind": 17,
+        "length": 16.5,
+        "width": 15.0
+      },
+      {
+        "unit": "KatSBD",
+        "type_id": 108,
+        "kind": 18,
+        "length": 11.0,
+        "width": 13.0
+      },
+      {
+        "unit": "Katori",
+        "type_id": 71,
+        "kind": 10,
+        "length": 162.0,
+        "width": 16.0
+      },
+      {
+        "unit": "Nell1",
+        "type_id": 166,
+        "kind": 16,
+        "length": 17.0,
+        "width": 25.0
+      },
+      {
+        "unit": "Nell2",
+        "type_id": 166,
+        "kind": 16,
+        "length": 17.0,
+        "width": 25.0
+      },
+      {
+        "unit": "Nell3",
+        "type_id": 166,
+        "kind": 16,
+        "length": 17.0,
+        "width": 25.0
+      },
+      {
+        "unit": "Nell4",
+        "type_id": 166,
+        "kind": 16,
+        "length": 17.0,
+        "width": 25.0
+      },
+      {
+        "unit": "Nell5",
+        "type_id": 166,
+        "kind": 16,
+        "length": 17.0,
+        "width": 25.0
+      },
+      {
+        "unit": "Nell6",
+        "type_id": 166,
+        "kind": 16,
+        "length": 17.0,
+        "width": 25.0
+      }
+    ]
   }
 }

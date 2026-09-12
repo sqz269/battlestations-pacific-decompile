@@ -1,0 +1,61 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a90ed0",
+    "end_address": "00a90ed1"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a90ed0",
+    "end_address": "00a90ed0",
+    "bytes_disassembled": 1,
+    "message": "Successfully disassembled 1 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a90ed0",
+    "disassemble_first": false,
+    "name": "BSP_InputBackend_EnumerateNoop"
+   },
+   "result": {
+    "success": true,
+    "address": "00a90ed0",
+    "function_name": "BSP_InputBackend_EnumerateNoop",
+    "entry_point": "00a90ed0",
+    "body_size": 1,
+    "message": "Function created successfully at 00a90ed0",
+    "warnings": [
+     "Function name 'BSP_InputBackend_EnumerateNoop' \u2014 main part 'InputBackend_EnumerateNoop' is not PascalCase. Expected: InputbackendEnumeratenoop",
+     "Function name 'BSP_InputBackend_EnumerateNoop' \u2014 main part 'InputBackend_EnumerateNoop' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_InputBackend_EnumerateNoop' does not start with a recognized verb. First word 'Input' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a90ed0",
+   "end": "00a90ed1",
+   "name": "BSP_InputBackend_EnumerateNoop",
+   "after": "Function: BSP_InputBackend_EnumerateNoop at 00a90ed0\nSignature: undefined BSP_InputBackend_EnumerateNoop(void)\nEntry: 00a90ed0\nBody: 00a90ed0 - 00a90ed0"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

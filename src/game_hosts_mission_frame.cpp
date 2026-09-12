@@ -1310,7 +1310,7 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             // +61h, and 009f3dd0 reads the director 0071be40 answers for, so the
             // host is built after the authored commands were issued.
             host.ship_ai = std::make_unique<GameShipAiHost>(host.log, *host.units);
-            host.ship_ai->register_units();
+            host.ship_ai->register_units(host.lua, host.scene_state.session_mode);
             host.units->set_ship_ai(host.ship_ai.get());
             // Milestone 2m: row 16 of the fan-out walks the entity chain this
             // step created, so the subsystem host learns about it here.
@@ -1514,7 +1514,18 @@ bool GameMissionFrameHost::enter_mission_state_004da6c0() {
     // JoinFormation and the rest of the Navigator family. The script manager
     // that would call it is three records, so the executable calls it here,
     // once, on the frame the mission enters state 0Dh.
-    host.lua.run_created_scripts();
+    // Packet cc_lua_binding_audit: 00898750 now runs its own body, and that body
+    // calls the named global itself (0089898B / 009290A0), on the frame the mission
+    // hands the name over. The stand-in above would then run `luaInit` a second
+    // time, so it runs only while the binding is still a record.
+    if (host.script_orders == nullptr || host.script_orders->timers().scripts_created == 0) {
+        host.lua.run_created_scripts();
+    } else {
+        host.log.notef("script objects: CreateScript 00898750 ran its own body %zu time(s) "
+            "and called each named global from inside it, so milestone 2l's one-shot "
+            "stand-in is not run",
+            host.script_orders->timers().scripts_created);
+    }
     return host.entry.entered;
 }
 
@@ -1691,6 +1702,14 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
     MissionFrameBinding binding(host);
     const bsp::MissionFrameResult result
         = bsp::run_mission_frame(host.frame_state, binding);
+    // Packet cc_lua_binding_audit: row 8 of the fixed-step fan-out, 00875E64 /
+    // 00929460, over the script entities CreateScript made. The fan-out's own row
+    // runs against an empty list because nothing else registers a think; this pass
+    // is the same reconstructed rule with the mission's script entities in it, and
+    // it is what re-enters `luaTimetable` when a luaDelay expires.
+    if (result.simulated && host.script_orders != nullptr) {
+        host.script_orders->run_script_timers(raw_delta);
+    }
     ++host.frames.frames;
     if (result.simulated) ++host.frames.simulated;
     if (result.paused) ++host.frames.paused;
