@@ -1,0 +1,459 @@
+{
+  "packet": "orch2_provider_pool_lifecycle_ar",
+  "source": "src/native_physical_provider_pool_lifecycle.cpp",
+  "header": "include/bsp/native_physical_provider_pool_lifecycle.hpp",
+  "documentation": "docs/NATIVE_PHYSICAL_PROVIDER_POOL_LIFECYCLE.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "native_spans": [
+    {
+      "entry": "00bf3250",
+      "last_instruction": "00bf3322",
+      "inclusive_byte_end": "00bf3322",
+      "end_exclusive": "00bf3323",
+      "length": 211,
+      "sha256": "62e1208c263cb4c0d8fada1ebad7f8d8b4e5a6197ad263f383235a746247321d",
+      "hex": "6aff686e7acc0064a10000000050648925000000005153568bf133dbc706c0a0d700895e04a1b488e100894608a1b488e1003bc3578974240c74038970048935b488e1008d7e0c57895c241cc706688ed600ff150c22ce00895f18895e28895e2c895e30b820000000c74634ffffffff394630c64424180273456880000000894630e8e72200008bf883c40433c0395e2c76198bcf3bcb74088b56288b1482891183c00183c1043b462c72e98b46283bc3740950e88036000083c404897e288b4c24105f8bc65e5b64890d0000000083c410c3",
+      "live_disk_equal": true,
+      "saved_proto": "00bf3250 FUN_00bf3250  undefined FUN_00bf3250(void)  body 00bf3250 - 00bf3322",
+      "coverage": "complete operational source; original FH3/CRT runtime identity external",
+      "reviewed_name": "BSP_NativePhysicalProviderPool_Construct",
+      "cpp_symbol": "initialize_native_physical_provider_pool_00bf3250",
+      "original_abi": "ECX actual fresh38h pool; EAX same; RET",
+      "behavior": "Prepend shared E188B4 base element, profile D68E68, real section0C/depth24, zero table headers, firstFFFFFFFF; publish capacity32 before80h allocation; copy current count/current backing, free current old backing, publish replacement. FH3 state0->2 cleanup table/section/base.",
+      "all_xrefs": [
+        "From 00cd9015 [UNCONDITIONAL_CALL]"
+      ]
+    },
+    {
+      "entry": "00bf3430",
+      "last_instruction": "00bf34cf",
+      "inclusive_byte_end": "00bf34cf",
+      "end_exclusive": "00bf34d0",
+      "length": 160,
+      "sha256": "c37b0cce850fe2041a46926dddf6eeb756bad05bc72075aaba14be7cd0649341",
+      "hex": "56578bf133ff397e2c765aeb038d49008b46288b04b86683b8f001000008753d50e8563100008b56288b4e2c8b4c8afc8bc2890cb883462cff83c4043b7e2c73198b56288b04ba83c038b90800000090893883c03c83e90175f683ef0183c7013b7e2c72ab33c039462cc74634ffffffff762a8b4e28eb088da42400000000908b116683baf001000000750e83c00183c1043b462c72e95f5ec38946345f5ec3",
+      "live_disk_equal": true,
+      "saved_proto": "00bf3430 FUN_00bf3430  undefined FUN_00bf3430(void)  body 00bf3430 - 00bf34cf",
+      "coverage": "complete operational source; original FH3/CRT runtime identity external",
+      "reviewed_name": "BSP_NativePhysicalProviderPool_TrimEmptyBlocks",
+      "cpp_symbol": "trim_native_physical_provider_pool_00bf3430",
+      "original_abi": "ECX actual38h pool; D68E68 virtual0; RET; no lock",
+      "behavior": "Free WORD1F0==8 block, reload current table/count, move last pointer, decrement count, rewrite all eight moved3Ch slot+38 IDs, retry moved block; reset firstFFFFFFFF and scan captured table with current count for first nonfull. Retain table/capacity.",
+      "all_xrefs": [
+        "From 00d68e68 [DATA]"
+      ]
+    },
+    {
+      "entry": "00bf33a0",
+      "last_instruction": "00bf3429",
+      "inclusive_byte_end": "00bf3429",
+      "end_exclusive": "00bf342a",
+      "length": 138,
+      "sha256": "3323c65ebdc7a9d42c2f3581a78ad345df93cfef7c3dd9ebaba4b1e4e8927523",
+      "hex": "56578bf933f639772cc707688ed60076178b47288b0cb051e8ef31000083c60183c4043b772c72e98b472885c0740950e8b435000083c404837f24008d770c7e15538b1d1022ce00834618ff56ffd3837e18007ff35b56ff151422ce008b470485c0c707c0a0d70074088b5708895008eb088b4708a3b488e1008b470885c074068b4f048948045f5ec3",
+      "live_disk_equal": true,
+      "saved_proto": "00bf33a0 FUN_00bf33a0  undefined FUN_00bf33a0(void)  body 00bf33a0 - 00bf3429",
+      "coverage": "complete operational source; original FH3/CRT runtime identity external",
+      "reviewed_name": "BSP_NativePhysicalProviderPool_Destroy",
+      "cpp_symbol": "destroy_native_physical_provider_pool_00bf33a0",
+      "original_abi": "ECX actual38h pool; RET",
+      "behavior": "Count comparison precedes D68E68 profile store. Free all current blocks in increasing index then table; drain positive signed depth, DeleteCriticalSection, base profile and same E188B4 unlink; retain raw headers and own links. No provider destructor or owner free.",
+      "all_xrefs": [
+        "From 00ce10f5 in CG_static_init_00ce10f0 [UNCONDITIONAL_CALL]"
+      ]
+    },
+    {
+      "entry": "00bf2e30",
+      "last_instruction": "00bf2e3d",
+      "inclusive_byte_end": "00bf2e3d",
+      "end_exclusive": "00bf2e3e",
+      "length": 14,
+      "sha256": "033c8fc8e423669692e41442b38027a4acfd5eac1586f157d2485575ee271617",
+      "hex": "8b0185c0740750e84d3b000059c3",
+      "live_disk_equal": true,
+      "saved_proto": "00bf2e30 FUN_00bf2e30  undefined FUN_00bf2e30(void)  body 00bf2e30 - 00bf2e3d",
+      "coverage": "complete operational source; original FH3/CRT runtime identity external",
+      "reviewed_name": "BSP_NativePhysicalProviderPool_FreePointerTable",
+      "cpp_symbol": "free_native_physical_provider_pool_table_00bf2e30",
+      "original_abi": "ECX actual0Ch table header; RET",
+      "behavior": "Capture pointer and free if nonnull; retain pointer/count/capacity. POP ECX at BF2E3C restores caller stack after returning free.",
+      "all_xrefs": [
+        "From 00cc7a69 in Unwind@00cc7a63 [UNCONDITIONAL_CALL]"
+      ]
+    },
+    {
+      "entry": "00cd9010",
+      "last_instruction": "00cd9025",
+      "inclusive_byte_end": "00cd9025",
+      "end_exclusive": "00cd9026",
+      "length": 22,
+      "sha256": "9ad2614721aab02e9e84d48ae41b8f1c921cf686463659ad61439cb0ab05707b",
+      "hex": "b9f0db0901e836a2f1ff68f010ce00e8d1dff1ff59c3",
+      "live_disk_equal": true,
+      "saved_proto": "00cd9010 ?  ?  body ?",
+      "coverage": "complete operational source; original FH3/CRT runtime identity external",
+      "reviewed_name": "BSP_Static_InitializePhysicalProviderPool",
+      "cpp_symbol": "initialize_static_native_physical_provider_pool_00cd9010",
+      "original_abi": "No arguments; EAX actual CRT atexit result; POP ECX then RET",
+      "behavior": "MOV ECX0109DBF0; CALL BF3250; push CE10F0, CALL BF6FF5; POP ECX and return registration status without rollback.",
+      "all_xrefs": [
+        "From 00ce369c [DATA]"
+      ]
+    },
+    {
+      "entry": "00ce10f0",
+      "last_instruction": "00ce10f5",
+      "inclusive_byte_end": "00ce10f9",
+      "end_exclusive": "00ce10fa",
+      "length": 10,
+      "sha256": "2351927cca781fc26d74b944bfbad04e249ade0c0523ed18b2d5b4db70eca02b",
+      "hex": "b9f0db0901e9a622f1ff",
+      "live_disk_equal": true,
+      "saved_proto": "00ce10f0 CG_static_init_00ce10f0  undefined CG_static_init_00ce10f0(void)  body 00ce10f0 - 00ce10f9",
+      "coverage": "complete operational source; original FH3/CRT runtime identity external",
+      "reviewed_name": "BSP_Static_DestroyPhysicalProviderPool",
+      "cpp_symbol": "destroy_static_native_physical_provider_pool_00ce10f0",
+      "original_abi": "No arguments; MOV ECX0109DBF0; JMP BF33A0; last instruction5 bytes",
+      "behavior": "CRT exit callback registered by CD9010, selecting same actual provider pool. Saved CG_static_init label is misleading.",
+      "all_xrefs": [
+        "From 00cd901a [DATA]"
+      ]
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "entry": "00cd9010",
+      "last_instruction": "00cd9025",
+      "inclusive_byte_end": "00cd9025",
+      "end_exclusive": "00cd9026",
+      "length": 22,
+      "coverage": "complete raw listing and source",
+      "parent_action": "Define after worker lease release before annotation; do not confuse instruction end and byte end."
+    }
+  ],
+  "flow_repairs_requested": [
+    {
+      "function": "00bf3250",
+      "call_site": "00bf3304",
+      "gap_start": "00bf3309",
+      "end_exclusive": "00bf330c"
+    },
+    {
+      "function": "00bf3430",
+      "call_site": "00bf3451",
+      "gap_start": "00bf3456",
+      "end_exclusive": "00bf348d"
+    },
+    {
+      "function": "00bf33a0",
+      "call_site": "00bf33b8",
+      "gap_start": "00bf33bd",
+      "end_exclusive": "00bf33c8"
+    },
+    {
+      "function": "00bf33a0",
+      "call_site": "00bf33d0",
+      "gap_start": "00bf33d5",
+      "end_exclusive": "00bf33d8"
+    },
+    {
+      "function": "00bf2e30",
+      "call_site": "00bf2e37",
+      "gap_start": "00bf2e3c",
+      "end_exclusive": "00bf2e3d"
+    }
+  ],
+  "unreachable_alignment": [
+    "00bf343d..00bf3440 exclusive",
+    "00bf34a8..00bf34b0 exclusive"
+  ],
+  "host_steps": [
+    {
+      "address": "00bf32d2",
+      "native": "00bf55be",
+      "function": "00bf3250",
+      "contract": "Reviewed CRT operator_new malloc/new-handler/retry/throw loop; source singleton_lifetime_allocate uses real host CRT. PUSH80; ADD ESP4 at BF32D9."
+    },
+    {
+      "address": "00bf3304",
+      "native": "00bf6989",
+      "function": "00bf3250",
+      "contract": "Reviewed CRT free current old pointer; ADD ESP4 at BF3309."
+    },
+    {
+      "address": "00bf3451",
+      "native": "00bf65ac",
+      "function": "00bf3430",
+      "contract": "Reviewed BF65AC JMP BF9DC8 CRT free implementation; ADD ESP4 after current-table move/count decrement at BF3469."
+    },
+    {
+      "address": "00bf33b8",
+      "native": "00bf65ac",
+      "function": "00bf33a0",
+      "contract": "Free current indexed block; ADD ESP4 at BF33C0 then reload count."
+    },
+    {
+      "address": "00bf33d0",
+      "native": "00bf6989",
+      "function": "00bf33a0",
+      "contract": "Free current nonnull backing pointer; ADD ESP4 at BF33D5."
+    },
+    {
+      "address": "00bf2e37",
+      "native": "00bf6989",
+      "function": "00bf2e30",
+      "contract": "Free captured pointer when nonnull; POP ECX at BF2E3C."
+    }
+  ],
+  "raw_calls_not_checked": [
+    {
+      "site": "00cd9015",
+      "target": "00bf3250",
+      "function_entry": "00cd9010",
+      "reason": "Undefined containing function; exact CALL decoded from equal disk/live bytes."
+    },
+    {
+      "site": "00cd901f",
+      "target": "00bf6ff5",
+      "function_entry": "00cd9010",
+      "reason": "Undefined containing function; CRT atexit reviewed including BF6FB9 onexit wrapper; POP ECX cleanup at CD9024."
+    }
+  ],
+  "tail_transfers_separate_from_CALL_rows": [
+    {
+      "site": "00ce10f5",
+      "target": "00bf33a0",
+      "contract": "MOV ECX0109DBF0; JMP, not CALL; five-byte final instruction."
+    },
+    {
+      "site": "00cc7a69",
+      "target": "00bf2e30",
+      "contract": "Consumed FH3 unwind state2: ECX=[EBP-10]+28; not owned/reconstructed as separate funclet."
+    },
+    {
+      "site": "00cc7a5e",
+      "target": "00402f70",
+      "contract": "Consumed FH3 unwind state1: ECX=[EBP-10]+0C; real section cleanup."
+    },
+    {
+      "site": "00cc7a53",
+      "target": "00403970",
+      "contract": "Consumed FH3 unwind state0: ECX=[EBP-10]; shared list unlink."
+    },
+    {
+      "site": "00cc7a73",
+      "target": "00bf6b43",
+      "contract": "Consumed native FH3 dispatch with EAX=E02794; runtime boundary."
+    },
+    {
+      "site": "00bf65ac",
+      "target": "00bf9dc8",
+      "contract": "Consumed CRT free forwarding jump; callee body reviewed."
+    }
+  ],
+  "real_OS_services": [
+    {
+      "call_site": "00bf32a2",
+      "iat": "00ce220c",
+      "service": "InitializeCriticalSection",
+      "argument": "captured pool+0C; stdcall4"
+    },
+    {
+      "call_site": "00bf33ed",
+      "iat": "00ce2210",
+      "service": "LeaveCriticalSection",
+      "argument": "EBX captured IAT at BF33E2; section pool+0C; depth decremented first"
+    },
+    {
+      "call_site": "00bf33f7",
+      "iat": "00ce2214",
+      "service": "DeleteCriticalSection",
+      "argument": "pool+0C; stdcall4"
+    }
+  ],
+  "exception_evidence": {
+    "handler": "00cc7a6e",
+    "descriptor": "00e02794",
+    "unwind_map": "00e0277c",
+    "states": [
+      "0 -> -1 CC7A50/403970 base unlink",
+      "1 -> 0 CC7A58/402F70 section cleanup",
+      "2 -> 1 CC7A63/BF2E30 table cleanup"
+    ],
+    "main_transition": "0 directly to2 at BF32C3 after section/header initialization",
+    "source": "MSVC __try/__finally with AbnormalTermination; real raw storage and OS/CRT services",
+    "original_dispatch_executed": false
+  },
+  "physical_storage": {
+    "pool_bytes": "0x38",
+    "actual_global": "0109dbf0",
+    "shared_list_head": "00e188b4",
+    "profile": "00d68e68",
+    "element": "canonical AllocatorListElement+00/04/08",
+    "critical_section": "0x0c, size0x18",
+    "depth": "0x24 signed positive drain",
+    "table": "0x28",
+    "count": "0x2c",
+    "capacity": "0x30",
+    "earliest": "0x34",
+    "block": "0x1f4, eight3Ch slots",
+    "slot_block_index": "slot+0x38",
+    "free_indices": "block+0x1e0, eight WORDs",
+    "free_count": "block+0x1f0 WORD",
+    "padding": "block+0x1f2 untouched",
+    "producer_review": "BF3250 owner; existing BF2D50 block producer; existing native_physical_provider_pool.cpp primitives; different physical STREAM pool BF30C0/BF3670 excluded"
+  },
+  "static_binding": "Explicit host bind before native list publication; borrowed one actual0109DBF0 raw owner and real shared AllocatorListDomain, same context as primitive callers. Real std::atexit; borrowed objects survive process exit. No private raw pool, list head, lock, invented provider fields, or singleton registration.",
+  "corrections": [
+    {
+      "was": "BF3430 returns after first free",
+      "is": "BF3456..BF348C moves/reindexes/retries before availability scan",
+      "evidence": "Equal live/disk bytes and raw full listing."
+    },
+    {
+      "was": "BF33A0 frees at most one block",
+      "is": "BF33BD..BF33C7 increments and reloads count to continue loop",
+      "evidence": "Equal live/disk bytes and raw full listing."
+    },
+    {
+      "was": "CG_static_init_00ce10f0",
+      "is": "static CRT exit destructor callback",
+      "evidence": "CD901A pushes CE10F0 for BF6FF5; CE10F5 JMP BF33A0."
+    }
+  ],
+  "validation": {
+    "source_build": "PASS scripts/build.ps1 with process-scoped MSBUILDDISABLENODEREUSE=1; after verify-seeds, 2/2 existing CTests passed.",
+    "focused_fixture": "PASS normal raw comparison and native/source real CRT exit subprocesses",
+    "original_fh3_abi": false,
+    "drop_in_binary_compatible": false,
+    "game_validated": false,
+    "permanent_tests_added": 0,
+    "limitations": [
+      "Host CRT exception typeinfo/new-handler identity differs from installed CRT; original FH3 dispatch not run.",
+      "No concurrent trimming or repeated startup/rebinding guarantee.",
+      "No physical-provider destructor or factory composition claim."
+    ],
+    "build_log": "local/provider_pool_lifecycle_ar/build-seeds-verified.log",
+    "seed_log": "local/provider_pool_lifecycle_ar/verify-seeds.log",
+    "report_calls": "PASS 6 ordinary CALL rows checked, 0 failed",
+    "raw_values_compared": 4525,
+    "unchanged_original_bytes": 555,
+    "source_SEH_injection": "PASS state0 before section initialization and state2 after header initialization; base unlink/raw states verified; original FH3 dispatcher not executed",
+    "fixture_cases": [
+      "Null/non-null table frees preserve pointer/count/capacity.",
+      "26 acquisitions across four blocks; middle empty removal moves a second empty block and retries it in the same pass.",
+      "All8 moved slot+38 IDs rewritten with provider payload/padding retained.",
+      "Availability scans for all-full, partially-free and empty pools; table/capacity retained.",
+      "Real shared AllocatorListDomain dispatches both owner trim callbacks.",
+      "Teardown observes actual three-block then table CRT free order, drains real recursion2, retains metadata/own links, unlinks tail then head.",
+      "Source guarded state0/state2 SEH exceptions clean up through the shared list.",
+      "Original/source static startup register real CRT callbacks; LIFO verifier observes same static-owner teardown."
+    ],
+    "fixture_boundaries": {
+      "relocation": "Owned original code copied unchanged to original+0x30000000; actual0109DBF0/E188B4/IAT cells explicit.",
+      "redirected_external_entries": [
+        "BF55BE/BF681B -> existing singleton_lifetime_allocate using real host CRT",
+        "BF6989/BF9DC8 -> existing singleton_lifetime_free using real host CRT; original BF65AC JMP intact",
+        "BF6FF5 -> real std::atexit",
+        "Absolute CE10F0 callback cell -> fixture bridge -> unchanged relocated CE10F0 body"
+      ],
+      "os_services": "Actual Initialize/Enter/Leave/DeleteCriticalSection, no synthetic locks.",
+      "original_FH3_dispatch": false,
+      "source_allocation_failure_80h_forced": false,
+      "atexit_failure_forced": false,
+      "free_order_observation": "Host free IAT temporarily routes to a fixed-array observer, which immediately invokes its captured genuine host CRT free implementation. Original and source observed pointers matched exact three-block/table order. No freeing behavior replaced or stubbed."
+    },
+    "prior_failed_fixture": {
+      "path": "local/provider_pool_lifecycle_ar/lifecycle-result.json",
+      "reason": "Whole-image VirtualAlloc reservation conflict before any original body executed. Preserved inputs/executable/result; successful sparse-page fixture uses separate v2 directory."
+    },
+    "earlier_fixtures": [
+      {
+        "directory": "local/provider_pool_lifecycle_ar_v2",
+        "outcome": "Passed original/source comparisons, SEH and CRT exit; retained unchanged. v4 adds direct observation of actual CRT free order."
+      },
+      {
+        "directory": "local/provider_pool_lifecycle_ar_v3",
+        "outcome": "Compile/link failed before execution due to x86 import variable spelling; frozen inputs/link log retained. Corrected declaration in separately frozen v4."
+      }
+    ]
+  },
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch2-provider-pool-lifecycle-ar",
+  "worktree_base": "b44ac4fae0d8cac994596163ce1ed84cc0ef5e9e",
+  "proof": {
+    "directory": "J:\\PROG\\battlestations-pacific-decompile-orch2-provider-pool-lifecycle-ar\\local\\provider_pool_lifecycle_ar_v4",
+    "input_manifest": "local/provider_pool_lifecycle_ar_v4/input_manifest.json",
+    "input_manifest_sha256": "45554671188d02971e2adee2ecf75593db08a06f84256ccfd1553715d4e1b49b",
+    "frozen_input_count": 849,
+    "preexecution_artifacts": {
+      "probe.exe": "6a6a7b1b9f69c8c40ccdc4d0de740c1a0b4cb2a2a42b9eb23b3ee1df9f67dbbc",
+      "probe.obj": "f3004ec90ee884dbd0f791762250f873da07a71497e9034052350fb87ea674e2",
+      "probe.cpp": "7e865ddb1fea66d8b939bd43dbbdc66ba488cc47bf447f4184383a51b0318607",
+      "build_probe.cmd": "3141ff810ebf434823868bbfbc60fc7edcdd8e0726b6e32c62d4134d47abf7a4",
+      "input_manifest.json": "45554671188d02971e2adee2ecf75593db08a06f84256ccfd1553715d4e1b49b",
+      "run_probe.py": "1b9ea3a50eb40d417f9dd4839ba23893ec978ed3705945a4b5684582fe030f4e"
+    },
+    "compile_command": "@echo off\ncall \"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvars32.bat\"\nif errorlevel 1 exit /b %errorlevel%\ncl /nologo /std:c++17 /EHsc /W4 /WX /O2 /MD /I local\\provider_pool_lifecycle_ar_v4\\frozen\\include local\\provider_pool_lifecycle_ar_v4\\frozen\\probe.cpp /Fo:local\\provider_pool_lifecycle_ar_v4\\probe.obj /Fe:local\\provider_pool_lifecycle_ar_v4\\probe.exe local\\provider_pool_lifecycle_ar_v4\\frozen\\bsp_core.lib local\\provider_pool_lifecycle_ar_v4\\frozen\\bsp_lua511.lib local\\provider_pool_lifecycle_ar_v4\\frozen\\bsp_zlib121.lib user32.lib d3d9.lib shell32.lib /link /MACHINE:X86 /BASE:0x20000000 /DYNAMICBASE:NO /MANIFEST:EMBED\nexit /b %errorlevel%\n",
+    "build_command": "$env:MSBUILDDISABLENODEREUSE='1'; ./scripts/build.ps1",
+    "results": [
+      {
+        "command": [
+          "J:\\PROG\\battlestations-pacific-decompile-orch2-provider-pool-lifecycle-ar\\local\\provider_pool_lifecycle_ar_v4\\probe.exe"
+        ],
+        "returncode": 0,
+        "stdout": "PASS original/source pointer-table release: null/non-null and all stale metadata preserved.\nPASS original/source lifecycle: 4525 matching raw block/header values; shared virtual trim, moved-empty retry, all8 slot IDs, preserved payload, recursion2, exact three-block/table CRT free order and tail/head unlink.\nPASS source SEH unwind: injected state0 and state2 exceptions reach base unlink with expected raw-header states; original FH3 dispatch not executed.\nPASS six original bodies: 555 bytes unchanged.\nPASS AR focused provider-pool lifecycle probe.\n",
+        "stderr": "",
+        "preexecution_artifacts": "preexecution_artifacts.json"
+      },
+      {
+        "command": [
+          "J:\\PROG\\battlestations-pacific-decompile-orch2-provider-pool-lifecycle-ar\\local\\provider_pool_lifecycle_ar_v4\\probe.exe",
+          "native-exit"
+        ],
+        "returncode": 0,
+        "stdout": "PASS static startup initialized actual owner and registered real CRT callback.\nPASS six original bodies: 555 bytes unchanged.\nPASS actual CRT atexit: static pool teardown completed before verifier.\n",
+        "stderr": "",
+        "preexecution_artifacts": "preexecution_artifacts.json"
+      },
+      {
+        "command": [
+          "J:\\PROG\\battlestations-pacific-decompile-orch2-provider-pool-lifecycle-ar\\local\\provider_pool_lifecycle_ar_v4\\probe.exe",
+          "source-exit"
+        ],
+        "returncode": 0,
+        "stdout": "PASS static startup initialized actual owner and registered real CRT callback.\nPASS six original bodies: 555 bytes unchanged.\nPASS actual CRT atexit: static pool teardown completed before verifier.\n",
+        "stderr": "",
+        "preexecution_artifacts": "preexecution_artifacts.json"
+      }
+    ],
+    "selected_frozen_artifacts": {
+      "frozen/src/native_physical_provider_pool_lifecycle.cpp": "6da8617044b9bedb8762aa325f9041e38ded869aaf455f21c95e2a14b6aba9d7",
+      "frozen/include/bsp/native_physical_provider_pool_lifecycle.hpp": "04175010f383b41ebaa628a2044af2cb408ed85636cb049bd7913c4f50c57e53",
+      "frozen/src/native_physical_provider_pool.cpp": "8235feddb6ddf1cf81ec94ed9bea5afe10cc77a9a5c57f9edfb3eaddb0678059",
+      "frozen/src/allocator_list.cpp": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732",
+      "frozen/src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "frozen/objects/native_physical_provider_pool_lifecycle.obj": "0253f6a84819cc5b8b558ba5c753cea675df6be1a30a974b8a9c0526ec3a784c",
+      "frozen/objects/native_physical_provider_pool.obj": "3abb0e45feafffb6a9670613c72e7699299023a1dd61c1b9ca783ea20e86b6c3",
+      "frozen/objects/allocator_list.obj": "8c05927e35ae912080f0df32f57efa388b50870ac2b8c04c74f5726f43c3c582",
+      "frozen/objects/singleton_lifetime.obj": "fe1caf1b00834cf665de7e0c5381d2f0b9d087a301ab6b41793fba86fec629fa",
+      "frozen/bsp_core.lib": "343b7caef18abfee67a574073a7937a962946c160b55992f317eb20659166f0b",
+      "frozen/bsp_lua511.lib": "ee15e5ff0faf759bb1f2bd8c55b053897dcbefbe36c6bf4c18dc99c85e9a72d5",
+      "frozen/bsp_zlib121.lib": "05c0bc15fe33914a783f5dc33d9799c1b67005c597163345dea76d6ad8308c82",
+      "frozen/probe.exe": "6a6a7b1b9f69c8c40ccdc4d0de740c1a0b4cb2a2a42b9eb23b3ee1df9f67dbbc",
+      "frozen/probe.obj": "f3004ec90ee884dbd0f791762250f873da07a71497e9034052350fb87ea674e2",
+      "frozen/probe.cpp": "7e865ddb1fea66d8b939bd43dbbdc66ba488cc47bf447f4184383a51b0318607",
+      "frozen/build_probe.cmd": "3141ff810ebf434823868bbfbc60fc7edcdd8e0726b6e32c62d4134d47abf7a4"
+    },
+    "current_source_header_archive_matches_frozen": true,
+    "input_and_executable_postexecution_hashes_unchanged": true,
+    "logs": {
+      "local\\provider_pool_lifecycle_ar\\build-first.log": "ead5cbd6401a6d7900d50fd16616356892753942612e66193d2e9aea13cc6f09",
+      "local\\provider_pool_lifecycle_ar\\build-seeds-verified.log": "2fb542446684f0eee0a60d9254b48cfcd159edb1531c6102f73776b52ff09d93",
+      "local\\provider_pool_lifecycle_ar\\verify-seeds.log": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+      "local\\provider_pool_lifecycle_ar\\report-call-check.log": "2bb9064702db228fcb8725c913e541a3b65603ca47db12ffcdcaed2514af61e3"
+    }
+  }
+}
