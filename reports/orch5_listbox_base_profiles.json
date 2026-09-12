@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "abi_compatible": false,
+  "game_validated": false,
+  "documentation": "docs/ORCH5_MENU_SELECTION_ROW_CONTROL_BATCH.md",
+  "packet": "orch5_listbox_base_profiles",
+  "source": "src/gui_widget_frame_runtime.cpp",
+  "status": "combined_win32_build_and_scoped_final_library_validation_recorded",
+  "functions": [
+    {
+      "address": "00a9e120",
+      "name": "GuiWidgetFrameRuntime::align_bounds64",
+      "original_abi": "ECX GUI; four stack DWORDs; RET10h",
+      "coverage": "Existing complete bare RET body accepted for actual Listbox current64; output remains unchanged",
+      "ledger_kind": "fragment"
+    },
+    {
+      "address": "00aaa3e0",
+      "name": "gui_widget_uses_base_clip70_profile",
+      "source": "src/gui_widget_clip_refresh.cpp",
+      "original_abi": "ECX GUI; no stack arguments; RET",
+      "coverage": "Accept actual Listbox table current70 in existing canonical clip provider; no change to clip algorithm",
+      "ledger_kind": "fragment"
+    }
+  ],
+  "vtable_evidence": {
+    "table": "00d5bbf8",
+    "bytes_address": "00d5bc5c",
+    "bytes": "20 e1 a9 00 60 ca a9 00 f0 a0 aa 00 e0 a3 aa 00 30 ac a9 00",
+    "slots": {
+      "64": "00a9e120",
+      "70": "00aaa3e0"
+    }
+  },
+  "limitations": [
+    "Actual Listbox current40 A9D030 remains unimplemented and rejected",
+    "No general Listbox frame or gameplay claim"
+  ],
+  "validation_report": "reports/orch5_menu_selection_row_control_batch.json"
+}

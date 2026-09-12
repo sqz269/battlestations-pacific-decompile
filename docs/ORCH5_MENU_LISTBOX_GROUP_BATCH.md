@@ -87,3 +87,7 @@ None of these is binary replacement, rendered-screen or gameplay validation.
 ## Promoted validation
 
 Source batch `b8e8d6b4` was integrated with concurrent main and built at `02ea409f780e36b79b37c55ccc71e57cbe759179`: both existing tests passed. The tool promoted `666f524ba793171851fd58d81d649f2eb1a7a763` after a second main update; the six additional files were documentation only. Compiled inputs were identical. All three scoped probes were rerun against that integrated library and passed. The report pins both commits and hashes; this evidence does not apply automatically to future main changes.
+
+## Correction from docs/ORCH5_MENU_SELECTION_ROW_CONTROL_BATCH.md
+
+The later selection/row-control batch implements menu current08 and actual vehicle unlock, canonical listener/layout bindings, Listbox row predicate/state/current60, null-position D8 append and existing native table64/70 profiles. BA90 retains an explicit visited-prefix callback domain. Full Listbox frame/properties/teardown, non-null insertion and complete menu/resource providers remain open. Earlier validation remains pinned to its original commit; see the new batch report for current scope and integrated validation.

@@ -100,11 +100,7 @@ void GuiListboxTypeImplementation::set_visible34(GuiWidgetOwner& owner, bool vis
 void GuiListboxTypeImplementation::set_active60(GuiWidgetOwner& owner, bool active) {
     require_owner(owner);
     Operation operation(*this);
-    require(active || runtime_.fields().auto_control_11e == 0,
-        "Listbox A9CD20 automatic row control requires actual A9BA90 dispatch");
-    owner.base_set_active60_00aa6a30(active);
-    require(active || runtime_.fields().auto_control_11e == 0,
-        "Listbox automatic row control changed during current60 base callback");
+    runtime_.set_active60_00a9cd20(active);
 }
 void GuiListboxTypeImplementation::before_scene_release(GuiWidgetOwner& owner) {
     before_host_tree_retirement(owner);

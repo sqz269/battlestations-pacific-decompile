@@ -233,7 +233,7 @@ void GuiWidgetFrameRuntime::align_bounds64(GuiWidgetOwner& widget,
         return;
     }
     require(gui_widget_uses_base_frame40_profile(widget.layout().type)
-        || widget.layout().type == GuiWidgetType::Icon,
+        || widget.layout().type == GuiWidgetType::Icon || widget.layout().type == GuiWidgetType::Listbox,
         "GUI hit test current64 profile has no established implementation");
     gui_widget_base_bounds64_00a9e120(left, top, right, bottom);
 }
