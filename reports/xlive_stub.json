@@ -1,0 +1,559 @@
+{
+  "packet": "cc_xlive_stub",
+  "owner": "agent/cc-xlive-stub",
+  "doc": "docs/XLIVE_STUB.md",
+  "summary": "Offline stand-in DLL for the 30 xlive.dll ordinals bsp_game.exe resolves, plus the diagnosis of why the installed xlive.dll access-violates when bsp_game.exe loads it. The installed DLL is not a Games for Windows Live runtime: it is a debug-built harness for battlestationspacific.exe that binary-patches the host executable at six hard-coded offsets during DllMain. Under a host that is not that 12 MB executable the patch destinations are unmapped and the first memcpy faults.",
+  "ghidra_writes": "none. This packet is read-only for Ghidra; no address was named or annotated.",
+  "leased_addresses": "none. Every thunk and call site cited already carries a reviewed name.",
+  "crash": {
+    "symptom": "bsp_game.exe exits with 0xC0000005 during SoundServices construction, which is where XLiveLibrary calls LoadLibraryExW. The run log stops after the 'settings resolution=' line, the line before that construction.",
+    "module": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/xlive.dll",
+    "module_identity": {
+      "pdb_path": "C:\\Users\\runsv\\Desktop\\big_projects\\BSP\\xlive\\alterbattlestations\\out\\xlive\\Debug\\xlive.pdb",
+      "configuration": "Debug (a .msvcjmc section is present)",
+      "image_base": "10000000",
+      "size_of_image": "004fe000",
+      "entry_rva": "00153069",
+      "exports": 256,
+      "note": "A BSP-specific fork of XLiveLessNess: the runtime log next to it is prefixed 'XLLN:' and the .rdata carries 'void __cdecl InitMod(void)', 'int __cdecl log_detour(const char *,...)' and 'int __cdecl fputs_detour(const char *,struct _iobuf *)'."
+    },
+    "root_cause": "During DllMain the DLL calls GetModuleHandleA(NULL) at xlive.dll RVA 0016b76c, stores the host executable's load base in its data cell at 104d8450, then adds six fixed offsets to it and memcpys patch bytes over the result. The offsets are battlestationspacific.exe RVAs. bsp_game.exe is a different, much smaller image, so base + 0x640f5e lands past the end of the mapping and the store faults.",
+    "reproduction": {
+      "probe": "local/xlive_load_probe.cpp (scratch, not committed)",
+      "observed": {
+        "module_base": "6c8e0000",
+        "fault_address": "6cbf9049",
+        "fault_rva": "00319049",
+        "operation": "write",
+        "target_address": "01220f5e",
+        "edx": "90909090",
+        "esi": "00a1ec20",
+        "edi": "01220f5e",
+        "return_address_rvas": [
+          "0018c276",
+          "0017bf30",
+          "00180bb3",
+          "00153069"
+        ]
+      },
+      "agrees_with": "the Windows Application Error log's fault offset 0x00319049 for bsp_game.exe, and 0x01220f5e - 0x640f5e = 0x00be0000, the host's ASLR load base"
+    },
+    "second_fault_offset": {
+      "value": "0033dbeb",
+      "reading": "not an independent failure. 0033dbd0 opens with sub esp,0x4c8 and no __chkstk; 0033dbeb is its first store into that frame. It faults after the first exception has already started a recursive dispatch that consumes the stack. The probe reproduced the same shape: one fault at 00319049 followed by a repeating fault in ntdll with the frame pointer descending about 0x6e88 per iteration. A concurrent worktree's own crash of the same executable logged the pair as xlive.dll+0x00319049 then ntdll.dll+0x0006abc6, one second apart, from one process id.",
+      "confidence": "provisional: the cascade is observed, the exact frame at 0033dbd0 is not named"
+    },
+    "patch_sites": [
+      {
+        "dll_rva": "0018c195",
+        "game_address": "0073d7f2",
+        "exe_rva": "0033d7f2",
+        "bytes": 4,
+        "value": "the DWORD 1041bf24, which points at the DLL's own string \"data\\\"",
+        "game_function": "0073d410 BSP_Application_Initialize"
+      },
+      {
+        "dll_rva": "0018c264",
+        "game_address": "00a40f5e",
+        "exe_rva": "00640f5e",
+        "bytes": 5,
+        "value": "90 90 90 90 90, five NOPs over a 5-byte CALL",
+        "game_function": "00a40df0 BSP_XLiveSystem_Initialize",
+        "note": "the faulting patch; 00a40f5e is the init_subsystem_3ac call site"
+      },
+      {
+        "dll_rva": "0018c27f",
+        "game_address": "008f841f",
+        "exe_rva": "004f841f",
+        "bytes": 4,
+        "value": "a DWORD produced by xlive.dll RVA 0015279f",
+        "game_function": "008f81f0 BSP_WinMain"
+      },
+      {
+        "dll_rva": "0018c5b3",
+        "game_address": "004254b0",
+        "exe_rva": "000254b0",
+        "bytes": null,
+        "value": "a detour install, not a memcpy: the target, the detour 1014ee51 and a third value go to xlive.dll RVA 00158451. 1014ee51 is an incremental-link thunk to 0018c610, whose body pushes the signature string 'int __cdecl log_detour(const char *,...)' at 0018c6d2",
+        "game_function": "004254b0 (function start; no reviewed name)"
+      },
+      {
+        "dll_rva": "0018cb0c",
+        "game_address": "00a660a6",
+        "exe_rva": "006660a6",
+        "bytes": 5,
+        "value": "five bytes",
+        "game_function": "00a66030 luaB_print"
+      },
+      {
+        "dll_rva": "0018cb27",
+        "game_address": "00a660e2",
+        "exe_rva": "006660e2",
+        "bytes": 5,
+        "value": "five bytes",
+        "game_function": "00a66030 luaB_print"
+      }
+    ],
+    "consequence": "No argument, manifest, working directory or process name changes this. The DLL writes into whatever image GetModuleHandleA(NULL) returns, so it is usable only under the original battlestationspacific.exe. bsp_game.exe needs a stand-in."
+  },
+  "ordinals": [
+    {
+      "ordinal": 1,
+      "export": "XWSAStartup",
+      "address": "00a40f72",
+      "native": "00a4d5d2",
+      "function": "00a40df0",
+      "function_name": "BSP_XLiveSystem_Initialize",
+      "iat": "00ce2708",
+      "call_sites_in_executable": 1,
+      "stack_bytes": 8,
+      "host_loader": "src/xlive_startup_adapter.cpp",
+      "stub_contract": "returns 0 and echoes the requested version into a zeroed WSADATA; the host rejects anything but 2.2 and throws on a nonzero result"
+    },
+    {
+      "ordinal": 2,
+      "export": "XWSACleanup",
+      "address": "00a40f84",
+      "native": "00a4d5cc",
+      "function": "00a40df0",
+      "function_name": "BSP_XLiveSystem_Initialize",
+      "iat": "00ce2704",
+      "call_sites_in_executable": 1,
+      "stack_bytes": 0,
+      "host_loader": "src/xlive_startup_adapter.cpp",
+      "stub_contract": "returns 0; result discarded"
+    },
+    {
+      "ordinal": 38,
+      "export": "XSocketNTOHS",
+      "address": "00a40f8e",
+      "native": "00a4d494",
+      "function": "00a40df0",
+      "function_name": "BSP_XLiveSystem_Initialize",
+      "iat": "00ce262c",
+      "call_sites_in_executable": 15,
+      "stack_bytes": 4,
+      "host_loader": "src/xlive_startup_adapter.cpp",
+      "stub_contract": "the real byte swap; the result is passed straight to ordinal 84"
+    },
+    {
+      "ordinal": 84,
+      "export": "XNetSetSystemLinkPort",
+      "address": "00a40f94",
+      "native": "00a4d5c6",
+      "function": "00a40df0",
+      "function_name": "BSP_XLiveSystem_Initialize",
+      "iat": "00ce2700",
+      "call_sites_in_executable": 1,
+      "stack_bytes": 4,
+      "host_loader": "src/xlive_startup_adapter.cpp",
+      "stub_contract": "returns 0; no link port exists offline"
+    },
+    {
+      "ordinal": 651,
+      "export": "XNotifyGetNext",
+      "address": "00a40161",
+      "native": "00a4d5ae",
+      "function": "00a40110",
+      "function_name": "BSP_XenonSystemManager_DrainNotifications",
+      "iat": "00ce26f0",
+      "call_sites_in_executable": 3,
+      "stack_bytes": 16,
+      "host_loader": "src/xlive_library.cpp",
+      "stub_contract": "returns FALSE (queue empty) and writes no output"
+    },
+    {
+      "ordinal": 1082,
+      "export": "XGetOverlappedExtendedError",
+      "address": "00a3eefa",
+      "native": "00a4d422",
+      "function": "00a3ed60",
+      "function_name": "BSP_XLiveSystem_DownloadStorage",
+      "iat": "00ce2678",
+      "call_sites_in_executable": 25,
+      "stack_bytes": 4,
+      "host_loader": "src/xlive_sdk_adapter.cpp",
+      "stub_contract": "returns ERROR_IO_INCOMPLETE; no overlapped operation was started"
+    },
+    {
+      "ordinal": 1083,
+      "export": "XGetOverlappedResult",
+      "address": "00a3eeb8",
+      "native": "00a4d42e",
+      "function": "00a3ed60",
+      "function_name": "BSP_XLiveSystem_DownloadStorage",
+      "iat": "00ce2670",
+      "call_sites_in_executable": 13,
+      "stack_bytes": 12,
+      "host_loader": "src/xlive_sdk_adapter.cpp",
+      "stub_contract": "returns ERROR_IO_INCOMPLETE"
+    },
+    {
+      "ordinal": 5005,
+      "export": "XLiveOnCreateDevice",
+      "address": "00b29972",
+      "native": "00c2f1c0",
+      "function": "00b29670",
+      "function_name": "BSP_D3D9Renderer_RecreateDevice",
+      "iat": "00ce25d0",
+      "call_sites_in_executable": 1,
+      "stack_bytes": 8,
+      "host_loader": "src/native_xlive_device_adapter.cpp",
+      "stub_contract": "returns S_OK; no overlay attaches to the D3D9 device"
+    },
+    {
+      "ordinal": 5006,
+      "export": "XLiveOnDestroyDevice",
+      "address": "00b29859",
+      "native": "00c2f1c6",
+      "function": "00b29670",
+      "function_name": "BSP_D3D9Renderer_RecreateDevice",
+      "iat": "00ce25d4",
+      "call_sites_in_executable": 1,
+      "stack_bytes": 0,
+      "host_loader": "src/native_xlive_device_adapter.cpp",
+      "stub_contract": "returns S_OK"
+    },
+    {
+      "ordinal": 5022,
+      "export": "XLiveGetUpdateInformation",
+      "address": "00a3ff5c",
+      "native": "00a4d59c",
+      "function": "00a3ff20",
+      "function_name": "BSP_XLiveSystem_GetTitleUpdatePath",
+      "iat": "00ce26e4",
+      "call_sites_in_executable": 1,
+      "stack_bytes": 4,
+      "host_loader": "src/xlive_library.cpp",
+      "stub_contract": "returns E_FAIL; title_update_path_00a3ff20 reads a negative HRESULT as no update"
+    },
+    {
+      "ordinal": 5024,
+      "export": "XLiveUpdateSystem",
+      "address": "00a404e9",
+      "native": "00a4d5a2",
+      "function": "00a40110",
+      "function_name": "BSP_XenonSystemManager_DrainNotifications",
+      "iat": "00ce26e8",
+      "call_sites_in_executable": 1,
+      "stack_bytes": 4,
+      "host_loader": "src/xlive_library.cpp",
+      "stub_contract": "returns E_FAIL; no update package is launched"
+    },
+    {
+      "ordinal": 5030,
+      "export": "XLivePreTranslateMessage",
+      "address": "00bec1d8",
+      "native": "00c2f1d2",
+      "function": "00bec1a0",
+      "function_name": "BSP_Win32Platform_RunLoop",
+      "iat": "00ce25dc",
+      "call_sites_in_executable": 2,
+      "stack_bytes": 4,
+      "host_loader": "src/xlive_library.cpp",
+      "stub_contract": "returns FALSE (not handled), leaving the host's own message pump in charge",
+      "other_call_sites": [
+        {
+          "address": "00becd0d",
+          "native": "00c2f1d2",
+          "function": "00beccd0",
+          "function_name": "BSP_Win32Platform_PumpLoadMessages"
+        }
+      ]
+    },
+    {
+      "ordinal": 5260,
+      "export": "XShowSigninUI",
+      "address": "00a4087a",
+      "native": "00a4d5ba",
+      "function": "00a40510",
+      "function_name": "BSP_XLiveSystem_PumpSigninUi",
+      "iat": "00ce26f8",
+      "call_sites_in_executable": 1,
+      "stack_bytes": 8,
+      "host_loader": "src/xlive_sdk_adapter.cpp",
+      "stub_contract": "returns ERROR_NOT_SUPPORTED; a success would make the pump wait for an overlay that never appears"
+    },
+    {
+      "ordinal": 5261,
+      "export": "XUserGetXUID",
+      "address": "00a3ec07",
+      "native": "00a4d56c",
+      "function": "00a3ebd0",
+      "function_name": "BSP_XLiveManager_RefreshCachedLocalUser_Provisional",
+      "iat": "00ce26c4",
+      "call_sites_in_executable": 1,
+      "stack_bytes": 8,
+      "host_loader": "src/xlive_sdk_adapter.cpp",
+      "stub_contract": "returns ERROR_NO_SUCH_USER; the caller substitutes XUID 0"
+    },
+    {
+      "ordinal": 5262,
+      "export": "XUserGetSigninState",
+      "address": "00a3ebde",
+      "native": "00a4d572",
+      "function": "00a3ebd0",
+      "function_name": "BSP_XLiveManager_RefreshCachedLocalUser_Provisional",
+      "iat": "00ce26c8",
+      "call_sites_in_executable": 2,
+      "stack_bytes": 4,
+      "host_loader": "src/xlive_sdk_adapter.cpp",
+      "stub_contract": "returns 0, eXUserSigninState_NotSignedIn; this is a state, not an error code"
+    },
+    {
+      "ordinal": 5263,
+      "export": "XUserGetName",
+      "address": "00a3ebf4",
+      "native": "00a4d566",
+      "function": "00a3ebd0",
+      "function_name": "BSP_XLiveManager_RefreshCachedLocalUser_Provisional",
+      "iat": "00ce26c0",
+      "call_sites_in_executable": 2,
+      "stack_bytes": 12,
+      "host_loader": "src/xlive_sdk_adapter.cpp",
+      "stub_contract": "returns ERROR_NO_SUCH_USER; the caller substitutes an empty name"
+    },
+    {
+      "ordinal": 5265,
+      "export": "XUserCheckPrivilege",
+      "address": "00a3ec39",
+      "native": "00a4d482",
+      "function": "00a3ebd0",
+      "function_name": "BSP_XLiveManager_RefreshCachedLocalUser_Provisional",
+      "iat": "00ce2638",
+      "call_sites_in_executable": 5,
+      "stack_bytes": 12,
+      "host_loader": "src/xlive_sdk_adapter.cpp",
+      "stub_contract": "returns ERROR_NO_SUCH_USER; the caller substitutes privilege 0"
+    },
+    {
+      "ordinal": 5266,
+      "export": "XShowMessageBoxUI",
+      "address": "00a4072a",
+      "native": "00a4d5c0",
+      "function": "00a40510",
+      "function_name": "BSP_XLiveSystem_PumpSigninUi",
+      "iat": "00ce26fc",
+      "call_sites_in_executable": 1,
+      "stack_bytes": 36,
+      "host_loader": "src/xlive_sdk_adapter.cpp",
+      "stub_contract": "returns ERROR_NOT_SUPPORTED; no overlay, so no choice is produced"
+    },
+    {
+      "ordinal": 5267,
+      "export": "XUserGetSigninInfo",
+      "address": "00a4090f",
+      "native": "00a4d560",
+      "function": "00a40510",
+      "function_name": "BSP_XLiveSystem_PumpSigninUi",
+      "iat": "00ce26bc",
+      "call_sites_in_executable": 2,
+      "stack_bytes": 12,
+      "host_loader": "src/xlive_sdk_adapter.cpp",
+      "stub_contract": "returns ERROR_NO_SUCH_USER; the 0x28-byte block is left untouched"
+    },
+    {
+      "ordinal": 5270,
+      "export": "XNotifyCreateListener",
+      "address": "00a40fd4",
+      "native": "00a4d5b4",
+      "function": "00a40df0",
+      "function_name": "BSP_XLiveSystem_Initialize",
+      "iat": "00ce26f4",
+      "call_sites_in_executable": 3,
+      "stack_bytes": 8,
+      "host_loader": "src/xlive_startup_adapter.cpp",
+      "stub_contract": "returns a stable non-NULL, non-(-1) identity so the host's validity test at 00a40fd9/00a40fe0 passes; the queue behind it stays empty"
+    },
+    {
+      "ordinal": 5277,
+      "export": "XUserSetContext",
+      "address": "004c0280",
+      "native": "00a4d3f2",
+      "function": "004c0170",
+      "function_name": "BSP_Game_UpdatePresenceContext",
+      "iat": "00ce2698",
+      "call_sites_in_executable": 9,
+      "stack_bytes": 12,
+      "host_loader": "src/xlive_application_callbacks.cpp",
+      "stub_contract": "returns nothing and stores no context"
+    },
+    {
+      "ordinal": 5278,
+      "export": "XUserWriteAchievements",
+      "address": "00a3fbf5",
+      "native": "00a4d596",
+      "function": "00a3fa70",
+      "function_name": "BSP_XLiveSystem_PumpAchievements",
+      "iat": "00ce26e0",
+      "call_sites_in_executable": 1,
+      "stack_bytes": 12,
+      "host_loader": "src/xlive_sdk_adapter.cpp",
+      "stub_contract": "returns ERROR_NO_SUCH_USER"
+    },
+    {
+      "ordinal": 5297,
+      "export": "XLiveInitializeEx",
+      "address": "00a40f46",
+      "native": "00a4d5de",
+      "function": "00a40df0",
+      "function_name": "BSP_XLiveSystem_Initialize",
+      "iat": "00ce2710",
+      "call_sites_in_executable": 1,
+      "stack_bytes": 8,
+      "host_loader": "src/xlive_startup_adapter.cpp",
+      "stub_contract": "returns S_OK; the host stores the HRESULT and branches on nothing"
+    },
+    {
+      "ordinal": 5304,
+      "export": "XStorageUploadFromMemoryGetProgress",
+      "address": "00a3f0a5",
+      "native": "00a4d58a",
+      "function": "00a3ef20",
+      "function_name": "BSP_XLiveSystem_UploadStorage",
+      "iat": "00ce26d8",
+      "call_sites_in_executable": 1,
+      "stack_bytes": 16,
+      "host_loader": "src/xlive_sdk_adapter.cpp",
+      "stub_contract": "returns ERROR_IO_PENDING"
+    },
+    {
+      "ordinal": 5305,
+      "export": "XStorageUploadFromMemory",
+      "address": "00a3f039",
+      "native": "00a4d590",
+      "function": "00a3ef20",
+      "function_name": "BSP_XLiveSystem_UploadStorage",
+      "iat": "00ce26dc",
+      "call_sites_in_executable": 1,
+      "stack_bytes": 20,
+      "host_loader": "src/xlive_sdk_adapter.cpp",
+      "stub_contract": "returns ERROR_NO_SUCH_USER"
+    },
+    {
+      "ordinal": 5307,
+      "export": "XStorageDownloadToMemoryGetProgress",
+      "address": "00a3eeaa",
+      "native": "00a4d57e",
+      "function": "00a3ed60",
+      "function_name": "BSP_XLiveSystem_DownloadStorage",
+      "iat": "00ce26d0",
+      "call_sites_in_executable": 1,
+      "stack_bytes": 16,
+      "host_loader": "src/xlive_sdk_adapter.cpp",
+      "stub_contract": "returns ERROR_IO_PENDING"
+    },
+    {
+      "ordinal": 5310,
+      "export": "XOnlineStartup",
+      "address": "00a40f63",
+      "native": "00a4d5d8",
+      "function": "00a40df0",
+      "function_name": "BSP_XLiveSystem_Initialize",
+      "iat": "00ce270c",
+      "call_sites_in_executable": 2,
+      "stack_bytes": 0,
+      "host_loader": "src/xlive_startup_adapter.cpp",
+      "stub_contract": "returns S_OK; result discarded at 00a40f63"
+    },
+    {
+      "ordinal": 5315,
+      "export": "XInviteGetAcceptedInfo",
+      "address": "00a40328",
+      "native": "00a4d5a8",
+      "function": "00a40110",
+      "function_name": "BSP_XenonSystemManager_DrainNotifications",
+      "iat": "00ce26ec",
+      "call_sites_in_executable": 1,
+      "stack_bytes": 8,
+      "host_loader": "src/xlive_library.cpp",
+      "stub_contract": "returns ERROR_NOT_FOUND and writes no payload; unreachable while the notification queue is empty"
+    },
+    {
+      "ordinal": 5344,
+      "export": "XStorageBuildServerPath",
+      "address": "00a3ed44",
+      "native": "00a4d578",
+      "function": "00a3ed10",
+      "function_name": "BSP_XLiveSystem_BuildStoragePath",
+      "iat": "00ce26cc",
+      "call_sites_in_executable": 1,
+      "stack_bytes": 28,
+      "host_loader": "src/xlive_sdk_adapter.cpp",
+      "stub_contract": "returns ERROR_NO_SUCH_USER; path_bytes is untouched"
+    },
+    {
+      "ordinal": 5345,
+      "export": "XStorageDownloadToMemory",
+      "address": "00a3ee60",
+      "native": "00a4d584",
+      "function": "00a3ed60",
+      "function_name": "BSP_XLiveSystem_DownloadStorage",
+      "iat": "00ce26d4",
+      "call_sites_in_executable": 1,
+      "stack_bytes": 28,
+      "host_loader": "src/xlive_sdk_adapter.cpp",
+      "stub_contract": "returns ERROR_NO_SUCH_USER"
+    }
+  ],
+  "not_exported": "battlestationspacific.exe imports 106 xlive.dll ordinals; the stand-in exports the 30 that bsp_game.exe's own loaders resolve with GetProcAddress(MAKEINTRESOURCEA(n)). The other 76 are reached only through the original executable's import table, which bsp_game.exe does not have. Exporting them would mean guessing a stack cleanup for each, and a wrong RET imm16 corrupts the caller's stack silently.",
+  "validation": {
+    "build": "scripts/build.ps1 Release Win32: every target built, no warnings under /W4 /WX; ctest -C Release reconstructed_math 1/1 passed. No test cases were added.",
+    "stub_build": "tools/build_xlive_stub.ps1 and the CMake target bsp_xlive_stub both produce build/win32/Release/xlive_stub.dll with all 30 ordinals",
+    "export_check": "all 30 ordinal-to-name pairs match the installed xlive.dll's own export table",
+    "runs": [
+      {
+        "command": "bsp_game.exe --frames 60 --xlive-dll build/win32/Release/xlive_stub.dll --game-root \"<install>\"",
+        "exit_code": 0,
+        "xlive_calls": {
+          "5030": 3
+        },
+        "corroboration": "the run log's PlatformLoopCallbacks::pretranslate [00bec1d8] calls=3"
+      },
+      {
+        "command": "bsp_game.exe --frames 60 --xlive-dll \"<install>/xlive.dll\" --game-root \"<install>\"",
+        "exit_code": "-1073741819 (0xC0000005)",
+        "log_lines": 77,
+        "note": "stops after the settings resolution line, before SoundServices"
+      },
+      {
+        "command": "bsp_game.exe --frames 700 --press-start-frame 30 --menu-select USN02 --mission-frames 500 --mission-frame-seconds 0.05 --mission-complete-frame 490 --order moveto:Java --order-unit Kortenaer --order-frame 5 --trajectory-csv local/v_traj_all.csv --log local/v_run_all.log --xlive-dll build/win32/Release/xlive_stub.dll --game-root \"<install>\"",
+        "exit_code": 0,
+        "xlive_calls": {
+          "5030": 3
+        },
+        "matches_milestone_2s": [
+          "units=32 ai_owned=31 steps=15680 gated=0 replans=5048",
+          "state_steps{concrete=4803 records=245}",
+          "cruise=13 stop=12 attackmove=6 movetopos=1",
+          "arm tail bodies=3426 latched=3425 stops=6 arrival_latches=0",
+          "sector_scans=47040 sector_marks=0 ring_scans=588",
+          "path search ticks=3421 swaps=12 points=3419 units_with_point=7"
+        ],
+        "differs_from_milestone_2s": {
+          "total_path": {
+            "was": 5047.64,
+            "is": 5007.14
+          },
+          "DeRuyter_moved": {
+            "was": 34.8,
+            "is": 33.43
+          },
+          "Kortenaer_moved": {
+            "was": 258.16,
+            "is": 215.02
+          },
+          "why": "the branch base is f51654b8, many merges past milestone 2s's 95f39aa4, and the motion work landed in between. The stand-in cannot explain it: the only ordinal the run reaches is 5030, three times, returning FALSE, which is the state the executable was in before commit 2c11966a."
+        }
+      }
+    ]
+  },
+  "corrections": [
+    {
+      "was": "milestone 2s correction 7: src/game_hosts.cpp line 1230 calls bind_legacy_crt_math_runtime with a braced temporary whose address src/legacy_crt_math.cpp line 271 stores",
+      "is": "already fixed on this branch's base. src/game_hosts.cpp line 48 defines application_math_runtime as a namespace-scope const object with static storage duration and line 1252 passes that object, so the stored pointer stays valid for the process lifetime.",
+      "evidence": "commit dc6b8b10 'Bind mission avoidance geometry and full lateral order memory' introduced the hoisted definition; git log -L 46,50:src/game_hosts.cpp shows it. No patch is proposed."
+    }
+  ],
+  "no_ghidra_function": "none. Every executable address cited lies inside an existing Ghidra function body. The xlive.dll RVAs are in a different module and are not Ghidra addresses; they are evidence from the file on disk."
+}
