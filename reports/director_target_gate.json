@@ -1,0 +1,336 @@
+{
+  "packet": "cc2_director_target_gate",
+  "owner": "agent/cc2-director-target-gate",
+  "docs": [
+    "docs/DIRECTOR_TARGET_GATE.md"
+  ],
+  "sources": [
+    "include/bsp/director_target_gate.hpp",
+    "src/director_target_gate.cpp"
+  ],
+  "subject": "Who writes the weapon director's auto-target hold at director+40h, the full predicate of 0071DF70 BSP_WeaponDirector_AcceptsNewTarget, and what 0071D980 issues.",
+  "reuses": [
+    "include/bsp/command_execution.hpp for CommandSlot and kDirectorCommandSlotCount",
+    "include/bsp/weapon_director.hpp for kDirectorOffCommandSlots (54h) and kDirectorCommandSlotStride (1Ch), through command_execution.hpp",
+    "docs/SCENE_COMMAND_TYPES.md for the 0/1/2/3 category split",
+    "docs/SESSION_MESSAGE_DISPATCH.md for the 5Ah route that reaches 0071C1E0",
+    "docs/COMMAND_EXECUTION.md for 00720850 and the +30h mode field"
+  ],
+  "answer": {
+    "question": "Who writes director+40h, with the call site, the value and when.",
+    "result": "Three producers; the field is written in the shipped build. The milestone-2n finding is wrong on both halves.",
+    "producers": [
+      {
+        "address": "00720225",
+        "containing": "00720180",
+        "instruction": "MOVSS dword ptr [ESI+40h],XMM0",
+        "value": "-1.0f, loaded at 007201E7 from 00D7A260",
+        "when": "once, in the command controller's base constructor; reached for a director from 008363E0 at 00836403 with ECX = this"
+      },
+      {
+        "address": "0071f314",
+        "containing": "0071f290",
+        "instruction": "FSTP dword ptr [ESI+40h]",
+        "value": "hold - frameDelta, guarded by COMISS at 0071F2FD and JB at 0071F30A",
+        "when": "every frame, only while the value is >= 0.0f; controller vtable slot +0Ch"
+      },
+      {
+        "address": "00817031",
+        "containing": "00816e30",
+        "instruction": "MOVSS dword ptr [ECX+40h],XMM0 with ECX = [EDI+738h] from 00817023",
+        "value": "3.0f from 00CE3854",
+        "when": "the cleartarget arm, selected by CMP EBP,0E08F00h at 00817017"
+      }
+    ],
+    "scan": "local/scan_off40.py over the shipped PE's executable sections: every MOVSS/MOVSD/MOVUPS store, MOV m32,r32, MOV m32,imm32, MOV m8, FST/FSTP, ADD/SUB/INC/DEC and the matching loads addressing [reg+40h] in both disp8 and disp32 form. 7568 sites, 3884 writes, 794 with a non-stack base. local/scan_dir40.py then filtered those 794 for a +738h displacement in the preceding 100h bytes, which found 00817031 (12 bytes after the fetch) and 00812DA5 (211 bytes, unrelated)."
+  },
+  "functions": [
+    {
+      "address": "0071df70",
+      "name": "BSP_WeaponDirector_AcceptsNewTarget",
+      "abi": "__thiscall(director) -> bool in AL, RET 0 at 0071DF80, 0071DFC9 and 0071DFCF, body 0071df70-0071dfcf",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "rules": [
+        "0071DF70-0071DF80: hold = [director+40h]; COMISS against 00D7A218 = 0.0f; JBE 0071DF81 continues, so hold > 0.0f returns false",
+        "0071DF83-0071DF9E: n = leading occupied slots from +54h in 1Ch steps, stop at the first null command pointer, cap 10",
+        "0071DFA7-0071DFC2: for i < n, reject when slot[i].command->vtable[0Ch]() is 1 or 2",
+        "0071DFC6: otherwise MOV AL,1"
+      ],
+      "calls": [
+        {
+          "address": "0071dfae",
+          "native": "command->vtable[0Ch] (int category(), the command descriptor's third getter)",
+          "role": "the only call the gate makes; ECX = slot[i].command, no stack arguments"
+        }
+      ]
+    },
+    {
+      "address": "0071d980",
+      "name": "BSP_WeaponDirector_SendOverrideCommand",
+      "abi": "__thiscall(director)(const CommandClass* command, const SceneCommandTarget* target), RET 8 at 0071d9dd, body 0071d980-0071d9df, SEH handler 00C85108",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "rules": [
+        "0071D995-0071D9A2: XORPS XMM0,XMM0 then COMISS XMM0,[ESI+40h]; JBE skips everything, so the send needs 0.0f > hold",
+        "the message flag 0 makes the receiver take the override arm, not the queue arm"
+      ],
+      "calls": [
+        {
+          "address": "0071d9b4",
+          "native": "0071c830",
+          "role": "BSP_GameUnitSetCommandMessage_Construct(&stackMessage, command, target, flag 0), MT_GAMEUNIT_SETCMD type byte 5Ch"
+        },
+        {
+          "address": "0071d9c9",
+          "native": "0077c2a0",
+          "role": "BSP_Session_RouteMessage, ECX = [director+34h], (message, routeFlags 7, out 0)"
+        }
+      ]
+    },
+    {
+      "address": "0071f290",
+      "name": "BSP_CommandControllerBase_Update",
+      "abi": "__thiscall(controller)(float frameDelta), RET 4 at 0071f3a2, body 0071f290-0071f3a4 inclusive, decoded from disk bytes",
+      "coverage": "partial: the hold arm 0071F2F8-0071F316 is complete; 0071F290-0071F2F7 and 0071F317-0071F3A4 are summarised from one read and their callees are unread",
+      "no_ghidra_function": true,
+      "vtable_slots": [
+        "00CFDA4C (base controller vtable 00CFDA40 + 0Ch)",
+        "00D09ECC (director base vtable 00D09EC0 + 0Ch)",
+        "00D09F64 (director derived vtable 00D09F58 + 0Ch)",
+        "00D0BDA4 (a fourth class's table)"
+      ],
+      "rules": [
+        "0071F2F8-0071F316: COMISS the hold against 00D7A218 = 0.0f; JB skips the x87 subtraction, so a negative value is left alone and everything else becomes hold - frameDelta"
+      ],
+      "calls_unverifiable": [
+        {
+          "site": "0071f34a",
+          "callee": "0071d9e0",
+          "why": "Ghidra defines no function containing this site, so verify_report_calls.py cannot check it; the site was read with bsp.py disasm-raw"
+        },
+        {
+          "site": "0071f36e",
+          "callee": "0071d810",
+          "why": "same"
+        }
+      ]
+    },
+    {
+      "address": "00720180",
+      "name": "BSP_CommandControllerBase_Construct",
+      "abi": "__thiscall(controller)(void* owner), body 00720180-00720442, SEH handler 00C85357; Ghidra's auto-name CG_array_ctor_helper_00720180 is wrong",
+      "coverage": "partial: the field stores 007201AB-0072031E including the +40h store; the three CALL tails and everything past 0072031E are unread",
+      "no_ghidra_function": false,
+      "fields": [
+        "+00h = 00CFD99C then 00CFDA40, +1Ch = 00CE3CD4 then 00CFDA28",
+        "+18h = 2 then 1, +34h = [owner+28h] (the session endpoint), +3Ch/+3Dh = 0",
+        "+40h = -1.0f, +44h = 0, +48h = 0, +4Ch = 0, +50h = 0",
+        "+54h array: LEA EAX,[ESI+54h] with stride 1Ch and count 0Ah pushed at 0072020E-00720213",
+        "+1CCh = 1FFh, +220h..+223h = 1"
+      ],
+      "calls": [
+        {
+          "address": "007201cb",
+          "native": "00876020",
+          "role": "first embedded subobject constructor, ECX = [owner]"
+        },
+        {
+          "address": "00720236",
+          "native": "00bf7cd1",
+          "role": "the ten-slot array construction helper, after the stride/count push"
+        }
+      ]
+    },
+    {
+      "address": "008363e0",
+      "name": "BSP_WeaponDirectorBase_Construct",
+      "abi": "__thiscall(director)(void* owner), RET 8, body 008363e0-008364a6",
+      "coverage": "partial: only the call that reaches the +40h producer; the rest is docs/WEAPON_DIRECTOR.md's",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "00836403",
+          "native": "00720180",
+          "role": "the base-base constructor; ECX is still this (008363FC MOV ESI,ECX, and the PUSH ECX at 008363F5 only reserves a slot)"
+        }
+      ]
+    },
+    {
+      "address": "00816e30",
+      "name": "BSP_UnitInstance_ApplyEntityCommand",
+      "abi": "__thiscall(unit)(message), body 00816e30-00817376",
+      "coverage": "partial: only the cleartarget arm 00817017-00817098",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "00817041",
+          "native": "director->vtable[2Ch] (008364E0, get fire target)",
+          "role": "read the current fire target after arming the hold"
+        },
+        {
+          "address": "00817072",
+          "native": "00835860",
+          "role": "BSP_WeaponDirector_SetFireTarget(0, force flag from the previous target test)"
+        },
+        {
+          "address": "00817087",
+          "native": "00521ea0",
+          "role": "BSP_CommandTarget_ResolveObject on director+18Ch, the current command's target"
+        },
+        {
+          "address": "00817098",
+          "native": "0071d9e0",
+          "role": "send command state 2 when the cleared target was the current command's"
+        }
+      ]
+    },
+    {
+      "address": "00721a40",
+      "name": "BSP_WeaponDirector_ApplyGameUnitMessage",
+      "abi": "__thiscall(unit)(message), RET 4, body 00721a40-00721c58",
+      "coverage": "partial: the vtable[38h] hop at 00721A93 and the message+20h branch 00721B2E-00721B87",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "00721a93",
+          "native": "director->vtable[38h] (0071C1E0 base, 00835640 in the director)",
+          "role": "the session-side caller docs/WEAPON_DIRECTOR.md recorded as unread; EDX loaded at 00721A8F, message pushed at 00721A92"
+        },
+        {
+          "address": "00721b47",
+          "native": "00721030",
+          "role": "decode the command target record out of the message (flag non-zero arm)"
+        },
+        {
+          "address": "00721b4f",
+          "native": "007216d0",
+          "role": "decode the command ordinal at message+21h into its singleton"
+        },
+        {
+          "address": "00721b5a",
+          "native": "director->vtable[60h] (008358D0 BSP_WeaponDirector_SetCommand)",
+          "role": "message+20h non-zero: queue the command"
+        },
+        {
+          "address": "00721b6c",
+          "native": "00721030",
+          "role": "decode the command target record (flag zero arm)"
+        },
+        {
+          "address": "00721b74",
+          "native": "007216d0",
+          "role": "decode the command ordinal (flag zero arm)"
+        },
+        {
+          "address": "00721b7c",
+          "native": "0071e7f0",
+          "role": "message+20h zero: BSP_WeaponDirector_SetOverrideCommand(command, target). This is what 0071D980 reaches."
+        }
+      ]
+    },
+    {
+      "address": "0071ecf0",
+      "name": "BSP_WeaponDirector_IssueCommand",
+      "abi": "__thiscall(director)(command, target), RET 8, body 0071ecf0-0071ed9a",
+      "coverage": "partial: read only as the contrast to 0071D980; the vtable[140h] and 00A2BD90 arms are unread",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "0071ed6c",
+          "native": "0071c830",
+          "role": "the same message builder with flag 1, so the receiver takes the queue arm"
+        },
+        {
+          "address": "0071ed81",
+          "native": "0077c2a0",
+          "role": "BSP_Session_RouteMessage with the same routeFlags 7"
+        }
+      ]
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "0071f290",
+      "end": "0071f3a4",
+      "name": "BSP_CommandControllerBase_Update",
+      "note": "inclusive end: RET 4 at 0071F3A2 occupies 0071F3A2-0071F3A4, then INT3 padding to 0071F3AF. Ghidra's FUN_0071F110 ends at 0071F14C and FUN_0071F3B0 starts after the padding, so 0071F14D-0071F3AF is undefined code holding at least five routines."
+    }
+  ],
+  "data": [
+    {
+      "address": "00d7a218",
+      "value": "0.0f",
+      "role": "the gate's threshold, read by 0071DF75 and 0071F2FD"
+    },
+    {
+      "address": "00d7a260",
+      "value": "-1.0f",
+      "role": "the constructed hold, stored by 00720225"
+    },
+    {
+      "address": "00ce3854",
+      "value": "3.0f",
+      "role": "the cleartarget hold, stored by 00817031"
+    }
+  ],
+  "corrections": [
+    {
+      "document": "docs/GAME_EXECUTABLE.md",
+      "was": "0071DF70 requires the float at [director+40h] to be greater than 0.0f",
+      "is": "0071DF70 requires the float to be at most 0.0f; greater than 0.0f is the rejection",
+      "evidence": "0071DF7C JBE 0071DF81 jumps to the slot scan; the fall-through at 0071DF7E is XOR AL,AL; RET. COMISS sets CF or ZF for below, equal and unordered, so only a strictly greater value falls through."
+    },
+    {
+      "document": "docs/GAME_EXECUTABLE.md",
+      "was": "director+40h has no writer in this process, no recovered producer anywhere",
+      "is": "three writers: 00720225 (-1.0f), 0071F314 (-= frameDelta), 00817031 (3.0f)",
+      "evidence": "the producer table above, found with local/scan_off40.py and local/scan_dir40.py over the shipped PE"
+    },
+    {
+      "document": "docs/GAME_EXECUTABLE.md",
+      "was": "+40h is not written by the director constructor 008366D0",
+      "is": "true of 008366D0, but its base 008363E0 calls 00720180 at 00836403 and that routine writes the field",
+      "evidence": "008363FC MOV ESI,ECX leaves ECX = this across the PUSH ECX slot reservation, so 00720180 runs on the director"
+    },
+    {
+      "document": "docs/WEAPON_DIRECTOR.md",
+      "was": "Who calls 0071C1E0 from the session side is a contract: unread. Ghidra records no caller.",
+      "is": "00721A40 BSP_WeaponDirector_ApplyGameUnitMessage calls it at 00721A93 as director->vtable[38h](message), reached from 00780120's IsA(59h) arm",
+      "evidence": "00721A8B MOV ECX,[EDI]; 00721A8D MOV EAX,[ECX]; 00721A8F MOV EDX,[EAX+38h]; 00721A92 PUSH ESI; 00721A93 CALL EDX. Already recorded in docs/SESSION_MESSAGE_DISPATCH.md lines 246 and 321."
+    },
+    {
+      "document": "docs/WEAPON_DIRECTOR.md",
+      "was": "00720CD0 partial: the slot loop and the command issue are read; 00720850 and the command descriptor 00E08F60 are unread",
+      "is": "00720850 has been read since by packet cc2_director_commands and is documented in docs/COMMAND_EXECUTION.md, including its name recovered from the trace literal",
+      "evidence": "the BSP reconstruction plate comment on 00720850 and docs/COMMAND_EXECUTION.md lines 33-54"
+    }
+  ],
+  "names_added": [
+    {
+      "address": "0071d980",
+      "name": "BSP_WeaponDirector_SendOverrideCommand",
+      "status": "hypothesis"
+    },
+    {
+      "address": "0071f290",
+      "name": "BSP_CommandControllerBase_Update",
+      "status": "hypothesis"
+    },
+    {
+      "address": "00720180",
+      "name": "BSP_CommandControllerBase_Construct",
+      "status": "hypothesis"
+    }
+  ],
+  "contracts": [
+    "009F5DA0 BSP_WeaponDirector_AutoTargetTick and the rest of docs/BOT_FIRE_TARGET.md belong to packet cc2_bot_fire_target; read here, not edited.",
+    "009F4D10 BSP_ShipAi_PublishOrderSlot was read only to rule it out as a +40h producer; it belongs to another orchestrator's ship-AI packets.",
+    "00720850, 00720CD0, 0071E6C0, 0071E7F0, 008358D0 and the +30h mode field belong to docs/COMMAND_EXECUTION.md (packet cc2_director_commands).",
+    "00780120 and the 5Ah delivery ladder belong to docs/SESSION_MESSAGE_DISPATCH.md.",
+    "00816E30's other arms belong to docs/ENTITY_COMMAND_ARMS.md and docs/ATTACK_COMMANDS.md."
+  ],
+  "run_time_evidence": "none. bsp_game.exe was not run for this packet, so the reading of why the executable's AI does not fire is static only.",
+  "build": "scripts/build.ps1, Win32, warnings as errors",
+  "tests": "no new test case; the existing suite was run unchanged"
+}
