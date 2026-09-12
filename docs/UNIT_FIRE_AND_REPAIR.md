@@ -462,3 +462,15 @@ The settings constants above now have keys and installed values: `+3B4h` is
 their consumers: `PumpRepairMultiplier` feeds the fire path and `FireRepairMultiplier` the water
 path; both ship as 3, so no run can tell them apart. The second assignment block in the shipped
 script is gated on `FailureDebug`, false in the installed `ScriptOptions.lua`.
+
+## Correction from docs/GAMEPLAY_SETTINGS_TAIL.md (packet cc2_settings_tail)
+
+The provisional timer order above is reversed. The session message `9Eh` arm at `0082203D`
+inside `00821E80` is the only writer of both repair timers: selector 0 (`SetFireDamage`
+0088E320) reaches `00939F90`/`0093A470`, which write `task+38h`; selector 1 (`SetWaterDamage`
+0088E790) reaches `00939FA0`/`0093A4F0`, which write `task+34h`. So `+34h` is the **water**
+timer and `+38h` the **fire** timer; `0093C120` (runs `+34h`) is the water step with
+`+3C8h PumpRepairMultiplier` as its divisor and `0093C210` (runs `+38h`) the fire step with
+`+3CCh FireRepairMultiplier`. The authored key names were right; the two step names were
+swapped in Ghidra (now BSP_RepairTask_* per that packet) and the fire/water repair priorities
+in the table above are exchanged accordingly.

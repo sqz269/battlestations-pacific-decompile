@@ -328,3 +328,9 @@ docs/UNIT_INSTANCE_SUBOBJECTS.md). Its `+34h`/`+38h` fields are the fire and wat
 timers with separate per-second rates at `+2Ch`/`+30h`, not amounts, and `+24h` is the repair
 priority `SetRepairPriority` sets, not an opaque task kind; the priority divides the damage the
 timers apply rather than shortening the burn.
+
+## Correction from docs/GAMEPLAY_SETTINGS_TAIL.md (packet cc2_settings_tail)
+
+In the repair-task note above, `+34h` is the water timer and `+38h` the fire timer (the
+provisional order was reversed); the writers are the `9Eh` message arm's setters
+`00939F90`/`0093A470` (fire, `+38h`) and `00939FA0`/`0093A4F0` (water, `+34h`).

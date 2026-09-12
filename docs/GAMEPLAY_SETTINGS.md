@@ -501,3 +501,10 @@ part only; the sub-object, failure-vector and effect blocks are contracts.
 | `gameplay_settings_effect_keys` | 0083b5e0 00871ba0 00870cd0 0083a910 0045afd0 | The named-effect and per-class sound blocks, including the `+5BCh`..`+604h` engine sound records `BSP_UnitInstance_UpdateEngineAudio` reads |
 | `gameplay_settings_string_keys` | 0083b5e0 00b662b0 00b685c0 | Where the eight `GetString` results land: `RightOfWayValues`, `CollisionEffect`, `SinkEffect`, the failure names and the free-camera-shot effect names |
 | `repair_multiplier_naming` | 0093c120 0093c210 0083b5e0 | Settle the crossed `PumpRepairMultiplier`/`FireRepairMultiplier` naming against the two consumer bodies |
+
+## Correction from docs/GAMEPLAY_SETTINGS_TAIL.md (packet cc2_settings_tail)
+
+The "crossed" `PumpRepairMultiplier` / `FireRepairMultiplier` observation is resolved the other
+way: the key names are correct and the two consumer function names were swapped. `+3C8h
+PumpRepairMultiplier` divides the water timer step (`0093C120`, which runs `task+34h`, the
+water timer) and `+3CCh FireRepairMultiplier` the fire timer step (`0093C210`, `task+38h`).
