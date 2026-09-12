@@ -1,0 +1,510 @@
+{
+  "schema_version": 1,
+  "packet": "native_effect_tree_erasure3",
+  "status": "complete_raw_erasure_and_owner_destruction_build_static_review_source_fixture",
+  "base_commit": "ccf56196eb12567579dce20b124884aa3668e2a7",
+  "owned_files": [
+    "src/native_int_pointer_tree18_erase.cpp",
+    "include/bsp/native_int_pointer_tree18_erase.hpp",
+    "src/native_gameplay_effect_destruction.cpp",
+    "include/bsp/native_gameplay_effect_destruction.hpp",
+    "docs/NATIVE_EFFECT_TREE_ERASURE.md",
+    "reports/native_effect_tree_erasure_audit.json"
+  ],
+  "owned_functions": [
+    {
+      "kind": "function",
+      "address": "0086e8a0",
+      "name": "erase_native_int_pointer_tree18_iterator_0086e8a0",
+      "cpp_symbol": "bsp::erase_native_int_pointer_tree18_iterator_0086e8a0",
+      "source": "src/native_int_pointer_tree18_erase.cpp",
+      "native_end_exclusive": "0086eb47",
+      "status": "complete_raw_source_main_build_static_review_and_bounded_source_fixture",
+      "evidence": "reports/native_effect_tree_erasure_audit.json",
+      "original_and_source_abi": "ECX tree, EDX unconsumed; stack output/input owner/node, EAX output, RET0Ch.",
+      "source_entry_fixture_executed": true,
+      "original_native_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "native_bytes": 679,
+      "ghidra_name": "STL_IntPointerTree18_EraseIterator",
+      "behavior": "Full checked successor, transplant, symmetric fixup, original-node free/current unsigned count/output captures. Nil input restores entry frame then tails actual owning27-byte-string/40-byte out_of_range source helper; assignment precedes cleanup arming."
+    },
+    {
+      "kind": "function",
+      "address": "0086ee50",
+      "name": "erase_native_int_pointer_tree18_range_0086ee50",
+      "cpp_symbol": "bsp::erase_native_int_pointer_tree18_range_0086ee50",
+      "source": "src/native_int_pointer_tree18_erase.cpp",
+      "native_end_exclusive": "0086ef19",
+      "status": "complete_raw_source_main_build_static_review_and_bounded_source_fixture",
+      "evidence": "reports/native_effect_tree_erasure_audit.json",
+      "original_and_source_abi": "ECX tree, EDX unconsumed; stack output/first owner/node/last owner/node, EAX output, RET14h.",
+      "source_entry_fixture_executed": true,
+      "original_native_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "native_bytes": 201,
+      "ghidra_name": "STL_IntPointerTree18_EraseRange",
+      "behavior": "Complete full-range clear and partial erase loop, actual iterator argument slots and returning invalid continuations; no payload ownership."
+    },
+    {
+      "kind": "function",
+      "address": "0086fde0",
+      "name": "destroy_native_int_pointer_tree18_0086fde0",
+      "cpp_symbol": "bsp::destroy_native_int_pointer_tree18_0086fde0",
+      "source": "src/native_int_pointer_tree18_erase.cpp",
+      "native_end_exclusive": "0086fe14",
+      "status": "complete_raw_source_main_build_static_review_and_bounded_source_fixture",
+      "evidence": "reports/native_effect_tree_erasure_audit.json",
+      "original_and_source_abi": "ECX actual tree header, RET.",
+      "source_entry_fixture_executed": false,
+      "original_native_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "native_bytes": 52,
+      "ghidra_name": "STL_IntPointerTree18_Destroy",
+      "behavior": "Current begin/end full-range erase, current head free, then head/count zero; no payload free."
+    },
+    {
+      "kind": "function",
+      "address": "0086fe20",
+      "name": "destroy_native_gameplay_effect_manager_0086fe20",
+      "cpp_symbol": "bsp::destroy_native_gameplay_effect_manager_0086fe20",
+      "source": "src/native_gameplay_effect_destruction.cpp",
+      "native_end_exclusive": "0086febf",
+      "status": "complete_raw_source_main_build_static_review_and_bounded_source_fixture",
+      "evidence": "reports/native_effect_tree_erasure_audit.json",
+      "original_and_source_abi": "Native ECX raw10h owner, RET; new EDX stable actual volatileF87664 publication reference.",
+      "source_entry_fixture_executed": true,
+      "original_native_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "native_bytes": 159,
+      "ghidra_name": "BSP_GameplayEffectManager_Destroy",
+      "behavior": "D0DA64/root capture, state1 subtree erase/current sentinel reset, state0 full range/current head free/head-count clear, unconditional publication/base reset. Source exception cleanup invokes tree86FDE0 then base869C50 according to active C++ scope."
+    },
+    {
+      "kind": "function",
+      "address": "008703e0",
+      "name": "delete_native_gameplay_effect_manager_008703e0",
+      "cpp_symbol": "bsp::delete_native_gameplay_effect_manager_008703e0",
+      "source": "src/native_gameplay_effect_destruction.cpp",
+      "native_end_exclusive": "008703fe",
+      "status": "complete_raw_source_main_build_static_review_and_bounded_source_fixture",
+      "evidence": "reports/native_effect_tree_erasure_audit.json",
+      "original_and_source_abi": "Native ECX owner, stack flags, EAX captured owner, RET4; new EDX actual publication reference.",
+      "source_entry_fixture_executed": true,
+      "original_native_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "native_bytes": 30,
+      "ghidra_name": "CG_scalar_deleting_dtor_008703e0",
+      "behavior": "Call full raw destructor, read current low flags bit0, free captured owner if set, return original address bits."
+    }
+  ],
+  "owned_native_bytes": 1121,
+  "native_EH_bytes": 143,
+  "native_data_bytes": 47,
+  "emitted_CODE_bytes": 1324,
+  "emitted_EH_SafeSEH_and_throw_metadata_bytes": 244,
+  "native_capture": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\effect_tree_erasure_primary\\native_captures.json",
+    "bytes": 3682,
+    "sha256": "48e42b21868a35db7d8437c4e33c09f1ac9f52870a80ec8dc991424a38e88f94"
+  },
+  "complete_emitted_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\effect_tree_erasure_primary\\complete_proof.json",
+    "bytes": 34109,
+    "sha256": "7b893644f91da3e67f994ad807b4dc57604ef924a9d32566915633d6ca6340bc"
+  },
+  "main_build": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\effect_tree_erasure_build_frozen_v2\\manifest.json",
+      "bytes": 88892,
+      "sha256": "0674964636c7e8609297a805ad55b78a61dd192e2c5c62a7335971315aeaf248"
+    },
+    "library_sha256": "d4e8428f6a2d9a9d335e345ab3284f0413dc7eb60196fd81b275960c3caa442a",
+    "strict_Win32": true,
+    "existing_CTests_passed": 2,
+    "fresh_reference_spans_matched": 8,
+    "unchanged_prebuild_inputs": 36,
+    "exact_archive_members": 9,
+    "actual_compiler_commands": 9,
+    "frozen_compiler_dependencies": 204,
+    "initial_capture_rejected": "cmake/startup.cmake changed during concurrent integration; preserved first capture and reran from fresh inputs."
+  },
+  "native_exception_maps": [
+    {
+      "unwind_map": "00dc7adc",
+      "funcinfo": "00dc7ae4",
+      "fields": [
+        429065506,
+        1,
+        14449372,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "states": [
+        {
+          "state": 0,
+          "to_state": -1,
+          "action": "00c95bb0"
+        }
+      ]
+    },
+    {
+      "unwind_map": "00dc7d8c",
+      "funcinfo": "00dc7d9c",
+      "fields": [
+        429065506,
+        2,
+        14450060,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "states": [
+        {
+          "state": 0,
+          "to_state": -1,
+          "action": "00c95e10"
+        },
+        {
+          "state": 1,
+          "to_state": 0,
+          "action": "00c95e18"
+        }
+      ]
+    }
+  ],
+  "compiled_exception_review": {
+    "unwind": [
+      [
+        -1,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        -1,
+        0
+      ]
+    ],
+    "try_blocks": [
+      [
+        1,
+        1,
+        2,
+        1,
+        0
+      ],
+      [
+        0,
+        2,
+        3,
+        1,
+        0
+      ]
+    ],
+    "tree_cleanup": 218,
+    "base_cleanup": 198,
+    "compiler_state_scope": "State1 surrounds subtree call; nonthrowing raw memory stores permit earlier source state0 than native. Hardware-fault cleanup is excluded."
+  },
+  "concrete_source_providers": [
+    {
+      "symbol": "??0NativeHardwareLayoutInvalidIterator@bsp@@QAE@ABUNativeLegacySboStringStorage@1@@Z",
+      "archive_member_header_offset": 37403876,
+      "member_sha256": "71a83267a2319a17453e2c9214a1877bb5422161fbb2b6635e82457986929d9e"
+    },
+    {
+      "symbol": "??0NativeHardwareLayoutInvalidIterator@bsp@@QAE@ABV01@@Z",
+      "archive_member_header_offset": 37403876,
+      "member_sha256": "71a83267a2319a17453e2c9214a1877bb5422161fbb2b6635e82457986929d9e"
+    },
+    {
+      "symbol": "??1NativeHardwareLayoutInvalidIterator@bsp@@QAE@XZ",
+      "archive_member_header_offset": 37403876,
+      "member_sha256": "71a83267a2319a17453e2c9214a1877bb5422161fbb2b6635e82457986929d9e"
+    },
+    {
+      "symbol": "?destroy_native_int_pointer_tree18_0086fde0@bsp@@YIXPAX@Z",
+      "archive_member_header_offset": 36876454,
+      "member_sha256": "96c0ada9738ffce69a2248d29893711909cfb9ee4f91c7d92cd6a512a86bd5d8"
+    },
+    {
+      "symbol": "?erase_native_int_pointer_tree18_range_0086ee50@bsp@@YIPAXPAX000000@Z",
+      "archive_member_header_offset": 36876454,
+      "member_sha256": "96c0ada9738ffce69a2248d29893711909cfb9ee4f91c7d92cd6a512a86bd5d8"
+    },
+    {
+      "symbol": "?erase_subtree_native_int_pointer_tree18_0086aa60@bsp@@YIXPAX00@Z",
+      "archive_member_header_offset": 36888364,
+      "member_sha256": "2006ae0ac074adf2a6aa23b0c6d2109e1cd2c43e2ac19030331719f9f19cf42a"
+    },
+    {
+      "symbol": "?increment_native_int_pointer_tree18_00869a20@bsp@@YIXPAX@Z",
+      "archive_member_header_offset": 36888364,
+      "member_sha256": "2006ae0ac074adf2a6aa23b0c6d2109e1cd2c43e2ac19030331719f9f19cf42a"
+    },
+    {
+      "symbol": "?maximum_native_int_pointer_tree18_008697b0@bsp@@YIPAXPAX@Z",
+      "archive_member_header_offset": 36888364,
+      "member_sha256": "2006ae0ac074adf2a6aa23b0c6d2109e1cd2c43e2ac19030331719f9f19cf42a"
+    },
+    {
+      "symbol": "?minimum_native_int_pointer_tree18_008697d0@bsp@@YIPAXPAX@Z",
+      "archive_member_header_offset": 36888364,
+      "member_sha256": "2006ae0ac074adf2a6aa23b0c6d2109e1cd2c43e2ac19030331719f9f19cf42a"
+    },
+    {
+      "symbol": "?native_legacy_sbo_string_assign_counted_00408720@bsp@@YAAAUNativeLegacySboStringStorage@1@AAU21@PBDI@Z",
+      "archive_member_header_offset": 36663012,
+      "member_sha256": "7cb1e93a0e5a1bf6267d46c7bccdf62b244ac058dee048e08fea3c0188cacc27"
+    },
+    {
+      "symbol": "?native_legacy_sbo_string_destroy_004072d0@bsp@@YAXAAUNativeLegacySboStringStorage@1@@Z",
+      "archive_member_header_offset": 36663012,
+      "member_sha256": "7cb1e93a0e5a1bf6267d46c7bccdf62b244ac058dee048e08fea3c0188cacc27"
+    },
+    {
+      "symbol": "?reset_native_gameplay_effect_manager_00869c50@bsp@@YIXPAXACRAX@Z",
+      "archive_member_header_offset": 36882832,
+      "member_sha256": "b67bacf7e2b31fbf91044a41f96f75d3bb660c0d42b5f8144c6bede0d2749254"
+    },
+    {
+      "symbol": "?rotate_left_native_int_pointer_tree18_0086a2f0@bsp@@YIXPAX00@Z",
+      "archive_member_header_offset": 36888364,
+      "member_sha256": "2006ae0ac074adf2a6aa23b0c6d2109e1cd2c43e2ac19030331719f9f19cf42a"
+    },
+    {
+      "symbol": "?rotate_right_native_int_pointer_tree18_00869810@bsp@@YIXPAX00@Z",
+      "archive_member_header_offset": 36888364,
+      "member_sha256": "2006ae0ac074adf2a6aa23b0c6d2109e1cd2c43e2ac19030331719f9f19cf42a"
+    },
+    {
+      "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+      "archive_member_header_offset": 38290254,
+      "member_sha256": "119e5429a49f175879383bb9d8ea86ea7fad80f0c9ae48a82b3c7f027fc3b613"
+    }
+  ],
+  "whole_provider_objects_unchanged": [
+    {
+      "object": "native_int_pointer_tree18_leaves.obj",
+      "sha256": "2006ae0ac074adf2a6aa23b0c6d2109e1cd2c43e2ac19030331719f9f19cf42a",
+      "entire_object_byte_identical": true
+    },
+    {
+      "object": "native_gameplay_effect_construction.obj",
+      "sha256": "b67bacf7e2b31fbf91044a41f96f75d3bb660c0d42b5f8144c6bede0d2749254",
+      "entire_object_byte_identical": true
+    },
+    {
+      "object": "native_hardware_layout_tree.obj",
+      "sha256": "71a83267a2319a17453e2c9214a1877bb5422161fbb2b6635e82457986929d9e",
+      "entire_object_byte_identical": true
+    },
+    {
+      "object": "native_legacy_sbo_string.obj",
+      "sha256": "7cb1e93a0e5a1bf6267d46c7bccdf62b244ac058dee048e08fea3c0188cacc27",
+      "entire_object_byte_identical": true
+    },
+    {
+      "object": "native_legacy_exception_owner.obj",
+      "sha256": "401ad3def762ddbb9e10325ea867694ab77354d08153ad1df5b12ad1804472d1",
+      "entire_object_byte_identical": true
+    },
+    {
+      "object": "native_tree_out_of_range_exception.obj",
+      "sha256": "975aaefe05649aa4926a7c062801421818f27aa3bb11ef25b6c78c4438dff506",
+      "entire_object_byte_identical": true
+    },
+    {
+      "object": "singleton_lifetime.obj",
+      "sha256": "119e5429a49f175879383bb9d8ea86ea7fad80f0c9ae48a82b3c7f027fc3b613",
+      "entire_object_byte_identical": true
+    }
+  ],
+  "source_fixture": {
+    "utc": "2026-09-12T05:04:29.852346+00:00",
+    "executable": "J:\\PROG\\battlestations-pacific-decompile\\local\\effect_tree_erasure_primary\\effect_tree_probe.exe",
+    "executable_sha256": "e3ae372c5e66611c71fd62f38cd91395eecc762ad251ca48ed3633338529ff03",
+    "returncode": 0,
+    "elapsed_seconds": 0.05689690000144765,
+    "stdout": "PASS: raw constructor; two-child iterator erase; partial range erase; owning invalid-iterator throw/catch; scalar destroy/free/publication clear.\n",
+    "stderr": "",
+    "scope": "One source fixture with concrete archived raw providers; not original native bodies or gameplay."
+  },
+  "source_fixture_entries": [
+    "0086e8a0",
+    "0086ee50",
+    "0086fe20",
+    "008703e0"
+  ],
+  "unexecuted_cleanup_entry": "0086fde0",
+  "saved_analysis": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\effect_tree_erasure_primary\\analysis_repair.json",
+    "bytes": 20628,
+    "sha256": "c5953825d038672ef5d2a5380b987d3de62a40de307f1df7f08110fbe57a76d4"
+  },
+  "next_dependencies": [
+    "00bd0400 full raw lifetime-manager destruction with actual deleting bindings for every admitted owner",
+    "Canonical executable raw-owner/lifetime integration and continued gameplay reconstruction"
+  ],
+  "limits": [
+    "Full source normal paths and owning source C++ exception contract; original native FH3/SEH/private spill/provider exception identities and gameplay unproved.",
+    "Destruction cleanup-provider throws were statically reviewed, not forced by the source fixture.",
+    "Ghidra inline scripting is disabled; two function objects retain shortened extents. Complete tails are captured/disassembled, and existing function objects/comments are preserved."
+  ],
+  "persistent_tests_added": 0,
+  "ad_hoc_source_fixtures": 1,
+  "original_native_runtime_executed": false,
+  "original_caller_ABI_compatible": false,
+  "game_validated": false,
+  "primary_review": {
+    "utc": "2026-09-12T05:13:08.116465+00:00",
+    "integration_state": "complete_raw_erasure_destruction_build_static_review_source_fixture_saved_and_registered",
+    "main_library_sha256": "d4e8428f6a2d9a9d335e345ab3284f0413dc7eb60196fd81b275960c3caa442a",
+    "saved_annotations": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_effect_tree_erasure_annotations.json",
+      "bytes": 11096,
+      "sha256": "b9d3803cc5eeed3cba8955587e9a6e742b56d19b7170107b54e5dc62022ee923"
+    },
+    "registered_records": [
+      {
+        "kind": "function",
+        "address": "0086e8a0",
+        "name": "erase_native_int_pointer_tree18_iterator_0086e8a0",
+        "cpp_symbol": "bsp::erase_native_int_pointer_tree18_iterator_0086e8a0",
+        "source": "src/native_int_pointer_tree18_erase.cpp",
+        "native_end_exclusive": "0086eb47",
+        "status": "complete_raw_source_main_build_static_review_and_bounded_source_fixture",
+        "evidence": "reports/native_effect_tree_erasure_audit.json",
+        "original_and_source_abi": "ECX tree, EDX unconsumed; stack output/input owner/node, EAX output, RET0Ch.",
+        "source_entry_fixture_executed": true,
+        "original_native_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "0086ee50",
+        "name": "erase_native_int_pointer_tree18_range_0086ee50",
+        "cpp_symbol": "bsp::erase_native_int_pointer_tree18_range_0086ee50",
+        "source": "src/native_int_pointer_tree18_erase.cpp",
+        "native_end_exclusive": "0086ef19",
+        "status": "complete_raw_source_main_build_static_review_and_bounded_source_fixture",
+        "evidence": "reports/native_effect_tree_erasure_audit.json",
+        "original_and_source_abi": "ECX tree, EDX unconsumed; stack output/first owner/node/last owner/node, EAX output, RET14h.",
+        "source_entry_fixture_executed": true,
+        "original_native_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "0086fde0",
+        "name": "destroy_native_int_pointer_tree18_0086fde0",
+        "cpp_symbol": "bsp::destroy_native_int_pointer_tree18_0086fde0",
+        "source": "src/native_int_pointer_tree18_erase.cpp",
+        "native_end_exclusive": "0086fe14",
+        "status": "complete_raw_source_main_build_static_review_and_bounded_source_fixture",
+        "evidence": "reports/native_effect_tree_erasure_audit.json",
+        "original_and_source_abi": "ECX actual tree header, RET.",
+        "source_entry_fixture_executed": false,
+        "original_native_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "0086fe20",
+        "name": "destroy_native_gameplay_effect_manager_0086fe20",
+        "cpp_symbol": "bsp::destroy_native_gameplay_effect_manager_0086fe20",
+        "source": "src/native_gameplay_effect_destruction.cpp",
+        "native_end_exclusive": "0086febf",
+        "status": "complete_raw_source_main_build_static_review_and_bounded_source_fixture",
+        "evidence": "reports/native_effect_tree_erasure_audit.json",
+        "original_and_source_abi": "Native ECX raw10h owner, RET; new EDX stable actual volatileF87664 publication reference.",
+        "source_entry_fixture_executed": true,
+        "original_native_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "008703e0",
+        "name": "delete_native_gameplay_effect_manager_008703e0",
+        "cpp_symbol": "bsp::delete_native_gameplay_effect_manager_008703e0",
+        "source": "src/native_gameplay_effect_destruction.cpp",
+        "native_end_exclusive": "008703fe",
+        "status": "complete_raw_source_main_build_static_review_and_bounded_source_fixture",
+        "evidence": "reports/native_effect_tree_erasure_audit.json",
+        "original_and_source_abi": "Native ECX owner, stack flags, EAX captured owner, RET4; new EDX actual publication reference.",
+        "source_entry_fixture_executed": true,
+        "original_native_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "refreshed_exports": [
+      {
+        "address": "0086e8a0",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0086e8a0\\decompiled.c",
+        "bytes": 7439,
+        "sha256": "76678379052b3cb17aef6d0d9dcf7aeeac73b336d31ad5a354a0932ec168b77c"
+      },
+      {
+        "address": "0086ee50",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0086ee50\\decompiled.c",
+        "bytes": 2978,
+        "sha256": "3ebe874b041b5d7db88f1657de76d7b7be359c4357f2576948c45b635876bc98"
+      },
+      {
+        "address": "0086fde0",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0086fde0\\decompiled.c",
+        "bytes": 1200,
+        "sha256": "5ec5878efebfb3a763a561e531ae12e24945d033d0a9e7d4ef74fb816627dd9a"
+      },
+      {
+        "address": "0086fe20",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0086fe20\\decompiled.c",
+        "bytes": 2580,
+        "sha256": "f7322ee323becc14dadd910c7429070243a609802dc54936bdf15a8e7711041a"
+      },
+      {
+        "address": "008703e0",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\008703e0\\decompiled.c",
+        "bytes": 4226,
+        "sha256": "afc22af470c00b0fc54b1e9d0fd9dd21a22f2333b3cebab0933b39d6c2ae4f34"
+      }
+    ],
+    "current_document": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_EFFECT_TREE_ERASURE.md",
+      "bytes": 6954,
+      "sha256": "07507ad9ae4addd50998c2fa9b4d90c21339f49e92087d05714d8b30e2663ed8"
+    },
+    "source_fixture_executed_PE_sha256": "e3ae372c5e66611c71fd62f38cd91395eecc762ad251ca48ed3633338529ff03",
+    "original_native_body_executed": false,
+    "original_caller_ABI_compatible": false,
+    "game_validated": false,
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\effect_tree_erasure_primary\\sealed.json",
+      "bytes": 108982,
+      "sha256": "e698e439441d61d8f967feaa10158d4a9532d379f696163756b84912b34fe987"
+    }
+  }
+}

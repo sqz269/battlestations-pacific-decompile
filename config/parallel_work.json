@@ -8042,6 +8042,61 @@
       ],
       "integration_report": "reports/sound_retained_channels.json",
       "discovery_evidence": "docs/SOUND_RETAINED_CHANNELS.md"
+    },
+    {
+      "id": "native_effect_tree_construction2",
+      "packet": "native_effect_tree_construction2",
+      "state": "complete_raw_tree_and_construction_build_static_review_saved_and_registered",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "008697b0",
+        "008697d0",
+        "00869810",
+        "0086a2f0",
+        "00869a20",
+        "0086aa60",
+        "0086ac00",
+        "00869c50",
+        "00870370",
+        "004c1650"
+      ],
+      "code_ownership": [
+        "src/native_int_pointer_tree18_leaves.cpp",
+        "include/bsp/native_int_pointer_tree18_leaves.hpp",
+        "src/native_gameplay_effect_construction.cpp",
+        "include/bsp/native_gameplay_effect_construction.hpp",
+        "docs/NATIVE_EFFECT_TREE_CONSTRUCTION.md",
+        "reports/native_effect_tree_construction_audit.json"
+      ],
+      "evidence": "reports/native_effect_tree_construction_audit.json",
+      "qualification": "Seven complete raw tree leaves and three owner construction/getter entries under explicit source bindings. Full iterator/range erase, owner destruction, mixed-owner dispatch and canonical executable migration remain open."
+    },
+    {
+      "id": "native_effect_tree_erasure3",
+      "packet": "native_effect_tree_erasure3",
+      "state": "complete_raw_erasure_destruction_build_static_review_source_fixture_saved_and_registered",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "0086e8a0",
+        "0086ee50",
+        "0086fde0",
+        "0086fe20",
+        "008703e0"
+      ],
+      "code_ownership": [
+        "src/native_int_pointer_tree18_erase.cpp",
+        "include/bsp/native_int_pointer_tree18_erase.hpp",
+        "src/native_gameplay_effect_destruction.cpp",
+        "include/bsp/native_gameplay_effect_destruction.hpp",
+        "docs/NATIVE_EFFECT_TREE_ERASURE.md",
+        "reports/native_effect_tree_erasure_audit.json"
+      ],
+      "evidence": "reports/native_effect_tree_erasure_audit.json",
+      "qualification": "Complete raw normal erasure and source owning exception/destruction contracts; one concrete source fixture. Two saved Ghidra body extents remain short. Raw mixed-owner lifetime dispatch, canonical executable migration and full gameplay remain open."
     }
   ],
   "snapshot_after_analysis": {

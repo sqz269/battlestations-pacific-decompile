@@ -1,0 +1,637 @@
+{
+  "schema_version": 1,
+  "packet": "native_effect_tree_construction2",
+  "status": "complete_raw_dependencies_and_construction_strict_build_and_static_review",
+  "base_commit": "6eec6aa0ea7accbaf4dfdca6c605a34f6f4b1509",
+  "owned_files": [
+    "src/native_int_pointer_tree18_leaves.cpp",
+    "include/bsp/native_int_pointer_tree18_leaves.hpp",
+    "src/native_gameplay_effect_construction.cpp",
+    "include/bsp/native_gameplay_effect_construction.hpp",
+    "docs/NATIVE_EFFECT_TREE_CONSTRUCTION.md",
+    "reports/native_effect_tree_construction_audit.json"
+  ],
+  "owned_functions": [
+    {
+      "kind": "function",
+      "address": "008697b0",
+      "name": "maximum_native_int_pointer_tree18_008697b0",
+      "cpp_symbol": "bsp::maximum_native_int_pointer_tree18_008697b0",
+      "source": "src/native_int_pointer_tree18_leaves.cpp",
+      "native_end_exclusive": "008697cc",
+      "status": "complete_raw_source_main_build_and_native_or_compiled_cleanup_reviewed",
+      "evidence": "reports/native_effect_tree_construction_audit.json",
+      "original_and_source_abi": "ECX subtree, EAX extreme node, RET.",
+      "source_entry_executed": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "native_bytes": 28,
+      "ghidra_name": "STL_IntPointerTree18_Maximum",
+      "behavior": "Walk right links until nil15; retain native padding."
+    },
+    {
+      "kind": "function",
+      "address": "008697d0",
+      "name": "minimum_native_int_pointer_tree18_008697d0",
+      "cpp_symbol": "bsp::minimum_native_int_pointer_tree18_008697d0",
+      "source": "src/native_int_pointer_tree18_leaves.cpp",
+      "native_end_exclusive": "008697eb",
+      "status": "complete_raw_source_main_build_and_native_or_compiled_cleanup_reviewed",
+      "evidence": "reports/native_effect_tree_construction_audit.json",
+      "original_and_source_abi": "ECX subtree, EAX extreme node, RET.",
+      "source_entry_executed": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "native_bytes": 27,
+      "ghidra_name": "STL_IntPointerTree18_Minimum",
+      "behavior": "Walk left links until nil15; retain native six-byte alignment LEA."
+    },
+    {
+      "kind": "function",
+      "address": "00869810",
+      "name": "rotate_right_native_int_pointer_tree18_00869810",
+      "cpp_symbol": "bsp::rotate_right_native_int_pointer_tree18_00869810",
+      "source": "src/native_int_pointer_tree18_leaves.cpp",
+      "native_end_exclusive": "00869862",
+      "status": "complete_raw_source_main_build_and_native_or_compiled_cleanup_reviewed",
+      "evidence": "reports/native_effect_tree_construction_audit.json",
+      "original_and_source_abi": "ECX tree, EDX unconsumed, stack pivot, RET4.",
+      "source_entry_executed": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "native_bytes": 82,
+      "ghidra_name": "STL_IntPointerTree18_RotateRight",
+      "behavior": "Complete root/right-child/left-child rotation cases, current rereads and nil-child parent update."
+    },
+    {
+      "kind": "function",
+      "address": "0086a2f0",
+      "name": "rotate_left_native_int_pointer_tree18_0086a2f0",
+      "cpp_symbol": "bsp::rotate_left_native_int_pointer_tree18_0086a2f0",
+      "source": "src/native_int_pointer_tree18_leaves.cpp",
+      "native_end_exclusive": "0086a33e",
+      "status": "complete_raw_source_main_build_and_native_or_compiled_cleanup_reviewed",
+      "evidence": "reports/native_effect_tree_construction_audit.json",
+      "original_and_source_abi": "ECX tree, EDX unconsumed, stack pivot, RET4.",
+      "source_entry_executed": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "native_bytes": 78,
+      "ghidra_name": "STL_IntPointerTree18_RotateLeft",
+      "behavior": "Complete root/left-child/right-child rotation cases, current rereads and nil-child parent update."
+    },
+    {
+      "kind": "function",
+      "address": "00869a20",
+      "name": "increment_native_int_pointer_tree18_00869a20",
+      "cpp_symbol": "bsp::increment_native_int_pointer_tree18_00869a20",
+      "source": "src/native_int_pointer_tree18_leaves.cpp",
+      "native_end_exclusive": "00869a83",
+      "status": "complete_raw_source_main_build_and_native_or_compiled_cleanup_reviewed",
+      "evidence": "reports/native_effect_tree_construction_audit.json",
+      "original_and_source_abi": "ECX actual owner/node iterator, RET.",
+      "source_entry_executed": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "native_bytes": 99,
+      "ghidra_name": "STL_IntPointerTree18_IncrementCheckedIterator",
+      "behavior": "Returning null-owner validation precedes current node read; nil node tails actual invalid service. Right-subtree minimum or parent walk writes only iterator node."
+    },
+    {
+      "kind": "function",
+      "address": "0086aa60",
+      "name": "erase_subtree_native_int_pointer_tree18_0086aa60",
+      "cpp_symbol": "bsp::erase_subtree_native_int_pointer_tree18_0086aa60",
+      "source": "src/native_int_pointer_tree18_leaves.cpp",
+      "native_end_exclusive": "0086aa95",
+      "status": "complete_raw_source_main_build_and_native_or_compiled_cleanup_reviewed",
+      "evidence": "reports/native_effect_tree_construction_audit.json",
+      "original_and_source_abi": "ECX tree retained through recursion, EDX unconsumed, stack subtree, RET4.",
+      "source_entry_executed": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "native_bytes": 53,
+      "ghidra_name": "STL_IntPointerTree18_EraseSubtree",
+      "behavior": "Recurse right, capture left, actual node free, continue left until nil15; no payload/header operations."
+    },
+    {
+      "kind": "function",
+      "address": "0086ac00",
+      "name": "allocate_native_int_pointer_tree18_node_0086ac00",
+      "cpp_symbol": "bsp::allocate_native_int_pointer_tree18_node_0086ac00",
+      "source": "src/native_int_pointer_tree18_leaves.cpp",
+      "native_end_exclusive": "0086ac37",
+      "status": "complete_raw_source_main_build_and_native_or_compiled_cleanup_reviewed",
+      "evidence": "reports/native_effect_tree_construction_audit.json",
+      "original_and_source_abi": "No input consumed, EAX raw18h node, RET.",
+      "source_entry_executed": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "native_bytes": 55,
+      "ghidra_name": "STL_IntPointerTree18_AllocateBlankNode",
+      "behavior": "Actual raw18h allocation; full LEA/TEST/store null branches; initialize links and color14/nil15 only. Payload/padding untouched."
+    },
+    {
+      "kind": "function",
+      "address": "00869c50",
+      "name": "reset_native_gameplay_effect_manager_00869c50",
+      "cpp_symbol": "bsp::reset_native_gameplay_effect_manager_00869c50",
+      "source": "src/native_gameplay_effect_construction.cpp",
+      "native_end_exclusive": "00869c61",
+      "status": "complete_raw_source_main_build_and_native_or_compiled_cleanup_reviewed",
+      "evidence": "reports/native_effect_tree_construction_audit.json",
+      "original_and_source_abi": "Native ECX owner, RET; source adds EDX stable actual volatileF87664 reference.",
+      "source_entry_executed": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "native_bytes": 17,
+      "ghidra_name": "BSP_GameplayEffectManager_ResetPublicationBase",
+      "behavior": "Clear actual publication before writingCE3818 to captured owner; no free or unregister."
+    },
+    {
+      "kind": "function",
+      "address": "00870370",
+      "name": "construct_native_gameplay_effect_manager_00870370",
+      "cpp_symbol": "bsp::construct_native_gameplay_effect_manager_00870370",
+      "source": "src/native_gameplay_effect_construction.cpp",
+      "native_end_exclusive": "008703d8",
+      "status": "complete_raw_source_main_build_and_native_or_compiled_cleanup_reviewed",
+      "evidence": "reports/native_effect_tree_construction_audit.json",
+      "original_and_source_abi": "Native ECX raw10h owner, EAX same owner, RET; source adds EDX actual volatileF87664 reference.",
+      "source_entry_executed": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "native_bytes": 104,
+      "ghidra_name": "BSP_GameplayEffectManager_Construct",
+      "behavior": "Arm cleanup before D0DA64 and raw18h sentinel allocation. Head publication, nil mark, current-head self-links, count0; owner allocator/payload/padding untouched. Failure reset869C50 then rethrow, without added frees."
+    },
+    {
+      "kind": "function",
+      "address": "004c1650",
+      "name": "get_native_gameplay_effect_manager_004c1650",
+      "cpp_symbol": "bsp::get_native_gameplay_effect_manager_004c1650",
+      "source": "src/native_gameplay_effect_construction.cpp",
+      "native_end_exclusive": "004c170d",
+      "status": "complete_raw_source_main_build_and_native_or_compiled_cleanup_reviewed",
+      "evidence": "reports/native_effect_tree_construction_audit.json",
+      "original_and_source_abi": "Native no input, EAX pointer, RET; source cdecl borrows distinct actual volatile01090AA0/F87664 cells.",
+      "source_entry_executed": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "native_bytes": 189,
+      "ghidra_name": "BSP_GameplayEffectManager_GetSingleton",
+      "behavior": "First manager/section capture, enter/depth then guard cleanup, current publication recheck, raw10h construction, end allocation cleanup, publish result, second manager lookup/current publication reload/register, captured section release, final current publication. Fast return captured; registration failure retains published owner and cleans guard."
+    }
+  ],
+  "owned_native_bytes": 732,
+  "native_EH_bytes": 143,
+  "emitted_CODE_bytes": 1035,
+  "emitted_EH_and_SafeSEH_bytes": 236,
+  "native_capture": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\effect_tree_construction_primary\\native_captures.json",
+    "bytes": 4135,
+    "sha256": "74db7b8a9a3b631dc3d786888b750aeb35a7b6b43be0280e41f5482fe4a736d6"
+  },
+  "complete_emitted_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\effect_tree_construction_primary\\complete_proof.json",
+    "bytes": 9252,
+    "sha256": "361e5bada929c88751b00a13faef4ce2b4a6354479d347eada5e9efcd7daa68a"
+  },
+  "main_build": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\effect_tree_construction_build_frozen\\manifest.json",
+      "bytes": 83425,
+      "sha256": "b26b7e7c61ed9f6b2d9b6b26a6904a8f7000bbaab5ec3e3459a86bbab152cef8"
+    },
+    "library_sha256": "5a931a3d23c258e053bec55478ef014f924e05a893b37a9927b3ab67b7db86ae",
+    "strict_Win32": true,
+    "existing_CTests_passed": 2,
+    "fresh_reference_spans_matched": 8,
+    "unchanged_prebuild_inputs": 30,
+    "exact_archive_members": 6,
+    "actual_compiler_commands": 6,
+    "frozen_compiler_dependencies": 196
+  },
+  "native_exception_maps": [
+    {
+      "unwind_map": "00dc7e6c",
+      "funcinfo": "00dc7e74",
+      "fields": [
+        429065506,
+        1,
+        14450284,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "states": [
+        {
+          "state": 0,
+          "to_state": -1,
+          "action": "00c95ec0"
+        }
+      ]
+    },
+    {
+      "unwind_map": "00d8d610",
+      "funcinfo": "00d8d620",
+      "fields": [
+        429065506,
+        2,
+        14210576,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "states": [
+        {
+          "state": 0,
+          "to_state": -1,
+          "action": "00c64fa0"
+        },
+        {
+          "state": 1,
+          "to_state": 0,
+          "action": "00c64fa8"
+        }
+      ]
+    }
+  ],
+  "compiled_exception_maps": [
+    {
+      "entry": "?construct_native_gameplay_effect_manager_00870370",
+      "states": 2,
+      "unwind": [
+        [
+          -1,
+          0
+        ],
+        [
+          -1,
+          0
+        ]
+      ],
+      "try_blocks": [
+        [
+          0,
+          0,
+          1,
+          1,
+          0
+        ]
+      ],
+      "catch_target_offsets": [
+        79
+      ]
+    },
+    {
+      "entry": "?get_native_gameplay_effect_manager_004c1650",
+      "states": 4,
+      "unwind": [
+        [
+          -1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          -1,
+          0
+        ]
+      ],
+      "try_blocks": [
+        [
+          1,
+          1,
+          2,
+          1,
+          0
+        ],
+        [
+          0,
+          2,
+          3,
+          1,
+          0
+        ]
+      ],
+      "catch_target_offsets": [
+        270,
+        249
+      ]
+    }
+  ],
+  "concrete_source_providers": [
+    {
+      "symbol": "?allocate_native_int_pointer_tree18_node_0086ac00@bsp@@YAPAXXZ",
+      "archive_member_header_offset": 36462756,
+      "member_sha256": "2006ae0ac074adf2a6aa23b0c6d2109e1cd2c43e2ac19030331719f9f19cf42a"
+    },
+    {
+      "symbol": "?destroy_native_singleton_guard_00411ee0@bsp@@YAXPAX@Z",
+      "archive_member_header_offset": 36394550,
+      "member_sha256": "6725828ad32e05b8ad9c3214e20b47334f7b1d7547f47d262550ba3e34e27434"
+    },
+    {
+      "symbol": "?get_native_singleton_manager_00415350@bsp@@YAPAXACRAX@Z",
+      "archive_member_header_offset": 36466070,
+      "member_sha256": "b241f4e6c7b683f2fbbfcae9d263ad9402b149a1b2fa397745ecfb594108136b"
+    },
+    {
+      "symbol": "?register_native_singleton_object_00bd0c30@bsp@@YIXPAX00@Z",
+      "archive_member_header_offset": 36473770,
+      "member_sha256": "f545b5ac1a851a4ce444f28b216e8db579f27833b531b2a14f88b9d465ccd2c2"
+    },
+    {
+      "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+      "archive_member_header_offset": 37864646,
+      "member_sha256": "119e5429a49f175879383bb9d8ea86ea7fad80f0c9ae48a82b3c7f027fc3b613"
+    },
+    {
+      "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+      "archive_member_header_offset": 37864646,
+      "member_sha256": "119e5429a49f175879383bb9d8ea86ea7fad80f0c9ae48a82b3c7f027fc3b613"
+    }
+  ],
+  "whole_provider_objects_unchanged": [
+    {
+      "object": "native_singleton_publication.obj",
+      "sha256": "b241f4e6c7b683f2fbbfcae9d263ad9402b149a1b2fa397745ecfb594108136b",
+      "entire_object_byte_identical": true
+    },
+    {
+      "object": "native_singleton_vector_registration_wrappers.obj",
+      "sha256": "f545b5ac1a851a4ce444f28b216e8db579f27833b531b2a14f88b9d465ccd2c2",
+      "entire_object_byte_identical": true
+    },
+    {
+      "object": "native_diagnostic_sink_lifetime.obj",
+      "sha256": "6725828ad32e05b8ad9c3214e20b47334f7b1d7547f47d262550ba3e34e27434",
+      "entire_object_byte_identical": true
+    },
+    {
+      "object": "singleton_lifetime.obj",
+      "sha256": "119e5429a49f175879383bb9d8ea86ea7fad80f0c9ae48a82b3c7f027fc3b613",
+      "entire_object_byte_identical": true
+    }
+  ],
+  "next_complete_dependencies": [
+    "0086e8a0 complete iterator erase including owning out_of_range and full post-free tail",
+    "0086ee50 complete range erase including partial path",
+    "0086fe20 raw effect-manager destructor and publication binding",
+    "008703e0 raw deleting wrapper and actual publication binding",
+    "00bd0400 actual mixed-owner destruction mapping then canonical executable migration"
+  ],
+  "limits": [
+    "Seven complete raw leaf bodies match native bytes except5 exact named CALL/tail-JMP relocations. Constructor normal body is compared after explicit FH3 frame removal.",
+    "Source constructor/getter EH and provider contracts use the current C++ CRT/Win32 domain, not original FH3/SEH identity or private spill aliases.",
+    "No new source entry execution, original caller ABI or game validation.",
+    "Native profiles are identity DWORDs, not rebuilt callable C++ vtables. No typed-manager cast or private publication domain.",
+    "Each new object contains only the SDK four-byte __Avx2WmemEnabledWeakValue BSS; no private publication cell."
+  ],
+  "new_tests_added": 0,
+  "fixture_tested": false,
+  "source_entries_executed": false,
+  "original_native_runtime_executed": false,
+  "original_caller_ABI_compatible": false,
+  "game_validated": false,
+  "primary_review": {
+    "utc": "2026-09-12T04:49:26.223856+00:00",
+    "integration_state": "complete_raw_tree_and_construction_build_static_review_saved_and_registered",
+    "main_library_sha256": "5a931a3d23c258e053bec55478ef014f924e05a893b37a9927b3ab67b7db86ae",
+    "saved_annotations": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_effect_tree_construction_annotations.json",
+      "bytes": 17027,
+      "sha256": "e94b7a15e02c6f09debf5680f1373d4e78a900be6a41d4c6faf0012d7207a912"
+    },
+    "registered_records": [
+      {
+        "kind": "function",
+        "address": "008697b0",
+        "name": "maximum_native_int_pointer_tree18_008697b0",
+        "cpp_symbol": "bsp::maximum_native_int_pointer_tree18_008697b0",
+        "source": "src/native_int_pointer_tree18_leaves.cpp",
+        "native_end_exclusive": "008697cc",
+        "status": "complete_raw_source_main_build_and_native_or_compiled_cleanup_reviewed",
+        "evidence": "reports/native_effect_tree_construction_audit.json",
+        "original_and_source_abi": "ECX subtree, EAX extreme node, RET.",
+        "source_entry_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "008697d0",
+        "name": "minimum_native_int_pointer_tree18_008697d0",
+        "cpp_symbol": "bsp::minimum_native_int_pointer_tree18_008697d0",
+        "source": "src/native_int_pointer_tree18_leaves.cpp",
+        "native_end_exclusive": "008697eb",
+        "status": "complete_raw_source_main_build_and_native_or_compiled_cleanup_reviewed",
+        "evidence": "reports/native_effect_tree_construction_audit.json",
+        "original_and_source_abi": "ECX subtree, EAX extreme node, RET.",
+        "source_entry_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00869810",
+        "name": "rotate_right_native_int_pointer_tree18_00869810",
+        "cpp_symbol": "bsp::rotate_right_native_int_pointer_tree18_00869810",
+        "source": "src/native_int_pointer_tree18_leaves.cpp",
+        "native_end_exclusive": "00869862",
+        "status": "complete_raw_source_main_build_and_native_or_compiled_cleanup_reviewed",
+        "evidence": "reports/native_effect_tree_construction_audit.json",
+        "original_and_source_abi": "ECX tree, EDX unconsumed, stack pivot, RET4.",
+        "source_entry_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "0086a2f0",
+        "name": "rotate_left_native_int_pointer_tree18_0086a2f0",
+        "cpp_symbol": "bsp::rotate_left_native_int_pointer_tree18_0086a2f0",
+        "source": "src/native_int_pointer_tree18_leaves.cpp",
+        "native_end_exclusive": "0086a33e",
+        "status": "complete_raw_source_main_build_and_native_or_compiled_cleanup_reviewed",
+        "evidence": "reports/native_effect_tree_construction_audit.json",
+        "original_and_source_abi": "ECX tree, EDX unconsumed, stack pivot, RET4.",
+        "source_entry_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00869a20",
+        "name": "increment_native_int_pointer_tree18_00869a20",
+        "cpp_symbol": "bsp::increment_native_int_pointer_tree18_00869a20",
+        "source": "src/native_int_pointer_tree18_leaves.cpp",
+        "native_end_exclusive": "00869a83",
+        "status": "complete_raw_source_main_build_and_native_or_compiled_cleanup_reviewed",
+        "evidence": "reports/native_effect_tree_construction_audit.json",
+        "original_and_source_abi": "ECX actual owner/node iterator, RET.",
+        "source_entry_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "0086aa60",
+        "name": "erase_subtree_native_int_pointer_tree18_0086aa60",
+        "cpp_symbol": "bsp::erase_subtree_native_int_pointer_tree18_0086aa60",
+        "source": "src/native_int_pointer_tree18_leaves.cpp",
+        "native_end_exclusive": "0086aa95",
+        "status": "complete_raw_source_main_build_and_native_or_compiled_cleanup_reviewed",
+        "evidence": "reports/native_effect_tree_construction_audit.json",
+        "original_and_source_abi": "ECX tree retained through recursion, EDX unconsumed, stack subtree, RET4.",
+        "source_entry_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "0086ac00",
+        "name": "allocate_native_int_pointer_tree18_node_0086ac00",
+        "cpp_symbol": "bsp::allocate_native_int_pointer_tree18_node_0086ac00",
+        "source": "src/native_int_pointer_tree18_leaves.cpp",
+        "native_end_exclusive": "0086ac37",
+        "status": "complete_raw_source_main_build_and_native_or_compiled_cleanup_reviewed",
+        "evidence": "reports/native_effect_tree_construction_audit.json",
+        "original_and_source_abi": "No input consumed, EAX raw18h node, RET.",
+        "source_entry_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00869c50",
+        "name": "reset_native_gameplay_effect_manager_00869c50",
+        "cpp_symbol": "bsp::reset_native_gameplay_effect_manager_00869c50",
+        "source": "src/native_gameplay_effect_construction.cpp",
+        "native_end_exclusive": "00869c61",
+        "status": "complete_raw_source_main_build_and_native_or_compiled_cleanup_reviewed",
+        "evidence": "reports/native_effect_tree_construction_audit.json",
+        "original_and_source_abi": "Native ECX owner, RET; source adds EDX stable actual volatileF87664 reference.",
+        "source_entry_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00870370",
+        "name": "construct_native_gameplay_effect_manager_00870370",
+        "cpp_symbol": "bsp::construct_native_gameplay_effect_manager_00870370",
+        "source": "src/native_gameplay_effect_construction.cpp",
+        "native_end_exclusive": "008703d8",
+        "status": "complete_raw_source_main_build_and_native_or_compiled_cleanup_reviewed",
+        "evidence": "reports/native_effect_tree_construction_audit.json",
+        "original_and_source_abi": "Native ECX raw10h owner, EAX same owner, RET; source adds EDX actual volatileF87664 reference.",
+        "source_entry_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "004c1650",
+        "name": "get_native_gameplay_effect_manager_004c1650",
+        "cpp_symbol": "bsp::get_native_gameplay_effect_manager_004c1650",
+        "source": "src/native_gameplay_effect_construction.cpp",
+        "native_end_exclusive": "004c170d",
+        "status": "complete_raw_source_main_build_and_native_or_compiled_cleanup_reviewed",
+        "evidence": "reports/native_effect_tree_construction_audit.json",
+        "original_and_source_abi": "Native no input, EAX pointer, RET; source cdecl borrows distinct actual volatile01090AA0/F87664 cells.",
+        "source_entry_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "refreshed_exports": [
+      {
+        "address": "008697b0",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\008697b0\\decompiled.c",
+        "bytes": 1039,
+        "sha256": "6073a089b89eadc85e48dbdee1537894ee317bf4bb1c0fa985051fffeec97358"
+      },
+      {
+        "address": "008697d0",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\008697d0\\decompiled.c",
+        "bytes": 1049,
+        "sha256": "d00b47057c3253df2039d92609de10db45396d4a7c570082e0011373edf65a71"
+      },
+      {
+        "address": "00869810",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00869810\\decompiled.c",
+        "bytes": 1565,
+        "sha256": "3771bd9fbda559a7203c108be50142e092e54cd8777d49f91610fbe3a972906b"
+      },
+      {
+        "address": "0086a2f0",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0086a2f0\\decompiled.c",
+        "bytes": 1566,
+        "sha256": "80efb39587104912982dc62d1208a3f58bee98a00f006cce4335db1e67a84fe4"
+      },
+      {
+        "address": "00869a20",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00869a20\\decompiled.c",
+        "bytes": 3430,
+        "sha256": "14fa4b8bf54f6fdcf8f02ad2cbb123f9ad37b856519bc5430ce13dddd7376c37"
+      },
+      {
+        "address": "0086aa60",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0086aa60\\decompiled.c",
+        "bytes": 1693,
+        "sha256": "6d43d011ab5f16f8311c2000fa42e15c33e52fb2c625908a36e0439106a705c7"
+      },
+      {
+        "address": "0086ac00",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0086ac00\\decompiled.c",
+        "bytes": 1717,
+        "sha256": "29427a8a3e30d4a271294f1bea351c77b81ba88f29f527ab74812e7502d433d2"
+      },
+      {
+        "address": "00869c50",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00869c50\\decompiled.c",
+        "bytes": 997,
+        "sha256": "2aa6ae3b71e0d4e0722752fee7c24d3251d94577423b08cb071c3fb0a9bb8e17"
+      },
+      {
+        "address": "00870370",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00870370\\decompiled.c",
+        "bytes": 2059,
+        "sha256": "8bed6a86a9f2629b26e997044dbbb171711f79908e118cb9b6aa22a50837fd96"
+      },
+      {
+        "address": "004c1650",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004c1650\\decompiled.c",
+        "bytes": 5677,
+        "sha256": "aa7c89ba6c86ce4ea33b2b3d1f7367694bc58744a3b11c6ae04419b55b62b91e"
+      }
+    ],
+    "current_document": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_EFFECT_TREE_CONSTRUCTION.md",
+      "bytes": 6019,
+      "sha256": "ae14f734ebdafa39bb6283d14369010ab5b06443bc0a5106d02d184b12d78a6a"
+    },
+    "new_entries_executed": false,
+    "original_caller_ABI_compatible": false,
+    "game_validated": false,
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\effect_tree_construction_primary\\sealed.json",
+      "bytes": 106401,
+      "sha256": "67f1dced601284a3ba484c173e544d3cce1e087d9157d38c2a71c0fb8c81fe94"
+    }
+  }
+}

@@ -1,0 +1,363 @@
+{
+  "packet": "orch2_stream_type_ids_ao",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "verification": "Every live BSP CLI query invokes Client.verify for bsp, program path, x86 language, and image base. Installed PE was read only."
+  },
+  "source": "src/native_stream_type_ids.cpp",
+  "header": "include/bsp/native_stream_type_ids.hpp",
+  "document": "docs/NATIVE_STREAM_TYPE_IDS.md",
+  "routines": [
+    {
+      "address": "00BE4530",
+      "name": "NativeStreamTypeIds::initialize_file_00be4530",
+      "coverage": "complete",
+      "end_inclusive": "00BE456D",
+      "end_exclusive": "00BE456E",
+      "bytes": 62,
+      "ghidra_body": "defined",
+      "abi": "ECX target; no stack arguments; saves ESI; RET; no semantic return value",
+      "guard": "0109DB54",
+      "canonical_descriptor": "0109DB58",
+      "layout": [
+        "own_id",
+        "root_id",
+        "native_name_address"
+      ],
+      "original_name": "FUN_00be4530",
+      "proposed_name": "BSP_FileType_InitializeDescriptor"
+    },
+    {
+      "address": "00CD8FC0",
+      "name": "NativeStreamTypeIds::initialize_memory_00cd8fc0",
+      "coverage": "complete_raw_entry",
+      "end_inclusive": "00CD900E",
+      "end_exclusive": "00CD900F",
+      "bytes": 79,
+      "ghidra_body": "undefined; no containing function at entry or either call site",
+      "abi": "No arguments; no stack adjustment; RET; EAX/ECX/EDX volatile; no semantic return value",
+      "guard": "0109DB94",
+      "descriptor": "0109DBA0",
+      "layout": [
+        "own_id",
+        "file_id",
+        "root_id",
+        "native_name_address"
+      ],
+      "original_name": null,
+      "proposed_name": "BSP_MemoryFileType_InitializeStatic",
+      "data_reference": "00CE3698; does not establish startup execution"
+    },
+    {
+      "address": "00CD9030",
+      "name": "NativeStreamTypeIds::initialize_physical_00cd9030",
+      "coverage": "complete_raw_entry",
+      "end_inclusive": "00CD907E",
+      "end_exclusive": "00CD907F",
+      "bytes": 79,
+      "ghidra_body": "undefined; no containing function at entry or either call site",
+      "abi": "No arguments; no stack adjustment; RET; EAX/ECX/EDX volatile; no semantic return value",
+      "guard": "0109DC2C",
+      "descriptor": "0109DC30",
+      "layout": [
+        "own_id",
+        "file_id",
+        "root_id",
+        "native_name_address"
+      ],
+      "original_name": null,
+      "proposed_name": "BSP_PhysicalFileType_InitializeStatic",
+      "data_reference": "00CE36A0; does not establish startup execution",
+      "boundary": "Preceded by RET00CD9025 and INT3 padding00CD9026..00CD902F. Branch00CD9037 targets RET00CD907E. Independent initializer starts00CD907F."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00BE454F",
+      "native": "00BEA780",
+      "function": "00BE4530",
+      "contract": "checked whole root body and assembly",
+      "arguments": "ECX=0109DB84 at00BE4543; no stack arguments; RET"
+    },
+    {
+      "address": "00BE455C",
+      "native": "006FAC20",
+      "function": "00BE4530",
+      "contract": "checked whole counter getter body and assembly",
+      "arguments": "No arguments; EAX owner; RET"
+    },
+    {
+      "address": "00CD8FDF",
+      "native": "00BE4530",
+      "function": "00CD8FC0",
+      "contract": "checked whole file body and both callers",
+      "arguments": "ECX=0109DB58 at00CD8FC9; retained through guard/name writes; no stack arguments; RET",
+      "boundary_evidence": "undefined raw79-byte entry [00CD8FC0,00CD900F)"
+    },
+    {
+      "address": "00CD8FFA",
+      "native": "006FAC20",
+      "function": "00CD8FC0",
+      "contract": "checked whole counter getter body and assembly",
+      "arguments": "No arguments; EAX owner; RET",
+      "boundary_evidence": "undefined raw79-byte entry [00CD8FC0,00CD900F)"
+    },
+    {
+      "address": "00CD904F",
+      "native": "00BE4530",
+      "function": "00CD9030",
+      "contract": "checked whole file body and both callers",
+      "arguments": "ECX=0109DB58 at00CD9039; retained through guard/name writes; no stack arguments; RET",
+      "boundary_evidence": "undefined raw79-byte entry [00CD9030,00CD907F)"
+    },
+    {
+      "address": "00CD906A",
+      "native": "006FAC20",
+      "function": "00CD9030",
+      "contract": "checked whole counter getter body and assembly",
+      "arguments": "No arguments; EAX owner; RET",
+      "boundary_evidence": "undefined raw79-byte entry [00CD9030,00CD907F)"
+    }
+  ],
+  "ordering": [
+    "Nonzero guard exits without any descriptor or counter write.",
+    "File sets guard then target name, initializes canonical root, copies current root ID, reads current published counter owner, increments owner+4, stores captured own ID.",
+    "Memory and physical set their own guard then name, call file initializer with canonical target, capture file own and root words before either destination store, get current counter owner, increment owner+4, then store captured own ID.",
+    "An alternate file target shares the canonical process guard; later child initializers can read untouched canonical file words. No corrective initialization is added."
+  ],
+  "existing_domains": {
+    "counter": "TypeIdCounterLifetime::get_006fac20; actual publication0109DB7C; owner8 bytes; current counter+4; shared SingletonLifetimeDomain manager; no reset on adapter construction",
+    "root": "LightTypeBootstrap::initialize_root_00bea780; actual guard0109DB80 and descriptor0109DB84; same counter publication/domain",
+    "integration_requirement": "Caller must supply the same TypeIdCounterLifetime instance used by the root bootstrap. New storage holds actual references, no descriptor copies or token registry. Consumer/runtime composition remains outside this packet."
+  },
+  "corrections": [
+    {
+      "was": "Physical descriptor writes at00CD9078 had no established containing initializer",
+      "is": "Complete bounded raw entry00CD9030..00CD907E inclusive, end00CD907F, 79 bytes",
+      "evidence": "Disk disassembly, matching Ghidra memory bytes, branch target and adjacent boundaries, DATA reference00CE36A0"
+    },
+    {
+      "was": "Physical IDs0109DC30..0109DC38 do not include a descriptor name",
+      "is": "The complete descriptor also contains name DWORD0109DC3C=00D69218 cFileX86",
+      "evidence": "MOV00CD9045 writes name before parent initialization"
+    }
+  ],
+  "validation": {
+    "build": "passed scripts/build.ps1 Release; MSVC Win32 /W4 /WX /fp:strict; existing reconstructed_math and native_math_differential CTest suites 2/2 passed",
+    "verify_seeds": "passed: 8 seed routines match installed disk and saved Ghidra bytes",
+    "focused_probe": {
+      "result": "1152 original/source state comparisons; 0 failures; existing counter fast path only",
+      "cases": "16 preset guard masks x 3 counter seeds (0,91,FFFFFFFF) x 4 invocation orders; 192 construction checks plus 960 step comparisons",
+      "boundaries": "both child orders, repeated calls, alternate ECX file target with canonical guard, owner publication swap, current parent words, uint32 wrap",
+      "reference": "installed bytes for006FAC20,00BEA780,00BE4530,00CD8FC0,00CD9030; all five complete ranges match live Ghidra memory bytes",
+      "relocation": "code and mapped process storage shifted by30000000; only decoded absolute operands within01080000..0109FFFF changed; relative calls unchanged; names unchanged; no callee hooks",
+      "scope": "No allocation/registration slow path or actual game startup/runtime execution",
+      "ignored_source": "local/native_stream_type_probe.cpp",
+      "ignored_preparation": "local/prepare_native_stream_type_probe.py",
+      "ignored_runner": "local/run_native_stream_type_probe.ps1",
+      "link": "/MANIFEST:EMBED; safe native_stream_type_probe.exe filename",
+      "log": "local/native_stream_type_probe.log"
+    },
+    "verify_report_calls": {
+      "result": "6 call rows checked, 4 failed; the two calls in defined BE4530 passed",
+      "failures": [
+        {
+          "site": "00CD8FDF",
+          "reason": "call site is in no Ghidra function"
+        },
+        {
+          "site": "00CD8FFA",
+          "reason": "call site is in no Ghidra function"
+        },
+        {
+          "site": "00CD904F",
+          "reason": "call site is in no Ghidra function"
+        },
+        {
+          "site": "00CD906A",
+          "reason": "call site is in no Ghidra function"
+        }
+      ],
+      "integration": "Primary will define the exact raw bodies after worker lease release and rerun verifier. All address/native rows retained."
+    },
+    "ghidra_mutation": "none; ledger names are proposed pending primary annotation",
+    "game_validation": "not performed",
+    "startup_execution": "not established"
+  },
+  "uncertainty": [
+    "Typed C++ API is not native ABI replacement.",
+    "Original counter slow path is reused after body/assembly review but the focused differential probe exercises only its existing-owner fast path.",
+    "Ghidra currently has no bodies for00CD8FC0 or00CD9030; primary integration must define them before the mechanical call-site gate can pass.",
+    "DATA references alone do not establish execution during startup."
+  ],
+  "byte_evidence": [
+    {
+      "start": "006fac20",
+      "end_exclusive": "006facd5",
+      "bytes": 181,
+      "sha256": "70526b13aa54e4afb188a2aeb0facac4a3e61c6770e787563b2c8e5d68a8d678",
+      "hex": "64a1000000006aff685838c8005064892500000000a17cdb090183ec0885c00f858100000056e805a7d1ff8b701085f6c7442404fc37ce0089742408740b56ff151822ce0083461801c744241400000000833d7cdb09010075376a08e89abb4f0083c40485c0740fc700c4b6cf00c7400400000000eb0233c0a37cdb0901e8ada6d1ff8b0d7cdb0901518bc8e87f5f4d0085f6740b834618ff56ff151022ce00a17cdb09015e8b4c240864890d0000000083c414c3",
+      "probe_absolute_operand_relocations": [
+        {
+          "instruction": "006fac35",
+          "operand": "0109db7c"
+        },
+        {
+          "instruction": "006fac71",
+          "operand": "0109db7c"
+        },
+        {
+          "instruction": "006fac99",
+          "operand": "0109db7c"
+        },
+        {
+          "instruction": "006faca3",
+          "operand": "0109db7c"
+        },
+        {
+          "instruction": "006facc0",
+          "operand": "0109db7c"
+        }
+      ],
+      "matches_live_ghidra_bytes": true
+    },
+    {
+      "start": "00bea780",
+      "end_exclusive": "00bea7ac",
+      "bytes": 44,
+      "sha256": "bfabed555a30d97800fe3fb0b69c7cc8e6ecc1ec9c590c51eb5ecc6bc63e67ac",
+      "hex": "803d80db090100568bf1751ec60580db090101e88804b1ff8b48048d5101895004890ec74604bc8bd6005ec3",
+      "probe_absolute_operand_relocations": [
+        {
+          "instruction": "00bea780",
+          "operand": "0109db80"
+        },
+        {
+          "instruction": "00bea78c",
+          "operand": "0109db80"
+        }
+      ],
+      "matches_live_ghidra_bytes": true
+    },
+    {
+      "start": "00be4530",
+      "end_exclusive": "00be456e",
+      "bytes": 62,
+      "sha256": "520d07de6b2a4eeaca5a3ed20d21bdb58568c5c00abbbbea914ebf83b3634b3e",
+      "hex": "803d54db090100568bf17530c60554db090101b984db0901c746088c88d600e82c620000a184db0901894604e8bf66b1ff8b48048d5101895004890e5ec3",
+      "probe_absolute_operand_relocations": [
+        {
+          "instruction": "00be4530",
+          "operand": "0109db54"
+        },
+        {
+          "instruction": "00be453c",
+          "operand": "0109db54"
+        },
+        {
+          "instruction": "00be4543",
+          "operand": "0109db84"
+        },
+        {
+          "instruction": "00be4554",
+          "operand": "0109db84"
+        }
+      ],
+      "matches_live_ghidra_bytes": true
+    },
+    {
+      "start": "00cd8fc0",
+      "end_exclusive": "00cd900f",
+      "bytes": 79,
+      "sha256": "d9b00e5d6d070e6d5f769b822941350b4b9e417dce9e01ed94e8b39db5b04d68",
+      "hex": "803d94db0901007545b958db0901c60594db090101c705acdb09017c8dd600e84cb5f0ffa158db09018b0d5cdb0901a3a4db0901890da8db0901e8211ca2ff8b48048d5101895004890da0db0901c3",
+      "probe_absolute_operand_relocations": [
+        {
+          "instruction": "00cd8fc0",
+          "operand": "0109db94"
+        },
+        {
+          "instruction": "00cd8fc9",
+          "operand": "0109db58"
+        },
+        {
+          "instruction": "00cd8fce",
+          "operand": "0109db94"
+        },
+        {
+          "instruction": "00cd8fd5",
+          "operand": "0109dbac"
+        },
+        {
+          "instruction": "00cd8fe4",
+          "operand": "0109db58"
+        },
+        {
+          "instruction": "00cd8fe9",
+          "operand": "0109db5c"
+        },
+        {
+          "instruction": "00cd8fef",
+          "operand": "0109dba4"
+        },
+        {
+          "instruction": "00cd8ff4",
+          "operand": "0109dba8"
+        },
+        {
+          "instruction": "00cd9008",
+          "operand": "0109dba0"
+        }
+      ],
+      "matches_live_ghidra_bytes": true
+    },
+    {
+      "start": "00cd9030",
+      "end_exclusive": "00cd907f",
+      "bytes": 79,
+      "sha256": "2783b4be9232f1b4035738c583f86a654beb2c801c4e5209eae8630f19e3314f",
+      "hex": "803d2cdc0901007545b958db0901c6052cdc090101c7053cdc09011892d600e8dcb4f0ffa158db09018b0d5cdb0901a334dc0901890d38dc0901e8b11ba2ff8b48048d5101895004890d30dc0901c3",
+      "probe_absolute_operand_relocations": [
+        {
+          "instruction": "00cd9030",
+          "operand": "0109dc2c"
+        },
+        {
+          "instruction": "00cd9039",
+          "operand": "0109db58"
+        },
+        {
+          "instruction": "00cd903e",
+          "operand": "0109dc2c"
+        },
+        {
+          "instruction": "00cd9045",
+          "operand": "0109dc3c"
+        },
+        {
+          "instruction": "00cd9054",
+          "operand": "0109db58"
+        },
+        {
+          "instruction": "00cd9059",
+          "operand": "0109db5c"
+        },
+        {
+          "instruction": "00cd905f",
+          "operand": "0109dc34"
+        },
+        {
+          "instruction": "00cd9064",
+          "operand": "0109dc38"
+        },
+        {
+          "instruction": "00cd9078",
+          "operand": "0109dc30"
+        }
+      ],
+      "matches_live_ghidra_bytes": true
+    }
+  ]
+}

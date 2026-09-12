@@ -169,6 +169,10 @@ target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene
   src/native_singleton_vector_registration_wrappers.cpp
   src/native_singleton_removal_reorder.cpp
   src/native_singleton_publication.cpp
+  src/native_int_pointer_tree18_leaves.cpp
+  src/native_gameplay_effect_construction.cpp
+  src/native_int_pointer_tree18_erase.cpp
+  src/native_gameplay_effect_destruction.cpp
   src/native_tracked_critical_section_release.cpp
   src/native_resource_registry_scalar_delete.cpp
   src/native_resource_registry_base.cpp

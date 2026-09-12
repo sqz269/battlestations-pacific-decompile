@@ -265,3 +265,9 @@ computation reads them; `gun+3F0h` is the owning unit, not an ammo provider; `00
 `0071E0D0` are director methods routing through the endpoint at director+34h, not free functions
 that null-gate the director; and there is one fire-target setter (`00835860`), whose three
 branches are argument shapes, not three setters.
+
+## Correction from docs/WEAPON_CLASS_DESCRIPTOR.md (packet cc2_projectile_kinds)
+
+The "sub-type table selecting 2, 3, 4, 5 or 7" that Fire consults is the gun class descriptor's
+weapon type at `+80h`, not the projectile descriptor's sub-type; and the `+88h`/`+8Ch` rotation
+rates docs/GUN_AIMING.md reads belong to the gun class descriptor, not to the projectile class.

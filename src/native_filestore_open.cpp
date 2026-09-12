@@ -1,8 +1,11 @@
 #include "bsp/native_filestore_open.hpp"
 
 #include "bsp/native_memory_stream.hpp"
+#include "bsp/native_physical_stream_conversion.hpp"
+#include "bsp/native_physical_stream_open.hpp"
 #include "bsp/native_vfs_date_leaf_providers.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include <stdexcept>
 
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -43,11 +46,24 @@ using LengthEntry = std::int64_t (__fastcall*)(void*, void*);
 using ReadEntry = void (__fastcall*)(void*, void*, void*, std::uint32_t,
     std::uint32_t*);
 
+void require_physical_slot(std::uint32_t profile, std::uint32_t offset,
+    std::uint32_t identity, const NativeStoredStreamConversionContext& context) {
+    if (!context.physical || !context.actual_physical_type_ids_0109dc30)
+        throw std::invalid_argument("Native physical stream conversion requires physical services and type IDs");
+    if (word(reinterpret_cast<const void*>(profile), offset) != identity)
+        throw std::invalid_argument("Unimplemented native physical stream conversion method");
+}
+
 bool current_type_query(void* owner, std::uint32_t token,
     NativeStoredStreamConversionContext& context) {
     const auto profile = word(owner);
     if (profile == 0x00d642c0)
         return dispatch_native_memory_stream_type_query(owner, token, context);
+    if (profile == 0x00d691b0) {
+        require_physical_slot(profile, 0x0c, 0x00bf4ff0, context);
+        return query_native_physical_stream_type_00bf4ff0(token,
+            context.actual_physical_type_ids_0109dc30);
+    }
     auto* const target = pointer(reinterpret_cast<void*>(profile), 0x0c);
     return reinterpret_cast<TypeEntry>(target)(owner, target, token);
 }
@@ -55,6 +71,11 @@ void current_seek_zero(void* owner, NativeStoredStreamConversionContext& context
     const auto profile = word(owner);
     if (profile == 0x00d642c0) {
         dispatch_native_memory_stream_seek(owner, 0, 0, 0, context.memory_owners);
+        return;
+    }
+    if (profile == 0x00d691b0) {
+        require_physical_slot(profile, 0x1c, 0x00bf4f20, context);
+        (void)seek_native_physical_stream_00bf4f20(owner, 0, 0, 0);
         return;
     }
     auto* const target = pointer(reinterpret_cast<void*>(profile), 0x1c);
@@ -66,6 +87,10 @@ std::uint32_t current_length_low(void* owner,
     if (profile == 0x00d642c0)
         return static_cast<std::uint32_t>(dispatch_native_memory_stream_length(
             owner, context.memory_owners));
+    if (profile == 0x00d691b0) {
+        require_physical_slot(profile, 0x30, 0x00bf4f90, context);
+        return static_cast<std::uint32_t>(size_native_physical_stream_00bf4f90(owner));
+    }
     auto* const target = pointer(reinterpret_cast<void*>(profile), 0x30);
     return static_cast<std::uint32_t>(reinterpret_cast<LengthEntry>(target)(owner, target));
 }
@@ -74,6 +99,12 @@ void current_read_once(void* owner, void* data, std::uint32_t count,
     const auto profile = word(owner);
     if (profile == 0x00d642c0) {
         dispatch_native_memory_stream_read(owner, data, count, nullptr, context.memory_owners);
+        return;
+    }
+    if (profile == 0x00d691b0) {
+        require_physical_slot(profile, 0x24, 0x00bf5030, context);
+        (void)read_native_physical_stream_00bf5030(owner, data, count, nullptr,
+            *context.physical);
         return;
     }
     auto* const target = pointer(reinterpret_cast<void*>(profile), 0x24);
