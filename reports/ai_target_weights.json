@@ -1,0 +1,253 @@
+{
+  "packet": "cc2_ai_target_weights",
+  "owner": "agent/cc2-ai-target-weights",
+  "doc": "docs/AI_GLOBALS_AND_TARGET_WEIGHTS.md",
+  "sources": [
+    "include/bsp/ai_target_weights.hpp",
+    "src/ai_target_weights.cpp"
+  ],
+  "routines": [
+    {
+      "address": "00a335d0",
+      "name": "BSP_Ai_LoadHighLevelGlobals",
+      "abi": "__thiscall(ECX = AI coordinator 004C1C50) -> void",
+      "coverage": "partial: 00a36930-00a37127 (SupportValues and ForcedTargetWeightValues tails)"
+    },
+    {
+      "address": "00a371a0",
+      "name": "BSP_Ai_ActiveModeTuning",
+      "abi": "__cdecl() -> AiModeTuning*",
+      "coverage": "complete"
+    },
+    {
+      "address": "00a08460",
+      "name": "BSP_Ai_TargetWeight",
+      "abi": "__fastcall(ECX = attacker, EDX = attacker class)(void* target, int target_is_neutral) -> float in ST0, RET 8",
+      "coverage": "partial: 00a0861f-00a09222 (the attacker-is-type-0Fh branch)"
+    },
+    {
+      "address": "00a31db0",
+      "name": "BSP_Ai_ForcedTargetWeightLookup",
+      "abi": "__fastcall(ECX = attacker, EDX = attacker class)(void* target, int neutral, float* out) -> AL, RET 0Ch",
+      "coverage": "complete"
+    },
+    {
+      "address": "00a32500",
+      "name": "BSP_Ai_ForcedTargetWeightInsert",
+      "abi": "__fastcall(ECX = rule record, DL = mode-table selector)(int mode_or_negative) -> void",
+      "coverage": "partial: 00a325e0-00a325f0 (the remove arm's tail)"
+    },
+    {
+      "address": "00a2eee0",
+      "name": "unnamed (AIGetGroupInfo fill)",
+      "abi": "__thiscall(ECX = AI group)(LuaObject* table) -> void",
+      "coverage": "partial: body unread, 551 instructions; callee set enumerated only"
+    }
+  ],
+  "no_ghidra_function": [],
+  "host": [
+    {
+      "address": "00a084c3",
+      "native": "00a03b90",
+      "containing": "00a08460",
+      "name": "memo_lookup",
+      "note": "map at 00F8A734, end sentinel 00F8A738, value at node+1Ch"
+    },
+    {
+      "address": "00a08540",
+      "native": "00a31db0",
+      "containing": "00a08460",
+      "name": "forced_rule_weight",
+      "note": "ECX = attacker, EDX = attacker class, (target, flag, &out)"
+    },
+    {
+      "address": "00a08556",
+      "native": "00a079b0",
+      "containing": "00a08460",
+      "name": "memo_store",
+      "note": "override return arm"
+    },
+    {
+      "address": "00a08574",
+      "native": "00a371a0",
+      "containing": "00a08460",
+      "name": "mode_tuning",
+      "note": "returns coordinator + mode*23Ch + 4; ESI carries it + 50h"
+    },
+    {
+      "address": "00a09501",
+      "native": "0072ab80",
+      "containing": "00a08460",
+      "name": "barrel_shots",
+      "note": "contract: unread"
+    },
+    {
+      "address": "00a094e6",
+      "native": "009fe270",
+      "containing": "00a08460",
+      "name": "barrel_accuracy",
+      "note": "contract: unread; gated by FCOMIP against zero at 00a094f5"
+    },
+    {
+      "address": "00a09578",
+      "native": "009fe200",
+      "containing": "00a08460",
+      "name": "distance_falloff",
+      "note": "four float stack arguments, contract: unread"
+    },
+    {
+      "address": "00a09624",
+      "native": "00424c40",
+      "containing": "00a08460",
+      "name": "capture_scale",
+      "note": "object read at +3B0h, contract: unread"
+    },
+    {
+      "address": "00a09379",
+      "native": "00a03b00",
+      "containing": "00a08460",
+      "name": "subsystem_accessor",
+      "note": "STL accessor, contract: unread"
+    },
+    {
+      "address": "00a097cc",
+      "native": "00a079b0",
+      "containing": "00a08460",
+      "name": "memo_store",
+      "note": "normal return arm"
+    },
+    {
+      "address": "00a371a1",
+      "native": "009ffc80",
+      "containing": "00a371a0",
+      "name": "game_mode",
+      "note": "0..6, the record index"
+    },
+    {
+      "address": "00a371a8",
+      "native": "004c1c50",
+      "containing": "00a371a0",
+      "name": "ai_coordinator",
+      "note": "record array base is the return value + 4"
+    },
+    {
+      "address": "00a36121",
+      "native": "00b66330",
+      "containing": "00a335d0",
+      "name": "read_number_or",
+      "note": "Defend_ResourcePercent, default 00CF6560 = 0.35"
+    },
+    {
+      "address": "00a36fd5",
+      "native": "00a32500",
+      "containing": "00a335d0",
+      "name": "insert_forced_rule",
+      "note": "one call per ForcedTargetWeightValues entry"
+    },
+    {
+      "address": "00a338f0",
+      "native": "00b66270",
+      "containing": "00a335d0",
+      "name": "read_number",
+      "note": "plain read, 0 for a missing key"
+    },
+    {
+      "address": "00a3798b",
+      "native": "00b67930",
+      "containing": "00a378c0",
+      "name": "create_table",
+      "note": "lua_createtable plus a registry reference, which pops the table"
+    },
+    {
+      "address": "00a3799f",
+      "native": "00a2eee0",
+      "containing": "00a378c0",
+      "name": "fill_group_info",
+      "note": "ECX = group, (table); contract: partial"
+    },
+    {
+      "address": "00a379a8",
+      "native": "00b66400",
+      "containing": "00a378c0",
+      "name": "result_count",
+      "note": "lua_gettop minus the saved top; answers 0 here"
+    },
+    {
+      "address": "00a31eb7",
+      "native": "00a08460",
+      "containing": "00a31db0",
+      "name": "relative_rule_base",
+      "note": "re-entry with the identical query; unbounded recursion, unreachable as shipped"
+    },
+    {
+      "address": "00a31fdf",
+      "native": "00a08460",
+      "containing": "00a31db0",
+      "name": "relative_rule_base",
+      "note": "the per-mode table's copy of the same arm"
+    },
+    {
+      "address": "00a0c2d1",
+      "native": "00a08460",
+      "containing": "00a0c1f0",
+      "name": "call_site",
+      "note": "ECX = EBP, EDX = EBX, target from [ECX+EDI*4], flag literal 0"
+    },
+    {
+      "address": "00a0c345",
+      "native": "00a08460",
+      "containing": "00a0c330",
+      "name": "call_site",
+      "note": "ECX = A[0], EDX = A[10h], target B[0], flag B[1Ch]"
+    },
+    {
+      "address": "00a0ae80",
+      "native": "00a08460",
+      "containing": "00a0a280",
+      "name": "call_site",
+      "note": "ECX from [ESP+2Ch], EDX from [ESP+EDI*4+94h], target EBX, flag EBP"
+    },
+    {
+      "address": "00a0f843",
+      "native": "00a08460",
+      "containing": "00a0f810",
+      "name": "call_site",
+      "note": "two records resolved by 00a04560, same shape as 00a0c345"
+    }
+  ],
+  "corrections": [
+    {
+      "subject": "00F8A8BC",
+      "was": "docs/LUA_BINDING_AI.md: an unresolved overlap; either 009FFC80's slots 3..6 are unreachable or the shipped build writes out of bounds",
+      "is": "the array is three floats wide and slots 3..6 are out of bounds; 00A360F5 guards the loader's store with CMP EDI,3 / JGE, while AISetDefendResourcePercent (00A37E4B) and the read at 00A29C38 both index it with 009FFC80's 0..6",
+      "evidence": "00A360F5 CMP EDI,3 / JGE 00A3613E; 00A36126 FSTP [EDI*4+0F8A8BCh]; loop bound XOR EDI,EDI at 00A3374B and CMP EDI,7 at 00A370D7; base of the 1Ch array proven at 00A25C06..00A25C23; all seven shipped sub-tables carry Defend_ResourcePercent"
+    },
+    {
+      "subject": "00F8A8C8",
+      "was": "base of a 1Ch-stride per-party record array, inferred from AIEnable and AISetQuickSpawnTargetPos",
+      "is": "confirmed; 00A25C06 computes party*1Ch and reads the +0Ch byte at 0F8A8D4h and the +10h vector at 0F8A8D8h",
+      "evidence": "00A25C06..00A25C23"
+    },
+    {
+      "subject": "AiTargetWeightRule (include/bsp/lua_binding_ai.hpp)",
+      "was": "field order only; the byte layout inside 00A32500's 20h-stride table was not established",
+      "is": "20h bytes: +00h attacker selector, +04h target selector, +08h byte target-is-neutral, +0Ch float weight, +10h byte relative, +14h/+18h reference selectors, +1Ch byte reference neutral, +1Dh/+1Eh selector-is-class-id flags",
+      "evidence": "00A32500's identity comparison at 00A32530..00A32570 and the match loop of 00A31DB0; FLD float ptr [EDI+0Ch] at 00A31EC2"
+    },
+    {
+      "subject": "AIGetGroupInfo result count",
+      "was": "docs/LUA_BINDING_AI.md: the one handler whose result count is not established",
+      "is": "zero; the handler returns nothing",
+      "evidence": "00B66400 is lua_gettop minus the saved top (00B66403..00B6640D); 00B67930's registry reference pops the table; every Lua callee of 00A2EEE0 is a LuaObject accessor, and 00B673A0 was read and is stack-neutral"
+    },
+    {
+      "subject": "00A31DB0 relative rules",
+      "was": "not documented",
+      "is": "the relative arm re-enters 00A08460 with the identical query instead of the rule's reference pair at +14h/+18h/+1Ch, which it never reads; the memo entry is written only after the computation, so a matching relative rule recurses without bound",
+      "evidence": "00A31EA9..00A31EB7 reads [ESP+10h], [ESP+18h], [ESP+28h] and EBX, all written once in the prologue at 00A31DB6/00A31DBA/00A31DE8/00A31DED; no read of EDI+14h, EDI+18h or EDI+1Ch anywhere in 00A31DB0"
+    }
+  ],
+  "runtime_evidence": "none; bsp_game.exe does not reach these paths, which need a loaded mission script (docs/LUA_BINDING_AI.md records the same)",
+  "build": "scripts/build.ps1 from the worktree: bsp_core, bsp_game and the probes link; reconstructed_math passes",
+  "tests": "no new test case; the existing reconstructed_math suite runs unchanged"
+}
