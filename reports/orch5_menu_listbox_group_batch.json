@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "orch5_menu_listbox_group",
-  "status": "combined_win32_build_existing_tests_and_three_final_library_probes_passed",
+  "status": "promoted_compiled_inputs_verified_and_three_integrated_library_probes_passed",
   "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911",
   "branch": "agent/orch5-20260911",
   "wave_base": "2cdded60f9090658db440f69b9c40ea72fe40538",
@@ -338,5 +338,69 @@
     "Prompt hosts and TacticalLibrary borrowed fields require actual constructed screen storage",
     "Group native numerical comparison shares recovered length/CRT; no independent original CRT or unmasked exception/MXCSR/condition-code proof",
     "Static affine sphere retains previous finite-input and supported x87 control-word domain"
-  ]
+  ],
+  "promoted_validation": {
+    "built_code_commit": "02ea409f780e36b79b37c55ccc71e57cbe759179",
+    "promoted_commit": "666f524ba793171851fd58d81d649f2eb1a7a763",
+    "source_commit": "b8e8d6b4588a1e4ad540f5fa977b93d0d848d083",
+    "changes_after_build": [
+      "docs/COMMAND_COMPLETION.md",
+      "docs/DIRECTOR_UPDATE_ARMS.md",
+      "docs/PILOT_COMMAND_PATH.md",
+      "docs/PLANE_FLIGHT.md",
+      "docs/PLANE_GROUND_OPS.md",
+      "docs/UNIT_MESSAGE_ARMS.md"
+    ],
+    "compiled_inputs_identical_after_promotion": true,
+    "build_passed": true,
+    "tests_passed": 2,
+    "tests_failed": 0,
+    "integration_log": "local/orch5-menu-listbox-group-integration.log",
+    "integration_log_sha256": "b7c37660af4b97b9a79b954f2e2229671c2799d0c19d98988dd5e4eea253138e",
+    "final_library_sha256": "b5c104dab6e49ebc09fc0222504dca889d769b94c81fdac917a316fdeb2913e7",
+    "source_sha256_lf": {
+      "cmake/startup.cmake": "4f46b6a324c01a1f07a5c4e99676170ec67dee0f95c63d8865d35270d2636be8",
+      "include/bsp/frontend_prompts.hpp": "ba11e0c866cb414881296390f7bd4717b3547322055e134eb95e4f2c1a400cb1",
+      "include/bsp/gui_listbox_runtime.hpp": "ae54e1028141528271ba2a1019c8913df2e985cd1299b24872b4c7db4bb06495",
+      "include/bsp/gui_type_dispatch.hpp": "e8c4d8c5e5464c7e97a0a168501fc30d70f90abb0b1dbb8033322886dade2a59",
+      "include/bsp/gui_widget_owner.hpp": "5fc0f3a9004f505dcd20d5b37b75082cf6b170e8679dc4798921c4f89c95756e",
+      "include/bsp/main_menu_command_listener.hpp": "ee49ca2ecb163666e18034568db1bbbeac87266d15e829ff409af5034f24a0af",
+      "include/bsp/main_menu_screens.hpp": "6d3ee2bf2c95088895f0e00955013e427960bb8637d0e44c79409d15fc0c6281",
+      "include/bsp/main_menu_tactical_library.hpp": "db046e1ff128738cf58e1e717290e1ef06ed109eab13b5aed4530494c5f159ca",
+      "include/bsp/native_group_world_sphere.hpp": "f723cc60773bae3528b3b3bc1212db3bb56aa17f1b840081635f02c6c24e61d3",
+      "include/bsp/native_point_light_provider.hpp": "b2c20ccb28cd9f94b53007030c19e4ff604dc1b131153f60f6421957a8cda3d1",
+      "src/frontend_prompts.cpp": "e0f56234f2f89ae80da3367b6a60e5b98445c3a290d2fd549c06f84f5420c41a",
+      "src/gui_listbox_runtime.cpp": "c4202a60b97b52847663f15e03e787fc80d265efe5916bea4ea9ac0ab1f1fd24",
+      "src/gui_type_dispatch.cpp": "c48cc68b224bba19594e962aba85385f3c8ebb283f2dffba41faba34819ce01f",
+      "src/gui_widget_color_dispatch.cpp": "488e0b6e1cb29025e8520c63d552d8d44db88a6b9613935b501be809a3bf1200",
+      "src/gui_widget_owner.cpp": "464e2ab14426160231f4161f40b8a16b0b37026efe015640df6c59405b01fec7",
+      "src/main_menu_command_listener.cpp": "ed2c82a114aebaa9de17903b15103409ebafe2132a81bc95b9a19d1757969647",
+      "src/main_menu_screens.cpp": "eb3ab8a8b4ff0d2b328dc956ed64890fe66134d17a4fa8b7596744c9d0e27869",
+      "src/main_menu_tactical_library.cpp": "4ed227fa2bf51302f513ed3a69f21db3f1c22705e773603409e8f45980871222",
+      "src/native_group_world_sphere.cpp": "0d4fce4c4bab5017cad245584ce45a2567146091d8f838a62567687e04c62b4f",
+      "src/native_point_light_provider.cpp": "cd17f340290fa84b2ba35f534a6024567c47b3e77e7ad2ffd957f0a706ca9aef"
+    },
+    "source_changes_from_initial_wave_build": [
+      "cmake/startup.cmake"
+    ],
+    "source_change_note": "Only shared CMake registry changed among the20 packet source files; concurrent main added its own compiled modules and was built before promotion",
+    "final_library_probes": [
+      {
+        "log": "local/orch5-group-sphere-promoted-probe.log",
+        "sha256": "7fbaa5c19914e5d94744c35665bb09edb2d7ad380e540de7996230fc8b6ce4ca",
+        "passed": true
+      },
+      {
+        "log": "local/orch5-listbox-promoted-probe.log",
+        "sha256": "a39376f4eab2f42c645e6d2ab8ae2e7552857dada227ae32834882632cf4f08e",
+        "passed": true
+      },
+      {
+        "log": "local/orch5-tactical-library-promoted-probe.log",
+        "sha256": "a63444a7975b179f770ff4051785453e735890c6277ce5f64a4c68279d61c821",
+        "passed": true
+      }
+    ],
+    "runtime_scope": "Same three scoped probes rerun against the integrated library; no full menu, render or game validation"
+  }
 }

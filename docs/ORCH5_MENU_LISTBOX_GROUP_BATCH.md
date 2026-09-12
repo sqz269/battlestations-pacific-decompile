@@ -83,3 +83,7 @@ None of these is binary replacement, rendered-screen or gameplay validation.
   establish a complete screen constructor or native record ABI.
 - Continue other current48 child profiles and the complete particle/Text
   spatial provider. Dynamic Group completion does not close those dependencies.
+
+## Promoted validation
+
+Source batch `b8e8d6b4` was integrated with concurrent main and built at `02ea409f780e36b79b37c55ccc71e57cbe759179`: both existing tests passed. The tool promoted `666f524ba793171851fd58d81d649f2eb1a7a763` after a second main update; the six additional files were documentation only. Compiled inputs were identical. All three scoped probes were rerun against that integrated library and passed. The report pins both commits and hashes; this evidence does not apply automatically to future main changes.
