@@ -57,6 +57,7 @@
 #include "bsp/world_entities.hpp"
 #include "bsp/mission_events.hpp"
 #include "bsp/mission_result.hpp"
+#include "bsp/mission_load_hosts.hpp"
 #include "bsp/mission_scene_load.hpp"
 #include "bsp/mission_state_entry.hpp"
 #include "bsp/mission_lua_host.hpp"
@@ -79,6 +80,7 @@
 #include "bsp/unit_parts.hpp"
 #include "bsp/projectile_impact.hpp"
 #include "bsp/blast_damage.hpp"
+#include "bsp/collision_shapes.hpp"
 #include <algorithm>
 #include <cmath>
 #include <memory>
@@ -2466,6 +2468,63 @@ int main() {
             "0041DF40 picks the coarsest layer a slope of 1.0 still clears");
         check(bsp::select_terrain_grid_layer(layers, 0.0f, false) == 0,
             "0041DF88 leaves the first layer in EBX when nothing qualifies");
+    }
+
+    {
+        // 004C3840's round-robin. The risk is the cursor: it lives in the frame
+        // across the whole candidate walk (004C39B0 reads it, 004C3A3C writes it
+        // back), so two units vacated from the same party must land on different
+        // players, and the third must wrap to the first.
+        bsp::MissionSlotBinding slots[4]{};
+        slots[0].present_08 = true;              // bound, party 0
+        slots[1].present_08 = true;              // bound, party 0
+        slots[2].present_08 = true;              // bound, party 1
+        slots[2].party_28 = 1;
+        slots[3].present_08 = true;              // vacant: +9h set, +0Ah clear
+        slots[3].flag_09 = true;
+        bsp::MissionPartyRoster roster =
+            bsp::build_mission_party_roster(slots, 4);
+        check(roster.member_count[0] == 2 && roster.member_count[1] == 1,
+            "004C38A2 enrols the bound slots and drops the one with +9h set and +0Ah clear");
+
+        bsp::PartyOwnerCandidate unit{};
+        unit.active_5c = true;
+        unit.owner_slot_188 = 3;                 // the vacant slot, party 0
+        const bsp::PartyReassignDecision first =
+            bsp::decide_party_reassignment(unit, slots, 4, roster);
+        const bsp::PartyReassignDecision second =
+            bsp::decide_party_reassignment(unit, slots, 4, roster);
+        const bsp::PartyReassignDecision third =
+            bsp::decide_party_reassignment(unit, slots, 4, roster);
+        check(first.action == bsp::PartyReassignAction::kReassign && first.to_slot == 0,
+            "the first unit off a vacant slot goes to its party's first member");
+        check(second.to_slot == 1 && third.to_slot == 0,
+            "004C3A21's remainder advances the cursor and wraps at the member count");
+
+        // A party with no bound player unbinds the owner instead (004C3996).
+        slots[2].flag_09 = true;                 // slot 2 is now vacant too
+        slots[3].party_28 = 1;                   // and the owner slot is party 1
+        bsp::MissionPartyRoster empty_party =
+            bsp::build_mission_party_roster(slots, 4);
+        const bsp::PartyReassignDecision unbound =
+            bsp::decide_party_reassignment(unit, slots, 4, empty_party);
+        check(unbound.action == bsp::PartyReassignAction::kUnbindOwner,
+            "an empty party roster takes the vtable +148h(1FFh, 8) arm");
+    }
+
+    {
+        // 0098AAE0's node reject, 0098AB4B-0098ABA2. Every branch rejects only on
+        // a strict separation, so a sphere that exactly touches the node bounds
+        // still reaches the shape array. An off-by-one to >= here would silently
+        // drop the grazing blast, which is the reason for this case.
+        const float node_min[3] = {0.0f, 0.0f, 0.0f};
+        const float node_max[3] = {10.0f, 10.0f, 10.0f};
+        const float touching[3] = {-2.0f, 5.0f, 5.0f};
+        const float clear[3] = {-3.0f, 5.0f, 5.0f};
+        check(bsp::collision_node_sphere_aabb_overlap(node_min, node_max, touching, 2.0f),
+            "0098AB62 keeps a sphere whose max exactly meets the node min");
+        check(!bsp::collision_node_sphere_aabb_overlap(node_min, node_max, clear, 2.0f),
+            "0098AB62 rejects once the sphere clears the node min");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

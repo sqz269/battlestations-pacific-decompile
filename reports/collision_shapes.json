@@ -1,0 +1,315 @@
+{
+  "packet": "cc2_collision_shapes",
+  "owner": "agent/cc2-collision-shapes",
+  "doc": "docs/COLLISION_SHAPES.md",
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "summary": "The collision shape class set, the seven writers of node+D0h/node+F8h, the shape record layouts, the record append 0098C460 and the pre-gate call 00428800. A fifth shape class, vtable 00CFD768 with the only non-stub sphere test 0070F720, answers a blast; it belongs to the unit part, not to the ship entity whose single shape is the transformed box with a false sphere stub.",
+  "routines": [
+    {
+      "address": "0098aab0",
+      "native": "0098aab0",
+      "name": "BSP_CollisionShape_SetBounds",
+      "body": "0098aab0-0098aada",
+      "abi": "__thiscall(shape in ECX; const float3* min, const float3* max) returning void, RET 0x8 at 0098aada",
+      "coverage": "complete",
+      "evidence": "Six FLD/FSTP pairs write shape+4h,+8h,+0Ch from the first argument (0098aab6, 0098aabf, 0098aac6) and shape+10h,+14h,+18h from the second (0098aacb, 0098aad1, 0098aad8). This fixes the shape record's common prefix."
+    },
+    {
+      "address": "0070f720",
+      "native": "0070f720",
+      "name": "BSP_UnitPartCollisionShape_TestSphere",
+      "body": "0070f720-0070f760",
+      "abi": "__thiscall(shape in ECX; const float3* centre, float radius, HitRecord* record) returning bool in AL, RET 0xc at 0070f760",
+      "coverage": "complete; 00b6db70, 00b6e0d0 and 00723f80 are contracts",
+      "evidence": "Slot 4 of vtable 00CFD768 and the only sphere slot in the program that is not XOR AL,AL; RET 0Ch. Reads the collision body at shape+20h, prepares it through 00b6db70 when bit 1 of body+5Ch is clear (0070f727), forwards (centre, radius, record) to the library query 00b6e0d0 and tails into 00723f80 with this = shape+24h. Argument offsets settled after the two prologue pushes: ESP+14h is the record and ESP+10h the radius at 0070f734, and ESP+14h is the centre after the two argument pushes at 0070f73e."
+    },
+    {
+      "address": "00711020",
+      "native": "00711020",
+      "name": "BSP_UnitPartCollisionShape_CopyConstruct",
+      "body": "00711020-0071106e",
+      "abi": "__cdecl-style(void* dest on the stack, const void* src on the stack) returning dest in EAX, RET 0x8 at 0071106e; ECX is ignored",
+      "coverage": "complete",
+      "evidence": "Writes the base shape vtable 00CE89DC at 0071102f, then the derived vtable 00CFD768 at 00711044. Copies six floats into dest+4h..+18h and three dwords into dest+1Ch (00711035/0071103e), dest+20h (0071104d/00711053) and dest+24h (00711065/0071106b). With 00711460's 0x30-byte list node whose value starts at +8h this fixes the record size at 0x28."
+    },
+    {
+      "address": "00711460",
+      "native": "00711460",
+      "name": "BSP_CollisionShapeList_BuyNode",
+      "body": "00711460-0071149e",
+      "abi": "__thiscall(list in ECX; void* next, void* prev, const void* value) returning the node in EAX, RET 0xc at 0071149c",
+      "coverage": "complete",
+      "evidence": "operator new(0x30) at 00711466, links at node+0h and node+4h, then the shape copy constructor into node+8h at 00711493. Called only by FUN_00712440, which is the unit part's collision build."
+    },
+    {
+      "address": "0098c460",
+      "native": "0098c460",
+      "name": "BSP_HitRecordVector_Append",
+      "body": "0098c460-0098c50e",
+      "abi": "__thiscall(vector in ECX; const HitRecord* record) returning void, RET 0x4 at 0098c4d5 on the fast path",
+      "coverage": "complete; 0098bde0 and 0098c3b0 are contracts",
+      "evidence": "Element stride 0x54: both size computations use IMUL by 30C30C31h with SAR EDX,4 (0098c477-0098c486 and 0098c491-0098c4a0), which is division by 0x54. Vector layout is the MSVC checked container, +0h proxy, +4h first, +8h last, +0Ch end. The spare-capacity path constructs an element in place through 0098bde0 and advances [ESI+8h] by 0x54; the grow path calls 0098c3b0. Neither path stores the source pointer, so the append copies and the caller's 004704b0 at 0098c606 is safe. This answers the contract left open in docs/EXPLOSION_RADIAL_DAMAGE.md."
+    },
+    {
+      "address": "00428800",
+      "native": "00428800",
+      "name": "BSP_Explosion_NotifyBlastSites",
+      "body": "00428800-00428b6d",
+      "abi": "(float radius, float damage) on the stack returning void, RET 0x8 at 00428b6a; ECX is saved to a local at 00428816 and its consumer was not read",
+      "coverage": "partial: 00428803-004288c9 only; 004288ca-00428b6a unread",
+      "evidence": "Only caller is BSP_Explosion_ApplyRadialDamage at 0084bad0, before the world-mode gate. Takes the container at [[00E188A8]+21D0h]+28h (00428803-0042880f) and returns when its size field +8h is zero (00428812). Squares the radius with FLD [ESP+74h]; FMUL ST0 at 00428824 and keeps it at [ESP+10h]. Per element ESI=[EBX+10h], then 0085bf90 over ESI+9Ch and ESI+A8h and an FCOMIP/JBE reject against the squared radius (0042886b-00428890); survivors enter a nested list at ESI+B4h. The damage argument's consumer is unread. Writes nothing through either argument."
+    },
+    {
+      "address": "004e6480",
+      "native": "004e6480",
+      "name": "BSP_CollisionNode_InitFields",
+      "body": "004e6480-004e653b",
+      "abi": "__thiscall(node in ECX) returning void, RET at 004e653b",
+      "coverage": "complete for the shape and child fields",
+      "evidence": "Corrects docs/EXPLOSION_RADIAL_DAMAGE.md: node+F8h shape count is zeroed at 004e64e1, node+FCh is assigned operator new(8) (PUSH 8 at 004e64c9, CALL 00bf55be at 004e64f7, store at 004e64fc), node+100h child count zeroed at 004e64e7 and node+104h is the child capacity 2 at 004e64ed. The children are a growable heap vector, not an inline array; only the shape array at +D0h is inline."
+    },
+    {
+      "address": "0092aae0",
+      "native": "0092aae0",
+      "name": "BSP_TickableGameEntity_InstallCollision",
+      "body": "0092aae0-0092b344",
+      "abi": "__thiscall(entity in ECX; one stack argument) returning void, RET 0x4 at 0092b342",
+      "coverage": "partial: the install and registration tail 0092b280-0092b30c; the geometry build above it is unread",
+      "evidence": "Publishes the transformed box embedded at entity+1A4h into the node embedded at entity+1C4h: the count is read as [ESI+2BCh] (= 0x1C4+0xF8) at 0092b289, the node address taken at 0092b2b3, the box address at 0092b2cb, the store at 0092b2da and the bump ADD [EDI+0F8h],EBX with EBX=1 (set at 0092b050) at 0092b2e1. Exactly one shape is installed. 00929e60 built both subobjects: base shape vtable at entity+1A4h (00929e9d), node base constructor on entity+1C4h (00929eef, 00929f0f), derived box vtable at entity+1A4h (00929f3a)."
+    },
+    {
+      "address": "00712440",
+      "native": "00712440",
+      "name": "BSP_UnitPartCollisionNode_BuildShapes",
+      "body": "00712440-007128b2",
+      "abi": "__thiscall(part collision node in ECX) returning void",
+      "coverage": "partial: the publish loop at 00712700-00712758 and the source vectors at 00712451/00712509; the record decode is unread",
+      "evidence": "Called by BSP_UnitPartInstance_Construct at 007135c0. Iterates the vector at [node+160h]+3Ch from +4h to +8h (00712451, 00712486-00712489) and a 0x10-byte-element vector at node+16Ch..+170h (00712509-00712527, SUB then SAR 4). Per shape it calls 0098aab0 on the list element value at 00712723, then publishes the element address: MOV ECX,[ESI+0F8h] at 00712741, ADD EBX,8 at 00712747, the store at 0071274a and the bump at 00712751. ESI is the node itself here. The producer of the records at [node+160h]+3Ch is unread."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0092b2f9",
+      "native": "0098a920",
+      "function": "0092aae0",
+      "method": "set_node_bounds",
+      "args": "this = the node (EDI); two stack vectors at ESP+0DCh and ESP+0E4h",
+      "ret": "void",
+      "gate": "immediately after the shape install"
+    },
+    {
+      "address": "0092b305",
+      "native": "0042e630",
+      "function": "0092aae0",
+      "method": "spatial_index",
+      "args": "none; the three zeros and the node pushed at 0092b2fe-0092b304 belong to the following call",
+      "ret": "the spatial index in EAX",
+      "gate": "always"
+    },
+    {
+      "address": "0092b30c",
+      "native": "0098ba10",
+      "function": "0092aae0",
+      "method": "insert_node",
+      "args": "this = the index (EAX); node, 0, 0, 0",
+      "ret": "void",
+      "gate": "always"
+    },
+    {
+      "address": "00712723",
+      "native": "0098aab0",
+      "function": "00712440",
+      "method": "set_shape_bounds",
+      "args": "this = EBX+8, the list element value; two stack vectors",
+      "ret": "void",
+      "gate": "per list element, before the publish"
+    },
+    {
+      "address": "00711466",
+      "native": "00bf681b",
+      "function": "00711460",
+      "method": "allocate_list_node",
+      "args": "none; 0x30 bytes",
+      "ret": "the block in EAX, may be null",
+      "gate": "per shape"
+    },
+    {
+      "address": "00711493",
+      "native": "00711020",
+      "function": "00711460",
+      "method": "copy_construct_shape",
+      "args": "ECX = EDI+2 and is ignored; dest = node+8h, src = the third argument",
+      "ret": "dest",
+      "gate": "per shape"
+    },
+    {
+      "address": "0070f72f",
+      "native": "00b6db70",
+      "function": "0070f720",
+      "method": "prepare_body",
+      "args": "this = the collision body at shape+20h",
+      "ret": "void",
+      "gate": "bit 1 of body+5Ch clear"
+    },
+    {
+      "address": "0070f749",
+      "native": "00b6e0d0",
+      "function": "0070f720",
+      "method": "body_sphere_query",
+      "args": "this = shape+20h; centre, radius, record",
+      "ret": "opaque, passed on in EAX",
+      "gate": "always"
+    },
+    {
+      "address": "0070f759",
+      "native": "00723f80",
+      "function": "0070f720",
+      "method": "owner_accept_sphere_hit",
+      "args": "this = shape+24h, the owner; body+F0h and the query result",
+      "ret": "bool in AL, the return of the sphere test",
+      "gate": "always"
+    },
+    {
+      "address": "0098c4c5",
+      "native": "0098bde0",
+      "function": "0098c460",
+      "method": "construct_record",
+      "args": "this = the storage end [vector+8h]; EDX = 1; src, vector, src and a zero flag byte",
+      "ret": "void",
+      "gate": "spare capacity"
+    },
+    {
+      "address": "0098c4f3",
+      "native": "0098c3b0",
+      "function": "0098c460",
+      "method": "insert_record_grow",
+      "args": "this = the vector; a temporary, the vector, the end iterator, src",
+      "ret": "void",
+      "gate": "no spare capacity"
+    },
+    {
+      "address": "006d3dd9",
+      "native": "006d1990",
+      "function": "006d3c10",
+      "method": "build_factory_shape",
+      "args": "this = ECX from EAX; a float and one stack argument",
+      "ret": "the shape in EAX, cached at [ESI+82Ch]",
+      "gate": "the non-null branch; the alternative sets EAX to zero at 006d3de0"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "range": "006d1400-006d141a",
+      "name": "BSP_CollisionNode_AddShape",
+      "note": "The canonical append, __thiscall(node in ECX; shape) RET 4: MOV EAX,[ECX+0F8h]; MOV EDX,[ESP+4]; MOV [ECX+EAX*4+0D0h],EDX; ADD dword [ECX+0F8h],1. No bounds check against the ten slots. A scan of every E8/E9 rel32 in .text finds zero direct calls to it; the six other install sites are this idiom inlined."
+    },
+    {
+      "range": "006d1420-006d142a",
+      "name": "BSP_CollisionNode_ClearShapes",
+      "note": "MOV dword [ECX+0F8h],0; RET. Also never called directly."
+    },
+    {
+      "range": "00747200-00747260",
+      "name": "collision shape republish loop, owner node at [ESI+360h]",
+      "note": "Walks the node's std::list at node+194h (proxy), node+198h (head) and publishes each element value at listnode+8h: MOV EAX,[ESI+360h]; MOV ECX,[EAX+0F8h]; LEA EDX,[EBP+8]; MOV [EAX+ECX*4+0D0h],EDX at 00747244; ADD [EAX+0F8h],1 at 0074724b; MOV EBP,[EBP] and JMP back at 0074725c-0074725f. Ghidra's enclosing candidate 007470b0 does not contain it."
+    },
+    {
+      "range": "00883f88-00883fb8",
+      "name": "subobject shape install, owner node at ESI+1E4h",
+      "note": "MOV ECX,[ESI+2DCh] (= 0x1E4+0xF8) at 00883f88; LEA EDI,[ESI+1E4h]; LEA EAX,[ESI+344h]; MOV [EDI+ECX*4+0D0h],EAX at 00883f9a; ADD [EDI+0F8h],1 at 00883fa1. Corroborates the subobject shape's this+8Ch as entity+3D0h, loaded at 00883fa8. Ghidra's enclosing candidate 00882ac0 does not contain it."
+    },
+    {
+      "range": "00724510-0072453c",
+      "name": "BSP_UnitPartCollisionShape_TraceSegment",
+      "note": "Slot 0 of vtable 00CFD768, RET 0Ch. Reads the node pointer at shape+1Ch and passes node+50h and node+90h, the world and inverse matrices named in include/bsp/spatial_index.hpp, plus the three stack arguments to 00723e90 with this = shape+24h at 00724530; TEST AL,AL; SETNE AL."
+    },
+    {
+      "range": "0070f710-0070f71e",
+      "name": "BSP_UnitPartCollisionShape_Slot8",
+      "note": "MOV ECX,[ECX+24h]; TEST ECX,ECX; JE; JMP 00723840; RET 4. One stack argument, matching the base stub's RET 4. This is the slot-8 body that made the class invisible to a sweep keyed on 004e6470."
+    },
+    {
+      "range": "004e6470-004e6472",
+      "name": "base shape slot 8 stub",
+      "note": "RET 4. Shared by vtables 00CE89DC, 00CEA050, 00CF8B94 and 00D194B8."
+    },
+    {
+      "range": "004f13a0-004f13a4",
+      "name": "subobject shape sphere stub",
+      "note": "XOR AL,AL; RET 0Ch. Slot 4 of 00CEA050."
+    },
+    {
+      "range": "00929ff0-00929ff4",
+      "name": "transformed box sphere stub",
+      "note": "XOR AL,AL; RET 0Ch. Slot 4 of 00D194B8. This is why a ship entity's own node never answers a sphere query."
+    },
+    {
+      "range": "006d30f0-006d30f4",
+      "name": "006D1990 class segment stub",
+      "note": "XOR AL,AL; RET 0Ch. Slot 0 of 00CF8B94."
+    },
+    {
+      "range": "006d3100-006d3104",
+      "name": "006D1990 class sphere stub",
+      "note": "XOR AL,AL; RET 0Ch. Slot 4 of 00CF8B94, a second copy of the same five bytes. This class stubs both geometry slots."
+    }
+  ],
+  "vtables": [
+    {
+      "address": "00ce89dc",
+      "name": "base collision shape",
+      "slots": ["00bf698e __purecall", "00bf698e __purecall", "004e6470"],
+      "writers": ["0071102f", "004f1206", "006d199a", "00929e9d"]
+    },
+    {
+      "address": "00cea050",
+      "name": "subobject shape at entity+344h",
+      "slots": ["0087ff80", "004f13a0", "004e6470"],
+      "writers": ["004f1296", "00882928"]
+    },
+    {
+      "address": "00cf8b94",
+      "name": "the 006D1990 factory shape",
+      "slots": ["006d30f0", "006d3100", "004e6470"],
+      "writers": ["006d19fd"]
+    },
+    {
+      "address": "00cfd768",
+      "name": "unit part collision shape, the only real sphere test",
+      "slots": ["00724510", "0070f720", "0070f710"],
+      "writers": ["00711044"]
+    },
+    {
+      "address": "00d194b8",
+      "name": "transformed box at entity+1A4h",
+      "slots": ["00929b80", "00929ff0", "004e6470"],
+      "writers": ["0092a080", "00929f3a"]
+    },
+    {
+      "address": "00ce89e8",
+      "name": "base collision node",
+      "slots": ["004e6560", "004e6590", "0098b9c0", "0098aae0"],
+      "writers": ["004e6543"]
+    },
+    {
+      "address": "00cfd7b8",
+      "name": "unit part collision node, the only slot-0Ch override",
+      "slots": ["004e6560", "00712fd0", "0098b9c0", "0070f090"],
+      "writers": ["007135fa"]
+    }
+  ],
+  "corrections": [
+    "docs/EXPLOSION_RADIAL_DAMAGE.md calls node+D0h an inline shape array; it is an inline array of shape POINTERS, walked with MOV ECX,[ESI] at 0098abd6 so the element becomes the this of the sphere call.",
+    "The same doc reads node+FCh/+100h as the children. That is right, but +104h is their capacity (2) and the array is heap-allocated by operator new(8) at 004e64f7, not inline.",
+    "The same doc's labelled gap concluded that every resolvable shape class stubs the sphere slot. That enumeration was keyed on the slot-8 stub 004e6470 and on the Ghidra bridge's xrefs, which only reports references from inside functions. Vtable 00CFD768 overrides slot 8 with 0070f710 and its sphere slot 0070f720 is a real test, so the gap is closed and the doc's conclusion that the blast path cannot produce a hull segment index is reopened.",
+    "The same doc could not place the extruded trace 0087fec0: its data reference 00cea174 is a slot inside a large class vtable whose neighbour 00cea170 is 0087f9f0, so 0087fec0 is a virtual method of a larger class and not a three-slot collision shape."
+  ],
+  "unread": [
+    "The producer of the vector at [part collision node+160h]+3Ch, which is where a part's shapes come from; this packet establishes only that BSP_UnitPartCollisionNode_BuildShapes reads them there.",
+    "00428800 beyond 004288c9, and the consumer of its damage argument.",
+    "The record interior of the subobject shape 00CEA050 beyond this+8Ch, and the record of the 00CF8B94 class.",
+    "00b6db70, 00b6e0d0 (the physics library), 00723f80, 00723e90, 00723840, 0098bde0, 0098c3b0, 0098a920, 0098ba10, 0085bf90.",
+    "The owners holding a collision node at +360h and at +19Ch (the two republish loops)."
+  ]
+}
