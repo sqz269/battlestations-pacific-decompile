@@ -1,0 +1,101 @@
+{
+  "packet": "cc2_unit_weapons",
+  "owner": "agent/cc2-unit-weapons",
+  "doc": "docs/UNIT_WEAPON_DEVICES.md",
+  "sources": [
+    "include/bsp/unit_weapons.hpp",
+    "src/unit_weapons.cpp"
+  ],
+  "classification": "discovery plus reconstruction; weapon device layout, stance rule and the forced-fire path",
+  "routines": [
+    { "address": "008be440", "name": "BSP_LuaBinding_GunForceFire", "abi": "__fastcall(ECX = lua_State) -> int result count", "coverage": "complete" },
+    { "address": "008be600", "name": "BSP_LuaBinding_GunForceFireWithAngle", "abi": "__fastcall(ECX = lua_State) -> int result count", "coverage": "complete" },
+    { "address": "008be7e0", "name": "BSP_LuaBinding_HasFired", "abi": "__fastcall(ECX = lua_State) -> int result count", "coverage": "partial: the unit+9D4h fallback gate read from pseudocode only; 006e8250 unread" },
+    { "address": "008a6950", "name": "BSP_LuaBinding_UnitFreeFire", "abi": "__fastcall(ECX = lua_State) -> int result count", "coverage": "complete" },
+    { "address": "008a6ac0", "name": "BSP_LuaBinding_UnitHoldFire", "abi": "__fastcall(ECX = lua_State) -> int result count", "coverage": "complete" },
+    { "address": "008a6490", "name": "BSP_LuaBinding_UnitSetFireStance", "abi": "__fastcall(ECX = lua_State) -> int result count", "coverage": "complete" },
+    { "address": "0089c590", "name": "BSP_LuaBinding_ArtilleryEnable", "abi": "__fastcall(ECX = lua_State) -> int result count", "coverage": "complete" },
+    { "address": "0089c8f0", "name": "BSP_LuaBinding_TorpedoEnable", "abi": "__fastcall(ECX = lua_State) -> int result count", "coverage": "complete" },
+    { "address": "0089eee0", "name": "BSP_LuaBinding_ShipSetTorpedoStock", "abi": "__fastcall(ECX = lua_State) -> int result count", "coverage": "complete" },
+    { "address": "008bed80", "name": "BSP_LuaBinding_GetShipTorpedoes", "abi": "__fastcall(ECX = lua_State) -> int result count", "coverage": "complete" },
+    { "address": "0089a8b0", "name": "BSP_LuaBinding_SetFireTarget", "abi": "__fastcall(ECX = lua_State) -> int result count", "coverage": "partial: three argument branches identified, all three director setter bodies unread" },
+    { "address": "0089c360", "name": "BSP_LuaBinding_GetFireTarget", "abi": "__fastcall(ECX = lua_State) -> int result count", "coverage": "complete" },
+    { "address": "0088dc10", "name": "BSP_LuaBinding_GetFirepower", "abi": "__fastcall(ECX = lua_State) -> int result count", "coverage": "entry only: the firepower computation after the entity fetch is unread" },
+    { "address": "008cf350", "name": "BSP_LuaBinding_GetGun", "abi": "__fastcall(ECX = lua_State) -> int result count", "coverage": "partial: the argument-2 boolean branch is unread" },
+    { "address": "00730160", "name": "BSP_Gun_Fire", "abi": "__thiscall(ECX = gun)(int useExplicitThrow, float throwA, float throwB) -> void, RET 0Ch", "coverage": "partial: ordered from the raw listing; the spread sub-type table 0073031d-0073049c and the spawn callee 0072f830 are unread" },
+    { "address": "0072cf00", "name": "BSP_Gun_SetBarrelReloadTimer", "abi": "__thiscall(ECX = gun)(int barrel, float time, int setFull) -> void, RET 0Ch", "coverage": "partial: the per-barrel effect attach tail after the timer write is unread" },
+    { "address": "0072d520", "name": "BSP_Gun_RearmBarrel", "abi": "__thiscall(ECX = gun)(int barrel, char full) -> void, RET 8", "coverage": "complete" },
+    { "address": "0072e6d0", "name": "BSP_Gun_SetupFromDescriptor", "abi": "__fastcall(ECX = gun) -> void, RET", "coverage": "partial: only the writes to 448h/44Ch/43Ch/450h were read" },
+    { "address": "0072adc0", "name": "BSP_Gun_DebugDumpFields", "abi": "__thiscall(ECX = formatter)(gun in EDI) -> void", "coverage": "partial: read as the name-to-offset source only" },
+    { "address": "0071be80", "name": "BSP_WeaponDirector_SetFireStance", "abi": "__thiscall(ECX = director)(int stance) -> void, RET 4", "coverage": "complete" },
+    { "address": "0071bed0", "name": "BSP_WeaponDirector_HoldFire", "abi": "__fastcall(ECX = director) -> void, RET", "coverage": "complete" },
+    { "address": "0071bf20", "name": "BSP_WeaponDirector_FreeFire", "abi": "__fastcall(ECX = director) -> void, RET", "coverage": "complete" },
+    { "address": "0071dfd0", "name": "BSP_WeaponEnable_SendArtilleryMessage", "abi": "(bool enabled) -> void", "coverage": "complete as a message builder; the receiving handler is unread" },
+    { "address": "0071e0d0", "name": "BSP_WeaponEnable_SendTorpedoMessage", "abi": "(bool enabled) -> void", "coverage": "complete as a message builder; the receiving handler is unread" },
+    { "address": "0081f8b0", "name": "BSP_UnitInstance_SetTorpedoStock", "abi": "__thiscall(ECX = unit)(int stock) -> void", "coverage": "complete" },
+    { "address": "0080e150", "name": "BSP_UnitInstance_WeaponDirector", "abi": "__fastcall(ECX = unit) -> director, RET", "coverage": "complete" },
+    { "address": "007298d0", "name": "BSP_Gun_NextReadyBarrel", "abi": "__thiscall(ECX = gun)(int start) -> int barrel", "coverage": "partial: the scan rule was read through 00730160's use of it" }
+  ],
+  "host_calls": [
+    { "address": "008be500", "native": "00b66c00", "containing": "008be440", "name": "lua_state_owner_construct_borrowed" },
+    { "address": "008be519", "native": "00b679b0", "containing": "008be440", "name": "lua_object_open_call_frame" },
+    { "address": "008be531", "native": "00b677e0", "containing": "008be440", "name": "lua_argument_at" },
+    { "address": "008be540", "native": "00888d20", "containing": "008be440", "name": "entity_from_lua_ptr_field" },
+    { "address": "008be552", "native": "00b67700", "containing": "008be440", "name": "lua_object_destruct" },
+    { "address": "008be56b", "native": "0072cf00", "containing": "008be440", "name": "gun_set_reload_timer", "args": "(barrel, 0.0f, 0)" },
+    { "address": "008be5ad", "native": "gun vtable[1D8h] -> 00730160", "containing": "008be440", "name": "gun_fire", "args": "(1, gun+400h, gun+404h)", "note": "indirect; three dwords pushed, callee pops 12" },
+    { "address": "008be5b3", "native": "00b66400", "containing": "008be440", "name": "lua_result_count" },
+    { "address": "008be6ff", "native": "00888d20", "containing": "008be600", "name": "entity_from_lua_ptr_field" },
+    { "address": "008be722", "native": "00b677e0", "containing": "008be600", "name": "lua_argument_at", "args": "(index 2)" },
+    { "address": "008be73c", "native": "00b677e0", "containing": "008be600", "name": "lua_argument_at", "args": "(index 1)" },
+    { "address": "008be755", "native": "00b66270", "containing": "008be600", "name": "lua_argument_number", "args": "(argument 2)" },
+    { "address": "008be760", "native": "00b66270", "containing": "008be600", "name": "lua_argument_number", "args": "(argument 1)" },
+    { "address": "008be76f", "native": "gun vtable[1D8h] -> 00730160", "containing": "008be600", "name": "gun_fire", "args": "(1, number(arg1), number(arg2))", "note": "indirect" },
+    { "address": "0072d531", "native": "ammo provider vtable[1F4h]", "containing": "0072d520", "name": "ammo_available", "note": "indirect" },
+    { "address": "0072d553", "native": "ammo provider vtable[1F8h]", "containing": "0072d520", "name": "ammo_consume", "note": "indirect" },
+    { "address": "0072d579", "native": "00bd2f10", "containing": "0072d520", "name": "random_in_range", "args": "(fireParams+28h, fireParams+2Ch)" },
+    { "address": "0072d589", "native": "0072cf00", "containing": "0072d520", "name": "gun_set_reload_timer", "args": "(barrel, t, 1)" },
+    { "address": "0072d5a5", "native": "0072cf00", "containing": "0072d520", "name": "gun_set_reload_timer", "args": "(barrel, *00cfdbf8, 0)" },
+    { "address": "0081f95a", "native": "0072d520", "containing": "0081f8b0", "name": "gun_rearm_barrel", "args": "(barrel, 1)" },
+    { "address": "0071be8f", "native": "director vtable[24h]", "containing": "0071be80", "name": "director_stance_allows_fire", "note": "indirect" },
+    { "address": "0071be9d", "native": "director vtable[28h]", "containing": "0071be80", "name": "director_stance_allows_move", "note": "indirect" },
+    { "address": "0071beaf", "native": "director vtable[40h]", "containing": "0071be80", "name": "director_apply_fire_permission", "note": "indirect" },
+    { "address": "0071bf2d", "native": "director vtable[24h]", "containing": "0071bf20", "name": "director_stance_allows_fire", "args": "(1)", "note": "indirect" },
+    { "address": "0071bedd", "native": "director vtable[24h]", "containing": "0071bed0", "name": "director_stance_allows_fire", "args": "(0)", "note": "indirect" }
+  ],
+  "no_ghidra_function": [
+    { "start": "00730160", "end_inclusive": "00730a1b", "role": "gun Fire, vtable 00cfe0a8 slot 1D8h (00cfe280); single epilogue 00730a14 RET 0Ch; read with capstone from local/rawdis.py because FUN_0072f830's body stops at 0073015c" },
+    { "start": "00826d70", "end_inclusive": "00826f0b", "role": "unit vtable 00cfc3d0 slot 1D8h, RET 4; read and discarded, it is not the gun Fire and the arity proves the two slots belong to different classes" }
+  ],
+  "raw_listing_call_sites": [
+    { "site": "00730169", "callee": "004bec00", "role": "input manager singleton, abort gate 1" },
+    { "site": "007301c4", "callee": "00b6db70", "role": "refresh the firing node's world matrix" },
+    { "site": "00730259", "callee": "gun vtable[5Ch] (24h)", "role": "muzzle query" },
+    { "site": "007302bb", "callee": "007298d0", "role": "next ready barrel" },
+    { "site": "007309e8", "callee": "0072d520", "role": "consume a round and re-arm the fired barrel" },
+    { "site": "00730840", "callee": "0072f830", "role": "projectile spawn, delay-group flag 1" },
+    { "site": "00730978", "callee": "0072f830", "role": "projectile spawn, delay-group flag 0" }
+  ],
+  "record_layouts": {
+    "gun_device": "3D4h barrel records, 3E4h per-barrel objects, 3F0h ammo provider, 3F4h weapon class (80h = type id, 7 = torpedo), 3F8h fire params, 400h throwA, 404h throwB, 414h reload timers, 418h reload durations, 43Ch delayGroupSize, 440h delayGroupIndex, 444h delayGroupCnt, 448h barrelNum, 44Ch nextFireBarrel, 450h barrelDelayTime, 454h contFiring",
+    "gun_barrel": "stride 14h; +4h dist, +8h speed, +Ch DT; +0h and +10h unnamed",
+    "unit": "3CCh device root count, 3D0h five-slot root array, 738h weapon director, 104Ch spare torpedo stock",
+    "names_from": "0072adc0 debug dump, literal strings at 00cfdeb8 barrelNum through 00cfdf78 _gun"
+  },
+  "canonical_storage": [
+    "gun device record offsets as constants",
+    "per-barrel record as a struct with the dump routine's names",
+    "fire stance as an enum with the two script-documented predicates",
+    "weapon enable as a session message value, not a field write"
+  ],
+  "remaining": [
+    "which classes answer vtable[5Ch](20h): siblings 00cfe308, 00cfe548, 00cfbd20, 00cfbf58, 00cfc190",
+    "the two unnamed dwords of the 14h barrel record",
+    "gun+3B4h delay-group block: no reader outside 00730160",
+    "planes' bombs and torpedoes",
+    "the receiving handler of session message kind 5Ah sub-kinds 3 and 5"
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "validation": "MSVC Win32 C++17 /W4 /WX build through scripts/build.ps1 and the existing reconstructed_math CTest passed; no new test added"
+}
