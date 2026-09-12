@@ -116,7 +116,7 @@ bool ship_ai_avoid_query_refresh_009d7050(ShipAiAvoidZoneSearcher& cache,
     if (minimum_above(half_z)) half_z=500.0f;
 
     const float x=spill(query.x);
-    cache.min_x=subtract(x,half_x); //009D71F1, before reading/spilling query z.
+    cache.min_x=subtract(x,half_x); //009D71F1 precedes the native z spill at009D71F5.
     const float z=spill(query.z);
     const float low_z=subtract(z,half_z);
     const float high_x=add(x,half_x),high_z=add(z,half_z);

@@ -43,6 +43,11 @@ No native manager publication ABI is implied by this process adapter.
 The Win32 build and both existing tests pass. The ignored native differential
 fixture and loaded-map probe are recorded in the associated reports; no tracked
 test suite was added. See also `SHIP_AI_AVOID_ZONE_SEARCH_PROOF.md` when present.
+The comparison covers float bits, cache/list/node state and callback order under
+masked x87 exceptions. Output control/status words, TOP and MXCSR are not
+compared. Unmasked fault sequencing is outside the claim: for example native
+009D71EE reads query z before the min_x store, although its spill follows that
+store at009D71F5. Both known callers supply disjoint records.
 
 ## Runtime connection still required
 
