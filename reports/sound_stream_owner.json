@@ -702,5 +702,21 @@
     "game_validation": false,
     "original_abi_replacement": false,
     "ghidra_mutations": false
+  },
+  "integration": {
+    "prototypes": "reports/sound_stream_owner_prototypes.json",
+    "annotation_and_export_completed": true,
+    "strict_win32_release": true,
+    "existing_ctests_passed": 2,
+    "game_validated": false,
+    "flow_report": "reports/sound_stream_owner_flow.json",
+    "interior_gaps_repaired": [
+      "00a865b3",
+      "00a87b45"
+    ],
+    "decoded_tails_with_incomplete_stored_bodies": [
+      "00a87390",
+      "00a86990"
+    ]
   }
 }

@@ -534,5 +534,13 @@
     "String allocation and current-CRT comparison remain existing library service boundaries; no original VC2005 locale/pool equivalence claim.",
     "A783F0 allocator-null branch is retained although supplied actual operator-new service throws on exhausted allocation.",
     "No game or audible-playback evidence."
-  ]
+  ],
+  "integration": {
+    "prototypes": "reports/sound_dialog_logical_prototypes.json",
+    "annotation_and_export_completed": true,
+    "strict_win32_release": true,
+    "existing_ctests_passed": 2,
+    "game_validated": false,
+    "function_definitions": "reports/sound_dialog_logical_function_definitions.json"
+  }
 }

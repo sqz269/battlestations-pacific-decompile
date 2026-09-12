@@ -49,7 +49,8 @@ std::int32_t find_sound_dialog_record_00a865f0(void* actual_table,
     const void* actual_name_header) noexcept;
 
 // Originally no arguments, ST0 float, RET; read CURRENT F8BBCC+218/+21C.
-// Not yet Ghidra functions: RET at A7782B/A7783B, end exclusive2C/3C.
+// Initially missing Ghidra starts, now defined: RET at A7782B/A7783B,
+// end exclusive2C/3C. Signature and original bytes recorded during integration.
 float sound_dialog_primary_gain_00a77820(void* volatile& global_00f8bbcc) noexcept;
 float sound_dialog_secondary_gain_00a77830(void* volatile& global_00f8bbcc) noexcept;
 

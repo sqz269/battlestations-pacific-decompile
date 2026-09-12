@@ -468,5 +468,566 @@
     "Non-loop EOF state3 retains sound/channel handles and stop preserves them; FMOD system must outlive native stream owner drain.",
     "Function naming and missing A87B60 start were recorded without Ghidra mutation.",
     "Typed source is not binary replacement except separately bound row arithmetic; CRT overlong-format undefined behavior is outside valid domain."
-  ]
+  ],
+  "native_calls": [
+    {
+      "address": "00a87503",
+      "native": "00a86150",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a8759c",
+      "native": "00415510",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a875bb",
+      "native": "00a86b40",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a875c9",
+      "native": "00c2de36",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a875d7",
+      "native": "00c2dde8",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a875f7",
+      "native": "00426500",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a87617",
+      "native": "00bd1a60",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a8761e",
+      "native": "00bd1a20",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a87625",
+      "native": "00bd1a60",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a87636",
+      "native": "00425f80",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a8765b",
+      "native": "00426500",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a87673",
+      "native": "00bd1a60",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a8767a",
+      "native": "00bd1a20",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a8768b",
+      "native": "00425f80",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a87692",
+      "native": "00a86bf0",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a876ab",
+      "native": "00a86b40",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a876bd",
+      "native": "00426500",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a876ec",
+      "native": "00bd1a60",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a876f3",
+      "native": "00bd1a20",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a876fa",
+      "native": "00bd1a60",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a87701",
+      "native": "00bd1bb0",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a87708",
+      "native": "00bd1a60",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a8770f",
+      "native": "00bd1bb0",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a87720",
+      "native": "00425f80",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a87736",
+      "native": "00c2deba",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a87743",
+      "native": "00a86de0",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a87750",
+      "native": "00a86150",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a8775e",
+      "native": "00c2de36",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a8777a",
+      "native": "00426500",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a87792",
+      "native": "00bd1a60",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a87799",
+      "native": "00bd1a20",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a877aa",
+      "native": "00425f80",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a877b1",
+      "native": "00a86bf0",
+      "caller": "00a874d0"
+    },
+    {
+      "address": "00a861d4",
+      "native": "00a85b50",
+      "caller": "00a86150"
+    },
+    {
+      "address": "00a86419",
+      "native": "00bf79f0",
+      "caller": "00a86150"
+    },
+    {
+      "address": "00a8642e",
+      "native": "00c2decc",
+      "caller": "00a86150"
+    },
+    {
+      "address": "00a86440",
+      "native": "00c2decc",
+      "caller": "00a86150"
+    },
+    {
+      "address": "00a86452",
+      "native": "00c2decc",
+      "caller": "00a86150"
+    },
+    {
+      "address": "00a86464",
+      "native": "00c2decc",
+      "caller": "00a86150"
+    },
+    {
+      "address": "00a8647e",
+      "native": "00c2decc",
+      "caller": "00a86150"
+    },
+    {
+      "address": "00a86498",
+      "native": "00c2decc",
+      "caller": "00a86150"
+    },
+    {
+      "address": "00a864bb",
+      "native": "00c2decc",
+      "caller": "00a86150"
+    },
+    {
+      "address": "00a864de",
+      "native": "00c2decc",
+      "caller": "00a86150"
+    },
+    {
+      "address": "00a86b7b",
+      "native": "00c2ded8",
+      "caller": "00a86b40"
+    },
+    {
+      "address": "00a86b8d",
+      "native": "00c2dec6",
+      "caller": "00a86b40"
+    },
+    {
+      "address": "00a86b9d",
+      "native": "00426500",
+      "caller": "00a86b40"
+    },
+    {
+      "address": "00a86bb5",
+      "native": "00bd1a60",
+      "caller": "00a86b40"
+    },
+    {
+      "address": "00a86bbc",
+      "native": "00bd1a20",
+      "caller": "00a86b40"
+    },
+    {
+      "address": "00a86bcd",
+      "native": "00425f80",
+      "caller": "00a86b40"
+    },
+    {
+      "address": "00a86bd4",
+      "native": "00a86bf0",
+      "caller": "00a86b40"
+    },
+    {
+      "address": "00a86c1b",
+      "native": "00a86b40",
+      "caller": "00a86bf0"
+    },
+    {
+      "address": "00a86c3a",
+      "native": "00a86b40",
+      "caller": "00a86bf0"
+    },
+    {
+      "address": "00a86c5d",
+      "native": "00426500",
+      "caller": "00a86bf0"
+    },
+    {
+      "address": "00a86c76",
+      "native": "00bd1a60",
+      "caller": "00a86bf0"
+    },
+    {
+      "address": "00a86c7d",
+      "native": "00bd1a20",
+      "caller": "00a86bf0"
+    },
+    {
+      "address": "00a86c84",
+      "native": "00bd1a60",
+      "caller": "00a86bf0"
+    },
+    {
+      "address": "00a86c94",
+      "native": "00425f80",
+      "caller": "00a86bf0"
+    },
+    {
+      "address": "00a86ca7",
+      "native": "00c2de18",
+      "caller": "00a86bf0"
+    },
+    {
+      "address": "00a86cb0",
+      "native": "00426500",
+      "caller": "00a86bf0"
+    },
+    {
+      "address": "00a86cc7",
+      "native": "00bd1a60",
+      "caller": "00a86bf0"
+    },
+    {
+      "address": "00a86cce",
+      "native": "00bd1ca0",
+      "caller": "00a86bf0"
+    },
+    {
+      "address": "00a86cdb",
+      "native": "00425f80",
+      "caller": "00a86bf0"
+    },
+    {
+      "address": "00a86d01",
+      "native": "00426500",
+      "caller": "00a86bf0"
+    },
+    {
+      "address": "00a86d18",
+      "native": "00bd1a60",
+      "caller": "00a86bf0"
+    },
+    {
+      "address": "00a86d1f",
+      "native": "00bd1ca0",
+      "caller": "00a86bf0"
+    },
+    {
+      "address": "00a86d2c",
+      "native": "00425f80",
+      "caller": "00a86bf0"
+    },
+    {
+      "address": "00a86d39",
+      "native": "00c2de0c",
+      "caller": "00a86bf0"
+    },
+    {
+      "address": "00a86d49",
+      "native": "00c2dec6",
+      "caller": "00a86bf0"
+    },
+    {
+      "address": "00a86d5e",
+      "native": "00a7a460",
+      "caller": "00a86bf0"
+    },
+    {
+      "address": "00a86d6c",
+      "native": "00426500",
+      "caller": "00a86bf0"
+    },
+    {
+      "address": "00a86d85",
+      "native": "00bd1a60",
+      "caller": "00a86bf0"
+    },
+    {
+      "address": "00a86d8c",
+      "native": "00bd1a20",
+      "caller": "00a86bf0"
+    },
+    {
+      "address": "00a86d93",
+      "native": "00bd1a60",
+      "caller": "00a86bf0"
+    },
+    {
+      "address": "00a86da4",
+      "native": "00425f80",
+      "caller": "00a86bf0"
+    },
+    {
+      "address": "00a86e01",
+      "native": "00426500",
+      "caller": "00a86de0"
+    },
+    {
+      "address": "00a86e19",
+      "native": "00bd1a60",
+      "caller": "00a86de0"
+    },
+    {
+      "address": "00a86e20",
+      "native": "00bd1a20",
+      "caller": "00a86de0"
+    },
+    {
+      "address": "00a86e31",
+      "native": "00425f80",
+      "caller": "00a86de0"
+    },
+    {
+      "address": "00a86e4c",
+      "native": "00c2de00",
+      "caller": "00a86de0"
+    },
+    {
+      "address": "00a86e61",
+      "native": "00a7a460",
+      "caller": "00a86de0"
+    },
+    {
+      "address": "00a86e6b",
+      "native": "00c2deea",
+      "caller": "00a86de0"
+    },
+    {
+      "address": "00a86e88",
+      "native": "00c2dee4",
+      "caller": "00a86de0"
+    },
+    {
+      "address": "00a86e9d",
+      "native": "00a7a460",
+      "caller": "00a86de0"
+    },
+    {
+      "address": "00a86eac",
+      "native": "00426500",
+      "caller": "00a86de0"
+    },
+    {
+      "address": "00a86eca",
+      "native": "00bd1a60",
+      "caller": "00a86de0"
+    },
+    {
+      "address": "00a86ed1",
+      "native": "00bd1a20",
+      "caller": "00a86de0"
+    },
+    {
+      "address": "00a86ed8",
+      "native": "00bd1a60",
+      "caller": "00a86de0"
+    },
+    {
+      "address": "00a86edf",
+      "native": "00bd1ca0",
+      "caller": "00a86de0"
+    },
+    {
+      "address": "00a86ef0",
+      "native": "00425f80",
+      "caller": "00a86de0"
+    },
+    {
+      "address": "00a86efe",
+      "native": "00c2dede",
+      "caller": "00a86de0"
+    },
+    {
+      "address": "00a86f13",
+      "native": "00a7a460",
+      "caller": "00a86de0"
+    },
+    {
+      "address": "00a867d7",
+      "native": "00a865f0",
+      "caller": "00a867b0"
+    },
+    {
+      "address": "00a86888",
+      "native": "00c2ded2",
+      "caller": "00a867b0"
+    },
+    {
+      "address": "00a8689d",
+      "native": "00a7a460",
+      "caller": "00a867b0"
+    },
+    {
+      "address": "00bd1be7",
+      "native": "00bf7a6a",
+      "caller": "00bd1bb0"
+    },
+    {
+      "address": "00bd1c12",
+      "native": "0041dd40",
+      "caller": "00bd1bb0"
+    },
+    {
+      "address": "00bd1c2d",
+      "native": "00bf7680",
+      "caller": "00bd1bb0"
+    },
+    {
+      "address": "00bd1c47",
+      "native": "0041dd40",
+      "caller": "00bd1bb0"
+    },
+    {
+      "address": "00bd1c54",
+      "native": "00bf7680",
+      "caller": "00bd1bb0"
+    },
+    {
+      "address": "00bd1c71",
+      "native": "00419cc0",
+      "caller": "00bd1bb0"
+    },
+    {
+      "address": "00bd1c78",
+      "native": "00bd1510",
+      "caller": "00bd1bb0"
+    },
+    {
+      "address": "00bd1cd7",
+      "native": "00bf7a6a",
+      "caller": "00bd1ca0"
+    },
+    {
+      "address": "00bd1d02",
+      "native": "0041dd40",
+      "caller": "00bd1ca0"
+    },
+    {
+      "address": "00bd1d1d",
+      "native": "00bf7680",
+      "caller": "00bd1ca0"
+    },
+    {
+      "address": "00bd1d37",
+      "native": "0041dd40",
+      "caller": "00bd1ca0"
+    },
+    {
+      "address": "00bd1d44",
+      "native": "00bf7680",
+      "caller": "00bd1ca0"
+    },
+    {
+      "address": "00bd1d61",
+      "native": "00419cc0",
+      "caller": "00bd1ca0"
+    },
+    {
+      "address": "00bd1d68",
+      "native": "00bd1510",
+      "caller": "00bd1ca0"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00a87b60",
+      "last_instruction": "00a87b66",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a87b67",
+      "status": "initially missing; now defined and exported",
+      "record": "reports/sound_stream_runtime_function_definitions.json"
+    }
+  ],
+  "integration": {
+    "prototypes": "reports/sound_stream_runtime_prototypes.json",
+    "annotation_and_export_completed": true,
+    "strict_win32_release": true,
+    "existing_ctests_passed": 2,
+    "installed_byte_output_probe": true,
+    "game_validated": false,
+    "review": "sound_startup_y independently matched owner/state paths; EOF handle retention preserved"
+  }
 }
