@@ -321,3 +321,9 @@ read at all.
 * `ship_motion_subupdates` - addresses `00825450`, `00826187..00826866`; files
   `docs/SHIP_MOTION_SUBUPDATES.md`. The wake, anchor and attachment blocks this packet
   labelled partial.
+
+## Correction from docs/SUBMARINE_MODEL.md (packet cc2_submarine_model)
+
+- **Was:** 0085542F, the routine starting 00855420, no Ghidra function, forwards its own [ESP+4] float.
+  **Is:** That routine is the submarine's motion tick, slot +8h of the +310h sub-object vtable 00D0BF3C (00855420 against the ship's 00825F20 at 00CFC394). Its this is unit+310h, and after the base call it runs a 13-step seabed-clearance scan and then the submarine's air and crush-depth models.
+  **Evidence:** the vtable diff of 00D0BF3C against 00CFC38C over 40 slots, LEA EBP,[ESI-310h] at 00855775, and the two tail calls at 0085591c and 0085592b with ECX = EBP.

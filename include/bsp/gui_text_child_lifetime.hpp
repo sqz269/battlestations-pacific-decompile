@@ -37,8 +37,9 @@ public:
     // then preserves only the wrapper allocation for explicit later disposal.
     // flags1 requires transferred ownership or an existing owning parent entry.
     void delete_text_child_virtual4(GuiLayoutWidget&, std::uint32_t flags) override;
-    // Current4 over the same Group/Text owner and allocation domain. Group
-    // AC73E0 has no derived resource tail before AA9730. Other profiles reject.
+    // Current4 over the same Group/Text/Section owner and allocation domain.
+    // Group has no derived tail; Section releases texture/string before AA9730.
+    // Source GUI pools and unsupported derived profiles remain explicit limits.
     void delete_widget_virtual4(GuiLayoutWidget&, std::uint32_t flags);
 
     // Transfer an ordinary live detached handle for reattachment, or completed

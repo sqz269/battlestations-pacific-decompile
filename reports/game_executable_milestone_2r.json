@@ -1,0 +1,1282 @@
+{
+  "packet": "cc_exe_2r",
+  "owner": "agent/cc-exe-2r",
+  "milestone": "2r: the hull the game builds, the navigation block's class values, the whole path follower, and six attackmove ships steering on their own",
+  "doc": "docs/GAME_EXECUTABLE.md",
+  "ghidra": "read-only for this packet: no renames, comments, prototypes, function creation or saves. Project C:/Users/sqz269/bsp.gpr, program /battlestationspacific.exe",
+  "sources": [
+    "src/game_hosts_units.cpp",
+    "include/bsp/game_hosts_units.hpp",
+    "src/game_hosts_ship_ai.cpp",
+    "include/bsp/game_hosts_ship_ai.hpp",
+    "src/game_hosts_lua.cpp",
+    "include/bsp/game_hosts_lua.hpp",
+    "docs/GAME_EXECUTABLE.md",
+    "reports/game_executable_milestone_2r.json"
+  ],
+  "run": {
+    "command": "bsp_game.exe --frames 700 --press-start-frame 30 --menu-select USN02 --mission-frames 500 --mission-frame-seconds 0.05 --mission-complete-frame 490 --order moveto:Java --order-unit Kortenaer --order-frame 5 --trajectory-csv local/traj_2r_all.csv --log local/run_2r_all.log --game-root \"I:/SteamLibrary/steamapps/common/Battlestations Pacific\"",
+    "exit": 0,
+    "host_methods_concrete": 602,
+    "host_methods_unimplemented": 493,
+    "baseline_2q_on_this_branch": {
+      "command": "the same line on the base commit a6a17386 / fcf8b17a",
+      "host_methods_concrete": 571,
+      "host_methods_unimplemented": 483,
+      "log": "local/run_2r_base.log"
+    },
+    "variants": {
+      "no_order": {
+        "concrete": 587,
+        "unimplemented": 487,
+        "log": "local/run_2r_noorder.log"
+      },
+      "ai_drive_retired": {
+        "concrete": 602,
+        "unimplemented": 493,
+        "log": "local/run_2r_aidrive.log",
+        "note": "identical to the run without the switch, which is what retiring it means"
+      },
+      "frames_1200": {
+        "concrete": 597,
+        "unimplemented": 484,
+        "log": "local/run_2r_long.log"
+      },
+      "frames_3000": {
+        "log": "local/run_2r_conv.log",
+        "note": "the drift table's source"
+      },
+      "title_120": {
+        "concrete": 155,
+        "unimplemented": 79,
+        "log": "local/run_2r_120.log",
+        "matches": "milestones 2o, 2p, 2q"
+      },
+      "title_40": {
+        "concrete": 130,
+        "unimplemented": 48,
+        "log": "local/run_2r_40.log",
+        "matches": "milestones 2o, 2p, 2q"
+      },
+      "vfs_probe_present": {
+        "exit": 0,
+        "log": "local/run_2r_vfs_ok.log"
+      },
+      "vfs_probe_absent": {
+        "exit": 3,
+        "log": "local/run_2r_vfs_bad.log"
+      }
+    }
+  },
+  "hull_body_steps": [
+    {
+      "method": "UnitController::build_sub_objects_and_hull_body",
+      "address": "00939e2a",
+      "native": "00937c90",
+      "function": "00939cb0",
+      "status": "concrete",
+      "note": "The controller constructor's last call. Its tail 009399C0..00939C05 is the writer of controller+2Ch. docs/SHIP_HULL_BODY.md."
+    },
+    {
+      "method": "ShipHullBody::refresh_unit_matrix_00414db0",
+      "address": "009399d2",
+      "native": "00414db0",
+      "function": "00937c90",
+      "status": "record",
+      "note": "Taken only when unit+C8h is clear; this process holds the byte set, so the refresh is not needed and the call is not made."
+    },
+    {
+      "method": "ShipHullBody::copy_transform_00c336c0",
+      "address": "009399e5",
+      "native": "00c336c0",
+      "function": "00937c90",
+      "status": "concrete",
+      "note": "unit+CCh into the descriptor's +14h as a 3x4, dropping the fourth column. Reconstructed inside ship_hull_body_descriptor_009399c0."
+    },
+    {
+      "method": "ShipHullBody::create_body_00c5d580",
+      "address": "00939a6f",
+      "native": "00c5d580",
+      "function": "00937c90",
+      "status": "concrete",
+      "note": "Dyn::World::CreateBody. The pool bookkeeping and broad-phase links are not projected; what the executable runs is 00C43CA0's initialisation of the body and motion state from the descriptor."
+    },
+    {
+      "method": "ShipHullBody::read_back_aabb_00c31f90",
+      "address": "00939a89",
+      "native": "00c31f90",
+      "function": "00937c90",
+      "status": "record",
+      "note": "B+38h / B+44h, the AABB the attached collision shapes produced. Their producer 00C5C940 is unread, so this process attaches none and the span is zero, which 00939C05 turns into a zero inertia and 00C37E70 into a zero inverse inertia."
+    },
+    {
+      "method": "ShipHullBody::set_inertia_00c37e70",
+      "address": "00939c05",
+      "native": "00c37e70",
+      "function": "00937c90",
+      "status": "concrete",
+      "note": "The solid-box inertia scaled per axis by the physics material's NyomatekSzorzo. With a zero AABB the tensor is zero."
+    },
+    {
+      "method": "ShipMotion::force_model_00937440",
+      "address": "00826a6d",
+      "native": "00937440",
+      "function": "00825f20",
+      "status": "concrete",
+      "note": "The ship force model. Milestone 2r gives it a real class+B0h mass at last (7688 for the DeRuyter class), but settings+588h has no producer here, so the torque is still zero and nothing applies it."
+    },
+    {
+      "method": "ShipMotion::hydro_forces_009329c0",
+      "address": "00937622",
+      "native": "009329c0",
+      "function": "00937440",
+      "status": "record",
+      "note": "THE ROUTINE THIS MILESTONE NAMES. 00937440's tail. 009329C0 BSP_UnitController_ApplyHydroForces, body 009329C0-00933BA9, unreconstructed. It is the only code on a hull's path that writes the body's linear velocity outside 0092D300: 009329EC calls 00C37E50 and 00932A0E calls 00C37E20. It reads eight floats out of the physics material record at settings+4E0h + material*38h (00932A96..00932B3F, with EDI = material*38h formed at 00932A82..00932A8F from the same class+B0h against 100.0 test 00937CF1 makes) and samples the water height at 00932D6B. Its absence, not the hull body, is why a turning ship's lateral velocity is never removed."
+    }
+  ],
+  "nav_block_steps": [
+    {
+      "method": "ShipAiNavBlock::construct_009e4330",
+      "address": "009f118d",
+      "native": "009e4330",
+      "function": "009f1160",
+      "status": "concrete",
+      "note": "Once per brain record, on the inline sub-object at brain+8h. The executable runs it once per created unit at registration, which is the only moment it can: no brain record is built here, and 009F1160 is the routine that would."
+    },
+    {
+      "method": "ShipAiNavBlock::seed_steering_009dfcb0",
+      "address": "009e43cc",
+      "native": "009dfcb0",
+      "function": "009e4330",
+      "status": "concrete",
+      "note": "ECX = blk+1C4h, so the stores land on blk+3C4h..+3E4h. Only that window is projected; the rest of the body is recorded with the same address."
+    },
+    {
+      "method": "ShipAiNavBlock::class_turn_circle_full_0082e960",
+      "address": "009e44c4",
+      "native": "0082e960",
+      "function": "009e4330",
+      "status": "concrete",
+      "note": "0082E960(class, 1.0f): the rudder curve 0082E890 over ShipGlobals[\"Navigator\"][\"TurnMultipliers\"] times class+520h. blk+3C8h."
+    },
+    {
+      "method": "ShipAiNavBlock::class_turn_circle_cruise_0082e960",
+      "address": "009e4555",
+      "native": "0082e960",
+      "function": "009e4330",
+      "status": "concrete",
+      "note": "0082E960(class, 0.9f). blk+3CCh."
+    },
+    {
+      "method": "ShipAiNavBlock::sqrt_00bf7030",
+      "address": "009e45f3",
+      "native": "00bf7030",
+      "function": "009e4330",
+      "status": "concrete",
+      "note": "The CRT square root behind blk+1B8h. No domain guard in the native; the projection returns 0 for a negative radicand and no shipped ship row reaches one."
+    },
+    {
+      "method": "ShipAiNavBlock::uniform_00bd2f10",
+      "address": "009e465f",
+      "native": "00bd2f10",
+      "function": "009e4330",
+      "status": "record",
+      "note": "The random draw 009E4669 negates into blk+148h, a field with no traced reader. No random stream exists in this process; the low end is taken."
+    },
+    {
+      "method": "ShipAiNavBlock::build_sector_shapes_009e0270",
+      "address": "009e46a9",
+      "native": "009e0270",
+      "function": "009e4330",
+      "status": "record",
+      "note": "The construction-time sector-shape build. The per-step refresh 009EF230 is wired; this one is recorded, and with it blk+19Ch / +1A0h from 009DE2F0."
+    },
+    {
+      "method": "ShipAiArmTail::nav_tuning_009e4330",
+      "address": "009f118d",
+      "native": "009e4330",
+      "function": "009f1160",
+      "status": "concrete",
+      "note": "The consumer side: blk+3CCh, +3D4h, +3D8h and +604h reach the arm tail 009EEAAB as the constructor wrote them instead of as zeroes. That closes milestone 2q's correction 8."
+    }
+  ],
+  "path_follower_steps": [
+    {
+      "method": "ShipAiPath::next_point_009e3c00",
+      "address": "009ee5f4",
+      "native": "009e3c00",
+      "function": "009ed6b0",
+      "status": "concrete",
+      "note": "Milestone 2r replaces milestone 2q's partial projection with packet cc_ai_path_follower's whole-body one, so the corner arm 009E3F1A..009E4222, the shortcut clearance test and the cursor advance at 009E421F are code rather than records."
+    },
+    {
+      "method": "ShipAiPathFollower::lateral_anchor_node_10",
+      "address": "009e3d8c",
+      "native": "009e3d8c",
+      "function": "009e3c00",
+      "status": "record",
+      "kind": "field_read",
+      "note": "A dereference of node+10h, not a call. No node of an unzoned plan carries a lateral record."
+    },
+    {
+      "method": "ShipAiPathFollower::order_turn_limit_00811d80",
+      "address": "009e3dcd",
+      "native": "00811d80",
+      "function": "009e3c00",
+      "status": "record",
+      "note": "Reached only inside the lateral-anchor arm, which no node of this mission enters, so the call is not made. The executable holds the four published fields of the order slot and not the two sub-records 00811D80 searches, so its answer would be the routine's own 30.0f whatever the position."
+    },
+    {
+      "method": "ShipAiPathFollower::class_turn_radius_0082e850",
+      "address": "009e3eae",
+      "native": "0082e850",
+      "function": "009e3c00",
+      "status": "concrete",
+      "note": "class+520h. Milestone 2q recorded this because no packet had read its writer; packet ship_ai_class_field_0524 has, and the units host answers with 00828F20's derived field."
+    },
+    {
+      "method": "ShipAiPathFollower::owner_length_09c8",
+      "address": "009e3ec0",
+      "native": "009e3ec0",
+      "function": "009e3c00",
+      "status": "concrete",
+      "kind": "field_read",
+      "note": "[plan+3Ch]+9C8h. Its producers are 0081106E and 0081FA4D; with no model box at [class+50h] the fallback copies the descriptor's +A0h Length, which this milestone reads out of the installed VehicleClass row."
+    },
+    {
+      "method": "ShipAiPathFollower::avoid_zone_manager_004218e0",
+      "address": "009e4200",
+      "native": "004218e0",
+      "function": "009e3c00",
+      "status": "record",
+      "note": "The avoid-zone manager singleton, packet cc_ai_avoid_zones's."
+    },
+    {
+      "method": "ShipAiPathFollower::segment_hits_zone_00417ef0",
+      "address": "009e4216",
+      "native": "00417ef0",
+      "function": "009e3c00",
+      "status": "record",
+      "note": "The shortcut clearance test. With a null manager it is never asked."
+    }
+  ],
+  "clearance_steps": [
+    {
+      "method": "ShipAi::refresh_turn_clearance_009ef910",
+      "address": "009f4d87",
+      "native": "009ef910",
+      "function": "009f4d10",
+      "status": "concrete",
+      "note": "The unconditional call the publish makes, one chain slot before the drive whose danger ramp divides blk+37Ch by unit+9CCh. Milestone 2q recorded it and left blk+37Ch at zero, which pinned every navigating ship at danger 1.0 and at the AutoThrust slow floor."
+    },
+    {
+      "method": "ShipAiClearance::hull_heading_vtable50",
+      "address": "009ef97c",
+      "native": "009ef97c",
+      "function": "009ef910",
+      "status": "concrete",
+      "kind": "indirect",
+      "note": "CALL EDX on the unit's vtable slot 50h."
+    },
+    {
+      "method": "ShipAiClearance::category_enabled_009ec770",
+      "address": "009efa08",
+      "native": "009ec770",
+      "function": "009ef910",
+      "status": "record",
+      "note": "Needs the unit's gameplay object byte +241h and the settings byte +4h, neither with a producer here."
+    },
+    {
+      "method": "ShipAiClearance::avoidance_enabled_0080e160",
+      "address": "009efcb8",
+      "native": "0080e160",
+      "function": "009ef910",
+      "status": "record",
+      "note": "unit+738h then the byte at +242h."
+    },
+    {
+      "method": "ShipAiClearance::static_zone_blocks_009d57e0",
+      "address": "009efd00",
+      "native": "009d57e0",
+      "function": "009ef910",
+      "status": "record",
+      "note": "blk+0A24h is the zero 009E4330 wrote, so the static test is off."
+    },
+    {
+      "method": "ShipAiClearance::static_zone_clearance_00415d70",
+      "address": "009efd4a",
+      "native": "00415d70",
+      "function": "009ef910",
+      "status": "record",
+      "note": "The same segment tree. Answers the 9999.0f sentinel."
+    },
+    {
+      "method": "ShipAiClearance::neighbour_blocks_sweep_009dd010",
+      "address": "009efdbd",
+      "native": "009dd010",
+      "function": "009ef910",
+      "status": "record",
+      "note": "Unreachable: blk+604h is 0."
+    },
+    {
+      "method": "ShipAiClearance::neighbour_support_009d8860",
+      "address": "009efe0f",
+      "native": "009d8860",
+      "function": "009ef910",
+      "status": "record",
+      "note": "Unreachable: blk+604h is 0."
+    },
+    {
+      "method": "ShipAiClearance::neighbour_closest_009d8a30",
+      "address": "009efec3",
+      "native": "009d8a30",
+      "function": "009ef910",
+      "status": "record",
+      "note": "Unreachable: blk+604h is 0."
+    },
+    {
+      "method": "ShipAiClearance::path_fade_00778890",
+      "address": "009f0000",
+      "native": "00778890",
+      "function": "009ef910",
+      "status": "record",
+      "note": "The group-leader query and the 00E08F80 vtable identity test; one predicate, no producer here."
+    },
+    {
+      "method": "ShipAiClearance::class_length_unit_00811a30",
+      "address": "009f0038",
+      "native": "00811a30",
+      "function": "009ef910",
+      "status": "concrete",
+      "note": "00811A30(unit, 1.0f): 0082E960(class, 1.0f) over the gameplay modifier product for channel 5, which this process computes as the routine's own 1.0f."
+    }
+  ],
+  "throttle_profile_steps": [
+    {
+      "method": "ShipAi::build_throttle_profile_009e04e0",
+      "address": "009f51f3",
+      "native": "009e04e0",
+      "function": "009f50e0",
+      "status": "concrete",
+      "note": "Chain slot 15. The contact-track list at blk+400h is the empty one 009E4653 leaves, so the walk finds nothing, the avoidance vector blk+34Ch/+350h is cleared each step and the 65-bin profile keeps the bypass byte 009E435F set, which is exactly what makes 009D6B40 a clamp and nothing more."
+    },
+    {
+      "method": "ShipAiThrottleProfile::hull_heading_vtable50",
+      "address": "009e0509",
+      "native": "009e0509",
+      "function": "009e04e0",
+      "status": "concrete",
+      "kind": "indirect",
+      "note": "The unit's vtable slot 50h; the routine pops the result without using it."
+    },
+    {
+      "method": "ShipAiThrottleProfile::avoidance_active_009da1d0",
+      "address": "009e061b",
+      "native": "009da1d0",
+      "function": "009e04e0",
+      "status": "record",
+      "note": "Needs the unit's gameplay byte +240h."
+    },
+    {
+      "method": "ShipAiThrottleProfile::refresh_track_009dc060",
+      "address": "009e0631",
+      "native": "009dc060",
+      "function": "009e04e0",
+      "status": "record",
+      "note": "Unreachable: the track list is empty."
+    },
+    {
+      "method": "ShipAiThrottleProfile::class_length_00811a30",
+      "address": "009e0723",
+      "native": "00811a30",
+      "function": "009e04e0",
+      "status": "concrete",
+      "note": "00811A30(unit, 0.75f), the same callee as the clearance host's with a different argument."
+    }
+  ],
+  "sector_scan_steps": [
+    {
+      "method": "ShipAiSectors::scan_sector_009eb660",
+      "address": "009ef334",
+      "native": "009eb660",
+      "function": "009ef230",
+      "status": "concrete",
+      "note": "Milestone 2p recorded this; packet cc_ai_sector_scan read 009EB660-009EC277 whole, so the probe geometry, the swept arc and the range with the hysteresis margin are code now. Three of the twelve sectors refresh per frame; no sector is marked because the neighbour list is empty and both avoid-zone gates are the zeroes 009E4330 wrote."
+    },
+    {
+      "method": "ShipAiSectorScan::settings_blocked_margin_1d8",
+      "address": "009eb681",
+      "native": "00424c40",
+      "function": "009eb660",
+      "status": "record",
+      "note": "settings+1D8h, the hysteresis margin a blocked sector adds. No producer here."
+    },
+    {
+      "method": "ShipAiSectorScan::zone_segment_crossing_004158e0",
+      "address": "009eb819",
+      "native": "004158e0",
+      "function": "009eb660",
+      "status": "record",
+      "note": "Gated on blk+0A3Ch and blk+0A24h, both zero."
+    },
+    {
+      "method": "ShipAiSectorScan::point_in_avoid_box_009d8160",
+      "address": "009eb8c0",
+      "native": "009d8160",
+      "function": "009eb660",
+      "status": "record",
+      "note": "Unreachable: the neighbour list is empty."
+    },
+    {
+      "method": "ShipAiSectorScan::point_in_near_box_009d80c0",
+      "address": "009eb8ca",
+      "native": "009d80c0",
+      "function": "009eb660",
+      "status": "record",
+      "note": "Unreachable: the neighbour list is empty."
+    },
+    {
+      "method": "ShipAiSectorScan::clip_ray_009dd540",
+      "address": "009eb8e2",
+      "native": "009dd540",
+      "function": "009eb660",
+      "status": "record",
+      "note": "Unreachable: the neighbour list is empty."
+    },
+    {
+      "method": "ShipAiSectorScan::clip_arc_zones_00415970",
+      "address": "009ebdaa",
+      "native": "00415970",
+      "function": "009eb660",
+      "status": "record",
+      "note": "Unreachable: blk+0A3Ch is 0."
+    },
+    {
+      "method": "ShipAiSectorScan::clip_arc_node_009dd010",
+      "address": "009ebe36",
+      "native": "009dd010",
+      "function": "009eb660",
+      "status": "record",
+      "note": "Unreachable: the neighbour list is empty."
+    },
+    {
+      "method": "ShipAiSectors::passing_corner_009d84e0",
+      "address": "009ebf67",
+      "native": "009d84e0",
+      "function": "009eb660",
+      "status": "record",
+      "note": "The corner to steer at and the side to pass on. Its call site sits inside the blocked arm, so a run with no neighbour never reaches it; the projection is wired and the run reports 0 marks, which is why it is a record and not a gap."
+    },
+    {
+      "method": "ShipAiSectorScan::free_bearing_009dc2e0",
+      "address": "009ec0c1",
+      "native": "009dc2e0",
+      "function": "009eb660",
+      "status": "record",
+      "note": "The avoid-zone free-bearing query."
+    },
+    {
+      "method": "ShipAiSectorScan::settings_neighbour_memory_194",
+      "address": "009ebede",
+      "native": "00424c40",
+      "function": "009eb660",
+      "status": "record",
+      "note": "settings+194h, the seconds a blocking node is kept."
+    },
+    {
+      "method": "ShipAi::neighbour_list_refresh_009f0ea0",
+      "address": "009f51e4",
+      "native": "009f0ea0",
+      "function": "009f50e0",
+      "status": "concrete",
+      "note": "Chain slot 14, one slot before the sector refresh, so the list the scan walks is aged and compacted first. It runs over the list this process holds, which nothing appends to."
+    },
+    {
+      "method": "ShipAi::neighbour_list_add_009f0d20",
+      "address": "009f1a25",
+      "native": "009f0d20",
+      "function": "009f1420",
+      "status": "record",
+      "note": "The candidate walk's call. The candidates come from the world object's linked list at [[00E188A8]+19CCh], which construct_world 004DE610 does not build here, and the node's own footprint at +44h..+60h has no producer in this packet either. blk+604h therefore stays the constructor's zero."
+    }
+  ],
+  "attackmove_steps": [
+    {
+      "method": "ShipAiApproach::frame_state_009f1bc0",
+      "address": "009f309b",
+      "native": "009f1bc0",
+      "function": "009f3090",
+      "status": "concrete",
+      "note": "Unchanged from milestone 2q: the frame timers, the planar goal range, the turn radius and the approach point."
+    },
+    {
+      "method": "ShipAiApproach::reset_scores_009e7fc0",
+      "address": "009f30a2",
+      "native": "009e7fc0",
+      "function": "009f3090",
+      "status": "concrete",
+      "note": "Milestone 2q recorded it. It runs now; the mode this mission's ships are in is 1, so the mode-0 arm that would call 009E5DA0 is not entered."
+    },
+    {
+      "method": "ShipAiApproach::decay_slot_009e6400",
+      "address": "009e8080",
+      "native": "009e6400",
+      "function": "009e7fc0",
+      "status": "concrete",
+      "note": "The bearing-decay scorer, one of the four. Packet cc_ai_ring_scan read it whole."
+    },
+    {
+      "method": "ShipAiApproach::score_slot_009e5da0",
+      "address": "009e81a7",
+      "native": "009e5da0",
+      "function": "009e7fc0",
+      "status": "record",
+      "note": "WIRED BUT NOT REACHED. The adapter is projected and 0095EB40 behind it is projected, but 009E81A7 sits in 009E7FC0's mode-0 arm and every attackmove ship of this mission is in mode 1 (the run's approach table prints mode=1), so the arm is not entered. firepower=0 in the run summary is that, not a missing wiring."
+    },
+    {
+      "method": "ShipAiApproach::rate_bearing_0095eb40",
+      "address": "009e5dc4",
+      "native": "0095eb40",
+      "function": "009e5da0",
+      "status": "record",
+      "note": "Behind the row above. Its host answers \"no gunnery device\": this process builds none, so the rating would be 0 even if the mode-0 arm ran."
+    },
+    {
+      "method": "ShipAiApproach::choose_standoff_range_009e6e80",
+      "address": "009f30a9",
+      "native": "009e6e80",
+      "function": "009f3090",
+      "status": "concrete",
+      "note": "Milestone 2q recorded it. Runs now; its curve sampler, its target reads and its random draws are records with their own addresses."
+    },
+    {
+      "method": "ShipAiApproach::score_slot_009e6870",
+      "address": "009e74b7",
+      "native": "009e6870",
+      "function": "009e6e80",
+      "status": "concrete",
+      "note": "The standoff-arc score, one of the four. Packet cc_ai_ring_scan read it whole."
+    },
+    {
+      "method": "ShipAiApproach::refresh_avoidance_009e9190",
+      "address": "009f30b8",
+      "native": "009e9190",
+      "function": "009f3090",
+      "status": "concrete",
+      "note": "Milestone 2q recorded it. Runs now over an empty candidate list, because construct_world 004DE610 is a load record."
+    },
+    {
+      "method": "ShipAiApproach::candidate_count_008053c0",
+      "address": "009e9220",
+      "native": "008053c0",
+      "function": "009e9190",
+      "status": "record",
+      "note": "The entity list at [unit+54h]+0DE8h."
+    },
+    {
+      "method": "ShipAiApproach::score_evade_009e74d0",
+      "address": "009f30c7",
+      "native": "009e74d0",
+      "function": "009f3090",
+      "status": "concrete",
+      "note": "Milestone 2q recorded it. Runs now; the two tuning floats and the evade flag are records."
+    },
+    {
+      "method": "ShipAiApproach::select_slot_009e76d0",
+      "address": "009f30d6",
+      "native": "009e76d0",
+      "function": "009f3090",
+      "status": "concrete",
+      "note": "THE RING SCAN. Milestone 2q's section 9 kept --ai-drive for this one routine. Packet cc_ai_ring_scan read it whole, including the six-way unrolled accept/reject body and the eight-way winner scan, and the executable runs it 588 times in the 500-frame run, once per approach frame of each of the six attackmove ships."
+    },
+    {
+      "method": "ShipAiApproach::score_slot_009e6640",
+      "address": "009e7755",
+      "native": "009e6640",
+      "function": "009e76d0",
+      "status": "concrete",
+      "note": "The obstacle probe, the fourth scorer. Packet cc_ai_ring_scan read it whole; its probe-space callees 00417B10 and 0041B4E0 are records, so no slot is ever blocked and every slot scores 1.0."
+    },
+    {
+      "method": "ShipAiRingScan::probe_origin_00417b10",
+      "address": "009e673e",
+      "native": "00417b10",
+      "function": "009e6640",
+      "status": "record",
+      "note": "No probe space exists here, so the start point is the query point."
+    },
+    {
+      "method": "ShipAiRingScan::probe_hit_0041b4e0",
+      "address": "009e6808",
+      "native": "0041b4e0",
+      "function": "009e6640",
+      "status": "record",
+      "note": "The segment cast. Answers false, which is why no slot is blocked."
+    },
+    {
+      "method": "ShipAiApproach::commit_bearing_009e5e90",
+      "address": "009e7ecb",
+      "native": "009e5e90",
+      "function": "009e76d0",
+      "status": "concrete",
+      "note": "The producer of the commanded heading nested+120Ch. 588 commits in the 500-frame run, one per ring scan."
+    },
+    {
+      "method": "ShipAiApproach::limit_throttle_009e6a90",
+      "address": "009f30dd",
+      "native": "009e6a90",
+      "function": "009f3090",
+      "status": "concrete",
+      "note": "The producer of the commanded throttle nested+1210h. Milestone 2q refused to run it because its input nested+120Ch was unwritten; the ring scan above writes it now, so the limiter runs on a produced value and 009F3635's clamp sees a real number instead of the 9999.0f sentinel."
+    },
+    {
+      "method": "ShipAiApproach::engagement_target_009e5e00",
+      "address": "009e6b85",
+      "native": "009e5e00",
+      "function": "009e6a90",
+      "status": "concrete",
+      "note": "Returns brain+0B20h when it answers the vtable[5Ch] kind test; the executable answers with the resolved attackmove target."
+    },
+    {
+      "method": "ShipAiApproach::sub_heading_command_1214",
+      "address": "009f3314",
+      "native": "009f3314",
+      "function": "009f3240",
+      "status": "concrete",
+      "kind": "field_read",
+      "note": "sub+1214h = nested+120Ch. Milestone 2q recorded this read because nothing wrote the field; 009E5E90 writes it now."
+    },
+    {
+      "method": "ShipAiApproach::sub_throttle_command_1218",
+      "address": "009f339a",
+      "native": "009f339a",
+      "function": "009f3240",
+      "status": "concrete",
+      "kind": "field_read",
+      "note": "sub+1218h = nested+1210h. Milestone 2q substituted a neutral zero because the field still held 009F1BF7's 9999.0f sentinel; 009E6A90 replaces the sentinel now and the read is the field's own value."
+    }
+  ],
+  "routines": [
+    {
+      "routine": "009E4330 the ship AI navigation block constructor",
+      "address": "009e4330",
+      "coverage": "complete (009E4330-009E46C2), consumed from packet cc_ai_nav_block_ctor on main at 3b4e07a6; not re-read here"
+    },
+    {
+      "routine": "0082E960 the class turning-circle radius",
+      "address": "0082e960",
+      "coverage": "complete (0082E960-0082E981), consumed from the same packet"
+    },
+    {
+      "routine": "009DFCB0 the steering-block seed",
+      "address": "009dfcb0",
+      "coverage": "partial: only the blk+3C4h..+3E4h window is projected. 009DFCB0-009DFE4F and 009DFEB0-009DFEB4 are recorded with the routine's own address"
+    },
+    {
+      "routine": "009E3C00 the path follower",
+      "address": "009e3c00",
+      "coverage": "complete (009E3C00-009E432A), consumed from packet cc_ai_path_follower; it replaces milestone 2q's partial src/ship_ai_path_point.cpp projection at this call site"
+    },
+    {
+      "routine": "009EF910 the turn clearance",
+      "address": "009ef910",
+      "coverage": "complete, consumed from packet cc_ai_clearance_profile"
+    },
+    {
+      "routine": "009E04E0 the throttle profile",
+      "address": "009e04e0",
+      "coverage": "partial: docs/SHIP_AI_CLEARANCE_PROFILE.md records 009E0C7C..009E0FBD as projected from pseudocode with the listing spot-checked, and 009E0FBD..009E104C as one host call. Neither arm is reached in this run, because the contact-track list is empty"
+    },
+    {
+      "routine": "009EB660 the obstacle sector scan",
+      "address": "009eb660",
+      "coverage": "complete (009EB660-009EC277), consumed from packet cc_ai_sector_scan"
+    },
+    {
+      "routine": "009D84E0 the passing corner",
+      "address": "009d84e0",
+      "coverage": "complete, consumed from the same packet; wired and not reached, because no sector is blocked"
+    },
+    {
+      "routine": "009E76D0 the approach ring scan",
+      "address": "009e76d0",
+      "coverage": "complete, consumed from packet cc_ai_ring_scan (the approach-update packet's own projection of the same routine is partial; the executable calls the approach-update entry point, whose unrolled loops that packet read in their first and last step only)"
+    },
+    {
+      "routine": "009E6A90 the approach throttle limiter",
+      "address": "009e6a90",
+      "coverage": "complete (009E6A90-009E6E78), consumed from packet cc_ai_approach_update"
+    },
+    {
+      "routine": "009E5E90 the commanded-heading commit",
+      "address": "009e5e90",
+      "coverage": "complete (009E5E90-009E605A), consumed from the same packet"
+    },
+    {
+      "routine": "0095EB40 the expected-damage rating",
+      "address": "0095eb40",
+      "coverage": "complete, consumed from packet cc_ai_bearing_rating; wired behind 009E5DA0 and not reached, because 009E7FC0's mode-0 arm is not entered"
+    },
+    {
+      "routine": "00937C90 the hull body build",
+      "address": "00937c90",
+      "coverage": "partial: only the tail 009399C0..00939C05, consumed from packet cc_ship_motion_tail. The shape-collection loops 00937D3F..009399BF are not projected, which is why the collision AABB is zero"
+    },
+    {
+      "routine": "009329C0 the hydrodynamic forces",
+      "address": "009329c0",
+      "coverage": "none. Read here only for its material-record reads and its two velocity writes; the body 009329C0-00933BA9 is not projected"
+    }
+  ],
+  "measurements": {
+    "nav_block": {
+      "note": "The five fields per ship, from the run's own table. The DeRuyter rows reproduce docs/SHIP_AI_NAV_BLOCK_CTOR.md's published table to every printed digit, which is the check that the wiring feeds the constructor the class values it expects.",
+      "DeRuyter_class_20": {
+        "hull_length_9c8": 171.0,
+        "turn_circle_full_3c8": 269.49,
+        "turn_circle_cruise_3cc": 256.02,
+        "yaw_floor_3d0": 0.12217,
+        "stop_radius_3d4": 68.4,
+        "start_radius_3d8": 102.6,
+        "mass_b0": 7688.0,
+        "material": 0
+      },
+      "Kortenaer_class_265_Tribal_1941": {
+        "hull_length_9c8": 110.0,
+        "turn_circle_full_3c8": 261.6,
+        "turn_circle_cruise_3cc": 248.52,
+        "yaw_floor_3d0": 0.13963,
+        "stop_radius_3d4": 44.0,
+        "start_radius_3d8": 66.0,
+        "mass_b0": 1800.0,
+        "material": 0
+      },
+      "Haguro": {
+        "hull_length_9c8": 203.0,
+        "turn_circle_full_3c8": 353.71,
+        "turn_circle_cruise_3cc": 336.02,
+        "yaw_floor_3d0": 0.10472,
+        "stop_radius_3d4": 81.2,
+        "start_radius_3d8": 121.8,
+        "mass_b0": 13500.0,
+        "material": 0
+      },
+      "blocks_built": 32
+    },
+    "counts_500_frames": {
+      "ship_ai_steps": 15680,
+      "nav_blocks": 32,
+      "clearance_refreshes": 15680,
+      "throttle_profiles": 15680,
+      "sector_scans": 47040,
+      "sector_marks": 0,
+      "ring_scans": 588,
+      "ring_bearings": 588,
+      "firepower_ratings": 0,
+      "path_follower_points": 3419,
+      "path_follower_corners": 0,
+      "path_follower_advances": 0,
+      "arm_tail_bodies": 3426,
+      "arm_tail_latched": 3425,
+      "arm_tail_stops": 6,
+      "arrival_latches": 0,
+      "ring_hops": 15680,
+      "rudder_law_calls": 15190,
+      "rudder_deadbands": 6272,
+      "live_pair_changes": 1760,
+      "command_events": 0,
+      "command_endings": 0,
+      "queue_advances": 0,
+      "director_stage_raises": 2,
+      "director_clear_messages": 2,
+      "director_clear_receives": 2,
+      "director_queue_advances": 2,
+      "total_path": 5047.64
+    },
+    "counts_2q_baseline_500_frames": {
+      "arm_tail_latched": 1955,
+      "arm_tail_stops": 0,
+      "rudder_deadbands": 9212,
+      "live_pair_changes": 43,
+      "total_path": 3825.35,
+      "danger_a84_every_navigating_ship": 1.0
+    },
+    "counts_1200_frames": {
+      "search_ticks": 8367,
+      "swaps": 36,
+      "points": 8389,
+      "output_blocks": 8396,
+      "arm_tail_bodies": 8396,
+      "arm_tail_latched": 8395,
+      "arrival_latches": 0,
+      "ring_scans": 1440,
+      "sector_scans": 115200,
+      "total_path": 12925.23,
+      "host_methods": "597 concrete, 484 unimplemented"
+    },
+    "distance_table_500_frames": {
+      "note": "moved, metres, over 490 fixed steps of 0.05 s",
+      "twelve_holding_cruise_ships": 294.05,
+      "expected_for_12_m_s": 294.0,
+      "Kortenaer_movetopos": 258.16,
+      "Kortenaer_2q": 261.14,
+      "DeRuyter_player": 34.8,
+      "attackmove_six": {
+        "Haguro": 205.15,
+        "Jintsu": 212.29,
+        "Yudachi": 201.19,
+        "Samidare": 201.19,
+        "Murasame": 202.79,
+        "Harusame": 202.79
+      },
+      "attackmove_six_2q": 0.0
+    },
+    "attackmove_closing_distance_to_Kortenaer": {
+      "note": "metres, start and end of the run, negative delta is closing",
+      "500_frames": {
+        "Haguro": {
+          "start": 2761.4,
+          "end": 2302.9,
+          "delta": -458.4
+        },
+        "Jintsu": {
+          "start": 2761.4,
+          "end": 2292.0,
+          "delta": -469.4
+        },
+        "Yudachi": {
+          "start": 2263.9,
+          "end": 1811.1,
+          "delta": -452.8
+        },
+        "Samidare": {
+          "start": 2263.9,
+          "end": 1806.3,
+          "delta": -457.6
+        },
+        "Murasame": {
+          "start": 2850.5,
+          "end": 2413.8,
+          "delta": -436.7
+        },
+        "Harusame": {
+          "start": 2850.5,
+          "end": 2402.9,
+          "delta": -447.6
+        }
+      },
+      "1200_frames": {
+        "Haguro": {
+          "end": 1883.5,
+          "delta": -877.9,
+          "moved": 533.8
+        },
+        "Jintsu": {
+          "end": 1676.0,
+          "delta": -1085.4,
+          "moved": 540.9
+        },
+        "Yudachi": {
+          "end": 1493.3,
+          "delta": -770.6,
+          "moved": 511.6
+        },
+        "Samidare": {
+          "end": 1230.6,
+          "delta": -1033.2,
+          "moved": 511.6
+        },
+        "Murasame": {
+          "end": 2188.3,
+          "delta": -662.2,
+          "moved": 516.6
+        },
+        "Harusame": {
+          "end": 1635.1,
+          "delta": -1215.4,
+          "moved": 516.6
+        }
+      },
+      "sub_state_each_ends_in": "the approach sub-state, member offset 8h, 009F3240. set_current_substate ran 6 times, once per attackmove ship, and every one of the 588 sub-state steps went to 009F3240",
+      "ring_scan_winner_slot": 0,
+      "commanded_heading_120c": {
+        "Haguro": -0.5235,
+        "Jintsu": 0.5235,
+        "Yudachi": -0.5235,
+        "Samidare": 0.5235,
+        "Murasame": -0.3633,
+        "Harusame": 0.3633
+      },
+      "commanded_throttle_1210": 0.5
+    },
+    "clearance_and_danger": {
+      "clearance_37c_every_ship": 9999.0,
+      "note": "The 9999.0f sentinel 009EF96F seeds and nothing lowers, because the neighbour list is empty and both avoid-zone gates are shut. The danger ramp 009F4168 divides it by unit+9CCh, so the ratio saturates and the danger target is 0.",
+      "danger_a84_before": 1.0,
+      "danger_a84_after": 0.0,
+      "turn_assist_load_102c_before": 1.5,
+      "turn_assist_load_102c_after": 0.0,
+      "sector_marks": 0
+    },
+    "moveto_arrival": {
+      "blk_3d8h_before": 0.0,
+      "blk_3d8h_after": 66.0,
+      "release_test": "009EEF14: record+21h && blk+3D8h + setback < blk+330h",
+      "arrival_latches_500_frames": 0,
+      "arrival_latches_1200_frames": 0,
+      "arrival_latches_3000_frames": 0,
+      "why": "The start radius is a produced value now and the release test is a real comparison, but blk+330h never falls to it. `moveto:Java` names a ship that is itself under way at 12.0 m/s on its authored Cruise, and Kortenaer makes 9.1 m/s at the AutoThrust slow floor of 0.5, so the remaining path length grows rather than shrinks: 561.54 m at step 10, 595.50 m at step 90, 3045 m and rising by the 3000-frame run. A goal that outruns the chaser cannot be reached, and the drift below is why the chaser is slow.",
+      "distance_from_Java_at_end_of_500_frames": 518.5,
+      "distance_from_Java_at_start": 559.0
+    },
+    "drift": {
+      "note": "Kortenaer, 3000 fixed steps of 0.05 s, --order moveto:Java. traj_speed is the planar speed of the trajectory over the preceding 0.5 s; drift is the angle between that velocity and the hull heading.",
+      "before": [
+        {
+          "t": 15.0,
+          "traj_speed": 10.784,
+          "fwd_speed": 9.118,
+          "drift_deg": 32.87
+        },
+        {
+          "t": 30.0,
+          "traj_speed": 15.162,
+          "fwd_speed": 9.103,
+          "drift_deg": 53.7
+        },
+        {
+          "t": 60.0,
+          "traj_speed": 26.45,
+          "fwd_speed": 9.073,
+          "drift_deg": 70.54
+        },
+        {
+          "t": 90.0,
+          "traj_speed": 38.615,
+          "fwd_speed": 9.044,
+          "drift_deg": 77.06
+        },
+        {
+          "t": 120.0,
+          "traj_speed": 51.021,
+          "fwd_speed": 9.014,
+          "drift_deg": 80.42
+        },
+        {
+          "t": 150.0,
+          "traj_speed": 66.052,
+          "fwd_speed": 18.184,
+          "drift_deg": 74.35
+        }
+      ],
+      "after": [
+        {
+          "t": 15.0,
+          "traj_speed": 10.633,
+          "fwd_speed": 9.119,
+          "drift_deg": 31.52
+        },
+        {
+          "t": 30.0,
+          "traj_speed": 15.286,
+          "fwd_speed": 10.033,
+          "drift_deg": 49.72
+        },
+        {
+          "t": 60.0,
+          "traj_speed": 37.451,
+          "fwd_speed": 14.657,
+          "drift_deg": 67.73
+        },
+        {
+          "t": 90.0,
+          "traj_speed": 61.074,
+          "fwd_speed": 12.502,
+          "drift_deg": 78.84
+        },
+        {
+          "t": 120.0,
+          "traj_speed": 74.197,
+          "fwd_speed": 7.706,
+          "drift_deg": 84.56
+        },
+        {
+          "t": 150.0,
+          "traj_speed": 85.301,
+          "fwd_speed": 18.16,
+          "drift_deg": 78.03
+        }
+      ],
+      "verdict": "The drift is NOT removed, and building the game's own hull body does not remove it. It is worse after, because the clearance wiring lifts the danger from 1.0 to 0 and the throttle with it, so the ship goes faster and therefore drifts faster. The routine that is missing is 009329C0."
+    },
+    "hull_body": {
+      "mass_DeRuyter": 7688.0,
+      "inverse_mass": 0.00013007,
+      "angular_damping": 1.0,
+      "linear_damping": 0.0,
+      "max_linear_speed": 1000.0,
+      "max_angular_speed": 1000.0,
+      "torque_lock_row1": false,
+      "physics_material": 0,
+      "inertia": "zero: the collision AABB's producer 00C5C940 is unread, so no shape is attached and the box span is zero",
+      "measured_effect": "the yaw rate is scaled by (1 - 1.0 * 0.05)^2 = 0.9025 inside each step. The acceptance form's yaw rate at t = 14 s moves from -0.061087 to -0.055131, which is 0.9025 of the old value to five decimals and is exactly what the probe's class-built body prints.",
+      "previous_stand_ins_removed": [
+        "M+18h and M+1Ch, milestone 2i's 1.0e30f speed clamps",
+        "class+A0h Length, class+A8h Height and class+B0h Mass, all held at 0.0f since milestone 2i"
+      ]
+    }
+  },
+  "probe_comparison": [
+    {
+      "case": "the probe under a sustained hard-over turn, the same order milestone 2q's section 7 measured on the executable",
+      "probe": "bsp_ship_motion_probe.exe --class 20 --steps 3000 --dt 0.05 --throttle 1 --rudder 1",
+      "capture": "local/probe_2r_turn.txt",
+      "drift_deg_at_150_s": 80.98,
+      "traj_speed_at_150_s": 63.271,
+      "fwd_speed_at_150_s": 10.565,
+      "finding": "THE PROBE DRIFTS TOO, and by more than the executable does. Its own printed summary says so in words: `final forward speed 10.5647 (a sustained turn bleeds speed: 0092D300 rewrites only the axial component, so the lateral one stays)`. The probe builds the class hull body through 00937C90's tail; if the hull body were what resists lateral motion, this run would not drift."
+    },
+    {
+      "case": "the probe on the packet's own command line",
+      "probe": "bsp_ship_motion_probe.exe --class 20 --moveto -250,-2724.6 --steps 3000 --dt 0.05",
+      "capture": "local/probe_2r_class20_moveto.txt",
+      "distance_to_goal_start": 2736.05,
+      "distance_to_goal_minimum": 2401.48,
+      "distance_to_goal_final": 2400.79,
+      "drift_deg_at_150_s": 73.57,
+      "finding": "It does not converge either: the minimum distance is 2401 m against a 2736 m start, reached early and never improved."
+    },
+    {
+      "case": "the probe with Kortenaer's own class and Kortenaer's own relative goal",
+      "probe": "bsp_ship_motion_probe.exe --class 265 --moveto -250,-224.6 --steps 3000 --dt 0.05",
+      "capture": "local/probe_2r_class265_moveto.txt",
+      "reference_speed": 18.262779,
+      "distance_to_goal_start": 336.07,
+      "distance_to_goal_minimum": 336.07,
+      "distance_to_goal_final": 1977.79,
+      "drift_deg_at_150_s": 74.5,
+      "traj_speed_at_150_s": 66.253,
+      "fwd_speed_at_150_s": 18.151,
+      "tool": "python tools/motion_trace_compare.py --trace local/trace_2r_kortenaer.csv --probe local/probe_2r_class265_moveto.txt --align-origin",
+      "peak_speed_delta": 12.9656,
+      "peak_heading_delta_deg": 52.2918,
+      "peak_position_delta_m": 1125.3248,
+      "final_position_delta_m": 346.8654,
+      "finding": "The live Kortenaer and the probe on the same class and the same relative goal both drift and neither closes. The comparison's deltas are dominated by the probe starting from rest against the trace's seeded 12.0 m/s and by the two sides' different throttle sources; what it establishes is that the drift is a property of the shared composition, not of one side."
+    },
+    {
+      "case": "the acceptance form, the one earlier published figure this milestone moves",
+      "trace": {
+        "heading": -43.052631,
+        "fwd_speed": 16.426525,
+        "yaw_rate": -0.055131
+      },
+      "probe": "bsp_ship_motion_probe.exe --class 20 --steps 290 --dt 0.05 --throttle 1 --rudder 1",
+      "t_seconds": 14.0,
+      "milestone_2q": {
+        "heading": -45.318523,
+        "fwd_speed": 16.422674,
+        "yaw_rate": -0.061087
+      },
+      "probe_hand_built_body": {
+        "heading": -41.253,
+        "fwd_speed": 16.4298,
+        "yaw_rate": -0.06109
+      },
+      "probe_class_built_body": {
+        "heading": -39.192,
+        "fwd_speed": 16.4329,
+        "yaw_rate": -0.05513
+      },
+      "finding": "The yaw rate moves from -0.061087 to -0.055131, which is 0.9025 of the old value, and lands on the probe's class-built-body column to five decimals. That is the hull body's angular damping of 1.0f applied twice per substep, and it is the intended effect of this milestone's first change."
+    }
+  ],
+  "corrections": [
+    {
+      "was": "docs/GAME_EXECUTABLE.md milestone 2q, section 7: \"what the shipped game has and this process does not is anything that resists the rest [of the velocity]. The rigid body's linear damping is zero because 00C37E00 is never called: docs/RIGID_BODY_INTEGRATION.md's follow-up ship_hull_body_creation is still open, so the mass, the inertia and both damping rates keep the values a freshly constructed body has.\"",
+      "is": "Building the hull body does not remove the drift, and the hull body's linear damping is 0.0f in the shipped game too. docs/SHIP_HULL_BODY.md settles it: the descriptor default at 00939295 survives and nothing overrides desc+60h, so the game's own hull runs with zero linear damping. 00C37E00 has two callers, 004462D0 and 00824B60, and neither is on a live hull's path: 004462D0 is BSP_GameDynamicsList_ApplyBuoyancyStep over the detached-part list that 00934150 and 00935540 add to, and 00824B60 is BSP_UnitInstance_OnWrecked. The routine that resists a hull's lateral velocity is 009329C0.",
+      "evidence": "docs/SHIP_HULL_BODY.md's \"What the hull body actually gets\" table; python tools/bsp.py ghidra callers 00c37e00; the run's own log line reporting linear damping 0.0 after the body is built; and the probe, which builds that body and drifts to 80.98 degrees at 150 s."
+    },
+    {
+      "was": "This packet's brief, and the reading of docs/GAME_EXECUTABLE.md milestone 2q behind it: \"a turning ship must hold its heading-aligned velocity as the probe does\", and src/ship_motion_probe.cpp \"turns and converges\".",
+      "is": "The probe does not hold its heading-aligned velocity. Under a sustained hard-over turn it reaches 80.98 degrees of drift at 150 s with a trajectory speed of 63.27 m/s against a forward speed of 10.56; under --moveto it never closes on the goal. The probe's own printed summary states the mechanism: 0092D300 rewrites only the axial component, so the lateral one stays.",
+      "evidence": "local/probe_2r_turn.txt, local/probe_2r_class20_moveto.txt and local/probe_2r_class265_moveto.txt, all three with the class-built hull body; the probe's summary line `a sustained turn bleeds speed: 0092D300 rewrites only the axial component, so the lateral one stays`."
+    },
+    {
+      "was": "docs/GAME_EXECUTABLE.md milestone 2q, correction 8: \"What it cannot do is finish: blk+3D8h is zero because FUN_009E4330 is unread, so 009EEF14's release test passes on every tick and 009EF034 never sets the arrival latch.\"",
+      "is": "Half closed. blk+3D8h is 66.0 m for Kortenaer now and the release test is a real comparison, but the latch is still never set, for a different reason: the goal is a ship under way. `moveto:Java` re-reads Java's position every frame, Java holds 12.0 m/s on its authored Cruise and Kortenaer makes 9.1 m/s, so blk+330h grows from 561.54 m at step 10 to 595.50 m at step 90 and to 3045 m over 3000 steps. The record has moved off 009E4330 and onto the order: nothing in the AI is now missing for an arrival, and a goal that outruns the chaser cannot be reached.",
+      "evidence": "the run's nav-block table (Kortenaer start_3d8 66.00); the ship-AI sample lines at steps 10, 20 ... 90 showing d330 rising; arrival_latches 0 at 500, 1200 and 3000 frames; the trajectory CSV's Java rows at 12.0 m/s."
+    },
+    {
+      "was": "docs/GAME_EXECUTABLE.md milestone 2q, section 9 and its `ai_drive` block: the switch is kept for `attackmove` alone, because \"009E6A90, the routine that turns its commanded heading into the commanded throttle, is only partially projected, so wiring the scan alone would feed a complete consumer from an incomplete producer\".",
+      "is": "009E6A90 is complete, and docs/SHIP_AI_APPROACH_UPDATE.md line 299 and docs/SHIP_AI_NAV_BLOCK_CTOR.md's own section both say so: body 009E6A90-009E6E78, complete. The scan and the limiter are both wired here and --ai-drive is retired: the run with the switch and the run without it report the same 602 concrete and 493 unimplemented, and the six attackmove ships move 201 to 212 m in the 500-frame run with the switch absent.",
+      "evidence": "docs/SHIP_AI_APPROACH_UPDATE.md line 299 and its routine table line 358; docs/SHIP_AI_NAV_BLOCK_CTOR.md section \"The commanded throttle, 009E6A90\"; local/run_2r_aidrive.log against local/run_2r_all.log."
+    },
+    {
+      "was": "docs/GAME_EXECUTABLE.md milestone 2q's host table, `the class turn radius (in 009e3c00) | 009e3eae | 0082e850 | record` and `the owner radius (in 009e3c00) | 009e3ec0 | field +9C8h | record, discarded by 009e42bd`.",
+      "is": "Both are produced values now. 0082E850 returns class+520h, whose writer 00828F20 packet ship_ai_class_field_0524 read, and unit+9C8h is the full hull `Length` that 0081106E and 0081FA4D copy from the descriptor when the class carries no model box. Correction 3 of docs/SHIP_AI_NAV_BLOCK_CTOR.md names the producers; this milestone reads the key.",
+      "evidence": "the run's nav-block table column len_9c8 (171.00 for the DeRuyter class, 110.00 for Kortenaer's, 203.00 for Haguro's), matching the installed vehicleclasses.lua rows exactly."
+    },
+    {
+      "was": "src/game_hosts_units.cpp, milestone 2i: \"class+A0h and class+A8h place the keel sample point. Only +A0h has a recovered Lua key ... and with a flat sea at y = 0 and an upright hull the gate at 00826994 passes either way\", with all three of hull_length, hull_height and hull_mass held at 0.0f.",
+      "is": "All three keys are present in the installed VehicleClass row and the process's own Lua reader already parsed two of them and threw them away. `Height` is added to the reader here. DeRuyter row 20 carries Length 171, Height 5 and Mass 7688. The keel point now sits half a hull length astern and 2.5 m below the pose, which leaves the gate open as before, and the mass reaches both the hull body descriptor and 00937440.",
+      "evidence": "vehicleclasses.lua lines 13881, 13882 and 13722 of the installed game (Length, Mass, Height inside VehicleClass[20]); the run's log line reporting mass 7688.0 and inverse 0.00013007."
+    },
+    {
+      "was": "docs/GAME_EXECUTABLE.md milestone 2q's host table, `the per-ship tuning | - | 009e4330 | record, five fields`, and its section 7 \"That is one unread routine standing between this executable and a moveto that ends itself.\"",
+      "is": "The routine was read by packet cc_ai_nav_block_ctor and is wired here, and it was not the only thing standing in the way. Two more were: the clearance producer 009EF910, whose absent blk+37Ch pinned every navigating ship at full danger and at the AutoThrust slow floor, and the order itself, which names a moving goal.",
+      "evidence": "the run's danger column, 1.000 before and 0.000 after; the nav-block table; arrival_latches still 0."
+    },
+    {
+      "was": "docs/SHIP_HULL_BODY.md's probe section and docs/RIGID_BODY_INTEGRATION.md's `ship_hull_body_creation` follow-up, read as implying that the hull body is what the executable's ship motion was missing.",
+      "is": "The hull body was missing and is supplied here, and its one measurable effect is the angular damping of 1.0f, which scales the commanded yaw rate by 0.9025 per step. It has no effect on the lateral velocity at all, because its linear damping is zero by the game's own descriptor default. Neither doc claims otherwise; this correction is against the reading milestone 2q took from them.",
+      "evidence": "the acceptance-form yaw rate moving by exactly 0.9025; the drift table, which is worse after the body is built."
+    }
+  ],
+  "ai_drive": {
+    "retired": true,
+    "reason": "All four states of this mission form their own desired pair. The switch is still accepted on the command line and ignored, with a log line saying so, so a script that passes it still runs.",
+    "states": [
+      {
+        "state": "cruise",
+        "ships": 13,
+        "produces_desired_throttle": true,
+        "moves": "yes, 12.0 m/s, 294.05 m in the 500-frame run",
+        "source": "the authored StartSpeed through 009E1265 / 00835E17"
+      },
+      {
+        "state": "stop",
+        "ships": 12,
+        "produces_desired_throttle": true,
+        "moves": "correctly not",
+        "source": "009E14C0"
+      },
+      {
+        "state": "movetopos",
+        "ships": 1,
+        "produces_desired_throttle": true,
+        "moves": "yes, 258.16 m",
+        "source": "the navigation arm's tail latch and ceiling, then 009EC7C0's AutoThrust floor of 0.5"
+      },
+      {
+        "state": "attackmove",
+        "ships": 6,
+        "produces_desired_throttle": true,
+        "moves": "yes, 201 to 212 m",
+        "source": "009E76D0 with its four slot scorers, 009E5E90's commanded heading and 009E6A90's commanded throttle, through 009F3240 and 009F3635"
+      }
+    ],
+    "evidence": "local/run_2r_aidrive.log reports the same 602 concrete and 493 unimplemented as local/run_2r_all.log, and driven=0 in both."
+  },
+  "read_for_this_packet": [
+    "009329C0 BSP_UnitController_ApplyHydroForces, 1032 listing lines dumped to local/hydro.txt and read for: the two velocity writes at 009329EC (00C37E50) and 00932A0E (00C37E20); the material index 00932A53..00932A8F, which is the same class+B0h against the double 100.0 at 00D7A220 that 00937CF1 uses, scaled to a 38h stride by the LEA/SUB/ADD chain at 00932A82..00932A8F; the eight material-record loads at 00932A96, 00932AAD, 00932AC4, 00932ADB, 00932AF2, 00932B09, 00932B20 and 00932B3F over settings+4E0h..+4F8h and +50Ch; and the water-height sample at 00932D6B. The rest of the body is not read.",
+    "0092D300 BSP_UnitController_ApproachAxialSpeed, 0092D300-0092D591 re-read from the listing to confirm the velocity store: 0092D3EC / 0092D3F4 / 0092D40D form the perpendicular residue v - current*dir into [ESP+24h..2Ch], and after the PUSH ECX at 0092D544 the three stores at 0092D56C / 0092D578 / 0092D584 write target*dir + that residue. The residue is preserved, which is the drift's mechanism and is correct against the image.",
+    "00C37E00 and 00C37DE0 callers, through the bridge: 004462D0 and 00824B60 for both.",
+    "00447510 BSP_GameDynamicsList_Add callers: 00934150 BSP_UnitParts_DetachPart, 007CAAD0 and 00935540. No hull registers on the buoyancy list.",
+    "009329C0 callers: 00937440 (ship), 00937630 (frozen) and 00936DC0."
+  ],
+  "still_unimplemented": [
+    "009329C0 BSP_UnitController_ApplyHydroForces, 009329C0-00933BA9. The hull's hydrodynamics: the only code on a live ship's path that writes the body's linear and angular velocity outside 0092D300 and 0092E8C0, and the reader of the six physics-material fields docs/SHIP_HULL_BODY.md's `ship_physics_material_record` follow-up lists. Until it exists a turning ship keeps every metre per second of lateral velocity it acquires.",
+    "00C5C940, the collision-shape attach behind 00937D3F..009399BF. It is the producer of the AABB the hull's box inertia is built from, so the inertia is zero here.",
+    "004DE610 construct_world. The world entity list is what 009F1877..009F18B8 walks to fill the neighbour list at blk+608h, which is what would let a sector be marked, a clearance be lowered and the traffic setback run.",
+    "The gameplay settings fields with no producer in this process: settings+1D4h / +214h / +218h (the clearance refresh period and its two error gates), settings+1D8h / +194h (the sector hysteresis margin and the neighbour memory), settings+588h (the rudder torque 00937440 multiplies by), and the approach tuning block behind 009E7FC0 / 009E6E80 / 009E74D0 / 009E9190.",
+    "The gunnery device lists at unit+394h / +398h / +430h, which 0095EB40 walks. With none built the expected-damage rating is 0.",
+    "009DFCB0 outside the blk+3C4h..+3E4h window, and 009E0270 / 009DE2F0, which are the producers of the shoulders blk+18Ch..+1B0h the clearance sweep and the sector probe place their pivots from."
+  ],
+  "names_added": [],
+  "evidence_appended": [
+    {
+      "address": "009e4330",
+      "name": "the ship AI navigation block constructor",
+      "note": "run-time evidence: 32 blocks built, one per created unit; the DeRuyter rows reproduce docs/SHIP_AI_NAV_BLOCK_CTOR.md's published table to every printed digit"
+    },
+    {
+      "address": "009ef910",
+      "name": "the turn clearance refresh",
+      "note": "run-time evidence: 15680 bodies in the 500-frame run, every one leaving blk+37Ch at the 9999.0f sentinel, which drops the danger from 1.0 to 0.0"
+    },
+    {
+      "address": "009eb660",
+      "name": "the obstacle sector scan",
+      "note": "run-time evidence: 47040 scans in the 500-frame run, 0 marks"
+    },
+    {
+      "address": "009e76d0",
+      "name": "the approach ring scan",
+      "note": "run-time evidence: 588 scans and 588 bearing commits in the 500-frame run; winner slot 0 for all six attackmove ships"
+    },
+    {
+      "address": "009e3c00",
+      "name": "the path follower",
+      "note": "run-time evidence: 3419 points in the 500-frame run, 0 corner arms and 0 cursor advances, which is the two-node open-sea prediction of docs/SHIP_AI_PATH_FOLLOWER.md confirmed"
+    },
+    {
+      "address": "00937c90",
+      "name": "the hull body build",
+      "note": "run-time evidence: 32 hull bodies; mass 7688 / inverse 0.00013007 for the DeRuyter class, angular damping 1.0, linear damping 0.0, clamps 1000.0, material 0. The measured effect is the acceptance form's yaw rate moving by 0.9025"
+    },
+    {
+      "address": "009329c0",
+      "name": "the hydrodynamic forces",
+      "note": "static evidence only: named here as the routine whose absence leaves a turning hull's lateral velocity untouched"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "007b3dd0",
+      "end": "007b3dd2",
+      "note": "the empty attackmove sub-state step, one RET 4; boundary defined by packet cc_ai_attackmove_substates, unchanged here and not touched by this milestone."
+    }
+  ],
+  "consumed_from_main": [
+    {
+      "packet": "ship_ai_nav_block_ctor",
+      "commit": "3b4e07a6",
+      "header": "include/bsp/ship_ai_nav_block_ctor.hpp",
+      "used": "wired and validated: 009E4330 over a six-method host, once per created unit"
+    },
+    {
+      "packet": "cc_ai_path_follower",
+      "header": "include/bsp/ship_ai_path_follower.hpp",
+      "used": "wired and validated: 009E3C00 whole, replacing milestone 2q's partial projection at 009EE5F4"
+    },
+    {
+      "packet": "cc_ai_clearance_profile",
+      "header": "include/bsp/ship_ai_clearance_profile.hpp",
+      "used": "wired and validated: 009EF910 and 009E04E0"
+    },
+    {
+      "packet": "cc_ai_sector_scan",
+      "header": "include/bsp/ship_ai_sector_scan.hpp",
+      "used": "wired and validated: 009EB660, 009D84E0 (wired, not reached) and 009F0EA0"
+    },
+    {
+      "packet": "cc_ai_ring_scan",
+      "header": "include/bsp/ship_ai_ring_scan.hpp",
+      "used": "wired and validated: the four slot scorers 009E6400, 009E5DA0, 009E6870 and 009E6640"
+    },
+    {
+      "packet": "cc_ai_approach_update",
+      "header": "include/bsp/ship_ai_approach_update.hpp",
+      "used": "wired and validated: 009E7FC0, 009E6E80, 009E9190, 009E74D0, 009E76D0, 009E5E90 and 009E6A90"
+    },
+    {
+      "packet": "cc_ai_bearing_rating",
+      "header": "include/bsp/ship_ai_bearing_rating.hpp",
+      "used": "wired behind 009E5DA0 and not reached, because 009E7FC0's mode-0 arm is not entered"
+    },
+    {
+      "packet": "cc_ship_motion_tail",
+      "header": "include/bsp/ship_hull_body.hpp",
+      "used": "wired and validated: the tail of 00937C90, once per created unit"
+    }
+  ],
+  "coverage": {
+    "exported": "no new export for this packet",
+    "reconstructed": "no new reconstruction: every routine wired here was reconstructed by an earlier packet and is consumed from main",
+    "build_tested": "scripts/build.ps1 Release Win32, /W4 /WX /fp:strict, no warnings; every target built",
+    "fixture_tested": "ctest -C Release: reconstructed_math passes, 1 of 1. No test cases were added",
+    "abi_compatible": "no: these are semantic C++ interfaces, not drop-in binary replacements",
+    "game_validated": "no. This is runtime-validated in bsp_game.exe only"
+  }
+}

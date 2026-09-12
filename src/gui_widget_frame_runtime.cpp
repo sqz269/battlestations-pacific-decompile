@@ -1,5 +1,6 @@
 #include "bsp/gui_widget_frame_runtime.hpp"
 #include "bsp/gui_text_runtime_factory.hpp"
+#include "bsp/gui_type_dispatch.hpp"
 #include "bsp/gui_timed_entry_owner.hpp"
 #include "bsp/input_device_state.hpp"
 #include <limits>
@@ -309,14 +310,30 @@ void GuiWidgetFrameRuntime::listener_tail(GuiWidgetOwner& widget) {
     }
 }
 void GuiWidgetFrameRuntime::update40(GuiWidgetOwner& widget, float seconds) {
+    if (widget.layout().type == GuiWidgetType::Icon) {
+        require(&widget.runtime() == &services_.widgets, "Icon frame requires the same widget runtime");
+        auto* icon = dynamic_cast<GuiIconTypeImplementation*>(&widget.implementation());
+        require(icon != nullptr, "Icon current40 requires the same canonical Icon runtime");
+        widget.require_no_active_owned_operation();
+        ActiveFrame active(*this, widget);
+        // AB1151/AB1157 spills a COPY for AA87B0. The native caller's original
+        // argument remains the later timer-subtraction input. Do not dispatch
+        // current40 again or release the owner borrow between base and tail.
+        update_base_active(widget, argument_spill(seconds));
+        icon->runtime().update_after_base40_00ab1150(widget, seconds, services_.zero_00d7a218);
+        return;
+    }
     require(gui_widget_uses_base_frame40_profile(widget.layout().type),
-        "GUI current40 has an unsupported derived profile (Icon uses AB1150)");
+        "GUI current40 has an unsupported derived profile");
     update_base_00aa87b0(widget, seconds);
 }
 void GuiWidgetFrameRuntime::update_base_00aa87b0(GuiWidgetOwner& widget, float seconds) {
     require(&widget.runtime() == &services_.widgets, "GUI frame requires the same widget runtime");
     widget.require_no_active_owned_operation();
     ActiveFrame active(*this, widget);
+    update_base_active(widget, seconds);
+}
+void GuiWidgetFrameRuntime::update_base_active(GuiWidgetOwner& widget, float seconds) {
     auto& layout = widget.layout();
     const auto count = layout.children.size();
     require(count <= static_cast<std::size_t>((std::numeric_limits<std::int32_t>::max)()),

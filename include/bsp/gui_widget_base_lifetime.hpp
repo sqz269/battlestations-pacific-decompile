@@ -18,7 +18,7 @@ struct GuiWidgetBaseLifetimeState {
 
 // AA9730 after the derived destructor, under the source base vtable. Uses the
 // same child allocation transport and canonical tree. Current child4 dispatch
-// is established for Group/Text; an unsupported child rejects at that phase.
+// is established for Group/Text/Section; an unsupported child rejects there.
 // Does not implement native widget pools, SEH or intrusive-list allocation ABI.
 // On return the companion is gone; flags1 also releases the wrapper allocation.
 void destroy_gui_widget_base_00aa9730(GuiWidgetOwner&, GuiTextChildDeletion&);

@@ -23,6 +23,66 @@ void copy_size_pair(GuiWidgetSize& destination, const GuiWidgetSize& source) {
         fstp dword ptr [edx + 4]
     }
 }
+// AB1169..AB117A: unordered rates follow the nonzero branch. Preserve UCOMISS
+// rather than allowing the compiler to fold a NaN comparison under /fp:fast.
+bool frame_rate_nonzero(float rate, const volatile float& zero) {
+    const auto* zero_pointer = &zero;
+    unsigned char result;
+    __asm {
+        mov edx, zero_pointer
+        movss xmm0, rate
+        ucomiss xmm0, dword ptr [edx]
+        lahf
+        test ah, 044h
+        setp result
+    }
+    return result != 0;
+}
+// AB117C..AB1197: no float product spill. The multiply/add remain x87 until
+// the sum spills to float, followed by the separate float argument spill.
+float frame_rotation(float rate, float seconds, const float& rotation) {
+    const auto* rotation_pointer = &rotation;
+    float result;
+    __asm {
+        mov edx, rotation_pointer
+        fld rate
+        fmul seconds
+        fadd dword ptr [edx]
+        fstp result
+        fld result
+        fstp result
+    }
+    return result;
+}
+// AB119C..AB11CF: positive gate is COMISS/JA. The subtraction spills to float
+// before it is stored and compared by FLDZ/FCOMIP; unordered never expires.
+bool advance_state_countdown(float& countdown, float seconds,
+    const volatile float& zero) {
+    const auto* zero_pointer = &zero;
+    auto* countdown_pointer = &countdown;
+    float captured;
+    unsigned char expired;
+    __asm {
+        mov edx, zero_pointer
+        mov ecx, countdown_pointer
+        movss xmm0, dword ptr [ecx]
+        comiss xmm0, dword ptr [edx]
+        mov expired, 0
+        jbe no_countdown
+        movss captured, xmm0
+        fld captured
+        fsub seconds
+        fstp seconds
+        fld seconds
+        fst dword ptr [ecx]
+        fldz
+        fcomip st(0), st(1)
+        fstp st(0)
+        setae expired
+    no_countdown:
+    }
+    return expired != 0;
+}
 const GuiValue* present(const GuiTable& table, const char* key) {
     const auto* value = table.find(key);
     return value && value->kind() != GuiValue::Kind::Nil ? value : nullptr;
@@ -267,6 +327,23 @@ struct GuiIconRuntime::Impl final : GuiIconHost {
     }
     std::uint32_t texture_width(void* texture) override { return services.textures.resolve.width(texture); }
     std::uint32_t texture_height(void* texture) override { return services.textures.resolve.height(texture); }
+    // Actual00AB2600 query shared by current44 and current48. Callback phases
+    // retain native short-circuit reads and the captured texture/state identity.
+    bool prefers_bilinear_00ab2600() {
+        if (!icon.has_texture || !icon.shader_name.empty()) return false;
+        if (!services.platform_allows_point_filter()) return true;
+        const auto& transform = widget.transform;
+        if (transform.rotate != 0.0f || transform.scale_x != 1.0f ||
+            transform.scale_y != 1.0f) return true;
+        const auto* state = gui_icon_state_at(icon, icon.current_state);
+        require(state != nullptr, "Icon filter query requires its current state.");
+        // AB24B0/AB17B0 capture texture before width, then height. Callbacks
+        // must preserve this state record and its existing retained texture.
+        auto* texture = state->texture;
+        const auto width = texture_width(texture);
+        const auto height = texture_height(texture);
+        return gui_icon_state_differs_from_native_size_00ab24b0(*state, width, height);
+    }
 };
 
 GuiIconRuntime::GuiIconRuntime(GuiLayoutWidget& widget, float& overbright,
@@ -285,10 +362,8 @@ void GuiIconRuntime::read_properties_00ab3310(const GuiTable& table) {
     auto& self = *impl_;
     const auto authored = read_gui_icon_authored_page_00ab3310(table, self.widget.transform,
         self.services.crt_sse2_conversion);
-    // These properties are recovered, but their per-frame asynchronous/rotation
-    // consumer00AB6430 is outside this startup packet. Fail explicitly instead
-    // of accepting a page whose later behavior this owner would silently omit.
-    require(authored.auto_rotate == 0.0f, "Icon AutoRotate requires the unreconstructed frame updater00AB6430.");
+    // Delayed texture loading is the separate00AB6430 dependency. AutoRotate
+    // runs through the canonical current40/00AB1150 continuation below.
     require(!authored.delayed_texture_load, "Icon DelayedTextureLoad requires the unreconstructed frame updater00AB6430.");
     gui_icon_apply_authored_page_00ab3310(self.icon, self.widget.transform, authored, self);
 }
@@ -298,6 +373,48 @@ void GuiIconRuntime::loaded78_00ab10f0() {
 }
 void GuiIconRuntime::select_state_00ab1710(std::int16_t index, std::int32_t mode, float ratio) {
     if (gui_icon_select_state_00ab1710(impl_->icon, index, mode, ratio)) rebuild_00ab3cb0(index);
+}
+void GuiIconRuntime::select_temporary84_00ab1110(std::int16_t immediate_index,
+    std::int16_t expiry_index, float seconds) {
+    select_state_00ab1710(immediate_index, 0, 1.0f); // AB112A current88
+    // AB1137 is MOVSS, not an x87 load/store (preserve the float payload).
+    std::memcpy(&impl_->icon.state_seconds_remaining_128, &seconds, sizeof(seconds));
+    impl_->icon.expiry_state_12c = expiry_index;
+}
+void GuiIconRuntime::set_rotation44_00ab27f0(GuiWidgetOwner& owner, float rotation) {
+    auto& self = *impl_;
+    require(&owner.layout() == &self.widget,
+        "Icon rotation44 requires this runtime's same retained widget owner.");
+    // AB27F0..AB27F6 spills the incoming float before AA7930 MOVSS stores it.
+    __asm {
+        fld rotation
+        fstp rotation
+    }
+    std::memcpy(&self.widget.transform.rotate, &rotation, sizeof(rotation));
+    owner.recompose_00aa7220(); // AA793B; no bounds refresh
+    const bool bilinear = self.prefers_bilinear_00ab2600(); // AB2802
+    // Reload cache and current state after query and any real texture callbacks.
+    if (bilinear != self.icon.cached_prefers_bilinear)
+        rebuild_00ab3cb0(self.icon.current_state); // AB2819 ->AB10D0 ->current80
+}
+void GuiIconRuntime::update_after_base40_00ab1150(GuiWidgetOwner& owner,
+    float original_seconds, const volatile float& zero_00d7a218) {
+    auto& self = *impl_;
+    require(&owner.layout() == &self.widget && self.widget.type == GuiWidgetType::Icon,
+        "Icon frame tail requires this runtime's same retained Icon owner.");
+    // Base AA87B0 and its callbacks have already run. Read derived fields now.
+    const float rate = self.icon.auto_rotate;
+    if (frame_rate_nonzero(rate, zero_00d7a218)) {
+        const float rotation = frame_rotation(rate, original_seconds, self.widget.transform.rotate);
+        set_rotation44_00ab27f0(owner, rotation); // AB119A actual current44
+    }
+    // current44 may alter the timer, state or derived properties: reload them.
+    if (advance_state_countdown(self.icon.state_seconds_remaining_128,
+            original_seconds, zero_00d7a218)) {
+        select_state_00ab1710(self.icon.expiry_state_12c, 0, 1.0f); // AB11EB current88
+        // AB11ED..AB11F0 unconditional +0 store AFTER a successful callback.
+        self.icon.state_seconds_remaining_128 = 0.0f;
+    }
 }
 void GuiIconRuntime::set_size58_00ab1ef0(GuiWidgetOwner& owner, const GuiWidgetSize& size) {
     auto& self = *impl_;
@@ -335,21 +452,7 @@ void GuiIconRuntime::set_scale48_00ab2820(GuiWidgetOwner& owner, const GuiWidget
     owner.recompose_00aa7220(); // No base bounds refresh.
     // 00AB282F ->00AB2600. Retain its short-circuit reads and its selected
     // state lookup only for the point-filter/native-size eligibility branch.
-    const bool bilinear = [&] {
-        if (!self.icon.has_texture || !self.icon.shader_name.empty()) return false;
-        if (!self.services.platform_allows_point_filter()) return true;
-        const auto& transform = self.widget.transform;
-        if (transform.rotate != 0.0f || transform.scale_x != 1.0f ||
-            transform.scale_y != 1.0f) return true;
-        const auto* state = gui_icon_state_at(self.icon, self.icon.current_state);
-        require(state != nullptr, "Icon scale48 filter query requires its current state.");
-        // 00AB24B0 captures the texture;00AB17B0 calls width before height.
-        // Keep this state record alive across those actual texture calls.
-        auto* texture = state->texture;
-        const auto width = self.texture_width(texture);
-        const auto height = self.texture_height(texture);
-        return gui_icon_state_differs_from_native_size_00ab24b0(*state, width, height);
-    }();
+    const bool bilinear = self.prefers_bilinear_00ab2600();
     // Reload +134h after the query. This routine never writes the cache itself
     // and has no -1 state exemption before current+8C ->00AB10D0 ->00AB3CB0.
     if (bilinear != self.icon.cached_prefers_bilinear)

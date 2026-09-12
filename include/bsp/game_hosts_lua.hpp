@@ -80,6 +80,14 @@ struct GameVehicleClassRow {
     float max_rot_angle{0.0f};               // class+4F8h
     float max_rot_angle_change_ratio{0.0f};  // class+4FCh
     float length{0.0f};                      // class+A0h, written by 00960230
+    // class+A8h, the `Height` key 00960230 writes beside `Length`. Milestone 2r
+    // reads it because 00826866 places the keel sample point at half the hull
+    // height below the pose and 00937C90's hull body needs neither, so the two
+    // keys are the same reader's pair. A missing key stores 0.
+    float height{0.0f};                      // class+A8h
+    // class+B0h, the `Mass` key 00960230 writes at 0096043A with the default
+    // 1.0f. 00937C90 puts it in the body descriptor's +04h at 009399F7 and
+    // 00937CF1 compares it against 100.0 to choose the physics material.
     float mass{0.0f};
 };
 

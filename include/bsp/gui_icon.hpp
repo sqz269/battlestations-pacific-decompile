@@ -158,13 +158,16 @@ struct GuiIconWidget {
     // page cannot author it; only code can.
     GuiUvRect crop{};
 
-    // +128h and +12Ch, written together by 00AB1110 after it has forwarded the
-    // state change. Nothing in this packet reads them.
-    float field_128{0.0f};
-    std::int16_t field_12c{0};
+    // +128h and +12Ch. 00AB1110 first selects its immediate state, then stores
+    // this countdown and expiry state. 00AB1150 subtracts the original frame
+    // seconds only when the countdown is ordered-positive; on ordered <=0 it
+    // selects expiry_state with (mode0, ratio1), then clears the countdown.
+    float state_seconds_remaining_128{0.0f};
+    std::int16_t expiry_state_12c{0};
 
     // +130h, `AutoRotate`. Default 0. Serialised by 00AB2B70 and read by
-    // 00AB3310; its consumer is outside this packet.
+    // 00AB3310. 00AB1150 adds rate * original frame seconds to base Rotate+48h
+    // through current44, including the unordered rate branch.
     float auto_rotate{0.0f};
 
     // +134h. 00AB3CB0 caches 00AB2600's answer here so it can keep the

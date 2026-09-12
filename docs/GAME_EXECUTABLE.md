@@ -6644,3 +6644,576 @@ float32 ratio (`008235BF`, `008235BA`, `008235DC`, `008235C3`). The scene's `Cru
 queued at that point, so when `00835E17` latches it the ring already holds the ratio and the
 untouched rudder keeps the spawn heading. The executable's cruise ships stand still because its
 unit creation skips that seed; wiring it is the next milestone's item.
+
+## Milestone 2r: the hull the game builds, the navigation block's class values, and six attackmove ships steering on their own
+
+Addresses: 00939e2a / 00937c90 with its tail 009399c0..00939c05, 009399d2 / 00414db0, 009399e5 /
+00c336c0, 00939a6f / 00c5d580, 00939a89 / 00c31f90 and 00939c05 / 00c37e70; 00826a6d / 00937440
+and its tail 00937622 / 009329c0, with 009329ec / 00c37e50, 00932a0e / 00c37e20, the material
+index 00932a53..00932a8f and its eight loads 00932a96..00932b3f, and 00932d6b / 0078cf20;
+0092d300's own store 0092d3ec..0092d40d and 0092d56c..0092d584; 009f118d / 009e4330 with
+009e43cc / 009dfcb0, 009e44c4 and 009e4555 / 0082e960, 009e45f3 / 00bf7030, 009e465f / 00bd2f10
+and 009e46a9 / 009e0270; 009ee5f4 / 009e3c00 with 009e3d8c, 009e3dcd / 00811d80, 009e3eae /
+0082e850, 009e3ec0, 009e4200 / 004218e0 and 009e4216 / 00417ef0; 009f4d87 / 009ef910 with
+009ef97c, 009efa08 / 009ec770, 009efcb8 / 0080e160, 009efd00 / 009d57e0, 009efd4a / 00415d70,
+009efdbd / 009dd010, 009efe0f / 009d8860, 009efec3 / 009d8a30, 009f0000 / 00778890 and 009f0038 /
+00811a30; 009f51f3 / 009e04e0 with 009e0509, 009e061b / 009da1d0, 009e0631 / 009dc060 and
+009e0723 / 00811a30; 009f51e4 / 009f0ea0 and 009f1a25 / 009f0d20; 009ef334 / 009eb660 with
+009eb681 and 009ebede / 00424c40, 009eb819 / 004158e0, 009eb8c0 / 009d8160, 009eb8ca / 009d80c0,
+009eb8e2 / 009dd540, 009ebdaa / 00415970, 009ebe36 / 009dd010, 009ebf67 / 009d84e0 and 009ec0c1 /
+009dc2e0; 009f309b / 009f1bc0, 009f30a2 / 009e7fc0, 009f30a9 / 009e6e80, 009f30b8 / 009e9190,
+009f30c7 / 009e74d0, 009f30d6 / 009e76d0 and 009f30dd / 009e6a90, with 009e8080 / 009e6400,
+009e81a7 / 009e5da0, 009e5dc4 / 0095eb40, 009e74b7 / 009e6870, 009e7755 / 009e6640 with 009e673e /
+00417b10 and 009e6808 / 0041b4e0, 009e7ecb / 009e5e90, 009e6b85 / 009e5e00, and the two reads
+009f3314 and 009f339a.
+
+Packet `cc_exe_2r`, worker `agent/cc-exe-2r`. Sources: `src/game_hosts_units.cpp`,
+`include/bsp/game_hosts_units.hpp`, `src/game_hosts_ship_ai.cpp`,
+`include/bsp/game_hosts_ship_ai.hpp`, `src/game_hosts_lua.cpp`,
+`include/bsp/game_hosts_lua.hpp`. Report: `reports/game_executable_milestone_2r.json`. No Ghidra
+mutation. Eight packets are consumed from `main` and none of their reconstructions is re-derived
+here; what this milestone adds is the wiring, the run and three corrections that the run forced.
+
+### 1. The hull body the game builds, and the one thing it changes
+
+`00939E2A` is the last call of the controller constructor `00939CB0`, and the tail of `00937C90`
+at `009399C0..00939C05` is the writer of `controller+2Ch` (`docs/SHIP_HULL_BODY.md`). The
+executable runs that tail now, once per created unit, so every hull carries the game's own
+descriptor: the mass at `009399F7`, the zeroed inertia diagonal, the angular damping `1.0f` at
+`00939A2F`, the row-1 torque lock below a mass of 100.0, `00C5D580`'s body and motion state, and
+`00C37E70`'s box inertia at `00939C05`. Two stand-ins go with it. Milestone 2i's `1.0e30f` speed
+clamps at `M+18h` and `M+1Ch` are replaced by the descriptor's own `1000.0f`, and the three class
+keys that had been pinned at `0.0f` since milestone 2i - `Length` at `class+A0h`, `Height` at
+`class+A8h` and `Mass` at `class+B0h` - are read out of the installed `VehicleClass` row, which
+this process's own Lua reader had already been parsing two of and throwing away.
+
+```
+rigid body: 00c41550 then 00c5b1b0, one substep of the whole 0.0500 s game step. Milestone 2r
+builds the hull body through the tail of 00937c90, so "DeRuyter" carries mass 7688.0 (inverse
+0.00013007), angular damping 1.0, linear damping 0.0, both speed clamps at 1000.0, torque-lock=0
+and physics material 0
+```
+
+The measurable effect is exactly one number. Each integration phase multiplies the angular
+velocity by `1 - rate*dt` and both phases run, so a commanded yaw rate is scaled by
+`(1 - 0.05)^2 = 0.9025` inside the step it is set in. The acceptance form says so to five
+decimals: at `t = 14 s` the controlled `DeRuyter`'s yaw rate moves from milestone 2q's
+`-0.061087` to `-0.055131`, and `bsp_ship_motion_probe.exe --class 20 --steps 290 --dt 0.05
+--throttle 1 --rudder 1` prints `-0.05513` in its class-built-body column. That is the whole of
+what the hull body does to this mission.
+
+The collision AABB is the one input it cannot supply. Its producer is the shape attach `00C5C940`
+behind `00937D3F..009399BF`, which no packet has read, so no shape is attached, the box span is
+zero and `00C37E70` turns the zero inertia into a zero inverse inertia. Nothing in this process
+applies a torque, so that decides nothing the run measures; it is the same default the probe takes.
+
+### 2. The drift is not the hull body's, and the probe drifts too
+
+Milestone 2q's section 7 read the sideways runaway as a missing hull body: "what the shipped game
+has and this process does not is anything that resists the rest [of the velocity]. The rigid
+body's linear damping is zero because `00C37E00` is never called". Both halves are wrong, and the
+run says so.
+
+The hull body's linear damping is `0.0f` **in the shipped game**. `docs/SHIP_HULL_BODY.md`
+settles it: the descriptor default at `00939295` survives and nothing overrides `desc+60h`. And
+`00C37E00` has two callers, neither on a live hull's path: `004462D0`
+`BSP_GameDynamicsList_ApplyBuoyancyStep`, which walks the detached-part list that `00934150`
+`BSP_UnitParts_DetachPart` and `00935540` add to, and `00824B60` `BSP_UnitInstance_OnWrecked`.
+A hull never registers on that list.
+
+`0092D300` is correct as reconstructed, and the drift is what it does. `0092D3EC`, `0092D3F4` and
+`0092D40D` form the perpendicular residue `v - current*dir`, and after the `PUSH ECX` at
+`0092D544` the three stores at `0092D56C`, `0092D578` and `0092D584` write `target*dir` plus that
+residue. The along-axis component is replaced every step; the rest is carried forward. Under a
+steady turn of `dtheta` per step the residue settles toward `-target * sin(dtheta) / (1 -
+cos(dtheta))`, which is thousands of metres per second, so in practice it grows without bound.
+
+The decisive evidence is the probe, which builds the class hull body and drifts **more** than the
+executable does:
+
+| run | drift at t = 150 s | trajectory speed | forward speed |
+| --- | --- | --- | --- |
+| probe, `--class 20 --throttle 1 --rudder 1` | 80.98 deg | 63.27 m/s | 10.56 m/s |
+| probe, `--class 20 --moveto -250,-2724.6` | 73.57 deg | - | 16.39 m/s |
+| probe, `--class 265 --moveto -250,-224.6` | 74.50 deg | 66.25 m/s | 18.15 m/s |
+| `bsp_game.exe`, `Kortenaer`, before this milestone | 74.35 deg | 66.05 m/s | 18.18 m/s |
+| `bsp_game.exe`, `Kortenaer`, after | 78.03 deg | 85.30 m/s | 18.16 m/s |
+
+The probe prints the mechanism itself: `final forward speed 10.5647 (a sustained turn bleeds
+speed: 0092D300 rewrites only the axial component, so the lateral one stays)`. Neither
+`--moveto` run converges: the class-20 one never gets nearer than 2401 m to a goal 2736 m away,
+and the class-265 one, on `Kortenaer`'s own class with `Kortenaer`'s own 336 m goal, ends 1978 m
+away having never improved on its starting distance.
+
+**The routine is `009329C0` `BSP_UnitController_ApplyHydroForces`**, body `009329C0-00933BA9`,
+the tail call of `00937440` at `00937622`. It is the only code on a live hull's path that writes
+the body's linear velocity outside `0092D300`: `009329EC` calls `00C37E50` (set linear velocity)
+and `00932A0E` calls `00C37E20` (set angular velocity). It selects a physics material the same way
+`00937CF1` does - `class+B0h` against the double `100.0` at `00D7A220` (`00932A53..00932A7E`),
+scaled to a `38h` stride by the `LEA`/`SUB`/`ADD` chain at `00932A82..00932A8F` - and then loads
+eight floats out of `settings + 4E0h + material*38h` at `00932A96`, `00932AAD`, `00932AC4`,
+`00932ADB`, `00932AF2`, `00932B09`, `00932B20` and `00932B3F`. Those are the six record fields
+`docs/SHIP_HULL_BODY.md`'s `ship_physics_material_record` follow-up lists as "the readers of
+`KozegellenallasiEgyutthato*`", the Hungarian for a medium-resistance coefficient. It also samples
+the water height at `00932D6B`. That is a hydrodynamic drag model reading drag coefficients out of
+the record this milestone's hull body already selects, and it is unreconstructed. Until it exists,
+a turning ship keeps every metre per second of lateral velocity it acquires, in this executable
+and in the probe alike.
+
+The drift is worse after this milestone, not better, and the reason is section 5: the clearance
+wiring lifts the danger level from 1.0 to 0 and the throttle with it, so `Kortenaer` goes faster
+and therefore drifts faster. That is a real result and it is reported as one.
+
+### 3. The navigation block, and what the five fields were worth
+
+`009F118D` runs `009E4330` on the brain record's inline sub-object at `brain+8h`, once per ship.
+Nothing in this process builds a brain record, so the executable runs the constructor once per
+created unit at registration, which is the only moment it can. Packet `cc_ai_nav_block_ctor`
+supplies the body; six host methods supply its call sites, of which `009DFCB0`, `0082E960` twice
+and `00BF7030` are concrete and `00BD2F10` and `009E0270` are records with their own addresses.
+
+The values reproduce `docs/SHIP_AI_NAV_BLOCK_CTOR.md`'s published table to every printed digit,
+which is the check that the wiring hands the constructor the class row it expects:
+
+```
+  unit                 state        len_9c8  turn_3c8  turn_3cc   yaw_3d0  stop_3d4 start_3d8    mass_b0  mat
+  DeRuyter             cruise        171.00    269.49    256.02   0.12217     68.40    102.60     7688.0    0
+  Kortenaer            movetopos     110.00    261.60    248.52   0.13963     44.00     66.00     1800.0    0
+  Haguro               attackmove    203.00    353.71    336.02   0.10472     81.20    121.80    13500.0    0
+```
+
+`Kortenaer`'s start radius `blk+3D8h` is 66.0 m where milestone 2q had 0.0, so `009EEF14`'s
+release test `record+21h && blk+3D8h + setback < blk+330h` is a real comparison at last. The
+arrival latch is still never set, and section 6 says why.
+
+### 4. The path follower, whole
+
+`009EE5F4` used to run milestone 2q's partial projection of `009E3C00`, which stopped at the
+corner arm. Packet `cc_ai_path_follower` read `009E3C00-009E432A` whole, so the corner arm
+`009E3F1A..009E4222`, the shortcut clearance test and the cursor advance at `009E421F` are code
+now. Two of its host methods that milestone 2q recorded are produced values: `0082E850` answers
+`class+520h`, whose writer `00828F20` packet `ship_ai_class_field_0524` read, and `unit+9C8h`
+answers the full hull `Length` its producers `0081106E` and `0081FA4D` copy from the descriptor
+when the class carries no model box.
+
+The run confirms `docs/SHIP_AI_PATH_FOLLOWER.md`'s two-node prediction exactly. Over 500 frames:
+**3419 points, 0 corner arms, 0 cursor advances, 0 lateral publishes**. On the open sea the plan
+is `head -> goal_node`, the walk does not run, the target is the goal node, the outgoing leg is
+zero length so the corner gate fails at `009E3F54`, and `009E41CF` clamps the step floor to the
+distance to the goal, which `009E42BF` brings back to exactly that. The published point is the
+goal.
+
+### 5. The clearance producer, and the danger level that was never real
+
+`009F4D87` is an unconditional call from the publish into `009EF910`, one chain slot before the
+drive whose danger ramp at `009F4168` divides `blk+37Ch` by `unit+9CCh`. Milestone 2q recorded it
+and left `blk+37Ch` at the zero a fresh block carries, which made the ramp's ratio zero and pinned
+**every navigating ship at danger 1.0** - and with it at `009EC7C0`'s `ThrustMin_Slow` of 0.5 and
+at a turn-assist load latch of 1.5.
+
+Run the routine and the field carries the `9999.0f` sentinel `009EF96F` seeds, because nothing
+lowers it: the neighbour list `blk+604h` is the zero `009E4659` wrote and nothing appends to it,
+and both avoid-zone gates are the zeroes `009E4401` wrote. The ratio saturates and the danger
+target is 0.
+
+| column | before | after |
+| --- | --- | --- |
+| `blk+37Ch` clearance | 0.0 | 9999.0 |
+| `blk+0A84h` danger, every navigating ship | 1.000 | 0.000 |
+| `unit+102Ch` turn-assist load | 1.500 | 0.000 |
+| rudder deadbands over 500 frames | 9212 | 6272 |
+| ring live-pair changes | 43 | 1760 |
+
+The throttle profile `009E04E0` at `009F51F3` and the obstacle sector scan `009EB660` at
+`009EF334` replace their records beside it, with the neighbour ageing pass `009F0EA0` at
+`009F51E4` one slot ahead of the scan so the list is compacted first. Both run over empty inputs
+and both say so: the contact-track list at `blk+400h` is the empty one `009E4653` leaves, so the
+profile keeps the bypass byte `009E435F` set and `009D6B40` stays a clamp; the neighbour list is
+empty and both zone gates are shut, so **47040 sector scans produce 0 marks** and `009D84E0`, the
+passing corner, is wired at `009EBF67` and never reached. The one thing that would change either
+is `004DE610` `construct_world`: the candidate walk at `009F1877..009F18B8` that feeds
+`009F0D20` reads the world object's entity list, and this process has no world object.
+
+### 6. A `moveto` that cannot end, for a reason that is no longer the AI's
+
+With the start radius produced, the release test is real, and the latch is still never set over
+500, 1200 and 3000 frames. The reason has moved off the AI entirely.
+
+`--order moveto:Java` names a **ship**, and the goal vector is re-read from that ship's position
+every frame. `Java` holds 12.0 m/s on its authored `Cruise`. `Kortenaer` makes 9.1 m/s, because
+`009EC7C0`'s `ThrustMin_Slow` floor is 0.5 and its heading error never falls inside the
+`HdgDiffValueMin_Slow` window - and its heading error never falls because the hull is travelling
+80 degrees off its own bow. So the remaining path length grows:
+
+```
+  ship ai step 10   Kortenaer  state=movetopos  ... d32c=   561.54 d330=   561.54
+  ship ai step 90   Kortenaer  state=movetopos  ... d32c=   595.50 d330=   595.50
+```
+
+and reaches 3045 m over 3000 steps. A goal that outruns the chaser cannot be reached, and the
+chaser is slow because of section 2. What this milestone can say is that nothing in the AI is
+missing for an arrival any more: the field the test compares against is produced, the latch's
+writer `009EF034` runs, `009DA590` behind `state->vtable[2Ch]` runs, and the completion path
+`0071E430 -> 0071D810 -> 0071C730 -> 00721BB7 -> 00720850` is wired end to end and still carries
+the director's own two `DeRuyter` completions, unchanged from milestone 2q.
+
+`Kortenaer` ends the 500-frame run 518.5 m from `Java`, having started 559.0 m away and moved
+258.16 m.
+
+### 7. Six attackmove ships steer on their own, and `--ai-drive` is retired
+
+All six of `009F3090`'s arms that milestone 2q recorded now run: `009E7FC0` at `009F30A2`,
+`009E6E80` at `009F30A9`, `009E9190` at `009F30B8`, `009E74D0` at `009F30C7`, the ring scan
+`009E76D0` at `009F30D6` and the throttle limiter `009E6A90` at `009F30DD`. The four slot scorers
+behind them are packet `cc_ai_ring_scan`'s whole-body projections: `009E6400` at `009E8080`,
+`009E5DA0` at `009E81A7`, `009E6870` at `009E74B7` and `009E6640` at `009E7755`. `009E5E90` at
+`009E7ECB` writes the commanded heading `nested+120Ch`, and `009E6A90` reads it back and writes
+the commanded throttle `nested+1210h`, which is what `009F3240` forwards and `009F3635` clamps.
+
+Milestone 2q's reason for keeping the switch was that `009E6A90` "is only partially projected".
+It is not: `docs/SHIP_AI_APPROACH_UPDATE.md` line 299 and its routine table both record
+`009E6A90-009E6E78` as complete, and `docs/SHIP_AI_NAV_BLOCK_CTOR.md` re-checked it. That is
+correction 4 below.
+
+```
+  unit                 state      ring_scan  bearings  winner   hdg_120c   thr_1210 clear_37c  profiles substate
+  Haguro               attackmove        98        98       0    -0.5235     0.5000    9999.0       490        8
+  Jintsu               attackmove        98        98       0     0.5235     0.5000    9999.0       490        8
+  Yudachi              attackmove        98        98       0    -0.5235     0.5000    9999.0       490        8
+  Samidare             attackmove        98        98       0     0.5235     0.5000    9999.0       490        8
+  Murasame             attackmove        98        98       0    -0.3633     0.5000    9999.0       490        8
+  Harusame             attackmove        98        98       0     0.3633     0.5000    9999.0       490        8
+```
+
+Every one of the six ends in the approach sub-state, member offset `8h`, `009F3240`:
+`set_current_substate` ran six times, once per ship, and all 588 sub-state steps went there. The
+winner is slot 0 for all six, because `009E6640`'s probe-space callees `00417B10` and `0041B4E0`
+are records so no slot is ever blocked and every slot scores 1.0; what separates the six is
+`009E5E90`'s own commit, which gives `Murasame` and `Harusame` a different bearing from the other
+four.
+
+They move, and they close:
+
+| ship | moved, 500 frames | closing on `Kortenaer`, 500 frames | closing, 1200 frames |
+| --- | --- | --- | --- |
+| `Haguro` | 205.15 m | -458.4 m | -877.9 m |
+| `Jintsu` | 212.29 m | -469.4 m | -1085.4 m |
+| `Yudachi` | 201.19 m | -452.8 m | -770.6 m |
+| `Samidare` | 201.19 m | -457.6 m | -1033.2 m |
+| `Murasame` | 202.79 m | -436.7 m | -662.2 m |
+| `Harusame` | 202.79 m | -447.6 m | -1215.4 m |
+
+Milestone 2q reported all six at 0.00 m. **`--ai-drive` is retired**: the switch is still accepted
+on the command line and ignored, with a log line saying so, and the run that passes it reports the
+same **602 concrete and 493 unimplemented** as the run that does not.
+
+One arm is wired and not reached, and it is named rather than counted as working. `009E5DA0` at
+`009E81A7` sits inside `009E7FC0`'s **mode-0** arm, and every attackmove ship of this mission is
+in mode 1 (`mode=1` in the run's approach table), so neither it nor `0095EB40` behind it at
+`009E5DC4` is entered. `firepower=0` in the summary is that gate, not a missing wiring; and if the
+arm did run, the rating would be 0 anyway, because `0095EB40` walks gunnery device lists at
+`unit+394h` / `+398h` / `+430h` that this process does not build.
+
+### Host methods
+
+`bsp_game.exe --frames 700 --press-start-frame 30 --menu-select USN02 --mission-frames 500
+--mission-frame-seconds 0.05 --mission-complete-frame 490 --order moveto:Java --order-unit
+Kortenaer --order-frame 5 --trajectory-csv local/traj_2r_all.csv --log local/run_2r_all.log
+--game-root "<install>"`, exit 0: **602 concrete, 493 unimplemented**, against the same line's
+milestone 2q baseline of **571 / 483** taken on this branch's merged base. With no `--order`:
+**587 / 487**. With `--ai-drive Kortenaer=1,0.5`: **602 / 493**, identical to the run without it,
+which is what retiring it means.
+
+`reports/game_executable_milestone_2r.json` carries the per-step table with the call site and
+callee of every row (`hull_body_steps`, `nav_block_steps`, `path_follower_steps`,
+`clearance_steps`, `throttle_profile_steps`, `sector_scan_steps`, `attackmove_steps`, `routines`,
+`measurements`, `probe_comparison`, `corrections`, `ai_drive`, `read_for_this_packet`,
+`still_unimplemented`, `evidence_appended`, `no_ghidra_function`, `consumed_from_main`,
+`coverage`). In call order, with the containing function where it is not the packet's main
+routine:
+
+| Step | Call site | Callee | Disposition |
+| --- | --- | --- | --- |
+| the hull body build (in 00939cb0) | 00939e2a | 00937c90 | concrete, 32 bodies |
+| refresh the unit matrix (in 00937c90) | 009399d2 | 00414db0 | record, not needed |
+| copy the transform (in 00937c90) | 009399e5 | 00c336c0 | concrete |
+| create the body (in 00937c90) | 00939a6f | 00c5d580 | concrete |
+| read back the AABB (in 00937c90) | 00939a89 | 00c31f90 | record, no shape attached |
+| set the box inertia (in 00937c90) | 00939c05 | 00c37e70 | concrete, zero tensor |
+| the force model (in 00825f20) | 00826a6d | vtable +0h = 00937440 | indirect, concrete |
+| **the hydrodynamics (in 00937440)** | **00937622** | **009329c0** | **record: the routine this milestone names** |
+| the navigation block (in 009f1160) | 009f118d | 009e4330 | concrete, 32 blocks |
+| the steering seed (in 009e4330) | 009e43cc | 009dfcb0 | concrete, window only |
+| the turn circle at full (in 009e4330) | 009e44c4 | 0082e960 | concrete |
+| the turn circle at 0.9 (in 009e4330) | 009e4555 | 0082e960 | concrete |
+| the square root (in 009e4330) | 009e45f3 | 00bf7030 | concrete |
+| the random phase (in 009e4330) | 009e465f | 00bd2f10 | record, no stream |
+| the sector shapes (in 009e4330) | 009e46a9 | 009e0270 | record |
+| the path point | 009ee5f4 | 009e3c00 | concrete, 3419 points, whole body |
+| the lateral anchor (in 009e3c00) | 009e3d8c | field +10h | record, none on this plan |
+| the order turn limit (in 009e3c00) | 009e3dcd | 00811d80 | record, unreachable arm |
+| the class turn radius (in 009e3c00) | 009e3eae | 0082e850 | concrete |
+| the owner length (in 009e3c00) | 009e3ec0 | field +9c8h | concrete |
+| the avoid-zone manager (in 009e3c00) | 009e4200 | 004218e0 | record |
+| the shortcut test (in 009e3c00) | 009e4216 | 00417ef0 | record |
+| the turn clearance (in 009f4d10) | 009f4d87 | 009ef910 | concrete, 15680 bodies |
+| the category gate (in 009ef910) | 009efa08 | 009ec770 | record |
+| the avoidance flag (in 009ef910) | 009efcb8 | 0080e160 | record |
+| the static zone block (in 009ef910) | 009efd00 | 009d57e0 | record |
+| the static zone clearance (in 009ef910) | 009efd4a | 00415d70 | record |
+| the neighbour sweep (in 009ef910) | 009efdbd | 009dd010 | record, list empty |
+| the neighbour support (in 009ef910) | 009efe0f | 009d8860 | record, list empty |
+| the neighbour closest (in 009ef910) | 009efec3 | 009d8a30 | record, list empty |
+| the path fade gate (in 009ef910) | 009f0000 | 00778890 | record |
+| the class length unit (in 009ef910) | 009f0038 | 00811a30 | concrete |
+| the throttle profile (in 009f50e0) | 009f51f3 | 009e04e0 | concrete, 15680 bodies |
+| the avoidance predicate (in 009e04e0) | 009e061b | 009da1d0 | record |
+| the track refresh (in 009e04e0) | 009e0631 | 009dc060 | record, list empty |
+| the gap length (in 009e04e0) | 009e0723 | 00811a30 | concrete |
+| the neighbour ageing (in 009f50e0) | 009f51e4 | 009f0ea0 | concrete, list empty |
+| the neighbour append (in 009f1420) | 009f1a25 | 009f0d20 | record, no world list |
+| the sector scan (in 009ef230) | 009ef334 | 009eb660 | concrete, 47040 scans, 0 marks |
+| the blocked margin (in 009eb660) | 009eb681 | 00424c40 | record |
+| the zone segment crossing (in 009eb660) | 009eb819 | 004158e0 | record |
+| the avoid-box test (in 009eb660) | 009eb8c0 | 009d8160 | record, list empty |
+| the near-box test (in 009eb660) | 009eb8ca | 009d80c0 | record, list empty |
+| the ray clip (in 009eb660) | 009eb8e2 | 009dd540 | record, list empty |
+| the arc clip against zones (in 009eb660) | 009ebdaa | 00415970 | record |
+| the arc clip against a node (in 009eb660) | 009ebe36 | 009dd010 | record, list empty |
+| the passing corner (in 009eb660) | 009ebf67 | 009d84e0 | record, wired, not reached |
+| the neighbour memory (in 009eb660) | 009ebede | 00424c40 | record |
+| the free bearing (in 009eb660) | 009ec0c1 | 009dc2e0 | record |
+| the frame state (in 009f3090) | 009f309b | 009f1bc0 | concrete, 588 frames |
+| the score reset (in 009f3090) | 009f30a2 | 009e7fc0 | concrete |
+| the bearing decay (in 009e7fc0) | 009e8080 | 009e6400 | concrete |
+| the class rating (in 009e7fc0) | 009e81a7 | 009e5da0 | record, mode-0 arm not entered |
+| the expected damage (in 009e5da0) | 009e5dc4 | 0095eb40 | record, behind the row above |
+| the standoff range (in 009f3090) | 009f30a9 | 009e6e80 | concrete |
+| the arc score (in 009e6e80) | 009e74b7 | 009e6870 | concrete |
+| the avoidance refresh (in 009f3090) | 009f30b8 | 009e9190 | concrete |
+| the candidate list (in 009e9190) | 009e9220 | 008053c0 | record, no world list |
+| the evade score (in 009f3090) | 009f30c7 | 009e74d0 | concrete |
+| **the ring scan (in 009f3090)** | **009f30d6** | **009e76d0** | **concrete, 588 scans** |
+| the obstacle probe (in 009e76d0) | 009e7755 | 009e6640 | concrete |
+| the probe origin (in 009e6640) | 009e673e | 00417b10 | record, no probe space |
+| the probe cast (in 009e6640) | 009e6808 | 0041b4e0 | record, never hits |
+| the bearing commit (in 009e76d0) | 009e7ecb | 009e5e90 | concrete, 588 commits |
+| the throttle limiter (in 009f3090) | 009f30dd | 009e6a90 | concrete |
+| the engagement target (in 009e6a90) | 009e6b85 | 009e5e00 | concrete |
+| the commanded heading (in 009f3240) | 009f3314 | field +1214h | concrete, produced now |
+| the commanded throttle (in 009f3240) | 009f339a | field +1218h | concrete, produced now |
+
+### Corrections
+
+1. **Milestone 2q section 7's diagnosis of the drift is wrong in both halves.** It says the
+   shipped game has something that resists the lateral velocity and that the missing thing is the
+   hull body's linear damping, "because `00C37E00` is never called". The hull body's linear
+   damping is `0.0f` in the shipped game (`docs/SHIP_HULL_BODY.md`: the descriptor default at
+   `00939295` survives, nothing overrides `desc+60h`), and `00C37E00`'s two callers, `004462D0`
+   and `00824B60`, are the detached-part buoyancy step and the wreck handler, neither on a live
+   hull's path. Evidence: `python tools/bsp.py ghidra callers 00c37e00`; `00447510`'s three
+   callers, all part-detach sites; the run's own log line reporting linear damping 0.0 after the
+   body is built; and the probe, which builds that body and drifts to 80.98 degrees at 150 s.
+
+2. **The probe does not hold its heading-aligned velocity.** This packet's brief and the reading
+   of milestone 2q behind it both take the probe as the converging reference. It is not one:
+   under a sustained hard-over turn it reaches 80.98 degrees of drift at 150 s with a trajectory
+   speed of 63.27 m/s against a forward speed of 10.56, and neither of its two `--moveto` runs
+   closes on its goal. Its own printed summary states the mechanism: `a sustained turn bleeds
+   speed: 0092D300 rewrites only the axial component, so the lateral one stays`. Evidence:
+   `local/probe_2r_turn.txt`, `local/probe_2r_class20_moveto.txt`,
+   `local/probe_2r_class265_moveto.txt`.
+
+3. **Milestone 2q's correction 8 is half closed, and its remainder is not the AI's.** `blk+3D8h`
+   is 66.0 m for `Kortenaer` now and `009EEF14` is a real comparison, but the latch is still never
+   set because `moveto:Java` names a ship under way at 12.0 m/s that a 9.1 m/s chaser cannot
+   catch: `blk+330h` rises from 561.54 m at step 10 to 595.50 m at step 90 and to 3045 m over
+   3000 steps. Evidence: the run's nav-block table; the ship-AI sample lines; `arrival_latches=0`
+   at 500, 1200 and 3000 frames; the trajectory CSV's `Java` rows.
+
+4. **Milestone 2q section 9's reason for keeping `--ai-drive` rests on a stale coverage claim.**
+   It says `009E6A90` "is only partially projected". `docs/SHIP_AI_APPROACH_UPDATE.md` line 299
+   and its routine table line 358 both record `009E6A90-009E6E78` as complete, and
+   `docs/SHIP_AI_NAV_BLOCK_CTOR.md`'s own section re-checked it against the listing. Evidence:
+   those three doc sections; `local/run_2r_aidrive.log` reporting the same 602 / 493 as
+   `local/run_2r_all.log`.
+
+5. **Milestone 2q's host rows `the class turn radius | 009e3eae | 0082e850 | record` and
+   `the owner radius | 009e3ec0 | field +9C8h | record` are both produced values now.** `0082E850`
+   returns `class+520h`, whose writer `00828F20` packet `ship_ai_class_field_0524` read, and
+   `unit+9C8h` is the full hull `Length` that `0081106E` and `0081FA4D` copy from the descriptor
+   when the class carries no model box - correction 3 of `docs/SHIP_AI_NAV_BLOCK_CTOR.md`.
+   Evidence: the run's `len_9c8` column, 171.00 / 110.00 / 203.00, matching the installed
+   `vehicleclasses.lua` rows exactly.
+
+6. **`src/game_hosts_units.cpp`'s milestone 2i note that only `class+A0h` has a recovered Lua key
+   is superseded, and two of the three keys were already being parsed and discarded.**
+   `GameVehicleClassRow` had `length` and `mass` fields filled by `read_vehicle_class_row` since
+   milestone 2i; the units host overwrote all three with `0.0f`. `Height` is added to the reader
+   here. `VehicleClass[20]` carries `Length = 171`, `Height = 5` and `Mass = 7688`. The keel
+   sample point now sits half a hull length astern and 2.5 m below the pose, which leaves
+   `00826994`'s gate open as before. Evidence: the installed `vehicleclasses.lua`; the run's log
+   line reporting mass 7688.0 and inverse 0.00013007.
+
+7. **Milestone 2q's `the per-ship tuning | - | 009e4330 | record, five fields` row, and its
+   section 7's "one unread routine standing between this executable and a `moveto` that ends
+   itself", understate what was in the way.** Two more things were: the clearance producer
+   `009EF910`, whose absent `blk+37Ch` pinned every navigating ship at danger 1.0 and at the
+   AutoThrust slow floor of 0.5, and the order itself, which names a moving goal. Evidence: the
+   danger column, 1.000 before and 0.000 after; `arrival_latches` still 0 with `blk+3D8h`
+   produced.
+
+8. **`docs/SHIP_AI_RING_SCAN.md`'s reading of `009E5DA0`'s reachability needs a run-time
+   qualifier.** The adapter and `0095EB40` behind it are complete and wired, and neither is
+   entered on this mission: `009E81A7` sits in `009E7FC0`'s mode-0 arm and every attackmove ship
+   here is in mode 1. Evidence: the run's approach table `mode=1`; `firepower=0` in the summary
+   beside `ring_scans=588`.
+
+### no_ghidra_function
+
+| Start | End (inclusive) | Note |
+| --- | --- | --- |
+| 007b3dd0 | 007b3dd2 | the empty attackmove sub-state step, one `RET 4`; boundary defined by packet `cc_ai_attackmove_substates`, unchanged here and not touched by this milestone |
+
+Every other address this milestone touched lies in a Ghidra function whose body range the bridge
+reports. `python tools/verify_report_calls.py reports/game_executable_milestone_2r.json` checks
+**65 call rows and reports 0 failures**; the one vtable slot (`00826A6D`, the force model) is
+reported as indirect and skipped, and the field reads are marked as such.
+
+### Validation
+
+`scripts/build.ps1` Release Win32 with `/W4 /WX /fp:strict`, no warnings, every target built.
+`ctest -C Release`: `reconstructed_math` passes, 1 of 1. **No test cases were added.**
+`origin/main` was merged in twice: at `a6a17386` before any change was made, and again at
+`fcf8b17a` after `docs/COORDINATION.md` and the checklist were read, which brought in
+`ship_ai_nav_block_ctor` (`3b4e07a6`). The baseline below was taken on that merged tree before the
+first edit.
+
+```
+bsp_game.exe --frames 700 --press-start-frame 30 --menu-select USN02 --mission-frames 500
+  --mission-frame-seconds 0.05 --mission-complete-frame 490 --order moveto:Java
+  --order-unit Kortenaer --order-frame 5 --trajectory-csv local/traj_2r_all.csv
+  --log local/run_2r_all.log --game-root "<install>"
+
+summary mission ship ai units=32 ai_owned=31 steps=15680 gated=0 replans=5048
+        state_steps{concrete=4803 records=245} publishes=15680 promotions=15680
+summary mission ship ai states cruise=13 stop=12 attackmove=6 movetopos=1 other=0
+summary mission ship ai plan requests=3426 seeds=13 accepts=3394 approach_frames=588
+        controller_updates=15680
+summary mission ship ai path search ticks=3420 swaps=13 points=3419 corner_arms=0
+        units_with_point=7 output_blocks=3426 bearings=3419
+summary mission ship ai nav blocks=32 (009e4330 once per brain record, 009f118d)
+        clearance=15680 throttle_profiles=15680 sector_scans=47040 sector_marks=0
+        ring_scans=588 ring_bearings=588 firepower=0 follower_points=3419
+        follower_corners=0 follower_advances=0
+summary mission ship ai command completion events=0 callbacks=0 end_commands=0 queue_advances=0
+summary mission ship ai arm tail bodies=3426 latched=3425 stops=6 arrival_latches=0
+summary mission ship ai ring hops=15680 gated_3f5=0 writes=15680 rudder_law=15190
+        deadbands=6272 live_pair_changes=1760 driven=0
+summary mission director completion end_commands=0 stage_raises=2 clear_messages=2
+        clear_receives=2 queue_advances=2 restarts=0 command_events=0 event_callbacks=0
+summary mission world units=32 walked=15680 updated=15680 motion_ticks=15680
+        simulated=24.50 s controlled=DeRuyter moved=34.80 total_path=5047.64
+host methods 602 concrete, 493 unimplemented
+
+  unit          StartSpeed  reference   ratio    axial   expected    moved    delta
+  DeRuyter         12.0000    16.4622  0.7289  12.0000     294.00    34.80  -259.20
+  Java             12.0000    16.4622  0.7289  12.0000     294.00   294.05     0.05
+  Kortenaer        12.0000    18.2628  0.6571  12.0000     294.00   258.16   -35.84
+  (the other eleven holding cruise ships: 294.05, delta 0.05)
+  (the six attackmove ships, 0.00 in milestone 2q: 205.15, 212.29, 201.19, 201.19,
+   202.79, 202.79)
+```
+
+Against milestone 2q's own numbers on the same line: `arm tail latched` 1955 -> 3425, `stops`
+0 -> 6, `rudder deadbands` 9212 -> 6272, `live_pair_changes` 43 -> 1760, `total_path` 3825.35 ->
+5047.64, and `danger` 1.000 -> 0.000 for every navigating ship. The counts that do not move are
+the ones that should not: 3426 arm-tail bodies, 3426 output blocks, 15680 ring hops, 15680
+publishes and promotions, the same two director completions, and `states cruise=13 stop=12
+attackmove=6 movetopos=1`.
+
+The `--mission-frames 1200` run (60.0 s, `local/run_2r_long.log`) reports **597 concrete, 484
+unimplemented**, `search ticks=8367 swaps=36 points=8389 corner_arms=0 output_blocks=8396`, `arm
+tail bodies=8396 latched=8395 stops=6 arrival_latches=0`, `ring_scans=1440 sector_scans=115200
+sector_marks=0`, the same two director completions and `total_path=12925.23`. A 3000-frame run
+(150.0 s, `local/run_2r_conv.log`) is what section 2's drift table comes from; it adds no arrival
+latch.
+
+Trajectory captures: `local/traj_2r_all.csv` and `local/traj_2r_conv.csv` carry every ship,
+`Kortenaer` and `Haguro` included. The probe comparisons are in section 2 and in
+`reports/game_executable_milestone_2r.json`'s `probe_comparison`;
+`python tools/motion_trace_compare.py --trace local/trace_2r_kortenaer.csv --probe
+local/probe_2r_class265_moveto.txt --align-origin` reports peak deltas of 12.97 m/s, 52.29 degrees
+and 1125.32 m, dominated by the probe starting from rest against the trace's seeded 12.0 m/s and
+by the two sides' different throttle sources. What it establishes is that both sides drift.
+
+Every earlier switch was rechecked on this binary. A 120-frame run with `--press-start-frame 30`
+and no `--menu-select` exits 0 and reports **155 concrete and 79 unimplemented**; a 40-frame
+title-only run reports **130 and 48**; `--vfs-probe fonts/fonts.lua` exits 0 and
+`--vfs-probe does/not/exist.lua` exits 3. All four match milestones 2o, 2p and 2q exactly. The one
+published figure that moves is the acceptance form, and correction 1 of section 1 shows the move
+is the hull body's angular damping rather than a regression.
+
+This remains a runtime-validated process, not a game-validated one. What it proves that milestone
+2q did not: that a ship's rigid body is the one the game's own constructor builds, with its mass,
+its material, its torque lock and both damping rates; that the navigation block carries the five
+class-derived fields milestone 2q reported as unwritten, to the digit the reading packet
+published; that the path follower runs whole and answers the goal node on an open-sea plan; that
+the clearance producer runs and takes every navigating ship off full danger; that the obstacle
+sector scan and the throttle profile run rather than being recorded; and that six attackmove ships
+choose a bearing through a 60-slot ring scan, turn it into a commanded heading and a commanded
+throttle, and close between 437 and 469 m on their target in 24.5 s with every diagnostic switch
+off. What it does not prove is that any of them goes where it was sent, and section 2 names the
+one routine that stands between this process and that.
+
+The milestone's cautionary result is section 2's. Building the hull body was the obvious reading
+of milestone 2q's section 7 and it does not fix the drift; the probe that section 7 held up as the
+converging reference drifts harder than the executable does. Two runs of a reconstruction that was
+never wrong, over an input whose producer is a 4.6 KB unread routine, looked like a bug in the
+consumer. That is the same mistake milestone 2q's own closing paragraph warns about, made one
+layer up.
+
+### Follow-up packets
+
+1. **`ship_hydro_forces_009329c0`**, `009329C0-00933BA9`, with `0042B260`, `004F9B30`, `0074F930`,
+   `00C33650`, `00C35330`, `00C35360`, `00C37E20` and `00C37E50`. The hull's hydrodynamics: the
+   drag that removes a turning ship's lateral velocity, the buoyancy that cancels the world's
+   gravity, and the reader of the physics-material record this milestone's hull body selects. It
+   is the single largest thing standing between this executable and a ship that goes where it is
+   sent, and nothing else in the ship AI is now waiting on anything.
+
+2. **`ship_physics_material_record`**, `settings+4E0h + i*38h` and `0083FEE7..008403B7`. The six
+   fields of the record whose keys `docs/SHIP_HULL_BODY.md` did not read, and the
+   `KozegellenallasiEgyutthato*` coefficients `009329C0` loads at `00932A96..00932B3F`. Follow-up
+   1 needs them.
+
+3. **`ship_hull_shapes`**, `00937D3F..009399BF`, `00C5C940`, and the `fizika_%02d` / `hajobelso`
+   node walks. Which model nodes become collision shapes, and therefore the AABB the hull's box
+   inertia is built from. Carried over unchanged from `docs/SHIP_HULL_BODY.md`; this milestone
+   supplies everything else the inertia needs.
+
+4. **`construct_world_004de610`**, unchanged from milestones 2h through 2q and now with three more
+   consumers. The world object's entity list at `[[00E188A8]+19CCh]` is what `009F1877..009F18B8`
+   walks to fill the neighbour list at `blk+608h`, which is the input the sector scan, the
+   clearance sweep and the arm tail's traffic setback are all waiting on. Wiring it would let a
+   sector be marked, a clearance be lowered and `009D84E0` be reached.
+
+5. **`ship_ai_moveto_static_goal`**, a diagnostic packet rather than a reconstruction: give
+   `--order moveto` a fixed point instead of a unit so the arrival latch can be exercised at all.
+   Section 6 shows the AI has nothing missing for an arrival and that the order is what makes one
+   impossible on this mission.
+
+6. **`gameplay_settings_ship_ai_block`**, `settings+194h`, `+1D4h`, `+1D8h`, `+214h`, `+218h`,
+   `+588h` and the approach tuning block behind `009E7FC0` / `009E6E80` / `009E74D0` / `009E9190`.
+   Six of this milestone's records are reads of that one singleton, whose recovered loader
+   `0083B5E0` fills only the rudder curve and the AutoThrust sub-table.
+
+7. **`ship_ai_nav_block_seed_defaults`**, `009DFCB0` whole. Carried over from
+   `docs/SHIP_AI_NAV_BLOCK_CTOR.md`: only the `blk+3C4h..+3E4h` window is projected, and the rest
+   seeds `blk+1C4h..+3C3h`, which includes the shoulders `blk+18Ch..+1B0h` that the clearance
+   sweep and the sector probe place their pivots from and that this milestone fills from the hull
+   pose with `009DE2F0` recorded.
+
+8. **`ship_gunnery_device_lists`**, `unit+394h` / `+398h` / `+430h` and the walk `0095EBB3`. The
+   inventory `0095EB40` rates. Without it the expected-damage rating is 0 whatever bearing it is
+   asked about, which is why `009E5DA0` would answer 0 even if `009E7FC0`'s mode-0 arm ran.

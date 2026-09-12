@@ -1,0 +1,180 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "abi_compatible": false,
+  "game_validated": false,
+  "render_validated": false,
+  "native_byte_differential": false,
+  "new_permanent_tests": 0,
+  "packet": "orch5_main_menu_listener_bodies",
+  "functions": [
+    {
+      "address": "00581970",
+      "name": "BSP_MainMenuWidgetListener_Current0C",
+      "source": "src/main_menu_widget_listener.cpp",
+      "original_abi": "ECX screen+40, widget stack, RET4",
+      "end_inclusive": "00581b16",
+      "coverage": "complete normal body for canonical supported widget profiles; original screen/vtable/string/SEH ABI excluded"
+    },
+    {
+      "address": "00581b20",
+      "name": "BSP_MainMenuWidgetListener_Current18",
+      "source": "src/main_menu_widget_listener.cpp",
+      "original_abi": "ECX screen+40, widget and Boolean stack, RET8",
+      "end_inclusive": "00581cd3",
+      "coverage": "complete normal body for canonical supported widget profiles; original screen/vtable/string/SEH ABI excluded"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00581970",
+      "address": "0058197f",
+      "native": "00a9e110",
+      "binding": "type5C",
+      "dispatch": "resolved_indirect"
+    },
+    {
+      "function": "00581970",
+      "address": "005819fa",
+      "native": "00ab6ad0",
+      "binding": "Text alpha4C",
+      "dispatch": "resolved_indirect"
+    },
+    {
+      "function": "00581970",
+      "address": "00581a3b",
+      "native": "00683320",
+      "binding": "briefing end-thumb",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00581970",
+      "address": "00581a52",
+      "native": "00683300",
+      "binding": "briefing auto-scroll clear",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00581970",
+      "address": "00581a76",
+      "native": "00a9e110",
+      "binding": "fresh type5C",
+      "dispatch": "resolved_indirect"
+    },
+    {
+      "function": "00581970",
+      "address": "00581a9b",
+      "native": "00ab1710",
+      "binding": "Icon current88 after D4 reload",
+      "dispatch": "resolved_indirect"
+    },
+    {
+      "function": "00581970",
+      "address": "00581ad0",
+      "native": "00683320",
+      "binding": "mission end-thumb",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00581970",
+      "address": "00581ae7",
+      "native": "00683300",
+      "binding": "mission auto-scroll clear",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00581970",
+      "address": "00581af3",
+      "native": "00a9e110",
+      "binding": "second type5C",
+      "dispatch": "resolved_indirect"
+    },
+    {
+      "function": "00581970",
+      "address": "00581b10",
+      "native": "00acf070",
+      "binding": "FrameBox current84 after D4 reload",
+      "dispatch": "resolved_indirect"
+    },
+    {
+      "function": "00581b20",
+      "address": "00581b2f",
+      "native": "00a9e110",
+      "binding": "type5C",
+      "dispatch": "resolved_indirect"
+    },
+    {
+      "function": "00581b20",
+      "address": "00581bf4",
+      "native": "00ab6ad0",
+      "binding": "Text alpha4C",
+      "dispatch": "resolved_indirect"
+    },
+    {
+      "function": "00581b20",
+      "address": "00581c33",
+      "native": "00a9e110",
+      "binding": "fresh type5C",
+      "dispatch": "resolved_indirect"
+    },
+    {
+      "function": "00581b20",
+      "address": "00581c56",
+      "native": "00ab1710",
+      "binding": "Icon current88",
+      "dispatch": "resolved_indirect"
+    },
+    {
+      "function": "00581b20",
+      "address": "00581cb2",
+      "native": "00a9e110",
+      "binding": "second type5C",
+      "dispatch": "resolved_indirect"
+    },
+    {
+      "function": "00581b20",
+      "address": "00581ccd",
+      "native": "00acf070",
+      "binding": "FrameBox current84",
+      "dispatch": "resolved_indirect"
+    }
+  ],
+  "dispatch_evidence": {
+    "derived_table": "00cefc04 installed by 0059033a at screen+40",
+    "type5c": "00a9e110 established concrete widget profile",
+    "Text4c": "00ab6ad0",
+    "Icon88": "00ab1710",
+    "FrameBox84": "00d5d1b4 -> 00acf070"
+  },
+  "analyzed_only": [
+    {
+      "address": "005993a0",
+      "reason": "current04 command chain; adapter remains abstract"
+    },
+    {
+      "address": "005902e0",
+      "reason": "same screen+40 table producer"
+    },
+    {
+      "address": "005861b0",
+      "reason": "existing canonical layout listener binder retained"
+    }
+  ],
+  "same_storage": [
+    "screen19C zoom reference",
+    "screen1D4 and354 scrollers",
+    "screen1C5 and1C4 arrow flags",
+    "screen568 background /56C pad input gate",
+    "current canonical widget Text/transform/runtime"
+  ],
+  "no_ghidra_function": [],
+  "review": "Independent Icon worker assembly/source review passed; parent fixed D4 reload after type callbacks before review",
+  "fixture": {
+    "source": "local/menu_listener_probe.cpp",
+    "source_sha256": "10e175b837b44425e506b26e4e921f58847a16d74344e11c652f06d5b7bc5bb5",
+    "log": "local/orch5-menu-listener-probe.log",
+    "log_sha256": "25b85e76a18ba4d25b382aeab53fb99478900e5e23e5bcc9d44aa96d0d75c597",
+    "result": "passed",
+    "scope": "Actual Group/frame owners and screen/scroller alias behavior; no full resource-backed Text/Icon/FrameBox or concrete5993A0"
+  }
+}

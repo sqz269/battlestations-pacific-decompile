@@ -88,6 +88,23 @@ public:
     void read_properties_00ab3310(const GuiTable& evaluated_table);
     void loaded78_00ab10f0();
     void select_state_00ab1710(std::int16_t, std::int32_t, float);
+    // Complete current84, ECX Icon; immediate index DWORD (low16 consumed),
+    // expiry index DWORD (low16 stored), float seconds; RET0Ch. Select first,
+    // then store the SAME +128 countdown/+12C expiry fields after callbacks.
+    void select_temporary84_00ab1110(std::int16_t immediate_index,
+        std::int16_t expiry_index, float seconds);
+    // Complete actual Icon current44, ECX Icon; float rotation stack; RET4.
+    // Base00AA7930 writes SAME Rotate/recomposes, then00AB2600 conditionally
+    // reaches existing current8C/current80 geometry when cached filtering differs.
+    void set_rotation44_00ab27f0(GuiWidgetOwner&, float rotation);
+    // AB1161..AB11FC: derived continuation ONLY. The canonical frame runtime
+    // must execute AA87B0 exactly once first and keep its active-owner lifetime
+    // guard across both base and this tail. Pass original seconds, not elapsed
+    // +80 or the base call's returned storage. Constants alias the live domain.
+    // Calls actual Icon current44/current88 on this SAME retained companion;
+    // callers must preserve its Icon profile and ownership across callbacks.
+    void update_after_base40_00ab1150(GuiWidgetOwner&, float original_seconds,
+        const volatile float& zero_00d7a218);
     void rebuild_00ab3cb0(std::int16_t);
     // Complete Icon virtual+58, native ECX=this, size-pair pointer stack,
     // RET4. Base size/recompose, then current-state size/rebuild unless -1.

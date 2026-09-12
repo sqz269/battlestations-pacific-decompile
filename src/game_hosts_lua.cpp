@@ -204,6 +204,7 @@ GameVehicleClassRow GameMissionLuaHost::read_vehicle_class_row(int index) {
             row.max_rot_angle = number("MaxRotAngle");
             row.max_rot_angle_change_ratio = number("MaxRotAngleChangeRatio");
             row.length = number("Length");
+            row.height = number("Height");
             row.mass = number("Mass");
         }
     }

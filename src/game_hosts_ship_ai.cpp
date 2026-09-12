@@ -16,6 +16,7 @@
 #include <cmath>
 #include <deque>
 #include <cstdio>
+#include <cstring>
 #include <memory>
 #include <string>
 #include <vector>
@@ -26,9 +27,15 @@
 #include "bsp/director_update_arms.hpp"
 #include "bsp/ship_ai_approach_update.hpp"
 #include "bsp/ship_ai_attackmove_substates.hpp"
+#include "bsp/ship_ai_bearing_rating.hpp"
+#include "bsp/ship_ai_ring_scan.hpp"
+#include "bsp/ship_ai_clearance_profile.hpp"
+#include "bsp/ship_ai_nav_block_ctor.hpp"
 #include "bsp/ship_ai_navigation.hpp"
 #include "bsp/ship_ai_navigation_arm_tail.hpp"
+#include "bsp/ship_ai_path_follower.hpp"
 #include "bsp/ship_ai_path_planner.hpp"
+#include "bsp/ship_ai_sector_scan.hpp"
 #include "bsp/ship_ai_path_point.hpp"
 #include "bsp/ship_ai_path_refresh.hpp"
 #include "bsp/ship_ai_path_search.hpp"
@@ -209,6 +216,37 @@ struct GameShipAiHost::Impl {
         // The attackmove approach sub-state's nested ring object, sub+8h.
         // Packet ship_ai_approach_update, on main at 89d4bb77.
         bsp::ShipAiApproachState approach{};
+        // Milestone 2r: what 009E4330 wrote into this block when the brain
+        // record was constructed. Packet ship_ai_nav_block_ctor, on main at
+        // 3b4e07a6. It is the producer of blk+3C8h, +3CCh, +3D0h, +3D4h, +3D8h
+        // and +604h, the five inputs milestone 2q reported as unwritten, and of
+        // blk+340h, +318h, +1B4h, +1B8h and +3E4h beside them.
+        bsp::ShipAiNavBlockFields nav_block{};
+        bool nav_block_built{false};
+        // Milestone 2r: the blk half 009EF910 owns - the refresh timer +374h,
+        // the clearance +37Ch, the outcome +370h and the hold +354h. Packet
+        // cc_ai_clearance_profile. 009F4D87 calls it from inside the publish,
+        // one chain slot before the drive whose danger ramp divides +37Ch by
+        // unit+9CCh.
+        bsp::ShipAiClearanceBlock clearance{};
+        // Milestone 2r: blk+4h, blk+34Ch, blk+350h and blk+354h, the fields
+        // 009E04E0 owns. Its contact-track list at blk+400h / +404h is the
+        // empty one 009E4653 leaves, so every step clears the avoidance vector
+        // and the 65-bin profile stays in the bypass 009E435F set.
+        bsp::ShipAiThrottleProfileBlock throttle_profile{};
+        bsp::ShipAiContactTrack track_scratch{};
+        // blk+608h with the count at blk+604h. Nothing appends to it: 009F0D20's
+        // only call site is 009F1A25 inside the brain pre-pass's candidate walk,
+        // and the node footprint that walk builds has no producer in this
+        // process. The ageing pass 009F0EA0 runs over it anyway.
+        std::vector<bsp::ShipAiObstacleNode*> neighbours;
+        std::vector<bsp::ShipAiObstacleNode*> neighbours_expired;
+        // Milestone 2r: the 60-slot approach ring at nested+30h and the 60
+        // score records the four scorers fill. 009E5530's second pass builds
+        // the ring once, when the attackmove sub-state object is constructed.
+        bsp::ShipAiAttackMoveRingSlot approach_ring[bsp::kAttackMoveRingSlotCount]{};
+        bsp::ShipAiApproachSlotScore approach_scores[bsp::kShipAiApproachSlotCount]{};
+        bool approach_ring_built{false};
     };
     std::vector<Controller> controllers;
     std::vector<GameShipAiRow> rows;
@@ -219,6 +257,20 @@ struct GameShipAiHost::Impl {
     bool logged_party_list{false};
     bool logged_accept_gate{false};
     bool logged_state_steps{false};
+
+    // 009E5530's second pass: the 60-slot approach ring, built once when the
+    // attackmove sub-state object is constructed. 009E5680..009E5758 is the
+    // whole of the per-slot rule and is already reconstructed.
+    void ensure_approach_ring(Controller& ctl, std::size_t index) {
+        if (ctl.approach_ring_built) return;
+        ctl.approach_ring_built = true;
+        for (int i = 0; i < bsp::kAttackMoveRingSlotCount; ++i) {
+            ctl.approach_ring[i] = bsp::ship_ai_attackmove_ring_slot_009e5530(i,
+                static_cast<std::uint32_t>(index) + 1u,
+                static_cast<std::uint32_t>(index) + 1u);
+        }
+        done("ShipAiApproach::build_ring_009e5530", 0x009e5530u);
+    }
 
     void record(const char* method, std::uint32_t address) {
         char text[16];
@@ -541,14 +593,10 @@ public:
         owner_.done("ShipAiMoveTo::goal_reached_009da590", 0x009da590u);
         if (arrival.clears_latch) ctl_.goal.flag_2fe = false;  // 009DA5F6
         // The latch itself is raised only at 009EF034, inside the navigation
-        // arm's tail, which this milestone runs. It is still never reached:
-        // 009EEF14's release test is blk+3D8h + setback < blk+330h and
-        // blk+3D8h comes from FUN_009E4330, which no packet has read, so the
-        // zero releases the stop on every tick. The record has moved off the
-        // store and onto that tuning routine.
-        if (!ctl_.goal.flag_2fe) {
-            owner_.record("ShipAiMoveTo::arrival_latch_input_009e4330", 0x009e4330u);
-        }
+        // arm's tail. Milestone 2r fills its input: 009EEF14's release test is
+        // blk+3D8h + setback < blk+330h, and blk+3D8h is now the start radius
+        // 009E453F wrote, so the stop is released only while the remaining
+        // path is longer than it.
         return arrival.reached;
     }
     std::uint32_t director_current_command_0054() override {
@@ -846,6 +894,501 @@ private:
     std::size_t index_;
 };
 
+// ---------------------------------------------------------------------------
+// Milestone 2r: the six arms of 009F3090, and the four slot scorers behind them
+// ---------------------------------------------------------------------------
+// Every method below is one native call site. The ones that need a weapon
+// inventory, a zone object or a traffic list answer "there is none", which is
+// this process's own state and not a substitute: no gunnery device is built,
+// construct_world 004DE610 is a load record and the avoid-zone manager has no
+// producer. Their addresses are recorded so a reader can tell a produced value
+// from an absent one.
+
+// 0095EB40, the expected-damage rating 009E5DA0 asks for per slot.
+class FirepowerBinding final : public bsp::ShipAiFirepowerHost {
+public:
+    FirepowerBinding(GameShipAiHost::Impl& owner, std::size_t index)
+        : owner_(owner), index_(index) {}
+    float unit_max_weapon_range() override {
+        owner_.record("ShipAiFirepower::unit_max_weapon_range_0494", 0x0095eb62u);
+        return 0.0f;
+    }
+    int category_device_count(int) override {
+        // 0095EBB3, [unit+394h + category*0Ch]. This process builds no gunnery
+        // device list, so every category is empty and the walk never starts.
+        owner_.record("ShipAiFirepower::category_device_count", 0x0095ebb3u);
+        return 0;
+    }
+    float category_max_range(int) override {
+        owner_.record("ShipAiFirepower::category_max_range", 0x0095ebc4u);
+        return 0.0f;
+    }
+    bsp::NativeHandle category_list_head(int) override {
+        owner_.record("ShipAiFirepower::category_list_head", 0x0095ec24u);
+        return 0;
+    }
+    bsp::NativeHandle list_next(bsp::NativeHandle) override { return 0; }
+    bsp::NativeHandle list_device(bsp::NativeHandle) override { return 0; }
+    bool device_is_turning_gun(bsp::NativeHandle) override { return false; }
+    bool device_is_operational(bsp::NativeHandle) override { return false; }
+    int device_ready_rounds(bsp::NativeHandle, float) override { return 0; }
+    bool device_is_destroyed(bsp::NativeHandle) override { return true; }
+    int device_barrel_count(bsp::NativeHandle) override { return 0; }
+    int device_weapon_function(bsp::NativeHandle) override { return 0; }
+    bsp::NativeHandle device_ammo_record(bsp::NativeHandle) override { return 0; }
+    void ammo_select_flak_alternate(bsp::NativeHandle) override {}
+    bsp::ShipAiFirepowerProjectileClass ammo_projectile_class(bsp::NativeHandle) override {
+        return bsp::ShipAiFirepowerProjectileClass{};
+    }
+    float ammo_cycle_period(bsp::NativeHandle) override { return 0.0f; }
+    float weapon_hit_probability(bsp::NativeHandle, float, float) override { return 0.0f; }
+    bool device_can_bear(bsp::NativeHandle, bsp::NativeHandle, float, float) override {
+        return false;
+    }
+    bsp::ShipAiFirepowerTickDamage gameplay_tick_damage() override {
+        owner_.record("ShipAiFirepower::gameplay_tick_damage_00424c40", 0x0095eeadu);
+        return bsp::ShipAiFirepowerTickDamage{};
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    std::size_t index_;
+};
+
+// 009E5DA0's own host: the one call it makes, into 0095EB40.
+class RingScanClassScoreBinding final : public bsp::ShipAiRingScanClassScoreHost {
+public:
+    RingScanClassScoreBinding(GameShipAiHost::Impl& owner, GameShipAiRow& row,
+                              std::size_t index)
+        : owner_(owner), row_(row), index_(index) {}
+    float rate_bearing_0095eb40(const bsp::ShipAiRingScanClassQuery& query) override {
+        bsp::ShipAiFirepowerQuery q{};
+        static_assert(sizeof(q) == sizeof(query.word), "the block is 17 dwords");
+        std::memcpy(&q, query.word, sizeof(q));
+        FirepowerBinding firepower(owner_, index_);
+        const bsp::ShipAiFirepowerResult result
+            = bsp::ship_ai_firepower_rating_0095eb40(q, firepower);
+        owner_.done("ShipAiApproach::rate_bearing_0095eb40", 0x009e5dc4u);
+        ++row_.firepower_ratings;
+        ++owner_.summary.firepower_ratings;
+        return result.total;
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiRow& row_;
+    std::size_t index_;
+};
+
+// 009E6640's own host, the obstacle probe behind the accept/reject test.
+class RingScanProbeBinding final : public bsp::ShipAiRingScanHost {
+public:
+    RingScanProbeBinding(GameShipAiHost::Impl& owner,
+                         GameShipAiHost::Impl::Controller& ctl, std::size_t index)
+        : owner_(owner), ctl_(ctl), index_(index) {}
+    float wrap_phase_00605070(float value) override {
+        return bsp::wrapped_angle_add_00438aa0(value, 0.0f);
+    }
+    std::uint32_t probe_space_vtable_0218() override {
+        owner_.record("ShipAiRingScan::probe_space_vtable_0218", 0x009e66ebu);
+        return 0u;
+    }
+    bool unit_pose_fresh_00c8() override {
+        return owner_.units.unit_pose_valid_00c8(index_);
+    }
+    void refresh_unit_pose_00414db0() override {
+        owner_.record("ShipAiRingScan::refresh_unit_pose", 0x00414db0u);
+    }
+    bsp::ShipAiAttackMoveXZ unit_world_xz() override {
+        float x = 0.0f, y = 0.0f, z = 0.0f;
+        owner_.units.unit_position_00fc(index_, x, y, z);
+        owner_.done("ShipAiRingScan::unit_world_xz", 0x009e6710u);
+        bsp::ShipAiAttackMoveXZ out{};
+        out.x = x;
+        out.z = z;
+        return out;
+    }
+    bsp::ShipAiAttackMoveXZ probe_origin_00417b10(std::uint32_t,
+                                                  const bsp::ShipAiAttackMoveXZ& point,
+                                                  float, int) override {
+        // 009E673E, 00417B10 on the probe space. No space exists here, so the
+        // start point is the query point itself.
+        owner_.record("ShipAiRingScan::probe_origin_00417b10", 0x00417b10u);
+        return point;
+    }
+    bool probe_hit_0041b4e0(std::uint32_t, const bsp::ShipAiAttackMoveXZ&,
+                            const bsp::ShipAiAttackMoveXZ&,
+                            bsp::ShipAiAttackMoveXZ&) override {
+        owner_.record("ShipAiRingScan::probe_hit_0041b4e0", 0x0041b4e0u);
+        return false;
+    }
+    float planar_length_00414c60(const bsp::ShipAiAttackMoveXZ& delta) override {
+        return bsp::length_2d_00414c60(std::array<float, 2>{delta.x, delta.z});
+    }
+    float tune_reject_penalty_04() override {
+        owner_.record("ShipAiRingScan::tune_reject_penalty_04", 0x009e784bu);
+        return 0.0f;
+    }
+    void rebuild_unit_world_matrix() override {
+        owner_.record("ShipAiRingScan::rebuild_unit_world_matrix", 0x009e7cadu);
+    }
+    bsp::ShipAiAttackMoveXZ brain_goal_0b2c() override {
+        bsp::ShipAiAttackMoveXZ out{};
+        out.x = ctl_.goal_vector.goal_x_0b2c;
+        out.z = ctl_.goal_vector.goal_z_0b34;
+        owner_.done("ShipAiRingScan::brain_goal_0b2c", 0x009e7d7au);
+        return out;
+    }
+    float unit_cruise_speed_0490() override {
+        owner_.record("ShipAiRingScan::unit_cruise_speed_0490", 0x009e7de7u);
+        return 0.0f;
+    }
+    void commit_bearing_009e5e90(float, float) override {}
+
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+    std::size_t index_;
+};
+
+// 009E7FC0.
+class ScoreResetBinding final : public bsp::ShipAiApproachScoreResetHost {
+public:
+    ScoreResetBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
+                      GameShipAiRow& row, std::size_t index)
+        : owner_(owner), ctl_(ctl), row_(row), index_(index) {}
+    void decay_slot_009e6400(int slot, float radius) override {
+        // 009E8080, the bearing-decay scorer. Packet cc_ai_ring_scan read it
+        // whole; the bearing it decays against is nested+1290h.
+        if (slot < 0 || slot >= bsp::kShipAiApproachSlotCount) return;
+        bsp::ship_ai_ring_scan_decay_slot_009e6400(ctl_.approach_scores[slot], radius,
+            ctl_.approach_ring[slot].angle_08);
+        owner_.done("ShipAiApproach::decay_slot_009e6400", 0x009e6400u);
+    }
+    void target_kind_probe_vtable_005c(int) override {
+        owner_.record("ShipAiApproach::target_kind_probe_005c", 0x009e80abu);
+    }
+    std::uint32_t brain_target_0b20() override { return ctl_.goal_vector.raw_target_0b20; }
+    bool brain_flag_0b28() override {
+        owner_.record("ShipAiApproach::brain_flag_0b28", 0x009e80b0u);
+        return false;
+    }
+    float nested_reference_127c() override { return ctl_.approach.avoid_radius_1290; }
+    float unit_lookahead_0494() override {
+        owner_.record("ShipAiApproach::unit_lookahead_0494", 0x009e80cdu);
+        return 0.0f;
+    }
+    bool zone_allows_target_00864fd0(std::uint32_t) override {
+        owner_.record("ShipAiApproach::zone_allows_target_00864fd0", 0x00864fd0u);
+        return false;
+    }
+    bsp::ShipAiApproachPoint probe_point_009e6120() override {
+        owner_.record("ShipAiApproach::probe_point_009e6120", 0x009e6120u);
+        return bsp::ShipAiApproachPoint{};
+    }
+    bool zone_allows_point_00864ba0(const bsp::ShipAiApproachPoint&) override {
+        owner_.record("ShipAiApproach::zone_allows_point_00864ba0", 0x00864ba0u);
+        return false;
+    }
+    float score_slot_009e5da0(int slot) override {
+        // 009E81A7, the ship-class rating. Packet cc_ai_ring_scan read the
+        // adapter whole and packet cc_ai_bearing_rating the 0095EB40 behind it.
+        if (slot < 0 || slot >= bsp::kShipAiApproachSlotCount) return 0.0f;
+        bsp::ShipAiRingScanClassQuery query{};
+        RingScanClassScoreBinding score(owner_, row_, index_);
+        bsp::ship_ai_ring_scan_class_score_009e5da0(ctl_.approach_ring[slot],
+            ctl_.approach_scores[slot], query, score);
+        owner_.done("ShipAiApproach::score_slot_009e5da0", 0x009e5da0u);
+        return ctl_.approach_scores[slot].raw_18;
+    }
+    float tune_scale_00() override {
+        owner_.record("ShipAiApproach::tune_scale_00", 0x009e81fau);
+        return 0.0f;
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+    GameShipAiRow& row_;
+    std::size_t index_;
+};
+
+// 009E74D0.
+class EvadeBinding final : public bsp::ShipAiApproachEvadeHost {
+public:
+    EvadeBinding(GameShipAiHost::Impl& owner, std::size_t index)
+        : owner_(owner), index_(index) {}
+    float unit_evade_flag_1128() override {
+        owner_.record("ShipAiApproach::unit_evade_flag_1128", 0x009e751fu);
+        return 0.0f;
+    }
+    float tune_bearing_10() override {
+        owner_.record("ShipAiApproach::tune_bearing_10", 0x009e75f2u);
+        return 0.0f;
+    }
+    float tune_evade_14() override { return 0.0f; }
+    float tune_evade_span_18() override { return 0.0f; }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    std::size_t index_;
+};
+
+// 009E6E80.
+class StandoffBinding final : public bsp::ShipAiApproachStandoffHost {
+public:
+    StandoffBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
+                    std::size_t index)
+        : owner_(owner), ctl_(ctl), index_(index) {}
+    void construct_scratch_00954940() override {
+        owner_.record("ShipAiApproach::scratch_00954940", 0x00954940u);
+    }
+    float tune_range_override_1c() override {
+        owner_.record("ShipAiApproach::tune_range_override_1c", 0x009e6ec5u);
+        return -1.0f;
+    }
+    bool target_is_kind_vtable_005c(int) override {
+        owner_.record("ShipAiApproach::target_kind_005c", 0x009e6efcu);
+        return false;
+    }
+    bool shipclass_allows_close_00827f70() override {
+        owner_.record("ShipAiApproach::shipclass_allows_close_00827f70", 0x00827f70u);
+        return false;
+    }
+    std::int32_t target_radius_07c4() override {
+        owner_.record("ShipAiApproach::target_radius_07c4", 0x009e6f4eu);
+        return 0;
+    }
+    std::int32_t target_gun_range_07a0() override {
+        owner_.record("ShipAiApproach::target_gun_range_07a0", 0x009e706fu);
+        return 0;
+    }
+    bool unit_is_group_leader_00778890() override {
+        owner_.record("ShipAiApproach::unit_is_group_leader_00778890", 0x00778890u);
+        return false;
+    }
+    float unit_gun_reference_09c8() override {
+        return owner_.units.unit_hull_length_09c8(index_);
+    }
+    float unit_cruise_speed_0490() override {
+        owner_.record("ShipAiApproach::unit_cruise_speed_0490", 0x009e7140u);
+        return 0.0f;
+    }
+    float random_stream1_00bd2f10(float low, float) override {
+        owner_.record("ShipAiApproach::random_stream1_00bd2f10", 0x00bd2f10u);
+        return low;
+    }
+    float curve_base_00952530() override {
+        owner_.record("ShipAiApproach::curve_base_00952530", 0x00952530u);
+        return 0.0f;
+    }
+    float curve_reference_009523c0() override {
+        owner_.record("ShipAiApproach::curve_reference_009523c0", 0x009523c0u);
+        return 0.0f;
+    }
+    float curve_primary_00955a40(float) override {
+        owner_.record("ShipAiApproach::curve_primary_00955a40", 0x00955a40u);
+        return 0.0f;
+    }
+    float curve_secondary_00955a40(float) override { return 0.0f; }
+    float nested_scan_scale_1284() override {
+        owner_.record("ShipAiApproach::nested_scan_scale_1284", 0x009e7284u);
+        return 0.0f;
+    }
+    float unit_turn_radius_00811a30(float rudder) override {
+        return owner_.units.unit_class_turn_circle_radius_0082e960(index_, rudder);
+    }
+    int unit_clearance_count_0080df40() override {
+        owner_.record("ShipAiApproach::unit_clearance_count_0080df40", 0x0080df40u);
+        return 0;
+    }
+    void score_slot_009e6870(int slot, float side_weight, float span_weight,
+                             float slot_scale, float tune_04) override {
+        // 009E74B7, the standoff-arc score. Packet cc_ai_ring_scan read it whole.
+        if (slot < 0 || slot >= bsp::kShipAiApproachSlotCount) return;
+        bsp::ship_ai_ring_scan_arc_slot_009e6870(ctl_.approach_ring[slot],
+            ctl_.approach_scores[slot], slot_scale, side_weight, span_weight, tune_04);
+        owner_.done("ShipAiApproach::score_slot_009e6870", 0x009e6870u);
+    }
+    float tune_slot_04() override {
+        owner_.record("ShipAiApproach::tune_slot_04", 0x009e7489u);
+        return 0.0f;
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+    std::size_t index_;
+};
+
+// 009E9190.
+class AvoidBinding final : public bsp::ShipAiApproachAvoidHost {
+public:
+    AvoidBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
+                 std::size_t index)
+        : owner_(owner), ctl_(ctl), index_(index) {}
+    float random_stream1_00bd2f10(float low, float) override {
+        owner_.record("ShipAiApproach::avoid_random_00bd2f10", 0x00bd2f10u);
+        return low;
+    }
+    int candidate_count_008053c0() override {
+        // 009E9220, the entity list at [unit+54h]+0DE8h. construct_world
+        // 004DE610 is a load record here, so the list does not exist.
+        owner_.record("ShipAiApproach::candidate_count_008053c0", 0x008053c0u);
+        return 0;
+    }
+    std::uint32_t candidate_at(int) override { return 0u; }
+    bool candidate_is_kind_vtable_005c(std::uint32_t) override { return false; }
+    std::uint32_t brain_target_0b20() override { return ctl_.goal_vector.raw_target_0b20; }
+    void refresh_pose_00414db0(std::uint32_t) override {}
+    bsp::ShipAiApproachPoint entity_world_position(std::uint32_t) override {
+        return bsp::ShipAiApproachPoint{};
+    }
+    float entity_speed_0494(std::uint32_t) override { return 0.0f; }
+    bsp::ShipAiApproachPoint unit_world_position() override {
+        float x = 0.0f, y = 0.0f, z = 0.0f;
+        owner_.units.unit_position_00fc(index_, x, y, z);
+        bsp::ShipAiApproachPoint out{};
+        out.x = x;
+        out.y = y;
+        out.z = z;
+        owner_.done("ShipAiApproach::avoid_unit_position", 0x009e93f3u);
+        return out;
+    }
+    void insert_traffic_record(std::uint32_t) override {
+        owner_.record("ShipAiApproach::insert_traffic_record_009e8360", 0x009e8360u);
+    }
+    int traffic_record_count() override { return 0; }
+    bool traffic_record_active_009e6170(int, const bsp::ShipAiApproachPoint&,
+                                        float) override {
+        return false;
+    }
+    void erase_traffic_record(int) override {}
+    void advance_traffic_record_009e6240(int, float,
+                                         const bsp::ShipAiApproachPoint&) override {}
+    float traffic_record_weight_0120(int) override { return 0.0f; }
+    bsp::ShipAiApproachPoint traffic_record_direction_010c(int) override {
+        return bsp::ShipAiApproachPoint{};
+    }
+    float vector_length_0042b2f0(const bsp::ShipAiApproachPoint& v) override {
+        return bsp::length_2d_00414c60(std::array<float, 2>{v.x, v.z});
+    }
+    float tune_avoid_strength_08() override {
+        owner_.record("ShipAiApproach::tune_avoid_strength_08", 0x009e964eu);
+        return 0.0f;
+    }
+    float tune_avoid_span_0c() override { return 0.0f; }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+    std::size_t index_;
+};
+
+// 009E76D0.
+class SelectBinding final : public bsp::ShipAiApproachSelectHost {
+public:
+    SelectBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
+                  GameShipAiRow& row, std::size_t index)
+        : owner_(owner), ctl_(ctl), row_(row), index_(index) {}
+    float wrap_angle_00605070(float value) override {
+        return bsp::wrapped_angle_add_00438aa0(value, 0.0f);
+    }
+    float score_slot_009e6640(int slot, float seconds, float slot_scale, bool override_a,
+                              bool override_b, float turn_radius) override {
+        // 009E7755, the obstacle probe. Packet cc_ai_ring_scan read it whole.
+        if (slot < 0 || slot >= bsp::kShipAiApproachSlotCount) return 0.0f;
+        RingScanProbeBinding probe(owner_, ctl_, index_);
+        const float score = bsp::ship_ai_ring_scan_probe_009e6640(ctl_.approach_ring[slot],
+            ctl_.approach_scores[slot], seconds, slot_scale, override_a, override_b,
+            turn_radius, probe);
+        owner_.done("ShipAiApproach::score_slot_009e6640", 0x009e6640u);
+        return score;
+    }
+    float tune_reject_penalty_04() override {
+        owner_.record("ShipAiApproach::select_tune_reject_04", 0x009e784bu);
+        return 0.0f;
+    }
+    void refresh_unit_pose() override {
+        owner_.record("ShipAiApproach::select_refresh_pose", 0x009e7cb4u);
+    }
+    bsp::ShipAiAttackMoveXZ brain_goal_0b2c() override {
+        bsp::ShipAiAttackMoveXZ out{};
+        out.x = ctl_.goal_vector.goal_x_0b2c;
+        out.z = ctl_.goal_vector.goal_z_0b34;
+        owner_.done("ShipAiApproach::select_brain_goal_0b2c", 0x009e7d7au);
+        return out;
+    }
+    bsp::ShipAiAttackMoveXZ unit_world_xz() override {
+        float x = 0.0f, y = 0.0f, z = 0.0f;
+        owner_.units.unit_position_00fc(index_, x, y, z);
+        bsp::ShipAiAttackMoveXZ out{};
+        out.x = x;
+        out.z = z;
+        owner_.done("ShipAiApproach::select_unit_xz", 0x009e7d92u);
+        return out;
+    }
+    float unit_cruise_speed_0490() override {
+        owner_.record("ShipAiApproach::select_cruise_speed_0490", 0x009e7de7u);
+        return 0.0f;
+    }
+    void commit_bearing_009e5e90(float bearing, float) override {
+        // 009E7ECB. Packet cc_ai_approach_update read 009E5E90 whole; it is the
+        // producer of the commanded heading at nested+120Ch.
+        bool blocked[bsp::kShipAiApproachSlotCount]{};
+        for (int i = 0; i < bsp::kShipAiApproachSlotCount; ++i) {
+            blocked[i] = ctl_.approach_scores[i].blocked_40;
+        }
+        bsp::ship_ai_approach_commit_bearing_009e5e90(ctl_.approach, blocked, bearing);
+        owner_.done("ShipAiApproach::commit_bearing_009e5e90", 0x009e5e90u);
+        ++row_.ring_scan_bearings;
+        ++owner_.summary.ring_scan_bearings;
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+    GameShipAiRow& row_;
+    std::size_t index_;
+};
+
+// 009E6A90.
+class ThrottleLimitBinding final : public bsp::ShipAiApproachThrottleHost {
+public:
+    ThrottleLimitBinding(GameShipAiHost::Impl& owner,
+                         GameShipAiHost::Impl::Controller& ctl, std::size_t index)
+        : owner_(owner), ctl_(ctl), index_(index) {}
+    float unit_heading_vtable_0050() override {
+        owner_.done("ShipAiApproach::limit_unit_heading", 0x009e6ab5u);
+        return owner_.units.unit_heading_radians(index_);
+    }
+    float unit_evade_flag_1128() override {
+        owner_.record("ShipAiApproach::limit_evade_flag_1128", 0x009e6b46u);
+        return 0.0f;
+    }
+    std::uint32_t engagement_target_009e5e00() override {
+        owner_.done("ShipAiApproach::engagement_target_009e5e00", 0x009e5e00u);
+        return ctl_.goal_vector.raw_target_0b20;
+    }
+    std::int32_t target_radius_07c4(std::uint32_t) override {
+        owner_.record("ShipAiApproach::limit_target_radius_07c4", 0x009e6b90u);
+        return 0;
+    }
+    bool unit_is_group_leader_00778890() override {
+        owner_.record("ShipAiApproach::limit_group_leader_00778890", 0x00778890u);
+        return false;
+    }
+    bool target_accepted_vtable_0234(std::uint32_t) override {
+        owner_.record("ShipAiApproach::limit_target_accepted_0234", 0x009e6c86u);
+        return false;
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+    std::size_t index_;
+};
+
 // bsp::ShipAiApproachUpdateHost, the seven calls of 009F3090 in their fixed
 // order. Only the first is run: it is the one that produces the approach point
 // and the goal range, and the other six need the 60-slot ring the four unread
@@ -877,35 +1420,54 @@ public:
         row_.approach_point_z = ctl_.approach.point_1228.z;
         row_.approach_goal_range = ctl_.approach.goal_range_11e0;
     }
+    // Milestone 2r. The six arms milestone 2q recorded now run: packets
+    // cc_ai_ring_scan, cc_ai_approach_update and cc_ai_bearing_rating between
+    // them cover 009E7FC0, 009E6E80, 009E9190, 009E74D0, 009E76D0 with the four
+    // slot scorers 009E6400 / 009E5DA0 / 009E6870 / 009E6640, the commit
+    // 009E5E90 and the throttle limiter 009E6A90.
     void reset_scores_009e7fc0() override {
-        owner_.record("ShipAiApproach::reset_scores", 0x009e7fc0u);
+        owner_.ensure_approach_ring(ctl_, index_);
+        ScoreResetBinding reset(owner_, ctl_, row_, index_);
+        bsp::ship_ai_approach_reset_scores_009e7fc0(ctl_.approach, ctl_.approach_scores,
+            ctl_.goal_vector.raw_target_0b20 != 0u, reset);
+        owner_.done("ShipAiApproach::reset_scores", 0x009e7fc0u);
     }
     void choose_standoff_range_009e6e80() override {
-        owner_.record("ShipAiApproach::choose_standoff_range", 0x009e6e80u);
+        StandoffBinding standoff(owner_, ctl_, index_);
+        bsp::ship_ai_approach_choose_standoff_009e6e80(ctl_.approach,
+            ctl_.goal_vector.raw_target_0b20 != 0u, standoff);
+        owner_.done("ShipAiApproach::choose_standoff_range", 0x009e6e80u);
     }
-    void refresh_avoidance_009e9190(float) override {
-        owner_.record("ShipAiApproach::refresh_avoidance", 0x009e9190u);
+    void refresh_avoidance_009e9190(float seconds) override {
+        AvoidBinding avoid(owner_, ctl_, index_);
+        bsp::ship_ai_approach_refresh_avoidance_009e9190(ctl_.approach, ctl_.approach_ring,
+            ctl_.approach_scores, seconds, avoid);
+        owner_.done("ShipAiApproach::refresh_avoidance", 0x009e9190u);
     }
-    void score_evade_009e74d0(float) override {
-        owner_.record("ShipAiApproach::score_evade", 0x009e74d0u);
+    void score_evade_009e74d0(float seconds) override {
+        EvadeBinding evade(owner_, index_);
+        bsp::ship_ai_approach_score_evade_009e74d0(ctl_.approach, ctl_.approach_ring,
+            ctl_.approach_scores, seconds, evade);
+        owner_.done("ShipAiApproach::score_evade", 0x009e74d0u);
     }
-    void select_slot_009e76d0(float) override {
-        // The ring scan. Partially read (the unrolled accept and winner loops
-        // were read in their first and last step only) and, more decisively, it
-        // ranks the 60 slots by five weights the four unread scorers fill, so
-        // its winner - and the commanded heading 009E5E90 builds from it - is
-        // not recoverable here.
-        owner_.record("ShipAiApproach::select_slot", 0x009e76d0u);
-        owner_.record("ShipAiApproach::commanded_heading_009e5e90", 0x009e5e90u);
+    void select_slot_009e76d0(float seconds) override {
+        SelectBinding select(owner_, ctl_, row_, index_);
+        bsp::ship_ai_approach_select_slot_009e76d0(ctl_.approach, ctl_.approach_ring,
+            ctl_.approach_scores, seconds, select);
+        owner_.done("ShipAiApproach::select_slot", 0x009e76d0u);
+        ++row_.ring_scans;
+        ++owner_.summary.ring_scans;
+        row_.ring_scan_winner = ctl_.approach.committed_slot_11e8;
+        row_.approach_heading_120c = ctl_.approach.commanded_heading_120c;
     }
     void limit_throttle_009e6a90() override {
-        // 009E6A90 is complete, and it is the producer of the commanded
-        // throttle at nested+1210h. It is NOT run: its first act is
-        // wrap(heading - nested+120Ch), and nested+120Ch is written by
-        // 009E5E90 behind the recorded ring scan above. Running the seed
-        // against the 0.0f the constructor leaves there would turn an unwritten
-        // field into a throttle that looks recovered and is not.
-        owner_.record("ShipAiApproach::limit_throttle", 0x009e6a90u);
+        // 009E6A90's first act is wrap(heading - nested+120Ch), and nested+120Ch
+        // is now what 009E5E90 wrote behind the ring scan above rather than the
+        // 0.0f the constructor leaves, so the limiter runs on a produced input.
+        ThrottleLimitBinding limit(owner_, ctl_, index_);
+        bsp::ship_ai_approach_limit_throttle_009e6a90(ctl_.approach, limit);
+        owner_.done("ShipAiApproach::limit_throttle", 0x009e6a90u);
+        row_.approach_throttle_1210 = ctl_.approach.commanded_throttle_1210;
     }
 
 private:
@@ -1544,6 +2106,77 @@ private:
 // swept-arc geometry between 009EB6B7 and 009EBECC was not read by any packet
 // and the neighbour list at blk+608h is empty in this process.
 
+// Milestone 2r: bsp::ShipAiSectorScanHost, the call sites of 009EB660. The
+// neighbour list blk+608h is empty and blk+0A3Ch / blk+0A24h are the zeroes
+// 009E4330 wrote, so both avoid-zone gates are shut and no node can block a
+// sector; what the scan does produce is the probe geometry and the range with
+// the hysteresis margin, per sector, per frame.
+class SectorScanBinding final : public bsp::ShipAiSectorScanHost {
+public:
+    SectorScanBinding(GameShipAiHost::Impl& owner, std::size_t index)
+        : owner_(owner), index_(index) {}
+
+    float settings_blocked_margin_1d8() override {
+        owner_.record("ShipAiSectorScan::settings_blocked_margin_1d8", 0x009eb686u);
+        return 0.0f;
+    }
+    float settings_neighbour_memory_194() override {
+        owner_.record("ShipAiSectorScan::settings_neighbour_memory_194", 0x009ebee3u);
+        return 0.0f;
+    }
+    float unit_heading_vtable50() override {
+        owner_.done("ShipAiSectorScan::unit_heading_vtable50", 0x009eb939u);
+        return owner_.units.unit_heading_radians(index_);
+    }
+    bool avoid_zone_segment_crossing_004158e0(const std::array<float, 2>&,
+                                              const std::array<float, 2>&,
+                                              std::array<float, 2>&) override {
+        owner_.record("ShipAiSectorScan::zone_segment_crossing_004158e0", 0x004158e0u);
+        return false;
+    }
+    bool point_in_avoid_box_009d8160(const bsp::ShipAiObstacleNode&,
+                                     const std::array<float, 2>&) override {
+        owner_.record("ShipAiSectorScan::point_in_avoid_box_009d8160", 0x009d8160u);
+        return false;
+    }
+    bool point_in_near_box_009d80c0(const bsp::ShipAiObstacleNode&,
+                                    const std::array<float, 2>&) override {
+        owner_.record("ShipAiSectorScan::point_in_near_box_009d80c0", 0x009d80c0u);
+        return false;
+    }
+    bool clip_ray_against_node_009dd540(const bsp::ShipAiObstacleNode&,
+                                        const std::array<float, 2>&,
+                                        const std::array<float, 2>&, float&) override {
+        owner_.record("ShipAiSectorScan::clip_ray_009dd540", 0x009dd540u);
+        return false;
+    }
+    bool clip_arc_against_avoid_zones_00415970(const std::array<float, 2>&, float, float,
+                                               float&) override {
+        owner_.record("ShipAiSectorScan::clip_arc_zones_00415970", 0x00415970u);
+        return false;
+    }
+    bool clip_arc_against_node_009dd010(const bsp::ShipAiObstacleNode&,
+                                        const std::array<float, 2>&, float, float,
+                                        float&) override {
+        owner_.record("ShipAiSectorScan::clip_arc_node_009dd010", 0x009dd010u);
+        return false;
+    }
+    void raise_node_lifetime_78(bsp::ShipAiObstacleNode& node, float value) override {
+        // 009EBEF7, an inlined compare and store on the blocking node. Reached
+        // only when a node blocks, which needs a neighbour list.
+        if (value > node.lifetime_78) node.lifetime_78 = value;
+        owner_.record("ShipAiSectorScan::raise_node_lifetime_78", 0x009ebef7u);
+    }
+    bool avoid_zone_free_bearing_009dc2e0(bsp::ShipAiSectorFreeBearingQuery&) override {
+        owner_.record("ShipAiSectorScan::free_bearing_009dc2e0", 0x009dc2e0u);
+        return false;
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    std::size_t index_;
+};
+
 class ObstacleSectorRefresh {
 public:
     static void run(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
@@ -1581,14 +2214,59 @@ public:
             if (sector >= 0 && sector < bsp::kShipAiObstacleSectorCount) {
                 ctl.obstacle.sector[static_cast<std::size_t>(sector)].braking_distance
                     = braking_distance;
-                // 009EF334, 009EB660(sector, blk). Read only partially by
-                // packet cc_ai_obstacle_tables: the swept-arc query between
-                // 009EB6B7 and 009EBECC is unread, and the neighbour list at
-                // blk+608h that the read half walks is empty here, so no
-                // sector can be marked blocked and the arms of 009F3F80 that
-                // consume a blocked sector are unreachable.
-                owner.record("ShipAiSectors::scan_sector", 0x009eb660u);
-                ctl.obstacle.sector[static_cast<std::size_t>(sector)].blocked = false;
+                // 009EF334, 009EB660(sector, blk). Milestone 2r runs packet
+                // cc_ai_sector_scan's whole-body projection in place of
+                // milestone 2p's record, so the probe geometry, the swept arc
+                // and the range with the hysteresis margin are code. The
+                // neighbour list at blk+608h is empty and both avoid-zone
+                // gates are the zeroes 009E4330 wrote, so no sector is marked.
+                bsp::ShipAiSectorScanInputs scan{};
+                {
+                    float x = 0.0f, y = 0.0f, z = 0.0f;
+                    owner.units.unit_position_00fc(index, x, y, z);
+                    scan.pose.x = x;      // blk+184h
+                    scan.pose.z = z;      // blk+188h
+                }
+                // blk+19Ch..+1B0h, the two beam axes and the hull forward that
+                // 009DE2F0 rebuilds inside the pre-step 009E0270, a record
+                // here. The hull's own world forward is available and is what
+                // 009DE452 normalises, so the forward pair is filled from the
+                // pose and the two beam pairs are its perpendiculars, which is
+                // the same construction 009DE4F6 makes.
+                {
+                    float right[3] = {0.0f, 0.0f, 0.0f};
+                    float up[3] = {0.0f, 0.0f, 0.0f};
+                    float forward[3] = {0.0f, 0.0f, 0.0f};
+                    float translation[3] = {0.0f, 0.0f, 0.0f};
+                    if (owner.units.unit_pose(index, right, up, forward, translation)) {
+                        scan.pose.forward_x = forward[0];
+                        scan.pose.forward_z = forward[2];
+                        scan.pose.port_x = -forward[2];
+                        scan.pose.port_z = forward[0];
+                        scan.pose.starboard_x = forward[2];
+                        scan.pose.starboard_z = -forward[0];
+                    }
+                    owner.record("ShipAiSectors::hull_axes_009de2f0", 0x009de2f0u);
+                }
+                scan.pose.heading = owner.units.unit_heading_radians(index);
+                scan.avoid_zones_present = false;  // blk+0A3Ch, 009E4401
+                scan.avoid_zones_enabled = false;  // blk+0A24h
+                SectorScanBinding scan_host(owner, index);
+                const bsp::ShipAiSectorScanResult result
+                    = bsp::ship_ai_scan_obstacle_sector_009eb660(
+                        ctl.obstacle.sector[static_cast<std::size_t>(sector)], scan,
+                        ctl.neighbours, scan_host);
+                owner.done("ShipAiSectors::scan_sector", 0x009eb660u);
+                ++owner.summary.sector_scans;
+                if (result.blocked) ++owner.summary.sector_marks;
+                // 009D84E0, the corner to steer at and the side to pass on. Its
+                // only call site 009EBF51 sits inside the blocked arm, so a run
+                // with no neighbour never reaches it.
+                if (result.blocking_node < 0) {
+                    owner.record("ShipAiSectors::passing_corner_009d84e0", 0x009d84e0u);
+                }
+                ctl.obstacle.sector[static_cast<std::size_t>(sector)].blocked
+                    = result.blocked;
                 ctl.obstacle.sector[static_cast<std::size_t>(sector)].blocker = nullptr;
             }
             sector += 2;
@@ -1797,41 +2475,226 @@ private:
 
 // Milestone 2q: bsp::ShipAiPathPointHost, the four call sites of 009E3C00 the
 // walk reaches.
-class PathPointBinding final : public bsp::ShipAiPathPointHost {
+// Milestone 2r: bsp::ShipAiPathFollowerHost. Packet cc_ai_path_follower read
+// 009E3C00-009E432A whole, including the corner arm 009E3F1A..009E4222 that
+// milestone 2q's projection stopped at, so the executable now runs that
+// reconstruction instead and its host has the follower's nine call sites.
+class PathFollowerBinding final : public bsp::ShipAiPathFollowerHost {
 public:
-    PathPointBinding(GameShipAiHost::Impl& owner, GameShipAiRow& row, std::size_t index)
+    PathFollowerBinding(GameShipAiHost::Impl& owner, GameShipAiRow& row, std::size_t index)
         : owner_(owner), row_(row), index_(index) {}
 
-    std::array<float, 2> lateral_point_offset_00811d80(std::uint32_t,
-                                                       const std::array<float, 2>&) override {
-        // Unreachable without an avoid zone: no node of this mission's plans
-        // carries a corner record at +10h.
-        owner_.record("ShipAiPathPoint::lateral_offset", 0x00811d80u);
-        return std::array<float, 2>{0.0f, 0.0f};
+    const bsp::ShipAiPathLateralAnchor* lateral_anchor_node_10(std::uint32_t handle)
+        override {
+        // 009E3D8C and 009E3DD2, a dereference of node+10h, not a call. No node
+        // of an unzoned plan carries a lateral record, so the answer is null and
+        // the read is recorded with the field's own site.
+        static_cast<void>(handle);
+        owner_.record("ShipAiPathFollower::lateral_anchor_node_10", 0x009e3d8cu);
+        return nullptr;
     }
-    float class_turn_radius_0082e850() override {
-        // 0082E853 reads class+520h, whose only writer is 00828F20
-        // BSP_ShipClass_DeriveTurnFields; no packet has reconstructed it, so
-        // the field is a record here. The answer is used only inside the
-        // corner arm and its unreachable clearance test.
-        owner_.record("ShipAiPathPoint::class_turn_radius", 0x0082e850u);
-        return 0.0f;
+    float order_turn_limit_at_00811d80(const std::array<float, 2>& xz) override {
+        // 009E3DCD, 00811D80 on the unit's own PUBLISHED order slot. Reached
+        // only inside the lateral-anchor arm above, which no node of an
+        // unzoned plan enters, so the call is not made in this run at all. The
+        // executable holds the four published fields of the slot
+        // (UnitAiOrderSlot) and not the two sub-records 00811D80 searches, so
+        // the answer would be the routine's own 30.0f whatever the position is.
+        static_cast<void>(xz);
+        owner_.record("ShipAiPathFollower::order_turn_limit_00811d80", 0x00811d80u);
+        return bsp::kUnitAiOrderTurnLimitDefault;
+    }
+    float owner_class_turn_radius_0082e850() override {
+        // 009E3EAE, 0082E850 on [[plan+3Ch]+538h]: class+520h, which 00828F20
+        // derives from MaxSpeed and MaxRotAngle. Milestone 2q recorded this
+        // because no packet had read the deriver; packet ship_ai_class_field_0524
+        // has, and the units host answers with the derived field.
+        const float radius = owner_.units.unit_class_turn_radius_0520(index_);
+        owner_.done("ShipAiPathFollower::class_turn_radius_0082e850", 0x0082e850u);
+        return radius;
     }
     float owner_radius_09c8() override {
-        // 009E3EC0, [plan+3Ch]+9C8h. The same field the planner and the drive
-        // record; no recovered producer anywhere.
-        owner_.record("ShipAiPathPoint::owner_radius_09c8", 0x009e3ec0u);
-        return 0.0f;
+        // 009E3EC0, [plan+3Ch]+9C8h. Its producers are 0081106E and 0081FA4D,
+        // and with no model box the answer is the descriptor's `Length`.
+        const float length = owner_.units.unit_hull_length_09c8(index_);
+        owner_.done("ShipAiPathFollower::owner_length_09c8", 0x009e3ec0u);
+        return length;
     }
-    void corner_arm_009e3f1a() override {
-        owner_.record("ShipAiPathPoint::corner_arm", 0x009e3f1au);
-        ++row_.path_corner_arms;
-        ++owner_.summary.path_corner_arms;
+    std::uint32_t avoid_zone_manager_004218e0() override {
+        // 009E4200. The manager singleton has no producer in this process;
+        // packet cc_ai_avoid_zones owns it.
+        owner_.record("ShipAiPathFollower::avoid_zone_manager", 0x004218e0u);
+        return 0u;
+    }
+    bool segment_hits_zone_00417ef0(std::uint32_t manager, std::uint32_t zone_layer,
+                                    const std::array<float, 2>& from,
+                                    const std::array<float, 2>& to,
+                                    std::array<float, 2>& hit) override {
+        static_cast<void>(manager);
+        static_cast<void>(zone_layer);
+        static_cast<void>(from);
+        static_cast<void>(to);
+        static_cast<void>(hit);
+        owner_.record("ShipAiPathFollower::segment_hits_zone", 0x00417ef0u);
+        return false;
     }
 
 private:
     GameShipAiHost::Impl& owner_;
     GameShipAiRow& row_;
+    std::size_t index_;
+};
+
+// Milestone 2r: bsp::ShipAiThrottleProfileHost, the call sites of 009E04E0.
+// The contact-track list is empty in this process, so the routine's list walk
+// does nothing, the avoidance vector blk+34Ch/+350h is cleared every step and
+// the 65-bin profile keeps the bypass byte 009E435F set. That is the run's own
+// state: 009E4653 clears blk+400h and nothing in this process appends a track.
+class ThrottleProfileBinding final : public bsp::ShipAiThrottleProfileHost {
+public:
+    ThrottleProfileBinding(GameShipAiHost::Impl& owner,
+                           GameShipAiHost::Impl::Controller& ctl, std::size_t index)
+        : owner_(owner), ctl_(ctl), index_(index) {}
+
+    float hull_heading_vtable50() override {
+        owner_.done("ShipAiThrottleProfile::hull_heading_vtable50", 0x009e0509u);
+        return owner_.units.unit_heading_radians(index_);
+    }
+    bool track_range_within_target_488(int) override {
+        owner_.record("ShipAiThrottleProfile::track_range_488", 0x009e0613u);
+        return false;
+    }
+    bool avoidance_active_009da1d0() override {
+        // 009E061B. 009DA1D0 needs the unit's gameplay byte +240h, which has no
+        // producer here; blk+3ECh is the byte `stop` writes.
+        owner_.record("ShipAiThrottleProfile::avoidance_active_009da1d0", 0x009da1d0u);
+        return false;
+    }
+    bool refresh_track_009dc060(int) override {
+        owner_.record("ShipAiThrottleProfile::refresh_track_009dc060", 0x009dc060u);
+        return false;
+    }
+    float class_length_three_quarters_00811a30() override {
+        const float radius = owner_.units.unit_class_turn_circle_radius_0082e960(index_,
+            bsp::kShipAiContactGapLengthArg);
+        owner_.done("ShipAiThrottleProfile::class_length_00811a30", 0x00811a30u);
+        return radius;
+    }
+    int track_count_400() override {
+        owner_.done("ShipAiThrottleProfile::track_count_400", 0x009e05c0u);
+        return 0;
+    }
+    bsp::ShipAiContactTrack& track_at(int) override {
+        owner_.record("ShipAiThrottleProfile::track_at", 0x009e05c7u);
+        return ctl_.track_scratch;
+    }
+    void destroy_track(int) override {
+        owner_.record("ShipAiThrottleProfile::destroy_track", 0x009e0fbdu);
+    }
+    bool track_has_source(int) override {
+        owner_.record("ShipAiThrottleProfile::track_has_source", 0x009e05efu);
+        return false;
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+    std::size_t index_;
+};
+
+// Milestone 2r: bsp::ShipAiClearanceHost, the fifteen call sites of 009EF910.
+// Packet cc_ai_clearance_profile read the routine whole; the executable runs it
+// from inside 009F4D10 at 009F4D87. Every neighbour and zone test answers "no
+// such thing" here, and that is the run's own state rather than a stand-in: the
+// neighbour count blk+604h is the zero 009E4659 wrote and 009F0D20 / 009F0EA0
+// never move because no world entity list exists, and blk+0A3Ch is the zero
+// 009E4401 wrote because no avoid zone is loaded. With nothing to lower it the
+// clearance stays at the 9999.0f sentinel 009EF96F seeds.
+class ClearanceBinding final : public bsp::ShipAiClearanceHost {
+public:
+    ClearanceBinding(GameShipAiHost::Impl& owner, std::size_t index)
+        : owner_(owner), index_(index) {}
+
+    float hull_heading_vtable50() override {
+        owner_.done("ShipAiClearance::hull_heading_vtable50", 0x009ef97cu);
+        return owner_.units.unit_heading_radians(index_);
+    }
+    bool obstacle_category_enabled_009ec770(int category) override {
+        // 009EFA08. The predicate needs the unit's gameplay object byte +241h
+        // and the settings byte +4h, neither of which has a producer here.
+        static_cast<void>(category);
+        owner_.record("ShipAiClearance::category_enabled_009ec770", 0x009ec770u);
+        return false;
+    }
+    bool avoidance_globally_enabled_0080e160_242() override {
+        owner_.record("ShipAiClearance::avoidance_enabled_0080e160", 0x0080e160u);
+        return false;
+    }
+    bool static_zone_blocks_009d57e0(float, float, float, float, float) override {
+        owner_.record("ShipAiClearance::static_zone_blocks_009d57e0", 0x009d57e0u);
+        return false;
+    }
+    float static_zone_clearance_00415d70(float, float, float, float, float, float,
+                                         float) override {
+        owner_.record("ShipAiClearance::static_zone_clearance_00415d70", 0x00415d70u);
+        return bsp::kShipAiClearanceSentinel;
+    }
+    int neighbour_count_604() override {
+        owner_.done("ShipAiClearance::neighbour_count_604", 0x009efd5bu);
+        return 0;
+    }
+    bool neighbour_owner_present_14(int) override {
+        owner_.record("ShipAiClearance::neighbour_owner_14", 0x009efd80u);
+        return false;
+    }
+    bool neighbour_owner_gone_5e(int) override {
+        owner_.record("ShipAiClearance::neighbour_owner_5e", 0x009efd8du);
+        return true;
+    }
+    int neighbour_owner_category_54(int) override {
+        owner_.record("ShipAiClearance::neighbour_owner_54", 0x009efd9du);
+        return -1;
+    }
+    bool neighbour_blocks_sweep_009dd010(int, float, float, float, float, float) override {
+        owner_.record("ShipAiClearance::neighbour_blocks_sweep_009dd010", 0x009dd010u);
+        return false;
+    }
+    void neighbour_support_point_009d8860(int, float, float, float& out_x,
+                                          float& out_z) override {
+        owner_.record("ShipAiClearance::neighbour_support_009d8860", 0x009d8860u);
+        out_x = 0.0f;
+        out_z = 0.0f;
+    }
+    void neighbour_closest_point_009d8a30(int, float, float, float& out_x,
+                                          float& out_z) override {
+        owner_.record("ShipAiClearance::neighbour_closest_009d8a30", 0x009d8a30u);
+        out_x = 0.0f;
+        out_z = 0.0f;
+    }
+    float neighbour_speed_0092d730(int) override {
+        owner_.record("ShipAiClearance::neighbour_speed_0092d730", 0x009eff7fu);
+        return 0.0f;
+    }
+    bool path_fade_applies_00778890() override {
+        // 009F0000 / 009F0019: the group-leader query and the vtable identity
+        // test against 00E08F80, the `moveonpath` command object. Neither has a
+        // producer here; the same pair is recorded in the approach binding.
+        owner_.record("ShipAiClearance::path_fade_00778890", 0x00778890u);
+        return false;
+    }
+    float class_length_unit_00811a30() override {
+        // 009F0038, 00811A30(unit, 1.0f): 0082E960(class, 1.0f) divided by the
+        // gameplay modifier product for channel 5, which is 1.0f in this
+        // process. The turn-circle half is now a recovered value, so only the
+        // divide is a record.
+        const float radius = owner_.units.unit_class_turn_circle_radius_0082e960(index_,
+            1.0f);
+        owner_.done("ShipAiClearance::class_length_unit_00811a30", 0x00811a30u);
+        return radius;
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
     std::size_t index_;
 };
 
@@ -1999,22 +2862,32 @@ public:
         row_.path_plan_nodes = live.node_count;
     }
     void next_path_point_009e3c00(bsp::ShipAiPathPointRecord& record) override {
-        // 009EE5F4, 009E3C00([nav+2F4h])(&record). Milestone 2q projects the
-        // walk, the three-node pick and the final store; the corner arm
-        // 009E3F1A..009E4222 stays a record and is unreachable on an unzoned
-        // plan, whose goal node carries neither link.
+        // 009EE5F4, 009E3C00([nav+2F4h])(&record). Milestone 2r runs packet
+        // cc_ai_path_follower's whole-body projection in place of milestone
+        // 2q's partial one, so the corner arm 009E3F1A..009E4222, the shortcut
+        // test and the cursor advance at 009E421F are code rather than records.
+        // On a two-node open-sea plan the walk does not run, the target is the
+        // goal node and the published point is the goal itself.
         bsp::ShipAiPathPlanBlock& live
             = (ctl_.plan_front == 0) ? ctl_.plan_a : ctl_.plan_b;
-        PathPointBinding point(owner_, row_, index_);
-        const bsp::ShipAiPathPointResult result
-            = bsp::ship_ai_path_point_009e3c00(live, record, point);
+        PathFollowerBinding point(owner_, row_, index_);
+        const bsp::ShipAiPathFollowerResult result
+            = bsp::ship_ai_path_follower_point_009e3c00(live, record, point);
         owner_.done("ShipAiPath::next_point_009e3c00", 0x009e3c00u);
-        if (result.has_head && !result.no_successor && !result.corner_arm) {
+        if (result.exit == bsp::ShipAiPathFollowerExit::StraightAtPoint
+            || result.exit == bsp::ShipAiPathFollowerExit::CornerTangent) {
             ++row_.path_points;
             ++owner_.summary.path_points;
+            ++owner_.summary.path_follower_points;
             row_.path_point_x = record.point_x_08;
             row_.path_point_z = record.point_z_0c;
         }
+        if (result.exit == bsp::ShipAiPathFollowerExit::CornerTangent) {
+            ++row_.path_corner_arms;
+            ++owner_.summary.path_corner_arms;
+            ++owner_.summary.path_follower_corners;
+        }
+        if (result.advanced_cursor) ++owner_.summary.path_follower_advances;
     }
     float path_width_2f4_08() override {
         owner_.record("ShipAiPath::path_width_2f4", 0x009ee61eu);
@@ -2194,19 +3067,11 @@ public:
         owner_.record(method, state->step);
         static_cast<void>(elapsed);
     }
-    // --ai-drive, milestone 2o: a LABELLED DIAGNOSTIC STAND-IN, applied after
-    // whatever the state step did. It exists because no state step except
-    // `cruise`'s produces a desired throttle at all: the navigation states hand
-    // 009DE050 a goal and let the navigation arm 009EDA26..009EF228 steer, and
-    // that span is a record here. The two calls are the game's own recovered
-    // setters and nothing after them is substituted.
+    // --ai-drive was milestone 2o's labelled diagnostic stand-in for the state
+    // steps that produced no desired throttle. Milestone 2r retires it: all
+    // four states of this mission now form their own pair.
     void apply_ai_drive() {
-        if (!ctl_.drive) return;
-        SetterBinding setters(owner_);
-        bsp::ship_ai_set_desired_throttle_009dbf90(ctl_.blk, ctl_.drive_throttle);
-        owner_.done("ShipAiDrive::set_desired_throttle", 0x009dbf90u);
-        bsp::ship_ai_set_desired_steering_009dffb0(ctl_.blk, ctl_.drive_rudder, setters);
-        owner_.done("ShipAiDrive::set_desired_steering", 0x009dffb0u);
+        // Milestone 2r: nothing. The switch is retired; see set_ai_drive.
     }
 
     float state_interval_vtable28() override {
@@ -2224,8 +3089,64 @@ public:
     void hold_009da0d0() override { owner_.record("ShipAi::hold", 0x009da0d0u); }
     void step_009eca20(float) override { owner_.record("ShipAi::step_009eca20", 0x009eca20u); }
     void step_009da6e0(float) override { owner_.record("ShipAi::step_009da6e0", 0x009da6e0u); }
-    void step_009f0ea0(float) override { owner_.record("ShipAi::step_009f0ea0", 0x009f0ea0u); }
-    void step_009e04e0(float) override { owner_.record("ShipAi::step_009e04e0", 0x009e04e0u); }
+    void step_009f0ea0(float seconds) override {
+        // 009F51E4, chain slot 14, one slot before the sector refresh, so the
+        // list the scan walks is aged and compacted first. Packet
+        // cc_ai_sector_scan projected the pass; it runs here over the list this
+        // process holds, which nothing appends to.
+        const bsp::ShipAiNeighbourRefreshResult refresh
+            = bsp::ship_ai_neighbour_list_refresh_009f0ea0(ctl_.neighbours, seconds,
+                                                           ctl_.neighbours_expired);
+        owner_.done("ShipAi::neighbour_list_refresh_009f0ea0", 0x009f0ea0u);
+        // 009F1A25, the candidate walk's call into 009F0D20. The candidates come
+        // from the world object's linked list at [[00E188A8]+19CCh], which
+        // construct_world 004DE610 does not build here, and the node's own
+        // footprint at +44h..+60h has no producer in this packet either.
+        owner_.record("ShipAi::neighbour_list_add_009f0d20", 0x009f0d20u);
+        ctl_.nav_block.neighbour_count_604 = refresh.survivors;
+    }
+    void step_009e04e0(float seconds) override {
+        // 009F51F3, the chain slot that builds the 65-bin throttle profile at
+        // blk+4h and the avoidance vector at blk+34Ch/+350h. Packet
+        // cc_ai_clearance_profile projected it; the contact-track list at
+        // blk+400h is the empty one 009E4653 left, so the walk finds nothing
+        // and the profile keeps the bypass byte the constructor set at
+        // 009E435F, which is what makes 009D6B40 a clamp and nothing more.
+        bsp::ShipAiThrottleProfileInputs in{};
+        in.reference_speed_3c4 = ctl_.obstacle.reference_speed_3c4;
+        in.own_speed = owner_.units.unit_forward_speed_0092d730(index_);
+        in.acceleration = owner_.units.unit_class_max_accel_0504(index_);
+        in.hull_half_width = owner_.units.unit_half_width_09cc(index_);
+        in.hull_beam = owner_.units.unit_hull_length_09c8(index_);
+        {
+            float x = 0.0f, y = 0.0f, z = 0.0f;
+            owner_.units.unit_position_00fc(index_, x, y, z);
+            in.position_x = x;
+            in.position_z = z;
+        }
+        {
+            float right[3] = {0.0f, 0.0f, 0.0f};
+            float up[3] = {0.0f, 0.0f, 0.0f};
+            float forward[3] = {0.0f, 0.0f, 0.0f};
+            float translation[3] = {0.0f, 0.0f, 0.0f};
+            if (owner_.units.unit_pose(index_, right, up, forward, translation)) {
+                in.forward_x = forward[0];
+                in.forward_z = forward[2];
+                in.normal_x = -forward[2];
+                in.normal_z = forward[0];
+            }
+            owner_.record("ShipAiThrottleProfile::hull_axes_009de2f0", 0x009de2f0u);
+        }
+        ThrottleProfileBinding profile(owner_, ctl_, index_);
+        bsp::ship_ai_build_throttle_profile_009e04e0(ctl_.throttle_profile, in, seconds,
+                                                     profile);
+        owner_.done("ShipAi::build_throttle_profile_009e04e0", 0x009e04e0u);
+        // The profile the drive's middle snaps the throttle with, and the
+        // bypass byte that decides whether it does anything at all.
+        ctl_.obstacle.profile = ctl_.throttle_profile.profile;
+        ++row_.throttle_profiles;
+        ++owner_.summary.throttle_profiles;
+    }
     void step_009ef230() override {
         // 009F51FA, chain slot 15, one slot before the throttle ceiling at
         // 009F5248 whose tail runs 009F3F80, so the twelve sectors at blk+808h
@@ -2336,15 +3257,22 @@ public:
         // VehicleClass row, the same divisor 009ED8EC uses.
         tuning.class_deceleration_508 = owner_.units.unit_retardation_0508(index_);
         owner_.done("ShipAiArmTail::class_deceleration_508", 0x009eed1au);
-        // blk+3CCh, blk+3D4h, blk+3D8h and blk+604h all come from FUN_009E4330,
-        // which no packet has read, so the four keep the zeroes a fresh block
-        // carries. blk+604h being zero is what holds the traffic setback walk
-        // shut at 009EEAD5, which is the honest answer while the world entity
-        // list has no producer either.
-        owner_.record("ShipAiArmTail::nav_tuning_009e4330", 0x009e4330u);
-        // [blk+3FCh]+9C8h, the hull radius, and the navigatorParams byte +21h.
-        owner_.record("ShipAiArmTail::hull_radius_09c8", 0x009ef112u);
-        tuning.hull_radius_9c8 = 0.0f;
+        // Milestone 2r: blk+3CCh, blk+3D4h, blk+3D8h and blk+604h are what
+        // 009E4330 wrote when the brain record was built, not zeroes. The
+        // constructor runs once per unit in register_units; 009E4568 and
+        // 009E4537 / 009E453F are their only other writer's defaults, and
+        // 009F0E69 / 009F114E move +604h every frame, which this process's
+        // neighbour list does not, so the count stays the constructor's zero
+        // and the traffic setback walk at 009EEAD5 stays shut.
+        tuning.turn_distance_3cc = ctl_.nav_block.turn_circle_cruise_3cc;
+        tuning.stop_radius_3d4 = ctl_.nav_block.stop_radius_3d4;
+        tuning.start_radius_3d8 = ctl_.nav_block.start_radius_3d8;
+        tuning.neighbour_count_604 = ctl_.nav_block.neighbour_count_604;
+        owner_.done("ShipAiArmTail::nav_tuning_009e4330", 0x009e4330u);
+        // [blk+3FCh]+9C8h, the full hull length 0081106E / 0081FA4D produce,
+        // and the navigatorParams byte +21h.
+        tuning.hull_radius_9c8 = owner_.units.unit_hull_length_09c8(index_);
+        owner_.done("ShipAiArmTail::hull_radius_09c8", 0x009ef112u);
         tuning.keep_clear_of_traffic_21 = true;
         ctl_.tail.plan_reset_2fc = ctl_.plan_computing_2fc;
         ctl_.tail.leader_snapshot_3a6 = ctl_.flag_3a6;
@@ -2397,6 +3325,42 @@ public:
         row_.slot_distance_40 = result.slot.distance_40;
         row_.slot_distance_48 = result.slot.distance_48;
         row_.slot_valid = result.slot.valid_4c;
+        run_clearance_refresh(seconds);
+    }
+    void run_clearance_refresh(float seconds) {
+        // 009F4D87, the unconditional call 009F4D10 makes into 009EF910.
+        // Milestone 2q recorded it and left blk+37Ch at the zero a fresh block
+        // carries, which made the danger ramp's ratio zero and pinned every
+        // navigating ship at full danger. Packet cc_ai_clearance_profile read
+        // the routine whole, so it runs here.
+        bsp::ShipAiClearanceGeometry geometry{};
+        // blk+1B4h and blk+3CCh, both written by 009E4330 at construction.
+        geometry.sweep_half_angle = ctl_.nav_block.shoulder_angle_1b4;
+        geometry.hull_radius = ctl_.nav_block.turn_circle_cruise_3cc;
+        // blk+18Ch..+1B0h, the two shoulders and the hull forward, which
+        // 009DE2F0 rebuilds inside the pre-step 009E0270. That routine is a
+        // record here, so the four are the zeroes the constructor left. They
+        // only place the pivot of the sweep; nothing in this run lowers the
+        // clearance, so they decide nothing it measures.
+        owner_.record("ShipAiClearance::shoulder_geometry_009de2f0", 0x009de2f0u);
+        bsp::ShipAiClearanceSettings settings{};
+        // settings+1D4h, +214h and +218h. 00424C40's block has no producer for
+        // these three in this process; a zero refresh period makes 009EF91D's
+        // countdown expire every tick, which is the most active reading.
+        owner_.record("ShipAiClearance::settings_00424c40", 0x009ef948u);
+        ctl_.clearance.heading_target_324 = ctl_.blk.heading_target_324;
+        ctl_.clearance.path_length_330 = ctl_.blk.distance_330;
+        ctl_.clearance.steering_mode_35c = static_cast<int>(ctl_.blk.direction);
+        ctl_.clearance.category_3f0 = ctl_.nav_block.plan_state_3f0;
+        ctl_.clearance.avoidance_enabled_3f4 = ctl_.nav_block.flag_3f4;
+        ctl_.clearance.static_zone_present_a3c = false;
+        ClearanceBinding clearance(owner_, index_);
+        bsp::ship_ai_refresh_turn_clearance_009ef910(ctl_.clearance, geometry, settings,
+                                                     seconds, clearance);
+        owner_.done("ShipAi::refresh_turn_clearance_009ef910", 0x009ef910u);
+        ++row_.clearance_refreshes;
+        ++owner_.summary.clearance_refreshes;
+        row_.clearance_37c = ctl_.clearance.clearance_37c;
     }
     void tail_009da8d0(float) override { owner_.record("ShipAi::tail_009da8d0", 0x009da8d0u); }
     void tail_009f4da0(float seconds) override {
@@ -2868,10 +3832,10 @@ void GameShipAiHost::Impl::drive_order_ring_009f3f80(std::size_t index, Controll
         ctl.obstacle.position_z = z;
     }
     // blk+37Ch, the clearance the danger ramp divides by unit+9CCh. Its only
-    // writer is 009EF910, which 009F4D10 calls one slot earlier and which no
-    // packet has read, so the field keeps the zero a fresh block carries and
-    // the ramp's ratio is zero, which is full danger. The record carries that.
-    record("ShipAiObstacle::clearance_37c_producer", 0x009ef910u);
+    // writer is 009EF910, which 009F4D10 called one chain slot earlier and
+    // which milestone 2r runs, so the field carries what that routine left.
+    ctl.obstacle.clearance_37c = ctl.clearance.clearance_37c;
+    done("ShipAiObstacle::clearance_37c_producer", 0x009ef910u);
     // blk+344h and blk+348h. 009F4DBC stores 1.0f into blk+348h unconditionally
     // before the 009F4DC1 early out; blk+344h's own arms inside 009F4DA0,
     // 009F4DC7..009F50BA, are still the record milestone 2o left. Milestone 2q
@@ -2924,6 +3888,66 @@ GameShipAiHost::GameShipAiHost(GameHostLog& log, GameUnitsHost& units)
     : impl_(std::make_unique<Impl>(log, units)) {}
 GameShipAiHost::~GameShipAiHost() = default;
 
+namespace {
+
+// Milestone 2r: bsp::ShipAiNavBlockCtorHost, the six call sites of 009E4330.
+// 009F1160 builds the brain record once per ship and 009F118D runs this on
+// `brain+8h`, so the executable runs it once per created unit at registration,
+// before any state object exists.
+class NavBlockCtorBinding final : public bsp::ShipAiNavBlockCtorHost {
+public:
+    NavBlockCtorBinding(GameShipAiHost::Impl& owner, std::size_t index)
+        : owner_(owner), index_(index) {}
+
+    bsp::ShipAiNavBlockSteeringDefaults seed_steering_009dfcb0() override {
+        // 009E43CC with ECX = blk+1C4h. Only the blk+3C4h..+3E4h window of
+        // 009DFCB0 is projected; the constructor overwrites all of it except
+        // +3DCh and +3E0h, so the window is what this process needs.
+        owner_.done("ShipAiNavBlock::seed_steering_009dfcb0", 0x009dfcb0u);
+        owner_.record("ShipAiNavBlock::seed_steering_unprojected", 0x009dfcb0u);
+        return bsp::ship_ai_nav_block_steering_defaults_009dfcb0();
+    }
+    bool unit_answers_class_5c(int class_id) override {
+        owner_.done("ShipAiNavBlock::unit_class_5c", 0x009e448eu);
+        return owner_.units.unit_is_kind_of(index_, class_id);
+    }
+    float class_turn_circle_radius_0082e960(float throttle_fraction) override {
+        return owner_.units.unit_class_turn_circle_radius_0082e960(index_,
+            throttle_fraction);
+    }
+    float sqrt_00bf7030(float value) override {
+        owner_.done("ShipAiNavBlock::sqrt_00bf7030", 0x00bf7030u);
+        return value > 0.0f ? std::sqrt(value) : 0.0f;
+    }
+    float uniform_float_00bd2f10(float low, float high) override {
+        // 009E465F. 00BD2F10's random stream has no producer in this process -
+        // every other site in this file records it - and 009E4669 stores the
+        // negated draw in blk+148h, a field with no traced reader. The low end
+        // is taken and the call recorded, which is what the approach point's
+        // own draw at 009F1BC0 does.
+        owner_.record("ShipAiNavBlock::uniform_00bd2f10", 0x00bd2f10u);
+        static_cast<void>(high);
+        return low;
+    }
+    void build_sector_shapes_009e0270(bsp::ShipAiNavBlockFields& fields,
+                                      std::uint32_t raw_argument) override {
+        // 009E46A9. 009E0270 rewrites blk+168h, blk+3C4h and the twelve sector
+        // shapes and calls 009DE2F0 for blk+19Ch / +1A0h. The per-step chain
+        // slot that would re-run it (009EF230's own refresh) is wired; the
+        // construction-time call is recorded with its own address, as
+        // `ShipAi::pre_step` already records the same routine.
+        static_cast<void>(fields);
+        static_cast<void>(raw_argument);
+        owner_.record("ShipAiNavBlock::build_sector_shapes_009e0270", 0x009e0270u);
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    std::size_t index_;
+};
+
+}  // namespace
+
 void GameShipAiHost::register_units() {
     Impl& host = *impl_;
     const std::size_t count = host.units.count();
@@ -2934,6 +3958,40 @@ void GameShipAiHost::register_units() {
         host.rows[index].unit_index = index;
         host.rows[index].unit = row != nullptr ? row->name : std::string();
         host.rows[index].state = "none";
+        // Milestone 2r: 009F118D, the navigation block constructor, once per
+        // brain record. Its five turn fields are the inputs the arm tail and
+        // the arrival release test read; milestone 2q had them at zero.
+        {
+            Impl::Controller& ctl = host.controllers[index];
+            bsp::ShipAiNavBlockUnitInputs in{};
+            in.present = row != nullptr;
+            in.handle = static_cast<std::uint32_t>(index) + 1u;
+            in.hull_length_09c8 = host.units.unit_hull_length_09c8(index);
+            in.ship_class.max_rot_angle_04f8
+                = host.units.unit_class_max_rot_angle_04f8(index);
+            in.ship_class.max_speed_0500 = host.units.unit_class_max_speed_0500(index);
+            in.ship_class.turn_radius_0520 = host.units.unit_class_turn_radius_0520(index);
+            NavBlockCtorBinding ctor(host, index);
+            ctl.nav_block = bsp::ship_ai_nav_block_ctor_009e4330(in, ctor);
+            ctl.nav_block_built = true;
+            host.done("ShipAiNavBlock::construct_009e4330", 0x009e4330u);
+            ++host.summary.nav_blocks;
+            // The three fields the block carries into the navigation arm's own
+            // state: blk+3C8h is the look-ahead ceiling 009ED769 re-seeds
+            // blk+340h from every tick, and blk+3D0h the heading window.
+            ctl.nav.look_ahead_max_3c8 = ctl.nav_block.turn_circle_full_3c8;
+            ctl.nav.look_ahead_340 = ctl.nav_block.look_ahead_340;
+            ctl.nav.turn_window_3d0 = ctl.nav_block.yaw_rate_3d0;
+            ctl.blk.early_out_3f5 = ctl.nav_block.early_out_3f5;
+            host.rows[index].nav_turn_circle_3c8 = ctl.nav_block.turn_circle_full_3c8;
+            host.rows[index].nav_turn_circle_3cc = ctl.nav_block.turn_circle_cruise_3cc;
+            host.rows[index].nav_yaw_floor_3d0 = ctl.nav_block.yaw_rate_3d0;
+            host.rows[index].nav_stop_radius_3d4 = ctl.nav_block.stop_radius_3d4;
+            host.rows[index].nav_start_radius_3d8 = ctl.nav_block.start_radius_3d8;
+            host.rows[index].nav_hull_length_9c8 = in.hull_length_09c8;
+            host.rows[index].hull_mass_00b0 = host.units.unit_hull_mass_00b0(index);
+            host.rows[index].hull_material = host.units.unit_hull_material(index);
+        }
         // 009F6A20 seeds the think countdown with the negation of a random draw
         // in [0, 1) so the once-a-second thinks of different directors fall on
         // different frames. This process has no 00BD2F10 on this path, so the
@@ -3066,19 +4124,18 @@ bool GameShipAiHost::promote_order_00825f2c(std::size_t unit_index) {
 void GameShipAiHost::set_ai_drive(std::size_t unit_index, float throttle, float rudder) {
     Impl& host = *impl_;
     if (unit_index >= host.controllers.size()) return;
-    Impl::Controller& ctl = host.controllers[unit_index];
-    if (!ctl.drive) ++host.summary.units_driven;
-    ctl.drive = true;
-    ctl.drive_throttle = throttle;
-    ctl.drive_rudder = rudder;
-    host.rows[unit_index].ai_driven = true;
-    host.log.notef("--ai-drive \"%s\" = throttle %.3f, rudder %.3f: a LABELLED DIAGNOSTIC "
-        "STAND-IN for the state step. Eight of the nine leaves of the family at 00d21598 "
-        "have no reconstructed body, so on every re-plan tick of this unit the executable "
-        "calls 009dbf90 and 009dffb0 on its own control block with this pair in place of "
-        "the state's decision. Everything after that point is the game's own recovered "
-        "path: 009ed6b0, 009f4d10, the 009f50c6 tail into 009f3f80, that routine's hop "
-        "through 0080e170 / 0080e190, 00813020's tick and 00825f20's motion",
+    // Milestone 2r RETIRES the switch. Milestone 2q kept it for `attackmove`
+    // alone, the one state of four that still produced no desired throttle,
+    // because 009E76D0 and its four slot scorers were records. They are wired
+    // now, so every state of this mission forms its own pair and there is
+    // nothing left for a stand-in to stand in for. The switch is accepted and
+    // ignored rather than removed from the command line, so a script that
+    // passes it still runs and the log says what happened.
+    host.log.notef("--ai-drive \"%s\" = throttle %.3f, rudder %.3f: RETIRED in milestone "
+        "2r and IGNORED. The diagnostic stand-in existed for `attackmove`, whose ring scan "
+        "009e76d0, four slot scorers 009e6400 / 009e5da0 / 009e6870 / 009e6640, bearing "
+        "commit 009e5e90 and throttle limiter 009e6a90 are all wired now; the six "
+        "attackmove ships move under their own commanded heading and throttle",
         host.rows[unit_index].unit.c_str(), static_cast<double>(throttle),
         static_cast<double>(rudder));
 }
@@ -3221,6 +4278,44 @@ void GameShipAiHost::report() {
         host.summary.path_points, host.summary.path_corner_arms,
         host.summary.units_with_path_point, host.summary.nav_output_blocks,
         host.summary.nav_bearings);
+    // Milestone 2r: what 009E4330 gave each ship, and the hull body beside it.
+    host.log.notef("  %-20s %-10s %9s %9s %9s %9s %9s %9s %10s %4s", "unit", "state",
+        "len_9c8", "turn_3c8", "turn_3cc", "yaw_3d0", "stop_3d4", "start_3d8", "mass_b0",
+        "mat");
+    for (const GameShipAiRow& row : host.rows) {
+        host.log.notef("  %-20s %-10s %9.2f %9.2f %9.2f %9.5f %9.2f %9.2f %10.1f %4d",
+            row.unit.c_str(), row.state.c_str(),
+            static_cast<double>(row.nav_hull_length_9c8),
+            static_cast<double>(row.nav_turn_circle_3c8),
+            static_cast<double>(row.nav_turn_circle_3cc),
+            static_cast<double>(row.nav_yaw_floor_3d0),
+            static_cast<double>(row.nav_stop_radius_3d4),
+            static_cast<double>(row.nav_start_radius_3d8),
+            static_cast<double>(row.hull_mass_00b0), row.hull_material);
+    }
+    // Milestone 2r: the attackmove ring scan, one row per ship that reached it.
+    host.log.notef("  %-20s %-10s %9s %9s %7s %10s %10s %9s %9s %8s", "unit", "state",
+        "ring_scan", "bearings", "winner", "hdg_120c", "thr_1210", "clear_37c", "profiles",
+        "substate");
+    for (const GameShipAiRow& row : host.rows) {
+        if (row.ring_scans == 0 && row.clearance_refreshes == 0) continue;
+        host.log.notef("  %-20s %-10s %9llu %9llu %7d %10.4f %10.4f %9.1f %9llu %8lx",
+            row.unit.c_str(), row.state.c_str(), row.ring_scans, row.ring_scan_bearings,
+            row.ring_scan_winner, static_cast<double>(row.approach_heading_120c),
+            static_cast<double>(row.approach_throttle_1210),
+            static_cast<double>(row.clearance_37c), row.throttle_profiles,
+            static_cast<unsigned long>(row.substate));
+    }
+    host.log.notef("summary mission ship ai nav blocks=%zu (009e4330 once per brain "
+        "record, 009f118d) clearance=%llu throttle_profiles=%llu sector_scans=%llu "
+        "sector_marks=%llu ring_scans=%llu ring_bearings=%llu firepower=%llu "
+        "follower_points=%llu follower_corners=%llu follower_advances=%llu",
+        host.summary.nav_blocks, host.summary.clearance_refreshes,
+        host.summary.throttle_profiles, host.summary.sector_scans,
+        host.summary.sector_marks, host.summary.ring_scans,
+        host.summary.ring_scan_bearings, host.summary.firepower_ratings,
+        host.summary.path_follower_points, host.summary.path_follower_corners,
+        host.summary.path_follower_advances);
     host.log.notef("summary mission ship ai command completion events=%llu callbacks=%llu "
         "end_commands=%llu queue_advances=%llu",
         host.summary.command_events, host.summary.command_event_callbacks,

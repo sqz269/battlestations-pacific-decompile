@@ -476,3 +476,9 @@ Combined verification is recorded in reports/warning_voice_order_integration.jso
 - **Was:** `+104h`, `+105h`: two bytes cleared by each channel dispatch, on the reporter
   **Is:** In 00984300 only the clears belong to the reporter. EBP holds this from 0098431C, is overwritten with 00980150's return at 009843CE and is restored only at 009847AF, so the +104h/+105h clears at 00984380/00984386 are on the reporter but the +105h store at 0098473F is on the channel object.
   **Evidence:** Filtered the whole 00984300 listing for EBP: writes at 0098431C, 009843CE and 009847AF only. The two regions Ghidra left undisassembled, 0098472E-0098473A and 0098478D-00984793, were decoded from disk bytes and contain no EBP restore. 009843EA MOV EAX,[EBP+8] reading _Mysize confirms EBP is the channel at that point.
+
+## Correction from docs/SUBMARINE_MODEL.md (packet cc2_submarine_model)
+
+- **Was:** 00977500 BSP_WarningManager_ReportSubmarinePeriscopeBroken raises submarineperiscopebroken.
+  **Is:** It does, but nothing calls it. ghidra xrefs finds no reference and a scan of the whole .text section for the absolute value 00977500 finds none either, so it is not reached through a table. Both break sites, 009373C0 and its reference-free twin 009327F0, set periscopeState to 2 without reporting. The reporter is complete and dead: the only feedback a player gets for a broken periscope is the mast disappearing.
+  **Evidence:** ghidra xrefs 00977500 returns nothing; local/scan_disp.py over .text for the value 00977500 returns 0 hits, against 1 hit for the live comparison address 00D196EC. The three sibling reporters are live: 00977050 at 00855375, 009771E0 at 0085533b and 00977370 at 0085523c.
