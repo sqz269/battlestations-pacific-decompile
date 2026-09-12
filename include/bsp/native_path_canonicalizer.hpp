@@ -30,6 +30,11 @@ public:
     NativePathCanonicalizerRuntimeServices(NativeStringPoolStorage* volatile&,
         volatile std::uint32_t& returns_disabled_01090aa4,
         SingletonLifetimeDomain&, Lowercase) noexcept;
+    // Same services over the application's actual raw01090AA0 publication.
+    // Borrow its canonical domain; do not create a parallel semantic manager.
+    NativePathCanonicalizerRuntimeServices(NativeStringPoolStorage* volatile&,
+        volatile std::uint32_t& returns_disabled_01090aa4,
+        void* volatile& actual_manager_publication_01090aa0, Lowercase) noexcept;
     void* allocate_scratch_00bf55be(std::uint32_t bytes) override;
     int lowercase_00bf9611(int signed_byte) override;
     void free_scratch_00bf65ac(void*) noexcept override;
@@ -39,7 +44,8 @@ public:
 private:
     NativeStringPoolStorage* volatile& publication_;
     volatile std::uint32_t& returns_disabled_;
-    SingletonLifetimeDomain& lifetime_;
+    SingletonLifetimeDomain* lifetime_{};
+    void* volatile* actual_manager_{};
     Lowercase lower_;
 };
 

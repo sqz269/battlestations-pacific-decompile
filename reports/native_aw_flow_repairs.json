@@ -1,0 +1,160 @@
+{
+ "events": [
+  {
+   "recreate": "00be063e",
+   "previous": "Function: Catch_All@00be063e at 00be063e\nSignature: undefined Catch_All@00be063e(void)\nEntry: 00be063e\nBody: 00be063e - 00be0646",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00be063e"
+   },
+   "result": {
+    "success": true,
+    "address": "00be063e",
+    "deleted_function": "Catch_All@00be063e",
+    "body_size": 9,
+    "message": "Function 'Catch_All@00be063e' deleted at 00be063e"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00be063e",
+    "end_address": "00be0653"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00be063e",
+    "end_address": "00be0652",
+    "bytes_disassembled": 21,
+    "message": "Successfully disassembled 21 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00be063e",
+    "disassemble_first": false,
+    "name": "Catch_All@00be063e"
+   },
+   "result": {
+    "success": true,
+    "address": "00be063e",
+    "function_name": "Catch_All@00be063e",
+    "entry_point": "00be063e",
+    "body_size": 9,
+    "message": "Function created successfully at 00be063e",
+    "warnings": [
+     "Function name 'Catch_All@00be063e' \u2014 main part 'Catch_All@00be063e' is not PascalCase. Expected: CatchAll@00be063e",
+     "Function name 'Catch_All@00be063e' \u2014 main part 'Catch_All@00be063e' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'Catch_All@00be063e' does not start with a recognized verb. First word 'Catch_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00be063e",
+   "end": "00be0653",
+   "name": "Catch_All@00be063e",
+   "after": "Function: Catch_All@00be063e at 00be063e\nSignature: undefined Catch_All@00be063e(void)\nEntry: 00be063e\nBody: 00be063e - 00be0646"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "action": "clear single BE0642 erroneous CALL_RETURN before rethrow catch recreation",
+   "function": "00be063e",
+   "owner": "agent/orch2-20260910",
+   "body_sha256": "9f0f1bb281b4a954facb176fc165f8f1134a452830878ee00a8127c63706d8d8",
+   "before": "Function: Catch_All@00be063e at 00be063e\nSignature: undefined Catch_All@00be063e(void)\nEntry: 00be063e\nBody: 00be063e - 00be0646",
+   "native_terminal": "BE064E CALL BF6885 rethrow(0,0); no RET is invented",
+   "global_no_return_modified": false,
+   "clear_result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 00be0642 (was: CALL_RETURN, now: NONE)"
+   }
+  },
+  {
+   "recreate": "00be063e",
+   "previous": "Function: Catch_All@00be063e at 00be063e\nSignature: undefined Catch_All@00be063e(void)\nEntry: 00be063e\nBody: 00be063e - 00be0646",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00be063e"
+   },
+   "result": {
+    "success": true,
+    "address": "00be063e",
+    "deleted_function": "Catch_All@00be063e",
+    "body_size": 9,
+    "message": "Function 'Catch_All@00be063e' deleted at 00be063e"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00be063e",
+    "end_address": "00be0653"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00be063e",
+    "end_address": "00be0652",
+    "bytes_disassembled": 21,
+    "message": "Successfully disassembled 21 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00be063e",
+    "disassemble_first": false,
+    "name": "Catch_All@00be063e"
+   },
+   "result": {
+    "success": true,
+    "address": "00be063e",
+    "function_name": "Catch_All@00be063e",
+    "entry_point": "00be063e",
+    "body_size": 21,
+    "message": "Function created successfully at 00be063e",
+    "warnings": [
+     "Function name 'Catch_All@00be063e' \u2014 main part 'Catch_All@00be063e' is not PascalCase. Expected: CatchAll@00be063e",
+     "Function name 'Catch_All@00be063e' \u2014 main part 'Catch_All@00be063e' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'Catch_All@00be063e' does not start with a recognized verb. First word 'Catch_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00be063e",
+   "end": "00be0653",
+   "name": "Catch_All@00be063e",
+   "after": "Function: Catch_All@00be063e at 00be063e\nSignature: undefined Catch_All@00be063e(void)\nEntry: 00be063e\nBody: 00be063e - 00be0652"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

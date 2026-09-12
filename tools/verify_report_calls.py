@@ -30,6 +30,7 @@ from ghidra_export import Client  # noqa: E402
 HEX = re.compile(r'^(?:0x)?([0-9a-fA-F]{6,8})$')
 BODY = re.compile(r'body:?\s*([0-9a-fA-F]{8})\s*-\s*([0-9a-fA-F]{8})', re.IGNORECASE)
 FN_AT = re.compile(r'Function:\s*(\S+)\s+at\s+([0-9a-fA-F]{8})')
+ENTRY = re.compile(r'\bEntry:\s*([0-9a-fA-F]{8})', re.IGNORECASE)
 
 
 def parse_addr(value):
@@ -76,7 +77,12 @@ class Live:
         self.listings = {}
 
     def containing(self, addr):
-        """Return (start, end_inclusive, name) of the function containing addr, or None."""
+        """Return (entry, body_end_inclusive, name) for the containing function.
+
+        A backward branch can put body bytes below the ABI entry. In particular,
+        _strchr enters at BF86F0 but owns a return block at BF86E0. Body minimum
+        is therefore neither the callee entry nor the caller's function identity.
+        """
         key = addr
         if key in self.cache:
             return self.cache[key]
@@ -96,17 +102,24 @@ class Live:
             m = BODY.search(text)
             name = None
             fm = FN_AT.search(text)
+            em = ENTRY.search(text)
+            entry = int(fm.group(2), 16) if fm else int(em.group(1), 16) if em else None
             if fm:
                 name = fm.group(1)
-            if m:
-                result = (int(m.group(1), 16), int(m.group(2), 16), name)
+            if m and entry is not None:
+                result = (entry, int(m.group(2), 16), name)
             else:
                 # fall back to the prototype endpoint, which prints the body range
                 try:
                     proto = self.client.get('get_function_signature', address=f'{addr:08x}')
-                    pm = BODY.search(proto if isinstance(proto, str) else json.dumps(proto))
-                    if pm:
-                        result = (int(pm.group(1), 16), int(pm.group(2), 16), name)
+                    proto = proto if isinstance(proto, str) else json.dumps(proto)
+                    pm, pf, pe = BODY.search(proto), FN_AT.search(proto), ENTRY.search(proto)
+                    if entry is None:
+                        entry = int(pf.group(2), 16) if pf else int(pe.group(1), 16) if pe else None
+                    if name is None and pf:
+                        name = pf.group(1)
+                    if pm and entry is not None:
+                        result = (entry, int(pm.group(2), 16), name)
                 except Exception:
                     result = None
         self.cache[key] = result

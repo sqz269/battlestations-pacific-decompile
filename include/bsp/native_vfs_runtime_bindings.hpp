@@ -1,6 +1,8 @@
 #pragma once
 #include "bsp/native_lua_vfs_dispatch.hpp"
 #include "bsp/native_adopted_substream.hpp"
+#include "bsp/native_vfs_factory_selection.hpp"
+#include "bsp/native_vfs_manager_lifetime.hpp"
 namespace bsp {
 struct NativeVfsOpenRouteContext;
 struct NativeVfsLookupRouteContext;
@@ -8,19 +10,27 @@ struct NativePhysicalStreamOpenContext;
 struct NativeStoredStreamConversionContext;
 struct NativeVfsOpenLoggingContext;
 struct NativeRetainedMemoryOwnerContext;
+struct NativePhysicalProviderContext;
+struct NativeFileAccessLogLifetimeBindings;
 // Concrete source dispatch for verified native manager/provider/stream methods.
 // Owners retain their original numeric vtable words. The corresponding native
 // table bytes must be readable at those addresses, as required by the existing
 // physical and mount-lookup consumers; no original code is called through them.
-// Supports D685B4 manager, D69168 physical and D689E8 FileStore providers,
+// Supports D685B4/D68D04 managers, D69168 physical and D689E8 FileStore providers,
 // D691B0 physical, D642C0 memory and D68DB0 adopted-source streams. Other profiles/slots are
-// explicit source boundaries. This does not construct the manager/mount tree.
+// explicit source boundaries. Factory creation and manager destruction reuse
+// the actual provider owners. The optional borrowed contexts are required for
+// physical factory/deletion and logger deletion respectively. No private pool,
+// publication, callback or lifetime domain is allocated by this binding.
 class NativeVfsRuntimeBindings final : public NativeLuaVfsDispatch,
-    public NativeAdoptedSubstreamDispatch {
+    public NativeAdoptedSubstreamDispatch, public NativeVfsFactoryCreateDispatch,
+    public NativeVfsManagerVirtualCalls {
 public:
     NativeVfsRuntimeBindings(NativeVfsOpenRouteContext&,NativeVfsLookupRouteContext&,
         NativePhysicalStreamOpenContext&,NativeStoredStreamConversionContext&,
-        NativeVfsOpenLoggingContext&,NativeRetainedMemoryOwnerContext&);
+        NativeVfsOpenLoggingContext&,NativeRetainedMemoryOwnerContext&,
+        NativePhysicalProviderContext* = nullptr,
+        NativeFileAccessLogLifetimeBindings* = nullptr);
     ~NativeVfsRuntimeBindings() override;
     NativeVfsRuntimeBindings(const NativeVfsRuntimeBindings&)=delete;
     NativeVfsRuntimeBindings& operator=(const NativeVfsRuntimeBindings&)=delete;
@@ -40,6 +50,12 @@ public:
     void* provider_open(void* provider,const void* name,std::uint32_t flags);
     std::uint32_t stream_size_low(void* stream,std::uint32_t argument);
     void log_open(void* manager,const void* name,void* stream,std::uint32_t mount_byte);
+    void* factory_create(std::uintptr_t captured_entry, void* actual_factory,
+        const void* system_header, const void* virtual_header) override;
+    void invoke_log_virtual0_00be1fa1(std::uint32_t captured_target,
+        void* captured_owner, std::uint32_t flags) override;
+    void invoke_provider_virtual4_00be1ffd(std::uint32_t captured_target,
+        void* captured_owner, std::uint32_t flags) override;
 private:
     NativeVfsOpenRouteContext& route_;
     NativeVfsLookupRouteContext& lookup_;
@@ -47,6 +63,8 @@ private:
     NativeStoredStreamConversionContext& store_;
     NativeVfsOpenLoggingContext& logging_;
     NativeRetainedMemoryOwnerContext& memory_;
+    NativePhysicalProviderContext* provider_;
+    NativeFileAccessLogLifetimeBindings* log_lifetime_;
     NativeVfsRuntimeBindings* previous_;
     NativeAdoptedSubstreamDispatch* previous_substreams_;
 };
