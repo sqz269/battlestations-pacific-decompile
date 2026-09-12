@@ -1352,37 +1352,6 @@ void GameMissionHost::load_mission_tree_005caaf0() {
     }
     host.log.implemented("MissionTreeScreen::load_tables", "005caaf0");
 
-    // A defect in the shared reconstruction, found here and not fixed here
-    // because src/mission_tree_data.cpp belongs to another packet.
-    // read_mission_record_005c6a70 fills MissionRecordData::sides, which is the
-    // MissionSideBlockData pair, but every screen-facing consumer
-    // (mission_side_index, mission_side_block, mission_opens_briefing,
-    // mission_side_index_005c27e0 and run_start_selected_mission_0058bdf0)
-    // reads MissionRecord::sides through record.screen, which the reader never
-    // writes. A record loaded from the real table therefore answers every side
-    // query from a default-constructed block: the side index comes out 1 for
-    // every mission and the page pairing sends a United States mission to the
-    // Japanese page. The executable copies the reader's blocks into the
-    // screen-facing projection so the recovered rules see real data; the fix
-    // belongs in read_mission_record_005c6a70.
-    std::size_t bridged = 0;
-    for (MissionGroupData& group : host.tables.groups) {
-        for (MissionRecordData& record : group.missions) {
-            for (std::size_t side = 0; side < kMissionSideBlockCount; ++side) {
-                record.screen.sides[side] = record.sides[side].screen;
-            }
-            ++bridged;
-        }
-    }
-    for (MissionRecordData& record : host.tables.multi) {
-        for (std::size_t side = 0; side < kMissionSideBlockCount; ++side) {
-            record.screen.sides[side] = record.sides[side].screen;
-        }
-        ++bridged;
-    }
-    host.log.notef("side blocks projected into the screen-facing record for %zu missions "
-        "(read_mission_record_005c6a70 fills only MissionRecordData::sides)", bridged);
-
     host.summary.tree_groups = host.tables.groups.size();
     host.summary.tree_multi = host.tables.multi.size();
     for (const MissionGroupData& group : host.tables.groups) {

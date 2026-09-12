@@ -1,0 +1,967 @@
+{
+  "packet": "orch5_mission_side_storage",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "bsp.py ghidra client verifies project name, program path, language and image base before every query; no Ghidra mutations"
+  },
+  "routines": [
+    {
+      "address": "005c5da0",
+      "body": [
+        "005c5da0",
+        "005c6238"
+      ],
+      "instructions": 485,
+      "flow_gaps": 0,
+      "coverage": "complete storage routing and side-key correction; existing Lua-view semantic projection retained",
+      "original_abi": "__thiscall: ECX=one native154h side block, [entry ESP+4]=reader, RET4; byte store at005c5daa",
+      "cpp": "read_mission_side_block_005c5da0(view, screen, extra), plus standalone-block forwarding overload"
+    },
+    {
+      "address": "005c6a70",
+      "body": [
+        "005c6a70",
+        "005c7b23"
+      ],
+      "instructions": 1144,
+      "flow_gaps": 0,
+      "coverage": "partial: canonical side storage at005c767c..005c770f; other existing reader logic unchanged, including picture-resource boundary",
+      "original_abi": "__thiscall: ECX=434h mission record, [entry ESP+4]=reader, RET4; EDI retains record, ESI retains reader",
+      "cpp": "read_mission_record_005c6a70 writes screen.sides[i] and side_extras[i] directly"
+    },
+    {
+      "address": "005c27e0",
+      "body": [
+        "005c27e0",
+        "005c27eb"
+      ],
+      "instructions": 4,
+      "flow_gaps": 0,
+      "coverage": "complete read-only verification; existing implementation unchanged",
+      "original_abi": "ECX=mission record, EAX=zero-extended record byte+0B8h==0, plain RET; compatible with thiscall getter or fastcall unary function, symbol unavailable",
+      "cpp": "mission_side_index_005c27e0(record) -> mission_side_index(record.screen)"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "MissionRecordData owned duplicate side screens; reader wrote data.sides[i].screen while menu helpers read data.screen.sides[i].",
+      "is": "Only data.screen.sides[i] owns those fields; data.side_extras[i] contains the disjoint remainder. All are value-owned.",
+      "evidence": "005c76b2 ECX=EDI+0B8h;005c76fc ECX=EDI+20Ch;005c5daa writes byte[this]=1;005c27e2 tests byte[ECX+0B8h]."
+    },
+    {
+      "was": "GameMissionHost copied every loaded side screen into the menu projection after the Lua load.",
+      "is": "Copy pass and its workaround log removed; producer and menu use one object.",
+      "evidence": "src/game_hosts_mission.cpp load_mission_tree_005caaf0; actual adapter fixture validates identity and re-read before any sync."
+    },
+    {
+      "was": "Hidden-hint consumer read mission.sides[side].extra.hidden_hints.",
+      "is": "Same side-index rule, mission.side_extras[side].hidden_hints.",
+      "evidence": "main_menu_selection_listener.cpp selected-mission branch uses mission_side_index(mission.screen)."
+    },
+    {
+      "was": "Four side Lua keys were formed as multiunitsidIslandCapture1v1 through IslandCapture4v4.",
+      "is": "Exact multiunitsidIC1v1,IC2v2,IC3v3,IC4v4 keys at destination slots4..7; semantic mode names retained separately.",
+      "evidence": "005c6066/005c60a7/005c60e8/005c6129 call005c5860 with destinations+114h,+124h,+134h,+144h."
+    },
+    {
+      "was": "Reader comment said first dword at005c5da5.",
+      "is": "First byte at005c5daa.",
+      "evidence": "005c5daa MOV byte ptr [EDI],0x1."
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "005c5dd7",
+      "function": "005c5da0",
+      "native": "reader+vtable10",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c5de9",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c5df7",
+      "function": "005c5da0",
+      "native": "005c5860",
+      "contract": "consume existing005c5860 guarded string-vector read"
+    },
+    {
+      "address": "005c5e0c",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c5e1a",
+      "function": "005c5da0",
+      "native": "005c5860",
+      "contract": "consume existing005c5860 guarded string-vector read"
+    },
+    {
+      "address": "005c5e2f",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c5e3d",
+      "function": "005c5da0",
+      "native": "005c5860",
+      "contract": "consume existing005c5860 guarded string-vector read"
+    },
+    {
+      "address": "005c5e52",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c5e60",
+      "function": "005c5da0",
+      "native": "005c5860",
+      "contract": "consume existing005c5860 guarded string-vector read"
+    },
+    {
+      "address": "005c5e75",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c5e83",
+      "function": "005c5da0",
+      "native": "005c5860",
+      "contract": "consume existing005c5860 guarded string-vector read"
+    },
+    {
+      "address": "005c5e98",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c5ea6",
+      "function": "005c5da0",
+      "native": "005c5860",
+      "contract": "consume existing005c5860 guarded string-vector read"
+    },
+    {
+      "address": "005c5ec1",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c5ed2",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c5ee0",
+      "function": "005c5da0",
+      "native": "005c5860",
+      "contract": "consume existing005c5860 guarded string-vector read"
+    },
+    {
+      "address": "005c5eff",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c5f10",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c5f21",
+      "function": "005c5da0",
+      "native": "005c5860",
+      "contract": "consume existing005c5860 guarded string-vector read"
+    },
+    {
+      "address": "005c5f40",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c5f51",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c5f62",
+      "function": "005c5da0",
+      "native": "005c5860",
+      "contract": "consume existing005c5860 guarded string-vector read"
+    },
+    {
+      "address": "005c5f81",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c5f92",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c5fa3",
+      "function": "005c5da0",
+      "native": "005c5860",
+      "contract": "consume existing005c5860 guarded string-vector read"
+    },
+    {
+      "address": "005c5fc2",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c5fd3",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c5fe4",
+      "function": "005c5da0",
+      "native": "005c5860",
+      "contract": "consume existing005c5860 guarded string-vector read"
+    },
+    {
+      "address": "005c6003",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c6014",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c6025",
+      "function": "005c5da0",
+      "native": "005c5860",
+      "contract": "consume existing005c5860 guarded string-vector read"
+    },
+    {
+      "address": "005c6044",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c6055",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c6066",
+      "function": "005c5da0",
+      "native": "005c5860",
+      "contract": "consume existing005c5860 guarded string-vector read"
+    },
+    {
+      "address": "005c6085",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c6096",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c60a7",
+      "function": "005c5da0",
+      "native": "005c5860",
+      "contract": "consume existing005c5860 guarded string-vector read"
+    },
+    {
+      "address": "005c60c6",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c60d7",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c60e8",
+      "function": "005c5da0",
+      "native": "005c5860",
+      "contract": "consume existing005c5860 guarded string-vector read"
+    },
+    {
+      "address": "005c6107",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c6118",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c6129",
+      "function": "005c5da0",
+      "native": "005c5860",
+      "contract": "consume existing005c5860 guarded string-vector read"
+    },
+    {
+      "address": "005c6148",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c6159",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c616a",
+      "function": "005c5da0",
+      "native": "005c5860",
+      "contract": "consume existing005c5860 guarded string-vector read"
+    },
+    {
+      "address": "005c6189",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c619a",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c61ab",
+      "function": "005c5da0",
+      "native": "005c5860",
+      "contract": "consume existing005c5860 guarded string-vector read"
+    },
+    {
+      "address": "005c61ca",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c61db",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c61ec",
+      "function": "005c5da0",
+      "native": "005c5860",
+      "contract": "consume existing005c5860 guarded string-vector read"
+    },
+    {
+      "address": "005c620b",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c621c",
+      "function": "005c5da0",
+      "native": "reader+vtable14",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c622d",
+      "function": "005c5da0",
+      "native": "005c5860",
+      "contract": "consume existing005c5860 guarded string-vector read"
+    },
+    {
+      "address": "005c6ac7",
+      "function": "005c6a70",
+      "native": "indirect:EDX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c6afb",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c6b46",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c6b8c",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c6bc0",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c6c06",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c6c3b",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c6c76",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c6cad",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c6cd0",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c6ce3",
+      "function": "005c6a70",
+      "native": "005c5860",
+      "contract": "consume existing005c5860 guarded string-vector read"
+    },
+    {
+      "address": "005c6d01",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c6d1b",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c6d30",
+      "function": "005c6a70",
+      "native": "005c4ad0",
+      "contract": "existing record-reader operation outside side-storage correction; callee body unread this packet"
+    },
+    {
+      "address": "005c6d64",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c6da0",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c6dbc",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c6ddf",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c6e41",
+      "function": "005c6a70",
+      "native": "indirect:EDX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c6ea3",
+      "function": "005c6a70",
+      "native": "indirect:EDX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c6f05",
+      "function": "005c6a70",
+      "native": "indirect:EDX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c6f67",
+      "function": "005c6a70",
+      "native": "indirect:EDX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c6fc9",
+      "function": "005c6a70",
+      "native": "indirect:EDX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c702b",
+      "function": "005c6a70",
+      "native": "indirect:EDX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c708d",
+      "function": "005c6a70",
+      "native": "indirect:EDX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c70ef",
+      "function": "005c6a70",
+      "native": "indirect:EDX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c7151",
+      "function": "005c6a70",
+      "native": "indirect:EDX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c71b3",
+      "function": "005c6a70",
+      "native": "indirect:EDX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c7215",
+      "function": "005c6a70",
+      "native": "indirect:EDX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c7277",
+      "function": "005c6a70",
+      "native": "indirect:EDX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c72d9",
+      "function": "005c6a70",
+      "native": "indirect:EDX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c733b",
+      "function": "005c6a70",
+      "native": "indirect:EDX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c739d",
+      "function": "005c6a70",
+      "native": "indirect:EDX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c73ff",
+      "function": "005c6a70",
+      "native": "indirect:EDX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c7408",
+      "function": "005c6a70",
+      "native": "indirect:EDX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c75a9",
+      "function": "005c6a70",
+      "native": "004c12b0",
+      "contract": "existing record-reader operation outside side-storage correction; callee body unread this packet"
+    },
+    {
+      "address": "005c75c7",
+      "function": "005c6a70",
+      "native": "00aa2660",
+      "contract": "existing record-reader operation outside side-storage correction; callee body unread this packet"
+    },
+    {
+      "address": "005c75de",
+      "function": "005c6a70",
+      "native": "indirect:dword ptr [0x00ce2220]",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c75ef",
+      "function": "005c6a70",
+      "native": "indirect:EDX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c7615",
+      "function": "005c6a70",
+      "native": "indirect:dword ptr [0x00ce2220]",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c7626",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c7670",
+      "function": "005c6a70",
+      "native": "indirect:EDX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c7699",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c76af",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c76b8",
+      "function": "005c6a70",
+      "native": "005c5da0",
+      "contract": "fill one native154h side block"
+    },
+    {
+      "address": "005c76c4",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c76e3",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c76f9",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c7702",
+      "function": "005c6a70",
+      "native": "005c5da0",
+      "contract": "fill one native154h side block"
+    },
+    {
+      "address": "005c770e",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c772e",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c7765",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c77b4",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c77fa",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c7840",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c7886",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c78cc",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c78e0",
+      "function": "005c6a70",
+      "native": "005765a0",
+      "contract": "existing record-reader operation outside side-storage correction; callee body unread this packet"
+    },
+    {
+      "address": "005c791b",
+      "function": "005c6a70",
+      "native": "indirect:EDX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c7942",
+      "function": "005c6a70",
+      "native": "indirect:EDX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c7974",
+      "function": "005c6a70",
+      "native": "indirect:EDX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c79b2",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c79e3",
+      "function": "005c6a70",
+      "native": "indirect:EDX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c7a11",
+      "function": "005c6a70",
+      "native": "indirect:EDX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c7a59",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c7a82",
+      "function": "005c6a70",
+      "native": "005c6850",
+      "contract": "existing record-reader operation outside side-storage correction; callee body unread this packet"
+    },
+    {
+      "address": "005c7a89",
+      "function": "005c6a70",
+      "native": "005c49c0",
+      "contract": "existing record-reader operation outside side-storage correction; callee body unread this packet"
+    },
+    {
+      "address": "005c7a9b",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c7ab7",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c7add",
+      "function": "005c6a70",
+      "native": "indirect:EAX",
+      "contract": "existing Lua-reader virtual dispatch; no new concrete host method"
+    },
+    {
+      "address": "005c7afd",
+      "function": "005c6a70",
+      "native": "00419cc0",
+      "contract": "existing record-reader operation outside side-storage correction; callee body unread this packet"
+    },
+    {
+      "address": "005c7b04",
+      "function": "005c6a70",
+      "native": "00bd1510",
+      "contract": "existing record-reader operation outside side-storage correction; callee body unread this packet"
+    }
+  ],
+  "consumer_calls": [
+    {
+      "address": "005809ea",
+      "native": "005c27e0",
+      "function": "00580940",
+      "body": [
+        "00580940",
+        "00580a18"
+      ],
+      "contract": "ECX from selected-record005806a0; DLC page7-side"
+    },
+    {
+      "address": "00580a06",
+      "native": "005c27e0",
+      "function": "00580940",
+      "body": [
+        "00580940",
+        "00580a18"
+      ],
+      "contract": "ECX from selected-record005806a0; campaign page5-side"
+    },
+    {
+      "address": "0058be15",
+      "native": "005c27e0",
+      "function": "0058bdf0",
+      "body": [
+        "0058bdf0",
+        "0058c006"
+      ],
+      "contract": "ECX=ESI selected record; EAX*154h+ESI+0B8h becomes chosen side block"
+    },
+    {
+      "address": "0058bf18",
+      "native": "005c27e0",
+      "function": "0058bdf0",
+      "body": [
+        "0058bdf0",
+        "0058c006"
+      ],
+      "contract": "ECX=ESI same selected record; side index passed in EDX to00626930"
+    }
+  ],
+  "uncertainty": [
+    "Descriptive function names remain hypotheses, not recovered symbols; no annotation or saved-project change.",
+    "C++ strings, vectors, two split semantic parts and uint32 enabled are not native154h/434h binary layouts; original writes/reads the low enabled byte.",
+    "Existing view callback ordering and repeated presence-test coalescing remain semantic projections; no claim of arbitrary side-effecting/metatable Lua equivalence.",
+    "Record logic outside the side branch was not reconstructed again. Picture resource production remains a separate parent packet.",
+    "No missing body definitions or flow gaps for005c5da0,005c6a70,005c27e0 in the verified live program. Indirect native dispatch bodies are consumed existing contracts, not newly reconstructed here."
+  ],
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "result": "pass",
+      "compiler": "MSVC19.51 Win32 Release",
+      "ctest": "reconstructed_math1/1 passed",
+      "log": "local/mission_side_storage_build.log",
+      "dependency_sources": "independent copies of cached parent-worktree Lua5.1.1, zlib1.2.1, D3DX headers via FETCHCONTENT_SOURCE_DIR overrides"
+    },
+    "real_lua_fixture": {
+      "result": "pass",
+      "source": "local/mission_side_storage_probe.cpp",
+      "runner": "local/mission_side_storage_probe.cmd",
+      "log": "local/mission_side_storage_probe.log",
+      "adapter": "exact GameMissionHost LiveMissionTreeView included in local probe translation unit",
+      "checks": [
+        "canonical reference identity",
+        "both sides",
+        "Japanese-only mission",
+        "missing sides",
+        "reread live object and absent-list retention",
+        "hidden hints paired by side",
+        "four native IC keys with wrong expanded key also present",
+        "independent copy",
+        "move and source reuse",
+        "vector relocation",
+        "live side-selection mutation",
+        "standalone block overload"
+      ],
+      "source_sha256": "69423a08b005ffc3c621917581cd8c84e3da5d17e6bacf59797110acd0f637f7"
+    },
+    "installed_table": {
+      "result": "pass",
+      "method": "real Lua5.1.1 directly executes installed MissionTree.lua and real MultiGlobals.lua through file DoFile callback; exact executable adapter and reconstructed group/record readers; validation after Lua closes",
+      "groups": 5,
+      "campaign_records": 143,
+      "multi_records": 34,
+      "nonempty_IC_lists": 102,
+      "IJN01": {
+        "side": 1,
+        "briefing": "IJN01",
+        "objectives": [
+          3,
+          2
+        ],
+        "hints": 4,
+        "hidden_hints": 1
+      },
+      "USN02": {
+        "side": 0,
+        "briefing": "USN02",
+        "objectives": [
+          2,
+          1
+        ],
+        "hints": 3,
+        "hidden_hints": 1
+      },
+      "source_sha256": {
+        "MissionTree.lua": "6b4780ef9afb7deb5368fa93ddbc5cf33398c50230994f2d09beea1ccb5fc4cb",
+        "MultiGlobals.lua": "88280bba42ff0d091104076d2d7a1bd496d9bf83407728558508ec2def40f301"
+      }
+    },
+    "full_game_host": {
+      "result": "not reached",
+      "process_exit": "0xC0000005",
+      "last_phase": "phase5 load_game_settings",
+      "log": "local/mission_side_storage_usn.log",
+      "note": "Full executable exited before mission-tree load. Cause not established; focused installed-table validation is separate."
+    },
+    "native_report_calls": {
+      "command": "python tools/verify_report_calls.py reports/mission_side_storage.json",
+      "result": "pass",
+      "direct_checked": 35,
+      "failed": 0,
+      "indirect_not_checked": 96,
+      "log": "local/mission_side_storage_native_calls.log"
+    },
+    "original_game_runtime": "not tested",
+    "original_abi_compatible": false
+  }
+}

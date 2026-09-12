@@ -2,11 +2,16 @@
 #include "bsp/main_menu_selection_listener.hpp"
 #include "bsp/main_menu_profile_display.hpp"
 #include "bsp/gui_widget_relative_bounds.hpp"
+#include "bsp/main_menu_objective_runtime.hpp"
 
 namespace bsp {
+// Bind58F5B0's producer to5966F0's existing counts and its same layout slots.
+// This factory creates references only; it owns no separate screen state.
+MainMenuObjectiveBindings make_main_menu_objective_bindings(
+    MainMenuSelectionListenerBindings&, MainMenuObjectiveProviders&);
 // Concrete recovered operations over the same screen and resource owners.
-// Mutable mission-tree owner, command-bar owner/host/environment, mission picture ownership and objective
-// vector identity accessors remain abstract until their real producers bind
+// Mutable mission-tree owner, command-bar owner/host/environment and mission
+// picture ownership remain abstract until their real producers bind
 // them. This class does not substitute another menu, profile or GUI tree.
 class MainMenuCanonicalSelectionServices : public MainMenuSelectionServices {
 public:
@@ -22,6 +27,8 @@ public:
     void call_00594b60() override;
     void call_00b6da70(NativeNodeBinding&, float, bool) override;
     void framebox_current58(GuiWidgetOwner&, const GuiWidgetSize&) override;
+    GuiWidgetOwner& call_00519dc0(std::uint32_t screen_vector_offset,
+        std::uint32_t index) override;
 private:
     MainMenuCommandListenerBindings& command_;
     MainMenuMedalServices& scores_;

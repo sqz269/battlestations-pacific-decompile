@@ -1,0 +1,179 @@
+{
+  "packet": "orch2_native_filestore_lifetime_and_vfs_drain_av",
+  "captured_utc": "2026-09-12T21:27:54.945284+00:00",
+  "classification": "progress",
+  "new_complete_routines": 22,
+  "new_owned_native_bytes": 3167,
+  "existing_routine_dispatch_extension": {
+    "entry": "00bd0400",
+    "bytes": 197,
+    "new_complete_routine_count": 0
+  },
+  "worker_commits": {
+    "resident": "ff501c82a1e73274564d37f3fe20ad2a499329cc",
+    "pending": "4e962362",
+    "canonical": "f24377373775eaa1bbfff6576af418753a208030"
+  },
+  "strict_win32_builds": [
+    {
+      "path": "local/native-av-build01.log",
+      "sha256": "9ae1bf86b6d592e785f78091f5f4d0e3c410aa071b6a0dd739651e606c27dc8f",
+      "ctest": "2 existing tests passed"
+    },
+    {
+      "path": "local/native-av-build02.log",
+      "sha256": "977bd37b3cc7bed18254a380c0bfb4b8700f80c2169315c97dff94b9df1cb6cc",
+      "ctest": "2 existing tests passed"
+    }
+  ],
+  "fixtures": [
+    {
+      "fixture": "local/native-av-worker-deliveries/resident/local/resident_av/integrated02",
+      "native_source_comparisons": 39,
+      "manifest_before_sha256": "38da8d929a751beba2e46e581d52882e03a04793469c04db27f0f431a9849ca3",
+      "result_file": "manifest_after.json",
+      "result_sha256": "9f2dedc00d8083c1ec413f528ccdb74b403b0f0fac45b784c28c7ba92aee1da1",
+      "result": {
+        "exit_code": 0,
+        "all_preexecution_hashes_unchanged": true,
+        "files_rechecked": 1057,
+        "native_source_states": 39,
+        "checks": 366,
+        "manifest_sha256": "38da8d929a751beba2e46e581d52882e03a04793469c04db27f0f431a9849ca3",
+        "exe_sha256": "5e25b5c224d24c8f35b7637f831b2692468ca178fbed779dbeb655b4d6dec7fd",
+        "library_sha256": "64856001b498525bd0e76244b6c9f0e2964032b1ca36131b9e0ff7e05be7252f",
+        "native_FH3_SEH_executed": false
+      }
+    },
+    {
+      "fixture": "local/native-av-pending-integrated01",
+      "native_source_comparisons": 20,
+      "manifest_before_sha256": "a6ba552dc6c6dfe0de2e4b29e080da95be83008d64aa9c0acbf2b64637cb4b14",
+      "result_file": "manifest_after.json",
+      "result_sha256": "4c4565823155cc086d35a0736c54852fc58ab6f44eb59b374f1ba1fdc64c4246",
+      "result": {
+        "exit_code": 0,
+        "all_preexecution_hashes_unchanged": true,
+        "files_rechecked": 97,
+        "seal_sha256": "a6ba552dc6c6dfe0de2e4b29e080da95be83008d64aa9c0acbf2b64637cb4b14",
+        "exe_sha256": "130f1d45b85f625dedd2e1dcfc604e9e1d1ac488b4de132a2d8dbd34ffeac68d",
+        "library_sha256": "b17d54ea1129bea09e93c9c5e629fd2e3b572bf83a4d25f14ecf63bb152c3b76",
+        "execution_sha256": "af898e7fc24d16cd3084dc2779b88d5a3e8dcfd407d8c6628d40d67579b11545",
+        "native_source_cases": 20,
+        "native_FH3_SEH_executed": false
+      }
+    },
+    {
+      "fixture": "local/native-av-worker-deliveries/canonical/local/native-vfs-canonical-drain-av/integrated01",
+      "native_source_comparisons": 1,
+      "manifest_before_sha256": "7e16f2f29279f44ac711ab70376eaba8395fd8d0d656811c1d6412f85e18fcf7",
+      "result_file": "summary.json",
+      "result_sha256": "2edf746814897e5caf0129e270c15963c72f636f7e8e67a62253f843569a14cf",
+      "result": {
+        "result": "passed",
+        "case": "one canonical drain scenario compared between unchanged original BD0400 and reconstructed source",
+        "result_bytes": 6148,
+        "result_sha256": "0ec4663927b553e8d1e3cf1827a3aeaab94c5fa82d9b2f564eb2b1405ddfaf36",
+        "input_files": 505,
+        "changed_inputs": [],
+        "linked_archive_equal_objects": 123,
+        "library_sha256": "b17d54ea1129bea09e93c9c5e629fd2e3b572bf83a4d25f14ecf63bb152c3b76",
+        "manifest_before_sha256": "7e16f2f29279f44ac711ab70376eaba8395fd8d0d656811c1d6412f85e18fcf7",
+        "native_original_FH3_SEH_executed": false,
+        "game_executed": false
+      }
+    },
+    {
+      "fixture": "local/native-av-provider/attempt03",
+      "native_source_comparisons": 19,
+      "manifest_before_sha256": "272d39a1fc7664d36a11c3bd0283e839a732cbee0c36215fc1d17b851e622cc6",
+      "result_file": "manifest_after.json",
+      "result_sha256": "c91a5184a1e99a06cf75cdc996b2da501dbf5f95a175daa364a88379031b0eaa",
+      "result": {
+        "source_repo": "J:\\PROG\\battlestations-pacific-decompile-orch2-20260910",
+        "captured_utc": "2026-09-12T21:21:41.686899+00:00",
+        "process_exit": 0,
+        "all_preexecution_hashes_unchanged": true,
+        "files_rechecked": 558,
+        "preexecution_manifest_sha256": "272d39a1fc7664d36a11c3bd0283e839a732cbee0c36215fc1d17b851e622cc6",
+        "execution_log_sha256": "a23125230f1bca13dc6b994a19f6fdf689ab1c7221866d7c34e23c55dbcdb78a",
+        "exe_sha256": "02c205fb7b846071ac3d0e3ca845a08ed1d80c5fa2549c14e819eb3d2ac1ef10",
+        "library_sha256": "64856001b498525bd0e76244b6c9f0e2964032b1ca36131b9e0ff7e05be7252f",
+        "native_source_states": 19,
+        "assertions": 1357,
+        "native_FH3_SEH_executed": false
+      }
+    }
+  ],
+  "total_native_source_comparisons": 79,
+  "call_verification": {
+    "rows": 110,
+    "failed": 0,
+    "log": "local/native-av-report-calls.log",
+    "sha256": "559d216897f672c3a3d7167e812aa65fe2c15d6b74cfc7eb256530d3b557aceb",
+    "indirect_limit": "BD0485 current_profile+vtable00 not mechanically checked; exact four profile/slot mappings and native drain fixture cover the bound domain."
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "reviewed_names": 22,
+    "prior_comments_preserved_and_read_back": true,
+    "annotation_log": "local\\ghidra-annotations-20260912T212510Z.json",
+    "annotation_log_sha256": "e79c7ba6b65b5a7b069504074c455c66219062364a14a46efecbc22dead4eebf",
+    "exports": "all22 force-refreshed; local/native-av-export-refresh.log",
+    "full_function_bodies_repaired": [
+      "00be7bf0",
+      "00be6760",
+      "00be7a30",
+      "00be7bb0",
+      "00be6a20",
+      "00be7650",
+      "00be7a70",
+      "00cc6e80"
+    ],
+    "external_handlers_defined": [
+      "00cc6e0e",
+      "00cc6e6b",
+      "00cc6e8b"
+    ],
+    "method": "Verified original bytes, local flow overrides and supported function recreation; old function/plate recorded and restored; no global no-return flags changed.",
+    "records": [
+      "reports/native_av_flow_repair.json",
+      "reports/native_av_tree_flow_repairs.json",
+      "reports/native_av_function_definitions.json"
+    ]
+  },
+  "current_input_proof": {
+    "path": "local\\native-av-promotion-checks\\20260912T212606711325Z-0152774d.json",
+    "sha256": "14325e88f278b6c9353b36189e7d3a71aa465a2c9faf59e4a3ee93b0ce12fc0e",
+    "prepared_inputs": "local/native-av-promotion-inputs.json",
+    "prepared_inputs_sha256": "1e8b0d8d36e7c13d6dba30ded57941304adf023e493202772c2189904e9a247c",
+    "current_source_header_object_pins": 1239,
+    "unique_linked_objects": 132,
+    "all_frozen_files_rehashed": 2232,
+    "scope": "Linked members equal frozen/current source and objects/current archives. Whole-library hashes recorded separately; no execution claim for unlinked members. Gate reruns before each promotion attempt."
+  },
+  "preserved_worker_deliveries": [
+    {
+      "name": "resident",
+      "files": 4258,
+      "manifest_sha256": "8b835d82563ad20be2b4a2d3b4d2c71ea8cbdd057add7363c52893a55984db8b"
+    },
+    {
+      "name": "pending",
+      "files": 242,
+      "manifest_sha256": "559d875a6870a947e28ef006321a773cbf91044b5a3b2ab70f8fdfb6c57af0ea"
+    },
+    {
+      "name": "canonical",
+      "files": 1586,
+      "manifest_sha256": "9eb1455e170045c4ca644d0fe4abdd576edb5baf5caac2e7ef23ac46cbf5a251"
+    }
+  ],
+  "material_limits": [
+    "Original FH3/SEH and binary ABI replacement unproven",
+    "Provider zero-reference stream deletion and destructor throwing paths not exercised in provider fixture",
+    "Native generic runtime FileStore dispatch is next packet",
+    "Full game startup and required gameplay remain unvalidated"
+  ]
+}

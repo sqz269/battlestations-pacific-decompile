@@ -50,29 +50,33 @@ std::string mode_key(std::string_view mode, const char* suffix) {
 // ---------------------------------------------------------------------------
 
 void read_mission_side_block_005c5da0(MissionTreeLuaView& view, MissionSideBlockData& out) {
-    // 005C5DA5: the block's first dword becomes 1 before anything is read. The
+    read_mission_side_block_005c5da0(view, out.screen, out.extra);
+}
+
+void read_mission_side_block_005c5da0(MissionTreeLuaView& view,
+                                    MissionSideBlock& screen, MissionSideBlockExtra& extra) {
+    // 005C5DAA: the block's first byte becomes 1 before anything is read. The
     // reader is only reached when the side key exists, so "block 0 enabled"
     // and "the mission has an allied side" are the same fact.
-    out.screen.enabled = 1;
+    screen.enabled = 1;
 
-    out.screen.briefing_key = view.read_string("briefingGuiLayer", "");
+    screen.briefing_key = view.read_string("briefingGuiLayer", "");
 
-    read_list_if_present(view, "primaryObjectives", out.screen.objectives_a);
-    read_list_if_present(view, "secondaryObjectives", out.screen.objectives_b);
-    read_list_if_present(view, "hiddenObjectives", out.extra.hidden_objectives);
-    read_list_if_present(view, "hiddenHints", out.extra.hidden_hints);
-    read_list_if_present(view, "loadingBackgrounds", out.extra.loading_backgrounds);
-    read_list_if_present(view, "hints", out.screen.loading_text);
-    read_list_if_present(view, "allunitsid", out.extra.unit_ids);
-    read_list_if_present(view, "allunitsnum", out.extra.unit_counts);
-    read_list_if_present(view, "allunitslockid", out.extra.locked_unit_ids);
-    read_list_if_present(view, "allunitslocknum", out.extra.locked_unit_counts);
-    read_list_if_present(view, "allunitslockhint", out.extra.locked_unit_hints);
-    read_list_if_present(view, "changeables", out.extra.changeables);
+    read_list_if_present(view, "primaryObjectives", screen.objectives_a);
+    read_list_if_present(view, "secondaryObjectives", screen.objectives_b);
+    read_list_if_present(view, "hiddenObjectives", extra.hidden_objectives);
+    read_list_if_present(view, "hiddenHints", extra.hidden_hints);
+    read_list_if_present(view, "loadingBackgrounds", extra.loading_backgrounds);
+    read_list_if_present(view, "hints", screen.loading_text);
+    read_list_if_present(view, "allunitsid", extra.unit_ids);
+    read_list_if_present(view, "allunitsnum", extra.unit_counts);
+    read_list_if_present(view, "allunitslockid", extra.locked_unit_ids);
+    read_list_if_present(view, "allunitslocknum", extra.locked_unit_counts);
+    read_list_if_present(view, "allunitslockhint", extra.locked_unit_hints);
+    read_list_if_present(view, "changeables", extra.changeables);
 
     for (std::size_t i = 0; i < kMissionMultiplayerModeCount; ++i) {
-        const std::string key = std::string("multiunitsid") + std::string(kMissionSideUnitListModes[i]);
-        read_list_if_present(view, key, out.extra.multiplayer_unit_ids[i]);
+        read_list_if_present(view, kMissionSideUnitListKeys[i], extra.multiplayer_unit_ids[i]);
     }
 }
 
@@ -154,7 +158,7 @@ void read_mission_record_005c6a70(MissionTreeLuaView& view, MissionRecordData& o
         const auto key = kMissionSideKeys[side];
         if (!view.has_name(key)) continue;
         view.enter_by_name(key);
-        read_mission_side_block_005c5da0(view, out.sides[side]);
+        read_mission_side_block_005c5da0(view, out.screen.sides[side], out.side_extras[side]);
         view.leave();
     }
 

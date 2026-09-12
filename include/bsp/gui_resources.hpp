@@ -4,12 +4,14 @@
 // Names are hypotheses; evidence and ownership limits: docs/GUI_RESOURCE_OWNER.md.
 #include <cstdint>
 #include <functional>
+#include <optional>
 #include <string>
 #include <string_view>
 
 #include "bsp/gui_layout_loader.hpp"
 
 namespace bsp {
+struct GuiManagerFrameServices;
 
 // An opaque renderer texture identity, not a reconstructed renderer object.
 // load_texture returns the native reference without an additional retain here.
@@ -45,6 +47,9 @@ struct GuiResourceState {
     // The native constructor leaves +84h unwritten. It is valid here only
     // after initialize_00aa5e20 returns; completion is separate C++ bookkeeping.
     std::uint8_t ready_flag{0};             // +84h; initialization writes zero last
+    // Constructor AA5D70 leaves+70 unwritten. AA4F80 publishes its raw second
+    // argument before callbacks and zero on normal completion only.
+    std::optional<std::uint8_t> blocked_70;
 };
 
 // Holds the manager's persistent resource slots, composing the existing page
@@ -70,6 +75,8 @@ public:
     GuiPageRegistry& pages() noexcept { return registry_; }
 
 private:
+    friend void update_gui_manager_00aa4f80(GuiResourceOwner&, float,
+        std::uint8_t, const GuiManagerFrameServices&);
     void show_required(GuiLayoutWidget* widget, bool visible, std::string_view name);
     GuiPageRegistry& registry_;
     GuiLayoutHost& layout_;

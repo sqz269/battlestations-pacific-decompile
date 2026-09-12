@@ -1,0 +1,899 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "packet": "orch5_listbox_frame",
+  "functions": [
+    {
+      "address": "00a9d030",
+      "end_inclusive": "00a9d358",
+      "name": "BSP_GuiListbox_UpdateFrame",
+      "cpp": "GuiListboxRuntime::update40_00a9d030",
+      "original_abi": "ECX Listbox; float dt stack; RET4",
+      "coverage": "complete normal valid-owner caller sequence; required downstream bodies and invalid-state boundaries explicit"
+    },
+    {
+      "address": "00a9c400",
+      "end_inclusive": "00a9c537",
+      "name": "BSP_GuiListbox_NavigateOneStep",
+      "cpp": "GuiListboxRuntime::navigate88_00a9c400",
+      "original_abi": "ECX Listbox; low-byte forward stack; RET4",
+      "coverage": "complete normal valid FC iterator sequence"
+    },
+    {
+      "address": "00a9da60",
+      "end_inclusive": "00a9de46",
+      "name": "BSP_GuiListbox_Navigate",
+      "cpp": "GuiListboxRuntime::navigate84_00a9da60",
+      "original_abi": "ECX Listbox; low-byte forward stack; RET4",
+      "coverage": "complete normal valid FC/14C iterator sequence; EC/158/164 require actual producers when read"
+    },
+    {
+      "address": "00696470",
+      "end_inclusive": "006964ab",
+      "name": "BSP_GuiListbox_ReadDefaultInput",
+      "cpp": "read_gui_listbox_input_00696470",
+      "original_abi": "ECX previous46 output; EDX next47 output; accept4A output stack; RET4",
+      "coverage": "complete three-call ordering; actual4D92B0 game/input/map/sound provider required"
+    },
+    {
+      "address": "00aa0f50",
+      "end_inclusive": "00aa0f6e",
+      "name": "BSP_GuiManager_SelectHighlightWidget",
+      "cpp": "select_gui_highlight_widget_00aa0f50",
+      "original_abi": "ECX manager; signed selector stack; EAX widget or null; RET4",
+      "coverage": "existing complete body revalidated; selector0 returns null"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00a9d05a",
+      "native": "00a9e0d0",
+      "function": "00a9d030",
+      "contract": "actual Listbox current38",
+      "original_abi": "ECX owner; RET/AL",
+      "listing": "EDX"
+    },
+    {
+      "address": "00a9d064",
+      "native": "004c12b0",
+      "function": "00a9d030",
+      "contract": "actual manager singleton get/create; returned identity remains authoritative",
+      "original_abi": "cdecl no args; EAX manager; RET",
+      "listing": "0x004c12b0"
+    },
+    {
+      "address": "00a9d07c",
+      "native": "00aa87b0",
+      "function": "00a9d030",
+      "contract": "actual base frame under same active owner borrow",
+      "original_abi": "ECX widget; x87-spilled dt stack; RET4",
+      "listing": "0x00aa87b0"
+    },
+    {
+      "address": "00a9d0b8",
+      "native": "00a9ba40",
+      "function": "00a9d030",
+      "contract": "actual Listbox current8C has selectable row",
+      "original_abi": "ECX owner; RET/AL",
+      "listing": "EDX"
+    },
+    {
+      "address": "00a9d0df",
+      "native": "00a9c220",
+      "function": "00a9d030",
+      "contract": "actual Listbox current80(false)",
+      "original_abi": "ECX owner; force0 stack; RET4",
+      "listing": "EDX"
+    },
+    {
+      "address": "00a9d0f6",
+      "native": "00425630",
+      "function": "00a9d030",
+      "contract": "checked iterator equality, valid same container",
+      "original_abi": "ECX iterator; other iterator pointer stack; RET4",
+      "listing": "0x00425630"
+    },
+    {
+      "address": "00a9d101",
+      "native": "00a9c310",
+      "function": "00a9d030",
+      "contract": "canonical first selectable row and current80(false)",
+      "original_abi": "ECX Listbox; RET",
+      "listing": "0x00a9c310"
+    },
+    {
+      "address": "00a9d11d",
+      "native": "Listbox+vtable144",
+      "function": "00a9d030",
+      "contract": "current144 input function binding (not a vtable slot)",
+      "original_abi": "fastcall ECX=&previous46,EDX=&next47,stack=&accept4A; RET4",
+      "listing": "EAX"
+    },
+    {
+      "address": "00a9d12e",
+      "native": "00696470",
+      "function": "00a9d030",
+      "contract": "currentF8BC08 default input function binding when initialized by4DD6EA",
+      "original_abi": "fastcall ECX=&previous46,EDX=&next47,stack=&accept4A; RET4",
+      "listing": "dword ptr [0x00f8bc08]"
+    },
+    {
+      "address": "00a9d149",
+      "native": "004ba6d0",
+      "function": "00a9d030",
+      "contract": "canonical current backend group class and index lookup",
+      "original_abi": "ECX backend; class,index stack; RET8",
+      "listing": "0x004ba6d0"
+    },
+    {
+      "address": "00a9d15a",
+      "native": "004ba6d0",
+      "function": "00a9d030",
+      "contract": "canonical current backend group class and index lookup",
+      "original_abi": "ECX backend; class,index stack; RET8",
+      "listing": "0x004ba6d0"
+    },
+    {
+      "address": "00a9d16e",
+      "native": "InputDevice+vtable2C",
+      "function": "00a9d030",
+      "contract": "actual keyboard current2C, A95F00 tailcall current28 A95ED0 for D5B904",
+      "original_abi": "ECX captured keyboard; RET/AL",
+      "listing": "EDX"
+    },
+    {
+      "address": "00a9d187",
+      "native": "InputDevice+vtable2C",
+      "function": "00a9d030",
+      "contract": "actual gamepad current2C, A93F60 for D5B7F0 and D5BB48",
+      "original_abi": "ECX captured gamepad; RET/AL",
+      "listing": "EAX"
+    },
+    {
+      "address": "00a9d19c",
+      "native": "00425e50",
+      "function": "00a9d030",
+      "contract": "canonical selected row or null at end",
+      "original_abi": "ECX Listbox; EAX borrowed row; RET",
+      "listing": "0x00425e50"
+    },
+    {
+      "address": "00a9d1a7",
+      "native": "00425e50",
+      "function": "00a9d030",
+      "contract": "canonical selected row or null at end",
+      "original_abi": "ECX Listbox; EAX borrowed row; RET",
+      "listing": "0x00425e50"
+    },
+    {
+      "address": "00a9d1c0",
+      "native": "00425e50",
+      "function": "00a9d030",
+      "contract": "canonical selected row or null at end",
+      "original_abi": "ECX Listbox; EAX borrowed row; RET",
+      "listing": "0x00425e50"
+    },
+    {
+      "address": "00a9d1ce",
+      "native": "Listener+vtable04",
+      "function": "00a9d030",
+      "contract": "actual listener114 activation row and SAME Listbox",
+      "original_abi": "ECX listener; row,Listbox stack; RET8",
+      "listing": "EDX"
+    },
+    {
+      "address": "00a9d1d4",
+      "native": "00941250",
+      "function": "00a9d030",
+      "contract": "currentF8BC0C sound callback; activation flag wins",
+      "original_abi": "CL=0,DL=1; RET",
+      "listing": "dword ptr [0x00f8bc0c]"
+    },
+    {
+      "address": "00a9d1fc",
+      "native": "00425a50",
+      "function": "00a9d030",
+      "contract": "checked iterator inequality, valid same container",
+      "original_abi": "ECX iterator; other iterator pointer stack; RET4",
+      "listing": "0x00425a50"
+    },
+    {
+      "address": "00a9d223",
+      "native": "00a9da60",
+      "function": "00a9d030",
+      "contract": "actual Listbox current84",
+      "original_abi": "ECX owner; forward low byte stack; RET4",
+      "listing": "EDX"
+    },
+    {
+      "address": "00a9d231",
+      "native": "00a9c220",
+      "function": "00a9d030",
+      "contract": "actual second current80(false) after current84 returns",
+      "original_abi": "ECX owner; force0 stack; RET4",
+      "listing": "EDX"
+    },
+    {
+      "address": "00a9d274",
+      "native": "00425a50",
+      "function": "00a9d030",
+      "contract": "checked iterator inequality, valid same container",
+      "original_abi": "ECX iterator; other iterator pointer stack; RET4",
+      "listing": "0x00425a50"
+    },
+    {
+      "address": "00a9d28a",
+      "native": "00425630",
+      "function": "00a9d030",
+      "contract": "checked iterator equality, valid same container",
+      "original_abi": "ECX iterator; other iterator pointer stack; RET4",
+      "listing": "0x00425630"
+    },
+    {
+      "address": "00a9d29e",
+      "native": "00425ac0",
+      "function": "00a9d030",
+      "contract": "checked iterator row-slot address",
+      "original_abi": "ECX iterator; RET",
+      "listing": "0x00425ac0"
+    },
+    {
+      "address": "00a9d2bd",
+      "native": "00a9ba90",
+      "function": "00a9d030",
+      "contract": "actual row state over same row Group/Text/Icon owners",
+      "original_abi": "ECX Listbox; iterator container,node,state stack; RETC",
+      "listing": "0x00a9ba90"
+    },
+    {
+      "address": "00a9d2c6",
+      "native": "00519e00",
+      "function": "00a9d030",
+      "contract": "checked iterator prefix increment, current node remains alive",
+      "original_abi": "ECX iterator; RET",
+      "listing": "0x00519e00"
+    },
+    {
+      "address": "00a9d2cf",
+      "native": "00425e50",
+      "function": "00a9d030",
+      "contract": "canonical selected row or null at end",
+      "original_abi": "ECX Listbox; EAX borrowed row; RET",
+      "listing": "0x00425e50"
+    },
+    {
+      "address": "00a9d2df",
+      "native": "004c12b0",
+      "function": "00a9d030",
+      "contract": "actual manager singleton get/create; returned identity remains authoritative",
+      "original_abi": "cdecl no args; EAX manager; RET",
+      "listing": "0x004c12b0"
+    },
+    {
+      "address": "00a9d2f2",
+      "native": "00aa0f50",
+      "function": "00a9d030",
+      "contract": "actual manager74 for selector1,78 for2,null otherwise",
+      "original_abi": "ECX manager; signed selector stack; RET4",
+      "listing": "0x00aa0f50"
+    },
+    {
+      "address": "00a9d2f9",
+      "native": "00aa6750",
+      "function": "00a9d030",
+      "contract": "actual widget resolved position",
+      "original_abi": "ECX widget; Vec3 output stack; RET4",
+      "listing": "0x00aa6750"
+    },
+    {
+      "address": "00a9d310",
+      "native": "00a9c540",
+      "function": "00a9d030",
+      "contract": "canonical highlight position over live selector and actual widget owners",
+      "original_abi": "ECX Listbox; row,paging low byte,depth float stack; RETC",
+      "listing": "0x00a9c540"
+    },
+    {
+      "address": "00a9d31e",
+      "native": "004c12b0",
+      "function": "00a9d030",
+      "contract": "actual manager singleton get/create; returned identity remains authoritative",
+      "original_abi": "cdecl no args; EAX manager; RET",
+      "listing": "0x004c12b0"
+    },
+    {
+      "address": "00a9d327",
+      "native": "00aa0f50",
+      "function": "00a9d030",
+      "contract": "actual manager74 for selector1,78 for2,null otherwise",
+      "original_abi": "ECX manager; signed selector stack; RET4",
+      "listing": "0x00aa0f50"
+    },
+    {
+      "address": "00a9d33b",
+      "native": "Highlight+vtable34",
+      "function": "00a9d030",
+      "contract": "unreachable normal selector0: native dereference fails atD333 first",
+      "original_abi": "ECX highlight; selected-nonnull low byte stack; RET4",
+      "listing": "EDX"
+    },
+    {
+      "address": "00a9d34b",
+      "native": "00ac0820",
+      "function": "00a9d030",
+      "contract": "actual source to highlight relative fit after current34",
+      "original_abi": "ECX source; EDX destination; width float stack; RET4",
+      "listing": "0x00ac0820"
+    },
+    {
+      "address": "00a9c40b",
+      "native": "00a9ba40",
+      "function": "00a9c400",
+      "contract": "actual Listbox current8C",
+      "original_abi": "ECX owner; RET/AL",
+      "listing": "EDX"
+    },
+    {
+      "address": "00a9c435",
+      "native": "00a9c220",
+      "function": "00a9c400",
+      "contract": "actual Listbox current80(false)",
+      "original_abi": "ECX owner; force0 stack; RET4",
+      "listing": "EDX"
+    },
+    {
+      "address": "00a9c445",
+      "native": "00425e50",
+      "function": "00a9c400",
+      "contract": "canonical selected row or null at end",
+      "original_abi": "ECX Listbox; EAX borrowed row; RET",
+      "listing": "0x00425e50"
+    },
+    {
+      "address": "00a9c458",
+      "native": "00a9be00",
+      "function": "00a9c400",
+      "contract": "actual row identity by signed ordinal",
+      "original_abi": "ECX Listbox; ordinal stack; RET4",
+      "listing": "0x00a9be00"
+    },
+    {
+      "address": "00a9c46d",
+      "native": "00a9b430",
+      "function": "00a9c400",
+      "contract": "checked iterator prefix increment",
+      "original_abi": "ECX iterator; RET",
+      "listing": "0x00a9b430"
+    },
+    {
+      "address": "00a9c477",
+      "native": "00bf6713",
+      "function": "00a9c400",
+      "contract": "correct CRT name retained; invalid checked-iterator domain excluded",
+      "original_abi": "native invalid-parameter path; not converted into success",
+      "listing": "0x00bf6713"
+    },
+    {
+      "address": "00a9c486",
+      "native": "00bf6713",
+      "function": "00a9c400",
+      "contract": "correct CRT name retained; invalid checked-iterator domain excluded",
+      "original_abi": "native invalid-parameter path; not converted into success",
+      "listing": "0x00bf6713"
+    },
+    {
+      "address": "00a9c49d",
+      "native": "00a9af60",
+      "function": "00a9c400",
+      "contract": "checked iterator prefix decrement, failure after writing sentinel",
+      "original_abi": "ECX iterator; RET",
+      "listing": "0x00a9af60"
+    },
+    {
+      "address": "00a9c4ca",
+      "native": "00bf6713",
+      "function": "00a9c400",
+      "contract": "correct CRT name retained; invalid checked-iterator domain excluded",
+      "original_abi": "native invalid-parameter path; not converted into success",
+      "listing": "0x00bf6713"
+    },
+    {
+      "address": "00a9c4da",
+      "native": "00bf6713",
+      "function": "00a9c400",
+      "contract": "correct CRT name retained; invalid checked-iterator domain excluded",
+      "original_abi": "native invalid-parameter path; not converted into success",
+      "listing": "0x00bf6713"
+    },
+    {
+      "address": "00a9c4ef",
+      "native": "00bf6713",
+      "function": "00a9c400",
+      "contract": "correct CRT name retained; invalid checked-iterator domain excluded",
+      "original_abi": "native invalid-parameter path; not converted into success",
+      "listing": "0x00bf6713"
+    },
+    {
+      "address": "00a9c4f9",
+      "native": "00bf6713",
+      "function": "00a9c400",
+      "contract": "correct CRT name retained; invalid checked-iterator domain excluded",
+      "original_abi": "native invalid-parameter path; not converted into success",
+      "listing": "0x00bf6713"
+    },
+    {
+      "address": "00a9c508",
+      "native": "00bf6713",
+      "function": "00a9c400",
+      "contract": "correct CRT name retained; invalid checked-iterator domain excluded",
+      "original_abi": "native invalid-parameter path; not converted into success",
+      "listing": "0x00bf6713"
+    },
+    {
+      "address": "00a9c51b",
+      "native": "00a9b430",
+      "function": "00a9c400",
+      "contract": "checked iterator prefix increment",
+      "original_abi": "ECX iterator; RET",
+      "listing": "0x00a9b430"
+    },
+    {
+      "address": "00a9c531",
+      "native": "00a9c220",
+      "function": "00a9c400",
+      "contract": "actual Listbox current80(false)",
+      "original_abi": "ECX owner; force0 stack; RET4",
+      "listing": "EDX"
+    },
+    {
+      "address": "00a9da7e",
+      "native": "00a9c400",
+      "function": "00a9da60",
+      "contract": "actual Listbox current88 when149==0",
+      "original_abi": "ECX owner; direction DWORD forwarded; RET4",
+      "listing": "EDX"
+    },
+    {
+      "address": "00a9da8d",
+      "native": "00a9ba40",
+      "function": "00a9da60",
+      "contract": "actual Listbox current8C",
+      "original_abi": "ECX owner; RET/AL",
+      "listing": "EDX"
+    },
+    {
+      "address": "00a9dab7",
+      "native": "00a9c220",
+      "function": "00a9da60",
+      "contract": "actual Listbox current80(false)",
+      "original_abi": "ECX owner; force0 stack; RET4",
+      "listing": "EDX"
+    },
+    {
+      "address": "00a9daeb",
+      "native": "00bf6713",
+      "function": "00a9da60",
+      "contract": "correct CRT name retained; invalid checked-iterator domain excluded",
+      "original_abi": "native invalid-parameter path; not converted into success",
+      "listing": "0x00bf6713"
+    },
+    {
+      "address": "00a9db05",
+      "native": "00bf6713",
+      "function": "00a9da60",
+      "contract": "correct CRT name retained; invalid checked-iterator domain excluded",
+      "original_abi": "native invalid-parameter path; not converted into success",
+      "listing": "0x00bf6713"
+    },
+    {
+      "address": "00a9db14",
+      "native": "00bf6713",
+      "function": "00a9da60",
+      "contract": "correct CRT name retained; invalid checked-iterator domain excluded",
+      "original_abi": "native invalid-parameter path; not converted into success",
+      "listing": "0x00bf6713"
+    },
+    {
+      "address": "00a9db2e",
+      "native": "00bf6713",
+      "function": "00a9da60",
+      "contract": "correct CRT name retained; invalid checked-iterator domain excluded",
+      "original_abi": "native invalid-parameter path; not converted into success",
+      "listing": "0x00bf6713"
+    },
+    {
+      "address": "00a9db83",
+      "native": "00a9d870",
+      "function": "00a9da60",
+      "contract": "canonical FC/14C rebuild preserving actual borrowed row identities",
+      "original_abi": "ECX Listbox; RET",
+      "listing": "0x00a9d870"
+    },
+    {
+      "address": "00a9db94",
+      "native": "00bf6713",
+      "function": "00a9da60",
+      "contract": "correct CRT name retained; invalid checked-iterator domain excluded",
+      "original_abi": "native invalid-parameter path; not converted into success",
+      "listing": "0x00bf6713"
+    },
+    {
+      "address": "00a9dba9",
+      "native": "00bf6713",
+      "function": "00a9da60",
+      "contract": "correct CRT name retained; invalid checked-iterator domain excluded",
+      "original_abi": "native invalid-parameter path; not converted into success",
+      "listing": "0x00bf6713"
+    },
+    {
+      "address": "00a9dbbf",
+      "native": "00bf6713",
+      "function": "00a9da60",
+      "contract": "correct CRT name retained; invalid checked-iterator domain excluded",
+      "original_abi": "native invalid-parameter path; not converted into success",
+      "listing": "0x00bf6713"
+    },
+    {
+      "address": "00a9dbce",
+      "native": "00bf6713",
+      "function": "00a9da60",
+      "contract": "correct CRT name retained; invalid checked-iterator domain excluded",
+      "original_abi": "native invalid-parameter path; not converted into success",
+      "listing": "0x00bf6713"
+    },
+    {
+      "address": "00a9dbf7",
+      "native": "00a9af90",
+      "function": "00a9da60",
+      "contract": "checked iterator postfix decrement; copied old result unused by caller",
+      "original_abi": "ECX iterator; output,unused0 stack; RET8",
+      "listing": "0x00a9af90"
+    },
+    {
+      "address": "00a9dc10",
+      "native": "Listener+vtable0C",
+      "function": "00a9da60",
+      "contract": "actual listener114 forward page boundary; reload live fields afterward",
+      "original_abi": "ECX listener; false,true,Listbox stack; RETC",
+      "listing": "EAX"
+    },
+    {
+      "address": "00a9dc25",
+      "native": "00bf6713",
+      "function": "00a9da60",
+      "contract": "correct CRT name retained; invalid checked-iterator domain excluded",
+      "original_abi": "native invalid-parameter path; not converted into success",
+      "listing": "0x00bf6713"
+    },
+    {
+      "address": "00a9dc34",
+      "native": "00bf6713",
+      "function": "00a9da60",
+      "contract": "correct CRT name retained; invalid checked-iterator domain excluded",
+      "original_abi": "native invalid-parameter path; not converted into success",
+      "listing": "0x00bf6713"
+    },
+    {
+      "address": "00a9dc5b",
+      "native": "00bf6713",
+      "function": "00a9da60",
+      "contract": "correct CRT name retained; invalid checked-iterator domain excluded",
+      "original_abi": "native invalid-parameter path; not converted into success",
+      "listing": "0x00bf6713"
+    },
+    {
+      "address": "00a9dc70",
+      "native": "00bf6713",
+      "function": "00a9da60",
+      "contract": "correct CRT name retained; invalid checked-iterator domain excluded",
+      "original_abi": "native invalid-parameter path; not converted into success",
+      "listing": "0x00bf6713"
+    },
+    {
+      "address": "00a9dc93",
+      "native": "00bf6713",
+      "function": "00a9da60",
+      "contract": "correct CRT name retained; invalid checked-iterator domain excluded",
+      "original_abi": "native invalid-parameter path; not converted into success",
+      "listing": "0x00bf6713"
+    },
+    {
+      "address": "00a9dcd9",
+      "native": "00a9d870",
+      "function": "00a9da60",
+      "contract": "canonical FC/14C rebuild preserving actual borrowed row identities",
+      "original_abi": "ECX Listbox; RET",
+      "listing": "0x00a9d870"
+    },
+    {
+      "address": "00a9dcf3",
+      "native": "00bf6713",
+      "function": "00a9da60",
+      "contract": "correct CRT name retained; invalid checked-iterator domain excluded",
+      "original_abi": "native invalid-parameter path; not converted into success",
+      "listing": "0x00bf6713"
+    },
+    {
+      "address": "00a9dd09",
+      "native": "00bf6713",
+      "function": "00a9da60",
+      "contract": "correct CRT name retained; invalid checked-iterator domain excluded",
+      "original_abi": "native invalid-parameter path; not converted into success",
+      "listing": "0x00bf6713"
+    },
+    {
+      "address": "00a9dd36",
+      "native": "00bf6713",
+      "function": "00a9da60",
+      "contract": "correct CRT name retained; invalid checked-iterator domain excluded",
+      "original_abi": "native invalid-parameter path; not converted into success",
+      "listing": "0x00bf6713"
+    },
+    {
+      "address": "00a9dd55",
+      "native": "00bf6713",
+      "function": "00a9da60",
+      "contract": "correct CRT name retained; invalid checked-iterator domain excluded",
+      "original_abi": "native invalid-parameter path; not converted into success",
+      "listing": "0x00bf6713"
+    },
+    {
+      "address": "00a9dd63",
+      "native": "00bf6713",
+      "function": "00a9da60",
+      "contract": "correct CRT name retained; invalid checked-iterator domain excluded",
+      "original_abi": "native invalid-parameter path; not converted into success",
+      "listing": "0x00bf6713"
+    },
+    {
+      "address": "00a9dd79",
+      "native": "00bf6713",
+      "function": "00a9da60",
+      "contract": "correct CRT name retained; invalid checked-iterator domain excluded",
+      "original_abi": "native invalid-parameter path; not converted into success",
+      "listing": "0x00bf6713"
+    },
+    {
+      "address": "00a9ddb0",
+      "native": "Listener+vtable0C",
+      "function": "00a9da60",
+      "contract": "actual listener114 backward page boundary; reload live fields afterward",
+      "original_abi": "ECX listener; true,false,Listbox stack; RETC",
+      "listing": "EDX"
+    },
+    {
+      "address": "00a9ddc9",
+      "native": "00bf6713",
+      "function": "00a9da60",
+      "contract": "correct CRT name retained; invalid checked-iterator domain excluded",
+      "original_abi": "native invalid-parameter path; not converted into success",
+      "listing": "0x00bf6713"
+    },
+    {
+      "address": "00a9dddf",
+      "native": "00bf6713",
+      "function": "00a9da60",
+      "contract": "correct CRT name retained; invalid checked-iterator domain excluded",
+      "original_abi": "native invalid-parameter path; not converted into success",
+      "listing": "0x00bf6713"
+    },
+    {
+      "address": "00a9de05",
+      "native": "00bf6713",
+      "function": "00a9da60",
+      "contract": "correct CRT name retained; invalid checked-iterator domain excluded",
+      "original_abi": "native invalid-parameter path; not converted into success",
+      "listing": "0x00bf6713"
+    },
+    {
+      "address": "00a9de1b",
+      "native": "00bf6713",
+      "function": "00a9da60",
+      "contract": "correct CRT name retained; invalid checked-iterator domain excluded",
+      "original_abi": "native invalid-parameter path; not converted into success",
+      "listing": "0x00bf6713"
+    },
+    {
+      "address": "00a9de3c",
+      "native": "00a9c220",
+      "function": "00a9da60",
+      "contract": "actual Listbox current80(false)",
+      "original_abi": "ECX owner; force0 stack; RET4",
+      "listing": "EAX"
+    },
+    {
+      "address": "0069647e",
+      "native": "004d92b0",
+      "function": "00696470",
+      "contract": "actual game front-end edge/repeat, live map/deadlines and sound requests; required downstream provider",
+      "original_abi": "ECX current game E188A8; action stack; RET4",
+      "listing": "0x004d92b0"
+    },
+    {
+      "address": "0069648d",
+      "native": "004d92b0",
+      "function": "00696470",
+      "contract": "actual game front-end edge/repeat, live map/deadlines and sound requests; required downstream provider",
+      "original_abi": "ECX current game E188A8; action stack; RET4",
+      "listing": "0x004d92b0"
+    },
+    {
+      "address": "0069649c",
+      "native": "004d92b0",
+      "function": "00696470",
+      "contract": "actual game front-end edge/repeat, live map/deadlines and sound requests; required downstream provider",
+      "original_abi": "ECX current game E188A8; action stack; RET4",
+      "listing": "0x004d92b0"
+    }
+  ],
+  "vtable": {
+    "producer": "A9DF74 writesD5BBF8",
+    "current40": {
+      "slot": "00d5bc38",
+      "target": "00a9d030"
+    },
+    "current84": {
+      "slot": "00d5bc7c",
+      "target": "00a9da60"
+    },
+    "current88": {
+      "slot": "00d5bc80",
+      "target": "00a9c400"
+    },
+    "current8c": {
+      "slot": "00d5bc84",
+      "target": "00a9ba40"
+    }
+  },
+  "corrections": [
+    {
+      "was": "A9C400 described as directional84",
+      "is": "A9C400 is current88; actual current84 isA9DA60",
+      "evidence": "live bytesD5BC7C=60DAA900,D5BC80=00C4A900; A9DA75 loads88"
+    },
+    {
+      "was": "selector0 mismatch might indicate fallback highlight",
+      "is": "AA0F50 returnsnull0; A9D333 dereferences it. Constructor sets120=1 and ordinary properties write118(default1), preserving normal1/2 path",
+      "evidence": "AA0F54..60; A9D323..333; A9DF94..96; A9E4BC..509"
+    },
+    {
+      "was": "input callbacks appear one-argument cdecl in pseudocode",
+      "is": "fastcall three output pointers, previous46 inECX,next47 inEDX,activation4A onstack; RET4",
+      "evidence": "A9D110..12E;696470..6964AB;4DD6E5..EA"
+    },
+    {
+      "was": "directions can be normalized before comparison",
+      "is": "raw bytes compared first; differing nonzero directionbytes choose forward",
+      "evidence": "A9D1DC..219"
+    }
+  ],
+  "producer_evidence": [
+    {
+      "field": "120",
+      "site": "00a9df96",
+      "value": "1; normal new-highlight path"
+    },
+    {
+      "field": "121",
+      "site": "00a9dfca",
+      "value": "0; skip hidden rows in wrap navigation"
+    },
+    {
+      "field": "149",
+      "site": "00a9dffc",
+      "value": "1; wrapping/paging navigation"
+    },
+    {
+      "field": "144",
+      "site": "00a9e02a",
+      "value": "null; A9AC74 stores custom borrowed callback"
+    },
+    {
+      "field": "manager74/78",
+      "site": "00aa5e20",
+      "value": "actual hl_FrameBox/hlCircle_FrameBox resource child identities; existing canonical GuiResourceState"
+    },
+    {
+      "field": "manager70",
+      "site": "00aa4fa3",
+      "value": "constructor-unwritten; parent canonical manager frame publishes raw input flag, then resets0 atAA503F after normal callbacks"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "entry": "00a95f00",
+      "end_inclusive": "00a95f06",
+      "bytes": "8b018b5028ffe2",
+      "meaning": "MOV EAX,[ECX];MOV EDX,[EAX+28];JMP EDX",
+      "owner": "external leased raw input worker; no definition or annotation mutation here"
+    }
+  ],
+  "flow_gaps": [
+    {
+      "function": "00a9da60",
+      "start": "00a9ddbd",
+      "end_inclusive": "00a9ddbf",
+      "bytes": "8d4900",
+      "meaning": "LEA ECX,[ECX] alignment after unconditionalJMP DDC0, no reachable body omitted"
+    }
+  ],
+  "ghidra_mutations": [],
+  "downstream_boundaries": [
+    "actual listener04/0C implementations supplied by parent identity dispatcher",
+    "actual InputDevice current2C implementation supplied by parent; raw external worker cannot cast typed InputDevice allocations",
+    "actual4D92B0 callback retains game/input/deadline-map/sound behavior; existing predicate-only helper is not a complete fallback",
+    "native allocator/SEH/invalid iterator ABI excluded; current row and iterator survive callbacks, actual type profiles remain stable",
+    "frame uses existing canonical C540 and actual Text/Icon/FrameBox providers; rendering and gameplay not validated"
+  ],
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "result": "passed MSVC Win32 Release after native seed verification",
+      "initial_attempt": "Lua511 download timed out; no C++ failure",
+      "dependency_reuse": "CMake FETCHCONTENT_SOURCE_DIR_LUA511/ZLIB121/DXSDK_D3DX point to existing parent build/win32/_deps sources",
+      "tests": [
+        "reconstructed_math: passed",
+        "native_math_differential: passed"
+      ],
+      "limits": "Existing math tests do not exercise Listbox native differential or GUI runtime",
+      "log": "local/listbox-frame-build-verified.log"
+    },
+    "call_verifier": {
+      "command": "python tools/verify_report_calls.py reports/gui_listbox_frame.json",
+      "result": "passed",
+      "call_rows": 85,
+      "direct_calls_verified": 64,
+      "numeric_indirect_rows": 14,
+      "symbolic_indirect_rows": 7,
+      "failed": 0,
+      "log": "local/listbox-frame-calls.log"
+    },
+    "fixture": "parent integrated fixture pending; no permanent tests added",
+    "native_abi": false,
+    "game_validated": false,
+    "strict_translation_unit": {
+      "result": "passed",
+      "flags": "MSVC Win32 /std:c++17 /W4 /WX /fp:strict /MD",
+      "log": "local/listbox-frame-tu.log"
+    },
+    "source_baseline": "a2a723b3",
+    "delay_object_disassembly": "local/listbox-frame-object.asm:4070..4079 preserves MOVSS,COMISS,JBE,FLD,FSUB,FSTP",
+    "artifact_hashes": {
+      "include/bsp/gui_listbox_runtime.hpp": "0f19d82c9d59ac37d40278b23f0118447e0c5f577a42fd5c0ccc36614507f128",
+      "src/gui_listbox_runtime.cpp": "21239abddad416d05568213f7652408c9851796b3bfd905d9d6062d138662271",
+      "docs/GUI_LISTBOX_FRAME.md": "38da2f2b66d28a0740c08e08db4c400180ab3cb63c082881f79d46edfe1616d6",
+      "build/win32/Release/bsp_core.lib": "9bd38601898c2d8e0ddf2318d73d6007c3240106445346d4b1094794c83a0367",
+      "local/listbox-frame-tu.log": "98eae58a90292b1e837c20a9f4cad2b0c4268e3b731d91e96322f566990ffecc",
+      "local/listbox-frame-calls.log": "2078062a9a6a7d42178274ca30163e90bef5dbfff2fd288276f0c771bb7e2163",
+      "local/listbox-frame-build-verified.log": "74eee71f8ab95add5c18eb88a1d0430ebeef7e3a10a087fd05b46a9a78dee096",
+      "local/listbox-frame-seeds.log": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+      "local/gui_listbox_runtime.obj": "124af7bfd9b6a35ffe111950a1af1ff2ac389bdcf504285f6990b93777b25dc8"
+    }
+  },
+  "ghidra_annotation_plan": [
+    {
+      "address": "00a9d030",
+      "old_name": "FUN_00a9d030",
+      "proposed_name": "BSP_GuiListbox_UpdateFrame",
+      "status": "not applied; preserve live comments and record current values in primary annotation batch"
+    },
+    {
+      "address": "00a9c400",
+      "old_name": "FUN_00a9c400",
+      "proposed_name": "BSP_GuiListbox_NavigateOneStep",
+      "status": "not applied; preserve live comments and record current values in primary annotation batch"
+    },
+    {
+      "address": "00a9da60",
+      "old_name": "FUN_00a9da60",
+      "proposed_name": "BSP_GuiListbox_Navigate",
+      "status": "not applied; preserve live comments and record current values in primary annotation batch"
+    },
+    {
+      "address": "00696470",
+      "old_name": "FUN_00696470",
+      "proposed_name": "BSP_GuiListbox_ReadDefaultInput",
+      "status": "not applied; preserve live comments and record current values in primary annotation batch"
+    }
+  ]
+}

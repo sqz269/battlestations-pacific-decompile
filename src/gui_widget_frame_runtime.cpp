@@ -157,9 +157,12 @@ bool elapsed_exceeds_threshold(const MouseInputDevice& mouse, double elapsed) no
     return result != 0;
 }
 bool has_entries(GuiWidgetOwner& owner, const GuiTimedEntryConstants& constants) {
+    std::int32_t count;
+    std::memcpy(&count, &owner.extra_fields().pointers_88_90[1], 4);
+    if (count <= 0) return false;
+    owner.require_timed_entry_ownership();
     auto& entries = owner.timed_entries(constants.one_00d7a24c);
     entries.validate_live();
-    const auto count = entries.count(); // AA87FD captures count once.
     auto* const data = entries.data();
     for (std::int32_t index = 0; index < count; ++index)
         if (data[index]) return true;
@@ -206,6 +209,16 @@ bool GuiWidgetFrameRuntime::operation_active(const GuiWidgetOwner& owner) const 
     for (auto* frame = active_; frame; frame = frame->previous)
         if (&frame->widget == &owner) return true;
     return false;
+}
+void GuiWidgetFrameRuntime::bind_listbox_frames(const GuiListboxFrameServices& services) {
+    require(!active_ && !listbox_frames_ && &services.base_frames == this,
+        "Listbox frame binding requires its idle same frame runtime");
+    listbox_frames_ = &services;
+}
+void GuiWidgetFrameRuntime::unbind_listbox_frames(const GuiListboxFrameServices& services) {
+    require(!active_ && listbox_frames_ == &services,
+        "Listbox frame services must own the binding and survive active frames");
+    listbox_frames_ = nullptr;
 }
 bool gui_widget_uses_base_frame40_profile(GuiWidgetType type) noexcept {
     switch (type) {
@@ -310,6 +323,17 @@ void GuiWidgetFrameRuntime::listener_tail(GuiWidgetOwner& widget) {
     }
 }
 void GuiWidgetFrameRuntime::update40(GuiWidgetOwner& widget, float seconds) {
+    if (widget.layout().type == GuiWidgetType::Listbox) {
+        require(&widget.runtime() == &services_.widgets && listbox_frames_,
+            "Listbox frame requires its same bound frame services");
+        auto* listbox = dynamic_cast<GuiListboxTypeImplementation*>(&widget.implementation());
+        require(listbox && &listbox->runtime().owner() == &widget,
+            "Listbox current40 requires its canonical companion");
+        widget.require_no_active_owned_operation();
+        ActiveFrame active(*this, widget);
+        listbox->runtime().update40_00a9d030(seconds, *listbox_frames_);
+        return;
+    }
     if (widget.layout().type == GuiWidgetType::Icon) {
         require(&widget.runtime() == &services_.widgets, "Icon frame requires the same widget runtime");
         auto* icon = dynamic_cast<GuiIconTypeImplementation*>(&widget.implementation());
@@ -331,6 +355,11 @@ void GuiWidgetFrameRuntime::update_base_00aa87b0(GuiWidgetOwner& widget, float s
     require(&widget.runtime() == &services_.widgets, "GUI frame requires the same widget runtime");
     widget.require_no_active_owned_operation();
     ActiveFrame active(*this, widget);
+    update_base_active(widget, seconds);
+}
+void GuiWidgetFrameRuntime::update_base_from_active_00aa87b0(GuiWidgetOwner& widget, float seconds) {
+    require(&widget.runtime() == &services_.widgets && operation_active(widget),
+        "GUI base continuation requires this owner's active derived frame");
     update_base_active(widget, seconds);
 }
 void GuiWidgetFrameRuntime::update_base_active(GuiWidgetOwner& widget, float seconds) {

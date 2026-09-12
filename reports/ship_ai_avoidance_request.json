@@ -1,0 +1,194 @@
+{
+  "packet": "cc_ai_avoidance_request",
+  "owner": "agent/cc-ai-avoidance-request",
+  "doc": "docs/SHIP_AI_AVOIDANCE_REQUEST.md",
+  "header": "include/bsp/ship_ai_avoidance_request.hpp",
+  "source": "src/ship_ai_avoidance_request.cpp",
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "summary": "The four-byte avoidance request block at blk+3ECh..blk+3F5h (brain+3F4h..brain+3FDh): its layout from the four unreferenced setters at 009DABB0..009DABE0 and the constructor 009E4330, its seven writers, its six readers, and the rule each reader applies. Each of the three request fields is ANDed at its consumer with one of the three authored booleans on the command controller: torpedoAvoidance +240h, shipCollisionAvoidance +241h, landCollisionAvoidance +242h.",
+  "block": [
+    {
+      "blk": "0x3EC",
+      "brain": "0x3F4",
+      "width": "byte",
+      "meaning": "torpedo-avoidance request",
+      "constructor_value": 1,
+      "constructor_site": "009e4695",
+      "setter": "009dabb0",
+      "director_partner": "0x240 torpedoAvoidance",
+      "readers": ["009da1d0"]
+    },
+    {
+      "blk": "0x3F0",
+      "brain": "0x3F8",
+      "width": "int32",
+      "meaning": "ship-collision avoidance Party filter: -1 off, 3 every side, otherwise one Party id",
+      "constructor_value": 3,
+      "constructor_site": "009e468b",
+      "setter": "009dabc0",
+      "director_partner": "0x241 shipCollisionAvoidance",
+      "readers": ["009ec770", "009ef350", "009f0ea0"]
+    },
+    {
+      "blk": "0x3F4",
+      "brain": "0x3FC",
+      "width": "byte",
+      "meaning": "land/avoid-zone avoidance request",
+      "constructor_value": 1,
+      "constructor_site": "009e469c",
+      "setter": "009dabd0",
+      "director_partner": "0x242 landCollisionAvoidance",
+      "readers": ["009da6e0", "009ef910"]
+    },
+    {
+      "blk": "0x3F5",
+      "brain": "0x3FD",
+      "width": "byte",
+      "meaning": "whole-controller bypass; ShipAiControlBlock::early_out_3f5 in bsp/ship_ai_states.hpp",
+      "constructor_value": 0,
+      "constructor_site": "009e46a3",
+      "setter": "009dabe0",
+      "director_partner": null,
+      "readers": ["009ed6b0", "009f3f80"]
+    }
+  ],
+  "writers": [
+    {"function": "009e4330", "site": "009e468b", "note": "constructor: 3EC=1, 3F0=3, 3F4=1, 3F5=0 at 009E468B..009E46A3"},
+    {"function": "009f1420", "site": "009f1b7b", "note": "pre-pass tail, chain step 3: 3EC=1, 3F4=1, 3F5=0, 3F0 = AvoidAllShipCollision ? 3 : -1 (009F1B78 SETNZ, 009F1B93 LEA ECX,[ECX*4-1])"},
+    {"function": "009e14c0", "site": "009e15bb", "note": "stop, stopped arm: 3F4=0, 3F0=-1, 3EC=1"},
+    {"function": "009e14c0", "site": "009e15e4", "note": "stop, making-way arm: 3F4=1, 3F0=3, 3EC=1"},
+    {"function": "009e1170", "site": "009e13b6", "note": "cruise arm 1 (group Party slot 1 human-held): 3EC=0, 3F0=-1, 3F4=0, 3F5=1 at 009E13DC. The only writer of 3F5=1 in the image"},
+    {"function": "009e1170", "site": "009e11d6", "note": "cruise arm 2 (unit+184h set): 3EC=0, 3F0=-1, 3F4=0"},
+    {"function": "009e1170", "site": "009e12eb", "note": "cruise arm 3: 3EC = 00521E70(unit,0), 3F0=3, 3F4=1"},
+    {"function": "009e1950", "site": "009e1c28", "note": "land, hold arm: 3F4=0, 3F0=-1"},
+    {"function": "009e1950", "site": "009e1ea2", "note": "land, goal arm: 3F4=1, 3F0=3"},
+    {"function": "009e2020", "site": "009e21f0", "note": "kamikaze: 3F0 = [[brain+0AA8h]+54h], the owning unit's own Party; then 3F4 = 0 (009E2235) or 1 (009E22D8) on the sub+8h latch at 009E21F6/009E2224"},
+    {"function": "009e23b0", "site": "009e2588", "note": "attackmove engage: 3F0 = own Party; then 3F4 = 0 (009E25CC) or 1 (009E2669) on the sub+8h latch at 009E258E/009E25BC"}
+  ],
+  "host_methods": [
+    {
+      "routine": "009da6e0",
+      "interface": "ShipAiAvoidZoneSearcherHost",
+      "steps": [
+        {"index": 1, "address": "009da6f6", "native": "0080e160", "function": "009da6e0", "method": "director_land_avoidance_0080e160_242", "note": "then the byte at director+242h landCollisionAvoidance (009DA6FB)"},
+        {"index": 2, "address": "009da724", "native": "004158a0", "function": "009da6e0", "method": "avoid_zone_segment_list_clear_004158a0", "note": "searcher 0, ECX = blk+0A3Ch; enabled-to-disabled edge only"},
+        {"index": 3, "address": "009da73f", "native": "0080e160", "function": "009da6e0", "method": "director_land_avoidance_0080e160_242"},
+        {"index": 4, "address": "009da76e", "native": "004158a0", "function": "009da6e0", "method": "avoid_zone_segment_list_clear_004158a0", "note": "searcher 1, ECX = blk+0A5Ch"},
+        {"index": 5, "address": "009da78c", "native": "0080e160", "function": "009da6e0", "method": "director_land_avoidance_0080e160_242"},
+        {"index": 6, "address": "009da7bb", "native": "004158a0", "function": "009da6e0", "method": "avoid_zone_segment_list_clear_004158a0", "note": "searcher 2, ECX = blk+0A7Ch"},
+        {"index": 7, "address": "009da7dd", "native": "0080e160", "function": "009da6e0", "method": "director_land_avoidance_0080e160_242", "note": "the fourth evaluation, gating the query"},
+        {"index": 8, "address": "009da854", "native": "009d7050", "function": "009da6e0", "method": "avoid_zone_query_refresh_009d7050", "note": "ECX = blk+0A24h, searcher 0 only; the five-dword query {blk+184h, blk+188h, w, w, blk+168h} built at 009DA81B..009DA850"}
+      ]
+    },
+    {
+      "routine": "009da1d0",
+      "interface": "ShipAiAvoidanceSteerGateHost",
+      "steps": [
+        {"index": 1, "site": "009da1e9", "native": "[blk+3FCh]+vtable5C", "kind": "indirect", "method": "unit_is_kind_vtable_005c", "argument": "0x0E at 009DA1E7", "contract": "unread"},
+        {"index": 2, "site": "009da1fa", "native": "unit+0C8h", "kind": "load", "method": "unit_pose_valid_00c8"},
+        {"index": 3, "address": "009da205", "native": "00414db0", "function": "009da1d0", "method": "refresh_unit_pose_00414db0"},
+        {"index": 4, "site": "009da20a", "native": "unit+100h", "kind": "load", "method": "unit_world_y_0100", "note": "compared with the double -15.0 at 00CE3D58, FCOMIP ST0,ST1 then JA at 009DA21B"},
+        {"index": 5, "address": "009da22c", "native": "0080e160", "function": "009da1d0", "method": "director_torpedo_avoidance_0080e160_240", "note": "then the byte at director+240h (009DA231)"}
+      ]
+    }
+  ],
+  "readers": [
+    {"function": "009da1d0", "site": "009da21d", "field": "blk+3ECh", "rule": "returns false when the byte is clear or director+240h is clear; gates 009DE5B0's heading override (009DE8F8) and 009E04E0's contact-track loop (009E061B)"},
+    {"function": "009ec770", "site": "009ec773", "field": "blk+3F0h", "rule": "false when the filter is negative, when director+241h is clear or when settings+4h AvoidAllShipCollision is clear; otherwise accepts when either Party is 3 or the two are equal"},
+    {"function": "009f0ea0", "site": "009f1052", "field": "blk+3F0h", "rule": "the same predicate inlined with side = [[node+14h]+54h]; the answer is 009EAFC0's last argument (009F10B0)"},
+    {"function": "009ef350", "site": "009ef368", "field": "blk+3F0h", "rule": "the same predicate inlined, evaluated once per Party 0,1,2 into a three-byte stack table indexed by [ent+54h] at 009EF423"},
+    {"function": "009da6e0", "site": "009da6e6", "field": "blk+3F4h", "rule": "enables the three avoid-zone searchers and the query refresh; on the disabling edge clears the segment list and resets the layer key to -1"},
+    {"function": "009ef910", "site": "009efca6", "field": "blk+3F4h", "rule": "with director+242h, gates the static avoid-zone clearance terms (host steps 3 to 5 of docs/SHIP_AI_CLEARANCE_PROFILE.md)"},
+    {"function": "009ed6b0", "site": "009ed9ff", "field": "blk+3F5h", "rule": "returns true at 009EDA06 after only the heading target and a clamp on blk+354h"},
+    {"function": "009f3f80", "site": "009f3feb", "field": "blk+3F5h", "rule": "jumps to the epilogue 009F4D00 at 009F3FF2, skipping the ring read, the body and the hop"}
+  ],
+  "effect_on_neighbours": {
+    "list_membership": "unchanged. 009F0D20, the candidate filter that appends to blk+608h, reads none of the four bytes; a whole-.text scan for each displacement puts no hit inside its body.",
+    "per_node": {"address": "009eafde", "field": "node+69h", "rule": "node+69h = (accept == 0); 009EAFD0 sets node+68h and node+69h together when the entity is gone"},
+    "consumers_of_node_69": [
+      {"function": "009dd010", "site": "009dd01d", "effect": "returns before any geometry, so the sector scan's straight and arc probes never clip against the node"},
+      {"function": "009ef350", "sites": ["009ef47b", "009ef689", "009ef6b9"], "effect": "the node is skipped before node+74h is set, in the pass 009F4D10 runs as chain step 14"}
+    ]
+  },
+  "coverage": [
+    {"routine": "0080e160", "range": "0080e160-0080e166", "coverage": "complete"},
+    {"routine": "009da1d0", "range": "009da1d0-009da244", "coverage": "complete"},
+    {"routine": "009da6e0", "range": "009da6e0-009da860", "coverage": "complete"},
+    {"routine": "009dabb0", "range": "009dabb0-009dabbc", "coverage": "complete"},
+    {"routine": "009dabc0", "range": "009dabc0-009dabcc", "coverage": "complete"},
+    {"routine": "009dabd0", "range": "009dabd0-009dabdc", "coverage": "complete"},
+    {"routine": "009dabe0", "range": "009dabe0-009dabec", "coverage": "complete"},
+    {"routine": "009ec770", "range": "009ec770-009ec7be", "coverage": "complete as the four gates plus the existing 009EC79B tail projection in src/ship_ai_settings_block.cpp"},
+    {"routine": "009f1420", "range": "009f1b7b-009f1b9a", "coverage": "partial: only the tail that writes the block; 009F1420-009F1B7A is docs/SHIP_AI_GOAL_VECTOR.md's"},
+    {"routine": "009e1170", "range": "009e1176-009e11c8, 009e12db-009e12ff, 009e13b4-009e13dc", "coverage": "partial: the arm selector and the three blocks of block writes; 009E11CE-009E12DA, 009E1300-009E13B1 and 009E13E2-009E14B5 are not projected"},
+    {"routine": "009e14c0", "range": "009e15b4-009e1605", "coverage": "partial: only the two arms' block writes; the step is src/ship_ai_state_steps.cpp"},
+    {"routine": "009e1950", "range": "009e1c28-009e1c3b, 009e1ea2-009e1ecb", "coverage": "partial: only the block writes"},
+    {"routine": "009e2020", "range": "009e21f0-009e21f5, 009e2235-009e223b, 009e22d8-009e22dd", "coverage": "partial: only the block writes"},
+    {"routine": "009e23b0", "range": "009e2588-009e258d, 009e25cc-009e25d2, 009e2669-009e266e", "coverage": "partial: only the block writes"},
+    {"routine": "009e4330", "range": "009e468b-009e46a3", "coverage": "partial: only the four block stores; the constructor is src/ship_ai_nav_block_ctor.cpp"},
+    {"routine": "009eafc0", "range": "009eafc0-009eafe6 of the body 009eafc0-009eb651", "coverage": "partial: only the entity gate and the node+69h store"},
+    {"routine": "009f0ea0", "range": "009f1052-009f10ff", "coverage": "partial: only the inlined predicate and the argument handed to 009EAFC0"},
+    {"routine": "009d7050", "range": "009d7050-009d724e", "coverage": "not projected: read from pseudocode and its head listing as a host contract; it belongs to ship_ai_avoid_zone_searchers"},
+    {"routine": "009ef350", "range": "009ef350-009ef90c", "coverage": "not projected: read for its two gates only"},
+    {"routine": "009ef910", "range": "009ef910-009f00cd", "coverage": "not projected: read for the 009EFCA6 gate only"},
+    {"routine": "009ed6b0", "range": "009ed6b0-...", "coverage": "not projected: read for the 009ED9FF gate only"},
+    {"routine": "009f3f80", "range": "009f3f80-009f4d04", "coverage": "not projected: read for the 009F3FEB gate only"},
+    {"routine": "009dd010", "range": "009dd010-...", "coverage": "not projected: read for the 009DD01D gate only"}
+  ],
+  "names": [
+    {"address": "009da6e0", "was": "FUN_009da6e0", "is": "BSP_ShipAi_RefreshAvoidZoneSearchers"},
+    {"address": "009da1d0", "was": "FUN_009da1d0", "is": "BSP_ShipAi_TorpedoAvoidanceAllowed"},
+    {"address": "0080e160", "was": "TRIV_body_0080e160", "is": "BSP_UnitInstance_WeaponDirectorDirect"},
+    {"address": "009dabb0", "was": "(no Ghidra function)", "is": "BSP_ShipAi_SetTorpedoAvoidanceRequest_Unused"},
+    {"address": "009dabc0", "was": "(no Ghidra function)", "is": "BSP_ShipAi_SetShipAvoidancePartyFilter_Unused"},
+    {"address": "009dabd0", "was": "(no Ghidra function)", "is": "BSP_ShipAi_SetLandAvoidanceRequest_Unused"},
+    {"address": "009dabe0", "was": "(no Ghidra function)", "is": "BSP_ShipAi_SetDriveBypass_Unused"}
+  ],
+  "corrections": [
+    {
+      "was": "docs/SHIP_AI_STATE_STEPS.md: blk+3ECh has no reader in what was scanned, and the follow-up's 'the other two have no reader yet'",
+      "is": "blk+3ECh has exactly one reader (009DA1D0 at 009DA21D), blk+3F0h three (009EC770, 009EF350, 009F0EA0), blk+3F4h two (009DA6E0, 009EF910)",
+      "evidence": "whole-.text scan-bytes for 'ec 03 00 00', 'f0 03 00 00' and 'f4 03 00 00'; every hit in 009D0000-009F6060 is listed in the doc"
+    },
+    {
+      "was": "docs/SHIP_AI_STATE_STEPS.md: the block is three fields",
+      "is": "four. blk+3F5h = brain+3FDh is written by the same constructor run, by the pre-pass and by 009E1170 arm 1, and has two readers of its own",
+      "evidence": "009E46A3, 009F1B8C, 009E13DC; 009ED9FF, 009F3FEB; the setter at 009DABE0"
+    },
+    {
+      "was": "docs/SHIP_AI_STATE_STEPS.md: 'blk+3F0h = -1 is therefore no side filter and 3 a side'",
+      "is": "3 is the wildcard, not a side. 009EC770 accepts when either side is 3; the only writers that store a real Party (009E23B0, 009E2020) store the ship's own",
+      "evidence": "009EC79F..009EC7B1; 009E2588 and 009E21F0, both from [[brain+0AA8h]+54h]"
+    },
+    {
+      "was": "the packet brief: 'the stop step 009E14C0 writes brain+3F8h = [unit+54h]'",
+      "is": "009E14C0 writes only the constants -1 and 3; the [unit+54h] store is 009E2588 in 009E23B0 and 009E21F0 in 009E2020",
+      "evidence": "009E15C4 MOV dword [EDX+3F8h],0FFFFFFFFh; 009E15ED MOV dword [EDX+3F8h],3"
+    },
+    {
+      "was": "docs/GAME_EXECUTABLE.md lines 5057 and 5296: 'nothing in this process writes the byte', of blk+3F5h",
+      "is": "the executable's process does not, but the game does: 009E1170 arm 1. The milestone's 0 of 15680 gated steps is a fact about the host's inputs, not about the byte having no producer",
+      "evidence": "009E13DC MOV byte [EDX+3FDh],AL with AL = 1 at 009E13DA; the whole-.text scan for 'fd 03 00 00' finds exactly three writers"
+    }
+  ],
+  "no_ghidra_function": [
+    {"start": "009dabb0", "end": "009dabbc", "evidence": "MOV AL,[ESP+4] at 009DABB0 after nine INT3 at 009DABA7..009DABAF; previous routine is the getter at 009DABA0 (FLD [ECX+998h]; RET at 009DABA6). Only exit RET 4 at 009DABBA, then three INT3."},
+    {"start": "009dabc0", "end": "009dabcc", "evidence": "MOV EAX,[ESP+4] at 009DABC0 after those INT3; RET 4 at 009DABCA; three INT3 at 009DABCD..009DABCF."},
+    {"start": "009dabd0", "end": "009dabdc", "evidence": "MOV AL,[ESP+4] at 009DABD0 after those INT3; RET 4 at 009DABDA; three INT3 at 009DABDD..009DABDF."},
+    {"start": "009dabe0", "end": "009dabec", "evidence": "MOV AL,[ESP+4] at 009DABE0 after those INT3; RET 4 at 009DABEA; three INT3 at 009DABED..009DABEF, then the defined 009DABF0 BSP_ShipAi_SetSpeedCommandedFlag_Unused (body 009DABF0-009DABF7)."}
+  ],
+  "reconstruction_records": {
+    "claimed": [
+      {"address": "009da6e0", "kind": "function", "name": "ship_ai_refresh_avoid_zone_searchers_009da6e0"},
+      {"address": "009da1d0", "kind": "function", "name": "ship_ai_avoidance_steer_gate_009da1d0"},
+      {"address": "009e11a5", "kind": "fragment", "name": "ship_ai_cruise_step_request_009e11d6"},
+      {"address": "009ec770", "kind": "fragment", "name": "ship_ai_avoidance_party_accepted_009ec770"},
+      {"address": "009eafde", "kind": "fragment", "name": "ship_ai_neighbour_excluded_009eafde"}
+    ],
+    "projected_but_not_claimed": "The block writes inside 009E14C0, 009E23B0, 009E1950, 009F1420 and 009E4330 are in src/ship_ai_avoidance_request.cpp and in the doc's writer table but carry no ledger record: those bodies belong to cc_ship_ai_state_steps, cc_ai_attackmove_substates, cc_ai_follow_land, cc_ai_goal_vector and cc_ai_nav_block_ctor, and 009E4330 was leased to agent/orch6-20260912 (orch6_nav_ctor_input_e) while this packet ran. Records added at 009F1B7B, 009E15B4, 009E2588, 009E468B and 009E1C28 during this packet were withdrawn before the commit for that reason.",
+    "lease": "009DA6E0, 0080E160, 009DA1D0, 009DABB0, 009DABC0, 009DABD0, 009DABE0, 009E11A5, 009EC770, 009EAFDE, plus the four output files."
+  },
+  "build": "scripts/build.ps1, Win32 Release, /W4 /WX clean; ctest reconstructed_math passed. Reconstructed and build-tested; not fixture-tested, not game-validated.",
+  "tests": "none added. The rules are straight-line boolean and constant selection; no existing check needed changing."
+}
