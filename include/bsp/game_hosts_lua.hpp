@@ -81,6 +81,7 @@ struct GameVehicleClassRow {
     float max_rot_angle{0.0f};               // class+4F8h
     float max_rot_angle_change_ratio{0.0f};  // class+4FCh
     float length{0.0f};                      // class+A0h, written by 00960230
+    float width{0.0f};                       // class+A4h, Width at00960368
     // class+A8h, the `Height` key 00960230 writes beside `Length`. Milestone 2r
     // reads it because 00826866 places the keel sample point at half the hull
     // height below the pose and 00937C90's hull body needs neither, so the two
@@ -91,6 +92,24 @@ struct GameVehicleClassRow {
     // 00937CF1 compares it against 100.0 to choose the physics material.
     float mass{0.0f};
 };
+
+// Actual selected class+570 bits and the existing producer's provenance.
+// A successful depth read initializes every field; false leaves output intact.
+// Native 0083B5E0/00837DE0 and the ship-leaf tails are projected only for this
+// scalar. This is not the full settings singleton or a descriptor replacement.
+struct GameShipDepthInput {
+    std::uint32_t class_reference_0570;
+    std::uint32_t settings_block_offset; // 80h for session zero, F0h otherwise
+    std::uint32_t scalar_source;         // selected kShipLeafTuningSources slot
+    const char* class_key;               // static producer key, e.g. Destroyer
+};
+
+// Same reader on an explicitly borrowed live interpreter. The conversion mode
+// is the existing 0109EEA4 projection required by native_lua_integer_00b66290.
+// Used by the host below and focused installed-data verification. Restores the
+// Lua stack and leaves output unchanged on failure; does not execute scripts.
+bool read_ship_depth_input_lua(lua_State&, int type_id, std::int32_t session_mode,
+    const bool& crt_sse2_conversion, GameShipDepthInput&, std::string& error);
 
 // One of the four names 004dfb70 invokes.
 struct GameMissionEntryPointRun {
@@ -199,6 +218,17 @@ public:
     // Parent lookup errors return false with text; caller must reject the load.
     // Successful reads include the native per-field non-number fallbacks.
     bool read_path_turn_ramp(ShipAiPathSearchTurnRamp& out, std::string& error);
+
+    // VehicleClass[type_id].Type selects one of the eight existing ship leaves;
+    // HeavyCruiser/BigLandingShip use native exact-Boolean-or-false semantics.
+    // Reads ShipGlobals.AvoidZoneDepthsSingle/Multi[class_key][1] through the
+    // native Lua wrappers. The bare final GetInteger preserves numeric-string,
+    // missing-value and nonnumeric conversion behavior; it adds no depth default.
+    // Unsupported/non-ship types and failed parent lookups return false with an
+    // error and preserve output. Call before AI construction with actual session
+    // mode; an unbound class scalar must not be replaced with a fabricated zero.
+    bool read_ship_depth_input(int type_id, std::int32_t session_mode,
+        GameShipDepthInput& out, std::string& error);
 
     // Milestone 2k. The two reads 0087d7b0 makes into the global config object
     // 00432650 hands out: `Globals["Minimap"]["MinimapRange"]` into +6Ch and

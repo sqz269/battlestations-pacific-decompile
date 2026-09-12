@@ -3,6 +3,8 @@
 #include "bsp/native_input_action_owner.hpp"
 #include "bsp/native_input_backend_owner.hpp"
 #include "bsp/native_physical_factory.hpp"
+#include "bsp/native_filestore_factory.hpp"
+#include "bsp/native_vfs_derived_manager.hpp"
 #include "bsp/native_string_pool_owner.hpp"
 #include "bsp/xlive_owner_lifetime.hpp"
 
@@ -114,6 +116,20 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
         if (bindings.physical_factory != nullptr) {
             delete_native_physical_factory_secondary_00bed910(owner, flags,
                 *bindings.physical_factory);
+            return;
+        }
+        break;
+    case 0x00d68d04:
+        if (bindings.vfs_manager != nullptr) {
+            delete_native_vfs_derived_manager_00bedac0(owner, flags,
+                *bindings.vfs_manager);
+            return;
+        }
+        break;
+    case 0x00d688b0:
+        if (bindings.filestore_factory != nullptr) {
+            delete_native_filestore_factory_secondary_00be5340(owner, flags,
+                *bindings.filestore_factory);
             return;
         }
         break;

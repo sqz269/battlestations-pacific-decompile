@@ -3,6 +3,15 @@
 #include <stdexcept>
 
 namespace bsp {
+MainMenuObjectiveBindings make_main_menu_objective_bindings(
+    MainMenuSelectionListenerBindings& selection, MainMenuObjectiveProviders& providers) {
+    auto& command = selection.command;
+    auto& layout = command.widget.layout;
+    return {command.widget.owners, command.strings, selection.compare_names_00bf7fbf,
+        providers, selection.field_64, selection.field_68, selection.field_6c,
+        layout.objective_page_2c8, layout.objective_groups_2cc,
+        layout.objective_companions_2dc, layout.objective_background_2ec};
+}
 MainMenuCanonicalSelectionServices::MainMenuCanonicalSelectionServices(
     MainMenuCommandListenerBindings& command,
     MainMenuMedalServices& scores, MainMenuDateBindings& date,
@@ -51,5 +60,15 @@ void MainMenuCanonicalSelectionServices::framebox_current58(GuiWidgetOwner& owne
     auto* frame = dynamic_cast<GuiFrameBoxTypeImplementation*>(&require_owner(owner).implementation());
     if (!frame) throw std::logic_error("Menu frame sizing requires its actual FrameBox companion");
     frame->set_size58(owner, size);
+}
+GuiWidgetOwner& MainMenuCanonicalSelectionServices::call_00519dc0(
+    std::uint32_t offset, std::uint32_t index) {
+    auto& layout = command_.widget.layout;
+    auto* vector = offset == 0x2cc ? &layout.objective_groups_2cc
+        : offset == 0x2dc ? &layout.objective_companions_2dc : nullptr;
+    if (!vector) throw std::logic_error("Menu objective selection requires actual2CC/2DC vector");
+    auto* widget = objective_vector_element_00519dc0(*vector, index);
+    if (!widget) throw std::logic_error("Menu objective selection dereferences a null native payload");
+    return command_.widget.owners.owner(*widget);
 }
 } // namespace bsp

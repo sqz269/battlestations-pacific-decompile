@@ -221,7 +221,7 @@ void objectives(MainMenuSelectionListenerBindings& b, std::int32_t selected) {
             const auto& mission = c.services.selected_mission_005806a0();
             const auto side = mission_side_index(mission.screen);
             const auto index = static_cast<std::uint32_t>(sub(sub(selected, b.field_64), b.field_68));
-            const auto& hints = mission.sides[side].extra.hidden_hints;
+            const auto& hints = mission.side_extras[side].hidden_hints;
             if (index < hints.size()) help(b, hints[index]);
             else temporary_help(b, "Hidden objective hint, pls fill it in Missiontree.lua");
             if (b.field_60 < add(b.field_64, b.field_68)) {

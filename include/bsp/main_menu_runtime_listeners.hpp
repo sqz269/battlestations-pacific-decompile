@@ -28,11 +28,11 @@ private:
 };
 
 // Two native subobjects, one canonical screen binding: CEFC04 at+40 supplies
-// widget04/0C/18; CEFC48 at+8 supplies Listbox08. No duplicate screen state.
+// widget04/0C/18; CEFC48 at+8 supplies Listbox04/08/0C. No duplicate screen state.
 // Register these borrowed interfaces in the existing frame/Listbox dispatchers
 // before the layout binder publishes their respective actual identities.
 class MainMenuRuntimeListeners final : public MainMenuWidgetListener,
-    public GuiListboxSelectionListener {
+    public GuiListboxFrameListener {
 public:
     MainMenuRuntimeListeners(void* screen_plus_40, void* screen_plus_8,
         MainMenuSelectionListenerBindings&);
@@ -43,6 +43,8 @@ public:
     void call_current0c(GuiWidgetOwner&) override;
     void call_current18(GuiWidgetOwner&, bool) override;
     void call_current08(GuiWidgetOwner* selected_row, GuiWidgetOwner& listbox) override;
+    void call_current04(GuiWidgetOwner& selected_row, GuiWidgetOwner& listbox) override;
+    void call_current0c(bool first, bool second, GuiWidgetOwner& listbox) override;
 private:
     class Operation;
     MainMenuSelectionListenerBindings& selection_;

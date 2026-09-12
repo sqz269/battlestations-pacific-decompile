@@ -1,0 +1,619 @@
+{
+  "reason": "Native registers, stack arguments and RET cleanup verified in original listings. unused EDX represents an unconsumed register, not an original argument; source contexts are excluded. Prior names and signatures are preserved in each receipt.",
+  "entries": [
+    {
+      "address": "008722d0",
+      "proposed": "void* __fastcall BSP_GamepadForce_ConstantRequestConstruct(void* self, void* unused_edx, uint channel, float amplitude, float remaining)",
+      "before": "Function: BSP_GamepadForce_ConstantRequestConstruct at 008722d0\nSignature: undefined BSP_GamepadForce_ConstantRequestConstruct(void)\nEntry: 008722d0\nBody: 008722d0 - 008722fe",
+      "apply": "Successfully set prototype for function at 008722d0 with __fastcall calling convention",
+      "after": "Function: BSP_GamepadForce_ConstantRequestConstruct at 008722d0\nSignature: void * __fastcall BSP_GamepadForce_ConstantRequestConstruct(void * self, void * unused_edx, uint channel, float amplitude, float remaining)\nEntry: 008722d0\nBody: 008722d0 - 008722fe",
+      "readback_verified": true
+    },
+    {
+      "address": "00872310",
+      "proposed": "uint __fastcall BSP_GamepadForce_ConstantRequestChannel(void* self)",
+      "before": "Function: BSP_GamepadForce_ConstantRequestChannel at 00872310\nSignature: undefined BSP_GamepadForce_ConstantRequestChannel(void)\nEntry: 00872310\nBody: 00872310 - 00872313",
+      "apply": "Successfully set prototype for function at 00872310 with __fastcall calling convention",
+      "after": "Function: BSP_GamepadForce_ConstantRequestChannel at 00872310\nSignature: uint __fastcall BSP_GamepadForce_ConstantRequestChannel(void * self)\nEntry: 00872310\nBody: 00872310 - 00872313",
+      "readback_verified": true
+    },
+    {
+      "address": "00872320",
+      "proposed": "float __fastcall BSP_GamepadForce_ConstantRequestValue(void* self)",
+      "before": "Function: BSP_GamepadForce_ConstantRequestValue at 00872320\nSignature: undefined BSP_GamepadForce_ConstantRequestValue(void)\nEntry: 00872320\nBody: 00872320 - 00872323",
+      "apply": "Successfully set prototype for function at 00872320 with __fastcall calling convention",
+      "after": "Function: BSP_GamepadForce_ConstantRequestValue at 00872320\nSignature: float __fastcall BSP_GamepadForce_ConstantRequestValue(void * self)\nEntry: 00872320\nBody: 00872320 - 00872323",
+      "readback_verified": true
+    },
+    {
+      "address": "00872330",
+      "proposed": "uint __fastcall BSP_GamepadForce_ConstantRequestExpired(void* self)",
+      "before": "Function: BSP_GamepadForce_ConstantRequestExpired at 00872330\nSignature: undefined BSP_GamepadForce_ConstantRequestExpired(void)\nEntry: 00872330\nBody: 00872330 - 00872341",
+      "apply": "Successfully set prototype for function at 00872330 with __fastcall calling convention",
+      "after": "Function: BSP_GamepadForce_ConstantRequestExpired at 00872330\nSignature: uint __fastcall BSP_GamepadForce_ConstantRequestExpired(void * self)\nEntry: 00872330\nBody: 00872330 - 00872341",
+      "readback_verified": true
+    },
+    {
+      "address": "00872350",
+      "proposed": "void* __fastcall BSP_GamepadForce_FadingRequestConstruct(void* self, void* unused_edx, uint channel, float amplitude, float duration)",
+      "before": "Function: BSP_GamepadForce_FadingRequestConstruct at 00872350\nSignature: undefined BSP_GamepadForce_FadingRequestConstruct(void)\nEntry: 00872350\nBody: 00872350 - 00872386",
+      "apply": "Successfully set prototype for function at 00872350 with __fastcall calling convention",
+      "after": "Function: BSP_GamepadForce_FadingRequestConstruct at 00872350\nSignature: void * __fastcall BSP_GamepadForce_FadingRequestConstruct(void * self, void * unused_edx, uint channel, float amplitude, float duration)\nEntry: 00872350\nBody: 00872350 - 00872386",
+      "readback_verified": true
+    },
+    {
+      "address": "008723a0",
+      "proposed": "uint __fastcall BSP_GamepadForce_FadingRequestChannel(void* self)",
+      "before": "Function: BSP_GamepadForce_FadingRequestChannel at 008723a0\nSignature: undefined BSP_GamepadForce_FadingRequestChannel(void)\nEntry: 008723a0\nBody: 008723a0 - 008723a3",
+      "apply": "Successfully set prototype for function at 008723a0 with __fastcall calling convention",
+      "after": "Function: BSP_GamepadForce_FadingRequestChannel at 008723a0\nSignature: uint __fastcall BSP_GamepadForce_FadingRequestChannel(void * self)\nEntry: 008723a0\nBody: 008723a0 - 008723a3",
+      "readback_verified": true
+    },
+    {
+      "address": "008723b0",
+      "proposed": "float __fastcall BSP_GamepadForce_FadingRequestValue(void* self)",
+      "before": "Function: BSP_GamepadForce_FadingRequestValue at 008723b0\nSignature: undefined BSP_GamepadForce_FadingRequestValue(void)\nEntry: 008723b0\nBody: 008723b0 - 008723cb",
+      "apply": "Successfully set prototype for function at 008723b0 with __fastcall calling convention",
+      "after": "Function: BSP_GamepadForce_FadingRequestValue at 008723b0\nSignature: float __fastcall BSP_GamepadForce_FadingRequestValue(void * self)\nEntry: 008723b0\nBody: 008723b0 - 008723cb",
+      "readback_verified": true
+    },
+    {
+      "address": "008723d0",
+      "proposed": "uint __fastcall BSP_GamepadForce_FadingRequestExpired(void* self)",
+      "before": "Function: BSP_GamepadForce_FadingRequestExpired at 008723d0\nSignature: undefined BSP_GamepadForce_FadingRequestExpired(void)\nEntry: 008723d0\nBody: 008723d0 - 008723e4",
+      "apply": "Successfully set prototype for function at 008723d0 with __fastcall calling convention",
+      "after": "Function: BSP_GamepadForce_FadingRequestExpired at 008723d0\nSignature: uint __fastcall BSP_GamepadForce_FadingRequestExpired(void * self)\nEntry: 008723d0\nBody: 008723d0 - 008723e4",
+      "readback_verified": true
+    },
+    {
+      "address": "008723f0",
+      "proposed": "void* __fastcall BSP_GamepadForce_AlternatingRequestConstruct(void* self, void* unused_edx, uint channel, byte selector, float first_value, float second_value, float first_period, float second_period, float duration)",
+      "before": "Function: BSP_GamepadForce_AlternatingRequestConstruct at 008723f0\nSignature: undefined BSP_GamepadForce_AlternatingRequestConstruct(void)\nEntry: 008723f0\nBody: 008723f0 - 0087244e",
+      "apply": "Successfully set prototype for function at 008723f0 with __fastcall calling convention",
+      "after": "Function: BSP_GamepadForce_AlternatingRequestConstruct at 008723f0\nSignature: void * __fastcall BSP_GamepadForce_AlternatingRequestConstruct(void * self, void * unused_edx, uint channel, byte selector, float first_value, float second_value, float first_period, float second_period, float duration)\nEntry: 008723f0\nBody: 008723f0 - 0087244e",
+      "readback_verified": true
+    },
+    {
+      "address": "00872460",
+      "proposed": "uint __fastcall BSP_GamepadForce_AlternatingRequestChannel(void* self)",
+      "before": "Function: BSP_GamepadForce_AlternatingRequestChannel at 00872460\nSignature: undefined BSP_GamepadForce_AlternatingRequestChannel(void)\nEntry: 00872460\nBody: 00872460 - 00872463",
+      "apply": "Successfully set prototype for function at 00872460 with __fastcall calling convention",
+      "after": "Function: BSP_GamepadForce_AlternatingRequestChannel at 00872460\nSignature: uint __fastcall BSP_GamepadForce_AlternatingRequestChannel(void * self)\nEntry: 00872460\nBody: 00872460 - 00872463",
+      "readback_verified": true
+    },
+    {
+      "address": "00872470",
+      "proposed": "float __fastcall BSP_GamepadForce_AlternatingRequestValue(void* self)",
+      "before": "Function: BSP_GamepadForce_AlternatingRequestValue at 00872470\nSignature: undefined BSP_GamepadForce_AlternatingRequestValue(void)\nEntry: 00872470\nBody: 00872470 - 00872492",
+      "apply": "Successfully set prototype for function at 00872470 with __fastcall calling convention",
+      "after": "Function: BSP_GamepadForce_AlternatingRequestValue at 00872470\nSignature: float __fastcall BSP_GamepadForce_AlternatingRequestValue(void * self)\nEntry: 00872470\nBody: 00872470 - 00872492",
+      "readback_verified": true
+    },
+    {
+      "address": "008724a0",
+      "proposed": "uint __fastcall BSP_GamepadForce_AlternatingRequestExpired(void* self)",
+      "before": "Function: BSP_GamepadForce_AlternatingRequestExpired at 008724a0\nSignature: undefined BSP_GamepadForce_AlternatingRequestExpired(void)\nEntry: 008724a0\nBody: 008724a0 - 008724b4",
+      "apply": "Successfully set prototype for function at 008724a0 with __fastcall calling convention",
+      "after": "Function: BSP_GamepadForce_AlternatingRequestExpired at 008724a0\nSignature: uint __fastcall BSP_GamepadForce_AlternatingRequestExpired(void * self)\nEntry: 008724a0\nBody: 008724a0 - 008724b4",
+      "readback_verified": true
+    },
+    {
+      "address": "008724c0",
+      "proposed": "void* __fastcall FUN_008724c0(void* self, void* unused_edx, uint flags)",
+      "before": "Function: FUN_008724c0 at 008724c0\nSignature: undefined FUN_008724c0(void)\nEntry: 008724c0\nBody: 008724c0 - 008724de",
+      "apply": "Successfully set prototype for function at 008724c0 with __fastcall calling convention",
+      "after": "Function: FUN_008724c0 at 008724c0\nSignature: void * __fastcall FUN_008724c0(void * self, void * unused_edx, uint flags)\nEntry: 008724c0\nBody: 008724c0 - 008724de",
+      "readback_verified": true
+    },
+    {
+      "address": "008724e0",
+      "proposed": "void* __fastcall BSP_GamepadForce_ConstantRequestDeletingDestructor(void* self, void* unused_edx, uint flags)",
+      "before": "Function: BSP_GamepadForce_ConstantRequestDeletingDestructor at 008724e0\nSignature: undefined BSP_GamepadForce_ConstantRequestDeletingDestructor(void)\nEntry: 008724e0\nBody: 008724e0 - 008724fe",
+      "apply": "Successfully set prototype for function at 008724e0 with __fastcall calling convention",
+      "after": "Function: BSP_GamepadForce_ConstantRequestDeletingDestructor at 008724e0\nSignature: void * __fastcall BSP_GamepadForce_ConstantRequestDeletingDestructor(void * self, void * unused_edx, uint flags)\nEntry: 008724e0\nBody: 008724e0 - 008724fe",
+      "readback_verified": true
+    },
+    {
+      "address": "00872500",
+      "proposed": "void* __fastcall BSP_GamepadForce_FadingRequestDeletingDestructor(void* self, void* unused_edx, uint flags)",
+      "before": "Function: BSP_GamepadForce_FadingRequestDeletingDestructor at 00872500\nSignature: undefined BSP_GamepadForce_FadingRequestDeletingDestructor(void)\nEntry: 00872500\nBody: 00872500 - 0087251e",
+      "apply": "Successfully set prototype for function at 00872500 with __fastcall calling convention",
+      "after": "Function: BSP_GamepadForce_FadingRequestDeletingDestructor at 00872500\nSignature: void * __fastcall BSP_GamepadForce_FadingRequestDeletingDestructor(void * self, void * unused_edx, uint flags)\nEntry: 00872500\nBody: 00872500 - 0087251e",
+      "readback_verified": true
+    },
+    {
+      "address": "00872520",
+      "proposed": "void* __fastcall BSP_GamepadForce_AlternatingRequestDeletingDestructor(void* self, void* unused_edx, uint flags)",
+      "before": "Function: BSP_GamepadForce_AlternatingRequestDeletingDestructor at 00872520\nSignature: undefined BSP_GamepadForce_AlternatingRequestDeletingDestructor(void)\nEntry: 00872520\nBody: 00872520 - 0087253e",
+      "apply": "Successfully set prototype for function at 00872520 with __fastcall calling convention",
+      "after": "Function: BSP_GamepadForce_AlternatingRequestDeletingDestructor at 00872520\nSignature: void * __fastcall BSP_GamepadForce_AlternatingRequestDeletingDestructor(void * self, void * unused_edx, uint flags)\nEntry: 00872520\nBody: 00872520 - 0087253e",
+      "readback_verified": true
+    },
+    {
+      "address": "00a93f90",
+      "proposed": "void __fastcall BSP_GamepadForce_ConstantRequestUpdate(void* self, void* unused_edx, float seconds)",
+      "before": "Function: BSP_GamepadForce_ConstantRequestUpdate at 00a93f90\nSignature: undefined BSP_GamepadForce_ConstantRequestUpdate(void)\nEntry: 00a93f90\nBody: 00a93f90 - 00a93fbe",
+      "apply": "Successfully set prototype for function at 00a93f90 with __fastcall calling convention",
+      "after": "Function: BSP_GamepadForce_ConstantRequestUpdate at 00a93f90\nSignature: void __fastcall BSP_GamepadForce_ConstantRequestUpdate(void * self, void * unused_edx, float seconds)\nEntry: 00a93f90\nBody: 00a93f90 - 00a93fbe",
+      "readback_verified": true
+    },
+    {
+      "address": "00a93fc0",
+      "proposed": "void __fastcall BSP_GamepadForce_FadingRequestUpdate(void* self, void* unused_edx, float seconds)",
+      "before": "Function: BSP_GamepadForce_FadingRequestUpdate at 00a93fc0\nSignature: undefined BSP_GamepadForce_FadingRequestUpdate(void)\nEntry: 00a93fc0\nBody: 00a93fc0 - 00a93fcc",
+      "apply": "Successfully set prototype for function at 00a93fc0 with __fastcall calling convention",
+      "after": "Function: BSP_GamepadForce_FadingRequestUpdate at 00a93fc0\nSignature: void __fastcall BSP_GamepadForce_FadingRequestUpdate(void * self, void * unused_edx, float seconds)\nEntry: 00a93fc0\nBody: 00a93fc0 - 00a93fcc",
+      "readback_verified": true
+    },
+    {
+      "address": "00a94510",
+      "proposed": "void __fastcall BSP_GamepadForce_AlternatingRequestUpdate(void* self, void* unused_edx, float seconds)",
+      "before": "Function: BSP_GamepadForce_AlternatingRequestUpdate at 00a94510\nSignature: undefined BSP_GamepadForce_AlternatingRequestUpdate(void)\nEntry: 00a94510\nBody: 00a94510 - 00a94543",
+      "apply": "Successfully set prototype for function at 00a94510 with __fastcall calling convention",
+      "after": "Function: BSP_GamepadForce_AlternatingRequestUpdate at 00a94510\nSignature: void __fastcall BSP_GamepadForce_AlternatingRequestUpdate(void * self, void * unused_edx, float seconds)\nEntry: 00a94510\nBody: 00a94510 - 00a94543",
+      "readback_verified": true
+    },
+    {
+      "address": "00a93e80",
+      "proposed": "void __fastcall BSP_InputDevice_OnSlotResetNoop(void* self)",
+      "before": "Function: BSP_InputDevice_OnSlotResetNoop at 00a93e80\nSignature: undefined BSP_InputDevice_OnSlotResetNoop(void)\nEntry: 00a93e80\nBody: 00a93e80 - 00a93e80",
+      "apply": "Successfully set prototype for function at 00a93e80 with __fastcall calling convention",
+      "after": "Function: BSP_InputDevice_OnSlotResetNoop at 00a93e80\nSignature: void __fastcall BSP_InputDevice_OnSlotResetNoop(void * self)\nEntry: 00a93e80\nBody: 00a93e80 - 00a93e80",
+      "readback_verified": true
+    },
+    {
+      "address": "00a93e90",
+      "proposed": "void __fastcall FUN_00a93e90(void* self, void* unused_edx, uint code, uint mode)",
+      "before": "Function: FUN_00a93e90 at 00a93e90\nSignature: undefined FUN_00a93e90(void)\nEntry: 00a93e90\nBody: 00a93e90 - 00a93e92",
+      "apply": "Successfully set prototype for function at 00a93e90 with __fastcall calling convention",
+      "after": "Function: FUN_00a93e90 at 00a93e90\nSignature: void __fastcall FUN_00a93e90(void * self, void * unused_edx, uint code, uint mode)\nEntry: 00a93e90\nBody: 00a93e90 - 00a93e92",
+      "readback_verified": true
+    },
+    {
+      "address": "00a93ea0",
+      "proposed": "byte __fastcall BSP_InputDevice_Query1CFalse(void* self, void* unused_edx, uint code)",
+      "before": "Function: BSP_InputDevice_Query1CFalse at 00a93ea0\nSignature: undefined BSP_InputDevice_Query1CFalse(void)\nEntry: 00a93ea0\nBody: 00a93ea0 - 00a93ea4",
+      "apply": "Successfully set prototype for function at 00a93ea0 with __fastcall calling convention",
+      "after": "Function: BSP_InputDevice_Query1CFalse at 00a93ea0\nSignature: byte __fastcall BSP_InputDevice_Query1CFalse(void * self, void * unused_edx, uint code)\nEntry: 00a93ea0\nBody: 00a93ea0 - 00a93ea4",
+      "readback_verified": true
+    },
+    {
+      "address": "00a95be0",
+      "proposed": "char* __fastcall FUN_00a95be0(void* self)",
+      "before": "Function: FUN_00a95be0 at 00a95be0\nSignature: undefined FUN_00a95be0(void)\nEntry: 00a95be0\nBody: 00a95be0 - 00a95be5",
+      "apply": "Successfully set prototype for function at 00a95be0 with __fastcall calling convention",
+      "after": "Function: FUN_00a95be0 at 00a95be0\nSignature: char * __fastcall FUN_00a95be0(void * self)\nEntry: 00a95be0\nBody: 00a95be0 - 00a95be5",
+      "readback_verified": true
+    },
+    {
+      "address": "00a96360",
+      "proposed": "char* __fastcall FUN_00a96360(void* self)",
+      "before": "Function: FUN_00a96360 at 00a96360\nSignature: undefined FUN_00a96360(void)\nEntry: 00a96360\nBody: 00a96360 - 00a96365",
+      "apply": "Successfully set prototype for function at 00a96360 with __fastcall calling convention",
+      "after": "Function: FUN_00a96360 at 00a96360\nSignature: char * __fastcall FUN_00a96360(void * self)\nEntry: 00a96360\nBody: 00a96360 - 00a96365",
+      "readback_verified": true
+    },
+    {
+      "address": "00a9a100",
+      "proposed": "char* __fastcall FUN_00a9a100(void* self)",
+      "before": "Function: FUN_00a9a100 at 00a9a100\nSignature: undefined FUN_00a9a100(void)\nEntry: 00a9a100\nBody: 00a9a100 - 00a9a105",
+      "apply": "Successfully set prototype for function at 00a9a100 with __fastcall calling convention",
+      "after": "Function: FUN_00a9a100 at 00a9a100\nSignature: char * __fastcall FUN_00a9a100(void * self)\nEntry: 00a9a100\nBody: 00a9a100 - 00a9a105",
+      "readback_verified": true
+    },
+    {
+      "address": "00a93f30",
+      "proposed": "byte __fastcall BSP_GamepadInputDevice_HasActivity(void* self)",
+      "before": "Function: BSP_GamepadInputDevice_HasActivity at 00a93f30\nSignature: undefined BSP_GamepadInputDevice_HasActivity(void)\nEntry: 00a93f30\nBody: 00a93f30 - 00a93f53",
+      "apply": "Successfully set prototype for function at 00a93f30 with __fastcall calling convention",
+      "after": "Function: BSP_GamepadInputDevice_HasActivity at 00a93f30\nSignature: byte __fastcall BSP_GamepadInputDevice_HasActivity(void * self)\nEntry: 00a93f30\nBody: 00a93f30 - 00a93f53",
+      "readback_verified": true
+    },
+    {
+      "address": "00a93f60",
+      "proposed": "byte __fastcall FUN_00a93f60(void* self)",
+      "before": "Function: FUN_00a93f60 at 00a93f60\nSignature: undefined FUN_00a93f60(void)\nEntry: 00a93f60\nBody: 00a93f60 - 00a93f83",
+      "apply": "Successfully set prototype for function at 00a93f60 with __fastcall calling convention",
+      "after": "Function: FUN_00a93f60 at 00a93f60\nSignature: byte __fastcall FUN_00a93f60(void * self)\nEntry: 00a93f60\nBody: 00a93f60 - 00a93f83",
+      "readback_verified": true
+    },
+    {
+      "address": "00a95ed0",
+      "proposed": "byte __fastcall FUN_00a95ed0(void* self)",
+      "before": "Function: FUN_00a95ed0 at 00a95ed0\nSignature: undefined FUN_00a95ed0(void)\nEntry: 00a95ed0\nBody: 00a95ed0 - 00a95ef6",
+      "apply": "Successfully set prototype for function at 00a95ed0 with __fastcall calling convention",
+      "after": "Function: FUN_00a95ed0 at 00a95ed0\nSignature: byte __fastcall FUN_00a95ed0(void * self)\nEntry: 00a95ed0\nBody: 00a95ed0 - 00a95ef6",
+      "readback_verified": true
+    },
+    {
+      "address": "00a9aab0",
+      "proposed": "byte __fastcall FUN_00a9aab0(void* self)",
+      "before": "Function: FUN_00a9aab0 at 00a9aab0\nSignature: undefined FUN_00a9aab0(void)\nEntry: 00a9aab0\nBody: 00a9aab0 - 00a9aad3",
+      "apply": "Successfully set prototype for function at 00a9aab0 with __fastcall calling convention",
+      "after": "Function: FUN_00a9aab0 at 00a9aab0\nSignature: byte __fastcall FUN_00a9aab0(void * self)\nEntry: 00a9aab0\nBody: 00a9aab0 - 00a9aad3",
+      "readback_verified": true
+    },
+    {
+      "address": "00a9aae0",
+      "proposed": "byte __fastcall FUN_00a9aae0(void* self)",
+      "before": "Function: FUN_00a9aae0 at 00a9aae0\nSignature: undefined FUN_00a9aae0(void)\nEntry: 00a9aae0\nBody: 00a9aae0 - 00a9ab03",
+      "apply": "Successfully set prototype for function at 00a9aae0 with __fastcall calling convention",
+      "after": "Function: FUN_00a9aae0 at 00a9aae0\nSignature: byte __fastcall FUN_00a9aae0(void * self)\nEntry: 00a9aae0\nBody: 00a9aae0 - 00a9ab03",
+      "readback_verified": true
+    },
+    {
+      "address": "00a95f00",
+      "proposed": "byte __fastcall FUN_00a95f00(void* self)",
+      "before": "Function: FUN_00a95f00 at 00a95f00\nSignature: undefined FUN_00a95f00(void)\nEntry: 00a95f00\nBody: 00a95f00 - 00a95f06",
+      "apply": "Successfully set prototype for function at 00a95f00 with __fastcall calling convention",
+      "after": "Function: FUN_00a95f00 at 00a95f00\nSignature: byte __fastcall FUN_00a95f00(void * self)\nEntry: 00a95f00\nBody: 00a95f00 - 00a95f06",
+      "readback_verified": true
+    },
+    {
+      "address": "00a95f10",
+      "proposed": "int __fastcall FUN_00a95f10(void* self)",
+      "before": "Function: FUN_00a95f10 at 00a95f10\nSignature: undefined FUN_00a95f10(void)\nEntry: 00a95f10\nBody: 00a95f10 - 00a95f39",
+      "apply": "Successfully set prototype for function at 00a95f10 with __fastcall calling convention",
+      "after": "Function: FUN_00a95f10 at 00a95f10\nSignature: int __fastcall FUN_00a95f10(void * self)\nEntry: 00a95f10\nBody: 00a95f10 - 00a95f39",
+      "readback_verified": true
+    },
+    {
+      "address": "00a94440",
+      "proposed": "int __fastcall FUN_00a94440(void* self)",
+      "before": "Function: FUN_00a94440 at 00a94440\nSignature: undefined FUN_00a94440(void)\nEntry: 00a94440\nBody: 00a94440 - 00a944f1",
+      "apply": "Successfully set prototype for function at 00a94440 with __fastcall calling convention",
+      "after": "Function: FUN_00a94440 at 00a94440\nSignature: int __fastcall FUN_00a94440(void * self)\nEntry: 00a94440\nBody: 00a94440 - 00a944f1",
+      "readback_verified": true
+    },
+    {
+      "address": "00a9ab10",
+      "proposed": "int __fastcall FUN_00a9ab10(void* self)",
+      "before": "Function: FUN_00a9ab10 at 00a9ab10\nSignature: undefined FUN_00a9ab10(void)\nEntry: 00a9ab10\nBody: 00a9ab10 - 00a9abc1",
+      "apply": "Successfully set prototype for function at 00a9ab10 with __fastcall calling convention",
+      "after": "Function: FUN_00a9ab10 at 00a9ab10\nSignature: int __fastcall FUN_00a9ab10(void * self)\nEntry: 00a9ab10\nBody: 00a9ab10 - 00a9abc1",
+      "readback_verified": true
+    },
+    {
+      "address": "00a9a380",
+      "proposed": "float __fastcall BSP_MouseInput_GetDoubleClickSeconds(void* self)",
+      "before": "Function: BSP_MouseInput_GetDoubleClickSeconds at 00a9a380\nSignature: undefined BSP_MouseInput_GetDoubleClickSeconds(void)\nEntry: 00a9a380\nBody: 00a9a380 - 00a9a386",
+      "apply": "Successfully set prototype for function at 00a9a380 with __fastcall calling convention",
+      "after": "Function: BSP_MouseInput_GetDoubleClickSeconds at 00a9a380\nSignature: float __fastcall BSP_MouseInput_GetDoubleClickSeconds(void * self)\nEntry: 00a9a380\nBody: 00a9a380 - 00a9a386",
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "008722d0",
+        "prototype": "void* __fastcall BSP_GamepadForce_ConstantRequestConstruct(void* self, void* unused_edx, uint channel, float amplitude, float remaining)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 008722d0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00872310",
+        "prototype": "uint __fastcall BSP_GamepadForce_ConstantRequestChannel(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00872310 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00872320",
+        "prototype": "float __fastcall BSP_GamepadForce_ConstantRequestValue(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00872320 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00872330",
+        "prototype": "uint __fastcall BSP_GamepadForce_ConstantRequestExpired(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00872330 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00872350",
+        "prototype": "void* __fastcall BSP_GamepadForce_FadingRequestConstruct(void* self, void* unused_edx, uint channel, float amplitude, float duration)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00872350 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "008723a0",
+        "prototype": "uint __fastcall BSP_GamepadForce_FadingRequestChannel(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 008723a0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "008723b0",
+        "prototype": "float __fastcall BSP_GamepadForce_FadingRequestValue(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 008723b0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "008723d0",
+        "prototype": "uint __fastcall BSP_GamepadForce_FadingRequestExpired(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 008723d0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "008723f0",
+        "prototype": "void* __fastcall BSP_GamepadForce_AlternatingRequestConstruct(void* self, void* unused_edx, uint channel, byte selector, float first_value, float second_value, float first_period, float second_period, float duration)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 008723f0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00872460",
+        "prototype": "uint __fastcall BSP_GamepadForce_AlternatingRequestChannel(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00872460 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00872470",
+        "prototype": "float __fastcall BSP_GamepadForce_AlternatingRequestValue(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00872470 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "008724a0",
+        "prototype": "uint __fastcall BSP_GamepadForce_AlternatingRequestExpired(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 008724a0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "008724c0",
+        "prototype": "void* __fastcall FUN_008724c0(void* self, void* unused_edx, uint flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 008724c0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "008724e0",
+        "prototype": "void* __fastcall BSP_GamepadForce_ConstantRequestDeletingDestructor(void* self, void* unused_edx, uint flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 008724e0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00872500",
+        "prototype": "void* __fastcall BSP_GamepadForce_FadingRequestDeletingDestructor(void* self, void* unused_edx, uint flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00872500 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00872520",
+        "prototype": "void* __fastcall BSP_GamepadForce_AlternatingRequestDeletingDestructor(void* self, void* unused_edx, uint flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00872520 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a93f90",
+        "prototype": "void __fastcall BSP_GamepadForce_ConstantRequestUpdate(void* self, void* unused_edx, float seconds)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a93f90 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a93fc0",
+        "prototype": "void __fastcall BSP_GamepadForce_FadingRequestUpdate(void* self, void* unused_edx, float seconds)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a93fc0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a94510",
+        "prototype": "void __fastcall BSP_GamepadForce_AlternatingRequestUpdate(void* self, void* unused_edx, float seconds)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a94510 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a93e80",
+        "prototype": "void __fastcall BSP_InputDevice_OnSlotResetNoop(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a93e80 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a93e90",
+        "prototype": "void __fastcall FUN_00a93e90(void* self, void* unused_edx, uint code, uint mode)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a93e90 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a93ea0",
+        "prototype": "byte __fastcall BSP_InputDevice_Query1CFalse(void* self, void* unused_edx, uint code)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a93ea0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a95be0",
+        "prototype": "char* __fastcall FUN_00a95be0(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a95be0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a96360",
+        "prototype": "char* __fastcall FUN_00a96360(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a96360 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a9a100",
+        "prototype": "char* __fastcall FUN_00a9a100(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a9a100 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a93f30",
+        "prototype": "byte __fastcall BSP_GamepadInputDevice_HasActivity(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a93f30 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a93f60",
+        "prototype": "byte __fastcall FUN_00a93f60(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a93f60 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a95ed0",
+        "prototype": "byte __fastcall FUN_00a95ed0(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a95ed0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a9aab0",
+        "prototype": "byte __fastcall FUN_00a9aab0(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a9aab0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a9aae0",
+        "prototype": "byte __fastcall FUN_00a9aae0(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a9aae0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a95f00",
+        "prototype": "byte __fastcall FUN_00a95f00(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a95f00 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a95f10",
+        "prototype": "int __fastcall FUN_00a95f10(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a95f10 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a94440",
+        "prototype": "int __fastcall FUN_00a94440(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a94440 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a9ab10",
+        "prototype": "int __fastcall FUN_00a9ab10(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a9ab10 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a9a380",
+        "prototype": "float __fastcall BSP_MouseInput_GetDoubleClickSeconds(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a9a380 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {}
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save_errors": [
+    "save_program {}: {'error': 'Unable to lock due to active transaction'}"
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

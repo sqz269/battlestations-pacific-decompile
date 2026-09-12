@@ -1,0 +1,244 @@
+[
+  {
+    "address": "004f8f20",
+    "before": {
+      "address": "004f8f20",
+      "function_name": "FUN_004f8f20"
+    },
+    "after": {
+      "address": "004f8f20",
+      "name": "BSP_MainMenu_ListboxListenerNoOp0C",
+      "evidence": "Hypothesis, not a recovered symbol. complete native empty body, routed through same CEFC48 listener identity. Original ABI: ECX screen+8 listener; three stack DWORDs; RET0C (C2 0C 00). reports/gui_manager_frame.json; reports/orch5_listbox_listener_slots.json. New C++ interfaces, no binary replacement or gameplay validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00519dc0",
+    "before": {
+      "address": "00519dc0",
+      "function_name": "STL_inst_00519dc0"
+    },
+    "after": {
+      "address": "00519dc0",
+      "name": "STL_inst_00519dc0",
+      "evidence": "Hypothesis, not a recovered symbol. complete normal sequence; native container allocator/debug iterator/SEH mechanics replaced. ECX vector; uint index stack; RET4; EAX element pointer. Canonical mission-side storage, duplicate-preserving briefing page map producer and same main-menu authored Group vectors. docs/MAIN_MENU_OBJECTIVE_RUNTIME.md; reports/main_menu_objective_runtime.json. New C++ container transport; library accessor preserved; no native ABI/game/render validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "0051cc90",
+    "before": {
+      "address": "0051cc90",
+      "function_name": "FUN_0051cc90"
+    },
+    "after": {
+      "address": "0051cc90",
+      "name": "STL_BriefingPageMap_Index_0051cc90",
+      "evidence": "Hypothesis, not a recovered symbol. complete normal sequence; native container allocator/debug iterator/SEH mechanics replaced. ECX map; native key pointer stack; RET4; EAX stored value pointer. Canonical mission-side storage, duplicate-preserving briefing page map producer and same main-menu authored Group vectors. docs/MAIN_MENU_OBJECTIVE_RUNTIME.md; reports/main_menu_objective_runtime.json. New C++ container transport; library accessor preserved; no native ABI/game/render validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "0051dda0",
+    "before": {
+      "address": "0051dda0",
+      "function_name": "FUN_0051dda0"
+    },
+    "after": {
+      "address": "0051dda0",
+      "name": "BSP_BriefingScreen_LoadObjectivePages",
+      "evidence": "Hypothesis, not a recovered symbol. complete normal sequence; native container allocator/debug iterator/SEH mechanics replaced. ECX briefing screen; RET. Canonical mission-side storage, duplicate-preserving briefing page map producer and same main-menu authored Group vectors. docs/MAIN_MENU_OBJECTIVE_RUNTIME.md; reports/main_menu_objective_runtime.json. New C++ container transport; library accessor preserved; no native ABI/game/render validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "0058f5b0",
+    "before": {
+      "address": "0058f5b0",
+      "function_name": "FUN_0058f5b0"
+    },
+    "after": {
+      "address": "0058f5b0",
+      "name": "BSP_MainMenu_BindObjectiveGroups",
+      "evidence": "Hypothesis, not a recovered symbol. complete normal sequence; native container allocator/debug iterator/SEH mechanics replaced. ECX main-menu screen; RET. Canonical mission-side storage, duplicate-preserving briefing page map producer and same main-menu authored Group vectors. docs/MAIN_MENU_OBJECTIVE_RUNTIME.md; reports/main_menu_objective_runtime.json. New C++ container transport; library accessor preserved; no native ABI/game/render validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00598b60",
+    "before": {
+      "address": "00598b60",
+      "function_name": "BSP_MainMenu_HandleBack",
+      "comment": "[BSP reconstruction 00598b60]\nHypothesis, not a recovered symbol. __fastcall(this), ECX = the main-menu screen 005902E0. Dispatches on the main-menu page at 00E08874. Page 1 calls 00588A80, which carries FE_pc.main_quit_confirm, so the top-level back is the quit confirmation. Pages 4, 5, 6 and 7 form one group tested in that order at 00598B7B..00598B9C: it caches 00A9C990's result into 00E08878 and 00E194DC and writes 1 into screen+55Ch for 5 and 7 only, which is what marks those two as the downloadable-content arms of the campaign mission list. The remaining arms reach BSP_MenuCommandScreen_GetSingleton with composed strings. Read to the dispatch only; the arms past 00598FA0 were not followed. See docs/MAIN_MENU_SCREENS.md.\n\n[BSP reconstruction 00598b60] update\nHypothesis, not a recovered symbol. __fastcall(this), ECX = the main-menu screen 005902E0. Dispatches on the main-menu page at 00E08874. Page 1 calls 00588A80, which carries FE_pc.main_quit_confirm, so the top-level back is the quit confirmation. Pages 4, 5, 6 and 7 form one group tested in that order at 00598B7B..00598B9C: it caches 00A9C990's result into 00E08878 and 00E194DC and writes 1 into screen+55Ch for 5 and 7 only, which is what marks those two as the downloadable-content arms of the campaign mission list. The remaining arms reach BSP_MenuCommandScreen_GetSingleton with composed strings. Read to the dispatch only; the arms past 00598FA0 were not followed. See docs/MAIN_MENU_SCREENS.md. | CORRECTION (packet cc_menu_detail): the routine runs on this = screen + 8, not on the screen. 00598BD4 reaches the top-level list box as [EDI+1B0h] (screen+1B8h) and 00598FBF recovers the screen with LEA ESI,[EDI-8]. Every offset in the decompilation is therefore 8 low. The byte stored at 00598FB3 as +55Ch is screen+564h, the United States campaign flag that 00597870 and 0058C010 also set on pages 5 and 7; it is not a downloadable-content flag. The downloadable-content flag is screen+565h (00597AEE, 00597B4A). The campaign arm ends at 00599315/00599318 by clearing screen+5Ch and calling 0058C010, so this is also how the mission-detail page is entered. See docs/MAIN_MENU_MISSION_DETAIL.md."
+    },
+    "after": {
+      "address": "00598b60",
+      "name": "BSP_MainMenu_HandleBack",
+      "evidence": "Hypothesis, not a recovered symbol. __fastcall(this), ECX = the main-menu screen 005902E0. Dispatches on the main-menu page at 00E08874. Page 1 calls 00588A80, which carries FE_pc.main_quit_confirm, so the top-level back is the quit confirmation. Pages 4, 5, 6 and 7 form one group tested in that order at 00598B7B..00598B9C: it caches 00A9C990's result into 00E08878 and 00E194DC and writes 1 into screen+55Ch for 5 and 7 only, which is what marks those two as the downloadable-content arms of the campaign mission list. The remaining arms reach BSP_MenuCommandScreen_GetSingleton with composed strings. Read to the dispatch only; the arms past 00598FA0 were not followed. See docs/MAIN_MENU_SCREENS.md. | CORRECTION (packet cc_menu_detail): the routine runs on this = screen + 8, not on the screen. 00598BD4 reaches the top-level list box as [EDI+1B0h] (screen+1B8h) and 00598FBF recovers the screen with LEA ESI,[EDI-8]. Every offset in the decompilation is therefore 8 low. The byte stored at 00598FB3 as +55Ch is screen+564h, the United States campaign flag that 00597870 and 0058C010 also set on pages 5 and 7; it is not a downloadable-content flag. The downloadable-content flag is screen+565h (00597AEE, 00597B4A). The campaign arm ends at 00599315/00599318 by clearing screen+5Ch and calling 0058C010, so this is also how the mission-detail page is entered. See docs/MAIN_MENU_MISSION_DETAIL.md. | Hypothesis, not a recovered symbol. partial: actual CEFC48+4 binding only to existing required598B60 page/activation provider; full body not implemented here; supersedes old unary screen-base ABI evidence. Original ABI: ECX screen+8 listener, row and Listbox stack DWORDs, RET8; body subtracts8 from ECX. reports/gui_manager_frame.json; reports/orch5_listbox_listener_slots.json. New C++ interfaces, no binary replacement or gameplay validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "005c27e0",
+    "before": {
+      "address": "005c27e0",
+      "function_name": "BSP_MissionRecord_SideIndex",
+      "comment": "[BSP reconstruction 005c27e0]\nHypothesis, not a recovered symbol. __fastcall bool(MissionRecord* record); the entire body is return record[0B8h] == 0, i.e. the side index used everywhere on the launch path (block 0 allied, block 1 japanese; a zero enabled byte selects block 1). Eight callers. See docs/MISSION_BRIEFING_START.md."
+    },
+    "after": {
+      "address": "005c27e0",
+      "name": "BSP_MissionRecord_SideIndex",
+      "evidence": "Hypothesis, not a recovered symbol. __fastcall bool(MissionRecord* record); the entire body is return record[0B8h] == 0, i.e. the side index used everywhere on the launch path (block 0 allied, block 1 japanese; a zero enabled byte selects block 1). Eight callers. See docs/MISSION_BRIEFING_START.md. | Hypothesis, not a recovered symbol. Canonical-side correction: complete read-only verification; existing implementation unchanged. ECX=mission record, EAX=zero-extended record byte+0B8h==0, plain RET; compatible with thiscall getter or fastcall unary function, symbol unavailable. Single screen.sides plus disjoint side_extras; exact multiunitsidIC1v1/2v2/3v3/4v4 keys. Supersedes prior first-DWORD comment: enabled store is a BYTE at005C5DAA. Same real Lua511 adapter and installed143 campaign/34multi records verified; full game not validated. docs/MISSION_SIDE_STORAGE.md; reports/mission_side_storage.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "005c5b40",
+    "before": {
+      "address": "005c5b40",
+      "function_name": "FUN_005c5b40"
+    },
+    "after": {
+      "address": "005c5b40",
+      "name": "BSP_MissionTree_AppendBriefingLayerNames",
+      "evidence": "Hypothesis, not a recovered symbol. complete normal sequence; native container allocator/debug iterator/SEH mechanics replaced. ECX mission tree; output vector stack; RET4. Canonical mission-side storage, duplicate-preserving briefing page map producer and same main-menu authored Group vectors. docs/MAIN_MENU_OBJECTIVE_RUNTIME.md; reports/main_menu_objective_runtime.json. New C++ container transport; library accessor preserved; no native ABI/game/render validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "005c5da0",
+    "before": {
+      "address": "005c5da0",
+      "function_name": "BSP_MissionTree_ReadSideBlockFromLua",
+      "comment": "[BSP reconstruction 005c5da0]\nHypothesis, not a recovered symbol. __thiscall(MissionSideBlock* this, LuaReader* reader), RET 4, 485 instructions, no flow gaps; decompiles with its arguments intact. Sets *this = 1 at 005C5DA5 before any read, which is what makes record+0B8h's first dword the side-presence test at 005C572A. Then briefingGuiLayer -> +04h (String, slot +10h) and twenty string vectors of 10h bytes: primaryObjectives +14h, secondaryObjectives +24h, hiddenObjectives +34h, hiddenHints +44h, loadingBackgrounds +54h, hints +64h, allunitsid +74h, allunitsnum +84h, changeables +94h, allunitslockid +A4h, allunitslocknum +B4h, allunitslockhint +C4h, multiunitsidDuel +D4h, multiunitsidSiege +E4h, multiunitsidEscort +F4h, multiunitsidCompetitive +104h, multiunitsidIC1v1 +114h, IC2v2 +124h, IC3v3 +134h, IC4v4 +144h. +0Ch is never written. docs/MISSION_TREE_LUA_READER.md."
+    },
+    "after": {
+      "address": "005c5da0",
+      "name": "BSP_MissionTree_ReadSideBlockFromLua",
+      "evidence": "Hypothesis, not a recovered symbol. __thiscall(MissionSideBlock* this, LuaReader* reader), RET 4, 485 instructions, no flow gaps; decompiles with its arguments intact. Sets *this = 1 at 005C5DA5 before any read, which is what makes record+0B8h's first dword the side-presence test at 005C572A. Then briefingGuiLayer -> +04h (String, slot +10h) and twenty string vectors of 10h bytes: primaryObjectives +14h, secondaryObjectives +24h, hiddenObjectives +34h, hiddenHints +44h, loadingBackgrounds +54h, hints +64h, allunitsid +74h, allunitsnum +84h, changeables +94h, allunitslockid +A4h, allunitslocknum +B4h, allunitslockhint +C4h, multiunitsidDuel +D4h, multiunitsidSiege +E4h, multiunitsidEscort +F4h, multiunitsidCompetitive +104h, multiunitsidIC1v1 +114h, IC2v2 +124h, IC3v3 +134h, IC4v4 +144h. +0Ch is never written. docs/MISSION_TREE_LUA_READER.md. | Hypothesis, not a recovered symbol. Canonical-side correction: complete storage routing and side-key correction; existing Lua-view semantic projection retained. __thiscall: ECX=one native154h side block, [entry ESP+4]=reader, RET4; byte store at005c5daa. Single screen.sides plus disjoint side_extras; exact multiunitsidIC1v1/2v2/3v3/4v4 keys. Supersedes prior first-DWORD comment: enabled store is a BYTE at005C5DAA. Same real Lua511 adapter and installed143 campaign/34multi records verified; full game not validated. docs/MISSION_SIDE_STORAGE.md; reports/mission_side_storage.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "005c6a70",
+    "before": {
+      "address": "005c6a70",
+      "function_name": "BSP_MissionTree_ReadMissionFromLua",
+      "comment": "[BSP reconstruction 005c6a70]\nHypothesis, not a recovered symbol. __thiscall(MissionRecord* this, LuaReader* reader), RET 4, 1144 instructions, no flow gaps. Fills the 434h record from one Lua mission table: id +00h, name +08h, contentID +10h, helpline +18h, sceneFile +20h, background +30h, debriefingText +38h, backgroundMovie +40h, backgroundVoice +48h, debriefingVoice +50h, MovieName +58h, date +60h..+68h (float[3] truncated), Pos +6Ch..+74h (zeroed when absent), prerequisites +78h (005C5860), navalacademy +88h (005C4AD0), description +98h, picture into +A0h/+A4h through 00AA2660, forcedDifficultyLevel +B4h with default 3 at 005C7641, allied +B8h and japanese +20Ch through 005C5DA0, sideMission +360h, MultiPlayMapSizes +364h..+423h, UniqueMultiSettings presence +424h and map +42Ch. docs/MISSION_TREE_LUA_READER.md."
+    },
+    "after": {
+      "address": "005c6a70",
+      "name": "BSP_MissionTree_ReadMissionFromLua",
+      "evidence": "Hypothesis, not a recovered symbol. __thiscall(MissionRecord* this, LuaReader* reader), RET 4, 1144 instructions, no flow gaps. Fills the 434h record from one Lua mission table: id +00h, name +08h, contentID +10h, helpline +18h, sceneFile +20h, background +30h, debriefingText +38h, backgroundMovie +40h, backgroundVoice +48h, debriefingVoice +50h, MovieName +58h, date +60h..+68h (float[3] truncated), Pos +6Ch..+74h (zeroed when absent), prerequisites +78h (005C5860), navalacademy +88h (005C4AD0), description +98h, picture into +A0h/+A4h through 00AA2660, forcedDifficultyLevel +B4h with default 3 at 005C7641, allied +B8h and japanese +20Ch through 005C5DA0, sideMission +360h, MultiPlayMapSizes +364h..+423h, UniqueMultiSettings presence +424h and map +42Ch. docs/MISSION_TREE_LUA_READER.md. | Hypothesis, not a recovered symbol. Canonical-side correction: partial: canonical side storage at005c767c..005c770f; other existing reader logic unchanged, including picture-resource boundary. __thiscall: ECX=434h mission record, [entry ESP+4]=reader, RET4; EDI retains record, ESI retains reader. Single screen.sides plus disjoint side_extras; exact multiunitsidIC1v1/2v2/3v3/4v4 keys. Supersedes prior first-DWORD comment: enabled store is a BYTE at005C5DAA. Same real Lua511 adapter and installed143 campaign/34multi records verified; full game not validated. docs/MISSION_SIDE_STORAGE.md; reports/mission_side_storage.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00696470",
+    "before": {
+      "address": "00696470",
+      "function_name": "FUN_00696470"
+    },
+    "after": {
+      "address": "00696470",
+      "name": "BSP_GuiListbox_ReadDefaultInput",
+      "evidence": "Hypothesis, not recovered symbol. ECX previous46 output; EDX next47 output; accept4A output stack; RET4. complete three-call ordering; actual4D92B0 game/input/map/sound provider required. docs/GUI_LISTBOX_FRAME.md; reports/gui_listbox_frame.json. Strict MSVC Win32 TU, full script build, both existing CTests and live call-site checks passed. Ghidra unchanged; actual callbacks and native ABI/gameplay remain explicit boundaries."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9c400",
+    "before": {
+      "address": "00a9c400",
+      "function_name": "FUN_00a9c400"
+    },
+    "after": {
+      "address": "00a9c400",
+      "name": "BSP_GuiListbox_NavigateOneStep",
+      "evidence": "Hypothesis, not recovered symbol. ECX Listbox; low-byte forward stack; RET4. complete normal valid FC iterator sequence. docs/GUI_LISTBOX_FRAME.md; reports/gui_listbox_frame.json. Strict MSVC Win32 TU, full script build, both existing CTests and live call-site checks passed. Ghidra unchanged; actual callbacks and native ABI/gameplay remain explicit boundaries."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9d030",
+    "before": {
+      "address": "00a9d030",
+      "function_name": "FUN_00a9d030"
+    },
+    "after": {
+      "address": "00a9d030",
+      "name": "BSP_GuiListbox_UpdateFrame",
+      "evidence": "Hypothesis, not recovered symbol. ECX Listbox; float dt stack; RET4. complete normal valid-owner caller sequence; required downstream bodies and invalid-state boundaries explicit. docs/GUI_LISTBOX_FRAME.md; reports/gui_listbox_frame.json. Strict MSVC Win32 TU, full script build, both existing CTests and live call-site checks passed. Ghidra unchanged; actual callbacks and native ABI/gameplay remain explicit boundaries."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9da60",
+    "before": {
+      "address": "00a9da60",
+      "function_name": "FUN_00a9da60"
+    },
+    "after": {
+      "address": "00a9da60",
+      "name": "BSP_GuiListbox_Navigate",
+      "evidence": "Hypothesis, not recovered symbol. ECX Listbox; low-byte forward stack; RET4. complete normal valid FC/14C iterator sequence; EC/158/164 require actual producers when read. docs/GUI_LISTBOX_FRAME.md; reports/gui_listbox_frame.json. Strict MSVC Win32 TU, full script build, both existing CTests and live call-site checks passed. Ghidra unchanged; actual callbacks and native ABI/gameplay remain explicit boundaries."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00aa0f50",
+    "before": {
+      "address": "00aa0f50",
+      "function_name": "BSP_GuiManager_SelectHighlightWidget",
+      "comment": "[BSP reconstruction 00aa0f50]\nHypothesis, not recovered symbol. ECX manager; signed selector stack; EAX borrowed widget; RET4. complete normal body over existing GuiResourceState slots74/78. docs/GUI_LISTBOX_NAVIGATION.md; reports/gui_listbox_navigation.json. Ghidra unchanged; primary integrator applies any annotations."
+    },
+    "after": {
+      "address": "00aa0f50",
+      "name": "BSP_GuiManager_SelectHighlightWidget",
+      "evidence": "Hypothesis, not recovered symbol. ECX manager; signed selector stack; EAX borrowed widget; RET4. complete normal body over existing GuiResourceState slots74/78. docs/GUI_LISTBOX_NAVIGATION.md; reports/gui_listbox_navigation.json. Ghidra unchanged; primary integrator applies any annotations."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00aa0f70",
+    "before": {
+      "address": "00aa0f70",
+      "function_name": "BSP_GuiManager_ResetScreens",
+      "comment": "[BSP reconstruction 00aa0f70]\nHypothesis, not a recovered symbol. void __thiscall f(manager): for the two non-null objects at manager+0x74 and manager+0x78 it writes the triple (-1.0f, -1.0f, 0.0f) into a local (00d7a260 holds 0xBF800000), passes it to the position setter 00aa8240 with the screen in ECX, then calls the screen virtual slot +0x34 with argument 0. The mechanics are from the listing at 00aa0f70; reading slot +0x34 as close or hide is unverified."
+    },
+    "after": {
+      "address": "00aa0f70",
+      "name": "BSP_GuiManager_ResetScreens",
+      "evidence": "Hypothesis, not a recovered symbol. void __thiscall f(manager): for the two non-null objects at manager+0x74 and manager+0x78 it writes the triple (-1.0f, -1.0f, 0.0f) into a local (00d7a260 holds 0xBF800000), passes it to the position setter 00aa8240 with the screen in ECX, then calls the screen virtual slot +0x34 with argument 0. The mechanics are from the listing at 00aa0f70; reading slot +0x34 as close or hide is unverified. | Hypothesis, not a recovered symbol. complete normal74/78 reset sequence with native callback reloads and live MOVSS constant. Original ABI: ECX manager, no stack arguments, RET. reports/gui_manager_frame.json; reports/orch5_listbox_listener_slots.json. New C++ interfaces, no binary replacement or gameplay validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00aa4f80",
+    "before": {
+      "address": "00aa4f80",
+      "function_name": "BSP_GuiManager_Update",
+      "comment": "[BSP reconstruction 00aa4f80]\nHypothesis, not a recovered symbol. Packet game_on_move_map, read-only analysis. Provisional. Four callers; in BSP_Game_OnMove it is called only immediately after BSP_GuiManager_GetOrCreate (004e4b67 on the blocking-screen fast path, 004e4cb8 on the front-end path), with the raw frame delta and a zero second argument, and immediately before BSP_Game_Render.\n\n[BSP reconstruction 00aa4f80] update\nHypothesis, not a recovered symbol. Packet game_on_move_map, read-only analysis. Provisional. Four callers; in BSP_Game_OnMove it is called only immediately after BSP_GuiManager_GetOrCreate (004e4b67 on the blocking-screen fast path, 004e4cb8 on the front-end path), with the raw frame delta and a zero second argument, and immediately before BSP_Game_Render. | Packet game_blocking_screen_frame: __thiscall, ECX = the 0x88-byte cGuiManager, stack arguments float seconds then a byte flag, RET 8; both BSP_Game_OnMove call sites pass flag 0. Body: byte manager+0x70 = flag; if flag == 0, 00aa3910(manager) runs the pointer hit-test pass over the cursor vector at DAT_00f8bbf4+0x94; BSP_GuiManager_ResetScreens (00aa0f70) hides hl_FrameBox at +0x74 and hlCircle_FrameBox at +0x78; 004d35d0 copy-constructs a temporary vector from the screen vector at manager+0x18/+0x1c so the walk is over a snapshot; each element is updated through its virtual +0x40(seconds) when its virtual +0x38 returns non-zero or BSP_GuiScreen_HasLiveEntries does; on exit manager+0x70 is cleared unconditionally and the snapshot is freed. The interleaved 00bf6713 calls are _SECURE_SCL assertions."
+    },
+    "after": {
+      "address": "00aa4f80",
+      "name": "BSP_GuiManager_Update",
+      "evidence": "Hypothesis, not a recovered symbol. Packet game_on_move_map, read-only analysis. Provisional. Four callers; in BSP_Game_OnMove it is called only immediately after BSP_GuiManager_GetOrCreate (004e4b67 on the blocking-screen fast path, 004e4cb8 on the front-end path), with the raw frame delta and a zero second argument, and immediately before BSP_Game_Render. | Packet game_blocking_screen_frame: __thiscall, ECX = the 0x88-byte cGuiManager, stack arguments float seconds then a byte flag, RET 8; both BSP_Game_OnMove call sites pass flag 0. Body: byte manager+0x70 = flag; if flag == 0, 00aa3910(manager) runs the pointer hit-test pass over the cursor vector at DAT_00f8bbf4+0x94; BSP_GuiManager_ResetScreens (00aa0f70) hides hl_FrameBox at +0x74 and hlCircle_FrameBox at +0x78; 004d35d0 copy-constructs a temporary vector from the screen vector at manager+0x18/+0x1c so the walk is over a snapshot; each element is updated through its virtual +0x40(seconds) when its virtual +0x38 returns non-zero or BSP_GuiScreen_HasLiveEntries does; on exit manager+0x70 is cleared unconditionally and the snapshot is freed. The interleaved 00bf6713 calls are _SECURE_SCL assertions. | Hypothesis, not a recovered symbol. complete normal caller sequence over same actual manager/page registry; AA3910 required pointer provider and actual page profiles remain explicit. Original ABI: ECX manager, seconds/raw blocked byte in two stack DWORDs, RET8. reports/gui_manager_frame.json; reports/orch5_listbox_listener_slots.json. New C++ interfaces, no binary replacement or gameplay validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00aa7ef0",
+    "before": {
+      "address": "00aa7ef0",
+      "function_name": "BSP_GuiScreen_HasLiveEntries",
+      "comment": "[BSP reconstruction 00aa7ef0]\nHypothesis, not a recovered symbol. Packet game_blocking_screen_frame, read-only analysis. Provisional. __fastcall, ECX = a cGuiScreen, no arguments, returns AL. Scans the screen+0x8c dword-counted array of pointers at screen+0x88 and returns 1 at the first non-null element, 0 otherwise. Its only observed use is in BSP_GuiManager_Update at 00aa500c, as the fallback that makes a screen whose virtual +0x38 said no still receive its virtual +0x40 update, so the array holds work that must drain even while the screen is not being drawn."
+    },
+    "after": {
+      "address": "00aa7ef0",
+      "name": "BSP_GuiScreen_HasLiveEntries",
+      "evidence": "Hypothesis, not a recovered symbol. Packet game_blocking_screen_frame, read-only analysis. Provisional. __fastcall, ECX = a cGuiScreen, no arguments, returns AL. Scans the screen+0x8c dword-counted array of pointers at screen+0x88 and returns 1 at the first non-null element, 0 otherwise. Its only observed use is in BSP_GuiManager_Update at 00aa500c, as the fallback that makes a screen whose virtual +0x38 said no still receive its virtual +0x40 update, so the array holds work that must drain even while the screen is not being drawn. | Hypothesis, not a recovered symbol. complete normal captured signed count and first nonnull scan; count<=0 returns before owner allocation or88 read; positive arrays require canonical ownership. Original ABI: ECX widget, no stack arguments, RET/AL. reports/gui_manager_frame.json; reports/orch5_listbox_listener_slots.json. New C++ interfaces, no binary replacement or gameplay validation."
+    },
+    "status": "applied"
+  }
+]

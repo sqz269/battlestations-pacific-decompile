@@ -127,7 +127,7 @@ inline constexpr double kShipAiThrottleProfileRound = 0.5;         // 00D7A280, 
 
 struct ShipAiThrottleProfile {
     std::array<std::uint8_t, kShipAiThrottleProfileBins> bin{};
-    bool bypass_41{false}; // this+41h, 009D6B4F: when set the routine only clamps
+    std::uint8_t bypass_41{0}; // actual byte:009E0270 preserves every nonzero value
 };
 
 // 009D6B87..009D6B99 and the two repeats at 009D6BA0 and 009D6BAF: the bin index

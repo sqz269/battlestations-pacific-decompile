@@ -1,0 +1,136 @@
+{
+ "repairs": [
+  {
+   "function": "00c41ad0",
+   "owner": "agent/orch6-20260912",
+   "when": "2026-09-12T21:28:32Z",
+   "decompile_lines_before": 303,
+   "gaps": [
+    {
+     "site": "00c41cd8",
+     "mnemonic": "CALL",
+     "operands": "0x00bf6989",
+     "gap_start": "00c41cdd",
+     "gap_end_exclusive": "00c41ce0",
+     "bytes": 3,
+     "after_call": true,
+     "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+    },
+    {
+     "site": "00c41d7e",
+     "mnemonic": "CALL",
+     "operands": "0x00bf6989",
+     "gap_start": "00c41d83",
+     "gap_end_exclusive": "00c41d86",
+     "bytes": 3,
+     "after_call": true,
+     "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+    },
+    {
+     "site": "00c41e6b",
+     "mnemonic": "CALL",
+     "operands": "0x00bf6989",
+     "gap_start": "00c41e70",
+     "gap_end_exclusive": "00c41e73",
+     "bytes": 3,
+     "after_call": true,
+     "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+    },
+    {
+     "site": "00c41f10",
+     "mnemonic": "CALL",
+     "operands": "0x00bf6989",
+     "gap_start": "00c41f15",
+     "gap_end_exclusive": "00c41f18",
+     "bytes": 3,
+     "after_call": true,
+     "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+    },
+    {
+     "site": "00c42048",
+     "mnemonic": "CALL",
+     "operands": "0x00bf6989",
+     "gap_start": "00c4204d",
+     "gap_end_exclusive": "00c42050",
+     "bytes": 3,
+     "after_call": true,
+     "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00c41cd8",
+      "mnemonic": "CALL",
+      "operands": "0x00bf6989",
+      "gap_start": "00c41cdd",
+      "gap_end_exclusive": "00c41ce0",
+      "bytes": 3,
+      "after_call": true,
+      "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+     },
+     "clear": "Success: Cleared flow override at 00c41cd8 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 3 byte(s)"
+    },
+    {
+     "gap": {
+      "site": "00c41d7e",
+      "mnemonic": "CALL",
+      "operands": "0x00bf6989",
+      "gap_start": "00c41d83",
+      "gap_end_exclusive": "00c41d86",
+      "bytes": 3,
+      "after_call": true,
+      "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+     },
+     "clear": "Success: Cleared flow override at 00c41d7e (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 3 byte(s)"
+    },
+    {
+     "gap": {
+      "site": "00c41e6b",
+      "mnemonic": "CALL",
+      "operands": "0x00bf6989",
+      "gap_start": "00c41e70",
+      "gap_end_exclusive": "00c41e73",
+      "bytes": 3,
+      "after_call": true,
+      "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+     },
+     "clear": "Success: Cleared flow override at 00c41e6b (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 3 byte(s)"
+    },
+    {
+     "gap": {
+      "site": "00c41f10",
+      "mnemonic": "CALL",
+      "operands": "0x00bf6989",
+      "gap_start": "00c41f15",
+      "gap_end_exclusive": "00c41f18",
+      "bytes": 3,
+      "after_call": true,
+      "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+     },
+     "clear": "Success: Cleared flow override at 00c41f10 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 3 byte(s)"
+    },
+    {
+     "gap": {
+      "site": "00c42048",
+      "mnemonic": "CALL",
+      "operands": "0x00bf6989",
+      "gap_start": "00c4204d",
+      "gap_end_exclusive": "00c42050",
+      "bytes": 3,
+      "after_call": true,
+      "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+     },
+     "clear": "Success: Cleared flow override at 00c42048 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 3 byte(s)"
+    }
+   ],
+   "decompile_lines_after": 293,
+   "gaps_remaining": 0
+  }
+ ]
+}

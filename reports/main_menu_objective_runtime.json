@@ -1,0 +1,1324 @@
+{
+  "schema_version": 1,
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "status": "reconstructed_normal_sequences_build_and_focused_container_fixture_tested",
+  "source": "src/main_menu_objective_runtime.cpp",
+  "documentation": "docs/MAIN_MENU_OBJECTIVE_RUNTIME.md",
+  "abi_compatible": false,
+  "game_validated": false,
+  "render_validated": false,
+  "functions": [
+    {
+      "address": "00519dc0",
+      "end_inclusive": "00519dea",
+      "original_name": "STL_inst_00519dc0",
+      "name": "objective_vector_element_00519dc0",
+      "source": "src/main_menu_objective_runtime.cpp",
+      "original_abi": "ECX vector; uint index stack; RET4; EAX element pointer",
+      "coverage": "complete normal sequence; native container allocator/debug iterator/SEH mechanics replaced"
+    },
+    {
+      "address": "0051cc90",
+      "end_inclusive": "0051cd7d",
+      "original_name": "FUN_0051cc90",
+      "name": "BriefingObjectivePageMap::index_0051cc90",
+      "source": "src/main_menu_objective_runtime.cpp",
+      "original_abi": "ECX map; native key pointer stack; RET4; EAX stored value pointer",
+      "coverage": "complete normal sequence; native container allocator/debug iterator/SEH mechanics replaced"
+    },
+    {
+      "address": "0051dda0",
+      "end_inclusive": "0051dfc4",
+      "original_name": "FUN_0051dda0",
+      "name": "load_briefing_objective_pages_0051dda0",
+      "source": "src/main_menu_objective_runtime.cpp",
+      "original_abi": "ECX briefing screen; RET",
+      "coverage": "complete normal sequence; native container allocator/debug iterator/SEH mechanics replaced"
+    },
+    {
+      "address": "0058f5b0",
+      "end_inclusive": "0058fed0",
+      "original_name": "FUN_0058f5b0",
+      "name": "bind_main_menu_objectives_0058f5b0",
+      "source": "src/main_menu_objective_runtime.cpp",
+      "original_abi": "ECX main-menu screen; RET",
+      "coverage": "complete normal sequence; native container allocator/debug iterator/SEH mechanics replaced"
+    },
+    {
+      "address": "005c5b40",
+      "end_inclusive": "005c5ccc",
+      "original_name": "FUN_005c5b40",
+      "name": "append_briefing_layer_names_005c5b40",
+      "source": "src/main_menu_objective_runtime.cpp",
+      "original_abi": "ECX mission tree; output vector stack; RET4",
+      "coverage": "complete normal sequence; native container allocator/debug iterator/SEH mechanics replaced"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00519ddb",
+      "native": "00bf6713",
+      "function": "00519dc0",
+      "instruction": "00519ddb: CALL 0x00bf6713 ",
+      "implementation": "invalid native domain; standard C++ checks/exceptions",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0051ccb2",
+      "native": "0051abb0",
+      "function": "0051cc90",
+      "instruction": "0051ccb2: CALL 0x0051abb0 ",
+      "implementation": "native map lower_bound mechanics replaced by std::map",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0051ccbd",
+      "native": "00bf6713",
+      "function": "0051cc90",
+      "instruction": "0051ccbd: CALL 0x00bf6713 ",
+      "implementation": "invalid native domain; standard C++ checks/exceptions",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0051ccce",
+      "native": "00443d00",
+      "function": "0051cc90",
+      "instruction": "0051ccce: CALL 0x00443d00 ",
+      "implementation": "BriefingObjectivePageLess with required actual CRT comparison",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0051ccef",
+      "native": "0041dd40",
+      "function": "0051cc90",
+      "instruction": "0051ccef: CALL 0x0041dd40 ",
+      "implementation": "NativeString resize or standard C++ string ownership as documented",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0051cd06",
+      "native": "00bf7680",
+      "function": "0051cc90",
+      "instruction": "0051cd06: CALL 0x00bf7680 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0051cd26",
+      "native": "0051c890",
+      "function": "0051cc90",
+      "instruction": "0051cd26: CALL 0x0051c890 ",
+      "implementation": "native map insertion mechanics replaced by std::map",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0051cd47",
+      "native": "00419cc0",
+      "function": "0051cc90",
+      "instruction": "0051cd47: CALL 0x00419cc0 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0051cd4e",
+      "native": "00bd1510",
+      "function": "0051cc90",
+      "instruction": "0051cd4e: CALL 0x00bd1510 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0051cd58",
+      "native": "00bf6713",
+      "function": "0051cc90",
+      "instruction": "0051cd58: CALL 0x00bf6713 ",
+      "implementation": "invalid native domain; standard C++ checks/exceptions",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0051cd62",
+      "native": "00bf6713",
+      "function": "0051cc90",
+      "instruction": "0051cd62: CALL 0x00bf6713 ",
+      "implementation": "invalid native domain; standard C++ checks/exceptions",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0051ddf6",
+      "native": "005c5b40",
+      "function": "0051dda0",
+      "instruction": "0051ddf6: CALL 0x005c5b40 ",
+      "implementation": "append_briefing_layer_names_005c5b40",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0051de43",
+      "native": "0041dd40",
+      "function": "0051dda0",
+      "instruction": "0051de43: CALL 0x0041dd40 ",
+      "implementation": "NativeString resize or standard C++ string ownership as documented",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0051de5e",
+      "native": "00bf7680",
+      "function": "0051dda0",
+      "instruction": "0051de5e: CALL 0x00bf7680 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0051de84",
+      "native": "0041dd40",
+      "function": "0051dda0",
+      "instruction": "0051de84: CALL 0x0041dd40 ",
+      "implementation": "NativeString resize or standard C++ string ownership as documented",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0051de9f",
+      "native": "00bf7680",
+      "function": "0051dda0",
+      "instruction": "0051de9f: CALL 0x00bf7680 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0051deb9",
+      "native": "004261a0",
+      "function": "0051dda0",
+      "instruction": "0051deb9: CALL 0x004261a0 ",
+      "implementation": "concatenate_native_string_headers_004261a0",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0051dece",
+      "native": "00419cc0",
+      "function": "0051dda0",
+      "instruction": "0051dece: CALL 0x00419cc0 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0051ded5",
+      "native": "00bd1510",
+      "function": "0051dda0",
+      "instruction": "0051ded5: CALL 0x00bd1510 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0051defe",
+      "native": "00419cc0",
+      "function": "0051dda0",
+      "instruction": "0051defe: CALL 0x00419cc0 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0051df05",
+      "native": "00bd1510",
+      "function": "0051dda0",
+      "instruction": "0051df05: CALL 0x00bd1510 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0051df0a",
+      "native": "004c12b0",
+      "function": "0051dda0",
+      "instruction": "0051df0a: CALL 0x004c12b0 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0051df20",
+      "native": "0051cc90",
+      "function": "0051dda0",
+      "instruction": "0051df20: CALL 0x0051cc90 ",
+      "implementation": "BriefingObjectivePageMap::index_0051cc90",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0051df31",
+      "native": "00aa5840",
+      "function": "0051dda0",
+      "instruction": "0051df31: CALL 0x00aa5840 ",
+      "implementation": "load_gui_page_00aa5840 existing canonical registry/loader",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0051df54",
+      "native": "0057bec0",
+      "function": "0051dda0",
+      "instruction": "0051df54: CALL 0x0057bec0 ",
+      "implementation": "report_loading_progress existing concrete implementation",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0051df70",
+      "native": "00419cc0",
+      "function": "0051dda0",
+      "instruction": "0051df70: CALL 0x00419cc0 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0051df77",
+      "native": "00bd1510",
+      "function": "0051dda0",
+      "instruction": "0051df77: CALL 0x00bd1510 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0051dfa0",
+      "native": "00432050",
+      "function": "0051dda0",
+      "instruction": "0051dfa0: CALL 0x00432050 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0051dfaa",
+      "native": "00bf65ac",
+      "function": "0051dda0",
+      "instruction": "0051dfaa: CALL 0x00bf65ac ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f5e8",
+      "native": "00bf6713",
+      "function": "0058f5b0",
+      "instruction": "0058f5e8: CALL 0x00bf6713 ",
+      "implementation": "invalid native domain; standard C++ checks/exceptions",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f5f5",
+      "native": "00bf6713",
+      "function": "0058f5b0",
+      "instruction": "0058f5f5: CALL 0x00bf6713 ",
+      "implementation": "invalid native domain; standard C++ checks/exceptions",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f605",
+      "native": "0051aeb0",
+      "function": "0058f5b0",
+      "instruction": "0058f605: CALL 0x0051aeb0 ",
+      "implementation": "vector clear of borrowed payloads",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f61e",
+      "native": "00bf6713",
+      "function": "0058f5b0",
+      "instruction": "0058f61e: CALL 0x00bf6713 ",
+      "implementation": "invalid native domain; standard C++ checks/exceptions",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f62b",
+      "native": "00bf6713",
+      "function": "0058f5b0",
+      "instruction": "0058f62b: CALL 0x00bf6713 ",
+      "implementation": "invalid native domain; standard C++ checks/exceptions",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f63b",
+      "native": "0051aeb0",
+      "function": "0058f5b0",
+      "instruction": "0058f63b: CALL 0x0051aeb0 ",
+      "implementation": "vector clear of borrowed payloads",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f642",
+      "native": "005806a0",
+      "function": "0058f5b0",
+      "instruction": "0058f642: CALL 0x005806a0 ",
+      "implementation": "MainMenuObjectiveProviders::selected_mission_005806a0",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f64f",
+      "native": "005c27e0",
+      "function": "0058f5b0",
+      "instruction": "0058f64f: CALL 0x005c27e0 ",
+      "implementation": "mission_side_index over canonical record.screen.sides",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f671",
+      "native": "0051cc90",
+      "function": "0058f5b0",
+      "instruction": "0058f671: CALL 0x0051cc90 ",
+      "implementation": "BriefingObjectivePageMap::index_0051cc90",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f689",
+      "native": "0058f5b0+vtable34",
+      "function": "0058f5b0",
+      "instruction": "0058f689: CALL EDX ",
+      "implementation": "GuiWidgetOwner::set_visible34 actual derived type dispatch",
+      "resolved_target": "00ac4450",
+      "coverage": "normal body indirect call"
+    },
+    {
+      "address": "0058f69c",
+      "native": "0041dd40",
+      "function": "0058f5b0",
+      "instruction": "0058f69c: CALL 0x0041dd40 ",
+      "implementation": "NativeString resize or standard C++ string ownership as documented",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f6b6",
+      "native": "00bf7680",
+      "function": "0058f5b0",
+      "instruction": "0058f6b6: CALL 0x00bf7680 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f6d1",
+      "native": "00aa7e00",
+      "function": "0058f5b0",
+      "instruction": "0058f6d1: CALL 0x00aa7e00 ",
+      "implementation": "find_child_by_name_00aa7e00 actual-owner overload",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f6f6",
+      "native": "00419cc0",
+      "function": "0058f5b0",
+      "instruction": "0058f6f6: CALL 0x00419cc0 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f6fd",
+      "native": "00bd1510",
+      "function": "0058f5b0",
+      "instruction": "0058f6fd: CALL 0x00bd1510 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f711",
+      "native": "0041dd40",
+      "function": "0058f5b0",
+      "instruction": "0058f711: CALL 0x0041dd40 ",
+      "implementation": "NativeString resize or standard C++ string ownership as documented",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f72c",
+      "native": "00bf7680",
+      "function": "0058f5b0",
+      "instruction": "0058f72c: CALL 0x00bf7680 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f74a",
+      "native": "0041dd40",
+      "function": "0058f5b0",
+      "instruction": "0058f74a: CALL 0x0041dd40 ",
+      "implementation": "NativeString resize or standard C++ string ownership as documented",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f765",
+      "native": "00bf7680",
+      "function": "0058f5b0",
+      "instruction": "0058f765: CALL 0x00bf7680 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f784",
+      "native": "00aa7e00",
+      "function": "0058f5b0",
+      "instruction": "0058f784: CALL 0x00aa7e00 ",
+      "implementation": "find_child_by_name_00aa7e00 actual-owner overload",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f7a4",
+      "native": "00aa7e00",
+      "function": "0058f5b0",
+      "instruction": "0058f7a4: CALL 0x00aa7e00 ",
+      "implementation": "find_child_by_name_00aa7e00 actual-owner overload",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f7f8",
+      "native": "00bf6713",
+      "function": "0058f5b0",
+      "instruction": "0058f7f8: CALL 0x00bf6713 ",
+      "implementation": "invalid native domain; standard C++ checks/exceptions",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f80f",
+      "native": "0051c5f0",
+      "function": "0058f5b0",
+      "instruction": "0058f80f: CALL 0x0051c5f0 ",
+      "implementation": "vector push_back of borrowed payloads",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f85d",
+      "native": "00bf6713",
+      "function": "0058f5b0",
+      "instruction": "0058f85d: CALL 0x00bf6713 ",
+      "implementation": "invalid native domain; standard C++ checks/exceptions",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f874",
+      "native": "0051c5f0",
+      "function": "0058f5b0",
+      "instruction": "0058f874: CALL 0x0051c5f0 ",
+      "implementation": "vector push_back of borrowed payloads",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f883",
+      "native": "0058f5b0+vtable34",
+      "function": "0058f5b0",
+      "instruction": "0058f883: CALL EDX ",
+      "implementation": "GuiWidgetOwner::set_visible34 actual derived type dispatch",
+      "resolved_target": "00aa8530",
+      "coverage": "normal body indirect call"
+    },
+    {
+      "address": "0058f88e",
+      "native": "0058f5b0+vtable34",
+      "function": "0058f5b0",
+      "instruction": "0058f88e: CALL EDX ",
+      "implementation": "GuiWidgetOwner::set_visible34 actual derived type dispatch",
+      "resolved_target": "00aa8530",
+      "coverage": "normal body indirect call"
+    },
+    {
+      "address": "0058f8a4",
+      "native": "0041dd40",
+      "function": "0058f5b0",
+      "instruction": "0058f8a4: CALL 0x0041dd40 ",
+      "implementation": "NativeString resize or standard C++ string ownership as documented",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f8bf",
+      "native": "00bf7680",
+      "function": "0058f5b0",
+      "instruction": "0058f8bf: CALL 0x00bf7680 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f8d7",
+      "native": "004260b0",
+      "function": "0058f5b0",
+      "instruction": "0058f8d7: CALL 0x004260b0 ",
+      "implementation": "native_string_from_int_004260b0",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f8f0",
+      "native": "004261a0",
+      "function": "0058f5b0",
+      "instruction": "0058f8f0: CALL 0x004261a0 ",
+      "implementation": "concatenate_native_string_headers_004261a0",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f90b",
+      "native": "0041dd40",
+      "function": "0058f5b0",
+      "instruction": "0058f90b: CALL 0x0041dd40 ",
+      "implementation": "NativeString resize or standard C++ string ownership as documented",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f923",
+      "native": "00bf7680",
+      "function": "0058f5b0",
+      "instruction": "0058f923: CALL 0x00bf7680 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f943",
+      "native": "00419cc0",
+      "function": "0058f5b0",
+      "instruction": "0058f943: CALL 0x00419cc0 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f94a",
+      "native": "00bd1510",
+      "function": "0058f5b0",
+      "instruction": "0058f94a: CALL 0x00bd1510 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f967",
+      "native": "00419cc0",
+      "function": "0058f5b0",
+      "instruction": "0058f967: CALL 0x00419cc0 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f96e",
+      "native": "00bd1510",
+      "function": "0058f5b0",
+      "instruction": "0058f96e: CALL 0x00bd1510 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f983",
+      "native": "00419cc0",
+      "function": "0058f5b0",
+      "instruction": "0058f983: CALL 0x00419cc0 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f98a",
+      "native": "00bd1510",
+      "function": "0058f5b0",
+      "instruction": "0058f98a: CALL 0x00bd1510 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f9a1",
+      "native": "0041dd40",
+      "function": "0058f5b0",
+      "instruction": "0058f9a1: CALL 0x0041dd40 ",
+      "implementation": "NativeString resize or standard C++ string ownership as documented",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f9bc",
+      "native": "00bf7680",
+      "function": "0058f5b0",
+      "instruction": "0058f9bc: CALL 0x00bf7680 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f9d4",
+      "native": "004260b0",
+      "function": "0058f5b0",
+      "instruction": "0058f9d4: CALL 0x004260b0 ",
+      "implementation": "native_string_from_int_004260b0",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058f9ed",
+      "native": "004261a0",
+      "function": "0058f5b0",
+      "instruction": "0058f9ed: CALL 0x004261a0 ",
+      "implementation": "concatenate_native_string_headers_004261a0",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fa08",
+      "native": "0041dd40",
+      "function": "0058f5b0",
+      "instruction": "0058fa08: CALL 0x0041dd40 ",
+      "implementation": "NativeString resize or standard C++ string ownership as documented",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fa20",
+      "native": "00bf7680",
+      "function": "0058f5b0",
+      "instruction": "0058fa20: CALL 0x00bf7680 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fa40",
+      "native": "00419cc0",
+      "function": "0058f5b0",
+      "instruction": "0058fa40: CALL 0x00419cc0 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fa47",
+      "native": "00bd1510",
+      "function": "0058f5b0",
+      "instruction": "0058fa47: CALL 0x00bd1510 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fa64",
+      "native": "00419cc0",
+      "function": "0058f5b0",
+      "instruction": "0058fa64: CALL 0x00419cc0 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fa6b",
+      "native": "00bd1510",
+      "function": "0058f5b0",
+      "instruction": "0058fa6b: CALL 0x00bd1510 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fa80",
+      "native": "00419cc0",
+      "function": "0058f5b0",
+      "instruction": "0058fa80: CALL 0x00419cc0 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fa87",
+      "native": "00bd1510",
+      "function": "0058f5b0",
+      "instruction": "0058fa87: CALL 0x00bd1510 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fa99",
+      "native": "00aa7e00",
+      "function": "0058f5b0",
+      "instruction": "0058fa99: CALL 0x00aa7e00 ",
+      "implementation": "find_child_by_name_00aa7e00 actual-owner overload",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fab8",
+      "native": "0041dd40",
+      "function": "0058f5b0",
+      "instruction": "0058fab8: CALL 0x0041dd40 ",
+      "implementation": "NativeString resize or standard C++ string ownership as documented",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fad0",
+      "native": "00bf7680",
+      "function": "0058f5b0",
+      "instruction": "0058fad0: CALL 0x00bf7680 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fae0",
+      "native": "0041dd40",
+      "function": "0058f5b0",
+      "instruction": "0058fae0: CALL 0x0041dd40 ",
+      "implementation": "NativeString resize or standard C++ string ownership as documented",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058faf8",
+      "native": "00bf7680",
+      "function": "0058f5b0",
+      "instruction": "0058faf8: CALL 0x00bf7680 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fb14",
+      "native": "00aa7e00",
+      "function": "0058f5b0",
+      "instruction": "0058fb14: CALL 0x00aa7e00 ",
+      "implementation": "find_child_by_name_00aa7e00 actual-owner overload",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fb41",
+      "native": "00aa7e00",
+      "function": "0058f5b0",
+      "instruction": "0058fb41: CALL 0x00aa7e00 ",
+      "implementation": "find_child_by_name_00aa7e00 actual-owner overload",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fb8c",
+      "native": "00bf6713",
+      "function": "0058f5b0",
+      "instruction": "0058fb8c: CALL 0x00bf6713 ",
+      "implementation": "invalid native domain; standard C++ checks/exceptions",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fb9f",
+      "native": "0051c5f0",
+      "function": "0058f5b0",
+      "instruction": "0058fb9f: CALL 0x0051c5f0 ",
+      "implementation": "vector push_back of borrowed payloads",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fbe8",
+      "native": "00bf6713",
+      "function": "0058f5b0",
+      "instruction": "0058fbe8: CALL 0x00bf6713 ",
+      "implementation": "invalid native domain; standard C++ checks/exceptions",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fbfb",
+      "native": "0051c5f0",
+      "function": "0058f5b0",
+      "instruction": "0058fbfb: CALL 0x0051c5f0 ",
+      "implementation": "vector push_back of borrowed payloads",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fc0e",
+      "native": "0058f5b0+vtable34",
+      "function": "0058f5b0",
+      "instruction": "0058fc0e: CALL EDX ",
+      "implementation": "GuiWidgetOwner::set_visible34 actual derived type dispatch",
+      "resolved_target": "00aa8530",
+      "coverage": "normal body indirect call"
+    },
+    {
+      "address": "0058fc18",
+      "native": "0058f5b0+vtable34",
+      "function": "0058f5b0",
+      "instruction": "0058fc18: CALL EDX ",
+      "implementation": "GuiWidgetOwner::set_visible34 actual derived type dispatch",
+      "resolved_target": "00aa8530",
+      "coverage": "normal body indirect call"
+    },
+    {
+      "address": "0058fc2e",
+      "native": "0041dd40",
+      "function": "0058f5b0",
+      "instruction": "0058fc2e: CALL 0x0041dd40 ",
+      "implementation": "NativeString resize or standard C++ string ownership as documented",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fc49",
+      "native": "00bf7680",
+      "function": "0058f5b0",
+      "instruction": "0058fc49: CALL 0x00bf7680 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fc61",
+      "native": "004260b0",
+      "function": "0058f5b0",
+      "instruction": "0058fc61: CALL 0x004260b0 ",
+      "implementation": "native_string_from_int_004260b0",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fc7a",
+      "native": "004261a0",
+      "function": "0058f5b0",
+      "instruction": "0058fc7a: CALL 0x004261a0 ",
+      "implementation": "concatenate_native_string_headers_004261a0",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fc95",
+      "native": "0041dd40",
+      "function": "0058f5b0",
+      "instruction": "0058fc95: CALL 0x0041dd40 ",
+      "implementation": "NativeString resize or standard C++ string ownership as documented",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fcad",
+      "native": "00bf7680",
+      "function": "0058f5b0",
+      "instruction": "0058fcad: CALL 0x00bf7680 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fccd",
+      "native": "00419cc0",
+      "function": "0058f5b0",
+      "instruction": "0058fccd: CALL 0x00419cc0 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fcd4",
+      "native": "00bd1510",
+      "function": "0058f5b0",
+      "instruction": "0058fcd4: CALL 0x00bd1510 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fcf1",
+      "native": "00419cc0",
+      "function": "0058f5b0",
+      "instruction": "0058fcf1: CALL 0x00419cc0 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fcf8",
+      "native": "00bd1510",
+      "function": "0058f5b0",
+      "instruction": "0058fcf8: CALL 0x00bd1510 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fd0d",
+      "native": "00419cc0",
+      "function": "0058f5b0",
+      "instruction": "0058fd0d: CALL 0x00419cc0 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fd14",
+      "native": "00bd1510",
+      "function": "0058f5b0",
+      "instruction": "0058fd14: CALL 0x00bd1510 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fd2b",
+      "native": "0041dd40",
+      "function": "0058f5b0",
+      "instruction": "0058fd2b: CALL 0x0041dd40 ",
+      "implementation": "NativeString resize or standard C++ string ownership as documented",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fd46",
+      "native": "00bf7680",
+      "function": "0058f5b0",
+      "instruction": "0058fd46: CALL 0x00bf7680 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fd5e",
+      "native": "004260b0",
+      "function": "0058f5b0",
+      "instruction": "0058fd5e: CALL 0x004260b0 ",
+      "implementation": "native_string_from_int_004260b0",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fd77",
+      "native": "004261a0",
+      "function": "0058f5b0",
+      "instruction": "0058fd77: CALL 0x004261a0 ",
+      "implementation": "concatenate_native_string_headers_004261a0",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fd92",
+      "native": "0041dd40",
+      "function": "0058f5b0",
+      "instruction": "0058fd92: CALL 0x0041dd40 ",
+      "implementation": "NativeString resize or standard C++ string ownership as documented",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fdaa",
+      "native": "00bf7680",
+      "function": "0058f5b0",
+      "instruction": "0058fdaa: CALL 0x00bf7680 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fdca",
+      "native": "00419cc0",
+      "function": "0058f5b0",
+      "instruction": "0058fdca: CALL 0x00419cc0 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fdd1",
+      "native": "00bd1510",
+      "function": "0058f5b0",
+      "instruction": "0058fdd1: CALL 0x00bd1510 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fdee",
+      "native": "00419cc0",
+      "function": "0058f5b0",
+      "instruction": "0058fdee: CALL 0x00419cc0 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fdf5",
+      "native": "00bd1510",
+      "function": "0058f5b0",
+      "instruction": "0058fdf5: CALL 0x00bd1510 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fe0a",
+      "native": "00419cc0",
+      "function": "0058f5b0",
+      "instruction": "0058fe0a: CALL 0x00419cc0 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fe11",
+      "native": "00bd1510",
+      "function": "0058f5b0",
+      "instruction": "0058fe11: CALL 0x00bd1510 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fe23",
+      "native": "00aa7e00",
+      "function": "0058f5b0",
+      "instruction": "0058fe23: CALL 0x00aa7e00 ",
+      "implementation": "find_child_by_name_00aa7e00 actual-owner overload",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fe47",
+      "native": "005c27e0",
+      "function": "0058f5b0",
+      "instruction": "0058fe47: CALL 0x005c27e0 ",
+      "implementation": "mission_side_index over canonical record.screen.sides",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fe90",
+      "native": "00419cc0",
+      "function": "0058f5b0",
+      "instruction": "0058fe90: CALL 0x00419cc0 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058fe97",
+      "native": "00bd1510",
+      "function": "0058f5b0",
+      "instruction": "0058fe97: CALL 0x00bd1510 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058feb2",
+      "native": "00419cc0",
+      "function": "0058f5b0",
+      "instruction": "0058feb2: CALL 0x00419cc0 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "0058feb9",
+      "native": "00bd1510",
+      "function": "0058f5b0",
+      "instruction": "0058feb9: CALL 0x00bd1510 ",
+      "implementation": "native runtime/string/STL mechanics; existing operation or documented C++ ownership projection",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "005c5b52",
+      "native": "00bf6713",
+      "function": "005c5b40",
+      "instruction": "005c5b52: CALL 0x00bf6713 ",
+      "implementation": "invalid native domain; standard C++ checks/exceptions",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "005c5b6b",
+      "native": "00bf6713",
+      "function": "005c5b40",
+      "instruction": "005c5b6b: CALL 0x00bf6713 ",
+      "implementation": "invalid native domain; standard C++ checks/exceptions",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "005c5b78",
+      "native": "00bf6713",
+      "function": "005c5b40",
+      "instruction": "005c5b78: CALL 0x00bf6713 ",
+      "implementation": "invalid native domain; standard C++ checks/exceptions",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "005c5b89",
+      "native": "00bf6713",
+      "function": "005c5b40",
+      "instruction": "005c5b89: CALL 0x00bf6713 ",
+      "implementation": "invalid native domain; standard C++ checks/exceptions",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "005c5b93",
+      "native": "00bf6713",
+      "function": "005c5b40",
+      "instruction": "005c5b93: CALL 0x00bf6713 ",
+      "implementation": "invalid native domain; standard C++ checks/exceptions",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "005c5ba3",
+      "native": "00bf6713",
+      "function": "005c5b40",
+      "instruction": "005c5ba3: CALL 0x00bf6713 ",
+      "implementation": "invalid native domain; standard C++ checks/exceptions",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "005c5bbc",
+      "native": "00bf6713",
+      "function": "005c5b40",
+      "instruction": "005c5bbc: CALL 0x00bf6713 ",
+      "implementation": "invalid native domain; standard C++ checks/exceptions",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "005c5bc9",
+      "native": "00bf6713",
+      "function": "005c5b40",
+      "instruction": "005c5bc9: CALL 0x00bf6713 ",
+      "implementation": "invalid native domain; standard C++ checks/exceptions",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "005c5bd2",
+      "native": "00bf6713",
+      "function": "005c5b40",
+      "instruction": "005c5bd2: CALL 0x00bf6713 ",
+      "implementation": "invalid native domain; standard C++ checks/exceptions",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "005c5be0",
+      "native": "00bf6713",
+      "function": "005c5b40",
+      "instruction": "005c5be0: CALL 0x00bf6713 ",
+      "implementation": "invalid native domain; standard C++ checks/exceptions",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "005c5c0c",
+      "native": "00450540",
+      "function": "005c5b40",
+      "instruction": "005c5c0c: CALL 0x00450540 ",
+      "implementation": "duplicate-preserving string vector push_back",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "005c5c16",
+      "native": "00bf6713",
+      "function": "005c5b40",
+      "instruction": "005c5c16: CALL 0x00bf6713 ",
+      "implementation": "invalid native domain; standard C++ checks/exceptions",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "005c5c2f",
+      "native": "00bf6713",
+      "function": "005c5b40",
+      "instruction": "005c5c2f: CALL 0x00bf6713 ",
+      "implementation": "invalid native domain; standard C++ checks/exceptions",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "005c5c4c",
+      "native": "00bf6713",
+      "function": "005c5b40",
+      "instruction": "005c5c4c: CALL 0x00bf6713 ",
+      "implementation": "invalid native domain; standard C++ checks/exceptions",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "005c5c59",
+      "native": "00bf6713",
+      "function": "005c5b40",
+      "instruction": "005c5c59: CALL 0x00bf6713 ",
+      "implementation": "invalid native domain; standard C++ checks/exceptions",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "005c5c66",
+      "native": "00bf6713",
+      "function": "005c5b40",
+      "instruction": "005c5c66: CALL 0x00bf6713 ",
+      "implementation": "invalid native domain; standard C++ checks/exceptions",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "005c5c73",
+      "native": "00bf6713",
+      "function": "005c5b40",
+      "instruction": "005c5c73: CALL 0x00bf6713 ",
+      "implementation": "invalid native domain; standard C++ checks/exceptions",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "005c5c7d",
+      "native": "00bf6713",
+      "function": "005c5b40",
+      "instruction": "005c5c7d: CALL 0x00bf6713 ",
+      "implementation": "invalid native domain; standard C++ checks/exceptions",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "005c5c96",
+      "native": "00450540",
+      "function": "005c5b40",
+      "instruction": "005c5c96: CALL 0x00450540 ",
+      "implementation": "duplicate-preserving string vector push_back",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "005c5caf",
+      "native": "00450540",
+      "function": "005c5b40",
+      "instruction": "005c5caf: CALL 0x00450540 ",
+      "implementation": "duplicate-preserving string vector push_back",
+      "coverage": "normal body call"
+    },
+    {
+      "address": "005c5cb9",
+      "native": "00bf6713",
+      "function": "005c5b40",
+      "instruction": "005c5cb9: CALL 0x00bf6713 ",
+      "implementation": "invalid native domain; standard C++ checks/exceptions",
+      "coverage": "normal body call"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Objective vector payloads presumed to require text/group cloning",
+      "evidence": "58F671 map lookup;58F784/58F7A4 child lookups;58F7E1/58F846 publication;594C91 call precedes594BF0 text clones",
+      "is": "58F5B0 publishes authored objective/companion Groups from briefing screen page map12C"
+    },
+    {
+      "was": "5C5B40 possibly collects unique keys",
+      "evidence": "5C5C0C,5C5C96,5C5CAF call450540; complete450540 body is vector append",
+      "is": "Duplicate-preserving push_back sequence; grouped active side then both multiplayer sides"
+    }
+  ],
+  "producer_chain": [
+    {
+      "caller": "0051e280",
+      "call_site": "0051e31a",
+      "callee": "0051dda0",
+      "role": "briefing registration loads map; live xref verified"
+    },
+    {
+      "caller": "00594bf0",
+      "call_site": "00594c91",
+      "callee": "0058f5b0",
+      "role": "objective page builder produces borrowed vectors"
+    }
+  ],
+  "indirect_table_evidence": [
+    {
+      "profile": "Group",
+      "table": "00d5cb80",
+      "slot": "34",
+      "slot_address": "00d5cbb4",
+      "bytes": "30 85 aa 00",
+      "target": "00aa8530"
+    },
+    {
+      "profile": "Screen",
+      "table": "00d5be38",
+      "slot": "34",
+      "slot_address": "00d5be6c",
+      "bytes": "50 44 ac 00",
+      "target": "00ac4450"
+    }
+  ],
+  "gaps": [
+    {
+      "start": "0051dfaf",
+      "end_inclusive": "0051dfb1",
+      "no_ghidra_function": true,
+      "bytes": "83 c4 04",
+      "instruction": "ADD ESP,4",
+      "flow": "falls through from _free to51DFB2; no CALL"
+    },
+    {
+      "start": "005c5baa",
+      "end_inclusive": "005c5baf",
+      "no_ghidra_function": true,
+      "bytes": "8d 9b 00 00 00 00",
+      "instruction": "LEA EBX,[EBX]",
+      "flow": "bypassed by5C5BA8 unconditional jump; no CALL"
+    },
+    {
+      "start": "0058fb29",
+      "end_inclusive": "0058fb2f",
+      "no_ghidra_function": true,
+      "bytes": "8d a4 24 00 00 00 00",
+      "instruction": "LEA ESP,[ESP]",
+      "flow": "alignment bypassed by58FB27 jump to58FB34; no CALL"
+    }
+  ],
+  "unresolved": [
+    "594BF0 text/Listbox row construction remains separate; no cloning in58F5B0",
+    "Concrete installed page loader and all actual widget/material/node type dependencies must be supplied",
+    "Native map/vector/string allocators for map loading, native debug iterators, corrupt input behavior and SEH are not reproduced",
+    "No original ABI or game/render validation"
+  ],
+  "validation": {
+    "live_call_check": "139 direct call rows checked; 0 failed; 5 indirect current34 rows with table bytes; local/objective_call_check.log",
+    "strict_compile": "PASS: MSVC Win32 /std:c++17 /EHsc /MD /W4 /WX /fp:strict; local/objective_strict_compile.log",
+    "dependencies": "Canonical side storage5861fbfc cherry-picked as c6e9c3d2; worker-local FetchContent source copies in ignoredlocal/deps; initial remote Lua download canceled, Win32 configure recovered; no tracked cache changes",
+    "full_build": "PASS: ./scripts/build.ps1 final incremental after canonical side/header changes; Win32 Release bsp_core and bsp_game built; existing reconstructed_math1/1 passed; local/objective_final_build.log",
+    "focused_fixture": "PASS: local/objective_container_probe.cpp linked new worker build/win32/Release/bsp_core.lib with /MANIFEST:EMBED; low-byte side choice, empty omission, duplicate append/order, retained prior output, stable case-insensitive map slot, vector element address identity/null payload/unsigned bounds; local/objective_final_probe.log",
+    "fixture_limits": "Container/source behavior only; no complete resource loader, canonical owner Group visibility traversal, original binary ABI, rendering or gameplay claim"
+  },
+  "proposed_annotations": [
+    {
+      "address": "0051cc90",
+      "old": "FUN_0051cc90",
+      "name": "STL_BriefingPageMap_Index_0051cc90"
+    },
+    {
+      "address": "0051dda0",
+      "old": "FUN_0051dda0",
+      "name": "BSP_BriefingScreen_LoadObjectivePages"
+    },
+    {
+      "address": "0058f5b0",
+      "old": "FUN_0058f5b0",
+      "name": "BSP_MainMenu_BindObjectiveGroups"
+    },
+    {
+      "address": "005c5b40",
+      "old": "FUN_005c5b40",
+      "name": "BSP_MissionTree_AppendBriefingLayerNames"
+    }
+  ],
+  "ghidra_mutation": "none; all descriptive names remain proposals for integrator under write lock; existingSTL_inst_00519dc0 preserved"
+}

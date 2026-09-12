@@ -1,0 +1,321 @@
+{
+  "packet": "orch4_native_input_runtime_ae",
+  "kind": "source_composition_no_original_function_claim",
+  "sources": [
+    "include/bsp/native_input_device_runtime.hpp",
+    "src/native_input_device_runtime.cpp"
+  ],
+  "documentation": "docs/NATIVE_INPUT_DEVICE_RUNTIME.md",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "worker_commits": {
+    "force_requests": "394b380b4869bccf17a2b2ffbc81185940b70388",
+    "virtuals": "3c897b00ddf49f52329362b1aaa5b7ac01e60799",
+    "guid_storage": "36fd92561baa1b39c017609ed89568555038ccc4",
+    "tail_virtuals": "24d02017b30cb2b5cfecd2970b24e37c248d675b"
+  },
+  "profiles": {
+    "keyboard": "00d5b904",
+    "mouse": "00d5b8b0",
+    "xinput": "00d5bb48",
+    "joystick": "00d5b7f0",
+    "gamepad_base": "00d5b670"
+  },
+  "ownership": "Borrows SDK/string/XInput services and canonical source clock/window publications. No second raw owner, manager, device table, GUID owner or implicit COM release.",
+  "dispatch": "Supplied captured profile selects fixed target; other methods read actual raw+0 on entry, nested native virtual calls capture afresh. Known pure slots use real CRT purecall.",
+  "native_metadata": {
+    "prototype_receipt": "reports/native_input_provider_prototypes.json",
+    "saved_readback_count": 42,
+    "missing_start_definitions": "reports/native_input_virtuals_function_definitions.json",
+    "force_base_definition": "reports/native_gamepad_force_requests_definitions.json",
+    "tail_prototype_receipt": "reports/native_input_tail_prototypes.json",
+    "tail_missing_start_definitions": "reports/native_input_tail_function_definitions.json",
+    "defined_starts_this_batch": 10
+  },
+  "review": {
+    "mapped_slots_verified": 82,
+    "actual_total_slots": 82,
+    "extra_tail_providers_pending": false,
+    "evidence": "Primary live table bytes plus worker read-only review of all signatures and dispatch; tracked native_profile_tables below."
+  },
+  "limitations": [
+    "New source ABI; no original vtable or exception ABI claim.",
+    "Canonical source FrameClock/Win32PlatformState owners are not original singleton/vtable ABI casts.",
+    "Borrowed fixture image constants are not installed original executable globals.",
+    "Full application frame/input-action path and raw request event/submission/insertion are not yet connected.",
+    "No game launch, single-instance bypass, hardware input or gameplay validation."
+  ],
+  "native_profile_tables": {
+    "verification": "Primary read all five complete table byte spans through bsp.py ghidra bytes against verified bsp.gpr /battlestationspacific.exe; 82 DWORD slots agree with the finite source dispatcher, including known purecall slots. Source dispatch is not an original callable-vtable ABI.",
+    "tables": {
+      "00d5b904": [
+        "00bd30e0",
+        "00a9a470",
+        "00a96350",
+        "00a96360",
+        "00a9a4a0",
+        "00a93e80",
+        "00a93e90",
+        "00a93ea0",
+        "00a95e70",
+        "00a95e90",
+        "00a95ed0",
+        "00a95f00",
+        "00a95f10",
+        "00a93eb0"
+      ],
+      "00d5b670": [
+        "00bd30e0",
+        "00a95e40",
+        "00a95bd0",
+        "00a95be0",
+        "00bf698e",
+        "00a93e80",
+        "00a93e90",
+        "00a93ea0",
+        "00bf698e",
+        "00bf698e",
+        "00a93f30",
+        "00a93f60",
+        "00a94440",
+        "00a93eb0",
+        "00bf698e"
+      ],
+      "00d5bb48": [
+        "00bd30e0",
+        "00a9a7c0",
+        "00a95bd0",
+        "00a95be0",
+        "00a9a7f0",
+        "00a93e80",
+        "00a93e90",
+        "00a93ea0",
+        "00a9a610",
+        "00a9a660",
+        "00a93f30",
+        "00a93f60",
+        "00a94440",
+        "00a9a5f0",
+        "00a9a9c0",
+        "00a9aa40"
+      ],
+      "00d5b7f0": [
+        "00bd30e0",
+        "00a99900",
+        "00a95bd0",
+        "00a992e0",
+        "00a98e30",
+        "00a98400",
+        "00a98bb0",
+        "00a98750",
+        "00a98bd0",
+        "00a98c50",
+        "00a93f30",
+        "00a93f60",
+        "00a94440",
+        "00a93eb0",
+        "00a98cc0",
+        "00a99710"
+      ],
+      "00d5b8b0": [
+        "00bd30e0",
+        "00a9a390",
+        "00a9a0f0",
+        "00a9a100",
+        "00a9a180",
+        "00a93e80",
+        "00a93e90",
+        "00a93ea0",
+        "00a99f70",
+        "00a99fe0",
+        "00a9aab0",
+        "00a9aae0",
+        "00a9ab10",
+        "00a93eb0",
+        "00a9a380",
+        "00a99f10",
+        "00a99f20",
+        "00a99f30",
+        "00a99f40",
+        "00a99f50",
+        "00a99f60"
+      ]
+    }
+  },
+  "validation_history": [
+    {
+      "code_revision": "41944009f4df28e0d1d258cb0ead1bb07994b0ad",
+      "uncommitted_runtime_at_first_build": true,
+      "win32_release_build": true,
+      "existing_ctests_passed": 2,
+      "native_seeds_match_disk": 8,
+      "direct_call_rows": 31,
+      "direct_call_failures": 0,
+      "indirect_calls_separately_reviewed": 10,
+      "indirect_tail_jumps_separately_reviewed": 1,
+      "primary_archive_sha256": "c3b141f4d971ebace17dfe71b2e088f0257f2f2ceb36318bfac47e61da6dfb1f",
+      "primary_guid_fixture": {
+        "path": "local/input_guid_storage_primary_ae.log",
+        "sha256": "ed69e4a34470ea46b100ea343e066beeb11a7e81fb8f9edd78b7f7627b24452d",
+        "output": "CORE_WORKTREE_HEAD 41944009f4df28e0d1d258cb0ead1bb07994b0ad\nCORE_SHA256 C3B141F4D971EBACE17DFE71B2E088F0257F2F2CEB36318BFAC47E61DA6DFB1F\nADAPTER_SOURCE_SHA256 EA2F6B0F4A72669F44906B2F59F828BEE75195504064DC3FCD55BD9C2EEB3B64\ninput_guid_storage_probe.cpp\nPASS canonical backend header: appends6 capacities1,2,3,4,6,6 growths5 aliases2 leading/prefix/suffix preserved; A97B00 teardown1\nPASS real UCRT returning invalid handler1 zero arguments; repaired empty-owner append1; A97B00 teardown2; heap validation\nBOUNDARY source archive fixture only; no allocation-failure replay/free counters/native ABI/SDK enumeration/game validation"
+      },
+      "primary_virtual_fixture": {
+        "path": "local/input_virtuals_primary_ae.log",
+        "sha256": "f2c3e7208ad3cc1930d799aa3fb9311829161a56b24bb6d35a4a8df2feb5d99b",
+        "output": "native_input_virtuals_probe.cpp\nraw keyboard: query20=512 first=255 tail_AL=128 no_write_leaves=3 literal_identity=3\nfixture dispatch: gamepad_queries=90 mouse_queries=17 profile_reloads=107 selected=7 tie_first=1 NaN_zero_ignored=1\nraw mouse getter: offset=238 x87_value=0.375; hardware/device-owner/runtime integration not exercised"
+      }
+    },
+    {
+      "utc": "2026-09-12T21:41:47.706633+00:00",
+      "code_revision": "3081db70a39c77eaf29cf4275f630c4c7be257c1",
+      "probe_revision": "3081db70a39c77eaf29cf4275f630c4c7be257c1",
+      "source_tree_sha256": "ea860a942fad2dce1f7db66ec317f8cc273762e4511bed7cca848fbc50434126",
+      "win32_release_build": true,
+      "existing_ctests_passed": 2,
+      "native_seeds_match_disk": 8,
+      "direct_call_rows": 52,
+      "direct_call_failures": 0,
+      "indirect_calls_separately_reviewed": 10,
+      "indirect_tail_jumps_separately_reviewed": 1,
+      "primary_archive_sha256": "555a45e633a8054f41a38dbd6f203a2d1f4dc630846da0dc313181aade58d259",
+      "all_five_probes_same_primary_archive": true,
+      "fixtures": [
+        {
+          "name": "force_requests",
+          "exit_code": 0,
+          "archive_sha256": "555a45e633a8054f41a38dbd6f203a2d1f4dc630846da0dc313181aade58d259",
+          "log_sha256": "927751faa4ae5a68b50e6008497b4bf07ae7bda999cc5b8e3cc5f43c2f11e466",
+          "output": "GameSourcesCompiledSeparately=False\nnative_force_requests_probe.cpp\nnative bytes: constructor_preimage=40 selector=128 padding=A5A5A5 fading_x87_cases=4 live_sentinel_cases=2\nraw consumer: profiles=3 expired_removed=1 remaining_after_pump=2 amplitudes=.375,.75 force_writes=4 count_after_clear=0 head_after_destroy=0 root=CEB130 SDK_calls=0\nscalar identity: flags2_preserved_allocations=3 base_flags1_calls=3 captured_returns=6 kind_tags_preserved=3\nReceipt=J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\native_force_requests_primary_20260912_144058_734.json\nLogSHA256=feb87be4f37efe47fc2390a7625ebc1278b817c10086c61b66848ec3938370bf"
+        },
+        {
+          "name": "virtuals",
+          "exit_code": 0,
+          "archive_sha256": "555a45e633a8054f41a38dbd6f203a2d1f4dc630846da0dc313181aade58d259",
+          "log_sha256": "f2c3e7208ad3cc1930d799aa3fb9311829161a56b24bb6d35a4a8df2feb5d99b",
+          "output": "native_input_virtuals_probe.cpp\nraw keyboard: query20=512 first=255 tail_AL=128 no_write_leaves=3 literal_identity=3\nfixture dispatch: gamepad_queries=90 mouse_queries=17 profile_reloads=107 selected=7 tie_first=1 NaN_zero_ignored=1\nraw mouse getter: offset=238 x87_value=0.375; hardware/device-owner/runtime integration not exercised"
+        },
+        {
+          "name": "tail_virtuals",
+          "exit_code": 0,
+          "archive_sha256": "555a45e633a8054f41a38dbd6f203a2d1f4dc630846da0dc313181aade58d259",
+          "log_sha256": "67b9bed0773f4a028091e9f636f41888da867b62c3791f5c6f5507ac8e215902",
+          "output": "native_input_tail_probe.cpp\nraw label: kind_reloaded=7 result=Axis/Up; resize_failure=1 releases=suffix6,output5 stale_header_preserved=1 live=0\nmouse tail: raw_DWORD_roundtrips=3; fixture storage only, no hardware/application claim"
+        },
+        {
+          "name": "guid_storage",
+          "exit_code": 0,
+          "archive_sha256": "555a45e633a8054f41a38dbd6f203a2d1f4dc630846da0dc313181aade58d259",
+          "log_sha256": "a2150eb10acbe9f70aee88d5c49b232f7f7caba40076ee2c9449198a8fc751e0",
+          "output": "CORE_WORKTREE_HEAD 3081db70a39c77eaf29cf4275f630c4c7be257c1\nCORE_SHA256 555A45E633A8054F41A38DBD6F203A2D1F4DC630846DA0DC313181AADE58D259\nADAPTER_SOURCE_SHA256 EA2F6B0F4A72669F44906B2F59F828BEE75195504064DC3FCD55BD9C2EEB3B64\ninput_guid_storage_probe.cpp\nPASS canonical backend header: appends6 capacities1,2,3,4,6,6 growths5 aliases2 leading/prefix/suffix preserved; A97B00 teardown1\nPASS real UCRT returning invalid handler1 zero arguments; repaired empty-owner append1; A97B00 teardown2; heap validation\nBOUNDARY source archive fixture only; no allocation-failure replay/free counters/native ABI/SDK enumeration/game validation"
+        },
+        {
+          "name": "device_runtime",
+          "exit_code": 0,
+          "archive_sha256": "555a45e633a8054f41a38dbd6f203a2d1f4dc630846da0dc313181aade58d259",
+          "log_sha256": "1dcf04cbad6e78c67f130b3ee6efefc604fd183c1c5ba07375b208bb82e80f89",
+          "output": "CORE_WORKTREE_HEAD 3081db70a39c77eaf29cf4275f630c4c7be257c1\nCORE_SHA256 555A45E633A8054F41A38DBD6F203A2D1F4DC630846DA0DC313181AADE58D259\ninput_device_runtime_probe.cpp\nINVENTORY type=18 product=Mouse\nINVENTORY type=19 product=Keyboard\nINVENTORY type=17 product=Virtual HID Framework (VHF) HID device\nINVENTORY type=17 product=G502 LIGHTSPEED Wireless Gaming Mouse\nINVENTORY type=17 product=G502 LIGHTSPEED Wireless Gaming Mouse\nINVENTORY type=17 product=G502 LIGHTSPEED Wireless Gaming Mouse\nINVENTORY type=17 product=G502 LIGHTSPEED Wireless Gaming Mouse\nINVENTORY type=17 product=Keychron Link \nINVENTORY type=17 product=HyperX Cloud Alpha S\nINVENTORY type=17 product=HyperX Cloud Alpha S\nINVENTORY type=17 product=AL75PRO\nINVENTORY type=17 product=AL75PRO\nINVENTORY type=17 product=HyperX Cloud Alpha S\nINVENTORY type=17 product=AL75PRO\nINVENTORY type=17 product=Keychron Link \nINVENTORY type=17 product=AL75PRO\nINVENTORY total=18 keyboard=1 mouse=1 other=16 controllers=0 retained_interfaces=0; CreateDevice/Acquire/poll/reset not called\nSTART backend=D5B72C registered=1 keyboard=1 mouse=1 xinput=4 device_refs=2 backend_refs=2 strings_live=0 GUID_count=0\nPASS raw BD0400 drain: backend_publication=0 manager_publication=0 device_refs_after_drain=2 backend_refs_after_drain=2; final device_refs=0 backend_refs=0 strings=0/0 live=0\nBOUNDARY unfiltered real SDK construction and raw drain only; no device poll/GetState/SetState, force request, game launch, foreground activation or input injection; image values and unused preimages are explicit fixture inputs"
+        }
+      ],
+      "sdk_lifecycle": {
+        "inventory_total": 18,
+        "controllers": 0,
+        "keyboard": 1,
+        "mouse": 1,
+        "xinput": 4,
+        "raw_backend_registered": 1,
+        "backend_publication_after_drain": 0,
+        "manager_publication_after_drain": 0,
+        "sdk_refs_after_raw_drain": [
+          2,
+          2
+        ],
+        "sdk_refs_after_explicit_device_then_backend_release": [
+          0,
+          0
+        ],
+        "raw_guid_count": 0,
+        "poll_or_force_delivery": false,
+        "application_launched": false
+      }
+    }
+  ],
+  "next_work": [
+    "Application attachment must replace the currently typed F8BBF4/cursor consumers without casting raw allocations into typed InputFocusBackendState or creating a second manager.",
+    "Preserve HWND and borrowed SDK/string/clock services through raw backend drain before window destruction.",
+    "Recover raw startup callback storage at backend+D8 and A900F0 reset over actual three-by-eight tables; frame/input-action consumers remain external.",
+    "Raw force submission game entries A95BF0/A949A0/A95780 need compatible actual-container source adapters; recognized STL insertion/rebalance remains library contracts with no original STL reconstruction claim."
+  ],
+  "validation": {
+    "utc": "2026-09-12T21:45:57.045871+00:00",
+    "code_revision": "c2b1437830ed15b33570a84b84ea73438b8a882f",
+    "probe_revision": "c2b1437830ed15b33570a84b84ea73438b8a882f",
+    "source_tree_sha256": "8f52238bde8f521565900aa92240f310def320c07849cd7c567b89798b0eee3d",
+    "win32_release_build": true,
+    "existing_ctests_passed": 2,
+    "native_seeds_match_disk": 8,
+    "direct_call_rows": 52,
+    "direct_call_failures": 0,
+    "indirect_calls_separately_reviewed": 10,
+    "indirect_tail_jumps_separately_reviewed": 1,
+    "primary_archive_sha256": "968d3b7bd21bc9847b7b5092391f21191e2a9a0ab4f0800587ed4123739fdc08",
+    "all_five_probes_same_primary_archive": true,
+    "fixtures": [
+      {
+        "name": "force_requests",
+        "exit_code": 0,
+        "archive_sha256": "968d3b7bd21bc9847b7b5092391f21191e2a9a0ab4f0800587ed4123739fdc08",
+        "log_sha256": "d9ff429c933a7fcce13820d562ffd78d3dc0e82d5da4e755bedcf106e4464b6c",
+        "output": "GameSourcesCompiledSeparately=False\nnative_force_requests_probe.cpp\nnative bytes: constructor_preimage=40 selector=128 padding=A5A5A5 fading_x87_cases=4 live_sentinel_cases=2\nraw consumer: profiles=3 expired_removed=1 remaining_after_pump=2 amplitudes=.375,.75 force_writes=4 count_after_clear=0 head_after_destroy=0 root=CEB130 SDK_calls=0\nscalar identity: flags2_preserved_allocations=3 base_flags1_calls=3 captured_returns=6 kind_tags_preserved=3\nReceipt=J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\native_force_requests_primary_20260912_144508_078.json\nLogSHA256=924523de735e96b9f8d2cc6e4a24695a1e505ecc62d44b30f4e355c9f594dca3"
+      },
+      {
+        "name": "virtuals",
+        "exit_code": 0,
+        "archive_sha256": "968d3b7bd21bc9847b7b5092391f21191e2a9a0ab4f0800587ed4123739fdc08",
+        "log_sha256": "f2c3e7208ad3cc1930d799aa3fb9311829161a56b24bb6d35a4a8df2feb5d99b",
+        "output": "native_input_virtuals_probe.cpp\nraw keyboard: query20=512 first=255 tail_AL=128 no_write_leaves=3 literal_identity=3\nfixture dispatch: gamepad_queries=90 mouse_queries=17 profile_reloads=107 selected=7 tie_first=1 NaN_zero_ignored=1\nraw mouse getter: offset=238 x87_value=0.375; hardware/device-owner/runtime integration not exercised"
+      },
+      {
+        "name": "tail_virtuals",
+        "exit_code": 0,
+        "archive_sha256": "968d3b7bd21bc9847b7b5092391f21191e2a9a0ab4f0800587ed4123739fdc08",
+        "log_sha256": "67b9bed0773f4a028091e9f636f41888da867b62c3791f5c6f5507ac8e215902",
+        "output": "native_input_tail_probe.cpp\nraw label: kind_reloaded=7 result=Axis/Up; resize_failure=1 releases=suffix6,output5 stale_header_preserved=1 live=0\nmouse tail: raw_DWORD_roundtrips=3; fixture storage only, no hardware/application claim"
+      },
+      {
+        "name": "guid_storage",
+        "exit_code": 0,
+        "archive_sha256": "968d3b7bd21bc9847b7b5092391f21191e2a9a0ab4f0800587ed4123739fdc08",
+        "log_sha256": "77c450a06cb9db9a59d496aa271060c26dc98d2af83fe5b49d26c1a4e8dafaaf",
+        "output": "CORE_WORKTREE_HEAD c2b1437830ed15b33570a84b84ea73438b8a882f\nCORE_SHA256 968D3B7BD21BC9847B7B5092391F21191E2A9A0AB4F0800587ED4123739FDC08\nADAPTER_SOURCE_SHA256 EA2F6B0F4A72669F44906B2F59F828BEE75195504064DC3FCD55BD9C2EEB3B64\ninput_guid_storage_probe.cpp\nPASS canonical backend header: appends6 capacities1,2,3,4,6,6 growths5 aliases2 leading/prefix/suffix preserved; A97B00 teardown1\nPASS real UCRT returning invalid handler1 zero arguments; repaired empty-owner append1; A97B00 teardown2; heap validation\nBOUNDARY source archive fixture only; no allocation-failure replay/free counters/native ABI/SDK enumeration/game validation"
+      },
+      {
+        "name": "device_runtime",
+        "exit_code": 0,
+        "archive_sha256": "968d3b7bd21bc9847b7b5092391f21191e2a9a0ab4f0800587ed4123739fdc08",
+        "log_sha256": "275d7e3b9c87d566a0f964ea8821a14468a607dfa0f9ccb73d955898abed0f58",
+        "output": "CORE_WORKTREE_HEAD c2b1437830ed15b33570a84b84ea73438b8a882f\nCORE_SHA256 968D3B7BD21BC9847B7B5092391F21191E2A9A0AB4F0800587ED4123739FDC08\ninput_device_runtime_probe.cpp\nINVENTORY type=18 product=Mouse\nINVENTORY type=19 product=Keyboard\nINVENTORY type=17 product=Virtual HID Framework (VHF) HID device\nINVENTORY type=17 product=G502 LIGHTSPEED Wireless Gaming Mouse\nINVENTORY type=17 product=G502 LIGHTSPEED Wireless Gaming Mouse\nINVENTORY type=17 product=G502 LIGHTSPEED Wireless Gaming Mouse\nINVENTORY type=17 product=G502 LIGHTSPEED Wireless Gaming Mouse\nINVENTORY type=17 product=Keychron Link \nINVENTORY type=17 product=HyperX Cloud Alpha S\nINVENTORY type=17 product=HyperX Cloud Alpha S\nINVENTORY type=17 product=AL75PRO\nINVENTORY type=17 product=AL75PRO\nINVENTORY type=17 product=HyperX Cloud Alpha S\nINVENTORY type=17 product=AL75PRO\nINVENTORY type=17 product=Keychron Link \nINVENTORY type=17 product=AL75PRO\nINVENTORY total=18 keyboard=1 mouse=1 other=16 controllers=0 retained_interfaces=0; CreateDevice/Acquire/poll/reset not called\nSTART backend=D5B72C registered=1 keyboard=1 mouse=1 xinput=4 device_refs=2 backend_refs=2 strings_live=0 GUID_count=0\nPASS raw BD0400 drain: backend_publication=0 manager_publication=0 device_refs_after_drain=2 backend_refs_after_drain=2; final device_refs=0 backend_refs=0 strings=0/0 live=0\nBOUNDARY unfiltered real SDK construction and raw drain only; no device poll/GetState/SetState, force request, game launch, foreground activation or input injection; image values and unused preimages are explicit fixture inputs"
+      }
+    ],
+    "sdk_lifecycle": {
+      "inventory_total": 18,
+      "controllers": 0,
+      "keyboard": 1,
+      "mouse": 1,
+      "xinput": 4,
+      "raw_backend_registered": 1,
+      "backend_publication_after_drain": 0,
+      "manager_publication_after_drain": 0,
+      "sdk_refs_after_raw_drain": [
+        2,
+        2
+      ],
+      "sdk_refs_after_explicit_device_then_backend_release": [
+        0,
+        0
+      ],
+      "raw_guid_count": 0,
+      "poll_or_force_delivery": false,
+      "application_launched": false
+    }
+  }
+}

@@ -15,6 +15,7 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
+#include "bsp/unit_hull_extents.hpp"
 
 #include "bsp/camera_affine.hpp"
 #include "bsp/camera_projection.hpp"
@@ -112,6 +113,8 @@ struct GameUnitSlot {
     // The motion half.
     bsp::ShipMotionState motion{};
     bsp::ShipMotionClass motion_class{};
+    bsp::UnitHullExtents hull_extents{};
+    float class_width_00a4{};
     bsp::ShipClassFields fields{};
     bsp::UnitOrderRing ring{};
     bsp::UnitOrderQueue queue{};
@@ -766,11 +769,9 @@ public:
         in.record = bsp::ship_physics_material_shipped(slot_.hull_material);
         in.class_mass = slot_.motion_class.hull_mass;      // class+B0h
         in.class_length = slot_.motion_class.hull_length;  // class+A0h
-        // class+A4h `Width`. Milestone 2r's correction 6 established that only
-        // `Length` and `Height` have a recovered Lua key on this installation's
-        // rows, so the width stays zero. It feeds the planing torque only, and
-        // that branch also needs material 1, which a destroyer is not.
-        in.class_width = 0.0f;
+        // Raw class+A4 Width from00960368; a model-derived unit+9CC can
+        // differ, so this class-field consumer retains the Lua value.
+        in.class_width = slot_.class_width_00a4;
         in.leak_water_mass = slot_.leak_water_mass_10fc;
         // unit+5Dh, the byte docs/UNIT_INSTANCE.md names `simulate`. The list
         // filter requires it clear on a live ship, and clear is what opens the
@@ -1195,6 +1196,14 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         // the 1.0f at 0096043A.
         slot->motion_class.hull_length = lua_row.length;   // class+A0h
         slot->motion_class.hull_height = lua_row.height;   // class+A8h
+        slot->class_width_00a4 = lua_row.width;            // class+A4h
+        //00810FAF..00811073: this represented class has no model resource.
+        // Copy its actual Lua Width/Length through the recovered no-model arm;
+        // a missing class leaves the slot's prior extent fields untouched.
+        const bsp::UnitHullExtentClassInputs extent_class{
+            nullptr, lua_row.length, lua_row.width};
+        bsp::produce_unit_hull_extents_00810faf(slot->hull_extents,
+            lua_row.found ? &extent_class : nullptr);
         constexpr float kClassMassReaderDefault = 1.0f;  // 0096043A
         slot->motion_class.hull_mass
             = lua_row.mass > 0.0f ? lua_row.mass : kClassMassReaderDefault;
@@ -2078,11 +2087,9 @@ bsp::ShipAiThrottleCeilingInputs GameUnitsHost::throttle_ceiling_inputs(
 }
 
 float GameUnitsHost::unit_half_width_09cc(std::size_t index) const {
-    static_cast<void>(index);
-    // unit+9CCh is read at 009D8FDE and at 009F4174 and has no recovered
-    // producer anywhere; the caller records it. 1.0f is the neutral divisor,
-    // not a recovered value.
-    return 1.0f;
+    if (index >= impl_->slots.size()) return 0.0f;
+    // Historical API name:00811010/00811062 produce FULL width.
+    return impl_->slots[index]->hull_extents.width_09cc;
 }
 
 float GameUnitsHost::unit_class_max_speed_0500(std::size_t index) const {
@@ -2127,10 +2134,7 @@ float GameUnitsHost::unit_class_turn_circle_radius_0082e960(std::size_t index,
 
 float GameUnitsHost::unit_hull_length_09c8(std::size_t index) const {
     if (index >= impl_->slots.size()) return 0.0f;
-    // 0081106E and 0081FA4D: twice the larger half-extent of the model box at
-    // [class+50h], or the descriptor's +A0h `Length` when the class carries no
-    // box. This process builds no box, so the fallback is the whole answer.
-    return impl_->slots[index]->motion_class.hull_length;
+    return impl_->slots[index]->hull_extents.length_09c8;
 }
 
 float GameUnitsHost::unit_hull_mass_00b0(std::size_t index) const {

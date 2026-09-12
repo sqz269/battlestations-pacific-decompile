@@ -1,0 +1,453 @@
+{
+  "schema_version": 1,
+  "status": "combined_win32_and_five_scoped_parent_library_fixtures_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "initial_baseline": "63338374",
+  "source_capture_head": "b62da51f1a9a95b72451ed5c8f2ddeeae4a2ac90",
+  "source_capture_note": "Parent integration source hashes include uncommitted parent changes; immutable built/promoted commits recorded after publication integration.",
+  "worker_commits": {
+    "listbox-frame": "4498c6244bdbfc04eaea8b3d47223512c440850c",
+    "mission-side-storage": "5861fbfc8ab5a4a7899d259c10974aa408a717ae",
+    "menu-objectives": "d700eb784351d5872831a389a68ab85af0007480"
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "target": "MSVC Win32 Release",
+    "passed": 2,
+    "failed": 0,
+    "log": "local/orch5-menu-frame-storage-build-final.log",
+    "sha256": "f6bde2a9bc1408b5d95c70a38e77e74bc4a2863f09c0316a2380eeca9a3c0a47"
+  },
+  "probes": [
+    {
+      "log": "local/listbox_frame_probe.log",
+      "sha256": "e80e00a6e037174efd1497cec814e7a83e47e5c977ee0afba2f1aedca5eab26b",
+      "passed": true
+    },
+    {
+      "log": "local/gui_manager_frame_probe.log",
+      "sha256": "e6fd3b47219a2e445bd6945d933037756a4c14b60d1ed51873ef7da51d085d42",
+      "passed": true
+    },
+    {
+      "log": "local/orch5-menu-frame-workers/mission-side-storage/parent_run.log",
+      "sha256": "20054bc746cb38007c31d43da7225cc3ea45b44d172963ea53a7d90eec9d7086",
+      "passed": true
+    },
+    {
+      "log": "local/orch5-menu-frame-workers/menu-objectives/objective_probe.log",
+      "sha256": "73c5d60e205d40128be5e34a713e1c9a74169650f9976a4224d6e3e6c04776ac",
+      "passed": true
+    },
+    {
+      "log": "local/orch5-menu-frame-existing-base-probe.log",
+      "sha256": "924de5b82db64422039f70bf004ffde993771d44e3adbca6de369d39c54535bf",
+      "passed": true
+    }
+  ],
+  "library_sha256": "53952b544fa23659c418cdae9b327ee8bed33842b8992ef174c59372b40d02f4",
+  "source_sha256_lf": {
+    "cmake/startup.cmake": "feb9765a7d5e83df3f37587b5c4a188b2b452c2af74b39e4d183316d11156522",
+    "include/bsp/gui_listbox_listener_binding.hpp": "df1118f715b48898254f104b215be313ab5f36c97b683a7573267b14e6e05a22",
+    "include/bsp/gui_listbox_runtime.hpp": "0f19d82c9d59ac37d40278b23f0118447e0c5f577a42fd5c0ccc36614507f128",
+    "include/bsp/gui_manager_frame.hpp": "a13b8c430a99f4c980e40650ea7731de8f6e550183b9f2d885c00b1159c81216",
+    "include/bsp/gui_resources.hpp": "92baeaee5b3c97ea095671cd73b917ce131b18e83d9bc4ede01d2752ac49ed35",
+    "include/bsp/gui_widget_frame_runtime.hpp": "a26b5cb6d973bffa1ee4ebb89584edfefd41217b2f5017fd3e4755d3a9648d0e",
+    "include/bsp/main_menu_layout_binding.hpp": "00f923a907e4310d8a941435eab09daba80a9c76c49c2d18500c12fd8f1bc70e",
+    "include/bsp/main_menu_objective_runtime.hpp": "904e58290b150ece49eb6df30de7b04dc7199bf7fbc00d1033dbe39e9be37c23",
+    "include/bsp/main_menu_runtime_listeners.hpp": "747333aea956b7f1133e7aae03ecbb1c075df5ab1d98baaa4c963b1488b0eb29",
+    "include/bsp/main_menu_selection_listener.hpp": "b23589b560e7a6a21347fe81720365c73793a0cfe032f4c63118ea4a72416715",
+    "include/bsp/main_menu_selection_services.hpp": "533804011d57262d5094994d6dc0f201bebfe31487704135c8b51af9b68cfb1a",
+    "include/bsp/mission_tree_data.hpp": "d161c536a250ef9aaef4a2f9067571f6f9de34cd40ac3c0ce2c95a2c41d9acd3",
+    "include/bsp/native_gamepad_xinput.hpp": "df1a6c06efa8c26184a892ffba8d3cce83878e5c36533790a6902c3f3ff10d80",
+    "include/bsp/native_input_device_sdk.hpp": "0a12b288c57b407eda80289c100375800644a6803ba67e9e409b6288197d41b2",
+    "include/bsp/native_input_enumeration.hpp": "2e1b51ee044b0fba397b9663f818536260d9c217744743de8ec3e64a6d90ecde",
+    "include/bsp/native_joystick.hpp": "5d3159928aed031bc747232b8332afa7966865ea5932e94ea158c4fe93115bf9",
+    "include/bsp/native_keyboard_mouse.hpp": "2e86bd39815da9e51d9fd90954dccd6b6e5ae9e2542771a5f6bef8231ba6dc7d",
+    "include/bsp/native_ref_counted.hpp": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82",
+    "src/game_hosts_mission.cpp": "800e234bed9b2222f8b7a8954af54ac57ef69473fcf31347d99a0fc32a6db045",
+    "src/gui_listbox_listener_binding.cpp": "cb7273a2894a99c7041d9e486db53c1a83a33b40fe68fb00f02b238920ccb37b",
+    "src/gui_listbox_runtime.cpp": "21239abddad416d05568213f7652408c9851796b3bfd905d9d6062d138662271",
+    "src/gui_manager_frame.cpp": "3675bdcc63188809baf25bb0611a05b0272b42508e80e3f5899f86f64fd0bb63",
+    "src/gui_widget_frame_runtime.cpp": "a4d4a604d423d16207bdaad7c4c88095d86aacf9e8a903fa471b89f38ea6656c",
+    "src/main_menu_objective_runtime.cpp": "c8b0705fe42489d20fa0525e15346df6275db675fc0f3ceb36159fbc2d8eccc4",
+    "src/main_menu_runtime_listeners.cpp": "1ad9020480ac2ce999ab092fcaac69411a414613d2789406fa5f390f32fc9a27",
+    "src/main_menu_selection_listener.cpp": "20244ce3567729807aeeec4792a56620d0653bcc357e736595b04caa49f93a2d",
+    "src/main_menu_selection_services.cpp": "8e3f65752b9083e66b49c3fe96ff07fdfe56a5c3ad35e7e4e30f353964a52845",
+    "src/mission_tree_data.cpp": "db7b0d9c7028ed8bafd94beb80c77a0c69ec50a4590f5060605b29f3de297219",
+    "src/native_gamepad_xinput.cpp": "237393ad55a48f8430407e0b6c660d579752f4ef1aa62893239a3a5623314ae6",
+    "src/native_input_device_sdk.cpp": "01358dc74acacfea535635d48d8993661fbfcd51b66d61408b5977b4b1ab5472",
+    "src/native_input_enumeration.cpp": "95d9babe46832e4463be2657d0edd9875cb2bb37f79dc4948f7a5ddbd3229512",
+    "src/native_joystick.cpp": "601c83f685e16a45483deea20607c4e9a52ad7b2c0fc239f19758febe160925d",
+    "src/native_keyboard_mouse.cpp": "fb6ac0f3ea9eb143b4d4c01aed12c9b9761e208db2cc0070283b50f47f77746f",
+    "src/native_ref_counted.cpp": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9"
+  },
+  "mechanical_calls": {
+    "rows": 265,
+    "failed": 0,
+    "log": "local/orch5-menu-frame-report-calls.log",
+    "sha256": "0ecb66de131a3b6f26e3fc23816031059dfcb0bfebb6a5ace107f538005d6ef4",
+    "limitation": "Numeric call targets mechanically checked; symbolic virtual calls separately reviewed against actual tables."
+  },
+  "annotations": {
+    "count": 18,
+    "saved": true,
+    "archive": "reports/orch5_menu_frame_storage_annotations.json",
+    "sha256": "a9f690835fcb4ad03ca14cd28711833b402b95c3cb83a22bd92be1052a4df5ad",
+    "old_values_preserved": true,
+    "exports_refreshed": true
+  },
+  "function_definition": "reports/orch5_listbox_listener_definitions.json",
+  "flow_repairs": [
+    "reports/orch5_objective_flow_repair.json"
+  ],
+  "flow_note": "51DFAF ADD ESP4 is in51DDA0 stored disassembly after repair:169 instructions,0gaps. Proto at an interior address is not a containing-function query.5C5BAA/58FB29/A9DDBD are bypassed alignment, not function entries. A95F00 remains leased to the separate raw-input worker and is not mutated here.",
+  "reviews": [
+    "Manager independent review corrected count<=0 allocating/binding a timed owner before native early return; same query correction applied to base child frame",
+    "Objective factory references the sole existing selection counts/layout vectors; accessor resolves actual owner identities; independent string/side reload review passed",
+    "Main-menu CEFC48 listener4 is598B60 with ECX screen+8 and RET8, distinct from widget5993A0; currentC is proven RET0C4F8F20"
+  ],
+  "worker_evidence_archives": [
+    {
+      "worker": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-frame",
+      "branch": "agent/orch5-listbox-frame",
+      "head": "4498c6244bdbfc04eaea8b3d47223512c440850c",
+      "archive": "local\\orch5-menu-frame-workers\\listbox-frame\\original",
+      "files": [
+        {
+          "path": "finalize_listbox_frame_report.py",
+          "sha256": "1e259eacc5473633763564883ab97f76f967f0a437b7e680ddbea1958eb229be",
+          "bytes": 1653
+        },
+        {
+          "path": "listbox-frame-build-cached.log",
+          "sha256": "5f31e57a7bc425172832518881f66bf1f52f4a70811a65b21a0d711b07e2981d",
+          "bytes": 34308
+        },
+        {
+          "path": "listbox-frame-build-verified.log",
+          "sha256": "74eee71f8ab95add5c18eb88a1d0430ebeef7e3a10a087fd05b46a9a78dee096",
+          "bytes": 2540
+        },
+        {
+          "path": "listbox-frame-build.log",
+          "sha256": "9abe849b37a3372a0687dc70186097aef54384975a5b7f89d775b374c76f56ba",
+          "bytes": 9627
+        },
+        {
+          "path": "listbox-frame-calls-final.log",
+          "sha256": "2078062a9a6a7d42178274ca30163e90bef5dbfff2fd288276f0c771bb7e2163",
+          "bytes": 2705
+        },
+        {
+          "path": "listbox-frame-calls.log",
+          "sha256": "2078062a9a6a7d42178274ca30163e90bef5dbfff2fd288276f0c771bb7e2163",
+          "bytes": 2705
+        },
+        {
+          "path": "listbox-frame-configure.log",
+          "sha256": "a776652d882b6299e71ac0f176d293e63463dfccb46c42d83ef9d1d0ed4f4003",
+          "bytes": 243
+        },
+        {
+          "path": "listbox-frame-ledger-final.log",
+          "sha256": "4f041406546a327a695d18925bb511098a755e36b5168f0ded50b2577ffa8665",
+          "bytes": 5096
+        },
+        {
+          "path": "listbox-frame-ledger.log",
+          "sha256": "eb8d799c45c3a2a3d504fec801c50208763e1d5998e205313fa43844375e9ab0",
+          "bytes": 389
+        },
+        {
+          "path": "listbox-frame-object.asm",
+          "sha256": "d4cdbf7b039b982cb3ec09787a96f220dfa0630144b361834de8d81fbe9f7694",
+          "bytes": 682889
+        },
+        {
+          "path": "listbox-frame-seeds.log",
+          "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+          "bytes": 3034
+        },
+        {
+          "path": "listbox-frame-tu.log",
+          "sha256": "98eae58a90292b1e837c20a9f4cad2b0c4268e3b731d91e96322f566990ffecc",
+          "bytes": 25
+        },
+        {
+          "path": "listbox_frame_00696470.asm",
+          "sha256": "58f8f2d488dae8acd36506e2450fbae90324aac76e1711c4ec519d59f410a6e0",
+          "bytes": 573
+        },
+        {
+          "path": "listbox_frame_00a9c400.asm",
+          "sha256": "df5401d993ba3fe0411bdb11477854d8c28f1e2686b28c7a92948f47b71508fb",
+          "bytes": 3031
+        },
+        {
+          "path": "listbox_frame_00a9d030.asm",
+          "sha256": "64f5b4f7968e0e036511ef2b886e8847c7f483539490e4cfd6525c475d56db7b",
+          "bytes": 7507
+        },
+        {
+          "path": "listbox_frame_00a9da60.asm",
+          "sha256": "68133d048f2e403944afb406edc59e15c75475f2c28e4b6ca3999bffdaa0e303",
+          "bytes": 9334
+        },
+        {
+          "path": "listbox_frame_00aa0f50.asm",
+          "sha256": "3bd5ee93ee207bcaa308d9e27c88ad7eda7325dfe74644b6356021bf00bfa0f0",
+          "bytes": 312
+        },
+        {
+          "path": "listbox_frame_commit.txt",
+          "sha256": "eb8583075f9995e64e5f043e1432516a81f60c17a6f3acfa8e62dac81db0e44d",
+          "bytes": 718
+        },
+        {
+          "path": "listbox_frame_ledger.py",
+          "sha256": "e9f1fcd8914333bf73589640659c92de0ebbd0719d8790d4052094af4bb3fc4a",
+          "bytes": 1502
+        },
+        {
+          "path": "make_listbox_frame_report.py",
+          "sha256": "5e37da51cfc26b86bc4e42135566852c05de79f8f00eabb4c67a908d96dee348",
+          "bytes": 10260
+        },
+        {
+          "path": "seed_reference.hpp",
+          "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+          "bytes": 2995
+        }
+      ]
+    },
+    {
+      "worker": "J:\\PROG\\battlestations-pacific-decompile-orch5-mission-side-storage",
+      "branch": "agent/orch5-mission-side-storage",
+      "head": "5861fbfc8ab5a4a7899d259c10974aa408a717ae",
+      "archive": "local\\orch5-menu-frame-workers\\mission-side-storage\\original",
+      "files": [
+        {
+          "path": "mission_side_storage_build.log",
+          "sha256": "62c96d68083b397a7b6005d93726db3c931ec33de22937f0110d2b77761a1db5",
+          "bytes": 2261
+        },
+        {
+          "path": "mission_side_storage_commit.txt",
+          "sha256": "61043fc3259478adc6203d718a437b3754dec8793ea04071876fba4f24b55b14",
+          "bytes": 708
+        },
+        {
+          "path": "mission_side_storage_configure.log",
+          "sha256": "06ac825ac079180d1922435cd79d9ffdc7ccf37653dc6bde250185ac65097196",
+          "bytes": 964
+        },
+        {
+          "path": "mission_side_storage_native_calls.log",
+          "sha256": "7504107250079a96c253f0c725dc460414698464f4f15a1c02a1e792da23e239",
+          "bytes": 7329
+        },
+        {
+          "path": "mission_side_storage_probe.cpp",
+          "sha256": "69423a08b005ffc3c621917581cd8c84e3da5d17e6bacf59797110acd0f637f7",
+          "bytes": 9637
+        },
+        {
+          "path": "mission_side_storage_probe.log",
+          "sha256": "512d44d73987d87c127fd5fd5594e3961577f83334c67b19ccdb4c7f7c857c36",
+          "bytes": 531
+        },
+        {
+          "path": "mission_side_storage_usn.log",
+          "sha256": "7fea4279d3b7a8420ef9f26e6dbd74c493c7042d5f6aa47e4e86a648269e09d1",
+          "bytes": 5303
+        },
+        {
+          "path": "write_mission_side_storage_report.py",
+          "sha256": "10fc82e9bb81117ff5108b834bb55fa476fbc8df46d3ea24518f1766ee3dc8d1",
+          "bytes": 6638
+        }
+      ]
+    },
+    {
+      "worker": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-objectives",
+      "branch": "agent/orch5-menu-objectives",
+      "head": "d700eb784351d5872831a389a68ab85af0007480",
+      "archive": "local\\orch5-menu-frame-workers\\menu-objectives\\original",
+      "files": [
+        {
+          "path": "menu_vector_stores.txt",
+          "sha256": "1a6b95a1fa59ce5468a9249ff13e5830da1b9518d728c99fd6f4e857bcd5d603",
+          "bytes": 2666
+        },
+        {
+          "path": "objective_build.log",
+          "sha256": "cbeff3ed2b5aa597e0699e18ec4e8210ff447a6d99acfb7e342a3695c713b226",
+          "bytes": 34227
+        },
+        {
+          "path": "objective_call_check.log",
+          "sha256": "3699441e9155ac66f473284739f3d0727b081a7e5af8e9d1497a01b4d3f9ccbb",
+          "bytes": 460
+        },
+        {
+          "path": "objective_commit.txt",
+          "sha256": "fd94cb1693e73f1cf5ae04aae934ddcddd834bbf794fd4e326476e08c7948bdb",
+          "bytes": 871
+        },
+        {
+          "path": "objective_configure.log",
+          "sha256": "9dcf37cc30182dd2a3cacb482c162843bbe9d8365e290316d798dc58285fcb49",
+          "bytes": 959
+        },
+        {
+          "path": "objective_container_probe.cpp",
+          "sha256": "a12f615250700f5f209bf9a2bb784f2460564f9a85289ef765e13191c9a826a7",
+          "bytes": 1923
+        },
+        {
+          "path": "objective_final_build.log",
+          "sha256": "9bb32a4ec6fb51483c850ec37c392f26de504410a8fbe3efe8582d409bc3ca2b",
+          "bytes": 2226
+        },
+        {
+          "path": "objective_final_probe.log",
+          "sha256": "73c5d60e205d40128be5e34a713e1c9a74169650f9976a4224d6e3e6c04776ac",
+          "bytes": 197
+        },
+        {
+          "path": "objective_probe.log",
+          "sha256": "73c5d60e205d40128be5e34a713e1c9a74169650f9976a4224d6e3e6c04776ac",
+          "bytes": 197
+        },
+        {
+          "path": "objective_strict_compile.log",
+          "sha256": "0211853480b6935bec033a5f82aebcf78356b70044e60b132fb0e70332148fad",
+          "bytes": 33
+        },
+        {
+          "path": "objective_vector_refs.txt",
+          "sha256": "5966b772a254539afd9307268f6306f2ac75c32c13487af32c67c30b5a2339fc",
+          "bytes": 13847
+        },
+        {
+          "path": "objective_x64_cache.txt",
+          "sha256": "394f02bb574d0d60d9e8844a334b32ede2821c99d3c37fd4a74b6358f9087103",
+          "bytes": 15784
+        },
+        {
+          "path": "producer_vector_refs.txt",
+          "sha256": "7da502f015e509a4ba592f445e17a9f918dba8da17b704b858464207e73b9d6c",
+          "bytes": 2842
+        },
+        {
+          "path": "write_objective_report.py",
+          "sha256": "d21bfbf358e53eaaf773f6b150ef13754b8e188d80583dc802c0f37428dab212",
+          "bytes": 5347
+        },
+        {
+          "path": "objective_first_configure/4.2.3-msvc3/VCTargetsPath.txt",
+          "sha256": "b3a0249a0e52216ea1a062047d4225df89640a2b3750b762c1f7a8ef4a58e582",
+          "bytes": 81
+        },
+        {
+          "path": "objective_first_configure/4.2.3-msvc3/CompilerIdC/CMakeCCompilerId.c",
+          "sha256": "ddc1eeeda601167929842285dfefa77b95ee0d116782a3227f17e7e18fbe90eb",
+          "bytes": 29602
+        },
+        {
+          "path": "objective_first_configure/4.2.3-msvc3/CompilerIdCXX/CMakeCXXCompilerId.cpp",
+          "sha256": "9e26b0f20786a2d59935f5dddb7dbeceb54e40f39ffd6996b2fc0e339431808d",
+          "bytes": 30429
+        }
+      ]
+    }
+  ],
+  "installed_tables": {
+    "groups": 5,
+    "campaign_records": 143,
+    "multiplayer_records": 34,
+    "populated_ic_lists": 102,
+    "adapter": "actual parent GameMissionHost LiveMissionTreeView and Lua5.1.1",
+    "full_executable": "separate attempt crashed C0000005 during settings startup before tree loading"
+  },
+  "abi_compatible": false,
+  "game_validated": false,
+  "render_validated": false,
+  "new_permanent_tests": 0,
+  "limits": [
+    "Listbox fixture initializes manager state and scripts game4D92B0 responses; native device2C and full game callbacks remain required",
+    "Manager fixture uses actual empty page registry and Group highlights; actual Screen page snapshot/traversal and AA3910 body not fixture-executed",
+    "Objective fixture verifies actual container/key transport, not full58F5B0 GUI resource traversal or594BF0 Text/Listbox construction",
+    "Mission picture texture owner, full598B60 activation, command-bar/menu providers and gameplay remain open",
+    "New C++ owner/container interfaces do not reproduce native allocator/SEH/debug iterator ABI"
+  ],
+  "promotion": {
+    "source_commit": "12d48cd75a5ca4d00b0ffe7e9112f97250b3905b",
+    "built_commit": "2c0cba7f7b0a52a07788bfba03d895f7fde37caa",
+    "exit_code": 0,
+    "promoted_commit": "2c0cba7f7b0a52a07788bfba03d895f7fde37caa",
+    "main_commit": "2c0cba7f7b0a52a07788bfba03d895f7fde37caa",
+    "build_log": "local/orch5-menu-frame-integration.log",
+    "build_log_sha256": "937a9e97fe56face0452bc4ed2016fe3b394284dad6384ca00348210cf48cb24",
+    "tests_passed": 2,
+    "tests_failed": 0,
+    "library_sha256": "0f5ac309e1c1f102b2cb0248e2403b59b99f7e836c8fe7d966860a07ccdbffc9",
+    "probes": [
+      {
+        "log": "local/orch5-menu-frame-promoted-listbox.log",
+        "sha256": "e44e0aabc1213e7f432ff496c95bd432a951240ecb75a5305297b042a3c2fad9",
+        "passed": true
+      },
+      {
+        "log": "local/orch5-menu-frame-promoted-manager.log",
+        "sha256": "336a20411914889bb9320d680b2f2e0f86480951540307a20b0f862942cf4ff7",
+        "passed": true
+      },
+      {
+        "log": "local/orch5-menu-frame-promoted-base.log",
+        "sha256": "924de5b82db64422039f70bf004ffde993771d44e3adbca6de369d39c54535bf",
+        "passed": true
+      },
+      {
+        "log": "local/orch5-menu-frame-promoted-sides.log",
+        "sha256": "07bf114c5912021d58eb7289cc0b94682b51bb7b6a18eb1a09b178dcac9263a9",
+        "passed": true
+      },
+      {
+        "log": "local/orch5-menu-frame-promoted-objectives.log",
+        "sha256": "73c5d60e205d40128be5e34a713e1c9a74169650f9976a4224d6e3e6c04776ac",
+        "passed": true
+      }
+    ],
+    "merged_compiled_inputs": [
+      "cmake/startup.cmake",
+      "include/bsp/native_filestore_pending_tree.hpp",
+      "include/bsp/native_filestore_provider_lifetime.hpp",
+      "include/bsp/native_filestore_resident_tree.hpp",
+      "include/bsp/native_particle_axial_loading.hpp",
+      "include/bsp/native_particle_object_tracer_loading.hpp",
+      "include/bsp/native_particle_type_factory.hpp",
+      "include/bsp/native_particle_type_loading.hpp",
+      "include/bsp/native_particle_type_property.hpp",
+      "include/bsp/native_singleton_destruction.hpp",
+      "include/bsp/ship_ai_avoidance_request.hpp",
+      "include/bsp/unit_kind_query.hpp",
+      "src/native_filestore_pending_tree.cpp",
+      "src/native_filestore_provider_lifetime.cpp",
+      "src/native_filestore_resident_tree.cpp",
+      "src/native_particle_axial_loading.cpp",
+      "src/native_particle_object_tracer_loading.cpp",
+      "src/native_particle_type_factory.cpp",
+      "src/native_particle_type_loading.cpp",
+      "src/native_particle_type_property.cpp",
+      "src/native_singleton_destruction.cpp",
+      "src/ship_ai_avoidance_request.cpp",
+      "src/unit_kind_query.cpp"
+    ],
+    "note": "Build and promoted code commit identical. Five fixtures recompiled from fixture TUs against these parent headers/libraries; side fixture includes the exact parent GameMissionHost TU for its internal adapter. No worker production objects used.",
+    "initial_probe_archive": "local/orch5-menu-frame-initial-probes",
+    "initial_worker_archive": "local/orch5-menu-frame-worker-archives.json"
+  }
+}

@@ -1,6 +1,7 @@
 #pragma once
 #include "bsp/gui_widget_attach.hpp"
 #include "bsp/render_tail.hpp"
+#include "bsp/input_action_classifier.hpp"
 #include <cstdint>
 #include <functional>
 #include <list>
@@ -10,6 +11,19 @@ namespace bsp {
 struct GuiResourceState;
 struct GuiWidgetRelativeBoundsConstants;
 class NativeStringStorage;
+class GuiWidgetFrameRuntime;
+
+// The native fastcall writes ECX=previous46, EDX=next47, stack=accept4A,
+// RET4. A completed adapter must return ALL three raw bytes; no zero sample
+// is supplied when a producer is missing. The frame compares raw direction
+// bytes before testing their individual nonzero predicates.
+struct GuiListboxInputSample {
+    std::uint8_t previous_46;
+    std::uint8_t next_47;
+    std::uint8_t activate_4a;
+};
+GuiListboxInputSample read_gui_listbox_input_00696470(
+    const std::function<std::uint8_t(std::int32_t)>& actual_action_004d92b0);
 
 // AA0F50, ECX actual manager, signed selector stack, EAX borrowed widget,
 // RET4. Reads the existing AA5E20-produced manager slots; no cached selector.
@@ -24,6 +38,30 @@ struct GuiListboxHighlightServices {
     const volatile float& paging_y_00d7a23c;
     const volatile float& ordinary_y_paging_height_00d5bbf0;
     const volatile float& ordinary_height_00d5bbec;
+};
+
+// Actual borrowed identities only. Listener bodies and the concrete current2C
+// dispatcher must be bound by the same application; no successful defaults.
+class GuiListboxFrameCalls {
+public:
+    virtual ~GuiListboxFrameCalls() = default;
+    // Native listener ECX, row/listbox stack, RET8.
+    virtual void listener_current04(void*, GuiWidgetOwner& row,
+        GuiWidgetOwner& listbox) = 0;
+    // Native listener ECX, first/second/listbox stack, RETC.
+    virtual void listener_current0c(void*, bool first, bool second,
+        GuiWidgetOwner& listbox) = 0;
+    // Native ECX actual device, RET/AL. Keyboard D5B904 -> A95F00 ->
+    // current28 A95ED0; gamepad D5B7F0/D5BB48 -> A93F60.
+    virtual std::uint8_t device_current2c(InputDevice&) = 0;
+};
+struct GuiListboxFrameServices {
+    GuiWidgetFrameRuntime& base_frames;
+    const GuiListboxHighlightServices& highlight;
+    GuiListboxFrameCalls& calls;
+    const std::function<GuiListboxInputSample()>& input_callback_f8bc08;
+    InputBindingDeviceGroups* const& input_groups_00f8bbf4;
+    const volatile float& zero_00d7a218;
 };
 
 // 00941250: CL first flag, DL second flag, RET. The registered target of
@@ -69,11 +107,15 @@ struct GuiListboxFields {
     std::uint8_t center_vertical_11d{};
     std::uint8_t auto_control_11e{};
     std::uint8_t horizontal_11f{};
+    std::uint8_t new_highlight_120{1}; // A9DF96; zero takes native null fault.
+    std::uint8_t allow_hidden_121{}; // A9DFCA, navigation skip predicate.
     float highlight_width_124{};
     float highlight_height_128{};
     GuiWidgetPoint highlight_offset_12c{};
     float line_distance_13c{};
+    std::function<GuiListboxInputSample()> input_callback_144; // A9E02A=null.
     std::uint8_t paging_148{};
+    std::uint8_t wrap_navigation_149{1}; // A9DFFC; zero delegates to current88.
     // Constructor-unwritten storage has no invented value. E230 writes EC,
     // 158,15C,160,164,168 in native order; C540 writes F0..F8 after fitting.
     std::optional<std::uint32_t> raw_ec;
@@ -94,7 +136,7 @@ void set_gui_widget_local_y_00aa78f0(GuiWidgetOwner&, float y);
 // tree. Its FC list borrows the actual row owners attached to owner.layout().
 // A9DF40 establishes empty rows, selected=end, previous110=null, listener114=
 // null and paging148=false. Only those constructor fields are projected here.
-// Full properties A9E400, frame40 A9D030, directional84 and scalar/copy teardown
+// Full properties A9E400 and scalar/copy teardown
 // remain required integration work. Owner and every borrowed row must stay
 // alive; remove a row here before its actual deleting destructor is invoked.
 class GuiListboxRuntime final {
@@ -126,6 +168,19 @@ public:
     // A9C310, ECX Listbox, RET. First row with hidden77==0, then current80(0).
     // Empty/all-hidden preserves current selection and does not notify.
     void select_first_selectable_00a9c310();
+    // Complete native current88, RET4 raw direction. Moves at most one node;
+    // a hidden target restores the old iterator without notifying. The forward
+    // end test compares actual row POINTERS, retaining duplicate-row behavior.
+    void navigate88_00a9c400(std::uint8_t forward);
+    // Complete normal valid-list current84, RET4. Wrap149 delegates or runs
+    // native paging/hidden traversal over these SAME FC/14C rows. EC/158 are
+    // read even on some unpaged boundaries and must have a real producer.
+    void navigate84_00a9da60(std::uint8_t forward, GuiListboxFrameCalls&);
+    // Full normal A9D030 caller sequence. Enter through the same frame runtime
+    // which holds its owner borrow across this derived routine and its base.
+    // Missing native services, constructor-unwritten reads, invalid iterators
+    // and the proven selector0 null-dereference branch fail explicitly.
+    void update40_00a9d030(float seconds, const GuiListboxFrameServices&);
     // A9C540, ECX Listbox, stack(row, low-byte paging, float depth), RETC.
     // Actual AA0F50 manager widget is dereferenced BEFORE testing row=null.
     // Uses its live current34/58 and native node hierarchy factor. No rendering
