@@ -45,6 +45,7 @@
 #include "bsp/cruise_command.hpp"
 #include "bsp/ship_ai_navigation.hpp"
 #include "bsp/ship_ai_states.hpp"
+#include "bsp/ship_ai_throttle_ring.hpp"
 #include "bsp/unit_autopilot_pair.hpp"
 #include "bsp/vector_helpers.hpp"
 #include "bsp/unit_commanded_speed.hpp"
@@ -435,6 +436,26 @@ struct MoveToPublishHost final : bsp::ShipAiPublishHost {
     void tail_009ef910(float) override {}   // 009EF910 unread
 };
 
+// The last link: 009DA250's one host call and 009F3F80's tail. Both take the
+// hull's signed forward speed through 0092D730, and the tail's two setters are
+// 0080E170 and 0080E190 on the unit that owns the ring.
+struct MoveToRudderLawHost final : bsp::ShipAiRudderLawHost {
+    float speed{0.0f};
+    float unit_body_axis_speed_0092d730() override { return speed; }
+};
+
+struct MoveToRingHopHost final : bsp::ShipAiRingHopHost {
+    bsp::UnitOrderRing* ring{nullptr};
+    float speed{0.0f};
+    float unit_body_axis_speed_0092d730() override { return speed; }
+    void set_ring_write_slot_rudder_0080e190(float value) override {
+        bsp::ship_ai_ring_set_write_slot_rudder_0080e190(*ring, value);
+    }
+    void set_ring_write_slot_throttle_0080e170(float value) override {
+        bsp::ship_ai_ring_set_write_slot_throttle_0080e170(*ring, value);
+    }
+};
+
 // -------------------------------------------------------------------------
 // One trajectory
 // -------------------------------------------------------------------------
@@ -547,6 +568,11 @@ struct TrajectoryInputs {
     bool moveto{false};
     float moveto_x{0.0f};
     float moveto_z{0.0f};
+    // The ship-class float 009DA268 loads for the division, [unit+538h]
+    // +524h. 00831840 does not write that offset, so the Lua key is unknown and
+    // the run uses MaxRotAngle (class+4F8h) unless --yaw-authority overrides it.
+    float yaw_authority_0524{0.0f};
+    bool yaw_authority_overridden{false};
 };
 
 struct TrajectoryResult {
@@ -583,6 +609,13 @@ struct TrajectoryResult {
     float moveto_bearing{0.0f};   // blk+324h after the navigation arm
     int moveto_turn_leads{0};     // steps on which the 009EE964 gate opened
     float moveto_arrival_time{-1.0f};
+    // The hop, 009F4B99..009F4D04: the last values 0080E170 and 0080E190 wrote
+    // into the ring's write slot, the heading error 009DA250 was driven with,
+    // and how many steps took the 009F4BC6 deadband that zeroes blk+1D4h.
+    float moveto_heading_error{0.0f};
+    float moveto_ring_throttle{0.0f};
+    float moveto_ring_rudder{0.0f};
+    int moveto_rudder_deadbands{0};
 };
 
 TrajectoryResult run_trajectory(const TrajectoryInputs& in, HullBodySetup& setup,
@@ -694,6 +727,8 @@ TrajectoryResult run_trajectory(const TrajectoryInputs& in, HullBodySetup& setup
     MoveToNavHost nav_host{};
     MoveToDirectHost direct_host{};
     MoveToPublishHost publish_host{};
+    MoveToRudderLawHost rudder_law_host{};
+    MoveToRingHopHost hop_host{};
     result.moveto = in.moveto;
 
     for (int step = 0; step <= in.steps; ++step) {
@@ -827,33 +862,47 @@ TrajectoryResult run_trajectory(const TrajectoryInputs& in, HullBodySetup& setup
             //    ship_motion_step_00825f20 below, at the head of the tick,
             //    exactly where 00825F2C sits in 00825F20.
 
-            // 6. STAND-IN, not recovered, and now known not to exist in this
-            //    shape: packet cc_ai_order_hop scanned every computation of a
-            //    slot address in .text and found no reader of +40h, +44h or
-            //    +48h on the unit's own motion path, so no native hop turns the
-            //    published triple into the order ring. The probe keeps a
-            //    proportional law over the +/-pi/4 window 00811960 clamps to so
-            //    that --moveto still produces a trajectory. A positive rudder
-            //    lowers the heading in this probe, hence the sign.
-            //    docs/UNIT_AI_ORDER_SLOT_READER.md.
+            // 6. The hop, recovered by packet cc_ai_throttle_ring: the tail of
+            //    009F3F80, which the controller reaches through 009F4DA0. The
+            //    AI does NOT read the slot it just published; it reads the ring
+            //    slot under the write cursor, slews blk+1D0h and blk+1D4h
+            //    toward it by at most dt * 1.5 and stores them back through
+            //    0080E170 / 0080E190. The rudder comes from 009DA250, the only
+            //    writer of blk+1D4h inside 009F3F80, driven by the same heading
+            //    error 009F43B6 builds from blk+324h.
+            //    docs/SHIP_AI_THROTTLE_TO_RING.md.
+            //
+            //    The one stand-in left: the ship-class float at class+524h that
+            //    009DA268 loads and 009DA280 divides by. 00831840 leaves +524h
+            //    so the Lua key behind it is unknown; the probe uses
+            //    MaxRotAngle (class+4F8h) and says so in the header and the
+            //    report. --yaw-authority overrides it.
             const float error = bsp::wrapped_angle_subtract_00438b10(
-                published.slot.heading_44, heading_radians(state));
-            float steer = error / 0.785398185253143310546875f;
-            if (steer > 1.0f) {
-                steer = 1.0f;
-            } else if (steer < -1.0f) {
-                steer = -1.0f;
+                blk.heading_target_324, heading_radians(state));
+            result.moveto_heading_error = error;
+            rudder_law_host.speed = host.forward_speed();
+            blk.desired_rudder = bsp::ship_ai_rudder_from_heading_error_009da250(
+                blk.direction, error, in.yaw_authority_0524, rudder_law_host);
+            hop_host.ring = &ring;
+            hop_host.speed = host.forward_speed();
+            const bsp::ShipAiRingHop hop = bsp::ship_ai_order_ring_hop_009f4b99(
+                blk, bsp::ship_ai_ring_write_slot_throttle(ring),
+                bsp::ship_ai_ring_write_slot_rudder(ring), in.dt, hop_host);
+            result.moveto_ring_throttle = hop.ring_throttle;
+            result.moveto_ring_rudder = hop.ring_rudder;
+            if (hop.rudder_zeroed) {
+                ++result.moveto_rudder_deadbands;
             }
-            order_a = in.throttle;
-            order_b = -steer;
         }
-        queue.slot_index = ring.write_cursor;
-        bsp::issue_unit_order_record_00816a40(issue, queue, scratch, order_a, order_b, 0);
-        const int w = ring.write_cursor;
-        ring.slot[w].param_a = queue.slot[w].param_a;
-        ring.slot[w].param_b = queue.slot[w].param_b;
-        ring.slot[w].kind = queue.slot[w].kind;
-        ring.slot[w].predicted = queue.slot_active[w];
+        if (!in.moveto) {
+            queue.slot_index = ring.write_cursor;
+            bsp::issue_unit_order_record_00816a40(issue, queue, scratch, order_a, order_b, 0);
+            const int w = ring.write_cursor;
+            ring.slot[w].param_a = queue.slot[w].param_a;
+            ring.slot[w].param_b = queue.slot[w].param_b;
+            ring.slot[w].kind = queue.slot[w].kind;
+            ring.slot[w].predicted = queue.slot_active[w];
+        }
 
         const bsp::ShipMotionStepResult motion_step =
             bsp::ship_motion_step_00825f20(state, cls, host, in.dt);
@@ -933,6 +982,8 @@ int main(int argc, char** argv) {
     bool moveto = false;
     float moveto_x = 0.0f;
     float moveto_z = 0.0f;
+    float yaw_authority = 0.0f;
+    bool have_yaw_authority = false;
     // --commanded-speed: the metres per second a Lua `SetShipSpeed` or
     // `NavigatorMoveOnPath` order would have put on the navigator parameter block,
     // which 009E1265's arm turns into a throttle of speed / reference.
@@ -969,6 +1020,9 @@ int main(int argc, char** argv) {
             moveto_x = static_cast<float>(std::atof(value.substr(0, comma).c_str()));
             moveto_z = static_cast<float>(std::atof(value.substr(comma + 1).c_str()));
             moveto = true;
+        } else if (arg == "--yaw-authority" && has_next) {
+            yaw_authority = static_cast<float>(std::atof(argv[++i]));
+            have_yaw_authority = true;
         } else if (arg == "--cruise") {
             cruise = true;
         } else if (arg == "--cruise-frame" && has_next) {
@@ -983,7 +1037,7 @@ int main(int argc, char** argv) {
         } else {
             std::printf("usage: %s [--lua <vehicleclasses.lua>] [--class N] [--type T]\n"
                         "          [--steps N] [--dt S] [--throttle X] [--rudder X]\n"
-                        "          [--moveto X,Z]\n"
+                        "          [--moveto X,Z] [--yaw-authority RAD]\n"
                         "          [--cruise] [--cruise-frame N]"
                         " [--commanded-speed M_PER_S]\n"
                         "          [--hull-extent DX DY DZ]\n",
@@ -1088,6 +1142,11 @@ int main(int argc, char** argv) {
     run_in.moveto = moveto;
     run_in.moveto_x = moveto_x;
     run_in.moveto_z = moveto_z;
+    // class+524h. 00831840 writes +4F8h..+51Bh and then +538h, so +524h is in a
+    // gap no reader this packet read fills; MaxRotAngle stands in for it and the
+    // run header says so.
+    run_in.yaw_authority_0524 = have_yaw_authority ? yaw_authority : chosen->max_rot_angle;
+    run_in.yaw_authority_overridden = have_yaw_authority;
 
     HullBodySetup stand_in = stand_in_body();
     HullBodySetup real = class_body(*chosen, hull_extent);
@@ -1153,7 +1212,12 @@ int main(int argc, char** argv) {
                     "    first step inside %.1f (00CF0DD8): %s\n"
                     "    last published slot   +44h %.6f rad, +40h %.4f, +48h %.4f\n"
                     "    slot promotions       %d of %d steps\n"
-                    "    nav arm bearing       %.6f rad, turn leads applied %d\n",
+                    "    nav arm bearing       %.6f rad, turn leads applied %d\n"
+                    "    009F3F80's tail, the hop this run recovered:\n"
+                    "      heading error       %.6f rad (blk+324h less the heading)\n"
+                    "      class+524h used     %.6f  (%s)\n"
+                    "      ring write slot     throttle %.6f, rudder %.6f\n"
+                    "      009F4BC6 deadbands  %d of %d steps\n",
                     static_cast<double>(run_in.moveto_x), static_cast<double>(run_in.moveto_z),
                     static_cast<double>(b.moveto_first_distance),
                     static_cast<double>(b.moveto_min_distance),
@@ -1164,18 +1228,30 @@ int main(int argc, char** argv) {
                     static_cast<double>(b.moveto_published_distance_40),
                     static_cast<double>(b.moveto_published_distance_48),
                     b.moveto_promotions, run_in.steps,
-                    static_cast<double>(b.moveto_bearing), b.moveto_turn_leads);
+                    static_cast<double>(b.moveto_bearing), b.moveto_turn_leads,
+                    static_cast<double>(b.moveto_heading_error),
+                    static_cast<double>(run_in.yaw_authority_0524),
+                    run_in.yaw_authority_overridden ? "--yaw-authority"
+                                                   : "MaxRotAngle, a stand-in",
+                    static_cast<double>(b.moveto_ring_throttle),
+                    static_cast<double>(b.moveto_ring_rudder),
+                    b.moveto_rudder_deadbands, run_in.steps);
         if (b.moveto_inside_step >= 0) {
             std::printf("    reached that range at step %d, %.2f s\n", b.moveto_inside_step,
                         static_cast<double>(b.moveto_arrival_time));
         }
-        std::printf("    one stand-in carries this run: the slot-to-rudder hop.\n"
-                    "    Packet cc_ai_order_hop scanned every slot-address\n"
-                    "    computation in .text and found no reader of slot +40h,\n"
-                    "    +44h or +48h on the unit's own motion path, so the\n"
-                    "    trajectory below is evidence about the published slot and\n"
-                    "    about the reconstructed motion, not about the shipped\n"
-                    "    steering law. blk+3C8h and blk+3D0h are run inputs.\n");
+        std::printf("    The slot-to-rudder stand-in is gone. The ring is fed by\n"
+                    "    009F3F80's tail through 0080E170 / 0080E190 and the\n"
+                    "    rudder by 009DA250, both reconstructed operation for\n"
+                    "    operation. One stand-in is left, the ship-class float at\n"
+                    "    class+524h that 009DA268 loads for the division:\n"
+                    "    00831840 never writes that offset, so the Lua key behind\n"
+                    "    it is unknown and MaxRotAngle stands in for it. The\n"
+                    "    branches of 009F3F80 before 009F4B99 that also write\n"
+                    "    blk+1D0h are unprojected, so this run exercises the hop\n"
+                    "    and the rudder law, not the collision arms before them.\n"
+                    "    blk+3C8h and blk+3D0h remain run inputs.\n"
+                    "    docs/SHIP_AI_THROTTLE_TO_RING.md.\n");
     }
 
     if (b.cruise) {
