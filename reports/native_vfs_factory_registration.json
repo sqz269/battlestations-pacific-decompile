@@ -1,0 +1,364 @@
+{
+  "packet": "orch2_native_vfs_factory_registration_au",
+  "base_commit": "6acc6b0a",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_vfs_factory_registration.cpp",
+  "header": "include/bsp/native_vfs_factory_registration.hpp",
+  "docs": "docs/NATIVE_VFS_FACTORY_REGISTRATION.md",
+  "status": "two_complete_actual_storage_bodies_with_consumed_library_contract_strict_win32_and_frozen_fixture_verified",
+  "functions": [
+    {
+      "address": "00be0660",
+      "end_inclusive": "00be0692",
+      "bytes": 51,
+      "coverage": "complete",
+      "name": "register_native_vfs_provider_factory_00be0660",
+      "hypothesis_name": "BSP_VFS_RegisterProviderFactory",
+      "original_abi": "ECX manager; EDX unconsumed; stacked factory; RET4; no semantic result",
+      "source": "src/native_vfs_factory_registration.cpp",
+      "saved_listing_gaps": []
+    },
+    {
+      "address": "00bdab20",
+      "end_inclusive": "00bdab52",
+      "bytes": 51,
+      "coverage": "complete",
+      "name": "allocate_native_vfs_factory_node_00bdab20",
+      "hypothesis_name": "BSP_VFSFactoryNode_Allocate",
+      "original_abi": "ECX/EDX unconsumed; stacked next,previous,factory-slot address; RET0C; EAX node",
+      "source": "src/native_vfs_factory_registration.cpp",
+      "saved_listing_gaps": []
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00be0675",
+      "native": "00bdab20",
+      "function": "00be0660"
+    },
+    {
+      "address": "00be0680",
+      "native": "00bdece0",
+      "function": "00be0660"
+    },
+    {
+      "address": "00bdab22",
+      "native": "00bf681b",
+      "function": "00bdab20"
+    },
+    {
+      "address": "00bded2c",
+      "native": "00408720",
+      "function": "00bdece0"
+    },
+    {
+      "address": "00bded41",
+      "native": "00411700",
+      "function": "00bdece0"
+    },
+    {
+      "address": "00bded58",
+      "native": "00bf6885",
+      "function": "00bdece0"
+    },
+    {
+      "address": "0073d675",
+      "native": "00be0660",
+      "function": "0073d410"
+    },
+    {
+      "address": "0073d688",
+      "native": "00be0660",
+      "function": "0073d410"
+    },
+    {
+      "address": "0073d95d",
+      "native": "00be0660",
+      "function": "0073d410"
+    },
+    {
+      "address": "00beda98",
+      "native": "00be0660",
+      "function": "00beda60"
+    },
+    {
+      "address": "0073bc73",
+      "native": "00be0660",
+      "function": "0073bc40"
+    }
+  ],
+  "layout": {
+    "producer": "00bdab20",
+    "node_bytes": 12,
+    "node_fields": {
+      "next": 0,
+      "previous": 4,
+      "factory": 8
+    },
+    "manager_list_owner": 48,
+    "manager_sentinel": 52,
+    "manager_count": 56,
+    "manager_producer": "00be1dc0",
+    "producer_sentinel_call": "00be1e1f",
+    "producer_sentinel_store": "00be1e24",
+    "producer_count_zero": "00be1e27",
+    "registration_preserves_owner_word": true
+  },
+  "ordering": [
+    "Capture manager sentinel and sentinel.previous before allocation",
+    "Helper requests12 bytes, cleans one cdecl size argument, tests/stores next then tests/stores previous then tests/reads current factory slot and stores value",
+    "Capture returned node; library count check with increment1",
+    "Write captured sentinel.previous then reload current node.previous and write that previous.next",
+    "No null/duplicate filtering or factory AddRef",
+    "Allocation precedes rejection; no EH cleanup or detached-node rollback"
+  ],
+  "library_contract": {
+    "entry": "00bdece0",
+    "current_library_name_retained": "STL_xlen_throw_00bdece0",
+    "owned_or_separate_reconstruction_count": false,
+    "body_bytes": 147,
+    "end_inclusive": "00bded72",
+    "normal_return": "RET4",
+    "inputs": "ECX raw list; stacked increment",
+    "count_offset": 8,
+    "guard": "uint32(0x3fffffff - captured_count) < increment",
+    "success_store": "captured_count + increment with DWORD wrap",
+    "failure_count_write": false,
+    "message": "list<T> too long",
+    "assigned_bytes": 16,
+    "terminator": "additional NUL written by existing counted assignment",
+    "source_transport": "existing NativeAliasListLengthError plus native legacy SBO constructor/assignment/destructor; no new CRT or exception type",
+    "rejected_direct_reuse": "grow_native_alias_list_count_004ce780 uses1FFFFFFF and would change admitted counts",
+    "exception_scope": {
+      "handler": "00cc64e8",
+      "func_info": "00e00a0c",
+      "unwind_map": "00e00a04",
+      "state0_cleanup": "00cc64e0 ->004072d0",
+      "state0_armed_after": "00bded2c assignment returns",
+      "payload_constructor": "00411700",
+      "length_error_token": "00d69260",
+      "throw_service": "00bf6885",
+      "throw_metadata": "00d83f98",
+      "native_FH3_executed": false
+    }
+  },
+  "corrections": [
+    {
+      "was": "BDECE0 throw-site label might imply unconditional failure",
+      "is": "returning captured-count growth helper with conditional length-error throw",
+      "evidence": "BDECFF..BDED0A predicate; BDED5D/5F ADD/store;BDED70 RET4"
+    },
+    {
+      "was": "Existing vector projection represents BE0660 implementation",
+      "is": "preserved historical fragment; this separate actual implementation mutates raw linked nodes and manager count in native order",
+      "evidence": "BE0663..BE0690; prior app_init_tail source not edited"
+    }
+  ],
+  "spans": [
+    {
+      "address": "00bdab20",
+      "bytes": 67,
+      "sha256": "5c615ef45676020dbe9791c71398c281f5d9ad212e211e62f0e160be0f660a92",
+      "live_matches_disk": true,
+      "bytes_hex": "6a0ce8f4bc010083c40485c074068b4c240489088d480485c974068b54240889118d480885c974088b54240c8b128911c20c00cccccccccccccccccccccccccc8bc1c2"
+    },
+    {
+      "address": "00bdece0",
+      "bytes": 163,
+      "sha256": "fb9eab1057af03c66e30c5fc1e5075b7c86ee4dbc85859d94c9f5e2dbbb3058c",
+      "live_matches_disk": true,
+      "bytes_hex": "64a1000000008b5424046aff68e864cc0050648925000000008b410883ec4456beffffff3f2bf03bf25e73516a1068f838ce008d4c2408c74424200f000000c744241c00000000c644240c00e8ef9982ff8d0424508d4c2420c744245000000000e8ba2983ff68983fd8008d4c242051c74424246092d600e8287b010003c28941088b4c244464890d0000000083c450c20400cccccccccccccccccccccccccc64a100"
+    },
+    {
+      "address": "00be0660",
+      "bytes": 67,
+      "sha256": "245fcedc62340683dda7dd49cbf2aafa8573d7e3d6ac1965e342be7d5f30f265",
+      "live_matches_disk": true,
+      "bytes_hex": "5356578b79348d71308b4f048d4424105051578bcee8a6a4ffff6a018bce8bd8e85be6ffff895f048b53045f5e891a5bc20400cccccccccccccccccccccccccc83ec08"
+    },
+    {
+      "address": "00cc64e0",
+      "bytes": 18,
+      "sha256": "b923ccd503211c253270fb2aedca34ba48266c767ab0a9550adbef13d9e00182",
+      "live_matches_disk": true,
+      "bytes_hex": "8d4db0e9e80d74ffb80c0ae000e95106f3ff"
+    },
+    {
+      "address": "00ce38f8",
+      "bytes": 17,
+      "sha256": "137ba7b8130c7be0ea882fe7eb408a7dd1c2b6913a9577da91b84bbdd756734c",
+      "live_matches_disk": true,
+      "bytes_hex": "6c6973743c543e20746f6f206c6f6e6700"
+    },
+    {
+      "address": "00e00a04",
+      "bytes": 44,
+      "sha256": "284e482b57a8c7272abed2e990cece49f30be1c6bd139a3b2a529a26473ecc84",
+      "live_matches_disk": true,
+      "bytes_hex": "ffffffffe064cc002205931901000000040ae000000000000000000000000000000000000000000001000000"
+    }
+  ],
+  "ghidra": {
+    "worker_mutations": false,
+    "project_verified_each_CLI_batch": true,
+    "exported": [
+      "00be0660",
+      "00bdab20",
+      "00bdece0"
+    ],
+    "old_annotations": {
+      "path": "local/factory_registration_au/old_annotations.json",
+      "bytes": 2318,
+      "sha256": "d642cd3e47f11395dd2a2945d9fe9283735dd7896ae1624db53d9c566ad813ba"
+    },
+    "flow_repairs_needed": []
+  },
+  "verification": {
+    "strict_build": "Release Win32 /W4 /WX /fp:strict; MSBUILDDISABLENODEREUSE=1; scripts/build.ps1 passed",
+    "ctests": [
+      "reconstructed_math passed",
+      "native_math_differential passed"
+    ],
+    "seeds": "8 established native seeds verified before first build configuration",
+    "call_report": {
+      "command": "python tools/verify_report_calls.py reports/native_vfs_factory_registration.json",
+      "checked": 11,
+      "failed": 0,
+      "log": {
+        "path": "local/factory_registration_au/report_calls.log",
+        "bytes": 78,
+        "sha256": "a2c98c252b8c127f0018df091cb6feed1c64661950e00d25ff3dfec6934bf3a7"
+      }
+    },
+    "fixture": {
+      "normal_native_source_comparisons": 5,
+      "source_only_rejection_cases": 1,
+      "executed_native_entries": [
+        "00be0660",
+        "00bdab20",
+        "00bdece0 normal branch"
+      ],
+      "copied_native_bytes": 249,
+      "instrumentation": "three relative CALL displacement changes:BE0675->copiedBDAB20,BE0680->copiedBDECE0,BDAB22->existing source CRT allocator",
+      "source_allocation_service": "singleton_lifetime_allocate",
+      "original_EH_handler_and_unused_throw_branch_calls": "unchanged and not executed",
+      "checks": [
+        "node next/previous/factory words with null and nonnull values",
+        "null and duplicate factory registration",
+        "forward/backward links and preserved raw manager bytes/sentinel value",
+        "3FFFFFFE plus1 admission",
+        "FFFFFFFF plus1 wrapping behavior",
+        "source3FFFFFFF rejection leaves manager/sentinel unchanged and transports exact16-byte native length-error message"
+      ],
+      "source_failure_detached_node": "intentional12-byte allocation retained until process exit, matching lack of native rollback",
+      "new_permanent_tests": false,
+      "execution_attempts": 1,
+      "failed_execution_attempts": 0,
+      "manifest": {
+        "path": "local/factory_registration_au/frozen_attempt_01/manifest.json",
+        "bytes": 657046,
+        "sha256": "6b419122cb88676a29d6ac9adff39cfcc27efb05de95f4ff4814908b797a5f5d"
+      },
+      "frozen_files": 2843,
+      "post_execution_hash_verification": "Verified 2843 unchanged current and physically frozen files"
+    },
+    "artifacts": [
+      {
+        "path": "src/native_vfs_factory_registration.cpp",
+        "bytes": 2661,
+        "sha256": "1b51926f4e50ed64cbe44da380d205018581d833ed7404f2a9f282ec569c84fc"
+      },
+      {
+        "path": "include/bsp/native_vfs_factory_registration.hpp",
+        "bytes": 1820,
+        "sha256": "ca15822b90633664fbec4e4fc5ae64ecb24156e281f4ee828c41053e3d610f4e"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 48428840,
+        "sha256": "16d4a54c6fd108f8e558f1e086243f2177425ebb1c71f630ea29f7f51066c683"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_vfs_factory_registration.obj",
+        "bytes": 6107,
+        "sha256": "ad940a83852655369c32d5fafb0af864ed76101d48f20d45e913c2d9b8973ad4"
+      },
+      {
+        "path": "local/factory_registration_au/factory_probe.cpp",
+        "bytes": 5633,
+        "sha256": "b474d56ec42aeec334d938df94c9f857e712ccc21274c19c4f29605342833d0f"
+      },
+      {
+        "path": "local/factory_registration_au/factory_probe.obj",
+        "bytes": 13604,
+        "sha256": "53811f4093e57e74dd7d183a32786c82e42d46e270804c70e203e75ca3f6487d"
+      },
+      {
+        "path": "local/factory_registration_au/factory_probe.exe",
+        "bytes": 17408,
+        "sha256": "c0bf4e8876c5348e3d5bc4c55aec70a39d9d408cb65c48bb5c432e81f759d971"
+      },
+      {
+        "path": "local/factory_registration_au/native_bytes.hpp",
+        "bytes": 1530,
+        "sha256": "581166f580411772e7cc2d541ad6ae0a31f642aafcbe012e9d9c0f0a0e4717fe"
+      },
+      {
+        "path": "local/factory_registration_au/native_image.exe",
+        "bytes": 12223752,
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+      }
+    ],
+    "logs": [
+      {
+        "path": "local/factory_registration_au/build_before_tests.log",
+        "bytes": 33060,
+        "sha256": "de74bf34e054116593a9dc167e1a8b8ae374f58057e94eefb272923798e2ac74"
+      },
+      {
+        "path": "local/factory_registration_au/build_and_ctest.log",
+        "bytes": 4016,
+        "sha256": "3a908ab97073485455641d161f66b6cbba8988e4b8926227fd09601f0ea92747"
+      },
+      {
+        "path": "local/factory_registration_au/compile_probe.log",
+        "bytes": 264,
+        "sha256": "27bb42a499b63d028540440e709da97b1f03477e11a61df35d85267ff5e582b4"
+      },
+      {
+        "path": "local/factory_registration_au/probe_attempt_01.log",
+        "bytes": 238,
+        "sha256": "5408bf9dc338b88bef0c29b6af1cda28e2abec44e4177fa04095cd1fb9e8e4ed"
+      },
+      {
+        "path": "local/factory_registration_au/postexecution_hashes.log",
+        "bytes": 61,
+        "sha256": "749c04a36f78bf688d711fecbef26f1cd8ed6eb34fdec49daae561199ebc57c6"
+      },
+      {
+        "path": "local/factory_registration_au/verify_seeds.log",
+        "bytes": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+      }
+    ]
+  },
+  "limits": [
+    "Native rejection/FH3, allocation failure, arbitrary callback or caller-stack mutation not executed",
+    "The existing source allocation service throws instead of returning invalid/null allocations",
+    "New source exception RTTI, static CRT/new-handler identity and native register/flag output identity differ",
+    "BDECE0 retains its current library name and is a consumed local contract; no new library reconstruction counted",
+    "Older semantic fragment and application/GameHost routing unchanged",
+    "No original-game or bsp_game runtime validation claim"
+  ]
+}

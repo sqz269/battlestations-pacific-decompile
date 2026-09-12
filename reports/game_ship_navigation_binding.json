@@ -1,0 +1,239 @@
+{
+  "packet": "orch6_navigation_runtime_d",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/game_hosts_ship_ai.cpp",
+  "documentation": "docs/GAME_SHIP_NAVIGATION_BINDING.md",
+  "abi_compatible": false,
+  "game_validated": false,
+  "fragments": [
+    {
+      "address": "009ed902",
+      "containing_function": "009ed6b0",
+      "body_end_inclusive": "009ed907",
+      "coverage": "FADD controlled-unit +9C8 hull extent; host reader now consumes actual loaded extent"
+    },
+    {
+      "address": "009e58d4",
+      "containing_function": "009e5770",
+      "body_end_inclusive": "009e58d9",
+      "coverage": "FSUB controlled-unit +9C8 hull extent from target integer range; range itself remains unresolved"
+    }
+  ],
+  "original_abi": {
+    "009ed6b0": "ECX navigation block, stack float seconds, RET4; stored body009ED6B0..009EF228",
+    "009e5770": "ECX state, stack delta, RET4 at009E59B5; body009E5770..009E59B7"
+  },
+  "native_calls": [
+    {
+      "address": "009ed8d1",
+      "native": "0092d730",
+      "function": "009ed6b0"
+    },
+    {
+      "address": "009e58b9",
+      "native": "00414c60",
+      "function": "009e5770"
+    },
+    {
+      "address": "009ebf67",
+      "native": "009d84e0",
+      "function": "009eb660"
+    },
+    {
+      "address": "009e45f3",
+      "native": "00bf7030",
+      "function": "009e4330"
+    }
+  ],
+  "no_ghidra_function": [],
+  "register_evidence": [
+    "009ED8DA MOV EAX,[ESI+3FCh];009ED8E4 reads class through[EAX+538h];009ED902 FADD[EAX+9C8h]",
+    "009E58BE MOV ECX,[ESI];009E58C8 MOV EAX,[ECX+AA8h];009E58CE FILD[EDI+7A0h];009E58D4 FSUB[EAX+9C8h]",
+    "00811068 FLD[class+A0h];0081106E FSTP[unit+9C8h] on absent model-box branch"
+  ],
+  "diagnostic_correction": "Passing-corner concrete call counted only when blocking_node>=0; empty-neighbour scan no longer fabricates an unimplemented call count.",
+  "verification": {
+    "build": "MSVC Win32 Release and existing CTest2/2 passed",
+    "log": "local/orch6_navigation_initial_build.log",
+    "source_sha256": "3a76cd5a7c3f04f57fe576a81e98dae7f3265ebf67e96010e656329278cb78c3",
+    "runtime_attempt": {
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\build\\win32\\Release\\bsp_game.exe",
+        "--frames",
+        "360",
+        "--press-start-frame",
+        "3",
+        "--menu-select",
+        "USN01",
+        "--mission-frames",
+        "120",
+        "--mission-frame-seconds",
+        "0.1",
+        "--game-root",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+        "--fmod-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "--fmod-event-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_navigation_length.log",
+        "--order-frame",
+        "0",
+        "--order-unit",
+        "Enterprise",
+        "--order",
+        "moveto:Airfield2"
+      ],
+      "exe_sha256": "fc009733bdf6376cebea49d25a289ceec039a23236bf9efbe56dec93b3bb6034",
+      "exit": 4294967295,
+      "seconds": 16.156280517578125
+    },
+    "runtime_result": "Startup existing-instance error path, no mission frames; concurrent PID102168 in cc-exe-2s worktree independently confirmed live and left untouched",
+    "new_tracked_tests": 0,
+    "integrated_build": {
+      "result": "MSVC Win32 Release and existing CTest2/2 passed",
+      "log": "local/orch6_final_geometry_build.log",
+      "source_sha256": "9c1f97354417c4db2d800b0f6b01a72bbe0dc06686fe1d3fe5a6abfdacaf0155"
+    },
+    "mission_runtime": {
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\build\\win32\\Release\\bsp_game.exe",
+        "--frames",
+        "360",
+        "--press-start-frame",
+        "3",
+        "--menu-select",
+        "USN01",
+        "--mission-frames",
+        "120",
+        "--mission-frame-seconds",
+        "0.1",
+        "--game-root",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+        "--fmod-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "--fmod-event-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_navigation_geometry.log",
+        "--order-frame",
+        "0",
+        "--order-unit",
+        "Enterprise",
+        "--order",
+        "moveto:Airfield2"
+      ],
+      "exe_sha256": "ef4c308c9bc3fd922191c87441f99c76e88ec8505159cc5f2a887325bdad1b17",
+      "exit": 0,
+      "seconds": 12.674929857254028,
+      "log": "local/orch6_navigation_geometry.log",
+      "frames_requested": 120,
+      "frames_ran": 120,
+      "frames_simulated": 120,
+      "frames_paused": 0,
+      "hull_geometry_updates": 18557,
+      "controls_extent_reads": 17520,
+      "goal_position_reads": 48,
+      "corner_arms": 0,
+      "fmod_errors": 0,
+      "clean_shutdown": true
+    },
+    "independent_review": "Geometry cache lanes, local constructor handoff, order and consumers accepted. Identified sqrt clamp corrected; width remains placeholder.",
+    "final_merged_runtime": {
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\build\\win32\\Release\\bsp_game.exe",
+        "--frames",
+        "360",
+        "--press-start-frame",
+        "3",
+        "--menu-select",
+        "USN01",
+        "--mission-frames",
+        "120",
+        "--mission-frame-seconds",
+        "0.1",
+        "--game-root",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+        "--fmod-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "--fmod-event-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_navigation_geometry.log",
+        "--order-frame",
+        "0",
+        "--order-unit",
+        "Enterprise",
+        "--order",
+        "moveto:Airfield2"
+      ],
+      "exe_sha256": "28f02566322f1865796864c3cbe6f60e3c3e98109bd6d940130bdfb1a79c0b66",
+      "exit": 0,
+      "seconds": 12.86674690246582,
+      "log": "local/orch6_navigation_geometry.log",
+      "frames_requested": 120,
+      "frames_ran": 120,
+      "frames_simulated": 120,
+      "frames_paused": 0,
+      "hull_geometry_updates": 18557,
+      "controls_extent_reads": 17520,
+      "goal_position_reads": 48,
+      "corner_arms": 0,
+      "fmod_errors": 0,
+      "clean_shutdown": true,
+      "compiled_commit": "4ee5f2ff0cce65d19f17d252a00a878a528d1d56",
+      "build_log": "local/orch6_geometry_integration.log",
+      "build_result": "MSVC Win32 Release, existing CTest2/2 passed after merging current main"
+    },
+    "later_main_merge_build": {
+      "compiled_commit": "f51654b84743852c2e2c25ee1c9f399dd635e56d",
+      "result": "MSVC Win32 Release and existing CTest2/2 passed",
+      "log": "local/orch6_geometry_final_head_build.log",
+      "exe_sha256": "3d3d0000544d55281fc9f7dd808b15f3c360ab70ce9fe1270ca8f7f212c74351",
+      "runtime_limit": "The120-frame runtime evidence above belongs to compiled commit4ee5f2ff; this later merge adds external unit-motion/UI changes and is build-tested here."
+    }
+  },
+  "limits": [
+    "Runtime proves geometry production and represented consumers during120 USN01 frames, not original gameplay parity.",
+    "Model-present and dirty-pose branches were not exercised; unsupported dirty cache is rejected.",
+    "Unit width remains a placeholder (currently1.0f); model-box extent path, class+A4 producer, target+7A0 range and neighbour population remain unresolved.",
+    "Full009E0270 implementation exists in the core, but actual class+570 depth and other pre-step/profile inputs remain unbound in the executable.",
+    "Zero corner arms in this run; no corner-detour or world collision gameplay validation."
+  ],
+  "hull_geometry_binding": {
+    "implementation": "ship_ai_hull_geometry_009de2f0",
+    "core_evidence": "reports/ship_ai_hull_geometry.json",
+    "inputs": "actual cache-valid unit world pose, constructor local hull scale and shoulder offset, actual application CRT access; represented absent-model path",
+    "order": "constructor uses its local fields before assignment; each controller pre-step refreshes the same persistent geometry before navigation consumers",
+    "consumers": {
+      "goal": "position184",
+      "sector_scan": "position184, forward1AC, beam19C/opposite1A4",
+      "throttle": "position184, forward1AC, beam19C",
+      "clearance": "shoulder18C/194 and forward1AC"
+    },
+    "constant": "00CF1748 bits3FDCCCCCC0000000 are widened0.45f, not double0.45",
+    "sqrt": "009E45F3 now uses recovered CRT sqrt with actual application CRT state; removed positive-only clamp",
+    "full_pre_step_runtime_bound": false
+  },
+  "ghidra_integration": {
+    "applied_functions": 1,
+    "prior_values": "local/ghidra-annotations-20260912T204234Z.json",
+    "existing_comments_preserved": true,
+    "project_saved": true,
+    "exports_refreshed": true,
+    "export_log": "local/orch6_dyn_geometry_exports.log"
+  }
+}

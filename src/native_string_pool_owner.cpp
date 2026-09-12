@@ -1,4 +1,6 @@
 #include "bsp/native_string_pool_owner.hpp"
+#include "bsp/native_singleton_publication.hpp"
+#include "bsp/native_singleton_vector_registration_wrappers.hpp"
 
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -86,6 +88,49 @@ NativeStringPoolStorage* native_string_pool_get_or_create_00419cc0(
         }
     }
     return actual_published_01090aa8; // Reload AFTER unlocking.
+}
+
+NativeStringPoolStorage* native_string_pool_get_or_create_00419cc0(
+    NativeStringPoolStorage* volatile& actual_published_01090aa8,
+    void* volatile& actual_manager_publication_01090aa0) {
+    if (auto* const owner = actual_published_01090aa8) return owner;
+    void* const first_manager = get_native_singleton_manager_00415350(
+        actual_manager_publication_01090aa0);
+    auto* const captured_section = *reinterpret_cast<CRITICAL_SECTION* volatile*>(
+        static_cast<std::byte*>(first_manager) + 0x10);
+    auto* const depth = reinterpret_cast<volatile std::uint32_t*>(
+        reinterpret_cast<std::uintptr_t>(captured_section) + 0x18);
+    if (captured_section) {
+        EnterCriticalSection(captured_section);
+        *depth = *depth + 1u;
+    }
+    void* allocation = nullptr;
+    unsigned unwind_state = 0;
+    // Preserve the existing source __finally boundary and native state1 raw
+    // allocation cleanup. State0 retains the first manager's actual section.
+    __try {
+        if (!actual_published_01090aa8) {
+            allocation = singleton_lifetime_allocate({SingletonAllocationKind::object,
+                0x8ad4a0, sizeof(NativeStringPoolStorage)});
+            unwind_state = 1;
+            auto* const owner = allocation
+                ? construct_native_string_pool_00bd1480(allocation) : nullptr;
+            unwind_state = 0;
+            actual_published_01090aa8 = owner;
+            void* const registration_manager = get_native_singleton_manager_00415350(
+                actual_manager_publication_01090aa0);
+            // Native419D49 resolves manager BEFORE419D4E reloads pool argument.
+            register_native_singleton_object_00bd0c30(registration_manager, nullptr,
+                actual_published_01090aa8);
+        }
+    } __finally {
+        if (unwind_state == 1) singleton_lifetime_free(allocation);
+        if (captured_section) {
+            *depth = *depth - 1u;
+            LeaveCriticalSection(captured_section);
+        }
+    }
+    return actual_published_01090aa8;
 }
 
 void destroy_native_string_pool_00bd14c0(NativeStringPoolStorage& owner,

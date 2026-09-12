@@ -56,6 +56,7 @@ public:
     void release_secondary_scene_nodes(GuiWidgetOwner&) override;
     void refresh_clip70(GuiWidgetOwner&) override;
     void set_alpha4c(GuiWidgetOwner&, float) override;
+    void set_size58(GuiWidgetOwner&, const GuiWidgetSize&) override;
 
     // Additional real Text profile entries, kept typed until generic widget
     // dispatch exposes these signatures. All operate on this SAME lifetime.

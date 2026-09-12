@@ -1,0 +1,312 @@
+{
+  "schema_version": 1,
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "status": "reconstructed_bounded_combined_win32_and_scoped_fixture_validation_recorded",
+  "abi_compatible": false,
+  "game_validated": false,
+  "render_validated": false,
+  "validation_report": "reports/orch5_menu_concrete_providers_batch.json",
+  "documentation": "docs/GUI_WIDGET_RELATIVE_BOUNDS.md",
+  "source": "src/gui_type_dispatch.cpp",
+  "functions": [
+    {
+      "address": "00aa7970",
+      "name": "BSP_GuiWidget_SetSize",
+      "source": "src/gui_widget_owner.cpp",
+      "ledger_kind": "function",
+      "original_abi": "ECX widget; pointer to two float size lanes stack; RET4",
+      "coverage": "Canonical Group, Screen and Listbox current58; sequential x87 size stores then actual recomposition without bounds refresh",
+      "end_inclusive": "00aa7986",
+      "reviewed_original_abi": "ECX widget;borrowed size pair stack;RET4 atAA7984;no stable result"
+    },
+    {
+      "address": "00acf120",
+      "name": "BSP_GuiFrameBox_SetSize",
+      "source": "src/gui_type_dispatch.cpp",
+      "ledger_kind": "function",
+      "original_abi": "ECX FrameBox; borrowed size pointer stack; RET4",
+      "coverage": "Actual FrameBox current58; base58 callback then fresh current state and live state records; sequential borrowed size copies and actual current88 resource rebuild; valid state storage domain",
+      "end_inclusive": "00acf1c4",
+      "reviewed_original_abi": "ECX FrameBox;borrowed size pair stack;RET4 atACF1C2;no stable result"
+    },
+    {
+      "address": "00aceb30",
+      "name": "BSP_GuiFrameBox_RebuildCurrentState",
+      "source": "src/gui_type_dispatch.cpp",
+      "ledger_kind": "function",
+      "original_abi": "ECX FrameBox; zero-extend word current state at EC, push DWORD to current80; RET",
+      "coverage": "Actual FrameBox current88 to current80 AD0D80 with captured low16 state; function defined from verified19 native bytes",
+      "end_inclusive": "00aceb42",
+      "reviewed_original_abi": "ECX FrameBox;no stack arguments;RET atACEB42;no stable result;current80 receives zero-extended low16 state as one stack DWORD"
+    },
+    {
+      "address": "00aa8240",
+      "name": "BSP_GuiWidget_SetResolvedPosition",
+      "source": "src/gui_widget_relative_bounds.cpp",
+      "ledger_kind": "fragment",
+      "original_abi": "ECX widget; resolved point pointer stack; RET4",
+      "coverage": "Canonical owner binding to existing inverse-parent arithmetic, same transform storage, actual recomposition and bounds refresh; inherited arithmetic domain unchanged",
+      "end_inclusive": "00aa8314",
+      "reviewed_original_abi": "ECX widget;borrowed resolved Vec3 pointer stack;RET4 atAA82DE/AA8312;no stable result"
+    }
+  ],
+  "dispatch_table_evidence": [
+    {
+      "slot58": "00d5cbd8",
+      "target": "00aa7970"
+    },
+    {
+      "slot58": "00d5be90",
+      "target": "00aa7970"
+    },
+    {
+      "slot58": "00d5bc50",
+      "target": "00aa7970"
+    },
+    {
+      "slot58": "00d5d188",
+      "target": "00acf120"
+    },
+    {
+      "slot58": "00d5c518",
+      "target": "00ab1ef0"
+    },
+    {
+      "slot58": "00d5c720",
+      "target": "00abbf30"
+    }
+  ],
+  "limits": [
+    "Section ABE670 is not base58 and remains unsupported in the generic default.",
+    "Actual Text and FrameBox implementations are dispatched; no fixture claims their resource or render effects."
+  ],
+  "host_steps": [
+    {
+      "address": "00aa797f",
+      "function": "00aa7970",
+      "source": "src/gui_widget_owner.cpp",
+      "instruction": "CALL 0x00aa7220",
+      "coverage": "normal body call",
+      "native": "00aa7220"
+    },
+    {
+      "address": "00acf129",
+      "function": "00acf120",
+      "source": "src/gui_type_dispatch.cpp",
+      "instruction": "CALL 0x00aa7970",
+      "coverage": "normal body call",
+      "native": "00aa7970"
+    },
+    {
+      "address": "00acf190",
+      "function": "00acf120",
+      "source": "src/gui_type_dispatch.cpp",
+      "instruction": "CALL 0x00bf6713",
+      "coverage": "excluded native invalid iterator/debug CRT path",
+      "native": "00bf6713",
+      "exclusion": "Canonical valid std::vector domain cannot reproduce corrupt native begin/end/count; original BF6713 call retained in evidence,not replaced with successful callback."
+    },
+    {
+      "address": "00acf1bc",
+      "function": "00acf120",
+      "source": "src/gui_type_dispatch.cpp",
+      "instruction": "CALL EAX",
+      "coverage": "normal body call",
+      "native": "00aceb30",
+      "dispatch": "indirect actual profile; primary target is current menu FrameBox where applicable",
+      "indirect_targets": [
+        {
+          "profile": "FrameBox",
+          "table": "00d5d130",
+          "slot": "88",
+          "slot_address": "00d5d1b8",
+          "target": "00aceb30",
+          "bytes": "30 eb ac 00"
+        }
+      ]
+    },
+    {
+      "address": "00aceb40",
+      "function": "00aceb30",
+      "source": "src/gui_type_dispatch.cpp",
+      "instruction": "CALL EAX",
+      "coverage": "normal body call",
+      "native": "00ad0d80",
+      "dispatch": "indirect actual profile; primary target is current menu FrameBox where applicable",
+      "indirect_targets": [
+        {
+          "profile": "FrameBox",
+          "table": "00d5d130",
+          "slot": "80",
+          "slot_address": "00d5d1b0",
+          "target": "00ad0d80",
+          "bytes": "80 0d ad 00"
+        }
+      ]
+    },
+    {
+      "address": "00aa826c",
+      "function": "00aa8240",
+      "source": "src/gui_widget_relative_bounds.cpp",
+      "instruction": "CALL 0x00aa6750",
+      "coverage": "normal body call",
+      "native": "00aa6750"
+    },
+    {
+      "address": "00aa82ce",
+      "function": "00aa8240",
+      "source": "src/gui_widget_relative_bounds.cpp",
+      "instruction": "CALL 0x00aa7220",
+      "coverage": "normal body call",
+      "native": "00aa7220"
+    },
+    {
+      "address": "00aa82d5",
+      "function": "00aa8240",
+      "source": "src/gui_widget_relative_bounds.cpp",
+      "instruction": "CALL 0x00aa70e0",
+      "coverage": "normal body call",
+      "native": "00aa70e0"
+    },
+    {
+      "address": "00aa8302",
+      "function": "00aa8240",
+      "source": "src/gui_widget_relative_bounds.cpp",
+      "instruction": "CALL 0x00aa7220",
+      "coverage": "normal body call",
+      "native": "00aa7220"
+    },
+    {
+      "address": "00aa8309",
+      "function": "00aa8240",
+      "source": "src/gui_widget_relative_bounds.cpp",
+      "instruction": "CALL 0x00aa70e0",
+      "coverage": "normal body call",
+      "native": "00aa70e0"
+    }
+  ],
+  "live_call_review": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review.json",
+  "indirect_table_evidence": [
+    {
+      "profile": "Group",
+      "table": "00d5cb80",
+      "slot": "58",
+      "slot_address": "00d5cbd8",
+      "target": "00aa7970",
+      "bytes": "70 79 aa 00"
+    },
+    {
+      "profile": "Screen",
+      "table": "00d5be38",
+      "slot": "58",
+      "slot_address": "00d5be90",
+      "target": "00aa7970",
+      "bytes": "70 79 aa 00"
+    },
+    {
+      "profile": "Listbox",
+      "table": "00d5bbf8",
+      "slot": "58",
+      "slot_address": "00d5bc50",
+      "target": "00aa7970",
+      "bytes": "70 79 aa 00"
+    },
+    {
+      "profile": "Icon",
+      "table": "00d5c4c0",
+      "slot": "58",
+      "slot_address": "00d5c518",
+      "target": "00ab1ef0",
+      "bytes": "f0 1e ab 00"
+    },
+    {
+      "profile": "Text",
+      "table": "00d5c6c8",
+      "slot": "58",
+      "slot_address": "00d5c720",
+      "target": "00abbf30",
+      "bytes": "30 bf ab 00"
+    },
+    {
+      "profile": "FrameBox",
+      "table": "00d5d130",
+      "slot": "58",
+      "slot_address": "00d5d188",
+      "target": "00acf120",
+      "bytes": "20 f1 ac 00"
+    },
+    {
+      "profile": "Group",
+      "table": "00d5cb80",
+      "slot": "5c",
+      "slot_address": "00d5cbdc",
+      "target": "00a9e110",
+      "bytes": "10 e1 a9 00"
+    },
+    {
+      "profile": "Screen",
+      "table": "00d5be38",
+      "slot": "5c",
+      "slot_address": "00d5be94",
+      "target": "00a9e110",
+      "bytes": "10 e1 a9 00"
+    },
+    {
+      "profile": "Listbox",
+      "table": "00d5bbf8",
+      "slot": "5c",
+      "slot_address": "00d5bc54",
+      "target": "00a9e110",
+      "bytes": "10 e1 a9 00"
+    },
+    {
+      "profile": "Icon",
+      "table": "00d5c4c0",
+      "slot": "5c",
+      "slot_address": "00d5c51c",
+      "target": "00a9e110",
+      "bytes": "10 e1 a9 00"
+    },
+    {
+      "profile": "Text",
+      "table": "00d5c6c8",
+      "slot": "5c",
+      "slot_address": "00d5c724",
+      "target": "00a9e110",
+      "bytes": "10 e1 a9 00"
+    },
+    {
+      "profile": "FrameBox",
+      "table": "00d5d130",
+      "slot": "5c",
+      "slot_address": "00d5d18c",
+      "target": "00a9e110",
+      "bytes": "10 e1 a9 00"
+    },
+    {
+      "profile": "FrameBox",
+      "table": "00d5d130",
+      "slot": "34",
+      "slot_address": "00d5d164",
+      "target": "00aa8530",
+      "bytes": "30 85 aa 00"
+    },
+    {
+      "profile": "FrameBox",
+      "table": "00d5d130",
+      "slot": "88",
+      "slot_address": "00d5d1b8",
+      "target": "00aceb30",
+      "bytes": "30 eb ac 00"
+    },
+    {
+      "profile": "FrameBox",
+      "table": "00d5d130",
+      "slot": "80",
+      "slot_address": "00d5d1b0",
+      "target": "00ad0d80",
+      "bytes": "80 0d ad 00"
+    }
+  ]
+}

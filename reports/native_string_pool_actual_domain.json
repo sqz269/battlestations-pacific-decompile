@@ -1,0 +1,227 @@
+{
+  "schema_version": 1,
+  "packet": "orch2_string_pool_actual_domain_au",
+  "date": "2026-09-12",
+  "base_revision": "43693b7d",
+  "kind": "adapter_extension",
+  "new_complete_routine_count": 0,
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "documentation": "docs/NATIVE_STRING_POOL_ACTUAL_DOMAIN.md",
+  "sources": [
+    "src/native_string_pool_owner.cpp",
+    "src/native_string_pool_storage.cpp",
+    "src/native_singleton_destruction.cpp"
+  ],
+  "headers": [
+    "include/bsp/native_string_pool_owner.hpp",
+    "include/bsp/native_string_pool_storage.hpp",
+    "include/bsp/native_singleton_destruction.hpp"
+  ],
+  "routines": [
+    {
+      "address": "00419cc0",
+      "end_inclusive": "00419d7f",
+      "coverage": "complete",
+      "role": "additional raw-domain transport for existing complete getter",
+      "original_abi": "No input arguments; EAX pool; RET"
+    },
+    {
+      "address": "00bd0400",
+      "end_inclusive": "00bd04c4",
+      "coverage": "complete",
+      "role": "existing complete normal schedule and finite source dispatch boundary, extended with two recovered profiles",
+      "original_abi": "ECX raw14h manager; stack none; RET; source EDX holds added bindings"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00419ce6",
+      "native": "00415350",
+      "function": "00419cc0",
+      "contract": "Resolve first manager; capture EAX+10 into ESI for the entire slow path."
+    },
+    {
+      "address": "00419cff",
+      "native": "00ce2218+IAT",
+      "function": "00419cc0",
+      "contract": "EnterCriticalSection, stacked captured ESI; stdcall cleanup; increment ESI+18 after return."
+    },
+    {
+      "address": "00419d1f",
+      "native": "00bf681b",
+      "function": "00419cc0",
+      "contract": "Stacked8AD4A0 allocation request; ADD ESP,4 at419D24."
+    },
+    {
+      "address": "00419d36",
+      "native": "00bd1480",
+      "function": "00419cc0",
+      "contract": "ECX allocation from EAX; complete owner constructor; EDX unconsumed; RET0."
+    },
+    {
+      "address": "00419d49",
+      "native": "00415350",
+      "function": "00419cc0",
+      "contract": "Second manager lookup before current01090AA8 argument reload at419D4E."
+    },
+    {
+      "address": "00419d57",
+      "native": "00bd0c30",
+      "function": "00419cc0",
+      "contract": "ECX second manager EAX, stacked current pool read after getter; callee RET4."
+    },
+    {
+      "address": "00419d65",
+      "native": "00ce2210+IAT",
+      "function": "00419cc0",
+      "contract": "LeaveCriticalSection with first captured ESI after decrement of ESI+18; stdcall cleanup."
+    },
+    {
+      "address": "00c5e113",
+      "native": "00411ee0",
+      "function": "00c5e110",
+      "contract": "ECX address of captured guard EBP-14; full guard cleanup.",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c5e11c",
+      "native": "00bf65ac",
+      "function": "00c5e118",
+      "contract": "Stack captured EBP-18 raw allocation; POP ECX atC5E121 restores4 bytes; RET atC5E122."
+    },
+    {
+      "address": "00bd0426",
+      "native": "00bcf910",
+      "function": "00bd0400",
+      "contract": "ECX manager; count current raw slots."
+    },
+    {
+      "address": "00bd0438",
+      "native": "00bf6713",
+      "function": "00bd0400",
+      "contract": "Returning invalid-parameter library boundary; no stack arguments."
+    },
+    {
+      "address": "00bd044e",
+      "native": "00bf6713",
+      "function": "00bd0400",
+      "contract": "Returning invalid-parameter library boundary; no stack arguments."
+    },
+    {
+      "address": "00bd045b",
+      "native": "00bf6713",
+      "function": "00bd0400",
+      "contract": "Returning invalid-parameter library boundary; no stack arguments."
+    },
+    {
+      "address": "00bd0485",
+      "native": "00bd1730",
+      "function": "00bd0400",
+      "contract": "Indirect dispatch: current D68200[0]; ECX popped pool; EDX slot target; stackedflags1; RET4."
+    },
+    {
+      "address": "00bd0485",
+      "native": "00bed910",
+      "function": "00bd0400",
+      "contract": "Indirect dispatch: current D68CF8[0]; ECX popped factory+4; EDX slot target; stackedflags1; SUB ECX,4 then BED950 RET4."
+    },
+    {
+      "address": "00bd0489",
+      "native": "00bcf910",
+      "function": "00bd0400",
+      "contract": "ECX restored from captured ESI manager; recount after deletion."
+    },
+    {
+      "address": "00bd0496",
+      "native": "0041cc80",
+      "function": "00bd0400",
+      "contract": "ECX address of actual manager section pointer at+10; drain/free section; RET0."
+    },
+    {
+      "address": "00bd04a3",
+      "native": "00bf65ac",
+      "function": "00bd0400",
+      "contract": "Stack current manager+4 slots; ADD ESP,4 atBD04A8."
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "00c5e121",
+      "end_inclusive": "00c5e122",
+      "bytes": "59 c3",
+      "reason": "Native state1 unwind free cleanup continues beyond live stored function endC5E120."
+    }
+  ],
+  "corrections": [
+    {
+      "was": "ActualNativeStringPoolStorage required semantic SingletonLifetimeDomain and could not share actualraw01090AA0 with physical factory.",
+      "is": "Additional overloads borrow the same real publication cell and preserve the original existing semantic API.",
+      "evidence": "Complete192-byte getter and raw manager/view contracts; executed composition vector identities."
+    },
+    {
+      "was": "RawBD0400 finite dispatch rejected both D68200 and D68CF8.",
+      "is": "Appended required explicit bindings dispatch pool viaBD1730 and registeredfactory+4 viaBED910/BED950. Unsupported profiles and missing bindings remain rejected.",
+      "evidence": "Live/installed slot bytes3017BD00 and10D9BE00; entire native deletion bodies; canonical source drain fixtures."
+    },
+    {
+      "was": "Earlier string-pool owner report called C5E123 a missing start.",
+      "is": "Current live Ghidra contains function C5E123..C5E12C; only C5E121..C5E122 remains outside a function among cited code.",
+      "evidence": "Fresh verified Ghidra proto in attempt02/verification.json."
+    }
+  ],
+  "native_evidence": {
+    "path": "local/native-string-pool-actual-domain-evidence/attempt02/verification.json",
+    "span_count": 11,
+    "bytes": 574,
+    "live_matches_installed": true,
+    "incoming_getter_xrefs_archived": 10105,
+    "incoming_caller_bodies_all_reconstructed": false
+  },
+  "validation": {
+    "strict_win32_build": "passed scripts/build.ps1 with MSBUILDDISABLENODEREUSE=1",
+    "ctests": [
+      "reconstructed_math passed",
+      "native_math_differential passed"
+    ],
+    "fixture": "local/native-derived-composition-au/attempt02/summary.json",
+    "fixture_summary_sha256": "741ff075bc87790b598b72522d4aeaf71bfbe8d2bf16d1c9bc259ce44d7dbb78",
+    "checks": 13280,
+    "comparisons": 5,
+    "source_unwind_checks": 2,
+    "unchanged_native_body_bytes": 1193,
+    "pinned_inputs": 531,
+    "linked_objects": 131,
+    "current_equals_frozen_equals_archive": true,
+    "post_execution_changed_files": [],
+    "source_only_derived_failure": "BEDA60 state0: deliberate CRT observation-hook exception only for factory8 allocation after D68D04 write; real BE1F60 member cleanup/unregister, captured section depth0, owner retained for caller free, remaining canonical pool drained. Original FH3/SEH not executed.",
+    "core_library_sha256": "04e1ab4f04532a913fb23f655ae46c5d928e272da015e33529078f6e6246cb46",
+    "probe_executable_sha256": "20260cd377246176c8fd4a0fecc53ac8148718849f5ba1ae0c756df52280f272",
+    "new_tracked_tests": false,
+    "native_FH3_SEH_tested": false,
+    "ABI_drop_in": false,
+    "game_validated": false
+  },
+  "limits": [
+    "Original FH3/SEH handlers are not executed; no original exception identity or hardware-fault unwind proof.",
+    "External calls bridge to reviewed real source bodies/services. Raw00419CC0 and rawBD0400 dispatch extensions are exercised as source composition, not differential execution of their original instructions.",
+    "D68D04 VFS profile is not supported by NativeSingletonDeletionBindings; explicit pre-drain VFS deletion is required here.",
+    "NativePathCanonicalizerRuntimeServices remains semantic-only; fixture RawPaths implements its existing service interface with real source CRT/tolower and the same raw pool getter.",
+    "No singleton concurrency/publication replacement or original hardware-fault coverage.",
+    "No ABI drop-in, full executable migration, game startup or gameplay validation.",
+    "The raw pool getter and raw manager drain extensions execute as source; native differential bodies are BEDA60/BEDAC0 and existing BE1DC0/BE1F60/BE25C0."
+  ],
+  "ghidra_mutations": false,
+  "installed_game_mutations": false,
+  "routine_ledger_count_increment": false
+}

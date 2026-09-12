@@ -1,0 +1,658 @@
+{
+  "packet": "native_filestore_factory_au",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "captured_utc": "2026-09-12T20:15:45.820831+00:00",
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "mode": "Ghidra read-only, actual raw storage source reconstruction",
+  "routines": [
+    {
+      "entry": "004fc150",
+      "inclusive_end": "004fc216",
+      "exclusive_end": "004fc217",
+      "bytes": 199,
+      "label": "getter",
+      "coverage": "complete source body with explicit native storage and genuine external services",
+      "saved_function_defined": true,
+      "no_ghidra_function": false,
+      "original_abi": "No consumed input; EAX captured first publication on fast path, final reload on slow path; RET",
+      "source_api": "get_native_filestore_factory_004fc150",
+      "binary_abi_compatible": false,
+      "game_validated": false,
+      "stored_proto": "004fc150 BSP_FileStoreFactory_GetSingleton  undefined BSP_FileStoreFactory_GetSingleton(void)  body 004fc150 - 004fc216",
+      "incoming_xrefs": "From 00738128 in BSP_Application_Shutdown [UNCONDITIONAL_CALL]\nFrom 007381a1 in BSP_Application_Shutdown [UNCONDITIONAL_CALL]\nFrom 00738217 in BSP_Application_Shutdown [UNCONDITIONAL_CALL]\nFrom 0073828d in BSP_Application_Shutdown [UNCONDITIONAL_CALL]\nFrom 0073d66d in BSP_Application_Initialize [UNCONDITIONAL_CALL]\nFrom 0073e224 in BSP_Application_Initialize [UNCONDITIONAL_CALL]\nFrom 0073e2a2 in BSP_Application_Initialize [UNCONDITIONAL_CALL]\nFrom 0073e320 in BSP_Application_Initialize [UNCONDITIONAL_CALL]\nFrom 0073e39e in BSP_Application_Initialize [UNCONDITIONAL_CALL]\nFrom 0073e41c in BSP_Application_Initialize [UNCONDITIONAL_CALL]\nFrom 00506c11 in BSP_LoadingQueue_RetireFront [UNCONDITIONAL_CALL]\nFrom 0050927e in BSP_LoadingQueue_Update [UNCONDITIONAL_CALL]\nFrom 005092b2 in BSP_LoadingQueue_Update [UNCONDITIONAL_CALL]\nFrom 0062d1cf in FUN_0062c2c0 [UNCONDITIONAL_CALL]\nFrom 00686465 in BSP_MainMenu_Init [UNCONDITIONAL_CALL]\nFrom 006864e4 in BSP_MainMenu_Init [UNCONDITIONAL_CALL]\nFrom 0068658d in BSP_MainMenu_Init [UNCONDITIONAL_CALL]\nFrom 0068660c in BSP_MainMenu_Init [UNCONDITIONAL_CALL]\nFrom 00686f0f in BSP_MainMenu_Destroy [UNCONDITIONAL_CALL]\nFrom 00686f98 in BSP_MainMenu_Destroy [UNCONDITIONAL_CALL]\nFrom 0068701e in BSP_MainMenu_Destroy [UNCONDITIONAL_CALL]\nFrom 006870a8 in BSP_MainMenu_Destroy [UNCONDITIONAL_CALL]\nFrom 00ab5329 in FUN_00ab51b0 [UNCONDITIONAL_CALL]\nFrom 00ab5f90 in FUN_00ab5f00 [UNCONDITIONAL_CALL]\nFrom 0058c9b9 in BSP_MainMenu_BuildMissionDetailPage [UNCONDITIONAL_CALL]\nFrom 0058847d [UNCONDITIONAL_CALL]\nFrom 00622e13 [UNCONDITIONAL_CALL]\nFrom 00be7b20 in BSP_FileStore_CompletePendingRequestAdapter [UNCONDITIONAL_CALL]",
+      "sha256": "581430b58651839f558de527aa0766ad06072dc6d12141caa5fc15373670143e",
+      "hex": "64a1000000006aff68b386c6005064892500000000a168db090183ec0c85c00f859300000056e8d591f1ff8b701085f6c7442408fc37ce008974240c740b56ff151822ce0083461801c744241800000000833d68db09010075496a0ce86aa66f0083c4048944240485c0c64424180174098bc8e858916e00eb0233c0c644241800a368db0901a168db090185c0740583c004eb0233c050e86491f1ff8bc8e83d4a6d0085f6740b834618ff56ff151022ce00a168db09015e8b4c240c64890d0000000083c418c3",
+      "matches_installed_pe": true,
+      "listing": [
+        "004fc150: mov eax, dword ptr fs:[0]",
+        "004fc156: push -1",
+        "004fc158: push 0xc686b3",
+        "004fc15d: push eax",
+        "004fc15e: mov dword ptr fs:[0], esp",
+        "004fc165: mov eax, dword ptr [0x109db68]",
+        "004fc16a: sub esp, 0xc",
+        "004fc16d: test eax, eax",
+        "004fc16f: jne 0x4fc208",
+        "004fc175: push esi",
+        "004fc176: call 0x415350",
+        "004fc17b: mov esi, dword ptr [eax + 0x10]",
+        "004fc17e: test esi, esi",
+        "004fc180: mov dword ptr [esp + 8], 0xce37fc",
+        "004fc188: mov dword ptr [esp + 0xc], esi",
+        "004fc18c: je 0x4fc199",
+        "004fc18e: push esi",
+        "004fc18f: call dword ptr [0xce2218]",
+        "004fc195: add dword ptr [esi + 0x18], 1",
+        "004fc199: mov dword ptr [esp + 0x18], 0",
+        "004fc1a1: cmp dword ptr [0x109db68], 0",
+        "004fc1a8: jne 0x4fc1f3",
+        "004fc1aa: push 0xc",
+        "004fc1ac: call 0xbf681b",
+        "004fc1b1: add esp, 4",
+        "004fc1b4: mov dword ptr [esp + 4], eax",
+        "004fc1b8: test eax, eax",
+        "004fc1ba: mov byte ptr [esp + 0x18], 1",
+        "004fc1bf: je 0x4fc1ca",
+        "004fc1c1: mov ecx, eax",
+        "004fc1c3: call 0xbe5320",
+        "004fc1c8: jmp 0x4fc1cc",
+        "004fc1ca: xor eax, eax",
+        "004fc1cc: mov byte ptr [esp + 0x18], 0",
+        "004fc1d1: mov dword ptr [0x109db68], eax",
+        "004fc1d6: mov eax, dword ptr [0x109db68]",
+        "004fc1db: test eax, eax",
+        "004fc1dd: je 0x4fc1e4",
+        "004fc1df: add eax, 4",
+        "004fc1e2: jmp 0x4fc1e6",
+        "004fc1e4: xor eax, eax",
+        "004fc1e6: push eax",
+        "004fc1e7: call 0x415350",
+        "004fc1ec: mov ecx, eax",
+        "004fc1ee: call 0xbd0c30",
+        "004fc1f3: test esi, esi",
+        "004fc1f5: je 0x4fc202",
+        "004fc1f7: add dword ptr [esi + 0x18], -1",
+        "004fc1fb: push esi",
+        "004fc1fc: call dword ptr [0xce2210]",
+        "004fc202: mov eax, dword ptr [0x109db68]",
+        "004fc207: pop esi",
+        "004fc208: mov ecx, dword ptr [esp + 0xc]",
+        "004fc20c: mov dword ptr fs:[0], ecx",
+        "004fc213: add esp, 0x18",
+        "004fc216: ret "
+      ]
+    },
+    {
+      "entry": "00be5320",
+      "inclusive_end": "00be533d",
+      "exclusive_end": "00be533e",
+      "bytes": 30,
+      "label": "construct",
+      "coverage": "complete source body with explicit native storage and genuine external services",
+      "saved_function_defined": true,
+      "no_ghidra_function": false,
+      "original_abi": "ECX raw 0Ch; EDX unconsumed; EAX input ECX; RET",
+      "source_api": "construct_native_filestore_factory_00be5320",
+      "binary_abi_compatible": false,
+      "game_validated": false,
+      "stored_proto": "00be5320 FUN_00be5320  undefined FUN_00be5320(void)  body 00be5320 - 00be533d",
+      "incoming_xrefs": "From 004fc1c3 in BSP_FileStoreFactory_GetSingleton [UNCONDITIONAL_CALL]",
+      "sha256": "d1dabe94c872013d848593fc806e0b78abc15985f8eb3601478fe7dee8841893",
+      "hex": "8bc1c74004ac88d600c700b488d600c74004b088d600c7400800000000c3",
+      "matches_installed_pe": true,
+      "listing": [
+        "00be5320: mov eax, ecx",
+        "00be5322: mov dword ptr [eax + 4], 0xd688ac",
+        "00be5329: mov dword ptr [eax], 0xd688b4",
+        "00be532f: mov dword ptr [eax + 4], 0xd688b0",
+        "00be5336: mov dword ptr [eax + 8], 0",
+        "00be533d: ret "
+      ]
+    },
+    {
+      "entry": "00be5340",
+      "inclusive_end": "00be5347",
+      "exclusive_end": "00be5348",
+      "bytes": 8,
+      "label": "secondary_delete",
+      "coverage": "complete source body with explicit native storage and genuine external services",
+      "saved_function_defined": false,
+      "no_ghidra_function": true,
+      "original_abi": "ECX secondary=primary+4; stacked flags; SUB ECX,4/JMP BE5790; EAX original primary; inherited RET4",
+      "source_api": "delete_native_filestore_factory_secondary_00be5340",
+      "binary_abi_compatible": false,
+      "game_validated": false,
+      "stored_proto": "00be5340 ?  ?  body ?",
+      "incoming_xrefs": "From 00d688b0 [DATA]",
+      "sha256": "75f0568e11feaf4f0a604c893aa6225eaae8e19db2fad21365b8da0affb2b816",
+      "hex": "83e904e948040000",
+      "matches_installed_pe": true,
+      "listing": [
+        "00be5340: sub ecx, 4",
+        "00be5343: jmp 0xbe5790"
+      ]
+    },
+    {
+      "entry": "00be5350",
+      "inclusive_end": "00be5371",
+      "exclusive_end": "00be5372",
+      "bytes": 34,
+      "label": "destroy",
+      "coverage": "complete source body with explicit native storage and genuine external services",
+      "saved_function_defined": false,
+      "no_ghidra_function": true,
+      "original_abi": "ECX primary; EAX scratch secondary; no semantic result; RET",
+      "source_api": "destroy_native_filestore_factory_00be5350",
+      "binary_abi_compatible": false,
+      "game_validated": false,
+      "stored_proto": "00be5350 ?  ?  body ?",
+      "incoming_xrefs": "No references found to address: 00be5350",
+      "sha256": "8c132196f7fbad5d054f0546006c670d1332f9685134b56a5dbc2568d3d43205",
+      "hex": "85c974058d4104eb0233c0c70568db090100000000c7001838ce00c701f4e9cf00c3",
+      "matches_installed_pe": true,
+      "listing": [
+        "00be5350: test ecx, ecx",
+        "00be5352: je 0xbe5359",
+        "00be5354: lea eax, [ecx + 4]",
+        "00be5357: jmp 0xbe535b",
+        "00be5359: xor eax, eax",
+        "00be535b: mov dword ptr [0x109db68], 0",
+        "00be5365: mov dword ptr [eax], 0xce3818",
+        "00be536b: mov dword ptr [ecx], 0xcfe9f4",
+        "00be5371: ret "
+      ]
+    },
+    {
+      "entry": "00be5380",
+      "inclusive_end": "00be53a8",
+      "exclusive_end": "00be53a9",
+      "bytes": 41,
+      "label": "base_delete",
+      "coverage": "complete source body with explicit native storage and genuine external services",
+      "saved_function_defined": false,
+      "no_ghidra_function": true,
+      "original_abi": "ECX base allocation itself; stacked flags; ESI captured ECX; EAX input; RET4",
+      "source_api": "delete_native_filestore_factory_base_00be5380",
+      "binary_abi_compatible": false,
+      "game_validated": false,
+      "stored_proto": "00be5380 ?  ?  body ?",
+      "incoming_xrefs": "From 00d688ac [DATA]",
+      "sha256": "b7ad4dc215f2e0a0fa6f857823a7bb605318d089f626f7f3581267ea47e9a7eb",
+      "hex": "f644240401568bf1c70568db090100000000c7061838ce00740956e80c12010083c4048bc65ec20400",
+      "matches_installed_pe": true,
+      "listing": [
+        "00be5380: test byte ptr [esp + 4], 1",
+        "00be5385: push esi",
+        "00be5386: mov esi, ecx",
+        "00be5388: mov dword ptr [0x109db68], 0",
+        "00be5392: mov dword ptr [esi], 0xce3818",
+        "00be5398: je 0xbe53a3",
+        "00be539a: push esi",
+        "00be539b: call 0xbf65ac",
+        "00be53a0: add esp, 4",
+        "00be53a3: mov eax, esi",
+        "00be53a5: pop esi",
+        "00be53a6: ret 4"
+      ]
+    },
+    {
+      "entry": "00be5790",
+      "inclusive_end": "00be57c9",
+      "exclusive_end": "00be57ca",
+      "bytes": 58,
+      "label": "delete",
+      "coverage": "complete source body with explicit native storage and genuine external services",
+      "saved_function_defined": true,
+      "no_ghidra_function": false,
+      "original_abi": "ECX primary; stacked flags byte bit0; ESI captured ECX; EAX original primary; RET4",
+      "source_api": "delete_native_filestore_factory_00be5790",
+      "binary_abi_compatible": false,
+      "game_validated": false,
+      "stored_proto": "00be5790 FUN_00be5790  undefined FUN_00be5790(void)  body 00be5790 - 00be57c9",
+      "incoming_xrefs": "From 00d688b4 [DATA]\nFrom 00be5343 [UNCONDITIONAL_CALL]",
+      "sha256": "2ae7c18eb0d0d42b60b7a27d9a14b2ecad5f2758b7c7611bdce05aad8b0d8d47",
+      "hex": "568bf185f674058d4604eb0233c0f644240801c70568db090100000000c7001838ce00c706f4e9cf00740956e8eb0d010083c4048bc65ec20400",
+      "matches_installed_pe": true,
+      "listing": [
+        "00be5790: push esi",
+        "00be5791: mov esi, ecx",
+        "00be5793: test esi, esi",
+        "00be5795: je 0xbe579c",
+        "00be5797: lea eax, [esi + 4]",
+        "00be579a: jmp 0xbe579e",
+        "00be579c: xor eax, eax",
+        "00be579e: test byte ptr [esp + 8], 1",
+        "00be57a3: mov dword ptr [0x109db68], 0",
+        "00be57ad: mov dword ptr [eax], 0xce3818",
+        "00be57b3: mov dword ptr [esi], 0xcfe9f4",
+        "00be57b9: je 0xbe57c4",
+        "00be57bb: push esi",
+        "00be57bc: call 0xbf65ac",
+        "00be57c1: add esp, 4",
+        "00be57c4: mov eax, esi",
+        "00be57c6: pop esi",
+        "00be57c7: ret 4"
+      ]
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "004fc176",
+      "native": "00415350",
+      "function": "004fc150",
+      "no_ghidra_function": false,
+      "contract": "see external_contracts and original_abi",
+      "evidence": "complete decoded live bytes equal installed PE; saved containing function when defined"
+    },
+    {
+      "address": "004fc1ac",
+      "native": "00bf681b",
+      "function": "004fc150",
+      "no_ghidra_function": false,
+      "contract": "see external_contracts and original_abi",
+      "evidence": "complete decoded live bytes equal installed PE; saved containing function when defined"
+    },
+    {
+      "address": "004fc1c3",
+      "native": "00be5320",
+      "function": "004fc150",
+      "no_ghidra_function": false,
+      "contract": "see external_contracts and original_abi",
+      "evidence": "complete decoded live bytes equal installed PE; saved containing function when defined"
+    },
+    {
+      "address": "004fc1e7",
+      "native": "00415350",
+      "function": "004fc150",
+      "no_ghidra_function": false,
+      "contract": "see external_contracts and original_abi",
+      "evidence": "complete decoded live bytes equal installed PE; saved containing function when defined"
+    },
+    {
+      "address": "004fc1ee",
+      "native": "00bd0c30",
+      "function": "004fc150",
+      "no_ghidra_function": false,
+      "contract": "see external_contracts and original_abi",
+      "evidence": "complete decoded live bytes equal installed PE; saved containing function when defined"
+    },
+    {
+      "address": "00be5343",
+      "native": "00be5790",
+      "function": "00be5340",
+      "kind": "tail_jump",
+      "no_ghidra_function": true,
+      "contract": "subtract4 from ECX, preserve stacked flags, inherit BE5790 RET4"
+    },
+    {
+      "address": "00be539b",
+      "native": "00bf65ac",
+      "function": "00be5380",
+      "no_ghidra_function": true,
+      "contract": "see external_contracts and original_abi",
+      "evidence": "complete decoded live bytes equal installed PE; saved containing function when defined"
+    },
+    {
+      "address": "00be57bc",
+      "native": "00bf65ac",
+      "function": "00be5790",
+      "no_ghidra_function": false,
+      "contract": "see external_contracts and original_abi",
+      "evidence": "complete decoded live bytes equal installed PE; saved containing function when defined"
+    },
+    {
+      "address": "004fc18f",
+      "native": "00ce2218+import",
+      "function": "004fc150",
+      "contract": "EnterCriticalSection(real captured first-manager section); stdcall RET4"
+    },
+    {
+      "address": "004fc1fc",
+      "native": "00ce2210+import",
+      "function": "004fc150",
+      "contract": "LeaveCriticalSection(the same captured section); stdcall RET4"
+    },
+    {
+      "address": "00c686a3",
+      "native": "00411ee0",
+      "function": "00c686a0",
+      "kind": "tail_jump",
+      "contract": "EH dependency only: LEA ECX,[EBP-14h]; original guard destructor; not executed by native fixture"
+    },
+    {
+      "address": "00c686ac",
+      "native": "00bf65ac",
+      "function": "00c686a8",
+      "contract": "EH dependency only: free saved allocation [EBP-18h]; POP ECX atC686B1; RET atC686B2; not executed by native fixture"
+    },
+    {
+      "address": "00c686b8",
+      "native": "00bf6b43",
+      "function": "00c686b3",
+      "kind": "tail_jump",
+      "no_ghidra_function": true,
+      "contract": "FH3 handler: EAX=D917A4; library dependency only, not reconstructed or executed"
+    }
+  ],
+  "data_spans": [
+    {
+      "entry": "00d688ac",
+      "inclusive_end": "00d688bb",
+      "bytes": 16,
+      "sha256": "0942f8b4f2c6bf3da995dfd595b176d4e01b00757e31aa2b9a86e020092fb28a",
+      "hex": "8053be004053be009057be002081be00",
+      "matches_installed_pe": true,
+      "owned": false,
+      "source_implemented": false
+    },
+    {
+      "entry": "00d91794",
+      "inclusive_end": "00d917c3",
+      "bytes": 48,
+      "sha256": "91ab2bcb96b85ab4edf25879dba79de79492bb5eb34cc19dbd20bf5d8cd2a578",
+      "hex": "ffffffffa086c60000000000a886c60022059319020000009417d9000000000000000000000000000000000000000000",
+      "matches_installed_pe": true,
+      "owned": false,
+      "source_implemented": false
+    }
+  ],
+  "external_eh_spans": [
+    {
+      "entry": "00c686a0",
+      "inclusive_end": "00c686a7",
+      "bytes": 8,
+      "sha256": "c466837879d00a9e885b5afb04c017511074ad99dbb80dec024e6b72ba017573",
+      "hex": "8d4dece938987aff",
+      "matches_installed_pe": true,
+      "owned": false,
+      "source_implemented": false,
+      "no_ghidra_function": false,
+      "coverage": "external dependency evidence only; not source reconstructed or native fixture executed",
+      "saved_body_inclusive_end": "00c686a7"
+    },
+    {
+      "entry": "00c686a8",
+      "inclusive_end": "00c686b2",
+      "bytes": 11,
+      "sha256": "236f6a47be47a15f321795b1f59391822a8abc8b221a48f1eea75a616c8c5c23",
+      "hex": "8b45e850e8fbdef8ff59c3",
+      "matches_installed_pe": true,
+      "owned": false,
+      "source_implemented": false,
+      "no_ghidra_function": false,
+      "coverage": "external dependency evidence only; not source reconstructed or native fixture executed",
+      "saved_body_inclusive_end": "00c686b0"
+    },
+    {
+      "entry": "00c686b3",
+      "inclusive_end": "00c686bc",
+      "bytes": 10,
+      "sha256": "fa0116a786819b962afb39a3d5c0289c7bc90da28b4a8ab2614f0b747844a541",
+      "hex": "b8a417d900e986e4f8ff",
+      "matches_installed_pe": true,
+      "owned": false,
+      "source_implemented": false,
+      "no_ghidra_function": true,
+      "coverage": "external dependency evidence only; not source reconstructed or native fixture executed",
+      "saved_body_inclusive_end": null
+    }
+  ],
+  "external_contracts": [
+    {
+      "callee": "00415350",
+      "source": "get_native_singleton_manager_00415350",
+      "contract": "already reconstructed native getter using shared actual01090AA0; no input; RET EAX manager; called at4FC176 and4FC1E7; second call receives pushed captured secondary but consumes no stack input"
+    },
+    {
+      "callee": "00bd0c30",
+      "source": "register_native_singleton_object_00bd0c30",
+      "contract": "actual manager ECX, one pushed object; RET4; bounds validation before null test, raw pointer append without AddRef/lock; body and assembly inspected"
+    },
+    {
+      "callee": "00bf681b",
+      "source": "singleton_lifetime_allocate",
+      "contract": "correct library name operator_new retained; cdecl size0Ch at4FC1AC; ADD ESP4 at4FC1B1; genuine malloc/new-handler service, original CRT identity excluded"
+    },
+    {
+      "callee": "00bf65ac",
+      "source": "singleton_lifetime_free",
+      "contract": "correct library name _free retained; cdecl exact owner; ADD ESP4 atBE53A0 andBE57C1; actual std::free"
+    },
+    {
+      "callee": "00411ee0",
+      "source": "destroy_native_singleton_guard_00411ee0",
+      "contract": "raw8h guard; capture+4 before profile write, depth decrement then genuine Leave; source C++ cleanup composition only"
+    },
+    {
+      "callee": "00bf6b43",
+      "source": "not reconstructed; library dependency only",
+      "contract": "Saved FID_conflict:___CxxFrameHandler3 wrapper calls___InternalCxxFrameHandler. Pseudocode/proto inspected. Correct saved library identity retained; original handler not executed."
+    }
+  ],
+  "layout": {
+    "producer": "00be5320 complete live and PE bytes",
+    "owner_bytes": 12,
+    "primary_00": "00d688b4",
+    "secondary_04": "00d688b0",
+    "transient_secondary_04": "00d688ac",
+    "optional_provider_cache_08": "zeroed only by constructor; producer BE80B0 lazily writes provider fromBE7FA0 (sibling owned)",
+    "table_slots": [
+      {
+        "slot": "00d688ac",
+        "target": "00be5380",
+        "role": "transient base scalar delete, no adjustment"
+      },
+      {
+        "slot": "00d688b0",
+        "target": "00be5340",
+        "role": "final secondary subtract4 adjustment"
+      },
+      {
+        "slot": "00d688b4",
+        "target": "00be5790",
+        "role": "final primary scalar delete"
+      },
+      {
+        "slot": "00d688b8",
+        "target": "00be8120",
+        "role": "provider factory method; sibling owned"
+      }
+    ]
+  },
+  "corrections": [
+    {
+      "was": "BE5320 saved void return",
+      "is": "EAX=input ECX",
+      "evidence": "BE5320 MOV EAX,ECX; RET atBE533D"
+    },
+    {
+      "was": "BE5790 pseudocode free branch returns extraout_EAX and listing skips cleanup",
+      "is": "all branches return original primary; free returns before ADD ESP4 and MOV EAX,ESI",
+      "evidence": "live=PE full BE5790..BE57C9, missing storedBE57C1..BE57C3"
+    },
+    {
+      "was": "factory owns cached provider implies destructor releases it",
+      "is": "factory destructors do not access +8, retain the word until raw owner free",
+      "evidence": "all three complete decoded destruction bodies"
+    }
+  ],
+  "ghidra_pending": {
+    "raw_definitions": [
+      {
+        "start": "00be5340",
+        "end_exclusive": "00be5348"
+      },
+      {
+        "start": "00be5350",
+        "end_exclusive": "00be5372"
+      },
+      {
+        "start": "00be5380",
+        "end_exclusive": "00be53a9"
+      }
+    ],
+    "flow_gaps": [
+      {
+        "function": "00be5790",
+        "start": "00be57c1",
+        "end_exclusive": "00be57c4"
+      }
+    ],
+    "unowned_eh_boundary": "C686B3 raw10h handler and C686A8 free tail B1..B2 require separate owner/integrator, not claimed for source reconstruction",
+    "external_handler_parent_resolution": {
+      "entry": "00c686b3",
+      "inclusive_end": "00c686bc",
+      "defined_by": "parent integrator under its own lease/write lock",
+      "parent_report": "reports/native_au_function_definitions.json",
+      "worker_mutation": false,
+      "evidence": "Final report_calls02.log validates C686B8 tail row as real containing function"
+    }
+  },
+  "limitations": [
+    "All six normal source bodies complete; no original ABI or EH equivalence claimed",
+    "FH3 states:0 guard cleanup C686A0;1 allocation free C686A8 then0; source /EHsc cannot reproduce hardware-fault or mutable saved-stack aliases",
+    "Raw numeric profiles require canonical mixed-owner dispatch binding elsewhere; final secondary calls BE5340, not BE5380",
+    "Provider creation and cache lifetime BE8120/BE80B0/BE7FA0 and D689E8 remain sibling-owned; destructor adds no provider release",
+    "Native differential fixture uses genuine source manager/registration/allocation services; it cannot prove original CRT or manager internals"
+  ],
+  "verification": {
+    "build": {
+      "configuration": "MSVC Win32 Release /fp:strict; MSBUILDDISABLENODEREUSE=1",
+      "result": "passed",
+      "initial_log": "local/filestore_au/build01.log",
+      "seed_verification": "local/filestore_au/verify_seeds01.log",
+      "final_log": "local/filestore_au/build02.log",
+      "ctests": [
+        "reconstructed_math passed",
+        "native_math_differential passed"
+      ]
+    },
+    "report_call_check": {
+      "log": "local/filestore_au/report_calls02.log",
+      "direct_rows": 11,
+      "failures": 2,
+      "cause": "Parent defined external C686B3 under its own lease/write lock. Raw owned BE5340/BE5380 remain pending. Exact failing sites BE5343,BE539B retained.",
+      "history": [
+        {
+          "log": "local/filestore_au/report_calls01.log",
+          "direct_rows": 11,
+          "failures": 3,
+          "cause": "Raw owned BE5340/BE5380 and unowned external C686B3 absent in saved Ghidra"
+        }
+      ]
+    },
+    "fixture": {
+      "directory": "local/filestore_au/attempt01",
+      "states": 15,
+      "checks": 406,
+      "result": "passed",
+      "source_only_exception": "genuine source CRT invalid-parameter handler throws through actual registration wrapper; publication survives and real section is released",
+      "original_native_FH3_SEH_executed": false,
+      "manager_precondition": "preexisting actual raw14h manager with real256-pointer slot buffer and optional real tracked section; source actual manager getter and registration are genuine shared services",
+      "cases": [
+        "constructor exact raw0Ch and returned primary",
+        "nondeleting body keeps cache+8",
+        "primary delete flags0/1/2/101h",
+        "D688B0 table-driven secondary adjustment flags0/1/2/101h",
+        "transient base allocation delete flags0/1/2/101h",
+        "cold getter without/with real section registers actual secondary once; fast getter ignores invalid manager; deletion does not unregister"
+      ],
+      "allocation_boundary": "real source malloc/new-handler service and std::free; observers delegate and assert exact owner bytes/publication-before-free",
+      "cache_fixture": "nonnull identity2468ACE0 stored in +8; bodies must preserve it and cannot dereference or release it",
+      "code_translation": "all six bodies copied unchanged at +30000000; relative calls/jumps verified; four external bridges outside owned bodies; original publication unchanged",
+      "artifacts": {
+        "preexecution_manifest": "local/filestore_au/attempt01/manifest_before.json",
+        "postexecution_manifest": "local/filestore_au/attempt01/manifest_after.json",
+        "preexecution_manifest_sha256": "ae92765c852093bcc67eb756f4e756da7dd23b71e72f5a31267bd07075b30d94",
+        "exe_sha256": "785b15ea4109acc19e13ac54a24fd8b492bb47a9b6ab2b838d743933aff7f54d",
+        "library_sha256": "6a83ef60549aa52750e5a9f56a478d78c94102a5497b11448f5d81dd93936791",
+        "source_sha256": "ac07435a234a255c0fa103876c0b43d34e94dc7dd63fe244c8a892771a53fedb",
+        "header_sha256": "7cd1ba457b57d308aa970f3bdbf3a352d51cb90eeb5b3f456094a79b98283b64",
+        "linked_object_sha256": "1ace67c1a97d75cf9ad442ca00fa2f498f9ccb93c89072fb7a089832b1157ba7",
+        "execution_log_sha256": "6585e91c8634b07e1b2413efc232a2cb8d10c0cf4d0bcabdc9dc7afa9b0460c9",
+        "frozen_files": 81,
+        "linked_archive_objects": 12,
+        "all_preexecution_hashes_unchanged": true,
+        "freeze_policy": "physical copies and matching archive-member verification before first execution; inputs and manifests read-only; no seal overwritten; no failed fixture attempt"
+      },
+      "reusable_driver": {
+        "path": "local/filestore_au/run_fixture.py",
+        "arguments": "--repo <built-checkout> --attempt <new-absolute-directory> [--build-log <current-build-log>]",
+        "behavior": "Fresh current target verification for all11 spans; exact PE and frozen-header equality; compile unchanged probe.cpp with specified current library; verify and freeze actual linked archive objects/source/headers/lib/exe; readonly before execution; preserve both manifests and return failure without overwriting attempts.",
+        "driver_validation": {
+          "source_repo": "J:\\PROG\\battlestations-pacific-decompile-orch2-filestore-factory-au",
+          "captured_utc": "2026-09-12T20:27:08.125747+00:00",
+          "process_exit": 0,
+          "all_preexecution_hashes_unchanged": true,
+          "files_rechecked": 83,
+          "preexecution_manifest_sha256": "612f2f8ec5c7bfb8387518cbb8b3281821a61874e69065187313d7f45c8c50c7",
+          "execution_log_sha256": "fb9a2184f4653d3b0a9b8d4bd549c423fcb0aa0f1270604135528805d5b322e7",
+          "exe_sha256": "71f793ec85502392cc89366e5feb8e09ac0f689e0e55eca9dddefc8059b9596a",
+          "library_sha256": "6a83ef60549aa52750e5a9f56a478d78c94102a5497b11448f5d81dd93936791",
+          "native_source_states": 15,
+          "assertions": 406,
+          "native_FH3_SEH_executed": false
+        },
+        "unchanged_cases": true,
+        "launcher_provenance": "Physical copy of successful driver_attempt02/launcher.cpp, originally adapted from parent attempt11 launcher; final helper input bytes unchanged",
+        "driver_sha256": "56f932bb22a31636af2c42cb38b42b91b42cc40cc4631abe26f3c4a9f8c3ad88",
+        "freeze_sha256": "d6ec3794d258799a3307fcebd1fad1120319b520b318d8790156dd764f2b3e9a",
+        "seal_sha256": "c5bb61c373b54651c37f40f2ac39c18fd1f0f55776c49b5b61620daf5e751a09"
+      }
+    }
+  },
+  "annotation_plan": [
+    {
+      "entry": "004fc150",
+      "old_saved_ghidra_name": "BSP_FileStoreFactory_GetSingleton",
+      "proposed_name": "BSP_FileStoreFactory_GetSingleton",
+      "provisional": true,
+      "evidence": "Descriptive behavior hypothesis; complete live/PE span and native/source comparison in this report. Preserve existing comments. Integrator owns Ghidra mutation."
+    },
+    {
+      "entry": "00be5320",
+      "old_saved_ghidra_name": "FUN_00be5320",
+      "proposed_name": "BSP_FileStoreFactory_Construct",
+      "provisional": true,
+      "evidence": "Descriptive behavior hypothesis; complete live/PE span and native/source comparison in this report. Preserve existing comments. Integrator owns Ghidra mutation."
+    },
+    {
+      "entry": "00be5340",
+      "old_saved_ghidra_name": null,
+      "proposed_name": "BSP_FileStoreFactory_SecondaryScalarDelete",
+      "provisional": true,
+      "evidence": "Descriptive behavior hypothesis; complete live/PE span and native/source comparison in this report. Preserve existing comments. Integrator owns Ghidra mutation."
+    },
+    {
+      "entry": "00be5350",
+      "old_saved_ghidra_name": null,
+      "proposed_name": "BSP_FileStoreFactory_Destroy",
+      "provisional": true,
+      "evidence": "Descriptive behavior hypothesis; complete live/PE span and native/source comparison in this report. Preserve existing comments. Integrator owns Ghidra mutation."
+    },
+    {
+      "entry": "00be5380",
+      "old_saved_ghidra_name": null,
+      "proposed_name": "BSP_FileStoreFactoryBase_ScalarDelete",
+      "provisional": true,
+      "evidence": "Descriptive behavior hypothesis; complete live/PE span and native/source comparison in this report. Preserve existing comments. Integrator owns Ghidra mutation."
+    },
+    {
+      "entry": "00be5790",
+      "old_saved_ghidra_name": "FUN_00be5790",
+      "proposed_name": "BSP_FileStoreFactory_ScalarDelete",
+      "provisional": true,
+      "evidence": "Descriptive behavior hypothesis; complete live/PE span and native/source comparison in this report. Preserve existing comments. Integrator owns Ghidra mutation."
+    }
+  ]
+}

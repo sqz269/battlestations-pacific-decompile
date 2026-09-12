@@ -1,0 +1,714 @@
+{
+  "packet": "orch4_native_joystick_ad",
+  "primary_integration_review": {
+    "reviewer": "gamepad/XInput worker; read-only native listing/EH review",
+    "correction": "A99940 captures old vtable slot34 address before BEC230, reloads device receiver at A99CFB, then loads function from saved slot at A99CFD. Integrated source corrected early function-value capture.",
+    "evidence": "A99CE7..A99D02 live listing; exact 5 flags preserved",
+    "remaining_limits": "Focused joystick probe does not execute full constructor or mutable COM vtable path; correction is source/listing verified. No new hardware claim."
+  },
+  "status": "actual_storage_reconstructed_strict_build_and_bounded_fixture_verified_required_base_dispatch",
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "read_only_bsp_wrappers_verify_target_each_live_batch",
+    "native_allocation_size": "0xb48",
+    "profile": "00d5b7f0",
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "functions": [
+    {
+      "address": "00a99940",
+      "implementation": "construct_native_joystick_00a99940",
+      "name_hypothesis": "BSP_JoystickInputDevice_Construct",
+      "coverage": "complete_normal_body_with_declared_host_and_exception_domain",
+      "original_abi": "thiscall ECX=actualB48h; stack DI8*, DIDEVICEINSTANCEA*; EAX=this; RET8",
+      "last_instruction": "00a99e8b",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a99e8e",
+      "disk_bytes_sha256": "eeaab7d21daf5cd8c333755b423181df68d3bb2c1232dac5b7cf8aabe2b4a1c3"
+    },
+    {
+      "address": "00a991f0",
+      "implementation": "destroy_native_joystick_00a991f0",
+      "name_hypothesis": "BSP_JoystickInputDevice_Destroy",
+      "coverage": "complete_normal_body_with_declared_host_and_exception_domain",
+      "original_abi": "thiscall ECX=actualB48h; no stack args; RET",
+      "last_instruction": "00a992de",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a992df",
+      "disk_bytes_sha256": "a1dd737dbca32be56f8505d7cd7aa83c5fc67ba9099274f84460f1a8c78387a5"
+    },
+    {
+      "address": "00a99900",
+      "implementation": "scalar_delete_native_joystick_00a99900",
+      "name_hypothesis": "CG_scalar_deleting_dtor_00a99900",
+      "coverage": "complete_normal_body_with_declared_host_and_exception_domain",
+      "original_abi": "thiscall ECX=actualB48h; stack flags; destroy before flags bit0/free; EAX=original; RET4",
+      "last_instruction": "00a9991b",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a9991e",
+      "disk_bytes_sha256": "f2b1d1c865b91ad99709db589a65cf82903710772f47082106e0bab1e36be2cf"
+    },
+    {
+      "address": "00a99920",
+      "implementation": "native_joystick_object_callback_00a99920",
+      "name_hypothesis": "BSP_JoystickInputDevice_ObjectCallbackA",
+      "coverage": "complete_normal_body_with_declared_host_and_exception_domain",
+      "original_abi": "stdcall object-instance*, actual receiver; EAX1 normal; RET8; actual context passed unchanged",
+      "last_instruction": "00a9992e",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a99931",
+      "disk_bytes_sha256": "1714350ec1c9d677019d8914c108eaf7edf32a31720825e7d925c3ca91966471"
+    },
+    {
+      "address": "00a98400",
+      "implementation": "reset_native_joystick_feedback_00a98400",
+      "name_hypothesis": "BSP_JoystickInputDevice_ResetFeedback",
+      "coverage": "complete_normal_body_with_declared_host_and_exception_domain",
+      "original_abi": "thiscall ECX=actualB48h; RET; reload device between commands2/20h/1",
+      "last_instruction": "00a98434",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a98435",
+      "disk_bytes_sha256": "d2c5db30d36be50132d272f9b057592a4a1ab5218230cba815b9d59950c8d981"
+    },
+    {
+      "address": "00a98cc0",
+      "implementation": "set_native_joystick_force_00a98cc0",
+      "name_hypothesis": "BSP_GamepadForce_SetJoystickOutput",
+      "coverage": "complete_normal_body_with_declared_host_and_exception_domain",
+      "original_abi": "thiscall ECX=actualB48h; stack channel,float; RET8; clock then deadline load and final effect reload",
+      "last_instruction": "00a98e1c",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a98e1f",
+      "disk_bytes_sha256": "189d828c711896d65f00fe056b2485cd04f1202e795a195080f4ec75bbfbbcd1"
+    },
+    {
+      "address": "00a98e30",
+      "implementation": "poll_native_joystick_00a98e30",
+      "name_hypothesis": "BSP_JoystickInputDevice_Poll",
+      "coverage": "complete_normal_body_with_declared_host_and_exception_domain",
+      "original_abi": "thiscall ECX=actualB48h; unread float stack argument; AL=success; RET4",
+      "last_instruction": "00a9914b",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a9914e",
+      "disk_bytes_sha256": "000e004005c9c5682332e836961a45fb976a91123df61c60c08fe8726ad76b26"
+    },
+    {
+      "address": "00a992f0",
+      "implementation": "describe_native_joystick_object_00a992f0",
+      "name_hypothesis": "BSP_JoystickInputDevice_DescribeObject",
+      "coverage": "complete_normal_body_with_declared_host_and_exception_domain",
+      "original_abi": "thiscall ECX=actualB48h; stack object-instance*; EAX1; RET4",
+      "last_instruction": "00a99705",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a99708",
+      "disk_bytes_sha256": "2b2d399d2c64108197acbf4affc5e2a331f96723bec56519a6963fed667f49a4"
+    },
+    {
+      "address": "00a98750",
+      "implementation": "query_native_joystick_relative_00a98750",
+      "name_hypothesis": "BSP_JoystickInputDevice_QueryRelative",
+      "coverage": "complete_normal_body_with_declared_host_and_exception_domain",
+      "original_abi": "thiscall ECX=actualB48h; stack code; AL=boolean; RET4",
+      "last_instruction": "00a98777",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a9877a",
+      "disk_bytes_sha256": "1f25e3447295231fc22f80ddf1b117125902673350d71b6216a822f672386acf"
+    },
+    {
+      "address": "00a98780",
+      "implementation": "query_native_joystick_binding_down_00a98780",
+      "name_hypothesis": "BSP_JoystickInputDevice_BindingDown",
+      "coverage": "complete_normal_body_with_declared_host_and_exception_domain",
+      "original_abi": "thiscall ECX=actualB48h; stack raw0Ch binding*; AL=boolean; RET4",
+      "last_instruction": "00a98917",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a9891a",
+      "disk_bytes_sha256": "f1fe9c131e54c40dfe1479b575ee5a00ce71530bb7b47a78b7086789ab3b9123"
+    },
+    {
+      "address": "00a98940",
+      "implementation": "query_native_joystick_binding_value_00a98940",
+      "name_hypothesis": "BSP_JoystickInputDevice_BindingValue",
+      "coverage": "complete_normal_body_with_declared_host_and_exception_domain",
+      "original_abi": "thiscall ECX=actualB48h; stack raw0Ch binding*; ST0=float; RET4",
+      "last_instruction": "00a98b63",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a98b66",
+      "disk_bytes_sha256": "51413428cf35c6e45440592a84f02b4c604c46fc5a92d3e846c48ea7f029ae7f"
+    },
+    {
+      "address": "00a98b90",
+      "implementation": "count_native_joystick_objects_00a98b90",
+      "name_hypothesis": "BSP_JoystickInputDevice_CountObjectsCallbackA",
+      "coverage": "complete_normal_body_with_declared_host_and_exception_domain",
+      "original_abi": "stdcall object-instance*, actual receiver; EAX1; RET8",
+      "last_instruction": "00a98baa",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a98bad",
+      "disk_bytes_sha256": "c399b9a2c5a4d673571774e5d62ffbe9a8bdda93d92958d7a9c02f0bb4cd23f7"
+    },
+    {
+      "address": "00a98bb0",
+      "implementation": "set_native_joystick_relative_00a98bb0",
+      "name_hypothesis": "BSP_JoystickInputDevice_SetRelativeBinding",
+      "coverage": "complete_normal_body_with_declared_host_and_exception_domain",
+      "original_abi": "thiscall ECX=actualB48h; stack code, raw lowbyte; RET8",
+      "last_instruction": "00a98bc2",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a98bc5",
+      "disk_bytes_sha256": "61471e6d978bd3ba7025294dd736107d0d32b34f7a717e6b0597d62798179a02"
+    },
+    {
+      "address": "00a98bd0",
+      "implementation": "query_native_joystick_down_00a98bd0",
+      "name_hypothesis": "BSP_JoystickInputDevice_QueryDown",
+      "coverage": "complete_normal_body_with_declared_host_and_exception_domain",
+      "original_abi": "thiscall ECX=actualB48h; stack code; AL=boolean; RET4; tailA98780",
+      "last_instruction": "00a98c45",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a98c48",
+      "disk_bytes_sha256": "c3356fa3d9a3b6e96c68d5582c823219c732229f206c87cff38fd8f1d62c5b27"
+    },
+    {
+      "address": "00a98c50",
+      "implementation": "query_native_joystick_value_00a98c50",
+      "name_hypothesis": "BSP_JoystickInputDevice_QueryValue",
+      "coverage": "complete_normal_body_with_declared_host_and_exception_domain",
+      "original_abi": "thiscall ECX=actualB48h; stack code; ST0=float; RET4; tailA98940",
+      "last_instruction": "00a98caf",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a98cb2",
+      "disk_bytes_sha256": "4dbe338bade8a6d24914c093a3f14bf7858f2a4ca79a48af8e1191bb9ac57bc6"
+    },
+    {
+      "address": "00a99150",
+      "implementation": "construct_native_joystick_object_00a99150",
+      "name_hypothesis": "BSP_JoystickObject_InitializeName_Provisional",
+      "coverage": "complete_normal_body_with_declared_host_and_exception_domain",
+      "original_abi": "thiscall ECX=raw1Ch metadata; EAX=this; zero8h header only; RET",
+      "last_instruction": "00a9915f",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a99160",
+      "disk_bytes_sha256": "9d20fb9737545d0eeb198c79dc5d325beabd6d570a4058d3f1e7f4a887df0403"
+    },
+    {
+      "address": "00a99160",
+      "implementation": "destroy_native_joystick_object_00a99160",
+      "name_hypothesis": "BSP_JoystickObject_DestroyName_Provisional",
+      "coverage": "complete_normal_body_with_declared_host_and_exception_domain",
+      "original_abi": "thiscall ECX=raw1Ch metadata; RET; captures header data/length+1; leaves dead header",
+      "last_instruction": "00a9917c",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a9917d",
+      "disk_bytes_sha256": "c15c4432dfaefca123fdbaffe10b31dc9d74f84c50f43438b13a54a327352bf0"
+    },
+    {
+      "address": "00a992e0",
+      "implementation": "native_joystick_product_name_00a992e0",
+      "name_hypothesis": "BSP_JoystickInputDevice_ProductName_Provisional",
+      "coverage": "complete_normal_body_with_declared_host_and_exception_domain",
+      "original_abi": "thiscall ECX=actualB48h; EAX=product data or original F8BC03; RET",
+      "last_instruction": "00a992ef",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a992f0",
+      "disk_bytes_sha256": "3f48541473c0544b6805f1a0d3e158ac43fbb8eb58eecbf64f66a761d2423f6a"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00a99962",
+      "native": "00a95d70",
+      "function": "00a99940"
+    },
+    {
+      "address": "00a999b8",
+      "native": "0041dd40",
+      "function": "00a99940"
+    },
+    {
+      "address": "00a999c9",
+      "native": "00bf7680",
+      "function": "00a99940"
+    },
+    {
+      "address": "00a999de",
+      "native": "00bf9440",
+      "function": "00a99940"
+    },
+    {
+      "address": "00a99a06",
+      "native": "00bf9440",
+      "function": "00a99940"
+    },
+    {
+      "address": "00a99a26",
+      "native": "00bf9440",
+      "function": "00a99940"
+    },
+    {
+      "address": "00a99a46",
+      "native": "00bf9440",
+      "function": "00a99940"
+    },
+    {
+      "address": "00a99adf",
+      "native": "00bf79f0",
+      "function": "00a99940"
+    },
+    {
+      "address": "00a99b27",
+      "native": "00bf55be",
+      "function": "00a99940"
+    },
+    {
+      "address": "00a99b59",
+      "native": "00bf7cd1",
+      "function": "00a99940"
+    },
+    {
+      "address": "00a99baf",
+      "native": "00bf55be",
+      "function": "00a99940"
+    },
+    {
+      "address": "00a99bd1",
+      "native": "00bf55be",
+      "function": "00a99940"
+    },
+    {
+      "address": "00a99c26",
+      "native": "00bf55be",
+      "function": "00a99940"
+    },
+    {
+      "address": "00a99cf6",
+      "native": "00bec230",
+      "function": "00a99940"
+    },
+    {
+      "address": "00a99d5c",
+      "native": "00bf79f0",
+      "function": "00a99940"
+    },
+    {
+      "address": "00a99e65",
+      "native": "00a98e30",
+      "function": "00a99940"
+    },
+    {
+      "address": "00a99e72",
+      "native": "00a98e30",
+      "function": "00a99940"
+    },
+    {
+      "address": "00a99223",
+      "native": "00bf6989",
+      "function": "00a991f0"
+    },
+    {
+      "address": "00a9922f",
+      "native": "00bf6989",
+      "function": "00a991f0"
+    },
+    {
+      "address": "00a99250",
+      "native": "00bf7c6e",
+      "function": "00a991f0"
+    },
+    {
+      "address": "00a99256",
+      "native": "00bf6989",
+      "function": "00a991f0"
+    },
+    {
+      "address": "00a99266",
+      "native": "00bf6989",
+      "function": "00a991f0"
+    },
+    {
+      "address": "00a992b3",
+      "native": "00419cc0",
+      "function": "00a991f0"
+    },
+    {
+      "address": "00a992ba",
+      "native": "00bd1510",
+      "function": "00a991f0"
+    },
+    {
+      "address": "00a992c9",
+      "native": "00a95a80",
+      "function": "00a991f0"
+    },
+    {
+      "address": "00a99903",
+      "native": "00a991f0",
+      "function": "00a99900"
+    },
+    {
+      "address": "00a99910",
+      "native": "00bf65ac",
+      "function": "00a99900"
+    },
+    {
+      "address": "00a99929",
+      "native": "00a992f0",
+      "function": "00a99920"
+    },
+    {
+      "address": "00a98d14",
+      "native": "00bf79f0",
+      "function": "00a98cc0"
+    },
+    {
+      "address": "00a98d6f",
+      "native": "00bf7420",
+      "function": "00a98cc0"
+    },
+    {
+      "address": "00a98dae",
+      "native": "00bf7420",
+      "function": "00a98cc0"
+    },
+    {
+      "address": "00a98e83",
+      "native": "00bf7680",
+      "function": "00a98e30"
+    },
+    {
+      "address": "00a98f1f",
+      "native": "00bf7420",
+      "function": "00a98e30"
+    },
+    {
+      "address": "00a98f40",
+      "native": "00bf7420",
+      "function": "00a98e30"
+    },
+    {
+      "address": "00a98f55",
+      "native": "00bf7420",
+      "function": "00a98e30"
+    },
+    {
+      "address": "00a98f76",
+      "native": "00bf7420",
+      "function": "00a98e30"
+    },
+    {
+      "address": "00a9910e",
+      "native": "00c2f166",
+      "function": "00a98e30"
+    },
+    {
+      "address": "00a99343",
+      "native": "0041dd40",
+      "function": "00a992f0"
+    },
+    {
+      "address": "00a99355",
+      "native": "00bf7680",
+      "function": "00a992f0"
+    },
+    {
+      "address": "00a99170",
+      "native": "00419cc0",
+      "function": "00a99160"
+    },
+    {
+      "address": "00a99177",
+      "native": "00bd1510",
+      "function": "00a99160"
+    },
+    {
+      "address": "00a98259",
+      "native": "00a99940",
+      "function": "00a98030"
+    },
+    {
+      "address": "00a98c3e",
+      "native": "00a98780",
+      "function": "00a98bd0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00a98ca8",
+      "native": "00a98940",
+      "function": "00a98c50",
+      "kind": "tail_jump"
+    }
+  ],
+  "indirect_steps": [
+    {
+      "function": "00a99940",
+      "address": "00a99ac7",
+      "native": "DirectInput8+vtable0c",
+      "contract": "CreateDevice(this,guidInstance,actual+220,null), stdcall16; result ignored; tracker retains returned reference"
+    },
+    {
+      "function": "00a99940",
+      "address": "00a99b00",
+      "native": "DirectInputDevice8+vtable10",
+      "contract": "EnumObjects(this,A98B90,actual receiver,0), stdcall16"
+    },
+    {
+      "function": "00a99940",
+      "address": "00a99c43",
+      "native": "DirectInputDevice8+vtable10",
+      "contract": "EnumObjects(this,A99920,actual receiver,0), stdcall16; TLS contains callback exception until SDK returns"
+    },
+    {
+      "function": "00a99940",
+      "address": "00a99c54",
+      "native": "DirectInputDevice8+vtable2c",
+      "contract": "SetDataFormat(this,actual+274), stdcall8"
+    },
+    {
+      "function": "00a99940",
+      "address": "00a99ca2",
+      "native": "DirectInputDevice8+vtable14",
+      "contract": "GetProperty(this,4,range), stdcall12; only HRESULT0 initializes flag/min/max/span"
+    },
+    {
+      "function": "00a99940",
+      "address": "00a99d02",
+      "native": "DirectInputDevice8+vtable34",
+      "contract": "Captured method before BEC230; reload receiver after; SetCooperativeLevel(this,HWND,5), stdcall12"
+    },
+    {
+      "function": "00a99940",
+      "address": "00a99d3b",
+      "native": "DirectInputDevice8+vtable18",
+      "contract": "SetProperty(this,9,20h DWORD property), stdcall12"
+    },
+    {
+      "function": "00a99940",
+      "address": "00a99e31",
+      "native": "DirectInputDevice8+vtable48",
+      "contract": "CreateEffect(this,kindGUID,56byte descriptor,actual+B24/B28,null), stdcall20"
+    },
+    {
+      "function": "00a991f0",
+      "address": "00a9928d",
+      "native": "DirectInputEffect+vtable2c",
+      "contract": "Unload(effect), stdcall4, effects0 then1; never Release"
+    },
+    {
+      "function": "00a98400",
+      "address": "00a98411",
+      "native": "DirectInputDevice8+vtable58",
+      "contract": "SendForceFeedbackCommand(this,2), stdcall8"
+    },
+    {
+      "function": "00a98400",
+      "address": "00a98421",
+      "native": "DirectInputDevice8+vtable58",
+      "contract": "reload; SendForceFeedbackCommand(this,20h), stdcall8"
+    },
+    {
+      "function": "00a98400",
+      "address": "00a98431",
+      "native": "DirectInputDevice8+vtable58",
+      "contract": "reload; SendForceFeedbackCommand(this,1), stdcall8"
+    },
+    {
+      "function": "00a98cc0",
+      "address": "00a98ce6",
+      "native": "01090ab0+vtable14",
+      "contract": "current clock; borrowed timestamp pointer; then load current+B38 and divide signed qwords/spill float"
+    },
+    {
+      "function": "00a98cc0",
+      "address": "00a98e14",
+      "native": "DirectInputEffect+vtable18",
+      "contract": "reload actual effect after clock; SetParameters(effect,56byte descriptor,20000100h), stdcall12"
+    },
+    {
+      "function": "00a98e30",
+      "address": "00a98e4d",
+      "native": "DirectInputDevice8+vtable64",
+      "contract": "Poll(this), stdcall4; signed HRESULT<0 fails"
+    },
+    {
+      "function": "00a98e30",
+      "address": "00a98e5f",
+      "native": "DirectInputDevice8+vtable1c",
+      "contract": "reload device; Acquire(this), stdcall4; ignored result, return false"
+    },
+    {
+      "function": "00a98e30",
+      "address": "00a98ea5",
+      "native": "DirectInputDevice8+vtable24",
+      "contract": "GetDeviceState(this,current+280,current+298), stdcall12; copy current to previous before call"
+    },
+    {
+      "function": "00a98e30",
+      "address": "00a990a8",
+      "native": "current_profile+vtable24",
+      "contract": "reload actual profile each code; thiscall(actual,code), RET4/ST0; strict parent dispatch"
+    },
+    {
+      "function": "00a98e30",
+      "address": "00a990e0",
+      "native": "01090ab0+vtable14",
+      "contract": "first abs(float value)>current CE3868; borrowed timestamp ratio/spill then add current CE3D68"
+    }
+  ],
+  "producer_and_storage": {
+    "actual_native_owner": "A98235 pushesB48h; A9823A BF681B allocation; A9824F reloads manager+E0; A98255 instance then A98256 DI8 then A98259 ctor ECXallocation; calleeRET8; A9826B attaches same EAX",
+    "sole_members": "device220; NativeString224; counts22C/230; usedbytes234[60]; signednextaxis270; DIDATAFORMAT274[18h]; valid28C; objects290; previous294; current298; bindings29C[90*0Ch]; effectkindB10,modeB14,axiscountB18,offsetsB1C/B20,effectsB24/B28,inhibitedB2C,detectionB30/B34,deadlineB38,xboxB3C,triggersB40/B44",
+    "metadata": "1Ch record: only NativeString0/4 zeroed byA99150; separate constructor loop byteC=0; describe writeskind8; successful range writesbyteC,min10,max14,span18. PaddingD..F untouched",
+    "allocation": "shared BF681B malloc/new-handler domain via singleton_lifetime_allocate/free; BF55BE saturated multiplication and cookie+4 overflow reproduced; metadata cookie stores originalcount; library ctor signed forward count, destructor reverse cookiecount",
+    "untouched": "raw caller B48h preimage preserved except native stores; binding+9..B, raw gaps, initial sample DWORDs, metadata fields not written by enumeration/range, B34 and first-poll B40/B44 remain native allocation bytes; no synthetic zero values",
+    "strings": "actual8h headers passed to existing resize/destroy, with post-allocation reloads; product getter returns borrowed actualdata/F8BC03 identity",
+    "reference_ownership": "NativeInputDeviceSdk receives actual+220/+B24/+B28 output slots and retains one returned reference each before later ctor steps; native destructor only Unload; host explicit final release occurs after owners/callbacks; no native device/effect Release inserted"
+  },
+  "ordering": [
+    "Ctor stampsD5B7F0 after baseA95D70, initializes product only then native derivedfields; two raw EnumObjects passes; no fabricated count consistency guard",
+    "Original profile and SDK pointer loads retained; SetCooperativeLevel method captured before current-window call, receiver reloaded afterward",
+    "Poll clearsvalid then handles Poll<0 Acquire; copies old samples before GetDeviceState; signed count scan; range deadzone regardless kind; detection fallback compares previous even for neutral button/axis",
+    "Poll virtual value scans0..89 before XInput import; freshprofile each; threshold NaN unordered does not trigger; x87 signed timestamp ratio is float-spilled before60secondaddition",
+    "XInputGetState index0 ignoresHRESULT and consumes actual local16byte SDK output, initialized from explicit borrowed stack preimage; does not alter sourcepreimage or eagerlyinitializeB40/B44",
+    "Force skips clock when initial effectnull; loadsdeadline afterclock; honors current0109EEA4 converter at every threshold/remap/magnitude site and reloads final effect",
+    "Scalar destruction precedesflagstest/free, returns originaladdressbits; no copied ownership or private lifetime manager"
+  ],
+  "exception_states": {
+    "constructor": {
+      "func_info": "00decf50",
+      "unwind_map": "00decf38",
+      "states": [
+        {
+          "state": 0,
+          "to": -1,
+          "funclet": "00cb6ac0",
+          "action": "baseA95A80"
+        },
+        {
+          "state": 1,
+          "to": 0,
+          "funclet": "00cb6ac8",
+          "action": "actualproduct224 header destroy0041DD20"
+        },
+        {
+          "state": 2,
+          "to": 1,
+          "funclet": "00cb6ad6",
+          "action": "free temporary cookie allocation before object-array publish"
+        }
+      ],
+      "boundary": "State2 is only around nonthrowing A99150 array construction, apart from excluded hardware faults. After publishing metadata/current/previous/format, later failure frees product/base only: arrays and acquired COM refs retained. SDK tracker owns references separately; no invented derived-destructor rollback."
+    },
+    "destructor": {
+      "func_info": "00decec8",
+      "unwind_map": "00deceb8",
+      "states": [
+        {
+          "state": 0,
+          "to": -1,
+          "funclet": "00cb6a50",
+          "action": "baseA95A80"
+        },
+        {
+          "state": 1,
+          "to": 0,
+          "funclet": "00cb6a58",
+          "action": "actualproduct224 header destroy0041DD20"
+        }
+      ],
+      "order": "previous,current,reversemetadata names+cookie,format,effectUnload0/1,product,base. Effect exception skips laterUnload but still name/base C++ cleanup."
+    },
+    "callback": "Constructor-local nested TLS frame keyed by actual raw receiver. Exception captured in stdcall callback returnsSTOP and is rethrown only after EnumObjects returns. No TLS or service fields inserted into rawowner."
+  },
+  "metadata_repairs": [
+    {
+      "was": "A991F0 body endedA99227 after returning _free",
+      "evidence": "read-only proto/listing after primary release",
+      "is": "primary repaired/exported through RETA992DE;72instructions0gaps"
+    },
+    {
+      "was": "CB6AD6 endedCB6ADE",
+      "evidence": "read-only proto plus installed linear disasm",
+      "is": "primary restoredPOPECXCB6ADF andRETCB6AE0;5instructions0gaps"
+    },
+    {
+      "was": "CB6A66 andCB6AE1 not defined",
+      "evidence": "read-only proto",
+      "is": "primary defined/exported handlers, exact endsCB6A6F/CB6AEA"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "00a992e0",
+      "last_instruction": "00a992ef",
+      "last_instruction_length": 1,
+      "end_inclusive": "00a992ef",
+      "end_exclusive": "00a992f0",
+      "byte_length": 16,
+      "evidence": "profileD5B7FC dataxref; nativeMOVdata+228/test/nonnullorF8BC03/RET; primary to define after lease release"
+    }
+  ],
+  "excluded_tail_calls": [],
+  "library_contracts": {
+    "BF7CD1": "stdcall5args RET20, signedcount forward constructor and reverseexceptioncleanup; native A99150 nonthrowing supported body",
+    "BF7C6E": "stdcall4args RET16; reverse signedcookiecount metadata destruction",
+    "BF7420": "existing actual mode-dependent naked converter, ECX borrowed0109EEA4 address; consumes nativeST0, EAXlow32; SSE2 FSTPdouble/CVTTSD2SI or originalBF7456 fallback; no C++cast",
+    "BF7680": "cdecl memcpy3args, ADDESP0C atA999CE/A9935A/A98E99",
+    "BF9440": "cdecl strstr2args, ADDESP8 aftereachproductcheck",
+    "BF55BE": "cdecl new-size; ADDESP4 aftermetadata; two samples plusformat arguments share ADDESP0C atA99C2B",
+    "BEC230": "ECXcurrentplatform, EAXHWND+30, RET; constructor PUSH5 remains for laterCOMcall",
+    "XInputGetState": "C2F166 JMP[CE239C], actualXINPUT1_3 ordinal2 type DWORDstdcall(DWORD,XINPUT_STATE*), RET8; ignoredHRESULT"
+  },
+  "verification": {
+    "seeds": "8/8 existing installed-vs-Ghidra seeds passed",
+    "build": "scripts/build.ps1 Win32Release /W4 /WX /fp:strict;MSBUILDDISABLENODEREUSE=1;exit0;2/2existingCTests",
+    "fixture": {
+      "source": "local/native_joystick_probe.cpp",
+      "runner": "local/run_native_joystick_probe.ps1",
+      "log": "local/native_joystick_probe.log",
+      "manifest": "/MANIFEST:EMBED",
+      "link": "own bsp_core.lib+libLua only; no explicit production source",
+      "exit_code": 0,
+      "native_object_ctor_preimages": 4,
+      "compared_bytes_each": 28,
+      "original_query_and_down_comparisons": 270,
+      "original_force_comparisons_both_CRT_modes": 8,
+      "raw_objects": 4,
+      "native_names_allocated": 4,
+      "native_names_released": 4,
+      "poll_calls": 4,
+      "get_device_state_calls": 3,
+      "acquire_calls": 1,
+      "effect_replacement_writes": 1,
+      "real_DirectInput8_CreateDevice_keyboard_references": 1,
+      "real_SDK_final_pending": 0,
+      "normal_raw_device_poll_sdk": "recordingCOM fixture only",
+      "full_constructor_and_base_teardown": false,
+      "physical_joystick_or_game_validated": false
+    },
+    "artifact_sha256": {
+      "local/native_joystick_probe.log": "eadb024b2761457a55552f7a391957f1bfe33fbb8bd46e63037221f5629f3a03",
+      "local/native_joystick_probe.exe": "4101a8fbc7401bcd2bb185d1fad15852914644c1319a25fed2d87bdfe86f0b35",
+      "build/win32/Release/bsp_core.lib": "0753170ca6d8153c64fa0f91b37d0a5f426bbf19da489cf4579fb3d5cfe72fe6",
+      "local/native_joystick_build.log": "ea13ac5e44cc47c5cc2834c2b683acd1cdc0ad74bd09d2b33c8fffb860201462"
+    },
+    "live_original_bytes": {
+      "query_block": 1392,
+      "query_sha256": "cf019b7aa463ac7c7ff8a90ac89b25a64b8696345930a80c69e2e251f962fe91",
+      "object_ctor": 16,
+      "ctor_sha256": "9d20fb9737545d0eeb198c79dc5d325beabd6d570a4058d3f1e7f4a887df0403",
+      "force": 351,
+      "force_sha256": "189d828c711896d65f00fe056b2485cd04f1202e795a195080f4ec75bbfbbcd1",
+      "live_equals_installed": true
+    },
+    "report_calls": "44 direct/caller/tail rows checked,0failed;19 indirect SDK/profile rows manually checked against assembly"
+  },
+  "remaining": [
+    "Bind real NativeGamepadContext A95D70/A95A80 and finite current-profile value dispatch through primary composite; no substitute base",
+    "Full successful raw joystick constructor/owner teardown fixture awaits concrete base dependency; no physical joystick availability or game-run claim",
+    "Raw label-producing vslot3C A99710 remains existing typed joystick_labels path; not supplied by this raw packet",
+    "Application must borrow live constants/currentclock/currentplatform and explicit allocation/stack preimages; no fake format globals or successful missing callbacks",
+    "Original FH3/SEH, hardwarefaults, binary ABI and arbitrary mutable saved-EH aliases excluded; supported C++unwinds do not invent rawmember rollback"
+  ]
+}
