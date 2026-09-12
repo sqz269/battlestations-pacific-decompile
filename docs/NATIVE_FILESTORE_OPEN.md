@@ -112,3 +112,9 @@ the initialized prefix only; the remaining backing bytes are intentionally
 uninitialized. Its service tables are fixture instrumentation, not implemented
 physical/archive owners. Native FH3 unwinding and real provider I/O are not
 executed. No game frame or gameplay validation is claimed by this packet.
+
+## Integration correction from docs/NATIVE_LUA_VFS_BINDING.md
+
+The primary defined BB8F60. CC7650 POP ECX/RET at CC7659..CC765A is decoded but remains outside its stored function body. NativeVfsRuntimeBindings now composes FileStore opens into actual Lua loads: seeded actual tree records and type IDs 11/22/33, fresh shared-backing wrappers, nested DoFile and duplicate suffix execution pass while stored cursors/references remain unchanged and shutdown counters reach zero. Native tree population/type registration and numeric physical/archive-to-memory conversion remain excluded.
+
+Evidence: reports/native_an_integration.json; reports/native_lua_vfs_binding.json.

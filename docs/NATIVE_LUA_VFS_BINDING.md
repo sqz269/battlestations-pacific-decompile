@@ -55,16 +55,30 @@ discards the high DWORD, while BF4F90 reads the cached 64-bit size.
 
 ## Verification boundaries
 
-Validation results and immutable artifacts are recorded in
-`reports/native_lua_vfs_binding.json` after the combined build and composition
-fixture. The earlier original-instruction Lua file/override fixtures are rerun
-under distinct artifact names; previously frozen evidence is preserved.
+The combined Win32 `/W4 /WX` build and both existing CTests pass. Six paired
+original-instruction/source BE41A0 calls agree on low/high results and optional
+output. The three earlier Lua file, override and fundamentals fixtures also
+pass against the combined library under distinct artifact names.
+
+The composition fixture passes actual Lua bootstrap and fundamentals loading,
+installed shader reads through physical HANDLE streams, FileStore lookup and
+fresh shared-backing wrappers, nested DoFile and duplicate suffix execution
+(`MCPP`). Stored stream cursors and reference counts remain unchanged. Canonical
+shutdown clears published owners and returns memory counters to zero.
+`reports/native_lua_vfs_binding.json` and `reports/native_an_integration.json`
+record the source, artifacts and independent reviews.
 
 The composition fixture supplies initialized actual manager/mount and FileStore
-tree records, current runtime type-ID inputs, and the original read-only table
+tree records, fixture-seeded type IDs (11, 22, 33), and the original read-only table
 bytes. It exercises concrete providers, raw owners, shared lifetime domains and
 Lua; it does not establish native construction of those seeded trees, full
 application startup, original exception identity/ABI, rendering or gameplay.
+Its manager failure callback and logging gate are null, and manager+79 is zero:
+successful I/O and the inactive logging path are the composition domain. The separate provider and
+logging fixtures cover read-failure callbacks, retry and active builder paths.
+Fixed, readable original table bytes are required; arbitrary slot mutation and
+cross-profile method substitutions are not validated. The FileStore conversion
+and runtime binding must share the same memory-owner counters and profiles.
 
 ## Follow-up packets
 

@@ -164,3 +164,9 @@ Provider/index construction, remaining seek/write/other stream slots, lifetime
 callback composition and application startup routing remain separate work. This
 packet supplies an actual physical open/read owner chain for the integrator; it
 does not claim complete VFS closure, original ABI compatibility or game validation.
+
+## Integration correction from docs/NATIVE_LUA_VFS_BINDING.md
+
+The primary defined BF4FA0 and decoded the reviewed BF30C0/BF4370/BF5090 gaps. BF3930 internal loop and final bytes are decoded, but the stored body still ends at BF3966; its final BF3967..BF396C tail remains outside that body. No full stored-tail repair is claimed. Actual numeric D68EC0 deletion now participates in the composition fixture canonical lifetime domain, and NativeVfsRuntimeBindings routes physical opens/reads/size/recycle into these functions. Real installed Lua file loads and shutdown pass with explicitly seeded actual manager/mount records. Manager/tree population, failure-service installation and complete application startup remain separate.
+
+Evidence: reports/native_an_integration.json; reports/native_lua_vfs_binding.json.

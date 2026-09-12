@@ -128,3 +128,9 @@ actual global slot and actual pool/lifetime domain; there is no remaining sink
 owner contract for this particular consumer. Primary integration connects this
 context to the native open route. Other providers, stream owners, and logger
 creation/teardown outside this function remain separate work.
+
+## Integration correction from docs/NATIVE_LUA_VFS_BINDING.md
+
+NativeVfsRuntimeBindings now invokes the actual BDE9C0 reconstruction from BDF310 in its original order before counter/size work. The whole Lua/VFS fixture uses a null log gate and manager+79 zero; it covers the filename work and disabled gate, while the separate 16-case fixture remains the active-builder evidence. No output sink or log registration behavior is invented.
+
+Evidence: reports/native_an_integration.json; reports/native_lua_vfs_binding.json.
