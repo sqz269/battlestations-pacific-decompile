@@ -1,0 +1,157 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00c6fdeb",
+    "end_address": "00c6fdf5"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00c6fdeb",
+    "end_address": "00c6fdf4",
+    "bytes_disassembled": 10,
+    "message": "Successfully disassembled 10 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00c6fdeb",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00c6fdeb",
+    "function_name": "FUN_00c6fdeb",
+    "entry_point": "00c6fdeb",
+    "body_size": 10,
+    "message": "Function created successfully at 00c6fdeb"
+   }
+  },
+  {
+   "defined": "00c6fdeb",
+   "end": "00c6fdf5",
+   "name": null,
+   "after": "Function: FUN_00c6fdeb at 00c6fdeb\nSignature: undefined FUN_00c6fdeb(void)\nEntry: 00c6fdeb\nBody: 00c6fdeb - 00c6fdf4"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00c6f9d8",
+    "end_address": "00c6f9e2"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00c6f9d8",
+    "end_address": "00c6f9e1",
+    "bytes_disassembled": 10,
+    "message": "Successfully disassembled 10 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00c6f9d8",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00c6f9d8",
+    "function_name": "FUN_00c6f9d8",
+    "entry_point": "00c6f9d8",
+    "body_size": 10,
+    "message": "Function created successfully at 00c6f9d8"
+   }
+  },
+  {
+   "defined": "00c6f9d8",
+   "end": "00c6f9e2",
+   "name": null,
+   "after": "Function: FUN_00c6f9d8 at 00c6f9d8\nSignature: undefined FUN_00c6f9d8(void)\nEntry: 00c6f9d8\nBody: 00c6f9d8 - 00c6f9e1"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "recreate": "00c6fdd0",
+   "previous": "Function: Unwind@00c6fdd0 at 00c6fdd0\nSignature: undefined Unwind@00c6fdd0(void)\nEntry: 00c6fdd0\nBody: 00c6fdd0 - 00c6fdd8",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00c6fdd0"
+   },
+   "result": {
+    "success": true,
+    "address": "00c6fdd0",
+    "deleted_function": "Unwind@00c6fdd0",
+    "body_size": 9,
+    "message": "Function 'Unwind@00c6fdd0' deleted at 00c6fdd0"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00c6fdd0",
+    "end_address": "00c6fddb"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00c6fdd0",
+    "end_address": "00c6fdda",
+    "bytes_disassembled": 11,
+    "message": "Successfully disassembled 11 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00c6fdd0",
+    "disassemble_first": false,
+    "name": "Unwind@00c6fdd0"
+   },
+   "result": {
+    "success": true,
+    "address": "00c6fdd0",
+    "function_name": "Unwind@00c6fdd0",
+    "entry_point": "00c6fdd0",
+    "body_size": 11,
+    "message": "Function created successfully at 00c6fdd0",
+    "warnings": [
+     "Function name 'Unwind@00c6fdd0' \u2014 main part 'Unwind@00c6fdd0' is not PascalCase. Expected: Unwind@00c6fdd0",
+     "Function name 'Unwind@00c6fdd0' does not start with a recognized verb. First word 'Unwind@00c6fdd0' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00c6fdd0",
+   "end": "00c6fddb",
+   "name": "Unwind@00c6fdd0",
+   "after": "Function: Unwind@00c6fdd0 at 00c6fdd0\nSignature: undefined Unwind@00c6fdd0(void)\nEntry: 00c6fdd0\nBody: 00c6fdd0 - 00c6fdda"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
