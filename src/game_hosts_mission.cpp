@@ -1342,7 +1342,7 @@ void GameMissionHost::load_mission_tree_005caaf0() {
     Impl& host = *impl_;
     MissionTreeScriptBinding binding(host);
     try {
-        host.tables = bsp::load_mission_tree_005caaf0(binding);
+        host.tables = bsp::load_mission_tree_metadata(binding);
         host.summary.tree_loaded = true;
     } catch (const std::exception& error) {
         host.summary.tree_error = error.what();

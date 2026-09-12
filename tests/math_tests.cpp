@@ -1571,11 +1571,11 @@ int main() {
         MapSizeView absent;
         absent.table_present = false;
         bsp::MissionRecordData without{};
-        bsp::read_mission_record_005c6a70(absent, without);
+        bsp::read_mission_record_metadata(absent, without);
 
         MapSizeView present;
         bsp::MissionRecordData with{};
-        bsp::read_mission_record_005c6a70(present, with);
+        bsp::read_mission_record_metadata(present, with);
 
         check(without.extra.map_sizes[0].north_west == bsp::kMissionMapDefaultNorthWest
                   && without.extra.map_sizes[0].south_east == bsp::kMissionMapDefaultSouthEast

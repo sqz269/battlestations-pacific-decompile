@@ -1,0 +1,511 @@
+{
+  "packet": "orch5_mission_picture",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "port": 8089,
+    "access": "read_only; verified bsp.py wrappers each live batch"
+  },
+  "source": [
+    "include/bsp/mission_picture_owner.hpp",
+    "src/mission_picture_owner.cpp",
+    "include/bsp/mission_tree_data.hpp",
+    "src/mission_tree_data.cpp"
+  ],
+  "status": "partial_projection_native_picture_owner_build_and_ownership_fixture_verified",
+  "coverage": "Picture producer and retained-subobject lifetime implemented inside the same canonical MissionRecordData. Whole record ABI, native STL/SEH, concrete GUI singleton and installed atlas/renderer provider startup are not completed by this packet.",
+  "routines": [
+    {
+      "address": "005C6A70",
+      "body": "005C6A70..005C7B23",
+      "coverage": "new picture005C75A2..005C763B; other Lua record rules remain existing semantic reconstruction",
+      "implementation": "read_mission_record_005c6a70 + MissionPictureOwner::read_005c6a70",
+      "abi": "ECX record, stack reader, RET4"
+    },
+    {
+      "address": "005C89B0",
+      "body": "005C89B0..005C8ADC",
+      "coverage": "picture stores005C8A49..005C8A96; remaining record construction not ported",
+      "implementation": "MissionPictureOwner constructor",
+      "abi": "ECX record; EAX record; RET"
+    },
+    {
+      "address": "005C81F0",
+      "body": "005C81F0..005C8879",
+      "coverage": "picture005C85A9..005C860D; other members not ported",
+      "implementation": "MissionPictureOwner copy constructor",
+      "abi": "ECX destination; stack source; EAX destination; RET4"
+    },
+    {
+      "address": "005C7B80",
+      "body": "005C7B80..005C8168",
+      "coverage": "picture005C7E2F..005C7E9C; other members not ported",
+      "implementation": "MissionPictureOwner copy assignment",
+      "abi": "ECX destination; stack source; EAX destination; RET4"
+    },
+    {
+      "address": "005C8AE0",
+      "body": "stored005C8AE0..005C8B2F; raw continuation005C8B30..005C8DAC",
+      "coverage": "picture005C8B58..005C8B82; other member teardown and SEH not ported",
+      "implementation": "MissionPictureOwner destructor",
+      "abi": "ECX record; RET at005C8DAC"
+    },
+    {
+      "address": "00AA2660",
+      "body": "00AA2660..00AA27E0",
+      "coverage": "complete existing semantic resolver reused; no new native renderer/atlas implementation",
+      "implementation": "src/gui_texture.cpp",
+      "abi": "four stack arguments; RET10h; EAX acquired texture; ECX unused"
+    },
+    {
+      "address": "005C8170",
+      "body": "005C8170..005C81A7",
+      "coverage": "read-only supporting ownership-route evidence, not a native STL implementation"
+    },
+    {
+      "address": "005C8880",
+      "body": "005C8880..005C88D7",
+      "coverage": "read-only supporting ownership-route evidence, not a native STL implementation"
+    },
+    {
+      "address": "005C8F90",
+      "body": "005C8F90..005C902E",
+      "coverage": "read-only supporting ownership-route evidence, not a native STL implementation"
+    },
+    {
+      "address": "005C9030",
+      "body": "005C9030..005C90C4",
+      "coverage": "read-only supporting ownership-route evidence, not a native STL implementation"
+    },
+    {
+      "address": "005C9250",
+      "body": "005C9250..005C9288",
+      "coverage": "read-only supporting ownership-route evidence, not a native STL implementation"
+    },
+    {
+      "address": "005C9290",
+      "body": "005C9290..005C92B5",
+      "coverage": "read-only supporting ownership-route evidence, not a native STL implementation"
+    },
+    {
+      "address": "005C92F0",
+      "body": "005C92F0..005C936D",
+      "coverage": "read-only supporting ownership-route evidence, not a native STL implementation"
+    },
+    {
+      "address": "005C9530",
+      "body": "005C9530..005C9822",
+      "coverage": "read-only supporting ownership-route evidence, not a native STL implementation"
+    },
+    {
+      "address": "005C9C10",
+      "body": "005C9C10..005C9CBB",
+      "coverage": "read-only supporting ownership-route evidence, not a native STL implementation"
+    },
+    {
+      "address": "005C9E30",
+      "body": "005C9E30..005C9ED3",
+      "coverage": "read-only supporting ownership-route evidence, not a native STL implementation"
+    }
+  ],
+  "producer_evidence": [
+    {
+      "field": "MissionRecordData.picture.texture_0a0",
+      "native_offset": "A0",
+      "write": "005C75FF",
+      "meaning": "acquired native reference from005C75C7 AA2660; old released first"
+    },
+    {
+      "field": "MissionRecordData.picture.uv_0a4",
+      "native_offset": "A4..B0",
+      "write": "005C75B9 passes SAME destination to AA2660; AA26B5..AA26C9 writes atlas values",
+      "meaning": "inout atlas rectangle; preserved on empty name or atlas miss"
+    },
+    {
+      "field": "MissionRecordExtra.picture",
+      "meaning": "authored frame string retained as diagnostic metadata only; never the native texture"
+    },
+    {
+      "field": "MissionRecordData.screen.sides/side_extras",
+      "meaning": "canonical prior side/IC routing preserved"
+    },
+    {
+      "field": "UV initializer",
+      "evidence": "D7A24C=0000803F; PE .rdata flags40000040; constructor stores0,0,1,1"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "005C75CC is the AA2660 CALL",
+      "is": "005C75C7 is CALL AA2660;005C75CC MOV captures old A0",
+      "evidence": "verified live assembly005C75A2..005C763C"
+    },
+    {
+      "was": "Authored picture string stood in for resource production",
+      "is": "optional native-reference owner distinguishes unresolved metadata from produced native null",
+      "evidence": "reader producer plus constructor/copy/assignment/dtor"
+    },
+    {
+      "was": "Picture resolution adjacent to Lua picture string read",
+      "is": "actual resolve/release occurs after map-size branches",
+      "evidence": "005C6D8E read, map branches through005C759A, texture branch005C75A2"
+    },
+    {
+      "was": "stored8AE0 body implies only settings-tree destruction",
+      "is": "free at8B2B incorrectly truncates continuation; actual picture release occurs in8B30..8DAC",
+      "evidence": "live bytes + disk decoding; live disasm start8B30 rejected outside stored8AE0"
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "005C75A9",
+      "native": "004C12B0",
+      "function": "005C6A70",
+      "implementation": "required services.get_gui_manager_004c12b0 boundary; existing singleton implementation remains external",
+      "abi": "cdecl no stack args; EAX manager forwarded in ECX to AA2660, where unused",
+      "evidence": "Complete getter body read: double-check, guard, allocate88h, AA5D70 construction and singleton registration."
+    },
+    {
+      "address": "005C75C7",
+      "native": "00AA2660",
+      "function": "005C6A70",
+      "implementation": "src/gui_texture.cpp:resolve_gui_texture_00aa2660",
+      "abi": "four stack arguments, RET10h; name frame+30, record+A4 UV, frame+48 float2 preimage, FLD1 scale; EAX acquired",
+      "evidence": "005C75CC is a MOV of old+A0 after the CALL, not the CALL site."
+    },
+    {
+      "address": "005C75DE",
+      "native": "IAT00CE2220:InterlockedDecrement",
+      "function": "005C6A70",
+      "implementation": "src/native_render_context.cpp:release_native_render_actual_owner",
+      "abi": "stdcall pointer old+04, RET4, EAX signed count",
+      "evidence": "Capture old+A0; decrement actual count before any current0 lookup."
+    },
+    {
+      "address": "005C7615",
+      "native": "IAT00CE2220:InterlockedDecrement",
+      "function": "005C6A70",
+      "implementation": "src/native_render_context.cpp:release_native_render_actual_owner",
+      "abi": "stdcall pointer old+04, RET4, EAX signed count",
+      "evidence": "Capture old+A0; decrement actual count before any current0 lookup."
+    },
+    {
+      "address": "005C75EF",
+      "native": "old_texture.current_vtable+00",
+      "function": "005C6A70",
+      "implementation": "NativeRenderActualOwners resolves same-atomic companion; RenderCommandReference::release_zero_references",
+      "abi": "ECX captured old; no stack args; terminal current0 only on count zero",
+      "evidence": "A0 still old during callback; in nonempty arm UV is already resolver output."
+    },
+    {
+      "address": "005C7626",
+      "native": "old_texture.current_vtable+00",
+      "function": "005C6A70",
+      "implementation": "NativeRenderActualOwners resolves same-atomic companion; RenderCommandReference::release_zero_references",
+      "abi": "ECX captured old; no stack args; terminal current0 only on count zero",
+      "evidence": "A0 still old during callback; in nonempty arm UV is already resolver output."
+    },
+    {
+      "address": "005C85C7",
+      "native": "IAT00CE221C:InterlockedIncrement",
+      "function": "005C81F0",
+      "implementation": "src/native_resource_cache_leaves.cpp:retain_native_cache_resource_004ddb20 reused for same atomic",
+      "abi": "stdcall source texture+04, RET4",
+      "evidence": "Destination A0 is published first; four UV DWORD copies follow."
+    },
+    {
+      "address": "005C7E4D",
+      "native": "IAT00CE221C:InterlockedIncrement",
+      "function": "005C7B80",
+      "implementation": "retain_native_cache_resource_004ddb20",
+      "abi": "stdcall new+04, RET4",
+      "evidence": "New A0 publication precedes retain; skipped on equal identities."
+    },
+    {
+      "address": "005C7E5B",
+      "native": "IAT00CE2220:InterlockedDecrement",
+      "function": "005C7B80",
+      "implementation": "release_native_render_actual_owner",
+      "abi": "stdcall captured old+04, RET4",
+      "evidence": "Old release follows new publication and retain; UV still old."
+    },
+    {
+      "address": "005C7E6B",
+      "native": "old_texture.current_vtable+00",
+      "function": "005C7B80",
+      "implementation": "canonical NativeRenderActualOwners current0 terminal dispatch",
+      "abi": "ECX captured old; no stack args",
+      "evidence": "Only zero; copy UV at005C7E6D afterward."
+    },
+    {
+      "address": "005C8B6B",
+      "native": "IAT00CE2220:InterlockedDecrement",
+      "function": "005C8AE0",
+      "implementation": "release_native_render_actual_owner",
+      "abi": "stdcall old+04, RET4",
+      "evidence": "Raw continuation: capture+A0 at8B58, clear after callback at8B7D.",
+      "no_ghidra_function": true,
+      "containing_body_status": "logical continuation outside stored005C8AE0 body005C8AE0..005C8B2F"
+    },
+    {
+      "address": "005C8B7B",
+      "native": "old_texture.current_vtable+00",
+      "function": "005C8AE0",
+      "implementation": "canonical NativeRenderActualOwners current0 terminal dispatch",
+      "abi": "ECX captured old; no stack args",
+      "evidence": "Zero path before+A0 clear; actual current table loaded at8B75/8B77.",
+      "no_ghidra_function": true,
+      "containing_body_status": "raw continuation; not a function entry"
+    },
+    {
+      "address": "00AA2679",
+      "native": "00AEFB20",
+      "function": "00AA2660",
+      "implementation": "existing GuiTextureCallbacks.find_atlas_item / texture_atlas.cpp",
+      "abi": "ECX atlas manager globalF8C26C, stack filename data, RET4",
+      "evidence": "Borrow item; null falls through current renderer64."
+    },
+    {
+      "address": "00AA2723",
+      "native": "texture.current_vtable+3C",
+      "function": "00AA2660",
+      "implementation": "existing GuiTextureCallbacks.width",
+      "abi": "ECX item+08 texture; no stack args; EAX uint32 width",
+      "evidence": "Only both float2 values zero; UV already written."
+    },
+    {
+      "address": "00AA2743",
+      "native": "texture.current_vtable+40",
+      "function": "00AA2660",
+      "implementation": "existing GuiTextureCallbacks.height",
+      "abi": "ECX reloaded item+08 texture; no stack args; EAX uint32 height",
+      "evidence": "After width unsigned-to-float spill; existing x87 semantic resolver reused."
+    },
+    {
+      "address": "00AA27BD",
+      "native": "IAT00CE221C:InterlockedIncrement",
+      "function": "00AA2660",
+      "implementation": "existing GuiTextureCallbacks.retain, required actual native+04 operation",
+      "abi": "stdcall texture+04, RET4",
+      "evidence": "Atlas-hit reference acquired once after optional size calculation."
+    },
+    {
+      "address": "00AA27DA",
+      "native": "renderer.current_vtable+64",
+      "function": "00AA2660",
+      "implementation": "existing GuiTextureCallbacks.load_texture",
+      "abi": "ECX globalF8D394 renderer; stack native name header and0; RET8; EAX acquired",
+      "evidence": "Atlas miss preserves incoming UV and size, no additional retain."
+    },
+    {
+      "address": "005C9E95",
+      "native": "005C9030",
+      "function": "005C9E30",
+      "implementation": "dependency evidence only; native STL/CRT not ported; host std::vector retains/releases MissionPictureOwner",
+      "abi": "spare capacity: ECX end slot, EDX1, stack source/iterator context/flags; helper RET10h",
+      "evidence": "Read normal insertion, relocation or erase chain; picture copy/assignment/destruction implementation is the scoped fragment."
+    },
+    {
+      "address": "005C9EB3",
+      "native": "00BF6713",
+      "function": "005C9E30",
+      "implementation": "dependency evidence only; native STL/CRT not ported; host std::vector retains/releases MissionPictureOwner",
+      "abi": "native returning invalid-parameter boundary before insert",
+      "evidence": "Read normal insertion, relocation or erase chain; picture copy/assignment/destruction implementation is the scoped fragment."
+    },
+    {
+      "address": "005C9EC6",
+      "native": "005C9C10",
+      "function": "005C9E30",
+      "implementation": "dependency evidence only; native STL/CRT not ported; host std::vector retains/releases MissionPictureOwner",
+      "abi": "ECX vector; stack output iterator, vector identity, end, source; RET10h",
+      "evidence": "Read normal insertion, relocation or erase chain; picture copy/assignment/destruction implementation is the scoped fragment."
+    },
+    {
+      "address": "005C9C7E",
+      "native": "005C9530",
+      "function": "005C9C10",
+      "implementation": "dependency evidence only; native STL/CRT not ported; host std::vector retains/releases MissionPictureOwner",
+      "abi": "ECX vector; stack iterator context, position, count1, source; RET10h",
+      "evidence": "Read normal insertion, relocation or erase chain; picture copy/assignment/destruction implementation is the scoped fragment."
+    },
+    {
+      "address": "005C9563",
+      "native": "005C81F0",
+      "function": "005C9530",
+      "implementation": "dependency evidence only; native STL/CRT not ported; host std::vector retains/releases MissionPictureOwner",
+      "abi": "ECX temporary434h record, stack source; RET4",
+      "evidence": "Read normal insertion, relocation or erase chain; picture copy/assignment/destruction implementation is the scoped fragment."
+    },
+    {
+      "address": "005C9656",
+      "native": "005C8F90",
+      "function": "005C9530",
+      "implementation": "dependency evidence only; native STL/CRT not ported; host std::vector retains/releases MissionPictureOwner",
+      "abi": "range retain-copy into allocated native storage",
+      "evidence": "Read normal insertion, relocation or erase chain; picture copy/assignment/destruction implementation is the scoped fragment."
+    },
+    {
+      "address": "005C9669",
+      "native": "005C9250",
+      "function": "005C9530",
+      "implementation": "dependency evidence only; native STL/CRT not ported; host std::vector retains/releases MissionPictureOwner",
+      "abi": "fill inserted range from retained temporary",
+      "evidence": "Read normal insertion, relocation or erase chain; picture copy/assignment/destruction implementation is the scoped fragment."
+    },
+    {
+      "address": "005C9685",
+      "native": "005C8F90",
+      "function": "005C9530",
+      "implementation": "dependency evidence only; native STL/CRT not ported; host std::vector retains/releases MissionPictureOwner",
+      "abi": "range retain-copy remaining suffix",
+      "evidence": "Read normal insertion, relocation or erase chain; picture copy/assignment/destruction implementation is the scoped fragment."
+    },
+    {
+      "address": "005C96B9",
+      "native": "005C9290",
+      "function": "005C9530",
+      "implementation": "dependency evidence only; native STL/CRT not ported; host std::vector retains/releases MissionPictureOwner",
+      "abi": "destroy each old record before freeing buffer",
+      "evidence": "Read normal insertion, relocation or erase chain; picture copy/assignment/destruction implementation is the scoped fragment."
+    },
+    {
+      "address": "005C96C2",
+      "native": "00BF65AC",
+      "function": "005C9530",
+      "implementation": "dependency evidence only; native STL/CRT not ported; host std::vector retains/releases MissionPictureOwner",
+      "abi": "cdecl free old begin; raw gap96C7 ADD ESP4",
+      "evidence": "Read normal insertion, relocation or erase chain; picture copy/assignment/destruction implementation is the scoped fragment."
+    },
+    {
+      "address": "005C8FD7",
+      "native": "005C81F0",
+      "function": "005C8F90",
+      "implementation": "dependency evidence only; native STL/CRT not ported; host std::vector retains/releases MissionPictureOwner",
+      "abi": "ECX destination cursor, stack source cursor; RET4, stride434h",
+      "evidence": "Read normal insertion, relocation or erase chain; picture copy/assignment/destruction implementation is the scoped fragment."
+    },
+    {
+      "address": "005C9078",
+      "native": "005C81F0",
+      "function": "005C9030",
+      "implementation": "dependency evidence only; native STL/CRT not ported; host std::vector retains/releases MissionPictureOwner",
+      "abi": "ECX destination cursor, stack repeated source; RET4, stride434h",
+      "evidence": "Read normal insertion, relocation or erase chain; picture copy/assignment/destruction implementation is the scoped fragment."
+    },
+    {
+      "address": "005C9274",
+      "native": "005C9030",
+      "function": "005C9250",
+      "implementation": "dependency evidence only; native STL/CRT not ported; host std::vector retains/releases MissionPictureOwner",
+      "abi": "fill wrapper into retain-copy constructor loop",
+      "evidence": "Read normal insertion, relocation or erase chain; picture copy/assignment/destruction implementation is the scoped fragment."
+    },
+    {
+      "address": "005C92A2",
+      "native": "005C8AE0",
+      "function": "005C9290",
+      "implementation": "dependency evidence only; native STL/CRT not ported; host std::vector retains/releases MissionPictureOwner",
+      "abi": "ECX current record; RET, stride434h",
+      "evidence": "Read normal insertion, relocation or erase chain; picture copy/assignment/destruction implementation is the scoped fragment."
+    },
+    {
+      "address": "005C932F",
+      "native": "005C8880",
+      "function": "005C92F0",
+      "implementation": "dependency evidence only; native STL/CRT not ported; host std::vector retains/releases MissionPictureOwner",
+      "abi": "copy/assign remaining range over erased position",
+      "evidence": "Read normal insertion, relocation or erase chain; picture copy/assignment/destruction implementation is the scoped fragment."
+    },
+    {
+      "address": "005C9344",
+      "native": "005C8AE0",
+      "function": "005C92F0",
+      "implementation": "dependency evidence only; native STL/CRT not ported; host std::vector retains/releases MissionPictureOwner",
+      "abi": "ECX each tail record; RET before end publication",
+      "evidence": "Read normal insertion, relocation or erase chain; picture copy/assignment/destruction implementation is the scoped fragment."
+    },
+    {
+      "address": "005C88AE",
+      "native": "005C8170",
+      "function": "005C8880",
+      "implementation": "dependency evidence only; native STL/CRT not ported; host std::vector retains/releases MissionPictureOwner",
+      "abi": "forward assignment wrapper with native iterator context",
+      "evidence": "Read normal insertion, relocation or erase chain; picture copy/assignment/destruction implementation is the scoped fragment."
+    },
+    {
+      "address": "005C8186",
+      "native": "005C7B80",
+      "function": "005C8170",
+      "implementation": "dependency evidence only; native STL/CRT not ported; host std::vector retains/releases MissionPictureOwner",
+      "abi": "ECX destination cursor, stack source cursor; RET4",
+      "evidence": "Read normal insertion, relocation or erase chain; picture copy/assignment/destruction implementation is the scoped fragment."
+    }
+  ],
+  "raw_flow_gaps": [
+    {
+      "start": "005C8B30",
+      "end_inclusive": "005C8DAC",
+      "logical_function": "005C8AE0",
+      "no_ghidra_function": true,
+      "evidence": "stored body ends8B2F; live disasm8AE0 --start8B30 rejected; raw decode reachesRET8DAC thenINT3",
+      "picture_calls": [
+        "005C8B6B",
+        "005C8B7B"
+      ]
+    },
+    {
+      "start": "005C96C7",
+      "end_inclusive": "005C96C9",
+      "logical_function": "005C9530",
+      "no_ghidra_function": true,
+      "evidence": "live flow afterCALL BF65AC96C2; rawADD ESP4"
+    },
+    {
+      "start": "005C9701",
+      "end_inclusive": "005C970C",
+      "logical_function": "005C9530",
+      "no_ghidra_function": true,
+      "evidence": "live flow afterCALL BF65AC96FC; rawADD ESP4,PUSH0,PUSH0,CALL BF6885 at9708"
+    }
+  ],
+  "abi_and_uncertainty": [
+    "New Win32 C++ interfaces, not drop-in native434h record layout or binary ABI.",
+    "Native picture constructors/vector routes retain-copy. No move-steal is introduced; host moves of other semantic fields remain host behavior.",
+    "Full native record destruction ordering of side/string/map members and SEH fault/allocator behavior remain outside this picture fragment.",
+    "AA2660 existing semantic callback/x87 implementation reused; no extra exact floating-point or hardware proof claimed.",
+    "Native provider operations must return normally with valid actual object+04 and canonical current0 profile. Missing bindings are rejected; invalid-domain failures during C++ destruction terminate.",
+    "Metadata reread deliberately resets previous owner and leaves disengaged picture; that is explicitly partial host adaptation, not native empty-name behavior."
+  ],
+  "remaining_providers": [
+    "actual GUI-manager getter004C12B0 lifetime/registration",
+    "actual installed atlas/renderer GuiTextureCallbacks with native reference identities",
+    "canonical NativeRenderActualOwners current-profile destruction and lifetime",
+    "per-nonempty-read native float2 frame preimage",
+    "parent application binding API and actual A0 consumer integration"
+  ],
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "result": "pass MSVC Win32 Release; reconstructed_math CTest1/1",
+      "log": "local/mission_picture_build.log"
+    },
+    "fixture": {
+      "command": "cmd /c local/run_mission_picture_probe.cmd",
+      "result": "pass; fixture TU only linked against worker production libraries",
+      "source": "local/mission_picture_probe.cpp",
+      "log": "local/mission_picture_probe.log",
+      "manifest": "/link /MANIFEST:EMBED",
+      "scope": "actual native-layout +04 atomic and borrowed canonical companion; simulated atlas/renderer/getter boundaries; not installed assets"
+    },
+    "game": {
+      "command": "bsp_game.exe --frames 45 --press-start-frame 5 --log local/mission_picture_game.log --settings-personal-root local/mission_picture_personal --game-root \"I:/SteamLibrary/steamapps/common/Battlestations Pacific\"",
+      "exit_code": -1073741819,
+      "hex_exit": "C0000005",
+      "result": "pre-entry crash during settings initialization before mission tree; no picture runtime validation",
+      "log": "local/mission_picture_game.log"
+    },
+    "ghidra": "no mutations, annotations, function definitions, prototype edits or saves",
+    "call_check": "verify_report_calls.py: 21 direct call rows checked, 0 failed; 14 explicit indirect/IAT rows remain assembly-backed"
+  }
+}

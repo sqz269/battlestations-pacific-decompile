@@ -34,6 +34,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/bot_task_states.cp
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/input_binding_poll.cpp src/sound_class_ownership.cpp src/sound_configuration.cpp src/fmod_configuration_library.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/input_device_state.cpp src/sound_file_callbacks.cpp src/sound_system_owner.cpp src/sound_startup.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/main_menu_objective_runtime.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/mission_picture_owner.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_file_access_log_owner.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_gamepad_force_requests.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_device_sdk.cpp)
