@@ -1,0 +1,280 @@
+{
+  "packet": "orch4_native_gamepad_rumble_af",
+  "status": "reconstructed_strict_build_and_relocated_native_raw_fixture_passed",
+  "source": [
+    "include/bsp/native_gamepad_rumble.hpp",
+    "src/native_gamepad_rumble.cpp"
+  ],
+  "document": "docs/NATIVE_GAMEPAD_RUMBLE.md",
+  "baseline_commit": "d474459fe15432c93bc6be909584fa2082fe36ef",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "bsp.py ghidra client verifies project/program before each live read"
+  },
+  "ghidra_mutations": false,
+  "functions": [
+    {
+      "address": "00a949a0",
+      "implementation": "refresh_native_gamepad_force_channel_00a949a0",
+      "coverage": "complete normal raw-storage schedule in documented normalized flag/valid addressable storage/provider domain",
+      "original_abi": "ECX actual gamepad; EDX no input; stack channel DWORD; void result; RET4",
+      "last_instruction": "00a94aad",
+      "last_instruction_length": 3,
+      "end_inclusive": "00a94aaf",
+      "end_exclusive": "00a94ab0",
+      "span": 272,
+      "sha256": "d9db387a3a6826ffb19a550ea6b86c26fbb16322f23141f9064b14edf81de1ee",
+      "disk_analysis_equal": true,
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a94c50",
+      "implementation": "set_native_gamepad_rumble_enabled_00a94c50",
+      "coverage": "complete normal raw-storage schedule in documented normalized flag/valid addressable storage/provider domain",
+      "original_abi": "CL enable byte, upper ECX and EDX no input; no stack args; void result; RET0",
+      "last_instruction": "00a94d3d",
+      "last_instruction_length": 1,
+      "end_inclusive": "00a94d3d",
+      "end_exclusive": "00a94d3e",
+      "span": 238,
+      "sha256": "d8f4e02b204483abcf7b8af7ae40074dc71508e49799c60c8d927bf27717ad83",
+      "disk_analysis_equal": true,
+      "native_abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00a949a0",
+      "address": "00a949eb",
+      "native": "00bf6713",
+      "contract": "iterator owner validation; compare with head captured BEFORE handler"
+    },
+    {
+      "function": "00a949a0",
+      "address": "00a949fc",
+      "native": "00bf6713",
+      "contract": "null iterator owner validation may return"
+    },
+    {
+      "function": "00a949a0",
+      "address": "00a94a06",
+      "native": "00bf6713",
+      "contract": "current node vs current iterator-owner head validation"
+    },
+    {
+      "function": "00a949a0",
+      "address": "00a94a1e",
+      "native": "00bf6713",
+      "contract": "after value getter, validate against reloaded current head; may return and change node payload"
+    },
+    {
+      "function": "00a949a0",
+      "address": "00a94a13",
+      "native": "request+vtable08",
+      "contract": "current node payload/current profile; no stack args; x87 ST0 -> FSTP binary32 before channel getter"
+    },
+    {
+      "function": "00a949a0",
+      "address": "00a94a2b",
+      "native": "request+vtable04",
+      "contract": "RELOAD node payload/profile after value+validation; EAX channel; no stack args"
+    },
+    {
+      "function": "00a949a0",
+      "address": "00a94a51",
+      "native": "00a94230",
+      "contract": "ECX actual8h iterator; RET0; existing869A20 equivalent raw library contract"
+    },
+    {
+      "function": "00a949a0",
+      "address": "00a94aa0",
+      "native": "device+vtable38",
+      "contract": "capture raw profile BEFORE amplitude store; channel/value stack, RET8 expected; output after store"
+    },
+    {
+      "function": "00a94c50",
+      "address": "00a94ccc",
+      "native": "00bf6713",
+      "contract": "returning invalid parameter; reload backend but retain old begin-slot address for actual device read"
+    },
+    {
+      "function": "00a94c50",
+      "address": "00a94cfc",
+      "native": "00a949a0",
+      "contract": "ECX captured current device; channel0/1 stack; RET4"
+    },
+    {
+      "function": "00a94c50",
+      "address": "00a94d11",
+      "native": "device+vtable38",
+      "contract": "current device profile; channel and FLDZ zero stack; RET8 expected; saved-amplitude clear occurs AFTER return"
+    },
+    {
+      "function": "004cd0f0",
+      "address": "004cd319",
+      "native": "00a94c50",
+      "contract": "XOR CL,CL; normalized0/1 register flag; RET0"
+    },
+    {
+      "function": "004cd0f0",
+      "address": "004cd349",
+      "native": "00a94c50",
+      "contract": "SETZ CL from current setting byteF889C0; normalized0/1 register flag; RET0"
+    },
+    {
+      "function": "0060d2d0",
+      "address": "0060d2dd",
+      "native": "00a94c50",
+      "contract": "SETZ CL from settingF889C0; normalized0/1 register flag; RET0"
+    },
+    {
+      "function": "0060d390",
+      "address": "0060d395",
+      "native": "00a94c50",
+      "contract": "XOR CL,CL; normalized0/1 register flag; RET0"
+    },
+    {
+      "function": "008acb70",
+      "address": "008acc58",
+      "native": "00a94c50",
+      "contract": "XOR CL,CL; normalized0/1 register flag; RET0"
+    },
+    {
+      "function": "008acb70",
+      "address": "008accb8",
+      "native": "00a94c50",
+      "contract": "SETZ CL from settingF889C0; normalized0/1 register flag; RET0"
+    },
+    {
+      "function": "008d5b50",
+      "address": "008d5de2",
+      "native": "00a94c50",
+      "contract": "CL=0 or BL=1; all EBX writes inspected, MOV EBX,1 at8D5CCB; normalized0/1 register flag; RET0"
+    },
+    {
+      "function": "00a94bc0",
+      "address": "00a94c33",
+      "native": "00a949a0",
+      "contract": "request channel getter atA94C2E after payload write; push channel; RET4"
+    },
+    {
+      "function": "00a95410",
+      "address": "00a954a5",
+      "native": "00a949a0",
+      "contract": "channel captured in EBP atA9547A from getter before delete/erase; push channel; RET4"
+    },
+    {
+      "function": "00a95780",
+      "address": "00a957b8",
+      "native": "00a949a0",
+      "contract": "channel returned atA957B3 from supplied request; captured deviceESI; push channel; RET4"
+    },
+    {
+      "function": "00a95bf0",
+      "address": "00a95c93",
+      "native": "00a949a0",
+      "contract": "channel returned atA95C8E from supplied request; captured deviceEDI; push channel; RET4"
+    }
+  ],
+  "no_ghidra_function": [],
+  "excluded_tail_calls": [],
+  "listing_gaps": [
+    {
+      "start": "00a94cea",
+      "end_inclusive": "00a94cef",
+      "bytes": "8d9b00000000",
+      "meaning": "6-byte LEA EBX,[EBX] alignment, bypassed by JMP A94CE8->A94CF0; no executable branch coverage missing"
+    }
+  ],
+  "library_contract": {
+    "native": "00a94230",
+    "range": "00a94230..00a94292",
+    "reused_source": "increment_native_int_pointer_tree18_00869a20",
+    "equivalent_range": "00869a20..00869a82",
+    "verification": "Both99-byte bodies equal after masking only direct CALL and tail-JMP displacements to same realBF6713; full listings read. No new implementation/name/ownership claim for library."
+  },
+  "producer_evidence": {
+    "backend": "actual class2 active vector header+B4, begin+B8/end+BC; existing A91570 groups storage, no copied fixed3x8 table",
+    "device": "A95D70 actual220h prefix; head+210,count+214; amplitudes218/21C zeroed; original allocator+20C retained",
+    "tree": "recognized actual18h links0/4/8, payload10,nil15, iterator owner/node; shared raw tree source reused",
+    "request": "existing actual14h/18h/28h constant/fading/alternating constructors and finite NativeGamepadForceRequestDispatch value/channel getters; no refcount or typed request projection"
+  },
+  "boundaries": [
+    "Source setter bool argument covers all seven verified normalized CL0/1 call sites, not arbitrary noncanonical raw flag bytes",
+    "Existing canonical bool storage is shared through volatile bool reference with other source gamepad/XInput contexts",
+    "Backend is unguarded on entry after flag store; native valid-pointer requirement preserved",
+    "No channel clamp; raw32-bit amplitude address arithmetic requires addressable native storage",
+    "No tick/expiration/deletion in refresh; actual request tree owner unchanged",
+    "Output requires genuine captured-profile finite device provider; unknown profiles must not produce fake success",
+    "Real returning-capable current CRT invalid-parameter service; original encoded static-CRT state and arbitrary iterator-stack aliasing/FH3/SEH/fault behavior excluded",
+    "No SDK force/GetState/SetState/device poll/game/application-settings calls"
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 Win32 Release /W4 /WX strict floating point,2 existing CTests passed",
+    "seeds": "8/8 analysis/disk bytes equal",
+    "call_audit": "18 direct CALL rows checked,0 failures;4 indirect sites manually audited",
+    "probe": "one ignored manifested archive-only probe; four relocated native differential cases plus source-only exception write ordering",
+    "probe_cases": [
+      {
+        "case": "unordered saved amplitude and NaN request filtering",
+        "outputs": 1,
+        "invalids": 0
+      },
+      {
+        "case": "disable callback re-enables flag and replaces backend; next channel/next device routing",
+        "outputs": 4,
+        "invalids": 0
+      },
+      {
+        "case": "value callback replaces head and disables; returning validation handler repairs and replaces payload before channel",
+        "outputs": 1,
+        "invalids": 1
+      },
+      {
+        "case": "negative/NaN request values preserve saved negative zero",
+        "outputs": 0,
+        "invalids": 0
+      }
+    ],
+    "source_exception_checks": "refresh amplitude stored before throwing output; disable amplitude unchanged if output throws",
+    "cleanup": "4 concrete tree payloads plus spare and2 raw trees destroyed by existing concrete source",
+    "probe_limit": "Original owned control flow/arithmetic with global/CALL bridges to source raw request getters, iterator, CRT handler and output observer; no original SDK binary ABI or actual controller output claim"
+  },
+  "corrections": [
+    {
+      "was": "Pseudocode places enabled store after backend/count reads",
+      "is": "Native A94C51 stores flag before A94C57 backend read",
+      "evidence": "complete A94C50 assembly"
+    },
+    {
+      "was": "Typed source cannot be substituted for actual backend vectors and gamepad request tree",
+      "is": "raw fields, iterator and request allocation identity reused without owning projections",
+      "evidence": "A94C5D..A94CD9 +B8/+BC traversal; A949B4..A94A62 raw tree18 iteration"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "build\\win32\\Release\\bsp_core.lib",
+      "sha256": "b05e10bf6d2429bba8cf7c00513426c59a1d28525b30711dc0d45ab94e474a28"
+    },
+    {
+      "path": "local\\native_gamepad_rumble_af_final_build.log",
+      "sha256": "1783ff3c22a73e1c01239e034c7ffd9f2e4e7cc2aa6fa2a65d41e9beedf18fa0"
+    },
+    {
+      "path": "local\\native_gamepad_rumble_af_probe.log",
+      "sha256": "9bb80334f8c644bcc4b894230ce0795788d31914216d64a7efc904a9d97b2cff"
+    },
+    {
+      "path": "local\\native_gamepad_rumble_af_seeds.json",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local\\native_gamepad_rumble_af_calls.log",
+      "sha256": "b28e9d89709c99f814bd5cd8847311aa2a99acb3121c49d67a78e0c17310f5e1"
+    }
+  ]
+}
