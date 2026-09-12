@@ -4389,7 +4389,8 @@
         ],
         "required_contract": "Actual renderer/global/pool providers; exact original HRESULT equality retry, COM invocation, registration and FH3 cleanup order. No empty or semantic substitute recreation/owner/registry callback."
       },
-      "source_ready": false
+      "source_ready": false,
+      "current_readiness_report": "reports/native_renderer_reset_readiness_5.json"
     },
     {
       "id": "native_renderer_recreate_device_next",
@@ -4496,7 +4497,8 @@
         "Actual current registry owners and their virtual reset callbacks",
         "Actual XLive thunk/provider integration and CRT returning invalid-parameter contract"
       ],
-      "discovery_evidence": "reports/native_renderer_recreate_device_next.json"
+      "discovery_evidence": "reports/native_renderer_recreate_device_next.json",
+      "current_readiness_report": "reports/native_renderer_reset_readiness_5.json"
     },
     {
       "id": "orch4_scheduled_voice_c",
@@ -5943,7 +5945,8 @@
       ],
       "source_ready": false,
       "evidence": "reports/native_vertex_stream_owner_discovery.json",
-      "scope": "24freshspans2159bytes; fullB24840/B23710/B4B5D0/B4BF10/B62010/B61E20/B24BF0. Trace actualbase4C retainedowner before implementation. Originalreset repeats streamzero4times."
+      "scope": "24freshspans2159bytes; fullB24840/B23710/B4B5D0/B4BF10/B62010/B61E20/B24BF0. Trace actualbase4C retainedowner before implementation. Originalreset repeats streamzero4times.",
+      "current_readiness_report": "reports/native_renderer_reset_readiness_5.json"
     },
     {
       "id": "orch4_config_singleton_i",
@@ -6726,7 +6729,8 @@
         "native_logical_vertex_owner"
       ],
       "scope": "Full reset/provider/FH3 discovery only. General old logical owner final-zero terminal remains unresolved.",
-      "evidence": "reports/native_renderer_binding_reset_audit.json"
+      "evidence": "reports/native_renderer_binding_reset_audit.json",
+      "current_readiness_report": "reports/native_renderer_reset_readiness_5.json"
     },
     {
       "id": "native_logical_vertex_retained_4c_writers12",
@@ -8303,6 +8307,79 @@
       "evidence": "reports/logical_vertex_alias_factory.json",
       "primary_review": "reports/logical_vertex_alias_workers4_review.json",
       "qualification": "Discovery only. No logical+4C nonnull writer/profile/final-zero terminal established; no source or readiness promotion."
+    },
+    {
+      "id": "native_shader_constants_actual5",
+      "packet": "native_shader_constants_actual5",
+      "state": "complete_primary_integration_and_qualified_evidence",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00b21820",
+        "00b218c0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_shader_constants.hpp",
+        "src/native_shader_constants.cpp",
+        "docs/NATIVE_SHADER_CONSTANTS.md",
+        "reports/native_shader_constants.json"
+      ],
+      "evidence": "reports/native_shader_constants.json",
+      "qualification": "Complete raw uploads, new EDX synchronization binding; original/source COM capture and source C++ cleanup; native FH3/SEH/original ABI/gameplay excluded."
+    },
+    {
+      "id": "native_renderer_draw_actual5",
+      "packet": "native_renderer_draw_actual5",
+      "state": "complete_primary_integration_and_qualified_evidence",
+      "done": true,
+      "source_ready": true,
+      "worker": "renderer_draw_actual5",
+      "function_addresses": [
+        "00b21b40"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_draw_primitive.hpp",
+        "src/native_renderer_draw_primitive.cpp",
+        "docs/NATIVE_RENDERER_DRAW_PRIMITIVE.md",
+        "reports/native_renderer_draw_primitive.json"
+      ],
+      "evidence": "reports/native_renderer_draw_primitive.json",
+      "qualification": "Complete raw draw source with actual optional guard/device; native/source COM capture and source unwind. Original FH3/ABI/gameplay excluded."
+    },
+    {
+      "id": "native_renderer_format_actual5",
+      "packet": "native_renderer_format_actual5",
+      "state": "complete_primary_integration_and_qualified_evidence",
+      "done": true,
+      "source_ready": true,
+      "worker": "renderer_format_actual5",
+      "function_addresses": [
+        "00b21ec0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_format_check.hpp",
+        "src/native_renderer_format_check.cpp",
+        "docs/NATIVE_RENDERER_FORMAT_CHECK.md",
+        "reports/native_renderer_format_check.json"
+      ],
+      "evidence": "reports/native_renderer_format_check.json",
+      "qualification": "Complete raw format wrapper and existing flags source; native wrapper fixture shares source translator; actual D3D9 query evidence, no startup/gameplay claim."
+    },
+    {
+      "id": "native_renderer_reset_readiness5",
+      "packet": "native_renderer_reset_readiness5",
+      "state": "complete_read_only_current_dependency_audit_parents_not_ready",
+      "done": true,
+      "source_ready": false,
+      "worker": "renderer_reset_readiness5",
+      "function_addresses": [],
+      "code_ownership": [
+        "docs/NATIVE_RENDERER_RESET_READINESS_5.md",
+        "reports/native_renderer_reset_readiness_5.json"
+      ],
+      "evidence": "reports/native_renderer_reset_readiness_5.json",
+      "qualification": "Discovery complete; four reset parents remain incomplete. Exact +4C logical-owner, cache+04 profile, +1A78 record-callback and CRT composition boundaries retained."
     }
   ],
   "snapshot_after_analysis": {
