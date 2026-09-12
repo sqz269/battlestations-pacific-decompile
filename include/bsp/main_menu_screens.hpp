@@ -228,15 +228,15 @@ inline constexpr std::string_view kMainMenuSinglePlayerHelp =
 // Opening the tactical library, 005885D0 and 005886C0
 // ---------------------------------------------------------------------------
 
-// Both routines push interface 0Bh through 004CC460 on the manager and then
-// write a mode into the tactical-library screen at 00E198AC+70h. They are the
-// only two sites in the packet that reach another screen's fields directly.
+// These value summaries do not execute either native ordering.5885D0 writes
+// the current library screen before pushing interface0B;5886C0 pushes first.
+// The complete same-owner sequences are in main_menu_tactical_library.hpp.
 struct TacticalLibraryRequest {
     int mode;                     // screen+94h: 5 from 005885D0, 4 from 005886C0
     int selector;                 // screen+98h, 63h at both sites
     bool has_selection;           // 005885D0 only: it fills +9Ch/+A0h first
-    std::uint32_t selection_a;    // screen+9Ch, from 005806A0 then 005C27E0
-    std::uint32_t selection_b;    // screen+A0h, from a second 005806A0
+    std::uint32_t selection_a;    // screen+9Ch, SECOND005806A0 record pointer
+    std::uint32_t selection_b;    // screen+A0h, FIRST005806A0 then005C27E0 side
 };
 
 // 005885D0. __thiscall, ECX is the main-menu screen, no stack arguments, RET.

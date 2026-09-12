@@ -387,3 +387,12 @@ everything shipyard-specific is authored in the scene bag (`Party`, `Stock %d`, 
   the hangar list; only `+780h` is proven to be the slot vector.
 * `MAirfield`'s `+748h`/`+749h`: which is the runway failure flag and which the hangar failure
   flag, and whether class ids `72h`-`75h` are runway and hangar parts.
+
+## Correction from docs/AIRFIELD_TAXI.md (packet cc2_airfield_taxi)
+
+- **Was:** the EntryPath/ExitPath list is a plausible producer for the taxi paths of ground state 5 but the consumer side was not traced; that link is open
+  **Is:** the consumer is the air-operations launch-site object at block+3Ch. 006D2780 feeds 006CF520 and 006CF730 (the launch queue); 006D2640 feeds 006CF420 (the state-5 taxi target), which the plane bot reads every step through (plane+BF4h)->+4h->+3Ch->vtable[2Ch]
+  **Evidence:** 006CF55C and 006CF73A call 006D2780; 006CF431, 006CF46D and 006CF494 call 006D2640; 009CD5EB MOV ECX,[EAX+3Ch] then CALL EDX with EDX = [[ECX]+2Ch] at 009CD5FF
+- **Was:** 006D5220 walks Hangar %d sub-bags for Object, EntryPath and ExitPath into the 0xC-stride vector at +830h
+  **Is:** three source branches keyed on *(airfield+0C0h)+4: the property bag (1), a compiled ushort table with stride 6 at src+13Ch counted by src+138h (2), and the Lua reader hangars/entityID/entryPathID/exitPathID (3). All three store path interfaces from 007AC9D0, not the authored entities
+  **Evidence:** the three arms of 006D5220; the compiled arm's (id - DAT_00F89A60)*10h + 0Ch + DAT_00F89AA8 record-map lookup with the iVar5 += 6 stride

@@ -1,9 +1,26 @@
 #include "bsp/frontend_prompts.hpp"
 
+#include <cstring>
 #include <limits>
 #include <utility>
 
 namespace bsp {
+void focus_first_prompt_navigation_00530670(FrontEndPromptScreen& screen,
+    FrontEndPromptHost& host) {
+    if (screen.input_mode == 0) host.set_navigation_focus(0); //0053067E
+}
+
+void focus_last_prompt_navigation_00530c20(FrontEndPromptScreen& screen,
+    FrontEndPromptHost& host) {
+    if (screen.input_mode != 0) return;
+    // A9AC50 returns the current navigation list header; +8 supplies its count.
+    // SUB EAX,1 wraps the DWORD, including the empty-list index FFFFFFFF.
+    const std::uint32_t bits = static_cast<std::uint32_t>(host.navigation_count()) - 1u;
+    std::int32_t index;
+    std::memcpy(&index, &bits, sizeof(index));
+    host.set_navigation_focus(index); //00530C3E, no second input-mode test
+}
+
 namespace {
 constexpr std::array<PromptWidget, 4> buttons{
     PromptWidget::Yes, PromptWidget::No, PromptWidget::Accept, PromptWidget::Restart};

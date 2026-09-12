@@ -1,0 +1,406 @@
+{
+  "schema_version": 1,
+  "packet": "orch5_menu_listbox_group",
+  "status": "promoted_compiled_inputs_verified_and_three_integrated_library_probes_passed",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911",
+  "branch": "agent/orch5-20260911",
+  "wave_base": "2cdded60f9090658db440f69b9c40ea72fe40538",
+  "worker_commits": {
+    "menu_command": "74a509c07dbb45768c8b8ba613f55be8459793ab",
+    "listbox_state": "ee8dc5b14f93c90abfe2d1dc6615444fb3dc5149",
+    "group_sphere": "acab1d428186018a624ade8805aadb188771daa3"
+  },
+  "source_sha256_lf": {
+    "cmake/startup.cmake": "b2074029847a6b6eb9c23e5cf8bf8f0fe77e78a3214bac1ef09b4a17ccc53f8f",
+    "include/bsp/frontend_prompts.hpp": "ba11e0c866cb414881296390f7bd4717b3547322055e134eb95e4f2c1a400cb1",
+    "include/bsp/gui_listbox_runtime.hpp": "ae54e1028141528271ba2a1019c8913df2e985cd1299b24872b4c7db4bb06495",
+    "include/bsp/gui_type_dispatch.hpp": "e8c4d8c5e5464c7e97a0a168501fc30d70f90abb0b1dbb8033322886dade2a59",
+    "include/bsp/gui_widget_owner.hpp": "5fc0f3a9004f505dcd20d5b37b75082cf6b170e8679dc4798921c4f89c95756e",
+    "include/bsp/main_menu_command_listener.hpp": "ee49ca2ecb163666e18034568db1bbbeac87266d15e829ff409af5034f24a0af",
+    "include/bsp/main_menu_screens.hpp": "6d3ee2bf2c95088895f0e00955013e427960bb8637d0e44c79409d15fc0c6281",
+    "include/bsp/main_menu_tactical_library.hpp": "db046e1ff128738cf58e1e717290e1ef06ed109eab13b5aed4530494c5f159ca",
+    "include/bsp/native_group_world_sphere.hpp": "f723cc60773bae3528b3b3bc1212db3bb56aa17f1b840081635f02c6c24e61d3",
+    "include/bsp/native_point_light_provider.hpp": "b2c20ccb28cd9f94b53007030c19e4ff604dc1b131153f60f6421957a8cda3d1",
+    "src/frontend_prompts.cpp": "e0f56234f2f89ae80da3367b6a60e5b98445c3a290d2fd549c06f84f5420c41a",
+    "src/gui_listbox_runtime.cpp": "c4202a60b97b52847663f15e03e787fc80d265efe5916bea4ea9ac0ab1f1fd24",
+    "src/gui_type_dispatch.cpp": "c48cc68b224bba19594e962aba85385f3c8ebb283f2dffba41faba34819ce01f",
+    "src/gui_widget_color_dispatch.cpp": "488e0b6e1cb29025e8520c63d552d8d44db88a6b9613935b501be809a3bf1200",
+    "src/gui_widget_owner.cpp": "464e2ab14426160231f4161f40b8a16b0b37026efe015640df6c59405b01fec7",
+    "src/main_menu_command_listener.cpp": "ed2c82a114aebaa9de17903b15103409ebafe2132a81bc95b9a19d1757969647",
+    "src/main_menu_screens.cpp": "eb3ab8a8b4ff0d2b328dc956ed64890fe66134d17a4fa8b7596744c9d0e27869",
+    "src/main_menu_tactical_library.cpp": "4ed227fa2bf51302f513ed3a69f21db3f1c22705e773603409e8f45980871222",
+    "src/native_group_world_sphere.cpp": "0d4fce4c4bab5017cad245584ce45a2567146091d8f838a62567687e04c62b4f",
+    "src/native_point_light_provider.cpp": "cd17f340290fa84b2ba35f534a6024567c47b3e77e7ad2ffd957f0a706ca9aef"
+  },
+  "source_capture_head": "2c05413949c657b7d9c62d929cb953045401d30d",
+  "source_capture_note": "Working-tree source hashes are authoritative for initial combined build; immutable promoted code commit recorded after integration",
+  "build": {
+    "command": "./scripts/build.ps1",
+    "target": "MSVC Win32 Release",
+    "passed": 2,
+    "failed": 0,
+    "log": "local/orch5-menu-listbox-group-build.log",
+    "log_sha256": "1e86ccc07efa50707ed735f878e3ce5f437ba34d1a56cc7dbe95acb365ed001f"
+  },
+  "probes": [
+    {
+      "name": "tactical_library_actual_storage",
+      "log": "local/orch5-tactical-library-probe.log",
+      "sha256": "a63444a7975b179f770ff4051785453e735890c6277ce5f64a4c68279d61c821",
+      "evidence": "Selection/side mapping, payload ordering, current manager reload after callback"
+    },
+    {
+      "name": "listbox_actual_owner_final_library",
+      "log": "local/orch5-menu-listbox-group-workers/listbox-state/listbox_final_probe.log",
+      "sha256": "a39376f4eab2f42c645e6d2ab8ae2e7552857dada227ae32834882632cf4f08e",
+      "evidence": "Same actual rows, layout, live D8/ordinal, selection/loaded78, listener reentry, sound flags and retirement preflight"
+    },
+    {
+      "name": "group_sphere_final_library",
+      "log": "local/orch5-menu-listbox-group-workers/group-sphere/group_getter_validation.log",
+      "sha256": "7fbaa5c19914e5d94744c35665bb09edb2d7ad380e540de7996230fc8b6ce4ca",
+      "numeric_comparisons": 93600,
+      "evidence": "Native-byte numerical comparisons plus dynamic/cache/static getter and real owner/pool teardown"
+    }
+  ],
+  "final_library_sha256": "dfe17ecf026a99bc4521eda9429a583b5848d7ad262a970b464109142e1ec12b",
+  "mechanical_calls": {
+    "numeric_rows": 132,
+    "failed": 0,
+    "symbolic_rows": 5,
+    "log": "local/orch5-menu-listbox-group-report-calls.log",
+    "sha256": "8a55f536c85166a5c9a4f6620ffae269dbf41caa65f28f6b73b641ca5ddffe26",
+    "limitation": "Indirect target resolution was independently checked against native tables; mechanical verifier establishes CALL site, not target"
+  },
+  "annotations": {
+    "count": 29,
+    "saved": true,
+    "archive": "reports/orch5_menu_listbox_group_annotations.json",
+    "sha256": "c6b6bd7a40af7a813b9d5b5975c37de9d7799c16b0149e926f355d80d7110345",
+    "old_names_and_comments_preserved": true,
+    "exports_refreshed": true,
+    "correct_library_names_retained": [
+      "STL_inst_00425e50",
+      "STL_inst_00a9be00"
+    ]
+  },
+  "function_definitions": {
+    "addresses": [
+      "00a9c220",
+      "00941250",
+      "00a9ac30"
+    ],
+    "saved": true,
+    "report": "reports/orch5_listbox_function_definitions.json"
+  },
+  "reviews": [
+    "Two independent main-menu caller assembly reviews passed",
+    "Independent Listbox selection/refresh/layout review passed",
+    "Listbox adapter review found two lifetime gaps; fixed active guard and whole-tree preflight, re-reviewed and fixture-tested",
+    "Group getter identity/cache/reload review passed"
+  ],
+  "worker_evidence_archives": [
+    {
+      "worker": "menu-command",
+      "files": [
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-command\\local\\menu_command_evidence_archive.json",
+          "archive": "local/orch5-menu-listbox-group-workers/menu-command/menu_command_evidence_archive.json",
+          "bytes": 2235,
+          "sha256": "3e16de7eff07fa33fd2eefe80f1664babc831cacb73dcd2dc99f5f725d2480f2"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-command\\local\\main_menu_command_assembly.txt",
+          "archive": "local/orch5-menu-listbox-group-workers/menu-command/main_menu_command_assembly.txt",
+          "bytes": 21016,
+          "sha256": "a6b277ca22bbebd4d142198fffb9e54f41f6db574a41cfcf2eea150afbd67a77"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-command\\local\\navigation_listener_598b60_assembly.txt",
+          "archive": "local/orch5-menu-listbox-group-workers/menu-command/navigation_listener_598b60_assembly.txt",
+          "bytes": 17021,
+          "sha256": "3aeb54cc09c73e34d1cf649213fbc8189657058113db7bf1f47e3fbe9fb94373"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-command\\local\\prefix_helper_43c130_assembly.txt",
+          "archive": "local/orch5-menu-listbox-group-workers/menu-command/prefix_helper_43c130_assembly.txt",
+          "bytes": 1111,
+          "sha256": "7228bf074addf0f054ab86ccab1f54f5610afdae875cfd6e248ebd76bf832714"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-command\\local\\checkpoint_contains_7f8d60_assembly.txt",
+          "archive": "local/orch5-menu-listbox-group-workers/menu-command/checkpoint_contains_7f8d60_assembly.txt",
+          "bytes": 712,
+          "sha256": "9db2cba5a3fb65d9fbe11a758558d0ef4ab768205d5f5a4b8f088844147583db"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-command\\local\\checkpoint_copy_7fc490_assembly.txt",
+          "archive": "local/orch5-menu-listbox-group-workers/menu-command/checkpoint_copy_7fc490_assembly.txt",
+          "bytes": 399,
+          "sha256": "5165da15f9fa5fc923aca8040112c43e665be68a17836abdc691853c82c4fc81"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-command\\local\\checkpoint_class_7fc370_assembly.txt",
+          "archive": "local/orch5-menu-listbox-group-workers/menu-command/checkpoint_class_7fc370_assembly.txt",
+          "bytes": 2501,
+          "sha256": "9427d0656452a27c347cfa5dd056396b04c82afa273a0a61984bef3901670e0c"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-command\\local\\checkpoint_unlock_584750_assembly.txt",
+          "archive": "local/orch5-menu-listbox-group-workers/menu-command/checkpoint_unlock_584750_assembly.txt",
+          "bytes": 4854,
+          "sha256": "e924827650e3864d79583880350447a1a54c729be1eb3136da0b44ffef386fb5"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-command\\local\\verified_body.txt",
+          "archive": "local/orch5-menu-listbox-group-workers/menu-command/verified_body.txt",
+          "bytes": 79,
+          "sha256": "70f474838a1e75854e7bc0c6522ac3d6b839a4110ad143e1b2dcd448eb3c3ac6"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-command\\local\\compile_menu_command.ps1",
+          "archive": "local/orch5-menu-listbox-group-workers/menu-command/compile_menu_command.ps1",
+          "bytes": 737,
+          "sha256": "b94ac6ac6b9ce5b97cc762bdaaa41c802df946501634cb46e3c894efc5c8f034"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-command\\local\\menu_command_compile.log",
+          "archive": "local/orch5-menu-listbox-group-workers/menu-command/menu_command_compile.log",
+          "bytes": 273,
+          "sha256": "b8482aa39e5c5f90a85e344054162f28d0e923081ac9c1ec48f946b43ebf14a7"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-command\\local\\menu_command_calls.log",
+          "archive": "local/orch5-menu-listbox-group-workers/menu-command/menu_command_calls.log",
+          "bytes": 1569,
+          "sha256": "ff56aca08816daf8381dae11e1e0905324a2de73ea003da9a3e2a6a3b60a33eb"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-command\\local\\menu_command_name_ledger.log",
+          "archive": "local/orch5-menu-listbox-group-workers/menu-command/menu_command_name_ledger.log",
+          "bytes": 638,
+          "sha256": "b10cbe314078f10e4d3b797719ec797ce447f227e68fa3f39eae1d95b9ab852b"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-command\\local\\menu_command_ledger.json",
+          "archive": "local/orch5-menu-listbox-group-workers/menu-command/menu_command_ledger.json",
+          "bytes": 579,
+          "sha256": "fa47d5640a11b24329bfd69b177c3329d0aee2fb1c21a9098b3968d898749b78"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-command\\local\\write_menu_command_report.py",
+          "archive": "local/orch5-menu-listbox-group-workers/menu-command/write_menu_command_report.py",
+          "bytes": 7925,
+          "sha256": "25241fdb0de4da4ff2684a91948c2b132f08bcdaee2a2b35ced8fe09ddab29ec"
+        }
+      ]
+    },
+    {
+      "worker": "group-sphere",
+      "files": [
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-group-sphere\\local\\group_sphere_probe.cpp",
+          "archive": "local/orch5-menu-listbox-group-workers/group-sphere/group_sphere_probe.cpp",
+          "bytes": 12207,
+          "sha256": "ed0138122aea0b44e9c47b481086c43ff66f36c866175a8930beeff8078751b5"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-group-sphere\\local\\group_sphere_getter_probe.cpp",
+          "archive": "local/orch5-menu-listbox-group-workers/group-sphere/group_sphere_getter_probe.cpp",
+          "bytes": 18002,
+          "sha256": "df9f255a755e9155666743f66e8fff51017d891c9eda2bb11b660d38b2e72d86"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-group-sphere\\local\\group_sphere_native_bytes.hpp",
+          "archive": "local/orch5-menu-listbox-group-workers/group-sphere/group_sphere_native_bytes.hpp",
+          "bytes": 2120,
+          "sha256": "28efc6b85dfdfee4f941c77cd688efb3991bddb2aac6509062e456220c22ea24"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-group-sphere\\local\\group_sphere_native_bytes.json",
+          "archive": "local/orch5-menu-listbox-group-workers/group-sphere/group_sphere_native_bytes.json",
+          "bytes": 257,
+          "sha256": "0eeb21fe71a0cfdc62b0b4c4e881ec7f397d58654972d3658d33b5e12b01e675"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-group-sphere\\local\\group_sphere_validation.log",
+          "archive": "local/orch5-menu-listbox-group-workers/group-sphere/group_sphere_validation.log",
+          "bytes": 586,
+          "sha256": "5abcb328bc67af797bfab3bf51ef66b62422e0e691cdb395cc5458cb53395710"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-group-sphere\\local\\group_sphere_calls.log",
+          "archive": "local/orch5-menu-listbox-group-workers/group-sphere/group_sphere_calls.log",
+          "bytes": 806,
+          "sha256": "f15af91fdf6a0357399587d2bf6750b722cd9985fb3e1372a98ca379b0a503fa"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-group-sphere\\local\\group_sphere_ghidra_bytes.txt",
+          "archive": "local/orch5-menu-listbox-group-workers/group-sphere/group_sphere_ghidra_bytes.txt",
+          "bytes": 1994,
+          "sha256": "bd72a3825af39df10013d5ce3814efd828e6242eea54ef1b3a779092e7a0fe7d"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-group-sphere\\local\\run_group_sphere_probe.ps1",
+          "archive": "local/orch5-menu-listbox-group-workers/group-sphere/run_group_sphere_probe.ps1",
+          "bytes": 1265,
+          "sha256": "b4918969213d83a87c292ff9453de9a57f08a195165043c345b007d2f2a334ce"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-group-sphere\\local\\run_group_getter_probe.ps1",
+          "archive": "local/orch5-menu-listbox-group-workers/group-sphere/run_group_getter_probe.ps1",
+          "bytes": 1324,
+          "sha256": "1053488e33faa02a5e86a11ee2a90445258a838a01a82015d7af295d1c422bc2"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-group-sphere\\local\\extract_group_sphere_probe.py",
+          "archive": "local/orch5-menu-listbox-group-workers/group-sphere/extract_group_sphere_probe.py",
+          "bytes": 736,
+          "sha256": "bd9f7c36f7485c816357b7727c287cfa200d0d9396ee56e3945188c42e039e15"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-group-sphere\\local\\group_getter_compile.log",
+          "archive": "local/orch5-menu-listbox-group-workers/group-sphere/group_getter_compile.log",
+          "bytes": 272,
+          "sha256": "661e729454b0f6f1c5f7d96f44ff6e6dbcb4f7fa23ce3f6f6dd0c3abcec10dfe"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-group-sphere\\local\\group_getter_validation.log",
+          "archive": "local/orch5-menu-listbox-group-workers/group-sphere/group_getter_validation.log",
+          "bytes": 753,
+          "sha256": "7fbaa5c19914e5d94744c35665bb09edb2d7ad380e540de7996230fc8b6ce4ca"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-group-sphere\\local\\group_getter_result.json",
+          "archive": "local/orch5-menu-listbox-group-workers/group-sphere/group_getter_result.json",
+          "bytes": 4372,
+          "sha256": "943ba35063841c3777882ee5f411118356600027e5ce74e8853471cc0dbe4b6c"
+        }
+      ]
+    },
+    {
+      "worker": "listbox-state",
+      "files": [
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-state\\local\\listbox_owner_probe.cpp",
+          "archive": "local/orch5-menu-listbox-group-workers/listbox-state/listbox_owner_probe.cpp",
+          "bytes": 12361,
+          "sha256": "56973854b3968d137a4b1d9ce0ab9b3294b21dbc8733b409b0748ac2f4592c2c"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-state\\local\\run_listbox_owner_probe.ps1",
+          "archive": "local/orch5-menu-listbox-group-workers/listbox-state/run_listbox_owner_probe.ps1",
+          "bytes": 1198,
+          "sha256": "fc07c0ecf96bd5c3ed8d6bafcf9887a2a7184e906fe0afd263742883ad436cee"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-state\\local\\run_listbox_final_probe.ps1",
+          "archive": "local/orch5-menu-listbox-group-workers/listbox-state/run_listbox_final_probe.ps1",
+          "bytes": 1061,
+          "sha256": "c47d35215e093060eebdde4dc1803d22f2a9686839d5d328d6ce0c69bac66709"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-state\\local\\listbox_owner_probe.log",
+          "archive": "local/orch5-menu-listbox-group-workers/listbox-state/listbox_owner_probe.log",
+          "bytes": 802,
+          "sha256": "7ec03accd66dc464719b545eb9b06b3d538d488541c34380803b2f26c43a76e5"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-state\\local\\listbox_final_probe.log",
+          "archive": "local/orch5-menu-listbox-group-workers/listbox-state/listbox_final_probe.log",
+          "bytes": 681,
+          "sha256": "a39376f4eab2f42c645e6d2ab8ae2e7552857dada227ae32834882632cf4f08e"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-state\\local\\listbox_compile.log",
+          "archive": "local/orch5-menu-listbox-group-workers/listbox-state/listbox_compile.log",
+          "bytes": 266,
+          "sha256": "60866454285ecfea883624027cd57c963eb60b11fc919fb47907c4904bc2efac"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-state\\local\\listbox_final_validation.json",
+          "archive": "local/orch5-menu-listbox-group-workers/listbox-state/listbox_final_validation.json",
+          "bytes": 1893,
+          "sha256": "4b5419cda324601d64b94ec5d3e3fc518a90235922fee31108c10ce4ec1eae9d"
+        }
+      ]
+    }
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "render_validated": false,
+  "new_permanent_tests": 0,
+  "limitations": [
+    "Menu current04 caller still requires concrete page/profile/map providers and canonical listener wiring",
+    "Listbox current08 main-menu target5966F0 remains unreconstructed; it is distinct from5993A0",
+    "Listbox properties/frame/navigation/native teardown, non-null insertion and linked/automatic row-control tails remain open",
+    "Listbox64/70 allowlists remain unsupported; horizontal Text path has no actual-resource fixture",
+    "Prompt hosts and TacticalLibrary borrowed fields require actual constructed screen storage",
+    "Group native numerical comparison shares recovered length/CRT; no independent original CRT or unmasked exception/MXCSR/condition-code proof",
+    "Static affine sphere retains previous finite-input and supported x87 control-word domain"
+  ],
+  "promoted_validation": {
+    "built_code_commit": "02ea409f780e36b79b37c55ccc71e57cbe759179",
+    "promoted_commit": "666f524ba793171851fd58d81d649f2eb1a7a763",
+    "source_commit": "b8e8d6b4588a1e4ad540f5fa977b93d0d848d083",
+    "changes_after_build": [
+      "docs/COMMAND_COMPLETION.md",
+      "docs/DIRECTOR_UPDATE_ARMS.md",
+      "docs/PILOT_COMMAND_PATH.md",
+      "docs/PLANE_FLIGHT.md",
+      "docs/PLANE_GROUND_OPS.md",
+      "docs/UNIT_MESSAGE_ARMS.md"
+    ],
+    "compiled_inputs_identical_after_promotion": true,
+    "build_passed": true,
+    "tests_passed": 2,
+    "tests_failed": 0,
+    "integration_log": "local/orch5-menu-listbox-group-integration.log",
+    "integration_log_sha256": "b7c37660af4b97b9a79b954f2e2229671c2799d0c19d98988dd5e4eea253138e",
+    "final_library_sha256": "b5c104dab6e49ebc09fc0222504dca889d769b94c81fdac917a316fdeb2913e7",
+    "source_sha256_lf": {
+      "cmake/startup.cmake": "4f46b6a324c01a1f07a5c4e99676170ec67dee0f95c63d8865d35270d2636be8",
+      "include/bsp/frontend_prompts.hpp": "ba11e0c866cb414881296390f7bd4717b3547322055e134eb95e4f2c1a400cb1",
+      "include/bsp/gui_listbox_runtime.hpp": "ae54e1028141528271ba2a1019c8913df2e985cd1299b24872b4c7db4bb06495",
+      "include/bsp/gui_type_dispatch.hpp": "e8c4d8c5e5464c7e97a0a168501fc30d70f90abb0b1dbb8033322886dade2a59",
+      "include/bsp/gui_widget_owner.hpp": "5fc0f3a9004f505dcd20d5b37b75082cf6b170e8679dc4798921c4f89c95756e",
+      "include/bsp/main_menu_command_listener.hpp": "ee49ca2ecb163666e18034568db1bbbeac87266d15e829ff409af5034f24a0af",
+      "include/bsp/main_menu_screens.hpp": "6d3ee2bf2c95088895f0e00955013e427960bb8637d0e44c79409d15fc0c6281",
+      "include/bsp/main_menu_tactical_library.hpp": "db046e1ff128738cf58e1e717290e1ef06ed109eab13b5aed4530494c5f159ca",
+      "include/bsp/native_group_world_sphere.hpp": "f723cc60773bae3528b3b3bc1212db3bb56aa17f1b840081635f02c6c24e61d3",
+      "include/bsp/native_point_light_provider.hpp": "b2c20ccb28cd9f94b53007030c19e4ff604dc1b131153f60f6421957a8cda3d1",
+      "src/frontend_prompts.cpp": "e0f56234f2f89ae80da3367b6a60e5b98445c3a290d2fd549c06f84f5420c41a",
+      "src/gui_listbox_runtime.cpp": "c4202a60b97b52847663f15e03e787fc80d265efe5916bea4ea9ac0ab1f1fd24",
+      "src/gui_type_dispatch.cpp": "c48cc68b224bba19594e962aba85385f3c8ebb283f2dffba41faba34819ce01f",
+      "src/gui_widget_color_dispatch.cpp": "488e0b6e1cb29025e8520c63d552d8d44db88a6b9613935b501be809a3bf1200",
+      "src/gui_widget_owner.cpp": "464e2ab14426160231f4161f40b8a16b0b37026efe015640df6c59405b01fec7",
+      "src/main_menu_command_listener.cpp": "ed2c82a114aebaa9de17903b15103409ebafe2132a81bc95b9a19d1757969647",
+      "src/main_menu_screens.cpp": "eb3ab8a8b4ff0d2b328dc956ed64890fe66134d17a4fa8b7596744c9d0e27869",
+      "src/main_menu_tactical_library.cpp": "4ed227fa2bf51302f513ed3a69f21db3f1c22705e773603409e8f45980871222",
+      "src/native_group_world_sphere.cpp": "0d4fce4c4bab5017cad245584ce45a2567146091d8f838a62567687e04c62b4f",
+      "src/native_point_light_provider.cpp": "cd17f340290fa84b2ba35f534a6024567c47b3e77e7ad2ffd957f0a706ca9aef"
+    },
+    "source_changes_from_initial_wave_build": [
+      "cmake/startup.cmake"
+    ],
+    "source_change_note": "Only shared CMake registry changed among the20 packet source files; concurrent main added its own compiled modules and was built before promotion",
+    "final_library_probes": [
+      {
+        "log": "local/orch5-group-sphere-promoted-probe.log",
+        "sha256": "7fbaa5c19914e5d94744c35665bb09edb2d7ad380e540de7996230fc8b6ce4ca",
+        "passed": true
+      },
+      {
+        "log": "local/orch5-listbox-promoted-probe.log",
+        "sha256": "a39376f4eab2f42c645e6d2ab8ae2e7552857dada227ae32834882632cf4f08e",
+        "passed": true
+      },
+      {
+        "log": "local/orch5-tactical-library-promoted-probe.log",
+        "sha256": "a63444a7975b179f770ff4051785453e735890c6277ce5f64a4c68279d61c821",
+        "passed": true
+      }
+    ],
+    "runtime_scope": "Same three scoped probes rerun against the integrated library; no full menu, render or game validation"
+  }
+}

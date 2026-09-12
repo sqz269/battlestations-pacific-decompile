@@ -51,3 +51,7 @@ Follow-up packet: reconstruct 005993a0 only after identifying the actual listbox
 prompt, selected-mission and screen-service owners; preserve its same screen
 bindings and every native call contract. A runnable menu also needs the actual
 screen constructor/provider configuration and resource-backed validation.
+
+## Correction from docs/ORCH5_MENU_LISTBOX_GROUP_BATCH.md
+
+The normal5993A0 current04 caller now has a reconstructed function over the same canonical owners, reviewed twice against assembly. The original callback interface still needs actual menu/listbox listener wiring and concrete page/profile providers;5966F0 is the distinct Listbox current08 target. See MAIN_MENU_COMMAND_LISTENER.md and reports/orch5_menu_listbox_group_batch.json; no complete menu/game claim.

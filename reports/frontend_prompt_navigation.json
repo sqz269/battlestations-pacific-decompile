@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "abi_compatible": false,
+  "game_validated": false,
+  "packet": "orch5_prompt_navigation",
+  "status": "combined_win32_build_and_scoped_validation_recorded_in_parent_batch",
+  "documentation": "docs/FRONTEND_PROMPT_NAVIGATION.md",
+  "source": "src/frontend_prompts.cpp",
+  "functions": [
+    {
+      "address": "00530670",
+      "name": "focus_first_prompt_navigation_00530670",
+      "source": "src/frontend_prompts.cpp",
+      "coverage": "complete normal body",
+      "original_abi": "ECX same prompt screen; no stack arguments; RET",
+      "body_inclusive": [
+        "00530670",
+        "00530683"
+      ]
+    },
+    {
+      "address": "00530c20",
+      "name": "focus_last_prompt_navigation_00530c20",
+      "source": "src/frontend_prompts.cpp",
+      "coverage": "complete normal body",
+      "original_abi": "ECX same prompt screen; no stack arguments; RET",
+      "body_inclusive": [
+        "00530c20",
+        "00530c44"
+      ]
+    }
+  ],
+  "call_sites": [
+    {
+      "function": "00530670",
+      "address": "0053067e",
+      "native": "00a9c7c0",
+      "binding": "same current navigation Listbox selects ordinal zero"
+    },
+    {
+      "function": "00530c20",
+      "address": "00530c2f",
+      "native": "00a9ac50",
+      "binding": "same current navigation Listbox FC header, count104"
+    },
+    {
+      "function": "00530c20",
+      "address": "00530c3e",
+      "native": "00a9c7c0",
+      "binding": "reload navigation Listbox; wrapped DWORD count minus one"
+    }
+  ],
+  "evidence": [
+    "Assembly and all direct callers confirm bare RET and no varying stack argument",
+    "Gate input_mode264 once; requested_focus284 is not written",
+    "FrontEndPromptHost resolves the same screen navigation widget24 on each operation"
+  ],
+  "limitations": [
+    "Required actual navigation host; new C++ interface and no game validation"
+  ],
+  "parent_integration_2026_09_12": {
+    "report": "reports/orch5_menu_listbox_group_batch.json",
+    "combined_win32_build_passed": true,
+    "existing_tests_passed": 2,
+    "scope": "Final-library Group/Listbox/tactical probes passed; menu caller assembly/compile reviewed, no complete menu runtime claim",
+    "new_cpp_abi": true,
+    "game_validated": false
+  }
+}

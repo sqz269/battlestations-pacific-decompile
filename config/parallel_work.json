@@ -8782,6 +8782,101 @@
       "qualification": "Two control-flow projections through required geometry callees; no executable wiring or native storage adapter. New C++ interfaces; original ABI and game behavior are not validated."
     },
     {
+      "id": "orch5_main_menu_command_sequence",
+      "state": "bounded_implementation_build_and_scoped_fixture_checked",
+      "worker": "orch5-20260911",
+      "integration_owner": "primary",
+      "function_addresses": [
+        "005993a0",
+        "00530670",
+        "00530c20",
+        "005885d0",
+        "005886c0"
+      ],
+      "code_ownership": [
+        "include/bsp/main_menu_command_listener.hpp",
+        "src/main_menu_command_listener.cpp",
+        "include/bsp/main_menu_tactical_library.hpp",
+        "src/main_menu_tactical_library.cpp"
+      ],
+      "output_files": [
+        "include/bsp/main_menu_command_listener.hpp",
+        "src/main_menu_command_listener.cpp",
+        "include/bsp/main_menu_tactical_library.hpp",
+        "src/main_menu_tactical_library.cpp",
+        "docs/ORCH5_MENU_LISTBOX_GROUP_BATCH.md",
+        "reports/orch5_menu_listbox_group_batch.json"
+      ],
+      "contract": "Use SAME canonical owners, actual callback-sensitive fields, and documented required providers; no native ABI or game claim.",
+      "validation": "Combined Win322/2 tests and3final-library probes passed;132numericCALLrows/29savedGhidraannotations acrossbatch; worker93,600native sphere comparisons.",
+      "annotation_status": "Applied under write lock; saved old names/comments; affected exports refreshed.",
+      "next_work": "Actual current08 listener5966F0 and concrete584F50/594BF0/584750 profile/page/map providers; same-screen listener and prompt-host wiring remain required."
+    },
+    {
+      "id": "orch5_listbox_canonical_selection",
+      "state": "bounded_implementation_build_and_scoped_fixture_checked",
+      "worker": "orch5-20260911",
+      "integration_owner": "primary",
+      "function_addresses": [
+        "00a9df40",
+        "00a9ac30",
+        "00a9ac40",
+        "00a9ac90",
+        "00425e50",
+        "00a9c990",
+        "00a9c920",
+        "00a9be00",
+        "00a9c7c0",
+        "00a9c740",
+        "00a9c220",
+        "00a9c050",
+        "00a9c0a0",
+        "00a9d750",
+        "00a9be60",
+        "00941250"
+      ],
+      "code_ownership": [
+        "include/bsp/gui_listbox_runtime.hpp",
+        "src/gui_listbox_runtime.cpp"
+      ],
+      "output_files": [
+        "include/bsp/gui_listbox_runtime.hpp",
+        "src/gui_listbox_runtime.cpp",
+        "docs/ORCH5_MENU_LISTBOX_GROUP_BATCH.md",
+        "reports/orch5_menu_listbox_group_batch.json"
+      ],
+      "contract": "Use SAME canonical owners, actual callback-sensitive fields, and documented required providers; no native ABI or game claim.",
+      "validation": "Combined Win322/2 tests and3final-library probes passed;132numericCALLrows/29savedGhidraannotations acrossbatch; worker93,600native sphere comparisons.",
+      "annotation_status": "Applied under write lock; saved old names/comments; affected exports refreshed.",
+      "next_work": "Full properties/frame/navigation/native teardown; auto-row state A9BA90 via A9B340; missingcurrent8C A9BA40; pagingproducerA9E230 and non-null insertion. Read-only D8 producerA9DA30 requires its own lease/evidence. Current64/70 gates still open."
+    },
+    {
+      "id": "orch5_group_dynamic_world_sphere",
+      "state": "bounded_implementation_build_and_scoped_fixture_checked",
+      "worker": "orch5-20260911",
+      "integration_owner": "primary",
+      "function_addresses": [
+        "00b8e980",
+        "00b8e9f0",
+        "00b8ebe0",
+        "00b8f100"
+      ],
+      "code_ownership": [
+        "include/bsp/native_group_world_sphere.hpp",
+        "src/native_group_world_sphere.cpp"
+      ],
+      "output_files": [
+        "include/bsp/native_group_world_sphere.hpp",
+        "src/native_group_world_sphere.cpp",
+        "docs/ORCH5_MENU_LISTBOX_GROUP_BATCH.md",
+        "reports/orch5_menu_listbox_group_batch.json"
+      ],
+      "contract": "Use SAME canonical owners, actual callback-sensitive fields, and documented required providers; no native ABI or game claim.",
+      "validation": "Combined Win322/2 tests and3final-library probes passed;132numericCALLrows/29savedGhidraannotations acrossbatch; worker93,600native sphere comparisons.",
+      "annotation_status": "Applied under write lock; saved old names/comments; affected exports refreshed.",
+      "next_work": "Other concrete child48 profiles and complete particle/Text spatial providers remain dependencies; static affine numerical domain unchanged."
+    },
+    {
       "id": "orch4_sound_platform_ab",
       "worker": "agent/orch4-20260910",
       "done": true,
