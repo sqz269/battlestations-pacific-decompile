@@ -1,0 +1,483 @@
+{
+  "packet": "orch2_native_mpkg_provider_ax",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program_path": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "label": "factory_get",
+      "entry": "00736a90",
+      "end_inclusive": "00736b5d",
+      "bytes": 206,
+      "sha256": "67b9ec934640c9846dd162bb583bd671c6440d178cb2dfe9bb6ea6d989883141",
+      "coverage": "complete",
+      "live_equal_PE": true,
+      "source": "src/native_mpkg_provider.cpp",
+      "name": "get_native_mpkg_factory_00736a90",
+      "original_abi": "No arguments; EAX factory; RET",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "factory_delete",
+      "entry": "00737090",
+      "end_inclusive": "007370c9",
+      "bytes": 58,
+      "sha256": "7e37a456c1575ce98a866888aed47a44f85cfcb884d99d69deb5ffc50bb2b0d1",
+      "coverage": "complete",
+      "live_equal_PE": true,
+      "source": "src/native_mpkg_provider.cpp",
+      "name": "delete_native_mpkg_factory_00737090",
+      "original_abi": "ECX primary; flags stack; EAX captured owner; RET4",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "factory_secondary",
+      "entry": "00735d00",
+      "end_inclusive": "00735d07",
+      "bytes": 8,
+      "sha256": "b474dc1d8c83258749bce9be684f57f5a2035905136736dc0aa94755954018bf",
+      "coverage": "complete",
+      "live_equal_PE": true,
+      "source": "src/native_mpkg_provider.cpp",
+      "name": "delete_native_mpkg_factory_secondary_00735d00",
+      "original_abi": "ECX secondary; SUB4/JMP737090; inherited RET4",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "factory_base",
+      "entry": "00735800",
+      "end_inclusive": "00735828",
+      "bytes": 41,
+      "sha256": "73adc258697f2ab3dd64a22d1e3b563058d5676259c176b0c7a48a222c1ccda6",
+      "coverage": "complete",
+      "live_equal_PE": true,
+      "source": "src/native_mpkg_provider.cpp",
+      "name": "delete_native_mpkg_factory_base_00735800",
+      "original_abi": "ECX base allocation; flags stack; EAX captured owner; RET4",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "provider_construct",
+      "entry": "00bb9cb0",
+      "end_inclusive": "00bb9d20",
+      "bytes": 113,
+      "sha256": "58d187cfc7cf73f4a35f6c6d17b1723816017216ef53e1e7e322ca156cb0d7bf",
+      "coverage": "complete",
+      "live_equal_PE": true,
+      "source": "src/native_mpkg_provider.cpp",
+      "name": "construct_native_mpkg_provider_00bb9cb0",
+      "original_abi": "ECX provider; original system header stack; EAX owner; RET4",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "provider_create",
+      "entry": "00bb9d90",
+      "end_inclusive": "00bb9e62",
+      "bytes": 211,
+      "sha256": "f29b9e0da7b9117c1397ac017446b00b782a94cb9de0a799d32e2d4ad2c0121b",
+      "coverage": "complete",
+      "live_equal_PE": true,
+      "source": "src/native_mpkg_provider.cpp",
+      "name": "create_native_mpkg_provider_00bb9d90",
+      "original_abi": "ECX factory unused; system/virtual headers stack, virtual unused; EAX provider/null; RET8",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "provider_destroy",
+      "entry": "00bb9e70",
+      "end_inclusive": "00bb9ed2",
+      "bytes": 99,
+      "sha256": "b26519a41333a39f609d7235f4171335c6a70ddef2a25d48850a9b640df4973d",
+      "coverage": "complete",
+      "live_equal_PE": true,
+      "source": "src/native_mpkg_provider.cpp",
+      "name": "destroy_native_mpkg_provider_00bb9e70",
+      "original_abi": "ECX provider; no stack args; RET",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "provider_delete",
+      "entry": "00bb9ee0",
+      "end_inclusive": "00bb9efd",
+      "bytes": 30,
+      "sha256": "090cbfd0acadb762bdb6d6fc14cde9c325b1969e68c40efce936b0419507ab07",
+      "coverage": "complete",
+      "live_equal_PE": true,
+      "source": "src/native_mpkg_provider.cpp",
+      "name": "delete_native_mpkg_provider_00bb9ee0",
+      "original_abi": "ECX provider; flags stack; EAX captured owner; RET4",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "native_bytes": 766,
+  "host_steps": [
+    {
+      "address": "00736ab6",
+      "native": "00415350",
+      "function": "00736a90",
+      "kind": "call",
+      "instruction": "call 0x415350",
+      "contract": "Current actual raw01090AA0 singleton manager getter; no arguments"
+    },
+    {
+      "address": "00736acf",
+      "native": "IAT+00ce2218",
+      "function": "00736a90",
+      "kind": "call",
+      "instruction": "call dword ptr [0xce2218]",
+      "contract": "Imported stdcall Win32 physical critical-section operation; captured section on stack"
+    },
+    {
+      "address": "00736aec",
+      "native": "00bf681b",
+      "function": "00736a90",
+      "kind": "call",
+      "instruction": "call 0xbf681b",
+      "contract": "Established operator_new/new-handler service; cdecl byte count, ADD ESP4"
+    },
+    {
+      "address": "00736b2e",
+      "native": "00415350",
+      "function": "00736a90",
+      "kind": "call",
+      "instruction": "call 0x415350",
+      "contract": "Current actual raw01090AA0 singleton manager getter; no arguments"
+    },
+    {
+      "address": "00736b35",
+      "native": "00bd0c30",
+      "function": "00736a90",
+      "kind": "call",
+      "instruction": "call 0xbd0c30",
+      "contract": "Register captured factory+4 on second current manager; RET4"
+    },
+    {
+      "address": "00736b43",
+      "native": "IAT+00ce2210",
+      "function": "00736a90",
+      "kind": "call",
+      "instruction": "call dword ptr [0xce2210]",
+      "contract": "Imported stdcall Win32 physical critical-section operation; captured section on stack"
+    },
+    {
+      "address": "007370bc",
+      "native": "00bf65ac",
+      "function": "00737090",
+      "kind": "call",
+      "instruction": "call 0xbf65ac",
+      "contract": "Established _free of captured allocation; cdecl pointer, ADD ESP4"
+    },
+    {
+      "address": "00735d03",
+      "native": "00737090",
+      "function": "00735d00",
+      "kind": "tail_jump",
+      "instruction": "jmp 0x737090",
+      "contract": "Owned scalar factory deleting tail; ECX adjusted primary; inherited flags/RET4"
+    },
+    {
+      "address": "0073581b",
+      "native": "00bf65ac",
+      "function": "00735800",
+      "kind": "call",
+      "instruction": "call 0xbf65ac",
+      "contract": "Established _free of captured allocation; cdecl pointer, ADD ESP4"
+    },
+    {
+      "address": "00bb9cd3",
+      "native": "00bb5590",
+      "function": "00bb9cb0",
+      "kind": "call",
+      "instruction": "call 0xbb5590",
+      "contract": "Actual provider base/name constructor; ECX owner, original header stack, RET4"
+    },
+    {
+      "address": "00bb9ce8",
+      "native": "00bf681b",
+      "function": "00bb9cb0",
+      "kind": "call",
+      "instruction": "call 0xbf681b",
+      "contract": "Established operator_new/new-handler service; cdecl byte count, ADD ESP4"
+    },
+    {
+      "address": "00bb9d00",
+      "native": "00bb9920",
+      "function": "00bb9cb0",
+      "kind": "call",
+      "instruction": "call 0xbb9920",
+      "contract": "Explicit primary-owned actual34h archive construction; ECX allocation, original header stack, EAX archive, RET4"
+    },
+    {
+      "address": "00bb9dcb",
+      "native": "00469840",
+      "function": "00bb9d90",
+      "kind": "call",
+      "instruction": "call 0x469840",
+      "contract": "Actual substring; ECX source, output/start/count stacked, EAX output, RET0C"
+    },
+    {
+      "address": "00bb9ddc",
+      "native": "00425850",
+      "function": "00bb9d90",
+      "kind": "call",
+      "instruction": "call 0x425850",
+      "contract": "Existing raw-header C-string case-insensitive compare; ECX suffix, C string stacked, AL Boolean, RET4"
+    },
+    {
+      "address": "00bb9e06",
+      "native": "00419cc0",
+      "function": "00bb9d90",
+      "kind": "call",
+      "instruction": "call 0x419cc0",
+      "contract": "Current actual string-pool getter; stacked caller cleanup args preserved"
+    },
+    {
+      "address": "00bb9e0d",
+      "native": "00bd1510",
+      "function": "00bb9d90",
+      "kind": "call",
+      "instruction": "call 0xbd1510",
+      "contract": "Return captured suffix data and current length+1 with unused1; RET0C"
+    },
+    {
+      "address": "00bb9e1b",
+      "native": "00bf681b",
+      "function": "00bb9d90",
+      "kind": "call",
+      "instruction": "call 0xbf681b",
+      "contract": "Established operator_new/new-handler service; cdecl byte count, ADD ESP4"
+    },
+    {
+      "address": "00bb9e36",
+      "native": "00bb9cb0",
+      "function": "00bb9d90",
+      "kind": "call",
+      "instruction": "call 0xbb9cb0",
+      "contract": "Owned actual18h provider construction; ECX allocation, original header stack, EAX provider, RET4"
+    },
+    {
+      "address": "00bb9ea5",
+      "native": "00bb9c10",
+      "function": "00bb9e70",
+      "kind": "call",
+      "instruction": "call 0xbb9c10",
+      "contract": "Explicit primary-owned archive destruction; ECX captured archive; RET0"
+    },
+    {
+      "address": "00bb9eab",
+      "native": "00bf65ac",
+      "function": "00bb9e70",
+      "kind": "call",
+      "instruction": "call 0xbf65ac",
+      "contract": "Established _free of captured allocation; cdecl pointer, ADD ESP4"
+    },
+    {
+      "address": "00bb9ebd",
+      "native": "00bb5380",
+      "function": "00bb9e70",
+      "kind": "call",
+      "instruction": "call 0xbb5380",
+      "contract": "Existing provider-base name release/profile restore; ECX owner, RET0"
+    },
+    {
+      "address": "00bb9ee3",
+      "native": "00bb9e70",
+      "function": "00bb9ee0",
+      "kind": "call",
+      "instruction": "call 0xbb9e70",
+      "contract": "Owned provider destructor; ECX captured owner; RET0"
+    },
+    {
+      "address": "00bb9ef0",
+      "native": "00bf65ac",
+      "function": "00bb9ee0",
+      "kind": "call",
+      "instruction": "call 0xbf65ac",
+      "contract": "Established _free of captured allocation; cdecl pointer, ADD ESP4"
+    },
+    {
+      "address": "00c86043",
+      "native": "00411ee0",
+      "function": "00c86040",
+      "kind": "tail_jump",
+      "contract": "Getter EH captured actual guard destruction"
+    },
+    {
+      "address": "00cc48d3",
+      "native": "00bb5380",
+      "function": "00cc48d0",
+      "kind": "tail_jump",
+      "contract": "Provider constructor state0 completed-base cleanup"
+    },
+    {
+      "address": "00cc48dc",
+      "native": "00bf65ac",
+      "function": "00cc48d8",
+      "contract": "Constructor state1 captured allocation free; raw POP ECX/RET atCC48E1..E2"
+    },
+    {
+      "address": "00cc48f4",
+      "native": "00bf65ac",
+      "function": "00cc48f0",
+      "contract": "Factory Create state0 captured provider allocation free; raw POP ECX/RET atCC48F9..FA"
+    },
+    {
+      "address": "00cc4913",
+      "native": "00bb5380",
+      "function": "00cc4910",
+      "kind": "tail_jump",
+      "contract": "Provider destruction state0 completed-base cleanup"
+    },
+    {
+      "address": "0073d680",
+      "native": "00736a90",
+      "function": "0073d410",
+      "contract": "Application no-argument getter then captured result factory registration"
+    },
+    {
+      "address": "00bb9d73",
+      "native": "00bb9c10",
+      "function": "00bb9d70",
+      "contract": "Other archive destructor caller confirms ECX archive, no stacked argument"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "00cc48e1",
+      "end_inclusive": "00cc48e2",
+      "bytes": 2,
+      "coverage": "complete raw EH free continuation POP ECX;RET; no stored function"
+    },
+    {
+      "start": "00cc48f9",
+      "end_inclusive": "00cc48fa",
+      "bytes": 2,
+      "coverage": "complete raw EH free continuation POP ECX;RET; no stored function"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "737090 omitted7370C1..C3 after a local no-return _free call override",
+      "is": "ADD ESP4 retained and complete function through7370C9",
+      "evidence": "Primary locked override clear/body repair/save/export; fresh live bytes equal installed PE"
+    },
+    {
+      "was": "735800 had no defined function and lookup mentioned enclosing735520",
+      "is": "Exact735800..73582841-byte base scalar deleting entry",
+      "evidence": "CFE9FCslot0 and complete raw bytes; primary locked creation/save/export"
+    },
+    {
+      "was": "Older semantic fragment treated guarded unsupported path inputs and archive parser as one provider operation",
+      "is": "Actual unsigned header gate and existing complete substring/compare; explicit raw archive operation boundary",
+      "evidence": "BB9D90 full211-byte assembly and shared helper producer contracts"
+    }
+  ],
+  "factory_layout": {
+    "bytes": 8,
+    "primary": "00cfea14",
+    "secondary_offset": 4,
+    "secondary": "00cfea10",
+    "temporary_secondary": "00cfe9fc",
+    "publication": "010904f4",
+    "domain": "actual raw01090AA0 only"
+  },
+  "provider_layout": {
+    "bytes": 24,
+    "producer": "00bb9cb0 consuming00bb5590",
+    "table": "00d64390",
+    "refs": 4,
+    "name_length": 8,
+    "name_data": 12,
+    "device": 16,
+    "archive": 20,
+    "archive_allocation_bytes": 52
+  },
+  "archive_boundary": {
+    "interface": "NativeMpkgArchiveOperations",
+    "construct": "construct_00bb9920(actual_archive, original_actual_system_header) -> returned archive",
+    "destroy": "destroy_00bb9c10(captured_archive); caller frees afterward",
+    "implementation_owner": "primary",
+    "semantic_parser_used": false,
+    "successful_fallback": false
+  },
+  "EH": {
+    "getter": "DB5510/mapDB5508 state0C86040 ->411EE0",
+    "construct": "DFE544/mapDFE534 state1CC48D8 captured free then state0CC48D0 base",
+    "create": "DFE570/mapDFE568 state0CC48F0 captured provider free; no EH suffix owner",
+    "destroy": "DFE59C/mapDFE594 state0CC4910 base; archive free skipped after throwing operation"
+  },
+  "verification": {
+    "strict_win32_build": "local/native-mpkg-provider-build02.log",
+    "MSBUILDDISABLENODEREUSE": "1",
+    "ctests_passed": 2,
+    "fixture": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpkg-provider-ax\\local\\mpkg_provider_ax\\attempt04",
+    "driver": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpkg-provider-ax\\local\\mpkg_provider_ax\\run_fixture.py",
+    "native_source_comparisons": 3,
+    "source_only_checks": 2,
+    "checks": 1297,
+    "frozen_files": 509,
+    "archive_equal_linked_objects": 123,
+    "all_outputs_accounted": true,
+    "after": {
+      "exit_code": 0,
+      "changed": [],
+      "verified_files": 509,
+      "pairs": [
+        {
+          "case": 0,
+          "native": "case_0_native.bin",
+          "source": "case_0_source.bin",
+          "bytes": 16388,
+          "sha256": "8a62285fb53039d309a8995c10982662029cca7e7db943a5ed2e189450324e3b",
+          "equal": true
+        },
+        {
+          "case": 1,
+          "native": "case_1_native.bin",
+          "source": "case_1_source.bin",
+          "bytes": 16388,
+          "sha256": "6369296bb84e4743fca6431af04e73f68a5e5f2b3678cc978923cdc8adb3e91d",
+          "equal": true
+        },
+        {
+          "case": 2,
+          "native": "case_2_native.bin",
+          "source": "case_2_source.bin",
+          "bytes": 16388,
+          "sha256": "b064dd0ef0a2b352b2d4e61a4aade4ba186d297afc7c40900a8d21e2242d1412",
+          "equal": true
+        }
+      ],
+      "native_source_comparisons": 3,
+      "source_only_checks": 2,
+      "checks": 1297,
+      "archive_scope": "recorded constructor/destructor call boundaries only; no archive-load proof",
+      "native_FH3_SEH_executed": false,
+      "seal_sha256": "79ed13aae718309b5ff87c480c7e9d524810f691029058b27a1212a746db7f30",
+      "exe_sha256": "fe2ae92b211ea5e5da3a7d03bab7de895817a93379b3308771d038217ba42f3f",
+      "library_sha256": "497e92d54b5e8ced4e8ea97a6d94077179e330f993bd595784ae45dd33737123",
+      "execution_sha256": "e3e4dac6aa75986e335cdecac881488c41fc5589e0c9b9a33d67a7d0158ffe4e"
+    }
+  },
+  "fixture_scope": "All8 original bodies execute byte-identical; actual source pool/rawmanager/base/substring helpers. Archive34h storage is an explicit constructor/destructor call-boundary recorder, not an implemented/loaded archive.",
+  "attempts": [
+    "attempt01 and02 retained fixture include compile failures",
+    "attempt03 retained ineffective registration-allocation trigger after all native comparisons passed",
+    "attempt04 complete pass"
+  ],
+  "limits": [
+    "Native FH3/SEH/hardware-fault and original CRT exception identity not executed",
+    "Inherited noexcept string release excludes throwing native pool cleanup",
+    "No archive load, native archive parser, installed archive, concurrency, application runtime or game proof",
+    "Explicit source interfaces do not preserve native stack/EH spill aliases"
+  ],
+  "ghidra_mutations": "none by worker; only primary locked body repairs described above"
+}
