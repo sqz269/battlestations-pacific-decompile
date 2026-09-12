@@ -139,7 +139,7 @@ bool GuiWidgetOwner::has_pending_base_clip() const noexcept {
 }
 void GuiWidgetOwner::require_no_active_owned_operation() const {
     if (base_lifetime_.phase != GuiWidgetBaseDeletionPhase::not_started || scene_release_active_ ||
-        base_copy_active_ ||
+        base_copy_active_ || (text_lifetime_ && text_lifetime_->has_incomplete_copy()) ||
         (implementation_ && implementation_->has_active_operation()) ||
         (runtime_.frame_runtime_ && runtime_.frame_runtime_->operation_active(*this)) ||
         has_pending_base_clip() || (timed_entries_ && timed_entries_->operation_active()))

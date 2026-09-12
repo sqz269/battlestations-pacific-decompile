@@ -39,8 +39,10 @@ requires live canonical parents and listeners through callbacks; recursive entry
 to an already active owner is diagnosed rather than supported as native reentry.
 
 Listbox is a separate current68 target: D5BC60 contains A9CA60. It performs
-row selection, scrolling and activation and cannot inherit AA7190. This dispatch
-currently rejects Listbox explicitly; its full caller remains a follow-up.
+row selection, scrolling and activation and cannot inherit AA7190. The shared
+dispatch now enters its actual companion under the same owner borrow after
+`bind_listbox_pointer` supplies matching frame/input services. See
+`docs/GUI_LISTBOX_POINTER_RUNTIME.md` for that complete normal caller.
 
 Validation: Win32 build and both existing CTest checks passed. The focused local
 GUI frame fixture passed one added sequence exercising child-to-parent dispatch, changed

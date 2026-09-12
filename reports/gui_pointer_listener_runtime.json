@@ -11,7 +11,7 @@
     {"address":"00aa7213","native":"parent current68(widget)","target_kind":"indirect"}
   ],
   "current68_words": {"Screen":"00d5bea0","Group":"00d5cbe8","Text":"00d5c730","Icon":"00d5c528","ClipBox":"00d5d0c0","Section":"00d5c950","FrameBox":"00d5d198"},
-  "unsupported_current68":{"Listbox":{"word":"00d5bc60","target":"00a9ca60","behavior":"explicit rejection; cannot inherit AA7190"}},
+  "derived_current68":{"Listbox":{"word":"00d5bc60","target":"00a9ca60","behavior":"same owner/frame/input services through bind_listbox_pointer; distinct actual caller, never AA7190 fallback","report":"reports/gui_listbox_pointer_runtime.json"}},
   "current68_target":"00aa7190",
   "empty_listener_bodies":{"004fa100":"RET4, CEB110 and CEFC04 current00","004fa120":"RET4, CEB110 and CEFC04 current08"},
   "no_ghidra_function":[],

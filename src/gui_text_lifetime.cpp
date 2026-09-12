@@ -98,7 +98,8 @@ GuiTextLifetime::GuiTextLifetime(GuiTextAfterBaseCopy00aa9520,
     : widget_(widget), buffers_(buffers), child_calls_(children) {
     require_owner();
     source.require_owner();
-    if (&widget == &source.widget_ || widget.text_lifetime_ ||
+    if (!widget.base_copy_complete_00aa9520() ||
+        &widget == &source.widget_ || widget.text_lifetime_ ||
         source.phase_ != Phase::live || source.widget_.text_lifetime_ != &source ||
         source.scalar_phase_ != GuiTextScalarDeletionPhase::not_started ||
         source.has_incomplete_copy() ||
@@ -106,9 +107,9 @@ GuiTextLifetime::GuiTextLifetime(GuiTextAfterBaseCopy00aa9520,
         !widget.node_binding() || !source.widget_.node_binding() ||
         widget.node_binding() == source.widget_.node_binding())
         throw std::logic_error("Text copy admission requires distinct already-copied owners and the same live source domain");
-    // These guards check identity only. They cannot establish that AA9520's
-    // copied base fields/list and current primary-node virtual10 have run.
-    // The tag explicitly requires that upstream producer; no base is created.
+    // The canonical base producer publishes completion only after its field
+    // copies and actual primary-node current10 return. The tag selects this
+    // derived admission; an ordinary default owner cannot pass the guard.
     require_copy_string(source.text_.text);
     require_copy_string(source.text_.source);
     require_copy_string(source.text_.shader_name);

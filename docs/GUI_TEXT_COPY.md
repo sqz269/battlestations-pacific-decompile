@@ -8,8 +8,8 @@ Model, mesh, section, material, parenting, and resource owners.
 
 This does **not** enable `GuiTextRuntimeFactory` copy construction or complete
 `00AAB4C0` subtree cloning. The destination must first have been produced by
-actual `00AA9520` base-copy construction. The admission tag is an explicit
-caller warranty, not evidence that a default-constructed owner was copied.
+actual `00AA9520` base-copy construction. Integration now checks the canonical
+base owner's completion predicate; a default-constructed owner is rejected.
 The actual Text identity/refcount binding required by the cursor material is
 also mandatory and is not supplied by `GuiWidgetOwner`'s semantic count.
 
@@ -45,8 +45,8 @@ The admission requires distinct, registered Text3 owners and distinct nonnull
 primary nodes in the same runtime. The source companion must be live and any
 earlier copied-source continuation must be complete. Destination association
 must be empty. Buffer and glyph-child service identities must match the source.
-These checks establish owner identity; they do not substitute for AA9520's
-missing producer. The copied companion is published once, without calling the
+These checks establish owner identity and require the separately reconstructed
+AA9520 producer to have completed. The copied companion is published once, without calling the
 default Text lifetime constructor or prematurely invoking AB8530.
 
 The native order is UTF16 text EC, source string F4, fields FC..190, empty glyph

@@ -20,9 +20,9 @@ struct GuiTextConstructorConstants {
     const volatile float& disabled_alpha_00ce3800;
 };
 
-// Explicit caller warranty: AA9520 has completed on this SAME destination
-// owner, including its primary-node virtual10 copy. This tag does not perform
-// or prove base copy construction; a default-constructed owner is insufficient.
+// Selects derived admission after AA9520 on this SAME destination owner.
+// Admission checks canonical base-copy completion, including the actual
+// primary-node virtual10 return. A default-constructed owner is insufficient.
 struct GuiTextAfterBaseCopy00aa9520 final {};
 
 // Fields absent from the existing Text projection; unwritten words are marked.
