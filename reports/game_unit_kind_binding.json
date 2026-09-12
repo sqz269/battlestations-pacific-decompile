@@ -1,0 +1,3133 @@
+{
+  "packet": "orch6_unit_kind_f",
+  "date": "2026-09-12",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "verification": "Every live query used bsp.py ghidra wrappers, which verify configured project/program/language/image base; no Ghidra writes",
+  "source": "src/game_hosts_units.cpp",
+  "header": "include/bsp/game_hosts_units.hpp",
+  "documentation": "docs/GAME_UNIT_KIND_BINDING.md",
+  "status": "runtime_binding_reconstructed_build_and_prior_runtime_domain_fixture_checked",
+  "functions": [
+    {
+      "address": "006FE460",
+      "body": "006FE460..006FE4C2",
+      "name": "BSP_UnitInstance_Construct",
+      "name_is_hypothesis": true,
+      "coverage": "complete analysis of identity producer; existing constructor implementation reused",
+      "original_abi": "ECX this, stack flag; returns this in EAX; RET4 at006FE4C0",
+      "abi_compatible": false,
+      "new_cpp_reconstruction": false,
+      "direct_calls": 1,
+      "has_ghidra_function": true
+    },
+    {
+      "address": "006FE530",
+      "body": "006FE530..006FE56A",
+      "coverage": "complete listing rechecked; existing specialized predicate remains unchanged",
+      "original_abi": "ECX instance, [ESP+4] query, RET4; EAX0/1 consumed through AL",
+      "new_cpp_reconstruction": false,
+      "direct_calls": 0
+    },
+    {
+      "address": "006FE590",
+      "body": "006FE590..006FE612",
+      "coverage": "complete listing checked for identity and argument provenance; external allocator reused",
+      "new_cpp_reconstruction": false,
+      "direct_calls": 4
+    },
+    {
+      "address": "004C0890",
+      "body": "004C0890..004C0924",
+      "coverage": "complete listing rechecked; existing control routine reused, its class-query adapter corrected",
+      "remaining_host_boundaries": [
+        "driven subunit absent",
+        "target+18h listener handle",
+        "renderer publication"
+      ]
+    },
+    {
+      "address": "009329C0",
+      "body": "009329C0..00933BA9",
+      "coverage": "partial: only query8 sites00932A42/00932E2F; all other blocks remain external to this packet"
+    },
+    {
+      "address": "00937C90",
+      "body": "00937C90..00939C8F",
+      "coverage": "partial: only query8 at00937CFD and selected record store00937D09; all other blocks remain external"
+    }
+  ],
+  "producer": {
+    "native_field": "instance+C4h",
+    "meaning": "most-derived instance class id",
+    "loaded_source": "GameLuaHost::read_vehicle_class_row(Type id).type -> vehicle_class_kind_row",
+    "factory": "00964790 existing 22-branch table; leaf descriptor kind equals corresponding instance class",
+    "witness": "006FE590 ->006FE460: primary vtable00CFC3D0 at006FE46D, +C4=7 at006FE4B3",
+    "register_provenance": "Complete006FE460 listing: only ESI assignment is MOV ESI,ECX at006FE466; preserved across0081ED40 and used for every vptr/+C4 store. Caller006FE590 saves descriptor ECX in EDI and allocation result in ESI.",
+    "unresolved": "Existing kVehicleClassKindUnknown(-1); no native sentinel stamp claimed",
+    "null_allocator_limit": "DummyTargetVehicle maps to descriptor kind53, but00749150 XOR EAX,EAX;RET4 allocates no native instance. Existing represented creator is outside packet."
+  },
+  "corrections": [
+    {
+      "was": "All instances used Destroyer006FE530 ancestry, suppressing only7 for non-Destroyers",
+      "evidence": "src/unit_kind_query.cpp existing88body table; all22factory branches covered by compiled fixture",
+      "is": "All four Units adapters use compiled predicate for actual factory-selected class"
+    },
+    {
+      "was": "Missing or unrecognized Type silently retained Destroyer7",
+      "evidence": "00964790 unknown Type returns no descriptor; host sentinel is explicitly unresolved",
+      "is": "Identity stays-1 and kind queries are false"
+    },
+    {
+      "was": "Hydro callee described as unread and every type labeled vtable00CFC3D0",
+      "evidence": "GameHostLog groups by method name; unit_kind_query stores actual body addresses",
+      "is": "Per-class diagnostic keys record actual compiled predicate address"
+    },
+    {
+      "was": "Hull kind8 call identified as00937D09",
+      "evidence": "live00937C90 listing",
+      "is": "Call00937CFD;00937D09 is accepted record-index store"
+    },
+    {
+      "was": "Controlled diagnostic assumed neither plane15 nor squadron24; listener call labeled004C08F2",
+      "evidence": "complete004C0890 listing; current handle host returns false",
+      "is": "Reports real query answers and unresolved listener adapters; call label004C08F7"
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "006FE468",
+      "native": "0081ED40",
+      "function": "006FE460",
+      "role": "existing ship-base constructor; ECX=this, forwarded flag, RET4"
+    },
+    {
+      "address": "006FE5AF",
+      "native": "00BF55BE",
+      "function": "006FE590",
+      "role": "external allocator, size1188h; existing contract"
+    },
+    {
+      "address": "006FE5BE",
+      "native": "00BF79F0",
+      "function": "006FE590",
+      "role": "external memset(this,0,1188h); ADD ESP,10h at006FE5C3 also consumes allocator size"
+    },
+    {
+      "address": "006FE5DD",
+      "native": "006FE460",
+      "function": "006FE590",
+      "role": "sole constructor caller; ECX allocation result and original stack flag; callee RET4"
+    },
+    {
+      "address": "006FE5F3",
+      "native": "009553D0",
+      "function": "006FE590",
+      "role": "existing descriptor setter instance+538h; descriptor is entry ECX saved in EDI"
+    },
+    {
+      "address": "004C08A2",
+      "native": "dynamic instance vtable+5Ch",
+      "function": "004C0890",
+      "role": "controlled unit",
+      "literal": 5,
+      "resolved_targets": "factory_classes predicate column; existing unit_kind_query core",
+      "stack_cleanup": "One stack query; native predicate RET4",
+      "live_site_checked": true
+    },
+    {
+      "address": "004C08BD",
+      "native": "dynamic instance vtable+5Ch",
+      "function": "004C0890",
+      "role": "controlled unit fallback",
+      "literal": 24,
+      "resolved_targets": "factory_classes predicate column; existing unit_kind_query core",
+      "stack_cleanup": "One stack query; native predicate RET4",
+      "live_site_checked": true
+    },
+    {
+      "address": "004C08DB",
+      "native": "dynamic instance vtable+5Ch",
+      "function": "004C0890",
+      "role": "resolved target",
+      "literal": 15,
+      "resolved_targets": "factory_classes predicate column; existing unit_kind_query core",
+      "stack_cleanup": "One stack query; native predicate RET4",
+      "live_site_checked": true
+    },
+    {
+      "address": "004C08EA",
+      "native": "dynamic instance vtable+5Ch",
+      "function": "004C0890",
+      "role": "resolved target fallback",
+      "literal": 24,
+      "resolved_targets": "factory_classes predicate column; existing unit_kind_query core",
+      "stack_cleanup": "One stack query; native predicate RET4",
+      "live_site_checked": true
+    },
+    {
+      "address": "00932A42",
+      "native": "dynamic instance vtable+5Ch",
+      "function": "009329C0",
+      "role": "hydro record selection",
+      "literal": 8,
+      "resolved_targets": "factory_classes predicate column; existing unit_kind_query core",
+      "stack_cleanup": "One stack query; native predicate RET4",
+      "live_site_checked": true
+    },
+    {
+      "address": "00932E2F",
+      "native": "dynamic instance vtable+5Ch",
+      "function": "009329C0",
+      "role": "hydro subtype scalar",
+      "literal": 8,
+      "resolved_targets": "factory_classes predicate column; existing unit_kind_query core",
+      "stack_cleanup": "One stack query; native predicate RET4",
+      "live_site_checked": true
+    },
+    {
+      "address": "00937CFD",
+      "native": "dynamic instance vtable+5Ch",
+      "function": "00937C90",
+      "role": "hull physics record selection",
+      "literal": 8,
+      "resolved_targets": "factory_classes predicate column; existing unit_kind_query core",
+      "stack_cleanup": "One stack query; native predicate RET4",
+      "live_site_checked": true
+    },
+    {
+      "address": "004C08F7",
+      "native": "dynamic target vtable+18h",
+      "function": "004C0890",
+      "role": "listener handle",
+      "contract": "unread target; existing host still returns false"
+    },
+    {
+      "address": "004C0905",
+      "native": "00B0D7B0",
+      "function": "004C0890",
+      "role": "existing renderer listener publication boundary; host remains unimplemented"
+    },
+    {
+      "address": "004C091E",
+      "native": "00B0D7B0",
+      "function": "004C0890",
+      "role": "same publication boundary with zero argument; host remains unimplemented"
+    }
+  ],
+  "factory_classes": {
+    "Destroyer": {
+      "kind": 7,
+      "predicate": "006fe530",
+      "instance_size": 4488,
+      "accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    "Cruiser": {
+      "kind": 10,
+      "predicate": "006fb3d0",
+      "instance_size": 4488,
+      "accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        10
+      ]
+    },
+    "LandingShip": {
+      "kind": 12,
+      "predicate": "0074bc60",
+      "instance_size": 4652,
+      "accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        12
+      ]
+    },
+    "Cargo": {
+      "kind": 11,
+      "predicate": "006eb230",
+      "instance_size": 4492,
+      "accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        11
+      ]
+    },
+    "BattleShip": {
+      "kind": 13,
+      "predicate": "006dfe90",
+      "instance_size": 4492,
+      "accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        13
+      ]
+    },
+    "Submarine": {
+      "kind": 8,
+      "predicate": "00853050",
+      "instance_size": 4744,
+      "accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        8
+      ]
+    },
+    "TorpedoBoat": {
+      "kind": 14,
+      "predicate": "00857dc0",
+      "instance_size": 4496,
+      "accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        14
+      ]
+    },
+    "MotherShip": {
+      "kind": 9,
+      "predicate": "00758510",
+      "instance_size": 4808,
+      "accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        9
+      ]
+    },
+    "ReconPlane": {
+      "kind": 20,
+      "predicate": "0074e480",
+      "instance_size": 3732,
+      "accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        15,
+        20
+      ]
+    },
+    "SmallReconPlane": {
+      "kind": 21,
+      "predicate": "0084c9f0",
+      "instance_size": 3732,
+      "accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        15,
+        20,
+        21
+      ]
+    },
+    "LargeReconPlane": {
+      "kind": 22,
+      "predicate": "0074e4e0",
+      "instance_size": 3732,
+      "accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        15,
+        20,
+        22
+      ]
+    },
+    "Fighter": {
+      "kind": 19,
+      "predicate": "007dda80",
+      "instance_size": 3732,
+      "accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        15,
+        19
+      ]
+    },
+    "DiveBomber": {
+      "kind": 18,
+      "predicate": "00953530",
+      "instance_size": 3732,
+      "accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        15,
+        18
+      ]
+    },
+    "TorpedoBomber": {
+      "kind": 17,
+      "predicate": "009535c0",
+      "instance_size": 3732,
+      "accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        15,
+        17
+      ]
+    },
+    "Kamikaze": {
+      "kind": 23,
+      "predicate": "009534a0",
+      "instance_size": 3732,
+      "accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        15,
+        23
+      ]
+    },
+    "LevelBomber": {
+      "kind": 16,
+      "predicate": "007d77f0",
+      "instance_size": 3732,
+      "accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        15,
+        16
+      ]
+    },
+    "AirField": {
+      "kind": 69,
+      "predicate": "006d20e0",
+      "instance_size": 2276,
+      "accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        69
+      ]
+    },
+    "Shipyard": {
+      "kind": 70,
+      "predicate": "00846c00",
+      "instance_size": 1956,
+      "accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        70
+      ]
+    },
+    "LandVehicle": {
+      "kind": 25,
+      "predicate": "0074dd90",
+      "instance_size": 1856,
+      "accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        25
+      ]
+    },
+    "LandFort": {
+      "kind": 27,
+      "predicate": "006f5890",
+      "instance_size": 1880,
+      "accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ]
+    },
+    "CommandBuilding": {
+      "kind": 28,
+      "predicate": "006f58e0",
+      "instance_size": 2024,
+      "accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27,
+        28
+      ]
+    },
+    "DummyTargetVehicle": {
+      "kind": 53,
+      "predicate": "007004b0",
+      "instance_size": 0,
+      "accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        53
+      ]
+    }
+  },
+  "unchanged_interfaces": [
+    "GameUnitsHost::unit_is_kind_of(index,query)",
+    "GameUnitsHost::unit_class_id(index)",
+    "correctly specialized unit_is_kind_of_006fe530",
+    "GameShipAiHost known loaded7..14 navigation guard"
+  ],
+  "runtime_consumers": [
+    "004C3CB0 local-player list classification",
+    "0068ACA0 HUD interface selection",
+    "004C0890 controlled-unit target classification",
+    "008AD44F script kind query",
+    "generic AI queries through GameUnitsHost",
+    "009329C0 hydro and00937C90 body query8"
+  ],
+  "no_ghidra_function": [],
+  "false_free_flow_gaps": [],
+  "ghidra_mutations": [],
+  "flow_audit": {
+    "function": "006FE460",
+    "listed_instructions": 17,
+    "gaps": 0,
+    "suspect_noreturn": false
+  },
+  "checklist": {
+    "callee_before_contract": "Existing predicate/factory contracts reused; constructor/base body and slot18 boundary distinguished",
+    "boundary_before_attribution": "Live proto verified constructor, controlled bind, hydro and hull body ranges",
+    "all_call_sites": "Constructor sole caller checked; both hydro sites and all four controlled kind sites represented",
+    "producer_before_layout": "Existing instance+C4 declaration reused; constructor store verified",
+    "partial_projection": "Report distinguishes complete identity analysis from partial hydro/body call-site binding",
+    "runtime_evidence": "Prior exact77registered-unit domain classified; combined post-merge mission run belongs to root and is not claimed",
+    "stack_cleanup": "Constructor and predicates RET4; allocator/memset shared ADD ESP10h quoted",
+    "register_provenance": "Whole006FE460 and006FE590 listing reviewed; no x87/numeric schedule changed",
+    "lease_only_annotated": "Only006FE460 leased for appended evidence; other native routines are external contracts",
+    "report_calls": "native_calls rows include address/native/function; indirect targets explicitly distinguished"
+  },
+  "validation": {
+    "build": "Win32 Release ./scripts/build.ps1 passed",
+    "existing_tests": "2/2 passed: reconstructed_math and native_math_differential after verify-seeds",
+    "report_calls": "7 direct call rows checked,0 failed;8 indirect rows listed separately and manually site-checked",
+    "native_core_evidence": "Reuses reports/unit_kind_query.json; no new original-byte differential",
+    "new_tracked_tests": 0,
+    "classification_summary": {
+      "units": 77,
+      "unique_types": 37,
+      "factory_branches": 22,
+      "installed_lua_rows": 633,
+      "installed_lua_type_strings": 21,
+      "unresolved_identities": 0,
+      "unchanged_units": 14,
+      "changed_units": 63,
+      "removed_counts": {
+        "6": 63
+      },
+      "added_counts": {
+        "27": 1,
+        "15": 20,
+        "20": 5
+      },
+      "class_counts": {
+        "69": 1,
+        "27": 41,
+        "28": 1,
+        "10": 3,
+        "7": 4,
+        "22": 5,
+        "9": 1,
+        "18": 5,
+        "17": 4,
+        "11": 6,
+        "16": 6
+      },
+      "ship_guard_count": 14,
+      "new_ship_count": 14,
+      "new_plane_count": 20,
+      "new_fort_count": 42
+    },
+    "classification_kind": "Existing runtime registration domain joined to installed Lua fixture and compiled predicate core; no new mission run or native differential",
+    "prior_runtime_commit": "784e09fc61501c8cce6dd1c0d25be8c6e6defbac",
+    "installation_hashes_rechecked": true,
+    "prior_lua_extraction_sha256_matches_extent_report": true,
+    "unknown_query_domain": "Compiled core returned false for all literals-1..96 with unknown class-1"
+  },
+  "installed_units": [
+    {
+      "index": 0,
+      "log_line": 1023,
+      "name": "Airfield2",
+      "type_id": 207,
+      "lua_name": "globals.unitclass_airfield",
+      "lua_type": "AirField",
+      "class_id": 69,
+      "predicate": "006d20e0",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        69
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        69
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 1,
+      "log_line": 1024,
+      "name": "Multi Hangar 1",
+      "type_id": 593,
+      "lua_name": "globals.unitclass_hangarfort",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 2,
+      "log_line": 1025,
+      "name": "CB2",
+      "type_id": 6,
+      "lua_name": "globals.unitclass_commandstation",
+      "lua_type": "CommandBuilding",
+      "class_id": 28,
+      "predicate": "006f58e0",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        28
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27,
+        28
+      ],
+      "removed": [
+        6
+      ],
+      "added": [
+        27
+      ]
+    },
+    {
+      "index": 3,
+      "log_line": 1026,
+      "name": "Coastal Gun 03",
+      "type_id": 460,
+      "lua_name": "globals.unitclass_uscoastalgun",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 4,
+      "log_line": 1027,
+      "name": "Coastal Gun 02",
+      "type_id": 460,
+      "lua_name": "globals.unitclass_uscoastalgun",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 5,
+      "log_line": 1028,
+      "name": "Heavy AA 03",
+      "type_id": 462,
+      "lua_name": "globals.unitclass_usheavyaa",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 6,
+      "log_line": 1029,
+      "name": "Heavy AA 02",
+      "type_id": 462,
+      "lua_name": "globals.unitclass_usheavyaa",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 7,
+      "log_line": 1030,
+      "name": "Coastal Gun 01",
+      "type_id": 460,
+      "lua_name": "globals.unitclass_uscoastalgun",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 8,
+      "log_line": 1031,
+      "name": "Heavy AA 01",
+      "type_id": 462,
+      "lua_name": "globals.unitclass_usheavyaa",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 9,
+      "log_line": 1032,
+      "name": "Containers, 01 01",
+      "type_id": 576,
+      "lua_name": "globals.unitclass_container",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 10,
+      "log_line": 1033,
+      "name": "Containers, 04 01",
+      "type_id": 202,
+      "lua_name": "globals.unitclass_container",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 11,
+      "log_line": 1034,
+      "name": "Containers, 01 02",
+      "type_id": 576,
+      "lua_name": "globals.unitclass_container",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 12,
+      "log_line": 1035,
+      "name": "Containers, 02 01",
+      "type_id": 577,
+      "lua_name": "globals.unitclass_container",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 13,
+      "log_line": 1036,
+      "name": "Containers, 03 01",
+      "type_id": 201,
+      "lua_name": "globals.unitclass_container",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 14,
+      "log_line": 1037,
+      "name": "US Barracks, Quonset Hut, Grey 02",
+      "type_id": 513,
+      "lua_name": "globals.unitclass_quonset",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 15,
+      "log_line": 1038,
+      "name": "Storage, 02 02",
+      "type_id": 555,
+      "lua_name": "globals.unitclass_house",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 16,
+      "log_line": 1039,
+      "name": "Storage, 02 03",
+      "type_id": 555,
+      "lua_name": "globals.unitclass_house",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 17,
+      "log_line": 1040,
+      "name": "Storage, 02 04",
+      "type_id": 555,
+      "lua_name": "globals.unitclass_house",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 18,
+      "log_line": 1041,
+      "name": "Water Tank, Small 01",
+      "type_id": 524,
+      "lua_name": "globals.unitclass_house",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 19,
+      "log_line": 1042,
+      "name": "Hangar, Small, 01 01",
+      "type_id": 544,
+      "lua_name": "globals.unitclass_house",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 20,
+      "log_line": 1043,
+      "name": "Storage, 05 01",
+      "type_id": 682,
+      "lua_name": "globals.unitclass_fort",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 21,
+      "log_line": 1044,
+      "name": "Storage, 04 01",
+      "type_id": 557,
+      "lua_name": "globals.unitclass_house",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 22,
+      "log_line": 1045,
+      "name": "Building, Small, 01 01",
+      "type_id": 545,
+      "lua_name": "globals.unitclass_house",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 23,
+      "log_line": 1046,
+      "name": "Storage, 02 05",
+      "type_id": 555,
+      "lua_name": "globals.unitclass_house",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 24,
+      "log_line": 1047,
+      "name": "Storage, 02 06",
+      "type_id": 555,
+      "lua_name": "globals.unitclass_house",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 25,
+      "log_line": 1048,
+      "name": "Containers, 03 02",
+      "type_id": 201,
+      "lua_name": "globals.unitclass_container",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 26,
+      "log_line": 1049,
+      "name": "kontener_borithato 01",
+      "type_id": 751,
+      "lua_name": "globals.unitclass_obstacle",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 27,
+      "log_line": 1050,
+      "name": "lada_nagy 01",
+      "type_id": 748,
+      "lua_name": "globals.unitclass_obstacle",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 28,
+      "log_line": 1051,
+      "name": "Static wildcat, closed 01",
+      "type_id": 762,
+      "lua_name": "globals.unitclass_wildcat",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 29,
+      "log_line": 1052,
+      "name": "Static wildcat, closed 02",
+      "type_id": 762,
+      "lua_name": "globals.unitclass_wildcat",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 30,
+      "log_line": 1053,
+      "name": "Static wildcat, closed 03",
+      "type_id": 762,
+      "lua_name": "globals.unitclass_wildcat",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 31,
+      "log_line": 1054,
+      "name": "Static wildcat, closed 04",
+      "type_id": 762,
+      "lua_name": "globals.unitclass_wildcat",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 32,
+      "log_line": 1055,
+      "name": "Static avenger 01",
+      "type_id": 753,
+      "lua_name": "globals.unitclass_avenger",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 33,
+      "log_line": 1056,
+      "name": "Hangar, Small, 04 01",
+      "type_id": 720,
+      "lua_name": "globals.unitclass_hangarfort",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 34,
+      "log_line": 1057,
+      "name": "Multi Hangar CB9",
+      "type_id": 593,
+      "lua_name": "globals.unitclass_hangarfort",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 35,
+      "log_line": 1058,
+      "name": "Hangar, Small, 04 02",
+      "type_id": 720,
+      "lua_name": "globals.unitclass_hangarfort",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 36,
+      "log_line": 1059,
+      "name": "Hangar, Small, 04 03",
+      "type_id": 720,
+      "lua_name": "globals.unitclass_hangarfort",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 37,
+      "log_line": 1060,
+      "name": "lada_nagy 02",
+      "type_id": 748,
+      "lua_name": "globals.unitclass_obstacle",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 38,
+      "log_line": 1061,
+      "name": "kontener_borithato 02",
+      "type_id": 751,
+      "lua_name": "globals.unitclass_obstacle",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 39,
+      "log_line": 1062,
+      "name": "Watchtower, 01 01",
+      "type_id": 564,
+      "lua_name": "globals.unitclass_watchtower",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 40,
+      "log_line": 1063,
+      "name": "Oil Tank, Big 01",
+      "type_id": 571,
+      "lua_name": "globals.unitclass_oiltankbig",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 41,
+      "log_line": 1064,
+      "name": "Storage, 03 01",
+      "type_id": 556,
+      "lua_name": "globals.unitclass_house",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 42,
+      "log_line": 1065,
+      "name": "Barrel lotz 01",
+      "type_id": 735,
+      "lua_name": "globals.unitclass_obstacle",
+      "lua_type": "LandFort",
+      "class_id": 27,
+      "predicate": "006f5890",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        27
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "removed": [
+        6
+      ],
+      "added": []
+    },
+    {
+      "index": 43,
+      "log_line": 1066,
+      "name": "Northampton",
+      "type_id": 19,
+      "lua_name": "Northampton class 1941",
+      "lua_type": "Cruiser",
+      "class_id": 10,
+      "predicate": "006fb3d0",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        10
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        10
+      ],
+      "removed": [],
+      "added": []
+    },
+    {
+      "index": 44,
+      "log_line": 1079,
+      "name": "Dunlap",
+      "type_id": 309,
+      "lua_name": "Mahan class 1941",
+      "lua_type": "Destroyer",
+      "class_id": 7,
+      "predicate": "006fe530",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        7
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        7
+      ],
+      "removed": [],
+      "added": []
+    },
+    {
+      "index": 45,
+      "log_line": 1081,
+      "name": "SaltLakeCity",
+      "type_id": 297,
+      "lua_name": "Pensacola class 1944",
+      "lua_type": "Cruiser",
+      "class_id": 10,
+      "predicate": "006fb3d0",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        10
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        10
+      ],
+      "removed": [],
+      "added": []
+    },
+    {
+      "index": 46,
+      "log_line": 1083,
+      "name": "Mav1",
+      "type_id": 174,
+      "lua_name": "globals.unitclass_mavis",
+      "lua_type": "LargeReconPlane",
+      "class_id": 22,
+      "predicate": "0074e4e0",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        22
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        15,
+        20,
+        22
+      ],
+      "removed": [
+        6
+      ],
+      "added": [
+        15,
+        20
+      ]
+    },
+    {
+      "index": 47,
+      "log_line": 1084,
+      "name": "Mav2",
+      "type_id": 174,
+      "lua_name": "globals.unitclass_mavis",
+      "lua_type": "LargeReconPlane",
+      "class_id": 22,
+      "predicate": "0074e4e0",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        22
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        15,
+        20,
+        22
+      ],
+      "removed": [
+        6
+      ],
+      "added": [
+        15,
+        20
+      ]
+    },
+    {
+      "index": 48,
+      "log_line": 1085,
+      "name": "Mav3",
+      "type_id": 174,
+      "lua_name": "globals.unitclass_mavis",
+      "lua_type": "LargeReconPlane",
+      "class_id": 22,
+      "predicate": "0074e4e0",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        22
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        15,
+        20,
+        22
+      ],
+      "removed": [
+        6
+      ],
+      "added": [
+        15,
+        20
+      ]
+    },
+    {
+      "index": 49,
+      "log_line": 1086,
+      "name": "Mav4",
+      "type_id": 174,
+      "lua_name": "globals.unitclass_mavis",
+      "lua_type": "LargeReconPlane",
+      "class_id": 22,
+      "predicate": "0074e4e0",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        22
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        15,
+        20,
+        22
+      ],
+      "removed": [
+        6
+      ],
+      "added": [
+        15,
+        20
+      ]
+    },
+    {
+      "index": 50,
+      "log_line": 1087,
+      "name": "Mav5",
+      "type_id": 174,
+      "lua_name": "globals.unitclass_mavis",
+      "lua_type": "LargeReconPlane",
+      "class_id": 22,
+      "predicate": "0074e4e0",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        22
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        15,
+        20,
+        22
+      ],
+      "removed": [
+        6
+      ],
+      "added": [
+        15,
+        20
+      ]
+    },
+    {
+      "index": 51,
+      "log_line": 1088,
+      "name": "Enterprise",
+      "type_id": 2,
+      "lua_name": "Yorktown class 1944",
+      "lua_type": "MotherShip",
+      "class_id": 9,
+      "predicate": "00758510",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        9
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        9
+      ],
+      "removed": [],
+      "added": []
+    },
+    {
+      "index": 52,
+      "log_line": 1090,
+      "name": "Ralph",
+      "type_id": 309,
+      "lua_name": "Mahan class 1941",
+      "lua_type": "Destroyer",
+      "class_id": 7,
+      "predicate": "006fe530",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        7
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        7
+      ],
+      "removed": [],
+      "added": []
+    },
+    {
+      "index": 53,
+      "log_line": 1092,
+      "name": "McCall",
+      "type_id": 309,
+      "lua_name": "Mahan class 1941",
+      "lua_type": "Destroyer",
+      "class_id": 7,
+      "predicate": "006fe530",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        7
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        7
+      ],
+      "removed": [],
+      "added": []
+    },
+    {
+      "index": 54,
+      "log_line": 1094,
+      "name": "Blue",
+      "type_id": 366,
+      "lua_name": "Benham class 1941",
+      "lua_type": "Destroyer",
+      "class_id": 7,
+      "predicate": "006fe530",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        7
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        7
+      ],
+      "removed": [],
+      "added": []
+    },
+    {
+      "index": 55,
+      "log_line": 1096,
+      "name": "ScoutDauntless",
+      "type_id": 108,
+      "lua_name": "globals.unitclass_dauntless",
+      "lua_type": "DiveBomber",
+      "class_id": 18,
+      "predicate": "00953530",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        18
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        15,
+        18
+      ],
+      "removed": [
+        6
+      ],
+      "added": [
+        15
+      ]
+    },
+    {
+      "index": 56,
+      "log_line": 1097,
+      "name": "ConTBD1",
+      "type_id": 112,
+      "lua_name": "globals.unitclass_devastator",
+      "lua_type": "TorpedoBomber",
+      "class_id": 17,
+      "predicate": "009535c0",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        17
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        15,
+        17
+      ],
+      "removed": [
+        6
+      ],
+      "added": [
+        15
+      ]
+    },
+    {
+      "index": 57,
+      "log_line": 1098,
+      "name": "ConTBD2",
+      "type_id": 112,
+      "lua_name": "globals.unitclass_devastator",
+      "lua_type": "TorpedoBomber",
+      "class_id": 17,
+      "predicate": "009535c0",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        17
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        15,
+        17
+      ],
+      "removed": [
+        6
+      ],
+      "added": [
+        15
+      ]
+    },
+    {
+      "index": 58,
+      "log_line": 1099,
+      "name": "ConTBD3",
+      "type_id": 112,
+      "lua_name": "globals.unitclass_devastator",
+      "lua_type": "TorpedoBomber",
+      "class_id": 17,
+      "predicate": "009535c0",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        17
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        15,
+        17
+      ],
+      "removed": [
+        6
+      ],
+      "added": [
+        15
+      ]
+    },
+    {
+      "index": 59,
+      "log_line": 1100,
+      "name": "ConSBD1",
+      "type_id": 108,
+      "lua_name": "globals.unitclass_dauntless",
+      "lua_type": "DiveBomber",
+      "class_id": 18,
+      "predicate": "00953530",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        18
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        15,
+        18
+      ],
+      "removed": [
+        6
+      ],
+      "added": [
+        15
+      ]
+    },
+    {
+      "index": 60,
+      "log_line": 1101,
+      "name": "ConSBD2",
+      "type_id": 108,
+      "lua_name": "globals.unitclass_dauntless",
+      "lua_type": "DiveBomber",
+      "class_id": 18,
+      "predicate": "00953530",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        18
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        15,
+        18
+      ],
+      "removed": [
+        6
+      ],
+      "added": [
+        15
+      ]
+    },
+    {
+      "index": 61,
+      "log_line": 1102,
+      "name": "ConSBD3",
+      "type_id": 108,
+      "lua_name": "globals.unitclass_dauntless",
+      "lua_type": "DiveBomber",
+      "class_id": 18,
+      "predicate": "00953530",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        18
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        15,
+        18
+      ],
+      "removed": [
+        6
+      ],
+      "added": [
+        15
+      ]
+    },
+    {
+      "index": 62,
+      "log_line": 1103,
+      "name": "Convoy1",
+      "type_id": 85,
+      "lua_name": "globals.unitclass_japfleetoiler",
+      "lua_type": "Cargo",
+      "class_id": 11,
+      "predicate": "006eb230",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        11
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        11
+      ],
+      "removed": [],
+      "added": []
+    },
+    {
+      "index": 63,
+      "log_line": 1105,
+      "name": "Convoy2",
+      "type_id": 87,
+      "lua_name": "globals.unitclass_japcargotransporter",
+      "lua_type": "Cargo",
+      "class_id": 11,
+      "predicate": "006eb230",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        11
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        11
+      ],
+      "removed": [],
+      "added": []
+    },
+    {
+      "index": 64,
+      "log_line": 1107,
+      "name": "Convoy3",
+      "type_id": 85,
+      "lua_name": "globals.unitclass_japfleetoiler",
+      "lua_type": "Cargo",
+      "class_id": 11,
+      "predicate": "006eb230",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        11
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        11
+      ],
+      "removed": [],
+      "added": []
+    },
+    {
+      "index": 65,
+      "log_line": 1109,
+      "name": "Convoy4",
+      "type_id": 87,
+      "lua_name": "globals.unitclass_japcargotransporter",
+      "lua_type": "Cargo",
+      "class_id": 11,
+      "predicate": "006eb230",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        11
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        11
+      ],
+      "removed": [],
+      "added": []
+    },
+    {
+      "index": 66,
+      "log_line": 1111,
+      "name": "Convoy5",
+      "type_id": 87,
+      "lua_name": "globals.unitclass_japcargotransporter",
+      "lua_type": "Cargo",
+      "class_id": 11,
+      "predicate": "006eb230",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        11
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        11
+      ],
+      "removed": [],
+      "added": []
+    },
+    {
+      "index": 67,
+      "log_line": 1113,
+      "name": "Convoy6",
+      "type_id": 85,
+      "lua_name": "globals.unitclass_japfleetoiler",
+      "lua_type": "Cargo",
+      "class_id": 11,
+      "predicate": "006eb230",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        11
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        11
+      ],
+      "removed": [],
+      "added": []
+    },
+    {
+      "index": 68,
+      "log_line": 1115,
+      "name": "KatTBD",
+      "type_id": 112,
+      "lua_name": "globals.unitclass_devastator",
+      "lua_type": "TorpedoBomber",
+      "class_id": 17,
+      "predicate": "009535c0",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        17
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        15,
+        17
+      ],
+      "removed": [
+        6
+      ],
+      "added": [
+        15
+      ]
+    },
+    {
+      "index": 69,
+      "log_line": 1116,
+      "name": "KatSBD",
+      "type_id": 108,
+      "lua_name": "globals.unitclass_dauntless",
+      "lua_type": "DiveBomber",
+      "class_id": 18,
+      "predicate": "00953530",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        18
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        15,
+        18
+      ],
+      "removed": [
+        6
+      ],
+      "added": [
+        15
+      ]
+    },
+    {
+      "index": 70,
+      "log_line": 1117,
+      "name": "Katori",
+      "type_id": 71,
+      "lua_name": "Agano class 1945",
+      "lua_type": "Cruiser",
+      "class_id": 10,
+      "predicate": "006fb3d0",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        10
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        10
+      ],
+      "removed": [],
+      "added": []
+    },
+    {
+      "index": 71,
+      "log_line": 1119,
+      "name": "Nell1",
+      "type_id": 166,
+      "lua_name": "globals.unitclass_nell",
+      "lua_type": "LevelBomber",
+      "class_id": 16,
+      "predicate": "007d77f0",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        16
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        15,
+        16
+      ],
+      "removed": [
+        6
+      ],
+      "added": [
+        15
+      ]
+    },
+    {
+      "index": 72,
+      "log_line": 1120,
+      "name": "Nell2",
+      "type_id": 166,
+      "lua_name": "globals.unitclass_nell",
+      "lua_type": "LevelBomber",
+      "class_id": 16,
+      "predicate": "007d77f0",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        16
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        15,
+        16
+      ],
+      "removed": [
+        6
+      ],
+      "added": [
+        15
+      ]
+    },
+    {
+      "index": 73,
+      "log_line": 1121,
+      "name": "Nell3",
+      "type_id": 166,
+      "lua_name": "globals.unitclass_nell",
+      "lua_type": "LevelBomber",
+      "class_id": 16,
+      "predicate": "007d77f0",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        16
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        15,
+        16
+      ],
+      "removed": [
+        6
+      ],
+      "added": [
+        15
+      ]
+    },
+    {
+      "index": 74,
+      "log_line": 1122,
+      "name": "Nell4",
+      "type_id": 166,
+      "lua_name": "globals.unitclass_nell",
+      "lua_type": "LevelBomber",
+      "class_id": 16,
+      "predicate": "007d77f0",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        16
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        15,
+        16
+      ],
+      "removed": [
+        6
+      ],
+      "added": [
+        15
+      ]
+    },
+    {
+      "index": 75,
+      "log_line": 1123,
+      "name": "Nell5",
+      "type_id": 166,
+      "lua_name": "globals.unitclass_nell",
+      "lua_type": "LevelBomber",
+      "class_id": 16,
+      "predicate": "007d77f0",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        16
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        15,
+        16
+      ],
+      "removed": [
+        6
+      ],
+      "added": [
+        15
+      ]
+    },
+    {
+      "index": 76,
+      "log_line": 1124,
+      "name": "Nell6",
+      "type_id": 166,
+      "lua_name": "globals.unitclass_nell",
+      "lua_type": "LevelBomber",
+      "class_id": 16,
+      "predicate": "007d77f0",
+      "old_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        16
+      ],
+      "new_accepted": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        15,
+        16
+      ],
+      "removed": [
+        6
+      ],
+      "added": [
+        15
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_pre_step_final_e.log",
+      "sha256": "e7b92c9c20d8d39350d809f11ec2f635fccdcc586116757120731b577b039d9f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\vehicle_class_widths.tsv",
+      "sha256": "2682a5aff51be64c924fd32619929055aa1ad44b0c5c30b79a11919b60705de4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\unit_extent_manifest.json",
+      "sha256": "f31a089eea9ba11963e4ba331b1d9315d73613d20ebb476a551ec80059c2d0b4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-kind-f\\local\\unit_kind_fixture.cpp",
+      "sha256": "15944ac72cd1921d7fe1fe6679c0320ce117c05f6ae3cacca83d1e68e8c62fc4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-kind-f\\local\\build_unit_kind_fixture.cmd",
+      "sha256": "5b8971517cd2ce848061feae61480aeab2fda0a75ef860365f10b07f28f90af1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-kind-f\\local\\unit_kind_fixture.exe",
+      "sha256": "ee322da377758cb47ffc40ad351d975d88135f2bf378d7dae1badce096ddb12b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-kind-f\\local\\unit_kind_factory.tsv",
+      "sha256": "8e118acd4ffea4e431ab8e49ad74cfb2456fd3933f5d6f31687d2282eff58794"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-kind-f\\local\\classify_unit_kind.py",
+      "sha256": "c961033707c2b4e0a84c7943b055e3be1a9fefb7f771edf08b8ed54b1724dc0b"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\autoload\\vehicleclasses.lua",
+      "sha256": "0649dddf3a765a8340db2e6d545d04ac86503b4f8ba2e867c88ecbd2d2983650"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\universe\\scenes\\missions\\USN\\usn_1_marshall.scn",
+      "sha256": "9235d9a6364b08cbd5cf3c6735ba9828aba5a6e7b2569300dc2eecf6d8dac17b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-kind-f\\local\\unit_kind_classification.json",
+      "sha256": "e6bdf6d3550bb2b0e57921cf549c17b20a0c2d4973748abbdeb0d6bd4cb158bb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-kind-f\\local\\orch6_unit_kind_final_build.log",
+      "sha256": "1fced6e944b4d9bdec534f4fadc882f5154d27430b0a0ed7896380f36364659e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-kind-f\\local\\unit_kind_fixture_build.log",
+      "sha256": "3178cc1b9f99391f8856486e880a418ddb799e26960bca0038449985b0d4ddbb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-kind-f\\local\\unit_kind_calls.log",
+      "sha256": "e2173b9956ffe9473dcea6cf93897a7d465db24f755c352f31a98383d696bf00"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-kind-f\\build\\win32\\Release\\bsp_game.exe",
+      "sha256": "7a061741735835b89d00f907e701cfa6e897cd71c7a4e3bc578743140dac48bd"
+    }
+  ],
+  "limitations": [
+    "New C++ binding is not a binary replacement or native class allocator",
+    "No new gameplay/runtime/frame-causality claim; root runs combined mission after merge",
+    "Subunit, listener handle, renderer publication and legacy world-registration+130h adapters remain partial",
+    "Unknown-identity handling is a deliberate host boundary; native failed object creation is not implemented here",
+    "Factory classes own their predicate; inherited-owner objects outside this vehicle domain require explicit owner identity",
+    "Existing methods on other hosts can still carry stale006FE530 diagnostic labels; files belong to their owners"
+  ],
+  "reproduce": [
+    "python tools/ghidra_export.py verify-seeds",
+    "./scripts/build.ps1",
+    "cmd /c local\\build_unit_kind_fixture.cmd",
+    "local\\unit_kind_fixture.exe > local\\unit_kind_factory.tsv",
+    "python local/classify_unit_kind.py",
+    "python tools/verify_report_calls.py reports/game_unit_kind_binding.json"
+  ]
+}
