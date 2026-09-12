@@ -33,6 +33,7 @@ public:
     virtual void refresh_clip70(GuiWidgetOwner&);
     virtual float* read_color54(GuiWidgetOwner&, float (&)[4]);
     virtual void set_alpha4c(GuiWidgetOwner&, float);
+    virtual void set_size58(GuiWidgetOwner&, const GuiWidgetSize&);
     virtual std::int32_t type5c(GuiWidgetOwner&);
     // Host-only preflight for retained C++ continuations before scalar deletion
     // starts. Not another native slot or side effect. Types with pending frames
@@ -130,6 +131,7 @@ public:
     void refresh_bounds_00aa70e0();
     void refresh_clip70();
     void set_position_00aa7dc0(const GuiWidgetPoint&);
+    void base_set_size58_00aa7970(const GuiWidgetSize&);
     void release_scene_nodes_00aa8320();
     // Requires an actual frame runtime registered in this same owner domain.
     void update40(float seconds);
@@ -205,6 +207,9 @@ public:
     // and its existing child lists with the page. Never dereference after page dies.
     void retire_tree(GuiLayoutWidget&);
     std::size_t retained_model_count() const noexcept { return models_.size(); }
+    // Existing B6DA70 traversal, exposed for actual widget-node callers.
+    // Descendant resolver must bind the same canonical scene hierarchy.
+    void set_node_visibility_factor_00b6da70(NativeNodeBinding&, float, bool recurse);
     GuiWidgetOwnerEnvironment& environment() noexcept { return environment_; }
 private:
     friend class GuiWidgetOwner;

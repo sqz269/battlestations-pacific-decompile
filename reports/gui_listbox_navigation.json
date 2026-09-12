@@ -1,0 +1,645 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "packet": "orch5_listbox_navigation",
+  "functions": [
+    {
+      "address": "00a9c310",
+      "end_inclusive": "00a9c373",
+      "name": "BSP_GuiListbox_SelectFirstSelectable",
+      "cpp": "select_first_selectable_00a9c310",
+      "original_abi": "ECX Listbox; no stack args; RET",
+      "coverage": "complete normal valid FC list domain"
+    },
+    {
+      "address": "00a9c540",
+      "end_inclusive": "00a9c73e",
+      "name": "BSP_GuiListbox_PositionHighlight",
+      "cpp": "update_highlight_00a9c540",
+      "original_abi": "ECX Listbox; stack row,paging low byte,depth float; RETC",
+      "coverage": "complete normal body for established canonical current34/58 and source profiles; native invalid pointers and unsupported derived profiles excluded"
+    },
+    {
+      "address": "00aa0f50",
+      "end_inclusive": "00aa0f6e",
+      "name": "BSP_GuiManager_SelectHighlightWidget",
+      "cpp": "select_gui_highlight_widget_00aa0f50",
+      "original_abi": "ECX manager; signed selector stack; EAX borrowed widget; RET4",
+      "coverage": "complete normal body over existing GuiResourceState slots74/78"
+    },
+    {
+      "address": "00a9abd0",
+      "end_inclusive": "00a9abfd",
+      "name": "BSP_Node_HierarchyFactor",
+      "cpp": "gui_node_hierarchy_factor_00a9abd0",
+      "original_abi": "ECX actual node; x87 float result; RET",
+      "coverage": "complete normal acyclic live native parent30/scalarAC domain; float32 spill at every level"
+    },
+    {
+      "address": "00a9e230",
+      "end_inclusive": "00a9e3f3",
+      "name": "BSP_GuiListbox_EnablePaging",
+      "cpp": "enable_paging_00a9e230",
+      "original_abi": "ECX Listbox; signed page size stack; RET4",
+      "coverage": "partial_projection: complete successful-allocation sequence; native string/list allocator and SEH ABI plus allocation reentry excluded"
+    },
+    {
+      "address": "00a9d870",
+      "end_inclusive": "00a9d9ca",
+      "name": "BSP_GuiListbox_RebuildPage",
+      "cpp": "rebuild_page_00a9d870",
+      "original_abi": "ECX Listbox; no stack args; RET",
+      "coverage": "complete normal valid FC/14C iterator sequence; current borrowed row/node and captured selected widget must survive callbacks; replacing14C during traversal excluded"
+    },
+    {
+      "address": "00a9d9d0",
+      "end_inclusive": "00a9da2d",
+      "name": "FUN_00a9d9d0",
+      "cpp": "enable_paging_00a9e230 list assignment fragment",
+      "original_abi": "ECX destination list; begin container/node,end container/node,unused allocator word; RET14",
+      "coverage": "partial_projection: E230 caller full source range to distinct destination14C; normal clear plus append only; native allocator/SEH excluded"
+    },
+    {
+      "address": "00a9d560",
+      "end_inclusive": "00a9d673",
+      "name": "FUN_00a9d560",
+      "cpp": "enable_paging_00a9e230 list insertion fragment",
+      "original_abi": "ECX destination list; destination container/node,source begin container/node,end container/node,unused allocator; RET1C",
+      "coverage": "partial_projection: A9D560..A9D604 then A9D661..A9D673 at destination empty-end; EH handler A9D606..A9D660, arbitrary insertion, allocator reentry and checked-STL errors excluded"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00a9c32b",
+      "native": "00bf6713",
+      "function": "00a9c310",
+      "contract": "existing CRT checked-iterator invalid domain excluded; existing correct library name retained"
+    },
+    {
+      "address": "00a9c339",
+      "native": "00bf6713",
+      "function": "00a9c310",
+      "contract": "existing CRT checked-iterator invalid domain excluded; existing correct library name retained"
+    },
+    {
+      "address": "00a9c34c",
+      "native": "00bf6713",
+      "function": "00a9c310",
+      "contract": "existing CRT checked-iterator invalid domain excluded; existing correct library name retained"
+    },
+    {
+      "address": "00a9c36d",
+      "native": "00a9c220",
+      "function": "00a9c310",
+      "contract": "canonical Listbox current80(false), live listener and post-callback selected row"
+    },
+    {
+      "address": "00a9c548",
+      "native": "004c12b0",
+      "function": "00a9c540",
+      "contract": "required current manager singleton getter; native lifetime remains external"
+    },
+    {
+      "address": "00a9c556",
+      "native": "00aa0f50",
+      "function": "00a9c540",
+      "contract": "read live selector1->manager74,2->78,other->null"
+    },
+    {
+      "address": "00a9c564",
+      "native": "00aa6750",
+      "function": "00a9c540",
+      "contract": "existing resolved-position accessor; separate calls and float copies retained"
+    },
+    {
+      "address": "00a9c57b",
+      "native": "00aa6750",
+      "function": "00a9c540",
+      "contract": "existing resolved-position accessor; separate calls and float copies retained"
+    },
+    {
+      "address": "00a9c5a9",
+      "native": "00aa8240",
+      "function": "00a9c540",
+      "contract": "parent canonical actual-owner resolved position, recompose and bounds composition"
+    },
+    {
+      "address": "00a9c5cd",
+      "native": "00a9abd0",
+      "function": "00a9c540",
+      "contract": "actual native parent30 factor recursion with float32 spills"
+    },
+    {
+      "address": "00a9c603",
+      "native": "widget+vtable34",
+      "function": "00a9c540",
+      "contract": "actual borrowed row/highlight/arrow current34 with native low byte; keep widget alive, load next arrow after previous callback"
+    },
+    {
+      "address": "00a9c613",
+      "native": "00ac0820",
+      "function": "00a9c540",
+      "contract": "parent concrete source-to-destination fit; ECX source,EDX highlight,width124 float stack RET4"
+    },
+    {
+      "address": "00a9c61f",
+      "native": "00aa6750",
+      "function": "00a9c540",
+      "contract": "existing resolved-position accessor; separate calls and float copies retained"
+    },
+    {
+      "address": "00a9c6d2",
+      "native": "00aa8240",
+      "function": "00a9c540",
+      "contract": "parent canonical actual-owner resolved position, recompose and bounds composition"
+    },
+    {
+      "address": "00a9c6d9",
+      "native": "00aa6740",
+      "function": "00a9c540",
+      "contract": "current size20/24 accessor; separate width then height read"
+    },
+    {
+      "address": "00a9c6ea",
+      "native": "00aa6740",
+      "function": "00a9c540",
+      "contract": "current size20/24 accessor; separate width then height read"
+    },
+    {
+      "address": "00a9c720",
+      "native": "highlight+vtable58",
+      "function": "00a9c540",
+      "contract": "actual highlight current58; parent supports established profiles, installed FrameBox resource effects not fixture-claimed"
+    },
+    {
+      "address": "00a9c734",
+      "native": "widget+vtable34",
+      "function": "00a9c540",
+      "contract": "actual borrowed row/highlight/arrow current34 with native low byte; keep widget alive, load next arrow after previous callback"
+    },
+    {
+      "address": "00a9abdb",
+      "native": "00a9abd0",
+      "function": "00a9abd0",
+      "contract": "actual native parent30 factor recursion with float32 spills"
+    },
+    {
+      "address": "00a9e27a",
+      "native": "00a9d9d0",
+      "function": "00a9e230",
+      "contract": "distinct14C clear then copy full FC pointer range; fifth allocator word unused"
+    },
+    {
+      "address": "00a9e2a1",
+      "native": "0041e870",
+      "function": "00a9e230",
+      "contract": "construct actual temporary native8h name header and contents"
+    },
+    {
+      "address": "00a9e2b3",
+      "native": "00aa7e00",
+      "function": "00a9e230",
+      "contract": "actual direct borrowed child names, second stack word1 unused, RET8; no recursion"
+    },
+    {
+      "address": "00a9e2d8",
+      "native": "00419cc0",
+      "function": "00a9e230",
+      "contract": "existing native string pool acquisition before temporary release"
+    },
+    {
+      "address": "00a9e2df",
+      "native": "00bd1510",
+      "function": "00a9e230",
+      "contract": "existing native string block return; actual pooled-string transport"
+    },
+    {
+      "address": "00a9e2ed",
+      "native": "0041e870",
+      "function": "00a9e230",
+      "contract": "construct actual temporary native8h name header and contents"
+    },
+    {
+      "address": "00a9e303",
+      "native": "00aa7e00",
+      "function": "00a9e230",
+      "contract": "actual direct borrowed child names, second stack word1 unused, RET8; no recursion"
+    },
+    {
+      "address": "00a9e32c",
+      "native": "0041e870",
+      "function": "00a9e230",
+      "contract": "construct actual temporary native8h name header and contents"
+    },
+    {
+      "address": "00a9e342",
+      "native": "00aa7e00",
+      "function": "00a9e230",
+      "contract": "actual direct borrowed child names, second stack word1 unused, RET8; no recursion"
+    },
+    {
+      "address": "00a9e367",
+      "native": "00419cc0",
+      "function": "00a9e230",
+      "contract": "existing native string pool acquisition before temporary release"
+    },
+    {
+      "address": "00a9e36e",
+      "native": "00bd1510",
+      "function": "00a9e230",
+      "contract": "existing native string block return; actual pooled-string transport"
+    },
+    {
+      "address": "00a9e37c",
+      "native": "0041e870",
+      "function": "00a9e230",
+      "contract": "construct actual temporary native8h name header and contents"
+    },
+    {
+      "address": "00a9e392",
+      "native": "00aa7e00",
+      "function": "00a9e230",
+      "contract": "actual direct borrowed child names, second stack word1 unused, RET8; no recursion"
+    },
+    {
+      "address": "00a9e3b4",
+      "native": "00419cc0",
+      "function": "00a9e230",
+      "contract": "existing native string pool acquisition before temporary release"
+    },
+    {
+      "address": "00a9e3bb",
+      "native": "00bd1510",
+      "function": "00a9e230",
+      "contract": "existing native string block return; actual pooled-string transport"
+    },
+    {
+      "address": "00a9e3d4",
+      "native": "00a9c7c0",
+      "function": "00a9e230",
+      "contract": "same FC selection index0 and current80(false)"
+    },
+    {
+      "address": "00a9e3db",
+      "native": "00a9d870",
+      "function": "00a9e230",
+      "contract": "rebuild FC window from same native14C pointers"
+    },
+    {
+      "address": "00a9d88b",
+      "native": "00425e50",
+      "function": "00a9d870",
+      "contract": "same current selected FC iterator row/null; saved pointer survives callbacks"
+    },
+    {
+      "address": "00a9d8ab",
+      "native": "00bf6713",
+      "function": "00a9d870",
+      "contract": "existing CRT checked-iterator invalid domain excluded; existing correct library name retained"
+    },
+    {
+      "address": "00a9d8bd",
+      "native": "widget+vtable34",
+      "function": "00a9d870",
+      "contract": "actual borrowed row/highlight/arrow current34 with native low byte; keep widget alive, load next arrow after previous callback"
+    },
+    {
+      "address": "00a9d8c6",
+      "native": "00a9bd50",
+      "function": "00a9d870",
+      "contract": "remove every FC identity equal to captured front row, no GUI detach/delete; same existing remove-row body sequence reused"
+    },
+    {
+      "address": "00a9d8eb",
+      "native": "00a9c220",
+      "function": "00a9d870",
+      "contract": "canonical Listbox current80(false), live listener and post-callback selected row"
+    },
+    {
+      "address": "00a9d8f4",
+      "native": "00a9c0a0",
+      "function": "00a9d870",
+      "contract": "canonical Listbox current7C layout after removal"
+    },
+    {
+      "address": "00a9d919",
+      "native": "00bf6713",
+      "function": "00a9d870",
+      "contract": "existing CRT checked-iterator invalid domain excluded; existing correct library name retained"
+    },
+    {
+      "address": "00a9d940",
+      "native": "00bf6713",
+      "function": "00a9d870",
+      "contract": "existing CRT checked-iterator invalid domain excluded; existing correct library name retained"
+    },
+    {
+      "address": "00a9d950",
+      "native": "00bf6713",
+      "function": "00a9d870",
+      "contract": "existing CRT checked-iterator invalid domain excluded; existing correct library name retained"
+    },
+    {
+      "address": "00a9d95f",
+      "native": "00a9d750",
+      "function": "00a9d870",
+      "contract": "null-position actual current34/attach/FC append; current14C node survives callbacks"
+    },
+    {
+      "address": "00a9d969",
+      "native": "00bf6713",
+      "function": "00a9d870",
+      "contract": "existing CRT checked-iterator invalid domain excluded; existing correct library name retained"
+    },
+    {
+      "address": "00a9d986",
+      "native": "00a9c740",
+      "function": "00a9d870",
+      "contract": "restore captured selected widget by identity if still visible/in FC"
+    },
+    {
+      "address": "00a9d9a1",
+      "native": "00a9c220",
+      "function": "00a9d870",
+      "contract": "canonical Listbox current80(false), live listener and post-callback selected row"
+    },
+    {
+      "address": "00a9d9b0",
+      "native": "widget+vtable34",
+      "function": "00a9d870",
+      "contract": "actual borrowed row/highlight/arrow current34 with native low byte; keep widget alive, load next arrow after previous callback"
+    },
+    {
+      "address": "00a9d9c1",
+      "native": "widget+vtable34",
+      "function": "00a9d870",
+      "contract": "actual borrowed row/highlight/arrow current34 with native low byte; keep widget alive, load next arrow after previous callback"
+    },
+    {
+      "address": "00a9d9f3",
+      "native": "00bf65ac",
+      "function": "00a9d9d0",
+      "contract": "returning host CRT free, native node allocation domain excluded; do not infer no-return"
+    },
+    {
+      "address": "00a9da25",
+      "native": "00a9d560",
+      "function": "00a9d9d0",
+      "contract": "range append to empty destination14C; allocation success domain only"
+    },
+    {
+      "address": "00a9d5a9",
+      "native": "00bf6713",
+      "function": "00a9d560",
+      "contract": "existing CRT checked-iterator invalid domain excluded; existing correct library name retained"
+    },
+    {
+      "address": "00a9d5bb",
+      "native": "00bf6713",
+      "function": "00a9d560",
+      "contract": "existing CRT checked-iterator invalid domain excluded; existing correct library name retained"
+    },
+    {
+      "address": "00a9d5c5",
+      "native": "00bf6713",
+      "function": "00a9d560",
+      "contract": "existing CRT checked-iterator invalid domain excluded; existing correct library name retained"
+    },
+    {
+      "address": "00a9d5d6",
+      "native": "00a9b790",
+      "function": "00a9d560",
+      "contract": "allocate12-byte node,next,previous and same source payload pointer; host std::list transport"
+    },
+    {
+      "address": "00a9d5e2",
+      "native": "00a9d480",
+      "function": "00a9d560",
+      "contract": "increment list count with3FFFFFFF maximum; existing STL name retained"
+    },
+    {
+      "address": "00a9d5f7",
+      "native": "00bf6713",
+      "function": "00a9d560",
+      "contract": "existing CRT checked-iterator invalid domain excluded; existing correct library name retained"
+    },
+    {
+      "address": "00a9d60d",
+      "native": "00425a50",
+      "function": "00a9d606",
+      "contract": "contract unread; excluded native EH handler, no host method invented"
+    },
+    {
+      "address": "00a9d629",
+      "native": "00a9af60",
+      "function": "00a9d606",
+      "contract": "contract unread; excluded native EH handler, no host method invented"
+    },
+    {
+      "address": "00a9d63b",
+      "native": "00a9b6c0",
+      "function": "00a9d606",
+      "contract": "contract unread; excluded native EH handler, no host method invented"
+    },
+    {
+      "address": "00a9d643",
+      "native": "00519e00",
+      "function": "00a9d606",
+      "contract": "contract unread; excluded native EH handler, no host method invented"
+    },
+    {
+      "address": "00a9d64f",
+      "native": "00425a50",
+      "function": "00a9d606",
+      "contract": "contract unread; excluded native EH handler, no host method invented"
+    },
+    {
+      "address": "00a9d65c",
+      "native": "00bf6885",
+      "function": "00a9d606",
+      "contract": "contract unread; excluded native EH handler, no host method invented"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "C540 pseudocode first parameter is a float and second flag looks like selection",
+      "is": "row pointer plus paging148 low byte plus float depth, three stack args RETC",
+      "evidence": "A9D301 MOVZX EDX,[ESI+148];D30B FSTP depth;D30E PUSH EDX;D30F PUSH EDI;C5AE loads row+40, C626 tests flag+44;C728/C73C RETC"
+    },
+    {
+      "was": "AA0F50 might map selector0 to a default highlight",
+      "is": "only1 returns74,2 returns78; every other selector returns null",
+      "evidence": "AA0F50..AA0F6E full assembly; AA5E20 stores actual hl_FrameBox/hlCircle_FrameBox in existing GuiResourceState"
+    },
+    {
+      "was": "E230 arrow lookup with argument1 recurses",
+      "is": "AA7E00 walks direct borrowed transform.children only; second stack word unused",
+      "evidence": "AA7E00 actual-name adapter and RET8; no recursive CALL in body"
+    },
+    {
+      "was": "D9D0 decompilation returns after freeing one old list node",
+      "is": "gap loops over and frees all prior nodes then continues to D560",
+      "evidence": "live bytes A9D9F8:83c4043b7e048bc775ee5f equal installed PE decode ADD ESP4,CMP EDI,[ESI+4],MOV EAX,EDI,JNE D9F0,POP EDI"
+    },
+    {
+      "was": "Paging state can have convenient zero defaults",
+      "is": "constructor writes empty14C only;158/15C/160/164/168 have optionals until actual E230 writes them in order",
+      "evidence": "A9E008..A9E03E constructs14C; E230 producer writes fieldsEC/148/158/arrows/164/168; existing FC row list and iterator stay canonical"
+    },
+    {
+      "was": "Linear exported listing suggests EH calls belong to D560",
+      "is": "Catch_All@00a9d606 owns D60D/D629/D63B/D643/D64F/D65C; excluded handler rows correctly attributed",
+      "evidence": "Live proto for each report failure identifies D606; numeric call verifier rerun"
+    }
+  ],
+  "caller_audit": {
+    "00a9c310": [
+      "005e8fa5 and005e8fd1 in005e8b20: ECX two Listboxes, no args",
+      "00a9d101 in00a9d030: invalid/end selection fallback",
+      "005ec7ae unattributed CALL; live proto has no containing function, raw bytes captured; no parent function guessed"
+    ],
+    "00a9c540": [
+      "00a9d310 only; ECX same Listbox, EDI borrowed row, current148, current selected highlight depth"
+    ],
+    "00aa0f50": [
+      "0051655f/00516909 selector1",
+      "00a9cf5c/00a9c556/00a9d2f2/00a9cd05 current118",
+      "00a9d327 literal0 followed by native dereference: unresolved invalid native path, no fallback invented"
+    ],
+    "00a9e230": [
+      "00601ee4 and006021f6 both push16"
+    ],
+    "00a9d870": [
+      "00a9e3db initialized window",
+      "00a9db83 increments164",
+      "00a9dcd9 decrements164",
+      "00604718 restores caller stored164 before no-argument call"
+    ],
+    "00a9d9d0": [
+      "00a9e27a only: destination14C,source FC begin/end,unused page-size allocator word"
+    ],
+    "00a9d560": [
+      "00a9da25 distinct cleared14C append",
+      "00aa5812 generic list copy-construction: outside fragment"
+    ],
+    "00a9abd0": [
+      "00a9c5cd receives row-node parent30",
+      "00a9abdb recursion receives native parent30"
+    ]
+  },
+  "constants": {
+    "00d7a23c": "3a83126f",
+    "00d5bbf0": "bb03126f",
+    "00d5bbec": "bbc49ba6",
+    "policy": "required live float aliases; supplied only to reached highlight path; no installed numeric substitutions"
+  },
+  "validation": {
+    "strict_tu": "passed local/strict_compile.log; MSVC Win32 /W4 /WX /fp:strict; parent dependency header",
+    "call_report": "59 numeric rows checked,0 failures;6 symbolic virtual rows explicit",
+    "combined_build": "Final parent scripts/build.ps1 Win32 Release passed; both existing CTests passed. These test existing math/native math, not navigation differential.",
+    "fixture": "PASS: final combined parent production libraries only, no replacement TUs; /W4 /WX /fp:strict /MANIFEST:EMBED; local/navigation_probe.log",
+    "abi_compatible": false,
+    "native_differential": false,
+    "game_validated": false,
+    "initial_fixture_inputs": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_probe.cpp",
+        "sha256": "45f274cba8f20aef7bcb6244c4e704b9c8ca606c646a67b40b53d1f44488a3ea"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\run_navigation_probe.ps1",
+        "sha256": "7fb0c7d6ee28b3f49c868c703a58c2c3b26e1f44fa8d79537e51870d17d57257"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_probe.exe",
+        "sha256": "3684599d696ce1644cf78d49b2459df27dc11321f5f77c7498f653d1b9a7a27f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\include\\bsp\\gui_listbox_runtime.hpp",
+        "sha256": "95d9e45cd81d65f76beb79e31f60c48dec8e7ea0541f65cf12254f5d950ba612"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\src\\gui_listbox_runtime.cpp",
+        "sha256": "f7bfb2fedcea75c6b8946ee17a3b07fd4efb96d33323e5211bf309aae18fe549"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\include\\bsp\\gui_widget_relative_bounds.hpp",
+        "sha256": "34d9ebb92fe07b5f1da083a10689a0f73796cdaa89cef60d347652bbb966277c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\src\\gui_widget_relative_bounds.cpp",
+        "sha256": "72ab4ebc4840577834242168b1ec3f1c44b8eb51b7db69ac724cf1eec9322633"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_core.lib",
+        "sha256": "7d7f36e5493ec6fce33cf6edc5239319f2b31a5def52eea536eb4d17459bc988"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_lua511.lib",
+        "sha256": "b6c19dd56bce2c86dcf1abf5c3044d48ddc2ac2c33ef04e3dc87f022413ee193"
+      }
+    ],
+    "fixture_scope": [
+      "canonical actual Listbox/Group owners; FC and14C duplicate identities with one GUI allocation",
+      "first selectable and all-hidden preserves selection",
+      "actual pooled native direct-child names, paging setup and repeated14C clear/assign",
+      "listener suppression/restoration and live page-size change during actual attachment world callback",
+      "actual native node hierarchy factor",
+      "C540 Group current34/current58 profile, null row and invalid selector; installed FrameBox/Text effects excluded"
+    ],
+    "export_archive": "local/navigation_evidence/manifest.json;16 per-function assembly/decompiled artifacts with SHA256",
+    "combined_build_log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\orch5-menu-providers-final-build.log",
+      "sha256": "996a8aee866f579a8ba4b3e670292248f6fad6917ca9723b9c6d0701b528456f"
+    },
+    "final_fixture_inputs": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_probe.cpp",
+        "sha256": "45f274cba8f20aef7bcb6244c4e704b9c8ca606c646a67b40b53d1f44488a3ea"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\run_navigation_probe.ps1",
+        "sha256": "7fb0c7d6ee28b3f49c868c703a58c2c3b26e1f44fa8d79537e51870d17d57257"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_probe.exe",
+        "sha256": "977c0ce1d65adf3101c941b94b3b43bfa0266cf02c3666f5f2feb0791f342d61"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\include\\bsp\\gui_listbox_runtime.hpp",
+        "sha256": "95d9e45cd81d65f76beb79e31f60c48dec8e7ea0541f65cf12254f5d950ba612"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\src\\gui_listbox_runtime.cpp",
+        "sha256": "f7bfb2fedcea75c6b8946ee17a3b07fd4efb96d33323e5211bf309aae18fe549"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\include\\bsp\\gui_widget_relative_bounds.hpp",
+        "sha256": "34d9ebb92fe07b5f1da083a10689a0f73796cdaa89cef60d347652bbb966277c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\src\\gui_widget_relative_bounds.cpp",
+        "sha256": "72ab4ebc4840577834242168b1ec3f1c44b8eb51b7db69ac724cf1eec9322633"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_core.lib",
+        "sha256": "9da645decb05dd4e1c799cb809f74fe9c5cb673c0731024b3a3b58a9ce8f8fc8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_lua511.lib",
+        "sha256": "b6c19dd56bce2c86dcf1abf5c3044d48ddc2ac2c33ef04e3dc87f022413ee193"
+      }
+    ],
+    "final_parent_head": "a6b54bfe2cc9629800ad9ebdddd9b1a472b71910",
+    "peer_review": "No new concrete source mismatch in independent Icon-worker C540/E230/D870 review; exact reviewed inputs at J:/PROG/battlestations-pacific-decompile-orch5-icon-state/local/listbox_navigation_review_manifest.json"
+  },
+  "open_boundaries": [
+    "Full current40 A9D030, directional84 A9DA60, A9CF30 highlight width producer, full properties and native scalar/copy teardown remain external",
+    "Non-null A9D750 insertion cross-list semantics remain excluded",
+    "Raw node/list/SEH ABI, allocator callback reentry and invalid iterator behavior not reproduced",
+    "Native 14C current node and captured selected row must survive rebuild callbacks; callback replacing14C fails host validity guard",
+    "Installed FrameBox resource/geometry and Text fit effects require parent concrete providers; Group probe does not prove them",
+    "Inherited resolved_position/local_position_for_resolved arithmetic is reused; native differential and parentless signaling-NaN load/store equivalence are unverified. C540 control/dispatch coverage is not a claim of all-float bit parity."
+  ],
+  "ghidra_mutation": false
+}

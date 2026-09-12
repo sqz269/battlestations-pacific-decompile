@@ -80,6 +80,7 @@ public:
     // A delayed record requiring a load/unload fails explicitly.
     void visibility_changed3c(GuiWidgetOwner&, bool) override;
     GuiIconRuntime& runtime() noexcept { return runtime_; }
+    void set_size58(GuiWidgetOwner&, const GuiWidgetSize&) override;
 private:
     GuiIconRuntime runtime_;
 };
@@ -92,6 +93,8 @@ public:
     void loaded78(GuiWidgetOwner&) override;
     GuiFrameBoxWidget& state() noexcept { return state_; }
     void set_state84_00acf070(GuiWidgetOwner&, std::int16_t state);
+    void set_size58(GuiWidgetOwner&, const GuiWidgetSize&) override;
+    void rebuild_current88_00aceb30(GuiWidgetOwner&);
 private:
     GuiFrameBoxWidget state_;
     GuiFrameBoxRuntimeServices services_;

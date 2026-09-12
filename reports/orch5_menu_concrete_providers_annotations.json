@@ -1,0 +1,345 @@
+[
+  {
+    "address": "0043bc30",
+    "before": {
+      "address": "0043bc30",
+      "function_name": "FUN_0043bc30"
+    },
+    "after": {
+      "address": "0043bc30",
+      "name": "BSP_MainMenu_BuildLocalizedDate",
+      "evidence": "complete normal body; all language branches and native allocations; ECX fresh native8h output;EDX date60;stack date64/date68;EAX output;RET8; docs/MAIN_MENU_PROFILE_DISPLAY.md; reports/main_menu_profile_display.json. Native ABI and gameplay not established."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00580820",
+    "before": {
+      "address": "00580820",
+      "function_name": "FUN_00580820"
+    },
+    "after": {
+      "address": "00580820",
+      "name": "BSP_MainMenu_PositionHighlight",
+      "evidence": "Hypothesis, not a recovered symbol. Actual screen highlight294 reloaded after visibility and fit callbacks; separate live size reads and CEE4E8 double height adjustment. Original ABI: ECX menu screen; selected objective pointer stack; RET4. reports/gui_widget_relative_bounds.json; reports/orch5_menu_concrete_providers_batch.json. New C++ transport, no binary replacement or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00594b60",
+    "before": {
+      "address": "00594b60",
+      "function_name": "FUN_00594b60"
+    },
+    "after": {
+      "address": "00594b60",
+      "name": "BSP_MainMenu_UpdateMissionMedal",
+      "evidence": "complete normal caller over canonical semantic score storage and actual Icon; ECX screen;RET; docs/MAIN_MENU_PROFILE_DISPLAY.md; reports/main_menu_profile_display.json. Native ABI and gameplay not established."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00851e90",
+    "before": {
+      "address": "00851e90",
+      "function_name": "FUN_00851e90"
+    },
+    "after": {
+      "address": "00851e90",
+      "name": "BSP_FixedStringBuilder_Construct",
+      "evidence": "complete normal actual-storage body; ECX16h builder;capacity stack;EAX builder;RET4; docs/MAIN_MENU_PROFILE_DISPLAY.md; reports/main_menu_profile_display.json. Native ABI and gameplay not established."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00851ec0",
+    "before": {
+      "address": "00851ec0",
+      "function_name": "BSP_FixedStringBuilder_Destruct"
+    },
+    "after": {
+      "address": "00851ec0",
+      "name": "BSP_FixedStringBuilder_Destruct",
+      "evidence": "complete normal actual-storage body through installed RET; ECX16h builder;RET at851ED0 beyond current truncated Ghidra body; docs/MAIN_MENU_PROFILE_DISPLAY.md; reports/main_menu_profile_display.json. Native ABI and gameplay not established."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00851f50",
+    "before": {
+      "address": "00851f50",
+      "function_name": "FUN_00851f50"
+    },
+    "after": {
+      "address": "00851f50",
+      "name": "BSP_FixedStringBuilder_AppendCString",
+      "evidence": "complete actual-storage body; ECX16h builder;C-string stack;EAX builder;RET4; docs/MAIN_MENU_PROFILE_DISPLAY.md; reports/main_menu_profile_display.json. Native ABI and gameplay not established."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00851fa0",
+    "before": {
+      "address": "00851fa0",
+      "function_name": "FUN_00851fa0"
+    },
+    "after": {
+      "address": "00851fa0",
+      "name": "BSP_FixedStringBuilder_AppendInteger",
+      "evidence": "complete actual-storage body; ECX16h builder;signed DWORD stack;EAX builder;RET4; docs/MAIN_MENU_PROFILE_DISPLAY.md; reports/main_menu_profile_display.json. Native ABI and gameplay not established."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "009052d0",
+    "before": {
+      "address": "009052d0",
+      "function_name": "FUN_009052d0"
+    },
+    "after": {
+      "address": "009052d0",
+      "name": "BSP_MissionScore_IsCompleted",
+      "evidence": "complete predicate; ECX score;EAX0/1;RET; docs/MAIN_MENU_PROFILE_DISPLAY.md; reports/main_menu_profile_display.json. Native ABI and gameplay not established."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9abd0",
+    "before": {
+      "address": "00a9abd0",
+      "function_name": "FUN_00a9abd0"
+    },
+    "after": {
+      "address": "00a9abd0",
+      "name": "BSP_Node_HierarchyFactor",
+      "evidence": "Hypothesis, not recovered symbol. ECX actual node; x87 float result; RET. complete normal acyclic live native parent30/scalarAC domain; float32 spill at every level. docs/GUI_LISTBOX_NAVIGATION.md; reports/gui_listbox_navigation.json. Ghidra unchanged; primary integrator applies any annotations."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9c310",
+    "before": {
+      "address": "00a9c310",
+      "function_name": "FUN_00a9c310"
+    },
+    "after": {
+      "address": "00a9c310",
+      "name": "BSP_GuiListbox_SelectFirstSelectable",
+      "evidence": "Hypothesis, not recovered symbol. ECX Listbox; no stack args; RET. complete normal valid FC list domain. docs/GUI_LISTBOX_NAVIGATION.md; reports/gui_listbox_navigation.json. Ghidra unchanged; primary integrator applies any annotations."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9c540",
+    "before": {
+      "address": "00a9c540",
+      "function_name": "FUN_00a9c540"
+    },
+    "after": {
+      "address": "00a9c540",
+      "name": "BSP_GuiListbox_PositionHighlight",
+      "evidence": "Hypothesis, not recovered symbol. ECX Listbox; stack row,paging low byte,depth float; RETC. complete normal body for established canonical current34/58 and source profiles; native invalid pointers and unsupported derived profiles excluded. docs/GUI_LISTBOX_NAVIGATION.md; reports/gui_listbox_navigation.json. Ghidra unchanged; primary integrator applies any annotations."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9d560",
+    "before": {
+      "address": "00a9d560",
+      "function_name": "FUN_00a9d560"
+    },
+    "after": {
+      "address": "00a9d560",
+      "name": "BSP_PointerList_InsertRange",
+      "evidence": "Provisional hypothesis, not a recovered symbol. Listbox E230 paging dependency implements pointer-list range insertion; reconstructed only the valid allocation projection in src/gui_listbox_runtime.cpp. Native allocation failure, maximum-size and iterator checks remain library contracts. See reports/gui_listbox_navigation.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9d870",
+    "before": {
+      "address": "00a9d870",
+      "function_name": "FUN_00a9d870"
+    },
+    "after": {
+      "address": "00a9d870",
+      "name": "BSP_GuiListbox_RebuildPage",
+      "evidence": "Hypothesis, not recovered symbol. ECX Listbox; no stack args; RET. complete normal valid FC/14C iterator sequence; current borrowed row/node and captured selected widget must survive callbacks; replacing14C during traversal excluded. docs/GUI_LISTBOX_NAVIGATION.md; reports/gui_listbox_navigation.json. Ghidra unchanged; primary integrator applies any annotations."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9d9d0",
+    "before": {
+      "address": "00a9d9d0",
+      "function_name": "FUN_00a9d9d0"
+    },
+    "after": {
+      "address": "00a9d9d0",
+      "name": "BSP_PointerList_AssignRange",
+      "evidence": "Provisional hypothesis, not a recovered symbol. Listbox E230 paging dependency assigns the canonical borrowed pointer list; reconstructed only the valid allocation projection in src/gui_listbox_runtime.cpp. Free fall-through gap repaired from installed/live bytes; library failure and exception paths remain explicit. See reports/gui_listbox_navigation.json and reports/orch5_menu_provider_flow_repair.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9e230",
+    "before": {
+      "address": "00a9e230",
+      "function_name": "FUN_00a9e230"
+    },
+    "after": {
+      "address": "00a9e230",
+      "name": "BSP_GuiListbox_EnablePaging",
+      "evidence": "Hypothesis, not recovered symbol. ECX Listbox; signed page size stack; RET4. partial_projection: complete successful-allocation sequence; native string/list allocator and SEH ABI plus allocation reentry excluded. docs/GUI_LISTBOX_NAVIGATION.md; reports/gui_listbox_navigation.json. Ghidra unchanged; primary integrator applies any annotations."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00aa0f50",
+    "before": {
+      "address": "00aa0f50",
+      "function_name": "FUN_00aa0f50"
+    },
+    "after": {
+      "address": "00aa0f50",
+      "name": "BSP_GuiManager_SelectHighlightWidget",
+      "evidence": "Hypothesis, not recovered symbol. ECX manager; signed selector stack; EAX borrowed widget; RET4. complete normal body over existing GuiResourceState slots74/78. docs/GUI_LISTBOX_NAVIGATION.md; reports/gui_listbox_navigation.json. Ghidra unchanged; primary integrator applies any annotations."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00aa7970",
+    "before": {
+      "address": "00aa7970",
+      "function_name": "BSP_GuiWidget_SetSize",
+      "comment": "[BSP reconstruction 00aa7970]\nHypothesis, not a recovered symbol. __thiscall(widget, const float pair[2]), RET 4. Base vtable 00d5bbf8 slot +58h, the slot the front-end scroll block drives with a two-float pair. Copies the two floats to widget+20h/+24h with x87 loads and stores, then calls 00AA7220. It does not refresh the bounding volume, so a resize leaves the node's bounds stale until some other path calls 00AA70E0. docs/GUI_WIDGET_TRANSFORM.md.\n\n[BSP reconstruction 00aa7970] update\nHypothesis, not a recovered symbol. __thiscall(widget, const float pair[2]), RET 4. Base vtable 00d5bbf8 slot +58h, the slot the front-end scroll block drives with a two-float pair. Copies the two floats to widget+20h/+24h with x87 loads and stores, then calls 00AA7220. It does not refresh the bounding volume, so a resize leaves the node's bounds stale until some other path calls 00AA70E0. docs/GUI_WIDGET_TRANSFORM.md. | Preserved base-size behavior now composed in actual Text resize path: sequential x87 pair loads/stores, actual canonical owner recompose, no bounds refresh. Native ECX widget, size pair stack, RET4 at AA7984. New C++ Text-owner projection, not a raw widget ABI replacement. docs/GUI_TEXT_RUNTIME_SUBMIT.md."
+    },
+    "after": {
+      "address": "00aa7970",
+      "name": "BSP_GuiWidget_SetSize",
+      "evidence": "Hypothesis, not a recovered symbol. __thiscall(widget, const float pair[2]), RET 4. Base vtable 00d5bbf8 slot +58h, the slot the front-end scroll block drives with a two-float pair. Copies the two floats to widget+20h/+24h with x87 loads and stores, then calls 00AA7220. It does not refresh the bounding volume, so a resize leaves the node's bounds stale until some other path calls 00AA70E0. docs/GUI_WIDGET_TRANSFORM.md. | Preserved base-size behavior now composed in actual Text resize path: sequential x87 pair loads/stores, actual canonical owner recompose, no bounds refresh. Native ECX widget, size pair stack, RET4 at AA7984. New C++ Text-owner projection, not a raw widget ABI replacement. docs/GUI_TEXT_RUNTIME_SUBMIT.md. | Hypothesis, not a recovered symbol. Canonical Group, Screen and Listbox current58; sequential x87 size stores then actual recomposition without bounds refresh. Original ABI: ECX widget; pointer to two float size lanes stack; RET4. reports/orch5_menu_size_dispatch.json; reports/orch5_menu_concrete_providers_batch.json. New C++ transport, no binary replacement or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00aa8240",
+    "before": {
+      "address": "00aa8240",
+      "function_name": "BSP_GuiWidget_SetResolvedPosition",
+      "comment": "[BSP reconstruction 00aa8240]\nHypothesis, not a recovered symbol. __thiscall(widget, const Vec3*) RET 4, the inverse of 00AA6750: it calls 00AA6750 on the same parent basis and writes the difference back into the widget's local translation at +0Ch. 78 callers. docs/FRONTEND_SCREEN_ANIMATION.md.\n\n[BSP reconstruction 00aa8240] update\nHypothesis, not a recovered symbol. __thiscall(widget, const Vec3*) RET 4, the inverse of 00AA6750: it calls 00AA6750 on the same parent basis and writes the difference back into the widget's local translation at +0Ch. 78 callers. docs/FRONTEND_SCREEN_ANIMATION.md. | Correction and completion from docs/GUI_WIDGET_TRANSFORM.md: +18h/+1Ch is Pivot, not scale (descriptor table 00AAAED0 binds it to 00d5c228). Order at 00AA8275..00AA82B5: (world - parent_resolved) reaches the frame first, then the parent pivot offset is added back, the exact inverse of 00AA6750. With no parent (00AA82E1) the argument is stored to +0Ch..+14h with SSE moves. Both paths then call 00AA7220 (recompose) and 00AA70E0 (bounds) with ECX = the widget."
+    },
+    "after": {
+      "address": "00aa8240",
+      "name": "BSP_GuiWidget_SetResolvedPosition",
+      "evidence": "Hypothesis, not a recovered symbol. __thiscall(widget, const Vec3*) RET 4, the inverse of 00AA6750: it calls 00AA6750 on the same parent basis and writes the difference back into the widget's local translation at +0Ch. 78 callers. docs/FRONTEND_SCREEN_ANIMATION.md. | Correction and completion from docs/GUI_WIDGET_TRANSFORM.md: +18h/+1Ch is Pivot, not scale (descriptor table 00AAAED0 binds it to 00d5c228). Order at 00AA8275..00AA82B5: (world - parent_resolved) reaches the frame first, then the parent pivot offset is added back, the exact inverse of 00AA6750. With no parent (00AA82E1) the argument is stored to +0Ch..+14h with SSE moves. Both paths then call 00AA7220 (recompose) and 00AA70E0 (bounds) with ECX = the widget. | Hypothesis, not a recovered symbol. Canonical owner binding to existing inverse-parent arithmetic, same transform storage, actual recomposition and bounds refresh; inherited arithmetic domain unchanged. Original ABI: ECX widget; resolved point pointer stack; RET4. reports/orch5_menu_size_dispatch.json; reports/orch5_menu_concrete_providers_batch.json. New C++ transport, no binary replacement or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ab17b0",
+    "before": {
+      "address": "00ab17b0",
+      "function_name": "BSP_GuiIcon_NativeSizeFromTexture",
+      "comment": "[BSP reconstruction 00ab17b0]\nHypothesis, not a recovered symbol. __fastcall(float2* out, texture* tex, const float uv[4]), RET 4, returning out. Reads the texture dimensions through virtuals +48h and +4ch as unsigned (FILD plus the conditional 4294967296.0 add at 00ab17ce/00ab17f3), divides by the doubles 960.0 (00cec380) and 720.0 (00cef1b8) and multiplies by the UV extents taken through AND 7fffffffh, so a flipped rectangle still measures positive. See docs/GUI_ICON_WIDGET.md."
+    },
+    "after": {
+      "address": "00ab17b0",
+      "name": "BSP_GuiIcon_NativeSizeFromTexture",
+      "evidence": "Hypothesis, not a recovered symbol. __fastcall(float2* out, texture* tex, const float uv[4]), RET 4, returning out. Reads the texture dimensions through virtuals +48h and +4ch as unsigned (FILD plus the conditional 4294967296.0 add at 00ab17ce/00ab17f3), divides by the doubles 960.0 (00cec380) and 720.0 (00cef1b8) and multiplies by the UV extents taken through AND 7fffffffh, so a flipped rectangle still measures positive. See docs/GUI_ICON_WIDGET.md. | Complete supported actual texture callback projection now supplied inside GuiIconRuntime::state_texture_size_00ab27a0. Native x87 unsigned conversions, width spill before height callback, float UV difference/sign mask/product, horizontal output before vertical UV reads; original texture ESI captured across callbacks. docs/GUI_ICON_STATE_MUTATION.md; build and inactive actual D3D9-resource fixture passed. Existing pure helper is unchanged. | Peer-review correction: actual callback projection uses required volatile00CE3978 float correction and00CEC380/00CEF1B8 double divisor aliases; conditional correction and each divide load at native x87 phases around width/height callbacks. No fixed numeric fallback. Actual-resource fixture mutates divisors during height and proves prior width spill versus later height divide; high-bit correction branch assembly-checked only."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ab2690",
+    "before": {
+      "address": "00ab2690",
+      "function_name": "BSP_GUI_SetStateTextureAndUV",
+      "comment": "[BSP reconstruction 00ab2690]\nECX object; stack state index, texture pointer, float[4] pointer; RET0ch. Retain replacement/release old texture in state record; floatUV copy and flip conditions. Active signed16 state atobject+ECh triggers objectvtable+80h. Concrete geometry method unresolved. Full routine unported; docs/ATLAS_GEOMETRY.md."
+    },
+    "after": {
+      "address": "00ab2690",
+      "name": "BSP_GUI_SetStateTextureAndUV",
+      "evidence": "ECX object; stack state index, texture pointer, float[4] pointer; RET0ch. Retain replacement/release old texture in state record; floatUV copy and flip conditions. Active signed16 state atobject+ECh triggers objectvtable+80h. Concrete geometry method unresolved. Full routine unported; docs/ATLAS_GEOMETRY.md. | Complete supported retained Icon projection now implemented in GuiIconRuntime::set_state_texture_00ab2690. Full DWORD range check; pointer store, retain, old release, borrowed UV copy and ordered x87/MOVSS flips, actual current80=00AB3CB0. See docs/GUI_ICON_STATE_MUTATION.md; read-only Ghidra batch; Win32 build and inactive real D3D9-resource fixture passed. | Peer-review correction: new mutator reads required live ONE alias00D7A24C after old texture release and four borrowed UV reads, before UV stores; no fixed1.0 fallback. Actual D3D9/Lua fixture changes this alias during old release and verifies resulting flip suppression. See docs/GUI_ICON_STATE_MUTATION.md."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ab27a0",
+    "before": {
+      "address": "00ab27a0",
+      "function_name": "STL_inst_00ab27a0"
+    },
+    "after": {
+      "address": "00ab27a0",
+      "name": "BSP_GuiIcon_StateTextureSize",
+      "evidence": "Hypothesis correcting provisional STL label. ECX Icon; stack output pointer and full DWORD state; RET8 at00AB27E4. Range check then captured state texture EDX, resolved UV stack and output ECX into00AB17B0 at00AB27DB; EAX returns same output. Implemented retained runtime provider; docs/GUI_ICON_STATE_MUTATION.md. No live Ghidra mutation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ac06c0",
+    "before": {
+      "address": "00ac06c0",
+      "function_name": "FUN_00ac06c0"
+    },
+    "after": {
+      "address": "00ac06c0",
+      "name": "BSP_GuiWidget_MeasurePaddedRelativeBounds",
+      "evidence": "Hypothesis, not a recovered symbol. Padded measurement over actual canonical owners; Text branch requires same completed Text lifetime; native x87 spill and alias order and saved-horizontal vertical alignment bug retained. Original ABI: ECX source widget, EDX size output; stack offset output, padding pointer, width float; RET0C. reports/gui_widget_relative_bounds.json; reports/orch5_menu_concrete_providers_batch.json. New C++ transport, no binary replacement or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ac0820",
+    "before": {
+      "address": "00ac0820",
+      "function_name": "FUN_00ac0820"
+    },
+    "after": {
+      "address": "00ac0820",
+      "name": "BSP_GuiWidget_FitRelativeToSource",
+      "evidence": "Hypothesis, not a recovered symbol. Canonical current58 dispatch before fresh geometry reads; separate pre-call width float spill and original width comparison; same owner runtime and synchronous Text completion required. Original ABI: ECX source, EDX destination; width float stack; RET4. reports/gui_widget_relative_bounds.json; reports/orch5_menu_concrete_providers_batch.json. New C++ transport, no binary replacement or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00aceb30",
+    "before": {
+      "address": "00aceb30",
+      "function_name": "FUN_00aceb30"
+    },
+    "after": {
+      "address": "00aceb30",
+      "name": "BSP_GuiFrameBox_RebuildCurrentState",
+      "evidence": "Hypothesis, not a recovered symbol. Actual FrameBox current88 to current80 AD0D80 with captured low16 state; function defined from verified19 native bytes. Original ABI: ECX FrameBox; zero-extend word current state at EC, push DWORD to current80; RET. reports/orch5_menu_size_dispatch.json; reports/orch5_menu_concrete_providers_batch.json. New C++ transport, no binary replacement or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00acf120",
+    "before": {
+      "address": "00acf120",
+      "function_name": "FUN_00acf120"
+    },
+    "after": {
+      "address": "00acf120",
+      "name": "BSP_GuiFrameBox_SetSize",
+      "evidence": "Hypothesis, not a recovered symbol. Actual FrameBox current58; base58 callback then fresh current state and live state records; sequential borrowed size copies and actual current88 resource rebuild; valid state storage domain. Original ABI: ECX FrameBox; borrowed size pointer stack; RET4. reports/orch5_menu_size_dispatch.json; reports/orch5_menu_concrete_providers_batch.json. New C++ transport, no binary replacement or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b6da70",
+    "before": {
+      "address": "00b6da70",
+      "function_name": "BSP_SceneNode_SetVisibilityFactor",
+      "comment": "[BSP reconstruction 00b6da70]\nProvisional hypothesis, not a recovered symbol. __thiscall(node, float value, char recurse). Writes the float into node+ACh and, when recurse is non-zero, walks the child list at node+34h chained through +3Ch and recurses. 00BBD310 calls it with (0.0f, 0) to hide the ocean node when the ocean is disabled; 00BBE8B0 calls it with the layer's faded alpha. The field's exact meaning (alpha or a visibility scale) is not established, so the noun is provisional. docs/GAME_WORLD_OCEAN.md."
+    },
+    "after": {
+      "address": "00b6da70",
+      "name": "BSP_SceneNode_SetVisibilityFactor",
+      "evidence": "Provisional hypothesis, not a recovered symbol. __thiscall(node, float value, char recurse). Writes the float into node+ACh and, when recurse is non-zero, walks the child list at node+34h chained through +3Ch and recurses. 00BBD310 calls it with (0.0f, 0) to hide the ocean node when the ocean is disabled; 00BBE8B0 calls it with the layer's faded alpha. The field's exact meaning (alpha or a visibility scale) is not established, so the noun is provisional. docs/GAME_WORLD_OCEAN.md. | Hypothesis, not a recovered symbol. Public same-widget-node entry to established native backing scalarAC MOVSS store and actual hierarchy resolver recursion; child factor x87 float spill retained. Original ABI: ECX node; float factor and recurse byte in two stack DWORDs; RET8. reports/main_menu_selection_services.json; reports/orch5_menu_concrete_providers_batch.json. New C++ transport, no binary replacement or game validation."
+    },
+    "status": "applied"
+  }
+]
