@@ -1,0 +1,2652 @@
+{
+  "schema_version": 1,
+  "packet": "orch2_manager_containers_ap",
+  "base_commit": "116987ab",
+  "status": "read_only_static_discovery_complete; full_manager_not_source_ready",
+  "owned_addresses": [
+    "00be1dc0",
+    "00be1f60",
+    "00bdb970"
+  ],
+  "owned_files": [
+    "docs/NATIVE_VFS_MANAGER_CONTAINERS_PACKET_MAP.md",
+    "reports/native_vfs_manager_containers_packet_map.json"
+  ],
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "evidence_policy": "Ghidra only through verified read-only BSP CLI. No Java, annotation, saved-body/flow repair, C++, tests or ledger changes. All27 bounded logical spans and7 EH data maps compared live versus installed PE.",
+  "routines": [
+    {
+      "address": "00be1dc0",
+      "end_inclusive": "00be1f5a",
+      "logical_bytes": 411,
+      "coverage": "complete static logical-body reading; no source reconstruction in this discovery",
+      "saved_proto": "00be1dc0 FUN_00be1dc0  undefined FUN_00be1dc0(void)  body 00be1dc0 - 00be1f5a",
+      "live_bytes_match_installed": true,
+      "sha256": "b293bc3a23b1ea909546ab50e2c69bd3a081050d93bb33325014c9c6124f8d6e",
+      "missing_listing_ranges": [],
+      "live_call_rows": [
+        {
+          "function": "00be1dc0",
+          "instruction": "call 0xbda6f0",
+          "address": "00be1ddf",
+          "native": "00bda6f0",
+          "callee_contract_and_abi": "ECX actual manager base; no consumed stack arguments; RET0; owner-publication contract remains separate"
+        },
+        {
+          "function": "00be1dc0",
+          "instruction": "call 0xbda960",
+          "address": "00be1e1f",
+          "native": "00bda960",
+          "callee_contract_and_abi": "No consumed incoming register/stack arguments; RET0; EAX allocated raw node; existing six-leaf source provider"
+        },
+        {
+          "function": "00be1dc0",
+          "instruction": "call 0xbdabf0",
+          "address": "00be1e34",
+          "native": "00bdabf0",
+          "callee_contract_and_abi": "No consumed incoming register/stack arguments; RET0; EAX allocated raw node; existing six-leaf source provider"
+        },
+        {
+          "function": "00be1dc0",
+          "instruction": "call 0xbdaba0",
+          "address": "00be1e67",
+          "native": "00bdaba0",
+          "callee_contract_and_abi": "No consumed incoming register/stack arguments; RET0; EAX allocated raw node; existing six-leaf source provider"
+        },
+        {
+          "function": "00be1dc0",
+          "instruction": "call 0xbda980",
+          "address": "00be1e91",
+          "native": "00bda980",
+          "callee_contract_and_abi": "No consumed incoming register/stack arguments; RET0; EAX allocated raw node; existing six-leaf source provider"
+        },
+        {
+          "function": "00be1dc0",
+          "instruction": "call 0x4c26b0",
+          "address": "00be1ea6",
+          "native": "004c26b0",
+          "callee_contract_and_abi": "No consumed incoming register/stack arguments; RET0; EAX allocated raw node; existing six-leaf source provider"
+        },
+        {
+          "function": "00be1dc0",
+          "instruction": "call 0x7f82f0",
+          "address": "00be1ed7",
+          "native": "007f82f0",
+          "callee_contract_and_abi": "No consumed incoming register/stack arguments; RET0; EAX allocated raw node; existing six-leaf source provider"
+        },
+        {
+          "function": "00be1dc0",
+          "instruction": "call 0xbdb970",
+          "address": "00be1f10",
+          "native": "00bdb970",
+          "callee_contract_and_abi": "One stack C-string pointer; incoming ECX/EDX unused; RET4; no stable EAX result established"
+        },
+        {
+          "function": "00be1dc0",
+          "instruction": "call 0xbdb970",
+          "address": "00be1f1a",
+          "native": "00bdb970",
+          "callee_contract_and_abi": "One stack C-string pointer; incoming ECX/EDX unused; RET4; no stable EAX result established"
+        },
+        {
+          "function": "00be1dc0",
+          "instruction": "call 0xbdb970",
+          "address": "00be1f24",
+          "native": "00bdb970",
+          "callee_contract_and_abi": "One stack C-string pointer; incoming ECX/EDX unused; RET4; no stable EAX result established"
+        },
+        {
+          "function": "00be1dc0",
+          "instruction": "call 0xbdb970",
+          "address": "00be1f2e",
+          "native": "00bdb970",
+          "callee_contract_and_abi": "One stack C-string pointer; incoming ECX/EDX unused; RET4; no stable EAX result established"
+        },
+        {
+          "function": "00be1dc0",
+          "instruction": "call 0xbdb970",
+          "address": "00be1f38",
+          "native": "00bdb970",
+          "callee_contract_and_abi": "One stack C-string pointer; incoming ECX/EDX unused; RET4; no stable EAX result established"
+        },
+        {
+          "function": "00be1dc0",
+          "instruction": "call 0xbdb970",
+          "address": "00be1f42",
+          "native": "00bdb970",
+          "callee_contract_and_abi": "One stack C-string pointer; incoming ECX/EDX unused; RET4; no stable EAX result established"
+        }
+      ],
+      "raw_or_indirect_calls": [],
+      "tail_jumps": [],
+      "return_instruction": "ret",
+      "contract": "Initialize actual A0h manager storage after BDA6F0; six allocation leaves; three tree heads converted to sentinel; six BDB970 calls; ten-state cleanup chain.",
+      "original_abi": "ECX A0h manager; ESI captures ECX atBE1DD8; EBX zero defined atBE1DE4 and callee-preserved thereafter; EDI current subobject; RET0; EAX=this atBE1F4C"
+    },
+    {
+      "address": "00be1f60",
+      "end_inclusive": "00be21e2",
+      "logical_bytes": 643,
+      "coverage": "complete static logical-body reading; no source reconstruction in this discovery",
+      "saved_proto": "00be1f60 FUN_00be1f60  undefined FUN_00be1f60(void)  body 00be1f60 - 00be2028",
+      "live_bytes_match_installed": true,
+      "sha256": "20c9962c30ead46b4a4e5f334566b68b86ab523b0078c25c5d9676d6dc60458c",
+      "missing_listing_ranges": [
+        {
+          "start": "00be2029",
+          "end_inclusive": "00be21e2",
+          "instructions": [
+            "00be2029: mov ecx, dword ptr [esi + 0x80]",
+            "00be202f: mov eax, dword ptr [ecx]",
+            "00be2031: mov dword ptr [ecx], ecx",
+            "00be2033: mov ecx, dword ptr [esi + 0x80]",
+            "00be2039: mov dword ptr [ecx + 4], ecx",
+            "00be203c: add esp, 4",
+            "00be203f: cmp eax, dword ptr [esi + 0x80]",
+            "00be2045: mov dword ptr [esi + 0x84], ebx",
+            "00be204b: je 0xbe2065",
+            "00be204d: lea ecx, [ecx]",
+            "00be2050: mov edi, dword ptr [eax]",
+            "00be2052: push eax",
+            "00be2053: call 0xbf65ac",
+            "00be2058: add esp, 4",
+            "00be205b: cmp edi, dword ptr [esi + 0x80]",
+            "00be2061: mov eax, edi",
+            "00be2063: jne 0xbe2050",
+            "00be2065: mov eax, dword ptr [esi + 0x80]",
+            "00be206b: push eax",
+            "00be206c: call 0xbf65ac",
+            "00be2071: add esp, 4",
+            "00be2074: lea edi, [esi + 0x6c]",
+            "00be2077: mov dword ptr [esi + 0x80], ebx",
+            "00be207d: mov eax, dword ptr [edi + 4]",
+            "00be2080: mov ecx, dword ptr [eax]",
+            "00be2082: push eax",
+            "00be2083: push edi",
+            "00be2084: push ecx",
+            "00be2085: push edi",
+            "00be2086: lea ecx, [esp + 0x2c]",
+            "00be208a: push ecx",
+            "00be208b: mov ecx, edi",
+            "00be208d: mov byte ptr [esp + 0x40], 6",
+            "00be2092: call 0x4d1a50",
+            "00be2097: mov eax, dword ptr [edi + 4]",
+            "00be209a: push eax",
+            "00be209b: call 0xbf65ac",
+            "00be20a0: mov dword ptr [edi + 4], ebx",
+            "00be20a3: mov dword ptr [edi + 8], ebx",
+            "00be20a6: mov eax, dword ptr [esi + 0x64]",
+            "00be20a9: mov edi, dword ptr [eax]",
+            "00be20ab: mov dword ptr [eax], eax",
+            "00be20ad: mov eax, dword ptr [esi + 0x64]",
+            "00be20b0: mov dword ptr [eax + 4], eax",
+            "00be20b3: add esp, 4",
+            "00be20b6: cmp edi, dword ptr [esi + 0x64]",
+            "00be20b9: mov byte ptr [esp + 0x2c], 5",
+            "00be20be: mov dword ptr [esi + 0x68], ebx",
+            "00be20c1: je 0xbe20e3",
+            "00be20c3: mov edx, dword ptr [edi]",
+            "00be20c5: lea ecx, [edi + 8]",
+            "00be20c8: mov dword ptr [esp + 0x10], edx",
+            "00be20cc: call 0xbe1220",
+            "00be20d1: push edi",
+            "00be20d2: call 0xbf65ac",
+            "00be20d7: mov edi, dword ptr [esp + 0x14]",
+            "00be20db: add esp, 4",
+            "00be20de: cmp edi, dword ptr [esi + 0x64]",
+            "00be20e1: jne 0xbe20c3",
+            "00be20e3: mov eax, dword ptr [esi + 0x64]",
+            "00be20e6: push eax",
+            "00be20e7: call 0xbf65ac",
+            "00be20ec: add esp, 4",
+            "00be20ef: lea edi, [esi + 0x54]",
+            "00be20f2: mov dword ptr [esi + 0x64], ebx",
+            "00be20f5: mov eax, dword ptr [edi + 4]",
+            "00be20f8: mov ecx, dword ptr [eax]",
+            "00be20fa: push eax",
+            "00be20fb: push edi",
+            "00be20fc: push ecx",
+            "00be20fd: push edi",
+            "00be20fe: lea eax, [esp + 0x2c]",
+            "00be2102: push eax",
+            "00be2103: mov ecx, edi",
+            "00be2105: mov byte ptr [esp + 0x40], 4",
+            "00be210a: call 0xbe0c30",
+            "00be210f: mov eax, dword ptr [edi + 4]",
+            "00be2112: push eax",
+            "00be2113: call 0xbf65ac",
+            "00be2118: mov dword ptr [edi + 4], ebx",
+            "00be211b: mov dword ptr [edi + 8], ebx",
+            "00be211e: add esp, 4",
+            "00be2121: lea edi, [esi + 0x48]",
+            "00be2124: push ebx",
+            "00be2125: mov ecx, edi",
+            "00be2127: mov byte ptr [esp + 0x30], 3",
+            "00be212c: call 0x427110",
+            "00be2131: mov edi, dword ptr [edi]",
+            "00be2133: push edi",
+            "00be2134: call 0xbf6989",
+            "00be2139: mov eax, dword ptr [ebp + 4]",
+            "00be213c: mov ecx, dword ptr [eax]",
+            "00be213e: add esp, 4",
+            "00be2141: push eax",
+            "00be2142: push ebp",
+            "00be2143: push ecx",
+            "00be2144: push ebp",
+            "00be2145: lea ecx, [esp + 0x2c]",
+            "00be2149: push ecx",
+            "00be214a: mov ecx, ebp",
+            "00be214c: mov byte ptr [esp + 0x40], 2",
+            "00be2151: call 0xbe0d00",
+            "00be2156: mov eax, dword ptr [ebp + 4]",
+            "00be2159: push eax",
+            "00be215a: call 0xbf65ac",
+            "00be215f: mov dword ptr [ebp + 4], ebx",
+            "00be2162: mov dword ptr [ebp + 8], ebx",
+            "00be2165: mov eax, dword ptr [esi + 0x34]",
+            "00be2168: mov ecx, dword ptr [eax]",
+            "00be216a: mov dword ptr [eax], eax",
+            "00be216c: mov eax, dword ptr [esi + 0x34]",
+            "00be216f: add esp, 4",
+            "00be2172: mov dword ptr [eax + 4], eax",
+            "00be2175: cmp ecx, dword ptr [esi + 0x34]",
+            "00be2178: mov dword ptr [esi + 0x38], ebx",
+            "00be217b: pop ebp",
+            "00be217c: je 0xbe2192",
+            "00be217e: mov edi, edi",
+            "00be2180: mov edi, dword ptr [ecx]",
+            "00be2182: push ecx",
+            "00be2183: call 0xbf65ac",
+            "00be2188: add esp, 4",
+            "00be218b: cmp edi, dword ptr [esi + 0x34]",
+            "00be218e: mov ecx, edi",
+            "00be2190: jne 0xbe2180",
+            "00be2192: mov eax, dword ptr [esi + 0x34]",
+            "00be2195: push eax",
+            "00be2196: call 0xbf65ac",
+            "00be219b: mov dword ptr [esi + 0x34], ebx",
+            "00be219e: mov eax, dword ptr [esi + 0x10]",
+            "00be21a1: add esp, 4",
+            "00be21a4: cmp eax, ebx",
+            "00be21a6: mov byte ptr [esp + 0x28], bl",
+            "00be21aa: je 0xbe21c2",
+            "00be21ac: mov ecx, dword ptr [esi + 0xc]",
+            "00be21af: push 1",
+            "00be21b1: add ecx, 1",
+            "00be21b4: push ecx",
+            "00be21b5: push eax",
+            "00be21b6: call 0x419cc0",
+            "00be21bb: mov ecx, eax",
+            "00be21bd: call 0xbd1510",
+            "00be21c2: mov ecx, esi",
+            "00be21c4: mov dword ptr [esp + 0x28], 0xffffffff",
+            "00be21cc: call 0xbda790",
+            "00be21d1: mov ecx, dword ptr [esp + 0x20]",
+            "00be21d5: pop edi",
+            "00be21d6: pop esi",
+            "00be21d7: pop ebx",
+            "00be21d8: mov dword ptr fs:[0], ecx",
+            "00be21df: add esp, 0x20",
+            "00be21e2: ret "
+          ],
+          "kind": "required raw continuation absent from stored listing"
+        }
+      ],
+      "live_call_rows": [
+        {
+          "function": "00be1f60",
+          "instruction": "call 0xbf6713",
+          "address": "00be1fc5",
+          "native": "00bf6713",
+          "callee_contract_and_abi": "No stack arguments; RET0; returning invalid-parameter wrapper; caller continues"
+        },
+        {
+          "function": "00be1f60",
+          "instruction": "call 0xbf6713",
+          "address": "00be1fd8",
+          "native": "00bf6713",
+          "callee_contract_and_abi": "No stack arguments; RET0; returning invalid-parameter wrapper; caller continues"
+        },
+        {
+          "function": "00be1f60",
+          "instruction": "call 0xbf6713",
+          "address": "00be1fe6",
+          "native": "00bf6713",
+          "callee_contract_and_abi": "No stack arguments; RET0; returning invalid-parameter wrapper; caller continues"
+        },
+        {
+          "function": "00be1f60",
+          "instruction": "call 0xbd97e0",
+          "address": "00be2003",
+          "native": "00bd97e0",
+          "callee_contract_and_abi": "ECX actual two-word iterator (owner,node); RET0; successor updates current iterator storage"
+        },
+        {
+          "function": "00be1f60",
+          "instruction": "call 0xbdec70",
+          "address": "00be201c",
+          "native": "00bdec70",
+          "callee_contract_and_abi": "ECX raw vector (backing,count,capacity); one signed stack count; RET4; all grow/shrink branches required"
+        },
+        {
+          "function": "00be1f60",
+          "instruction": "call 0xbf6989",
+          "address": "00be2024",
+          "native": "00bf6989",
+          "callee_contract_and_abi": "One cdecl stack block pointer; caller ADD ESP,4, sometimes delayed/interleaved; returning free thunk"
+        }
+      ],
+      "raw_or_indirect_calls": [
+        {
+          "instruction": "call edx",
+          "raw_site": "00be1fa1",
+          "target": "edx",
+          "reason": "indirect dispatch",
+          "logical_continuation_of": "00be1f60",
+          "callee_contract_and_abi": "Current virtual0 or virtual4 call with ECX object and one stack deleting flag1; concrete profile contract not established in this packet"
+        },
+        {
+          "instruction": "call eax",
+          "raw_site": "00be1ffd",
+          "target": "eax",
+          "reason": "indirect dispatch",
+          "logical_continuation_of": "00be1f60",
+          "callee_contract_and_abi": "Current virtual0 or virtual4 call with ECX object and one stack deleting flag1; concrete profile contract not established in this packet"
+        },
+        {
+          "instruction": "call 0xbf65ac",
+          "raw_site": "00be2053",
+          "target": "00bf65ac",
+          "reason": "outside live stored listing; raw continuation evidence only",
+          "logical_continuation_of": "00be1f60",
+          "callee_contract_and_abi": "One cdecl stack block pointer; caller ADD ESP,4, sometimes delayed/interleaved; returning free thunk"
+        },
+        {
+          "instruction": "call 0xbf65ac",
+          "raw_site": "00be206c",
+          "target": "00bf65ac",
+          "reason": "outside live stored listing; raw continuation evidence only",
+          "logical_continuation_of": "00be1f60",
+          "callee_contract_and_abi": "One cdecl stack block pointer; caller ADD ESP,4, sometimes delayed/interleaved; returning free thunk"
+        },
+        {
+          "instruction": "call 0x4d1a50",
+          "raw_site": "00be2092",
+          "target": "004d1a50",
+          "reason": "outside live stored listing; raw continuation evidence only",
+          "logical_continuation_of": "00be1f60",
+          "callee_contract_and_abi": "ECX tree owner; stack(output_iterator,first_owner,first_node,last_owner,last_node); RET14; EAX output_iterator"
+        },
+        {
+          "instruction": "call 0xbf65ac",
+          "raw_site": "00be209b",
+          "target": "00bf65ac",
+          "reason": "outside live stored listing; raw continuation evidence only",
+          "logical_continuation_of": "00be1f60",
+          "callee_contract_and_abi": "One cdecl stack block pointer; caller ADD ESP,4, sometimes delayed/interleaved; returning free thunk"
+        },
+        {
+          "instruction": "call 0xbe1220",
+          "raw_site": "00be20cc",
+          "target": "00be1220",
+          "reason": "outside live stored listing; raw continuation evidence only",
+          "logical_continuation_of": "00be1f60",
+          "callee_contract_and_abi": "ECX payload consisting of string+0 and lists+8/+14; RET0; no stable EAX result"
+        },
+        {
+          "instruction": "call 0xbf65ac",
+          "raw_site": "00be20d2",
+          "target": "00bf65ac",
+          "reason": "outside live stored listing; raw continuation evidence only",
+          "logical_continuation_of": "00be1f60",
+          "callee_contract_and_abi": "One cdecl stack block pointer; caller ADD ESP,4, sometimes delayed/interleaved; returning free thunk"
+        },
+        {
+          "instruction": "call 0xbf65ac",
+          "raw_site": "00be20e7",
+          "target": "00bf65ac",
+          "reason": "outside live stored listing; raw continuation evidence only",
+          "logical_continuation_of": "00be1f60",
+          "callee_contract_and_abi": "One cdecl stack block pointer; caller ADD ESP,4, sometimes delayed/interleaved; returning free thunk"
+        },
+        {
+          "instruction": "call 0xbe0c30",
+          "raw_site": "00be210a",
+          "target": "00be0c30",
+          "reason": "outside live stored listing; raw continuation evidence only",
+          "logical_continuation_of": "00be1f60",
+          "callee_contract_and_abi": "ECX tree owner; stack(output_iterator,first_owner,first_node,last_owner,last_node); RET14; EAX output_iterator"
+        },
+        {
+          "instruction": "call 0xbf65ac",
+          "raw_site": "00be2113",
+          "target": "00bf65ac",
+          "reason": "outside live stored listing; raw continuation evidence only",
+          "logical_continuation_of": "00be1f60",
+          "callee_contract_and_abi": "One cdecl stack block pointer; caller ADD ESP,4, sometimes delayed/interleaved; returning free thunk"
+        },
+        {
+          "instruction": "call 0x427110",
+          "raw_site": "00be212c",
+          "target": "00427110",
+          "reason": "outside live stored listing; raw continuation evidence only",
+          "logical_continuation_of": "00be1f60",
+          "callee_contract_and_abi": "ECX actual string-vector header; one signed stack count; RET4; existing actual raw string-vector resize"
+        },
+        {
+          "instruction": "call 0xbf6989",
+          "raw_site": "00be2134",
+          "target": "00bf6989",
+          "reason": "outside live stored listing; raw continuation evidence only",
+          "logical_continuation_of": "00be1f60",
+          "callee_contract_and_abi": "One cdecl stack block pointer; caller ADD ESP,4, sometimes delayed/interleaved; returning free thunk"
+        },
+        {
+          "instruction": "call 0xbe0d00",
+          "raw_site": "00be2151",
+          "target": "00be0d00",
+          "reason": "outside live stored listing; raw continuation evidence only",
+          "logical_continuation_of": "00be1f60",
+          "callee_contract_and_abi": "ECX tree owner; stack(output_iterator,first_owner,first_node,last_owner,last_node); RET14; EAX output_iterator"
+        },
+        {
+          "instruction": "call 0xbf65ac",
+          "raw_site": "00be215a",
+          "target": "00bf65ac",
+          "reason": "outside live stored listing; raw continuation evidence only",
+          "logical_continuation_of": "00be1f60",
+          "callee_contract_and_abi": "One cdecl stack block pointer; caller ADD ESP,4, sometimes delayed/interleaved; returning free thunk"
+        },
+        {
+          "instruction": "call 0xbf65ac",
+          "raw_site": "00be2183",
+          "target": "00bf65ac",
+          "reason": "outside live stored listing; raw continuation evidence only",
+          "logical_continuation_of": "00be1f60",
+          "callee_contract_and_abi": "One cdecl stack block pointer; caller ADD ESP,4, sometimes delayed/interleaved; returning free thunk"
+        },
+        {
+          "instruction": "call 0xbf65ac",
+          "raw_site": "00be2196",
+          "target": "00bf65ac",
+          "reason": "outside live stored listing; raw continuation evidence only",
+          "logical_continuation_of": "00be1f60",
+          "callee_contract_and_abi": "One cdecl stack block pointer; caller ADD ESP,4, sometimes delayed/interleaved; returning free thunk"
+        },
+        {
+          "instruction": "call 0x419cc0",
+          "raw_site": "00be21b6",
+          "target": "00419cc0",
+          "reason": "outside live stored listing; raw continuation evidence only",
+          "logical_continuation_of": "00be1f60",
+          "callee_contract_and_abi": "No consumed stack arguments; RET0; EAX current actual pool. Three already-pushed words belong to following BD1510"
+        },
+        {
+          "instruction": "call 0xbd1510",
+          "raw_site": "00be21bd",
+          "target": "00bd1510",
+          "reason": "outside live stored listing; raw continuation evidence only",
+          "logical_continuation_of": "00be1f60",
+          "callee_contract_and_abi": "ECX returned pool; stack (block,size,unused=1); RET0C consumes the three words previously pushed before 419CC0"
+        },
+        {
+          "instruction": "call 0xbda790",
+          "raw_site": "00be21cc",
+          "target": "00bda790",
+          "reason": "outside live stored listing; raw continuation evidence only",
+          "logical_continuation_of": "00be1f60",
+          "callee_contract_and_abi": "ECX actual manager base; no consumed stack arguments; RET0; current-global unregister contract remains separate"
+        }
+      ],
+      "tail_jumps": [],
+      "return_instruction": "ret",
+      "contract": "Install D685B4; optional current 109CEE8 virtual0(1); delete every nonnull mount provider via current virtual4(1); then reverse member cleanup; missing442-byte live tail.",
+      "original_abi": "ECX A0h manager; ESI captures ECX atBE1F7A; EBX zero atBE1F8D; EBP=manager+3C while mount cleanup active; RET0; no stable EAX result established"
+    },
+    {
+      "address": "00bdb970",
+      "end_inclusive": "00bdba04",
+      "logical_bytes": 149,
+      "coverage": "complete static logical-body reading; no source reconstruction in this discovery",
+      "saved_proto": "00bdb970 FUN_00bdb970  undefined FUN_00bdb970(void)  body 00bdb970 - 00bdba04",
+      "live_bytes_match_installed": true,
+      "sha256": "a5308d1cb4feae1adad899d5995ff2f220a45327b43f9c14583e495104a685c8",
+      "missing_listing_ranges": [],
+      "live_call_rows": [
+        {
+          "function": "00bdb970",
+          "instruction": "call 0x41e870",
+          "address": "00bdb991",
+          "native": "0041e870",
+          "callee_contract_and_abi": "ECX destination 8-byte string header; one stack C-string pointer; RET4; EAX destination"
+        },
+        {
+          "function": "00bdb970",
+          "instruction": "call 0xbee390",
+          "address": "00bdb9a5",
+          "native": "00bee390",
+          "callee_contract_and_abi": "ECX output 8-byte header; EDX input 8-byte header; RET0; EAX output"
+        },
+        {
+          "function": "00bdb970",
+          "instruction": "call 0x419cc0",
+          "address": "00bdb9c1",
+          "native": "00419cc0",
+          "callee_contract_and_abi": "No consumed stack arguments; RET0; EAX current actual pool. Three already-pushed words belong to following BD1510"
+        },
+        {
+          "function": "00bdb970",
+          "instruction": "call 0xbd1510",
+          "address": "00bdb9c8",
+          "native": "00bd1510",
+          "callee_contract_and_abi": "ECX returned pool; stack (block,size,unused=1); RET0C consumes the three words previously pushed before 419CC0"
+        },
+        {
+          "function": "00bdb970",
+          "instruction": "call 0x419cc0",
+          "address": "00bdb9e8",
+          "native": "00419cc0",
+          "callee_contract_and_abi": "No consumed stack arguments; RET0; EAX current actual pool. Three already-pushed words belong to following BD1510"
+        },
+        {
+          "function": "00bdb970",
+          "instruction": "call 0xbd1510",
+          "address": "00bdb9ef",
+          "native": "00bd1510",
+          "callee_contract_and_abi": "ECX returned pool; stack (block,size,unused=1); RET0C consumes the three words previously pushed before 419CC0"
+        }
+      ],
+      "raw_or_indirect_calls": [],
+      "tail_jumps": [],
+      "return_instruction": "ret 4",
+      "contract": "Construct source C-string temporary; canonicalize into second native header; release source then output. State2 unwinds only output if source release throws.",
+      "original_abi": "One stack C-string pointer; incoming ECX/EDX unused; RET4; no stable EAX result established"
+    },
+    {
+      "address": "00bdaed0",
+      "end_inclusive": "00bdaf17",
+      "logical_bytes": 72,
+      "coverage": "complete static logical-body reading; no source reconstruction in this discovery",
+      "saved_proto": "00bdaed0 FUN_00bdaed0  undefined FUN_00bdaed0(void)  body 00bdaed0 - 00bdaf0b",
+      "live_bytes_match_installed": true,
+      "sha256": "161a76739263c4ce8242dc71e2b06b05e9628d6be5e44090788a1dc369e2a331",
+      "missing_listing_ranges": [
+        {
+          "start": "00bdaef8",
+          "end_inclusive": "00bdaf02",
+          "instructions": [
+            "00bdaef8: add esp, 4",
+            "00bdaefb: cmp edi, dword ptr [esi + 4]",
+            "00bdaefe: mov eax, edi",
+            "00bdaf00: jne 0xbdaef0",
+            "00bdaf02: pop edi"
+          ],
+          "kind": "required raw continuation absent from stored listing"
+        },
+        {
+          "start": "00bdaf0c",
+          "end_inclusive": "00bdaf17",
+          "instructions": [
+            "00bdaf0c: add esp, 4",
+            "00bdaf0f: mov dword ptr [esi + 4], 0",
+            "00bdaf16: pop esi",
+            "00bdaf17: ret "
+          ],
+          "kind": "required raw continuation absent from stored listing"
+        }
+      ],
+      "live_call_rows": [
+        {
+          "function": "00bdaed0",
+          "instruction": "call 0xbf65ac",
+          "address": "00bdaef3",
+          "native": "00bf65ac",
+          "callee_contract_and_abi": "One cdecl stack block pointer; caller ADD ESP,4, sometimes delayed/interleaved; returning free thunk"
+        },
+        {
+          "function": "00bdaed0",
+          "instruction": "call 0xbf65ac",
+          "address": "00bdaf07",
+          "native": "00bf65ac",
+          "callee_contract_and_abi": "One cdecl stack block pointer; caller ADD ESP,4, sometimes delayed/interleaved; returning free thunk"
+        }
+      ],
+      "raw_or_indirect_calls": [],
+      "tail_jumps": [],
+      "return_instruction": "ret",
+      "contract": "Self-link list head and zero count before freeing node chain; capture next before free, compare against current head; free current head and clear owner+4; no payload destruction.",
+      "original_abi": "ECX raw owner; no consumed stack arguments; RET0. Tail thunks preserve ABI of target."
+    },
+    {
+      "address": "007f8310",
+      "end_inclusive": "007f8357",
+      "logical_bytes": 72,
+      "coverage": "complete static logical-body reading; no source reconstruction in this discovery",
+      "saved_proto": "007f8310 FUN_007f8310  undefined FUN_007f8310(void)  body 007f8310 - 007f834b",
+      "live_bytes_match_installed": true,
+      "sha256": "5b102a401ce4bccec413f964ac96573b1f65ffa24bcffba9cda73cfffd25a3de",
+      "missing_listing_ranges": [
+        {
+          "start": "007f8338",
+          "end_inclusive": "007f8342",
+          "instructions": [
+            "007f8338: add esp, 4",
+            "007f833b: cmp edi, dword ptr [esi + 4]",
+            "007f833e: mov eax, edi",
+            "007f8340: jne 0x7f8330",
+            "007f8342: pop edi"
+          ],
+          "kind": "required raw continuation absent from stored listing"
+        },
+        {
+          "start": "007f834c",
+          "end_inclusive": "007f8357",
+          "instructions": [
+            "007f834c: add esp, 4",
+            "007f834f: mov dword ptr [esi + 4], 0",
+            "007f8356: pop esi",
+            "007f8357: ret "
+          ],
+          "kind": "required raw continuation absent from stored listing"
+        }
+      ],
+      "live_call_rows": [
+        {
+          "function": "007f8310",
+          "instruction": "call 0xbf65ac",
+          "address": "007f8333",
+          "native": "00bf65ac",
+          "callee_contract_and_abi": "One cdecl stack block pointer; caller ADD ESP,4, sometimes delayed/interleaved; returning free thunk"
+        },
+        {
+          "function": "007f8310",
+          "instruction": "call 0xbf65ac",
+          "address": "007f8347",
+          "native": "00bf65ac",
+          "callee_contract_and_abi": "One cdecl stack block pointer; caller ADD ESP,4, sometimes delayed/interleaved; returning free thunk"
+        }
+      ],
+      "raw_or_indirect_calls": [],
+      "tail_jumps": [],
+      "return_instruction": "ret",
+      "contract": "Same 72-byte plain-list destruction schedule as BDAED0; independent native entry used at manager+7C.",
+      "original_abi": "ECX raw owner; no consumed stack arguments; RET0. Tail thunks preserve ABI of target."
+    },
+    {
+      "address": "00bdb3c0",
+      "end_inclusive": "00bdb3c4",
+      "logical_bytes": 5,
+      "coverage": "complete static logical-body reading; no source reconstruction in this discovery",
+      "saved_proto": "00bdb3c0 FUN_00bdb3c0  undefined FUN_00bdb3c0(void)  body 00bdb3c0 - 00bdb3c4",
+      "live_bytes_match_installed": true,
+      "sha256": "638bd53f0cd04c4271a7205b9e7a03de5d9456366ddea7279c2ed4f096a61748",
+      "missing_listing_ranges": [],
+      "live_call_rows": [],
+      "raw_or_indirect_calls": [],
+      "tail_jumps": [
+        {
+          "site": "00bdb3c0",
+          "target": "00bdaed0",
+          "kind": "tail jump, not a CALL row",
+          "live_listing": true
+        }
+      ],
+      "return_instruction": "jmp 0xbdaed0",
+      "contract": "Five-byte tail thunk to BDAED0.",
+      "original_abi": "ECX raw owner; no consumed stack arguments; RET0. Tail thunks preserve ABI of target."
+    },
+    {
+      "address": "007f8770",
+      "end_inclusive": "007f8774",
+      "logical_bytes": 5,
+      "coverage": "complete static logical-body reading; no source reconstruction in this discovery",
+      "saved_proto": "007f8770 FUN_007f8770  undefined FUN_007f8770(void)  body 007f8770 - 007f8774",
+      "live_bytes_match_installed": true,
+      "sha256": "4ee929c6da7156a3b1e634d383733f3c1806083f2f98ec4267a3e6aae2251a46",
+      "missing_listing_ranges": [],
+      "live_call_rows": [],
+      "raw_or_indirect_calls": [],
+      "tail_jumps": [
+        {
+          "site": "007f8770",
+          "target": "007f8310",
+          "kind": "tail jump, not a CALL row",
+          "live_listing": true
+        }
+      ],
+      "return_instruction": "jmp 0x7f8310",
+      "contract": "Five-byte tail thunk to7F8310.",
+      "original_abi": "ECX raw owner; no consumed stack arguments; RET0. Tail thunks preserve ABI of target."
+    },
+    {
+      "address": "00be1220",
+      "end_inclusive": "00be12b9",
+      "logical_bytes": 154,
+      "coverage": "complete static logical-body reading; no source reconstruction in this discovery",
+      "saved_proto": "00be1220 FUN_00be1220  undefined FUN_00be1220(void)  body 00be1220 - 00be1258",
+      "live_bytes_match_installed": true,
+      "sha256": "e237619b020abe0b1c93b0b2b6ef5ae7a2bc225215ee51c0fe3684f4a9435b80",
+      "missing_listing_ranges": [
+        {
+          "start": "00be1259",
+          "end_inclusive": "00be12b9",
+          "instructions": [
+            "00be1259: mov dword ptr [edi + 4], 0",
+            "00be1260: lea edi, [esi + 8]",
+            "00be1263: add esp, 4",
+            "00be1266: mov ecx, edi",
+            "00be1268: mov byte ptr [esp + 0x14], 0",
+            "00be126d: call 0x4d05e0",
+            "00be1272: mov eax, dword ptr [edi + 4]",
+            "00be1275: push eax",
+            "00be1276: call 0xbf65ac",
+            "00be127b: mov dword ptr [edi + 4], 0",
+            "00be1282: mov eax, dword ptr [esi + 4]",
+            "00be1285: add esp, 4",
+            "00be1288: test eax, eax",
+            "00be128a: mov dword ptr [esp + 0x14], 0xffffffff",
+            "00be1292: je 0xbe12a9",
+            "00be1294: mov esi, dword ptr [esi]",
+            "00be1296: push 1",
+            "00be1298: add esi, 1",
+            "00be129b: push esi",
+            "00be129c: push eax",
+            "00be129d: call 0x419cc0",
+            "00be12a2: mov ecx, eax",
+            "00be12a4: call 0xbd1510",
+            "00be12a9: mov ecx, dword ptr [esp + 0xc]",
+            "00be12ad: pop edi",
+            "00be12ae: pop esi",
+            "00be12af: mov dword ptr fs:[0], ecx",
+            "00be12b6: add esp, 0x10",
+            "00be12b9: ret "
+          ],
+          "kind": "required raw continuation absent from stored listing"
+        }
+      ],
+      "live_call_rows": [
+        {
+          "function": "00be1220",
+          "instruction": "call 0x4d05e0",
+          "address": "00be124b",
+          "native": "004d05e0",
+          "callee_contract_and_abi": "ECX raw list owner; no stack arguments; RET0; actual string-list clear provider exists"
+        },
+        {
+          "function": "00be1220",
+          "instruction": "call 0xbf65ac",
+          "address": "00be1254",
+          "native": "00bf65ac",
+          "callee_contract_and_abi": "One cdecl stack block pointer; caller ADD ESP,4, sometimes delayed/interleaved; returning free thunk"
+        }
+      ],
+      "raw_or_indirect_calls": [
+        {
+          "instruction": "call 0x4d05e0",
+          "raw_site": "00be126d",
+          "target": "004d05e0",
+          "reason": "outside live stored listing; raw continuation evidence only",
+          "logical_continuation_of": "00be1220",
+          "callee_contract_and_abi": "ECX raw list owner; no stack arguments; RET0; actual string-list clear provider exists"
+        },
+        {
+          "instruction": "call 0xbf65ac",
+          "raw_site": "00be1276",
+          "target": "00bf65ac",
+          "reason": "outside live stored listing; raw continuation evidence only",
+          "logical_continuation_of": "00be1220",
+          "callee_contract_and_abi": "One cdecl stack block pointer; caller ADD ESP,4, sometimes delayed/interleaved; returning free thunk"
+        },
+        {
+          "instruction": "call 0x419cc0",
+          "raw_site": "00be129d",
+          "target": "00419cc0",
+          "reason": "outside live stored listing; raw continuation evidence only",
+          "logical_continuation_of": "00be1220",
+          "callee_contract_and_abi": "No consumed stack arguments; RET0; EAX current actual pool. Three already-pushed words belong to following BD1510"
+        },
+        {
+          "instruction": "call 0xbd1510",
+          "raw_site": "00be12a4",
+          "target": "00bd1510",
+          "reason": "outside live stored listing; raw continuation evidence only",
+          "logical_continuation_of": "00be1220",
+          "callee_contract_and_abi": "ECX returned pool; stack (block,size,unused=1); RET0C consumes the three words previously pushed before 419CC0"
+        }
+      ],
+      "tail_jumps": [],
+      "return_instruction": "ret",
+      "contract": "Destroy lists at payload+14 then+8, freeing each current head and zeroing head field, then release string at+0; EH cleans +8 list then string if first destruction throws.",
+      "original_abi": "ECX payload consisting of string+0 and lists+8/+14; RET0; no stable EAX result"
+    },
+    {
+      "address": "00be19e0",
+      "end_inclusive": "00be1a1d",
+      "logical_bytes": 62,
+      "coverage": "complete static logical-body reading; no source reconstruction in this discovery",
+      "saved_proto": "00be19e0 FUN_00be19e0  undefined FUN_00be19e0(void)  body 00be19e0 - 00be1a1d",
+      "live_bytes_match_installed": true,
+      "sha256": "125ae1c111d7bdbb5c88b67e47178acbef488f5e1536f5982cae1ed68900a2e7",
+      "missing_listing_ranges": [
+        {
+          "start": "00be1a10",
+          "end_inclusive": "00be1a1a",
+          "instructions": [
+            "00be1a10: add esp, 4",
+            "00be1a13: cmp ebx, dword ptr [edi + 4]",
+            "00be1a16: mov esi, ebx",
+            "00be1a18: jne 0xbe1a00",
+            "00be1a1a: pop ebx"
+          ],
+          "kind": "required raw continuation absent from stored listing"
+        }
+      ],
+      "live_call_rows": [
+        {
+          "function": "00be19e0",
+          "instruction": "call 0xbe1220",
+          "address": "00be1a05",
+          "native": "00be1220",
+          "callee_contract_and_abi": "ECX payload consisting of string+0 and lists+8/+14; RET0; no stable EAX result"
+        },
+        {
+          "function": "00be19e0",
+          "instruction": "call 0xbf65ac",
+          "address": "00be1a0b",
+          "native": "00bf65ac",
+          "callee_contract_and_abi": "One cdecl stack block pointer; caller ADD ESP,4, sometimes delayed/interleaved; returning free thunk"
+        }
+      ],
+      "raw_or_indirect_calls": [],
+      "tail_jumps": [],
+      "return_instruction": "ret",
+      "contract": "Self-link current list head and zero count; for each node capture next, destroy payload+8 through BE1220, free node; retain head.",
+      "original_abi": "ECX raw list owner; RET0; clear all payload nodes, retaining current head"
+    },
+    {
+      "address": "00be1d60",
+      "end_inclusive": "00be1d7c",
+      "logical_bytes": 29,
+      "coverage": "complete static logical-body reading; no source reconstruction in this discovery",
+      "saved_proto": "00be1d60 FUN_00be1d60  undefined FUN_00be1d60(void)  body 00be1d60 - 00be1d70",
+      "live_bytes_match_installed": true,
+      "sha256": "5d35d12d81215451ebdca2be876b91663cdc3f9a849f97c73fd4a907df86bcf3",
+      "missing_listing_ranges": [
+        {
+          "start": "00be1d71",
+          "end_inclusive": "00be1d7c",
+          "instructions": [
+            "00be1d71: add esp, 4",
+            "00be1d74: mov dword ptr [esi + 4], 0",
+            "00be1d7b: pop esi",
+            "00be1d7c: ret "
+          ],
+          "kind": "required raw continuation absent from stored listing"
+        }
+      ],
+      "live_call_rows": [
+        {
+          "function": "00be1d60",
+          "instruction": "call 0xbe19e0",
+          "address": "00be1d63",
+          "native": "00be19e0",
+          "callee_contract_and_abi": "ECX raw list owner; RET0; clear all payload nodes, retaining current head"
+        },
+        {
+          "function": "00be1d60",
+          "instruction": "call 0xbf65ac",
+          "address": "00be1d6c",
+          "native": "00bf65ac",
+          "callee_contract_and_abi": "One cdecl stack block pointer; caller ADD ESP,4, sometimes delayed/interleaved; returning free thunk"
+        }
+      ],
+      "raw_or_indirect_calls": [],
+      "tail_jumps": [],
+      "return_instruction": "ret",
+      "contract": "BE19E0 clear, free current head, zero owner+4; no additional count reset.",
+      "original_abi": "ECX raw owner; no consumed stack arguments; RET0. Tail thunks preserve ABI of target."
+    },
+    {
+      "address": "004d2640",
+      "end_inclusive": "004d265c",
+      "logical_bytes": 29,
+      "coverage": "complete static logical-body reading; no source reconstruction in this discovery",
+      "saved_proto": "004d2640 FUN_004d2640  undefined FUN_004d2640(void)  body 004d2640 - 004d2650",
+      "live_bytes_match_installed": true,
+      "sha256": "58ae01c9e956349e0f0b6c04cf21854e2923be3357c915f8d4714ed64e093371",
+      "missing_listing_ranges": [
+        {
+          "start": "004d2651",
+          "end_inclusive": "004d265c",
+          "instructions": [
+            "004d2651: add esp, 4",
+            "004d2654: mov dword ptr [esi + 4], 0",
+            "004d265b: pop esi",
+            "004d265c: ret "
+          ],
+          "kind": "required raw continuation absent from stored listing"
+        }
+      ],
+      "live_call_rows": [
+        {
+          "function": "004d2640",
+          "instruction": "call 0x4d05e0",
+          "address": "004d2643",
+          "native": "004d05e0",
+          "callee_contract_and_abi": "ECX raw list owner; no stack arguments; RET0; actual string-list clear provider exists"
+        },
+        {
+          "function": "004d2640",
+          "instruction": "call 0xbf65ac",
+          "address": "004d264c",
+          "native": "00bf65ac",
+          "callee_contract_and_abi": "One cdecl stack block pointer; caller ADD ESP,4, sometimes delayed/interleaved; returning free thunk"
+        }
+      ],
+      "raw_or_indirect_calls": [],
+      "tail_jumps": [],
+      "return_instruction": "ret",
+      "contract": "4D05E0 actual pooled-string list clear, free current head, zero owner+4; required BE1220 unwind dependency.",
+      "original_abi": "ECX raw owner; no consumed stack arguments; RET0. Tail thunks preserve ABI of target."
+    },
+    {
+      "address": "00bdb850",
+      "end_inclusive": "00bdb8c5",
+      "logical_bytes": 118,
+      "coverage": "complete static logical-body reading; no source reconstruction in this discovery",
+      "saved_proto": "00bdb850 FUN_00bdb850  undefined FUN_00bdb850(void)  body 00bdb850 - 00bdb8c5",
+      "live_bytes_match_installed": true,
+      "sha256": "9e8544f6f5d25f77bc08af112cf12fe68b5db579a7e97777c71a35d39c18db7a",
+      "missing_listing_ranges": [],
+      "live_call_rows": [
+        {
+          "function": "00bdb850",
+          "instruction": "call 0x419cc0",
+          "address": "00bdb886",
+          "native": "00419cc0",
+          "callee_contract_and_abi": "No consumed stack arguments; RET0; EAX current actual pool. Three already-pushed words belong to following BD1510"
+        },
+        {
+          "function": "00bdb850",
+          "instruction": "call 0xbd1510",
+          "address": "00bdb88d",
+          "native": "00bd1510",
+          "callee_contract_and_abi": "ECX returned pool; stack (block,size,unused=1); RET0C consumes the three words previously pushed before 419CC0"
+        },
+        {
+          "function": "00bdb850",
+          "instruction": "call 0x419cc0",
+          "address": "00bdb8aa",
+          "native": "00419cc0",
+          "callee_contract_and_abi": "No consumed stack arguments; RET0; EAX current actual pool. Three already-pushed words belong to following BD1510"
+        },
+        {
+          "function": "00bdb850",
+          "instruction": "call 0xbd1510",
+          "address": "00bdb8b1",
+          "native": "00bd1510",
+          "callee_contract_and_abi": "ECX returned pool; stack (block,size,unused=1); RET0C consumes the three words previously pushed before 419CC0"
+        }
+      ],
+      "raw_or_indirect_calls": [],
+      "tail_jumps": [],
+      "return_instruction": "ret",
+      "contract": "Release second native string+8 then first+0; leave headers stale; EH state0 releases first string if second release throws.",
+      "original_abi": "ECX two-string 10h payload; RET0; destroy second string then first; no stable EAX result"
+    },
+    {
+      "address": "00bdcc60",
+      "end_inclusive": "00bdcd0e",
+      "logical_bytes": 175,
+      "coverage": "complete static logical-body reading; no source reconstruction in this discovery",
+      "saved_proto": "00bdcc60 FUN_00bdcc60  undefined FUN_00bdcc60(void)  body 00bdcc60 - 00bdcd0e",
+      "live_bytes_match_installed": true,
+      "sha256": "c3d415ea8b4849e4a9fde629501176bcb24adb7cd3a8cd6e46888aac09651422",
+      "missing_listing_ranges": [],
+      "live_call_rows": [
+        {
+          "function": "00bdcc60",
+          "instruction": "call 0x41dd40",
+          "address": "00bdcc99",
+          "native": "0041dd40",
+          "callee_contract_and_abi": "ECX raw string header; stack(length,preserve=1); RET8; actual resize provider exists"
+        },
+        {
+          "function": "00bdcc60",
+          "instruction": "call 0xbf7680",
+          "address": "00bdccae",
+          "native": "00bf7680",
+          "callee_contract_and_abi": "cdecl memcpy(destination,source,size); three stack words; ADD ESP,0C; library memory-copy contract"
+        },
+        {
+          "function": "00bdcc60",
+          "instruction": "call 0x41dd40",
+          "address": "00bdccdc",
+          "native": "0041dd40",
+          "callee_contract_and_abi": "ECX raw string header; stack(length,preserve=1); RET8; actual resize provider exists"
+        },
+        {
+          "function": "00bdcc60",
+          "instruction": "call 0xbf7680",
+          "address": "00bdccf1",
+          "native": "00bf7680",
+          "callee_contract_and_abi": "cdecl memcpy(destination,source,size); three stack words; ADD ESP,0C; library memory-copy contract"
+        }
+      ],
+      "raw_or_indirect_calls": [],
+      "tail_jumps": [],
+      "return_instruction": "ret 4",
+      "contract": "Construct two strings at+0/+8 independently: zero header, identity guard, current source length resize, reload source then memcpy current destination length; cleanup first only if second fails.",
+      "original_abi": "ECX destination 10h pair; one stack source pair pointer; RET4; EAX destination"
+    },
+    {
+      "address": "00bdcd10",
+      "end_inclusive": "00bdcdec",
+      "logical_bytes": 221,
+      "coverage": "complete static logical-body reading; no source reconstruction in this discovery",
+      "saved_proto": "00bdcd10 FUN_00bdcd10  undefined FUN_00bdcd10(void)  body 00bdcd10 - 00bdcdec",
+      "live_bytes_match_installed": true,
+      "sha256": "c769288dee5e87fa1a546b0c2f4469822538e73d80bb196397b2fb0bb3d849fb",
+      "missing_listing_ranges": [
+        {
+          "start": "00bdcd6d",
+          "end_inclusive": "00bdcd6f",
+          "instructions": [
+            "00bdcd6d: lea ecx, [ecx]"
+          ],
+          "kind": "required raw continuation absent from stored listing"
+        },
+        {
+          "start": "00bdcdd0",
+          "end_inclusive": "00bdcdd9",
+          "instructions": [
+            "00bdcdd0: add esp, 4",
+            "00bdcdd3: pop edi",
+            "00bdcdd4: mov dword ptr [esi], ebp",
+            "00bdcdd6: mov dword ptr [esi + 8], ebx",
+            "00bdcdd9: pop ebp"
+          ],
+          "kind": "required raw continuation absent from stored listing"
+        }
+      ],
+      "live_call_rows": [
+        {
+          "function": "00bdcd10",
+          "instruction": "call 0xbf55be",
+          "address": "00bdcd52",
+          "native": "00bf55be",
+          "callee_contract_and_abi": "One cdecl stack byte count; ADD ESP,4; EAX storage; JMP BF681B actual allocation service"
+        },
+        {
+          "function": "00bdcd10",
+          "instruction": "call 0xbdcc60",
+          "address": "00bdcd8d",
+          "native": "00bdcc60",
+          "callee_contract_and_abi": "ECX destination 10h pair; one stack source pair pointer; RET4; EAX destination"
+        },
+        {
+          "function": "00bdcd10",
+          "instruction": "call 0xbdb850",
+          "address": "00bdcdb4",
+          "native": "00bdb850",
+          "callee_contract_and_abi": "ECX two-string 10h payload; RET0; destroy second string then first; no stable EAX result"
+        },
+        {
+          "function": "00bdcd10",
+          "instruction": "call 0xbf6989",
+          "address": "00bdcdcb",
+          "native": "00bf6989",
+          "callee_contract_and_abi": "One cdecl stack block pointer; caller ADD ESP,4, sometimes delayed/interleaved; returning free thunk"
+        }
+      ],
+      "raw_or_indirect_calls": [],
+      "tail_jumps": [],
+      "return_instruction": "ret 4",
+      "contract": "Signed clamp capacity>=1; skip if current capacity sufficient; allocate count<<4 modulo DWORD; construct copies while reloading owner count/backing; destroy old pairs; free old backing; publish new backing/capacity. EH action calls actual RET helper401130; no completed-copy or new-backing rollback.",
+      "original_abi": "ECX raw vector (backing,count,capacity); one signed stack capacity; RET4; clamp capacity to at least1"
+    },
+    {
+      "address": "00bdec70",
+      "end_inclusive": "00bdecd4",
+      "logical_bytes": 101,
+      "coverage": "complete static logical-body reading; no source reconstruction in this discovery",
+      "saved_proto": "00bdec70 FUN_00bdec70  undefined FUN_00bdec70(void)  body 00bdec70 - 00bdecd4",
+      "live_bytes_match_installed": true,
+      "sha256": "77b637ffa883f6ddf2e76739c984b975227f9e5943915b7865cf30f6f294cd3d",
+      "missing_listing_ranges": [],
+      "live_call_rows": [
+        {
+          "function": "00bdec70",
+          "instruction": "call 0xbdcd10",
+          "address": "00bdec7f",
+          "native": "00bdcd10",
+          "callee_contract_and_abi": "ECX raw vector (backing,count,capacity); one signed stack capacity; RET4; clamp capacity to at least1"
+        },
+        {
+          "function": "00bdec70",
+          "instruction": "call 0xbdb850",
+          "address": "00bdecc2",
+          "native": "00bdb850",
+          "callee_contract_and_abi": "ECX two-string 10h payload; RET0; destroy second string then first; no stable EAX result"
+        }
+      ],
+      "raw_or_indirect_calls": [],
+      "tail_jumps": [],
+      "return_instruction": "ret 4",
+      "contract": "Signed count/capacity comparisons; grow viaBDCD10, zero four words per new slot with null slot check; decrement live count before each BDB850; finally store requested count.",
+      "original_abi": "ECX raw vector (backing,count,capacity); one signed stack count; RET4; all grow/shrink branches required"
+    },
+    {
+      "address": "00be0350",
+      "end_inclusive": "00be0366",
+      "logical_bytes": 23,
+      "coverage": "complete static logical-body reading; no source reconstruction in this discovery",
+      "saved_proto": "00be0350 FUN_00be0350  undefined FUN_00be0350(void)  body 00be0350 - 00be0361",
+      "live_bytes_match_installed": true,
+      "sha256": "7dc0dd071b6ef78d6b3e16215e1ace2e3ce84be3e460cec6d432c5eda08564ee",
+      "missing_listing_ranges": [
+        {
+          "start": "00be0362",
+          "end_inclusive": "00be0366",
+          "instructions": [
+            "00be0362: add esp, 4",
+            "00be0365: pop esi",
+            "00be0366: ret "
+          ],
+          "kind": "required raw continuation absent from stored listing"
+        }
+      ],
+      "live_call_rows": [
+        {
+          "function": "00be0350",
+          "instruction": "call 0xbdec70",
+          "address": "00be0355",
+          "native": "00bdec70",
+          "callee_contract_and_abi": "ECX raw vector (backing,count,capacity); one signed stack count; RET4; all grow/shrink branches required"
+        },
+        {
+          "function": "00be0350",
+          "instruction": "call 0xbf6989",
+          "address": "00be035d",
+          "native": "00bf6989",
+          "callee_contract_and_abi": "One cdecl stack block pointer; caller ADD ESP,4, sometimes delayed/interleaved; returning free thunk"
+        }
+      ],
+      "raw_or_indirect_calls": [],
+      "tail_jumps": [],
+      "return_instruction": "ret",
+      "contract": "Resize pair vector to zero through BDEC70 then free current backing; leave header pointer/capacity stale.",
+      "original_abi": "ECX raw owner; no consumed stack arguments; RET0. Tail thunks preserve ABI of target."
+    },
+    {
+      "address": "00be16c0",
+      "end_inclusive": "00be16f3",
+      "logical_bytes": 52,
+      "coverage": "complete static logical-body reading; no source reconstruction in this discovery",
+      "saved_proto": "00be16c0 FUN_00be16c0  undefined FUN_00be16c0(void)  body 00be16c0 - 00be16e3",
+      "live_bytes_match_installed": true,
+      "sha256": "18ce1a2c4d3e3d9c6713e633ba6b76462fcabf821835a9b81743c5be958fcd9a",
+      "missing_listing_ranges": [
+        {
+          "start": "00be16e4",
+          "end_inclusive": "00be16f3",
+          "instructions": [
+            "00be16e4: add esp, 4",
+            "00be16e7: xor eax, eax",
+            "00be16e9: mov dword ptr [esi + 4], eax",
+            "00be16ec: mov dword ptr [esi + 8], eax",
+            "00be16ef: pop esi",
+            "00be16f0: add esp, 8",
+            "00be16f3: ret "
+          ],
+          "kind": "required raw continuation absent from stored listing"
+        }
+      ],
+      "live_call_rows": [
+        {
+          "function": "00be16c0",
+          "instruction": "call 0xbe0d00",
+          "address": "00be16d6",
+          "native": "00be0d00",
+          "callee_contract_and_abi": "ECX tree owner; stack(output_iterator,first_owner,first_node,last_owner,last_node); RET14; EAX output_iterator"
+        },
+        {
+          "function": "00be16c0",
+          "instruction": "call 0xbf65ac",
+          "address": "00be16df",
+          "native": "00bf65ac",
+          "callee_contract_and_abi": "One cdecl stack block pointer; caller ADD ESP,4, sometimes delayed/interleaved; returning free thunk"
+        }
+      ],
+      "raw_or_indirect_calls": [],
+      "tail_jumps": [],
+      "return_instruction": "ret",
+      "contract": "Full-range BE0D00, free current24h head, zero head/count.",
+      "original_abi": "ECX raw owner; no consumed stack arguments; RET0. Tail thunks preserve ABI of target."
+    },
+    {
+      "address": "00be1700",
+      "end_inclusive": "00be1733",
+      "logical_bytes": 52,
+      "coverage": "complete static logical-body reading; no source reconstruction in this discovery",
+      "saved_proto": "00be1700 FUN_00be1700  undefined FUN_00be1700(void)  body 00be1700 - 00be1723",
+      "live_bytes_match_installed": true,
+      "sha256": "c7dcc06a16f8bda81ce448c12ba58c4efdb3345882aa2770ed4050a1b84b4350",
+      "missing_listing_ranges": [
+        {
+          "start": "00be1724",
+          "end_inclusive": "00be1733",
+          "instructions": [
+            "00be1724: add esp, 4",
+            "00be1727: xor eax, eax",
+            "00be1729: mov dword ptr [esi + 4], eax",
+            "00be172c: mov dword ptr [esi + 8], eax",
+            "00be172f: pop esi",
+            "00be1730: add esp, 8",
+            "00be1733: ret "
+          ],
+          "kind": "required raw continuation absent from stored listing"
+        }
+      ],
+      "live_call_rows": [
+        {
+          "function": "00be1700",
+          "instruction": "call 0xbe0c30",
+          "address": "00be1716",
+          "native": "00be0c30",
+          "callee_contract_and_abi": "ECX tree owner; stack(output_iterator,first_owner,first_node,last_owner,last_node); RET14; EAX output_iterator"
+        },
+        {
+          "function": "00be1700",
+          "instruction": "call 0xbf65ac",
+          "address": "00be171f",
+          "native": "00bf65ac",
+          "callee_contract_and_abi": "One cdecl stack block pointer; caller ADD ESP,4, sometimes delayed/interleaved; returning free thunk"
+        }
+      ],
+      "raw_or_indirect_calls": [],
+      "tail_jumps": [],
+      "return_instruction": "ret",
+      "contract": "Full-range BE0C30, free current20h head, zero head/count.",
+      "original_abi": "ECX raw owner; no consumed stack arguments; RET0. Tail thunks preserve ABI of target."
+    },
+    {
+      "address": "004d74a0",
+      "end_inclusive": "004d74d3",
+      "logical_bytes": 52,
+      "coverage": "complete static logical-body reading; no source reconstruction in this discovery",
+      "saved_proto": "004d74a0 FUN_004d74a0  undefined FUN_004d74a0(void)  body 004d74a0 - 004d74c3",
+      "live_bytes_match_installed": true,
+      "sha256": "b022e42dd00efdae179f3797de8283d0e9252cbd193dfc4dc877d07a11e12546",
+      "missing_listing_ranges": [
+        {
+          "start": "004d74c4",
+          "end_inclusive": "004d74d3",
+          "instructions": [
+            "004d74c4: add esp, 4",
+            "004d74c7: xor eax, eax",
+            "004d74c9: mov dword ptr [esi + 4], eax",
+            "004d74cc: mov dword ptr [esi + 8], eax",
+            "004d74cf: pop esi",
+            "004d74d0: add esp, 8",
+            "004d74d3: ret "
+          ],
+          "kind": "required raw continuation absent from stored listing"
+        }
+      ],
+      "live_call_rows": [
+        {
+          "function": "004d74a0",
+          "instruction": "call 0x4d1a50",
+          "address": "004d74b6",
+          "native": "004d1a50",
+          "callee_contract_and_abi": "ECX tree owner; stack(output_iterator,first_owner,first_node,last_owner,last_node); RET14; EAX output_iterator"
+        },
+        {
+          "function": "004d74a0",
+          "instruction": "call 0xbf65ac",
+          "address": "004d74bf",
+          "native": "00bf65ac",
+          "callee_contract_and_abi": "One cdecl stack block pointer; caller ADD ESP,4, sometimes delayed/interleaved; returning free thunk"
+        }
+      ],
+      "raw_or_indirect_calls": [],
+      "tail_jumps": [],
+      "return_instruction": "ret",
+      "contract": "Full-range4D1A50, free current18h head, zero head/count.",
+      "original_abi": "ECX raw owner; no consumed stack arguments; RET0. Tail thunks preserve ABI of target."
+    },
+    {
+      "address": "00be0c30",
+      "end_inclusive": "00be0cf8",
+      "logical_bytes": 201,
+      "coverage": "complete static logical-body reading; no source reconstruction in this discovery",
+      "saved_proto": "00be0c30 FUN_00be0c30  undefined FUN_00be0c30(void)  body 00be0c30 - 00be0cf8",
+      "live_bytes_match_installed": true,
+      "sha256": "6f991f54bfbfa6c0cd18f82576ef0762f412f6d81d785524f18f6a3987a647b7",
+      "missing_listing_ranges": [
+        {
+          "start": "00be0caf",
+          "end_inclusive": "00be0caf",
+          "instructions": [
+            "00be0caf: nop "
+          ],
+          "kind": "alignment padding, not missing flow"
+        }
+      ],
+      "live_call_rows": [
+        {
+          "function": "00be0c30",
+          "instruction": "call 0xbf6713",
+          "address": "00be0c4a",
+          "native": "00bf6713",
+          "callee_contract_and_abi": "No stack arguments; RET0; returning invalid-parameter wrapper; caller continues"
+        },
+        {
+          "function": "00be0c30",
+          "instruction": "call 0xbf6713",
+          "address": "00be0c66",
+          "native": "00bf6713",
+          "callee_contract_and_abi": "No stack arguments; RET0; returning invalid-parameter wrapper; caller continues"
+        },
+        {
+          "function": "00be0c30",
+          "instruction": "call 0xbdf7a0",
+          "address": "00be0c7a",
+          "native": "00bdf7a0",
+          "callee_contract_and_abi": "ECX tree owner; one stack node pointer; RET4; recursively destroy right subtree then current and captured left chain"
+        },
+        {
+          "function": "00be0c30",
+          "instruction": "call 0xbf6713",
+          "address": "00be0cba",
+          "native": "00bf6713",
+          "callee_contract_and_abi": "No stack arguments; RET0; returning invalid-parameter wrapper; caller continues"
+        },
+        {
+          "function": "00be0c30",
+          "instruction": "call 0xbd9860",
+          "address": "00be0cc9",
+          "native": "00bd9860",
+          "callee_contract_and_abi": "ECX actual two-word iterator (owner,node); RET0; successor updates current iterator storage"
+        },
+        {
+          "function": "00be0c30",
+          "instruction": "call 0xbdfd80",
+          "address": "00be0cd7",
+          "native": "00bdfd80",
+          "callee_contract_and_abi": "ECX tree owner; stack(output_iterator,iterator_owner,node); complete ABI and deletion/EH body remain to audit; not a pure length-throw helper"
+        }
+      ],
+      "raw_or_indirect_calls": [],
+      "tail_jumps": [],
+      "return_instruction": "ret 0x14",
+      "contract": "Full-range fast path BDF7A0 then ordered head/count resets; partial path advances with BD9860 and removes with BDFD80; returning validation checks.",
+      "original_abi": "ECX tree owner; stack(output_iterator,first_owner,first_node,last_owner,last_node); RET14; EAX output_iterator"
+    },
+    {
+      "address": "00be0d00",
+      "end_inclusive": "00be0dc8",
+      "logical_bytes": 201,
+      "coverage": "complete static logical-body reading; no source reconstruction in this discovery",
+      "saved_proto": "00be0d00 FUN_00be0d00  undefined FUN_00be0d00(void)  body 00be0d00 - 00be0dc8",
+      "live_bytes_match_installed": true,
+      "sha256": "1399b2e6dbc7350063cc35c2b496ed80bd013f4d8e6bf2ad2942f993f1b01764",
+      "missing_listing_ranges": [
+        {
+          "start": "00be0d7f",
+          "end_inclusive": "00be0d7f",
+          "instructions": [
+            "00be0d7f: nop "
+          ],
+          "kind": "alignment padding, not missing flow"
+        }
+      ],
+      "live_call_rows": [
+        {
+          "function": "00be0d00",
+          "instruction": "call 0xbf6713",
+          "address": "00be0d1a",
+          "native": "00bf6713",
+          "callee_contract_and_abi": "No stack arguments; RET0; returning invalid-parameter wrapper; caller continues"
+        },
+        {
+          "function": "00be0d00",
+          "instruction": "call 0xbf6713",
+          "address": "00be0d36",
+          "native": "00bf6713",
+          "callee_contract_and_abi": "No stack arguments; RET0; returning invalid-parameter wrapper; caller continues"
+        },
+        {
+          "function": "00be0d00",
+          "instruction": "call 0xbdf7e0",
+          "address": "00be0d4a",
+          "native": "00bdf7e0",
+          "callee_contract_and_abi": "ECX tree owner; one stack node pointer; RET4; recursively destroy right subtree then current and captured left chain"
+        },
+        {
+          "function": "00be0d00",
+          "instruction": "call 0xbf6713",
+          "address": "00be0d8a",
+          "native": "00bf6713",
+          "callee_contract_and_abi": "No stack arguments; RET0; returning invalid-parameter wrapper; caller continues"
+        },
+        {
+          "function": "00be0d00",
+          "instruction": "call 0xbd97e0",
+          "address": "00be0d99",
+          "native": "00bd97e0",
+          "callee_contract_and_abi": "ECX actual two-word iterator (owner,node); RET0; successor updates current iterator storage"
+        },
+        {
+          "function": "00be0d00",
+          "instruction": "call 0xbe0080",
+          "address": "00be0da7",
+          "native": "00be0080",
+          "callee_contract_and_abi": "ECX tree owner; stack(output_iterator,iterator_owner,node); complete ABI and deletion/EH body remain to audit; not a pure length-throw helper"
+        }
+      ],
+      "raw_or_indirect_calls": [],
+      "tail_jumps": [],
+      "return_instruction": "ret 0x14",
+      "contract": "Full-range fast path BDF7E0 then ordered head/count resets; partial path advances with BD97E0 and removes with BE0080; returning validation checks.",
+      "original_abi": "ECX tree owner; stack(output_iterator,first_owner,first_node,last_owner,last_node); RET14; EAX output_iterator"
+    },
+    {
+      "address": "004d1a50",
+      "end_inclusive": "004d1b18",
+      "logical_bytes": 201,
+      "coverage": "complete static logical-body reading; no source reconstruction in this discovery",
+      "saved_proto": "004d1a50 FUN_004d1a50  undefined FUN_004d1a50(void)  body 004d1a50 - 004d1b18",
+      "live_bytes_match_installed": true,
+      "sha256": "1289be6471aa189d7debb670034cf55c2e09ad13f4a7e641f829a0e501ab0264",
+      "missing_listing_ranges": [
+        {
+          "start": "004d1acf",
+          "end_inclusive": "004d1acf",
+          "instructions": [
+            "004d1acf: nop "
+          ],
+          "kind": "alignment padding, not missing flow"
+        }
+      ],
+      "live_call_rows": [
+        {
+          "function": "004d1a50",
+          "instruction": "call 0xbf6713",
+          "address": "004d1a6a",
+          "native": "00bf6713",
+          "callee_contract_and_abi": "No stack arguments; RET0; returning invalid-parameter wrapper; caller continues"
+        },
+        {
+          "function": "004d1a50",
+          "instruction": "call 0xbf6713",
+          "address": "004d1a86",
+          "native": "00bf6713",
+          "callee_contract_and_abi": "No stack arguments; RET0; returning invalid-parameter wrapper; caller continues"
+        },
+        {
+          "function": "004d1a50",
+          "instruction": "call 0x4cec60",
+          "address": "004d1a9a",
+          "native": "004cec60",
+          "callee_contract_and_abi": "ECX tree owner; one stack node pointer; RET4; recursively destroy right subtree then current and captured left chain"
+        },
+        {
+          "function": "004d1a50",
+          "instruction": "call 0xbf6713",
+          "address": "004d1ada",
+          "native": "00bf6713",
+          "callee_contract_and_abi": "No stack arguments; RET0; returning invalid-parameter wrapper; caller continues"
+        },
+        {
+          "function": "004d1a50",
+          "instruction": "call 0x4be730",
+          "address": "004d1ae9",
+          "native": "004be730",
+          "callee_contract_and_abi": "ECX actual two-word iterator (owner,node); RET0; successor updates current iterator storage"
+        },
+        {
+          "function": "004d1a50",
+          "instruction": "call 0x4cf8a0",
+          "address": "004d1af7",
+          "native": "004cf8a0",
+          "callee_contract_and_abi": "ECX tree owner; stack(output_iterator,iterator_owner,node); complete ABI and deletion/EH body remain to audit; not a pure length-throw helper"
+        }
+      ],
+      "raw_or_indirect_calls": [],
+      "tail_jumps": [],
+      "return_instruction": "ret 0x14",
+      "contract": "Full-range fast path4CEC60 then ordered head/count resets; partial path advances with4BE730 and removes with4CF8A0; returning validation checks.",
+      "original_abi": "ECX tree owner; stack(output_iterator,first_owner,first_node,last_owner,last_node); RET14; EAX output_iterator"
+    },
+    {
+      "address": "00bdf7a0",
+      "end_inclusive": "00bdf7dc",
+      "logical_bytes": 61,
+      "coverage": "complete static logical-body reading; no source reconstruction in this discovery",
+      "saved_proto": "00bdf7a0 FUN_00bdf7a0  undefined FUN_00bdf7a0(void)  body 00bdf7a0 - 00bdf7dc",
+      "live_bytes_match_installed": true,
+      "sha256": "fdc0440428d818ed2d1129450ad48cbdc0fbfffd05831ebb637823ed968b7f6d",
+      "missing_listing_ranges": [
+        {
+          "start": "00bdf7cc",
+          "end_inclusive": "00bdf7d6",
+          "instructions": [
+            "00bdf7cc: add esp, 4",
+            "00bdf7cf: cmp byte ptr [esi + 0x1d], 0",
+            "00bdf7d3: mov edi, esi",
+            "00bdf7d5: je 0xbdf7b1"
+          ],
+          "kind": "required raw continuation absent from stored listing"
+        }
+      ],
+      "live_call_rows": [
+        {
+          "function": "00bdf7a0",
+          "instruction": "call 0xbdf7a0",
+          "address": "00bdf7b7",
+          "native": "00bdf7a0",
+          "callee_contract_and_abi": "ECX tree owner; one stack node pointer; RET4; recursively destroy right subtree then current and captured left chain"
+        },
+        {
+          "function": "00bdf7a0",
+          "instruction": "call 0x489d50",
+          "address": "00bdf7c1",
+          "native": "00489d50",
+          "callee_contract_and_abi": "ECX two-string 10h payload; RET0; destroy second string then first; current source is fragment"
+        },
+        {
+          "function": "00bdf7a0",
+          "instruction": "call 0xbf65ac",
+          "address": "00bdf7c7",
+          "native": "00bf65ac",
+          "callee_contract_and_abi": "One cdecl stack block pointer; caller ADD ESP,4, sometimes delayed/interleaved; returning free thunk"
+        }
+      ],
+      "raw_or_indirect_calls": [],
+      "tail_jumps": [],
+      "return_instruction": "ret 4",
+      "contract": "Sentinel byte+1D; recurse right+8; capture left+0; destroy two-string payload+0C via489D50; free node; continue captured left.",
+      "original_abi": "ECX tree owner; one stack node pointer; RET4; recursively destroy right subtree then current and captured left chain"
+    },
+    {
+      "address": "00bdf7e0",
+      "end_inclusive": "00bdf831",
+      "logical_bytes": 82,
+      "coverage": "complete static logical-body reading; no source reconstruction in this discovery",
+      "saved_proto": "00bdf7e0 FUN_00bdf7e0  undefined FUN_00bdf7e0(void)  body 00bdf7e0 - 00bdf831",
+      "live_bytes_match_installed": true,
+      "sha256": "0857aba7159b14ae655b8c612c3695ac0f77cc9e8e7d04ba633c8451c2321207",
+      "missing_listing_ranges": [
+        {
+          "start": "00bdf821",
+          "end_inclusive": "00bdf82b",
+          "instructions": [
+            "00bdf821: add esp, 4",
+            "00bdf824: cmp byte ptr [esi + 0x21], 0",
+            "00bdf828: mov edi, esi",
+            "00bdf82a: je 0xbdf7f1"
+          ],
+          "kind": "required raw continuation absent from stored listing"
+        }
+      ],
+      "live_call_rows": [
+        {
+          "function": "00bdf7e0",
+          "instruction": "call 0xbdf7e0",
+          "address": "00bdf7f7",
+          "native": "00bdf7e0",
+          "callee_contract_and_abi": "ECX tree owner; one stack node pointer; RET4; recursively destroy right subtree then current and captured left chain"
+        },
+        {
+          "function": "00bdf7e0",
+          "instruction": "call 0x419cc0",
+          "address": "00bdf80f",
+          "native": "00419cc0",
+          "callee_contract_and_abi": "No consumed stack arguments; RET0; EAX current actual pool. Three already-pushed words belong to following BD1510"
+        },
+        {
+          "function": "00bdf7e0",
+          "instruction": "call 0xbd1510",
+          "address": "00bdf816",
+          "native": "00bd1510",
+          "callee_contract_and_abi": "ECX returned pool; stack (block,size,unused=1); RET0C consumes the three words previously pushed before 419CC0"
+        },
+        {
+          "function": "00bdf7e0",
+          "instruction": "call 0xbf65ac",
+          "address": "00bdf81c",
+          "native": "00bf65ac",
+          "callee_contract_and_abi": "One cdecl stack block pointer; caller ADD ESP,4, sometimes delayed/interleaved; returning free thunk"
+        }
+      ],
+      "raw_or_indirect_calls": [],
+      "tail_jumps": [],
+      "return_instruction": "ret 4",
+      "contract": "Sentinel byte+21; recurse right+8; capture left+0; release string length+10/data+14; free node; continue left. Does not destroy provider+18.",
+      "original_abi": "ECX tree owner; one stack node pointer; RET4; recursively destroy right subtree then current and captured left chain"
+    },
+    {
+      "address": "004cec60",
+      "end_inclusive": "004cecb1",
+      "logical_bytes": 82,
+      "coverage": "complete static logical-body reading; no source reconstruction in this discovery",
+      "saved_proto": "004cec60 BSP_NativeStringSet_EraseSubtree  undefined BSP_NativeStringSet_EraseSubtree(void)  body 004cec60 - 004cecb1",
+      "live_bytes_match_installed": true,
+      "sha256": "1c8d10bd6438bd6ad91831de878e3d155fa77bbc7e907848e8da2978b7908124",
+      "missing_listing_ranges": [
+        {
+          "start": "004ceca1",
+          "end_inclusive": "004cecab",
+          "instructions": [
+            "004ceca1: add esp, 4",
+            "004ceca4: cmp byte ptr [esi + 0x15], 0",
+            "004ceca8: mov edi, esi",
+            "004cecaa: je 0x4cec71"
+          ],
+          "kind": "required raw continuation absent from stored listing"
+        }
+      ],
+      "live_call_rows": [
+        {
+          "function": "004cec60",
+          "instruction": "call 0x4cec60",
+          "address": "004cec77",
+          "native": "004cec60",
+          "callee_contract_and_abi": "ECX tree owner; one stack node pointer; RET4; recursively destroy right subtree then current and captured left chain"
+        },
+        {
+          "function": "004cec60",
+          "instruction": "call 0x419cc0",
+          "address": "004cec8f",
+          "native": "00419cc0",
+          "callee_contract_and_abi": "No consumed stack arguments; RET0; EAX current actual pool. Three already-pushed words belong to following BD1510"
+        },
+        {
+          "function": "004cec60",
+          "instruction": "call 0xbd1510",
+          "address": "004cec96",
+          "native": "00bd1510",
+          "callee_contract_and_abi": "ECX returned pool; stack (block,size,unused=1); RET0C consumes the three words previously pushed before 419CC0"
+        },
+        {
+          "function": "004cec60",
+          "instruction": "call 0xbf65ac",
+          "address": "004cec9c",
+          "native": "00bf65ac",
+          "callee_contract_and_abi": "One cdecl stack block pointer; caller ADD ESP,4, sometimes delayed/interleaved; returning free thunk"
+        }
+      ],
+      "raw_or_indirect_calls": [],
+      "tail_jumps": [],
+      "return_instruction": "ret 4",
+      "contract": "Sentinel byte+15; recurse right+8; capture left+0; release string length+0C/data+10; free node; continue left. Existing mission host interface is not this raw algorithm.",
+      "original_abi": "ECX tree owner; one stack node pointer; RET4; recursively destroy right subtree then current and captured left chain"
+    },
+    {
+      "address": "00489d50",
+      "end_inclusive": "00489dc5",
+      "logical_bytes": 118,
+      "coverage": "complete static logical-body reading; no source reconstruction in this discovery",
+      "saved_proto": "00489d50 BSP_TrafficStringPair_Destroy  undefined BSP_TrafficStringPair_Destroy(void)  body 00489d50 - 00489dc5",
+      "live_bytes_match_installed": true,
+      "sha256": "ee51a70ab93dc01ef7d65d6a6516842f973fd6f70291a935da06fb30cbcdeec4",
+      "missing_listing_ranges": [],
+      "live_call_rows": [
+        {
+          "function": "00489d50",
+          "instruction": "call 0x419cc0",
+          "address": "00489d86",
+          "native": "00419cc0",
+          "callee_contract_and_abi": "No consumed stack arguments; RET0; EAX current actual pool. Three already-pushed words belong to following BD1510"
+        },
+        {
+          "function": "00489d50",
+          "instruction": "call 0xbd1510",
+          "address": "00489d8d",
+          "native": "00bd1510",
+          "callee_contract_and_abi": "ECX returned pool; stack (block,size,unused=1); RET0C consumes the three words previously pushed before 419CC0"
+        },
+        {
+          "function": "00489d50",
+          "instruction": "call 0x419cc0",
+          "address": "00489daa",
+          "native": "00419cc0",
+          "callee_contract_and_abi": "No consumed stack arguments; RET0; EAX current actual pool. Three already-pushed words belong to following BD1510"
+        },
+        {
+          "function": "00489d50",
+          "instruction": "call 0xbd1510",
+          "address": "00489db1",
+          "native": "00bd1510",
+          "callee_contract_and_abi": "ECX returned pool; stack (block,size,unused=1); RET0C consumes the three words previously pushed before 419CC0"
+        }
+      ],
+      "raw_or_indirect_calls": [],
+      "tail_jumps": [],
+      "return_instruction": "ret",
+      "contract": "118-byte two-string destructor, same behavior asBDB850 with separate EH metadata. Current traffic source is only a fragment.",
+      "original_abi": "ECX two-string 10h payload; RET0; destroy second string then first; current source is fragment"
+    },
+    {
+      "address": "00bee390",
+      "end_inclusive": "00bee512",
+      "logical_bytes": 387,
+      "coverage": "complete static logical-body reading; no source reconstruction in this discovery",
+      "saved_proto": "00bee390 BSP_Path_CanonicalizeMountName  undefined BSP_Path_CanonicalizeMountName(void)  body 00bee390 - 00bee512",
+      "live_bytes_match_installed": true,
+      "sha256": "f3db474665b49451a2e7ec5b0662cbbac9c9531025ba92c19256c2f6eafc134a",
+      "missing_listing_ranges": [],
+      "live_call_rows": [
+        {
+          "function": "00bee390",
+          "instruction": "call 0xbf55be",
+          "address": "00bee3b9",
+          "native": "00bf55be",
+          "callee_contract_and_abi": "One cdecl stack byte count; ADD ESP,4; EAX storage; JMP BF681B actual allocation service"
+        },
+        {
+          "function": "00bee390",
+          "instruction": "call 0xbf9611",
+          "address": "00bee4ca",
+          "native": "00bf9611",
+          "callee_contract_and_abi": "cdecl CRT tolower(signed-extended byte); one stack word; ADD ESP,4; locale-sensitive library boundary"
+        },
+        {
+          "function": "00bee390",
+          "instruction": "call 0x41e870",
+          "address": "00bee4f0",
+          "native": "0041e870",
+          "callee_contract_and_abi": "ECX destination 8-byte string header; one stack C-string pointer; RET4; EAX destination"
+        },
+        {
+          "function": "00bee390",
+          "instruction": "call 0xbf65ac",
+          "address": "00bee500",
+          "native": "00bf65ac",
+          "callee_contract_and_abi": "One cdecl stack block pointer; caller ADD ESP,4, sometimes delayed/interleaved; returning free thunk"
+        }
+      ],
+      "raw_or_indirect_calls": [],
+      "tail_jumps": [],
+      "return_instruction": "ret",
+      "contract": "Actual-header lexical slash/dot/parent canonicalization; unsigned length<256 uses local scratch else malloc-paired new(length+1); NUL-terminated copy, counted scan, signed-byte CRTtolower, construct output, free heap scratch only after successful output construction.",
+      "original_abi": "ECX output 8-byte header; EDX input 8-byte header; RET0; EAX output"
+    }
+  ],
+  "eh": [
+    {
+      "owner": "00be1dc0",
+      "func_info": "00e0107c",
+      "unwind_map": "00e010a0",
+      "live_data_matches_disk": true,
+      "states": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00cc6910",
+          "raw_instructions": [
+            {
+              "site": "00cc6910",
+              "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+            },
+            {
+              "site": "00cc6913",
+              "instruction": "jmp 0xbda790"
+            }
+          ]
+        },
+        {
+          "state": 1,
+          "previous": 0,
+          "action": "00cc6918",
+          "raw_instructions": [
+            {
+              "site": "00cc6918",
+              "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+            },
+            {
+              "site": "00cc691b",
+              "instruction": "add ecx, 0xc"
+            },
+            {
+              "site": "00cc691e",
+              "instruction": "jmp 0x41dd20"
+            }
+          ]
+        },
+        {
+          "state": 2,
+          "previous": 1,
+          "action": "00cc6923",
+          "raw_instructions": [
+            {
+              "site": "00cc6923",
+              "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+            },
+            {
+              "site": "00cc6926",
+              "instruction": "add ecx, 0x30"
+            },
+            {
+              "site": "00cc6929",
+              "instruction": "jmp 0xbdb3c0"
+            }
+          ]
+        },
+        {
+          "state": 3,
+          "previous": 2,
+          "action": "00cc692e",
+          "raw_instructions": [
+            {
+              "site": "00cc692e",
+              "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+            },
+            {
+              "site": "00cc6931",
+              "instruction": "add ecx, 0x3c"
+            },
+            {
+              "site": "00cc6934",
+              "instruction": "jmp 0xbe16c0"
+            }
+          ]
+        },
+        {
+          "state": 4,
+          "previous": 3,
+          "action": "00cc6939",
+          "raw_instructions": [
+            {
+              "site": "00cc6939",
+              "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+            },
+            {
+              "site": "00cc693c",
+              "instruction": "add ecx, 0x48"
+            },
+            {
+              "site": "00cc693f",
+              "instruction": "jmp 0x4d0fa0"
+            }
+          ]
+        },
+        {
+          "state": 5,
+          "previous": 4,
+          "action": "00cc6944",
+          "raw_instructions": [
+            {
+              "site": "00cc6944",
+              "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+            },
+            {
+              "site": "00cc6947",
+              "instruction": "add ecx, 0x54"
+            },
+            {
+              "site": "00cc694a",
+              "instruction": "jmp 0xbe1700"
+            }
+          ]
+        },
+        {
+          "state": 6,
+          "previous": 5,
+          "action": "00cc694f",
+          "raw_instructions": [
+            {
+              "site": "00cc694f",
+              "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+            },
+            {
+              "site": "00cc6952",
+              "instruction": "add ecx, 0x60"
+            },
+            {
+              "site": "00cc6955",
+              "instruction": "jmp 0xbe1d60"
+            }
+          ]
+        },
+        {
+          "state": 7,
+          "previous": 6,
+          "action": "00cc695a",
+          "raw_instructions": [
+            {
+              "site": "00cc695a",
+              "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+            },
+            {
+              "site": "00cc695d",
+              "instruction": "add ecx, 0x6c"
+            },
+            {
+              "site": "00cc6960",
+              "instruction": "jmp 0x4d74a0"
+            }
+          ]
+        },
+        {
+          "state": 8,
+          "previous": 7,
+          "action": "00cc6965",
+          "raw_instructions": [
+            {
+              "site": "00cc6965",
+              "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+            },
+            {
+              "site": "00cc6968",
+              "instruction": "add ecx, 0x7c"
+            },
+            {
+              "site": "00cc696b",
+              "instruction": "jmp 0x7f8770"
+            }
+          ]
+        },
+        {
+          "state": 9,
+          "previous": 8,
+          "action": "00cc6970",
+          "raw_instructions": [
+            {
+              "site": "00cc6970",
+              "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+            },
+            {
+              "site": "00cc6973",
+              "instruction": "add ecx, 0x94"
+            },
+            {
+              "site": "00cc6979",
+              "instruction": "jmp 0xbe0350"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "00be1f60",
+      "func_info": "00e010f0",
+      "unwind_map": "00e01114",
+      "live_data_matches_disk": true,
+      "states": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00cc6990",
+          "raw_instructions": [
+            {
+              "site": "00cc6990",
+              "instruction": "mov ecx, dword ptr [ebp - 0x18]"
+            },
+            {
+              "site": "00cc6993",
+              "instruction": "jmp 0xbda790"
+            }
+          ]
+        },
+        {
+          "state": 1,
+          "previous": 0,
+          "action": "00cc6998",
+          "raw_instructions": [
+            {
+              "site": "00cc6998",
+              "instruction": "mov ecx, dword ptr [ebp - 0x18]"
+            },
+            {
+              "site": "00cc699b",
+              "instruction": "add ecx, 0xc"
+            },
+            {
+              "site": "00cc699e",
+              "instruction": "jmp 0x41dd20"
+            }
+          ]
+        },
+        {
+          "state": 2,
+          "previous": 1,
+          "action": "00cc69a3",
+          "raw_instructions": [
+            {
+              "site": "00cc69a3",
+              "instruction": "mov ecx, dword ptr [ebp - 0x18]"
+            },
+            {
+              "site": "00cc69a6",
+              "instruction": "add ecx, 0x30"
+            },
+            {
+              "site": "00cc69a9",
+              "instruction": "jmp 0xbdb3c0"
+            }
+          ]
+        },
+        {
+          "state": 3,
+          "previous": 2,
+          "action": "00cc69ae",
+          "raw_instructions": [
+            {
+              "site": "00cc69ae",
+              "instruction": "mov ecx, dword ptr [ebp - 0x18]"
+            },
+            {
+              "site": "00cc69b1",
+              "instruction": "add ecx, 0x3c"
+            },
+            {
+              "site": "00cc69b4",
+              "instruction": "jmp 0xbe16c0"
+            }
+          ]
+        },
+        {
+          "state": 4,
+          "previous": 3,
+          "action": "00cc69b9",
+          "raw_instructions": [
+            {
+              "site": "00cc69b9",
+              "instruction": "mov ecx, dword ptr [ebp - 0x18]"
+            },
+            {
+              "site": "00cc69bc",
+              "instruction": "add ecx, 0x48"
+            },
+            {
+              "site": "00cc69bf",
+              "instruction": "jmp 0x4d0fa0"
+            }
+          ]
+        },
+        {
+          "state": 5,
+          "previous": 4,
+          "action": "00cc69c4",
+          "raw_instructions": [
+            {
+              "site": "00cc69c4",
+              "instruction": "mov ecx, dword ptr [ebp - 0x18]"
+            },
+            {
+              "site": "00cc69c7",
+              "instruction": "add ecx, 0x54"
+            },
+            {
+              "site": "00cc69ca",
+              "instruction": "jmp 0xbe1700"
+            }
+          ]
+        },
+        {
+          "state": 6,
+          "previous": 5,
+          "action": "00cc69cf",
+          "raw_instructions": [
+            {
+              "site": "00cc69cf",
+              "instruction": "mov ecx, dword ptr [ebp - 0x18]"
+            },
+            {
+              "site": "00cc69d2",
+              "instruction": "add ecx, 0x60"
+            },
+            {
+              "site": "00cc69d5",
+              "instruction": "jmp 0xbe1d60"
+            }
+          ]
+        },
+        {
+          "state": 7,
+          "previous": 6,
+          "action": "00cc69da",
+          "raw_instructions": [
+            {
+              "site": "00cc69da",
+              "instruction": "mov ecx, dword ptr [ebp - 0x18]"
+            },
+            {
+              "site": "00cc69dd",
+              "instruction": "add ecx, 0x6c"
+            },
+            {
+              "site": "00cc69e0",
+              "instruction": "jmp 0x4d74a0"
+            }
+          ]
+        },
+        {
+          "state": 8,
+          "previous": 7,
+          "action": "00cc69e5",
+          "raw_instructions": [
+            {
+              "site": "00cc69e5",
+              "instruction": "mov ecx, dword ptr [ebp - 0x18]"
+            },
+            {
+              "site": "00cc69e8",
+              "instruction": "add ecx, 0x7c"
+            },
+            {
+              "site": "00cc69eb",
+              "instruction": "jmp 0x7f8770"
+            }
+          ]
+        },
+        {
+          "state": 9,
+          "previous": 8,
+          "action": "00cc69f0",
+          "raw_instructions": [
+            {
+              "site": "00cc69f0",
+              "instruction": "mov ecx, dword ptr [ebp - 0x18]"
+            },
+            {
+              "site": "00cc69f3",
+              "instruction": "add ecx, 0x94"
+            },
+            {
+              "site": "00cc69f9",
+              "instruction": "jmp 0xbe0350"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "00bdb970",
+      "func_info": "00e0047c",
+      "unwind_map": "00e00464",
+      "live_data_matches_disk": true,
+      "states": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00cc60d0",
+          "raw_instructions": [
+            {
+              "site": "00cc60d0",
+              "instruction": "lea ecx, [ebp - 0x1c]"
+            },
+            {
+              "site": "00cc60d3",
+              "instruction": "jmp 0x41dd20"
+            }
+          ]
+        },
+        {
+          "state": 1,
+          "previous": 0,
+          "action": "00cc60d8",
+          "raw_instructions": [
+            {
+              "site": "00cc60d8",
+              "instruction": "lea ecx, [ebp - 0x14]"
+            },
+            {
+              "site": "00cc60db",
+              "instruction": "jmp 0x41dd20"
+            }
+          ]
+        },
+        {
+          "state": 2,
+          "previous": -1,
+          "action": "00cc60d8",
+          "raw_instructions": [
+            {
+              "site": "00cc60d8",
+              "instruction": "lea ecx, [ebp - 0x14]"
+            },
+            {
+              "site": "00cc60db",
+              "instruction": "jmp 0x41dd20"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "00bdb850",
+      "func_info": "00e00440",
+      "unwind_map": "00e00438",
+      "live_data_matches_disk": true,
+      "states": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00cc60b0",
+          "raw_instructions": [
+            {
+              "site": "00cc60b0",
+              "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+            },
+            {
+              "site": "00cc60b3",
+              "instruction": "jmp 0x41dd20"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "00bdcc60",
+      "func_info": "00e006a8",
+      "unwind_map": "00e006a0",
+      "live_data_matches_disk": true,
+      "states": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00cc6250",
+          "raw_instructions": [
+            {
+              "site": "00cc6250",
+              "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+            },
+            {
+              "site": "00cc6253",
+              "instruction": "jmp 0x41dd20"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "00bdcd10",
+      "func_info": "00e006d4",
+      "unwind_map": "00e006cc",
+      "live_data_matches_disk": true,
+      "states": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00cc6270",
+          "raw_instructions": [
+            {
+              "site": "00cc6270",
+              "instruction": "mov eax, dword ptr [ebp - 0x18]"
+            },
+            {
+              "site": "00cc6273",
+              "instruction": "shl eax, 4"
+            },
+            {
+              "site": "00cc6276",
+              "instruction": "add eax, dword ptr [ebp - 0x14]"
+            },
+            {
+              "site": "00cc6279",
+              "instruction": "push eax"
+            },
+            {
+              "site": "00cc627a",
+              "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+            },
+            {
+              "site": "00cc627d",
+              "instruction": "push ecx"
+            },
+            {
+              "site": "00cc627e",
+              "instruction": "call 0x401130"
+            },
+            {
+              "site": "00cc6283",
+              "instruction": "add esp, 8"
+            },
+            {
+              "site": "00cc6286",
+              "instruction": "ret "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "00be1220",
+      "func_info": "00e00ed0",
+      "unwind_map": "00e00ec0",
+      "live_data_matches_disk": true,
+      "states": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00cc6800",
+          "raw_instructions": [
+            {
+              "site": "00cc6800",
+              "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+            },
+            {
+              "site": "00cc6803",
+              "instruction": "jmp 0x41dd20"
+            }
+          ]
+        },
+        {
+          "state": 1,
+          "previous": 0,
+          "action": "00cc6808",
+          "raw_instructions": [
+            {
+              "site": "00cc6808",
+              "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+            },
+            {
+              "site": "00cc680b",
+              "instruction": "add ecx, 8"
+            },
+            {
+              "site": "00cc680e",
+              "instruction": "jmp 0x4d2640"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "candidate_packets": [
+    {
+      "id": "native_vfs_plain_list_destruction4",
+      "readiness": "ready for actual raw-source implementation",
+      "addresses": [
+        "00bdaed0",
+        "007f8310",
+        "00bdb3c0",
+        "007f8770"
+      ],
+      "native_bytes": 154,
+      "dependencies": "Only existing returning singleton_lifetime_free service. No object-payload ownership, pool or tree dependency.",
+      "files": [
+        "include/bsp/native_vfs_plain_list_destruction.hpp",
+        "src/native_vfs_plain_list_destruction.cpp"
+      ],
+      "conditions": "Preserve captured next/current head reloads, initial self-link/count reset, post-free loops and final head reset. Use raw evidence for four omitted ranges; no Ghidra mutation required."
+    },
+    {
+      "id": "native_vfs_pair_vector5",
+      "readiness": "ready with explicit existing source CRT and returning pool-getter boundary",
+      "addresses": [
+        "00bdb850",
+        "00bdcc60",
+        "00bdcd10",
+        "00bdec70",
+        "00be0350"
+      ],
+      "native_bytes": 638,
+      "dependencies": "Existing actual8h string resize/destruction plus ActualNativeStringPoolStorage, shared singleton allocation/free, library memcpy;401130 is actual RET.",
+      "files": [
+        "include/bsp/native_vfs_pair_vector.hpp",
+        "src/native_vfs_pair_vector.cpp"
+      ],
+      "conditions": "Implement all growth/shrink/copy branches. No RAII rollback of completed copies/new allocation on reserve failure: native unwind is no-op. Preserve signed count comparisons, modulo32 shift, callback-visible reloads, stale headers. Existing release interface is noexcept; original throwing getter/EH identity not supplied by that interface."
+    },
+    {
+      "id": "native_vfs_request_list_lifetime4",
+      "readiness": "ready with explicit existing returning pool-getter boundary",
+      "addresses": [
+        "004d2640",
+        "00be1220",
+        "00be19e0",
+        "00be1d60"
+      ],
+      "native_bytes": 274,
+      "dependencies": "Actual4D05E0 raw pooled-string-list clear overload, actual string header destructor/pool storage, singleton_lifetime_free.",
+      "files": [
+        "include/bsp/native_vfs_request_list_lifetime.hpp",
+        "src/native_vfs_request_list_lifetime.cpp"
+      ],
+      "conditions": "Include4D2640 needed by BE1220 EH; preserve both list-head frees/zero writes, string last, captured next and count-before-destruction. No payload-key or extension semantic name is established."
+    },
+    {
+      "id": "native_vfs_string_subtree2",
+      "readiness": "ready after coordination with4CEC60 existing semantic ledger owner",
+      "addresses": [
+        "00bdf7e0",
+        "004cec60"
+      ],
+      "native_bytes": 164,
+      "dependencies": "Existing actual string pool getter/return boundary and singleton_lifetime_free; recursion within each leaf.",
+      "files": [
+        "include/bsp/native_vfs_string_subtree.hpp",
+        "src/native_vfs_string_subtree.cpp"
+      ],
+      "conditions": "4CEC60 current ledger says reconstructed but cited source forwards host clear calls and exposes no address-matched raw body; do not claim duplicate full owner or silently supersede record. Existing nil offsets and distinct key offsets must remain separate."
+    }
+  ],
+  "eh_direct_calls": [
+    {
+      "address": "00cc627e",
+      "native": "00401130",
+      "function": "00cc6270",
+      "callee_contract_and_abi": "Actual one-byte RET helper consumes no arguments. CC6270 evaluates/pushes two pointer words then caller ADD ESP,8; no cleanup action is performed."
+    }
+  ],
+  "raw_function_starts_missing": [],
+  "missing_definition_note": "All candidate entry addresses already have stored functions. Missing byte intervals are body holes/tails; they are not new function starts. Raw CALL rows use raw_site/target and are excluded from live verifier claims. Pure alignment gaps are labelled separately.",
+  "root_destruction_order": [
+    "current109CEE8 virtual0(1)",
+    "mount providers current virtual4(1)",
+    "+94 pair vector",
+    "+7C plain list",
+    "+6C tree",
+    "+60 payload list",
+    "+54 tree",
+    "+48 string vector",
+    "+3C mount tree",
+    "+30 factory list",
+    "+0C string",
+    "BDA790 base"
+  ],
+  "blocked_full_manager_dependencies": [
+    {
+      "address": "00bdb970",
+      "coverage": "complete static body and EH read; source absent",
+      "blocker": "BEE390 current source canonicalize_resource_path_00bee390_fragment is ASCII/NUL-free std::string projection, not actual-header producer. Six constructor calls cannot be elided."
+    },
+    {
+      "address": "00bee390",
+      "coverage": "complete static body read; actual source absent",
+      "blocker": "Need actual raw-header canonicalizer (387bytes) including stack/heap branch, signed-byte locale CRT contract, current string construction and heap cleanup schedule; BDB970 wrapper adds149bytes."
+    },
+    {
+      "address": "00bdfd80",
+      "end_inclusive": "00bdfffc",
+      "coverage": "partial discovery:155-line pseudocode only first40 read; no full removal/EH audit",
+      "blocker": "Saved STL_xlen_throw name does not mean library throw leaf; actual20h-node removal and balancing remain unread."
+    },
+    {
+      "address": "00be0080",
+      "end_inclusive": "00be0311",
+      "coverage": "partial discovery:161-line pseudocode only first40 read; no full removal/EH audit",
+      "blocker": "Actual24h-node single erase, balancing, diagnostic/EH remain unread."
+    },
+    {
+      "address": "004cf8a0",
+      "end_inclusive": "004cfb31",
+      "coverage": "partial discovery:162-line pseudocode only first40 read; no full removal/EH audit",
+      "blocker": "Saved STL_xlen_throw name does not establish full18h-node removal."
+    },
+    {
+      "address": "004be730",
+      "end_inclusive": "004be792",
+      "coverage": "not read in this packet; named only",
+      "blocker": "18h-tree iterator source absent; do not substitute the +21/+1D nil-byte iterator implementations."
+    },
+    {
+      "address": "00bdf7a0",
+      "coverage": "complete static61-byte subtree body read; source absent",
+      "blocker": "Its489D50 two-string destructor is only a traffic source fragment; compose through an actual two-string cleanup entry, coordinated with pair-vector packet."
+    },
+    {
+      "address": "00bda6f0",
+      "coverage": "consumed separate manager-base boundary",
+      "blocker": "Actual lifetime/publication and lock getter domain remains separate; discovery does not reconstruct it."
+    },
+    {
+      "address": "00bda790",
+      "coverage": "consumed separate manager-base boundary",
+      "blocker": "Actual current-global unregister and lock release domain remains separate."
+    }
+  ],
+  "source_provider_findings": [
+    {
+      "address": "004cec60",
+      "was": "Ledger reconstructed_build_tested source src/mission_load_hosts.cpp",
+      "is": "Cited source calls host.clear_string_tree_00e18a60 and host.clear_scripted_name_set, no raw4CEC60 entry",
+      "evidence": "src/mission_load_hosts.cpp:162,251 and header host contracts; live4CEC60 key release/free recursion inspected"
+    },
+    {
+      "address": "00489d50",
+      "was": "Traffic pair cleanup named and integrated",
+      "is": "Ledger explicitly fragment; no demonstrated actual-entry replacement",
+      "evidence": "bsp.py lookup489D50; live body matches two-string destructor shape ofBDB850"
+    },
+    {
+      "address": "00bee390",
+      "was": "Named canonicalizer and bounded build-checked source",
+      "is": "Source API explicitly fragment; rejects embeddedNUL/highbit bytes and uses std::string",
+      "evidence": "include/bsp/resource_path.hpp; src/resource_path.cpp:10-12 versus full liveBEE390"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "BDAED0 and7F8310 ends after returning-free hazard unresolved",
+      "is": "Complete logical bodies are72bytes each, endingBDAF17 and7F8357; four internal/tail gaps recorded",
+      "evidence": "Live listing plus matching installed raw intervals"
+    },
+    {
+      "was": "BDCD10 looked as if old backing free were terminal",
+      "is": "CDD0-CDD9 restores stack and publishes EBP backing/EBX capacity",
+      "evidence": "Matching raw continuation absent from live listing"
+    },
+    {
+      "was": "Assuming ordinary vector exception rollback from a cleanup state",
+      "is": "CC6270 passes current copied-element pointers to401130, whose whole body is RET; no completed-copy/new-backing rollback",
+      "evidence": "VerifiedE006D4/E006CC and rawCC6270 action; live401130"
+    },
+    {
+      "was": "4CEC60 commentary ended at4CECAF",
+      "is": "RET4 instruction begins4CECAF but inclusive byte end is4CECB1;82bytes",
+      "evidence": "Complete live/disk span and decoded RET immediate"
+    }
+  ],
+  "verification": {
+    "live_call_rows_expected": 97,
+    "raw_or_indirect_rows": 24,
+    "build": "not run: docs/report discovery only",
+    "tests": "none added or run",
+    "game": "not run; no runtime claim",
+    "compared_logical_bytes": 3758,
+    "live_call_validation": {
+      "command": "python tools/verify_report_calls.py reports/native_vfs_manager_containers_packet_map.json",
+      "checked": 97,
+      "failed": 0
+    }
+  },
+  "source_pins": [
+    {
+      "path": "config/target.json",
+      "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2"
+    },
+    {
+      "path": "include/bsp/native_vfs_container_allocation.hpp",
+      "sha256": "7aa5f78de45034f75163da77a7630418511918523325ed4a125a676f17e4deeb"
+    },
+    {
+      "path": "src/native_vfs_container_allocation.cpp",
+      "sha256": "dbb7ca65319f7d4c07a68a1b2f5df58fa9faf52a0432298490fa81f9669f93ad"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "da175f7edd3aa2228c4fecae76bb637f92ee1377618957e5987e6c0add104f72"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "sha256": "766956ef99c0d3cd30cada7e9942ac8147172812aede18dd689d5f28fb00707a"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "sha256": "2e9074ec71b5fff046026c9d47f8ab4f706b005906681b149d5f58a6b95ae749"
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "sha256": "7c5abc18b5d19a362b18614b74912baa29e5076b9370808da82b804724c846f8"
+    },
+    {
+      "path": "include/bsp/native_render_resource_record.hpp",
+      "sha256": "07782e4e7897d5db6310a8a0aabf1dc58a99c571a5751de10a5c19f6f0110df8"
+    },
+    {
+      "path": "src/native_render_resource_record.cpp",
+      "sha256": "c5ce60b7d4e30a823c85ab29211d295c3a9103983a1597199b4e4bf9315d0c40"
+    },
+    {
+      "path": "include/bsp/native_string_vector.hpp",
+      "sha256": "50103278e30ffed29738b02acf97008c16c6efd0ac66669ff25ed177694ce7d2"
+    },
+    {
+      "path": "src/native_string_vector.cpp",
+      "sha256": "1075734174ec56a36ff118d9e7d6e6371288f1c5260d6df8a07f262aa2326f9e"
+    },
+    {
+      "path": "include/bsp/resource_path.hpp",
+      "sha256": "535071af4ef7ade72b4ab405398060b307c69795a76a43b2c342ecaabf8cc3f4"
+    },
+    {
+      "path": "src/resource_path.cpp",
+      "sha256": "325e8753947ae02d371d4189340b709369da68f7c8340203854584f9712001e6"
+    },
+    {
+      "path": "include/bsp/native_pooled_resource_path.hpp",
+      "sha256": "2b9b1dad7f2843e0ddcc4d4bf609343ddf02a1516b9c54c2028ea4e78f56bc26"
+    },
+    {
+      "path": "src/mission_load_hosts.cpp",
+      "sha256": "84f6735bb01e63e63dabcef07e3c366556e1e6b3236d7f8d9489babfeedcf560"
+    },
+    {
+      "path": "include/bsp/mission_load_hosts.hpp",
+      "sha256": "65e20839a2fa736d2865bf958e68cab0886ceb3c3f1845d32559b418448ea9aa"
+    },
+    {
+      "path": "src/traffic_config.cpp",
+      "sha256": "ab9b0fc84dde1faf82e2cb2385c229d2113f9c9dfeff844dcba72211642c41a6"
+    },
+    {
+      "path": "docs/NATIVE_VFS_MANAGER_PACKET_MAP.md",
+      "sha256": "dc3ebe461743b32d07287bd0b909f75ecd3a98ae98881204fbab21350b975aee"
+    }
+  ]
+}
