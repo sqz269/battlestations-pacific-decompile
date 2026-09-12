@@ -382,3 +382,14 @@ None of it is binary compatible: the records are C++ containers, not the engine'
 vectors and `{size, char*}` strings. Every routine named here has a Ghidra function; the packet
 has no listing-only routines and `bsp.py ghidra flow` reports no gaps in any of the four large
 readers.
+
+
+## Correction from docs/MISSION_SIDE_STORAGE.md
+
+5C6A70 now writes screen-facing side fields directly into `record.screen.sides`
+and the disjoint remainder into `record.side_extras`. Menu consumers and the Lua
+reader share these same values; the executable's post-load copy pass is removed.
+5C5DA0 writes its enabled BYTE at5C5DAA, not a DWORD at5C5DA5. The four Lua list
+keys are multiunitsidIC1v1/IC2v2/IC3v3/IC4v4. Real Lua5.1.1 and installed table
+checks passed; full executable startup still failed before tree loading and is
+not evidence of gameplay equivalence.

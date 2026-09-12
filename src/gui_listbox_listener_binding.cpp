@@ -50,4 +50,32 @@ void GuiListboxListenerDispatch::listener_current08(void* identity,
     ActiveCall call(*this, listener);
     listener.call_current08(selected_row, listbox);
 }
+GuiListboxFrameListener& GuiListboxListenerDispatch::frame_listener(void* identity,
+    GuiWidgetOwner& listbox) {
+    if (&listbox.runtime() != &owners_ || listbox.layout().type != GuiWidgetType::Listbox)
+        throw std::logic_error("Listbox frame callback requires its canonical owner");
+    const auto found = listeners_.find(identity);
+    auto* listener = found == listeners_.end() ? nullptr
+        : dynamic_cast<GuiListboxFrameListener*>(found->second);
+    if (!listener) throw std::logic_error("Current Listbox listener has no bound frame slots");
+    return *listener;
+}
+void GuiListboxListenerDispatch::listener_current04(void* identity,
+    GuiWidgetOwner& row, GuiWidgetOwner& listbox) {
+    if (&row.runtime() != &owners_)
+        throw std::logic_error("Listbox activation row belongs to another widget runtime");
+    auto& listener = frame_listener(identity, listbox);
+    ActiveCall call(*this, listener);
+    listener.call_current04(row, listbox);
+}
+void GuiListboxListenerDispatch::listener_current0c(void* identity,
+    bool first, bool second, GuiWidgetOwner& listbox) {
+    auto& listener = frame_listener(identity, listbox);
+    ActiveCall call(*this, listener);
+    listener.call_current0c(first, second, listbox);
+}
+std::uint8_t GuiListboxListenerDispatch::device_current2c(InputDevice& device) {
+    if (!activity_) throw std::logic_error("Listbox activation requires the actual device current2C provider");
+    return activity_->device_current2c(device);
+}
 } // namespace bsp

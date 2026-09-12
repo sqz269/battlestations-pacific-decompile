@@ -11,6 +11,7 @@
 #include "bsp/gui_layout_loader.hpp"
 
 namespace bsp {
+struct GuiManagerFrameServices;
 
 // An opaque renderer texture identity, not a reconstructed renderer object.
 // load_texture returns the native reference without an additional retain here.
@@ -74,6 +75,8 @@ public:
     GuiPageRegistry& pages() noexcept { return registry_; }
 
 private:
+    friend void update_gui_manager_00aa4f80(GuiResourceOwner&, float,
+        std::uint8_t, const GuiManagerFrameServices&);
     void show_required(GuiLayoutWidget* widget, bool visible, std::string_view name);
     GuiPageRegistry& registry_;
     GuiLayoutHost& layout_;

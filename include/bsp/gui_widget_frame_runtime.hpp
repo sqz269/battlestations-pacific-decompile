@@ -6,6 +6,7 @@
 
 namespace bsp {
 class MouseInputDevice;
+struct GuiListboxFrameServices;
 
 // An adapter for ONE existing listener owner/subobject identity. These names
 // deliberately identify native slots: individual listener target bodies are
@@ -60,6 +61,10 @@ public:
     void bind_listener(GuiWidgetFrameListenerOwner&);
     void unbind_listener(GuiWidgetFrameListenerOwner&);
     bool operation_active(const GuiWidgetOwner&) const noexcept;
+    // Borrowed services refer back to this runtime. Bind after both objects
+    // exist and keep them alive until unbound, outside every active frame.
+    void bind_listbox_frames(const GuiListboxFrameServices&);
+    void unbind_listbox_frames(const GuiListboxFrameServices&);
     void update40(GuiWidgetOwner&, float seconds);
     // Direct base call for proven derived continuations; it does not dispatch40.
     void update_base_00aa87b0(GuiWidgetOwner&, float seconds);
@@ -73,6 +78,7 @@ private:
     // Only borrowed identity associations and call-lifetime metadata.
     std::unordered_map<void*, GuiWidgetFrameListenerOwner*> listeners_;
     ActiveFrame* active_{};
+    const GuiListboxFrameServices* listbox_frames_{};
     GuiWidgetFrameListenerOwner& listener(GuiWidgetOwner&) const;
     void align_bounds64(GuiWidgetOwner&, float&, float&, float&, float&);
     void update_base_active(GuiWidgetOwner&, float seconds);

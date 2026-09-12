@@ -48,7 +48,13 @@ struct MainMenuLayoutBindings {
     GuiLayoutWidget *briefing_grid_244{}, *briefing_248{}, *primary_text_24c{};
     GuiLayoutWidget *number_text_250{}, *number2_text_254{}, *dest_text_258{}, *dest2_text_25c{};
     GuiTextColor dest2_color_260{}, dest_color_270{};
-    GuiLayoutWidget *highlight_background_294{}, *worldmap_2f0{};
+    GuiLayoutWidget* highlight_background_294{};
+    // 58F5B0 publishes the authored briefing page and Group pairs here.
+    // Values borrow the same GUI tree; 5966F0 reads these vectors via519DC0.
+    GuiLayoutWidget* objective_page_2c8{};
+    std::vector<GuiLayoutWidget*> objective_groups_2cc;
+    std::vector<GuiLayoutWidget*> objective_companions_2dc;
+    GuiLayoutWidget *objective_background_2ec{}, *worldmap_2f0{};
     GuiLayoutWidget *mission_picture_2f4{}, *medal_2f8{}, *checkpoint_background_2fc{};
     GuiLayoutWidget *checkpoint_text_300{}, *mission_name_304{}, *mission_date_308{}, *mission_content_30c{};
     GuiLayoutWidget *missions_us_310{}, *missions_jp_314{}, *missions_us_dlc_318{}, *missions_jp_dlc_31c{}, *training_320{};

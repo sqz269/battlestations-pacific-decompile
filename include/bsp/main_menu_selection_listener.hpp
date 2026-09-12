@@ -49,15 +49,16 @@ struct MainMenuSelectionServices {
 
 // These references add no menu state. Bind to the SAME screen fields/global
 // publication slots used by its producers and MainMenuCommandListenerBindings.
-// +64/+68/+6C names remain address-only until the objective producer is ported.
+// +64/+68/+6C are authored primary/secondary Group counts and hidden objective
+// count, written by58F5B0 through make_main_menu_objective_bindings.
 struct MainMenuSelectionListenerBindings {
     MainMenuCommandListenerBindings& command;
     MainMenuSelectionServices& services;
     GuiNativeNameCompare compare_names_00bf7fbf;
     std::int32_t& field_60;
-    const volatile std::int32_t& field_64;
-    const volatile std::int32_t& field_68;
-    const volatile std::int32_t& field_6c;
+    volatile std::int32_t& field_64;
+    volatile std::int32_t& field_68;
+    volatile std::int32_t& field_6c;
     GuiLayoutWidget*& active_mission_group_110;
     std::uint8_t& arrow_bottom_enabled_1c4;
     std::uint8_t& arrow_top_enabled_1c5;
