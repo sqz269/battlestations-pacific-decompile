@@ -211,3 +211,24 @@ CTest passes. No new test was added: the sequence is straight-line, and a test
 over the mount table would only mirror the constants it asserts. There is no
 native ABI replacement, no fixture parsing and no game validation in this packet.
 No Ghidra metadata was changed; the three names above are ledger records only.
+
+## Correction from docs/NATIVE_VFS_MANAGER_LIFETIME.md
+
+The AT lifetime work implements the complete actual-storage manager base
+BDA6F0/BDA790/BDA8E0, manager BE1DC0/BE1F60/BE25C0, nested request-list teardown,
+and five file-access-log owner bodies. BDA790 removes the current 0109CEEC
+publication from the lifetime manager, which need not equal its ECX owner.
+BE1F60 first deletes the captured current 0109CEE8 log, then every nonnull mount
+node+18 provider through its current virtual slot4 with flags1; node+1C is not an
+ownership gate. It then releases all containers and its native string before
+calling BDA790. The file log is a four-byte vtable owner; its constructor consumes
+the supplied native string without retaining it.
+
+Most of BE1F60 teardown lies in the verified 442-byte raw tail after BE2028.
+Call-override repair and tail decoding preserve that evidence, while the stored
+Ghidra function-body range remains incomplete. See the new report for the full
+normal/state cleanup contracts, strict Win32 build results and qualified fixture
+scope. The new names/comments are applied and saved with old comments preserved.
+Complete derived BEDA60/BEDAC0 startup composition and non-physical provider
+virtual bindings remain follow-up work; these source interfaces are not an
+original-ABI replacement or a game validation result.

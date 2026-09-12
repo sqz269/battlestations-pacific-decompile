@@ -1,5 +1,6 @@
 #include "bsp/native_point_light_provider.hpp"
 #include "bsp/model_bounds.hpp"
+#include "bsp/native_group_world_sphere.hpp"
 #include <cstring>
 #include <stdexcept>
 
@@ -128,15 +129,31 @@ const float* native_model_population_sphere_00b6e8c0(NativeNodeBinding& node) {
     return model_sphere(node.storage, node.transform);
 }
 const float* native_point_light_supported_world_sphere(
-    NativePointLightPopulationRuntime&, SceneNodeAttachment& binding) {
+    NativePointLightPopulationRuntime& runtime, SceneNodeAttachment& binding) {
     auto& raw = raw_node(binding);
     if (raw.vtable_00 == 0x00d62de8)
         return model_sphere(raw, binding.transform);
     if (raw.vtable_00 == 0x00d634f8) {
         const auto* bytes = reinterpret_cast<const unsigned char*>(&raw);
-        if (bytes[0x175] != 0 && (raw.auxiliary_flags_138 & 0x30u) == 0)
-            throw std::logic_error("Group dynamic bounds B8EBE0 are not bound");
-        return model_sphere(raw, binding.transform);
+        if (bytes[0x175] == 0) return model_sphere(raw, binding.transform);
+        if ((raw.auxiliary_flags_138 & 0x30u) == 0) {
+            if (!binding.context)
+                throw std::logic_error("Dynamic Group bounds require the actual Group companion");
+            auto& group = *static_cast<NativeGroupOwner*>(binding.context);
+            if (&group.node.scene_attachment != &binding || &group.storage.node != &raw)
+                throw std::logic_error("Dynamic Group bounds companion identity differs");
+            NativeGroupWorldSphereRuntime spheres{runtime.nodes,
+                {&runtime.crt, runtime.half_00d7a280}, &runtime,
+                [](NativeGroupWorldSphereRuntime& active, SceneNodeAttachment& child) -> const float* {
+                    auto& population = *static_cast<NativePointLightPopulationRuntime*>(active.context);
+                    if (!population.sphere_virtual48)
+                        throw std::logic_error("Dynamic Group lost its current child virtual48");
+                    return population.sphere_virtual48(population, child);
+                }};
+            aggregate_native_group_world_sphere_00b8ebe0(spheres, group);
+            raw.auxiliary_flags_138 |= 0x30u; // B8F11D reload/OR after callback; do not re-read175.
+        }
+        return raw.world_sphere_13c.data();
     }
     throw std::logic_error("Current native virtual48 has no PointLight bounds binding");
 }

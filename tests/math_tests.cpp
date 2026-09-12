@@ -1,5 +1,7 @@
+#include "bsp/ai_planner_tails.hpp"
 #include "bsp/land_and_structures.hpp"
 #include "bsp/air_operations.hpp"
+#include "bsp/ship_hydro_forces.hpp"
 #include "bsp/submarine_model.hpp"
 #include "bsp/plane_flight.hpp"
 #include "bsp/pilot_controls.hpp"
@@ -3191,6 +3193,85 @@ int main() {
         const bsp::LandConvoySlot slot = bsp::land_convoy_slot_00742400(f, 9);
         check(slot.group == 2 && slot.lane == 1,
             "00742400: index 9 of a 3x4 block is rank 2, file 1");
+    }
+
+    {
+        // 009329C0: a hull carrying pure lateral velocity must lose it while a hull
+        // carrying the same speed forward keeps almost all of it. That asymmetry is the
+        // whole point of the routine and it rests on two readings of the listing that a
+        // sign or an axis swap would silently break: the lateral pair at settings+4F0h
+        // and +4F4h drives the body's row-0 axis (00933199) while the forward axis takes
+        // the linear term at +4F8h alone (0093324E). With the shipped `Ship` row the
+        // lateral coefficients are a hundred times the forward one.
+        struct Host final : bsp::ShipHydroHost {
+            bsp::OceanVec3 velocity{};
+            bsp::OceanVec3 force{};
+            bsp::OceanVec3 body_linear_velocity_00c31f40() override { return velocity; }
+            bsp::OceanVec3 body_angular_velocity_00c31f20() override { return {}; }
+            bsp::ShipHydroTransform body_world_transform_00c33650() override { return {}; }
+            bool unit_category_8_vtable5c() override { return false; }
+            float water_height_0078cf20(float, float) override { return 0.0f; }
+            void leak_tick_0074f930(float) override {}
+            bsp::OceanVec3 leak_heel_torque_0074f2e0() override { return {}; }
+            void add_force_00c35360(const bsp::OceanVec3& f) override { force = f; }
+            void add_torque_00c35330(const bsp::OceanVec3&) override {}
+            void set_linear_velocity_00c37e50(const bsp::OceanVec3&) override {}
+            void set_angular_velocity_00c37e20(const bsp::OceanVec3&) override {}
+            void set_body_no_gravity_flag_00932a16() override {}
+        };
+
+        bsp::ShipBuoyancyElement element{};
+        element.coefficient = 0.0f;   // no buoyancy, so only the drag shows
+        element.level_base = 0.0f;
+        element.level_draft = 4.0f;   // fully submerged: the point sits at the waterline
+        element.level_top = 8.0f;
+
+        bsp::ShipHydroInputs in{};
+        in.material = bsp::ShipPhysicsMaterial::kShip;
+        in.record = bsp::ship_physics_material_shipped(in.material);
+        in.class_mass = 1000.0f;
+        in.elements = &element;
+        in.element_count = 1;
+
+        Host lateral{};
+        lateral.velocity.x = 10.0f;  // pure row-0 motion
+        const auto lateral_result = bsp::ship_hydro_apply_forces_009329c0(in, 0.05f, lateral);
+        Host forward{};
+        forward.velocity.z = 10.0f;  // pure row-2 motion, same speed
+        const auto forward_result = bsp::ship_hydro_apply_forces_009329c0(in, 0.05f, forward);
+
+        check(lateral_result.force.x < -1.0f,
+            "009329C0: lateral velocity meets a drag force opposing it");
+        check(forward_result.force.z < 0.0f,
+            "009329C0: forward velocity meets a drag force opposing it too");
+        check(-lateral_result.force.x > -forward_result.force.z * 10.0f,
+            "009329C0: the lateral axis takes KozegellenallasiEgyutthatoLOldalra/NOldalra "
+            "and the forward axis only the linear LElore, so lateral drag dominates");
+        // dv = F * dt / mass. The clamp at 009335DD caps a single element at the whole
+        // component, never past it, so the lateral speed falls toward zero and never
+        // reverses.
+        const float lateral_dv = lateral_result.force.x * 0.05f / in.class_mass;
+        check(lateral_dv < 0.0f && lateral_dv >= -10.0f,
+            "009335DD: one element's impulse cannot reverse the velocity it opposes");
+    }
+
+    {
+        // 00A1E250. The Capture_MinimalCBTargetWeight floor is applied to
+        // (a - b/2) + max(0, c - d/2) BEFORE StrategicGain is added, so a target
+        // whose unit terms are deeply negative still prices at floor + gain and
+        // the printed decomposition at 00D22CC8 does not add up to the total.
+        bsp::AiTailCaptureScoreInputs in;
+        in.own_value = 1.0f;
+        in.enemy_value = 40.0f;          // (a - b/2) = -19
+        in.own_resources = 0.0f;
+        in.enemy_resources = 0.0f;       // (c - d/2) = 0, clamped arm not needed
+        in.strategic_gain = 7.0f;
+        in.min_cb_target_weight = 0.5f;
+        const bsp::AiTailCaptureScoreTerms t = bsp::ai_tail_capture_score(in);
+        check(std::fabs(t.total - 7.5f) < 1e-4f,
+            "00A1E74B: the floor bites before 00A1E81D adds StrategicGain");
+        check(std::fabs(t.own_value - 1.0f) < 1e-4f && std::fabs(t.enemy_value - 40.0f) < 1e-4f,
+            "00A1E836: the six printed terms keep their unclamped values");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

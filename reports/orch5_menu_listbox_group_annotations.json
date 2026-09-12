@@ -1,0 +1,387 @@
+[
+  {
+    "address": "00425e50",
+    "before": {
+      "address": "00425e50",
+      "function_name": "STL_inst_00425e50"
+    },
+    "after": {
+      "address": "00425e50",
+      "name": "STL_inst_00425e50",
+      "evidence": "Correct existing Ghidra STL instantiation name retained. Canonical Listbox selected-row projection uses same actual row identities; ECX Listbox, EAX row or null, bare RET. Valid checked-iterator domain only. docs/GUI_LISTBOX_RUNTIME.md; reports/gui_listbox_runtime.json; no generic library reimplementation or ABI claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00530670",
+    "before": {
+      "address": "00530670",
+      "function_name": "FUN_00530670"
+    },
+    "after": {
+      "address": "00530670",
+      "name": "BSP_FrontEndPrompt_FocusFirstNavigation",
+      "evidence": "Hypothesis, not a recovered symbol. complete normal body. ECX same prompt screen; no stack arguments; RET. reports/frontend_prompt_navigation.json; reports/orch5_menu_listbox_group_batch.json. Combined Win32 build and scoped fixture validation recorded by parent; new C++ interface, not ABI/game validated."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00530c20",
+    "before": {
+      "address": "00530c20",
+      "function_name": "FUN_00530c20"
+    },
+    "after": {
+      "address": "00530c20",
+      "name": "BSP_FrontEndPrompt_FocusLastNavigation",
+      "evidence": "Hypothesis, not a recovered symbol. complete normal body. ECX same prompt screen; no stack arguments; RET. reports/frontend_prompt_navigation.json; reports/orch5_menu_listbox_group_batch.json. Combined Win32 build and scoped fixture validation recorded by parent; new C++ interface, not ABI/game validated."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "005885d0",
+    "before": {
+      "address": "005885d0",
+      "function_name": "BSP_MainMenu_OpenTacticalLibraryWithSelection",
+      "comment": "[BSP reconstruction 005885d0]\nHypothesis, not a recovered symbol. __thiscall(this), ECX = the main-menu screen, no stack arguments, RET. Resolves two values (005806A0 then 005C27E0 at 005885D4, then 005806A0 again at 005885E4), writes them into *(00E198AC)+70h at +9Ch and +A0h with the byte at +A4h cleared, writes mode 5 at +94h and selector 63h at +98h, then calls BSP_FrontEndManager_PushInterfaceRequest (004CC460) with interface 0Bh and a null payload. 0Bh is the tactical library screen at manager +70h. Neither 005806A0 nor 005C27E0 was read, so what the two selection values are is unresolved. See docs/MAIN_MENU_SCREENS.md."
+    },
+    "after": {
+      "address": "005885d0",
+      "name": "BSP_MainMenu_OpenTacticalLibraryWithSelection",
+      "evidence": "Hypothesis, not a recovered symbol. __thiscall(this), ECX = the main-menu screen, no stack arguments, RET. Resolves two values (005806A0 then 005C27E0 at 005885D4, then 005806A0 again at 005885E4), writes them into *(00E198AC)+70h at +9Ch and +A0h with the byte at +A4h cleared, writes mode 5 at +94h and selector 63h at +98h, then calls BSP_FrontEndManager_PushInterfaceRequest (004CC460) with interface 0Bh and a null payload. 0Bh is the tactical library screen at manager +70h. Neither 005806A0 nor 005C27E0 was read, so what the two selection values are is unresolved. See docs/MAIN_MENU_SCREENS.md. | Hypothesis, not a recovered symbol. complete normal sequence. ECX caller screen forwarded to global-only selection getters; no stack arguments; RET. reports/main_menu_tactical_library.json; reports/orch5_menu_listbox_group_batch.json. Combined Win32 build and scoped fixture validation recorded by parent; new C++ interface, not ABI/game validated."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "005886c0",
+    "before": {
+      "address": "005886c0",
+      "function_name": "BSP_MainMenu_OpenTacticalLibrary",
+      "comment": "[BSP reconstruction 005886c0]\nHypothesis, not a recovered symbol. No stack arguments, RET. Calls BSP_FrontEndManager_PushInterfaceRequest (004CC460) with interface 0Bh and a null payload FIRST at 005886CA, and only then writes mode 4 at +94h and selector 63h at +98h of *(00E198AC)+70h. The reversed order relative to 005885D0 means a servicing pass running between the two would see the request with the previous mode still in place; whether that is reachable was not checked. No selection is written, so +9Ch/+A0h keep whatever the previous request left. See docs/MAIN_MENU_SCREENS.md."
+    },
+    "after": {
+      "address": "005886c0",
+      "name": "BSP_MainMenu_OpenTacticalLibrary",
+      "evidence": "Hypothesis, not a recovered symbol. No stack arguments, RET. Calls BSP_FrontEndManager_PushInterfaceRequest (004CC460) with interface 0Bh and a null payload FIRST at 005886CA, and only then writes mode 4 at +94h and selector 63h at +98h of *(00E198AC)+70h. The reversed order relative to 005885D0 means a servicing pass running between the two would see the request with the previous mode still in place; whether that is reachable was not checked. No selection is written, so +9Ch/+A0h keep whatever the previous request left. See docs/MAIN_MENU_SCREENS.md. | Hypothesis, not a recovered symbol. complete normal sequence. ECX caller screen forwarded to global-only selection getters; no stack arguments; RET. reports/main_menu_tactical_library.json; reports/orch5_menu_listbox_group_batch.json. Combined Win32 build and scoped fixture validation recorded by parent; new C++ interface, not ABI/game validated."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "005993a0",
+    "before": {
+      "address": "005993a0",
+      "function_name": "FUN_005993a0",
+      "comment": "[BSP reconstruction 005993a0]\nHypothesis, not a recovered symbol. Same screen+40 CEFC04 listener: complete normal current0C/current18 over canonical widgets; current04 5993A0 is analyzed only and remains abstract. Native RET4/RET8, Text low-byte gate, live D4 reload after type callbacks, same screen/scrollers. docs/MAIN_MENU_WIDGET_LISTENER.md; reports/main_menu_widget_listener.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "after": {
+      "address": "005993a0",
+      "name": "BSP_MainMenuWidgetListener_Current04",
+      "evidence": "Hypothesis, not a recovered symbol. Same screen+40 CEFC04 listener: complete normal current0C/current18 over canonical widgets; current04 5993A0 is analyzed only and remains abstract. Native RET4/RET8, Text low-byte gate, live D4 reload after type callbacks, same screen/scrollers. docs/MAIN_MENU_WIDGET_LISTENER.md; reports/main_menu_widget_listener.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation. | Full normal5993A0..599D57 caller reconstructed over same canonical widget/screen/listbox/scroller/prompt owners, with explicitly required addressed page/profile services. LiteralFLD1 current4C before fresh type, native low-byte commands, D8-versus-ordinal distinction, current8 navigation RET8 with selected row and captured listbox, native prompt string cleanup order. docs/MAIN_MENU_COMMAND_LISTENER.md; reports/main_menu_command_listener.json. Strict Win32 compilation passed; no original ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00941250",
+    "before": {
+      "address": "00941250",
+      "function_name": "FUN_00941250"
+    },
+    "after": {
+      "address": "00941250",
+      "name": "BSP_GuiSound_RequestSelectionFlags",
+      "evidence": "Hypothesis, not a recovered symbol. Complete same SoundRequestQueue byte producer; DL has priority and getter is reached only when needed. CL first flag, DL second flag; RET. reports/gui_listbox_runtime.json; reports/orch5_listbox_function_definitions.json; reports/orch5_menu_listbox_group_batch.json. New C++ ABI; no playback/game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9ac30",
+    "before": {
+      "address": "00a9ac30",
+      "function_name": "FUN_00a9ac30"
+    },
+    "after": {
+      "address": "00a9ac30",
+      "name": "BSP_GuiListbox_ConstructedNoOp",
+      "evidence": "Hypothesis, not a recovered symbol. complete bare RET. ECX Listbox; RET. reports/orch5_listbox_type_integration.json; reports/orch5_menu_listbox_group_batch.json. Combined Win32 build and scoped fixture validation recorded by parent; new C++ interface, not ABI/game validated."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9ac40",
+    "before": {
+      "address": "00a9ac40",
+      "function_name": "FUN_00a9ac40"
+    },
+    "after": {
+      "address": "00a9ac40",
+      "name": "BSP_GuiListbox_SetListener",
+      "evidence": "Hypothesis, not a recovered symbol. ECX Listbox, stack borrowed listener, RET4. complete normal body. Canonical Listbox/state evidence: docs/GUI_LISTBOX_RUNTIME.md; reports/gui_listbox_runtime.json. Parent actual type11 owner fixture passed; MSVC Win32 TU passed. New C++ interface, no native ABI/game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9ac90",
+    "before": {
+      "address": "00a9ac90",
+      "function_name": "FUN_00a9ac90"
+    },
+    "after": {
+      "address": "00a9ac90",
+      "name": "BSP_GuiListbox_SetLayoutFlags",
+      "evidence": "Hypothesis, not a recovered symbol. ECX Listbox, three stack low bytes, RETC. complete normal body. Canonical Listbox/state evidence: docs/GUI_LISTBOX_RUNTIME.md; reports/gui_listbox_runtime.json. Parent actual type11 owner fixture passed; MSVC Win32 TU passed. New C++ interface, no native ABI/game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9be00",
+    "before": {
+      "address": "00a9be00",
+      "function_name": "STL_inst_00a9be00"
+    },
+    "after": {
+      "address": "00a9be00",
+      "name": "STL_inst_00a9be00",
+      "evidence": "Correct existing Ghidra STL instantiation name retained. Canonical Listbox row-at-ordinal projection traverses same FC row identities; ECX Listbox, signed ordinal stack, EAX actual row or null, RET4. docs/GUI_LISTBOX_RUNTIME.md; reports/gui_listbox_runtime.json; no generic library reimplementation or ABI claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9be60",
+    "before": {
+      "address": "00a9be60",
+      "function_name": "FUN_00a9be60"
+    },
+    "after": {
+      "address": "00a9be60",
+      "name": "BSP_GuiListbox_RemoveRow",
+      "evidence": "Hypothesis, not a recovered symbol. ECX Listbox, stack actual row, RET4. complete normal body with std::list pointer-identity removal and actual current34/current7C; native allocator ABI excluded. Canonical Listbox/state evidence: docs/GUI_LISTBOX_RUNTIME.md; reports/gui_listbox_runtime.json. Parent actual type11 owner fixture passed; MSVC Win32 TU passed. New C++ interface, no native ABI/game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9c050",
+    "before": {
+      "address": "00a9c050",
+      "function_name": "FUN_00a9c050"
+    },
+    "after": {
+      "address": "00a9c050",
+      "name": "BSP_GuiListbox_Loaded",
+      "evidence": "Hypothesis, not a recovered symbol. ECX Listbox, RET. complete normal body with required actual base78/current60 profile. Canonical Listbox/state evidence: docs/GUI_LISTBOX_RUNTIME.md; reports/gui_listbox_runtime.json. Parent actual type11 owner fixture passed; MSVC Win32 TU passed. New C++ interface, no native ABI/game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9c0a0",
+    "before": {
+      "address": "00a9c0a0",
+      "function_name": "FUN_00a9c0a0"
+    },
+    "after": {
+      "address": "00a9c0a0",
+      "name": "BSP_GuiListbox_LayoutRows",
+      "evidence": "Hypothesis, not a recovered symbol. ECX Listbox, RET; x87 arithmetic. complete vertical and centering paths; horizontal raw114 supported for canonical Text rows; other derived114 aliases excluded. Canonical Listbox/state evidence: docs/GUI_LISTBOX_RUNTIME.md; reports/gui_listbox_runtime.json. Parent actual type11 owner fixture passed; MSVC Win32 TU passed. New C++ interface, no native ABI/game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9c220",
+    "before": {
+      "address": "00a9c220",
+      "function_name": "FUN_00a9c220"
+    },
+    "after": {
+      "address": "00a9c220",
+      "name": "BSP_GuiListbox_RefreshSelection",
+      "evidence": "Hypothesis, not a recovered symbol. Complete current80 using same selected iterator, listener114 and live sound callback; reload after listener mutation. ECX Listbox; lowbyte force on stack; RET4. reports/gui_listbox_runtime.json; reports/orch5_listbox_function_definitions.json; reports/orch5_menu_listbox_group_batch.json. New C++ ABI; no playback/game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9c740",
+    "before": {
+      "address": "00a9c740",
+      "function_name": "FUN_00a9c740"
+    },
+    "after": {
+      "address": "00a9c740",
+      "name": "BSP_GuiListbox_SelectRow",
+      "evidence": "Hypothesis, not a recovered symbol. ECX Listbox, stack actual row or null, RET4. complete normal body over actual current80 companion. Canonical Listbox/state evidence: docs/GUI_LISTBOX_RUNTIME.md; reports/gui_listbox_runtime.json. Parent actual type11 owner fixture passed; MSVC Win32 TU passed. New C++ interface, no native ABI/game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9c7c0",
+    "before": {
+      "address": "00a9c7c0",
+      "function_name": "FUN_00a9c7c0"
+    },
+    "after": {
+      "address": "00a9c7c0",
+      "name": "BSP_GuiListbox_SelectIndex",
+      "evidence": "Hypothesis, not a recovered symbol. ECX Listbox, stack signed ordinal, RET4. complete normal body over actual current80 companion. Canonical Listbox/state evidence: docs/GUI_LISTBOX_RUNTIME.md; reports/gui_listbox_runtime.json. Parent actual type11 owner fixture passed; MSVC Win32 TU passed. New C++ interface, no native ABI/game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9c920",
+    "before": {
+      "address": "00a9c920",
+      "function_name": "FUN_00a9c920"
+    },
+    "after": {
+      "address": "00a9c920",
+      "name": "BSP_GuiListbox_GetSelectedIndex",
+      "evidence": "Hypothesis, not a recovered symbol. ECX Listbox, EAX ordinal or -1, RET. complete valid checked-iterator domain. Canonical Listbox/state evidence: docs/GUI_LISTBOX_RUNTIME.md; reports/gui_listbox_runtime.json. Parent actual type11 owner fixture passed; MSVC Win32 TU passed. New C++ interface, no native ABI/game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9c990",
+    "before": {
+      "address": "00a9c990",
+      "function_name": "FUN_00a9c990"
+    },
+    "after": {
+      "address": "00a9c990",
+      "name": "BSP_GuiListbox_GetSelectedData",
+      "evidence": "Hypothesis, not a recovered symbol. ECX Listbox, EAX raw row D8 or FFFFFFFF, RET. complete valid checked-iterator domain. Canonical Listbox/state evidence: docs/GUI_LISTBOX_RUNTIME.md; reports/gui_listbox_runtime.json. Parent actual type11 owner fixture passed; MSVC Win32 TU passed. New C++ interface, no native ABI/game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9cce0",
+    "before": {
+      "address": "00a9cce0",
+      "function_name": "BSP_GuiListControl_SetVisible",
+      "comment": "[BSP reconstruction 00a9cce0]\nHypothesis, not a recovered symbol. __thiscall(widget, char visible), RET 4, widget vtable +34h in table 00d5bbf8. No Ghidra function: raw listing 00A9CCE0-00A9CD16. Calls the base 00AA8530 and then, when the id at +118h is not -1, resolves it through BSP_GuiManager_GetOrCreate (004C12B0) and 00AA0F50 and calls the same virtual +34h on the result, so one widget can slave another's visibility. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md."
+    },
+    "after": {
+      "address": "00a9cce0",
+      "name": "BSP_GuiListControl_SetVisible",
+      "evidence": "Hypothesis, not a recovered symbol. __thiscall(widget, char visible), RET 4, widget vtable +34h in table 00d5bbf8. No Ghidra function: raw listing 00A9CCE0-00A9CD16. Calls the base 00AA8530 and then, when the id at +118h is not -1, resolves it through BSP_GuiManager_GetOrCreate (004C12B0) and 00AA0F50 and calls the same virtual +34h on the result, so one widget can slave another's visibility. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md. | Hypothesis, not a recovered symbol. partial: highlight index118 stays -1 across base callback. ECX Listbox; low byte visible on stack; RET4. reports/orch5_listbox_type_integration.json; reports/orch5_menu_listbox_group_batch.json. Combined Win32 build and scoped fixture validation recorded by parent; new C++ interface, not ABI/game validated."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9cd20",
+    "before": {
+      "address": "00a9cd20",
+      "function_name": "BSP_GuiListControl_SetActive",
+      "comment": "[BSP reconstruction 00a9cd20]\nHypothesis, not a recovered symbol. __thiscall(widget, char active), RET 4, widget vtable +60h in table 00d5bbf8. 00A9CD2C calls the base 00AA6A30 with ECX still holding this, which Ghidra drops. When the byte is being cleared and byte +11Eh is set, 00A9CD50 to 00A9CDA9 walks the item list at +FCh..+10Ch calling 00A9BA90(&list, node, node != [this+10Ch] ? 3 : 1), so the selected entry gets state 1 and the rest state 3. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md."
+    },
+    "after": {
+      "address": "00a9cd20",
+      "name": "BSP_GuiListControl_SetActive",
+      "evidence": "Hypothesis, not a recovered symbol. __thiscall(widget, char active), RET 4, widget vtable +60h in table 00d5bbf8. 00A9CD2C calls the base 00AA6A30 with ECX still holding this, which Ghidra drops. When the byte is being cleared and byte +11Eh is set, 00A9CD50 to 00A9CDA9 walks the item list at +FCh..+10Ch calling 00A9BA90(&list, node, node != [this+10Ch] ? 3 : 1), so the selected entry gets state 1 and the rest state 3. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md. | Hypothesis, not a recovered symbol. partial: active true or auto_control11E stays zero across base callback. ECX Listbox; low byte active on stack; RET4. reports/orch5_listbox_type_integration.json; reports/orch5_menu_listbox_group_batch.json. Combined Win32 build and scoped fixture validation recorded by parent; new C++ interface, not ABI/game validated."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9d750",
+    "before": {
+      "address": "00a9d750",
+      "function_name": "FUN_00a9d750"
+    },
+    "after": {
+      "address": "00a9d750",
+      "name": "BSP_GuiListbox_InsertRow",
+      "evidence": "Hypothesis, not a recovered symbol. ECX Listbox, stack row, iterator pointer, after-byte, RETC. partial_projection: null-position branch A9D750..A9D7AB and common A9D813..A9D863; non-null iterator A9D7AC..A9D812 excluded; C++ owning-handle transport. Canonical Listbox/state evidence: docs/GUI_LISTBOX_RUNTIME.md; reports/gui_listbox_runtime.json. Parent actual type11 owner fixture passed; MSVC Win32 TU passed. New C++ interface, no native ABI/game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a9df40",
+    "before": {
+      "address": "00a9df40",
+      "function_name": "FUN_00a9df40"
+    },
+    "after": {
+      "address": "00a9df40",
+      "name": "BSP_GuiListbox_Construct",
+      "evidence": "Hypothesis, not a recovered symbol. ECX storage, EAX this, RET. partial_projection: only constructor-established FC row/selection/cache/listener and layout fields; base, remaining derived fields, raw pools/SEH excluded. Canonical Listbox/state evidence: docs/GUI_LISTBOX_RUNTIME.md; reports/gui_listbox_runtime.json. Parent actual type11 owner fixture passed; MSVC Win32 TU passed. New C++ interface, no native ABI/game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00aa78f0",
+    "before": {
+      "address": "00aa78f0",
+      "function_name": "BSP_GuiWidget_SetLocalY",
+      "comment": "[BSP reconstruction 00aa78f0]\nHypothesis, not a recovered symbol. __thiscall(widget, float y), RET 4. MOVSS the argument to widget+10h, then CALL 00AA7220. Transform only. docs/GUI_WIDGET_TRANSFORM.md."
+    },
+    "after": {
+      "address": "00aa78f0",
+      "name": "BSP_GuiWidget_SetLocalY",
+      "evidence": "Hypothesis, not a recovered symbol. __thiscall(widget, float y), RET 4. MOVSS the argument to widget+10h, then CALL 00AA7220. Transform only. docs/GUI_WIDGET_TRANSFORM.md. | Hypothesis, not a recovered symbol. ECX widget, float stack arg, RET4. complete normal body over same GuiWidgetOwner transform/node. Canonical Listbox/state evidence: docs/GUI_LISTBOX_RUNTIME.md; reports/gui_listbox_runtime.json. Parent actual type11 owner fixture passed; MSVC Win32 TU passed. New C++ interface, no native ABI/game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00aa7d00",
+    "before": {
+      "address": "00aa7d00",
+      "function_name": "BSP_GuiWidget_SetLocalXYAndBounds",
+      "comment": "[BSP reconstruction 00aa7d00]\nHypothesis, not a recovered symbol. __thiscall(widget, float x, float y), RET 8. Writes +0Ch and +10h from the two stack floats and rewrites +14h with its own value, then calls 00AA7220 and 00AA70E0. docs/GUI_WIDGET_TRANSFORM.md."
+    },
+    "after": {
+      "address": "00aa7d00",
+      "name": "BSP_GuiWidget_SetLocalXYAndBounds",
+      "evidence": "Hypothesis, not a recovered symbol. __thiscall(widget, float x, float y), RET 8. Writes +0Ch and +10h from the two stack floats and rewrites +14h with its own value, then calls 00AA7220 and 00AA70E0. docs/GUI_WIDGET_TRANSFORM.md. | Hypothesis, not a recovered symbol. ECX widget, two float stack args, RET8. complete normal body over same GuiWidgetOwner transform/node/bounds. Canonical Listbox/state evidence: docs/GUI_LISTBOX_RUNTIME.md; reports/gui_listbox_runtime.json. Parent actual type11 owner fixture passed; MSVC Win32 TU passed. New C++ interface, no native ABI/game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b8e980",
+    "before": {
+      "address": "00b8e980",
+      "function_name": "FUN_00b8e980"
+    },
+    "after": {
+      "address": "00b8e980",
+      "name": "BSP_Vector3f_NormalizeAndStoreLength",
+      "evidence": "Hypothesis, not recovered symbol. Actual CRT length, alias-sensitive length store before source reload, ordered-positive divide or positive zeros. Native [00b8e980,00b8e9e7); ECX output XYZ; EDX input XYZ; stack length output; EAX output XYZ; RET4 at B8E9CB and B8E9E4. New C++ ABI; strict Win32 compile, extracted-native numerical differential and actual Group owner fixture passed. No combined-build or game validation claim. docs/NATIVE_GROUP_WORLD_SPHERE.md; reports/native_group_world_sphere.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b8e9f0",
+    "before": {
+      "address": "00b8e9f0",
+      "function_name": "FUN_00b8e9f0"
+    },
+    "after": {
+      "address": "00b8e9f0",
+      "name": "BSP_Sphere_MergeEnclosing",
+      "evidence": "Hypothesis, not recovered symbol. Exact x87 containment/unordered branches, live double D7A280, binary32 radius/product spills and alias-sensitive source reloads. Native [00b8e9f0,00b8eb1e); ECX destination sphere; stack source sphere; EAX same destination; RET4 at B8EAA4, B8EB0D and B8EB1B. New C++ ABI; strict Win32 compile, extracted-native numerical differential and actual Group owner fixture passed. No combined-build or game validation claim. docs/NATIVE_GROUP_WORLD_SPHERE.md; reports/native_group_world_sphere.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b8ebe0",
+    "before": {
+      "address": "00b8ebe0",
+      "function_name": "FUN_00b8ebe0"
+    },
+    "after": {
+      "address": "00b8ebe0",
+      "name": "BSP_Group_AggregateWorldSphere",
+      "evidence": "Hypothesis, not recovered symbol. Same actual Group owner/cache and captured +178/+17C array, first qualifying seed followed by all trailing elements, final mask30 OR. Native [00b8ebe0,00b8ec7b); ECX Group; RET at B8EC7A. New C++ ABI; strict Win32 compile, extracted-native numerical differential and actual Group owner fixture passed. No combined-build or game validation claim. docs/NATIVE_GROUP_WORLD_SPHERE.md; reports/native_group_world_sphere.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b8f100",
+    "before": {
+      "address": "00b8f100",
+      "function_name": "BSP_Group_GetWorldSphere",
+      "comment": "[BSP reconstruction 00b8f100]\nECX group, EAX group13C, RET. Static byte175==0 affine sphere; otherwise cached or B8EBE0 aggregation. C++ only static/cached branches; dynamic cache miss remains partial. Actual canonical PointLight/Model population and partial spatial producer. New C++ ABI; no Text provider, render or game claim. Evidence docs/NATIVE_POINT_LIGHT_PROVIDER.md; reports/native_point_light_provider.json. Ghidra read-only; parent owns annotations. | Hypothesis, not a recovered symbol. Actual raw PointLight population chain and particle volume-producer fragment B0CAE1..B0CBA6 preserve raw identity, alias-sensitive loads/stores, strict sphere comparisons and duplicate reciprocal backlinks. Model/cache-static Group paths supported; dynamic Group and complete particle/Text providers remain open. docs/NATIVE_POINT_LIGHT_PROVIDER.md; reports/native_point_light_provider.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+    },
+    "after": {
+      "address": "00b8f100",
+      "name": "BSP_Group_GetWorldSphere",
+      "evidence": "ECX group, EAX group13C, RET. Static byte175==0 affine sphere; otherwise cached or B8EBE0 aggregation. C++ only static/cached branches; dynamic cache miss remains partial. Actual canonical PointLight/Model population and partial spatial producer. New C++ ABI; no Text provider, render or game claim. Evidence docs/NATIVE_POINT_LIGHT_PROVIDER.md; reports/native_point_light_provider.json. Ghidra read-only; parent owns annotations. | Hypothesis, not a recovered symbol. Actual raw PointLight population chain and particle volume-producer fragment B0CAE1..B0CBA6 preserve raw identity, alias-sensitive loads/stores, strict sphere comparisons and duplicate reciprocal backlinks. Model/cache-static Group paths supported; dynamic Group and complete particle/Text providers remain open. docs/NATIVE_POINT_LIGHT_PROVIDER.md; reports/native_point_light_provider.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation. | Hypothesis, not a recovered symbol. complete Group branch sequencing within existing affine numeric domain. ECX Group; EAX same sphere13C; RET. reports/orch5_group_sphere_integration.json; reports/orch5_menu_listbox_group_batch.json. Combined Win32 build and scoped fixture validation recorded by parent; new C++ interface, not ABI/game validated."
+    },
+    "status": "applied"
+  }
+]

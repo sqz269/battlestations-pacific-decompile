@@ -392,7 +392,8 @@ private:
 
 class AvoidZoneResetBinding final : public bsp::AvoidZoneResetHost {
 public:
-    explicit AvoidZoneResetBinding(GameHostLog& log) : log_(log) {}
+    AvoidZoneResetBinding(GameHostLog& log, const std::function<void()>& rebuild)
+        : log_(log), rebuild_(rebuild) {}
 
     void clear_avoid_zone_counter_648h() override {
         log_.implemented("MissionLoad::clear_avoid_zone_counter", "004e075a");
@@ -406,15 +407,14 @@ public:
         log_.implemented("MissionLoad::clear_scene_tree", "004e076c");
     }
     void rebuild_avoid_zones_00424d00() override {
-        // 004218e0 hands 00424d00 the AvoidZoneManager singleton; 00424d00 then
-        // scans the world's own list at [[00e188a8]+19CCh]+370h for entities
-        // named `AvoidZone`. construct_world 004de610 is a load record, so there
-        // is no world list to scan and the rebuild is recorded.
-        log_.unimplemented("MissionLoad::rebuild_avoid_zone_table", "00424d00");
+        rebuild_();
+        log_.implemented("MissionLoad::rebuild_avoid_zone_geometry", "00424d00..00424ddf");
+        log_.unimplemented("MissionLoad::avoid_zone_draft_layers", "00424ddf..00425487");
     }
 
 private:
     GameHostLog& log_;
+    const std::function<void()>& rebuild_;
 };
 
 class ScriptedNameBinding final : public bsp::ScriptedNameListHost {
@@ -566,8 +566,9 @@ bool run_load_session_slot_reset_004dfc13(GameHostLog& log, int session_mode,
     return networked;
 }
 
-void run_load_avoid_zone_state_004e0754(GameHostLog& log) {
-    AvoidZoneResetBinding binding(log);
+void run_load_avoid_zone_state_004e0754(GameHostLog& log,
+    const std::function<void()>& rebuild_geometry) {
+    AvoidZoneResetBinding binding(log, rebuild_geometry);
     bsp::run_reset_avoid_zone_state_004e0754(binding);
     log.notef("mission load avoid-zone state: the block at 004e0754 clears game+648h and "
         "game+64Ch, erases the tree at game+5C8h and hands the 004218e0 singleton to "

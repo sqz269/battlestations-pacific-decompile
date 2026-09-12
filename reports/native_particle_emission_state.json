@@ -1,0 +1,1250 @@
+{
+  "packet": "orch3_emission_state_ao",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00b0ca40",
+      "end_inclusive": "00b0cc08",
+      "end_exclusive": "00b0cc09",
+      "length": 457,
+      "sha256": "ce95c7c4c11e5fb901a1a7a6a89dd076fd4199df17da42f205d95ee1a797eda8",
+      "live_disk_equal": true,
+      "cpp_symbol": "initialize_native_particle_emission_state_00b0ca40",
+      "ghidra_name": "BSP_NativeParticleEmission_InitializeState",
+      "source": "src/native_particle_emission_state.cpp",
+      "header": "include/bsp/native_particle_emission_state.hpp",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_NativeParticleEmission_InitializeState(void * definition, float time, void * emitter, float * position, float * direction, void * record)",
+      "original_abi": "ECX actual6Ch state; stack(definition,time,emitter,position,direction,record); RET18; time unread",
+      "evidence": "AO review: descriptive hypothesis, not a recovered symbol. Full live/installed span and final RET verified. See docs/NATIVE_PARTICLE_EMISSION_STATE.md and reports/native_particle_emission_state.json. Actual6Ch state, PARTICLE virtual18 and same canonical PointLight/Model bindings; actual shared0108FF50 lock and01090AA0 manager use physical sections/current publications. Full source behavior through required real current dispatch; new C++ interfaces, original FH3 and gameplay unvalidated.",
+      "coverage": "complete source body through required canonical services/current particle dispatch",
+      "last_instruction": {
+        "address": "00b0cc06",
+        "length": 3,
+        "bytes": "c21800",
+        "text": "ret 0x18"
+      }
+    },
+    {
+      "address": "0072b740",
+      "end_inclusive": "0072b7fc",
+      "end_exclusive": "0072b7fd",
+      "length": 189,
+      "sha256": "41038d09b0d2a9bcf0b3743eea9d26865ae48cd3d381dba7be7d990599a8f070",
+      "live_disk_equal": true,
+      "cpp_symbol": "get_native_particle_population_lock_0072b740",
+      "ghidra_name": "BSP_NativeParticlePopulationLock_Get",
+      "source": "src/native_particle_emission_state.cpp",
+      "header": "include/bsp/native_particle_emission_state.hpp",
+      "native_calling_convention": "__cdecl",
+      "native_prototype": "void * __cdecl BSP_NativeParticlePopulationLock_Get(void)",
+      "original_abi": "No original inputs; EAX actual8h owner published at0108FF50; RET",
+      "evidence": "AO review: descriptive hypothesis, not a recovered symbol. Full live/installed span and final RET verified. See docs/NATIVE_PARTICLE_EMISSION_STATE.md and reports/native_particle_emission_state.json. Actual6Ch state, PARTICLE virtual18 and same canonical PointLight/Model bindings; actual shared0108FF50 lock and01090AA0 manager use physical sections/current publications. Full source behavior through required real current dispatch; new C++ interfaces, original FH3 and gameplay unvalidated.",
+      "coverage": "complete source body through required canonical services/current particle dispatch",
+      "last_instruction": {
+        "address": "0072b7fc",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      }
+    },
+    {
+      "address": "0072a4f0",
+      "end_inclusive": "0072a534",
+      "end_exclusive": "0072a535",
+      "length": 69,
+      "sha256": "c7c7e720fae1559edf7d6faad67c73e759fb5cf3fe889e1d5db30e3dbb886af7",
+      "live_disk_equal": true,
+      "cpp_symbol": "construct_native_particle_population_lock_0072a4f0",
+      "ghidra_name": "BSP_NativeParticlePopulationLock_Construct",
+      "source": "src/native_particle_emission_state.cpp",
+      "header": "include/bsp/native_particle_emission_state.hpp",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_NativeParticlePopulationLock_Construct(void)",
+      "original_abi": "ECX actual8h owner; EAX same owner; RET",
+      "evidence": "AO review: descriptive hypothesis, not a recovered symbol. Full live/installed span and final RET verified. See docs/NATIVE_PARTICLE_EMISSION_STATE.md and reports/native_particle_emission_state.json. Actual6Ch state, PARTICLE virtual18 and same canonical PointLight/Model bindings; actual shared0108FF50 lock and01090AA0 manager use physical sections/current publications. Full source behavior through required real current dispatch; new C++ interfaces, original FH3 and gameplay unvalidated.",
+      "coverage": "complete source body through required canonical services/current particle dispatch",
+      "last_instruction": {
+        "address": "0072a534",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      }
+    },
+    {
+      "address": "00729420",
+      "end_inclusive": "00729430",
+      "end_exclusive": "00729431",
+      "length": 17,
+      "sha256": "cd3d768560429869344695b3cd5cc82cf8b8530d28937ac1d8043b5e7822e9c6",
+      "live_disk_equal": true,
+      "cpp_symbol": "clear_native_particle_population_lock_base_00729420",
+      "ghidra_name": "BSP_NativeParticlePopulationLock_ClearBase",
+      "source": "src/native_particle_emission_state.cpp",
+      "header": "include/bsp/native_particle_emission_state.hpp",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_NativeParticlePopulationLock_ClearBase(void)",
+      "original_abi": "ECX actual owner; clears0108FF50 beforeCE3818 profile; RET",
+      "evidence": "AO review: descriptive hypothesis, not a recovered symbol. Full live/installed span and final RET verified. See docs/NATIVE_PARTICLE_EMISSION_STATE.md and reports/native_particle_emission_state.json. Actual6Ch state, PARTICLE virtual18 and same canonical PointLight/Model bindings; actual shared0108FF50 lock and01090AA0 manager use physical sections/current publications. Full source behavior through required real current dispatch; new C++ interfaces, original FH3 and gameplay unvalidated.",
+      "coverage": "complete source body through required canonical services/current particle dispatch",
+      "last_instruction": {
+        "address": "00729430",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      }
+    },
+    {
+      "address": "0072cc90",
+      "end_inclusive": "0072ccc6",
+      "end_exclusive": "0072ccc7",
+      "length": 55,
+      "sha256": "86f3203bc2b4d6953cb1539163b867aa9f98ae2e66d2a908980862968e66d9d6",
+      "live_disk_equal": true,
+      "cpp_symbol": "delete_native_particle_population_lock_0072cc90",
+      "ghidra_name": "BSP_NativeParticlePopulationLock_Delete",
+      "source": "src/native_particle_emission_state.cpp",
+      "header": "include/bsp/native_particle_emission_state.hpp",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_NativeParticlePopulationLock_Delete(uint flags)",
+      "original_abi": "ECX actual8h owner; stack flags; EAX captured owner; RET4",
+      "evidence": "AO review: descriptive hypothesis, not a recovered symbol. Full live/installed span and final RET verified. See docs/NATIVE_PARTICLE_EMISSION_STATE.md and reports/native_particle_emission_state.json. Actual6Ch state, PARTICLE virtual18 and same canonical PointLight/Model bindings; actual shared0108FF50 lock and01090AA0 manager use physical sections/current publications. Full source behavior through required real current dispatch; new C++ interfaces, original FH3 and gameplay unvalidated.",
+      "coverage": "complete source body through required canonical services/current particle dispatch",
+      "last_instruction": {
+        "address": "0072ccc4",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      }
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b0cadf",
+      "native": "eax",
+      "function": "00b0ca40"
+    },
+    {
+      "address": "00b0cb08",
+      "native": "00b6db70",
+      "function": "00b0ca40"
+    },
+    {
+      "address": "00b0cba7",
+      "native": "0072b740",
+      "function": "00b0ca40"
+    },
+    {
+      "address": "00b0cbc0",
+      "native": "dword ptr [0xce2218]",
+      "function": "00b0ca40"
+    },
+    {
+      "address": "00b0cbe2",
+      "native": "00b7b090",
+      "function": "00b0ca40"
+    },
+    {
+      "address": "00b0cbf0",
+      "native": "dword ptr [0xce2210]",
+      "function": "00b0ca40"
+    },
+    {
+      "address": "0072b766",
+      "native": "00415350",
+      "function": "0072b740"
+    },
+    {
+      "address": "0072b77f",
+      "native": "dword ptr [0xce2218]",
+      "function": "0072b740"
+    },
+    {
+      "address": "0072b79c",
+      "native": "00bf681b",
+      "function": "0072b740"
+    },
+    {
+      "address": "0072b7b3",
+      "native": "0072a4f0",
+      "function": "0072b740"
+    },
+    {
+      "address": "0072b7c6",
+      "native": "00415350",
+      "function": "0072b740"
+    },
+    {
+      "address": "0072b7d4",
+      "native": "00bd0c30",
+      "function": "0072b740"
+    },
+    {
+      "address": "0072b7e2",
+      "native": "dword ptr [0xce2210]",
+      "function": "0072b740"
+    },
+    {
+      "address": "0072a51b",
+      "native": "00bd1860",
+      "function": "0072a4f0"
+    },
+    {
+      "address": "0072cc9c",
+      "native": "0041cc80",
+      "function": "0072cc90"
+    },
+    {
+      "address": "0072ccb9",
+      "native": "00bf65ac",
+      "function": "0072cc90"
+    }
+  ],
+  "no_ghidra_function": [],
+  "validation": {
+    "strict_win32_object_compile": "passed after review correction",
+    "combined_build": "passed2seededCTests",
+    "native_fixture": {
+      "result": "PASS",
+      "stdout": "PASS original B0CA40: 18 differential runs, full x87 lower-stack/status equality; one B04C80->AFDAF0/B0CA40 sparse-state composition; 7 full native byte bodies; linked null-root, canonical PointLight/Model links, real section depth, fast/slow lock and constructor/base/delete. Native FH3 not tested.",
+      "compile": "MSVC Win32 /EHsc /std:c++17 /W4 /WX /O2 /MD /fp:strict; /MANIFEST:EMBED",
+      "link": "newly compiled root native_particle_emission_state.cpp object precedes root bsp_core.lib; no production edits",
+      "native_byte_evidence": "byte_evidence.json",
+      "call_validation": "15 direct call rows checked, 0 failed; tools/verify_report_calls.py against verified live target",
+      "state_comparisons": 18,
+      "x87_precisions": [
+        "24",
+        "53",
+        "64"
+      ],
+      "state_scenarios": [
+        "no light / no singleton creation",
+        "absolute position / actual reciprocal population / tangent exclusion",
+        "relative actual world refresh / NaN minimum-radius clamp",
+        "definition+emitter reload after supplied particle virtual18",
+        "physically linked light with null captured roots",
+        "existing physical section recursively held / callback depth2 / returned depth1"
+      ],
+      "additional_checks": [
+        "full 6Ch state and sphere/current owner-link results",
+        "lower x87 stack 80-bit sentinel and FP status equality",
+        "real tracked sections, manager register count and fast getter identity",
+        "native/source72A4F0 and729420 standalone",
+        "native/source72CC90 flags0 then flags1; section cleanup/base-profile/publication checks"
+      ],
+      "composition": "one copied B04C80 -> copied AFDAF0/B0CA40 versus current source; state row id2 out of4, actual108h record, all4 6Ch states equal, count1, final5C=10.875, model counters0/1/1, x87 lower-stack/status equality",
+      "canonical_services": [
+        "existing actual PointLight/Model owners and pools",
+        "actual2E0h particle pool slots, same NativeModelOwner/node binding and authored tail fields",
+        "existing B6DB70 transform operation, B7B090 population and physical reciprocal links",
+        "existing raw manager/getter/registration and Win32 tracked critical sections",
+        "existing source CRT allocation/free"
+      ],
+      "limitations": [
+        "Native particle virtual18 and shape virtual0C are explicit fixture boundaries, not reconstructed actual definition bodies.",
+        "Emitter fixtures construct the canonical model BASE in actual2E0h particle slots and author required tail fields; full AF74A0 particle model construction is not tested.",
+        "Native byte callers use relocated calls to existing reconstructed canonical external services; the whole original engine graph is not executed.",
+        "Mixed-owner raw manager teardown is not implemented by this probe: fixture explicitly pops its one lock before executing the real scalar delete, then destroys the empty real manager.",
+        "Native FH3/SEH, allocation failure, concurrency scheduling, hidden ABI stack aliasing and gameplay are not covered.",
+        "No game/process writes, production commits or permanent tests were made."
+      ],
+      "hashes": {
+        "C:\\Users\\sqz269\\bsp-ao-state-probe\\probe.cpp": "7c50ba3fb0915561548435540ea4f1b2274cddd75018d471bb3ca3ffe5858f71",
+        "C:\\Users\\sqz269\\bsp-ao-state-probe\\probe_support.hpp": "56d85cde9bc35e7004e63c73755729d89cd1e033f1d71ba0413692109b4b0d34",
+        "C:\\Users\\sqz269\\bsp-ao-state-probe\\state_body.inl": "1bb568b321bfb19ab94a56507bd790e74fd4cc27958d423ab220d3e7fe0de568",
+        "C:\\Users\\sqz269\\bsp-ao-state-probe\\make_probe.py": "9f55ed6fe1a37d64940b778e2efd955cb11373299a12f4dc870ea6e1cabc3553",
+        "C:\\Users\\sqz269\\bsp-ao-state-probe\\make_fixture.py": "ab91bceaa3e033efcd3fed25b7287d5a96954c596cb71e0c0c2086b4b104573c",
+        "C:\\Users\\sqz269\\bsp-ao-state-probe\\build.ps1": "b071b1515a26744c9ac2fa4a641d92da695c5117f84b8844c476185410e50abd",
+        "C:\\Users\\sqz269\\bsp-ao-state-probe\\probe.exe": "7eebea6d0a7720f5cf3e781a66edef0993939512fc150f9e7a23b2bde9e8e34a",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_particle_emission_state.cpp": "3eb9b0173ce41e0ea067ad9a2c12d0bda56aa410cb781ae6c11c053bb6bd69a4",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_particle_emission_state.hpp": "59f8bec84e416457e6b4a002e749e2f5a099db139eb2b0be81c2589ed0ccd3a3",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_particle_emission_spawn.cpp": "9672e8871f1e1ae7ed6439c3f10463ee86ebdffd9dd08687db3c084cb873d03c",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib": "f63b5822d2240466fc8bd597f75e57dd2257b2693e2515d2d9e52c2d28fbd4b7"
+      },
+      "commands": [
+        "python make_fixture.py",
+        "python make_probe.py",
+        "powershell -File build.ps1",
+        "python tools/verify_report_calls.py C:/Users/sqz269/bsp-ao-state-probe/byte_evidence.json",
+        "python record_results.py"
+      ]
+    },
+    "game_validated": false
+  },
+  "limitations": [
+    "Native virtual18 belongs to the actual PARTICLE definition family constructed by B00CE0, not the six-slot cone/sphere/smartarea emitter tables. Required captured-target dispatcher remains an application boundary.",
+    "PointLight and Model must have their existing canonical owner bindings. Runtime lookup validates identity; it neither creates a shadow payload nor changes native references.",
+    "PointLight traversal uses the current provider sphere paths; AO fixture exercises actual Model paths, not dynamic Group aggregation.",
+    "Raw mixed-owner singleton manager destruction still requires real CFDEB4-to72CC90 dispatch. The one-entryCFDEB4 table is not a RefCounted interface.",
+    "Host C++ cleanup follows native guarded scopes; original FH3 register ABI, aliased exception spills, hardware-fault cleanup, original throwing unwind and gameplay remain unvalidated."
+  ],
+  "analyzed_exception_bodies": [
+    {
+      "address": "00c855c0",
+      "end_inclusive": "00c855c7",
+      "name": "BSP_Unwind_ParticlePopulationLockBase",
+      "evidence": "AO analyzed compiler cleanup/dispatcher, not an additional reconstructed application body. MOV ECX,[EBP-10]; JMP729420; constructor cleanup. Verified live/installed bytes00c855c0..00c855c7. Native exception-frame/register ABI remains unchanged; do not substitute a no-input C++ prototype. Descriptive label is provisional, not a recovered symbol. See docs/NATIVE_PARTICLE_EMISSION_STATE.md. Native throwing unwind/gameplay unvalidated.",
+      "status": "analyzed_compiler_cleanup_or_dispatcher_only",
+      "live_disk_equal": true,
+      "sha256": "dabc589043bec0118025b1392d5892801b4982b1703630b8fe9db1ffdf23419c",
+      "instructions": [
+        "00c855c0: mov ecx, dword ptr [ebp - 0x10]",
+        "00c855c3: jmp 0x729420"
+      ]
+    },
+    {
+      "address": "00c855c8",
+      "end_inclusive": "00c855d1",
+      "name": "BSP_FH3_ParticlePopulationLockConstruction",
+      "evidence": "AO analyzed compiler cleanup/dispatcher, not an additional reconstructed application body. MOV EAX,DB46B4; JMPBF6B43; existing CRT CxxFrameHandler3. Verified live/installed bytes00c855c8..00c855d1. Native exception-frame/register ABI remains unchanged; do not substitute a no-input C++ prototype. Descriptive label is provisional, not a recovered symbol. See docs/NATIVE_PARTICLE_EMISSION_STATE.md. Native throwing unwind/gameplay unvalidated.",
+      "status": "analyzed_compiler_cleanup_or_dispatcher_only",
+      "live_disk_equal": true,
+      "sha256": "e53d84369c93784648ee1bed9690dc8d8eb0b69a5f90fbb181573986a99fa6a3",
+      "instructions": [
+        "00c855c8: mov eax, 0xdb46b4",
+        "00c855cd: jmp 0xbf6b43"
+      ]
+    },
+    {
+      "address": "00c85600",
+      "end_inclusive": "00c85607",
+      "name": "BSP_Unwind_ParticlePopulationManagerGuard",
+      "evidence": "AO analyzed compiler cleanup/dispatcher, not an additional reconstructed application body. LEA ECX,[EBP-14]; JMP411EE0; captured manager section. Verified live/installed bytes00c85600..00c85607. Native exception-frame/register ABI remains unchanged; do not substitute a no-input C++ prototype. Descriptive label is provisional, not a recovered symbol. See docs/NATIVE_PARTICLE_EMISSION_STATE.md. Native throwing unwind/gameplay unvalidated.",
+      "status": "analyzed_compiler_cleanup_or_dispatcher_only",
+      "live_disk_equal": true,
+      "sha256": "2975f7b171bffa3ba750123dda7004f167d2c35f5e668a131e733bc6d281f682",
+      "instructions": [
+        "00c85600: lea ecx, [ebp - 0x14]",
+        "00c85603: jmp 0x411ee0"
+      ]
+    },
+    {
+      "address": "00c85608",
+      "end_inclusive": "00c85612",
+      "name": "BSP_Unwind_ParticlePopulationLockAllocation",
+      "evidence": "AO analyzed compiler cleanup/dispatcher, not an additional reconstructed application body. MOV EAX,[EBP-18]; PUSH EAX; CALLBF65AC; POP ECX; RET; captured allocation. Verified live/installed bytes00c85608..00c85612. Native exception-frame/register ABI remains unchanged; do not substitute a no-input C++ prototype. Descriptive label is provisional, not a recovered symbol. See docs/NATIVE_PARTICLE_EMISSION_STATE.md. Native throwing unwind/gameplay unvalidated.",
+      "status": "analyzed_compiler_cleanup_or_dispatcher_only",
+      "live_disk_equal": true,
+      "sha256": "d2c835847057e5d7ef791582b957fcbdb219910ad53f88cff76bfff700790db8",
+      "instructions": [
+        "00c85608: mov eax, dword ptr [ebp - 0x18]",
+        "00c8560b: push eax",
+        "00c8560c: call 0xbf65ac",
+        "00c85611: pop ecx",
+        "00c85612: ret "
+      ]
+    },
+    {
+      "address": "00c85613",
+      "end_inclusive": "00c8561c",
+      "name": "BSP_FH3_ParticlePopulationLockPublication",
+      "evidence": "AO analyzed compiler cleanup/dispatcher, not an additional reconstructed application body. MOV EAX,DB4714; JMPBF6B43; existing CRT CxxFrameHandler3. Verified live/installed bytes00c85613..00c8561c. Native exception-frame/register ABI remains unchanged; do not substitute a no-input C++ prototype. Descriptive label is provisional, not a recovered symbol. See docs/NATIVE_PARTICLE_EMISSION_STATE.md. Native throwing unwind/gameplay unvalidated.",
+      "status": "analyzed_compiler_cleanup_or_dispatcher_only",
+      "live_disk_equal": true,
+      "sha256": "e6616ce3fbb74031ac1fa8ec238a9b76a758197dfc90badb899b4b38bb066b95",
+      "instructions": [
+        "00c85613: mov eax, 0xdb4714",
+        "00c85618: jmp 0xbf6b43"
+      ]
+    },
+    {
+      "address": "00cbbbc0",
+      "end_inclusive": "00cbbbc7",
+      "name": "BSP_Unwind_ParticleEmissionPopulationGuard",
+      "evidence": "AO analyzed compiler cleanup/dispatcher, not an additional reconstructed application body. LEA ECX,[EBP-18]; JMP411EE0; captured population section. Verified live/installed bytes00cbbbc0..00cbbbc7. Native exception-frame/register ABI remains unchanged; do not substitute a no-input C++ prototype. Descriptive label is provisional, not a recovered symbol. See docs/NATIVE_PARTICLE_EMISSION_STATE.md. Native throwing unwind/gameplay unvalidated.",
+      "status": "analyzed_compiler_cleanup_or_dispatcher_only",
+      "live_disk_equal": true,
+      "sha256": "904a7f72391cdb6356a666cf76ca7497f7073fa063eda9c67c78408eb1d5103f",
+      "instructions": [
+        "00cbbbc0: lea ecx, [ebp - 0x18]",
+        "00cbbbc3: jmp 0x411ee0"
+      ]
+    },
+    {
+      "address": "00cbbbc8",
+      "end_inclusive": "00cbbbd1",
+      "name": "BSP_FH3_ParticleEmissionState",
+      "evidence": "AO analyzed compiler cleanup/dispatcher, not an additional reconstructed application body. MOV EAX,DF3DF8; JMPBF6B43; existing CRT CxxFrameHandler3. Verified live/installed bytes00cbbbc8..00cbbbd1. Native exception-frame/register ABI remains unchanged; do not substitute a no-input C++ prototype. Descriptive label is provisional, not a recovered symbol. See docs/NATIVE_PARTICLE_EMISSION_STATE.md. Native throwing unwind/gameplay unvalidated.",
+      "status": "analyzed_compiler_cleanup_or_dispatcher_only",
+      "live_disk_equal": true,
+      "sha256": "248465eb3f0d1f812179bd9064894969bf1eae0fcc18014b9d58b2937a67430f",
+      "instructions": [
+        "00cbbbc8: mov eax, 0xdf3df8",
+        "00cbbbcd: jmp 0xbf6b43"
+      ]
+    }
+  ],
+  "analysis_repairs": {
+    "delete_flow": "local/ao-state-flow.json",
+    "delete_definitions": "local/ao-state-definitions.json",
+    "handler_definitions": "local/ao-state-handler-definitions.json",
+    "funclet_flow": "local/ao-state-funclet-flow.json",
+    "funclet_definitions": "local/ao-state-funclet-definitions.json",
+    "previous_documentation": [
+      "local/ao-before-0072cc90.json",
+      "local/ao-before-00c85608.json"
+    ]
+  },
+  "integration_ao": {
+    "strict_win32_build_and_two_seeded_ctests": true,
+    "combined_library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+    "current_library_fixture": {
+      "label": "state",
+      "exit_code": 0,
+      "log": "local\\ao-state-current-replay.log",
+      "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+      "source_sha256": "7c50ba3fb0915561548435540ea4f1b2274cddd75018d471bb3ca3ffe5858f71",
+      "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\state-current.cmd",
+      "executable_sha256": "35ab09a74173ac78d5b4a006cea89e525a1183dbc03be3f2e375b0d4a36d6394"
+    },
+    "source_hashes": {
+      "include/bsp/native_particle_emission_state.hpp": "59f8bec84e416457e6b4a002e749e2f5a099db139eb2b0be81c2589ed0ccd3a3",
+      "src/native_particle_emission_state.cpp": "3eb9b0173ce41e0ea067ad9a2c12d0bda56aa410cb781ae6c11c053bb6bd69a4"
+    },
+    "normalized_entries": [
+      {
+        "address": "00b0ca40",
+        "end_inclusive": "00b0cc08",
+        "end_exclusive": "00b0cc09",
+        "length": 457,
+        "sha256": "ce95c7c4c11e5fb901a1a7a6a89dd076fd4199df17da42f205d95ee1a797eda8",
+        "live_disk_equal": true,
+        "cpp_symbol": "initialize_native_particle_emission_state_00b0ca40",
+        "ghidra_name": "BSP_NativeParticleEmission_InitializeState",
+        "source": "src/native_particle_emission_state.cpp",
+        "header": "include/bsp/native_particle_emission_state.hpp",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void __thiscall BSP_NativeParticleEmission_InitializeState(void * definition, float time, void * emitter, float * position, float * direction, void * record)",
+        "original_abi": "ECX actual6Ch state; stack(definition,time,emitter,position,direction,record); RET18; time unread",
+        "evidence": "AO review: descriptive hypothesis, not a recovered symbol. Full live/installed span and final RET verified. See docs/NATIVE_PARTICLE_EMISSION_STATE.md and reports/native_particle_emission_state.json. Actual6Ch state, PARTICLE virtual18 and same canonical PointLight/Model bindings; actual shared0108FF50 lock and01090AA0 manager use physical sections/current publications. Full source behavior through required real current dispatch; new C++ interfaces, original FH3 and gameplay unvalidated.",
+        "coverage": "complete source body through required canonical services/current particle dispatch",
+        "last_instruction": {
+          "address": "00b0cc06",
+          "length": 3,
+          "bytes": "c21800",
+          "text": "ret 0x18"
+        }
+      },
+      {
+        "address": "0072b740",
+        "end_inclusive": "0072b7fc",
+        "end_exclusive": "0072b7fd",
+        "length": 189,
+        "sha256": "41038d09b0d2a9bcf0b3743eea9d26865ae48cd3d381dba7be7d990599a8f070",
+        "live_disk_equal": true,
+        "cpp_symbol": "get_native_particle_population_lock_0072b740",
+        "ghidra_name": "BSP_NativeParticlePopulationLock_Get",
+        "source": "src/native_particle_emission_state.cpp",
+        "header": "include/bsp/native_particle_emission_state.hpp",
+        "native_calling_convention": "__cdecl",
+        "native_prototype": "void * __cdecl BSP_NativeParticlePopulationLock_Get(void)",
+        "original_abi": "No original inputs; EAX actual8h owner published at0108FF50; RET",
+        "evidence": "AO review: descriptive hypothesis, not a recovered symbol. Full live/installed span and final RET verified. See docs/NATIVE_PARTICLE_EMISSION_STATE.md and reports/native_particle_emission_state.json. Actual6Ch state, PARTICLE virtual18 and same canonical PointLight/Model bindings; actual shared0108FF50 lock and01090AA0 manager use physical sections/current publications. Full source behavior through required real current dispatch; new C++ interfaces, original FH3 and gameplay unvalidated.",
+        "coverage": "complete source body through required canonical services/current particle dispatch",
+        "last_instruction": {
+          "address": "0072b7fc",
+          "length": 1,
+          "bytes": "c3",
+          "text": "ret "
+        }
+      },
+      {
+        "address": "0072a4f0",
+        "end_inclusive": "0072a534",
+        "end_exclusive": "0072a535",
+        "length": 69,
+        "sha256": "c7c7e720fae1559edf7d6faad67c73e759fb5cf3fe889e1d5db30e3dbb886af7",
+        "live_disk_equal": true,
+        "cpp_symbol": "construct_native_particle_population_lock_0072a4f0",
+        "ghidra_name": "BSP_NativeParticlePopulationLock_Construct",
+        "source": "src/native_particle_emission_state.cpp",
+        "header": "include/bsp/native_particle_emission_state.hpp",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void * __thiscall BSP_NativeParticlePopulationLock_Construct(void)",
+        "original_abi": "ECX actual8h owner; EAX same owner; RET",
+        "evidence": "AO review: descriptive hypothesis, not a recovered symbol. Full live/installed span and final RET verified. See docs/NATIVE_PARTICLE_EMISSION_STATE.md and reports/native_particle_emission_state.json. Actual6Ch state, PARTICLE virtual18 and same canonical PointLight/Model bindings; actual shared0108FF50 lock and01090AA0 manager use physical sections/current publications. Full source behavior through required real current dispatch; new C++ interfaces, original FH3 and gameplay unvalidated.",
+        "coverage": "complete source body through required canonical services/current particle dispatch",
+        "last_instruction": {
+          "address": "0072a534",
+          "length": 1,
+          "bytes": "c3",
+          "text": "ret "
+        }
+      },
+      {
+        "address": "00729420",
+        "end_inclusive": "00729430",
+        "end_exclusive": "00729431",
+        "length": 17,
+        "sha256": "cd3d768560429869344695b3cd5cc82cf8b8530d28937ac1d8043b5e7822e9c6",
+        "live_disk_equal": true,
+        "cpp_symbol": "clear_native_particle_population_lock_base_00729420",
+        "ghidra_name": "BSP_NativeParticlePopulationLock_ClearBase",
+        "source": "src/native_particle_emission_state.cpp",
+        "header": "include/bsp/native_particle_emission_state.hpp",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void __thiscall BSP_NativeParticlePopulationLock_ClearBase(void)",
+        "original_abi": "ECX actual owner; clears0108FF50 beforeCE3818 profile; RET",
+        "evidence": "AO review: descriptive hypothesis, not a recovered symbol. Full live/installed span and final RET verified. See docs/NATIVE_PARTICLE_EMISSION_STATE.md and reports/native_particle_emission_state.json. Actual6Ch state, PARTICLE virtual18 and same canonical PointLight/Model bindings; actual shared0108FF50 lock and01090AA0 manager use physical sections/current publications. Full source behavior through required real current dispatch; new C++ interfaces, original FH3 and gameplay unvalidated.",
+        "coverage": "complete source body through required canonical services/current particle dispatch",
+        "last_instruction": {
+          "address": "00729430",
+          "length": 1,
+          "bytes": "c3",
+          "text": "ret "
+        }
+      },
+      {
+        "address": "0072cc90",
+        "end_inclusive": "0072ccc6",
+        "end_exclusive": "0072ccc7",
+        "length": 55,
+        "sha256": "86f3203bc2b4d6953cb1539163b867aa9f98ae2e66d2a908980862968e66d9d6",
+        "live_disk_equal": true,
+        "cpp_symbol": "delete_native_particle_population_lock_0072cc90",
+        "ghidra_name": "BSP_NativeParticlePopulationLock_Delete",
+        "source": "src/native_particle_emission_state.cpp",
+        "header": "include/bsp/native_particle_emission_state.hpp",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void * __thiscall BSP_NativeParticlePopulationLock_Delete(uint flags)",
+        "original_abi": "ECX actual8h owner; stack flags; EAX captured owner; RET4",
+        "evidence": "AO review: descriptive hypothesis, not a recovered symbol. Full live/installed span and final RET verified. See docs/NATIVE_PARTICLE_EMISSION_STATE.md and reports/native_particle_emission_state.json. Actual6Ch state, PARTICLE virtual18 and same canonical PointLight/Model bindings; actual shared0108FF50 lock and01090AA0 manager use physical sections/current publications. Full source behavior through required real current dispatch; new C++ interfaces, original FH3 and gameplay unvalidated.",
+        "coverage": "complete source body through required canonical services/current particle dispatch",
+        "last_instruction": {
+          "address": "0072ccc4",
+          "length": 3,
+          "bytes": "c20400",
+          "text": "ret 4"
+        }
+      }
+    ],
+    "native_signatures_readback_verified": true,
+    "saved_names_and_evidence": [
+      {
+        "address": "00729420",
+        "before": {
+          "address": "00729420",
+          "function_name": "FUN_00729420"
+        },
+        "after": {
+          "address": "00729420",
+          "name": "BSP_NativeParticlePopulationLock_ClearBase",
+          "evidence": "AO review: descriptive hypothesis, not a recovered symbol. Full live/installed span and final RET verified. See docs/NATIVE_PARTICLE_EMISSION_STATE.md and reports/native_particle_emission_state.json. Actual6Ch state, PARTICLE virtual18 and same canonical PointLight/Model bindings; actual shared0108FF50 lock and01090AA0 manager use physical sections/current publications. Full source behavior through required real current dispatch; new C++ interfaces, original FH3 and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0072a4f0",
+        "before": {
+          "address": "0072a4f0",
+          "function_name": "FUN_0072a4f0"
+        },
+        "after": {
+          "address": "0072a4f0",
+          "name": "BSP_NativeParticlePopulationLock_Construct",
+          "evidence": "AO review: descriptive hypothesis, not a recovered symbol. Full live/installed span and final RET verified. See docs/NATIVE_PARTICLE_EMISSION_STATE.md and reports/native_particle_emission_state.json. Actual6Ch state, PARTICLE virtual18 and same canonical PointLight/Model bindings; actual shared0108FF50 lock and01090AA0 manager use physical sections/current publications. Full source behavior through required real current dispatch; new C++ interfaces, original FH3 and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0072b740",
+        "before": {
+          "address": "0072b740",
+          "function_name": "FUN_0072b740"
+        },
+        "after": {
+          "address": "0072b740",
+          "name": "BSP_NativeParticlePopulationLock_Get",
+          "evidence": "AO review: descriptive hypothesis, not a recovered symbol. Full live/installed span and final RET verified. See docs/NATIVE_PARTICLE_EMISSION_STATE.md and reports/native_particle_emission_state.json. Actual6Ch state, PARTICLE virtual18 and same canonical PointLight/Model bindings; actual shared0108FF50 lock and01090AA0 manager use physical sections/current publications. Full source behavior through required real current dispatch; new C++ interfaces, original FH3 and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0072cc90",
+        "before": {
+          "address": "0072cc90",
+          "function_name": "CG_scalar_deleting_dtor_0072cc90"
+        },
+        "after": {
+          "address": "0072cc90",
+          "name": "BSP_NativeParticlePopulationLock_Delete",
+          "evidence": "AO review: descriptive hypothesis, not a recovered symbol. Full live/installed span and final RET verified. See docs/NATIVE_PARTICLE_EMISSION_STATE.md and reports/native_particle_emission_state.json. Actual6Ch state, PARTICLE virtual18 and same canonical PointLight/Model bindings; actual shared0108FF50 lock and01090AA0 manager use physical sections/current publications. Full source behavior through required real current dispatch; new C++ interfaces, original FH3 and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b0ca40",
+        "before": {
+          "address": "00b0ca40",
+          "function_name": "FUN_00b0ca40",
+          "comment": "[BSP reconstruction 00b0ca40]\nHypothesis, not a recovered symbol. Actual raw PointLight population chain and particle volume-producer fragment B0CAE1..B0CBA6 preserve raw identity, alias-sensitive loads/stores, strict sphere comparisons and duplicate reciprocal backlinks. Model/cache-static Group paths supported; dynamic Group and complete particle/Text providers remain open. docs/NATIVE_POINT_LIGHT_PROVIDER.md; reports/native_point_light_provider.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+        },
+        "after": {
+          "address": "00b0ca40",
+          "name": "BSP_NativeParticleEmission_InitializeState",
+          "evidence": "Hypothesis, not a recovered symbol. Actual raw PointLight population chain and particle volume-producer fragment B0CAE1..B0CBA6 preserve raw identity, alias-sensitive loads/stores, strict sphere comparisons and duplicate reciprocal backlinks. Model/cache-static Group paths supported; dynamic Group and complete particle/Text providers remain open. docs/NATIVE_POINT_LIGHT_PROVIDER.md; reports/native_point_light_provider.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation. | AO review: descriptive hypothesis, not a recovered symbol. Full live/installed span and final RET verified. See docs/NATIVE_PARTICLE_EMISSION_STATE.md and reports/native_particle_emission_state.json. Actual6Ch state, PARTICLE virtual18 and same canonical PointLight/Model bindings; actual shared0108FF50 lock and01090AA0 manager use physical sections/current publications. Full source behavior through required real current dispatch; new C++ interfaces, original FH3 and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00c855c0",
+        "before": {
+          "address": "00c855c0",
+          "function_name": "Unwind@00c855c0"
+        },
+        "after": {
+          "address": "00c855c0",
+          "name": "BSP_Unwind_ParticlePopulationLockBase",
+          "evidence": "AO analyzed compiler cleanup/dispatcher, not an additional reconstructed application body. MOV ECX,[EBP-10]; JMP729420; constructor cleanup. Verified live/installed bytes00c855c0..00c855c7. Native exception-frame/register ABI remains unchanged; do not substitute a no-input C++ prototype. Descriptive label is provisional, not a recovered symbol. See docs/NATIVE_PARTICLE_EMISSION_STATE.md. Native throwing unwind/gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00c855c8",
+        "before": {
+          "address": "00c855c8",
+          "function_name": "FUN_00c855c8"
+        },
+        "after": {
+          "address": "00c855c8",
+          "name": "BSP_FH3_ParticlePopulationLockConstruction",
+          "evidence": "AO analyzed compiler cleanup/dispatcher, not an additional reconstructed application body. MOV EAX,DB46B4; JMPBF6B43; existing CRT CxxFrameHandler3. Verified live/installed bytes00c855c8..00c855d1. Native exception-frame/register ABI remains unchanged; do not substitute a no-input C++ prototype. Descriptive label is provisional, not a recovered symbol. See docs/NATIVE_PARTICLE_EMISSION_STATE.md. Native throwing unwind/gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00c85600",
+        "before": {
+          "address": "00c85600",
+          "function_name": "Unwind@00c85600"
+        },
+        "after": {
+          "address": "00c85600",
+          "name": "BSP_Unwind_ParticlePopulationManagerGuard",
+          "evidence": "AO analyzed compiler cleanup/dispatcher, not an additional reconstructed application body. LEA ECX,[EBP-14]; JMP411EE0; captured manager section. Verified live/installed bytes00c85600..00c85607. Native exception-frame/register ABI remains unchanged; do not substitute a no-input C++ prototype. Descriptive label is provisional, not a recovered symbol. See docs/NATIVE_PARTICLE_EMISSION_STATE.md. Native throwing unwind/gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00c85608",
+        "before": {
+          "address": "00c85608",
+          "function_name": "Unwind@00c85608"
+        },
+        "after": {
+          "address": "00c85608",
+          "name": "BSP_Unwind_ParticlePopulationLockAllocation",
+          "evidence": "AO analyzed compiler cleanup/dispatcher, not an additional reconstructed application body. MOV EAX,[EBP-18]; PUSH EAX; CALLBF65AC; POP ECX; RET; captured allocation. Verified live/installed bytes00c85608..00c85612. Native exception-frame/register ABI remains unchanged; do not substitute a no-input C++ prototype. Descriptive label is provisional, not a recovered symbol. See docs/NATIVE_PARTICLE_EMISSION_STATE.md. Native throwing unwind/gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00c85613",
+        "before": {
+          "address": "00c85613",
+          "function_name": "FUN_00c85613"
+        },
+        "after": {
+          "address": "00c85613",
+          "name": "BSP_FH3_ParticlePopulationLockPublication",
+          "evidence": "AO analyzed compiler cleanup/dispatcher, not an additional reconstructed application body. MOV EAX,DB4714; JMPBF6B43; existing CRT CxxFrameHandler3. Verified live/installed bytes00c85613..00c8561c. Native exception-frame/register ABI remains unchanged; do not substitute a no-input C++ prototype. Descriptive label is provisional, not a recovered symbol. See docs/NATIVE_PARTICLE_EMISSION_STATE.md. Native throwing unwind/gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cbbbc0",
+        "before": {
+          "address": "00cbbbc0",
+          "function_name": "Unwind@00cbbbc0"
+        },
+        "after": {
+          "address": "00cbbbc0",
+          "name": "BSP_Unwind_ParticleEmissionPopulationGuard",
+          "evidence": "AO analyzed compiler cleanup/dispatcher, not an additional reconstructed application body. LEA ECX,[EBP-18]; JMP411EE0; captured population section. Verified live/installed bytes00cbbbc0..00cbbbc7. Native exception-frame/register ABI remains unchanged; do not substitute a no-input C++ prototype. Descriptive label is provisional, not a recovered symbol. See docs/NATIVE_PARTICLE_EMISSION_STATE.md. Native throwing unwind/gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cbbbc8",
+        "before": {
+          "address": "00cbbbc8",
+          "function_name": "FUN_00cbbbc8"
+        },
+        "after": {
+          "address": "00cbbbc8",
+          "name": "BSP_FH3_ParticleEmissionState",
+          "evidence": "AO analyzed compiler cleanup/dispatcher, not an additional reconstructed application body. MOV EAX,DF3DF8; JMPBF6B43; existing CRT CxxFrameHandler3. Verified live/installed bytes00cbbbc8..00cbbbd1. Native exception-frame/register ABI remains unchanged; do not substitute a no-input C++ prototype. Descriptive label is provisional, not a recovered symbol. See docs/NATIVE_PARTICLE_EMISSION_STATE.md. Native throwing unwind/gameplay unvalidated."
+        },
+        "status": "applied"
+      }
+    ],
+    "previous_comments": {
+      "00729420": {
+        "address": "00729420",
+        "function_name": "FUN_00729420"
+      },
+      "0072cc90": {
+        "address": "0072cc90",
+        "function_name": "CG_scalar_deleting_dtor_0072cc90"
+      },
+      "0072a4f0": {
+        "address": "0072a4f0",
+        "function_name": "FUN_0072a4f0"
+      },
+      "0072b740": {
+        "address": "0072b740",
+        "function_name": "FUN_0072b740"
+      },
+      "00b0ca40": {
+        "address": "00b0ca40",
+        "function_name": "FUN_00b0ca40",
+        "comment": "[BSP reconstruction 00b0ca40]\nHypothesis, not a recovered symbol. Actual raw PointLight population chain and particle volume-producer fragment B0CAE1..B0CBA6 preserve raw identity, alias-sensitive loads/stores, strict sphere comparisons and duplicate reciprocal backlinks. Model/cache-static Group paths supported; dynamic Group and complete particle/Text providers remain open. docs/NATIVE_POINT_LIGHT_PROVIDER.md; reports/native_point_light_provider.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+      },
+      "00c855c0": {
+        "address": "00c855c0",
+        "function_name": "Unwind@00c855c0"
+      },
+      "00c855c8": {
+        "address": "00c855c8",
+        "function_name": "FUN_00c855c8"
+      },
+      "00c85600": {
+        "address": "00c85600",
+        "function_name": "Unwind@00c85600"
+      },
+      "00c85608": {
+        "address": "00c85608",
+        "function_name": "Unwind@00c85608"
+      },
+      "00c85613": {
+        "address": "00c85613",
+        "function_name": "FUN_00c85613"
+      },
+      "00cbbbc0": {
+        "address": "00cbbbc0",
+        "function_name": "Unwind@00cbbbc0"
+      },
+      "00cbbbc8": {
+        "address": "00cbbbc8",
+        "function_name": "FUN_00cbbbc8"
+      }
+    },
+    "current_comments": {
+      "00729420": {
+        "address": "00729420",
+        "function_name": "BSP_NativeParticlePopulationLock_ClearBase",
+        "comment": "[BSP reconstruction 00729420]\nAO review: descriptive hypothesis, not a recovered symbol. Full live/installed span and final RET verified. See docs/NATIVE_PARTICLE_EMISSION_STATE.md and reports/native_particle_emission_state.json. Actual6Ch state, PARTICLE virtual18 and same canonical PointLight/Model bindings; actual shared0108FF50 lock and01090AA0 manager use physical sections/current publications. Full source behavior through required real current dispatch; new C++ interfaces, original FH3 and gameplay unvalidated."
+      },
+      "0072cc90": {
+        "address": "0072cc90",
+        "function_name": "BSP_NativeParticlePopulationLock_Delete",
+        "comment": "[BSP reconstruction 0072cc90]\nAO review: descriptive hypothesis, not a recovered symbol. Full live/installed span and final RET verified. See docs/NATIVE_PARTICLE_EMISSION_STATE.md and reports/native_particle_emission_state.json. Actual6Ch state, PARTICLE virtual18 and same canonical PointLight/Model bindings; actual shared0108FF50 lock and01090AA0 manager use physical sections/current publications. Full source behavior through required real current dispatch; new C++ interfaces, original FH3 and gameplay unvalidated."
+      },
+      "0072a4f0": {
+        "address": "0072a4f0",
+        "function_name": "BSP_NativeParticlePopulationLock_Construct",
+        "comment": "[BSP reconstruction 0072a4f0]\nAO review: descriptive hypothesis, not a recovered symbol. Full live/installed span and final RET verified. See docs/NATIVE_PARTICLE_EMISSION_STATE.md and reports/native_particle_emission_state.json. Actual6Ch state, PARTICLE virtual18 and same canonical PointLight/Model bindings; actual shared0108FF50 lock and01090AA0 manager use physical sections/current publications. Full source behavior through required real current dispatch; new C++ interfaces, original FH3 and gameplay unvalidated."
+      },
+      "0072b740": {
+        "address": "0072b740",
+        "function_name": "BSP_NativeParticlePopulationLock_Get",
+        "comment": "[BSP reconstruction 0072b740]\nAO review: descriptive hypothesis, not a recovered symbol. Full live/installed span and final RET verified. See docs/NATIVE_PARTICLE_EMISSION_STATE.md and reports/native_particle_emission_state.json. Actual6Ch state, PARTICLE virtual18 and same canonical PointLight/Model bindings; actual shared0108FF50 lock and01090AA0 manager use physical sections/current publications. Full source behavior through required real current dispatch; new C++ interfaces, original FH3 and gameplay unvalidated."
+      },
+      "00b0ca40": {
+        "address": "00b0ca40",
+        "function_name": "BSP_NativeParticleEmission_InitializeState",
+        "comment": "[BSP reconstruction 00b0ca40]\nHypothesis, not a recovered symbol. Actual raw PointLight population chain and particle volume-producer fragment B0CAE1..B0CBA6 preserve raw identity, alias-sensitive loads/stores, strict sphere comparisons and duplicate reciprocal backlinks. Model/cache-static Group paths supported; dynamic Group and complete particle/Text providers remain open. docs/NATIVE_POINT_LIGHT_PROVIDER.md; reports/native_point_light_provider.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation.\n\n[BSP reconstruction 00b0ca40] update\nHypothesis, not a recovered symbol. Actual raw PointLight population chain and particle volume-producer fragment B0CAE1..B0CBA6 preserve raw identity, alias-sensitive loads/stores, strict sphere comparisons and duplicate reciprocal backlinks. Model/cache-static Group paths supported; dynamic Group and complete particle/Text providers remain open. docs/NATIVE_POINT_LIGHT_PROVIDER.md; reports/native_point_light_provider.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation. | AO review: descriptive hypothesis, not a recovered symbol. Full live/installed span and final RET verified. See docs/NATIVE_PARTICLE_EMISSION_STATE.md and reports/native_particle_emission_state.json. Actual6Ch state, PARTICLE virtual18 and same canonical PointLight/Model bindings; actual shared0108FF50 lock and01090AA0 manager use physical sections/current publications. Full source behavior through required real current dispatch; new C++ interfaces, original FH3 and gameplay unvalidated."
+      }
+    },
+    "game_validated": false,
+    "original_fh3_abi_validated": false,
+    "independent_review": "Pooled-text worker reviewed all5bodies and direct spawn wiring; corrected linked-light/null-root reference formation, then original-byte state and composed spawn comparisons passed.",
+    "function_repairs": {
+      "ao-state-flow.json": {
+        "repairs": [
+          {
+            "function": "0072cc90",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T19:12:35Z",
+            "decompile_lines_before": 17,
+            "gaps": [
+              {
+                "site": "0072ccb9",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "0072ccbe",
+                "gap_end_exclusive": "0072ccc1",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "0072ccb9",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf65ac",
+                  "gap_start": "0072ccbe",
+                  "gap_end_exclusive": "0072ccc1",
+                  "bytes": 3,
+                  "after_call": true,
+                  "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+                },
+                "clear": "Success: Cleared flow override at 0072ccb9 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 3 byte(s)"
+              },
+              {
+                "explicit_tail_call": "0072ccb9",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 0072ccb9 (was: NONE, now: NONE)"
+                }
+              }
+            ],
+            "explicit_tail_end_exclusive": "0072ccc7",
+            "explicit_body_sha256": "86f3203bc2b4d6953cb1539163b867aa9f98ae2e66d2a908980862968e66d9d6",
+            "body_before": "Function: CG_scalar_deleting_dtor_0072cc90 at 0072cc90\nSignature: undefined CG_scalar_deleting_dtor_0072cc90(void)\nEntry: 0072cc90\nBody: 0072cc90 - 0072ccc6",
+            "decompile_lines_after": 14,
+            "gaps_remaining": 0,
+            "body_after": "Function: CG_scalar_deleting_dtor_0072cc90 at 0072cc90\nSignature: undefined CG_scalar_deleting_dtor_0072cc90(void)\nEntry: 0072cc90\nBody: 0072cc90 - 0072ccc6",
+            "stored_body_tail_complete": true
+          }
+        ]
+      },
+      "ao-state-definitions.json": {
+        "events": [
+          {
+            "recreate": "0072cc90",
+            "previous": "Function: CG_scalar_deleting_dtor_0072cc90 at 0072cc90\nSignature: undefined CG_scalar_deleting_dtor_0072cc90(void)\nEntry: 0072cc90\nBody: 0072cc90 - 0072ccc6",
+            "plate": null
+          },
+          {
+            "endpoint": "delete_function",
+            "body": {
+              "address": "0072cc90"
+            },
+            "result": {
+              "success": true,
+              "address": "0072cc90",
+              "deleted_function": "CG_scalar_deleting_dtor_0072cc90",
+              "body_size": 52,
+              "message": "Function 'CG_scalar_deleting_dtor_0072cc90' deleted at 0072cc90"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "0072cc90",
+              "end_address": "0072ccc7"
+            },
+            "result": {
+              "success": true,
+              "start_address": "0072cc90",
+              "end_address": "0072ccc6",
+              "bytes_disassembled": 55,
+              "message": "Successfully disassembled 55 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "0072cc90",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "0072cc90",
+              "function_name": "CG_scalar_deleting_dtor_0072cc90",
+              "entry_point": "0072cc90",
+              "body_size": 55,
+              "message": "Function created successfully at 0072cc90"
+            }
+          },
+          {
+            "defined": "0072cc90",
+            "end": "0072ccc7",
+            "name": null,
+            "after": "Function: CG_scalar_deleting_dtor_0072cc90 at 0072cc90\nSignature: undefined CG_scalar_deleting_dtor_0072cc90(void)\nEntry: 0072cc90\nBody: 0072cc90 - 0072ccc6"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      },
+      "ao-state-handler-definitions.json": {
+        "events": [
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00c855c8",
+              "end_address": "00c855d2"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00c855c8",
+              "end_address": "00c855d1",
+              "bytes_disassembled": 10,
+              "message": "Successfully disassembled 10 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00c855c8",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00c855c8",
+              "function_name": "FUN_00c855c8",
+              "entry_point": "00c855c8",
+              "body_size": 10,
+              "message": "Function created successfully at 00c855c8"
+            }
+          },
+          {
+            "defined": "00c855c8",
+            "end": "00c855d2",
+            "name": null,
+            "after": "Function: FUN_00c855c8 at 00c855c8\nSignature: undefined FUN_00c855c8(void)\nEntry: 00c855c8\nBody: 00c855c8 - 00c855d1"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00c85613",
+              "end_address": "00c8561d"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00c85613",
+              "end_address": "00c8561c",
+              "bytes_disassembled": 10,
+              "message": "Successfully disassembled 10 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00c85613",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00c85613",
+              "function_name": "FUN_00c85613",
+              "entry_point": "00c85613",
+              "body_size": 10,
+              "message": "Function created successfully at 00c85613"
+            }
+          },
+          {
+            "defined": "00c85613",
+            "end": "00c8561d",
+            "name": null,
+            "after": "Function: FUN_00c85613 at 00c85613\nSignature: undefined FUN_00c85613(void)\nEntry: 00c85613\nBody: 00c85613 - 00c8561c"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00cbbbc8",
+              "end_address": "00cbbbd2"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00cbbbc8",
+              "end_address": "00cbbbd1",
+              "bytes_disassembled": 10,
+              "message": "Successfully disassembled 10 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00cbbbc8",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00cbbbc8",
+              "function_name": "FUN_00cbbbc8",
+              "entry_point": "00cbbbc8",
+              "body_size": 10,
+              "message": "Function created successfully at 00cbbbc8"
+            }
+          },
+          {
+            "defined": "00cbbbc8",
+            "end": "00cbbbd2",
+            "name": null,
+            "after": "Function: FUN_00cbbbc8 at 00cbbbc8\nSignature: undefined FUN_00cbbbc8(void)\nEntry: 00cbbbc8\nBody: 00cbbbc8 - 00cbbbd1"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      },
+      "ao-state-funclet-flow.json": {
+        "repairs": [
+          {
+            "function": "00c85608",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T19:15:31Z",
+            "decompile_lines_before": 10,
+            "gaps": [
+              {
+                "site": "00c8560c",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00c85611",
+                "gap_end_exclusive": "00c85613",
+                "bytes": 2,
+                "after_call": true,
+                "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00c8560c",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf65ac",
+                  "gap_start": "00c85611",
+                  "gap_end_exclusive": "00c85613",
+                  "bytes": 2,
+                  "after_call": true,
+                  "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+                },
+                "clear": "Success: Cleared flow override at 00c8560c (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 2 byte(s)"
+              },
+              {
+                "explicit_tail_call": "00c8560c",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00c8560c (was: NONE, now: NONE)"
+                }
+              }
+            ],
+            "explicit_tail_end_exclusive": "00c85613",
+            "explicit_body_sha256": "d2c835847057e5d7ef791582b957fcbdb219910ad53f88cff76bfff700790db8",
+            "body_before": "Function: Unwind@00c85608 at 00c85608\nSignature: undefined Unwind@00c85608(void)\nEntry: 00c85608\nBody: 00c85608 - 00c85610",
+            "decompile_lines_after": 10,
+            "gaps_remaining": 1,
+            "body_after": "Function: Unwind@00c85608 at 00c85608\nSignature: undefined Unwind@00c85608(void)\nEntry: 00c85608\nBody: 00c85608 - 00c85610",
+            "stored_body_tail_complete": false,
+            "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+          }
+        ]
+      },
+      "ao-state-funclet-definitions.json": {
+        "events": [
+          {
+            "recreate": "00c85608",
+            "previous": "Function: Unwind@00c85608 at 00c85608\nSignature: undefined Unwind@00c85608(void)\nEntry: 00c85608\nBody: 00c85608 - 00c85610",
+            "plate": null
+          },
+          {
+            "endpoint": "delete_function",
+            "body": {
+              "address": "00c85608"
+            },
+            "result": {
+              "success": true,
+              "address": "00c85608",
+              "deleted_function": "Unwind@00c85608",
+              "body_size": 9,
+              "message": "Function 'Unwind@00c85608' deleted at 00c85608"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00c85608",
+              "end_address": "00c85613"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00c85608",
+              "end_address": "00c85612",
+              "bytes_disassembled": 11,
+              "message": "Successfully disassembled 11 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00c85608",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00c85608",
+              "function_name": "Unwind@00c85608",
+              "entry_point": "00c85608",
+              "body_size": 11,
+              "message": "Function created successfully at 00c85608"
+            }
+          },
+          {
+            "defined": "00c85608",
+            "end": "00c85613",
+            "name": null,
+            "after": "Function: Unwind@00c85608 at 00c85608\nSignature: undefined Unwind@00c85608(void)\nEntry: 00c85608\nBody: 00c85608 - 00c85612"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "final_merged_validation_ao": {
+    "tested_commit": "fe3ae2c51c2cd681a975c2e15db7092dc06f97cf",
+    "reviewed_source_commit": "89e23a18ccb60f8ec18cefb50e90ceb532783c65",
+    "build": "local/ao-final-combined-build.log: strict MSVC Win32 and both seeded CTests passed",
+    "all10_reviewed_source_header_hashes_preserved": true,
+    "all54_name_evidence_rows_preserved": true,
+    "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+    "current_library_replays": [
+      {
+        "label": "text",
+        "exit_code": 0,
+        "log": "local\\ao-text-current-replay.log",
+        "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+        "source_sha256": "9cad29f895a90fb0af2863f17e0f5485348770c31b8a5f5f020e91c3eb0da257",
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\text-current.cmd",
+        "executable_sha256": "f1e546aa348f230e99378114963a239de0d3f09202f57a801313d0d910c343c3"
+      },
+      {
+        "label": "parameters",
+        "exit_code": 0,
+        "log": "local\\ao-parameters-current-replay.log",
+        "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+        "source_sha256": "2c6bf74c361c624a9779945487b3e76f84aade6e2184c0b4319d5783d173aa6f",
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\parameters-current.cmd",
+        "executable_sha256": "15f890b0ba9179e5006f816069b0bfaf856354537cb92b02d7af5a36ad81604b"
+      },
+      {
+        "label": "definition-loading",
+        "exit_code": 0,
+        "log": "local\\ao-definition-loading-current-replay.log",
+        "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+        "source_sha256": "01fe7404a896ff634fd05e114351533b0146a66bcdd6025808217935a11809b6",
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\definition-loading-current.cmd",
+        "executable_sha256": "bbc30283999b97b67eb05cb8d53efee8b17bf737d8916f03b62bade2702cb0f5"
+      },
+      {
+        "label": "state",
+        "exit_code": 0,
+        "log": "local\\ao-state-current-replay.log",
+        "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+        "source_sha256": "7c50ba3fb0915561548435540ea4f1b2274cddd75018d471bb3ca3ffe5858f71",
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\state-current.cmd",
+        "executable_sha256": "35ab09a74173ac78d5b4a006cea89e525a1183dbc03be3f2e375b0d4a36d6394"
+      }
+    ],
+    "new_functions": 45,
+    "revised_spawn_functions": 1,
+    "native_signatures": 46,
+    "analyzed_bodies": 8,
+    "direct_call_rows": 484,
+    "failed_call_rows": 0,
+    "original_fh3_and_gameplay": false
+  }
+}

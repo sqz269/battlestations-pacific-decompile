@@ -50,8 +50,10 @@ bool is_downloadable_content_page(MainMenuPage page) noexcept {
 TacticalLibraryRequest open_tactical_library_005885d0(
     std::uint32_t selection_a, std::uint32_t selection_b) noexcept {
     // 005885D0..00588633. The two selection values are resolved first
-    // (005885D4 through 005C27E0, then 005885E4), written to +9Ch and +A0h
-    // with the byte at +A4h cleared, then mode 5 and selector 63h go in and
+    // (005885D4 through 005C27E0, then 005885E4); SECOND record goes to+9C,
+    // FIRST side result to+A0. This value summary executes no native ordering;
+    // the complete sequence is in main_menu_tactical_library.cpp. Native also
+    // clears+A4, then stores mode5 and selector63h before
     // 004CC460 pushes interface 0Bh with a null payload.
     TacticalLibraryRequest request{};
     request.mode = 5;                 // 00588610

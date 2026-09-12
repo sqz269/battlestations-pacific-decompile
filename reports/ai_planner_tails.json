@@ -1,0 +1,313 @@
+{
+  "packet": "cc2_ai_planner_tails",
+  "owner": "agent/cc2-ai-planner-tails",
+  "doc": "docs/AI_PLANNER_TAILS.md",
+  "header": "include/bsp/ai_planner_tails.hpp",
+  "source": "src/ai_planner_tails.cpp",
+  "ghidra": "read-only: no renames, comments, prototypes, function creation or saves",
+  "summary": "Closes the open questions of docs/AI_PLANNERS.md line 318: the Defend merge scoring, the Capture scoring (which lives in 00A1E250, not in the Capture think), 00A16EF0, the command factory 00A13340, the two merge tests, the three STL/strength helpers and the tuning key names.",
+  "routines": [
+    {
+      "address": "00a1e250",
+      "name": "BSP_AiPlanner_CaptureTargetScore",
+      "body": "00a1e250-00a1e981",
+      "abi": "__fastcall(ECX = int ownTeam, EDX = Entity* target)(float out[6], NativeString* explain), RET 8, returns the total in ST0",
+      "coverage": "complete",
+      "note": "The only user of the format string at 00D22CC8. Both pointer arguments are null-checked."
+    },
+    {
+      "address": "00a03760",
+      "name": "BSP_AiCapture_UnitArrivalValue",
+      "body": "00a03760-00a038b5",
+      "abi": "__fastcall(ECX = Entity* unit, EDX = Entity* target), no stack arguments, RET, returns a float",
+      "coverage": "complete"
+    },
+    {
+      "address": "009ffc10",
+      "name": "BSP_Math_HorizontalLength",
+      "body": "009ffc10-009ffc65",
+      "abi": "__thiscall(ECX = const float v[3]), no stack arguments, RET, returns a float",
+      "coverage": "complete"
+    },
+    {
+      "address": "00946fc0",
+      "name": "BSP_AiParty_AvailableResources",
+      "body": "00946fc0-00947084",
+      "abi": "__fastcall(ECX = int team), no stack arguments, returns a float",
+      "coverage": "complete for the accumulation; partial: 009469F0 and the +9D4h IsType(0Fh) indirection were not read"
+    },
+    {
+      "address": "00a13340",
+      "name": "BSP_AiCommand_CreateFromLua",
+      "body": "00a13340-00a137c9",
+      "abi": "__thiscall(ECX = AiGroup* group)(five stack arguments), RET 0x14, returns the command or null",
+      "coverage": "complete"
+    },
+    {
+      "address": "00a16ef0",
+      "name": "BSP_AiGroup_CreateFromScript",
+      "body": "00a16ef0-00a171ff",
+      "abi": "__fastcall(ECX = NativeString* groupName, EDX = std::vector<Entity*>* members), no stack arguments, RET",
+      "coverage": "complete"
+    },
+    {
+      "address": "00a1a720",
+      "name": "BSP_AiPlanner_OrderCaptureGroup",
+      "body": "00a1a720-00a1a795",
+      "abi": "__thiscall(planner)(AiGroup* group, Entity* target), RET 8",
+      "coverage": "complete"
+    },
+    {
+      "address": "00a1a6d0",
+      "name": "BSP_AiPlanner_OrderDefendGroup",
+      "body": "00a1a6d0-00a1a712",
+      "abi": "__thiscall(planner)(AiGroup* group, Entity* target), RET 8; ECX is not read in the body",
+      "coverage": "complete"
+    },
+    {
+      "address": "00a2be20",
+      "name": "BSP_AiGroup_IssueDefendPosition",
+      "body": "00a2be20-00a2be6e",
+      "abi": "__thiscall(AiGroup* group), no arguments, RET",
+      "coverage": "complete"
+    },
+    {
+      "address": "00a10d50",
+      "name": "BSP_AiCommand_MergeLeaderStrengthOk",
+      "body": "00a10d50-00a10dbb",
+      "abi": "__thiscall(AiCommand* command)(AiGroup* other), RET 4, returns a bool in EAX",
+      "coverage": "complete"
+    },
+    {
+      "address": "00a10c60",
+      "name": "BSP_AiCommand_MergeLeaderDistanceOk",
+      "body": "00a10c60-00a10d4e",
+      "abi": "__thiscall(AiCommand* command)(AiGroup* other), RET 4, returns a bool in EAX",
+      "coverage": "complete"
+    },
+    {
+      "address": "00a2c4c0",
+      "name": "BSP_AiGroup_TotalLeaderWeight",
+      "body": "00a2c4c0-00a2c520",
+      "abi": "__thiscall(AiGroup* group), no arguments, RET, returns a float in ST0",
+      "coverage": "complete"
+    },
+    {
+      "address": "00a17880",
+      "name": "STL_vector_push_back_00a17880",
+      "body": "00a17880-00a17925",
+      "abi": "__thiscall(vector*)(const T* value), RET 4; element stride 1Ch",
+      "coverage": "complete; library code, not reconstructed"
+    },
+    {
+      "address": "00a17960",
+      "name": "STL_list_copy_construct_00a17960",
+      "body": "00a17960-00a179cb",
+      "abi": "__thiscall(list*)(const list* other), RET 4, returns this in EAX",
+      "coverage": "complete as a shape; the range insert 00A17760 was not read; library code, not reconstructed"
+    },
+    {
+      "address": "00a28a60",
+      "name": "BSP_AiPlanner_DefendThink",
+      "body": "00a28a60-00a29e2a",
+      "abi": "__thiscall(planner), no stack arguments (existing Ghidra name)",
+      "coverage": "partial: the merge pass 00A29860-00A29BE7 is read in full; 00A28A87-00A29850 and 00A29B8E-00A29E2A are read only for their call sequence"
+    },
+    {
+      "address": "00a29fd0",
+      "name": "BSP_AiPlanner_CaptureThink",
+      "body": "00a29fd0-00a2b7eb",
+      "abi": "__thiscall(planner), no stack arguments (existing Ghidra name)",
+      "coverage": "partial: the four scoring blocks 00A2A046-00A2A1E7, 00A2A5FA-00A2A66E, 00A2AC11-00A2AC4E and 00A2B4A6-00A2B4EE are read in full; 00A2A200-00A2A5C0, 00A2A6E0-00A2AC00, 00A2AC90-00A2B480 and 00A2B4F0-00A2B7EB are not"
+    }
+  ],
+  "capture_score_terms": [
+    {"term": "a", "rule": "sum of BSP_AiCapture_UnitArrivalValue over world units of ownTeam", "address": "00a1e2a8", "native": "00a03760", "function": "00a1e250"},
+    {"term": "b", "rule": "the same sum for the enemy team (ownTeam == 0)", "address": "00a1e2f9", "native": "00a03760", "function": "00a1e250"},
+    {"term": "term1", "rule": "a - b * 0.5 (00D7A280, a double)", "address": "00a1e34b", "native": "00a03760", "function": "00a1e250"},
+    {"term": "c", "rule": "AvailableResources(ownTeam) * (1000 / max(ownDist, 1000)) / Capture_CapturePointResourceValue", "address": "00a1e6d9", "native": "00946fc0", "function": "00a1e250"},
+    {"term": "d", "rule": "the same for the enemy team", "address": "00a1e701", "native": "00946fc0", "function": "00a1e250"},
+    {"term": "term2", "rule": "max(0, c - d * 0.5); tuning read for the divisor", "address": "00a1e6c0", "native": "00a371a0", "function": "00a1e250"},
+    {"term": "floor", "rule": "max(term1 + term2, Capture_MinimalCBTargetWeight) before e is added", "address": "00a1e74b", "native": "00a371a0", "function": "00a1e250"},
+    {"term": "e", "rule": "the target's Lua StrategicGain (00D22CF8), default 0.0", "address": "00a1e7da", "native": "00b66330", "function": "00a1e250"}
+  ],
+  "capture_score_host_steps": [
+    {"step": "unit_arrival_value", "address": "00a1e2a8", "native": "00a03760", "function": "00a1e250", "note": "world+19CCh+64h list"},
+    {"step": "unit_arrival_value", "address": "00a1e2f9", "native": "00a03760", "function": "00a1e250", "note": "world+19CCh+13Ch list"},
+    {"step": "unit_arrival_value", "address": "00a1e34b", "native": "00a03760", "function": "00a1e250", "note": "world+19CCh+358h list"},
+    {"step": "unit_arrival_value", "address": "00a1e39d", "native": "00a03760", "function": "00a1e250", "note": "world+19CCh+364h list"},
+    {"step": "near_unit_distance (pose refresh)", "address": "00a1e42e", "native": "00414db0", "function": "00a1e250"},
+    {"step": "near_unit_distance (pose refresh)", "address": "00a1e506", "native": "00414db0", "function": "00a1e250"},
+    {"step": "available_resources(ownTeam)", "address": "00a1e6d9", "native": "00946fc0", "function": "00a1e250"},
+    {"step": "available_resources(enemyTeam)", "address": "00a1e701", "native": "00946fc0", "function": "00a1e250"},
+    {"step": "tuning(+19Ch)", "address": "00a1e6c0", "native": "00a371a0", "function": "00a1e250"},
+    {"step": "tuning(+19Ch)", "address": "00a1e6e6", "native": "00a371a0", "function": "00a1e250"},
+    {"step": "tuning(+1B8h)", "address": "00a1e74b", "native": "00a371a0", "function": "00a1e250"},
+    {"step": "strategic_gain: the entity's Lua self object", "address": "00a1e7ac", "native": "00927b40", "function": "00a1e250"},
+    {"step": "strategic_gain: StrategicGain field", "address": "00a1e7c5", "native": "00b67800", "function": "00a1e250"},
+    {"step": "strategic_gain: GetFloatOrDefault(0.0)", "address": "00a1e7da", "native": "00b66330", "function": "00a1e250"},
+    {"step": "explain: sprintf with 00D22CC8", "address": "00a1e8c1", "native": "004b8490", "function": "00a1e250"}
+  ],
+  "unit_arrival_value_steps": [
+    {"step": "the unit's Lua CaptureWeight", "address": "00a03769", "native": "00a03510", "function": "00a03760"},
+    {"step": "refresh the target world pose", "address": "00a0377d", "native": "00414db0", "function": "00a03760"},
+    {"step": "refresh the unit world pose", "address": "00a0378d", "native": "00414db0", "function": "00a03760"},
+    {"step": "horizontal distance unit - target", "address": "00a037c6", "native": "009ffc10", "function": "00a03760"},
+    {"step": "Capture_ArriveToRangeTime", "address": "00a03850", "native": "00a371a0", "function": "00a03760"}
+  ],
+  "defend_merge_rules": [
+    {"rule": "Defend_MergeTargetDist (tuning+1DCh), squared at 00A298FC, compared at 00A29A52", "address": "00a298e2", "native": "00a371a0", "function": "00a28a60"},
+    {"rule": "Defend_MergeGroupsDist (tuning+1E0h), squared at 00A29ACA, compared at 00A29B7B", "address": "00a29ab0", "native": "00a371a0", "function": "00a28a60"},
+    {"rule": "merge the second group into the first", "address": "00a29b8e", "native": "00a2db80", "function": "00a28a60"},
+    {"rule": "erase the merged group from the record's list", "address": "00a29b9c", "native": "00a1d1d0", "function": "00a28a60"}
+  ],
+  "capture_think_rules": [
+    {"rule": "spawn ramp: InterpolateClamped(0, SpawnDelay[1], SpawnDelayTime, SpawnDelay[2], plannerAge)", "address": "00a2a0a6", "native": "00419010", "function": "00a29fd0"},
+    {"rule": "Capture_SpawnDelay[2] (tuning+1C4h)", "address": "00a2a071", "native": "00a371a0", "function": "00a29fd0"},
+    {"rule": "Capture_SpawnDelayTime (tuning+1C8h)", "address": "00a2a080", "native": "00a371a0", "function": "00a29fd0"},
+    {"rule": "Capture_SpawnDelay[1] (tuning+1C0h)", "address": "00a2a08f", "native": "00a371a0", "function": "00a29fd0"},
+    {"rule": "fill rec+4h..rec+18h with the six score terms", "address": "00a2a184", "native": "00a1e250", "function": "00a29fd0"},
+    {"rule": "Capture_CapturePointResourceValue (tuning+19Ch) for the record price", "address": "00a2a18b", "native": "00a371a0", "function": "00a29fd0"},
+    {"rule": "the target's own CaptureWeight", "address": "00a2a1a4", "native": "00a03510", "function": "00a29fd0"},
+    {"rule": "Capture_MinimalResource (tuning+1A0h), the price floor", "address": "00a2a1b0", "native": "00a371a0", "function": "00a29fd0"},
+    {"rule": "ActAttackTargetWeightMul[2] (tuning+1A8h)", "address": "00a2a605", "native": "00a371a0", "function": "00a29fd0"},
+    {"rule": "ActAttackTargetWeightMulDist[2] (tuning+1B4h)", "address": "00a2a614", "native": "00a371a0", "function": "00a29fd0"},
+    {"rule": "ActAttackTargetWeightMul[1] (tuning+1ACh)", "address": "00a2a623", "native": "00a371a0", "function": "00a29fd0"},
+    {"rule": "ActAttackTargetWeightMulDist[1] (tuning+1B0h)", "address": "00a2a632", "native": "00a371a0", "function": "00a29fd0"},
+    {"rule": "the attack-weight interpolation itself", "address": "00a2a641", "native": "00419010", "function": "00a29fd0"},
+    {"rule": "Capture_CommandBuildingStrategicWeightMul (tuning+1BCh)", "address": "00a2a670", "native": "00a371a0", "function": "00a29fd0"},
+    {"rule": "blend: (1 - CBStrategicMul) * w", "address": "00a2ac11", "native": "00a371a0", "function": "00a29fd0"},
+    {"rule": "blend: + CBStrategicMul * s", "address": "00a2ac28", "native": "00a371a0", "function": "00a29fd0"},
+    {"rule": "spawn budget: the game-mode index for 00F8A8BC[mode] = Defend_ResourcePercent", "address": "00a2b4a6", "native": "009ffc80", "function": "00a29fd0"},
+    {"rule": "spawn budget: the party resource cap", "address": "00a2b4c0", "native": "00942130", "function": "00a29fd0"},
+    {"rule": "spawn budget: what this planner already committed", "address": "00a2b4d7", "native": "00a1c900", "function": "00a29fd0"}
+  ],
+  "command_factory_rows": [
+    {"row": "read the commandType key", "address": "00a1337c", "native": "00b67800", "function": "00a13340"},
+    {"row": "the Lua string value", "address": "00a13388", "native": "00b662b0", "function": "00a13340"},
+    {"row": "NONCONTROL, vtable 00D22990, 8 bytes", "address": "00a1340e", "native": "00bf7fbf", "function": "00a13340"},
+    {"row": "IDLE, vtable 00D229E0, 8 bytes", "address": "00a133d8", "native": "00425850", "function": "00a13340"},
+    {"row": "MOVETO, vtable 00D22ABC, 14h bytes, targetPos", "address": "00a13470", "native": "00425850", "function": "00a13340"},
+    {"row": "CAUTIOUSMOVE, ctor 00A102D0, 20h bytes, targetPos", "address": "00a13560", "native": "00a102d0", "function": "00a13340"},
+    {"row": "REGROUPINGMOVE, ctor 00A10370, 14h bytes, targetPos", "address": "00a135d2", "native": "00a10370", "function": "00a13340"},
+    {"row": "MOVETOATTACK, ctor 00A10890, 20h bytes, target", "address": "00a13651", "native": "00a10890", "function": "00a13340"},
+    {"row": "CAUTIOUSATTACK, ctor 00A109B0, 2Ch bytes, target", "address": "00a136b2", "native": "00a109b0", "function": "00a13340"},
+    {"row": "CLOSEATTACK, ctor 00A10AE0, 20h bytes, target", "address": "00a13712", "native": "00a10ae0", "function": "00a13340"},
+    {"row": "DEFENDPOSITION, vtable 00D22A38, 8 bytes", "address": "00a13726", "native": "00425850", "function": "00a13340"},
+    {"row": "RETREAT, vtable 00D22A60, 8 bytes", "address": "00a13754", "native": "00425850", "function": "00a13340"},
+    {"row": "the target entity argument", "address": "00a13648", "native": "00a37250", "function": "00a13340"},
+    {"row": "the targetPos vector argument", "address": "00a134c0", "native": "00888760", "function": "00a13340"}
+  ],
+  "script_spawner_steps": [
+    {"step": "the party slot of the first member", "address": "00a16f29", "native": "009ffd20", "function": "00a16ef0"},
+    {"step": "construct the group", "address": "00a16f7b", "native": "00a2dfa0", "function": "00a16ef0"},
+    {"step": "add the remaining members", "address": "00a16fd6", "native": "00a2d8e0", "function": "00a16ef0"},
+    {"step": "the effective game mode", "address": "00a16fed", "native": "004bca50", "function": "00a16ef0"},
+    {"step": "mode 4: claim into brain+10h (Duel)", "address": "00a17000", "native": "00a22750", "function": "00a16ef0"},
+    {"step": "mode 5: claim into brain+14h (Escort)", "address": "00a17024", "native": "00a22750", "function": "00a16ef0"},
+    {"step": "mode 6: claim into brain+18h (Siege)", "address": "00a17048", "native": "00a22750", "function": "00a16ef0"},
+    {"step": "mode 7: claim into brain+1Ch (Competitive)", "address": "00a1706c", "native": "00a22750", "function": "00a16ef0"},
+    {"step": "modes 0..3: issue DEFENDPOSITION first", "address": "00a17085", "native": "00a2be20", "function": "00a16ef0"},
+    {"step": "name.substr(0,9)", "address": "00a17099", "native": "00469840", "function": "00a16ef0"},
+    {"step": "compare to \"[capture]\" (00D22CA8)", "address": "00a170a5", "native": "00425850", "function": "00a16ef0"},
+    {"step": "claim into brain+0Ch (Capture)", "address": "00a170db", "native": "00a22750", "function": "00a16ef0"},
+    {"step": "resolve the entity id after the prefix", "address": "00a17112", "native": "00521e30", "function": "00a16ef0"},
+    {"step": "order the captured group", "address": "00a1711c", "native": "00a1a720", "function": "00a16ef0"},
+    {"step": "name.substr(0,8)", "address": "00a17169", "native": "00469840", "function": "00a16ef0"},
+    {"step": "compare to \"[defend]\" (00D22C9C)", "address": "00a17175", "native": "00425850", "function": "00a16ef0"},
+    {"step": "claim into brain+0h (Defend)", "address": "00a171a6", "native": "00a22750", "function": "00a16ef0"},
+    {"step": "order the defending group", "address": "00a171d8", "native": "00a1a6d0", "function": "00a16ef0"}
+  ],
+  "merge_test_steps": [
+    {"step": "own leader weight", "address": "00a10d8b", "native": "009ffd70", "function": "00a10d50"},
+    {"step": "other leader weight", "address": "00a10d96", "native": "009ffd70", "function": "00a10d50"},
+    {"step": "AutoMerge_MergeDist (tuning+208h)", "address": "00a10cf5", "native": "00a371a0", "function": "00a10c60"},
+    {"step": "group total leader weight", "address": "00a2c4fd", "native": "009ffd70", "function": "00a2c4c0"}
+  ],
+  "order_helper_steps": [
+    {"step": "target already in a group: choose the attack order", "address": "00a1a74e", "native": "00a2cbd0", "function": "00a1a720"},
+    {"step": "otherwise test the group", "address": "00a1a75e", "native": "00a2c600", "function": "00a1a720"},
+    {"step": "issue DEFENDPOSITION", "address": "00a1a769", "native": "00a2be20", "function": "00a1a720"},
+    {"step": "issue PATROLTO to the target position", "address": "00a1a78c", "native": "00a2c310", "function": "00a1a720"},
+    {"step": "HasGroupableCombatant", "address": "00a1a6d7", "native": "00a2c5a0", "function": "00a1a6d0"},
+    {"step": "issue PATROLTO to the target position", "address": "00a1a6fe", "native": "00a2c310", "function": "00a1a6d0"},
+    {"step": "issue DEFENDPOSITION", "address": "00a1a70a", "native": "00a2be20", "function": "00a1a6d0"}
+  ],
+  "tuning_keys": [
+    {"reader_offset": "+1CCh", "key": "FreeAttack_ObjectiveTargetMul", "default": 2.0, "source": "docs/AI_GLOBALS_AND_TARGET_WEIGHTS.md record table"},
+    {"reader_offset": "+1D0h", "key": "FreeAttack_NearDist", "default": 5000.0, "source": "docs/AI_GLOBALS_AND_TARGET_WEIGHTS.md record table"},
+    {"reader_offset": "+1D4h", "key": "FreeAttack_FarDist", "default": 12000.0, "source": "docs/AI_GLOBALS_AND_TARGET_WEIGHTS.md record table"},
+    {"reader_offset": "+1D8h", "key": "FreeAttack_ExistingTargetMul", "default": 1.5, "source": "docs/AI_GLOBALS_AND_TARGET_WEIGHTS.md record table"},
+    {"reader_offset": "+204h", "key": "CloseAttack_TargetGroupMemberMul", "default": 2.0, "source": "+208h's low neighbour"},
+    {"reader_offset": "+208h", "key": "AutoMerge_MergeDist", "default": 650.0, "source": "read at 00A10CF5 and by the compose pass"},
+    {"reader_offset": "+20Ch", "key": "AutoMerge_LeaveDist", "default": 1200.0, "source": "+208h's high neighbour"}
+  ],
+  "no_ghidra_function": [],
+  "flow_gaps": [],
+  "corrections": [
+    {
+      "document": "docs/AI_PLANNERS.md",
+      "was": "the \"capture: %.2f\\n=(%.2f-%.2f/2)+(%.2f-%.2f/2)+%.2f\" formula at 00D22CC4, unread inside the Capture think",
+      "is": "00D22CC4 is the float -999999.0 (the initial best score of 00A1CB80 at 00A1CC17, already correct in include/bsp/ai_planners.hpp as kAiPlannerScoreFloor); the format string starts at 00D22CC8 and its only user in the image is 00A1E250",
+      "evidence": "MOVSS XMM0,[0x00D22CC4] at 00A1CC17; bytes at 00D22CC4 are f0 23 74 c9 = -999999.0f; the string body starts at 00D22CC8; a .text byte scan for the literal c8 2c d2 00 returns 00A1E8BC only (PUSH 0xd22cc8 at 00A1E8BB)"
+    },
+    {
+      "document": "docs/AI_PLANNERS.md",
+      "was": "00A371A0 is used at 00A298E2 / 00A29AB0 / 00A2B4A6",
+      "is": "00A298E2 and 00A29AB0 are 00A371A0; 00A2B4A6 is CALL 009FFC80, the effective game-mode index, feeding 00F8A8BC[mode] = Defend_ResourcePercent",
+      "evidence": "00A2B4A6: CALL 0x009ffc80 then FLD float ptr [EAX*0x4 + 0xf8a8bc]"
+    },
+    {
+      "document": "docs/AI_PLANNERS.md",
+      "was": "00A16EF0, which calls the claim 00A22750 six times, is the only candidate producer of the Attack planner's group list",
+      "is": "00A16EF0 never touches brain+4h. Its six claims go to brain+10h, +14h, +18h, +1Ch (modes 4..7) and to brain+0Ch or brain+0h for the \"[capture]\" and \"[defend]\" name prefixes in modes 0..3. The Attack planner's group list still has no producer this packet found",
+      "evidence": "the mode dispatch at 00A16FF2-00A1706C reads [brain+10h], [brain+14h], [brain+18h], [brain+1Ch]; the prefix path at 00A170D7 reads [brain+0Ch] and at 00A171A3 reads [brain+0h]"
+    },
+    {
+      "document": "docs/AI_PLANNERS.md",
+      "was": "00A13340 is a factory that installs nine of these vtables",
+      "is": "it builds ten named classes (NONCONTROL, IDLE, MOVETO, CAUTIOUSMOVE, REGROUPINGMOVE, MOVETOATTACK, CAUTIOUSATTACK, CLOSEATTACK, DEFENDPOSITION, RETREAT) plus an IDLE fallback for an unmatched name",
+      "evidence": "the strcmp at 00A1340E against [00E0E308] plus the nine BSP_NativeString_EqualsCStringInsensitive sites at 00A133D8, 00A13470, 00A1350B, 00A1357D, 00A13607, 00A13668, 00A136C8, 00A13726, 00A13754, and the default at 00A13787"
+    },
+    {
+      "document": "docs/AI_PLANNERS.md",
+      "was": "DEFENDPOSITION's \"Ctor seen\" is 00A2BE20",
+      "is": "00A2BE20 is the issue helper: it returns early when the group's current command already answers IsType(11), otherwise it allocates 8 bytes inline, writes the vtable 00D22A38 and the owner, destroys the old command and stores the new one at group+564Ch",
+      "evidence": "00A2BE2E PUSH 0xb then CALL [vt+8h]; 00A2BE48 MOV dword ptr [EAX],0xd22a38; 00A2BE66 MOV dword ptr [ESI + 0x564c],EDI"
+    },
+    {
+      "document": "docs/AI_PLANNERS.md",
+      "was": "the Lua key names of tuning fields +1CCh, +1D0h, +1D4h, +1D8h and +208h's neighbours are unknown",
+      "is": "all seven are already named in docs/AI_GLOBALS_AND_TARGET_WEIGHTS.md's record table; that open question is stale, not open",
+      "evidence": "00A371A0 returns coordinator + 4 + mode*23Ch, so a reader-side tuning+N is that table's `record +N` column; +1CCh FreeAttack_ObjectiveTargetMul, +1D0h FreeAttack_NearDist, +1D4h FreeAttack_FarDist, +1D8h FreeAttack_ExistingTargetMul, +204h CloseAttack_TargetGroupMemberMul, +208h AutoMerge_MergeDist, +20Ch AutoMerge_LeaveDist"
+    }
+  ],
+  "names_added": [
+    {"address": "00a1e250", "name": "BSP_AiPlanner_CaptureTargetScore"},
+    {"address": "00a03760", "name": "BSP_AiCapture_UnitArrivalValue"},
+    {"address": "009ffc10", "name": "BSP_Math_HorizontalLength"},
+    {"address": "00946fc0", "name": "BSP_AiParty_AvailableResources"},
+    {"address": "00a13340", "name": "BSP_AiCommand_CreateFromLua"},
+    {"address": "00a16ef0", "name": "BSP_AiGroup_CreateFromScript"},
+    {"address": "00a1a720", "name": "BSP_AiPlanner_OrderCaptureGroup"},
+    {"address": "00a1a6d0", "name": "BSP_AiPlanner_OrderDefendGroup"},
+    {"address": "00a2be20", "name": "BSP_AiGroup_IssueDefendPosition"},
+    {"address": "00a10d50", "name": "BSP_AiCommand_MergeLeaderStrengthOk"},
+    {"address": "00a10c60", "name": "BSP_AiCommand_MergeLeaderDistanceOk"},
+    {"address": "00a2c4c0", "name": "BSP_AiGroup_TotalLeaderWeight"},
+    {"address": "00a17880", "name": "STL_vector_push_back_00a17880"},
+    {"address": "00a17960", "name": "STL_list_copy_construct_00a17960"}
+  ],
+  "build": "scripts/build.ps1 clean (Win32, /W4 /WX); ctest reconstructed_math passed",
+  "tests": "one focused case added to tests/math_tests.cpp: the Capture_MinimalCBTargetWeight floor applies before StrategicGain is added",
+  "open_questions": [
+    "The Defend think's collection passes 00A28A87-00A29850 and its spawn tail 00A29B8E-00A29E2A.",
+    "The Capture think outside its four scoring blocks: 00A2A200-00A2A5C0, 00A2A6E0-00A2AC00, 00A2AC90-00A2B480, 00A2B4F0-00A2B7EB.",
+    "00A1C900 (the planner's committed resources) and 00942130 (the party resource cap) were not read.",
+    "00A22D10 and 00A22F60, the Capture think's record accessors; the record layout above comes from the store sites only.",
+    "009469F0 and the +9D4h indirection inside 00946FC0.",
+    "The second value blended at 00A2AC33 has no producer this packet found.",
+    "Which entity family owns each of 00A03760's two speed sub-objects (+538h, +35Ch).",
+    "The Attack planner's group list still has no producer: 00A22750's only callers are 00A181A0, 00A22800 and 00A16EF0, and none of them claims into brain+4h."
+  ]
+}

@@ -1,0 +1,353 @@
+{
+  "packet": "orch6_game_avoid_zone_runtime",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "sources": [
+    "src/game_avoid_zone_runtime.cpp",
+    "src/game_hosts_ship_ai.cpp",
+    "src/game_hosts_mission_frame.cpp",
+    "src/game_hosts_ready.cpp",
+    "src/game_hosts.cpp"
+  ],
+  "coverage": "process data ownership and call bindings; no native scene creator/singleton ABI claim",
+  "native_calls": [
+    {
+      "address": "009e3821",
+      "native": "004218e0",
+      "source_report": "ship_ai_path_planner.json",
+      "contract": "existing reconstructed callee; concrete runtime binding"
+    },
+    {
+      "address": "009e3831",
+      "native": "00417e40",
+      "source_report": "ship_ai_path_planner.json",
+      "contract": "existing reconstructed callee; concrete runtime binding"
+    },
+    {
+      "address": "009e3851",
+      "native": "00417580",
+      "source_report": "ship_ai_path_planner.json",
+      "contract": "existing reconstructed callee; concrete runtime binding"
+    },
+    {
+      "address": "009e3870",
+      "native": "004218e0",
+      "source_report": "ship_ai_path_planner.json",
+      "contract": "existing reconstructed callee; concrete runtime binding"
+    },
+    {
+      "address": "009e387b",
+      "native": "004120d0",
+      "source_report": "ship_ai_path_planner.json",
+      "contract": "existing reconstructed callee; concrete runtime binding"
+    },
+    {
+      "address": "009e38a2",
+      "native": "0041b840",
+      "source_report": "ship_ai_path_planner.json",
+      "contract": "existing reconstructed callee; concrete runtime binding"
+    },
+    {
+      "address": "009e38e3",
+      "native": "004218e0",
+      "source_report": "ship_ai_path_planner.json",
+      "contract": "existing reconstructed callee; concrete runtime binding"
+    },
+    {
+      "address": "009e38ef",
+      "native": "00417e40",
+      "source_report": "ship_ai_path_planner.json",
+      "contract": "existing reconstructed callee; concrete runtime binding"
+    },
+    {
+      "address": "009e390b",
+      "native": "00417580",
+      "source_report": "ship_ai_path_planner.json",
+      "contract": "existing reconstructed callee; concrete runtime binding"
+    },
+    {
+      "address": "009e3058",
+      "native": "004218e0",
+      "source_report": "ship_ai_path_search.json",
+      "contract": "existing reconstructed callee; concrete runtime binding"
+    },
+    {
+      "address": "009e3075",
+      "native": "00417e90",
+      "source_report": "ship_ai_path_search.json",
+      "contract": "existing reconstructed callee; concrete runtime binding"
+    },
+    {
+      "address": "009e3105",
+      "native": "00422500",
+      "source_report": "ship_ai_path_search.json",
+      "contract": "existing reconstructed callee; concrete runtime binding"
+    },
+    {
+      "address": "009e3189",
+      "native": "0071c4f0",
+      "source_report": "ship_ai_path_search.json",
+      "contract": "existing reconstructed callee; concrete runtime binding"
+    },
+    {
+      "address": "009e3207",
+      "native": "0071c4f0",
+      "source_report": "ship_ai_path_search.json",
+      "contract": "existing reconstructed callee; concrete runtime binding"
+    },
+    {
+      "address": "009d5917",
+      "native": "00417610",
+      "source_report": "ship_ai_path_search.json",
+      "contract": "existing reconstructed callee; concrete runtime binding"
+    },
+    {
+      "address": "009d5923",
+      "native": "00423190",
+      "source_report": "ship_ai_path_search.json",
+      "contract": "existing reconstructed callee; concrete runtime binding"
+    },
+    {
+      "address": "009e3dcd",
+      "native": "00811d80",
+      "source_report": "ship_ai_path_follower.json",
+      "contract": "existing reconstructed callee; concrete runtime binding"
+    },
+    {
+      "address": "009e4200",
+      "native": "004218e0",
+      "source_report": "ship_ai_path_follower.json",
+      "contract": "existing reconstructed callee; concrete runtime binding"
+    },
+    {
+      "address": "009e4216",
+      "native": "00417ef0",
+      "source_report": "ship_ai_path_follower.json",
+      "contract": "existing reconstructed callee; concrete runtime binding"
+    },
+    {
+      "address": "00417f2e",
+      "native": "004120d0",
+      "source_report": "ship_ai_path_follower.json",
+      "contract": "existing reconstructed callee; concrete runtime binding"
+    },
+    {
+      "address": "004e07be",
+      "native": "00424d00",
+      "contract": "existing recovered call site; data ownership binding"
+    },
+    {
+      "address": "009ed6de",
+      "native": "0080e000",
+      "contract": "existing recovered call site; data ownership binding"
+    },
+    {
+      "address": "009ee66c",
+      "native": "00815f30",
+      "contract": "existing recovered call site; data ownership binding"
+    },
+    {
+      "address": "00825f77",
+      "native": "00811d10",
+      "contract": "existing recovered call site; data ownership binding"
+    }
+  ],
+  "no_ghidra_function": [],
+  "corrections": [
+    "Entity+54h gate is Party2, not path kind. Named group precedes that gate.",
+    "Constructor-produced zero-corner zones are destroyed and omitted.",
+    "Use exact crossing/SAT kernels instead of generic gun-bot crossing.",
+    "Use authored Map bounds and native0071C4F0 unordered rejection.",
+    "Native24h corner handles are copied into compact follower anchors, never reinterpreted.",
+    "Full AI order pair retains lateral subrecords; scalar publish preserves them; promotion copies only00h..3Fh.",
+    "CRT dispatch state is shared at process lifetime; LegacyCrtMathRuntime binding now owns a persistent aggregate instead of a temporary."
+  ],
+  "validation": {
+    "build": "Win32 Release scripts/build.ps1 and existing CTest2/2 passed after full order binding",
+    "runtime": {
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\build\\win32\\Release\\bsp_game.exe",
+        "--frames",
+        "360",
+        "--press-start-frame",
+        "3",
+        "--menu-select",
+        "USN01",
+        "--mission-frames",
+        "120",
+        "--mission-frame-seconds",
+        "0.1",
+        "--game-root",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+        "--fmod-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "--fmod-event-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_usn01_zone_simulation.log"
+      ],
+      "exe_sha256": "09218c482255654803974f7f9f55fa9a9ab9c1b00b7dac9175dc8cc038a9d4fc",
+      "exit": 0,
+      "seconds": 14.342185735702515
+    },
+    "world_bounds": "reports/world_map_bounds.json",
+    "clearance": "reports/avoid_zone_clearance.json",
+    "scene_data": "reports/game_scene_zone_paths.json",
+    "parents": "reports/scene_landscape_class.json",
+    "turn_ramp": "reports/ship_ai_path_turn_ramp.json",
+    "runtime_observed": {
+      "mission_frames_requested": 120,
+      "mission_frames_ran": 120,
+      "mission_frames_simulated": 120,
+      "ai_steps": 18480,
+      "ai_order_promotions": 18480,
+      "path_search_ticks": 240,
+      "path_follower_points": 239,
+      "corner_detour_arms": 0,
+      "lateral_publishes": 0,
+      "groups": 6,
+      "zones": 21,
+      "source_points": 2193,
+      "surviving_corners": 2193,
+      "parent_associations": 21,
+      "fmod_errors": 0
+    },
+    "runtime_source_sha256": {
+      "src/game_avoid_zone_runtime.cpp": "f3fa2af3c0bb57a2f7c0f8171378b364b2e9f9328e7f8044852a93aea34c64c4",
+      "src/game_hosts_ship_ai.cpp": "1464b2a6d893e80ee90db85f855ca5265c99191c4e1e809f09154f1f55ef89c0",
+      "src/game_hosts_mission_frame.cpp": "95d6b150b2d60f62590f2bf2b6d999ac76987c4a70ad48d75ea03384a3fc20c5",
+      "src/game_hosts_ready.cpp": "07a78aa3cc83c3d39bb81ed80c9b2390649db34495f819a946d3b50ca0618bc9",
+      "src/game_hosts.cpp": "4cd9ba31e953e9833a56e5759dd3d61c648b7c1a2903e57d59829c46f75390a8",
+      "src/avoid_zone_geometry.cpp": "088aeecc477727f122e0172210fed8e13a8ce80b40cb693dc573f6d8eaa1e21c",
+      "src/world_map_bounds.cpp": "902811514969ea0454910a92614446b68ea58db28277d67b5aef76a061f79e5f",
+      "include/bsp/game_hosts_ship_ai.hpp": "fb0251d7f2d6aa5813203617c34cbd2f7dcd6f3633fc8cff24dbf2f2a0fb0243",
+      "include/bsp/game_avoid_zone_runtime.hpp": "6c798fbec4024cecf8ea78ee92389619b6de3d354d13a7f0932f654a8235557a"
+    },
+    "forced_order_attempt": {
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\build\\win32\\Release\\bsp_game.exe",
+        "--frames",
+        "360",
+        "--press-start-frame",
+        "3",
+        "--menu-select",
+        "USN01",
+        "--mission-frames",
+        "120",
+        "--mission-frame-seconds",
+        "0.1",
+        "--game-root",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+        "--fmod-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "--fmod-event-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_usn01_zone_order.log",
+        "--order-frame",
+        "0",
+        "--order-unit",
+        "Enterprise",
+        "--order",
+        "MoveToPos:Airfield2"
+      ],
+      "exe_sha256": "09218c482255654803974f7f9f55fa9a9ab9c1b00b7dac9175dc8cc038a9d4fc",
+      "exit": 1,
+      "seconds": 14.60477876663208
+    },
+    "forced_order_result": "Not a mission test: another orchestrator executable cc-exe-2s held the native single-instance mutex; startup exited1 without a window.",
+    "private_runtime": {
+      "guide": "docs/XLIVE_PRIVATE_RUNTIME.md",
+      "xlive_sha256": "79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385",
+      "msidcrl40_sha256": "623cb6ca98e566357abbd0e76b15713921e1d7e1144c0c4f589a0407c7eff1ee",
+      "signatures": "Microsoft Authenticode Valid, independently rechecked",
+      "installed_files_modified": false,
+      "committed_dlls": false
+    },
+    "annotation_readback": [
+      {
+        "address": "00415190",
+        "name": "BSP_AvoidZoneSegment_Initialize",
+        "old_comment_preserved": true
+      },
+      {
+        "address": "004158a0",
+        "name": "BSP_AvoidZoneSegmentList_Clear",
+        "old_comment_preserved": true
+      },
+      {
+        "address": "004158e0",
+        "name": "BSP_AvoidZoneSegmentList_NearestHit",
+        "old_comment_preserved": true
+      },
+      {
+        "address": "00417630",
+        "name": "BSP_AvoidZone_SelectSegmentRunsInBox",
+        "old_comment_preserved": true
+      },
+      {
+        "address": "00417a40",
+        "name": "BSP_AvoidZoneGroup_SelectSegmentRunsInBox",
+        "old_comment_preserved": true
+      },
+      {
+        "address": "00419fc0",
+        "name": "BSP_AvoidZoneSegmentList_PointDistance",
+        "old_comment_preserved": true
+      },
+      {
+        "address": "00423190",
+        "name": "BSP_AvoidZone_EnsureCornerClearanceScale",
+        "old_comment_preserved": true
+      },
+      {
+        "address": "004d5bd0",
+        "name": "BSP_Game_ApplyMapBounds",
+        "old_comment_preserved": true
+      },
+      {
+        "address": "004e6c00",
+        "name": "BSP_Map_ReadExtentPropertiesAndApply",
+        "old_comment_preserved": true
+      },
+      {
+        "address": "004f1360",
+        "name": "BSP_Landscape_IsKindOf",
+        "old_comment_preserved": true
+      },
+      {
+        "address": "004f3730",
+        "name": "BSP_Math_SegmentCrossing2D",
+        "old_comment_preserved": true
+      },
+      {
+        "address": "0071c4f0",
+        "name": "BSP_Game_PointOutsideMapBounds",
+        "old_comment_preserved": true
+      },
+      {
+        "address": "0085c910",
+        "name": "BSP_Math_BoxMeetsSegment2D",
+        "old_comment_preserved": true
+      }
+    ],
+    "flow_repair": "reports/avoid_zone_clearance_flow_repair.json:004158A0 single false free fallthrough repaired;0041D1E0 already clean when queried"
+  },
+  "limits": [
+    "Path/Landscape native creation remains unresolved; runtime is an explicit geometry projection from retained generated records.",
+    "Physics hull tail00424DDF..00425487 remains unresolved; follow-up established it selects existing groups, not new group insertion.",
+    "Unknown named path/parent interfaces are explicit unsupported inputs; no synthetic empty-world fallback.",
+    "No manager/thread publication ABI, native SEH or full game behavior claim.",
+    "Existing detour, containment, and AI search/follower reconstructions retain their documented semantic limitations.",
+    "Engage/sector interfaces and unrelated AI contracts remain unresolved.",
+    "Build and fixture evidence are not gameplay validation."
+  ]
+}

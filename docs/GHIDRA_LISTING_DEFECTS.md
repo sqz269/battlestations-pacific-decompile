@@ -64,3 +64,15 @@ Run again from the Script Manager after the `00643c1c..00643c68` row was added: 
   `00643c68` all resolve to the function); `tools/ghidra_flow_repair.py 006435d0` reports 565
   instructions, 0 gaps. The other four rows printed "already repaired" and were left untouched.
   No listing defects remain queued.
+
+## Repair run 5 (2026-09-12, RepairListingDefects.java, Ghidra 12.0.4)
+
+- `0081f56c..0081f8ad`: repaired. `BSP_UnitVehicleBase_Destruct` now owns `0081f3a0 - 0081f8ad`
+  (392 instructions, 0 flow gaps), so the level-5 release steps 11 to 23 of
+  docs/UNIT_DESTRUCTOR_LEVELS.md are inside the stored body.
+- `0077e442..0077e490`: repaired. `BSP_UnitOwnerEntity_Destruct` owns `0077e380 - 0077e490`
+  (67 instructions, 0 gaps).
+- `004dd123..004dd5a6`: repaired. `CG_vector_deleting_dtor_004dcf90`, the game destructor, owns
+  `004dcf90 - 004dd5a6` (464 instructions, 0 gaps), the tail docs/GAMEPLAY_LOOSE_ENDS_1.md found.
+- The five earlier rows printed "already repaired" and were left untouched. No listing defects
+  remain queued.

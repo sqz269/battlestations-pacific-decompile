@@ -374,3 +374,18 @@ ABI-compatible and not game-validated.
   `docs/DIRECTOR_TARGET_GATE.md`.
 - Whether the three orphan accessor clusters are dead in the shipped build only, or were dead in
   every configuration. Nothing in a shipped image can answer that.
+
+## Correction from docs/GAMEPLAY_LOOSE_ENDS_2.md (packet cc2_gameplay_loose_ends_2)
+
+- **Was:** open question: the twenty D01502F9h sentinels at +1D0h-+21Fh. Nothing in this packet reads them
+  **Is:** nothing in the image reads them; the bit pattern is the float -1.0e10
+  **Evidence:** the immediate 0D01502F9h decodes to exactly one instruction image-wide, 0072032E MOV EAX,0D01502F9h, and the only other raw occurrence (00CE4ADC) sits inside a string blob; every 1D0h-21Fh access in 00700000-00730000 belongs to a gun class or to the fill
+- **Was:** open question: whether the shared vector at 00F87574-7Ch is a plain zero; with 262 references it was not chased
+  **Is:** it is the zero vector for the whole run
+  **Evidence:** .data rawptr 00A08000 rawsize 10000h backs only 00E08000-00E18000 so 00F87574 is in the zero-filled tail; scanning .text for the three absolute addresses gives 520, 516 and 520 decoded operand references and not one store of any form (no MOVSS/MOVUPS/FSTP/MOV to those addresses)
+- **Was:** open question: the fourth vtable holding 0071F290 at 00D0BDA4
+  **Is:** 00D0BDA4 is slot +0Ch of 00D0BD98, the table FUN_0084D810 installs on the class that also owns 0084E010 at +7Ch
+  **Evidence:** 0084D849 MOV dword ptr [ESI],0D0BD98h; the code-pointer run from 00D0BD98 puts 0071F290 at +0Ch and 0084E010 at +7Ch
+- **Was:** open question: 008637D0, the per-weapon availability test 009F1BC0 ANDs with aaEnabled
+  **Is:** __thiscall(unit, Entity* target), RET 4: true when any category in the list at 00E0A510 is present on the unit, accepted by [unit+60h]->vtable[4h], and willing to engage the target
+  **Evidence:** 008637D5 and 0086381A bound the loop with CMP ... ,0Ch; 008637F2 CMP byte [EAX+EDI+70h],0; 008637F9-00863802 the vtable[4h] call; 0086380E CALL 008633D0; 00863837 MOV AL,1

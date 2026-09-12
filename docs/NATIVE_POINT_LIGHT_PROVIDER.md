@@ -119,3 +119,7 @@ registration+A4 backlink; supplying the consistent root binding corrected its
 final-head assertion. No implementation behavior was changed to accommodate it.
 The fixture does not execute original bytes or cover dynamic Group aggregation.
 The integrator registers the new source and runs the combined build.
+
+## Correction from docs/ORCH5_MENU_LISTBOX_GROUP_BATCH.md
+
+Group B8F100 dynamic cache misses are now composed with the actual Group owner and B8EBE0 physical attachment aggregation. Either cache bit is a hit; callbacks do not cause mode175 redispatch. Static numeric limits remain. Final-library native/owner evidence is in reports/orch5_menu_listbox_group_batch.json. Complete particle/Text and other child48 providers remain open.
