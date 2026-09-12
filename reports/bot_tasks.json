@@ -1,0 +1,252 @@
+{
+  "packet": "cc2_bot_tasks",
+  "owner": "agent/cc2-bot-tasks",
+  "doc": "docs/BOT_TASKS.md",
+  "sources": [
+    "include/bsp/bot_tasks.hpp",
+    "src/bot_tasks.cpp"
+  ],
+  "headline": "The thirteen bot tasks 0099A170 builds are all aircraft tasks, and none of them issues a unit command. Each factory is an operator_new wrapper around one constructor of a common family: base 0099C6F0 at [0,3F8h) holding the kind id at +300h and the current state pointer at +310h, an approach controller from 009F9CE0 at +3F8h holding the unit, its class block, the pilot control block at unit+9D4h and a speed ratio at +41Ch, then per-class state objects named moveto/follow plus a class-specific attack chain. The per-tick rule is vtable slot +54h: it writes Pilot/<Class>/CruisingAlt and a second altitude into the pilot control block and clamps an attack distance scaled by the speed ratio. Break-off is slot +1Ch: no target, a target marked at +5Dh, or distance past Pilot/<Class>/SafeDist times the speed ratio.",
+  "routines": [
+    {
+      "address": "0099c6f0",
+      "name": "BSP_BotTask_ConstructBase",
+      "abi": "BotTask* __thiscall(ECX = this)(Bot* bot, int kind_id), RET 8",
+      "coverage": "complete: 0099c6f0-0099c8a1",
+      "abi_evidence": "bot from [ESP+20h] at 0099c709 after the three SEH pushes plus PUSH ECX/EBP/ESI/EDI; kind from [ESP+24h] at 0099c730 with the stack restored by the 0099be30 call; RET 8 at 0099c8a1"
+    },
+    {
+      "address": "009f9ce0",
+      "name": "BSP_BotApproach_ConstructSpeedReference",
+      "abi": "void* __thiscall(ECX = this)(Unit* unit, float reference_speed)",
+      "coverage": "complete: caches unit, unit->+538h, unit->+9D4h, unit->+DF4h, the 248h-stride descriptor row, and max(1.0f, classBlock->+188h / reference_speed) at +24h"
+    },
+    {
+      "address": "007b8ad0",
+      "name": "BSP_Unit_HasFollowTarget",
+      "abi": "bool __fastcall(ECX = unit)()",
+      "coverage": "complete: returns unit->+9D8h == 0; three instructions"
+    },
+    {
+      "address": "009a6970",
+      "name": "BSP_BotTask_MakeDepthCharge",
+      "abi": "BotTask* __fastcall(ECX = bot, EDX = target)",
+      "coverage": "complete: 009a6970-009a69d5, operator_new(7BCh) then 009a5240; returns 0 without constructing when the allocation fails"
+    },
+    {
+      "address": "009a5240",
+      "name": "BSP_BotTaskDepthCharge_Construct",
+      "abi": "BotTask* __thiscall(ECX = this)(Bot* bot, Entity* target), RET 8",
+      "coverage": "complete: 009a5240-009a52e4; kind 1, vtables 00D1F738 / 00D1F734 / +4F4h 00D1F730, initial state +508h or +544h"
+    },
+    {
+      "address": "009a1d60",
+      "name": "BSP_BotApproachCloseToShip_Construct",
+      "abi": "void* __thiscall(ECX = this)(Unit* unit, Entity* target), RET 8",
+      "coverage": "complete: 009a1d60-009a1dba; +48h = unit->+9D4h->+398h, +4Ch = speed ratio * 1500.0"
+    },
+    {
+      "address": "009a3390",
+      "name": "BSP_BotApproachDepthCharge_Construct",
+      "abi": "void* __thiscall(ECX = this)(Unit* unit, Entity* target)",
+      "coverage": "partial: the tuning-fed fields +30h..+58h, +74h, +78h and +F0h..+F8h are read; the three tail calls 009a31a0, 009a3300 and 009a3290 are contract: unread"
+    },
+    {
+      "address": "009a6500",
+      "name": "BSP_BotTaskDepthCharge_UpdateCruiseProfile",
+      "abi": "void __fastcall(ECX = this)()",
+      "coverage": "complete: vtable slot +54h; writes Pilot/DepthCharge/CruisingAlt to ctl+394h and AimAltRange/2 to ctl+398h, then clamps this->+43Ch to AttackDist * this->+41Ch"
+    },
+    {
+      "address": "009a65f0",
+      "name": "BSP_BotTaskDepthCharge_ShouldBreakOff",
+      "abi": "int __fastcall(ECX = this)()",
+      "coverage": "complete: vtable slot +1Ch; 1 when the latched target at +48Ch is null or marked at +5Dh, or when the distance reaches Pilot/DepthCharge/SafeDist * this->+41Ch"
+    },
+    {
+      "address": "009a5d80",
+      "name": "BSP_BotTaskDepthCharge_StepResult",
+      "abi": "byte __fastcall(ECX = this)()",
+      "coverage": "complete: vtable slot +50h; 1 while the current state is moveto or follow, otherwise 2 when the byte at +46Eh is set and 0 when it is clear"
+    },
+    {
+      "address": "009a5420",
+      "name": "BSP_BotTaskDepthCharge_IsAttackState",
+      "abi": "int __thiscall(ECX = this)(void* state)",
+      "coverage": "complete: compares state against this+6C4h, +5DCh, +6A0h, +784h, +67Ch, +6E4h and +7A0h, the seven DepthCharge/* states"
+    },
+    {
+      "address": "0099b740",
+      "name": "BSP_BotTask_AbandonIfStale",
+      "abi": "void __fastcall(ECX = task)()",
+      "coverage": "complete: when +2FCh and +2F4h are set and +2F4h equals *(+2FCh + 3D0h), calls vtable slot +38h and 007ed3f0(1) on a true result"
+    },
+    {
+      "address": "0099b660",
+      "name": "BSP_BotTask_UpdateCruiseProfileBase",
+      "abi": "void __fastcall(ECX = this)()",
+      "coverage": "complete: empty body, Ghidra labels it TRIV_body_0099b660"
+    },
+    {
+      "address": "009a3090",
+      "name": "BSP_BotTaskDepthCharge_RegisterStateNames",
+      "abi": "void __fastcall(ECX = approach)()",
+      "coverage": "complete: nine 00411e70 calls naming moveto, follow, done, attackrun, goaway, aim, prepare, leave and turnto"
+    },
+    {
+      "address": "009c8920",
+      "name": "BSP_BotTaskDiveBomb_UpdateCruiseProfile",
+      "abi": "void __fastcall(ECX = this)()",
+      "coverage": "complete for the profile writes: DiveBomb/CruisingAlt to ctl+394h, a randomised BeginAltRange/1 to ctl+398h, [00CE4C04] to ctl+39Ch, then the DiveBomb/AttackDist clamp"
+    },
+    {
+      "address": "009d4a70",
+      "name": "BSP_BotTaskTorpedo_UpdateCruiseProfile",
+      "abi": "void __fastcall(ECX = this)()",
+      "coverage": "complete for the profile writes: Torpedo/CruisingAlt to ctl+394h, the descriptor-row float at *(this->+40Ch) to ctl+398h, [00CE4C04] to ctl+39Ch, then the Torpedo/AttackDist clamp"
+    },
+    {
+      "address": "009a2d60",
+      "name": "BSP_BotTaskCloseToShip_UpdateCruiseProfile",
+      "abi": "void __fastcall(ECX = this)()",
+      "coverage": "complete: CloseToShip/CruisingAlt to ctl+394h and CloseToShip/DropAlt to ctl+398h; no attack-distance clamp and no tail call"
+    },
+    {
+      "address": "009badb0",
+      "name": "BSP_BotTask_MakeStop",
+      "abi": "BotTask* __fastcall(ECX = bot)",
+      "coverage": "complete: 009badb0-009bae09; operator_new(3F8h), 0099c6f0(this, bot, 0Fh), vtable 00D20500; the base class with no derived constructor"
+    }
+  ],
+  "call_sites": [
+    {"address": "009a6991", "native": "00bf681b", "function": "009a6970", "note": "operator_new(7BCh) for the depth-charge task"},
+    {"address": "009a69ad", "native": "009a5240", "function": "009a6970", "note": "the depth-charge constructor, ECX = the allocation"},
+    {"address": "009a5266", "native": "0099c6f0", "function": "009a5240", "note": "base constructor, kind 1 pushed at 009a525d"},
+    {"address": "009a5281", "native": "009a4dc0", "function": "009a5240", "note": "approach constructor on this+3F8h"},
+    {"address": "009a52a7", "native": "007b8ad0", "function": "009a5240", "note": "ECX = [ESI+3FCh], the unit; selects +508h over +544h"},
+    {"address": "009a52cc", "native": "009f9980", "function": "009a5240", "note": "ECX = this+3F8h, argument this"},
+    {"address": "0099c729", "native": "0099be30", "function": "0099c6f0", "note": "ECX = this+4, argument bot->+4 - 310h or 0"},
+    {"address": "0099c765", "native": "00bd2f10", "function": "0099c6f0", "note": "(0.0f, 1.0f) with ECX = 1; the result is negated into +308h"},
+    {"address": "0099c790", "native": "009faad0", "function": "0099c6f0", "note": "ECX = this+314h, argument this"},
+    {"address": "0099c79c", "native": "009fcef0", "function": "0099c6f0", "note": "ECX = this+38Ch, argument this"},
+    {"address": "0099c7ba", "native": "00bd2f10", "function": "0099c6f0", "note": "([00D7A260], 0.0f) with ECX = 0, into +3E8h"},
+    {"address": "0099c829", "native": "009fab60", "function": "0099c6f0", "note": "ECX = this+314h; four descriptor floats +228h, +220h, +224h, +22Ch"},
+    {"address": "009a1d64", "native": "0042e740", "function": "009a1d60", "note": "the game tuning singleton, for +42Ch"},
+    {"address": "009a1d7a", "native": "009f9ce0", "function": "009a1d60", "note": "ECX = this, arguments unit and Pilot/CloseToShip/ReferenceSpeed"},
+    {"address": "009a1d8f", "native": "009a1ca0", "function": "009a1d60", "note": "ECX = this+2Ch, argument target"},
+    {"address": "009badcf", "native": "00bf681b", "function": "009badb0", "note": "operator_new(3F8h), the base size"},
+    {"address": "009badec", "native": "0099c6f0", "function": "009badb0", "note": "kind 0Fh pushed at 009bade7; stop has no derived constructor"},
+    {"address": "009c8c91", "native": "00bf681b", "function": "009c8c70", "note": "operator_new(7E0h), divebomb"},
+    {"address": "009c8cad", "native": "009c7710", "function": "009c8c70", "note": "the divebomb constructor"},
+    {"address": "009b9051", "native": "00bf681b", "function": "009b9030", "note": "operator_new(6F8h), levelbomb"},
+    {"address": "009b906d", "native": "009b7990", "function": "009b9030", "note": "the levelbomb constructor"},
+    {"address": "009aec01", "native": "00bf681b", "function": "009aebe0", "note": "operator_new(74Ch), dropkamikaze"},
+    {"address": "009aec1d", "native": "009adbf0", "function": "009aebe0", "note": "the dropkamikaze constructor"},
+    {"address": "009d4e51", "native": "00bf681b", "function": "009d4e30", "note": "operator_new(7DCh), torpedo"},
+    {"address": "009d4e6d", "native": "009d3050", "function": "009d4e30", "note": "the torpedo constructor"},
+    {"address": "009cd321", "native": "00bf681b", "function": "009cd300", "note": "operator_new(6FCh), strafe"},
+    {"address": "009cd33d", "native": "009cc230", "function": "009cd300", "note": "the strafe constructor"},
+    {"address": "007b7ff1", "native": "00bf681b", "function": "007b7fd0", "note": "operator_new(708h), rocket"},
+    {"address": "007b800d", "native": "007b6a40", "function": "007b7fd0", "note": "the rocket constructor"},
+    {"address": "009af741", "native": "00bf681b", "function": "009af720", "note": "operator_new(6A0h), kamikaze"},
+    {"address": "009af75d", "native": "009aeef0", "function": "009af720", "note": "the kamikaze constructor"},
+    {"address": "009ab5e7", "native": "00bf681b", "function": "009ab570", "note": "operator_new(758h), dogfight"},
+    {"address": "009ab604", "native": "009a9810", "function": "009ab570", "note": "the dogfight constructor"},
+    {"address": "009b41e1", "native": "00bf681b", "function": "009b41c0", "note": "operator_new(670h), land"},
+    {"address": "009b41fd", "native": "009b3240", "function": "009b41c0", "note": "the land constructor"},
+    {"address": "009a2f61", "native": "00bf681b", "function": "009a2f40", "note": "operator_new(554h), closetoship"},
+    {"address": "009a2f7d", "native": "009a2730", "function": "009a2f40", "note": "the closetoship constructor"},
+    {"address": "009ca2ce", "native": "00bf681b", "function": "009ca2b0", "note": "operator_new(564h), retreat"},
+    {"address": "009ca2e9", "native": "009c9d00", "function": "009ca2b0", "note": "the retreat constructor"},
+    {"address": "009c7736", "native": "0099c6f0", "function": "009c7710", "note": "divebomb base, kind 8 at 009c772d"},
+    {"address": "009c7751", "native": "009c73a0", "function": "009c7710", "note": "divebomb approach constructor"},
+    {"address": "009c7777", "native": "007b8ad0", "function": "009c7710", "note": "divebomb initial-state selector"},
+    {"address": "009c779c", "native": "009f9980", "function": "009c7710", "note": "divebomb approach registration"},
+    {"address": "009b79b6", "native": "0099c6f0", "function": "009b7990", "note": "levelbomb base, kind 4 at 009b79ad"},
+    {"address": "009b79d1", "native": "009b75e0", "function": "009b7990", "note": "levelbomb approach constructor"},
+    {"address": "009b79f7", "native": "007b8ad0", "function": "009b7990", "note": "levelbomb initial-state selector"},
+    {"address": "009b7a1c", "native": "009f9980", "function": "009b7990", "note": "levelbomb approach registration"},
+    {"address": "009adc16", "native": "0099c6f0", "function": "009adbf0", "note": "dropkamikaze base, kind 5 at 009adc0d"},
+    {"address": "009adc31", "native": "009ad720", "function": "009adbf0", "note": "dropkamikaze approach constructor"},
+    {"address": "009adc57", "native": "007b8ad0", "function": "009adbf0", "note": "dropkamikaze initial-state selector"},
+    {"address": "009adc7c", "native": "009f9980", "function": "009adbf0", "note": "dropkamikaze approach registration"},
+    {"address": "009d3076", "native": "0099c6f0", "function": "009d3050", "note": "torpedo base, kind 0Eh at 009d306d"},
+    {"address": "009d3091", "native": "009d2da0", "function": "009d3050", "note": "torpedo approach constructor"},
+    {"address": "009d30b7", "native": "007b8ad0", "function": "009d3050", "note": "torpedo initial-state selector"},
+    {"address": "009d30dc", "native": "009f9980", "function": "009d3050", "note": "torpedo approach registration"},
+    {"address": "009cc256", "native": "0099c6f0", "function": "009cc230", "note": "strafe base, kind 0Ah at 009cc24d"},
+    {"address": "009cc271", "native": "009cc020", "function": "009cc230", "note": "strafe approach constructor"},
+    {"address": "009cc297", "native": "007b8ad0", "function": "009cc230", "note": "strafe initial-state selector"},
+    {"address": "009cc2bc", "native": "009f9980", "function": "009cc230", "note": "strafe approach registration"},
+    {"address": "007b6a66", "native": "0099c6f0", "function": "007b6a40", "note": "rocket base, kind 0Bh at 007b6a5d"},
+    {"address": "007b6a81", "native": "007b6830", "function": "007b6a40", "note": "rocket approach constructor"},
+    {"address": "007b6aa7", "native": "007b8ad0", "function": "007b6a40", "note": "rocket initial-state selector"},
+    {"address": "007b6acc", "native": "009f9980", "function": "007b6a40", "note": "rocket approach registration"},
+    {"address": "009aef16", "native": "0099c6f0", "function": "009aeef0", "note": "kamikaze base, kind 0Ch at 009aef0d"},
+    {"address": "009aef31", "native": "009aed20", "function": "009aeef0", "note": "kamikaze approach constructor"},
+    {"address": "009aef57", "native": "007b8ad0", "function": "009aeef0", "note": "kamikaze initial-state selector"},
+    {"address": "009aef8f", "native": "009f9980", "function": "009aeef0", "note": "kamikaze approach registration"},
+    {"address": "009a9836", "native": "0099c6f0", "function": "009a9810", "note": "dogfight base, kind 2 at 009a982d"},
+    {"address": "009a9851", "native": "009a94e0", "function": "009a9810", "note": "dogfight approach constructor"},
+    {"address": "009a9874", "native": "009f9980", "function": "009a9810", "note": "dogfight registers before selecting its state, unlike the other eleven"},
+    {"address": "009a987f", "native": "007b8ad0", "function": "009a9810", "note": "dogfight initial-state selector"},
+    {"address": "009b3265", "native": "0099c6f0", "function": "009b3240", "note": "land base, kind 3 at 009b325c"},
+    {"address": "009b3283", "native": "009b2e50", "function": "009b3240", "note": "land approach constructor"},
+    {"address": "009b32c8", "native": "007b8ad0", "function": "009b3240", "note": "land initial-state selector"},
+    {"address": "009b32ed", "native": "009f9980", "function": "009b3240", "note": "land approach registration"},
+    {"address": "009a2755", "native": "0099c6f0", "function": "009a2730", "note": "closetoship base, kind 0 at 009a274c"},
+    {"address": "009a2773", "native": "009a2500", "function": "009a2730", "note": "closetoship approach constructor"},
+    {"address": "009a27a9", "native": "007b8ad0", "function": "009a2730", "note": "closetoship initial-state selector"},
+    {"address": "009a27ce", "native": "009f9980", "function": "009a2730", "note": "closetoship approach registration"},
+    {"address": "009c9d26", "native": "0099c6f0", "function": "009c9d00", "note": "retreat base, kind 9 at 009c9d1d"},
+    {"address": "009c9d3c", "native": "009c9bb0", "function": "009c9d00", "note": "retreat approach constructor"},
+    {"address": "009c9d7e", "native": "00bd2f10", "function": "009c9d00", "note": "retreat is the only constructor with its own 00bd2f10 call"},
+    {"address": "009c9d91", "native": "007b8ad0", "function": "009c9d00", "note": "retreat initial-state selector"},
+    {"address": "009c9db6", "native": "009f9980", "function": "009c9d00", "note": "retreat approach registration"},
+    {"address": "009a6506", "native": "0099b660", "function": "009a6500", "note": "depthcharge slot +54h calls the empty base first"},
+    {"address": "007b7af3", "native": "0099b660", "function": "007b7af0", "note": "rocket slot +54h"},
+    {"address": "009a2d63", "native": "0099b660", "function": "009a2d60", "note": "closetoship slot +54h"},
+    {"address": "009aaf33", "native": "0099b660", "function": "009aaf30", "note": "dogfight slot +54h"},
+    {"address": "009af484", "native": "0099b660", "function": "009af480", "note": "kamikaze slot +54h"},
+    {"address": "009b3c63", "native": "0099b660", "function": "009b3c60", "note": "land slot +54h"},
+    {"address": "009b8c96", "native": "0099b660", "function": "009b8c90", "note": "levelbomb slot +54h"},
+    {"address": "009c8926", "native": "0099b660", "function": "009c8920", "note": "divebomb slot +54h"},
+    {"address": "009cd023", "native": "0099b660", "function": "009cd020", "note": "strafe slot +54h"},
+    {"address": "009d4a77", "native": "0099b660", "function": "009d4a70", "note": "torpedo slot +54h"}
+  ],
+  "indirect_sites": [
+    {"address": "009a52c7", "native": "009a5240+vtable04", "note": "state->vtable[4](), entering the initial state; the target depends on which state object the ctor picked"},
+    {"address": "0099b740+vtable38", "native": "indirect", "note": "task->vtable[38h]() inside 0099b740, gated on +2F4h == *(+2FCh + 3D0h)"}
+  ],
+  "raw_data": [
+    {"range": "00d05708-00d0576f", "what": "the base bot-task vtable, 26 slots; bounded by the string \"not defined\" at 00d05770", "method": "ghidra bytes"},
+    {"range": "00d1f730-00d1f79f", "what": "the depth-charge vtable group: a one-slot table at 00d1f730, a one-slot table at 00d1f734 and the 26-slot primary at 00d1f738; bounded by the string \"dogfight/avoid_turn\" at 00d1f7a0", "method": "ghidra bytes"},
+    {"range": "00d20500-00d20567", "what": "the stop task's 26-slot primary vtable", "method": "ghidra bytes"},
+    {"range": "00d7a24c-00d7a24f", "what": "1.0f, the speed-ratio floor and the base task's +304h", "method": "ghidra bytes"},
+    {"range": "00d7a260-00d7a263", "what": "-1.0f, the base task's +3ECh and the approach controller's +420h", "method": "ghidra bytes"},
+    {"range": "00cf00f8-00cf00ff", "what": "1500.0 as a double, the close-to-ship +4Ch multiplier", "method": "ghidra bytes"},
+    {"range": "00ce3d78-00ce3d7f", "what": "1.5 as a double, the depth-charge +44h/+48h multiplier", "method": "ghidra bytes"}
+  ],
+  "no_ghidra_function": [
+    {"address": "009a5d50", "what": "depth-charge vtable slot +4Ch; the enclosing Ghidra candidate is 009a5d00", "read": false},
+    {"address": "009a5f10", "what": "depth-charge vtable slot +0Ch; the enclosing Ghidra candidate is 009a5e60", "read": false},
+    {"address": "009a54b0", "what": "depth-charge vtable slots +48h, +2Ch, +10h, +14h, +3Ch and +5Ch all fall in the six-byte getter block at 009a54b0-009a5500", "read": false}
+  ],
+  "negative_results": [
+    {"claim": "no bot task class calls 0077d600 BSP_Entity_IssueCommand", "evidence": "the full 47-entry caller list of 0077d600 contains no address in the task class bodies; the callers are scene-load, entity-order, menu, lobby and Lua-binding routines"},
+    {"claim": "no bot task class calls 00835860 BSP_WeaponDirector_SetFireTarget", "evidence": "its eight callers are 004643a0, 00744a90, 00816e30, 008358d0, 00835c70, 008438b0, 0089a8b0 and 009f5da0"},
+    {"claim": "008358d0 BSP_WeaponDirector_SetCommand has no callers at all in the call graph", "evidence": "python tools/bsp.py callers 008358d0 returns zero rows"},
+    {"claim": "all thirteen tasks are aircraft tasks", "evidence": "every tuning constant they read is under the Pilot/ prefix of docs/GAME_TUNING_SINGLETON.md; each constructor builds moveto and follow states; the only non-task caller of the shared tail 0099b740 is 009998a0 BSP_PilotBot_Update"}
+  ],
+  "unread": [
+    "every state object's own body, including the aim, attackrun and release states where ordnance is released",
+    "the motion controller behind unit+9D4h, its fields +37Ch, +380h, +384h, +38Ch, +38Dh, +38Eh, +394h, +398h, +39Ch, +3A9h, +3AAh, +3ABh and +3ADh",
+    "009998a0 BSP_PilotBot_Update (a peer's contract)",
+    "00bd2f10, the shared two-float helper every approach range passes through",
+    "0099be30, 009faad0, 009fcef0, 009f9980, 009a1ca0, 009fab60, 007c47f0",
+    "the nine non-attack task classes that also derive from 0099c6f0: 009bacb0, 009bad30, 009bafc0, 009bb640, 009bb910, 009bbad0, 009bce50, 009c3000, 009cf8e0",
+    "land's state-name registrar; 009ab490 and 009ab500 before dogfight's allocation; 009ab920, which picks kamikaze's RocketLike or FighterLike profile",
+    "nineteen of the twenty-six interface slots",
+    "the consumer of the three-value return of slot +50h"
+  ]
+}
