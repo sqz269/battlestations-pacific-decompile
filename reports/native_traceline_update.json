@@ -1,0 +1,441 @@
+{
+  "packet": "orch3_traceline_update_as",
+  "status": "three_complete_core_bodies_strict_compiled_and_original_byte_differential_passed; render_analysis_only",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "bridge": 8089,
+  "read_only_ghidra": true,
+  "functions": [
+    {
+      "address": "00af22b0",
+      "end_inclusive": "00af2620",
+      "end_exclusive": "00af2621",
+      "native_byte_count": 881,
+      "native_sha256": "410e53e42c024a91f8a6fb44ec4d30fe3c8bb5ae6ea4834ea9f3bb8b2c1c528d",
+      "cpp_symbol": "append_native_traceline_point_00af22b0",
+      "ghidra_name": "BSP_NativeTraceline_AppendPoint",
+      "previous_ghidra_name": "FUN_00af22b0",
+      "original_abi": "ECX actual node, EDX actual point; stack interval, RET4 at AF2360/AF261E length3. Source adds second stack access, RET8; incidental EAX not claimed.",
+      "native_calling_convention": "__fastcall",
+      "source": "src/native_traceline_update.cpp",
+      "header": "include/bsp/native_traceline_update.hpp",
+      "coverage": "complete native body through existing real dependencies; full original-byte differential; new source ABI; not game-validated",
+      "evidence": "Full listing and installed-byte CFG, all direct callers, producer-established native storage, cleanup instructions, x87 register/spill ordering and mutable image constants reviewed. No Ghidra mutation in worker."
+    },
+    {
+      "address": "00af2630",
+      "end_inclusive": "00af2643",
+      "end_exclusive": "00af2644",
+      "native_byte_count": 20,
+      "native_sha256": "a1364a1189411d3aef1cb64346912c90457fb14c5f5134c736004a6175378dd9",
+      "cpp_symbol": "set_native_traceline_point_00af2630",
+      "ghidra_name": "BSP_NativeTraceline_SetPoint",
+      "previous_ghidra_name": "FUN_00af2630",
+      "original_abi": "ECX actual node; stack point,interval; RET8 at AF2641 length3. Source adds EDX access; incidental EAX not claimed.",
+      "native_calling_convention": "__thiscall",
+      "source": "src/native_traceline_update.cpp",
+      "header": "include/bsp/native_traceline_update.hpp",
+      "coverage": "complete native body through existing real dependencies; full original-byte differential; new source ABI; not game-validated",
+      "evidence": "Full listing and installed-byte CFG, all direct callers, producer-established native storage, cleanup instructions, x87 register/spill ordering and mutable image constants reviewed. No Ghidra mutation in worker."
+    },
+    {
+      "address": "00b0a110",
+      "end_inclusive": "00b0a3eb",
+      "end_exclusive": "00b0a3ec",
+      "native_byte_count": 732,
+      "native_sha256": "fa4abce2e06c85a0ed68721bd9406060d61b458b06966cf083b1a9d0ac1a80f5",
+      "cpp_symbol": "update_native_particle_tracer_00b0a110",
+      "ghidra_name": "BSP_NativeParticleTracer_Update",
+      "previous_ghidra_name": "FUN_00b0a110",
+      "original_abi": "ECX actual definition; stack state,age,word,matrix,delta; RET14 at B0A3E9 length3; EAX1. Source adds EDX access; word and delta unread.",
+      "native_calling_convention": "__thiscall",
+      "source": "src/native_traceline_update.cpp",
+      "header": "include/bsp/native_traceline_update.hpp",
+      "coverage": "complete native body through existing real dependencies; full original-byte differential; new source ABI; not game-validated",
+      "evidence": "Full listing and installed-byte CFG, all direct callers, producer-established native storage, cleanup instructions, x87 register/spill ordering and mutable image constants reviewed. No Ghidra mutation in worker."
+    }
+  ],
+  "analyzed_functions": [
+    {
+      "address": "00af26a0",
+      "end_inclusive": "00af3168",
+      "last_instruction_address": "00af3166",
+      "last_instruction_length": 3,
+      "end_exclusive": "00af3169",
+      "native_byte_count": 2761,
+      "native_sha256": "d187331f1e2a85d88ddc9a3a9d6d84021545202dde8c0a5c6459d8b7bd10285d",
+      "no_ghidra_function": true,
+      "coverage": "analysis_only: complete AF26A0..AF3168 has no source implementation in this packet",
+      "original_abi": "ECX actual node; stack render_context,float,float,flags; RET10 at AF3166, length3; EAX incidental",
+      "meaning": "D0C928+20 mesh fill and render submission, not segment aging",
+      "free_gaps": [],
+      "padding_after": "AF3169..AF316F CC before AF3170",
+      "unresolved": "canonical current bounds/culling, stream map/unmap and B748E0 draw bindings; root must define Ghidra function before validating its call rows"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00af2403",
+      "native": "00419440",
+      "function": "00af22b0"
+    },
+    {
+      "address": "00af2437",
+      "native": "00bf7420",
+      "function": "00af22b0"
+    },
+    {
+      "address": "00af263c",
+      "native": "00af22b0",
+      "function": "00af2630"
+    },
+    {
+      "address": "00b0a159",
+      "native": "00affd20",
+      "function": "00b0a110"
+    },
+    {
+      "address": "00b0a160",
+      "native": "00affcb0",
+      "function": "00b0a110"
+    },
+    {
+      "address": "00b0a1d3",
+      "native": "00affd20",
+      "function": "00b0a110"
+    },
+    {
+      "address": "00b0a1da",
+      "native": "00affcb0",
+      "function": "00b0a110"
+    },
+    {
+      "address": "00b0a2b2",
+      "native": "00affd20",
+      "function": "00b0a110"
+    },
+    {
+      "address": "00b0a2b9",
+      "native": "00affcb0",
+      "function": "00b0a110"
+    },
+    {
+      "address": "00b0a33c",
+      "native": "00affd20",
+      "function": "00b0a110"
+    },
+    {
+      "address": "00b0a343",
+      "native": "00affcb0",
+      "function": "00b0a110"
+    },
+    {
+      "address": "00b0a3c1",
+      "native": "01090ab0+vtable1c",
+      "function": "00b0a110"
+    },
+    {
+      "address": "00b0a3da",
+      "native": "00af2630",
+      "function": "00b0a110"
+    }
+  ],
+  "analyzed_render_call_sites": [
+    {
+      "address": "00af26d0",
+      "native": "01090ab0+vtable14",
+      "function": "00af26a0"
+    },
+    {
+      "address": "00af26f3",
+      "native": "00d0c928+vtable48",
+      "function": "00af26a0"
+    },
+    {
+      "address": "00af26f8",
+      "native": "00b71530",
+      "function": "00af26a0"
+    },
+    {
+      "address": "00af270c",
+      "native": "00b74640",
+      "function": "00af26a0"
+    },
+    {
+      "address": "00af2719",
+      "native": "00b73260",
+      "function": "00af26a0"
+    },
+    {
+      "address": "00af2769",
+      "native": "stream+vtable10",
+      "function": "00af26a0"
+    },
+    {
+      "address": "00af2ade",
+      "native": "00af1c20",
+      "function": "00af26a0"
+    },
+    {
+      "address": "00af2b29",
+      "native": "00af1c20",
+      "function": "00af26a0"
+    },
+    {
+      "address": "00af2b83",
+      "native": "00419510",
+      "function": "00af26a0"
+    },
+    {
+      "address": "00af2bad",
+      "native": "00af1c20",
+      "function": "00af26a0"
+    },
+    {
+      "address": "00af2c3c",
+      "native": "00af1c20",
+      "function": "00af26a0"
+    },
+    {
+      "address": "00af2cdd",
+      "native": "00b6db70",
+      "function": "00af26a0"
+    },
+    {
+      "address": "00af2e1b",
+      "native": "00af1c20",
+      "function": "00af26a0"
+    },
+    {
+      "address": "00af2f01",
+      "native": "00af1c20",
+      "function": "00af26a0"
+    },
+    {
+      "address": "00af3104",
+      "native": "00b732c0",
+      "function": "00af26a0"
+    },
+    {
+      "address": "00af312b",
+      "native": "stream+vtable14",
+      "function": "00af26a0"
+    },
+    {
+      "address": "00af3157",
+      "native": "00b748e0",
+      "function": "00af26a0"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "B0A110 decompiler compares state+30 as float",
+      "is": "raw DWORD pointer !=0",
+      "evidence": "B0A118 CMP dword ptr[ESI+30],0; B0A3C9 reloads it into ECX before AF2630"
+    },
+    {
+      "was": "B0A110 exported prototype shows four stack parameters",
+      "is": "five stack words; word and delta unread",
+      "evidence": "B0A3E9 RET14; original caller current28 marshals state,age,word,matrix,delta"
+    },
+    {
+      "was": "AF26A0 presumed per-frame segment updater",
+      "is": "mesh generation and render submission",
+      "evidence": "AF26A0 context+8 camera gate, B74640/B73260, current stream10 map, B732C0 ranges, current stream14 unmap, B748E0 draw"
+    },
+    {
+      "was": "AF22B0 pseudocode extraout_ST0 and reassociated expressions",
+      "is": "live x87 distance below normalized direction, scalar, and interpolation values; exact float/double spills",
+      "evidence": "whole AF22B0 listing and138 original-byte cases including both BF7420 modes"
+    }
+  ],
+  "control_flow": [
+    {
+      "start": "00af22b0",
+      "end_inclusive": "00af2620",
+      "reachable_instructions": 238,
+      "all_instructions_reachable": true,
+      "all_branch_targets_inside": true,
+      "indirect_jumps": 0,
+      "free_gaps": [],
+      "return_depth_balanced": true
+    },
+    {
+      "start": "00b0a110",
+      "end_inclusive": "00b0a3eb",
+      "reachable_instructions": 233,
+      "all_instructions_reachable": true,
+      "all_branch_targets_inside": true,
+      "indirect_jumps": 0,
+      "free_gaps": [],
+      "return_depth_balanced": true
+    },
+    {
+      "start": "00af26a0",
+      "end_inclusive": "00af3168",
+      "reachable_instructions": 641,
+      "all_instructions_reachable": true,
+      "all_branch_targets_inside": true,
+      "indirect_jumps": 0,
+      "free_gaps": [],
+      "return_depth_balanced": true
+    }
+  ],
+  "storage_producers": [
+    {
+      "producer": "00af3440",
+      "sites": [
+        "00af348a",
+        "00af34ab",
+        "00af34bc",
+        "00af34cd",
+        "00af34d3",
+        "00af34d9"
+      ],
+      "facts": "node184 actual payload; payload20 times14h actual rows; node188 pointer; count190/head18C zero"
+    },
+    {
+      "producer": "00858260",
+      "facts": "same prepared model base companion, real1BCh derived slot, flags194/195 cleared"
+    },
+    {
+      "producer": "00b0b6a0",
+      "facts": "actual6Ch state and80h payload producers; source consumes existing canonical particle parameter owners"
+    }
+  ],
+  "verification": {
+    "strict_compile": "passed MSVC Win32 /MD /W4 /WX /O2 /fp:strict",
+    "fixture": "138 passed, three complete core bodies, all raw mutations/EAX1/x87SW-CW/MXCSR equal; no permanent test files",
+    "fixture_shared_boundary": "Only established BF7030 sqrt service is shared by native and source. Native caller/curve/vector-length/BF7420..BF74CB bytes execute; concrete source clock compared with original BEE070 timestamp getter. Arbitrary clock overrides/exception handlers not validated.",
+    "repository_build": "scripts/build.ps1 passed; both existing CTests passed. New source strict-compiled separately; root owns its CMake registration. Probe replay passed linked to current root libraries with public integral wrappers, without extra parameter-loading source object.",
+    "report_calls": "worker verifier: 12 direct core rows passed, clock indirect skipped; 13 analyzed render direct rows fail only because AF26A0 has no Ghidra function; four render indirect rows skipped. Root defines AF26A0 after lease transfer and reruns.",
+    "probe_path": "C:\\Users\\sqz269\\bsp-as-traceline-update\\probe.cpp",
+    "probe_build": "C:\\Users\\sqz269\\bsp-as-traceline-update\\build.ps1",
+    "probe_log": "C:\\Users\\sqz269\\bsp-as-traceline-update\\probe.log",
+    "manifest": "/link /MANIFEST:EMBED; no SAFESEH override",
+    "game_validated": false
+  },
+  "native_evidence": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "bridge": 8089,
+    "relocation_directory_size": 0,
+    "spans": [
+      {
+        "address": "00af22b0",
+        "end_inclusive": "00af2620",
+        "size": 881,
+        "sha256": "410e53e42c024a91f8a6fb44ec4d30fe3c8bb5ae6ea4834ea9f3bb8b2c1c528d",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00af2630",
+        "end_inclusive": "00af2643",
+        "size": 20,
+        "sha256": "a1364a1189411d3aef1cb64346912c90457fb14c5f5134c736004a6175378dd9",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b0a110",
+        "end_inclusive": "00b0a3eb",
+        "size": 732,
+        "sha256": "fa4abce2e06c85a0ed68721bd9406060d61b458b06966cf083b1a9d0ac1a80f5",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00af26a0",
+        "end_inclusive": "00af3168",
+        "size": 2761,
+        "sha256": "d187331f1e2a85d88ddc9a3a9d6d84021545202dde8c0a5c6459d8b7bd10285d",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00affcb0",
+        "end_inclusive": "00affd19",
+        "size": 106,
+        "sha256": "952e5577aae6abce1f7cee64cf04108164b1468264d2b5ad360cfb234fb659c5",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00affd20",
+        "end_inclusive": "00affd6f",
+        "size": 80,
+        "sha256": "563dfdf31e01e41e72defe0f51338eb39453f100256b3cbae1dd7d17b65196ad",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00419440",
+        "end_inclusive": "004194a1",
+        "size": 98,
+        "sha256": "d5f5657abc11375962f710514119fcfe29745cb7bc22a7a54e7d2586fefe785f",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00bf7420",
+        "end_inclusive": "00bf74cb",
+        "size": 172,
+        "sha256": "72aa0b237c99ff7b906a75855a4c90cd305475d7859f66c64a43a2b20471cd5b",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00bee070",
+        "end_inclusive": "00bee073",
+        "size": 4,
+        "sha256": "9b5251af6794c76b2f519f4601eefe7c7f18622726ef5633ff8713cbcdf488fe",
+        "live_disk_equal": true
+      }
+    ],
+    "data": [
+      {
+        "address": "00d7a208",
+        "size": 4,
+        "bytes": "00000080",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00d7a220",
+        "size": 8,
+        "bytes": "0000000000005940",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00e13028",
+        "size": 12,
+        "bytes": "f304353f00000000f304353f",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00d7a348",
+        "size": 8,
+        "bytes": "000000000000d03f",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00cf1450",
+        "size": 8,
+        "bytes": "000000605555d53f",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00d7a280",
+        "size": 8,
+        "bytes": "000000000000e03f",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00ce4b48",
+        "size": 8,
+        "bytes": "0000000000e06f40",
+        "live_disk_equal": true
+      }
+    ]
+  },
+  "remaining": [
+    "AF26A0 source reconstruction and fixture coverage",
+    "root Ghidra annotations and saves",
+    "current root CMake integration/replay",
+    "game execution/visual validation"
+  ]
+}
