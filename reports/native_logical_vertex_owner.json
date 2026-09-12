@@ -1,0 +1,1197 @@
+{
+  "packet": "orch3_vertex_stream_at",
+  "audited_utc": "2026-09-12T23:40:52.906907+00:00",
+  "base_commit": "e5f2317e",
+  "owned_files": [
+    "include/bsp/native_logical_vertex_owner.hpp",
+    "src/native_logical_vertex_owner.cpp",
+    "docs/NATIVE_LOGICAL_VERTEX_OWNER.md",
+    "reports/native_logical_vertex_owner.json"
+  ],
+  "functions": [
+    {
+      "address": "00b287c0",
+      "cpp": "create_native_registered_vertex_stream_00b287c0",
+      "coverage": "complete",
+      "length": 234,
+      "inclusive_end": "00b288a9",
+      "last_instruction_address": "00b288a7",
+      "last_instruction_length": 3,
+      "old_name": "BSP_Renderer_CreateRegisteredVertexStream",
+      "proposed_name": "BSP_Renderer_CreateRegisteredVertexStream",
+      "native_abi": "ECX renderer; stack count,flags,declaration; EAX same raw stream; RET0Ch"
+    },
+    {
+      "address": "00b4b370",
+      "cpp": "allocate_native_logical_vertex_stream_00b4b370",
+      "coverage": "complete",
+      "length": 10,
+      "inclusive_end": "00b4b379",
+      "last_instruction_address": "00b4b375",
+      "last_instruction_length": 5,
+      "old_name": "BSP_LogicalVertexStream_AllocateCpuSlot",
+      "proposed_name": "BSP_LogicalVertexStream_AllocateCpuSlot",
+      "native_abi": "incoming ECX ignored; EAX slot; tail JMP B4AE80 with ECX actual108FE18 pool"
+    },
+    {
+      "address": "00b4bc00",
+      "cpp": "construct_native_logical_vertex_stream_00b4bc00",
+      "coverage": "complete",
+      "length": 758,
+      "inclusive_end": "00b4bef5",
+      "last_instruction_address": "00b4bef3",
+      "last_instruction_length": 3,
+      "old_name": "BSP_D3D9LogicalVertexStream_Construct",
+      "proposed_name": "BSP_D3D9LogicalVertexStream_Construct",
+      "native_abi": "ECX owner; stack count,declaration,flags; EAX owner; RET0Ch"
+    },
+    {
+      "address": "00b61e20",
+      "cpp": "construct_native_logical_vertex_base_00b61e20",
+      "coverage": "complete",
+      "length": 356,
+      "inclusive_end": "00b61f83",
+      "last_instruction_address": "00b61f81",
+      "last_instruction_length": 3,
+      "old_name": "BSP_LogicalVertexStreamBase_Construct",
+      "proposed_name": "BSP_LogicalVertexStreamBase_Construct",
+      "native_abi": "ECX owner; stack declaration; EAX owner; RET4"
+    },
+    {
+      "address": "00b62010",
+      "cpp": "destroy_native_logical_vertex_base_00b62010",
+      "coverage": "complete",
+      "length": 135,
+      "inclusive_end": "00b62096",
+      "last_instruction_address": "00b62096",
+      "last_instruction_length": 1,
+      "old_name": "FUN_00b62010",
+      "proposed_name": "FUN_00b62010",
+      "native_abi": "ECX owner; RET"
+    },
+    {
+      "address": "00b4b5d0",
+      "cpp": "destroy_native_logical_vertex_stream_00b4b5d0",
+      "coverage": "complete",
+      "length": 280,
+      "inclusive_end": "00b4b6e7",
+      "last_instruction_address": "00b4b6e7",
+      "last_instruction_length": 1,
+      "old_name": "BSP_LogicalVertexStream_Destruct",
+      "proposed_name": "BSP_LogicalVertexStream_Destruct",
+      "native_abi": "ECX owner; RET"
+    },
+    {
+      "address": "00b4bf10",
+      "cpp": "delete_native_logical_vertex_stream_00b4bf10",
+      "coverage": "complete",
+      "length": 32,
+      "inclusive_end": "00b4bf2f",
+      "last_instruction_address": "00b4bf2d",
+      "last_instruction_length": 3,
+      "old_name": "FUN_00b4bf10",
+      "proposed_name": "FUN_00b4bf10",
+      "native_abi": "ECX owner; stack flags; EAX original owner; RET4"
+    },
+    {
+      "address": "00b4ae80",
+      "cpp": "allocate_native_logical_vertex_slot_00b4ae80",
+      "coverage": "complete",
+      "length": 316,
+      "inclusive_end": "00b4afbb",
+      "last_instruction_address": "00b4afbb",
+      "last_instruction_length": 1,
+      "old_name": "BSP_VertexStreamSlabPool_Allocate",
+      "proposed_name": "BSP_VertexStreamSlabPool_Allocate",
+      "native_abi": "ECX pool; EAX slot; RET"
+    },
+    {
+      "address": "00b48eb0",
+      "cpp": "initialize_native_logical_vertex_slab_00b48eb0",
+      "coverage": "complete",
+      "length": 64,
+      "inclusive_end": "00b48eef",
+      "last_instruction_address": "00b48eed",
+      "last_instruction_length": 3,
+      "old_name": "BSP_VertexStreamSlab_Initialize",
+      "proposed_name": "BSP_VertexStreamSlab_Initialize",
+      "native_abi": "ECX slab; stack slab index; EAX slab; RET4"
+    },
+    {
+      "address": "00b4b1e0",
+      "cpp": "register_native_physical_vertex_stream_00b4b1e0",
+      "coverage": "complete",
+      "length": 214,
+      "inclusive_end": "00b4b2b5",
+      "last_instruction_address": "00b4b2b3",
+      "last_instruction_length": 3,
+      "old_name": "BSP_PhysicalBuffer_RegisterLogicalStream",
+      "proposed_name": "BSP_PhysicalBuffer_RegisterLogicalStream",
+      "native_abi": "ECX physical; stack raw stream; RET4"
+    },
+    {
+      "address": "00b22d10",
+      "cpp": "reserve_native_renderer_pointer_array_00b22d10",
+      "coverage": "complete",
+      "length": 95,
+      "inclusive_end": "00b22d6e",
+      "last_instruction_address": "00b22d6c",
+      "last_instruction_length": 3,
+      "old_name": "BSP_PointerArray_Reserve_00b22d10",
+      "proposed_name": "BSP_PointerArray_Reserve_00b22d10",
+      "native_abi": "ECX array; stack signed capacity bits; RET4"
+    },
+    {
+      "address": "00b1fe50",
+      "cpp": "native_renderer_secondary_stream_registration_00b1fe50",
+      "coverage": "complete",
+      "length": 7,
+      "inclusive_end": "00b1fe56",
+      "last_instruction_address": "00b1fe56",
+      "last_instruction_length": 1,
+      "no_ghidra_function": true,
+      "old_name": null,
+      "proposed_name": "BSP_Renderer_GetSecondaryStreamRegistrationByte",
+      "native_abi": "ECX renderer; AL byte+19AC; RET"
+    },
+    {
+      "address": "00b47c90",
+      "cpp": "native_vertex_declaration_has_semantic_00b47c90",
+      "coverage": "complete",
+      "length": 69,
+      "inclusive_end": "00b47cd4",
+      "last_instruction_address": "00b47cd2",
+      "last_instruction_length": 3,
+      "old_name": "BSP_VertexDeclaration_HasSemantic",
+      "proposed_name": "BSP_VertexDeclaration_HasSemantic",
+      "native_abi": "ECX declaration; stack usage,occurrence; AL boolean; RET8"
+    },
+    {
+      "address": "00b47c40",
+      "cpp": "native_vertex_declaration_semantic_offset_00b47c40",
+      "coverage": "complete",
+      "length": 24,
+      "inclusive_end": "00b47c57",
+      "last_instruction_address": "00b47c55",
+      "last_instruction_length": 3,
+      "old_name": "BSP_VertexDeclaration_GetSemanticOffset",
+      "proposed_name": "BSP_VertexDeclaration_GetSemanticOffset",
+      "native_abi": "ECX declaration; stack usage,occurrence; EAX raw offset; RET8"
+    },
+    {
+      "address": "00b47ce0",
+      "cpp": "native_vertex_declaration_find_semantic_00b47ce0",
+      "coverage": "complete",
+      "length": 62,
+      "inclusive_end": "00b47d1d",
+      "last_instruction_address": "00b47d1b",
+      "last_instruction_length": 3,
+      "old_name": "BSP_VertexDeclaration_FindSemantic",
+      "proposed_name": "BSP_VertexDeclaration_FindSemantic",
+      "native_abi": "ECX declaration; stack usage,occurrence; EAX index or FFFFFFFF; RET8"
+    },
+    {
+      "address": "00b47c20",
+      "cpp": "native_vertex_declaration_semantic_type_00b47c20",
+      "coverage": "complete",
+      "length": 25,
+      "inclusive_end": "00b47c38",
+      "last_instruction_address": "00b47c36",
+      "last_instruction_length": 3,
+      "old_name": "BSP_VertexDeclaration_GetSemanticType",
+      "proposed_name": "BSP_VertexDeclaration_GetSemanticType",
+      "native_abi": "ECX declaration; stack usage,occurrence; EAX raw type; RET8"
+    },
+    {
+      "address": "00b47c60",
+      "cpp": "native_vertex_declaration_semantic_size_00b47c60",
+      "coverage": "complete",
+      "length": 32,
+      "inclusive_end": "00b47c7f",
+      "last_instruction_address": "00b47c7d",
+      "last_instruction_length": 3,
+      "old_name": "BSP_VertexDeclaration_GetSemanticSize",
+      "proposed_name": "BSP_VertexDeclaration_GetSemanticSize",
+      "native_abi": "ECX declaration; stack usage,occurrence; EAX raw size; RET8"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b287e0",
+      "native": "00b4b370",
+      "function": "00b287c0",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b28804",
+      "native": "00b4bc00",
+      "function": "00b287c0",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b28836",
+      "native": "00b22d10",
+      "function": "00b287c0",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b28854",
+      "native": "00d5f0a8+58",
+      "function": "00b287c0",
+      "kind": "call",
+      "contract": "current renderer profile; B1FE50, seven-byte no-function leaf"
+    },
+    {
+      "address": "00b2887d",
+      "native": "00b22d10",
+      "function": "00b287c0",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b4b375",
+      "native": "00b4ae80",
+      "function": "00b4b370",
+      "kind": "tail_jump",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b4bc25",
+      "native": "00b61e20",
+      "function": "00b4bc00",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b4bc55",
+      "native": "00b33ad0",
+      "function": "00b4bc00",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b4bd39",
+      "native": "00b1feb0",
+      "function": "00b4bc00",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b4bd45",
+      "native": "Win32!InterlockedIncrement",
+      "function": "00b4bc00",
+      "kind": "call",
+      "contract": "actual Win32 operation; original import cell retained in pinned body"
+    },
+    {
+      "address": "00b4bd58",
+      "native": "Win32!EnterCriticalSection",
+      "function": "00b4bc00",
+      "kind": "call",
+      "contract": "actual Win32 operation; original import cell retained in pinned body"
+    },
+    {
+      "address": "00b4bd66",
+      "native": "00b4b1e0",
+      "function": "00b4bc00",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b4bd7c",
+      "native": "Win32!LeaveCriticalSection",
+      "function": "00b4bc00",
+      "kind": "call",
+      "contract": "actual Win32 operation; original import cell retained in pinned body"
+    },
+    {
+      "address": "00b4bd96",
+      "native": "00b1fef0",
+      "function": "00b4bc00",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b4bdbf",
+      "native": "IDirect3DDevice9+68",
+      "function": "00b4bc00",
+      "kind": "call",
+      "contract": "real CreateVertexBuffer stdcall, seven DWORD arguments including this"
+    },
+    {
+      "address": "00b4bddf",
+      "native": "00b29670",
+      "function": "00b4bc00",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b4bdea",
+      "native": "00b1fef0",
+      "function": "00b4bc00",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b4be12",
+      "native": "IDirect3DDevice9+68",
+      "function": "00b4bc00",
+      "kind": "call",
+      "contract": "real CreateVertexBuffer retry, same escaped output cell"
+    },
+    {
+      "address": "00b4be16",
+      "native": "00bf681b",
+      "function": "00b4bc00",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b4be76",
+      "native": "00d61e34+14",
+      "function": "00b4bc00",
+      "kind": "call",
+      "contract": "current physical Attach; established B4C370"
+    },
+    {
+      "address": "00b4be82",
+      "native": "IUnknown+08",
+      "function": "00b4bc00",
+      "kind": "call",
+      "contract": "current temporary COM Release, unconditional"
+    },
+    {
+      "address": "00b4bea4",
+      "native": "Win32!InterlockedIncrement",
+      "function": "00b4bc00",
+      "kind": "call",
+      "contract": "actual Win32 operation; original import cell retained in pinned body"
+    },
+    {
+      "address": "00b4beb2",
+      "native": "Win32!InterlockedDecrement",
+      "function": "00b4bc00",
+      "kind": "call",
+      "contract": "actual Win32 operation; original import cell retained in pinned body"
+    },
+    {
+      "address": "00b4bec2",
+      "native": "actual_declaration+vtable00",
+      "function": "00b4bc00",
+      "kind": "call",
+      "contract": "captured previous actual+04 reached zero; canonical current terminal"
+    },
+    {
+      "address": "00b4bedc",
+      "native": "00b33b00",
+      "function": "00b4bc00",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b61ead",
+      "native": "00b47c90",
+      "function": "00b61e20",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b61eba",
+      "native": "00b47c40",
+      "function": "00b61e20",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b61ec6",
+      "native": "00b47ce0",
+      "function": "00b61e20",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b61ed2",
+      "native": "00b47c20",
+      "function": "00b61e20",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b61edf",
+      "native": "00b47c90",
+      "function": "00b61e20",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b61eed",
+      "native": "00b47c40",
+      "function": "00b61e20",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b61efa",
+      "native": "00b47ce0",
+      "function": "00b61e20",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b61f07",
+      "native": "00b47c20",
+      "function": "00b61e20",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b61f14",
+      "native": "00b47c90",
+      "function": "00b61e20",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b61f22",
+      "native": "00b47c40",
+      "function": "00b61e20",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b61f2f",
+      "native": "00b47ce0",
+      "function": "00b61e20",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b61f3c",
+      "native": "00b47c20",
+      "function": "00b61e20",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b61f49",
+      "native": "00b47c90",
+      "function": "00b61e20",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b61f57",
+      "native": "00b47c60",
+      "function": "00b61e20",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b61f66",
+      "native": "00b47c40",
+      "function": "00b61e20",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b62047",
+      "native": "Win32!InterlockedDecrement",
+      "function": "00b62010",
+      "kind": "call",
+      "contract": "actual Win32 operation; original import cell retained in pinned body"
+    },
+    {
+      "address": "00b62057",
+      "native": "actual_retained_4c+vtable00",
+      "function": "00b62010",
+      "kind": "call",
+      "contract": "captured unresolved runtime identity actual+04 reached zero; required canonical current terminal"
+    },
+    {
+      "address": "00b62068",
+      "native": "00bf65ac",
+      "function": "00b62010",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b62081",
+      "native": "00bd30f0",
+      "function": "00b62010",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b4b610",
+      "native": "00b33ad0",
+      "function": "00b4b5d0",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b4b63b",
+      "native": "Win32!EnterCriticalSection",
+      "function": "00b4b5d0",
+      "kind": "call",
+      "contract": "actual Win32 operation; original import cell retained in pinned body"
+    },
+    {
+      "address": "00b4b649",
+      "native": "00b4b3f0",
+      "function": "00b4b5d0",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b4b660",
+      "native": "Win32!LeaveCriticalSection",
+      "function": "00b4b5d0",
+      "kind": "call",
+      "contract": "actual Win32 operation; original import cell retained in pinned body"
+    },
+    {
+      "address": "00b4b676",
+      "native": "00b268e0",
+      "function": "00b4b5d0",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b4b688",
+      "native": "Win32!InterlockedDecrement",
+      "function": "00b4b5d0",
+      "kind": "call",
+      "contract": "captured original decrement import reused for declaration and physical"
+    },
+    {
+      "address": "00b4b694",
+      "native": "actual_declaration+vtable00",
+      "function": "00b4b5d0",
+      "kind": "call",
+      "contract": "captured current declaration actual+04 reached zero; canonical current terminal"
+    },
+    {
+      "address": "00b4b69d",
+      "native": "Win32!InterlockedDecrement",
+      "function": "00b4b5d0",
+      "kind": "call",
+      "contract": "same captured decrement import, current physical+04"
+    },
+    {
+      "address": "00b4b6aa",
+      "native": "actual_physical+vtable00",
+      "function": "00b4b5d0",
+      "kind": "call",
+      "contract": "current D61E34/D61E7C BD30E0 and private/pooled deleting terminal"
+    },
+    {
+      "address": "00b4b6c4",
+      "native": "00b33b00",
+      "function": "00b4b5d0",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b4b6d3",
+      "native": "00b62010",
+      "function": "00b4b5d0",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b4bf13",
+      "native": "00b4b5d0",
+      "function": "00b4bf10",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b4bf25",
+      "native": "00b49570",
+      "function": "00b4bf10",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b4ae8a",
+      "native": "Win32!EnterCriticalSection",
+      "function": "00b4ae80",
+      "kind": "call",
+      "contract": "actual Win32 operation; original import cell retained in pinned body"
+    },
+    {
+      "address": "00b4aeab",
+      "native": "00bf681b",
+      "function": "00b4ae80",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b4aebd",
+      "native": "00b48eb0",
+      "function": "00b4ae80",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b4aedf",
+      "native": "00bf55be",
+      "function": "00b4ae80",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b4af11",
+      "native": "00bf6989",
+      "function": "00b4ae80",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b4af9b",
+      "native": "Win32!LeaveCriticalSection",
+      "function": "00b4ae80",
+      "kind": "call",
+      "contract": "actual Win32 operation; original import cell retained in pinned body"
+    },
+    {
+      "address": "00b4afaf",
+      "native": "Win32!LeaveCriticalSection",
+      "function": "00b4ae80",
+      "kind": "call",
+      "contract": "actual Win32 operation; original import cell retained in pinned body"
+    },
+    {
+      "address": "00b4b211",
+      "native": "00b33ad0",
+      "function": "00b4b1e0",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b4b26e",
+      "native": "00b496a0",
+      "function": "00b4b1e0",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b4b29e",
+      "native": "00b33b00",
+      "function": "00b4b1e0",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b22d30",
+      "native": "00bf55be",
+      "function": "00b22d10",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    },
+    {
+      "address": "00b22d5c",
+      "native": "00bf6989",
+      "function": "00b22d10",
+      "kind": "call",
+      "contract": "direct body or established provider"
+    }
+  ],
+  "evidence": {
+    "installed_executable": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "project_verified_before_each_read": true,
+    "spans": [
+      {
+        "address": "00b287c0",
+        "length": 234,
+        "kind": "owned",
+        "disk_offset": 7505856,
+        "sha256": "1403a4015028fcf34e9c40de61707a76b03b8fcfc51cd877bcc2413d85725b0b",
+        "hex": "6aff6838d2cb0064a1000000005064892500000000515556578bf9b974000000e88b2b02008944240c33ed3bc5896c241874188b4c24248b542428518b4c242452518bc8e8f73302008be88b87b41a00003987b01a00008db7ac1a0000c7442418ffffffff751403c083f8017f05b801000000508bcee8d5a4ffff8b56048b068d049085c074028928834604018b178b42588bcfffd03c01753a8b87b81900003987b41900008db7b0190000751403c083f8017f05b801000000508bcee88ea4ffff8b4e048b168d048a85c074028928834604018b4c24105f5e8bc55d64890d0000000083c410c20c00",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b4b370",
+        "length": 10,
+        "kind": "owned",
+        "disk_offset": 7648112,
+        "sha256": "63ef3af6d5ba3ec51d458f342eada7ecf539f0d158171b1fbb51b321c0e1eb64",
+        "hex": "b918fe0801e906fbffff",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b4bc00",
+        "length": 758,
+        "kind": "owned",
+        "disk_offset": 7650304,
+        "sha256": "97ebd5030eed737bb80dc522c2aea2112f98b326dd3b06246b703ff3db62fce9",
+        "hex": "6aff68b0f9cb0064a100000000506489250000000083ec108b44242456578bf15089742410e8f661010033ffc7066c1dd600897e58897e68897e6c897e70803ddcd6080100897c242074138b0d94d3f800894c2414e8767efeff88442410538b5c24348bc383e00f83f803c6442424018bcb772fff2485f8beb400897c240c81c900000100eb1cc744240c01000000eb12c744240c02000000eb08c744240c03000000f6c1107405bf010000008bc125000f00003d000300007722741b3d00010000740f3d00020000752e81cf00400000eb2683cf02eb2183cf40eb1c3d00040000740f3d00050000750e81cf80000000eb0681cf000100008bd181e200f0000081fa00100000750681cf0002000081e100000f0081f900000100750383cf088b0d94d3f8008bc32500f000003d00100000558b6c24307555e87241fdff89465883c00450ff151c22ce008b3d94d3f80081c7f419000057ff151822ce00834718018b4e5856e875f4ffffa194d3f80005f419000083cfff01781850ff151022ce00897e5c8b7c2434e9fd000000c744243000000000e85541fdff8b4c24348b89cc0000008b100fafcd6a008d5c2434538b5c24185333db535751508b4268ffd0395c2430754d3bc374493d7c01768874423d0e000780743b8b0d94d3f800e88cd8fdff8b0d94d3f800e80141fdff8b4c24348b89cc0000008b100fafcd538d5c2434538b5c24185333db535751508b4268ffd06a2ce800aa0a0083c4043bc37430c70030b1ce00c740040100000089580889580c895810c700341ed60089581489581889581c895820895828895824eb0233c08b7c24348b5c24388946588b97cc0000000fafd5528b5424348bc88b008b40145352ffd08b4424308b088b510850ffd2c7465c00000000896e64895e608b5e683bdf5d742b85ff897e68740a83c70457ff151c22ce0085db74168d430450ff152022ce0085c075088b138b028bcbffd0803ddcd6080100c6442424005b740e8b4c2410518b4c2418e81f7cfeff8b4c24185f8bc65e64890d0000000083c41cc20c00",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b61e20",
+        "length": 356,
+        "kind": "owned",
+        "disk_offset": 7740960,
+        "sha256": "65814249bf85c9940a1681dbf7028b3ebbcf7109de5ce21cc2f15003569b9185",
+        "hex": "6aff688814cc0064a10000000050648925000000005153568bf1c70630b1ce00578974240cc7460401000000a1e0fe08018b7c242033db89464883c001a3e0fe080183c8ffc706682bd600895e5089461089461c894628895e18895e24895e3089463489463889463c894640894644895e08895e4c8b87cc00000053538bcf895c242089460cc7465400000040e8de5dfeff84c0742453538bcfe8815dfeff53538bcf894610e8155efeff53538bcf894618e8495dfeff894614536a038bcfe8ac5dfeff84c07427536a038bcfe84e5dfeff536a038bcf89461ce8e15dfeff536a038bcf894624e8145dfeff894620536a058bcfe8775dfeff84c07427536a058bcfe8195dfeff536a058bcf894628e8ac5dfeff536a058bcf894630e8df5cfeff89462c536a0a8bcfe8425dfeff84c0741c536a0a8bcfe8045dfeff83f804750d536a0a8bcfe8d55cfeff8946348b4c24105f8bc65e5b64890d0000000083c410c20400",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b62010",
+        "length": 135,
+        "kind": "owned",
+        "disk_offset": 7741456,
+        "sha256": "f434f05c047d17dad1d47896f8950acd6430e05528c728ddef0a1bd988f4797c",
+        "hex": "6aff68a814cc0064a100000000506489250000000051568bf15789742408c706682bd6008b7e4c85ffc744241400000000741d8d470450ff152022ce0085c075088b178b028bcfffd0c7464c000000008b465085c0741050e83f45090083c404c74650000000008bcec7442414ffffffffe86a1007008b4c240c5f5e64890d0000000083c410c3",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b4b5d0",
+        "length": 280,
+        "kind": "owned",
+        "disk_offset": 7648720,
+        "sha256": "1240e286c7368e760937936a1b902cbb1f53bbe152425f30af656bc6b5a6572e",
+        "hex": "6aff6830f9cb0064a100000000506489250000000083ec0c568bf189742404c7066c1dd600803ddcd6080100c74424180000000074138b0d94d3f800894c240ce8bb84feff88442408578b46602500f000003d00100000c644241c01753a8b3d94d3f80081c7f419000057ff151822ce00834718018b4e5856e8a2fdffffa194d3f80083800c1a0000ff05f419000050ff151022ce00eb068b4e588b51048b0d94d3f8005556e865b2fdff8b7e688b2d2022ce008d470450ffd585c075088b178b028bcfffd08b7e588d4f0451ffd585c05d75088b178b028bcfffd0803ddcd6080100c644241c005f740e8b4c2408518b4c2410e83784feff8bcec7442418ffffffffe8386901008b4c24105e64890d0000000083c418c3",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b4bf10",
+        "length": 32,
+        "kind": "owned",
+        "disk_offset": 7651088,
+        "sha256": "8f865de6cdb18f616b354bde94369b79a4c05961d0a91e15749a62fd889deaa2",
+        "hex": "568bf1e8b8f6fffff644240801740b56b918fe0801e846d6ffff8bc65ec20400",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b4ae80",
+        "length": 316,
+        "kind": "owned",
+        "disk_offset": 7646848,
+        "sha256": "02ad24dfb9a6525749c16ae065febc94d47a0004c1d13b2a35e4ca8ec50d6130",
+        "hex": "5355568bf1578d5e0c53ff151822ce008343180183cdff396e340f85920000008b462c68440f0000894634e86bb90a0083c40485c0740f8b4e34518bc8e8eedfffff8be8eb0233ed8b463039462c754c8d4400028d14850000000052894630e8daa60a008bf833c083c40439462c76198bcf85c974088b56288b1482891183c00183c1043b462c72e98b462885c0740950e873ba0a0083c404897e288b462c8b4e288d048185c07402892883462c0183cdff8b56348b46288b0490668180400f0000ffff0fb788400f00000fb7d10fb79450000f00008bfac1e7042bfa6685c98d3cf875468b463483c0013b462c896e3473388b4e288d0c818da424000000008b116683ba400f000000751c83c00183c1043b462c72e9016b1853ff151022ce008bc75f5e5d5bc3894634016b1853ff151022ce008bc75f5e5d5bc3",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b48eb0",
+        "length": 64,
+        "kind": "owned",
+        "disk_offset": 7638704,
+        "sha256": "78b7056628e42c0e2c1ee98497777a6a854713e054d61961bf2216681dc63460",
+        "hex": "538b5c2408568bc15766c780400f0000200033d28d78748db0000f00008d4900b91f0000002bca66890e891f83c20183c60283c77883fa207ce65f5e5bc20400",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b4b1e0",
+        "length": 214,
+        "kind": "owned",
+        "disk_offset": 7647712,
+        "sha256": "3f7d8f4770188fd3b57abad55075ac72f56252ccc5648812a34f901ad99a9778",
+        "hex": "64a1000000006aff68c8f8cb00506489250000000083ec08803ddcd608010053568bf174178b1d94d3f8008bcb895c240ce8ba88feff88442408eb048b5c240c578b56088b4e0c8b7c242483c6088bc28d0c883bc1c744241c000000007318903938740983c0043bc172f5eb0a2bc2c1f80283f8ff752e8b4608394604751403c083f8017f05b801000000508bcee82de4ffff8b46048b0e8d048185c07402893883460401803ddcd6080100c744241cffffffff5f740c8b542408528bcbe85d88feff8b4c24105e5b64890d0000000083c414c20400",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b22d10",
+        "length": 95,
+        "kind": "owned",
+        "disk_offset": 7482640,
+        "sha256": "70c57d1530f440247d5a72624ff0c7567d13328133833ecaf2f0d260013034b6",
+        "hex": "56578b7c240c83ff018bf17d05bf01000000397e087d438d04bd000000005350e889280d008bd833c083c4043946047e188bcb85c974078b168b1482891183c00183c1043b46047cea8b0650e8283c0d0083c404891e897e085b5f5ec20400",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b1fe50",
+        "length": 7,
+        "kind": "owned",
+        "disk_offset": 7470672,
+        "sha256": "21ca3cc4767dbd86a713e25012472933dee0dae33b2369ef2fb6bec590210be6",
+        "hex": "8a81ac190000c3",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b47c90",
+        "length": 69,
+        "kind": "owned",
+        "disk_offset": 7634064,
+        "sha256": "af7a3cb79026751af31396c107a553ebd7b275767d8b689d0b8440e053f36795",
+        "hex": "8b5110535633f633c085d2577e278b490c8b7c24148b5c241083c10c8d642400391975073bf7741583c60183c00183c1143bc27ceb5f5e32c05bc208005f5eb0015bc20800",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b47c40",
+        "length": 24,
+        "kind": "owned",
+        "disk_offset": 7633984,
+        "sha256": "3d35c8e437486f8a73b7f633856db7de288d504e94a0dce72d6c1bf85079f24b",
+        "hex": "8b4424048d5440068b4424088b0c918d04808b0481c20800",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b47ce0",
+        "length": 62,
+        "kind": "owned",
+        "disk_offset": 7634144,
+        "sha256": "71c08a94348c74e72556ee271465734a6e1c6187233eb752bc7ab9529f860a46",
+        "hex": "8b5110535633f633c085d2577e278b490c8b7c24148b5c241083c10c8d642400391975073bf7741083c60183c00183c1143bc27ceb83c8ff5f5e5bc20800",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b47c20",
+        "length": 25,
+        "kind": "owned",
+        "disk_offset": 7633952,
+        "sha256": "2dddf246ecd56ff7b40b3ba47ede9ffc221508ca2400df7c7a07d3fe674e8754",
+        "hex": "8b4424048d5440068b4424088b0c918d04808b448104c20800",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b47c60",
+        "length": 32,
+        "kind": "owned",
+        "disk_offset": 7634016,
+        "sha256": "f8665534bb337786934c0f2ab922132ad1bd24ad49575b765f30520a9a4f2945",
+        "hex": "8b4424048d5440068b4424088b0c918d04808b5481048b0495c01cd600c20800",
+        "live_PE_match": true
+      },
+      {
+        "address": "00d5f100",
+        "length": 8,
+        "kind": "renderer slots58/5C",
+        "disk_offset": 9826560,
+        "sha256": "570a669ce7649d2cb99673edf5f8563201580c7c039915a71c98882d11c863bf",
+        "hex": "50feb100c087b200",
+        "live_PE_match": true
+      },
+      {
+        "address": "00d61d6c",
+        "length": 52,
+        "kind": "logical profile",
+        "disk_offset": 9837932,
+        "sha256": "384e1478cf11d2935eb491ad4f9c0bb1de1808da1189228426b27a7a38a04c88",
+        "hex": "e030bd0010bfb400408db400a0aab4008099b400809ab400308db400c08cb400d08cb400e08cb400108db400f08cb400b0aab400",
+        "live_PE_match": true
+      },
+      {
+        "address": "00d61e34",
+        "length": 36,
+        "kind": "private physical profile",
+        "disk_offset": 9838132,
+        "sha256": "0ce96f1496942ff87525bc114a4ba34656127d397a8e80aaf35b1bebc26234ad",
+        "hex": "e030bd0040bbb40000bab400d0b9b40020b5b40070c3b400b0b9b400f0b9b400c0b9b400",
+        "live_PE_match": true
+      },
+      {
+        "address": "00d61e7c",
+        "length": 36,
+        "kind": "pooled physical profile",
+        "disk_offset": 9838204,
+        "sha256": "d74f853720d97ef5f568b327d488040b9a2cb5924c65cdc72197ae3f31597be1",
+        "hex": "e030bd0030c2b40000bab400d0b9b40020b5b40070c3b400b0b9b400f0b9b400b092b400",
+        "live_PE_match": true
+      },
+      {
+        "address": "00d61cc0",
+        "length": 72,
+        "kind": "type-size table",
+        "disk_offset": 9837760,
+        "sha256": "2e971703e69970aff164f8b135d0213c2b6019d9d18b2768c9ce2749496d5c6e",
+        "hex": "04000000080000000c000000100000000400000004000000040000000800000004000000040000000800000004000000080000000400000004000000040000000800000004000000",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b49960",
+        "length": 12,
+        "kind": "factory unwind provider",
+        "disk_offset": 7641440,
+        "sha256": "5344cf37d10543989ad78ff2fb63e22310b04add23f665a63fb5fc50ce44540b",
+        "hex": "51b918fe0801e805fcffffc3",
+        "live_PE_match": true
+      },
+      {
+        "address": "00bd30f0",
+        "length": 7,
+        "kind": "base cleanup",
+        "disk_offset": 8204528,
+        "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+        "hex": "c70130b1ce00c3",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b1feb0",
+        "length": 7,
+        "kind": "shared physical getter",
+        "disk_offset": 7470768,
+        "sha256": "ed07ef49143025d13fb0b147b03936835e41a97cbad3417fc5971923fc1b0c53",
+        "hex": "8b8174190000c3",
+        "live_PE_match": true
+      },
+      {
+        "address": "00cbf9a0",
+        "length": 26,
+        "kind": "constructor EH actions",
+        "disk_offset": 9173408,
+        "sha256": "6b22250dc1f8aea039d16e62b5db73f66dcb25d5daaddc3e8d532fb536efe772",
+        "hex": "8b4de8e96826eaff8d4dece96017e6ffb89c84df00e98971f3ff",
+        "live_PE_match": true
+      },
+      {
+        "address": "00df848c",
+        "length": 16,
+        "kind": "constructor unwind map",
+        "disk_offset": 10454156,
+        "sha256": "78c726b5517621a70763e7ed8ad4eaa48698a1ff2599c3d3d30f264b969f4b2f",
+        "hex": "ffffffffa0f9cb0000000000a8f9cb00",
+        "live_PE_match": true
+      },
+      {
+        "address": "00cbf920",
+        "length": 26,
+        "kind": "destructor EH actions",
+        "disk_offset": 9173280,
+        "sha256": "bb027cd249de50715649131aa7244e59079cb547f7455871c87937de84bba6ce",
+        "hex": "8b4de8e9e826eaff8d4dece9e017e6ffb8dc83df00e90972f3ff",
+        "live_PE_match": true
+      },
+      {
+        "address": "00df83cc",
+        "length": 16,
+        "kind": "destructor unwind map",
+        "disk_offset": 10453964,
+        "sha256": "9edbebb318ce7656dde5d829aa516976ad5f1dc68c90b72323a488b86c4d6a10",
+        "hex": "ffffffff20f9cb000000000028f9cb00",
+        "live_PE_match": true
+      },
+      {
+        "address": "00cbd230",
+        "length": 18,
+        "kind": "factory EH action",
+        "disk_offset": 9163312,
+        "sha256": "2c4c087a32d8f7cf872128ada11eef944752c2059bdc0c4b79ec8e6eadadbf6a",
+        "hex": "8b4df0e928c7e8ffb8c859df00e90199f3ff",
+        "live_PE_match": true
+      },
+      {
+        "address": "00df59c0",
+        "length": 8,
+        "kind": "factory unwind map",
+        "disk_offset": 10443200,
+        "sha256": "41fb3c7d31b035625270a319793953708b5cb212da4beb7cf0ff236f0e5202f7",
+        "hex": "ffffffff30d2cb00",
+        "live_PE_match": true
+      },
+      {
+        "address": "00cc14a0",
+        "length": 18,
+        "kind": "base EH action",
+        "disk_offset": 9180320,
+        "sha256": "04598db95cbdc6f557e1f325d872f971a23270570c7e6dab8b2837320bcb6d2c",
+        "hex": "8b4df0e9c878e8ffb8eca2df00e99156f3ff",
+        "live_PE_match": true
+      },
+      {
+        "address": "00dfa2e4",
+        "length": 8,
+        "kind": "base unwind map",
+        "disk_offset": 10461924,
+        "sha256": "e91d4d716fcc89476f395945cb4aa417f0da90274c5ab87d0afdb69c7316586b",
+        "hex": "ffffffffa014cc00",
+        "live_PE_match": true
+      }
+    ],
+    "provider_files": [
+      {
+        "path": "include/bsp/native_logical_vertex_owner.hpp",
+        "sha256": "5a2cb578921e29eb266a94f4962272d46681b883a054a6226b3aae11bb92ef9f"
+      },
+      {
+        "path": "src/native_logical_vertex_owner.cpp",
+        "sha256": "4c827759571860461aa523f2261bb9876a70813358b4dcbdae509c4cd6102617"
+      },
+      {
+        "path": "include/bsp/native_render_context.hpp",
+        "sha256": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f"
+      },
+      {
+        "path": "src/native_render_context.cpp",
+        "sha256": "ee62d05164d69ba93eea4ffd34691dfd777aec5d629ad1753a8954b18468cc1e"
+      },
+      {
+        "path": "include/bsp/native_physical_buffer_owner.hpp",
+        "sha256": "6aad296c974287291b404f5ab422146128fe9e0d17c249416b49be54953aaf45"
+      },
+      {
+        "path": "src/native_physical_buffer_owner.cpp",
+        "sha256": "58990828f8fed7e38a4f58ca07ff58a844ba4e65d3d1ffe42da4edd38587f59d"
+      },
+      {
+        "path": "include/bsp/native_renderer_synchronization_actual.hpp",
+        "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0"
+      },
+      {
+        "path": "src/native_renderer_synchronization_actual.cpp",
+        "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a"
+      },
+      {
+        "path": "include/bsp/native_render_buffer_unregistration.hpp",
+        "sha256": "d81e02e8c18fd08e35e34878719b1db509c94ae5075a77251bdb5709616628b9"
+      },
+      {
+        "path": "src/native_render_buffer_unregistration.cpp",
+        "sha256": "094d74b949d82182ef0f58761cfcd38520b83b65615456f3aa37521d0b9d2aea"
+      },
+      {
+        "path": "include/bsp/native_logical_vertex_pool_return.hpp",
+        "sha256": "ecd38c30ea9df37e3720f4484abbe1973bfd50d8fade17fe360164678a671c5d"
+      },
+      {
+        "path": "src/native_logical_vertex_pool_return.cpp",
+        "sha256": "acf5b39e00f791c7fe37155e2412cfab0c93556f490aa6c684ad2f070a16f50b"
+      },
+      {
+        "path": "include/bsp/native_shader_device_reset.hpp",
+        "sha256": "347056dafcbfe3a29f6d109c4f79914f583e4976327bf9c61b51e4d88ee01590"
+      },
+      {
+        "path": "src/native_shader_device_reset.cpp",
+        "sha256": "21a2631b1cdecf365bd93bcfdefbb9cd371eec46865921197a6dc6ecfb9cdcce"
+      },
+      {
+        "path": "include/bsp/native_logical_buffer_device_restore.hpp",
+        "sha256": "2e79708e49c1559f706602b9fe761791776f11fee1c5b3efa69d7fbb2bd57c45"
+      },
+      {
+        "path": "include/bsp/native_vertex_declaration_owner.hpp",
+        "sha256": "8d247b03c4a954a71025c0a57bba407f47faf2d095fc8026233ce1b3f3f9c96f"
+      },
+      {
+        "path": "src/native_vertex_declaration_owner.cpp",
+        "sha256": "b2ba105ed138ff054858bee7999e424bdb6902e18fbe954153316af81241466c"
+      }
+    ],
+    "validation_artifacts": [
+      {
+        "path": "local/vertex_owner_at/probe.cpp",
+        "sha256": "764161b9e575195ffa54a1a62a15e5875785df6fe07b6d6a657bca43ecb13338"
+      },
+      {
+        "path": "local/vertex_owner_at/profile_cells.hpp",
+        "sha256": "06fb32b9d7169d10808db810bae2c89fab3cae1e4c9b41564948a00d244c7af4"
+      },
+      {
+        "path": "local/vertex_owner_at/relocate.py",
+        "sha256": "4118446c31e675140ef060972b139e3090f5049c7217d6da920e21ffb95b2988"
+      },
+      {
+        "path": "local/vertex_owner_at/relocated.bin",
+        "sha256": "6a6148fe7220721bb43c3e716dac7a0e5193d73c8c0d9929d507e38b5c8979b6"
+      },
+      {
+        "path": "local/vertex_owner_at/relocations.json",
+        "sha256": "38898d38b1176a258b4a525384842eda532842d8ee0fec3d0a942cfdc77fc7b4"
+      },
+      {
+        "path": "local/vertex_owner_at/native_logical_vertex_owner.obj",
+        "sha256": "8627c66e84ce6be26b171cf85ed9016bfaa94e8c108b65433e3301daba18eaa9"
+      },
+      {
+        "path": "local/vertex_owner_at/probe.exe",
+        "sha256": "4f05e964ed66ff26e325f4798c533437bfffb1603f8a69d4fcfbbfd9b1c0c688"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch3-20260910/build/win32/Release/bsp_core.lib",
+        "sha256": "85b27b52d44afbf8e6c471abe8397df9ff67452d09be9124aa2ff08904cca702"
+      },
+      {
+        "path": "local\\vertex_owner_at\\compile_probe.cmd",
+        "sha256": "4f93a5e1183603e24b0fc3da43ec0259e2cec8af30b9c4ce84c07e96b217a4b9"
+      },
+      {
+        "path": "local\\vertex_owner_at\\replay_current_library.cmd",
+        "sha256": "45c30bbaeee39ce71b4f0358e1514b5357467eb0955c5e2c9d80cc8335a8e9c9"
+      }
+    ]
+  },
+  "corrections": [
+    {
+      "was": "B4BC00 pseudocode compares local_18 and dereferences unaff_EDI",
+      "evidence": "whole assembly B4BC00..B4BEF5; RET0Ch",
+      "is": "real CreateVertexBuffer output cell, preserved declaration and flags, current COM temporary release"
+    },
+    {
+      "was": "base+4C unresolved blocks even the raw ownership sequence",
+      "evidence": "B61E92 zero initializer; B62034 capture, B62047 decrement, B62057 current virtual0, B62059 clear",
+      "is": "full actual+4 release/current canonical terminal sequence is expressible while runtime producer/type remain unproven"
+    },
+    {
+      "was": "B62010 gap after apparently nonreturning free",
+      "evidence": "fresh10 bytes83c404c7465000000000",
+      "is": "B6206D..B62076 ADD ESP,4 and clear actual+50"
+    }
+  ],
+  "verification": {
+    "strict_win32_compile": "PASS /std:c++17 /EHsc /MD /W4 /WX /O2 /fp:strict",
+    "existing_build": "PASS scripts/build.ps1, reconstructed_math 1/1; source separately compiled, CMake integration belongs to primary",
+    "verify_seeds": "PASS eight current installed-PE/live-Ghidra seeds",
+    "report_calls": "PASS47 direct rows checked0 failed;22 explicit indirect/import rows",
+    "differential": {
+      "result": "PASS",
+      "compared_dword_or_scalar_checks": 1012,
+      "pool_allocations_per_side": 65,
+      "factory_variants_per_side": 6,
+      "dynamic_secondary_bytes": [
+        0,
+        1,
+        2
+      ],
+      "private_flags": [
+        "00000000",
+        "00000001",
+        "00010001"
+      ],
+      "real_d3d9_hal_devices": 1,
+      "real_private_vertex_buffers": 6,
+      "canonical_source_stream_terminals": 6,
+      "canonical_source_base_parent_context_terminals": 1,
+      "owned_operand_relocations": 48,
+      "dependency_operand_relocations": 10,
+      "external_function_bridges": [
+        "00bf55be actual allocation",
+        "00bf681b actual allocation",
+        "00bf6989 actual free",
+        "00bf65ac actual free",
+        "00b4c370 established actual physical Attach",
+        "00b4bb40 established actual physical delete"
+      ],
+      "owned_function_bridges": 0,
+      "normalization": "native relocated profile word normalized; private physical address replaced with stable marker in object snapshots; declaration identity unchanged",
+      "optional_guard_mode": 0,
+      "real_locks": "actual Win32 slab and renderer inline critical sections",
+      "not_exercised": [
+        "B29670 device recreation",
+        "malformed/null failure faults",
+        "optional guard enabled transitions",
+        "exception injection",
+        "game adoption"
+      ],
+      "scratch": "local/vertex_owner_at/probe.cpp",
+      "output": "PASS 1012 compared DWORD/scalar checks; pool65 x2; six factory variants x2; real D3D9 HAL private buffers6; canonical stream6 and context1 terminals; source resolver7",
+      "linker": "MANIFEST:EMBED; BASE20000000; DYNAMICBASE:NO; default stack and SAFESEH"
+    },
+    "game_validated": false,
+    "original_binary_abi_compatible": false
+  },
+  "limits": [
+    "B29670 is a required real same-renderer service, not reconstructed here.",
+    "Runtime nonnull writer/type of logical+4C is unproven; canonical registry must resolve exact +04/current terminal.",
+    "New source interfaces are not drop-in original ABI or game/render validation.",
+    "Optional guard entry-disabled/exit-enabled transition is outside native valid domain.",
+    "Raw null-fault, allocation exceptions and malformed storage are not repaired."
+  ]
+}
