@@ -1,0 +1,319 @@
+{
+  "packet": "orch6_dyn_scene_f",
+  "worker": "agent/orch6-dyn-scene-f",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/dyn_scene_runtime.cpp",
+  "documentation": "docs/DYN_SCENE_RUNTIME.md",
+  "status": "Win32 Release and 2 CTests passed; four original-byte constructor fixtures and all 78 owned buffers matched",
+  "abi_compatible": false,
+  "game_validated": false,
+  "ghidra_worker_read_only": true,
+  "routines": [
+    {
+      "address": "00c38070",
+      "body_end_inclusive": "00c38461",
+      "implementation": "dyn_scene_construct_00c38070",
+      "proposed_name": "DYN_CollisionSystem_Construct_00C38070",
+      "original_abi": "stack scene, world; EAX scene result; RET8 at 00C3845F",
+      "coverage": "complete normal successful-allocation storage semantics for fresh construction; explicit allocator/global/dispatcher/vtable inputs; native failure/SEH ABI outside interface",
+      "name_provisional": true,
+      "unresolved_ranges": [],
+      "unresolved_success_path_ranges": []
+    },
+    {
+      "address": "0040a1e0",
+      "body_end_inclusive": "0040a2df",
+      "implementation": "dyn_manifold_pool_construct_0040a1e0",
+      "proposed_name": "DYN_ManifoldPool_Construct_0040A1E0",
+      "original_abi": "stack pool; EAX pool result; RET4 at 0040A2DD",
+      "coverage": "complete normal successful-allocation storage semantics for fresh construction; explicit allocator/global/dispatcher/vtable inputs; native failure/SEH ABI outside interface",
+      "name_provisional": true,
+      "unresolved_ranges": [],
+      "unresolved_success_path_ranges": []
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00c38102",
+      "native": "00bf79f0",
+      "function": "00c38070",
+      "listing": "0x00bf79f0"
+    },
+    {
+      "address": "00c38189",
+      "native": "00bf681b",
+      "function": "00c38070",
+      "listing": "0x00bf681b"
+    },
+    {
+      "address": "00c3819f",
+      "native": "00c36f10",
+      "function": "00c38070",
+      "listing": "0x00c36f10"
+    },
+    {
+      "address": "00c381b8",
+      "native": "00bf681b",
+      "function": "00c38070",
+      "listing": "0x00bf681b"
+    },
+    {
+      "address": "00c381d6",
+      "native": "0040a1e0",
+      "function": "00c38070",
+      "listing": "0x0040a1e0"
+    },
+    {
+      "address": "00c381e7",
+      "native": "00CE2154+IAT",
+      "function": "00c38070",
+      "listing": "dword ptr [0x00ce2154]",
+      "contract": "InitializeCriticalSectionAndSpinCount(container+1D8,10000), stdcall; return value ignored"
+    },
+    {
+      "address": "00c38234",
+      "native": "00bf55be",
+      "function": "00c38070",
+      "listing": "0x00bf55be"
+    },
+    {
+      "address": "00c382a8",
+      "native": "00bf6989",
+      "function": "00c38070",
+      "listing": "0x00bf6989",
+      "scope": "inlined old-buffer free; unreachable in normal fresh construction because pointer/count triples were reset earlier in this function"
+    },
+    {
+      "address": "00c38310",
+      "native": "00bf55be",
+      "function": "00c38070",
+      "listing": "0x00bf55be"
+    },
+    {
+      "address": "00c3834e",
+      "native": "00bf6989",
+      "function": "00c38070",
+      "listing": "0x00bf6989",
+      "scope": "inlined old-buffer free; unreachable in normal fresh construction because pointer/count triples were reset earlier in this function"
+    },
+    {
+      "address": "00c383e1",
+      "native": "00bf55be",
+      "function": "00c38070",
+      "listing": "0x00bf55be"
+    },
+    {
+      "address": "00c3843d",
+      "native": "00bf6989",
+      "function": "00c38070",
+      "listing": "0x00bf6989",
+      "scope": "inlined old-buffer free; unreachable in normal fresh construction because pointer/count triples were reset earlier in this function"
+    },
+    {
+      "address": "0040a23a",
+      "native": "00bf9f1a",
+      "function": "0040a1e0",
+      "listing": "0x00bf9f1a"
+    },
+    {
+      "address": "0040a27c",
+      "native": "00bf55be",
+      "function": "0040a1e0",
+      "listing": "0x00bf55be"
+    },
+    {
+      "address": "0040a2ad",
+      "native": "00bf6989",
+      "function": "0040a1e0",
+      "listing": "0x00bf6989",
+      "scope": "inlined old-buffer free; unreachable in normal fresh construction because pointer/count triples were reset earlier in this function"
+    }
+  ],
+  "no_ghidra_function": [],
+  "flow_repair": {
+    "performed_by": "parent root under write lock; saved/exported",
+    "call": "0040A2AD",
+    "gap_start": "0040A2B2",
+    "gap_end_inclusive": "0040A2B4",
+    "report": "reports/dyn_scene_pool_flow_repair.json",
+    "remaining_call_gaps": 0,
+    "alignment_ranges_left_unchanged": [
+      "00C38368-00C3836F",
+      "00C3839A-00C3839F"
+    ]
+  },
+  "borrowed_runtime": {
+    "engine_global": "0109E9FC, explicit void* const* engine_slot; engine+10 thread pool, pool+4 worker count",
+    "general_convex_global": "0109E9F4, explicit writable slot set to actual GeneralConvexIntersect object",
+    "general_convex_owner": "0109EA48 initialized by 00C48FD0; 26 double support directions and CRITICAL_SECTION; implementation external",
+    "engine_owner": "00C55EA0 allocates 358h and calls 00C37740 before storing engine+10; engine/thread startup external",
+    "sap_vtable": "complete Dyn::SAPBroadPhaseManager2 00D7A160, source constructor reused from dyn_body_creation",
+    "task_vtable": "complete Dyn::CollisionSystem::IntersectTask2 00D7A110",
+    "dispatch_objects": [
+      {
+        "address": "00E17434",
+        "class_name": "Dyn::BoxBoxIntersect",
+        "vtable": "00D7A184",
+        "table": "pair",
+        "indices": [
+          7
+        ]
+      },
+      {
+        "address": "00E17438",
+        "class_name": "Dyn::TerrainConvexMeshIntersect",
+        "vtable": "00D7A18C",
+        "table": "pair",
+        "indices": [
+          29,
+          34
+        ]
+      },
+      {
+        "address": "00E17440",
+        "class_name": "Dyn::SphereSphereIntersect",
+        "vtable": "00D7A1CC",
+        "table": "pair",
+        "indices": [
+          0
+        ]
+      },
+      {
+        "address": "00E17444",
+        "class_name": "Dyn::BoxSphereIntersect",
+        "vtable": "00D7A1D4",
+        "table": "pair",
+        "indices": [
+          1,
+          6
+        ]
+      },
+      {
+        "address": "0109EA48",
+        "class_name": "Dyn::GeneralConvexIntersect",
+        "vtable": "00D7A1A8",
+        "table": "pair",
+        "indices": [
+          2,
+          4,
+          8,
+          10,
+          12,
+          13,
+          14,
+          16,
+          24,
+          25,
+          26,
+          28
+        ]
+      },
+      {
+        "address": "00E17448",
+        "class_name": "Dyn::ConvexRayIntersection",
+        "vtable": "00D7A1F4",
+        "table": "ray",
+        "indices": [
+          2,
+          4
+        ]
+      },
+      {
+        "address": "00E174E8",
+        "class_name": "Dyn::BoxRayIntersection",
+        "vtable": "00D7A1FC",
+        "table": "ray",
+        "indices": [
+          1
+        ]
+      },
+      {
+        "address": "00E174EC",
+        "class_name": "Dyn::SphereRayIntersection",
+        "vtable": "00D7A204",
+        "table": "ray",
+        "indices": [
+          0
+        ]
+      }
+    ]
+  },
+  "omitted_unreachable_copy_ranges": [
+    "00C3824C-00C382AD",
+    "00C3831A-00C38353",
+    "00C383EB-00C38442",
+    "0040A286-0040A2B4 old vector copy/free within fresh 0040A1E0 constructor"
+  ],
+  "native_unspecified_storage": [
+    "IntersectTask2 +4/+C/+10",
+    "entire reserved event buffer until future writes",
+    "inactive pool slots except free links; sentinel payload except linkage",
+    "spare page-vector capacity"
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1, MSVC Win32 Release, passed",
+    "ctests_passed": 2,
+    "ctests_failed": 0,
+    "native_probe": "local/dyn_scene_probe.cpp linked with build/win32/Release/bsp_core.lib",
+    "native_probe_source_sha256": "515278ea0a22fe8f08f11d469f24fc5f75b11b23bd1fed8ad6f970d18882e5dc",
+    "worker_counts": [
+      0,
+      1,
+      4,
+      64
+    ],
+    "cases": 4,
+    "owned_buffers_compared": 78,
+    "allocations_per_case": [
+      18,
+      20,
+      20,
+      20
+    ],
+    "tracked_allocations_after_fixture_discard": 0,
+    "canonical_record_sha256": "3b77266c04a8716ab7530f254f615ef5f73fc0eeb5ad30d6eab59ec501d82ae6",
+    "source_record_matches": true,
+    "comparison": "Entire scene and all owned buffers, including unspecified poison; only proven pointer fields normalized.",
+    "comparison_exclusions": [
+      "CRITICAL_SECTION.DebugInfo address and pointed OS object; remaining CS fields compare and real uncontended enter/leave succeeds."
+    ],
+    "native_bytes": [
+      {
+        "address": "00C38070",
+        "length": 1010,
+        "matches": true,
+        "sha256": "c6321228cd31453f83ab287896434d15688b8f96bb8078ea744de72e835137bf"
+      },
+      {
+        "address": "0040A1E0",
+        "length": 256,
+        "matches": true,
+        "sha256": "2b4a1077e2e2147dbaed0a10692c026c4f169af4ab80e8aef8a22c688d191214"
+      },
+      {
+        "address": "00C48FD0",
+        "length": 595,
+        "matches": true,
+        "sha256": "c9d6190a28348d373800dd8e542a5c99d80fa61545e0d3aff35eaa15171a7708"
+      }
+    ],
+    "native_setup": "Actual 00C48FD0 global dispatcher initializer and static dispatcher objects; actual native body/motion pool constructors prepare borrowed world storage. Full world constructor not run.",
+    "engine_fixture": "Only consumed engine+10 and task-pool+4 fields populated as explicit borrowed-input projection; actual engine/task-thread startup not run.",
+    "crt_bindings": "Host CRT allocation/free/memory/constructor iteration; finite FSQRT intrinsic bound for 00C48FD0 support directions; actual Win32 critical-section calls.",
+    "no_cpp_game_validation": true,
+    "no_collision_or_task_execution": true,
+    "no_native_scene_world_destructor_validation": true,
+    "native_call_checker": {
+      "direct_checked": 14,
+      "failed": 0,
+      "indirect_documented": 1
+    }
+  },
+  "limitations": [
+    "Native null-return allocation, SEH and failure ABI not implemented; valid successful construction domain.",
+    "Full engine/global-dispatch startup is external; supplied objects and complete vtables must be real and remain alive.",
+    "Collision stepping, task execution, shutdown and scene/world destruction remain separate.",
+    "Fixture arena discard and Win32 lock deletion are not native scene destruction."
+  ]
+}
