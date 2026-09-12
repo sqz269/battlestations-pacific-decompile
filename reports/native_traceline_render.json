@@ -1,0 +1,906 @@
+{
+  "packet": "orch3_traceline_render_at",
+  "status": "complete_listed_normal_bodies_strict_compiled_and_96_original_byte_fixture_cases_passed; actual_B1DFF0_and_GPU_composition_required",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "bridge": 8089,
+  "read_only_ghidra": true,
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00af26a0",
+      "end_inclusive": "00af3168",
+      "end_exclusive": "00af3169",
+      "last_instruction_address": "00af3166",
+      "last_instruction_length": 3,
+      "native_byte_count": 2761,
+      "native_sha256": "d187331f1e2a85d88ddc9a3a9d6d84021545202dde8c0a5c6459d8b7bd10285d",
+      "live_disk_equal": true,
+      "cpp_symbol": "render_native_traceline_00af26a0",
+      "ghidra_name": "BSP_NativeTraceline_FillAndSubmitGeometry",
+      "source": "src/native_traceline_render.cpp",
+      "header": "include/bsp/native_traceline_render.hpp",
+      "original_abi": "ECX actual1BCh node; four stack words(context,lod,visibility,flags); AF3166 RET10 length3; incidental EAX not claimed.",
+      "native_calling_convention": "__thiscall",
+      "coverage": "complete normal body; required external B1DFF0/other-derived services are not reconstructed",
+      "source_abi": "EDX adds borrowed NativeTracelineRenderAccess; original stack arguments and cleanup retained",
+      "no_ghidra_function": false,
+      "evidence": "Complete verified live/disk bytes; full listing and branch/stack-depth review; original byte differential on reached paths; producer layout reconciliation; descriptive names are hypotheses.",
+      "free_fallback_gaps": []
+    },
+    {
+      "address": "00af1c20",
+      "end_inclusive": "00af1c6e",
+      "end_exclusive": "00af1c6f",
+      "last_instruction_address": "00af1c6c",
+      "last_instruction_length": 3,
+      "native_byte_count": 79,
+      "native_sha256": "86ba97b88452e51bea6dd7b3d4e481d0c0a985a7f07437f02f177f054b8f7995",
+      "live_disk_equal": true,
+      "cpp_symbol": "copy_native_traceline_vertex_00af1c20",
+      "ghidra_name": "BSP_NativeTracelineVertex_Copy",
+      "source": "src/native_traceline_render.cpp",
+      "header": "include/bsp/native_traceline_render.hpp",
+      "original_abi": "ECX destination; stack source; AF1C6C RET4 length3; EAX destination. Source unused EDX.",
+      "native_calling_convention": "__thiscall",
+      "coverage": "complete body with explicit existing dependency bindings",
+      "source_abi": "explicit source signature; see original_abi",
+      "no_ghidra_function": false,
+      "evidence": "Complete verified live/disk bytes; full listing and branch/stack-depth review; original byte differential on reached paths; producer layout reconciliation; descriptive names are hypotheses.",
+      "free_fallback_gaps": []
+    },
+    {
+      "address": "00b71530",
+      "end_inclusive": "00b71582",
+      "end_exclusive": "00b71583",
+      "last_instruction_address": "00b71580",
+      "last_instruction_length": 3,
+      "native_byte_count": 83,
+      "native_sha256": "b2b2dc3e3cee673ed62c1adf43ea515fe0f7fc70d9b198732abe3dcf37b407bb",
+      "live_disk_equal": true,
+      "cpp_symbol": "classify_native_camera_sphere_00b71530",
+      "ghidra_name": "BSP_NativeCamera_ClassifySphere",
+      "source": "src/native_traceline_render.cpp",
+      "header": "include/bsp/native_traceline_render.hpp",
+      "original_abi": "ECX actual camera; stack sphere; B71580 RET4 length3; EAX classification.",
+      "native_calling_convention": "__thiscall",
+      "coverage": "complete body with explicit existing dependency bindings",
+      "source_abi": "EDX adds borrowed NativeTracelineRenderAccess; original stack arguments and cleanup retained",
+      "no_ghidra_function": false,
+      "evidence": "Complete verified live/disk bytes; full listing and branch/stack-depth review; original byte differential on reached paths; producer layout reconciliation; descriptive names are hypotheses.",
+      "free_fallback_gaps": []
+    },
+    {
+      "address": "00b651e0",
+      "end_inclusive": "00b652cb",
+      "end_exclusive": "00b652cc",
+      "last_instruction_address": "00b652c9",
+      "last_instruction_length": 3,
+      "native_byte_count": 236,
+      "native_sha256": "5cd2951df3a60ac72b359d2b407bcc6e033606008665619ec80a0050a1c5d79b",
+      "live_disk_equal": true,
+      "cpp_symbol": "classify_native_plane_sphere_00b651e0",
+      "ghidra_name": "BSP_NativePlaneSet_ClassifySphere",
+      "source": "src/native_traceline_render.cpp",
+      "header": "include/bsp/native_traceline_render.hpp",
+      "original_abi": "ECX actual plane set; stack sphere,initialmask; B652AF/B652C9 RET8 length3; EAX classification.",
+      "native_calling_convention": "__thiscall",
+      "coverage": "complete body with explicit existing dependency bindings",
+      "source_abi": "EDX adds borrowed NativeTracelineRenderAccess; original stack arguments and cleanup retained",
+      "no_ghidra_function": false,
+      "evidence": "Complete verified live/disk bytes; full listing and branch/stack-depth review; original byte differential on reached paths; producer layout reconciliation; descriptive names are hypotheses.",
+      "free_fallback_gaps": []
+    },
+    {
+      "address": "00b748e0",
+      "end_inclusive": "00b74b5a",
+      "end_exclusive": "00b74b5b",
+      "last_instruction_address": "00b74b58",
+      "last_instruction_length": 3,
+      "native_byte_count": 635,
+      "native_sha256": "88799a75a59f6a8ff16d32c7c014a9ad1f901a610e9f0eada5079a1d9c4d1b49",
+      "live_disk_equal": true,
+      "cpp_symbol": "render_native_generated_model_00b748e0",
+      "ghidra_name": "BSP_NativeGeneratedModel_Render",
+      "source": "src/native_traceline_render.cpp",
+      "header": "include/bsp/native_traceline_render.hpp",
+      "original_abi": "ECX actual model; four stack words(context,lod,visibility,flags); B74B58 RET10 length3; incidental EAX not claimed.",
+      "native_calling_convention": "__thiscall",
+      "coverage": "complete normal body; required external B1DFF0/other-derived services are not reconstructed",
+      "source_abi": "EDX adds borrowed NativeTracelineRenderAccess; original stack arguments and cleanup retained",
+      "no_ghidra_function": false,
+      "evidence": "Complete verified live/disk bytes; full listing and branch/stack-depth review; original byte differential on reached paths; producer layout reconciliation; descriptive names are hypotheses.",
+      "free_fallback_gaps": []
+    },
+    {
+      "address": "00b72f80",
+      "end_inclusive": "00b7325a",
+      "end_exclusive": "00b7325b",
+      "last_instruction_address": "00b73258",
+      "last_instruction_length": 3,
+      "native_byte_count": 731,
+      "native_sha256": "70d161222d27ae53ca04dd53d1c2dd554a5411c28b73aab91975fd1ef11cf32b",
+      "live_disk_equal": true,
+      "cpp_symbol": "render_native_mesh_entries_00b72f80",
+      "ghidra_name": "BSP_NativeMesh_CreateRenderEntries",
+      "source": "src/native_traceline_render.cpp",
+      "header": "include/bsp/native_traceline_render.hpp",
+      "original_abi": "ECX actual mesh; five stack words(context,model,lod,visibility,flags); B7302F/B7314C/B73258 RET14 length3; incidental EAX not claimed.",
+      "native_calling_convention": "__thiscall",
+      "coverage": "complete normal body; required external B1DFF0/other-derived services are not reconstructed",
+      "source_abi": "EDX adds borrowed NativeTracelineRenderAccess; original stack arguments and cleanup retained",
+      "no_ghidra_function": false,
+      "evidence": "Complete verified live/disk bytes; full listing and branch/stack-depth review; original byte differential on reached paths; producer layout reconciliation; descriptive names are hypotheses.",
+      "free_fallback_gaps": [
+        {
+          "start": "00b7304a",
+          "end_inclusive": "00b7304f",
+          "byte_count": 6,
+          "bytes": "8d9b00000000",
+          "interpretation": "LEA EBX,[EBX] unreachable alignment after unconditional jump; no omitted reachable logic"
+        }
+      ]
+    },
+    {
+      "address": "007c1180",
+      "end_inclusive": "007c11d7",
+      "end_exclusive": "007c11d8",
+      "last_instruction_address": "007c11d5",
+      "last_instruction_length": 3,
+      "native_byte_count": 88,
+      "native_sha256": "b0ba0b0f256e0d67a98f0b8ca3bf481e4931cc3c88ee88bf722581a123c4f943",
+      "live_disk_equal": true,
+      "cpp_symbol": "transform_native_sphere_007c1180",
+      "ghidra_name": "BSP_Sphere_TransformAffine",
+      "source": "src/native_traceline_render.cpp",
+      "header": "include/bsp/native_traceline_render.hpp",
+      "original_abi": "ECX actual source sphere; stack destination,matrix; 7C11D5 RET8 length3; EAX destination.",
+      "native_calling_convention": "__thiscall",
+      "coverage": "complete body with explicit existing dependency bindings",
+      "source_abi": "EDX adds borrowed NativeTracelineRenderAccess; original stack arguments and cleanup retained",
+      "no_ghidra_function": false,
+      "evidence": "Complete verified live/disk bytes; full listing and branch/stack-depth review; original byte differential on reached paths; producer layout reconciliation; descriptive names are hypotheses.",
+      "free_fallback_gaps": []
+    },
+    {
+      "address": "007bb620",
+      "end_inclusive": "007bb6d6",
+      "end_exclusive": "007bb6d7",
+      "last_instruction_address": "007bb6d6",
+      "last_instruction_length": 1,
+      "native_byte_count": 183,
+      "native_sha256": "cfe195f35352e3df6fbb19f80f406a9022730cc9d5c81210414c98df73920f5d",
+      "live_disk_equal": true,
+      "cpp_symbol": "maximum_native_basis_squared_007bb620",
+      "ghidra_name": "BSP_Matrix_GetMaximumBasisLengthSquared",
+      "source": "src/native_traceline_render.cpp",
+      "header": "include/bsp/native_traceline_render.hpp",
+      "original_abi": "ECX actual matrix; 7BB6A4/7BB6C4/7BB6D6 RET length1; ST0 result.",
+      "native_calling_convention": "__fastcall",
+      "coverage": "complete body with explicit existing dependency bindings",
+      "source_abi": "explicit source signature; see original_abi",
+      "no_ghidra_function": false,
+      "evidence": "Complete verified live/disk bytes; full listing and branch/stack-depth review; original byte differential on reached paths; producer layout reconciliation; descriptive names are hypotheses.",
+      "free_fallback_gaps": []
+    },
+    {
+      "address": "00b6e8c0",
+      "end_inclusive": "00b6e922",
+      "end_exclusive": "00b6e923",
+      "last_instruction_address": "00b6e922",
+      "last_instruction_length": 1,
+      "native_byte_count": 99,
+      "native_sha256": "abd86e5982ec56551665990e4f9cb3aa74c1d61676494fb429fb27d3d1278ddb",
+      "live_disk_equal": true,
+      "cpp_symbol": "get_native_model_world_sphere_00b6e8c0",
+      "ghidra_name": "BSP_Model_GetWorldSphere",
+      "source": "src/native_traceline_render.cpp",
+      "header": "include/bsp/native_traceline_render.hpp",
+      "original_abi": "ECX actual model; B6E922 RET length1; EAX actual+13C.",
+      "native_calling_convention": "__thiscall",
+      "coverage": "complete body with explicit existing dependency bindings",
+      "source_abi": "EDX adds borrowed NativeTracelineRenderAccess; original stack arguments and cleanup retained",
+      "no_ghidra_function": false,
+      "evidence": "Complete verified live/disk bytes; full listing and branch/stack-depth review; original byte differential on reached paths; producer layout reconciliation; descriptive names are hypotheses.",
+      "free_fallback_gaps": []
+    },
+    {
+      "address": "00415550",
+      "end_inclusive": "0041558d",
+      "end_exclusive": "0041558e",
+      "last_instruction_address": "0041558d",
+      "last_instruction_length": 1,
+      "native_byte_count": 62,
+      "native_sha256": "53e6afce10160ae6a6da1e8f06f258a91ced43d8f16cd813ddd0df88c94f9a22",
+      "live_disk_equal": true,
+      "cpp_symbol": "max_native_float_by_ref_00415550",
+      "ghidra_name": "BSP_Math_MaxFloatByRef",
+      "source": "src/native_traceline_render.cpp",
+      "header": "include/bsp/native_traceline_render.hpp",
+      "original_abi": "ECX left float, EDX right float; 41557B/41558D RET length1; ST0 result.",
+      "native_calling_convention": "__fastcall",
+      "coverage": "complete body with explicit existing dependency bindings",
+      "source_abi": "explicit source signature; see original_abi",
+      "no_ghidra_function": false,
+      "evidence": "Complete verified live/disk bytes; full listing and branch/stack-depth review; original byte differential on reached paths; producer layout reconciliation; descriptive names are hypotheses.",
+      "free_fallback_gaps": []
+    },
+    {
+      "address": "00b6d810",
+      "end_inclusive": "00b6d816",
+      "end_exclusive": "00b6d817",
+      "last_instruction_address": "00b6d816",
+      "last_instruction_length": 1,
+      "native_byte_count": 7,
+      "native_sha256": "d92a2a6da9c016786097d8f7913a61230dd12fb2ca478922ecd87e6e311e43a2",
+      "live_disk_equal": true,
+      "cpp_symbol": "get_native_node_notification_context_00b6d810",
+      "ghidra_name": "BSP_Node_GetNotificationContext",
+      "source": "src/native_traceline_render.cpp",
+      "header": "include/bsp/native_traceline_render.hpp",
+      "original_abi": "ECX actual node; B6D816 RET length1; EAX actual+A0 pointer word.",
+      "native_calling_convention": "__fastcall",
+      "coverage": "complete body with explicit existing dependency bindings",
+      "source_abi": "explicit source signature; see original_abi",
+      "no_ghidra_function": false,
+      "evidence": "Complete verified live/disk bytes; full listing and branch/stack-depth review; original byte differential on reached paths; producer layout reconciliation; descriptive names are hypotheses.",
+      "free_fallback_gaps": []
+    },
+    {
+      "address": "00b6dcb0",
+      "end_inclusive": "00b6dcb3",
+      "end_exclusive": "00b6dcb4",
+      "last_instruction_address": "00b6dcb3",
+      "last_instruction_length": 1,
+      "native_byte_count": 4,
+      "native_sha256": "54ce28942b28a399fea31e453441d66bfb0c3eaadd9760356b805a66e26dea4c",
+      "live_disk_equal": true,
+      "cpp_symbol": "get_native_node_bounds_scalar_00b6dcb0",
+      "ghidra_name": "BSP_Node_GetBoundsScalar",
+      "source": "src/native_traceline_render.cpp",
+      "header": "include/bsp/native_traceline_render.hpp",
+      "original_abi": "ECX actual node; B6DCB3 RET length1; ST0 actual+50 scalar.",
+      "native_calling_convention": "__fastcall",
+      "coverage": "complete body with explicit existing dependency bindings",
+      "source_abi": "explicit source signature; see original_abi",
+      "no_ghidra_function": false,
+      "evidence": "Complete verified live/disk bytes; full listing and branch/stack-depth review; original byte differential on reached paths; producer layout reconciliation; descriptive names are hypotheses.",
+      "free_fallback_gaps": []
+    },
+    {
+      "address": "006ef890",
+      "end_inclusive": "006ef894",
+      "end_exclusive": "006ef895",
+      "last_instruction_address": "006ef892",
+      "last_instruction_length": 3,
+      "native_byte_count": 5,
+      "native_sha256": "96bb05a9b4b1029fe7f666a311c7c16bed4d239a715c81b90e12ebf3a7657c4d",
+      "live_disk_equal": true,
+      "cpp_symbol": "accept_native_model_006ef890",
+      "ghidra_name": "BSP_Model_AcceptRender",
+      "source": "src/native_traceline_render.cpp",
+      "header": "include/bsp/native_traceline_render.hpp",
+      "original_abi": "ECX owner; two stack words(camera,lod); 6EF892 RET8 length3; only AL=1, high EAX unchanged in raw leaf.",
+      "native_calling_convention": "__thiscall",
+      "coverage": "complete body with explicit existing dependency bindings",
+      "source_abi": "explicit source signature; see original_abi",
+      "no_ghidra_function": true,
+      "evidence": "Complete verified live/disk bytes; full listing and branch/stack-depth review; original byte differential on reached paths; producer layout reconciliation; descriptive names are hypotheses.",
+      "free_fallback_gaps": [],
+      "raw_definition": "b001c20800; MOV AL,1 then RET8; root definition pending; no worker Ghidra mutation"
+    },
+    {
+      "address": "004142e0",
+      "end_inclusive": "00414363",
+      "end_exclusive": "00414364",
+      "last_instruction_address": "00414361",
+      "last_instruction_length": 3,
+      "native_byte_count": 132,
+      "native_sha256": "918c584a4b36931271d55da548684ecad60b7e02dd1fe7548aff6601a7364004",
+      "live_disk_equal": true,
+      "cpp_symbol": "transform_native_point_004142e0",
+      "ghidra_name": "BSP_Vector3f_TransformAffinePoint",
+      "source": "src/native_traceline_render.cpp",
+      "header": "include/bsp/native_traceline_render.hpp",
+      "original_abi": "ECX source; stack destination,matrix; 414361 RET8 length3; EAX destination. Source unused EDX.",
+      "native_calling_convention": "__thiscall",
+      "coverage": "complete body with explicit existing dependency bindings",
+      "source_abi": "explicit source signature; see original_abi",
+      "no_ghidra_function": false,
+      "evidence": "Complete verified live/disk bytes; full listing and branch/stack-depth review; original byte differential on reached paths; producer layout reconciliation; descriptive names are hypotheses.",
+      "free_fallback_gaps": []
+    },
+    {
+      "address": "00b51a20",
+      "end_inclusive": "00b51aaa",
+      "end_exclusive": "00b51aab",
+      "last_instruction_address": "00b51aa8",
+      "last_instruction_length": 3,
+      "native_byte_count": 139,
+      "native_sha256": "5ce74d7321e2e3d53e30af406bd9b6f858339c774109a0aa88d2586215c17cb6",
+      "live_disk_equal": true,
+      "cpp_symbol": "initialize_native_render_entry_00b51a20",
+      "ghidra_name": "BSP_RenderEntry_Initialize",
+      "source": "src/native_traceline_render.cpp",
+      "header": "include/bsp/native_traceline_render.hpp",
+      "original_abi": "ECX actual28h entry; eight stack words(leading,section,geometry,model,camera,visibility,depth_override,flags); B51A7A/B51AA8 RET20 length3; incidental EAX not claimed.",
+      "native_calling_convention": "__thiscall",
+      "coverage": "complete body with explicit existing dependency bindings",
+      "source_abi": "EDX adds borrowed NativeTracelineRenderAccess; original stack arguments and cleanup retained",
+      "no_ghidra_function": false,
+      "evidence": "Complete verified live/disk bytes; full listing and branch/stack-depth review; original byte differential on reached paths; producer layout reconciliation; descriptive names are hypotheses.",
+      "free_fallback_gaps": []
+    },
+    {
+      "address": "00bee050",
+      "end_inclusive": "00bee053",
+      "end_exclusive": "00bee054",
+      "last_instruction_address": "00bee053",
+      "last_instruction_length": 1,
+      "native_byte_count": 4,
+      "native_sha256": "dadecdeeff0b9454fd9dc08c558a9148187b2b1bec017fe8b92430570b86012a",
+      "live_disk_equal": true,
+      "cpp_symbol": "frame_clock_current_00bee050",
+      "ghidra_name": "BSP_FrameClock_GetCurrent",
+      "source": "src/native_traceline_render.cpp",
+      "header": "include/bsp/native_traceline_render.hpp",
+      "original_abi": "ECX original clock; BEE053 RET length1; EAX original+20 current pair. Source returns SAME canonical FrameClock.current, a new typed owner ABI.",
+      "native_calling_convention": "__fastcall",
+      "coverage": "complete body with explicit existing dependency bindings",
+      "source_abi": "explicit source signature; see original_abi",
+      "no_ghidra_function": false,
+      "evidence": "Complete verified live/disk bytes; full listing and branch/stack-depth review; original byte differential on reached paths; producer layout reconciliation; descriptive names are hypotheses.",
+      "free_fallback_gaps": []
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00af26d0",
+      "native": "01090ab0+vtable14",
+      "function": "00af26a0",
+      "instruction": "call eax",
+      "resolved_native": "00bee050",
+      "contract": "required current_14 on SAME FrameClock"
+    },
+    {
+      "address": "00af26f3",
+      "native": "00d0c928+vtable48",
+      "function": "00af26a0",
+      "instruction": "call eax",
+      "resolved_native": "00b6e8c0",
+      "contract": "current profile; concrete raw model sphere or required derived service"
+    },
+    {
+      "address": "00af26f8",
+      "native": "00b71530",
+      "function": "00af26a0"
+    },
+    {
+      "address": "00af270c",
+      "native": "00b74640",
+      "function": "00af26a0"
+    },
+    {
+      "address": "00af2719",
+      "native": "00b73260",
+      "function": "00af26a0"
+    },
+    {
+      "address": "00af2769",
+      "native": "stream+vtable10",
+      "function": "00af26a0",
+      "instruction": "call eax",
+      "resolved_native": "00b49980",
+      "contract": "existing actual logical vertex mapping"
+    },
+    {
+      "address": "00af2ade",
+      "native": "00af1c20",
+      "function": "00af26a0"
+    },
+    {
+      "address": "00af2b29",
+      "native": "00af1c20",
+      "function": "00af26a0"
+    },
+    {
+      "address": "00af2b83",
+      "native": "00419510",
+      "function": "00af26a0"
+    },
+    {
+      "address": "00af2bad",
+      "native": "00af1c20",
+      "function": "00af26a0"
+    },
+    {
+      "address": "00af2c3c",
+      "native": "00af1c20",
+      "function": "00af26a0"
+    },
+    {
+      "address": "00af2cdd",
+      "native": "00b6db70",
+      "function": "00af26a0"
+    },
+    {
+      "address": "00af2e1b",
+      "native": "00af1c20",
+      "function": "00af26a0"
+    },
+    {
+      "address": "00af2f01",
+      "native": "00af1c20",
+      "function": "00af26a0"
+    },
+    {
+      "address": "00af3104",
+      "native": "00b732c0",
+      "function": "00af26a0"
+    },
+    {
+      "address": "00af312b",
+      "native": "stream+vtable14",
+      "function": "00af26a0",
+      "instruction": "call eax",
+      "resolved_native": "00b49a80",
+      "contract": "existing actual logical vertex unmapping"
+    },
+    {
+      "address": "00af3157",
+      "native": "00b748e0",
+      "function": "00af26a0"
+    },
+    {
+      "address": "00b71549",
+      "native": "00b70490",
+      "function": "00b71530"
+    },
+    {
+      "address": "00b71553",
+      "native": "00b653f0",
+      "function": "00b71530"
+    },
+    {
+      "address": "00b71565",
+      "native": "00b658e0",
+      "function": "00b71530"
+    },
+    {
+      "address": "00b71577",
+      "native": "00b651e0",
+      "function": "00b71530"
+    },
+    {
+      "address": "00b74923",
+      "native": "00b6db70",
+      "function": "00b748e0"
+    },
+    {
+      "address": "00b74959",
+      "native": "00b6db70",
+      "function": "00b748e0"
+    },
+    {
+      "address": "00b749a4",
+      "native": "00419440",
+      "function": "00b748e0"
+    },
+    {
+      "address": "00b749af",
+      "native": "00b6dcb0",
+      "function": "00b748e0"
+    },
+    {
+      "address": "00b749e9",
+      "native": "model+vtable48",
+      "function": "00b748e0",
+      "instruction": "call eax",
+      "resolved_native": "00b6e8c0",
+      "contract": "current profile; concrete raw model sphere or required derived service"
+    },
+    {
+      "address": "00b749ee",
+      "native": "00b71530",
+      "function": "00b748e0"
+    },
+    {
+      "address": "00b74a0f",
+      "native": "00b6d810",
+      "function": "00b748e0"
+    },
+    {
+      "address": "00b74a22",
+      "native": "00b70490",
+      "function": "00b748e0"
+    },
+    {
+      "address": "00b74a34",
+      "native": "model+vtable48",
+      "function": "00b748e0",
+      "instruction": "call eax",
+      "resolved_native": "00b6e8c0",
+      "contract": "no stack arguments; pending destination/matrix are for following sphere transform"
+    },
+    {
+      "address": "00b74a38",
+      "native": "007c1180",
+      "function": "00b748e0"
+    },
+    {
+      "address": "00b74a72",
+      "native": "00415550",
+      "function": "00b748e0"
+    },
+    {
+      "address": "00b74aa9",
+      "native": "004155b0",
+      "function": "00b748e0"
+    },
+    {
+      "address": "00b74ac6",
+      "native": "model+vtable58",
+      "function": "00b748e0",
+      "instruction": "call edx",
+      "resolved_native": "006ef890",
+      "contract": "current profile; camera,lod; RET8; concrete verified AL1 leaf or required derived service"
+    },
+    {
+      "address": "00b74afd",
+      "native": "00b72f80",
+      "function": "00b748e0"
+    },
+    {
+      "address": "00b74b48",
+      "native": "child+vtable20",
+      "function": "00b748e0",
+      "instruction": "call edx",
+      "resolved_native": null,
+      "contract": "all four context,lod,visibility,flags stack arguments; current derived dispatch required"
+    },
+    {
+      "address": "00b72fbb",
+      "native": "00b6db70",
+      "function": "00b72f80"
+    },
+    {
+      "address": "00b72fd2",
+      "native": "007c1180",
+      "function": "00b72f80"
+    },
+    {
+      "address": "00b72fda",
+      "native": "00b71530",
+      "function": "00b72f80"
+    },
+    {
+      "address": "00b73076",
+      "native": "00ce221c+IAT",
+      "function": "00b72f80",
+      "instruction": "call dword ptr [0xce221c]",
+      "contract": "Win32 InterlockedIncrement(actual cache+8), stdcall RET4; resulting count selects actual cache row"
+    },
+    {
+      "address": "00b730b2",
+      "native": "00b51a20",
+      "function": "00b72f80"
+    },
+    {
+      "address": "00b730bf",
+      "native": "00b1dff0",
+      "function": "00b72f80"
+    },
+    {
+      "address": "00b730de",
+      "native": "00ce221c+IAT",
+      "function": "00b72f80",
+      "instruction": "call dword ptr [0xce221c]",
+      "contract": "Win32 InterlockedIncrement(actual cache+8), stdcall RET4; resulting count selects actual cache row"
+    },
+    {
+      "address": "00b73114",
+      "native": "00b51a20",
+      "function": "00b72f80"
+    },
+    {
+      "address": "00b73121",
+      "native": "00b1dff0",
+      "function": "00b72f80"
+    },
+    {
+      "address": "00b73189",
+      "native": "00ce221c+IAT",
+      "function": "00b72f80",
+      "instruction": "call dword ptr [0xce221c]",
+      "contract": "Win32 InterlockedIncrement(actual cache+8), stdcall RET4; resulting count selects actual cache row"
+    },
+    {
+      "address": "00b731c1",
+      "native": "00b51a20",
+      "function": "00b72f80"
+    },
+    {
+      "address": "00b731ce",
+      "native": "00b1dff0",
+      "function": "00b72f80"
+    },
+    {
+      "address": "00b731ed",
+      "native": "00ce221c+IAT",
+      "function": "00b72f80",
+      "instruction": "call dword ptr [0xce221c]",
+      "contract": "Win32 InterlockedIncrement(actual cache+8), stdcall RET4; resulting count selects actual cache row"
+    },
+    {
+      "address": "00b73223",
+      "native": "00b51a20",
+      "function": "00b72f80"
+    },
+    {
+      "address": "00b73230",
+      "native": "00b1dff0",
+      "function": "00b72f80"
+    },
+    {
+      "address": "007c118d",
+      "native": "007bb620",
+      "function": "007c1180"
+    },
+    {
+      "address": "007c1192",
+      "native": "00bf7030",
+      "function": "007c1180"
+    },
+    {
+      "address": "007c11ae",
+      "native": "004142e0",
+      "function": "007c1180"
+    },
+    {
+      "address": "00b6e8d5",
+      "native": "00b6db70",
+      "function": "00b6e8c0"
+    },
+    {
+      "address": "00b6e8e9",
+      "native": "007c1180",
+      "function": "00b6e8c0"
+    },
+    {
+      "address": "00b51a7d",
+      "native": "00b6fcb0",
+      "function": "00b51a20"
+    },
+    {
+      "address": "00b51a8f",
+      "native": "model+vtable48",
+      "function": "00b51a20",
+      "instruction": "call eax",
+      "resolved_native": "00b6e8c0",
+      "contract": "no stack arguments; pending destination/matrix are for following point transform"
+    },
+    {
+      "address": "00b51a93",
+      "native": "004142e0",
+      "function": "00b51a20"
+    }
+  ],
+  "verification": {
+    "strict_build": "MSVC Win32 /MD /W4 /WX /O2 /fp:strict; source module and probe compiled; /MANIFEST:EMBED; PASS",
+    "standard_build": "scripts/build.ps1 Release PASS; existing reconstructed_math 1/1 PASS. New source not yet in CMake: root registration pending; module separately strict-compiled.",
+    "live_disk_bytes": {
+      "complete_spans": 18,
+      "global_spans": 6,
+      "equal": true,
+      "relocation_directory_size": 0
+    },
+    "fixture_cases": {
+      "total": 96,
+      "AF26A0": 40,
+      "B748E0": 32,
+      "B72F80": 24,
+      "x87_control_words": [
+        "007f",
+        "027f",
+        "037f",
+        "0e7f"
+      ],
+      "compared": [
+        "actual node/vertex/section/cache/entry bytes",
+        "x87 status/control",
+        "MXCSR",
+        "collection row identity/order",
+        "child context/LOD/visibility/flags"
+      ],
+      "limits": [
+        "B1DFF0 is a recording fixture service: its grouping/fade/batch/allocation body is NOT executed",
+        "Logical map/unmap use the existing real provider with absent physical owner and preexisting mapped+08 pointer",
+        "No stream constructor, registration, physical D3D lock, final draw, scene composition, original-caller ABI or game validation",
+        "Existing world/camera/frustum/CRT/mapping providers are shared boundaries in both compared executions",
+        "Finite ordinary render fixtures; arbitrary malformed/exceptional storage and hardware-fault unwind not tested"
+      ]
+    },
+    "cfg_stack_review": [
+      {
+        "address": "00af1c20",
+        "instruction_count": 27,
+        "context_stack_depths_checked": 27,
+        "last_instruction": "00af1c6c"
+      },
+      {
+        "address": "004142e0",
+        "instruction_count": 50,
+        "context_stack_depths_checked": 50,
+        "last_instruction": "00414361"
+      },
+      {
+        "address": "007bb620",
+        "instruction_count": 68,
+        "context_stack_depths_checked": 68,
+        "last_instruction": "007bb6d6"
+      },
+      {
+        "address": "00415550",
+        "instruction_count": 20,
+        "context_stack_depths_checked": 20,
+        "last_instruction": "0041558d"
+      },
+      {
+        "address": "00b6d810",
+        "instruction_count": 2,
+        "context_stack_depths_checked": 2,
+        "last_instruction": "00b6d816"
+      },
+      {
+        "address": "00b6dcb0",
+        "instruction_count": 2,
+        "context_stack_depths_checked": 2,
+        "last_instruction": "00b6dcb3"
+      },
+      {
+        "address": "007c1180",
+        "instruction_count": 31,
+        "context_stack_depths_checked": 31,
+        "last_instruction": "007c11d5"
+      },
+      {
+        "address": "00b6e8c0",
+        "instruction_count": 27,
+        "context_stack_depths_checked": 27,
+        "last_instruction": "00b6e922"
+      },
+      {
+        "address": "00b651e0",
+        "instruction_count": 79,
+        "context_stack_depths_checked": 79,
+        "last_instruction": "00b652c9"
+      },
+      {
+        "address": "00b71530",
+        "instruction_count": 25,
+        "context_stack_depths_checked": 25,
+        "last_instruction": "00b71580"
+      },
+      {
+        "address": "00b51a20",
+        "instruction_count": 46,
+        "context_stack_depths_checked": 46,
+        "last_instruction": "00b51aa8"
+      },
+      {
+        "address": "00b72f80",
+        "instruction_count": 243,
+        "context_stack_depths_checked": 243,
+        "last_instruction": "00b73258"
+      },
+      {
+        "address": "00b748e0",
+        "instruction_count": 175,
+        "context_stack_depths_checked": 175,
+        "last_instruction": "00b74b58"
+      },
+      {
+        "address": "00af26a0",
+        "instruction_count": 641,
+        "context_stack_depths_checked": 641,
+        "last_instruction": "00af3166"
+      }
+    ],
+    "scratch": "C:/Users/sqz269/bsp-at-traceline-render",
+    "probe_log": "C:/Users/sqz269/bsp-at-traceline-render/probe.log",
+    "current_root_replay": "build-probe.ps1 -CurrentRoot compiles probe.cpp ONLY and links current root bsp_core.lib and bsp_lua511.lib; pending root integration",
+    "verify_report_calls": {
+      "direct_rows_checked": 46,
+      "indirect_rows": 13,
+      "failed": 0,
+      "log": "C:/Users/sqz269/bsp-at-traceline-render/verify-calls.log"
+    }
+  },
+  "corrections": [
+    {
+      "was": "Ghidra FMUL ST1 could be rendered as FMUL ST0,ST1",
+      "is": "AF2E47 is DC C9: FMUL ST1,ST0; preserve half constant in ST0 for subsequent flare coordinates",
+      "evidence": "Original-byte case1 flare differential failed, opcode inspection corrected destination, all96 cases then passed."
+    },
+    {
+      "was": "A0 could be called a dedicated LOD mode because B748E0 tests its getter",
+      "is": "NativeNodeStorage producer names A0 notification_context; B6D810 is a pointer getter. Null controls the computed-LOD branch.",
+      "evidence": "include/bsp/native_node_construction.hpp and B6D810 MOV EAX,[ECX+A0]; RET."
+    },
+    {
+      "was": "Existing semantic renderentry/grouping projection was presumed sufficient for the actual render path",
+      "is": "B51A20 now writes actual28h entries; actual B1DFF0 is a required service and remains unreconstructed in this packet",
+      "evidence": "B51A20 complete body and B1DFF0 body/INSTANCE_GROUPING contract read; parent verified no actual provider exists."
+    }
+  ],
+  "required_services": [
+    {
+      "service": "current_14",
+      "contract": "current slot of SAME canonical FrameClock; actual D68D50+14=BEE050 returns current pair; source performs signed64 x87 ratio"
+    },
+    {
+      "service": "profile",
+      "contract": "nonmutating canonical lookup of CURRENT raw vtable; numeric image slots never called as host pointers"
+    },
+    {
+      "service": "other-derived virtual48/58/20",
+      "contract": "unread for arbitrary targets; exact original owner and all stack arguments forwarded; no synthesized success"
+    },
+    {
+      "service": "collect_entry_00b1dff0",
+      "contract": "actual context+10 command and actual cache row; full visibility/group/batch routing/allocation required; no copied InstanceRenderEntry or second queue"
+    },
+    {
+      "service": "logical_mapping",
+      "contract": "same actual stream and NativeLogicalBufferMappingContext; only B49980/B49A80 current profiles; unsupported profiles terminate before layout substitution"
+    }
+  ],
+  "game_validated": false,
+  "abi_compatible": false,
+  "permanent_tests_added": false,
+  "globals_verified": [
+    {
+      "address": "00d7a208",
+      "size": 4,
+      "bytes": "00000080",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d7a218",
+      "size": 4,
+      "bytes": "00000000",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d7a24c",
+      "size": 4,
+      "bytes": "0000803f",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d7a238",
+      "size": 4,
+      "bytes": "0ad7233c",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00ce4b48",
+      "size": 8,
+      "bytes": "0000000000e06f40",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d7a280",
+      "size": 8,
+      "bytes": "000000000000e03f",
+      "live_disk_equal": true
+    }
+  ],
+  "owned_files": [
+    "include/bsp/native_traceline_render.hpp",
+    "src/native_traceline_render.cpp",
+    "docs/NATIVE_TRACELINE_RENDER.md",
+    "reports/native_traceline_render.json"
+  ]
+}
