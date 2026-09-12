@@ -1,0 +1,457 @@
+{
+  "schema_version": 1,
+  "packet": "orch5_point_provider",
+  "ghidra": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "read_only": true,
+    "verification": "bsp wrappers verify project/program before every live query/export"
+  },
+  "status": "typed_actual_owner_population_and_partial_volume_producer_strict_win32_compile_and_focused_fixture_passed",
+  "source": "src/native_point_light_provider.cpp",
+  "header": "include/bsp/native_point_light_provider.hpp",
+  "documentation": "docs/NATIVE_POINT_LIGHT_PROVIDER.md",
+  "routines": [
+    {
+      "address": "00b7b090",
+      "name": "populate_native_point_light_if_unlinked_00b7b090",
+      "body_inclusive": [
+        "00b7b090",
+        "00b7b0a5"
+      ],
+      "abi": "ECX light; stack root; RET4 at B7B0A3",
+      "coverage": "complete",
+      "contract": "Any nonzero current reverse count skips population; no retain, recompute, dedup or scene registration."
+    },
+    {
+      "address": "00b72140",
+      "name": "populate_native_root_point_light_00b72140",
+      "body_inclusive": [
+        "00b72140",
+        "00b72163"
+      ],
+      "abi": "ECX root; stack raw light; RET4 at B72161",
+      "coverage": "complete",
+      "contract": "Actual root+0C, current next3C after each visit."
+    },
+    {
+      "address": "00b6ef20",
+      "name": "populate_native_node_point_light_00b6ef20",
+      "body_inclusive": [
+        "00b6ef20",
+        "00b6f086"
+      ],
+      "abi": "ECX node; stack raw light; RET4 at B6F084",
+      "coverage": "complete traversal with required current type/bounds dispatch",
+      "contract": "Group prune distance>sum; other accepted type append distance<sum; double getter, live child-next, shared actual physical arrays."
+    },
+    {
+      "address": "00b6e8c0",
+      "name": "native_model_population_sphere_00b6e8c0",
+      "body_inclusive": [
+        "00b6e8c0",
+        "00b6e922"
+      ],
+      "abi": "ECX node; EAX node+13C; RET",
+      "coverage": "complete raw storage adapter within existing affine-sphere numerical contract",
+      "contract": "Actual local08/worldF0/cache13C. Existing finite inputs and CW007F/027F kernel boundary."
+    },
+    {
+      "address": "00b8f100",
+      "name": "native_point_light_supported_world_sphere",
+      "body_inclusive": [
+        "00b8f100",
+        "00b8f18b"
+      ],
+      "abi": "ECX group; EAX group+13C; RET",
+      "coverage": "partial_projection",
+      "covered": "cached branch and byte175==0 static sphere branch",
+      "excluded_inclusive": [
+        [
+          "00b8f118",
+          "00b8f12e"
+        ]
+      ],
+      "dependency": "B8EBE0 dynamic aggregate and B8E9F0 merge unavailable; reject explicitly."
+    },
+    {
+      "address": "00b0ca40",
+      "name": "initialize_native_particle_point_light_volume_00b0ca40_fragment",
+      "body_inclusive": [
+        "00b0ca40",
+        "00b0cc08"
+      ],
+      "abi": "ECX particle; six stack DWORDs; RET18 at B0CC06",
+      "coverage": "partial_projection",
+      "covered_inclusive": [
+        "00b0cae1",
+        "00b0cba6"
+      ],
+      "excluded_inclusive": [
+        [
+          "00b0ca40",
+          "00b0cae0"
+        ],
+        [
+          "00b0cba7",
+          "00b0cc08"
+        ]
+      ],
+      "contract": "Post-virtual18 raw light60 guard, same emitter transform/relative1B0, actual XYZ1EC/1F0/1F4 and radius1F8; current raw light reloads; radius minimum COMISS/JA."
+    }
+  ],
+  "calls": [
+    {
+      "address": "00b7b09e",
+      "native": "00b72140",
+      "function": "00b7b090",
+      "contract": "actual root population"
+    },
+    {
+      "address": "00b72153",
+      "native": "00b6ef20",
+      "function": "00b72140",
+      "contract": "visit root"
+    },
+    {
+      "address": "00b6ef2c",
+      "native": "00b8e600",
+      "function": "00b6ef20",
+      "contract": "load group0109032C"
+    },
+    {
+      "address": "00b6ef7d",
+      "native": "00419440",
+      "function": "00b6ef20",
+      "contract": "group length"
+    },
+    {
+      "address": "00b6efb7",
+      "native": "00b74310",
+      "function": "00b6ef20",
+      "contract": "load object01090034"
+    },
+    {
+      "address": "00b6efcc",
+      "native": "00b8f920",
+      "function": "00b6ef20",
+      "contract": "load current01090344"
+    },
+    {
+      "address": "00b6efe1",
+      "native": "00b8f9c0",
+      "function": "00b6ef20",
+      "contract": "load current010903C8"
+    },
+    {
+      "address": "00b6f02e",
+      "native": "00419440",
+      "function": "00b6ef20",
+      "contract": "non-group length"
+    },
+    {
+      "address": "00b6f05c",
+      "native": "00b6eed0",
+      "function": "00b6ef20",
+      "contract": "actual forward then reciprocal append"
+    },
+    {
+      "address": "00b6f073",
+      "native": "00b6ef20",
+      "function": "00b6ef20",
+      "contract": "current child recursion"
+    },
+    {
+      "address": "00b6e8d5",
+      "native": "00b6db70",
+      "function": "00b6e8c0",
+      "contract": "world refresh"
+    },
+    {
+      "address": "00b6e8e9",
+      "native": "007c1180",
+      "function": "00b6e8c0",
+      "contract": "existing affine sphere kernel"
+    },
+    {
+      "address": "00b8f118",
+      "native": "00b8ebe0",
+      "function": "00b8f100",
+      "contract": "unimplemented dynamic aggregate"
+    },
+    {
+      "address": "00b8f13e",
+      "native": "00b6db70",
+      "function": "00b8f100",
+      "contract": "static group world refresh"
+    },
+    {
+      "address": "00b8f152",
+      "native": "007c1180",
+      "function": "00b8f100",
+      "contract": "static group affine sphere"
+    },
+    {
+      "address": "00b0cb08",
+      "native": "00b6db70",
+      "function": "00b0ca40",
+      "contract": "relative emitter world refresh"
+    },
+    {
+      "address": "00b0cba7",
+      "native": "0072b740",
+      "function": "00b0ca40",
+      "contract": "excluded shared synchronization owner"
+    },
+    {
+      "address": "00b0cbe2",
+      "native": "00b7b090",
+      "function": "00b0ca40",
+      "contract": "excluded call-site synchronization composition"
+    },
+    {
+      "address": "00874147",
+      "native": "00b7bd30",
+      "function": "008740e0",
+      "contract": "discovery: allocation"
+    },
+    {
+      "address": "0087419c",
+      "native": "00b7c710",
+      "function": "008740e0",
+      "contract": "discovery: actual light ctor"
+    },
+    {
+      "address": "00874212",
+      "native": "004b62e0",
+      "function": "008740e0",
+      "contract": "discovery: base diffuse"
+    },
+    {
+      "address": "0087391f",
+      "native": "00b7b090",
+      "function": "008738b0",
+      "contract": "discovery: no XYZ1EC producer before population"
+    }
+  ],
+  "indirect_steps": [
+    {
+      "site": "00b6ef36",
+      "function": "00b6ef20",
+      "virtual_offset": "0c",
+      "contract": "current predicate for group token"
+    },
+    {
+      "site": "00b6ef47",
+      "function": "00b6ef20",
+      "virtual_offset": "48",
+      "contract": "current group sphere before capture/length"
+    },
+    {
+      "site": "00b6ef8d",
+      "function": "00b6ef20",
+      "virtual_offset": "48",
+      "contract": "current group sphere after length"
+    },
+    {
+      "site": "00b6efc1",
+      "function": "00b6ef20",
+      "virtual_offset": "0c",
+      "contract": "current predicate for object token"
+    },
+    {
+      "site": "00b6efd6",
+      "function": "00b6ef20",
+      "virtual_offset": "0c",
+      "contract": "current predicate for token01090344"
+    },
+    {
+      "site": "00b6efeb",
+      "function": "00b6ef20",
+      "virtual_offset": "0c",
+      "contract": "current predicate for token010903C8"
+    },
+    {
+      "site": "00b6eff8",
+      "function": "00b6ef20",
+      "virtual_offset": "48",
+      "contract": "current non-group sphere before capture/length"
+    },
+    {
+      "site": "00b6f03e",
+      "function": "00b6ef20",
+      "virtual_offset": "48",
+      "contract": "current non-group sphere after length"
+    }
+  ],
+  "producer_evidence": [
+    {
+      "function": "00b0ca40",
+      "span_inclusive": [
+        "00b0caf7",
+        "00b0cba6"
+      ],
+      "fields": {
+        "center_xyz": [
+          "1ec",
+          "1f0",
+          "1f4"
+        ],
+        "radius": "1f8"
+      },
+      "minimum_word": {
+        "address": "00d7a238",
+        "value": "3c23d70a",
+        "meaning": "0.01f; implementation borrows current word"
+      },
+      "details": "FLD/FSTP absolute or world-relative coordinates; all relative sums precede stores; minimum MOVSS before Z store; COMISS/JA means unordered radius selects minimum."
+    },
+    {
+      "function": "008740e0",
+      "span_inclusive": [
+        "00874207",
+        "00874270"
+      ],
+      "details": "Initializes colors and radius but never centerXYZ1EC; not selected as Text provider."
+    },
+    {
+      "function": "008738b0",
+      "span_inclusive": [
+        "008738c0",
+        "0087398e"
+      ],
+      "details": "Node virtual30 then B7B090 then radius/lifetime. Node transform does not prove separate PointLight test-center initialization."
+    }
+  ],
+  "unresolved": [
+    "Real Text source Model resource/geometry/provider selected AB9D75 and which caller populates it.",
+    "Full particle initializers AF90A0/B08F60/B0B6A0 and B0CA40 earlier fields/current virtual18.",
+    "B0CA40 original shared lock and post-fragment composition; new calls must run at actual caller synchronization point.",
+    "B8EBE0 dynamic Group aggregation/B8E9F0 merge; other current virtual48 profiles.",
+    "Effective render light colors/specular/scales, renderer projection, actual illuminated Text.",
+    "Native malformed-memory/SEH and original-byte execution."
+  ],
+  "missing_bodies": [
+    {
+      "entry": "008721a0",
+      "inclusive": [
+        "008721a0",
+        "008721b1"
+      ],
+      "observed_live_defined": false,
+      "installed_and_ghidra_hex": "0f57c00f2f41207206b801000000c333c0c3",
+      "contract": "dynamic-effect expiry predicate uses COMISS zero versus owner20; RET",
+      "implemented": false
+    },
+    {
+      "entry": "00b7ab50",
+      "inclusive": [
+        "00b7ab50",
+        "00b7ab55"
+      ],
+      "observed_live_defined": false,
+      "installed_and_ghidra_hex": "a1c0010901c3",
+      "contract": "current PointLight type name word010901C0 getter",
+      "implemented": false
+    }
+  ],
+  "raw_call_gaps": [],
+  "corrections": [
+    {
+      "was": "Constructor candidates could be Text-provider routes",
+      "is": "008740E0 is dynamic-effect owner; AF90A0/B08F60/B0B6A0 particle; BC0510 lightning; Text association not proven",
+      "evidence": "callee bodies, literal names, physical B7B090 caller chain"
+    },
+    {
+      "was": "Node world position could supply PointLight1EC spatial-test center",
+      "is": "Distinct raw fields; B0CA40 directly produces center1EC while 8738B0 only writes Node transform",
+      "evidence": "0087390E virtual30, B6DAE0 world+120 writes, B0CB4E..B0CB84 actual1EC stores"
+    },
+    {
+      "was": "Fixture root head should clear after prepend-only registration",
+      "is": "Fixture must supply consistent native root-list+A4 backlink as well as head/siblings",
+      "evidence": "B721F0 only prepends; B6DFA0 uses node+A4 to unlink root; corrected fixture passed"
+    },
+    {
+      "was": "Initial compile asm variable out",
+      "is": "Renamed to result_values",
+      "evidence": "MSVC C4405 reserved assembler keyword; strict compile passed after identifier correction"
+    }
+  ],
+  "validation": {
+    "compile": {
+      "result": "passed",
+      "target": "MSVC Win32",
+      "flags": "/std:c++17 /W4 /WX /O2 /MD /EHsc /fp:strict",
+      "translation_units": [
+        "src/native_point_light_provider.cpp"
+      ]
+    },
+    "fixture": {
+      "result": "passed",
+      "source": "local/point_provider_probe.cpp",
+      "runner": "local/point_provider_compile.ps1",
+      "executable": "local/point_provider_probe.exe",
+      "link": "new object + parent orch5-20260911 combined bsp_core.lib and actual CRT/Win32 services; /MANIFEST:EMBED",
+      "checks": [
+        "actual PointLight200h and Model188h pool owners",
+        "absolute/relative XYZ and unordered radius clamp",
+        "raw Model local08/worldF0/cache13C refresh",
+        "strict tangent exclusion",
+        "actual root population and nonzero guard",
+        "duplicate raw clone identity with reciprocal arrays",
+        "unchanged native references during link and clone",
+        "node-first reciprocal cleanup followed by light-first forward cleanup and terminal pool return"
+      ],
+      "exclusions": [
+        "original native byte execution",
+        "dynamic Group aggregate",
+        "original synchronization or particle dispatch",
+        "Text/runtime/render/game"
+      ],
+      "log": "local/point_provider_validation.log"
+    },
+    "report_calls": "passed: 22 exact numeric call rows; 0 failed",
+    "combined_build": "Integrator registers source and runs scripts/build.ps1 after merge. Worker source/probe compile is not combined build."
+  },
+  "integration": {
+    "sources": [
+      "src/native_point_light_provider.cpp"
+    ],
+    "ghidra_mutations": "none; integrator owns annotations",
+    "cMake_edited": false
+  },
+  "hashes": {
+    "include/bsp/native_point_light_provider.hpp": "0868cc17ee0e50857bc87a954c778748e39eb2ea41fd4b70796f696a3daa2356",
+    "src/native_point_light_provider.cpp": "ea9c83c470db8fb1a4260244d63934a4889fd6cff90429a3f2ac08d99f35d9ac",
+    "docs/NATIVE_POINT_LIGHT_PROVIDER.md": "1cb2db570dbf0940661317e7dcf4a6193a2be6e8278c38bad4d16cb22e9de7d1",
+    "local/point_provider_probe.cpp": "26e7e102190cda16bebf20b1513c9e4d95c8a7acd852abd67449b3d30d0225ba",
+    "local/point_provider_compile.ps1": "72f5119e7f5b4a96a916d412cd3c2c71bde2cc51d03b36fc9ebaba4e4c429143",
+    "local/native_point_light_provider.obj": "1f9ee3dcf29a3f4a3f7ffd4d5f6a450fe372219ec3a7089d0cdffa22a028b6ba",
+    "local/point_provider_probe.exe": "b5de6753d04d7c8e36c1c701ee4aa2ac32640cd2cce4ca78735dbdbcae20782b",
+    "local/point_provider_validation.log": "7f8249538dc40fb97939b22060ec9408c95ebfa5021b960207e558c8f35ef1e1"
+  },
+  "annotation_plan": [
+    {
+      "address": "00b7b090",
+      "was": "FUN_00b7b090",
+      "is": "BSP_PointLight_PopulateIfUnlinked"
+    },
+    {
+      "address": "00b72140",
+      "was": "FUN_00b72140",
+      "is": "BSP_RenderRoot_PopulatePointLight"
+    },
+    {
+      "address": "00b6ef20",
+      "was": "FUN_00b6ef20",
+      "is": "BSP_Node_PopulateIntersectingPointLight"
+    },
+    {
+      "address": "00b8f100",
+      "was": "FUN_00b8f100",
+      "is": "BSP_Group_GetWorldSphere"
+    }
+  ]
+}
