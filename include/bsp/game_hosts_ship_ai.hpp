@@ -161,7 +161,7 @@ struct GameShipAiRow {
     unsigned long long path_search_ticks{0};
     unsigned long long path_plan_swaps{0};
     unsigned long long path_points{0};       // 009E3C00 calls that produced a point
-    unsigned long long path_corner_arms{0};  // 009E3F1A, the unprojected arm
+    unsigned long long path_corner_arms{0};  // follower exits through CornerTangent
     unsigned long long nav_output_blocks{0}; // 009EE671 bodies
     unsigned long long nav_bearings{0};      // 009EE813, the bearing was taken
     float path_point_x{0.0f};                // record+8h

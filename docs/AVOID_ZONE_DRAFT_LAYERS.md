@@ -201,3 +201,15 @@ runtime physics integration or game validation. Call rows are checked in
 ## Integration review correction
 
 The descriptor projection returns the final create-body inputs. Besides stores00424204..004243E5, it consumes the shape-vector end increment at0042445C and flags OR at00424463 (through00424469). The intervening native vector execution remains unresolved; coverage is discontiguous. An independent assembly review accepted the implemented stages after this coverage correction. Nine false free-call fallthrough gaps in00423C50 were repaired under the Ghidra write lock;00424D00 already had no remaining call gap. See reports/avoid_zone_draft_flow_repair.json.
+
+## Correction from docs/AVOID_ZONE_POLYGON_PARTITION.md and docs/AVOID_ZONE_DYN_HULL.md
+
+The ordered004F6F20 partitioner and constructor-reached Dyn hull pipeline,
+vertex-count getter, retained deep copy and teardown are now reconstructed.
+Original-byte fixtures matched all706 extruded pieces from the installed
+Marshall scene. Scene transforms and zone construction in that fixture use
+existing reconstructed code; only the partition and hull kernels were compared
+against original execution. The manager list integration, native world owner
+and collision-body creation remain separate dependencies. This does not make
+the partial00423C50 projection a complete world-physics implementation.
+See reports/avoid_zone_installed_geometry.json for input provenance.

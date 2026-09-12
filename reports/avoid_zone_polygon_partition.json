@@ -1,0 +1,740 @@
+{
+  "packet": "orch6_polygon_partition_d",
+  "worker": "agent/orch6-polygon-partition-d",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "source": "src/avoid_zone_polygon_partition.cpp",
+  "documentation": "docs/AVOID_ZONE_POLYGON_PARTITION.md",
+  "routines": [
+    {
+      "address": "004f6f20",
+      "body_end_inclusive": "004f7173",
+      "original_abi": "ECX destination68h; stack point-vector pointer,float; EAX destination; RET8",
+      "coverage": "complete valid-container algorithm; semantic C++ ownership replaces native allocator/debug-iterator/SEH ABI",
+      "implementation": "avoid_zone_polygon_partition_004f6f20",
+      "proposed_name": "BSP_PolygonPartition_ConstructOrderedPieces",
+      "old_name": "FUN_004f6f20"
+    },
+    {
+      "address": "004f65f0",
+      "body_end_inclusive": "004f66e0",
+      "original_abi": "ECX partitioner; plain RET",
+      "coverage": "complete cyclic link initialization with semantic vector allocation",
+      "implementation": "PartitionState::PartitionState",
+      "proposed_name": "BSP_PolygonPartition_InitializeLinks",
+      "old_name": "FUN_004f65f0"
+    },
+    {
+      "address": "004f6560",
+      "body_end_inclusive": "004f65ec",
+      "original_abi": "ECX partitioner; AL success; plain RET",
+      "coverage": "complete seed and current-piece initialization",
+      "implementation": "PartitionState::select_seed",
+      "proposed_name": "BSP_PolygonPartition_StartPiece",
+      "old_name": "FUN_004f6560"
+    },
+    {
+      "address": "004f4ec0",
+      "body_end_inclusive": "004f51fa",
+      "original_abi": "ECX partitioner; AL found; plain RET",
+      "coverage": "complete greatest-angle admissible seed selection",
+      "implementation": "PartitionState::select_seed",
+      "proposed_name": "BSP_PolygonPartition_SelectAdmissibleSeed",
+      "old_name": "FUN_004f4ec0"
+    },
+    {
+      "address": "004f5500",
+      "body_end_inclusive": "004f5783",
+      "original_abi": "ECX partitioner; EAX boolean; plain RET",
+      "coverage": "complete",
+      "implementation": "PartitionState::extend_previous",
+      "proposed_name": "BSP_PolygonPartition_CanExtendPrevious",
+      "old_name": "FUN_004f5500"
+    },
+    {
+      "address": "004f5790",
+      "body_end_inclusive": "004f5a09",
+      "original_abi": "ECX partitioner; EAX boolean; plain RET",
+      "coverage": "complete",
+      "implementation": "PartitionState::extend_next",
+      "proposed_name": "BSP_PolygonPartition_CanExtendNext",
+      "old_name": "FUN_004f5790"
+    },
+    {
+      "address": "004f4cd0",
+      "body_end_inclusive": "004f4eb2",
+      "original_abi": "ECX partitioner; five uint32 stack indices; EAX boolean; RET14h",
+      "coverage": "complete",
+      "implementation": "PartitionState::triangle_empty",
+      "proposed_name": "BSP_PolygonPartition_ActiveChainOutsideTriangle",
+      "old_name": "FUN_004f4cd0"
+    },
+    {
+      "address": "004f4c60",
+      "body_end_inclusive": "004f4ccb",
+      "original_abi": "six float stack words; ST0 result; RET18h",
+      "coverage": "complete with existing clamped asin boundary",
+      "implementation": "partition_angle",
+      "proposed_name": "BSP_Geometry_NormalizedSignedAngle2D",
+      "old_name": "FUN_004f4c60"
+    },
+    {
+      "address": "004f2f40",
+      "body_end_inclusive": "004f2fad",
+      "original_abi": "ECX vector; plain RET; reconstruction adds CRT access EDX",
+      "coverage": "complete with actual CRT sqrt access",
+      "implementation": "normalize_partition_vector",
+      "proposed_name": "BSP_Geometry_NormalizeVector2DWithCutoff",
+      "old_name": "FUN_004f2f40"
+    },
+    {
+      "address": "004f3ef0",
+      "body_end_inclusive": "004f400c",
+      "original_abi": "ECX remaining-weight output; EDX first-weight output; eight float words plus output pointer on stack; RET24h",
+      "coverage": "complete x87 kernel",
+      "implementation": "partition_barycentric",
+      "proposed_name": "BSP_Geometry_BarycentricCoordinates2D",
+      "old_name": "FUN_004f3ef0"
+    },
+    {
+      "address": "004f6710",
+      "body_end_inclusive": "004f6792",
+      "original_abi": "ECX native8-byte-element vector; stack source pointer; RET4",
+      "coverage": "complete valid-container append semantics; native allocation/growth/debug-iterator/SEH execution excluded",
+      "implementation": "PartitionState::run",
+      "proposed_name": "BSP_PolygonPartition_AppendCutPair",
+      "old_name": "FUN_004f6710"
+    },
+    {
+      "address": "004f6e90",
+      "body_end_inclusive": "004f6f12",
+      "original_abi": "ECX native16-byte-vector-element vector; stack source pointer; RET4",
+      "coverage": "complete valid-container deep-copy append semantics; native allocation/growth/debug-iterator/SEH execution excluded",
+      "implementation": "PartitionState::run",
+      "proposed_name": "BSP_PolygonPartition_AppendPieceCopy",
+      "old_name": "FUN_004f6e90"
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "004f6f8e",
+      "native": "004f65f0",
+      "containing_function": "004f6f20"
+    },
+    {
+      "address": "004f6fa6",
+      "native": "004f6560",
+      "containing_function": "004f6f20"
+    },
+    {
+      "address": "004f6fcc",
+      "native": "004f5500",
+      "containing_function": "004f6f20"
+    },
+    {
+      "address": "004f6fee",
+      "native": "00bf6713",
+      "containing_function": "004f6f20"
+    },
+    {
+      "address": "004f7003",
+      "native": "00bf6713",
+      "containing_function": "004f6f20"
+    },
+    {
+      "address": "004f7012",
+      "native": "00441f30",
+      "containing_function": "004f6f20"
+    },
+    {
+      "address": "004f7022",
+      "native": "004f5790",
+      "containing_function": "004f6f20"
+    },
+    {
+      "address": "004f7044",
+      "native": "00bf6713",
+      "containing_function": "004f6f20"
+    },
+    {
+      "address": "004f7054",
+      "native": "00442190",
+      "containing_function": "004f6f20"
+    },
+    {
+      "address": "004f707b",
+      "native": "004f6710",
+      "containing_function": "004f6f20"
+    },
+    {
+      "address": "004f7096",
+      "native": "00bf6713",
+      "containing_function": "004f6f20"
+    },
+    {
+      "address": "004f70ba",
+      "native": "00bf6713",
+      "containing_function": "004f6f20"
+    },
+    {
+      "address": "004f70cc",
+      "native": "004f6e90",
+      "containing_function": "004f6f20"
+    },
+    {
+      "address": "004f70f5",
+      "native": "00bf6713",
+      "containing_function": "004f6f20"
+    },
+    {
+      "address": "004f7102",
+      "native": "00bf6713",
+      "containing_function": "004f6f20"
+    },
+    {
+      "address": "004f7129",
+      "native": "00bf67a7",
+      "containing_function": "004f6f20"
+    },
+    {
+      "address": "004f6618",
+      "native": "00492210",
+      "containing_function": "004f65f0"
+    },
+    {
+      "address": "004f6628",
+      "native": "00492210",
+      "containing_function": "004f65f0"
+    },
+    {
+      "address": "004f6647",
+      "native": "00bf6713",
+      "containing_function": "004f65f0"
+    },
+    {
+      "address": "004f666f",
+      "native": "00bf6713",
+      "containing_function": "004f65f0"
+    },
+    {
+      "address": "004f6696",
+      "native": "00bf6713",
+      "containing_function": "004f65f0"
+    },
+    {
+      "address": "004f66c1",
+      "native": "00bf6713",
+      "containing_function": "004f65f0"
+    },
+    {
+      "address": "004f6564",
+      "native": "004f4ec0",
+      "containing_function": "004f6560"
+    },
+    {
+      "address": "004f658c",
+      "native": "00bf6713",
+      "containing_function": "004f6560"
+    },
+    {
+      "address": "004f65b6",
+      "native": "00bf6713",
+      "containing_function": "004f6560"
+    },
+    {
+      "address": "004f65d0",
+      "native": "00442190",
+      "containing_function": "004f6560"
+    },
+    {
+      "address": "004f65d8",
+      "native": "00442190",
+      "containing_function": "004f6560"
+    },
+    {
+      "address": "004f65e0",
+      "native": "00442190",
+      "containing_function": "004f6560"
+    },
+    {
+      "address": "004f4efc",
+      "native": "00bf6713",
+      "containing_function": "004f4ec0"
+    },
+    {
+      "address": "004f4f1d",
+      "native": "00bf6713",
+      "containing_function": "004f4ec0"
+    },
+    {
+      "address": "004f4f57",
+      "native": "00bf6713",
+      "containing_function": "004f4ec0"
+    },
+    {
+      "address": "004f4f8e",
+      "native": "00bf6713",
+      "containing_function": "004f4ec0"
+    },
+    {
+      "address": "004f4faf",
+      "native": "00bf6713",
+      "containing_function": "004f4ec0"
+    },
+    {
+      "address": "004f5004",
+      "native": "00bf7030",
+      "containing_function": "004f4ec0"
+    },
+    {
+      "address": "004f5075",
+      "native": "00bf7030",
+      "containing_function": "004f4ec0"
+    },
+    {
+      "address": "004f50c8",
+      "native": "0042cf10",
+      "containing_function": "004f4ec0"
+    },
+    {
+      "address": "004f50f9",
+      "native": "00bf6713",
+      "containing_function": "004f4ec0"
+    },
+    {
+      "address": "004f511e",
+      "native": "00bf6713",
+      "containing_function": "004f4ec0"
+    },
+    {
+      "address": "004f513e",
+      "native": "00bf6713",
+      "containing_function": "004f4ec0"
+    },
+    {
+      "address": "004f515f",
+      "native": "00bf6713",
+      "containing_function": "004f4ec0"
+    },
+    {
+      "address": "004f517a",
+      "native": "00bf6713",
+      "containing_function": "004f4ec0"
+    },
+    {
+      "address": "004f519c",
+      "native": "004f4cd0",
+      "containing_function": "004f4ec0"
+    },
+    {
+      "address": "004f51ce",
+      "native": "00bf6713",
+      "containing_function": "004f4ec0"
+    },
+    {
+      "address": "004f551d",
+      "native": "00bf6713",
+      "containing_function": "004f5500"
+    },
+    {
+      "address": "004f5541",
+      "native": "00bf6713",
+      "containing_function": "004f5500"
+    },
+    {
+      "address": "004f5575",
+      "native": "00bf6713",
+      "containing_function": "004f5500"
+    },
+    {
+      "address": "004f55a6",
+      "native": "00bf6713",
+      "containing_function": "004f5500"
+    },
+    {
+      "address": "004f55ca",
+      "native": "00bf6713",
+      "containing_function": "004f5500"
+    },
+    {
+      "address": "004f55e5",
+      "native": "004f4c60",
+      "containing_function": "004f5500"
+    },
+    {
+      "address": "004f561b",
+      "native": "00bf6713",
+      "containing_function": "004f5500"
+    },
+    {
+      "address": "004f563f",
+      "native": "00bf6713",
+      "containing_function": "004f5500"
+    },
+    {
+      "address": "004f5673",
+      "native": "00bf6713",
+      "containing_function": "004f5500"
+    },
+    {
+      "address": "004f56a4",
+      "native": "00bf6713",
+      "containing_function": "004f5500"
+    },
+    {
+      "address": "004f56c8",
+      "native": "00bf6713",
+      "containing_function": "004f5500"
+    },
+    {
+      "address": "004f56e3",
+      "native": "004f4c60",
+      "containing_function": "004f5500"
+    },
+    {
+      "address": "004f5715",
+      "native": "00bf6713",
+      "containing_function": "004f5500"
+    },
+    {
+      "address": "004f5733",
+      "native": "00bf6713",
+      "containing_function": "004f5500"
+    },
+    {
+      "address": "004f5754",
+      "native": "00bf6713",
+      "containing_function": "004f5500"
+    },
+    {
+      "address": "004f5773",
+      "native": "004f4cd0",
+      "containing_function": "004f5500"
+    },
+    {
+      "address": "004f57ac",
+      "native": "00bf6713",
+      "containing_function": "004f5790"
+    },
+    {
+      "address": "004f57d0",
+      "native": "00bf6713",
+      "containing_function": "004f5790"
+    },
+    {
+      "address": "004f5804",
+      "native": "00bf6713",
+      "containing_function": "004f5790"
+    },
+    {
+      "address": "004f5835",
+      "native": "00bf6713",
+      "containing_function": "004f5790"
+    },
+    {
+      "address": "004f5859",
+      "native": "00bf6713",
+      "containing_function": "004f5790"
+    },
+    {
+      "address": "004f5874",
+      "native": "004f4c60",
+      "containing_function": "004f5790"
+    },
+    {
+      "address": "004f58a9",
+      "native": "00bf6713",
+      "containing_function": "004f5790"
+    },
+    {
+      "address": "004f58cd",
+      "native": "00bf6713",
+      "containing_function": "004f5790"
+    },
+    {
+      "address": "004f5901",
+      "native": "00bf6713",
+      "containing_function": "004f5790"
+    },
+    {
+      "address": "004f5932",
+      "native": "00bf6713",
+      "containing_function": "004f5790"
+    },
+    {
+      "address": "004f5956",
+      "native": "00bf6713",
+      "containing_function": "004f5790"
+    },
+    {
+      "address": "004f5971",
+      "native": "004f4c60",
+      "containing_function": "004f5790"
+    },
+    {
+      "address": "004f59a3",
+      "native": "00bf6713",
+      "containing_function": "004f5790"
+    },
+    {
+      "address": "004f59c1",
+      "native": "00bf6713",
+      "containing_function": "004f5790"
+    },
+    {
+      "address": "004f59de",
+      "native": "00bf6713",
+      "containing_function": "004f5790"
+    },
+    {
+      "address": "004f59fa",
+      "native": "004f4cd0",
+      "containing_function": "004f5790"
+    },
+    {
+      "address": "004f4d09",
+      "native": "00bf6713",
+      "containing_function": "004f4cd0"
+    },
+    {
+      "address": "004f4d41",
+      "native": "00bf6713",
+      "containing_function": "004f4cd0"
+    },
+    {
+      "address": "004f4d83",
+      "native": "00bf6713",
+      "containing_function": "004f4cd0"
+    },
+    {
+      "address": "004f4dc3",
+      "native": "00bf6713",
+      "containing_function": "004f4cd0"
+    },
+    {
+      "address": "004f4e42",
+      "native": "004f3ef0",
+      "containing_function": "004f4cd0"
+    },
+    {
+      "address": "004f4e83",
+      "native": "00bf6713",
+      "containing_function": "004f4cd0"
+    },
+    {
+      "address": "004f4c7d",
+      "native": "004f2f40",
+      "containing_function": "004f4c60"
+    },
+    {
+      "address": "004f4c9e",
+      "native": "004f2f40",
+      "containing_function": "004f4c60"
+    },
+    {
+      "address": "004f4cc1",
+      "native": "0042cf10",
+      "containing_function": "004f4c60"
+    },
+    {
+      "address": "004f2f77",
+      "native": "00bf7030",
+      "containing_function": "004f2f40"
+    },
+    {
+      "address": "004f6759",
+      "native": "004f5ad0",
+      "containing_function": "004f6710"
+    },
+    {
+      "address": "004f6773",
+      "native": "00bf6713",
+      "containing_function": "004f6710"
+    },
+    {
+      "address": "004f6786",
+      "native": "004f6410",
+      "containing_function": "004f6710"
+    },
+    {
+      "address": "004f6ed9",
+      "native": "004f6930",
+      "containing_function": "004f6e90"
+    },
+    {
+      "address": "004f6ef3",
+      "native": "00bf6713",
+      "containing_function": "004f6e90"
+    },
+    {
+      "address": "004f6f06",
+      "native": "004f6e00",
+      "containing_function": "004f6e90"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "decompiler first two004F4CD0 arguments are floats; first argument remains traversal index",
+      "is": "five uint32 index arguments; first argument stack slot becomes barycentric output",
+      "evidence": "004F4CD4/CD8 integer compares;004F4E35/E39 output register pointers;004F4EA4 RET14h"
+    },
+    {
+      "was": "seed is restricted to positive angles",
+      "is": "strict greatest score from initial negative FLT_MAX, including negative angles",
+      "evidence": "00D7A244 live bytes FF FF 7F FF;004F4EDC store;004F50D9/DD comparison"
+    },
+    {
+      "was": "normalization near-zero divisor is zero or one",
+      "is": "double1e-5 rounded to binary32",
+      "evidence": "00CE3C70 live bytes F1 68 E3 88 B5 F8 E4 3E;004F2F88/8E"
+    }
+  ],
+  "unresolved": [
+    "native vector allocator/debug-iterator/growth/SEH binary compatibility",
+    "whole-CRT exceptional-input parity",
+    "authored-scene runtime use",
+    "Dyn hull/world body creation"
+  ],
+  "no_ghidra_function": [],
+  "false_free_flow_gaps": [],
+  "abi_compatible": false,
+  "game_validated": false,
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "status": "passed",
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential"
+      ],
+      "ctest_passed": 2,
+      "ctest_failed": 0,
+      "native_seeds_verified": true,
+      "log": "local/polygon_partition_build.log"
+    },
+    "native_differential": {
+      "status": "passed",
+      "cases": 939,
+      "pieces": 8840,
+      "cuts": 7904,
+      "seed_failure_returns": 1,
+      "x87_rounding_modes": 4,
+      "comparison": "exact ordered piece indices, ordered cuts, remaining count",
+      "native_image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "native_spans": [
+        {
+          "start": "004f6f20",
+          "end_inclusive": "004f7173",
+          "length": 596,
+          "sha256": "31b38577dad561bc3409765ae1c8353ca95dead193ad7cc8e0b1dd77678979ed",
+          "live_ghidra_matches_installed_before_fixture_relocation": true
+        },
+        {
+          "start": "004f5500",
+          "end_inclusive": "004f5783",
+          "length": 644,
+          "sha256": "815c137599f8474e730def9f889cde1f06afbba2850f677ddbcd0a50e81b51d4",
+          "live_ghidra_matches_installed_before_fixture_relocation": true
+        },
+        {
+          "start": "004f5790",
+          "end_inclusive": "004f5a09",
+          "length": 634,
+          "sha256": "f4323cebff0ab19dac6ddde95283d16c21af618df2fdec75cb718cb0d0b4129e",
+          "live_ghidra_matches_installed_before_fixture_relocation": true
+        },
+        {
+          "start": "004f6560",
+          "end_inclusive": "004f65ec",
+          "length": 141,
+          "sha256": "73198eb120af9039cc9eccc9f0eb5006036c212c6ba67cb0b2475aa88a0f501a",
+          "live_ghidra_matches_installed_before_fixture_relocation": true
+        },
+        {
+          "start": "004f65f0",
+          "end_inclusive": "004f66e0",
+          "length": 241,
+          "sha256": "86e5c0134dd28c2b02cd7d0cee764e957587c98b6e5678ff138039e46593747e",
+          "live_ghidra_matches_installed_before_fixture_relocation": true
+        },
+        {
+          "start": "004f4ec0",
+          "end_inclusive": "004f51fa",
+          "length": 827,
+          "sha256": "d419231ced8fbf42674134151894a61b694511153bd5f148c5a753c1b414d08e",
+          "live_ghidra_matches_installed_before_fixture_relocation": true
+        },
+        {
+          "start": "004f4c60",
+          "end_inclusive": "004f4ccb",
+          "length": 108,
+          "sha256": "c0dcd5a2f1c8d76f2d8ac256610804425fb45c535d5248e73e88564b4aec99ae",
+          "live_ghidra_matches_installed_before_fixture_relocation": true
+        },
+        {
+          "start": "004f4cd0",
+          "end_inclusive": "004f4eb2",
+          "length": 483,
+          "sha256": "3bd93ddd68d50fc773152234857c53a9cafcf81911d8d5cbf92ebff6c1672021",
+          "live_ghidra_matches_installed_before_fixture_relocation": true
+        },
+        {
+          "start": "004f2f40",
+          "end_inclusive": "004f2fad",
+          "length": 110,
+          "sha256": "0f71dfc52f87583a7d1d156198fd6dfacc466bf0931e56c2b860a3764464960c",
+          "live_ghidra_matches_installed_before_fixture_relocation": true
+        },
+        {
+          "start": "004f3ef0",
+          "end_inclusive": "004f400c",
+          "length": 285,
+          "sha256": "ad3b99225891f4bc762f0ccaccddac2d70330cd5988ed806e2269f026cab425f",
+          "live_ghidra_matches_installed_before_fixture_relocation": true
+        }
+      ],
+      "relocated_absolute_operand_count": 8,
+      "fixture_hooks": [
+        "00492210 resize uint32 vector",
+        "00442190 append uint32",
+        "00441F30 insert uint32",
+        "004F6710 append index pair",
+        "004F6E90 deep-copy index vector",
+        "0042CF10 existing reconstructed clamped asin",
+        "00BF7030 existing actual-access CRT sqrt",
+        "00BF6713 fail if invalid container reached"
+      ],
+      "boundary": "Original partition control and geometric instructions; semantic valid-vector allocation hooks. No allocation failure, original allocator ABI or exceptional CRT parity claim.",
+      "probe_exit_code": 0,
+      "linked_library": "build/win32/Release/bsp_core.lib"
+    },
+    "artifacts": {
+      "local/polygon_partition_probe.cpp": "33282aed0c6494f42f04a36df20ecd17168d1f73ef85737d5a865af44b2a280a",
+      "local/polygon_partition_probe.log": "e1993ad6e3c490dd330dbcfcb7665d262915fc10b90a4f1fe708c6df6ad06972",
+      "local/polygon_partition_relocations.py": "a6c7b9a46b1b7c4282d53b284566b3985f8182e66d9a928f0a4b790981df4abc",
+      "local/polygon_partition_relocation_manifest.json": "12b3c759f3f6aac986e0efed213c1c3ceef9525e537224c76dad200d6fa4b355",
+      "local/build_polygon_partition_probe.cmd": "4d74810d8462ce87e5e7eeb8abeb508c3125c72b30db1d35930ca3ea43e7e143",
+      "include/bsp/avoid_zone_polygon_partition.hpp": "6f421e126243c16bf6e3b78f18abdfa319b2274d1421603e86e5b01edb9eb075",
+      "src/avoid_zone_polygon_partition.cpp": "d0601c8580832b09d0336b7f8d2e588735ad771f128a4bab124aac98e12d1a3c",
+      "local/polygon_partition_build.log": "0e2c73c0a9e7ac26d891e2f6c1358fde3a15b5451f8cbbe79d6c7be35859d2cd",
+      "local/polygon_partition_call_check.log": "6c5a1d165ce24bcba31ce53b64c72c7e5a12c6946b0d1329e98498b059d10cd6",
+      "local/polygon_partition_probe.exe": "32881e3830b4ece8f69cf147ff8797955be8f261b33e88483ec0fdd2bf123865",
+      "build/win32/Release/bsp_core.lib": "baebcb9c6cf5e15e25d738ef07af24b7f63a3b015dc33b1a3cdfcd89a2e4b711"
+    },
+    "call_check": {
+      "command": "python tools/verify_report_calls.py reports/avoid_zone_polygon_partition.json",
+      "checked": 91,
+      "failed": 0
+    }
+  },
+  "integrator_verification": {
+    "cases": 939,
+    "pieces": 8840,
+    "cuts": 7904,
+    "rounding_modes": 4,
+    "log": "local/orch6_partition_integrated_probe.log"
+  },
+  "installed_geometry_report": "reports/avoid_zone_installed_geometry.json"
+}

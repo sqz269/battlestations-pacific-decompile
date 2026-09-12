@@ -99,9 +99,9 @@ inline constexpr float kShipAiSectorFreeBearingWidth = 5.0f;
 // Per group g in {0, 1} and bucket b in 0..5, with
 //   radius_unit = 00811A30(unit, 0.5f)       009E02D7
 //   length      = blk+3E4h = unit+9C8h * 0.45  009E44DB, the double at 00CF1748
-//   half_width  = unit+9CCh                  009E032E
+//   full_beam   = unit+9CCh                  009E032E
 // the writes are
-//   sector+0h  = (g == 0)                    009E0347 SETZ, and five more
+//   sector+0h  = (g == 0)                    009E0338 SETZ; stores at009E0347 and five more
 //   sector+4h  = {r, 2.5r, -1, -1, 2.5r, r}  009E034A, 009E037D, 009E03B1, ...
 //   sector+0Ch = {L/10, L/5, L/2, L/2, L/5, L/10}  009E035D and the five siblings
 //   sector+10h = {w/2.2, w/4, w/2.2, -w/2.2, -w/4, -w/2.2}  009E0357 and siblings
@@ -110,13 +110,13 @@ inline constexpr float kShipAiSectorFreeBearingWidth = 5.0f;
 // circles. The doubles are 00CE3DE0 (2.5), 00D05AC8 (2.2), 00CE3DC0 (10.0),
 // 00D7A348 (0.25), 00D7A370 (5.0), 00D7A280 (0.5), and 00D7A260 (-1.0f).
 inline constexpr double kShipAiSectorWideRadiusScale = 2.5;   // 00CE3DE0
-inline constexpr double kShipAiSectorOuterLateralDivisor = 2.2; // 00D05AC8
+inline constexpr double kShipAiSectorOuterLateralDivisor = 0x1.19999a0000000p+1; // 00D05AC8, widened 2.2f
 inline constexpr double kShipAiSectorInnerLateralScale = 0.25;  // 00D7A348
 inline constexpr double kShipAiSectorNearReachDivisor = 10.0;   // 00CE3DC0
 inline constexpr double kShipAiSectorMidReachDivisor = 5.0;     // 00D7A370
 inline constexpr double kShipAiSectorFarReachScale = 0.5;       // 00D7A280
 inline constexpr float kShipAiSectorStraightRadius = -1.0f;     // 00D7A260
-inline constexpr double kShipAiSectorReachHullScale = 0.45;     // 00CF1748, 009E44DB
+inline constexpr double kShipAiSectorReachHullScale = 0x1.cccccc0000000p-2; // 00CF1748, widened 0.45f
 
 // The three unit quantities 009E0270 reads. `turn_radius_reference` is what
 // 00811A30 returns for the rudder fraction 0.5f (00CE3800): a class curve
@@ -126,8 +126,8 @@ inline constexpr double kShipAiSectorReachHullScale = 0.45;     // 00CF1748, 009
 // hypothesis this header states.
 struct ShipAiSectorHullMetrics {
     float turn_radius_reference{0.0f}; // 009E02D7, 00811A30(unit, 0.5f)
-    float half_length_9c8{0.0f};       // 009E44D5, unit+9C8h
-    float half_width_9cc{0.0f};        // 009E032E, unit+9CCh
+    float half_length_9c8{0.0f};       // Legacy name: FULL length, unit+9C8h.
+    float half_width_9cc{0.0f};        // Legacy name: FULL beam, unit+9CCh.
 };
 
 // Fills the twelve ShipAiObstacleSector shape fields (kind, half_width, reach,
@@ -137,6 +137,16 @@ struct ShipAiSectorHullMetrics {
 // docs/SHIP_AI_SECTOR_SCAN.md.
 void ship_ai_build_sector_shapes_009e0270(
     const ShipAiSectorHullMetrics& hull,
+    std::array<ShipAiObstacleSector, 12>& sectors) noexcept;
+
+// Exact x87/SSE shape segment009E02E0..009E0499 and remaining constant pops,
+// using actual blk+3E4 directly.
+// The legacy metrics overload above first derives constructor0.45*length;
+// the full pre-step in ship_ai_hull_geometry.hpp uses this overload instead.
+// Writes only sector+00,+04,+0C,+10, in native order. Inputs are stable for
+// the loop (no calls occur while these native plain fields are read).
+void ship_ai_build_sector_shapes_009e0270(float radius_00811a30,
+    float stored_reach_3e4, float full_beam_9cc,
     std::array<ShipAiObstacleSector, 12>& sectors) noexcept;
 
 // ---------------------------------------------------------------------------

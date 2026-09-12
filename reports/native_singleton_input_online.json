@@ -234,5 +234,54 @@
     "Actual listener slot-zero bodies",
     "Online application startup with mutable D3D/profile fields and process-lifetime IPC retention",
     "Canonical menu music owner and MoviePlayer host"
-  ]
+  ],
+  "promotion_validation": {
+    "validated_source_commit": "8afc372d207d468329e926d7ca60608b2a352580",
+    "build_log": "local/native_input_online_ac_promote.log",
+    "build_log_sha256": "d09151c29e047df24997ec8aa7a797550028563dac3873573eb8c7e59dd5e45a",
+    "ctests_passed": 2,
+    "no_main_move_after_build": true,
+    "owned_source_hashes_equal_initial_fixture": true,
+    "artifacts_sha256": {
+      "build/win32/Release/bsp_core.lib": "0cb313e71844fe3ee560c700971a4340f384d922e93e2e91378121ad1c53953e",
+      "build/win32/Release/bsp_lua511.lib": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+      "build/win32/Release/bsp_game.exe": "7ef64ffb065417296cd3f5081786bf332e2a6e0bbba2e3bd891c0504f6af973e"
+    },
+    "fixtures": {
+      "xlive": {
+        "log": "J:\\PROG\\battlestations-pacific-decompile-orch4-xlive-owner-ac\\local\\xlive_owner_ac_promoted_8afc372d_fixture.log",
+        "log_sha256": "835cad016b17903773d8cc58c873000862a67dd3cc5fb8d76710a931d37f3f13",
+        "exit_code": 0,
+        "counts_equal_initial": true,
+        "linkage": "Promoted primary headers and archives only; no reconstructed source compiled separately; /MANIFEST:EMBED"
+      },
+      "backend": {
+        "log": "J:\\PROG\\battlestations-pacific-decompile-orch4-input-backend-ac\\local\\native-input-backend-promoted-drain-probe.log",
+        "log_sha256": "dd320793a962997ebd9c76eac59b79f8fb1cf262c03b25f82e4fe08365724256",
+        "exit_code": 0,
+        "counts_equal_initial": true,
+        "linkage": "Promoted primary headers and archives only; no reconstructed source compiled separately; /MANIFEST:EMBED"
+      },
+      "actions": {
+        "log": "J:\\PROG\\battlestations-pacific-decompile-orch4-input-actions-ac\\local\\input_action_owner_promoted_probe.log",
+        "log_sha256": "4ec850c903d96ca0d577f64c650fe70db3b9be22818e1a3ab7983de29dae8a30",
+        "exit_code": 0,
+        "counts_equal_initial": true,
+        "linkage": "Promoted primary headers and archives only; no reconstructed source compiled separately; /MANIFEST:EMBED"
+      }
+    },
+    "application": {
+      "status": "blocked_by_existing_process_single_instance_check",
+      "log": "local\\native_input_online_ac_game_promoted.log",
+      "log_sha256": "84e98f944cb77de2e327cb314272efea58eb342de756a630a98e43c56a7062e7",
+      "runner_timeout_seconds": 180,
+      "our_test_process_terminated_by_runner": true,
+      "other_process_not_modified": true,
+      "evidence": "Own runtime log reaches create_single_instance_mutex, resolve_language and error_message_box only. winmain_startup.cpp214..222 identifies already_exists branch; user confirmed single-instance check.",
+      "source_runtime_validated": false,
+      "new_input_online_owners_instantiated": false,
+      "prior_two_frame_result": "Initial combined archive passed before merging current main; not final promoted application proof."
+    },
+    "final_publication_receipt": "local/native_input_online_ac_publish_receipt.json (ignored; final HEAD, source/artifact equivalence and remote containment)"
+  }
 }

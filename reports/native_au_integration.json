@@ -1,0 +1,110 @@
+{
+  "packet": "orch2_native_au_integration",
+  "status": "source_integrated_strict_Win32_and_current_frozen_fixtures_checked",
+  "prepared_tested_commit": "27212ff7866df925908fc2e0ee901e0ab249d604",
+  "current_library_sha256": "2971e393d2f7270e6e72e4a7054afec7a69fbe5bb06c2e0e91c51394ccc82b5b",
+  "new_complete_routines": 10,
+  "new_owned_native_body_bytes": 581,
+  "new_addresses": [
+    "004fc150",
+    "00bdab20",
+    "00be0660",
+    "00be5320",
+    "00be5340",
+    "00be5350",
+    "00be5380",
+    "00be5790",
+    "00beda60",
+    "00bedac0"
+  ],
+  "existing_adapter_extensions": [
+    "00419cc0",
+    "00bd0400"
+  ],
+  "adapter_extensions_add_to_routine_count": false,
+  "source_commits": [
+    "379853dd010d70e5e104f993660fcc0a8c0de4e9",
+    "43693b7d",
+    "315ef7beb82b741fb20bee34d1f454479fb73d58",
+    "a539aeb0"
+  ],
+  "fixtures": [
+    {
+      "packet": "derived_manager_actual_lifetime",
+      "summary": "local/native-au-current-derived/integrated01/summary.json",
+      "sha256": "cb94b2ee85ea5cc95d287dbcafd42b6a1c7d7b1314419ed954d0860a711845b0",
+      "native_source_cases": 5,
+      "source_only_unwinds": 2,
+      "checks": 13280,
+      "linked_objects": 131
+    },
+    {
+      "packet": "filestore_factory",
+      "summary": "local/native-au-current-filestore/integrated01/manifest_after.json",
+      "sha256": "57fb9a928d53d68bfcffebca4c9f4e6ee9f8f6544e81e6d4179dafe6f4ff9f91",
+      "native_source_states": 15,
+      "source_only_registration_exception": true,
+      "checks": 406,
+      "linked_objects": 12
+    },
+    {
+      "packet": "vfs_factory_registration",
+      "summary": "local/native-au-registration-integrated02/summary.json",
+      "sha256": "069251eeec5f56f506b6b683eba48aec1403953fd6af0ca66468e6b5f46f865c",
+      "native_source_cases": 5,
+      "source_only_rejection": true,
+      "linked_objects": 5
+    }
+  ],
+  "promotion_gate": {
+    "script": "local/validate_native_au_promotion.py",
+    "inputs": "local/native-au-promotion-inputs.json",
+    "inputs_sha256": "2c371f55e9b5ad8329087a911cbd55b959acbdd43d2f7820c727df1b5d6394e6",
+    "source_header_object_pins": 463,
+    "object_count": 132,
+    "behavior": "Verify current sources/headers/objects against frozen passing fixtures and actual current archive members before each fast-forward attempt. A moving-main retry rebuilds and rechecks; changed inputs block promotion."
+  },
+  "ghidra": {
+    "definitions_report": "reports/native_au_function_definitions.json",
+    "new_source_function_definitions": 3,
+    "external_FH3_handler_definition": "00c686b3",
+    "external_handler_counted_as_reconstruction": false,
+    "local_flow_reports": [
+      "reports/native_au_flow_repair.json",
+      "reports/native_filestore_factory_flow_repair.json"
+    ],
+    "repaired_gaps": 2,
+    "repaired_bytes": 6,
+    "remaining_gaps_in_repaired_functions": 0,
+    "retained_raw_continuation": "C5E121..C5E122 is POP ECX; RET following the already existing string-pool unwind funclet. It is not a new standalone routine and was not blindly defined as one.",
+    "global_callee_noreturn_unchanged": true,
+    "saved_annotation_log": "local/ghidra-annotations-20260912T203741Z.json",
+    "annotation_readback_verified": 12,
+    "prior_comments_preserved": true,
+    "exports_forced_after_annotation": 12
+  },
+  "verification": {
+    "strict_MSVC_Win32_build": true,
+    "existing_CTests_passed": 2,
+    "report_rows_checked": 43,
+    "report_rows_failed": 0,
+    "note": "IAT calls and the two resolved BD0485 virtual targets are explicit manual evidence; the mechanical checker does not prove their targets."
+  },
+  "delivery_copies": {
+    "derived_composition": "67bec0503d57abe870bb861a053977cf85adc9dd03c3f291e59d736264f317c9",
+    "raw_pool_domain_evidence": "87c43e158e409553e1c0a4dc8a994873cb09051602b7c0d03d49301250dc7d65",
+    "filestore_factory": "ae7e7b3a77723bc2859a6cfe78a71ada420659525c3abc40e753391a96b01484"
+  },
+  "retained_attempts": [
+    "worker derived attempts01 and02",
+    "worker FileStore attempt01 and driver_attempt02",
+    "parent registration integrated01 compiled but did not execute because verbose-linker provenance was absent; integrated02 uses the emitted map and passed"
+  ],
+  "limits": [
+    "Original FH3/SEH, hardware faults, publication replacement/concurrency and game behavior remain unvalidated.",
+    "Explicit VFS deletion precedes raw canonical drain; D68D04 and FileStore D688B0 finite shutdown dispatch remain unsupported.",
+    "FileStore provider lifetime remains a later dependency packet; factory cache+8 is intentionally untouched on factory destruction.",
+    "No ABI-compatible binary replacement or runnable game rebuild claim."
+  ],
+  "publication_receipt": "local/native-au-remote-publication.json"
+}

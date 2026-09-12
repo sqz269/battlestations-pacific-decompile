@@ -18,11 +18,11 @@
       "ghidra_name": "BSP_ConeEmissionDefinition_Load",
       "source": "src/native_particle_definition_loading.cpp",
       "header": "include/bsp/native_particle_definition_loading.hpp",
-      "coverage": "complete native body through canonical reconstructed dependencies and two required actual application services",
+      "coverage": "complete source body through concrete suffix/factory and required actual current child parser",
       "native_calling_convention": "__thiscall",
       "native_prototype": "bool __thiscall BSP_ConeEmissionDefinition_Load(void *text)",
       "original_abi": "ECX actual definition; one stack argument; RET4; AL boolean, high EAX unspecified",
-      "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+      "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated. AP integration: suffix AF44C0 and particle factory B00CE0 now call concrete implementations in the same owner/string/parameter domain; actual current child parser08 remains the required application boundary.",
       "last_instruction": {
         "address": "00b04821",
         "length": 3,
@@ -41,11 +41,11 @@
       "ghidra_name": "BSP_SphereEmissionDefinition_Load",
       "source": "src/native_particle_definition_loading.cpp",
       "header": "include/bsp/native_particle_definition_loading.hpp",
-      "coverage": "complete native body through canonical reconstructed dependencies and two required actual application services",
+      "coverage": "complete source body through concrete suffix/factory and required actual current child parser",
       "native_calling_convention": "__thiscall",
       "native_prototype": "bool __thiscall BSP_SphereEmissionDefinition_Load(void *text)",
       "original_abi": "ECX actual definition; one stack argument; RET4; AL boolean, high EAX unspecified",
-      "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+      "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated. AP integration: suffix AF44C0 and particle factory B00CE0 now call concrete implementations in the same owner/string/parameter domain; actual current child parser08 remains the required application boundary.",
       "last_instruction": {
         "address": "00b03892",
         "length": 3,
@@ -64,11 +64,11 @@
       "ghidra_name": "BSP_SmartAreaEmissionDefinition_Load",
       "source": "src/native_particle_definition_loading.cpp",
       "header": "include/bsp/native_particle_definition_loading.hpp",
-      "coverage": "complete native body through canonical reconstructed dependencies and two required actual application services",
+      "coverage": "complete source body through concrete suffix/factory and required actual current child parser",
       "native_calling_convention": "__thiscall",
       "native_prototype": "bool __thiscall BSP_SmartAreaEmissionDefinition_Load(void *text)",
       "original_abi": "ECX actual definition; one stack argument; RET4; AL boolean, high EAX unspecified",
-      "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+      "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated. AP integration: suffix AF44C0 and particle factory B00CE0 now call concrete implementations in the same owner/string/parameter domain; actual current child parser08 remains the required application boundary.",
       "last_instruction": {
         "address": "00b02b22",
         "length": 3,
@@ -3223,5 +3223,178 @@
     "direct_call_rows": 484,
     "failed_call_rows": 0,
     "original_fh3_and_gameplay": false
+  },
+  "integration_ap_wiring": {
+    "suffix": "concrete AF44C0 using owners.strings",
+    "particle_factory": "concrete B00CE0 using particle_types->base.owners; identity checked before selected Particle entry",
+    "removed_callbacks": [
+      "suffix_00af44c0",
+      "particle_factory_00b00ce0"
+    ],
+    "current_application_boundary": "five actual child parser08 targets",
+    "historical_sections": "AO validation remains historical; AP current-library validation is recorded separately"
+  },
+  "integration_ap": {
+    "native_signatures_readback_verified": true,
+    "names_and_comments_saved": true,
+    "old_prototypes": [
+      "00b03ec0 BSP_ConeEmissionDefinition_Load  bool __thiscall BSP_ConeEmissionDefinition_Load(void * this, void * text)  body 00b03ec0 - 00b04823",
+      "00b02fd0 BSP_SphereEmissionDefinition_Load  bool __thiscall BSP_SphereEmissionDefinition_Load(void * this, void * text)  body 00b02fd0 - 00b03894",
+      "00b02210 BSP_SmartAreaEmissionDefinition_Load  bool __thiscall BSP_SmartAreaEmissionDefinition_Load(void * this, void * text)  body 00b02210 - 00b02b24"
+    ],
+    "current_prototypes": [
+      "00b03ec0 BSP_ConeEmissionDefinition_Load  bool __thiscall BSP_ConeEmissionDefinition_Load(void * this, void * text)  body 00b03ec0 - 00b04823",
+      "00b02fd0 BSP_SphereEmissionDefinition_Load  bool __thiscall BSP_SphereEmissionDefinition_Load(void * this, void * text)  body 00b02fd0 - 00b03894",
+      "00b02210 BSP_SmartAreaEmissionDefinition_Load  bool __thiscall BSP_SmartAreaEmissionDefinition_Load(void * this, void * text)  body 00b02210 - 00b02b24"
+    ],
+    "previous_comments": [
+      {
+        "address": "00b03ec0",
+        "annotation": {
+          "address": "00b03ec0",
+          "function_name": "BSP_ConeEmissionDefinition_Load",
+          "comment": "[BSP reconstruction 00b03ec0]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+        }
+      },
+      {
+        "address": "00b02fd0",
+        "annotation": {
+          "address": "00b02fd0",
+          "function_name": "BSP_SphereEmissionDefinition_Load",
+          "comment": "[BSP reconstruction 00b02fd0]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+        }
+      },
+      {
+        "address": "00b02210",
+        "annotation": {
+          "address": "00b02210",
+          "function_name": "BSP_SmartAreaEmissionDefinition_Load",
+          "comment": "[BSP reconstruction 00b02210]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+        }
+      }
+    ],
+    "current_comments": [
+      {
+        "address": "00b03ec0",
+        "annotation": {
+          "address": "00b03ec0",
+          "function_name": "BSP_ConeEmissionDefinition_Load",
+          "comment": "[BSP reconstruction 00b03ec0]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.\n\n[BSP reconstruction 00b03ec0] update\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated. | Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated. AP integration: suffix AF44C0 and particle factory B00CE0 now call concrete implementations in the same owner/string/parameter domain; actual current child parser08 remains the required application boundary."
+        }
+      },
+      {
+        "address": "00b02fd0",
+        "annotation": {
+          "address": "00b02fd0",
+          "function_name": "BSP_SphereEmissionDefinition_Load",
+          "comment": "[BSP reconstruction 00b02fd0]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.\n\n[BSP reconstruction 00b02fd0] update\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated. | Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated. AP integration: suffix AF44C0 and particle factory B00CE0 now call concrete implementations in the same owner/string/parameter domain; actual current child parser08 remains the required application boundary."
+        }
+      },
+      {
+        "address": "00b02210",
+        "annotation": {
+          "address": "00b02210",
+          "function_name": "BSP_SmartAreaEmissionDefinition_Load",
+          "comment": "[BSP reconstruction 00b02210]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.\n\n[BSP reconstruction 00b02210] update\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated. | Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated. AP integration: suffix AF44C0 and particle factory B00CE0 now call concrete implementations in the same owner/string/parameter domain; actual current child parser08 remains the required application boundary."
+        }
+      }
+    ],
+    "direct_call_check": "local/ap-final-call-checks.log: all5 reports passed",
+    "combined_build_pending": false,
+    "combined_library_sha256": "f5ac82c0edf8718cd73db313bcc1d716092728bc19d0b28601da3050b881538c",
+    "current_library_fixture": {
+      "label": "loading",
+      "exit_code": 0,
+      "log": "local\\ap-loading-current-replay.log",
+      "library_sha256": "f5ac82c0edf8718cd73db313bcc1d716092728bc19d0b28601da3050b881538c",
+      "probe_input_hashes": {
+        "C:\\Users\\sqz269\\bsp-ap-loading\\probe.cpp": "522ba8dc90496cd4ba43a03db8526d033b86927c46e24dd83ff493cdeb5e62e8",
+        "C:\\Users\\sqz269\\bsp-ap-loading\\probe_data.hpp": "320f96f8e2dd70d0d50b5dc3310b45ac9a13a799b4f328053c717e9459e0a220"
+      },
+      "runner": "C:\\Users\\sqz269\\bsp-orch3-ap\\loading-current.cmd",
+      "executable_sha256": "970ba9ac42cda871e6e54318389a8af34bfcea463209d707e3ac94f4264b8c3c"
+    }
+  },
+  "final_merged_validation_ap": {
+    "tested_commit": "b6b68f13520e848d3f111393c19c9bba17192866",
+    "reviewed_source_commit": "c7a911003baa0d2933c41611696cfa809350c065",
+    "build": "local/ap-final-combined-build.log: strict MSVC Win32 and both seeded CTests passed",
+    "all10_reviewed_source_header_hashes_preserved": true,
+    "all26_name_evidence_rows_preserved": true,
+    "library_sha256": "f5ac82c0edf8718cd73db313bcc1d716092728bc19d0b28601da3050b881538c",
+    "current_library_replays": [
+      {
+        "label": "suffix",
+        "exit_code": 0,
+        "log": "local\\ap-suffix-current-replay.log",
+        "library_sha256": "f5ac82c0edf8718cd73db313bcc1d716092728bc19d0b28601da3050b881538c",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-ap-suffix\\probe.cpp": "04f393444c6bb18bb5f343145b839c3792c32c3f398c22c1cb636479eaa8de57",
+          "C:\\Users\\sqz269\\bsp-ap-suffix\\native_bytes.hpp": "1738d180e41a8bf4f4fee9bc71040bdc19c67b1fd6ad1844571a7c27688325c9",
+          "C:\\Users\\sqz269\\bsp-ap-suffix\\relocations.hpp": "d73415e87f4f87a215259d511099a866947ad03ba122b7bc153c9bd3ccfe0dc0"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ap\\suffix-current.cmd",
+        "executable_sha256": "f6dd8d0990c49144d821594f1a98cd94ebd5f8271856fbfc8829001eec52a04f"
+      },
+      {
+        "label": "base",
+        "exit_code": 0,
+        "log": "local\\ap-base-current-replay.log",
+        "library_sha256": "f5ac82c0edf8718cd73db313bcc1d716092728bc19d0b28601da3050b881538c",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-ap-base\\probe.cpp": "7acca887865dc22339456236336d0a720c3b99d71dcf4cf8ec65165ce6c17bfe",
+          "C:\\Users\\sqz269\\bsp-ap-base\\native_bytes.hpp": "e70dabafabbb48561d5155a0d102eb269bd8c8148b1852d91567f401a0c356b4"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ap\\base-current.cmd",
+        "executable_sha256": "f0b956b87f5594f8aadb95a7c17099e1452b0d8099777c48fa7b98d6742610c1"
+      },
+      {
+        "label": "state",
+        "exit_code": 0,
+        "log": "local\\ap-state-current-replay.log",
+        "library_sha256": "f5ac82c0edf8718cd73db313bcc1d716092728bc19d0b28601da3050b881538c",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-ap-state\\probe.cpp": "04cd9379b52aa9c9ef0b8da76612557cf91cd9d69804ff22ea53846a7507608b",
+          "C:\\Users\\sqz269\\bsp-ap-state\\original_bytes.hpp": "9d350efa3b9ad1c3d94af79e3bdca999b2f0641a0345e58fa9ab54a9016eb674"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ap\\state-current.cmd",
+        "executable_sha256": "4814104c8bb4a5c7e99b460ff7e40e896b6ef22c18ec0a09f74f1f800f781674"
+      },
+      {
+        "label": "factory",
+        "exit_code": 0,
+        "log": "local\\ap-factory-current-replay.log",
+        "library_sha256": "f5ac82c0edf8718cd73db313bcc1d716092728bc19d0b28601da3050b881538c",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-ap-factory\\probe.cpp": "10762cfddd5a492736a072262509a6503c088edcdb38e24eb1d4f01223924944",
+          "C:\\Users\\sqz269\\bsp-ap-factory\\native_bytes.hpp": "00be5632e62efbb7d6cbd1b2f828f1c89de94786910a0eae2d6f2b429d7bb742"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ap\\factory-current.cmd",
+        "executable_sha256": "c5c61b5ef886cb56c60b76c44bb835058a9eae385c6a23acd5295d47f027b967"
+      },
+      {
+        "label": "loading",
+        "exit_code": 0,
+        "log": "local\\ap-loading-current-replay.log",
+        "library_sha256": "f5ac82c0edf8718cd73db313bcc1d716092728bc19d0b28601da3050b881538c",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-ap-loading\\probe.cpp": "522ba8dc90496cd4ba43a03db8526d033b86927c46e24dd83ff493cdeb5e62e8",
+          "C:\\Users\\sqz269\\bsp-ap-loading\\probe_data.hpp": "320f96f8e2dd70d0d50b5dc3310b45ac9a13a799b4f328053c717e9459e0a220"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ap\\loading-current.cmd",
+        "executable_sha256": "970ba9ac42cda871e6e54318389a8af34bfcea463209d707e3ac94f4264b8c3c"
+      }
+    ],
+    "new_functions": 17,
+    "revised_loader_functions": 3,
+    "native_signatures": 20,
+    "analyzed_bodies": 6,
+    "direct_call_rows": 495,
+    "failed_call_rows": 0,
+    "original_fh3_and_gameplay": false,
+    "remaining_application_boundaries": [
+      "five actual particle text parsers",
+      "Sprite/Object/Tracer state initializers and their real resource dependencies"
+    ]
   }
 }
