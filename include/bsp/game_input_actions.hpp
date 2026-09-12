@@ -1,6 +1,7 @@
 #pragma once
 #include "bsp/game_input_runtime.hpp"
 #include "bsp/native_input_action_binding_runtime.hpp"
+#include "bsp/native_input_action_configuration.hpp"
 #include "bsp/native_input_action_tick.hpp"
 #include <memory>
 
@@ -34,6 +35,9 @@ public:
     // Requires the constructed backend and valid actual action storage. Reached
     // callbacks use the required provider and may propagate their exceptions.
     void update(float seconds);
+    // A93C80 uses the same raw owner/record/listener services as frame updates.
+    // Contexts is an actual12h DWORD-vector header, borrowed through the call.
+    void configure(std::uint32_t action_index, const void* contexts, std::uint8_t replace_listener);
 private:
     struct Impl;
     std::unique_ptr<Impl> impl_;

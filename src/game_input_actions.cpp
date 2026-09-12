@@ -5,10 +5,12 @@ struct GameInputActions::Impl final : NativeInputActionTickCalls {
     GameInputRuntime& runtime;
     GameInputActionServices bound;
     NativeInputActionBindingContext bindings;
+    NativeInputActionConfigurationContext configuration;
     NativeInputActionTickContext tick;
     Impl(GameInputRuntime& input, GameInputActionServices services)
         : runtime(input), bound(services),
           bindings{input.devices(), services.crt, services.constants},
+          configuration{input.records_context(), bindings, services.timing},
           tick{input.backend_context().global_00f8bbf4, services.callback_00f8bbfc,
               services.zero_00d7a218, services.timing, *this} {}
     void backend_vslot04(void* backend, std::uint32_t profile, float seconds) override {
@@ -31,5 +33,11 @@ GameInputActions::~GameInputActions() = default;
 void GameInputActions::update(float seconds) {
     void* const owner = impl_->runtime.action_owner();
     update_native_input_action_owner_00a92c40(owner, seconds, impl_->tick);
+}
+void GameInputActions::configure(std::uint32_t index, const void* contexts,
+    std::uint8_t replace_listener) {
+    void* const owner = impl_->runtime.action_owner();
+    configure_native_input_action_00a93c80(owner, index, contexts, replace_listener,
+        impl_->configuration);
 }
 } // namespace bsp::game
