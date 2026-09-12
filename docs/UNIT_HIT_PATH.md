@@ -311,3 +311,12 @@ One row per native call site the reconstruction models as a virtual method of `U
 * The game-settings offsets `+3B4h`, `+3B8h`, `+3D4h`, `+3D8h` are unattributed; they are the four
   scalars the repair tick multiplies by.
 * Nine other stores to `+36Ch` exist in the program and were not attributed to a class.
+
+## Correction from docs/PROJECTILE_IMPACT.md (packet cc2_projectile_impact)
+
+The dispatch slot above is mis-numbered: `007BBCF0` BSP_UnitInstance_OnHit is vtable slot
+`ECh`, not `1ACh`; slot `1ACh` is the AddDamage base `0095DA00` (in all nine vtables holding
+`007BBCF0`, the dword `C0h` later is `0095DA00`). The hit record's producer, listed unread
+here, is `009239A0`: the impact `0084BC60` queues the record through `00926E80` and the
+drain dispatches `entity->vtable[ECh]` up the parent chain. `0084C430` is the collision
+sweep, not a tracer.
