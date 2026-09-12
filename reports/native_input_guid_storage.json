@@ -1,0 +1,363 @@
+{
+  "packet": "orch4_input_guid_storage_ae",
+  "status": "source_host_adapter_built_existing_tests_and_focused_fixture_passed",
+  "source": {
+    "header": "include/bsp/native_input_guid_storage.hpp",
+    "implementation": "src/native_input_guid_storage.cpp",
+    "api": "append_input_guid_storage(void*, const _GUID&)",
+    "coverage": "complete within documented valid raw-header, complete-GUID append domain; not a native STL implementation"
+  },
+  "native_function_claims": [],
+  "ledger_name_or_reconstruction_changes": [],
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "read-only bsp.py ghidra commands verify target before each query"
+  },
+  "baseline_commit": "ea60458c",
+  "storage": {
+    "receiver": "actual backend+E4",
+    "fields": {
+      "0": "untouched DWORD",
+      "4": "owned begin",
+      "8": "end",
+      "C": "capacity-end"
+    },
+    "element_bytes": 16,
+    "owner": "existing raw backend, destroyed by destroy_native_input_backend_guids_00a97b00",
+    "additional_owning_vectors": 0
+  },
+  "contracts": {
+    "input": "valid representable Win32 pointer ranges; complete external GUID or existing whole-element source; existing source CRT allocation domain",
+    "growth": "max(count+1, capacity+floor(capacity/2)); overflowing geometric candidate discarded; maximum0x0fffffff",
+    "alias": "capture all16 source bytes before slow-path allocation; complete-element aliases tested; partial/header overlaps excluded",
+    "publication": "after copies, capture current old begin/count, free old begin, publish capacity-end/end/begin",
+    "allocator": "singleton_lifetime_allocate object with equal native/host bytes; existing malloc/_callnewh retry; singleton_lifetime_free",
+    "length_error": "reuse native_singleton_length_error_00bd0590; A97B90/BD0590 body-equivalent except addresses/EH handler; existing NativeSingletonVectorLengthError source transport",
+    "invalid_parameter": "real _invalid_parameter_noinfo, returning-capable, current UCRT handler domain; no fake callback",
+    "failure": "allocation failure occurs before new header publication; standard GUID memory copies do not throw C++ exceptions; no FH3/SEH/fault identity claim",
+    "excluded": [
+      "general middle insertion/insert-count",
+      "arbitrary malformed pointers or partial overlaps",
+      "reentrant allocator/new-handler changes to this header",
+      "original register/stack/iterator/FH3 ABI",
+      "original static-CRT heap and encoded global handler state",
+      "physical SDK enumeration or application/game integration"
+    ]
+  },
+  "library_bodies_read_only": [
+    {
+      "entry": "00a97fa0",
+      "end_inclusive": "00a98022",
+      "abi": "ECX header; stack source; RET4 at A98020 length3"
+    },
+    {
+      "entry": "00a97f10",
+      "end_inclusive": "00a97f9a",
+      "abi": "ECX header; stack result,iterator-owner,position,source; RET10 at A97F98 length3"
+    },
+    {
+      "entry": "00a97cb0",
+      "end_inclusive": "00a97ef2",
+      "abi": "ECX header; stack iterator-owner,position,count,source; RET10 at A97EF0 length3",
+      "coverage": "valid append growth/error evidence; middle-insert branches not reconstructed"
+    },
+    {
+      "entry": "00a974d0",
+      "end_inclusive": "00a97520",
+      "abi": "ECX count; unused EDX; EAX allocation; RET0 or throw"
+    },
+    {
+      "entry": "00a97790",
+      "end_inclusive": "00a977c7",
+      "abi": "ECX first,EDX last;4stack words; EAX destination end; RET10"
+    },
+    {
+      "entry": "00a97880",
+      "end_inclusive": "00a978b7",
+      "abi": "ECX destination,EDX count;4stack words; RET10"
+    },
+    {
+      "entry": "00a97a20",
+      "end_inclusive": "00a97a55",
+      "abi": "ECX header; stack destination,count,source; EAX end; RETC"
+    },
+    {
+      "entry": "00a97b90",
+      "end_inclusive": "00a97bf8",
+      "abi": "no input or normal return; final throw CALL A97BF4 length5"
+    },
+    {
+      "entry": "00a97b00",
+      "end_inclusive": "00a97b29",
+      "abi": "existing destructor; ECX header, RET0"
+    }
+  ],
+  "preexisting_library_flow_gaps": [
+    {
+      "caller": "00a97cb0",
+      "start": "00a97df4",
+      "end_exclusive": "00a97df7",
+      "disk_evidence": "ADD ESP,4 after returning free"
+    },
+    {
+      "caller": "00a97cb0",
+      "start": "00a97e29",
+      "end_exclusive": "00a97e35",
+      "disk_evidence": "ADD ESP,4; PUSH0; PUSH0; CALL BF6885",
+      "gap_site": "00a97e30",
+      "callee": "00bf6885",
+      "instruction_length": 5,
+      "live_call_row": false
+    }
+  ],
+  "library_eh_evidence": {
+    "func_info": "00decdec",
+    "unwind_map": "00decdcc",
+    "first_try": "00dece10",
+    "first_catch_descriptor": "00decdbc",
+    "handler": "00a97e20",
+    "behavior": "state0 growth catch frees new allocation and rethrows; not ported"
+  },
+  "validation": {
+    "native_seeds": {
+      "matched": 8,
+      "total": 8,
+      "log": "local/input_guid_seeds.log"
+    },
+    "win32_build": {
+      "command": "scripts/build.ps1",
+      "exit_code": 0,
+      "flags": [
+        "/W4",
+        "/WX",
+        "/fp:strict"
+      ],
+      "log": "local/input_guid_build_cached.log",
+      "log_sha256": "cc025fb70589a92ecaff7741419d019500f522b55ef3178e088355bc6c3023e0"
+    },
+    "existing_tests": {
+      "passed": 2,
+      "failed": 0,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential"
+      ]
+    },
+    "focused_probe": {
+      "status": "passed",
+      "source": "local/input_guid_storage_probe.cpp",
+      "runner": "local/run_input_guid_storage_probe.ps1",
+      "log": "local/input_guid_storage_probe.log",
+      "link": "own built bsp_core.lib and bsp_lua511.lib; own headers; no explicit production .cpp; /MANIFEST:EMBED",
+      "counts": {
+        "ordinary_appends": 6,
+        "capacity_sequence": [
+          1,
+          2,
+          3,
+          4,
+          6,
+          6
+        ],
+        "buffer_replacements": 5,
+        "complete_element_aliases": 2,
+        "crt_invalid_handler_calls": 1,
+        "repair_case_appends": 1,
+        "actual_guid_destructor_calls": 2
+      },
+      "canaries": "leading DWORD/backend prefix and suffix preserved",
+      "heap_validate": true,
+      "limitations": [
+        "no allocation-failure replay",
+        "no allocator free counters",
+        "no native ABI or original DLL replay",
+        "no SDK enumeration or game validation"
+      ],
+      "baseline_worktree_head": "ea60458cf057fb7a17e6ad2210067410fff5d770",
+      "build_includes": "owned AE source and CMake registration, before their commit",
+      "core_archive_sha256": "65d24b4ea710dff8bf253713f412873e79b18c077a24f00c39f81d94cbe52501",
+      "adapter_source_sha256": "ea2f6b0f4a72669f44906b2f59f828bee75195504064dc3fcd55bd9c2eeb3b64",
+      "log_sha256": "5ad707a1a242d8815405a4111c43adb492ede8755839b2150743b45ddbd596dd"
+    },
+    "call_audit": {
+      "passed": 26,
+      "failed": 0,
+      "log": "local/input_guid_calls.log"
+    },
+    "new_permanent_tests": 0,
+    "application_or_game_validated": false,
+    "build_dependency_retry": {
+      "first_log": "local/input_guid_build.log",
+      "reason": "Lua HTTPS SSL/connection reset before source compilation",
+      "reused_cached_archive": "lua-5.1.1.tar.gz",
+      "sha256": "c5daeed0a75d8e4dd2328b7c7a69888247868154acbda69110e97d4a6e17d1f0",
+      "resolution": "verified against cmake/lua.cmake; copied only archive into worker build cache; no dependency or primary source changes"
+    }
+  },
+  "read_only_library_call_evidence": [
+    {
+      "address": "00a9821e",
+      "native": "00a97fa0",
+      "caller": "00a98030",
+      "purpose": "actual external SDK GUID producer"
+    },
+    {
+      "address": "00a97fe9",
+      "native": "00a97880",
+      "caller": "00a97fa0",
+      "purpose": "fast-path complete GUID copy"
+    },
+    {
+      "address": "00a98003",
+      "native": "00bf6713",
+      "caller": "00a97fa0",
+      "purpose": "slow begin/end validation"
+    },
+    {
+      "address": "00a98016",
+      "native": "00a97f10",
+      "caller": "00a97fa0",
+      "purpose": "recognized insert/iterator wrapper"
+    },
+    {
+      "address": "00a97f36",
+      "native": "00bf6713",
+      "caller": "00a97f10",
+      "purpose": "captured begin/end validation"
+    },
+    {
+      "address": "00a97f43",
+      "native": "00bf6713",
+      "caller": "00a97f10",
+      "purpose": "iterator-owner validation"
+    },
+    {
+      "address": "00a97f6d",
+      "native": "00bf6713",
+      "caller": "00a97f10",
+      "purpose": "post-insertion begin/end validation"
+    },
+    {
+      "address": "00a97f85",
+      "native": "00bf6713",
+      "caller": "00a97f10",
+      "purpose": "post-insertion element range validation"
+    },
+    {
+      "address": "00a97f60",
+      "native": "00a97cb0",
+      "caller": "00a97f10",
+      "purpose": "recognized insert-count implementation, append case evidence only"
+    },
+    {
+      "address": "00a97d26",
+      "native": "00a97b90",
+      "caller": "00a97cb0",
+      "purpose": "length error"
+    },
+    {
+      "address": "00a97d87",
+      "native": "00a974d0",
+      "caller": "00a97cb0",
+      "purpose": "replacement allocation"
+    },
+    {
+      "address": "00a97daa",
+      "native": "00a97790",
+      "caller": "00a97cb0",
+      "purpose": "prefix copy"
+    },
+    {
+      "address": "00a97dd0",
+      "native": "00a97790",
+      "caller": "00a97cb0",
+      "purpose": "suffix copy; empty for valid append"
+    },
+    {
+      "address": "00a97db7",
+      "native": "00a97a20",
+      "caller": "00a97cb0",
+      "purpose": "copy captured value"
+    },
+    {
+      "address": "00a97def",
+      "native": "00bf65ac",
+      "caller": "00a97cb0",
+      "purpose": "old buffer free"
+    },
+    {
+      "address": "00a97e24",
+      "native": "00bf65ac",
+      "caller": "00a97e20",
+      "purpose": "growth catch new buffer free"
+    },
+    {
+      "address": "00a974dd",
+      "native": "00bf681b",
+      "caller": "00a974d0",
+      "purpose": "shared raw allocation domain"
+    },
+    {
+      "address": "00a97505",
+      "native": "00bf6340",
+      "caller": "00a974d0",
+      "purpose": "bad_alloc exception construction boundary"
+    },
+    {
+      "address": "00a9751c",
+      "native": "00bf6885",
+      "caller": "00a974d0",
+      "purpose": "bad_alloc throw boundary"
+    },
+    {
+      "address": "00a97a44",
+      "native": "00a97880",
+      "caller": "00a97a20",
+      "purpose": "plain GUID repeat copy"
+    },
+    {
+      "address": "00a97bc8",
+      "native": "00408720",
+      "caller": "00a97b90",
+      "purpose": "counted exception message"
+    },
+    {
+      "address": "00a97bdd",
+      "native": "00411700",
+      "caller": "00a97b90",
+      "purpose": "exception payload"
+    },
+    {
+      "address": "00a97bf4",
+      "native": "00bf6885",
+      "caller": "00a97b90",
+      "purpose": "length-error throw"
+    },
+    {
+      "address": "00bd05c8",
+      "native": "00408720",
+      "caller": "00bd0590",
+      "purpose": "existing equivalent counted message service"
+    },
+    {
+      "address": "00bd05dd",
+      "native": "00411700",
+      "caller": "00bd0590",
+      "purpose": "existing equivalent exception payload service"
+    },
+    {
+      "address": "00bd05f4",
+      "native": "00bf6885",
+      "caller": "00bd0590",
+      "purpose": "existing equivalent length-error throw service"
+    }
+  ],
+  "evidence_corrections": [
+    {
+      "was": "A97E24 attributed to parent body span A97CB0",
+      "is": "existing Catch_All@A97E20 function owns A97E24; body A97E20..A97E28",
+      "evidence": "live get_function_by_address and verify_report_calls; no Ghidra mutation"
+    }
+  ]
+}
