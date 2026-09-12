@@ -441,5 +441,23 @@
     "preserved_fmod_result": "FMOD_Channel_Stop0x25 per run for never-started fixture channel; native caller ignores result.",
     "native_exception_differential": false,
     "audible_output": false
+  },
+  "merged_validation": {
+    "merged_tested_commit": "71516808617bf22befb1b7df23c1938591efd1eb",
+    "source_validation_commit": "4ea84f9b",
+    "win32_release": "passed",
+    "existing_ctests": "2/2 passed",
+    "installed_fixture": "3 normal paths and2 failure paths passed against merged library",
+    "build_log": "local/sound_application_y_merged_build.log",
+    "fixture_log": "local/sound_dialog_y_merged_fixture.log",
+    "fixture_log_sha256": "933d8459dc69b3af88f19039b5ed8a10d4c8befe16305a4172d0454ceabcf685",
+    "library_sha256": "fd04de21350e78dfe498f3fbd2fb2378b592851e0f1d9a302c1536793f1fa313",
+    "owned_source_hashes_unchanged": true,
+    "direct_calls_checked": 130,
+    "direct_calls_failed": 0,
+    "qualified_indirect_rows": 35,
+    "game_validated": false,
+    "native_abi": false,
+    "application_phase5_wired": false
   }
 }
