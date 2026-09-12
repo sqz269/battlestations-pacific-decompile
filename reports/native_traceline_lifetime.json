@@ -1,0 +1,343 @@
+{
+  "packet": "orch3_traceline_lifetime_as",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "read_only_ghidra": true,
+  "source_files": [
+    "include/bsp/native_traceline_lifetime.hpp",
+    "src/native_traceline_lifetime.cpp"
+  ],
+  "routines": [
+    {
+      "address": "00af1980",
+      "native": "00af1980",
+      "name": "destroy_native_traceline_00af1980",
+      "coverage": "complete",
+      "original_abi": "ECX actual Traceline; no stack arguments; RET through tail B750C0",
+      "body_end_inclusive": "00af19a3",
+      "end_exclusive": "00af19a4",
+      "size": 36,
+      "sha256": "5dd112f96ecb4ba6fb0a862c9c48b7abdd857191462599bf70df912b92cc0758",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00af199f",
+        "length": 5,
+        "instruction": "JMP 00b750c0"
+      },
+      "status": "reconstructed_complete_through_existing_actual_model_owner"
+    },
+    {
+      "address": "00858380",
+      "native": "00858380",
+      "name": "delete_native_traceline_00858380",
+      "coverage": "complete",
+      "original_abi": "ECX actual Traceline; stack flags; EAX original slot; RET4",
+      "body_end_inclusive": "0085839b",
+      "end_exclusive": "0085839c",
+      "size": 28,
+      "sha256": "89fc729a26e78b1352d743533a0933ddb873c59ac512797f63e1e567164f7790",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00858399",
+        "length": 3,
+        "instruction": "RET4"
+      },
+      "status": "reconstructed_complete_through_same_actual_f8c288_pool"
+    },
+    {
+      "address": "0086ad50",
+      "native": "0086ad50",
+      "name": "destroy_native_traceline_payload_0086ad50",
+      "coverage": "complete",
+      "original_abi": "ECX actual80h payload; no stack arguments; RET",
+      "body_end_inclusive": "0086addf",
+      "end_exclusive": "0086ade0",
+      "size": 144,
+      "sha256": "2ee166c00ba0ed28cb12a1cdbcffe7135bda7c492cc105fb57945579fe1b9231",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "0086addf",
+        "length": 1,
+        "instruction": "RET"
+      },
+      "status": "reconstructed_complete_with_cpp_state0_cleanup"
+    },
+    {
+      "address": "0086ade0",
+      "native": "0086ade0",
+      "name": "delete_native_traceline_payload_0086ade0",
+      "coverage": "complete",
+      "original_abi": "ECX actual80h payload; stack flags; EAX original payload; RET4",
+      "body_end_inclusive": "0086adfd",
+      "end_exclusive": "0086adfe",
+      "size": 30,
+      "sha256": "209cc9ea7ff9ddd8b967999bcbdce1ec8d9a3de71fab16e93a035fa96f580e73",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "0086adfb",
+        "length": 3,
+        "instruction": "RET4"
+      },
+      "status": "reconstructed_complete_through_real_matching_crt_frees"
+    }
+  ],
+  "no_ghidra_functions": [],
+  "host_steps": [
+    {
+      "address": "00af1994",
+      "native": "00bf6989",
+      "function": "00af1980",
+      "contract": "real returning free of captured188; no clear",
+      "cleanup": "00af1999 ADD ESP,4"
+    },
+    {
+      "address": "00af199f",
+      "native": "00b750c0",
+      "function": "00af1980",
+      "kind": "tail_jump",
+      "contract": "complete same actual model owner destruction"
+    },
+    {
+      "address": "00858383",
+      "native": "00af1980",
+      "function": "00858380",
+      "contract": "full derived destruction"
+    },
+    {
+      "address": "00858391",
+      "native": "00af1ea0",
+      "function": "00858380",
+      "contract": "same actual1BCh slot to F8C288 iff flags bit0"
+    },
+    {
+      "address": "0086ad8d",
+      "native": "IAT00ce2220+InterlockedDecrement",
+      "function": "0086ad50",
+      "contract": "captured payload40 plus4; WINAPI consumes one pointer"
+    },
+    {
+      "address": "0086ad99",
+      "native": "captured_payload40+vtable00",
+      "function": "0086ad50",
+      "contract": "current virtual0 only on zero; actual canonical terminal owner required"
+    },
+    {
+      "address": "0086ada9",
+      "native": "IAT00ce2220+InterlockedDecrement",
+      "function": "0086ad50",
+      "contract": "reload payload44 AFTER prior callback then captured actual plus4"
+    },
+    {
+      "address": "0086adb5",
+      "native": "captured_payload44+vtable00",
+      "function": "0086ad50",
+      "contract": "current virtual0 only on zero"
+    },
+    {
+      "address": "0086adc2",
+      "native": "00bf6989",
+      "function": "0086ad50",
+      "contract": "free captured current4C and clear4C after returning",
+      "cleanup": "0086adc7 ADD ESP,4"
+    },
+    {
+      "address": "0086ade3",
+      "native": "0086ad50",
+      "function": "0086ade0",
+      "contract": "full actual80h payload destruction"
+    },
+    {
+      "address": "0086adf0",
+      "native": "00bf65ac",
+      "function": "0086ade0",
+      "contract": "actual matching scalar free iff flags bit0",
+      "cleanup": "0086adf5 ADD ESP,4"
+    },
+    {
+      "address": "00c95466",
+      "native": "00869b10",
+      "function": "00c95460",
+      "kind": "tail_jump",
+      "contract": "state0 CURRENT payload4C member free/clear"
+    }
+  ],
+  "returning_free_gaps": [
+    {
+      "function": "00af1980",
+      "call": "00af1994",
+      "range_exclusive": [
+        "00af1999",
+        "00af199c"
+      ],
+      "decoded": "ADD ESP,4; reconnect complete B750C0 tail"
+    },
+    {
+      "function": "0086ad50",
+      "call": "0086adc2",
+      "range_exclusive": [
+        "0086adc7",
+        "0086adcd"
+      ],
+      "decoded": "ADD ESP,4; MOV [ESI+4C],EBX"
+    },
+    {
+      "function": "0086ade0",
+      "call": "0086adf0",
+      "range_exclusive": [
+        "0086adf5",
+        "0086adf8"
+      ],
+      "decoded": "ADD ESP,4; reconnect EAX=ESI,RET4"
+    },
+    {
+      "function": "00869b10",
+      "call": "00869b1a",
+      "range_exclusive": [
+        "00869b1f",
+        "00869b28"
+      ],
+      "decoded": "ADD ESP,4; MOV [ESI],0",
+      "scope": "consumed unwind helper, not leased or annotated"
+    }
+  ],
+  "unwind": {
+    "function": "0086ad50",
+    "handler": "00c9546b",
+    "fh3_info": "00dc7414",
+    "map": "00dc740c = ffffffff,00c95460",
+    "action": "ECX=[EBP-10]+4C; JMP869B10",
+    "effects": "if release40 or release44 lookup throws, free/clear CURRENT4C; failing field and unvisited fields retained; no second owner release",
+    "abi_limit": "C++ exception cleanup effects implemented; native FH3/SEH machinery not transplanted"
+  },
+  "layout_producers": [
+    {
+      "function": "00b0b6a0",
+      "range": [
+        "00b0b96c",
+        "00b0b9ed"
+      ],
+      "evidence": "allocate80h then inline publishD0D4A4, clear4C/50/54 and40/44; no standalone ctor invented"
+    },
+    {
+      "function": "00b0b6a0",
+      "range": [
+        "00b0bbf4",
+        "00b0bc70"
+      ],
+      "evidence": "actual resource getter plus4/8 assigned with retain to payload40/44"
+    },
+    {
+      "function": "00858260",
+      "range": [
+        "00858260",
+        "00858324"
+      ],
+      "evidence": "same fullB75030 base, D0C8C8, clear188; derived1B8 slab ID preserved"
+    },
+    {
+      "function": "00b0b6a0",
+      "range": [
+        "00b0c6c6",
+        "00b0c6f5"
+      ],
+      "evidence": "actual pool1BCh slot construct858260 then publishD0C928 before AF3440"
+    }
+  ],
+  "all_direct_callers": {
+    "00af1980": [
+      "00858333 in00858330",
+      "00858383 in00858380"
+    ],
+    "00858380": [
+      "00d0c92c DATA"
+    ],
+    "0086ad50": [
+      "0086ade3 in0086ade0",
+      "0086b9ec in0086b9b0",
+      "00c95553 in00c95550"
+    ],
+    "0086ade0": [
+      "00d0d4a4 DATA"
+    ]
+  },
+  "register_provenance": {
+    "0086ad50": "whole live listing: ESI=ECX at86AD69; EDI captures current40 then44; EBP=IAT CE2220; EBX cleared86AD7F and preserved by all callees; after each terminal callback field clears use EBX=0",
+    "00af1980": "ESI=ECX; EAX captures188 BEFORE table store; cdecl free preservesESI; tail restoresECX=ESI"
+  },
+  "corrections": [
+    {
+      "was": "AF1980 pseudocode returned after free188",
+      "is": "returning ADD ESP4 then complete B750C0 tail",
+      "evidence": "00af1999..00af19a3 raw disk decoding matches verified live bytes"
+    },
+    {
+      "was": "86AD50 pseudocode returned after free4C",
+      "is": "clear4C after free and normal epilogue; count/capacity unchanged",
+      "evidence": "0086adc7..0086adcd returning-free gap"
+    },
+    {
+      "was": "86ADE0 pseudocode returned extraout_EAX after free",
+      "is": "EAX always original ESI after ADD ESP4",
+      "evidence": "0086adf5..0086adfd"
+    },
+    {
+      "was": "normal Model reference/pool usable for Traceline",
+      "is": "D0C928 uses858380/AF1EA0/F8C288; D0C8C8 uses858330/B748C0 separately",
+      "evidence": "live24-DWORD profiles D0C928/D0C8C8 and scalar-delete bodies"
+    }
+  ],
+  "canonical_reference": {
+    "class": "NativeTracelineReference",
+    "binding_point": "after actualD0C928 publication beforeAF3440",
+    "identity": "same live NativeModelOwner, actual+04, existing native node/scene binding and runtime; no extra retain",
+    "dispatch": {
+      "00": "00bd30e0",
+      "04": "00858380",
+      "0c": "006ef860",
+      "18": "00b6f310",
+      "40": "00b6dbe0",
+      "50": "00b6ed80",
+      "54": "00b6ee10"
+    },
+    "retirement": "destroy actual -> return same1BCh slot -> unbind lifetime -> callback removes actual registry/disposes companions; no later access",
+    "failure_retirement": "only after existing owner.phase==dead; no pool return; host caller retains raw-slot responsibility"
+  },
+  "verification": {
+    "strict_win32": "PASS /MD /W4 /WX /O2 /fp:strict /EHsc /std:c++17; manifested neutral probe.exe; /SAFESEH:NO only original-byte fixture",
+    "fixture_path": "C:\\Users\\sqz269\\bsp-as-traceline-lifetime",
+    "fixture_log": "C:\\Users\\sqz269\\bsp-as-traceline-lifetime\\execution.log",
+    "original_byte_comparisons": {
+      "traceline_scalar": 10,
+      "payload_destructor": 2,
+      "payload_scalar": 5
+    },
+    "focused_checks": [
+      "actual context destruction/free and callback replacement40->44 ordering",
+      "missing actual owner decremented to0 fails, leaves unvisited reference and clears current4C in C++ state0",
+      "canonical derived lifetime binds same actual+04; real scene retain/release; actual point-light forward/reverse backlink removed; native logical self release -> full base -> actual pool return -> unbind -> disposal"
+    ],
+    "differential_boundary": "original derived bodies, payload bodies and pool return execute verified native bytes; B750C0 delegates the existing full native actual-owner source for both sides; real CRT/native type/string/scene services; original dynamic context table relocation normalized at canonical dispatch boundary",
+    "seh_differential": "not tested; original fixture handler forwards exceptions; native scope map read and C++ missing-owner state0 effect tested separately",
+    "full_build": "PASS scripts/build.ps1 Release, Win32 bsp_game and all registered targets; reconstructed_math 1/1 PASS; log local/lifetime-full-build.log; this new source registration belongs to root and strict fixture compiled it directly",
+    "report_calls": "PASS tools/verify_report_calls.py reports/native_traceline_lifetime.json:8 checked,0 failed;4 indirect rows explicitly not mechanically checked",
+    "game_validated": false,
+    "fixture_sha256": {
+      "probe.cpp": "e28e75f8809097af4510de4a758e1d6bbe79e0182c44a8465511564dd51a302f",
+      "base_probe.hpp": "e7d5086254f4c9164d1756606d44088c1b869cd416b3e5f69f23cfbe14d8089e",
+      "make_fixture.py": "6d134f3d1be96910feb4424bc8b3a1c0e12c5f0a3c6e79f235d880dd9a84c57a",
+      "build.ps1": "967b176c0c9dc43259e3bce38018745154be8d8589919e7230ddff865aba6813",
+      "execution.log": "3f0f7b44989bbb3f38c8537dfe926d4f961a9d55a3b5ca0a7d5ce84523a917cd"
+    }
+  },
+  "limitations": [
+    "new C++ interfaces, not original ABI replacements",
+    "no AF3440 attachment or AF26A0/B0A110 update implementation in this packet",
+    "base858330 normalModelpool route omitted because correct pool identity for that object extent is not established; never return a1BCh slot there",
+    "pool membership checks prove range, boundary and retained ID, not allocation/live status; caller supplies stable initialized pool and live owner",
+    "native payload terminal providers must be actual canonical owners; missing bindings fail instead of successful no-op release",
+    "no game/runtime rendering claim; this path is not wired into the repository executable by this packet"
+  ],
+  "ghidra_mutations": []
+}
