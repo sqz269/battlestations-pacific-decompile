@@ -7,15 +7,21 @@
 //   00813020                        -> the ring tick, which writes unit+980h / +984h
 //   00825F20                        -> the motion tick: the gate, the target speed,
 //                                      0092D300 (speed) and 0092E8C0 (steering)
-//   a stand-in Euler step           -> position and attitude, which the game gets from
-//                                      its physics library instead
+//   00C41550 then 00C5B1B0          -> position and attitude, the Dyn library's own two
+//                                      integration phases for one substep
 //
-// What is NOT reconstructed, and is supplied here as a labelled stand-in: the ocean
-// sampler 0078CF20, the gameplay scale hook 008E6430, the settings singleton 00424C40
-// (so the rudder curve denominator is forced to 1), and the rigid-body integrator. Each
-// is printed in the header so a reader can never mistake one for recovered behaviour.
+// The four stand-ins the first version of this probe carried are gone: 0078CF20 (the
+// ocean sampler), 008E6430 (the gameplay-modifier product), the rudder curve settings at
+// +438h..+44Ch, and the integrator itself are all reconstructed now.
 //
-// docs/SHIP_MOTION.md, docs/CONTROLLED_UNIT.md.
+// What is still open, and is printed in the header so no reader mistakes it for recovered
+// behaviour: the hull body's mass, inertia and damping; the force path into that body
+// (009329C0's hydrodynamics are not reconstructed, so nothing pushes force here); and the
+// library's own substep size at world+00h, which decides how many substeps one 0.05 s
+// game step takes.
+//
+// docs/SHIP_MOTION.md, docs/RIGID_BODY_INTEGRATION.md, docs/UNIT_RUDDER_CURVE.md,
+// docs/OCEAN_HEIGHT.md, docs/CONTROLLED_UNIT.md.
 
 #include <cmath>
 #include <cstdio>
@@ -27,11 +33,14 @@
 
 #include "bsp/ship_class_fields.hpp"
 #include "bsp/ship_motion.hpp"
+#include "bsp/ocean_height.hpp"
+#include "bsp/rigid_body_integration.hpp"
 #include "bsp/unit_forces.hpp"
 #include "bsp/unit_motion.hpp"
 #include "bsp/unit_order_record.hpp"
 #include "bsp/unit_orders.hpp"
 #include "bsp/unit_rudder.hpp"
+#include "bsp/unit_rudder_curve.hpp"
 #include "bsp/unit_state_message.hpp"
 
 namespace {
@@ -158,24 +167,17 @@ bool load_vehicle_classes(const std::string& path, std::vector<LuaVehicleClass>&
 // Hosts
 // -------------------------------------------------------------------------
 
-// The rudder curve settings at +438h..+44Ch were never recovered from the image or the
-// installed data. Forcing the three denominator knots to 1.0 makes 0082E890 return 1.0
-// for every speed, so 0082ECB0 reduces to (MaxRotAngle / 1) * speedRatio * rudder *
-// efficiency. That is a deliberate stand-in, not a reading of the game's curve.
-bsp::UnitRudderCurveSettings identity_curve() {
-    bsp::UnitRudderCurveSettings s{};
-    s.value_0438 = 1.0f;
-    s.speed_043c = 1.0f;
-    s.value_0440 = 1.0f;
-    s.speed_0444 = 0.0f;
-    s.value_0448 = 1.0f;
-    s.speed_044c = 0.5f;
-    return s;
+// The rudder curve settings at +438h..+44Ch are the gameplay settings singleton's, filled
+// by the Lua settings loader 0083B5E0 from ShipGlobals["Navigator"]["TurnMultipliers"].
+// The installed shipglobals.lua authors them as {0.0, 0.4}, {0.5, 1.5}, {1.0, 2.0}.
+// docs/UNIT_RUDDER_CURVE.md. This replaces the identity-curve stand-in the probe used.
+bsp::UnitRudderCurveSettings shipped_curve() {
+    return bsp::unit_rudder_curve_settings(bsp::kShippedTurnMultipliers);
 }
 
 struct ProbeRudderHost final : bsp::UnitRudderHost {
     bsp::ShipClassFields fields{};
-    bsp::UnitRudderCurveSettings settings = identity_curve();
+    bsp::UnitRudderCurveSettings settings = shipped_curve();
     float forward_speed{0.0f};
     float efficiency{1.0f};
     float steering{0.0f};
@@ -185,7 +187,15 @@ struct ProbeRudderHost final : bsp::UnitRudderHost {
     const bsp::ShipClassFields& ship_class() override { return fields; }
     bool gameplay_scale_enabled() override { return false; }
     bool scale_manager_enabled() override { return false; }
-    float gameplay_scale_008e6430(int) override { return 1.0f; }
+    // 008E6430 with an empty modifier list. The product starts at the 1.0f at 00D7A24C
+    // and a mission that registers nothing leaves it there, which is also the value
+    // 0080FC30 substitutes when its two gates fail.
+    float gameplay_scale_008e6430(int) override {
+        return bsp::gameplay_modifier_product_008e6430(nullptr, 0, modifiers);
+    }
+    struct NoModifiers final : bsp::GameplayModifierHost {
+        bool entry_matches_008e4680(const bsp::GameplayModifierEntry&) override { return false; }
+    } modifiers{};
     float turn_efficiency() override { return efficiency; }
     float forward_speed_0092d730() override { return forward_speed; }
     float steering_command() override { return steering; }
@@ -217,13 +227,22 @@ struct ProbeMotionHost final : bsp::ShipMotionHost {
         state->order_kind = ring->current_kind;
     }
 
-    // 0078CF20 was never read. A flat sea at y = 0 keeps the keel point below the
-    // surface for an upright hull, which is the case the gate is meant to pass.
-    float ocean_height(float, float) override { return 0.0f; }
+    // 0078CF20, reconstructed: the wave field times the coverage mask. A flat sea is the
+    // wave field disabled or its amplitude zero, which makes the product exactly 0.0f.
+    // docs/OCEAN_HEIGHT.md.
+    bsp::FlatSeaOceanHost sea{};
+    float ocean_height(float x, float z) override {
+        return bsp::ocean_water_height_0078cf20(x, z, sea);
+    }
 
-    // 008E6430 was never analysed. The literal at 00D7A24C is what the listing uses when
-    // the two globals at 00826A06 are clear, which is the single-player case.
-    float gameplay_scale() override { return bsp::kUnitReferenceSpeedUnscaled; }
+    // 008E6430, reconstructed: the product over the category-4 modifier list. Empty here,
+    // so it is the 1.0f at 00D7A24C, which is also what 00826A06's clear globals give.
+    float gameplay_scale() override {
+        return bsp::gameplay_modifier_product_008e6430(nullptr, 0, no_modifiers);
+    }
+    struct NoModifiers final : bsp::GameplayModifierHost {
+        bool entry_matches_008e4680(const bsp::GameplayModifierEntry&) override { return false; }
+    } no_modifiers{};
 
     // 00826A6D dispatches the controller's force-model slot; 00937440 for a surface
     // ship. Its torque is computed so the probe can report it, but nothing applies it:
@@ -398,9 +417,15 @@ int main(int argc, char** argv) {
     std::printf("  step         %.4f s, %d steps\n", static_cast<double>(dt), steps);
     std::printf("  order        throttle %.3f, rudder %.3f, through 00816A40\n",
                 static_cast<double>(throttle), static_cast<double>(rudder));
-    std::printf("  stand-ins    ocean 0078CF20 (flat sea y=0), gameplay scale 008E6430 (1.0),\n"
-                "               rudder curve settings +438h..+44Ch (denominator forced to 1),\n"
-                "               rigid-body integration (explicit Euler, not the game's)\n\n");
+    std::printf("  inputs       ocean 0078CF20 reconstructed, flat sea (wave field off -> 0.0)\n"
+                "               gameplay scale 008E6430 reconstructed, empty list -> 1.0\n"
+                "               rudder curve +438h..+44Ch from shipglobals.lua"
+                " {0,0.4} {0.5,1.5} {1,2}\n"
+                "               integration 00C41550 + 00C5B1B0, the game's own routines\n"
+                "  left open    the hull body's mass, inertia and damping; the force path\n"
+                "               into the body; the library's substep size (world+00h), so\n"
+                "               one substep of the full %.4f s game step is taken\n\n",
+                static_cast<double>(dt));
 
     // --- the unit state -------------------------------------------------------
     bsp::ShipMotionState state{};
@@ -455,6 +480,19 @@ int main(int argc, char** argv) {
     ring.slot[slot].kind = queue.slot[slot].kind;
     ring.slot[slot].predicted = queue.slot_active[slot];
 
+    // --- the rigid body -------------------------------------------------------
+    // The hull body's own mass, inertia and damping are not established (no ship-side
+    // caller of 00C37F40, 00C37E70, 00C37E00 or 00C37DE0 was found), and the force path
+    // into it is not reconstructed, so this body carries no force, no gravity and no
+    // damping. Only the position and orientation update is exercised, which is exactly
+    // the stand-in this probe used to supply by hand.
+    bsp::DynMotionState motion{};
+    motion.max_linear_speed = 1.0e30f;   // M+18h, unknown; a clamp that never fires
+    motion.max_angular_speed = 1.0e30f;  // M+1Ch, likewise
+    bsp::DynBody body{};
+    body.motion = &motion;
+    bsp::DynWorldStepConstants physics_world{};  // gravity and both sleep thresholds zero
+
     // --- the run --------------------------------------------------------------
     const float reference = host.reference_speed();
     std::printf("  reference speed 0080FC30 = %.6f\n\n", static_cast<double>(reference));
@@ -491,7 +529,30 @@ int main(int argc, char** argv) {
         ring.slot[w].predicted = queue.slot_active[w];
 
         bsp::ship_motion_step_00825f20(state, cls, host, dt);
-        bsp::ship_integrate_stand_in(state, dt);
+
+        // The game's own integrator, not an Euler stand-in: 00C41550 then 00C5B1B0, the
+        // two phases of one Dyn substep. The motion tick has just written both velocities
+        // straight onto the body (00C37E50 / 00C37E20), so the position phase is what
+        // turns them into a pose. The velocity phase runs first, as 00C5BB30 orders it;
+        // with no force, no gravity and no damping it only rebuilds the inverse inertia.
+        // docs/RIGID_BODY_INTEGRATION.md.
+        motion.linear_velocity = state.linear_velocity;
+        motion.angular_velocity = state.angular_velocity;
+        for (int i = 0; i < 3; ++i) {
+            body.row0[i] = state.pose_row0[i];
+            body.row1[i] = state.pose_row1[i];
+            body.row2[i] = state.pose_row2[i];
+            body.position[i] = state.position[i];
+        }
+        bsp::dyn_body_substep(body, physics_world, dt);
+        state.linear_velocity = motion.linear_velocity;
+        state.angular_velocity = motion.angular_velocity;
+        for (int i = 0; i < 3; ++i) {
+            state.pose_row0[i] = body.row0[i];
+            state.pose_row1[i] = body.row1[i];
+            state.pose_row2[i] = body.row2[i];
+            state.position[i] = body.position[i];
+        }
         t += dt;
 
         const float speed = host.forward_speed();
@@ -520,10 +581,22 @@ int main(int argc, char** argv) {
     std::printf("  peak yaw rate %.5f rad/s, class MaxRotAngle %.5f rad/s, ratio %.4f\n",
                 static_cast<double>(peak_yaw), static_cast<double>(rate_at_full),
                 static_cast<double>((rate_at_full > 0.0f) ? peak_yaw / rate_at_full : 0.0f));
-    std::printf("  heading turns at the class rudder rate: %s\n",
-                (rate_at_full > 0.0f && peak_yaw > 0.99f * rate_at_full &&
-                 peak_yaw < 1.01f * rate_at_full)
+    // With the shipped curve the denominator at full throttle is 2.0, so the expected
+    // steady yaw rate at a hard-over rudder and full speed is MaxRotAngle / 2, not
+    // MaxRotAngle. 0082ECB0 is (MaxRotAngle / denominator) * speedRatio * rudder *
+    // efficiency, and the steering slew at 0092EAAD reaches that target within 2 dt.
+    const float expected_yaw =
+        rate_at_full /
+        bsp::kShippedTurnMultipliers.max_speed.turn_circle_multiplier;
+    std::printf("  expected yaw rate with the shipped curve %.5f rad/s"
+                " (MaxRotAngle / %.2f)\n",
+                static_cast<double>(expected_yaw),
+                static_cast<double>(
+                    bsp::kShippedTurnMultipliers.max_speed.turn_circle_multiplier));
+    std::printf("  heading turns at the curve's rate: %s\n",
+                (expected_yaw > 0.0f && peak_yaw > 0.99f * expected_yaw &&
+                 peak_yaw < 1.01f * expected_yaw)
                     ? "yes"
-                    : "no (see the stand-in rudder curve above)");
+                    : "no");
     return 0;
 }
