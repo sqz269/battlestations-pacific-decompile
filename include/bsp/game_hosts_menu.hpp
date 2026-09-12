@@ -39,6 +39,7 @@ struct GuiLayoutPage;
 namespace bsp::game {
 
 class GameHostLog;
+class GameSingletonHost;
 class GameFrontendHost;
 class GameVfsHost;
 class GameScriptHost;
@@ -141,7 +142,7 @@ public:
     // in-mission frames of 004e4a40 to run once the load has finished, and
     // `profiler` is the counter pair the frame brackets itself with.
     GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameStateSlot& state,
-        long press_start_frame, GameVfsHost& vfs, GameScriptHost& scripts,
+        GameSingletonHost& singletons, long press_start_frame, GameVfsHost& vfs, GameScriptHost& scripts,
         LocaleTables& locale, std::string menu_select, long mission_frames = 0,
         GameFrameProfiler* profiler = nullptr, std::string language = {},
         long mission_complete_frame = -1, long order_frame = -1,

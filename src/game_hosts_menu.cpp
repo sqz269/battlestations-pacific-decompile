@@ -10,6 +10,7 @@
 #include "bsp/frontend_states.hpp"
 #include "bsp/game_frame_control.hpp"
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_hosts_singletons.hpp"
 #include "bsp/game_hosts_frontend.hpp"
 #include "bsp/game_hosts_hud.hpp"
 #include "bsp/game_hosts_mission.hpp"
@@ -17,7 +18,6 @@
 #include "bsp/input_tick.hpp"
 #include "bsp/main_menu_screens.hpp"
 #include "bsp/press_start_screen.hpp"
-#include "bsp/singleton_lifetime.hpp"
 #include "bsp/title_init.hpp"
 
 #include <algorithm>
@@ -155,10 +155,7 @@ struct GameMenuHost::Impl {
     MainMenuMusicState title_music{};
     FrontEndShellState shell_state{};
     LoadingScreenConfig loading_globals{};
-    GameplayEffectManager* volatile effect_singleton{nullptr};
-    GameplayEffectManagerAllocationWords effect_allocation_words{0};
-    std::unique_ptr<SingletonLifetimeDomain> lifetime;
-    std::unique_ptr<GameplayEffectManagerContext> effect_context;
+    GameplayEffectManagerContext& effect_context;
 
     // --- the main-menu path -------------------------------------------------
     MainMenuPathState path{};
@@ -173,7 +170,7 @@ struct GameMenuHost::Impl {
     bool mission_running{false};
 
     Impl(GameHostLog& log_in, GameFrontendHost& frontend_in, GameStateSlot& state_in,
-        long press_start_frame_in);
+        GameSingletonHost& singletons, long press_start_frame_in);
 
     MenuScreen* screen_at(int slot);
     // The executable's record of one registry slot. `external` is the object
@@ -1157,7 +1154,7 @@ public:
     }
     GameplayEffectManagerContext& effect_manager_context() override {
         owner_.log.implemented("FrontEndShell::effect_manager_context", "004c1650");
-        return *owner_.effect_context;
+        return owner_.effect_context;
     }
     bool title_screen_present() override { return owner_.world.title != nullptr; }
     void destroy_title_screen() override {
@@ -1429,16 +1426,6 @@ private:
     MenuTitleMusicHost& music_;
 };
 
-// The singleton lifetime domain the gameplay effect manager registers with.
-// 004e4000 probes that registry at 004e4062 as stripped instrumentation, so the
-// domain exists only to satisfy the probe.
-void menu_lifetime_destroy(void* context, void* owner, std::uint32_t flags) noexcept {
-    static_cast<void>(context);
-    static_cast<void>(owner);
-    static_cast<void>(flags);
-}
-void menu_lifetime_invalid_parameter(void* context) noexcept { static_cast<void>(context); }
-
 }  // namespace
 
 // ---------------------------------------------------------------------------
@@ -1446,15 +1433,12 @@ void menu_lifetime_invalid_parameter(void* context) noexcept { static_cast<void>
 // ---------------------------------------------------------------------------
 
 GameMenuHost::Impl::Impl(GameHostLog& log_in, GameFrontendHost& frontend_in,
-    GameStateSlot& state_in, long press_start_frame_in)
+    GameStateSlot& state_in, GameSingletonHost& singletons, long press_start_frame_in)
     : log(log_in), frontend(frontend_in), state(state_in),
-      press_start_frame(press_start_frame_in) {
+      press_start_frame(press_start_frame_in),
+      effect_context(singletons.gameplay_effect_context()) {
     summary.press_start_frame = press_start_frame_in;
     world.title = nullptr;
-    lifetime = std::make_unique<SingletonLifetimeDomain>(SingletonLifetimeCallbacks{
-        nullptr, &menu_lifetime_destroy, &menu_lifetime_invalid_parameter});
-    effect_context = std::make_unique<GameplayEffectManagerContext>(
-        GameplayEffectManagerContext{*lifetime, effect_singleton, effect_allocation_words});
     // The press-start action record is enabled so 004c43c0's own gate at
     // 00a92c88 does not skip it; every other action has no record at all.
     press_action.enabled = true;
@@ -1538,12 +1522,12 @@ void GameMenuHost::Impl::advance_path(float raw_delta) {
 // ---------------------------------------------------------------------------
 
 GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameStateSlot& state,
-    long press_start_frame, GameVfsHost& vfs, GameScriptHost& scripts, LocaleTables& locale,
+    GameSingletonHost& singletons, long press_start_frame, GameVfsHost& vfs, GameScriptHost& scripts, LocaleTables& locale,
     std::string menu_select, long mission_frames, GameFrameProfiler* profiler,
     std::string language, long mission_complete_frame, long order_frame,
     float order_throttle, float order_rudder, float mission_frame_seconds,
     std::string trajectory_csv, std::string order_command, std::string order_command_target)
-    : impl_(std::make_unique<Impl>(log, frontend, state, press_start_frame)) {
+    : impl_(std::make_unique<Impl>(log, frontend, state, singletons, press_start_frame)) {
     // Milestone 2h: the in-mission HUD registers into the same registry this
     // object owns, so the HUD host is built here and handed to the mission.
     impl_->hud = std::make_unique<GameHudHost>(log, *this);

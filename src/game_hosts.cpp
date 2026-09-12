@@ -22,6 +22,7 @@
 #include "bsp/game_hosts_frontend.hpp"
 #include "bsp/game_hosts_init_tail.hpp"
 #include "bsp/game_hosts_menu.hpp"
+#include "bsp/game_hosts_singletons.hpp"
 #include "bsp/game_hosts_mission.hpp"
 #include "bsp/font_registry_startup.hpp"
 #include "bsp/fingerprint_payload.hpp"
@@ -776,6 +777,7 @@ void GameLoopCallbacks::frame() {
 GameStartupHost::GameStartupHost(GameHostLog& log, HINSTANCE instance,
     const GameExecutableOptions& options) : log_(log), instance_(instance), options_(options) {
     initialize_static_game_settings_00cd2d80(settings_);
+    singletons_ = new GameSingletonHost(log_);
 }
 
 GameStartupHost::~GameStartupHost() {
@@ -785,6 +787,7 @@ GameStartupHost::~GameStartupHost() {
     // device and before the font host whose registry its pages reference.
     if (device_) device_->set_overlay(nullptr);
     delete menu_;
+    delete singletons_;
     delete profiler_;
     delete decals_;
     delete frontend_;
@@ -1257,7 +1260,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // override 0067ca80 is what loads FE_initial, so all three title pages are now owned
     // rather than loaded directly as milestone 2b did.
     profiler_ = new GameFrameProfiler(log_, 8);
-    menu_ = new GameMenuHost(log_, *frontend_, game_state_, options_.press_start_frame,
+    menu_ = new GameMenuHost(log_, *frontend_, game_state_, *singletons_, options_.press_start_frame,
         *vfs_, *scripts_, locale_->tables(), options_.menu_select, options_.mission_frames,
         profiler_, summary_.language, options_.mission_complete_frame, options_.order_frame,
         options_.order_throttle, options_.order_rudder, options_.mission_frame_seconds,
@@ -1432,8 +1435,8 @@ void GameStartupHost::application_destruct() {
 }
 
 void GameStartupHost::destroy_singleton_lifetime_manager() {
-    // 008f8449: only when 01090aa0 is set. No singleton lifetime manager exists here.
-    log_.unimplemented("StartupHost::destroy_singleton_lifetime_manager", "008f8449");
+    log_.implemented("StartupHost::destroy_singleton_lifetime_manager", "008f8449");
+    singletons_->shutdown();
 }
 
 }  // namespace bsp::game

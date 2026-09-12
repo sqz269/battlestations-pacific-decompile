@@ -7948,6 +7948,31 @@
         "reports/native_singleton_removal_reorder_audit.json"
       ],
       "evidence": "reports/native_singleton_removal_reorder_audit.json"
+    },
+    {
+      "id": "game_singleton_runtime_ownership",
+      "packet": "game_singleton_runtime_ownership",
+      "state": "source_host_ownership_integrated_strict_build_and_bounded_runtime_verified",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [],
+      "fragment_addresses": [
+        "008f8449"
+      ],
+      "code_ownership": [
+        "src/game_hosts_singletons.cpp",
+        "include/bsp/game_hosts_singletons.hpp",
+        "src/game_hosts.cpp",
+        "include/bsp/game_hosts.hpp",
+        "src/game_hosts_menu.cpp",
+        "include/bsp/game_hosts_menu.hpp",
+        "cmake/startup.cmake",
+        "docs/GAME_SINGLETON_RUNTIME_OWNERSHIP.md",
+        "reports/game_singleton_runtime_ownership.json"
+      ],
+      "evidence": "reports/game_singleton_runtime_ownership.json",
+      "qualification": "Typed executable ownership binding, only currently admitted GameplayEffectManager. Raw mixed-owner destructor/getters and full gameplay remain open."
     }
   ],
   "snapshot_after_analysis": {
