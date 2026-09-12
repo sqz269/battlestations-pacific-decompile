@@ -1,0 +1,253 @@
+{
+  "packet": "orch6_avoid_zone_manager_queries",
+  "worker": "agent/orch6-zone-wrappers",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "source": "src/avoid_zone_manager_queries.cpp",
+  "header": "include/bsp/avoid_zone_manager_queries.hpp",
+  "documentation": "docs/AVOID_ZONE_MANAGER_QUERIES.md",
+  "routines": [
+    {
+      "address": "00417580",
+      "body_end_inclusive": "00417600",
+      "coverage": "complete",
+      "implementation": "avoid_zone_point_offset_00417580",
+      "proposed_name": "BSP_AvoidZone_PushPointOutside",
+      "abi": "ECX zone; stack out,point,float margin,byte test in word; EAX out; RET10h at004175e8/004175fe",
+      "reuses_existing_implementation": false,
+      "flow_gaps": []
+    },
+    {
+      "address": "00417e40",
+      "body_end_inclusive": "00417e58",
+      "coverage": "complete",
+      "implementation": "avoid_zone_manager_containing_point_00417e40",
+      "proposed_name": "BSP_AvoidZoneManager_ZoneContainingPoint",
+      "abi": "ECX manager; stack point,layer; EAX zone/null; RET8 at00417e56",
+      "reuses_existing_implementation": false,
+      "flow_gaps": []
+    },
+    {
+      "address": "00417e90",
+      "body_end_inclusive": "00417eed",
+      "coverage": "complete",
+      "implementation": "avoid_zone_manager_segment_hit_00417e90",
+      "proposed_name": "BSP_AvoidZoneManager_SegmentHit",
+      "abi": "ECX manager; stack layer,toward,from,out_zone,out_edge; AL bool; RET14h at00417eeb",
+      "reuses_existing_implementation": false,
+      "flow_gaps": []
+    },
+    {
+      "address": "00417ef0",
+      "body_end_inclusive": "00417f5b",
+      "coverage": "complete",
+      "implementation": "avoid_zone_manager_segment_hit_point_00417ef0",
+      "proposed_name": "BSP_AvoidZoneManager_SegmentHitPoint",
+      "abi": "ECX manager; stack layer,toward,from,out_point; AL bool; RET10h at00417f59",
+      "reuses_existing_implementation": false,
+      "flow_gaps": []
+    },
+    {
+      "address": "004120d0",
+      "body_end_inclusive": "00412111",
+      "coverage": "complete",
+      "implementation": "avoid_zone_group_for_layer_004120d0",
+      "proposed_name": "BSP_AvoidZoneManager_GroupForLayerOrBelow_004120D0",
+      "abi": "ECX manager; stack signed layer; EAX group; RET4 at00412104/0041210f",
+      "reuses_existing_implementation": true,
+      "flow_gaps": []
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00417596",
+      "native": "00414f50",
+      "function": "00417580",
+      "contract": "body_read"
+    },
+    {
+      "address": "004175a2",
+      "native": "00416b50",
+      "function": "00417580",
+      "contract": "body_read"
+    },
+    {
+      "address": "004175c5",
+      "native": "00416f30",
+      "function": "00417580",
+      "contract": "body_read"
+    },
+    {
+      "address": "00417e4a",
+      "native": "00412120",
+      "function": "00417e40",
+      "contract": "body_read"
+    },
+    {
+      "address": "00417e51",
+      "native": "004178f0",
+      "function": "00417e40",
+      "contract": "body_read"
+    },
+    {
+      "address": "00417ece",
+      "native": "004120d0",
+      "function": "00417e90",
+      "contract": "body_read"
+    },
+    {
+      "address": "00417ed5",
+      "native": "004179d0",
+      "function": "00417e90",
+      "contract": "body_read"
+    },
+    {
+      "address": "00417f2e",
+      "native": "004120d0",
+      "function": "00417ef0",
+      "contract": "body_read"
+    },
+    {
+      "address": "00417f35",
+      "native": "004179d0",
+      "function": "00417ef0",
+      "contract": "body_read"
+    },
+    {
+      "address": "009e3831",
+      "native": "00417e40",
+      "function": "009e3780",
+      "contract": "body_read"
+    },
+    {
+      "address": "009e38ef",
+      "native": "00417e40",
+      "function": "009e3780",
+      "contract": "body_read"
+    },
+    {
+      "address": "009e3851",
+      "native": "00417580",
+      "function": "009e3780",
+      "contract": "body_read"
+    },
+    {
+      "address": "009e390b",
+      "native": "00417580",
+      "function": "009e3780",
+      "contract": "body_read"
+    },
+    {
+      "address": "009e387b",
+      "native": "004120d0",
+      "function": "009e3780",
+      "contract": "body_read"
+    },
+    {
+      "address": "009e3075",
+      "native": "00417e90",
+      "function": "009e3040",
+      "contract": "body_read"
+    },
+    {
+      "address": "00422bab",
+      "native": "00417ef0",
+      "function": "00422500",
+      "contract": "body_read"
+    },
+    {
+      "address": "0042315c",
+      "native": "00417ef0",
+      "function": "00422500",
+      "contract": "body_read"
+    },
+    {
+      "address": "009e4216",
+      "native": "00417ef0",
+      "function": "009e3c00",
+      "contract": "body_read"
+    }
+  ],
+  "no_ghidra_function": [],
+  "unread_wrapper_ranges": [],
+  "corrections": [
+    {
+      "was": "00417580 body ended004175FE",
+      "evidence": "RET10h at004175FE occupies3 bytes; live proto and complete listing",
+      "is": "Inclusive end00417600"
+    },
+    {
+      "was": "00417EF0 body ended00417F59",
+      "evidence": "RET10h at00417F59 occupies3 bytes; live proto and complete listing",
+      "is": "Inclusive end00417F5B"
+    },
+    {
+      "was": "004120D0 geometry header body ended00412119",
+      "evidence": "RET4 at0041210F occupies3 bytes; live proto and complete listing",
+      "is": "Inclusive end00412111"
+    }
+  ],
+  "caller_direction_evidence": {
+    "test_byte": "009E380E MOV EBX,1; whole009E3780 EBX listing checked; no intervening writes before009E3840/009E38FE PUSH EBX",
+    "goal_margin": "009E383A FLD[00CE38B8] =10; FSTP[ESP] at009E3842",
+    "pose_margin": "009E38F8 FLD[00CE3850] =5; FSTP[ESP] at009E3900",
+    "margin_sign": "004175AB FLD caller float;004175B0 FSTP[ESP]; no sign change",
+    "offset": "00416F30 adds margin times interpolated native offset_dir after unshifted-distance selection",
+    "producer": "0041A418/423 right normal(incoming+outgoing);0041A454/45A normalize;0041A47E positive-turn reversal gate",
+    "scope": "Outward for valid simple produced rings; no global outwardness claim for arbitrary/degenerate/self-intersecting records"
+  },
+  "storage_policy": "Borrow native records and matching semantic snapshots. Return stable group/zone indices; preserve group and zone ordering for plan lifetime. No reinterpretation of semantic corner as native record.",
+  "deviations": [
+    "Empty manager throws invalid_argument: native lookup unconditionally reads slot0; legitimate empty groups still return no hit.",
+    "00417580 no-candidate branch throws domain_error: native otherwise copies uninitialized point locals.",
+    "Typed C++ identities and value-return point replace native pointers/hidden receiver ABI."
+  ],
+  "dependencies": [
+    "00414F50 concrete x87-aware geometry helper",
+    "00416B50,004178F0,004179D0 existing semantic geometry",
+    "004120D0,00412120 existing concrete table lookup",
+    "00416F30 existing native-byte-differential-tested closest offset implementation"
+  ],
+  "verification": {
+    "build": "PASS scripts/build.ps1 MSVC Win32 Release; bsp_game.exe built; existing reconstructed_math and native_math_differential CTest2/2 passed",
+    "live_call_rows": {
+      "checked": 18,
+      "failed": 0
+    },
+    "fixture": "PASS12 manager/offset integration checks, one fixed native-record convex ring plus translated semantic copy",
+    "new_tracked_tests": 0,
+    "build_log": "local/avoid_zone_manager_queries_build.log",
+    "fixture_source": "local/avoid_zone_manager_probe.cpp",
+    "fixture_runner": "local/run_avoid_zone_manager_probe.ps1",
+    "fixture_log": "local/avoid_zone_manager_probe.log",
+    "fixture_manifest": "/link /MANIFEST:EMBED",
+    "whole_manager_native_differential": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "executable_wiring_changed": false,
+    "scope": "Complete wrappers over existing semantic geometry; numeric leaf-kernel integration remains with primary worker.",
+    "native_seeds": "PASS verify-seeds: installed binary ranges equal Ghidra bytes; native differential test enabled"
+  },
+  "dependency_alignment_gap": {
+    "function": "004179d0",
+    "start": "004179fd",
+    "end_inclusive": "004179ff",
+    "bytes": "8d4900",
+    "classification": "unreachable LEA ECX,[ECX] alignment, skipped by004179fb JMP00417a00; not a flow-repair gap"
+  },
+  "completed_utc": "2026-09-12T18:55:22.604204+00:00",
+  "ghidra_annotation_policy": {
+    "applied": false,
+    "prior_comments_preserved": true,
+    "prior_names": {
+      "00417580": "BSP_AvoidZone_PushPointOutside",
+      "00417e40": "BSP_AvoidZoneManager_ZoneContainingPoint",
+      "00417e90": "FUN_00417e90",
+      "00417ef0": "BSP_AvoidZoneManager_SegmentHitPoint",
+      "004120d0": "FUN_004120d0"
+    },
+    "ledger_previous_values_log": "local/avoid_zone_manager_ledger.log",
+    "application_owner": "primary integrator"
+  }
+}
