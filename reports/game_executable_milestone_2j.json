@@ -279,6 +279,38 @@
     }
   ],
 
+  "lobby_settings_steps": [
+    {
+      "method": "MissionLua::sync_lobby_settings",
+      "address": "004e02d0",
+      "function": "004dfb70",
+      "native": "005e2f00",
+      "status": "concrete",
+      "note": "Packet cc2_lobby_settings reconstructed the routine while this packet was open, so milestone 2f's zeroed thirteen-field substitute table is gone. 005e2f93..005e2fcc is a single-player early-out that sets the global nil at 005e2f59 and publishes no table; game+1FE4h is zero here, so that is the path taken, and the USN02 mission Lua reaches the same three bindings with no chunk error afterwards."
+    },
+    {
+      "method": "MissionLua::lobby_settings_set_global_nil",
+      "address": "005e2f59",
+      "function": "005e2f00",
+      "native": "00b67350",
+      "status": "concrete"
+    },
+    {
+      "method": "MissionLua::lobby_settings_option_number",
+      "address": null,
+      "native": "008d2f50",
+      "status": "record",
+      "note": "The MultiLobbySettings registry loaded from Scripts/datatables/MultiGlobals.lua, which this process does not load. The native map is a std::map, so a missing key reads as zero; the early-out means no payload is read on this path anyway. No reachable call site in this process."
+    },
+    {
+      "method": "MissionLua::lobby_settings_option_label",
+      "address": null,
+      "native": "005e2320",
+      "status": "record",
+      "note": "Needs the mission record at 00e19594, the player-count bytes at game+2017h/+2018h and the label map. Never reached on the single-player path."
+    }
+  ],
+
   "minimap": [
     {
       "method": "HudMinimap::radar_map_texture",
@@ -290,7 +322,7 @@
   ],
 
   "switches": {
-    "--trajectory-csv <path>": "one row per unit per fixed simulation step; columns step,t,unit,class,x,y,z,heading,forward_speed,throttle,rudder,yaw_rate with a header row. The path is resolved before --game-root changes the current directory."
+    "--trajectory-csv <path>": "one row per unit per fixed simulation step, plus a step 0 block holding the pose before the first step; columns step,t,unit,class,x,y,z,heading,fwd_speed,throttle,rudder,yaw_rate with a header row. yaw_rate is dot(w, row1), the component about the hull's own up axis, which is the one 0092e8c0 slews. One file per unit is written beside the combined one as <stem>.<unit>.csv, because a reader that takes consecutive rows as one trajectory cannot use the interleaved file. The path is resolved before --game-root changes the current directory. Column spellings and the step 0 row come from packet cc_motion_trace's reader; forward_speed, this packet's first spelling, parses there as a missing optional column and defaults to 0.0 silently."
   },
 
   "trajectory": {
@@ -310,16 +342,33 @@
       "heading_degrees_t14": -20.302,
       "yaw_rate_t14": -0.03054,
       "straight_line_moved_m": 187.81,
-      "host_methods": "319 concrete, 339 unimplemented",
+      "host_methods": "325 concrete, 337 unimplemented",
       "bridge_quads": 57
     },
     "why": "The shipped TurnMultipliers curve divides MaxRotAngle by 2.0 at full throttle, so the steady yaw rate at rudder 0.5 halves from MaxRotAngle/2 to MaxRotAngle/4. The forward speed rises slightly because a slower turn keeps more of the velocity on the hull's forward axis and 0092d300 rewrites only the axial component."
   },
 
+  "motion_differential": {
+    "acceptance": "docs/MOTION_DIFFERENTIAL.md measured milestone 2i at -0.12217 rad/s (the whole MaxRotAngle, the stand-in denominator 1.0) against the probe's -0.06109 (MaxRotAngle / 2.0) at full throttle and rudder 1. With the curve wired the executable settles at -0.06109 rad/s.",
+    "settled_yaw_rate_rudder_1": -0.06109,
+    "max_rot_angle": 0.122173,
+    "compare_command": "python tools/motion_trace_compare.py --trace local/trajectory_r1.DeRuyter.csv --probe local/probe_class20.txt --align-origin",
+    "probe_command": "bsp_ship_motion_probe.exe --class 20 --throttle 1.0 --rudder 1.0",
+    "trace_command": "bsp_game.exe ... --mission-frame-seconds 0.05 --order-frame 1 --order throttle=1,rudder=1 --trajectory-csv local/trajectory_r1.csv",
+    "samples_compared": 281,
+    "time_span_seconds": [0.0, 14.0],
+    "result": "no channel left its tolerance over the compared span",
+    "peak_delta": {"speed_m_s": 0.2188, "heading_deg": 0.0434, "position_m": 0.0957, "yaw_rad_s": 0.00101},
+    "final_delta": {"speed_m_s": -0.0000, "heading_deg": 0.0005, "position_m": 0.0031},
+    "order_frame_20_note": "With the brief's --order-frame 20 the final heading delta is 1.70 degrees. That is the switch, not the model: the executable runs the authored Cruise order (throttle 1, rudder 0) for the first 20 in-mission frames, which is 1.0 s of straight running the probe does not have.",
+    "residual_speed_note": "The peak speed delta of 0.22 m/s is the probe's print granularity: it prints every ten steps and the tool interpolates between those samples.",
+    "scope": "This is an agreement between two runs of the same reconstruction. Both sides share the same open gaps: the hull body's mass, inertia and damping, the force channel, and the library's substep size."
+  },
+
   "validation": {
     "build": "scripts/build.ps1, Release Win32, /W4 /WX /fp:strict, no warnings",
     "tests": "ctest reconstructed_math 1/1 passed; no test cases added",
-    "run": "exit 0; 32 units, 8960 walks, 8960 motion ticks over 14.00 s of simulated time; trajectory csv 8960 rows",
+    "run": "exit 0; 321 -> 325 concrete and 337 unimplemented host methods; 32 units, 8960 walks, 8960 motion ticks over 14.00 s of simulated time; trajectory csv 8992 rows in the combined file plus 32 per-unit files",
     "regressions": [
       "--frames 120 --press-start-frame 30 (no --menu-select): exit 0, 154 concrete / 80 unimplemented, same as milestones 2d and 2i",
       "--frames 40 title only: exit 0, 129 concrete / 49 unimplemented, same as milestones 2d and 2i",

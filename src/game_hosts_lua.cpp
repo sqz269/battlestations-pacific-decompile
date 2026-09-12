@@ -15,6 +15,7 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/global_script_folders.hpp"
+#include "bsp/mission_lobby_settings.hpp"
 #include "bsp/mission_lua_bindings.hpp"
 #include "bsp/mission_lua_machine.hpp"
 #include "bsp/mission_scene_load.hpp"
@@ -448,27 +449,145 @@ std::size_t GameMissionLuaHost::run_global_script_folders_00886900() {
     return summary_.global_folder_scripts - ran_before;
 }
 
+namespace {
+
+// bsp::LobbySettingsSyncHost and bsp::LobbySettingsOptionSource over the live
+// interpreter, for packet cc2_lobby_settings' reconstruction of 005E2F00.
+// Everything the routine writes into Lua is done here; everything it reads from
+// a registry or a record this process does not own is a host record.
+class LobbySettingsBinding final : public bsp::LobbySettingsSyncHost {
+public:
+    LobbySettingsBinding(lua_State* state, GameHostLog& log) : state_(state), log_(log) {}
+
+    void set_global_nil(const char* name) override {
+        if (state_ == nullptr) return;
+        lua_pushnil(state_);
+        lua_setfield(state_, LUA_GLOBALSINDEX, name);
+        nil_global_ = true;
+        log_.implemented("MissionLua::lobby_settings_set_global_nil", "00b67350");
+    }
+    void set_global_new_table(const char* name) override {
+        if (state_ == nullptr) return;
+        lua_createtable(state_, 0, static_cast<int>(bsp::kLobbySettingsFieldCount));
+        lua_setfield(state_, LUA_GLOBALSINDEX, name);
+        table_created_ = true;
+        log_.implemented("MissionLua::lobby_settings_set_global_table", "00b67580");
+    }
+    void open_global_table(const char* name) override {
+        if (state_ == nullptr) return;
+        lua_getfield(state_, LUA_GLOBALSINDEX, name);
+        open_ = lua_type(state_, -1) == LUA_TTABLE;
+        if (!open_) ::lua_settop(state_, ::lua_gettop(state_) - 1);
+        log_.implemented("MissionLua::lobby_settings_open_table", "00b67800");
+    }
+    void table_set_nil(const char* field) override {
+        if (!open_) return;
+        lua_pushnil(state_);
+        lua_setfield(state_, -2, field);
+        ++nil_fields_;
+    }
+    void table_set_number(const char* field, int value) override {
+        if (!open_) return;
+        lua_pushinteger(state_, value);
+        lua_setfield(state_, -2, field);
+        ++number_fields_;
+    }
+    void table_set_string(const char* field, const char* value) override {
+        if (!open_) return;
+        lua_pushstring(state_, value != nullptr ? value : "");
+        lua_setfield(state_, -2, field);
+        ++string_fields_;
+    }
+    void close_table() override {
+        if (!open_) return;
+        ::lua_settop(state_, ::lua_gettop(state_) - 1);
+        open_ = false;
+    }
+    const char* option_label(int slot) override {
+        static_cast<void>(slot);
+        // 005E2320 needs the mission record at 00E19594, the player-count bytes
+        // at game+2017h/+2018h and the label map, none of which this process
+        // owns. It is never reached on the single-player path.
+        log_.unimplemented("MissionLua::lobby_settings_option_label", "005e2320");
+        return "";
+    }
+    void publish_mode_flags(const bsp::LobbySettingsModeFlags& flags) override {
+        flags_ = flags;
+        // The three bytes 00E0C978, 00E17BF2 and 00E08880. The executable holds
+        // them as its own state; 0080FC30's gate reads the first of them.
+        log_.implemented("MissionLua::lobby_settings_mode_flags", "005e3017");
+    }
+    void publish_command_points(float value) override {
+        command_points_ = value;
+        log_.implemented("MissionLua::lobby_settings_command_points", "00e0cfb4");
+    }
+
+    bool nil_global() const noexcept { return nil_global_; }
+    bool table_created() const noexcept { return table_created_; }
+    std::size_t nil_fields() const noexcept { return nil_fields_; }
+    std::size_t number_fields() const noexcept { return number_fields_; }
+    std::size_t string_fields() const noexcept { return string_fields_; }
+    const bsp::LobbySettingsModeFlags& flags() const noexcept { return flags_; }
+    float command_points() const noexcept { return command_points_; }
+
+private:
+    lua_State* state_;
+    GameHostLog& log_;
+    bool open_{false};
+    bool nil_global_{false};
+    bool table_created_{false};
+    std::size_t nil_fields_{0};
+    std::size_t number_fields_{0};
+    std::size_t string_fields_{0};
+    bsp::LobbySettingsModeFlags flags_{};
+    float command_points_{0.0f};
+};
+
+// The MultiLobbySettings registry 008D2F50 loads from
+// Scripts/datatables/MultiGlobals.lua. This process does not load it, and the
+// native map is a std::map, so a missing key reads as zero rather than failing;
+// the record answers with that zero.
+class LobbySettingsOptionsBinding final : public bsp::LobbySettingsOptionSource {
+public:
+    explicit LobbySettingsOptionsBinding(GameHostLog& log) : log_(log) {}
+    int option_number(int slot, int option) override {
+        static_cast<void>(slot);
+        static_cast<void>(option);
+        log_.unimplemented("MissionLua::lobby_settings_option_number", "008d2f50");
+        return 0;
+    }
+
+private:
+    GameHostLog& log_;
+};
+
+}  // namespace
+
 void GameMissionLuaHost::publish_lobby_settings_005e2f00() {
     if (state_ == nullptr) return;
-    // 005e2f00 reads and writes the thirteen slots of 00e08908 through the
-    // LuaObject API, taking each value from session state. This process has no
-    // session, so the table is created with zeroed fields and the sync itself
-    // is a record: without the table the multiplayer scripts index a nil global
-    // at their first line, which is why the step exists at all.
-    lua_createtable(state_, 0, static_cast<int>(bsp::kLobbySettingsFieldCount));
-    std::size_t fields = 0;
-    for (std::size_t slot = 0; slot < bsp::kLobbySettingsSlotCount; ++slot) {
-        const char* field = bsp::lobby_settings_field_name(slot);
-        if (field == nullptr) continue;  // slot 0Dh, the null pointer at 00e08940
-        lua_pushinteger(state_, 0);
-        lua_setfield(state_, -2, field);
-        ++fields;
-    }
-    lua_setfield(state_, LUA_GLOBALSINDEX, bsp::kLobbySettingsTable);
-    summary_.lobby_settings_published = true;
-    log_.unimplemented("MissionLua::sync_lobby_settings", "005e2f00");
-    log_.notef("LobbySettings created with %zu fields, all zero: the values are the "
-        "session owner's (005e2f00 syncs them, this process does not)", fields);
+    // Packet cc2_lobby_settings reconstructed 005E2F00 in full, so milestone 2i's
+    // substitute (a zeroed thirteen-field table, on the guess that a script
+    // would otherwise index a nil global) is gone. The routine's own answer for
+    // this run is the opposite of that guess: 005E2F93..005E2FCC is a
+    // single-player early-out that sets the global **nil** at 005E2F59 and
+    // publishes no table at all. game+1FE4h is zero here, so that is the path
+    // taken, and the executable now takes it rather than inventing a table.
+    bsp::LobbySettingsGameState state{};
+    state.network_session = false;      // game+1FE4h
+    state.game_mode_forced = false;     // game+61Ch
+    state.effective_game_mode = 8;      // 004bca50, the single-player campaign
+    LobbySettingsBinding sync(state_, log_);
+    LobbySettingsOptionsBinding options(log_);
+    bsp::lobby_settings_sync_005e2f00(sync, options, state);
+    summary_.lobby_settings_published = sync.table_created();
+    log_.implemented("MissionLua::sync_lobby_settings", "005e2f00");
+    log_.notef("LobbySettings: %s (single player, game+1FE4h = 0), fields nil=%zu number=%zu "
+        "string=%zu; mode flags powerups=%d reload_payload=%d map=%d, command points %.1f",
+        sync.nil_global() ? "the global is set nil by the 005e2f93 early-out"
+                          : "a table was published",
+        sync.nil_fields(), sync.number_fields(), sync.string_fields(),
+        sync.flags().powerups_enabled ? 1 : 0, sync.flags().reload_payload_on ? 1 : 0,
+        sync.flags().map_enabled ? 1 : 0, static_cast<double>(sync.command_points()));
 }
 
 bool GameMissionLuaHost::run_mission_script_008860b0(const std::string& script_name) {

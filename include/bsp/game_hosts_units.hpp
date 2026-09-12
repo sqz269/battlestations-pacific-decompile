@@ -81,7 +81,12 @@ struct GameUnitRow {
     float throttle{0.0f};     // unit+980h, what the ring published
     float ordered_rudder{0.0f};  // unit+984h, what the ring published
     float rudder{0.0f};       // controller+80h, the slewed rudder
-    float yaw_rate{0.0f};
+    float yaw_rate{0.0f};     // the angular velocity's world y
+    // dot(angular velocity, pose row 1), the component about the hull's own up
+    // axis, which is the one 0092e8c0 slews toward the commanded rate. It
+    // equals the world y only while the hull is upright, so the trajectory dump
+    // reports this one and not the world component.
+    float yaw_rate_up_axis{0.0f};
     float distance{0.0f};     // straight-line, start to current
     float path_length{0.0f};  // summed per step
     unsigned long long instance_updates{0};
