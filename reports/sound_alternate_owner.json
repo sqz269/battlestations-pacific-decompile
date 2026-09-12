@@ -1,0 +1,1117 @@
+{
+  "packet": "orch4_sound_alternate_owner_y",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "functions": [
+    {
+      "address": "00a778d0",
+      "name": "construct_sound_alternate_base_00a778d0",
+      "proposed_name": "BSP_StreamedDialogManager_ConstructBase",
+      "previous_name": "FUN_00a778d0",
+      "source": "src/sound_alternate_owner.cpp",
+      "document": "docs/SOUND_ALTERNATE_OWNER.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body and native-map-derived C++ exception cleanup; Windows SEH ABI excluded",
+      "original_abi": "ECX owner; EAX owner; RET",
+      "abi": "ECX owner; EAX owner; RET",
+      "meaning": "Publish and register current F8BBCC under captured lifetime-manager section. C++ exception cleanup verified from DEAB2C/DEAB60: captured guard unwinds before root412430 writesCE3818; preserve current global and partial registration/unregister effects. A79230 is state-1 during the base call.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a77960",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a77961",
+      "ghidra_missing_start_at_initial_review": false,
+      "evidence": "Hypothesis, not recovered symbol. ECX owner; EAX owner; RET. Publish and register current F8BBCC under captured lifetime-manager section. See docs/SOUND_ALTERNATE_OWNER.md and reports/sound_alternate_owner.json. Normal C++ host semantics; no native ABI/SEH or game validation claim. Full Release Win32 build, both existing tests and 70 direct-call audit rows passed. Required playback services remain explicit. C++ exception cleanup verified from DEAB2C/DEAB60: captured guard unwinds before root412430 writesCE3818; preserve current global and partial registration/unregister effects. A79230 is state-1 during the base call."
+    },
+    {
+      "address": "00a77970",
+      "name": "destroy_sound_alternate_base_00a77970",
+      "proposed_name": "BSP_StreamedDialogManager_DestroyBase",
+      "previous_name": "FUN_00a77970",
+      "source": "src/sound_alternate_owner.cpp",
+      "document": "docs/SOUND_ALTERNATE_OWNER.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body and native-map-derived C++ exception cleanup; Windows SEH ABI excluded",
+      "original_abi": "ECX owner; RET",
+      "abi": "ECX owner; RET",
+      "meaning": "Unregister CURRENT global, clear F8BBCC, leave captured section, install CE3818. C++ exception cleanup verified from DEAB2C/DEAB60: captured guard unwinds before root412430 writesCE3818; preserve current global and partial registration/unregister effects. A79230 is state-1 during the base call.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a77a08",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a77a09",
+      "ghidra_missing_start_at_initial_review": false,
+      "evidence": "Hypothesis, not recovered symbol. ECX owner; RET. Unregister CURRENT global, clear F8BBCC, leave captured section, install CE3818. See docs/SOUND_ALTERNATE_OWNER.md and reports/sound_alternate_owner.json. Normal C++ host semantics; no native ABI/SEH or game validation claim. Full Release Win32 build, both existing tests and 70 direct-call audit rows passed. Required playback services remain explicit. C++ exception cleanup verified from DEAB2C/DEAB60: captured guard unwinds before root412430 writesCE3818; preserve current global and partial registration/unregister effects. A79230 is state-1 during the base call."
+    },
+    {
+      "address": "00a79230",
+      "name": "construct_sound_alternate_owner_00a79230",
+      "proposed_name": "BSP_StreamedDialogManager_Construct",
+      "previous_name": "BSP_DialogStreamTable_Load",
+      "source": "src/sound_alternate_owner.cpp",
+      "document": "docs/SOUND_ALTERNATE_OWNER.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body; required services and valid-storage/exception domain documented",
+      "original_abi": "ECX actual234h owner; EAX owner; RET",
+      "abi": "ECX actual234h owner; EAX owner; RET",
+      "meaning": "Owned arrays, actual20h table load, actual8h physical pair and two5Ch logical profiles.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a79478",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a79479",
+      "ghidra_missing_start_at_initial_review": false,
+      "evidence": "Hypothesis, not recovered symbol. ECX actual234h owner; EAX owner; RET. Owned arrays, actual20h table load, actual8h physical pair and two5Ch logical profiles. See docs/SOUND_ALTERNATE_OWNER.md and reports/sound_alternate_owner.json. Normal C++ host semantics; no native ABI/SEH or game validation claim. Full Release Win32 build, both existing tests and 70 direct-call audit rows passed. Required playback services remain explicit."
+    },
+    {
+      "address": "00a790d0",
+      "name": "scalar_delete_sound_alternate_owner_00a790d0",
+      "proposed_name": "BSP_StreamedDialogManager_ScalarDelete",
+      "previous_name": "FUN_00a790d0",
+      "source": "src/sound_alternate_owner.cpp",
+      "document": "docs/SOUND_ALTERNATE_OWNER.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body; required services and valid-storage/exception domain documented",
+      "original_abi": "ECX owner; stack flags byte; EAX original owner; RET4",
+      "abi": "ECX owner; stack flags byte; EAX original owner; RET4",
+      "meaning": "Full teardown then free on bit0; return original pointer after free.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a790eb",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a790ee",
+      "ghidra_missing_start_at_initial_review": false,
+      "evidence": "Hypothesis, not recovered symbol. ECX owner; stack flags byte; EAX original owner; RET4. Full teardown then free on bit0; return original pointer after free. See docs/SOUND_ALTERNATE_OWNER.md and reports/sound_alternate_owner.json. Normal C++ host semantics; no native ABI/SEH or game validation claim. Full Release Win32 build, both existing tests and 70 direct-call audit rows passed. Required playback services remain explicit."
+    },
+    {
+      "address": "00a78fb0",
+      "name": "destroy_sound_alternate_owner_00a78fb0",
+      "proposed_name": "BSP_StreamedDialogManager_Destroy",
+      "previous_name": "FUN_00a78fb0",
+      "source": "src/sound_alternate_owner.cpp",
+      "document": "docs/SOUND_ALTERNATE_OWNER.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body; required services and valid-storage/exception domain documented",
+      "original_abi": "ECX owner; RET",
+      "abi": "ECX owner; RET",
+      "meaning": "Clear channels, free physical pair/logicals, release table, reverse arrays, base.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a790ba",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a790bb",
+      "ghidra_missing_start_at_initial_review": false,
+      "evidence": "Hypothesis, not recovered symbol. ECX owner; RET. Clear channels, free physical pair/logicals, release table, reverse arrays, base. See docs/SOUND_ALTERNATE_OWNER.md and reports/sound_alternate_owner.json. Normal C++ host semantics; no native ABI/SEH or game validation claim. Full Release Win32 build, both existing tests and 70 direct-call audit rows passed. Required playback services remain explicit."
+    },
+    {
+      "address": "00a789c0",
+      "name": "update_sound_alternate_owner_00a789c0",
+      "proposed_name": "BSP_StreamedDialogManager_Update",
+      "previous_name": "FUN_00a789c0",
+      "source": "src/sound_alternate_owner.cpp",
+      "document": "docs/SOUND_ALTERNATE_OWNER.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body; required services and valid-storage/exception domain documented",
+      "original_abi": "ECX owner; stack float dt; RET4",
+      "abi": "ECX owner; stack float dt; RET4",
+      "meaning": "Smooth gain; tick both logical profiles; arbitrate one physical stream with current-field reloads.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a78cdb",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a78cde",
+      "ghidra_missing_start_at_initial_review": false,
+      "evidence": "Hypothesis, not recovered symbol. ECX owner; stack float dt; RET4. Smooth gain; tick both logical profiles; arbitrate one physical stream with current-field reloads. See docs/SOUND_ALTERNATE_OWNER.md and reports/sound_alternate_owner.json. Normal C++ host semantics; no native ABI/SEH or game validation claim. Full Release Win32 build, both existing tests and 70 direct-call audit rows passed. Required playback services remain explicit."
+    },
+    {
+      "address": "00a77c10",
+      "name": "clear_sound_alternate_channels_00a77c10",
+      "proposed_name": "BSP_StreamedDialogManager_ClearChannels",
+      "previous_name": "FUN_00a77c10",
+      "source": "src/sound_alternate_owner.cpp",
+      "document": "docs/SOUND_ALTERNATE_OWNER.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body; required services and valid-storage/exception domain documented",
+      "original_abi": "ECX owner; RET",
+      "abi": "ECX owner; RET",
+      "meaning": "Release logical stream/current config references, physical stream; clear requests and208=-1.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a77cfa",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a77cfb",
+      "ghidra_missing_start_at_initial_review": false,
+      "evidence": "Hypothesis, not recovered symbol. ECX owner; RET. Release logical stream/current config references, physical stream; clear requests and208=-1. See docs/SOUND_ALTERNATE_OWNER.md and reports/sound_alternate_owner.json. Normal C++ host semantics; no native ABI/SEH or game validation claim. Full Release Win32 build, both existing tests and 70 direct-call audit rows passed. Required playback services remain explicit."
+    },
+    {
+      "address": "00a78150",
+      "name": "construct_sound_alternate_logical_00a78150",
+      "proposed_name": "BSP_StreamedDialogLogicalProfileA_Construct",
+      "previous_name": "FUN_00a78150",
+      "source": "src/sound_alternate_owner.cpp",
+      "document": "docs/SOUND_ALTERNATE_OWNER.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body; required services and valid-storage/exception domain documented",
+      "original_abi": "ECX actual5Ch logical; stack category; EAX logical; RET4",
+      "abi": "ECX actual5Ch logical; stack category; EAX logical; RET4",
+      "meaning": "D58E60 and profilebyte58=1; exact owned initialization preserving2C/padding.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a781b2",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a781b5",
+      "ghidra_missing_start_at_initial_review": false,
+      "evidence": "Hypothesis, not recovered symbol. ECX actual5Ch logical; stack category; EAX logical; RET4. D58E60 and profilebyte58=1; exact owned initialization preserving2C/padding. See docs/SOUND_ALTERNATE_OWNER.md and reports/sound_alternate_owner.json. Normal C++ host semantics; no native ABI/SEH or game validation claim. Full Release Win32 build, both existing tests and 70 direct-call audit rows passed. Required playback services remain explicit."
+    },
+    {
+      "address": "00a781c0",
+      "name": "construct_sound_alternate_logical_00a781c0",
+      "proposed_name": "BSP_StreamedDialogLogicalProfileB_Construct",
+      "previous_name": "FUN_00a781c0",
+      "source": "src/sound_alternate_owner.cpp",
+      "document": "docs/SOUND_ALTERNATE_OWNER.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body; required services and valid-storage/exception domain documented",
+      "original_abi": "ECX actual5Ch logical; stack category; EAX logical; RET4",
+      "abi": "ECX actual5Ch logical; stack category; EAX logical; RET4",
+      "meaning": "D58E64 and profilebyte58=0; exact owned initialization preserving2C/padding.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a78221",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a78224",
+      "ghidra_missing_start_at_initial_review": false,
+      "evidence": "Hypothesis, not recovered symbol. ECX actual5Ch logical; stack category; EAX logical; RET4. D58E64 and profilebyte58=0; exact owned initialization preserving2C/padding. See docs/SOUND_ALTERNATE_OWNER.md and reports/sound_alternate_owner.json. Normal C++ host semantics; no native ABI/SEH or game validation claim. Full Release Win32 build, both existing tests and 70 direct-call audit rows passed. Required playback services remain explicit."
+    },
+    {
+      "address": "00a780b0",
+      "name": "destroy_sound_alternate_logical_00a780b0",
+      "proposed_name": "BSP_StreamedDialogLogical_Destroy",
+      "previous_name": "FUN_00a780b0",
+      "source": "src/sound_alternate_owner.cpp",
+      "document": "docs/SOUND_ALTERNATE_OWNER.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body; required services and valid-storage/exception domain documented",
+      "original_abi": "ECX actual5Ch logical; RET",
+      "abi": "ECX actual5Ch logical; RET",
+      "meaning": "D58E5C; stream04, config30, config10, name08.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a7814f",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a78150",
+      "ghidra_missing_start_at_initial_review": false,
+      "evidence": "Hypothesis, not recovered symbol. ECX actual5Ch logical; RET. D58E5C; stream04, config30, config10, name08. See docs/SOUND_ALTERNATE_OWNER.md and reports/sound_alternate_owner.json. Normal C++ host semantics; no native ABI/SEH or game validation claim. Full Release Win32 build, both existing tests and 70 direct-call audit rows passed. Required playback services remain explicit."
+    },
+    {
+      "address": "00a77dd0",
+      "name": "destroy_sound_alternate_configuration_00a77dd0",
+      "proposed_name": "BSP_StreamedDialogConfiguration_Destroy",
+      "previous_name": "FUN_00a77dd0",
+      "source": "src/sound_alternate_owner.cpp",
+      "document": "docs/SOUND_ALTERNATE_OWNER.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body; required services and valid-storage/exception domain documented",
+      "original_abi": "ECX actual1Ch config; RET",
+      "abi": "ECX actual1Ch config; RET",
+      "meaning": "Release ref18 then destroy18h record.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a77e39",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a77e3a",
+      "ghidra_missing_start_at_initial_review": false,
+      "evidence": "Hypothesis, not recovered symbol. ECX actual1Ch config; RET. Release ref18 then destroy18h record. See docs/SOUND_ALTERNATE_OWNER.md and reports/sound_alternate_owner.json. Normal C++ host semantics; no native ABI/SEH or game validation claim. Full Release Win32 build, both existing tests and 70 direct-call audit rows passed. Required playback services remain explicit."
+    },
+    {
+      "address": "004c87d0",
+      "name": "construct_sound_alternate_record_004c87d0",
+      "proposed_name": "BSP_StreamedDialogRecord_Construct",
+      "previous_name": "no function start; label LAB_004c87d0",
+      "source": "src/sound_alternate_owner.cpp",
+      "document": "docs/SOUND_ALTERNATE_OWNER.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body; required services and valid-storage/exception domain documented",
+      "original_abi": "ECX actual18h record; EAX record; RET",
+      "abi": "ECX actual18h record; EAX record; RET",
+      "meaning": "Two empty actual NativeStrings, null ref10 and float14=1.",
+      "name_is_hypothesis": true,
+      "last_instruction": "004c87ef",
+      "last_instruction_length": 1,
+      "end_exclusive": "004c87f0",
+      "ghidra_missing_start_at_initial_review": true,
+      "evidence": "Hypothesis, not recovered symbol. ECX actual18h record; EAX record; RET. Two empty actual NativeStrings, null ref10 and float14=1. See docs/SOUND_ALTERNATE_OWNER.md and reports/sound_alternate_owner.json. Normal C++ host semantics; no native ABI/SEH or game validation claim. Full Release Win32 build, both existing tests and 70 direct-call audit rows passed. Required playback services remain explicit."
+    },
+    {
+      "address": "004c87f0",
+      "name": "destroy_sound_alternate_record_004c87f0",
+      "proposed_name": "BSP_StreamedDialogRecord_Destroy",
+      "previous_name": "FUN_004c87f0",
+      "source": "src/sound_alternate_owner.cpp",
+      "document": "docs/SOUND_ALTERNATE_OWNER.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body; required services and valid-storage/exception domain documented",
+      "original_abi": "ECX actual18h record; RET",
+      "abi": "ECX actual18h record; RET",
+      "meaning": "Ref10 zero dispatch/clear, then strings08 and00, leaving string headers stale.",
+      "name_is_hypothesis": true,
+      "last_instruction": "004c8890",
+      "last_instruction_length": 1,
+      "end_exclusive": "004c8891",
+      "ghidra_missing_start_at_initial_review": false,
+      "evidence": "Hypothesis, not recovered symbol. ECX actual18h record; RET. Ref10 zero dispatch/clear, then strings08 and00, leaving string headers stale. See docs/SOUND_ALTERNATE_OWNER.md and reports/sound_alternate_owner.json. Normal C++ host semantics; no native ABI/SEH or game validation claim. Full Release Win32 build, both existing tests and 70 direct-call audit rows passed. Required playback services remain explicit."
+    },
+    {
+      "address": "00a77d00",
+      "name": "construct_sound_alternate_physical_pair_00a77d00",
+      "proposed_name": "BSP_StreamedDialogPhysicalPair_Construct",
+      "previous_name": "no function start; label LAB_00a77d00",
+      "source": "src/sound_alternate_owner.cpp",
+      "document": "docs/SOUND_ALTERNATE_OWNER.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body; required services and valid-storage/exception domain documented",
+      "original_abi": "ECX actual8h pair; EAX pair; RET",
+      "abi": "ECX actual8h pair; EAX pair; RET",
+      "meaning": "Initialize two null reference slots.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a77d0f",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a77d10",
+      "ghidra_missing_start_at_initial_review": true,
+      "evidence": "Hypothesis, not recovered symbol. ECX actual8h pair; EAX pair; RET. Initialize two null reference slots. See docs/SOUND_ALTERNATE_OWNER.md and reports/sound_alternate_owner.json. Normal C++ host semantics; no native ABI/SEH or game validation claim. Full Release Win32 build, both existing tests and 70 direct-call audit rows passed. Required playback services remain explicit."
+    },
+    {
+      "address": "00a77d10",
+      "name": "destroy_sound_alternate_physical_pair_00a77d10",
+      "proposed_name": "BSP_StreamedDialogPhysicalPair_Destroy",
+      "previous_name": "FUN_00a77d10",
+      "source": "src/sound_alternate_owner.cpp",
+      "document": "docs/SOUND_ALTERNATE_OWNER.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body; required services and valid-storage/exception domain documented",
+      "original_abi": "ECX actual8h pair; RET",
+      "abi": "ECX actual8h pair; RET",
+      "meaning": "Release/clear slots00 and04 in order.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a77d94",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a77d95",
+      "ghidra_missing_start_at_initial_review": false,
+      "evidence": "Hypothesis, not recovered symbol. ECX actual8h pair; RET. Release/clear slots00 and04 in order. See docs/SOUND_ALTERNATE_OWNER.md and reports/sound_alternate_owner.json. Normal C++ host semantics; no native ABI/SEH or game validation claim. Full Release Win32 build, both existing tests and 70 direct-call audit rows passed. Required playback services remain explicit."
+    },
+    {
+      "address": "00a778c0",
+      "name": "construct_sound_alternate_reference_00a778c0",
+      "proposed_name": "BSP_StreamedDialogReference_Construct",
+      "previous_name": "no function start; label LAB_00a778c0",
+      "source": "src/sound_alternate_owner.cpp",
+      "document": "docs/SOUND_ALTERNATE_OWNER.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body; required services and valid-storage/exception domain documented",
+      "original_abi": "ECX actual4h slot; EAX slot; RET",
+      "abi": "ECX actual4h slot; EAX slot; RET",
+      "meaning": "Initialize null reference slot.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a778c8",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a778c9",
+      "ghidra_missing_start_at_initial_review": true,
+      "evidence": "Hypothesis, not recovered symbol. ECX actual4h slot; EAX slot; RET. Initialize null reference slot. See docs/SOUND_ALTERNATE_OWNER.md and reports/sound_alternate_owner.json. Normal C++ host semantics; no native ABI/SEH or game validation claim. Full Release Win32 build, both existing tests and 70 direct-call audit rows passed. Required playback services remain explicit."
+    },
+    {
+      "address": "00a85c00",
+      "name": "request_sound_stream_fade_00a85c00",
+      "proposed_name": "BSP_SoundStream_RequestFade",
+      "previous_name": "FUN_00a85c00",
+      "source": "src/sound_alternate_owner.cpp",
+      "document": "docs/SOUND_ALTERNATE_OWNER.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body; required services and valid-storage/exception domain documented",
+      "original_abi": "ECX actual54h stream; RET",
+      "abi": "ECX actual54h stream; RET",
+      "meaning": "For state20 in1/2 set byteA=1 and byteB=0.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a85c13",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a85c14",
+      "ghidra_missing_start_at_initial_review": false,
+      "evidence": "Hypothesis, not recovered symbol. ECX actual54h stream; RET. For state20 in1/2 set byteA=1 and byteB=0. See docs/SOUND_ALTERNATE_OWNER.md and reports/sound_alternate_owner.json. Normal C++ host semantics; no native ABI/SEH or game validation claim. Full Release Win32 build, both existing tests and 70 direct-call audit rows passed. Required playback services remain explicit."
+    },
+    {
+      "address": "00a86f40",
+      "name": "request_sound_stream_stop_00a86f40",
+      "proposed_name": "BSP_SoundStream_RequestStop",
+      "previous_name": "FUN_00a86f40",
+      "source": "src/sound_alternate_owner.cpp",
+      "document": "docs/SOUND_ALTERNATE_OWNER.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body; required services and valid-storage/exception domain documented",
+      "original_abi": "ECX actual54h stream; RET",
+      "abi": "ECX actual54h stream; RET",
+      "meaning": "Use shared native18h StringBuilder constructor/appends/destructor, then set byte09=1.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a86fa7",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a86fa8",
+      "ghidra_missing_start_at_initial_review": false,
+      "evidence": "Hypothesis, not recovered symbol. ECX actual54h stream; RET. Use shared native18h StringBuilder constructor/appends/destructor, then set byte09=1. See docs/SOUND_ALTERNATE_OWNER.md and reports/sound_alternate_owner.json. Normal C++ host semantics; no native ABI/SEH or game validation claim. Full Release Win32 build, both existing tests and 70 direct-call audit rows passed. Required playback services remain explicit."
+    },
+    {
+      "address": "00a77ff0",
+      "name": "copy_sound_stream_name_00a77ff0",
+      "proposed_name": "BSP_SoundStream_CopyName",
+      "previous_name": "FUN_00a77ff0",
+      "source": "src/sound_alternate_owner.cpp",
+      "document": "docs/SOUND_ALTERNATE_OWNER.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body; required services and valid-storage/exception domain documented",
+      "original_abi": "ECX actual54h stream; stack NativeString destination; EAX destination; RET4",
+      "abi": "ECX actual54h stream; stack NativeString destination; EAX destination; RET4",
+      "meaning": "Clear destination first, then actual-header deep copy of name24; self-construction abandons old data.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a7803c",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7803f",
+      "ghidra_missing_start_at_initial_review": false,
+      "evidence": "Hypothesis, not recovered symbol. ECX actual54h stream; stack NativeString destination; EAX destination; RET4. Clear destination first, then actual-header deep copy of name24; self-construction abandons old data. See docs/SOUND_ALTERNATE_OWNER.md and reports/sound_alternate_owner.json. Normal C++ host semantics; no native ABI/SEH or game validation claim. Full Release Win32 build, both existing tests and 70 direct-call audit rows passed. Required playback services remain explicit."
+    },
+    {
+      "address": "00a791d0",
+      "name": "destroy_sound_alternate_table_00a791d0",
+      "proposed_name": "BSP_DialogStreamTable_Destroy",
+      "previous_name": "FUN_00a791d0",
+      "source": "src/sound_alternate_owner.cpp",
+      "document": "docs/SOUND_ALTERNATE_OWNER.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body; required services and valid-storage/exception domain documented",
+      "original_abi": "ECX actual20h table; RET",
+      "abi": "ECX actual20h table; RET",
+      "meaning": "Reverse shrink actual14h NativeString records to0, free data, install CEB130.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a7922c",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a7922d",
+      "ghidra_missing_start_at_initial_review": false,
+      "evidence": "Hypothesis, not recovered symbol. ECX actual20h table; RET. Reverse shrink actual14h NativeString records to0, free data, install CEB130. See docs/SOUND_ALTERNATE_OWNER.md and reports/sound_alternate_owner.json. Normal C++ host semantics; no native ABI/SEH or game validation claim. Full Release Win32 build, both existing tests and 70 direct-call audit rows passed. Required playback services remain explicit."
+    },
+    {
+      "address": "00a796f0",
+      "name": "scalar_delete_sound_alternate_table_00a796f0",
+      "proposed_name": "BSP_DialogStreamTable_ScalarDelete",
+      "previous_name": "FUN_00a796f0",
+      "source": "src/sound_alternate_owner.cpp",
+      "document": "docs/SOUND_ALTERNATE_OWNER.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body; required services and valid-storage/exception domain documented",
+      "original_abi": "ECX table; stack flags byte; EAX original table; RET4",
+      "abi": "ECX table; stack flags byte; EAX original table; RET4",
+      "meaning": "Table body then free on bit0; return original pointer.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a7970b",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7970e",
+      "ghidra_missing_start_at_initial_review": false,
+      "evidence": "Hypothesis, not recovered symbol. ECX table; stack flags byte; EAX original table; RET4. Table body then free on bit0; return original pointer. See docs/SOUND_ALTERNATE_OWNER.md and reports/sound_alternate_owner.json. Normal C++ host semantics; no native ABI/SEH or game validation claim. Full Release Win32 build, both existing tests and 70 direct-call audit rows passed. Required playback services remain explicit."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00a778fe",
+      "native": "00415350",
+      "caller": "00a778d0",
+      "contract": "Existing native/helper boundary; original instruction 0x00415350"
+    },
+    {
+      "address": "00a77917",
+      "native": "00ce2218+IAT",
+      "caller": "00a778d0",
+      "contract": "Existing native/helper boundary; original instruction dword ptr [0x00ce2218]"
+    },
+    {
+      "address": "00a7792c",
+      "native": "00415350",
+      "caller": "00a778d0",
+      "contract": "Existing native/helper boundary; original instruction 0x00415350"
+    },
+    {
+      "address": "00a7793a",
+      "native": "00bd0c30",
+      "caller": "00a778d0",
+      "contract": "Existing native/helper boundary; original instruction 0x00bd0c30"
+    },
+    {
+      "address": "00a77948",
+      "native": "00ce2210+IAT",
+      "caller": "00a778d0",
+      "contract": "Existing native/helper boundary; original instruction dword ptr [0x00ce2210]"
+    },
+    {
+      "address": "00a7799e",
+      "native": "00415350",
+      "caller": "00a77970",
+      "contract": "Existing native/helper boundary; original instruction 0x00415350"
+    },
+    {
+      "address": "00a779b7",
+      "native": "00ce2218+IAT",
+      "caller": "00a77970",
+      "contract": "Existing native/helper boundary; original instruction dword ptr [0x00ce2218]"
+    },
+    {
+      "address": "00a779c6",
+      "native": "00415350",
+      "caller": "00a77970",
+      "contract": "Existing native/helper boundary; original instruction 0x00415350"
+    },
+    {
+      "address": "00a779d4",
+      "native": "00bcfca0",
+      "caller": "00a77970",
+      "contract": "Existing native/helper boundary; original instruction 0x00bcfca0"
+    },
+    {
+      "address": "00a779ec",
+      "native": "00ce2210+IAT",
+      "caller": "00a77970",
+      "contract": "Existing native/helper boundary; original instruction dword ptr [0x00ce2210]"
+    },
+    {
+      "address": "00a79251",
+      "native": "00a778d0",
+      "caller": "00a79230",
+      "contract": "Publish/register F8BBCC base before derived member initialization."
+    },
+    {
+      "address": "00a79274",
+      "native": "00bf7cd1",
+      "caller": "00a79230",
+      "contract": "Existing native/helper boundary; original instruction 0x00bf7cd1"
+    },
+    {
+      "address": "00a79293",
+      "native": "00bf7cd1",
+      "caller": "00a79230",
+      "contract": "Existing native/helper boundary; original instruction 0x00bf7cd1"
+    },
+    {
+      "address": "00a792fb",
+      "native": "00bf681b",
+      "caller": "00a79230",
+      "contract": "Existing native/helper boundary; original instruction 0x00bf681b"
+    },
+    {
+      "address": "00a7934b",
+      "native": "00ce2220+IAT",
+      "caller": "00a79230",
+      "contract": "Existing native/helper boundary; original instruction dword ptr [0x00ce2220]"
+    },
+    {
+      "address": "00a7935b",
+      "native": "current_receiver+vtable00",
+      "caller": "00a79230",
+      "contract": "Existing native/helper boundary; original instruction EDX"
+    },
+    {
+      "address": "00a79379",
+      "native": "0041dd40",
+      "caller": "00a79230",
+      "contract": "Existing native/helper boundary; original instruction 0x0041dd40"
+    },
+    {
+      "address": "00a79394",
+      "native": "00bf7680",
+      "caller": "00a79230",
+      "contract": "Existing native/helper boundary; original instruction 0x00bf7680"
+    },
+    {
+      "address": "00a793ac",
+      "native": "00a87060",
+      "caller": "00a79230",
+      "contract": "Required actual20h table load through A87060, ECX table and stack NativeString path."
+    },
+    {
+      "address": "00a793c9",
+      "native": "00419cc0",
+      "caller": "00a79230",
+      "contract": "Existing native/helper boundary; original instruction 0x00419cc0"
+    },
+    {
+      "address": "00a793d0",
+      "native": "00bd1510",
+      "caller": "00a79230",
+      "contract": "Existing native/helper boundary; original instruction 0x00bd1510"
+    },
+    {
+      "address": "00a793d7",
+      "native": "00bf55be",
+      "caller": "00a79230",
+      "contract": "Existing native/helper boundary; original instruction 0x00bf55be"
+    },
+    {
+      "address": "00a79404",
+      "native": "00bf7cd1",
+      "caller": "00a79230",
+      "contract": "Existing native/helper boundary; original instruction 0x00bf7cd1"
+    },
+    {
+      "address": "00a79419",
+      "native": "00bf681b",
+      "caller": "00a79230",
+      "contract": "Existing native/helper boundary; original instruction 0x00bf681b"
+    },
+    {
+      "address": "00a79429",
+      "native": "00a78150",
+      "caller": "00a79230",
+      "contract": "Existing native/helper boundary; original instruction 0x00a78150"
+    },
+    {
+      "address": "00a79437",
+      "native": "00bf681b",
+      "caller": "00a79230",
+      "contract": "Existing native/helper boundary; original instruction 0x00bf681b"
+    },
+    {
+      "address": "00a79446",
+      "native": "00a781c0",
+      "caller": "00a79230",
+      "contract": "Existing native/helper boundary; original instruction 0x00a781c0"
+    },
+    {
+      "address": "00a790d3",
+      "native": "00a78fb0",
+      "caller": "00a790d0",
+      "contract": "Existing native/helper boundary; original instruction 0x00a78fb0"
+    },
+    {
+      "address": "00a790e0",
+      "native": "00bf65ac",
+      "caller": "00a790d0",
+      "contract": "Existing native/helper boundary; original instruction 0x00bf65ac"
+    },
+    {
+      "address": "00a78fdd",
+      "native": "00a77c10",
+      "caller": "00a78fb0",
+      "contract": "Release current logical and physical stream references before owner member destruction."
+    },
+    {
+      "address": "00a78ffa",
+      "native": "00bf7c6e",
+      "caller": "00a78fb0",
+      "contract": "Existing native/helper boundary; original instruction 0x00bf7c6e"
+    },
+    {
+      "address": "00a79000",
+      "native": "00bf6989",
+      "caller": "00a78fb0",
+      "contract": "Existing native/helper boundary; original instruction 0x00bf6989"
+    },
+    {
+      "address": "00a79014",
+      "native": "00a780b0",
+      "caller": "00a78fb0",
+      "contract": "Existing native/helper boundary; original instruction 0x00a780b0"
+    },
+    {
+      "address": "00a7901a",
+      "native": "00bf65ac",
+      "caller": "00a78fb0",
+      "contract": "Existing native/helper boundary; original instruction 0x00bf65ac"
+    },
+    {
+      "address": "00a7902e",
+      "native": "00a780b0",
+      "caller": "00a78fb0",
+      "contract": "Existing native/helper boundary; original instruction 0x00a780b0"
+    },
+    {
+      "address": "00a79034",
+      "native": "00bf65ac",
+      "caller": "00a78fb0",
+      "contract": "Existing native/helper boundary; original instruction 0x00bf65ac"
+    },
+    {
+      "address": "00a79052",
+      "native": "00ce2220+IAT",
+      "caller": "00a78fb0",
+      "contract": "Existing native/helper boundary; original instruction dword ptr [0x00ce2220]"
+    },
+    {
+      "address": "00a79062",
+      "native": "current_receiver+vtable00",
+      "caller": "00a78fb0",
+      "contract": "Existing native/helper boundary; original instruction EDX"
+    },
+    {
+      "address": "00a7907f",
+      "native": "00bf7c6e",
+      "caller": "00a78fb0",
+      "contract": "Existing native/helper boundary; original instruction 0x00bf7c6e"
+    },
+    {
+      "address": "00a79095",
+      "native": "00bf7c6e",
+      "caller": "00a78fb0",
+      "contract": "Existing native/helper boundary; original instruction 0x00bf7c6e"
+    },
+    {
+      "address": "00a790a4",
+      "native": "00a77970",
+      "caller": "00a78fb0",
+      "contract": "Unregister CURRENT F8BBCC and restore CE3818 base."
+    },
+    {
+      "address": "00a78a0c",
+      "native": "0042ac60",
+      "caller": "00a789c0",
+      "contract": "Existing StepTowards on owner220, target224, x87 rate*dt stored to float step."
+    },
+    {
+      "address": "00a78a32",
+      "native": "00a78820",
+      "caller": "00a789c0",
+      "contract": "Required actual5Ch logical update(dt,gain); sole call site."
+    },
+    {
+      "address": "00a78a8a",
+      "native": "00a85c00",
+      "caller": "00a789c0",
+      "contract": "Concrete A85C00 state1/2 fade-byte writes."
+    },
+    {
+      "address": "00a78aad",
+      "native": "00a77ff0",
+      "caller": "00a789c0",
+      "contract": "Existing native/helper boundary; original instruction 0x00a77ff0"
+    },
+    {
+      "address": "00a78ac2",
+      "native": "owner+230_callback",
+      "caller": "00a789c0",
+      "contract": "Current owner+230 callback; ECX temporary NativeString; indirect body external."
+    },
+    {
+      "address": "00a78adf",
+      "native": "00419cc0",
+      "caller": "00a789c0",
+      "contract": "Existing native/helper boundary; original instruction 0x00419cc0"
+    },
+    {
+      "address": "00a78ae6",
+      "native": "00bd1510",
+      "caller": "00a789c0",
+      "contract": "Existing native/helper boundary; original instruction 0x00bd1510"
+    },
+    {
+      "address": "00a78afc",
+      "native": "00ce2220+IAT",
+      "caller": "00a789c0",
+      "contract": "Existing native/helper boundary; original instruction dword ptr [0x00ce2220]"
+    },
+    {
+      "address": "00a78b0c",
+      "native": "current_receiver+vtable00",
+      "caller": "00a789c0",
+      "contract": "Existing native/helper boundary; original instruction EAX"
+    },
+    {
+      "address": "00a78b71",
+      "native": "00a77ff0",
+      "caller": "00a789c0",
+      "contract": "Existing native/helper boundary; original instruction 0x00a77ff0"
+    },
+    {
+      "address": "00a78b88",
+      "native": "004254b0",
+      "caller": "00a789c0",
+      "contract": "Existing native/helper boundary; original instruction 0x004254b0"
+    },
+    {
+      "address": "00a78ba3",
+      "native": "00419cc0",
+      "caller": "00a789c0",
+      "contract": "Existing native/helper boundary; original instruction 0x00419cc0"
+    },
+    {
+      "address": "00a78baa",
+      "native": "00bd1510",
+      "caller": "00a789c0",
+      "contract": "Existing native/helper boundary; original instruction 0x00bd1510"
+    },
+    {
+      "address": "00a78bb1",
+      "native": "00a86f40",
+      "caller": "00a789c0",
+      "contract": "Concrete actual54h stream stop request with shared native StringBuilder temporary and byte09=1."
+    },
+    {
+      "address": "00a78bcf",
+      "native": "00ce2220+IAT",
+      "caller": "00a789c0",
+      "contract": "Existing native/helper boundary; original instruction dword ptr [0x00ce2220]"
+    },
+    {
+      "address": "00a78bdf",
+      "native": "current_receiver+vtable00",
+      "caller": "00a789c0",
+      "contract": "Existing native/helper boundary; original instruction EDX"
+    },
+    {
+      "address": "00a78c20",
+      "native": "00a77ff0",
+      "caller": "00a789c0",
+      "contract": "Existing native/helper boundary; original instruction 0x00a77ff0"
+    },
+    {
+      "address": "00a78c37",
+      "native": "004254b0",
+      "caller": "00a789c0",
+      "contract": "Existing native/helper boundary; original instruction 0x004254b0"
+    },
+    {
+      "address": "00a78c52",
+      "native": "00419cc0",
+      "caller": "00a789c0",
+      "contract": "Existing native/helper boundary; original instruction 0x00419cc0"
+    },
+    {
+      "address": "00a78c59",
+      "native": "00bd1510",
+      "caller": "00a789c0",
+      "contract": "Existing native/helper boundary; original instruction 0x00bd1510"
+    },
+    {
+      "address": "00a78c60",
+      "native": "00a85c00",
+      "caller": "00a789c0",
+      "contract": "Concrete A85C00 state1/2 fade-byte writes; reload current physical slot after diagnostic name allocation."
+    },
+    {
+      "address": "00a78c83",
+      "native": "004254b0",
+      "caller": "00a789c0",
+      "contract": "Existing native/helper boundary; original instruction 0x004254b0"
+    },
+    {
+      "address": "00a78c91",
+      "native": "00a783f0",
+      "caller": "00a789c0",
+      "contract": "Required selected logical start/resume; sole call site."
+    },
+    {
+      "address": "00a78ca9",
+      "native": "00ce221c+IAT",
+      "caller": "00a789c0",
+      "contract": "Existing native/helper boundary; original instruction dword ptr [0x00ce221c]"
+    },
+    {
+      "address": "00a78cb7",
+      "native": "00ce2220+IAT",
+      "caller": "00a789c0",
+      "contract": "Existing native/helper boundary; original instruction dword ptr [0x00ce2220]"
+    },
+    {
+      "address": "00a78cc7",
+      "native": "current_receiver+vtable00",
+      "caller": "00a789c0",
+      "contract": "Existing native/helper boundary; original instruction EDX"
+    },
+    {
+      "address": "00a77c41",
+      "native": "00ce2220+IAT",
+      "caller": "00a77c10",
+      "contract": "Existing native/helper boundary; original instruction dword ptr [0x00ce2220]"
+    },
+    {
+      "address": "00a77c51",
+      "native": "current_receiver+vtable00",
+      "caller": "00a77c10",
+      "contract": "Existing native/helper boundary; original instruction EAX"
+    },
+    {
+      "address": "00a77c69",
+      "native": "00ce2220+IAT",
+      "caller": "00a77c10",
+      "contract": "Existing native/helper boundary; original instruction dword ptr [0x00ce2220]"
+    },
+    {
+      "address": "00a77c79",
+      "native": "current_receiver+vtable00",
+      "caller": "00a77c10",
+      "contract": "Existing native/helper boundary; original instruction EAX"
+    },
+    {
+      "address": "00a77c8c",
+      "native": "00ce2220+IAT",
+      "caller": "00a77c10",
+      "contract": "Existing native/helper boundary; original instruction dword ptr [0x00ce2220]"
+    },
+    {
+      "address": "00a77c9c",
+      "native": "current_receiver+vtable00",
+      "caller": "00a77c10",
+      "contract": "Existing native/helper boundary; original instruction EAX"
+    },
+    {
+      "address": "00a77cbf",
+      "native": "00ce2220+IAT",
+      "caller": "00a77c10",
+      "contract": "Existing native/helper boundary; original instruction dword ptr [0x00ce2220]"
+    },
+    {
+      "address": "00a77ccf",
+      "native": "current_receiver+vtable00",
+      "caller": "00a77c10",
+      "contract": "Existing native/helper boundary; original instruction EAX"
+    },
+    {
+      "address": "00a780e7",
+      "native": "00ce2220+IAT",
+      "caller": "00a780b0",
+      "contract": "Existing native/helper boundary; original instruction dword ptr [0x00ce2220]"
+    },
+    {
+      "address": "00a780f7",
+      "native": "current_receiver+vtable00",
+      "caller": "00a780b0",
+      "contract": "Existing native/helper boundary; original instruction EAX"
+    },
+    {
+      "address": "00a78108",
+      "native": "00a77dd0",
+      "caller": "00a780b0",
+      "contract": "Existing native/helper boundary; original instruction 0x00a77dd0"
+    },
+    {
+      "address": "00a78115",
+      "native": "00a77dd0",
+      "caller": "00a780b0",
+      "contract": "Existing native/helper boundary; original instruction 0x00a77dd0"
+    },
+    {
+      "address": "00a78133",
+      "native": "00419cc0",
+      "caller": "00a780b0",
+      "contract": "Existing native/helper boundary; original instruction 0x00419cc0"
+    },
+    {
+      "address": "00a7813a",
+      "native": "00bd1510",
+      "caller": "00a780b0",
+      "contract": "Existing native/helper boundary; original instruction 0x00bd1510"
+    },
+    {
+      "address": "00a77e01",
+      "native": "00ce2220+IAT",
+      "caller": "00a77dd0",
+      "contract": "Existing native/helper boundary; original instruction dword ptr [0x00ce2220]"
+    },
+    {
+      "address": "00a77e11",
+      "native": "current_receiver+vtable00",
+      "caller": "00a77dd0",
+      "contract": "Existing native/helper boundary; original instruction EAX"
+    },
+    {
+      "address": "00a77e24",
+      "native": "004c87f0",
+      "caller": "00a77dd0",
+      "contract": "Existing native/helper boundary; original instruction 0x004c87f0"
+    },
+    {
+      "address": "004c8821",
+      "native": "00ce2220+IAT",
+      "caller": "004c87f0",
+      "contract": "Existing native/helper boundary; original instruction dword ptr [0x00ce2220]"
+    },
+    {
+      "address": "004c8831",
+      "native": "current_receiver+vtable00",
+      "caller": "004c87f0",
+      "contract": "Existing native/helper boundary; original instruction EAX"
+    },
+    {
+      "address": "004c8850",
+      "native": "00419cc0",
+      "caller": "004c87f0",
+      "contract": "Existing native/helper boundary; original instruction 0x00419cc0"
+    },
+    {
+      "address": "004c8857",
+      "native": "00bd1510",
+      "caller": "004c87f0",
+      "contract": "Existing native/helper boundary; original instruction 0x00bd1510"
+    },
+    {
+      "address": "004c8874",
+      "native": "00419cc0",
+      "caller": "004c87f0",
+      "contract": "Existing native/helper boundary; original instruction 0x00419cc0"
+    },
+    {
+      "address": "004c887b",
+      "native": "00bd1510",
+      "caller": "004c87f0",
+      "contract": "Existing native/helper boundary; original instruction 0x00bd1510"
+    },
+    {
+      "address": "00a77d47",
+      "native": "00ce2220+IAT_in_EBX",
+      "caller": "00a77d10",
+      "contract": "Existing native/helper boundary; original instruction EBX"
+    },
+    {
+      "address": "00a77d53",
+      "native": "current_receiver+vtable00",
+      "caller": "00a77d10",
+      "contract": "Existing native/helper boundary; original instruction EAX"
+    },
+    {
+      "address": "00a77d6e",
+      "native": "00ce2220+IAT_in_EBX",
+      "caller": "00a77d10",
+      "contract": "Existing native/helper boundary; original instruction EBX"
+    },
+    {
+      "address": "00a77d7a",
+      "native": "current_receiver+vtable00",
+      "caller": "00a77d10",
+      "contract": "Existing native/helper boundary; original instruction EAX"
+    },
+    {
+      "address": "00a86f5f",
+      "native": "00426500",
+      "caller": "00a86f40",
+      "contract": "Existing native/helper boundary; original instruction 0x00426500"
+    },
+    {
+      "address": "00a86f77",
+      "native": "00bd1a60",
+      "caller": "00a86f40",
+      "contract": "Existing native/helper boundary; original instruction 0x00bd1a60"
+    },
+    {
+      "address": "00a86f7e",
+      "native": "00bd1a20",
+      "caller": "00a86f40",
+      "contract": "Existing native/helper boundary; original instruction 0x00bd1a20"
+    },
+    {
+      "address": "00a86f8f",
+      "native": "00425f80",
+      "caller": "00a86f40",
+      "contract": "Existing native/helper boundary; original instruction 0x00425f80"
+    },
+    {
+      "address": "00a7801a",
+      "native": "0041dd40",
+      "caller": "00a77ff0",
+      "contract": "Existing native/helper boundary; original instruction 0x0041dd40"
+    },
+    {
+      "address": "00a7802f",
+      "native": "00bf7680",
+      "caller": "00a77ff0",
+      "contract": "Existing native/helper boundary; original instruction 0x00bf7680"
+    },
+    {
+      "address": "00a791fd",
+      "native": "00a78ec0",
+      "caller": "00a791d0",
+      "contract": "A78EC0(size0); valid native vector reverse string cleanup."
+    },
+    {
+      "address": "00a79205",
+      "native": "00bf6989",
+      "caller": "00a791d0",
+      "contract": "Existing native/helper boundary; original instruction 0x00bf6989"
+    },
+    {
+      "address": "00a796f3",
+      "native": "00a791d0",
+      "caller": "00a796f0",
+      "contract": "Existing native/helper boundary; original instruction 0x00a791d0"
+    },
+    {
+      "address": "00a79700",
+      "native": "00bf65ac",
+      "caller": "00a796f0",
+      "contract": "Existing native/helper boundary; original instruction 0x00bf65ac"
+    }
+  ],
+  "tail_evidence": [
+    {
+      "tail_site": "00a79217",
+      "callee": "00bd30f0",
+      "attribution": "disk fallthrough after A791D0; no current Ghidra containing function",
+      "instruction": "CALL 00BD30F0",
+      "last_instruction": "00a7922c",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a7922d",
+      "evidence": "bsp.py disasm-raw A79205 length43: returning BF6989; ADDESP4; MOVECX,ESI; CALLBD30F0; SEH epilogue; RET"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "A79230 named DialogStreamTable_Load",
+      "evidence": "0073DB02 PUSH234h; A79251 base publish/register; A7926E D58F78; A793AC table load; subsequent owned pair/logical constructors",
+      "is": "234h streamed-dialog owner constructor"
+    },
+    {
+      "was": "Physical pair constructor A77D10 in APP_INIT_AUDIO_ONLINE.md",
+      "evidence": "A793EC PUSH A77D10 destructor, A793F1 PUSH A77D00 constructor, A79404 EH vector constructor; raw body A77D00..A77D0F",
+      "is": "A77D00 constructor; A77D10 destructor"
+    },
+    {
+      "was": "A78FB0 stops after CRT frees in pseudocode; scalar extraout_EAX",
+      "evidence": "A79005/A7901F/A79039 continuations; A790BA RET; A790E8 MOV EAX,ESI; A79708 MOV EAX,ESI",
+      "is": "Continue to base cleanup and return original ESI from scalar wrappers"
+    },
+    {
+      "was": "A791D0 Ghidra body endedA79209",
+      "evidence": "Disk A7920A ADDESP4, A79217 CALLBD30F0, A7922C RETlen1",
+      "is": "Full destructor ends A7922C RET"
+    },
+    {
+      "was": "Base C++ wrappers skipped root-vtable reset if manager operations threw",
+      "is": "Guard-then-CE3818 cleanup in A778D0 and A77970, preserving publication/partial effects",
+      "evidence": "DEAB2C statesCB4CC8->411EE0,CB4CC0->412430; DEAB60 statesCB4CE8->411EE0,CB4CE0->412430. Ignored focused actual-manager fixture passed ctor-throw unlock/rootreset/publication and normal current-global destructor."
+    }
+  ],
+  "pending_native_dependencies": [
+    "A87060 native-table loader (primary packet)",
+    "A78820 logical frame service",
+    "A783F0 logical stream start/resume",
+    "Actual54h stream/current-vtable reference lifetime dispatch",
+    "Owner230 callback registration and dispatch"
+  ],
+  "ghidra_repairs_requested": [
+    {
+      "address": "004c87d0",
+      "last_instruction": "004c87ef",
+      "last_instruction_length": 1,
+      "end_exclusive": "004c87f0"
+    },
+    {
+      "address": "00a77d00",
+      "last_instruction": "00a77d0f",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a77d10"
+    },
+    {
+      "address": "00a778c0",
+      "last_instruction": "00a778c8",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a778c9"
+    },
+    {
+      "address": "00a791d0",
+      "last_instruction": "00a7922c",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a7922d"
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 Release MSVC Win32 passed; serial retry after transient MSBuild tlog access errors",
+    "existing_tests": "reconstructed_math and native_math_differential passed (2/2)",
+    "verify_seeds": "8/8 disk/live byte matches",
+    "report_calls": "70 direct call-site rows checked, 0 failed; 34 indirect rows documented but not checked by direct-call verifier",
+    "tail_attribution": "A79217 CALL BD30F0 separately verified in disk fallthrough; current Ghidra body does not include it",
+    "new_tests": 0,
+    "abi_compatible": false,
+    "game_validated": false,
+    "ghidra_mutated_by_worker": false,
+    "focused_probe": "PASS: constructor exception unlock/root reset preserves publication; destructor unregisters current global. One ignored fixture local/sound_alternate_probe.cpp, linked /MANIFEST:EMBED. Destructor exception path supported by native map evidence, not induced by fixture.",
+    "final_build": "After base exception corrections: scripts/build.ps1 Release Win32 and both existing tests passed; no build process remains running."
+  }
+}
