@@ -8,12 +8,11 @@
 #include <cstdint>
 
 namespace bsp {
-struct GeneratedModelPointLightLinks;
 
-// The one native +164 pointer/count/capacity array. It borrows light bindings;
+// The one native +164 pointer/count/capacity array. It borrows actual lights;
 // this constructor only initializes it empty and never creates a second list.
 struct NativeNodePointLightArray {
-    GeneratedModelPointLightLinks** begin;
+    void** begin; // actual point-light identities, never companion pointers
     std::int32_t count;
     std::int32_t capacity;
 };
