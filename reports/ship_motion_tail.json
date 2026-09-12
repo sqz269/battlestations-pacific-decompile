@@ -1,0 +1,407 @@
+{
+  "packet": "cc_ship_motion_tail",
+  "date": "2026-09-11",
+  "owner": "agent/cc-ship-motion-tail",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": "none; read-only bridge use only",
+  "docs": [
+    "docs/SHIP_HULL_BODY.md",
+    "docs/DYN_WORLD_SETTINGS.md",
+    "docs/UNIT_FORCE_CHANNEL.md"
+  ],
+  "sources": [
+    "include/bsp/ship_hull_body.hpp",
+    "src/ship_hull_body.cpp",
+    "include/bsp/dyn_world_settings.hpp",
+    "src/dyn_world_settings.cpp",
+    "include/bsp/unit_force_channel.hpp",
+    "src/unit_force_channel.cpp",
+    "src/ship_motion_probe.cpp"
+  ],
+
+  "hull_body_creation": {
+    "question": "who writes controller+2Ch, and what mass, inertia and damping the hull body gets",
+    "answer": "the tail of 00937C90; the store is at 00939A86",
+    "steps": [
+      {
+        "address": "00939e2a",
+        "function": "00939cb0",
+        "native": "00937c90",
+        "what": "the controller constructor calls its sub-object builder last, after nulling controller+2Ch at 00939DBD"
+      },
+      {
+        "address": "009399d2",
+        "function": "00937c90",
+        "native": "00414db0",
+        "what": "refresh the unit's world matrix when the byte at unit+C8h is clear"
+      },
+      {
+        "address": "009399e5",
+        "function": "00937c90",
+        "native": "00c336c0",
+        "what": "copy unit+CCh into descriptor+14h as a 3x4 transform, dropping the 4x4's fourth column"
+      },
+      {
+        "address": "00939a6f",
+        "function": "00937c90",
+        "native": "00c5d580",
+        "what": "Dyn::World::CreateBody with the world from [[00E188A8]+18h] in ECX; the result is stored at controller+2Ch by 00939A86"
+      },
+      {
+        "address": "00939a89",
+        "function": "00937c90",
+        "native": "00c31f90",
+        "what": "read the new body's AABB back, B+38h and B+44h, which the attached shapes produced"
+      },
+      {
+        "address": "00939b27",
+        "function": "00937c90",
+        "native": "00424c40",
+        "what": "the game settings singleton, for the physics material record at settings+4E0h + material*38h"
+      },
+      {
+        "address": "00939c05",
+        "function": "00937c90",
+        "native": "00c37e70",
+        "what": "set the box inertia: mul * (Mass/12) * the two cross sums per axis"
+      },
+      {
+        "address": "00c5d8b9",
+        "function": "00c5d580",
+        "native": "00c43ca0",
+        "what": "the descriptor-to-body init, body in EAX and descriptor in EDX; the producer of every body and motion-state field"
+      },
+      {
+        "address": "00c5d8d4",
+        "function": "00c5d580",
+        "native": "00c5c940",
+        "what": "attach each shape in the descriptor's vector; the producer of the AABB, not read by this packet"
+      },
+      {
+        "address": "00c4211b",
+        "function": "00c420e0",
+        "native": "00c41ad0",
+        "what": "the world constructor, called on the operator_new(0x48C) block from 00C420F8"
+      }
+    ],
+    "descriptor_layout_producer": "00C43CA0, read in full",
+    "values": {
+      "mass": "class+B0h, the Lua key Mass; reader 00960230 at 0096043A, default 1.0f",
+      "inverse_mass": "1/mass at 00C43DA1, no zero guard",
+      "linear_damping": "0.0f, the descriptor default at 00939295",
+      "angular_damping": "1.0f, 00D7A24C loaded at 00939A2F and stored at 00939A3E",
+      "max_linear_speed": "1000.0f, 00CE3804 at 009392D2",
+      "max_angular_speed": "1000.0f, same load at 009392DB",
+      "flags": "0; a hull body is always dynamic",
+      "lock_torque_to_row1": "set when Mass < 100.0 (the double at 00D7A220), 00939A57",
+      "sleep_countdown_seed": "20, the immediate 14h at 00C43E57"
+    },
+    "inertia_rule": "I.axis = NyomatekSzorzo[axis] * (Mass/12.0) * (sum of the other two extents squared); 00939A8E..00939C05, the divisor is the double 12.0 at 00CE42D0",
+    "physics_material": {
+      "selection": "00937CF1..00937D38: unit vtable slot 5Ch with id 8 selects 2, else Mass >= 100.0 selects 0 and below it 1",
+      "records": "settings+4E0h + i*38h, 38h bytes, producer 0083B5E0 at 0083FEE7..008403B7",
+      "names": {
+        "0": "Ship (00CEB79C), NyomatekSzorzo {1,1,2}, Friction 0.5",
+        "1": "TBoat (00D0A780), NyomatekSzorzo {1,1,2}, Friction 0.5",
+        "2": "Submarine (00CEB7B0), NyomatekSzorzo {1,1,1}, Friction 1.0"
+      },
+      "keys": {
+        "NyomatekSzorzo": "00D0A668, record+20h, read by index 1..3 at 008401E1, default 1.0f",
+        "Friction": "00D0A648, record+34h, default 1.0f",
+        "KozegellenallasiEgyutthatoLElore": "00D0A69C, record+18h",
+        "KozegellenallasiEgyutthatoNElore": "00D0A678, record+1Ch"
+      }
+    },
+    "coverage": {
+      "00c43ca0": "complete",
+      "00937c90": "partial: only the tail 009399C0..00939C05. The shape-collection loops at 00937D3F..009399BF are read for the descriptor's vector, not reconstructed",
+      "00937cf1_00937d38": "complete",
+      "00939a8e_00939c05": "complete",
+      "00c5d580": "partial: the free-list bookkeeping and broad-phase links at 00C5D5A0..00C5D8B2 are described, not reconstructed",
+      "0083b5e0": "partial: only the three physics records",
+      "00c5c940": "none; not read"
+    }
+  },
+
+  "dyn_world_construction": {
+    "question": "the writer of [game+18h], world+00h, world+34h and world+3Ch..+44h",
+    "answer": "004DDB90's stack descriptor, through the factory 00C420E0 and the constructor 00C41AD0",
+    "steps": [
+      {
+        "address": "004de129",
+        "function": "004ddb90",
+        "native": "00c55f50",
+        "what": "the Dyn engine, stored at game+14h by 004DE194 and passed in ECX to the factory"
+      },
+      {
+        "address": "004de1d3",
+        "function": "004ddb90",
+        "native": "00c420e0",
+        "what": "Dyn::Engine::CreateWorld with the 40h-byte stack descriptor at ESP+1Ch; the result is stored at game+18h by 004DE1DB"
+      },
+      {
+        "address": "00875e0c",
+        "function": "00875bb0",
+        "native": "00c5c540",
+        "what": "the fixed-step fanout calls the substep schedule once per game step with world = [game+18h] and dt = 0.05f (00D0DE84)"
+      },
+      {
+        "address": "00c5c6bd",
+        "function": "00c5c540",
+        "native": "00c5bb30",
+        "what": "the remainder branch, the substep the shipped world actually takes"
+      },
+      {
+        "address": "00c5c66d",
+        "function": "00c5c540",
+        "native": "00c5bb30",
+        "what": "the fixed-substep loop, which never runs in the shipped world because world+00h equals the game step"
+      }
+    ],
+    "values": {
+      "world+00h": "0.05f, 00CE7638 at 004DE168, copied by 00C41AF2",
+      "world+04h..+0Ch": "gravity (0, -10, 0); 00CE6848 at 004DE1BB",
+      "world+34h": "int 1, EDI at 004DE1AB, copied by 00C41B2E; read as an int by 00C5C63C/00C5C661/00C5C674",
+      "world+3Ch": "0.0f sleep linear speed, 004DE1C7, copied by 00C41B3A",
+      "world+40h": "0.0f sleep angular speed, 004DE1CD, copied by 00C41B44",
+      "world+44h": "20 sleep countdown reload, immediate 14h at 004DE197, copied by 00C41B4A",
+      "carried_unread": "world+10h (0), +14h (0.0f), +18h (0.1f), +1Ch (0.85f), +20h (1.0f), +24h (0.02f), +28h (0.5f), +38h (10)"
+    },
+    "consequence": "with world+00h == dt the loop test 0.05f < 0.05f is false, so 00C5C540 takes exactly one substep of the whole 0.05 s game step; a commanded force is integrated by the whole step, not by a fraction of it",
+    "coverage": {
+      "00c41ad0": "partial: the descriptor copy 00C41AF2..00C41B4A only; 00C41B4D..00C420DB is not read",
+      "00c420e0": "complete for the factory's own body",
+      "004ddb90": "partial: the world block 004DE13E..004DE1DB only",
+      "00c5c540": "as in docs/RIGID_BODY_INTEGRATION.md, plus the budget-type correction"
+    }
+  },
+
+  "unit_force_channel": {
+    "question": "the list through which engine thrust, damage and explosions push force onto a unit",
+    "answer": "there is no such list. unit+10D4h is the leak model (already corrected in the tree) and the only channel from outside the controller family is unit message 93h",
+    "steps": [
+      {
+        "address": "00822255",
+        "function": "00821e80",
+        "native": "0092bf30",
+        "what": "unit message 93h: the payload vec3 at msg+1Ch..+24h and the controller from unit+1018h"
+      },
+      {
+        "site": "0092bf33",
+        "function": "0092bf30",
+        "target": "00c35330",
+        "instruction": "JMP",
+        "what": "MOV ECX,[ECX+2Ch] at 0092BF30 then a tail JMP: the controller's AddTorque on the hull body. Recorded as site/target rather than address/native because it is a jump, not a call, so tools/verify_report_calls.py would reject a CALL claim"
+      },
+      {
+        "address": "008221f3",
+        "function": "00821e80",
+        "native": "0074e830",
+        "what": "case 91h, on the leak model at unit+10D4h, not on the body"
+      },
+      {
+        "address": "0082221b",
+        "function": "00821e80",
+        "native": "0074e860",
+        "what": "case 92h, on the leak model at unit+10D4h, not on the body"
+      },
+      {
+        "address": "00933b01",
+        "function": "009329c0",
+        "native": "00c35360",
+        "what": "the hydrodynamic model's summed force; the only AddForce call site in the image"
+      },
+      {
+        "address": "00933b38",
+        "function": "009329c0",
+        "native": "00c35330",
+        "what": "the hydrodynamic model's summed torque, carrying the leak heeling term"
+      },
+      {
+        "address": "00937613",
+        "function": "00937440",
+        "native": "00c35330",
+        "what": "the ship override's rudder torque"
+      },
+      {
+        "address": "009329ec",
+        "function": "009329c0",
+        "native": "00c37e50",
+        "what": "the disabled-controller path zeroes the linear velocity"
+      },
+      {
+        "address": "00932a0e",
+        "function": "009329c0",
+        "native": "00c37e20",
+        "what": "the same path zeroes the angular velocity"
+      },
+      {
+        "address": "0092d588",
+        "function": "0092d300",
+        "native": "00c37e50",
+        "what": "the throttle half of the motion tick"
+      },
+      {
+        "address": "0092d84d",
+        "function": "0092d770",
+        "native": "00c37e50",
+        "what": "the unconditional axial-speed setter"
+      },
+      {
+        "address": "0092eb8f",
+        "function": "0092e8c0",
+        "native": "00c37e20",
+        "what": "the rudder half of the motion tick"
+      },
+      {
+        "address": "0092e812",
+        "function": "0092e5b0",
+        "native": "00c37e50",
+        "what": "a second controller routine, not read by this packet"
+      },
+      {
+        "address": "0092e895",
+        "function": "0092e5b0",
+        "native": "00c37e20",
+        "what": "the same routine"
+      },
+      {
+        "address": "0093739a",
+        "function": "00936dc0",
+        "native": "00c37e50",
+        "what": "the depth-holding override"
+      },
+      {
+        "address": "009373a7",
+        "function": "00936dc0",
+        "native": "00c37e20",
+        "what": "the depth-holding override"
+      },
+      {
+        "address": "00937675",
+        "function": "00937630",
+        "native": "00c37e50",
+        "what": "the frozen override zeroes the linear velocity"
+      },
+      {
+        "address": "00937697",
+        "function": "00937630",
+        "native": "00c37e20",
+        "what": "the frozen override zeroes the angular velocity"
+      }
+    ],
+    "message_93h": {
+      "kind_byte": "msg+10h == 93h, the switch in 00821E80",
+      "payload": "three floats at msg+1Ch, +20h, +24h",
+      "payload_producer": "0080FFD0, which writes exactly those three slots from its second, third and fourth arguments",
+      "local_senders": "none. 0080FFD0 has no callers in the image; the only other reference to its vtable 00D034C8 is 0076226E, inside the stream decoder's constructor 00762220 reached from BSP_SessionMessage_CreateFromStream 00768530"
+    },
+    "out_of_scope_sites": [
+      "00447A34 in BSP_GameDynamicsList_Add and the 00C32050 site in BSP_GameDynamicsList_ApplyBuoyancyStep write the debris bodies of docs/GAME_DYNAMICS_LIST.md, not a hull body"
+    ],
+    "coverage": {
+      "0092bf30": "complete",
+      "00821e80": "partial: case 93h reconstructed; cases 91h and 92h read only far enough to place them; the rest of 00821E80..00822393 is not read",
+      "0080ffd0": "complete as the payload's producer; not reconstructed",
+      "00762220": "complete as the sender question; not reconstructed",
+      "0074f2e0_0074f930_009329c0_00937440": "reused as contracts from docs/UNIT_FORCE_COMMANDS.md and include/bsp/unit_forces.hpp"
+    }
+  },
+
+  "probe": {
+    "binary": "build/win32/Release/bsp_ship_motion_probe.exe",
+    "change": "the hand-built stand-in body is replaced by ship_hull_body_create_00937c90 in the world dyn_world_settings_game(); the probe now runs the same trajectory with both and prints the comparison",
+    "arguments": "--class N --steps 400, full throttle, hard-over rudder, flat sea",
+    "class_inputs": {
+      "VehicleClass[11]": "Allen M. Sumner class 1945, Mass 1800, Length 110, Height 4, MaxSpeed 17.4911, MaxRotAngle 0.15708",
+      "VehicleClass[23]": "Fletcher class 1943, Mass 1800, Length 110, Height 4, MaxSpeed 18.77722, MaxRotAngle 0.13963"
+    },
+    "trajectory": {
+      "VehicleClass[11]": {
+        "before_x": -78.9317, "after_x": -70.8440,
+        "before_y": 0.0, "after_y": -2005.0,
+        "before_z": 352.0871, "after_z": 348.7847,
+        "before_heading_deg": -79.5344, "after_heading_deg": -75.5632,
+        "before_final_speed": 17.4030, "after_final_speed": 17.4116,
+        "before_peak_speed": 17.4782, "after_peak_speed": 17.4796,
+        "before_peak_yaw": 0.07854, "after_peak_yaw": 0.07088
+      },
+      "VehicleClass[23]": {
+        "before_x": -66.3204, "after_x": -59.8336,
+        "before_y": 0.0, "after_y": -2005.0,
+        "before_z": 363.2104, "after_z": 359.9183,
+        "before_heading_deg": -70.1653, "after_heading_deg": -66.6620,
+        "before_final_speed": 18.7036, "after_final_speed": 18.7108,
+        "before_peak_speed": 18.7656, "after_peak_speed": 18.7667,
+        "before_peak_yaw": 0.06981, "after_peak_yaw": 0.06301
+      }
+    },
+    "finding": "the peak yaw rate falls by exactly 0.9025 in both classes, which is (1 - angular_damping*dt)^2 with angular_damping 1.0f and dt 0.05: the hull's damping is applied once in each of the substep's two phases, so the rudder curve's target is cut by 9.75% inside the same step it is set in",
+    "left_open": "the hull's collision AABB is zero unless --hull-extent supplies it, because its producer 00C5C940 is not read; y falls 2005 m in 20 s because 00C41550 adds the world's gravity of -10 and 009329C0's buoyancy is not reconstructed"
+  },
+
+  "corrections": [
+    {
+      "target": "docs/RIGID_BODY_INTEGRATION.md, the ship_hull_body_creation follow-up row",
+      "was": "00C37F40/00C37E70 have four callers between them and none of them is on the hull path read here",
+      "is": "00C37E70 has a hull-path caller, 00937C90 at 00939C05. 00C37F40 indeed never runs for a hull body; the mass reaches M+50h through the descriptor at 00C43DA1",
+      "evidence": "ghidra xrefs 00C37E70; ghidra disasm 00937C90 at 00939C05; 00C43CA0 read in full"
+    },
+    {
+      "target": "docs/RIGID_BODY_INTEGRATION.md, the coverage table row 'the hull body's creation: not found'",
+      "was": "not found",
+      "is": "the tail of 00937C90; the store into controller+2Ch is at 00939A86",
+      "evidence": "ghidra disasm 00937C90 --start 009399C0"
+    },
+    {
+      "target": "docs/RIGID_BODY_INTEGRATION.md, 'world+00h itself is not established'",
+      "was": "not established; if it is 0.05f the loop runs zero times, if smaller several substeps run and only the first sees the commanded force",
+      "is": "0.05f, from 00CE7638 through 004DE168 and 00C41AF2. One substep of the whole game step, so the commanded force is integrated by the whole step",
+      "evidence": "004DDB90 at 004DE168 and 004DE1D3; 00C420E0; 00C41AD0 at 00C41AF2; ghidra bytes 00CE7638"
+    },
+    {
+      "target": "docs/RIGID_BODY_INTEGRATION.md substep pseudocode and dyn_world_substep_plan_00c5c540 in include/bsp/rigid_body_integration.hpp",
+      "was": "world+34h is a float decremented through an integer cast",
+      "is": "world+34h is an int: 00C5C63C MOV, 00C5C661 CMP dword, 00C5C674 SUB dword. It is copied into a stack local before the loop, so the world's field is never decremented. The float projection agrees for every integral value passed by value, so the existing function is left alone and dyn_world_substep_plan converts",
+      "evidence": "ghidra disasm 00C5C540 at 00C5C63C..00C5C674"
+    },
+    {
+      "target": "docs/RIGID_BODY_INTEGRATION.md, the world fields the phases read",
+      "was": "sleep speed thresholds at world+3Ch and world+40h, no values",
+      "is": "both 0.0f, so the test threshold^2 < speed^2 is passed by any non-zero velocity and only an exactly stationary body counts down",
+      "evidence": "004DE1C7 and 004DE1CD store the zeroed XMM0; 00C41B3A and 00C41B44 copy them"
+    },
+    {
+      "target": "docs/RIGID_BODY_INTEGRATION.md, the unit_force_channel follow-up row",
+      "was": "0074F2E0, unit+10D4h: the list through which engine thrust, damage and explosions push force onto a unit, the missing input to 009329C0",
+      "is": "unit+10D4h is the leak model, already corrected in docs/UNIT_CONTROLLER_UPDATE.md and reconstructed in include/bsp/unit_forces.hpp. No damage or explosion routine calls any Dyn mutator. The only channel from outside the controller family is unit message 93h at 00822255. 009329C0 has no missing force input: it is the only AddForce caller in the image",
+      "evidence": "ghidra xrefs on 00C35360, 00C35330, 00C37E50, 00C37E20, 00C32050, 00C37E70; 00821E80 case 93h; 0080FFD0 caller count"
+    },
+    {
+      "target": "src/ship_motion_probe.cpp header",
+      "was": "the hull body's mass, inertia and damping are open because no ship-side caller of 00C37F40, 00C37E70, 00C37E00 or 00C37DE0 was found",
+      "is": "the damping never goes through 00C37E00/00C37DE0 for a hull body; it is a descriptor field written by 00C43D79 and 00C43D85. The inertia does go through 00C37E70, at 00939C05",
+      "evidence": "00C43CA0 read in full; ghidra xrefs 00C37E70"
+    }
+  ],
+
+  "ledger_names": [
+    "00937c90 BSP_UnitController_BuildSubObjectsAndHullBody",
+    "00c5d580 Dyn_World_CreateBody",
+    "00c43ca0 Dyn_Body_InitFromDescriptor",
+    "00c420e0 Dyn_Engine_CreateWorld",
+    "00c41ad0 Dyn_World_Construct",
+    "0092bf30 BSP_UnitController_AddHullTorque",
+    "0080ffd0 BSP_UnitMessage_AddHullTorque_Construct",
+    "00762220 BSP_UnitMessage_AddHullTorque_ConstructFromStream"
+  ],
+
+  "no_ghidra_function": "none",
+
+  "not_done": [
+    "unit_motion_time_scale (unit+340h and its writers) and ship_motion_subupdates (00825450, 00826187..00826866) were listed as optional item 4 of the packet and were not started; the turn went to items 1, 2, 3 and 5",
+    "00C5C940, the shape attach, is the producer of the hull AABB the inertia needs and is not read",
+    "the eight carried world fields have no reader in this packet"
+  ]
+}
