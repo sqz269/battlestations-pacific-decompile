@@ -1,0 +1,4828 @@
+{
+ "packet": "cc2_gameplay_settings",
+ "owner": "agent/cc2-gameplay-settings",
+ "doc": "docs/GAMEPLAY_SETTINGS.md",
+ "sources": [
+  "include/bsp/gameplay_settings.hpp",
+  "src/gameplay_settings.cpp"
+ ],
+ "routines": [
+  {
+   "address": "00424c40",
+   "name": "BSP_GameSettings_GetSingleton",
+   "abi": "__cdecl() -> GameplayTuningSettings*",
+   "coverage": "complete: 00424c40-00424cff"
+  },
+  {
+   "address": "00424a10",
+   "name": "BSP_GameplayTuningSettings_Construct",
+   "abi": "__thiscall(ECX = the 76Ch block) -> EAX = the block",
+   "coverage": "complete: 00424a10-00424c15"
+  },
+  {
+   "address": "0083b5e0",
+   "name": "BSP_GameSettings_LoadFromLuaGlobals",
+   "abi": "__thiscall(ECX = the settings object) -> void",
+   "coverage": "partial: every store into the settings object in 0083b5e0-00842951 is covered and all 258 typed getter sites resolve to a key path; not read are the sub-object constructions at 0083c81a..., the failure descriptor vector build at 0083e5d8-0083e9ff, the effect-name blocks around 0083e06b and 008413e9-008418a4, and the later iterations of the three index-selected loops 0083fee7-008403b7, 00840500-008408ff and 008413xx-008418xx"
+  }
+ ],
+ "no_ghidra_function": [],
+ "object": {
+  "address": "00f8753c",
+  "size": "0x76c",
+  "vtable": "00ce3994",
+  "keyed_offsets": 212,
+  "consumed_offsets": 154,
+  "consumer_functions": 83,
+  "getter_call_sites": 258,
+  "keys_assigned_in_installed_script": 254
+ },
+ "key_table": [
+  {
+   "offset": "190",
+   "key": "ShipAvoidance.CollectTimer.[1]",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083b7ad",
+   "store_at": "0083b7b2",
+   "store": "float ptr [ESI + 0x190]",
+   "installed": "{ 1, 2, }",
+   "installed_assignments": 3,
+   "consumers": [
+    "FUN_009f1160"
+   ]
+  },
+  {
+   "offset": "194",
+   "key": "ShipAvoidance.CollectTimer.[2]",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083b810",
+   "store_at": "0083b815",
+   "store": "float ptr [ESI + 0x194]",
+   "installed": "{ 1, 2, }",
+   "installed_assignments": 3,
+   "consumers": [
+    "FUN_009eaca0",
+    "FUN_009eb660",
+    "FUN_009f0d20"
+   ]
+  },
+  {
+   "offset": "198",
+   "key": "ShipAvoidance.CollectDist",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083b85d",
+   "store_at": "0083b862",
+   "store": "float ptr [ESI + 0x198]",
+   "installed": "450",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_009f1420"
+   ]
+  },
+  {
+   "offset": "19C",
+   "key": "ShipAvoidance.CollectHitTime",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083b899",
+   "store_at": "0083b89e",
+   "store": "float ptr [ESI + 0x19c]",
+   "installed": "10",
+   "installed_assignments": 2,
+   "consumers": [
+    "FUN_009f1420"
+   ]
+  },
+  {
+   "offset": "1A0",
+   "key": "ShipAvoidance.NearbyShip_ArriveTimeMin",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "3",
+   "read_at": "0083b8df",
+   "store_at": "0083b8e4",
+   "store": "float ptr [ESI + 0x1a0]",
+   "installed": "2.0",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "1A4",
+   "key": "ShipAvoidance.NearbyShip_ArriveDistMin",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0.25",
+   "read_at": "0083b925",
+   "store_at": "0083b92a",
+   "store": "float ptr [ESI + 0x1a4]",
+   "installed": "0.4",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "1A8",
+   "key": "ShipAvoidance.NearbyShip_PosSpeedCorrig",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "2",
+   "read_at": "0083b96b",
+   "store_at": "0083b970",
+   "store": "float ptr [ESI + 0x1a8]",
+   "installed": "0.5",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_009eae20"
+   ]
+  },
+  {
+   "offset": "1AC",
+   "key": "ShipAvoidance.NearbyShip_EstPos_DistLimitMul",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0.7",
+   "read_at": "0083b9b1",
+   "store_at": "0083b9b6",
+   "store": "float ptr [ESI + 0x1ac]",
+   "installed": "4.0",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "1B0",
+   "key": "ShipAvoidance.NearbyShip_EstPos_MinShipLength",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "100",
+   "read_at": "0083b9f7",
+   "store_at": "0083b9fc",
+   "store": "float ptr [ESI + 0x1b0]",
+   "installed": "5",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "1B4",
+   "key": "ShipAvoidance.NearbyShip_EstPos_ShipLengthLimitMul",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "1.8",
+   "read_at": "0083ba3d",
+   "store_at": "0083ba42",
+   "store": "float ptr [ESI + 0x1b4]",
+   "installed": "4.0",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "1B8",
+   "key": "ShipAvoidance.NearbyShip_MyMinSpdRatio",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0.6",
+   "read_at": "0083ba83",
+   "store_at": "0083ba88",
+   "store": "float ptr [ESI + 0x1b8]",
+   "installed": "0.2",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_009f0ea0"
+   ]
+  },
+  {
+   "offset": "1BC",
+   "key": "ShipAvoidance.NearbyShip_EstPos_ShipSpdMul",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0.75",
+   "read_at": "0083bac9",
+   "store_at": "0083bace",
+   "store": "float ptr [ESI + 0x1bc]",
+   "installed": "1.0",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "1C0",
+   "key": "ShipAvoidance.NearbyShip_EstPos_SizeDecMul",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0.3",
+   "read_at": "0083bb0f",
+   "store_at": "0083bb14",
+   "store": "float ptr [ESI + 0x1c0]",
+   "installed": "0.3",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "1C4",
+   "key": "ShipAvoidance.NearbyShip_EstPos_SizeDecMin",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0.1",
+   "read_at": "0083bb55",
+   "store_at": "0083bb5a",
+   "store": "float ptr [ESI + 0x1c4]",
+   "installed": "0.2",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "1C8",
+   "key": "ShipAvoidance.NearbyShip_NextCornerReachDistAddOn",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "100",
+   "read_at": "0083bb9b",
+   "store_at": "0083bba0",
+   "store": "float ptr [ESI + 0x1c8]",
+   "installed": "100",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "1CC",
+   "key": "ShipAvoidance.NearbyShip_MovePathLineCheckThreshold",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "200",
+   "read_at": "0083bbe1",
+   "store_at": "0083bbe6",
+   "store": "float ptr [ESI + 0x1cc]",
+   "installed": "150",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "1D4",
+   "key": "ShipAvoidance.NearbyShip_WayClearCheckTime",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0.5",
+   "read_at": "0083bc27",
+   "store_at": "0083bc2c",
+   "store": "float ptr [ESI + 0x1d4]",
+   "installed": "0.25",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_009ef910"
+   ]
+  },
+  {
+   "offset": "1D8",
+   "key": "ShipAvoidance.HitDetector_LastHitDistAddOn",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "30",
+   "read_at": "0083bc6d",
+   "store_at": "0083bc72",
+   "store": "float ptr [ESI + 0x1d8]",
+   "installed": "50",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_009eb660"
+   ]
+  },
+  {
+   "offset": "1D0",
+   "key": "ShipAvoidance.NearbyShip_GoAwaySpdAdd",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "3",
+   "read_at": "0083bcb3",
+   "store_at": "0083bcb8",
+   "store": "float ptr [ESI + 0x1d0]",
+   "installed": "2.0",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "1EC",
+   "key": "TorpedoAvoidance.CollectTimer.[1]",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083bf3f",
+   "store_at": "0083bf44",
+   "store": "float ptr [ESI + 0x1ec]",
+   "installed": "{ 1, 2, }",
+   "installed_assignments": 3,
+   "consumers": [
+    "FUN_009f1160"
+   ]
+  },
+  {
+   "offset": "1F0",
+   "key": "TorpedoAvoidance.CollectTimer.[2]",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083bfa8",
+   "store_at": "0083bfad",
+   "store": "float ptr [ESI + 0x1f0]",
+   "installed": "{ 1, 2, }",
+   "installed_assignments": 3,
+   "consumers": [
+    "FUN_009eaca0",
+    "FUN_009f0ad0"
+   ]
+  },
+  {
+   "offset": "1F4",
+   "key": "LandAvoidance.CheckMovePosZoneTime.[1]",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083c032",
+   "store_at": "0083c037",
+   "store": "float ptr [ESI + 0x1f4]",
+   "installed": "{ 2.5, 3, }",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_009eca20"
+   ]
+  },
+  {
+   "offset": "1F8",
+   "key": "LandAvoidance.CheckMovePosZoneTime.[2]",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083c09b",
+   "store_at": "0083c0a0",
+   "store": "float ptr [ESI + 0x1f8]",
+   "installed": "{ 2.5, 3, }",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "1FC",
+   "key": "LandAvoidance.CheckShipPosZoneTime.[1]",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083c104",
+   "store_at": "0083c109",
+   "store": "float ptr [ESI + 0x1fc]",
+   "installed": "{ 2.5, 3, }",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_009eca20"
+   ]
+  },
+  {
+   "offset": "200",
+   "key": "LandAvoidance.CheckShipPosZoneTime.[2]",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083c16d",
+   "store_at": "0083c172",
+   "store": "float ptr [ESI + 0x200]",
+   "installed": "{ 2.5, 3, }",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "204",
+   "key": "LandAvoidance.CheckTravelZoneTime.[1]",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083c1d6",
+   "store_at": "0083c1db",
+   "store": "float ptr [ESI + 0x204]",
+   "installed": "{ 3, 4, }",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_009eca20"
+   ]
+  },
+  {
+   "offset": "208",
+   "key": "LandAvoidance.CheckTravelZoneTime.[2]",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083c23f",
+   "store_at": "0083c244",
+   "store": "float ptr [ESI + 0x208]",
+   "installed": "{ 3, 4, }",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_009eca20"
+   ]
+  },
+  {
+   "offset": "20C",
+   "key": "LandAvoidance.CollectTimer.[1]",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083c2ab",
+   "store_at": "0083c2b0",
+   "store": "float ptr [ESI + 0x20c]",
+   "installed": "{ 1, 2, }",
+   "installed_assignments": 3,
+   "consumers": []
+  },
+  {
+   "offset": "210",
+   "key": "LandAvoidance.CollectTimer.[2]",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083c31a",
+   "store_at": "0083c31f",
+   "store": "float ptr [ESI + 0x210]",
+   "installed": "{ 1, 2, }",
+   "installed_assignments": 3,
+   "consumers": []
+  },
+  {
+   "offset": "214",
+   "key": "LandAvoidance.YTurnDirDiff.[1]",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "1.8",
+   "read_at": "0083c393",
+   "store_at": "0083c398",
+   "store": "float ptr [ESI + 0x214]",
+   "installed": "{ 1.8, 2.1, }",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_009ef910"
+   ]
+  },
+  {
+   "offset": "218",
+   "key": "LandAvoidance.YTurnDirDiff.[2]",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "2.1",
+   "read_at": "0083c40c",
+   "store_at": "0083c411",
+   "store": "float ptr [ESI + 0x218]",
+   "installed": "{ 1.8, 2.1, }",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_009ef910"
+   ]
+  },
+  {
+   "offset": "21C",
+   "key": "LandAvoidance.WayCheckerUpdateTime",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "1.5",
+   "read_at": "0083c46c",
+   "store_at": "0083c471",
+   "store": "float ptr [ESI + 0x21c]",
+   "installed": null,
+   "installed_assignments": 0,
+   "consumers": []
+  },
+  {
+   "offset": "220",
+   "key": "AvoidanceCheat.TurnSpdLimit",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "5",
+   "read_at": "0083c4d9",
+   "store_at": "0083c4f9",
+   "store": "float ptr [ESI + 0x220]",
+   "installed": "4.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_UnitInstance_ApplyPropellerTurnAssist"
+   ]
+  },
+  {
+   "offset": "224",
+   "key": "AvoidanceCheat.TurnSpdMul",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0.6",
+   "read_at": "0083c531",
+   "store_at": "0083c536",
+   "store": "float ptr [ESI + 0x224]",
+   "installed": "0.5",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_UnitInstance_ApplyPropellerTurnAssist"
+   ]
+  },
+  {
+   "offset": "228",
+   "key": "AvoidanceCheat.StopSpdMul",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "2",
+   "read_at": "0083c57d",
+   "store_at": "0083c582",
+   "store": "float ptr [ESI + 0x228]",
+   "installed": "2.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_UnitInstance_GetForwardAcceleration"
+   ]
+  },
+  {
+   "offset": "238",
+   "key": "Hack.RotationAdd",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0",
+   "read_at": "0083c5fa",
+   "store_at": "0083c5ff",
+   "store": "float ptr [ESI + 0x238]",
+   "installed": "0.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_ShipClass_ReadLuaFields"
+   ]
+  },
+  {
+   "offset": "23C",
+   "key": "Hack.HeightAdd",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0",
+   "read_at": "0083c642",
+   "store_at": "0083c647",
+   "store": "float ptr [ESI + 0x23c]",
+   "installed": "0.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_ShipClass_ReadLuaFields"
+   ]
+  },
+  {
+   "offset": "22C",
+   "key": "Retreat.ExitDist",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083c6f2",
+   "store_at": "0083c6f7",
+   "store": "float ptr [ESI + 0x22c]",
+   "installed": "1000",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_00826d70"
+   ]
+  },
+  {
+   "offset": "230",
+   "key": "Retreat.ExitTime",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083c734",
+   "store_at": "0083c739",
+   "store": "float ptr [ESI + 0x230]",
+   "installed": "60",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_00826d70"
+   ]
+  },
+  {
+   "offset": "234",
+   "key": "Retreat.WarningRepeatTime",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083c776",
+   "store_at": "0083c77b",
+   "store": "float ptr [ESI + 0x234]",
+   "installed": "10",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_00826d70"
+   ]
+  },
+  {
+   "offset": "160",
+   "key": "AttackMoveDirector.MyDamageWeight",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "10",
+   "read_at": "0083c96c",
+   "store_at": "0083c971",
+   "store": "float ptr [ESI + 0x160]",
+   "installed": "10.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_UnitInstance_ResetNavigatorParams"
+   ]
+  },
+  {
+   "offset": "164",
+   "key": "AttackMoveDirector.IdealDistWeight",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "4",
+   "read_at": "0083c9b8",
+   "store_at": "0083c9bd",
+   "store": "float ptr [ESI + 0x164]",
+   "installed": "4.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_UnitInstance_ResetNavigatorParams"
+   ]
+  },
+  {
+   "offset": "168",
+   "key": "AttackMoveDirector.NearbyEnemyWeight",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "3",
+   "read_at": "0083ca01",
+   "store_at": "0083ca06",
+   "store": "float ptr [ESI + 0x168]",
+   "installed": "3.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_UnitInstance_ResetNavigatorParams"
+   ]
+  },
+  {
+   "offset": "16C",
+   "key": "AttackMoveDirector.NearbyEnemyReference",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "1000",
+   "read_at": "0083ca47",
+   "store_at": "0083ca4c",
+   "store": "float ptr [ESI + 0x16c]",
+   "installed": "1000.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_UnitInstance_ResetNavigatorParams"
+   ]
+  },
+  {
+   "offset": "170",
+   "key": "AttackMoveDirector.NearestMoveDirWeight",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "1",
+   "read_at": "0083ca8c",
+   "store_at": "0083ca91",
+   "store": "float ptr [ESI + 0x170]",
+   "installed": "1.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_UnitInstance_ResetNavigatorParams"
+   ]
+  },
+  {
+   "offset": "174",
+   "key": "AttackMoveDirector.PrevMoveDirWeight",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0.25",
+   "read_at": "0083cad8",
+   "store_at": "0083cadd",
+   "store": "float ptr [ESI + 0x174]",
+   "installed": "0.25",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_UnitInstance_ResetNavigatorParams"
+   ]
+  },
+  {
+   "offset": "178",
+   "key": "AttackMoveDirector.PrevMoveDirRange",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "1.0472",
+   "read_at": "0083cb24",
+   "store_at": "0083cb29",
+   "store": "float ptr [ESI + 0x178]",
+   "installed": "DEG(60)",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_UnitInstance_ResetNavigatorParams"
+   ]
+  },
+  {
+   "offset": "6C4",
+   "key": "Navigator.AutoThrust.SteerValueMin_Slow",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083cba8",
+   "store_at": "0083cbad",
+   "store": "float ptr [ESI + 0x6c4]",
+   "installed": "0.4",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "6C8",
+   "key": "Navigator.AutoThrust.SteerValueMax_Slow",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083cbea",
+   "store_at": "0083cbef",
+   "store": "float ptr [ESI + 0x6c8]",
+   "installed": "1.0",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "6CC",
+   "key": "Navigator.AutoThrust.HdgDiffValueMin_Slow",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083cc2c",
+   "store_at": "0083cc31",
+   "store": "float ptr [ESI + 0x6cc]",
+   "installed": "DEG(25)",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_UnitBot_ComputeThrottleCeiling"
+   ]
+  },
+  {
+   "offset": "6D0",
+   "key": "Navigator.AutoThrust.HdgDiffValueMax_Slow",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083cc6e",
+   "store_at": "0083cc73",
+   "store": "float ptr [ESI + 0x6d0]",
+   "installed": "DEG(75)",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "6D4",
+   "key": "Navigator.AutoThrust.ThrustMin_Slow",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083ccb0",
+   "store_at": "0083ccb5",
+   "store": "float ptr [ESI + 0x6d4]",
+   "installed": "0.5",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_UnitBot_ComputeThrottleCeiling"
+   ]
+  },
+  {
+   "offset": "6D8",
+   "key": "Navigator.AutoThrust.SteerValueMin_Fast",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083ccf2",
+   "store_at": "0083ccf7",
+   "store": "float ptr [ESI + 0x6d8]",
+   "installed": "0.75",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "6DC",
+   "key": "Navigator.AutoThrust.SteerValueMax_Fast",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083cd34",
+   "store_at": "0083cd39",
+   "store": "float ptr [ESI + 0x6dc]",
+   "installed": "1.5",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "6E0",
+   "key": "Navigator.AutoThrust.HdgDiffValueMin_Fast",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083cd76",
+   "store_at": "0083cd7b",
+   "store": "float ptr [ESI + 0x6e0]",
+   "installed": "DEG(45)",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_UnitBot_ComputeThrottleCeiling"
+   ]
+  },
+  {
+   "offset": "6E4",
+   "key": "Navigator.AutoThrust.HdgDiffValueMax_Fast",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083cdb8",
+   "store_at": "0083cdbd",
+   "store": "float ptr [ESI + 0x6e4]",
+   "installed": "DEG(90)",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "6E8",
+   "key": "Navigator.AutoThrust.ThrustMin_Fast",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083cdfa",
+   "store_at": "0083cdff",
+   "store": "float ptr [ESI + 0x6e8]",
+   "installed": "0.75",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_UnitBot_ComputeThrottleCeiling"
+   ]
+  },
+  {
+   "offset": "6EC",
+   "key": "Navigator.AutoThrust.HdgDiffDangerMul",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083ce3c",
+   "store_at": "0083ce41",
+   "store": "float ptr [ESI + 0x6ec]",
+   "installed": "6.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_UnitBot_ComputeThrottleCeiling"
+   ]
+  },
+  {
+   "offset": "444",
+   "key": "Navigator.TurnMultipliers.TurnMultiplierMinSpeed.[1]",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083ced9",
+   "store_at": "0083cede",
+   "store": "float ptr [ESI + 0x444]",
+   "installed": "{ 0.0, 0.4 }",
+   "installed_assignments": 2,
+   "consumers": [
+    "BSP_ShipClass_ComputeRudderCurveDenominator"
+   ]
+  },
+  {
+   "offset": "440",
+   "key": "Navigator.TurnMultipliers.TurnMultiplierMinSpeed.[2]",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083cf48",
+   "store_at": "0083cf4d",
+   "store": "float ptr [ESI + 0x440]",
+   "installed": "{ 0.0, 0.4 }",
+   "installed_assignments": 2,
+   "consumers": []
+  },
+  {
+   "offset": "44C",
+   "key": "Navigator.TurnMultipliers.TurnMultiplierMedSpeed.[1]",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083cfb7",
+   "store_at": "0083cfbc",
+   "store": "float ptr [ESI + 0x44c]",
+   "installed": "{ 0.5, 1.5 }",
+   "installed_assignments": 2,
+   "consumers": [
+    "BSP_ShipClass_ComputeRudderCurveDenominator"
+   ]
+  },
+  {
+   "offset": "448",
+   "key": "Navigator.TurnMultipliers.TurnMultiplierMedSpeed.[2]",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083d026",
+   "store_at": "0083d02b",
+   "store": "float ptr [ESI + 0x448]",
+   "installed": "{ 0.5, 1.5 }",
+   "installed_assignments": 2,
+   "consumers": [
+    "BSP_ShipClass_ComputeRudderCurveDenominator"
+   ]
+  },
+  {
+   "offset": "43C",
+   "key": "Navigator.TurnMultipliers.TurnMultiplierMaxSpeed.[1]",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083d095",
+   "store_at": "0083d09a",
+   "store": "float ptr [ESI + 0x43c]",
+   "installed": "{ 1.0, 2.0 }",
+   "installed_assignments": 2,
+   "consumers": []
+  },
+  {
+   "offset": "438",
+   "key": "Navigator.TurnMultipliers.TurnMultiplierMaxSpeed.[2]",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083d104",
+   "store_at": "0083d109",
+   "store": "float ptr [ESI + 0x438]",
+   "installed": "{ 1.0, 2.0 }",
+   "installed_assignments": 2,
+   "consumers": [
+    "FUN_0082e850"
+   ]
+  },
+  {
+   "offset": "6FC",
+   "key": "Navigator.IslandAttackTurnCircleMultiplier",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083d15a",
+   "store_at": "0083d15f",
+   "store": "float ptr [ESI + 0x6fc]",
+   "installed": "4.0",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "700",
+   "key": "Navigator.FlockPredictTime",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083d19d",
+   "store_at": "0083d1a2",
+   "store": "float ptr [ESI + 0x700]",
+   "installed": "3.0",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "704",
+   "key": "Navigator.FlockSeparationStrength",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083d1df",
+   "store_at": "0083d1e4",
+   "store": "float ptr [ESI + 0x704]",
+   "installed": "1.1",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "708",
+   "key": "Navigator.FlockFollowStrength",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083d221",
+   "store_at": "0083d226",
+   "store": "float ptr [ESI + 0x708]",
+   "installed": "1.0",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "70C",
+   "key": "Navigator.FlockSeparationMinDistMult",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083d263",
+   "store_at": "0083d268",
+   "store": "float ptr [ESI + 0x70c]",
+   "installed": "0.8",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "710",
+   "key": "Navigator.FlockSeparationMaxDistMult",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083d2a5",
+   "store_at": "0083d2aa",
+   "store": "float ptr [ESI + 0x710]",
+   "installed": "2.0",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "714",
+   "key": "Navigator.FlockMoveTreshold",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083d2e7",
+   "store_at": "0083d2ec",
+   "store": "float ptr [ESI + 0x714]",
+   "installed": "0.5",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "718",
+   "key": "Navigator.FlockThrustTreshold",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083d329",
+   "store_at": "0083d32e",
+   "store": "float ptr [ESI + 0x718]",
+   "installed": "0.2",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "71C",
+   "key": "Navigator.FlockBackSteerSpeed",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083d36b",
+   "store_at": "0083d370",
+   "store": "float ptr [ESI + 0x71c]",
+   "installed": "-0.1",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "720",
+   "key": "Navigator.FlockVectorMultiplier",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083d3ad",
+   "store_at": "0083d3b2",
+   "store": "float ptr [ESI + 0x720]",
+   "installed": "1.5",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "724",
+   "key": "Navigator.FlockLeaderMaxHdg",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083d3ef",
+   "store_at": "0083d3f4",
+   "store": "float ptr [ESI + 0x724]",
+   "installed": "DEG(20)",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "728",
+   "key": "Navigator.FlockLeaderMaxSideMove",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083d431",
+   "store_at": "0083d436",
+   "store": "float ptr [ESI + 0x728]",
+   "installed": "0.2",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "6F0",
+   "key": "Navigator.PathFinderParams.LengthModifier_DirDiffMin",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0.261799",
+   "read_at": "0083d4bf",
+   "store_at": "0083d4c4",
+   "store": "float ptr [ESI + 0x6f0]",
+   "installed": "DEG(15)",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_009ec280"
+   ]
+  },
+  {
+   "offset": "6F4",
+   "key": "Navigator.PathFinderParams.LengthModifier_DirDiffMax",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "1.5708",
+   "read_at": "0083d50b",
+   "store_at": "0083d510",
+   "store": "float ptr [ESI + 0x6f4]",
+   "installed": "DEG(80)",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_009ec280"
+   ]
+  },
+  {
+   "offset": "6F8",
+   "key": "Navigator.PathFinderParams.LengthModifier_LengthAddon",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "1500",
+   "read_at": "0083d557",
+   "store_at": "0083d55c",
+   "store": "float ptr [ESI + 0x6f8]",
+   "installed": "1200",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_009ec280"
+   ]
+  },
+  {
+   "offset": "01C",
+   "key": "Sinking.SectionNum",
+   "type": "int",
+   "getter": "00b66380",
+   "loader_default": "4",
+   "read_at": "0083d5bc",
+   "store_at": "0083d5c8",
+   "store": "dword ptr [ESI + 0x1c],EAX",
+   "installed": "6",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_TickableGameEntity_TickAdvance"
+   ]
+  },
+  {
+   "offset": "018",
+   "key": "Sinking.StartAngularVelocity",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "30",
+   "read_at": "0083d605",
+   "store_at": "0083d626",
+   "store": "float ptr [ESI + 0x18]",
+   "installed": "-10",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "014",
+   "key": "Sinking.DragPower",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "1",
+   "read_at": "0083d666",
+   "store_at": "0083d66b",
+   "store": "float ptr [ESI + 0x14]",
+   "installed": "1",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_TickableGameEntity_TickAdvance"
+   ]
+  },
+  {
+   "offset": "008",
+   "key": "Sinking.DragMultiplier",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "1",
+   "read_at": "0083d6ab",
+   "store_at": "0083d6b0",
+   "store": "float ptr [ESI + 0x8]",
+   "installed": "2.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_TickableGameEntity_TickAdvance"
+   ]
+  },
+  {
+   "offset": "00C",
+   "key": "Sinking.DragMultiplierZ",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "1",
+   "read_at": "0083d6f0",
+   "store_at": "0083d6f5",
+   "store": "float ptr [ESI + 0xc]",
+   "installed": "0.3",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_TickableGameEntity_TickAdvance"
+   ]
+  },
+  {
+   "offset": "010",
+   "key": "Sinking.LeakSize",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "1",
+   "read_at": "0083d735",
+   "store_at": "0083d73a",
+   "store": "float ptr [ESI + 0x10]",
+   "installed": "1.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_TickableGameEntity_TickAdvance"
+   ]
+  },
+  {
+   "offset": "020",
+   "key": "Debris.SplashSpeed.[1]",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "5",
+   "read_at": "0083d7b8",
+   "store_at": "0083d7bd",
+   "store": "float ptr [ESI + 0x20]",
+   "installed": "{5,20,}",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_GameDynamicsList_UpdateFrame"
+   ]
+  },
+  {
+   "offset": "024",
+   "key": "Debris.SplashSpeed.[2]",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "20",
+   "read_at": "0083d82e",
+   "store_at": "0083d833",
+   "store": "float ptr [ESI + 0x24]",
+   "installed": "{5,20,}",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_GameDynamicsList_UpdateFrame"
+   ]
+  },
+  {
+   "offset": "028",
+   "key": "Debris.SplashFXID.[1]",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "9",
+   "read_at": "0083d8a4",
+   "store_at": "0083d8a9",
+   "store": "float ptr [ESI + 0x28]",
+   "installed": "{52,44,}",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_GameDynamicsList_UpdateFrame"
+   ]
+  },
+  {
+   "offset": "02C",
+   "key": "Debris.SplashFXID.[2]",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "52",
+   "read_at": "0083d91a",
+   "store_at": "0083d91f",
+   "store": "float ptr [ESI + 0x2c]",
+   "installed": "{52,44,}",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_GameDynamicsList_UpdateFrame"
+   ]
+  },
+  {
+   "offset": "030",
+   "key": "PlayerArtilleryThrow.AfterShot_FireTime",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "3",
+   "read_at": "0083d998",
+   "store_at": "0083d99d",
+   "store": "float ptr [ESI + 0x30]",
+   "installed": "0.2",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_0095dc40"
+   ]
+  },
+  {
+   "offset": "034",
+   "key": "PlayerArtilleryThrow.AfterShot_WaitTime",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "3",
+   "read_at": "0083d9de",
+   "store_at": "0083d9e3",
+   "store": "float ptr [ESI + 0x34]",
+   "installed": "0.2",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_0095dc40"
+   ]
+  },
+  {
+   "offset": "038",
+   "key": "PlayerArtilleryThrow.ThrowIncrementTime_HasTarget",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "12",
+   "read_at": "0083da21",
+   "store_at": "0083da64",
+   "store": "float ptr [ESI + 0x38]",
+   "installed": "2.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_0095dc40"
+   ]
+  },
+  {
+   "offset": "03C",
+   "key": "PlayerArtilleryThrow.ThrowIncrementTime_NoTarget",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "8",
+   "read_at": "0083da96",
+   "store_at": "0083dad9",
+   "store": "float ptr [ESI + 0x3c]",
+   "installed": "4.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_0095dc40"
+   ]
+  },
+  {
+   "offset": "040",
+   "key": "PlayerArtilleryThrow.ThrowDecrementTime",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "10",
+   "read_at": "0083db0b",
+   "store_at": "0083db4e",
+   "store": "float ptr [ESI + 0x40]",
+   "installed": "2.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_0095dc40"
+   ]
+  },
+  {
+   "offset": "044",
+   "key": "PipeSightParams.pipesight_enabled",
+   "type": "bool",
+   "getter": "00b662f0",
+   "loader_default": null,
+   "read_at": "0083db94",
+   "store_at": "0083db9d",
+   "store": "byte ptr [ESI + 0x44],AL",
+   "installed": "true",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_0064dd30"
+   ]
+  },
+  {
+   "offset": "05C",
+   "key": "PipeSightParams.blur_drag",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0.9",
+   "read_at": "0083dbd7",
+   "store_at": "0083dbdc",
+   "store": "float ptr [ESI + 0x5c]",
+   "installed": "0.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_0064dd30"
+   ]
+  },
+  {
+   "offset": "058",
+   "key": "PipeSightParams.blur_spring",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "1",
+   "read_at": "0083dc19",
+   "store_at": "0083dc1e",
+   "store": "float ptr [ESI + 0x58]",
+   "installed": "0.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_0064dd30"
+   ]
+  },
+  {
+   "offset": "060",
+   "key": "PipeSightParams.blur_rate",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0.4",
+   "read_at": "0083dc5f",
+   "store_at": "0083dc64",
+   "store": "float ptr [ESI + 0x60]",
+   "installed": "0.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_0064dd30"
+   ]
+  },
+  {
+   "offset": "048",
+   "key": "PipeSightParams.blur_heavy_add",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0.3",
+   "read_at": "0083dca5",
+   "store_at": "0083dcaa",
+   "store": "float ptr [ESI + 0x48]",
+   "installed": "0.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_0064dd30"
+   ]
+  },
+  {
+   "offset": "04C",
+   "key": "PipeSightParams.blur_medium_add",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0.3",
+   "read_at": "0083dceb",
+   "store_at": "0083dcf0",
+   "store": "float ptr [ESI + 0x4c]",
+   "installed": "0.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_0064dd30"
+   ]
+  },
+  {
+   "offset": "050",
+   "key": "PipeSightParams.blur_light_add",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0.3",
+   "read_at": "0083dd31",
+   "store_at": "0083dd36",
+   "store": "float ptr [ESI + 0x50]",
+   "installed": "0.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_0064dd30"
+   ]
+  },
+  {
+   "offset": "054",
+   "key": "PipeSightParams.blur_aa_add",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0.3",
+   "read_at": "0083dd77",
+   "store_at": "0083dd7c",
+   "store": "float ptr [ESI + 0x54]",
+   "installed": "0.0",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "078",
+   "key": "PipeSightParams.zoom_drag",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0.9",
+   "read_at": "0083ddbd",
+   "store_at": "0083ddc2",
+   "store": "float ptr [ESI + 0x78]",
+   "installed": "0.5",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_0064dd30"
+   ]
+  },
+  {
+   "offset": "074",
+   "key": "PipeSightParams.zoom_spring",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "1",
+   "read_at": "0083ddff",
+   "store_at": "0083de04",
+   "store": "float ptr [ESI + 0x74]",
+   "installed": "1.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_0064dd30"
+   ]
+  },
+  {
+   "offset": "07C",
+   "key": "PipeSightParams.zoom_rate",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0.4",
+   "read_at": "0083de45",
+   "store_at": "0083de4a",
+   "store": "float ptr [ESI + 0x7c]",
+   "installed": "0.5",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_0064dd30"
+   ]
+  },
+  {
+   "offset": "064",
+   "key": "PipeSightParams.zoom_heavy_add",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0.3",
+   "read_at": "0083de8b",
+   "store_at": "0083de90",
+   "store": "float ptr [ESI + 0x64]",
+   "installed": "0.05",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_0064dd30"
+   ]
+  },
+  {
+   "offset": "068",
+   "key": "PipeSightParams.zoom_medium_add",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0.3",
+   "read_at": "0083ded1",
+   "store_at": "0083ded6",
+   "store": "float ptr [ESI + 0x68]",
+   "installed": "0.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_0064dd30"
+   ]
+  },
+  {
+   "offset": "06C",
+   "key": "PipeSightParams.zoom_light_add",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0.3",
+   "read_at": "0083df17",
+   "store_at": "0083df1c",
+   "store": "float ptr [ESI + 0x6c]",
+   "installed": "0.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_0064dd30"
+   ]
+  },
+  {
+   "offset": "070",
+   "key": "PipeSightParams.zoom_aa_add",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0.3",
+   "read_at": "0083df5d",
+   "store_at": "0083df62",
+   "store": "float ptr [ESI + 0x70]",
+   "installed": "0.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_0064dd30"
+   ]
+  },
+  {
+   "offset": "3A0",
+   "key": "ColliDolgok.ColliDamageMultiplier",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0",
+   "read_at": "0083dfd4",
+   "store_at": "0083dfd9",
+   "store": "float ptr [ESI + 0x3a0]",
+   "installed": "1.0",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "3B0",
+   "key": "WaterTickDamage",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0",
+   "read_at": "0083e1b3",
+   "store_at": "0083e1b8",
+   "store": "float ptr [ESI + 0x3b0]",
+   "installed": "100",
+   "installed_assignments": 2,
+   "consumers": [
+    "BSP_Ai_TargetWeight",
+    "BSP_UnitSubObjectA20_Construct",
+    "FUN_0095e9a0",
+    "FUN_0095eb40"
+   ]
+  },
+  {
+   "offset": "3AC",
+   "key": "FireTickDamage",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0",
+   "read_at": "0083e1f5",
+   "store_at": "0083e1fa",
+   "store": "float ptr [ESI + 0x3ac]",
+   "installed": "40",
+   "installed_assignments": 2,
+   "consumers": [
+    "BSP_UnitSubObjectA20_Construct",
+    "FUN_0095eb40"
+   ]
+  },
+  {
+   "offset": "3B4",
+   "key": "BodyRepairTickPercentage",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0.2",
+   "read_at": "0083e23e",
+   "store_at": "0083e258",
+   "store": "float ptr [ESI + 0x3b4]",
+   "installed": "0.1",
+   "installed_assignments": 2,
+   "consumers": [
+    "BSP_RepairTask_RepairHull"
+   ]
+  },
+  {
+   "offset": "3B8",
+   "key": "GunRepairTickPercentage",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "2",
+   "read_at": "0083e290",
+   "store_at": "0083e2aa",
+   "store": "float ptr [ESI + 0x3b8]",
+   "installed": "2",
+   "installed_assignments": 2,
+   "consumers": [
+    "BSP_RepairTask_RepairSubObjects"
+   ]
+  },
+  {
+   "offset": "3BC",
+   "key": "FireFailureChance",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "1",
+   "read_at": "0083e2de",
+   "store_at": "0083e2f1",
+   "store": "float ptr [ESI + 0x3bc]",
+   "installed": "3",
+   "installed_assignments": 2,
+   "consumers": []
+  },
+  {
+   "offset": "3C0",
+   "key": "FireFailureDamageDuration",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "1",
+   "read_at": "0083e32c",
+   "store_at": "0083e331",
+   "store": "float ptr [ESI + 0x3c0]",
+   "installed": "10",
+   "installed_assignments": 2,
+   "consumers": [
+    "FUN_00827b90"
+   ]
+  },
+  {
+   "offset": "3C4",
+   "key": "ExplosionDamagePercentage",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "1",
+   "read_at": "0083e374",
+   "store_at": "0083e38e",
+   "store": "float ptr [ESI + 0x3c4]",
+   "installed": "35",
+   "installed_assignments": 2,
+   "consumers": [
+    "FUN_00827b90"
+   ]
+  },
+  {
+   "offset": "3C8",
+   "key": "PumpRepairMultiplier",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "2",
+   "read_at": "0083e3c6",
+   "store_at": "0083e3cb",
+   "store": "float ptr [ESI + 0x3c8]",
+   "installed": "3",
+   "installed_assignments": 2,
+   "consumers": [
+    "BSP_InGameHudRootScreen_UpdateUnitRowWidgets",
+    "BSP_RepairTask_ApplyFireDamage"
+   ]
+  },
+  {
+   "offset": "3CC",
+   "key": "FireRepairMultiplier",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "2",
+   "read_at": "0083e412",
+   "store_at": "0083e417",
+   "store": "float ptr [ESI + 0x3cc]",
+   "installed": "3",
+   "installed_assignments": 2,
+   "consumers": [
+    "BSP_InGameHudRootScreen_UpdateUnitRowWidgets",
+    "BSP_RepairTask_ApplyWaterDamage"
+   ]
+  },
+  {
+   "offset": "3D0",
+   "key": "FailureRepairMultiplier",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "2",
+   "read_at": "0083e45e",
+   "store_at": "0083e463",
+   "store": "float ptr [ESI + 0x3d0]",
+   "installed": "3",
+   "installed_assignments": 2,
+   "consumers": [
+    "BSP_RepairTask_RepairFailures"
+   ]
+  },
+  {
+   "offset": "3D4",
+   "key": "BodyRepairMultiplier",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "2",
+   "read_at": "0083e4aa",
+   "store_at": "0083e4af",
+   "store": "float ptr [ESI + 0x3d4]",
+   "installed": "2",
+   "installed_assignments": 2,
+   "consumers": [
+    "BSP_RepairTask_RepairHull"
+   ]
+  },
+  {
+   "offset": "3D8",
+   "key": "GunRepairMultiplier",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "2",
+   "read_at": "0083e4f6",
+   "store_at": "0083e4fb",
+   "store": "float ptr [ESI + 0x3d8]",
+   "installed": "4",
+   "installed_assignments": 2,
+   "consumers": [
+    "BSP_RepairTask_RepairSubObjects"
+   ]
+  },
+  {
+   "offset": "3DC",
+   "key": "FailureChance",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "5",
+   "read_at": "0083e542",
+   "store_at": "0083e55c",
+   "store": "float ptr [ESI + 0x3dc]",
+   "installed": "100",
+   "installed_assignments": 2,
+   "consumers": []
+  },
+  {
+   "offset": "3E0",
+   "key": "FailureDamageThreshold",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "100",
+   "read_at": "0083e594",
+   "store_at": "0083e599",
+   "store": "float ptr [ESI + 0x3e0]",
+   "installed": "100",
+   "installed_assignments": 2,
+   "consumers": [
+    "BSP_ShipSystems_RollComponentFailure"
+   ]
+  },
+  {
+   "offset": "3F4",
+   "key": "VizbeomlesDolgok.KillDepth",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083ea71",
+   "store_at": "0083ea76",
+   "store": "float ptr [ESI + 0x3f4]",
+   "installed": "-200.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_UnitInstance_UpdateShipMotion"
+   ]
+  },
+  {
+   "offset": "3F8",
+   "key": "VizbeomlesDolgok.PTBoatLeakSize",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083eaad",
+   "store_at": "0083eab2",
+   "store": "float ptr [ESI + 0x3f8]",
+   "installed": "100.0",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "734",
+   "key": "VizbeomlesDolgok.SinkEffectEnnyiMeterenkent",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "5",
+   "read_at": "0083ed04",
+   "store_at": "0083ed09",
+   "store": "float ptr [ESI + 0x734]",
+   "installed": "7",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "738",
+   "key": "VizbeomlesDolgok.SinkEffectIlyenGyakran",
+   "type": "int",
+   "getter": "00b66380",
+   "loader_default": "1000",
+   "read_at": "0083ed45",
+   "store_at": "0083ed4e",
+   "store": "dword ptr [ESI + 0x738],EAX",
+   "installed": "2000",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "408",
+   "key": "VizbeomlesDolgok.WaterSectionNum",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "6",
+   "read_at": "0083ed8e",
+   "store_at": "0083ed93",
+   "store": "float ptr [ESI + 0x408]",
+   "installed": null,
+   "installed_assignments": 0,
+   "consumers": [
+    "FUN_00822c20"
+   ]
+  },
+  {
+   "offset": "3FC",
+   "key": "VizbeomlesDolgok.LeakPerHP",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0.1",
+   "read_at": "0083edda",
+   "store_at": "0083eddf",
+   "store": "float ptr [ESI + 0x3fc]",
+   "installed": "0.1",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "400",
+   "key": "VizbeomlesDolgok.MaxLeakPercent",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0.01",
+   "read_at": "0083ee26",
+   "store_at": "0083ee2b",
+   "store": "float ptr [ESI + 0x400]",
+   "installed": "0.02",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_0074f490"
+   ]
+  },
+  {
+   "offset": "404",
+   "key": "VizbeomlesDolgok.EnnyiVizEsKeszPercent",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0.8",
+   "read_at": "0083ee72",
+   "store_at": "0083ee77",
+   "store": "float ptr [ESI + 0x404]",
+   "installed": "0.2",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_LeakManager_Update",
+    "FUN_0074f490",
+    "FUN_0074fa80"
+   ]
+  },
+  {
+   "offset": "40C",
+   "key": "VizbeomlesDolgok.DologSzorzo",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "4",
+   "read_at": "0083eebe",
+   "store_at": "0083eec3",
+   "store": "float ptr [ESI + 0x40c]",
+   "installed": "2",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_0074f490"
+   ]
+  },
+  {
+   "offset": "410",
+   "key": "Formacio.HeadingMul",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083ef21",
+   "store_at": "0083ef26",
+   "store": "float ptr [ESI + 0x410]",
+   "installed": "0.005",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "414",
+   "key": "Formacio.HeadingPower",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083ef63",
+   "store_at": "0083ef68",
+   "store": "float ptr [ESI + 0x414]",
+   "installed": "1",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "418",
+   "key": "Formacio.ThrustMul",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083efa5",
+   "store_at": "0083efaa",
+   "store": "float ptr [ESI + 0x418]",
+   "installed": "0.01",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "41C",
+   "key": "Formacio.FollowerSpeedMul",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083efe7",
+   "store_at": "0083efec",
+   "store": "float ptr [ESI + 0x41c]",
+   "installed": "1.5",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "424",
+   "key": "Formacio.FollowerMaxDist",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083f029",
+   "store_at": "0083f02e",
+   "store": "float ptr [ESI + 0x424]",
+   "installed": "4000.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_0070ed30"
+   ]
+  },
+  {
+   "offset": "42C",
+   "key": "Formacio.FormationShipDist",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083f06b",
+   "store_at": "0083f070",
+   "store": "float ptr [ESI + 0x42c]",
+   "installed": "250.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_0070ed30",
+    "FUN_0070efd0"
+   ]
+  },
+  {
+   "offset": "430",
+   "key": "Formacio.UpdateInterval",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083f0ad",
+   "store_at": "0083f0b2",
+   "store": "float ptr [ESI + 0x430]",
+   "installed": "10.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_UnitInstance_UpdateShipMotion"
+   ]
+  },
+  {
+   "offset": "420",
+   "key": "Formacio.FormationMaxCount",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083f0ef",
+   "store_at": "0083f0f4",
+   "store": "float ptr [ESI + 0x420]",
+   "installed": "24",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_0077f940"
+   ]
+  },
+  {
+   "offset": "434",
+   "key": "Formacio.PlayerFollowerMaxDist",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083f131",
+   "store_at": "0083f136",
+   "store": "float ptr [ESI + 0x434]",
+   "installed": "4000.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_HudFormationScreen_Register"
+   ]
+  },
+  {
+   "offset": "450",
+   "key": "ShipCamera.ZoomOffset",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083f194",
+   "store_at": "0083f199",
+   "store": "float ptr [ESI + 0x450]",
+   "installed": "1.25",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_00432e60"
+   ]
+  },
+  {
+   "offset": "454",
+   "key": "ShipCamera.LengthMult",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083f1d6",
+   "store_at": "0083f1db",
+   "store": "float ptr [ESI + 0x454]",
+   "installed": "1.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_00433800",
+    "FUN_00433cb0"
+   ]
+  },
+  {
+   "offset": "458",
+   "key": "ShipCamera.MinCameraAngle",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "-89",
+   "read_at": "0083f222",
+   "store_at": "0083f227",
+   "store": "float ptr [ESI + 0x458]",
+   "installed": "-89",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_0064da40",
+    "FUN_00651370"
+   ]
+  },
+  {
+   "offset": "45C",
+   "key": "ShipCamera.MaxCameraAngle",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "89",
+   "read_at": "0083f26e",
+   "store_at": "0083f273",
+   "store": "float ptr [ESI + 0x45c]",
+   "installed": "89",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "460",
+   "key": "ShipCamera.FollowCamDelay",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0.3",
+   "read_at": "0083f2ba",
+   "store_at": "0083f2bf",
+   "store": "float ptr [ESI + 0x460]",
+   "installed": "1",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_005484f0"
+   ]
+  },
+  {
+   "offset": "46C",
+   "key": "Repair.RepairTeamCount",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083f31d",
+   "store_at": "0083f322",
+   "store": "float ptr [ESI + 0x46c]",
+   "installed": "3",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_UnitInstance_RaiseRepairLevel",
+    "FUN_00822c20"
+   ]
+  },
+  {
+   "offset": "470",
+   "key": "Repair.RepairTeamBonus",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083f35f",
+   "store_at": "0083f364",
+   "store": "float ptr [ESI + 0x470]",
+   "installed": "0.60",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "474",
+   "key": "Repair.RepairTeamPenalty",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083f3a1",
+   "store_at": "0083f3a6",
+   "store": "float ptr [ESI + 0x474]",
+   "installed": "0.10",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "464",
+   "key": "Repair.RepairScriptInterval",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083f3e3",
+   "store_at": "0083f3e8",
+   "store": "float ptr [ESI + 0x464]",
+   "installed": "2.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_00827820"
+   ]
+  },
+  {
+   "offset": "468",
+   "key": "Repair.RepairStepValue",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083f425",
+   "store_at": "0083f42a",
+   "store": "float ptr [ESI + 0x468]",
+   "installed": "0.025",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "478",
+   "key": "Repair.RepairUnderwaterModifier",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083f467",
+   "store_at": "0083f46c",
+   "store": "float ptr [ESI + 0x478]",
+   "installed": "0.70",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "494",
+   "key": "Repair.RepairZoneMultiplier",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083f511",
+   "store_at": "0083f516",
+   "store": "float ptr [ESI + 0x494]",
+   "installed": "5.00",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_00825450"
+   ]
+  },
+  {
+   "offset": "498",
+   "key": "Repair.TorpedoRestockTime",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083f54d",
+   "store_at": "0083f552",
+   "store": "float ptr [ESI + 0x498]",
+   "installed": "1.00",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_00825450"
+   ]
+  },
+  {
+   "offset": "4A8",
+   "key": "Submarine.SubmarineTorpedoRange",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083f5ad",
+   "store_at": "0083f5b2",
+   "store": "float ptr [ESI + 0x4a8]",
+   "installed": "400.0",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "49C",
+   "key": "Submarine.SubmarinePeriscopeLevel",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083f5ef",
+   "store_at": "0083f5f4",
+   "store": "float ptr [ESI + 0x49c]",
+   "installed": "20.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_Entity_IsSurfaceTarget"
+   ]
+  },
+  {
+   "offset": "4A0",
+   "key": "Submarine.SubmarineMediumLevel",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083f631",
+   "store_at": "0083f636",
+   "store": "float ptr [ESI + 0x4a0]",
+   "installed": "50.0",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "4A4",
+   "key": "Submarine.SubmarineDeepLevel",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083f673",
+   "store_at": "0083f67f",
+   "store": "float ptr [ESI + 0x4a4]",
+   "installed": "80.0",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "4C8",
+   "key": "SubAttack.MaxTorpedoRange",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083f6d6",
+   "store_at": "0083f6db",
+   "store": "float ptr [ESI + 0x4c8]",
+   "installed": "800.0",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "4CC",
+   "key": "SubAttack.TooCloseDist",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083f718",
+   "store_at": "0083f71d",
+   "store": "float ptr [ESI + 0x4cc]",
+   "installed": "400.0",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "4D0",
+   "key": "SubAttack.FarEnoughDist",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083f75a",
+   "store_at": "0083f75f",
+   "store": "float ptr [ESI + 0x4d0]",
+   "installed": "480.0",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "4D4",
+   "key": "SubAttack.SubmarineLostTime",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083f79c",
+   "store_at": "0083f7a1",
+   "store": "float ptr [ESI + 0x4d4]",
+   "installed": "30",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "4AC",
+   "key": "Submarine.SubmarineDepthDamage",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083f81c",
+   "store_at": "0083f828",
+   "store": "float ptr [ESI + 0x4ac]",
+   "installed": "9.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_008551c0"
+   ]
+  },
+  {
+   "offset": "4B0",
+   "key": "Submarine.SubmarineDamageDepth",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083f85e",
+   "store_at": "0083f863",
+   "store": "float ptr [ESI + 0x4b0]",
+   "installed": "70.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_008551c0"
+   ]
+  },
+  {
+   "offset": "4B4",
+   "key": "Submarine.SubmarineDepthSpeedMul",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083f8a0",
+   "store_at": "0083f8a5",
+   "store": "float ptr [ESI + 0x4b4]",
+   "installed": "0.834",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_UnitInstance_UpdateShipMotion"
+   ]
+  },
+  {
+   "offset": "4B8",
+   "key": "Submarine.SubmarineAirWarningLimit",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083f8e2",
+   "store_at": "0083f8e7",
+   "store": "float ptr [ESI + 0x4b8]",
+   "installed": "0.35",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_00855250"
+   ]
+  },
+  {
+   "offset": "4BC",
+   "key": "Submarine.SubmarineAirNeedLimit",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083f924",
+   "store_at": "0083f929",
+   "store": "float ptr [ESI + 0x4bc]",
+   "installed": "0.16",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_00855250"
+   ]
+  },
+  {
+   "offset": "4C0",
+   "key": "Submarine.SubmarineAirEnoughLimit",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083f966",
+   "store_at": "0083f96b",
+   "store": "float ptr [ESI + 0x4c0]",
+   "installed": "0.5",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_00855250"
+   ]
+  },
+  {
+   "offset": "4C4",
+   "key": "Submarine.PeriscopeRepairTime",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "30",
+   "read_at": "0083f9b2",
+   "store_at": "0083f9be",
+   "store": "float ptr [ESI + 0x4c4]",
+   "installed": "60.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_UnitController_ClearShapeCollisionBits",
+    "FUN_0064dd30"
+   ]
+  },
+  {
+   "offset": "5AC",
+   "key": "TorpedoHit.LifeTime",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083fa1a",
+   "store_at": "0083fa1f",
+   "store": "float ptr [ESI + 0x5ac]",
+   "installed": "4.1",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_00827dd0"
+   ]
+  },
+  {
+   "offset": "5B0",
+   "key": "TorpedoHit.Upthrust",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083fa5f",
+   "store_at": "0083fa64",
+   "store": "float ptr [ESI + 0x5b0]",
+   "installed": "3000000",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_UnitController_ApplyHydroForces"
+   ]
+  },
+  {
+   "offset": "5B4",
+   "key": "TorpedoHit.UpDist",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083faa3",
+   "store_at": "0083faa8",
+   "store": "float ptr [ESI + 0x5b4]",
+   "installed": "4.2",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "5B8",
+   "key": "TorpedoHit.MassRatio",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083fae7",
+   "store_at": "0083faec",
+   "store": "float ptr [ESI + 0x5b8]",
+   "installed": "900",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_UnitController_ApplyHydroForces"
+   ]
+  },
+  {
+   "offset": "4D8",
+   "key": "MotherShip.ElevatorSpeed",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083fb4c",
+   "store_at": "0083fb51",
+   "store": "float ptr [ESI + 0x4d8]",
+   "installed": "4.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_006cfaf0"
+   ]
+  },
+  {
+   "offset": "4DC",
+   "key": "MotherShip.ElevatorDepth",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "0083fb8e",
+   "store_at": "0083fb93",
+   "store": "float ptr [ESI + 0x4dc]",
+   "installed": "7.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_006d0930"
+   ]
+  },
+  {
+   "offset": "598",
+   "key": "DOFParams.Dist",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "1",
+   "read_at": "0083fc08",
+   "store_at": "0083fc0d",
+   "store": "float ptr [ESI + 0x598]",
+   "installed": "50",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_006515b0"
+   ]
+  },
+  {
+   "offset": "59C",
+   "key": "DOFParams.Range1",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "1",
+   "read_at": "0083fc4a",
+   "store_at": "0083fc4f",
+   "store": "float ptr [ESI + 0x59c]",
+   "installed": "300",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "5A0",
+   "key": "DOFParams.Range2",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "1",
+   "read_at": "0083fc8f",
+   "store_at": "0083fc94",
+   "store": "float ptr [ESI + 0x5a0]",
+   "installed": "550",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "5A4",
+   "key": "DOFParams.MinAmount",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "1",
+   "read_at": "0083fcd7",
+   "store_at": "0083fcdc",
+   "store": "float ptr [ESI + 0x5a4]",
+   "installed": "0.6",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "5A8",
+   "key": "DOFParams.MaxAmount",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0",
+   "read_at": "0083fd1f",
+   "store_at": "0083fd24",
+   "store": "float ptr [ESI + 0x5a8]",
+   "installed": "0.1",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "65C",
+   "key": "Physics.WreckChance",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0",
+   "read_at": "0083fd99",
+   "store_at": "0083fd9e",
+   "store": "float ptr [ESI + 0x65c]",
+   "installed": "0.3",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_ShipInstance_OnHealthChanged"
+   ]
+  },
+  {
+   "offset": "588",
+   "key": "Physics.TBoatNyomatekSzorzo",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "30000",
+   "read_at": "0083fddf",
+   "store_at": "0083fde4",
+   "store": "float ptr [ESI + 0x588]",
+   "installed": "1500",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_UnitController_ApplyShipForces"
+   ]
+  },
+  {
+   "offset": "58C",
+   "key": "Physics.TBoatMotorMaxSzog",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "6",
+   "read_at": "0083fe28",
+   "store_at": "0083fe48",
+   "store": "float ptr [ESI + 0x58c]",
+   "installed": "10.0",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "590",
+   "key": "Physics.TorpedoForce",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "1",
+   "read_at": "0083fe7c",
+   "store_at": "0083fe81",
+   "store": "float ptr [ESI + 0x590]",
+   "installed": "-75",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "594",
+   "key": "Physics.TorpedoForcePower",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "2",
+   "read_at": "0083fec8",
+   "store_at": "0083fecd",
+   "store": "float ptr [ESI + 0x594]",
+   "installed": null,
+   "installed_assignments": 0,
+   "consumers": []
+  },
+  {
+   "offset": "64C",
+   "key": "Sounds.ShipDeadMeatSoundTimeMin",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "3",
+   "read_at": "008407ba",
+   "store_at": "008407bf",
+   "store": "float ptr [ESI + 0x64c]",
+   "installed": "10.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_UnitInstance_OnWrecked",
+    "BSP_UnitInstance_Update"
+   ]
+  },
+  {
+   "offset": "650",
+   "key": "Sounds.ShipDeadMeatSoundTimeMax",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "6",
+   "read_at": "00840800",
+   "store_at": "00840805",
+   "store": "float ptr [ESI + 0x650]",
+   "installed": "15.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_UnitInstance_OnWrecked",
+    "BSP_UnitInstance_Update"
+   ]
+  },
+  {
+   "offset": "654",
+   "key": "Sounds.PlaneDeadMeatFreq0",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0.15",
+   "read_at": "00840849",
+   "store_at": "0084084e",
+   "store": "float ptr [ESI + 0x654]",
+   "installed": "1.0",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "658",
+   "key": "Sounds.PlaneDeadMeatFreq1000",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "1",
+   "read_at": "00840891",
+   "store_at": "00840896",
+   "store": "float ptr [ESI + 0x658]",
+   "installed": "0.5",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "688",
+   "key": "Flag.NeedFlag",
+   "type": "bool",
+   "getter": "00b66250",
+   "loader_default": null,
+   "read_at": "0084091a",
+   "store_at": "0084091f",
+   "store": "byte ptr [ESI + 0x688],AL",
+   "installed": "true",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_0095de00"
+   ]
+  },
+  {
+   "offset": "68C",
+   "key": "Flag.WindPowerMin",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "00840945",
+   "store_at": "0084094a",
+   "store": "float ptr [ESI + 0x68c]",
+   "installed": "8.0",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "690",
+   "key": "Flag.WindPowerMax",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "00840981",
+   "store_at": "00840986",
+   "store": "float ptr [ESI + 0x690]",
+   "installed": "9.0",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "694",
+   "key": "Flag.WindPowerChange",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "008409c0",
+   "store_at": "008409c5",
+   "store": "float ptr [ESI + 0x694]",
+   "installed": "0.04",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "69C",
+   "key": "Flag.WindDirMin",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "00840a02",
+   "store_at": "00840a07",
+   "store": "float ptr [ESI + 0x69c]",
+   "installed": "-1",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "6A0",
+   "key": "Flag.WindDirMax",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "00840a44",
+   "store_at": "00840a49",
+   "store": "float ptr [ESI + 0x6a0]",
+   "installed": "1",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "698",
+   "key": "Flag.WindDirChange",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "00840a86",
+   "store_at": "00840a8b",
+   "store": "float ptr [ESI + 0x698]",
+   "installed": "0.01",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "6AC",
+   "key": "Flag.DtMul",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "00840ac8",
+   "store_at": "00840acd",
+   "store": "float ptr [ESI + 0x6ac]",
+   "installed": "1.5",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "6B0",
+   "key": "Flag.DtStep",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "00840b0a",
+   "store_at": "00840b0f",
+   "store": "float ptr [ESI + 0x6b0]",
+   "installed": "0.01666",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "6B4",
+   "key": "Flag.NumIteration",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "00840b4c",
+   "store_at": "00840b5d",
+   "store": "dword ptr [ESI + 0x6b4],EAX",
+   "installed": "10",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "6A8",
+   "key": "Flag.Drag",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "00840b93",
+   "store_at": "00840b98",
+   "store": "float ptr [ESI + 0x6a8]",
+   "installed": "1.5",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "6A4",
+   "key": "Flag.Gravity",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "00840bd5",
+   "store_at": "00840bda",
+   "store": "float ptr [ESI + 0x6a4]",
+   "installed": "0.75",
+   "installed_assignments": 8,
+   "consumers": []
+  },
+  {
+   "offset": "680",
+   "key": "DebrisStruct.DebrisEnabled",
+   "type": "bool",
+   "getter": "00b662f0",
+   "loader_default": "0",
+   "read_at": "0084124e",
+   "store_at": "00841257",
+   "store": "byte ptr [ESI + 0x680],AL",
+   "installed": "true",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_UnitInstance_Update"
+   ]
+  },
+  {
+   "offset": "684",
+   "key": "DebrisStruct.DebrisNumPerMeter",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0.3",
+   "read_at": "00841294",
+   "store_at": "00841299",
+   "store": "float ptr [ESI + 0x684]",
+   "installed": "0.3",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_00935540"
+   ]
+  },
+  {
+   "offset": "74C",
+   "key": "Fire.FireDamagePerFireTick",
+   "type": "float",
+   "getter": "00b66270",
+   "loader_default": null,
+   "read_at": "008419d8",
+   "store_at": "008419dd",
+   "store": "float ptr [ESI + 0x74c]",
+   "installed": "10.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_ShipClass_ReadLuaFields"
+   ]
+  },
+  {
+   "offset": "754",
+   "key": "AAGunnerErrorModifier.VersusPlayer",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "1.4",
+   "read_at": "00841a3f",
+   "store_at": "00841a44",
+   "store": "float ptr [ESI + 0x754]",
+   "installed": "1.2",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_GunBot_LeadAimTick"
+   ]
+  },
+  {
+   "offset": "750",
+   "key": "AAGunnerErrorModifier.VersusAI",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "2",
+   "read_at": "00841a88",
+   "store_at": "00841a8d",
+   "store": "float ptr [ESI + 0x750]",
+   "installed": "2.0",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_GunBot_LeadAimTick"
+   ]
+  },
+  {
+   "offset": "758",
+   "key": "AAGunnerErrorModifier.CalcTargetPosTimeAddFix",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0",
+   "read_at": "00841ad0",
+   "store_at": "00841ad5",
+   "store": "float ptr [ESI + 0x758]",
+   "installed": "0.05",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_00901c20"
+   ]
+  },
+  {
+   "offset": "75C",
+   "key": "AAGunnerErrorModifier.CalcTargetPosTimeAddMul",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "0",
+   "read_at": "00841b18",
+   "store_at": "00841b1d",
+   "store": "float ptr [ESI + 0x75c]",
+   "installed": "0.1",
+   "installed_assignments": 1,
+   "consumers": [
+    "FUN_00901c20"
+   ]
+  },
+  {
+   "offset": "760",
+   "key": "AAGunnerErrorModifier.TurnOffAAGunThrow",
+   "type": "bool",
+   "getter": "00b662f0",
+   "loader_default": "0",
+   "read_at": "00841b5c",
+   "store_at": "00841b68",
+   "store": "byte ptr [ESI + 0x760],AL",
+   "installed": "false",
+   "installed_assignments": 1,
+   "consumers": [
+    "BSP_Gun_Fire"
+   ]
+  },
+  {
+   "offset": "764",
+   "key": "SubTorpedoDelay",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "1.5",
+   "read_at": "00842608",
+   "store_at": "0084260d",
+   "store": "float ptr [ESI + 0x764]",
+   "installed": "0.5",
+   "installed_assignments": 1,
+   "consumers": []
+  },
+  {
+   "offset": "768",
+   "key": "ShipTorpedoDelay",
+   "type": "float",
+   "getter": "00b66330",
+   "loader_default": "1",
+   "read_at": "0084264a",
+   "store_at": "0084264f",
+   "store": "float ptr [ESI + 0x768]",
+   "installed": "0.5",
+   "installed_assignments": 1,
+   "consumers": []
+  }
+ ],
+ "consumers": {
+  "004": [
+   {
+    "site": "008d0852",
+    "fn": "FUN_008d0740",
+    "caller": "008d0740"
+   },
+   {
+    "site": "009ec795",
+    "fn": "FUN_009ec770",
+    "caller": "009ec770"
+   },
+   {
+    "site": "009ef389",
+    "fn": "FUN_009ef350",
+    "caller": "009ef350"
+   },
+   {
+    "site": "009f107a",
+    "fn": "FUN_009f0ea0",
+    "caller": "009f0ea0"
+   },
+   {
+    "site": "009f1b78",
+    "fn": "FUN_009f1420",
+    "caller": "009f1420"
+   }
+  ],
+  "008": [
+   {
+    "site": "0092b4c8",
+    "fn": "BSP_TickableGameEntity_TickAdvance",
+    "caller": "0092b350"
+   }
+  ],
+  "00C": [
+   {
+    "site": "0092b4d6",
+    "fn": "BSP_TickableGameEntity_TickAdvance",
+    "caller": "0092b350"
+   }
+  ],
+  "010": [
+   {
+    "site": "0092b394",
+    "fn": "BSP_TickableGameEntity_TickAdvance",
+    "caller": "0092b350"
+   }
+  ],
+  "014": [
+   {
+    "site": "0092b4bd",
+    "fn": "BSP_TickableGameEntity_TickAdvance",
+    "caller": "0092b350"
+   }
+  ],
+  "01C": [
+   {
+    "site": "0092b4ba",
+    "fn": "BSP_TickableGameEntity_TickAdvance",
+    "caller": "0092b350"
+   }
+  ],
+  "020": [
+   {
+    "site": "00448023",
+    "fn": "BSP_GameDynamicsList_UpdateFrame",
+    "caller": "00447b80"
+   }
+  ],
+  "024": [
+   {
+    "site": "00448011",
+    "fn": "BSP_GameDynamicsList_UpdateFrame",
+    "caller": "00447b80"
+   }
+  ],
+  "028": [
+   {
+    "site": "00448032",
+    "fn": "BSP_GameDynamicsList_UpdateFrame",
+    "caller": "00447b80"
+   }
+  ],
+  "02C": [
+   {
+    "site": "0044801a",
+    "fn": "BSP_GameDynamicsList_UpdateFrame",
+    "caller": "00447b80"
+   }
+  ],
+  "030": [
+   {
+    "site": "0095dcec",
+    "fn": "FUN_0095dc40",
+    "caller": "0095dc40"
+   }
+  ],
+  "034": [
+   {
+    "site": "0095dd0e",
+    "fn": "FUN_0095dc40",
+    "caller": "0095dc40"
+   }
+  ],
+  "038": [
+   {
+    "site": "0095dd9b",
+    "fn": "FUN_0095dc40",
+    "caller": "0095dc40"
+   }
+  ],
+  "03C": [
+   {
+    "site": "0095dda2",
+    "fn": "FUN_0095dc40",
+    "caller": "0095dc40"
+   }
+  ],
+  "040": [
+   {
+    "site": "0095dd41",
+    "fn": "FUN_0095dc40",
+    "caller": "0095dc40"
+   }
+  ],
+  "044": [
+   {
+    "site": "0064dea7",
+    "fn": "FUN_0064dd30",
+    "caller": "0064dd30"
+   }
+  ],
+  "048": [
+   {
+    "site": "0064df76",
+    "fn": "FUN_0064dd30",
+    "caller": "0064dd30"
+   }
+  ],
+  "04C": [
+   {
+    "site": "0064dfa2",
+    "fn": "FUN_0064dd30",
+    "caller": "0064dd30"
+   }
+  ],
+  "050": [
+   {
+    "site": "0064dfc6",
+    "fn": "FUN_0064dd30",
+    "caller": "0064dd30"
+   }
+  ],
+  "058": [
+   {
+    "site": "0064e0f5",
+    "fn": "FUN_0064dd30",
+    "caller": "0064dd30"
+   }
+  ],
+  "05C": [
+   {
+    "site": "0064e0e6",
+    "fn": "FUN_0064dd30",
+    "caller": "0064dd30"
+   }
+  ],
+  "060": [
+   {
+    "site": "0064e1e3",
+    "fn": "FUN_0064dd30",
+    "caller": "0064dd30"
+   }
+  ],
+  "064": [
+   {
+    "site": "0064df85",
+    "fn": "FUN_0064dd30",
+    "caller": "0064dd30"
+   }
+  ],
+  "068": [
+   {
+    "site": "0064dfb1",
+    "fn": "FUN_0064dd30",
+    "caller": "0064dd30"
+   }
+  ],
+  "06C": [
+   {
+    "site": "0064dfdb",
+    "fn": "FUN_0064dd30",
+    "caller": "0064dd30"
+   }
+  ],
+  "070": [
+   {
+    "site": "0064e0dd",
+    "fn": "FUN_0064dd30",
+    "caller": "0064dd30"
+   }
+  ],
+  "074": [
+   {
+    "site": "0064e295",
+    "fn": "FUN_0064dd30",
+    "caller": "0064dd30"
+   }
+  ],
+  "078": [
+   {
+    "site": "0064e21d",
+    "fn": "FUN_0064dd30",
+    "caller": "0064dd30"
+   }
+  ],
+  "07C": [
+   {
+    "site": "0064e2d6",
+    "fn": "FUN_0064dd30",
+    "caller": "0064dd30"
+   }
+  ],
+  "160": [
+   {
+    "site": "00822ba7",
+    "fn": "BSP_UnitInstance_ResetNavigatorParams",
+    "caller": "00822b70"
+   }
+  ],
+  "164": [
+   {
+    "site": "00822b8d",
+    "fn": "BSP_UnitInstance_ResetNavigatorParams",
+    "caller": "00822b70"
+   }
+  ],
+  "168": [
+   {
+    "site": "00822bba",
+    "fn": "BSP_UnitInstance_ResetNavigatorParams",
+    "caller": "00822b70"
+   }
+  ],
+  "16C": [
+   {
+    "site": "00822bce",
+    "fn": "BSP_UnitInstance_ResetNavigatorParams",
+    "caller": "00822b70"
+   }
+  ],
+  "170": [
+   {
+    "site": "00822be2",
+    "fn": "BSP_UnitInstance_ResetNavigatorParams",
+    "caller": "00822b70"
+   }
+  ],
+  "174": [
+   {
+    "site": "00822bf6",
+    "fn": "BSP_UnitInstance_ResetNavigatorParams",
+    "caller": "00822b70"
+   }
+  ],
+  "178": [
+   {
+    "site": "00822c0a",
+    "fn": "BSP_UnitInstance_ResetNavigatorParams",
+    "caller": "00822b70"
+   }
+  ],
+  "190": [
+   {
+    "site": "009f13e2",
+    "fn": "FUN_009f1160",
+    "caller": "009f1160"
+   }
+  ],
+  "194": [
+   {
+    "site": "009ead58",
+    "fn": "FUN_009eaca0",
+    "caller": "009eaca0"
+   },
+   {
+    "site": "009ebee3",
+    "fn": "FUN_009eb660",
+    "caller": "009eb660"
+   },
+   {
+    "site": "009f0dcd",
+    "fn": "FUN_009f0d20",
+    "caller": "009f0d20"
+   }
+  ],
+  "198": [
+   {
+    "site": "009f19bd",
+    "fn": "FUN_009f1420",
+    "caller": "009f1420"
+   }
+  ],
+  "19C": [
+   {
+    "site": "009f19ae",
+    "fn": "FUN_009f1420",
+    "caller": "009f1420"
+   }
+  ],
+  "1A8": [
+   {
+    "site": "009eaeca",
+    "fn": "FUN_009eae20",
+    "caller": "009eae20"
+   }
+  ],
+  "1B8": [
+   {
+    "site": "009f0f6d",
+    "fn": "FUN_009f0ea0",
+    "caller": "009f0ea0"
+   }
+  ],
+  "1D4": [
+   {
+    "site": "009ef948",
+    "fn": "FUN_009ef910",
+    "caller": "009ef910"
+   }
+  ],
+  "1D8": [
+   {
+    "site": "009eb686",
+    "fn": "FUN_009eb660",
+    "caller": "009eb660"
+   }
+  ],
+  "1EC": [
+   {
+    "site": "009f13b0",
+    "fn": "FUN_009f1160",
+    "caller": "009f1160"
+   }
+  ],
+  "1F0": [
+   {
+    "site": "009ead4e",
+    "fn": "FUN_009eaca0",
+    "caller": "009eaca0"
+   },
+   {
+    "site": "009f0bac",
+    "fn": "FUN_009f0ad0",
+    "caller": "009f0ad0"
+   }
+  ],
+  "1F4": [
+   {
+    "site": "009ecee3",
+    "fn": "FUN_009eca20",
+    "caller": "009eca20"
+   }
+  ],
+  "1FC": [
+   {
+    "site": "009ecb65",
+    "fn": "FUN_009eca20",
+    "caller": "009eca20"
+   }
+  ],
+  "204": [
+   {
+    "site": "009ed01f",
+    "fn": "FUN_009eca20",
+    "caller": "009eca20"
+   }
+  ],
+  "208": [
+   {
+    "site": "009ed02e",
+    "fn": "FUN_009eca20",
+    "caller": "009eca20"
+   }
+  ],
+  "214": [
+   {
+    "site": "009f007f",
+    "fn": "FUN_009ef910",
+    "caller": "009ef910"
+   }
+  ],
+  "218": [
+   {
+    "site": "009f0089",
+    "fn": "FUN_009ef910",
+    "caller": "009ef910"
+   }
+  ],
+  "220": [
+   {
+    "site": "00825e1b",
+    "fn": "BSP_UnitInstance_ApplyPropellerTurnAssist",
+    "caller": "00825de0"
+   }
+  ],
+  "224": [
+   {
+    "site": "00825e44",
+    "fn": "BSP_UnitInstance_ApplyPropellerTurnAssist",
+    "caller": "00825de0"
+   }
+  ],
+  "228": [
+   {
+    "site": "00825eee",
+    "fn": "BSP_UnitInstance_GetForwardAcceleration",
+    "caller": "00825ec0"
+   }
+  ],
+  "22C": [
+   {
+    "site": "00826dcf",
+    "fn": "FUN_00826d70",
+    "caller": "00826d70"
+   }
+  ],
+  "230": [
+   {
+    "site": "00826ee7",
+    "fn": "FUN_00826d70",
+    "caller": "00826d70"
+   }
+  ],
+  "234": [
+   {
+    "site": "00826e99",
+    "fn": "FUN_00826d70",
+    "caller": "00826d70"
+   }
+  ],
+  "238": [
+   {
+    "site": "008344a6",
+    "fn": "BSP_ShipClass_ReadLuaFields",
+    "caller": "00831840"
+   }
+  ],
+  "23C": [
+   {
+    "site": "008344fe",
+    "fn": "BSP_ShipClass_ReadLuaFields",
+    "caller": "00831840"
+   }
+  ],
+  "3A8": [
+   {
+    "site": "009348ca",
+    "fn": "BSP_UnitParts_DetachPart",
+    "caller": "00934150"
+   },
+   {
+    "site": "00936d4d",
+    "fn": "FUN_00935d30",
+    "caller": "00935d30"
+   }
+  ],
+  "3AC": [
+   {
+    "site": "0093bd35",
+    "fn": "BSP_UnitSubObjectA20_Construct",
+    "caller": "0093bcc0"
+   },
+   {
+    "site": "0095eeea",
+    "fn": "FUN_0095eb40",
+    "caller": "0095eb40"
+   }
+  ],
+  "3B0": [
+   {
+    "site": "0093bd27",
+    "fn": "BSP_UnitSubObjectA20_Construct",
+    "caller": "0093bcc0"
+   },
+   {
+    "site": "0095eaff",
+    "fn": "FUN_0095e9a0",
+    "caller": "0095e9a0"
+   },
+   {
+    "site": "0095eec2",
+    "fn": "FUN_0095eb40",
+    "caller": "0095eb40"
+   },
+   {
+    "site": "00a09629",
+    "fn": "BSP_Ai_TargetWeight",
+    "caller": "00a08460"
+   }
+  ],
+  "3B4": [
+   {
+    "site": "0093c7fb",
+    "fn": "BSP_RepairTask_RepairHull",
+    "caller": "0093c770"
+   }
+  ],
+  "3B8": [
+   {
+    "site": "0093c938",
+    "fn": "BSP_RepairTask_RepairSubObjects",
+    "caller": "0093c860"
+   }
+  ],
+  "3C0": [
+   {
+    "site": "00827d8b",
+    "fn": "FUN_00827b90",
+    "caller": "00827b90"
+   }
+  ],
+  "3C4": [
+   {
+    "site": "00827be8",
+    "fn": "FUN_00827b90",
+    "caller": "00827b90"
+   }
+  ],
+  "3C8": [
+   {
+    "site": "0064965a",
+    "fn": "BSP_InGameHudRootScreen_UpdateUnitRowWidgets",
+    "caller": "00648c20"
+   },
+   {
+    "site": "0093c131",
+    "fn": "BSP_RepairTask_ApplyFireDamage",
+    "caller": "0093c120"
+   }
+  ],
+  "3CC": [
+   {
+    "site": "0064968a",
+    "fn": "BSP_InGameHudRootScreen_UpdateUnitRowWidgets",
+    "caller": "00648c20"
+   },
+   {
+    "site": "0093c221",
+    "fn": "BSP_RepairTask_ApplyWaterDamage",
+    "caller": "0093c210"
+   }
+  ],
+  "3D0": [
+   {
+    "site": "0093c558",
+    "fn": "BSP_RepairTask_RepairFailures",
+    "caller": "0093c520"
+   }
+  ],
+  "3D4": [
+   {
+    "site": "0093c78c",
+    "fn": "BSP_RepairTask_RepairHull",
+    "caller": "0093c770"
+   }
+  ],
+  "3D8": [
+   {
+    "site": "0093c88c",
+    "fn": "BSP_RepairTask_RepairSubObjects",
+    "caller": "0093c860"
+   }
+  ],
+  "3E0": [
+   {
+    "site": "0093bf78",
+    "fn": "BSP_ShipSystems_RollComponentFailure",
+    "caller": "0093bed0"
+   }
+  ],
+  "3E8": [
+   {
+    "site": "0064f8ec",
+    "fn": "FUN_0064dd30",
+    "caller": "0064dd30"
+   },
+   {
+    "site": "0064f924",
+    "fn": "FUN_0064dd30",
+    "caller": "0064dd30"
+   },
+   {
+    "site": "0064f97f",
+    "fn": "FUN_0064dd30",
+    "caller": "0064dd30"
+   },
+   {
+    "site": "0093c325",
+    "fn": "BSP_ShipSystems_PickRandomFailure",
+    "caller": "0093c300"
+   },
+   {
+    "site": "0093c371",
+    "fn": "BSP_ShipSystems_PickRandomFailure",
+    "caller": "0093c300"
+   },
+   {
+    "site": "0093c39d",
+    "fn": "BSP_ShipSystems_PickRandomFailure",
+    "caller": "0093c300"
+   },
+   {
+    "site": "0093c3b9",
+    "fn": "BSP_ShipSystems_PickRandomFailure",
+    "caller": "0093c300"
+   },
+   {
+    "site": "0093c3e5",
+    "fn": "BSP_ShipSystems_PickRandomFailure",
+    "caller": "0093c300"
+   }
+  ],
+  "3EC": [
+   {
+    "site": "0093c333",
+    "fn": "BSP_ShipSystems_PickRandomFailure",
+    "caller": "0093c300"
+   },
+   {
+    "site": "0093c37b",
+    "fn": "BSP_ShipSystems_PickRandomFailure",
+    "caller": "0093c300"
+   },
+   {
+    "site": "0093c3c3",
+    "fn": "BSP_ShipSystems_PickRandomFailure",
+    "caller": "0093c300"
+   }
+  ],
+  "3F4": [
+   {
+    "site": "00826603",
+    "fn": "BSP_UnitInstance_UpdateShipMotion",
+    "caller": "00825f20"
+   },
+   {
+    "site": "00826618",
+    "fn": "BSP_UnitInstance_UpdateShipMotion",
+    "caller": "00825f20"
+   }
+  ],
+  "400": [
+   {
+    "site": "0074f554",
+    "fn": "FUN_0074f490",
+    "caller": "0074f490"
+   },
+   {
+    "site": "0074f564",
+    "fn": "FUN_0074f490",
+    "caller": "0074f490"
+   }
+  ],
+  "404": [
+   {
+    "site": "0074f8e1",
+    "fn": "FUN_0074f490",
+    "caller": "0074f490"
+   },
+   {
+    "site": "0074fa02",
+    "fn": "BSP_LeakManager_Update",
+    "caller": "0074f930"
+   },
+   {
+    "site": "0074fa94",
+    "fn": "FUN_0074fa80",
+    "caller": "0074fa80"
+   }
+  ],
+  "408": [
+   {
+    "site": "00823770",
+    "fn": "FUN_00822c20",
+    "caller": "00822c20"
+   }
+  ],
+  "40C": [
+   {
+    "site": "0074f49b",
+    "fn": "FUN_0074f490",
+    "caller": "0074f490"
+   }
+  ],
+  "420": [
+   {
+    "site": "0077f9b4",
+    "fn": "FUN_0077f940",
+    "caller": "0077f940"
+   }
+  ],
+  "424": [
+   {
+    "site": "0070edd8",
+    "fn": "FUN_0070ed30",
+    "caller": "0070ed30"
+   }
+  ],
+  "42C": [
+   {
+    "site": "0070eec6",
+    "fn": "FUN_0070ed30",
+    "caller": "0070ed30"
+   },
+   {
+    "site": "0070effe",
+    "fn": "FUN_0070efd0",
+    "caller": "0070efd0"
+   }
+  ],
+  "430": [
+   {
+    "site": "00826d26",
+    "fn": "BSP_UnitInstance_UpdateShipMotion",
+    "caller": "00825f20"
+   }
+  ],
+  "434": [
+   {
+    "site": "00539f07",
+    "fn": "BSP_HudFormationScreen_Register",
+    "caller": "00538f80"
+   }
+  ],
+  "438": [
+   {
+    "site": "0082e871",
+    "fn": "FUN_0082e850",
+    "caller": "0082e850"
+   }
+  ],
+  "444": [
+   {
+    "site": "0082e8ea",
+    "fn": "BSP_ShipClass_ComputeRudderCurveDenominator",
+    "caller": "0082e890"
+   }
+  ],
+  "448": [
+   {
+    "site": "0082e938",
+    "fn": "BSP_ShipClass_ComputeRudderCurveDenominator",
+    "caller": "0082e890"
+   }
+  ],
+  "44C": [
+   {
+    "site": "0082e898",
+    "fn": "BSP_ShipClass_ComputeRudderCurveDenominator",
+    "caller": "0082e890"
+   }
+  ],
+  "450": [
+   {
+    "site": "00432e98",
+    "fn": "FUN_00432e60",
+    "caller": "00432e60"
+   }
+  ],
+  "454": [
+   {
+    "site": "00433b05",
+    "fn": "FUN_00433800",
+    "caller": "00433800"
+   },
+   {
+    "site": "00433fa9",
+    "fn": "FUN_00433cb0",
+    "caller": "00433cb0"
+   }
+  ],
+  "458": [
+   {
+    "site": "0064dbb6",
+    "fn": "FUN_0064da40",
+    "caller": "0064da40"
+   },
+   {
+    "site": "006514b1",
+    "fn": "FUN_00651370",
+    "caller": "00651370"
+   }
+  ],
+  "460": [
+   {
+    "site": "00548cbb",
+    "fn": "FUN_005484f0",
+    "caller": "005484f0"
+   }
+  ],
+  "464": [
+   {
+    "site": "00827828",
+    "fn": "FUN_00827820",
+    "caller": "00827820"
+   }
+  ],
+  "46C": [
+   {
+    "site": "00823c17",
+    "fn": "FUN_00822c20",
+    "caller": "00822c20"
+   },
+   {
+    "site": "0082798d",
+    "fn": "BSP_UnitInstance_RaiseRepairLevel",
+    "caller": "00827960"
+   },
+   {
+    "site": "008279a5",
+    "fn": "BSP_UnitInstance_RaiseRepairLevel",
+    "caller": "00827960"
+   }
+  ],
+  "494": [
+   {
+    "site": "008254f8",
+    "fn": "FUN_00825450",
+    "caller": "00825450"
+   }
+  ],
+  "498": [
+   {
+    "site": "00825580",
+    "fn": "FUN_00825450",
+    "caller": "00825450"
+   }
+  ],
+  "49C": [
+   {
+    "site": "00922ceb",
+    "fn": "BSP_Entity_IsSurfaceTarget",
+    "caller": "00922c80"
+   }
+  ],
+  "4AC": [
+   {
+    "site": "00855211",
+    "fn": "FUN_008551c0",
+    "caller": "008551c0"
+   }
+  ],
+  "4B0": [
+   {
+    "site": "008551fe",
+    "fn": "FUN_008551c0",
+    "caller": "008551c0"
+   }
+  ],
+  "4B4": [
+   {
+    "site": "008269e6",
+    "fn": "BSP_UnitInstance_UpdateShipMotion",
+    "caller": "00825f20"
+   }
+  ],
+  "4B8": [
+   {
+    "site": "0085534d",
+    "fn": "FUN_00855250",
+    "caller": "00855250"
+   },
+   {
+    "site": "0085535e",
+    "fn": "FUN_00855250",
+    "caller": "00855250"
+   }
+  ],
+  "4BC": [
+   {
+    "site": "00855313",
+    "fn": "FUN_00855250",
+    "caller": "00855250"
+   },
+   {
+    "site": "00855324",
+    "fn": "FUN_00855250",
+    "caller": "00855250"
+   },
+   {
+    "site": "008553ce",
+    "fn": "FUN_00855250",
+    "caller": "00855250"
+   }
+  ],
+  "4C0": [
+   {
+    "site": "008553f6",
+    "fn": "FUN_00855250",
+    "caller": "00855250"
+   }
+  ],
+  "4C4": [
+   {
+    "site": "0064f806",
+    "fn": "FUN_0064dd30",
+    "caller": "0064dd30"
+   },
+   {
+    "site": "00937418",
+    "fn": "BSP_UnitController_ClearShapeCollisionBits",
+    "caller": "009373c0"
+   }
+  ],
+  "4D8": [
+   {
+    "site": "006cfd31",
+    "fn": "FUN_006cfaf0",
+    "caller": "006cfaf0"
+   }
+  ],
+  "4DC": [
+   {
+    "site": "006d099a",
+    "fn": "FUN_006d0930",
+    "caller": "006d0930"
+   }
+  ],
+  "4E0": [
+   {
+    "site": "00932a96",
+    "fn": "BSP_UnitController_ApplyHydroForces",
+    "caller": "009329c0"
+   }
+  ],
+  "4E4": [
+   {
+    "site": "00932aad",
+    "fn": "BSP_UnitController_ApplyHydroForces",
+    "caller": "009329c0"
+   }
+  ],
+  "4E8": [
+   {
+    "site": "00932ac4",
+    "fn": "BSP_UnitController_ApplyHydroForces",
+    "caller": "009329c0"
+   }
+  ],
+  "4EC": [
+   {
+    "site": "00932adb",
+    "fn": "BSP_UnitController_ApplyHydroForces",
+    "caller": "009329c0"
+   }
+  ],
+  "4F0": [
+   {
+    "site": "00932af2",
+    "fn": "BSP_UnitController_ApplyHydroForces",
+    "caller": "009329c0"
+   }
+  ],
+  "4F4": [
+   {
+    "site": "00932b09",
+    "fn": "BSP_UnitController_ApplyHydroForces",
+    "caller": "009329c0"
+   }
+  ],
+  "4F8": [
+   {
+    "site": "00932b20",
+    "fn": "BSP_UnitController_ApplyHydroForces",
+    "caller": "009329c0"
+   }
+  ],
+  "500": [
+   {
+    "site": "00939b53",
+    "fn": "BSP_UnitController_BuildSubObjectsAndHullBody",
+    "caller": "00937c90"
+   }
+  ],
+  "50C": [
+   {
+    "site": "00932b3f",
+    "fn": "BSP_UnitController_ApplyHydroForces",
+    "caller": "009329c0"
+   }
+  ],
+  "510": [
+   {
+    "site": "00937f53",
+    "fn": "BSP_UnitController_BuildSubObjectsAndHullBody",
+    "caller": "00937c90"
+   }
+  ],
+  "514": [
+   {
+    "site": "00939365",
+    "fn": "BSP_UnitController_BuildSubObjectsAndHullBody",
+    "caller": "00937c90"
+   }
+  ],
+  "588": [
+   {
+    "site": "00937592",
+    "fn": "BSP_UnitController_ApplyShipForces",
+    "caller": "00937440"
+   }
+  ],
+  "598": [
+   {
+    "site": "00651677",
+    "fn": "FUN_006515b0",
+    "caller": "006515b0"
+   }
+  ],
+  "5AC": [
+   {
+    "site": "00827de0",
+    "fn": "FUN_00827dd0",
+    "caller": "00827dd0"
+   }
+  ],
+  "5B0": [
+   {
+    "site": "00932e96",
+    "fn": "BSP_UnitController_ApplyHydroForces",
+    "caller": "009329c0"
+   }
+  ],
+  "5B8": [
+   {
+    "site": "00932e81",
+    "fn": "BSP_UnitController_ApplyHydroForces",
+    "caller": "009329c0"
+   }
+  ],
+  "5BC": [
+   {
+    "site": "00825305",
+    "fn": "BSP_UnitInstance_UpdateEngineAudio",
+    "caller": "008252c0"
+   }
+  ],
+  "5E0": [
+   {
+    "site": "008252e8",
+    "fn": "BSP_UnitInstance_UpdateEngineAudio",
+    "caller": "008252c0"
+   }
+  ],
+  "604": [
+   {
+    "site": "008252fd",
+    "fn": "BSP_UnitInstance_UpdateEngineAudio",
+    "caller": "008252c0"
+   }
+  ],
+  "64C": [
+   {
+    "site": "008250b4",
+    "fn": "BSP_UnitInstance_OnWrecked",
+    "caller": "00824b60"
+   },
+   {
+    "site": "0082570e",
+    "fn": "BSP_UnitInstance_Update",
+    "caller": "008255b0"
+   }
+  ],
+  "650": [
+   {
+    "site": "008250a2",
+    "fn": "BSP_UnitInstance_OnWrecked",
+    "caller": "00824b60"
+   },
+   {
+    "site": "008256ff",
+    "fn": "BSP_UnitInstance_Update",
+    "caller": "008255b0"
+   }
+  ],
+  "65C": [
+   {
+    "site": "00827b52",
+    "fn": "BSP_ShipInstance_OnHealthChanged",
+    "caller": "00827a90"
+   }
+  ],
+  "664": [
+   {
+    "site": "00935793",
+    "fn": "FUN_00935540",
+    "caller": "00935540"
+   },
+   {
+    "site": "009357b1",
+    "fn": "FUN_00935540",
+    "caller": "00935540"
+   }
+  ],
+  "668": [
+   {
+    "site": "0093579d",
+    "fn": "FUN_00935540",
+    "caller": "00935540"
+   }
+  ],
+  "674": [
+   {
+    "site": "00935743",
+    "fn": "FUN_00935540",
+    "caller": "00935540"
+   },
+   {
+    "site": "0093577f",
+    "fn": "FUN_00935540",
+    "caller": "00935540"
+   }
+  ],
+  "678": [
+   {
+    "site": "00935751",
+    "fn": "FUN_00935540",
+    "caller": "00935540"
+   },
+   {
+    "site": "00935767",
+    "fn": "FUN_00935540",
+    "caller": "00935540"
+   }
+  ],
+  "680": [
+   {
+    "site": "00825af9",
+    "fn": "BSP_UnitInstance_Update",
+    "caller": "008255b0"
+   }
+  ],
+  "684": [
+   {
+    "site": "00935583",
+    "fn": "FUN_00935540",
+    "caller": "00935540"
+   }
+  ],
+  "688": [
+   {
+    "site": "0095de7a",
+    "fn": "FUN_0095de00",
+    "caller": "0095de00"
+   }
+  ],
+  "6CC": [
+   {
+    "site": "009ec850",
+    "fn": "BSP_UnitBot_ComputeThrottleCeiling",
+    "caller": "009ec7c0"
+   }
+  ],
+  "6D4": [
+   {
+    "site": "009ec8da",
+    "fn": "BSP_UnitBot_ComputeThrottleCeiling",
+    "caller": "009ec7c0"
+   }
+  ],
+  "6E0": [
+   {
+    "site": "009ec8b8",
+    "fn": "BSP_UnitBot_ComputeThrottleCeiling",
+    "caller": "009ec7c0"
+   }
+  ],
+  "6E8": [
+   {
+    "site": "009ec910",
+    "fn": "BSP_UnitBot_ComputeThrottleCeiling",
+    "caller": "009ec7c0"
+   }
+  ],
+  "6EC": [
+   {
+    "site": "009ec7d4",
+    "fn": "BSP_UnitBot_ComputeThrottleCeiling",
+    "caller": "009ec7c0"
+   }
+  ],
+  "6F0": [
+   {
+    "site": "009ec310",
+    "fn": "FUN_009ec280",
+    "caller": "009ec280"
+   }
+  ],
+  "6F4": [
+   {
+    "site": "009ec323",
+    "fn": "FUN_009ec280",
+    "caller": "009ec280"
+   }
+  ],
+  "6F8": [
+   {
+    "site": "009ec336",
+    "fn": "FUN_009ec280",
+    "caller": "009ec280"
+   }
+  ],
+  "72C": [
+   {
+    "site": "0092a86f",
+    "fn": "FUN_0092a6d0",
+    "caller": "0092a6d0"
+   },
+   {
+    "site": "00933d49",
+    "fn": "FUN_00933bb0",
+    "caller": "00933bb0"
+   }
+  ],
+  "730": [
+   {
+    "site": "0092aa8d",
+    "fn": "FUN_0092a8c0",
+    "caller": "0092a8c0"
+   }
+  ],
+  "740": [
+   {
+    "site": "00540dd0",
+    "fn": "FUN_00540d50",
+    "caller": "00540d50"
+   },
+   {
+    "site": "00540dff",
+    "fn": "FUN_00540d50",
+    "caller": "00540d50"
+   },
+   {
+    "site": "00540e2b",
+    "fn": "FUN_00540d50",
+    "caller": "00540d50"
+   },
+   {
+    "site": "00540f72",
+    "fn": "FUN_00540d50",
+    "caller": "00540d50"
+   }
+  ],
+  "744": [
+   {
+    "site": "00540dde",
+    "fn": "FUN_00540d50",
+    "caller": "00540d50"
+   },
+   {
+    "site": "00540e09",
+    "fn": "FUN_00540d50",
+    "caller": "00540d50"
+   },
+   {
+    "site": "00540f7c",
+    "fn": "FUN_00540d50",
+    "caller": "00540d50"
+   }
+  ],
+  "74C": [
+   {
+    "site": "00833cac",
+    "fn": "BSP_ShipClass_ReadLuaFields",
+    "caller": "00831840"
+   },
+   {
+    "site": "00833cce",
+    "fn": "BSP_ShipClass_ReadLuaFields",
+    "caller": "00831840"
+   }
+  ],
+  "750": [
+   {
+    "site": "00902d47",
+    "fn": "BSP_GunBot_LeadAimTick",
+    "caller": "00902920"
+   }
+  ],
+  "754": [
+   {
+    "site": "00902d58",
+    "fn": "BSP_GunBot_LeadAimTick",
+    "caller": "00902920"
+   }
+  ],
+  "758": [
+   {
+    "site": "00902185",
+    "fn": "FUN_00901c20",
+    "caller": "00901c20"
+   }
+  ],
+  "75C": [
+   {
+    "site": "009021a0",
+    "fn": "FUN_00901c20",
+    "caller": "00901c20"
+   }
+  ],
+  "760": [
+   {
+    "site": "0073030b",
+    "fn": "BSP_Gun_Fire",
+    "caller": "00730160"
+   }
+  ]
+ },
+ "host": [
+  {
+   "address": "0083b60e",
+   "native": "00b66bd0",
+   "containing": "0083b5e0",
+   "name": "lua_state_construct",
+   "note": "1 call site in the loader"
+  },
+  {
+   "address": "0083b625",
+   "native": "00b6a020",
+   "containing": "0083b5e0",
+   "name": "lua_state_open",
+   "note": "1 call site in the loader"
+  },
+  {
+   "address": "0083b63a",
+   "native": "0041dd40",
+   "containing": "0083b5e0",
+   "name": "native_string_resize",
+   "note": "9 call sites in the loader"
+  },
+  {
+   "address": "0083b655",
+   "native": "00bf7680",
+   "containing": "0083b5e0",
+   "name": "memcpy_script_path",
+   "note": "10 call sites in the loader"
+  },
+  {
+   "address": "0083b672",
+   "native": "00b69d40",
+   "containing": "0083b5e0",
+   "name": "run_script",
+   "note": "2 call sites in the loader"
+  },
+  {
+   "address": "0083b692",
+   "native": "00419cc0",
+   "containing": "0083b5e0",
+   "name": "pool_singleton",
+   "note": "21 call sites in the loader"
+  },
+  {
+   "address": "0083b699",
+   "native": "00bd1510",
+   "containing": "0083b5e0",
+   "name": "pool_return_block",
+   "note": "20 call sites in the loader"
+  },
+  {
+   "address": "0083b721",
+   "native": "00b67980",
+   "containing": "0083b5e0",
+   "name": "lua_globals",
+   "note": "1 call site in the loader"
+  },
+  {
+   "address": "0083b73d",
+   "native": "00b67800",
+   "containing": "0083b5e0",
+   "name": "lua_get_by_name",
+   "note": "326 call sites in the loader"
+  },
+  {
+   "address": "0083b751",
+   "native": "00b67700",
+   "containing": "0083b5e0",
+   "name": "lua_slot_destruct",
+   "note": "396 call sites in the loader"
+  },
+  {
+   "address": "0083b79e",
+   "native": "00b67720",
+   "containing": "0083b5e0",
+   "name": "lua_get_by_index",
+   "note": "62 call sites in the loader"
+  },
+  {
+   "address": "0083b7ad",
+   "native": "00b66270",
+   "containing": "0083b5e0",
+   "name": "lua_get_number",
+   "note": "107 call sites in the loader"
+  },
+  {
+   "address": "0083b8df",
+   "native": "00b66330",
+   "containing": "0083b5e0",
+   "name": "lua_get_float_or_default",
+   "note": "131 call sites in the loader"
+  },
+  {
+   "address": "0083bce1",
+   "native": "00bf6713",
+   "containing": "0083b5e0",
+   "name": "crt_helper_00bf6713",
+   "note": "31 call sites in the loader"
+  },
+  {
+   "address": "0083bd01",
+   "native": "00839700",
+   "containing": "0083b5e0",
+   "name": "call_00839700",
+   "note": "1 call site in the loader"
+  },
+  {
+   "address": "0083bd4e",
+   "native": "00b65fb0",
+   "containing": "0083b5e0",
+   "name": "lua_is_nil",
+   "note": "11 call sites in the loader"
+  },
+  {
+   "address": "0083bd70",
+   "native": "00b677e0",
+   "containing": "0083b5e0",
+   "name": "lua_argument_at",
+   "note": "2 call sites in the loader"
+  },
+  {
+   "address": "0083bd7f",
+   "native": "00b662b0",
+   "containing": "0083b5e0",
+   "name": "lua_get_string",
+   "note": "8 call sites in the loader"
+  },
+  {
+   "address": "0083be6c",
+   "native": "0083a880",
+   "containing": "0083b5e0",
+   "name": "call_0083a880",
+   "note": "1 call site in the loader"
+  },
+  {
+   "address": "0083c5c4",
+   "native": "00b661b0",
+   "containing": "0083b5e0",
+   "name": "lua_is_table",
+   "note": "3 call sites in the loader"
+  },
+  {
+   "address": "0083c675",
+   "native": "00bf7fbf",
+   "containing": "0083b5e0",
+   "name": "stricmp",
+   "note": "1 call site in the loader"
+  },
+  {
+   "address": "0083c7bd",
+   "native": "00b65f50",
+   "containing": "0083b5e0",
+   "name": "lua_slot_construct",
+   "note": "7 call sites in the loader"
+  },
+  {
+   "address": "0083c7f3",
+   "native": "00b67690",
+   "containing": "0083b5e0",
+   "name": "lua_assign_subtable",
+   "note": "10 call sites in the loader"
+  },
+  {
+   "address": "0083c81a",
+   "native": "00836f80",
+   "containing": "0083b5e0",
+   "name": "call_00836f80",
+   "note": "4 call sites in the loader"
+  },
+  {
+   "address": "0083d5bc",
+   "native": "00b66380",
+   "containing": "0083b5e0",
+   "name": "lua_get_integer_or_default",
+   "note": "2 call sites in the loader"
+  },
+  {
+   "address": "0083db94",
+   "native": "00b662f0",
+   "containing": "0083b5e0",
+   "name": "lua_get_boolean_or_default",
+   "note": "4 call sites in the loader"
+  },
+  {
+   "address": "0083e06b",
+   "native": "00871ba0",
+   "containing": "0083b5e0",
+   "name": "effect_acquire_by_name",
+   "note": "6 call sites in the loader"
+  },
+  {
+   "address": "0083e126",
+   "native": "00870cd0",
+   "containing": "0083b5e0",
+   "name": "effect_acquire",
+   "note": "1 call site in the loader"
+  },
+  {
+   "address": "0083e64e",
+   "native": "00839590",
+   "containing": "0083b5e0",
+   "name": "call_00839590",
+   "note": "1 call site in the loader"
+  },
+  {
+   "address": "0083e665",
+   "native": "00421470",
+   "containing": "0083b5e0",
+   "name": "call_00421470",
+   "note": "1 call site in the loader"
+  },
+  {
+   "address": "0083e721",
+   "native": "0083b350",
+   "containing": "0083b5e0",
+   "name": "call_0083b350",
+   "note": "1 call site in the loader"
+  },
+  {
+   "address": "0083e824",
+   "native": "00bd1120",
+   "containing": "0083b5e0",
+   "name": "pool_allocate_block",
+   "note": "1 call site in the loader"
+  },
+  {
+   "address": "0083e956",
+   "native": "00438e10",
+   "containing": "0083b5e0",
+   "name": "cstring_compare_insensitive",
+   "note": "1 call site in the loader"
+  },
+  {
+   "address": "0084090d",
+   "native": "00b66000",
+   "containing": "0083b5e0",
+   "name": "lua_is_boolean",
+   "note": "1 call site in the loader"
+  },
+  {
+   "address": "0084091a",
+   "native": "00b66250",
+   "containing": "0083b5e0",
+   "name": "lua_get_boolean",
+   "note": "2 call sites in the loader"
+  },
+  {
+   "address": "00840b51",
+   "native": "00bf7420",
+   "containing": "0083b5e0",
+   "name": "crt_float_to_int",
+   "note": "1 call site in the loader"
+  },
+  {
+   "address": "00840bfe",
+   "native": "0041f370",
+   "containing": "0083b5e0",
+   "name": "call_0041f370",
+   "note": "1 call site in the loader"
+  },
+  {
+   "address": "00840c96",
+   "native": "0041e490",
+   "containing": "0083b5e0",
+   "name": "call_0041e490",
+   "note": "1 call site in the loader"
+  },
+  {
+   "address": "00840d6c",
+   "native": "00838e40",
+   "containing": "0083b5e0",
+   "name": "stl_inst_00838e40",
+   "note": "1 call site in the loader"
+  },
+  {
+   "address": "00840dbb",
+   "native": "00488bf0",
+   "containing": "0083b5e0",
+   "name": "stl_inst_00488bf0",
+   "note": "1 call site in the loader"
+  },
+  {
+   "address": "00840dc9",
+   "native": "0041e870",
+   "containing": "0083b5e0",
+   "name": "native_string_assign",
+   "note": "9 call sites in the loader"
+  },
+  {
+   "address": "00840dd6",
+   "native": "004c1400",
+   "containing": "0083b5e0",
+   "name": "resource_manager_singleton",
+   "note": "6 call sites in the loader"
+  },
+  {
+   "address": "00840de2",
+   "native": "00b80d70",
+   "containing": "0083b5e0",
+   "name": "call_00b80d70",
+   "note": "6 call sites in the loader"
+  },
+  {
+   "address": "00840df2",
+   "native": "0083a910",
+   "containing": "0083b5e0",
+   "name": "call_0083a910",
+   "note": "6 call sites in the loader"
+  },
+  {
+   "address": "00840e33",
+   "native": "0045afd0",
+   "containing": "0083b5e0",
+   "name": "call_0045afd0",
+   "note": "6 call sites in the loader"
+  },
+  {
+   "address": "00841326",
+   "native": "0083a9e0",
+   "containing": "0083b5e0",
+   "name": "call_0083a9e0",
+   "note": "1 call site in the loader"
+  },
+  {
+   "address": "008413e9",
+   "native": "0083b480",
+   "containing": "0083b5e0",
+   "name": "call_0083b480",
+   "note": "1 call site in the loader"
+  },
+  {
+   "address": "008418a4",
+   "native": "00b685c0",
+   "containing": "0083b5e0",
+   "name": "lua_construct_string_or_default",
+   "note": "1 call site in the loader"
+  },
+  {
+   "address": "00841be5",
+   "native": "00b66290",
+   "containing": "0083b5e0",
+   "name": "lua_get_integer",
+   "note": "28 call sites in the loader"
+  },
+  {
+   "address": "00842937",
+   "native": "00b669a0",
+   "containing": "0083b5e0",
+   "name": "lua_state_close",
+   "note": "1 call site in the loader"
+  },
+  {
+   "address": "00424a62",
+   "native": "00836ef0",
+   "containing": "00424a10",
+   "name": "settings_subobject_construct",
+   "note": "four 58h sub-objects at +240h, +298h, +2F0h, +348h; EBX counts 3..0"
+  },
+  {
+   "address": "00424bde",
+   "native": "00bf7cd1",
+   "containing": "00424a10",
+   "name": "eh_vector_ctor_iterator",
+   "note": "(this+72Ch, size 4, count 2, ctor 00415680, dtor 0041DE40)"
+  },
+  {
+   "address": "00424bfc",
+   "native": "0083b5e0",
+   "containing": "00424a10",
+   "name": "load_from_lua_globals",
+   "note": "tail call, ECX still the settings object"
+  },
+  {
+   "address": "00424c66",
+   "native": "00415350",
+   "containing": "00424c40",
+   "name": "singleton_lifetime_manager",
+   "note": "guard object taken before the allocation"
+  },
+  {
+   "address": "00424c9f",
+   "native": "00bf681b",
+   "containing": "00424c40",
+   "name": "operator_new",
+   "note": "PUSH 76Ch: the object's size"
+  },
+  {
+   "address": "00424cb6",
+   "native": "00424a10",
+   "containing": "00424c40",
+   "name": "settings_construct",
+   "note": "ECX = the fresh block"
+  },
+  {
+   "address": "00424cc9",
+   "native": "00415350",
+   "containing": "00424c40",
+   "name": "singleton_lifetime_manager",
+   "note": "second fetch, for the registration"
+  },
+  {
+   "address": "00424cd7",
+   "native": "00bd0c30",
+   "containing": "00424c40",
+   "name": "register_for_destruction",
+   "note": "ECX = manager, argument = the instance"
+  }
+ ],
+ "corrections": [
+  {
+   "subject": "00424a10",
+   "was": "CG_array_ctor_helper_00424a10 (the ledger tagged it a compiler-generated array-constructor helper)",
+   "is": "the constructor of the gameplay tuning settings object: __thiscall, writes the vtable 00CE3994 at 00424A34, sets the defaults at 00424A3E-00424BEF and tail-calls the Lua loader 0083B5E0 at 00424BFC with ECX still holding the object",
+   "evidence": "00424CB6 calls it with ECX = the 76Ch block from operator_new at 00424C9F; 00424A34 MOV dword ptr [ESI],0x00CE3994; 00424BF5 MOV ECX,ESI then 00424BFC CALL 0x0083B5E0; 00424C06 MOV EAX,ESI returns this"
+  },
+  {
+   "subject": "settings+80h..+15Fh",
+   "was": "docs/GAME_TUNING_SINGLETON.md and docs/VEHICLE_CLASS_LUA_LOAD.md: what fills settings+80h..+F0h is unknown; the candidate is the 6412-instruction 0083B5E0",
+   "is": "0083B5E0 does fill it, at 00841B7B-008425A1: two 70h-byte int records, AvoidZoneDepthsSingle at +80h and AvoidZoneDepthsMulti at +F0h, indexed by ship class key with two slots per class and five for MiniSub and Submarine",
+   "evidence": "00841B7B XOR EBP,EBP then the pass select at 00841B7F: 00841B81 LEA EDI,[ESI+80h] with key 00D0A228 'AvoidZoneDepthsSingle', 00841B8E LEA EDI,[ESI+F0h] with key 00D0A210 'AvoidZoneDepthsMulti'; 28 stores 00841BEE-008425A1 of the form MOV dword ptr [EDI + disp],EAX after 00B66290 GetInteger; disp spans 00h..6Ch, so each record is 70h wide and +80h + 70h = +F0h"
+  },
+  {
+   "subject": "settings+3C8h and +3CCh",
+   "was": "docs/UNIT_FIRE_AND_REPAIR.md: +3C8h is the fire damage divisor and +3CCh the water damage divisor, values contract: unread",
+   "is": "the roles stand and the values are 3 and 3, but the authored Lua key names are crossed relative to them: +3C8h is PumpRepairMultiplier and +3CCh is FireRepairMultiplier, while their consumers are 0093C120 (fire) and 0093C210 (water). Both ship as 3, so a shipped run cannot tell the difference",
+   "evidence": "0083E3CB FSTP float ptr [ESI + 3C8h] after the key at 00D0ACF4 'PumpRepairMultiplier'; 0083E417 FSTP float ptr [ESI + 3CCh] after the key at 00D0ACDC 'FireRepairMultiplier'; shipglobals.lua lines 84 and 85 gloss them as the water and the fire damage-over-time divisors; the consumer sweep finds +3C8h read only by 0093C120 and +3CCh only by 0093C210. The two consumer bodies were not re-read here"
+  }
+ ],
+ "runtime_evidence": [
+  {
+   "claim": "the installed damage constants are the first assignment block, not the FailureDebug block",
+   "evidence": "scripts/datatables/ScriptOptions.lua line 1 is 'FailureDebug = false', and shipglobals.lua line 746 gates the second block on it. Static: the loader path is not reached by bsp_game.exe in this packet's runs"
+  }
+ ],
+ "build": "scripts/build.ps1, Win32 MSVC, warnings as errors",
+ "tests": "no new test case; existing checks run"
+}
