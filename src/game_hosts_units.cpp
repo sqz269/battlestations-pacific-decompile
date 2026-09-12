@@ -32,6 +32,7 @@
 #include "bsp/vehicle_class.hpp"
 #include "bsp/world_ocean.hpp"
 
+#include <cfloat>
 #include <cmath>
 #include <cstdio>
 #include <cstring>
@@ -96,10 +97,14 @@ struct GameUnitSlot {
 };
 
 struct GameUnitsHost::Impl {
-    Impl(GameHostLog& log_in, GameMissionLuaHost& lua_in) : log(log_in), lua(lua_in) {}
+    Impl(GameHostLog& log_in, GameMissionLuaHost& lua_in)
+        : log(log_in), lua(lua_in), commands(log_in) {}
 
     GameHostLog& log;
     GameMissionLuaHost& lua;
+    // Milestone 2l: the weapon director of every created unit, and the three
+    // message hops between the authored `Command` token and its command slot.
+    GameCommandsHost commands;
     std::vector<std::unique_ptr<GameUnitSlot>> slots;
     // A flat copy of the rows, rebuilt on demand so units() can hand the caller
     // one contiguous table without exposing the slots.
@@ -131,6 +136,7 @@ struct GameUnitsHost::Impl {
     bool logged_integrator{false};
     bool logged_cruise{false};
     bool logged_gate{false};
+    bool logged_precision{false};
 
     void record(const char* method, std::uint32_t address) {
         char text[16];
@@ -166,6 +172,15 @@ struct GameUnitsHost::Impl {
 
     void refresh_row(GameUnitSlot& slot);
     void issue_into_ring(GameUnitSlot& slot, float throttle, float rudder);
+
+    // The heading 00835ac0 latches. The unit virtual at primary slot 50h is a
+    // RET 0 getter with no reconstruction, so this is the executable's own
+    // value: atan2 over pose row 2, the same convention the trajectory dump and
+    // the run log print in degrees.
+    static float pose_heading_radians(const GameUnitSlot& slot) {
+        return static_cast<float>(std::atan2(static_cast<double>(slot.motion.pose_row2[0]),
+            static_cast<double>(slot.motion.pose_row2[2])));
+    }
 };
 
 namespace {
@@ -682,6 +697,9 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         row.type_symbol = entity.type_symbol;
         row.type_id = entity.type_id;
         row.party = entity.party;
+        // Milestone 2l: the two strings 004f0520's last step handed 00469610.
+        row.command = entity.command;
+        row.command_target = entity.command_target;
 
         // The frame 0046cf40 composed for the gate is the instance's world 4x4;
         // rows 0..2 are the body axes and row 3 the position, which is the same
@@ -758,6 +776,22 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         host.slots.push_back(std::move(slot));
     }
     host.summary.units = host.slots.size();
+    // Milestone 2l: the entities 0046aab0's target lookup would find, and the
+    // owners its records name. entity+174h is the executable's own id space,
+    // because the two handle tables at 00f89a0c / 00f89a60 are not built here.
+    std::vector<GameCommandUnit> command_units;
+    command_units.reserve(host.slots.size());
+    for (std::size_t index = 0; index < host.slots.size(); ++index) {
+        GameCommandUnit unit;
+        unit.index = index;
+        unit.name = host.slots[index]->row.name;
+        unit.object_id = static_cast<std::uint16_t>(index + 1);
+        for (int lane = 0; lane < 3; ++lane) {
+            unit.position[lane] = host.slots[index]->motion.position[lane];
+        }
+        command_units.push_back(unit);
+    }
+    host.commands.register_units(std::move(command_units));
     host.log.notef("world units: %zu created instance(s) carried into the frame, %zu with a "
         "VehicleClass row out of the installed table", host.summary.units,
         host.summary.class_rows);
@@ -767,22 +801,65 @@ void GameUnitsHost::issue_authored_commands() {
     Impl& host = *impl_;
     if (!host.logged_cruise) {
         host.logged_cruise = true;
-        host.log.notef("authored command stand-in: the `Command = E CommandType : Cruise` "
-            "token every DestroyerGen of this scene carries is queued by 00469610 and "
-            "resolved by 0046aab0 against a command registry whose command objects have no "
-            "reconstruction, so the executable turns the token into one order-ring order "
-            "(throttle 1, rudder 0) through the recovered 00816a40 and says so");
+        host.log.notef("milestone 2l: the authored `Command` token is no longer a stand-in "
+            "order. docs/CRUISE_COMMAND.md recovered `cruise` as a latch that captures the "
+            "ring's ordered pair (unit+980h / unit+984h) and the heading when it becomes "
+            "the unit's current command and re-applies what it captured, so a ship whose "
+            "ring is still zero holds zero. Milestone 2i wrote throttle 1 / rudder 0 into "
+            "the ring for the same token, which is what the latch would produce for a ship "
+            "already running at full throttle and is wrong for a ship at rest");
     }
-    for (std::unique_ptr<GameUnitSlot>& slot : host.slots) {
-        slot->row.command = "Cruise";
-        slot->standing_order = true;
-        slot->standing_throttle = 1.0f;
-        slot->standing_rudder = 0.0f;
-        host.issue_into_ring(*slot, slot->standing_throttle, slot->standing_rudder);
+    for (std::size_t index = 0; index < host.slots.size(); ++index) {
+        GameUnitSlot& slot = *host.slots[index];
+        // The token every DestroyerGen of this scene authors. An entity that
+        // authored none is skipped, exactly as 004f0520's last step skips the
+        // queue call when the property is absent.
+        if (slot.row.command.empty()) continue;
+        const float heading = host.pose_heading_radians(slot);
+        const GameCommandRow* row = host.commands.issue(index, slot.row.command,
+            slot.row.command_target, slot.ring, heading);
+        if (row == nullptr) continue;
+        slot.row.command_current = row->current;
+        slot.row.command_latched = row->latched;
+        slot.row.latch_is_heading = row->fields.is_heading;
+        slot.row.latch_steer = row->fields.steer_or_heading;
+        slot.row.latch_thrust = row->fields.thrust;
+        // Nothing on this path writes an order ring, so no standing order is
+        // armed: the ring stays at whatever 00812d40 constructed it with.
+        slot.standing_order = false;
         ++host.summary.cruise_orders;
     }
-    host.record("SceneCommand::resolve_command_object", 0x0046aab0u);
 }
+
+bool GameUnitsHost::issue_player_command(const std::string& token,
+    const std::string& target_token) {
+    Impl& host = *impl_;
+    if (!host.controlled_bound || host.controlled_index >= host.slots.size()) return false;
+    GameUnitSlot& slot = *host.slots[host.controlled_index];
+    const float heading = host.pose_heading_radians(slot);
+    const GameCommandRow* row = host.commands.issue(host.controlled_index, token,
+        target_token, slot.ring, heading);
+    if (row == nullptr) return false;
+    slot.row.command = row->command.empty() ? token : row->command;
+    slot.row.command_target = target_token;
+    slot.row.command_current = row->current;
+    slot.row.command_latched = row->latched;
+    slot.row.latch_is_heading = row->fields.is_heading;
+    slot.row.latch_steer = row->fields.steer_or_heading;
+    slot.row.latch_thrust = row->fields.thrust;
+    ++host.summary.player_orders;
+    host.log.notef("player command issued to \"%s\": token=\"%s\" resolved=\"%s\" "
+        "outcome=%s current=%d latched=%d (%s %.3f, thrust %.3f)", slot.row.name.c_str(),
+        token.c_str(), row->command.c_str(), row->resolve_outcome.c_str(),
+        row->current ? 1 : 0, row->latched ? 1 : 0,
+        row->fields.is_heading ? "heading" : "rudder",
+        static_cast<double>(row->fields.steer_or_heading),
+        static_cast<double>(row->fields.thrust));
+    if (!row->blocked.empty()) host.log.notef("  %s", row->blocked.c_str());
+    return true;
+}
+
+const GameCommandsHost& GameUnitsHost::commands() const noexcept { return impl_->commands; }
 
 void GameUnitsHost::set_controlled_unit_004c0890(std::size_t index) {
     Impl& host = *impl_;
@@ -833,10 +910,24 @@ void GameUnitsHost::update_entity_008255b0(std::size_t index, float scaled_delta
 void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     Impl& host = *impl_;
     if (host.slots.empty()) return;
+    if (!host.logged_precision) {
+        // The second half of docs/X87_CONTROL_WORD.md's read, taken where that
+        // document says it matters: the fixed step that runs the reconstruction
+        // of 00825f20, after the Direct3D 9 device exists. The first half is in
+        // game_main before Direct3D is created. Neither read changes anything.
+        host.logged_precision = true;
+        const unsigned long field = x87_precision_field();
+        host.log.notef("x87 precision at the fixed simulation step: %s (_controlfp_s & "
+            "_MCW_PC = 0x%08lx). The shipped executable runs 00825f20's own float "
+            "expressions on the x87 stack at this precision; this reconstruction computes "
+            "them with SSE2 float32 under /fp:strict, which rounds every intermediate to "
+            "24 bits of mantissa as well",
+            x87_precision_name(field), field);
+    }
     ++host.summary.motion_steps;
     host.summary.simulated_seconds += step_seconds;
-    for (std::unique_ptr<GameUnitSlot>& owned : host.slots) {
-        GameUnitSlot& slot = *owned;
+    for (std::size_t index = 0; index < host.slots.size(); ++index) {
+        GameUnitSlot& slot = *host.slots[index];
         if (!slot.state->active) continue;
         // The order under the write cursor is refilled every step so a standing
         // order keeps standing: the game does that from the HUD every frame the
@@ -844,6 +935,26 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
         // otherwise only mark later slots predicted.
         if (slot.standing_order) {
             host.issue_into_ring(slot, slot.standing_throttle, slot.standing_rudder);
+        }
+        // Milestone 2l: 009e1170's AI arm for a unit whose current command is
+        // `cruise`. It decides a desired throttle and either a rudder or a held
+        // heading and hands all three to the AI controller block at [state]+8;
+        // the hop from that block to unit+0fc4h / unit+0fdch, which is what
+        // 00825f20 would copy into the ring under the unit+61h gate, has no
+        // recovered writer, so nothing it decides reaches the motion below.
+        if (host.commands.holds_cruise(index)) {
+            bsp::UnitBodyAxisSpeedInputs axis{};
+            axis.velocity[0] = slot.motion.linear_velocity.x;
+            axis.velocity[1] = slot.motion.linear_velocity.y;
+            axis.velocity[2] = slot.motion.linear_velocity.z;
+            axis.axis[0] = slot.motion.pose_row2[0];
+            axis.axis[1] = slot.motion.pose_row2[1];
+            axis.axis[2] = slot.motion.pose_row2[2];
+            bsp::CruiseOrderedValues ordered{};
+            host.commands.cruise_step(index, host.is_controlled(slot),
+                bsp::unit_forward_speed_0092d730(axis),
+                bsp::unit_reference_speed_0080fc30(slot.motion.max_speed,
+                    bsp::kUnitReferenceSpeedUnscaled), ordered);
         }
         UnitRudderBinding rudder(host, slot);
         ShipMotionBinding motion(host, slot, rudder);
@@ -1023,24 +1134,34 @@ void GameUnitsHost::report() {
         "simulated time, %llu instance update(s) of 008255b0",
         host.summary.motion_steps, host.summary.motion_ticks,
         static_cast<double>(host.summary.simulated_seconds), host.summary.instance_updates);
-    // Milestone 2k adds the ordered pair each unit is running under, which is
-    // what the authored `Command` token produced through 00816a40 (or, for the
-    // controlled unit, what --order last wrote into the same ring at unit+980h
-    // and +984h). The token-to-order mapping is still milestone 2i's own
-    // decision: the command object 0046aab0 resolves has no reconstruction.
-    host.log.notef("  %-20s %-12s %5s %5s %8s %8s %9s %9s %9s %9s %8s %5s", "unit", "type",
-        "party", "class", "throttle", "rudder", "start x", "start z", "x", "z", "moved",
+    // Milestone 2k added the ordered pair each unit is running under, which is
+    // unit+980h / unit+984h as the ring published them. Milestone 2l adds the
+    // authored command and what its latch captured, and the two columns now
+    // disagree on purpose: `cruise` writes the director's +243h / +244h / +248h
+    // and never the ring, so a ship under an authored command alone shows a
+    // zero ordered pair and does not move.
+    host.log.notef("  %-20s %-12s %5s %5s %8s %8s %-8s %7s %9s %9s %8s %5s", "unit", "type",
+        "party", "class", "throttle", "rudder", "command", "latched", "x", "z", "moved",
         "gate");
     for (const std::unique_ptr<GameUnitSlot>& owned : host.slots) {
         const GameUnitRow& row = owned->row;
-        host.log.notef("  %-20s %-12s %5d %5d %8.3f %8.3f %9.1f %9.1f %9.1f %9.1f %8.2f "
+        char latched[16];
+        if (row.command_latched) {
+            std::snprintf(latched, sizeof(latched), "%s%.2f",
+                row.latch_is_heading ? "h" : "r",
+                static_cast<double>(row.latch_steer));
+        } else {
+            std::snprintf(latched, sizeof(latched), "-");
+        }
+        host.log.notef("  %-20s %-12s %5d %5d %8.3f %8.3f %-8s %7s %9.1f %9.1f %8.2f "
             "%5d%s", row.name.c_str(), row.type_symbol.c_str(), row.party, owned->class_id,
             static_cast<double>(row.throttle), static_cast<double>(row.ordered_rudder),
-            static_cast<double>(row.start[0]), static_cast<double>(row.start[2]),
+            row.command.empty() ? "-" : row.command.c_str(), latched,
             static_cast<double>(row.position[0]), static_cast<double>(row.position[2]),
             static_cast<double>(row.distance), row.command_applied ? 1 : 0,
             row.controlled ? "  <- controlled" : "");
     }
+    host.commands.report();
 }
 
 }  // namespace bsp::game

@@ -1,0 +1,91 @@
+{
+  "packet": "cc_commanded_speed",
+  "owner": "agent/cc-commanded-speed",
+  "doc": "docs/UNIT_COMMANDED_SPEED.md",
+  "header": "include/bsp/unit_commanded_speed.hpp",
+  "source": "src/unit_commanded_speed.cpp",
+  "probe": "src/ship_motion_probe.cpp",
+  "question": "Who writes the commanded speed at *(unit+73Ch) +24h/+28h, and what do the director's command stages do with it?",
+  "answer": "The block is the unit's `navigatorParams` (the literal string at 00D094C4). Two Lua bindings write the pair with an identical store: luaMW_SetShipSpeed 00890D30 and luaMW_NavigatorMoveOnPath 008A3600. +24h is max(requested, 0) and +28h is the mission clock DAT_00F876A4, not a boolean enable. The pair makes the weapon director's idle tail at 00836DC9 re-issue `cruise` instead of `stop`, and it ends a standing `stop` at 00836A8B. 00835BF0 (director vtable 6Ch) drops it once it is more than one second old.",
+  "names": [
+    {"address": "00890d30", "name": "BSP_LuaBinding_SetShipSpeed", "was": "FUN_00890d30"},
+    {"address": "008a3600", "name": "BSP_LuaBinding_NavigatorMoveOnPath", "was": "FUN_008a3600"},
+    {"address": "00835bf0", "name": "BSP_WeaponDirector_ResetCommandStage", "was": "(no Ghidra function)"},
+    {"address": "00835b40", "name": "BSP_WeaponDirector_RetargetCommandSlot", "was": "(no Ghidra function)"},
+    {"address": "00836920", "name": "BSP_WeaponDirector_Step", "was": "FUN_00836920"},
+    {"address": "00822b70", "name": "BSP_UnitInstance_ResetNavigatorParams", "was": "FUN_00822b70"}
+  ],
+  "routines": [
+    {"name": "navigator_commanded_speed_store_00890e6f", "address": "00890e6f", "range": "00890E6F-00890E97 and 008A38D5-008A3912", "coverage": "complete"},
+    {"name": "navigator_commanded_speed_stale_00835c28", "address": "00835c28", "range": "00835C28-00835C44", "coverage": "complete"},
+    {"name": "navigator_commanded_speed_active", "address": "00836ac1", "range": "009E12AC, 00836AC1, 00836E59", "coverage": "complete"},
+    {"name": "weapon_director_reset_command_stage_00835bf0", "address": "00835bf0", "range": "00835BF0-00835C6F", "coverage": "complete"},
+    {"name": "weapon_director_step_prepass_00836941", "address": "00836941", "range": "00836941-00836997", "coverage": "complete"},
+    {"name": "weapon_director_abandon_for_far_weapon_target_008369a1", "address": "008369a1", "range": "008369A1-00836A7E", "coverage": "partial: the stage decision only; 00521EA0, 00427EB0 and the two indirect vtable[0Ch] category calls are caller-supplied and the squared planar distance is passed in"},
+    {"name": "weapon_director_stop_arm_00836a8b", "address": "00836a8b", "range": "00836A81-00836AD7", "coverage": "complete"},
+    {"name": "weapon_director_idle_reissue_00836dc9", "address": "00836dc9", "range": "00836DC9-00836EA7", "coverage": "complete"},
+    {"name": "ship_cruise_state_arm_009e1188", "address": "009e1188", "range": "009E1178-009E11CE, 009E1265, 009E13B4", "coverage": "complete for the arm selection; the arm bodies belong to docs/CRUISE_COMMAND.md"},
+    {"name": "ship_cruise_state_commanded_speed_after_arm_009e13f8", "address": "009e13f8", "range": "009E13F2-009E13F8", "coverage": "complete"},
+    {"name": "BSP_WeaponDirector_Step whole body", "address": "00836920", "range": "00836920-00836EA7", "coverage": "partial: 0083693C's callee 00835F60 unread; the follow, attackmove and moveonpath arms 00836ADC-00836D66 are read and summarised in the doc but not projected"},
+    {"name": "BSP_LuaBinding_SetShipSpeed", "address": "00890d30", "range": "00890D30-00890EEE", "coverage": "partial: only the store at 00890E6F-00890E97 is projected; the shared Lua binding prologue is not"},
+    {"name": "BSP_LuaBinding_NavigatorMoveOnPath", "address": "008a3600", "range": "008A3600-008A3960", "coverage": "partial: only the store at 008A38D5-008A3912 is projected; the 5Bh session message it routes is not read"}
+  ],
+  "host_steps": [
+    {"step": "filled command slots, the no-command flag", "address": "0083694e", "native": "0071be60", "function": "00836920", "this": "the director", "args": "none", "gate": "[director+54h] == 0"},
+    {"step": "filled command slots, the stage-1 test", "address": "0083699a", "native": "0071be60", "function": "00836920", "this": "the director", "args": "none", "gate": "primary stage == 1"},
+    {"step": "raise the primary stage", "address": "00836985", "native": "0071d810", "function": "00836920", "this": "the director", "args": "2", "gate": "primary stage == 1 and (more than one slot filled or the unit is player-controlled)"},
+    {"step": "raise the secondary stage", "address": "00836993", "native": "0071d9e0", "function": "00836920", "this": "the director", "args": "2", "gate": "secondary stage == 1"},
+    {"step": "filled command slots, the far-target test", "address": "0083699a", "native": "0071be60", "function": "00836920", "this": "the director", "args": "none", "gate": "always; the same call feeds the far-target test at 008369A1"},
+    {"step": "raise the primary stage, far weapon target", "address": "00836a7c", "native": "0071d810", "function": "00836920", "this": "the director", "args": "2", "gate": "a queued weapon command's target is farther than 4.0e6 m squared"},
+    {"step": "filled command slots, the stop arm", "address": "00836a9d", "native": "0071be60", "function": "00836920", "this": "the director", "args": "none", "gate": "the primary command is 00E08F88 stop"},
+    {"step": "raise the primary stage, stop finished", "address": "00836ad2", "native": "0071d810", "function": "00836920", "this": "the director", "args": "2", "gate": "more than one slot filled, or player-controlled, or the commanded speed is active"},
+    {"step": "raise the secondary stage, attackmove", "address": "00836dc4", "native": "0071d9e0", "function": "00836920", "this": "the director", "args": "2", "gate": "the secondary command is 00E08F78 and its target passed the checks"},
+    {"step": "filled command slots, the idle gate", "address": "00836dd6", "native": "0071be60", "function": "00836920", "this": "the director", "args": "none", "gate": "primary stage == 2"},
+    {"step": "filled command slots, the idle allowance", "address": "00836ded", "native": "0071be60", "function": "00836920", "this": "the director", "args": "none", "gate": "the idle gate passed"},
+    {"step": "reset the command stage and expire the commanded speed", "address": "00836e0b", "native": "00D09F58+vtable6c", "function": "00836920", "this": "the director", "args": "1", "gate": "the idle tail runs"},
+    {"step": "is the unit in another entity's group", "address": "00836e13", "native": "007788b0", "function": "00836920", "this": "[director+24Ch]", "args": "none", "gate": "the idle tail runs"},
+    {"step": "that group's owning entity", "address": "00836e28", "native": "007788d0", "function": "00836920", "this": "[director+24Ch]", "args": "none", "gate": "the unit is in another entity's group"},
+    {"step": "build the follow target", "address": "00836e32", "native": "00465080", "function": "00836920", "this": "a stack SceneCommandTarget", "args": "the owner entity, range 0.0f", "gate": "same"},
+    {"step": "build the stop target", "address": "00836e6d", "native": "00465080", "function": "00836920", "this": "a stack SceneCommandTarget", "args": "the unit, range 0.0f", "gate": "not player-controlled and no commanded speed"},
+    {"step": "build the cruise target", "address": "00836e85", "native": "00465080", "function": "00836920", "this": "a stack SceneCommandTarget", "args": "the unit, range 0.0f", "gate": "player-controlled, or a commanded speed is active"},
+    {"step": "issue the default command", "address": "00836e92", "native": "0071ecf0", "function": "00836920", "this": "the director", "args": "the command object (00E08F60 follow, 00E08F70 cruise or 00E08F88 stop) and the target", "gate": "the idle tail reached a choice"}
+  ],
+  "host_steps_in_no_ghidra_function": [
+    {"step": "clear the command stage pair", "address": "00835bfa", "native_unverified": "0071c130", "function": "00835bf0", "this": "the director", "args": "the primary flag", "gate": "always", "note": "call site inside no_ghidra_function 00835BF0-00835C6F; tools/verify_report_calls.py cannot check it until ghidra_define_function runs"},
+    {"step": "refill the navigator params from tuning", "address": "00835c65", "native_unverified": "00822b70", "function": "00835bf0", "this": "[director+24Ch]", "args": "literal 0, which makes 00822B70's whole body a no-op", "gate": "the primary flag is set", "note": "same region"}
+  ],
+  "producers": [
+    {"field": "*(unit+73Ch)+24h", "site": "00890e86", "function": "00890d30", "rule": "max(lua argument 1, 0.0f); the clamp is FLDZ / FCOMPI ST(1) / JBE at 00890E73"},
+    {"field": "*(unit+73Ch)+28h", "site": "00890e97", "function": "00890d30", "rule": "the mission clock DAT_00F876A4, loaded at 00890E8B"},
+    {"field": "*(unit+73Ch)+24h", "site": "008a3901", "function": "008a3600", "rule": "the same clamp on the path order's speed, which defaults to the class MaxSpeed at *(*(unit+538h)+500h) and is overridden by Lua argument 4"},
+    {"field": "*(unit+73Ch)+28h", "site": "008a3912", "function": "008a3600", "rule": "the mission clock, loaded at 008A3906"},
+    {"field": "*(unit+73Ch)+24h and +28h", "site": "0081f273", "function": "0081ed40", "rule": "the constructor initialises both to -1.0f from 00D7A260"},
+    {"field": "*(unit+73Ch)+28h", "site": "00835c54", "function": "00835bf0", "rule": "-1.0f when the pair is stale on the primary path or the call is not primary"},
+    {"field": "*(unit+73Ch)+28h", "site": "009e13f8", "function": "009e1170", "rule": "-1.0f in the detached arm of the ship AI cruise state"}
+  ],
+  "search": {
+    "method": "A Capstone forward scan over the disk PE .text from every `MOV r32,[r32+73Ch]` and every `MOV r32,[r32+0AB0h]` (the only cached copy of the block pointer, made at 009F11A4 into the ship AI controller), tracking the loaded register through moves, spills and calls for a 250-instruction window and reporting every 4-byte store to +24h or +28h.",
+    "result": "Six store sites, five functions, listed under `producers`. A second scan reported every call that receives the block pointer as `this` or as a stack argument: only BSP_GameSettings_GetSingleton (a coincidence of register reuse), _free in the destructor, and the two stripped property-registration bodies 009D5DF0 and 009D5E00. Nothing else can reach the block.",
+    "caveat": "The scan cannot see a producer that reaches the block through a pointer cached at a displacement other than 73Ch or 0AB0h. No third cache site was found, but that is a bounded search, not a proof."
+  },
+  "corrections": [
+    {"was": "docs/CRUISE_COMMAND.md: the producer of +24h is `contract: unread`, and luaMW_LandConvoySetSpeed and luaMW_SquadronSetSpeed are the only SetSpeed bindings in the image", "is": "luaMW_SetShipSpeed at 00890D30 and luaMW_NavigatorMoveOnPath at 008A3600 both write the pair. luaMW_LandConvoySetSpeed writes convoy+368h through 00741140 and luaMW_SquadronSetSpeed calls member->vtable[3Ch] per squadron member.", "evidence": "00890E86/00890E97, 008A3901/008A3912; 00741140's three-instruction body; 0089F780's per-member loop"},
+    {"was": "docs/CRUISE_COMMAND.md: +28h is an enable, >= 0.0f active and -1.0f inactive", "is": "The stored value is the mission clock DAT_00F876A4. 00835C28 subtracts it from the clock and compares the difference with 1.0f, so it is a timestamp with a one-second age test. The >= 0.0f reading of the consumers is still right.", "evidence": "00890E8B, 008A3906, 00835C28..00835C44"},
+    {"was": "docs/CRUISE_COMMAND.md and include/bsp/cruise_command.hpp: 009E11C6 stores -1.0f into +28h", "is": "The store is at 009E13F8, in the arm that starts at 009E13B4. 009E11C6 is not an instruction start; the instruction covering it is CMP byte ptr [ECX+184h],BL at 009E11C2.", "evidence": "the live Ghidra listing of 009E1170, 009E13F2..009E13F8"},
+    {"was": "docs/CRUISE_COMMAND.md: 00836920 raises the command stage to 2 when the enable is active and the unit is not player-controlled", "is": "The arm belongs to the `stop` command 00E08F88 only, and raises when any of three holds: more than one slot filled, the unit IS player-controlled, or the pair is active.", "evidence": "00836A8E, 00836A9D..00836AD2"},
+    {"was": "the packet brief: unit+73Ch points to a parameter block 00822B70 fills from the tuning singleton", "is": "00822B70 only refills +0h..+18h and sets +20h, and its whole body is skipped when its char argument is zero. The block is allocated and initialised in BSP_UnitVehicleBase_Construct at 0081F283..0081F28C.", "evidence": "00822B70's body; 0081F220..0081F28C"}
+  ],
+  "no_ghidra_function": [
+    {"start": "00835b40", "end_inclusive": "00835bea", "evidence": "Start: CC padding at 00835B38..00835B3F after BSP_WeaponDirector_LatchCruiseFields (Ghidra body 00835AC0-00835B37, RET 0Ch = C2 0C 00 at 00835B35); 00D09FC8, director vtable slot 70h, points here; the bytes 53 55 8B 6C 24 0C are a push ebx / push ebp / mov ebp,[esp+0Ch] prologue. End: RET 8 = C2 08 00 at 00835BE8..00835BEA followed by CC padding at 00835BEB..00835BEF."},
+    {"start": "00835bf0", "end_inclusive": "00835c6f", "evidence": "Start: the CC padding at 00835BEB..00835BEF; 00D09FC4, director vtable slot 6Ch, points here; the bytes 51 53 8B 5C 24 0C are a prologue. End: RET 4 = C2 04 00 at 00835C6D..00835C6F, immediately followed by 00835C70, the Ghidra function BSP_WeaponDirector_BeginCurrentCommand (83 EC 20)."}
+  ],
+  "probe_runs": [
+    {"command": "bsp_ship_motion_probe.exe --class 20 --cruise --steps 200 --rudder 0", "class": "VehicleClass[20] DeRuyter class 1935 (Cruiser), MaxSpeed 16.4622", "commanded_speed_24h": 0.0, "commanded_speed_28h": -1.0, "throttle_at_latch": 1.0, "peak_forward_speed": 16.4622, "final_forward_speed": 16.4622},
+    {"command": "bsp_ship_motion_probe.exe --class 20 --cruise --commanded-speed 6.0 --steps 200 --rudder 0", "class": "VehicleClass[20] DeRuyter class 1935 (Cruiser), MaxSpeed 16.4622", "commanded_speed_24h": 6.0, "commanded_speed_28h": 1.0, "throttle_at_latch": 0.364471, "peak_forward_speed": 6.0, "final_forward_speed": 6.0, "note": "0.364471 = 6.0 / 16.4622, the division at 009E12BD. +28h is the probe's own clock at the latch frame, not DAT_00F876A4."}
+  ],
+  "leases": {
+    "claimed": ["00890d30", "008a3600", "00835bf0", "00835b40", "00836920", "00822b70"],
+    "left_out": [{"address": "009e1170", "owner": "agent/cc-exe-2l", "packet": "cc_exe_2l", "effect": "read only; no ledger record and no Ghidra annotation from this packet. The corrections above about 009E11C6 and the arm addresses are findings, not edits."}]
+  },
+  "build": {"command": "./scripts/build.ps1", "result": "pass", "tests": "reconstructed_math 1/1 passed", "new_tests": 0}
+}

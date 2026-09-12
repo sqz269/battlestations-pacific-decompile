@@ -17,6 +17,7 @@
 #endif
 #include <windows.h>
 
+#include <cfloat>
 #include <cstdio>
 #include <string>
 #include <exception>
@@ -152,7 +153,8 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         std::fprintf(stderr, "usage: bsp_game.exe [--frames N] [--log <path>]"
             " [--game-root <dir>] [--settings-personal-root <dir>] [--vfs-probe <virtual path>]"
             " [--press-start-frame N] [--menu-select <mission id>] [--mission-frames N]"
-            " [--mission-complete-frame N] [--order throttle=<f>,rudder=<f>]"
+            " [--mission-complete-frame N]"
+            " [--order throttle=<f>,rudder=<f> | --order <command>[:<entity>]]"
             " [--order-frame N] [--mission-frame-seconds S]"
             " [--trajectory-csv <path>]"
             " [--screenshot <path>] [--screenshot-frame N]"
@@ -165,7 +167,18 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         std::fprintf(stderr, "bsp_game: cannot write log %s\n", options.log_path.c_str());
         return 2;
     }
-    log.notef("bsp_game milestone 2j, frames=%ld press_start_frame=%ld screenshot_frame=%ld "
+    // docs/X87_CONTROL_WORD.md establishes statically that the CRT startup sets
+    // the x87 precision field to 53 bits (`__setdefaultprecision` asks for
+    // _PC_53 under _MCW_PC at 00c0683c) and that no game code changes it again,
+    // and that the device is created without D3DCREATE_FPU_PRESERVE so d3d9.dll
+    // drops the field to 24 bits for the life of the device. This is the first
+    // half of that read taken at run time: the mode before Direct3D exists. The
+    // second is taken at the first fixed simulation step. Neither changes any
+    // arithmetic; both are observations.
+    const unsigned long precision_before_d3d = bsp::game::x87_precision_field();
+    log.notef("x87 precision before Direct3D: %s (_controlfp_s & _MCW_PC = 0x%08lx)",
+        bsp::game::x87_precision_name(precision_before_d3d), precision_before_d3d);
+    log.notef("bsp_game milestone 2l, frames=%ld press_start_frame=%ld screenshot_frame=%ld "
         "screenshot_mission_frame=%ld menu_select=%s mission_frames=%ld "
         "mission_complete_frame=%ld order_frame=%ld order=throttle %.3f rudder %.3f "
         "mission_frame_seconds=%.4f trajectory_csv=%s log=%s",

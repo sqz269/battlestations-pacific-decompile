@@ -504,6 +504,12 @@ public:
         static_cast<void>(instance);
         command_ = command;
         target_ = target;
+        // Milestone 2l keeps both strings on the entity record: 00469610's own
+        // queue is still a record, but the token and the target name are what
+        // 0046aab0 resolves later, so dropping them here left the command path
+        // with nothing to issue.
+        entity_.command = command;
+        entity_.command_target = target;
         owner_.log.unimplemented("SceneUnit::queue_entity_command", "00469610");
         ++commands_;
     }

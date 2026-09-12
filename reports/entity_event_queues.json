@@ -1,0 +1,406 @@
+{
+  "packet": "cc2_entity_event_queues",
+  "owner": "agent/cc2-entity-event-queues",
+  "doc": "docs/ENTITY_EVENT_QUEUES.md",
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "summary": "The three entity event drains of the fixed-step fan-out. The deferred hit queue (00F899C0) holds one event kind: a 60h-byte value that is the 54h-byte hit record of docs/HIT_NARROWPHASE.md with a 12-byte impact direction appended, in 68h-byte nodes; its producer 00926E80 appends at the sentinel's +4h link and its drain 00926700 pops the same link, so dispatch is LIFO, and the drain takes no lock and re-reads the back pointer after the dispatch, so an event queued from inside a handler is destroyed undispatched. The two pending lists carry one entity pointer per 0Ch node: 00F899A8 is filled by Destroy 00926C80 and dispatched through vtable[74h], 00F899B4 by Kill 00926D90 and dispatched through vtable[80h], both FIFO; 009273A0 copies and clears both under no lock, dispatches, and loops until both are empty. 00925A00 is the cancel path that removes an entity from either list. 00903610 ages the +6Ch counter set by 00922FD0 and releases an entity on the pass where it reaches 3, destroying its child subtrees through 009035E0 first.",
+  "routines": [
+    {
+      "address": "00926700",
+      "native": "00926700",
+      "name": "BSP_DeferredEntityEventQueue_Drain",
+      "body": "00926700-009267c2",
+      "abi": "__cdecl void(void), RET at 009267C2, no arguments and no stack cleanup at either call site (00875E44, 00875EC4)",
+      "coverage": "complete",
+      "evidence": "Read from the raw listing; the Ghidra pseudocode is truncated at 0092679D..009267AD by the non-returning _free (docs/FIXED_STEP_FANOUT.md). Loop head 00926714 reads ESI = [EDX+4] with EDX = [00F899C4], the sentinel; the same +4h link is the one the producer writes at 00926F12 (MOV [EDI],ESI with EDI = head+4h from 00926EE8 LEA EDI,[EAX+4]), so the drain pops the most recently pushed node and the queue is LIFO. Dispatch gate 0092673F/00926745: [subject+5Eh] and [subject+5Fh] both zero. The unlink at 00926780..00926792 re-reads [00F899C4] at 00926755 and [EDX+4] at 0092675B rather than reusing ESI from 00926714, which is back() followed by pop_back(); a push from inside 009239A0 therefore has its node popped and destroyed without a dispatch. No lock: the only calls in the body are 00BF6713, 009239A0, 004704B0 and 00BF65AC. 00E18684 is cleared at 009267BB and set at 00926ED4, and Ghidra's reference table lists no other reference of any kind, so nothing reads it."
+    },
+    {
+      "address": "00926e80",
+      "native": "00926e80",
+      "name": "BSP_DeferredEntityEventQueue_Push",
+      "body": "00926e80-00926f99",
+      "abi": "__fastcall(ECX = HitRecord* record, EDX = const float direction[3]), RET at 00926F99 with no immediate",
+      "coverage": "complete",
+      "evidence": "ECX saved to [ESP+10h] at 00926E9E and reloaded as the copy source at 00926F37; EDX kept in EBX at 00926E9C and used as the float source at 00926F46/00926F4B/00926F51. The lock owner is 00924990 (00926EA2), its CRITICAL_SECTION at owner+4h, entered through the import at 00CE2218 with the recursion count at cs+18h and left through 00CE2210. The node is operator new(0x68) inside 00926670 at 00926691, 8 bytes of links plus a 60h value: 00925050 copies the 54h hit record into node+8h and 00926F48/00926F4E/00926F54 write the direction at value+54h..+5Ch. 00926F65 calls shot->vtable[5Ch](29h) and discards EAX."
+    },
+    {
+      "address": "009273a0",
+      "native": "009273a0",
+      "name": "BSP_EntityEventQueues_FlushPending",
+      "body": "009273a0-009275d1",
+      "abi": "__cdecl void(void), RET at 009275D1, no arguments and no cleanup at the call site 00875EC9",
+      "coverage": "complete",
+      "evidence": "Read from the raw listing; five _free fall-through gaps truncate the pseudocode. Outer loop 009273C0..009275BA: returns only when both [00F899B0] and [00F899BC] are zero (009273C2, 009273CA). 00926FA0 copies each global list into a frame local (009273DF for 00F899A8, 009273F1 for 00F899B4); 009273F6..00927469 reset both sentinels to themselves, zero both sizes and free every old node with no value destructor, so the value is a raw pointer. Pass D at 00927477 loads ECX = [node+8h] and calls [[ECX]+74h]; pass K at 0092749E..00927521 is 009263C0 inlined, ending in [[ESI]+80h]. Both walks start at head[+0h] and advance through [node+0h], the opposite end from the producers' [head+4h] appends at 00926D61 and 00926E53, so both lists are FIFO. No lock is taken anywhere in the body."
+    },
+    {
+      "address": "00926fa0",
+      "native": "00926fa0",
+      "name": "BSP_PendingEntityList_Copy",
+      "body": "00926fa0-0092700b",
+      "abi": "__thiscall(dest) with one stack argument (the source list), RET 4 at 00927009",
+      "coverage": "complete",
+      "evidence": "Corrects docs/FIXED_STEP_FANOUT.md, which called this a lock acquisition. 00924A50 (00926FC6) is operator new(0xC) storing EAX into [EAX] and [EAX+4], a self-linked sentinel node, and its result is stored into dest+4h at 00926FD2 with dest+8h zeroed at 00926FD5. The six pushes at 00926FE3..00926FE8 hand 009269B0 the destination, the sentinel, the source and the source range [first, head). There is no EnterCriticalSection anywhere in the body."
+    },
+    {
+      "address": "009269b0",
+      "native": "009269b0",
+      "name": "STL_list_InsertRange_009269b0",
+      "body": "009269b0-00926ac3",
+      "abi": "__thiscall(list) with six stack arguments, the range insert of the 0Ch-node list",
+      "coverage": "partial: 009269F0-00926A54 (the insert loop) read; the tail from 00926A56 through 0077A7E0 is unread",
+      "evidence": "Each iteration calls 00924B10(EBX, [EBX+4], srcnode+8h) at 00926A26 and links the new node at [EBX+4] (00926A3A), the same push_back shape as the producers, then advances the source through [EDI] at 00926A4C, so the copy preserves source order."
+    },
+    {
+      "address": "00925a00",
+      "native": "00925a00",
+      "name": "BSP_MissionEntity_CancelPendingDestroy",
+      "body": "00925a00-00925a89",
+      "abi": "__thiscall(entity), RET at 00925A89",
+      "coverage": "complete",
+      "evidence": "Under the 009248D0 lock. The parent gate at 00925A1F..00925A38 requires no parent, or a parent with +5Ch non-zero and +5Dh, +60h and +5Eh all clear. 00925A4D removes the entity from the kill list 00F899B4 with 00781260 when +5Fh is set, then clears +5Fh; 00925A58 clears +5Eh; 00925A6B removes it from the destroy list 00F899A8 when +60h is set, then clears +60h; 00925A73 clears +5Dh."
+    },
+    {
+      "address": "009263c0",
+      "native": "009263c0",
+      "name": "BSP_SceneNode_Remove",
+      "body": "009263c0-00926414",
+      "abi": "__thiscall(entity), tail-jump to vtable[80h] at 00926411",
+      "coverage": "complete",
+      "evidence": "Step-for-step identical to the flush's pass-K block 0092749E..00927521, with 00925C40 called rather than inlined. Ghidra reports no references to 009263C0 of any kind, calls or data, so it is not in a vtable and 0092751F is the only reachable dispatch of slot +80h found by this packet."
+    },
+    {
+      "address": "00926390",
+      "native": "00926390",
+      "name": "BSP_MissionEntity_OnDestroyedHook",
+      "body": "00926390-009263b1",
+      "abi": "__thiscall(entity), tail-jump to vtable[7Ch] at 009263AE",
+      "coverage": "complete",
+      "evidence": "Slot +74h of the MDestroyer vtable 00CFC3D0 (bytes at 00CFC444). Returns immediately when +5Dh is set; otherwise sets +5Dh = 1 and +60h = 1, calls 00925C90 and tail-calls vtable[7Ch]. Read to name the destroy-list host method rather than infer it from the call site."
+    },
+    {
+      "address": "00903610",
+      "native": "00903610",
+      "name": "BSP_World_ReleaseExpiredObjects",
+      "body": "00903610-0090366c",
+      "abi": "__thiscall(world), RET at 0090366C, this = [game+19CCh] at the call site 00875EDA",
+      "coverage": "complete",
+      "evidence": "Walks [[world+4h]] through entity+38h, the chain 00904BF0 walks (docs/GAME_WORLD_ENTITIES.md). 00903620..0090362D: a counter at +6Ch that is zero or negative is skipped, otherwise incremented and stored. Below 3 the entity is kept and becomes the resume anchor at 00903660; at 3 the child subtrees are destroyed through 009035E0 while [entity+50h] is non-zero (00903632..00903644) and the entity itself through vtable[0](1) at 0090364E. The walk resumes at anchor+38h, or from the chain head when no anchor is set (00903650..0090365E), because the destroyed node has left the chain. The counter's producer is 00922FD0, which stores 1 at 00922FE8."
+    },
+    {
+      "address": "009035e0",
+      "native": "009035e0",
+      "name": "BSP_SceneNode_DestroySubtree",
+      "body": "009035e0-00903609",
+      "abi": "__thiscall(node), RET at 00903609",
+      "coverage": "complete",
+      "evidence": "while ([node+50h] != 0) recurse on [node+48h] (009035F0..009035FC), then vtable[0](1) at 00903606. Deepest child first; the loop depends on the destructor unlinking the child and decrementing +50h, which is not read here."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00926750",
+      "native": "009239a0",
+      "function": "00926700",
+      "method": "dispatch_hit_009239a0",
+      "this": "the subject, ECX = [node+8h]",
+      "args": "PUSH node+8h (the record), PUSH node+5Ch (the direction); the LEA pair is 0092673A and 0092674B",
+      "gate": "subject non-null and [subject+5Eh] and [subject+5Fh] both clear"
+    },
+    {
+      "address": "00926792",
+      "native": "004704b0",
+      "function": "00926700",
+      "method": "destroy_hit_record_004704b0",
+      "this": "ECX = node+8h (LEA at 0092678C)",
+      "args": "none",
+      "gate": "every popped node"
+    },
+    {
+      "address": "00926ea2",
+      "native": "00924990",
+      "function": "00926e80",
+      "method": "deferred_queue_lock_owner",
+      "this": "none",
+      "args": "none; EAX is the owner, EBP = owner[+4h] is the CRITICAL_SECTION",
+      "gate": "always"
+    },
+    {
+      "address": "00926eff",
+      "native": "00926670",
+      "function": "00926e80",
+      "method": "push_back_node_00926670",
+      "this": "ECX = 0x00F899C0, the list object",
+      "args": "PUSH &temp, PUSH head[+4h], PUSH head; RET 0Ch",
+      "gate": "always"
+    },
+    {
+      "address": "00926f0d",
+      "native": "00926890",
+      "function": "00926e80",
+      "method": "bump_size_00926890",
+      "this": "ECX = 0x00F899C0",
+      "args": "PUSH 1",
+      "gate": "always"
+    },
+    {
+      "address": "00926f41",
+      "native": "00925050",
+      "function": "00926e80",
+      "method": "assign_hit_record_00925050",
+      "this": "ECX = node+8h (ADD ESI,8 at 00926F3B)",
+      "args": "PUSH the record from [ESP+10h]",
+      "gate": "always"
+    },
+    {
+      "address": "00926f73",
+      "native": "004704b0",
+      "function": "00926e80",
+      "method": "destroy_stack_record_004704b0",
+      "this": "ECX = ESP+1Ch, the frame temporary",
+      "args": "none",
+      "gate": "always"
+    },
+    {
+      "address": "009273df",
+      "native": "00926fa0",
+      "function": "009273a0",
+      "method": "copy_pending_list_00926fa0",
+      "this": "ECX = ESP+14h, the destroy copy",
+      "args": "PUSH 0x00F899A8",
+      "gate": "either size non-zero"
+    },
+    {
+      "address": "009273f1",
+      "native": "00926fa0",
+      "function": "009273a0",
+      "method": "copy_pending_list_00926fa0",
+      "this": "ECX = ESP+20h, the kill copy",
+      "args": "PUSH 0x00F899B4",
+      "gate": "either size non-zero"
+    },
+    {
+      "address": "009274c3",
+      "native": "004bca80",
+      "function": "009273a0",
+      "method": "clear_controlled_unit_handle_004bca80",
+      "this": "ECX = 0 (XOR ECX,ECX at 009274C1)",
+      "args": "none; the callee stores ECX into 00E188DC and calls 00B0D7B0",
+      "gate": "vtable[18h]() non-zero and equal to [00E188DC]"
+    },
+    {
+      "address": "009274de",
+      "native": "00694280",
+      "function": "009273a0",
+      "method": "observer_lock_owner_00694280",
+      "this": "none",
+      "args": "none; EDI = owner[+4h]",
+      "gate": "[entity+5Eh] clear"
+    },
+    {
+      "address": "00927510",
+      "native": "00696330",
+      "function": "009273a0",
+      "method": "notify_observers_00696330",
+      "this": "ECX = the entity",
+      "args": "none",
+      "gate": "[entity+8h] non-zero, sampled under the observer lock at 009274F5"
+    },
+    {
+      "address": "0090363b",
+      "native": "009035e0",
+      "function": "00903610",
+      "method": "destroy_child_subtree_009035e0",
+      "this": "ECX = [entity+48h]",
+      "args": "none",
+      "gate": "[entity+50h] non-zero"
+    },
+    {
+      "address": "009035f3",
+      "native": "009035e0",
+      "function": "009035e0",
+      "method": "destroy_child_subtree_009035e0",
+      "this": "ECX = [node+48h]",
+      "args": "none",
+      "gate": "[node+50h] non-zero"
+    },
+    {
+      "address": "00926401",
+      "native": "00925c40",
+      "function": "009263c0",
+      "method": "notify_observers_if_any_00925c40",
+      "this": "ECX = the entity",
+      "args": "none; the inlined copy in 009273A0 is 009274DE-00927510",
+      "gate": "[entity+5Eh] clear"
+    },
+    {
+      "address": "009263a1",
+      "native": "00925c90",
+      "function": "00926390",
+      "method": "notify_observers_00925c90",
+      "this": "ECX = the entity",
+      "args": "none",
+      "gate": "[entity+5Dh] clear"
+    },
+    {
+      "address": "00926d4e",
+      "native": "00924b10",
+      "function": "00926c80",
+      "method": "push_back_entity_00924b10",
+      "this": "ECX = 0x00F899A8",
+      "args": "PUSH &entity, PUSH head[+4h], PUSH head; RET 0Ch",
+      "gate": "[entity+60h] was clear"
+    },
+    {
+      "address": "00926e40",
+      "native": "00924b10",
+      "function": "00926d90",
+      "method": "push_back_entity_00924b10",
+      "this": "ECX = 0x00F899B4",
+      "args": "PUSH &entity, PUSH head[+4h], PUSH head; RET 0Ch",
+      "gate": "[entity+5Fh] was clear"
+    },
+    {
+      "address": "00925a4d",
+      "native": "00781260",
+      "function": "00925a00",
+      "method": "remove_entity_00781260",
+      "this": "ECX = 0x00F899B4",
+      "args": "PUSH &entity",
+      "gate": "[entity+5Fh] set"
+    },
+    {
+      "address": "00925a6b",
+      "native": "00781260",
+      "function": "00925a00",
+      "method": "remove_entity_00781260",
+      "this": "ECX = 0x00F899A8",
+      "args": "PUSH &entity",
+      "gate": "[entity+60h] set"
+    },
+    {
+      "address": "00926fc6",
+      "native": "00924a50",
+      "function": "00926fa0",
+      "method": "buy_sentinel_node_00924a50",
+      "this": "none",
+      "args": "none; EAX is a 0Ch node with both links pointing at itself",
+      "gate": "always"
+    },
+    {
+      "address": "00926ff2",
+      "native": "009269b0",
+      "function": "00926fa0",
+      "method": "insert_range_009269b0",
+      "this": "ECX = the destination list",
+      "args": "six pushes at 00926FE3-00926FE8: source head, source, first, source, sentinel, destination",
+      "gate": "always"
+    },
+    {
+      "address": "00926a26",
+      "native": "00924b10",
+      "function": "009269b0",
+      "method": "push_back_entity_00924b10",
+      "this": "ECX = the destination list",
+      "args": "PUSH srcnode+8h, PUSH [EBX+4], PUSH EBX",
+      "gate": "the source range is not exhausted"
+    }
+  ],
+  "virtual_call_sites": [
+    {
+      "address": "0092747f",
+      "slot": "+74h",
+      "function": "009273a0",
+      "this": "ECX = [node+8h], the entity",
+      "args": "none",
+      "implementation_read": "00926390 for MDestroyer (vtable 00CFC3D0, bytes at 00CFC444)",
+      "gate": "every destroy-list node"
+    },
+    {
+      "address": "009274a8",
+      "slot": "+18h",
+      "function": "009273a0",
+      "this": "ECX = the entity",
+      "args": "none; returns the render handle of docs/CONTROLLED_UNIT.md",
+      "implementation_read": "006D1E80 for MDestroyer (00CFC3E8), named in docs/CONTROLLED_UNIT.md",
+      "gate": "every kill-list node"
+    },
+    {
+      "address": "009274bb",
+      "slot": "+18h",
+      "function": "009273a0",
+      "this": "ECX = the entity",
+      "args": "none; the second call, compared with [00E188DC]",
+      "implementation_read": "006D1E80 for MDestroyer",
+      "gate": "the first call returned non-zero"
+    },
+    {
+      "address": "0092751f",
+      "slot": "+80h",
+      "function": "009273a0",
+      "this": "ECX = the entity",
+      "args": "none",
+      "implementation_read": "00951FB0 for MDestroyer (00CFC450): [this+4A4h] = 0 then JMP 00779AF0; the base is 00928C80",
+      "gate": "[entity+5Eh] was clear"
+    },
+    {
+      "address": "00926f65",
+      "slot": "+5Ch",
+      "function": "00926e80",
+      "this": "ECX = [record+4h], the shot",
+      "args": "PUSH 29h; the result in EAX is discarded",
+      "implementation_read": "not read; the same slot and argument as 009239A0 step 2 (docs/PROJECTILE_IMPACT.md)",
+      "gate": "[record+4h] non-null"
+    },
+    {
+      "address": "0090364e",
+      "slot": "+0h",
+      "function": "00903610",
+      "this": "ECX = the entity",
+      "args": "PUSH 1, the scalar deleting destructor's free flag",
+      "implementation_read": "006FE570 for MDestroyer (00CFC3D0); its body is not read",
+      "gate": "the +6Ch counter reached 3"
+    },
+    {
+      "address": "00903606",
+      "slot": "+0h",
+      "function": "009035e0",
+      "this": "ECX = the node",
+      "args": "PUSH 1",
+      "implementation_read": "not read",
+      "gate": "the node has no children left"
+    }
+  ],
+  "no_ghidra_function": [],
+  "corrections": [
+    {
+      "was": "docs/FIXED_STEP_FANOUT.md: 00926FA0 takes the registry lock from 00924A50 and applies the range algorithm 009269B0.",
+      "is": "00926FA0 is the std::list copy constructor and takes no lock. 00924A50 is operator new(0xC) followed by [EAX] = EAX and [EAX+4] = EAX, a self-linked sentinel node, whose result 00926FD2 stores into dest+4h before zeroing dest+8h.",
+      "evidence": "00924A50-00924A69 in full; 00926FC6, 00926FD2, 00926FD5. No EnterCriticalSection appears in 00926FA0 or in 009273A0."
+    },
+    {
+      "was": "docs/FIXED_STEP_FANOUT.md: the drain takes the front node of the std::list at 00F899C4.",
+      "is": "It takes the back node. 00926714 reads head[+4h], and 00926F12 is where the producer links the new node, so producer and consumer share one end of the ring and the queue is LIFO.",
+      "evidence": "00926EE8 LEA EDI,[EAX+4]; 00926F12 MOV [EDI],ESI; 00926714 MOV ESI,[EDX+4] with EDX = [00F899C4]."
+    },
+    {
+      "was": "docs/FIXED_STEP_FANOUT.md: 009273A0 is partial, what the two queues carry is not established.",
+      "is": "Each node is 0Ch bytes holding one entity pointer at +8h; the flush copies both lists, clears the globals, dispatches vtable[74h] over the first copy and the 009263C0 block ending in vtable[80h] over the second, then repeats until both globals are empty.",
+      "evidence": "00924B10 PUSH 0xC; 00927477 MOV ECX,[ESI+8]; 0092749E MOV ESI,[EBP+8]; the outer JMP at 009275BA."
+    },
+    {
+      "was": "docs/UNIT_DAMAGE_AND_DEATH.md: a unit shot to death never runs the on-killed hook, stated as a finding whose caveat is that a second dispatch of vtable[80h] elsewhere would change it.",
+      "is": "The finding stands and the caveat is closed for the second dispatch that exists. 00926408 inside 009263C0 is a second vtable[80h] dispatch, but Ghidra reports no reference to 009263C0 at all, calls or data, so it is unreachable and 0092751F remains the only live dispatch. Damage reaches 0077D1A0, the only caller of Destroy 00926C80, and so only the destroy list; Kill 00926D90 additionally calls vtable[70h] = 0077D1A0 for a unit, so an explicit Kill lands on both lists.",
+      "evidence": "callers of 00926C80 is the single entry 0077D1A0; 00CFC440 holds 0077D1A0 at slot +70h; xrefs to 009263C0 is empty. No program-wide byte scan for CALL [reg+80h] was run; the corroboration is the +5Ch/+5Dh byte scan already recorded in docs/HIT_NARROWPHASE.md."
+    }
+  ],
+  "unread": [
+    "Whether any vtable[ECh] handler under 009239A0 reaches 00926E80, which decides whether the drain's re-entrancy hazard fires in practice. 0084BAD0 and 00819A20 are producers and belong to peer packets.",
+    "vtable[0](1) for an entity: what the release actually unlinks (the world chain, the id tables of docs/ENTITY_IDENTITY.md, the Lua self table, the tick registry).",
+    "009269B0's tail from 00926A56 through 0077A7E0.",
+    "00925050's part-array copy loop past 009250C7.",
+    "009272EF, a third +5Dh writer, inside the unrelated 00927050.",
+    "No run of bsp_game.exe was taken for this packet: the claim that rows 6 and 14 are both needed is structural, from the fan-out order, not from a log.",
+    "00925C40 ends in JMP 00696330 at 00925C78, a tail-jump and not a CALL, so it is not a host_steps row; the same dispatch appears as the CALL at 00927510 inside the inlined copy."
+  ]
+}

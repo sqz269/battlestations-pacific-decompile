@@ -1,0 +1,44 @@
+[
+  {
+    "address": "00bd08d0",
+    "before": {
+      "address": "00bd08d0",
+      "function_name": "BSP_PointerVector_InsertOneChecked",
+      "comment": "[BSP reconstruction 00bd08d0]\nPreserve offset and returning pointer validations; foreign-iterator-owner branch unreachable for native append caller and omitted from typed public API. Original ABI: ECX vector; stack result-iterator,iterator-owner,position,pointer-to-value; RET10h. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: same_owner_append_fragment_only; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation."
+    },
+    "after": {
+      "address": "00bd08d0",
+      "name": "BSP_PointerVector_InsertOneChecked",
+      "evidence": "Supersedes earlier typed/count-one reconstruction scope for this raw complete 137-byte entry. Null begin or zero signed-shift size selects index0 and skips owner validation. Otherwise retain captured begin/owner around returning validation. Call actual full BD0700 in original container. Preserve current result argument reload, position-argument overwrite, captured result position and result+4 before result+0 stores. Original ABI: ECX original owner; EDX unconsumed; stack result_iterator, iterator_owner, position, value_slot; EAX result_iterator, RET10h. All717 native bytes in the four-entry batch match emitted bytes except21 named call operands, with six-byte actual invalid-parameter import adapter. Complete provider CODE/data/EH parity and actual archived symbol bindings verified. Strict main Win32 build,2 existing CTests,8 seeds passed; main archive SHA256 c257efd65c865acafc48711f2333c05a7820444fb6c283de9c8399afc521931e. Source CRT handler/allocator/exception ownership differs from original; no packet execution or game validation. Descriptive names remain hypotheses. reports/native_singleton_vector_registration_wrappers_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00bd0bc0",
+    "before": {
+      "address": "00bd0bc0",
+      "function_name": "BSP_PointerVector_Append",
+      "comment": "[BSP reconstruction 00bd0bc0]\nECX vector owner, pointer-to-value stack,RET4. Write at end and advance4 if capacity available; otherwise checked iterator and00bd08d0 insertion/growth. Pointer vector helper, allocator/debug ABI unported.\n\n[BSP reconstruction 00bd0bc0] update\nECX vector owner, pointer-to-value stack,RET4. Write at end and advance4 if capacity available; otherwise checked iterator and00bd08d0 insertion/growth. Pointer vector helper, allocator/debug ABI unported. | Fast store and end+4; otherwise checked same-owner insert. Captured value retained across allocation/free. Original ABI: ECX vector; stack pointer-to-owner; RET4. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_function; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation."
+    },
+    "after": {
+      "address": "00bd0bc0",
+      "name": "BSP_PointerVector_Append",
+      "evidence": "Supersedes earlier typed/count-one reconstruction scope for this raw complete 105-byte entry. Preserve raw unsigned size/capacity comparison. Spare-capacity path captures current end, reads value through current argument, writes value then captured end+4. Growth retains captured end through validation and invokes checked insertion with a real eight-byte stack iterator result. Original ABI: ECX owner; EDX unconsumed; one stack value_slot pointer; RET4, no semantic result. All717 native bytes in the four-entry batch match emitted bytes except21 named call operands, with six-byte actual invalid-parameter import adapter. Complete provider CODE/data/EH parity and actual archived symbol bindings verified. Strict main Win32 build,2 existing CTests,8 seeds passed; main archive SHA256 c257efd65c865acafc48711f2333c05a7820444fb6c283de9c8399afc521931e. Source CRT handler/allocator/exception ownership differs from original; no packet execution or game validation. Descriptive names remain hypotheses. reports/native_singleton_vector_registration_wrappers_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00bd0c30",
+    "before": {
+      "address": "00bd0c30",
+      "function_name": "BSP_SingletonLifetime_Register",
+      "comment": "[BSP reconstruction 00bd0c30]\nECX manager, oneobjectpointer stack,RET4. Validate end>=begin, ignore null, append nonnull via00bd0bc0. No AddRef, duplicate filtering or internal lock. Manager deletes registeredobjects LIFO atshutdown.\n\n[BSP reconstruction 00bd0c30] update\nECX manager, oneobjectpointer stack,RET4. Validate end>=begin, ignore null, append nonnull via00bd0bc0. No AddRef, duplicate filtering or internal lock. Manager deletes registeredobjects LIFO atshutdown. | Unsigned end>=begin validation before null test; callback may return; nonnull append with no internal lock, AddRef or duplicate filtering. Original ABI: ECX manager; stack owner; RET4. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_function; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation."
+    },
+    "after": {
+      "address": "00bd0c30",
+      "name": "BSP_SingletonLifetime_Register",
+      "evidence": "Supersedes earlier typed/count-one reconstruction scope for this raw complete 39-byte entry. Validate current bounds before current object argument null test. Nonnull passes the address of the actual invocation argument to append. No lock, duplicate check, retain or local exception frame. Registered-owner destruction remains separate. Original ABI: ECX owner; EDX unconsumed; one stack object pointer; RET4, no semantic result. All717 native bytes in the four-entry batch match emitted bytes except21 named call operands, with six-byte actual invalid-parameter import adapter. Complete provider CODE/data/EH parity and actual archived symbol bindings verified. Strict main Win32 build,2 existing CTests,8 seeds passed; main archive SHA256 c257efd65c865acafc48711f2333c05a7820444fb6c283de9c8399afc521931e. Source CRT handler/allocator/exception ownership differs from original; no packet execution or game validation. Descriptive names remain hypotheses. reports/native_singleton_vector_registration_wrappers_audit.json"
+    },
+    "status": "applied"
+  }
+]

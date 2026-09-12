@@ -1,0 +1,30 @@
+[
+  {
+    "address": "00bd0600",
+    "before": {
+      "address": "00bd0600",
+      "function_name": "BSP_PointerVector_Reserve",
+      "comment": "[BSP reconstruction 00bd0600]\nOnly constructor empty reserve256 is implemented as its caller requires; generic populated reserve is not exposed or claimed reconstructed. Original ABI: ECX vector; stack capacity; RET4. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: constructor_empty_vector_fragment_only; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation."
+    },
+    "after": {
+      "address": "00bd0600",
+      "name": "BSP_PointerVector_Reserve",
+      "evidence": "Supersedes the earlier typed or constructor-only reconstruction scope for this complete raw source entry. Complete 165-byte original function. complete general reserve, including populated copy/free/republication and failure schedule. Retain captured begin/end around returning validations, SAR distance, current post-copy size, paired free and begin/capacity/end publication. Include BD0689 ADD ESP4. No replacement rollback. MSVC Win32 __fastcall(void* owner, void* unused_edx, uint32_t capacity); actual raw owner and concrete source CRT services. Source synchronous C++ cleanup effects only, not original FH3/SEH/catch ABI. Strict main Win32 build, both existing CTests and8 reference seeds passed. Actual main archive SHA256 92e383410f1bcb7d3ae8fd7ec50bf9232d1b021261c6f5654eab10466bd63f48;7 exact archived objects,35 unchanged prebuild inputs. Full main/worker CODE and data/EH relocation comparison plus unchanged static verifier replay. Source CRT allocation, invalid-handler and exception identity differ from the original. No packet execution, original ABI equivalence or game validation. Descriptive names are hypotheses; correct STL throw name retained. reports/native_singleton_vector_reserve_construct_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00bd0960",
+    "before": {
+      "address": "00bd0960",
+      "function_name": "BSP_SingletonLifetime_Construct",
+      "comment": "[BSP reconstruction 00bd0960]\nECX object, EAX sameobject, RET. Zero vector begin/end/capacity+4/+8/+C, reserve256pointer slots via00bd0600, create trackedcriticalsection00bd1860 at+10. Offset0 not initialized here.\n\n[BSP reconstruction 00bd0960] update\nECX object, EAX sameobject, RET. Zero vector begin/end/capacity+4/+8/+C, reserve256pointer slots via00bd0600, create trackedcriticalsection00bd1860 at+10. Offset0 not initialized here. | Native+0 untouched, +4/+8/+C zeroed; reserve256 before create section; +10 section pointer. Host type adapts layout explicitly. Original ABI: ECX manager; EAX same manager; RET. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_function; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation."
+    },
+    "after": {
+      "address": "00bd0960",
+      "name": "BSP_SingletonLifetime_Construct",
+      "evidence": "Supersedes the earlier typed or constructor-only reconstruction scope for this complete raw source entry. Complete 80-byte original function. complete raw zero/reserve256/actual tracked-section construction plus source-C++ cleanup/rethrow. Zero only +4/+8/+C; reserve256 and actual raw1Ch section creation before +10 publication. On synchronous failure call actual raw BD0220 on captured owner then rethrow; +0 untouched. MSVC Win32 void* __fastcall(void* owner, void* unused_edx); actual raw owner and concrete source CRT services. Source synchronous C++ cleanup effects only, not original FH3/SEH/catch ABI. Strict main Win32 build, both existing CTests and8 reference seeds passed. Actual main archive SHA256 92e383410f1bcb7d3ae8fd7ec50bf9232d1b021261c6f5654eab10466bd63f48;7 exact archived objects,35 unchanged prebuild inputs. Full main/worker CODE and data/EH relocation comparison plus unchanged static verifier replay. Source CRT allocation, invalid-handler and exception identity differ from the original. No packet execution, original ABI equivalence or game validation. Descriptive names are hypotheses; correct STL throw name retained. reports/native_singleton_vector_reserve_construct_audit.json"
+    },
+    "status": "applied"
+  }
+]

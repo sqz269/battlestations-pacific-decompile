@@ -1542,7 +1542,7 @@ GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameSta
     std::string menu_select, long mission_frames, GameFrameProfiler* profiler,
     std::string language, long mission_complete_frame, long order_frame,
     float order_throttle, float order_rudder, float mission_frame_seconds,
-    std::string trajectory_csv)
+    std::string trajectory_csv, std::string order_command, std::string order_command_target)
     : impl_(std::make_unique<Impl>(log, frontend, state, press_start_frame)) {
     // Milestone 2h: the in-mission HUD registers into the same registry this
     // object owns, so the HUD host is built here and handed to the mission.
@@ -1551,7 +1551,8 @@ GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameSta
         impl_->mission = std::make_unique<GameMissionHost>(log, vfs, scripts, frontend,
             locale, std::move(menu_select), mission_frames, profiler, std::move(language),
             mission_complete_frame, impl_->hud.get(), order_frame, order_throttle,
-            order_rudder, mission_frame_seconds, std::move(trajectory_csv));
+            order_rudder, mission_frame_seconds, std::move(trajectory_csv),
+            std::move(order_command), std::move(order_command_target));
     }
 }
 

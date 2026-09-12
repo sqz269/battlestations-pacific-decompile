@@ -1,5 +1,6 @@
 #include "bsp/app_bootstrap.hpp"
 #include "bsp/award_grant.hpp"
+#include "bsp/entity_event_queues.hpp"
 #include "bsp/award_trackers.hpp"
 #include "bsp/blocking_screen.hpp"
 #include "bsp/game_entry.hpp"
@@ -28,6 +29,7 @@
 #include "bsp/mission_lobby_settings.hpp"
 #include "bsp/math.hpp"
 #include "bsp/simulation_gate.hpp"
+#include "bsp/spatial_index.hpp"
 #include "bsp/title_init.hpp"
 #include "bsp/unit_forces.hpp"
 #include "bsp/weapon_director.hpp"
@@ -75,6 +77,7 @@
 #include "bsp/unit_hit_path.hpp"
 #include "bsp/unit_parts.hpp"
 #include "bsp/projectile_impact.hpp"
+#include "bsp/blast_damage.hpp"
 #include <algorithm>
 #include <cmath>
 #include <memory>
@@ -2350,6 +2353,78 @@ int main() {
         check(std::fabs(bsp::gun_step_axis_0085ad80(near_delta, rate, 1.0f, true) - near_delta)
                   < 1e-6f,
             "MRFSGun skips the soft approach and turns at the full rate");
+    }
+
+    {
+        // 00903610's grace period. An entity marked by 00922FD0 carries a 1 and
+        // must survive two more passes: releasing at 2 instead of 3 would free
+        // it a whole fixed step early, and ageing a zero counter would release
+        // entities nothing ever marked.
+        using bsp::EntityExpiryAction;
+        check(bsp::entity_expiry_step_00903620(0).action == EntityExpiryAction::kSkip &&
+              bsp::entity_expiry_step_00903620(0).counter == 0,
+            "00903625 JLE leaves an unmarked entity alone");
+        check(bsp::entity_expiry_step_00903620(-1).action == EntityExpiryAction::kSkip,
+            "00903625 is a signed test, so a negative counter is skipped too");
+        const bsp::EntityExpiryStep marked = bsp::entity_expiry_step_00903620(1);
+        check(marked.action == EntityExpiryAction::kAge && marked.counter == 2,
+            "00903627 ages the 1 that 00922FE8 stored to 2 and keeps the entity");
+        const bsp::EntityExpiryStep aged = bsp::entity_expiry_step_00903620(2);
+        check(aged.action == EntityExpiryAction::kRelease && aged.counter == 3,
+            "0090362A releases on the pass that reaches 3, the second after marking");
+    }
+
+    {
+        // 0098BD01's cell key. The re-bucket path packs the AABB's two corner
+        // cells without clamping them the way 0098ADD0's walk does, so the edge
+        // cases are the risk worth pinning: the last in-grid cell must survive
+        // the round trip, and a cell that left the grid must not, because the
+        // ADDs borrow across the byte lanes.
+        bsp::SpatialCellRect corner{};
+        corner.min = {0, 0};
+        corner.max = {bsp::kSpatialGridMaxIndex, bsp::kSpatialGridMaxIndex};
+        const std::uint32_t corner_key = bsp::spatial_cell_key_0098bd01(corner);
+        const bsp::SpatialCellRect corner_back =
+            bsp::spatial_cell_key_unpack_0098a3d3(corner_key);
+        check(corner_key == 0x95950000u,
+            "0098BD01 packs minX, minZ, maxX, maxZ into the four bytes, low first");
+        check(corner_back.min.x == 0 && corner_back.min.z == 0
+                  && corner_back.max.x == bsp::kSpatialGridMaxIndex
+                  && corner_back.max.z == bsp::kSpatialGridMaxIndex,
+            "0098A3D0 recovers the cells 0098A310 stored while every index is in range");
+
+        bsp::SpatialCellRect outside{};
+        outside.min = {-1, 4};
+        outside.max = {2, 5};
+        const bsp::SpatialCellRect outside_back =
+            bsp::spatial_cell_key_unpack_0098a3d3(bsp::spatial_cell_key_0098bd01(outside));
+        check(outside_back.min.x != outside.min.x || outside_back.min.z != outside.min.z,
+            "a cell index below the grid borrows into the next lane and 0098A3D0 unlinks the wrong cells");
+
+        // 0098BAD2 sends anything wider than 2x2 to the loose array, which is
+        // what keeps the register loop inside the node's four link slots.
+        check(bsp::spatial_placement_0098bad2(corner) == bsp::SpatialPlacement::kLooseArray,
+            "a grid-wide box cannot fit four cell links");
+        bsp::SpatialCellRect quad{};
+        quad.min = {10, 10};
+        quad.max = {11, 11};
+        check(bsp::spatial_placement_0098bad2(quad) == bsp::SpatialPlacement::kGridCells
+                  && bsp::spatial_cell_slot_count_0098a310(quad) == bsp::kSpatialNodeCellLinkSlots,
+            "a 2x2 span is exactly the four links at node+0Ch");
+    }
+
+    {
+        // 004705C0's blast falloff. The three constants are complete: the 1.0f
+        // the fraction is subtracted from, the strict "> 0" the ignore flag is
+        // gated on, and the unguarded divide by the record's +24h range.
+        check(std::fabs(bsp::blast_falloff_fraction_004705c0(25.0f, 100.0f, false) - 0.75f)
+                  < 1e-6f,
+            "004705E7 scales the part distance by the explosion radius");
+        check(bsp::blast_falloff_fraction_004705c0(150.0f, 100.0f, true) < 0.0f,
+            "00470602 leaves a hit outside the radius negative even when the flag is set");
+        check(std::fabs(bsp::blast_falloff_fraction_004705c0(25.0f, 100.0f, true) - 1.0f)
+                  < 1e-6f,
+            "00470602 lifts a positive fraction to 1.0f");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

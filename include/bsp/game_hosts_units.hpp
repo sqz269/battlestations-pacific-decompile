@@ -35,9 +35,14 @@
 //             damping have no recovered producer, so the body carries none and
 //             the substep schedule 00c5c540 stays a record.
 //
-// What remains this file's own decision, and is recorded as one: the authored
-// `Command = E CommandType : Cruise` token is turned into one order-ring order,
-// because the command object 0046aab0 resolves has no reconstruction.
+// Milestone 2l removed the last of those decisions. The authored
+// `Command = E CommandType : Cruise` token is no longer turned into an
+// order-ring order: it runs the recovered command path of
+// include/bsp/game_hosts_commands.hpp, and `cruise` turns out to be a latch
+// that captures the ring's ordered pair rather than an order that fills it.
+// A ship whose ring is zero therefore holds zero, which is what the authored
+// state of this mission's 32 destroyers is. `--order` still writes the
+// controlled unit's ring through 00816a40, which is the player's own path.
 //
 // Evidence: docs/UNIT_INSTANCE_UPDATE.md, docs/SHIP_MOTION.md,
 // docs/UNIT_CONTROLLER.md, docs/UNIT_CONTROLLER_UPDATE.md,
@@ -51,6 +56,7 @@
 #include <string>
 #include <vector>
 
+#include "bsp/game_hosts_commands.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 
 namespace bsp::game {
@@ -68,6 +74,15 @@ struct GameUnitRow {
     int type_id{-1};          // the symbol resolved through the enum library
     int party{-1};
     std::string command;      // the authored `Command` token
+    std::string command_target;  // the authored `CommandTarget`, "" when unset
+    // Milestone 2l: what the recovered command path did with that token. The
+    // latched triple is the weapon director's +243h / +244h / +248h after
+    // 00835c70's `cruise` arm ran 00835ac0 over the unit's live ring.
+    bool command_current{false};
+    bool command_latched{false};
+    bool latch_is_heading{false};
+    float latch_steer{0.0f};
+    float latch_thrust{0.0f};
     bool class_row_found{false};  // VehicleClass[type_id] exists
     std::string class_row_name;
     float max_speed{0.0f};
@@ -130,10 +145,18 @@ public:
     // the recovered global-script step 00886900 loaded.
     void create_units(const std::vector<GameSceneEntityRecord>& entities);
 
-    // The authored `Command` token of each unit, turned into one order through
-    // 00816a40 and copied into the ring 00813020 reads. The token-to-order
-    // mapping is this milestone's own; see the header comment.
+    // Milestone 2l: the authored `Command` token of each unit, run through the
+    // recovered path 0046aab0 -> 0077d600 -> 00816e30 -> 0071ecf0 -> 00721a40
+    // -> 008358d0 -> 0071e6c0 and, when the pushed command becomes current,
+    // 00835c70's own arm. Nothing here writes an order ring.
     void issue_authored_commands();
+
+    // --order <command name>: the same path, issued to the controlled unit on
+    // --order-frame. Returns false when no unit is bound.
+    bool issue_player_command(const std::string& token, const std::string& target_token);
+
+    // The command path's own rows and counters, for the report.
+    const GameCommandsHost& commands() const noexcept;
 
     // 004c0890 on one created unit, through bsp::set_controlled_unit_004c0890.
     void set_controlled_unit_004c0890(std::size_t index);
