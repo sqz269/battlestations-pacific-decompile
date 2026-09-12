@@ -3,6 +3,7 @@
 // docs/AVOID_ZONE_GEOMETRY.md. Names are hypotheses, not recovered symbols.
 
 #include "bsp/avoid_zone_geometry.hpp"
+#include "bsp/avoid_zone_clearance.hpp"
 
 #include <cmath>
 #include <cstdio>
@@ -168,8 +169,8 @@ bool avoid_zone_segment_hit_00416dd0(const AvoidZonePolygon& zone,
                                      std::array<float, 2>& running,
                                      std::int32_t& edge_index) noexcept {
     // 00416DE9: the AABB reject, through the adjustor thunk 004F2B00.
-    if (!avoid_zone_box_meets_segment_0085c910(zone.bounds_min, zone.bounds_max,
-                                               toward, running)) {
+    if (!native_box_meets_segment_0085c910(zone.bounds_min.data(), zone.bounds_max.data(),
+                                               toward.data(), running.data())) {
         return false;
     }
     const std::int32_t count = static_cast<std::int32_t>(zone.corners.size());
@@ -186,11 +187,11 @@ bool avoid_zone_segment_hit_00416dd0(const AvoidZonePolygon& zone,
         if (dx * dx + dy * dy < kAvoidZoneSegmentEndEpsilonSq) break;
 
         // 00416EA5: ECX = toward, EDX = the running point, then the edge.
-        const SegmentCrossingXZ crossing =
-            segment_crossing_004f3730(toward, running, previous, current);
-        if (crossing.crossed) {
+        std::array<float, 2> crossing;
+        if (native_segment_crossing_004f3730(toward.data(), running.data(),
+            previous.data(), current.data(), crossing.data())) {
             edge_index = index;
-            running = crossing.point;
+            running = crossing;
             hit = true;
         }
         ++index;
