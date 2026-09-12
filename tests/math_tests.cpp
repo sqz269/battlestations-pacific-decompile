@@ -9,6 +9,7 @@
 #include "bsp/game_settings.hpp"
 #include "bsp/gun_aiming.hpp"
 #include "bsp/gun_platform_arc.hpp"
+#include "bsp/gun_bot_remainder.hpp"
 #include "bsp/gun_bot_ticks.hpp"
 #include "bsp/game_tuning_singleton.hpp"
 #include "bsp/gui_icon.hpp"
@@ -2741,6 +2742,40 @@ int main() {
             "009032E9 maps -0.10 rad to 0.5v - 0.01 = -0.06 rad");
         check(bsp::gun_bot_ballistic_vertical_correction_009030c0(-0.10f, true) == 0.0f,
             "009032B5 flattens the shot when the target answers IsKindOf(0Fh)");
+    }
+
+    {
+        // 008FB8D0 builds the intercept quadratic with a linear coefficient of
+        // dot(d, v) where the exact equation needs 2 dot(d, v), so the solution
+        // under-leads a receding target. A ship 1000 m away running straight
+        // away at half the torpedo's speed should be met at 100 s; the native
+        // answers 76.76 s. The pair is pinned so the deviation is not silently
+        // corrected into a "fix" that stops matching the game.
+        const std::array<float, 3> shooter{{0.0f, 0.0f, 0.0f}};
+        const std::array<float, 3> target{{1000.0f, 0.0f, 0.0f}};
+        const std::array<float, 3> velocity{{10.0f, 0.0f, 0.0f}};
+        const bsp::TorpedoInterceptRoots roots =
+            bsp::torpedo_intercept_time_008fb8d0(shooter, target, 20.0f, velocity);
+        check(roots.root_count == 1,
+            "008FBAE4 reports one root when the torpedo outruns the target");
+        check(std::fabs(roots.first - 76.7592f) < 1e-2f,
+            "008FBA95 under-leads a receding target: 76.76 s, not the exact 100 s");
+        check(std::fabs(bsp::torpedo_intercept_time_exact(shooter, target, 20.0f, velocity) -
+                        100.0f) < 1e-3f,
+            "the exact intercept of the same shot is 1000 / (20 - 10)");
+
+        std::array<float, 3> point{};
+        check(bsp::torpedo_intercept_point_008fbb00(shooter, target, 20.0f, velocity, point) &&
+              std::fabs(point[0] - 1767.59f) < 1e-1f,
+            "008FBB9E aims 1767.6 m out, 232 m short of the exact intercept");
+
+        // The one case the missing factor cannot spoil: a stationary target,
+        // where dot(d, v) is zero and both forms agree.
+        const std::array<float, 3> still{{0.0f, 0.0f, 0.0f}};
+        const bsp::TorpedoInterceptRoots parked =
+            bsp::torpedo_intercept_time_008fb8d0(shooter, target, 20.0f, still);
+        check(parked.root_count >= 1 && std::fabs(parked.first - 50.0f) < 1e-3f,
+            "008FB8D0 is exact against a stationary target: 1000 / 20");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
