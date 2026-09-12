@@ -1,0 +1,169 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00c686b3",
+    "end_address": "00c686bd"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00c686b3",
+    "end_address": "00c686bc",
+    "bytes_disassembled": 10,
+    "message": "Successfully disassembled 10 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00c686b3",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00c686b3",
+    "function_name": "FUN_00c686b3",
+    "entry_point": "00c686b3",
+    "body_size": 10,
+    "message": "Function created successfully at 00c686b3"
+   }
+  },
+  {
+   "defined": "00c686b3",
+   "end": "00c686bd",
+   "name": null,
+   "after": "Function: FUN_00c686b3 at 00c686b3\nSignature: undefined FUN_00c686b3(void)\nEntry: 00c686b3\nBody: 00c686b3 - 00c686bc"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00be5340",
+    "end_address": "00be5348"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00be5340",
+    "end_address": "00be5347",
+    "bytes_disassembled": 8,
+    "message": "Successfully disassembled 8 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00be5340",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00be5340",
+    "function_name": "FUN_00be5340",
+    "entry_point": "00be5340",
+    "body_size": 8,
+    "message": "Function created successfully at 00be5340"
+   }
+  },
+  {
+   "defined": "00be5340",
+   "end": "00be5348",
+   "name": null,
+   "after": "Function: FUN_00be5340 at 00be5340\nSignature: undefined FUN_00be5340(void)\nEntry: 00be5340\nBody: 00be5340 - 00be5347"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00be5350",
+    "end_address": "00be5372"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00be5350",
+    "end_address": "00be5371",
+    "bytes_disassembled": 34,
+    "message": "Successfully disassembled 34 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00be5350",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00be5350",
+    "function_name": "FUN_00be5350",
+    "entry_point": "00be5350",
+    "body_size": 34,
+    "message": "Function created successfully at 00be5350"
+   }
+  },
+  {
+   "defined": "00be5350",
+   "end": "00be5372",
+   "name": null,
+   "after": "Function: FUN_00be5350 at 00be5350\nSignature: undefined FUN_00be5350(void)\nEntry: 00be5350\nBody: 00be5350 - 00be5371"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00be5380",
+    "end_address": "00be53a9"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00be5380",
+    "end_address": "00be53a8",
+    "bytes_disassembled": 41,
+    "message": "Successfully disassembled 41 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00be5380",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00be5380",
+    "function_name": "FUN_00be5380",
+    "entry_point": "00be5380",
+    "body_size": 38,
+    "message": "Function created successfully at 00be5380"
+   }
+  },
+  {
+   "defined": "00be5380",
+   "end": "00be53a9",
+   "name": null,
+   "after": "Function: FUN_00be5380 at 00be5380\nSignature: undefined FUN_00be5380(void)\nEntry: 00be5380\nBody: 00be5380 - 00be53a8"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
