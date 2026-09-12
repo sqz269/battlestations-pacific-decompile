@@ -41,6 +41,7 @@
 #include <string>
 #include <vector>
 
+#include "bsp/cruise_command.hpp"
 #include "bsp/dyn_world_settings.hpp"
 #include "bsp/ship_class_fields.hpp"
 #include "bsp/ship_hull_body.hpp"
@@ -357,10 +358,18 @@ struct ProbeMotionHost final : bsp::ShipMotionHost {
     }
 };
 
-float heading_degrees(const bsp::ShipMotionState& state) {
+// The probe's stand-in for unit->vtable[50h], the heading getter the MT_SHIP_SYNC
+// builder quantizes over +-pi (docs/UNIT_STATE_MESSAGE.md) and the one 00835E46
+// hands to the cruise latch. The native body is not reconstructed; this is the
+// same forward-axis angle the probe already prints.
+float heading_radians(const bsp::ShipMotionState& state) {
     return static_cast<float>(std::atan2(static_cast<double>(state.pose_row2[0]),
-                                         static_cast<double>(state.pose_row2[2])) *
-                              180.0 / 3.14159265358979323846);
+                                         static_cast<double>(state.pose_row2[2])));
+}
+
+float heading_degrees(const bsp::ShipMotionState& state) {
+    return static_cast<float>(static_cast<double>(heading_radians(state)) * 180.0 /
+                              3.14159265358979323846);
 }
 
 // -------------------------------------------------------------------------
@@ -414,6 +423,10 @@ struct TrajectoryInputs {
     float dt{0.0f};
     float throttle{0.0f};
     float rudder{0.0f};
+    // --cruise: run the unit under the reconstructed `Cruise` order instead of
+    // a hand order re-issued every step. docs/CRUISE_COMMAND.md.
+    bool cruise{false};
+    int cruise_frame{20};
 };
 
 struct TrajectoryResult {
@@ -425,6 +438,10 @@ struct TrajectoryResult {
     float peak_speed{0.0f};
     float peak_yaw{0.0f};
     float reference{0.0f};
+    // Filled only under --cruise: what 00835AC0 latched at the latch step.
+    bool cruise{false};
+    bsp::CruiseAutopilotFields cruise_fields{};
+    bsp::CruiseSteerMode cruise_mode{bsp::CruiseSteerMode::Rudder};
 };
 
 TrajectoryResult run_trajectory(const TrajectoryInputs& in, HullBodySetup& setup,
@@ -501,6 +518,12 @@ TrajectoryResult run_trajectory(const TrajectoryInputs& in, HullBodySetup& setup
                     "   throttle    rudder   yaw_rate\n");
     }
 
+    // --cruise state. The speed setting at *(unit+73Ch) +24h / +28h is left disabled
+    // (-1.0f, the value 009E11C6 stores) because its producer is unread, so the rule
+    // takes cruiseThrust rather than the commanded-speed override.
+    bsp::CruiseAutopilotFields cruise_fields{};
+    const bsp::CruiseSpeedSetting cruise_speed_setting{};
+
     float t = 0.0f;
     for (int step = 0; step <= in.steps; ++step) {
         if (verbose && step % 10 == 0) {
@@ -521,8 +544,32 @@ TrajectoryResult run_trajectory(const TrajectoryInputs& in, HullBodySetup& setup
         // Re-fill the slot under the write cursor so the order keeps standing: the game
         // does this from the HUD every frame the key is held, and the ring's own forward
         // copy at 00813186 would otherwise only ever mark slots predicted.
+        //
+        // Under --cruise the values are not the hand order after the latch step: the
+        // authored `Cruise` captures the standing order once (00835E17..00835E58, the
+        // rule in cruise_command_begin_00835e17) and then re-applies it every step
+        // (009E1265..009E13B1, cruise_ordered_values_009e1170). Only the rudder arm of
+        // that rule reaches the ring here; the heading arm goes through 009E0040, the
+        // ship AI's own heading controller, which this packet does not reconstruct, and
+        // a ship already on its latched heading is steered with a zero rudder either
+        // way. docs/CRUISE_COMMAND.md says so and lists the limit.
+        float order_a = in.throttle;
+        float order_b = in.rudder;
+        if (in.cruise && step >= in.cruise_frame) {
+            if (step == in.cruise_frame) {
+                cruise_fields = bsp::cruise_command_begin_00835e17(ring, heading_radians(state));
+                result.cruise = true;
+                result.cruise_fields = cruise_fields;
+            }
+            const bsp::CruiseOrderedValues ordered = bsp::cruise_ordered_values_009e1170(
+                cruise_fields, cruise_speed_setting, result.reference, host.forward_speed());
+            result.cruise_mode = ordered.mode;
+            order_a = ordered.throttle;
+            order_b = (ordered.mode == bsp::CruiseSteerMode::Rudder) ? ordered.steer_or_heading
+                                                                    : 0.0f;
+        }
         queue.slot_index = ring.write_cursor;
-        bsp::issue_unit_order_record_00816a40(issue, queue, scratch, in.throttle, in.rudder, 0);
+        bsp::issue_unit_order_record_00816a40(issue, queue, scratch, order_a, order_b, 0);
         const int w = ring.write_cursor;
         ring.slot[w].param_a = queue.slot[w].param_a;
         ring.slot[w].param_b = queue.slot[w].param_b;
@@ -582,6 +629,12 @@ int main(int argc, char** argv) {
     float dt = bsp::kUnitStateMessageTickSeconds; // 0.05f, 00D0DE84
     float throttle = 1.0f;
     float rudder = 1.0f;
+    // --cruise: after --cruise-frame steps of the hand order, latch it the way
+    // 00835E17 does and run the rest under 009E1170's rule. The default 20 is the
+    // frame count docs/GAME_EXECUTABLE.md milestone 2j names for the stretch the
+    // executable runs under the authored `Cruise` before the injected order.
+    bool cruise = false;
+    int cruise_frame = 20;
     // The hull's collision AABB span. Its producer is the shape attach 00C5C940, which
     // this packet does not read, so it defaults to zero rather than to an invented box.
     bsp::OceanVec3 hull_extent{};
@@ -603,6 +656,10 @@ int main(int argc, char** argv) {
             throttle = static_cast<float>(std::atof(argv[++i]));
         } else if (arg == "--rudder" && has_next) {
             rudder = static_cast<float>(std::atof(argv[++i]));
+        } else if (arg == "--cruise") {
+            cruise = true;
+        } else if (arg == "--cruise-frame" && has_next) {
+            cruise_frame = std::atoi(argv[++i]);
         } else if (arg == "--hull-extent" && (i + 3) < argc) {
             hull_extent.x = static_cast<float>(std::atof(argv[++i]));
             hull_extent.y = static_cast<float>(std::atof(argv[++i]));
@@ -610,7 +667,8 @@ int main(int argc, char** argv) {
         } else {
             std::printf("usage: %s [--lua <vehicleclasses.lua>] [--class N] [--type T]\n"
                         "          [--steps N] [--dt S] [--throttle X] [--rudder X]\n"
-                        "          [--hull-extent DX DY DZ]\n",
+                        "          [--cruise] [--cruise-frame N]"
+                        " [--hull-extent DX DY DZ]\n",
                         argv[0]);
             return 2;
         }
@@ -661,6 +719,17 @@ int main(int argc, char** argv) {
     std::printf("  step         %.4f s, %d steps\n", static_cast<double>(dt), steps);
     std::printf("  order        throttle %.3f, rudder %.3f, through 00816A40\n",
                 static_cast<double>(throttle), static_cast<double>(rudder));
+    if (cruise) {
+        std::printf("  cruise       on: the hand order stands for %d steps, then the latch"
+                    " 00835E17\n"
+                    "               captures it into cruiseIsHeading /"
+                    " cruiseSteerOrHeading /\n"
+                    "               cruiseThrust and 009E1170 re-applies it every step."
+                    " The commanded\n"
+                    "               speed at *(unit+73Ch)+24h/+28h stays disabled, its"
+                    " producer unread.\n",
+                    cruise_frame);
+    }
     std::printf("  inputs       ocean 0078CF20 reconstructed, flat sea (wave field off -> 0.0)\n"
                 "               gameplay scale 008E6430 reconstructed, empty list -> 1.0\n"
                 "               rudder curve +438h..+44Ch from shipglobals.lua"
@@ -684,6 +753,8 @@ int main(int argc, char** argv) {
     run_in.dt = dt;
     run_in.throttle = throttle;
     run_in.rudder = rudder;
+    run_in.cruise = cruise;
+    run_in.cruise_frame = cruise_frame;
 
     HullBodySetup stand_in = stand_in_body();
     HullBodySetup real = class_body(*chosen, hull_extent);
@@ -734,6 +805,20 @@ int main(int argc, char** argv) {
                 static_cast<double>(b.peak_yaw));
     std::printf("  B's y falls because 00C41550 adds the world's gravity and nothing here\n"
                 "  cancels it: 009329C0's buoyancy is not reconstructed.\n");
+
+    if (b.cruise) {
+        static const char* const kModeName[] = {"rudder", "heading", "straight"};
+        std::printf("\n  cruise latch at step %d (00835AC0 through 00835E17)\n"
+                    "    cruiseIsHeading       %s   (|ordered rudder| < 0.01)\n"
+                    "    cruiseSteerOrHeading  %.6f  (%s)\n"
+                    "    cruiseThrust          %.6f  (the ring's +148h at the latch)\n"
+                    "    steering arm 009E1170 takes: %s\n",
+                    run_in.cruise_frame, b.cruise_fields.is_heading ? "true " : "false",
+                    static_cast<double>(b.cruise_fields.steer_or_heading),
+                    b.cruise_fields.is_heading ? "radians of heading" : "the ordered rudder",
+                    static_cast<double>(b.cruise_fields.thrust),
+                    kModeName[static_cast<int>(b.cruise_mode)]);
+    }
 
     const TrajectoryResult& result = b;
     const float reference = result.reference;
