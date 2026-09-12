@@ -2,7 +2,7 @@
   "packet": "orch3_particle_record_update_am",
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
-  "status": "reconstructed_strict_win32_compile_tested_bounded_original_byte_fixture_tested",
+  "status": "reconstructed_strict_win32_build_tested_bounded_fixture_tested_saved_analysis_verified",
   "headers": [
     "include/bsp/native_particle_record_update.hpp"
   ],
@@ -502,7 +502,143 @@
     "full_application_composition": false,
     "gameplay": false,
     "source_review": "complete; preparation/constructor additionally independently reviewed",
-    "saved_analysis": "pending",
-    "full_build": "pending"
+    "saved_analysis": "saved and read back;41 name/evidence rows,33 native signatures,43 refreshed exports",
+    "full_build": "passed standard scripts/build.ps1 strict MSVC Win32 and both seeded CTests",
+    "tested_source_commit": "43c83a7deb1af1a030c1f1d755aad0ab297b6bdc",
+    "build_log": "local/am-first-combined-build.log",
+    "combined_library_sha256": "b5aee7ed0e30c940c912e27f0fc02fb27e7b208c8f4003bcf45044fcb5ea4f3b",
+    "source_hashes": {
+      "include/bsp/native_particle_record_update.hpp": "8a2e359c9453f479f6afcb8fd51669138202349f6619616d32dadad04e1b4c0b",
+      "src/native_particle_record_update.cpp": "c09d90371c1adde6cc169b06f79f65780aa9a1db67efcd93c74e0ea7f6dfeb1d"
+    },
+    "call_reports": "200 direct CALL rows across8 reports,0failed; indirect/tail boundaries retain manual/native-fixture coverage limits",
+    "fixture": "local/am-fixture-record-update.log",
+    "original_exception_and_gameplay": false,
+    "fixture_instrumentation": "Current production source copy replaces only the outgoing recovered spawn/children CALL targets with the original fixture instrumentation; all new EDX context loads and other instructions are retained. Production library is uninstrumented. Concrete callee fixtures independently pass. Complete production model\u2192records composition executes expired records only."
+  },
+  "ghidra_annotation_audit_am": {
+    "attempt_records": [
+      "local/ghidra-annotations-20260912T174341Z.json",
+      "local/ghidra-annotations-20260912T174629Z.json"
+    ],
+    "earliest_preimages_preserved": true,
+    "old_comments_preserved": true,
+    "project_saved": true,
+    "readback_verified": true,
+    "changes": [
+      {
+        "address": "00afcf50",
+        "before": {
+          "address": "00afcf50",
+          "function_name": "FUN_00afcf50"
+        },
+        "after": {
+          "address": "00afcf50",
+          "name": "BSP_CopyNativeParticleRecord",
+          "evidence": "Complete verified-target assembly and installed PE bytes; original caller stack setup and final RET decoded. See packet documentation. AM integration review: descriptive hypothesis, not a recovered symbol. ECX destination108h; stack source108h; EAX destination; RET4. Complete live/installed span and final instruction verified. See reports/native_particle_record_update.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afd410",
+        "before": {
+          "address": "00afd410",
+          "function_name": "FUN_00afd410"
+        },
+        "after": {
+          "address": "00afd410",
+          "name": "BSP_AppendNativeParticleRecord",
+          "evidence": "Complete verified-target assembly and installed PE bytes; original caller stack setup and final RET decoded. See packet documentation. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual18h owner; stack source108h; RET4. Complete live/installed span and final instruction verified. See reports/native_particle_record_update.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afd7a0",
+        "before": {
+          "address": "00afd7a0",
+          "function_name": "FUN_00afd7a0"
+        },
+        "after": {
+          "address": "00afd7a0",
+          "name": "BSP_UpdateNativeParticleRecords",
+          "evidence": "Complete verified-target assembly and installed PE bytes; original caller stack setup and final RET decoded. See packet documentation. AM integration review: descriptive hypothesis, not a recovered symbol. ECX same actual18h owner; stack float time, low mode byte; EAX signed current count14; RET8. Complete live/installed span and final instruction verified. See reports/native_particle_record_update.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afe030",
+        "before": {
+          "address": "00afe030",
+          "function_name": "FUN_00afe030"
+        },
+        "after": {
+          "address": "00afe030",
+          "name": "BSP_CopyNativeParticleModelPosition",
+          "evidence": "Complete verified-target assembly and installed PE bytes; original caller stack setup and final RET decoded. See packet documentation. AM integration review: descriptive hypothesis, not a recovered symbol. ECX same actual2DCh model; stack destination; EAX destination; RET4. Complete live/installed span and final instruction verified. See reports/native_particle_record_update.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afe290",
+        "before": {
+          "address": "00afe290",
+          "function_name": "FUN_00afe290"
+        },
+        "after": {
+          "address": "00afe290",
+          "name": "BSP_UpdateNativeParticleRecord",
+          "evidence": "Complete verified-target assembly and installed PE bytes; original caller stack setup and final RET decoded. See packet documentation. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual108h record; stack float time, float step, low mode byte; AL alive, upper EAX unspecified; RET0C. Complete live/installed span and final instruction verified. See reports/native_particle_record_update.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated."
+        },
+        "status": "applied"
+      }
+    ]
+  },
+  "ghidra_signature_audit_am": {
+    "project_saved": true,
+    "readback_verified": true,
+    "before": {
+      "00afcf50": "00afcf50 BSP_CopyNativeParticleRecord  undefined BSP_CopyNativeParticleRecord(void)  body 00afcf50 - 00afd0e6\n",
+      "00afd410": "00afd410 BSP_AppendNativeParticleRecord  undefined BSP_AppendNativeParticleRecord(void)  body 00afd410 - 00afd43c\n",
+      "00afe030": "00afe030 BSP_CopyNativeParticleModelPosition  undefined BSP_CopyNativeParticleModelPosition(void)  body 00afe030 - 00afe07a\n",
+      "00afe290": "00afe290 BSP_UpdateNativeParticleRecord  undefined BSP_UpdateNativeParticleRecord(void)  body 00afe290 - 00afead6\n",
+      "00afd7a0": "00afd7a0 BSP_UpdateNativeParticleRecords  undefined BSP_UpdateNativeParticleRecords(void)  body 00afd7a0 - 00afd81d\n"
+    },
+    "changes": [
+      {
+        "address": "00afcf50",
+        "prototype": "void * __thiscall BSP_CopyNativeParticleRecord(void * source)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00afcf50 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00afd410",
+        "prototype": "void __thiscall BSP_AppendNativeParticleRecord(void * source)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00afd410 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00afe030",
+        "prototype": "void * __thiscall BSP_CopyNativeParticleModelPosition(void * destination)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00afe030 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00afe290",
+        "prototype": "byte __thiscall BSP_UpdateNativeParticleRecord(float time, float step, byte mode)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00afe290 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00afd7a0",
+        "prototype": "int __thiscall BSP_UpdateNativeParticleRecords(float time, byte mode)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00afd7a0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ]
   }
 }

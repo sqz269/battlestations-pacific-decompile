@@ -335,8 +335,273 @@
   ],
   "integration_am": {
     "source_review": "complete; preparation/constructor additionally independently reviewed",
-    "saved_analysis": "pending",
-    "full_build": "pending",
-    "gameplay": false
+    "saved_analysis": "saved and read back;41 name/evidence rows,33 native signatures,43 refreshed exports",
+    "full_build": "passed standard scripts/build.ps1 strict MSVC Win32 and both seeded CTests",
+    "gameplay": false,
+    "tested_source_commit": "43c83a7deb1af1a030c1f1d755aad0ab297b6bdc",
+    "build_log": "local/am-first-combined-build.log",
+    "combined_library_sha256": "b5aee7ed0e30c940c912e27f0fc02fb27e7b208c8f4003bcf45044fcb5ea4f3b",
+    "source_hashes": {
+      "include/bsp/native_particle_preparation.hpp": "94d2f1992aa577cd68c85ff546b074eb9434e31ed50ac6a984c792db8660ebb8",
+      "src/native_particle_preparation.cpp": "790480e209c197d18feb56345a19d1e340974f518c3bee40102a02a172754c62"
+    },
+    "call_reports": "200 direct CALL rows across8 reports,0failed; indirect/tail boundaries retain manual/native-fixture coverage limits",
+    "fixture": "local/am-fixture-preparation.log",
+    "original_exception_and_gameplay": false,
+    "independent_review": "particle_arrays_am read-only second pass: no actionable correctness findings in preparation/construction wiring, ABI/count/member/child reloads or cookie-array unwind."
+  },
+  "status": "reconstructed_strict_win32_build_tested_bounded_fixture_tested_saved_analysis_verified",
+  "ghidra_annotation_audit_am": {
+    "attempt_records": [
+      "local/ghidra-annotations-20260912T174341Z.json",
+      "local/ghidra-annotations-20260912T174629Z.json"
+    ],
+    "earliest_preimages_preserved": true,
+    "old_comments_preserved": true,
+    "project_saved": true,
+    "readback_verified": true,
+    "changes": [
+      {
+        "address": "007099c0",
+        "before": {
+          "address": "007099c0",
+          "function_name": "FUN_007099c0"
+        },
+        "after": {
+          "address": "007099c0",
+          "name": "BSP_NativeNode_SetHierarchyMask",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/disk byte span verified. Actual borrowed pointers, current signed counts and post-virtual row/table reloads; no replacement owner. See docs/NATIVE_PARTICLE_PREPARATION.md and reports/native_particle_preparation.json. Full producer class sizes, real polymorphic member behavior, native exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual owner; uint mask; RET4; void return. Complete live/installed span and final instruction verified. See reports/native_particle_preparation.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af10a0",
+        "before": {
+          "address": "00af10a0",
+          "function_name": "TRIV_body_00af10a0"
+        },
+        "after": {
+          "address": "00af10a0",
+          "name": "BSP_NativeParticleResources_GetIndexStream",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/disk byte span verified. Actual borrowed pointers, current signed counts and post-virtual row/table reloads; no replacement owner. See docs/NATIVE_PARTICLE_PREPARATION.md and reports/native_particle_preparation.json. Full producer class sizes, real polymorphic member behavior, native exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual owner; void; RET; void * return. Complete live/installed span and final instruction verified. See reports/native_particle_preparation.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af10b0",
+        "before": {
+          "address": "00af10b0",
+          "function_name": "TRIV_body_00af10b0"
+        },
+        "after": {
+          "address": "00af10b0",
+          "name": "BSP_NativeParticleResources_GetVertexDescriptor",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/disk byte span verified. Actual borrowed pointers, current signed counts and post-virtual row/table reloads; no replacement owner. See docs/NATIVE_PARTICLE_PREPARATION.md and reports/native_particle_preparation.json. Full producer class sizes, real polymorphic member behavior, native exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual owner; void; RET; void * return. Complete live/installed span and final instruction verified. See reports/native_particle_preparation.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af10f0",
+        "before": {
+          "address": "00af10f0",
+          "function_name": "FUN_00af10f0"
+        },
+        "after": {
+          "address": "00af10f0",
+          "name": "BSP_NativeParticleResources_GetMaterialVariant",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/disk byte span verified. Actual borrowed pointers, current signed counts and post-virtual row/table reloads; no replacement owner. See docs/NATIVE_PARTICLE_PREPARATION.md and reports/native_particle_preparation.json. Full producer class sizes, real polymorphic member behavior, native exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual owner; uint first, uint second; RET8; void * return. Complete live/installed span and final instruction verified. See reports/native_particle_preparation.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af1120",
+        "before": {
+          "address": "00af1120",
+          "function_name": "TRIV_body_00af1120"
+        },
+        "after": {
+          "address": "00af1120",
+          "name": "BSP_NativeParticleResources_GetSecondaryMaterial",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/disk byte span verified. Actual borrowed pointers, current signed counts and post-virtual row/table reloads; no replacement owner. See docs/NATIVE_PARTICLE_PREPARATION.md and reports/native_particle_preparation.json. Full producer class sizes, real polymorphic member behavior, native exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual owner; void; RET; void * return. Complete live/installed span and final instruction verified. See reports/native_particle_preparation.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af40e0",
+        "before": {
+          "address": "00af40e0",
+          "function_name": "FUN_00af40e0"
+        },
+        "after": {
+          "address": "00af40e0",
+          "name": "BSP_NativeParticleVariant_Prepare",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/disk byte span verified. Actual borrowed pointers, current signed counts and post-virtual row/table reloads; no replacement owner. See docs/NATIVE_PARTICLE_PREPARATION.md and reports/native_particle_preparation.json. Full producer class sizes, real polymorphic member behavior, native exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual owner; void; RET; void return. Complete live/installed span and final instruction verified. See reports/native_particle_preparation.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af9f50",
+        "before": {
+          "address": "00af9f50",
+          "function_name": "FUN_00af9f50"
+        },
+        "after": {
+          "address": "00af9f50",
+          "name": "BSP_NativeParticleDefinition_Prepare",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/disk byte span verified. Actual borrowed pointers, current signed counts and post-virtual row/table reloads; no replacement owner. See docs/NATIVE_PARTICLE_PREPARATION.md and reports/native_particle_preparation.json. Full producer class sizes, real polymorphic member behavior, native exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual owner; void; RET; void return. Complete live/installed span and final instruction verified. See reports/native_particle_preparation.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b0d130",
+        "before": {
+          "address": "00b0d130",
+          "function_name": "BSP_ShadowTextureOwner_GetTexture",
+          "comment": "[BSP reconstruction 00b0d130]\nBSP reconstruction hypothesis: MOV ECX,[ECX+3Ch]; JMP00b4cb10. Material fragment supplies global00f8d39c; this is a nested pointer getter, not an adjustor thunk. ABI: ECX owner; no stack arguments; EAX borrowed logical texture through tailcall. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Host shadow binding uses explicit inputs; no engine shadow generation or game-validation claim. Original ABI: ECX owner; no stack arguments; EAX borrowed logical texture through tailcall. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+        },
+        "after": {
+          "address": "00b0d130",
+          "name": "BSP_ShadowTextureOwner_GetTexture",
+          "evidence": "BSP reconstruction hypothesis: MOV ECX,[ECX+3Ch]; JMP00b4cb10. Material fragment supplies global00f8d39c; this is a nested pointer getter, not an adjustor thunk. ABI: ECX owner; no stack arguments; EAX borrowed logical texture through tailcall. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Host shadow binding uses explicit inputs; no engine shadow generation or game-validation claim. Original ABI: ECX owner; no stack arguments; EAX borrowed logical texture through tailcall. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation. | Descriptive hypothesis, not a recovered symbol. Full live/disk byte span verified. Actual borrowed pointers, current signed counts and post-virtual row/table reloads; no replacement owner. See docs/NATIVE_PARTICLE_PREPARATION.md and reports/native_particle_preparation.json. Full producer class sizes, real polymorphic member behavior, native exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual owner; void; RET; void * return. Complete live/installed span and final instruction verified. See reports/native_particle_preparation.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b0d140",
+        "before": {
+          "address": "00b0d140",
+          "function_name": "FUN_00b0d140"
+        },
+        "after": {
+          "address": "00b0d140",
+          "name": "BSP_NativeShadowTextureOwner_GetMapTexture",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/disk byte span verified. Actual borrowed pointers, current signed counts and post-virtual row/table reloads; no replacement owner. See docs/NATIVE_PARTICLE_PREPARATION.md and reports/native_particle_preparation.json. Full producer class sizes, real polymorphic member behavior, native exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual owner; void; RET; void * return. Complete live/installed span and final instruction verified. See reports/native_particle_preparation.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b4cb10",
+        "before": {
+          "address": "00b4cb10",
+          "function_name": "BSP_ShadowTextureHolder_GetTexture",
+          "comment": "[BSP reconstruction 00b4cb10]\nBSP reconstruction hypothesis: Return holder+8h without AddRef or null guard. ABI: ECX holder; no stack arguments; EAX borrowed logical texture; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Host shadow binding uses explicit inputs; no engine shadow generation or game-validation claim. Original ABI: ECX holder; no stack arguments; EAX borrowed logical texture; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+        },
+        "after": {
+          "address": "00b4cb10",
+          "name": "BSP_ShadowTextureHolder_GetTexture",
+          "evidence": "BSP reconstruction hypothesis: Return holder+8h without AddRef or null guard. ABI: ECX holder; no stack arguments; EAX borrowed logical texture; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Host shadow binding uses explicit inputs; no engine shadow generation or game-validation claim. Original ABI: ECX holder; no stack arguments; EAX borrowed logical texture; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation. | Descriptive hypothesis, not a recovered symbol. Full live/disk byte span verified. Actual borrowed pointers, current signed counts and post-virtual row/table reloads; no replacement owner. See docs/NATIVE_PARTICLE_PREPARATION.md and reports/native_particle_preparation.json. Full producer class sizes, real polymorphic member behavior, native exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual owner; void; RET; void * return. Complete live/installed span and final instruction verified. See reports/native_particle_preparation.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b4d170",
+        "before": {
+          "address": "00b4d170",
+          "function_name": "TRIV_body_00b4d170"
+        },
+        "after": {
+          "address": "00b4d170",
+          "name": "BSP_NativeShadowMap_GetTextureHolder",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/disk byte span verified. Actual borrowed pointers, current signed counts and post-virtual row/table reloads; no replacement owner. See docs/NATIVE_PARTICLE_PREPARATION.md and reports/native_particle_preparation.json. Full producer class sizes, real polymorphic member behavior, native exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual owner; void; RET; void * return. Complete live/installed span and final instruction verified. See reports/native_particle_preparation.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated."
+        },
+        "status": "applied"
+      }
+    ]
+  },
+  "ghidra_signature_audit_am": {
+    "project_saved": true,
+    "readback_verified": true,
+    "before": {
+      "00af40e0": "00af40e0 BSP_NativeParticleVariant_Prepare  undefined BSP_NativeParticleVariant_Prepare(void)  body 00af40e0 - 00af4105\n",
+      "00af9f50": "00af9f50 BSP_NativeParticleDefinition_Prepare  undefined BSP_NativeParticleDefinition_Prepare(void)  body 00af9f50 - 00af9fa0\n",
+      "00af10a0": "00af10a0 BSP_NativeParticleResources_GetIndexStream  undefined BSP_NativeParticleResources_GetIndexStream(void)  body 00af10a0 - 00af10a3\n",
+      "00af10b0": "00af10b0 BSP_NativeParticleResources_GetVertexDescriptor  undefined BSP_NativeParticleResources_GetVertexDescriptor(void)  body 00af10b0 - 00af10b3\n",
+      "00af1120": "00af1120 BSP_NativeParticleResources_GetSecondaryMaterial  undefined BSP_NativeParticleResources_GetSecondaryMaterial(void)  body 00af1120 - 00af1123\n",
+      "00af10f0": "00af10f0 BSP_NativeParticleResources_GetMaterialVariant  undefined BSP_NativeParticleResources_GetMaterialVariant(void)  body 00af10f0 - 00af111c\n",
+      "00b4d170": "00b4d170 BSP_NativeShadowMap_GetTextureHolder  undefined BSP_NativeShadowMap_GetTextureHolder(void)  body 00b4d170 - 00b4d173\n",
+      "00b4cb10": "00b4cb10 BSP_ShadowTextureHolder_GetTexture  undefined BSP_ShadowTextureHolder_GetTexture(void)  body 00b4cb10 - 00b4cb13\n",
+      "00b0d130": "00b0d130 BSP_ShadowTextureOwner_GetTexture  undefined BSP_ShadowTextureOwner_GetTexture(void)  body 00b0d130 - 00b0d137\n",
+      "00b0d140": "00b0d140 BSP_NativeShadowTextureOwner_GetMapTexture  undefined BSP_NativeShadowTextureOwner_GetMapTexture(void)  body 00b0d140 - 00b0d14e\n",
+      "007099c0": "007099c0 BSP_NativeNode_SetHierarchyMask  undefined BSP_NativeNode_SetHierarchyMask(void)  body 007099c0 - 007099e3\n"
+    },
+    "changes": [
+      {
+        "address": "00af40e0",
+        "prototype": "void __thiscall BSP_NativeParticleVariant_Prepare(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af40e0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af9f50",
+        "prototype": "void __thiscall BSP_NativeParticleDefinition_Prepare(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af9f50 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af10a0",
+        "prototype": "void * __thiscall BSP_NativeParticleResources_GetIndexStream(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af10a0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af10b0",
+        "prototype": "void * __thiscall BSP_NativeParticleResources_GetVertexDescriptor(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af10b0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af1120",
+        "prototype": "void * __thiscall BSP_NativeParticleResources_GetSecondaryMaterial(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af1120 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af10f0",
+        "prototype": "void * __thiscall BSP_NativeParticleResources_GetMaterialVariant(uint first, uint second)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af10f0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b4d170",
+        "prototype": "void * __thiscall BSP_NativeShadowMap_GetTextureHolder(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b4d170 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b4cb10",
+        "prototype": "void * __thiscall BSP_ShadowTextureHolder_GetTexture(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b4cb10 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b0d130",
+        "prototype": "void * __thiscall BSP_ShadowTextureOwner_GetTexture(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b0d130 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b0d140",
+        "prototype": "void * __thiscall BSP_NativeShadowTextureOwner_GetMapTexture(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b0d140 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "007099c0",
+        "prototype": "void __thiscall BSP_NativeNode_SetHierarchyMask(uint mask)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 007099c0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ]
   }
 }

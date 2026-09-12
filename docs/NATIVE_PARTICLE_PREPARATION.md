@@ -47,3 +47,13 @@ three full 1488-byte hierarchy images (79 assertions). Original virtual member
 implementations, exceptional paths and gameplay were not executed. The call
 verifier checks four direct CALL rows; two virtual calls are explicitly indirect.
 Two JMP rows are recorded separately and executed by the native-byte probe.
+
+## AM combined validation and saved analysis
+
+The combined strict MSVC Win32 build and both existing seeded CTests passed.
+Eight call reports check200 direct CALL rows without failures. All seven focused
+replays pass within their documented boundaries. Saved names, native signatures,
+full body ranges and old-comment preservation were read back; affected exports
+were refreshed. The report embeds the earliest annotation preimages and repair
+records. Earlier worker pending notes describe isolated snapshots. No original
+exception ABI, complete application composition or gameplay claim is added.

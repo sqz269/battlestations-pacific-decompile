@@ -248,3 +248,13 @@ AFD2E0 now receives the current one-bit reference explicitly. AF40E0 still
 requires actual current member virtual14/0C dispatch; source ownership and
 renderer/random application bindings remain required. These helper fixtures
 do not establish complete AF74A0 execution. See also NATIVE_PARTICLE_ARRAY_RESIZE.md.
+
+## AM combined validation and saved analysis
+
+The combined strict MSVC Win32 build and both existing seeded CTests passed.
+Eight call reports check200 direct CALL rows without failures. All seven focused
+replays pass within their documented boundaries. Saved names, native signatures,
+full body ranges and old-comment preservation were read back; affected exports
+were refreshed. The report embeds the earliest annotation preimages and repair
+records. Earlier worker pending notes describe isolated snapshots. No original
+exception ABI, complete application composition or gameplay claim is added.

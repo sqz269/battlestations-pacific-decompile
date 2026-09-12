@@ -125,3 +125,13 @@ not the actual game definition implementation or native CRT exceptional policy.
 Native EH/object compatibility, full successful generation and gameplay are
 unvalidated. No permanent tests were added. The integrator owns combined CMake
 registration, the standard build and any saved-analysis changes.
+
+## AM combined validation and saved analysis
+
+The combined strict MSVC Win32 build and both existing seeded CTests passed.
+Eight call reports check200 direct CALL rows without failures. All seven focused
+replays pass within their documented boundaries. Saved names, native signatures,
+full body ranges and old-comment preservation were read back; affected exports
+were refreshed. The report embeds the earliest annotation preimages and repair
+records. Earlier worker pending notes describe isolated snapshots. No original
+exception ABI, complete application composition or gameplay claim is added.

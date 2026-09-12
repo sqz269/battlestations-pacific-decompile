@@ -150,3 +150,13 @@ See NATIVE_PARTICLE_EMITTER_UPDATE.md, NATIVE_PARTICLE_RECORD_UPDATE.md,
 NATIVE_PARTICLE_EMISSION_SPAWN.md and NATIVE_PARTICLE_RECORD_CHILDREN.md.
 Earlier isolated fixture service descriptions are historical, not final wiring.
 Full application composition, native exception ABI and gameplay remain unproven.
+
+## AM combined validation and saved analysis
+
+The combined strict MSVC Win32 build and both existing seeded CTests passed.
+Eight call reports check200 direct CALL rows without failures. All seven focused
+replays pass within their documented boundaries. Saved names, native signatures,
+full body ranges and old-comment preservation were read back; affected exports
+were refreshed. The report embeds the earliest annotation preimages and repair
+records. Earlier worker pending notes describe isolated snapshots. No original
+exception ABI, complete application composition or gameplay claim is added.

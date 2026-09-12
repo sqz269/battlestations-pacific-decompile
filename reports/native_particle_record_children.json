@@ -2,7 +2,7 @@
   "packet": "orch3_particle_record_children_am",
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
-  "status": "reconstructed_strict_win32_compile_tested_bounded_original_byte_fixture_tested",
+  "status": "reconstructed_strict_win32_build_tested_bounded_fixture_tested_saved_analysis_verified",
   "headers": [
     "include/bsp/native_particle_record_children.hpp"
   ],
@@ -87,10 +87,15 @@
       "evidence": "Complete verified-target assembly, native caller setup and final RET; installed-byte original fixture. See packet documentation. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual18h owner; stack same model,definition,parent108h,requested,time,elapsed; EAX actual appended count; RET18; elapsed unread. Complete live/installed span and final instruction verified. See reports/native_particle_record_children.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
       "uncertainty": "Names are provisional hypotheses; added EDX access is a new integration ABI. Required captured definition implementation and CRT exceptional behavior, native EH/object compatibility and gameplay unvalidated.",
       "live_disk_equal": true,
-      "ghidra_name": "BSP_AppendNativeParticleRecordChildren",
-      "native_prototype": "int __thiscall BSP_AppendNativeParticleRecordChildren(void * model, void * definition, void * parent, float requested, float time, float elapsed)",
+      "ghidra_name": "BSP_NativeParticleRecords_GenerateDescendants",
+      "native_prototype": "int __thiscall BSP_NativeParticleRecords_GenerateDescendants(void * model, void * definition, void * parent, float requested, float time, float elapsed)",
       "native_calling_convention": "__thiscall",
-      "original_abi_compatible": false
+      "original_abi_compatible": false,
+      "name_correction": {
+        "was": "BSP_AppendNativeParticleRecordChildren",
+        "is": "BSP_NativeParticleRecords_GenerateDescendants",
+        "reason": "Ghidra name-collision guard rejects token-subset extension of existing single-record append; generated descendants distinguishes actual behavior."
+      }
     }
   ],
   "call_sites": [
@@ -280,8 +285,101 @@
   },
   "integration_am": {
     "source_review": "complete; preparation/constructor additionally independently reviewed",
-    "saved_analysis": "pending",
-    "full_build": "pending",
-    "gameplay": false
+    "saved_analysis": "saved and read back;41 name/evidence rows,33 native signatures,43 refreshed exports",
+    "full_build": "passed standard scripts/build.ps1 strict MSVC Win32 and both seeded CTests",
+    "gameplay": false,
+    "tested_source_commit": "43c83a7deb1af1a030c1f1d755aad0ab297b6bdc",
+    "build_log": "local/am-first-combined-build.log",
+    "combined_library_sha256": "b5aee7ed0e30c940c912e27f0fc02fb27e7b208c8f4003bcf45044fcb5ea4f3b",
+    "source_hashes": {
+      "include/bsp/native_particle_record_children.hpp": "f0d037ed725afc8213fdac98c4fda4eb2678a8ae7f17ac873798b0cd1878491e",
+      "src/native_particle_record_children.cpp": "f50ca3363a9050e5e10b42a1dd2a8543cbfaf2fcc3e4fcf137c0bc36e0ca1a8d"
+    },
+    "call_reports": "200 direct CALL rows across8 reports,0failed; indirect/tail boundaries retain manual/native-fixture coverage limits",
+    "fixture": "local/am-fixture-record-children.log",
+    "original_exception_and_gameplay": false
+  },
+  "ghidra_annotation_audit_am": {
+    "attempt_records": [
+      "local/ghidra-annotations-20260912T174341Z.json",
+      "local/ghidra-annotations-20260912T174629Z.json"
+    ],
+    "earliest_preimages_preserved": true,
+    "old_comments_preserved": true,
+    "project_saved": true,
+    "readback_verified": true,
+    "changes": [
+      {
+        "address": "00afd440",
+        "before": {
+          "address": "00afd440",
+          "function_name": "FUN_00afd440"
+        },
+        "after": {
+          "address": "00afd440",
+          "name": "BSP_NativeParticleRecords_GenerateDescendants",
+          "evidence": "Complete verified-target assembly, native caller setup and final RET; installed-byte original fixture. See packet documentation. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual18h owner; stack same model,definition,parent108h,requested,time,elapsed; EAX actual appended count; RET18; elapsed unread. Complete live/installed span and final instruction verified. See reports/native_particle_record_children.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated. Proposed AppendNativeParticleRecordChildren was rejected by the live name-collision guard; GenerateDescendants describes repeated initialized child generation."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afdbf0",
+        "before": {
+          "address": "00afdbf0",
+          "function_name": "FUN_00afdbf0"
+        },
+        "after": {
+          "address": "00afdbf0",
+          "name": "BSP_InterpolateNativeParticleRecord",
+          "evidence": "Complete verified-target assembly, native caller setup and final RET; installed-byte original fixture. See packet documentation. AM integration review: descriptive hypothesis, not a recovered symbol. ECX parent108h; stack position,velocity,matrix,ordinal,fraction; RET14; ordinal unread. Complete live/installed span and final instruction verified. See reports/native_particle_record_children.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afe1a0",
+        "before": {
+          "address": "00afe1a0",
+          "function_name": "FUN_00afe1a0"
+        },
+        "after": {
+          "address": "00afe1a0",
+          "name": "BSP_InitializeNativeParticleRecord",
+          "evidence": "Complete verified-target assembly, native caller setup and final RET; installed-byte original fixture. See packet documentation. AM integration review: descriptive hypothesis, not a recovered symbol. ECX record108h; stack same model,definition,time,velocity; RET10. Complete live/installed span and final instruction verified. See reports/native_particle_record_children.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated."
+        },
+        "status": "applied"
+      }
+    ]
+  },
+  "ghidra_signature_audit_am": {
+    "project_saved": true,
+    "readback_verified": true,
+    "before": {
+      "00afe1a0": "00afe1a0 BSP_InitializeNativeParticleRecord  undefined BSP_InitializeNativeParticleRecord(void)  body 00afe1a0 - 00afe28d\n",
+      "00afdbf0": "00afdbf0 BSP_InterpolateNativeParticleRecord  undefined BSP_InterpolateNativeParticleRecord(void)  body 00afdbf0 - 00afdceb\n",
+      "00afd440": "00afd440 BSP_NativeParticleRecords_GenerateDescendants  undefined BSP_NativeParticleRecords_GenerateDescendants(void)  body 00afd440 - 00afd792\n"
+    },
+    "changes": [
+      {
+        "address": "00afe1a0",
+        "prototype": "void __thiscall BSP_InitializeNativeParticleRecord(void * model, void * definition, float time, void * velocity)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00afe1a0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00afdbf0",
+        "prototype": "void __thiscall BSP_InterpolateNativeParticleRecord(void * position, void * velocity, void * matrix, int ordinal, float fraction)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00afdbf0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00afd440",
+        "prototype": "int __thiscall BSP_NativeParticleRecords_GenerateDescendants(void * model, void * definition, void * parent, float requested, float time, float elapsed)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00afd440 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ]
   }
 }

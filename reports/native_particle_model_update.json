@@ -780,6 +780,91 @@
       "evidence": "AFCF50 complete forward copy includes final float+104; native RET4"
     },
     "full_application_composition": false,
-    "gameplay": false
+    "gameplay": false,
+    "full_build": "passed standard scripts/build.ps1 strict MSVC Win32 and both seeded CTests",
+    "tested_source_commit": "43c83a7deb1af1a030c1f1d755aad0ab297b6bdc",
+    "build_log": "local/am-first-combined-build.log",
+    "combined_library_sha256": "b5aee7ed0e30c940c912e27f0fc02fb27e7b208c8f4003bcf45044fcb5ea4f3b",
+    "source_hashes": {
+      "include/bsp/native_particle_model_update.hpp": "7578f73927ae1d7214e9a0ee285fabcf7797597e4b1d26f5dfbb87d0a889485d",
+      "src/native_particle_model_update.cpp": "9db5e5aed36166bfe0384a70c33005fc626b4a2a3ab74f2214d95a230fa718c1"
+    },
+    "call_reports": "200 direct CALL rows across8 reports,0failed; indirect/tail boundaries retain manual/native-fixture coverage limits",
+    "saved_analysis": "saved and read back;41 name/evidence rows,33 native signatures,43 refreshed exports",
+    "fixture": "local/am-fixture-model-composition.log",
+    "original_exception_and_gameplay": false,
+    "composition": "Existing696 pairs/480 model invocations plus one full original/production model update over two expired108h records; full backing and FP status equal. Old bounded native image extended with verified AFE290 body; complete producer/active-emission/application gameplay not claimed.",
+    "fixture_image_extension": {
+      "original_image": "local/model_update_image.bin",
+      "new_function": {
+        "address": "00afe290",
+        "end_inclusive": "00afead6",
+        "end_exclusive": "00afead7",
+        "size": 2119,
+        "instructions": 581,
+        "sha256": "ebc5c4f6a6c3b4c673f46acbd52d8b90d0b9b38127a14cabb453788add5d74a0",
+        "last_instruction": {
+          "address": "00afead4",
+          "size": 3,
+          "text": "ret 0xc",
+          "bytes": "c20c00"
+        },
+        "coverage": "complete through required real emission bindings",
+        "cpp_symbol": "update_native_particle_record_00afe290",
+        "proposed_ghidra_name": "BSP_UpdateNativeParticleRecord",
+        "original_abi": "ECX actual108h record; stack float time, float step, low mode byte; AL alive, upper EAX unspecified; RET0C",
+        "header": "include/bsp/native_particle_record_update.hpp",
+        "source": "src/native_particle_record_update.cpp",
+        "evidence": "Complete verified-target assembly and installed PE bytes; original caller stack setup and final RET decoded. See packet documentation. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual108h record; stack float time, float step, low mode byte; AL alive, upper EAX unspecified; RET0C. Complete live/installed span and final instruction verified. See reports/native_particle_record_update.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
+        "uncertainty": "Descriptive name is provisional. Added EDX access on update entries is a new integration ABI. Actual native object/EH ABI and game validation unproven.",
+        "live_disk_equal": true,
+        "ghidra_name": "BSP_UpdateNativeParticleRecord",
+        "native_prototype": "byte __thiscall BSP_UpdateNativeParticleRecord(float time, float step, byte mode)",
+        "native_calling_convention": "__thiscall",
+        "original_abi_compatible": false
+      },
+      "additional_decoded_absolute_operand_relocations": [
+        7332644,
+        7332666,
+        7332870,
+        7333041,
+        7333053,
+        7333063,
+        7333500
+      ],
+      "scope": "Original fixture intentionally filled unreachable unselected bodies with INT3. New expired-record composition now includes complete verified AFE290 body; all prior captured functions unchanged. Installed fixed image has no base-relocation table; exact absolute memory operands are decoded."
+    }
+  },
+  "ghidra_annotation_audit_am": {
+    "attempt_records": [
+      "local/ghidra-annotations-20260912T174341Z.json",
+      "local/ghidra-annotations-20260912T174629Z.json"
+    ],
+    "earliest_preimages_preserved": true,
+    "old_comments_preserved": true,
+    "project_saved": true,
+    "readback_verified": true,
+    "changes": [
+      {
+        "address": "00af6dd0",
+        "before": {
+          "address": "00af6dd0",
+          "function_name": "BSP_ParticleModel_Update",
+          "comment": "[BSP reconstruction 00af6dd0]\nFull installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain. Descriptive name is a provisional hypothesis, not a recovered symbol. thiscall: ECX actual 2DCh model; stack(float delta, low mode byte); RET8. See docs/NATIVE_PARTICLE_MODEL_UPDATE.md for required real services and bounded fixture coverage. New interface; native object/EH ABI and gameplay unvalidated."
+        },
+        "after": {
+          "address": "00af6dd0",
+          "name": "BSP_ParticleModel_Update",
+          "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain. Descriptive name is a provisional hypothesis, not a recovered symbol. thiscall: ECX actual 2DCh model; stack(float delta, low mode byte); RET8. See docs/NATIVE_PARTICLE_MODEL_UPDATE.md for required real services and bounded fixture coverage. New interface; native object/EH ABI and gameplay unvalidated. | Provisional descriptive hypothesis, not a recovered symbol. AM source integration correction. Direct recovered append/emitter/record update and nested emission kernels use same actual storage and borrowed per-call contexts. Definition virtual08 temporary extent corrected fromA0h to108h by complete AFCF50 reads. See reports/native_particle_model_update.json. No full application/native exception/gameplay claim."
+        },
+        "status": "applied"
+      }
+    ]
+  },
+  "ghidra_signature_audit_am": {
+    "project_saved": true,
+    "readback_verified": true,
+    "before": {},
+    "changes": []
   }
 }

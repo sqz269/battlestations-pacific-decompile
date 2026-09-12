@@ -150,3 +150,13 @@ Missing functions are B05400..B05402 (literal RET4), CBB7B6..CBB7BF
 (MOV EAX,DF3904 then JMP BF6B43). The three existing unwind functions already
 have correct bodies. Parent integration owns definition/flow repairs,
 annotations, ledger metadata, save/export and CMake wiring.
+
+## AM combined validation and saved analysis
+
+The combined strict MSVC Win32 build and both existing seeded CTests passed.
+Eight call reports check200 direct CALL rows without failures. All seven focused
+replays pass within their documented boundaries. Saved names, native signatures,
+full body ranges and old-comment preservation were read back; affected exports
+were refreshed. The report embeds the earliest annotation preimages and repair
+records. Earlier worker pending notes describe isolated snapshots. No original
+exception ABI, complete application composition or gameplay claim is added.
