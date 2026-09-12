@@ -254,3 +254,13 @@ interpolation wave passes the frame leftover and never commits; `00929CB0` divid
 into the physics interpolator's alpha), `+8h` advances the simulation, `+0Ch` commits the pose, `+10h`/`+14h`
 are the base stub in all eight concrete tables. The group index picks the job-pool batch; every wave loops
 all five groups with the same admission test.
+
+## Correction from docs/GUN_BOT_TICKS.md
+
+Packet `cc2_gun_bot_ticks` settles the `vtable[+0Ch]` callee this doc left open ("`008759B0`'s
+sub-list is covered as a rule but its `vtable[+0Ch]` callee is not"): for a gun's tick node the
+sub-list holds the gun bots (`BSP_GunBot_Attach` `008FBC80` and the per-class attach bodies
+`008FBDC0` / `008FBEC0` / `006DF1F0`), so the `+0Ch` callee is one of the five aim ticks
+`008FFA20` / `008FFF20` / `00902920` / `009030C0` / `006DF520`, and the `dt` they receive is the
+wave's 0.05f. The follow-up row `tick_element_sublist` above is closed for gun nodes by that
+packet; other node kinds keep their own callees.
