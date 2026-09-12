@@ -1,0 +1,68 @@
+{
+  "reason": "Verified native listing: inline 00735B50 has no effective inputs and RET; job 004BBD00 ignores incoming ECX/EDX and consumes one unused stack DWORD with RET4; transition 004CD610 uses ECX game plus one stack byte in a DWORD slot and RET4. unused_edx is an analysis carrier, not an original argument.",
+  "entries": [
+    {
+      "address": "00735b50",
+      "proposed": "void __cdecl BSP_SoundFrame_ServiceInline()",
+      "before": "Function: FUN_00735b50 at 00735b50\nSignature: undefined FUN_00735b50(void)\nEntry: 00735b50\nBody: 00735b50 - 00735c20",
+      "apply": "Successfully set prototype for function at 00735b50 with __cdecl calling convention",
+      "after": "Function: BSP_SoundFrame_ServiceInline at 00735b50\nSignature: void __cdecl BSP_SoundFrame_ServiceInline(void)\nEntry: 00735b50\nBody: 00735b50 - 00735c20",
+      "readback_verified": true
+    },
+    {
+      "address": "004bbd00",
+      "proposed": "void __fastcall BSP_SoundFrame_RunJob(void* unused_ecx, void* unused_edx, uint unused_job_argument)",
+      "before": "Function: FUN_004bbd00 at 004bbd00\nSignature: undefined FUN_004bbd00(void)\nEntry: 004bbd00\nBody: 004bbd00 - 004bbdcf",
+      "apply": "Successfully set prototype for function at 004bbd00 with __fastcall calling convention",
+      "after": "Function: BSP_SoundFrame_RunJob at 004bbd00\nSignature: void __fastcall BSP_SoundFrame_RunJob(void * unused_ecx, void * unused_edx, uint unused_job_argument)\nEntry: 004bbd00\nBody: 004bbd00 - 004bbdcf",
+      "readback_verified": true
+    },
+    {
+      "address": "004cd610",
+      "proposed": "void __fastcall BSP_Game_PrepareSoundTransition(void* game, void* unused_edx, byte change_input)",
+      "before": "Function: FUN_004cd610 at 004cd610\nSignature: undefined FUN_004cd610(void)\nEntry: 004cd610\nBody: 004cd610 - 004cd6cc",
+      "apply": "Successfully set prototype for function at 004cd610 with __fastcall calling convention",
+      "after": "Function: BSP_Game_PrepareSoundTransition at 004cd610\nSignature: void __fastcall BSP_Game_PrepareSoundTransition(void * game, void * unused_edx, byte change_input)\nEntry: 004cd610\nBody: 004cd610 - 004cd6cc",
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00735b50",
+        "prototype": "void __cdecl BSP_SoundFrame_ServiceInline()",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 00735b50 with __cdecl calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "004bbd00",
+        "prototype": "void __fastcall BSP_SoundFrame_RunJob(void* unused_ecx, void* unused_edx, uint unused_job_argument)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 004bbd00 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "004cd610",
+        "prototype": "void __fastcall BSP_Game_PrepareSoundTransition(void* game, void* unused_edx, byte change_input)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 004cd610 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

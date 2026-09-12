@@ -1,0 +1,133 @@
+{
+  "packet": "orch4_sound_application_ab",
+  "status": "partial_application_sound_composition_build_and_actual_two_frame_run_verified",
+  "source": [
+    "include/bsp/game_hosts.hpp",
+    "src/game_hosts.cpp"
+  ],
+  "document": "docs/SOUND_APPLICATION_WIRING.md",
+  "analysis_project": "C:/Users/sqz269/bsp.gpr",
+  "analysis_program": "/battlestationspacific.exe",
+  "original_abi": "0073D410 receives application ECX and two stack values; complete return signature not revised. C++ composition is not an original ABI or SEH replacement.",
+  "new_complete_native_routines": 0,
+  "game_validated": false,
+  "audible_playback_verified": false,
+  "call_coverage": "Only sound startup calls and existing loop pretranslation import; other application and loop calls outside this fragment.",
+  "host_steps": [
+    {
+      "address": "0073dafd",
+      "native": "00a88770",
+      "caller": "0073d410",
+      "service": "actual core startup after settings"
+    },
+    {
+      "address": "0073db2b",
+      "native": "00a79230",
+      "caller": "0073d410",
+      "service": "actual streamed dialog startup"
+    },
+    {
+      "address": "00bec1d8",
+      "native": "00c2f1d2",
+      "caller": "00bec1a0",
+      "service": "shared real XLivePreTranslateMessage library"
+    }
+  ],
+  "ordering": {
+    "parser_registration": [
+      "0073db41",
+      "0073db69"
+    ],
+    "music_store": "0073db7e",
+    "speech_store": "0073db8e",
+    "window_indirect_call": "0073dc25",
+    "window_caller_cleanup": "0073dc2b",
+    "online_initialization_call": "0073dc7c",
+    "input_initialization_call": "0073dd8e"
+  },
+  "publication_evidence": "reports/game_platform_services.json proves loader-zero F8ABE8/F8BBF4 and later unique nonzero construction routes; no placeholder owners are created.",
+  "source_sha256_before_commit": {
+    "include/bsp/game_hosts.hpp": "4d89c68ed6f5336ab54f63005cb01bec2ba9b0557d62a07bdd11364c6bcd1a17",
+    "src/game_hosts.cpp": "d6ab47ce6e76e24a3ad585f36af2c39f9dd062cb7c1215fff3626373637ad326"
+  },
+  "selected_library_sha256": {
+    "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll": "31e7451aef6115b0aec353e4e508ff9f0fc14ea3a8957e5ddb805ede911700e8",
+    "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll": "4b6ae7ba8d3da780c23abb5e72a65ea50e5348a60a1b4aef43196e09ae771890",
+    "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\gfwl-private-runtime\\xlive.dll": "79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385",
+    "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\gfwl-private-runtime\\msidcrl40.dll": "623cb6ca98e566357abbd0e76b15713921e1d7e1144c0c4f589a0407c7eff1ee",
+    "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\gfwl-private-runtime\\ppcrlconfig.dll": "649557d6349ea0658808952c1bbf9a111ec2283c29345c7f904919fd599e5d61",
+    "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\gfwl-private-runtime\\xlivefnt.dll": "a07e20c09a0c3eac2ed3e6288d67060e82b70595053153866b1cfb4f9958f9a4"
+  },
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "ctests_passed": 2,
+      "log": "local/sound_application_ab_build.log"
+    },
+    "run": {
+      "command": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\build\\win32\\Release\\bsp_game.exe",
+        "--game-root",
+        "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+        "--settings-personal-root",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\sound-application-ab-personal",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--frames",
+        "2",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\sound_application_ab_run.log"
+      ],
+      "returncode": 0,
+      "seconds": 1.442143201828003
+    },
+    "run_log": "local/sound_application_ab_run.log",
+    "startup": {
+      "before_window": true,
+      "sound_enabled": true,
+      "classes": 7,
+      "resources": 1,
+      "resource_bytes": 0,
+      "fmod_calls": 132,
+      "fmod_errors": 0,
+      "file_opens": 0,
+      "file_closes": 0,
+      "load_pretranslations": 0,
+      "load_focus_calls": 1
+    },
+    "loop": {
+      "frames": 2,
+      "presented": 2,
+      "real_xlive_pretranslation_calls": 2
+    },
+    "raw_teardown": {
+      "registered_slots": 3,
+      "started": false,
+      "classes": 0,
+      "samples": 0,
+      "resources": 0,
+      "file_opens": 0,
+      "sdk_file_closes": 0,
+      "host_file_reclaims": 0,
+      "pending_file_adapters": 0,
+      "fmod_errors": 0
+    },
+    "limits": [
+      "No sound file opens or audible playback in this run",
+      "Online/input owners remain explicitly unimplemented",
+      "Game render/listener and title menu bindings remain pending",
+      "Private matching XLive SDK pair explicitly selected; installed files unchanged"
+    ]
+  },
+  "follow_up": [
+    "Shared raw online manager and IPC lifecycle",
+    "Actual input backend and lazy action manager",
+    "Native game-render entry and listener service bindings",
+    "Canonical native menu title-path/owning stream slot, MoviePlayer host and track selection producer"
+  ],
+  "no_ghidra_function": []
+}
