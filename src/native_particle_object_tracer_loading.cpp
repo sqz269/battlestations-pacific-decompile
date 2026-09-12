@@ -1,5 +1,6 @@
 #include "bsp/native_particle_object_tracer_loading.hpp"
 #include "bsp/native_particle_type_property.hpp"
+#include "bsp/native_particle_type_resources.hpp"
 #include "bsp/native_particle_type_base.hpp"
 #include "bsp/native_particle_parameter_loading.hpp"
 #include "bsp/native_particle_model_update.hpp"
@@ -7,6 +8,7 @@
 #include "bsp/native_string.hpp"
 #include <cstdlib>
 #include <cstring>
+#include <stdexcept>
 
 namespace bsp {
 static_assert(sizeof(void*)==4,"Actual particle loading requires Win32");
@@ -189,7 +191,11 @@ bool load_native_object_particle_definition_00af8bd0(void* p,void* text,
         if(text_is(name,"Model")) {
             Pooled model(line,2,b.parameters.owners.strings);
             const auto target=load<std::uint32_t>(load<void*>(p),0x20);
-            b.properties.model_virtual20(b.properties.context,p,target,model.header.data);
+            if(target==0x00af9660 && b.properties.resources){
+                if(&b.properties.resources->base!=&b.properties.base)
+                    throw std::logic_error("particle model loading requires the same native base domain");
+                load_native_object_particle_models_00af9660(p,model.header.data,*b.properties.resources);
+            }else b.properties.model_virtual20(b.properties.context,p,target,model.header.data);
             return;
         }
         parse_parameter(p,line,name,b,kind,[&](void* builder,float scalar) {

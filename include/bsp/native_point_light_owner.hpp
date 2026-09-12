@@ -119,4 +119,11 @@ private:
 // Host setup failure reclaims only this unpublished fresh construction.
 NativePointLightReference* allocate_native_point_light(NativePointLightEnvironment&,
     const NativeString&);
+// Host ownership composition after the caller has performed the actual raw
+// allocation and B7C710 construction in its native order. Requires a fresh,
+// unbound slot from this SAME environment. Consumes that constructed slot;
+// host companion/binding failure destroys it and returns it to the same pool.
+// This adds no native allocation, constructor, retain, or alternate owner graph.
+NativePointLightReference* adopt_constructed_native_point_light(
+    NativePointLightEnvironment&, NativePointLightStorageView);
 } // namespace bsp

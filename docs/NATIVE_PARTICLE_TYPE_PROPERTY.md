@@ -55,3 +55,10 @@ Project `C:/Users/sqz269/bsp.gpr`, program `/battlestationspacific.exe`, and ins
 Strict isolated MSVC Win32 compile and native differential passed with process exit0: `/MD /W4 /WX /fp:strict /O2`, embedded manifest, explicit main return0, and the real SysWOW64 d3dx9_40 export. Comparisons cover 84 filename cases,6 suffix cases,8 raw atlas cases,5 frame counts,5 x87 UV values (including signaling NaN),8 texture loads and15 common properties. Raw bytes, AL/EAX results, pool/array allocation-release order, and renderer/deleting/shader call traces agree. Commands and executable/source/library hashes are in the report and scratch `C:/Users/sqz269/bsp-aq-properties`.
 
 `verify_report_calls.py` validates the report's exact decoded address/native rows. Full primary build/current integrated library replay is pending integration; the worker adds no CMake entries, shared metadata or permanent tests. Fixtures reach only supported normal allocations and services, not original FH3/allocation-failure behavior, arbitrary malformed strings, fixed-buffer overflow, real renderer resource internals, or gameplay. The game executable does not currently reach this imported raw-owner fixture; no frame-time cause or visual parity claim is made.
+
+## Correction from docs/NATIVE_PARTICLE_TYPE_RESOURCES.md (AR)
+
+Concrete dispatch of the five captured shader10 targets B089E0/B06210/B07C80/AF80E0/B0A040 over the same actual counted-string storage; unknown current targets retain the real shader service.
+
+Earlier isolated dispatcher captures remain historical evidence; the optional
+composition does not establish complete application wiring or gameplay.

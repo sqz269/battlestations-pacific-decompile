@@ -4,6 +4,7 @@
 
 namespace bsp {
 struct TrackedCriticalSection;
+struct NativeParticleTypeStateDispatch;
 // Actual8h owner published at108FF50. Its one-slot native profileCFDEB4
 // contains72CC90, not a RefCounted interface. No host vptr/count is added.
 struct NativeParticlePopulationLockStorage {
@@ -41,6 +42,9 @@ struct NativeParticleEmissionStateAccess {
     // Find its existing canonical owner, not a new PointLight/shadow payload.
     // The caller checks identity, population runtime and physical link binding.
     NativePointLightOwner& (*resolve_light)(void*, void* actual_light);
+    // Optional concrete current-target dispatch for the five reconstructed
+    // particle families. Unknown targets still require particle_virtual18.
+    const NativeParticleTypeStateDispatch* type_states=nullptr;
 };
 // Full B0CA40..B0CC08. Original ECX actual6Ch state, six stack words
 // (particle definition,time,emitter,position,direction,record), RET18. Time is
