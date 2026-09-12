@@ -1,0 +1,494 @@
+{
+  "packet": "cc2_gun_bot_remainder",
+  "owner": "agent/cc2-gun-bot-remainder",
+  "docs": "docs/GUN_BOT_REMAINDER.md",
+  "sources": [
+    "include/bsp/gun_bot_remainder.hpp",
+    "src/gun_bot_remainder.cpp"
+  ],
+  "subject": "The parts of the gun-bot family docs/GUN_BOT_TICKS.md left partial: the torpedo intercept solver 008FBB00/008FB8D0, the entity lead-point predictor behind vtable slot 100h, DepthChargeBot's tick 008FC080, AAGunnerBot's fire byte, the 008FFF20 callees and 00959C20's solution builders. Ghidra was read-only for this packet.",
+  "reuses": [
+    "include/bsp/gun_bot_ticks.hpp for GunBotTargetValidity, gun_bot_target_still_valid_008ffa20 and kAAGunnerBotRangeFraction",
+    "docs/ROBOT_CONFIG.md for the descriptor header and the per-level strides; the Lua key names come from the readers it tabulates"
+  ],
+  "functions": [
+    {
+      "address": "008fb8d0",
+      "name": "BSP_Math_SolveInterceptTime",
+      "abi": "__fastcall(ECX const float3* shooter, EDX const float3* target, float speed, const float3* target_velocity, float* t1, float* t2) -> int, RET 10h, body 008fb8d0-008fbafb",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "note": "a = |v|^2 - speed^2, b = dot(shooter - target, v), c = |shooter - target|^2. The quadratic arm needs |a| outside 1e-4, uses disc = b*b - 4*a*c and roots (b +/- sqrt(disc)) / (2a). The exact intercept needs a linear coefficient of 2*dot(d, v), so every non-abeam solution under-leads.",
+      "calls": [
+        {
+          "address": "008fba21",
+          "native": "00bf7030",
+          "role": "the CRT square root of the discriminant"
+        }
+      ]
+    },
+    {
+      "address": "008fbb00",
+      "name": "BSP_Math_SolveInterceptPoint",
+      "abi": "__fastcall(ECX const float3* shooter, EDX const float3* target, float speed, const float3* target_velocity, float3* out) -> bool, RET 0Ch, body 008fbb00-008fbc08",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "note": "one root uses t1 at 008fbb9e, two roots use t2 at 008fbb3c; out = target + t * target_velocity and EAX is the boolean, not the pointer",
+      "calls": [
+        {
+          "address": "008fbb20",
+          "native": "008fb8d0",
+          "role": "the root solve; the two out pointers alias the routine's own speed and velocity argument slots"
+        }
+      ]
+    },
+    {
+      "address": "00816650",
+      "name": "BSP_Ship_PickLeadAimPoint",
+      "abi": "__thiscall(ship)(float3* out, const float3* box, const float3* origin, float section_chance, float engine_room_weight, float magazine_weight, float fueltank_weight) -> float3*, RET 1Ch, body 00816650-00816987",
+      "coverage": "complete",
+      "no_ghidra_function": true,
+      "note": "entity vtable slot 100h for every ship class. Picks one of three named sections weighted by the three Lua weights, or a random point in the hull box of [ship+538h]. The argument names come from 008FCA10's Lua keys at descriptor +20h..+2Ch.",
+      "calls": [],
+      "call_sites": "Ghidra has no function at 00816650, so tools/verify_report_calls.py cannot place these sites; the full table is in docs/GUN_BOT_REMAINDER.md section 3. 0081667C 00BD2F10 rand(0,1); 008166B7/008166FA/00816746 0093A570 with ids 5/8/6; 00816796 00BD2F10 the weighted pick; 00816883/008168A0/008168D5 00BD2F10 the three hull-box draws; 00816941 00419010 the length taper."
+    },
+    {
+      "address": "0042d810",
+      "name": "BSP_Entity_LeadAimPointZero",
+      "abi": "__thiscall(entity)(float3* out, const float3*, const float3*, float, float, float, float) -> float3*, RET 1Ch, body 0042d810-0042d827",
+      "coverage": "complete",
+      "no_ghidra_function": true,
+      "note": "entity vtable slot 100h for the base class, every plane, MLandVehicle and MLandFort: three zeroes through the out pointer, every other argument ignored",
+      "calls": []
+    },
+    {
+      "address": "0093a570",
+      "name": "BSP_ShipSectionList_Contains",
+      "abi": "__thiscall(vector)(int id) -> bool, RET 4, body 0093a570-0093a5c6",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "note": "a linear scan of the 10h-byte records between [vector+18h] and [vector+1Ch] for one whose first dword equals id; every call site in 00816650 negates the answer",
+      "calls": []
+    },
+    {
+      "address": "008fc080",
+      "name": "BSP_GunBot_DepthChargeTick",
+      "abi": "__thiscall(bot)(float dt), RET 4 at 008fc3f0, body 008fc080-008fc3f2; DepthChargeBot primary vtable 00d18338 slot +0ch",
+      "coverage": "complete except the sign of ContinuousFireTime in the burst-end test at 008fc3c7",
+      "no_ghidra_function": false,
+      "note": "drops when the submerged target's current or predicted horizontal distance is inside AttackDist, floored at 100 m. The prediction time is how long a charge takes to sink to the target.",
+      "calls": [
+        {
+          "address": "008fc08a",
+          "native": "00521ea0",
+          "role": "resolve the command target handle at bot+38h"
+        },
+        {
+          "address": "008fc0b5",
+          "native": "00803510",
+          "role": "the party relation between the two +54h records"
+        },
+        {
+          "address": "008fc0d2",
+          "native": "0072bd50",
+          "role": "bot->vtable[38h](0), clear the fire target, on any validity failure"
+        },
+        {
+          "address": "008fc0e2",
+          "native": "008fbce0",
+          "role": "the idle return-to-rest timer"
+        },
+        {
+          "address": "008fc11e",
+          "native": "00927f10",
+          "role": "the side auto-engage gate on [unit+1ACh]"
+        },
+        {
+          "address": "008fc13c",
+          "native": "0072bd30",
+          "role": "bot->vtable[44h](), the fire target entity"
+        },
+        {
+          "address": "008fc19c",
+          "native": "00414db0",
+          "role": "refresh the owner's world pose when +0C8h is clear"
+        },
+        {
+          "address": "008fc1d2",
+          "native": "0072bd30",
+          "role": "bot->vtable[44h]() again, for the target pose"
+        },
+        {
+          "address": "008fc1e1",
+          "native": "00414db0",
+          "role": "refresh the target's world pose"
+        },
+        {
+          "address": "008fc232",
+          "native": "0072d2c0",
+          "role": "the tail jump gun->vtable[1E8h](0) when the target is not submerged",
+          "kind": "tail_jump"
+        },
+        {
+          "address": "008fc264",
+          "native": "0072bd30",
+          "role": "bot->vtable[44h]() for the velocity query"
+        },
+        {
+          "address": "008fc270",
+          "native": "00415550",
+          "role": "BSP_Math_MaxFloatByRef(0, sink time), the clamp at zero"
+        },
+        {
+          "address": "008fc28a",
+          "native": "target+vtable34",
+          "role": "target->vtable[34h](&v), the world velocity; 00470ba0 and 007bbb70 are the other two bodies behind the slot"
+        },
+        {
+          "address": "008fc28e",
+          "native": "00414260",
+          "role": "tmp = velocity * sink time"
+        },
+        {
+          "address": "008fc2a0",
+          "native": "0072bd30",
+          "role": "bot->vtable[44h]() for the target's world position"
+        },
+        {
+          "address": "008fc2a4",
+          "native": "00427eb0",
+          "role": "the target's refreshed world position at +0FCh"
+        },
+        {
+          "address": "008fc2ab",
+          "native": "004142a0",
+          "role": "predicted = target position + tmp"
+        },
+        {
+          "address": "008fc334",
+          "native": "00415510",
+          "role": "BSP_Math_MinFloatByRef of the current and predicted squared horizontal distances"
+        },
+        {
+          "address": "008fc345",
+          "native": "00415550",
+          "role": "BSP_Math_MaxFloatByRef(10000, AttackDist^2), the radius floor"
+        },
+        {
+          "address": "008fc39a",
+          "native": "0072d2c0",
+          "role": "gun->vtable[1E8h](fire byte)"
+        },
+        {
+          "address": "008fc3e2",
+          "native": "00bd2f10",
+          "role": "the new fire delay, rand(FireDelay[0], FireDelay[1])"
+        }
+      ]
+    },
+    {
+      "address": "00902920",
+      "name": "BSP_GunBot_LeadErrorAimAndFireTick",
+      "abi": "__thiscall(bot)(float dt), RET 4 at 009030b0, body 00902920-009030b2; AAGunnerBot primary vtable 00d180a0 slot +0ch",
+      "coverage": "partial: 00902f62-009030b0, the fire byte, is now read from the listing; 00902920-00902f61 stays as docs/GUN_BOT_TICKS.md section 6.4 has it",
+      "no_ghidra_function": false,
+      "note": "the byte is zero unless the mount, the descriptor, the 0085ABA0 aim, a range under 0.9 * maxRange, an absolute angle-delta SUM under five degrees and a clear inhibit bit all pass",
+      "calls": [
+        {
+          "address": "00902bfd",
+          "native": "target+vtable100",
+          "role": "target->vtable[100h] with section_chance = -1.0, weights 1/1/1, origin (0,0,0) and box (0.8, 0.5, 0.8); the negative chance forces the hull-box arm"
+        },
+        {
+          "address": "00902fb0",
+          "native": "0085aba0",
+          "role": "SetTargetAngles(h, v); a rejected aim leaves the byte at zero"
+        },
+        {
+          "address": "00902ffc",
+          "native": "00438b10",
+          "role": "the horizontal delta against gun+480h"
+        },
+        {
+          "address": "0090302a",
+          "native": "00438b10",
+          "role": "the vertical delta against gun+484h"
+        },
+        {
+          "address": "0090308d",
+          "native": "target+vtable5c",
+          "role": "target->vtable[5Ch](2) with the answer discarded; EBX is 2 from 00902a82"
+        },
+        {
+          "address": "009030a8",
+          "native": "0072d2c0",
+          "role": "the tail jump into gun->vtable[1E8h](fire byte)",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "address": "008fff20",
+      "name": "BSP_GunBot_TorpedoAimAndFireTick",
+      "abi": "__thiscall(bot)(float dt), RET 4 at 009003cb, body 008fff20-0090099b; TorpedoBot primary vtable 00d182b0 slot +0ch",
+      "coverage": "partial: step 7's solver and step 12's callees are now read; the scan tail 009006fb-009007c7 is unchanged from docs/GUN_BOT_TICKS.md",
+      "no_ghidra_function": false,
+      "note": "the intercept is solved against the target's HORIZONTAL velocity only: the y component of the velocity copy is zeroed at 00900258 before the call",
+      "calls": [
+        {
+          "address": "00900110",
+          "native": "008527e0",
+          "role": "the submerged-target gate on [target+1204h] - 3.0 < [target+100h]"
+        },
+        {
+          "address": "00900120",
+          "native": "00427eb0",
+          "role": "the gun's own world position, the shooter point"
+        },
+        {
+          "address": "0090014a",
+          "native": "0072bd30",
+          "role": "bot->vtable[44h](), the fire target"
+        },
+        {
+          "address": "0090014e",
+          "native": "0042d7e0",
+          "role": "the target's world matrix; +30h..+38h is the target point"
+        },
+        {
+          "address": "009001a8",
+          "native": "0042b2f0",
+          "role": "the distance used by the range gate"
+        },
+        {
+          "address": "009001e6",
+          "native": "00415510",
+          "role": "BSP_Math_MinFloatByRef of [gun owner +44Ch] * 1.5 and bot+68h + 100.0"
+        },
+        {
+          "address": "00900200",
+          "native": "0072bd30",
+          "role": "bot->vtable[44h]() for the velocity query"
+        },
+        {
+          "address": "0090020e",
+          "native": "target+vtable34",
+          "role": "target->vtable[34h](&v), the world velocity"
+        },
+        {
+          "address": "0090025e",
+          "native": "008fbb00",
+          "role": "the intercept point against the weapon descriptor's +0E4h run speed"
+        },
+        {
+          "address": "0090058a",
+          "native": "008053c0",
+          "role": "the per-slot unit list the friendly scan walks; the head is [result+0DDCh]"
+        },
+        {
+          "address": "009005c6",
+          "native": "00427eb0",
+          "role": "each candidate's world position"
+        },
+        {
+          "address": "00900607",
+          "native": "00427e30",
+          "role": "the squared distance against 4000000, so a 2000 m scan radius"
+        },
+        {
+          "address": "009006ee",
+          "native": "004f3730",
+          "role": "the two-dimensional crossing of the torpedo run against the candidate's projected path"
+        },
+        {
+          "address": "00900951",
+          "native": "00951fc0",
+          "role": "flip the launch spread sign at unit+6D4h after the shot"
+        },
+        {
+          "address": "00900983",
+          "native": "0072d2c0",
+          "role": "the common abort, gun->vtable[1E8h](0)"
+        }
+      ]
+    },
+    {
+      "address": "004f3730",
+      "name": "BSP_Math_SegmentCrossing2D",
+      "abi": "__fastcall(ECX const float2* a0, EDX const float2* a1, const float2* b0, const float2* b1, float2* out) -> bool, RET 0Ch, body 004f3730-004f3801",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "note": "only [0] and [1] of every argument are read; 008FFF20 packs (x, z) into them. Both segment parameters must land in [0, 1] (00D7A24C) and the point written is on the first segment.",
+      "calls": [
+        {
+          "address": "004f3781",
+          "native": "004f3630",
+          "role": "the two segment parameters; the out pointers alias this routine's own b0 and b1 argument slots"
+        }
+      ]
+    },
+    {
+      "address": "004f3630",
+      "name": "BSP_Math_SegmentParameters2D",
+      "abi": "__fastcall(ECX const float2* a0, EDX const float2* da, const float2* b0, const float2* db, float* t, float* u) -> bool, RET 10h, body 004f3630-004f372e",
+      "coverage": "complete except the tolerance 004F3560 applies",
+      "no_ghidra_function": false,
+      "note": "denominator db.x * da.y - db.y * da.x; t is the parameter along a0 -> a1 and u the one along b0 -> b1",
+      "calls": [
+        {
+          "address": "004f36a5",
+          "native": "004f3560",
+          "role": "reject a parallel pair; a relative near-equality test whose tolerance rule was not read"
+        }
+      ]
+    },
+    {
+      "address": "008527e0",
+      "name": "BSP_Submarine_IsShallowEnoughToEngage",
+      "abi": "__fastcall(entity) -> bool, RET, body 008527e0-0085281a",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "note": "[entity+1204h] - 3.0 (00D7A2B0, a double) < [entity+100h], the world height",
+      "calls": [
+        {
+          "address": "008527ed",
+          "native": "00414db0",
+          "role": "refresh the world pose when +0C8h is clear"
+        }
+      ]
+    },
+    {
+      "address": "008fe140",
+      "name": "BSP_Entity_AsShipOrNull",
+      "abi": "__fastcall(entity) -> entity*, RET, body 008fe140-008fe15b",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "note": "returns the argument when it is non-null and vtable[5Ch](6) accepts, otherwise null",
+      "calls": []
+    },
+    {
+      "address": "00955830",
+      "name": "BSP_Device_AimDirectionToLocalPair",
+      "abi": "__thiscall(device)(int* out_flag, float* out_pair), RET 8, body 00955830-00955965",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "note": "transforms the stored direction at device+110h into the device's local frame and splits it; a local y above 1.0 or below -1.0 writes a sentinel into the flag instead of a pair",
+      "calls": []
+    },
+    {
+      "address": "00957740",
+      "name": "BSP_Aim_ResolveRayToWorldPoint",
+      "abi": "__fastcall(ECX filter, EDX const float3* origin, const float3* direction, float3* out, device), RET 0Ch, body 00957740-00957bcc",
+      "coverage": "partial: entry, the range clamp and the segment query; the 00957850-00957bcc tail was not read",
+      "no_ghidra_function": false,
+      "note": "extends the ray to t = -origin.y / direction.y clamped to [[device+3F8h]+34h]+60h, queries the spatial index for the first hit and falls back to the y = 0 plane crossing",
+      "calls": []
+    },
+    {
+      "address": "00957bd0",
+      "name": "read_only_no_name_assigned_00957bd0",
+      "abi": "__fastcall(ECX, EDX, float, float, float, u4, u4, int, float*), seven stack args, body 00957bd0-009580dc, SEH frame with handler 00CA8F58",
+      "coverage": "contract: unread, ABI only",
+      "no_ghidra_function": false,
+      "note": "the kind-1/2 arm's solution builder; no name was recorded for it",
+      "calls": []
+    },
+    {
+      "address": "00951fc0",
+      "name": "BSP_Unit_FlipTorpedoSpreadOffset",
+      "abi": "__fastcall(unit), RET, body 00951fc0-00952042",
+      "coverage": "partial: the sign flip is read, the limit test at the tail is x87 and was taken from pseudocode",
+      "no_ghidra_function": false,
+      "note": "negates unit+6D4h, subtracting 00CF8608 on the positive branch; 008FFF20 reads the same field at 00900280 while building the run heading, so consecutive launches alternate their spread",
+      "calls": []
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "0042d810",
+      "name": "BSP_Entity_LeadAimPointZero",
+      "end_address": "0042d827",
+      "note": "entity vtable slot 100h for the base, plane, land-vehicle and land-fort classes. Ghidra's enclosing candidate is 0042d7e0 BSP_EntityPose_GetWorldMatrix; int3 padding at 0042d828 follows the RET 1Ch at 0042d825.",
+      "body": "0042d810-0042d827"
+    },
+    {
+      "address": "00816650",
+      "name": "BSP_Ship_PickLeadAimPoint",
+      "end_address": "00816987",
+      "note": "entity vtable slot 100h for every ship class. Ghidra's enclosing candidate is 00816410; int3 padding at 00816988 follows the RET 1Ch at 00816985 and the next function starts at 00816990.",
+      "body": "00816650-00816987"
+    },
+    {
+      "address": "00812090",
+      "name": "BSP_Ship_GetWorldVelocity",
+      "end_address": "008120d1",
+      "note": "entity vtable slot 34h for every ship class: speed from 0092D730([ship+1018h]) times the forward at +94h/+98h/+9Ch, written through the out pointer, RET 4. Ghidra's enclosing candidate is 00812000's neighbour; int3 padding at 008120d2.",
+      "body": "00812090-008120d1"
+    },
+    {
+      "address": "00470ba0",
+      "name": "BSP_Entity_GetWorldVelocityZero",
+      "end_address": "00470bcc",
+      "note": "entity vtable slot 34h for the base class: copies the zero global at 00F87574, RET 4. int3 padding at 00470bcd; the next body starts at 00470bd0.",
+      "body": "00470ba0-00470bcc"
+    }
+  ],
+  "corrections": [
+    {
+      "document": "docs/BOT_FIRE_TARGET.md, docs/GUN_BOT_TICKS.md",
+      "was": "the lead-point predictor is called at 008FFBC6",
+      "is": "008FFBC6 is CALL EAX with EAX = bot->vtable[44h], the call that fetches the fire target; the slot 100h call is the CALL EDX at 008FFC03 on that target",
+      "evidence": "008ffbad loads [EDX+44h] into EAX, 008ffbc6 calls it, 008ffbcc-008ffbce load [EAX] then [+100h] from the RETURNED object's vtable, and 008ffc01 moves that object into ECX before the CALL EDX at 008ffc03"
+    },
+    {
+      "document": "docs/GUN_BOT_TICKS.md section 6.4 step 3",
+      "was": "00902C86, 00902CAC, 00902CC7 and 00902CD0 are a second vtable[100h] sample",
+      "is": "those four sites are 008FDAF0, 00438B10, 00438B10 and 00438AA0; the only vtable[100h] call in 00902920 is at 00902BFD",
+      "evidence": "the Ghidra listing of 00902920 contains exactly one [EDX+0x100] load, at 00902bf0, and its CALL EDX is at 00902bfd"
+    },
+    {
+      "document": "docs/GUN_BOT_TICKS.md section 11",
+      "was": "the four lead scalars vtable[100h] takes and the (0.6, 0.6, 0.6) direction every caller passes are open questions",
+      "is": "they are SectionTargetChance, EngineRoomWeight, MagazineWeight and FueltankWeight, and the third argument is a fraction of the hull half-extents rather than a direction",
+      "evidence": "008FCA10 stores those four Lua keys at TailGunnerBot descriptor +20h, +24h, +28h and +2Ch, which are the four floats 008ffb8c-008ffbaa push; 00816820-008168d5 draws the box against [ship+538h]+0A0h/+0A4h/+0A8h"
+    },
+    {
+      "document": "docs/GUN_BOT_TICKS.md section 6.5 step 7",
+      "was": "008FBB00(runSpeed, targetVelocity, out) solves the torpedo intercept",
+      "is": "it also takes the shooter and target points in ECX and EDX, and what it solves is an intercept whose linear coefficient is half the exact one, so it under-leads every target that is not stationary and not exactly abeam",
+      "evidence": "008fbb00's RET 0Ch leaves two register arguments; 008fb8d0 builds b = dot(d, v) at 008fb949-008fb96b, disc = b*b - 4*a*c at 008fba02 and divides by a + a at 008fba40, where the exact form needs 2*dot(d, v)"
+    },
+    {
+      "document": "docs/GUN_BOT_TICKS.md section 6.5 step 12",
+      "was": "the friendly entity is projected forward by 1000 seconds of its own velocity and 004F3730 tests it against the torpedo run",
+      "is": "the projection scales the entity's +94h/+9Ch forward vector, and 004F3730 is a two-dimensional segment crossing that reads only the x and z components",
+      "evidence": "00900630 and 00900647 read [EDI+0x94] and [EDI+0x9c]; 004f3730 and 004f3630 index only [0] and [1] of all their float arguments"
+    },
+    {
+      "document": "the packet brief for cc2_gun_bot_remainder",
+      "was": "00902920 is AAFlakBot",
+      "is": "00902920 is AAGunnerBot and 009030C0 is AAFlakBot; docs/GUN_BOT_TICKS.md section 2 already recorded this",
+      "evidence": "00902b6e loads [00E19998] and 00902b68 indexes it with skill * 10h, which docs/ROBOT_CONFIG.md gives as the AAGunnerBot descriptor and its 10h six-level stride; AAFlakBot's stride is 20h"
+    }
+  ],
+  "open_questions": [
+    "The sign of ContinuousFireTime in the shipped DepthChargeBot Lua. The static rule at 008fc3c7 ends the burst when bot+60h < ContinuousFireTime, and bot+60h is already at or below zero on every firing frame, so a positive value ends the burst on its first frame.",
+    "What ship+0A20h holds. 0093A570 scans 10h-byte records keyed by an int and the three section ids are 5, 6 and 8; the producer was not found.",
+    "Why 00902920 calls target->vtable[5Ch](2) at 0090308c and discards the answer.",
+    "004F3560's tolerance rule and 00951FC0's limit test at the tail.",
+    "00957BD0, the kind-1/2 arm's solution builder, and 00957740's 00957850-00957bcc tail.",
+    "008FF040 and 008FF310: Ghidra still has no function at either address, so this packet did not read them."
+  ],
+  "tool_problems": [
+    {
+      "tool": "python tools/bsp.py show",
+      "symptom": "--start rejects a hexadecimal address ('invalid int value: 008ffb60'); it takes a decimal line index only",
+      "workaround": "dump the listing with ghidra disasm into local/ and page it with sed or grep"
+    },
+    {
+      "tool": "python tools/bsp.py disasm-raw",
+      "symptom": "the default byte budget stops well before the requested --limit; 00816650 decoded only 33 instructions until --length 0x220 was given",
+      "workaround": "always pass --length explicitly for a body longer than a few dozen bytes"
+    }
+  ]
+}
