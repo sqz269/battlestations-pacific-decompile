@@ -1,0 +1,629 @@
+{
+  "packet": "orch4_native_input_backend_owner_ac",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "status": "raw_owner_reconstructed_build_fixture_tested_required_device_providers",
+  "functions": [
+    {
+      "address": "00a908a0",
+      "end_inclusive": "00a90930",
+      "name": "BSP_NativeInputBackendBase_Construct",
+      "original_name": "FUN_00a908a0",
+      "implementation": "construct_native_input_backend_base_00a908a0",
+      "source": "src/native_input_backend_owner.cpp",
+      "coverage": "complete_normal_control_flow_with_required_raw_providers",
+      "native_abi": "ECX actual raw storage; no stack arguments; RET; EAX=this",
+      "native_abi_replacement": false,
+      "missing_start": false
+    },
+    {
+      "address": "00a90940",
+      "end_inclusive": "00a909d8",
+      "name": "BSP_NativeInputBackendBase_Destroy",
+      "original_name": "FUN_00a90940",
+      "implementation": "destroy_native_input_backend_base_00a90940",
+      "source": "src/native_input_backend_owner.cpp",
+      "coverage": "complete_normal_control_flow_with_required_raw_providers",
+      "native_abi": "ECX actual raw storage; no stack arguments; RET; no semantic return",
+      "native_abi_replacement": false,
+      "missing_start": false
+    },
+    {
+      "address": "00a909e0",
+      "end_inclusive": "00a909fd",
+      "name": "BSP_NativeInputBackendBase_ScalarDelete",
+      "original_name": "CG_scalar_deleting_dtor_00a909e0",
+      "implementation": "scalar_delete_native_input_backend_base_00a909e0",
+      "source": "src/native_input_backend_owner.cpp",
+      "coverage": "complete_normal_control_flow_with_required_raw_providers",
+      "native_abi": "ECX actual raw storage; flags stack; RET4; captured EAX address",
+      "native_abi_replacement": false,
+      "missing_start": false
+    },
+    {
+      "address": "00a914c0",
+      "end_inclusive": "00a914fa",
+      "name": "BSP_NativeInputBackendClass_Construct",
+      "original_name": "FUN_00a914c0",
+      "implementation": "construct_native_input_backend_class_00a914c0",
+      "source": "src/native_input_backend_owner.cpp",
+      "coverage": "complete_normal_control_flow_with_required_raw_providers",
+      "native_abi": "ECX actual raw storage; no stack arguments; RET; EAX=this",
+      "native_abi_replacement": false,
+      "missing_start": false
+    },
+    {
+      "address": "00a91570",
+      "end_inclusive": "00a91619",
+      "name": "BSP_NativeInputBackendGroups_Construct",
+      "original_name": "CG_array_ctor_helper_00a91570",
+      "implementation": "construct_native_input_backend_groups_00a91570",
+      "source": "src/native_input_backend_owner.cpp",
+      "coverage": "complete_normal_control_flow_with_required_raw_providers",
+      "native_abi": "ECX actual raw storage; no stack arguments; RET; EAX=this",
+      "native_abi_replacement": false,
+      "missing_start": false
+    },
+    {
+      "address": "00a90dc0",
+      "end_inclusive": "00a90dfa",
+      "name": "BSP_NativeInputBackendClass_Destroy",
+      "original_name": "FUN_00a90dc0",
+      "implementation": "destroy_native_input_backend_class_00a90dc0",
+      "source": "src/native_input_backend_owner.cpp",
+      "coverage": "complete_normal_control_flow_with_required_raw_providers",
+      "native_abi": "ECX actual raw storage; no stack arguments; RET; no semantic return",
+      "native_abi_replacement": false,
+      "missing_start": false
+    },
+    {
+      "address": "00a90e00",
+      "end_inclusive": "00a90ebb",
+      "name": "BSP_NativeInputBackendGroups_Destroy",
+      "original_name": "CG_vector_deleting_dtor_00a90e00",
+      "implementation": "destroy_native_input_backend_groups_00a90e00",
+      "source": "src/native_input_backend_owner.cpp",
+      "coverage": "complete_normal_control_flow_with_required_raw_providers",
+      "native_abi": "ECX actual raw storage; no stack arguments; RET; no semantic return",
+      "native_abi_replacement": false,
+      "missing_start": false
+    },
+    {
+      "address": "00a91150",
+      "end_inclusive": "00a9116d",
+      "name": "BSP_NativeInputBackendGroups_ScalarDelete",
+      "original_name": "CG_scalar_deleting_dtor_00a91150",
+      "implementation": "scalar_delete_native_input_backend_groups_00a91150",
+      "source": "src/native_input_backend_owner.cpp",
+      "coverage": "complete_normal_control_flow_with_required_raw_providers",
+      "native_abi": "ECX actual raw storage; flags stack; RET4; captured EAX address",
+      "native_abi_replacement": false,
+      "missing_start": false
+    },
+    {
+      "address": "00a982d0",
+      "end_inclusive": "00a983b0",
+      "name": "BSP_InputDeviceManager_Construct",
+      "original_name": "BSP_InputDeviceManager_Construct",
+      "implementation": "construct_native_input_backend_00a982d0",
+      "source": "src/native_input_backend_owner.cpp",
+      "coverage": "complete_normal_control_flow_with_required_raw_providers",
+      "native_abi": "ECX actual raw storage; no stack arguments; RET; EAX=this",
+      "native_abi_replacement": false,
+      "missing_start": false
+    },
+    {
+      "address": "00a97c00",
+      "end_inclusive": "00a97c56",
+      "name": "BSP_NativeInputBackend_ScalarDelete",
+      "original_name": "CG_scalar_deleting_dtor_00a97c00",
+      "implementation": "scalar_delete_native_input_backend_00a97c00",
+      "source": "src/native_input_backend_owner.cpp",
+      "coverage": "complete_normal_control_flow_with_required_raw_providers",
+      "native_abi": "ECX actual raw storage; flags stack; RET4; captured EAX address",
+      "native_abi_replacement": false,
+      "missing_start": false
+    },
+    {
+      "address": "00a97b00",
+      "end_inclusive": "00a97b29",
+      "name": "BSP_NativeInputBackendGuidVector_Destroy",
+      "original_name": "FUN_00a97b00",
+      "implementation": "destroy_native_input_backend_guids_00a97b00",
+      "source": "src/native_input_backend_owner.cpp",
+      "coverage": "complete_normal_control_flow_with_required_raw_providers",
+      "native_abi": "ECX actual raw storage; no stack arguments; RET; no semantic return",
+      "native_abi_replacement": false,
+      "missing_start": false
+    }
+  ],
+  "direct_calls": [
+    {
+      "address": "00a908ce",
+      "function": "00a908a0",
+      "native": "00415350"
+    },
+    {
+      "address": "00a908fc",
+      "function": "00a908a0",
+      "native": "00415350"
+    },
+    {
+      "address": "00a9090a",
+      "function": "00a908a0",
+      "native": "00bd0c30"
+    },
+    {
+      "address": "00a9096e",
+      "function": "00a90940",
+      "native": "00415350"
+    },
+    {
+      "address": "00a90996",
+      "function": "00a90940",
+      "native": "00415350"
+    },
+    {
+      "address": "00a909a4",
+      "function": "00a90940",
+      "native": "00bcfca0"
+    },
+    {
+      "address": "00a909e3",
+      "function": "00a909e0",
+      "native": "00a90940"
+    },
+    {
+      "address": "00a909f0",
+      "function": "00a909e0",
+      "native": "00bf65ac"
+    },
+    {
+      "address": "00a9158f",
+      "function": "00a91570",
+      "native": "00a908a0"
+    },
+    {
+      "address": "00a915b5",
+      "function": "00a91570",
+      "native": "00bf7cd1"
+    },
+    {
+      "address": "00a90dce",
+      "function": "00a90dc0",
+      "native": "00bf65ac"
+    },
+    {
+      "address": "00a90de7",
+      "function": "00a90dc0",
+      "native": "00bf65ac"
+    },
+    {
+      "address": "00a90e95",
+      "function": "00a90e00",
+      "native": "00bf7c6e"
+    },
+    {
+      "address": "00a90ea4",
+      "function": "00a90e00",
+      "native": "00a90940"
+    },
+    {
+      "address": "00a91153",
+      "function": "00a91150",
+      "native": "00a90e00"
+    },
+    {
+      "address": "00a91160",
+      "function": "00a91150",
+      "native": "00bf65ac"
+    },
+    {
+      "address": "00a982f1",
+      "function": "00a982d0",
+      "native": "00a91570"
+    },
+    {
+      "address": "00a9833b",
+      "function": "00a982d0",
+      "native": "00c2e016"
+    },
+    {
+      "address": "00a98365",
+      "function": "00a982d0",
+      "native": "00bf681b"
+    },
+    {
+      "address": "00a9837d",
+      "function": "00a982d0",
+      "native": "00a9a5a0"
+    },
+    {
+      "address": "00a98390",
+      "function": "00a982d0",
+      "native": "00a904e0"
+    },
+    {
+      "address": "00a97c14",
+      "function": "00a97c00",
+      "native": "00bf65ac"
+    },
+    {
+      "address": "00a97c3c",
+      "function": "00a97c00",
+      "native": "00a90e00"
+    },
+    {
+      "address": "00a97c49",
+      "function": "00a97c00",
+      "native": "00bf65ac"
+    },
+    {
+      "address": "00a97b0b",
+      "function": "00a97b00",
+      "native": "00bf65ac"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "address": "00a908e7",
+      "function": "00a908a0",
+      "native": "dword ptr [0x00ce2218]"
+    },
+    {
+      "address": "00a90918",
+      "function": "00a908a0",
+      "native": "dword ptr [0x00ce2210]"
+    },
+    {
+      "address": "00a90987",
+      "function": "00a90940",
+      "native": "dword ptr [0x00ce2218]"
+    },
+    {
+      "address": "00a909bc",
+      "function": "00a90940",
+      "native": "dword ptr [0x00ce2210]"
+    },
+    {
+      "address": "00a90e51",
+      "function": "00a90e00",
+      "native": "EDX"
+    },
+    {
+      "address": "00a90e5d",
+      "function": "00a90e00",
+      "native": "dword ptr [0x00ce2220]"
+    },
+    {
+      "address": "00a90e6d",
+      "function": "00a90e00",
+      "native": "EAX"
+    },
+    {
+      "address": "00a98322",
+      "function": "00a982d0",
+      "native": "dword ptr [0x00ce215c]"
+    },
+    {
+      "address": "00a98348",
+      "function": "00a982d0",
+      "native": "EDX"
+    },
+    {
+      "address": "00a9835b",
+      "function": "00a982d0",
+      "native": "ECX"
+    }
+  ],
+  "incoming_and_eh_calls": [
+    {
+      "address": "0073dd8e",
+      "native": "00a982d0",
+      "function": "0073d410",
+      "kind": "call"
+    },
+    {
+      "address": "00a97b6d",
+      "native": "00a90e00",
+      "function": "00a97b30",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb65e3",
+      "native": "00412430",
+      "function": "00cb65e0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb65eb",
+      "native": "00411ee0",
+      "function": "00cb65e8",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb6603",
+      "native": "00412430",
+      "function": "00cb6600",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb660b",
+      "native": "00411ee0",
+      "function": "00cb6608",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb6623",
+      "native": "00a90940",
+      "function": "00cb6620",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb6638",
+      "native": "00bf7c6e",
+      "function": "00cb6628",
+      "kind": "call"
+    },
+    {
+      "address": "00cb6693",
+      "native": "00a90940",
+      "function": "00cb6690",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb6a23",
+      "native": "00a90e00",
+      "function": "00cb6a20",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb6a31",
+      "native": "00a97b00",
+      "function": "00cb6a28",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb6a3a",
+      "native": "00bf65ac",
+      "function": "00cb6a36",
+      "kind": "call"
+    }
+  ],
+  "storage": {
+    "owner_size": "f8",
+    "class_size": "24",
+    "publication": "00f8bbf4",
+    "manager_publication": "01090aa0",
+    "profiles": [
+      "00d5b5f4",
+      "00d5b5f8",
+      "00d5b72c"
+    ],
+    "root_profile": "00ce3818",
+    "canonical_raw_allocation": true,
+    "parallel_semantic_domain": false,
+    "typed_projection_casts": false,
+    "untouched": [
+      "65..67",
+      "class+4",
+      "class+14",
+      "d5..d7",
+      "de..df",
+      "e4..e7",
+      "f5..f7"
+    ],
+    "class_group_requested_counts": "68,8c,b0 become0 after forward class initialization"
+  },
+  "producer_evidence": [
+    {
+      "address": "0073dd6c",
+      "meaning": "PUSH F8h allocation size; caller passes result ECX at73DD8C"
+    },
+    {
+      "address": "00a908f6",
+      "meaning": "Publish the supplied raw allocation before second-manager registration"
+    },
+    {
+      "address": "00a95d9f",
+      "meaning": "XInput/common gamepad constructor writes native device+4 refcount1"
+    },
+    {
+      "address": "00a9a2c1",
+      "meaning": "Mouse constructor writes native device+4 refcount1"
+    },
+    {
+      "address": "00a9a5ba",
+      "meaning": "Raw240h XInput producer stamps D5BB48 after common base"
+    }
+  ],
+  "provider_contracts": [
+    {
+      "address": "00a9835b",
+      "native": "DirectInput+vtable10",
+      "function": "00a982d0",
+      "provider": "NativeInputBackendHost::enumerate_devices_vslot10",
+      "contract": "Actual interface,type0,original A982B0 callback on same raw backend,flags1; callback forwards swapped args to A98030; HRESULT ignored; provider contains SDK callback exceptions"
+    },
+    {
+      "address": "00a9837d",
+      "native": "00a9a5a0",
+      "function": "00a982d0",
+      "provider": "NativeInputBackendHost::construct_xinput_device_00a9a5a0",
+      "contract": "Supplied raw240h allocation in ECX, index0..3 stack, RET4, EAX constructed pointer; constructor member cleanup belongs to provider"
+    },
+    {
+      "address": "00a98390",
+      "native": "00a904e0",
+      "function": "00a982d0",
+      "provider": "NativeInputBackendHost::attach_device_00a904e0",
+      "contract": "Raw backend ECX, slot -1 then raw device stack, RET8; class vslot8, assign device+8 and table; no retain"
+    },
+    {
+      "address": "00a90e51",
+      "native": "device+vtable14",
+      "function": "00a90e00",
+      "provider": "NativeInputBackendHost::reset_device_vslot14",
+      "contract": "ECX current raw device, no stack args; caller reloads same owning slot afterward"
+    },
+    {
+      "address": "00a90e6d",
+      "native": "device+vtable00",
+      "function": "00a90e00",
+      "provider": "NativeInputBackendHost::zero_references_device_vslot00",
+      "contract": "After actual InterlockedDecrement(captured_device+4)==0, current slot-zero dispatch with captured device ECX and no stack flags"
+    }
+  ],
+  "sdk": {
+    "create": "Real DirectInput8Create(GetModuleHandleA(nullptr),800,IID_IDirectInput8A,actual owner+E0 output,null)",
+    "add_ref": "Real actual interface AddRef; owner+E0 reloaded before enumeration",
+    "reference_tracking": "Reserve before acquisition; record one returned/acquired reference even with failed HRESULT and nonnull output; no extra AddRef",
+    "native_destructor_release": false,
+    "final_host_release": "Explicit reverse acquisition order only after owner/devices/callbacks stop borrowing",
+    "factory_reference_boundary": "Required raw enumeration/device producers must retain and clean their separately acquired COM references, including construction exceptions"
+  },
+  "exception_maps": [
+    {
+      "function": "00a908a0",
+      "descriptor": "00dec88c",
+      "map": "00dec87c",
+      "states": "1 captured guard411EE0;0 root412430; published allocation survives registration failure"
+    },
+    {
+      "function": "00a90940",
+      "descriptor": "00dec8c0",
+      "map": "00dec8b0",
+      "states": "1 captured guard411EE0;0 root412430"
+    },
+    {
+      "function": "00a91570",
+      "descriptor": "00dec978",
+      "map": "00dec970",
+      "states": "0 baseA90940; all class constructors are raw nonthrowing stores in source domain"
+    },
+    {
+      "function": "00a90e00",
+      "descriptor": "00dec8f4",
+      "map": "00dec8e4",
+      "states": "1 reverse three class destructors;0 baseA90940; do not continue unvisited devices"
+    },
+    {
+      "function": "00a982d0",
+      "descriptor": "00dece94",
+      "map": "00dece7c",
+      "states": "2 free current raw240h allocation;1 GUID memberA97B00;0 base groupsA90E00; restore state1 BEFORE attachment"
+    }
+  ],
+  "flow_qualifications": [
+    {
+      "function": "00a90dc0",
+      "was": "missing free fallthrough A90DD3..D5 and A90DEC..EE",
+      "worker_ghidra_mutation": false,
+      "is": "primary repaired before worker implementation; full end A90DFA"
+    },
+    {
+      "function": "00a97c00",
+      "was": "missing free fallthrough A97C19..1B and A97C4E..50",
+      "worker_ghidra_mutation": false,
+      "is": "primary repaired before worker implementation; full end A97C56"
+    },
+    {
+      "function": "00a909e0",
+      "missing_start": "00a909f5",
+      "missing_end": "00a909f7",
+      "bytes": "83c404",
+      "meaning": "ADD ESP,4; source includes continuation; RET4 ends A909FD",
+      "worker_ghidra_mutation": false
+    },
+    {
+      "function": "00a91150",
+      "missing_start": "00a91165",
+      "missing_end": "00a91167",
+      "bytes": "83c404",
+      "meaning": "ADD ESP,4; source includes continuation; RET4 ends A9116D",
+      "worker_ghidra_mutation": false
+    },
+    {
+      "function": "00a97b00",
+      "missing_start": "00a97b10",
+      "missing_end": "00a97b12",
+      "bytes": "83c404",
+      "meaning": "ADD ESP,4; source includes continuation; RET ends A97B29",
+      "worker_ghidra_mutation": false
+    },
+    {
+      "function": "00cb6a36",
+      "tail": "00cb6a3f..00cb6a40",
+      "bytes": "59c3",
+      "meaning": "POP ECX; RET after free",
+      "worker_ghidra_mutation": false
+    }
+  ],
+  "remaining_boundaries": [
+    "Application raw manager finite profile dispatch does not yet admit these backend profiles; no shared dispatcher edits in this packet.",
+    "Original raw A982B0/A98030 device producer and A9A5A0/A904E0 contracts are required; typed InputDevice/InputDeviceTable/InputFocusBackendState are not raw storage.",
+    "No original FH3/SEH/hardware-fault, allocator/new-handler identity or drop-in ABI replacement; source secondary exceptions during unwind terminate.",
+    "SDK missing creation output becomes explicit source error before native AddRef null fault; tracking vector reservation can throw before SDK acquisition.",
+    "Attachment failure restores native state1, leaving a constructed but unattached device outside this owner cleanup; not silently freed.",
+    "Factory wrapper frees captured F8h on construction failure without repairing native surviving publication from an early registration failure.",
+    "No hardware enumeration, real raw device construction, complete successful A982D0, or application/game validation claimed."
+  ],
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release /W4 /WX",
+      "exit_code": 0,
+      "existing_ctests_passed": 2,
+      "log": "local/native-input-backend-build.log"
+    },
+    "seeds": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "matched": 8,
+      "log": "local/native-input-backend-seeds.log"
+    },
+    "call_audit": {
+      "command": "python tools/verify_report_calls.py reports/native_input_backend_owner.json",
+      "checked": 39,
+      "failed": 0,
+      "owned_unique_direct_calls": 25,
+      "owned_indirect_calls": 10,
+      "note": "39 includes 12 incoming/EH rows and two duplicated direct provider-contract rows; indirect calls manually qualified",
+      "log": "local/native-input-backend-call-audit.log"
+    },
+    "fixture": {
+      "source": "local/native_input_backend_probe.cpp",
+      "runner": "local/run_native_input_backend_probe.ps1",
+      "manifest_embedded": true,
+      "exit_code": 0,
+      "log": "local/native-input-backend-probe.log",
+      "nonempty_raw_cleanup": {
+        "same_allocation_and_registration": true,
+        "resets": 3,
+        "zero_reference_calls": 1,
+        "resulting_references": [
+          1,
+          0,
+          1,
+          1,
+          1
+        ],
+        "slot_callback_replacements_cleared": true,
+        "headers_and_publication_cleared": true
+      },
+      "callback_exception": "Unvisited raw devices and reference counts retained; class/GUID/base cleanup completed",
+      "sdk_constructor_fault": {
+        "real_DirectInput8Create_HRESULT": 0,
+        "tracked_references_before_final_host_release": 2,
+        "tracked_references_after_final_host_release": 0,
+        "fault": "required enumeration provider throws before SDK enumeration"
+      },
+      "devices": "Explicit fixture raw allocations/profile callbacks; not native hardware device implementations",
+      "hardware_enumeration": false,
+      "raw_xinput_construction": false,
+      "successful_full_A982D0": false
+    },
+    "permanent_tests_added": 0,
+    "game_validated": false
+  }
+}

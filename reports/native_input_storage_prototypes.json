@@ -1,0 +1,340 @@
+{
+  "reason": "Native ECX/stack cleanup and semantic EAX from complete verified listings. Explicit unused EDX is an unconsumed register; source service contexts do not belong to native ABI.",
+  "entries": [
+    {
+      "address": "0086a220",
+      "proposed": "void __fastcall BSP_NativeDwordVector_Reserve_0086A220(void* self, void* unused_edx, int requested)",
+      "before": "Function: BSP_NativeDwordVector_Reserve_0086A220 at 0086a220\nSignature: undefined BSP_NativeDwordVector_Reserve_0086A220(void)\nEntry: 0086a220\nBody: 0086a220 - 0086a27e",
+      "apply": "Successfully set prototype for function at 0086a220 with __fastcall calling convention",
+      "after": "Function: BSP_NativeDwordVector_Reserve_0086A220 at 0086a220\nSignature: void __fastcall BSP_NativeDwordVector_Reserve_0086A220(void * self, void * unused_edx, int requested)\nEntry: 0086a220\nBody: 0086a220 - 0086a27e",
+      "readback_verified": true
+    },
+    {
+      "address": "0086a430",
+      "proposed": "void __fastcall BSP_NativeDwordVector_Resize_0086A430(void* self, void* unused_edx, int requested)",
+      "before": "Function: BSP_NativeDwordVector_Resize_0086A430 at 0086a430\nSignature: undefined BSP_NativeDwordVector_Resize_0086A430(void)\nEntry: 0086a430\nBody: 0086a430 - 0086a47f",
+      "apply": "Successfully set prototype for function at 0086a430 with __fastcall calling convention",
+      "after": "Function: BSP_NativeDwordVector_Resize_0086A430 at 0086a430\nSignature: void __fastcall BSP_NativeDwordVector_Resize_0086A430(void * self, void * unused_edx, int requested)\nEntry: 0086a430\nBody: 0086a430 - 0086a47f",
+      "readback_verified": true
+    },
+    {
+      "address": "00696d80",
+      "proposed": "void __fastcall BSP_NativeDwordVector_Reserve_00696D80(void* self, void* unused_edx, int requested)",
+      "before": "Function: BSP_NativeDwordVector_Reserve_00696D80 at 00696d80\nSignature: undefined BSP_NativeDwordVector_Reserve_00696D80(void)\nEntry: 00696d80\nBody: 00696d80 - 00696dde",
+      "apply": "Successfully set prototype for function at 00696d80 with __fastcall calling convention",
+      "after": "Function: BSP_NativeDwordVector_Reserve_00696D80 at 00696d80\nSignature: void __fastcall BSP_NativeDwordVector_Reserve_00696D80(void * self, void * unused_edx, int requested)\nEntry: 00696d80\nBody: 00696d80 - 00696dde",
+      "readback_verified": true
+    },
+    {
+      "address": "00696e70",
+      "proposed": "void __fastcall BSP_NativeDwordVector_Resize_00696E70(void* self, void* unused_edx, int requested)",
+      "before": "Function: BSP_NativeDwordVector_Resize_00696E70 at 00696e70\nSignature: undefined BSP_NativeDwordVector_Resize_00696E70(void)\nEntry: 00696e70\nBody: 00696e70 - 00696ebf",
+      "apply": "Successfully set prototype for function at 00696e70 with __fastcall calling convention",
+      "after": "Function: BSP_NativeDwordVector_Resize_00696E70 at 00696e70\nSignature: void __fastcall BSP_NativeDwordVector_Resize_00696E70(void * self, void * unused_edx, int requested)\nEntry: 00696e70\nBody: 00696e70 - 00696ebf",
+      "readback_verified": true
+    },
+    {
+      "address": "00696de0",
+      "proposed": "void __fastcall BSP_NativeInputModifierVector_Reserve(void* self, void* unused_edx, int requested)",
+      "before": "Function: BSP_NativeInputModifierVector_Reserve at 00696de0\nSignature: undefined BSP_NativeInputModifierVector_Reserve(void)\nEntry: 00696de0\nBody: 00696de0 - 00696e6d",
+      "apply": "Successfully set prototype for function at 00696de0 with __fastcall calling convention",
+      "after": "Function: BSP_NativeInputModifierVector_Reserve at 00696de0\nSignature: void __fastcall BSP_NativeInputModifierVector_Reserve(void * self, void * unused_edx, int requested)\nEntry: 00696de0\nBody: 00696de0 - 00696e6d",
+      "readback_verified": true
+    },
+    {
+      "address": "00697220",
+      "proposed": "void __fastcall BSP_NativeInputModifierVector_Resize(void* self, void* unused_edx, int requested)",
+      "before": "Function: BSP_NativeInputModifierVector_Resize at 00697220\nSignature: undefined BSP_NativeInputModifierVector_Resize(void)\nEntry: 00697220\nBody: 00697220 - 00697280",
+      "apply": "Successfully set prototype for function at 00697220 with __fastcall calling convention",
+      "after": "Function: BSP_NativeInputModifierVector_Resize at 00697220\nSignature: void __fastcall BSP_NativeInputModifierVector_Resize(void * self, void * unused_edx, int requested)\nEntry: 00697220\nBody: 00697220 - 00697280",
+      "readback_verified": true
+    },
+    {
+      "address": "00a92e70",
+      "proposed": "void* __fastcall BSP_NativeInputContextWords_Assign(void* self, void* unused_edx, void* source)",
+      "before": "Function: BSP_NativeInputContextWords_Assign at 00a92e70\nSignature: undefined BSP_NativeInputContextWords_Assign(void)\nEntry: 00a92e70\nBody: 00a92e70 - 00a92ed9",
+      "apply": "Successfully set prototype for function at 00a92e70 with __fastcall calling convention",
+      "after": "Function: BSP_NativeInputContextWords_Assign at 00a92e70\nSignature: void * __fastcall BSP_NativeInputContextWords_Assign(void * self, void * unused_edx, void * source)\nEntry: 00a92e70\nBody: 00a92e70 - 00a92ed9",
+      "readback_verified": true
+    },
+    {
+      "address": "00a92ee0",
+      "proposed": "void* __fastcall BSP_NativeInputModifierVector_Assign(void* self, void* unused_edx, void* source)",
+      "before": "Function: BSP_NativeInputModifierVector_Assign at 00a92ee0\nSignature: undefined BSP_NativeInputModifierVector_Assign(void)\nEntry: 00a92ee0\nBody: 00a92ee0 - 00a92f70",
+      "apply": "Successfully set prototype for function at 00a92ee0 with __fastcall calling convention",
+      "after": "Function: BSP_NativeInputModifierVector_Assign at 00a92ee0\nSignature: void * __fastcall BSP_NativeInputModifierVector_Assign(void * self, void * unused_edx, void * source)\nEntry: 00a92ee0\nBody: 00a92ee0 - 00a92f70",
+      "readback_verified": true
+    },
+    {
+      "address": "00a93100",
+      "proposed": "void* __fastcall BSP_InputBinding_CopyConstruct(void* self, void* unused_edx, void* source)",
+      "before": "Function: BSP_InputBinding_CopyConstruct at 00a93100\nSignature: undefined BSP_InputBinding_CopyConstruct(void)\nEntry: 00a93100\nBody: 00a93100 - 00a93194",
+      "apply": "Successfully set prototype for function at 00a93100 with __fastcall calling convention",
+      "after": "Function: BSP_InputBinding_CopyConstruct at 00a93100\nSignature: void * __fastcall BSP_InputBinding_CopyConstruct(void * self, void * unused_edx, void * source)\nEntry: 00a93100\nBody: 00a93100 - 00a93194",
+      "readback_verified": true
+    },
+    {
+      "address": "00a93220",
+      "proposed": "void __fastcall BSP_InputBindingVector_Reserve(void* self, void* unused_edx, int requested)",
+      "before": "Function: BSP_InputBindingVector_Reserve at 00a93220\nSignature: undefined BSP_InputBindingVector_Reserve(void)\nEntry: 00a93220\nBody: 00a93220 - 00a93341",
+      "apply": "Successfully set prototype for function at 00a93220 with __fastcall calling convention",
+      "after": "Function: BSP_InputBindingVector_Reserve at 00a93220\nSignature: void __fastcall BSP_InputBindingVector_Reserve(void * self, void * unused_edx, int requested)\nEntry: 00a93220\nBody: 00a93220 - 00a93341",
+      "readback_verified": true
+    },
+    {
+      "address": "00a93500",
+      "proposed": "void __fastcall BSP_InputBindingVector_Resize(void* self, void* unused_edx, int requested)",
+      "before": "Function: BSP_InputBindingVector_Resize at 00a93500\nSignature: undefined BSP_InputBindingVector_Resize(void)\nEntry: 00a93500\nBody: 00a93500 - 00a93614",
+      "apply": "Successfully set prototype for function at 00a93500 with __fastcall calling convention",
+      "after": "Function: BSP_InputBindingVector_Resize at 00a93500\nSignature: void __fastcall BSP_InputBindingVector_Resize(void * self, void * unused_edx, int requested)\nEntry: 00a93500\nBody: 00a93500 - 00a93614",
+      "readback_verified": true
+    },
+    {
+      "address": "00a93440",
+      "proposed": "void __fastcall BSP_NativeInputBindingVector_AppendCopy(void* self, void* unused_edx, void* source)",
+      "before": "Function: BSP_NativeInputBindingVector_AppendCopy at 00a93440\nSignature: undefined BSP_NativeInputBindingVector_AppendCopy(void)\nEntry: 00a93440\nBody: 00a93440 - 00a934ae",
+      "apply": "Successfully set prototype for function at 00a93440 with __fastcall calling convention",
+      "after": "Function: BSP_NativeInputBindingVector_AppendCopy at 00a93440\nSignature: void __fastcall BSP_NativeInputBindingVector_AppendCopy(void * self, void * unused_edx, void * source)\nEntry: 00a93440\nBody: 00a93440 - 00a934ae",
+      "readback_verified": true
+    },
+    {
+      "address": "00a937e0",
+      "proposed": "void* __fastcall BSP_NativeInputBindingVector_Assign(void* self, void* unused_edx, void* source)",
+      "before": "Function: BSP_NativeInputBindingVector_Assign at 00a937e0\nSignature: undefined BSP_NativeInputBindingVector_Assign(void)\nEntry: 00a937e0\nBody: 00a937e0 - 00a93824",
+      "apply": "Successfully set prototype for function at 00a937e0 with __fastcall calling convention",
+      "after": "Function: BSP_NativeInputBindingVector_Assign at 00a937e0\nSignature: void * __fastcall BSP_NativeInputBindingVector_Assign(void * self, void * unused_edx, void * source)\nEntry: 00a937e0\nBody: 00a937e0 - 00a93824",
+      "readback_verified": true
+    },
+    {
+      "address": "00a93940",
+      "proposed": "void* __fastcall BSP_NativeInputActionRecord_Construct(void* self)",
+      "before": "Function: BSP_NativeInputActionRecord_Construct at 00a93940\nSignature: undefined BSP_NativeInputActionRecord_Construct(void)\nEntry: 00a93940\nBody: 00a93940 - 00a939bc",
+      "apply": "Successfully set prototype for function at 00a93940 with __fastcall calling convention",
+      "after": "Function: BSP_NativeInputActionRecord_Construct at 00a93940\nSignature: void * __fastcall BSP_NativeInputActionRecord_Construct(void * self)\nEntry: 00a93940\nBody: 00a93940 - 00a939bc",
+      "readback_verified": true
+    },
+    {
+      "address": "00a939c0",
+      "proposed": "void __fastcall BSP_NativeInputActionRecord_Destroy(void* self)",
+      "before": "Function: BSP_NativeInputActionRecord_Destroy at 00a939c0\nSignature: undefined BSP_NativeInputActionRecord_Destroy(void)\nEntry: 00a939c0\nBody: 00a939c0 - 00a93a55",
+      "apply": "Successfully set prototype for function at 00a939c0 with __fastcall calling convention",
+      "after": "Function: BSP_NativeInputActionRecord_Destroy at 00a939c0\nSignature: void __fastcall BSP_NativeInputActionRecord_Destroy(void * self)\nEntry: 00a939c0\nBody: 00a939c0 - 00a93a55",
+      "readback_verified": true
+    },
+    {
+      "address": "00a93a60",
+      "proposed": "void* __fastcall BSP_NativeInputActionRecord_ScalarDelete(void* self, void* unused_edx, uint flags)",
+      "before": "Function: BSP_NativeInputActionRecord_ScalarDelete at 00a93a60\nSignature: undefined BSP_NativeInputActionRecord_ScalarDelete(void)\nEntry: 00a93a60\nBody: 00a93a60 - 00a93a7d",
+      "apply": "Successfully set prototype for function at 00a93a60 with __fastcall calling convention",
+      "after": "Function: BSP_NativeInputActionRecord_ScalarDelete at 00a93a60\nSignature: void * __fastcall BSP_NativeInputActionRecord_ScalarDelete(void * self, void * unused_edx, uint flags)\nEntry: 00a93a60\nBody: 00a93a60 - 00a93a7d",
+      "readback_verified": true
+    },
+    {
+      "address": "00a93a80",
+      "proposed": "void* __fastcall BSP_NativeInputActionRecord_CopyConstruct(void* self, void* unused_edx, void* source)",
+      "before": "Function: BSP_NativeInputActionRecord_CopyConstruct at 00a93a80\nSignature: undefined BSP_NativeInputActionRecord_CopyConstruct(void)\nEntry: 00a93a80\nBody: 00a93a80 - 00a93b21",
+      "apply": "Successfully set prototype for function at 00a93a80 with __fastcall calling convention",
+      "after": "Function: BSP_NativeInputActionRecord_CopyConstruct at 00a93a80\nSignature: void * __fastcall BSP_NativeInputActionRecord_CopyConstruct(void * self, void * unused_edx, void * source)\nEntry: 00a93a80\nBody: 00a93a80 - 00a93b21",
+      "readback_verified": true
+    },
+    {
+      "address": "00a93b30",
+      "proposed": "void __fastcall BSP_NativeInputActionVector_Reserve(void* self, void* unused_edx, int requested)",
+      "before": "Function: BSP_NativeInputActionVector_Reserve at 00a93b30\nSignature: undefined BSP_NativeInputActionVector_Reserve(void)\nEntry: 00a93b30\nBody: 00a93b30 - 00a93c0c",
+      "apply": "Successfully set prototype for function at 00a93b30 with __fastcall calling convention",
+      "after": "Function: BSP_NativeInputActionVector_Reserve at 00a93b30\nSignature: void __fastcall BSP_NativeInputActionVector_Reserve(void * self, void * unused_edx, int requested)\nEntry: 00a93b30\nBody: 00a93b30 - 00a93c0c",
+      "readback_verified": true
+    },
+    {
+      "address": "00a93c10",
+      "proposed": "void __fastcall BSP_NativeInputActionVector_Resize(void* self, void* unused_edx, int requested)",
+      "before": "Function: BSP_NativeInputActionVector_Resize at 00a93c10\nSignature: undefined BSP_NativeInputActionVector_Resize(void)\nEntry: 00a93c10\nBody: 00a93c10 - 00a93c72",
+      "apply": "Successfully set prototype for function at 00a93c10 with __fastcall calling convention",
+      "after": "Function: BSP_NativeInputActionVector_Resize at 00a93c10\nSignature: void __fastcall BSP_NativeInputActionVector_Resize(void * self, void * unused_edx, int requested)\nEntry: 00a93c10\nBody: 00a93c10 - 00a93c72",
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0086a220",
+        "prototype": "void __fastcall BSP_NativeDwordVector_Reserve_0086A220(void* self, void* unused_edx, int requested)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0086a220 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0086a430",
+        "prototype": "void __fastcall BSP_NativeDwordVector_Resize_0086A430(void* self, void* unused_edx, int requested)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0086a430 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00696d80",
+        "prototype": "void __fastcall BSP_NativeDwordVector_Reserve_00696D80(void* self, void* unused_edx, int requested)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00696d80 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00696e70",
+        "prototype": "void __fastcall BSP_NativeDwordVector_Resize_00696E70(void* self, void* unused_edx, int requested)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00696e70 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00696de0",
+        "prototype": "void __fastcall BSP_NativeInputModifierVector_Reserve(void* self, void* unused_edx, int requested)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00696de0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00697220",
+        "prototype": "void __fastcall BSP_NativeInputModifierVector_Resize(void* self, void* unused_edx, int requested)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00697220 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a92e70",
+        "prototype": "void* __fastcall BSP_NativeInputContextWords_Assign(void* self, void* unused_edx, void* source)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a92e70 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a92ee0",
+        "prototype": "void* __fastcall BSP_NativeInputModifierVector_Assign(void* self, void* unused_edx, void* source)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a92ee0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a93100",
+        "prototype": "void* __fastcall BSP_InputBinding_CopyConstruct(void* self, void* unused_edx, void* source)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a93100 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a93220",
+        "prototype": "void __fastcall BSP_InputBindingVector_Reserve(void* self, void* unused_edx, int requested)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a93220 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a93500",
+        "prototype": "void __fastcall BSP_InputBindingVector_Resize(void* self, void* unused_edx, int requested)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a93500 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a93440",
+        "prototype": "void __fastcall BSP_NativeInputBindingVector_AppendCopy(void* self, void* unused_edx, void* source)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a93440 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a937e0",
+        "prototype": "void* __fastcall BSP_NativeInputBindingVector_Assign(void* self, void* unused_edx, void* source)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a937e0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a93940",
+        "prototype": "void* __fastcall BSP_NativeInputActionRecord_Construct(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a93940 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a939c0",
+        "prototype": "void __fastcall BSP_NativeInputActionRecord_Destroy(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a939c0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a93a60",
+        "prototype": "void* __fastcall BSP_NativeInputActionRecord_ScalarDelete(void* self, void* unused_edx, uint flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a93a60 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a93a80",
+        "prototype": "void* __fastcall BSP_NativeInputActionRecord_CopyConstruct(void* self, void* unused_edx, void* source)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a93a80 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a93b30",
+        "prototype": "void __fastcall BSP_NativeInputActionVector_Reserve(void* self, void* unused_edx, int requested)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a93b30 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a93c10",
+        "prototype": "void __fastcall BSP_NativeInputActionVector_Resize(void* self, void* unused_edx, int requested)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a93c10 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

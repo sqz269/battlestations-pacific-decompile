@@ -20,6 +20,12 @@ public:
     void probe_gameplay_effect_memory(const char* label);
     SoundLifetimeAccess sound_lifetime() noexcept;
     void bind_sound_runtime(GameSoundRuntime*) noexcept;
+    // Install stable borrowed services before registration. They remain valid
+    // until shutdown returns; scalar flags1 consumes the online allocation.
+    // Input callers retain SDK references until all raw device owners finish.
+    void bind_xlive_owner(XLiveOwnerAllocation*) noexcept;
+    void bind_input_backend(NativeInputBackendOwnerContext*) noexcept;
+    void bind_input_actions(NativeInputActionOwnerContext*) noexcept;
     // 008F8449: capture current manager, rawBD0400 drain, free captured manager,
     // then clear its actual publication, while all bindings remain alive.
     void shutdown();

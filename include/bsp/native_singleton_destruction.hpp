@@ -4,13 +4,21 @@
 
 namespace bsp {
 struct NativeResourceRegistryDeleteBindings;
+class XLiveOwnerAllocation;
+struct NativeInputBackendOwnerContext;
+struct NativeInputActionOwnerContext;
 namespace game { class GameSoundRuntime; }
 
 // Stable borrowed source bindings. Every nonnull object admitted to the raw
 // manager must carry one of these recovered slot-zero profiles: CE3818,
-// D0DA64, D5E594, D5E59C, D5B44C, D5B460, D5B478 or D58F78. D0DA64
+// D0DA64, D5E594, D5E59C, D5B44C, D5B460, D5B478, D58F78, D24138,
+// D2413C, D5B5F4, D5B5F8, D5B72C or D5B630. D0DA64
 // requires its actual publication cell; registry and sound profiles require
-// their concrete borrowed bindings. Sound owners retain C++ projected storage.
+// their concrete borrowed bindings. Sound and XLive owners retain C++ projected
+// storage; XLive additionally requires the exact allocation identity. Input
+// contexts borrow the same raw manager/publications as construction and must
+// outlive drain. Input dispatch does not require current-publication identity:
+// native destructors themselves implement its reload/unregister/clear rules.
 // Profile identity is read when popped, not cached when registered. An unknown
 // profile or missing binding throws a source contract error before dispatch.
 // This finite map is not the original process's arbitrary virtual dispatch.
@@ -18,8 +26,11 @@ struct NativeSingletonDeletionBindings {
     void* volatile* actual_effect_publication_00f87664{};
     const NativeResourceRegistryDeleteBindings* resource_registry{};
     game::GameSoundRuntime* sound_runtime{};
+    XLiveOwnerAllocation* xlive_owner{};
+    NativeInputBackendOwnerContext* input_backend{};
+    NativeInputActionOwnerContext* input_actions{};
 };
-static_assert(sizeof(NativeSingletonDeletionBindings) == 12);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 24);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting

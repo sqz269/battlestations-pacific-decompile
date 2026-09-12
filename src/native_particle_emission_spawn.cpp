@@ -1,4 +1,5 @@
 #include "bsp/native_particle_emission_spawn.hpp"
+#include "bsp/native_particle_emission_state.hpp"
 #include <cstddef>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -9,7 +10,7 @@ namespace bsp {
 static_assert(offsetof(NativeParticleEmissionSpawnAccess, floor_00bf85b0) == 0);
 static_assert(offsetof(NativeParticleEmissionSpawnAccess, truncate_st0_00bf7420) == 4);
 static_assert(offsetof(NativeParticleEmissionSpawnAccess, definition_virtual0c) == 8);
-static_assert(offsetof(NativeParticleEmissionSpawnAccess, initialize_state_00b0ca40) == 12);
+static_assert(offsetof(NativeParticleEmissionSpawnAccess, state) == 12);
 // Original instruction kernels retain each x87 lifetime/spill and current
 // actual-storage reload. One added local DWORD saves borrowed EDX access.
 // MOV-only service loads add no floating-point operations or flag changes.
@@ -106,7 +107,8 @@ __declspec(naked) std::int32_t __fastcall spawn_native_particle_emission_00b04c8
         fstp dword ptr [esp] // 00b04d70
         push edx // 00b04d73
         mov eax,dword ptr [esp + 04ch] // borrowed access
-        call dword ptr [eax + 0ch] // 00b04d74
+        mov edx,dword ptr [eax + 0ch] // borrowed concrete initializer access
+        call initialize_native_particle_emission_state_00b0ca40 // 00b04d74
         fld dword ptr [ebx + 0b4h] // 00b04d79
         fmul dword ptr [esi + 05ch] // 00b04d7f
         mov eax,01h // 00b04d82

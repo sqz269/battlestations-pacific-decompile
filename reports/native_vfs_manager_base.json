@@ -1,0 +1,264 @@
+{
+  "packet": "orch2_native_vfs_manager_base_at",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program_path": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ghidra_mutations": "none; worker read-only; proposed names and listing repair for locked integrator",
+  "functions": [
+    {
+      "entry": "00bda6f0",
+      "name": "construct_native_vfs_manager_base_00bda6f0",
+      "proposed_name": "BSP_VfsManagerBase_ConstructAndPublish",
+      "previous_name": "FUN_00bda6f0",
+      "native_abi": "ECX owner; no consumed EDX or stack input; EAX original owner; RET",
+      "coverage": "complete_logical_body",
+      "source": "src/native_vfs_manager_base.cpp",
+      "logical_end_exclusive": "00bda781",
+      "logical_bytes": 145,
+      "sha256": "d165c592799f385ace7792857154da9e649e4f5cf9ff004fd1a15f846d6ac225",
+      "live_ghidra_equal": true
+    },
+    {
+      "entry": "00bda790",
+      "name": "destroy_native_vfs_manager_base_00bda790",
+      "proposed_name": "BSP_VfsManagerBase_DestroyAndUnpublish",
+      "previous_name": "FUN_00bda790",
+      "native_abi": "ECX owner; no consumed EDX or stack input; no semantic result; RET",
+      "coverage": "complete_logical_body",
+      "source": "src/native_vfs_manager_base.cpp",
+      "logical_end_exclusive": "00bda829",
+      "logical_bytes": 153,
+      "sha256": "11d1ca73f36aaca324e7ae520e0ae2248580d7e62550bdce793c3223cf3c5cd2",
+      "live_ghidra_equal": true
+    },
+    {
+      "entry": "00bda8e0",
+      "name": "delete_native_vfs_manager_base_00bda8e0",
+      "proposed_name": "BSP_VfsManagerBase_ScalarDeletingDestructor",
+      "previous_name": "CG_scalar_deleting_dtor_00bda8e0",
+      "native_abi": "ECX owner; one DWORD stack flags; EAX original owner; RET4",
+      "coverage": "complete_logical_body_including_three_missing_listing_bytes",
+      "source": "src/native_vfs_manager_base.cpp",
+      "logical_end_exclusive": "00bda8fe",
+      "logical_bytes": 30,
+      "sha256": "7f105dae7bc38189deb0c826b350e8dfbe58c45a0b7a7b146d2de5c2d7cde6c9",
+      "live_ghidra_equal": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00bda71e",
+      "native": "00415350",
+      "function": "00bda6f0",
+      "contract": "first manager getter before guard state1"
+    },
+    {
+      "address": "00bda74c",
+      "native": "00415350",
+      "function": "00bda6f0",
+      "contract": "second manager getter before publication reload"
+    },
+    {
+      "address": "00bda75a",
+      "native": "00bd0c30",
+      "function": "00bda6f0",
+      "contract": "register current publication; RET4"
+    },
+    {
+      "address": "00bda7be",
+      "native": "00415350",
+      "function": "00bda790",
+      "contract": "first manager getter before guard state1"
+    },
+    {
+      "address": "00bda7e6",
+      "native": "00415350",
+      "function": "00bda790",
+      "contract": "second manager getter before publication reload"
+    },
+    {
+      "address": "00bda7f4",
+      "native": "00bcfca0",
+      "function": "00bda790",
+      "contract": "remove current publication, then clear; RET4"
+    },
+    {
+      "address": "00bda8e3",
+      "native": "00bda790",
+      "function": "00bda8e0",
+      "contract": "destroy before flag test"
+    },
+    {
+      "address": "00bda8f0",
+      "native": "00bf65ac",
+      "function": "00bda8e0",
+      "contract": "free original owner only if flag bit0, raw ADD ESP4 follows"
+    },
+    {
+      "address": "00bda737",
+      "native": "IAT:00ce2218",
+      "function": "00bda6f0",
+      "contract": "EnterCriticalSection captured first section"
+    },
+    {
+      "address": "00bda768",
+      "native": "IAT:00ce2210",
+      "function": "00bda6f0",
+      "contract": "LeaveCriticalSection captured first section"
+    },
+    {
+      "address": "00bda7d7",
+      "native": "IAT:00ce2218",
+      "function": "00bda790",
+      "contract": "EnterCriticalSection captured first section"
+    },
+    {
+      "address": "00bda80c",
+      "native": "IAT:00ce2210",
+      "function": "00bda790",
+      "contract": "LeaveCriticalSection captured first section"
+    }
+  ],
+  "cleanup_steps": [
+    {
+      "address": "00cc5fd3",
+      "native": "00412430",
+      "function": "00cc5fd0",
+      "kind": "tail_jump",
+      "contract": "constructor state0 root profile",
+      "scope": "existing dependency; no additional reconstruction or annotation"
+    },
+    {
+      "address": "00cc5fdb",
+      "native": "00411ee0",
+      "function": "00cc5fd8",
+      "kind": "tail_jump",
+      "contract": "constructor state1 captured guard",
+      "scope": "existing dependency; no additional reconstruction or annotation"
+    },
+    {
+      "address": "00cc5ff3",
+      "native": "00412430",
+      "function": "00cc5ff0",
+      "kind": "tail_jump",
+      "contract": "destructor state0 root profile",
+      "scope": "existing dependency; no additional reconstruction or annotation"
+    },
+    {
+      "address": "00cc5ffb",
+      "native": "00411ee0",
+      "function": "00cc5ff8",
+      "kind": "tail_jump",
+      "contract": "destructor state1 captured guard",
+      "scope": "existing dependency; no additional reconstruction or annotation"
+    }
+  ],
+  "cleanup_maps": [
+    {
+      "function": "00bda6f0",
+      "handler": "00cc5fe0",
+      "func_info": "00e002fc",
+      "unwind_map": "00e002ec",
+      "states": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00cc5fd0"
+        },
+        {
+          "state": 1,
+          "previous": 0,
+          "action": "00cc5fd8"
+        }
+      ]
+    },
+    {
+      "function": "00bda790",
+      "handler": "00cc6000",
+      "func_info": "00e00330",
+      "unwind_map": "00e00320",
+      "states": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00cc5ff0"
+        },
+        {
+          "state": 1,
+          "previous": 0,
+          "action": "00cc5ff8"
+        }
+      ]
+    }
+  ],
+  "corrections": [
+    {
+      "was": "BDA8E0 live listing skips BDA8F5..BDA8F7 after free",
+      "is": "83 C4 04 = ADD ESP,4; stored end already BDA8FD inclusive",
+      "evidence": "PE/live bytes BDA8F5[9] = 83c4048bc65ec20400; complete logical end-exclusive BDA8FE",
+      "requested_repair": "Disassemble BDA8F5..BDA8F7 under write lock, preserve comments and existing body/name; no new function or extension required"
+    },
+    {
+      "was": "Potential captured-this interpretation of registration/removal",
+      "is": "Second getter returns before fresh0109CEEC reload; removal uses current publication",
+      "evidence": "BDA74C->BDA751->BDA75A and BDA7E6->BDA7EB->BDA7F4; EDI retains original owner and ESI retains original section"
+    },
+    {
+      "was": "Potential generic RAII equivalence to original FH3/SEH",
+      "is": "C++ provider cleanup schedule only; normal Leave remains inside native state1",
+      "evidence": "State1 stores BDA741/BDA7E1 have no later state decrement; maps retain section action then owner root action"
+    }
+  ],
+  "boundaries": [
+    "Raw owner storage and actual singleton publication bridge; no private lifetime domain, pool or registry.",
+    "Explicit source arguments replace original no-binding ABI; profile DWORDs are not callable host vtables.",
+    "Native differential probe redirects lifetime getter/register/unregister/free to existing canonical source services and uses actual Win32 Enter/Leave; original FH3 exceptions are not executed.",
+    "Source registration callback return/throw checks use the canonical semantic fixture domain; getter allocation-failure and removal-fault scheduling are statically reconstructed but not forced in the fixture.",
+    "Original FH3/SEH, mutable EH-spill aliasing, hardware-fault cleanup during Enter/Leave and provider register/throw identities are not established.",
+    "No complete-manager, original CRT identity, binary replacement or gameplay validation claim."
+  ],
+  "validation": {
+    "status": "strict_build_existing_ctests_and_focused_probe_passed",
+    "verify_seeds": "8/8 PE/live equal before build",
+    "build": "scripts/build.ps1 Release, MSBUILDDISABLENODEREUSE=1, MSVC Win32 /W4 /WX /fp:strict",
+    "existing_ctests": {
+      "passed": 2,
+      "failed": 0,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential"
+      ]
+    },
+    "call_report": "12 direct call/tail-jump rows checked, 0 failed; 4 Win32 IAT rows explicit indirect",
+    "fixture": {
+      "directory": "J:\\PROG\\battlestations-pacific-decompile-orch2-manager-base-at\\local\\native_vfs_manager_base_frozen_01",
+      "result": "PASS: native/source actual-manager normal lifetime comparison; optional section; current-publication removal; full flags bit0; source callback return/throw cleanup; 93 assertions",
+      "normal_cases": 8,
+      "source_callback_cases": 2,
+      "native_service_redirects": [
+        "00415350 -> canonical actual source getter",
+        "00bd0c30 -> canonical raw source registration",
+        "00bcfca0 -> canonical raw source removal",
+        "00bf65ac -> matching actual source CRT free"
+      ],
+      "win32_imports": "actual EnterCriticalSection/LeaveCriticalSection",
+      "original_fh3_exceptions_executed": false,
+      "source_exceptions": "returning and throwing semantic registration validation; callback changes publication",
+      "pre_execution_pinned_files": 37,
+      "post_execution_changed_files": [],
+      "manifest_sha256": "f53892215096a6cca3309fec285899111f29c9de4600427dd503f6ad07410c41",
+      "pins": {
+        "include/bsp/native_vfs_manager_base.hpp": "f43ba544592fbd659c4cd4e715211cf0e6963eacd12a32e472888262a13816a0",
+        "src/native_vfs_manager_base.cpp": "d1e02101eaadeb1bd929d4faac012d9380987de4d743cbd28c9a407734e019fc",
+        "build/win32/bsp_core.dir/Release/native_vfs_manager_base.obj": "ebc613b35d4f53f25051d923dcd10052b973f6bd28c4279ffe2b2843e809cff8",
+        "build/win32/Release/bsp_core.lib": "8fef0003c352c3cce60ea749ffd6d74877af6aedc9ff05a05655e486baaec236",
+        "local/native_vfs_manager_base_probe.cpp": "07d69ecbbc7854ad36531e2b2cdecea2b06d5a34dd638ef2d94538fc159e9532",
+        "native_base.bin": "935c72cef83f200eaa4b1a17fce85d82438c5e3d4a3e3cfd994a936912f3dfa4",
+        "probe.obj": "fad509ef2d9f387dfcce070370d053b53b4efa10003c1f3f442eedbf41d40969",
+        "base_probe.exe": "1460555ad6616732db383098100b2a843644aaa9029ac677217867c79a0a98a1"
+      },
+      "retained_attempts": "First successful compile used checkout paths and was retained unexecuted under attempt_01; second successful compile used physically frozen headers/library and was executed once. Both compile logs and outputs remain."
+    }
+  }
+}

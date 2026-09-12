@@ -299,3 +299,20 @@ none. Every address cited above lies inside an existing Ghidra function body, ch
 `python tools/bsp.py ghidra proto <addr> --brief`: `009329C0`, `0042B260`, `004142E0`, `004F9B30`,
 `0074F2E0`, `0074F930`, `0078CF20`, `00424C40`, `0083B5E0`, `00BF7030`, `00C31F20`, `00C31F40`,
 `00C32000`, `00C33650`, `00C35330`, `00C35360`, `00C37E20`, `00C37E50`, `00937440`, `00937C90`.
+
+## Correction from docs/SHIP_BUOYANCY_ELEMENTS.md
+
+Packet `cc_buoyancy_elements` found the producer this doc could not: `0082D040` builds the list,
+pushing through `std::vector<Element,24h>::push_back` `0082C960` with the vector object's own
+base `descriptor+528h` in ECX (the displacement `52Ch` is never used; `009329C0` reads the list
+as `ADD EDI,528h` then `[EDI+4]` and `[EDI+8]`). The elements are generated, not authored:
+`0082FE30`, the ship class descriptor's model-binding virtual (slot 8 of all eight ship vtables;
+`00759120` overrides it for MMothership), resolves the model nodes named `deckline` and
+`bottomline`, sorts both polylines by ascending z, walks `Hull.Segments` stations evenly over
+`Length`, samples both lines at each station with `0082A920` and pushes two records per station
+at `+Width/2` and `-Width/2`. Field roles from the producer: `+04h` is the waterline (not a top),
+`+08h` the deck line (not the draught), `+14h` the draught (`008936A0` `luaMW_GetDraught` returns
+its maximum), `+10h`/`+14h` the cached section height and draught both readers recompute.
+`coefficient * draught` is `Mass*10*0.5/Hull.Segments` on every record and there are
+`2*Hull.Segments` of them, so the list sums to exactly `10*Mass` and `00937C90`'s displacement sum
+cancels `Gravitacio*Mass` when the shape exponent leaves the factor at 1.

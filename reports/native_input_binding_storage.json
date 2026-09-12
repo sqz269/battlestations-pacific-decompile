@@ -1,0 +1,498 @@
+{
+  "packet": "orch4_native_input_binding_storage_ac",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "module": "native_input_binding_storage",
+  "source": [
+    "include/bsp/native_input_binding_storage.hpp",
+    "src/native_input_binding_storage.cpp"
+  ],
+  "document": "docs/NATIVE_INPUT_BINDING_STORAGE.md",
+  "functions": [
+    {
+      "address": "0086a220",
+      "name": "BSP_NativeDwordVector_Reserve_0086A220",
+      "implementation": "reserve_native_input_dwords_0086a220",
+      "source": "src/native_input_binding_storage.cpp",
+      "document": "docs/NATIVE_INPUT_BINDING_STORAGE.md",
+      "coverage": "complete normal schedule and documented C++ unwind over valid native ranges",
+      "original_abi": "ECX receiver; one DWORD stack argument; no semantic result; RET 0x4",
+      "end_exclusive": "0086a27f",
+      "end_inclusive": "0086a27e",
+      "last_instruction": "0086a27c",
+      "last_instruction_length": 3,
+      "span": 95,
+      "sha256": "1a54cdd764367a839b6886b5132b7b114e1585fe04c1ca1536c08b1b17d6adc8",
+      "disk_analysis_equal": true,
+      "existing_projection_preserved": false,
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "0086a430",
+      "name": "BSP_NativeDwordVector_Resize_0086A430",
+      "implementation": "resize_native_input_dwords_0086a430",
+      "source": "src/native_input_binding_storage.cpp",
+      "document": "docs/NATIVE_INPUT_BINDING_STORAGE.md",
+      "coverage": "complete normal schedule and documented C++ unwind over valid native ranges",
+      "original_abi": "ECX receiver; one DWORD stack argument; no semantic result; RET 0x4",
+      "end_exclusive": "0086a480",
+      "end_inclusive": "0086a47f",
+      "last_instruction": "0086a47d",
+      "last_instruction_length": 3,
+      "span": 80,
+      "sha256": "7caec3188f4275f9636f28cb7eccb62fca700f5143eb96911f6b4a1078a530c8",
+      "disk_analysis_equal": true,
+      "existing_projection_preserved": false,
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00696d80",
+      "name": "BSP_NativeDwordVector_Reserve_00696D80",
+      "implementation": "reserve_native_input_context_words_00696d80",
+      "source": "src/native_input_binding_storage.cpp",
+      "document": "docs/NATIVE_INPUT_BINDING_STORAGE.md",
+      "coverage": "complete normal schedule and documented C++ unwind over valid native ranges",
+      "original_abi": "ECX receiver; one DWORD stack argument; no semantic result; RET 0x4",
+      "end_exclusive": "00696ddf",
+      "end_inclusive": "00696dde",
+      "last_instruction": "00696ddc",
+      "last_instruction_length": 3,
+      "span": 95,
+      "sha256": "0608c45abbbf34340d49dddff07c7d1ecfd9197abff776274fe9c70558b409f0",
+      "disk_analysis_equal": true,
+      "existing_projection_preserved": false,
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00696e70",
+      "name": "BSP_NativeDwordVector_Resize_00696E70",
+      "implementation": "resize_native_input_context_words_00696e70",
+      "source": "src/native_input_binding_storage.cpp",
+      "document": "docs/NATIVE_INPUT_BINDING_STORAGE.md",
+      "coverage": "complete normal schedule and documented C++ unwind over valid native ranges",
+      "original_abi": "ECX receiver; one DWORD stack argument; no semantic result; RET 0x4",
+      "end_exclusive": "00696ec0",
+      "end_inclusive": "00696ebf",
+      "last_instruction": "00696ebd",
+      "last_instruction_length": 3,
+      "span": 80,
+      "sha256": "9c47a5911185d3b8b748d453ce190edfc93f846ca1e718956f1811934bdc68dd",
+      "disk_analysis_equal": true,
+      "existing_projection_preserved": false,
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00696de0",
+      "name": "BSP_NativeInputModifierVector_Reserve",
+      "implementation": "reserve_native_input_modifiers_00696de0",
+      "source": "src/native_input_binding_storage.cpp",
+      "document": "docs/NATIVE_INPUT_BINDING_STORAGE.md",
+      "coverage": "complete normal schedule and documented C++ unwind over valid native ranges",
+      "original_abi": "ECX receiver; one DWORD stack argument; no semantic result; RET 0x4",
+      "end_exclusive": "00696e6e",
+      "end_inclusive": "00696e6d",
+      "last_instruction": "00696e6b",
+      "last_instruction_length": 3,
+      "span": 142,
+      "sha256": "c086a04809962f1a49e99fe93d589a6688a2c086511e1e594371ab8066a79abc",
+      "disk_analysis_equal": true,
+      "existing_projection_preserved": false,
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00697220",
+      "name": "BSP_NativeInputModifierVector_Resize",
+      "implementation": "resize_native_input_modifiers_00697220",
+      "source": "src/native_input_binding_storage.cpp",
+      "document": "docs/NATIVE_INPUT_BINDING_STORAGE.md",
+      "coverage": "complete normal schedule and documented C++ unwind over valid native ranges",
+      "original_abi": "ECX receiver; one DWORD stack argument; no semantic result; RET 0x4",
+      "end_exclusive": "00697281",
+      "end_inclusive": "00697280",
+      "last_instruction": "0069727e",
+      "last_instruction_length": 3,
+      "span": 97,
+      "sha256": "b4631771cf56829c027a3f4038e75da4e9aeaa0cc579c25213e4af8a6c963395",
+      "disk_analysis_equal": true,
+      "existing_projection_preserved": false,
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a92e70",
+      "name": "BSP_NativeInputContextWords_Assign",
+      "implementation": "assign_native_input_context_words_00a92e70",
+      "source": "src/native_input_binding_storage.cpp",
+      "document": "docs/NATIVE_INPUT_BINDING_STORAGE.md",
+      "coverage": "complete normal schedule and documented C++ unwind over valid native ranges",
+      "original_abi": "ECX receiver; one DWORD stack argument; EAX captured pointer; RET 0x4",
+      "end_exclusive": "00a92eda",
+      "end_inclusive": "00a92ed9",
+      "last_instruction": "00a92ed7",
+      "last_instruction_length": 3,
+      "span": 106,
+      "sha256": "6d04ec4fbbc83731c99cd052476ead41c945f8ede258d86f793de68ed6727899",
+      "disk_analysis_equal": true,
+      "existing_projection_preserved": false,
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a92ee0",
+      "name": "BSP_NativeInputModifierVector_Assign",
+      "implementation": "assign_native_input_modifiers_00a92ee0",
+      "source": "src/native_input_binding_storage.cpp",
+      "document": "docs/NATIVE_INPUT_BINDING_STORAGE.md",
+      "coverage": "complete normal schedule and documented C++ unwind over valid native ranges",
+      "original_abi": "ECX receiver; one DWORD stack argument; EAX captured pointer; RET 0x4",
+      "end_exclusive": "00a92f71",
+      "end_inclusive": "00a92f70",
+      "last_instruction": "00a92f6e",
+      "last_instruction_length": 3,
+      "span": 145,
+      "sha256": "659696c90272e46162bcde429ecdb396cd79faf7044bad9004dadd7b1541fa81",
+      "disk_analysis_equal": true,
+      "existing_projection_preserved": false,
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a93100",
+      "name": "BSP_InputBinding_CopyConstruct",
+      "implementation": "copy_native_input_binding_00a93100",
+      "source": "src/native_input_binding_storage.cpp",
+      "document": "docs/NATIVE_INPUT_BINDING_STORAGE.md",
+      "coverage": "complete normal schedule and documented C++ unwind over valid native ranges",
+      "original_abi": "ECX receiver; one DWORD stack argument; EAX captured pointer; RET 0x4",
+      "end_exclusive": "00a93195",
+      "end_inclusive": "00a93194",
+      "last_instruction": "00a93192",
+      "last_instruction_length": 3,
+      "span": 149,
+      "sha256": "f9641bfa75678c59eef0410983b147022af84456316a246844db8f75ad3a190a",
+      "disk_analysis_equal": true,
+      "existing_projection_preserved": true,
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a93220",
+      "name": "BSP_InputBindingVector_Reserve",
+      "implementation": "reserve_native_input_bindings_00a93220",
+      "source": "src/native_input_binding_storage.cpp",
+      "document": "docs/NATIVE_INPUT_BINDING_STORAGE.md",
+      "coverage": "complete normal schedule and documented C++ unwind over valid native ranges",
+      "original_abi": "ECX receiver; one DWORD stack argument; no semantic result; RET 0x4",
+      "end_exclusive": "00a93342",
+      "end_inclusive": "00a93341",
+      "last_instruction": "00a9333f",
+      "last_instruction_length": 3,
+      "span": 290,
+      "sha256": "1146f2cb95b2db524cdc443f09324e54998ae4c05293c09a52ff1a474b2693a1",
+      "disk_analysis_equal": true,
+      "existing_projection_preserved": true,
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a93500",
+      "name": "BSP_InputBindingVector_Resize",
+      "implementation": "resize_native_input_bindings_00a93500",
+      "source": "src/native_input_binding_storage.cpp",
+      "document": "docs/NATIVE_INPUT_BINDING_STORAGE.md",
+      "coverage": "complete normal schedule and documented C++ unwind over valid native ranges",
+      "original_abi": "ECX receiver; one DWORD stack argument; no semantic result; RET 0x4",
+      "end_exclusive": "00a93615",
+      "end_inclusive": "00a93614",
+      "last_instruction": "00a93612",
+      "last_instruction_length": 3,
+      "span": 277,
+      "sha256": "cb4f9298e75537bbcf47a79063888890b0310a7abf73c66b7901f43037a5baab",
+      "disk_analysis_equal": true,
+      "existing_projection_preserved": true,
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a93440",
+      "name": "BSP_NativeInputBindingVector_AppendCopy",
+      "implementation": "append_native_input_binding_00a93440",
+      "source": "src/native_input_binding_storage.cpp",
+      "document": "docs/NATIVE_INPUT_BINDING_STORAGE.md",
+      "coverage": "complete normal schedule and documented C++ unwind over valid native ranges",
+      "original_abi": "ECX receiver; one DWORD stack argument; no semantic result; RET 0x4",
+      "end_exclusive": "00a934af",
+      "end_inclusive": "00a934ae",
+      "last_instruction": "00a934ac",
+      "last_instruction_length": 3,
+      "span": 111,
+      "sha256": "90d79a9e31871d0b4ba356f6a90e00020d8acbbcc9316600f378ac99a6e53178",
+      "disk_analysis_equal": true,
+      "existing_projection_preserved": false,
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a937e0",
+      "name": "BSP_NativeInputBindingVector_Assign",
+      "implementation": "assign_native_input_bindings_00a937e0",
+      "source": "src/native_input_binding_storage.cpp",
+      "document": "docs/NATIVE_INPUT_BINDING_STORAGE.md",
+      "coverage": "complete normal schedule and documented C++ unwind over valid native ranges",
+      "original_abi": "ECX receiver; one DWORD stack argument; EAX captured pointer; RET 0x4",
+      "end_exclusive": "00a93825",
+      "end_inclusive": "00a93824",
+      "last_instruction": "00a93822",
+      "last_instruction_length": 3,
+      "span": 69,
+      "sha256": "13188025cb9fcfcdba3e836ad3b0a9d3a7eb6588de971f49ec9ff850c44b33c3",
+      "disk_analysis_equal": true,
+      "existing_projection_preserved": false,
+      "native_abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0086a240",
+      "caller": "0086a220",
+      "native": "00bf55be",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "0086a26c",
+      "caller": "0086a220",
+      "native": "00bf6989",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "0086a43e",
+      "caller": "0086a430",
+      "native": "0086a220",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00696da0",
+      "caller": "00696d80",
+      "native": "00bf55be",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00696dcc",
+      "caller": "00696d80",
+      "native": "00bf6989",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00696e7e",
+      "caller": "00696e70",
+      "native": "00696d80",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00696e01",
+      "caller": "00696de0",
+      "native": "00bf55be",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00696e5a",
+      "caller": "00696de0",
+      "native": "00bf6989",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "0069722e",
+      "caller": "00697220",
+      "native": "00696de0",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a92e77",
+      "caller": "00a92e70",
+      "native": "00696e70",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a92e86",
+      "caller": "00a92e70",
+      "native": "00696d80",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a92eaf",
+      "caller": "00a92e70",
+      "native": "00696d80",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a92ee8",
+      "caller": "00a92ee0",
+      "native": "00697220",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a92ef7",
+      "caller": "00a92ee0",
+      "native": "00696de0",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a92f21",
+      "caller": "00a92ee0",
+      "native": "00696de0",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a9315c",
+      "caller": "00a93100",
+      "native": "00a92ee0",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a93174",
+      "caller": "00a93100",
+      "native": "00a92ee0",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a93260",
+      "caller": "00a93220",
+      "native": "00bf55be",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a93299",
+      "caller": "00a93220",
+      "native": "00a93100",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a932d9",
+      "caller": "00a93220",
+      "native": "00697220",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a932e1",
+      "caller": "00a93220",
+      "native": "00bf6989",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a932f8",
+      "caller": "00a93220",
+      "native": "00697220",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a93300",
+      "caller": "00a93220",
+      "native": "00bf6989",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a9331c",
+      "caller": "00a93220",
+      "native": "00bf6989",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a93525",
+      "caller": "00a93500",
+      "native": "00a93220",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a935ac",
+      "caller": "00a93500",
+      "native": "00697220",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a935b5",
+      "caller": "00a93500",
+      "native": "00bf6989",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a935cb",
+      "caller": "00a93500",
+      "native": "00697220",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a935d3",
+      "caller": "00a93500",
+      "native": "00bf6989",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a93474",
+      "caller": "00a93440",
+      "native": "00a93220",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a93494",
+      "caller": "00a93440",
+      "native": "00a93100",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a937e7",
+      "caller": "00a937e0",
+      "native": "00a93500",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a937f6",
+      "caller": "00a937e0",
+      "native": "00a93220",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a9380c",
+      "caller": "00a937e0",
+      "native": "00a93440",
+      "coverage": "owned body instruction"
+    }
+  ],
+  "indirect_steps": [],
+  "no_ghidra_function": [],
+  "coverage": "Complete normal schedules for valid raw containers and the documented source C++ exception domain. Original ABI/FH3/SEH and arbitrary listener providers are not supplied.",
+  "game_validated": false,
+  "native_abi_compatible": false,
+  "source_sha256": {
+    "include/bsp/native_input_binding_storage.hpp": "25003dd7a0746a31e7b0ebd1e9ef74f76d5cfe97c86e9408424e0242fd5aeb72",
+    "src/native_input_binding_storage.cpp": "9d8ddb3a12f46ebd5431fd568762087dd9335a872c03ebdb7a74453bf81a77d7"
+  },
+  "validation": {
+    "build": "Win32 Release scripts/build.ps1 passed; both existing CTests passed",
+    "build_log": "local/native_input_records_ac_build.log",
+    "direct_call_audit": {
+      "checked": 34,
+      "failed": 0,
+      "log": "local/native_input_storage_ac_calls.log"
+    },
+    "all_body_bytes_match": true,
+    "peer_review": "Independent owner workers reviewed live reloads, padding, refcounts and native EH order; growth-only constant load corrected before passing build/fixture",
+    "nonempty_fixture": "Passed against primary provider archive plus worker owner source; final archive-only raw drain evidence tracked separately",
+    "fixture_log": "../battlestations-pacific-decompile-orch4-input-actions-ac/local/input_action_owner_nonempty_probe.log",
+    "permanent_tests_added": 0,
+    "application_input_validated": false,
+    "native_abi_compatible": false
+  },
+  "boundaries": [
+    "Valid actual Win32 engine array headers and addressable ranges required; not STL layout.",
+    "Existing CRT allocation boundary; original FH3/SEH and arbitrary allocator/new-handler identity not supplied.",
+    "Placement cleanup00401130 is actual no-op; no stronger reserve rollback or replacement reclamation.",
+    "Listener current-profile slot-zero body remains required; native call has no stack flags.",
+    "Field and x87 behavior do not establish game/frame input integration."
+  ]
+}
