@@ -1,0 +1,126 @@
+{
+  "packet": "orch3_tracer_curve_aj",
+  "source": "src/tracer_parameter_curve.cpp",
+  "header": "include/bsp/tracer_parameter_curve.hpp",
+  "documentation": "docs/TRACER_PARAMETER_CURVE.md",
+  "status": "reconstructed_strict_win32_compiled_original_byte_fixture_passed",
+  "names_are_hypotheses": true,
+  "ghidra": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "bsp.py ghidra verifies project/program/language/image base before every query",
+    "read_only": true,
+    "exports_refreshed": false,
+    "missing_definitions": [
+      {
+        "address": "00ba9da0",
+        "inclusive_end": "00ba9e4a",
+        "last_instruction": "00ba9e48",
+        "last_instruction_length": 3,
+        "last_instruction_text": "RET 4",
+        "length_bytes": 171,
+        "live_equals_disk": true,
+        "sha256": "d7ad8f9a4e072bc1e1646ccbb260f17f7fde0691a1103dff976a2e858ae3964a",
+        "action": "primary integrator defines after worker releases lease"
+      }
+    ]
+  },
+  "routines": [
+    {
+      "address": "00ba9da0",
+      "native": "00ba9da0",
+      "function": "00ba9da0",
+      "name": "TracerParameterCurveStorage::sample_00ba9da0",
+      "coverage": "complete",
+      "inclusive_end": "00ba9e4a",
+      "abi": "MSVC x86 __thiscall; ECX owner; one binary32 stack argument; RET 4; x87 ST0 result",
+      "rounding": "exact x87 comparisons and FSUB/FMUL/FADD; interpolation FSTP32/FLD32 retained",
+      "mutates": "owner+18 current segment only"
+    },
+    {
+      "address": "00bacaa0",
+      "native": "00bacaa0",
+      "function": "00bacaa0",
+      "name": "TracerParameterCurveStorage::initialize_00bacaa0",
+      "coverage": "complete normal-return initialized state; native SEH/unwind scaffolding omitted",
+      "inclusive_end": "00bacb05",
+      "abi": "MSVC x86 __thiscall; ECX fresh storage; no stack arguments; RET; EAX same storage",
+      "folded_effects": "unobserved transient base vtable CEB130 and BAC5E0(0) on freshly zeroed storage"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00bacae8",
+      "native": "00bac5e0",
+      "function": "00bacaa0",
+      "contract": "read complete body and assembly; resize of embedded array to 0 on zero size/capacity only rewrites zero size; RET 4"
+    }
+  ],
+  "producer_evidence": [
+    {
+      "address": "00869e7e",
+      "native": "00bacaa0",
+      "function": "00869e40",
+      "contract": "construct 1Ch-byte curve owner after null-owner allocation branch"
+    },
+    {
+      "address": "00869f52",
+      "native": "00bac670",
+      "function": "00869e40",
+      "contract": "read complete body/assembly; append coordinate/value, compute previous record slope; RET 8"
+    },
+    {
+      "address": "00bac6f3",
+      "native": "00babfe0",
+      "function": "00bac670",
+      "contract": "read body/assembly plus missing post-free disk tail; grow capacity of 0Ch-byte records"
+    }
+  ],
+  "consumer_evidence": [
+    {
+      "address": "00872a05",
+      "native": "00ba9da0",
+      "function": "00872790",
+      "kind": "indirect",
+      "contract": "current owner slot08; BA9DA0 only when current table is D63FFC; subsequent FSTP32 at872A0F"
+    },
+    {
+      "address": "00872a1a",
+      "native": "00ba9da0",
+      "function": "00872790",
+      "kind": "indirect",
+      "contract": "reload same owner's current table/slot08; subsequent FSTP32 at872A20"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "live Ghidra has no function definition at BA9DA0",
+      "is": "verified complete 171-byte evaluator spans BA9DA0..BA9E4A; definition deferred to primary integrator",
+      "evidence": "live bytes equal disk; D63FFC+08 points to BA9DA0; final RET4 starts BA9E48 and is three bytes"
+    },
+    {
+      "was": "live BABFE0 listing and pseudocode omit the post-free pointer/capacity publication",
+      "is": "disk tail BAC053..BAC05C cleans stack, stores the pointer and capacity, and restores saved registers; read-only evidence, no repair",
+      "evidence": "BAC04E CALL BF6989; BAC053 ADD ESP,4; BAC057 MOV [ESI],EBP; BAC059 MOV [ESI+8],EBX; BAC05C POP EBP"
+    }
+  ],
+  "validation": {
+    "strict_compile": "passed MSVC Win32 /std:c++17 /EHsc /W4 /WX /O2",
+    "original_byte_differential": "passed 66816 calls across 12 x87 precision/rounding control words",
+    "compared": ["full owner state", "80-bit ST0", "FSTP32 result", "x87 status/control", "existing x87 sentinel", "EBX/EDI", "RET4 stack balance"],
+    "constructor_state": "passed returned pointer and all 1Ch owner fields after filling with A5 bytes",
+    "fixture_directory": "local/tracer_curve_probe",
+    "fixture_files": ["extract.py", "original.inc", "original.bin", "bytes.json", "probe.cpp", "build.cmd", "probe.exe", "result.log"],
+    "manifest": "probe links /MANIFEST:EMBED",
+    "repository_build": "scripts/build.ps1 passed Release Win32; 1/1 configured test passed (reconstructed_math). CMake unchanged, so the new curve source was compiled separately by the strict fixture build, not added to the baseline target.",
+    "call_report_checker": "6 call rows checked; 4 direct rows pass; 2 consumer rows fail only because BA9DA0 has no live function definition; indirect CALL instructions and containing function872790 verified",
+    "game_validated": false
+  },
+  "unresolved": [
+    "BA9DA0 live function definition and primary-owned Ghidra annotation/export refresh",
+    "real Lua loader, record allocator and reference-counted lifetime wiring",
+    "current virtual-slot dispatch binding in type4 runtime, including non-BA9DA0 slots",
+    "constructor native exception/unwind ABI is omitted",
+    "BABFE0 live body omits BAC053..BAC05C after _free; disk tail inspected only"
+  ]
+}
