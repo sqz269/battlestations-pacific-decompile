@@ -1,0 +1,645 @@
+{
+  "packet": "cc2_gun_aiming",
+  "owner": "agent/cc2-gun-aiming",
+  "docs": [
+    "docs/GUN_AIMING.md"
+  ],
+  "sources": [
+    "include/bsp/gun_aiming.hpp",
+    "src/gun_aiming.cpp"
+  ],
+  "subject": "How a gun tracks its fire target and fires: the turning-gun target angles, the rate-limited step at the gun's +310h tick element, the node matrices, and the CanFire / FireIfReady chain.",
+  "reuses": [
+    "docs/UNIT_WEAPON_DEVICES.md for the gun record and 00730160 Fire",
+    "docs/GUN_CLASS_FAMILY.md for the six classes behind 00CFE0A8",
+    "docs/VEHICLE_CLASS_FIELDS.md for the platform record, RestAngles and the Windows firing arcs",
+    "docs/TICK_ELEMENT_OVERRIDES.md for the fixed-step tick element at +310h and unit+6F8h/+6FCh",
+    "docs/GAME_WORLD_ENTITIES.md and docs/IN_MISSION_SUBSYSTEM_TICK.md for the vtable[0DCh] world walk"
+  ],
+  "functions": [
+    {
+      "address": "0085aba0",
+      "name": "BSP_TurningGun_SetTargetAngles",
+      "abi": "__thiscall(gun)(float horz, float vert) -> bool, RET 8 at 0085ace9 and 0085acef",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "0085abbd",
+          "native": "00bf857a",
+          "role": "fmod(horz, 2pi) with 2pi from 00CE3828"
+        },
+        {
+          "address": "0085ac0e",
+          "native": "00bf857a",
+          "role": "fmod(vert, 2pi)"
+        },
+        {
+          "address": "0085ac78",
+          "native": "005471b0",
+          "role": "std::vector::at out-of-range for the platform index"
+        },
+        {
+          "address": "0085ac94",
+          "native": "007f5fc0",
+          "role": "traverse-window test on the platform, ECX = platform"
+        }
+      ],
+      "reads": [
+        {
+          "address": "0085ac51",
+          "field": "gun+3F0h",
+          "value": "the owning unit"
+        },
+        {
+          "address": "0085ac58",
+          "field": "unit+538h",
+          "value": "the unit class descriptor"
+        },
+        {
+          "address": "0085ac5f",
+          "field": "gun+38Ch",
+          "value": "platform index"
+        },
+        {
+          "address": "0085ac65",
+          "field": "descriptor+94h",
+          "value": "platform array base, count at +98h"
+        },
+        {
+          "address": "0085aca5",
+          "field": "weaponDescriptor+8Ch",
+          "value": "VertRotSpeed, must be non-zero"
+        },
+        {
+          "address": "0085acb9",
+          "field": "weaponDescriptor+88h",
+          "value": "HorzRotSpeed, must be non-zero"
+        }
+      ],
+      "writes": [
+        {
+          "address": "0085abb5",
+          "field": "gun+4A0h",
+          "value": "-1.0f from 00D7A260, before any test"
+        },
+        {
+          "address": "0085acd0",
+          "field": "gun+494h",
+          "value": "the wrapped horizontal target"
+        },
+        {
+          "address": "0085acde",
+          "field": "gun+498h",
+          "value": "the wrapped vertical target"
+        }
+      ]
+    },
+    {
+      "address": "0085ad80",
+      "name": "BSP_TurningGun_StepAim",
+      "abi": "__thiscall(gun+310h)(float dt), RET 4 at 0085b0e0; the body reaches the gun with a -310h bias",
+      "coverage": "complete for both axes; 007F6530 and 007F6840 are contracts",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "0085add2",
+          "native": "00605070",
+          "role": "angle write helper, first axis"
+        },
+        {
+          "address": "0085addd",
+          "native": "00605070",
+          "role": "angle write helper, second axis"
+        },
+        {
+          "address": "0085ae19",
+          "native": "00438b10",
+          "role": "BSP_Math_SubtractWrappedAngle(tHorz, horz)"
+        },
+        {
+          "address": "0085ae42",
+          "native": "00438b10",
+          "role": "BSP_Math_SubtractWrappedAngle(tVert, vert)"
+        },
+        {
+          "address": "0085ae99",
+          "native": "005471b0",
+          "role": "std::vector::at out-of-range for the platform index"
+        },
+        {
+          "address": "0085aeda",
+          "native": "007f6530",
+          "role": "arc-aware signed step deltas on the platform"
+        },
+        {
+          "address": "0085afa6",
+          "native": "00419010",
+          "role": "BSP_Math_InterpolateClamped soft approach, horizontal"
+        },
+        {
+          "address": "0085afd1",
+          "native": "00605070",
+          "role": "angle write helper after the horizontal step"
+        },
+        {
+          "address": "0085b094",
+          "native": "00419010",
+          "role": "BSP_Math_InterpolateClamped soft approach, vertical"
+        },
+        {
+          "address": "0085b0ab",
+          "native": "00605070",
+          "role": "angle write helper after the vertical step"
+        },
+        {
+          "address": "0085b0c5",
+          "native": "007f6840",
+          "role": "final platform validity test; a false answer restores the traverse angle"
+        }
+      ],
+      "indirect_calls": [
+        {
+          "address": "0085af76",
+          "native": "indirect: gun vtable[5Ch](23h)",
+          "role": "MRFSGun test before the horizontal soft approach"
+        },
+        {
+          "address": "0085b064",
+          "native": "indirect: gun vtable[5Ch](23h)",
+          "role": "MRFSGun test before the vertical soft approach"
+        }
+      ],
+      "reads": [
+        {
+          "address": "0085ad8c",
+          "field": "unit+5Dh",
+          "value": "gate, must be zero"
+        },
+        {
+          "address": "0085ad96",
+          "field": "gun+3B8h",
+          "value": "gate, must be zero"
+        },
+        {
+          "address": "0085adeb",
+          "field": "weaponDescriptor+88h",
+          "value": "HorzRotSpeed; at or below zero snaps to the target"
+        },
+        {
+          "address": "0085adf9",
+          "field": "weaponDescriptor+8Ch",
+          "value": "VertRotSpeed; at or below zero snaps to the target"
+        },
+        {
+          "address": "0085aeeb",
+          "field": "weaponDescriptor+88h",
+          "value": "the horizontal rate used for the per-step clamp"
+        },
+        {
+          "address": "0085afe2",
+          "field": "weaponDescriptor+8Ch",
+          "value": "the vertical rate used for the per-step clamp"
+        }
+      ],
+      "constants": [
+        {
+          "address": "00cfaa48",
+          "value": "0.000174533f",
+          "role": "dead band, one hundredth of a degree"
+        },
+        {
+          "address": "00ce3990",
+          "value": "0.17453294f",
+          "role": "ten degrees, the soft-approach span"
+        },
+        {
+          "address": "00ce3800",
+          "value": "0.5f",
+          "role": "the soft-approach floor"
+        }
+      ]
+    },
+    {
+      "address": "0085ad00",
+      "name": "BSP_TurningGun_AimToRestAngles",
+      "abi": "__fastcall(gun), RET at 0085ad7a",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "notes": "Calls 0085ABA0 with (platform+94h, platform+90h) only when platform+94h differs from the double FLT_MAX at 00D7A278, and bounds-checks the platform index through 005471B0 first. docs/VEHICLE_CLASS_FIELDS.md names the two floats RestAngles[1] and RestAngles[2] with the float FLT_MAX default at 00D7A248. No call-site address is asserted: the body was read from the decompiler only."
+    },
+    {
+      "address": "0085a8b0",
+      "name": "BSP_TurningGun_CanReachAngles",
+      "abi": "__thiscall(gun)(float horz, float vert) -> bool, RET 8 at 0085a99a",
+      "coverage": "complete",
+      "no_ghidra_function": true,
+      "body": "0085a8b0-0085a99c",
+      "raw_listing_calls": [
+        {
+          "site": "0085a8be",
+          "callee": "00bf857a",
+          "role": "fmod(horz, 2pi)"
+        },
+        {
+          "site": "0085a90f",
+          "callee": "00bf857a",
+          "role": "fmod(vert, 2pi)"
+        },
+        {
+          "site": "0085a977",
+          "callee": "005471b0",
+          "role": "std::vector::at out-of-range for the platform index"
+        },
+        {
+          "site": "0085a993",
+          "callee": "007f5fc0",
+          "role": "traverse-window test, the returned value"
+        }
+      ]
+    },
+    {
+      "address": "0085a830",
+      "name": "BSP_TurningGun_CanFire",
+      "abi": "__thiscall(gun)(bool checkReload) -> bool, RET 4 at 0085a83f and 0085a89f",
+      "coverage": "complete",
+      "no_ghidra_function": true,
+      "body": "0085a830-0085a8a1",
+      "reads": [
+        {
+          "address": "0085a833",
+          "field": "gun+490h",
+          "value": "fire inhibit; non-zero returns false"
+        },
+        {
+          "address": "0085a86c",
+          "field": "gun+484h",
+          "value": "vertAngle, second argument"
+        },
+        {
+          "address": "0085a87e",
+          "field": "gun+480h",
+          "value": "horzAngle, first argument"
+        }
+      ],
+      "raw_listing_calls": [
+        {
+          "site": "0085a867",
+          "callee": "005471b0",
+          "role": "std::vector::at out-of-range for the platform index"
+        },
+        {
+          "site": "0085a887",
+          "callee": "007f60a0",
+          "role": "fire-window test on the CURRENT angles gun+480h/gun+484h"
+        },
+        {
+          "site": "0085a899",
+          "callee": "00729a80",
+          "role": "tail call to the base gun test, argument forwarded"
+        }
+      ]
+    },
+    {
+      "address": "00729a80",
+      "name": "BSP_Gun_CanFire",
+      "abi": "__thiscall(gun)(bool checkReload) -> bool",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [],
+      "notes": "Ordered tests: [gun+3F8h]+34h non-zero; gun+3B8h clear; gun+358h not positive; with checkReload, gun+450h (barrelDelayTime) and gun+478h both spent; 006D1E50 gates the unit-wide cooldown unit+6F8h; weapon type 7 gates unit+6FCh; the muzzle world y at or above 1.0 (00D7A24C) or both 00728A90 and 005459B0 false; then any barrel index below gun+448h whose gun+414h timer is spent. Call sites inside the body were read from the decompiler only."
+    },
+    {
+      "address": "00727e30",
+      "name": "BSP_Gun_FireIfReady",
+      "abi": "__fastcall(gun) -> bool",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [],
+      "indirect_calls": [
+        {
+          "address": "00727e3d",
+          "native": "indirect: gun vtable[1D0h](1)",
+          "role": "CanFire with the reload check on; slot loaded at 00727e35"
+        },
+        {
+          "address": "after 00727e47",
+          "native": "indirect: gun vtable[1D8h](0,0,0)",
+          "role": "Fire with a zero throw pair; slot loaded at 00727e47"
+        }
+      ]
+    },
+    {
+      "address": "0085a270",
+      "name": "BSP_TurningGun_Update",
+      "abi": "__thiscall(gun)(float dt), RET 4 at 0085a3c5",
+      "coverage": "complete",
+      "no_ghidra_function": true,
+      "body": "0085a270-0085a3c7",
+      "raw_listing_calls": [
+        {
+          "site": "0085a27e",
+          "callee": "0072b2d0",
+          "role": "the base gun update, dt forwarded"
+        },
+        {
+          "site": "0085a2fe",
+          "callee": "00bf6713",
+          "role": "std::vector out-of-range, barrel index"
+        },
+        {
+          "site": "0085a331",
+          "callee": "00bf6713",
+          "role": "std::vector out-of-range, barrel index"
+        },
+        {
+          "site": "0085a348",
+          "callee": "00b6db60",
+          "role": "world matrix of the barrel node at barrel+0h"
+        },
+        {
+          "site": "0085a3b9",
+          "callee": "00859550",
+          "role": "install the angle matrices on the gun's nodes"
+        }
+      ],
+      "raw_listing_indirect_calls": [
+        {
+          "site": "0085a3a3",
+          "callee": "indirect: barrelNode vtable[2Ch](&point)",
+          "role": "place the recoiled barrel point"
+        }
+      ]
+    },
+    {
+      "address": "00859550",
+      "name": "BSP_TurningGun_ApplyAnglesToNodes",
+      "abi": "__fastcall(gun)",
+      "coverage": "partial: the two-node case is complete; the single-node case at 0085973x..008597c0 is described but 00B646E0 and 00B64640 were not read",
+      "no_ghidra_function": false,
+      "calls": [],
+      "reads": [
+        {
+          "address": "00859583",
+          "field": "gun+480h",
+          "value": "horzAngle for the sine"
+        },
+        {
+          "address": "0085959b",
+          "field": "gun+480h",
+          "value": "horzAngle for the cosine"
+        },
+        {
+          "address": "0085967e",
+          "field": "gun+484h",
+          "value": "vertAngle for the sine"
+        },
+        {
+          "address": "00859696",
+          "field": "gun+484h",
+          "value": "vertAngle for the cosine"
+        },
+        {
+          "address": "0085977a",
+          "field": "gun+480h",
+          "value": "single-node case"
+        },
+        {
+          "address": "008597aa",
+          "field": "gun+484h",
+          "value": "single-node case"
+        }
+      ]
+    },
+    {
+      "address": "0072b2d0",
+      "name": "BSP_Gun_UpdateBarrelRecoil",
+      "abi": "__thiscall(gun)(float dt)",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [],
+      "notes": "Per barrel: barrel+10h becomes (speed != 0); barrel+Ch (DT) accumulates dt and, while at or above 1/120 (00CEF0B8), subtracts 1/120 (00CFDF80) and advances dist/speed against weaponDescriptor+ACh, +B0h and +B4h. dist and speed are the recoil slide and its velocity, not a projectile speed."
+    },
+    {
+      "address": "0085a3d0",
+      "name": "BSP_TurningGun_SetupFromDescriptor",
+      "abi": "__fastcall(gun)",
+      "coverage": "partial: only the angle seeding was read; 0085a4xx-0085a822 hold the arc midpoint search and a saved-state branch",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "0085a3d8",
+          "native": "0072e6d0",
+          "role": "the base gun setup runs first"
+        }
+      ],
+      "notes": "With a saved instance state it copies state+118h into gun+480h, +494h and +488h and state+11Ch into gun+484h, +498h and +48Ch, then calls 00859550; otherwise it takes the platform's first arc with bits 0 and 1 set and seeds horzAngle with (minH + maxH) * 0.5 (00D7A280)."
+    },
+    {
+      "address": "0085b0f0",
+      "name": "BSP_TurningGun_SetAnglesImmediate",
+      "abi": "__thiscall(gun)(float tHorz, float tVert, float horz, float vert), RET 10h at 0085b7c7",
+      "coverage": "partial: 0085b108-0085b720, the four atan2-derived angles stored into gun+4BCh..+4C8h and the arc search that picks a reachable horizontal angle",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "0085b103",
+          "native": "00bf857a",
+          "role": "fmod of the first angle"
+        },
+        {
+          "address": "0085b7bb",
+          "native": "00859550",
+          "role": "install the angle matrices"
+        }
+      ],
+      "writes": [
+        {
+          "address": "0085b726",
+          "field": "gun+480h",
+          "value": "only when the wrapped difference exceeds 0.8 rad (00CE3D40)"
+        },
+        {
+          "address": "0085b72e",
+          "field": "gun+488h",
+          "value": "the same value"
+        },
+        {
+          "address": "0085b791",
+          "field": "gun+484h",
+          "value": "the same rule on the vertical axis"
+        },
+        {
+          "address": "0085b799",
+          "field": "gun+48Ch",
+          "value": "the same value"
+        },
+        {
+          "address": "0085b7a3",
+          "field": "gun+494h",
+          "value": "always"
+        },
+        {
+          "address": "0085b7b3",
+          "field": "gun+498h",
+          "value": "always"
+        }
+      ]
+    },
+    {
+      "address": "007f5fc0",
+      "name": "BSP_GunPlatform_AnglesInTraverseWindow",
+      "abi": "__thiscall(platform)(float horz, float vert) -> bool, RET 8",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [],
+      "notes": "Walks platform+3Ch for platform+40h records of 14h bytes: +4h MinHorzAngle, +8h MaxHorzAngle, +Ch MinVertAngle, +10h MaxVertAngle, +0h flags. Each bound is widened by 0.008726646 rad (00D08B88) and the horizontal angle is first clamped to +/-pi (00D7A264, 00CE684C). Bit 0 of the flags must be set."
+    },
+    {
+      "address": "007f60a0",
+      "name": "BSP_GunPlatform_AnglesInFireWindow",
+      "abi": "__thiscall(platform)(float horz, float vert) -> bool, RET 8",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [],
+      "notes": "The same walk and the same epsilon as 007F5FC0, testing bit 1 of the flags instead of bit 0."
+    },
+    {
+      "address": "007f5960",
+      "name": "BSP_GunArc_HorizontalAngleInWindow",
+      "abi": "__thiscall(arcRecord)(float horz) -> bool",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [],
+      "notes": "One record, horizontal bounds only, same clamp and epsilon."
+    },
+    {
+      "address": "0072d830",
+      "name": "BSP_Gun_HandleNetworkMessage",
+      "abi": "__thiscall(gun)(message)",
+      "coverage": "partial: only the opcodes reached from this packet",
+      "no_ghidra_function": false,
+      "calls": [],
+      "indirect_calls": [
+        {
+          "address": "0072d860",
+          "native": "indirect: gun vtable[1DCh]",
+          "role": "opcode 0ADh runs FireIfReady"
+        }
+      ],
+      "notes": "Switch on the byte at message+10h: 4Bh/4Ch ignored, 68h -> vtable[1C8h], 69h -> vtable[1CCh], 0ACh -> 0072D5B0, 0ADh -> vtable[1DCh]."
+    },
+    {
+      "address": "0084c7e0",
+      "name": "BSP_RapidTurningGun_HandleNetworkMessage",
+      "abi": "__thiscall(gun)(message), RET 4 at 0084c7fb",
+      "coverage": "complete",
+      "no_ghidra_function": true,
+      "body": "0084c7e0-0084c7fd",
+      "raw_listing_calls": [
+        {
+          "site": "0084c7f4",
+          "callee": "0084c6e0",
+          "role": "opcode 0B0h; everything else tail-jumps to 0072D830 at 0084c7ee"
+        }
+      ]
+    },
+    {
+      "address": "0084c6e0",
+      "name": "BSP_RapidTurningGun_ApplyAimAndFireMessage",
+      "abi": "__thiscall(gun)(message)",
+      "coverage": "complete for the aim and fire path",
+      "no_ghidra_function": false,
+      "calls": [],
+      "notes": "Writes gun+4D0h from message+28h, calls 0085B0F0(message+20h, message+24h, message+20h, message+24h), then gun->vtable[1D8h](message+2Ch != 0, message+30h, message+34h). Call site addresses were read from the decompiler, not the listing."
+    },
+    {
+      "address": "00803480",
+      "name": "BSP_RapidFixedSlaveGun_HandleNetworkMessage",
+      "abi": "__thiscall(gun)(message)",
+      "coverage": "partial: only the dispatch; the opcode 0AFh body was not read",
+      "no_ghidra_function": true,
+      "body": "00803480-unread (the opcode 0AFh arm was not read; the dispatch ends at 0080348e)",
+      "notes": "Compares message+10h against 0AFh; anything else tail-jumps to 0072D830 at 0080348e."
+    },
+    {
+      "address": "00859b10",
+      "name": "BSP_TurningGun_WriteSnapshotFields",
+      "abi": "__thiscall(gun)(packet, transport)",
+      "coverage": "partial: the field mapping only",
+      "no_ghidra_function": false,
+      "calls": [],
+      "notes": "packet+20h = gun+488h, +24h = gun+48Ch, +28h = gun+494h, +2Ch = gun+498h, +30h = gun+49Ch, +40h = &gun+4BCh."
+    },
+    {
+      "address": "0085ba30",
+      "name": "BSP_TurningGun_ApplySnapshotFields",
+      "abi": "__thiscall(gun)(packet)",
+      "coverage": "partial: the field mapping and the two gates",
+      "no_ghidra_function": false,
+      "calls": [],
+      "notes": "Drops the packet when gun+4CCh is not -1 and is above packet+0Ch; skips a locally controlled unit through BSP_UnitInstance_IsLocalPlayerRole(0) and (1); then copies packet+20h/+24h/+28h/+2Ch into gun+4BCh/+4C0h/+4C4h/+4C8h behind the present flags at packet+34h..+37h, and packet+30h into gun+49Ch."
+    },
+    {
+      "address": "00732a30",
+      "name": "weapon_class_rotation_speed_stores",
+      "abi": "inside the weapon class Lua loader 007327B0",
+      "coverage": "partial: only the two rotation-speed fields",
+      "no_ghidra_function": false,
+      "calls": [],
+      "writes": [
+        {
+          "address": "00732a30",
+          "field": "weaponDescriptor+88h",
+          "value": "HorzRotSpeed, key string at 00CFE8CC, default 0.0f"
+        },
+        {
+          "address": "00732a6c",
+          "field": "weaponDescriptor+8Ch",
+          "value": "VertRotSpeed, key string at 00CFE8BC, default 0.0f"
+        }
+      ]
+    }
+  ],
+  "unread": [
+    "007f6530 and 007f6840, the platform routines that produce the signed step deltas and the final validity answer",
+    "gun vtable slots 188h, 1D4h, 1E0h, 1E4h, 1E8h and the MRT/MST overrides 0084c800, 006fdc90, 006fdcd0, 006fe160, 008598b0, 00859a20",
+    "00859950 slot 180h beyond its call to 0077B280",
+    "who sends network opcode 0ADh, and how the weapon director's allowFire at director+3Ch reaches it",
+    "target selection and any lead computation: 008ffa20, 008fff20, 00902920, 009030c0, 00959c20, 006df520 all call 0085aba0 but their bodies were not read",
+    "21h MMultipleBombPlatform (00CFE308) and plane gun mounts",
+    "the dispatcher that drives the gun's +310h tick element"
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "0085a8b0",
+      "name": "BSP_TurningGun_CanReachAngles",
+      "body": "0085a8b0-0085a99c",
+      "note": "read from the raw listing with capstone; Ghidra has no function here, so tools/verify_report_calls.py cannot check its call sites. They are listed under raw_listing_calls with site/callee keys for that reason."
+    },
+    {
+      "address": "0085a830",
+      "name": "BSP_TurningGun_CanFire",
+      "body": "0085a830-0085a8a1",
+      "note": "read from the raw listing with capstone; Ghidra has no function here, so tools/verify_report_calls.py cannot check its call sites. They are listed under raw_listing_calls with site/callee keys for that reason."
+    },
+    {
+      "address": "0085a270",
+      "name": "BSP_TurningGun_Update",
+      "body": "0085a270-0085a3c7",
+      "note": "read from the raw listing with capstone; Ghidra has no function here, so tools/verify_report_calls.py cannot check its call sites. They are listed under raw_listing_calls with site/callee keys for that reason."
+    },
+    {
+      "address": "0084c7e0",
+      "name": "BSP_RapidTurningGun_HandleNetworkMessage",
+      "body": "0084c7e0-0084c7fd",
+      "note": "read from the raw listing with capstone; Ghidra has no function here, so tools/verify_report_calls.py cannot check its call sites. They are listed under raw_listing_calls with site/callee keys for that reason."
+    },
+    {
+      "address": "00803480",
+      "name": "BSP_RapidFixedSlaveGun_HandleNetworkMessage",
+      "body": "00803480-unread (the opcode 0AFh arm was not read; the dispatch ends at 0080348e)",
+      "note": "read from the raw listing with capstone; Ghidra has no function here, so tools/verify_report_calls.py cannot check its call sites. They are listed under raw_listing_calls with site/callee keys for that reason."
+    }
+  ]
+}
