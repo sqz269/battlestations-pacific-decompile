@@ -68,9 +68,16 @@ ShipAiPublishResult ship_ai_publish_order_009f4d10(float heading_target_324,
 
 // 00825F2C..00825F7C, the head of BSP_UnitInstance_UpdateShipMotion. When the
 // current slot carries a valid order it clears the flag, flips the index
-// (`1 - index`, 00825F51/00825F56) and copies the slot it just left into the
-// new current slot through 00811D10, a sixteen-dword field copy
-// (00811D10-00811D76). Returns the index the unit is left on.
+// (`1 - index`, 00825F51/00825F56) and calls 00811D10 with the slot it just
+// left as the source and the new current slot as `this`.
+//
+// Correction (packet cc_ai_order_hop): that copy does NOT carry the order.
+// 00811D10's body runs 00811D14..00811D71 over the record's +00h..+3Fh and
+// stops, so +40h, +44h, +48h and +4Ch - every field of UnitAiOrderSlot - keep
+// whatever the destination already held. After the flip the published order is
+// the slot at `unit + 0A98h + 54h * index`, which is what its readers address.
+// unit_ai_order_copy_00811d10 in bsp/ship_ai_navigation.hpp projects the copy.
+// This routine therefore leaves both slots' order fields alone.
 struct UnitAiOrderPromotion {
     int index{0};
     UnitAiOrderSlot slots[2]{};

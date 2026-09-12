@@ -2,6 +2,7 @@
 #include <cstddef>
 #include <cstdint>
 
+#include "bsp/unit_autopilot_pair.hpp" // UnitAiOrderPromotion, the head of 00825F20
 #include "bsp/unit_forces.hpp"   // UnitAxialSpeedInputs/Step, unit_steering_torque_00937440
 #include "bsp/unit_instance.hpp" // kUnitOffPoseBlock, kUnitOffClassBlock, kUnitOffController
 #include "bsp/world_ocean.hpp"   // OceanVec3
@@ -298,6 +299,13 @@ struct ShipMotionState {
     float boost_reserve{0.0f};      // unit+1188h
     std::uint8_t order_kind_mirror{0}; // unit+118Ch
     int class_id{0};                // unit+C4h
+
+    // The unit's pair of 84-byte AI order slots and the index at unit+0B40h.
+    // 00825F2C..00825F7C promotes them before anything else in the tick, so the
+    // step below runs that first. Nothing else in this module reads them: the
+    // published triple is not a command to this unit
+    // (docs/UNIT_AI_ORDER_SLOT_READER.md).
+    UnitAiOrderPromotion ai_order{};
 };
 
 // What one tick did, so a caller can watch it without a physics body.
@@ -315,6 +323,7 @@ struct ShipMotionStepResult {
     UnitAxialSpeedStep axial{};
     ShipSteeringStep steering{};
     OceanVec3 force_model_torque{}; // 00937440's contribution, when the host reports it
+    bool ai_order_promoted{false};  // 00825F3F found the current slot's +4Ch set
 };
 
 // One method per native call site on 00825F20's motion path that this reconstruction
