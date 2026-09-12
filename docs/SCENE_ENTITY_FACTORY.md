@@ -347,3 +347,9 @@ name** (`instanceName`), and the stack carries `parent`, `&record->localFrame` (
 `record->properties` and `0`, in that order. The frame block is therefore the second stack
 argument, not a register. Provisional until the creator bodies themselves are read; the two call
 sites agree.
+
+## Correction from docs/ENTITY_CLASS_IDS.md (packet cc2_class_id_table)
+
+Class id 19h is `MLandVehicle`, a live class, not one removed before release; 1Fh is the one id
+in 00h..47h with no class test and no constructor stamping it. The +C4h id, the scene class id
+and the Lua entity-lookup bucket (class id minus six) are one space.
