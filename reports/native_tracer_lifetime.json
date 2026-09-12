@@ -710,5 +710,21 @@
         }
       }
     ]
+  },
+  "main_merge_validation": {
+    "merged_base": "31ea5b1a78820b039f1d000c99894f555c8a6433",
+    "adaptation": "Current main replaced modeled point-light companions with actual raw node/light arrays. Both new lifetime references now remove backlinks through NativePointLightLinksRuntime and concrete B7C1A0, matching canonical NativeModelReference. actual_names routing is preserved.",
+    "code_sha256": {
+      "include/bsp/native_tracer_lifetime.hpp": "e4a6b0c57a3e8e210b397023106e575f3c5850d69c2fca043cffb25d8b286e3e",
+      "src/native_tracer_lifetime.cpp": "9ac1a10fdcc3cf1edb6ee3c10e7776148140b4476459a05af7e9733027bf7adf"
+    },
+    "combined_library_sha256": "5675ba1eb32c06451c04ab5299c0834e6ab3c803ce61a8a23cf4c0a7f7db033c",
+    "standard_build_and_both_seeded_ctests": "local/al-merge-adapted-build.log: passed",
+    "current_library_fixtures": [
+      "local/al-merge-adapted-fixtures.log",
+      "local/al-merge-manager-fixture.log"
+    ],
+    "additional_source_case": "Particle logical release with one actual light verifies removal of the raw-node backlink, physical model return, and cleanup of both actual array backings. Tracer uses the same reviewed callback pattern and compiles; nonempty tracer logical release not executed.",
+    "original_EH_and_gameplay": false
   }
 }

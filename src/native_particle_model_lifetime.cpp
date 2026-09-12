@@ -191,10 +191,12 @@ std::uint32_t NativeParticleModelReference::light_count(void* context) noexcept 
     if (array.count < 0 || array.capacity < array.count || (array.count && !array.begin)) std::terminate();
     return static_cast<std::uint32_t>(array.count);
 }
-GeneratedModelPointLightLinks& NativeParticleModelReference::light_element(void* context, std::uint32_t index) noexcept {
-    auto* light = static_cast<NativeParticleModelReference*>(context)->owner_.storage.node.point_lights_164.begin[index];
-    if (!light) std::terminate();
-    return *light;
+void NativeParticleModelReference::remove_light_backlink(void* context,
+    std::uint32_t index, CameraTransform&) noexcept {
+    auto& owner = static_cast<NativeParticleModelReference*>(context)->owner_;
+    auto& node = owner.storage.node;
+    auto& light = owner.environment.nodes.point_lights.light(node.point_lights_164.begin[index]);
+    remove_native_point_light_backlink_00b7c1a0(light, node);
 }
 void NativeParticleModelReference::shrink_lights(void* context) noexcept {
     shrink_native_node_point_lights_to_zero_00b6ec70(
@@ -204,7 +206,7 @@ void NativeParticleModelReference::release_model_virtual18_00b6f310() noexcept {
     if (phase_ != Phase::bound || owner_.phase != NativeModelOwner::Phase::live) std::terminate();
     require_slot(0x18, 0x00b6f310);
     release_node_logical_00b6f310({runtime_, owner_.node.transform,
-        owner_.storage.node.released_44, *this, {this, light_count, light_element, shrink_lights}});
+        owner_.storage.node.released_44, *this, {this, light_count, remove_light_backlink, shrink_lights}});
 }
 void NativeParticleModelReference::remove_scene_virtual54(SceneResource* scene, bool recurse) noexcept {
     if (phase_ == Phase::retired || owner_.phase == NativeModelOwner::Phase::dead) std::terminate();

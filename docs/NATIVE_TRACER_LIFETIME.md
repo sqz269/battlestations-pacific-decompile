@@ -148,3 +148,14 @@ replay of bounded fixtures. Returning-free gaps and missing function definitions
 are repaired and saved. Earlier worker pending notes describe their original
 snapshot. Full constructor/teardown coverage, native EH compatibility and
 gameplay remain bounded as documented above.
+
+## Current-main point-light array integration
+
+Main now exposes actual raw point-light descriptors. The logical-release
+callback resolves each current raw light through the existing node runtime
+and calls concrete B7C1A0 with the same actual node. No modeled backlink
+copy is introduced. The merged standard Win32 build and both CTests passed.
+All focused fixtures were replayed against that library. One additional
+particle source-runtime case verifies a nonempty actual backlink is removed
+and both array backings are cleaned up. Nonempty tracer release, native EH
+and gameplay remain unexecuted. See the report main_merge_validation record.
