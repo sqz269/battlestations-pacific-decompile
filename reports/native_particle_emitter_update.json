@@ -1325,5 +1325,22 @@
         }
       ]
     }
+  },
+  "final_merged_validation_am": {
+    "tested_commit": "98b5bc67287460ad1e15f36f388cc013bb753fcb",
+    "build": "local/am-final-combined-build.log: standard scripts/build.ps1 strict Win32 and both existing seeded CTests passed",
+    "fixtures": [
+      "am-fixture-preparation.log",
+      "am-fixture-arrays.log",
+      "am-fixture-record-update.log",
+      "am-fixture-emitter-update.log",
+      "am-fixture-spawn.log",
+      "am-fixture-record-children.log",
+      "am-fixture-model-composition.log"
+    ],
+    "reviewed_source_commit": "cc993c1dc7768a79abfe1cb820670ab527f09b04",
+    "all16_owned_source_header_hashes_preserved": true,
+    "library_sha256": "0dc405a61fadfc8d09ff86522dae3e54359944191221c35627ebc08567b5c67d",
+    "full_application_native_EH_and_gameplay": false
   }
 }
