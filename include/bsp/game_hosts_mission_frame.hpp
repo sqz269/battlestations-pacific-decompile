@@ -148,6 +148,10 @@ public:
     // Milestone 2l: --order <command>[:<entity>] on the same --order-frame,
     // issued through 0046aab0 -> 0077d600 instead of through the order ring.
     void set_player_command(std::string token, std::string target, std::string unit = {});
+    // Milestone 2o, --ai-drive <name>=<throttle>,<rudder>: the labelled
+    // diagnostic stand-in for the eight state steps that have no body. Engaged
+    // on the same --order-frame as the player order.
+    void set_ai_drive(std::string unit, float throttle, float rudder);
     // Milestone 2m: --order speed=<m/s> on the same --order-frame, the store
     // luaMW_SetShipSpeed 00890d30 makes on *(unit+73Ch) +24h / +28h.
     void set_player_commanded_speed(float speed) noexcept;

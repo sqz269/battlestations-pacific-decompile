@@ -193,6 +193,17 @@ struct GameExecutableOptions {
     // player-controlled unit at 009f3df3, so a command issued to the controlled
     // ship can never put its AI controller into any other state.
     std::string order_unit;
+    // Milestone 2o: --ai-drive <name>=<throttle>,<rudder>. A LABELLED
+    // DIAGNOSTIC STAND-IN, engaged on --order-frame like the player order.
+    // Eight of the nine ship AI state steps have no reconstructed body, so on
+    // each re-plan tick of the named unit the executable calls the two
+    // recovered setters 009dbf90 and 009dffb0 on its control block with this
+    // pair, and the rest of the chain - 009ed6b0, 009f4d10, 009f4da0's tail
+    // into 009f3f80, the hop through 0080e170 / 0080e190, 00813020 and
+    // 00825f20 - runs as the game's own routines. Empty drives nothing.
+    std::string ai_drive_unit;
+    float ai_drive_throttle{0.0f};
+    float ai_drive_rudder{0.0f};
     bool order_command_position{false};
     float order_command_x{0.0f};
     float order_command_z{0.0f};

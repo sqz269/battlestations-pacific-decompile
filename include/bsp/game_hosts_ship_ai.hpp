@@ -116,6 +116,19 @@ struct GameShipAiRow {
     float slot_distance_40{0.0f};
     float slot_distance_48{0.0f};
     bool slot_valid{false};
+    // Milestone 2o: the hop at the tail of 009F3F80, chain slot 16.
+    unsigned long long ring_hops{0};        // bodies of 009F3F80 that reached 009F4B99
+    unsigned long long ring_gated_3f5{0};   // steps the 009F3FF2 gate on blk+3F5h stopped
+    unsigned long long ring_writes{0};      // 0080E170 / 0080E190 pairs written
+    unsigned long long rudder_law_calls{0}; // 009F44F7, the 009F44E4 gate open
+    unsigned long long rudder_deadbands{0}; // the 009F4BC6 arm that zeroes blk+1D4h
+    unsigned long long live_pair_changes{0}; // steps on which 00813020 moved +148h/+14Ch
+    float ring_slot_throttle{0.0f};  // what 0080E170 last received
+    float ring_slot_rudder{0.0f};    // what 0080E190 last received
+    float ring_live_throttle{0.0f};  // ring+148h as the motion read it
+    float ring_live_rudder{0.0f};    // ring+14Ch
+    float heading_error{0.0f};       // 00438B10(blk+324h, heading) at 009F40BB
+    bool ai_driven{false};           // --ai-drive named this unit
     // 009F5DA0, the automatic target selector
     unsigned long long target_thinks{0};   // ticks whose countdown was spent
     unsigned long long target_scans{0};
@@ -136,6 +149,14 @@ struct GameShipAiSummary {
     unsigned long long state_steps_recorded{0};
     unsigned long long publishes{0};
     unsigned long long promotions{0};
+    // Milestone 2o.
+    unsigned long long ring_hops{0};
+    unsigned long long ring_gated_3f5{0};
+    unsigned long long ring_writes{0};
+    unsigned long long rudder_law_calls{0};
+    unsigned long long rudder_deadbands{0};
+    unsigned long long live_pair_changes{0};
+    std::size_t units_driven{0};
     unsigned long long thinks{0};
     unsigned long long scans{0};
     unsigned long long fire_target_sets{0};
@@ -168,6 +189,15 @@ public:
     // 00825F2C..00825F7C, the motion head's own promotion of the slot the
     // controller published. Returns true when a valid order was promoted.
     bool promote_order_00825f2c(std::size_t unit_index);
+
+    // --ai-drive <name>=<throttle>,<rudder>, milestone 2o. A LABELLED
+    // DIAGNOSTIC STAND-IN, not a reconstruction: eight of the nine state steps
+    // have no body, so on a re-plan tick of a unit named here the executable
+    // calls the two recovered setters 009DBF90 and 009DFFB0 on that unit's own
+    // control block in place of the state step's decision. Everything after
+    // that point - 009ED6B0, 009F4D10, 009F4DA0, 009F3F80's hop, 00813020 and
+    // 00825F20 - is the game's own recovered path.
+    void set_ai_drive(std::size_t unit_index, float throttle, float rudder);
 
     const std::vector<GameShipAiRow>& rows() const noexcept;
     const GameShipAiSummary& summary() const noexcept;

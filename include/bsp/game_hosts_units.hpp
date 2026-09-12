@@ -236,6 +236,32 @@ public:
     bool run_cruise_state_step_009e1170(std::size_t index, bsp::ShipAiControlBlock& blk,
         bsp::ShipAiSetterHost& setters);
 
+    // ---- milestone 2o: the hop from the AI's desired pair into the ring ----
+    // 009f3ff8..009f402e, the head of 009f3f80: the slot under the ring's write
+    // cursor at unit+97ch, read before the body rewrites the two desired values
+    // and slews them toward it. The two loads are independent
+    // (009f400d reads +83ch, 009f4025 reads +838h).
+    float unit_ring_write_slot_throttle(std::size_t index) const;
+    float unit_ring_write_slot_rudder(std::size_t index) const;
+    // 0080e170 at 009f4cfb and 0080e190 at 009f4ce8: the two five-instruction
+    // setters that put the slewed pair back into that same slot. They touch no
+    // cursor, no bound and neither live field.
+    void unit_ring_set_write_slot_throttle_0080e170(std::size_t index, float value);
+    void unit_ring_set_write_slot_rudder_0080e190(std::size_t index, float value);
+    // ring+148h / +14ch, the live pair 00813020 steps toward the read slot and
+    // 00825f20 reads. Only the run's own counting uses these.
+    float unit_ring_current_throttle(std::size_t index) const;
+    float unit_ring_current_rudder(std::size_t index) const;
+    // The divisor 009da268 loads from [[blk+3fch]+538h]+524h. 00831840 does not
+    // write class+524h, so it has no recovered Lua key; this is the same
+    // stand-in the probe uses, `MaxRotAngle` at class+4f8h, and it is labelled
+    // as one everywhere it is reported.
+    float unit_yaw_authority_stand_in_04f8(std::size_t index) const;
+    // --ai-drive <name>=<throttle>,<rudder>: the diagnostic stand-in for the
+    // eight state steps that have no body. Returns false when no created
+    // instance carries the name.
+    bool enable_ai_drive(const std::string& unit_name, float throttle, float rudder);
+
     std::size_t count() const noexcept;
     bool unit_active(std::size_t index) const noexcept;
     // The unit whose 5Ch/5Dh/5Eh/60h bytes the list filter reads.
