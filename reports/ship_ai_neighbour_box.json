@@ -1,0 +1,383 @@
+{
+  "packet": "cc_ai_box_refresh",
+  "owner": "agent/cc-ai-box-refresh",
+  "doc": "docs/SHIP_AI_NEIGHBOUR_BOX.md",
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "summary": "009EAE20 and 009EAFC0, the two box refreshes 009F0EA0 runs on every surviving neighbour node once a frame. 009EAE20 rebuilds the near box: the observed hull's own oriented box, centre pushed along its heading by min(settings+1A8h * body-axis speed, unit+9C8h * 0.25), half extents unit+9C8h * 0.55 + |advance| along the bow and unit+9CCh * 0.60 abeam. 009EAFC0 caches the observed hull's world Y bounds in node+80h/+84h, stores the party filter's answer in node+69h, gates on vertical overlap with blk+1BCh/blk+1C0h, and then fills the avoid box node+44h..+64h either by copying the near box or by dead-reckoning the other ship along a line or a turning circle. The node's complete field table is reconciled across 009E52E0, the two refreshes, the sector scan's consumers, the clearance footprints and the traffic separation.",
+  "sources": [
+    "include/bsp/ship_ai_neighbour_box.hpp",
+    "src/ship_ai_neighbour_box.cpp"
+  ],
+  "routines": [
+    {
+      "address": "009eae20",
+      "native": "009eae20",
+      "name": "BSP_ShipAi_NeighbourNearBoxRefresh",
+      "projection": "bsp::ship_ai_neighbour_near_box_refresh_009eae20",
+      "abi": "void __thiscall(node)(const float* self_velocity_xz), RET 4 at 009EAFB2; the stack argument is never read",
+      "body": "009EAE20-009EAFB4",
+      "coverage": "complete: every instruction 009EAE20..009EAFB2 is projected. 00424C40, 0092D730 and 00414DB0 and the indirect vtable slot +50h stay behind ShipAiNeighbourNearBoxHost; the 006BC0C0 cos/sin fold is inlined here as it is in the native.",
+      "status": "semantic_reconstruction_strict_win32_build_passed"
+    },
+    {
+      "address": "009eafc0",
+      "native": "009eafc0",
+      "name": "BSP_ShipAi_NeighbourAvoidBoxRefresh",
+      "projection": "bsp::ship_ai_neighbour_avoid_box_refresh_009eafc0",
+      "abi": "void __thiscall(node)(float self_x, float self_z, float self_vx, float self_vz, float self_half_length, float self_half_beam_unread, float self_bounds_max_y, float self_bounds_min_y, int accept), RET 24h at 009EAFE5, 009EB305, 009EB4CE, 009EB60E and 009EB64F",
+      "body": "009EAFC0-009EB651 as a byte range; Ghidra's function 009EAFC0 excludes 009EB4D1-009EB610, which it made into the separate zero-caller function FUN_009EB4D1",
+      "coverage": "complete: every instruction 009EAFC0..009EB64F is projected, all five return arms included. 0098A8E0, 00419260, 0080FC30, 00811940, 0092D730, 00424C40, 006BC0C0 and the indirect vtable slots +20h and +34h stay behind ShipAiNeighbourAvoidBoxHost; 00414C60 and 00438AA0 are called directly; 00415510, 00415550 and 00415620 are projected as file-static helpers keeping the native comparison order.",
+      "status": "semantic_reconstruction_strict_win32_build_passed"
+    },
+    {
+      "address": "009eb4d1",
+      "native": "009eb4d1",
+      "name": "BSP_ShipAi_NeighbourAvoidBoxArcArm",
+      "projection": "bsp::ship_ai_neighbour_avoid_box_refresh_009eafc0 (arc branch)",
+      "abi": "not a routine: the arc arm of 009EAFC0, entered only by the conditional JBE at 009EB470 and leaving through 009EAFC0's own epilogue at 009EB5FA..009EB60E",
+      "body": "009EB4D1-009EB610",
+      "coverage": "complete: 009EB4D1..009EB60E is projected as the arc branch. Ghidra split it out of 009EAFC0 and it has zero callers, so get_function_by_address of 009EB4DE and 009EB4F6 answers 009EB4D1; the two call rows below are attributed to it, not to 009EAFC0.",
+      "status": "semantic_reconstruction_strict_win32_build_passed"
+    },
+    {
+      "address": "009e52e0",
+      "native": "009e52e0",
+      "name": "the neighbour node constructor",
+      "abi": "node* __thiscall(node)(unit* observed, void* observing_block, float lifetime), RET 0Ch at 009E53A3",
+      "body": "009E52E0-009E53A5",
+      "coverage": "partial: 009E52F5..009E53A3, the field stores, read for the field table only. The SEH frame 009E52E0..009E52F4 and the 00694A60 link at 009E532D are not projected.",
+      "status": "read_not_projected"
+    },
+    {
+      "address": "009f0ea0",
+      "native": "009f0ea0",
+      "name": "BSP_ShipAi_NeighbourListRefresh",
+      "abi": "void __thiscall(blk)(float dt), RET 4 at 009F115B",
+      "body": "009F0EA0-009F115D",
+      "coverage": "partial: 009F0EA9..009F0FEF and 009F10A0..009F10FF, the head that builds the two refreshes' arguments. The ageing loop stays docs/SHIP_AI_SECTOR_SCAN.md's and was not re-projected here.",
+      "status": "read_not_projected"
+    }
+  ],
+  "host_steps": [
+    {
+      "step": 1,
+      "routine": "009eae20",
+      "method": "observed_heading_vtable50",
+      "address": "009eae46",
+      "native": "indirect [[node+14h]]+50h -> 006DFD60",
+      "function": "009eae20",
+      "evidence": "009EAE41 MOV EAX,[ECX]; 009EAE43 MOV EDX,[EAX+50h]; 009EAE46 CALL EDX; 009EAE48 FSTP [ESI+40h]. The concrete slot in the unit vtable 00CFC3D0 is 006DFD60, FLD dword ptr [ECX+1050h]; RET."
+    },
+    {
+      "step": 2,
+      "routine": "009eae20",
+      "method": "observed_body_axis_speed_0092d730",
+      "address": "009eae54",
+      "native": "0092d730",
+      "function": "009eae20",
+      "evidence": "009EAE4B MOV EAX,[ESI+14h]; 009EAE4E MOV ECX,[EAX+1018h]; 009EAE54 CALL. Signed: the result multiplies settings+1A8h at 009EAED0 and a negative product survives the min at 009EAEF3."
+    },
+    {
+      "step": 3,
+      "routine": "009eae20",
+      "method": "settings_pos_speed_corrig_1a8",
+      "address": "009eaec5",
+      "native": "00424c40",
+      "function": "009eae20",
+      "evidence": "009EAEC5 CALL; 009EAECA FLD float ptr [EAX+1A8h]. ShipAvoidance.NearbyShip_PosSpeedCorrig, docs/SHIP_AI_SETTINGS_BLOCK.md."
+    },
+    {
+      "step": 4,
+      "routine": "009eae20",
+      "method": "observed_hull_length_09c8",
+      "address": "009eaedb",
+      "native": "field [unit+9C8h], no CALL",
+      "function": "009eae20",
+      "evidence": "009EAED4 MOV EDI,[ESI+14h]; 009EAEDB FLD float ptr [EDI+9C8h]; 009EAEE1 FMUL double 0.25 (00D7A348)."
+    },
+    {
+      "step": 5,
+      "routine": "009eae20",
+      "method": "observed_pose_valid_00c8",
+      "address": "009eaf07",
+      "native": "field [unit+C8h], no CALL",
+      "function": "009eae20",
+      "evidence": "009EAF07 CMP byte ptr [EDI+C8h],0; 009EAF2C JNZ skips the refresh."
+    },
+    {
+      "step": 6,
+      "routine": "009eae20",
+      "method": "refresh_observed_pose_00414db0",
+      "address": "009eaf30",
+      "native": "00414db0",
+      "function": "009eae20",
+      "evidence": "009EAF2E MOV ECX,EDI; 009EAF30 CALL. Reached only when the byte at step 5 is clear."
+    },
+    {
+      "step": 7,
+      "routine": "009eae20",
+      "method": "observed_world_position_xz_00fc",
+      "address": "009eaf35",
+      "native": "fields [unit+FCh] and [unit+104h], no CALL",
+      "function": "009eae20",
+      "evidence": "009EAF35 FLD float ptr [EDI+FCh]; 009EAF45 FLD float ptr [EDI+104h]. Both are read after step 6, which is why the projection makes the pair a host call rather than an input."
+    },
+    {
+      "step": 8,
+      "routine": "009eae20",
+      "method": "observed_hull_length_09c8",
+      "address": "009eaf8c",
+      "native": "field [unit+9C8h], no CALL",
+      "function": "009eae20",
+      "evidence": "009EAF89 MOV EAX,[ESI+14h]; 009EAF8C FLD float ptr [EAX+9C8h]; 009EAF92 FMUL double 0.55 (00CEC8F0); 009EAF98 FADD |advance|; 009EAF9C FSTP [ESI+38h]. The second read of the same field."
+    },
+    {
+      "step": 9,
+      "routine": "009eae20",
+      "method": "observed_hull_beam_09cc",
+      "address": "009eaf9f",
+      "native": "field [unit+9CCh], no CALL",
+      "function": "009eae20",
+      "evidence": "009EAF9F FLD float ptr [EAX+9CCh]; 009EAFA5 FMUL double 0.6 (00CEFF98); 009EAFAB FSTP [ESI+3Ch]."
+    },
+    {
+      "step": 10,
+      "routine": "009eafc0",
+      "method": "observed_model_vtable20",
+      "address": "009eafed",
+      "native": "indirect [[node+14h]]+20h -> 006D1E30",
+      "function": "009eafc0",
+      "evidence": "009EAFE8 MOV EAX,[ECX]; 009EAFEA MOV EDX,[EAX+20h]; 009EAFED CALL EDX; 009EAFF1 TEST EAX,EAX. The presence test. Concrete slot 006D1E30, MOV EAX,[ECX+360h]; RET, the same getter 009DE2F0 uses."
+    },
+    {
+      "step": 11,
+      "routine": "009eafc0",
+      "method": "observed_model_vtable20",
+      "address": "009eb005",
+      "native": "indirect [[node+14h]]+20h -> 006D1E30",
+      "function": "009eafc0",
+      "evidence": "009EAFF3 MOV ECX,[ESI+14h]; 009EB005 CALL EDX; 009EB007 MOV ECX,EAX. The second call of the same slot, whose result is the copier's this."
+    },
+    {
+      "step": 12,
+      "routine": "009eafc0",
+      "method": "observed_world_bounds_0098a8e0",
+      "address": "009eb009",
+      "native": "0098a8e0",
+      "function": "009eafc0",
+      "evidence": "009EAFFA PUSH EAX (the second buffer) and 009EB001 PUSH EDX (the first) are this call's arguments, not the vtable getter's: the getter's RET has no cleanup and 0098A8E0 is RET 8. 009EB00E takes the second buffer's Y into node+80h and 009EB01C the first buffer's Y into node+84h."
+    },
+    {
+      "step": 13,
+      "routine": "009eafc0",
+      "method": "settings_ship_avoidance_180",
+      "address": "009eb05f",
+      "native": "00424c40",
+      "function": "009eafc0",
+      "evidence": "009EB05F CALL; 009EB081 MOV EDI,EAX; 009EB087 ADD EDI,180h. EDI is written once and the only POP EDI before 009EB334 is at 009EB2CC, on a path 009EB2B7 skips, so every [EDI+disp] in the body is in this epoch. Ten rows: +20h, +24h, +2Ch, +30h, +34h, +3Ch, +40h, +44h, +50h."
+    },
+    {
+      "step": 14,
+      "routine": "009eafc0",
+      "method": "reciprocal_length_00419260",
+      "address": "009eb0ed",
+      "native": "00419260",
+      "function": "009eafc0",
+      "evidence": "009EB0D6 LEA ECX,[ESP+20h] over the delta rebuilt at 009EB0D3..009EB0E9; 009EB0F5 stores the result and 009EB104/009EB111 multiply both components by it."
+    },
+    {
+      "step": 15,
+      "routine": "009eafc0",
+      "method": "observed_velocity_vtable34",
+      "address": "009eb119",
+      "native": "indirect [[node+14h]]+34h -> 00812090",
+      "function": "009eafc0",
+      "evidence": "009EB0FD MOV EDX,[ECX]; 009EB0FF MOV EDX,[EDX+34h]; 009EB10C PUSH EAX (the out buffer); 009EB119 CALL EDX, RET 4. Concrete slot 00812090: the body axis (unit+94h,+98h,+9Ch) scaled by 0092D730(unit+1018h), returned in the caller's buffer. Only [0] and [2] are read back, at 009EB11B and 009EB125."
+    },
+    {
+      "step": 16,
+      "routine": "009eafc0",
+      "method": "observed_body_axis_speed_0092d730",
+      "address": "009eb1fe",
+      "native": "0092d730",
+      "function": "009eafc0",
+      "evidence": "009EB1F5 MOV EAX,[ESI+14h]; 009EB1F8 MOV ECX,[EAX+1018h]; 009EB1FE CALL. Signed here: 009EB207..009EB212 makes the travel, whose sign 009EB3D4 tests."
+    },
+    {
+      "step": 17,
+      "routine": "009eafc0",
+      "method": "observed_reference_speed_0080fc30",
+      "address": "009eb241",
+      "native": "0080fc30",
+      "function": "009eafc0",
+      "evidence": "009EB23E MOV ECX,[ESI+14h]; 009EB241 CALL; 009EB246 FMUL double 0.05 (00D7A270). Runs before step 18, which is why the projection sequences both into locals."
+    },
+    {
+      "step": 18,
+      "routine": "009eafc0",
+      "method": "observed_body_axis_speed_0092d730",
+      "address": "009eb259",
+      "native": "0092d730",
+      "function": "009eafc0",
+      "evidence": "009EB24C MOV EAX,[ESI+14h]; 009EB24F MOV ECX,[EAX+1018h]; 009EB259 CALL; 009EB269 AND ECX,7FFFFFFFh takes it absolute, unlike step 16."
+    },
+    {
+      "step": 19,
+      "routine": "009eafc0",
+      "method": "observed_hull_length_09c8",
+      "address": "009eb337",
+      "native": "field [unit+9C8h], no CALL",
+      "function": "009eafc0",
+      "evidence": "009EB331 MOV EBX,[ESI+14h]; 009EB337 LEA ECX,[EBX+9C8h] as the first operand of the 00415550 at 009EB34B, against settings+1B0h."
+    },
+    {
+      "step": 20,
+      "routine": "009eafc0",
+      "method": "observed_command_yaw_rate_00811940",
+      "address": "009eb428",
+      "native": "00811940",
+      "function": "009eafc0",
+      "evidence": "009EB420 MOV ECX,EBX (the observed unit); 009EB428 CALL; 009EB42D FCHS negates it; 009EB42F scales it by the projection time."
+    },
+    {
+      "step": 21,
+      "routine": "009eafc0",
+      "method": "heading_to_direction_006bc0c0",
+      "address": "009eb4f6",
+      "native": "006bc0c0",
+      "function": "009eb4d1",
+      "evidence": "009EB4EC LEA ECX,[ESP+34h] (the out pair); 009EB4F3 FSTP [ESP] (the heading); 009EB4F6 CALL, RET 4. 009EB4FB and 009EB508 read out[0] and out[1] into node+4Ch and node+50h. The containing Ghidra function is FUN_009EB4D1, the arc arm Ghidra split out of 009EAFC0, not 009EAFC0 itself."
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "009f104d",
+      "native": "009eae20",
+      "function": "009f0ea0",
+      "evidence": "009F1046 LEA ECX,[ESP+30h]; 009F104A PUSH ECX; 009F104B MOV ECX,EDI (the node); 009F104D CALL. The pushed pair is the floored hull velocity and the callee never reads it."
+    },
+    {
+      "address": "009f10ff",
+      "native": "009eafc0",
+      "function": "009f0ea0",
+      "evidence": "009F10B0 PUSH EDX plus 009F10B1 SUB ESP,18h plus 009F10E5 SUB ESP,8 is the 24h the callee's RET cleans; 009F10F8 MOV ECX,EDI (the node); 009F10FF CALL."
+    },
+    {
+      "address": "009eb09c",
+      "native": "00414c60",
+      "function": "009eafc0",
+      "evidence": "009EB083 LEA ECX,[ESP+20h] over the delta from the node's near centre to this hull; the result loses node+38h at 009EB0A1."
+    },
+    {
+      "address": "009eb144",
+      "native": "00414c60",
+      "function": "009eafc0",
+      "evidence": "009EB11D LEA ECX,[ESP+38h] points at arguments 2 and 3 and is not reloaded, so this length is this hull's own speed, not the relative one."
+    },
+    {
+      "address": "009eb19b",
+      "native": "00415550",
+      "function": "009eafc0",
+      "evidence": "009EB18C LEA ECX,[EDI+20h] (settings+1A0h), 009EB193 LEA EDX,[ESP+48h] (the distance threshold divided by the closing speed): the arrival time's floor."
+    },
+    {
+      "address": "009eb27f",
+      "native": "00415550",
+      "function": "009eafc0",
+      "evidence": "009EB27B LEA ECX,[ESP+14h] (|body-axis speed|), 009EB277 LEA EDX,[ESP+0Ch] (reference speed * 0.05)."
+    },
+    {
+      "address": "009eb296",
+      "native": "00415510",
+      "function": "009eafc0",
+      "evidence": "009EB288 LEA ECX,[EDI+44h] (settings+1C4h), 009EB28B LEA EDX,[ESP+14h]: the cap on the per-second shrink rate."
+    },
+    {
+      "address": "009eb329",
+      "native": "00415510",
+      "function": "009eafc0",
+      "evidence": "009EB312 LEA ECX,[ESP+14h] with 1.0f stored there at 009EB316, 009EB30A LEA EDX,[ESP+38h] with shrink * 6.0 stored at 009EB325."
+    },
+    {
+      "address": "009eb34b",
+      "native": "00415550",
+      "function": "009eafc0",
+      "evidence": "009EB337 LEA ECX,[EBX+9C8h], 009EB334 LEA EDX,[EDI+30h] (settings+1B0h); the result is scaled by settings+1B4h at 009EB350."
+    },
+    {
+      "address": "009eb444",
+      "native": "00415620",
+      "function": "009eafc0",
+      "evidence": "009EB43C LEA ECX,[ESP+4Ch] (the raw turn), 009EB438 LEA EDX,[ESP+44h] (-pi/2, 00CE3CCC), 009EB437 PUSH EDX of [ESP+50h] (+pi/2, 00CE3C64). RET 4."
+    },
+    {
+      "address": "009eb4de",
+      "native": "00438aa0",
+      "function": "009eb4d1",
+      "evidence": "009EB4D1 SUB ESP,8; 009EB4D4 FSTP [ESP+4] (the turn); 009EB4DB FSTP [ESP] (node+40h); RET 8, which is what makes the following displacements land back in the PUSH EBX/PUSH EDI epoch."
+    }
+  ],
+  "corrections": [
+    {
+      "was": "docs/SHIP_AI_SECTOR_SCAN.md node table and include/bsp/ship_ai_sector_scan.hpp: +28h/+2Ch and +30h/+34h are 'the beam and forward axes', named axis_beam_* and axis_forward_*",
+      "is": "+28h/+2Ch is the forward axis and +30h/+34h the beam axis. The old names came from the consumers; the producer settles it.",
+      "evidence": "009EAE9D and 009EAEA8 store cos and sin of the observed hull's own folded heading into +28h/+2Ch; 009EAEB8 and 009EAEC0 derive +30h/+34h from them as (+2Ch, -(+28h))."
+    },
+    {
+      "was": "docs/SHIP_AI_SECTOR_SCAN.md node table and include/bsp/ship_ai_sector_scan.hpp: +38h/+3Ch are 'the near box half extents', named near_half_beam and near_half_length",
+      "is": "+38h is the half extent along +28h, so the half length; +3Ch is the half extent along +30h, the half beam. The avoid pair +5Ch/+60h follows them.",
+      "evidence": "009EAF9C stores unit+9C8h * 0.55 + |advance| into +38h and 009EAFAB stores unit+9CCh * 0.60 into +3Ch; 009D8111 and 009D813A in 009D80C0 compare +38h against the +28h projection."
+    },
+    {
+      "was": "docs/SHIP_AI_SECTOR_SCAN.md node table: '+18h the observing control block, 009E5308'",
+      "is": "+18h is zeroed; the observing control block goes to +1Ch. 009E5308 is inside 009E5306 MOV dword ptr [ESP+0Ch],ESI, a stack store, not a node store.",
+      "evidence": "009E5321 MOV dword ptr [ESI+18h],EBX with EBX zero; 009E5334 MOV EAX,[ESP+24h]; 009E5338 MOV dword ptr [ESI+1Ch],EAX. That argument is pushed at 009F0E4F as ESI, the block whose blk+604h/blk+608h the node is appended to."
+    },
+    {
+      "was": "docs/SHIP_AI_SECTOR_SCAN.md: '009EAFC0 is given the clamped hull velocity (the floor 00D7A23C = 0.001f, the cap class+500h * settings+1B8h)'",
+      "is": "class+500h * settings+1B8h is a floor, not a cap: the velocity is scaled up to it, never down. The key is ShipAvoidance.NearbyShip_MyMinSpdRatio.",
+      "evidence": "009F0F9F FCOMI cap,speed; 009F0FA1 JBE leaves the vector alone when the value is already below the speed; 009F0FA3 FDIVRP makes cap/speed, which is greater than one, and 009F0FAF/009F0FB7 scale both components by it."
+    },
+    {
+      "was": "docs/SHIP_AI_SECTOR_SCAN.md: '009EAFC0 is given ... unit+9C8h * 0.55 and unit+9CCh * 0.75'",
+      "is": "It is given both and reads only the first. Argument 5, unit+9CCh * 0.75, has no reader in the body.",
+      "evidence": "In the PUSH EBX; PUSH EDI epoch argument 5 is [ESP+44h]; the only [ESP+44h] operands in the body are 009EB04F (pre-push epoch, argument 7), 009EB438 (ESP = entry-30h, argument 4) and 009EB479 (post-pop epoch, argument 7's slot reused as the signed travel)."
+    },
+    {
+      "was": "docs/SHIP_AI_SECTOR_SCAN.md uncertainty 3: whether 009EAE20 and 009EAFC0 keep the two axis pairs identical was not checked",
+      "is": "They do on the near-box copy tail and on the straight arm, and they do not on the arc arm, which rotates +4Ch..+58h and leaves +28h..+34h unrotated.",
+      "evidence": "009EB2D7..009EB2EC and 009EB4B2..009EB4C7 copy +28h..+34h into +4Ch..+58h; 009EB505..009EB51B writes the 006BC0C0 direction for the projected heading into +4Ch..+58h and touches neither +28h nor +30h."
+    },
+    {
+      "was": "docs/SHIP_AI_SECTOR_SCAN.md: '009EAE20(n)(&dir)'",
+      "is": "The argument is the caller's floored hull velocity pair, and 009EAE20 never reads it.",
+      "evidence": "009F1046 LEA ECX,[ESP+30h] over the pair written at 009F0FB3/009F0FBB; the body's frame is SUB ESP,1Ch plus PUSH ESI (plus PUSH EDI at 009EAE82), so the argument sits at [ESP+24h] then [ESP+28h], and the largest displacement any instruction in the body touches is +1Ch."
+    }
+  ],
+  "run_time_evidence": {
+    "status": "none available",
+    "evidence": "docs/GAME_EXECUTABLE.md milestone 2p records the neighbour list empty in the validation process: 009EF230 runs 15680 times and marks nothing because 009F0D20 never appends. Both routines here run only inside that list's ageing loop, so bsp_game.exe cannot reach either. Every claim in the doc is static, from the listing."
+  },
+  "no_ghidra_function": [
+    {
+      "start": "006dfd60",
+      "end_inclusive": "006dfd66",
+      "evidence": "Start: the pointer stored at 00CFC3D0+50h, the vtable slot 009EAE46 calls; python tools/bsp.py ghidra proto 006DFD60 --brief reports no function there, only the enclosing candidate 006DFD20. End: disasm-raw reads 006DFD60 FLD dword ptr [ECX+1050h] (6 bytes) and 006DFD66 RET (1 byte) from the disk image, with INT3 padding 006DFD67..006DFD6F and the next accessor at 006DFD70.",
+      "note": "Read only to give the indirect host method observed_heading_vtable50 a contract. Nothing is projected from it and no name is claimed for it, so defining it is optional."
+    }
+  ],
+  "flow_gaps": [],
+  "uncertainties": [
+    "unit+9C8h and unit+9CCh are read as the hull's full length and full beam. Three uses agree (009F1987's admission radius (self+9C8h + other+9C8h) * 0.5, include/bsp/ship_ai_hull_geometry.hpp's unit_full_beam_09cc, and the 0.55/0.60 scalings here), but docs/GAME_EXECUTABLE.md records that +9C8h has no producer anywhere and include/bsp/ship_ai_arm_final_step.hpp calls it a hull radius. If it is a radius, every extent in this packet is twice what it should be.",
+    "node+64h has no located reader. Twenty-one node-touching routines were grepped for it and none reads it.",
+    "00424C40 is called twice per node per frame, once from each refresh (009EAEC5, 009EB05F). Whether that is deliberate is not established; the projection keeps both calls.",
+    "The concrete vtable bodies are read from 00CFC3D0, which is the unit's table on two independent readings, but nothing proves the observed unit at node+14h is of that exact class rather than a subclass overriding +20h, +34h or +50h.",
+    "Whether node+68h set by the collapse arm at 009EB2C5 is meant to persist is not settled: 009F0EA0 clears nothing and 009EB076 clears it only after the vertical gate passes."
+  ],
+  "build": {
+    "command": "$env:MSBUILDDISABLENODEREUSE=1; ./scripts/build.ps1",
+    "result": "clean under /W4 /WX for Win32; ctest reconstructed_math 1/1 passed",
+    "tests_added": "none. Both routines are projections whose evidence is the listing; the four pure rules are exposed as free functions so the doc's numbers can be checked without a host, and the comparison helpers already have coverage through the packets that call them."
+  }
+}

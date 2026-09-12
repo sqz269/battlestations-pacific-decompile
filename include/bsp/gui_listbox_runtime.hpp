@@ -13,6 +13,7 @@ struct GuiResourceState;
 struct GuiWidgetRelativeBoundsConstants;
 class NativeStringStorage;
 class GuiWidgetFrameRuntime;
+struct GuiListboxPointerServices;
 
 // The native fastcall writes ECX=previous46, EDX=next47, stack=accept4A,
 // RET4. A completed adapter must return ALL three raw bytes; no zero sample
@@ -48,6 +49,9 @@ public:
     virtual ~GuiListboxFrameCalls() = default;
     // Native listener ECX, row/listbox stack, RET8.
     virtual void listener_current04(void*, GuiWidgetOwner& row,
+        GuiWidgetOwner& listbox) = 0;
+    // Native listener current10, row/listbox stack, RET8 (pointer68 path).
+    virtual void listener_current10(void*, GuiWidgetOwner& row,
         GuiWidgetOwner& listbox) = 0;
     // Native listener ECX, first/second/listbox stack, RETC.
     virtual void listener_current0c(void*, bool first, bool second,
@@ -113,10 +117,14 @@ struct GuiListboxFields {
     float highlight_width_124{};
     float highlight_height_128{};
     GuiWidgetPoint highlight_offset_12c{};
+    std::uint8_t field_138{}; // A9E010=0; pointer68 requires incoming85 when set.
     float line_distance_13c{};
+    std::uint8_t field_140{}; // A9E01E=0; pointer68 gates on current20 when set.
+    std::uint8_t field_141{}; // A9E024=0; enables pointer68's second edge arm.
     std::function<GuiListboxInputSample()> input_callback_144; // A9E02A=null.
     std::uint8_t paging_148{};
     std::uint8_t wrap_navigation_149{1}; // A9DFFC; zero delegates to current88.
+    std::uint8_t field_14a{1}; // A9E002=1; first pointer68 gate.
     // Constructor-unwritten storage has no invented value. E230 writes EC,
     // 158,15C,160,164,168 in native order; C540 writes F0..F8 after fitting.
     std::optional<std::uint32_t> raw_ec;
@@ -182,6 +190,12 @@ public:
     // Missing native services, constructor-unwritten reads, invalid iterators
     // and the proven selector0 null-dereference branch fail explicitly.
     void update40_00a9d030(float seconds, const GuiListboxFrameServices&);
+    // Complete147-instruction pointer current68 atA9CA60..A9CC46, RET4.
+    // Incoming widget is read (unlike AA7190). Requires the actual frame
+    // runtime owner borrow; retains SAME FC rows, listener114 and input source.
+    // Valid single-thread/lifetime domain; pending dependencies throw in order.
+    void pointer68_00a9ca60(GuiWidgetOwner* incoming_child,
+        const GuiListboxPointerServices&);
     // A9C540, ECX Listbox, stack(row, low-byte paging, float depth), RETC.
     // Actual AA0F50 manager widget is dereferenced BEFORE testing row=null.
     // Uses its live current34/58 and native node hierarchy factor. No rendering

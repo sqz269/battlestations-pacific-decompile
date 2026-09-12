@@ -63,6 +63,7 @@ public:
     void call_current18(GuiWidgetOwner&, bool) override;
     void call_current08(GuiWidgetOwner* selected_row, GuiWidgetOwner& listbox) override;
     void call_current04(GuiWidgetOwner& selected_row, GuiWidgetOwner& listbox) override;
+    void call_current10(GuiWidgetOwner& selected_row, GuiWidgetOwner& listbox) override;
     void call_current0c(bool first, bool second, GuiWidgetOwner& listbox) override;
 private:
     class Operation;

@@ -981,7 +981,7 @@ struct GameStartupHost::InputServices {
               {app.sound_->cursor_shown_0109db8e, app.sound_->focus_reset_pending_0109db8f,
                   app.sound_->previous_ui_0109db90},
               app.sound_->online_00f8abe8, loading_step_00d7a2f0, show_cursor,
-              &gui_raw_input_device_004ba6d0}) {
+              &gui_raw_input_device_004ba6d0, rumble_00e12f2c}) {
         app.singletons_->bind_input_backend(&core.backend_context());
         app.singletons_->bind_input_actions(&core.action_context());
     }
@@ -1538,6 +1538,12 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         menu_->mission()->set_ai_drive(options_.ai_drive_unit, options_.ai_drive_throttle,
             options_.ai_drive_rudder);
     }
+    // The first-time OnInitOnce input fragment precedes OnInitTitle. A917E0
+    // requests one wildcard slot per class and clears its active/filter ranges;
+    // it does not activate devices. The remaining Lua/UI OnInitOnce calls are
+    // separate initialization work, not implied by this fragment's log entry.
+    input_runtime_->initialize_classes_004dd6a8();
+    log_.implemented("OnInitOnce::configure_input_classes_fragment", "004dd6b4");
     menu_->run_title_init_004c9a70();
     const GameFrontendSummary& frontend = frontend_->summary();
     summary_.gui_pages_loaded = frontend.pages_loaded;

@@ -5,6 +5,7 @@
 namespace bsp {
 class NativeInputDeviceRuntime;
 class GuiListboxFrameCalls;
+class InputFocusDeviceHost;
 
 // Borrows the application's actual raw F8BBF4 publication and its finite
 // device dispatcher. No backend, class vector, device or input sample is owned.
@@ -25,11 +26,17 @@ public:
     std::int32_t mouse_accumulated_x() const;
     std::int32_t mouse_accumulated_y() const;
     std::uint8_t buttons_active(GuiListboxFrameCalls& typed_provider) const;
+    std::uint8_t activity_current28() const;
+    std::uint8_t query_current20(std::uint32_t code) const;
+    // Mouse A99FE0 explicitly spills binary32 before its return. The value
+    // transport preserves that result for the caller's ordered comparison.
+    float value_current24(std::uint32_t code) const;
 private:
     friend class GuiInputSource;
     InputDevice* typed_{};
     void* raw_{};
     NativeInputDeviceRuntime* native_{};
+    InputFocusDeviceHost* typed_activity_{};
 };
 
 // The legacy typed interface and the native owner domain remain distinct.
@@ -38,15 +45,19 @@ private:
 class GuiInputSource {
 public:
     GuiInputSource(InputBindingDeviceGroups* const& typed_publication) noexcept;
+    GuiInputSource(InputBindingDeviceGroups* const& typed_publication,
+        InputFocusDeviceHost& actual_activity_provider) noexcept;
     GuiInputSource(GuiNativeInputSource) noexcept;
     GuiInputDeviceRef device(std::uint32_t device_class, std::uint32_t index = 0) const;
     bool same_publication(const GuiInputSource& other) const noexcept {
-        return typed_ == other.typed_ && raw_ == other.raw_ && native_ == other.native_;
+        return typed_ == other.typed_ && raw_ == other.raw_ && native_ == other.native_
+            && typed_activity_ == other.typed_activity_;
     }
 private:
     InputBindingDeviceGroups* const* typed_{};
     void* volatile* raw_{};
     NativeInputDeviceRuntime* native_{};
+    InputFocusDeviceHost* typed_activity_{};
 };
 
 // 4BA6D0 ECX backend, class/index stack, RET8. Actual24h class records at6C,

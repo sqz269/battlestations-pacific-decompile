@@ -18,14 +18,17 @@ struct GameInputRuntimeBindings {
     void* volatile& backend_00f8bbf4;
     void* volatile& actions_00f8bbf8;
     const volatile std::uint32_t& binding_one_bits_00d7a24c;
-    // A source provider publication, not a native field or substitute listener.
-    // Required only when an actual record releases a nonnull listener to zero.
+    // Optional source provider publication. With no override the facade binds
+    // actual D5B610 listeners to their recovered finite deletion bodies.
     NativeInputActionRecordCalls* volatile& listener_calls;
     PlatformCursorGlobals cursor_globals;
     XLiveManagerOwner* volatile& online_00f8abe8;
     const volatile float& loading_step_00d7a2f0;
     NativeInputShowCursorCall const& show_cursor;
     GameRawInputDeviceLookup lookup_device_004ba6d0;
+    // Same mutable source word borrowed by devices.xinput_tables, never a
+    // separate settings snapshot. The setter also updates active devices.
+    volatile bool& rumble_enabled_00e12f2c;
 };
 
 class GameInputRuntime final {
@@ -39,8 +42,14 @@ public:
     NativeInputDeviceRuntime& devices() noexcept;
     // Native allocation/constructor, publication reload/callback write/reset.
     void startup();
+    // Three OnInitOnce calls at4DD6B4/C5/D6, with a publication reload for
+    // each class. Caller supplies the original first-time initialization stage.
+    void initialize_classes_004dd6a8();
+    void set_rumble_enabled_00a94c50(bool enabled);
     void update_cursor(bool loading);
     void update_backend(float seconds);
+    // Entry for a raw caller which already captured its receiver/profile.
+    void backend_update_vslot04(void*, std::uint32_t captured_profile, float seconds);
     void* action_owner();
     // Call after the shared raw manager drain while window and DLLs still live.
     // Does not initiate a second raw drain or repair surviving native state.

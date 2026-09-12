@@ -84,3 +84,12 @@ source for MSVC Win32 Release and passed both existing tests (`reconstructed_mat
 and `native_math_differential`). The ignored build log is `local/spacing-build.log`.
 No new permanent tests were added. These checks do not execute complete GUI
 registration, the game, or rendering.
+
+## Correction from docs/MAIN_MENU_REGISTRATION.md
+
+The complete ordinary582F30 caller now composes this existing spacing fragment
+after base registration and fresh current14, then hides captured470, performs
+the screen reset stores in native order, and reaches the required renderer
+presentation service with six recovered operands. It borrows the same screen,
+layout and geometry fields. The executable's older manual attachment shortcut
+still requires integration; the new caller is not gameplay validation.

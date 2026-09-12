@@ -1,0 +1,908 @@
+{
+  "packet": "orch6_dyn_task_native_proof_g",
+  "status": "bounded original-byte versus reconstructed source differential passed",
+  "implementation_commit": "7d0f80fe333af0bab0ea645fececee0f610380f3",
+  "source": "src/dyn_task_manager.cpp",
+  "header": "include/bsp/dyn_task_manager.hpp",
+  "document": "docs/DYN_TASK_NATIVE_PROOF.md",
+  "original_byte_execution": true,
+  "game_validated": false,
+  "abi_compatible": false,
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "byte_and_relocation_verification": {
+    "original": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "original_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "inherited_image": "J:\\PROG\\battlestations-pacific-decompile-orch6-dyn-engine-g\\local\\dyn_engine_native_image.bin",
+    "image_sha256": "86f0f456d654ba64cf421f073ba2aa95d7dbef99fa324b42c7e29a6ad3f1728e",
+    "native_base": "30000000",
+    "delta": "2FC00000",
+    "spans": [
+      {
+        "address": "00C37740",
+        "end_inclusive": "00C377ED",
+        "length": 174,
+        "original_sha256": "9f6c357444f48fb6e48ebc0d1e462623eaa011e035e8a05c0f8efabfb6b9f8ca",
+        "relocated_sha256": "d26aebcf148bfe5356ced423fa28503cc21dfc33dc1822742e41d90fb31fc579",
+        "live_matches_installed": true,
+        "inherited_relocations_independently_verified": true,
+        "relocations": [
+          {
+            "instruction": "00C37748",
+            "operand": "00C37749",
+            "old": "00CC806F",
+            "new": "308C806F",
+            "text": "push 0xcc806f"
+          },
+          {
+            "instruction": "00C37775",
+            "operand": "00C37777",
+            "old": "00CE2154",
+            "new": "308E2154",
+            "text": "call dword ptr [0xce2154]"
+          },
+          {
+            "instruction": "00C37788",
+            "operand": "00C3778A",
+            "old": "00CE214C",
+            "new": "308E214C",
+            "text": "call dword ptr [0xce214c]"
+          },
+          {
+            "instruction": "00C37799",
+            "operand": "00C3779B",
+            "old": "00CE22B8",
+            "new": "308E22B8",
+            "text": "call dword ptr [0xce22b8]"
+          },
+          {
+            "instruction": "00C377BA",
+            "operand": "00C377BC",
+            "old": "00CE22B8",
+            "new": "308E22B8",
+            "text": "call dword ptr [0xce22b8]"
+          }
+        ]
+      },
+      {
+        "address": "00C37690",
+        "end_inclusive": "00C3773A",
+        "length": 171,
+        "original_sha256": "54e972c95d34224b2979baeedc86415abdfa49bca6489978d2824940809bbe72",
+        "relocated_sha256": "14bfcbac6bcf539869d397e98cd382d5ba8afd2b80b9aac5f2e5f8f57aa2e390",
+        "live_matches_installed": true,
+        "inherited_relocations_independently_verified": true,
+        "relocations": [
+          {
+            "instruction": "00C376A2",
+            "operand": "00C376A4",
+            "old": "00CE22B4",
+            "new": "308E22B4",
+            "text": "call dword ptr [0xce22b4]"
+          },
+          {
+            "instruction": "00C376B3",
+            "operand": "00C376B5",
+            "old": "00CE21FC",
+            "new": "308E21FC",
+            "text": "call dword ptr [0xce21fc]"
+          },
+          {
+            "instruction": "00C376C0",
+            "operand": "00C376C2",
+            "old": "00CE2158",
+            "new": "308E2158",
+            "text": "call dword ptr [0xce2158]"
+          },
+          {
+            "instruction": "00C3770A",
+            "operand": "00C3770B",
+            "old": "00C37680",
+            "new": "30837680",
+            "text": "push 0xc37680"
+          },
+          {
+            "instruction": "00C37728",
+            "operand": "00C3772A",
+            "old": "00CE22A0",
+            "new": "308E22A0",
+            "text": "call dword ptr [0xce22a0]"
+          }
+        ]
+      },
+      {
+        "address": "00C37680",
+        "end_inclusive": "00C3768F",
+        "length": 16,
+        "original_sha256": "385d62003075d7d85ee8a9d47ee015e252486445e26583e50556bee35cbb28c3",
+        "relocated_sha256": "385d62003075d7d85ee8a9d47ee015e252486445e26583e50556bee35cbb28c3",
+        "live_matches_installed": true,
+        "inherited_relocations_independently_verified": true,
+        "relocations": []
+      },
+      {
+        "address": "00C375F0",
+        "end_inclusive": "00C37676",
+        "length": 135,
+        "original_sha256": "131a9ee76a6f4acbcb8af23afa2a9ff6c6825267f8eacaeb68a4c5e2619f94f8",
+        "relocated_sha256": "5e51c5a928c10705c7cccdeaa5fca10679c946eb59d3b5f221142cbf022b1a20",
+        "live_matches_installed": true,
+        "inherited_relocations_independently_verified": true,
+        "relocations": [
+          {
+            "instruction": "00C375F5",
+            "operand": "00C375F7",
+            "old": "00CE2218",
+            "new": "308E2218",
+            "text": "mov ebp, dword ptr [0xce2218]"
+          },
+          {
+            "instruction": "00C3761F",
+            "operand": "00C37621",
+            "old": "00CE21FC",
+            "new": "308E21FC",
+            "text": "call dword ptr [0xce21fc]"
+          },
+          {
+            "instruction": "00C3763E",
+            "operand": "00C37640",
+            "old": "00CE2210",
+            "new": "308E2210",
+            "text": "call dword ptr [0xce2210]"
+          },
+          {
+            "instruction": "00C37668",
+            "operand": "00C3766A",
+            "old": "00CE22B4",
+            "new": "308E22B4",
+            "text": "call dword ptr [0xce22b4]"
+          }
+        ]
+      },
+      {
+        "address": "00C33140",
+        "end_inclusive": "00C3324B",
+        "length": 268,
+        "original_sha256": "25b9437b433d7ff78346130842e1b8a52b1dfb1e4421cb3a54bd2acfd9e928ee",
+        "relocated_sha256": "641bb2e96d57c171237cd00e08024a4a6979acbf7f5a736be73703a18c06b9e8",
+        "live_matches_installed": true,
+        "inherited_relocations_independently_verified": true,
+        "relocations": [
+          {
+            "instruction": "00C3314A",
+            "operand": "00C3314C",
+            "old": "00CE2218",
+            "new": "308E2218",
+            "text": "call dword ptr [0xce2218]"
+          },
+          {
+            "instruction": "00C33221",
+            "operand": "00C33223",
+            "old": "00CE2150",
+            "new": "308E2150",
+            "text": "call dword ptr [0xce2150]"
+          },
+          {
+            "instruction": "00C3322F",
+            "operand": "00C33231",
+            "old": "00CE2210",
+            "new": "308E2210",
+            "text": "call dword ptr [0xce2210]"
+          },
+          {
+            "instruction": "00C3323F",
+            "operand": "00C33241",
+            "old": "00CE22B0",
+            "new": "308E22B0",
+            "text": "call dword ptr [0xce22b0]"
+          }
+        ]
+      },
+      {
+        "address": "00C40FF0",
+        "end_inclusive": "00C41069",
+        "length": 122,
+        "original_sha256": "c3752bf7c06afa70e2ecd493be343430e1288e5f656a25d45bfa45cf65b9e1f2",
+        "relocated_sha256": "f24a85e1d0df586e6d07431489e486cbdadf4f3498414e5f0a395a8ef7167175",
+        "live_matches_installed": true,
+        "inherited_relocations_independently_verified": true,
+        "relocations": [
+          {
+            "instruction": "00C40FF8",
+            "operand": "00C40FF9",
+            "old": "00CC8118",
+            "new": "308C8118",
+            "text": "push 0xcc8118"
+          },
+          {
+            "instruction": "00C41020",
+            "operand": "00C41022",
+            "old": "00CE225C",
+            "new": "308E225C",
+            "text": "mov edi, dword ptr [0xce225c]"
+          },
+          {
+            "instruction": "00C41041",
+            "operand": "00C41043",
+            "old": "00CE2214",
+            "new": "308E2214",
+            "text": "call dword ptr [0xce2214]"
+          }
+        ]
+      }
+    ]
+  },
+  "functions": [
+    {
+      "address": "00C37740",
+      "native": "00C37740",
+      "end_inclusive": "00C377ED",
+      "proposed_name": "DYN_TaskManager_Construct_00C37740",
+      "cpp_symbol": "dyn_task_manager_construct_00c37740",
+      "original_abi": "stack manager, count; RET8 at00C377EB",
+      "name_is_hypothesis": true,
+      "native_span_sha256": "9f6c357444f48fb6e48ebc0d1e462623eaa011e035e8a05c0f8efabfb6b9f8ca",
+      "native_span_bytes": 174,
+      "coverage": "successful count1 constructor; allocation/OS failures and native SEH excluded"
+    },
+    {
+      "address": "00C37690",
+      "native": "00C37690",
+      "end_inclusive": "00C3773A",
+      "proposed_name": "DYN_TaskManager_SetWorkerCount_00C37690",
+      "cpp_symbol": "dyn_task_manager_set_worker_count_00c37690",
+      "original_abi": "ESI manager; stack count; RET4 at00C37738",
+      "name_is_hypothesis": true,
+      "native_span_sha256": "54e972c95d34224b2979baeedc86415abdfa49bca6489978d2824940809bbe72",
+      "native_span_bytes": 171,
+      "coverage": "0->1 initial creation,1->1 stop/join/recreate,1->0 destruction; failure/overflow excluded"
+    },
+    {
+      "address": "00C37680",
+      "native": "00C37680",
+      "end_inclusive": "00C3768F",
+      "proposed_name": "DYN_TaskManager_WorkerEntry_00C37680",
+      "cpp_symbol": "worker_entry_00c37680",
+      "original_abi": "stack manager; unsigned __stdcall; RET4 at00C3768D; EAX0",
+      "name_is_hypothesis": true,
+      "native_span_sha256": "385d62003075d7d85ee8a9d47ee015e252486445e26583e50556bee35cbb28c3",
+      "native_span_bytes": 16,
+      "coverage": "two original entry launches returning0 through native RET4"
+    },
+    {
+      "address": "00C375F0",
+      "native": "00C375F0",
+      "end_inclusive": "00C37676",
+      "proposed_name": "DYN_TaskManager_WorkerLoop_00C375F0",
+      "cpp_symbol": "worker_loop_00c375f0",
+      "original_abi": "ESI manager; RET at00C37676",
+      "name_is_hypothesis": true,
+      "native_span_sha256": "131a9ee76a6f4acbcb8af23afa2a9ff6c6825267f8eacaeb68a4c5e2619f94f8",
+      "native_span_bytes": 135,
+      "coverage": "16 original task calls; semaphore wake,LIFO pop,group0 nonfinal/final decrement,event signal,shutdown exit"
+    },
+    {
+      "address": "00C33140",
+      "native": "00C33140",
+      "end_inclusive": "00C3324B",
+      "proposed_name": "Dyn_TaskScheduler_RunBatchAndWait",
+      "cpp_symbol": "dyn_task_manager_run_batch_00c33140",
+      "original_abi": "ESI manager; EAX task vector; stack signed count; RET4 at00C33249",
+      "name_is_hypothesis": true,
+      "native_span_sha256": "25b9437b433d7ff78346130842e1b8a52b1dfb1e4421cb3a54bd2acfd9e928ee",
+      "native_span_bytes": 268,
+      "coverage": "positive batches4,7,2,3; capacity4->7 then reuse; first free group0 and completion wait; no pending-entry copy or other groups"
+    },
+    {
+      "address": "00C40FF0",
+      "native": "00C40FF0",
+      "end_inclusive": "00C41069",
+      "proposed_name": "DYN_TaskManager_Destroy_00C40FF0",
+      "cpp_symbol": "dyn_task_manager_destroy_00c40ff0",
+      "original_abi": "stack manager; RET4 at00C41067",
+      "name_is_hypothesis": true,
+      "native_span_sha256": "c3752bf7c06afa70e2ecd493be343430e1288e5f656a25d45bfa45cf65b9e1f2",
+      "native_span_bytes": 122,
+      "coverage": "successful worker stop,shutdown/semaphore closure,handle-array null free,CS deletion,queue free"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00C37775",
+      "function": "00C37740",
+      "instruction": "CALL dword ptr [0x00ce2154]",
+      "native": "KERNEL32.dll!InitializeCriticalSectionAndSpinCount",
+      "iat": "00CE2154",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C37788",
+      "function": "00C37740",
+      "instruction": "CALL dword ptr [0x00ce214c]",
+      "native": "KERNEL32.dll!CreateSemaphoreA",
+      "iat": "00CE214C",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C37799",
+      "function": "00C37740",
+      "instruction": "CALL dword ptr [0x00ce22b8]",
+      "native": "KERNEL32.dll!CreateEventA",
+      "iat": "00CE22B8",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C377BA",
+      "function": "00C37740",
+      "instruction": "CALL dword ptr [0x00ce22b8]",
+      "native": "KERNEL32.dll!CreateEventA",
+      "iat": "00CE22B8",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C377D2",
+      "function": "00C37740",
+      "instruction": "CALL 0x00c37690",
+      "native": "00C37690"
+    },
+    {
+      "address": "00C376A2",
+      "function": "00C37690",
+      "instruction": "CALL dword ptr [0x00ce22b4]",
+      "native": "KERNEL32.dll!SetEvent",
+      "iat": "00CE22B4",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C376B3",
+      "function": "00C37690",
+      "instruction": "CALL dword ptr [0x00ce21fc]",
+      "native": "KERNEL32.dll!WaitForMultipleObjects",
+      "iat": "00CE21FC",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C376C0",
+      "function": "00C37690",
+      "instruction": "CALL dword ptr [0x00ce2158]",
+      "native": "KERNEL32.dll!ResetEvent",
+      "iat": "00CE2158",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C376C9",
+      "function": "00C37690",
+      "instruction": "CALL 0x00bf6989",
+      "native": "00BF6989"
+    },
+    {
+      "address": "00C376F2",
+      "function": "00C37690",
+      "instruction": "CALL 0x00bf55be",
+      "native": "00BF55BE"
+    },
+    {
+      "address": "00C37713",
+      "function": "00C37690",
+      "instruction": "CALL 0x00c03bc4",
+      "native": "00C03BC4"
+    },
+    {
+      "address": "00C37728",
+      "function": "00C37690",
+      "instruction": "CALL dword ptr [0x00ce22a0]",
+      "native": "KERNEL32.dll!SetThreadPriority",
+      "iat": "00CE22A0",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C37685",
+      "function": "00C37680",
+      "instruction": "CALL 0x00c375f0",
+      "native": "00C375F0"
+    },
+    {
+      "address": "00C3761F",
+      "function": "00C375F0",
+      "instruction": "CALL dword ptr [0x00ce21fc]",
+      "native": "KERNEL32.dll!WaitForMultipleObjects",
+      "iat": "00CE21FC",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C3762D",
+      "function": "00C375F0",
+      "instruction": "CALL EBP",
+      "native": "KERNEL32.dll!EnterCriticalSection",
+      "iat": "00CE2218",
+      "evidence": "loaded into EBP at00C375F5"
+    },
+    {
+      "address": "00C3763E",
+      "function": "00C375F0",
+      "instruction": "CALL dword ptr [0x00ce2210]",
+      "native": "KERNEL32.dll!LeaveCriticalSection",
+      "iat": "00CE2210",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C3764A",
+      "function": "00C375F0",
+      "instruction": "CALL EAX",
+      "native": "task+vtable00",
+      "evidence": "00C37644 loads task vtable;00C37646 first slot;00C37648 ECX=task; no stack args; actual task methods remain external"
+    },
+    {
+      "address": "00C37668",
+      "function": "00C375F0",
+      "instruction": "CALL dword ptr [0x00ce22b4]",
+      "native": "KERNEL32.dll!SetEvent",
+      "iat": "00CE22B4",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C3314A",
+      "function": "00C33140",
+      "instruction": "CALL dword ptr [0x00ce2218]",
+      "native": "KERNEL32.dll!EnterCriticalSection",
+      "iat": "00CE2218",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C33172",
+      "function": "00C33140",
+      "instruction": "CALL 0x00bf55be",
+      "native": "00BF55BE"
+    },
+    {
+      "address": "00C331A4",
+      "function": "00C33140",
+      "instruction": "CALL 0x00bf6989",
+      "native": "00BF6989"
+    },
+    {
+      "address": "00C33221",
+      "function": "00C33140",
+      "instruction": "CALL dword ptr [0x00ce2150]",
+      "native": "KERNEL32.dll!ReleaseSemaphore",
+      "iat": "00CE2150",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C3322F",
+      "function": "00C33140",
+      "instruction": "CALL dword ptr [0x00ce2210]",
+      "native": "KERNEL32.dll!LeaveCriticalSection",
+      "iat": "00CE2210",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C3323F",
+      "function": "00C33140",
+      "instruction": "CALL dword ptr [0x00ce22b0]",
+      "native": "KERNEL32.dll!WaitForSingleObject",
+      "iat": "00CE22B0",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C41015",
+      "function": "00C40FF0",
+      "instruction": "CALL 0x00c37690",
+      "native": "00C37690"
+    },
+    {
+      "address": "00C41027",
+      "function": "00C40FF0",
+      "instruction": "CALL EDI",
+      "native": "KERNEL32.dll!CloseHandle",
+      "iat": "00CE225C",
+      "evidence": "loaded into EDI at00C41020"
+    },
+    {
+      "address": "00C41030",
+      "function": "00C40FF0",
+      "instruction": "CALL EDI",
+      "native": "KERNEL32.dll!CloseHandle",
+      "iat": "00CE225C",
+      "evidence": "loaded into EDI at00C41020"
+    },
+    {
+      "address": "00C41035",
+      "function": "00C40FF0",
+      "instruction": "CALL 0x00bf6989",
+      "native": "00BF6989"
+    },
+    {
+      "address": "00C41041",
+      "function": "00C40FF0",
+      "instruction": "CALL dword ptr [0x00ce2214]",
+      "native": "KERNEL32.dll!DeleteCriticalSection",
+      "iat": "00CE2214",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C4104F",
+      "function": "00C40FF0",
+      "instruction": "CALL 0x00bf6989",
+      "native": "00BF6989"
+    }
+  ],
+  "producer_and_consumers": [
+    {
+      "address": "00C55EFD",
+      "native": "00BF681B",
+      "function": "00C55EA0",
+      "evidence": "PUSH358h at00C55EF5; real manager allocation"
+    },
+    {
+      "address": "00C55F1A",
+      "native": "00C37740",
+      "function": "00C55EA0",
+      "evidence": "descriptor pointer loaded00C55F12; first dword00C55F16 after successful allocation; push count then manager; publish engine+10 at00C55F1F"
+    },
+    {
+      "address": "00C577EE",
+      "native": "00C33140",
+      "function": "00C57070",
+      "evidence": "00C577E4 EAX=scene+CC;00C577EA ESI=engine+10;00C577ED push countEBX"
+    },
+    {
+      "address": "00C5BCCA",
+      "native": "00C33140",
+      "function": "00C5BB30",
+      "evidence": "00C5BCBE ECX=engine+10;00C5BCC1 EAX=world+480;00C5BCC7 push countESI;00C5BCC8 ESI=ECX"
+    },
+    {
+      "address": "00C5C0E8",
+      "native": "00C33140",
+      "function": "00C5BB30",
+      "evidence": "00C5C0DE EAX=world+468;00C5C0E4 ESI=engine+10;00C5C0E7 push countEBX"
+    },
+    {
+      "address": "00C421F2",
+      "native": "00C40FF0",
+      "function": "00C421B0",
+      "evidence": "00C421EA load engine+10;00C421F1 push manager; destructor before manager storage release"
+    }
+  ],
+  "runtime_mapping": {
+    "fixture_executable_base": "20000000",
+    "native_image_base": "30000000",
+    "delta": "2FC00000",
+    "owned_body_mutations": "none beyond independently verified absolute address relocation; all six bodies byte-compared before and after original execution",
+    "iat_bindings": [
+      {
+        "iat": "00CE2154",
+        "native": "InitializeCriticalSectionAndSpinCount"
+      },
+      {
+        "iat": "00CE214C",
+        "native": "CreateSemaphoreA"
+      },
+      {
+        "iat": "00CE22B8",
+        "native": "CreateEventA"
+      },
+      {
+        "iat": "00CE22B4",
+        "native": "SetEvent"
+      },
+      {
+        "iat": "00CE21FC",
+        "native": "WaitForMultipleObjects"
+      },
+      {
+        "iat": "00CE2158",
+        "native": "ResetEvent"
+      },
+      {
+        "iat": "00CE22A0",
+        "native": "SetThreadPriority"
+      },
+      {
+        "iat": "00CE2218",
+        "native": "EnterCriticalSection"
+      },
+      {
+        "iat": "00CE2210",
+        "native": "LeaveCriticalSection"
+      },
+      {
+        "iat": "00CE2150",
+        "native": "ReleaseSemaphore"
+      },
+      {
+        "iat": "00CE22B0",
+        "native": "WaitForSingleObject"
+      },
+      {
+        "iat": "00CE225C",
+        "native": "CloseHandle"
+      },
+      {
+        "iat": "00CE2214",
+        "native": "DeleteCriticalSection"
+      }
+    ],
+    "external_runtime_bridges": [
+      {
+        "target": "00BF55BE",
+        "replacement": "tracked malloc-backed successful allocation"
+      },
+      {
+        "target": "00BF6989",
+        "replacement": "tracked free including null; exact release order compared"
+      },
+      {
+        "target": "00C03BC4",
+        "replacement": "assert six args then host CRT _beginthreadex; actual entry mapped00C37680,argument manager,ID output manager+8; original game CRT internals excluded"
+      }
+    ],
+    "task_domain": "actual compiled fixture task vtable slot0,ECX task,no stack args,writable group at+4; recording callback only,physics payloads excluded",
+    "abi_wrappers": "constructor stdcall(manager,count) RET8; adjustment ESI manager/stack count RET4; scheduler ESI manager/EAX vector/stack count RET4; destructor stdcall(manager) RET4; native worker entry stdcall(manager) EAX0"
+  },
+  "validation": {
+    "build": "cmd /c local\\build_dyn_task_native_probe.cmd; Win32 host fixture /W4 /WX passed; actual committed source compiled /O2,fixture /Od,manifest embedded",
+    "run": "local\\dyn_task_native_probe.exe; exit0",
+    "result": "original/source equality across six snapshots,1316 canonical32bit words,16 callbacks each,allocation/free order and complete extra fixture cleanup",
+    "snapshot_words": 1316,
+    "masked_cs_placeholder_words": 36,
+    "compared_nonmasked_words": 1280,
+    "snapshots_per_side": 6,
+    "callbacks_per_side": 16,
+    "batch_counts": [
+      4,
+      7,
+      2,
+      3
+    ],
+    "worker_sequence": [
+      1,
+      1,
+      0
+    ],
+    "allocation_sizes_per_side": [
+      4,
+      16,
+      28,
+      4
+    ],
+    "freed_allocation_ids_per_side": [
+      2,
+      1,
+      4,
+      0,
+      3
+    ],
+    "native_thread_launches": 2,
+    "extra_fixture_handle_closures_per_side": 102,
+    "extra_fixture_handle_closures_total": 204,
+    "native_source_record_sha256": "40428022521008b461d8d723a814e1e0c19b15f5e5fb2e4ca16f3a8ab1e25785",
+    "record_files_equal": true,
+    "resource_checks": "real unique102 synchronization handles; event/semaphore reset state; actual worker priority2/ID; joined thread exit0; exact two native closures; separately close100 completion events and two retained workers per side; all tracked allocations freed; native image/watchdog cleaned up",
+    "existing_tests": "unchanged module passed Win32 Release+2existing math tests in implementation packet; not rerun for doc/report and ignored fixture additions",
+    "call_verification": "16 direct call rows checked,0 failed;20 import/virtual rows retain full native listing and IAT/register evidence"
+  },
+  "comparison_exclusions": [
+    "24-byte OS critical-section representation masked in each snapshot; actual spin10000,recursion0,owner-null idle state and lifecycle checked separately",
+    "allocation pointers,fixture task pointers,event/semaphore handles and thread IDs canonicalized; numeric OS values not compared",
+    "task object payload bytes not compared; callback count/order/thread and written completion group checked",
+    "original game CRT internals not executed; standard host allocation and thread CRT contracts used"
+  ],
+  "unexercised": [
+    "pending-queue entry copying during capacity growth",
+    "concurrent submitters and nonzero completion groups",
+    "group-reuse race",
+    "empty/invalid batches",
+    "failed Win32/thread creation,allocation failure/overflow,task exceptions,native SEH/unwind",
+    "stress,gameplay,real physics task payloads"
+  ],
+  "no_ghidra_function": [],
+  "unresolved_call_continuation_gaps": [],
+  "production_defects_found": [],
+  "corrections": [
+    {
+      "was": "scheduler/worker/resize/destructor execution supported only by source fixture",
+      "is": "bounded original-byte execution agrees with source for the stated one-worker paths",
+      "evidence": "local/dyn_task_native_probe.log and equal canonical record files; six verified original spans"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "src/dyn_task_manager.cpp",
+      "sha256": "0160749d351494d2ac34a08a0c4d98322a6a4aa54ab5db8c35e23931591d75d0",
+      "bytes": 6748
+    },
+    {
+      "path": "include/bsp/dyn_task_manager.hpp",
+      "sha256": "3c6736d8c7ee289631f9fdebd02f9c0915688389ec29a782357183ee2f54c147",
+      "bytes": 2343
+    },
+    {
+      "path": "local/build_dyn_task_native_probe.cmd",
+      "sha256": "6e0f0574213e869fc2fd2347224cdbd38cef5320ff5bc8f132bbda74c4438bc8",
+      "bytes": 517
+    },
+    {
+      "path": "local/dyn_task_native_bytes_verified.json",
+      "sha256": "7c7120c61f9408374e60e758ca75dde6429fe0e6ff2d98db43d74f28b280f193",
+      "bytes": 7233
+    },
+    {
+      "path": "local/dyn_task_native_compile.log",
+      "sha256": "98aa60369a99f34565a816a21ffba25281287588475b548c2e29a34e9c94a8f0",
+      "bytes": 49
+    },
+    {
+      "path": "local/dyn_task_native_image.bin",
+      "sha256": "86f0f456d654ba64cf421f073ba2aa95d7dbef99fa324b42c7e29a6ad3f1728e",
+      "bytes": 14872576
+    },
+    {
+      "path": "local/dyn_task_native_prepare.log",
+      "sha256": "e764ebb59d24762b90399784a949463e550b33abe62d4059eea3c1917af46fd3",
+      "bytes": 122
+    },
+    {
+      "path": "local/dyn_task_native_probe.cpp",
+      "sha256": "8fbe81214bfbe57840e8253ab87498f09c7946094f8f2ead5b66c2b4c18904ea",
+      "bytes": 11528
+    },
+    {
+      "path": "local/dyn_task_native_probe.exe",
+      "sha256": "f44684363bd12d438899392b8f7cd2c74c11345b0f5b3b21dcbe1f06819eb5e8",
+      "bytes": 64000
+    },
+    {
+      "path": "local/dyn_task_native_probe.log",
+      "sha256": "1b1895eb8102395e0b840716fc093eaea1a62c9101a9802ced8537606dc05a08",
+      "bytes": 404
+    },
+    {
+      "path": "local/dyn_task_native_report_calls.log",
+      "sha256": "9d293fbf567a1ad16255ccd2f1e760fd2f56f15446bcb4c8073f6cde5a82d6b5",
+      "bytes": 1743
+    },
+    {
+      "path": "local/dyn_task_original_records.bin",
+      "sha256": "40428022521008b461d8d723a814e1e0c19b15f5e5fb2e4ca16f3a8ab1e25785",
+      "bytes": 5264
+    },
+    {
+      "path": "local/dyn_task_source_records.bin",
+      "sha256": "40428022521008b461d8d723a814e1e0c19b15f5e5fb2e4ca16f3a8ab1e25785",
+      "bytes": 5264
+    },
+    {
+      "path": "local/native_00C33140_bytes.txt",
+      "sha256": "7ef2c9c9ff3d516911e3591363ee4c574ecc9ddfd6636e76d1885cfa985831f7",
+      "bytes": 1293
+    },
+    {
+      "path": "local/native_00C33140_original.bin",
+      "sha256": "25b9437b433d7ff78346130842e1b8a52b1dfb1e4421cb3a54bd2acfd9e928ee",
+      "bytes": 268
+    },
+    {
+      "path": "local/native_00C33140_proto.txt",
+      "sha256": "ffedb7e2ed1947c53beea7bc01e58d4fd3a0cd9004317fec88493c09c244d978",
+      "bytes": 121
+    },
+    {
+      "path": "local/native_00C33140_relocated.bin",
+      "sha256": "641bb2e96d57c171237cd00e08024a4a6979acbf7f5a736be73703a18c06b9e8",
+      "bytes": 268
+    },
+    {
+      "path": "local/native_00C375F0_bytes.txt",
+      "sha256": "03dfc70589aecc1470c7baa58de9e270eec85ced295b26a1864a0d0239536006",
+      "bytes": 657
+    },
+    {
+      "path": "local/native_00C375F0_original.bin",
+      "sha256": "131a9ee76a6f4acbcb8af23afa2a9ff6c6825267f8eacaeb68a4c5e2619f94f8",
+      "bytes": 135
+    },
+    {
+      "path": "local/native_00C375F0_proto.txt",
+      "sha256": "db116869be93f2b2fc6fac3b809ddc6a03eaf0244282b86c021337286bca80f0",
+      "bytes": 95
+    },
+    {
+      "path": "local/native_00C375F0_relocated.bin",
+      "sha256": "5e51c5a928c10705c7cccdeaa5fca10679c946eb59d3b5f221142cbf022b1a20",
+      "bytes": 135
+    },
+    {
+      "path": "local/native_00C37680_bytes.txt",
+      "sha256": "fbaab6c2a30b9af0a939769b359e3604036da603982d27841d2de22b925f701c",
+      "bytes": 77
+    },
+    {
+      "path": "local/native_00C37680_original.bin",
+      "sha256": "385d62003075d7d85ee8a9d47ee015e252486445e26583e50556bee35cbb28c3",
+      "bytes": 16
+    },
+    {
+      "path": "local/native_00C37680_proto.txt",
+      "sha256": "3237d104598db96227c6830c05d07225d7ed61da82a053aa9f2f0b62b36158dd",
+      "bytes": 95
+    },
+    {
+      "path": "local/native_00C37680_relocated.bin",
+      "sha256": "385d62003075d7d85ee8a9d47ee015e252486445e26583e50556bee35cbb28c3",
+      "bytes": 16
+    },
+    {
+      "path": "local/native_00C37690_bytes.txt",
+      "sha256": "465affbbab1a26c5a965382641177311a6cb935ba9a60def888d15a3182b928f",
+      "bytes": 827
+    },
+    {
+      "path": "local/native_00C37690_original.bin",
+      "sha256": "54e972c95d34224b2979baeedc86415abdfa49bca6489978d2824940809bbe72",
+      "bytes": 171
+    },
+    {
+      "path": "local/native_00C37690_proto.txt",
+      "sha256": "a4493edd63219261e3bb0fd9caa44fb446441983d9023489aeb6e1618cfb9b2b",
+      "bytes": 95
+    },
+    {
+      "path": "local/native_00C37690_relocated.bin",
+      "sha256": "14bfcbac6bcf539869d397e98cd382d5ba8afd2b80b9aac5f2e5f8f57aa2e390",
+      "bytes": 171
+    },
+    {
+      "path": "local/native_00C37740_bytes.txt",
+      "sha256": "1be8515b06b8ca7bca4d3e197d15054efb3586aa061f4e10c4fbc4bd94a30df0",
+      "bytes": 839
+    },
+    {
+      "path": "local/native_00C37740_original.bin",
+      "sha256": "9f6c357444f48fb6e48ebc0d1e462623eaa011e035e8a05c0f8efabfb6b9f8ca",
+      "bytes": 174
+    },
+    {
+      "path": "local/native_00C37740_proto.txt",
+      "sha256": "ba0bc37904a4ec2922a4d6b8e1e45c8ac0269fc47f6f73c05b476ac6a97631b7",
+      "bytes": 95
+    },
+    {
+      "path": "local/native_00C37740_relocated.bin",
+      "sha256": "d26aebcf148bfe5356ced423fa28503cc21dfc33dc1822742e41d90fb31fc579",
+      "bytes": 174
+    },
+    {
+      "path": "local/native_00C40FF0_bytes.txt",
+      "sha256": "ca3e604eee8f16be01c5abc0e4115247f97a6c7876bfbfcd653273589c2940a4",
+      "bytes": 592
+    },
+    {
+      "path": "local/native_00C40FF0_original.bin",
+      "sha256": "c3752bf7c06afa70e2ecd493be343430e1288e5f656a25d45bfa45cf65b9e1f2",
+      "bytes": 122
+    },
+    {
+      "path": "local/native_00C40FF0_proto.txt",
+      "sha256": "eb01f468ece27a27da0dc0b4f856e82682a2093792355f6f87eb5f6e5b9acf15",
+      "bytes": 95
+    },
+    {
+      "path": "local/native_00C40FF0_relocated.bin",
+      "sha256": "f24a85e1d0df586e6d07431489e486cbdadf4f3498414e5f0a395a8ef7167175",
+      "bytes": 122
+    },
+    {
+      "path": "local/prepare_dyn_task_native_probe.py",
+      "sha256": "4db13a8c931d93fa0d9a016c97e752d43e4e2722d28a361c207f2fa06af6177f",
+      "bytes": 3391
+    },
+    {
+      "path": "local/record_dyn_task_native_report.py",
+      "sha256": "f10f6f44d0014d8387e9d637c5e6bcf6a39ebcb046d0442d26ac1bfe84eb9fd7",
+      "bytes": 6878
+    }
+  ]
+}

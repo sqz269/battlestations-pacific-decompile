@@ -1,0 +1,292 @@
+{
+  "packet": "orch6_dyn_engine_g",
+  "owner": "agent/orch6-dyn-engine-g",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/dyn_engine_runtime.cpp",
+  "header": "include/bsp/dyn_engine_runtime.hpp",
+  "documentation": "docs/DYN_ENGINE_RUNTIME.md",
+  "status": "complete_normal_storage_win32_build_two_tests_original_bytes_fixture_checked",
+  "abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {
+      "address": "00c55f50",
+      "body_end_inclusive": "00c55fbe",
+      "previous_name": "DYN_physics_00c55f50",
+      "proposed_name": "Dyn_Engine_EnsureInitialized",
+      "name_provisional": true,
+      "implementation": "dyn_engine_ensure_00c55f50",
+      "original_abi": "ECX=descriptor pointer; EAX=existing/new engine; plain RET at00C55FBE",
+      "coverage": "Complete normal storage construction and explicit returned-null branches; native SEH/OOM cleanup excluded",
+      "unresolved_success_path_ranges": []
+    },
+    {
+      "address": "00c55ea0",
+      "body_end_inclusive": "00c55f4e",
+      "previous_name": "DYN_physics_00c55ea0",
+      "proposed_name": "Dyn_Engine_Construct",
+      "name_provisional": true,
+      "implementation": "dyn_engine_construct_00c55ea0",
+      "original_abi": "stack(engine pointer,descriptor pointer); EAX=engine; RET8 at00C55F34/00C55F4C",
+      "coverage": "Complete normal storage construction and explicit returned-null branches; native SEH/OOM cleanup excluded",
+      "unresolved_success_path_ranges": []
+    },
+    {
+      "address": "00c50310",
+      "body_end_inclusive": "00c50382",
+      "previous_name": "DYN_physics_00c50310",
+      "proposed_name": "Dyn_Profile_ConstructRoot",
+      "name_provisional": true,
+      "implementation": "dyn_profile_construct_00c50310",
+      "original_abi": "ESI=profile pointer; EAX=profile; plain RET at00C50382",
+      "coverage": "Complete normal storage construction and explicit returned-null branches; native SEH/OOM cleanup excluded",
+      "unresolved_success_path_ranges": []
+    },
+    {
+      "address": "00c44000",
+      "body_end_inclusive": "00c44081",
+      "previous_name": "DYN_physics_00c44000",
+      "proposed_name": "Dyn_ProfileNode_Construct",
+      "name_provisional": true,
+      "implementation": "dyn_profile_node_construct_00c44000",
+      "original_abi": "EDX=name; stack(node pointer,word2C); EAX=node; RET8 at00C4407F",
+      "coverage": "Complete normal storage construction and explicit returned-null branches; native SEH/OOM cleanup excluded",
+      "unresolved_success_path_ranges": []
+    }
+  ],
+  "native_calls": [
+    {
+      "function": "00c55f50",
+      "address": "00c55f74",
+      "native": "00bf681b",
+      "contract": "Existing operator new;14h engine allocation"
+    },
+    {
+      "function": "00c55f50",
+      "address": "00c55f8e",
+      "native": "00c55ea0",
+      "contract": "Complete engine constructor before global publication"
+    },
+    {
+      "function": "00c55ea0",
+      "address": "00c55ecf",
+      "native": "00bf681b",
+      "contract": "Existing operator new;9Ch profile allocation"
+    },
+    {
+      "function": "00c55ea0",
+      "address": "00c55ee7",
+      "native": "00c50310",
+      "contract": "ESI profile owner; exact Root allocation, publication and tail zeroing"
+    },
+    {
+      "function": "00c55ea0",
+      "address": "00c55efd",
+      "native": "00bf681b",
+      "contract": "Existing operator new;358h task-manager allocation"
+    },
+    {
+      "function": "00c55ea0",
+      "address": "00c55f1a",
+      "native": "00c37740",
+      "contract": "Separate actual task-manager constructor; stack manager plus snapshotted descriptor DWORD"
+    },
+    {
+      "function": "00c50310",
+      "address": "00c50328",
+      "native": "00bf681b",
+      "contract": "Existing operator new;48h Root node allocation"
+    },
+    {
+      "function": "00c50310",
+      "address": "00c50347",
+      "native": "00c44000",
+      "contract": "Actual D79DC8 Root string in EDX; stack allocated node and zero word2C"
+    },
+    {
+      "function": "00c50310",
+      "address": "00c5036d",
+      "native": "00bf79f0",
+      "contract": "memset profile+0C with zero for90h bytes after0109E9F8 publication; shared ADD ESP1Ch includes arguments and frame"
+    },
+    {
+      "function": "00c44000",
+      "address": "00c44050",
+      "native": "00408720",
+      "contract": "Existing native legacy SBO string assign counted; ECX=node+10; stack name and byte count, RET8"
+    }
+  ],
+  "no_ghidra_function": [],
+  "false_free_flow_gaps": [],
+  "external_flow_gaps": [
+    {
+      "function": "00c50390",
+      "after_call": "00c5042f",
+      "start": "00c50434",
+      "end_inclusive": "00c50436",
+      "coverage": "Unowned caller evidence; not reconstructed or repaired"
+    }
+  ],
+  "globals": [
+    {
+      "address": "0109e9fc",
+      "contract": "Borrowed actual engine publication cell; read before allocation, written only after engine constructor returns"
+    },
+    {
+      "address": "0109e9f8",
+      "contract": "Borrowed actual profile publication cell; written after profile head and before90h tail clear"
+    },
+    {
+      "address": "00d79dc8",
+      "contract": "Borrowed current Root NUL-terminated bytes, copied via established SBO string"
+    }
+  ],
+  "calling_sites": [
+    {
+      "function": "004ddb90",
+      "address": "004de129",
+      "native": "00c55f50",
+      "contract": "LEA ECX,[ESP+14h]; descriptor first DWORD is prior00BE4800 EAX"
+    },
+    {
+      "function": "00c50390",
+      "address": "00c503cb",
+      "native": "00c44000",
+      "contract": "Second call supplies arbitrary caller name and word2C; both are preserved by generic node API"
+    }
+  ],
+  "ownership": {
+    "engine": "14h owns9Ch profile at+C and real358h task manager at+10; vector0/4/8 starts empty",
+    "profile": "9Ch owns48h Root node at0/4; +8zero; tail+C..9Bzero",
+    "node": "48h with existing1Ch legacy SBO string at+10; word2C copied; leading00/string10/trailing44 and inline slack untouched",
+    "allocation_failure": "Native operator_new throws; forced null-return branches preserve exact caller behavior, not successful runtime readiness",
+    "external": "Engine/profile destruction, exception cleanup, world vector insertion, game integration and profiler timing are not implemented"
+  },
+  "register_provenance": {
+    "engine_ensure": "ECX copied to ESI atC55F6E and passed after allocation; existing engine returned without reading descriptor",
+    "engine_construct": "EDI loaded from stack atC55EBA; descriptor read atC55F12/16 after successful358h allocation and snapshotted into pushed EDX",
+    "profile_construct": "ESI input set by caller C55EE4..EEC; EAX reset toESI atC50376",
+    "node_construct": "EDX name scanned before00408720; ESI node fromstackC44018; second stack word readC44055 and stored2C"
+  },
+  "numerical_contract": "No floating arithmetic added; profile zero tail uses byte memset; string length and unsigned word2C preserved",
+  "corrections": [
+    {
+      "was": "00C50310 decompile showed a fastcall parameter, two operator_new arguments and void return",
+      "evidence": "CallerC55EE4/E5 savesESI and assigns allocation; C50326 pushes48h andC5032D addsESP4; C50376 MOV EAX,ESI andC50382 RET",
+      "is": "ESI is the profile input; operator_new has one cdecl size argument; EAX returns the profile; plain RET"
+    },
+    {
+      "was": "00C55F50 decompile declared void",
+      "evidence": "C55F66 loads existingglobal; C55F8E constructor returnsEAX; actual caller storesEAX togame+14 at004DE194",
+      "is": "EAX returns the existing engine or the complete constructor result"
+    }
+  ],
+  "validation": {
+    "build": "Win32Release ./scripts/build.ps1 passed, with ignored dependency inclusion of actual task-manager source",
+    "tests": "2/2 reconstructed_math and native_math_differential passed after verify-seeds",
+    "call_report": "12 call rows checked,0 failed;10 owned direct call sites plus2 caller-evidence rows",
+    "combined_source_hashes": {
+      "J:\\PROG\\battlestations-pacific-decompile-orch6-dyn-engine-g\\src\\dyn_engine_runtime.cpp": "7b2608638c893d8135993072ed01ae1e8fbdd0070db8fc31242e227d0ace8360",
+      "J:\\PROG\\battlestations-pacific-decompile-orch6-dyn-engine-g\\include\\bsp\\dyn_engine_runtime.hpp": "059c3367a5d71532c076a29895b62394e1d88d71fa6cd828c5a540604359d82a",
+      "J:\\PROG\\battlestations-pacific-decompile-orch6-dyn-tasks-g\\src\\dyn_task_manager.cpp": "0160749d351494d2ac34a08a0c4d98322a6a4aa54ab5db8c35e23931591d75d0",
+      "J:\\PROG\\battlestations-pacific-decompile-orch6-dyn-tasks-g\\include\\bsp\\dyn_task_manager.hpp": "3c6736d8c7ee289631f9fdebd02f9c0915688389ec29a782357183ee2f54c147"
+    },
+    "combined_library_sha256": "e1fe560b159973078e2c111d99f0552df223f34f4f66bad9946d078d4bf77822",
+    "dependency_inclusion": "local/task_dependency.cmake adds source/include from agent/orch6-dyn-tasks-g; no copied/staged dependency files; hashes unchanged before final probe",
+    "native_bytes": "7 complete code spans match installed PE and live Ghidra",
+    "fixture": "Original engine/profile/node/task-manager constructor bytes against combined Release library, actual Win32 CS/semaphore/101events, requested workers0",
+    "fixture_cases": 5,
+    "normal_success_cases": 1,
+    "forced_allocator_null_ordinals": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "singleton_reuse_cases": 4,
+    "owned_buffer_pairs": 12,
+    "serialized_bytes_per_file": 3260,
+    "serialized_sha256": "5c4481c9a7f2b346978a5865e91dd35777502bfb59063826d3aff5be92800f32",
+    "serialization_scope": "All owned buffer words; pointer fields and checked OS handle roles canonicalized. Allocation/publication observations compared separately in memory.",
+    "comparison_exclusions": "Only task-manager+18 CRITICAL_SECTION.DebugInfo. Actual102 handle values normalized by role after GetHandleInformation and initial WAIT_TIMEOUT checks. Other bytes, including untouched A5, remain compared.",
+    "profile_publication_checks": 6,
+    "closed_fixture_handles": 612,
+    "tracked_allocations_remaining": 0,
+    "cleanup": "Fixture closes102 handles/manager, deletes CS and frees raw buffers directly; no native engine/profile/task-manager destructor invoked",
+    "no_worker_execution": true,
+    "new_tracked_tests": 0,
+    "artifacts": {
+      "local\\dyn_engine_probe.cpp": "c893b88d421ffac3204e0aa810eac377778c996f5a103c292ca0a543808c82e1",
+      "local\\prepare_engine_fixture.py": "b5d98b8c29de2e4b0b9a6b5d4670fc5170768bc079e901016c67d17b304eba06",
+      "local\\dyn_engine_bytes_verified.json": "0ee0e578dd01ae28b92327a90a42893fd79dc6fc07936d77c66ba039210c37aa",
+      "local\\dyn_engine_probe.log": "9ba6bd3996c9f93c178bbdd6e8f3321edecaa9b5b72aecc01d405fb66a662e50",
+      "local\\dyn_engine_build.log": "4aef03705c3c6234970a6dec3510c4a6ab5689dfff30f1c9d7226df8c932d486",
+      "local\\dyn_engine_native_records.bin": "5c4481c9a7f2b346978a5865e91dd35777502bfb59063826d3aff5be92800f32",
+      "local\\dyn_engine_source_records.bin": "5c4481c9a7f2b346978a5865e91dd35777502bfb59063826d3aff5be92800f32"
+    },
+    "reproduce": [
+      "./local/configure_engine_build.ps1 # requires retained task worktree paths",
+      "./scripts/build.ps1",
+      "./local/build_dyn_engine_probe.ps1",
+      "python tools/verify_report_calls.py reports/dyn_engine_runtime.json"
+    ]
+  },
+  "limits": [
+    "New C++ interfaces, no native exception/SEH ABI or engine/profile destructor validation",
+    "Actual separate task-manager source is called directly; its worker execution/lifetime evidence belongs to its report",
+    "Engine fixture uses zero workers and102 real OS objects; no worker execution in this fixture",
+    "Forced allocator null returns exercise checked branches, not native allocator exhaustion or EH",
+    "Fixture directly disposes102 handles/CS/raw storage; does not repair untouched manager+00 or claim native cleanup",
+    "No startup/world/game integration or asynchronous publication/profiler claim"
+  ],
+  "byte_verification": {
+    "original_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "inherited_relocated_image_sha256": "86f0f456d654ba64cf421f073ba2aa95d7dbef99fa324b42c7e29a6ad3f1728e",
+    "inherited_manifest": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\dyn_hull_relocation_manifest.json",
+    "verified_spans": [
+      {
+        "address": "00c55f50",
+        "end_inclusive": "00c55fbe",
+        "length": 111,
+        "sha256": "31e51e0ae8d1cb1248bcab63e6a1e29dcb1c5ba0044b08af4039ac8fa184e1b3"
+      },
+      {
+        "address": "00c55ea0",
+        "end_inclusive": "00c55f4e",
+        "length": 175,
+        "sha256": "4dc9e693b3a7da4d383624ebf132ab3581c16783e7f8b35d1bb3dbaf32d22925"
+      },
+      {
+        "address": "00c50310",
+        "end_inclusive": "00c50382",
+        "length": 115,
+        "sha256": "687392e171970a53386eabe254b0216cb9c2dff0d4914d6a034524c72fecdbf3"
+      },
+      {
+        "address": "00c44000",
+        "end_inclusive": "00c44081",
+        "length": 130,
+        "sha256": "0840222b5e67436bab655c870cc7e053b2f5a87c78bf3ba4424c5e6be969e33b"
+      },
+      {
+        "address": "00c37740",
+        "end_inclusive": "00c377ed",
+        "length": 174,
+        "sha256": "9f6c357444f48fb6e48ebc0d1e462623eaa011e035e8a05c0f8efabfb6b9f8ca"
+      },
+      {
+        "address": "00c37690",
+        "end_inclusive": "00c3773a",
+        "length": 171,
+        "sha256": "54e972c95d34224b2979baeedc86415abdfa49bca6489978d2824940809bbe72"
+      },
+      {
+        "address": "00408720",
+        "end_inclusive": "004087e0",
+        "length": 193,
+        "sha256": "762a4e777878c11cadea969a9f2b5c00730ee910300d1f921463ff7157848c34"
+      }
+    ]
+  }
+}

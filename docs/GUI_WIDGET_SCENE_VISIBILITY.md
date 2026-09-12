@@ -390,3 +390,13 @@ The one confirmed widget-side entry point from a screen is `00ACDEF0`, the only 
 | 00AA9520, 00AA9730 | analyzed |
 | 00AAA5A0 | reconstructed, build-tested (node half only, `attach_child`) |
 | 00AB73B0, 00A9C380 | analyzed |
+
+## Correction from docs/GUI_WIDGET_COPY_RUNTIME.md
+
+The D5C0B8 table contains DWORD clone flags, not per-type names. The current
+image stores3E for types0..16 and26 for17/18. AA9520 pushes zero at AA9640,
+loads the source primary node at AA96E4, loads its current10 target and the
+current table word, then calls at AA96FC. Text3 therefore requires flags3E,
+parent0. B752B0 obtains the new Model name from the source node's B6D800
+header and forwards the flags to base/geometry copying. The existing Text
+flags26 model helper cannot substitute for the additional3E stream-copy arms.

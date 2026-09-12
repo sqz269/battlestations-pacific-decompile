@@ -1,0 +1,188 @@
+#include "bsp/gui_text_copy.hpp"
+#include <cstring>
+#include <stdexcept>
+#include <utility>
+
+namespace bsp {
+namespace {
+void require(bool condition, const char* message) {
+    if (!condition) throw std::logic_error(message);
+}
+NativeModelOwner& actual_model(NativeNodeBinding* node, GuiTextBufferServices& services) {
+    require(node != nullptr, "Text cursor requires a nonnull actual Model");
+    auto* lifetime = services.parenting.nodes.attachments.find_actual_node(
+        reinterpret_cast<std::uint32_t>(&node->storage));
+    auto* reference = dynamic_cast<NativeModelReference*>(lifetime);
+    require(reference != nullptr, "Text cursor requires the canonical Model reference");
+    auto& model = reference->model_owner();
+    require(&model.node == node && &model.storage.node == &node->storage &&
+        &model.environment.nodes == &services.parenting.nodes &&
+        &model.environment.retained_owners == &services.geometry.actual_owners() &&
+        model.phase == NativeModelOwner::Phase::live && reference->reference_count.load() > 0,
+        "Text cursor Model storage and ownership domains must agree");
+    return model;
+}
+float current_sentinel(GuiTextBufferServices& services) noexcept {
+    const auto bits = services.widgets.environment().models.constants.unchanged_00d7a260;
+    float value;
+    std::memcpy(&value, &bits, sizeof(value));
+    return value;
+}
+float current_x87_sentinel(GuiTextBufferServices& services) noexcept {
+    const auto* from = &services.widgets.environment().models.constants.unchanged_00d7a260;
+    float value;
+    __asm {
+        mov eax, from
+        fld dword ptr [eax]
+        fstp dword ptr value
+    }
+    return value;
+}
+template<class Function> Function current_slot(void* renderer, std::size_t offset) {
+    require(renderer != nullptr, "Text cursor requires an actual current renderer");
+    const auto* table = *static_cast<const std::uintptr_t* const*>(renderer);
+    require(table && table[offset / 4], "Text cursor requires an actual callable renderer slot");
+    return reinterpret_cast<Function>(table[offset / 4]);
+}
+template<class Pointer> void release_creator(Pointer*& acquired, NativeRenderActualOwners& owners) {
+    auto* captured = std::exchange(acquired, nullptr);
+    release_native_render_actual_owner(owners, captured);
+}
+} // namespace
+
+void ensure_gui_text_cursor_00ab8910(GuiTextLifetime& lifetime,
+    GuiTextCursorServices& services, GuiTextCursorAcquired& acquired) {
+    require(acquired.phase == GuiTextCursorPhase::not_started,
+        "Text cursor creation cannot replay a completed or interrupted frame");
+    auto binding = lifetime.content_binding();
+    auto& buffers = services.buffers;
+    auto& widget = binding.widget;
+    require(widget.text_lifetime() == &lifetime &&
+        widget.layout().type == GuiWidgetType::Text && widget.layout().transform.type_id == 3 &&
+        &buffers.widgets.owner(widget.layout()) == &widget,
+        "Text cursor requires its same canonical Text lifetime");
+    auto& cursor = lifetime.fields().pointer_184;
+    if (cursor) { acquired.phase = GuiTextCursorPhase::complete; return; }
+    require(&buffers.widgets.environment().models.nodes == &buffers.parenting.nodes &&
+        &buffers.widgets.environment().models.retained_owners == &buffers.geometry.actual_owners() &&
+        &buffers.materials.retained_owners == &buffers.geometry.actual_owners(),
+        "Text cursor services must share actual node and resource domains");
+    acquired.phase = GuiTextCursorPhase::running;
+    try {
+        // Same pool, constructor and canonical publication primitive as AB8530.
+        // Publishes +184 BEFORE the gui_cursor temporary name is released.
+        buffers.widgets.create_auxiliary_model_00ab8530_fragment(cursor, "gui_cursor");
+        actual_model(cursor, buffers).storage.node.auxiliary_flags_138 &= ~std::uint32_t{3};
+        auto* parent = widget.node_binding();
+        set_native_node_parent_00b6e680(buffers.parenting,
+            actual_model(cursor, buffers).node.transform, parent ? &parent->transform : nullptr);
+
+        CameraMatrix matrix{};
+        const float one = services.one_00d7a24c; // One MOVSS reused four times.
+        matrix[0] = matrix[5] = matrix[10] = matrix[15] = one;
+        matrix[14] = current_sentinel(buffers); // Separate live read from later x87.
+        auto& positioned = actual_model(cursor, buffers);
+        require(positioned.storage.node.vtable_00 == 0x00d62de8 &&
+            positioned.environment.vtable_00d62de8 &&
+            positioned.environment.vtable_00d62de8[0x38 / 4] == 0x00b6db10,
+            "Text cursor requires the actual Model current38 B6DB10 profile");
+        set_transform_local_matrix_00b6db10(positioned.node.transform, matrix);
+        buffers.widgets.set_node_visibility_factor_00b6da70(
+            actual_model(cursor, buffers).node, 0.0f, false);
+        acquired.mesh = buffers.geometry.create_mesh();
+        const float sentinel = current_x87_sentinel(buffers);
+        set_native_model_geometry_00b75170(actual_model(cursor, buffers), 0,
+            acquired.mesh, sentinel, sentinel);
+
+        acquired.format_name_live = true;
+        acquired.format_name.assign_0041e870(buffers.strings, "simplecolor.mvfm");
+        using Declaration = void* (__thiscall*)(void*, NativeString*);
+        using Vertex = void* (__thiscall*)(void*, std::uint32_t, std::uint32_t, void*);
+        void* renderer = buffers.current_renderer_00f8d394;
+        acquired.declaration = current_slot<Declaration>(renderer, 0x38)(renderer, &acquired.format_name);
+        destroy_native_string_header_0041dd20(&acquired.format_name, buffers.strings);
+        acquired.format_name_live = false;
+        renderer = buffers.current_renderer_00f8d394; // Reload after name-release callbacks.
+        acquired.vertex = current_slot<Vertex>(renderer, 0x5c)(renderer, 4, 1, acquired.declaration);
+        require(acquired.declaration && acquired.vertex,
+            "Text cursor renderer factories must return actual owned resources");
+        auto& owners = buffers.geometry.actual_owners();
+        set_native_mesh_vertex_stream_00b73bb0(*acquired.mesh, owners, 0, acquired.vertex);
+        // AB8910 order differs from AB8400. There is no index-stream factory.
+        release_creator(acquired.declaration, owners);
+        release_creator(acquired.vertex, owners);
+        acquired.section = buffers.geometry.create_section();
+        acquired.section->primitive_08 = 5;
+        acquired.section->range_words_0c[0] = 0;
+        acquired.section->range_words_0c[2] = 0;
+        acquired.section->range_words_0c[1] = 4;
+        acquired.section->range_words_0c[3] = 2;
+        acquired.effect_name_live = true;
+        acquired.effect_name.assign_0041e870(buffers.strings, "GuiCursor.mshd");
+        acquired.material = buffers.geometry.create_material_for_effect_00535320(acquired.effect_name,
+            buffers.current_renderer_00f8d394, buffers.materials, buffers.material_vtable_00d5e520);
+        destroy_native_string_header_0041dd20(&acquired.effect_name, buffers.strings);
+        acquired.effect_name_live = false;
+        services.parameter_owner.bind_retained_text_00b18a40(*acquired.material, widget, owners);
+        set_native_mesh_section_material_00b864c0(*acquired.section, owners, acquired.material);
+        release_creator(acquired.material, owners);
+        rebuild_native_mesh_section_vertex_layout_00b865a0(*acquired.section, owners,
+            acquired.mesh, services.layouts);
+        append_native_mesh_draw_section_00b73c60(*acquired.mesh, acquired.section);
+        release_creator(acquired.section, owners);
+        release_creator(acquired.mesh, owners);
+        acquired.phase = GuiTextCursorPhase::complete;
+    } catch (...) {
+        acquired.phase = GuiTextCursorPhase::failed;
+        throw; // Preserve publications, acquired references and live names.
+    }
+}
+
+GuiTextCopyContinuation::GuiTextCopyContinuation(GuiTextLifetime& lifetime,
+    GuiTextCopyServices& services) : lifetime_(lifetime), services_(services) {
+    require(lifetime.after_base_copy_ && !lifetime.copy_continuation_claimed_ &&
+        lifetime.phase_ == GuiTextLifetime::Phase::constructing &&
+        lifetime.scalar_phase_ == GuiTextScalarDeletionPhase::not_started &&
+        lifetime.widget_.text_lifetime() == &lifetime &&
+        &services.cursor.buffers == &lifetime.buffers_ &&
+        &services.submit.content.content.buffers == &lifetime.buffers_ &&
+        &services.submit.content.content.calls.glyph_child_calls() == &lifetime.child_calls_ &&
+        &services.cursor.layouts == &services.submit.content.nonempty.layouts,
+        "Text copy continuation requires one after-base admission and its same content/resource services");
+    lifetime.copy_continuation_claimed_ = true;
+}
+
+GuiTextCopyPhase GuiTextCopyContinuation::run_derived_00abb2c0() {
+    require(phase_ == GuiTextCopyPhase::admitted, "Text copy native calls must run exactly once");
+    try {
+        phase_ = GuiTextCopyPhase::cursor;
+        ensure_gui_text_cursor_00ab8910(lifetime_, services_.cursor, cursor_);
+        phase_ = GuiTextCopyPhase::sections;
+        auto binding = lifetime_.content_binding();
+        ensure_gui_text_draw_sections_00ab8530(binding.widget, binding.text,
+            binding.shadow_188, services_.cursor.buffers);
+        phase_ = GuiTextCopyPhase::rebuilding;
+        auto result = rebuild_gui_text_content_00abb1d0(lifetime_, services_.submit);
+        pending_ = std::move(result.pending);
+        phase_ = result.status == GuiTextSubmitStatus::pending_content
+            ? GuiTextCopyPhase::pending_content : GuiTextCopyPhase::complete;
+        lifetime_.copy_continuation_complete_ = phase_ == GuiTextCopyPhase::complete;
+        if (lifetime_.copy_continuation_complete_) lifetime_.phase_ = GuiTextLifetime::Phase::live;
+        return phase_;
+    } catch (...) { phase_ = GuiTextCopyPhase::failed; throw; }
+}
+
+GuiTextCopyPhase GuiTextCopyContinuation::resume_after_child() {
+    require(phase_ == GuiTextCopyPhase::pending_content && pending_,
+        "Text copy resume requires its retained pending content frame");
+    // The inner operation checks the exact pending reason before consuming it.
+    // No AB8910, AB8530 or ABB1D0 prefix is repeated here.
+    const auto result = resume_gui_text_submit_after_child(pending_);
+    if (result == GuiTextSubmitStatus::complete) {
+        phase_ = GuiTextCopyPhase::complete;
+        lifetime_.copy_continuation_complete_ = true;
+        lifetime_.phase_ = GuiTextLifetime::Phase::live;
+    }
+    return phase_;
+}
+} // namespace bsp
