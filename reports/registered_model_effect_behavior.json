@@ -1,0 +1,284 @@
+{
+  "packet": "orch3_model_behavior_aj",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "function_count_at_initial_verification": 63388,
+  "source": "src/registered_model_effect_behavior.cpp",
+  "header": "include/bsp/registered_model_effect_behavior.hpp",
+  "documentation": "docs/REGISTERED_MODEL_EFFECT_BEHAVIOR.md",
+  "status": "seven_complete_bounded_bodies_with_required_application_callees_strict_win32_native_boundary_fixture_passed",
+  "routines": [
+    {
+      "address": "00872010",
+      "end_inclusive": "00872017",
+      "length": 8,
+      "cpp_symbol": "complete_registered_model_effect_00872010",
+      "name": "complete_registered_model_effect_00872010",
+      "ghidra_name": "BSP_RegisteredModelEffect_Complete",
+      "source": "src/registered_model_effect_behavior.cpp",
+      "original_abi": "ECX event; tail JMP AF6BE0; AL boolean; RET",
+      "coverage": "complete through reconstructed AF6BE0 and required callees",
+      "last_instruction": "00872013",
+      "last_instruction_length": 5,
+      "sha256": "4d0db9ab8e72818c1b84fdf1e8ec7ad8dd0e656f210f067e77863f57c5154669",
+      "disk_sha256": "4d0db9ab8e72818c1b84fdf1e8ec7ad8dd0e656f210f067e77863f57c5154669",
+      "live_disk_equal": true,
+      "evidence": "Complete bounded actual-storage body; native-byte boundary fixture passed; required application callees remain. Descriptive names provisional; no Ghidra writes. docs/REGISTERED_MODEL_EFFECT_BEHAVIOR.md."
+    },
+    {
+      "address": "00872740",
+      "end_inclusive": "00872761",
+      "length": 34,
+      "cpp_symbol": "update_registered_model_effect_00872740",
+      "name": "update_registered_model_effect_00872740",
+      "ghidra_name": "BSP_RegisteredModelEffect_Update",
+      "source": "src/registered_model_effect_behavior.cpp",
+      "original_abi": "ECX event; stack float delta,actual reference node; RET8",
+      "coverage": "complete entry through required AF6DD0; simulation dependency unimplemented",
+      "last_instruction": "0087275f",
+      "last_instruction_length": 3,
+      "sha256": "b71824ade2ac86b217fe69cda8bf2a7ebc5a63892110d24738322feecc414e0d",
+      "disk_sha256": "b71824ade2ac86b217fe69cda8bf2a7ebc5a63892110d24738322feecc414e0d",
+      "live_disk_equal": true,
+      "evidence": "Complete bounded actual-storage body; native-byte boundary fixture passed; required application callees remain. Descriptive names provisional; no Ghidra writes. docs/REGISTERED_MODEL_EFFECT_BEHAVIOR.md."
+    },
+    {
+      "address": "00871fe0",
+      "end_inclusive": "00871fe7",
+      "length": 8,
+      "cpp_symbol": "deactivate_registered_model_effect_00871fe0",
+      "name": "deactivate_registered_model_effect_00871fe0",
+      "ghidra_name": "BSP_RegisteredModelEffect_Deactivate",
+      "source": "src/registered_model_effect_behavior.cpp",
+      "original_abi": "ECX event; tail JMP AF5F20; RET",
+      "coverage": "complete through recovered stop chain and required B04F00",
+      "last_instruction": "00871fe3",
+      "last_instruction_length": 5,
+      "sha256": "8730927c205c6ec38170469f70700accee6e0045a3e232821e98988a3195da32",
+      "disk_sha256": "8730927c205c6ec38170469f70700accee6e0045a3e232821e98988a3195da32",
+      "live_disk_equal": true,
+      "evidence": "Complete bounded actual-storage body; native-byte boundary fixture passed; required application callees remain. Descriptive names provisional; no Ghidra writes. docs/REGISTERED_MODEL_EFFECT_BEHAVIOR.md."
+    },
+    {
+      "address": "00af6be0",
+      "end_inclusive": "00af6c46",
+      "length": 103,
+      "cpp_symbol": "complete_particle_model_00af6be0",
+      "name": "complete_particle_model_00af6be0",
+      "ghidra_name": "BSP_ParticleModel_Complete",
+      "source": "src/registered_model_effect_behavior.cpp",
+      "original_abi": "ECX actual model; AL boolean; RET",
+      "coverage": "complete through required 0051F6B0 and AFF690",
+      "last_instruction": "00af6c46",
+      "last_instruction_length": 1,
+      "sha256": "a7cffd85c9bf63038fc8c95300aed031285edb4e1613dfb6854ceff322523e7a",
+      "disk_sha256": "a7cffd85c9bf63038fc8c95300aed031285edb4e1613dfb6854ceff322523e7a",
+      "live_disk_equal": true,
+      "evidence": "Complete bounded actual-storage body; native-byte boundary fixture passed; required application callees remain. Descriptive names provisional; no Ghidra writes. docs/REGISTERED_MODEL_EFFECT_BEHAVIOR.md."
+    },
+    {
+      "address": "00af5f20",
+      "end_inclusive": "00af5f50",
+      "length": 49,
+      "cpp_symbol": "stop_particle_model_00af5f20",
+      "name": "stop_particle_model_00af5f20",
+      "ghidra_name": "BSP_ParticleModel_Stop",
+      "source": "src/registered_model_effect_behavior.cpp",
+      "original_abi": "ECX actual model; RET",
+      "coverage": "complete through recovered AFF570 and required B04F00",
+      "last_instruction": "00af5f50",
+      "last_instruction_length": 1,
+      "sha256": "b1c42be6c6d9cfef6059f7057d4eea9c9035de8fc567aea99680332c35b486e5",
+      "disk_sha256": "b1c42be6c6d9cfef6059f7057d4eea9c9035de8fc567aea99680332c35b486e5",
+      "live_disk_equal": true,
+      "evidence": "Complete bounded actual-storage body; native-byte boundary fixture passed; required application callees remain. Descriptive names provisional; no Ghidra writes. docs/REGISTERED_MODEL_EFFECT_BEHAVIOR.md."
+    },
+    {
+      "address": "00aff570",
+      "end_inclusive": "00aff57c",
+      "length": 13,
+      "cpp_symbol": "stop_particle_emitter_00aff570",
+      "name": "stop_particle_emitter_00aff570",
+      "ghidra_name": "BSP_ParticleEmitter_Stop",
+      "source": "src/registered_model_effect_behavior.cpp",
+      "original_abi": "ECX actual emitter; RET or tail JMP B05070",
+      "coverage": "complete through recovered B05070 and required B04F00",
+      "last_instruction": "00aff57c",
+      "last_instruction_length": 1,
+      "sha256": "094526503b8ed57bf541fc4e0ab3849a572c34af90c5d9c1fd59fac752d94ee4",
+      "disk_sha256": "094526503b8ed57bf541fc4e0ab3849a572c34af90c5d9c1fd59fac752d94ee4",
+      "live_disk_equal": true,
+      "evidence": "Complete bounded actual-storage body; native-byte boundary fixture passed; required application callees remain. Descriptive names provisional; no Ghidra writes. docs/REGISTERED_MODEL_EFFECT_BEHAVIOR.md."
+    },
+    {
+      "address": "00b05070",
+      "end_inclusive": "00b05100",
+      "length": 145,
+      "cpp_symbol": "stop_particle_emitter_states_00b05070",
+      "name": "stop_particle_emitter_states_00b05070",
+      "ghidra_name": "BSP_ParticleEmitter_StopStates",
+      "source": "src/registered_model_effect_behavior.cpp",
+      "original_abi": "ECX actual container; RET",
+      "coverage": "complete through required B04F00",
+      "last_instruction": "00b05100",
+      "last_instruction_length": 1,
+      "sha256": "a9d23b15e0aecde7e50a3910a5b93cb41b3da9975132f194268020ae34504cc3",
+      "disk_sha256": "a9d23b15e0aecde7e50a3910a5b93cb41b3da9975132f194268020ae34504cc3",
+      "live_disk_equal": true,
+      "evidence": "Complete bounded actual-storage body; native-byte boundary fixture passed; required application callees remain. Descriptive names provisional; no Ghidra writes. docs/REGISTERED_MODEL_EFFECT_BEHAVIOR.md."
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00872010",
+      "address": "00872013",
+      "native": "00af6be0",
+      "kind": "tail_jump",
+      "contract": "actual model1C; AL bool; RET"
+    },
+    {
+      "function": "00872740",
+      "address": "0087275a",
+      "native": "00af6dd0",
+      "kind": "call",
+      "contract": "read; required entire simulation; ECX model,stack float/low mode byte; RET8 atAF738F; callerRET8 at87275F"
+    },
+    {
+      "function": "00871fe0",
+      "address": "00871fe3",
+      "native": "00af5f20",
+      "kind": "tail_jump",
+      "contract": "actual model1C; RET"
+    },
+    {
+      "function": "00af6be0",
+      "address": "00af6be3",
+      "native": "0051f6b0",
+      "kind": "call",
+      "contract": "read; existing singleton getter; live owner04 after call; no stack args"
+    },
+    {
+      "function": "00af6be0",
+      "address": "00af6c1e",
+      "native": "00aff690",
+      "kind": "call",
+      "contract": "read; required actual emitter getter; no stack args; RET atAFF6F5; caller guards emitter10 nonnull"
+    },
+    {
+      "function": "00af5f20",
+      "address": "00af5f42",
+      "native": "00aff570",
+      "kind": "call",
+      "contract": "read; actual emitter from captured span; RET"
+    },
+    {
+      "function": "00aff570",
+      "address": "00aff577",
+      "native": "00b05070",
+      "kind": "tail_jump",
+      "contract": "read; captured nonnull emitter10 actual container; RET"
+    },
+    {
+      "function": "00b05070",
+      "address": "00b050aa",
+      "native": "00b04f00",
+      "kind": "call",
+      "contract": "read; required actual6Ch state and DWORD0; RET4; AL ignored; other B05008 caller passes1 and B05185 passes0"
+    }
+  ],
+  "required_dependencies": [
+    {
+      "address": "00af6dd0",
+      "coverage": "required; not implemented by this packet",
+      "contract": "whole simulation AF6DD0..AF7391"
+    },
+    {
+      "address": "00aff690",
+      "coverage": "required; not implemented by this packet",
+      "contract": "whole emitter lazy container getter AFF690..AFF6F5; guarded nonnull boundary tested"
+    },
+    {
+      "address": "00b04f00",
+      "coverage": "required; not implemented by this packet",
+      "contract": "whole actual state cleanup B04F00..B04FB0; definition virtual1C, point-light/node cleanup and lock"
+    },
+    {
+      "address": "0051f6b0",
+      "coverage": "required; not implemented by this packet",
+      "contract": "existing RegisteredModelEffectCallees actual singleton getter"
+    },
+    {
+      "address": "00af74a0",
+      "coverage": "required; not implemented by this packet",
+      "contract": "separate real particle-model constructor"
+    }
+  ],
+  "actual_table": {
+    "address": "00d0de18",
+    "virtual08": "00872010",
+    "virtual28": "00872740",
+    "virtual30": "00871fe0"
+  },
+  "missing_ghidra_definitions": [
+    {
+      "start": "00872010",
+      "end_inclusive": "00872017",
+      "last_instruction": "00872013",
+      "last_instruction_length": 5
+    },
+    {
+      "start": "00872740",
+      "end_inclusive": "00872761",
+      "last_instruction": "0087275f",
+      "last_instruction_length": 3
+    }
+  ],
+  "corrections": [
+    {
+      "was": "B0CA40 decompiler treats incoming definition/state64 as float",
+      "is": "actual pointer DWORD stored at state64; no new copied state schema",
+      "evidence": "B0CA62 loads original first stack argument; B0CA69 MOV [ESI+64],ECX; B04C80 selects actual6Ch state from WORD-index rows"
+    }
+  ],
+  "verification": {
+    "strict_win32_compile": "passed /W4 /WX /fp:strict under both /Od and /O2; manifest embedded",
+    "native_boundary_fixture": "passed local/model_behavior_probe.exe; seven recovered spans, relocated calls/jumps",
+    "fixture_checks": [
+      "completion suppression/uninitialized/container counts",
+      "false B04F00 result still removes state",
+      "B04F00 interception replaces row backing and mutates model span/count",
+      "captured model span survives callback changes",
+      "WORD/padding/x87 signaling-NaN row swap matches",
+      "actual event04/model04 and direct active0C unchanged",
+      "virtual28 mode2/3 and x87 delta bits match"
+    ],
+    "fixture_exclusions": [
+      "AF74A0 construction",
+      "AF6DD0 simulation",
+      "AFF690 allocation/SEH",
+      "B04F00 actual cleanup",
+      "native ABI/SEH",
+      "gameplay or visuals"
+    ],
+    "live_disk_spans": "all seven exact spans matched",
+    "repository_build": "scripts/build.ps1 Release passed; reconstructed_math 1/1 passed. New source compiled separately because CMake is integrator owned.",
+    "report_call_verifier": "root checker b056d0de: 8 rows checked, exactly 2 failures:872013 and87275A have no containing Ghidra function. Three explicit tail_jump rows supported; all other rows passed. Integrator will define entries after lease release and require final clean result.",
+    "ghidra_mutations": "none; read-only verified CLI queries only",
+    "duplicate_top_level_types": "one new uniquely named interface; existing storage types reused",
+    "report_call_verifier_log": "local/model_behavior_report_check.txt",
+    "fixture_artifacts": [
+      "local/model_behavior_probe.cpp",
+      "local/model_behavior_bytes.hpp",
+      "local/model_behavior_probe.exe",
+      "local/model_behavior_live_disk.json",
+      "local/model_behavior_build.log"
+    ]
+  },
+  "integration": [
+    "add source to CMake",
+    "bind current D0DE18 virtual08/28/30 through existing PointEffectChildEvents owners; dispatcher clears active0C before virtual30",
+    "supply required callees, real AF74A0 and shared F8D2D0 pool",
+    "define two missing entries and annotate/name/export seven covered routines under integrator lock",
+    "add owned ledger records and run final call verifier/build"
+  ]
+}
