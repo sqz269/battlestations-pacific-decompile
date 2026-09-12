@@ -265,3 +265,19 @@ not the list itself, and the 3.0 refill constant is a double. The node is 0Ch by
 `BSP_MissionLuaHost_CallNamedThreadSafe(entity+178h, name, 0, 0, -1)` and re-resolved every
 call; an untimed `SetThink` is a three-second heartbeat because it shares the collectgarbage
 countdown `00F89A04`; `00898150` arms a delay clamped to 0.5f.
+
+## Correction from docs/ENTITY_EVENT_QUEUES.md
+
+Packet `cc2-entity-event-queues` (main 0bd8a3cc) read the three queue drains in full and corrects
+this doc: (1) `00926FA0` is the `std::list` copy constructor and takes no lock; `00924A50` is
+`operator new(0xC)` building a self-linked sentinel node stored into `dest+4h`, not a registry lock
+(no `EnterCriticalSection` in `00926FA0` or `009273A0`); (2) the deferred drain takes the BACK node
+(`00926714` reads `head[+4h]`, the end the producer links at `00926F12`), so the queue is LIFO and,
+being lock-free with a re-read of the back pointer after dispatch, an event queued from inside a
+handler is popped undispatched; (3) `009273A0`'s two lists hold 0Ch nodes with one entity pointer at
+`+8h`; the flush copies both lists, clears the globals, dispatches `vtable[74h]` over the first copy and
+the `009263C0` block ending in `vtable[80h]` over the second, and loops until both globals are empty.
+The deferred queue holds one event kind (the 54h hit record plus the impact direction at `+54h`, in
+68h nodes), expiry ages `+6Ch` and releases at 3; a damage death lands only on the destroy list, an
+explicit Kill on both. `include/bsp/entity_event_queues.hpp` replaces the `drain_deferred_entity_events`,
+`flush_pending_entity_queues` and `release_expired_world_objects` records of the fan-out host.
