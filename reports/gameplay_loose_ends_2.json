@@ -1,0 +1,282 @@
+{
+  "packet": "cc2_loose_ends_2",
+  "owner": "agent/cc2-loose-ends-2",
+  "document": "docs/GAMEPLAY_LOOSE_ENDS_2.md",
+  "ghidra": "read-only",
+  "method": "every writer/reader/caller hunt started from a byte scan of the PE on disk (local/pescan.py: disp, cover, disprange, imm, callto, vcall; local/vtlen.py; local/vtslots.py; local/msgkinds.py; local/mtnames.py). Two-byte 0F-prefixed opcodes decode like any other and operand widths are reported, so a 16-byte MOVUPS covering a byte field is not missed.",
+
+  "answers": [
+    {
+      "item": "A1",
+      "question": "what the three values of ctl+FCh gate",
+      "answer": "a controller mode: 0 free flight, 1 ground roll, 2 water surface. It selects the aerodynamic block in the core law (007DBE0E), dispatches 007DA380's factor arms (007DA38D), gates the ground-plane store (007DB6D1) and the wheel-height lift (007DA211), and zeroes the roll accumulator when it is 1 (007DA8D9).",
+      "coverage": "complete for the reader set (the disp32 FCh scan over 007D7000-007DE000 returns eleven references and no others); partial inside 007DA380's mode-1 and mode-2 arms"
+    },
+    {
+      "item": "A2",
+      "question": "who reads unit+C01h",
+      "answer": "nobody. Negative established by five scans: disp32 C01h (five byte writes only), every memory operand of any width covering offset C01h (the same writes plus two 16-byte clears), disp32 C00h (two byte writes, no dword read), the raw dword 00000C01h in .rdata/.data (none), and every LEA with a displacement in 0B82h-0C01h over 00600000-00A00000 (only &unit+BFCh as 006BC530's out-parameter).",
+      "coverage": "complete"
+    },
+    {
+      "item": "A3",
+      "question": "who requests unit+900h state 3",
+      "answer": "no code path produces 3. No immediate store uses it, the guarded setter's six call sites push 6/4/7/4-or-5/6/7 behind a guard that excludes 3, and the unguarded writer FUN_007C78A0's four callers push 6/2/1 and a replicated byte. State 3 is reachable only from a network state byte (007D160F) or a spawn/property-bag record (007D63EA, 007D65DD, 007D711A). It is consumed: 007C6347, the catapult update FUN_006EC240 at 006EC456, and FUN_007C78A0's surface-state class. 006EB5C0 is an unreferenced IsLaunching predicate.",
+      "coverage": "complete for the producer question"
+    },
+    {
+      "item": "A4",
+      "question": "how to reconcile the two readings of unit+9C0h",
+      "answer": "two sibling class families reuse the offset. The plane family keeps a two-entry stride-8 record { byte, byte, byte, byte, float } published by FUN_007CDC70; the class-06 ship family keeps a MaxSpeed float written by BSP_UnitInstance_SEntityInit, which appears only in the five class-06 vtables. No routine mixes them.",
+      "coverage": "complete"
+    },
+    {
+      "item": "B-144",
+      "question": "the bodies of unit vtable slot 144h per class",
+      "answer": "one body, 0077F2D0, in all 25 unit vtables; never overridden. Its only message call site is 0095AC28 in BSP_Unit_HandleMessage, the class-05 base handler.",
+      "coverage": "complete for 0077F2D0; 009278A0 contract: unread"
+    },
+    {
+      "item": "B-208",
+      "question": "the bodies of unit vtable slot 208h per class",
+      "answer": "slot 208h is index 130, one past the end of the class-05 base vtable (204h), so each family adds its own unrelated virtual there: the ship family 008141E0 (MSubmarine 00853230), the plane family 007D0B80, MLandFort and MCommandBuilding 007460E0, MAirfield 006D0D90. MT_VEHICLE_UNIT_LAUNCH (slot, float) is the ship family's contract only.",
+      "coverage": "partial: 008141E0 read to its selection loop; 00853230 and 007460E0 contract: unread"
+    },
+    {
+      "item": "B-220-224-238",
+      "question": "the bodies of unit vtable slots 220h, 224h and 238h per class",
+      "answer": "these slots exist only on the class-06 ship family; every other unit vtable ends before them, which matches their only message call sites all being in BSP_UnitInstance_HandleMessage. 220h: 008198A0, MMothership overrides with 007583A0. 224h: 008137B0, MMothership 007583F0. 238h: 008206F0, MLandingShip 0074A4C0. unit+9E4h is the steering-jam flag and unit+9E5h the engine-jam flag; unit+A14h/+A18h is the point-effect array an engine jam stops and a clear restarts.",
+      "coverage": "complete for 008198A0, 008137B0, 007583A0, 007583F0, 006D0D90; partial for 008206F0 (entry gate only) and 0074A4C0 (entry gate only)"
+    },
+    {
+      "item": "B-6C",
+      "question": "the producer of 6Ch MT_SHIP_SET_ENGINEJAMFAILURE",
+      "answer": "the kind is not computed. 007619B0 is a dedicated message constructor that stores it as a byte immediate (MOV byte [EAX+10h],6Ch at 007619C8), which is why a scan of the kind pushed at each of the 426 0075B430 call sites missed it. The producer is FUN_008132C0's \"EngineJam\" branch, which builds with 007619B0 and routes with 0077C2A0(unit, msg, 7, 0); 00827D65 is the damage-side producer and 00768FA6 the third caller.",
+      "coverage": "complete for 007619B0; 008132C0 read only at its three string branches"
+    },
+    {
+      "item": "C1",
+      "question": "what reads the twenty D01502F9h sentinels at director+1D0h-+21Fh",
+      "answer": "nothing. The value is the float -1.0e10 and the immediate occurs in exactly one instruction image-wide, the fill at 0072032E; the only other raw occurrence (00CE4ADC) is inside a string blob. Every 1D0h-21Fh access in 00700000-00730000 belongs to a gun class or to the fill, and none of the two CommandControllerBase users' own routines reads the band.",
+      "coverage": "partial: displacements in that band are common on unrelated classes, so matches outside 00700000-00730000 could not be attributed"
+    },
+    {
+      "item": "C2",
+      "question": "008637D0 whole",
+      "answer": "__thiscall(unit, Entity* target), RET 4, AL. Walks the weapon-category list at 00E0A510 (terminated by an entry >= 0Ch) and returns 1 for the first category that is present on the unit (byte unit[cat+70h]), accepted by [unit+60h]->vtable[4h](cat), and willing to engage the target (008633D0). Otherwise 0.",
+      "coverage": "complete"
+    },
+    {
+      "item": "C3",
+      "question": "which entity director+34h is",
+      "answer": "the base constructor's only stack argument, the parent object the controller attaches to. The weapon director forwards its own first argument; FUN_0084D810 passes unit+310h, the tick-element node, or 0. The owning unit lives at +24Ch on the weapon director and +224h on the other subclass, so the producers that report +34h and +24Ch are reporting different fields, both correctly.",
+      "coverage": "complete"
+    },
+    {
+      "item": "C4",
+      "question": "whether anything reads the previous-command record at director+16Ch",
+      "answer": "yes, exactly one reader: BSP_CommandControllerBase_CopyStateFrom reads [src+16Ch] at 0072046B and copies +178h..+184h, called only from BSP_WeaponDirector_CopyStateFrom. It is a wholesale state clone, so nothing consults the record to decide behaviour. FUN_00721760's word read at +174h is on its target argument, not on a director.",
+      "coverage": "complete"
+    },
+    {
+      "item": "C5",
+      "question": "0084E010",
+      "answer": "its only reference in the image is the dword at 00D0BE14, slot +7Ch of the table based at 00D0BD98 that FUN_0084D810 installs at [this]. The owner is that class: a BSP_CommandControllerBase with vtables 00D0BD98 and 00D0BD7C, the owning unit at +224h, built from 007F2070 and 007F5000. 00D0BDA4 in the same table is the fourth slot holding 0071F290 (+0Ch).",
+      "coverage": "none for 0084E010's body; the owner and slot are settled"
+    },
+    {
+      "item": "C6",
+      "question": "whether the shared vector at 00F87574..7C is a plain zero",
+      "answer": "yes. It lies past .data's rawsize (10000h backs only 00E08000-00E18000) so it is zero at load, and .text holds 1556 decoded operand references to the three addresses with not one store of any form. The address is taken at eight sites and the two PUSH sites hand it in as an input point.",
+      "coverage": "partial: a callee writing through one of the taken addresses was not exhaustively excluded"
+    }
+  ],
+
+  "call_sites": [
+    { "item": "A1", "address": "007da728", "native": "007da380", "function": "007da710", "note": "the rate law calls the mode-dispatched factor provider with three out-parameter addresses" },
+    { "item": "A1", "address": "007da384", "native": "007d9a70", "function": "007da380", "note": "the value the free-flight and ground arms publish in both float out-parameters" },
+    { "item": "A1", "address": "007db6a6", "native": "007da710", "function": "007db680", "note": "the core law runs the rate law before its own mode dispatch at 007DBE0E" },
+    { "item": "A1", "address": "007da2fe", "native": "006bc530", "function": "007d9f60", "note": "the wheel-height query on the object the plane stands on; the out-pointer is &[esp+10h]" },
+    { "item": "A1", "address": "007da331", "native": "007d7d70", "function": "007d9f60", "note": "the pose lift applied when the wheel point sinks below classDesc+1FCh + 0.01" },
+    { "item": "A4", "address": "007cdcbc", "native": "007b9140", "function": "007cdc70", "note": "publishes byte 0 of the current stride-8 record entry" },
+    { "item": "A4", "address": "007cdce7", "native": "007bcc20", "function": "007cdc70", "note": "publishes the float at entry+4" },
+    { "item": "A4", "address": "007cdcff", "native": "007cd9a0", "function": "007cdc70", "note": "publishes byte 3 of the entry" },
+    { "item": "A2", "address": "009ceac4", "native": "007b9000", "note": "the pilot bot sets unit+C01h = 2 when ground contact is still held on the expected object" },
+    { "item": "A2", "address": "009ce8dc", "native": "007b9010", "note": "the pilot bot sets unit+C01h = 1 when the pose Y exceeds a threshold" },
+    { "item": "A2", "address": "009b28b8", "target": "007b96c0", "containing_function": "none: Ghidra has no function at this call site, so the row carries no `native` field", "note": "the pilot bot sets unit+C00h = 1; the rel32 target was read from the disk bytes (E8 03 6E E0 FF)" },
+    { "item": "A3", "address": "007cbf7b", "native": "007c1430", "note": "the guarded flight-state setter, called with 7 here; no call site anywhere passes 3" },
+    { "item": "A3", "address": "007d160f", "native": "007c78a0", "function": "007d1360", "note": "the unguarded state writer, fed MOVZX ECX, byte [EDI+8Ch] from a replicated record - the only path that can carry 3" },
+    { "item": "A3", "address": "006ec632", "target": "006ec240", "containing_function": "none: Ghidra has no function at this call site, so the row carries no `native` field", "note": "the only caller of the catapult update whose state-3 test is at 006EC456; found by a rel32 scan of the disk bytes" },
+    { "item": "B-144", "address": "0077f2d8", "native": "009278a0", "function": "0077f2d0", "note": "the actual station assignment; contract: unread" },
+    { "item": "B-144", "address": "0077f349", "native": "0077edf0", "function": "0077f2d0", "note": "find-or-insert keyed on the unit pointer; the returned byte is set to 1" },
+    { "item": "B-220", "address": "008199fc", "native": "00867b10", "function": "008198a0", "note": "an engine jam stops every non-null point effect in unit+A14h" },
+    { "item": "B-224", "address": "0081380d", "native": "00866b70", "function": "008137b0", "note": "the engine-jam clear restarts the same effects" },
+    { "item": "B-220", "address": "007583e1", "native": "008198a0", "function": "007583a0", "kind": "tail_call", "note": "MMothership's override falls through to the ship base body for every kind other than 72h and 74h" },
+    { "item": "B-224", "address": "00758431", "native": "008137b0", "function": "007583f0", "kind": "tail_call", "note": "MMothership's override falls through to the ship base body for every kind other than 73h and 75h" },
+    { "item": "B-208", "address": "008142dc", "native": "006ed000", "function": "008141e0", "note": "the per-catapult heading used to pick the closest device" },
+    { "item": "B-6C", "address": "00813530", "native": "007619b0", "function": "008132c0", "note": "the \"EngineJam\" branch builds the 6Ch message with the dedicated constructor" },
+    { "item": "B-6C", "address": "00813546", "native": "0077c2a0", "function": "008132c0", "note": "routes the 6Ch message with (unit, msg, 7, 0)" },
+    { "item": "B-6C", "address": "0081356f", "native": "0093bd80", "function": "008132c0", "note": "the follow-up call on unit+A20h with 7" },
+    { "item": "C2", "address": "0086380e", "native": "008633d0", "function": "008637d0", "note": "the per-category target acceptance test the availability loop ANDs in" },
+    { "item": "C3", "address": "0084d844", "native": "00720180", "function": "0084d810", "note": "passes unit+310h (or 0) as the argument stored to director+34h" },
+    { "item": "C3", "address": "00836403", "native": "00720180", "note": "the weapon director forwards its own first stack argument to director+34h" },
+    { "item": "C4", "address": "00836689", "native": "00720450", "function": "00836680", "note": "the only rel32 caller of the state clone that reads director+16Ch" },
+    { "item": "C4", "address": "0072180e", "native": "00721760", "note": "the only caller of the command-record builder whose +174h read is on its target argument" }
+  ],
+
+  "vtable_slots": [
+    { "slot": "00D1A698+144", "native": "0077f2d0", "class": "05 unit base", "note": "identical in all 25 unit vtables" },
+    { "slot": "00D09678+208", "native": "008141e0", "class": "06 ship base", "note": "MT_VEHICLE_UNIT_LAUNCH (int, float)" },
+    { "slot": "00D0BF80+208", "native": "00853230", "class": "08 MSubmarine", "note": "contract: unread" },
+    { "slot": "00D05F20+208", "native": "007d0b80", "class": "0F plane base", "note": "BSP_Plane_HandleStateMessageKinds(msg); all eight plane classes share it" },
+    { "slot": "00CFF3F8+208", "native": "007460e0", "class": "1B MLandFort", "note": "also MCommandBuilding; contract: unread" },
+    { "slot": "00CF8C08+208", "native": "006d0d90", "class": "45 MAirfield", "note": "clears the runway (73h) and hangar (75h) failure bytes" },
+    { "slot": "00D09678+220", "native": "008198a0", "class": "06 ship base", "note": "failure setters 6Ah/6Bh/6Ch" },
+    { "slot": "00D01630+220", "native": "007583a0", "class": "09 MMothership", "note": "adds 72h/74h, then tail-calls the base body" },
+    { "slot": "00D09678+224", "native": "008137b0", "class": "06 ship base", "note": "failure clears 6Dh/6Eh" },
+    { "slot": "00D01630+224", "native": "007583f0", "class": "09 MMothership", "note": "adds 73h/75h, then tail-calls the base body" },
+    { "slot": "00D09678+238", "native": "008206f0", "class": "06 ship base", "note": "MT_SHIP_STARTLANDING; returns -1 when [unit+538h]+78Ch is zero" },
+    { "slot": "00CFFA30+238", "native": "0074a4c0", "class": "0C MLandingShip", "note": "returns -8 when unit+1200h is set" },
+    { "slot": "00D0BD98+07C", "native": "0084e010", "class": "the class FUN_0084D810 constructs", "note": "the only reference to 0084E010 in the image" },
+    { "slot": "00D0BD98+00C", "native": "0071f290", "class": "the class FUN_0084D810 constructs", "note": "the fourth table holding 0071F290" },
+    { "slot": "00CFD99C+0F0", "native": "00720450", "class": "BSP_CommandControllerBase", "note": "the state clone that reads +16Ch" }
+  ],
+
+  "names_added": [
+    { "address": "007da380", "name": "BSP_PlaneFlight_ControllerModeFactors" },
+    { "address": "006eb5c0", "name": "BSP_Plane_IsLaunching" },
+    { "address": "007c78a0", "name": "BSP_Plane_SetFlightStateUnguarded" },
+    { "address": "007cdc70", "name": "BSP_Plane_PublishStepRecord" },
+    { "address": "007619b0", "name": "BSP_ShipMessage_SetEngineJamFailure_Construct" },
+    { "address": "0077f2d0", "name": "BSP_Unit_AssignSingleDeviceRole" },
+    { "address": "008141e0", "name": "BSP_ShipInstance_LaunchFromCatapult" },
+    { "address": "008198a0", "name": "BSP_ShipInstance_SetFailureFromMessage" },
+    { "address": "008137b0", "name": "BSP_ShipInstance_ClearFailureFromMessage" },
+    { "address": "007583a0", "name": "BSP_Mothership_SetFailureFromMessage" },
+    { "address": "007583f0", "name": "BSP_Mothership_ClearFailureFromMessage" },
+    { "address": "006d0d90", "name": "BSP_Airfield_ClearFailureFromMessage" },
+    { "address": "008637d0", "name": "BSP_UnitGunneryAi_AnyCategoryAcceptsTarget" },
+    { "address": "00721760", "name": "BSP_CommandRecord_Build" }
+  ],
+
+  "no_ghidra_function": [
+    { "address": "006eb5c0", "name": "BSP_Plane_IsLaunching", "end_address": "006eb5cc" }
+  ],
+
+  "flow_gaps": [],
+
+  "corrections": [
+    {
+      "document": "docs/PLANE_FLIGHT.md",
+      "was": "line 163: when ctl->+FCh != 1 the whole roll term is discarded",
+      "is": "the roll accumulator is discarded when ctl+FCh == 1, on the ground; it survives in free flight and on the water",
+      "evidence": "007DA8D9 CMP dword [ESI+FCh],1; 007DA8E0 XORPS XMM2,XMM2; 007DA8E3 JNE 007DA8EB; 007DA8E5 MOVSS [ESP+18h],XMM2 - the zeroing store is reached only on equality"
+    },
+    {
+      "document": "docs/PLANE_FLIGHT.md",
+      "was": "line 79: +FCh is a mode dword, zeroed each step and tested == 1",
+      "is": "it is not zeroed each step; each of the three laws writes its own value (0, 1, 2) and it is read six ways, including a four-way dispatch in 007DA380 and a three-way dispatch in the core law",
+      "evidence": "writers 007DC841, 007DCD24, 007DCDDC; readers 007DA38D, 007DA8D9, 007DB6D1, 007DBE0E, 007DA211; the disp32 FCh scan over 007D7000-007DE000 returns eleven references and no others"
+    },
+    {
+      "document": "docs/PLANE_GROUND_OPS.md",
+      "was": "2 in the water law (007DCDD3)",
+      "is": "the store instruction starts at 007DCDDC",
+      "evidence": "007DCDDC C7 86 FC 00 00 00 02 00 00 00 MOV dword ptr [ESI+FCh],2"
+    },
+    {
+      "document": "docs/PLANE_GROUND_OPS.md",
+      "was": "open question: what classDesc+1FCh is; it has no key in docs/PLANE_CLASS_FIELDS.md",
+      "is": "the undercarriage height reference, the distance from the model origin to the wheels",
+      "evidence": "007DB70B FSUB [ECX+1FCh] builds the ground plane's distance in the core law's mode-1 arm; 007DA30A-007DA318 subtracts it plus 0.01 from the sampled deck height before lifting the pose; the lift-off test unit+BFCh - classDesc+1FCh > 0.1 uses the same reference"
+    },
+    {
+      "document": "docs/PLANE_GROUND_OPS.md",
+      "was": "open question: which of unit+ACCh, unit+B1Ch and unit+BFCh the physics body writes",
+      "is": "unit+BFCh is not written by the physics body; it is 006BC530's out-parameter",
+      "evidence": "007BB2E3 LEA EAX,[ESI+BFCh] / 007BB2E9 PUSH EAX and 007C5F1C LEA EDX,[ESI+BFCh] / 007C5F22 PUSH EDX before 006BC530; these are the only unit-based LEA instructions in the 0B82h-0C01h displacement band across 00600000-00A00000"
+    },
+    {
+      "document": "docs/PILOT_COMMAND_PATH.md",
+      "was": "line 389: docs/MOTION_DIFFERENTIAL.md reads unit+9C0h as a ship's maximum speed and +9C8h as a radius; the two layouts cannot both hold at the same base",
+      "is": "they hold at two different bases: the stride-8 byte record is the plane family's layout and the MaxSpeed float is the class-06 ship family's",
+      "evidence": "00822C20 BSP_UnitInstance_SEntityInit writes the float at 00822C65 and appears in exactly five vtables (00CF9150, 00CFA818, 00CFB7D8, 00CFC470, 00D09718), each a class-06 family vtable + A0h; no plane vtable carries it, while 007CFE4C MOV byte [ESI+9C0h],BL in BSP_PlaneUnitInstance_Construct and the five stride-8 stores in FUN_007CDC70 treat the offset as bytes"
+    },
+    {
+      "document": "docs/UNIT_MESSAGE_ARMS.md",
+      "was": "[208h] (MT_VEHICLE_UNIT_LAUNCH: (slot, float)) as one unresolved unit virtual",
+      "is": "slot +208h is index 130, one past the end of the class-05 base vtable, so four families put unrelated virtuals there with different signatures; (slot, float) is the ship family's contract only",
+      "evidence": "measured code-pointer runs: class 05 00D1A698 = 204h, plane base 00D05F20 = 20Ch, ship base 00D09678 = 240h, MAirfield 00CF8C08 = 20Ch, MShipyard 00D0B770 = 204h; the five slot-208h load sites 00821F12, 007CCFBC, 00744C0C, 006D293F and 007B9279 sit in four different message handlers"
+    },
+    {
+      "document": "docs/UNIT_MESSAGE_ARMS.md",
+      "was": "[220h], [224h] and [238h] as unresolved unit virtuals whose concrete bodies were not resolved",
+      "is": "the three slots exist only on the class-06 ship family; every other unit vtable ends before them. 220h = 008198A0 with MMothership 007583A0; 224h = 008137B0 with MMothership 007583F0; 238h = 008206F0 with MLandingShip 0074A4C0",
+      "evidence": "the measured vtable lengths above, and the three slots' only message call sites (00822122, 00822142, 00821F63) all lying inside BSP_UnitInstance_HandleMessage, body 00821E80-00822393"
+    },
+    {
+      "document": "docs/UNIT_MESSAGE_ARMS.md",
+      "was": "71h-79h: default; the base arms 79h",
+      "is": "72h MT_AIRBASE_SET_RUNWAYFAILURE, 73h MT_AIRBASE_CLEAR_RUNWAYFAILURE, 74h MT_AIRBASE_SET_HANGARFAILURE and 75h MT_AIRBASE_CLEAR_HANGARFAILURE are not defaults for MMothership (unit+11A4h/+11A5h) or MAirfield (unit+748h/+749h)",
+      "evidence": "the MT_* literal table gives index = 234 - kind against three anchors (6Ah, 79h, 7Ah, all matching the existing doc); 007583AD PUSH 72h, 007583C8 PUSH 74h, 007583FD PUSH 73h, 00758418 PUSH 75h, 006D0D9D PUSH 73h, 006D0DB8 PUSH 75h"
+    },
+    {
+      "document": "docs/UNIT_MESSAGE_ARMS.md",
+      "was": "6Ch MT_SHIP_SET_ENGINEJAMFAILURE producer: unresolved, kind computed",
+      "is": "the kind is a byte immediate inside the dedicated constructor 007619B0, and the producer is FUN_008132C0's \"EngineJam\" branch",
+      "evidence": "007619C8 C6 40 10 6C MOV byte ptr [EAX+10h],6Ch; 00813519 PUSH 0CF6124h (\"EngineJam\"), 00813530 CALL 007619B0, 00813546 CALL 0077C2A0 with (unit, msg, 7, 0); the sibling kinds are PUSH 6Ah at 008133D5 and PUSH 6Bh at 008134C4 in the same function"
+    },
+    {
+      "document": "docs/COMMAND_COMPLETION.md",
+      "was": "open question: which entity director+34h is, and why the two finished producers disagree with 0071F600",
+      "is": "+34h is the base constructor's only stack argument, the parent object the controller attaches to; the owning unit is a separate field per subclass (+24Ch on the weapon director, +224h on the FUN_0084D810 class), so both producers are correct about different fields",
+      "evidence": "0072019E MOV EDI,[ESP+28h] and 00720219 MOV [ESI+34h],EDI in BSP_CommandControllerBase_Construct; 0084D839 LEA EAX,[EDI+310h] / 0084D843 PUSH EAX / 0084D844 CALL 00720180 and 0084D856 MOV [ESI+224h],EDI; 008363F6 MOV EAX,[ESP+14h] / 008363FE PUSH EAX / 00836403 CALL 00720180"
+    },
+    {
+      "document": "docs/COMMAND_COMPLETION.md",
+      "was": "open question: whether anything reads the previous-command record at +16Ch. A targeted scan was not run",
+      "is": "one reader, BSP_CommandControllerBase_CopyStateFrom, and it is a wholesale state clone rather than a behavioural read",
+      "evidence": "0072046B MOV EDX,[EDI+16Ch] with EDI = [ESP+44h] (the source) and EBP = ECX (the destination); 007204AB-007204D5 copy +178h, +17Ch, +180h and +184h; the only rel32 caller is 00836689 in BSP_WeaponDirector_CopyStateFrom"
+    },
+    {
+      "document": "docs/COMMAND_COMPLETION.md",
+      "was": "open question: 0084E010's owner and its vtable slot",
+      "is": "slot +7Ch of the table based at 00D0BD98 that FUN_0084D810 installs at [this]; the owner keeps its unit at +224h and is built from 007F2070 and 007F5000",
+      "evidence": "the only reference to 0084E010 anywhere in the image is the dword at 00D0BE14, which lies in the code-pointer run starting at 00D0BD98; 0084D849 MOV dword ptr [ESI],0D0BD98h"
+    },
+    {
+      "document": "docs/DIRECTOR_UPDATE_ARMS.md",
+      "was": "open question: the twenty D01502F9h sentinels at +1D0h-+21Fh. Nothing in this packet reads them",
+      "is": "nothing in the image reads them; the bit pattern is the float -1.0e10",
+      "evidence": "the immediate 0D01502F9h decodes to exactly one instruction image-wide, 0072032E MOV EAX,0D01502F9h, and the only other raw occurrence (00CE4ADC) sits inside a string blob; every 1D0h-21Fh access in 00700000-00730000 belongs to a gun class or to the fill"
+    },
+    {
+      "document": "docs/DIRECTOR_UPDATE_ARMS.md",
+      "was": "open question: whether the shared vector at 00F87574-7Ch is a plain zero; with 262 references it was not chased",
+      "is": "it is the zero vector for the whole run",
+      "evidence": ".data rawptr 00A08000 rawsize 10000h backs only 00E08000-00E18000 so 00F87574 is in the zero-filled tail; scanning .text for the three absolute addresses gives 520, 516 and 520 decoded operand references and not one store of any form (no MOVSS/MOVUPS/FSTP/MOV to those addresses)"
+    },
+    {
+      "document": "docs/DIRECTOR_UPDATE_ARMS.md",
+      "was": "open question: the fourth vtable holding 0071F290 at 00D0BDA4",
+      "is": "00D0BDA4 is slot +0Ch of 00D0BD98, the table FUN_0084D810 installs on the class that also owns 0084E010 at +7Ch",
+      "evidence": "0084D849 MOV dword ptr [ESI],0D0BD98h; the code-pointer run from 00D0BD98 puts 0071F290 at +0Ch and 0084E010 at +7Ch"
+    },
+    {
+      "document": "docs/DIRECTOR_UPDATE_ARMS.md",
+      "was": "open question: 008637D0, the per-weapon availability test 009F1BC0 ANDs with aaEnabled",
+      "is": "__thiscall(unit, Entity* target), RET 4: true when any category in the list at 00E0A510 is present on the unit, accepted by [unit+60h]->vtable[4h], and willing to engage the target",
+      "evidence": "008637D5 and 0086381A bound the loop with CMP ... ,0Ch; 008637F2 CMP byte [EAX+EDI+70h],0; 008637F9-00863802 the vtable[4h] call; 0086380E CALL 008633D0; 00863837 MOV AL,1"
+    }
+  ],
+
+  "build": "scripts/build.ps1 from the worktree: bsp_game.exe linked, 1/1 existing test passed (reconstructed_math)",
+  "reconstructed": [
+    "include/bsp/gameplay_loose_ends_2.hpp and src/gameplay_loose_ends_2.cpp: the ctl+FCh gate table (plane_controller_mode_gates) and the whole of 008637D0 (any_weapon_category_accepts_target_008637d0) over an injected host. Build-tested only; neither is a drop-in binary replacement."
+  ],
+  "analyzed_not_reconstructed": [
+    "A2, A3, A4, every group-B body, and C1, C3, C4, C5, C6 are documented rules and negatives with no C++ projection."
+  ],
+  "tests_added": 0,
+  "tests_note": "No test added: both rules are exercised by the existing build, and neither carries a concrete regression risk that a test would pin without mirroring the implementation."
+}
