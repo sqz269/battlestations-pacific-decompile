@@ -1173,5 +1173,105 @@
     "failed": 0,
     "artifact": "local/native-physical-memory-binding-calls-verification.log",
     "boundary": "Indirect/IAT rows are explicitly skipped by the direct-call checker; current slot identities and successful conversion paths are separately byte/fixture checked. Raw manager-tail continuations remain labeled outside stored bodies."
+  },
+  "publication_validation": {
+    "integrated_and_build_tested_head": "6a4345babe80f692e053752ea237739257383421",
+    "own_source_commit": "d4f432c6",
+    "reviewed_evidence_commit": "508a3edb",
+    "full_build": "Strict Win32 build and both existing CTests passed after merging concurrent main",
+    "scope_hash_verification": {
+      "utc": "2026-09-12T05:03:17.776536+00:00",
+      "checked_head": "6a4345babe80f692e053752ea237739257383421",
+      "checked_files": 321,
+      "passed": true,
+      "failures": [],
+      "counts": {
+        "source_files": 156,
+        "root_artifacts": 74,
+        "frozen_libraries": 3,
+        "worker_artifacts": 88
+      }
+    },
+    "coordination": "Concurrent main merged in the owned worktree; source registration conflict resolved by repository line union. Main fast-forwarded only after combined build and tests passed.",
+    "annotation_recovery": "The integrator then failed replacing its shared-main annotation JSON log (WinError5). The same twelve leased annotations were reapplied through the locked tool in the owned worktree, project saved, all names and prior comments verified, exports force-refreshed, and count-gated snapshot/index refreshed. The earlier saved fixture annotation evidence remains intact.",
+    "annotation_log": "local/ghidra-annotations-20260912T050259Z.json",
+    "annotations_after_recovery": {
+      "00bef750": {
+        "address": "00bef750",
+        "function_name": "BSP_Stream_ConvertToMemory",
+        "comment": "[BSP reconstruction 00bef750]\nECX source,RET,newmemorywrapperEAX. Nullsource null; memorysource sharesbacking resetscursor; other seek0,size lowDWORD,uninitializedbacking,oneuncheckedread,wrap and release temporarybacking. Typedphysicalfragment positive1..INT32MAX, requestedlength retained onshortread, hostinitializedprefix/errorreport; VFS/typequery/nativeallocator absent.\n\n[BSP reconstruction 00bef750] update\nECX source,RET,newmemorywrapperEAX. Nullsource null; memorysource sharesbacking resetscursor; other seek0,size lowDWORD,uninitializedbacking,oneuncheckedread,wrap and release temporarybacking. Typedphysicalfragment positive1..INT32MAX, requestedlength retained onshortread, hostinitializedprefix/errorreport; VFS/typequery/nativeallocator absent.\n\nBorrows source without source retain/release. Memory path shares backing and resets only returned cursor. Other path seeks source0, takes low sizeDWORD, makes one unchecked read with null actual pointer, creates wrapper then releases temporary backing. Zero length uses one-byte allocation with logical0 and read0. Physical host projection now accepts0..INT32_MAX; other domains unchanged. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX borrowed source; no stack args; EAX new memory wrapper or null for null source; RET. Evidence: docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00bef750] update\nECX source,RET,newmemorywrapperEAX. Nullsource null; memorysource sharesbacking resetscursor; other seek0,size lowDWORD,uninitializedbacking,oneuncheckedread,wrap and release temporarybacking. Typedphysicalfragment positive1..INT32MAX, requestedlength retained onshortread, hostinitializedprefix/errorreport; VFS/typequery/nativeallocator absent.\n\nBorrows source without source retain/release. Memory path shares backing and resets only returned cursor. Other path seeks source0, takes low sizeDWORD, makes one unchecked read with null actual pointer, creates wrapper then releases temporary backing. Zero length uses one-byte allocation with logical0 and read0. Physical host projection now accepts0..INT32_MAX; other domains unchanged. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX borrowed source; no stack args; EAX new memory wrapper or null for null source; RET. Evidence: docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim. | Complete actual storage 240-byte body; ECX source; EAX stream; RET. Existing native owners and explicit current numeric/callable stream methods. Strict Win32/two existing tests/32 original-instruction comparisons pass. docs/NATIVE_FILESTORE_OPEN.md; reports/native_filestore_open.json. Descriptive hypothesis; no game validation.\n\n[BSP reconstruction 00bef750] update\nECX source,RET,newmemorywrapperEAX. Nullsource null; memorysource sharesbacking resetscursor; other seek0,size lowDWORD,uninitializedbacking,oneuncheckedread,wrap and release temporarybacking. Typedphysicalfragment positive1..INT32MAX, requestedlength retained onshortread, hostinitializedprefix/errorreport; VFS/typequery/nativeallocator absent.\n\nBorrows source without source retain/release. Memory path shares backing and resets only returned cursor. Other path seeks source0, takes low sizeDWORD, makes one unchecked read with null actual pointer, creates wrapper then releases temporary backing. Zero length uses one-byte allocation with logical0 and read0. Physical host projection now accepts0..INT32_MAX; other domains unchanged. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX borrowed source; no stack args; EAX new memory wrapper or null for null source; RET. Evidence: docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim. | Complete actual storage 240-byte body; ECX source; EAX stream; RET. Existing native owners and explicit current numeric/callable stream methods. Strict Win32/two existing tests/32 original-instruction comparisons pass. docs/NATIVE_FILESTORE_OPEN.md; reports/native_filestore_open.json. Descriptive hypothesis; no game validation. | Hypothesis, not a recovered symbol. BEF750 now binds numeric D691B0 current typeBF4FF0, seekBF4F20, cached-sizeBF4F90 and readBF5030 through explicit physical services and current descriptors. Memory token precedes profile read; each subsequent slot is fresh; backing data precedes read lookup. Native type initializers share the root/counter lifetime domain. Four original-converter/physical-leaf source pairs pass (normal, low-DWORD truncation, retained short read, zero), including cached and OS cursor checks. Actual physical-backed FileStore Lua load and canonical counter/owner shutdown pass. Memory/callable32-case and native type1152-case regressions pass. Source-domain guards, adapted reference method table, reconstructed reference ownership dependencies, seeded trees, missing error/FH3 handlers and unknown startup initializer order are explicit. docs/NATIVE_PHYSICAL_MEMORY_BINDING.md; reports/native_physical_memory_binding.json."
+      },
+      "00bf4f20": {
+        "address": "00bf4f20",
+        "function_name": "BSP_PhysicalStream_Seek",
+        "comment": "[BSP reconstruction 00bf4f20]\nECX stream, signed64distance and DWORDorigin stack,RET0Ch. SetFilePointerEx writes cachedposition+10. Typed host returns explicit Win32 error; preserves output state, no normalization.\n\n[BSP reconstruction 00bf4f20] update\nECX stream, signed64distance and DWORDorigin stack,RET0Ch. SetFilePointerEx writes cachedposition+10. Typed host returns explicit Win32 error; preserves output state, no normalization. | Actual-storage refinement: complete BF4F20..BF4F3F (32 bytes), ECX actual20h stream; stacked distance low/high/origin, RET0C. Current HANDLE+8 and direct output+10 to real SetFilePointerEx via CE22D8; full BOOL EAX, no error translation or shadow cursor. Strict Win32 build, two existing CTests and original-byte/real-file differential passed. docs/NATIVE_PHYSICAL_STREAM_CONVERSION.md; reports/native_physical_stream_conversion.json"
+      },
+      "00bf4ff0": {
+        "address": "00bf4ff0",
+        "function_name": "BSP_PhysicalStream_QueryType",
+        "comment": "[BSP reconstruction 00bf4ff0]\nDescriptive hypothesis. Complete raw BF4FF0..BF5017 (40 bytes), verified installed PE. ECX overwritten by stack token; compare current contiguous volatile DWORDs0109DC30/34/38 in order, AL Boolean only, RET4. D691B0+0C target. Saved Ghidra definition pending primary; worker read-only. Strict Win32 build and original-byte current-ID differential passed. docs/NATIVE_PHYSICAL_STREAM_CONVERSION.md; reports/native_physical_stream_conversion.json"
+      },
+      "00be4530": {
+        "address": "00be4530",
+        "function_name": "BSP_FileType_InitializeDescriptor",
+        "comment": "[BSP reconstruction 00be4530]\nComplete descriptor initializer 00be4530..00be456d inclusive; guard 0109DB54, actual process storage, shared counter0109DB7C and root0109DB84. Original ABI: ECX target; no stack arguments; saves ESI; RET; no semantic return value. docs/NATIVE_STREAM_TYPE_IDS.md; reports/native_stream_type_ids.json. Proposed descriptive name; Ghidra annotation pending primary; no startup execution or game validation claim."
+      },
+      "00cd8fc0": {
+        "address": "00cd8fc0",
+        "function_name": "BSP_MemoryFileType_InitializeStatic",
+        "comment": "[BSP reconstruction 00cd8fc0]\nComplete descriptor initializer 00cd8fc0..00cd900e inclusive; guard 0109DB94, actual process storage, shared counter0109DB7C and root0109DB84. Original ABI: No arguments; no stack adjustment; RET; EAX/ECX/EDX volatile; no semantic return value. docs/NATIVE_STREAM_TYPE_IDS.md; reports/native_stream_type_ids.json. Proposed descriptive name; Ghidra annotation pending primary; no startup execution or game validation claim."
+      },
+      "00cd9030": {
+        "address": "00cd9030",
+        "function_name": "BSP_PhysicalFileType_InitializeStatic",
+        "comment": "[BSP reconstruction 00cd9030]\nComplete descriptor initializer 00cd9030..00cd907e inclusive; guard 0109DC2C, actual process storage, shared counter0109DB7C and root0109DB84. Original ABI: No arguments; no stack adjustment; RET; EAX/ECX/EDX volatile; no semantic return value. docs/NATIVE_STREAM_TYPE_IDS.md; reports/native_stream_type_ids.json. Proposed descriptive name; Ghidra annotation pending primary; no startup execution or game validation claim."
+      },
+      "00bda960": {
+        "address": "00bda960",
+        "function_name": "BSP_RawListHead_Allocate0C_00bda960",
+        "comment": "[BSP reconstruction 00bda960]\nDescriptive hypothesis, complete 26-byte native allocation leaf; BF681B(0xc), independent destination null tests, exact writes and untouched bytes. EAX raw pointer, no consumed inputs, RET0. Source shared malloc/new-handler service boundary. Live/installed/emitted bytes verified; strict Win32 build, existing tests, original/source allocation-write/null probe passed. Ghidra readonly; proposed ledger name only. docs/NATIVE_VFS_CONTAINER_ALLOCATION.md; reports/native_vfs_container_allocation.json."
+      },
+      "00bda980": {
+        "address": "00bda980",
+        "function_name": "BSP_RawListHead_Allocate28_00bda980",
+        "comment": "[BSP reconstruction 00bda980]\nDescriptive hypothesis, complete 26-byte native allocation leaf; BF681B(0x28), independent destination null tests, exact writes and untouched bytes. EAX raw pointer, no consumed inputs, RET0. Source shared malloc/new-handler service boundary. Live/installed/emitted bytes verified; strict Win32 build, existing tests, original/source allocation-write/null probe passed. Ghidra readonly; proposed ledger name only. docs/NATIVE_VFS_CONTAINER_ALLOCATION.md; reports/native_vfs_container_allocation.json."
+      },
+      "00bdabf0": {
+        "address": "00bdabf0",
+        "function_name": "BSP_RawTreeNode_Allocate24_00bdabf0",
+        "comment": "[BSP reconstruction 00bdabf0]\nDescriptive hypothesis, complete 55-byte native allocation leaf; BF681B(0x24), independent destination null tests, exact writes and untouched bytes. EAX raw pointer, no consumed inputs, RET0. Source shared malloc/new-handler service boundary. Live/installed/emitted bytes verified; strict Win32 build, existing tests, original/source allocation-write/null probe passed. Ghidra readonly; proposed ledger name only. docs/NATIVE_VFS_CONTAINER_ALLOCATION.md; reports/native_vfs_container_allocation.json."
+      },
+      "00bdaba0": {
+        "address": "00bdaba0",
+        "function_name": "BSP_RawTreeNode_Allocate20_00bdaba0",
+        "comment": "[BSP reconstruction 00bdaba0]\nDescriptive hypothesis, complete 55-byte native allocation leaf; BF681B(0x20), independent destination null tests, exact writes and untouched bytes. EAX raw pointer, no consumed inputs, RET0. Source shared malloc/new-handler service boundary. Live/installed/emitted bytes verified; strict Win32 build, existing tests, original/source allocation-write/null probe passed. Ghidra readonly; proposed ledger name only. docs/NATIVE_VFS_CONTAINER_ALLOCATION.md; reports/native_vfs_container_allocation.json."
+      },
+      "004c26b0": {
+        "address": "004c26b0",
+        "function_name": "BSP_RawTreeNode_Allocate18_004c26b0",
+        "comment": "[BSP reconstruction 004c26b0]\nDescriptive hypothesis, complete 55-byte native allocation leaf; BF681B(0x18), independent destination null tests, exact writes and untouched bytes. EAX raw pointer, no consumed inputs, RET0. Source shared malloc/new-handler service boundary. Live/installed/emitted bytes verified; strict Win32 build, existing tests, original/source allocation-write/null probe passed. Ghidra readonly; proposed ledger name only. docs/NATIVE_VFS_CONTAINER_ALLOCATION.md; reports/native_vfs_container_allocation.json."
+      },
+      "007f82f0": {
+        "address": "007f82f0",
+        "function_name": "BSP_RawListHead_Allocate0C_007f82f0",
+        "comment": "[BSP reconstruction 007f82f0]\nDescriptive hypothesis, complete 26-byte native allocation leaf; BF681B(0xc), independent destination null tests, exact writes and untouched bytes. EAX raw pointer, no consumed inputs, RET0. Source shared malloc/new-handler service boundary. Live/installed/emitted bytes verified; strict Win32 build, existing tests, original/source allocation-write/null probe passed. Ghidra readonly; proposed ledger name only. docs/NATIVE_VFS_CONTAINER_ALLOCATION.md; reports/native_vfs_container_allocation.json."
+      }
+    },
+    "push": "This record precedes the final evidence commit push; remote ancestry is verified separately."
+  },
+  "publication_artifacts_sha256": {
+    "local/native-ao-publication-integration.log": "6d4d4cc1b2a00387b1072bf4f5382af03c1a5e7555398a701d68cf230e806133",
+    "local/native-ao-publication-recovery.log": "cf97408677a26c0ebb13215d891531d0cb82a94b66988e2b7e3dad6ecc19b9f5",
+    "local/native-ao-publication-annotation-log.json": "5c4f7cb7f1a2c543f6f15c7fb561963a63207f0b8695ec47cc782953f326a7ee",
+    "local/native-ao-publication-comments.json": "f2f543304fc3778350a66b49c593459a613bf2598fd951bdbf58ca25b6f51a4e",
+    "local/native-ao-artifact-verification.json": "e0ba9f0f7bd9314d94b4d7f19af73d8745e8d2bd059ede54a826726ab670cb40",
+    "local/native-ao-pre-publication-artifact-verification.json": "7451d6e9ead0caf0e15bc53f17291ae481b2c727557e8a9d23c35b663994d835",
+    "local/native-ao-installed-pe-verification.json": "6ac83cb3eb742a9c5197629d2fc0d89c8aa16c093de480c7140c3d8d52b9b94e",
+    "local/verify_native_ao_artifacts.py": "8425c1c42f3fefcf0de43cac1ee1a143d1fd91b2c41701d8057bf1f1aed7ba59",
+    "local/resume_native_ao_publication.py": "cae6c9050570a6561c5b46f80b56be46ec6ddbdb50893dbf8890bd1081e21cc5",
+    "local/record_native_ao_publication.py": "2739aa29f5b99d7f8c719e978cf418c61effa32de46aa6ce4de15fa43b43f301",
+    "local/integrate_startup_workers.py": "28e87d4fa6e5b3bdc1185deab35b54363910f5581b6d464486f6f4b12f7695a2",
+    "local/check_integrator_retry_guard.py": "f4ea2a5c048949cd8fe6db949774a52cb4ba28f91967f607b354332ae2d6cb68",
+    "local/ghidra-annotations-20260912T050259Z.json": "f880f5f16cee10eb52e79b7d89c6f9f2650aa88b43d785e075d9ac69f8955261"
   }
 }
