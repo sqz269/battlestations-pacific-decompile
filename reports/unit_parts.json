@@ -1,0 +1,182 @@
+{
+  "packet": "cc2_unit_parts",
+  "owner": "agent/cc2-unit-parts",
+  "doc": "docs/UNIT_PARTS.md",
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "summary": "Separates the three part records on a unit: the 30h class-side part descriptors in class+18h, the 1ACh damage-state model instance at unit+360h, and the per-part physics and detach state that lives on the unit motion controller at unit+1018h. Reads 00934150 in full, decodes the 00958A30 sub-object branch, and identifies 00821E80 as the receiver of unit message kind 99h rather than a damage threshold.",
+  "routines": [
+    {
+      "address": "00934150",
+      "native": "00934150",
+      "name": "BSP_UnitParts_DetachPart",
+      "body": "00934150-0093553A",
+      "abi": "__thiscall(controller, int index, const float impulse[3]), RET 8",
+      "coverage": "complete for the control flow and every named call site; the 14h-byte group entry layout and the debris spec fields are contract: unread",
+      "evidence": "1422 instructions from python tools/bsp.py ghidra disasm 00934150. Part record base from SHL EAX,5 at 00934176 and LEA EDI,[EAX+ESI] at 0093417A with the first field read at [EDI+90h] (00934180). Group slot from MOVSX EDI,byte ptr [ECX+ESI+34Ch] at 00934356 with JL 00935520 at 00934366."
+    },
+    {
+      "address": "0080E440",
+      "native": "0080E440",
+      "name": "BSP_UnitInstance_DetachPart",
+      "body": "0080E440-0080E46F",
+      "abi": "__thiscall(unit, int index), RET 4",
+      "coverage": "complete",
+      "evidence": "Reads unit+1018h, zeroes a stack vec3 and calls 00934150 at 0080E467; ADD ESP,0xC at 0080E46C proves the callee popped the two pushed arguments."
+    },
+    {
+      "address": "00821E80",
+      "native": "00821E80",
+      "name": "BSP_UnitInstance_HandleMessage",
+      "body": "00821E80-00822393",
+      "abi": "undefined1 __thiscall(unit, msg), RET 4",
+      "coverage": "partial: the 99h case is read in full; the other 26 switch targets are located but not read",
+      "evidence": "MOVZX EAX,byte ptr [ESI+10h] / ADD EAX,-4Bh / CMP EAX,55h / JA 0082237B at 00821E9D-00821EAA, then MOVZX EAX,[EAX+822400h] and JMP [EAX*4+822394h]. Table bytes read with ghidra bytes 00822394 --length 194: target index 13h is 00821FF0 and byte 4Eh of the index table selects it, so the message kind is 4Bh+4Eh = 99h."
+    },
+    {
+      "address": "00958A30",
+      "native": "00958A30",
+      "name": "BSP_UnitInstance_ReactToHealthChange",
+      "body": "00958A30-00958DCF",
+      "abi": "__fastcall(this), RET 0",
+      "coverage": "complete for the sub-object branch 00958A58-00958DA6; the six virtual slots it dispatches are contract: unread",
+      "evidence": "Branch entry at 00958A63 (COMISS XMM1,XMM0 on +370h) and 00958A6D (CMP byte [ESI+720h],0). Break path 00958A7A-00958BC4, repeat path 00958BD5-00958CD3, repair path 00958CD4-00958DA6, root path 00958DA7-00958DCF."
+    },
+    {
+      "address": "0080E410",
+      "native": "0080E410",
+      "name": "BSP_UnitInstance_ResetCondition",
+      "body": "0080E410-0080E43F",
+      "abi": "__thiscall(unit)",
+      "coverage": "complete",
+      "evidence": "00878340 at 0080E413, then 1.0f (00D7A24C) into +9D8h and +9DCh and the bytes +9E4h and +9E5h cleared. One call site 00758373; eight DATA references (00CF9268, 00CFA930, 00CFB8F0, 00CFC588, 00CFFBE8, 00D09830, 00D0C138, 00D0C800) put it in vtables, slot unread."
+    },
+    {
+      "address": "007135C0",
+      "native": "007135C0",
+      "name": "BSP_UnitPartInstance_Construct",
+      "body": "007135C0-00713723",
+      "abi": "__thiscall(obj, unit, partSet)",
+      "coverage": "complete for the fields it writes; its five helper calls are contract: unread",
+      "evidence": "Writes +0h (two vptrs), +4Ch, +160h, +164h, +16Ch/+170h/+174h = 0, +17Ch, +184h, +18Ch, +198h and zeroes up to +1A8h, which fits the 1ACh allocation at 0087BE1C."
+    },
+    {
+      "address": "00937C90",
+      "native": "00937C90",
+      "name": "BSP_UnitController_BuildSubObjectsAndHullBody",
+      "body": "00937C90-00939C8F",
+      "abi": "unread",
+      "coverage": "partial: read only for the writes to +310h, +320h/+330h/+340h and +34Ch and for its node-name strings; the rest of 00937C90-00939C8F is unread",
+      "evidence": "MOV byte ptr [EDI+EBP+34Ch],0FFh at 0093813A and MOV byte ptr [EDI+EBP+34Ch],AL at 009381B5 with AL from the running counter at [ESP+18h]; +310h/+314h at 009383C9/009383E1/009383FC; +330h/+334h at 0093919D/009391AB. Strings 00CEB90C fizika_%02d, 00CEB900 ep_fizika, 00D1968C firstnode, 00D19698 back, 00D196A0 front, 00D196A8 the Hungarian missing-collider diagnostic."
+    },
+    {
+      "address": "00939CB0",
+      "native": "00939CB0",
+      "name": "BSP_UnitController_Construct",
+      "body": "00939CB0-00939E43",
+      "abi": "__thiscall(this, unit), RET 4",
+      "coverage": "reused as the producer of the part record array; already reconstructed in docs/UNIT_CONTROLLER_UPDATE.md",
+      "evidence": "eh_vector_constructor_iterator(this+8Ch, 20h, 14h, 009318D0, 0092FD50) gives 20 records of 20h bytes at +8Ch..+30Bh, which is exactly the array 00934150 indexes."
+    },
+    {
+      "address": "0080DEC0",
+      "native": "0080DEC0",
+      "name": "BSP_UnitInstance_CreateMotionController",
+      "body": "0080DEC0-0080DF17",
+      "abi": "__thiscall(unit)",
+      "coverage": "complete",
+      "evidence": "PUSH 390h at 0080DED7, operator new 00BF681B at 0080DEDE, 00939CB0 at 0080DEF9, MOV [ESI+1018h],EAX at 0080DF06. Found by searching the program for the byte pattern 89 86 18 10 00 00, which also returns the variants 007497D6 and 00857C66."
+    },
+    {
+      "address": "0072AB10",
+      "native": "0072AB10",
+      "name": "BSP_UnitInstance_LastDamageStateIndex",
+      "abi": "__fastcall(unit) -> int",
+      "coverage": "complete",
+      "evidence": "Reads unit+360h; when [inst+16Ch] is non-null and ([inst+170h]-[inst+16Ch])>>4 is non-zero it returns that count minus one, otherwise 0. Its result is the argument of vtable[1B4h] at 00958ADC and 00958C11."
+    },
+    {
+      "address": "00935C70",
+      "native": "00935C70",
+      "name": "BSP_UnitParts_DetachAllLiveParts",
+      "coverage": "reused from docs/UNIT_DAMAGE_AND_DEATH.md as the only writer of controller+310h after the build",
+      "evidence": "Walks [controller+310h, controller+314h), stores -10000.0f (00D19620) for every entry above 0.0f and calls 00934150 at 00935D16."
+    }
+  ],
+  "host_steps": [
+    {"address": "009341C1", "native": "00B6DFA0", "function": "00934150", "method": "release_part_node", "this": "node", "args": "-", "ret": "void", "gate": "slot non-null"},
+    {"address": "00934248", "native": "00867B10", "function": "00934150", "method": "stop_effect_children", "this": "effect", "args": "-", "ret": "void", "gate": "effect slot non-null"},
+    {"address": "0093442F", "native": "00B6DA70", "function": "00934150", "method": "set_node_visibility", "this": "node", "args": "factor", "ret": "void", "gate": "group +340h pass"},
+    {"address": "009344EE", "native": "00B6E0A0", "function": "00934150", "method": "node_world_position", "this": "node", "args": "-", "ret": "vec3", "gate": "group +340h pass"},
+    {"address": "0093487A", "native": "008685E0", "function": "00934150", "method": "spawn_debris_effect", "this": "-", "args": "handle, centroid", "ret": "effect", "gate": "class effect vector empty"},
+    {"address": "009348EA", "native": "008685E0", "function": "00934150", "method": "spawn_debris_effect", "this": "-", "args": "handle, centroid", "ret": "effect", "gate": "class effect vector non-empty"},
+    {"address": "009348BC", "native": "00424C40", "function": "00934150", "method": "game_settings", "this": "-", "args": "-", "ret": "settings", "gate": "class effect vector empty"},
+    {"address": "00934930", "native": "00C31F40", "function": "00934150", "method": "physics_begin_debris", "this": "body", "args": "-", "ret": "void", "gate": "group +320h non-empty"},
+    {"address": "009349DD", "native": "0042B260", "function": "00934150", "method": "normalize_with_floor", "this": "-", "args": "vec3", "ret": "vec3", "gate": "per group entry"},
+    {"address": "009349FD", "native": "00BD2F10", "function": "00934150", "method": "reciprocal_length", "this": "-", "args": "float", "ret": "float", "gate": "per group entry"},
+    {"address": "00934C70", "native": "00B6D890", "function": "00934150", "method": "register_debris_node", "this": "node", "args": "-", "ret": "void", "gate": "per group entry"},
+    {"address": "00934CD8", "native": "00B6DB70", "function": "00934150", "method": "refresh_world_matrix", "this": "node", "args": "-", "ret": "void", "gate": "node+5Ch & 2 clear"},
+    {"address": "00934F7C", "native": "00BF7A6A", "function": "00934150", "method": "format_debris_name", "this": "-", "args": "\"fizika_%d, %d. db\"", "ret": "chars", "gate": "per group entry"},
+    {"address": "00934FAB", "native": "00408720", "function": "00934150", "method": "assign_debris_name", "this": "string", "args": "counted chars", "ret": "void", "gate": "per group entry"},
+    {"address": "00934FD1", "native": "00447510", "function": "00934150", "method": "add_game_dynamics_body", "this": "[00E188A8]+30h", "args": "spec, flag", "ret": "void", "gate": "per group entry"},
+    {"address": "00935196", "native": "0092E250", "function": "00934150", "method": "apply_node_transform", "this": "node", "args": "-", "ret": "void", "gate": "group +330h pass"},
+    {"address": "009351A5", "native": "00427D10", "function": "00934150", "method": "compose_node_transform", "this": "-", "args": "matrix", "ret": "void", "gate": "group +330h pass"},
+    {"address": "00935350", "native": "004A5C60", "function": "00934150", "method": "flush_scene_batch", "this": "-", "args": "-", "ret": "void", "gate": "group present"},
+    {"address": "00935444", "native": "0085BF20", "function": "00934150", "method": "hull_node_is_visible", "this": "-", "args": "-", "ret": "bool", "gate": "tail pass, node+ACh > 0.0f"},
+    {"address": "00935477", "native": "00B6DA70", "function": "00934150", "method": "set_node_visibility", "this": "node", "args": "factor", "ret": "void", "gate": "tail pass"},
+    {"address": "00821FF6", "native": "0080E440", "function": "00821E80", "method": "unit_detach_part", "this": "unit", "args": "[msg+20h]", "ret": "void", "gate": "message kind 99h"},
+    {"address": "0080E467", "native": "00934150", "function": "0080E440", "method": "controller_detach_part", "this": "[unit+1018h]", "args": "index, {0,0,0}", "ret": "void", "gate": "none"},
+    {"address": "00935D16", "native": "00934150", "function": "00935C70", "method": "controller_detach_part", "this": "controller", "args": "index, {0,0,0}", "ret": "void", "gate": "health > 0.0f"},
+    {"address": "0080E413", "native": "00878340", "function": "0080E410", "method": "restore_full_health", "this": "unit", "args": "-", "ret": "void", "gate": "none"},
+    {"address": "00958A83", "native": "0041E870", "function": "00958A30", "method": "make_effect_name", "this": "stack string", "args": "00CF0B74 \"InferiorFailure\"", "ret": "string", "gate": "first break"},
+    {"address": "00958ACE", "native": "0072AB10", "function": "00958A30", "method": "last_damage_state_index", "this": "-", "args": "sub-object", "ret": "int", "gate": "first break"},
+    {"address": "00958C03", "native": "0072AB10", "function": "00958A30", "method": "last_damage_state_index", "this": "-", "args": "sub-object", "ret": "int", "gate": "later break, +358h == 0 and +728h <= 0"},
+    {"address": "00958D25", "native": "0041E870", "function": "00958A30", "method": "make_effect_name", "this": "stack string", "args": "00CF0B74 \"InferiorFailure\"", "ret": "string", "gate": "health >= max"},
+    {"address": "00958D60", "native": "00419CC0", "function": "00958A30", "method": "storage_pool_for_block", "this": "-", "args": "block, size+1, 1", "ret": "pool", "gate": "string heap-allocated"},
+    {"address": "00958D67", "native": "00BD1510", "function": "00958A30", "method": "storage_pool_return_block", "this": "pool", "args": "-", "ret": "void", "gate": "string heap-allocated"},
+    {"address": "0080DEDE", "native": "00BF681B", "function": "0080DEC0", "method": "allocate_controller", "this": "-", "args": "390h", "ret": "ptr", "gate": "none"},
+    {"address": "0080DEF9", "native": "00939CB0", "function": "0080DEC0", "method": "construct_controller", "this": "new object", "args": "unit", "ret": "controller", "gate": "allocation non-null"},
+    {"address": "00934530", "native": "vtable+2Ch (scene node)", "function": "00934150", "method": "node_set_position", "this": "node", "args": "vec3", "ret": "void", "gate": "group +340h pass"},
+    {"address": "00934671", "native": "vtable+48h (scene node)", "function": "00934150", "method": "node_bounds_centre", "this": "node", "args": "-", "ret": "vec3", "gate": "group +320h pass"},
+    {"address": "00934A89", "native": "unit vtable+190h", "function": "00934150", "method": "unit_detail_for_lod", "this": "[controller+1Ch]", "args": "-", "ret": "handle", "gate": "per group entry"},
+    {"address": "00958AA1", "native": "vtable+194h", "function": "00958A30", "method": "start_named_effect", "this": "sub-object", "args": "name, 0", "ret": "void", "gate": "first break"},
+    {"address": "00958ADC", "native": "vtable+1B4h", "function": "00958A30", "method": "set_damage_state", "this": "sub-object", "args": "last damage state index", "ret": "void", "gate": "first break"},
+    {"address": "00958C11", "native": "vtable+1B4h", "function": "00958A30", "method": "set_damage_state", "this": "sub-object", "args": "last damage state index", "ret": "void", "gate": "later break"},
+    {"address": "00958CF4", "native": "vtable+1B4h", "function": "00958A30", "method": "set_damage_state", "this": "sub-object", "args": "0", "ret": "void", "gate": "+720h set and +728h <= 0"},
+    {"address": "00958D43", "native": "vtable+19Ch", "function": "00958A30", "method": "stop_named_effect", "this": "sub-object", "args": "name, 0", "ret": "void", "gate": "health >= max"},
+    {"address": "00958D94", "native": "vtable+1B4h", "function": "00958A30", "method": "set_damage_state", "this": "sub-object", "args": "0", "ret": "void", "gate": "repair finished, +728h > 0"},
+    {"address": "00958B8F", "native": "vtable+5Ch", "function": "00958A30", "method": "is_kind_of", "this": "sub-object", "args": "1Bh", "ret": "bool", "gate": "owner-damage rule"},
+    {"address": "00958B20", "native": "vtable+204h", "function": "00958A30", "method": "secondary_kind_test", "this": "sub-object", "args": "46h", "ret": "bool", "gate": "IsKindOf(1Bh)"},
+    {"address": "00958B68", "native": "vtable+204h", "function": "00958A30", "method": "secondary_kind_test", "this": "sub-object", "args": "45h", "ret": "bool", "gate": "IsKindOf(1Bh)"},
+    {"address": "00958BC2", "native": "owner vtable+1ACh", "function": "00958A30", "method": "owner_add_damage", "this": "[this+71Ch]", "args": "[[this+71Ch]+538h]+194h", "ret": "void", "gate": "IsKindOf(1Bh) and [[this+538h]+174h]"}
+  ],
+  "no_ghidra_function": [],
+  "corrections": [
+    {
+      "what": "unit+1018h",
+      "was": "a breakable-parts object with a per-part health vector at +310h, writer not found (docs/UNIT_DAMAGE_AND_DEATH.md)",
+      "is": "the unit motion controller of docs/UNIT_CONTROLLER_UPDATE.md, allocated at 0080DEC0 as 390h bytes and constructed by 00939CB0",
+      "evidence": "The byte pattern 89 86 18 10 00 00 has three matches, 007497D6, 0080DF06 and 00857C66; 0080DEC0's whole body is PUSH 390h / 00BF681B / 00939CB0 / MOV [ESI+1018h],EAX."
+    },
+    {
+      "what": "the parts vector on the unit",
+      "was": "the vector at this+344h with the elements at this+344h (docs/UNIT_HIT_PATH.md)",
+      "is": "the vector object is at +344h; its begin is +348h and its end +34Ch",
+      "evidence": "LEA EBP,[ESI+344h] at 0087BD46 is the resize this; the elements are read at [EBP+4] (0087BD58) and [EBP+8] (0087BD5F). 0087BF80 reads the same pair directly as [ESI+348h] and [ESI+34Ch] at 0087C070 and 0087C07E."
+    },
+    {
+      "what": "00821E80",
+      "was": "expected to be the caller that decides to detach a part on a damage threshold",
+      "is": "the unit message handler; its case for kind 99h forwards [msg+20h] to 0080E440 with no test at all",
+      "evidence": "The switch head at 00821E9D-00821EB7 and the two jump tables at 00822394 and 00822400. No threshold anywhere on the path; the sender of kind 99h is unread."
+    }
+  ],
+  "unread": [
+    "The 30h part descriptor fields in class+18h and the routine that fills that vector; neither 00960230 nor 0087CA80 writes +18h..+20h.",
+    "The sender of unit message kind 99h and how it chooses the part index.",
+    "Whether the controller part index (0..19) and the entries of unit+344h are the same index space.",
+    "The 14h-byte group entry layout beyond the node pointer at +0h and the four dwords copied into the debris spec.",
+    "The six virtual slots 00958A30 dispatches and the class ids 45h, 46h and 1Bh.",
+    "Which vtable slot 0080E410 occupies in the eight vtables that reference it."
+  ]
+}
