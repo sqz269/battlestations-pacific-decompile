@@ -180,6 +180,49 @@ void merge_group_into(const PropertyLibrary& library, const std::string& name,
     }
 }
 
+// 007B352E..007B3604, only the fresh kind-1 PathPoints/Pos data projection.
+// The native asks for Point%002i using its current point count (00415870),
+// copies the three Pos lanes unchanged and appends once before the next lookup.
+// Other source-holder kinds, Group, allocation, derived lengths and native
+// entity construction are not implemented by this retention binding.
+void retain_path_points(const ScenePropertyBlock& bag, GameSceneEntityRecord& record) {
+    const ScenePropertyBlock* points = nullptr;
+    for (const auto& block : bag.blocks) {
+        if (equal_insensitive(block.first, "PathPoints")) { points = &block.second; break; }
+    }
+    if (points == nullptr) {
+        record.path_points_error = "PathPoints block absent";
+        return;
+    }
+    for (std::size_t index = 0;; ++index) {
+        char key[40];
+        std::snprintf(key, sizeof(key), "Point%02zu", index);
+        // A scalar at this key has native type != 6 and terminates the loop.
+        if (points->find(key) != nullptr) break;
+        const ScenePropertyBlock* point = nullptr;
+        for (const auto& block : points->blocks) {
+            if (equal_insensitive(block.first, key)) { point = &block.second; break; }
+        }
+        if (point == nullptr) break;
+        const SceneProperty* position = point->find("Pos");
+        std::array<float, 3> value{};
+        bool valid = position != nullptr && position->type_letter == "V3"
+            && position->values.size() == value.size();
+        for (std::size_t lane = 0; valid && lane < value.size(); ++lane) {
+            valid = scene_scan_float(position->values[lane], value[lane]);
+        }
+        if (!valid) {
+            // The native dereferences the schema-backed V3 value directly.
+            // An unsupported/malformed bag cannot become invented geometry.
+            record.path_points_error = std::string(key) + ".Pos is not a readable V3";
+            record.path_points_local.clear();
+            return;
+        }
+        record.path_points_local.push_back(value);
+    }
+    record.path_points_retained = true;
+}
+
 // ---------------------------------------------------------------------------
 // The gate's pose resolver
 // ---------------------------------------------------------------------------
@@ -231,6 +274,7 @@ struct GameSceneContentsHost::Impl {
     std::vector<std::int32_t> stock_queue;
     GameSceneContentsSummary summary;
     std::vector<GameSceneEntityRecord> entities;
+    ScenePropertyBlock root_properties;
     PropertyLibrary library;
     VehicleClassRegistry vehicle_registry;
     std::string scene_path;
@@ -687,6 +731,7 @@ public:
 
     void publish_scene_root_properties(const ScenePropertyBlock& block) override {
         root_properties_ = block.values.size();
+        owner_.root_properties = block;
         owner_.log.implemented("SceneContents::publish_scene_root_properties", "00469b60");
     }
     void publish_scene_precache(const ScenePropertyBlock& block) override {
@@ -731,6 +776,16 @@ public:
     std::size_t precache_properties() const noexcept { return precache_properties_; }
 
 private:
+    struct AuthoredParent {
+        std::size_t scene_id{0};
+        std::string name;
+        std::array<float, 16> world{};
+    };
+    // visit_entity calls a parent before its children while their addresses
+    // remain stable. Consume entries on arrival so later root-stack reuse
+    // cannot accidentally acquire the preceding root's parent.
+    std::map<const SceneEntity*, AuthoredParent> authored_parents_;
+    std::size_t next_scene_id_{1};
     GameSceneContentsHost::Impl& owner_;
     SceneFilePass pass_;
     int mode_{8};
@@ -743,6 +798,20 @@ private:
 void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
     const float world_frame[16], SceneFilePass pass) {
     GameSceneContentsHost::Impl& owner = owner_;
+    const std::size_t scene_id = next_scene_id_++;
+    AuthoredParent authored_parent;
+    const auto parent_entry = authored_parents_.find(&entity);
+    if (parent_entry != authored_parents_.end()) {
+        authored_parent = parent_entry->second;
+        authored_parents_.erase(parent_entry);
+    }
+    AuthoredParent child_parent;
+    child_parent.scene_id = scene_id;
+    child_parent.name = entity.name;
+    std::copy_n(world_frame, child_parent.world.size(), child_parent.world.begin());
+    for (const SceneEntity& child : entity.children) {
+        authored_parents_[&child] = child_parent;
+    }
     GameSceneClassTally& tally = owner.tally(entity.class_name);
     if (pass == SceneFilePass::Instantiate) ++tally.seen;
 
@@ -916,6 +985,17 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
     record.generated = gate.generate;
     record.gate_rule = rule_name;
     std::memcpy(record.world, world_frame, sizeof(record.world));
+    record.scene_id = scene_id;
+    record.parent_scene_id = authored_parent.scene_id;
+    record.parent_name = authored_parent.name;
+    std::memcpy(record.local, entity.frame, sizeof(record.local));
+    std::copy(authored_parent.world.begin(), authored_parent.world.end(), record.parent_world);
+    if (klass->class_id == 0x47) {
+        retain_path_points(bag, record);
+        owner.log.notef("scene path retained: id=%zu parent=%zu name=%s points=%zu "
+            "valid=%d creator_concrete=0", record.scene_id, record.parent_scene_id,
+            record.name.c_str(), record.path_points_local.size(), record.path_points_retained);
+    }
 
     if (!gate.generate) {
         record.skipped_because = std::string("gate rejected: ") + rule_name;
@@ -1615,6 +1695,10 @@ const std::vector<GameSceneEntityRecord>& GameSceneContentsHost::entities() cons
     return impl_->entities;
 }
 
+const bsp::ScenePropertyBlock& GameSceneContentsHost::root_properties() const noexcept {
+    return impl_->root_properties;
+}
+
 std::size_t GameSceneContentsHost::created_unit_count() const noexcept {
     return impl_->summary.created;
 }
@@ -1623,6 +1707,7 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
     const std::string& override_name, int raw_game_mode, bool mode_forced,
     bool multiplayer_session) {
     Impl& impl = *impl_;
+    impl.root_properties = {};
     impl.scene_path = scene_path;
     impl.override_name = override_name;
     impl.raw_game_mode = raw_game_mode;
