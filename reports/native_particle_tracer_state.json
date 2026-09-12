@@ -9,114 +9,121 @@
     {
       "address": "00b0b6a0",
       "end_inclusive": "00b0c80e",
-      "cpp_symbol": "bsp::initialize_native_particle_tracer_state_00b0b6a0",
+      "cpp_symbol": "initialize_native_particle_tracer_state_00b0b6a0",
       "ghidra_name": "BSP_NativeParticleTracer_InitializeState",
       "previous_ghidra_name": "FUN_00b0b6a0",
       "native_calling_convention": "__thiscall",
-      "native_prototype": "void __thiscall BSP_NativeParticleTracer_InitializeState(void *state, void *record)",
+      "native_prototype": "void BSP_NativeParticleTracer_InitializeState(void *state, void *record)",
       "original_abi": "ECX actual Tracer definition; stack actual6Ch state, actual108h record; RET8 at B0C80C; EAX incidental. Source fastcall adds EDX access, preserves native local offsets and outgoing cleanup.",
       "source": "src/native_particle_tracer_state.cpp",
       "header": "include/bsp/native_particle_tracer_state.hpp",
-      "evidence": "D5E048+18 is B0B6A0; B0CA40 captures current18 and calls at B0CADF. Whole listing, all call sites, installed-byte CFG and two returning-free gaps reviewed. Definitions from B0A0B0/B0AD50, state from B0CA40, record from AFE0A0/AFE1A0, payload from this body, node slot from AF32F0/AF19D0 and constructor858260. All normal branches reconstructed through actual captured node5C and definition28.",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. D5E048+18 is B0B6A0; B0CA40 captures current18 and calls at B0CADF. Whole listing, all call sites, installed-byte CFG and two returning-free gaps reviewed. Definitions from B0A0B0/B0AD50, state from B0CA40, record from AFE0A0/AFE1A0, payload from this body, node slot from AF32F0/AF19D0 and constructor858260. All normal branches reconstructed through actual captured node5C and definition28.",
       "coverage": "complete normal body through required real services; caller differential reaches AF3440 at B0C74B and stops without success; suffix B0C74D..B0C80E source/assembly only; original FH3 unwind not reconstructed",
       "native_byte_count": 4463,
-      "native_sha256": "bfb01cb69217344263fd33ce2ff88563fe297de9026611b699640799f68ec8a0"
+      "native_sha256": "bfb01cb69217344263fd33ce2ff88563fe297de9026611b699640799f68ec8a0",
+      "end_exclusive": "00b0c80f"
     },
     {
       "address": "00b0a840",
       "end_inclusive": "00b0a91a",
-      "cpp_symbol": "bsp::cleanup_native_particle_tracer_state_00b0a840",
+      "cpp_symbol": "cleanup_native_particle_tracer_state_00b0a840",
       "ghidra_name": "BSP_NativeParticleTracer_CleanupState",
       "previous_ghidra_name": "FUN_00b0a840",
       "native_calling_convention": "__thiscall",
-      "native_prototype": "unsigned char __thiscall BSP_NativeParticleTracer_CleanupState(void *state, unsigned int force)",
+      "native_prototype": "unsigned char BSP_NativeParticleTracer_CleanupState(void *state, unsigned int force)",
       "original_abi": "ECX unused; two stack DWORDs state, force; only force low byte read; RET8 at B0A918; AL Boolean. New source takes explicit access reference.",
       "source": "src/native_particle_tracer_state.cpp",
       "header": "include/bsp/native_particle_tracer_state.hpp",
-      "evidence": "D5E048+1C is B0A840. B04F00 captures current1C at B04F25 and calls B04F2A after pushing force and state. Whole 219-byte listing establishes actual72B740 lock, count190 gate, flags195/1A8, payload deleting virtual0(flags1) before canonicalB6DFA0 and post-call pointer clears.",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. D5E048+1C is B0A840. B04F00 captures current1C at B04F25 and calls B04F2A after pushing force and state. Whole 219-byte listing establishes actual72B740 lock, count190 gate, flags195/1A8, payload deleting virtual0(flags1) before canonicalB6DFA0 and post-call pointer clears.",
       "coverage": "complete normal body; five full standalone differentials, real payload deletion and canonical logical node release; derived terminal physically unreachable because of external actual reference",
       "native_byte_count": 219,
-      "native_sha256": "df4acb4cfbcd315696941fd22be6d12cd189933f45521c93e39a90317f73a53e"
+      "native_sha256": "df4acb4cfbcd315696941fd22be6d12cd189933f45521c93e39a90317f73a53e",
+      "end_exclusive": "00b0a91b"
     },
     {
       "address": "00b0b5d0",
       "end_inclusive": "00b0b68c",
-      "cpp_symbol": "bsp::get_native_tracer_resources_00b0b5d0",
+      "cpp_symbol": "get_native_tracer_resources_00b0b5d0",
       "ghidra_name": "BSP_NativeParticleTracerResources_Get",
       "previous_ghidra_name": "FUN_00b0b5d0",
       "native_calling_convention": "__cdecl",
-      "native_prototype": "void * __cdecl BSP_NativeParticleTracerResources_Get(void)",
+      "native_prototype": "void * BSP_NativeParticleTracerResources_Get(void)",
       "original_abi": "No native arguments; RET at B0B68C; EAX current F8D38C. New source borrows manager/publication/domain access.",
       "source": "src/native_particle_tracer_state.cpp",
       "header": "include/bsp/native_particle_tracer_state.hpp",
-      "evidence": "All five direct callers are B0BBF4/B0BC35/B0BF60/B0C05D/B0C075 within B0B6A0. Whole listing confirms initial captured fast return, double check under captured manager+10 section, actual18h allocation/construction, publication, manager reload and BD0C30 registration.",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. All five direct callers are B0BBF4/B0BC35/B0BF60/B0C05D/B0C075 within B0B6A0. Whole listing confirms initial captured fast return, double check under captured manager+10 section, actual18h allocation/construction, publication, manager reload and BD0C30 registration.",
       "coverage": "complete normal body with real constructor dependencies; native differential executes fast path only; slow path and original FH3 unwind not runtime-proven",
       "native_byte_count": 189,
-      "native_sha256": "581d54458f2c71ff94c65bf980aaf141881344d091edb34393514a86727436e0"
+      "native_sha256": "581d54458f2c71ff94c65bf980aaf141881344d091edb34393514a86727436e0",
+      "end_exclusive": "00b0b68d"
     },
     {
       "address": "00b0ab90",
       "end_inclusive": "00b0ac9b",
-      "cpp_symbol": "bsp::construct_native_tracer_resources_00b0ab90",
+      "cpp_symbol": "construct_native_tracer_resources_00b0ab90",
       "ghidra_name": "BSP_NativeParticleTracerResources_Construct",
       "previous_ghidra_name": "FUN_00b0ab90",
       "native_calling_convention": "__thiscall",
-      "native_prototype": "void * __thiscall BSP_NativeParticleTracerResources_Construct(void)",
+      "native_prototype": "void * BSP_NativeParticleTracerResources_Construct(void)",
       "original_abi": "ECX actual18h; no stack arguments; RET at B0AC9B; EAX same actual storage. New source adds access.",
       "source": "src/native_particle_tracer_state.cpp",
       "header": "include/bsp/native_particle_tracer_state.hpp",
-      "evidence": "Sole direct caller B0B643 allocates18h. Whole listing and renderer profile D5F0A8 establish format-name current38 B317E0, actual14h key/current40 B2F710, then three current-atlas calls. Key+4/+8/+C are native stack residue; key0 and key10 are explicitly produced. Full callees and exact caller cleanup reviewed.",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Sole direct caller B0B643 allocates18h. Whole listing and renderer profile D5F0A8 establish format-name current38 B317E0, actual14h key/current40 B2F710, then three current-atlas calls. Key+4/+8/+C are native stack residue; key0 and key10 are explicitly produced. Full callees and exact caller cleanup reviewed.",
       "coverage": "complete normal body through required renderer38; existing actual B2F710 used for known current40; strict compile/static evidence only, no constructor runtime claim",
       "native_byte_count": 268,
-      "native_sha256": "f40bfc8bd37160ddd0284ae8bcdb34a528e14eac186b58e47afe063e5a073d57"
+      "native_sha256": "f40bfc8bd37160ddd0284ae8bcdb34a528e14eac186b58e47afe063e5a073d57",
+      "end_exclusive": "00b0ac9c"
     },
     {
       "address": "00af3430",
       "end_inclusive": "00af3439",
-      "cpp_symbol": "bsp::allocate_native_traceline_slot_00af3430",
+      "cpp_symbol": "allocate_native_traceline_slot_00af3430",
       "ghidra_name": "BSP_NativeTraceline_AllocateSlot",
       "previous_ghidra_name": "CG_static_dtor_stub_00af3430",
       "native_calling_convention": "__cdecl",
-      "native_prototype": "void * __cdecl BSP_NativeTraceline_AllocateSlot(void)",
+      "native_prototype": "void * BSP_NativeTraceline_AllocateSlot(void)",
       "original_abi": "No stack arguments; incoming ECX from callers is discarded. MOV ECX,F8C288; JMP AF32F0 at AF3435; EAX actual pool slot. New source receives borrowed access.",
       "source": "src/native_particle_tracer_state.cpp",
       "header": "include/bsp/native_particle_tracer_state.hpp",
-      "evidence": "Full ten-byte body AF3430..AF3439 corrects bogus static-dtor label. Both callers B0C6AC and8592C0 put1B8 in ECX, overwritten by thunk. AF32F0 and slab producer AF19D0 establish shared static pool,32 slots/37C4h slab,1BCh stride and slot ID1B8.",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Full ten-byte body AF3430..AF3439 corrects bogus static-dtor label. Both callers B0C6AC and8592C0 put1B8 in ECX, overwritten by thunk. AF32F0 and slab producer AF19D0 establish shared static pool,32 slots/37C4h slab,1BCh stride and slot ID1B8.",
       "coverage": "complete thunk to required actual AF32F0 service; both differential sides execute original AF32F0/AF19D0 in the actual pool layout; pool body is consumed, not claimed reconstructed",
       "native_byte_count": 10,
-      "native_sha256": "faeabf1474053dec41892396ba1e4ecc3797d4a862a34ecee6d8a0ca1c8fe187"
+      "native_sha256": "faeabf1474053dec41892396ba1e4ecc3797d4a862a34ecee6d8a0ca1c8fe187",
+      "end_exclusive": "00af343a"
     },
     {
       "address": "00afda80",
       "end_inclusive": "00afdabc",
-      "cpp_symbol": "bsp::native_particle_record_matrix_00afda80",
+      "cpp_symbol": "native_particle_record_matrix_00afda80",
       "ghidra_name": "BSP_NativeParticleRecord_GetMatrix",
       "previous_ghidra_name": "FUN_00afda80",
       "native_calling_convention": "__thiscall",
-      "native_prototype": "void * __thiscall BSP_NativeParticleRecord_GetMatrix(void)",
+      "native_prototype": "void * BSP_NativeParticleRecord_GetMatrix(void)",
       "original_abi": "ECX actual108h record; no stack arguments; EAX borrowed matrix; native RET or tail B6DB60. Source fastcall has one ECX argument.",
       "source": "src/native_particle_tracer_state.cpp",
       "header": "include/bsp/native_particle_tracer_state.hpp",
-      "evidence": "All direct callers B0C75E,AFDDE4,AFDDF4 inspected. AFE0A0/AFE1A0 actual producers establish A0 definition/A4 model. Whole listing tests definition70 for record60, then model1B0 for exact B6DB60, otherwise node5Cbit2 and B6DB70 before returning nodeF0.",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. All direct callers B0C75E,AFDDE4,AFDDF4 inspected. AFE0A0/AFE1A0 actual producers establish A0 definition/A4 model. Whole listing tests definition70 for record60, then model1B0 for exact B6DB60, otherwise node5Cbit2 and B6DB70 before returning nodeF0.",
       "coverage": "complete body; four full original-byte differential branches including actual lazy-world node writes",
       "native_byte_count": 61,
-      "native_sha256": "db3ffca826d04c5d0e3121343adc72f3ed050f5e1d9a422f35151319af2d4088"
+      "native_sha256": "db3ffca826d04c5d0e3121343adc72f3ed050f5e1d9a422f35151319af2d4088",
+      "end_exclusive": "00afdabd"
     },
     {
       "address": "00858260",
       "end_inclusive": "00858325",
-      "cpp_symbol": "bsp::construct_native_traceline_00858260",
+      "cpp_symbol": "construct_native_traceline_00858260",
       "ghidra_name": "BSP_NativeTraceline_Construct",
       "previous_ghidra_name": "FUN_00858260",
       "native_calling_convention": "__thiscall",
-      "native_prototype": "void * __thiscall BSP_NativeTraceline_Construct(void *name)",
+      "native_prototype": "void * BSP_NativeTraceline_Construct(void *name)",
       "original_abi": "ECX actual1B8h node inside1BCh slot; stack counted8h name; RET4 at858323; EAX same node. Source receives same-slot prepared companion access.",
       "source": "src/native_particle_tracer_state.cpp",
       "header": "include/bsp/native_particle_tracer_state.hpp",
-      "evidence": "Both callers B0C6E8 and8592FA inspected after real AF3430 allocation; both subsequently installD0C928. Whole body invokes actualB75030, writesD0C8C8, preserves untouched190, copies currentD7A24C by MOVSS and traverses captured child34/current3C with7099C0 mask1.",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Both callers B0C6E8 and8592FA inspected after real AF3430 allocation; both subsequently installD0C928. Whole body invokes actualB75030, writesD0C8C8, preserves untouched190, copies currentD7A24C by MOVSS and traverses captured child34/current3C with7099C0 mask1.",
       "coverage": "complete normal body using same prepared NativeModelOwner and shared actual strings/node lifetime domain; exercised in all21 caller pairs; original FH3 unwind and derived terminal return are not established",
       "native_byte_count": 198,
-      "native_sha256": "52705b6eecf7f379fc82db44aa57234cc0c5a7af66d5bff63f0a62905032c931"
+      "native_sha256": "52705b6eecf7f379fc82db44aa57234cc0c5a7af66d5bff63f0a62905032c931",
+      "end_exclusive": "00858326"
     }
   ],
   "host_steps": [
@@ -1143,5 +1150,361 @@
     "src/native_particle_tracer_state.cpp",
     "docs/NATIVE_PARTICLE_TRACER_STATE.md",
     "reports/native_particle_tracer_state.json"
-  ]
+  ],
+  "integration_ar_review": {
+    "all_direct_call_rows_verified": true,
+    "saved_names_and_comments": 27,
+    "ordinary_native_signatures": 27,
+    "combined_validation": "pending exact merged build/replay",
+    "analysis_repairs": {
+      "ar-flow-repair.json": {
+        "repairs": [
+          {
+            "function": "00af8350",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T21:34:18Z",
+            "decompile_lines_before": 28,
+            "gaps": [
+              {
+                "site": "00af839c",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00af83a1",
+                "gap_end_exclusive": "00af83aa",
+                "bytes": 9,
+                "after_call": true,
+                "sha256": "2a7ea53e1544290f2c14148fed51666fe04b900860ff3e8162ed21c93caee7c1"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00af839c",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00af83a1",
+                  "gap_end_exclusive": "00af83aa",
+                  "bytes": 9,
+                  "after_call": true,
+                  "sha256": "2a7ea53e1544290f2c14148fed51666fe04b900860ff3e8162ed21c93caee7c1"
+                },
+                "clear": "Success: Cleared flow override at 00af839c (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 9 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 31,
+            "gaps_remaining": 0
+          },
+          {
+            "function": "00af8b00",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T21:41:57Z",
+            "decompile_lines_before": 46,
+            "gaps": [
+              {
+                "site": "00af8b76",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00af8b7b",
+                "gap_end_exclusive": "00af8b85",
+                "bytes": 10,
+                "after_call": true,
+                "sha256": "33d71ec3c907b8e3ff2b3c81153160e6dfe31997f86b18d47c6b14179ceb8d60"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00af8b76",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf65ac",
+                  "gap_start": "00af8b7b",
+                  "gap_end_exclusive": "00af8b85",
+                  "bytes": 10,
+                  "after_call": true,
+                  "sha256": "33d71ec3c907b8e3ff2b3c81153160e6dfe31997f86b18d47c6b14179ceb8d60"
+                },
+                "clear": "Success: Cleared flow override at 00af8b76 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 10 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 45,
+            "gaps_remaining": 0
+          },
+          {
+            "function": "00b0b6a0",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T22:00:37Z",
+            "decompile_lines_before": 617,
+            "gaps": [
+              {
+                "site": "00b0bf18",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b0bf1d",
+                "gap_end_exclusive": "00b0bf20",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              },
+              {
+                "site": "00b0bfc6",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b0bfcb",
+                "gap_end_exclusive": "00b0bfce",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00b0bf18",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b0bf1d",
+                  "gap_end_exclusive": "00b0bf20",
+                  "bytes": 3,
+                  "after_call": true,
+                  "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+                },
+                "clear": "Success: Cleared flow override at 00b0bf18 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 3 byte(s)"
+              },
+              {
+                "gap": {
+                  "site": "00b0bfc6",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b0bfcb",
+                  "gap_end_exclusive": "00b0bfce",
+                  "bytes": 3,
+                  "after_call": true,
+                  "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+                },
+                "clear": "Success: Cleared flow override at 00b0bfc6 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 3 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 615,
+            "gaps_remaining": 0
+          }
+        ]
+      },
+      "ar-function-definitions.json": {
+        "events": [
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00af80e0",
+              "end_address": "00af80e3"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00af80e0",
+              "end_address": "00af80e2",
+              "bytes_disassembled": 3,
+              "message": "Successfully disassembled 3 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00af80e0",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00af80e0",
+              "function_name": "FUN_00af80e0",
+              "entry_point": "00af80e0",
+              "body_size": 3,
+              "message": "Function created successfully at 00af80e0"
+            }
+          },
+          {
+            "defined": "00af80e0",
+            "end": "00af80e3",
+            "name": null,
+            "after": "Function: FUN_00af80e0 at 00af80e0\nSignature: undefined FUN_00af80e0(void)\nEntry: 00af80e0\nBody: 00af80e0 - 00af80e2"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00b0a040",
+              "end_address": "00b0a043"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00b0a040",
+              "end_address": "00b0a042",
+              "bytes_disassembled": 3,
+              "message": "Successfully disassembled 3 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00b0a040",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00b0a040",
+              "function_name": "FUN_00b0a040",
+              "entry_point": "00b0a040",
+              "body_size": 3,
+              "message": "Function created successfully at 00b0a040"
+            }
+          },
+          {
+            "defined": "00b0a040",
+            "end": "00b0a043",
+            "name": null,
+            "after": "Function: FUN_00b0a040 at 00b0a040\nSignature: undefined FUN_00b0a040(void)\nEntry: 00b0a040\nBody: 00b0a040 - 00b0a042"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "recreate": "00af8350",
+            "previous": "Function: FUN_00af8350 at 00af8350\nSignature: undefined FUN_00af8350(void)\nEntry: 00af8350\nBody: 00af8350 - 00af83ae",
+            "plate": null
+          },
+          {
+            "endpoint": "delete_function",
+            "body": {
+              "address": "00af8350"
+            },
+            "result": {
+              "success": true,
+              "address": "00af8350",
+              "deleted_function": "FUN_00af8350",
+              "body_size": 86,
+              "message": "Function 'FUN_00af8350' deleted at 00af8350"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00af8350",
+              "end_address": "00af83af"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00af8350",
+              "end_address": "00af83ae",
+              "bytes_disassembled": 95,
+              "message": "Successfully disassembled 95 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00af8350",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00af8350",
+              "function_name": "FUN_00af8350",
+              "entry_point": "00af8350",
+              "body_size": 95,
+              "message": "Function created successfully at 00af8350"
+            }
+          },
+          {
+            "defined": "00af8350",
+            "end": "00af83af",
+            "name": null,
+            "after": "Function: FUN_00af8350 at 00af8350\nSignature: undefined FUN_00af8350(void)\nEntry: 00af8350\nBody: 00af8350 - 00af83ae"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00b007f0",
+              "end_address": "00b007fe"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00b007f0",
+              "end_address": "00b007fd",
+              "bytes_disassembled": 14,
+              "message": "Successfully disassembled 14 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00b007f0",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00b007f0",
+              "function_name": "FUN_00b007f0",
+              "entry_point": "00b007f0",
+              "body_size": 14,
+              "message": "Function created successfully at 00b007f0"
+            }
+          },
+          {
+            "defined": "00b007f0",
+            "end": "00b007fe",
+            "name": null,
+            "after": "Function: FUN_00b007f0 at 00b007f0\nSignature: undefined FUN_00b007f0(void)\nEntry: 00b007f0\nBody: 00b007f0 - 00b007fd"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      }
+    }
+  }
 }

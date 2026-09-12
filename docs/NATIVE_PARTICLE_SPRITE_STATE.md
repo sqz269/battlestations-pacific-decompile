@@ -158,3 +158,8 @@ only to observe hardware faults; no original C++ unwind is claimed. MXCSR,
 all CPU registers, allocator exhaustion, gameplay and rendering were not
 validated. Root integration owns CMake, the combined build, Ghidra repair,
 annotations, exports and ledger publication.
+
+## Correction from AR integration
+
+B007F0 was defined as the full14-byte function ending B007FD.
+Saved annotation/export and final build evidence are recorded in the report.

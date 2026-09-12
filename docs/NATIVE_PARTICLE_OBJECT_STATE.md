@@ -158,3 +158,8 @@ and indirect import/virtual boundary. Full worktree build validation excludes
 this new source until the integrator registers it in CMake. The existing full
 worktree build and its single CTest pass; the new source's actual compiled
 source and exact current library hashes are captured by `record_results.py`.
+
+## Correction from AR integration
+
+AF8B00 returning-free continuation AF8B7B..AF8B84 is now present in saved Ghidra flow.
+Saved annotation/export and final build evidence are recorded in the report.

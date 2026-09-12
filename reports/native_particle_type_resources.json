@@ -1,0 +1,2302 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "packet": "orch3_particle_resources_ar",
+  "recorded_utc": "2026-09-12T21:41:10.695444+00:00",
+  "functions": [
+    {
+      "address": "00b089e0",
+      "end_inclusive": "00b08abb",
+      "end_exclusive": "00b08abc",
+      "sha256": "cd6860ea7e5e8ec98bad38f26e5cdf464a245f47f5f1825d752135dbef53f5d3",
+      "live_disk_equal": true,
+      "bytes": 220,
+      "last_instruction": "00b08ab9: ret 4",
+      "cpp_symbol": "set_native_sprite_particle_shader_00b089e0",
+      "ghidra_name": "BSP_NativeParticleSprite_SetShader",
+      "source": "src/native_particle_type_resources.cpp",
+      "header": "include/bsp/native_particle_type_resources.hpp",
+      "original_abi": "ECX actual definition; stack C string; RET4; actual8h temporaries released before definition+7C write.",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_NativeParticleSprite_SetShader(char *name)",
+      "coverage": "complete normal native body through required actual application services",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00b089e0..00b08abb; ECX actual definition; stack C string; RET4; actual8h temporaries released before definition+7C write. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md.",
+      "calls": [
+        {
+          "address": "00b08a15",
+          "native": "0041dd40",
+          "function": "00b089e0"
+        },
+        {
+          "address": "00b08a30",
+          "native": "00bf7680",
+          "function": "00b089e0"
+        },
+        {
+          "address": "00b08a49",
+          "native": "0041e870",
+          "function": "00b089e0"
+        },
+        {
+          "address": "00b08a55",
+          "native": "00435c40",
+          "function": "00b089e0"
+        },
+        {
+          "address": "00b08a6f",
+          "native": "00419cc0",
+          "function": "00b089e0"
+        },
+        {
+          "address": "00b08a76",
+          "native": "00bd1510",
+          "function": "00b089e0"
+        },
+        {
+          "address": "00b08a92",
+          "native": "00419cc0",
+          "function": "00b089e0"
+        },
+        {
+          "address": "00b08a99",
+          "native": "00bd1510",
+          "function": "00b089e0"
+        }
+      ]
+    },
+    {
+      "address": "00b06210",
+      "end_inclusive": "00b062eb",
+      "end_exclusive": "00b062ec",
+      "sha256": "7e6295131bb84b1fe6517eafc6aa52f6b745e718f0cab3771212f607d04d5c41",
+      "live_disk_equal": true,
+      "bytes": 220,
+      "last_instruction": "00b062e9: ret 4",
+      "cpp_symbol": "set_native_axial_particle_shader_00b06210",
+      "ghidra_name": "BSP_NativeParticleAxial_SetShader",
+      "source": "src/native_particle_type_resources.cpp",
+      "header": "include/bsp/native_particle_type_resources.hpp",
+      "original_abi": "ECX actual definition; stack C string; RET4; exact case-insensitive Additive comparison through435C40/BF7FBF.",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_NativeParticleAxial_SetShader(char *name)",
+      "coverage": "complete normal native body through required actual application services",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00b06210..00b062eb; ECX actual definition; stack C string; RET4; exact case-insensitive Additive comparison through435C40/BF7FBF. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md.",
+      "calls": [
+        {
+          "address": "00b06245",
+          "native": "0041dd40",
+          "function": "00b06210"
+        },
+        {
+          "address": "00b06260",
+          "native": "00bf7680",
+          "function": "00b06210"
+        },
+        {
+          "address": "00b06279",
+          "native": "0041e870",
+          "function": "00b06210"
+        },
+        {
+          "address": "00b06285",
+          "native": "00435c40",
+          "function": "00b06210"
+        },
+        {
+          "address": "00b0629f",
+          "native": "00419cc0",
+          "function": "00b06210"
+        },
+        {
+          "address": "00b062a6",
+          "native": "00bd1510",
+          "function": "00b06210"
+        },
+        {
+          "address": "00b062c2",
+          "native": "00419cc0",
+          "function": "00b06210"
+        },
+        {
+          "address": "00b062c9",
+          "native": "00bd1510",
+          "function": "00b06210"
+        }
+      ]
+    },
+    {
+      "address": "00b07c80",
+      "end_inclusive": "00b07d5b",
+      "end_exclusive": "00b07d5c",
+      "sha256": "1e1ee835d6f47e4cbe3d8314d17171aa2e2b71edbc7a3570d6d33ae80ead4e27",
+      "live_disk_equal": true,
+      "bytes": 220,
+      "last_instruction": "00b07d59: ret 4",
+      "cpp_symbol": "set_native_floating_particle_shader_00b07c80",
+      "ghidra_name": "BSP_NativeParticleFloating_SetShader",
+      "source": "src/native_particle_type_resources.cpp",
+      "header": "include/bsp/native_particle_type_resources.hpp",
+      "original_abi": "ECX actual definition; stack C string; RET4; exact case-insensitive Additive comparison through435C40/BF7FBF.",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_NativeParticleFloating_SetShader(char *name)",
+      "coverage": "complete normal native body through required actual application services",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00b07c80..00b07d5b; ECX actual definition; stack C string; RET4; exact case-insensitive Additive comparison through435C40/BF7FBF. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md.",
+      "calls": [
+        {
+          "address": "00b07cb5",
+          "native": "0041dd40",
+          "function": "00b07c80"
+        },
+        {
+          "address": "00b07cd0",
+          "native": "00bf7680",
+          "function": "00b07c80"
+        },
+        {
+          "address": "00b07ce9",
+          "native": "0041e870",
+          "function": "00b07c80"
+        },
+        {
+          "address": "00b07cf5",
+          "native": "00435c40",
+          "function": "00b07c80"
+        },
+        {
+          "address": "00b07d0f",
+          "native": "00419cc0",
+          "function": "00b07c80"
+        },
+        {
+          "address": "00b07d16",
+          "native": "00bd1510",
+          "function": "00b07c80"
+        },
+        {
+          "address": "00b07d32",
+          "native": "00419cc0",
+          "function": "00b07c80"
+        },
+        {
+          "address": "00b07d39",
+          "native": "00bd1510",
+          "function": "00b07c80"
+        }
+      ]
+    },
+    {
+      "address": "00af80e0",
+      "end_inclusive": "00af80e2",
+      "end_exclusive": "00af80e3",
+      "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+      "live_disk_equal": true,
+      "bytes": 3,
+      "last_instruction": "00af80e0: ret 4",
+      "cpp_symbol": "native_object_particle_shader_noop_00af80e0",
+      "ghidra_name": "BSP_NativeParticleObject_SetShaderNoop",
+      "source": "src/native_particle_type_resources.cpp",
+      "header": "include/bsp/native_particle_type_resources.hpp",
+      "original_abi": "Full three-byte RET4; ECX and stack argument unread.",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_NativeParticleObject_SetShaderNoop(char *unused)",
+      "coverage": "complete normal native body through required actual application services",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00af80e0..00af80e2; Full three-byte RET4; ECX and stack argument unread. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md.",
+      "calls": []
+    },
+    {
+      "address": "00b0a040",
+      "end_inclusive": "00b0a042",
+      "end_exclusive": "00b0a043",
+      "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+      "live_disk_equal": true,
+      "bytes": 3,
+      "last_instruction": "00b0a040: ret 4",
+      "cpp_symbol": "native_tracer_particle_shader_noop_00b0a040",
+      "ghidra_name": "BSP_NativeParticleTracer_SetShaderNoop",
+      "source": "src/native_particle_type_resources.cpp",
+      "header": "include/bsp/native_particle_type_resources.hpp",
+      "original_abi": "Full three-byte RET4; ECX and stack argument unread.",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_NativeParticleTracer_SetShaderNoop(char *unused)",
+      "coverage": "complete normal native body through required actual application services",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00b0a040..00b0a042; Full three-byte RET4; ECX and stack argument unread. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md.",
+      "calls": []
+    },
+    {
+      "address": "00af8350",
+      "end_inclusive": "00af83ae",
+      "end_exclusive": "00af83af",
+      "sha256": "904fe92052053edff0a81e9c13f26204e6c19937fc17b611bb57de5bd7c5a7c2",
+      "live_disk_equal": true,
+      "bytes": 95,
+      "last_instruction": "00af83ac: ret 4",
+      "cpp_symbol": "reserve_native_object_particle_models_00af8350",
+      "ghidra_name": "BSP_NativeParticleObject_ReserveModels",
+      "source": "src/native_particle_type_resources.cpp",
+      "header": "include/bsp/native_particle_type_resources.hpp",
+      "original_abi": "ECX actual0Ch array descriptor; stack signed capacity; RET4; current count/base reads and post-free stores.",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_NativeParticleObject_ReserveModels(int capacity)",
+      "coverage": "complete normal native body through required actual application services",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00af8350..00af83ae; ECX actual0Ch array descriptor; stack signed capacity; RET4; current count/base reads and post-free stores. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md.",
+      "calls": [
+        {
+          "address": "00af8370",
+          "native": "00bf55be",
+          "function": "00af8350"
+        },
+        {
+          "address": "00af839c",
+          "native": "00bf6989",
+          "function": "00af8350"
+        }
+      ]
+    },
+    {
+      "address": "00af8940",
+      "end_inclusive": "00af89b0",
+      "end_exclusive": "00af89b1",
+      "sha256": "05a2c2f21809c4e1b7324d99252951c856b5681ed340ffc34d0457c5b2288e39",
+      "live_disk_equal": true,
+      "bytes": 113,
+      "last_instruction": "00af89b0: ret ",
+      "cpp_symbol": "clear_native_object_particle_models_00af8940",
+      "ghidra_name": "BSP_NativeParticleObject_ClearModels",
+      "source": "src/native_particle_type_resources.cpp",
+      "header": "include/bsp/native_particle_type_resources.hpp",
+      "original_abi": "ECX actual definition; RET; reverse current-count loop, actual InterlockedDecrement and current virtual00.",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_NativeParticleObject_ClearModels(void)",
+      "coverage": "complete normal native body through required actual application services",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00af8940..00af89b0; ECX actual definition; RET; reverse current-count loop, actual InterlockedDecrement and current virtual00. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md.",
+      "calls": []
+    },
+    {
+      "address": "00af9660",
+      "end_inclusive": "00af9bad",
+      "end_exclusive": "00af9bae",
+      "sha256": "b2716be3d783b677d856652ba7194bb1eb956fa9a3ee8d3af567c7ab1f6c8b7a",
+      "live_disk_equal": true,
+      "bytes": 1358,
+      "last_instruction": "00af9bab: ret 4",
+      "cpp_symbol": "load_native_object_particle_models_00af9660",
+      "ghidra_name": "BSP_NativeParticleObject_LoadModels",
+      "source": "src/native_particle_type_resources.cpp",
+      "header": "include/bsp/native_particle_type_resources.hpp",
+      "original_abi": "ECX actual definition; stack C string; RET4; complete normal path over required real VFS/manager services.",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_NativeParticleObject_LoadModels(char *filename)",
+      "coverage": "complete normal native body through required actual application services",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00af9660..00af9bad; ECX actual definition; stack C string; RET4; complete normal path over required real VFS/manager services. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md.",
+      "calls": [
+        {
+          "address": "00af9688",
+          "native": "00af8940",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9695",
+          "native": "0041e870",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af96ae",
+          "native": "00bdf4c0",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af96c3",
+          "native": "0041dd40",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af96de",
+          "native": "00bf7680",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af96f4",
+          "native": "00467cf0",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9706",
+          "native": "00419cc0",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af970d",
+          "native": "00bd1510",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af973c",
+          "native": "00469840",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af975a",
+          "native": "0041dd40",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9772",
+          "native": "00bf7680",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9795",
+          "native": "00419cc0",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af979c",
+          "native": "00bd1510",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af97ad",
+          "native": "00469840",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af97c9",
+          "native": "0041dd40",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af97e1",
+          "native": "00bf7680",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9804",
+          "native": "00419cc0",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af980b",
+          "native": "00bd1510",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9853",
+          "native": "00bf8417",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af986a",
+          "native": "00bf7a6a",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af987f",
+          "native": "00469840",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af98a7",
+          "native": "00bf7a6a",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af98d7",
+          "native": "0041dd40",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af98f2",
+          "native": "00bf7680",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9910",
+          "native": "004261a0",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9929",
+          "native": "004261a0",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9949",
+          "native": "00419cc0",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9950",
+          "native": "00bd1510",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9968",
+          "native": "00419cc0",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af996f",
+          "native": "00bd1510",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af997f",
+          "native": "00bdf4c0",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9994",
+          "native": "004c1400",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af99a7",
+          "native": "00b80720",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af99ae",
+          "native": "004c1400",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af99ba",
+          "native": "00b80d70",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af99e2",
+          "native": "00af8350",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9a18",
+          "native": "00419cc0",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9a1f",
+          "native": "00bd1510",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9a44",
+          "native": "00419cc0",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9a4b",
+          "native": "00bd1510",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9a6f",
+          "native": "00419cc0",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9a76",
+          "native": "00bd1510",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9a8e",
+          "native": "004261a0",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9aa6",
+          "native": "00bdf4c0",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9ab8",
+          "native": "004c1400",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9acb",
+          "native": "00b80720",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9ad2",
+          "native": "004c1400",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9ade",
+          "native": "00b80d70",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9b06",
+          "native": "00af8350",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9b38",
+          "native": "00419cc0",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9b3f",
+          "native": "00bd1510",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9b61",
+          "native": "00419cc0",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9b68",
+          "native": "00bd1510",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9b8b",
+          "native": "00419cc0",
+          "function": "00af9660"
+        },
+        {
+          "address": "00af9b92",
+          "native": "00bd1510",
+          "function": "00af9660"
+        }
+      ]
+    },
+    {
+      "address": "00b80d70",
+      "end_inclusive": "00b80d80",
+      "end_exclusive": "00b80d81",
+      "sha256": "37cf3052fd108fd8ea272087fb222f00ae492d4add6839ce152167041efce64c",
+      "live_disk_equal": true,
+      "bytes": 17,
+      "last_instruction": "00b80d7e: ret 4",
+      "cpp_symbol": "load_native_resource_with_default_factory_00b80d70",
+      "ghidra_name": "BSP_NativeResourceManager_LoadDefaultFactory",
+      "source": "src/native_particle_type_resources.cpp",
+      "header": "include/bsp/native_particle_type_resources.hpp",
+      "original_abi": "ECX actual manager; stack actual8h name; RET4/EAX resource; captured current manager+4 to B80720 RET8.",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * BSP_NativeResourceManager_LoadDefaultFactory(void *name)",
+      "coverage": "complete normal native body through required actual application services",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00b80d70..00b80d80; ECX actual manager; stack actual8h name; RET4/EAX resource; captured current manager+4 to B80720 RET8. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md.",
+      "calls": [
+        {
+          "address": "00b80d79",
+          "native": "00b80720",
+          "function": "00b80d70"
+        }
+      ]
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00af80e0",
+      "end_inclusive": "00af80e2"
+    },
+    {
+      "address": "00b0a040",
+      "end_inclusive": "00b0a042"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "AF8350 saved flow stops at BF6989 free",
+      "is": "AF83A1..AF83A9 is returning free fall-through; actual array base/capacity publish afterwards",
+      "evidence": "Verified installed/live bytes through RET4 AF83AC; full range exclusive AF83AF."
+    }
+  ],
+  "validation": {
+    "strict_win32_object_compile": "passed /W4 /WX /fp:strict /O2",
+    "native_fixture": {
+      "status": "passed_scratch_compositional_native_differential",
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "production_edits": false,
+      "normal_native_bodies": 9,
+      "comparisons": 126,
+      "shader_and_noop_comparisons": 40,
+      "reserve_comparisons": 6,
+      "drain_comparisons": 5,
+      "default_factory_comparisons": 2,
+      "filename_loader_comparisons": 73,
+      "ordered_events": 2931,
+      "subprocess": {
+        "exit_code": 0,
+        "stdout": "PASS 126 comparisons: 40 shaders/noops, 6 reserve, 5 drain, 2 default-factory, 73 filename loads; 2931 ordered storage/array/resource/VFS events; nine original-byte bodies and same actual resource words/current virtual00.\n",
+        "stderr": ""
+      },
+      "compile": {
+        "workdir": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910",
+        "command": "cl /nologo /EHsc /std:c++17 /W4 /WX /O2 /MD /fp:strict /IJ:/PROG/battlestations-pacific-decompile-orch3-20260910/include C:/Users/sqz269/bsp-ar-resources/probe.cpp J:/PROG/battlestations-pacific-decompile-orch3-20260910/src/native_particle_type_resources.cpp /FeC:/Users/sqz269/bsp-ar-resources/probe.exe /FoC:/Users/sqz269/bsp-ar-resources/ /link J:/PROG/battlestations-pacific-decompile-orch3-20260910/build/win32/Release/bsp_core.lib J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_lua511.lib user32.lib d3d9.lib advapi32.lib shell32.lib /MANIFEST:EMBED",
+        "launcher": "powershell & C:/Users/sqz269/bsp-ar-resources/build.ps1",
+        "compiler": "MSVC Win32 toolchain via Visual Studio18.6.1 developer shell",
+        "manifest_xml": "<?xml version='1.0' encoding='UTF-8' standalone='yes'?>\r\n<assembly xmlns='urn:schemas-microsoft-com:asm.v1' manifestVersion='1.0'>\r\n  <trustInfo xmlns=\"urn:schemas-microsoft-com:asm.v3\">\r\n    <security>\r\n      <requestedPrivileges>\r\n        <requestedExecutionLevel level='asInvoker' uiAccess='false' />\r\n      </requestedPrivileges>\r\n    </security>\r\n  </trustInfo>\r\n</assembly>\r\n",
+        "explicit_main_return": 0
+      },
+      "globals": [
+        {
+          "address": "0109ceec",
+          "size": 4,
+          "disk_and_live_bytes": "00000000",
+          "live_disk_equal": true
+        },
+        {
+          "address": "00f8d31c",
+          "size": 4,
+          "disk_and_live_bytes": "00000000",
+          "live_disk_equal": true
+        },
+        {
+          "address": "00f8d320",
+          "size": 1,
+          "disk_and_live_bytes": "00",
+          "live_disk_equal": true
+        },
+        {
+          "address": "00ce2220",
+          "size": 4,
+          "disk_and_live_bytes": "e856a000",
+          "live_disk_equal": true
+        }
+      ],
+      "import_evidence": [
+        {
+          "dll": "KERNEL32.dll",
+          "name": "InterlockedDecrement",
+          "iat_address": "00ce2220"
+        }
+      ],
+      "pe_relocation_directory_size": 0,
+      "decoded_relative_calls": 82,
+      "decoded_operand_rebindings": [
+        {
+          "function": "00b089e0",
+          "instruction": "00b08a15",
+          "operand_offset": 1,
+          "native": "0041dd40",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00b089e0",
+          "instruction": "00b08a2a",
+          "operand_offset": 1,
+          "native": "00d5df5c",
+          "kind": "absolute_literal"
+        },
+        {
+          "function": "00b089e0",
+          "instruction": "00b08a30",
+          "operand_offset": 1,
+          "native": "00bf7680",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00b089e0",
+          "instruction": "00b08a49",
+          "operand_offset": 1,
+          "native": "0041e870",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00b089e0",
+          "instruction": "00b08a55",
+          "operand_offset": 1,
+          "native": "00435c40",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00b089e0",
+          "instruction": "00b08a6f",
+          "operand_offset": 1,
+          "native": "00419cc0",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00b089e0",
+          "instruction": "00b08a76",
+          "operand_offset": 1,
+          "native": "00bd1510",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00b089e0",
+          "instruction": "00b08a92",
+          "operand_offset": 1,
+          "native": "00419cc0",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00b089e0",
+          "instruction": "00b08a99",
+          "operand_offset": 1,
+          "native": "00bd1510",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00b06210",
+          "instruction": "00b06245",
+          "operand_offset": 1,
+          "native": "0041dd40",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00b06210",
+          "instruction": "00b0625a",
+          "operand_offset": 1,
+          "native": "00d5df5c",
+          "kind": "absolute_literal"
+        },
+        {
+          "function": "00b06210",
+          "instruction": "00b06260",
+          "operand_offset": 1,
+          "native": "00bf7680",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00b06210",
+          "instruction": "00b06279",
+          "operand_offset": 1,
+          "native": "0041e870",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00b06210",
+          "instruction": "00b06285",
+          "operand_offset": 1,
+          "native": "00435c40",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00b06210",
+          "instruction": "00b0629f",
+          "operand_offset": 1,
+          "native": "00419cc0",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00b06210",
+          "instruction": "00b062a6",
+          "operand_offset": 1,
+          "native": "00bd1510",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00b06210",
+          "instruction": "00b062c2",
+          "operand_offset": 1,
+          "native": "00419cc0",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00b06210",
+          "instruction": "00b062c9",
+          "operand_offset": 1,
+          "native": "00bd1510",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00b07c80",
+          "instruction": "00b07cb5",
+          "operand_offset": 1,
+          "native": "0041dd40",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00b07c80",
+          "instruction": "00b07cca",
+          "operand_offset": 1,
+          "native": "00d5df5c",
+          "kind": "absolute_literal"
+        },
+        {
+          "function": "00b07c80",
+          "instruction": "00b07cd0",
+          "operand_offset": 1,
+          "native": "00bf7680",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00b07c80",
+          "instruction": "00b07ce9",
+          "operand_offset": 1,
+          "native": "0041e870",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00b07c80",
+          "instruction": "00b07cf5",
+          "operand_offset": 1,
+          "native": "00435c40",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00b07c80",
+          "instruction": "00b07d0f",
+          "operand_offset": 1,
+          "native": "00419cc0",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00b07c80",
+          "instruction": "00b07d16",
+          "operand_offset": 1,
+          "native": "00bd1510",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00b07c80",
+          "instruction": "00b07d32",
+          "operand_offset": 1,
+          "native": "00419cc0",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00b07c80",
+          "instruction": "00b07d39",
+          "operand_offset": 1,
+          "native": "00bd1510",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af8350",
+          "instruction": "00af8370",
+          "operand_offset": 1,
+          "native": "00bf55be",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af8350",
+          "instruction": "00af839c",
+          "operand_offset": 1,
+          "native": "00bf6989",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af8940",
+          "instruction": "00af894e",
+          "operand_offset": 2,
+          "native": "00ce2220",
+          "kind": "absolute_global"
+        },
+        {
+          "function": "00b80d70",
+          "instruction": "00b80d79",
+          "operand_offset": 1,
+          "native": "00b80720",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9688",
+          "operand_offset": 1,
+          "native": "00af8940",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9695",
+          "operand_offset": 1,
+          "native": "0041e870",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af969f",
+          "operand_offset": 2,
+          "native": "0109ceec",
+          "kind": "absolute_global"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af96ae",
+          "operand_offset": 1,
+          "native": "00bdf4c0",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af96c3",
+          "operand_offset": 1,
+          "native": "0041dd40",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af96d8",
+          "operand_offset": 1,
+          "native": "00ce3a70",
+          "kind": "absolute_literal"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af96de",
+          "operand_offset": 1,
+          "native": "00bf7680",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af96f4",
+          "operand_offset": 1,
+          "native": "00467cf0",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9706",
+          "operand_offset": 1,
+          "native": "00419cc0",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af970d",
+          "operand_offset": 1,
+          "native": "00bd1510",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af973c",
+          "operand_offset": 1,
+          "native": "00469840",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af975a",
+          "operand_offset": 1,
+          "native": "0041dd40",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9772",
+          "operand_offset": 1,
+          "native": "00bf7680",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9795",
+          "operand_offset": 1,
+          "native": "00419cc0",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af979c",
+          "operand_offset": 1,
+          "native": "00bd1510",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af97ad",
+          "operand_offset": 1,
+          "native": "00469840",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af97c9",
+          "operand_offset": 1,
+          "native": "0041dd40",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af97e1",
+          "operand_offset": 1,
+          "native": "00bf7680",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9804",
+          "operand_offset": 1,
+          "native": "00419cc0",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af980b",
+          "operand_offset": 1,
+          "native": "00bd1510",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af984b",
+          "operand_offset": 1,
+          "native": "00f8d320",
+          "kind": "absolute_literal"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9853",
+          "operand_offset": 1,
+          "native": "00bf8417",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9860",
+          "operand_offset": 1,
+          "native": "00d5db2c",
+          "kind": "absolute_literal"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af986a",
+          "operand_offset": 1,
+          "native": "00bf7a6a",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af987f",
+          "operand_offset": 1,
+          "native": "00469840",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af98a7",
+          "operand_offset": 1,
+          "native": "00bf7a6a",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af98d7",
+          "operand_offset": 1,
+          "native": "0041dd40",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af98f2",
+          "operand_offset": 1,
+          "native": "00bf7680",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9910",
+          "operand_offset": 1,
+          "native": "004261a0",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9929",
+          "operand_offset": 1,
+          "native": "004261a0",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9949",
+          "operand_offset": 1,
+          "native": "00419cc0",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9950",
+          "operand_offset": 1,
+          "native": "00bd1510",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9968",
+          "operand_offset": 1,
+          "native": "00419cc0",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af996f",
+          "operand_offset": 1,
+          "native": "00bd1510",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9974",
+          "operand_offset": 2,
+          "native": "0109ceec",
+          "kind": "absolute_global"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af997f",
+          "operand_offset": 1,
+          "native": "00bdf4c0",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af998c",
+          "operand_offset": 2,
+          "native": "00f8d31c",
+          "kind": "absolute_global"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9994",
+          "operand_offset": 1,
+          "native": "004c1400",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9999",
+          "operand_offset": 2,
+          "native": "00f8d31c",
+          "kind": "absolute_global"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af99a7",
+          "operand_offset": 1,
+          "native": "00b80720",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af99ae",
+          "operand_offset": 1,
+          "native": "004c1400",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af99ba",
+          "operand_offset": 1,
+          "native": "00b80d70",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af99e2",
+          "operand_offset": 1,
+          "native": "00af8350",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9a18",
+          "operand_offset": 1,
+          "native": "00419cc0",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9a1f",
+          "operand_offset": 1,
+          "native": "00bd1510",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9a44",
+          "operand_offset": 1,
+          "native": "00419cc0",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9a4b",
+          "operand_offset": 1,
+          "native": "00bd1510",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9a6f",
+          "operand_offset": 1,
+          "native": "00419cc0",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9a76",
+          "operand_offset": 1,
+          "native": "00bd1510",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9a8e",
+          "operand_offset": 1,
+          "native": "004261a0",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9a98",
+          "operand_offset": 2,
+          "native": "0109ceec",
+          "kind": "absolute_global"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9aa6",
+          "operand_offset": 1,
+          "native": "00bdf4c0",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9aaf",
+          "operand_offset": 2,
+          "native": "00f8d31c",
+          "kind": "absolute_global"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9ab8",
+          "operand_offset": 1,
+          "native": "004c1400",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9abd",
+          "operand_offset": 2,
+          "native": "00f8d31c",
+          "kind": "absolute_global"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9acb",
+          "operand_offset": 1,
+          "native": "00b80720",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9ad2",
+          "operand_offset": 1,
+          "native": "004c1400",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9ade",
+          "operand_offset": 1,
+          "native": "00b80d70",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9b06",
+          "operand_offset": 1,
+          "native": "00af8350",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9b38",
+          "operand_offset": 1,
+          "native": "00419cc0",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9b3f",
+          "operand_offset": 1,
+          "native": "00bd1510",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9b61",
+          "operand_offset": 1,
+          "native": "00419cc0",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9b68",
+          "operand_offset": 1,
+          "native": "00bd1510",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9b8b",
+          "operand_offset": 1,
+          "native": "00419cc0",
+          "kind": "relative_call"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9b92",
+          "operand_offset": 1,
+          "native": "00bd1510",
+          "kind": "relative_call"
+        }
+      ],
+      "unexecuted_original_exception_handlers": [
+        {
+          "function": "00b089e0",
+          "instruction": "00b089e2",
+          "native_handler": "00cbb968",
+          "disposition": "unchanged original handler immediate; no exceptions are raised in the tested domain"
+        },
+        {
+          "function": "00b06210",
+          "instruction": "00b06212",
+          "native_handler": "00cbb808",
+          "disposition": "unchanged original handler immediate; no exceptions are raised in the tested domain"
+        },
+        {
+          "function": "00b07c80",
+          "instruction": "00b07c82",
+          "native_handler": "00cbb8d8",
+          "disposition": "unchanged original handler immediate; no exceptions are raised in the tested domain"
+        },
+        {
+          "function": "00af9660",
+          "instruction": "00af9668",
+          "native_handler": "00cbafa3",
+          "disposition": "unchanged original handler immediate; no exceptions are raised in the tested domain"
+        }
+      ],
+      "observations": [
+        "All native outer bodies execute complete copied original bytes; AF9660 calls original AF8940,AF8350,B80D70 inside fixture.",
+        "Actual98h definition bytes and all array cells compare with transient allocator/resource pointers normalized to stable fixture identities.",
+        "Resource reference counts live at physical+4; original import invokes InterlockedDecrement; current actual virtual00 dispatch and callback-mutated descriptors/cells are checked.",
+        "Same NativeStringStorage fixture design as bsp-aq-properties: real malloc/free blocks, required exact size and allocation id, current release contents/order, full string headers through existing exact helpers.",
+        "Shader+7C publication follows both releases even when release callbacks change that word; comparison is case insensitive.",
+        "Reserve allocation/free callbacks mutate current base/count/capacity; native dynamic reloads and final publication agree.",
+        "Drain callbacks clear count, switch array/count, replace the captured cell and change the next resource virtual00.",
+        "BDF4C0,4C1400,B80720 are explicit controlled original-ABI boundaries over physical fixtures; they are not implementation claims for VFS or resource internals.",
+        "Initial failed resolve is ignored; current VFS publication is reread; numbered loading stops at first failed resolve and appends successful null resources.",
+        "All-numeric stems keep first character; a single-digit stem takes single-name path; signed32 increment/format wrap is exercised.",
+        "F8D31C is tested before manager getter and reread only for explicit branch; default branch reads current manager+4 even if getter publishes F8D31C."
+      ],
+      "defects_reported_to_integrator": [
+        {
+          "kind": "documentation",
+          "was": "AF8350 actual12h descriptor",
+          "is": "actual0Ch descriptor (12 bytes)",
+          "evidence": "native accesses +0/+4/+8; source/header use0Ch"
+        },
+        {
+          "kind": "documentation",
+          "was": "shader case sensitivity",
+          "is": "case insensitive",
+          "evidence": "435C40 length checks then BF7FBF _stricmp at435C84; lowercase additive produces1; original/rebuilt comparisons agree"
+        }
+      ],
+      "source_defects_reproduced": [],
+      "limitations": [
+        "Compositional normal-path differential, not full-original VFS/resource/CRT/string implementation execution.",
+        "No original FH3, C++/SEH unwind, invalid-pointer faults or allocation exhaustion proof; original handler immediates are deliberately outside exercised paths.",
+        "No x87/MXCSR/full-register parity claim for these resource routines; meaningful B80D70 returned resource identity is compared, other incidental EAX values are not.",
+        "No gameplay, rendering, application VFS/resource integration, or shader compilation validation.",
+        "No optional property/parser composition was added in this bounded follow-up.",
+        "Exotic mutation of inaccessible local temporary headers through out-of-contract instrumentation was not tested."
+      ],
+      "input_sha256": {
+        "C:\\Users\\sqz269\\bsp-ar-resources\\probe.cpp": "31831b8987a83ef772c85ca55e00b35a9d247b0304f94da037fe2459dcc20fbf",
+        "C:\\Users\\sqz269\\bsp-ar-resources\\probe.exe": "b92a01cfaacfe0044e110d8fdb8fed9b2132e2cd554ff91e7f887bc7daef8959",
+        "C:\\Users\\sqz269\\bsp-ar-resources\\probe.log": "4b450fb57f7875e89158418e24edfda4a16e118d4206469a7327ed5845c24770",
+        "C:\\Users\\sqz269\\bsp-ar-resources\\build.ps1": "1e95ae4a3aead53e4d9aed670d701dfc13acf1fc2b128a734ac95fe2ca02f396",
+        "C:\\Users\\sqz269\\bsp-ar-resources\\native_bytes.hpp": "bd9a042151374fed15297720dcf0ec0a644c85162a26d381e4f1958dde09633d",
+        "C:\\Users\\sqz269\\bsp-ar-resources\\spans.json": "2f0ce8a837a2d671e126b329c1ef890c426f651f60a114d1e5d04db6d9dfc104",
+        "C:\\Users\\sqz269\\bsp-ar-resources\\record_verification.py": "49d55225066e9ac66f0a8b5cbeb7c6ab1dd7aa492997ce14e22252dd9f669870",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_particle_type_resources.cpp": "1a3b959c8605c2413b58e5b786f61e0b0e62112c68f385ee375ee5f4dfa15c0b",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_particle_type_resources.hpp": "6df0dd204083c058f738be2d959f8469ed721204eb9d2d68f5d2a4fb92f6cb95",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_physical_file_date.cpp": "6c7671a3b07969df77952f3a7338fc1e5e6369120944bdb67c045e2cd304905f",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_particle_type_base.hpp": "28afa3e93f423326a0943350de5fbb518657b475708ba084c8aa78ddc2fd3e99",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_particle_definition.hpp": "3a8500ab45353cb0d701fa3c0b2b1d85a301c982c14af23d82d31b379b8cd898",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib": "4679f587dac2956bcb7eb6f542c96cb736f30ccf3be0a7c1b55f2431d17c2095",
+        "C:\\Users\\sqz269\\bsp-aq-properties\\probe.cpp": "add900f89be405a85215b6f97810c10636a251aa5ce01214957b9806e9a3499d",
+        "C:\\Windows\\SysWOW64\\d3dx9_40.dll": "16fd909aeb68d0d1aca8529dc7f78880b97d6649d70ce8d03a2c858bc28e216b"
+      }
+    },
+    "combined_build": "pending"
+  },
+  "boundaries": [
+    "BDF4C0 mutates the actual counted string using the current actual VFS; its complete implementation is required.",
+    "4C1400 and B80720 are actual resource-manager/factory services; no fabricated cached resources or successful loader fallback.",
+    "Resource+4 and actual current virtual00 share the existing owner domain. The returned B80720 pointer is appended without another retain.",
+    "MSVC CRT memory/format/atol are library boundaries; invalid large buffers and exception ABI are not generalized.",
+    "Native FH3 unwind, full application composition and gameplay remain unvalidated."
+  ],
+  "fixture_capture": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "functions": [
+      {
+        "address": "00b089e0",
+        "end_inclusive": "00b08abb",
+        "end_exclusive": "00b08abc",
+        "sha256": "cd6860ea7e5e8ec98bad38f26e5cdf464a245f47f5f1825d752135dbef53f5d3",
+        "live_disk_equal": true,
+        "bytes": 220,
+        "last_instruction": "00b08ab9: ret 4"
+      },
+      {
+        "address": "00b06210",
+        "end_inclusive": "00b062eb",
+        "end_exclusive": "00b062ec",
+        "sha256": "7e6295131bb84b1fe6517eafc6aa52f6b745e718f0cab3771212f607d04d5c41",
+        "live_disk_equal": true,
+        "bytes": 220,
+        "last_instruction": "00b062e9: ret 4"
+      },
+      {
+        "address": "00b07c80",
+        "end_inclusive": "00b07d5b",
+        "end_exclusive": "00b07d5c",
+        "sha256": "1e1ee835d6f47e4cbe3d8314d17171aa2e2b71edbc7a3570d6d33ae80ead4e27",
+        "live_disk_equal": true,
+        "bytes": 220,
+        "last_instruction": "00b07d59: ret 4"
+      },
+      {
+        "address": "00af80e0",
+        "end_inclusive": "00af80e2",
+        "end_exclusive": "00af80e3",
+        "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+        "live_disk_equal": true,
+        "bytes": 3,
+        "last_instruction": "00af80e0: ret 4"
+      },
+      {
+        "address": "00b0a040",
+        "end_inclusive": "00b0a042",
+        "end_exclusive": "00b0a043",
+        "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+        "live_disk_equal": true,
+        "bytes": 3,
+        "last_instruction": "00b0a040: ret 4"
+      },
+      {
+        "address": "00af8350",
+        "end_inclusive": "00af83ae",
+        "end_exclusive": "00af83af",
+        "sha256": "904fe92052053edff0a81e9c13f26204e6c19937fc17b611bb57de5bd7c5a7c2",
+        "live_disk_equal": true,
+        "bytes": 95,
+        "last_instruction": "00af83ac: ret 4"
+      },
+      {
+        "address": "00af8940",
+        "end_inclusive": "00af89b0",
+        "end_exclusive": "00af89b1",
+        "sha256": "05a2c2f21809c4e1b7324d99252951c856b5681ed340ffc34d0457c5b2288e39",
+        "live_disk_equal": true,
+        "bytes": 113,
+        "last_instruction": "00af89b0: ret "
+      },
+      {
+        "address": "00b80d70",
+        "end_inclusive": "00b80d80",
+        "end_exclusive": "00b80d81",
+        "sha256": "37cf3052fd108fd8ea272087fb222f00ae492d4add6839ce152167041efce64c",
+        "live_disk_equal": true,
+        "bytes": 17,
+        "last_instruction": "00b80d7e: ret 4"
+      },
+      {
+        "address": "00af9660",
+        "end_inclusive": "00af9bad",
+        "end_exclusive": "00af9bae",
+        "sha256": "b2716be3d783b677d856652ba7194bb1eb956fa9a3ee8d3af567c7ab1f6c8b7a",
+        "live_disk_equal": true,
+        "bytes": 1358,
+        "last_instruction": "00af9bab: ret 4"
+      }
+    ],
+    "call_sites": [
+      {
+        "address": "00b08a15",
+        "native": "0041dd40",
+        "function": "00b089e0"
+      },
+      {
+        "address": "00b08a30",
+        "native": "00bf7680",
+        "function": "00b089e0"
+      },
+      {
+        "address": "00b08a49",
+        "native": "0041e870",
+        "function": "00b089e0"
+      },
+      {
+        "address": "00b08a55",
+        "native": "00435c40",
+        "function": "00b089e0"
+      },
+      {
+        "address": "00b08a6f",
+        "native": "00419cc0",
+        "function": "00b089e0"
+      },
+      {
+        "address": "00b08a76",
+        "native": "00bd1510",
+        "function": "00b089e0"
+      },
+      {
+        "address": "00b08a92",
+        "native": "00419cc0",
+        "function": "00b089e0"
+      },
+      {
+        "address": "00b08a99",
+        "native": "00bd1510",
+        "function": "00b089e0"
+      },
+      {
+        "address": "00b06245",
+        "native": "0041dd40",
+        "function": "00b06210"
+      },
+      {
+        "address": "00b06260",
+        "native": "00bf7680",
+        "function": "00b06210"
+      },
+      {
+        "address": "00b06279",
+        "native": "0041e870",
+        "function": "00b06210"
+      },
+      {
+        "address": "00b06285",
+        "native": "00435c40",
+        "function": "00b06210"
+      },
+      {
+        "address": "00b0629f",
+        "native": "00419cc0",
+        "function": "00b06210"
+      },
+      {
+        "address": "00b062a6",
+        "native": "00bd1510",
+        "function": "00b06210"
+      },
+      {
+        "address": "00b062c2",
+        "native": "00419cc0",
+        "function": "00b06210"
+      },
+      {
+        "address": "00b062c9",
+        "native": "00bd1510",
+        "function": "00b06210"
+      },
+      {
+        "address": "00b07cb5",
+        "native": "0041dd40",
+        "function": "00b07c80"
+      },
+      {
+        "address": "00b07cd0",
+        "native": "00bf7680",
+        "function": "00b07c80"
+      },
+      {
+        "address": "00b07ce9",
+        "native": "0041e870",
+        "function": "00b07c80"
+      },
+      {
+        "address": "00b07cf5",
+        "native": "00435c40",
+        "function": "00b07c80"
+      },
+      {
+        "address": "00b07d0f",
+        "native": "00419cc0",
+        "function": "00b07c80"
+      },
+      {
+        "address": "00b07d16",
+        "native": "00bd1510",
+        "function": "00b07c80"
+      },
+      {
+        "address": "00b07d32",
+        "native": "00419cc0",
+        "function": "00b07c80"
+      },
+      {
+        "address": "00b07d39",
+        "native": "00bd1510",
+        "function": "00b07c80"
+      },
+      {
+        "address": "00af8370",
+        "native": "00bf55be",
+        "function": "00af8350"
+      },
+      {
+        "address": "00af839c",
+        "native": "00bf6989",
+        "function": "00af8350"
+      },
+      {
+        "address": "00b80d79",
+        "native": "00b80720",
+        "function": "00b80d70"
+      },
+      {
+        "address": "00af9688",
+        "native": "00af8940",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9695",
+        "native": "0041e870",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af96ae",
+        "native": "00bdf4c0",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af96c3",
+        "native": "0041dd40",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af96de",
+        "native": "00bf7680",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af96f4",
+        "native": "00467cf0",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9706",
+        "native": "00419cc0",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af970d",
+        "native": "00bd1510",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af973c",
+        "native": "00469840",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af975a",
+        "native": "0041dd40",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9772",
+        "native": "00bf7680",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9795",
+        "native": "00419cc0",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af979c",
+        "native": "00bd1510",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af97ad",
+        "native": "00469840",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af97c9",
+        "native": "0041dd40",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af97e1",
+        "native": "00bf7680",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9804",
+        "native": "00419cc0",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af980b",
+        "native": "00bd1510",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9853",
+        "native": "00bf8417",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af986a",
+        "native": "00bf7a6a",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af987f",
+        "native": "00469840",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af98a7",
+        "native": "00bf7a6a",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af98d7",
+        "native": "0041dd40",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af98f2",
+        "native": "00bf7680",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9910",
+        "native": "004261a0",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9929",
+        "native": "004261a0",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9949",
+        "native": "00419cc0",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9950",
+        "native": "00bd1510",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9968",
+        "native": "00419cc0",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af996f",
+        "native": "00bd1510",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af997f",
+        "native": "00bdf4c0",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9994",
+        "native": "004c1400",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af99a7",
+        "native": "00b80720",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af99ae",
+        "native": "004c1400",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af99ba",
+        "native": "00b80d70",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af99e2",
+        "native": "00af8350",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9a18",
+        "native": "00419cc0",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9a1f",
+        "native": "00bd1510",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9a44",
+        "native": "00419cc0",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9a4b",
+        "native": "00bd1510",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9a6f",
+        "native": "00419cc0",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9a76",
+        "native": "00bd1510",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9a8e",
+        "native": "004261a0",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9aa6",
+        "native": "00bdf4c0",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9ab8",
+        "native": "004c1400",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9acb",
+        "native": "00b80720",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9ad2",
+        "native": "004c1400",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9ade",
+        "native": "00b80d70",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9b06",
+        "native": "00af8350",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9b38",
+        "native": "00419cc0",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9b3f",
+        "native": "00bd1510",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9b61",
+        "native": "00419cc0",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9b68",
+        "native": "00bd1510",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9b8b",
+        "native": "00419cc0",
+        "function": "00af9660"
+      },
+      {
+        "address": "00af9b92",
+        "native": "00bd1510",
+        "function": "00af9660"
+      }
+    ],
+    "strings": {
+      "00d5df5c": "Additive",
+      "00ce3a70": ".",
+      "00f8d320": "",
+      "00d5db2c": "%%0%dd"
+    }
+  },
+  "integration_ar_review": {
+    "all_direct_call_rows_verified": true,
+    "saved_names_and_comments": 27,
+    "ordinary_native_signatures": 27,
+    "combined_validation": "pending exact merged build/replay",
+    "analysis_repairs": {
+      "ar-flow-repair.json": {
+        "repairs": [
+          {
+            "function": "00af8350",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T21:34:18Z",
+            "decompile_lines_before": 28,
+            "gaps": [
+              {
+                "site": "00af839c",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00af83a1",
+                "gap_end_exclusive": "00af83aa",
+                "bytes": 9,
+                "after_call": true,
+                "sha256": "2a7ea53e1544290f2c14148fed51666fe04b900860ff3e8162ed21c93caee7c1"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00af839c",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00af83a1",
+                  "gap_end_exclusive": "00af83aa",
+                  "bytes": 9,
+                  "after_call": true,
+                  "sha256": "2a7ea53e1544290f2c14148fed51666fe04b900860ff3e8162ed21c93caee7c1"
+                },
+                "clear": "Success: Cleared flow override at 00af839c (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 9 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 31,
+            "gaps_remaining": 0
+          },
+          {
+            "function": "00af8b00",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T21:41:57Z",
+            "decompile_lines_before": 46,
+            "gaps": [
+              {
+                "site": "00af8b76",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00af8b7b",
+                "gap_end_exclusive": "00af8b85",
+                "bytes": 10,
+                "after_call": true,
+                "sha256": "33d71ec3c907b8e3ff2b3c81153160e6dfe31997f86b18d47c6b14179ceb8d60"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00af8b76",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf65ac",
+                  "gap_start": "00af8b7b",
+                  "gap_end_exclusive": "00af8b85",
+                  "bytes": 10,
+                  "after_call": true,
+                  "sha256": "33d71ec3c907b8e3ff2b3c81153160e6dfe31997f86b18d47c6b14179ceb8d60"
+                },
+                "clear": "Success: Cleared flow override at 00af8b76 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 10 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 45,
+            "gaps_remaining": 0
+          },
+          {
+            "function": "00b0b6a0",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T22:00:37Z",
+            "decompile_lines_before": 617,
+            "gaps": [
+              {
+                "site": "00b0bf18",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b0bf1d",
+                "gap_end_exclusive": "00b0bf20",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              },
+              {
+                "site": "00b0bfc6",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b0bfcb",
+                "gap_end_exclusive": "00b0bfce",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00b0bf18",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b0bf1d",
+                  "gap_end_exclusive": "00b0bf20",
+                  "bytes": 3,
+                  "after_call": true,
+                  "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+                },
+                "clear": "Success: Cleared flow override at 00b0bf18 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 3 byte(s)"
+              },
+              {
+                "gap": {
+                  "site": "00b0bfc6",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b0bfcb",
+                  "gap_end_exclusive": "00b0bfce",
+                  "bytes": 3,
+                  "after_call": true,
+                  "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+                },
+                "clear": "Success: Cleared flow override at 00b0bfc6 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 3 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 615,
+            "gaps_remaining": 0
+          }
+        ]
+      },
+      "ar-function-definitions.json": {
+        "events": [
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00af80e0",
+              "end_address": "00af80e3"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00af80e0",
+              "end_address": "00af80e2",
+              "bytes_disassembled": 3,
+              "message": "Successfully disassembled 3 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00af80e0",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00af80e0",
+              "function_name": "FUN_00af80e0",
+              "entry_point": "00af80e0",
+              "body_size": 3,
+              "message": "Function created successfully at 00af80e0"
+            }
+          },
+          {
+            "defined": "00af80e0",
+            "end": "00af80e3",
+            "name": null,
+            "after": "Function: FUN_00af80e0 at 00af80e0\nSignature: undefined FUN_00af80e0(void)\nEntry: 00af80e0\nBody: 00af80e0 - 00af80e2"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00b0a040",
+              "end_address": "00b0a043"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00b0a040",
+              "end_address": "00b0a042",
+              "bytes_disassembled": 3,
+              "message": "Successfully disassembled 3 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00b0a040",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00b0a040",
+              "function_name": "FUN_00b0a040",
+              "entry_point": "00b0a040",
+              "body_size": 3,
+              "message": "Function created successfully at 00b0a040"
+            }
+          },
+          {
+            "defined": "00b0a040",
+            "end": "00b0a043",
+            "name": null,
+            "after": "Function: FUN_00b0a040 at 00b0a040\nSignature: undefined FUN_00b0a040(void)\nEntry: 00b0a040\nBody: 00b0a040 - 00b0a042"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "recreate": "00af8350",
+            "previous": "Function: FUN_00af8350 at 00af8350\nSignature: undefined FUN_00af8350(void)\nEntry: 00af8350\nBody: 00af8350 - 00af83ae",
+            "plate": null
+          },
+          {
+            "endpoint": "delete_function",
+            "body": {
+              "address": "00af8350"
+            },
+            "result": {
+              "success": true,
+              "address": "00af8350",
+              "deleted_function": "FUN_00af8350",
+              "body_size": 86,
+              "message": "Function 'FUN_00af8350' deleted at 00af8350"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00af8350",
+              "end_address": "00af83af"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00af8350",
+              "end_address": "00af83ae",
+              "bytes_disassembled": 95,
+              "message": "Successfully disassembled 95 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00af8350",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00af8350",
+              "function_name": "FUN_00af8350",
+              "entry_point": "00af8350",
+              "body_size": 95,
+              "message": "Function created successfully at 00af8350"
+            }
+          },
+          {
+            "defined": "00af8350",
+            "end": "00af83af",
+            "name": null,
+            "after": "Function: FUN_00af8350 at 00af8350\nSignature: undefined FUN_00af8350(void)\nEntry: 00af8350\nBody: 00af8350 - 00af83ae"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00b007f0",
+              "end_address": "00b007fe"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00b007f0",
+              "end_address": "00b007fd",
+              "bytes_disassembled": 14,
+              "message": "Successfully disassembled 14 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00b007f0",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00b007f0",
+              "function_name": "FUN_00b007f0",
+              "entry_point": "00b007f0",
+              "body_size": 14,
+              "message": "Function created successfully at 00b007f0"
+            }
+          },
+          {
+            "defined": "00b007f0",
+            "end": "00b007fe",
+            "name": null,
+            "after": "Function: FUN_00b007f0 at 00b007f0\nSignature: undefined FUN_00b007f0(void)\nEntry: 00b007f0\nBody: 00b007f0 - 00b007fd"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

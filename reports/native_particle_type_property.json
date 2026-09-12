@@ -505,7 +505,7 @@
       "coverage": "complete_native_body",
       "source": "src/native_particle_type_property.cpp",
       "header": "include/bsp/native_particle_type_property.hpp",
-      "evidence": "AQ hypothesis, not recovered symbol. Full installed/live byte span verified; decoded calls and native stack cleanup inspected. Actual pooled string, raw atlas manager/item and1Ch particle record domains; real D3DXFloat32To16Array import. Strict Win32/native-byte differential passes supported normal paths. Original FH3/allocation-failure/malformed-buffer faults and gameplay unvalidated. See docs/NATIVE_PARTICLE_TYPE_PROPERTY.md and reports/native_particle_type_property.json.",
+      "evidence": "AQ hypothesis, not recovered symbol. Full installed/live byte span verified; decoded calls and native stack cleanup inspected. Actual pooled string, raw atlas manager/item and1Ch particle record domains; real D3DXFloat32To16Array import. Strict Win32/native-byte differential passes supported normal paths. Original FH3/allocation-failure/malformed-buffer faults and gameplay unvalidated. See docs/NATIVE_PARTICLE_TYPE_PROPERTY.md and reports/native_particle_type_property.json. AR integration: Concrete dispatch of the five captured shader10 targets B089E0/B06210/B07C80/AF80E0/B0A040 over the same actual counted-string storage; unknown current targets retain the real shader service. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md.",
       "end_exclusive": "00b01c12"
     },
     {
@@ -2547,5 +2547,368 @@
       "Sprite/Object/Tracer state initializers and full application/runtime ownership",
       "Original FH3/invalid-storage faults and gameplay"
     ]
+  },
+  "integration_ar": {
+    "change": "Concrete dispatch of the five captured shader10 targets B089E0/B06210/B07C80/AF80E0/B0A040 over the same actual counted-string storage; unknown current targets retain the real shader service.",
+    "combined_build": "pending",
+    "fixture": "pending",
+    "original_fh3": false,
+    "gameplay": false
+  },
+  "integration_ar_review": {
+    "all_direct_call_rows_verified": true,
+    "saved_names_and_comments": 27,
+    "ordinary_native_signatures": 27,
+    "combined_validation": "pending exact merged build/replay",
+    "analysis_repairs": {
+      "ar-flow-repair.json": {
+        "repairs": [
+          {
+            "function": "00af8350",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T21:34:18Z",
+            "decompile_lines_before": 28,
+            "gaps": [
+              {
+                "site": "00af839c",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00af83a1",
+                "gap_end_exclusive": "00af83aa",
+                "bytes": 9,
+                "after_call": true,
+                "sha256": "2a7ea53e1544290f2c14148fed51666fe04b900860ff3e8162ed21c93caee7c1"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00af839c",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00af83a1",
+                  "gap_end_exclusive": "00af83aa",
+                  "bytes": 9,
+                  "after_call": true,
+                  "sha256": "2a7ea53e1544290f2c14148fed51666fe04b900860ff3e8162ed21c93caee7c1"
+                },
+                "clear": "Success: Cleared flow override at 00af839c (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 9 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 31,
+            "gaps_remaining": 0
+          },
+          {
+            "function": "00af8b00",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T21:41:57Z",
+            "decompile_lines_before": 46,
+            "gaps": [
+              {
+                "site": "00af8b76",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00af8b7b",
+                "gap_end_exclusive": "00af8b85",
+                "bytes": 10,
+                "after_call": true,
+                "sha256": "33d71ec3c907b8e3ff2b3c81153160e6dfe31997f86b18d47c6b14179ceb8d60"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00af8b76",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf65ac",
+                  "gap_start": "00af8b7b",
+                  "gap_end_exclusive": "00af8b85",
+                  "bytes": 10,
+                  "after_call": true,
+                  "sha256": "33d71ec3c907b8e3ff2b3c81153160e6dfe31997f86b18d47c6b14179ceb8d60"
+                },
+                "clear": "Success: Cleared flow override at 00af8b76 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 10 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 45,
+            "gaps_remaining": 0
+          },
+          {
+            "function": "00b0b6a0",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T22:00:37Z",
+            "decompile_lines_before": 617,
+            "gaps": [
+              {
+                "site": "00b0bf18",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b0bf1d",
+                "gap_end_exclusive": "00b0bf20",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              },
+              {
+                "site": "00b0bfc6",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b0bfcb",
+                "gap_end_exclusive": "00b0bfce",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00b0bf18",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b0bf1d",
+                  "gap_end_exclusive": "00b0bf20",
+                  "bytes": 3,
+                  "after_call": true,
+                  "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+                },
+                "clear": "Success: Cleared flow override at 00b0bf18 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 3 byte(s)"
+              },
+              {
+                "gap": {
+                  "site": "00b0bfc6",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b0bfcb",
+                  "gap_end_exclusive": "00b0bfce",
+                  "bytes": 3,
+                  "after_call": true,
+                  "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+                },
+                "clear": "Success: Cleared flow override at 00b0bfc6 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 3 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 615,
+            "gaps_remaining": 0
+          }
+        ]
+      },
+      "ar-function-definitions.json": {
+        "events": [
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00af80e0",
+              "end_address": "00af80e3"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00af80e0",
+              "end_address": "00af80e2",
+              "bytes_disassembled": 3,
+              "message": "Successfully disassembled 3 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00af80e0",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00af80e0",
+              "function_name": "FUN_00af80e0",
+              "entry_point": "00af80e0",
+              "body_size": 3,
+              "message": "Function created successfully at 00af80e0"
+            }
+          },
+          {
+            "defined": "00af80e0",
+            "end": "00af80e3",
+            "name": null,
+            "after": "Function: FUN_00af80e0 at 00af80e0\nSignature: undefined FUN_00af80e0(void)\nEntry: 00af80e0\nBody: 00af80e0 - 00af80e2"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00b0a040",
+              "end_address": "00b0a043"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00b0a040",
+              "end_address": "00b0a042",
+              "bytes_disassembled": 3,
+              "message": "Successfully disassembled 3 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00b0a040",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00b0a040",
+              "function_name": "FUN_00b0a040",
+              "entry_point": "00b0a040",
+              "body_size": 3,
+              "message": "Function created successfully at 00b0a040"
+            }
+          },
+          {
+            "defined": "00b0a040",
+            "end": "00b0a043",
+            "name": null,
+            "after": "Function: FUN_00b0a040 at 00b0a040\nSignature: undefined FUN_00b0a040(void)\nEntry: 00b0a040\nBody: 00b0a040 - 00b0a042"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "recreate": "00af8350",
+            "previous": "Function: FUN_00af8350 at 00af8350\nSignature: undefined FUN_00af8350(void)\nEntry: 00af8350\nBody: 00af8350 - 00af83ae",
+            "plate": null
+          },
+          {
+            "endpoint": "delete_function",
+            "body": {
+              "address": "00af8350"
+            },
+            "result": {
+              "success": true,
+              "address": "00af8350",
+              "deleted_function": "FUN_00af8350",
+              "body_size": 86,
+              "message": "Function 'FUN_00af8350' deleted at 00af8350"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00af8350",
+              "end_address": "00af83af"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00af8350",
+              "end_address": "00af83ae",
+              "bytes_disassembled": 95,
+              "message": "Successfully disassembled 95 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00af8350",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00af8350",
+              "function_name": "FUN_00af8350",
+              "entry_point": "00af8350",
+              "body_size": 95,
+              "message": "Function created successfully at 00af8350"
+            }
+          },
+          {
+            "defined": "00af8350",
+            "end": "00af83af",
+            "name": null,
+            "after": "Function: FUN_00af8350 at 00af8350\nSignature: undefined FUN_00af8350(void)\nEntry: 00af8350\nBody: 00af8350 - 00af83ae"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00b007f0",
+              "end_address": "00b007fe"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00b007f0",
+              "end_address": "00b007fd",
+              "bytes_disassembled": 14,
+              "message": "Successfully disassembled 14 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00b007f0",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00b007f0",
+              "function_name": "FUN_00b007f0",
+              "entry_point": "00b007f0",
+              "body_size": 14,
+              "message": "Function created successfully at 00b007f0"
+            }
+          },
+          {
+            "defined": "00b007f0",
+            "end": "00b007fe",
+            "name": null,
+            "after": "Function: FUN_00b007f0 at 00b007f0\nSignature: undefined FUN_00b007f0(void)\nEntry: 00b007f0\nBody: 00b007f0 - 00b007fd"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      }
+    }
   }
 }

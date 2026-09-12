@@ -8,86 +8,92 @@
     {
       "address": "00af90a0",
       "end_inclusive": "00af9650",
-      "cpp_symbol": "bsp::initialize_native_particle_object_state_00af90a0",
+      "cpp_symbol": "initialize_native_particle_object_state_00af90a0",
       "ghidra_name": "BSP_ParticleObject_InitializeState",
       "native_calling_convention": "__thiscall",
-      "native_prototype": "void __thiscall BSP_ParticleObject_InitializeState(void *state, void *record)",
+      "native_prototype": "void BSP_ParticleObject_InitializeState(void *state, void *record)",
       "original_abi": "ECX actual Object definition; stack actual6Ch state,actual108h record; RET8; incidental EAX unestablished",
       "source": "src/native_particle_object_state.cpp",
       "header": "include/bsp/native_particle_object_state.hpp",
       "evidence": "Complete installed/live 1457-byte span SHA256 5953dfcd022308a84df760779c16a1ad025254c109f4b9c1952e0166471f7ace; whole listing and exact stack cleanup reviewed; docs/NATIVE_PARTICLE_OBJECT_STATE.md. Descriptive hypothesis/new EDX access ABI; native FH3 and gameplay unvalidated.",
       "coverage": "complete",
-      "saved_name_before": "FUN_00af90a0"
+      "saved_name_before": "FUN_00af90a0",
+      "end_exclusive": "00af9651"
     },
     {
       "address": "00af8b00",
       "end_inclusive": "00af8ba9",
-      "cpp_symbol": "bsp::clear_native_particle_object_state_00af8b00",
+      "cpp_symbol": "clear_native_particle_object_state_00af8b00",
       "ghidra_name": "BSP_ParticleObject_ClearState",
       "native_calling_convention": "__thiscall",
-      "native_prototype": "bool __thiscall BSP_ParticleObject_ClearState(void *state, uint argument)",
+      "native_prototype": "bool BSP_ParticleObject_ClearState(void *state, unsigned int argument)",
       "original_abi": "ECX unused actual definition; stack actual6Ch state,unused argument DWORD; RET8; AL true",
       "source": "src/native_particle_object_state.cpp",
       "header": "include/bsp/native_particle_object_state.hpp",
       "evidence": "Complete installed/live 170-byte span SHA256 aa9e048067272774e77aebbd963b4cdb711bbf81c0c3906c5a0dce4c1ed65bab; whole listing and exact stack cleanup reviewed; docs/NATIVE_PARTICLE_OBJECT_STATE.md. Descriptive hypothesis/new EDX access ABI; native FH3 and gameplay unvalidated.",
       "coverage": "complete",
-      "saved_name_before": "FUN_00af8b00"
+      "saved_name_before": "FUN_00af8b00",
+      "end_exclusive": "00af8baa"
     },
     {
       "address": "00af8440",
       "end_inclusive": "00af84ff",
-      "cpp_symbol": "bsp::construct_native_particle_object_matrix_00af8440",
+      "cpp_symbol": "construct_native_particle_object_matrix_00af8440",
       "ghidra_name": "BSP_ParticleObject_ConstructRandomMatrix",
       "native_calling_convention": "__thiscall",
-      "native_prototype": "void * __thiscall BSP_ParticleObject_ConstructRandomMatrix()",
+      "native_prototype": "void * BSP_ParticleObject_ConstructRandomMatrix(void)",
       "original_abi": "ECX actual40h matrix; RET; EAX same matrix",
       "source": "src/native_particle_object_state.cpp",
       "header": "include/bsp/native_particle_object_state.hpp",
       "evidence": "Complete installed/live 192-byte span SHA256 740bec77a0531c6ac412a3872d32779f3477cd373b39d210fb3dd7a4e6909839; whole listing and exact stack cleanup reviewed; docs/NATIVE_PARTICLE_OBJECT_STATE.md. Descriptive hypothesis/new EDX access ABI; native FH3 and gameplay unvalidated.",
       "coverage": "complete",
-      "saved_name_before": "FUN_00af8440"
+      "saved_name_before": "FUN_00af8440",
+      "end_exclusive": "00af8500"
     },
     {
       "address": "00af8270",
       "end_inclusive": "00af82ad",
-      "cpp_symbol": "bsp::compose_native_particle_record_matrix_00af8270",
+      "cpp_symbol": "compose_native_particle_record_matrix_00af8270",
       "ghidra_name": "BSP_ParticleRecord_ComposeObjectMatrix",
       "native_calling_convention": "__thiscall",
-      "native_prototype": "void * __thiscall BSP_ParticleRecord_ComposeObjectMatrix(void *output)",
+      "native_prototype": "void * BSP_ParticleRecord_ComposeObjectMatrix(void *output)",
       "original_abi": "ECX actual108h record; stack output40h; RET4; EAX output",
       "source": "src/native_particle_object_state.cpp",
       "header": "include/bsp/native_particle_object_state.hpp",
       "evidence": "Complete installed/live 62-byte span SHA256 0bb92a5808e5d44df1c995cae664ee3fe692b8d403f7f82df3c9746e9fd4a359; whole listing and exact stack cleanup reviewed; docs/NATIVE_PARTICLE_OBJECT_STATE.md. Descriptive hypothesis/new EDX access ABI; native FH3 and gameplay unvalidated.",
       "coverage": "complete",
-      "saved_name_before": "FUN_00af8270"
+      "saved_name_before": "FUN_00af8270",
+      "end_exclusive": "00af82ae"
     },
     {
       "address": "00bd2f10",
       "end_inclusive": "00bd2f30",
-      "cpp_symbol": "bsp::native_particle_random_range_00bd2f10",
+      "cpp_symbol": "native_particle_random_range_00bd2f10",
       "ghidra_name": "BSP_Random_UniformFloatRange",
       "native_calling_convention": "__thiscall",
-      "native_prototype": "float __thiscall BSP_Random_UniformFloatRange(float minimum, float maximum)",
+      "native_prototype": "float BSP_Random_UniformFloatRange(float minimum, float maximum)",
       "original_abi": "ECX integer stream selector; stack minimum,maximum; RET8; ST0 float32",
       "source": "src/native_particle_object_state.cpp",
       "header": "include/bsp/native_particle_object_state.hpp",
       "evidence": "Complete installed/live 33-byte span SHA256 a66023eb262d4976f95f49cf16ef0cb8e2afeda0dc71d74466408ae9a17c163e; whole listing and exact stack cleanup reviewed; docs/NATIVE_PARTICLE_OBJECT_STATE.md. Descriptive hypothesis/new EDX access ABI; native FH3 and gameplay unvalidated.",
       "coverage": "complete",
-      "saved_name_before": "BSP_Random_UniformFloatRange"
+      "saved_name_before": "BSP_Random_UniformFloatRange",
+      "end_exclusive": "00bd2f31"
     },
     {
       "address": "00bd2e60",
       "end_inclusive": "00bd2ecd",
-      "cpp_symbol": "bsp::native_particle_random_state_range_00bd2e60",
+      "cpp_symbol": "native_particle_random_state_range_00bd2e60",
       "ghidra_name": "BSP_RandomState_UniformFloatRange",
       "native_calling_convention": "__thiscall",
-      "native_prototype": "float __thiscall BSP_RandomState_UniformFloatRange(float minimum, float maximum)",
+      "native_prototype": "float BSP_RandomState_UniformFloatRange(float minimum, float maximum)",
       "original_abi": "ECX actual RandomState; stack minimum,maximum; RET8; ST0 float32",
       "source": "src/native_particle_object_state.cpp",
       "header": "include/bsp/native_particle_object_state.hpp",
       "evidence": "Complete installed/live 110-byte span SHA256 2e66b9e051f1ed069bf305ba4fc78e0dfc3df94eb92bf39ad2ff3ee31630f4dd; whole listing and exact stack cleanup reviewed; docs/NATIVE_PARTICLE_OBJECT_STATE.md. Descriptive hypothesis/new EDX access ABI; native FH3 and gameplay unvalidated.",
       "coverage": "complete",
-      "saved_name_before": "FUN_00bd2e60"
+      "saved_name_before": "FUN_00bd2e60",
+      "end_exclusive": "00bd2ece"
     }
   ],
   "host_steps": [
@@ -678,5 +684,361 @@
     "Controlled native-ABI fixture boundaries validate caller selection, arguments and physical ownership effects, not actual factory parsing/model loading/AF85B0 renderer behavior.",
     "Original FH3, allocation/hardware-fault unwind, arbitrary invalid pointers and whole FP environment remain unvalidated.",
     "AF8B7B..84 free continuation requires integration repair/export refresh. No missing Ghidra function starts or invented library names."
-  ]
+  ],
+  "integration_ar_review": {
+    "all_direct_call_rows_verified": true,
+    "saved_names_and_comments": 27,
+    "ordinary_native_signatures": 27,
+    "combined_validation": "pending exact merged build/replay",
+    "analysis_repairs": {
+      "ar-flow-repair.json": {
+        "repairs": [
+          {
+            "function": "00af8350",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T21:34:18Z",
+            "decompile_lines_before": 28,
+            "gaps": [
+              {
+                "site": "00af839c",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00af83a1",
+                "gap_end_exclusive": "00af83aa",
+                "bytes": 9,
+                "after_call": true,
+                "sha256": "2a7ea53e1544290f2c14148fed51666fe04b900860ff3e8162ed21c93caee7c1"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00af839c",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00af83a1",
+                  "gap_end_exclusive": "00af83aa",
+                  "bytes": 9,
+                  "after_call": true,
+                  "sha256": "2a7ea53e1544290f2c14148fed51666fe04b900860ff3e8162ed21c93caee7c1"
+                },
+                "clear": "Success: Cleared flow override at 00af839c (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 9 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 31,
+            "gaps_remaining": 0
+          },
+          {
+            "function": "00af8b00",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T21:41:57Z",
+            "decompile_lines_before": 46,
+            "gaps": [
+              {
+                "site": "00af8b76",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00af8b7b",
+                "gap_end_exclusive": "00af8b85",
+                "bytes": 10,
+                "after_call": true,
+                "sha256": "33d71ec3c907b8e3ff2b3c81153160e6dfe31997f86b18d47c6b14179ceb8d60"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00af8b76",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf65ac",
+                  "gap_start": "00af8b7b",
+                  "gap_end_exclusive": "00af8b85",
+                  "bytes": 10,
+                  "after_call": true,
+                  "sha256": "33d71ec3c907b8e3ff2b3c81153160e6dfe31997f86b18d47c6b14179ceb8d60"
+                },
+                "clear": "Success: Cleared flow override at 00af8b76 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 10 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 45,
+            "gaps_remaining": 0
+          },
+          {
+            "function": "00b0b6a0",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T22:00:37Z",
+            "decompile_lines_before": 617,
+            "gaps": [
+              {
+                "site": "00b0bf18",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b0bf1d",
+                "gap_end_exclusive": "00b0bf20",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              },
+              {
+                "site": "00b0bfc6",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b0bfcb",
+                "gap_end_exclusive": "00b0bfce",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00b0bf18",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b0bf1d",
+                  "gap_end_exclusive": "00b0bf20",
+                  "bytes": 3,
+                  "after_call": true,
+                  "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+                },
+                "clear": "Success: Cleared flow override at 00b0bf18 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 3 byte(s)"
+              },
+              {
+                "gap": {
+                  "site": "00b0bfc6",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b0bfcb",
+                  "gap_end_exclusive": "00b0bfce",
+                  "bytes": 3,
+                  "after_call": true,
+                  "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+                },
+                "clear": "Success: Cleared flow override at 00b0bfc6 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 3 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 615,
+            "gaps_remaining": 0
+          }
+        ]
+      },
+      "ar-function-definitions.json": {
+        "events": [
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00af80e0",
+              "end_address": "00af80e3"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00af80e0",
+              "end_address": "00af80e2",
+              "bytes_disassembled": 3,
+              "message": "Successfully disassembled 3 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00af80e0",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00af80e0",
+              "function_name": "FUN_00af80e0",
+              "entry_point": "00af80e0",
+              "body_size": 3,
+              "message": "Function created successfully at 00af80e0"
+            }
+          },
+          {
+            "defined": "00af80e0",
+            "end": "00af80e3",
+            "name": null,
+            "after": "Function: FUN_00af80e0 at 00af80e0\nSignature: undefined FUN_00af80e0(void)\nEntry: 00af80e0\nBody: 00af80e0 - 00af80e2"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00b0a040",
+              "end_address": "00b0a043"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00b0a040",
+              "end_address": "00b0a042",
+              "bytes_disassembled": 3,
+              "message": "Successfully disassembled 3 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00b0a040",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00b0a040",
+              "function_name": "FUN_00b0a040",
+              "entry_point": "00b0a040",
+              "body_size": 3,
+              "message": "Function created successfully at 00b0a040"
+            }
+          },
+          {
+            "defined": "00b0a040",
+            "end": "00b0a043",
+            "name": null,
+            "after": "Function: FUN_00b0a040 at 00b0a040\nSignature: undefined FUN_00b0a040(void)\nEntry: 00b0a040\nBody: 00b0a040 - 00b0a042"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "recreate": "00af8350",
+            "previous": "Function: FUN_00af8350 at 00af8350\nSignature: undefined FUN_00af8350(void)\nEntry: 00af8350\nBody: 00af8350 - 00af83ae",
+            "plate": null
+          },
+          {
+            "endpoint": "delete_function",
+            "body": {
+              "address": "00af8350"
+            },
+            "result": {
+              "success": true,
+              "address": "00af8350",
+              "deleted_function": "FUN_00af8350",
+              "body_size": 86,
+              "message": "Function 'FUN_00af8350' deleted at 00af8350"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00af8350",
+              "end_address": "00af83af"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00af8350",
+              "end_address": "00af83ae",
+              "bytes_disassembled": 95,
+              "message": "Successfully disassembled 95 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00af8350",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00af8350",
+              "function_name": "FUN_00af8350",
+              "entry_point": "00af8350",
+              "body_size": 95,
+              "message": "Function created successfully at 00af8350"
+            }
+          },
+          {
+            "defined": "00af8350",
+            "end": "00af83af",
+            "name": null,
+            "after": "Function: FUN_00af8350 at 00af8350\nSignature: undefined FUN_00af8350(void)\nEntry: 00af8350\nBody: 00af8350 - 00af83ae"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00b007f0",
+              "end_address": "00b007fe"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00b007f0",
+              "end_address": "00b007fd",
+              "bytes_disassembled": 14,
+              "message": "Successfully disassembled 14 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00b007f0",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00b007f0",
+              "function_name": "FUN_00b007f0",
+              "entry_point": "00b007f0",
+              "body_size": 14,
+              "message": "Function created successfully at 00b007f0"
+            }
+          },
+          {
+            "defined": "00b007f0",
+            "end": "00b007fe",
+            "name": null,
+            "after": "Function: FUN_00b007f0 at 00b007f0\nSignature: undefined FUN_00b007f0(void)\nEntry: 00b007f0\nBody: 00b007f0 - 00b007fd"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      }
+    }
+  }
 }

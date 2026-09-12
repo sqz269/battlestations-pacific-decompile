@@ -168,3 +168,8 @@ executable three-byte ranges inside the initializer: `B0BF1D..B0BF1F` and
 includes both. `B0BF3D..B0BF3F` is skipped alignment, not missing executable flow.
 The integrator can repair those two flow gaps after the worker lease is released.
 All call-site rows and full inclusive ranges are in the accompanying report.
+
+## Correction from AR integration
+
+Both returning-free ADD ESP,4 continuations at B0BF1D and B0BFCB are repaired; alignment at B0BF3D stays data. AF3430 already has its complete ten-byte body; its allocation-thunk interpretation replaces the misleading destructor name.
+Saved annotation/export and final build evidence are recorded in the report.
