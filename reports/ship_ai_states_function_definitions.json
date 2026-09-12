@@ -1,0 +1,99 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "009f50e0",
+    "end_address": "009f5252"
+   },
+   "result": {
+    "success": true,
+    "start_address": "009f50e0",
+    "end_address": "009f5251",
+    "bytes_disassembled": 370,
+    "message": "Successfully disassembled 370 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "009f50e0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "009f50e0",
+    "function_name": "FUN_009f50e0",
+    "entry_point": "009f50e0",
+    "body_size": 372,
+    "message": "Function created successfully at 009f50e0"
+   }
+  },
+  {
+   "defined": "009f50e0",
+   "end": "009f5252",
+   "name": null,
+   "after": "Function: FUN_009f50e0 at 009f50e0\nSignature: undefined FUN_009f50e0(void)\nEntry: 009f50e0\nBody: 009f50e0 - 009f5253"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "009e5770",
+    "end_address": "009e59b8"
+   },
+   "result": {
+    "success": true,
+    "start_address": "009e5770",
+    "end_address": "009e59b7",
+    "bytes_disassembled": 584,
+    "message": "Successfully disassembled 584 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "009e5770",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "009e5770",
+    "function_name": "FUN_009e5770",
+    "entry_point": "009e5770",
+    "body_size": 584,
+    "message": "Function created successfully at 009e5770"
+   }
+  },
+  {
+   "defined": "009e5770",
+   "end": "009e59b8",
+   "name": null,
+   "after": "Function: FUN_009e5770 at 009e5770\nSignature: undefined FUN_009e5770(void)\nEntry: 009e5770\nBody: 009e5770 - 009e59b7"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
