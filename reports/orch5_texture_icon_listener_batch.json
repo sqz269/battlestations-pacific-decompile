@@ -168,5 +168,53 @@
     "log_sha256": "ae917ba11e173fa9cfb721164aa70f1651ed8dc2070840bc31bd8e61a2e6df61",
     "old_names_and_comments_preserved": true,
     "exports_refreshed": true
+  },
+  "promoted_validation": {
+    "tested_code_commit": "41f1776950778d3e023c6966bed04b59edf8a64c",
+    "result": "passed",
+    "target": "MSVC Win32 Release",
+    "existing_tests": "2/2 passed",
+    "build_log": "local/orch5-texture-icon-listener-promoted-build.log",
+    "build_log_sha256": "94b4e9c15d3a970beedc84127bab4e7eea9b4eacb8897b7cebb219661e0190f1",
+    "integration_log": "local/orch5-texture-icon-listener-integration.log",
+    "integration_log_sha256": "0638cdb5851315495248f0d76c422c5c6d4b35964e318523d6b9c6d0ae679bfb",
+    "initial_integration_built_commit": "a82f3787520b9685509065cebf3f2c9a318468a0",
+    "reason_for_second_build": "main advanced after first build and promotion included new submarine sources and tests; rebuilt resulting41f17769 before publication",
+    "index_recovery": "Transient main bsp_index.sqlite sharing violation during integration; explicit main index --if-stale returned index is fresh. Root index also rebuilt successfully.",
+    "source_hashes_verified_against_committed_worktree": true,
+    "library_sha256": "2c7f4086e144fd8573083ce98492e62fbe9964bdca4cb9b69c0268317530d591",
+    "fixtures": {
+      "base": {
+        "result": "passed",
+        "log": "local/orch5-texture-icon-listener-promoted-base-probe.log",
+        "log_sha256": "6498a83341b5b5bd4d78ab7296faa0c136ab5294e687ba340e7fc69a6e692aac",
+        "scope": "Existing recursive Group teardown regression only; no full Section texture/resource lifetime fixture"
+      },
+      "menu": {
+        "result": "passed",
+        "log": "local/orch5-texture-icon-listener-promoted-menu-probe.log",
+        "log_sha256": "25b85e76a18ba4d25b382aeab53fb99478900e5e23e5bcc9d44aa96d0d75c597",
+        "scope": "Canonical Group/frame owners and actual same screen/scroller storage only"
+      },
+      "point": {
+        "result": "passed",
+        "log": "local/orch5-texture-icon-listener-promoted-point-probe.log",
+        "log_sha256": "116e2fefbe8c488a07d05f1e03d6b810ecc2ac505ef17995519a536e9e1d3fea",
+        "scope": "Actual raw pool owners, spatial population, strict tangent, duplicate backlinks, radius producer and both teardown orders; links final combined library"
+      },
+      "section": {
+        "result": "passed",
+        "log": "local/orch5-texture-icon-listener-promoted-section-probe.log",
+        "log_sha256": "54bf39fd9b5ff697f2cc779b439b3eae1e4e611fe4c64aec9243a13a8575ef9d",
+        "scope": "Actual resolver/canonical atlas storage only; no full property/setter/emitter/retirement fixture"
+      },
+      "icon": {
+        "result": "passed",
+        "log": "local/orch5-texture-icon-listener-promoted-icon-probe.log",
+        "log_sha256": "159d9563df8789ae22c2b963c75762c5923ec47b520bf796a71d952418383a7d",
+        "scope": "Includes actual production numeric kernels; no full resource-backed Icon frame fixture"
+      }
+    },
+    "no_game_or_render_validation": true
   }
 }

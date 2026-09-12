@@ -66,3 +66,12 @@ the actual 5993A0 menu command chain and screen provider; resource-backed GUI
 configuration/validation; Section native copy/pool retirement; and the Text
 PointLight provider with dynamic Group/particle dependencies. Their incomplete
 dependencies must be resolved before treating them as independently ready work.
+
+The integration tool first built a82f3787, then incorporated a concurrent main
+advancement containing submarine sources during promotion. The resulting code
+commit `41f1776950778d3e023c6966bed04b59edf8a64c` was rebuilt successfully and all
+five scoped probes were rerun against that combined library. The batch source
+hashes still match. The following evidence commit changes documentation only.
+A transient shared-index file lock was resolved; main reported its index fresh
+and the private worktree index was rebuilt. See `promoted_validation` in the
+batch report for immutable commit, build, library and probe evidence hashes.
