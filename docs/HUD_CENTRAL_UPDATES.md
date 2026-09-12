@@ -408,3 +408,11 @@ prefix and the no-machinegun fallback is `"."`. None of the five follow-up seeds
 writes Medal_Icon (`+5Ch`) or Medal_Text (`+60h`).
 See the follow-up's listing evidence, bounded reconstruction and remaining widget
 ownership questions. These findings do not establish native ABI or in-game UI parity.
+
+## Correction from docs/UNIT_GUNNERY_PASS.md
+
+Packet `cc2_unit_gunnery_pass` read `00927F10` whole: it is `__stdcall(slot)`, `RET 4`, with no
+ECX input, not the two-argument call step 238 above writes. Its argument is a party slot record
+and it answers `[slot+9h]`: 1 when the slot is AI- or mission-held, 0 when a human holds it
+(`BSP_Side_AutoEngageEnabled`, provisional). The HUD step's call site is unchanged; only the
+contract is corrected.
