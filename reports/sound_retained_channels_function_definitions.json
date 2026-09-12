@@ -1,0 +1,48 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a7b690",
+    "end_address": "00a7b708"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a7b690",
+    "end_address": "00a7b707",
+    "bytes_disassembled": 120,
+    "message": "Successfully disassembled 120 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a7b690",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00a7b690",
+    "function_name": "FUN_00a7b690",
+    "entry_point": "00a7b690",
+    "body_size": 120,
+    "message": "Function created successfully at 00a7b690"
+   }
+  },
+  {
+   "defined": "00a7b690",
+   "end": "00a7b708",
+   "name": null,
+   "after": "Function: FUN_00a7b690 at 00a7b690\nSignature: undefined FUN_00a7b690(void)\nEntry: 00a7b690\nBody: 00a7b690 - 00a7b707"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

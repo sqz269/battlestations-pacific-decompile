@@ -60,7 +60,7 @@ struct SoundInstanceContext {
     SoundChannelFmodHost& fmod;
     SoundChannelVirtualHost& virtuals;
 };
-// Concrete D5ABF8 dispatch; other derived tables remain explicit boundaries.
+// Shared slot10/14 dispatch for D5ABF8 and retained D5AD58/D5ADA0/D5ADE8.
 class NonspatialSoundChannelVirtuals final : public SoundChannelVirtualHost {
 public:
     bool query_slot_14(SoundChannelInstance&, SoundInstanceContext&) override;

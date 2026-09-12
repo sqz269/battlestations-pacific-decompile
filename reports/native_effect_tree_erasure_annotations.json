@@ -1,0 +1,71 @@
+[
+  {
+    "address": "0086e8a0",
+    "before": {
+      "address": "0086e8a0",
+      "function_name": "STL_IntPointerTree18_EraseIterator",
+      "comment": "[BSP reconstruction 0086e8a0]\nHypothesis, not a recovered symbol. ECX map; output iterator and owner/node stack pair; EAX output; RETCh. End iterator throws out_of_range; normal checked successor/transplant/rebalance/free/count-decrement path. No payload release. Prior whole-function throw label disproven; tail beyond stored body verified. Full-span disk/live bytes match SHA256 ed4d9a7c7ec077879ae85ef8e663f97d7e0eb8b81622fd0dd330f79f344bab2b. See docs/GAMEPLAY_EFFECT_DEFINITION.md. Existing Win32 checks and focused ownership fixture passed; component dispatch, native SEH/ABI and gameplay remain external/unvalidated."
+    },
+    "after": {
+      "address": "0086e8a0",
+      "name": "STL_IntPointerTree18_EraseIterator",
+      "evidence": "Complete raw source[679]. Full checked successor, transplant, symmetric fixup, original-node free/current unsigned count/output captures. Nil input restores entry frame then tails actual owning27-byte-string/40-byte out_of_range source helper; assignment precedes cleanup arming. ABI: ECX tree, EDX unconsumed; stack output/input owner/node, EAX output, RET0Ch. Fresh1121 function bytes plus143 EH/47 data bytes match saved BSP/disk;837 normal bytes match emitted bodies except20 named calls. Actual source EH/throw/provider bindings reviewed; seven entire prior provider objects unchanged. Strict Win32/2 CTests/8 seeds and one concrete raw source fixture passed. This entry fixture-executed=True; original native bodies/SEH/caller ABI and gameplay unproven. Library SHA256 d4e8428f6a2d9a9d335e345ab3284f0413dc7eb60196fd81b275960c3caa442a. Ghidra86E8A0/86FE20 extents remain short because inline scripts are disabled; full tails captured, function objects preserved. Names are hypotheses; correct existing names retained. reports/native_effect_tree_erasure_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "0086ee50",
+    "before": {
+      "address": "0086ee50",
+      "function_name": "STL_IntPointerTree18_EraseRange",
+      "comment": "[BSP reconstruction 0086ee50]\nHypothesis, not a recovered symbol. ECX=map; output iterator pointer and two owner/node iterator pairs; EAX=output; RET14h. Whole-tree erase/reset or checked iterator increment and erase. Manager destruction reaches the already-empty full-range path. Stock library contract only. Full-span live/disk bytes match SHA256 d54906fc02e0850e2b1742054193f262f4dd9d491830c722ee573220ec884bf5. See docs/GAMEPLAY_EFFECT_MANAGER.md. Win32 build and existing tests passed; native STL error/SEH/ABI and gameplay unvalidated."
+    },
+    "after": {
+      "address": "0086ee50",
+      "name": "STL_IntPointerTree18_EraseRange",
+      "evidence": "Complete raw source[201]. Complete full-range clear and partial erase loop, actual iterator argument slots and returning invalid continuations; no payload ownership. ABI: ECX tree, EDX unconsumed; stack output/first owner/node/last owner/node, EAX output, RET14h. Fresh1121 function bytes plus143 EH/47 data bytes match saved BSP/disk;837 normal bytes match emitted bodies except20 named calls. Actual source EH/throw/provider bindings reviewed; seven entire prior provider objects unchanged. Strict Win32/2 CTests/8 seeds and one concrete raw source fixture passed. This entry fixture-executed=True; original native bodies/SEH/caller ABI and gameplay unproven. Library SHA256 d4e8428f6a2d9a9d335e345ab3284f0413dc7eb60196fd81b275960c3caa442a. Ghidra86E8A0/86FE20 extents remain short because inline scripts are disabled; full tails captured, function objects preserved. Names are hypotheses; correct existing names retained. reports/native_effect_tree_erasure_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "0086fde0",
+    "before": {
+      "address": "0086fde0",
+      "function_name": "FUN_0086fde0"
+    },
+    "after": {
+      "address": "0086fde0",
+      "name": "STL_IntPointerTree18_Destroy",
+      "evidence": "Complete raw source[52]. Current begin/end full-range erase, current head free, then head/count zero; no payload free. ABI: ECX actual tree header, RET. Fresh1121 function bytes plus143 EH/47 data bytes match saved BSP/disk;837 normal bytes match emitted bodies except20 named calls. Actual source EH/throw/provider bindings reviewed; seven entire prior provider objects unchanged. Strict Win32/2 CTests/8 seeds and one concrete raw source fixture passed. This entry fixture-executed=False; original native bodies/SEH/caller ABI and gameplay unproven. Library SHA256 d4e8428f6a2d9a9d335e345ab3284f0413dc7eb60196fd81b275960c3caa442a. Ghidra86E8A0/86FE20 extents remain short because inline scripts are disabled; full tails captured, function objects preserved. Names are hypotheses; correct existing names retained. reports/native_effect_tree_erasure_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "0086fe20",
+    "before": {
+      "address": "0086fe20",
+      "function_name": "BSP_GameplayEffectManager_Destroy",
+      "comment": "[BSP reconstruction 0086fe20]\nHypothesis, not a recovered symbol. ECX=owner; RET at0086FEBE. Clear weak map nodes, free head, zero head/count, unconditional00F87664 clear, base vtableCE3818. No payload release or manager unregister. Verified tail extends beyond stored Ghidra body. Full-span live/disk bytes match SHA256 fa962eb975732d1484060de458c0398a64ed0e018cebccc5b42cece7742160eb. See docs/GAMEPLAY_EFFECT_MANAGER.md. Win32 build and existing tests passed; native STL error/SEH/ABI and gameplay unvalidated."
+    },
+    "after": {
+      "address": "0086fe20",
+      "name": "BSP_GameplayEffectManager_Destroy",
+      "evidence": "Complete raw source[159]. D0DA64/root capture, state1 subtree erase/current sentinel reset, state0 full range/current head free/head-count clear, unconditional publication/base reset. Source exception cleanup invokes tree86FDE0 then base869C50 according to active C++ scope. ABI: Native ECX raw10h owner, RET; new EDX stable actual volatileF87664 publication reference. Fresh1121 function bytes plus143 EH/47 data bytes match saved BSP/disk;837 normal bytes match emitted bodies except20 named calls. Actual source EH/throw/provider bindings reviewed; seven entire prior provider objects unchanged. Strict Win32/2 CTests/8 seeds and one concrete raw source fixture passed. This entry fixture-executed=True; original native bodies/SEH/caller ABI and gameplay unproven. Library SHA256 d4e8428f6a2d9a9d335e345ab3284f0413dc7eb60196fd81b275960c3caa442a. Ghidra86E8A0/86FE20 extents remain short because inline scripts are disabled; full tails captured, function objects preserved. Names are hypotheses; correct existing names retained. reports/native_effect_tree_erasure_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "008703e0",
+    "before": {
+      "address": "008703e0",
+      "function_name": "CG_scalar_deleting_dtor_008703e0",
+      "comment": "[BSP reconstruction 008703e0]\nHypothesis, not a recovered symbol. ECX=owner; stack flags; EAX=original address; RET4. Calls0086FE20; flags&1 free. Correct compiler scalar-destructor name retained. Full-span live/disk bytes match SHA256 0c5a8a96499f0d71d34518e5593cc5ff0b87c60d37e037edf145a6462d18e86f. See docs/GAMEPLAY_EFFECT_MANAGER.md. Win32 build and existing tests passed; native STL error/SEH/ABI and gameplay unvalidated.\n\n[BSP reconstruction 008703e0] update\nExecutable host integration now keeps one application-owned SingletonLifetimeDomain and GameplayEffectManager publication/context alive after menu teardown through008F8449. The only owner currently admitted is the actual004C1650 GameplayEffectManager; dispatch calls completed scalar_delete_gameplay_effect_manager_008703e0(flags1) with that live context. Native D0DA64[0]=008703E0 reverified. Removed both no-op menu callbacks; validation calls actual source CRT invalid-parameter service. Strict Win32 build,2 existing CTests and8 reference seeds passed. Executed PE SHA256 347b9fe58a1cca32c9bace63fd33da20bccd786042f868e5c0a4fe381e0c884a:180 title/menu frames, exit0, one registered slot drained, effect and manager publications null, then mutex/thread cleanup. This is an existing typed source-host ownership binding, not complete raw BD0400/profile dispatch or original CRT/SEH ABI. Other singleton teardown and full gameplay remain unproven. reports/game_singleton_runtime_ownership.json\n\n[BSP reconstruction 008703e0] update\nHypothesis, not a recovered symbol. ECX=owner; stack flags; EAX=original address; RET4. Calls0086FE20; flags&1 free. Correct compiler scalar-destructor name retained. Full-span live/disk bytes match SHA256 0c5a8a96499f0d71d34518e5593cc5ff0b87c60d37e037edf145a6462d18e86f. See docs/GAMEPLAY_EFFECT_MANAGER.md. Win32 build and existing tests passed; native STL error/SEH/ABI and gameplay unvalidated. | Executable host integration now keeps one application-owned SingletonLifetimeDomain and GameplayEffectManager publication/context alive after menu teardown through008F8449. The only owner currently admitted is the actual004C1650 GameplayEffectManager; dispatch calls completed scalar_delete_gameplay_effect_manager_008703e0(flags1) with that live context. Native D0DA64[0]=008703E0 reverified. Removed both no-op menu callbacks; validation calls actual source CRT invalid-parameter service. Strict Win32 build,2 existing CTests and8 reference seeds passed. Executed PE SHA256 347b9fe58a1cca32c9bace63fd33da20bccd786042f868e5c0a4fe381e0c884a:180 title/menu frames, exit0, one registered slot drained, effect and manager publications null, then mutex/thread cleanup. This is an existing typed source-host ownership binding, not complete raw BD0400/profile dispatch or original CRT/SEH ABI. Other singleton teardown and full gameplay remain unproven. reports/game_singleton_runtime_ownership.json"
+    },
+    "after": {
+      "address": "008703e0",
+      "name": "CG_scalar_deleting_dtor_008703e0",
+      "evidence": "Complete raw source[30]. Call full raw destructor, read current low flags bit0, free captured owner if set, return original address bits. ABI: Native ECX owner, stack flags, EAX captured owner, RET4; new EDX actual publication reference. Fresh1121 function bytes plus143 EH/47 data bytes match saved BSP/disk;837 normal bytes match emitted bodies except20 named calls. Actual source EH/throw/provider bindings reviewed; seven entire prior provider objects unchanged. Strict Win32/2 CTests/8 seeds and one concrete raw source fixture passed. This entry fixture-executed=True; original native bodies/SEH/caller ABI and gameplay unproven. Library SHA256 d4e8428f6a2d9a9d335e345ab3284f0413dc7eb60196fd81b275960c3caa442a. Ghidra86E8A0/86FE20 extents remain short because inline scripts are disabled; full tails captured, function objects preserved. Names are hypotheses; correct existing names retained. reports/native_effect_tree_erasure_audit.json"
+    },
+    "status": "applied"
+  }
+]

@@ -50,7 +50,8 @@ void memory_result(FmodResult result, SoundInstanceContext& c) {
     }
 }
 void require_nonspatial(const SoundChannelInstance& instance) {
-    if (instance.native_vtable_00 != 0x00d5abf8)
+    if (instance.native_vtable_00 != 0x00d5abf8 && instance.native_vtable_00 != 0x00d5ad58 &&
+        instance.native_vtable_00 != 0x00d5ada0 && instance.native_vtable_00 != 0x00d5ade8)
         throw std::logic_error("Unbound derived sound-channel virtual table");
 }
 }
