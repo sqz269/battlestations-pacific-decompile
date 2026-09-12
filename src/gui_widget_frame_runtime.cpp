@@ -333,6 +333,11 @@ void GuiWidgetFrameRuntime::update_base_00aa87b0(GuiWidgetOwner& widget, float s
     ActiveFrame active(*this, widget);
     update_base_active(widget, seconds);
 }
+void GuiWidgetFrameRuntime::update_base_from_active_00aa87b0(GuiWidgetOwner& widget, float seconds) {
+    require(&widget.runtime() == &services_.widgets && operation_active(widget),
+        "GUI base continuation requires this owner's active derived frame");
+    update_base_active(widget, seconds);
+}
 void GuiWidgetFrameRuntime::update_base_active(GuiWidgetOwner& widget, float seconds) {
     auto& layout = widget.layout();
     const auto count = layout.children.size();

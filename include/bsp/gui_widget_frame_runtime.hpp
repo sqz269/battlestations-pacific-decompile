@@ -63,6 +63,9 @@ public:
     void update40(GuiWidgetOwner&, float seconds);
     // Direct base call for proven derived continuations; it does not dispatch40.
     void update_base_00aa87b0(GuiWidgetOwner&, float seconds);
+    // Direct base continuation of a derived40 already borrowed by update40.
+    // Keeps that borrow through the derived tail; never redispatches current40.
+    void update_base_from_active_00aa87b0(GuiWidgetOwner&, float seconds);
     bool contains_pointer_00aa6a40(GuiWidgetOwner&);
 private:
     struct ActiveFrame;
