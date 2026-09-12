@@ -1,0 +1,417 @@
+{
+  "packet": "cc2_projectile_impact",
+  "owner": "agent/cc2-projectile-impact",
+  "doc": "docs/PROJECTILE_IMPACT.md",
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "summary": "0072F830 is the gun's fire-effects routine and the pellet loop; the projectile itself is created one per pellet by 0072BF10 through the class descriptor's vtable[20h] = 006E8430 (the vtable 00CFA138..00CFA158 is immediately followed by the string MBullet). 006E8430 allocates 284h bytes, runs 006E7B00 and returns projectile+170h, the shot interface. The flight is four raw-listing bodies: position 006E7670 / 006E7760 (vtable[114h] / [118h]) and velocity 006E65C0 / 006E65F0 (vtable[11Ch] / [120h]), with gravity 9.8103800773621 at 00CF9058 and the half at 00D7A280. Per step the sweep 0084C430 -> 0084BF00 traces the segment from projectile+1DCh to projectile+FCh, fills a 70h-byte staging buffer whose +1Ch is the hit record of docs/UNIT_HIT_PATH.md, and calls 0084BC60, which teleports the projectile to the impact point, kills it and queues the record with 00926E80. BSP_DeferredEntityEventQueue_Drain then calls 009239A0, which dispatches entity->vtable[ECh] = 007BBCF0 BSP_UnitInstance_OnHit. Slot 1ACh is AddDamage, not OnHit.",
+  "routines": [
+    {
+      "address": "0072f830",
+      "native": "0072f830",
+      "name": "BSP_Gun_SpawnShotAndEffects",
+      "body": "0072f830-0073015c",
+      "abi": "__thiscall(void* gun, float* spawnPos, float* effectPos, void* a3, int flag), RET 10h at 0073015a",
+      "coverage": "complete for the spawn path; the point-effect, looped-effect and camera-shake callees are contracts",
+      "evidence": "Four stack arguments from RET 0x10. Frame: PUSH -1 / PUSH 0xc85883 / PUSH EAX then SUB ESP,0xCC then PUSH EBX/EBP/ESI/EDI, so ESP0 = entry-0xE8; EBX = [ESP0+0xF0] at 0072f882 is the second argument (the effect position, used for the point-effect matrix translation) and EDI = [ESP0+0xEC] at 0072fef0 is the first (the spawn position, forwarded to 0072bf10). The flag at [ESP0+0x10] is zeroed at 0072fad9 and set as a byte at 0072fd80 / 0072fda6 from ([[gun+3B4h]+10h] + gun[+444h]*4) >> 1."
+    },
+    {
+      "address": "0072bf10",
+      "native": "0072bf10",
+      "name": "BSP_Gun_CreateProjectile",
+      "body": "0072bf10-0072c162",
+      "abi": "__thiscall(void* gun, float* pos, float* dir, int flag), RET 0Ch at 0072c160",
+      "coverage": "complete",
+      "evidence": "Seven pushes reach the factory (0072bfe3, 0072bfe8, 0072bfea, 0072bfef, 0072bff4, 0072c003, 0072c004) and the caller does not adjust ESP after 0072c006, while its own epilogue is ADD ESP,0x18 / RET 0xc, so the callee pops 1Ch. Stack slots: entry ESP = E, SUB ESP,0x18 plus three pushes puts ESP0 at E-0x24, so [ESP0+0x28/0x2C/0x30] are pos, dir and flag. ESI (the factory result) is the shot interface: [ESI+0xCC] at 0072c00d is projectile+23Ch, the self-pointer 006E7B91 installs."
+    },
+    {
+      "address": "006e8430",
+      "native": "006e8430",
+      "name": "BSP_ProjectileClass_CreateProjectile",
+      "body": "006e8430-006e86e4",
+      "abi": "__thiscall(void* classDesc, int zero, int ownerId, float* pos, float* dir, char flag, char nearCamera, void* a7), RET 1Ch, returns projectile+170h",
+      "coverage": "complete; the mapping of the last two of the seven stack arguments to +278h and the vtable[3Ch] gate is inferred from the push order, Ghidra drops them",
+      "evidence": "operator_new(0x284) then memset 0x284 then 006E7B00 at 006e8478. It is the class descriptor's vtable[20h]: 00CFA158 is the only reference to 006E8430 and it is the last slot of the vtable 00CFA138..00CFA158, with the string MBullet at 00CFA15C. Velocity: v = classDesc[+50h] * dir into +178h..+180h and +94h..+9Ch, with v.y biased by 00D0DE84 (0.05f) * 00CF9058 (double 9.8103800773621) for classDesc[+8h] in {4,5,6,7}. Position goes to +A4h..+ACh, +FCh..+104h, +1D0h..+1D8h and +1DCh..+1E4h."
+    },
+    {
+      "address": "006e7b00",
+      "native": "006e7b00",
+      "name": "BSP_ProjectileTickableEntity_Construct",
+      "body": "006e7b00-006e7bb5",
+      "abi": "__thiscall(void* projectile), RET, returns this in EAX",
+      "coverage": "complete",
+      "evidence": "Already named in the ledger. This packet only corrects the subobject offsets: LEA EDI,[ESI+0x170] at 006e7b24 then MOV [EDI],0xcf9d90 at 006e7b7b makes +170h the shot interface, and LEA EBX,[ESI+0x244] at 006e7b3b then MOV [EBX],0xcf9d78 at 006e7b81 makes +244h the tick element, not a scene node. MOV [ESI+0x23c],ESI at 006e7b91 is the self-pointer and [ESI+0xC4] = 0x29 the class id. [ESI+0x27c] takes 00BD2F10(0.0f, [00D7A2F0] = 0.1f)."
+    },
+    {
+      "address": "006e6bb0",
+      "native": "006e6bb0",
+      "name": "BSP_Projectile_BindOwner",
+      "body": "006e6bb0-006e6c0f",
+      "abi": "__thiscall(void* shotInterface, void* owner)",
+      "coverage": "complete",
+      "evidence": "Guarded by [[shot+0CCh]+5Dh] == 0, that is projectile+5Dh through the self-pointer, and by a non-null owner. Stores owner at shot+0C8h = projectile+238h after unregistering and re-registering the observer pair, and writes [00CE3854] to shot+94h = projectile+204h. 006E6490 reads the same projectile+238h at [ESI-0xC] with ESI = projectile+244h, which confirms the offset."
+    },
+    {
+      "address": "009555a0",
+      "native": "009555a0",
+      "name": "BSP_Owner_RegisterProjectile",
+      "body": "009555a0-00955628",
+      "abi": "__thiscall(void* owner, void* shotInterface)",
+      "coverage": "complete",
+      "evidence": "ECX = ESI is the owner (009555a1) and the shot comes from [ESP+0xC] at 009555b1. [director + 1D0h + classDesc[+8h]*4] = [00F876A4] at 0095561b, where director = owner->vtable[114h]() at 009555e0 with the 0080E150 accessor of docs/UNIT_WEAPON_DEVICES.md, falling back to owner[+9D4h] at 00955607."
+    },
+    {
+      "address": "0084c430",
+      "native": "0084c430",
+      "name": "BSP_Projectile_SweepStepSegment",
+      "body": "0084c430-0084c4d5",
+      "abi": "__fastcall(char replayFlag, char one, float prev[3], float cur[3], void* shot, void* owner, void* classDesc, void* a10, void* a11), RET 2Ch at 0084c4d3",
+      "coverage": "complete",
+      "evidence": "Copies the two by-value vectors into one float[6] local and tail-calls 0084BF00 at 0084c4c8 with the remaining five arguments. This corrects docs/TICK_ELEMENT_OVERRIDES.md, which calls it the tracer: 0084BF00 traces the segment and reaches the impact routine 0084BC60."
+    },
+    {
+      "address": "0084bf00",
+      "native": "0084bf00",
+      "name": "BSP_Projectile_TraceSegmentAndImpact",
+      "body": "0084bf00-0084c429",
+      "abi": "__fastcall(char replayFlag, uint flags, float segment[6], void* shot, void* owner, void* classDesc, void* extra), SEH frame",
+      "coverage": "complete for the projectile caller; the [shot+0CCh]->vtable[5Ch](0Fh) branch belongs to the second caller 007C0910 and is contract: other caller unread",
+      "evidence": "Zeroes a 70h-byte staging buffer whose first three dwords are the shot, the owner and the class descriptor, whose +10h..+18h is the normalised segment direction and whose +1Ch is handed to 0098B370 at 0084c1d3 as the out-record. Aborts unless the squared segment length exceeds the double 1.0e-7 at 00D0B9C0. The two impact calls are 0084c314 (entity, mode 1) and 0084c3cf (static, mode 2)."
+    },
+    {
+      "address": "0084bc60",
+      "native": "0084bc60",
+      "name": "BSP_Projectile_OnImpact",
+      "body": "0084bc60-0084befc",
+      "abi": "__fastcall, staging buffer in ESI, mode as the float-typed 4th slot, SEH frame",
+      "coverage": "complete; the session-message, decal and explosion callees are contracts",
+      "evidence": "ESI is the staging buffer: LEA ECX,[ESI+0x1c] and LEA EDX,[ESI+0x10] at 0084be18 / 0084be1d prove the hit record starts at buffer+1Ch and the direction at buffer+10h. Teleports the projectile through [[buffer+0h]+0CCh] by setting +C8h = 1, +10Ch = 0 and +FCh..+104h to the hit position. Mode 1 is refined to 3 or 4 by vtable[5Ch](44h) / (0Fh) on the hit entity."
+    },
+    {
+      "address": "00926e80",
+      "native": "00926e80",
+      "name": "BSP_DeferredEntityEventQueue_Push",
+      "body": "00926e80-00926f99",
+      "abi": "__fastcall(void* hitRecord, float* direction)",
+      "coverage": "complete",
+      "evidence": "MOV EBX,EDX at 00926e9c and MOV [ESP+0x10],ECX at 00926e9e: ECX is the record and EDX the direction. ADD ESI,0x8 at 00926f3b then 00925050 at 00926f41 copies the record into node+8h, and the direction lands at [ESI+0x54]..[ESI+0x5c] = node+5Ch..node+64h, which bounds the record at 54h bytes. Takes the critical section at [00924990()+4h], which the drain does not."
+    },
+    {
+      "address": "009239a0",
+      "native": "009239a0",
+      "name": "BSP_Entity_DispatchQueuedHit",
+      "body": "009239a0-00923ae7",
+      "abi": "__thiscall(void* entity, void* hitRecord, float* direction)",
+      "coverage": "complete",
+      "evidence": "The producer of the 007BBCF0 call that docs/UNIT_HIT_PATH.md lists as unread. while (entity->vtable[0xEC](record) == 0) entity = entity[+3Ch] at 00923a70 walks the parent chain. Slot ECh is 007BBCF0: every one of the nine data references to 007BBCF0 (00D0015C, 00D003F4, 00D0600C, 00D06724, 00D06A0C, 00D0BB6C, 00D19E14, 00D1A0EC, 00D1A3C4) has the dword 0095DA00 exactly 0C0h later, and 0095DA00 is the AddDamage base at slot 1ACh, so ECh = 1ACh - 0C0h."
+    },
+    {
+      "address": "0098b370",
+      "native": "0098b370",
+      "name": "BSP_SpatialIndex_SweepSegments",
+      "body": "0098b370-0098b446",
+      "abi": "one segment list, a mask and an out-record; returns non-zero on a hit",
+      "coverage": "complete as a loop; 0098ADD0 is an AABB walk and the narrowphase that writes the hull and part fields is contract: unread",
+      "evidence": "Copies six floats as one from/to pair and calls 0098ADD0 once, or iterates stride-24 segments. Called at 0084c1d3 right after BSP_SpatialIndex_GetSingleton with the out-record at staging buffer +1Ch."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00730042",
+      "native": "0072bf10",
+      "function": "0072f830",
+      "method": "create_projectile",
+      "this": "gun",
+      "args": "EDI = [ESP0+0ECh] the spawn position, LEA EAX,[ESP+0x40] the perturbed direction, EBX = [ESP0+10h] the flag",
+      "gate": "the pellet loop, gun[+3F4h]+0CCh >= 2"
+    },
+    {
+      "address": "00730076",
+      "native": "0072bf10",
+      "function": "0072f830",
+      "method": "create_projectile",
+      "this": "gun",
+      "args": "[ESP0+0ECh], LEA EAX,[ESP+0x4c], [ESP0+10h]",
+      "gate": "single shot, gun[+3F4h]+0CCh < 2"
+    },
+    {
+      "address": "0072c155",
+      "native": "009555a0",
+      "function": "0072bf10",
+      "method": "register_projectile",
+      "this": "owner = [gun+3F0h]",
+      "args": "the shot interface",
+      "gate": "always"
+    },
+    {
+      "address": "009555b8",
+      "native": "006e6bb0",
+      "function": "009555a0",
+      "method": "bind_owner",
+      "this": "the shot interface",
+      "args": "owner",
+      "gate": "always"
+    },
+    {
+      "address": "006e8478",
+      "native": "006e7b00",
+      "function": "006e8430",
+      "method": "construct_projectile",
+      "this": "the 284h-byte allocation",
+      "args": "none",
+      "gate": "the allocation succeeded"
+    },
+    {
+      "address": "006e8511",
+      "native": "00923870",
+      "function": "006e8430",
+      "method": "attach_to_world",
+      "this": "-",
+      "args": "0, [00E188A8]+19CCh, a scale-1 matrix",
+      "gate": "always"
+    },
+    {
+      "address": "006e8625",
+      "native": "0085dc80",
+      "function": "006e8430",
+      "method": "post_construct_0085dc80",
+      "this": "-",
+      "args": "unread",
+      "gate": "always"
+    },
+    {
+      "address": "006e652d",
+      "native": "00414db0",
+      "function": "006e6490",
+      "method": "refresh_world_pose",
+      "this": "projectile",
+      "args": "none",
+      "gate": "[projectile+C8h] == 0"
+    },
+    {
+      "address": "006e657f",
+      "native": "0084c430",
+      "function": "006e6490",
+      "method": "sweep_segment",
+      "this": "-",
+      "args": "previous +1DCh..+1E4h, current +FCh..+104h, the shot interface, the owner +238h, the class descriptor +174h, 00F87574, +1C8h; CL = ([00E188A8]+1FE4h != 2), DL = 1",
+      "gate": "[projectile+5Ch] != 0"
+    },
+    {
+      "address": "006e659f",
+      "native": "00696350",
+      "function": "006e6490",
+      "method": "expire_projectile",
+      "this": "projectile",
+      "args": "0, EDX zeroed",
+      "gate": "flight time > classDesc[+54h]"
+    },
+    {
+      "address": "006e65a9",
+      "native": "00926d90",
+      "function": "006e6490",
+      "method": "release_projectile",
+      "this": "projectile",
+      "args": "2",
+      "gate": "same"
+    },
+    {
+      "address": "0084c4c8",
+      "native": "0084bf00",
+      "function": "0084c430",
+      "method": "trace_segment",
+      "this": "-",
+      "args": "the packed float[6] plus the five forwarded arguments",
+      "gate": "always"
+    },
+    {
+      "address": "0084c13f",
+      "native": "0084b4b0",
+      "function": "0084bf00",
+      "method": "trace_static",
+      "this": "-",
+      "args": "segment",
+      "gate": "shot->vtable[2Ch]() != 0 and classDesc[+74h] == 0"
+    },
+    {
+      "address": "0084c14c",
+      "native": "0084b380",
+      "function": "0084bf00",
+      "method": "trace_static",
+      "this": "-",
+      "args": "segment",
+      "gate": "otherwise"
+    },
+    {
+      "address": "0084c1d3",
+      "native": "0098b370",
+      "function": "0084bf00",
+      "method": "sweep_entities",
+      "this": "the spatial index singleton",
+      "args": "segment, owner->vtable[B0h](), staging buffer +1Ch",
+      "gate": "always"
+    },
+    {
+      "address": "0084c2f2",
+      "native": "0084afd0",
+      "function": "0084bf00",
+      "method": "on_entity_hit_0084afd0",
+      "this": "-",
+      "args": "{1, [shot+0CCh]}",
+      "gate": "CL set and a hit entity"
+    },
+    {
+      "address": "0084c314",
+      "native": "0084bc60",
+      "function": "0084bf00",
+      "method": "impact",
+      "this": "-",
+      "args": "flags, staging buffer, mode 1, extra",
+      "gate": "an entity was hit"
+    },
+    {
+      "address": "0084c34b",
+      "native": "007bc4e0",
+      "function": "0084bf00",
+      "method": "on_static_hit_007bc4e0",
+      "this": "-",
+      "args": "unread",
+      "gate": "the owner branch of the static path"
+    },
+    {
+      "address": "0084c3cf",
+      "native": "0084bc60",
+      "function": "0084bf00",
+      "method": "impact",
+      "this": "-",
+      "args": "flags, staging buffer, mode 2, extra",
+      "gate": "no entity, a static hit, shot->vtable[2Ch]() == 0 and vtable[30h]() true"
+    },
+    {
+      "address": "0084bd44",
+      "native": "0084b650",
+      "function": "0084bc60",
+      "method": "session_hit_context",
+      "this": "-",
+      "args": "none",
+      "gate": "world mode 1 and the projectile passes vtable[5Ch](2Ah)"
+    },
+    {
+      "address": "0084bd89",
+      "native": "0084b000",
+      "function": "0084bc60",
+      "method": "build_hit_message",
+      "this": "-",
+      "args": "mode, the encoded target, the hit position, extra",
+      "gate": "same"
+    },
+    {
+      "address": "0084bdea",
+      "native": "0084b8c0",
+      "function": "0084bc60",
+      "method": "place_decal",
+      "this": "-",
+      "args": "the decal handle, the hit position, extra",
+      "gate": "[shot+45h] != 0"
+    },
+    {
+      "address": "0084be20",
+      "native": "00926e80",
+      "function": "0084bc60",
+      "method": "queue_hit",
+      "this": "-",
+      "args": "ECX = staging buffer +1Ch (the hit record), EDX = staging buffer +10h (the direction)",
+      "gate": "the hit entity at buffer+1Ch is non-null"
+    },
+    {
+      "address": "0084bee3",
+      "native": "0084bad0",
+      "function": "0084bc60",
+      "method": "spawn_explosion",
+      "this": "-",
+      "args": "the radius and offset position, classDesc[+8h] == 10h, the owner, buffer+20h",
+      "gate": "classDesc[+6Ch] != 0"
+    },
+    {
+      "address": "00926f41",
+      "native": "00925050",
+      "function": "00926e80",
+      "method": "copy_hit_record",
+      "this": "node+8h",
+      "args": "the hit record",
+      "gate": "always"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "006e65c0",
+      "body": "006e65c0-006e65e6",
+      "name": "BSP_Projectile_ApplyGravityToVelocity",
+      "abi": "__thiscall(void* projectile, float scaledStep), RET 4 at 006e65e4",
+      "evidence": "Slot 11Ch of the projectile vtable 00CF9DF0: the dword at 00CF9F0C is 006E65C0. Read from bytes through capstone. Body: if ([[ECX+0x174]+0x20] == 0) [ECX+0x17c] -= step * qword [0x00cf9058]. 00CF9058 is the double 9.8103800773621."
+    },
+    {
+      "address": "006e65f0",
+      "body": "006e65f0-006e666e",
+      "name": "BSP_Projectile_ApplyDragToVelocity",
+      "abi": "__thiscall(void* projectile, float scaledStep), RET 4 at 006e666c",
+      "evidence": "Slot 120h of 00CF9DF0: the dword at 00CF9F10 is 006E65F0. Negates the three velocity components, multiplies each by the step and adds them back, so v *= (1 - step). No tunable constant and no gravity test."
+    },
+    {
+      "address": "006e7670",
+      "body": "006e7670-006e7758",
+      "name": "BSP_Projectile_IntegratePositionWithGravity",
+      "abi": "__thiscall(void* projectile, float scaledStep), RET 4 at 006e7756",
+      "evidence": "Slot 114h of 00CF9DF0: the dword at 00CF9F04 is 006E7670. ECX is the projectile because [ECX+0x23c] is the self-pointer 006E7B91 installs. Clears +C8h and +10Ch, walks the child list [+48h] / [+44h] through 0042ED50, copies the snapshot +1D0h..+1D8h into +A4h..+ACh and adds v*step, with d.y reduced by (step*g)*step*0.5 when [[ECX+0x174]+0x20] == 0. The 0.5 is the double at 00D7A280. The stack slots for the three products are at entry-0Ch, entry-8 and entry-4 because POP ESI at 006e76fb shifts ESP between the stores."
+    },
+    {
+      "address": "006e7760",
+      "body": "006e7760-006e7812",
+      "name": "BSP_Projectile_IntegratePositionLinear",
+      "abi": "__thiscall(void* projectile, float scaledStep), RET 4",
+      "evidence": "Slot 118h of 00CF9DF0: the dword at 00CF9F08 is 006E7760. The same body without the [[ECX+0x174]+0x20] test and without the half-step gravity term; the node walk runs after the position update instead of before it."
+    },
+    {
+      "address": "0070c370",
+      "body": "0070c370-0070c7aa",
+      "name": "BSP_FlakProjectile_TickAdvance",
+      "abi": "__thiscall(void* tickElement, float step), RET 4 at 0070c3d7 and 0070c7aa",
+      "coverage": "partial: 0070c370-0070c3e6 and 0070c79b-0070c7aa; the proximity search 0070c4a4-0070c795 is contract: unread",
+      "evidence": "Slot 8h of the flak vtable 00CFD554 per docs/TICK_ELEMENT_OVERRIDES.md. Calls 006E6490 at 0070c387 with the same step, so the base flight, sweep and expiry all still run. Then scaled = classDesc[+5Ch]*step, and flight time [ESI-0x80] = projectile+1C4h is compared with classDesc[+54h] at 0070c3b1 (detonate through 0070C210 at 0070c3c8 after clearing projectile+294h) and with classDesc[+D8h] at 0070c3e2 (the fuse arming time). The segment at 0070c41c is the world translation minus the previous snapshot, normalised by 0042B2F0 at 0070c45f."
+    },
+    {
+      "address": "0070c210",
+      "body": "0070c210-unread",
+      "name": "flak detonation",
+      "evidence": "Called at 0070c3c8 on expiry and at 0070c79b on a proximity hit. contract: unread."
+    }
+  ],
+  "corrections": [
+    {
+      "subject": "0084c430",
+      "was": "the tracer (docs/TICK_ELEMENT_OVERRIDES.md, Projectile section)",
+      "is": "the per-step collision sweep",
+      "evidence": "0084C430 packs the two vectors and calls 0084BF00 at 0084c4c8; 0084BF00 traces the segment against static geometry (0084B380 / 0084B4B0), sweeps entities through the spatial index (0098B370 at 0084c1d3) and calls the impact routine 0084BC60 at 0084c314 and 0084c3cf. Nothing in either body touches a tracer effect."
+    },
+    {
+      "subject": "007bbcf0",
+      "was": "reached through a vtable, slot 1ACh of the unit (the packet brief)",
+      "is": "slot ECh; 1ACh is AddDamage, as docs/UNIT_HIT_PATH.md level 3 already records",
+      "evidence": "All nine data references to 007BBCF0 (00D0015C, 00D003F4, 00D0600C, 00D06724, 00D06A0C, 00D0BB6C, 00D19E14, 00D1A0EC, 00D1A3C4) hold 0095DA00 at +0C0h, and 0095DA00 is the AddDamage base at slot 1ACh, so 007BBCF0 sits at 1ACh - 0C0h = ECh. 009239A0 dispatches exactly that slot at 00923a70."
+    },
+    {
+      "subject": "006e7b00",
+      "was": "puts the node at +244h (docs/TICK_ELEMENT_OVERRIDES.md)",
+      "is": "+244h is the tick-element subobject (vtable 00CF9D78) and +170h is the shot interface (vtable 00CF9D90)",
+      "evidence": "LEA EDI,[ESI+0x170] at 006e7b24 with MOV [EDI],0xcf9d90 at 006e7b7b, and LEA EBX,[ESI+0x244] at 006e7b3b with MOV [EBX],0xcf9d78 at 006e7b81. 006E8430 returns projectile+170h and 006E6490 runs with ECX = projectile+244h ([ESI-0x244] is the base, [ESI-0xD0] the class descriptor)."
+    }
+  ],
+  "unread": [
+    "0084b380 and 0084b4b0, the two static-geometry traces; only their float[4] result shape is known (+0Ch is the hit byte)",
+    "0084b8c0 the decal, 0084bad0 the explosion, 0084b000 and 0084b650 the session hit message, 0084afd0 and 007bc4e0 the two per-branch notifications",
+    "0098add0's narrowphase, which writes the hull segment index, the part-hit array and the damage fields of the hit record; the producer-side layout in the doc covers only +0h, +4h and +8h..+10h",
+    "0070c210 the flak detonation and the proximity search 0070c4a4-0070c795",
+    "the projectile class descriptor's own layout beyond +8h, +20h, +50h, +54h, +5Ch, +6Ch, +74h, +ACh, +B0h, +B4h, +B8h, +CCh and +D8h",
+    "the meaning of the byte projectile+5Ch that gates the sweep and the byte projectile+5Dh that gates re-binding; neither writer was found"
+  ]
+}
