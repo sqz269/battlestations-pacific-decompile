@@ -40,6 +40,7 @@
 namespace bsp::game {
 
 class GameHostLog;
+class GameMissionLuaHost;
 class GameVfsHost;
 
 // One entity the instantiate pass reached, in file order. `world` is the frame
@@ -123,6 +124,12 @@ class GameSceneContentsHost {
 public:
     GameSceneContentsHost(GameHostLog& log, GameVfsHost& vfs);
     ~GameSceneContentsHost();
+
+    // Milestone 2m. 0095c640 reads `VehicleClass[index].Type` and two further
+    // fields out of the live Lua table the recovered global-script step already
+    // loaded, so the registration pass needs the mission Lua host. Attached
+    // before the pass runs; without it the preload keeps its record.
+    void attach_lua(GameMissionLuaHost* lua) noexcept;
     GameSceneContentsHost(const GameSceneContentsHost&) = delete;
     GameSceneContentsHost& operator=(const GameSceneContentsHost&) = delete;
 

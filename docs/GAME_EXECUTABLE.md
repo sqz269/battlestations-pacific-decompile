@@ -1,6 +1,6 @@
-# bsp_game.exe, milestones 1 through 2l
+# bsp_game.exe, milestones 1 through 2m
 
-Milestone 2l is the current state of the executable, and its section corrects the earlier
+Milestone 2m is the current state of the executable, and its section corrects the earlier
 ones. Milestone 1 is the spine it was all built on.
 
 Addresses added by milestone 2a: 0073d604-0073d899 (the phase-2 VFS block of Init), 00beda60
@@ -4313,6 +4313,348 @@ do: the hop from the AI controller block to the order ring has no recovered writ
 7. **Binding return values.** The first shipped script line that consumes one stops the
    script; `luaRnd` is the one this mission hits.
 8. **`construct_world` 004de610**, unchanged from milestones 2h, 2i, 2j and 2k.
+
+## Milestone 2m: the script's orders as real commands, and the hosts that were waiting on a wiring
+
+Addresses: 008a30d0 (`NavigatorAttackMove`) and 008a2f20 (`NavigatorMoveToRange`, with 008a2bc0
+and 008a2d70 as the same body), 0088a810 with 00b67910 / 00b65fb0 / 00888aa0 / 00888760 (the
+Lua-to-`SceneCommandTarget` reader), 00899d10 through 0077c8d0 with the availability predicate at
+vtable 16Ch and 00905300 / 0075b430 / 0077c2a0, 00895250 with vtable 128h, 008ad330 with vtable
+5Ch, 008ab850 with 00888d20 / 004bca50 / vtable 148h / 004c3840; 00836920's stage spine
+(00836941, 00836a8b, 00836dc9) with 0071be60 / 0071d810 / 0071d9e0 / 00465080 / 0071ecf0 /
+007788b0 / 007788d0 and the stage reset 00835bf0 with 0071c130 / 00822b70, and the
+commanded-speed store 00890e6f; the seven fan-out rows 00875e3a / 0098bdb0, 00875e3f / 00874de0,
+00875e44 / 00926700, 00875e55 / 00888230, 00875e64 / 00929460, 00875ec9 / 009273a0 and
+00875eda / 00903610; 0046d51a / 0095c640 (the vehicle-class preload); the
+mission-load rows 004dfc13 with 004cec60 and 004bb160, 004e0754 with 004218e0 and 00424d00, and
+004d30f0 with 004cec60 / 00b67980 / 00b66200 / 004d0640; and the four scene-contents steps
+004d0ee0 with 004cb160 / 004caf50, 004c17d0 with 004248a0 / 004239e0, 004ba870, and 0046df00's
+weather pass with 00b66bd0 / 00b6a020 / 00b69d40 / 00b67800 / 008f5a00 / 008f2260 / 008f3370.
+Packet `cc_exe_2m`, owner `agent/cc-exe-2m`. Sources: `src/game_hosts_script_orders.cpp`,
+`include/bsp/game_hosts_script_orders.hpp`, `src/game_hosts_ready.cpp`,
+`include/bsp/game_hosts_ready.hpp`, plus edits to `src/game_hosts_commands.cpp`,
+`src/game_hosts_units.cpp`, `src/game_hosts_scene_contents.cpp`, `src/game_hosts_fixed_step.cpp`,
+`src/game_hosts_lua.cpp`, `src/game_hosts_mission_frame.cpp`, `src/game_hosts_mission.cpp`,
+`src/game_hosts_menu.cpp`, `src/game_hosts.cpp` and their headers. Report:
+`reports/game_executable_milestone_2m.json`. Ghidra was read-only for this packet.
+
+Milestone 2l watched `usn_2_java`'s own order function address 21 of the mission's 32 created
+instances through ten bindings that were all host records, and said that no order reached a ship.
+Packet `cc_lua_navigator` then read eight of those ten rows. This milestone runs them, and the
+answer is one hop better and still short of a moving ship.
+
+### 1. The mission's orders are real commands now, and where they stop
+
+`GameScriptOrdersHost` is the executable's host for `src/lua_binding_navigator.cpp`. Six of the
+mission's ten binding rows run their reconstructed bodies over the created instances; the other
+four (`NavigatorSetTorpedoEvasion`, `NavigatorSetAvoidLandCollision`, `SetInvincible`,
+`SetFireTarget`) belong to other packets and keep milestone 2l's record.
+
+What one run of `luaInit` produced:
+
+| Binding | Row | Calls | What reached a ship |
+| --- | --- | --- | --- |
+| `SetSkillLevel` | 00895250 | 15 | nothing: vtable 128h is a record |
+| `RepairEnable` | 008ad330 | 12 | nothing: every ship answers `IsKindOf(6)`, so the routed 9Fh message arm runs and the session is a record |
+| `JoinFormation` | 00899d10 | 14 | nothing: 0077c8d0's first question is vtable 16Ch |
+| `NavigatorAttackMove` | 008a30d0 | 6 | an `attackmove` MT_COMMAND, routed and applied |
+| `SetRoleAvailable` | 008ab850 | 4 | nothing: vtable 148h is a record |
+| `NavigatorMoveToRange` | 008a2f20 | 1 | a `moveto` MT_COMMAND, routed and applied |
+
+The seven navigator calls build a real command: the fixed command object (`00e08f78`
+`attackmove`, `00e08f68` `moveto`), the descriptor `0088a810` read, and the constant flags 1.
+`0077d600` builds MT_COMMAND and routes it, and `00816e30` applies it. **That is where they
+stop.** `00816e30`'s own arms `00816f7c..00817330` hold `moveto` and `attackmove` and
+`docs/CRUISE_COMMAND.md` projects none of them, so the command never reaches a weapon director
+slot. Milestone 2l already recorded that boundary for `--order settarget`; this milestone is the
+first run in which the mission's own orders reach it.
+
+```
+  binding                    unit             command    target           issued   slot
+  NavigatorMoveToRange       DeRuyter         moveto     (position)            1      0
+  NavigatorAttackMove        Haguro           attackmove DeRuyter              1      0
+  NavigatorAttackMove        Jintsu           attackmove Java                  1      0
+  NavigatorAttackMove        Yudachi          attackmove DeRuyter              1      0
+  NavigatorAttackMove        Samidare         attackmove Java                  1      0
+  NavigatorAttackMove        Murasame         attackmove DeRuyter              1      0
+  NavigatorAttackMove        Harusame         attackmove Java                  1      0
+```
+
+Two things in that table are worth naming. The six Japanese destroyers attack the two Dutch
+cruisers by name, which is the mission's own pairing and is read out of the created instances
+rather than assigned here. And the Dutch `moveto` carries a position rather than a target,
+because its argument is `FindEntity("DRGoTo")` and `DRGoTo` is one of the scene's two
+`NavPoint`s, whose creator `004e99b0` is a record: the lookup answers nil, so `0088a810` takes
+its ID-absent arm at `0088a8a1` and the descriptor becomes the origin with `position_valid` set.
+That is the native's own behaviour for a value that carries no `ID`, not a failure.
+
+**Every ship still holds station.** The run's distance table is unchanged from milestone 2l:
+`moved 0.00` for all 32 over 19.5 simulated seconds. The three reasons, in the order they bite:
+
+1. a scripted `attackmove` or `moveto` does not reach a director slot (`entity_command_arms`);
+2. the thirteen scene-authored `cruise` commands latch a zero ring, as milestone 2l established;
+3. even a latched or commanded value would reach no ring, because the hop from the AI controller
+   block at `[state]+8` to `unit+0fc4h` / `unit+0fdch` has no recovered writer
+   (`unit_autopilot_pair`).
+
+The AI decision routines that are still records, named: `009f3dd0` and the ship AI state class
+family at `00d21598` (so the `moveto`, `attackmove`, `follow` and `stop` states do not exist),
+`00816f7c..00817330` (the entity command arms), `00836adc..00836d66` (the director's `follow`,
+`attackmove` and `moveonpath` step arms), `00a2bd90` (the AI group forward, unreached because no
+script of this mission writes `entity+16ch`), `008162b0` (the command-availability predicate) and
+the three setters `009dbf90` / `009dffb0` / `009e0040`, which run and write a block nothing
+reads.
+
+### 2. The weapon director's stage ladder, and what it does to a ship with no orders
+
+`00836920` runs once per unit per fixed simulation step. Nothing in it is new: the pre-pass
+`00836941`, the `stop` arm `00836a8b`, the idle tail `00836dc9` and the stage reset `00835bf0`
+are `docs/UNIT_COMMANDED_SPEED.md`'s routines. Its own caller is the unit update's director
+block, which this process does not reach, so the position in the step is the executable's
+decision and is recorded as one.
+
+What it decides on this mission is the first thing in three milestones that changes the
+commands the ships hold. **Nineteen of the 32 authored `None`** (milestone 2l's correction 1), so
+their directors have no primary command and no filled slot, the pre-pass flag is set, the idle
+tail runs and `00836e59` finds no commanded speed: all nineteen are issued **`stop`** through
+`0071ecf0`, and the slot push takes it. The controlled unit takes the other branch: `00836e45`
+reads `unit+184h`, so its idle tail chooses `cruise`. The thirteen ships that author `Cruise`
+never reach the tail, because their primary stage is 1 with one filled slot.
+
+```
+summary mission director steps=12480 idle_reissues=20 stop=19 cruise=1 follow=0
+        script_issues=7 blocked_at_00816f7c=7 commanded_speeds=0
+summary mission commands units=32 resolved=13 issued=20 pushed=33 current=33 latched=14
+```
+
+### 3. The commanded speed, and the new switch
+
+The pair at `*(unit+73Ch)` `+24h` / `+28h` is no longer a default-constructed record.
+`GameCommandsHost` owns one navigator parameter block per unit, the director reaches it the way
+the native does (through `[director+24Ch]+73Ch`), the stage reset `00835bf0` ages it against
+`00835c28`'s one-second budget, the `stop` arm and the idle tail read it, and the cruise state
+reads it at `009e12ac`.
+
+`--order speed=<m/s>` makes the store `luaMW_SetShipSpeed` `00890d30` makes, on the controlled
+unit. It is not a throttle, and the log says so: `+24h` is the clamped request and `+28h` is the
+mission clock `DAT_00F876A4`. **Neither of the two producers is called by this mission**:
+`usn_2_java.lua` calls neither `SetShipSpeed` nor `NavigatorMoveOnPath`, so without the switch
+every block stays at the constructor's `-1.0f` and the run reports `commanded_speeds=0`.
+
+With the switch the pair goes active and the run says where it stops: the controlled unit is
+player-controlled, so `009e1170` takes the `009e11e8` arm and never reads a cruise field, and the
+idle tail's choice for that unit was already `cruise`. So the switch exercises the producer and
+the block, and on this mission it changes no trajectory.
+
+### 4. The hosts that only needed wiring
+
+Seven fan-out rows, three mission-load rows and five scene-contents steps had reconstructions on
+main and were still records. All fifteen now run. Two of the fifteen arrived in the merge of main
+this packet took before finishing: packet `cc2_fixed_step_callbacks` made fan-out row 5 (00874de0)
+wireable and packet `cc2_scene_traffic_groups` made the vehicle-class preload (0095c640) wireable,
+after this packet had already recorded both as unavailable.
+
+| Row | Native | What it did here |
+| --- | --- | --- |
+| `refresh_moved_spatial_nodes` | 0098bdb0 | the walk runs over an empty root list: nothing registers a spatial node, 0098a310's callers are the scene graph's |
+| `run_step_callbacks` | 00874de0 | the list at 00f87680 is empty: its only registrant 00875a80 belongs to the engine's own subsystems |
+| `drain_deferred_entity_events` | 00926700 | the queue is empty; 780 passes over 390 steps, because rows 6 and 14 are the same callee |
+| `drain_queued_lua_calls` | 00888230 | the deferred call list is empty: its producer 00887560 only runs for a named call made off the main thread |
+| `run_due_entity_think` | 00929460 | both think lists are empty: 0088a240 is the `SetThink` binding's |
+| `flush_pending_entity_queues` | 009273a0 | both pending lists are empty: 00922fd0 is a record |
+| `release_expired_world_objects` | 00903610 | **walks this mission's 32 created instances**, 12480 visits over 390 steps; every counter at entity+6Ch is zero, which is 00903625's skip |
+| `reset_network_slots` | 004dfc13 | the recovered branch, which for a local session is 004dfd18 and the single-player reset 004bb160. It was a skipped arm |
+| `reset_objective_list` | 004e0754 | the two clears, the tree erase and the avoid-zone rebuild; 00424d00 itself stays a record because it scans a world that does not exist |
+| `rebuild_scripted_name_list` | 004d30f0 | **878 function-valued names out of 1178 Lua globals**, the pre-script baseline teardown nils against |
+| `preload_record_effects` | 004d0ee0 | clears the handle vector and resolves zero names: record+C70h is a consumer-side read the header pass does not fill |
+| `load_avoid_zones` | 004c17d0 | **172939 bytes of the mission's `.nav` parsed into 3 TerrainGridLayers**, 240x240 at 100.0 m per cell |
+| `scatter_clouds` | 004ba870 | returns at its own gate 004ba879, because record+C84h is zero |
+| `select_weather_descriptor` | 0046df00 | the whole `Weathers` walk on a private Lua state; see the corrections |
+| `register_vehicle_class_preload` | 0095c640 | its three reads go to the live `VehicleClass` global the recovered global-script step loaded, once per registration body |
+
+Two that the packet brief listed as ready could not be wired, and the report says why for each:
+`00871ba0` (the effect acquire needs a `GameplayEffectAcquisitionContext` nothing here builds) and
+`00922e20` (the 0Ch property-bag holder is a host method of `SceneEntityCreateHost`, not a
+routine, and 00922e20 itself has no reconstruction). `004c3840` has a reconstruction and stays an
+arm the load never takes, because `004e044d` gates it on `game+1FE4h == 1`.
+
+### What it looks like on screen
+
+Unchanged from milestone 2l, and for milestone 2l's reason: what a mission would draw goes
+through `004ca440` and `004ca1f0`, both records, and no ship moves. The capture at in-mission
+frame 380 is the captain HUD over the cleared dark blue buffer: the repair wheel with its four
+quadrant icons in the middle, the engine telegraph with its `STOP` / `HALF` / `3/4` / `FULL` dial
+and the rudder indicator in the bottom right, the damage bar under them, the `Artillery`,
+`Repair` and `Fighter Ace` text runs, the one unit marker with its `Unit Name` label and `1254`
+distance, and the minimap cluster's authored `error.tga` island map in the top right. The sprite
+bridge holds the same 192 quads. The capture is at the validation machine's 2560x1440, where
+milestone 2k's wide-screen caveat still puts the minimap cluster half outside the window; it is
+written to the ignored `local/run.png` and is not committed.
+
+### Host methods
+
+`bsp_game.exe --frames 600 --press-start-frame 30 --menu-select USN02 --mission-frames 400
+--mission-frame-seconds 0.05 --mission-complete-frame 390 --trajectory-csv local/trajectory.csv
+--screenshot local/run.png --screenshot-mission-frame 380 --log local/game_run.log --game-root
+"<install>"`, exit 0: **434 concrete, 402 unimplemented**. The same command on the tree this
+packet branched from reports **375 and 411**. Two of the 59 the packet added arrived with the
+merge of main it took before finishing, not with its own reading; the corrections say which.
+
+The per-step table with the call site and callee of every row is
+`reports/game_executable_milestone_2m.json` (`script_order_steps`, `script_order_indirect`,
+`script_order_field_reads`, `director_step_steps`, `fixed_step_rows`, `mission_load_steps`,
+`scene_contents_steps`, `still_unimplemented`). The counts by group:
+
+| Group | Steps with a call site | Concrete | Records |
+| --- | --- | --- | --- |
+| The eight binding bodies | 27 | 19 | 8 |
+| The director's stage ladder 00836920 | 13 | 11 | 2 |
+| The seven fan-out rows | 7 | 7 | 0 |
+| The three mission-load rows | 10 | 9 | 1 |
+| The five scene-contents steps | 22 | 21 | 1 |
+
+Twenty-six records the run reached before are gone, and sixteen new ones appeared, each a native
+call site this executable had never reached: `00816f7c` (the entity command arms), `0077c8fe`
+(the availability predicate), `0089539a`, `008ad4cd`, `008aba51`, `0088a88e`, `00836adc`
+(the director's step arms), `0071c730` (the stage completion message), `007788b0`, `00424d00`,
+`00521ea0`, `006fe530`, `00694a60`, `009e1170`'s stop-state step and the entity-think GC gate.
+
+### Corrections
+
+1. **This packet's brief asked for the script's orders to move the ships. They do not, and the
+   reason is one hop further on than the brief assumed.** The bindings run, the commands are real
+   and routed, and `00816e30`'s own arm for `moveto` and `attackmove` is projected nowhere, so no
+   scripted order reaches a weapon director slot. That block is milestone 2l's follow-up 6,
+   `entity_command_arms`, and it is now the first of three steps between the mission's script and
+   a ship that obeys it.
+2. **This packet's brief listed `0095c640` among the hosts with a reconstruction on main. It had
+   none when the packet opened, and it has one now.** `python tools/bsp.py lookup 0095c640`
+   answered `FUN_0095c640` with no ledger name and the address was leased to
+   `agent/cc2-scene-traffic-groups`; that packet landed while this one was open, and the merge of
+   main this packet took before finishing brought `include/bsp/scene_traffic_groups.hpp`, so the
+   step is wired after all. The same merge brought `cc2_fixed_step_callbacks`, which made fan-out
+   row 5 (00874de0) wireable, and renamed `reset_objective_list` to `reset_avoid_zone_state`
+   rather than to the `rebuild_avoid_zone_table` this packet had been told to expect.
+3. **`00871ba0` and `00922e20` are reconstructed and still not wireable.** The effect acquire
+   takes a `GameplayEffectAcquisitionContext` (a manager context, a native string storage, a
+   name-index host and a scalar-component dispatcher) that nothing in this process builds, and
+   `00922e20` is a host method of `SceneEntityCreateHost` rather than a routine. This is the same
+   class of answer milestone 2d gave for the scene graph: reconstructed is not the same as
+   callable.
+4. **This installation ships an empty weather table.** `scripts/datatables/weather.lua` opens a
+   `--[[` block on its second line and closes it on line 136, its last content line, so every
+   authored entry is inside the comment and `Weathers` evaluates to `{}`. `select_weather_entry`
+   therefore matches nothing for any mission on this installation, and the pass writes no shadow
+   key. The four `g_Terrain.*` writes a run does perform come from `0046df00`'s own
+   console-variable block, not from the weather row.
+5. **Milestone 2h's "all 32 author `Cruise`" was corrected by 2l, and the consequence is now
+   visible.** Nineteen ships author `None`, so their directors are idle and the recovered idle
+   tail issues `stop` to every one of them. No milestone before this ran that tail.
+6. **`docs/MISSION_LOAD_HOSTS.md`'s renamed host methods.** The executable's load walk accepts the
+   old spellings (`reset_network_slots`, `reset_objective_list`, `rebuild_scripted_name_list`),
+   the ones this packet was told to expect (`erase_native_string_set`,
+   `rebuild_avoid_zone_table`, `record_script_function_baseline`) and the one main actually
+   carries (`reset_avoid_zone_state`), because that rename landed while this packet was open.
+7. **A 120 frame run now reports 155 concrete and 79 unimplemented**, one more concrete than
+   milestone 2l published, and the move is not this packet's: every record that run reaches has
+   the same status it had on the tree this packet branched from.
+
+### no_ghidra_function
+
+| Start | End (inclusive) | Note |
+| --- | --- | --- |
+| 00835bf0 | 00835c6f | The director's vtable slot 6Ch, which the idle tail invokes at 00836e0b. `docs/UNIT_COMMANDED_SPEED.md` carries both boundaries and the define command (`python tools/ghidra_define_function.py 00835bf0 00835c70`); until it runs, `tools/verify_report_calls.py` cannot check the two rows inside that body, which the report lists under `native_unverified`. |
+
+Every other address this packet touched already has a Ghidra function. No name was added and no
+Ghidra annotation was made: the packet is a wiring of reconstructions other packets recovered.
+
+### Validation
+
+`scripts/build.ps1` Release Win32 with `/W4 /WX /fp:strict`, no warnings. The existing ctest case
+`reconstructed_math` passes, 1 of 1. No test cases were added.
+`python tools/verify_report_calls.py reports/game_executable_milestone_2m.json` checks 81 call
+rows and reports 0 failures; five rows are reported as indirect because the native call goes
+through a vtable slot.
+
+```
+  binding SetSkillLevel                argc=2 phase=luaInit (reconstructed body)
+  binding NavigatorAttackMove          argc=2 phase=luaInit (reconstructed body)
+JoinFormation stops at its first question. 0077c8d0 asks the follower's vtable 16Ch whether it
+        may `follow` the leader, which for MDestroyer is 008162b0; that body was not read by the
+        packet that reconstructed the binding, so the host answers the neutral false
+summary mission script bindings calls=52 attackmove=6 moveto=1 issued=7 reached_director=0
+        units=7 formations=0/14 skills=15 repairs=12 roles=4
+summary mission script orders instances=21/32 bindings=10 reconstructed=6 entity_resolves=33
+weather pass: SCRIPTS\datatables\Weather.lua carries 0 entry(ies) and 0 sub-scene(s)
+  the installed table is empty: this installation's scripts/datatables/weather.lua opens a
+        `--[[` block on its second line and closes it on its last
+avoid zones: 172939 byte(s) of the scene's `.nav` parsed into 3 TerrainGridLayer(s)
+scene record effect preload: 004d0ee0 cleared the handle vector at record+D50h and resolved 0
+        name(s)
+cloud scatter: 004ba870 read the gate at record+C84h, found 0 and returned at 004ba879
+mission load session-slot reset: 004dfc13 tests game+1FE4h and this session is local, so the
+        routine takes 004dfd18, the single-player reset 004bb160
+mission load scripted-name baseline: 004d30f0 walked 1178 Lua global(s) and recorded 878
+        function-valued name(s) into the set at game+1930h
+summary fixed step subsystems spatial=390/0 callbacks=390/0 deferred_events=780/0 lua_calls=390/0
+        think=390/0 pending_queues=390 expiry=390/12480 released=0
+summary mission director steps=12480 idle_reissues=20 stop=19 cruise=1 follow=0 script_issues=7
+        blocked_at_00816f7c=7 commanded_speeds=0
+summary mission scene contents mode=8 entities=34 generated=34 rejected=0 created=32
+        registration_bodies=32 party_class_marks=32 property_groups=22 enum_tables=33
+summary mission world units=32 walked=12480 updated=12480 motion_ticks=12480 simulated=19.50 s
+        controlled=DeRuyter moved=0.00 total_path=0.00
+host methods 434 concrete, 402 unimplemented
+```
+
+Every earlier switch was rechecked on the same binary. A 120 frame run with
+`--press-start-frame 30` and no `--menu-select` exits 0 and reports 155 concrete and 79
+unimplemented, a 40 frame title-only run reports 130 and 48 (see correction 7),
+`--vfs-probe fonts/fonts.lua` exits 0 and `--vfs-probe does/not/exist.lua` exits 3. A
+`--mission-frames 60` run with no `--mission-complete-frame` still ends on the frame count with
+`summary mission exit reachable=0`, and the 400 frame run above still leaves state 0Dh through
+004d7970 and exits on the front-end request rather than on the frame count. The acceptance form
+`--order-frame 1 --order throttle=1,rudder=1` reproduces milestone 2j's published numbers
+exactly: `heading -41.253, fwd 16.430, yaw -0.06109` at t = 14 s, so the director's new per-step
+ladder changes no trajectory. `--trajectory-csv` writes the same twelve columns.
+
+This remains a runtime-validated process, not a game-validated one. What it now proves, that
+milestone 2l did not, is that the mission's own order function issues real `attackmove` and
+`moveto` commands through the game's own path over the mission's own ships, that the recovered
+weapon-director stage ladder gives every ship with no orders a `stop` and the player's ship a
+`cruise`, and that six fixed-step passes, three load steps and four scene-contents steps run
+their own reconstructions over this mission's data. It proves nothing about what those orders
+would do: three named blocks still stand between a scripted order and a moving ship, and no ship
+moved under anything but the player's own `--order`.
+
+### Follow-up packets
+
+1. **`entity_command_arms`**, 00816e30's 00816f7c..00817330. It is now the first blocker: seven
+   real commands a run issues stop there. Milestone 2l listed it for `--order settarget`; the
+   mission's own script needs the `moveto` and `attackmove` arms of the same block.
+2. **`unit_autopilot_pair`**, `docs/CRUISE_COMMAND.md`'s own first follow-up: `unit+61h`,
+   `unit+0fc4h`, `unit+0fdch` and the writer that carries the AI controller block at `[state]+8`
+   into them. Unchanged from milestone 2l and still the last step.
+3. **`ship_ai_state_machine`**, 00d21598 and 009f3dd0, so 009e1170 runs where the game runs it
+   and the `moveto`, `follow` and `stop` states exist at all. Unchanged from milestone 2l.
+4. **`008162b0`**, the command-availability predicate at vtable 16Ch, which is the whole of
+   `JoinFormation`: fourteen calls a run makes stop at it.
+5. **The three vtable leaves the small bindings need**: 128h (skill), 148h (role) and the
+   `IsKindOf(6)` class this `RepairEnable` answers, plus the delivery of the type-76h, 9Fh and
+   4Ch session messages.
+6. **`gameplay_effect_acquisition` as the executable can own it**: a `GameplayEffectManagerContext`,
+   a name-index host and a scalar-component dispatcher would make `00871ba0` concrete here and
+   with it the record effect preload's own acquire.
+7. **`scene_property_bag_holder`**: 00922e20 itself, so a created entity's +C0h carries the 0Ch
+   holder rather than a record.
+8. **`00424d00`**, the avoid-zone table rebuild, which needs `construct_world` 004de610's list at
+   `[[00e188a8]+19CCh]+370h`.
+9. **`load_prop_library` over `008F67B0`.** Packet `cc2_scene_traffic_groups` reconstructed the
+   property-group and enum library loader in the same merge that brought the vehicle-class
+   preload, so milestone 2h's own reader, the one stand-in that decides the generation gate for
+   every entity of every `.scn`, can now be deleted. That is milestone 2h's follow-up 2, and it
+   is the largest stand-in this executable still carries.
+10. **`construct_world` 004de610**, unchanged from milestones 2h, 2i, 2j, 2k and 2l.
 
 ## Next milestones
 
