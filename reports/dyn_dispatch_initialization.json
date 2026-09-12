@@ -1,0 +1,1043 @@
+{
+  "packet": "orch6_dyn_dispatch_g",
+  "source": "src/dyn_dispatch_initialization.cpp",
+  "header": "include/bsp/dyn_dispatch_initialization.hpp",
+  "doc": "docs/DYN_DISPATCH_INITIALIZATION.md",
+  "status": "complete_borrowed_vtables_and_CRT_Win32_build_original_byte_storage_and_real_CS_fixture_tested",
+  "routines": [
+    {
+      "entry": "00c48fd0",
+      "inclusive_end": "00c49222",
+      "last_instruction": "00c49222",
+      "last_instruction_length": 1,
+      "bytes": 595,
+      "instruction_count": 122,
+      "flow_gaps": [],
+      "sha256": "c9d6190a28348d373800dd8e542a5c99d80fa61545e0d3aff35eaa15171a7708",
+      "live_bytes_match_installed": true,
+      "name": "dyn_general_convex_construct_00c48fd0",
+      "original_abi": "cdecl, no arguments; EAX global owner; RET at00C49222",
+      "coverage": "complete",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "entry": "00cc8950",
+      "inclusive_end": "00cc8960",
+      "last_instruction": "00cc8960",
+      "last_instruction_length": 1,
+      "bytes": 17,
+      "instruction_count": 5,
+      "flow_gaps": [],
+      "sha256": "7786e03b04ea7d0c3f5caa87bec0fbab8275c0a80882650960cd72cb5793f0fe",
+      "live_bytes_match_installed": true,
+      "name": "initialize_static_dyn_dispatch_00cc8950",
+      "original_abi": "cdecl, no arguments; EAX atexit result; RET at00CC8960",
+      "coverage": "complete",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "entry": "00cd91d0",
+      "inclusive_end": "00cd91db",
+      "last_instruction": "00cd91db",
+      "last_instruction_length": 1,
+      "bytes": 12,
+      "instruction_count": 3,
+      "flow_gaps": [],
+      "sha256": "0769c9aff2e3be3a36e59d4932b3f4ee824eee77362804f8dc9f44be67ddc350",
+      "live_bytes_match_installed": true,
+      "name": "dyn_general_convex_destroy_00cd91d0",
+      "original_abi": "cdecl, no arguments; no consumed return; RET at00CD91DB",
+      "coverage": "complete",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "calls": [
+    {
+      "address": "00c48fec",
+      "native": "00CE2154+IAT",
+      "function": "00c48fd0",
+      "contract": "InitializeCriticalSectionAndSpinCount(0109ECC0,10000); stdcall pops8; BOOL ignored",
+      "bytes": "ff155421ce00",
+      "producer": "PUSH2710 atC48FD8, PUSH109ECC0 atC48FDD; MOV[109EA48],D7A1A8 atC48FE2 before call"
+    },
+    {
+      "address": "00c491ef",
+      "native": "00bf7030",
+      "function": "00c48fd0",
+      "contract": "Actual recovered CRT sqrt with squared length already in x87 ST0; no stack arguments, RET",
+      "registers": "ESI assigned109EA60 atC491B4 and advanced18h atC491F8; no other ESI writes until epilogue",
+      "floating_input": "loads y,x,z; y*y+x*x then adds z*z without a double spill"
+    },
+    {
+      "address": "00cc8950",
+      "native": "00c48fd0",
+      "function": "00cc8950",
+      "contract": "No arguments; constructor runs before atexit registration; EAX owner ignored"
+    },
+    {
+      "address": "00cc895a",
+      "native": "00bf6ff5",
+      "function": "00cc8950",
+      "contract": "Actual CRT _atexit receives CD91D0 pushed atCC8955; POP ECX atCC895F removes4 bytes; EAX status returned unchanged"
+    },
+    {
+      "address": "00cd91d5",
+      "native": "00CE2214+IAT",
+      "function": "00cd91d0",
+      "contract": "DeleteCriticalSection(0109ECC0); stdcall pops4; no later owner stores",
+      "bytes": "ff151422ce00",
+      "producer": "PUSH109ECC0 atCD91D0"
+    }
+  ],
+  "read_only_consumer_calls": [
+    {
+      "address": "00c53619",
+      "native": "00c53010",
+      "function": "00c535e0",
+      "contract": "External execution dependency, not reconstructed or semantically renamed in this packet",
+      "owner_producer_evidence": "C535EF derives owner+8; C535F2 derives owner+278; work record receives both before call; wrapperRET14h confirms five input stack words"
+    }
+  ],
+  "storage": {
+    "original_owner": "0109ea48",
+    "bytes": 656,
+    "alignment": 8,
+    "fields": [
+      {
+        "offset": "0x0",
+        "bytes": 4,
+        "meaning": "required actual vtable; writtenC48FE2"
+      },
+      {
+        "offset": "0x4",
+        "bytes": 4,
+        "meaning": "untouched alignment word; initially zero BSS"
+      },
+      {
+        "offset": "0x8",
+        "bytes": 624,
+        "meaning": "26 ordered double[3] support directions"
+      },
+      {
+        "offset": "0x278",
+        "bytes": 24,
+        "meaning": "actual Win32 CRITICAL_SECTION; OS initialization spin10000 and explicit deletion"
+      }
+    ],
+    "aggregate": "DynDispatchGlobalsStorage is a new noncopyable aggregate of actual globals, not a claimed contiguous native global layout",
+    "initial_bytes": "0109EA48 first12 live bytes allzero; seven static vtable words independently present in PE data"
+  },
+  "support_directions_before_normalization": [
+    [
+      0,
+      1,
+      0
+    ],
+    [
+      0,
+      -1,
+      0
+    ],
+    [
+      0,
+      1,
+      1
+    ],
+    [
+      0,
+      0,
+      1
+    ],
+    [
+      0,
+      -1,
+      1
+    ],
+    [
+      0,
+      -1,
+      -1
+    ],
+    [
+      0,
+      0,
+      -1
+    ],
+    [
+      0,
+      1,
+      -1
+    ],
+    [
+      1,
+      0,
+      0
+    ],
+    [
+      1,
+      1,
+      0
+    ],
+    [
+      1,
+      1,
+      1
+    ],
+    [
+      1,
+      0,
+      1
+    ],
+    [
+      1,
+      -1,
+      1
+    ],
+    [
+      1,
+      -1,
+      0
+    ],
+    [
+      1,
+      -1,
+      -1
+    ],
+    [
+      1,
+      0,
+      -1
+    ],
+    [
+      1,
+      1,
+      -1
+    ],
+    [
+      -1,
+      0,
+      0
+    ],
+    [
+      -1,
+      1,
+      0
+    ],
+    [
+      -1,
+      1,
+      1
+    ],
+    [
+      -1,
+      0,
+      1
+    ],
+    [
+      -1,
+      -1,
+      1
+    ],
+    [
+      -1,
+      -1,
+      0
+    ],
+    [
+      -1,
+      -1,
+      -1
+    ],
+    [
+      -1,
+      0,
+      -1
+    ],
+    [
+      -1,
+      1,
+      -1
+    ]
+  ],
+  "all_78_initial_stores": [
+    {
+      "instruction": "00c48ff4",
+      "destination": "0109ea50",
+      "offset": "0x8",
+      "value": 0
+    },
+    {
+      "instruction": "00c48ffc",
+      "destination": "0109ea58",
+      "offset": "0x10",
+      "value": 1
+    },
+    {
+      "instruction": "00c49004",
+      "destination": "0109ea60",
+      "offset": "0x18",
+      "value": 0
+    },
+    {
+      "instruction": "00c4900a",
+      "destination": "0109ea68",
+      "offset": "0x20",
+      "value": 0
+    },
+    {
+      "instruction": "00c49016",
+      "destination": "0109ea70",
+      "offset": "0x28",
+      "value": -1
+    },
+    {
+      "instruction": "00c4901c",
+      "destination": "0109eab8",
+      "offset": "0x70",
+      "value": -1
+    },
+    {
+      "instruction": "00c49022",
+      "destination": "0109ead0",
+      "offset": "0x88",
+      "value": -1
+    },
+    {
+      "instruction": "00c49028",
+      "destination": "0109ead8",
+      "offset": "0x90",
+      "value": -1
+    },
+    {
+      "instruction": "00c4902e",
+      "destination": "0109eaf0",
+      "offset": "0xa8",
+      "value": -1
+    },
+    {
+      "instruction": "00c49034",
+      "destination": "0109eb08",
+      "offset": "0xc0",
+      "value": -1
+    },
+    {
+      "instruction": "00c4903a",
+      "destination": "0109eb78",
+      "offset": "0x130",
+      "value": -1
+    },
+    {
+      "instruction": "00c49040",
+      "destination": "0109eb90",
+      "offset": "0x148",
+      "value": -1
+    },
+    {
+      "instruction": "00c49046",
+      "destination": "0109eba8",
+      "offset": "0x160",
+      "value": -1
+    },
+    {
+      "instruction": "00c4904c",
+      "destination": "0109ebb0",
+      "offset": "0x168",
+      "value": -1
+    },
+    {
+      "instruction": "00c49052",
+      "destination": "0109ebc8",
+      "offset": "0x180",
+      "value": -1
+    },
+    {
+      "instruction": "00c49058",
+      "destination": "0109ebe0",
+      "offset": "0x198",
+      "value": -1
+    },
+    {
+      "instruction": "00c4905e",
+      "destination": "0109ebe8",
+      "offset": "0x1a0",
+      "value": -1
+    },
+    {
+      "instruction": "00c49064",
+      "destination": "0109ec00",
+      "offset": "0x1b8",
+      "value": -1
+    },
+    {
+      "instruction": "00c4906a",
+      "destination": "0109ec18",
+      "offset": "0x1d0",
+      "value": -1
+    },
+    {
+      "instruction": "00c49070",
+      "destination": "0109ec30",
+      "offset": "0x1e8",
+      "value": -1
+    },
+    {
+      "instruction": "00c49076",
+      "destination": "0109ec48",
+      "offset": "0x200",
+      "value": -1
+    },
+    {
+      "instruction": "00c4907c",
+      "destination": "0109ec50",
+      "offset": "0x208",
+      "value": -1
+    },
+    {
+      "instruction": "00c49082",
+      "destination": "0109ec60",
+      "offset": "0x218",
+      "value": -1
+    },
+    {
+      "instruction": "00c49088",
+      "destination": "0109ec68",
+      "offset": "0x220",
+      "value": -1
+    },
+    {
+      "instruction": "00c4908e",
+      "destination": "0109ec78",
+      "offset": "0x230",
+      "value": -1
+    },
+    {
+      "instruction": "00c49094",
+      "destination": "0109ec80",
+      "offset": "0x238",
+      "value": -1
+    },
+    {
+      "instruction": "00c4909a",
+      "destination": "0109ec88",
+      "offset": "0x240",
+      "value": -1
+    },
+    {
+      "instruction": "00c490a0",
+      "destination": "0109ec90",
+      "offset": "0x248",
+      "value": -1
+    },
+    {
+      "instruction": "00c490a6",
+      "destination": "0109eca0",
+      "offset": "0x258",
+      "value": -1
+    },
+    {
+      "instruction": "00c490ac",
+      "destination": "0109eca8",
+      "offset": "0x260",
+      "value": -1
+    },
+    {
+      "instruction": "00c490b2",
+      "destination": "0109ecb8",
+      "offset": "0x270",
+      "value": -1
+    },
+    {
+      "instruction": "00c490b8",
+      "destination": "0109ea78",
+      "offset": "0x30",
+      "value": 0
+    },
+    {
+      "instruction": "00c490be",
+      "destination": "0109ea80",
+      "offset": "0x38",
+      "value": 0
+    },
+    {
+      "instruction": "00c490c4",
+      "destination": "0109ea98",
+      "offset": "0x50",
+      "value": 0
+    },
+    {
+      "instruction": "00c490ca",
+      "destination": "0109eaa0",
+      "offset": "0x58",
+      "value": 0
+    },
+    {
+      "instruction": "00c490d0",
+      "destination": "0109eab0",
+      "offset": "0x68",
+      "value": 0
+    },
+    {
+      "instruction": "00c490d6",
+      "destination": "0109eac8",
+      "offset": "0x80",
+      "value": 0
+    },
+    {
+      "instruction": "00c490dc",
+      "destination": "0109eae0",
+      "offset": "0x98",
+      "value": 0
+    },
+    {
+      "instruction": "00c490e2",
+      "destination": "0109eae8",
+      "offset": "0xa0",
+      "value": 0
+    },
+    {
+      "instruction": "00c490e8",
+      "destination": "0109eaf8",
+      "offset": "0xb0",
+      "value": 0
+    },
+    {
+      "instruction": "00c490ee",
+      "destination": "0109eb18",
+      "offset": "0xd0",
+      "value": 0
+    },
+    {
+      "instruction": "00c490f4",
+      "destination": "0109eb20",
+      "offset": "0xd8",
+      "value": 0
+    },
+    {
+      "instruction": "00c490fa",
+      "destination": "0109eb38",
+      "offset": "0xf0",
+      "value": 0
+    },
+    {
+      "instruction": "00c49100",
+      "destination": "0109eb60",
+      "offset": "0x118",
+      "value": 0
+    },
+    {
+      "instruction": "00c49106",
+      "destination": "0109eb98",
+      "offset": "0x150",
+      "value": 0
+    },
+    {
+      "instruction": "00c4910c",
+      "destination": "0109ebc0",
+      "offset": "0x178",
+      "value": 0
+    },
+    {
+      "instruction": "00c49112",
+      "destination": "0109ebf0",
+      "offset": "0x1a8",
+      "value": 0
+    },
+    {
+      "instruction": "00c49118",
+      "destination": "0109ebf8",
+      "offset": "0x1b0",
+      "value": 0
+    },
+    {
+      "instruction": "00c4911e",
+      "destination": "0109ec10",
+      "offset": "0x1c8",
+      "value": 0
+    },
+    {
+      "instruction": "00c49124",
+      "destination": "0109ec38",
+      "offset": "0x1f0",
+      "value": 0
+    },
+    {
+      "instruction": "00c4912a",
+      "destination": "0109ec70",
+      "offset": "0x228",
+      "value": 0
+    },
+    {
+      "instruction": "00c49130",
+      "destination": "0109ec98",
+      "offset": "0x250",
+      "value": 0
+    },
+    {
+      "instruction": "00c49136",
+      "destination": "0109ea88",
+      "offset": "0x40",
+      "value": 1
+    },
+    {
+      "instruction": "00c4913c",
+      "destination": "0109ea90",
+      "offset": "0x48",
+      "value": 1
+    },
+    {
+      "instruction": "00c49142",
+      "destination": "0109eaa8",
+      "offset": "0x60",
+      "value": 1
+    },
+    {
+      "instruction": "00c49148",
+      "destination": "0109eac0",
+      "offset": "0x78",
+      "value": 1
+    },
+    {
+      "instruction": "00c4914e",
+      "destination": "0109eb00",
+      "offset": "0xb8",
+      "value": 1
+    },
+    {
+      "instruction": "00c49154",
+      "destination": "0109eb10",
+      "offset": "0xc8",
+      "value": 1
+    },
+    {
+      "instruction": "00c4915a",
+      "destination": "0109eb28",
+      "offset": "0xe0",
+      "value": 1
+    },
+    {
+      "instruction": "00c49160",
+      "destination": "0109eb30",
+      "offset": "0xe8",
+      "value": 1
+    },
+    {
+      "instruction": "00c49166",
+      "destination": "0109eb40",
+      "offset": "0xf8",
+      "value": 1
+    },
+    {
+      "instruction": "00c4916c",
+      "destination": "0109eb48",
+      "offset": "0x100",
+      "value": 1
+    },
+    {
+      "instruction": "00c49172",
+      "destination": "0109eb50",
+      "offset": "0x108",
+      "value": 1
+    },
+    {
+      "instruction": "00c49178",
+      "destination": "0109eb58",
+      "offset": "0x110",
+      "value": 1
+    },
+    {
+      "instruction": "00c4917e",
+      "destination": "0109eb68",
+      "offset": "0x120",
+      "value": 1
+    },
+    {
+      "instruction": "00c49184",
+      "destination": "0109eb70",
+      "offset": "0x128",
+      "value": 1
+    },
+    {
+      "instruction": "00c4918a",
+      "destination": "0109eb80",
+      "offset": "0x138",
+      "value": 1
+    },
+    {
+      "instruction": "00c49190",
+      "destination": "0109eb88",
+      "offset": "0x140",
+      "value": 1
+    },
+    {
+      "instruction": "00c49196",
+      "destination": "0109eba0",
+      "offset": "0x158",
+      "value": 1
+    },
+    {
+      "instruction": "00c4919c",
+      "destination": "0109ebb8",
+      "offset": "0x170",
+      "value": 1
+    },
+    {
+      "instruction": "00c491a2",
+      "destination": "0109ebd0",
+      "offset": "0x188",
+      "value": 1
+    },
+    {
+      "instruction": "00c491a8",
+      "destination": "0109ebd8",
+      "offset": "0x190",
+      "value": 1
+    },
+    {
+      "instruction": "00c491ae",
+      "destination": "0109ec08",
+      "offset": "0x1c0",
+      "value": 1
+    },
+    {
+      "instruction": "00c491b9",
+      "destination": "0109ec20",
+      "offset": "0x1d8",
+      "value": 1
+    },
+    {
+      "instruction": "00c491bf",
+      "destination": "0109ec28",
+      "offset": "0x1e0",
+      "value": 1
+    },
+    {
+      "instruction": "00c491c5",
+      "destination": "0109ec40",
+      "offset": "0x1f8",
+      "value": 1
+    },
+    {
+      "instruction": "00c491cb",
+      "destination": "0109ec58",
+      "offset": "0x210",
+      "value": 1
+    },
+    {
+      "instruction": "00c491d1",
+      "destination": "0109ecb0",
+      "offset": "0x268",
+      "value": 1
+    }
+  ],
+  "normalization": {
+    "range": "00c491d7..00c49217",
+    "schedule": "FLDy,FLDx,FLDz,FLDST1,FMULPST2,FLDST2,FMULPST3,FXCH,FADDPST2,FMULST0,FADDP; CRTsqrtST0;FLD1,FDIVRP; x,y,z stores with original pops",
+    "end_test": "ESI starts109EA60; advances18h; signed compare with109ECD0; exactly26 directions",
+    "constant": "00D7A250 bytes000000000000F0BF = exactdouble-1; FLDZ/FLD1 supply0/1",
+    "crt_service": "Existing native_crt_sqrt_st0_00bf7030; required CameraAxesCrtAccess contains actual volatile0109DD78 state and actual00C27489 exception service; no replacement sqrt/CRT implementation",
+    "new_register_binding": "EDI actual owner; EBX borrowed CRT access; ESI original component pointer; GPR setup adds no floating operation/spill"
+  },
+  "dispatch_objects": [
+    {
+      "object": "00e17434",
+      "vtable": "00d7a184",
+      "vslot0": "00c49a30",
+      "complete_object_locator": "00d7c77c",
+      "type_descriptor": "00e171a4",
+      "rtti_name": ".?AVBoxBoxIntersect@Dyn@@",
+      "producer": "initialized PE data word"
+    },
+    {
+      "object": "00e17438",
+      "vtable": "00d7a18c",
+      "vslot0": "00c53630",
+      "complete_object_locator": "00d7c730",
+      "type_descriptor": "00e17174",
+      "rtti_name": ".?AVTerrainConvexMeshIntersect@Dyn@@",
+      "producer": "initialized PE data word"
+    },
+    {
+      "object": "00e17440",
+      "vtable": "00d7a1cc",
+      "vslot0": "00c518d0",
+      "complete_object_locator": "00d7c5b0",
+      "type_descriptor": "00e170b4",
+      "rtti_name": ".?AVSphereSphereIntersect@Dyn@@",
+      "producer": "initialized PE data word"
+    },
+    {
+      "object": "00e17444",
+      "vtable": "00d7a1d4",
+      "vslot0": "00c48330",
+      "complete_object_locator": "00d7c564",
+      "type_descriptor": "00e1708c",
+      "rtti_name": ".?AVBoxSphereIntersect@Dyn@@",
+      "producer": "initialized PE data word"
+    },
+    {
+      "object": "0109ea48",
+      "vtable": "00d7a1a8",
+      "vslot0": "00c535e0",
+      "complete_object_locator": "00d7c698",
+      "type_descriptor": "00e17128",
+      "rtti_name": ".?AVGeneralConvexIntersect@Dyn@@",
+      "producer": "00c48fe2"
+    },
+    {
+      "object": "00e17448",
+      "vtable": "00d7a1f4",
+      "vslot0": "00c44780",
+      "complete_object_locator": "00d7c434",
+      "type_descriptor": "00e16fd4",
+      "rtti_name": ".?AVConvexRayIntersection@Dyn@@",
+      "producer": "initialized PE data word"
+    },
+    {
+      "object": "00e174e8",
+      "vtable": "00d7a1fc",
+      "vslot0": "00c50dd0",
+      "complete_object_locator": "00d7c3e8",
+      "type_descriptor": "00e16fac",
+      "rtti_name": ".?AVBoxRayIntersection@Dyn@@",
+      "producer": "initialized PE data word"
+    },
+    {
+      "object": "00e174ec",
+      "vtable": "00d7a204",
+      "vslot0": "00c50740",
+      "complete_object_locator": "00d7c39c",
+      "type_descriptor": "00e16f84",
+      "rtti_name": ".?AVSphereRayIntersection@Dyn@@",
+      "producer": "initialized PE data word"
+    }
+  ],
+  "static_object_producer": {
+    "coverage": "complete PE data words for seven scene dispatch objects; collision execution remains external",
+    "incoming_references": {
+      "00e17434": [
+        "00c38128"
+      ],
+      "00e17438": [
+        "00c38112",
+        "00c38117",
+        "00c3811d"
+      ],
+      "00e17440": [
+        "00c38122"
+      ],
+      "00e17444": [
+        "00c38107",
+        "00c3810c",
+        "00c3810f"
+      ],
+      "00e17448": [
+        "00c3815f",
+        "00c38173",
+        "00c38179"
+      ],
+      "00e174e8": [
+        "00c38169"
+      ],
+      "00e174ec": [
+        "00c3817f"
+      ]
+    },
+    "incoming_reference_kind": "Instruction-verified incoming uses within00C38070..00C38461; no constructor WRITE references. Live dataref atC3815F associates the wrong object; exact MOV literal determines this row.",
+    "tables": "One actual virtual entry at each listed vtable; preceding locator and full RTTI names recovered; no invented lifecycle or filler slots"
+  },
+  "initializer_lifetime": {
+    "only_initializer_pointer": "00CE36B0 contains50 89 CC00 ->00CC8950",
+    "only_constructor_callsite": "00CC8950",
+    "only_teardown_pointer": "00CC8955 pushes00CD91D0 foratexit",
+    "registration_result": "Preserved0/-1 actual _atexit result. Failure does not undo initialization.",
+    "owner_admission": "Required sole stable process owner; different owner binding throws; callbacks must run before owner storage ceases to exist",
+    "teardown": "Only DeleteCriticalSection; no data/table clears, deallocation or automatic RAII deletion"
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "worker_mutations": false,
+    "no_ghidra_function": [],
+    "flow_gaps": [],
+    "resolved_missing_definition": {
+      "entry": "00cc8950",
+      "inclusive_end": "00cc8960",
+      "last_instruction": "00cc8960",
+      "last_instruction_length": 1,
+      "defined_by": "root under write lock, saved/exported and released before worker reclaim",
+      "root_report": "reports/dyn_dispatch_initializer_definition.json"
+    },
+    "snapshot_limit": "Old functions snapshot may show prior candidate atCC8950; all acceptance queries used actual live exact definition"
+  },
+  "original_image": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "validation": {
+    "build": "./scripts/build.ps1: MSVC Win32 successful, existing CTest2/2 passed after verify-seeds",
+    "tracked_tests_added": 0,
+    "fixture": "local/dyn_dispatch_probe.cpp, compiled /O2 /fp:strict /MANIFEST:EMBED /BASE:0x20000000 /DYNAMICBASE:NO",
+    "constructor_cases": 12,
+    "support_doubles_per_case": 78,
+    "x87_controls": [
+      "027f",
+      "037f",
+      "067f",
+      "0a7f",
+      "0e7f",
+      "007f"
+    ],
+    "mxcsr": "00001f80",
+    "crt_bypass_values": [
+      0,
+      1
+    ],
+    "compared": "complete278h prefix including vtable/all78 doubles/poisoned untouched padding, EAX owner result and x87 CW/status",
+    "matched_crt_exception_boundary_calls": 120,
+    "exception_boundary": "Both sides share existing recovered CRT with explicit recording00C27489 handler; produced result/control unchanged; unary uninitialized argument2 never read",
+    "real_lock_lifecycle_cases": 26,
+    "lock_checks": "Native spin10000, recursive enters, cross-thread TryEnter exclusion while held and admission after release; real DeleteCriticalSection",
+    "registration_checks": 4,
+    "registration_return_inputs": [
+      0,
+      -1
+    ],
+    "registration_checks_scope": "Original and rebuilt initialize before registration; exact teardown callback; return status; failure retains actual live lock until explicit fixture cleanup",
+    "pe_static_words_matched": 7,
+    "different_owner_rejected": true,
+    "failures": 0,
+    "report_calls": "4 direct call rows checked,0 failed;2 WinAPI IAT rows explicitly indirect and manually checked against live listing/bytes; local/dyn_dispatch_report_calls.log"
+  },
+  "preserved_fixture_reuse": {
+    "source": "J:/PROG/battlestations-pacific-decompile-orch6-20260912/local/dyn_scene_native_image.bin",
+    "local_copy": "local/dyn_scene_native_image.bin",
+    "bytes": 14872576,
+    "sha256": "86f0f456d654ba64cf421f073ba2aa95d7dbef99fa324b42c7e29a6ad3f1728e",
+    "earlier_scope": "Existing primary scene/world fixture executes originalC48FD0 with finite-domainFSQRT boundary; current fixture replaces that numerical boundary with shared recovered CRT",
+    "new_operand_relocations": [
+      {
+        "operand_address": "00cc8956",
+        "meaning": "pushed teardown callback"
+      },
+      {
+        "operand_address": "00cd91d1",
+        "meaning": "pushed actual CS pointer"
+      },
+      {
+        "operand_address": "00cd91d7",
+        "meaning": "DeleteCriticalSection IAT address"
+      }
+    ],
+    "relocation_delta": "2fc00000",
+    "mapped_base": "30000000",
+    "other_probe_memory_changes": "Resolve two WinAPI IAT entries to actual OS functions; redirectBF7030 to same recoveredCRT andBF6FF5 to explicit registration boundary; relocate original8virtualentry words and7staticobject words only in private image",
+    "original_installation_modified": false
+  },
+  "corrections": [
+    {
+      "was": "C48FD0 only an external general-dispatch startup prerequisite",
+      "is": "Complete real owner constructor, exact26 directions, CS initialization, registration and teardown now callable with actual tables/CRT",
+      "evidence": "Three complete owned bodies and original-byte/lifecycle fixture"
+    },
+    {
+      "was": "CG_static_init_00cd91d0 generic category suggested initialization",
+      "is": "It deletes the GeneralConvex global critical section and performs no initialization",
+      "evidence": "CD91D0..CD91DB complete12bytes andCC8955 registeredcallback producer"
+    },
+    {
+      "was": "Live datarefs attach00C3815F to BoxRay object00E174E8",
+      "is": "The actual MOV EAX,00E17448 loads ConvexRay; BoxRay literal is at00C38169",
+      "evidence": "Live00C38070 listing at00C3815F..00C38179; consumer rows use instruction evidence"
+    }
+  ],
+  "limits": [
+    "Caller must supply complete actual callable collision/ray tables and actual CRT state/exception service; no fallback or generated dispatch methods.",
+    "Collision algorithms, task execution, engine/world/scene teardown and runtime wiring are external. No mission/gameplay validation.",
+    "Native raw global/exception ABI, invalid pointers, double initialization/deletion, concurrent startup/destruction and unmasked hardware-fault sequencing are not claimed.",
+    "Fixture uses the shared recovered CRT kernel and explicit handler/registration boundaries. It proves storage/operation/service-input order, not independent CRT-handler/atexit-engine fidelity.",
+    "Critical-section process-specific debug/handle pointers are exercised through the real OS lifecycle rather than compared as equal raw addresses."
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "artifacts": [
+    {
+      "path": "include/bsp/dyn_dispatch_initialization.hpp",
+      "sha256": "6511497f51a59ae26f76a36e6e2fd58d14e0d0873c89103842165239c7ac25ee"
+    },
+    {
+      "path": "src/dyn_dispatch_initialization.cpp",
+      "sha256": "6e3b6ce622b6abc36389c26708c8763e9640b6716b943f8a1e9ffcdf170fbdcf"
+    },
+    {
+      "path": "local/dyn_dispatch_probe.cpp",
+      "sha256": "73930262c7826279650cb985dae0c280ad134493325e8aabcb78ea2656219ddc"
+    },
+    {
+      "path": "local/build_dyn_dispatch_probe.ps1",
+      "sha256": "b0003c8e4529b3bdac35fb4a9f7acf61af3654a975572f561b19e3d24b3c5ef6"
+    },
+    {
+      "path": "local/build_dyn_dispatch_probe.cmd",
+      "sha256": "53327b03aaf30322fd27b05105da9581e60386afffaa2f03a415dbae17bd7cfe"
+    },
+    {
+      "path": "local/dyn_dispatch_probe.log",
+      "sha256": "90a607d2dd08a81280a505e6332ed13c7629dce74998f7fb9e26f304df0852f6"
+    },
+    {
+      "path": "local/dyn_dispatch_probe_compile.log",
+      "sha256": "803cde9306f5f1e8f83ce2fc1d099db0387c6a92266d54fb106e4820a3647434"
+    },
+    {
+      "path": "local/dyn_dispatch_build.log",
+      "sha256": "4992117e081606ab4c42af698b574d6cb152f1ca8659ea5ad8176d936d1166bb"
+    },
+    {
+      "path": "local/dyn_dispatch_verify_seeds.log",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/dyn_dispatch_initializer_listing.txt",
+      "sha256": "b6fa6da9f9fa62ac6f43b0cd5ade84ae79c38c542cb61d1370d9d1cc27f94a89"
+    },
+    {
+      "path": "local/dyn_dispatch_evidence.json",
+      "sha256": "8424b8392039ca9ce50c2d55605984ec92c0bca69d1e4c9d86ebcfaf975a8d1a"
+    },
+    {
+      "path": "local/collect_dyn_dispatch_evidence.py",
+      "sha256": "b180d3ef12e6bb0216c17c137316c1e2c1e567f970c76037782de0b587ba8156"
+    },
+    {
+      "path": "local/dyn_dispatch_bytes_00c48fd0.txt",
+      "sha256": "75ea31da6a1ea554758dcedebe13edd31f27e2e5f48a4089dfa67d1115a1b66f"
+    },
+    {
+      "path": "local/dyn_dispatch_bytes_00cc8950.txt",
+      "sha256": "b70bc52bf293d7f2c2ce61b47a8a556b90ee42b194dbc10dd1923936423493b6"
+    },
+    {
+      "path": "local/dyn_dispatch_bytes_00cd91d0.txt",
+      "sha256": "6c25cfe975869c1adf355bb0f9d4e3620b16e8d9e19cb74bb7176c93fe81c4cf"
+    },
+    {
+      "path": "local/dyn_dispatch_report_calls.log",
+      "sha256": "712773374a844ef87732af9d9339c76b41cea98b5aea7d9980db976f3a4053ea"
+    }
+  ],
+  "compiled_inputs": [
+    {
+      "path": "include/bsp/dyn_dispatch_initialization.hpp",
+      "compiled_bytes_sha256": "6511497f51a59ae26f76a36e6e2fd58d14e0d0873c89103842165239c7ac25ee",
+      "git_lf_sha256": "6511497f51a59ae26f76a36e6e2fd58d14e0d0873c89103842165239c7ac25ee"
+    },
+    {
+      "path": "src/dyn_dispatch_initialization.cpp",
+      "compiled_bytes_sha256": "6e3b6ce622b6abc36389c26708c8763e9640b6716b943f8a1e9ffcdf170fbdcf",
+      "git_lf_sha256": "75829e5d8da162c35cf29ac9f083e76a881c8b08ba808aba7d3c25b9e764302a"
+    }
+  ]
+}
