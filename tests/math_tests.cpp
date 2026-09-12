@@ -1,4 +1,5 @@
 #include "bsp/air_operations.hpp"
+#include "bsp/plane_flight.hpp"
 #include "bsp/cruise_speed_setting.hpp"
 #include "bsp/director_update_arms.hpp"
 #include "bsp/plane_squadron.hpp"
@@ -2999,6 +3000,36 @@ int main() {
         bands.periscope_raised = true;
         check(bsp::sensor_category_submarine_00852b90(-5.0f, bands) == SensorCategory::periscope_out,
             "00852C4C picks PeriscopeOut from the +1234h flag, PeriscopeIn without it");
+    }
+
+    {
+        // 009FB800 over a Shooting Star row (DropAngle 0.698132, no ClimbAngle key so
+        // class+1ECh is 0). Pins the asymmetry the two arms have: the climb arm falls
+        // back to the DEG(40) floor and so commands nothing, while the dive arm's
+        // DropAngle carries both the gain and the cap.
+        bsp::PlanePitchCommandInputs climb;
+        climb.desired_altitude = 400.0f;
+        climb.reference = 1.0f;
+        climb.unit_world_y = 100.0f;
+        climb.class_drop_angle = 0.698132f;
+        const float climb_demand = bsp::pitch_command_009fb800(climb);
+
+        bsp::PlanePitchCommandInputs dive = climb;
+        dive.desired_altitude = 100.0f;
+        dive.unit_world_y = 400.0f;
+        const float dive_demand = bsp::pitch_command_009fb800(dive);
+
+        bsp::PlanePitchCommandInputs at_ceiling = climb;
+        at_ceiling.desired_altitude = 9000.0f;
+        at_ceiling.unit_world_y = 1450.0f;
+        const float ceiling_demand = bsp::pitch_command_009fb800(at_ceiling);
+
+        check(climb_demand == 0.0f,
+            "009FB88D: class+1ECh has no Lua key, so every shipped plane climbs on a zero gain");
+        check(dive_demand < 0.0f && std::fabs(dive_demand + 0.698132f) < 1e-5f,
+            "009FB9B8: -min(DropAngle * clamp(-x/200, 0, ref), max(DropAngle*1.6, DEG(60)))");
+        check(ceiling_demand == 0.0f,
+            "009FB809: Dynamics/Ceiling minus 50 caps the demand before the error is taken");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

@@ -1,0 +1,928 @@
+{
+  "packet": "cc2_plane_flight",
+  "owner": "agent/cc2-plane-flight",
+  "date": "2026-09-12",
+  "ghidra": "read-only: no rename, comment, prototype, function creation or save",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "doc": "docs/PLANE_FLIGHT.md",
+  "headline": [
+    "unit+9D4h is the plane's squadron, not a pilot control block. The pilot control block is unit+9E4h: five float axes and three bytes, latched into unit+BB0h each step by 007B9770.",
+    "The flight controller is the object at unit+AB0h, constructed by 007D7EA0(this, unit) from the plane unit constructor 007CFD20 at 007CFF87; it holds the unit at +8h and the plane class descriptor (unit+538h) at +0Ch.",
+    "The per-step law is the tick element's slot +8h, 007CE040, shared by all five plane classes; its motion dispatch at 007CEC30-007CECB4 picks one of three arms, and the free-flight arm reaches the core law through 007CC2F0 -> 007DC830 -> 007DB680 -> 007DA710.",
+    "The Dynamics/* tuning group is mirrored verbatim from tuning+210h to 00F872F0 by a single REP MOVSD at 007EAAE1, which is why the flight code reads absolute globals instead of calling 0042E740."
+  ],
+  "routines": [
+    {
+      "address": "007CFD20",
+      "native": "none",
+      "name": "BSP_PlaneUnitInstance_Construct",
+      "convention": "__thiscall(instance, a, b), chains to 0095CC90 at 007CFD4B",
+      "body": "007CFD20-007D0344",
+      "role": "the level-5 plane unit constructor: installs the eight vptrs (00D05F20 at +0h, 00D05EDC at +310h), zeroes the pilot control block at +9E4h with the throttle seeded 1.0f at 007CFEB0, zeroes the squadron pointer at 007CFE6C and the spawn index to -1 at 007CFE72, and builds the flight controller at +AB0h at 007CFF87",
+      "coverage": "partial: the field writes 007CFDB4-007D00B7 and the two sub-object constructions; 007D00B7-007D0344 unread",
+      "state": "analysed",
+      "representative_callee": "0095CC90"
+    },
+    {
+      "address": "007D7EA0",
+      "native": "none",
+      "name": "BSP_PlaneFlightController_Construct",
+      "convention": "__thiscall(controller = unit+AB0h, unit), RET 4",
+      "body": "007D7EA0-007D7FE7",
+      "role": "the flight controller constructor: vtable 00D06848, +8h the unit, +0Ch unit+538h, +10h an operator new(0D0h) sub-object with vtable 00D06844, +90h 99.0f, +98h/+9Ch 1.0f",
+      "coverage": "complete for the controller's own fields; the 0D0h sub-object is partial",
+      "state": "analysed, reconstructed as offsets",
+      "representative_callee": "00BF681B"
+    },
+    {
+      "address": "007CE040",
+      "native": "none",
+      "name": "BSP_PlaneTickElement_FixedStep",
+      "convention": "__thiscall(node = unit+310h, float step)",
+      "body": "007CE040-007CF172",
+      "role": "tick element slot +8h for every plane class; runs the level-4 unit tick, then the three-arm motion dispatch, then the control latch",
+      "coverage": "partial: 007CE040-007CE094, 007CEC30-007CECBF and 007CE96F; the damage, fire, collision, effect and sound body is unread",
+      "state": "analysed, sequence reconstructed",
+      "representative_callee": "00953CC0"
+    },
+    {
+      "address": "00953CC0",
+      "native": "none",
+      "name": "BSP_UnitGameObject_TickAdvance",
+      "convention": "__thiscall(node, float step), RET 4",
+      "body": "00953CC0-00953D9D",
+      "role": "dispatches unit->vtable[+1F0h] unconditionally and unit->vtable[+1D8h] only when unit+520h is clear",
+      "coverage": "complete",
+      "state": "analysed (read-only, owned by docs/TICK_ELEMENT_OVERRIDES.md)",
+      "representative_callee": "00927F10"
+    },
+    {
+      "address": "007DC830",
+      "native": "none",
+      "name": "BSP_PlaneFlight_FreeFlightStep",
+      "convention": "__thiscall(controller, float step)",
+      "body": "007DC830-007DCCE2",
+      "role": "the free-flight step: refreshes the controller's two mode bytes from unit+9F9h/+9F8h, runs the core law, then the stall ratio against StallSpd and the drag interpolations over the Dynamics mirror",
+      "coverage": "partial: 007DC830-007DC88E and the two interpolation blocks; 007DCA17-007DCB47 unread",
+      "state": "analysed",
+      "representative_callee": "007DB680"
+    },
+    {
+      "address": "007DB680",
+      "native": "none",
+      "name": "BSP_PlaneFlight_CoreLaw",
+      "convention": "__thiscall(controller, float step, float, float, int), 1214 listed instructions",
+      "body": "007DB680-007DC82A",
+      "role": "the core law: 007D81B0, 007D9C10, the rate law 007DA710, 007D7C00 over the controller's +18h and +3Ch blocks, then the stall and speed block; reads tuning+518h Pilot/Landing/WireRope",
+      "coverage": "partial: the five callees and the two control-block pointers at 007DB6C7/007DB6DE; 007DB760-007DC82A unread",
+      "state": "analysed",
+      "representative_callee": "007DA710"
+    },
+    {
+      "address": "007DA710",
+      "native": "none",
+      "name": "BSP_PlaneFlight_ControlRateLaw",
+      "convention": "__thiscall(controller, float step)",
+      "body": "007DA710-007DAFCD",
+      "role": "turns the latched control axes into rates using the per-class gains RollSpd +1A8h, PitchSpd +1ACh, YawSpd +1B0h and NegativePitchRatio +1D8h; discards the roll term when controller+FCh is not 1",
+      "coverage": "partial: the four gains, the three latched inputs and the mode gate; 007DA380's out-parameters and the tail past 007DA934 unread",
+      "state": "analysed",
+      "representative_callee": "007DA380"
+    },
+    {
+      "address": "007CAF10",
+      "native": "none",
+      "name": "BSP_Plane_LimitAndResetControls",
+      "convention": "__thiscall(unit, float step), RET 4; no Ghidra function",
+      "body": "007CAF10-007CB431",
+      "role": "the plane's vtable[+1ECh], called from 007CC2F0 at 007CC322 immediately before the controller step: clamps each control axis between two bounds at 007CB161-007CB1B3 and resets the roll axis and its latch at 007CB3B9-007CB3DC",
+      "coverage": "partial: those two blocks only",
+      "state": "analysed from the raw listing"
+    },
+    {
+      "address": "007B9770",
+      "native": "none",
+      "name": "BSP_Plane_LatchControlInput",
+      "convention": "__thiscall(unit), RET, no argument",
+      "body": "007B9770-007B97D2",
+      "role": "copies the five live control axes to unit+BB0h and the three bytes to unit+BC8h with the permutation +9F8h->+BC8h, +9FAh->+BC9h, +9F9h->+BCAh",
+      "coverage": "complete",
+      "state": "analysed, reconstructed, build-tested"
+    },
+    {
+      "address": "007BB6E0",
+      "native": "none",
+      "name": "BSP_Plane_QuantizeControlAxes",
+      "convention": "__thiscall(unit, const float* axes), called from 007BB920",
+      "body": "007BB6E0-007BB91E",
+      "role": "the signed-byte round trip every control axis takes so a locally flown plane and a replicated one see the same input: q = ftol(v*127 + 128.5) clamped to [1, 0FFh], then (q - 128)/127",
+      "coverage": "partial: the first axis in full, the other four by repetition at 007BB730 and 007BB763",
+      "state": "analysed, one axis reconstructed, build-tested",
+      "representative_callee": "00BF7420"
+    },
+    {
+      "address": "007ED0D0",
+      "native": "none",
+      "name": "BSP_PlaneSquadron_InsertPlaneSorted",
+      "convention": "__thiscall(squadron, plane, spawnIndex), RET 8",
+      "body": "007ED0D0-007ED150",
+      "role": "one of the two producers of plane+9D4h: writes the squadron back pointer and the spawn index, then inserts the plane into squadron+3D0h[] in +9D8h order and bumps +3CCh",
+      "coverage": "complete",
+      "state": "analysed"
+    },
+    {
+      "address": "009FBA50",
+      "native": "none",
+      "name": "BSP_PilotBot_CommandCruiseAltitude",
+      "convention": "float __thiscall(this = state+4h, float base, float rangeLow, float rangeHigh, float scale), RET 10h",
+      "body": "009FBA50-009FBB1C",
+      "role": "biases the altitude by max(rangeHigh-rangeLow,0) * scale * classDesc+518h, clamps against Dynamics/Ceiling-50 and the squadron's +394h, then tail-calls 009FB800 with the clamped and unclamped values; leaves scale in ST0 at the RET",
+      "coverage": "complete",
+      "state": "analysed, reconstructed, build-tested",
+      "representative_callee": "009FB800"
+    },
+    {
+      "address": "009FB800",
+      "native": "none",
+      "name": "BSP_PilotBot_CommandPitchFromAltitude",
+      "convention": "void __thiscall(this = state+4h, float desiredAltitude, float reference), RET 8",
+      "body": "009FB800-009FBA4F",
+      "role": "turns the altitude error into the signed pitch demand at command+2BCh with command+2D0h = 2; the climb gain is classDesc+1ECh against a DEG(40) floor and Pilot/General/ClimbDist, the dive gain is DropAngle against a DEG(60) floor and Pilot/General/DropDist",
+      "coverage": "complete",
+      "state": "analysed, reconstructed, build-tested, fixture-tested",
+      "representative_callee": "0042E740"
+    },
+    {
+      "address": "009F9E40",
+      "native": "none",
+      "name": "BSP_PilotBot_CommandHeadingToPoint",
+      "convention": "void __thiscall(this = state+4h, const float target[3]), RET 4",
+      "body": "009F9E40-009F9ECE",
+      "role": "command+2C0h = wrap(PI/2 - atan2(target.z - unit.z, target.x - unit.x)) into [0, 2PI); command+2CCh = 2",
+      "coverage": "complete",
+      "state": "analysed, reconstructed, build-tested",
+      "representative_callee": "00BF701A"
+    },
+    {
+      "address": "0099B450",
+      "native": "none",
+      "name": "BSP_PilotBot_SeedPlanSlots",
+      "convention": "__thiscall(command block = task+4h)",
+      "body": "0099B450-0099B4E2",
+      "role": "seeds the five {current, desired, flag} plan triples at command+274h, +280h, +28Ch, +298h and +2A4h from unit+9F0h, +9E4h, +9ECh, +9E8h and +9F4h, clearing every flag",
+      "coverage": "complete",
+      "state": "analysed"
+    },
+    {
+      "address": "007E2A20",
+      "native": "none",
+      "name": "BSP_GameTuning_LoadFromPlaneGlobals",
+      "convention": "__thiscall(tuning singleton), existing ledger name",
+      "body": "007E2A20-007EAB5E",
+      "role": "its tail at 007EAAD7-007EAAE1 is the only producer of the Dynamics mirror: MOV ECX,4Eh / MOV EDI,00F872F0h / REP MOVSD from ESI = EBP+210h (007E2D03, the only ESI write after 007E2A61)",
+      "coverage": "partial: the mirror copy only; the 394 key reads belong to docs/GAME_TUNING_SINGLETON.md",
+      "state": "analysed for the mirror"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "007CE08F",
+      "native": "00953CC0",
+      "method": "unit_game_object_tick_00953cc0",
+      "containing": "007CE040",
+      "signature": "node / step / void",
+      "note": "the level-4 unit tick"
+    },
+    {
+      "address": "00953CFD",
+      "native": "0095DC40",
+      "method": "class_input_poll_0095dc40",
+      "containing": "00953CC0",
+      "signature": "unit / step / void",
+      "note": "unit->vtable[+1F0h]; the plane's is the turbo double-tap detector"
+    },
+    {
+      "address": "00953D98",
+      "native": "none",
+      "method": "out_of_action_countdown_007c6c30",
+      "containing": "00953CC0",
+      "signature": "unit / step / void",
+      "note": "unit->vtable[+1D8h], only when unit+520h is clear (00953D7D / 00953D84) Resolved target: 007C6C30, the plane's vtable[+1D8h]; no Ghidra function, see no_ghidra_function.",
+      "resolved_target": "007C6C30, the plane's vtable[+1D8h]; no Ghidra function, see no_ghidra_function"
+    },
+    {
+      "address": "007CEC3F",
+      "native": "none",
+      "method": "free_flight_gate_00d06130_38",
+      "containing": "007CE040",
+      "signature": "unit+72Ch / - / bool",
+      "note": "an indirect call through (*(unit+72Ch))->vtable[+38h]; the slot's target was not resolved. contract: unread"
+    },
+    {
+      "address": "007CEC55",
+      "native": "none",
+      "method": "accumulate_airborne_time",
+      "containing": "007CE040",
+      "signature": "unit / step / void",
+      "note": "unit+908h += step, only when unit+9E0h is clear (007CEC45)"
+    },
+    {
+      "address": "007CEC6E",
+      "native": "007CC2F0",
+      "method": "free_flight_007cc2f0",
+      "containing": "007CE040",
+      "signature": "unit / step / void",
+      "note": "the free-flight arm"
+    },
+    {
+      "address": "007CEC92",
+      "native": "007CBFA0",
+      "method": "ground_roll_007cbfa0",
+      "containing": "007CE040",
+      "signature": "unit / step / void",
+      "note": "the arm for unit+900h in {4, 5}"
+    },
+    {
+      "address": "007CECAF",
+      "native": "007CBA50",
+      "method": "surface_007cba50",
+      "containing": "007CE040",
+      "signature": "unit / step / void",
+      "note": "the arm for unit+5F0h == 6"
+    },
+    {
+      "address": "007CECBA",
+      "native": "0085DC80",
+      "method": "commit_step_pose_0085dc80",
+      "containing": "007CE040",
+      "signature": "unit+674h / - / void",
+      "note": "reached from every arm that ran; skipped when none matched"
+    },
+    {
+      "address": "007CE96F",
+      "native": "007B9770",
+      "method": "latch_control_input_007b9770",
+      "containing": "007CE040",
+      "signature": "unit / - / void",
+      "note": "the control-input latch"
+    },
+    {
+      "address": "007CC322",
+      "native": "none",
+      "method": "not modelled (the +1ECh slot)",
+      "containing": "007CC2F0",
+      "signature": "unit / step / void",
+      "note": "the control clamp and reset, immediately before the controller step Resolved target: 007CAF10, the plane's vtable[+1ECh]; no Ghidra function, see no_ghidra_function.",
+      "resolved_target": "007CAF10, the plane's vtable[+1ECh]; no Ghidra function, see no_ghidra_function"
+    },
+    {
+      "address": "007CC332",
+      "native": "007DC830",
+      "method": "not modelled (the controller step)",
+      "containing": "007CC2F0",
+      "signature": "unit+AB0h / step / void",
+      "note": "the free-flight controller step"
+    },
+    {
+      "address": "007DC86E",
+      "native": "007DB680",
+      "method": "not modelled (the core law)",
+      "containing": "007DC830",
+      "signature": "controller / step, 0, 0, 0 / void",
+      "note": "four stack arguments"
+    },
+    {
+      "address": "007DC878",
+      "native": "007D99C0",
+      "method": "not modelled (the speed getter)",
+      "containing": "007DC830",
+      "signature": "controller / - / float",
+      "note": "divided by classDesc+184h StallSpd at 007DC87D"
+    },
+    {
+      "address": "007DB6A6",
+      "native": "007DA710",
+      "method": "not modelled (the rate law)",
+      "containing": "007DB680",
+      "signature": "controller / step / void",
+      "note": "the per-class rate gains"
+    },
+    {
+      "address": "007DB6B6",
+      "native": "007D7C00",
+      "method": "not modelled",
+      "containing": "007DB680",
+      "signature": "controller+10h / controller+18h, controller+3Ch / void",
+      "note": "contract: unread"
+    },
+    {
+      "address": "007DB690",
+      "native": "007D81B0",
+      "method": "not modelled",
+      "containing": "007DB680",
+      "signature": "controller / step / void",
+      "note": "contract: unread"
+    },
+    {
+      "address": "007DB697",
+      "native": "007D9C10",
+      "method": "not modelled",
+      "containing": "007DB680",
+      "signature": "controller / - / void",
+      "note": "contract: unread; ends in JMP 007D8020"
+    },
+    {
+      "address": "007DA728",
+      "native": "007DA380",
+      "method": "not modelled",
+      "containing": "007DA710",
+      "signature": "controller / three out-parameters / void",
+      "note": "supplies the three roll factors; contract: unread"
+    },
+    {
+      "address": "009FBB13",
+      "native": "009FB800",
+      "method": "command_pitch_from_altitude",
+      "containing": "009FBA50",
+      "signature": "state+4h / clampedAlt, unclampedAlt / void",
+      "note": "the tail call"
+    },
+    {
+      "address": "009FBA7D",
+      "native": "0042E740",
+      "method": "game_tuning",
+      "containing": "009FBA50",
+      "signature": "- / - / void*",
+      "note": "Dynamics/Ceiling at +210h"
+    },
+    {
+      "address": "009FB804",
+      "native": "0042E740",
+      "method": "game_tuning",
+      "containing": "009FB800",
+      "signature": "- / - / void*",
+      "note": "the ceiling clamp"
+    },
+    {
+      "address": "009FB8C3",
+      "native": "0042E740",
+      "method": "game_tuning",
+      "containing": "009FB800",
+      "signature": "- / - / void*",
+      "note": "Pilot/General/ClimbDist at +544h"
+    },
+    {
+      "address": "009FB9AF",
+      "native": "0042E740",
+      "method": "game_tuning",
+      "containing": "009FB800",
+      "signature": "- / - / void*",
+      "note": "Pilot/General/DropDist at +548h"
+    },
+    {
+      "address": "009FB844",
+      "native": "00414DB0",
+      "method": "refresh_pose",
+      "containing": "009FB800",
+      "signature": "unit / - / void",
+      "note": "when unit+C8h is clear"
+    },
+    {
+      "address": "009F9E54",
+      "native": "00414DB0",
+      "method": "refresh_pose",
+      "containing": "009F9E40",
+      "signature": "unit / - / void",
+      "note": "when unit+C8h is clear"
+    },
+    {
+      "address": "009F9E7E",
+      "native": "00BF701A",
+      "method": "atan2",
+      "containing": "009F9E40",
+      "signature": "- / dz, dx / float",
+      "note": "ST1 = dz, ST0 = dx"
+    },
+    {
+      "address": "007CFF87",
+      "native": "007D7EA0",
+      "method": "construct_flight_controller",
+      "containing": "007CFD20",
+      "signature": "unit+AB0h / unit / void",
+      "note": "ECX from 007CFF6A LEA ECX,[ESI+0AB0h]"
+    },
+    {
+      "address": "007CE865",
+      "native": "007BB920",
+      "method": "not modelled (the quantizer entry)",
+      "containing": "007CE040",
+      "signature": "unit / - / void",
+      "note": "calls 007BB6E0"
+    }
+  ],
+  "vtables": [
+    {
+      "address": "00D05EDC",
+      "role": "the base plane tick element table, installed by 007CFDA0 and 007D03E9",
+      "slots": {
+        "+0h": "007D0390",
+        "+4h": "007C6500",
+        "+8h": "007CE040",
+        "+Ch": "007BEEE0",
+        "+10h": "0042BBA0",
+        "+14h": "0042BBB0"
+      }
+    },
+    {
+      "address": "00D065F4",
+      "role": "installed by 007D7757; slots +4h and +8h identical",
+      "slots": {
+        "+0h": "007D77D0",
+        "+4h": "007C6500",
+        "+8h": "007CE040"
+      }
+    },
+    {
+      "address": "00D068DC",
+      "role": "installed by 007DD9E7; slots +4h and +8h identical",
+      "slots": {
+        "+0h": "007DDA60",
+        "+4h": "007C6500",
+        "+8h": "007CE040"
+      }
+    },
+    {
+      "address": "00D19CE4",
+      "role": "installed by 00951B97; slots +4h and +8h identical",
+      "slots": {
+        "+0h": "00953090",
+        "+4h": "007C6500",
+        "+8h": "007CE040"
+      }
+    },
+    {
+      "address": "00D19FBC",
+      "role": "installed by 00951C77; slots +4h and +8h identical",
+      "slots": {
+        "+0h": "00953050",
+        "+4h": "007C6500",
+        "+8h": "007CE040"
+      }
+    },
+    {
+      "address": "00D1A294",
+      "role": "installed by 00951D57; slots +4h and +8h identical",
+      "slots": {
+        "+0h": "009530C0",
+        "+4h": "007C6500",
+        "+8h": "007CE040"
+      }
+    },
+    {
+      "address": "00D06848",
+      "role": "the flight controller's own table, installed by 007D7EAD",
+      "slots": {
+        "+0h": "007D7FF0",
+        "+4h": "null"
+      }
+    },
+    {
+      "address": "00D06844",
+      "role": "the 0D0h sub-object's table, installed by 007D7ED9",
+      "slots": {
+        "+0h": "contract: unread"
+      }
+    }
+  ],
+  "producers_of_unit_9d4h": [
+    {
+      "address": "007CFE6C",
+      "containing": "007CFD20",
+      "native": "none",
+      "writes": "0 (XOR EBX,EBX at 007CFD56); +9D8h becomes -1 at 007CFE72"
+    },
+    {
+      "address": "007ED0E6",
+      "containing": "007ED0D0",
+      "native": "none",
+      "writes": "the squadron back pointer, with the spawn index and the sorted insert"
+    },
+    {
+      "address": "007F4B49",
+      "containing": "007F4580",
+      "native": "none",
+      "writes": "the squadron back pointer (docs/PLANE_SQUADRON.md step 13)"
+    },
+    {
+      "address": "007F3A07",
+      "containing": "007F3970",
+      "native": "none",
+      "writes": "0, on removal"
+    },
+    {
+      "address": "007CDF6C",
+      "containing": "007CDF20",
+      "native": "none",
+      "writes": "contract: unread"
+    },
+    {
+      "address": "007D68D5",
+      "containing": "a block Ghidra has no function for",
+      "native": "none",
+      "writes": "contract: unread"
+    },
+    {
+      "address": "007D694B",
+      "containing": "a block Ghidra has no function for",
+      "native": "none",
+      "writes": "0; contract: unread"
+    },
+    {
+      "address": "007ECE68",
+      "containing": "a block Ghidra has no function for",
+      "native": "none",
+      "writes": "contract: unread"
+    },
+    {
+      "address": "007ECE80",
+      "containing": "a block Ghidra has no function for",
+      "native": "none",
+      "writes": "0; contract: unread"
+    },
+    {
+      "address": "007ED21A",
+      "containing": "a block Ghidra has no function for",
+      "native": "none",
+      "writes": "contract: unread"
+    }
+  ],
+  "pilot_control_block": {
+    "base": "unit+9E4h",
+    "axes": {
+      "+9E4h": "roll; zeroed 007CFE92",
+      "+9E8h": "pitch; zeroed 007CFE98",
+      "+9ECh": "yaw; zeroed 007CFE9E",
+      "+9F0h": "throttle; 1.0f at 007CFEB0",
+      "+9F4h": "fifth axis; zeroed 007CFEA4",
+      "+9F8h": "byte; zeroed 007CFEAA, copied to controller+5h at 007DC86B",
+      "+9F9h": "byte; copied to controller+4h at 007DC85D",
+      "+9FAh": "byte; latched only"
+    },
+    "latch": {
+      "base": "unit+BB0h",
+      "writer": "007B9770",
+      "permutation": "+9F8h -> +BC8h (007B978F), +9FAh -> +BC9h (007B97B4), +9F9h -> +BCAh (007B97C0)"
+    },
+    "writer_of_the_axes": "contract: unread; 007CAF10 clamps and resets, 007BB6E0 quantizes, 007C2AF0 and the block containing 007D1676 are the network snapshot and restore, and 007CA509 and 007D1333 are unread"
+  },
+  "dynamics_tuning_mirror": {
+    "copy_site": "007EAAE1 REP MOVSD",
+    "count_site": "007EAAD7 MOV ECX,4Eh",
+    "destination_site": "007EAADC MOV EDI,00F872F0h",
+    "source_site": "007E2D03 LEA ESI,[EBP+210h]; the only ESI write after 007E2A61 XOR ESI,ESI and before the copy",
+    "window": "00F872F0-00F87427 mirrors tuning+210h-tuning+347h, the whole Dynamics/* group",
+    "formula": "tuning_offset = mirror_address - 00F870E0h",
+    "why_no_other_producer": ".data has VA 00E08000, vsize 297EDCh and raw length 10000h, so everything above 00E18000 is zero-filled at load; scanning .text for every MOV/MOVSS/FST/FSTP into an absolute address in 00F872F0-00F87400 finds none",
+    "rows": [
+      {
+        "mirror": "00F872F0",
+        "tuning": "+210h",
+        "key": "Dynamics/Ceiling",
+        "default": "1500"
+      },
+      {
+        "mirror": "00F8730C",
+        "tuning": "+22Ch",
+        "key": "Dynamics/SpdMultipliers/StallRangeMin",
+        "default": "1.2"
+      },
+      {
+        "mirror": "00F87310",
+        "tuning": "+230h",
+        "key": "Dynamics/SpdMultipliers/StallRangeMax",
+        "default": "1.6"
+      },
+      {
+        "mirror": "00F87314",
+        "tuning": "+234h",
+        "key": "Dynamics/SpdMultipliers/StallOffPitch",
+        "default": "DEG(-15)"
+      },
+      {
+        "mirror": "00F87330",
+        "tuning": "+250h",
+        "key": "Dynamics/DeadMeat/RotationMin",
+        "default": "DEG(10)"
+      },
+      {
+        "mirror": "00F87334",
+        "tuning": "+254h",
+        "key": "Dynamics/DeadMeat/RotationMin (the duplicated slot)",
+        "default": "DEG(10)"
+      },
+      {
+        "mirror": "00F87338",
+        "tuning": "+258h",
+        "key": "Dynamics/DeadMeat/SpinRollSpd",
+        "default": "5.0"
+      },
+      {
+        "mirror": "00F8733C",
+        "tuning": "+25Ch",
+        "key": "Dynamics/DeadMeat/RollMulTime",
+        "default": "6"
+      },
+      {
+        "mirror": "00F87340",
+        "tuning": "+260h",
+        "key": "Dynamics/DeadMeat/RollMul",
+        "default": "2.0"
+      },
+      {
+        "mirror": "00F8734C",
+        "tuning": "+26Ch",
+        "key": "Dynamics/DeadMeat/SpinStallMul",
+        "default": "10"
+      },
+      {
+        "mirror": "00F87350",
+        "tuning": "+270h",
+        "key": "Dynamics/DeadMeat/SpinStallMulTime",
+        "default": "4"
+      },
+      {
+        "mirror": "00F87354",
+        "tuning": "+274h",
+        "key": "Dynamics/DeadMeat/SpinStallMulOnPitch",
+        "default": "DEG(0)"
+      },
+      {
+        "mirror": "00F87358",
+        "tuning": "+278h",
+        "key": "Dynamics/DeadMeat/SpinStallMulOffPitch",
+        "default": "DEG(-75)"
+      },
+      {
+        "mirror": "00F8735C",
+        "tuning": "+27Ch",
+        "key": "Dynamics/DeadMeat/StallMul",
+        "default": "1"
+      },
+      {
+        "mirror": "00F87360",
+        "tuning": "+280h",
+        "key": "Dynamics/DeadMeat/StallMulTime",
+        "default": "4"
+      },
+      {
+        "mirror": "00F87364",
+        "tuning": "+284h",
+        "key": "Dynamics/DeadMeat/StallMulOnPitch",
+        "default": "DEG(10)"
+      },
+      {
+        "mirror": "00F87368",
+        "tuning": "+288h",
+        "key": "Dynamics/DeadMeat/StallMulOffPitch",
+        "default": "DEG(-25)"
+      },
+      {
+        "mirror": "00F87388",
+        "tuning": "+2A8h",
+        "key": "Dynamics/RunwayYawTurnSpdLimit/1",
+        "default": "KMH(25)"
+      },
+      {
+        "mirror": "00F873D0",
+        "tuning": "+2F0h",
+        "key": "Dynamics/Water/MinCtrlAngle",
+        "default": "DEG(20)"
+      },
+      {
+        "mirror": "00F873FC",
+        "tuning": "+31Ch",
+        "key": "Dynamics/AccelCheatMul",
+        "default": "1.5"
+      }
+    ],
+    "read_through_the_singleton": [
+      {
+        "tuning": "+518h",
+        "key": "Pilot/Landing/WireRope",
+        "default": "7.25",
+        "reader": "007DB680"
+      },
+      {
+        "tuning": "+544h",
+        "key": "Pilot/General/ClimbDist",
+        "default": "130",
+        "reader": "009FB800 at 009FB8CC"
+      },
+      {
+        "tuning": "+548h",
+        "key": "Pilot/General/DropDist",
+        "default": "200",
+        "reader": "009FB800 at 009FB9BA"
+      },
+      {
+        "tuning": "+210h",
+        "key": "Dynamics/Ceiling",
+        "default": "1500",
+        "reader": "009FBA50 at 009FBA82 and 009FB800 at 009FB809"
+      }
+    ]
+  },
+  "installed_class_row": {
+    "file": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/Scripts/datatables/autoload/vehicleclasses.lua",
+    "row": "Shooting Star (P-80), the first row in the file whose [\"Type\"] is \"Fighter\" (line 2452)",
+    "fields": {
+      "+164h Accel": 5,
+      "+17Ch StallRotAccel": 0.872665,
+      "+184h StallSpd": 17.5,
+      "+188h MaxSpd": 125,
+      "+18Ch TravelSpeed": 141.666672,
+      "+1A8h RollSpd": 1.22173,
+      "+1ACh PitchSpd": 0.523599,
+      "+1B0h YawSpd": 0.279253,
+      "+1B4h YawRollRatio": 0.6,
+      "+1BCh RollAccel": 2.443461,
+      "+1C0h PitchAccel": 1.22173,
+      "+1C4h YawAccel": 0.523599,
+      "+1C8h TurnRollSpd": 0.10472,
+      "+1CCh YawLimitAngle": 0.436332,
+      "+1D0h PitchLimitAngle": 0.436332,
+      "+1D4h DragPitchRatio": 0,
+      "+1D8h NegativePitchRatio": 0.8,
+      "+1DCh AirBrakeDrag": 0.3,
+      "+1E0h WheelBrake": 80,
+      "+1ECh (no key)": "absent from the row, so 0",
+      "+1F0h DropAngle": 0.698132,
+      "+268h TurnCircleRadius": 1100,
+      "+274h RollMaxforceLimit": 0.174533,
+      "+278h PitchMaxforceLimit": 0.436332,
+      "+518h (no key)": "absent from the row, so 0"
+    },
+    "note": "ClimbAngle appears zero times in the file, and no .text store lands at plane-descriptor +1ECh or +518h, so both gains are zero for every shipped class"
+  },
+  "constants": {
+    "00CE3938": "double 50.0, the ceiling margin",
+    "00CE7D20": "float 0.69813174, DEG(40), the climb-angle floor",
+    "00D05AAC": "float 1.0471976, DEG(60), the dive-angle floor",
+    "00CE3D48": "double 1.6, the angle-limit scale",
+    "00CE3830": "double 1.5707964, PI/2",
+    "00CE3828": "double 6.2831855, 2*PI",
+    "00D7A210": "double 1.0, the reference bias in 009FB800",
+    "00D7A280": "double 0.5, the reference halving",
+    "00D7A208": "float -0.0, the dive negation",
+    "00CFD408": "double 127.0, the control quantizer steps",
+    "00D05998": "double 128.5, the control quantizer bias",
+    "00D7A250": "double -1.0, the quantizer's low clamp",
+    "00D059A0": "float 99.0, controller+90h",
+    "00D7A24C": "float 1.0",
+    "00D7A328": "double 4.0, a rate-law factor"
+  },
+  "corrections": [
+    {
+      "document": "docs/BOT_TASKS.md",
+      "was": "the tasks write \"the pilot control block at unit+9D4h\", with a desired cruising altitude at +394h, a second altitude at +398h, a third value at +39Ch and a dirty flag at +3ADh",
+      "is": "unit+9D4h is the plane's squadron. Those four fields are squadron fields: a formation-level cruising altitude and its limits. The pilot control block is unit+9E4h, five float axes and three bytes.",
+      "evidence": "scanning .text for every MOV [reg+9D4h] gives ten stores. 007ED0E6 in 007ED0D0 writes plane+9D4h = squadron together with plane+9D8h = spawnIndex and the sorted insert into squadron+3D0h[]; 007F4B49 does the same in 007F4580; 007F3A07 clears it in BSP_Squadron_RemovePlane; 007CFE6C zeroes it in the plane unit constructor. 009FBA50 at 009FBA90 reads approach+0Ch (= unit+9D4h) and then +394h as a shared altitude ceiling. The existing readers agree: [[unit+9D4h]+3D0h] == unit (docs/HUD_CENTRAL_UPDATES.md), [unit+9D4h]+3CCh (docs/MISSION_RESULT_DECISION.md), 007B97E0 MOV EAX,[ECX+9D4h]; RET (docs/GUNNERY_TABLES.md)."
+    },
+    {
+      "document": "docs/BOT_TASK_STATES.md",
+      "was": "the host table gives 009FBA50 the receiver \"approach\"",
+      "is": "the receiver of 009FBA50, 009FB800 and 009F9E40 is state+4h, the state's owner-approach slot; each routine dereferences it once to reach the approach",
+      "evidence": "009C18C9 MOV EDI,ECX (the state's this); 009C19A8 LEA ESI,[EDI+4], the only ESI write before the call; 009C1AFF MOV ECX,ESI one instruction before 009C1B17 CALL 009FBA50. Inside, 009FBA88 MOV ECX,[ESI], 009FB833 MOV EAX,[ESI] and 009F9E44 MOV EAX,[EDI] each load the approach from the first dword."
+    },
+    {
+      "document": "docs/BOT_TASK_STATES.md",
+      "was": "the 009FBA50 argument list reads \"009FBA50(alt, +38h, ., throttle)\" with +38h taken as an approach field",
+      "is": "+38h is the state object's own +38h (bot_task_state_off::kMoveToMode), read as a float",
+      "evidence": "009C1B09 FLD float ptr [EDI+38h], with EDI still holding the state's this from 009C18C9; EDI is not rewritten until 009C1B3D, after the call."
+    },
+    {
+      "document": "docs/TICK_ELEMENT_OVERRIDES.md",
+      "was": "\"finally, while that byte is set, unit->vtable[+1D8h](step)\"",
+      "is": "the slot runs only when unit+520h is clear",
+      "evidence": "00953D7D CMP byte ptr [ESI+210h],0 then 00953D84 JNZ 0x00953D9A, which jumps past the 00953D98 CALL EDX; ESI is the node at unit+310h, so [ESI+210h] is unit+520h."
+    },
+    {
+      "document": "config/tags",
+      "was": "007CFD20 carries the tag CG_array_ctor_helper_007cfd20",
+      "is": "007CFD20 is the level-5 plane unit instance constructor, not an array constructor helper",
+      "evidence": "007CFD4B CALL 0095CC90, the level-4 unit constructor of docs/UNIT_INSTANCE_LAYOUT.md; 007CFD78-007CFDAA install eight vptrs at +0h, +10h, +24h, +170h, +1E4h, +310h and +38Ch; 007CFF87 constructs the flight controller at unit+AB0h. There is no element loop and no element stride anywhere in the body. Ghidra was read-only for this packet, so the tag was not changed; the ledger now carries BSP_PlaneUnitInstance_Construct for the address."
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "007C6500",
+      "name": "BSP_PlaneTickElement_AdvancePose",
+      "end_address": "007C675D",
+      "note": "tick element slot +4h in all six plane tables; RET 4 at 007C675A, 2 int3, next entry 007C6760. Named from its slot, body unread."
+    },
+    {
+      "address": "007C6C30",
+      "name": "BSP_Plane_OutOfActionCountdown",
+      "end_address": "007C6E0A",
+      "note": "the plane's vtable[+1D8h]; RET 4, 5 int3, next entry 007C6E10. Head read to 007C6DA6."
+    },
+    {
+      "address": "007CAF10",
+      "name": "BSP_Plane_LimitAndResetControls",
+      "end_address": "007CB431",
+      "note": "the plane's vtable[+1ECh]; RET 4, 14 int3, next entry 007CB440. Two blocks read."
+    }
+  ],
+  "uncertainties": [
+    "The routine that writes the local player's stick or the bot's five planned axes into unit+9E4h was not found; 007CA509 and 007D1333 are the remaining candidate sites.",
+    "classDesc+1ECh and classDesc+518h have no producer at all: no Lua key and no .text store. Either an unread constructor writes them or the shipped data leaves the AI climb gain and the cruise-altitude gain at zero, which would make 009FB800's climb arm dead.",
+    "unit+900h is an enum with at least the values 4, 5 and 6; it was not enumerated.",
+    "009FBA50 leaves its fourth argument in ST0 at the RET. Whether that is a deliberate float return was not settled; all four call sites seen discard it.",
+    "The matrix composition at 007CED40-007CED6B that turns the controller's state into unit+74h and unit+674h was not transcribed; docs/ENTITY_LOCAL_MATRIX.md and docs/DYN_PHYSICS_SUBSTEP.md own it.",
+    "Takeoff and landing were reached only through tuning+518h Pilot/Landing/WireRope in 007DB680 and the ground-roll gate; the catapult and airbase launch of docs/AIR_OPERATIONS.md were not re-read."
+  ],
+  "run_time_evidence": "none offered: bsp_game.exe has no plane entity and no fixed-step plane tick, so rule 6 of docs/WORKER_VERIFICATION_CHECKLIST.md does not apply to any claim in this packet",
+  "reconstruction": {
+    "header": "include/bsp/plane_flight.hpp",
+    "source": "src/plane_flight.cpp",
+    "cmake": "cmake/startup.cmake, one appended line registering src/plane_flight.cpp with bsp_core",
+    "test": "tests/math_tests.cpp, one case over pitch_command_009fb800",
+    "build": "./scripts/build.ps1 clean, Win32, /W4 /WX; reconstructed_math passed",
+    "reconstructed": [
+      "latch_control_input_007b9770 (007B9770, complete)",
+      "quantize_control_axis_007bb6e0 (007BB6E0, one axis)",
+      "heading_command_009f9e40 (009F9E40, complete)",
+      "pitch_command_009fb800 (009FB800, complete)",
+      "cruise_altitude_command_009fba50 (009FBA50, complete)",
+      "select_motion_arm_007ce040 and run_plane_fixed_step_007ce040 (the motion path of 007CE040, partial by construction)",
+      "dynamics_mirror_to_tuning_offset (the 007EAAE1 mirror mapping)"
+    ],
+    "analysed_only": [
+      "007CFD20",
+      "007D7EA0",
+      "007DC830",
+      "007DB680",
+      "007DA710",
+      "007CAF10",
+      "007D99C0",
+      "007ED0D0",
+      "0099B450",
+      "00953CC0",
+      "0095DC40",
+      "007C6C30"
+    ]
+  },
+  "follow_up_packets": [
+    {
+      "packet": "plane_control_producer",
+      "addresses": [
+        "007ca3f0",
+        "007cb440",
+        "007d1300",
+        "0099d300"
+      ],
+      "files": [
+        "docs/PLANE_CONTROL_PRODUCER.md"
+      ],
+      "contract": "Find the routine that writes unit+9E4h from the local player's input and from 0099D300's five plan slots, and settle whether classDesc+1ECh and +518h have any producer"
+    },
+    {
+      "packet": "plane_core_law_body",
+      "addresses": [
+        "007db680",
+        "007da710",
+        "007da380",
+        "007d81b0",
+        "007d9c10",
+        "007d7c00"
+      ],
+      "files": [
+        "docs/PLANE_CORE_LAW.md"
+      ],
+      "contract": "Transcribe 007DB680's stall and speed block and 007DA710's tail, and decode the controller's 0D0h sub-object at +10h"
+    },
+    {
+      "packet": "plane_ground_and_water_arms",
+      "addresses": [
+        "007cbfa0",
+        "007cba50",
+        "007dccf0",
+        "007dcdd0",
+        "007dafd0"
+      ],
+      "files": [
+        "docs/PLANE_GROUND_WATER.md"
+      ],
+      "contract": "The two non-flight motion arms, the unit+900h enum, and the runway and water-surface laws behind Dynamics/Runway* and Dynamics/Water*"
+    }
+  ],
+  "state": {
+    "007CE040": "exported, analysed for the motion path, sequence reconstructed, build-tested",
+    "009FBA50, 009FB800, 009F9E40": "analysed complete, reconstructed, build-tested, fixture-tested",
+    "007B9770, 007BB6E0": "analysed, reconstructed, build-tested",
+    "007CFD20, 007D7EA0, 007ED0D0, 0099B450": "analysed, layouts recorded as offsets",
+    "007DC830, 007DB680, 007DA710, 007CAF10": "analysed partially, names recorded",
+    "007E2A20": "analysed for the Dynamics mirror only"
+  }
+}
