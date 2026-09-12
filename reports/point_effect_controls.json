@@ -1,0 +1,345 @@
+{
+  "packet": "orch3_point_controls_ah",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "status": "complete_cpp_strict_win32_build_original_body_and_actual_manager_chain_fixture_passed",
+  "functions": [
+    {
+      "name": "BSP_PointEffect_RestartGatedRows",
+      "address": "00866f50",
+      "end_exclusive": "0086703c",
+      "length": 236,
+      "sha256": "3a71743fa69f02fa03edd3e709ca942776db049c8c13a1c841f57d4fe8fd3c85",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "00866fae",
+          "target": "edx",
+          "relative": false
+        },
+        {
+          "address": "00866fd5",
+          "target": "dword ptr [0xce221c]",
+          "relative": false
+        },
+        {
+          "address": "00866fe3",
+          "target": "dword ptr [0xce2220]",
+          "relative": false
+        },
+        {
+          "address": "00866ff3",
+          "target": "eax",
+          "relative": false
+        },
+        {
+          "address": "00867005",
+          "target": "dword ptr [0xce2220]",
+          "relative": false
+        },
+        {
+          "address": "00867015",
+          "target": "eax",
+          "relative": false
+        }
+      ],
+      "returns": [
+        {
+          "address": "0086703b",
+          "bytes": "c3",
+          "operands": ""
+        }
+      ],
+      "hex": null,
+      "symbol": "restart_point_effect_00866f50",
+      "file": "src/point_effect_controls.cpp",
+      "original_abi": "ECX actual114h point, no stack arguments, RET; no established return value",
+      "classification": "complete_body_new_typed_interface",
+      "coverage": "complete",
+      "ghidra_name": "BSP_PointEffect_RestartGatedRows",
+      "cpp_symbol": "restart_point_effect_00866f50",
+      "source": "src/point_effect_controls.cpp",
+      "evidence": "AH complete236-byte restart: capture definition84 and row span; clear08/0A; current row gated10 low byte alone controls current virtual18 factory; reload destination backing at captured offset; publish-retain-release assignment then consume returned owner even on identity. No resize, admission gate or lock. Original236-byte controlled ownership/callback/ESP comparison passed; factory exception partial state preserved. Complete live/disk span SHA256 3a71743fa69f02fa03edd3e709ca942776db049c8c13a1c841f57d4fe8fd3c85. docs/POINT_EFFECT_CONTROLS.md; reports/point_effect_controls.json. Strict MSVC Win32 build and both existing CTests passed. Descriptive names are hypotheses. Parameters: ECX actual114h point, no stack arguments, RET; no established return value."
+    },
+    {
+      "name": "BSP_PointEffect_StopChildren",
+      "address": "00867b10",
+      "end_exclusive": "00867bff",
+      "length": 239,
+      "sha256": "09375095cf9d3635f2bf89d7eb3126d646984cf3a612662ed0ab4a3a36f62038",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "00867b2c",
+          "target": "0x866440",
+          "relative": true,
+          "native": "00866440"
+        },
+        {
+          "address": "00867b45",
+          "target": "dword ptr [0xce2218]",
+          "relative": false
+        },
+        {
+          "address": "00867b9f",
+          "target": "edx",
+          "relative": false
+        },
+        {
+          "address": "00867ba5",
+          "target": "0x867320",
+          "relative": true,
+          "native": "00867320"
+        },
+        {
+          "address": "00867bb4",
+          "target": "dword ptr [0xce2220]",
+          "relative": false
+        },
+        {
+          "address": "00867bc4",
+          "target": "eax",
+          "relative": false
+        },
+        {
+          "address": "00867be8",
+          "target": "dword ptr [0xce2210]",
+          "relative": false
+        }
+      ],
+      "returns": [
+        {
+          "address": "00867bfe",
+          "bytes": "c3",
+          "operands": ""
+        }
+      ],
+      "hex": null,
+      "symbol": "stop_point_effect_00867b10",
+      "file": "src/point_effect_controls.cpp",
+      "original_abi": "ECX actual114h point, no stack arguments, RET; no established return value",
+      "classification": "complete_body_new_typed_interface",
+      "coverage": "complete",
+      "ghidra_name": "BSP_PointEffect_StopChildren",
+      "cpp_symbol": "stop_point_effect_00867b10",
+      "source": "src/point_effect_controls.cpp",
+      "evidence": "AH complete239-byte stop: actual866440 manager and captured OS lock, test08 then clear0A; capture primary span and set08, current active0C and captured current30 clear-before-call, append current source through867320 then release and clear current captured slot after terminal reentry. No primary resize. Actual lock unwinds on failure without state rollback. Original239-byte controlled ownership/callback/ESP comparison passed. Complete live/disk span SHA256 09375095cf9d3635f2bf89d7eb3126d646984cf3a612662ed0ab4a3a36f62038. docs/POINT_EFFECT_CONTROLS.md; reports/point_effect_controls.json. Strict MSVC Win32 build and both existing CTests passed. Descriptive names are hypotheses. Parameters: ECX actual114h point, no stack arguments, RET; no established return value."
+    },
+    {
+      "name": "BSP_PointEffect_ConsumeParentReference",
+      "address": "0042d9a0",
+      "end_exclusive": "0042d9e0",
+      "length": 64,
+      "sha256": "1889e26d7ce5fa09743b922f26c14bcf01f4df885b8f64de5afa2b4b8a9bc801",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "0042d9ae",
+          "target": "dword ptr [0xce2220]",
+          "relative": false
+        },
+        {
+          "address": "0042d9be",
+          "target": "eax",
+          "relative": false
+        }
+      ],
+      "returns": [
+        {
+          "address": "0042d9d0",
+          "bytes": "c20400",
+          "operands": "4"
+        },
+        {
+          "address": "0042d9dd",
+          "bytes": "c20400",
+          "operands": "4"
+        }
+      ],
+      "hex": null,
+      "symbol": "consume_point_effect_parent_0042d9a0",
+      "file": "src/point_effect_controls.cpp",
+      "original_abi": "ECX owned field address; stack consumed reference; EAX original field address; both exits RET4",
+      "classification": "complete_body_new_typed_interface",
+      "coverage": "complete",
+      "ghidra_name": "BSP_PointEffect_ConsumeParentReference",
+      "cpp_symbol": "consume_point_effect_parent_0042d9a0",
+      "source": "src/point_effect_controls.cpp",
+      "evidence": "AH complete64-byte consumed parent replacement: capture old field, decrement actual04/current terminal, then clear and publish consumed input. No retain or same-pointer shortcut. EAX returns original field address, both RET4 exits. Original complete-body controlled actual-count/terminal-reentry/ESP comparison passed. Complete live/disk span SHA256 1889e26d7ce5fa09743b922f26c14bcf01f4df885b8f64de5afa2b4b8a9bc801. docs/POINT_EFFECT_CONTROLS.md; reports/point_effect_controls.json. Strict MSVC Win32 build and both existing CTests passed. Descriptive names are hypotheses. Parameters: ECX owned field address; stack consumed reference; EAX original field address; both exits RET4."
+    }
+  ],
+  "exception_evidence": [
+    {
+      "name": "restart_eh",
+      "address": "00c94de0",
+      "end_exclusive": "00c94df2",
+      "length": 18,
+      "sha256": "3232197ed569cf3fe88dbcf328a88a0643e742e9f3fff470f9ab6649f05cb36a",
+      "live_disk_equal": true,
+      "calls": [],
+      "returns": [],
+      "hex": "8d4df0e988a2a3ffb8446cdc00e9511df6ff"
+    },
+    {
+      "name": "stop_eh",
+      "address": "00c94f50",
+      "end_exclusive": "00c94f62",
+      "length": 18,
+      "sha256": "da18c43969f98f4082e316a2800cce6a38ff6f9c7c9c1b826b6b571c55b2c628",
+      "live_disk_equal": true,
+      "calls": [],
+      "returns": [],
+      "hex": "8d4dece988cf77ffb8006edc00e9e11bf6ff"
+    },
+    {
+      "name": "restart_map",
+      "address": "00dc6c3c",
+      "end_exclusive": "00dc6c64",
+      "length": 40,
+      "sha256": "fa2e3939124d8e7caabec6e642aeca18167101c3cf500c040185300dd86e9e3d",
+      "live_disk_equal": true,
+      "hex": "ffffffffe04dc90022059319010000003c6cdc000000000000000000000000000000000000000000"
+    },
+    {
+      "name": "stop_map",
+      "address": "00dc6df8",
+      "end_exclusive": "00dc6e20",
+      "length": 40,
+      "sha256": "8c794bc6a057912c1dbb85eae76a886c0e5f953d71acae67544f43cfbe4218d4",
+      "live_disk_equal": true,
+      "hex": "ffffffff504fc9002205931901000000f86ddc000000000000000000000000000000000000000000"
+    }
+  ],
+  "docs": [
+    "docs/POINT_EFFECT_CONTROLS.md"
+  ],
+  "source_files": [
+    "include/bsp/point_effect_controls.hpp",
+    "src/point_effect_controls.cpp"
+  ],
+  "dependencies": [
+    "00866440 actual shared-domain effect manager and critical section",
+    "00867320 complete reference-array append using current source slot",
+    "006FBEB0/006CF070 complete canonical reference assignment and clear",
+    "PointEffectRowRuntime current real component virtual18 and actual definition backing",
+    "PointEffectChildEvents current real event virtual30 with capture-clear-invoke ordering",
+    "PointEffectInstanceLinks exact existing parent actual04/current terminal mapping"
+  ],
+  "validation": {
+    "original_byte_fixture": "passed",
+    "direct_compile": "MSVC Win32 /EHsc /O2 /W4 /WX /fp:strict /MANIFEST:EMBED, new source linked with existing bsp_core",
+    "cases": [
+      "complete236/239/64-byte controls and original115-byte append",
+      "ESP balance and both parent RET4 exits",
+      "captured row/primary spans and current destination/source reloads",
+      "gated lowbyte, ignored admitted byte, same-pointer/null factory ownership",
+      "terminal reentry overwrite after publish-before-release assignment",
+      "cancellation replacement/null source; inactive and already-stopped controls",
+      "parent same-pointer consumed reference, no incoming retain, terminal reentry overwritten",
+      "real Win32 lock recursion and release",
+      "C++ throwing factory/cancel retains partial state and unwinds lock"
+    ],
+    "logs": [
+      "local/point-controls-extraction-ah.log",
+      "local/point-controls-native-ah.log"
+    ],
+    "native_eh_executed": false,
+    "full_build": "local/effect-frame-ah-final-build.log: scripts/build.ps1 strict MSVC Win32 and both existing CTests passed",
+    "actual_application_chain": "local/live-effect-frame-probe-ah.log: complete original231-byte manager/RET8 versus C++, normalized114h point state and lifetime counts match; actual parent/full4x4/sample, restart/factories, nonempty real frame jobs, children/retirement, deferred terminal and complete domain teardown. Borrowed phase2 span population and device sink are explicit fixture inputs.",
+    "game_validated": false,
+    "combined_build": "local/effect-frame-ah-final-build.log: scripts/build.ps1 strict MSVC Win32 and both existing CTests passed",
+    "call_verification": "local/effect-frame-ah-call-verification-final.log: all report direct-call rows verified, zero failures",
+    "actual_manager_chain": "local/live-effect-frame-probe-ah.log: complete original231-byte manager/RET8 versus C++, normalized114h point state and lifetime counts match; actual parent/full4x4/sample, restart/factories, nonempty real frame jobs, children/retirement, deferred terminal and complete domain teardown. Borrowed phase2 span population and device sink are explicit fixture inputs."
+  },
+  "limitations": [
+    "New typed APIs are not native object/vtable ABI replacements.",
+    "Controlled native differential owners share one actual atomic04 count; physical event/node destructors are not executed in this probe.",
+    "Stop native probe uses a published manager layout adapter pointing to the same actual Win32 lock; getter construction/registration belongs to primary actual application-chain validation.",
+    "Original append probe uses reserved capacity; complete growth is delegated to existing recovered implementation.",
+    "Native terminal actions throwing through virtual00 and native EH dispatcher execution are outside the existing nonthrowing canonical terminal contract.",
+    "Captured native spans and owners require valid application lifetimes; no defensive retain/rollback or success fallback was introduced."
+  ],
+  "ghidra_signature_audit": {
+    "record": "local/effect-frame-signatures-ah.json",
+    "project_saved": true,
+    "before": {
+      "00866f50": "00866f50 FUN_00866f50  undefined FUN_00866f50(void)  body 00866f50 - 0086703b\n",
+      "00867b10": "00867b10 FUN_00867b10  undefined FUN_00867b10(void)  body 00867b10 - 00867bfe\n",
+      "0042d9a0": "0042d9a0 FUN_0042d9a0  undefined FUN_0042d9a0(void)  body 0042d9a0 - 0042d9df\n"
+    },
+    "changes": [
+      {
+        "address": "00866f50",
+        "prototype": "void __thiscall BSP_PointEffect_RestartGatedRows(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00866f50 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00867b10",
+        "prototype": "void __thiscall BSP_PointEffect_StopChildren(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00867b10 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "0042d9a0",
+        "prototype": "void ** __thiscall BSP_PointEffect_ConsumeParentReference(void * consumed_parent)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 0042d9a0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ],
+    "after": "00866f50 BSP_PointEffect_RestartGatedRows  void __thiscall BSP_PointEffect_RestartGatedRows(void * this)  body 00866f50 - 0086703b\n00867b10 BSP_PointEffect_StopChildren  void __thiscall BSP_PointEffect_StopChildren(void * this)  body 00867b10 - 00867bfe\n0042d9a0 BSP_PointEffect_ConsumeParentReference  void * * __thiscall BSP_PointEffect_ConsumeParentReference(void * this, void * consumed_parent)  body 0042d9a0 - 0042d9df",
+    "parameter_note": "Ghidra supplies ECX this automatically; prototype text contains only native stack arguments. Scalar adjustor receiver is secondary+04 and primary scalar returns original primary; unknown native structures remain void pointers."
+  },
+  "ghidra_annotation_audit": {
+    "record": "local/ghidra-annotations-20260911T234951Z.json",
+    "readback": "local/effect-frame-ah-comments.json",
+    "project_saved": true,
+    "names_and_evidence_verified": true,
+    "prior_comments_preserved": true,
+    "changes": [
+      {
+        "address": "0042d9a0",
+        "before": {
+          "address": "0042d9a0",
+          "function_name": "BSP_PointEffect_ConsumeParentReference"
+        },
+        "after": {
+          "address": "0042d9a0",
+          "name": "BSP_PointEffect_ConsumeParentReference",
+          "evidence": "AH complete64-byte consumed parent replacement: capture old field, decrement actual04/current terminal, then clear and publish consumed input. No retain or same-pointer shortcut. EAX returns original field address, both RET4 exits. Original complete-body controlled actual-count/terminal-reentry/ESP comparison passed. Complete live/disk span SHA256 1889e26d7ce5fa09743b922f26c14bcf01f4df885b8f64de5afa2b4b8a9bc801. docs/POINT_EFFECT_CONTROLS.md; reports/point_effect_controls.json. Strict MSVC Win32 build and both existing CTests passed. Descriptive names are hypotheses. Parameters: ECX owned field address; stack consumed reference; EAX original field address; both exits RET4."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00866f50",
+        "before": {
+          "address": "00866f50",
+          "function_name": "BSP_PointEffect_RestartGatedRows"
+        },
+        "after": {
+          "address": "00866f50",
+          "name": "BSP_PointEffect_RestartGatedRows",
+          "evidence": "AH complete236-byte restart: capture definition84 and row span; clear08/0A; current row gated10 low byte alone controls current virtual18 factory; reload destination backing at captured offset; publish-retain-release assignment then consume returned owner even on identity. No resize, admission gate or lock. Original236-byte controlled ownership/callback/ESP comparison passed; factory exception partial state preserved. Complete live/disk span SHA256 3a71743fa69f02fa03edd3e709ca942776db049c8c13a1c841f57d4fe8fd3c85. docs/POINT_EFFECT_CONTROLS.md; reports/point_effect_controls.json. Strict MSVC Win32 build and both existing CTests passed. Descriptive names are hypotheses. Parameters: ECX actual114h point, no stack arguments, RET; no established return value."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00867b10",
+        "before": {
+          "address": "00867b10",
+          "function_name": "BSP_PointEffect_StopChildren"
+        },
+        "after": {
+          "address": "00867b10",
+          "name": "BSP_PointEffect_StopChildren",
+          "evidence": "AH complete239-byte stop: actual866440 manager and captured OS lock, test08 then clear0A; capture primary span and set08, current active0C and captured current30 clear-before-call, append current source through867320 then release and clear current captured slot after terminal reentry. No primary resize. Actual lock unwinds on failure without state rollback. Original239-byte controlled ownership/callback/ESP comparison passed. Complete live/disk span SHA256 09375095cf9d3635f2bf89d7eb3126d646984cf3a612662ed0ab4a3a36f62038. docs/POINT_EFFECT_CONTROLS.md; reports/point_effect_controls.json. Strict MSVC Win32 build and both existing CTests passed. Descriptive names are hypotheses. Parameters: ECX actual114h point, no stack arguments, RET; no established return value."
+        },
+        "status": "applied"
+      }
+    ]
+  }
+}

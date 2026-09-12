@@ -1,0 +1,144 @@
+{
+  "packet": "cc2_tick_element_overrides",
+  "owner": "agent/cc2-tick-element-overrides",
+  "doc": "docs/TICK_ELEMENT_OVERRIDES.md",
+  "sources": [
+    "include/bsp/tick_element_overrides.hpp",
+    "src/tick_element_overrides.cpp"
+  ],
+  "subject": "The six-slot tick-element interface at 00D0DEC8, the seven concrete vtables that override it, and the per-step slot bodies of the four registering classes.",
+  "ghidra": "read-only; no renames, comments, prototypes or saves",
+
+  "routines": [
+    {"address": "00875890", "name": "BSP_TickRegistration_Construct", "coverage": "reused from docs/FIXED_STEP_JOB_WAVES.md"},
+    {"address": "0087b670", "name": "BSP_UnitTickableEntity_Construct", "coverage": "complete for the tick node: vtable 00D0DF28 at unit+310h, group argument 0"},
+    {"address": "007f2c60", "name": "BSP_PlaneSquadronTickableEntity_Construct", "coverage": "complete for the tick node: vtable 00D0877C at squadron+310h, group 3"},
+    {"address": "006e7b00", "name": "BSP_ProjectileTickableEntity_Construct", "coverage": "complete for the tick node: vtable 00CF9D78 at projectile+244h, group 0"},
+    {"address": "00929e50", "name": "BSP_TickableGameEntity_Construct", "coverage": "complete for the tick node: vtable 00D194C4 at entity+170h, group 0"},
+    {"address": "00953cc0", "name": "BSP_UnitGameObject_TickAdvance", "coverage": "complete, body 00953CC0..00953D9D"},
+    {"address": "006d1fc0", "name": "BSP_UnitTickElement_CommitStepPose", "coverage": "complete, body 006D1FC0..006D1FEE, no Ghidra function"},
+    {"address": "007f3ba0", "name": "BSP_PlaneSquadron_TickAdvance", "coverage": "complete, body 007F3BA0..007F3D30, no Ghidra function"},
+    {"address": "006e6750", "name": "BSP_Projectile_PlaceStepPose", "coverage": "complete, body 006E6750..006E67CC"},
+    {"address": "006e6490", "name": "BSP_Projectile_TickAdvance", "coverage": "complete, body 006E6490..006E65B4"},
+    {"address": "006e7d50", "name": "BSP_Projectile_CommitStepPose", "coverage": "complete, body 006E7D50..006E7D96"},
+    {"address": "00929cb0", "name": "BSP_TickableGameEntity_PlaceStepPose", "coverage": "complete, body 00929CB0..00929D61, no Ghidra function"},
+    {"address": "0092b350", "name": "BSP_TickableGameEntity_TickAdvance", "coverage": "partial: call sequence only; the x87 body 0092B380..0092B8FB is not projected"},
+    {"address": "00811ab0", "name": "BSP_UnitInstance_RunShiftedControllerUpdate", "coverage": "contract: already reconstructed in src/unit_rudder.cpp"},
+    {"address": "00825f20", "name": "BSP_UnitInstance_UpdateShipMotion", "coverage": "contract: unread, leased to agent/cc-exe-2i"},
+    {"address": "0070c370", "name": "flak projectile slot +8h", "coverage": "contract: unread"}
+  ],
+
+  "vtables": [
+    {"address": "00d0dec8", "class": "tick element base", "slots": ["00875920", "0042bb70", "0042bb80", "0042bb90", "0042bba0", "0042bbb0"]},
+    {"address": "00d0df28", "class": "unit level 3 (0087B670)", "slots": ["0087a4f0", "0042bb70", "0042bb80", "0042bb90", "0042bba0", "0042bbb0"]},
+    {"address": "00d1a654", "class": "unit level 4 (0095CC90)", "slots": ["00959c10", "0042bb70", "00953cc0", "006d1fc0", "0042bba0", "0042bbb0"]},
+    {"address": "00d09630", "class": "unit level 5 (0081ED40)", "slots": ["0081f380", "00811ab0", "00825f20", "006d1fc0", "0042bba0", "0042bbb0"]},
+    {"address": "00cfc38c", "class": "unit level 6 MDestroyer (006FE460)", "slots": ["006fe510", "00811ab0", "00825f20", "006d1fc0", "0042bba0", "0042bbb0"]},
+    {"address": "00d0877c", "class": "plane squadron (007F2C60)", "slots": ["007efae0", "0042bb70", "007f3ba0", "0042bb90", "0042bba0", "0042bbb0"]},
+    {"address": "00cf9d78", "class": "projectile (006E7B00)", "slots": ["006e7bf0", "006e6750", "006e6490", "006e7d50", "0042bba0", "0042bbb0"]},
+    {"address": "00cfd554", "class": "flak projectile (0070CAE0)", "slots": ["0070cb70", "006e6750", "0070c370", "006e7d50", "0042bba0", "0042bbb0"]},
+    {"address": "00d194c4", "class": "tickable game entity (00929E50)", "slots": ["0092a030", "00929cb0", "0092b350", "0042bb90", "0042bba0", "0042bbb0"]}
+  ],
+
+  "groups": [
+    {"class": "unit", "constructor_argument": 0, "group_at_splice": 1, "evidence": "0081F198 MOV dword ptr [ESI + 0x324],0x1 inside 0081ED40; unit+324h is the node's +14h; 00874C90 reads node+14h at the splice"},
+    {"class": "plane squadron", "constructor_argument": 3, "group_at_splice": 3, "evidence": "007F2C89 PUSH 0x3 before 007F2C9A CALL 00875890"},
+    {"class": "projectile", "constructor_argument": 0, "group_at_splice": 0, "evidence": "006E7B39 PUSH 0x0; 0070CAE0 rewrites only the vtable at +244h"},
+    {"class": "tickable game entity", "constructor_argument": 0, "group_at_splice": 0, "evidence": "00929E75 XOR EBX,EBX then 00929E77 PUSH EBX; no later write to entity+184h"}
+  ],
+
+  "host_steps": [
+    {"address": "0087b694", "native": "0077eed0", "function": "0087b670", "name": "construct the level-2 base", "note": "contract"},
+    {"address": "0087b6a9", "native": "00875890", "function": "0087b670", "name": "register the unit's tick node", "args": "ECX = unit+310h, payload = unit, group = 0"},
+    {"address": "007f2c84", "native": "0077eed0", "function": "007f2c60", "name": "construct the level-2 base", "note": "contract"},
+    {"address": "007f2c9a", "native": "00875890", "function": "007f2c60", "name": "register the squadron's tick node", "args": "ECX = squadron+310h, payload = squadron, group = 3"},
+    {"address": "006e7b1f", "native": "00925ce0", "function": "006e7b00", "name": "construct the level-1 base", "note": "contract"},
+    {"address": "006e7b34", "native": "006e22d0", "function": "006e7b00", "name": "construct the motion sub-object at projectile+170h", "note": "contract"},
+    {"address": "006e7b49", "native": "00875890", "function": "006e7b00", "name": "register the projectile's tick node", "args": "ECX = projectile+244h, payload = projectile, group = 0"},
+    {"address": "00929e70", "native": "00925ce0", "function": "00929e50", "name": "construct the level-1 base", "note": "contract"},
+    {"address": "00929e85", "native": "00875890", "function": "00929e50", "name": "register the entity's tick node", "args": "ECX = entity+170h, payload = entity, group = 0"},
+    {"address": "00929f0f", "native": "004e6480", "function": "00929e50", "name": "construct the sub-object at entity+1C4h", "note": "contract"},
+
+    {"address": "00953d6e", "native": "00927f10", "function": "00953cc0", "name": "unit_role_still_available", "args": "ECX = unit, role = unit+1ACh", "ret": "bool in AL", "gate": "unit+1ACh != 8; false clears the byte at unit+520h"},
+
+    {"address": "006e6774", "function": "006e6750", "callee_kind": "virtual", "native_slot": "[projectile+170h]+2Ch", "name": "motion mode query", "ret": "int"},
+    {"address": "006e679e", "function": "006e6750", "callee_kind": "virtual", "native_slot": "projectile vtable +118h or +114h", "name": "place the projectile pose", "args": "scaled step"},
+    {"address": "006e67b5", "native": "00414db0", "function": "006e6750", "name": "BSP_EntityPose_RefreshWorld", "gate": "projectile+280h non-null and the byte at projectile+C8h clear"},
+    {"address": "006e67c8", "function": "006e6750", "callee_kind": "virtual", "native_slot": "[[projectile+280h]+0Ch] vtable +34h", "name": "hand the matrix to the attached scene node", "args": "projectile+CCh"},
+
+    {"address": "006e64c2", "function": "006e6490", "callee_kind": "virtual", "native_slot": "[projectile+170h]+2Ch", "name": "motion mode query", "ret": "int"},
+    {"address": "006e64ea", "function": "006e6490", "callee_kind": "virtual", "native_slot": "projectile vtable +120h or +11Ch", "name": "advance the projectile body", "args": "scaled step"},
+    {"address": "006e652d", "native": "00414db0", "function": "006e6490", "name": "BSP_EntityPose_RefreshWorld", "gate": "byte projectile+5Ch set and byte projectile+C8h clear"},
+    {"address": "006e657f", "native": "0084c430", "function": "006e6490", "name": "emit the tracer segment", "args": "eleven dwords, RET 0x2C at 0084C4D3: prev vector, world vector, adjusted projectile+170h, projectile+238h, projectile+174h, 00F87574, projectile+1C8h; CL = ([00E188A8]+1FE4h != 2), DL = 1", "gate": "byte projectile+5Ch set", "note": "contract"},
+    {"address": "006e659f", "native": "00696350", "function": "006e6490", "name": "expire the projectile", "args": "ECX = projectile, 0, EDX = 0", "gate": "projectile+1C4h > [[projectile+174h]+54h]", "note": "contract"},
+    {"address": "006e65a9", "native": "00926d90", "function": "006e6490", "name": "release the projectile", "args": "ECX = projectile, 2", "gate": "same", "note": "contract"},
+
+    {"address": "006e7d74", "native": "00414db0", "function": "006e7d50", "name": "BSP_EntityPose_RefreshWorld", "gate": "byte projectile+C8h clear"}
+  ],
+
+  "no_function_steps": [
+    {"site": "006d1fd6", "containing": "006d1fc0", "native": "004134f0", "name": "BSP_Matrix_Copy4x4X87", "args": "ECX = node+364h (unit+674h), source node-29Ch (unit+74h)", "gate": "byte node+1C8h clear"},
+    {"site": "006d1fe9", "containing": "006d1fc0", "native": "004134f0", "name": "BSP_Matrix_Copy4x4X87", "args": "ECX = node+364h, source node+1D0h (unit+4E0h)", "gate": "byte node+1C8h set"},
+
+    {"site": "007f3c02", "containing": "007f3ba0", "native": "007ee7f0", "name": "squadron notify", "args": "ECX = squadron, 0", "gate": "step > 0 and byte squadron+3ECh set", "note": "contract"},
+    {"site": "007f3c5b", "containing": "007f3ba0", "native": "007ee790", "name": "squadron periodic tick", "args": "ECX = squadron", "gate": "the countdown at squadron+3C4h expired", "note": "contract"},
+    {"site": "007f3ca0", "containing": "007f3ba0", "native": "007b8ad0", "name": "member update", "args": "ECX = member", "ret": "bool in AL, OR-ed into squadron+3B0h", "gate": "byte member+904h set", "note": "contract"},
+    {"site": "007f3cd9", "containing": "007f3ba0", "native": "00926d90", "name": "release the member", "args": "ECX = member, 5", "gate": "member+900h == 1 and byte member+904h set", "note": "contract"},
+    {"site": "007f3ce7", "containing": "007f3ba0", "native": "007f3970", "name": "drop the member from the squadron", "args": "ECX = squadron, member, 0", "gate": "same", "note": "contract"},
+    {"site": "007f3d1c", "containing": "007f3ba0", "native": "0077a650", "name": "squadron finalize", "args": "ECX = squadron", "gate": "the float at squadron+308h is not 0.0f", "note": "contract"},
+
+    {"site": "00929cea", "containing": "00929cb0", "native": "00c43ea0", "name": "interpolate_body_transform_00c43ea0", "args": "body entity+354h, alpha = step / 0.05f, two stack buffers", "ret": "pointer in EAX", "gate": "entity+354h non-null", "note": "contract, already reconstructed in src/game_dynamics_list.cpp"},
+    {"site": "00929cf1", "containing": "00929cb0", "native": "00c33650", "name": "physics library", "args": "ECX = the pointer 00C43EA0 returned", "note": "contract"},
+    {"site": "00929d07", "containing": "00929cb0", "native": "0042d0d0", "name": "BSP_Vector3f_TransformDirectionOptionalNormalize", "args": "ECX = stack matrix, EDX = entity+364h, out buffer, 0"},
+    {"site": "00929d41", "containing": "00929cb0", "native": "00741e90", "name": "entity takes the interpolated matrix", "args": "ECX = entity, matrix", "note": "contract"},
+    {"site": "00929d56", "containing": "00929cb0", "callee_kind": "virtual", "native_slot": "[entity+350h] vtable +34h", "name": "attached scene node takes the matrix", "args": "matrix"},
+
+    {"site": "0092b369", "containing": "0092b350", "native": "00424c40", "name": "rigid body settings", "note": "contract, leased to another owner"},
+    {"site": "0092b3c9", "containing": "0092b350", "native": "0042b260", "name": "BSP_Geometry_NormalizeVectorWithFloor", "note": "contract"},
+    {"site": "0092b444", "containing": "0092b350", "native": "00414db0", "name": "BSP_EntityPose_RefreshWorld", "note": "contract"}
+  ],
+
+  "virtual_steps": [
+    {"site": "00953cdf", "containing": "00953cc0", "native_slot": "unit vtable +5Ch", "args": "ECX = unit, 9", "gate": "the dword at unit+528h is not negative"},
+    {"site": "00953cfd", "containing": "00953cc0", "native_slot": "unit vtable +1F0h", "args": "ECX = unit, step", "gate": "none"},
+    {"site": "00953d98", "containing": "00953cc0", "native_slot": "unit vtable +1D8h", "args": "ECX = unit, step", "gate": "the byte at unit+520h is set"}
+  ],
+
+  "corrections": [
+    {
+      "was": "docs/FIXED_STEP_JOB_WAVES.md: the unit's element is registered into group 0 (0087B6A9 passes 0)",
+      "is": "the argument is 0 but level 5 overwrites the node's +14h with 1 before the first splice, so a unit ticks in group 1",
+      "evidence": "0081F198 MOV dword ptr [ESI + 0x324],0x1 inside 0081ED40; unit+324h is node+14h per docs/UNIT_INSTANCE_LAYOUT.md; 00874C90 reads node+14h at the splice"
+    },
+    {
+      "was": "docs/FIXED_STEP_JOB_WAVES.md: element+30h is 'a float constant, the same one 00778450 resets its timer from'",
+      "is": "00D7A260 is -1.0f and element+30h is a per-element time scale applied only above 1.0f",
+      "evidence": "00D7A260 = 00 00 80 BF; 00811AB4 MOVSS XMM0,[ESI+30h], 00811AB9 COMISS against 00D7A24C = 1.0f, 00811AC6 JBE skips the multiply"
+    },
+    {
+      "was": "docs/FIXED_STEP_JOB_WAVES.md: 'Derived classes override them' about all five base stubs",
+      "is": "only slots +4h, +8h and +0Ch are ever overridden; +10h and +14h are the base stub in all eight concrete tables",
+      "evidence": "every table listed under vtables ends with 0042BBA0 and 0042BBB0"
+    }
+  ],
+
+  "no_ghidra_function": [
+    {"start": "0042bb70", "end": "0042bb72", "evidence": "00D0DECC points here; C2 04 00 then INT3 from 0042BB73"},
+    {"start": "0042bb80", "end": "0042bb82", "evidence": "00D0DED0 points here; C2 04 00 then INT3 from 0042BB83"},
+    {"start": "0042bb90", "end": "0042bb90", "evidence": "00D0DED4 points here; C3 then INT3 from 0042BB91"},
+    {"start": "0042bba0", "end": "0042bba2", "evidence": "00D0DED8 points here; C2 04 00 then INT3 from 0042BBA3"},
+    {"start": "0042bbb0", "end": "0042bbb2", "evidence": "00D0DEDC points here; 32 C0 C3 then INT3 from 0042BBB3"},
+    {"start": "006d1fc0", "end": "006d1fee", "evidence": "00D1A660 points here; RET at 006D1FEE, INT3 from 006D1FEF"},
+    {"start": "007f3ba0", "end": "007f3d30", "evidence": "00D08784 points here; RET 4 at 007F3D21 and the JMP 0x7F3C60 tail ends at 007F3D30, INT3 from 007F3D31"},
+    {"start": "00929cb0", "end": "00929d61", "evidence": "00D194C8 points here; RET 4 at 00929D5F, INT3 from 00929D62"},
+    {"start": "0092b350", "end": "0092b91e", "evidence": "00D194CC points here; RET 4 at 0092B91C"}
+  ],
+
+  "open_questions": [
+    "Nothing reached in this packet calls slot +10h (0042BBA0) or slot +14h (0042BBB0); no concrete table overrides either.",
+    "0070C370, the flak projectile's slot +8h, is unread.",
+    "The x87 middle of 0092B350 (0092B380..0092B8FB) is unread.",
+    "The admission bytes payload+5Eh and payload+BDh are still only 'gone' and 'active'.",
+    "Groups 2 and 4 still have no constructor site."
+  ]
+}

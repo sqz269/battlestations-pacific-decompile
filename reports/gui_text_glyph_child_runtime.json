@@ -1,0 +1,223 @@
+{
+  "packet": "orch5_glyph_child_tail",
+  "source": "src/gui_text_glyph_child_runtime.cpp",
+  "header": "include/bsp/gui_text_glyph_child_runtime.hpp",
+  "documentation": "docs/GUI_TEXT_GLYPH_CHILD_RUNTIME.md",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "ghidra_mutations": false,
+    "verification": "Every bsp.py ghidra query verifies configured project and program. All1747 function bytes match installed PE; shader literal verified live and on disk."
+  },
+  "fragment": {
+    "address": "00ab98f0",
+    "ghidra_name_observed": "BSP_TextContext_WriteGlyphQuad",
+    "name_action": "Keep existing name; append evidence and preserve all existing comments. No worker Ghidra write.",
+    "name_hypothesis": "begin_gui_text_glyph_child_tail_00ab98f0_fragment",
+    "original_abi": "Whole function: ECX Text parent and ten stack DWORDs; RET28h at AB9FC0. This new entry begins only at AB9D33 after gates/quad/index/UV clears.",
+    "whole_end_exclusive": "00ab9fc3",
+    "whole_length": 1747,
+    "whole_sha256": "795b76de15e3a52d032bfca739ca1cffe9714a83d7d619fd6aae9302aa13d236",
+    "start": "00ab9d33",
+    "last_instruction": "00ab9fa9",
+    "last_length": 5,
+    "last_text": "call 00aa8240",
+    "end_exclusive": "00ab9fae",
+    "length": 635,
+    "sha256": "59718a7ec3f47fbff294e70075cdf1c7005152bdc30e0990561acb3c2d9fc7c3",
+    "behavior": "Actual unbound Text allocation, parent glyph publication, current reference Model clone(flags26,parent0), creator transfer, sections/visibility/listener/mouse/font/shadow, actual shader/codeunit pool temporaries, actual content plus final50, pool cleanup, ownership-transfer attachment, pivot and existing actual position tail.",
+    "source_reload_evidence": "Reference Model loaded AB9D75/7B after parent vector append; listener loaded AB9DA7 after current34; reference font reloaded AB9DBA; position helper reloads current reference AB9EC2 and original arg2.x only AB9F5E/62.",
+    "literal": {
+      "address": "00cefd78",
+      "value": "GuiFontBilinear.mshd",
+      "bytes_with_terminator": 21
+    },
+    "pooled_temporary_lifetimes": "Shader header through AB9E1F, return buffer at AB9E40 before UTF16 constructor. UTF16 header through ABA8D0 and current50; return current data/current length*2+2 at AB9E91. Header bytes remain untouched after return."
+  },
+  "call_sites": [
+    {
+      "address": "00ab9d38",
+      "target": "00ab78a0",
+      "role": "Text raw slot",
+      "native": "00ab78a0",
+      "function": "00ab98f0"
+    },
+    {
+      "address": "00ab9d4f",
+      "target": "00ab9650",
+      "role": "primary-null Text construction",
+      "native": "00ab9650",
+      "function": "00ab98f0"
+    },
+    {
+      "address": "00ab9d70",
+      "target": "005dad40",
+      "role": "parent glyph vector publication",
+      "native": "005dad40",
+      "function": "00ab98f0"
+    },
+    {
+      "address": "00ab9d87",
+      "target": "current Model virtual10",
+      "role": "flags26,parent0 clone",
+      "native": "00b752b0",
+      "function": "00ab98f0",
+      "indirect_resolution": "Current canonical Model/Text profile; checker only establishes an indirect CALL, profile evidence is separate."
+    },
+    {
+      "address": "00ab9d8c",
+      "target": "00aa6720",
+      "role": "Model creator transfer",
+      "native": "00aa6720",
+      "function": "00ab98f0"
+    },
+    {
+      "address": "00ab9d93",
+      "target": "00ab8530",
+      "role": "ensure draw sections",
+      "native": "00ab8530",
+      "function": "00ab98f0"
+    },
+    {
+      "address": "00ab9da5",
+      "target": "current Text virtual34",
+      "role": "visibility true",
+      "native": "00aa8530",
+      "function": "00ab98f0",
+      "indirect_resolution": "Current canonical Model/Text profile; checker only establishes an indirect CALL, profile evidence is separate."
+    },
+    {
+      "address": "00ab9db2",
+      "target": "00aa6bc0",
+      "role": "live listener, flag0",
+      "native": "00aa6bc0",
+      "function": "00ab98f0"
+    },
+    {
+      "address": "00ab9dc9",
+      "target": "00ab8c30",
+      "role": "live reference font name",
+      "native": "00ab8c30",
+      "function": "00ab98f0"
+    },
+    {
+      "address": "00ab9e05",
+      "target": "00ab6c30",
+      "role": "shadow enabled, position0",
+      "native": "00ab6c30",
+      "function": "00ab98f0"
+    },
+    {
+      "address": "00ab9e13",
+      "target": "0041e870",
+      "role": "actual shader temporary construction",
+      "native": "0041e870",
+      "function": "00ab98f0"
+    },
+    {
+      "address": "00ab9e1f",
+      "target": "00ab8e70",
+      "role": "shader name and cache invalidation",
+      "native": "00ab8e70",
+      "function": "00ab98f0"
+    },
+    {
+      "address": "00ab9e39",
+      "target": "00419cc0",
+      "role": "current pool getter before narrow release",
+      "native": "00419cc0",
+      "function": "00ab98f0"
+    },
+    {
+      "address": "00ab9e40",
+      "target": "00bd1510",
+      "role": "narrow temporary return",
+      "native": "00bd1510",
+      "function": "00ab98f0"
+    },
+    {
+      "address": "00ab9e51",
+      "target": "00ab81c0",
+      "role": "actual codeunit header",
+      "native": "00ab81c0",
+      "function": "00ab98f0"
+    },
+    {
+      "address": "00ab9e61",
+      "target": "00aba8d0",
+      "role": "actual recursive content",
+      "native": "00aba8d0",
+      "function": "00ab98f0"
+    },
+    {
+      "address": "00ab9e71",
+      "target": "current Text virtual50",
+      "role": "final color",
+      "native": "00ab6b50",
+      "function": "00ab98f0",
+      "indirect_resolution": "Current canonical Model/Text profile; checker only establishes an indirect CALL, profile evidence is separate."
+    },
+    {
+      "address": "00ab9e8a",
+      "target": "00419cc0",
+      "role": "current pool getter before UTF16 release",
+      "native": "00419cc0",
+      "function": "00ab98f0"
+    },
+    {
+      "address": "00ab9e91",
+      "target": "00bd1510",
+      "role": "UTF16 return after final50",
+      "native": "00bd1510",
+      "function": "00ab98f0"
+    },
+    {
+      "address": "00ab9e9b",
+      "target": "00aaa5a0",
+      "role": "actual child attachment",
+      "native": "00aaa5a0",
+      "function": "00ab98f0"
+    },
+    {
+      "address": "00ab9ec0",
+      "target": "current Text virtual30",
+      "role": "pivot pair",
+      "native": "00a9e0b0",
+      "function": "00ab98f0",
+      "indirect_resolution": "Current canonical Model/Text profile; checker only establishes an indirect CALL, profile evidence is separate."
+    },
+    {
+      "address": "00ab9ecd",
+      "target": "00aa6750",
+      "role": "live reference position",
+      "native": "00aa6750",
+      "function": "00ab98f0"
+    },
+    {
+      "address": "00ab9fa9",
+      "target": "00aa8240",
+      "role": "actual child position",
+      "native": "00aa8240",
+      "function": "00ab98f0"
+    }
+  ],
+  "boundaries": {
+    "pending_content": "Keep same child implementation submission/content, outer actual UTF16 header and original caller frame. Finish exact nested child before implementation.resume_after_glyph_child; only idle implementation permits tail resume.",
+    "point_light_owners_required": "Destination Model exists; parent vector already published; keep model creator and detached child. No base-copy retry or attachment.",
+    "domain_required": "Current phase and exception retained. Existing successful-domain allocations/callbacks required; this is neither rollback nor a generic resumable native exception.",
+    "native_layout_abi": "Uses canonical existing typed Text/layout/vector projections and actual string headers/owners. Does not claim native string/list/SEH ABI or raw Text byte layout.",
+    "integration": "Parent registers source and optional actual recursive driver; see docs/GUI_TEXT_CHILD_DRIVER.md. Existing mapped prefix remains caller-owned.",
+    "reentry": "Resume marks cleanup in progress before UTF16 release/attach/pivot; same-frame content guard rejects replay."
+  },
+  "validation": {
+    "strict_compile": "Passed MSVC Win32 /std:c++17 /EHsc /W4 /WX /O2 /MD using current parent/factory/mesh header overlays",
+    "registered_build": "./scripts/build.ps1 passed existing registered Release Win32 build and 2/2 CTests; this new source is not yet registered in worker checkout",
+    "live_disk": "All1747 bytes matched; tail635 bytes and terminated literal21 bytes verified separately",
+    "new_tests": 0,
+    "native_tail_fixture": false,
+    "game_validated": false,
+    "original_abi_compatible": false,
+    "integration_report": "reports/orch5_text_factory_batch.json"
+  }
+}

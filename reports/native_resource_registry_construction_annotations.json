@@ -1,0 +1,41 @@
+[
+  {
+    "address": "00b19c30",
+    "before": {
+      "address": "00b19c30",
+      "function_name": "FUN_00b19c30"
+    },
+    "after": {
+      "address": "00b19c30",
+      "name": "BSP_ResourceRegistry_AllocateSentinel",
+      "evidence": "Complete55-byte raw sentinel allocation. Full original wrapping LEA/TEST/link initialization, byte18=1/19=0, unwritten payload/padding; fixed58-byte bridge invokes actual28-byte malloc/new-handler service. Null is not success. All177 original bytes accounted, exact55/18/56 streams,3whole actualobjects173 COFFsections and sourceEH/provider binding proof. Exact same main library d79113e724e5752d46764e2b69a9cc6cfc3f342dd6d6915c9b3b5cefe713a438;46 unchangedprebuildinputs,strictWin32/2CTests/8seeds. No new runtime/nativecallerABI/nativeSEH/gameclaim. Descriptive names are hypotheses. reports/native_resource_registry_construction_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1aa70",
+    "before": {
+      "address": "00b1aa70",
+      "function_name": "FUN_00b1aa70"
+    },
+    "after": {
+      "address": "00b1aa70",
+      "name": "BSP_ResourceRegistry_ConstructTreeProfile",
+      "evidence": "Complete104 native bytes accounted by20 normal instructions56B plus11 originalEH bookkeeping instructions. New C++ catch spills actual EDX publication and ECX owner before state0/helper; catch binds full B19760 reset and rethrow, independent of currentESI/EDI. Profile/head/currentlink reload/count sequence unchanged; no frees added. Fullcatch108/handler29/maps88 and actual allocator90/reset23 checked. All177 original bytes accounted, exact55/18/56 streams,3whole actualobjects173 COFFsections and sourceEH/provider binding proof. Exact same main library d79113e724e5752d46764e2b69a9cc6cfc3f342dd6d6915c9b3b5cefe713a438;46 unchangedprebuildinputs,strictWin32/2CTests/8seeds. No new runtime/nativecallerABI/nativeSEH/gameclaim. Descriptive names are hypotheses. reports/native_resource_registry_construction_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1b6e0",
+    "before": {
+      "address": "00b1b6e0",
+      "function_name": "FUN_00b1b6e0"
+    },
+    "after": {
+      "address": "00b1b6e0",
+      "name": "BSP_ResourceRegistry_ConstructRenderProfile",
+      "evidence": "Complete18-byte raw constructor, captured owner inESI, fullbase CALL then captured D5E59C profile store, original return. Added actual EDX publication binding required; no outercleanup. All177 original bytes accounted, exact55/18/56 streams,3whole actualobjects173 COFFsections and sourceEH/provider binding proof. Exact same main library d79113e724e5752d46764e2b69a9cc6cfc3f342dd6d6915c9b3b5cefe713a438;46 unchangedprebuildinputs,strictWin32/2CTests/8seeds. No new runtime/nativecallerABI/nativeSEH/gameclaim. Descriptive names are hypotheses. reports/native_resource_registry_construction_audit.json"
+    },
+    "status": "applied"
+  }
+]

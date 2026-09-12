@@ -1,0 +1,611 @@
+{
+  "packet": "orch3_native_effect_jobs_ah",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "status": "complete_cpp_strict_win32_build_original_body_and_actual_manager_chain_fixture_passed",
+  "functions": [
+    {
+      "name": "dispatch",
+      "address": "00866c60",
+      "end_exclusive": "00866cca",
+      "length": 106,
+      "sha256": "3dcef2534439bf0c2e94a25d900502fe47c356dd095531252d8881f5392e668f",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "00866c90",
+          "target": "0x4c1130",
+          "relative": true
+        },
+        {
+          "address": "00866c9a",
+          "target": "0x8667f0",
+          "relative": true
+        },
+        {
+          "address": "00866ca8",
+          "target": "eax",
+          "relative": false
+        },
+        {
+          "address": "00866cb3",
+          "target": "0x4c1130",
+          "relative": true
+        },
+        {
+          "address": "00866cc3",
+          "target": "eax",
+          "relative": false
+        }
+      ],
+      "returns": [
+        {
+          "address": "00866cc7",
+          "bytes": "c20800",
+          "operands": "8"
+        }
+      ],
+      "cpp_symbol": "dispatch_native_effect_entries_00866c60",
+      "ghidra_name": "BSP_EffectManager_DispatchEntries",
+      "native_abi": "__thiscall(manager,float delta,void* reference), RET8",
+      "source": "src/native_effect_jobs.cpp",
+      "coverage": "complete",
+      "original_abi": "__thiscall(manager,float delta,void* reference), RET8",
+      "evidence": "AH complete106-byte phase two: count20; publish referenceF8760C, capture backing1C end/begin, publish deltaF87608 by MOVSS. Each captured cell gets actual4C1130 frame before raw load, captures pool+04, gets8667F0 job, checks current enqueue04 and invokes BE3020. Final actual frame/current08 BE3150(1), including empty span. Same real worker pool and lifetime domain, nonowning cells. Original empty-body/ESP plus real worker lifecycle fixture passed. Complete live/disk span SHA256 3dcef2534439bf0c2e94a25d900502fe47c356dd095531252d8881f5392e668f. docs/NATIVE_EFFECT_JOBS.md; reports/native_effect_jobs.json. Strict MSVC Win32 build and both existing CTests passed. Descriptive names are hypotheses. Parameters: __thiscall(manager,float delta,void* reference), RET8."
+    },
+    {
+      "name": "get",
+      "address": "008667f0",
+      "end_exclusive": "008668be",
+      "length": 206,
+      "sha256": "2cd0a6e678fa70debede46ec74dfb65e58fdb127c4ba044377566fa2be86aff5",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "00866816",
+          "target": "0x415350",
+          "relative": true
+        },
+        {
+          "address": "0086682f",
+          "target": "dword ptr [0xce2218]",
+          "relative": false
+        },
+        {
+          "address": "0086684c",
+          "target": "0xbf681b",
+          "relative": true
+        },
+        {
+          "address": "0086688e",
+          "target": "0x415350",
+          "relative": true
+        },
+        {
+          "address": "00866895",
+          "target": "0xbd0c30",
+          "relative": true
+        },
+        {
+          "address": "008668a3",
+          "target": "dword ptr [0xce2210]",
+          "relative": false
+        }
+      ],
+      "returns": [
+        {
+          "address": "008668bd",
+          "bytes": "c3",
+          "operands": ""
+        }
+      ],
+      "cpp_symbol": "native_effect_job_singleton_008667f0",
+      "ghidra_name": "BSP_EffectJob_GetSingleton",
+      "native_abi": "cdecl(), EAX currentF87658, RET",
+      "source": "src/native_effect_jobs.cpp",
+      "coverage": "complete",
+      "original_abi": "cdecl(), EAX currentF87658, RET",
+      "evidence": "AH complete206-byte eight-byte job singleton: fast currentF87658; actual shared415350 manager/captured OS lock; recheck; allocate8, secondaryD0D3C8 then primaryD0D3E8 then secondaryD0D3E4; publish; capture secondary+4 before second415350 and BD0C30 registration; unlock and return currentglobal. Only lock cleanup on exception, no allocation rollback. Original206-byte/ESP/actual registration and OS lock comparison passed. Complete live/disk span SHA256 2cd0a6e678fa70debede46ec74dfb65e58fdb127c4ba044377566fa2be86aff5. docs/NATIVE_EFFECT_JOBS.md; reports/native_effect_jobs.json. Strict MSVC Win32 build and both existing CTests passed. Descriptive names are hypotheses. Parameters: cdecl(), EAX currentF87658, RET."
+    },
+    {
+      "name": "callback",
+      "address": "008663b0",
+      "end_exclusive": "008663cf",
+      "length": 31,
+      "sha256": "8507755e11511b788c860e5f8aaafb7d475b1a99bc8ad24f4daa1e7b748ef2dd",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "008663ca",
+          "target": "eax",
+          "relative": false
+        }
+      ],
+      "returns": [
+        {
+          "address": "008663cc",
+          "bytes": "c20400",
+          "operands": "4"
+        }
+      ],
+      "cpp_symbol": "execute_native_effect_job_008663b0",
+      "ghidra_name": "BSP_EffectJob_ExecuteCurrentEvent",
+      "native_abi": "ECX job ignored, stack raw event, RET4",
+      "source": "src/native_effect_jobs.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX job ignored, stack raw event, RET4",
+      "evidence": "AH complete31-byte job callback: ECX job ignored, stack raw event; x87 FLD currentF87608, read currentF8760C, current event virtual28, FSTP delta then call; RET4. C++ pure existing raw-event mapping and actual current rumble update28, no extra owner/count. Native table loads precede FSTP whereas pure C++ mapping follows; invalid table-fault order and asynchronous mutations outside contract. Complete live/disk span SHA256 8507755e11511b788c860e5f8aaafb7d475b1a99bc8ad24f4daa1e7b748ef2dd. docs/NATIVE_EFFECT_JOBS.md; reports/native_effect_jobs.json. Strict MSVC Win32 build and both existing CTests passed. Descriptive names are hypotheses. Parameters: ECX job ignored, stack raw event, RET4."
+    },
+    {
+      "name": "adjustor",
+      "address": "008663d0",
+      "end_exclusive": "008663d8",
+      "length": 8,
+      "sha256": "9d16783b9649f14f2aadbcb7e8e497774fdfd650cc3a294d71f1002fd560a73b",
+      "live_disk_equal": true,
+      "calls": [],
+      "returns": [],
+      "cpp_symbol": "delete_native_effect_job_secondary_008663d0",
+      "ghidra_name": "BSP_EffectJob_DeleteSecondary",
+      "native_abi": "__thiscall(secondary,uint flags), ECX-=4 tail866400",
+      "source": "src/native_effect_jobs.cpp",
+      "coverage": "complete",
+      "original_abi": "__thiscall(secondary,uint flags), ECX-=4 tail866400",
+      "evidence": "AH complete8-byte effect-job registered secondary adjustor: subtract4 from ECX, tail jump866400 with unchanged stackflags, return original primary. Original8-byte/ESP/flags0,2,1 actual singleton lifetime fixture passed. Complete live/disk span SHA256 9d16783b9649f14f2aadbcb7e8e497774fdfd650cc3a294d71f1002fd560a73b. docs/NATIVE_EFFECT_JOBS.md; reports/native_effect_jobs.json. Strict MSVC Win32 build and both existing CTests passed. Descriptive names are hypotheses. Parameters: __thiscall(secondary,uint flags), ECX-=4 tail866400."
+    },
+    {
+      "name": "scalar",
+      "address": "00866400",
+      "end_exclusive": "00866434",
+      "length": 52,
+      "sha256": "051cac50301c84f6c5a31f508acceaaf61d15a0d7c798906f2836c28c79bbd75",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "00866426",
+          "target": "0xbf65ac",
+          "relative": true
+        }
+      ],
+      "returns": [
+        {
+          "address": "00866431",
+          "bytes": "c20400",
+          "operands": "4"
+        }
+      ],
+      "cpp_symbol": "delete_native_effect_job_00866400",
+      "ghidra_name": "CG_scalar_deleting_dtor_00866400",
+      "native_abi": "__thiscall(primary,uint flags), RET4, EAX originalprimary",
+      "source": "src/native_effect_jobs.cpp",
+      "coverage": "complete",
+      "original_abi": "__thiscall(primary,uint flags), RET4, EAX originalprimary",
+      "evidence": "AH complete52-byte effect-job primary scalar: unconditionally clearF87658, restore secondary+04 toCE3818, free captured primary only flagsbit0, return original primary; primary table unchanged and no unregister. Preserve correct compiler scalar-deleting-dtor name. Original52-byte/ESP/flags0,2,1/currentglobal replacement fixture passed. Complete live/disk span SHA256 051cac50301c84f6c5a31f508acceaaf61d15a0d7c798906f2836c28c79bbd75. docs/NATIVE_EFFECT_JOBS.md; reports/native_effect_jobs.json. Strict MSVC Win32 build and both existing CTests passed. Descriptive names are hypotheses. Parameters: __thiscall(primary,uint flags), RET4, EAX originalprimary."
+    }
+  ],
+  "exception_evidence": [
+    {
+      "name": "maps",
+      "address": "00dc6b74",
+      "end_exclusive": "00dc6b98",
+      "length": 36,
+      "sha256": "c8b4c4741d18760cb1d067b0a86e464421a7318f051a33156909732ced83b9be",
+      "live_disk_equal": true,
+      "calls": [],
+      "returns": []
+    },
+    {
+      "name": "funclets",
+      "address": "00c94d40",
+      "end_exclusive": "00c94d55",
+      "length": 21,
+      "sha256": "410e179370e0cfe02b5e240b2f5e519aca4c3ce5c86d569a7cd75402c77bae4a",
+      "live_disk_equal": true,
+      "calls": [],
+      "returns": []
+    }
+  ],
+  "owner": {
+    "global_address": "00f87658",
+    "native_bytes": 8,
+    "primary_table": "00d0d3e8",
+    "primary_word0": "008663b0",
+    "secondary_offset": 4,
+    "secondary_table": "00d0d3e4",
+    "secondary_word0": "008663d0",
+    "intrusive_count": false,
+    "registration": "captured secondary pointer before second415350 call",
+    "shared_domain": "actual application01090AA0; no new domain"
+  },
+  "dependencies": [
+    "004c1130 actual frame owner0109CF08 and real worker execution",
+    "00be3020 actual nonowning queue with CURRENT virtual04 validation",
+    "00be3150 CURRENT virtual08 actual dispatch using real scope0109DBE4",
+    "00415350/00bd0c30 same actual singleton domain",
+    "PointEffectChildEvents required current event28",
+    "NativeGamepadForceEvents::find_actual pure existing canonical lookup"
+  ],
+  "validation": {
+    "direct_win32_compile": "local/effect-jobs-compile-ah.log",
+    "fixture": "local/effect-jobs-probe-ah.log",
+    "fixture_source": "local/effect_jobs_probe_ah.cpp",
+    "native_executed": [
+      "complete206byte8667F0 normal/null/fastpath",
+      "complete52byte866400 flags0/2/1",
+      "complete8byte8663D0 flags0/2/1",
+      "complete106byte866C60 empty branch and real frame/worker dispatch"
+    ],
+    "cpp_extra": [
+      "allocation exception unlock",
+      "current enqueue04 table rejection",
+      "actual registration validation exception preserves publication/no free and releases captured lock"
+    ],
+    "actual_domains": [
+      "SingletonLifetimeDomain registration and shutdown",
+      "actual OS critical section and recursion18",
+      "actual138A8 frame owner and worker pool",
+      "actual Win32 suspended worker/start/done events and thread entry",
+      "actual0109DBE4 scope and RandomThreads registry"
+    ],
+    "fixture_adapters": [
+      "original lifetime getter returns layout view of same actual manager/OS section",
+      "allocation/free wrappers use same canonical allocator with explicitnull/exception injection",
+      "original empty dispatcher uses actual frame getter and pool dispatch wrappers"
+    ],
+    "manifest_embedded": true,
+    "combined_build": "local/effect-frame-ah-final-build.log: scripts/build.ps1 strict MSVC Win32 and both existing CTests passed",
+    "call_verification": "local/effect-frame-ah-call-verification-final.log: all report direct-call rows verified, zero failures",
+    "native_callback": {
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "address": "008663b0",
+      "end_exclusive": "008663cf",
+      "length": 31,
+      "sha256": "8507755e11511b788c860e5f8aaafb7d475b1a99bc8ad24f4daa1e7b748ef2dd",
+      "live_disk_fixture_bytes_equal": true,
+      "return_address": "008663cc",
+      "return_bytes": "c20400",
+      "status": "passed_complete_original31byte_vs_current_cpp_actual_event_fixture",
+      "probe_log": "J:\\PROG\\battlestations-pacific-decompile-orch3-ah-job-callback\\local\\effect-job-callback-probe-ah.log",
+      "probe_source": "J:\\PROG\\battlestations-pacific-decompile-orch3-ah-job-callback\\local\\effect_job_callback_probe_ah.cpp",
+      "runner": "J:\\PROG\\battlestations-pacific-decompile-orch3-ah-job-callback\\local\\run_effect_job_callback_probe_ah.cmd",
+      "manifest_embedded": true,
+      "compiler": "/std:c++17 /EHsc /O2 /W4 /WX /fp:strict /MD, MSVC Win32",
+      "checks": [
+        "complete31-bytebody including everyRET4 immediate byte and ESP equality eachcall",
+        "liveF87608/F8760C reread after prior observer changes shared globals",
+        "native CURRENT eventtable+28 switches between two ABI observers eachcall",
+        "actualcanonical NativeGamepadForceEvents::find_actual and GameplayPointChildEvents::update_virtual_28",
+        "actualD0DCD0word10=872150; complete3-byte872150 RET8 semantics",
+        "input signalingNaN7fa12345 outputs quietNaN7fe12345 and x87invalid status1 on bothpaths with all exceptions masked",
+        "negativezero80000000 preserved and ordinary calls have x87exceptionflags0",
+        "entire actual20h eventowner image, soleactual04referencecount,3canonicaleventbindings and independentrequestcount unchanged",
+        "C++ currentevent28 missingmethod rejected with rawowner/count unchanged",
+        "fullactualpoint/definition/component/node/string teardown afterbothruns"
+      ],
+      "calls": [
+        {
+          "input_delta": "3fa00000",
+          "observed_delta": "3fa00000",
+          "reference": "11113333",
+          "current_adapter": 1,
+          "x87_exception_flags": 0
+        },
+        {
+          "input_delta": "c0200000",
+          "observed_delta": "c0200000",
+          "reference": "22224444",
+          "current_adapter": 2,
+          "x87_exception_flags": 0
+        },
+        {
+          "input_delta": "7fa12345",
+          "observed_delta": "7fe12345",
+          "reference": "33335555",
+          "current_adapter": 1,
+          "x87_exception_flags": 1
+        },
+        {
+          "input_delta": "80000000",
+          "observed_delta": "80000000",
+          "reference": "44446666",
+          "current_adapter": 2,
+          "x87_exception_flags": 0
+        }
+      ],
+      "abi_adapters": [
+        "only original8663B0 absoluteF87608/F8760C operands relocated; fulloriginal code and RET4 otherwise unchanged",
+        "actualrawrumbleownerprimarytable temporarily points to host callabletable; current+28bridge restores nativeidentityD0DCD0 before resolving existingcompanion and delegating same realcurrent872150 C++ implementation",
+        "observer records exactfloatbits/reference then delegatesactualeventno-op before changingfixture sharedglobals for nextcall",
+        "new C++ pureowner projection follows x87 FSTP; no claim of original invalid-table faultordering"
+      ],
+      "limits": [
+        "native job body executed; original872150 bytes verified but reached via canonical C++ implementation bridge",
+        "x87 exceptions masked; no originalnativeEHdispatch or unmaskedfault-order proof",
+        "directcallback fixture does not exercise nonempty manager queue/parallel callback scheduling",
+        "controlled device sink fromAG fixture, no physical forceoutput/gameplayvalidation",
+        "no productiontrackedfiles, Ghidramutations, commit or push in scratchworktree"
+      ],
+      "inputs": {
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_effect_jobs.cpp": "56b1b4f681131db5f42b3524c5176b8e52b954d5cf8b8ca13181ac54449f1600",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\gameplay_point_binding.cpp": "bbfc4a5f983fbc1b95899ff0f5a89735755974c5aad49529d262097ad127eb8a",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_gamepad_force_event.cpp": "52f13730950b709c5ffc1d27badde7b1f59f6d93358793abc0c9c8a096e71050",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib": "c5d2cf89fda6dc2dc3739df11ed498335c43e217b46b93d890bb9894a31f92fc"
+      }
+    },
+    "native_callback_copy": "local/effect-job-callback-evidence-ah.json",
+    "actual_manager_chain": "local/live-effect-frame-probe-ah.log: complete original231-byte manager/RET8 versus C++, normalized114h point state and lifetime counts match; actual parent/full4x4/sample, restart/factories, nonempty real frame jobs, children/retirement, deferred terminal and complete domain teardown. Borrowed phase2 span population and device sink are explicit fixture inputs.",
+    "game_validated": false
+  },
+  "limits": [
+    "New C++ ABI; integer native vtables not directly executable C++ ABI",
+    "No original EH dispatcher execution",
+    "No native invalid-pointer/table-fault ordering claim: C++ pure currentevent projection follows x87store",
+    "No arbitrary asynchronous tablemutation parity claim",
+    "No gameplay or physical device validation",
+    "Unknown current event and job implementations remain required",
+    "Original231-byte manager executes through five actual C++ callee bridges. Nonempty phase2 is actual C++ queue/dispatch with fixture-populated borrowed event entries; original106-byte dispatcher is directly exercised for empty dispatch only. Original31-byte callback has a separate actual-event fixture."
+  ],
+  "documentation": "docs/NATIVE_EFFECT_JOBS.md",
+  "native_call_sites": [
+    {
+      "function": "00866c60",
+      "address": "00866c90",
+      "native": "004c1130"
+    },
+    {
+      "function": "00866c60",
+      "address": "00866c9a",
+      "native": "008667f0"
+    },
+    {
+      "function": "00866c60",
+      "address": "00866cb3",
+      "native": "004c1130"
+    },
+    {
+      "function": "008667f0",
+      "address": "00866816",
+      "native": "00415350"
+    },
+    {
+      "function": "008667f0",
+      "address": "0086684c",
+      "native": "00bf681b"
+    },
+    {
+      "function": "008667f0",
+      "address": "0086688e",
+      "native": "00415350"
+    },
+    {
+      "function": "008667f0",
+      "address": "00866895",
+      "native": "00bd0c30"
+    },
+    {
+      "function": "00866400",
+      "address": "00866426",
+      "native": "00bf65ac"
+    }
+  ],
+  "ghidra_signature_audit": {
+    "record": "local/effect-frame-signatures-ah.json",
+    "project_saved": true,
+    "before": {
+      "00866c60": "00866c60 BSP_EffectManager_DispatchEntries  undefined BSP_EffectManager_DispatchEntries(void)  body 00866c60 - 00866cc9\n",
+      "008667f0": "008667f0 FUN_008667f0  undefined FUN_008667f0(void)  body 008667f0 - 008668bd\n",
+      "008663b0": "008663b0 FUN_008663b0  undefined FUN_008663b0(void)  body 008663b0 - 008663ce\n",
+      "008663d0": "008663d0 FUN_008663d0  undefined FUN_008663d0(void)  body 008663d0 - 008663d7\n",
+      "00866400": "00866400 CG_scalar_deleting_dtor_00866400  undefined CG_scalar_deleting_dtor_00866400(void)  body 00866400 - 00866433\n"
+    },
+    "changes": [
+      {
+        "address": "00866c60",
+        "prototype": "void __thiscall BSP_EffectManager_DispatchEntries(float delta, void * reference_node)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00866c60 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "008667f0",
+        "prototype": "void * __cdecl BSP_EffectJob_GetSingleton(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 008667f0 with __cdecl calling convention"
+        }
+      },
+      {
+        "address": "008663b0",
+        "prototype": "void __thiscall BSP_EffectJob_ExecuteCurrentEvent(void * event)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 008663b0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "008663d0",
+        "prototype": "void * __thiscall BSP_EffectJob_DeleteSecondary(uint flags)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 008663d0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00866400",
+        "prototype": "void * __thiscall CG_scalar_deleting_dtor_00866400(uint flags)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00866400 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ],
+    "after": "00866c60 BSP_EffectManager_DispatchEntries  void __thiscall BSP_EffectManager_DispatchEntries(void * this, float delta, void * reference_node)  body 00866c60 - 00866cc9\n008667f0 BSP_EffectJob_GetSingleton  void * __cdecl BSP_EffectJob_GetSingleton(void)  body 008667f0 - 008668bd\n008663b0 BSP_EffectJob_ExecuteCurrentEvent  void __thiscall BSP_EffectJob_ExecuteCurrentEvent(void * this, void * event)  body 008663b0 - 008663ce\n008663d0 BSP_EffectJob_DeleteSecondary  void * __thiscall BSP_EffectJob_DeleteSecondary(void * this, uint flags)  body 008663d0 - 008663d7\n00866400 CG_scalar_deleting_dtor_00866400  void * __thiscall CG_scalar_deleting_dtor_00866400(void * this, uint flags)  body 00866400 - 00866433",
+    "parameter_note": "Ghidra supplies ECX this automatically; prototype text contains only native stack arguments. Scalar adjustor receiver is secondary+04 and primary scalar returns original primary; unknown native structures remain void pointers."
+  },
+  "ghidra_function_definitions": {
+    "events": [
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "008663b0",
+          "end_address": "008663cf"
+        },
+        "result": {
+          "success": true,
+          "start_address": "008663b0",
+          "end_address": "008663ce",
+          "bytes_disassembled": 31,
+          "message": "Successfully disassembled 31 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "008663b0",
+          "disassemble_first": false
+        },
+        "result": {
+          "success": true,
+          "address": "008663b0",
+          "function_name": "FUN_008663b0",
+          "entry_point": "008663b0",
+          "body_size": 31,
+          "message": "Function created successfully at 008663b0"
+        }
+      },
+      {
+        "defined": "008663b0",
+        "end": "008663cf",
+        "name": null,
+        "after": "Function: FUN_008663b0 at 008663b0\nSignature: undefined FUN_008663b0(void)\nEntry: 008663b0\nBody: 008663b0 - 008663ce"
+      },
+      {
+        "endpoint": "save_program",
+        "body": {},
+        "result": {
+          "success": true,
+          "program": "battlestationspacific.exe",
+          "message": "Program saved successfully"
+        }
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "008663d0",
+          "end_address": "008663d8"
+        },
+        "result": {
+          "success": true,
+          "start_address": "008663d0",
+          "end_address": "008663d7",
+          "bytes_disassembled": 8,
+          "message": "Successfully disassembled 8 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "008663d0",
+          "disassemble_first": false
+        },
+        "result": {
+          "success": true,
+          "address": "008663d0",
+          "function_name": "FUN_008663d0",
+          "entry_point": "008663d0",
+          "body_size": 8,
+          "message": "Function created successfully at 008663d0"
+        }
+      },
+      {
+        "defined": "008663d0",
+        "end": "008663d8",
+        "name": null,
+        "after": "Function: FUN_008663d0 at 008663d0\nSignature: undefined FUN_008663d0(void)\nEntry: 008663d0\nBody: 008663d0 - 008663d7"
+      },
+      {
+        "endpoint": "save_program",
+        "body": {},
+        "result": {
+          "success": true,
+          "program": "battlestationspacific.exe",
+          "message": "Program saved successfully"
+        }
+      }
+    ]
+  },
+  "ghidra_annotation_audit": {
+    "record": "local/ghidra-annotations-20260911T234951Z.json",
+    "readback": "local/effect-frame-ah-comments.json",
+    "project_saved": true,
+    "names_and_evidence_verified": true,
+    "prior_comments_preserved": true,
+    "changes": [
+      {
+        "address": "008663b0",
+        "before": {
+          "address": "008663b0",
+          "function_name": "BSP_EffectJob_ExecuteCurrentEvent"
+        },
+        "after": {
+          "address": "008663b0",
+          "name": "BSP_EffectJob_ExecuteCurrentEvent",
+          "evidence": "AH complete31-byte job callback: ECX job ignored, stack raw event; x87 FLD currentF87608, read currentF8760C, current event virtual28, FSTP delta then call; RET4. C++ pure existing raw-event mapping and actual current rumble update28, no extra owner/count. Native table loads precede FSTP whereas pure C++ mapping follows; invalid table-fault order and asynchronous mutations outside contract. Complete live/disk span SHA256 8507755e11511b788c860e5f8aaafb7d475b1a99bc8ad24f4daa1e7b748ef2dd. docs/NATIVE_EFFECT_JOBS.md; reports/native_effect_jobs.json. Strict MSVC Win32 build and both existing CTests passed. Descriptive names are hypotheses. Parameters: ECX job ignored, stack raw event, RET4."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "008663d0",
+        "before": {
+          "address": "008663d0",
+          "function_name": "BSP_EffectJob_DeleteSecondary"
+        },
+        "after": {
+          "address": "008663d0",
+          "name": "BSP_EffectJob_DeleteSecondary",
+          "evidence": "AH complete8-byte effect-job registered secondary adjustor: subtract4 from ECX, tail jump866400 with unchanged stackflags, return original primary. Original8-byte/ESP/flags0,2,1 actual singleton lifetime fixture passed. Complete live/disk span SHA256 9d16783b9649f14f2aadbcb7e8e497774fdfd650cc3a294d71f1002fd560a73b. docs/NATIVE_EFFECT_JOBS.md; reports/native_effect_jobs.json. Strict MSVC Win32 build and both existing CTests passed. Descriptive names are hypotheses. Parameters: __thiscall(secondary,uint flags), ECX-=4 tail866400."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00866400",
+        "before": {
+          "address": "00866400",
+          "function_name": "CG_scalar_deleting_dtor_00866400"
+        },
+        "after": {
+          "address": "00866400",
+          "name": "CG_scalar_deleting_dtor_00866400",
+          "evidence": "AH complete52-byte effect-job primary scalar: unconditionally clearF87658, restore secondary+04 toCE3818, free captured primary only flagsbit0, return original primary; primary table unchanged and no unregister. Preserve correct compiler scalar-deleting-dtor name. Original52-byte/ESP/flags0,2,1/currentglobal replacement fixture passed. Complete live/disk span SHA256 051cac50301c84f6c5a31f508acceaaf61d15a0d7c798906f2836c28c79bbd75. docs/NATIVE_EFFECT_JOBS.md; reports/native_effect_jobs.json. Strict MSVC Win32 build and both existing CTests passed. Descriptive names are hypotheses. Parameters: __thiscall(primary,uint flags), RET4, EAX originalprimary."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "008667f0",
+        "before": {
+          "address": "008667f0",
+          "function_name": "BSP_EffectJob_GetSingleton"
+        },
+        "after": {
+          "address": "008667f0",
+          "name": "BSP_EffectJob_GetSingleton",
+          "evidence": "AH complete206-byte eight-byte job singleton: fast currentF87658; actual shared415350 manager/captured OS lock; recheck; allocate8, secondaryD0D3C8 then primaryD0D3E8 then secondaryD0D3E4; publish; capture secondary+4 before second415350 and BD0C30 registration; unlock and return currentglobal. Only lock cleanup on exception, no allocation rollback. Original206-byte/ESP/actual registration and OS lock comparison passed. Complete live/disk span SHA256 2cd0a6e678fa70debede46ec74dfb65e58fdb127c4ba044377566fa2be86aff5. docs/NATIVE_EFFECT_JOBS.md; reports/native_effect_jobs.json. Strict MSVC Win32 build and both existing CTests passed. Descriptive names are hypotheses. Parameters: cdecl(), EAX currentF87658, RET."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00866c60",
+        "before": {
+          "address": "00866c60",
+          "function_name": "BSP_EffectManager_DispatchEntries",
+          "comment": "[BSP reconstruction 00866c60]\nProvisional hypothesis, not a recovered symbol. __thiscall on the effect-manager singleton with (float delta, void* referenceNode), RET 8; phase 2 of 00867EE0. Publishes the arguments into _DAT_00F87608 and DAT_00F8760C, walks the second array at +1Ch/+20h and dispatches each entry through 004C1130()'s +04h object, virtual +04h, then one virtual +08h with argument 1. Reads as per-frame draw or queue submission; 004C1130's object is render-side and was not analysed, so the verb is provisional. docs/GAME_WORLD_OCEAN.md."
+        },
+        "after": {
+          "address": "00866c60",
+          "name": "BSP_EffectManager_DispatchEntries",
+          "evidence": "Provisional hypothesis, not a recovered symbol. __thiscall on the effect-manager singleton with (float delta, void* referenceNode), RET 8; phase 2 of 00867EE0. Publishes the arguments into _DAT_00F87608 and DAT_00F8760C, walks the second array at +1Ch/+20h and dispatches each entry through 004C1130()'s +04h object, virtual +04h, then one virtual +08h with argument 1. Reads as per-frame draw or queue submission; 004C1130's object is render-side and was not analysed, so the verb is provisional. docs/GAME_WORLD_OCEAN.md. | AH complete106-byte phase two: count20; publish referenceF8760C, capture backing1C end/begin, publish deltaF87608 by MOVSS. Each captured cell gets actual4C1130 frame before raw load, captures pool+04, gets8667F0 job, checks current enqueue04 and invokes BE3020. Final actual frame/current08 BE3150(1), including empty span. Same real worker pool and lifetime domain, nonowning cells. Original empty-body/ESP plus real worker lifecycle fixture passed. Complete live/disk span SHA256 3dcef2534439bf0c2e94a25d900502fe47c356dd095531252d8881f5392e668f. docs/NATIVE_EFFECT_JOBS.md; reports/native_effect_jobs.json. Strict MSVC Win32 build and both existing CTests passed. Descriptive names are hypotheses. Parameters: __thiscall(manager,float delta,void* reference), RET8."
+        },
+        "status": "applied"
+      }
+    ]
+  }
+}

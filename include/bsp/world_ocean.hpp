@@ -94,9 +94,11 @@ struct EffectSampleState {
     bool track_displacement{false}; // +2Ch
 };
 
-// 00867D00 sampling rule. sampled_position is what the instance's node reports
-// this frame; it is only consumed when the interval elapses. Returns true when
-// a new sample was latched, which is also when the timer resets to zero.
+// Sampling-only semantic adapter for00867D00; shares its x87 age/gate/spill
+// stages with advance_point_effect_00867d00 in point_effect_advance.hpp. This
+// does not implement restart, attachment, stop or live-node refresh. The caller
+// supplies an already-sampled position; no callback can change timer/flags here.
+// Returns true when latched, which is also when the timer resets to positive0.
 bool advance_effect_sample_00867d00(
     EffectSampleState& state, float delta, const OceanVec3& sampled_position) noexcept;
 

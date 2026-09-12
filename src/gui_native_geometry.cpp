@@ -1,4 +1,5 @@
 #include "bsp/gui_native_geometry.hpp"
+#include "bsp/native_mesh_clone.hpp"
 #include <cstring>
 #include <exception>
 #include <list>
@@ -131,6 +132,61 @@ struct GuiNativeGeometryOwners::Impl {
             throw;
         }
     }
+    NativeMeshSectionStorage* clone_section(const NativeMeshSectionStorage& source) {
+        auto it = section_entries.emplace(section_entries.end(), *this);
+        void* allocated = nullptr;
+        try {
+            allocated = allocate_native_mesh_section_slot_00b85ee0(sections.pool_010901d4);
+            if (!allocated) throw std::bad_alloc();
+            it->raw = copy_construct_native_mesh_section_00b85ef0(allocated, source,
+                registration.owners, constants.maximum_00ce4970);
+            it->reference = std::make_unique<NativeMeshSectionReference>(*it->raw, sections,
+                NativeMeshSectionCompanionDisposal{&*it, retire_section});
+            registration.bind(registration.context, it->raw, *it->reference);
+            it->registered = true;
+            return it->raw;
+        } catch (...) {
+            if (it->reference) {
+                release_render_command_reference(*it->reference); // erases it
+            } else {
+                if (it->raw) delete_native_mesh_section_00b86690(it->raw, sections, 1);
+                else if (allocated)
+                    return_native_mesh_section_slot_00b85b20(sections.pool_010901d4, allocated);
+                // A failed native copy constructor performs base-only unwind;
+                // it is not followed by a full section destructor.
+                section_entries.erase(it);
+            }
+            throw;
+        }
+    }
+    NativeMaterialStorage* clone_material(const NativeMaterialStorage& source,
+        NativeMaterialDestructionAccess& access, const volatile std::uint32_t* profile) {
+        require(&access.retained_owners == &registration.owners,
+            "GUI native material clone requires the same actual owner domain");
+        require(profile && profile[0] == 0x00bd30e0 && profile[1] == 0x00b194b0,
+            "GUI native material clone requires the actual current D5E520 lifetime profile");
+        auto it = material_entries.emplace(material_entries.end(), *this);
+        void* allocated = nullptr;
+        try {
+            allocated = allocate_native_material_slot_00b18780(access.material_slots);
+            if (!allocated) throw std::bad_alloc();
+            it->raw = clone_native_material_00b18b60(allocated, source, registration.owners);
+            it->reference = std::make_unique<NativeMaterialReference>(*it->raw,
+                access, profile, NativeMaterialCompanionDisposal{&*it, retire_material});
+            registration.bind(registration.context, it->raw, *it->reference);
+            it->registered = true;
+            return it->raw;
+        } catch (...) {
+            if (it->reference) {
+                release_render_command_reference(*it->reference); // erases it
+            } else {
+                if (it->raw) delete_native_material_00b194b0(it->raw, access, 1);
+                else if (allocated) access.material_slots.return_slot_00b17a80(allocated);
+                material_entries.erase(it);
+            }
+            throw;
+        }
+    }
     NativeMaterialStorage* create_material(NativeString& name,
         void* const volatile& renderer, NativeMaterialDestructionAccess& access,
         const volatile std::uint32_t* profile) {
@@ -165,6 +221,31 @@ GuiNativeGeometryOwners::GuiNativeGeometryOwners(NativeMeshEnvironment& meshes,
 GuiNativeGeometryOwners::~GuiNativeGeometryOwners() = default;
 NativeMeshStorage* GuiNativeGeometryOwners::create_mesh() { return impl_->create_mesh(); }
 NativeMeshSectionStorage* GuiNativeGeometryOwners::create_section() { return impl_->create_section(); }
+NativeMeshStorage* GuiNativeGeometryOwners::clone_mesh_for_text_00b742a0(
+    NativeMeshStorage& source, const volatile std::uint32_t* mesh_profile,
+    NativeMaterialDestructionAccess& materials,
+    const volatile std::uint32_t* material_profile, NativeMeshCloneAcquired& acquired) {
+    require(!acquired.mesh && !acquired.section && !acquired.material,
+        "GUI Text mesh clone requires empty acquired creator storage");
+    auto* const source_reference = dynamic_cast<NativeMeshReference*>(
+        &actual_owners().resolve_actual(&source));
+    require(source.native_vtable_00 == 0x00d62d60 && source_reference &&
+        &source_reference->storage() == &source,
+        "GUI Text mesh clone requires its canonical actual D62D60 mesh");
+    require(mesh_profile && mesh_profile[4] == 0x00b742a0,
+        "GUI Text mesh has no implementation for its current clone virtual slot");
+    acquired.mesh = create_mesh();
+    copy_native_mesh_for_text_00b73f50(*acquired.mesh, source, *this,
+        impl_->meshes.strings, materials, material_profile, acquired);
+    return acquired.mesh;
+}
+NativeMeshSectionStorage* GuiNativeGeometryOwners::clone_section_00b85ef0(
+    const NativeMeshSectionStorage& source) { return impl_->clone_section(source); }
+NativeMaterialStorage* GuiNativeGeometryOwners::clone_material_00b18b60(
+    const NativeMaterialStorage& source, NativeMaterialDestructionAccess& materials,
+    const volatile std::uint32_t* material_profile) {
+    return impl_->clone_material(source, materials, material_profile);
+}
 NativeMaterialStorage* GuiNativeGeometryOwners::create_material_for_effect_00535320(
     NativeString& name, void* const volatile& renderer,
     NativeMaterialDestructionAccess& access, const volatile std::uint32_t* profile) {

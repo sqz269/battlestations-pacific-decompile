@@ -8,6 +8,10 @@
 #include <stdexcept>
 #include <exception>
 
+#if !defined(_MSC_VER) || !defined(_M_IX86)
+#error Native mesh section copying requires MSVC Win32 x87 assembly.
+#endif
+
 namespace bsp {
 namespace {
 static_assert(sizeof(void*) == 4, "Native mesh section pool storage targets MSVC Win32.");
@@ -249,6 +253,23 @@ void assign_actual(void*& field, void* incoming, NativeRenderActualOwners& owner
     if (incoming) retain_actual(incoming);
     if (old) release_native_render_actual_owner(owners, old);
 }
+void copy_actual(void*& destination, void* const& source, NativeRenderActualOwners& owners) {
+    // B85EF0 loads the destination before the current source identity.
+    void* const old = destination;
+    void* const incoming = source;
+    if (old == incoming) return;
+    destination = incoming;
+    if (incoming) retain_actual(incoming);
+    if (old) release_native_render_actual_owner(owners, old);
+}
+void copy_section_float_word(std::uint32_t& destination, const std::uint32_t& source) noexcept {
+    __asm {
+        mov eax, source
+        mov edx, destination
+        fld dword ptr [eax]
+        fstp dword ptr [edx]
+    }
+}
 void release_then_clear(void*& field, NativeRenderActualOwners& owners) {
     void* const old = field;
     if (old) {
@@ -304,6 +325,48 @@ NativeMeshSectionStorage* create_native_mesh_section_00533fa0(
     NativeMeshSectionPool& pool, const volatile std::uint32_t& bounds_w) {
     auto* raw = allocate_native_mesh_section_slot_00b85ee0(pool);
     return raw ? construct_native_mesh_section_00b857f0(raw, bounds_w) : nullptr;
+}
+
+NativeMeshSectionStorage* copy_construct_native_mesh_section_00b85ef0(
+    void* raw, const NativeMeshSectionStorage& source, NativeRenderActualOwners& owners,
+    const volatile std::uint32_t& bounds_w) {
+    auto* section = ::new (raw) NativeMeshSectionStorage;
+    section->native_vtable_00 = reference_profile;
+    section->references_04.store(1, std::memory_order_relaxed);
+    const auto w = bounds_w; // Native copy reads CE4970 after base count=1.
+    section->native_vtable_00 = section_profile;
+    section->material_20 = nullptr;
+    section->bounds_bits_24[0] = 0;
+    section->bounds_bits_24[1] = 0;
+    section->bounds_bits_24[2] = 0;
+    section->bounds_bits_24[3] = w;
+    section->word_34 = 0;
+    section->next_section_38 = nullptr;
+    section->vertex_stream_count_4c = 0;
+    section->vertex_layout_50 = nullptr;
+    section->instance_generator_binding_5c = nullptr;
+    section->indexed_58 = source.indexed_58;
+    section->primitive_08 = source.primitive_08;
+    for (std::uint32_t i = 0; i < 4; ++i)
+        section->range_words_0c[i] = source.range_words_0c[i];
+    section->instance_count_1c = source.instance_count_1c;
+    try { // Native EH state0 starts immediately before material assignment.
+        copy_actual(section->material_20, source.material_20, owners);
+        for (std::uint32_t i = 0; i < 4; ++i)
+            copy_section_float_word(section->bounds_bits_24[i], source.bounds_bits_24[i]);
+        copy_section_float_word(section->word_34, source.word_34);
+        copy_actual(section->next_section_38, source.next_section_38, owners);
+        for (std::int32_t i = 0; i < source.vertex_stream_count_4c; ++i)
+            append_native_mesh_section_vertex_stream_00b85b80(*section, source.vertex_streams_3c[i]);
+        copy_actual(section->vertex_layout_50, source.vertex_layout_50, owners);
+        section->uninterpreted_54 = source.uninterpreted_54;
+        copy_actual(section->instance_generator_binding_5c, source.instance_generator_binding_5c, owners);
+    } catch (...) {
+        // CC24B0 invokes only BD30F0, not the derived resource destructor.
+        section->native_vtable_00 = reference_profile;
+        throw;
+    }
+    return section;
 }
 
 void set_native_mesh_section_material_00b864c0(

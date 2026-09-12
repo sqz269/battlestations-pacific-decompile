@@ -1,0 +1,63 @@
+{
+  "batch": "orch5_text_factory",
+  "worktree": "agent/orch5-20260911",
+  "base": "d7389974",
+  "workers": [
+    "7c59c571",
+    "07383c7a",
+    "5316aa21",
+    "2d1cd4d7"
+  ],
+  "reports": [
+    "reports/gui_model_clone_transport.json",
+    "reports/gui_widget_attach_actual.json",
+    "reports/native_mesh_section_copy.json",
+    "reports/native_mesh_clone.json",
+    "reports/gui_text_runtime_factory.json",
+    "reports/gui_text_glyph_child_runtime.json",
+    "reports/gui_text_child_driver.json"
+  ],
+  "source_sha256": {
+    "src/native_mesh_section.cpp": "91db099dda46b3c297ee554ec976f238bf968b5f4dfd674496597c2a62a2b74a",
+    "src/native_mesh_clone.cpp": "bad88139345ac5c51e727d9bad59b5d4129ce318cd8439ea6e8356f720e7ff65",
+    "src/gui_native_geometry.cpp": "1c0a6a678fb76043970bfab2293d7c03a6b8890f1377135137b768af13b6b68f",
+    "src/native_gui_text_model_clone.cpp": "45aba92475d0227cfd3f6656ace8f99865327af7ca6f3a79d62694555168280a",
+    "src/gui_widget_owner.cpp": "20591c5b11b6dc58fb96a3eeee43e4eeb0d036884395e3d60bd9c951ba20202d",
+    "src/gui_widget_attach.cpp": "d20b38ff1e90e4c78c4f1b20ef9c05f841cad2e7cdc1f462c401f2c40215af03",
+    "src/gui_text_child_lifetime.cpp": "42fdbdecc357000d27eb0f5b37ab4b9e372c3ca0d8eaf1411fb25f79af1dc546",
+    "src/gui_text_content.cpp": "4dea17e90586f795b38e25bee6d93191cd9979ba7b621495268182c0efdb1a85",
+    "src/gui_text_runtime_content.cpp": "f9d0985c5b85bbe3775d2112a9459d8f9fd605773120851a6b9d7d97a10eff58",
+    "src/gui_text_runtime_factory.cpp": "738c4592a56a547a530e41e37350971745e2a717734dcbb368c0e7335fd2e1f6",
+    "src/gui_text_glyph_child_runtime.cpp": "acc49b4463e1d3120c1ca92846e63d4f1df63b8917f7dbc50b8f940b1c2911cb"
+  },
+  "registered_sources": [
+    "src/native_mesh_clone.cpp",
+    "src/gui_widget_attach.cpp",
+    "src/gui_text_runtime_factory.cpp",
+    "src/gui_text_glyph_child_runtime.cpp"
+  ],
+  "validation": {
+    "build": "Release MSVC Win32 scripts/build.ps1 passed",
+    "existing_tests": "reconstructed_math and native_math_differential 2/2 passed",
+    "build_log": "local/orch5-text-factory-reviewed-build.log",
+    "call_rows": 72,
+    "call_failures": 0,
+    "resolved_indirect_rows": 7,
+    "call_log": "local/orch5-text-factory-calls.log",
+    "section_copy_probe": "Original 481 bytes match PE; original-byte vs combined-library probe passed all100 slot bytes, retained counts, x87 status and subsequent host release balance.",
+    "probe_log": "local/orch5-section-copy-probe.log",
+    "new_permanent_tests": 0,
+    "independent_review": "Factory/child-tail/driver/Model/mesh/section bounded source and assembly reviews; reentry and service-domain corrections accepted."
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "annotation_count": 15,
+    "saved": true,
+    "before_values": "reports/orch5_text_factory_annotations.json"
+  },
+  "abi_compatible": false,
+  "game_validated": false,
+  "visual_validated": false,
+  "remaining": "See docs/ORCH5_TEXT_FACTORY_BATCH.md follow-up packets; explicit native failure/pending/positive-light/timed-entry boundaries remain."
+}

@@ -1,0 +1,59 @@
+{
+  "packet": "orch5_glyph_child_owner_leaves",
+  "source": "src/gui_widget_attach.cpp",
+  "functions": [
+    {
+      "address": "00aaa5a0",
+      "end_inclusive": "00aaa629",
+      "original_abi": "ECX parent,child/insert position stack,RET8 atAAA627",
+      "coverage": "typed detached allocation/null-position append branch"
+    },
+    {
+      "address": "00aa6bc0",
+      "end_inclusive": "00aa6bd3",
+      "original_abi": "ECX widget,listener/lowbyte stack,RET8 atAA6BD1",
+      "coverage": "complete field stores"
+    },
+    {
+      "address": "00a9e0b0",
+      "end_inclusive": "00a9e0c6",
+      "original_abi": "ECX widget,pair pointer stack,RET4 atA9E0C4",
+      "coverage": "complete sequential x87 copy and actual recompose"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00aaa61d",
+      "native": "00b6e680",
+      "function": "00aaa5a0",
+      "evidence": "current parent node then child node after logical insertion"
+    },
+    {
+      "address": "00a9e0bf",
+      "native": "00aa7220",
+      "function": "00a9e0b0",
+      "evidence": "actual recomposition after sequential pair copy"
+    },
+    {
+      "address": "00ab9db2",
+      "native": "00aa6bc0",
+      "function": "00ab98f0",
+      "evidence": "current parent listener and literal flag0"
+    },
+    {
+      "address": "00ab9e9b",
+      "native": "00aaa5a0",
+      "function": "00ab98f0",
+      "evidence": "actual child and insert position0"
+    },
+    {
+      "address": "00ab9ec0",
+      "native": "00a9e0b0",
+      "function": "00ab98f0",
+      "evidence": "resolved current30 inherited pivot setter"
+    }
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "remaining": "existing-parent detachment is explicit caller prerequisite; nonnull list-iterator insertion, native vector/list allocation ABI and game validation excluded"
+}

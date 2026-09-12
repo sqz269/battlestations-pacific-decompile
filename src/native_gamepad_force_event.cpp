@@ -226,6 +226,11 @@ NativeGamepadForceEventReference* NativeGamepadForceEvents::find(RenderCommandRe
         if (ref == &value) return ref;
     return nullptr;
 }
+NativeGamepadForceEventReference* NativeGamepadForceEvents::find_actual(const void* value) const noexcept {
+    for (auto* ref = references_; ref; ref = ref->next_)
+        if (&ref->storage_ == value) return ref;
+    return nullptr;
+}
 void NativeGamepadForceEvents::update(NativeGamepadForceEventReference& ref, float,
     void*) {
     if (&ref.owner_ != this) throw std::invalid_argument("Wrong rumble event domain");

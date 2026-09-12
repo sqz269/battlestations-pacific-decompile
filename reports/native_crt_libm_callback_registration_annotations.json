@@ -1,0 +1,29 @@
+[
+  {
+    "address": "00c04f67",
+    "before": {
+      "address": "00c04f67",
+      "function_name": "LIBCRT_unmatched_00c04f67",
+      "comment": "[BSP inventory 00c04f67] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+    },
+    "after": {
+      "address": "00c04f67",
+      "name": "BSP_CRT_EncodePointerCurrentState",
+      "evidence": "Complete110 original bytes36instructions mapped to128 compiled bytes46instructions; current TLS/IAT capture order and PTD+1F8, exact KERNEL32.DLL/EncodePointer named imports, full19-byte fixed gate bridge and original actual argument writeback. Seven compiled accessor proofs include actual encoder context0/4/8/C. Full151/46 mapped to128+55bytes/63instructions;2actualobjects24mappedsections/30relocs,fullbridge19,7compiler layoutaccessors and exact136strcmp. Exact same main library d79113e724e5752d46764e2b69a9cc6cfc3f342dd6d6915c9b3b5cefe713a438;46 unchangedprebuildinputs,strictWin32/2CTests/8seeds. No new runtime/nativecallerABI/nativeSEH/gameclaim. Descriptive names are hypotheses. reports/native_crt_libm_callback_registration_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00c0f0bb",
+    "before": {
+      "address": "00c0f0bb",
+      "function_name": "BSP_CRT_RegisterLibmMathErrorCallback"
+    },
+    "after": {
+      "address": "00c0f0bb",
+      "name": "BSP_CRT_RegisterLibmMathErrorCallback",
+      "evidence": "Complete41 original bytes10instructions mapped to55 compiled bytes17instructions. Null first currentargument performs actual flag AND0 read-modify-write, leaves encoded stale and does not read encoder binding. Nonnull rereads actual argument, fullencoder then encoded store beforeflag1. Added context cleanup changes incidentalflags; no registration owner/lock/retirement/currentcallback guarantee. Full151/46 mapped to128+55bytes/63instructions;2actualobjects24mappedsections/30relocs,fullbridge19,7compiler layoutaccessors and exact136strcmp. Exact same main library d79113e724e5752d46764e2b69a9cc6cfc3f342dd6d6915c9b3b5cefe713a438;46 unchangedprebuildinputs,strictWin32/2CTests/8seeds. No new runtime/nativecallerABI/nativeSEH/gameclaim. Descriptive names are hypotheses. reports/native_crt_libm_callback_registration_audit.json"
+    },
+    "status": "applied"
+  }
+]

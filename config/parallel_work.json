@@ -7665,6 +7665,83 @@
         "reports/native_crt_libm_error_callback_discovery.json"
       ],
       "evidence": "reports/native_crt_libm_error_callback_discovery.json"
+    },
+    {
+      "id": "native_crt_pointer_decode_support3",
+      "packet": "native_crt_pointer_decode_support3",
+      "state": "three_complete_entries_main_archive_link_checked_saved_and_registered",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00c04efb",
+        "00bfbb61",
+        "00c05920"
+      ],
+      "code_ownership": [
+        "src/native_crt_pointer_decode_support.cpp",
+        "include/bsp/native_crt_pointer_decode_support.hpp",
+        "docs/NATIVE_CRT_POINTER_DECODE_SUPPORT.md",
+        "reports/native_crt_pointer_decode_support_audit.json"
+      ],
+      "evidence": "reports/native_crt_pointer_decode_support_audit.json"
+    },
+    {
+      "id": "native_resource_registry_construction3",
+      "packet": "native_resource_registry_construction3",
+      "state": "complete_source_main_build_static_proof_saved_and_registered",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00b19c30",
+        "00b1aa70",
+        "00b1b6e0"
+      ],
+      "code_ownership": [
+        "src/native_resource_registry_construction.cpp",
+        "include/bsp/native_resource_registry_construction.hpp",
+        "docs/NATIVE_RESOURCE_REGISTRY_CONSTRUCTION.md",
+        "reports/native_resource_registry_construction_audit.json"
+      ],
+      "evidence": "reports/native_resource_registry_construction_audit.json"
+    },
+    {
+      "id": "native_crt_pointer_decode1",
+      "packet": "native_crt_pointer_decode1",
+      "state": "complete_source_main_build_static_proof_saved_and_registered",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00c04fde"
+      ],
+      "code_ownership": [
+        "src/native_crt_pointer_decode.cpp",
+        "include/bsp/native_crt_pointer_decode.hpp",
+        "docs/NATIVE_CRT_POINTER_DECODE.md",
+        "reports/native_crt_pointer_decode_audit.json"
+      ],
+      "evidence": "reports/native_crt_pointer_decode_audit.json"
+    },
+    {
+      "id": "native_crt_libm_callback_registration2",
+      "packet": "native_crt_libm_callback_registration2",
+      "state": "complete_source_main_build_static_proof_saved_and_registered",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00c04f67",
+        "00c0f0bb"
+      ],
+      "code_ownership": [
+        "src/native_crt_libm_callback_registration.cpp",
+        "include/bsp/native_crt_libm_callback_registration.hpp",
+        "docs/NATIVE_CRT_LIBM_CALLBACK_REGISTRATION.md",
+        "reports/native_crt_libm_callback_registration_audit.json"
+      ],
+      "evidence": "reports/native_crt_libm_callback_registration_audit.json"
     }
   ],
   "snapshot_after_analysis": {
