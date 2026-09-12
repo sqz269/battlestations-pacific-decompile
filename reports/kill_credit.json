@@ -1,0 +1,232 @@
+{
+  "schema_version": 1,
+  "packet": "cc2_kill_credit",
+  "owner": "agent/cc2-kill-credit",
+  "base_commit": "22991794",
+  "status": "attribution_writer_and_kill_writer_read_complete_two_projectile_flag_producers_found_reconstructed_and_build_tested",
+  "owned_files": [
+    "docs/KILL_CREDIT.md",
+    "reports/kill_credit.json",
+    "include/bsp/kill_credit.hpp",
+    "src/kill_credit.cpp",
+    "cmake/startup.cmake"
+  ],
+  "doc": "docs/KILL_CREDIT.md",
+  "ghidra_access": "read_only",
+  "no_ghidra_function": [],
+  "routines": [
+    {"address": "0077ce60", "name": "BSP_Unit_RecordDamageAttribution", "body": "0077ce60-0077d19f", "abi": "__thiscall(Unit* victim, HitRecord*), RET 4 at 0077d19d", "coverage": "complete", "status": "analyzed, reconstructed, build-tested"},
+    {"address": "0091bda0", "name": "BSP_MissionScoring_RecordUnitKill", "body": "0091bda0-0091c553", "abi": "__thiscall(ScoringManager*, Unit* victim), RET 4 at 0091c551, SEH frame", "coverage": "complete", "status": "analyzed, reconstructed, build-tested"},
+    {"address": "0077cc80", "name": "BSP_AttributionRef_Assign", "body": "0077cc80-0077ccbd", "abi": "__thiscall(Ref*, const Ref*), RET 4", "coverage": "complete", "status": "analyzed"},
+    {"address": "006e22d0", "name": "BSP_ProjectileShotBase_Construct", "body": "006e22d0-006e2409", "abi": "__thiscall(shot), no stack arguments", "coverage": "partial: 006e22ef-006e2355 only; 006e2356-006e2409 unread", "status": "analyzed"},
+    {"address": "00779a00", "name": "BSP_OrdnanceKind_ToCategory", "body": "00779a00-00779a3e", "abi": "int __fastcall(descriptor)", "coverage": "complete, including the index table at 00779a5c and the jump table at 00779a40", "status": "analyzed, reconstructed, build-tested"},
+    {"address": "009ffd20", "name": "BSP_Unit_LossCountingSlot", "body": "009ffd20-009ffd5c", "abi": "int __fastcall(unit)", "coverage": "complete", "status": "analyzed, reconstructed, build-tested"},
+    {"address": "0090e850", "name": "STL_KillListMap_Index", "body": "0090e850-0090e8f9", "abi": "__thiscall(map, const uint32* key), returns the mapped 2Ch-byte value", "coverage": "partial: the search and the default-entry prototype; 0090e8d0-0090e8f9 unread", "status": "analyzed"},
+    {"address": "0090ede0", "name": "BSP_MissionScoring_GrantAward", "body": "0090ede0-0090f0df", "abi": "__thiscall(manager, int slot, const NativeString* token, int value, int flag), RET 10h at 0090f0dd", "coverage": "partial: the ABI, the local apply through 0090c000 and the message gate; 0090eea0-0090f0df unread", "status": "analyzed"},
+    {"address": "0090c170", "name": "STL_EntityIntMap_Find", "body": "0090c170-0090c1d8", "abi": "__thiscall(map, iterator* out, const void** key), returns out", "coverage": "complete", "status": "analyzed"},
+    {"address": "0090ec40", "name": "BSP_MissionScoring_RecordShooterHit", "body": "0090ec40-0090ed39", "abi": "__thiscall(manager, Unit* shooter, int flag)", "coverage": "partial: the entry conditions and the record+12Ch map; 0090eccd-0090ed39 unread", "status": "analyzed"},
+    {"address": "0070cc30", "name": "BSP_FlakBulletClass_CreateProjectile", "body": "0070cc30-0070ce92", "abi": "__thiscall with seven stack arguments, RET 1ch at 0070ce90", "coverage": "partial: the 298h allocation and zero-fill and the +290h store", "status": "analyzed"},
+    {"address": "00959450", "name": "BSP_Unit_OnDestroyed", "body": "00959450-00959608", "abi": "__fastcall(unit), no stack arguments", "coverage": "complete for the gate and the call list; cited, not re-derived", "status": "analyzed"}
+  ],
+  "attribution_rules_0077ce60": {
+    "gate": "victim+5Ch != 0 && victim+5Dh == 0 && victim+60h == 0 && victim+5Eh == 0, tested at 0077ce66..0077ce88 and again at 0077cefb..0077cf1d",
+    "damage": "hit+34h == -1 ? 00470740(hit, 0.0f) : 00470510(hit, 0.0f); COMISS against [00d7a218] at 0077cebe, JBE skips to the tail",
+    "source": "src = [hit+4h]->vtable[108h](); both must be non-null",
+    "fields": [
+      {"field": "+2e4h", "site": "0077ced7", "source": "[00f876a4], the mission clock stamp", "note": "written before the shot is fetched"},
+      {"field": "+2d4h", "site": "0077cf29", "source": "[[src+4h]+8h], the ordnance kind"},
+      {"field": "+2d0h", "site": "0077cf3e", "source": "[[src+cch]+54h], the attacker side"},
+      {"field": "-", "site": "0077cf44", "source": "word [src+b0h] == 0 abandons everything below"},
+      {"field": "+2e8h", "site": "0077cf58, 0077cf73", "source": "1 when the prior value is negative; 0 when +2c4h is set and differs from [src+ach]; otherwise unchanged"},
+      {"field": "+2c4h, +2c8h", "site": "0077cf84", "source": "0077cc80 copies [src+ach] and word [src+b0h] out of the src+98h record"},
+      {"field": "+2cch", "site": "0077cfba", "source": "the attacker unit class, virtual +0h on attacker+170h"},
+      {"field": "+2d8h", "site": "0077cfc5", "source": "attacker+180h, or [src+1ch] when attacker+180h > 8 (CMP EBX,8 / JBE at 0077cfb7)"},
+      {"field": "+2dch", "site": "0077cfdd", "source": "[src+1ch] when the attacker IsKindOf(0fh)"},
+      {"field": "+2dch", "site": "0077d010", "source": "attacker[+1ach + 00779a00(src+4h)*4] when the attacker IsKindOf(06h) or IsKindOf(1bh)", "note": "the fallback docs/SCORING_BODIES.md left unread; the lost register is EBX"},
+      {"field": "+2dch", "site": "0077d02e", "source": "attacker+1b0h when the attacker IsKindOf(0fh) and that value is <= 7"},
+      {"field": "+2d8h", "site": "0077d067", "source": "[[fort+71ch]+180h] when the attacker IsKindOf(1bh) and the credited slot is above 7 and fort+71ch is set"},
+      {"field": "+2e0h", "site": "0077d07e", "source": "word [[src+ach]+174h], the attacker type id"},
+      {"field": "+2d8h", "site": "0077d08a", "source": "[src+1ch] on the arm with no attacker unit"},
+      {"field": "+2cch", "site": "0077d0de", "source": "forced to 0ch on the kamikaze branch, which also writes [src+1ch] = [shot+1ach]"}
+    ],
+    "kamikaze_condition": "on the shot entity [hit+4h]: (IsKindOf(0fh) && 007b93e0(shot, 0)) || IsKindOf(17h) || (IsKindOf(06h) && 00779aa0(shot))",
+    "parent_propagation": "0077d0e8..0077d122: parent = victim->vtable[140h](); when non-null, not the victim and IsKindOf(02h), the same 0077cc80 copy runs into parent+2b0h and parent+2d8h = [src+1ch]",
+    "register_provenance_ebx": "writes at 0077cecd ([hit+4h]), 0077cfa3 (attacker+180h), 0077cfc2 ([src+1ch]) and 0077d07a (reload of the 0077ced3 spill of [hit+4h]); EBX at 0077d090..0077d0d5 is the shot entity on both paths"
+  },
+  "kill_rules_0091bda0": {
+    "entry": [
+      {"site": "0091bdc4", "rule": "return when [game+1fe4h] == 2"},
+      {"site": "0091bdd8", "rule": "when manager+1484h is set, return if victim+54h == [game+18cch + [game+18ech]*4]+28h"},
+      {"site": "0091be3f", "rule": "return when 0090c170 finds victim->vtable[140h]() in the entity map at manager+1488h"},
+      {"site": "0091be4d", "rule": "return when the victim IsKindOf(1bh) and its vtable[140h]() is not itself"}
+    ],
+    "loss_pass": {
+      "loop": "0091be90..0091bf7a, EBX = 18cch + slot*4, EBP = slot, EDI = manager + 1fch + slot*284h, ADD EDI,284h at 0091bf6e",
+      "rule": "victim+54h must be 0 or 1; count when 009ffd20(victim) == slot or when [game+18cch + slot*4]+28h differs from the victim side",
+      "maps": "record[slot]+1ech for side 0 (allied losses), record[slot]+1f8h for side 1 (Japanese); key is victim->vtable[28h]()"
+    },
+    "kill_trees": "unchanged from docs/SCORING_BODIES.md: slot victim+2d8h rejected above 7, tree +b4h when +2d8h == +2dch and +c0h otherwise, keys relative party / attacker class / victim class",
+    "type_tallies": [
+      {"map": "record+1a4h", "condition": "attacker IsKindOf(06h)", "slot": "victim+2dch", "key": "word victim+174h", "sites": "0091c061, 0091c085, 0091c091"},
+      {"map": "record+198h", "condition": "attacker IsKindOf(0fh)", "slot": "victim+2dch", "key": "word victim+174h", "sites": "0091c09f, 0091c0c3, 0091c0cf"}
+    ],
+    "awards": [
+      {"token": "Counter_RUA_DU", "target": "record[victim+2d8h]+6ch name->int map", "condition": "attacker IsKindOf(07h) && victim+2d4h == 0ah && victim+2d0h != victim+54h", "value": "+1", "sites": "0091c0dd, 0091c0e9, 0091c0fc, 0091c125"},
+      {"token": "RUA_DU", "condition": "the counter after the increment equals Params[0] of the RUA_DU row exactly (CMP then SETZ at 0091c194)", "value": "1", "grant_site": "0091c1e5"},
+      {"token": "RUA_BU", "condition": "victim+2dch <= 7 && attacker IsKindOf(0dh) && victim IsKindOf(06h) && distance > Params[0] && 00803510(victim+54h, victim+2d0h) == 1", "value": "CVTTSS2SI of the distance", "grant_site": "0091c36a"},
+      {"token": "GA_WY", "condition": "attacker IsKindOf(0dh|07h|0ah|09h) && victim+54h != [victim+2c4h]+54h && [victim+2c4h]+1b0h != 0 && 00923be0(attacker) * 100.0 <= Params[0]", "value": "1", "grant_site": "0091c517"}
+    ],
+    "distance": "0042b2f0 on victim+fch..104h minus attacker+fch..104h, both poses refreshed with 00414db0 when their +c8h byte is clear; [00d7a220] is the double 100.0",
+    "kill_list": {
+      "map": "record[victim+2d8h]+1bch, uint32 -> 2ch-byte entry, operator[] 0090e850 inserting the 0091c3cb prototype",
+      "key": "(word victim+174h << 16) | word victim+2e0h, SHL EDX,10h then OR at 0091c3ac",
+      "writes": [
+        {"entry_offset": "+20h", "value": "victim+2d8h", "site": "0091c3cb"},
+        {"entry_offset": "+18h", "value": "victim+2d4h", "site": "0091c3dc"},
+        {"entry_offset": "+2ah", "value": "victim+2e8h != 0", "site": "0091c3f5"}
+      ]
+    },
+    "registry": "0050fc30 on [00e19900]+10h, then vector::at(0) (00481750) on the row's +44h; +44h is hypothesised to be the Params column of Scripts\\datatables\\Achievements.lua"
+  },
+  "projectile_flags": [
+    {
+      "field": "[shot+45h]",
+      "producer": "006e22d0 at 006e2353, MOV byte ptr [ESI+0x45],AL with AL = 1",
+      "meaning": "the impact-effect dispatch gate; 0084bdb0 CMP byte ptr [ECX+0x45],0 with ECX = [staging+0h] skips 0084bdb6..0084bdea when clear. The default is enabled.",
+      "identification": "006e22d0 also seeds the +98h weak-reference record (006e2304..006e2321) that 0077cc80 copies into victim+2b0h, and clears +cch; +98h, +cch and +45h are all shared with the two consumers",
+      "other_writers": "none. scan-bytes over .text for C6 xx 45, 88 xx 45, 8D xx 45 across every non-SIB mod=01 modrm, and for C7 xx 44 and 66 C7 xx 44; the only projectile-range hits belong to the [unit+dech] replicated-state block (007b8da0, 007b8dc0, 007b8de0, 007c5f60), a different class. A memcpy or assignment operator was not scanned for."
+    },
+    {
+      "field": "[proj+290h]",
+      "producer": "0070cc30 at 0070ce65..0070ce6b, FLD [ECX+70h]; FMUL [EDX+4]; FSTP [ESI+290h]",
+      "meaning": "the flak burst distance bias; classDesc+70h is Blast.BlastRange, EDX is the routine's seventh stack argument (RET 1ch at 0070ce90), contract unread",
+      "owning_class": "the flak bullet projectile, 298h bytes: PUSH 0x298 into 00bf55be at 0070cc4e and a memset(obj, 0, 0x298) at 0070cc5c..0070cc67; the base projectile 006e8430 uses 284h"
+    }
+  ],
+  "attribution_readers": [
+    {"routine": "0077eed0", "name": "BSP_UnitOwnerEntity_Construct", "fields": "writes +2c4h, +2cch, +2d0h, +2d8h, +2e4h, +2e8h", "note": "the block initialiser"},
+    {"routine": "00915f20", "fields": "reads +2c4h, +2d0h, +2d4h, +2dch, +2e0h", "note": "the damage-trace recorder 0077ce60 calls; contract unread"},
+    {"routine": "009813a0", "fields": "reads +2d8h at 0098181e and 00981948", "note": "the kill mission-event reporter"},
+    {"routine": "009744c0", "fields": "reads +2c4h at 00974523, compares +2d8h at 009747f0", "note": "contract unread"},
+    {"routine": "00906180", "fields": "reads +2cch, +2d0h, +2d4h, +2dch, +2e0h, +2e8h", "note": "contract unread, a likely serialiser"},
+    {"routine": "00907510", "fields": "reads +2c4h", "note": "contract unread"},
+    {"routine": "0077c160", "fields": "reads +2d8h", "note": "contract unread"},
+    {"routine": "00877b90", "name": "BSP_UnitInstance_SetHealth", "fields": "writes +2e8h at 00877c20", "note": "resets the sole-attacker flag"}
+  ],
+  "call_sites": [
+    {"address": "0077cea1", "native": "00470510", "function": "0077ce60", "step": "hull damage when hit+34h != -1"},
+    {"address": "0077cea8", "native": "00470740", "function": "0077ce60", "step": "max part damage when hit+34h == -1"},
+    {"address": "0077cf84", "native": "0077cc80", "function": "0077ce60", "step": "copy src+98h into victim+2b0h"},
+    {"address": "0077d004", "native": "00779a00", "function": "0077ce60", "step": "ordnance category for the +1ach slot array"},
+    {"address": "0077d04e", "native": "0077bcf0", "function": "0077ce60", "step": "checked downcast of the attacker to MLandFort"},
+    {"address": "0077d0a3", "native": "007b93e0", "function": "0077ce60", "step": "kamikaze ordnance test on the shot"},
+    {"address": "0077d0cc", "native": "00779aa0", "function": "0077ce60", "step": "ram capability test on the shot"},
+    {"address": "0077d11a", "native": "0077cc80", "function": "0077ce60", "step": "copy src+98h into parent+2b0h"},
+    {"address": "0077d13c", "native": "00915f20", "function": "0077ce60", "step": "damage-trace recorder"},
+    {"address": "0077d149", "native": "00988510", "function": "0077ce60", "step": "hit mission event"},
+    {"address": "0077d193", "native": "0090ec40", "function": "0077ce60", "step": "per-slot shooter hit tally"},
+    {"address": "0091be29", "native": "0090c170", "function": "0091bda0", "step": "find the root entity in the manager+1488h map"},
+    {"address": "0091be99", "native": "009ffd20", "function": "0091bda0", "step": "loss-counting slot, side 0 arm"},
+    {"address": "0091befd", "native": "009ffd20", "function": "0091bda0", "step": "loss-counting slot, side 1 arm"},
+    {"address": "0091bec3", "native": "0041e870", "function": "0091bda0", "step": "NativeString from the victim name"},
+    {"address": "0091bed8", "native": "005070c0", "function": "0091bda0", "step": "allied loss map operator[] at record+1ech"},
+    {"address": "0091bf39", "native": "005070c0", "function": "0091bda0", "step": "Japanese loss map operator[] at record+1f8h"},
+    {"address": "0091bfd8", "native": "00803510", "function": "0091bda0", "step": "relative party for the +b4h tree"},
+    {"address": "0091c015", "native": "00803510", "function": "0091bda0", "step": "relative party for the +c0h tree"},
+    {"address": "0091c033", "native": "0062c170", "function": "0091bda0", "step": "kill tree level 1"},
+    {"address": "0091c03a", "native": "0062bb60", "function": "0091bda0", "step": "kill tree level 2"},
+    {"address": "0091c041", "native": "00625900", "function": "0091bda0", "step": "kill tree level 3"},
+    {"address": "0091c08c", "native": "00667eb0", "function": "0091bda0", "step": "ship kills by victim type at record+1a4h"},
+    {"address": "0091c0ca", "native": "00667eb0", "function": "0091bda0", "step": "plane kills by victim type at record+198h"},
+    {"address": "0091c125", "native": "005070c0", "function": "0091bda0", "step": "increment Counter_RUA_DU in record+6ch"},
+    {"address": "0091c175", "native": "0050fc30", "function": "0091bda0", "step": "achievement row for RUA_DU"},
+    {"address": "0091c18f", "native": "00481750", "function": "0091bda0", "step": "Params[0] of the RUA_DU row"},
+    {"address": "0091c1e5", "native": "0090ede0", "function": "0091bda0", "step": "grant RUA_DU"},
+    {"address": "0091c210", "native": "00414db0", "function": "0091bda0", "step": "refresh the attacker pose"},
+    {"address": "0091c220", "native": "00414db0", "function": "0091bda0", "step": "refresh the victim pose"},
+    {"address": "0091c271", "native": "0042b2f0", "function": "0091bda0", "step": "kill distance"},
+    {"address": "0091c2d1", "native": "0050fc30", "function": "0091bda0", "step": "achievement row for RUA_BU"},
+    {"address": "0091c2db", "native": "00481750", "function": "0091bda0", "step": "Params[0] of the RUA_BU row"},
+    {"address": "0091c2f5", "native": "00803510", "function": "0091bda0", "step": "relative party for the RUA_BU test, arguments swapped"},
+    {"address": "0091c36a", "native": "0090ede0", "function": "0091bda0", "step": "grant RUA_BU with the truncated distance"},
+    {"address": "0091c3c2", "native": "0090e850", "function": "0091bda0", "step": "kill list entry, credited slot write"},
+    {"address": "0091c3d7", "native": "0090e850", "function": "0091bda0", "step": "kill list entry, ordnance kind write"},
+    {"address": "0091c3f0", "native": "0090e850", "function": "0091bda0", "step": "kill list entry, sole-attacker write"},
+    {"address": "0091c48a", "native": "0050fc30", "function": "0091bda0", "step": "achievement row for GA_WY"},
+    {"address": "0091c493", "native": "00923be0", "function": "0091bda0", "step": "attacker health"},
+    {"address": "0091c4a7", "native": "00481750", "function": "0091bda0", "step": "Params[0] of the GA_WY row"},
+    {"address": "0091c517", "native": "0090ede0", "function": "0091bda0", "step": "grant GA_WY"},
+    {"address": "0095945b", "native": "00878990", "function": "00959450", "step": "unconditional destroy step"},
+    {"address": "00959507", "native": "009813a0", "function": "00959450", "step": "kill mission event, skipped when the owner capability byte is set"},
+    {"address": "00959519", "native": "0091bda0", "function": "00959450", "step": "record the kill; ECX = [[00e188a8]+21a0h] at 00959512, PUSH EDI at 00959518"},
+    {"address": "0095951e", "native": "004b4b00", "function": "00959450", "step": "the unit the rest of the path compares against"},
+    {"address": "00959573", "native": "00565fb0", "function": "00959450", "step": "player-side follow-up"},
+    {"address": "0095957e", "native": "0068a120", "function": "00959450", "step": "player-side follow-up"},
+    {"address": "009595b8", "native": "004cc460", "function": "00959450", "step": "front-end interface request 34h"},
+    {"address": "00959601", "native": "004c0890", "function": "00959450", "kind": "tail_jump", "step": "clear the controlled unit"},
+    {"address": "0070cc7d", "native": "0070cae0", "function": "0070cc30", "step": "flak projectile constructor on the 298h allocation"},
+    {"address": "0084c314", "native": "0084bc60", "function": "0084bf00", "step": "impact handler, first site"},
+    {"address": "0084c3cf", "native": "0084bc60", "function": "0084bf00", "step": "impact handler, second site"},
+    {"address": "0084bdea", "native": "0084b8c0", "function": "0084bc60", "step": "the impact-effect dispatch [shot+45h] gates"}
+  ],
+  "corrections": [
+    {
+      "document": "docs/SCORING_BODIES.md",
+      "was": "victim+2D8h is attacker+180h, falling back to [hit+1Ch] when it exceeds 7",
+      "is": "the fallback fires only when attacker+180h is above 8, and its source is the shot's source record [src+1Ch], not the hit record",
+      "evidence": "0077cfb7 CMP EBX,0x8 then 0077cfc0 JBE past the store; 0077cfc2 MOV EBX,[EBP+0x1c] with EBP the shot->vtable[108h]() result set at 0077cef1"
+    },
+    {
+      "document": "docs/SCORING_BODIES.md",
+      "was": "victim+2D0h is [[hit+CCh]+54h] and victim+2DCh is [hit+1Ch]",
+      "is": "both read the shot's source record, not the hit record",
+      "evidence": "0077cf2f MOV ECX,[EBP+0xcc] and 0077cfda MOV ECX,[EBP+0x1c]"
+    },
+    {
+      "document": "docs/SCORING_BODIES.md",
+      "was": "00959450 reaches 0091BDA0 only on the branch where the owner answers +18h(17h) or +18h(6) with a set byte; otherwise the kill goes to 009813A0 and no tree is touched",
+      "is": "that branch gates 009813A0 alone; 0091BDA0 runs on both arms because 0095950c is the fall-through of the 009813A0 call as well as the JNZ target",
+      "evidence": "009594fe JNZ 0x0095950c, 00959507 CALL 0x009813a0, then 0095950c in program order"
+    },
+    {
+      "document": "docs/SCORING_BODIES.md",
+      "was": "0091BDA0's per-slot string counters are over game+18CCh..18ECh",
+      "is": "that range is the loop cursor over the player-record pointers; the counters are the two loss maps in the eight scoring records, at record+1ECh and record+1F8h",
+      "evidence": "0091bf6e ADD EDI,0x284 beside 0091bf68 ADD EBX,0x4, EDI seeded manager+1FCh at 0091be85"
+    },
+    {
+      "document": "docs/MISSION_EVENTS_UPDATE.md",
+      "was": "the entityKilled channel 00986480 has 0077ce60 as its native producer",
+      "is": "00986480's only caller is 0077d1a0 BSP_UnitInstance_DestroyAndBroadcast, the function starting one byte after 0077ce60's body ends; 0077ce60 produces the hit channel only",
+      "evidence": "ghidra callers 00986480; 0077ce60's Ghidra body is 0077ce60-0077d19f and 00988510 is called at 0077d149"
+    },
+    {
+      "document": "docs/PROJECTILE_HELPERS.md",
+      "was": "neither producer of [shot+45h] nor of [proj+290h] was found",
+      "is": "006e2353 inside the shot base constructor 006e22d0 sets [shot+45h] to 1; 0070ce6b inside BSP_FlakBulletClass_CreateProjectile writes [proj+290h] = Blast.BlastRange * arg6[+4h]",
+      "evidence": "006e2353 MOV byte ptr [ESI+0x45],AL with AL set at 006e2313; 0070ce65 FLD [ECX+0x70]; 0070ce68 FMUL [EDX+0x4]; 0070ce6b FSTP [ESI+0x290]"
+    },
+    {
+      "document": "docs/PROJECTILE_IMPACT.md",
+      "was": "the projectile is 284h bytes",
+      "is": "the base class is 284h; the flak subclass allocates and zero-fills 298h, which is what makes +290h and +294h legal",
+      "evidence": "0070cc4e PUSH 0x298 into 00bf55be and 0070cc5c..0070cc67 memset(obj, 0, 0x298); 006e844b PUSH 0x284 for the base"
+    }
+  ],
+  "open_questions": [
+    "what inserts into the entity->int map at manager+1488h that 0091be3f consults",
+    "whether achievement row +44h really is the Params column; the offset is settled by its consumer, not by the parser 006b9450, so checklist rule 4 is not satisfied",
+    "0070cc30's seventh argument, the float multiplier on Blast.BlastRange",
+    "007b93e0's ABI: the ledger records void __cdecl(int loadout), but 0077d0a1..0077d0a3 passes the shot in ECX and one stack dword",
+    "00915f20 and 00906180, the two largest readers of the attribution block",
+    "whether a memcpy or assignment operator ever clears [shot+45h]; only displacement forms were scanned"
+  ],
+  "reconstruction": {
+    "header": "include/bsp/kill_credit.hpp",
+    "source": "src/kill_credit.cpp",
+    "build": "scripts/build.ps1, Win32 MSVC Release, warnings as errors: succeeded",
+    "tests": "ctest reconstructed_math: 1/1 passed; no new test added",
+    "reused": "ScoringKillAttribution, ScoringKillCredit, scoring_relative_party_00803510 and scoring_kill_tree_offset from include/bsp/scoring_bodies.hpp; kFlakOffBurstDistanceBias from include/bsp/projectile_helpers.hpp",
+    "classification": "analyzed and build-tested; not fixture-tested, not ABI-compatible, not game-validated"
+  }
+}
