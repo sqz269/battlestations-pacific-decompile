@@ -3048,10 +3048,15 @@ The minimap's unit markers were **not** added. `GUI_minimap` carries the six tea
 (`minimap_units_blue_Group` and its five siblings) each with one `item_ship_Icon` template, and
 `bsp/hud_updates.hpp` already reconstructs the placement (`hud_minimap_icon_position`, the
 anisotropic 1/1024 and 1/768 divisors, and `hud_minimap_icon_rotation`, pi/2 minus the
-heading). What is missing is the conversion into that space: 005C0F20 gets its per-unit
-position from `00427EB0`, which returns an icon-space float3 and has not been read, and the map
-half-extents from `00432650`, which has not either. Placing markers without them would be an
-invented scale, so it is a follow-up rather than a stand-in.
+heading). What is missing is the space those divisors put an icon into.
+`docs/HUD_CENTRAL_UPDATES.md` reads `00427EB0` as returning "an icon-space float3"; it is three
+instructions (body 00427EB0..00427EC8) that refresh the entity's pose when +C8h is clear and
+return `unit+0FCh`, the translation row of the world pose, so the differences the placement
+divides are **world** units. This mission's ships are spread over more than 5000 world units in
+each axis, and 5000/1024 is far outside the 0..1 space the widget tree composes positions in,
+so either the map half-extent `00432650` supplies culls almost all of them or the minimap group
+carries a scale this packet did not find. Placing markers on either guess would be an invented
+scale, so it stays a follow-up rather than becoming a stand-in.
 
 ### What it looks like on screen
 
@@ -3110,6 +3115,11 @@ The per-step table with the call site and callee of every row this packet adds i
    the mission's island map. Resolving a different atlas would not change it.
 4. **The scene's `Type` id is the `VehicleClass` row index.** Milestone 2h used it only to name
    the class. All eleven of this mission's symbols index the matching installed row.
+5. **`docs/HUD_CENTRAL_UPDATES.md` calls `00427EB0`'s result "an icon-space float3".** It is
+   the entity's **world** translation: the body 00427EB0..00427EC8 is `if (unit+C8h == 0)
+   BSP_EntityPose_RefreshWorld(); return unit + 0FCh`, and unit+FCh is pose row 3. Whatever
+   compresses a world offset into the minimap's own space is somewhere else in 005C0F20; see
+   section 3.
 
 ### Code with no Ghidra function
 
@@ -3193,9 +3203,10 @@ physics the stand-in integrator replaces, or about what a running game would dra
 1. **`construct_world` 004DE610**, still milestone 2h's follow-up 1 and still the single step
    between this executable and the passes that read the world object: the entity manager at
    game+21A0h, the +4ACh ready byte and the fixed step's gate at 00875E69.
-2. **`00427EB0` and `00432650`**, the icon-space conversion and the map half-extents the
-   minimap's unit-icon pass needs. With them the six team groups' `item_ship_Icon` templates
-   can be placed through the already reconstructed `hud_minimap_icon_position`.
+2. **The minimap's own scale.** `hud_minimap_icon_position` is reconstructed and `00427EB0`
+   hands it world coordinates (correction 5), so what is left is the term between them:
+   `00432650`'s map half-extents, and whatever transform the six team groups carry. With it the
+   `item_ship_Icon` templates can be placed and a mission's units appear on the HUD.
 3. **The `Cruise` command object**, and the rest of the `CommandType` registry 0046AAB0
    resolves against: it is what turns an authored scene command into a real order.
 4. **`00825F20`'s caller.** 0085542F and 00749B2C have no Ghidra function and 00644A38 is in an

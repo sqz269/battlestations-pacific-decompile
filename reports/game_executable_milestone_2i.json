@@ -509,6 +509,12 @@
       "was": "the type id the scene's `Type = E ShipClasses : <symbol>` resolves to was only used to name the class",
       "is": "it is the index of the installed `VehicleClass[N]` row: 19 Northampton, 20 DeRuyter, 21 York, 25 Clemson, 70 Kuma, 73 Fubuki, 263 leander, 265 Tribal, 276 Kagero, 289 Shiratsuyu, 293 Myoko all match the scene's own symbols",
       "evidence": "scripts/datatables/autoload/vehicleclasses.lua, read through the live Lua state the recovered global-script step 00886900 loaded it into"
+    },
+    {
+      "id": 5,
+      "was": "docs/HUD_CENTRAL_UPDATES.md: `00427EB0(unit)` returns an icon-space float3",
+      "is": "it returns the entity's world translation. The body 00427EB0..00427EC8 is `if (unit+C8h == 0) BSP_EntityPose_RefreshWorld(); return unit + 0FCh`, and unit+FCh is pose row 3, so the per-axis differences hud_minimap_icon_position divides by 1024 and 768 are world units",
+      "evidence": "the live decompilation of 00427EB0, a three-statement body"
     }
   ],
   "no_ghidra_function": [],
