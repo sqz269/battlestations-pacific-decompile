@@ -5475,3 +5475,23 @@ and parameter region between settings queries and device creation, and loads
 locale tables with the native setter/register/reload order. The old log label
 `gui_startup` at00aa06d0 referred to locale reload; fonts/GUI resource loading
 at0073bae0 remains unimplemented. Startup process checks do not validate gameplay.
+
+## Correction from docs/DIRECTOR_TARGET_GATE.md
+
+Packet `cc2_director_target_gate` (main fe8ae5ae) read `0071DF70` and its writers whole and
+corrects milestone 2n's section 5 ("Nothing reaches `00835860`") in three places:
+
+| what milestone 2n said | what is true | evidence |
+| --- | --- | --- |
+| the float at `[director+40h]` must be greater than the 0.0f at `00D7A218` | the compare runs the other way: `0071DF7C` is `JBE` to the slot scan and the fall-through at `0071DF7E` is `XOR AL,AL / RET`, so a hold above 0.0f is the rejection and at most 0.0f passes | `0071DF7C`, `0071DF7E` |
+| `director+40h` has no writer in this process and no recovered producer anywhere | three writers: `00720225` stores -1.0f in the command controller base constructor `00720180` (`008366D0` skips the field, but its base `008363E0` calls `00720180` at `00836403` with ECX still the director; Ghidra's auto-name `CG_array_ctor_helper_00720180` hid it); `0071F314` in `0071F290` (controller vtable `+0Ch`, per frame) does `hold -= dt` while `hold >= 0`; `00817031` in the `cleartarget` arm of `00816E30` stores 3.0f. It is a three-second re-acquisition hold after `cleartarget` | `00720225`, `0071F314`, `00817031` |
+| the predicate's neutral answer stops every think | the constructed -1.0f passes the gate, so the hold is not why no think reaches `00835860`. The remaining rule counts the leading occupied slots at `director+54h` (stride `1Ch`, stop at the first null) and rejects if any answers category 1 or 2 (gunnery / weapon-run, the set `008358D0` forces the fire target for) from its `vtable[0Ch]`. What the units hold in slot 0 when the think runs decides it, and needs a run of this executable; if slot 0 carries the authored `attackmove` of the Japanese force, category 2 blocks the automatic think by design and the fire target has to come through `008358D0`'s forced set | `docs/DIRECTOR_TARGET_GATE.md` |
+
+`0071D980` is the override send, `__thiscall(director)(command, target)`, `RET 8`, acting only
+while the hold is strictly negative; it builds `MT_GAMEUNIT_SETCMD` with flag byte 0 (installed
+as an override through `0071E7F0` in receiver `00721A40` at `00721B36`) where `0071ECF0`
+IssueCommand passes 1 (queue). Names: `BSP_WeaponDirector_SendOverrideCommand` `0071D980`,
+`BSP_CommandControllerBase_Update` `0071F290`, `BSP_CommandControllerBase_Construct` `00720180`.
+The executable's `AutoTarget::director_accepts_new_target` record (`src/game_hosts_ship_ai.cpp`)
+still answers with the old reading; replacing it with the hold test and the slot category scan,
+and reporting what slot 0 carries, is the next executable milestone's first item.
