@@ -1,0 +1,267 @@
+{
+  "packet": "cc_buoyancy_elements",
+  "owner": "agent/cc-buoyancy-elements",
+  "doc": "docs/SHIP_BUOYANCY_ELEMENTS.md",
+  "header": "include/bsp/ship_buoyancy_elements.hpp",
+  "source": "src/ship_buoyancy_elements.cpp",
+  "summary": "The producer of the vehicle class buoyancy element list at class+52Ch is 0082D040, reached from the ship class model-binding virtual 0082FE30 at slot 8 (vtable+20h) of the ship vtables. It samples the model's \"deckline\" and \"bottomline\" polylines at Hull.Segments evenly spaced stations over Length and pushes two 24h-byte records per station (one at +Width/2, one at -Width/2) into the vector whose object base is class+528h. No displacement scan of 52Ch could find it: the only writer is std::vector::push_back at 0082C960 whose this is the vector, not the class.",
+  "question_answers": {
+    "producer": "0082D040 (body 0082D040-0082D6FD), called once at 0082FEE3 from 0082FE30 (body 0082FE30-00831801), the class descriptor's model-binding virtual at vtable slot 8. The append is 0082C960, std::vector<Element,24h>::push_back, called with ECX = descriptor+528h at 0082D658 and 0082D67C.",
+    "value_source": "Two named polylines in the ship's model, not a Lua key table and not a fixed pattern from Length/Width/Height alone. 00718000 resolves the node named \"deckline\" (literal 00D09A0C) at 0082FEBA and \"bottomline\" (00D09A00) at 0082FECA out of the model at descriptor+50h; each record's +44h is a std::vector<Vec3> of points. Length (descriptor+A0h), Width (+A4h), Mass (+B0h), Hull.WaterLineRatio (+71Ch) and Hull.Segments (+720h) supply the station spacing, lateral offset and normalisation.",
+    "record_roles": "+00h buoyancy coefficient = Mass*10*0.5/draught/Hull.Segments; +04h waterline = lerp(deck, bottom, ratio); +08h deck line sample; +0Ch bottom line (keel) sample; +10h deck - bottom; +14h waterline - bottom, the draught; +18h..+20h position = (+/-Width/2, deck sample, station z).",
+    "deruyter": "VehicleClass[20] DeRuyter 1935: Length 171, Width 16, Mass 7688, Hull.Segments 5, Hull.WaterLineRatio 0.55, Mesh models/ships/us/Deruyter.mmod. The model's deckline has four points and its bottomline six; both decoded and tabulated in the doc. The ten resulting elements sit at z = -85.5, -42.75, 0, 42.75, 85.5 with x = +/-8.0, and sum(coefficient * draught) = 76880 = 10 * Mass."
+  },
+  "host_steps": [
+    {
+      "step": 1,
+      "method": "ShipBuoyancyElementHost::find_model_profile_points(\"deckline\", 0)",
+      "address": "0082FEBA",
+      "native": "00718000",
+      "function": "0082FE30",
+      "contract": "read: 00718000 body 00718000-007180D5, void* __thiscall(model, const std::string* name, int kind). Walks the model record vector at model+68h..+6Ch, compares each record's std::string name at record+0Ch with 004B3FC0 requiring an exact length match and record+24h == kind, returns the LAST match or null. The points are the std::vector<Vec3> at record+44h.",
+      "arguments": "ECX = descriptor+50h (0082FEA9), name = the literal at 00D09A0C length 8, kind = EBX = 0 (0082FEAC)"
+    },
+    {
+      "step": 2,
+      "method": "ShipBuoyancyElementHost::find_model_profile_points(\"bottomline\", 0)",
+      "address": "0082FECA",
+      "native": "00718000",
+      "function": "0082FE30",
+      "contract": "same callee, same contract",
+      "arguments": "ECX = descriptor+50h (0082FEBF), name = the literal at 00D09A00 length 10, kind = EBX = 0 (0082FEC2)"
+    },
+    {
+      "step": 3,
+      "method": "ship_buoyancy_build_list_0082d4ca (the producer itself)",
+      "address": "0082FEE3",
+      "native": "0082D040",
+      "function": "0082FE30",
+      "contract": "void __thiscall(descriptor, const vector<Vec3>* bottom_points, const vector<Vec3>* deck_points, float water_line_ratio), RET 0Ch at 0082D6FB. 0082FED9 pushes the deck record's points as the third parameter and 0082FEDD the bottom record's as the second; 0082FECF pushes descriptor+71Ch as the float."
+    }
+  ],
+  "native_calls_inside_the_producer": [
+    {
+      "what": "copy the bottom-line points out of the model record (std::vector assign)",
+      "address": "0082D1FE",
+      "native": "0071F9F0",
+      "function": "0082D040"
+    },
+    {
+      "what": "append one point to the z-sorted bottom-line list",
+      "address": "0082D331",
+      "native": "004215D0",
+      "function": "0082D040"
+    },
+    {
+      "what": "copy the deck-line points out of the model record",
+      "address": "0082D376",
+      "native": "0071F9F0",
+      "function": "0082D040"
+    },
+    {
+      "what": "append one point to the z-sorted deck-line list",
+      "address": "0082D491",
+      "native": "004215D0",
+      "function": "0082D040"
+    },
+    {
+      "what": "sample the deck line at the station z -> record +08h and the point's y",
+      "address": "0082D585",
+      "native": "0082A920",
+      "function": "0082D040"
+    },
+    {
+      "what": "sample the bottom line at the station z -> record +0Ch",
+      "address": "0082D5D8",
+      "native": "0082A920",
+      "function": "0082D040"
+    },
+    {
+      "what": "push the starboard record (+18h = +Width/2) into the vector at descriptor+528h",
+      "address": "0082D658",
+      "native": "0082C960",
+      "function": "0082D040"
+    },
+    {
+      "what": "push the port record, the same stack record with +18h negated at 0082D65D",
+      "address": "0082D67C",
+      "native": "0082C960",
+      "function": "0082D040"
+    },
+    {
+      "what": "per-part predicate feeding the AABB that is computed and never read",
+      "address": "0082D0C3",
+      "native": "00721C90",
+      "function": "0082D040"
+    },
+    {
+      "what": "per-part AABB, same dead block",
+      "address": "0082D0E3",
+      "native": "00723170",
+      "function": "0082D040"
+    },
+    {
+      "what": "push_back fast path: construct the element in place at _Mylast",
+      "address": "0082C9C5",
+      "native": "0082A280",
+      "function": "0082C960"
+    },
+    {
+      "what": "push_back slow path: grow the 24h-element vector",
+      "address": "0082C9F3",
+      "native": "0082C4B0",
+      "function": "0082C960"
+    },
+    {
+      "what": "the ninth ship kind's override calls the shared model binding first",
+      "address": "0075913D",
+      "native": "0082FE30",
+      "function": "00759120"
+    }
+  ],
+  "routines": [
+    {
+      "name": "ship_buoyancy_build_list_0082d4ca",
+      "address": "0082D4CA",
+      "range": "0082D4CA-0082D690",
+      "coverage": "complete"
+    },
+    {
+      "name": "ship_buoyancy_make_element_0082d5e4",
+      "address": "0082D5E4",
+      "range": "0082D5E4-0082D67C",
+      "coverage": "complete"
+    },
+    {
+      "name": "ship_buoyancy_station_z_0082d500",
+      "address": "0082D500",
+      "range": "0082D500-0082D54E",
+      "coverage": "complete"
+    },
+    {
+      "name": "ship_buoyancy_sort_profile_by_z_0082d21f",
+      "address": "0082D21F",
+      "range": "0082D21F-0082D365",
+      "coverage": "complete; the second copy at 0082D380-0082D4C5 is the same body inlined again"
+    },
+    {
+      "name": "ship_buoyancy_sample_profile_0082a920",
+      "address": "0082A920",
+      "range": "0082A920-0082AA7C",
+      "coverage": "complete"
+    },
+    {
+      "name": "ship_buoyancy_build_from_model_0082fea9",
+      "address": "0082FEA9",
+      "range": "0082FEA9-0082FEE8",
+      "coverage": "partial: 0082FE30's body is 0082FE30-00831801 and only this window is projected. Not read: 0082FE51 (0095F500), 0082FE58 (0082D700) and everything from 0082FEE8 to 00831801"
+    },
+    {
+      "name": "0082D040 as a whole",
+      "address": "0082D040",
+      "range": "0082D040-0082D6FD",
+      "coverage": "partial: 0082D067-0082D192 (the part AABB, computed and never read) is understood and not projected; 0082D1A1-0082D21E, 0082D36A-0082D37B and 0082D696-0082D6FD are std::vector lifetime and not projected"
+    },
+    {
+      "name": "0082C960 push_back",
+      "address": "0082C960",
+      "range": "0082C960-0082CA00",
+      "coverage": "analysed library contract, not ported; 0082C4B0 and 0082A280 not read"
+    },
+    {
+      "name": "00718000 named node lookup",
+      "address": "00718000",
+      "range": "00718000-007180D5",
+      "coverage": "read in full for the host contract, not ported (the model resource is the model loader's)"
+    }
+  ],
+  "class_fields": [
+    {"offset": "+50h", "role": "the class's loaded model resource", "evidence": "0082FEA9 and 0082FEBF feed it to 00718000; 0082D067 walks its +10h/+14h part array"},
+    {"offset": "+A0h", "role": "Length, the station span", "evidence": "0082D193, halved by the double 0.5 at 00D7A280 at 0082D1B2"},
+    {"offset": "+A4h", "role": "Width, the lateral offset", "evidence": "0082D507 and 0082D65D"},
+    {"offset": "+B0h", "role": "Mass, the coefficient normaliser", "evidence": "0082D637"},
+    {"offset": "+71Ch", "role": "Hull.WaterLineRatio, the deck-to-keel blend", "evidence": "0082FECF pushes it; 0082D611..0082D622 blends with it"},
+    {"offset": "+720h", "role": "Hull.Segments, the station count", "evidence": "0082D4CE and 0082D681"},
+    {"offset": "+528h", "role": "the element vector's object base, the _SECURE_SCL proxy word before _Myfirst", "evidence": "0082D4ED computes descriptor+528h and passes it as ECX to 0082C960; 00932C3C does the same with ADD EDI,528h then [EDI+4]/[EDI+8]"}
+  ],
+  "record_layout": [
+    {"offset": "+00h", "role": "buoyancy coefficient", "value": "Mass * 10.0 * 0.5 / draught / Hull.Segments", "address": "0082D637"},
+    {"offset": "+04h", "role": "waterline", "value": "deck * (1 - ratio) + bottom * ratio", "address": "0082D611"},
+    {"offset": "+08h", "role": "deck line level", "value": "the deckline sample at the station z", "address": "0082D58A"},
+    {"offset": "+0Ch", "role": "keel level", "value": "the bottomline sample at the station z", "address": "0082D5DD"},
+    {"offset": "+10h", "role": "section height", "value": "deck - bottom", "address": "0082D604"},
+    {"offset": "+14h", "role": "draught", "value": "waterline - bottom", "address": "0082D629"},
+    {"offset": "+18h", "role": "position x", "value": "+/- Width * 0.5", "address": "0082D507"},
+    {"offset": "+1Ch", "role": "position y", "value": "the same deckline sample as +08h", "address": "0082D58A"},
+    {"offset": "+20h", "role": "position z", "value": "i * Length / (Hull.Segments - 1) - Length * 0.5", "address": "0082D51C"}
+  ],
+  "corrections": [
+    {
+      "was": "No site in the image appends to class+52Ch, so it stays empty in a shipped build (docs/SHIP_AI_CLASS_FIELD_0524.md)",
+      "is": "0082C960 appends twice per station with ECX = class+528h; the list holds 2 * Hull.Segments records",
+      "evidence": "0082D4E9/0082D4ED compute EBX = EDX + 528h with EDX = the descriptor reloaded from [ESP+34h] at 0082D4CA; 0082D602 and 0082D673 move EBX into ECX before the calls at 0082D658 and 0082D67C. 0082C967/0082C972/0082C98C read [ESI+4]/[ESI+8]/[ESI+0Ch] and 0082C9CA advances by 24h"
+    },
+    {
+      "was": "class+528h: no store at that displacement belongs to a descriptor; unsettled",
+      "is": "class+528h is the element vector's own base word, the _SECURE_SCL _Myproxy/_Myfirstiter that precedes _Myfirst at +52Ch. It is not a separate field and no code stores a value into it here",
+      "evidence": "00932C3C ADD EDI,528h then [EDI+4] and [EDI+8]; 0082C960 addresses the same three pointers at +4/+8/+0Ch from the same base"
+    },
+    {
+      "was": "the buoyancy element list's producer was not found, so its field roles are a hypothesis reconciled between its two readers (docs/SHIP_HYDRO_FORCES.md)",
+      "is": "the producer is 0082D040 and there are five readers, not two: 009329C0, 00937C90, 008936A0 (+14h), 00933DA0 (+1Ch at 00933E62) and 00963600 (teardown)",
+      "evidence": "the byte scan for [reg+52Ch] loads over the whole .text returns 009329C0, 00933DA0, 00937C90, 008936A0 and 00963600 as the only ship-side sites"
+    },
+    {
+      "was": "record +04h is level_top",
+      "is": "record +04h is the waterline, lerp(deck, bottom, Hull.WaterLineRatio)",
+      "evidence": "0082D611 FMUL [ESP+0CCh] (the ratio) on the bottom sample, 0082D61A FMUL the double (1 - ratio) on the deck sample, 0082D61E FADDP, 0082D622 FSTP into the +04h slot"
+    },
+    {
+      "was": "record +08h is level_draft",
+      "is": "record +08h is the deck line height; the draught is +14h",
+      "evidence": "0082D585 samples the deck-line list and 0082D58A stores the result into the +08h slot and the +1Ch point y. 008936A0 luaMW_GetDraught returns max(element[+14h])"
+    },
+    {
+      "was": "record +10h and +14h are unread by either reader",
+      "is": "the producer caches deck - bottom at +10h and waterline - bottom at +14h, the two differences both readers recompute; +14h is read by 008936A0",
+      "evidence": "0082D604 FSUBP then 0082D608 FSTP into +10h; 0082D629 FSUBR then 0082D630 FST into +14h. 008936A0's loop loads [+14h + i*24h]"
+    }
+  ],
+  "checks": [
+    {
+      "what": "the list's coefficients normalise so the displacement sum cancels the weight",
+      "result": "sum(coefficient * draught) over the ten DeRuyter elements is 76880.000, exactly 10 * Mass (7688). 00937C90 multiplies by Gravitacio/10 and 00937F74 subtracts Gravitacio * Mass, so controller+84h is zero when the material exponent leaves the shape factor at 1",
+      "kind": "numeric, from the installed data"
+    },
+    {
+      "what": "the deck/bottom assignment is not reversible",
+      "result": "with deck -> +08h and bottom -> +0Ch the DeRuyter's waterline lands between -0.001 and +0.153 at all five stations, on the model origin plane. Swapping them puts it at +1.12",
+      "kind": "numeric, from the installed data"
+    },
+    {
+      "what": "build",
+      "result": "scripts/build.ps1 Win32 /W4 /WX clean; the existing reconstructed_math test passes with the one added case"
+    },
+    {
+      "what": "run-time evidence",
+      "result": "not available. bsp_game.exe has no ship class descriptor or model resource, so this path is not reachable from the native probes (docs/WORKER_VERIFICATION_CHECKLIST.md rule 6 does not apply)"
+    }
+  ],
+  "names_added": [
+    {"address": "0082D040", "name": "BSP_ShipClass_BuildBuoyancyElements"},
+    {"address": "0082A920", "name": "BSP_ShipClass_SampleHullProfileY"},
+    {"address": "0082C960", "name": "MSVC_VectorBuoyancyElement_PushBack"},
+    {"address": "0082FE30", "name": "BSP_ShipClass_BindModelData_Provisional", "note": "provisional: only 0082FEA9-0082FEE8 of a 14.6 KB body was read"},
+    {"address": "00759120", "name": "BSP_MotherShipClass_BindModelData_Provisional", "note": "provisional: only the head was read. The class is MMothership: the vtable at 00D1AEBC has this at slot 8 (00D1AEDC) and its slot +0Ch, 00963F00, returns 00D1AEEC, the ASCII MMothership"}
+  ],
+  "names_deliberately_not_added": [
+    {"address": "00718000", "reason": "the model's named point-set lookup is the model loader's, held by owner main (Codex). Its contract is documented from the call sites 0082FEBA and 0082FECA and left unnamed."}
+  ],
+  "reconstruction_records": [
+    {"address": "0082A920", "kind": "function", "name": "ship_buoyancy_sample_profile_0082a920"},
+    {"address": "0082D4CA", "kind": "fragment", "name": "ship_buoyancy_build_list_0082d4ca", "parent": "0082D040"},
+    {"address": "0082D21F", "kind": "fragment", "name": "ship_buoyancy_sort_profile_by_z_0082d21f", "parent": "0082D040"},
+    {"address": "0082FEA9", "kind": "fragment", "name": "ship_buoyancy_build_from_model_0082fea9", "parent": "0082FE30"}
+  ],
+  "no_ghidra_function": []
+}

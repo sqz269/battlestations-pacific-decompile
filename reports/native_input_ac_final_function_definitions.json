@@ -1,0 +1,204 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00c64d53",
+    "end_address": "00c64d5d"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00c64d53",
+    "end_address": "00c64d5c",
+    "bytes_disassembled": 10,
+    "message": "Successfully disassembled 10 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00c64d53",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00c64d53",
+    "function_name": "FUN_00c64d53",
+    "entry_point": "00c64d53",
+    "body_size": 10,
+    "message": "Function created successfully at 00c64d53"
+   }
+  },
+  {
+   "defined": "00c64d53",
+   "end": "00c64d5d",
+   "name": null,
+   "after": "Function: FUN_00c64d53 at 00c64d53\nSignature: undefined FUN_00c64d53(void)\nEntry: 00c64d53\nBody: 00c64d53 - 00c64d5c"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00cb6833",
+    "end_address": "00cb683d"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00cb6833",
+    "end_address": "00cb683c",
+    "bytes_disassembled": 10,
+    "message": "Successfully disassembled 10 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00cb6833",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00cb6833",
+    "function_name": "FUN_00cb6833",
+    "entry_point": "00cb6833",
+    "body_size": 10,
+    "message": "Function created successfully at 00cb6833"
+   }
+  },
+  {
+   "defined": "00cb6833",
+   "end": "00cb683d",
+   "name": null,
+   "after": "Function: FUN_00cb6833 at 00cb6833\nSignature: undefined FUN_00cb6833(void)\nEntry: 00cb6833\nBody: 00cb6833 - 00cb683c"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "recreate": "00a93d80",
+   "previous": "Function: FUN_00a93d80 at 00a93d80\nSignature: undefined FUN_00a93d80(void)\nEntry: 00a93d80\nBody: 00a93d80 - 00a93d91",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00a93d80"
+   },
+   "result": {
+    "success": true,
+    "address": "00a93d80",
+    "deleted_function": "FUN_00a93d80",
+    "body_size": 18,
+    "message": "Function 'FUN_00a93d80' deleted at 00a93d80"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a93d80",
+    "end_address": "00a93d97"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a93d80",
+    "end_address": "00a93d96",
+    "bytes_disassembled": 23,
+    "message": "Successfully disassembled 23 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a93d80",
+    "disassemble_first": false,
+    "name": "FUN_00a93d80"
+   },
+   "result": {
+    "success": true,
+    "address": "00a93d80",
+    "function_name": "FUN_00a93d80",
+    "entry_point": "00a93d80",
+    "body_size": 23,
+    "message": "Function created successfully at 00a93d80"
+   }
+  },
+  {
+   "defined": "00a93d80",
+   "end": "00a93d97",
+   "name": "FUN_00a93d80",
+   "after": "Function: FUN_00a93d80 at 00a93d80\nSignature: undefined FUN_00a93d80(void)\nEntry: 00a93d80\nBody: 00a93d80 - 00a93d96"
+  },
+  {
+   "recreate": "00c64d48",
+   "previous": "Function: Unwind@00c64d48 at 00c64d48\nSignature: undefined Unwind@00c64d48(void)\nEntry: 00c64d48\nBody: 00c64d48 - 00c64d50",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00c64d48"
+   },
+   "result": {
+    "success": true,
+    "address": "00c64d48",
+    "deleted_function": "Unwind@00c64d48",
+    "body_size": 9,
+    "message": "Function 'Unwind@00c64d48' deleted at 00c64d48"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00c64d48",
+    "end_address": "00c64d53"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00c64d48",
+    "end_address": "00c64d52",
+    "bytes_disassembled": 11,
+    "message": "Successfully disassembled 11 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00c64d48",
+    "disassemble_first": false,
+    "name": "Unwind@00c64d48"
+   },
+   "result": {
+    "success": true,
+    "address": "00c64d48",
+    "function_name": "Unwind@00c64d48",
+    "entry_point": "00c64d48",
+    "body_size": 11,
+    "message": "Function created successfully at 00c64d48",
+    "warnings": [
+     "Function name 'Unwind@00c64d48' \u2014 main part 'Unwind@00c64d48' is not PascalCase. Expected: Unwind@00c64d48",
+     "Function name 'Unwind@00c64d48' does not start with a recognized verb. First word 'Unwind@00c64d48' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00c64d48",
+   "end": "00c64d53",
+   "name": "Unwind@00c64d48",
+   "after": "Function: Unwind@00c64d48 at 00c64d48\nSignature: undefined Unwind@00c64d48(void)\nEntry: 00c64d48\nBody: 00c64d48 - 00c64d52"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

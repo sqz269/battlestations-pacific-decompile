@@ -339,7 +339,60 @@
         "old_comment_preserved": true
       }
     ],
-    "flow_repair": "reports/avoid_zone_clearance_flow_repair.json:004158A0 single false free fallthrough repaired;0041D1E0 already clean when queried"
+    "flow_repair": "reports/avoid_zone_clearance_flow_repair.json:004158A0 single false free fallthrough repaired;0041D1E0 already clean when queried",
+    "combined_integration": {
+      "commit": "e0419034fd4ab0f7a365540d845cba4dd7b407a4",
+      "build": "Win32 Release and existing CTest2/2 passed",
+      "command_runtime": {
+        "args": [
+          "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\build\\win32\\Release\\bsp_game.exe",
+          "--frames",
+          "360",
+          "--press-start-frame",
+          "3",
+          "--menu-select",
+          "USN01",
+          "--mission-frames",
+          "120",
+          "--mission-frame-seconds",
+          "0.1",
+          "--game-root",
+          "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+          "--fmod-dll",
+          "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+          "--fmod-event-dll",
+          "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+          "--xlive-dll",
+          "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\xlive.dll",
+          "--xlive-dependency",
+          "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\msidcrl40.dll",
+          "--log",
+          "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_usn01_zone_order_named.log",
+          "--order-frame",
+          "0",
+          "--order-unit",
+          "Enterprise",
+          "--order",
+          "moveto:Airfield2"
+        ],
+        "exe_sha256": "dc1e51f6ffe75299733d506756a997e149a73850d1267c7ce6fb8632c389fa85",
+        "exit": 0,
+        "seconds": 14.318570852279663
+      },
+      "accepted_command": "Enterprise moveto:Airfield2, outcome issued/current1",
+      "path_search_ticks": 238,
+      "plan_swaps": 3,
+      "path_follower_points": 239,
+      "corner_detour_arms": 0,
+      "mission_frames": 120,
+      "original_scene_and_sdk_files_modified": false
+    },
+    "unrecognized_command_attempt": {
+      "input": "MoveToPos:Airfield2",
+      "outcome": "unknown_command_name; mission completed120frames but requested command was not issued",
+      "evidence": "local/orch6_usn01_zone_order_combined.json"
+    },
+    "integration_annotation_log": "local/orch6_game_runtime_integration.log:17 new reviewed names applied, project saved, snapshot/index refreshed"
   },
   "limits": [
     "Path/Landscape native creation remains unresolved; runtime is an explicit geometry projection from retained generated records.",

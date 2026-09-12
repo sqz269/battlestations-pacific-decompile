@@ -1,0 +1,359 @@
+{
+  "packet": "orch3_particle_base_ap",
+  "recorded_utc": "2026-09-12T13:07:56.114965-07:00",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "no_pe_relocations": true,
+  "functions": [
+    {
+      "address": "00b01150",
+      "end_inclusive": "00b012e8",
+      "bytes": 409,
+      "sha256": "9e050dfdc0518d504504a7de96ace1faa2996b72fc9e34385d2b3eaa2f5cf15c",
+      "live_disk_equal": true,
+      "last_instruction": "00b012e6: ret 0xc",
+      "calls": [
+        {
+          "address": "00b011b4",
+          "native": "0041dd40",
+          "function": "00b01150",
+          "offset": 101
+        },
+        {
+          "address": "00b011cc",
+          "native": "00bf7680",
+          "function": "00b01150",
+          "offset": 125
+        },
+        {
+          "address": "00b01274",
+          "native": "00c2dfce",
+          "function": "00b01150",
+          "offset": 293
+        },
+        {
+          "address": "00b01290",
+          "native": "00b00c20",
+          "function": "00b01150",
+          "offset": 321
+        }
+      ],
+      "proposed_name": "BSP_ParticleTypeBase_Construct",
+      "original_abi": "ECX actual owner; stack(name8h,word14,parent18); RET0C; EAX owner",
+      "coverage": "complete_native_body",
+      "uncertainty": "new C++ interface, no original FH3 ABI; constructor record+18 explicitly supplied native stack residue"
+    },
+    {
+      "address": "00b00c20",
+      "end_inclusive": "00b00ca4",
+      "bytes": 133,
+      "sha256": "9306985af1f23d030900a90f906f94530587b1baa161ade5fd4b16b324f7cfde",
+      "live_disk_equal": true,
+      "last_instruction": "00b00ca2: ret 4",
+      "calls": [
+        {
+          "address": "00b00c4f",
+          "native": "00bf55be",
+          "function": "00b00c20",
+          "offset": 48
+        },
+        {
+          "address": "00b00c90",
+          "native": "00bf6989",
+          "function": "00b00c20",
+          "offset": 113
+        }
+      ],
+      "proposed_name": "BSP_ParticleTypeRecords_Reserve",
+      "original_abi": "ECX actual descriptor; stack(signed requested capacity); RET4; EAX unspecified",
+      "coverage": "complete_native_body",
+      "uncertainty": "descriptive name is a hypothesis; no gameplay validation"
+    },
+    {
+      "address": "00b00fb0",
+      "end_inclusive": "00b0112f",
+      "bytes": 384,
+      "sha256": "76e902238cbf803a2d3db479884151944440be4c75039308a7905c89db622c72",
+      "live_disk_equal": true,
+      "last_instruction": "00b0112f: ret ",
+      "calls": [
+        {
+          "address": "00b00fe5",
+          "native": "00affdf0",
+          "function": "00b00fb0",
+          "offset": 54
+        },
+        {
+          "address": "00b00fec",
+          "native": "00b00090",
+          "function": "00b00fb0",
+          "offset": 61
+        },
+        {
+          "address": "00b00ffa",
+          "native": "00affdf0",
+          "function": "00b00fb0",
+          "offset": 75
+        },
+        {
+          "address": "00b01001",
+          "native": "00b00090",
+          "function": "00b00fb0",
+          "offset": 82
+        },
+        {
+          "address": "00b0100f",
+          "native": "00affdf0",
+          "function": "00b00fb0",
+          "offset": 96
+        },
+        {
+          "address": "00b01016",
+          "native": "00b00090",
+          "function": "00b00fb0",
+          "offset": 103
+        },
+        {
+          "address": "00b01024",
+          "native": "00affdf0",
+          "function": "00b00fb0",
+          "offset": 117
+        },
+        {
+          "address": "00b0102b",
+          "native": "00b00090",
+          "function": "00b00fb0",
+          "offset": 124
+        },
+        {
+          "address": "00b01040",
+          "native": "00affdf0",
+          "function": "00b00fb0",
+          "offset": 145
+        },
+        {
+          "address": "00b01047",
+          "native": "00b00090",
+          "function": "00b00fb0",
+          "offset": 152
+        },
+        {
+          "address": "00b01055",
+          "native": "00affdf0",
+          "function": "00b00fb0",
+          "offset": 166
+        },
+        {
+          "address": "00b0105c",
+          "native": "00b00090",
+          "function": "00b00fb0",
+          "offset": 173
+        },
+        {
+          "address": "00b0106a",
+          "native": "00affdf0",
+          "function": "00b00fb0",
+          "offset": 187
+        },
+        {
+          "address": "00b01071",
+          "native": "00b00090",
+          "function": "00b00fb0",
+          "offset": 194
+        },
+        {
+          "address": "00b0107f",
+          "native": "00affdf0",
+          "function": "00b00fb0",
+          "offset": 208
+        },
+        {
+          "address": "00b01086",
+          "native": "00b00090",
+          "function": "00b00fb0",
+          "offset": 215
+        },
+        {
+          "address": "00b01094",
+          "native": "00affdf0",
+          "function": "00b00fb0",
+          "offset": 229
+        },
+        {
+          "address": "00b0109b",
+          "native": "00b00090",
+          "function": "00b00fb0",
+          "offset": 236
+        },
+        {
+          "address": "00b010a9",
+          "native": "00affdf0",
+          "function": "00b00fb0",
+          "offset": 250
+        },
+        {
+          "address": "00b010b0",
+          "native": "00b00090",
+          "function": "00b00fb0",
+          "offset": 257
+        },
+        {
+          "address": "00b010c7",
+          "native": "00b00c20",
+          "function": "00b00fb0",
+          "offset": 280
+        },
+        {
+          "address": "00b010e6",
+          "native": "00bf6989",
+          "function": "00b00fb0",
+          "offset": 311
+        },
+        {
+          "address": "00b01104",
+          "native": "00419cc0",
+          "function": "00b00fb0",
+          "offset": 341
+        },
+        {
+          "address": "00b0110b",
+          "native": "00bd1510",
+          "function": "00b00fb0",
+          "offset": 348
+        },
+        {
+          "address": "00b0111a",
+          "native": "00bd30f0",
+          "function": "00b00fb0",
+          "offset": 363
+        }
+      ],
+      "proposed_name": "BSP_ParticleTypeBase_Destroy",
+      "original_abi": "ECX owner; RET; EAX unspecified",
+      "coverage": "complete_native_body",
+      "uncertainty": "descriptive name is a hypothesis; no gameplay validation"
+    },
+    {
+      "address": "00b01130",
+      "end_inclusive": "00b0114d",
+      "bytes": 30,
+      "sha256": "fa054ba7cf26b60af55f8db7b6b3c8fafee796b27c9dba5485750ca32729b32b",
+      "live_disk_equal": true,
+      "last_instruction": "00b0114b: ret 4",
+      "calls": [
+        {
+          "address": "00b01133",
+          "native": "00b00fb0",
+          "function": "00b01130",
+          "offset": 4
+        },
+        {
+          "address": "00b01140",
+          "native": "00bf65ac",
+          "function": "00b01130",
+          "offset": 17
+        }
+      ],
+      "proposed_name": "BSP_ParticleTypeBase_ScalarDeletingDestructor",
+      "original_abi": "ECX owner; stack(flags); RET4; EAX captured owner",
+      "coverage": "complete_native_body",
+      "uncertainty": "descriptive name is a hypothesis; no gameplay validation"
+    },
+    {
+      "address": "00b00920",
+      "end_inclusive": "00b00940",
+      "bytes": 33,
+      "sha256": "d62e5888af5c8054989b3299d58a64e057345f37c1139b494dc793c239f3497e",
+      "live_disk_equal": true,
+      "last_instruction": "00b00940: ret ",
+      "calls": [],
+      "proposed_name": "BSP_ParticleTypeBase_ClampRecordRange",
+      "original_abi": "ECX owner; RET; EAX new+54",
+      "coverage": "complete_native_body",
+      "uncertainty": "descriptive name is a hypothesis; no gameplay validation",
+      "ghidra_function_at_capture": false
+    },
+    {
+      "address": "00b00740",
+      "end_inclusive": "00b00742",
+      "bytes": 3,
+      "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+      "live_disk_equal": true,
+      "last_instruction": "00b00740: ret 4",
+      "calls": [],
+      "proposed_name": "BSP_ParticleTypeBase_NoOpWord",
+      "original_abi": "ECX ignored; one ignored stack word; RET4; EAX untouched",
+      "coverage": "complete_native_body",
+      "uncertainty": "descriptive name is a hypothesis; no gameplay validation",
+      "ghidra_function_at_capture": false
+    }
+  ],
+  "bindings": {
+    "owners": "SAME NativeParticleDefinitionBindings strings/F8D344/refprofile/native allocation domains",
+    "half_import": "actual d3dx9_40 HMODULE; named D3DXFloat32To16Array export",
+    "globals": [
+      "D5DDC0 11word profile",
+      "D7A24C",
+      "CE3804",
+      "CE6650"
+    ],
+    "native_uninitialized_record_word": "explicit initial_record_stack_word18; no synthesized zero"
+  },
+  "corrections": [
+    {
+      "was": "B00C20 gap B00C95..B00C9E after no-return BF6989",
+      "is": "ADD ESP4, store pointer/capacity, POP EDI/EBP; inclusive body B00CA4",
+      "evidence": "live bytes match installed PE full 133-byte span"
+    },
+    {
+      "was": "B00FB0 body ends B010EA",
+      "is": "extend through B0112F RET, including three calls in restored tail",
+      "evidence": "live bytes match installed PE full 384-byte span"
+    },
+    {
+      "was": "B01130 gap B01145..B01147",
+      "is": "ADD ESP4 before EAX return; inclusive body B0114D",
+      "evidence": "full 30-byte span"
+    },
+    {
+      "was": "B00920 and B00740 have no Ghidra function",
+      "is": "create inclusive B00920..B00940 and B00740..B00742",
+      "evidence": "33-byte signed clamp and 3-byte RET4; live=disk"
+    }
+  ],
+  "source_sha256": {
+    "include/bsp/native_particle_type_base.hpp": "28afa3e93f423326a0943350de5fbb518657b475708ba084c8aa78ddc2fd3e99",
+    "src/native_particle_type_base.cpp": "d02cc6784c30d1a928bd05ca69f3c07419e800be25579868d583401cb4ff0746"
+  },
+  "verification": {
+    "strict_compile_command": "C:\\Users\\sqz269\\bsp-ap-base\\compile.cmd",
+    "strict_compile_exit_code": 0,
+    "probe_command": "C:\\Users\\sqz269\\bsp-ap-base\\probe.cmd",
+    "probe_execution_exit_code": 0,
+    "probe_stdout": "PASS: 3 constructor/destructor comparisons including all ten parameter slots, live scalar bits and explicit stack residue; 3 reserve comparisons; 8 scalar deletes; 36 signed range cases; RET4 no-op. Actual d3dx9_40 library import, shared actual parameter pool. Native FH3 normal paths only.",
+    "probe_source_sha256": "7acca887865dc22339456236336d0a720c3b99d71dcf4cf8ec65165ce6c17bfe",
+    "probe_executable_sha256": "8a096b43403686505aa3a69422242ea0bd666fbcafa3a6c1678d3382396d450c",
+    "d3dx9_40_sha256": "16fd909aeb68d0d1aca8529dc7f78880b97d6649d70ce8d03a2c858bc28e216b",
+    "bound_library": "J:/PROG/battlestations-pacific-decompile-orch3-20260910/build/win32/Release/bsp_core.lib",
+    "bound_library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+    "native_exceptions": "not executed; original FH3 handler addresses unused on normal paths",
+    "permanent_tests_added": 0,
+    "full_project_build": "integrator pending",
+    "game_validated": false,
+    "original_abi_compatible": false,
+    "call_verification_before_repairs": {
+      "command": "python tools/verify_report_calls.py reports/native_particle_type_base.json",
+      "exit_code": 1,
+      "rows_checked": 33,
+      "failures": 3,
+      "failing_sites": [
+        "00b01104",
+        "00b0110b",
+        "00b0111a"
+      ],
+      "reason": "Live Ghidra B00FB0 body is truncated at B010EA; integrator body repair then replay required. All three sites are verified in matching complete live/disk bytes."
+    }
+  }
+}
