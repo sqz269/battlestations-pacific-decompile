@@ -5,6 +5,7 @@
 #include "bsp/app_bootstrap.hpp"
 #include "bsp/award_grant.hpp"
 #include "bsp/entity_event_queues.hpp"
+#include "bsp/entity_lifecycle_tails.hpp"
 #include "bsp/award_trackers.hpp"
 #include "bsp/blocking_screen.hpp"
 #include "bsp/game_entry.hpp"
@@ -2956,6 +2957,26 @@ int main() {
         const float limited = bsp::ship_ai_approach_command_limit_009e6a90(seeded, 1.0f);
         check(limited >= -1.0f && limited <= 1.0f && limited != bsp::kApproachCommandUnset,
             "009E6A90: the sentinel never reaches the throttle 009F3635 forwards");
+    }
+
+    {
+        // 00925825: the world+0Ch unit list is only left from the parentless
+        // branch of 00925780, so a child entity never reaches 004845A0 however
+        // large its +B8h counter is.
+        bsp::EntityReleaseState child{};
+        child.has_parent = true;
+        child.world_list_counter = 3;
+        const auto child_steps = bsp::entity_release_steps_006fe570(child);
+        check(std::find(child_steps.begin(), child_steps.end(),
+                        bsp::EntityReleaseStep::remove_from_world_unit_list) == child_steps.end(),
+            "00925835 is unreachable for an entity with a parent");
+
+        bsp::EntityReleaseState root = child;
+        root.has_parent = false;
+        const auto root_steps = bsp::entity_release_steps_006fe570(root);
+        check(std::find(root_steps.begin(), root_steps.end(),
+                        bsp::EntityReleaseStep::remove_from_world_unit_list) != root_steps.end(),
+            "00925835 runs for a parentless entity whose +B8h counter is set");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
