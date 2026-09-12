@@ -291,7 +291,7 @@ void GuiWidgetFrameRuntime::dispatch_current68(GuiWidgetOwner& widget, GuiWidget
     require(&widget.runtime() == &services_.widgets,
         "GUI current68 requires the same widget runtime");
     require(gui_widget_uses_base_frame40_profile(widget.layout().type) ||
-        widget.layout().type == GuiWidgetType::Icon || widget.layout().type == GuiWidgetType::Listbox,
+        widget.layout().type == GuiWidgetType::Icon,
         "GUI current68 profile has no established implementation");
     widget.require_no_active_owned_operation();
     ActiveFrame call(*this, widget);

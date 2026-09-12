@@ -26,14 +26,18 @@ device+0 and invokes the existing finite NativeInputDeviceRuntime dispatcher.
 The separate typed input domain requires an explicit InputFocusDeviceHost;
 the old typed constructor does not fabricate activity when that path is reached.
 
-Supported current68 profiles are Screen, Group, Text, Icon, Listbox, ClipBox,
+Supported current68 profiles are Screen, Group, Text, Icon, ClipBox,
 Section and FrameBox. Unsupported profiles fail explicitly. Their native slot
 words and each call site are recorded in the companion report. The owner domain
 requires live canonical parents and listeners through callbacks; recursive entry
 to an already active owner is diagnosed rather than supported as native reentry.
 
+Listbox is a separate current68 target: D5BC60 contains A9CA60. It performs
+row selection, scrolling and activation and cannot inherit AA7190. This dispatch
+currently rejects Listbox explicitly; its full caller remains a follow-up.
+
 Validation: Win32 build and both existing CTest checks passed. The focused local
-GUI frame fixture adds one sequence exercising child-to-parent dispatch, changed
+GUI frame fixture passed one added sequence exercising child-to-parent dispatch, changed
 listener identity after00, changed backend after04, and button1 from the retained
 mouse. Fixture execution is recorded separately. No new permanent tests were added.
 Game, enabled manager hit traversal and binary ABI compatibility are unverified.
