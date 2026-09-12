@@ -118,17 +118,17 @@ bool projectile_segment_is_sweepable(const TickPoint3& from, const TickPoint3& t
 }
 
 ProjectileImpactMode projectile_refine_impact_mode(ProjectileImpactMode mode,
-                                                   bool target_is_scoring_kind,
-                                                   bool target_is_unit_kind) {
+                                                   bool target_is_landscape_kind,
+                                                   bool target_is_plane_kind) {
     // 0084BC8x: only mode 1 is refined, and the 44h test wins over the 0Fh one.
     if (mode != ProjectileImpactMode::kEntity) {
         return mode;
     }
-    if (target_is_scoring_kind) {
-        return ProjectileImpactMode::kScoringTarget;
+    if (target_is_landscape_kind) {
+        return ProjectileImpactMode::kLandscape;
     }
-    if (target_is_unit_kind) {
-        return ProjectileImpactMode::kUnit;
+    if (target_is_plane_kind) {
+        return ProjectileImpactMode::kPlane;
     }
     return mode;
 }

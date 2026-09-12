@@ -200,7 +200,7 @@ ImpactEffectSlot impact_effect_slot_0084b8c0(ProjectileImpactMode mode, int medi
             slot.valid = true;
             slot.class_desc_offset = kWeaponClassOffEffectStatic;
             return slot;
-        case ProjectileImpactMode::kUnit:
+        case ProjectileImpactMode::kPlane:
             // 0084B953..0084B964, likewise unconditional.
             slot.valid = true;
             slot.class_desc_offset = kWeaponClassOffEffectPlane;
@@ -212,7 +212,7 @@ ImpactEffectSlot impact_effect_slot_0084b8c0(ProjectileImpactMode mode, int medi
                 return slot;
             }
             break;
-        case ProjectileImpactMode::kScoringTarget:
+        case ProjectileImpactMode::kLandscape:
             if (medium == 0) {
                 slot.valid = true;
                 slot.class_desc_offset = kWeaponClassOffEffectLandscape;  // 0084B943
