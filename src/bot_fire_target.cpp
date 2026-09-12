@@ -281,7 +281,7 @@ void auto_target_tick_009f5da0(BotFireTargetHost& host, AutoTargetState& state,
             return; // 009F5DD5
         }
         if (slot == reinterpret_cast<void*>(
-                        static_cast<std::uintptr_t>(kCommandObjectFollow))) {
+                        static_cast<std::uintptr_t>(kTargetSelectorFollowCommandObject))) {
             return; // 009F5DE0, a follow order is left alone
         }
         host.release_controller(unit, 0); // 009F5DEB

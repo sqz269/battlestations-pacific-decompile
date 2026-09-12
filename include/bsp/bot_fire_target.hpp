@@ -92,7 +92,7 @@ inline constexpr std::size_t kDirectorVtableSlotCurrentTarget = 0x2c; // 009F5E2
 
 // The command singletons the tick compares against, named in
 // docs/SCENE_COMMAND_TYPES.md by their index in the 00E08EF8 + 8*(k-1) table.
-inline constexpr std::uint32_t kCommandObjectFollow = 0x00E08F60u;     // index 14
+inline constexpr std::uint32_t kTargetSelectorFollowCommandObject = 0x00E08F60u;     // index 14
 inline constexpr std::uint32_t kCommandObjectAttackMoveAddr = 0x00E08F78u; // index 17
 inline constexpr std::uint32_t kCommandObjectSetTargetAddr = 0x00E08EF8u;  // index 1
 inline constexpr std::uint32_t kCommandObjectClearTargetAddr = 0x00E08F00u; // index 2
