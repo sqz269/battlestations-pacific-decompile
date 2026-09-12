@@ -766,5 +766,20 @@
       "source_unchanged": true,
       "library_sha256": "3ca30054b3287e5612c4b6fc9c684a8927805b4591db28a95d9367a4e05977ef"
     }
+  },
+  "integration_am": {
+    "concrete_callees": [
+      "00afd410",
+      "00aff640",
+      "00afd7a0"
+    ],
+    "access_layout": "existing offsets preserved; model appended record20/emitter24; record replaced same-offset outer function pointers with typed emission1C/children20 access",
+    "correction": {
+      "was": "definition_virtual08 temporary valid through+9F",
+      "is": "actual temporary valid through+107",
+      "evidence": "AFCF50 complete forward copy includes final float+104; native RET4"
+    },
+    "full_application_composition": false,
+    "gameplay": false
   }
 }

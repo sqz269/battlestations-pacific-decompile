@@ -30,9 +30,13 @@
       "original_abi": "ECX record108h; stack same model,definition,time,velocity; RET10",
       "header": "include/bsp/native_particle_record_children.hpp",
       "source": "src/native_particle_record_children.cpp",
-      "evidence": "Complete verified-target assembly, native caller setup and final RET; installed-byte original fixture. See packet documentation.",
+      "evidence": "Complete verified-target assembly, native caller setup and final RET; installed-byte original fixture. See packet documentation. AM integration review: descriptive hypothesis, not a recovered symbol. ECX record108h; stack same model,definition,time,velocity; RET10. Complete live/installed span and final instruction verified. See reports/native_particle_record_children.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
       "uncertainty": "Names are provisional hypotheses; added EDX access is a new integration ABI. Required captured definition implementation and CRT exceptional behavior, native EH/object compatibility and gameplay unvalidated.",
-      "live_disk_equal": true
+      "live_disk_equal": true,
+      "ghidra_name": "BSP_InitializeNativeParticleRecord",
+      "native_prototype": "void __thiscall BSP_InitializeNativeParticleRecord(void * model, void * definition, float time, void * velocity)",
+      "native_calling_convention": "__thiscall",
+      "original_abi_compatible": false
     },
     {
       "address": "00afdbf0",
@@ -53,9 +57,13 @@
       "original_abi": "ECX parent108h; stack position,velocity,matrix,ordinal,fraction; RET14; ordinal unread",
       "header": "include/bsp/native_particle_record_children.hpp",
       "source": "src/native_particle_record_children.cpp",
-      "evidence": "Complete verified-target assembly, native caller setup and final RET; installed-byte original fixture. See packet documentation.",
+      "evidence": "Complete verified-target assembly, native caller setup and final RET; installed-byte original fixture. See packet documentation. AM integration review: descriptive hypothesis, not a recovered symbol. ECX parent108h; stack position,velocity,matrix,ordinal,fraction; RET14; ordinal unread. Complete live/installed span and final instruction verified. See reports/native_particle_record_children.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
       "uncertainty": "Names are provisional hypotheses; added EDX access is a new integration ABI. Required captured definition implementation and CRT exceptional behavior, native EH/object compatibility and gameplay unvalidated.",
-      "live_disk_equal": true
+      "live_disk_equal": true,
+      "ghidra_name": "BSP_InterpolateNativeParticleRecord",
+      "native_prototype": "void __thiscall BSP_InterpolateNativeParticleRecord(void * position, void * velocity, void * matrix, int ordinal, float fraction)",
+      "native_calling_convention": "__thiscall",
+      "original_abi_compatible": false
     },
     {
       "address": "00afd440",
@@ -76,9 +84,13 @@
       "original_abi": "ECX actual18h owner; stack same model,definition,parent108h,requested,time,elapsed; EAX actual appended count; RET18; elapsed unread",
       "header": "include/bsp/native_particle_record_children.hpp",
       "source": "src/native_particle_record_children.cpp",
-      "evidence": "Complete verified-target assembly, native caller setup and final RET; installed-byte original fixture. See packet documentation.",
+      "evidence": "Complete verified-target assembly, native caller setup and final RET; installed-byte original fixture. See packet documentation. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual18h owner; stack same model,definition,parent108h,requested,time,elapsed; EAX actual appended count; RET18; elapsed unread. Complete live/installed span and final instruction verified. See reports/native_particle_record_children.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
       "uncertainty": "Names are provisional hypotheses; added EDX access is a new integration ABI. Required captured definition implementation and CRT exceptional behavior, native EH/object compatibility and gameplay unvalidated.",
-      "live_disk_equal": true
+      "live_disk_equal": true,
+      "ghidra_name": "BSP_AppendNativeParticleRecordChildren",
+      "native_prototype": "int __thiscall BSP_AppendNativeParticleRecordChildren(void * model, void * definition, void * parent, float requested, float time, float elapsed)",
+      "native_calling_convention": "__thiscall",
+      "original_abi_compatible": false
     }
   ],
   "call_sites": [
@@ -265,5 +277,11 @@
       "sha256": "4f9bccfb266252d2318918e11718abf3cda1109fb944249a1bab95fd15977913",
       "link_order": "new strict Win32 children object before existing bsp_core.lib"
     }
+  },
+  "integration_am": {
+    "source_review": "complete; preparation/constructor additionally independently reviewed",
+    "saved_analysis": "pending",
+    "full_build": "pending",
+    "gameplay": false
   }
 }

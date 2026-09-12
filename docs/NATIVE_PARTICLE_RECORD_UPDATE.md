@@ -136,3 +136,17 @@ and container helpers are shared between the two paths. Original CRT exceptional
 handlers, dirty-world refresh, native EH and gameplay are unvalidated here.
 No permanent test suite was added. The integrator owns the combined standard
 build/CMake registration and saved-analysis changes; their status is separate.
+
+## Correction from AM concrete simulation integration
+
+Model AF6DD0 now invokes concrete AFD410, AFF640 and AFD7A0. Record AFE290
+now directly invokes B04C80 and AFD440 with typed borrowed application access.
+Those kernels include AFDAF0 and AFE1A0/AFDBF0 respectively; real current
+definition virtual generation, state B0CA40 initialization and CRT services
+remain required. Existing assembly access offsets and original stack words
+are preserved. Definition virtual08 must return readable storage through+107,
+because AFCF50 copies the final float at+104; the earlier+9F extent was too small.
+See NATIVE_PARTICLE_EMITTER_UPDATE.md, NATIVE_PARTICLE_RECORD_UPDATE.md,
+NATIVE_PARTICLE_EMISSION_SPAWN.md and NATIVE_PARTICLE_RECORD_CHILDREN.md.
+Earlier isolated fixture service descriptions are historical, not final wiring.
+Full application composition, native exception ABI and gameplay remain unproven.

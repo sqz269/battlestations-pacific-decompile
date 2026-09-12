@@ -239,3 +239,12 @@ The model environment must bind the same actual_names storage as material
 parameter names so its node-name destruction returns storage to the same pool.
 See NATIVE_PARTICLE_MODEL_MANAGER.md, NATIVE_PARTICLE_MODEL_LIFETIME.md and
 reports/native_model_actual_names.json. Full AF74A0 execution remains unvalidated.
+
+## Correction from docs/NATIVE_PARTICLE_PREPARATION.md
+
+AM replaces the required AF40E0/resource/shadow/mask methods with concrete
+actual-pointer helpers and replaces AFD130/AFD220 with concrete cookie arrays.
+AFD2E0 now receives the current one-bit reference explicitly. AF40E0 still
+requires actual current member virtual14/0C dispatch; source ownership and
+renderer/random application bindings remain required. These helper fixtures
+do not establish complete AF74A0 execution. See also NATIVE_PARTICLE_ARRAY_RESIZE.md.

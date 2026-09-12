@@ -30,9 +30,13 @@
       "original_abi": "ECX destination108h; stack source108h; EAX destination; RET4",
       "header": "include/bsp/native_particle_record_update.hpp",
       "source": "src/native_particle_record_update.cpp",
-      "evidence": "Complete verified-target assembly and installed PE bytes; original caller stack setup and final RET decoded. See packet documentation.",
+      "evidence": "Complete verified-target assembly and installed PE bytes; original caller stack setup and final RET decoded. See packet documentation. AM integration review: descriptive hypothesis, not a recovered symbol. ECX destination108h; stack source108h; EAX destination; RET4. Complete live/installed span and final instruction verified. See reports/native_particle_record_update.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
       "uncertainty": "Descriptive name is provisional. Added EDX access on update entries is a new integration ABI. Actual native object/EH ABI and game validation unproven.",
-      "live_disk_equal": true
+      "live_disk_equal": true,
+      "ghidra_name": "BSP_CopyNativeParticleRecord",
+      "native_prototype": "void * __thiscall BSP_CopyNativeParticleRecord(void * source)",
+      "native_calling_convention": "__thiscall",
+      "original_abi_compatible": false
     },
     {
       "address": "00afd410",
@@ -53,9 +57,13 @@
       "original_abi": "ECX actual18h owner; stack source108h; RET4",
       "header": "include/bsp/native_particle_record_update.hpp",
       "source": "src/native_particle_record_update.cpp",
-      "evidence": "Complete verified-target assembly and installed PE bytes; original caller stack setup and final RET decoded. See packet documentation.",
+      "evidence": "Complete verified-target assembly and installed PE bytes; original caller stack setup and final RET decoded. See packet documentation. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual18h owner; stack source108h; RET4. Complete live/installed span and final instruction verified. See reports/native_particle_record_update.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
       "uncertainty": "Descriptive name is provisional. Added EDX access on update entries is a new integration ABI. Actual native object/EH ABI and game validation unproven.",
-      "live_disk_equal": true
+      "live_disk_equal": true,
+      "ghidra_name": "BSP_AppendNativeParticleRecord",
+      "native_prototype": "void __thiscall BSP_AppendNativeParticleRecord(void * source)",
+      "native_calling_convention": "__thiscall",
+      "original_abi_compatible": false
     },
     {
       "address": "00afe030",
@@ -76,9 +84,13 @@
       "original_abi": "ECX same actual2DCh model; stack destination; EAX destination; RET4",
       "header": "include/bsp/native_particle_record_update.hpp",
       "source": "src/native_particle_record_update.cpp",
-      "evidence": "Complete verified-target assembly and installed PE bytes; original caller stack setup and final RET decoded. See packet documentation.",
+      "evidence": "Complete verified-target assembly and installed PE bytes; original caller stack setup and final RET decoded. See packet documentation. AM integration review: descriptive hypothesis, not a recovered symbol. ECX same actual2DCh model; stack destination; EAX destination; RET4. Complete live/installed span and final instruction verified. See reports/native_particle_record_update.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
       "uncertainty": "Descriptive name is provisional. Added EDX access on update entries is a new integration ABI. Actual native object/EH ABI and game validation unproven.",
-      "live_disk_equal": true
+      "live_disk_equal": true,
+      "ghidra_name": "BSP_CopyNativeParticleModelPosition",
+      "native_prototype": "void * __thiscall BSP_CopyNativeParticleModelPosition(void * destination)",
+      "native_calling_convention": "__thiscall",
+      "original_abi_compatible": false
     },
     {
       "address": "00afe290",
@@ -99,9 +111,13 @@
       "original_abi": "ECX actual108h record; stack float time, float step, low mode byte; AL alive, upper EAX unspecified; RET0C",
       "header": "include/bsp/native_particle_record_update.hpp",
       "source": "src/native_particle_record_update.cpp",
-      "evidence": "Complete verified-target assembly and installed PE bytes; original caller stack setup and final RET decoded. See packet documentation.",
+      "evidence": "Complete verified-target assembly and installed PE bytes; original caller stack setup and final RET decoded. See packet documentation. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual108h record; stack float time, float step, low mode byte; AL alive, upper EAX unspecified; RET0C. Complete live/installed span and final instruction verified. See reports/native_particle_record_update.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
       "uncertainty": "Descriptive name is provisional. Added EDX access on update entries is a new integration ABI. Actual native object/EH ABI and game validation unproven.",
-      "live_disk_equal": true
+      "live_disk_equal": true,
+      "ghidra_name": "BSP_UpdateNativeParticleRecord",
+      "native_prototype": "byte __thiscall BSP_UpdateNativeParticleRecord(float time, float step, byte mode)",
+      "native_calling_convention": "__thiscall",
+      "original_abi_compatible": false
     },
     {
       "address": "00afd7a0",
@@ -122,9 +138,13 @@
       "original_abi": "ECX same actual18h owner; stack float time, low mode byte; EAX signed current count14; RET8",
       "header": "include/bsp/native_particle_record_update.hpp",
       "source": "src/native_particle_record_update.cpp",
-      "evidence": "Complete verified-target assembly and installed PE bytes; original caller stack setup and final RET decoded. See packet documentation.",
+      "evidence": "Complete verified-target assembly and installed PE bytes; original caller stack setup and final RET decoded. See packet documentation. AM integration review: descriptive hypothesis, not a recovered symbol. ECX same actual18h owner; stack float time, low mode byte; EAX signed current count14; RET8. Complete live/installed span and final instruction verified. See reports/native_particle_record_update.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
       "uncertainty": "Descriptive name is provisional. Added EDX access on update entries is a new integration ABI. Actual native object/EH ABI and game validation unproven.",
-      "live_disk_equal": true
+      "live_disk_equal": true,
+      "ghidra_name": "BSP_UpdateNativeParticleRecords",
+      "native_prototype": "int __thiscall BSP_UpdateNativeParticleRecords(float time, byte mode)",
+      "native_calling_convention": "__thiscall",
+      "original_abi_compatible": false
     }
   ],
   "call_sites": [
@@ -464,5 +484,25 @@
       "sha256": "4f9bccfb266252d2318918e11718abf3cda1109fb944249a1bab95fd15977913",
       "link_order": "new strict Win32 record object before existing bsp_core.lib"
     }
+  },
+  "integration_am": {
+    "concrete_callees": [
+      "00b04c80",
+      "00afdaf0",
+      "00afd440",
+      "00afe1a0",
+      "00afdbf0"
+    ],
+    "access_layout": "existing offsets preserved; model appended record20/emitter24; record replaced same-offset outer function pointers with typed emission1C/children20 access",
+    "correction": {
+      "was": "definition_virtual08 temporary valid through+9F",
+      "is": "actual temporary valid through+107",
+      "evidence": "AFCF50 complete forward copy includes final float+104; native RET4"
+    },
+    "full_application_composition": false,
+    "gameplay": false,
+    "source_review": "complete; preparation/constructor additionally independently reviewed",
+    "saved_analysis": "pending",
+    "full_build": "pending"
   }
 }

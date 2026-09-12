@@ -1,0 +1,342 @@
+{
+  "packet": "orch3_particle_preparation_am",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00af40e0",
+      "end_inclusive": "00af4105",
+      "end_exclusive": "00af4106",
+      "length": 38,
+      "sha256": "28dbcf6c872359e694ab775d3521cf1dceb90f98347f280225fa33dbebd6c3c3",
+      "live_disk_equal": true,
+      "cpp_symbol": "prepare_native_particle_variant_00af40e0",
+      "ghidra_name": "BSP_NativeParticleVariant_Prepare",
+      "source": "src/native_particle_preparation.cpp",
+      "header": "include/bsp/native_particle_preparation.hpp",
+      "coverage": "complete body through required real current virtual dispatch",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_NativeParticleVariant_Prepare(void)",
+      "original_abi": "ECX actual owner; void; RET; void return",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/disk byte span verified. Actual borrowed pointers, current signed counts and post-virtual row/table reloads; no replacement owner. See docs/NATIVE_PARTICLE_PREPARATION.md and reports/native_particle_preparation.json. Full producer class sizes, real polymorphic member behavior, native exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual owner; void; RET; void return. Complete live/installed span and final instruction verified. See reports/native_particle_preparation.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
+      "last_instruction": {
+        "address": "00af4105",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      },
+      "original_abi_compatible": false
+    },
+    {
+      "address": "00af9f50",
+      "end_inclusive": "00af9fa0",
+      "end_exclusive": "00af9fa1",
+      "length": 81,
+      "sha256": "0804b7f81d8cf9b22671c88593c4a90adf663516b559e787cdbc748c678a10ab",
+      "live_disk_equal": true,
+      "cpp_symbol": "prepare_native_particle_definition_00af9f50",
+      "ghidra_name": "BSP_NativeParticleDefinition_Prepare",
+      "source": "src/native_particle_preparation.cpp",
+      "header": "include/bsp/native_particle_preparation.hpp",
+      "coverage": "complete body through required real current virtual dispatch",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_NativeParticleDefinition_Prepare(void)",
+      "original_abi": "ECX actual owner; void; RET; void return",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/disk byte span verified. Actual borrowed pointers, current signed counts and post-virtual row/table reloads; no replacement owner. See docs/NATIVE_PARTICLE_PREPARATION.md and reports/native_particle_preparation.json. Full producer class sizes, real polymorphic member behavior, native exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual owner; void; RET; void return. Complete live/installed span and final instruction verified. See reports/native_particle_preparation.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
+      "last_instruction": {
+        "address": "00af9fa0",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      },
+      "original_abi_compatible": false
+    },
+    {
+      "address": "00af10a0",
+      "end_inclusive": "00af10a3",
+      "end_exclusive": "00af10a4",
+      "length": 4,
+      "sha256": "f7e0208f5e988ae39c7a45dfddbd12921d02f9c3deb5695d4c534c8ab0ccdb0f",
+      "live_disk_equal": true,
+      "cpp_symbol": "native_particle_index_stream_00af10a0",
+      "ghidra_name": "BSP_NativeParticleResources_GetIndexStream",
+      "source": "src/native_particle_preparation.cpp",
+      "header": "include/bsp/native_particle_preparation.hpp",
+      "coverage": "complete body through required real current virtual dispatch",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_NativeParticleResources_GetIndexStream(void)",
+      "original_abi": "ECX actual owner; void; RET; void * return",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/disk byte span verified. Actual borrowed pointers, current signed counts and post-virtual row/table reloads; no replacement owner. See docs/NATIVE_PARTICLE_PREPARATION.md and reports/native_particle_preparation.json. Full producer class sizes, real polymorphic member behavior, native exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual owner; void; RET; void * return. Complete live/installed span and final instruction verified. See reports/native_particle_preparation.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
+      "last_instruction": {
+        "address": "00af10a3",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      },
+      "original_abi_compatible": false
+    },
+    {
+      "address": "00af10b0",
+      "end_inclusive": "00af10b3",
+      "end_exclusive": "00af10b4",
+      "length": 4,
+      "sha256": "0b78473b3a56c63ff2a64431fb600078066cbe407d3dee7ea8fd7575bd7f82d5",
+      "live_disk_equal": true,
+      "cpp_symbol": "native_particle_vertex_descriptor_00af10b0",
+      "ghidra_name": "BSP_NativeParticleResources_GetVertexDescriptor",
+      "source": "src/native_particle_preparation.cpp",
+      "header": "include/bsp/native_particle_preparation.hpp",
+      "coverage": "complete body through required real current virtual dispatch",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_NativeParticleResources_GetVertexDescriptor(void)",
+      "original_abi": "ECX actual owner; void; RET; void * return",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/disk byte span verified. Actual borrowed pointers, current signed counts and post-virtual row/table reloads; no replacement owner. See docs/NATIVE_PARTICLE_PREPARATION.md and reports/native_particle_preparation.json. Full producer class sizes, real polymorphic member behavior, native exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual owner; void; RET; void * return. Complete live/installed span and final instruction verified. See reports/native_particle_preparation.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
+      "last_instruction": {
+        "address": "00af10b3",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      },
+      "original_abi_compatible": false
+    },
+    {
+      "address": "00af1120",
+      "end_inclusive": "00af1123",
+      "end_exclusive": "00af1124",
+      "length": 4,
+      "sha256": "38058506e8e859d5be73a33baa621352c08ea01f2224ee170173253757193941",
+      "live_disk_equal": true,
+      "cpp_symbol": "native_particle_secondary_material_00af1120",
+      "ghidra_name": "BSP_NativeParticleResources_GetSecondaryMaterial",
+      "source": "src/native_particle_preparation.cpp",
+      "header": "include/bsp/native_particle_preparation.hpp",
+      "coverage": "complete body through required real current virtual dispatch",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_NativeParticleResources_GetSecondaryMaterial(void)",
+      "original_abi": "ECX actual owner; void; RET; void * return",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/disk byte span verified. Actual borrowed pointers, current signed counts and post-virtual row/table reloads; no replacement owner. See docs/NATIVE_PARTICLE_PREPARATION.md and reports/native_particle_preparation.json. Full producer class sizes, real polymorphic member behavior, native exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual owner; void; RET; void * return. Complete live/installed span and final instruction verified. See reports/native_particle_preparation.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
+      "last_instruction": {
+        "address": "00af1123",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      },
+      "original_abi_compatible": false
+    },
+    {
+      "address": "00af10f0",
+      "end_inclusive": "00af111c",
+      "end_exclusive": "00af111d",
+      "length": 45,
+      "sha256": "c40d1fa2d987d0a5703d7744a975e556766e94cf994dfc04df42ea540b0b1368",
+      "live_disk_equal": true,
+      "cpp_symbol": "native_particle_material_variant_00af10f0",
+      "ghidra_name": "BSP_NativeParticleResources_GetMaterialVariant",
+      "source": "src/native_particle_preparation.cpp",
+      "header": "include/bsp/native_particle_preparation.hpp",
+      "coverage": "complete body through required real current virtual dispatch",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_NativeParticleResources_GetMaterialVariant(uint first, uint second)",
+      "original_abi": "ECX actual owner; uint first, uint second; RET8; void * return",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/disk byte span verified. Actual borrowed pointers, current signed counts and post-virtual row/table reloads; no replacement owner. See docs/NATIVE_PARTICLE_PREPARATION.md and reports/native_particle_preparation.json. Full producer class sizes, real polymorphic member behavior, native exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual owner; uint first, uint second; RET8; void * return. Complete live/installed span and final instruction verified. See reports/native_particle_preparation.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
+      "last_instruction": {
+        "address": "00af111a",
+        "length": 3,
+        "bytes": "c20800",
+        "text": "ret 8"
+      },
+      "original_abi_compatible": false
+    },
+    {
+      "address": "00b4d170",
+      "end_inclusive": "00b4d173",
+      "end_exclusive": "00b4d174",
+      "length": 4,
+      "sha256": "2e339cdc5de837ec151dbde90057caeabba18ac3ea32e7c2cffc8f95df41a6ff",
+      "live_disk_equal": true,
+      "cpp_symbol": "native_shadow_texture_holder_00b4d170",
+      "ghidra_name": "BSP_NativeShadowMap_GetTextureHolder",
+      "source": "src/native_particle_preparation.cpp",
+      "header": "include/bsp/native_particle_preparation.hpp",
+      "coverage": "complete body through required real current virtual dispatch",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_NativeShadowMap_GetTextureHolder(void)",
+      "original_abi": "ECX actual owner; void; RET; void * return",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/disk byte span verified. Actual borrowed pointers, current signed counts and post-virtual row/table reloads; no replacement owner. See docs/NATIVE_PARTICLE_PREPARATION.md and reports/native_particle_preparation.json. Full producer class sizes, real polymorphic member behavior, native exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual owner; void; RET; void * return. Complete live/installed span and final instruction verified. See reports/native_particle_preparation.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
+      "last_instruction": {
+        "address": "00b4d173",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      },
+      "original_abi_compatible": false
+    },
+    {
+      "address": "00b4cb10",
+      "end_inclusive": "00b4cb13",
+      "end_exclusive": "00b4cb14",
+      "length": 4,
+      "sha256": "916ae10aa3fd76a4d5b25b2fb66e9df0fd04957c7ab10930268d1ed7808be689",
+      "live_disk_equal": true,
+      "cpp_symbol": "native_shadow_holder_texture_00b4cb10",
+      "ghidra_name": "BSP_ShadowTextureHolder_GetTexture",
+      "source": "src/native_particle_preparation.cpp",
+      "header": "include/bsp/native_particle_preparation.hpp",
+      "coverage": "complete body through required real current virtual dispatch",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_ShadowTextureHolder_GetTexture(void)",
+      "original_abi": "ECX actual owner; void; RET; void * return",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/disk byte span verified. Actual borrowed pointers, current signed counts and post-virtual row/table reloads; no replacement owner. See docs/NATIVE_PARTICLE_PREPARATION.md and reports/native_particle_preparation.json. Full producer class sizes, real polymorphic member behavior, native exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual owner; void; RET; void * return. Complete live/installed span and final instruction verified. See reports/native_particle_preparation.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
+      "last_instruction": {
+        "address": "00b4cb13",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      },
+      "original_abi_compatible": false
+    },
+    {
+      "address": "00b0d130",
+      "end_inclusive": "00b0d137",
+      "end_exclusive": "00b0d138",
+      "length": 8,
+      "sha256": "82da3903d5fa0bc5719f3bdb47ac7ba8a53ba92f30ec9d9b9375a00f237e00ed",
+      "live_disk_equal": true,
+      "cpp_symbol": "native_shadow_owner_texture_00b0d130",
+      "ghidra_name": "BSP_ShadowTextureOwner_GetTexture",
+      "source": "src/native_particle_preparation.cpp",
+      "header": "include/bsp/native_particle_preparation.hpp",
+      "coverage": "complete body through required real current virtual dispatch",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_ShadowTextureOwner_GetTexture(void)",
+      "original_abi": "ECX actual owner; void; RET; void * return",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/disk byte span verified. Actual borrowed pointers, current signed counts and post-virtual row/table reloads; no replacement owner. See docs/NATIVE_PARTICLE_PREPARATION.md and reports/native_particle_preparation.json. Full producer class sizes, real polymorphic member behavior, native exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual owner; void; RET; void * return. Complete live/installed span and final instruction verified. See reports/native_particle_preparation.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
+      "last_instruction": {
+        "address": "00b0d133",
+        "length": 5,
+        "bytes": "e9d8f90300",
+        "text": "jmp 0xb4cb10"
+      },
+      "original_abi_compatible": false
+    },
+    {
+      "address": "00b0d140",
+      "end_inclusive": "00b0d14e",
+      "end_exclusive": "00b0d14f",
+      "length": 15,
+      "sha256": "c4e1dc25592ec366b8a788597a3a5e92370d669ff95090b406c745d2ec8bc42c",
+      "live_disk_equal": true,
+      "cpp_symbol": "native_shadow_owner_map_texture_00b0d140",
+      "ghidra_name": "BSP_NativeShadowTextureOwner_GetMapTexture",
+      "source": "src/native_particle_preparation.cpp",
+      "header": "include/bsp/native_particle_preparation.hpp",
+      "coverage": "complete body through required real current virtual dispatch",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_NativeShadowTextureOwner_GetMapTexture(void)",
+      "original_abi": "ECX actual owner; void; RET; void * return",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/disk byte span verified. Actual borrowed pointers, current signed counts and post-virtual row/table reloads; no replacement owner. See docs/NATIVE_PARTICLE_PREPARATION.md and reports/native_particle_preparation.json. Full producer class sizes, real polymorphic member behavior, native exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual owner; void; RET; void * return. Complete live/installed span and final instruction verified. See reports/native_particle_preparation.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
+      "last_instruction": {
+        "address": "00b0d14a",
+        "length": 5,
+        "bytes": "e9c1f90300",
+        "text": "jmp 0xb4cb10"
+      },
+      "original_abi_compatible": false
+    },
+    {
+      "address": "007099c0",
+      "end_inclusive": "007099e3",
+      "end_exclusive": "007099e4",
+      "length": 36,
+      "sha256": "78f713f91dd786fae4cdeaeba04f89f7ac04eb2de0f27ea7874efe7a3e80ca9d",
+      "live_disk_equal": true,
+      "cpp_symbol": "set_native_node_hierarchy_mask_007099c0",
+      "ghidra_name": "BSP_NativeNode_SetHierarchyMask",
+      "source": "src/native_particle_preparation.cpp",
+      "header": "include/bsp/native_particle_preparation.hpp",
+      "coverage": "complete body through required real current virtual dispatch",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_NativeNode_SetHierarchyMask(uint mask)",
+      "original_abi": "ECX actual owner; uint mask; RET4; void return",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/disk byte span verified. Actual borrowed pointers, current signed counts and post-virtual row/table reloads; no replacement owner. See docs/NATIVE_PARTICLE_PREPARATION.md and reports/native_particle_preparation.json. Full producer class sizes, real polymorphic member behavior, native exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual owner; uint mask; RET4; void return. Complete live/installed span and final instruction verified. See reports/native_particle_preparation.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
+      "last_instruction": {
+        "address": "007099e1",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      },
+      "original_abi_compatible": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00af40f2",
+      "native": "00af9f50",
+      "function": "00af40e0",
+      "kind": "call"
+    },
+    {
+      "address": "00af9f62",
+      "native": "00af9f50",
+      "function": "00af9f50",
+      "kind": "call"
+    },
+    {
+      "address": "00af9f87",
+      "native": "edx",
+      "function": "00af9f50",
+      "kind": "call"
+    },
+    {
+      "address": "00af9f90",
+      "native": "edx",
+      "function": "00af9f50",
+      "kind": "call"
+    },
+    {
+      "address": "00b0d143",
+      "native": "00b4d170",
+      "function": "00b0d140",
+      "kind": "call"
+    },
+    {
+      "address": "007099d3",
+      "native": "007099c0",
+      "function": "007099c0",
+      "kind": "call"
+    }
+  ],
+  "tail_jumps": [
+    {
+      "site": "00b0d133",
+      "target": "00b4cb10",
+      "owner": "00b0d130"
+    },
+    {
+      "site": "00b0d14a",
+      "target": "00b4cb10",
+      "owner": "00b0d140"
+    }
+  ],
+  "no_ghidra_function": [],
+  "validation": {
+    "strict_win32_object_compile": true,
+    "original_byte_fixture": "passed:11 original routines, 79 assertions; reentrant dispatch instrumentation,16 selector pairs,3 full1488-byte hierarchy comparisons",
+    "game_validated": false,
+    "fixture_source_sha256": "98eb3e00ecfad067e4eb148669a5527dd85381321a9992e8164aaae360e7f4ef",
+    "fixture_path": "C:/Users/sqz269/bsp-orch3-am/preparation_probe.exe",
+    "full_model_constructor_execution": false
+  },
+  "limitations": [
+    "Preparation actual member virtual14/0C remains required application dispatch; fixture instruments these boundaries only.",
+    "Embedded row addresses/counts are verified access footprints, not inferred full producer class sizes or capacities.",
+    "No full model constructor execution or native exception/runtime/gameplay compatibility claim."
+  ],
+  "integration_am": {
+    "source_review": "complete; preparation/constructor additionally independently reviewed",
+    "saved_analysis": "pending",
+    "full_build": "pending",
+    "gameplay": false
+  }
+}

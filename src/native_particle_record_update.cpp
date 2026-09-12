@@ -1,3 +1,5 @@
+#include "bsp/native_particle_emission_spawn.hpp"
+#include "bsp/native_particle_record_children.hpp"
 #include "bsp/native_particle_record_update.hpp"
 #include "bsp/native_particle_model_update.hpp"
 #include "bsp/native_particle_emitter_lifetime.hpp"
@@ -18,8 +20,8 @@ static_assert(offsetof(NativeParticleRecordUpdateAccess, transverse_00d7a258) ==
 static_assert(offsetof(NativeParticleRecordUpdateAccess, direction_00e13028) == 16);
 static_assert(offsetof(NativeParticleRecordUpdateAccess, length_threshold_00d7a268) == 20);
 static_assert(offsetof(NativeParticleRecordUpdateAccess, one_00d7a24c) == 24);
-static_assert(offsetof(NativeParticleRecordUpdateAccess, call_00b04c80) == 28);
-static_assert(offsetof(NativeParticleRecordUpdateAccess, call_00afd440) == 32);
+static_assert(offsetof(NativeParticleRecordUpdateAccess, emission) == 28);
+static_assert(offsetof(NativeParticleRecordUpdateAccess, children) == 32);
 void* __fastcall acquire_bridge(void* emitter) {
     return acquire_native_particle_emitter_container_00aff690(emitter);
 }
@@ -744,7 +746,8 @@ __declspec(naked) std::uint8_t __fastcall update_native_particle_record_00afe290
         push esi // 00afe90f
         push edi // 00afe910
         mov edx,dword ptr [esp+0a0h] // added binding
-        call dword ptr [edx+01ch] // 00afe911
+        mov edx,dword ptr [edx+01ch] // actual emission access
+        call spawn_native_particle_emission_00b04c80 // 00afe911
         mov ecx,dword ptr [esp + 024h] // 00afe916
         mov dword ptr [esp + 020h],eax // 00afe91a
     L_00afe91e:
@@ -864,7 +867,8 @@ __declspec(naked) std::uint8_t __fastcall update_native_particle_record_00afe290
         push eax // 00afea8c
         push edx // 00afea8d
         mov edx,dword ptr [esp+0a4h] // added binding
-        call dword ptr [edx+020h] // 00afea8e
+        mov edx,dword ptr [edx+020h] // actual child-record access
+        call append_native_particle_record_children_00afd440 // 00afea8e
         mov dword ptr [esp + 024h],eax // 00afea93
         mov eax,dword ptr [esi + 0a0h] // 00afea97
         cmp dword ptr [eax + 078h],01h // 00afea9d

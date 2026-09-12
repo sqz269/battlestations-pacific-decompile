@@ -28,7 +28,8 @@
       "descriptive_name_is_hypothesis": true,
       "native_calling_convention": "__thiscall",
       "native_prototype": "void __thiscall BSP_NativeParticleModelBytes_Resize(int count)",
-      "evidence": "AM review: descriptive hypothesis, not recovered symbol. Complete installed/live bytes and final RET verified; new C++ source ABI. Actual cookie storage, sparse108h initialization, allocation publication/failure ordering and raw MOVSS constant preserved. See docs/NATIVE_PARTICLE_ARRAY_RESIZE.md and reports/native_particle_array_resize.json. Original FH3 exceptions and gameplay unvalidated."
+      "evidence": "AM review: descriptive hypothesis, not recovered symbol. Complete installed/live bytes and final RET verified; new C++ source ABI. Actual cookie storage, sparse108h initialization, allocation publication/failure ordering and raw MOVSS constant preserved. See docs/NATIVE_PARTICLE_ARRAY_RESIZE.md and reports/native_particle_array_resize.json. Original FH3 exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual8h byte header; stack signed count; RET4. Complete live/installed span and final instruction verified. See reports/native_particle_array_resize.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
+      "end_inclusive": "00afd1ce"
     },
     {
       "address": "00afd220",
@@ -53,7 +54,8 @@
       "descriptive_name_is_hypothesis": true,
       "native_calling_convention": "__thiscall",
       "native_prototype": "void __thiscall BSP_NativeParticleModelRecords_Resize(int count)",
-      "evidence": "AM review: descriptive hypothesis, not recovered symbol. Complete installed/live bytes and final RET verified; new C++ source ABI. Actual cookie storage, sparse108h initialization, allocation publication/failure ordering and raw MOVSS constant preserved. See docs/NATIVE_PARTICLE_ARRAY_RESIZE.md and reports/native_particle_array_resize.json. Original FH3 exceptions and gameplay unvalidated."
+      "evidence": "AM review: descriptive hypothesis, not recovered symbol. Complete installed/live bytes and final RET verified; new C++ source ABI. Actual cookie storage, sparse108h initialization, allocation publication/failure ordering and raw MOVSS constant preserved. See docs/NATIVE_PARTICLE_ARRAY_RESIZE.md and reports/native_particle_array_resize.json. Original FH3 exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual8h record header; stack signed count; RET4. Complete live/installed span and final instruction verified. See reports/native_particle_array_resize.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
+      "end_inclusive": "00afd2d4"
     },
     {
       "address": "00afcd90",
@@ -78,7 +80,8 @@
       "descriptive_name_is_hypothesis": true,
       "native_calling_convention": "__thiscall",
       "native_prototype": "void * __thiscall BSP_NativeParticleArrayByte_Construct(void)",
-      "evidence": "AM review: descriptive hypothesis, not recovered symbol. Complete installed/live bytes and final RET verified; new C++ source ABI. Actual cookie storage, sparse108h initialization, allocation publication/failure ordering and raw MOVSS constant preserved. See docs/NATIVE_PARTICLE_ARRAY_RESIZE.md and reports/native_particle_array_resize.json. Original FH3 exceptions and gameplay unvalidated."
+      "evidence": "AM review: descriptive hypothesis, not recovered symbol. Complete installed/live bytes and final RET verified; new C++ source ABI. Actual cookie storage, sparse108h initialization, allocation publication/failure ordering and raw MOVSS constant preserved. See docs/NATIVE_PARTICLE_ARRAY_RESIZE.md and reports/native_particle_array_resize.json. Original FH3 exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual byte; EAX same pointer; RET. Complete live/installed span and final instruction verified. See reports/native_particle_array_resize.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
+      "end_inclusive": "00afcd95"
     },
     {
       "address": "00afdac0",
@@ -103,7 +106,8 @@
       "descriptive_name_is_hypothesis": true,
       "native_calling_convention": "__thiscall",
       "native_prototype": "void * __thiscall BSP_NativeParticleRecord_Construct(void)",
-      "evidence": "AM review: descriptive hypothesis, not recovered symbol. Complete installed/live bytes and final RET verified; new C++ source ABI. Actual cookie storage, sparse108h initialization, allocation publication/failure ordering and raw MOVSS constant preserved. See docs/NATIVE_PARTICLE_ARRAY_RESIZE.md and reports/native_particle_array_resize.json. Original FH3 exceptions and gameplay unvalidated."
+      "evidence": "AM review: descriptive hypothesis, not recovered symbol. Complete installed/live bytes and final RET verified; new C++ source ABI. Actual cookie storage, sparse108h initialization, allocation publication/failure ordering and raw MOVSS constant preserved. See docs/NATIVE_PARTICLE_ARRAY_RESIZE.md and reports/native_particle_array_resize.json. Original FH3 exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual108h record; EAX same pointer; RET. Complete live/installed span and final instruction verified. See reports/native_particle_array_resize.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
+      "end_inclusive": "00afdae0"
     }
   ],
   "host_steps": [
@@ -265,5 +269,11 @@
     "zero_count": "allocates4h cookie",
     "size_overflow": "unsigned saturation toFFFFFFFF",
     "existing_cookie_domain": "actual valid allocated spans and nonnegative signed old cookie counts"
+  },
+  "integration_am": {
+    "source_review": "complete; preparation/constructor additionally independently reviewed",
+    "saved_analysis": "pending",
+    "full_build": "pending",
+    "gameplay": false
   }
 }
