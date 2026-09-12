@@ -1,0 +1,340 @@
+{
+  "reason": "Native ECX receiver, DWORD flags/RET4 and captured EAX from verified original listings. Getter004BEC00 has no arguments. unused EDX represents an unconsumed register, not an original argument; source contexts are excluded.",
+  "entries": [
+    {
+      "address": "00a908a0",
+      "proposed": "void* __fastcall BSP_NativeInputBackendBase_Construct(void* self)",
+      "before": "Function: BSP_NativeInputBackendBase_Construct at 00a908a0\nSignature: undefined BSP_NativeInputBackendBase_Construct(void)\nEntry: 00a908a0\nBody: 00a908a0 - 00a90930",
+      "apply": "Successfully set prototype for function at 00a908a0 with __fastcall calling convention",
+      "after": "Function: BSP_NativeInputBackendBase_Construct at 00a908a0\nSignature: void * __fastcall BSP_NativeInputBackendBase_Construct(void * self)\nEntry: 00a908a0\nBody: 00a908a0 - 00a90930",
+      "readback_verified": true
+    },
+    {
+      "address": "00a90940",
+      "proposed": "void __fastcall BSP_NativeInputBackendBase_Destroy(void* self)",
+      "before": "Function: BSP_NativeInputBackendBase_Destroy at 00a90940\nSignature: undefined BSP_NativeInputBackendBase_Destroy(void)\nEntry: 00a90940\nBody: 00a90940 - 00a909d8",
+      "apply": "Successfully set prototype for function at 00a90940 with __fastcall calling convention",
+      "after": "Function: BSP_NativeInputBackendBase_Destroy at 00a90940\nSignature: void __fastcall BSP_NativeInputBackendBase_Destroy(void * self)\nEntry: 00a90940\nBody: 00a90940 - 00a909d8",
+      "readback_verified": true
+    },
+    {
+      "address": "00a909e0",
+      "proposed": "void* __fastcall BSP_NativeInputBackendBase_ScalarDelete(void* self, void* unused_edx, uint flags)",
+      "before": "Function: BSP_NativeInputBackendBase_ScalarDelete at 00a909e0\nSignature: undefined BSP_NativeInputBackendBase_ScalarDelete(void)\nEntry: 00a909e0\nBody: 00a909e0 - 00a909fd",
+      "apply": "Successfully set prototype for function at 00a909e0 with __fastcall calling convention",
+      "after": "Function: BSP_NativeInputBackendBase_ScalarDelete at 00a909e0\nSignature: void * __fastcall BSP_NativeInputBackendBase_ScalarDelete(void * self, void * unused_edx, uint flags)\nEntry: 00a909e0\nBody: 00a909e0 - 00a909fd",
+      "readback_verified": true
+    },
+    {
+      "address": "00a914c0",
+      "proposed": "void* __fastcall BSP_NativeInputBackendClass_Construct(void* self)",
+      "before": "Function: BSP_NativeInputBackendClass_Construct at 00a914c0\nSignature: undefined BSP_NativeInputBackendClass_Construct(void)\nEntry: 00a914c0\nBody: 00a914c0 - 00a914fa",
+      "apply": "Successfully set prototype for function at 00a914c0 with __fastcall calling convention",
+      "after": "Function: BSP_NativeInputBackendClass_Construct at 00a914c0\nSignature: void * __fastcall BSP_NativeInputBackendClass_Construct(void * self)\nEntry: 00a914c0\nBody: 00a914c0 - 00a914fa",
+      "readback_verified": true
+    },
+    {
+      "address": "00a91570",
+      "proposed": "void* __fastcall BSP_NativeInputBackendGroups_Construct(void* self)",
+      "before": "Function: BSP_NativeInputBackendGroups_Construct at 00a91570\nSignature: undefined BSP_NativeInputBackendGroups_Construct(void)\nEntry: 00a91570\nBody: 00a91570 - 00a91619",
+      "apply": "Successfully set prototype for function at 00a91570 with __fastcall calling convention",
+      "after": "Function: BSP_NativeInputBackendGroups_Construct at 00a91570\nSignature: void * __fastcall BSP_NativeInputBackendGroups_Construct(void * self)\nEntry: 00a91570\nBody: 00a91570 - 00a91619",
+      "readback_verified": true
+    },
+    {
+      "address": "00a90dc0",
+      "proposed": "void __fastcall BSP_NativeInputBackendClass_Destroy(void* self)",
+      "before": "Function: BSP_NativeInputBackendClass_Destroy at 00a90dc0\nSignature: undefined BSP_NativeInputBackendClass_Destroy(void)\nEntry: 00a90dc0\nBody: 00a90dc0 - 00a90dfa",
+      "apply": "Successfully set prototype for function at 00a90dc0 with __fastcall calling convention",
+      "after": "Function: BSP_NativeInputBackendClass_Destroy at 00a90dc0\nSignature: void __fastcall BSP_NativeInputBackendClass_Destroy(void * self)\nEntry: 00a90dc0\nBody: 00a90dc0 - 00a90dfa",
+      "readback_verified": true
+    },
+    {
+      "address": "00a90e00",
+      "proposed": "void __fastcall BSP_NativeInputBackendGroups_Destroy(void* self)",
+      "before": "Function: BSP_NativeInputBackendGroups_Destroy at 00a90e00\nSignature: undefined BSP_NativeInputBackendGroups_Destroy(void)\nEntry: 00a90e00\nBody: 00a90e00 - 00a90ebb",
+      "apply": "Successfully set prototype for function at 00a90e00 with __fastcall calling convention",
+      "after": "Function: BSP_NativeInputBackendGroups_Destroy at 00a90e00\nSignature: void __fastcall BSP_NativeInputBackendGroups_Destroy(void * self)\nEntry: 00a90e00\nBody: 00a90e00 - 00a90ebb",
+      "readback_verified": true
+    },
+    {
+      "address": "00a91150",
+      "proposed": "void* __fastcall BSP_NativeInputBackendGroups_ScalarDelete(void* self, void* unused_edx, uint flags)",
+      "before": "Function: BSP_NativeInputBackendGroups_ScalarDelete at 00a91150\nSignature: undefined BSP_NativeInputBackendGroups_ScalarDelete(void)\nEntry: 00a91150\nBody: 00a91150 - 00a9116d",
+      "apply": "Successfully set prototype for function at 00a91150 with __fastcall calling convention",
+      "after": "Function: BSP_NativeInputBackendGroups_ScalarDelete at 00a91150\nSignature: void * __fastcall BSP_NativeInputBackendGroups_ScalarDelete(void * self, void * unused_edx, uint flags)\nEntry: 00a91150\nBody: 00a91150 - 00a9116d",
+      "readback_verified": true
+    },
+    {
+      "address": "00a982d0",
+      "proposed": "void* __fastcall BSP_InputDeviceManager_Construct(void* self)",
+      "before": "Function: BSP_InputDeviceManager_Construct at 00a982d0\nSignature: undefined BSP_InputDeviceManager_Construct(void)\nEntry: 00a982d0\nBody: 00a982d0 - 00a983b0",
+      "apply": "Successfully set prototype for function at 00a982d0 with __fastcall calling convention",
+      "after": "Function: BSP_InputDeviceManager_Construct at 00a982d0\nSignature: void * __fastcall BSP_InputDeviceManager_Construct(void * self)\nEntry: 00a982d0\nBody: 00a982d0 - 00a983b0",
+      "readback_verified": true
+    },
+    {
+      "address": "00a97c00",
+      "proposed": "void* __fastcall BSP_NativeInputBackend_ScalarDelete(void* self, void* unused_edx, uint flags)",
+      "before": "Function: BSP_NativeInputBackend_ScalarDelete at 00a97c00\nSignature: undefined BSP_NativeInputBackend_ScalarDelete(void)\nEntry: 00a97c00\nBody: 00a97c00 - 00a97c56",
+      "apply": "Successfully set prototype for function at 00a97c00 with __fastcall calling convention",
+      "after": "Function: BSP_NativeInputBackend_ScalarDelete at 00a97c00\nSignature: void * __fastcall BSP_NativeInputBackend_ScalarDelete(void * self, void * unused_edx, uint flags)\nEntry: 00a97c00\nBody: 00a97c00 - 00a97c56",
+      "readback_verified": true
+    },
+    {
+      "address": "00a97b00",
+      "proposed": "void __fastcall BSP_NativeInputBackendGuidVector_Destroy(void* self)",
+      "before": "Function: BSP_NativeInputBackendGuidVector_Destroy at 00a97b00\nSignature: undefined BSP_NativeInputBackendGuidVector_Destroy(void)\nEntry: 00a97b00\nBody: 00a97b00 - 00a97b29",
+      "apply": "Successfully set prototype for function at 00a97b00 with __fastcall calling convention",
+      "after": "Function: BSP_NativeInputBackendGuidVector_Destroy at 00a97b00\nSignature: void __fastcall BSP_NativeInputBackendGuidVector_Destroy(void * self)\nEntry: 00a97b00\nBody: 00a97b00 - 00a97b29",
+      "readback_verified": true
+    },
+    {
+      "address": "004bec00",
+      "proposed": "void* __cdecl BSP_InputManager_GetSingleton()",
+      "before": "Function: BSP_InputManager_GetSingleton at 004bec00\nSignature: undefined BSP_InputManager_GetSingleton(void)\nEntry: 004bec00\nBody: 004bec00 - 004becbc",
+      "apply": "Successfully set prototype for function at 004bec00 with __cdecl calling convention",
+      "after": "Function: BSP_InputManager_GetSingleton at 004bec00\nSignature: void * __cdecl BSP_InputManager_GetSingleton(void)\nEntry: 004bec00\nBody: 004bec00 - 004becbc",
+      "readback_verified": true
+    },
+    {
+      "address": "00a93da0",
+      "proposed": "void* __fastcall BSP_InputActionOwner_Construct(void* self)",
+      "before": "Function: BSP_InputActionOwner_Construct at 00a93da0\nSignature: undefined BSP_InputActionOwner_Construct(void)\nEntry: 00a93da0\nBody: 00a93da0 - 00a93dc7",
+      "apply": "Successfully set prototype for function at 00a93da0 with __fastcall calling convention",
+      "after": "Function: BSP_InputActionOwner_Construct at 00a93da0\nSignature: void * __fastcall BSP_InputActionOwner_Construct(void * self)\nEntry: 00a93da0\nBody: 00a93da0 - 00a93dc7",
+      "readback_verified": true
+    },
+    {
+      "address": "00a93dd0",
+      "proposed": "void __fastcall BSP_InputActionOwner_Destroy(void* self)",
+      "before": "Function: BSP_InputActionOwner_Destroy at 00a93dd0\nSignature: undefined BSP_InputActionOwner_Destroy(void)\nEntry: 00a93dd0\nBody: 00a93dd0 - 00a93e4f",
+      "apply": "Successfully set prototype for function at 00a93dd0 with __fastcall calling convention",
+      "after": "Function: BSP_InputActionOwner_Destroy at 00a93dd0\nSignature: void __fastcall BSP_InputActionOwner_Destroy(void * self)\nEntry: 00a93dd0\nBody: 00a93dd0 - 00a93e4f",
+      "readback_verified": true
+    },
+    {
+      "address": "00a93e50",
+      "proposed": "void* __fastcall BSP_InputActionOwner_ScalarDeletingDestructor(void* self, void* unused_edx, uint flags)",
+      "before": "Function: BSP_InputActionOwner_ScalarDeletingDestructor at 00a93e50\nSignature: undefined BSP_InputActionOwner_ScalarDeletingDestructor(void)\nEntry: 00a93e50\nBody: 00a93e50 - 00a93e6d",
+      "apply": "Successfully set prototype for function at 00a93e50 with __fastcall calling convention",
+      "after": "Function: BSP_InputActionOwner_ScalarDeletingDestructor at 00a93e50\nSignature: void * __fastcall BSP_InputActionOwner_ScalarDeletingDestructor(void * self, void * unused_edx, uint flags)\nEntry: 00a93e50\nBody: 00a93e50 - 00a93e6d",
+      "readback_verified": true
+    },
+    {
+      "address": "00a3f530",
+      "proposed": "void* __fastcall BSP_XLiveManagerBase_Construct(void* self)",
+      "before": "Function: BSP_XLiveManagerBase_Construct at 00a3f530\nSignature: undefined BSP_XLiveManagerBase_Construct(void)\nEntry: 00a3f530\nBody: 00a3f530 - 00a3f5c0",
+      "apply": "Successfully set prototype for function at 00a3f530 with __fastcall calling convention",
+      "after": "Function: BSP_XLiveManagerBase_Construct at 00a3f530\nSignature: void * __fastcall BSP_XLiveManagerBase_Construct(void * self)\nEntry: 00a3f530\nBody: 00a3f530 - 00a3f5c0",
+      "readback_verified": true
+    },
+    {
+      "address": "00a3f5d0",
+      "proposed": "void __fastcall BSP_XLiveManagerBase_Destroy(void* self)",
+      "before": "Function: BSP_XLiveManagerBase_Destroy at 00a3f5d0\nSignature: undefined BSP_XLiveManagerBase_Destroy(void)\nEntry: 00a3f5d0\nBody: 00a3f5d0 - 00a3f668",
+      "apply": "Successfully set prototype for function at 00a3f5d0 with __fastcall calling convention",
+      "after": "Function: BSP_XLiveManagerBase_Destroy at 00a3f5d0\nSignature: void __fastcall BSP_XLiveManagerBase_Destroy(void * self)\nEntry: 00a3f5d0\nBody: 00a3f5d0 - 00a3f668",
+      "readback_verified": true
+    },
+    {
+      "address": "00a3f670",
+      "proposed": "void* __fastcall CG_scalar_deleting_dtor_00a3f670(void* self, void* unused_edx, uint flags)",
+      "before": "Function: CG_scalar_deleting_dtor_00a3f670 at 00a3f670\nSignature: undefined CG_scalar_deleting_dtor_00a3f670(void)\nEntry: 00a3f670\nBody: 00a3f670 - 00a3f68d",
+      "apply": "Successfully set prototype for function at 00a3f670 with __fastcall calling convention",
+      "after": "Function: CG_scalar_deleting_dtor_00a3f670 at 00a3f670\nSignature: void * __fastcall CG_scalar_deleting_dtor_00a3f670(void * self, void * unused_edx, uint flags)\nEntry: 00a3f670\nBody: 00a3f670 - 00a3f68d",
+      "readback_verified": true
+    },
+    {
+      "address": "00a3fdc0",
+      "proposed": "void* __fastcall CG_scalar_deleting_dtor_00a3fdc0(void* self, void* unused_edx, uint flags)",
+      "before": "Function: CG_scalar_deleting_dtor_00a3fdc0 at 00a3fdc0\nSignature: undefined CG_scalar_deleting_dtor_00a3fdc0(void)\nEntry: 00a3fdc0\nBody: 00a3fdc0 - 00a3fddd",
+      "apply": "Successfully set prototype for function at 00a3fdc0 with __fastcall calling convention",
+      "after": "Function: CG_scalar_deleting_dtor_00a3fdc0 at 00a3fdc0\nSignature: void * __fastcall CG_scalar_deleting_dtor_00a3fdc0(void * self, void * unused_edx, uint flags)\nEntry: 00a3fdc0\nBody: 00a3fdc0 - 00a3fddd",
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a908a0",
+        "prototype": "void* __fastcall BSP_NativeInputBackendBase_Construct(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a908a0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a90940",
+        "prototype": "void __fastcall BSP_NativeInputBackendBase_Destroy(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a90940 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a909e0",
+        "prototype": "void* __fastcall BSP_NativeInputBackendBase_ScalarDelete(void* self, void* unused_edx, uint flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a909e0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a914c0",
+        "prototype": "void* __fastcall BSP_NativeInputBackendClass_Construct(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a914c0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a91570",
+        "prototype": "void* __fastcall BSP_NativeInputBackendGroups_Construct(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a91570 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a90dc0",
+        "prototype": "void __fastcall BSP_NativeInputBackendClass_Destroy(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a90dc0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a90e00",
+        "prototype": "void __fastcall BSP_NativeInputBackendGroups_Destroy(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a90e00 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a91150",
+        "prototype": "void* __fastcall BSP_NativeInputBackendGroups_ScalarDelete(void* self, void* unused_edx, uint flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a91150 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a982d0",
+        "prototype": "void* __fastcall BSP_InputDeviceManager_Construct(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a982d0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a97c00",
+        "prototype": "void* __fastcall BSP_NativeInputBackend_ScalarDelete(void* self, void* unused_edx, uint flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a97c00 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a97b00",
+        "prototype": "void __fastcall BSP_NativeInputBackendGuidVector_Destroy(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a97b00 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "004bec00",
+        "prototype": "void* __cdecl BSP_InputManager_GetSingleton()",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 004bec00 with __cdecl calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a93da0",
+        "prototype": "void* __fastcall BSP_InputActionOwner_Construct(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a93da0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a93dd0",
+        "prototype": "void __fastcall BSP_InputActionOwner_Destroy(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a93dd0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a93e50",
+        "prototype": "void* __fastcall BSP_InputActionOwner_ScalarDeletingDestructor(void* self, void* unused_edx, uint flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a93e50 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a3f530",
+        "prototype": "void* __fastcall BSP_XLiveManagerBase_Construct(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a3f530 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a3f5d0",
+        "prototype": "void __fastcall BSP_XLiveManagerBase_Destroy(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a3f5d0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a3f670",
+        "prototype": "void* __fastcall CG_scalar_deleting_dtor_00a3f670(void* self, void* unused_edx, uint flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a3f670 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a3fdc0",
+        "prototype": "void* __fastcall CG_scalar_deleting_dtor_00a3fdc0(void* self, void* unused_edx, uint flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a3fdc0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}
