@@ -91,7 +91,7 @@ does not initialize all tail pointer fields before that sequence, so generic
 facade cleanup cannot safely inspect them. This packet does not claim balanced
 allocation ownership for every constructor failure.
 
-## Verification and remaining installed-runtime issue
+## Initial verification and EOF investigation
 
 Release Win32 builds use `/W4 /WX`; both existing CTests pass, including 456
 native math comparisons. The standard eight seed spans match the installed
@@ -111,7 +111,7 @@ and the existing stream restarts through the logical branch. Both explicit core
 shutdown and raw singleton drain balance two opens/two closes, all tracked
 strings and all core sample/resource/class ownership.
 
-The EOF refinement intentionally exposes a remaining core/library ownership
+The initial EOF refinement exposed a core/library ownership
 boundary. With looping disabled, seeking the real stream near EOF reaches
 native state3 while retaining sound and channel words. One fixture reference
 allows observing those words after the manager releases its logical and
@@ -127,4 +127,47 @@ release. The callback-count imbalance also needs independent close tracking
 before attributing it to an unclosed file. The failed check is
 preserved in the report and ignored log. No production workaround hides this
 source state3 retention edge. Full EOF cleanup and gameplay validation are
-not claimed.
+not claimed by that historical run. The integrated correction below supersedes
+its unresolved host-adapter ownership assessment; the earlier observations
+and failed log remain evidence of the installed SDK's behavior.
+
+## Integrated host cleanup correction
+
+The primary integration now preserves the native state3, Sound and Channel
+retention while completing ownership of its own VFS adapters. The installed
+EventSystem release returns success but emits only one Close callback for two
+Open callbacks in this EOF case. `GameSoundRuntime` tracks only the adapters
+created by its successful host opens, forwards the real EventSystem release,
+and captures its result. After successful release has returned, it invokes
+the existing A7B750 close helper on any remaining tracked adapters. These are
+host VFS handles, not FMOD Sound or Channel pointers. It never releases a dead
+Sound or changes the recovered stream stop/destruction sequence. A failed
+release cannot authorize adapter reclamation or callback/library disposal.
+
+`file_closes` continues to count actual SDK Close callbacks. The new
+`file_reclaims` counts additional host adapter cleanup, and
+`file_handles_pending` reports still-owned adapters. The ownership check is
+`file_opens == file_closes + file_reclaims`, with pending equal to zero;
+reclamation is not reported as an SDK callback.
+
+The integrated fixture in the primary checkout, recorded in
+`local/sound_dialog_facade_integrated_z.log`, now passes all three paths:
+
+| Installed fixture path | Opens | SDK closes | Host reclaims | Pending | Tracked strings | FMOD errors |
+|---|---:|---:|---:|---:|---:|---:|
+| Stop/restart, explicit core shutdown | 2 | 2 | 0 | 0 | 0 | 0 |
+| Stop/restart, raw singleton drain | 2 | 2 | 0 | 0 | 0 | 0 |
+| EOF with native retained handles | 2 | 1 | 1 | 0 | 0 | 0 |
+
+The EOF fixture proves handle retention before SDK teardown, then lets the
+core perform real EventSystem release and host adapter recovery. It neither
+queries nor releases the stale Sound afterward. The earlier post-release
+GetLength result remains a diagnostic observation, not proof of a live SDK
+allocation. All three runs end with empty sample, resource and class ownership.
+
+This is installed-library fixture proof for the concrete core/facade composition
+and its host cleanup policy. Application startup/render-loop wiring, mission
+request producers, a nonnull callback230 translation, and gameplay validation
+remain outside this packet. The native late-allocation constructor boundary
+and BDF4C0 resolver fragment limitations are unchanged. This documentation
+correction changes no source, native annotation or ABI claim.
