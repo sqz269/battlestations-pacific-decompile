@@ -67,6 +67,9 @@ class GameMissionLuaHost;
 // Milestone 2n, defined in bsp/game_hosts_ship_ai.hpp. Held by pointer so this
 // header stays independent of the ship AI types.
 class GameShipAiHost;
+// Milestone 2t, defined in bsp/game_hosts_gunnery.hpp. Owned by this host
+// because the gunnery pass hangs off the unit's own tick element unit+310h.
+class GameGunneryHost;
 
 // One created scene unit as this process holds it, for the run log and the
 // report. Positions are world units; the heading is degrees of
@@ -247,6 +250,9 @@ public:
     // unit's own 84-byte order slot, which the motion's head at 00825f2c then
     // promotes. Both are the same object, so the host is attached here.
     void set_ship_ai(GameShipAiHost* ai) noexcept;
+    // Milestone 2t: the gun chain this host owns, or null before create_units.
+    GameGunneryHost* gunnery() noexcept;
+    const GameGunneryHost* gunnery() const noexcept;
     // 0071be40 on the unit's own weapon director, which 009f3dd0 reads at
     // 009f3de6 to decide which AI state the controller should be in.
     std::uint32_t director_current_command_0071be40(std::size_t index) const;
