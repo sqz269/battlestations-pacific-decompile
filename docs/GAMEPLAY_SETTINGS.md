@@ -60,8 +60,13 @@ script run, not a reader over an already-loaded table:
 2. `0083B63A` and `0083B6AE` build two script paths into a native string (`0041DD40` resize,
    `00BF7680` copy) of lengths `1Dh` and `22h`, and `0083B672`/`0083B6E6` run each through
    `00B69D40 BSP_LuaStateOwner_RunScriptWithOverrides`. The first path's literal is at
-   `00CE7CBC` and the second's at `00D0B67C`; `00D0B680` reads
-   `Scripts\datatables\S...`, so these are the two datatable scripts.
+   `00CE7CBC` and the second's at `00D0B67C`. Resolved after the merge (worker follow-up, landed
+   by the integrator): the first is `Scripts\global\luaMW_init.lua` (29 characters, the `1Dh`
+   pushed into the string resize at `0083B62C`, run at `0083B672`), the global bootstrap, not a
+   datatable; the second is `Scripts\datatables\ShipGlobals.lua` (34 characters, `22h` at
+   `0083B6A0`, run at `0083B6E6`), the datatable read back through one global table, which itself
+   runs `scripts/datatables/ScriptOptions.lua` near its end (the `FailureDebug` gate). Both files
+   exist in the installation; the shape matches the tuning singleton keyed from `PlaneGlobals.lua`.
 3. `0083B721` takes the globals table (`00B67980`) and `0083B73D` selects the single global
    the loader reads, `"ShipGlobals"` at `00D0B670`.
 4. Everything after that is the key table. The idiom per key is
