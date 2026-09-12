@@ -1,0 +1,75 @@
+{
+  "packet": "orch4_sound_startup_y",
+  "project": "bsp",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "source": ["src/sound_startup.cpp", "include/bsp/sound_startup.hpp", "src/sound_system_owner.cpp"],
+  "documentation": "docs/SOUND_STARTUP_UNWIND.md",
+  "routines": [
+    {"address": "00a88770", "coverage": "complete normal ordering and EH states in throwing-allocation canonical-state projection", "abi": "ECX=178h owner; stack disabled low byte plus two unused words; EAX=owner; RET0C", "final_instruction": "00a88aa6", "final_instruction_length": 3},
+    {"address": "00a7b190", "coverage": "complete existing registration and guard/root-base exception unwind", "abi": "ECX=owner; EAX=owner; RET", "final_instruction": "00a7b220", "final_instruction_length": 1},
+    {"address": "00a880e0", "coverage": "complete existing registration and guard/root-base exception unwind", "abi": "ECX=owner; EAX=owner; RET", "final_instruction": "00a88170", "final_instruction_length": 1}
+  ],
+  "host_steps": [
+    {"address": "0073dafd", "native": "00a88770", "caller": "0073d410", "contract": "Construct caller-allocated 178h owner using disabled byte and two unused words; RET0C"},
+    {"address": "00a88791", "native": "00a81480", "caller": "00a88770", "contract": "Construct sound base before arming outer unwind"},
+    {"address": "00a887b4", "native": "00bf681b", "caller": "00a88770", "contract": "Throwing allocation of 10h auxiliary owner; ADD ESP,4 at A887B9"},
+    {"address": "00a887cb", "native": "00a88650", "caller": "00a88770", "contract": "Construct and register separately allocated auxiliary tree"},
+    {"address": "00a887de", "native": "00415350", "caller": "00a88770", "contract": "Get canonical singleton lifetime manager after capturing auxiliary global"},
+    {"address": "00a887e5", "native": "00bd0d70", "caller": "00a88770", "contract": "Reorder registered owner after captured auxiliary; RET8"},
+    {"address": "00a887f5", "native": "01090ab0+vtable14", "caller": "00a88770", "contract": "Read four-word clock sample and copy into owner+118..124"},
+    {"address": "00a8881e", "native": "00c2df80", "caller": "00a88770", "contract": "Create EventSystem into owner+48; begin existing FMOD fragment"},
+    {"address": "00a88a65", "native": "00bf681b", "caller": "00a88770", "contract": "Throwing allocation of 18h resource owner; ADD ESP,4 at A88A6A"},
+    {"address": "00a88a7b", "native": "00a858f0", "caller": "00a88770", "contract": "Construct resource owner before assigning completed result to +54"},
+    {"address": "00a88a8e", "native": "00a7ff80", "caller": "00a88770", "contract": "Initialize Lua configuration while outer base-unwind remains armed"},
+    {"address": "00a7b1fa", "native": "00bd0c30", "caller": "00a7b190", "contract": "Register current published sound singleton; failure preserves published global"},
+    {"address": "00a8814a", "native": "00bd0c30", "caller": "00a880e0", "contract": "Register current published auxiliary singleton; failure preserves published global"},
+    {"address": "00cb62ac", "native": "00bf65ac", "caller": "00cb62a8", "contract": "Free partial auxiliary allocation, then POP ECX/RET beyond current truncated Ghidra body"},
+    {"address": "00cb62b7", "native": "00bf65ac", "caller": "00cb62b3", "contract": "Free partial resource allocation, then POP ECX/RET beyond current truncated Ghidra body"}
+  ],
+  "exception_tables": [
+    {"owner": "00a88770", "handler": "00cb62be", "func_info": "00dec478", "magic": "19930522", "max_state": 3, "unwind_map": "00dec460", "states": [
+      {"state": 0, "next": -1, "funclet": "00cb62a0", "EHtail_site": "00cb62a3", "callee": "00a816b0", "effect": "Destroy completed base only"},
+      {"state": 1, "next": 0, "funclet": "00cb62a8", "effect": "Free partial auxiliary allocation"},
+      {"state": 2, "next": 0, "funclet": "00cb62b3", "effect": "Free partial resource allocation"}
+    ]},
+    {"owner": "00a7b190", "handler": "00cb4fe0", "func_info": "00deaeec", "max_state": 2, "unwind_map": "00deaedc", "states": [
+      {"state": 0, "next": -1, "funclet": "00cb4fd0", "EHtail_site": "00cb4fd3", "callee": "00412430", "effect": "Write CE3818 without clearing published global"},
+      {"state": 1, "next": 0, "funclet": "00cb4fd8", "EHtail_site": "00cb4fdb", "callee": "00411ee0", "effect": "Destroy captured critical-section guard"}
+    ]},
+    {"owner": "00a880e0", "handler": "00cb6210", "func_info": "00dec37c", "max_state": 2, "unwind_map": "00dec36c", "states": [
+      {"state": 0, "next": -1, "funclet": "00cb6200", "EHtail_site": "00cb6203", "callee": "00412430", "effect": "Write CE3818 without clearing published global"},
+      {"state": 1, "next": 0, "funclet": "00cb6208", "EHtail_site": "00cb620b", "callee": "00411ee0", "effect": "Destroy captured critical-section guard"}
+    ]}
+  ],
+  "native_boundaries_for_integrator": [
+    {"address": "00cb62be", "current": "missing function", "verified_bytes": "b878c4de00e97b08f4ff", "final_instruction": "00cb62c3", "final_instruction_length": 5, "end_inclusive": "00cb62c7", "EHtail_site": "00cb62c3", "callee": "00bf6b44"},
+    {"address": "00cb62a8", "current_end_inclusive": "00cb62b0", "final_instruction": "00cb62b2", "final_instruction_length": 1, "end_inclusive": "00cb62b2"},
+    {"address": "00cb62b3", "current_end_inclusive": "00cb62bb", "final_instruction": "00cb62bd", "final_instruction_length": 1, "end_inclusive": "00cb62bd"},
+    {"address": "00a816b0", "current_end_inclusive": "00a816f2", "final_instruction": "00a817cf", "final_instruction_length": 1, "end_inclusive": "00a817cf", "evidence": "Existing destructor reconstruction plus bounded disk disassembly A816F3..A817CF; bytes after free verified live"}
+  ],
+  "corrections": [
+    {"was": "Only normal success sequence in sound_startup.cpp", "is": "Completed base is destroyed if any later startup stage throws", "evidence": "DEC478/DEC460 state0; CB62A3 tail A816B0"},
+    {"was": "Registration helper exceptions leave D5ABAC/D5B448 profile", "is": "After captured guard unwinds, set CE3818 and rethrow; preserve published globals", "evidence": "DEAEEC/DEAEDC and DEC37C/DEC36C; root-base funclets tail412430"},
+    {"was": "Ghidra decompiler labels constructor argument as FMOD_SPEAKERMODE", "is": "First argument low byte is sound-disabled; speaker-mode scratch later aliases that stack slot", "evidence": "A88798 byte read, A887BC temporary pointer store, A88890 speaker scratch, A88AA6 RET0C; caller73DAFD"}
+  ],
+  "verification": {
+    "target_verified_each_live_batch": true,
+    "seed_bytes_match_installed_image": true,
+    "win32_release_build": "passed scripts/build.ps1 with MSBUILDDISABLENODEREUSE=1; local/sound_startup_build_isolated.log",
+    "existing_ctests": "2/2 passed: reconstructed_math and native_math_differential",
+    "focused_exception_probe": "passed local/sound_startup_unwind_probe.cpp: both helper exceptions restore lock recursion and CE3818, preserve publication, and propagate original exception",
+    "outer_constructor_failure_runtime": "not run in this worker; runtime integration worker owns installed startup failure scenarios",
+    "report_direct_calls": "14 checked, 0 failed; one clock virtual explicitly indirect",
+    "native_exception_differential": false,
+    "hardware_audio": false,
+    "gameplay": false
+  },
+  "limits": [
+    "New C++ interfaces and storage, not native object ABI or FH3 frame layout",
+    "Native defensive null allocations are recorded but not injected into throwing C++ factories",
+    "Native allocator failure timing and partial STL allocation identities are not reproduced",
+    "Completed auxiliary, resource and FMOD objects intentionally survive native constructor EH; host recovery is separate",
+    "Existing helper contracts govern malformed storage, allocation internals and opaque asset cleanup"
+  ]
+}
