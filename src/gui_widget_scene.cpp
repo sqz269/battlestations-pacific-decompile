@@ -201,7 +201,8 @@ GuiWidgetTransform* clone_subtree(
 {
     // 00AAB4D0: the type tag in ECX and the widget itself in EDX. The factory
     // runs the copy constructor 00AA9520, which clones the node through the
-    // node's own vtable +10h and leaves +8h, +85h and +E4h untouched.
+    // node's own vtable +10h with table00D5C0B8 clone flags and parent0,
+    // and leaves +8h, +85h and +E4h untouched. The table contains no names.
     GuiWidgetTransform* clone =
         host.create_widget_of_type(widget.type_id, widget);
 

@@ -1,0 +1,68 @@
+{
+  "reason": "Native registers, stack arguments and RET cleanup verified in original listings. unused EDX represents an unconsumed register, not an original argument; source contexts are excluded. Prior names and signatures are preserved in each receipt.",
+  "entries": [
+    {
+      "address": "00a917e0",
+      "proposed": "void __fastcall BSP_InputBackend_ConfigureClass(void* self, void* unused_edx, uint device_class, uint count, void* identifiers)",
+      "before": "Function: BSP_InputBackend_ConfigureClass at 00a917e0\nSignature: undefined BSP_InputBackend_ConfigureClass(void)\nEntry: 00a917e0\nBody: 00a917e0 - 00a91899",
+      "apply": "Successfully set prototype for function at 00a917e0 with __fastcall calling convention",
+      "after": "Function: BSP_InputBackend_ConfigureClass at 00a917e0\nSignature: void __fastcall BSP_InputBackend_ConfigureClass(void * self, void * unused_edx, uint device_class, uint count, void * identifiers)\nEntry: 00a917e0\nBody: 00a917e0 - 00a91899",
+      "readback_verified": true
+    },
+    {
+      "address": "00a949a0",
+      "proposed": "void __fastcall BSP_GamepadForce_RefreshChannel(void* self, void* unused_edx, uint channel)",
+      "before": "Function: BSP_GamepadForce_RefreshChannel at 00a949a0\nSignature: undefined BSP_GamepadForce_RefreshChannel(void)\nEntry: 00a949a0\nBody: 00a949a0 - 00a94aaf",
+      "apply": "Successfully set prototype for function at 00a949a0 with __fastcall calling convention",
+      "after": "Function: BSP_GamepadForce_RefreshChannel at 00a949a0\nSignature: void __fastcall BSP_GamepadForce_RefreshChannel(void * self, void * unused_edx, uint channel)\nEntry: 00a949a0\nBody: 00a949a0 - 00a94aaf",
+      "readback_verified": true
+    },
+    {
+      "address": "00a94c50",
+      "proposed": "void __fastcall BSP_GamepadForce_SetEnabled(bool enabled)",
+      "before": "Function: BSP_GamepadForce_SetEnabled at 00a94c50\nSignature: undefined BSP_GamepadForce_SetEnabled(void)\nEntry: 00a94c50\nBody: 00a94c50 - 00a94d3d",
+      "apply": "Successfully set prototype for function at 00a94c50 with __fastcall calling convention",
+      "after": "Function: BSP_GamepadForce_SetEnabled at 00a94c50\nSignature: void __fastcall BSP_GamepadForce_SetEnabled(bool enabled)\nEntry: 00a94c50\nBody: 00a94c50 - 00a94d3d",
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a917e0",
+        "prototype": "void __fastcall BSP_InputBackend_ConfigureClass(void* self, void* unused_edx, uint device_class, uint count, void* identifiers)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a917e0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a949a0",
+        "prototype": "void __fastcall BSP_GamepadForce_RefreshChannel(void* self, void* unused_edx, uint channel)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a949a0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a94c50",
+        "prototype": "void __fastcall BSP_GamepadForce_SetEnabled(bool enabled)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a94c50 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

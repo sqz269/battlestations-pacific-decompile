@@ -32,3 +32,10 @@ and scroller storage. It does not instantiate a complete main-menu listener or
 validate a running game. Definition evidence is retained in
 `reports/gui_widget_listener_binding_definitions.json`; source/report hashes and
 the final combined evidence are in `reports/orch5_texture_icon_listener_batch.json`.
+
+## Correction from docs/GUI_POINTER_LISTENER_RUNTIME.md
+
+Canonical GuiBaseWidgetListener now supplies current00 (4FA100) and current08
+(4FA120) as well. Both verified native bodies are RET4, and both CEB110 and
+CEFC04 point to them. AA7190 invokes fresh listener00 before looking up its
+mouse and fresh listener04/08 on captured mouse rising button histories.

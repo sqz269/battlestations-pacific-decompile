@@ -1,0 +1,84 @@
+{
+  "packet": "orch5_listbox_pointer",
+  "target": {"project": "C:/Users/sqz269/bsp.gpr", "program": "/battlestationspacific.exe", "mode": "verified_bsp_wrappers_read_only"},
+  "source": "src/gui_listbox_pointer_runtime.cpp",
+  "header": "include/bsp/gui_listbox_pointer_runtime.hpp",
+  "documentation": "docs/GUI_LISTBOX_POINTER_RUNTIME.md",
+  "routines": [
+    {"address": "00a9ca60", "name": "GuiListboxRuntime::pointer68_00a9ca60", "end_inclusive": "00a9cc46", "last_instruction": "00a9cc44", "last_instruction_length": 3, "instruction_count": 147, "byte_length": 487, "coverage": "complete normal caller with required canonical providers", "abi": "ECX actual Listbox; incoming widget stack pointer read; RET4", "flow_gaps": [], "no_ghidra_function": false},
+    {"address": "00696430", "name": "read_gui_listbox_pointer_activation_00696430", "end_inclusive": "00696443", "last_instruction_length": 1, "coverage": "complete byte-output caller using actual4C43C0 provider", "abi": "ECX byte output, no stack args, bare RET", "no_ghidra_function": false},
+    {"address": "004f8f30", "name": "MainMenuRuntimeListeners::call_current10", "end_inclusive": "004f8f32", "last_instruction": "004f8f30", "last_instruction_length": 3, "bytes": "c20800", "coverage": "complete empty native body for actual main-menu listener profile", "abi": "ECX actual listener; row,Listbox stack arguments unread; RET8", "no_ghidra_function": true, "alignment_after_body": "CC bytes from4F8F33, not part of RET body"}
+  ],
+  "native_tables": [
+    {"site": "00d5bc60", "bytes": "60caa900", "meaning": "Listbox D5BBF8 current68=A9CA60"},
+    {"site": "00cefc58", "bytes": "308f4f00", "meaning": "main-menu CEFC48 listener current10=4F8F30"}
+  ],
+  "field_producers": [
+    {"site": "00a9e002", "field": "14a", "value": 1},
+    {"site": "00a9e010", "field": "138", "value": 0},
+    {"site": "00a9e01e", "field": "140", "value": 0},
+    {"site": "00a9e024", "field": "141", "value": 0}
+  ],
+  "callee_evidence": [
+    {"entry": "00425e50", "end_inclusive": "00425eac", "coverage": "complete body read, existing selected row getter reused", "abi": "ECX list, EAX row or null, bare RET; checked-STL invalid diagnostics outside valid domain", "callback_provenance": "no callbacks in valid iterator path between listener table capture and fresh114 receiver"},
+    {"entry": "0067c170", "end_inclusive": "0067c191", "coverage": "complete9-instruction body read, existing actual history accessors reused", "abi": "ECX device, index stack, RET4, EAX0/1", "semantics": "current[index] nonzero and previous[index] zero; no validity or swapping query"},
+    {"entry": "00a99fe0", "end_inclusive": "00a9a0aa", "coverage": "complete body read, existing input value dispatcher reused", "abi": "ECX mouse, code stack, RET4, ST0", "float_transport": "code10 tail A9A0A0 FSTP binary32 thenA9A0A4 FLD; no added precision loss"},
+    {"entry": "00a99f70", "end_inclusive": "00a99fda", "coverage": "complete body read, existing current20 dispatcher reused", "abi": "ECX mouse, code stack, RET4, AL query result", "semantics": "validity/swapped-button aware raw sample query; not history edge"},
+    {"entry": "00a9c740", "end_inclusive": "00a9c7b4", "coverage": "complete body read, existing canonical row selector reused", "semantics": "nonnull call refreshes80 even hidden/nonmember; pointer caller performs its separate second80"},
+    {"entry": "00a9c220", "end_inclusive": "00a9c30c", "coverage": "complete body read, existing current80 reused", "semantics": "paging forces refresh; actual listener08 and sound; previous110 updated after callbacks"},
+    {"entry": "004c43c0", "end_inclusive": "004c43fe", "coverage": "complete body read, actual action-record provider required", "abi": "ECX game, action index stack, RET4, AL edge result"}
+  ],
+  "host_steps": [
+    {"address": "00a9caa8", "native": "004ba6d0", "function": "00a9ca60", "contract": "freshF8BBF4 class1/index0; capture device for24 and20"},
+    {"address": "00a9cab8", "native": "00a9ca60+vtable24", "function": "00a9ca60", "contract": "captured device current24(10), RET4 ST0; only orderedzero continues"},
+    {"address": "00a9cad5", "native": "00a9ca60+vtable20", "function": "00a9ca60", "contract": "same captured device fresh current20(0), RET4 AL"},
+    {"address": "00a9cb40", "native": "00a9ca60+vtable84", "function": "00a9ca60", "contract": "actual Listbox current84 direction0/1, RET4; delay copied after callback"},
+    {"address": "00a9cb5c", "native": "00f8bc84+current", "function": "00a9ca60", "contract": "fresh callback, ECX byte-output; distinct from144/F8BC08"},
+    {"address": "00a9cb6b", "native": "00425e50", "function": "00a9ca60", "contract": "current selected pointer before comparing incoming widget"},
+    {"address": "00a9cb77", "native": "00a9c740", "function": "00a9ca60", "contract": "incoming widget pointer, RET4"},
+    {"address": "00a9cb88", "native": "00a9ca60+vtable80", "function": "00a9ca60", "contract": "current80(false) even after selector's own80"},
+    {"address": "00a9cb95", "native": "00425e50", "function": "00a9ca60", "contract": "nonnull selection gate"},
+    {"address": "00a9cba0", "native": "00425e50", "function": "00a9ca60", "contract": "fresh selected hidden77 gate"},
+    {"address": "00a9cbb6", "native": "00425e50", "function": "00a9ca60", "contract": "row argument after captured listener table; callback-free valid domain"},
+    {"address": "00a9cbc5", "native": "00a9ca60+vtable04", "function": "00a9ca60", "contract": "captured114table04, fresh114receiver, selected row/Listbox stack, RET8"},
+    {"address": "00a9cbcb", "native": "00f8bc0c+current", "function": "00a9ca60", "contract": "fresh sound callback CL0/DL1 even when listener/row gate fails"},
+    {"address": "00a9cbe4", "native": "004ba6d0", "function": "00a9ca60", "contract": "freshF8BBF4 class1/index0 after live141 gate; null returns"},
+    {"address": "00a9cbf1", "native": "0067c170", "function": "00a9ca60", "contract": "new current device direct history index1; RET4"},
+    {"address": "00a9cc05", "native": "00425e50", "function": "00a9ca60", "contract": "freshnonnull selection gate for listener10"},
+    {"address": "00a9cc10", "native": "00425e50", "function": "00a9ca60", "contract": "fresh selected hidden77 gate for listener10"},
+    {"address": "00a9cc26", "native": "00425e50", "function": "00a9ca60", "contract": "row after captured114table; no callback on valid path"},
+    {"address": "00a9cc35", "native": "00a9ca60+vtable10", "function": "00a9ca60", "contract": "captured114table10 and fresh114receiver; row/Listbox, RET8"},
+    {"address": "00a9cc3b", "native": "00f8bc0c+current", "function": "00a9ca60", "contract": "fresh sound callback CL0/DL1 after second edge"},
+    {"address": "0069643b", "native": "004c43c0", "function": "00696430", "contract": "freshE188A8 game, action55, RET4, rawAL written to output"}
+  ],
+  "corrections": [
+    {"was": "Listbox could inherit baseAA7190 pointer routine", "is": "D5BC60 points to distinct A9CA60 with read incoming widget", "evidence": "live tablebytes andcomplete147-instruction body"},
+    {"was": "unordered query24 might pass the zero comparison", "is": "only orderedzero continues; unordered mask44h has even parity and exits", "evidence": "A9CABE FUCOMIP;A9CAC3 TEST AH44h;A9CAC6 JP"},
+    {"was": "Listbox144 is the pointer activation callback", "is": "A9CB5C calls currentF8BC84;144 is separate frame input", "evidence": "direct memoryCALL and4DD6DB/E0 producer696430"}
+  ],
+  "dependencies": [
+    "Existing actual GuiListboxRuntime row selection/refresh/navigation and produced paging state",
+    "CurrentF8BC84 callable and underlying actual4C43C0/action55 storage; no fabricated input samples",
+    "CurrentF8BC0C callable, normally registered00941250 request producer; actual sound queue required",
+    "Actual listener04/10 profiles and their downstream page/resource effects",
+    "Same finite raw input dispatch or typed InputStateDevice domain; full SDK polling/game not claimed",
+    "Parent GuiWidgetFrameRuntime current68 binding/borrow and same-publication guard"
+  ],
+  "verification": {
+    "report_calls": "12 direct call rows checked; 0 failures; 9 indirect rows manually checked against the complete assembly",
+    "win32_build": "scripts/build.ps1 passed with the parent frame/input integrations; CTest 2/2 passed; local/listbox-pointer-build-final.log",
+    "focused_fixture": "local/listbox_pointer_probe.cpp compiled /W4 /WX /fp:strict with /MANIFEST:EMBED and passed through frames.dispatch_current68; local/listbox-pointer-probe.log",
+    "fixture_observations": [
+      "Selection performs two current80 refreshes, then current04, fresh sound, fresh-backend direct history, fresh current10, fresh sound in order",
+      "Activation may replace its own dispatch publication while the immediate captured target remains alive",
+      "Direct history edge uses current/previous bytes even when the fresh typed mouse valid flag is false",
+      "Unordered or nonzero current24 and unordered page delay exit without activation/navigation",
+      "Paging delay reads the changed live constant after navigation callbacks",
+      "Active frame/Listbox owner borrows reject unbind and retirement; normal cleanup releases all fixture models"
+    ],
+    "fixture_boundaries": "Actual canonical Group/Listbox/model owners with fixture resource initialization, typed mouse samples, and scripted activation/listener targets; no installed game, raw-device SDK polling, Text or rendering proof",
+    "new_permanent_tests": false,
+    "game_validated": false,
+    "binary_abi_compatible": false
+  }
+}

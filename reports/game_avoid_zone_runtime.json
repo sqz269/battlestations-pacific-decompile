@@ -402,5 +402,45 @@
     "Existing detour, containment, and AI search/follower reconstructions retain their documented semantic limitations.",
     "Engage/sector interfaces and unrelated AI contracts remain unresolved.",
     "Build and fixture evidence are not gameplay validation."
-  ]
+  ],
+  "cache_search_extension": {
+    "report": "reports/ship_ai_avoid_zone_search.json",
+    "doc": "docs/SHIP_AI_AVOID_ZONE_SEARCH.md",
+    "methods": [
+      "refresh_search",
+      "clear_search",
+      "search_segment"
+    ],
+    "runtime_controller_bound": false,
+    "validation": {
+      "scene": "universe/Scenes/missions/USN/usn_1_marshall.scn",
+      "game_root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+      "mode": 0,
+      "forced": false,
+      "multiplayer": false,
+      "query_layer": 3,
+      "query": [
+        0,
+        0,
+        100000,
+        100000
+      ],
+      "initial_cache_bounds": [
+        -1,
+        -1,
+        1,
+        1
+      ],
+      "explicit_fixture_inputs": true,
+      "groups": 6,
+      "zones": 21,
+      "corners": 2193,
+      "selected_segments": 426,
+      "cache_reused": true,
+      "crossing": true,
+      "clear_and_empty_output_preservation": true,
+      "exit": 0,
+      "scope": "actual installed scene data through existing projected scene/geometry owners; no gameplay steering"
+    }
+  }
 }

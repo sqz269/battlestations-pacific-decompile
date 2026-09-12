@@ -1,4 +1,5 @@
 #include "bsp/gui_widget_owner.hpp"
+#include "bsp/gui_widget_copy.hpp"
 #include "bsp/camera_multiply.hpp"
 #include "bsp/gui_text_type_dispatch.hpp"
 #include "bsp/gui_timed_entry_owner.hpp"
@@ -101,6 +102,17 @@ GuiWidgetTypeImplementation& GuiWidgetOwner::implementation() {
     if (!implementation_) throw std::logic_error("GUI type implementation is not constructed");
     return *implementation_;
 }
+GuiWidgetOwner::GuiWidgetOwner(GuiLayoutWidget& layout, GuiWidgetOwnerRuntime& runtime,
+    const GuiWidgetBaseCopyPreimage& preimage)
+    : layout_(layout), runtime_(runtime), base_copy_untyped_(true) {
+    // Only establish the host companion. AA9520's writes happen in native
+    // order after registration; none of AA9390 or the derived default runs.
+    std::memcpy(extra_.fields_7c_80, preimage.fields_7c_80_bits,
+        sizeof(extra_.fields_7c_80));
+    std::memcpy(&extra_.clip_enabled_e8, &preimage.clip_enabled_e8_bits, sizeof(float));
+    scene_.active = preimage.active_85;
+    scene_.authored_visible = layout.visible;
+}
 GuiWidgetOwner::~GuiWidgetOwner() noexcept = default;
 GuiTimedEntryOwner& GuiWidgetOwner::timed_entries(const volatile float& one) {
     if (!timed_entries_) timed_entries_ = std::make_unique<GuiTimedEntryOwner>(*this, one);
@@ -127,6 +139,7 @@ bool GuiWidgetOwner::has_pending_base_clip() const noexcept {
 }
 void GuiWidgetOwner::require_no_active_owned_operation() const {
     if (base_lifetime_.phase != GuiWidgetBaseDeletionPhase::not_started || scene_release_active_ ||
+        base_copy_active_ || (text_lifetime_ && text_lifetime_->has_incomplete_copy()) ||
         (implementation_ && implementation_->has_active_operation()) ||
         (runtime_.frame_runtime_ && runtime_.frame_runtime_->operation_active(*this)) ||
         has_pending_base_clip() || (timed_entries_ && timed_entries_->operation_active()))
@@ -454,6 +467,14 @@ void GuiWidgetOwnerRuntime::retire_model(void* context, NativeModelReference& re
     void* slot = &reference.model_owner().storage.node;
     runtime.models_.erase(slot);
 }
+void GuiWidgetOwnerRuntime::require_model_copy_reference(NativeModelReference& reference) const {
+    auto& model = reference.model_owner();
+    const auto found = models_.find(&model.storage.node);
+    if (&model.environment != &environment_.models || model.phase != NativeModelOwner::Phase::live ||
+        found == models_.end() || !found->second || found->second->owner.get() != &model ||
+        found->second->reference.get() != &reference)
+        throw std::logic_error("widget copy requires this runtime's canonical live Model reference");
+}
 GuiWidgetOwner& GuiWidgetOwnerRuntime::construct_child_00aa6560(GuiLayoutWidget& layout) {
     if (layout.type != GuiWidgetType::Group && layout.type != GuiWidgetType::Icon &&
         layout.type != GuiWidgetType::FrameBox && layout.type != GuiWidgetType::ClipBox &&
@@ -571,6 +592,10 @@ void GuiWidgetOwnerRuntime::erase_tree(GuiLayoutWidget& layout) {
 void GuiWidgetOwnerRuntime::retire_tree(GuiLayoutWidget& layout) {
     const auto found = widgets_.find(&layout);
     if (found == widgets_.end()) return;
+    if (found->second->base_copy_untyped_) {
+        retire_base_copy_admission(*found->second);
+        return;
+    }
     // Reject unsupported descendant retirement before the first recursive
     // virtual20 releases any scene nodes. This is pure host validation, not
     // derived teardown; AA31F0's release-before-delete ordering stays intact.

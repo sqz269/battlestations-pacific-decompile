@@ -7,6 +7,7 @@
 namespace bsp {
 class MouseInputDevice;
 struct GuiListboxFrameServices;
+struct GuiListboxPointerServices;
 
 // An adapter for ONE existing listener owner/subobject identity. These names
 // deliberately identify native slots: individual listener target bodies are
@@ -17,7 +18,9 @@ public:
     explicit GuiWidgetFrameListenerOwner(void* actual_identity);
     virtual ~GuiWidgetFrameListenerOwner() = default;
     void* actual_identity() const noexcept { return identity_; }
+    virtual void call_current00(GuiWidgetOwner&) = 0;
     virtual void call_current04(GuiWidgetOwner&) = 0;
+    virtual void call_current08(GuiWidgetOwner&) = 0;
     virtual void call_current0c(GuiWidgetOwner&) = 0;
     virtual void call_current10(GuiWidgetOwner&) = 0;
     virtual void call_current14(GuiWidgetOwner&) = 0;
@@ -66,6 +69,8 @@ public:
     // exist and keep them alive until unbound, outside every active frame.
     void bind_listbox_frames(const GuiListboxFrameServices&);
     void unbind_listbox_frames(const GuiListboxFrameServices&);
+    void bind_listbox_pointer(const GuiListboxPointerServices&);
+    void unbind_listbox_pointer(const GuiListboxPointerServices&);
     void update40(GuiWidgetOwner&, float seconds);
     // Direct base call for proven derived continuations; it does not dispatch40.
     void update_base_00aa87b0(GuiWidgetOwner&, float seconds);
@@ -73,6 +78,10 @@ public:
     // Keeps that borrow through the derived tail; never redispatches current40.
     void update_base_from_active_00aa87b0(GuiWidgetOwner&, float seconds);
     bool contains_pointer_00aa6a40(GuiWidgetOwner&);
+    void align_bounds64(GuiWidgetOwner&, float&, float&, float&, float&);
+    // AA7190, RET4: the incoming child argument is unread. Re-read listener
+    // identity at each call, but retain the mouse obtained after current00.
+    void dispatch_current68(GuiWidgetOwner&, GuiWidgetOwner* incoming_child);
 private:
     struct ActiveFrame;
     GuiWidgetFrameServices services_;
@@ -80,8 +89,8 @@ private:
     std::unordered_map<void*, GuiWidgetFrameListenerOwner*> listeners_;
     ActiveFrame* active_{};
     const GuiListboxFrameServices* listbox_frames_{};
+    const GuiListboxPointerServices* listbox_pointer_{};
     GuiWidgetFrameListenerOwner& listener(GuiWidgetOwner&) const;
-    void align_bounds64(GuiWidgetOwner&, float&, float&, float&, float&);
     void update_base_active(GuiWidgetOwner&, float seconds);
     void listener_tail(GuiWidgetOwner&);
 };

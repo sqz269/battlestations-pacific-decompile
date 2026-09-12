@@ -52,6 +52,7 @@
 #include "bsp/entity_think_dispatch.hpp"
 #include "bsp/lua_binding_mission.hpp"
 #include "bsp/lua_binding_navigator.hpp"
+#include "bsp/mission_blackout.hpp"
 
 struct lua_State;
 
@@ -110,6 +111,20 @@ struct GameScriptEntity {
     unsigned long long thinks{0};
 };
 
+// Packet cc_mission_blackout: what the fade at `*(00E198C4 + A4h) + C0h` did
+// across a run. `callbacks` is the count of 005B9969 calls, the only route from
+// the native fade back into the mission script.
+struct GameBlackoutSummary {
+    std::size_t arms{0};              // 005B9BA0 entries
+    std::size_t callbacks{0};         // 005B9969 calls
+    std::size_t updates{0};           // 005B9800 entries
+    std::size_t completions{0};       // the 005B9842 arm
+    std::size_t interface_requests{0};  // 004CC460 with id 20h
+    std::string last_callback;
+    float level{0.0f};
+    float remaining{0.0f};
+};
+
 struct GameScriptTimerSummary {
     std::size_t scripts_created{0};
     std::size_t think_registrations{0};
@@ -131,7 +146,8 @@ class GameScriptOrdersHost final : public bsp::LuaBindingNavigatorHost,
                                    public bsp::LuaBindingArgumentReader,
                                    public bsp::LuaBindingResultWriter,
                                    public bsp::LuaBindingMissionHost,
-                                   public bsp::EntityThinkHost {
+                                   public bsp::EntityThinkHost,
+                                   public bsp::MissionBlackoutHost {
 public:
     GameScriptOrdersHost(GameHostLog& log, GameUnitsHost& units);
 
@@ -151,6 +167,7 @@ public:
     // empty list.
     void run_script_timers(float step);
     const GameScriptTimerSummary& timers() const noexcept { return timers_; }
+    const GameBlackoutSummary& blackout() const noexcept { return blackout_summary_; }
 
     // 008980E8 / 0088A330, the single callee of SetThink's reconstructed body
     // (bsp::lua_binding_set_think). Public so the small bsp::LuaBindingCoreHost
@@ -234,6 +251,22 @@ private:
     bool entity_flag_5e_00898bd9(void* entity) override;
     void entity_kill_00926d90(void* entity, int cause) override;
 
+    // --- bsp::MissionBlackoutHost, one method per native call site -------------
+    void blackout_icon_set_visible(bool visible) override;
+    void blackout_icon_set_colour(const bsp::BlackoutFillColour& colour) override;
+    void blackout_icon_get_colour(bsp::BlackoutFillColour& colour) override;
+    void mission_lua_call_named_00887e50(const std::string& name) override;
+    void* local_player_unit_00e188d8() override;
+    bool interface_request_pending_005b66d0() override;
+    void ingame_interface_store_1c_00644220(int value) override;
+    void push_interface_request_004cc460(int request_id, void* payload) override;
+    int game_session_kind_1fe4h() override;
+    void session_broadcast_blackout_0076d310(float level, float duration) override;
+    void force_show_please_wait_screen_00e19698() override;
+
+    // The 004C40F0 step at 004C429A: one 005B9800 pass with the frame delta.
+    void run_blackout_update(float step);
+
     // --- bsp::EntityThinkHost, the walk 00929460 makes over those entities ------
     void run_entity_think_00929150(std::uint32_t entity) override;
     void free_think_node_0092952c(const bsp::EntityThinkNode& node) override;
@@ -293,6 +326,20 @@ private:
     std::uint32_t random_state_{0x13579BDFu};
     unsigned long long random_draws_{0};
     GameScriptTimerSummary timers_{};
+
+    // Packet cc_mission_blackout. The five fields at `*(00E198C4 + A4h) + C0h`,
+    // and the widget colour the +54h getter would answer with. 005BA7B0 leaves
+    // +C0h, +C4h and +C8h unwritten; this process starts them at zero, which is
+    // the state a first `Blackout` overwrites anyway.
+    bsp::MissionBlackoutFade blackout_{};
+    bsp::BlackoutFillColour blackout_colour_{};
+    GameBlackoutSummary blackout_summary_{};
+    // *(float*)(00432650() + E0h), the configured default duration. That field
+    // was not read by this packet; every `Blackout` in usn_2_java and
+    // commandhelpers.lua passes an explicit numeric argument 3, so the default is
+    // never consumed. The host logs it if a call ever reaches it.
+    float blackout_configured_duration_{0.0f};
+    bool blackout_configured_duration_used_{false};
 };
 
 }  // namespace bsp::game

@@ -1,0 +1,184 @@
+{
+  "packet": "orch4_native_input_action_listener_ag",
+  "status": "reconstructed_strict_build_and_actual_raw_manager_fixture_passed",
+  "baseline_commit": "e701e28434fac99e3f4d4e696e58716d627e0ffc",
+  "source": [
+    "include/bsp/native_input_action_listener_owner.hpp",
+    "src/native_input_action_listener_owner.cpp"
+  ],
+  "document": "docs/NATIVE_INPUT_ACTION_LISTENER_OWNER.md",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "bsp.py ghidra client verifies each live batch"
+  },
+  "ghidra_mutations": false,
+  "functions": [
+    {
+      "address": "00a92b70",
+      "implementation": "replace_native_input_action_listener_00a92b70",
+      "coverage": "complete normal raw-storage schedule; source provider and CRT allocation domain; native replacement leak preserved on old-release exception",
+      "original_abi": "ECX actual30h action; EDX no input; no stack arguments; void result; RET0",
+      "last_instruction": "00a92bfe",
+      "last_instruction_length": 1,
+      "end_inclusive": "00a92bfe",
+      "end_exclusive": "00a92bff",
+      "span": 143,
+      "sha256": "dad80063a24e821aa7b1d59452f074131c71b16fb8224c77f0a581c1a6463423",
+      "disk_analysis_equal": true,
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a92150",
+      "implementation": "scalar_delete_native_input_action_listener_00a92150",
+      "coverage": "complete normal raw-storage schedule; source provider and CRT allocation domain; native replacement leak preserved on old-release exception",
+      "original_abi": "ECX actual24h listener; EDX no input; one stack DWORD, only lowbyte bit0 read; EAX original address; RET4",
+      "last_instruction": "00a92171",
+      "last_instruction_length": 3,
+      "end_inclusive": "00a92173",
+      "end_exclusive": "00a92174",
+      "span": 36,
+      "sha256": "38a73aeef47b64ab037ef2faccd0a6b3e2d252d841048f797f627b1737f36ffb",
+      "disk_analysis_equal": true,
+      "native_abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00a92b70",
+      "address": "00a92b78",
+      "native": "00bf681b",
+      "contract": "cdecl malloc/new-handler allocation24h; ADD ESP4 atA92B7F; no owning EH cleanup"
+    },
+    {
+      "function": "00a92b70",
+      "address": "00a92be5",
+      "native": "import[00ce2220]",
+      "contract": "InterlockedDecrement captured old listener+4; stdcall one pointer, callee cleanup4, EAX signed refcount"
+    },
+    {
+      "function": "00a92b70",
+      "address": "00a92bf5",
+      "native": "listener+vtable00",
+      "contract": "captured old listener ECX, captured current profile slot0, no stack arguments; publication follows return"
+    },
+    {
+      "function": "00a92150",
+      "address": "00a92159",
+      "native": "00bd30f0",
+      "contract": "ECX original listener retained from entry throughESI; shared root reset toCEB130, no args"
+    },
+    {
+      "function": "00a92150",
+      "address": "00a92166",
+      "native": "00bf65ac",
+      "contract": "cdecl originalESI allocation; ADD ESP4 atA9216B then EAX=ESI andRET4"
+    },
+    {
+      "function": "00a93c80",
+      "address": "00a93cb3",
+      "native": "00a92b70",
+      "contract": "complete callerA93C80..A93D49; ESI=owner+4 base plus index*30h after required resize; flag stackbyte+18 gates call; ECX=ESI; no args"
+    },
+    {
+      "function": "00a939c0",
+      "address": "00a93a01",
+      "native": "listener+vtable00",
+      "contract": "existing record destructor captures+2C, decrements+4 then current slot0 no flags; concrete finite adapter closesD5B610"
+    },
+    {
+      "function": "00bd30e0",
+      "address": "00bd30eb",
+      "native": "listener+vtable04",
+      "contract": "shared no-flags root rereads actual profile, captures slot04, pushes flags1"
+    }
+  ],
+  "no_ghidra_function": [],
+  "excluded_tail_calls": [],
+  "layout": {
+    "producer": "00a92b70",
+    "size": 36,
+    "profile": "00d5b610",
+    "vtable": [
+      "00bd30e0",
+      "00a92150"
+    ],
+    "reference_count": "+4 signed InterlockedLONG initially1",
+    "bytes": "+8..+13 twelve zero bytes; all initialized in observed native store order",
+    "floats": "+14,+18,+1C,+20 positivezero binary32",
+    "owning_cell": "actual30h action+2C; owner actual24h array at+4, signed count+8; no new owning vectors"
+  },
+  "exception_boundary": {
+    "old_release_throws": "fresh24h allocation remains unpublished and is not freed; old cell stays as callback left it; source inserts no rollback",
+    "allocation_throws": "action+2C never read or changed",
+    "unknown_profile": "finite adapter throws invalid_argument; arbitrary listener profiles remain external",
+    "tested": "normal shared retention/publication and real manager teardown only; allocation failure and old-slot exception not injected"
+  },
+  "validation": {
+    "build": "scripts/build.ps1 Win32 Release /W4 /WX, exit0",
+    "ctest": "2/2 passed",
+    "seeds": "8/8 live analysis/disk equality",
+    "fixture": "ignored manifested PRIMARY-selectable archive-only runner; current run uses this worker archive",
+    "counts": {
+      "records": 2,
+      "listener_allocations": 4,
+      "listener_frees": 4,
+      "zero_reference_deletes": 3,
+      "direct_scalar_free": 1,
+      "shared_retain": 1,
+      "publication_observations": 1,
+      "unknown_profile_rejected": 1
+    },
+    "raw_manager": "BD0400 drained actual action owner, publication null, manager slots/section null; caller freed manager allocation",
+    "runtime_limits": "No native differential, allocation-failure injection, application/game/SDK execution",
+    "call_audit": "4 direct rows checked,0failed;4indirect rows manually verified"
+  },
+  "corrections": [
+    {
+      "was": "GhidraA92150 skippedADDESP4 after returningCRT free",
+      "is": "primary sanctioned repair includesA9216B..A9216D; complete12instructions0gaps throughRET4 endA92173",
+      "evidence": "primary reports/native_input_listener_flow_repair.json and refreshed listing; worker did not mutateGhidra"
+    },
+    {
+      "was": "A92B70 inferred no parameters; scalar pseudocode returnedextraoutEAX afterfree",
+      "is": "actionECX capturedESI; scalarreturnsoriginalESI afterfree; originalABI map attached",
+      "evidence": "A92B76,A92BF8; A92151,A9216E,A92171"
+    }
+  ],
+  "deferred_callback": {
+    "implemented": false,
+    "wrapper": "6965A0 MOV ECX,[E188A8]; JMP4D8CD0; 11disk/live-matching bytes8B0DA888E100E92527E4FF",
+    "no_ghidra_function": [
+      {
+        "address": "006965a0",
+        "last_instruction": "006965a6",
+        "last_instruction_length": 5,
+        "end_inclusive": "006965aa",
+        "end_exclusive": "006965ab"
+      }
+    ],
+    "record_deadlines": "existingtyped4D8CD0 is not actualraw binding. Native16getter reloads consume30h rows and update globalrawtreeE18A7C through4D6900, using game+64C plus doubleCE65D0 and binary32spill BEFORE map insertion. SourceWorldTickState owns a separatestd::map; do not substitute it.",
+    "producer_handoff": "missingstartCC9E30..CC9E6F calls4C27A0, publishes sentinelE18A80, nilbyte+15=1, selflinks0/4/8 and countE18A84=0, registersCD9EC0 destructor. CD9EC0 is teardown despite static_init name. Need source raw-map contract and canonical game/elapsed publication.",
+    "artifact": "local/native_input_deadlines_next_ag.md"
+  },
+  "artifacts": [
+    {
+      "path": "build\\win32\\Release\\bsp_core.lib",
+      "sha256": "2b4defaa4d79b3e1f27344cdbd2987601d77eaf7e43789d9e68ced5fdde19f79"
+    },
+    {
+      "path": "local\\native_input_action_listener_ag_build.log",
+      "sha256": "df2121e6bed9893d3f6bebe35daa94ac050da3158bf233e8ab6f7609e8c70c07"
+    },
+    {
+      "path": "local\\native_input_action_listener_ag_probe.log",
+      "sha256": "b2ab124b8be76e25c314c8032b25310fac003cb00e4753ae5208ae3c8aaa211c"
+    },
+    {
+      "path": "local\\native_input_action_listener_ag_seeds.json",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    }
+  ]
+}

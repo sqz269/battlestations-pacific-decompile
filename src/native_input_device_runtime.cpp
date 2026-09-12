@@ -153,7 +153,11 @@ HWND NativeInputDeviceRuntime::call_00bec230() {
     return get_platform_window_00bec230(*platform);
 }
 void NativeInputDeviceRuntime::set_force_vslot38(void* d, std::uint32_t channel, float value) {
-    switch (profile(d)) {
+    set_force_vslot38(d, profile(d), channel, value);
+}
+void NativeInputDeviceRuntime::set_force_vslot38(void* d, std::uint32_t p,
+    std::uint32_t channel, float value) {
+    switch (p) {
     case xinput: set_native_xinput_motor_00a9a9c0(d, channel, value); return;
     case joystick: set_native_joystick_force_00a98cc0(d, channel, value, joystick_); return;
     case gamepad: pure_slot();
@@ -190,7 +194,9 @@ void NativeInputDeviceRuntime::set_relative_vslot18(void* d, std::uint32_t code,
     else unbound();
 }
 std::uint8_t NativeInputDeviceRuntime::relative_vslot1c(void* d, std::uint32_t code) {
-    const auto p = profile(d);
+    return relative_vslot1c(d, profile(d), code);
+}
+std::uint8_t NativeInputDeviceRuntime::relative_vslot1c(void* d, std::uint32_t p, std::uint32_t code) {
     if (p == joystick) return query_native_joystick_relative_00a98750(d, code);
     if (admitted(p)) return query_native_input_relative_false_00a93ea0(d, code);
     unbound();

@@ -22,9 +22,10 @@ over actual active vectors, rather than the fixed attachment table.
 
 Sound's cursor events now borrow the same facade/publications. Existing source
 online/platform owners retain their own types; raw input allocations are never
-cast to typed input owners. A reached listener-zero callback requires the actual
-application listener provider. No replacement listener or empty active vector is
-created by the facade. Captured groups-profile D5B5F8 slot0C is A90ED0's C3;
+cast to typed input owners. Listener-zero callbacks use the recovered finite
+D5B610 deletion provider unless the application supplies an explicit override.
+Actual listener allocation and release ordering are documented in
+NATIVE_INPUT_ACTION_LISTENER_OWNER.md. Captured groups-profile D5B5F8 slot0C is A90ED0's C3;
 slot10 is the purecall used by the tick prepass. The DirectInput profile's slot0C
 dispatches A983C0, capturing+E0 before clearing+F4.
 
@@ -50,9 +51,11 @@ uninitialized-stack failure behavior remains outside the demonstrated domain.
 
 ## Remaining application work
 
-The native OnInitOnce requested-count/accepted-ID producer A917E0, action/frame
-processing, actual online-owner construction and listener implementation are
-separate required boundaries. The real settings commit must bind the live rumble
+The native OnInitOnce requested-count/accepted-ID producer A917E0 is now bound
+by the startup fragment documented in GAME_INPUT_STARTUP_SETTINGS.md. Action/frame
+services are now composed in GameInputActions (GAME_INPUT_ACTIONS.md); application
+frame wiring, action setup, the real deadline callback/map provider and actual
+online-owner construction remain required boundaries. The real settings commit must bind the live rumble
 word; mouse scale/invert producers are not established merely by initializing their
 image words. Source construction and cleanup do not establish interactive input,
 hardware effects, native ABI compatibility or a runnable game rebuild. Validation

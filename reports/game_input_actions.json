@@ -1,0 +1,191 @@
+{
+  "packet": "orch4_game_input_actions_ag",
+  "status": "raw_action_services_composed_build_and_component_fixtures_verified_application_frame_pending",
+  "kind": "source_composition_no_new_original_entry",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": [
+    "include/bsp/game_input_actions.hpp",
+    "src/game_input_actions.cpp",
+    "include/bsp/game_input_runtime.hpp",
+    "src/game_input_runtime.cpp",
+    "include/bsp/native_input_device_runtime.hpp",
+    "src/native_input_device_runtime.cpp"
+  ],
+  "document": "docs/GAME_INPUT_ACTIONS.md",
+  "worker_commits": {
+    "class_configuration": "39837c8974464d7468c1ff644526b824d8ed9815",
+    "rumble": "e701e28434fac99e3f4d4e696e58716d627e0ffc",
+    "listener": "8387bfa0d25c981a94a9661cb2a2a4e8314b7799",
+    "bindings": "896eefaf920089a446b46bbc1a188d8c3f5a8b2f",
+    "tick": "06616914ee71d88961bf7116d04876913c5f0453",
+    "deadline_map_lifetime": "3e3aeb787f09cc67b69bbda294802169a85bfd80"
+  },
+  "storage": "Existing raw singleton manager/backend/action publications and finite device services; actual30h records and24h listeners. No parallel owner/vector/callback flag or copied timing/CRT state.",
+  "source_composition": "GameInputActions binds lazy getter, captured backend/profile tick, real raw rebind/poll and listener update. Required GameInputActionCallbacks forwards captured identity. It does not instantiate in GameStartupHost pending first-time action setup and real deadline callback/map provider.",
+  "native_metadata": {
+    "signatures_saved_and_readback_verified": 14,
+    "prior_values_retained": true,
+    "reports": [
+      "reports/native_input_configuration_rumble_prototypes.json",
+      "reports/native_input_action_ag_prototypes.json",
+      "reports/native_input_tick_ag_prototypes.json",
+      "reports/native_input_deadline_map_ag_prototypes.json"
+    ],
+    "initializer_definition": "reports/native_input_deadline_map_initializer_definitions.json",
+    "destructor_repair": [
+      "reports/native_input_deadline_map_flow_repair.json",
+      "reports/native_input_deadline_map_function_definitions.json"
+    ],
+    "listener_flow_repair": "reports/native_input_listener_flow_repair.json",
+    "exports_refreshed": 14
+  },
+  "calls": [
+    {
+      "function": "00cc9e30",
+      "address": "00cc9e35",
+      "native": "004c27a0",
+      "contract": "Actual18h sentinel allocator; ECX E18A7C is not consumed, no stack args, EAX allocation."
+    },
+    {
+      "function": "00cc9e30",
+      "address": "00cc9e69",
+      "native": "00bf6ff5",
+      "contract": "cdecl atexit(CD9EC0), caller POP ECX cleans4, EAX actual0/-1 thenRET; newly defined complete64byte initializer."
+    }
+  ],
+  "validation": {
+    "utc": "2026-09-12T23:11:56.963193+00:00",
+    "code_revision": "8857c23818ead59c9798628cfce4eb9e02c82f71",
+    "code_manifest": "local/input_actions_ag_source_manifest.json",
+    "code_manifest_sha256": "922395fba3e897535d1643c8368eb375bbd1917b02e4e420982e43da10f9936c",
+    "code_files": 2087,
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "native_seeds_match_disk": 8,
+    "primary_archive_sha256": "aa5fb02d5f7fa069b4f94e45e94c191e20a07dfcd91facf8496cc041e8ad01b0",
+    "game_executable_sha256": "9bf60f2aff0e322d689e9be5a49523ef8c7feb4ddec7d5dc73aa5e7c8d769020",
+    "build_log_sha256": "5132421ec4aa0f66d2e945cc1c974723c012a98d171f891204385f517b1e6581",
+    "component_call_audits": {
+      "listener": [
+        4,
+        0
+      ],
+      "bindings": [
+        19,
+        0
+      ],
+      "tick": [
+        38,
+        0
+      ],
+      "deadline_map": [
+        23,
+        0
+      ],
+      "class_configuration": [
+        12,
+        0
+      ],
+      "rumble": [
+        18,
+        0
+      ]
+    },
+    "call_audit_boundary": "Numeric CALL rows only; indirect captures separately reviewed. Two newly defined initializer calls are explicit rows in this report. Unowned60BC03/5E737A/5EC84C/5EC921 remain qualified missing containing-function evidence.",
+    "fixtures": [
+      {
+        "path": "local/input_actions_ag_binding.log",
+        "sha256": "f106f5dd5d32038085ce258ca250986c706ed77cecf82ecaa7a8e57e4013808b",
+        "output": "verified native spans 5 direct relocations 7 absolute relocations 10\nnative_action_binding_probe_ag.cpp\nnative rebind\nsource rebind\nnative poll\nsource poll\nnative/source actual-storage differential: rebind_all=1 poll=1 spans=5 calls=13 paired_code_receiver_mutation=1 forbidden_byte2_allowed=1 endpoint_shrink=1 retained_unresolved_cache=1 later_modifier_cache_preserved=1 value_bits=3ee00000 previous_byte=2 current_byte=1\ncontrolled fixture device callbacks; no SDK/window/polling/force/game effects\n"
+      },
+      {
+        "path": "local/input_actions_ag_tick.log",
+        "sha256": "19638b5e39bc263310899565cc52040d1fced40d11d667156d771d0c552cb729",
+        "output": "CoreWorktree=J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\nSourceCommit=8857c23818ead59c9798628cfce4eb9e02c82f71\nCoreArchiveSHA256=aa5fb02d5f7fa069b4f94e45e94c191e20a07dfcd91facf8496cc041e8ad01b0\nGameSourcesCompiledSeparately=False\nnative_action_tick_probe.cpp\nPASS listener native comparisons=32 raw24h bytes_equal=1 header_refcount_preserved=1 low_byte_arguments=1 finite_infinite_qnan_cases=1\nPASS tick native cases=2 mutable_backend_reload=1 dirty_byte_only=1 retained_record=1 live_base_count=1 post_poll_listener=1 live_timing=1 captured_tail_callback=1 null_tail_skipped=1 raw_preimages_equal=1\nBOUNDARY copied original bytes plus controlled rebind/poll/backend/tail providers; no real device poll, SDK, force, ShowCursor, game or full original exception ABI\n"
+      },
+      {
+        "path": "local/input_actions_ag_listener.log",
+        "sha256": "b2ab124b8be76e25c314c8032b25310fac003cb00e4753ae5208ae3c8aaa211c",
+        "output": "native_input_action_listener_probe.cpp\nPASS listener lifecycle: records=2 replacements=4 initialized24h=4 shared_retain=1 zero_reference_deletes=3 direct_scalar_free=1 publication_observations=1 unknown_profile_rejected=1\nPASS actual BD0400 drain: action_publication=null manager_slots=null manager_section=null listener_allocations=4 listener_frees=4\nLIMIT source archive fixture; no native differential, allocation-failure injection, SDK calls, application or game execution\n"
+      },
+      {
+        "path": "local/input_actions_ag_map.log",
+        "sha256": "868d89b21466da0f31198a41fd640c18ceb2bdadaf7ba307e15a368b60866078",
+        "output": "native_input_action_deadline_map_probe.cpp\nPASS static map initialization: CRT_result=0 canonical_header=1 sentinel18h=1 valid_manual_nodes=3 scalar_value_bits=preserved\nPASS actual CRT atexit: registered_destructor=1 nonempty_nodes=3 head=null count=0 opaque_word=preserved\nLIMIT manually populated valid raw tree; no insertion, native differential, allocation failure, application, SDK or game execution\n"
+      },
+      {
+        "path": "local/input_actions_ag_classes.log",
+        "sha256": "687024f3c8efa50ae8bccb8f45ab0ef4101e3de333e374842eab06b34e19cbd8",
+        "output": "native_input_class_configuration_probe.cpp\nraw class configuration: invalid_returns=1 requested_before_validation=1 captured_erase_suffix=1 wildcard_words=3 explicit_ids=3 copy_reuse=1 self_alias_clear=1 fixed_slots_unchanged=1 dirty_callback_unchanged=1 class_buffers=0\nactual storage only; SDK/window/input polling/force/gameplay not exercised\n"
+      },
+      {
+        "path": "local/input_actions_ag_rumble.log",
+        "sha256": "9bb80334f8c644bcc4b894230ce0795788d31914216d64a7efc904a9d97b2cff",
+        "output": "native_gamepad_rumble_probe.cpp\nPASS differential mode0 outputs=1 invalids=0\nPASS differential mode1 outputs=4 invalids=0\nPASS differential mode2 outputs=1 invalids=1\nPASS differential mode3 outputs=0 invalids=0\nPASS exception write order; concrete4 tree payloads+spare and2 raw trees destroyed\nBOUNDARY relocated native bodies with only publication/CALL bridges; concrete raw request getters and iterator; output observer only; no SDK force/GetState/SetState/poll/game calls\n"
+      },
+      {
+        "path": "local/input_actions_ag_facade.log",
+        "sha256": "cab97e96d309afa39a9e8296522d8b56d7cb19e4dafb5a8381ec4ee803b048c6",
+        "output": "CoreWorktree=J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\nSourceCommit=8857c23818ead59c9798628cfce4eb9e02c82f71\nCoreArchiveSHA256=aa5fb02d5f7fa069b4f94e45e94c191e20a07dfcd91facf8496cc041e8ad01b0\nGameSourcesCompiledSeparately=False\nDependency=real committed gui_raw_input_device_004ba6d0; three empty active-vector queries\nBoundary=real DI inventory/controllers==0 guard, hidden own HWND, facade startup/class configuration/shared rumble word/action/raw-drain/explicit SDK release; no poll/cursor/ShowCursor/force output/game\ninput_facade_lifecycle_probe.cpp\nINVENTORY type=18 product=Mouse\nINVENTORY type=19 product=Keyboard\nINVENTORY type=17 product=Virtual HID Framework (VHF) HID device\nINVENTORY type=17 product=G502 LIGHTSPEED Wireless Gaming Mouse\nINVENTORY type=17 product=G502 LIGHTSPEED Wireless Gaming Mouse\nINVENTORY type=17 product=G502 LIGHTSPEED Wireless Gaming Mouse\nINVENTORY type=17 product=G502 LIGHTSPEED Wireless Gaming Mouse\nINVENTORY type=17 product=Keychron Link \nINVENTORY type=17 product=HyperX Cloud Alpha S\nINVENTORY type=17 product=HyperX Cloud Alpha S\nINVENTORY type=17 product=AL75PRO\nINVENTORY type=17 product=AL75PRO\nINVENTORY type=17 product=HyperX Cloud Alpha S\nINVENTORY type=17 product=AL75PRO\nINVENTORY type=17 product=Keychron Link \nINVENTORY type=17 product=AL75PRO\nINVENTORY total=18 keyboard=1 mouse=1 other=16 controllers=0 retained_interfaces=0; CreateDevice/Acquire/poll/reset not called\nPASS configuration: requested_counts=1,1,1 wildcard_ids=1,1,1 active_devices=0; real_getters=3; same_rumble_word=1; SDK_force_calls=0\nPASS facade listener: actual_records=1 listener_profile=D5B610 refs=1 external_provider=0; native drain uses recovered finite deletion\nSTART facade_backend=D5B72C callback_D8=004B4630 action=D5B630 registered=2 keyboard=1 mouse=1 xinput=4 device_refs=2 backend_refs=2 strings_live=0\nPASS facade BD0400: registered_before=2 backend_publication=0 action_publication=0 manager_publication=0 raw_members=0 device_refs_after_drain=2 backend_refs_after_drain=2 final_device_refs=0 final_backend_refs=0 strings=0/0 live=0 hidden_window_alive=1 visible=0\nBOUNDARY actual facade startup/reset/class configuration, real empty-vector getter, rumble flag with no active devices, lazy action and raw drain; no cursor/ShowCursor/backend poll/GetState/SetState/force output/game/input injection/foreground activation; native base-registration failure is not injected\n"
+      }
+    ],
+    "sdk_facade_receipt": {
+      "core_worktree": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910",
+      "source_commit": "8857c23818ead59c9798628cfce4eb9e02c82f71",
+      "core_archive": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\build\\win32\\Release\\bsp_core.lib",
+      "core_archive_sha256": "aa5fb02d5f7fa069b4f94e45e94c191e20a07dfcd91facf8496cc041e8ad01b0",
+      "archive_stable": true,
+      "selected_source_hashes": {
+        "include/bsp/game_input_runtime.hpp": "e484f7ab7c6a961617431beab0d100f13611864540f9fea309aff98ccf3d0c5b",
+        "src/game_input_runtime.cpp": "0aeec9f4f7cb35db7ed406869a5b454a3360edfdd322f2b2a37f5df8fbd8ecd1",
+        "include/bsp/gui_input_runtime.hpp": "35b8750062890419abf8881c374a74a709f2c3c49dedba84072bf6f9bdbc366b",
+        "src/gui_input_runtime.cpp": "922deebe7d674c8b042d5c0e1508bffd89665ca7e057fe8bc225d3a84a3b3b4b",
+        "include/bsp/native_input_backend_startup.hpp": "7a1358271b5f3c7fe1c2506231c97e255f6e2c68b137945393b9c72b1948ae9e",
+        "src/native_input_backend_startup.cpp": "b7abbe8ace78e86cf34542345b5f6344ac8a8e9de676cd25f9e6a4b24e33e27a"
+      },
+      "fixture_source_sha256": "f6891ae4e5aeb072892bdcb105beec9783e1b23180a7d09424d491976f3f6091",
+      "fixture_constants_sha256": "ccf1ca024a9ba91d7f647b2ab22b88b1626502b3b191ecd8765ff3d7d0d68c76",
+      "runner_sha256": "2f93b00e82dff4dea734059a74dae620d1549954943b2c2bc66f6bd10a8a9a9b",
+      "project_include_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include",
+      "game_sources_compiled_separately": false,
+      "manifest_embedded": true,
+      "log": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\input_actions_ag_facade.log",
+      "log_sha256": "cab97e96d309afa39a9e8296522d8b56d7cb19e4dafb5a8381ec4ee803b048c6",
+      "exit_code": 0,
+      "controllers_gate_required": true,
+      "hidden_window_noactivate": true,
+      "device_poll_calls": 0,
+      "cursor_calls": 0,
+      "show_cursor_calls": 0,
+      "force_calls": 0,
+      "game_launches": 0,
+      "lookup_dependency": "real committed getter; three empty active-vector queries"
+    },
+    "tick_receipt": {
+      "core_worktree": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910",
+      "source_commit": "8857c23818ead59c9798628cfce4eb9e02c82f71",
+      "core_archive": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\build\\win32\\Release\\bsp_core.lib",
+      "core_archive_sha256": "aa5fb02d5f7fa069b4f94e45e94c191e20a07dfcd91facf8496cc041e8ad01b0",
+      "archive_stable": true,
+      "fixture_source_sha256": "a6a1e604043d901139d658c050aa8d514be583f124cab7ce870ca520b404cb1d",
+      "runner_sha256": "4e729c1e1fabc2e98cb6938bdb9361a0a7aa046f900ceac78a2205002336a1c7",
+      "project_include_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include",
+      "game_sources_compiled_separately": false,
+      "manifest_embedded": true,
+      "log": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\input_actions_ag_tick.log",
+      "log_sha256": "19638b5e39bc263310899565cc52040d1fced40d11d667156d771d0c552cb729",
+      "exit_code": 0,
+      "sdk_calls": 0,
+      "real_activation_calls": 0,
+      "game_launches": 0
+    }
+  },
+  "limitations": [
+    "GameInputActions frame composition is build-tested, not application-frame exercised.",
+    "Action configurationA93C80/A92D40, callback6965A0/4D8CD0 and real4D6900 map subscript are subsequent dependencies; native OnInitOnce Lua/settings/UI stage remains incomplete.",
+    "The deadline map fixture populates a valid tree manually and tests actual CRT teardown; no insertion-provider proof.",
+    "Source APIs add explicit contexts and are not drop-in native ABI replacements. Controlled fixtures do not prove all native exception paths.",
+    "Single-instance check and running game untouched; no game launch/input injection/device polling/ShowCursor/hardware force. Gameplay remains unvalidated."
+  ]
+}

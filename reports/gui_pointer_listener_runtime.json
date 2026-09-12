@@ -1,0 +1,25 @@
+{
+  "packet": "orch5_pointer_listener",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "functions": [{"address":"00aa7190","name":"BSP_GuiWidget_DispatchPointerActivity","source":"src/gui_widget_frame_runtime.cpp","original_abi":"ECX widget, unread stack argument, RET4","end_inclusive":"00aa7218","instructions":49,"gaps":0,"coverage":"complete normal caller on documented canonical owner domain"}],
+  "call_sites": [
+    {"address":"00aa71ae","native":"listener current00(widget)","target_kind":"indirect"},
+    {"address":"00aa71ba","native":"004ba6d0","contract":"fresh F8BBF4 receiver, class1/index0; captured mouse"},
+    {"address":"00aa71e0","native":"listener current04(widget)","target_kind":"indirect"},
+    {"address":"00aa71fd","native":"listener current08(widget)","target_kind":"indirect"},
+    {"address":"00aa7213","native":"parent current68(widget)","target_kind":"indirect"}
+  ],
+  "current68_words": {"Screen":"00d5bea0","Group":"00d5cbe8","Text":"00d5c730","Icon":"00d5c528","ClipBox":"00d5d0c0","Section":"00d5c950","FrameBox":"00d5d198"},
+  "derived_current68":{"Listbox":{"word":"00d5bc60","target":"00a9ca60","behavior":"same owner/frame/input services through bind_listbox_pointer; distinct actual caller, never AA7190 fallback","report":"reports/gui_listbox_pointer_runtime.json"}},
+  "current68_target":"00aa7190",
+  "empty_listener_bodies":{"004fa100":"RET4, CEB110 and CEFC04 current00","004fa120":"RET4, CEB110 and CEFC04 current08"},
+  "no_ghidra_function":[],
+  "build_tested":true,
+  "fixture_tested":true,
+  "fixture":"local/gui_frame_probe.cpp: same canonical owners, parent bubbling, listener replacement, captured mouse after backend replacement, changed button1 history; PASS",
+  "mechanical_call_check":{"direct_checked":1,"failed":0,"indirect_reviewed_in_listing":4},
+  "abi_compatible":false,
+  "game_validated":false,
+  "new_permanent_tests":0
+}

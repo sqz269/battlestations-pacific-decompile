@@ -74,6 +74,14 @@ void GuiListboxListenerDispatch::listener_current0c(void* identity,
     ActiveCall call(*this, listener);
     listener.call_current0c(first, second, listbox);
 }
+void GuiListboxListenerDispatch::listener_current10(void* identity,
+    GuiWidgetOwner& row, GuiWidgetOwner& listbox) {
+    if (&row.runtime() != &owners_)
+        throw std::logic_error("Listbox pointer row belongs to another widget runtime");
+    auto& listener = frame_listener(identity, listbox);
+    ActiveCall call(*this, listener);
+    listener.call_current10(row, listbox);
+}
 std::uint8_t GuiListboxListenerDispatch::device_current2c(InputDevice& device) {
     if (!activity_) throw std::logic_error("Listbox activation requires the actual device current2C provider");
     return activity_->device_current2c(device);
