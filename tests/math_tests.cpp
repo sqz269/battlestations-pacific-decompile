@@ -77,6 +77,7 @@
 #include "bsp/unit_hit_path.hpp"
 #include "bsp/unit_parts.hpp"
 #include "bsp/projectile_impact.hpp"
+#include "bsp/blast_damage.hpp"
 #include <algorithm>
 #include <cmath>
 #include <memory>
@@ -2410,6 +2411,20 @@ int main() {
         check(bsp::spatial_placement_0098bad2(quad) == bsp::SpatialPlacement::kGridCells
                   && bsp::spatial_cell_slot_count_0098a310(quad) == bsp::kSpatialNodeCellLinkSlots,
             "a 2x2 span is exactly the four links at node+0Ch");
+    }
+
+    {
+        // 004705C0's blast falloff. The three constants are complete: the 1.0f
+        // the fraction is subtracted from, the strict "> 0" the ignore flag is
+        // gated on, and the unguarded divide by the record's +24h range.
+        check(std::fabs(bsp::blast_falloff_fraction_004705c0(25.0f, 100.0f, false) - 0.75f)
+                  < 1e-6f,
+            "004705E7 scales the part distance by the explosion radius");
+        check(bsp::blast_falloff_fraction_004705c0(150.0f, 100.0f, true) < 0.0f,
+            "00470602 leaves a hit outside the radius negative even when the flag is set");
+        check(std::fabs(bsp::blast_falloff_fraction_004705c0(25.0f, 100.0f, true) - 1.0f)
+                  < 1e-6f,
+            "00470602 lifts a positive fraction to 1.0f");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

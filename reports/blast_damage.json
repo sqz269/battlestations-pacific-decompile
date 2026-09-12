@@ -1,0 +1,309 @@
+{
+  "packet": "cc2_blast_damage",
+  "owner": "agent/cc2-blast-damage",
+  "doc": "docs/EXPLOSION_RADIAL_DAMAGE.md",
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "summary": "0084BAD0 is __fastcall(centre in ECX, &radius in EDX; &damage, ignoreFalloff, sourceEntity, shot) with RET 0x10, so four stack arguments. It calls 00428800(radius, damage) before the world-mode test, so that call runs even when [00E188A8+1FE4h] == 2 suppresses the blast. The gather 00904470 is __stdcall(outVector, centre, radius by value, ignoreFalloff byte, shot, sourceEntity) with RET 0x18: it takes the exclude from sourceEntity->vtable[B0h]() (skipped when the entity is null), fetches the spatial index from the lazy singleton 0042E630 and runs 0098C630 over it, then writes the shot, the centre into +18h..+20h, the radius into +24h and the flag into +2Ch per gathered record. The ECX = [world+19CCh] load at 0084BB3B is dead: 00904470 overwrites ECX with its sixth argument at its first instruction. 0098C630 is __thiscall(index; centre, radius, excludeNode, outVector) RET 0x10 over the same 96h x 96h grid at index+84h as the segment query, stamping each visited node at node+4h with [00E188A8+648h]; 0098C510 is __thiscall(index; centre, radius, excludeNode, node, outVector) RET 0x14, resets a stack record, sets +0h = node[+4Ch], calls node->vtable[0Ch](centre, radius, excludeNode, &record), appends through 0098C460 on a hit and recurses over node+FCh/+100h. The third argument of that virtual is the exclude node, not the output vector. The node interface is four slots wide (base vtable 00CE89E8): slot 8 is the segment entry 0098B9C0 and slot 0Ch the sphere entry 0098AAE0, which rejects the sphere AABB against node+13Ch..+150h and then calls shape->vtable[4](centre, radius, &record) over the node+D0h shapes. The shape interface is three slots wide, its base vtable 00CE89DC has __purecall in the sphere slot, and both concrete shape classes resolvable from the known segment traces implement it as XOR AL,AL / RET 0xC. The only node class that overrides slot 0Ch, the unit part's 0070F090, re-pushes the same four arguments and tail-calls 0098AAE0. So nothing on the blast path writes record+34h and the hull segment index stays -1 from 00470470. Eight call sites in six containers reach 0084BAD0; the projectile, bomb and flak sites all take the radius from classDesc+70h and the damage from Random(classDesc+B4h, classDesc+B8h), the unit death explosion 00819A20 takes both from the class descriptor pair [unit+538h]+514h/+518h, and the three sites in 0053F2D0 pass no shot, no source entity and no ignore flag.",
+  "routines": [
+    {
+      "address": "0084bad0",
+      "native": "0084bad0",
+      "name": "BSP_Explosion_ApplyRadialDamage",
+      "body": "0084bad0-0084bc5f",
+      "abi": "__fastcall(const float3* centre in ECX, const float* radius in EDX, const float* damage, int ignoreFalloff, void* sourceEntity, void* shot) returning void, RET 0x10 at 0084bc5b, SEH frame",
+      "coverage": "complete for the argument contract, the record fill and the queue gate; 00428800 stays a contract",
+      "evidence": "Stack arguments from the callee cleanup RET 0x10 at 0084bc5b: four dwords. Their order from the prologue and the loop. After PUSH -1 / PUSH 0xc94208 / PUSH EAX the MOV EAX,[ESP+0x10] at 0084bade is entry ESP+4, the first stack argument, and FLD [EAX] at 0084bae9 dereferences it as a float, so it is a pointer to the damage. ESI = EDX at 0084baf7 with FLD [ESI] at 0084baf9 makes EDX a pointer to the radius; EDI = ECX at 0084bafb and FLD [EDI]/[EDI+4]/[EDI+8] at 0084bbb6..0084bbc9 make ECX a float3. In the record loop ESP is entry-0x38: MOV ECX,[ESP+0x3c] at 0084bba1 is entry+4 (&damage), MOV EDX,[ESP+0x48] at 0084bba7 is entry+0x10 (shot, pushed for 00470350), MOV ECX,[ESP+0x44] at 0084bbb8 is entry+0xc (sourceEntity, compared with [ESI] at 0084bbcf) and MOV AL,byte ptr [ESP+0x40] at 0084bbc2 is entry+8, read as a byte only. 00428800 is called at 0084bb00 before the CMP [EAX+0x1fe4],2 at 0084bb0a. The gathered buffer is an MSVC vector object at entry-0x1c: EBX = LEA [ESP+0x18] at 0084bb5f is that object, [EBX+8] is the end pointer the bound checks at 0084bb97 and 0084bbfe use, and the cursor advances by ADD ESI,0x54 at 0084bc08. The queued direction is XORPS XMM0 with MOVSS XMM1,[0x00d7a24c] at 0084bbd9 into a local float3, and 00d7a24c reads 00 00 80 3f, so the direction is (0, 1, 0)."
+    },
+    {
+      "address": "00904470",
+      "native": "00904470",
+      "name": "BSP_Explosion_GatherHitRecords",
+      "body": "00904470-00904550",
+      "abi": "__stdcall(void* outVector, const float3* centre, float radius, unsigned char ignoreFalloff, void* shot, void* sourceEntity) returning void, RET 0x18 at 00904550",
+      "coverage": "complete",
+      "evidence": "Six stack arguments from RET 0x18 at 00904550 and from the caller's six pushes at 0084bb33..0084bb49. Order from the reads: MOV ECX,[ESP+0x18] at 00904470 is entry+0x18, the sixth argument, tested for null and used as the this of the vtable[B0h] call; FLD [ESP+0xc] at 00904484 is entry+0xc, the radius as a float by value; MOV EBX,[ESP+0xc] at 00904489 (ESP = entry-4) is entry+8, the centre pointer; MOV EDI,[ESP+0x14] at 00904490 (ESP = entry-0x10) is entry+4, the output vector. In the record loop ESP is entry-0x10: MOV EAX,[ESP+0x24] at 009044ed is entry+0x14, the shot pushed into 00470350; MOVSS XMM0,[ESP+0x1c] at 0090451e is entry+0xc, the radius written to +24h; MOV CL,[ESP+0x20] at 00904533 is entry+0x10, the flag byte written to +2Ch. The four arguments for 0098C630 are pushed at 00904494..0090449a and 0042E630 is called at 0090449b with them already on the stack, so it takes none and returns the index in EAX, which becomes ECX at 009044a0. ECX at entry is never read before it is overwritten, so the [world+19CCh] the caller loads is dead."
+    },
+    {
+      "address": "0098c630",
+      "native": "0098c630",
+      "name": "BSP_SpatialIndex_QuerySphere",
+      "body": "0098c630-0098c7ba",
+      "abi": "__thiscall(void* index; const float3* centre, float radius, void* excludeNode, void* outVector) returning a bool in AL, RET 0x10 at 0098c7ba",
+      "coverage": "complete",
+      "evidence": "Four stack arguments from RET 0x10. EBP = [ESP+0x3c] at 0098c635 is entry+4, the centre; [ESP+0x48] at 0098c75c is entry+8, the radius; [ESP+0x4c] at 0098c768 is entry+0xc, passed straight to 0098C510 as its exclude; [ESP+0x50] at 0098c758 is entry+0x10, the output vector. The FPU block at 0098c639..0098c6a8 builds centre-radius into [ESP+0x28..0x30] and centre+radius into [ESP+0x34..0x3c], and 0098AD60 is called twice at 0098c6ac and 0098c6b9 to turn each corner into a cell pair. The clamps at 0098c6be..0098c6f0 raise only the low pair to 0 and lower only the high pair to 0x95. The grid is at EBX+0x84 with a row stride of 0x258 bytes (0x96 dwords), IMUL EDX,EDX,0x96 at 0098c6fe. Each cell is a link list: the node is [link+8] at 0098c750 and the next link [link+4] at 0098c77f. EDI = [00e188a8 + 0x648] at 0098c653 is the stamp compared with [node+4] at 0098c753 and written back at 0098c762. The return is the OR of the 0098C510 results, OR byte ptr [ESP+0x13],AL at 0098c77b."
+    },
+    {
+      "address": "0098c510",
+      "native": "0098c510",
+      "name": "BSP_CollisionNode_OverlapSphere",
+      "body": "0098c510-0098c61e",
+      "abi": "__thiscall(void* index; const float3* centre, float radius, void* excludeNode, void* node, void* outVector) returning a bool in AL, RET 0x14 at 0098c554",
+      "coverage": "complete; node->vtable[0Ch] and 0098C460 are contracts",
+      "evidence": "Five stack arguments from RET 0x14. EBX = [ESP+0x78] at 0098c529 is entry+0xc, the exclude; EDI = [ESP+0x80] at 0098c52e is entry+0x10, the node; the CMP EDI,EBX at 0098c535 returns false when they are the same pointer. [ESP+0x80] at 0098c575 (ESP = entry-0x78) is entry+8, the radius; [ESP+0x88] at 0098c588 is entry+4, the centre; [ESP+0x8c] at 0098c59b is entry+0x14, the output vector used as the this of 0098C460. The virtual is [[EDI]+0xc] at 0098c57e and its four arguments are pushed at 0098c585..0098c592 in the order &record, exclude, radius, centre, so the call is (centre, radius, excludeNode, &record); the third is EBX, the exclude, not the vector. It cleans its own 16 bytes: after the call ESP is back to entry-0x78, which is what makes [ESP+0x8c] the vector and [ESP+0x80] the radius in the child loop. The temporary record at entry-0x60 is reset by 00470470 at 0098c55d, given node[+4Ch] through 00470370 at 0098c570, and destroyed by 004704B0 at 0098c606 after the children at [EDI+0xfc] / [EDI+0x100] are recursed over."
+    },
+    {
+      "address": "0098aae0",
+      "native": "0098aae0",
+      "name": "BSP_CollisionNode_SphereOverlapDefault",
+      "body": "0098aae0-0098ac11",
+      "abi": "__thiscall(void* node; const float3* centre, float radius, void* excludeNode, HitRecord* record) returning a bool in AL, RET 0x10 at 0098ab5f",
+      "coverage": "complete; the per-shape vtable[4] is a contract",
+      "evidence": "This is the collision node's vtable slot 0Ch and so the callee of every 0098C510 dispatch that is not overridden. Found from the node base vtable 00CE89E8, which 004E6540 writes at 004e6543 before calling the base constructor 004E6480 and storing its argument at node+4Ch: the four dwords from 00CE89E8 are 004E6560 (a bare RET), 004E6590 (the deleting destructor), 0098B9C0 (the segment entry, whose callees are 0085CAD0 and 0098AC20) and 0098AAE0. EDI = [ESP+0x24] at 0098aae4 is entry+4, the centre, and [ESP+0x28] at 0098aaf9 is entry+8, the radius. The FPU block builds centre-radius and centre+radius and rejects against [ECX+0x13c], [ECX+0x140], [ECX+0x144] (min) and [ECX+0x148], [ECX+0x14c], [ECX+0x150] (max) with six FCOMIP tests at 0098ab4b, 0098ab62, 0098ab72, 0098ab82, 0098ab92 and 0098aba2, each rejecting on a strict separation. The shape loop is LEA EBP,[ECX+EAX*4+0xd0] with EAX = [ECX+0xf8] at 0098abb2, ESI from [ECX+0xd0], and per element it calls [[shape]+4] at 0098abe3 with the three arguments &record, radius, centre. The return is the OR of those results; an empty array falls out at 0098ac03 with the flag still 0."
+    },
+    {
+      "address": "0070c210",
+      "native": "0070c210",
+      "name": "BSP_FlakProjectile_Detonate",
+      "body": "0070c210-0070c366",
+      "abi": "__thiscall, one 0084BAD0 call at 0070c280",
+      "coverage": "reused from docs/HIT_NARROWPHASE.md, argument shape re-read here",
+      "evidence": "0084BAD0(ECX = proj+FCh, EDX = classDesc+70h, &damage, 1, [proj+238h], projectile). The damage is 00BD2F10(classDesc+B4h, classDesc+B8h) at 0070c247. This is the only one of the eight call sites that passes a non-zero ignore-falloff flag."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0084bb00",
+      "native": "00428800",
+      "function": "0084bad0",
+      "method": "call_00428800",
+      "this": "none (no ECX set up)",
+      "args": "the radius and the damage as floats by value at [ESP] and [ESP+4]",
+      "gate": "always, before the world-mode test"
+    },
+    {
+      "address": "0084bb4a",
+      "native": "00904470",
+      "function": "0084bad0",
+      "method": "gather_hit_records",
+      "this": "none used; ECX = [00E188A8+19CCh] is loaded at 0084bb3b and never read by the callee",
+      "args": "&vector, centre, radius by value, ignoreFalloff, shot, sourceEntity",
+      "gate": "[00E188A8+1FE4h] != 2"
+    },
+    {
+      "address": "0084bbb1",
+      "native": "00470350",
+      "function": "0084bad0",
+      "method": "record_set_shot",
+      "this": "the gathered record (ESI)",
+      "args": "the shot from entry+0x10",
+      "gate": "per gathered record"
+    },
+    {
+      "address": "0084bbf9",
+      "native": "00926e80",
+      "function": "0084bad0",
+      "method": "queue_hit",
+      "this": "the gathered record (ESI)",
+      "args": "EDX = a local float3 (0, 1, 0) built from XORPS and [00D7A24C]",
+      "gate": "record+0h != sourceEntity"
+    },
+    {
+      "address": "0084bc32",
+      "native": "004704b0",
+      "function": "0084bad0",
+      "method": "destroy_record",
+      "this": "each gathered record in turn",
+      "args": "none",
+      "gate": "the buffer is non-null"
+    },
+    {
+      "address": "0084bc43",
+      "native": "00bf65ac",
+      "function": "0084bad0",
+      "method": "free_gathered",
+      "this": "none",
+      "args": "the buffer pointer",
+      "gate": "the buffer is non-null"
+    },
+    {
+      "address": "0090449b",
+      "native": "0042e630",
+      "function": "00904470",
+      "method": "spatial_index",
+      "this": "none",
+      "args": "none; the four arguments already pushed belong to 0098C630",
+      "gate": "always"
+    },
+    {
+      "address": "009044a2",
+      "native": "0098c630",
+      "function": "00904470",
+      "method": "query_sphere",
+      "this": "the index returned in EAX by 0042E630",
+      "args": "centre, radius, excludeNode, outVector",
+      "gate": "always"
+    },
+    {
+      "address": "009044f4",
+      "native": "00470350",
+      "function": "00904470",
+      "method": "record_set_shot",
+      "this": "the gathered record (ESI)",
+      "args": "the shot from entry+0x14",
+      "gate": "per gathered record"
+    },
+    {
+      "address": "0098c776",
+      "native": "0098c510",
+      "function": "0098c630",
+      "method": "node_overlap",
+      "this": "the index (EBX)",
+      "args": "centre, radius, excludeNode, node, outVector",
+      "gate": "[node+4h] != [00E188A8+648h]"
+    },
+    {
+      "address": "0098c55d",
+      "native": "00470470",
+      "function": "0098c510",
+      "method": "record_reset",
+      "this": "the stack record",
+      "args": "none",
+      "gate": "node != excludeNode"
+    },
+    {
+      "address": "0098c570",
+      "native": "00470370",
+      "function": "0098c510",
+      "method": "record_set_entity",
+      "this": "the stack record",
+      "args": "node[+4Ch]",
+      "gate": "node != excludeNode"
+    },
+    {
+      "address": "0098c5a7",
+      "native": "0098c460",
+      "function": "0098c510",
+      "method": "append_record",
+      "this": "the output vector",
+      "args": "&record",
+      "gate": "the node reported a hit"
+    },
+    {
+      "address": "0098c5ea",
+      "native": "0098c510",
+      "function": "0098c510",
+      "method": "recurse_child",
+      "this": "the index, reloaded from the saved slot",
+      "args": "centre, radius, excludeNode, child, outVector",
+      "gate": "per child of [node+FCh], count [node+100h]"
+    },
+    {
+      "address": "0098c606",
+      "native": "004704b0",
+      "function": "0098c510",
+      "method": "destroy_record",
+      "this": "the stack record",
+      "args": "none",
+      "gate": "node != excludeNode"
+    },
+    {
+      "address": "0053f5fa",
+      "native": "0084bad0",
+      "function": "0053f2d0",
+      "method": "apply_explosion",
+      "this": "ECX = ESI+18h, EDX = entry+14h of a 30h-byte table element",
+      "args": "&damage (a 10h-stride cursor), 0, 0, 0",
+      "gate": "per table element"
+    },
+    {
+      "address": "0053fb45",
+      "native": "0084bad0",
+      "function": "0053f2d0",
+      "method": "apply_explosion",
+      "this": "ECX = a local float3 at ESP+0xa0, EDX = element+14h",
+      "args": "&damage, 0, 0, 0",
+      "gate": "per table element"
+    },
+    {
+      "address": "0053fe37",
+      "native": "0084bad0",
+      "function": "0053f2d0",
+      "method": "apply_explosion",
+      "this": "ECX = a local float3 at ESP+0x94, EDX = element+14h",
+      "args": "&damage, 0, 0, 0",
+      "gate": "per table element"
+    },
+    {
+      "address": "006fd032",
+      "native": "0084bad0",
+      "function": "006fcd20",
+      "method": "apply_explosion",
+      "this": "ECX = projectile+FCh, EDX = [proj+314h]+70h",
+      "args": "&damage (a local from 00BD2F10), 0, [proj+3D8h], the projectile",
+      "gate": "always on this path"
+    },
+    {
+      "address": "00819c14",
+      "native": "0084bad0",
+      "function": "00819a20",
+      "method": "apply_explosion",
+      "this": "ECX = unit+FCh, EDX = [unit+538h]+518h",
+      "args": "&damage = [unit+538h]+514h, 0, 0, 0",
+      "gate": "[[unit+538h]+514h] > [00D7A218]"
+    },
+    {
+      "address": "0084bee3",
+      "native": "0084bad0",
+      "function": "0084bc60",
+      "method": "apply_explosion",
+      "this": "ECX = a local float3, the hit position minus the scaled direction",
+      "args": "&damage (a local), classDesc[+8h] == 10h, buffer+4h, buffer+20h; EDX = classDesc+70h",
+      "gate": "classDesc[+6Ch], per docs/PROJECTILE_IMPACT.md"
+    },
+    {
+      "address": "0070c280",
+      "native": "0084bad0",
+      "function": "0070c210",
+      "method": "apply_explosion",
+      "this": "ECX = proj+FCh, EDX = classDesc+70h",
+      "args": "&damage (from 00BD2F10), 1, [proj+238h], the projectile",
+      "gate": "always"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "range": "0085f7c0-0085f80f",
+      "read": "raw listing through tools/bsp.py ghidra bytes plus capstone in local/decode.py",
+      "note": "The eighth 0084BAD0 call site, 0085f80c, has no containing Ghidra function; the enclosing candidate 0085F500 does not start it. The setup is byte-for-byte the shape of 006FD032: damage = 00BD2F10(classDesc+B4h, classDesc+B8h) with ECX = 1 at 0085f7d5, a pose refresh 00414DB0 when [ebx+0xc8] == 0, ESI = [ebx+0x3d8] as the source entity, EDX = [ebx+0x314]+0x70 as the radius, EBX itself as the shot and ECX = ebx+0xfc as the centre. No host_steps row is claimed for it because the containing function cannot be named."
+    },
+    {
+      "range": "004e6560-004e6560",
+      "read": "raw bytes plus capstone",
+      "note": "A one-byte C3. Slot 0 of the collision node's base vtable 00CE89E8 and of both derived node vtables 00CEA05C and 00D194A8."
+    },
+    {
+      "range": "004e6470-004e6472",
+      "read": "raw bytes plus capstone",
+      "note": "C2 04 00, a RET 4 stub. Slot 8 of the three-slot shape interface."
+    },
+    {
+      "range": "004f13a0-004f13a4",
+      "read": "raw bytes plus capstone",
+      "note": "XOR AL,AL / RET 0xC. Slot 4 (the sphere test) of the shape vtable 00CEA050, whose slot 0 is the subobject segment trace 0087FF80. Three stack arguments, matching the three 0098AAE0 pushes."
+    },
+    {
+      "range": "00929ff0-00929ff4",
+      "read": "raw bytes plus capstone",
+      "note": "The same XOR AL,AL / RET 0xC, slot 4 of the shape vtable 00D194B8 whose slot 0 is the transformed-box trace 00929B80."
+    },
+    {
+      "range": "0070f090-0070f0b3",
+      "read": "raw bytes plus capstone",
+      "note": "The unit part's override of the node slot 0Ch in vtable 00CFD7B8, built by BSP_UnitPartInstance_Construct at 007135fa. It re-pushes centre, radius, exclude and &record, calls 0098AAE0 at 0070f0a7, normalises the result with SETNE and returns RET 0x10. It writes nothing of its own."
+    }
+  ],
+  "corrections": [
+    "docs/HIT_NARROWPHASE.md says 0098C510 calls node->vtable[0Ch](centre, radius, vector, &record). The third argument is EBX, the exclude node the routine also compares itself against at 0098c535; the output vector is the fifth stack argument and is only touched at 0098c59b for the 0098C460 append.",
+    "docs/HIT_NARROWPHASE.md calls 0087FEC0, 0087FF80 and 00929B80 the shape vtable[0] implementations without giving the interface. Slot 0 of the three-slot shape vtable is the segment trace and slot 4 is the sphere test; the base shape vtable 00CE89DC has __purecall (00BF698E) in the sphere slot, so a concrete shape must define one.",
+    "docs/PROJECTILE_IMPACT.md line 315 says the explosion at 0084BE32 has its radius randomised from classDesc[+B4h]/[+B8h]. The randomised local is pushed as the third argument, the damage pointer; the radius is EDX = classDesc+70h, the same field the flak and bomb sites use.",
+    "The ECX = [00E188A8+19CCh] load at 0084BB3B is not a this pointer for 00904470. The callee's first instruction overwrites ECX with its sixth stack argument and it never reads the entry value."
+  ],
+  "unread": [
+    "The producer of the collision node's shape array at node+D0h. Both concrete shape classes reachable from the three known segment traces stub the sphere slot, and 0098AAE0 can only return true through that slot, so the shape class the blast path actually hits is not in the enumerated set. Until the installer of node+D0h is read, the shape enumeration is partial and the blast hit set cannot be closed.",
+    "00428800, called with the radius and damage before the world-mode test. Read only to 00428890: it squares the radius, walks a container at [00E188A8+21D0h]+28h and compares the square against a value from 0085BF90. The verb is not settled, so the host method keeps its address as its name.",
+    "0098C460, the append. Read only as a call: it must copy the stack record, since 0098C510 destroys that record with 004704B0 immediately afterwards and 004704B0 frees the part array at +3Ch.",
+    "The containing function of 0085F80C, and the identity of 0053F2D0 beyond its single caller 00540390 and its point-effect callees.",
+    "Node classes that override both slot 8 and slot 0Ch would not appear in the differential used here, which enumerated overrides by taking the data references to the default slot 8 (0098B9C0) and the default slot 0Ch (0098AAE0) and looking for a vtable present in one list and not the other. Only 00CFD7B8 differs, and its override forwards."
+  ]
+}
