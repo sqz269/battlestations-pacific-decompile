@@ -56,3 +56,11 @@ Run again from the Script Manager after the `00643c1c..00643c68` row was added: 
   one-byte-back anchor at `00643c1b` found no owner. The script now walks back up to 64 bytes to
   the nearest owned address, adds the range from the byte after it through the end of the last
   decoded instruction, and skips rows an earlier run already repaired. One more run is queued.
+
+## Repair run 4 (2026-09-12, RepairListingDefects.java, Ghidra 12.0.4)
+
+- `00643c1c..00643c68`: repaired. The backward-walking anchor found `BSP_InGameHudMarkersScreen_Update`
+  at `00643c18` and the body now owns `00643c19..00643c68` as well (`00643c19`, `00643c1c` and
+  `00643c68` all resolve to the function); `tools/ghidra_flow_repair.py 006435d0` reports 565
+  instructions, 0 gaps. The other four rows printed "already repaired" and were left untouched.
+  No listing defects remain queued.
