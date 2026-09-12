@@ -8,7 +8,9 @@ namespace bsp {
 class GuiBaseWidgetListener : public GuiWidgetFrameListenerOwner {
 public:
     using GuiWidgetFrameListenerOwner::GuiWidgetFrameListenerOwner;
+    void call_current00(GuiWidgetOwner&) override; // 004FA100
     void call_current04(GuiWidgetOwner&) override; // 004FA110
+    void call_current08(GuiWidgetOwner&) override; // 004FA120
     void call_current0c(GuiWidgetOwner&) override; // 004FA130
     void call_current10(GuiWidgetOwner&) override; // 004FA140
     void call_current14(GuiWidgetOwner&) override; // 004FA150

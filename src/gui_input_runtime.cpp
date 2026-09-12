@@ -1,6 +1,7 @@
 #include "bsp/gui_input_runtime.hpp"
 #include "bsp/gui_listbox_runtime.hpp"
 #include "bsp/input_device_state.hpp"
+#include "bsp/input_focus_reset.hpp"
 #include "bsp/native_input_device_runtime.hpp"
 #include "bsp/platform_cursor.hpp"
 #include <cstddef>
@@ -39,6 +40,8 @@ void* gui_raw_input_device_004ba6d0(void* backend,std::uint32_t type,std::uint32
     return read<void*>(fresh,index*4u);
 }
 GuiInputSource::GuiInputSource(InputBindingDeviceGroups* const& typed) noexcept : typed_(&typed) {}
+GuiInputSource::GuiInputSource(InputBindingDeviceGroups* const& typed,
+    InputFocusDeviceHost& activity) noexcept : typed_(&typed), typed_activity_(&activity) {}
 GuiInputSource::GuiInputSource(GuiNativeInputSource raw) noexcept
     :raw_(&raw.backend_00f8bbf4),native_(&raw.devices) {}
 GuiInputDeviceRef GuiInputSource::device(std::uint32_t type,std::uint32_t index) const {
@@ -51,6 +54,7 @@ GuiInputDeviceRef GuiInputSource::device(std::uint32_t type,std::uint32_t index)
         if(!groups || type>=groups->size())
             throw std::logic_error("GUI input requires its actual typed class vectors");
         result.typed_=get_input_class_device_004ba6d0(*groups,static_cast<std::int32_t>(type),signed_word(index));
+        result.typed_activity_=typed_activity_;
     }
     return result;
 }
@@ -87,5 +91,11 @@ std::uint8_t GuiInputDeviceRef::buttons_active(GuiListboxFrameCalls& provider) c
     if(raw_) return native_->buttons_active_vslot2c(raw_);
     if(!typed_) throw std::logic_error("GUI input has no device at current2C");
     return provider.device_current2c(*typed_);
+}
+std::uint8_t GuiInputDeviceRef::activity_current28() const {
+    if(raw_) return native_->activity_vslot28(raw_,read<std::uint32_t>(raw_,0));
+    if(!typed_ || !typed_activity_)
+        throw std::logic_error("GUI current28 requires its actual typed activity provider");
+    return static_cast<std::uint8_t>(typed_activity_->activity_vslot28(*typed_));
 }
 } // namespace bsp

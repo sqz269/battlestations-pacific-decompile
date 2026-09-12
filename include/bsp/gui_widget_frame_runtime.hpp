@@ -17,7 +17,9 @@ public:
     explicit GuiWidgetFrameListenerOwner(void* actual_identity);
     virtual ~GuiWidgetFrameListenerOwner() = default;
     void* actual_identity() const noexcept { return identity_; }
+    virtual void call_current00(GuiWidgetOwner&) = 0;
     virtual void call_current04(GuiWidgetOwner&) = 0;
+    virtual void call_current08(GuiWidgetOwner&) = 0;
     virtual void call_current0c(GuiWidgetOwner&) = 0;
     virtual void call_current10(GuiWidgetOwner&) = 0;
     virtual void call_current14(GuiWidgetOwner&) = 0;
@@ -73,6 +75,10 @@ public:
     // Keeps that borrow through the derived tail; never redispatches current40.
     void update_base_from_active_00aa87b0(GuiWidgetOwner&, float seconds);
     bool contains_pointer_00aa6a40(GuiWidgetOwner&);
+    void align_bounds64(GuiWidgetOwner&, float&, float&, float&, float&);
+    // AA7190, RET4: the incoming child argument is unread. Re-read listener
+    // identity at each call, but retain the mouse obtained after current00.
+    void dispatch_current68(GuiWidgetOwner&, GuiWidgetOwner* incoming_child);
 private:
     struct ActiveFrame;
     GuiWidgetFrameServices services_;
@@ -81,7 +87,6 @@ private:
     ActiveFrame* active_{};
     const GuiListboxFrameServices* listbox_frames_{};
     GuiWidgetFrameListenerOwner& listener(GuiWidgetOwner&) const;
-    void align_bounds64(GuiWidgetOwner&, float&, float&, float&, float&);
     void update_base_active(GuiWidgetOwner&, float seconds);
     void listener_tail(GuiWidgetOwner&);
 };
