@@ -69,6 +69,7 @@
 #include "bsp/entity_think_dispatch.hpp"
 #include "bsp/unit_damage.hpp"
 #include "bsp/unit_hit_path.hpp"
+#include "bsp/projectile_impact.hpp"
 #include <algorithm>
 #include <cmath>
 #include <memory>
@@ -2183,6 +2184,24 @@ int main() {
             bsp::apply_damage_00879070(health, gates, as_damage);
         check(as_damage == -120.0f && !repaired.refused && repaired.new_health == 520.0f,
             "00879810 turns a positive delta into a repair through 00879070");
+    }
+
+    {
+        // 006E7670 and 006E65C0. The position slot takes a half-step gravity
+        // term and the velocity slot a full one; swapping them, or dropping
+        // either, still compiles and still looks like a ballistic arc.
+        bsp::ProjectileFlightState state;
+        state.velocity.y = 100.0f;
+        state.snapshot_current.y = 50.0f;
+
+        const float step = 0.05f;
+        const float g = static_cast<float>(bsp::kProjectileGravity);
+        const bsp::ProjectileFlightState next = bsp::projectile_flight_step(state, step);
+
+        const float expected_y = 50.0f + 100.0f * step - (step * g) * step * 0.5f;
+        check(next.local_position.y == expected_y && next.velocity.y == 100.0f - step * g &&
+                  next.flight_time == step,
+            "006E7670 takes 0.5*g*t^2 on the position while 006E65C0 takes g*t on the velocity");
     }
 
 
