@@ -256,3 +256,9 @@ else.
   constructor set; that default was not read.
 - `007B97E0`'s `[plane+9D4h]` and `006F57A0`'s `[fort+738h]` were read as accessors only.
   What owns those pointers is out of this packet.
+
+## Correction from docs/GAMEPLAY_LOOSE_ENDS_1.md (packet cc2_gameplay_loose_ends_1)
+
+- **Was:** 00956C20's blast accumulator unit+460h + cat*4 has no reader in this packet's reach; contract: unread on the consumer side.
+  **Is:** It has no live reader at all. The only two functions that read it are unreferenced accessors, so the field is written every pass and never consumed in the shipped build. There are twelve categories.
+  **Evidence:** The only indexed accesses to 0x460 in .text are 00956D6C, 00956E94, 00956E9B and 009F9BE4; 009F9BE0 and 009F9BF0 have zero absolute occurrences and zero E8/E9 call sites. 00956EC0 CMP ESI,0xC with JL sets the category count. By contrast the sibling array unit+430h+cat*4 has live indexed readers at 00863A34 and 0095EBC4.

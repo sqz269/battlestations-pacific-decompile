@@ -1,0 +1,58 @@
+[
+  {
+    "address": "00b21820",
+    "before": {
+      "address": "00b21820",
+      "function_name": "BSP_D3D9Renderer_SetVertexShaderConstantsF",
+      "comment": "[BSP reconstruction 00b21820]\nThiscall RETCh start/data/float4count. Zero count skips guard/API. Optional guard; D3D float constant upload then attempted-call counter and count*16 modulo32-bit byte counter; HRESULT ignored natively. Typed port real-device register readback checked; new API exposes HRESULT and zero-count S_FALSE."
+    },
+    "after": {
+      "address": "00b21820",
+      "name": "BSP_D3D9Renderer_SetVertexShaderConstantsF",
+      "evidence": "Complete160-byte raw vertex float constant upload in src/native_shader_constants.cpp. Count captured before guard; zero skips all renderer/global use. Live data/start callee-slot reads after optional entry; current renderer+1A10/current COM table, ignored HRESULT, live wrapping DWORD counters. New EDX actual synchronization binding, ECX/raw stack and RET0Ch retained but not original drop-in ABI. Source guard arms after outgoing pushes and current entry load; current mode before disarm; actual B21110 C++ cleanup. Both original FH3 maps/actions separately verified; native EH execution/private frame/SEH and game validation excluded. Primary strict Win32, emitted-code/provider proof and one qualified native/source capture-device fixture; reports/native_shader_constants.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b218c0",
+    "before": {
+      "address": "00b218c0",
+      "function_name": "BSP_D3D9Renderer_SetPixelShaderConstantsF",
+      "comment": "[BSP reconstruction 00b218c0]\nThiscall RETCh start/data/float4count. Zero count skips guard/API. Optional guard; D3D float constant upload then attempted-call counter and count*16 modulo32-bit byte counter; HRESULT ignored natively. Typed port real-device register readback checked; new API exposes HRESULT and zero-count S_FALSE."
+    },
+    "after": {
+      "address": "00b218c0",
+      "name": "BSP_D3D9Renderer_SetPixelShaderConstantsF",
+      "evidence": "Complete160-byte raw pixel float constant upload in src/native_shader_constants.cpp. Count captured before guard; zero skips all renderer/global use. Live data/start callee-slot reads after optional entry; current renderer+1A10/current COM table, ignored HRESULT, live wrapping DWORD counters. New EDX actual synchronization binding, ECX/raw stack and RET0Ch retained but not original drop-in ABI. Source guard arms after outgoing pushes and current entry load; current mode before disarm; actual B21110 C++ cleanup. Both original FH3 maps/actions separately verified; native EH execution/private frame/SEH and game validation excluded. Primary strict Win32, emitted-code/provider proof and one qualified native/source capture-device fixture; reports/native_shader_constants.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b21b40",
+    "before": {
+      "address": "00b21b40",
+      "function_name": "BSP_D3D9Renderer_DrawPrimitive",
+      "comment": "[BSP reconstruction 00b21b40]\nRecovered vtable+140h, RETCh. Skips inhibit+1d90h, device-lost+1d8ah or zero primitive count; optional guard then device slot144h DrawPrimitive. Helper00b1f740 called on object+1904h only computes unused ECX+10h (LEA/RET), no observable side effects. New interface returns HRESULT/S_FALSE."
+    },
+    "after": {
+      "address": "00b21b40",
+      "name": "BSP_D3D9Renderer_DrawPrimitive",
+      "evidence": "Complete175-byte raw renderer body: DWORD+1D90 then byte+1D8A skips; current+1904 and actual B1F740 before zero count; actual optional guard entry, current device/table+144 DrawPrimitive, ignored HRESULT, no counter writes; current mode read precedes disarm, saved DWORD/renderer and actual leave. New C++ interface uses actual synchronization and B21110 C++ cleanup; original FH3/SEH/private frame/caller-stack aliases and drop-in ABI excluded. Strict Win32 build, seven normal captured-native/source cases and one source-only C++ unwind fixture passed; local COM capture and actual Win32 lock, no game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b21ec0",
+    "before": {
+      "address": "00b21ec0",
+      "function_name": "BSP_D3D9Renderer_CheckDeviceFormat",
+      "comment": "[BSP reconstruction 00b21ec0]\nHypothesis, not a recovered symbol. Renderer virtual +F8h: IDirect3D9::CheckDeviceFormat wrapper, RET 10h; the usage mask comes from BSP_D3D9_TranslateResourceFlags (00b20a80), so the DF16/D16 probes are depth-stencil texture queries against an X8R8G8B8 adapter format (docs/APP_INIT_RENDERER.md). Defined from disk-verified bytes by the integrator."
+    },
+    "after": {
+      "address": "00b21ec0",
+      "name": "BSP_D3D9Renderer_CheckDeviceFormat",
+      "evidence": "Complete B21EC0[75], end exclusive B21F0B. Native ECX raw renderer; stack adapter format, engine flags, original resource kind, check format; RET10h; AL=(signed HRESULT>=0). Full actual B20A80 outputs pool into private flags slot and usage into private kind slot while EDI retains original kind; unused pool. Current renderer+1990/current object table/+28 COM CheckDeviceFormat uses adapter0 HAL1 and caller formats/translated usage/original kind. New raw C++ source interface; not original caller ABI or gameplay proof. See docs/NATIVE_RENDERER_FORMAT_CHECK.md and reports/native_renderer_format_check.json."
+    },
+    "status": "applied"
+  }
+]

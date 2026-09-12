@@ -32,7 +32,7 @@ std::int32_t signed_word(std::uint32_t bits) noexcept {
     std::memcpy(&value, &bits, sizeof(value));
     return value;
 }
-void enter_light_phase(DirectionalLightOwner& owner) noexcept {
+void enter_light_phase(NativeLightBaseOwnerView& owner) noexcept {
     owner.node.storage.vtable_00 = 0x00d62f58u;
     auto& dispatch = owner.node.scene_attachment;
     dispatch.is_type = owner.light_virtual_0c;
@@ -41,21 +41,21 @@ void enter_light_phase(DirectionalLightOwner& owner) noexcept {
     dispatch.remove_scene = dispatch_light_scene_remove_00b7bd60;
     dispatch.context = &owner.retained_scenes;
 }
-void destroy_scene_array(DirectionalLightOwner& owner) {
-    resize_system_ambient_backlinks_00b7bc70(owner.light.scenes_178, 0);
-    singleton_lifetime_free(owner.light.scenes_178.begin_00);
+void destroy_scene_array(NativeLightBaseOwnerView& owner) {
+    resize_system_ambient_backlinks_00b7bc70(owner.scenes_178, 0);
+    singleton_lifetime_free(owner.scenes_178.begin_00);
     // Native leaves the pointer/capacity words and pointed scene state intact.
 }
-void finish_node_base(DirectionalLightOwner& owner) {
+void finish_node_base(NativeLightBaseOwnerView& owner) {
     try {
         destroy_native_node_00b6f440(owner.runtime, owner.node);
     } catch (...) {
         // The node destructor completes its own cleanup unwind before throwing.
-        owner.light.~NativeLightTailStorage();
+        owner.end_tail(owner.tail);
         owner.runtime.scenes.forget_destroyed_binding(owner.node.scene_attachment);
         throw;
     }
-    owner.light.~NativeLightTailStorage();
+    owner.end_tail(owner.tail);
     owner.runtime.scenes.forget_destroyed_binding(owner.node.scene_attachment);
 }
 }
@@ -109,11 +109,19 @@ DirectionalLightOwner::DirectionalLightOwner(NativeLightStorageView storage,
 }
 
 void destroy_native_light_00b7c5b0(DirectionalLightOwner& owner) {
+    destroy_native_light_00b7c5b0({owner.runtime, owner.node, owner.light.shadow_174,
+        owner.light.scenes_178, owner.retained_scenes, owner.light_virtual_0c,
+        &owner.light, [](void* tail) noexcept {
+            static_cast<NativeLightTailStorage*>(tail)->~NativeLightTailStorage();
+        }});
+}
+void destroy_native_light_00b7c5b0(NativeLightBaseOwnerView owner) {
     // Validate the supplied companion before entering native destruction/unwind.
-    if (&owner.runtime.scenes.resolve(owner.node.transform) != &owner.node.scene_attachment)
+    if (!owner.light_virtual_0c || !owner.tail || !owner.end_tail ||
+        &owner.runtime.scenes.resolve(owner.node.transform) != &owner.node.scene_attachment)
         throw std::logic_error("light destruction requires its existing scene dispatch binding");
     enter_light_phase(owner);
-    auto& array = owner.light.scenes_178;
+    auto& array = owner.scenes_178;
     try {
         while (array.count_04 > 0) {
             SceneResource* scene = array.begin_00[array.count_04 - 1];
@@ -127,9 +135,9 @@ void destroy_native_light_00b7c5b0(DirectionalLightOwner& owner) {
             if (array.count_04 != 0)
                 array.count_04 = signed_word(static_cast<std::uint32_t>(array.count_04) - 1u);
         }
-        if (void* shadow = owner.light.shadow_174) {
+        if (void* shadow = owner.shadow_174) {
             owner.runtime.release_retained_owner(shadow);
-            owner.light.shadow_174 = nullptr; // clear after the real terminal callback
+            owner.shadow_174 = nullptr; // clear after the real terminal callback
         }
     } catch (...) {
         // CC1EE6 / DFAFC4 / DFAFB4: state1 array B7C1C0, state0 node B6F440.

@@ -1,0 +1,181 @@
+{
+  "packet": "orch5_widget_base_lifetime",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/gui_widget_base_lifetime.cpp",
+  "documentation": "docs/GUI_WIDGET_BASE_LIFETIME.md",
+  "functions": [
+    {
+      "address": "00aa9730",
+      "name": "destroy_gui_widget_base_00aa9730",
+      "end_inclusive": "00aa99b8",
+      "original_abi": "ECX base widget; RET; source SEH frame",
+      "coverage": "partial_projection: complete normal sequence for canonical Group/Text child4 and initialized descriptor domain; source pools/list allocation/vtable/SEH/return ABI excluded"
+    },
+    {
+      "address": "00ac73e0",
+      "name": "GuiTextChildDeletion::delete_widget_virtual4",
+      "end_inclusive": "00ac7405",
+      "original_abi": "ECX Group; flags DWORD stack; EAX original allocation; RET4",
+      "coverage": "partial_projection: Group immediate-base and post-base bit0 disposition over same C++ wrapper allocation; native F0 pool transport excluded"
+    },
+    {
+      "address": "00aa8320",
+      "name": "GuiWidgetOwner::release_scene_nodes_00aa8320",
+      "end_inclusive": "00aa8396",
+      "original_abi": "ECX widget; RET",
+      "coverage": "existing canonical current20 with active-owner and current child/count lifetime guards; stable host-list constraints"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00ac73e9",
+      "native": "00aa9730",
+      "function": "00ac73e0",
+      "binding": "Group current4 installs Group table then immediate common base call"
+    },
+    {
+      "address": "00ac73fb",
+      "native": "00ac7260",
+      "function": "00ac73e0",
+      "binding": "native flags bit0 pool free AFTER base; new C++ allocation transport is separate ABI"
+    },
+    {
+      "address": "00aa9760",
+      "native": "00aa8320",
+      "function": "00aa9730",
+      "binding": "base table D5C130 installed first"
+    },
+    {
+      "address": "00aa8352",
+      "native": "00aa8320",
+      "function": "00aa8320",
+      "binding": "resolved supported child20; each child current profile remains live"
+    },
+    {
+      "address": "00aa8368",
+      "native": "00ab6a30",
+      "function": "00aa8320",
+      "binding": "pure F8BE28 descriptor word getter"
+    },
+    {
+      "address": "00aa8372",
+      "native": "00a9e070",
+      "function": "00aa8320",
+      "binding": "resolved only under restored base D5C130; initialized native hierarchy excludes Text"
+    },
+    {
+      "address": "00aa837b",
+      "native": "00ab73b0",
+      "function": "00aa8320",
+      "binding": "standalone Text secondary branch; excluded for current base after derived teardown"
+    },
+    {
+      "address": "00aa8387",
+      "native": "00b6dfa0",
+      "function": "00aa8320",
+      "binding": "current primary release, clear field only after return"
+    },
+    {
+      "address": "00aa9797",
+      "native": "00ac73e0",
+      "function": "00aa9730",
+      "binding": "resolved Group current4(1); Text resolves AB8EE0; unknown profiles rejected"
+    },
+    {
+      "address": "00aa97b9",
+      "native": "00b6e680",
+      "function": "00aa9730",
+      "binding": "self-detach native node null parenting"
+    },
+    {
+      "address": "00aa97c2",
+      "native": "00b6d890",
+      "function": "00aa9730",
+      "binding": "reload primary then root registration null"
+    },
+    {
+      "address": "00aa97d2",
+      "native": "00b6d940",
+      "function": "00aa9730",
+      "binding": "parent primary nonnull then unlink current child primary"
+    },
+    {
+      "address": "00aa97df",
+      "native": "00a9bd50",
+      "function": "00aa9730",
+      "binding": "logical child list removal before parent-word clear"
+    },
+    {
+      "address": "00aa97ee",
+      "native": "00b6dfa0",
+      "function": "00aa9730",
+      "binding": "re-test main primary after detach callbacks"
+    },
+    {
+      "address": "00aa994c",
+      "native": "00bf6989",
+      "function": "00aa9730",
+      "binding": "existing timed-owner fragment final backing free"
+    },
+    {
+      "address": "00aa9973",
+      "native": "00bf65ac",
+      "function": "00aa9730",
+      "binding": "native residual list-node free; typed same-list allocation projection"
+    },
+    {
+      "address": "00aa9986",
+      "native": "00bf65ac",
+      "function": "00aa9730",
+      "binding": "native sentinel free then +68 clear"
+    },
+    {
+      "address": "00aa99a1",
+      "native": "00bd30f0",
+      "function": "00aa9730",
+      "binding": "base profile reset only; no reference decrement"
+    }
+  ],
+  "source_sha256": {
+    "include/bsp/gui_widget_base_lifetime.hpp": "1290fe07948c9946c09ef1ef19f5a9b93bb03ada8be0be304dfc26a078ab9d52",
+    "src/gui_widget_base_lifetime.cpp": "24abae2f71a1e5945b02f8f943d370fbb43235ac6529142497f149f6fc56ebf0",
+    "include/bsp/gui_text_child_lifetime.hpp": "e9f65b47da68105fad0281a6018ba9be348f8dfb17d94cc86eaf05d669e00ced",
+    "src/gui_text_child_lifetime.cpp": "1367f1d70595f33a187601752e286b4b306a0c86431751ad8e6a03c5bab50fcc"
+  },
+  "validation": {
+    "strict_win32": "passed /W4 /WX /fp:strict on base, owner and Text lifetime/factory TUs",
+    "combined_build": "passed final combined MSVC Win32 Release, 2/2 existing tests and final-library Group fixture",
+    "fixture": "local/gui_widget_base_probe.cpp passed actual nested Group Model/timed/tree owners, flags1 and flags0 with /MANIFEST:EMBED",
+    "fixture_sha256": "a2d862f8e97690a5bf2e91fdc1172c8f8ba6f5a1f3fbb065e1f88f38797d855c",
+    "fixture_log_sha256": "6498a83341b5b5bd4d78ab7296faa0c136ab5294e687ba340e7fc69a6e692aac",
+    "mixed_text_fixture": false,
+    "native_byte_differential": false,
+    "new_permanent_tests": 0
+  },
+  "boundaries": [
+    "new C++ ABI, not native GUI pools/list allocator/vtable/SEH",
+    "source-initialized distinct base/Text descriptors; descriptor alias/mutation is outside interface",
+    "remaining child4 only Group/Text",
+    "unchanged page manager companion-retirement projection",
+    "callback exception phases retained but not resumable",
+    "per-owner guard not atomic whole-tree or ancestor-borrow protection"
+  ],
+  "game_validated": false,
+  "abi_compatible": false,
+  "parent_validation": {
+    "build_log": "local/orch5-section-frame-point-final-build.log",
+    "build_log_sha256": "f8e9373ee8de71b75ea3368e94fb00def9769a4bade1830495a1c42535cdc9b0",
+    "fixture": {
+      "source": "local/gui_widget_base_probe.cpp",
+      "source_sha256": "a2d862f8e97690a5bf2e91fdc1172c8f8ba6f5a1f3fbb065e1f88f38797d855c",
+      "log": "local/orch5-final-base-probe.log",
+      "log_sha256": "6498a83341b5b5bd4d78ab7296faa0c136ab5294e687ba340e7fc69a6e692aac",
+      "result": "passed",
+      "scope": "source fixture linked final bsp_core.lib; no original-byte execution"
+    },
+    "batch_report": "reports/orch5_section_frame_light_batch.json",
+    "game_validated": false,
+    "drop_in_abi_compatible": false
+  }
+}

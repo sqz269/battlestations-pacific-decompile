@@ -188,3 +188,7 @@ them off as checked calls. No source, ABI, fixture or game validation is claimed
 ## AQ parent integration, 2026-09-12
 
 Correction from docs/NATIVE_PHYSICAL_FACTORY_PRIMITIVES.md: seven factory publication, adjustment/deletion and provider-pool primitive bodies now have source reconstructions and bounded native comparisons. The full pool initialization/link/trim lifecycle and complete physical-provider construction are still dependency boundaries. This closes only the corresponding primitive entries of this discovery map.
+
+## AR parent integration, 2026-09-12
+
+Correction from docs/NATIVE_PHYSICAL_PROVIDER_POOL_LIFECYCLE.md and docs/NATIVE_PHYSICAL_PENDING_RECORDS.md: actual physical-provider pool initialization, trim, teardown, table free and static lifetime are reconstructed, as are pending-record copy/name cleanup and queue reserve/resize/destruction. These close the corresponding dependencies of this discovery map. Complete physical-provider construction and deletion remain open; the normal deletion path still depends on full range erase and balancing, so readiness is not inferred from named helpers alone.

@@ -1,0 +1,448 @@
+{
+  "status": "complete_raw_source_bodies_primary_library_COFF_and_qualified_native_source_fixture_checked",
+  "native_functions": [
+    {
+      "address": "00b21820",
+      "native_bytes": 160,
+      "source_body_bytes": 254,
+      "native_upload_counter_bytes": 52,
+      "mapped_upload_counter_instructions": [
+        {
+          "native_address": "00b2185a",
+          "source_offset": 130,
+          "native_hex": "8b542424",
+          "source_hex": "8b5304",
+          "classification": "native data slot rebound through borrowed callee-slot pointer"
+        },
+        {
+          "native_address": "00b2185e",
+          "source_offset": 133,
+          "native_hex": "8b86101a0000",
+          "source_hex": "8b86101a0000",
+          "classification": "exact instruction bytes"
+        },
+        {
+          "native_address": "00b21864",
+          "source_offset": 139,
+          "native_hex": "8b08",
+          "source_hex": "8b08",
+          "classification": "exact instruction bytes"
+        },
+        {
+          "native_address": "00b21866",
+          "source_offset": 141,
+          "native_hex": "57",
+          "source_hex": "57",
+          "classification": "exact instruction bytes"
+        },
+        {
+          "native_address": "00b21867",
+          "source_offset": 142,
+          "native_hex": "52",
+          "source_hex": "52",
+          "classification": "exact instruction bytes"
+        },
+        {
+          "native_address": "00b21868",
+          "source_offset": 143,
+          "native_hex": "8b542428",
+          "source_hex": "8b13",
+          "classification": "native start slot rebound through borrowed callee-slot pointer"
+        },
+        {
+          "native_address": "00b2186c",
+          "source_offset": 145,
+          "native_hex": "52",
+          "source_hex": "52",
+          "classification": "exact instruction bytes"
+        },
+        {
+          "native_address": "00b2186d",
+          "source_offset": 146,
+          "native_hex": "50",
+          "source_hex": "50",
+          "classification": "exact instruction bytes"
+        },
+        {
+          "native_address": "00b2186e",
+          "source_offset": 147,
+          "native_hex": "8b8178010000",
+          "source_hex": "8b8178010000",
+          "classification": "exact instruction bytes"
+        },
+        {
+          "native_address": "00b21874",
+          "source_offset": 153,
+          "native_hex": "c744242800000000",
+          "source_hex": "c645dc01",
+          "classification": "source cleanup arm at native state-0 point after four outgoing pushes"
+        },
+        {
+          "native_address": "00b2187c",
+          "source_offset": 157,
+          "native_hex": "ffd0",
+          "source_hex": "ffd0",
+          "classification": "exact instruction bytes"
+        },
+        {
+          "native_address": "00b2187e",
+          "source_offset": 159,
+          "native_hex": "8386d81b000001",
+          "source_hex": "8386d81b000001",
+          "classification": "exact instruction bytes"
+        },
+        {
+          "native_address": "00b21885",
+          "source_offset": 166,
+          "native_hex": "c1e704",
+          "source_hex": "c1e704",
+          "classification": "exact instruction bytes"
+        },
+        {
+          "native_address": "00b21888",
+          "source_offset": 169,
+          "native_hex": "01bee01b0000",
+          "source_hex": "01bee01b0000",
+          "classification": "exact instruction bytes"
+        }
+      ],
+      "count_capture_before_guard": true,
+      "zero_count_skips_context_and_renderer": true,
+      "current_mode_before_disarm": true,
+      "adapter_bytes": 18,
+      "adapter_ret_bytes": 12,
+      "source_FH3_funcinfo": [
+        429065506,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "source_guard_padding_not_forwarded": "source zero-extends saved low byte; actual leave provider ignores the argument"
+    },
+    {
+      "address": "00b218c0",
+      "native_bytes": 160,
+      "source_body_bytes": 254,
+      "native_upload_counter_bytes": 52,
+      "mapped_upload_counter_instructions": [
+        {
+          "native_address": "00b218fa",
+          "source_offset": 130,
+          "native_hex": "8b542424",
+          "source_hex": "8b5304",
+          "classification": "native data slot rebound through borrowed callee-slot pointer"
+        },
+        {
+          "native_address": "00b218fe",
+          "source_offset": 133,
+          "native_hex": "8b86101a0000",
+          "source_hex": "8b86101a0000",
+          "classification": "exact instruction bytes"
+        },
+        {
+          "native_address": "00b21904",
+          "source_offset": 139,
+          "native_hex": "8b08",
+          "source_hex": "8b08",
+          "classification": "exact instruction bytes"
+        },
+        {
+          "native_address": "00b21906",
+          "source_offset": 141,
+          "native_hex": "57",
+          "source_hex": "57",
+          "classification": "exact instruction bytes"
+        },
+        {
+          "native_address": "00b21907",
+          "source_offset": 142,
+          "native_hex": "52",
+          "source_hex": "52",
+          "classification": "exact instruction bytes"
+        },
+        {
+          "native_address": "00b21908",
+          "source_offset": 143,
+          "native_hex": "8b542428",
+          "source_hex": "8b13",
+          "classification": "native start slot rebound through borrowed callee-slot pointer"
+        },
+        {
+          "native_address": "00b2190c",
+          "source_offset": 145,
+          "native_hex": "52",
+          "source_hex": "52",
+          "classification": "exact instruction bytes"
+        },
+        {
+          "native_address": "00b2190d",
+          "source_offset": 146,
+          "native_hex": "50",
+          "source_hex": "50",
+          "classification": "exact instruction bytes"
+        },
+        {
+          "native_address": "00b2190e",
+          "source_offset": 147,
+          "native_hex": "8b81b4010000",
+          "source_hex": "8b81b4010000",
+          "classification": "exact instruction bytes"
+        },
+        {
+          "native_address": "00b21914",
+          "source_offset": 153,
+          "native_hex": "c744242800000000",
+          "source_hex": "c645dc01",
+          "classification": "source cleanup arm at native state-0 point after four outgoing pushes"
+        },
+        {
+          "native_address": "00b2191c",
+          "source_offset": 157,
+          "native_hex": "ffd0",
+          "source_hex": "ffd0",
+          "classification": "exact instruction bytes"
+        },
+        {
+          "native_address": "00b2191e",
+          "source_offset": 159,
+          "native_hex": "8386dc1b000001",
+          "source_hex": "8386dc1b000001",
+          "classification": "exact instruction bytes"
+        },
+        {
+          "native_address": "00b21925",
+          "source_offset": 166,
+          "native_hex": "c1e704",
+          "source_hex": "c1e704",
+          "classification": "exact instruction bytes"
+        },
+        {
+          "native_address": "00b21928",
+          "source_offset": 169,
+          "native_hex": "01bee41b0000",
+          "source_hex": "01bee41b0000",
+          "classification": "exact instruction bytes"
+        }
+      ],
+      "count_capture_before_guard": true,
+      "zero_count_skips_context_and_renderer": true,
+      "current_mode_before_disarm": true,
+      "adapter_bytes": 18,
+      "adapter_ret_bytes": 12,
+      "source_FH3_funcinfo": [
+        429065506,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "source_guard_padding_not_forwarded": "source zero-extends saved low byte; actual leave provider ignores the argument"
+    }
+  ],
+  "actual_provider_bindings": [
+    {
+      "symbol": "?enter_native_renderer_optional_guard_00b33ad0@bsp@@YAEPBXAAUNativeRendererSynchronizationGlobals@1@@Z",
+      "archive_header_offset": 39929156,
+      "member_sha256": "df2f8d2001e3c7f7000980988780853ce25bbdf7f1314166a123d94a760a61bf"
+    },
+    {
+      "symbol": "?leave_native_renderer_optional_guard_00b33b00@bsp@@YAXPBXIAAUNativeRendererSynchronizationGlobals@1@@Z",
+      "archive_header_offset": 39929156,
+      "member_sha256": "df2f8d2001e3c7f7000980988780853ce25bbdf7f1314166a123d94a760a61bf"
+    },
+    {
+      "symbol": "?destroy_native_renderer_optional_guard_00b21110@bsp@@YAXABUNativeRendererOptionalGuardStorage@1@AAUNativeRendererSynchronizationGlobals@1@@Z",
+      "archive_header_offset": 39929156,
+      "member_sha256": "df2f8d2001e3c7f7000980988780853ce25bbdf7f1314166a123d94a760a61bf"
+    }
+  ],
+  "build_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\shader_constants_actual5\\build_frozen_v2\\manifest.json",
+    "bytes": 44488,
+    "sha256": "ab6594230abbb5d0767186154f8a24e6f8eff8ce62aafa8cf6a904cfd790ac2c"
+  },
+  "library": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\shader_constants_actual5\\build_frozen_v2\\build\\win32\\Release\\bsp_core.lib",
+    "bytes": 46682270,
+    "sha256": "73a8c9229b89a12a08e8978a598c7bc3628e957c231dd6d185f0314589c2b872"
+  },
+  "fixture": {
+    "executable": "J:\\PROG\\battlestations-pacific-decompile\\local\\shader_constants_actual5\\constants_probe.exe",
+    "executable_sha256": "a8d289f208935888c8ece3c5bb7be5d7e49819d0a07b883c0c1c06143369dcca",
+    "returncode": 0,
+    "stdout": "PASS: both native/source uploads, live post-call counters and wrapping, ignored E_FAIL, zero-count null skip; source-only actual optional-guard C++ unwind. Native guard/EH and real D3D device not exercised.\n",
+    "stderr": "",
+    "seconds": 0.045734999992419034,
+    "utc": "2026-09-12T16:53:14.799468+00:00"
+  },
+  "native_fixture_mode": 0,
+  "native_relocations_per_body": [
+    "two absolute optional-mode data operands"
+  ],
+  "source_only_fixture": "actual mode1 null-permitted lock guard; C++ exception from capture device; no post-call counter updates; nesting restored",
+  "persistent_tests_added": 0,
+  "ad_hoc_probes": 1,
+  "limits": [
+    "COM ABI capture device; no actual D3D upload/readback in this fixture.",
+    "Original guard/FH3 paths were not executed; source C++ guard cleanup was exercised.",
+    "Extra EDX context and source private frame differ; no original caller drop-in ABI, hardware-fault/SEH or game validation claim."
+  ],
+  "native_captures": {
+    "spans": [
+      {
+        "address": "00b21820",
+        "bytes": 160,
+        "instructions": 44,
+        "sha256": "eb6a705765ef44f4ab1f755d2d0f36bba9b3f1eede7653bd1efa0d490716e82e",
+        "saved_equals_disk": true
+      },
+      {
+        "address": "00b218c0",
+        "bytes": 160,
+        "instructions": 44,
+        "sha256": "d8a82241eddf807cc67f7ae751fb26ac441518bf7e01425c87f9cc4f16bd3498",
+        "saved_equals_disk": true
+      }
+    ],
+    "owned_native_bytes": 320,
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "source_files": [
+    {
+      "path": "src\\native_shader_constants.cpp",
+      "sha256": "6f3101c42f9ba54487b5de622038016c5a7103af5191f1aaa208fcb863f1b2b1"
+    },
+    {
+      "path": "include\\bsp\\native_shader_constants.hpp",
+      "sha256": "614a897e6f34e6517a3f7cc812463aedc8a10cfbf19c89e2c2baade99d79c657"
+    }
+  ],
+  "historical_semantic_implementations_preserved": "src/d3d9_states.cpp",
+  "native_EH": {
+    "spans": [
+      {
+        "address": "00cbcd98",
+        "bytes": 10,
+        "kind": "FH3 handler",
+        "sha256": "2d1c4f3cc7d04c5aea81f88f07b341b703effd08c2810194b6d155e0ef11d958",
+        "saved_equals_disk": true
+      },
+      {
+        "address": "00df531c",
+        "bytes": 36,
+        "kind": "FuncInfo",
+        "sha256": "bacd2b7b30f93631184fdf90d425206c8a2869efc4e4e85b25315078162098ea",
+        "saved_equals_disk": true
+      },
+      {
+        "address": "00df5314",
+        "bytes": 8,
+        "kind": "single unwind entry",
+        "sha256": "f98e9153de4f890b3d823dfaf2a3eaa6073eba4860c03419ff2afc36fc38234f",
+        "saved_equals_disk": true
+      },
+      {
+        "address": "00cbcd90",
+        "bytes": 8,
+        "kind": "guard unwind action",
+        "sha256": "1d3c5ad22b6a99e4a73413afeeb8c28a61eabe1e7a22cb499ab5d368c35c5f4a",
+        "saved_equals_disk": true
+      },
+      {
+        "address": "00cbcdb8",
+        "bytes": 10,
+        "kind": "FH3 handler",
+        "sha256": "20229bd75ce8295fa098009a4f52bc56d783dc2ec3bba2fb40378d54237ee49b",
+        "saved_equals_disk": true
+      },
+      {
+        "address": "00df5348",
+        "bytes": 36,
+        "kind": "FuncInfo",
+        "sha256": "ec899461afe91ec823a2176da833beb4011460a1d22c6ad93385f5c5960ce101",
+        "saved_equals_disk": true
+      },
+      {
+        "address": "00df5340",
+        "bytes": 8,
+        "kind": "single unwind entry",
+        "sha256": "be4dcae156dd785362f5833a500ab1acb24d8f59562ca6c154c98381b1807f05",
+        "saved_equals_disk": true
+      },
+      {
+        "address": "00cbcdb0",
+        "bytes": 8,
+        "kind": "guard unwind action",
+        "sha256": "d8760c84efd8c0800ab85150b6075a74f5870f31fa909c7eb4c3a3a6776c1b03",
+        "saved_equals_disk": true
+      }
+    ],
+    "total_bytes": 124,
+    "functions": [
+      {
+        "function": "00b21820",
+        "handler": "00cbcd98",
+        "frame_handler": "00bf6b43",
+        "funcinfo": "00df531c",
+        "fields": [
+          429065506,
+          1,
+          14635796,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        "unwind_map": "00df5314",
+        "state": -1,
+        "action": "00cbcd90",
+        "action_instructions": [
+          "lea ecx, [ebp - 0x14]",
+          "jmp 0xb21110"
+        ],
+        "guard_cleanup": "00b21110",
+        "native_execution": false
+      },
+      {
+        "function": "00b218c0",
+        "handler": "00cbcdb8",
+        "frame_handler": "00bf6b43",
+        "funcinfo": "00df5348",
+        "fields": [
+          429065506,
+          1,
+          14635840,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        "unwind_map": "00df5340",
+        "state": -1,
+        "action": "00cbcdb0",
+        "action_instructions": [
+          "lea ecx, [ebp - 0x14]",
+          "jmp 0xb21110"
+        ],
+        "guard_cleanup": "00b21110",
+        "native_execution": false
+      }
+    ],
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "source_relation": "one armed native state transitions to -1 through actual B21110; source record/frame layout remains different",
+    "native_EH_execution": false
+  }
+}

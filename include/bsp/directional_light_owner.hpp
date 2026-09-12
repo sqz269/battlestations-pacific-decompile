@@ -65,6 +65,20 @@ public:
 // frees +178, then executes the direct node base destructor. It ends both raw
 // lifetimes and forgets only the dead host scene association. It returns no slot.
 void destroy_native_light_00b7c5b0(DirectionalLightOwner&);
+// Reference-only base destruction adapter for distinct derived tail lifetimes.
+// All fields alias the same actual light; end_tail ends only its typed lifetime.
+// In particular this does not require a live direction view at point-light+1E0.
+struct NativeLightBaseOwnerView {
+    NativeNodeDestructionRuntime& runtime;
+    NativeNodeBinding& node;
+    void*& shadow_174;
+    SystemAmbientBacklinks& scenes_178;
+    LightSceneRetention& retained_scenes;
+    SceneTypePredicate light_virtual_0c;
+    void* tail;
+    void (*end_tail)(void*) noexcept;
+};
+void destroy_native_light_00b7c5b0(NativeLightBaseOwnerView);
 // Native ECX directional owner, stack deletion flags, EAX original owner,
 // RET4. Directional -> light -> node phases; returns the SAME pool slot only
 // when flags&1. Returned raw pointer may already be free, as in the native ABI.

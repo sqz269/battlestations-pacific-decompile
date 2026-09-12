@@ -297,9 +297,10 @@ enum class PlaneMotionArm {
 struct PlaneMotionDispatchInputs {
     bool control_mode_gate{false};  // (*(unit+72Ch))->vtable[+38h]() at 007CEC3F
     int ground_water_mode{0};       // unit+900h
-    int surface_mode{0};            // unit+5F0h
+    int surface_mode{0};            // unit+5F0h; docs/PLANE_GROUND_OPS.md: the third arm branches on the same ground/water mode field
 };
 
+// Superseded by select_motion_arm_007cec30 in include/bsp/plane_ground_ops.hpp (two inputs, docs/PLANE_GROUND_OPS.md).
 PlaneMotionArm select_motion_arm_007ce040(const PlaneMotionDispatchInputs& in);
 
 // The host the step sequence drives: one method per native call site.
