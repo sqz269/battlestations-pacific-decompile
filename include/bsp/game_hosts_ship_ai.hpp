@@ -52,6 +52,8 @@ namespace bsp::game {
 
 class GameHostLog;
 class GameUnitsHost;
+class GameSceneContentsHost;
+class GameMissionLuaHost;
 
 // 009F3D00's own dispatch, read from the image at 009F3D04..009F3DA0. Each row
 // is one `CMP EAX,<command>` and the `LEA EDI,[ESI+<ai offset>]` it takes; the
@@ -323,6 +325,8 @@ public:
     // One controller per created instance, in creation order. Called once,
     // after the instantiate pass and after the authored commands were issued.
     void register_units();
+    void load_avoid_zone_geometry(const GameSceneContentsHost&, GameMissionLuaHost&,
+        std::int32_t mode, std::uint8_t forced, std::int32_t session);
 
     // 009F50E0 for every registered unit, once per fixed simulation step, and
     // 009F5DA0 beside it. Run before the motion pass, because the motion's head

@@ -39,6 +39,7 @@ struct lua_State;
 
 namespace bsp {
 class VfsLocaleRuntime;
+struct ShipAiPathSearchTurnRamp;
 }
 
 namespace bsp::game {
@@ -193,6 +194,11 @@ public:
     // 0083cc2c..0083ce3c). 0083cc2c itself is not projected; only its reads
     // run. False leaves the output untouched.
     bool read_auto_thrust_0083cc2c(ShipAiAutoThrustSettings& out);
+
+    // Read the recovered0083D492..0083D575 fragment on this actual Lua state.
+    // Parent lookup errors return false with text; caller must reject the load.
+    // Successful reads include the native per-field non-number fallbacks.
+    bool read_path_turn_ramp(ShipAiPathSearchTurnRamp& out, std::string& error);
 
     // Milestone 2k. The two reads 0087d7b0 makes into the global config object
     // 00432650 hands out: `Globals["Minimap"]["MinimapRange"]` into +6Ch and

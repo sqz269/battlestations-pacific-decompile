@@ -20,6 +20,7 @@
 #include "bsp/mission_lua_bindings.hpp"
 #include "bsp/mission_lua_machine.hpp"
 #include "bsp/mission_scene_load.hpp"
+#include "bsp/ship_ai_path_turn_ramp.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/vfs_locale_runtime.hpp"
 #include "bsp/vfs_provider_manager.hpp"
@@ -424,6 +425,15 @@ bool GameMissionLuaHost::read_auto_thrust_0083cc2c(bsp::ShipAiAutoThrustSettings
     if (!complete) return false;
     out = settings;
     return true;
+}
+
+bool GameMissionLuaHost::read_path_turn_ramp(ShipAiPathSearchTurnRamp& out,
+    std::string& error) {
+    if (state_ == nullptr) {
+        error = "path turn ramp requires the live mission Lua state";
+        return false;
+    }
+    return read_ship_ai_path_turn_ramp_lua(*state_, out, error);
 }
 
 bool GameMissionLuaHost::read_turn_multipliers_0083ce56(bsp::UnitRudderCurveSettings& out) {
