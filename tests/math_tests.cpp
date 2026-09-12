@@ -1,3 +1,4 @@
+#include "bsp/ai_planner_tails.hpp"
 #include "bsp/land_and_structures.hpp"
 #include "bsp/air_operations.hpp"
 #include "bsp/ship_hydro_forces.hpp"
@@ -3252,6 +3253,25 @@ int main() {
         const float lateral_dv = lateral_result.force.x * 0.05f / in.class_mass;
         check(lateral_dv < 0.0f && lateral_dv >= -10.0f,
             "009335DD: one element's impulse cannot reverse the velocity it opposes");
+    }
+
+    {
+        // 00A1E250. The Capture_MinimalCBTargetWeight floor is applied to
+        // (a - b/2) + max(0, c - d/2) BEFORE StrategicGain is added, so a target
+        // whose unit terms are deeply negative still prices at floor + gain and
+        // the printed decomposition at 00D22CC8 does not add up to the total.
+        bsp::AiTailCaptureScoreInputs in;
+        in.own_value = 1.0f;
+        in.enemy_value = 40.0f;          // (a - b/2) = -19
+        in.own_resources = 0.0f;
+        in.enemy_resources = 0.0f;       // (c - d/2) = 0, clamped arm not needed
+        in.strategic_gain = 7.0f;
+        in.min_cb_target_weight = 0.5f;
+        const bsp::AiTailCaptureScoreTerms t = bsp::ai_tail_capture_score(in);
+        check(std::fabs(t.total - 7.5f) < 1e-4f,
+            "00A1E74B: the floor bites before 00A1E81D adds StrategicGain");
+        check(std::fabs(t.own_value - 1.0f) < 1e-4f && std::fabs(t.enemy_value - 40.0f) < 1e-4f,
+            "00A1E836: the six printed terms keep their unclamped values");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
