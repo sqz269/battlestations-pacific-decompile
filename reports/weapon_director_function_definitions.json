@@ -1,0 +1,275 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00835640",
+    "end_address": "0083568f"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00835640",
+    "end_address": "0083568e",
+    "bytes_disassembled": 79,
+    "message": "Successfully disassembled 79 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00835640",
+    "disassemble_first": false,
+    "name": "BSP_WeaponDirector_ApplyCommandMessageDerived"
+   },
+   "result": {
+    "success": true,
+    "address": "00835640",
+    "function_name": "BSP_WeaponDirector_ApplyCommandMessageDerived",
+    "entry_point": "00835640",
+    "body_size": 79,
+    "message": "Function created successfully at 00835640",
+    "warnings": [
+     "Function name 'BSP_WeaponDirector_ApplyCommandMessageDerived' \u2014 main part 'WeaponDirector_ApplyCommandMessageDerived' is not PascalCase. Expected: WeapondirectorApplycommandmessagederived",
+     "Function name 'BSP_WeaponDirector_ApplyCommandMessageDerived' \u2014 main part 'WeaponDirector_ApplyCommandMessageDerived' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_WeaponDirector_ApplyCommandMessageDerived' does not start with a recognized verb. First word 'Weapon' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00835640",
+   "end": "0083568f",
+   "name": "BSP_WeaponDirector_ApplyCommandMessageDerived",
+   "after": "Function: BSP_WeaponDirector_ApplyCommandMessageDerived at 00835640\nSignature: undefined BSP_WeaponDirector_ApplyCommandMessageDerived(void)\nEntry: 00835640\nBody: 00835640 - 0083568e"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00836210",
+    "end_address": "0083623b"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00836210",
+    "end_address": "0083623a",
+    "bytes_disassembled": 43,
+    "message": "Successfully disassembled 43 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00836210",
+    "disassemble_first": false,
+    "name": "BSP_WeaponDirector_StoreFirePermission"
+   },
+   "result": {
+    "success": true,
+    "address": "00836210",
+    "function_name": "BSP_WeaponDirector_StoreFirePermission",
+    "entry_point": "00836210",
+    "body_size": 43,
+    "message": "Function created successfully at 00836210",
+    "warnings": [
+     "Function name 'BSP_WeaponDirector_StoreFirePermission' \u2014 main part 'WeaponDirector_StoreFirePermission' is not PascalCase. Expected: WeapondirectorStorefirepermission",
+     "Function name 'BSP_WeaponDirector_StoreFirePermission' \u2014 main part 'WeaponDirector_StoreFirePermission' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_WeaponDirector_StoreFirePermission' does not start with a recognized verb. First word 'Weapon' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00836210",
+   "end": "0083623b",
+   "name": "BSP_WeaponDirector_StoreFirePermission",
+   "after": "Function: BSP_WeaponDirector_StoreFirePermission at 00836210\nSignature: undefined BSP_WeaponDirector_StoreFirePermission(void)\nEntry: 00836210\nBody: 00836210 - 0083623a"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "008364e0",
+    "end_address": "008364e7"
+   },
+   "result": {
+    "success": true,
+    "start_address": "008364e0",
+    "end_address": "008364e6",
+    "bytes_disassembled": 7,
+    "message": "Successfully disassembled 7 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "008364e0",
+    "disassemble_first": false,
+    "name": "BSP_WeaponDirector_GetFireTarget"
+   },
+   "result": {
+    "success": true,
+    "address": "008364e0",
+    "function_name": "BSP_WeaponDirector_GetFireTarget",
+    "entry_point": "008364e0",
+    "body_size": 7,
+    "message": "Function created successfully at 008364e0",
+    "warnings": [
+     "Function name 'BSP_WeaponDirector_GetFireTarget' \u2014 main part 'WeaponDirector_GetFireTarget' is not PascalCase. Expected: WeapondirectorGetfiretarget",
+     "Function name 'BSP_WeaponDirector_GetFireTarget' \u2014 main part 'WeaponDirector_GetFireTarget' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_WeaponDirector_GetFireTarget' does not start with a recognized verb. First word 'Weapon' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "008364e0",
+   "end": "008364e7",
+   "name": "BSP_WeaponDirector_GetFireTarget",
+   "after": "Function: BSP_WeaponDirector_GetFireTarget at 008364e0\nSignature: undefined BSP_WeaponDirector_GetFireTarget(void)\nEntry: 008364e0\nBody: 008364e0 - 008364e6"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0071d560",
+    "end_address": "0071d57b"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0071d560",
+    "end_address": "0071d57a",
+    "bytes_disassembled": 27,
+    "message": "Successfully disassembled 27 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0071d560",
+    "disassemble_first": false,
+    "name": "BSP_WeaponDirector_StanceAllowsFire"
+   },
+   "result": {
+    "success": true,
+    "address": "0071d560",
+    "function_name": "BSP_WeaponDirector_StanceAllowsFire",
+    "entry_point": "0071d560",
+    "body_size": 27,
+    "message": "Function created successfully at 0071d560",
+    "warnings": [
+     "Function name 'BSP_WeaponDirector_StanceAllowsFire' \u2014 main part 'WeaponDirector_StanceAllowsFire' is not PascalCase. Expected: WeapondirectorStanceallowsfire",
+     "Function name 'BSP_WeaponDirector_StanceAllowsFire' \u2014 main part 'WeaponDirector_StanceAllowsFire' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_WeaponDirector_StanceAllowsFire' does not start with a recognized verb. First word 'Weapon' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "0071d560",
+   "end": "0071d57b",
+   "name": "BSP_WeaponDirector_StanceAllowsFire",
+   "after": "Function: BSP_WeaponDirector_StanceAllowsFire at 0071d560\nSignature: undefined BSP_WeaponDirector_StanceAllowsFire(void)\nEntry: 0071d560\nBody: 0071d560 - 0071d57a"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0071d580",
+    "end_address": "0071d59b"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0071d580",
+    "end_address": "0071d59a",
+    "bytes_disassembled": 27,
+    "message": "Successfully disassembled 27 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0071d580",
+    "disassemble_first": false,
+    "name": "BSP_WeaponDirector_StanceAllowsMove"
+   },
+   "result": {
+    "success": true,
+    "address": "0071d580",
+    "function_name": "BSP_WeaponDirector_StanceAllowsMove",
+    "entry_point": "0071d580",
+    "body_size": 27,
+    "message": "Function created successfully at 0071d580",
+    "warnings": [
+     "Function name 'BSP_WeaponDirector_StanceAllowsMove' \u2014 main part 'WeaponDirector_StanceAllowsMove' is not PascalCase. Expected: WeapondirectorStanceallowsmove",
+     "Function name 'BSP_WeaponDirector_StanceAllowsMove' \u2014 main part 'WeaponDirector_StanceAllowsMove' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_WeaponDirector_StanceAllowsMove' does not start with a recognized verb. First word 'Weapon' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "0071d580",
+   "end": "0071d59b",
+   "name": "BSP_WeaponDirector_StanceAllowsMove",
+   "after": "Function: BSP_WeaponDirector_StanceAllowsMove at 0071d580\nSignature: undefined BSP_WeaponDirector_StanceAllowsMove(void)\nEntry: 0071d580\nBody: 0071d580 - 0071d59a"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0071d5e0",
+    "end_address": "0071d5ea"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0071d5e0",
+    "end_address": "0071d5e9",
+    "bytes_disassembled": 10,
+    "message": "Successfully disassembled 10 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0071d5e0",
+    "disassemble_first": false,
+    "name": "BSP_WeaponDirector_StoreMovePermission"
+   },
+   "result": {
+    "success": true,
+    "address": "0071d5e0",
+    "function_name": "BSP_WeaponDirector_StoreMovePermission",
+    "entry_point": "0071d5e0",
+    "body_size": 10,
+    "message": "Function created successfully at 0071d5e0",
+    "warnings": [
+     "Function name 'BSP_WeaponDirector_StoreMovePermission' \u2014 main part 'WeaponDirector_StoreMovePermission' is not PascalCase. Expected: WeapondirectorStoremovepermission",
+     "Function name 'BSP_WeaponDirector_StoreMovePermission' \u2014 main part 'WeaponDirector_StoreMovePermission' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_WeaponDirector_StoreMovePermission' does not start with a recognized verb. First word 'Weapon' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "0071d5e0",
+   "end": "0071d5ea",
+   "name": "BSP_WeaponDirector_StoreMovePermission",
+   "after": "Function: BSP_WeaponDirector_StoreMovePermission at 0071d5e0\nSignature: undefined BSP_WeaponDirector_StoreMovePermission(void)\nEntry: 0071d5e0\nBody: 0071d5e0 - 0071d5e9"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
