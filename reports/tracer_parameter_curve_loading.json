@@ -1,0 +1,488 @@
+{
+  "packet": "orch3_curve_loading_ak",
+  "source": "src/tracer_parameter_curve_loading.cpp",
+  "header": "include/bsp/tracer_parameter_curve_loading.hpp",
+  "documentation": "docs/TRACER_PARAMETER_CURVE_LOADING.md",
+  "status": "reconstructed_strict_win32_compiled_original_byte_and_actual_lua_fixtures_passed_pending_live_body_repair_and_build_registration",
+  "names_are_hypotheses": true,
+  "ghidra": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "read_only": true,
+    "exports_refreshed": true,
+    "verification": "Every bsp.py ghidra query/export verifies configured existing project/program/language/image base. No annotation, definition, prototype, comment, or save mutation.",
+    "required_repairs": [
+      {
+        "function": "00babfe0",
+        "was": "body min/max BABFE0..BAC061 has undisassembled BAC053..BAC05C",
+        "is": "restore BAC053 ADD ESP,4; BAC056 POP EDI; BAC057 MOV [ESI],EBP; BAC059 MOV [ESI+8],EBX; BAC05C POP EBP",
+        "evidence": "130 live bytes equal disk; final BAC05F RET4 length3 inclusive BAC061"
+      },
+      {
+        "function": "00bacb10",
+        "was": "live body ends BACB49 after free CALL",
+        "is": "extend body through BACB6C; restore BACB4A..BACB6C including base destructor CALL BACB57",
+        "evidence": "93 live bytes equal disk; final BACB6C RET length1 inclusive BACB6C"
+      },
+      {
+        "function": "00bacbb0",
+        "was": "BACBC5..BACBC7 omitted after free CALL",
+        "is": "restore BACBC5 ADD ESP,4; existing inclusive BACBCD remains correct",
+        "evidence": "30 live bytes equal disk; final BACBCB RET4 length3 inclusive BACBCD"
+      }
+    ]
+  },
+  "routines": [
+    {
+      "address": "00babfe0",
+      "native": "00babfe0",
+      "function": "00babfe0",
+      "name": "reserve_tracer_curve_records_00babfe0",
+      "cpp_symbol": "reserve_tracer_curve_records_00babfe0",
+      "source": "src/tracer_parameter_curve_loading.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX owner+08, one signed capacity stack argument, RET4",
+      "inclusive_end": "00bac061",
+      "last_instruction": "00bac05f",
+      "last_instruction_length": 3,
+      "last_instruction_text": "RET4",
+      "length": 130,
+      "sha256": "f3dde530c0a9e98dac888f8548a3639f8e4d976637d3fe896fc72d9317e4f389",
+      "live_disk_equal": true,
+      "evidence": "docs/TRACER_PARAMETER_CURVE_LOADING.md; original-byte fixture with actual storage and bindings"
+    },
+    {
+      "address": "00bac5e0",
+      "native": "00bac5e0",
+      "function": "00bac5e0",
+      "name": "resize_tracer_curve_records_00bac5e0",
+      "cpp_symbol": "resize_tracer_curve_records_00bac5e0",
+      "source": "src/tracer_parameter_curve_loading.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX owner+08, one signed size stack argument, RET4",
+      "inclusive_end": "00bac636",
+      "last_instruction": "00bac634",
+      "last_instruction_length": 3,
+      "last_instruction_text": "RET4",
+      "length": 87,
+      "sha256": "670abeebe6701d42e733ccde791698ee2ee3715c44f8020bd4d667d73eee0347",
+      "live_disk_equal": true,
+      "evidence": "docs/TRACER_PARAMETER_CURVE_LOADING.md; original-byte fixture with actual storage and bindings"
+    },
+    {
+      "address": "00bac670",
+      "native": "00bac670",
+      "function": "00bac670",
+      "name": "append_tracer_curve_point_00bac670",
+      "cpp_symbol": "append_tracer_curve_point_00bac670",
+      "source": "src/tracer_parameter_curve_loading.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX actual owner, binary32 coordinate/value stack arguments, RET8",
+      "inclusive_end": "00bac729",
+      "last_instruction": "00bac727",
+      "last_instruction_length": 3,
+      "last_instruction_text": "RET8",
+      "length": 186,
+      "sha256": "d71c15c1b62aca7fb28a902e5906370c1532944bb7a7be8d835dca5f4907d0e2",
+      "live_disk_equal": true,
+      "evidence": "docs/TRACER_PARAMETER_CURVE_LOADING.md; original-byte fixture with actual storage and bindings"
+    },
+    {
+      "address": "00869e40",
+      "native": "00869e40",
+      "function": "00869e40",
+      "name": "load_tracer_parameter_curve_00869e40",
+      "cpp_symbol": "load_tracer_parameter_curve_00869e40",
+      "source": "src/tracer_parameter_curve_loading.cpp",
+      "coverage": "complete normal-return behavior; original SEH/unwind excluded",
+      "original_abi": "ECX unused, LuaObject pointer/output-owner pointer/binary32 scale stack arguments, RET0C",
+      "inclusive_end": "00869fcb",
+      "last_instruction": "00869fc9",
+      "last_instruction_length": 3,
+      "last_instruction_text": "RET0C",
+      "length": 396,
+      "sha256": "2e9f0fb07a27b07e3172ab3bcc87f0b903ef9c40d2d57815988f2022315f481e",
+      "live_disk_equal": true,
+      "evidence": "docs/TRACER_PARAMETER_CURVE_LOADING.md; original-byte fixture with actual storage and bindings"
+    },
+    {
+      "address": "00bacb10",
+      "native": "00bacb10",
+      "function": "00bacb10",
+      "name": "destroy_tracer_parameter_curve_00bacb10",
+      "cpp_symbol": "destroy_tracer_parameter_curve_00bacb10",
+      "source": "src/tracer_parameter_curve_loading.cpp",
+      "coverage": "complete normal-return behavior; original SEH/unwind excluded",
+      "original_abi": "ECX actual owner, no stack arguments, RET",
+      "inclusive_end": "00bacb6c",
+      "last_instruction": "00bacb6c",
+      "last_instruction_length": 1,
+      "last_instruction_text": "RET",
+      "length": 93,
+      "sha256": "98bbcfeb35fafec2a162859b10c95e16988f661a4e0ed3b05ba72300a79ac08e",
+      "live_disk_equal": true,
+      "evidence": "docs/TRACER_PARAMETER_CURVE_LOADING.md; original-byte fixture with actual storage and bindings"
+    },
+    {
+      "address": "00bacbb0",
+      "native": "00bacbb0",
+      "function": "00bacbb0",
+      "name": "scalar_destroy_tracer_parameter_curve_00bacbb0",
+      "cpp_symbol": "scalar_destroy_tracer_parameter_curve_00bacbb0",
+      "source": "src/tracer_parameter_curve_loading.cpp",
+      "coverage": "complete normal-return behavior; original SEH/unwind excluded",
+      "original_abi": "ECX actual owner, stack flags, EAX same address, RET4",
+      "inclusive_end": "00bacbcd",
+      "last_instruction": "00bacbcb",
+      "last_instruction_length": 3,
+      "last_instruction_text": "RET4",
+      "length": 30,
+      "sha256": "3a0cad1f95ac93e8d86b269b2cb3c2e3177eb24bb4b2d727af7ecf2da7377faf",
+      "live_disk_equal": true,
+      "evidence": "docs/TRACER_PARAMETER_CURVE_LOADING.md; original-byte fixture with actual storage and bindings"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00babfe0",
+      "address": "00bac001",
+      "native": "00bf55be",
+      "contract": "read JMP thunk BF681B and allocator body: low32(capacity*12) bytes; cdecl size; ADD ESP,4 at BAC008"
+    },
+    {
+      "function": "00babfe0",
+      "address": "00bac04e",
+      "native": "00bf6989",
+      "contract": "read thunk chain BF65AC/BF9DC8 and returning CRT free body; old backing; disk ADD ESP,4 BAC053 before publications"
+    },
+    {
+      "function": "00bac5e0",
+      "address": "00bac5ee",
+      "native": "00babfe0",
+      "contract": "read complete body plus disk tail; ECX embedded records; signed requested size; RET4"
+    },
+    {
+      "function": "00bac670",
+      "address": "00bac6f3",
+      "native": "00babfe0",
+      "contract": "read complete body plus disk tail; doubled signed capacity with <=1 fallback1; RET4; previous slope already changed"
+    },
+    {
+      "function": "00869e40",
+      "address": "00869e68",
+      "native": "00bf681b",
+      "contract": "read complete allocator body and asm; allocate 1Ch bytes; cdecl; ADD ESP,4 at869E6D"
+    },
+    {
+      "function": "00869e40",
+      "address": "00869e7e",
+      "native": "00bacaa0",
+      "contract": "existing actual1Ch initializer; ECX raw owner; RET/EAX same; output publication869E91"
+    },
+    {
+      "function": "00869e40",
+      "address": "00869e97",
+      "native": "00b65f50",
+      "contract": "read body; ECX actual14h temporary; default initialization preserves opaque0C/padding; RET"
+    },
+    {
+      "function": "00869e40",
+      "address": "00869ea9",
+      "native": "00b65f50",
+      "contract": "read body; ECX actual14h temporary; default initialization preserves opaque0C/padding; RET"
+    },
+    {
+      "function": "00869e40",
+      "address": "00869ebf",
+      "native": "00b67720",
+      "contract": "read body; actual stack-tracked object; ECX table/row, stack output/index; RET8/EAXoutput"
+    },
+    {
+      "function": "00869e40",
+      "address": "00869eeb",
+      "native": "00b67720",
+      "contract": "read body; actual stack-tracked object; ECX table/row, stack output/index; RET8/EAXoutput"
+    },
+    {
+      "function": "00869e40",
+      "address": "00869f1c",
+      "native": "00b67720",
+      "contract": "read body; actual stack-tracked object; ECX table/row, stack output/index; RET8/EAXoutput"
+    },
+    {
+      "function": "00869e40",
+      "address": "00869f70",
+      "native": "00b67720",
+      "contract": "read body; actual stack-tracked object; ECX table/row, stack output/index; RET8/EAXoutput"
+    },
+    {
+      "function": "00869e40",
+      "address": "00869ece",
+      "native": "00b65fb0",
+      "contract": "read complete predicate body/asm; ECX row; only kind2 consults lua_type==NIL; RET/AL"
+    },
+    {
+      "function": "00869e40",
+      "address": "00869f7d",
+      "native": "00b65fb0",
+      "contract": "read complete predicate body/asm; ECX row; only kind2 consults lua_type==NIL; RET/AL"
+    },
+    {
+      "function": "00869e40",
+      "address": "00869ef7",
+      "native": "00b66270",
+      "contract": "read body/asm; actual owner+4 Lua state and index+8; lua_tonumber then FSTP32/FLD32; RET/ST0"
+    },
+    {
+      "function": "00869e40",
+      "address": "00869f28",
+      "native": "00b66270",
+      "contract": "read body/asm; actual owner+4 Lua state and index+8; lua_tonumber then FSTP32/FLD32; RET/ST0"
+    },
+    {
+      "function": "00869e40",
+      "address": "00869f0c",
+      "native": "00b67700",
+      "contract": "read body; ECX temporary; release actual tracked stack object then clear current kind only; RET"
+    },
+    {
+      "function": "00869e40",
+      "address": "00869f39",
+      "native": "00b67700",
+      "contract": "read body; ECX temporary; release actual tracked stack object then clear current kind only; RET"
+    },
+    {
+      "function": "00869e40",
+      "address": "00869f60",
+      "native": "00b67700",
+      "contract": "read body; ECX temporary; release actual tracked stack object then clear current kind only; RET"
+    },
+    {
+      "function": "00869e40",
+      "address": "00869f93",
+      "native": "00b67700",
+      "contract": "read body; ECX temporary; release actual tracked stack object then clear current kind only; RET"
+    },
+    {
+      "function": "00869e40",
+      "address": "00869fa1",
+      "native": "00b67700",
+      "contract": "read body; ECX temporary; release actual tracked stack object then clear current kind only; RET"
+    },
+    {
+      "function": "00869e40",
+      "address": "00869fb2",
+      "native": "00b67700",
+      "contract": "read body; ECX temporary; release actual tracked stack object then clear current kind only; RET"
+    },
+    {
+      "function": "00869e40",
+      "address": "00869f52",
+      "native": "00bac670",
+      "contract": "complete append; ECX captured owner, stack scaled coordinate/value; RET8"
+    },
+    {
+      "function": "00bacb10",
+      "address": "00bacb3d",
+      "native": "00bac5e0",
+      "contract": "complete resize; ECX owner+08, stack0; RET4; no free and no point-count/cache clear"
+    },
+    {
+      "function": "00bacb10",
+      "address": "00bacb45",
+      "native": "00bf6989",
+      "contract": "returning CRT free on records; disk ADD ESP,4 atBACB4A"
+    },
+    {
+      "function": "00bacb10",
+      "address": "00bacb57",
+      "native": "00bd30f0",
+      "contract": "read complete7-byte body; ECX actual owner; store base tableCEB130; RET; this CALL is in currently missing live tail"
+    },
+    {
+      "function": "00bacbb0",
+      "address": "00bacbb3",
+      "native": "00bacb10",
+      "contract": "complete body including disk tail; ECX owner; RET; no refcount decrement"
+    },
+    {
+      "function": "00bacbb0",
+      "address": "00bacbc0",
+      "native": "00bf65ac",
+      "contract": "free owner iff flags bit0; disk ADD ESP,4 atBACBC5; scalar returns same address afterward"
+    },
+    {
+      "function": "00bf55be",
+      "address": "00bf55be",
+      "native": "00bf681b",
+      "contract": "verified exact numeric JMP thunk; target allocator body read",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00bf6989",
+      "address": "00bf6989",
+      "native": "00bf65ac",
+      "contract": "verified exact numeric JMP thunk; downstream free body read",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00bf65ac",
+      "address": "00bf65ac",
+      "native": "00bf9dc8",
+      "contract": "verified exact numeric JMP thunk; BF9DC8 is returning CRT free",
+      "kind": "tail_jump"
+    }
+  ],
+  "byte_verification": [
+    {
+      "name": "reserve",
+      "start": "00babfe0",
+      "end_inclusive": "00bac061",
+      "bytes": 130,
+      "sha256": "f3dde530c0a9e98dac888f8548a3639f8e4d976637d3fe896fc72d9317e4f389",
+      "live_disk_equal": true
+    },
+    {
+      "name": "resize",
+      "start": "00bac5e0",
+      "end_inclusive": "00bac636",
+      "bytes": 87,
+      "sha256": "670abeebe6701d42e733ccde791698ee2ee3715c44f8020bd4d667d73eee0347",
+      "live_disk_equal": true
+    },
+    {
+      "name": "append",
+      "start": "00bac670",
+      "end_inclusive": "00bac729",
+      "bytes": 186,
+      "sha256": "d71c15c1b62aca7fb28a902e5906370c1532944bb7a7be8d835dca5f4907d0e2",
+      "live_disk_equal": true
+    },
+    {
+      "name": "load",
+      "start": "00869e40",
+      "end_inclusive": "00869fcb",
+      "bytes": 396,
+      "sha256": "2e9f0fb07a27b07e3172ab3bcc87f0b903ef9c40d2d57815988f2022315f481e",
+      "live_disk_equal": true
+    },
+    {
+      "name": "destroy",
+      "start": "00bacb10",
+      "end_inclusive": "00bacb6c",
+      "bytes": 93,
+      "sha256": "98bbcfeb35fafec2a162859b10c95e16988f661a4e0ed3b05ba72300a79ac08e",
+      "live_disk_equal": true
+    },
+    {
+      "name": "scalar",
+      "start": "00bacbb0",
+      "end_inclusive": "00bacbcd",
+      "bytes": 30,
+      "sha256": "3a0cad1f95ac93e8d86b269b2cb3c2e3177eb24bb4b2d727af7ecf2da7377faf",
+      "live_disk_equal": true
+    },
+    {
+      "name": "sample",
+      "start": "00ba9da0",
+      "end_inclusive": "00ba9e4a",
+      "bytes": 171,
+      "sha256": "d7ad8f9a4e072bc1e1646ccbb260f17f7fde0691a1103dff976a2e858ae3964a",
+      "live_disk_equal": true
+    }
+  ],
+  "layout": {
+    "reuse": "include/bsp/tracer_parameter_curve.hpp and include/bsp/native_lua_objects.hpp only; no duplicate owner/refcount/domain",
+    "owner_bytes": 28,
+    "record_bytes": 12,
+    "record_coordinate_offset": 0,
+    "record_value_offset": 4,
+    "record_slope_offset": 8,
+    "producer": "BAC70F/BAC715/BAC718; prior slope BAC6C5 or BAC6D5; size BAC71B; point count BAC71E",
+    "native_vtable": "00d63ffc",
+    "slots": {
+      "00": "00bd30e0",
+      "04": "00bacbb0",
+      "08": "00ba9da0"
+    },
+    "dispatch_limit": "Original-image table identity is not callable host code. Caller must bind actual current slot and handle its actual reference count; scalar/body perform no decrement."
+  },
+  "corrections": [
+    {
+      "was": "grow pseudocode returns immediately after free",
+      "is": "publishes new backing then requested capacity after returning free",
+      "evidence": "disk BAC053..BAC05C and matching live bytes"
+    },
+    {
+      "was": "approximately0.001 comparison could be ordinary ordered >=",
+      "is": "threshold-vs-delta FCOMIP/JBE takes the division branch on equality AND unordered",
+      "evidence": "BAC6B1 FSTP32; BAC6B9 load bits3A83126F; BAC6BF FCOMIP; BAC6C1 JBE; FDIVRP BAC6D3"
+    },
+    {
+      "was": "curve destructor could clear all storage and counters",
+      "is": "resize(0), free records, then base tableCEB130; dangling pointer/capacity/point count/cache/refcount remain",
+      "evidence": "complete BACB10..BACB6C disk body and BD30F0 store"
+    },
+    {
+      "was": "loader might roll back constructed output on record-allocation failure",
+      "is": "owner is published before Lua reads and remains owned by output on later failure",
+      "evidence": "869E91 publication precedes row lookup869EBF and append869F52; focused failure fixture"
+    }
+  ],
+  "verification": {
+    "strict_compile": "PASS MSVC Win32 /std:c++17 /EHsc /W4 /WX /O2 /MD; source compiled directly with ignored probe; /link /MANIFEST:EMBED",
+    "baseline": "PASS scripts/build.ps1 Release Win32; one configured existing CTest reconstructed_math",
+    "call_checker": "Expected one failure pending live BACB10 tail repair: BACB57 -> BD30F0. All other call/tail rows pass.",
+    "fixture_path": "local/curve_loading_probe/ (ignored)",
+    "fixture_log": "local/curve_loading_probe/probe_build.log",
+    "fixture_results": [
+      "3072 original/rebuilt append/evaluate/destroy pairs across12 x87 precision/rounding control words; all owner fields except allocation address, record bytes, result/cache, x87 status, stack sentinel",
+      "Threshold neighbors, signedzero/subnormal/infinite/quietNaN/signalingNaN; previous slope remains updated when allocation throws",
+      "Reserve/resize/growth and pointer/capacity publication after free differential passed",
+      "84 real Lua5.1.1 original/rebuilt loader cases across12 x87 control words, including NaN/subnormal scales; null/existing output, first-nil stop, actual stack tracking, evaluation and owner-plus-record scalar free",
+      "Focused rebuilt checks: empty-table owner, flags2 does not free owner, owner allocation failure leaves output null, record allocation failure leaves owner published and cleans active Lua temporaries"
+    ],
+    "native_eh": "Original-byte loader/destructor SEH frames returned normally; original native exception handlers not exercised or reconstructed",
+    "gameplay": "Not run; reconstructed application does not yet dispatch this default curve loading/lifetime path",
+    "cmake": "Unchanged by worker; integrator must add src/tracer_parameter_curve_loading.cpp to bsp_core"
+  },
+  "limits": [
+    "New explicit C++ interfaces; native MSVC SEH/unwind and private Lua calling convention are not ABI replacements",
+    "Uses linked Lua5.1.1 and canonical actual stack-object wrappers; fixture relocates original CALLs to those same wrappers rather than executing original interpreter machine code",
+    "Library allocator policy reproduced with host CRT; native heap/new-handler/EH-global identity not reproduced",
+    "Native malformed storage/count conditions remain unchecked; custom memory must be nonnull-or-throw with matching nonthrowing free",
+    "No virtual table image dereference, reference-count decrement, synthetic tracer activation, gameplay or visual validation"
+  ],
+  "producer_calls": [
+    {
+      "function": "0086d180",
+      "address": "0086d829",
+      "native": "00869e40",
+      "contract": "read all five argument setups: stack table/output/scale; firstfour local float scale, last FLD1; ECX EDI passed but not read by callee; RET0C"
+    },
+    {
+      "function": "0086d180",
+      "address": "0086d8da",
+      "native": "00869e40",
+      "contract": "read all five argument setups: stack table/output/scale; firstfour local float scale, last FLD1; ECX EDI passed but not read by callee; RET0C"
+    },
+    {
+      "function": "0086d180",
+      "address": "0086d98b",
+      "native": "00869e40",
+      "contract": "read all five argument setups: stack table/output/scale; firstfour local float scale, last FLD1; ECX EDI passed but not read by callee; RET0C"
+    },
+    {
+      "function": "0086d180",
+      "address": "0086da3c",
+      "native": "00869e40",
+      "contract": "read all five argument setups: stack table/output/scale; firstfour local float scale, last FLD1; ECX EDI passed but not read by callee; RET0C"
+    },
+    {
+      "function": "0086d180",
+      "address": "0086dc46",
+      "native": "00869e40",
+      "contract": "read all five argument setups: stack table/output/scale; firstfour local float scale, last FLD1; ECX EDI passed but not read by callee; RET0C"
+    }
+  ]
+}
