@@ -8,6 +8,7 @@
 #include "bsp/game_entry.hpp"
 #include "bsp/game_settings.hpp"
 #include "bsp/gun_aiming.hpp"
+#include "bsp/gun_platform_arc.hpp"
 #include "bsp/game_tuning_singleton.hpp"
 #include "bsp/gui_icon.hpp"
 #include "bsp/gui_layer.hpp"
@@ -2692,6 +2693,37 @@ int main() {
             "007F476E has no upper clamp on WingCount");
         check(!bsp::squadron_wing_count_fits_array_007f4b55(6),
             "six wings would write past the five pointers at squadron+3D0h");
+    }
+
+    {
+        // 007F669F is the one branch of 007F6530 that changes a delta's sign
+        // rather than its magnitude, so it is the branch worth pinning. Four
+        // windows partition the circle; the gun sits in the second at -1.5 rad
+        // and the target is at +1.5 rad in the fourth. The short way is +3.0
+        // rad and runs through the third window, so blocking that window has to
+        // send the gun the other way instead.
+        bsp::GunFiringArc windows[4] = {};
+        for (bsp::GunFiringArc& w : windows) {
+            w.flags = bsp::kGunArcFlagTraverse;
+            w.min_vert = -1.0f;
+            w.max_vert = 1.0f;
+        }
+        windows[0].min_horz = -3.14f; windows[0].max_horz = -2.0f;
+        windows[1].min_horz = -2.0f;  windows[1].max_horz = -1.0f;
+        windows[2].min_horz = -1.0f;  windows[2].max_horz = 1.0f;
+        windows[3].min_horz = 1.0f;   windows[3].max_horz = 3.14f;
+        const bsp::GunPlatformArcs arcs{windows, 4};
+
+        const bsp::GunArcRouteOutcome clear =
+            bsp::gun_arc_route_deltas_007f6530(arcs, -1.5f, 0.0f, 1.5f, 0.0f);
+        check(!clear.routed_around && clear.deltas.horz > 0.0f,
+            "007F6530 keeps the short way when every window on it allows traverse");
+
+        windows[2].flags = 0; // the third window forbids traversal
+        const bsp::GunArcRouteOutcome blocked =
+            bsp::gun_arc_route_deltas_007f6530(arcs, -1.5f, 0.0f, 1.5f, 0.0f);
+        check(blocked.routed_around && blocked.deltas.horz < 0.0f,
+            "007F669F reverses the traverse when a blocked window is in the way");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
