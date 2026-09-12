@@ -5449,14 +5449,23 @@ and 009f4dbc; the attackmove sub-states 009e88d8 / 009e86f0 with 009e8714, 009e8
 00852860, 009e87bd / 007b6ee0 and 009e87cd / 009e85b0 with 009e85cd, 009e864c / 0082adc0 and
 009e8658 / 004178f0, then 009e88f0 into 009f3240 with 009f328f / 009f3090, 009f332b / 009de050,
 009f3360 / 00605070, 009f3375, 009f3429 / 00778890, 009f35e3, 009f3635 and 009f3647 / 009e00a0,
-and the four members 009e23b0, 009e26c0, 009f3670 and 007b3dd0; 009e57d0, 009e5847 / 00521ea0 and
+and the four members 009e23b0, 009e26c0, 009f3670 and 007b3dd0; inside 009f3090 the frame state
+009f309b / 009f1bc0 with 009f1bf7, 009f1c6a, 009f1cde, 009f1d3c / 00811a30, 009f1db4 / 00bd2f10,
+009f1e94 / 00417b10 and 009f1f2d, and the six records 009f30a2, 009f30a9, 009f30b8, 009f30c7,
+009f30d6 and 009f30dd; the plan request 009e3780 with 009e3821 / 004218e0, 009e3831 / 00417e40,
+009e3851 / 00417580, 009e387b / 004120d0, 009e38a2 / 0041b840, 009e3927 and 009e394c / 00bf681b,
+009e3973 / 009d9230, 009e3980, 009e39f5 / 009d9d40, 009e3adb and 009e3af0, with 009ec680 a record;
+009e14f3 / 0071c4f0 and its box at 00e188a8; 0071f290 with 0071f2d1, 0071f314, 0071f340, 0071f395
+and 0071f39e; 009e57d0, 009e5847 / 00521ea0 and
 009e585f in 009e5770; and 009f5ed0 / 0071df70 with 0071df75, 0071df83 and 0071dfae. Packet
 `cc_exe_2p`, owner `agent/cc-exe-2p`. Sources: `src/game_hosts_ship_ai.cpp`,
 `include/bsp/game_hosts_ship_ai.hpp`, plus edits to `src/game_hosts_units.cpp`,
 `src/game_hosts_commands.cpp`, `src/game_hosts_lua.cpp`, their headers and
 `tools/motion_trace_compare.py`. Report: `reports/game_executable_milestone_2p.json`. Ghidra was
 read-only for this packet; one name was added and two existing names had run-time evidence
-appended.
+appended. Three packets landed on main during this packet's turn and are used here:
+`ship_ai_path_planner` at `878325ba`, `ship_ai_approach_update` at `89d4bb77` and
+`cc2_director_update_arms`.
 
 Milestone 2o closed the chain from a ship AI state's decision to a moving hull and then reported
 that every decision on it was zero: all 98 `movetopos` goal sets were `(0,0)`, the six `attackmove`
@@ -5464,10 +5473,12 @@ ships ended every frame at an unreconstructed sub-state vtable slot, and one shi
 because a labelled diagnostic switch stood in for a desired throttle no state produced. This
 milestone runs the producers. The goal vector has a writer and the executable calls it, so 31 of
 the 32 ships now carry a real goal taken from their own command; the six `attackmove` ships reach a
-sub-state body on all 588 dispatches; every span of `009F3F80` runs a projection instead of one
-record; and the automatic target gate answers with the corrected predicate and passes. What did not
-change is that no ship moves without the switch, and the milestone's job is to say exactly which
-record blocks that, per state, rather than as one gap.
+sub-state body on all 588 dispatches and carry a real approach point taken from that goal; the
+navigating ships ask a real planner for a plan; every span of `009F3F80` runs a projection instead
+of one record; the world-bounds rule runs at its own call site; and the automatic target think runs
+where `0071F290` puts it and answers with the corrected predicate. What did not change is that no
+ship moves without the switch, and the milestone's job is to say exactly which record blocks that,
+per state, rather than as one gap.
 
 ### 1. The goal vector has a producer, and it is the unit's own command
 
@@ -5554,11 +5565,22 @@ the same frame, so the station-keeping arm was entered **0 times in 15680 steps*
 ran **3426** times, which is exactly the number of steps that ended in `Navigate` or
 `NavigateAstern`.
 
-The path pick runs `009ED3E0` and asks `009E3C00` for a point. Both are records - `009E3780`, the
-planner, is leased to `agent/cc-ai-path-planner` and was not on main during this packet - so the
-record comes back with `node_18 = 0`, `009EE5F9` takes the skip, and `00815F30` publishes **0**
-times. That matters because the projected output block `009EE671..009EEAA2` needs that point: it is
-reconstructed, the probe exercises it, and in the executable it never runs.
+The path pick runs `009ED3E0`, which asks the planner for a plan and `009E3C00` for a point.
+**The plan request is no longer a record.** Packet `ship_ai_path_planner` landed on main at
+`878325ba` during this packet's turn and was merged in before validation, so `009E3780` runs: it
+latches the goal, asks the avoid-zone manager to push both endpoints clear, allocates a two-node
+ship-to-goal graph and leaves the plan in state 1, then answers on every later call whether it is
+still the plan for this goal and this pose. **3426 requests, 7 seeds and 3426 accepts** in the base
+run, which says the goal drifted past the re-plan tolerance exactly once per navigating unit. The
+three zone queries are records, because the avoid-zone singleton `004218E0` is not built here.
+
+What the plan does **not** get is nodes between its two seeds. `009EC680`, the one state transition
+per navigation tick that fills them, is leased to `agent/cc-ai-path-search` and is a record, so
+`plan+34h` is 0 for every unit; and `009E3C00`'s point-producing tail past `009E3D81` belongs to
+packet `ship_ai_path_follower` and is unprojected. The record therefore still comes back with
+`node_18 = 0`, `009EE5F9` takes the skip, and `00815F30` publishes **0** times. That matters because
+the projected output block `009EE671..009EEAA2` needs that point: it is reconstructed, the probe
+exercises it, and in the executable it never runs.
 
 **And the span past it is the one that would move a navigating ship.** `009ED6B0`'s direct-control
 block - the ahead/astern latch at `009ED802`..`009ED8A5` and everything that follows it - is inside
@@ -5584,10 +5606,36 @@ reader:
 | `state+14F4h` initial | `007B3DD0` | 0 | `009E84F8` seeds `state+1500h` negative, so the first selector call moves off it before the first dispatch. Its body is one `RET 4` |
 
 `009F3240` calls `009DE050` 588 times, which is why `goal_sets` rises from 98 to **686** and
-`units_with_goal` from 1 to **7**. Every one of those goals is `(0,0)`, and that is a different gap
-from the one milestone 2o named: the approach point `(sub+1230h, sub+1238h)` is produced by the
-nested ring update `009F3090`, whose seven callees no packet has read. The same record is why the
-step's own desired throttle, `brain+1D8h = clamp(sub+1218h, -1, 1)` at `009F3635`, is zero.
+`units_with_goal` from 1 to **7**. **Those goals are real.** Packet `ship_ai_approach_update`
+landed on main at `89d4bb77` during this packet's turn and was merged in before validation, so
+`009F3090` runs its seven-call driver and the first of the seven, the frame state `009F1BC0`, runs
+its projection. `009F1F2D..009F1F3D` copies the attackmove destination into the approach point
+verbatim - the displacement through `00417B10` needs a zone object at `target+740h`, which has no
+producer here - and `009F1CDE` rewrites the planar range to that destination every frame:
+
+| unit | target | approach point | goal range |
+| --- | --- | --- | --- |
+| `Haguro`, `Yudachi`, `Murasame` | `DeRuyter` | `(250.0, -3000.0)` | 3250.0, 2750.0, 3288.3 |
+| `Jintsu`, `Samidare`, `Harusame` | `Java` | `(-250.0, -3000.0)` | 3250.0, 2750.0, 3288.3 |
+
+The other six callees of `009F3090` are records with their own addresses, and the reason is one
+chain: `009E76D0`, the ring scan, ranks 60 slots by five weights that four unread scorers
+(`009E6400`, `009E5DA0`, `009E6870`, `009E6640`) fill, and it is the caller of `009E5E90`, the only
+writer of the commanded heading `nested+120Ch`. That field is in turn the first input of
+`009E6A90`, the only writer of the commanded throttle `nested+1210h`. So the two values `009F3240`
+forwards to the brain are still records, and the step's own desired throttle,
+`brain+1D8h = clamp(sub+1218h, -1, 1)` at `009F3635`, is zero.
+
+**One hazard is worth recording, because it produced a false result before it was caught.**
+`009F1BF7` seeds `nested+1210h` with the `9999.0f` sentinel at `00CE4C04` on **every** frame, and
+`009E6A90` is the only routine that replaces it. With `009E6A90` recorded, the sentinel survives to
+`009F3635`, whose clamp to `[-1, +1]` turns it into **full ahead**: an intermediate build of this
+milestone sailed all six ships and reported `total_path=2819.14` in the base run, with no
+diagnostic switch anywhere. The read at `009F339A` now recognises the sentinel and answers the
+neutral zero, and the run is back to 0 units moved. `009E6A90` cannot simply be run in its place,
+because its own first act is `wrap(heading - nested+120Ch)` against the field the recorded ring
+scan leaves unwritten. A sentinel is not a value, and a complete routine over an unproduced input
+is not a recovery.
 
 **`brain+1D8h` is `blk+1D0h`.** `blk` is `brain+8h`, so the five displacements
 `docs/SHIP_AI_ATTACKMOVE_SUBSTATES.md` lists for this step are control-block fields:
@@ -5598,6 +5646,19 @@ and `brain+1E0h` is `blk+1D8h` the desired heading - which is what the `00605070
 approach step does produce a desired throttle, and it leaves the block in `NavigateAstern`.
 
 ### 6. The automatic target gate, corrected and measured
+
+The think itself now runs where the game runs it. `docs/DIRECTOR_UPDATE_ARMS.md` reads `0071F290`,
+the controller vtable's `+0Ch`, whole: seven arms in order, of which arm 3 is the hold countdown
+`0071F314` and arm 7 ticks `[controller+38h]->vtable[4](dt)` after the command stepping and before
+`vtable[7Ch]`. The director's own vtable `00D21B48` holds `009F5DA0` in slot `+4h`, so that tick is
+the automatic target think and `vtable[7Ch]` is `00836920`. Milestone 2n **supplied** that
+placement; this milestone takes it from the routine, **15680** bodies, one per unit per fixed step.
+Three arms stay records: the path-vector reset at `0071F2D1` has no `+1A4h` path array here, and the
+two begin-command arms are gated on the accepted bytes at `+44h` / `+4Ch`, which this process does
+not model - which is what keeps `00835C70` from being stepped twice, since milestone 2l already runs
+it at its own site. `00836920` is logged where milestone 2m runs it, not repeated here. What this
+executable still supplies is where `0071F290` itself runs, because the controller vtable has no
+caller in the recovered graph.
 
 Milestone 2n and 2o carried `AutoTarget::director_accepts_new_target` as a record whose note said
 the float at `director+40h` must be **greater** than `0.0f` and that the field had no writer.
@@ -5637,21 +5698,22 @@ values and two cannot, and the record that blocks each one is named:
 | --- | --- | --- | --- |
 | `cruise` | 13 | yes, and it is 0 for every ship: nothing ordered them to move | - |
 | `stop` | 12 | yes, and 0 is the answer: `009E14C0` writes `blk+1D0h = 0` and holds heading | - |
-| `attackmove` | 6 | yes, at `009F3635`, and it is 0 | `009F3090`, the nested ring update, and its seven unread callees `009F1BC0`, `009E7FC0`, `009E6E80`, `009E9190`, `009E74D0`, `009E76D0` and `009E6A90` |
-| `movetopos` | 1 | **no** | `009EEAAB..009EF228`, unprojected everywhere, with `009E3780` / `009E3C00` behind it: `009ED6B0`'s own latch block is skipped for `Navigate`, so nothing on the recovered path can form one |
+| `attackmove` | 6 | yes, at `009F3635`, and it is 0 | `009E76D0`, the ring scan, with `009E5E90` inside it and the four unread slot scorers behind that. It is the only writer of `nested+120Ch`, which is in turn the only input of `009E6A90`, the only writer of the throttle `009F3635` forwards |
+| `movetopos` | 1 | **no** | `009EEAAB..009EF228`, unprojected everywhere, with `009EC680` and `009E3C00`'s tail behind it: `009ED6B0`'s own latch block is skipped for `Navigate`, so nothing on the recovered path can form one |
 
 Two states out of four therefore still need the switch, and one of them, `movetopos`, would need it
-even with a perfect goal. That is the honest form of milestone 2o's "the value that moved this ship
-still came from a diagnostic switch": the goal is no longer the reason.
+even with a perfect goal and a complete path. That is the honest form of milestone 2o's "the value
+that moved this ship still came from a diagnostic switch": the goal is no longer the reason, and
+neither is the approach point.
 
 ### Host methods
 
 `bsp_game.exe --frames 700 --press-start-frame 30 --menu-select USN02 --mission-frames 500
 --mission-frame-seconds 0.05 --mission-complete-frame 490 --order moveto:Java --order-unit
 Kortenaer --order-frame 5 --trajectory-csv local/traj_2p_base.csv --log local/run_2p_base.log
---game-root "<install>"`, exit 0: **531 concrete, 456 unimplemented**, against milestone 2o's
+--game-root "<install>"`, exit 0: **545 concrete, 470 unimplemented**, against milestone 2o's
 **495 / 443** for the same command line on this branch's base commit `1f93aeaf`. With
-`--ai-drive Kortenaer=1,0.5`: **533 / 456**.
+`--ai-drive Kortenaer=1,0.5`: **547 / 470**.
 
 The per-step table with the call site and callee of every row is
 `reports/game_executable_milestone_2p.json` (`goal_vector_steps`, `path_steps`, `obstacle_steps`,
@@ -5679,7 +5741,10 @@ is not the packet's main routine:
 | the station-keeping arm | - | 009eda28 | record, 0 entries |
 | the path pick | - | 009ee580 | concrete, 3426 entries |
 | the path plan refresh | 009ee5c2 | 009ed3e0 | record |
-| the planner | - | 009e3780 | record, leased elsewhere |
+| the plan request | - | 009e3780 | concrete, 3426 requests and 7 seeds |
+| the node allocation (in 009e3780) | 009e3927 | 00bf681b | concrete |
+| the plan's zone queries (in 009e3780) | 009e3821 / 009e3831 / 009e38a2 | 004218e0 / 00417e40 / 0041b840 | record |
+| the path search | - | 009ec680 | record, leased elsewhere |
 | the path point | 009ee5f4 | 009e3c00 | record, no node |
 | the lateral publish | 009ee66c | 00815f30 | record, 0 calls |
 | the navigation arm tail | - | 009eeaab | record |
@@ -5696,11 +5761,17 @@ is not the packet's main routine:
 | the readiness pair (in 009e85b0) | - | 009e85cd | record |
 | the sub-state's own step | 009e88f0 | vtable +0Ch | indirect, 588 dispatches |
 | the approach step | - | 009f3240 | concrete, 588 bodies |
-| the approach ring update | 009f328f | 009f3090 | record |
+| the approach ring update | 009f328f | 009f3090 | concrete, 588 bodies |
+| the approach frame state | 009f309b | 009f1bc0 | concrete, the approach point and the goal range |
+| the ring scan and the commanded heading | 009f30d6 | 009e76d0 | record |
+| the throttle limiter | 009f30dd | 009e6a90 | record, and its input is the row above |
 | the approach's navigation goal | 009f332b | 009de050 | concrete, 588 calls |
 | the movetopos goal read | - | 009e57d0 | concrete, no longer a record |
 | the movetopos target resolve | 009e5847 | 00521ea0 | concrete |
 | the movetopos kind test | 009e585f | vtable +5Ch | indirect, false for a ship |
+| the `stop` step's world-bounds test | 009e14f3 | 0071c4f0 | concrete rule, its box is the record |
+| the command controller update | - | 0071f290 | concrete, 15680 bodies |
+| the think, through the director's vtable | 0071f395 | vtable +4h | indirect, 009f5da0 |
 | the auto-target gate | 009f5ed0 | 0071df70 | concrete, 403 passes |
 
 ### Corrections
@@ -5728,6 +5799,20 @@ is not the packet's main routine:
    scene's `Type = E ShipClasses : PACK3_Icarus` resolves to 265, which is
    `VehicleClass[265] Tribal class 1941`, and that is what was run - the same class milestone 2o
    used.
+8. **Milestone 2o's `0071C4F0` record was on the wrong thing.** The routine's body is read and its
+   rule now runs at `009E14F3`; what is missing is the box the world object keeps at `[00E188A8]`
+   `+711Ch` / `+7124h` / `+7128h` / `+7130h`, because `construct_world 004DE610` is still a load
+   record. Running the four comparisons against a zero box would put every ship of this mission
+   outside a world that does not exist, so the record moved onto the operands and the neutral
+   `inside` answer stands: **0 of 12** `stop` ships took the navigate-to-origin arm.
+9. **Milestone 2n's "the executable decides where the automatic target think runs" is superseded.**
+   `0071F290` arm 7 is the call site, and the director's vtable `00D21B48` makes it `009F5DA0`.
+   What is still supplied is where `0071F290` runs, not where the think runs inside it.
+10. **A sentinel is not a value, and this milestone proved it the expensive way.** An intermediate
+    build ran `009F1BC0` without `009E6A90`, and `009F1BF7`'s `9999.0f` seed reached `009F3635`'s
+    clamp and sailed all six `attackmove` ships at full throttle for `total_path=2819.14` with no
+    diagnostic switch in the run. Section 5 has the fix and the reason `009E6A90` cannot be run in
+    its place.
 
 ### no_ghidra_function
 
@@ -5737,13 +5822,17 @@ is not the packet's main routine:
 | 007b3dd0 | 007b3dd2 | the empty sub-state step, one `RET 4`; boundary defined by packet `cc_ai_attackmove_substates`, unchanged here |
 
 Every other address this milestone touched lies in a Ghidra function whose body range the bridge
-reports. `python tools/verify_report_calls.py reports/game_executable_milestone_2p.json` checks 55
+reports. `python tools/verify_report_calls.py reports/game_executable_milestone_2p.json` checks 73
 call rows and reports 0 failures; the vtable dispatches are reported as indirect.
 
 ### Validation
 
 `scripts/build.ps1` Release Win32 with `/W4 /WX /fp:strict`, no warnings. The existing ctest case
-`reconstructed_math` passes, 1 of 1. No test cases were added.
+`reconstructed_math` passes, 1 of 1. No test cases were added. `origin/main` was merged in before
+validation for the three packets this milestone consumes - `ship_ai_path_planner` at `878325ba`,
+`ship_ai_approach_update` at `89d4bb77` and `cc2_director_update_arms` - and the two ledger shards
+that conflicted, `config/names/00710000.jsonl` and `config/names/009f0000.jsonl`, were resolved by
+keeping both sides' records.
 
 ```
 bsp_game.exe --frames 700 --press-start-frame 30 --menu-select USN02 --mission-frames 500
@@ -5757,6 +5846,8 @@ summary mission ship ai states cruise=13 stop=12 attackmove=6 movetopos=1 other=
 summary mission ship ai goal vector prepasses=5048 refreshes=4466 nonzero_goals=31
         brain_targets=19 path_plan_refreshes=3426 path_picks=3426 path_publishes=0
         station_keeping=0 sector_refreshes=15680 middle_runs=15680 substate_concrete=588
+summary mission ship ai plan requests=3426 seeds=7 accepts=3426 approach_frames=588
+        controller_updates=15680
 summary mission ship ai state steps real=4803 goal_sets=686 goal_replans=1 units_with_goal=7
         substate_steps=588 navigate_mode_steps=3426
 summary mission ship ai ring hops=15680 gated_3f5=0 writes=15680 rudder_law=9310
@@ -5765,7 +5856,12 @@ summary mission auto target thinks=812 scans=787 chose=22 fire_target_sets=403
         attackmove_issues=0 accepts=403
 summary mission world units=32 walked=15680 updated=15680 motion_ticks=15680 simulated=24.50 s
         controlled=DeRuyter moved=0.00 total_path=0.00
-host methods 531 concrete, 456 unimplemented
+host methods 545 concrete, 470 unimplemented
+
+  unit          state       plan_req  seeds  state  nodes  approach  point_x  point_z  goal_range
+  Kortenaer     movetopos        486      1      1      0         0      0.0      0.0         0.0
+  Haguro        attackmove       490      1      1      0        98    250.0  -3000.0      3250.0
+  Jintsu        attackmove       490      1      1      0        98   -250.0  -3000.0      3250.0
 ```
 
 Every one of the 32 ships reports `moved 0.00` in the base run, which is unchanged from milestone
@@ -5777,11 +5873,13 @@ same command line, so nothing this milestone added changed a trajectory. With
 summary mission ship ai goal vector prepasses=5048 refreshes=4466 nonzero_goals=31
         brain_targets=19 path_plan_refreshes=2940 path_picks=2940 path_publishes=0
         station_keeping=0 sector_refreshes=15680 middle_runs=15680 substate_concrete=588
+summary mission ship ai plan requests=2940 seeds=6 accepts=2940 approach_frames=588
+        controller_updates=15680
 summary mission ship ai ring hops=15680 gated_3f5=0 writes=15680 rudder_law=8824
         deadbands=15194 live_pair_changes=14 driven=1
   Kortenaer   PACK3_Icarus  0  7  1.000  0.500 moveto  -  -32.1  -2083.7  417.54  1
 summary mission world units=32 ... controlled=DeRuyter moved=0.00 total_path=417.76
-host methods 533 concrete, 456 unimplemented
+host methods 547 concrete, 470 unimplemented
 ```
 
 `Kortenaer`'s final row of `local/traj_2p_drive.csv` is
@@ -5812,7 +5910,8 @@ rather than a match**: peaks of 0.6750 m/s, 44.1620 deg, 110.5314 m and 0.03490 
 chain, handed the goal directly, saturates the rudder at 1.0 and turns at -0.06981 rad/s; the
 executable's `Kortenaer` holds the diagnostic switch's 0.5 and turns at -0.034906. The difference is
 the stand-in, not the motion model, and it measures exactly the gap section 4 names: the probe
-substitutes a single path point for `009E3C00`, and the executable has none.
+substitutes a single path point for `009E3C00`, and the executable plans a graph whose nodes
+`009EC680` never fills.
 
 Every earlier switch was rechecked on this binary. The acceptance form `--order-frame 1 --order
 throttle=1,rudder=1` reproduces milestone 2j's published numbers exactly, `heading -41.252617,
@@ -5824,15 +5923,23 @@ exits 3: all four match milestone 2o exactly. A `--mission-frames 60` run with n
 
 This remains a runtime-validated process, not a game-validated one. What it proves that milestone
 2o did not is that the AI's own decisions are now recovered values rather than records: the goal
-vector comes from the unit's own command through `0071EB60`, the `attackmove` machine reaches a
-real sub-state body on every dispatch, every span of `009F3F80` runs a projection, the obstacle
-sectors refresh on the schedule the image keeps, and the automatic target gate answers with the
-corrected predicate and is blocked only where the authored commands say it should be. What it does
-not prove is that any of those decisions can move a hull. The path source is a record, the
-navigation arm's tail is unprojected, the approach ring update is unread, the clearance that feeds
-the danger ramp has no producer and the throttle profile has no writer, so the chain runs end to
-end over a desired pair that is still zero, and the one ship that moves is still moved by a
-labelled switch.
+vector comes from the unit's own command through `0071EB60`, the six `attackmove` ships reach a
+real sub-state body on every dispatch and carry a real approach point taken from that goal, the
+navigating ships ask a real planner for a plan, every span of `009F3F80` runs a projection, the
+obstacle sectors refresh on the schedule the image keeps, the world-bounds rule runs at its own
+call site, and the automatic target think runs where `0071F290` puts it and is blocked only where
+the authored commands say it should be. What it does not prove is that any of those decisions can
+move a hull. The path search is a record, so the plan has two nodes and no point; the navigation
+arm's tail is unprojected; the approach ring scan is a record, so the two commands it feeds are
+too; the clearance behind the danger ramp has no producer and the throttle profile has no writer.
+The chain runs end to end over a desired pair that is still zero, and the one ship that moves is
+still moved by a labelled switch.
+
+The milestone's own cautionary result is in section 5: an intermediate build that ran the approach
+frame state without its throttle limiter moved all six ships 2819 units on a `9999.0f` sentinel.
+Running a complete routine over an input its producer never wrote does not make the output
+recovered, and a run that starts moving is not by itself evidence that it started moving for the
+right reason.
 
 ### Follow-up packets
 
@@ -5840,13 +5947,18 @@ labelled switch.
    it is the only code that can latch `blk+35Ch` and form a desired throttle for a ship in
    `Navigate`, because `009ED6B0`'s own latch block is inside `if (mode != Navigate)`. Until it is
    projected, no `movetopos` ship can move on its own order however good its goal is.
-2. **`ship_ai_path_source`**, `009E3780`, `009E3C00`, `009ED3E0`, `009D9E50`, `00811D80`. Unchanged
-   from `docs/SHIP_AI_GOAL_VECTOR.md`, and now measured: the pick runs 3426 times a run and gets no
-   node, so the projected output block `009EE671..009EEAA2` never runs in the executable.
-   `009E3780` is leased to `agent/cc-ai-path-planner`.
-3. **`ship_ai_attackmove_ring_update`**, `009F3090` with `009F1BC0`, `009E7FC0`, `009E6E80`,
-   `009E9190`, `009E74D0`, `009E76D0` and `009E6A90`. Six ships run `009F3240` 588 times a run and
-   all four fields it reads off the nested object are zero.
+2. **`ship_ai_path_search`**, `009EC680` with `009E3C00`'s tail past `009E3D81`. `009E3780` now
+   seeds a two-node ship-to-goal graph 7 times a run and answers 3426 requests, and the search that
+   fills the nodes between the seeds is the only thing between that and a path point. `009EC680` is
+   leased to `agent/cc-ai-path-search`; the point source belongs to `ship_ai_path_follower`.
+3. **`ship_ai_attackmove_ring_scan`**, `009E76D0` with `009E5E90` and the four slot scorers
+   `009E6400`, `009E5DA0`, `009E6870` and `009E6640`. The approach point and the goal range are
+   recovered now; the commanded heading `nested+120Ch` is not, and it is also the only input of
+   `009E6A90`, which is the only writer of the commanded throttle. Both are what `009F3240`
+   forwards to the brain.
+   Beside it, the five unread spans of `009F1BC0` (`009F1DBF`, `009F2124`, `009F221C`, `009F2395`,
+   `009F270A`) and the four further approach-point stores at `009F2216`, `009F237D`, `009F23B5`
+   and `009F26F0`.
 4. **`ship_ai_clearance_37c`**, `009EF910` and `009F4D10`, `blk+37Ch` and `blk+33Ch`. The run shows
    the cost of the gap: the danger level saturates at 1.0 for every ship on every step and the
    rudder limit's gate at `009F4514` never opens.
@@ -5860,7 +5972,9 @@ labelled switch.
 8. **`entity_kind_predicate_vtable_005c`**, the slot the goal vector, the selector and the
    `movetopos` step all call with 2, 8, 9 and 1Ch. The executable answers it from the recovered
    chain `006FE530`, and what each literal selects is still a reading from use.
-9. **`construct_world` 004de610**, unchanged from milestones 2h through 2o.
+9. **`construct_world` 004de610**, unchanged from milestones 2h through 2o, and now the single
+   missing operand of a rule that otherwise runs: the world box `0071C4F0` compares against, and
+   the session mode at `[*(00E188A8) + 1FE4h]` that arm 7 of `0071F290` tests.
 
 ## Next milestones
 

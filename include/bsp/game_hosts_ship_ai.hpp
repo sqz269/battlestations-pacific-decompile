@@ -150,6 +150,16 @@ struct GameShipAiRow {
     std::string brain_target_name;           // the created instance it resolves to
     std::string command_descriptor;          // what 0071EB60 answered with
     unsigned long long path_plan_refreshes{0};  // 009ED3E0 call sites
+    unsigned long long path_plan_seeds{0};   // 009E3780 calls that rebuilt the graph
+    unsigned long long path_plan_accepts{0}; // 009E3780 calls that answered true
+    int path_plan_state{0};                  // plan+1Ch after the last request
+    int path_plan_nodes{0};                  // plan+34h
+    unsigned long long approach_frames{0};   // 009F1BC0 bodies
+    float approach_point_x{0.0f};            // nested+1228h
+    float approach_point_z{0.0f};            // nested+1230h
+    float approach_goal_range{0.0f};         // nested+11E0h
+    unsigned long long controller_updates{0};  // 0071F290 bodies
+    bool controller_update_session_gate{false};
     unsigned long long path_picks{0};        // 009EE580 bodies that passed the gate
     unsigned long long path_publishes{0};    // 009EE66C, 00815F30
     unsigned long long station_keeping{0};   // 009EDA28 bodies the gate let in
@@ -208,6 +218,10 @@ struct GameShipAiSummary {
     std::size_t units_with_nonzero_goal{0};
     std::size_t units_with_brain_target{0};
     unsigned long long path_plan_refreshes{0};
+    unsigned long long path_plan_seeds{0};
+    unsigned long long path_plan_accepts{0};
+    unsigned long long approach_frames{0};
+    unsigned long long controller_updates{0};
     unsigned long long path_picks{0};
     unsigned long long path_publishes{0};
     unsigned long long station_keeping{0};

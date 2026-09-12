@@ -274,6 +274,12 @@ public:
     // 009e57c2 read the x and z alone.
     void unit_position_00fc(std::size_t index, float& x, float& y, float& z) const;
 
+    // [00E188A8] +711ch / +7124h / +7128h / +7130h, the box 0071c4f0 tests a
+    // position against. False when this process has no world object, which it
+    // does not: construct_world 004de610 is a load record.
+    bool world_bounds_box_00e188a8(float& min_x, float& max_x, float& min_z,
+        float& max_z) const;
+
     // ---- milestone 2p: what the brain pre-pass 009f1420 reads --------------
     // 0071eb60 on [brain+0ab8h], the unit's own weapon director. False is the
     // empty singleton at 00e19b98; `mode` is director+30h.
