@@ -65,10 +65,10 @@ inline constexpr int kSpawnIndex = 0x9D8;        // 007ED0EC
 
 // The flight controller object, unit+AB0h, built by 007D7EA0(this, unit).
 namespace plane_flight_controller_off {
-inline constexpr int kVtable = 0x00;         // 007D7EAD, 00D06848
+inline constexpr int kControllerVtable = 0x00;         // 007D7EAD, 00D06848
 inline constexpr int kModeByte4 = 0x04;      // 007D7EB3 zero; 007DC85D from unit+9F9h
 inline constexpr int kModeByte5 = 0x05;      // 007D7EB6 zero; 007DC86B from unit+9F8h
-inline constexpr int kUnit = 0x08;           // 007D7EB9
+inline constexpr int kControllerUnit = 0x08;           // 007D7EB9
 inline constexpr int kClassDescriptor = 0x0C;// 007D7EC7, unit+538h
 inline constexpr int kSubObject = 0x10;      // 007D7F4F, operator new(0D0h) at 007D7ECA
 inline constexpr int kSubObjectByte = 0x14;  // 007D7F52 zero
@@ -114,11 +114,11 @@ inline constexpr int kCruiseAltitudeGain = 0x518;  // 009FBADB; producer unread,
 // The bot approach controller sub-object, task+3F8h. docs/BOT_TASKS.md tabulates it
 // task-relative; these are the offsets the three pilot helpers dereference.
 namespace plane_pilot_approach_off {
-inline constexpr int kVtable = 0x00;
-inline constexpr int kUnit = 0x04;             // 009FB836, 009F9E46
+inline constexpr int kStateVtable = 0x00;
+inline constexpr int kStateUnit = 0x04;             // 009FB836, 009F9E46
 inline constexpr int kClassDescriptor = 0x08;  // 009FBAD6
 inline constexpr int kSquadron = 0x0C;         // 009FBA90, unit+9D4h
-inline constexpr int kCommandBlock = 0x18;     // 009F9EAF, task+4h
+inline constexpr int kStateCommandBlock = 0x18;     // 009F9EAF, task+4h
 }  // namespace plane_pilot_approach_off
 
 // The command block fields the three helpers write (relative to task+4h).
@@ -126,7 +126,7 @@ namespace plane_pilot_command_off {
 inline constexpr int kPitchDemand = 0x2BC;    // 009FB937 / 009FB957 / 009FBA39
 inline constexpr int kHeadingDemand = 0x2C0;  // 009F9EB9
 inline constexpr int kPitchMode = 0x2D0;      // 009FB93F, literal 2
-inline constexpr int kHeadingMode = 0x2CC;    // 009F9EC1, literal 2
+inline constexpr int kStateHeadingMode = 0x2CC;    // 009F9EC1, literal 2
 
 // The five plan slots 0099B450 seeds and 0099D300 overrides: {current, desired, flag}.
 inline constexpr int kThrottleCurrent = 0x274;  // 0099B466 from unit+9F0h
