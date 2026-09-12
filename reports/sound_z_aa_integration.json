@@ -81,7 +81,53 @@
     }
   ],
   "promotion": {
-    "state": "pending_exact_promoted_commit_validation_and_push"
+    "state": "exact_source_commit_promoted_and_validated",
+    "source_commit": "0b798be8d08e64f4cc9d76c95c3788a30290f374",
+    "source_tree": "79f6388df8fde499897954cf97b1b39e9b94c8f3",
+    "utc": "2026-09-12T18:03:12.911979+00:00",
+    "win32_build_and_existing_ctests_passed": true,
+    "installed_facade_cases_passed": 3,
+    "table_failure_case_passed": true,
+    "semantic_cases_passed": 5,
+    "raw_lifetime_cases_passed": 5,
+    "byte_output_calls_passed": 2,
+    "listener_probe_passed": true,
+    "logs": [
+      {
+        "path": "local/sound_z_aa_promote.log",
+        "sha256": "7e4204a06f6c05f8b933dd00de479d004de5d2a0e001cf637f3f4986a35e6d8b"
+      },
+      {
+        "path": "local/sound_z_aa_promoted_facade.log",
+        "sha256": "f91da8b03f9f52b7cfa69b64bb708992acde31c88dd781bbdfcff1689dc71b8e"
+      },
+      {
+        "path": "local/sound_z_aa_promoted_table.log",
+        "sha256": "bb10cb98a77c086fea0d38c27c5a548439e02a34bd9bf808c5563139ee1e02cf"
+      },
+      {
+        "path": "local/sound_z_aa_promoted_semantic.log",
+        "sha256": "933d8459dc69b3af88f19039b5ed8a10d4c8befe16305a4172d0454ceabcf685"
+      },
+      {
+        "path": "local/sound_z_aa_promoted_raw.log",
+        "sha256": "d65039ba7af104b11836837e4860394cfe3e1067db7cbbdb8993491adb3765fe"
+      },
+      {
+        "path": "local/sound_z_aa_promoted_bytes.log",
+        "sha256": "587fd6e09815c40077568bb95a0bb9514e1ba089e20169678913743afeb4d279"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-sound-stream-owner-z\\local\\interface_listener_primary_final_0b798be8_20260912_110053534.log",
+        "sha256": "ce0e2d05d2a9a05be606bc371a339ba3697af395aa11002e8d39bdfbbb41b218"
+      }
+    ],
+    "library": {
+      "path": "build/win32/Release/bsp_core.lib",
+      "sha256": "3302819378ef326845056c6cf4816c88b3c055a29210bb857847fccce871dfa8"
+    },
+    "annotation": "38 new or extended reviewed names applied by integration and project saved; prior annotation receipt in main local/ghidra-annotations-20260912T175948Z.json; index refreshed",
+    "qualification": "This receipt records validation of the named promoted source commit. Later metadata-only commits do not change those source artifacts. No drop-in ABI or game/audio validation claimed."
   },
   "remaining": [
     "Actual game+1ED4/+19FC publication and actual interface+4; semantic owner objects cannot be passed as raw storage",
