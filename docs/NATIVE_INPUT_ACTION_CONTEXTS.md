@@ -34,7 +34,11 @@ separately and35 numeric CALLrows including the activation call atA9304C.
 ## Verification boundary
 
 Both complete72-byte bodies match the original image and current Ghidra bytes.
-The packet's report records final build/fixture validation when performed. The
+The strict Win32 build and both existing CTests passed. One extension of the
+existing native configuration fixture compares four native spans and seven
+phases, including unsigned priority, floor1, unchanged-level refresh and a
+callback-mutated endpoint. Final combined validation is recorded in
+reports/input_configuration_ah_integration.json. The
 source APIs add a required service context; they are not native callable/FH3/SEH
 replacements. Callback exceptions preserve earlier writes. Application frame
 execution, arbitrary stack aliases and gameplay have not been validated.

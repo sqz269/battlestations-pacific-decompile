@@ -29,6 +29,9 @@ struct GameInputActionServices {
 // actual game publication (game clock at+64C) and a real map-subscript service.
 class GameInputDeadlineCallback final : public GameInputActionCallbacks {
 public:
+    // Uses the concrete signed-key map adapter over the supplied actual map.
+    GameInputDeadlineCallback(GameInputRuntime&, void* volatile& game_00e188a8,
+        void* actual_map_00e18a7c, const volatile double& delay_00ce65d0);
     GameInputDeadlineCallback(GameInputRuntime&, void* volatile& game_00e188a8,
         void* actual_map_00e18a7c, const volatile double& delay_00ce65d0,
         NativeInputActionDeadlineCalls&);

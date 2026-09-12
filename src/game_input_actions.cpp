@@ -1,7 +1,22 @@
 #include "bsp/game_input_actions.hpp"
+#include "bsp/native_input_deadline_map_lookup_adapter.hpp"
 #include <stdexcept>
 
 namespace bsp::game {
+namespace {
+class DeadlineMapCalls final : public NativeInputActionDeadlineCalls {
+    float* call_004d6900(void* map, const std::int32_t* key) override {
+        return subscript_input_deadline_map_storage(map, key);
+    }
+};
+NativeInputActionDeadlineCalls& deadline_map_calls() {
+    static DeadlineMapCalls calls;
+    return calls;
+}
+} // namespace
+GameInputDeadlineCallback::GameInputDeadlineCallback(GameInputRuntime& runtime,
+    void* volatile& game, void* map, const volatile double& delay)
+    : GameInputDeadlineCallback(runtime, game, map, delay, deadline_map_calls()) {}
 GameInputDeadlineCallback::GameInputDeadlineCallback(GameInputRuntime& runtime,
     void* volatile& game, void* map, const volatile double& delay,
     NativeInputActionDeadlineCalls& calls)
