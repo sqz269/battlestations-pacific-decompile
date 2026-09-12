@@ -9,6 +9,7 @@
 #include "bsp/game_settings.hpp"
 #include "bsp/gun_aiming.hpp"
 #include "bsp/gun_platform_arc.hpp"
+#include "bsp/gun_bot_ticks.hpp"
 #include "bsp/game_tuning_singleton.hpp"
 #include "bsp/gui_icon.hpp"
 #include "bsp/gui_layer.hpp"
@@ -2724,6 +2725,22 @@ int main() {
             bsp::gun_arc_route_deltas_007f6530(arcs, -1.5f, 0.0f, 1.5f, 0.0f);
         check(blocked.routed_around && blocked.deltas.horz < 0.0f,
             "007F669F reverses the traverse when a blocked window is in the way");
+    }
+
+    {
+        // 009032A8..009032E9: only a depression steeper than -0.02 rad is
+        // corrected, and the correction is v - (0.02 + v) * 0.5, which is
+        // 0.5v - 0.01, not a plain halving. A target of kind 0Fh flattens the
+        // shot instead (009032B5).
+        check(bsp::gun_bot_ballistic_vertical_correction_009030c0(0.25f, false) == 0.25f,
+            "009032A8 leaves an elevation untouched");
+        check(bsp::gun_bot_ballistic_vertical_correction_009030c0(-0.01f, false) == -0.01f,
+            "009032CE leaves a depression shallower than -0.02 rad untouched");
+        check(std::fabs(bsp::gun_bot_ballistic_vertical_correction_009030c0(-0.10f, false) -
+                        -0.06f) < 1e-6f,
+            "009032E9 maps -0.10 rad to 0.5v - 0.01 = -0.06 rad");
+        check(bsp::gun_bot_ballistic_vertical_correction_009030c0(-0.10f, true) == 0.0f,
+            "009032B5 flattens the shot when the target answers IsKindOf(0Fh)");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
