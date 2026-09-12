@@ -1,0 +1,513 @@
+{
+  "packet": "cc_ai_bearing_rating",
+  "owner": "agent/cc-ai-bearing-rating",
+  "doc": "docs/SHIP_AI_BEARING_RATING.md",
+  "header": "include/bsp/ship_ai_bearing_rating.hpp",
+  "source": "src/ship_ai_bearing_rating.cpp",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "read-only",
+  "summary": "0095EB40 is an expected-damage estimate over a time window, not a firing-arc score. `this` is the unit. It walks the twelve gunnery-category lists 00956C20 builds, keeps every operational turning gun (vtable[5Ch](22h), not the rebuild's 20h) whose category the query enables and whose range the query is inside, and sums direct damage past the target's armour plus flooding damage plus fire damage. The bearing enters only through the optional per-mount bearing test 0085B7D0.",
+
+  "routines": [
+    {
+      "address": "0095eb40",
+      "native": "0095eb40",
+      "name": "ship_ai_firepower_rating_0095eb40",
+      "abi": "float __thiscall(Unit* this, ShipAiFirepowerQuery* block)",
+      "ret": "RET 4 at 0095EB99, 0095F065, 0095F077",
+      "body": "0095eb40-0095f079",
+      "coverage": "complete",
+      "result_register": "ST0"
+    },
+    {
+      "address": "0095f080",
+      "native": "0095f080",
+      "name": "ship_ai_firepower_range_profile_0095f080",
+      "abi": "void __thiscall(Unit* this, ShipAiFirepowerQuery block /*44h by value*/, float* out60, int prefer_long_range)",
+      "ret": "RET 4Ch at 0095F165",
+      "body": "0095f080-0095f167",
+      "coverage": "complete"
+    },
+    {
+      "address": "009e6240",
+      "native": "009e6240",
+      "name": "ship_ai_approach_refresh_avoidance_rating_009e6240",
+      "abi": "void __thiscall(state, float dt, float tx, float ty, float tz, ShipAiFirepowerQuery* block), RET 14h at 009E63B6",
+      "body": "009e6240-009e63b8",
+      "coverage": "not reconstructed: contract only. Its seeding of the block (009E634C word 5, 009E634F byte +40h, 009E6359 word 0) and its use of the result (009E6373 max(result,1.0f) into state+120h) are documented; the body belongs to the approach-update packets."
+    },
+    {
+      "address": "00605070",
+      "native": "00605070",
+      "name": "ship_ai_firepower_wrap_angle_00605070",
+      "abi": "void __thiscall(float* angle), RET 0",
+      "body": "00605070-006050bd",
+      "coverage": "complete, reimplemented as a pure rule"
+    },
+    {
+      "address": "00419010",
+      "native": "00419010",
+      "name": "ship_ai_firepower_lerp_clamped_00419010",
+      "abi": "float __stdcall(float x0, float y0, float x1, float y1, float t), RET 14h",
+      "body": "00419010-004190ce",
+      "coverage": "complete, reimplemented as a pure rule"
+    },
+    {
+      "address": "00415510",
+      "native": "00415510",
+      "name": "min_by_ref_00415510",
+      "abi": "float __fastcall(const float* a, const float* b), RET 0",
+      "body": "00415510-0041554d",
+      "coverage": "complete, reimplemented as a pure rule"
+    },
+    {
+      "address": "00415690",
+      "native": "00415690",
+      "name": "clamp_in_place_00415690",
+      "abi": "void __fastcall(float* value, const float* low, const float* high), RET 4",
+      "body": "00415690-004156ef",
+      "coverage": "complete, reimplemented as a pure rule"
+    },
+    {
+      "address": "006eb060",
+      "native": "006eb060",
+      "name": "weapon_hit_probability (host method)",
+      "abi": "float __thiscall(ProjectileClass* this, float range, float target_length), RET 8",
+      "body": "006eb060-006eb151",
+      "coverage": "contract read from the callee body; exposed as a host method, not reconstructed. Returns 0 when range >= [this+60h]; otherwise 008386F0([this+8h] mapped to a weapon Function, target_length, range/[this+60h]) which selects the WeaponHitAccuracy sub-object at settings+240h/+298h/+2F0h/+348h and evaluates 008383D0."
+    },
+    {
+      "address": "0085b7d0",
+      "native": "0085b7d0",
+      "name": "device_can_bear (host method)",
+      "abi": "bool __thiscall(Device* this, ProjectileClass* projectile, float bearing, float range), RET 0Ch",
+      "body": "0085b7d0-0085b97b",
+      "coverage": "contract read from the callee body; exposed as a host method, not reconstructed. Function 8 always true; range > [projectile+60h] false; Function 7 checks the traverse filter 0085AB50; otherwise it solves the gravity arc 00955630 and requires 0085A8B0 at both the plus and the minus spread."
+    },
+    {
+      "address": "00727d70",
+      "native": "00727d70",
+      "name": "device_ready_rounds (host method)",
+      "abi": "int __thiscall(Device* this, float horizon), RET 4",
+      "body": "00727d70-00727e0d",
+      "coverage": "contract read from the callee body; exposed as a host method, not reconstructed. Counts the [this+448h] floats at [this+414h] that are <= horizon."
+    },
+    {
+      "address": "0095cf80",
+      "native": "0095cf80",
+      "name": "ammo_select_flak_alternate (host method)",
+      "abi": "void* __thiscall(AmmoRecord* this, const AmmoRecord* src), RET 4",
+      "body": "0095cf80-0095d11b",
+      "coverage": "contract read from the callee body; exposed as a host method, not reconstructed. A refcounting copy-assignment over +4h..+40h plus the nested object at +3Ch; 0095EB40 calls it with src = this+48h, so the projectile class read afterwards at [ammo+34h] is the flak alternate."
+    },
+    {
+      "address": "00729f10",
+      "native": "00729f10",
+      "name": "device_is_operational (host method)",
+      "abi": "bool __thiscall(Device* this), RET 0",
+      "body": "00729f10-00729f36",
+      "coverage": "already named BSP_Gun_IsOperational; contract re-read: true iff [[this+3F0h]+720h], [this+3B8h] and [this+5Dh] are all zero."
+    }
+  ],
+
+  "host_steps": [
+    {
+      "step": 1,
+      "method": "unit_max_weapon_range",
+      "address": "0095eb62",
+      "native": null,
+      "function": "0095eb40",
+      "kind": "field_read",
+      "evidence": "FLD float ptr [EBX+494h]; the call returns 0 unless block[0] < it (0095EB6E FCOMIP, 0095EB90 JC). kUnitOffAnyWeaponMaxRange."
+    },
+    {
+      "step": 2,
+      "method": "wrap the query bearing (reimplemented, not a host method)",
+      "address": "0095eba1",
+      "native": "00605070",
+      "function": "0095eb40",
+      "evidence": "LEA ECX,[EDI+14h] at 0095EB9E: the wrap is in place on word 5, which the decompiler dropped."
+    },
+    {
+      "step": 3,
+      "method": "category_device_count",
+      "address": "0095ebb3",
+      "native": null,
+      "function": "0095eb40",
+      "kind": "field_read",
+      "evidence": "CMP dword ptr [EBX+EAX*4+394h],0 with EAX = category*3; the count of the doubly linked list 00956C20 builds."
+    },
+    {
+      "step": 4,
+      "method": "category_max_range",
+      "address": "0095ebc4",
+      "native": null,
+      "function": "0095eb40",
+      "kind": "field_read",
+      "evidence": "FLD float ptr [EBX+ESI*4+430h]; the category is skipped when block[0] > it (0095EBD1 JA). kUnitOffCategoryRanges."
+    },
+    {
+      "step": 5,
+      "method": "category_list_head",
+      "address": "0095ec24",
+      "native": null,
+      "function": "0095eb40",
+      "kind": "field_read",
+      "evidence": "MOV ECX,dword ptr [ECX+398h] with ECX = EBX + category*0Ch; zero ends the category (0095EC30 JZ)."
+    },
+    {
+      "step": 6,
+      "method": "list_device",
+      "address": "0095ec3a",
+      "native": null,
+      "function": "0095eb40",
+      "kind": "field_read",
+      "evidence": "MOV EBX,dword ptr [ECX+8]. kUnitGunneryListNodeOffPayload."
+    },
+    {
+      "step": 7,
+      "method": "device_is_turning_gun",
+      "address": "0095ec46",
+      "native": "0095ec46+vtable5C",
+      "function": "0095eb40",
+      "kind": "virtual",
+      "evidence": "PUSH 22h at 0095EC42 then CALL EAX through [[device]+5Ch]. 22h is the turning-gun family base (docs/ENTITY_CLASS_IDS.md), not the 20h base gun that 00956C20 pushes at 00956C72."
+    },
+    {
+      "step": 8,
+      "method": "device_is_operational",
+      "address": "0095ec52",
+      "native": "00729f10",
+      "function": "0095eb40",
+      "evidence": "MOV ECX,EBX then CALL; TEST AL,AL / JZ 0095EF69 skips the device."
+    },
+    {
+      "step": 9,
+      "method": "device_ready_rounds",
+      "address": "0095ec84",
+      "native": "00727d70",
+      "function": "0095eb40",
+      "evidence": "Only when byte +41h is set (0095EC5F). The horizon is 0.0f for category 7 (0095EC6A XORPS) and block[7] otherwise (0095EC6F)."
+    },
+    {
+      "step": 10,
+      "method": "device_is_destroyed",
+      "address": "0095ec8b",
+      "native": null,
+      "function": "0095eb40",
+      "kind": "field_read",
+      "evidence": "CMP byte ptr [EBX+3B8h],0; the alternative arm of byte +41h, JNZ 0095EF69."
+    },
+    {
+      "step": 11,
+      "method": "device_barrel_count",
+      "address": "0095ec98",
+      "native": null,
+      "function": "0095eb40",
+      "kind": "field_read",
+      "evidence": "MOV EAX,dword ptr [EBX+448h]; a zero count skips the device (0095ECA4 JZ). The same field 00727D70 uses as its loop bound."
+    },
+    {
+      "step": 12,
+      "method": "device_weapon_function",
+      "address": "0095ecaa",
+      "native": null,
+      "function": "0095eb40",
+      "kind": "field_read",
+      "evidence": "MOV ECX,[EBX+3F4h]; CMP dword ptr [ECX+80h],6. The weapon Function 007327B0 writes (bsp::GunneryCategory)."
+    },
+    {
+      "step": 13,
+      "method": "device_ammo_record",
+      "address": "0095ecb7",
+      "native": null,
+      "function": "0095eb40",
+      "kind": "field_read",
+      "evidence": "MOV EAX,[EBX+354h]; MOV EBP,[EAX+74h] at 0095ECBD."
+    },
+    {
+      "step": 14,
+      "method": "ammo_select_flak_alternate",
+      "address": "0095ecd4",
+      "native": "0095cf80",
+      "function": "0095eb40",
+      "evidence": "Guarded by Function == 6 and byte +3Dh clear and byte +3Ch set (0095ECB0, 0095ECC2, 0095ECC8). LEA EDX,[EBP+48h]; MOV ECX,EBP."
+    },
+    {
+      "step": 15,
+      "method": "ammo_projectile_class",
+      "address": "0095ecdb",
+      "native": null,
+      "function": "0095eb40",
+      "kind": "field_read",
+      "evidence": "MOV ESI,dword ptr [EBP+34h], read after the flak swap. Its fields are read at 0095ECE2 (+60h), 0095ECF3 (+8h), 0095ED05/0095ED15 (+B4h, +ACh), 0095ED3B/0095ED4B (+B8h, +B0h), 0095EE7E (+BCh), 0095EE9A (+C4h), 0095EEA0 (+C0h)."
+    },
+    {
+      "step": 16,
+      "method": "lerp_clamped (reimplemented, not a host method)",
+      "address": "0095ed9d",
+      "native": "00419010",
+      "function": "0095eb40",
+      "evidence": "Five stack arguments pushed at 0095ED78..0095ED9A: x0 = max(+ACh,+B4h), y0 = 1.0f, x1 = max(+B0h,+B8h), y1 = 0.0f, t = block[4] for sub-type 0Ah else block[3]. A result that is not > 0 drops the mount (0095EDB0 JNC)."
+    },
+    {
+      "step": 17,
+      "method": "weapon_hit_probability",
+      "address": "0095edc9",
+      "native": "006eb060",
+      "function": "0095eb40",
+      "evidence": "MOV ECX,ESI (the projectile class); arguments block[0] at 0095EDC2 and block[1] at 0095EDB6. A result that is not > 0 drops the mount (0095EDDC JNC)."
+    },
+    {
+      "step": 18,
+      "method": "device_can_bear",
+      "address": "0095edfa",
+      "native": "0085b7d0",
+      "function": "0095eb40",
+      "evidence": "Only when byte +40h is set (0095EDE2). MOV ECX,EBX (the device); PUSH ESI (the projectile class) at 0095EDF9, block[5] at 0095EDF3 and block[0] at 0095EDE8."
+    },
+    {
+      "step": 19,
+      "method": "ammo_cycle_period",
+      "address": "0095ee07",
+      "native": null,
+      "function": "0095eb40",
+      "kind": "field_read",
+      "evidence": "MOVSS XMM0,dword ptr [EBP+2Ch]; COMISS against zero, FLD1 when not positive, else block[6] / it (0095EE1A FDIV)."
+    },
+    {
+      "step": 20,
+      "method": "clamp the excess damage (reimplemented, not a host method)",
+      "address": "0095ee79",
+      "native": "00415690",
+      "function": "0095eb40",
+      "evidence": "ECX = &excess (0095EE6F), EDX = &0.0f (0095EE6B/0095EE73), stack = &block[2] (0095EE63 LEA EAX,[EDI+8], 0095EE6A PUSH). The decompiler showed only the stack argument."
+    },
+    {
+      "step": 21,
+      "method": "gameplay_tick_damage",
+      "address": "0095eead",
+      "native": "00424c40",
+      "function": "0095eb40",
+      "evidence": "The singleton; [EBP+3B0h] is WaterTickDamage (0095EEC2). The image calls the getter again at 0095EED8 for [EBP+3ACh] FireTickDamage (0095EEEA); one host method covers both sites because the singleton is the same object."
+    },
+    {
+      "step": 22,
+      "method": "min against the window (reimplemented, not a host method)",
+      "address": "0095eebd",
+      "native": "00415510",
+      "function": "0095eb40",
+      "evidence": "ECX = &block[6] (0095EEB2 LEA EBX,[EDI+18h]), EDX = &(WaterDamage * product) (0095EEB5). Both arguments are by reference and the decompiler showed neither."
+    },
+    {
+      "step": 23,
+      "method": "gameplay_tick_damage (second site)",
+      "address": "0095eed8",
+      "native": "00424c40",
+      "function": "0095eb40",
+      "evidence": "Same singleton; [EBP+3ACh] FireTickDamage at 0095EEEA."
+    },
+    {
+      "step": 24,
+      "method": "min against the window (second site)",
+      "address": "0095eee5",
+      "native": "00415510",
+      "function": "0095eb40",
+      "evidence": "ECX = &block[6], EDX = &(base * FireChance * FireDamage / block[8]) (0095EEDD)."
+    },
+    {
+      "step": 25,
+      "method": "list_next",
+      "address": "0095ef6d",
+      "native": null,
+      "function": "0095eb40",
+      "kind": "field_read",
+      "evidence": "MOV EAX,dword ptr [ECX+4]; JNZ 0095EC36 continues the walk. kUnitGunneryListNodeOffNext."
+    },
+    {
+      "step": 26,
+      "method": "0095F080 calls the rating once per sample",
+      "address": "0095f109",
+      "native": "0095eb40",
+      "function": "0095f080",
+      "evidence": "MOV ECX,[ESP+14h] (the saved this) and LEA EAX,[ESP+1Ch] (the block) at 0095F100/0095F104, inside the 60-iteration loop 0095F100-0095F15C."
+    },
+    {
+      "step": 27,
+      "method": "0095F080 wraps word 5 with the CRT fmod",
+      "address": "0095f09f",
+      "native": "00bf857a",
+      "function": "0095f080",
+      "evidence": "FLD [ESP+20h] (word 5) and FLD double [00CE3828] at 0095F083/0095F08F; the two fixups follow at 0095F0B2 and 0095F0C8, the same shape as 00605070."
+    }
+  ],
+
+  "call_graph": [
+    {
+      "address": "009e5dc4",
+      "native": "0095eb40",
+      "function": "009e5da0",
+      "evidence": "MOV ECX,dword ptr [ESI] at 009E5DB9: the `this` is [slot+0h], the unit. The adapter replaces word 5 with wrap(word5 - slot.angle_08) through 00438B10 and copies words 12, 11, 10, 13 into slot+1Ch, +20h, +24h, +28h."
+    },
+    {
+      "address": "009e635e",
+      "native": "0095eb40",
+      "function": "009e6240",
+      "evidence": "MOV ECX,dword ptr [EDI+14h] at 009E635B: the `this` is the entity the state holds at +14h. 009E634C writes word 5, 009E634F sets byte +40h to 1, 009E6359 writes word 0 from state+11Ch."
+    },
+    {
+      "address": "009f2f11",
+      "native": "0095f080",
+      "function": "009f1bc0",
+      "evidence": "PUSH 1 (prefer_long_range) at 009F2EF0, LEA EDX,[EBP+12C0h] (the own-ship 60-float curve) at 009F2EF2, REP MOVSD of 11h dwords out of nested+127Ch at 009F2EF9..009F2F09, MOV ECX,[EAX+0AA8h] (the unit)."
+    },
+    {
+      "address": "009f2fb1",
+      "native": "0095f080",
+      "function": "009f1bc0",
+      "evidence": "PUSH 0 at 009F2F9A, the target curve at nested+13B0h, REP MOVSD out of the second block at nested+1238h, MOV ECX,EBX = [owner+0B20h], the target unit."
+    },
+    {
+      "address": "009f309b",
+      "native": "009f1bc0",
+      "function": "009f3090",
+      "evidence": "The block producer runs first in the frame."
+    },
+    {
+      "address": "009f30a2",
+      "native": "009e7fc0",
+      "function": "009f3090",
+      "evidence": "The ring reset runs second and overwrites words 5, 6, 7 and bytes +40h/+41h at 009E813D..009E8178 before the ring scan."
+    },
+    {
+      "address": "009f30a9",
+      "native": "009e6e80",
+      "function": "009f3090",
+      "evidence": "The standoff-range chooser runs third and is the consumer of both curves: LEA EBX,[ESI+13B0h] at 009E71A5 and LEA EBP,[ESI+12C0h] at 009E71B9."
+    },
+    {
+      "address": "009f30b8",
+      "native": "009e9190",
+      "function": "009f3090",
+      "evidence": "The avoidance refresh runs fourth and reaches 0095EB40 through 009E6240."
+    },
+    {
+      "address": "009e81a7",
+      "native": "009e5da0",
+      "function": "009e7fc0",
+      "evidence": "SUB ESP,44h and REP MOVSD of 11h dwords out of nested+127Ch at 009E8192..009E81A2 fix the block at seventeen dwords."
+    },
+    {
+      "address": "00956c72",
+      "native": "00956c72+vtable5C",
+      "function": "00956c20",
+      "kind": "virtual",
+      "evidence": "PUSH 20h, not the 22h 0095EB40 pushes at 0095EC42. The rebuild admits every gun; the rating admits only turning guns."
+    }
+  ],
+
+  "query_block": {
+    "size": "0x44",
+    "producer": "009f1bc0 fills all seventeen dwords; 009e7fc0 overwrites words 5, 6, 7 and bytes +40h/+41h",
+    "words": [
+      {"offset": "+00h", "name": "range", "producer": "009f2a04 from nested+11E0h; 0095f087 for the sweep"},
+      {"offset": "+04h", "name": "target_length", "producer": "009f2a54 from [target+538h]+A0h (Length); 009f2ab9 default 100.0f"},
+      {"offset": "+08h", "name": "damage_cap", "producer": "009f2a44 from [target+370h]; 009f2aa1 default 10000.0f"},
+      {"offset": "+0Ch", "name": "armour", "producer": "009f2a2c from [target+538h]+4Ch; 009f2a91 default 0.0f"},
+      {"offset": "+10h", "name": "armour_torpedo", "producer": "009f2a3c, the virtual [[target+538h]]+24h; 009f2a99 default 0.0f"},
+      {"offset": "+14h", "name": "bearing", "producer": "009f2a18 and 009e8153 from nested+11DCh; 009e5db4 makes it slot relative"},
+      {"offset": "+18h", "name": "window_seconds", "producer": "009f2ea1 and 009e814b, both 00CE3930 = 20.0f"},
+      {"offset": "+1Ch", "name": "ready_horizon_seconds", "producer": "009f2eb1 = 00CE38C8 = 30.0f; 009e8161 = 00CEB4B0 = 60.0f"},
+      {"offset": "+20h", "name": "damage_threshold", "producer": "009f2a6b from [target+538h]+6B8h (DamageThreshold); 009f2a7f default 10000.0f"},
+      {"offset": "+24h", "name": "unused_word9", "producer": "009f2b95, 009f2c6b, 009f2cf6; never read by 0095eb40"},
+      {"offset": "+28h", "name": "out_artillery", "producer": "0095eb4e zero, 0095f00b store"},
+      {"offset": "+2Ch", "name": "out_small_calibre", "producer": "0095eb53 zero, 0095efef store"},
+      {"offset": "+30h", "name": "out_torpedo", "producer": "0095eb58 zero, 0095f043 store"},
+      {"offset": "+34h", "name": "out_depth_charge", "producer": "0095eb5d zero, 0095f027 store"},
+      {"offset": "+38h", "name": "unused_word14", "producer": "009f2a10 and 009f2e9b; never read by 0095eb40"},
+      {"offset": "+3Ch", "name": "allow_machine_gun", "producer": "009f2ae7/009f2b04 and 009f2e0f"},
+      {"offset": "+3Dh", "name": "allow_artillery", "producer": "009f2b20/009f2b3d and 009f2e29"},
+      {"offset": "+3Eh", "name": "allow_torpedo", "producer": "009f2bc2 and 009f2e5c"},
+      {"offset": "+3Fh", "name": "allow_depth_charge", "producer": "009f2b6d/009f2b8a and 009f2e43"},
+      {"offset": "+40h", "name": "require_bearing", "producer": "009e8171 = 1, 009f2ecb = 0, 009e634f = 1"},
+      {"offset": "+41h", "name": "use_ready_rounds", "producer": "009e8178 = 1, 009f2ed2 = 1"}
+    ]
+  },
+
+  "class_fields_510_514": {
+    "question": "the class fields +510h and +514h that gate the engage sub-state",
+    "lua_keys": [
+      {"offset": "+510h", "key": "KamikazeDamage", "string": "00d09cf4", "push": "008319f6", "store": "00831a22", "default": "0.0f via FLDZ at 008319d0/00831a0a and the defaulted getter 00b66330"},
+      {"offset": "+514h", "key": "KamikazeBlastDamage", "string": "00d09ce0", "push": "00831a3b", "store": "00831a67", "default": "0.0f via FLDZ at 00831a4f and 00b66330"},
+      {"offset": "+518h", "key": "KamikazeBlastRange", "string": "00d09ccc", "push": "00831a80", "store": "00831aac", "default": "0.0f"}
+    ],
+    "reader": "00831840, the vehicle-class Lua reader; no other function in the export tree writes descriptor+510h or +514h",
+    "conjunct": {
+      "function": "009e85b0",
+      "chain": "009E85B6 MOV ECX,[EDI+4]; 009E85B9 MOV EAX,[ECX+0AA8h] (the unit, zero returns 0 at 009E85C1); 009E85C7 MOV EAX,[EAX+538h] (the class descriptor)",
+      "reads": "009E85CD MOVSS XMM1,[EAX+510h]; 009E85D8 COMISS against the XORPS zero; 009E85DB JA. 009E85DD MOVSS XMM1,[EAX+514h]; 009E85E5 COMISS; 009E85E8 JBE 009E86AF",
+      "condition": "TRUE iff desc+510h > 0.0f OR desc+514h > 0.0f. Both NaN falls through to the JBE and is FALSE.",
+      "same_test_elsewhere": "00936dc0 performs the identical pair test on [[+1Ch]+538h]"
+    },
+    "installed_values": {
+      "mission": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/scripts/missions/usn/usn_2_java.lua",
+      "scene": ".../universe/scenes/missions/usn/usn_2_java.scn",
+      "allied_destroyers": "Alden, John1, John2, John3 are Clemson; the RN ships Electra, Encounter, Jupiter are PACK3_Icarus",
+      "enemy_destroyers": "Shiratsuyu, Kagero, Fubuki",
+      "class_table": "scripts/datatables/autoload/vehicleclasses.lua (VehicleClass[25] Clemson at line 16446, [73] Fubuki at 37482, [276] Kagero at 104567, [289] Shiratsuyu at 113849, [473] Icarus at 63323)",
+      "result": "Neither KamikazeDamage nor KamikazeBlastDamage appears in any of those class tables. In the whole 191122-line file the pair appears only for VehicleClass[4] Kaiten (lines 2106-2108, 3000 / 3000 / 50) and VehicleClass[43] Shinyo (lines 22981-22983, 1500 / 3000 / 50).",
+      "consequence": "desc+510h and desc+514h are both 0.0f for every usn_2_java destroyer, so 009E85B0's first conjunct is FALSE and the sub-state can never be selected for them. The gate is a suicide-craft test, not an armament test."
+    }
+  },
+
+  "corrections": [
+    {
+      "what": "what 0095EB40 rates",
+      "was": "docs/SHIP_AI_RING_SCAN.md: 'the ship class's rating of a bearing', body unread; the packet brief asked whether it is firing-arc coverage or a broadside preference",
+      "is": "an expected-damage estimate over block[6] seconds against a target described by the block. `this` is the unit, not the class descriptor. The bearing enters only through the optional 0085B7D0 test.",
+      "evidence": "0095EE29..0095EEFA is a damage product; the four outputs are per projectile sub-type; the arc-looking fields +ACh..+B8h are DamageMin/DamageMax/BlastDamageMin/BlastDamageMax (docs/WEAPON_CLASS_DESCRIPTOR.md 109-120), not angle limits"
+    },
+    {
+      "what": "the vtable[5Ch] argument",
+      "was": "include/bsp/gunnery_tables.hpp GunneryRebuildDevice: 'is_gun = vtable[5Ch](20h)'; nothing said the rating narrows it",
+      "is": "0095EB40 pushes 22h at 0095EC42, the turning-gun family base, so fixed guns (21h), bomb platforms (25h) and catapults (28h) are rejected even inside an enabled category",
+      "evidence": "0095EC42 PUSH 22h against 00956C72 PUSH 20h; docs/ENTITY_CLASS_IDS.md lines 149-160"
+    },
+    {
+      "what": "the producer of the seventeen dwords",
+      "was": "docs/SHIP_AI_RING_SCAN.md: 'The producer of the other fourteen dwords is unknown'",
+      "is": "009F1BC0 writes all seventeen at 009F2A04..009F2ED2; 009E7FC0 then overwrites words 5, 6, 7 and bytes +40h/+41h. 009F3090 calls them in that order at 009F309B and 009F30A2.",
+      "evidence": "the store list in query_block above, and the two call sites in call_graph"
+    },
+    {
+      "what": "the ring-scan word 7 constant",
+      "was": "docs/SHIP_AI_RING_SCAN.md: 'words 6 and 7 are nested+1294h = 20.0f and nested+1298h = 60.0f (009E814B, 009E8161)'",
+      "is": "the two stores are correct and the values are right, but the source of word 7 is the float at 00CEB4B0, not an immediate; the range-profile path writes 30.0f from 00CE38C8 at 009F2EB1 instead",
+      "evidence": "009E8159 MOVSS XMM0,[00CEB4B0] = 42700000h = 60.0f; 009F2EB1 MOVSS XMM0,[00CE38C8] = 41F00000h = 30.0f"
+    },
+    {
+      "what": "the decompiler output for 0095EB40",
+      "was": "exports/bsp/functions/0095eb40/decompiled.c shows FUN_00605070(), BSP_Math_MinFloatByRef() and BSP_Math_ClampInPlace(pfVar4 + 2) with no or partial arguments, and omits the FDIV by block[8]",
+      "is": "00605070 takes ECX = &block[5]; 00415510 takes ECX and EDX by reference; 00415690 takes a value, a low and a high pointer; the fire term divides by block[8] at 0095EEA6",
+      "evidence": "0095EB9E, 0095EEB2/0095EEB5, 0095EE63/0095EE6B/0095EE6F, 0095EEA6"
+    },
+    {
+      "what": "the WeaponHitAccuracy consumer",
+      "was": "docs/GAMEPLAY_SETTINGS_TAIL.md follow-up `weapon_hit_accuracy_consumer`: 'Find the reader of settings+240h + category*58h and confirm the bucket interpolation'",
+      "is": "0095EB40 is the reader, through 006EB060 at 0095EDC9 and 008386F0. 008383D0 interpolates on the target length between two nine-entry rows and buckets the normalised range.",
+      "evidence": "006EB0B2/006EB0DB/006EB123 push the Function; 00838713/0083873D/00838762/0083878C add 240h/298h/2F0h/348h to ECX"
+    }
+  ],
+
+  "no_ghidra_function": "none",
+
+  "build": "./scripts/build.ps1 clean, /W4 /WX; build/win32/bsp_core.dir/Release/ship_ai_bearing_rating.obj; ctest 1/1 passed",
+
+  "follow_up_packets": [
+    "ship_ai_firepower_query_target_fields - the producer of the class descriptor field +4Ch (block word 3) and of the virtual [[desc]]+24h (block word 4). 00831840 writes neither; both are read in damage units at 0095ED9D.",
+    "gun_ammo_record_layout - whether device+354h and device+3F4h hold the same class descriptor, and the producer of the ammunition record fields +2Ch (a period in seconds), +34h and the nested alternate at +48h.",
+    "ship_ai_standoff_range_009e6e80 - the consumer of both 60-sample curves at nested+12C0h and nested+13B0h.",
+    "weapon_hit_accuracy_profile_008383d0 - the nine range buckets and the two rows of the 58h-byte sub-objects at settings+240h/+298h/+2F0h/+348h."
+  ]
+}
