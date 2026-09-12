@@ -263,3 +263,9 @@ and stack shape at the site.
   `00D09FD4` are its only references.
 * The `50h` path object built by `0071FB90` and its `vtable[4]`/`[8]` point list.
 * Whether `+18h` of the parameter record is ever non-zero; every producer read writes 0.
+
+## Correction from docs/COMMAND_COMPLETION.md (packet cc2_command_completion)
+
+- **Was:** 00984300, 00984800, 0071F3B0, 007788D0 and 005457C0 listed as unread callees of the command path
+  **Is:** All five are read. 00984300 and 00984800 are the `command` and `target` mission-event dispatchers; 0071F3B0 is a refcounted-pointer reset that is on the path only because 0071F600 drops a path object with it; 007788D0 is the controlling-entity accessor; 005457C0 is the still-hostile test.
+  **Evidence:** docs/COMMAND_COMPLETION.md sections 3 and 5; bodies 00984300-009847FD, 00984800-00984B93, 0071F3B0-0071F3D8, 007788D0-007788DE, 005457C0-005457D8.

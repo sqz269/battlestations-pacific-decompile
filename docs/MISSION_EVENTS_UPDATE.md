@@ -470,3 +470,9 @@ Combined verification is recorded in reports/warning_voice_order_integration.jso
 - **Was:** the entityKilled channel 00986480 has 0077ce60 as its native producer
   **Is:** 00986480's only caller is 0077d1a0 BSP_UnitInstance_DestroyAndBroadcast, the function starting one byte after 0077ce60's body ends; 0077ce60 produces the hit channel only
   **Evidence:** ghidra callers 00986480; 0077ce60's Ghidra body is 0077ce60-0077d19f and 00988510 is called at 0077d149
+
+## Correction from docs/COMMAND_COMPLETION.md (packet cc2_command_completion)
+
+- **Was:** `+104h`, `+105h`: two bytes cleared by each channel dispatch, on the reporter
+  **Is:** In 00984300 only the clears belong to the reporter. EBP holds this from 0098431C, is overwritten with 00980150's return at 009843CE and is restored only at 009847AF, so the +104h/+105h clears at 00984380/00984386 are on the reporter but the +105h store at 0098473F is on the channel object.
+  **Evidence:** Filtered the whole 00984300 listing for EBP: writes at 0098431C, 009843CE and 009847AF only. The two regions Ghidra left undisassembled, 0098472E-0098473A and 0098478D-00984793, were decoded from disk bytes and contain no EBP restore. 009843EA MOV EAX,[EBP+8] reading _Mysize confirms EBP is the channel at that point.

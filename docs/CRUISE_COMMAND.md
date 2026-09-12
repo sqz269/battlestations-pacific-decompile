@@ -439,3 +439,9 @@ Ghidra functions already (the four `008356xx` as `TRIV_body_*`), so they are not
 5. The category labels 0/1/2/3 of `docs/SCENE_COMMAND_TYPES.md` are a reading; what this
    packet proves is that `00835E90`, `0071E550`, `008358D0` and `0071E6C0` all branch on
    "category is 1 or 2" and never on any other value.
+
+## Correction from docs/COMMAND_COMPLETION.md (packet cc2_command_completion)
+
+- **Was:** the 5Dh senders are 0071E390, 0071C7A0, 0071C7E0, 0071C770
+  **Is:** That list is not exhaustive. The senders on the completion path are 0071C730 (the builder 0071D810 uses at 0071D852 and 0071D9E0 uses), 0071D880 with index -1, and 0071D900, which 0071E550 reaches at 0071E5AA.
+  **Evidence:** 0071D921 and 0071D852 both reach BSP_SessionMessage_ConstructBase(5Dh) with vtable 00CFD9D8; the three builders differ only in msg+20h and msg+24h.
