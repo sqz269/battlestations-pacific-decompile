@@ -1,0 +1,1047 @@
+{
+  "packet": "orch3_particle_object_tracer_aq",
+  "scope": "Complete Object/Tracer text parsers, Object Size cache and Tracer actual texture pointer list.",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "bridge": "http://127.0.0.1:8089",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00af8bd0",
+      "end_inclusive": "00af9094",
+      "cpp_symbol": "bsp::load_native_object_particle_definition_00af8bd0",
+      "ghidra_name": "BSP_ObjectParticleDefinition_LoadText",
+      "native_prototype": "bool __thiscall BSP_ObjectParticleDefinition_LoadText(void *text)",
+      "native_calling_convention": "__thiscall",
+      "source": "src/native_particle_object_tracer_loading.cpp",
+      "header": "include/bsp/native_particle_object_tracer_loading.hpp",
+      "evidence": "Complete installed/live byte match SHA256 180671c6f9dfafcb849630ab66fe660d9e3d7daf0a229e257a806925f7f87a7f; inclusive last byte 00af9094; RET4 at 00af9051; decoded Capstone listing and all direct call sites captured in C:/Users/sqz269/bsp-aq-object-tracer. Descriptive name is a hypothesis. See docs/NATIVE_PARTICLE_OBJECT_TRACER_LOADING.md.",
+      "original_abi": {
+        "receiver": "ECX actual definition",
+        "stack_arguments": "void *text",
+        "stack_cleanup": "RET 4",
+        "result": "AL true, including EOF",
+        "native_eh": "FH3 normal paths inspected; native exception ABI not replaced"
+      },
+      "coverage": "complete",
+      "status": "reconstructed_installed_byte_fixture_tested_new_cpp_interface",
+      "bytes": 1221,
+      "native_sha256": "180671c6f9dfafcb849630ab66fe660d9e3d7daf0a229e257a806925f7f87a7f",
+      "last_instruction": "00af9090: jmp 0xaf8fce"
+    },
+    {
+      "address": "00b0ad50",
+      "end_inclusive": "00b0b5cb",
+      "cpp_symbol": "bsp::load_native_tracer_particle_definition_00b0ad50",
+      "ghidra_name": "BSP_TracerParticleDefinition_LoadText",
+      "native_prototype": "bool __thiscall BSP_TracerParticleDefinition_LoadText(void *text)",
+      "native_calling_convention": "__thiscall",
+      "source": "src/native_particle_object_tracer_loading.cpp",
+      "header": "include/bsp/native_particle_object_tracer_loading.hpp",
+      "evidence": "Complete installed/live byte match SHA256 083aaf7a56a84ff723429ed7ae4c8b09d18966a2914dc8d6c8758a0859466490; inclusive last byte 00b0b5cb; RET4 at 00b0b5c9; decoded Capstone listing and all direct call sites captured in C:/Users/sqz269/bsp-aq-object-tracer. Descriptive name is a hypothesis. See docs/NATIVE_PARTICLE_OBJECT_TRACER_LOADING.md.",
+      "original_abi": {
+        "receiver": "ECX actual definition",
+        "stack_arguments": "void *text",
+        "stack_cleanup": "RET 4",
+        "result": "AL true, including EOF",
+        "native_eh": "FH3 normal paths inspected; native exception ABI not replaced"
+      },
+      "coverage": "complete",
+      "status": "reconstructed_installed_byte_fixture_tested_new_cpp_interface",
+      "bytes": 2172,
+      "native_sha256": "083aaf7a56a84ff723429ed7ae4c8b09d18966a2914dc8d6c8758a0859466490",
+      "last_instruction": "00b0b5c9: ret 4"
+    },
+    {
+      "address": "00af80f0",
+      "end_inclusive": "00af816b",
+      "cpp_symbol": "bsp::set_native_object_particle_size_00af80f0",
+      "ghidra_name": "BSP_ObjectParticleDefinition_SetSize",
+      "native_prototype": "void __thiscall BSP_ObjectParticleDefinition_SetSize(void *parameter)",
+      "native_calling_convention": "__thiscall",
+      "source": "src/native_particle_object_tracer_loading.cpp",
+      "header": "include/bsp/native_particle_object_tracer_loading.hpp",
+      "evidence": "Complete installed/live byte match SHA256 48c36ca4076b3169bcff7b7ccf173420e5547151557ab4d294b6c0e0a1b12df0; inclusive last byte 00af816b; RET4 at 00af8169; decoded Capstone listing and all direct call sites captured in C:/Users/sqz269/bsp-aq-object-tracer. Descriptive name is a hypothesis. See docs/NATIVE_PARTICLE_OBJECT_TRACER_LOADING.md.",
+      "original_abi": {
+        "receiver": "ECX actual definition",
+        "stack_arguments": "void *parameter",
+        "stack_cleanup": "RET 4",
+        "result": "no EAX contract",
+        "native_eh": "FH3 normal paths inspected; native exception ABI not replaced"
+      },
+      "coverage": "complete",
+      "status": "reconstructed_installed_byte_fixture_tested_new_cpp_interface",
+      "bytes": 124,
+      "native_sha256": "48c36ca4076b3169bcff7b7ccf173420e5547151557ab4d294b6c0e0a1b12df0",
+      "last_instruction": "00af8169: ret 4"
+    },
+    {
+      "address": "00b0a920",
+      "end_inclusive": "00b0ab8a",
+      "cpp_symbol": "bsp::load_native_tracer_particle_textures_00b0a920",
+      "ghidra_name": "BSP_TracerParticleDefinition_LoadTextures",
+      "native_prototype": "void __thiscall BSP_TracerParticleDefinition_LoadTextures(char *filename)",
+      "native_calling_convention": "__thiscall",
+      "source": "src/native_particle_object_tracer_loading.cpp",
+      "header": "include/bsp/native_particle_object_tracer_loading.hpp",
+      "evidence": "Complete installed/live byte match SHA256 3a5fbab84d629b563b73f4b926d16c4e194eec33913350772fd25e585fb4d43c; inclusive last byte 00b0ab8a; RET4 at 00b0ab88; decoded Capstone listing and all direct call sites captured in C:/Users/sqz269/bsp-aq-object-tracer. Descriptive name is a hypothesis. See docs/NATIVE_PARTICLE_OBJECT_TRACER_LOADING.md.",
+      "original_abi": {
+        "receiver": "ECX actual definition",
+        "stack_arguments": "char *filename",
+        "stack_cleanup": "RET 4",
+        "result": "no EAX contract",
+        "native_eh": "FH3 normal paths inspected; native exception ABI not replaced"
+      },
+      "coverage": "complete",
+      "status": "reconstructed_installed_byte_fixture_tested_new_cpp_interface",
+      "bytes": 619,
+      "native_sha256": "3a5fbab84d629b563b73f4b926d16c4e194eec33913350772fd25e585fb4d43c",
+      "last_instruction": "00b0ab88: ret 4"
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00af8c0b",
+      "native": "00af5740",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8c1e",
+      "native": "00bf7fbf",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8c31",
+      "native": "00af5740",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8c4a",
+      "native": "00bf7fbf",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8c64",
+      "native": "00bf7fbf",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8c7e",
+      "native": "00aee3c0",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8c8b",
+      "native": "00bf7fbf",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8cb7",
+      "native": "00419cc0",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8cbe",
+      "native": "00bd1510",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8cda",
+      "native": "00af44c0",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8ce7",
+      "native": "00b015c0",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8d12",
+      "native": "00419cc0",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8d19",
+      "native": "00bd1510",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8d35",
+      "native": "00aee3c0",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8d49",
+      "native": "00bf7fbf",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8d60",
+      "native": "00aee3c0",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8da2",
+      "native": "00419cc0",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8da9",
+      "native": "00bd1510",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8ddf",
+      "native": "00af44c0",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8df1",
+      "native": "00aee3c0",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8df9",
+      "native": "00bfa66c",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8e24",
+      "native": "00419cc0",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8e2b",
+      "native": "00bd1510",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8e58",
+      "native": "00419cc0",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8e5f",
+      "native": "00bd1510",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8e6c",
+      "native": "00afbed0",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8e86",
+      "native": "00afc360",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8e96",
+      "native": "00af44c0",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8ea9",
+      "native": "00af44c0",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8eb8",
+      "native": "00afc470",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8ee2",
+      "native": "00419cc0",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8ee9",
+      "native": "00bd1510",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8f16",
+      "native": "00419cc0",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8f1d",
+      "native": "00bd1510",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8f3a",
+      "native": "00b00980",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8f48",
+      "native": "00bf6989",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8f82",
+      "native": "00419cc0",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8f89",
+      "native": "00bd1510",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8f9e",
+      "native": "00bf7fbf",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8fb2",
+      "native": "00afbf60",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8fce",
+      "native": "00bf6989",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8feb",
+      "native": "00aee2a0",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af8ff9",
+      "native": "00af5740",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af9032",
+      "native": "00419cc0",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af9039",
+      "native": "00bd1510",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af905e",
+      "native": "00bf7fbf",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af9072",
+      "native": "00afbf60",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00af9086",
+      "native": "00af80f0",
+      "function": "00af8bd0"
+    },
+    {
+      "address": "00b0ad87",
+      "native": "00af5740",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0ad9a",
+      "native": "00bf7fbf",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0adad",
+      "native": "00af5740",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0adca",
+      "native": "00bf7fbf",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0ade4",
+      "native": "00bf7fbf",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0adfe",
+      "native": "00aee3c0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0ae0b",
+      "native": "00bf7fbf",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0ae37",
+      "native": "00419cc0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0ae3e",
+      "native": "00bd1510",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0ae5a",
+      "native": "00af44c0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0ae67",
+      "native": "00b015c0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0ae92",
+      "native": "00419cc0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0ae99",
+      "native": "00bd1510",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0aeb5",
+      "native": "00aee3c0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0aec9",
+      "native": "00bf7fbf",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0aee0",
+      "native": "00aee3c0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0aee8",
+      "native": "00bf8417",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0af1a",
+      "native": "00419cc0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0af21",
+      "native": "00bd1510",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0af58",
+      "native": "00bf7fbf",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0af73",
+      "native": "00aee3c0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0af86",
+      "native": "00aefb20",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0afb5",
+      "native": "00419cc0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0afbc",
+      "native": "00bd1510",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0afe9",
+      "native": "00419cc0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0aff0",
+      "native": "00bd1510",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b008",
+      "native": "00bf7fbf",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b01f",
+      "native": "00aee3c0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b032",
+      "native": "00aefb20",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b046",
+      "native": "00aee2a0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b05a",
+      "native": "00bf7fbf",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b071",
+      "native": "00aee3c0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b080",
+      "native": "00b0a920",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b08e",
+      "native": "00aee2a0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b0a1",
+      "native": "00af44c0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b0b3",
+      "native": "00aee3c0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b0bb",
+      "native": "00bfa66c",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b0cb",
+      "native": "00aee2a0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b0d9",
+      "native": "00aee2a0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b0e2",
+      "native": "00afbed0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b0fc",
+      "native": "00afc360",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b10c",
+      "native": "00af44c0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b11f",
+      "native": "00af44c0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b12e",
+      "native": "00afc470",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b13c",
+      "native": "00aee2a0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b14a",
+      "native": "00aee2a0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b163",
+      "native": "00b00980",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b17a",
+      "native": "00bf7fbf",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b18a",
+      "native": "00afc1b0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b1a4",
+      "native": "00bf7fbf",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b1b4",
+      "native": "00afc1b0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b1ce",
+      "native": "00bf7fbf",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b1de",
+      "native": "00afc1b0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b1f8",
+      "native": "00bf7fbf",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b208",
+      "native": "00afbf60",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b22e",
+      "native": "00bf7fbf",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b23e",
+      "native": "00afc1b0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b258",
+      "native": "00bf7fbf",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b268",
+      "native": "00afbf60",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b28e",
+      "native": "00bf7fbf",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b29e",
+      "native": "00afc1b0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b2b8",
+      "native": "00bf7fbf",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b2c8",
+      "native": "00afbf60",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b2ee",
+      "native": "00bf7fbf",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b2fe",
+      "native": "00afbf60",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b324",
+      "native": "00bf7fbf",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b334",
+      "native": "00afbf60",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b35a",
+      "native": "00bf7fbf",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b36a",
+      "native": "00afbf60",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b390",
+      "native": "00bf7fbf",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b3a0",
+      "native": "00afbf60",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b3c6",
+      "native": "00bf7fbf",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b3d6",
+      "native": "00afbf60",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b3fc",
+      "native": "00bf7fbf",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b40c",
+      "native": "00afbf60",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b432",
+      "native": "00bf7fbf",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b442",
+      "native": "00afbf60",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b468",
+      "native": "00bf7fbf",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b478",
+      "native": "00afbf60",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b49e",
+      "native": "00bf7fbf",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b4ae",
+      "native": "00afbf60",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b4d4",
+      "native": "00bf7fbf",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b4e4",
+      "native": "00afbf60",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b4fb",
+      "native": "00bf7fbf",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b50b",
+      "native": "00afbf60",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b52e",
+      "native": "00bf7fbf",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b53e",
+      "native": "00afbf60",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b559",
+      "native": "00af4110",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b567",
+      "native": "00aee2a0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b575",
+      "native": "00af5740",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b5aa",
+      "native": "00419cc0",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00b0b5b1",
+      "native": "00bd1510",
+      "function": "00b0ad50"
+    },
+    {
+      "address": "00af8127",
+      "native": "00affa70",
+      "function": "00af80f0"
+    },
+    {
+      "address": "00af8142",
+      "native": "00affae0",
+      "function": "00af80f0"
+    },
+    {
+      "address": "00b0a94e",
+      "native": "00af3a20",
+      "function": "00b0a920"
+    },
+    {
+      "address": "00b0a968",
+      "native": "00aefb20",
+      "function": "00b0a920"
+    },
+    {
+      "address": "00b0a9aa",
+      "native": "00bf55be",
+      "function": "00b0a920"
+    },
+    {
+      "address": "00b0a9f0",
+      "native": "00bf6989",
+      "function": "00b0a920"
+    },
+    {
+      "address": "00b0aa3c",
+      "native": "00af3b50",
+      "function": "00b0a920"
+    },
+    {
+      "address": "00b0aa5d",
+      "native": "00aefb20",
+      "function": "00b0a920"
+    },
+    {
+      "address": "00b0aa9f",
+      "native": "00bf55be",
+      "function": "00b0a920"
+    },
+    {
+      "address": "00b0aae0",
+      "native": "00bf6989",
+      "function": "00b0a920"
+    },
+    {
+      "address": "00b0ab23",
+      "native": "00419cc0",
+      "function": "00b0a920"
+    },
+    {
+      "address": "00b0ab2a",
+      "native": "00bd1510",
+      "function": "00b0a920"
+    },
+    {
+      "address": "00b0ab6a",
+      "native": "00419cc0",
+      "function": "00b0a920"
+    },
+    {
+      "address": "00b0ab71",
+      "native": "00bd1510",
+      "function": "00b0a920"
+    },
+    {
+      "address": "00af8d75",
+      "native": "00af9660",
+      "function": "00af8bd0",
+      "kind": "indirect_current_vtable20",
+      "evidence": "AF8D67 loads current vtable, AF8D6B target+20; D5DB20 points AF9660. Callee body AF9660..AF9BAD clears/loads/appends actual model resources, RET4 at AF9BAB."
+    }
+  ],
+  "corrections": [
+    {
+      "was": "AF80F0 tentatively interpreted as rotation cache",
+      "evidence": "AF9086 is reached only for Size; AF80F9 publishes +84, AF810F..AF8160 publish +88; Object constructor AF89E0 establishes separate RotationSpeed+80.",
+      "is": "Object Size parameter pointer+84 and first-value cache+88"
+    },
+    {
+      "was": "Decompiler casts percentage double D7A358 to float before multiplying",
+      "is": "Runtime conversion precedes current double load; original FLD float/FMUL double/FSTP float order",
+      "evidence": "AF8FB2 conversion precedes AF8FBB FMUL qword; AF9072 precedes AF907B; Tracer equivalent sequences at B0B208/B0B211 onward."
+    },
+    {
+      "was": "MaxSegmentNum inferred integer from name",
+      "is": "Raw first float at Tracer+80",
+      "evidence": "B0B18A calls AFC1B0; B0B18F FSTP dword [ESI+80]."
+    },
+    {
+      "was": "TileLength assumed scaled like adjacent parameters",
+      "is": "Runtime parameter+E4 without any multiplier write",
+      "evidence": "B0B4E4 CALL AFBF60 and B0B4E9 MOV [ESI+E4],EAX; next field comparison follows."
+    },
+    {
+      "was": "AFBED0 assumed to reset builder kind+C for each line",
+      "is": "Explicit initial stack-kind binding; preserve kind across repeated local builder lifetimes",
+      "evidence": "AFBED0 clears only0/4/8; AFC470 return is ignored; native loop reuses the same stack slot."
+    }
+  ],
+  "ghidra_repairs": [
+    {
+      "call_site": "00af8f48",
+      "missing_start": "00af8f4d",
+      "missing_end_inclusive": "00af8f78",
+      "bytes": 44,
+      "was": "Returning BF6989 call has a false no-return override; following bytes absent from live listing",
+      "is": "Name reload, ADD ESP4, clear builder0/4/8, restore EH state and scan name before normal line loop.",
+      "evidence": "Full installed/live matching span, Capstone instruction decode; clear only this call-site flow override under the write lock.",
+      "applied_by_worker": false
+    },
+    {
+      "call_site": "00af8fce",
+      "missing_start": "00af8fd3",
+      "missing_end_inclusive": "00af8fef",
+      "bytes": 29,
+      "was": "Returning BF6989 call has a false no-return override; following bytes absent from live listing",
+      "is": "ADD ESP4, clear builder0/4/8, restore EH state, CALL AEE2A0 at AF8FEB, resume line read.",
+      "evidence": "Full installed/live matching span, Capstone instruction decode; clear only this call-site flow override under the write lock.",
+      "applied_by_worker": false
+    },
+    {
+      "call_site": "00b0a9f0",
+      "missing_start": "00b0a9f5",
+      "missing_end_inclusive": "00b0a9f7",
+      "bytes": 3,
+      "was": "Returning BF6989 call has a false no-return override; following bytes absent from live listing",
+      "is": "ADD ESP4; continue pointer publication and single item append.",
+      "evidence": "Full installed/live matching span, Capstone instruction decode; clear only this call-site flow override under the write lock.",
+      "applied_by_worker": false
+    },
+    {
+      "call_site": "00b0aae0",
+      "missing_start": "00b0aae5",
+      "missing_end_inclusive": "00b0aae7",
+      "bytes": 3,
+      "was": "Returning BF6989 call has a false no-return override; following bytes absent from live listing",
+      "is": "ADD ESP4; continue pointer publication and frame loop.",
+      "evidence": "Full installed/live matching span, Capstone instruction decode; clear only this call-site flow override under the write lock.",
+      "applied_by_worker": false
+    }
+  ],
+  "ghidra_function_body_status": "Existing inclusive extents verified correct. Four flow gaps await integrator repair; no worker Ghidra mutations.",
+  "alignment_gaps": [
+    {
+      "start": "00af8bfd",
+      "end_inclusive": "00af8bff",
+      "reason": "Unexecuted 3-byte alignment after jump"
+    },
+    {
+      "start": "00b0adbd",
+      "end_inclusive": "00b0adbf",
+      "reason": "Unexecuted 3-byte alignment after jump"
+    }
+  ],
+  "producer_evidence": {
+    "object": "AF89E0 actual Object constructor, D5DB00 profile, derived +80/+84/+8C/+90/+94",
+    "tracer": "B0A0B0 actual Tracer constructor, D5E048 profile, descriptor+98/+9C/+A0",
+    "atlas": "Shared raw AEFB20: actual manager+4 array/+8 count, actual30h item name8h+0C, same returned item pointer",
+    "curves": "Actual0Ch pooled runtime parameter, kind WORD+A, type1 20h rows and every other nonzero AF80F0 path 28h rows."
+  },
+  "caller_evidence": {
+    "object_parser": [
+      "00d5db08 DATA profile"
+    ],
+    "tracer_parser": [
+      "00d5e050 DATA profile"
+    ],
+    "size": [
+      "00af9086 CALL from AF8BD0"
+    ],
+    "textures": [
+      "00b0b080 CALL from B0AD50"
+    ],
+    "model_service": [
+      "00d5db20 DATA profile",
+      "00af8d75 indirect current vtable20"
+    ]
+  },
+  "validation": {
+    "strict_compile_command": "cmd /c C:/Users/sqz269/bsp-aq-object-tracer/compile.cmd",
+    "strict_compile_exit_code": 0,
+    "probe_command": "cmd /c C:/Users/sqz269/bsp-aq-object-tracer/probe.cmd",
+    "probe_exit_code": 0,
+    "probe_stdout": "af8bd0 state/cursor, 763 string events and 793 combined string/array events match\nb0ad50 state/cursor, 2949 string events and 3026 combined string/array events match\naf8bd0 state/cursor, 7 string events and 9 combined string/array events match\nb0ad50 state/cursor, 23 string events and 25 combined string/array events match\nPASS: four owned native bodies; Object/Tracer fields, EOF/braces/unknown lines, actual atlas identity/list reuse-growth, mutable percentage scale, 17 size-cache cases; native FH3 normal paths only.",
+    "baseline_build_command": "./scripts/build.ps1",
+    "baseline_build_exit_code": 0,
+    "baseline_ctest": "reconstructed_math 1/1 passed; pre-integration CMake graph does not register this worker source",
+    "call_verification_command": "python tools/verify_report_calls.py reports/native_particle_object_tracer_loading.json",
+    "call_verification_exit_code": 1,
+    "call_verification_result": "155 call rows checked; exactly one failure: AF8FEB CALL AEE2A0 is absent from the current Ghidra body due to AF8FCE false-no-return override. Installed/live bytes verify the call; integrator has queued owned-flow repair and must rerun before acceptance. Model indirect call reported separately.",
+    "linked_inputs": [
+      "owned source",
+      "current shared property source",
+      "current root native_particle_type_loading.cpp",
+      "root bsp_core.lib",
+      "root bsp_lua511.lib",
+      "root bsp_zlib121.lib"
+    ],
+    "artifact_directory": "C:\\Users\\sqz269\\bsp-aq-object-tracer",
+    "byte_capture": "Four spans captured from verified BSP Ghidra project and compared with installed PE sections; no source binary writes",
+    "relocation": "Only Capstone decoded call immediates and absolute address operands relocated. No raw byte scanning; native FH3 targets untouched and normal paths only.",
+    "differential_cases": [
+      "Object numeric/shared/unknown/repeated invalid-after-Const parameter lines and linear Size",
+      "Tracer all 20 numeric fields, signed ShowBullet, actual head/tail atlas lookup, three-frame list, reset/miss/reuse",
+      "No-opening-brace EOF and closing-brace cursor",
+      "Mutable percentage scale changed by runtime curve allocation (20-byte row) before final FMUL",
+      "Three direct B0A920 preexisting-array cases: single hit, miss, numbered frames",
+      "17 AF80F0 null, raw constant signed zero/sNaN, linear, cubic and nonstandard nonzero kind cases"
+    ],
+    "comparisons": [
+      "Complete normalized definition bytes and sparse holes",
+      "Defined runtime parameter payloads and curve rows; TileLength untouched multiplier from explicitly preseeded actual F8D344 slots",
+      "Actual raw atlas item identity and entire descriptor allocation contents for direct cases",
+      "Text cursor",
+      "Exact pooled text events",
+      "Exact combined interleaved string/array events"
+    ],
+    "source_hashes": {
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-particle-object-tracer-aq\\src\\native_particle_object_tracer_loading.cpp": "a5056e4f9cf52b0eb09c5546f2636bc4609c9fefde767bcd1176d024d7faf551",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-particle-object-tracer-aq\\include\\bsp\\native_particle_object_tracer_loading.hpp": "aef81209687429d0f73af2fbfd6badd7a1702aecfc8bf06655246a520619b21f",
+      "C:\\Users\\sqz269\\bsp-aq-object-tracer\\probe.cpp": "3c52914ee95cd52af21c7eb3ba51d183ca0c9e6559e7ee1194d4d93a3a0a974d",
+      "C:\\Users\\sqz269\\bsp-aq-object-tracer\\probe_data.hpp": "3867d22139b02d784126b6d31dab8b97e0a79720917ab05ddaec801eef32887f",
+      "C:\\Users\\sqz269\\bsp-aq-object-tracer\\probe.cmd": "79ef6a1b464d9da6a44e8e2c9174d3aedea7bec6aba1e81bc30d72b9aa335edf",
+      "C:\\Users\\sqz269\\bsp-aq-object-tracer\\object_tracer_probe.exe": "0180e3ee34fdbe1e166477c40f1044a2ddc2b490f66bf01e4f53ee042d734e39",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_particle_type_loading.cpp": "87840100602a06d5656692631430b2ada665a75ae4dc99aad99b467a4ea7d1ac",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-particle-properties-aq\\src\\native_particle_type_property.cpp": "3f69a650503b89d01c268d34494f0c81b9196008c232113d14afa7d8aecd96c3"
+    },
+    "current_library_only_replay": "Required at integration after shared headers/sources and CMake registration are merged."
+  },
+  "boundaries": [
+    "New C++ interface; original native calling convention/EH not a drop-in replacement",
+    "Actual Model AF9660 current virtual20 service body is read but not reconstructed by this packet; no successful model stub",
+    "Shared shader/renderer/VFS resource service internals remain real external boundaries",
+    "Native FH3 unwind and arbitrary invalid-storage faults not validated",
+    "Fixture raw atlas entries are actual layout examples, not renderer-loaded game textures",
+    "Game/runtime render behavior is not validated."
+  ]
+}
