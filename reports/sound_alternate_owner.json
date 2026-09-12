@@ -1069,7 +1069,6 @@
     }
   ],
   "pending_native_dependencies": [
-    "A87060 native-table loader (primary packet)",
     "A78820 logical frame service",
     "A783F0 logical stream start/resume",
     "Actual54h stream/current-vtable reference lifetime dispatch",
@@ -1113,5 +1112,57 @@
     "ghidra_mutated_by_worker": false,
     "focused_probe": "PASS: constructor exception unlock/root reset preserves publication; destructor unregisters current global. One ignored fixture local/sound_alternate_probe.cpp, linked /MANIFEST:EMBED. Destructor exception path supported by native map evidence, not induced by fixture.",
     "final_build": "After base exception corrections: scripts/build.ps1 Release Win32 and both existing tests passed; no build process remains running."
+  },
+  "integrated_validation": {
+    "build": "MSVC Win32 Release passed",
+    "ctests": "2/2 passed",
+    "build_log": "local/sound_application_y_build.log",
+    "build_commit": "79f4b70d",
+    "fixture": "local/sound_dialog_fixture.cpp",
+    "fixture_sha256": "b84433b1b9e7937c1f6f375746f7f7df39c1287ebeac273305d6a856c2acfb67",
+    "runner": "local/run_sound_dialog_fixture.ps1",
+    "runner_sha256": "438f93819c8ae0c9e10d05aad3d4e02556ce3c6b9447a59219fb96854c406138",
+    "manifest_embedded": true,
+    "fixture_log": "local/sound_dialog_y_fixture.log",
+    "fixture_log_sha256": "933d8459dc69b3af88f19039b5ed8a10d4c8befe16305a4172d0454ceabcf685",
+    "code_sha256": {
+      "include/bsp/game_sound_runtime.hpp": "59daeb303258c74ce692a6b074acc4363a06484e97caf7052269dab3810c08e8",
+      "src/game_sound_runtime.cpp": "879e52c33c75d82be3ea21510d3af102a4714941fc585ce2da36a9bd71c9afd3",
+      "include/bsp/game_sound_platform.hpp": "0d7576437f308c2bd212119c2874d17401b3aff2eaf8c9d4940c31c294d0dac4",
+      "src/game_sound_platform.cpp": "0e94ef85632fb19ca74af38e57ece41dfa69a49ef53262b459892d7d4e182080",
+      "include/bsp/sound_dialog_table.hpp": "4dbbb1286a837698319d65b52e07231cbe7021030562079c478b05d537b9b591",
+      "src/sound_dialog_table.cpp": "dfff2ee81f64dbcc8c12cc0fa8b92f63adb68c8632159044b18ae13c8175f57e",
+      "include/bsp/sound_alternate_owner.hpp": "d2087c37d158255e6e3acc2b21cf9189002a60eb70ba18faada81667d8a5b540",
+      "src/sound_alternate_owner.cpp": "621cfb98f430e44a6622436e4caac936b8b9e216c9b7e216e39cdd41f86459b8",
+      "include/bsp/sound_startup.hpp": "e40f978b6234fa9fb60a403b14c6a2523bb3ed0b628518ad2d4de0dba63bbcf7",
+      "src/sound_startup.cpp": "df982f9b8cfd8c4451ec540750f5f41b0c45b14bae43210043c04f54df0b27e0",
+      "src/sound_system_owner.cpp": "9cdc4718527b480008fbce053cfc791b5d8fdc79543016ee7fc6c95523b03ed7"
+    },
+    "library_sha256": "5f3269dc42f77c8373ad1cc3bc4b6091283889b13a8e89b0a1212512ecb24826",
+    "normal_runs": 3,
+    "failure_runs": 2,
+    "installed_dialog_file_sha256": "ed9fedb69f6c45ab4b23e8b822c59e50b5849c3759d0b6e6458c233977b10584",
+    "results": [
+      "Actual234h dialog constructor, publication, table and logical-owner allocations; scalar destruction and balanced tracked pooled strings.",
+      "Installed basic mono row, repeated append, capacity growth1/2/4, live format count change, preserved earlier counts, first-channel offsets, volume and loop.",
+      "Sound disabled twice and enabled once, installed FSB sample/channel and FEV callback file ownership, zero startup FMOD errors.",
+      "Explicit shutdown with query lock followed by shared-domain drain has no stale deletion callbacks; shared-domain drain dispatches four live owners.",
+      "Missing Event DLL and injected sound Lua VFS failure propagate and clear owned state.",
+      "Actual Microsoft XLive ordinal5030 WM_NULL; cursor policy uses actual absent-online/input guards."
+    ],
+    "preserved_fmod_result": "FMOD_Channel_Stop0x25 per run for never-started fixture channel; native caller ignores result.",
+    "native_exception_differential": false,
+    "audible_output": false,
+    "game_validated": false,
+    "native_abi": false,
+    "new_permanent_tests": 0
+  },
+  "ghidra_integration": {
+    "definitions": "reports/sound_alternate_owner_function_definitions.json",
+    "flow": "reports/sound_alternate_owner_flow.json",
+    "prototypes": "reports/sound_alternate_owner_prototypes.json",
+    "names_saved": true,
+    "exports_refreshed": true,
+    "stored_table_destructor_tail_incomplete": true
   }
 }

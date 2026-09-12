@@ -124,3 +124,14 @@ singleton host is being migrated to the native lifetime representation, and the
 shared registration boundary must be connected before this semantic-domain
 composition can be installed there. Alternate-engine streaming dependencies and
 audible playback remain separate work.
+
+## Integration correction from SOUND_APPLICATION.md
+
+The host now unregisters a captured event-query lock before native scalar
+deletion. A89B40 clears publication and frees storage without removing its
+shared-domain entry. The original fixture only created that lock while
+draining the domain; the combined fixture also creates it before explicit
+runtime shutdown, then drains the domain and verifies no stale callbacks.
+The recovered native destructor is unchanged. The combined fixture also
+constructs the actual dialog owner/table and uses the explicit private
+Microsoft XLive dependency selection documented in XLIVE_PRIVATE_RUNTIME.md.

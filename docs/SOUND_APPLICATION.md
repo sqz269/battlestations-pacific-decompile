@@ -34,6 +34,12 @@ registrations.
 
 The installed fixture exercises real sound libraries, soundsetup.lua, an FSB,
 an event bank, the streamed_dialogs.def table and actual XLive pretranslation.
+The XLive selection uses the previously extracted Microsoft2.0 runtime with
+its matching private msidcrl40 dependency, hash-checked against
+XLIVE_PRIVATE_RUNTIME.md. The installed AlterBSP replacement still exits
+during loading in the standalone probe; bare system XLive returns error182.
+The explicit private-dependency path passes actual ordinal5030 WM_NULL calls.
+No game or Windows file is replaced and no account initialization is performed.
 It constructs no online or input owner, so cursor policy follows its real
 early guard. It does not tick or start logical dialog streams: those remain
 required dependencies, as does callback230. Build and fixture receipts are

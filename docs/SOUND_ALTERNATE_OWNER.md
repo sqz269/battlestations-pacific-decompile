@@ -163,3 +163,15 @@ The Release Win32 build and both existing tests passed after the exception
 correction. A single ignored actual-manager probe verified constructor-throw
 unlock/root reset/publication and normal destruction of the current global;
 destructor-throw cleanup remains supported by the native handler map.
+
+## Integration correction from SOUND_APPLICATION.md
+
+The actual20h A87060 table-loader dependency is now implemented in
+sound_dialog_table.cpp and exercised inside this owner's real constructor.
+The combined installed fixture covers repeated table append/growth, live
+format counts, explicit sound shutdown and shared-domain scalar deletion.
+Its tracked pooled strings and file callbacks balance. Logical tick/start,
+actual54h stream lifetime and callback230 remain explicit dependencies.
+Three missing function starts were defined; five destructor free gaps were
+repaired. A791D0's35-byte tail is decoded and byte-verified separately because
+Ghidra's stored body remains truncated. No stream playback is established.
