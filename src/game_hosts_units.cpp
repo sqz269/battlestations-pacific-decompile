@@ -20,7 +20,10 @@
 #include "bsp/camera_projection.hpp"
 #include "bsp/controlled_unit.hpp"
 #include "bsp/cruise_speed_setting.hpp"
+#include "bsp/dyn_world_settings.hpp"
+#include "bsp/lua_binding_navigator.hpp"
 #include "bsp/ocean_height.hpp"
+#include "bsp/ship_hydro_forces.hpp"
 #include "bsp/pose_refresh.hpp"
 #include "bsp/rigid_body_integration.hpp"
 #include "bsp/ship_ai_throttle_ring.hpp"
@@ -41,6 +44,7 @@
 #include <cfloat>
 #include <cmath>
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <memory>
 #include <string>
@@ -57,11 +61,38 @@ float heading_degrees_of(const bsp::ShipMotionState& state) {
         * 180.0 / kPi);
 }
 
+// `<x>,<z>`, the point form of `--order moveto:<target>`. Both halves must be
+// numbers and nothing may follow them, so an entity name can never be mistaken
+// for a point. An optional leading `@` is accepted for readability.
+bool parse_order_position(const std::string& text, float& x, float& z) {
+    std::size_t begin = 0;
+    if (begin < text.size() && text[begin] == '@') ++begin;
+    const std::size_t comma = text.find(',', begin);
+    if (comma == std::string::npos || comma == begin) return false;
+    const std::string first = text.substr(begin, comma - begin);
+    const std::string second = text.substr(comma + 1);
+    if (second.empty()) return false;
+    char* end = nullptr;
+    const double parsed_x = std::strtod(first.c_str(), &end);
+    if (end == nullptr || *end != '\0') return false;
+    const double parsed_z = std::strtod(second.c_str(), &end);
+    if (end == nullptr || *end != '\0') return false;
+    x = static_cast<float>(parsed_x);
+    z = static_cast<float>(parsed_z);
+    return true;
+}
+
 }  // namespace
 
 // ---------------------------------------------------------------------------
 // One created unit
 // ---------------------------------------------------------------------------
+
+// How many stand-in buoyancy elements a hull gets. The native count is
+// (class+530h - class+52Ch) / 24h and is authored data this process does not
+// have; eight is the probe's own --hydro-elements default, so the two sides of
+// the comparison use the same number.
+constexpr int kBuoyancyElementCount = 8;
 
 struct GameUnitSlot {
     GameUnitRow row;
@@ -96,6 +127,22 @@ struct GameUnitSlot {
     bsp::DynMotionState motion_state{};
     bsp::DynBody body{};
     bsp::ShipPhysicsMaterial hull_material{bsp::ShipPhysicsMaterial::kShip};
+
+    // Milestone 2s: what 009329C0 reads. The physics-material record is the row
+    // settings+4E0h + material*38h that the hull body already selected, and the
+    // element list is class+52Ch..+530h.
+    //
+    // The element list is a STAND-IN, not the game's own: its producer writes
+    // class+528h..+534h and no function in the exported set does that, so
+    // docs/SHIP_HYDRO_FORCES.md leaves the field roles as a hypothesis and its
+    // follow-up `ship_buoyancy_element_producer` owns the question. The list
+    // built here is the same one the probe builds under --hydro, from the class
+    // row's own Length, Height and Mass, so the two sides are comparable.
+    std::vector<bsp::ShipBuoyancyElement> buoyancy_elements;
+    // unit+10FCh, the leak model's total accumulated water. 0074F930 writes it
+    // and 009329C0 adds it to the hull mass at 00932B78; an undamaged hull
+    // holds it at zero.
+    float leak_water_mass_10fc{0.0f};
 
     int class_id{bsp::kUnitDestroyerClassId};  // unit+C4h, the descriptor's kind
     // Milestone 2p: the two load latches the middle of 009F3F80 raises with the
@@ -140,11 +187,22 @@ struct GameUnitsHost::Impl {
 
     // The world fields 00c41550 and 00c5b1b0 read: gravity at world+04h..+0Ch,
     // the two sleep speed thresholds at world+3Ch/+40h and the countdown reload
-    // at world+44h. None of them has a recovered producer
-    // (docs/RIGID_BODY_INTEGRATION.md, follow-up `dyn_world_construction`), and
-    // the Dyn world object itself does not exist in this process, so they stay
-    // at zero: no gravity, and any non-zero speed keeps a body awake.
-    bsp::DynWorldStepConstants physics_world{};
+    // at world+44h.
+    //
+    // Milestone 2r left these at zero on the reading that none of them had a
+    // recovered producer. They do: 004DDB90 builds the world descriptor on its
+    // own stack and 00C41AD0 copies it into the world, and packet
+    // `dyn_world_settings` read both whole (docs/DYN_WORLD_SETTINGS.md). The
+    // values are the game's own: gravity (0, -10, 0) from the double at
+    // 00CE6848, both sleep speeds the zero 004DE1C7 / 004DE1CD store, so no
+    // body ever sleeps.
+    //
+    // Gravity is switched on here and not earlier because it only balances once
+    // 009329C0 runs: the buoyancy the element list produces at the hull's draft
+    // is exactly mass * 10, which is what cancels 00C41550's gravity * dt. The
+    // two belong to the same step and neither is correct alone.
+    bsp::DynWorldStepConstants physics_world{
+        bsp::dyn_world_step_constants(bsp::dyn_world_settings_game())};
 
     // The notes are logged once per kind, not once per unit tick.
     bool logged_ocean{false};
@@ -152,6 +210,46 @@ struct GameUnitsHost::Impl {
     bool logged_curve{false};
     bool logged_integrator{false};
     bool logged_cruise{false};
+    bool logged_hydro{false};
+
+    // Milestone 2s: the world registry's per-class unit lists, the 97 triples
+    // at [[00E188A8]+19CCh] + 18h + id*0Ch that 004CB076's vector-constructor
+    // iterator builds inside 004CB030 BSP_World_Construct. Each triple is
+    // {count, head, tail} and 00484540 BSP_UnitList_PushBack appends to it, so
+    // the vector of indices below is that list in its own insertion order.
+    // Only the ids a unit's +130h override joins are ever non-empty here.
+    static constexpr int kWorldListCount = 97;  // PUSH 0x61 at 004CB076
+    std::vector<std::size_t> world_lists[kWorldListCount];
+
+    // 00484540, __thiscall void(list, void* value), RET 4. The node is
+    // {prev, next, value}; the empty branch at 00484586 writes the head and the
+    // other at 00484572 chains from the tail, and both set the tail and
+    // ADD dword ptr [ESI],1. Nothing here needs the node identity, so the list
+    // is its values in order.
+    void world_list_push_back_00484540(int class_id, std::size_t unit_index) {
+        if (class_id < 0 || class_id >= kWorldListCount) return;
+        world_lists[class_id].push_back(unit_index);
+        ++summary.world_list_pushes;
+        done("UnitList::push_back", 0x00484540u);
+    }
+
+    // 006FE620 BSP_UnitInstance_RegisterInWorldLists, the unit class's
+    // implementation of entity virtual slot +130h (00CFC3D0+130h == 00CFC500,
+    // the only reference to 006FE620 in the image). Its body is six pushes: the
+    // call of 00928560 at 006FE623, whose own body is
+    // `MOV ECX,[ECX+30h]; ADD ECX,24h; CALL 00484540`, so it joins id 1; then
+    // ids 2, 4, 5, 6 and 7.
+    void register_in_world_lists_006fe620(std::size_t unit_index) {
+        done("UnitInstance::register_in_world_lists", 0x006fe620u);
+        done("GameEntity::register_in_parent_entity_list", 0x00928560u);
+        world_list_push_back_00484540(1, unit_index);   // 00928564, ADD ECX,0x24
+        world_list_push_back_00484540(2, unit_index);   // 006FE62C, ADD ECX,0x30
+        world_list_push_back_00484540(4, unit_index);   // 006FE638, ADD ECX,0x48
+        world_list_push_back_00484540(5, unit_index);   // 006FE644, ADD ECX,0x54
+        world_list_push_back_00484540(6, unit_index);   // 006FE650, ADD ECX,0x60
+        world_list_push_back_00484540(7, unit_index);   // 006FE65C, ADD ECX,0x6C
+        ++summary.world_registrations;
+    }
     bool logged_gate{false};
     bool logged_precision{false};
 
@@ -169,6 +267,9 @@ struct GameUnitsHost::Impl {
         std::snprintf(text, sizeof(text), "%08lx", static_cast<unsigned long>(address));
         log.implemented(method, text);
     }
+    // An indirect dispatch has no call-site address of its own; the slot is the
+    // evidence, so the report carries `<vtable>+vtableNN` for it.
+    void record_slot(const char* method, const char* text) { log.unimplemented(method, text); }
 
     bool is_controlled(const GameUnitSlot& slot) const {
         return controlled_bound && controlled_index < slots.size()
@@ -436,6 +537,127 @@ private:
 };
 
 // ---------------------------------------------------------------------------
+// bsp::ShipHydroHost, one method per call site of 009329C0
+// ---------------------------------------------------------------------------
+
+// The hull's hydrodynamics, run where 00937440 makes its last call, 00937622.
+// docs/SHIP_HYDRO_FORCES.md.
+//
+// Eleven of the twelve methods are calls. The exceptions and the qualifications:
+//
+//  * unit_category_8_vtable5c is the only record. Its callee is the unit's own
+//    vtable slot 5Ch and no packet has read that body
+//    (docs/SHIP_HYDRO_FORCES.md follow-up `unit_vtable_5c`), so the answer is
+//    substituted from the recovered IsKindOf table and the slot is reported as
+//    the evidence instead of a call site;
+//  * the leak model at unit+10D4h has no leak points, because nothing in this
+//    process damages a hull, so 0074F930's tick and 0074F2E0's heeling torque
+//    both run over an empty entry list. They are calls, not records: the
+//    reconstruction in bsp/unit_forces.hpp is what answers them;
+//  * the disabled path's three effects (00C37E50, 00C37E20 and the OR of bit 2
+//    into body+50h) are wired to the body but never reached, because
+//    controller+14h is clear on a live hull.
+class ShipHydroBinding final : public bsp::ShipHydroHost {
+public:
+    ShipHydroBinding(GameUnitsHost::Impl& owner, GameUnitSlot& slot)
+        : owner_(owner), slot_(slot) {}
+
+    bsp::OceanVec3 body_linear_velocity_00c31f40() override {
+        owner_.done("ShipHydro::body_linear_velocity", 0x00c31f40u);
+        return slot_.motion.linear_velocity;
+    }
+    bsp::OceanVec3 body_angular_velocity_00c31f20() override {
+        owner_.done("ShipHydro::body_angular_velocity", 0x00c31f20u);
+        return slot_.motion.angular_velocity;
+    }
+    // 00C32000 hands back body+8h and 00C33650 expands that 3x4 into the 4x4
+    // whose rows are the body axes. The pose the motion state carries is the
+    // same one the position phase 00C5B1B0 wrote into the body last step.
+    bsp::ShipHydroTransform body_world_transform_00c33650() override {
+        bsp::ShipHydroTransform m{};
+        m.row0 = {slot_.motion.pose_row0[0], slot_.motion.pose_row0[1],
+            slot_.motion.pose_row0[2]};
+        m.row1 = {slot_.motion.pose_row1[0], slot_.motion.pose_row1[1],
+            slot_.motion.pose_row1[2]};
+        m.row2 = {slot_.motion.pose_row2[0], slot_.motion.pose_row2[1],
+            slot_.motion.pose_row2[2]};
+        m.position = {slot_.motion.position[0], slot_.motion.position[1],
+            slot_.motion.position[2]};
+        owner_.done("ShipHydro::body_world_transform", 0x00c33650u);
+        return m;
+    }
+    // 00932A42 and 00932E2F, the unit's vtable slot 5Ch with the literal 8. The
+    // callee's body is unread (docs/SHIP_HYDRO_FORCES.md follow-up
+    // `unit_vtable_5c`), so this answers the same way 00937D09's hull-body site
+    // does: the recovered IsKindOf table, which gives MSubmarine for category 8.
+    bool unit_category_8_vtable5c() override {
+        owner_.record_slot("ShipHydro::unit_category_8", "00cfc3d0+vtable5c");
+        return bsp::unit_is_kind_of_006fe530(bsp::kUnitForceSubmarineClassId,
+            slot_.class_id);
+    }
+    float water_height_0078cf20(float x, float z) override {
+        OceanFieldBinding sea(owner_);
+        const float height = bsp::ocean_water_height_0078cf20(x, z, sea);
+        owner_.done("ShipHydro::water_height", 0x0078cf20u);
+        return height;
+    }
+    // 00933A01. An undamaged hull has no leak points, so the tick runs over a
+    // count of zero and leaves the unit+10FCh it already read at zero.
+    void leak_tick_0074f930(float dt) override {
+        // Every scalar past `count` is read only inside the per-leak passes, so
+        // with a count of zero the result is the zero the routine's own two
+        // accumulators start at, whatever they are.
+        leak_water_mass_10fc = bsp::unit_leak_tick_0074f930(nullptr, 0u, 0.0f, 0.0f,
+            0.0f, 1.0f, false, dt).total_water;
+        owner_.done("ShipHydro::leak_tick", 0x0074f930u);
+    }
+    // 00933A52, over the same empty list, so the heeling torque is the zero the
+    // routine's own out vector starts at.
+    bsp::OceanVec3 leak_heel_torque_0074f2e0() override {
+        float rows[9] = {
+            slot_.motion.pose_row0[0], slot_.motion.pose_row0[1], slot_.motion.pose_row0[2],
+            slot_.motion.pose_row1[0], slot_.motion.pose_row1[1], slot_.motion.pose_row1[2],
+            slot_.motion.pose_row2[0], slot_.motion.pose_row2[1], slot_.motion.pose_row2[2]};
+        const bsp::OceanVec3 torque = bsp::unit_leak_torque_0074f2e0(nullptr, 0u, rows);
+        owner_.done("ShipHydro::leak_heel_torque", 0x0074f2e0u);
+        return torque;
+    }
+    // 00933B01 and 00933B38, the two flushes. They are the only reason the
+    // velocity phase 00C41550 has anything to integrate.
+    void add_force_00c35360(const bsp::OceanVec3& force) override {
+        bsp::dyn_body_add_force_00c35360(slot_.body, force);
+        ++owner_.summary.hydro_force_flushes;
+        owner_.done("ShipHydro::add_force", 0x00c35360u);
+    }
+    void add_torque_00c35330(const bsp::OceanVec3& torque) override {
+        bsp::dyn_body_add_torque_00c35330(slot_.body, torque);
+        ++owner_.summary.hydro_torque_flushes;
+        owner_.done("ShipHydro::add_torque", 0x00c35330u);
+    }
+    void set_linear_velocity_00c37e50(const bsp::OceanVec3& v) override {
+        bsp::dyn_body_set_linear_velocity_00c37e50(slot_.body, v);
+        slot_.motion.linear_velocity = v;
+        owner_.done("ShipHydro::set_linear_velocity", 0x00c37e50u);
+    }
+    void set_angular_velocity_00c37e20(const bsp::OceanVec3& w) override {
+        bsp::dyn_body_set_angular_velocity_00c37e20(slot_.body, w);
+        slot_.motion.angular_velocity = w;
+        owner_.done("ShipHydro::set_angular_velocity", 0x00c37e20u);
+    }
+    void set_body_no_gravity_flag_00932a16() override {
+        slot_.body.flags |= bsp::kDynBodyFlagNoGravity;
+        owner_.record("ShipHydro::set_body_no_gravity_flag", 0x00932a16u);
+    }
+
+    // unit+10FCh as the leak tick left it, for the next call's total mass.
+    float leak_water_mass_10fc{0.0f};
+
+private:
+    GameUnitsHost::Impl& owner_;
+    GameUnitSlot& slot_;
+};
+
+// ---------------------------------------------------------------------------
 // bsp::ShipMotionHost, one method per call site of 00825f20's motion path
 // ---------------------------------------------------------------------------
 
@@ -479,10 +701,28 @@ public:
         return scale;
     }
 
-    // controller->vtable[0](dt), which for a surface ship is 00937440. Its
-    // torque is computed so the run can report it; nothing applies it, because
-    // the hydrodynamic tail 009329c0 and the rigid-body solver are external.
-    bsp::OceanVec3 run_force_model(float) override {
+    // controller->vtable[0](dt), which for a surface ship is 00937440.
+    //
+    // Milestone 2r said of this torque that "nothing applies it, because the
+    // hydrodynamic tail 009329c0 and the rigid-body solver are external". Both
+    // halves are now false. 00937440 applies it itself: `python tools/bsp.py
+    // ghidra xrefs 00c35330` reports `From 00937613 in
+    // BSP_UnitController_ApplyShipForces`, nine instructions before the call
+    // into 009329C0, so the torque goes onto the body exactly as the hydro
+    // totals do. It is a call the executable makes and it is made here, and it
+    // moves nothing for two separate reasons: the vector it carries is the zero
+    // vector, because the gain is multiplied by settings+588h and that field
+    // has no recovered producer, and the inverse inertia is zero anyway,
+    // because the collision AABB's producer 00C5C940 is unread.
+    //
+    // Then the tail. 00937622 is a CALL into 009329C0 with the same dt
+    // (00937618 FLD [ESP+40h], 0093761C PUSH ECX, 0093761D MOV ECX,EDI,
+    // 0093761F FSTP [ESP]), followed by the epilogue at 00937627, so the
+    // hydrodynamics happen here, inside the motion tick at 00826A6D and ahead
+    // of 0092D300's velocity rewrite, which is the native order. What they
+    // stage reaches the hull through 00C35360 AddForce and 00C35330 AddTorque,
+    // and the velocity phase 00C41550 at the end of the step integrates it.
+    bsp::OceanVec3 run_force_model(float dt) override {
         bsp::UnitSteeringTorqueInputs in{};
         in.velocity = slot_.motion.linear_velocity;
         in.axis.x = slot_.motion.pose_row2[0];
@@ -497,7 +737,91 @@ public:
         in.pose_row2.z = slot_.motion.pose_row2[2];
         in.settings_rudder_torque = 0.0f;  // settings+588h, not recovered
         owner_.done("ShipMotion::force_model", 0x00937440u);
-        return bsp::unit_steering_torque_00937440(in);
+        const bsp::OceanVec3 torque = bsp::unit_steering_torque_00937440(in);
+        // 00937449 CMP byte ptr [EAX+5Dh],0 / 0093744D JNZ 00937618: a set byte
+        // skips the whole torque block and lands one instruction before the
+        // hydrodynamic call, so the hydrodynamics run either way and only the
+        // torque is gated. EAX is [controller+1Ch], the unit, and the byte is
+        // the one bsp/unit_instance.hpp names `simulate`, held clear here.
+        if (slot_.state == nullptr || !slot_.state->simulate) {
+            bsp::dyn_body_add_torque_00c35330(slot_.body, torque);
+            owner_.done("ShipMotion::add_rudder_torque", 0x00c35330u);
+        }
+        run_hydrodynamics_00937622(dt);
+        return torque;
+    }
+
+    // 00937622, 00937440's last call. 009329C0 is slot 0 of the controller vtable
+    // 00D19630 and 00937440 forwards its own dt into it.
+    void run_hydrodynamics_00937622(float dt) {
+        if (slot_.buoyancy_elements.empty()) return;
+        ShipHydroBinding hydro_host(owner_, slot_);
+        hydro_host.leak_water_mass_10fc = slot_.leak_water_mass_10fc;
+
+        bsp::ShipHydroInputs in{};
+        // controller+14h. Nothing in this process sets it, so the live path at
+        // 00932A1F is the one taken and the routine never writes a velocity.
+        in.disabled = false;
+        in.material = slot_.hull_material;
+        in.record = bsp::ship_physics_material_shipped(slot_.hull_material);
+        in.class_mass = slot_.motion_class.hull_mass;      // class+B0h
+        in.class_length = slot_.motion_class.hull_length;  // class+A0h
+        // class+A4h `Width`. Milestone 2r's correction 6 established that only
+        // `Length` and `Height` have a recovered Lua key on this installation's
+        // rows, so the width stays zero. It feeds the planing torque only, and
+        // that branch also needs material 1, which a destroyer is not.
+        in.class_width = 0.0f;
+        in.leak_water_mass = slot_.leak_water_mass_10fc;
+        // unit+5Dh, the byte docs/UNIT_INSTANCE.md names `simulate`. The list
+        // filter requires it clear on a live ship, and clear is what opens the
+        // planing branch at 00933639, not what shuts it.
+        in.suppress_planing = slot_.state != nullptr && slot_.state->simulate;
+        in.elements = slot_.buoyancy_elements.data();
+        in.element_count = static_cast<int>(slot_.buoyancy_elements.size());
+
+        const bsp::ShipHydroResult result
+            = bsp::ship_hydro_apply_forces_009329c0(in, dt, hydro_host);
+        owner_.done("ShipMotion::hydrodynamics", 0x009329c0u);
+        slot_.leak_water_mass_10fc = hydro_host.leak_water_mass_10fc;
+        ++slot_.row.hydro_calls;
+        ++owner_.summary.hydro_calls;
+        owner_.summary.hydro_element_steps
+            += static_cast<unsigned long long>(in.element_count);
+        owner_.summary.hydro_submerged_steps
+            += static_cast<unsigned long long>(result.submerged_elements);
+        slot_.row.hydro_elements = in.element_count;
+        slot_.row.hydro_submerged = result.submerged_elements;
+        slot_.row.hydro_force[0] = result.force.x;
+        slot_.row.hydro_force[1] = result.force.y;
+        slot_.row.hydro_force[2] = result.force.z;
+        slot_.row.hydro_torque[0] = result.torque.x;
+        slot_.row.hydro_torque[1] = result.torque.y;
+        slot_.row.hydro_torque[2] = result.torque.z;
+        if (!owner_.logged_hydro) {
+            owner_.logged_hydro = true;
+            owner_.log.notef("hydrodynamics 009329c0 runs from 00937440's last call at "
+                "00937622, over %d buoyancy elements of \"%s\" and physics material %d. "
+                "The element list at class+52Ch is a STAND-IN: no function in the "
+                "exported set writes class+528h..+534h, so the list is built from the "
+                "class row's own Length %.1f, Height %.1f and Mass %.1f the way "
+                "bsp_ship_motion_probe.exe --hydro builds it, and the buoyancy is solved "
+                "so the hull displaces its own weight at its draft. The world's gravity "
+                "is now the game's own (0, %.1f, 0) from 004DDB90; before this milestone "
+                "it was zero, and the two only balance together. The first flush staged "
+                "force (%.2f, %.2f, %.2f) and torque (%.2f, %.2f, %.2f) with %d of %d "
+                "elements submerged",
+                static_cast<int>(slot_.buoyancy_elements.size()), slot_.row.name.c_str(),
+                static_cast<int>(slot_.hull_material),
+                static_cast<double>(slot_.motion_class.hull_length),
+                static_cast<double>(slot_.motion_class.hull_height),
+                static_cast<double>(slot_.motion_class.hull_mass),
+                static_cast<double>(owner_.physics_world.gravity.y),
+                static_cast<double>(result.force.x), static_cast<double>(result.force.y),
+                static_cast<double>(result.force.z),
+                static_cast<double>(result.torque.x), static_cast<double>(result.torque.y),
+                static_cast<double>(result.torque.z), result.submerged_elements,
+                in.element_count);
+        }
     }
 
     float reference_speed() override {
@@ -946,6 +1270,51 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         }
         slot->body.motion = &slot->motion_state;
 
+        // Milestone 2s: the buoyancy element list at class+52Ch..+530h, which
+        // 009329C0 walks. This is a STAND-IN and the doc says so: the producer
+        // writes class+528h..+534h and no function in the exported set does,
+        // so docs/SHIP_HYDRO_FORCES.md carries the four field roles as a
+        // hypothesis reconciled between its only two readers and leaves the
+        // writer to packet `ship_buoyancy_element_producer`.
+        //
+        // The list built here is the one bsp_ship_motion_probe.exe --hydro
+        // builds, so the two sides of the comparison are the same list: the
+        // elements are spread evenly along the class `Length` in the hull's own
+        // Y = 0 plane, the draft is half the class `Height`, and the shared
+        // coefficient is solved so that a hull floating at that draft displaces
+        // exactly its own weight against the world gravity of 10. A class row
+        // that carries no Length or Height produces no list at all, and the
+        // hydrodynamic step is then skipped rather than run on invented data.
+        {
+            const float length = slot->motion_class.hull_length;
+            const float height = slot->motion_class.hull_height;
+            const float mass = slot->motion_class.hull_mass;
+            if (length > 0.0f && height > 0.0f && mass > 0.0f) {
+                const float draft = height * 0.5f;
+                // ship_hydro_buoyancy_00932e44 at depth == draft, with the
+                // surface mix of 0.5 the 00CE3800 float supplies.
+                const float shape
+                    = bsp::kShipHydroBuoyancyShapeMix * (draft / height)
+                        + (1.0f - bsp::kShipHydroBuoyancyShapeMix);
+                const float count = static_cast<float>(kBuoyancyElementCount);
+                const float per_element = (mass * bsp::kShipHydroDragGravity) / count;
+                const float coefficient = per_element / (draft * shape);
+                slot->buoyancy_elements.reserve(kBuoyancyElementCount);
+                for (int i = 0; i < kBuoyancyElementCount; ++i) {
+                    bsp::ShipBuoyancyElement element{};
+                    element.coefficient = coefficient;
+                    element.level_base = 0.0f;
+                    element.level_draft = draft;
+                    element.level_top = height;
+                    element.position.x = 0.0f;
+                    element.position.y = 0.0f;
+                    element.position.z = length
+                        * ((static_cast<float>(i) + 0.5f) / count - 0.5f);
+                    slot->buoyancy_elements.push_back(element);
+                }
+            }
+        }
+
         slot->parent = nullptr;
         slot->pose = std::make_unique<bsp::PoseRefreshView>(
             bsp::PoseRefreshView{bsp::PoseRefreshParentSlot(slot->parent), slot->local,
@@ -957,6 +1326,15 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         slot->state->simulate = false;   // +5Dh; the list filter requires it clear
         slot->state->has_scene_node = false;  // +4A4h, 00928860 is a 2h record
         slot->state->part_count = 0;     // +A18h, the instance has no parts here
+        // Milestone 2s: the unit joins the world's per-class lists the way its
+        // own +130h override does. The dispatch site itself was not located: a
+        // byte scan of `.text` for `call dword ptr [reg + 130h]`
+        // (`ff ?? 30 01 00 00`) finds nothing, and neither do the neighbouring
+        // slots 12Ch and 134h, so the slot is cited as data rather than as a
+        // call site. The implementation body is read, and it is the evidence.
+        host.register_in_world_lists_006fe620(host.slots.size());
+        host.record_slot("UnitInstance::register_in_world_lists_dispatch",
+            "00cfc3d0+vtable130");
         Impl::publish_pose(*slot);
         host.slots.push_back(std::move(slot));
     }
@@ -1036,6 +1414,58 @@ bool GameUnitsHost::issue_player_command(const std::string& token,
     if (index >= host.slots.size()) return false;
     GameUnitSlot& slot = *host.slots[index];
     const float heading = host.pose_heading_radians(slot);
+    // Milestone 2s: a fixed point instead of a named entity. `--order
+    // moveto:<x>,<z>` is the same order `NavigatorMoveToPos` issues from a
+    // mission script: 0088A810's Vector3 branch builds a descriptor whose
+    // position_valid byte is set, whose object is null and whose three floats
+    // are the point, and 008A2BC0 hands that and the fixed command object to
+    // 0077D600. A named entity has no comma in it on any scene of this game, so
+    // a target token that parses as two numbers is the point form.
+    //
+    // Milestone 2r's section 6 is why this exists: `moveto:<unit>` names a ship
+    // whose position the goal vector re-reads every frame, and a goal that
+    // outruns the chaser cannot be reached, so the arrival latch could never be
+    // exercised whatever the AI did.
+    float point[3] = {0.0f, 0.0f, 0.0f};
+    if (parse_order_position(target_token, point[0], point[2])) {
+        bsp::SceneCommandTarget target{};
+        target.kind = 0;              // 0088A8A6 clears the word
+        target.position_valid = 1;    // 0088A8A9
+        target.object = nullptr;      // 0088A8BE
+        target.object_id = 0;
+        target.position[0] = point[0];
+        target.position[1] = point[1];
+        target.position[2] = point[2];
+        target.reserved = 0.0f;       // 0088A8C7
+        char label[64];
+        std::snprintf(label, sizeof(label), "(%.1f, %.1f)",
+            static_cast<double>(point[0]), static_cast<double>(point[2]));
+        const GameCommandRow* placed = host.commands.issue_command_object(index,
+            bsp::kCommandObjectMoveTo, target, bsp::kNavigatorIssueFlags,
+            std::string("player:--order"), std::string(label), slot.ring, heading);
+        if (placed == nullptr) return false;
+        slot.row.command = placed->command.empty() ? token : placed->command;
+        slot.row.command_target = label;
+        slot.row.command_current = placed->current;
+        slot.row.command_latched = placed->latched;
+        slot.row.latch_is_heading = placed->fields.is_heading;
+        slot.row.latch_steer = placed->fields.steer_or_heading;
+        slot.row.latch_thrust = placed->fields.thrust;
+        ++host.summary.player_orders;
+        const double dx = static_cast<double>(point[0]) - slot.motion.position[0];
+        const double dz = static_cast<double>(point[2]) - slot.motion.position[2];
+        host.log.notef("player command issued to \"%s\": token=\"%s\" resolved=\"%s\" a "
+            "FIXED POINT %s through the command builder 0088a810 takes for "
+            "NavigatorMoveToPos, not a named entity. The hull is at (%.1f, %.1f), so the "
+            "point is %.2f m ahead. current=%d latched=%d",
+            slot.row.name.c_str(), token.c_str(), placed->command.c_str(), label,
+            static_cast<double>(slot.motion.position[0]),
+            static_cast<double>(slot.motion.position[2]),
+            std::sqrt(dx * dx + dz * dz), placed->current ? 1 : 0,
+            placed->latched ? 1 : 0);
+        if (!placed->blocked.empty()) host.log.notef("  %s", placed->blocked.c_str());
+        return true;
+    }
     const GameCommandRow* row = host.commands.issue(index, token,
         target_token, slot.ring, heading);
     if (row == nullptr) return false;
@@ -1266,6 +1696,34 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
         const double dy = static_cast<double>(slot.motion.position[1]) - before[1];
         const double dz = static_cast<double>(slot.motion.position[2]) - before[2];
         slot.row.path_length += static_cast<float>(std::sqrt(dx * dx + dy * dy + dz * dz));
+        // Milestone 2s: the drift angle and the trajectory speed, measured from
+        // the step's own displacement rather than from the velocity, so they
+        // report where the hull went and not what it was told. The drift is the
+        // angle in the horizontal plane between that displacement and the
+        // hull's forward axis (pose row 2), which is the quantity milestone 2r's
+        // section 2 table reports for both the executable and the probe.
+        {
+            const double planar = std::sqrt(dx * dx + dz * dz);
+            slot.row.trajectory_speed = (step_seconds > 0.0f)
+                ? static_cast<float>(std::sqrt(dx * dx + dy * dy + dz * dz)
+                    / static_cast<double>(step_seconds))
+                : 0.0f;
+            if (planar > 1.0e-6) {
+                const double fx = slot.motion.pose_row2[0];
+                const double fz = slot.motion.pose_row2[2];
+                const double forward = std::sqrt(fx * fx + fz * fz);
+                if (forward > 1.0e-6) {
+                    double cosine = (dx * fx + dz * fz) / (planar * forward);
+                    if (cosine > 1.0) cosine = 1.0;
+                    if (cosine < -1.0) cosine = -1.0;
+                    slot.row.drift_degrees
+                        = static_cast<float>(std::acos(cosine) * 180.0 / 3.14159265358979323846);
+                    if (slot.row.drift_degrees > slot.row.peak_drift_degrees) {
+                        slot.row.peak_drift_degrees = slot.row.drift_degrees;
+                    }
+                }
+            }
+        }
         slot.row.command_applied = result.gate.command_applies;
         if (!host.logged_gate) {
             host.logged_gate = true;
@@ -1475,6 +1933,18 @@ void GameUnitsHost::unit_position_00fc(std::size_t index, float& x, float& y,
     x = motion.position[0];
     y = motion.position[1];
     z = motion.position[2];
+}
+
+std::size_t GameUnitsHost::world_list_size(int class_id) const noexcept {
+    if (class_id < 0 || class_id >= Impl::kWorldListCount) return 0;
+    return impl_->world_lists[class_id].size();
+}
+
+std::size_t GameUnitsHost::world_list_entry(int class_id, std::size_t position) const noexcept {
+    if (class_id < 0 || class_id >= Impl::kWorldListCount) return impl_->slots.size();
+    const std::vector<std::size_t>& list = impl_->world_lists[class_id];
+    if (position >= list.size()) return impl_->slots.size();
+    return list[position];
 }
 
 std::size_t GameUnitsHost::count() const noexcept { return impl_->slots.size(); }
@@ -1813,6 +2283,50 @@ void GameUnitsHost::report() {
     }
     host.log.notef("summary mission start speed seeds=%zu non_zero=%zu key=%s",
         host.summary.start_speed_seeds, seeded, bsp::kSceneUnitStartSpeedKey);
+    // Milestone 2s: what the hydrodynamic callback did. `drift` is the angle
+    // between the last step's displacement and the hull's bow, `peak` the worst
+    // over the whole run, and `traj` the speed along that displacement against
+    // `fwd`, the axial speed 0092D300 commands. A hull with no drag holds every
+    // metre per second it acquires sideways, so traj runs far above fwd and the
+    // drift runs toward ninety degrees; with the drag they converge.
+    host.log.notef("  %-20s %5s %4s %5s %9s %9s %9s %10s %10s", "unit", "elem", "sub",
+        "mat", "drift", "peak", "fwd", "traj", "force_y");
+    for (const std::unique_ptr<GameUnitSlot>& owned : host.slots) {
+        const GameUnitRow& row = owned->row;
+        if (row.hydro_calls == 0) continue;
+        host.log.notef("  %-20s %5d %4d %5d %9.4f %9.4f %9.4f %10.4f %10.1f",
+            row.name.c_str(), row.hydro_elements, row.hydro_submerged,
+            static_cast<int>(owned->hull_material),
+            static_cast<double>(row.drift_degrees),
+            static_cast<double>(row.peak_drift_degrees),
+            static_cast<double>(row.forward_speed),
+            static_cast<double>(row.trajectory_speed),
+            static_cast<double>(row.hydro_force[1]));
+    }
+    host.summary.world_class_6_list = host.world_lists[6].size();
+    {
+        // The ids a unit's +130h override joins, and how long each list is.
+        char ids[128];
+        int written = 0;
+        for (int id = 0; id < Impl::kWorldListCount; ++id) {
+            if (host.world_lists[id].empty()) continue;
+            written += std::snprintf(ids + written,
+                sizeof(ids) - static_cast<std::size_t>(written), "%s%d=%zu",
+                written == 0 ? "" : " ", id, host.world_lists[id].size());
+            if (written >= static_cast<int>(sizeof(ids)) - 1) break;
+        }
+        host.log.notef("summary mission world lists registrations=%llu pushes=%llu "
+            "lists{%s} (006fe620 through 00484540; id 6 is the one 009f1877 walks for "
+            "ship AI neighbour candidates, and nothing walks it yet)",
+            host.summary.world_registrations, host.summary.world_list_pushes, ids);
+    }
+    host.log.notef("summary mission hydrodynamics calls=%llu element_steps=%llu "
+        "submerged_steps=%llu add_force=%llu add_torque=%llu gravity_y=%.1f "
+        "elements_per_hull=%d (009329c0 from 00937440 at 00937622, its last call)",
+        host.summary.hydro_calls, host.summary.hydro_element_steps,
+        host.summary.hydro_submerged_steps, host.summary.hydro_force_flushes,
+        host.summary.hydro_torque_flushes,
+        static_cast<double>(host.physics_world.gravity.y), kBuoyancyElementCount);
     host.commands.report();
 }
 
