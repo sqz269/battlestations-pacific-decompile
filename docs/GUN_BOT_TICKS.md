@@ -504,3 +504,9 @@ Both start after `int3` padding (`006DF4B3`-`006DF4BF` and `008FC07F`) and end a
 - `gun+474h` and `008FDBE0`, the `009030C0` step 8 pair.
 - Whether bit `1` of `[unit+634h]` really means "a human is aiming this gun"; three ticks
   read three different bits of the same dword.
+
+## Correction from docs/DIRECTOR_UPDATE_ARMS.md (packet cc2_director_update_arms)
+
+- **Was:** director+221h described as the artillery flag: 'the owning unit's weapon director must have its artillery flag set'
+  **Is:** +221h is aaEnabled; artilleryEnabled is +220h. The gun bot's block also runs when the byte is clear, not set
+  **Evidence:** 008FFAD5 CMP byte ptr [EAX+221h],0 followed by JNZ 008FFAE9, which skips the block when the byte is non-zero
