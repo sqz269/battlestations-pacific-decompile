@@ -1,3 +1,4 @@
+#include "bsp/land_and_structures.hpp"
 #include "bsp/air_operations.hpp"
 #include "bsp/plane_flight.hpp"
 #include "bsp/pilot_controls.hpp"
@@ -3049,6 +3050,54 @@ int main() {
             "007BB6E0: q >= 0FFh gives 1.0f and q <= 1 gives -1.0f, the two saturations");
         check(below_step == 1.0f / bsp::kPilotQuantizeScale,
             "007BB6E0: the 128.5 bias snaps a sub-step command up to exactly one step, 1/127");
+    }
+
+    {
+        // The LandConvoy's two wraps, 00743060 and 00742400. Worth pinning because
+        // the two are deliberately different: the element slot wraps with loops
+        // (007430DB, 007430FE) while the placement pass wraps with one conditional
+        // each way (00742581-007425A9), so a row gap wider than the path leaves the
+        // group arc outside [0, length). The lateral centring on
+        // (columns - 1) * 0.5 is the other silent-failure candidate.
+        bsp::LandConvoyFormation f;
+        f.rows = 3;
+        f.columns = 4;
+        f.row_gap = 30.0f;
+        f.column_gap = 10.0f;
+        f.speed = 100.0f;
+        f.path_length = 50.0f;
+
+        const bsp::LandConvoyArcStep stepped =
+            bsp::land_convoy_advance_arc_00743060(f, 40.0f, 0.0f, 0.05f);
+        check(std::fabs(stepped.live_arc - 45.0f) < 1e-4f,
+            "00743060: 40 + 0.05*100 = 45 stays inside [0, 50) with no wrap");
+        const bsp::LandConvoyArcStep wrapped =
+            bsp::land_convoy_advance_arc_00743060(f, 48.0f, 0.0f, 0.05f);
+        check(std::fabs(wrapped.live_arc - 3.0f) < 1e-4f,
+            "00743060: the subtract loop brings 53 back to 3");
+
+        f.reverse = true;
+        const bsp::LandConvoyArcStep reversed =
+            bsp::land_convoy_advance_arc_00743060(f, 2.0f, 7.0f, 0.05f);
+        check(std::fabs(reversed.live_arc - 47.0f) < 1e-4f,
+            "00743060: 00D7A260 = -1 sends 2 to -3, and the add loop lifts it to 47");
+        check(std::fabs(reversed.odometer - 12.0f) < 1e-4f,
+            "00743126: the odometer takes |speed|, so a reversed convoy still counts up");
+        f.reverse = false;
+
+        // One conditional only: 0 + 2*30 = 60 wraps once to 10, but group 3 would
+        // reach 90 and wrap only to 40; the loop version would not agree.
+        check(std::fabs(bsp::land_convoy_group_arc_00742400(f, 0.0f, 2) - 10.0f) < 1e-4f,
+            "00742400: the single subtract takes group 2's arc 60 to 10");
+
+        check(std::fabs(bsp::land_convoy_lateral_offset_00742400(f, 0) + 15.0f) < 1e-4f,
+            "00742400: file 0 of four sits at -(4-1)*0.5*10 = -15, the formation is centred");
+        check(std::fabs(bsp::land_convoy_lateral_offset_00742400(f, 3) - 15.0f) < 1e-4f,
+            "00742400: file 3 of four mirrors it at +15");
+
+        const bsp::LandConvoySlot slot = bsp::land_convoy_slot_00742400(f, 9);
+        check(slot.group == 2 && slot.lane == 1,
+            "00742400: index 9 of a 3x4 block is rank 2, file 1");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
