@@ -3,7 +3,6 @@
 #include "bsp/gui_text_runtime_factory.hpp"
 #include "bsp/gui_type_dispatch.hpp"
 #include "bsp/native_string_compare.hpp"
-#include <algorithm>
 #include <cstring>
 #include <stdexcept>
 
@@ -50,20 +49,21 @@ void apply_gui_listbox_row_state_00a9ba90(GuiWidgetOwner& row,
         apply_gui_listbox_widget_state_00a9b340(row, state, one); // A9BB11
         return;
     }
-    auto& children = row.layout().children;
+    auto& children = row.layout().transform.children;
     std::size_t ordinal = 0;
     while (ordinal < children.size()) {
-        auto* const child = children[ordinal].get();
+        auto* const child = children[ordinal];
+        if (!child)
+            throw std::logic_error("Listbox Group row requires actual nonnull borrowed child entries");
         apply_gui_listbox_widget_state_00a9b340(
             row.runtime().owner(*child), state, one); // A9BAF6
-        // Canonical children use a vector owning actual layouts. Re-find the
-        // same native current-node identity AFTER callbacks so removal of an
-        // earlier child or vector reallocation cannot skip the next live row.
-        const auto current = std::find_if(children.begin(), children.end(),
-            [child](const auto& owned) { return owned.get() == child; });
-        if (current == children.end())
-            throw std::logic_error("Listbox row control requires its current Group child to remain attached");
-        ordinal = static_cast<std::size_t>(current - children.begin()) + 1;
+        // GUI+64 is the BORROWED transform list, including duplicate entries.
+        // This vector transport requires the visited prefix through current
+        // to preserve membership/order across callbacks; the live suffix may
+        // change. Pointer equality is only a guard, NOT native node identity.
+        if (ordinal >= children.size() || children[ordinal] != child)
+            throw std::logic_error("Listbox row control requires its current borrowed child ordinal to remain stable");
+        ++ordinal; // A9BB05, after B340; read the live next entry/sentinel.
     }
 }
 

@@ -3,7 +3,7 @@
 Addresses: `00A9B340`, `00A9BA40`, `00A9BA90`.
 
 The three helpers use the same `GuiWidgetOwner`, Text/Icon companions, direct
-child ownership vector, and `GuiListboxRuntime::rows_` as the existing GUI.
+borrowed transform-child vector, and `GuiListboxRuntime::rows_` as the existing GUI.
 There is no copied row tree, selection index, color cache, Lua table, or fallback
 state callback. Names are descriptive hypotheses. Evidence was verified against
 `C:/Users/sqz269/bsp.gpr`, `/battlestationspacific.exe`; each live wrapper calls
@@ -13,7 +13,7 @@ the existing project/program verifier before its batch.
 | --- | --- | --- |
 | A9B340..A9B3ED widget state | ECX unused; row pointer and state DWORD stack; RET8 | Complete normal body for actual current type5C profiles; delegates Text/Icon behavior to existing companions |
 | A9BA40..A9BA8D any selectable row | ECX Listbox; AL Boolean; RET | Complete valid FC list domain; no native checked-STL diagnostic ABI |
-| A9BA90..A9BB24 row state | ECX Listbox; checked iterator `{container,node}` and state stack; RETC | Complete valid iterator domain; caller supplies the actual dereferenced FC row |
+| A9BA90..A9BB24 row state | ECX Listbox; checked iterator `{container,node}` and state stack; RETC | Partial callback-domain projection: complete normal sequence when the borrowed-child prefix through the current ordinal is preserved; native node identity and visited-prefix edits excluded |
 
 ## Producer-backed Text exception
 
@@ -50,14 +50,22 @@ current5C profiles remain explicit owner-dispatch boundaries.
 
 `A9BA90` first queries the actual row's current5C. A Group2 iterates its direct
 `+64` child list and calls A9B340; nested Groups are inert through that helper.
-Every other row calls A9B340 directly. The C++ direct-child vector transport
-re-finds the same current actual child after the call before advancing. This
-observes appended children and removal of other children while surviving
-vector reallocation. Removing the current child is outside the native valid
-iterator domain and throws. The row, group, current child and same owner
-domain must stay alive across callbacks. Full checked-STL layout and error
-handler behavior are excluded, and moving the current node across containers
-does not become a supported iteration operation.
+Every other row calls A9B340 directly. The native GUI+64/+68 list is the SAME
+borrowed `row.layout().transform.children`, including duplicate entries;
+`layout().children` only owns allocations and is not the native list. The
+existing `GuiWidgetTransform` declaration and actual-name AA7E00 adapter
+establish this distinction; AA83A0 removes every borrowed occurrence while
+moving only the one owning allocation.
+
+The C++ vector transport uses a live ordinal and advances only after A9B340.
+It requires the prefix through the current ordinal to retain membership and
+order across callbacks; every borrowed owner in that prefix remains alive.
+Appends and changes to the unvisited suffix are observed from the live vector.
+A changed/missing current ordinal throws, but equal child pointers do not
+prove original list-node identity, especially when entries are duplicated.
+Removing or reordering the visited prefix is excluded even when native nodes
+could otherwise remain valid. There is no copied authoritative child list or
+synthetic node identity. Full checked-STL layout/error ABI remains excluded.
 
 The parent retains its private canonical FC iterator and current selected
 iterator. A9CD20 compares the **current** selected node each iteration and
@@ -97,7 +105,8 @@ and cleans14h stack bytes. No invented termination contract is used here.
 
 Strict MSVC Win32 `/W4 /WX /fp:strict` compilation passed. One local extension
 of the existing actual Listbox/Group owner fixture passed empty/all-hidden/
-mixed77 checks, direct-child-only Group traversal, and the parent's full
+mixed77 checks, direct-child-only Group traversal including borrowed duplicates
+and a borrowed list differing from owning allocations, and the parent's full
 current60 true fast path/false nonzero-auto-control tail, alongside its prior
 canonical attachment, selection, layout, callback and retirement checks.
 It links this TU and the parent's current runtime/type TUs against the parent

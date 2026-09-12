@@ -16,13 +16,17 @@ class GuiListboxRuntime;
 void apply_gui_listbox_widget_state_00a9b340(GuiWidgetOwner&, std::int32_t state,
     const volatile float* one_00d7a24c);
 
-// Complete valid-iterator00A9BA90: native ECX Listbox, checked FC iterator
+// Partial callback-domain projection00A9BA90: native ECX Listbox, checked FC iterator
 // {container,node} and state DWORD stack, RETC. Caller dereferences its SAME
 // canonical FC node and supplies that actual borrowed row here. Current Group2
-// visits direct children in live list order; nested Groups are not recursed.
+// visits its SAME borrowed transform.children GUI+64 list in live order,
+// including duplicates; owning layout.children is not that native list.
+// Nested Groups are not recursed.
 // Row/group/current child and their actual owner domain must survive callbacks.
-// Appends/removal of other children are observed after each call; removal of
-// the current child is outside the native valid-iterator domain and throws.
+// The prefix through the current ordinal must retain membership/order across
+// callbacks; unvisited suffix and appends may change. Current-ordinal checks
+// cannot prove native list-node identity, especially for equal-pointer entries.
+// Earlier-prefix removal/reordering and native node identity are not modelled.
 void apply_gui_listbox_row_state_00a9ba90(GuiWidgetOwner& actual_row,
     std::int32_t state, const volatile float* one_00d7a24c);
 

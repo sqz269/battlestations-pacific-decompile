@@ -25,7 +25,7 @@
       "end_inclusive": "00a9bb24",
       "cpp": "apply_gui_listbox_row_state_00a9ba90",
       "original_abi": "ECX Listbox; stack checked iterator container,node,state DWORD; RETC",
-      "coverage": "complete valid iterator domain over actual borrowed row and actual direct children; current-node removal excluded"
+      "coverage": "partial_projection: complete normal sequence over actual GUI64 borrowed transform.children with duplicate entries; callback prefix through current ordinal must preserve membership/order; native node identity and visited-prefix edits excluded"
     }
   ],
   "host_steps": [
@@ -171,11 +171,16 @@
       "was": "Selectable-row test might call visibility current38",
       "is": "Callback-free actual FC rows with raw row77 zero predicate; empty/allhidden false",
       "evidence": "A9BA6B..A9BA8D and constructor AA946C clears77"
+    },
+    {
+      "was": "Initial BA90 implementation traversed owning layout.children and re-found current child by pointer",
+      "is": "Traverse SAME borrowed transform.children GUI64 vector including duplicate entries; live ordinal with explicit prefix-preservation callback domain. Child pointer equality is not native node identity.",
+      "evidence": "GuiWidgetTransform children declaration maps64..6C; actual AA7E00 in gui_text_type_dispatch.hpp uses borrowed transform.children; AA83A0 canonical adapter erases every borrowed occurrence but moves one owning allocation; extended actual-owner fixture tests borrowed duplicates and omitted owning child"
     }
   ],
   "validation": {
     "strict_msvc_win32": "passed /EHsc /std:c++17 /W4 /WX /O2 /MD /fp:strict",
-    "fixture": "passed existing actual-owner fixture extended locally for empty/allhidden/mixed77, direct-child-only Group traversal, parent full current60 true fast path and false nonzero-auto-control tail; no selected-state callback reentry validation",
+    "fixture": "passed existing actual-owner fixture extended locally for empty/allhidden/mixed77, direct-child-only Group traversal, parent full current60 true fast path and false nonzero-auto-control tail; no selected-state callback reentry validation; added borrowed GUI64 duplicate entries and borrowed membership differing from owning allocations",
     "fixture_build": "worker row-control TU plus parent current gui_listbox_runtime/gui_type_dispatch TUs against baseline parent bsp_core.lib and bsp_lua511.lib; /MANIFEST:EMBED",
     "fixture_log": "local/row_control_probe.log",
     "report_calls": "passed 17 numeric call rows, zero failures; six indirect sites resolved from current table bytes",
@@ -189,15 +194,15 @@
     "input_hashes": [
       {
         "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-control\\src\\gui_listbox_row_control.cpp",
-        "sha256": "7f53eb4e78d2dcc92eecd4adffd79dc32aa7be89350c70be78b9d9b9d82d0cb0"
+        "sha256": "419833ee05eee06f43e1bb5d6877b3c2db8a97e0e02441fed1f3a05993f115a3"
       },
       {
         "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-control\\include\\bsp\\gui_listbox_row_control.hpp",
-        "sha256": "1d1fd528b0af8a7e433a0b55f62c7c310124dd3040436c9163d6adcbb54bb1b8"
+        "sha256": "3590c5aada169eeeeba61b64547ed7d255f9e67b2f7275d29222596ef9e047f2"
       },
       {
         "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-control\\local\\row_control_probe.cpp",
-        "sha256": "18fa05e1c88116b50ce291a2daba0b560effa5cea35b28d4dca82704151c3c8e"
+        "sha256": "0d1db36c7988260a7b5d5dd9f385171088514696d0a013220aae614dd0092daa"
       },
       {
         "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\include\\bsp\\gui_listbox_runtime.hpp",
@@ -220,8 +225,8 @@
   "uncertainty": [
     "Descriptive names are hypotheses, not recovered symbols.",
     "New C++ ABI, canonical vector/list owner transport and NativeString source header borrow are not native object/pool/SEH/STL ABI.",
-    "Actual row/group/current child and their same owner domain must survive callbacks; removal of current iterator node is excluded.",
+    "Actual row/group/current child and their same owner domain must survive callbacks; visited borrowed prefix membership/order must remain stable. Equal pointers do not establish native node identity; edits to visited prefix are excluded.",
     "Unsupported current5C profiles and downstream Text/Icon service/input domains fail explicitly in existing companions.",
-    "Fixture validates actual Listbox/Group paths, not actual Text/Icon resource effects or render output."
+    "Fixture validates actual Listbox/Group paths including borrowed duplicates and different owning membership, not actual Text/Icon resource effects or render output."
   ]
 }
