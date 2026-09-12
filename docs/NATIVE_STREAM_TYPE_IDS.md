@@ -98,3 +98,9 @@ annotation. The worker is restricted to read-only Ghidra use. In particular,
 `verify_report_calls.py` cannot validate four genuine child calls until the primary
 agent defines the two missing function bodies; the report retains all six call
 rows and records that limitation. No startup execution or gameplay result is claimed.
+
+## Integration correction from docs/NATIVE_PHYSICAL_MEMORY_BINDING.md
+
+The primary defined CD8FC0 and CD9030 from verified native byte ranges, preserving evidence of their previously undefined state. All six direct report call rows now pass. The primary independently relinked and reran all 1,152 descriptor comparisons against the combined library. The worker provenance manifest is retrospective and is labeled as such in the integration report. Original counter slow-path execution and original startup initializer order remain outside the differential fixture scope.
+
+Evidence: reports/native_ao_integration.json; reports/native_physical_memory_binding.json.

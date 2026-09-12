@@ -212,3 +212,9 @@ The report distinguishes stored-function call-site rows (checked using
 Only the former can pass that check today. Static reading and packet readiness
 are the results; reconstruction, build, fixture, ABI and game validation remain
 unclaimed.
+
+## Integration correction from docs/NATIVE_PHYSICAL_MEMORY_BINDING.md
+
+The six allocation producers BDA960, BDA980, BDABF0, BDABA0, 4C26B0 and 7F82F0 are now reconstructed as actual raw-storage routines in docs/NATIVE_VFS_CONTAINER_ALLOCATION.md. Their independent destination checks, untouched bytes and null-allocation fault behavior are preserved. This resolves that allocation dependency only. Actual container construction/destruction, manager publication and cleanup, BE1F60 stored-tail coverage, factory and mount insertion, and startup-derived D68D04 dispatch remain separate dependencies.
+
+Evidence: reports/native_ao_integration.json; reports/native_physical_memory_binding.json.

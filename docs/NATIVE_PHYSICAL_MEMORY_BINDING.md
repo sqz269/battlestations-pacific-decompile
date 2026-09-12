@@ -32,10 +32,38 @@ and its callable field+90 failure method through BD9E30.
 
 ## Validation boundary
 
+The combined strict Win32 build and both existing CTests pass. Four original
+BEF750/source comparisons pass with real physical type, seek, size and read
+leaves: exact file size, nonzero high DWORD with low size seven, short-read EOF
+with the larger requested length retained, and zero size. Both cached and OS
+cursors, all source-owner bytes except the reference adapter's table token,
+initialized data prefixes, wrapper/backing lengths and reference counts agree.
+Memory counters return to their starting values after both results are released.
+The existing 32-case FileStore fixture and 1,152 type-initializer comparisons
+also pass after relinking against the combined library.
+
+The Lua composition initializes file/memory/physical descriptors and shares the
+canonical counter domain. It passes fundamentals/bootstrap and installed shader
+loads, nested duplicate memory-backed scripts, and a FileStore entry retaining
+an actual physical stream. Clearing Platform before the retained physical
+fundamentals load and observing it restored verifies script execution. Shutdown
+clears the type counter publication as well as existing owners; descriptor
+guards correctly stay set. No automatic startup registration is introduced.
+
+Windows had already reserved BF0000 in the probe process. The original converter
+and physical methods therefore execute at a common translation of 30000000.
+Their instruction bytes stay unchanged. A separate reference owner copy uses a
+callable table pointing to the translated methods; only its table word is
+normalized for owner-byte comparison. The reconstructed side keeps its original
+D691B0 table and owner identity. Allocation, backing construction and wrapper
+creation use reconstructed dependencies through three separate reference call
+target stubs. ReadFile failure and native FH3 paths are excluded: their reference
+targets/handler are not installed in this fixture. The short-read tail is
+uninitialized and is deliberately excluded from data comparison.
+
 Results and frozen artifacts are recorded in reports/native_physical_memory_binding.json
-and reports/native_ao_integration.json after combined verification. The focused
-fixture initializes stream descriptors explicitly within the canonical lifetime
-domain; that does not prove original startup initializer ordering. Manager,
+and reports/native_ao_integration.json. Explicit descriptor initialization in the
+fixture does not prove original startup initializer ordering. Manager,
 mount and FileStore tree records remain explicitly initialized fixture inputs.
 Original exception identity, general archive ownership, complete application
 startup and gameplay are outside this packet's validation scope.

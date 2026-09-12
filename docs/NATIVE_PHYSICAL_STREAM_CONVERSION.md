@@ -97,3 +97,9 @@ resolve virtual dispatch or operating-system import rows; the raw listing,
 vtable bytes and installed import directory provide that evidence. Passing this
 fixture establishes these bounded leaf behaviors, not game execution, complete
 stream conversion, full ABI replacement or a recovered ID initialization policy.
+
+## Integration correction from docs/NATIVE_PHYSICAL_MEMORY_BINDING.md
+
+The primary defined BF4FF0 from its verified native byte range and saved the reviewed names and evidence. BEF750 now consumes these type/seek methods through the actual numeric D691B0 profile. Four paired conversions exercise original converter and physical method instructions with real handles; reference allocation, backing and wrapper construction use reconstructed dependencies. Final cached and OS cursors agree. The translated error callback and FH3 handler are not installed, so these paired runs do not validate failure or exception paths.
+
+Evidence: reports/native_ao_integration.json; reports/native_physical_memory_binding.json.

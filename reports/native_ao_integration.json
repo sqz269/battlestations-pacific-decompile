@@ -1,0 +1,1177 @@
+{
+  "packet": "native_ao_integration",
+  "utc": "2026-09-12T04:56:46.653855+00:00",
+  "tested_source_commit": "116987ab234b419074226c5b49e98c844ed38500",
+  "root_report": "reports/native_physical_memory_binding.json",
+  "worker_packets": [
+    {
+      "packet": "physical",
+      "commit": "355534b291df1c4b07e1f7e502956a596b21bd9a",
+      "report": "reports/native_physical_stream_conversion.json",
+      "worker_manifest_records_verified": 30,
+      "frozen_artifacts": [
+        {
+          "path": "local/native-ao-worker-evidence/physical/build/win32/bsp_core.dir/Release/native_physical_stream_conversion.obj",
+          "bytes": 1069,
+          "sha256": "83d938ab63e4c52b9f954a34cd52e88778eff097c94c8e68190d37eb88e1b1bc"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/build/win32/Release/bsp_core.lib",
+          "bytes": 43377068,
+          "sha256": "ace7a58dc62bc7ca4f0ae4ba852ddaa65f529b26110d422162499ba64a5bbdad"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/build/win32/Release/bsp_math_tests.exe",
+          "bytes": 461824,
+          "sha256": "e8dcdaeed8197aeab08d2798712c0ff152fa13432fa0ba2ed19384f0cca9b049"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/build/win32/Release/bsp_native_math_tests.exe",
+          "bytes": 18432,
+          "sha256": "08725c95978769f6f41955de2ef39571f5c7cde79eabca2786e89a8780ef34a9"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/cmake/startup.cmake",
+          "bytes": 53955,
+          "sha256": "a933f1640a993489c7b00e1d56140059d9072e8c6df1e2e51430928d943df9c5"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/docs/NATIVE_PHYSICAL_STREAM_CONVERSION.md",
+          "bytes": 6290,
+          "sha256": "90d00d32e100dd60ac48c12143c1366307b7972875b8dfe699310b118c4f20de"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/include/bsp/native_physical_stream_conversion.hpp",
+          "bytes": 1307,
+          "sha256": "8c24719755dd8719da843edeb2730598976d2d7dac702b733c0d399daec0d6ac"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/local/physical_conversion_ao/00bf4f20.bin",
+          "bytes": 32,
+          "sha256": "956d15aa55fd38f9f349ef3c873b984bd3fae3e02c78e78e949743f929dbb27c"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/local/physical_conversion_ao/00bf4f20_bytes.log",
+          "bytes": 154,
+          "sha256": "f800e6978a1aafd7f9b6fc57b14a53d51b09e9357ab4742ef0754d637db90253"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/local/physical_conversion_ao/00bf4ff0.bin",
+          "bytes": 40,
+          "sha256": "98b2c13b13008e1c966ccf05c311e430ea18fba9cf4d3911ca0a4b12a3fd2d39"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/local/physical_conversion_ao/00bf4ff0_bytes.log",
+          "bytes": 199,
+          "sha256": "58ddfde2c48f8ea42ef1f4c94a76db351c616bd1495768aec4bc2302a4950b83"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/local/physical_conversion_ao/add_ledgers.py",
+          "bytes": 2231,
+          "sha256": "db25a3a934b3116bdf780ea687aea8910b2436cbfe7c12ec14928fbb7f903bd1"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/local/physical_conversion_ao/build.log",
+          "bytes": 5166,
+          "sha256": "0509590b1b81ba108f31e0ed9b85d7938a1a3cfd88b3416bc57f4b50216b9615"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/local/physical_conversion_ao/build_initial_configure_race.log",
+          "bytes": 54539,
+          "sha256": "689b8f223735e033eeb365260a2a4f3c0c5112e1e563a3539e2efb2224f62fc5"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/local/physical_conversion_ao/build_probe.cmd",
+          "bytes": 545,
+          "sha256": "29e6582715af3b0d0f6444931de6a4e7ed5c02c660c96936caadf35b8a155473"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/local/physical_conversion_ao/capture_evidence.py",
+          "bytes": 2428,
+          "sha256": "5ade06955e0767fdb03e43f568aad7ab668acfa652ed9c266f392bbde4377e4f"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/local/physical_conversion_ao/commit_message.txt",
+          "bytes": 700,
+          "sha256": "854260fd33886e1290adeca21e084bec8202847942eb0118ed0d255ecd30d21f"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/local/physical_conversion_ao/ledger_edits.log",
+          "bytes": 525,
+          "sha256": "df2e897a7a3de3611cd885a5171ad464ab1af441f46bb445e565b3933feda63e"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/local/physical_conversion_ao/original_evidence.json",
+          "bytes": 2948,
+          "sha256": "d6323c6cf06db6fa745b0b0d981feacf02f62c1c2557f225336bf9f28f71a693"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/local/physical_conversion_ao/probe.cpp",
+          "bytes": 6851,
+          "sha256": "f2bee63441116fe92e38ab5ef36b8d48778a9cee28208d6be6574b8f7b0426c7"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/local/physical_conversion_ao/probe.exe",
+          "bytes": 12800,
+          "sha256": "3ff10c174e1be87f6c77206b3cde944be143dbd767e04e6b354abc14cb7525e5"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/local/physical_conversion_ao/probe.map",
+          "bytes": 28909,
+          "sha256": "b37d65e9aabca8d0fc8676b8793467ea64bccec7ea0f02afc360b748e7acf6a9"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/local/physical_conversion_ao/probe.obj",
+          "bytes": 13441,
+          "sha256": "2972db21d2b9f891920722898fa582ee71f2870107bb59b126019c6cc13bd7a3"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/local/physical_conversion_ao/probe_build.log",
+          "bytes": 11,
+          "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/local/physical_conversion_ao/probe_data.bin",
+          "bytes": 32,
+          "sha256": "66687aadf862bd776c8fc18b8e9f8e20089714856ee233b3902a591d0d5f2925"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/local/physical_conversion_ao/probe_linked_library.json",
+          "bytes": 233,
+          "sha256": "4684b144444777f576dda79e40e76a41c2ba91260106235b5631916b7302b1f0"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/local/physical_conversion_ao/probe_result.json",
+          "bytes": 617,
+          "sha256": "01a3df76d457acd438b166be191e9827254dc6b000d13c8ba6302d27007692a0"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/local/physical_conversion_ao/report_calls.log",
+          "bytes": 404,
+          "sha256": "2286a99e29558838f8b34f2023386816a3421d2be6dba2f674fad6360e01266c"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/local/physical_conversion_ao/verify_seeds.log",
+          "bytes": 3034,
+          "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/local/physical_conversion_ao/write_report.py",
+          "bytes": 9730,
+          "sha256": "256aa088df0f28fef776a3bbee6d712a79231a0173443361a3a1f059ee4424d1"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/local/seed_reference.hpp",
+          "bytes": 2995,
+          "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/src/native_physical_stream_conversion.cpp",
+          "bytes": 1077,
+          "sha256": "8c6beb3ab29e40fb71e42d4266076c27a354d72b7112b6c4e5731b1477e7454a"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/physical/worker-report.json",
+          "bytes": 18110,
+          "sha256": "aca695f859b07c2d5d1e00997d9b67a461209a753e186c8156ca96ae388ee3cb"
+        }
+      ],
+      "validation": {
+        "build": "scripts/build.ps1 MSVC Win32 Release /W4 /WX passed",
+        "initial_build_retry": "Sorting the appended registry line during the first build triggered parallel CMake regeneration/FetchContent file races. Initial log retained; unchanged-source full scripts/build.ps1 rerun after registry stabilization passed.",
+        "existing_tests": "100% tests passed, 0 tests failed out of 2: reconstructed_math and native_math_differential",
+        "seed_verification": {
+          "command": "python tools/ghidra_export.py verify-seeds",
+          "ranges": 8,
+          "all_match": true
+        },
+        "original_bytes": {
+          "ranges": 2,
+          "bytes": 72,
+          "all_match": true
+        },
+        "focused_probe": {
+          "query_cases": 12,
+          "seek_cases": [
+            {
+              "name": "begin",
+              "result": 1,
+              "last_error": 305419896,
+              "position": 0
+            },
+            {
+              "name": "current",
+              "result": 1,
+              "last_error": 305419896,
+              "position": 12
+            },
+            {
+              "name": "end_negative",
+              "result": 1,
+              "last_error": 305419896,
+              "position": 29
+            },
+            {
+              "name": "high_distance",
+              "result": 1,
+              "last_error": 305419896,
+              "position": 4294967305
+            },
+            {
+              "name": "negative_begin",
+              "result": 0,
+              "last_error": 131,
+              "position": 1234605616436508552
+            },
+            {
+              "name": "invalid_origin",
+              "result": 0,
+              "last_error": 87,
+              "position": 1234605616436508552
+            },
+            {
+              "name": "invalid_handle",
+              "result": 0,
+              "last_error": 6,
+              "position": 1234605616436508552
+            }
+          ],
+          "all_original_source_comparisons_passed": true
+        },
+        "probe_scope": "One ignored fixture; original bytes execute in an isolated process with real SetFilePointerEx IAT and current ID storage. Independent real handles, existing source BF50D0 initializes actual raw owners. Full result/last-error/raw-byte/OS-cursor comparisons.",
+        "probe_compile": "MSVC Win32 /O2 /W4 /WX /MD linked bsp_core.lib, /link /MANIFEST:EMBED /BASE:0x20000000 /DYNAMICBASE:NO; probe.exe only.",
+        "report_call_check": {
+          "command": "python tools/verify_report_calls.py reports/native_physical_stream_conversion.json",
+          "passed": true,
+          "numeric_call_rows_checked": 1,
+          "failures": 0,
+          "output": "indirect  report.host_steps[0]: native='IAT:00ce22d8:SetFilePointerEx' (not checked)\n  indirect  report.reviewed_consumers[0]: native='00d691b0+vtable0c' (not checked)\n  indirect  report.reviewed_consumers[1]: 00bef7bc calls through a register or memory operand; the report resolves it to 00bf4f20 (not verifiable here)\nreports/native_physical_stream_conversion.json: 1 call rows checked, 0 failed",
+          "limitation": "Import and vtable rows are not mechanically resolved; independent installed import, table bytes and instruction listing evidence is preserved."
+        },
+        "artifacts": [
+          {
+            "path": "include/bsp/native_physical_stream_conversion.hpp",
+            "bytes": 1307,
+            "sha256": "8c24719755dd8719da843edeb2730598976d2d7dac702b733c0d399daec0d6ac"
+          },
+          {
+            "path": "src/native_physical_stream_conversion.cpp",
+            "bytes": 1077,
+            "sha256": "8c6beb3ab29e40fb71e42d4266076c27a354d72b7112b6c4e5731b1477e7454a"
+          },
+          {
+            "path": "docs/NATIVE_PHYSICAL_STREAM_CONVERSION.md",
+            "bytes": 6290,
+            "sha256": "90d00d32e100dd60ac48c12143c1366307b7972875b8dfe699310b118c4f20de"
+          },
+          {
+            "path": "cmake/startup.cmake",
+            "bytes": 53955,
+            "sha256": "a933f1640a993489c7b00e1d56140059d9072e8c6df1e2e51430928d943df9c5"
+          },
+          {
+            "path": "build/win32/Release/bsp_core.lib",
+            "bytes": 43377068,
+            "sha256": "ace7a58dc62bc7ca4f0ae4ba852ddaa65f529b26110d422162499ba64a5bbdad"
+          },
+          {
+            "path": "build/win32/bsp_core.dir/Release/native_physical_stream_conversion.obj",
+            "bytes": 1069,
+            "sha256": "83d938ab63e4c52b9f954a34cd52e88778eff097c94c8e68190d37eb88e1b1bc"
+          },
+          {
+            "path": "build/win32/Release/bsp_math_tests.exe",
+            "bytes": 461824,
+            "sha256": "e8dcdaeed8197aeab08d2798712c0ff152fa13432fa0ba2ed19384f0cca9b049"
+          },
+          {
+            "path": "build/win32/Release/bsp_native_math_tests.exe",
+            "bytes": 18432,
+            "sha256": "08725c95978769f6f41955de2ef39571f5c7cde79eabca2786e89a8780ef34a9"
+          },
+          {
+            "path": "local/seed_reference.hpp",
+            "bytes": 2995,
+            "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+          },
+          {
+            "path": "local/physical_conversion_ao/00bf4f20.bin",
+            "bytes": 32,
+            "sha256": "956d15aa55fd38f9f349ef3c873b984bd3fae3e02c78e78e949743f929dbb27c"
+          },
+          {
+            "path": "local/physical_conversion_ao/00bf4f20_bytes.log",
+            "bytes": 154,
+            "sha256": "f800e6978a1aafd7f9b6fc57b14a53d51b09e9357ab4742ef0754d637db90253"
+          },
+          {
+            "path": "local/physical_conversion_ao/00bf4ff0.bin",
+            "bytes": 40,
+            "sha256": "98b2c13b13008e1c966ccf05c311e430ea18fba9cf4d3911ca0a4b12a3fd2d39"
+          },
+          {
+            "path": "local/physical_conversion_ao/00bf4ff0_bytes.log",
+            "bytes": 199,
+            "sha256": "58ddfde2c48f8ea42ef1f4c94a76db351c616bd1495768aec4bc2302a4950b83"
+          },
+          {
+            "path": "local/physical_conversion_ao/add_ledgers.py",
+            "bytes": 2231,
+            "sha256": "db25a3a934b3116bdf780ea687aea8910b2436cbfe7c12ec14928fbb7f903bd1"
+          },
+          {
+            "path": "local/physical_conversion_ao/build.log",
+            "bytes": 5166,
+            "sha256": "0509590b1b81ba108f31e0ed9b85d7938a1a3cfd88b3416bc57f4b50216b9615"
+          },
+          {
+            "path": "local/physical_conversion_ao/build_initial_configure_race.log",
+            "bytes": 54539,
+            "sha256": "689b8f223735e033eeb365260a2a4f3c0c5112e1e563a3539e2efb2224f62fc5"
+          },
+          {
+            "path": "local/physical_conversion_ao/build_probe.cmd",
+            "bytes": 545,
+            "sha256": "29e6582715af3b0d0f6444931de6a4e7ed5c02c660c96936caadf35b8a155473"
+          },
+          {
+            "path": "local/physical_conversion_ao/capture_evidence.py",
+            "bytes": 2428,
+            "sha256": "5ade06955e0767fdb03e43f568aad7ab668acfa652ed9c266f392bbde4377e4f"
+          },
+          {
+            "path": "local/physical_conversion_ao/ledger_edits.log",
+            "bytes": 525,
+            "sha256": "df2e897a7a3de3611cd885a5171ad464ab1af441f46bb445e565b3933feda63e"
+          },
+          {
+            "path": "local/physical_conversion_ao/original_evidence.json",
+            "bytes": 2948,
+            "sha256": "d6323c6cf06db6fa745b0b0d981feacf02f62c1c2557f225336bf9f28f71a693"
+          },
+          {
+            "path": "local/physical_conversion_ao/probe.cpp",
+            "bytes": 6851,
+            "sha256": "f2bee63441116fe92e38ab5ef36b8d48778a9cee28208d6be6574b8f7b0426c7"
+          },
+          {
+            "path": "local/physical_conversion_ao/probe.exe",
+            "bytes": 12800,
+            "sha256": "3ff10c174e1be87f6c77206b3cde944be143dbd767e04e6b354abc14cb7525e5"
+          },
+          {
+            "path": "local/physical_conversion_ao/probe.map",
+            "bytes": 28909,
+            "sha256": "b37d65e9aabca8d0fc8676b8793467ea64bccec7ea0f02afc360b748e7acf6a9"
+          },
+          {
+            "path": "local/physical_conversion_ao/probe.obj",
+            "bytes": 13441,
+            "sha256": "2972db21d2b9f891920722898fa582ee71f2870107bb59b126019c6cc13bd7a3"
+          },
+          {
+            "path": "local/physical_conversion_ao/probe_build.log",
+            "bytes": 11,
+            "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+          },
+          {
+            "path": "local/physical_conversion_ao/probe_linked_library.json",
+            "bytes": 233,
+            "sha256": "4684b144444777f576dda79e40e76a41c2ba91260106235b5631916b7302b1f0"
+          },
+          {
+            "path": "local/physical_conversion_ao/probe_result.json",
+            "bytes": 617,
+            "sha256": "01a3df76d457acd438b166be191e9827254dc6b000d13c8ba6302d27007692a0"
+          },
+          {
+            "path": "local/physical_conversion_ao/report_calls.log",
+            "bytes": 404,
+            "sha256": "2286a99e29558838f8b34f2023386816a3421d2be6dba2f674fad6360e01266c"
+          },
+          {
+            "path": "local/physical_conversion_ao/verify_seeds.log",
+            "bytes": 3034,
+            "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+          },
+          {
+            "path": "local/physical_conversion_ao/write_report.py",
+            "bytes": 9730,
+            "sha256": "256aa088df0f28fef776a3bbee6d712a79231a0173443361a3a1f059ee4424d1"
+          }
+        ]
+      },
+      "provenance_scope": "Original worker manifest checked before copying; additional dependency copies recorded at integration"
+    },
+    {
+      "packet": "types",
+      "commit": "1552f7fb248e4b7ddf677d982968fb6fc1d167db",
+      "report": "reports/native_stream_type_ids.json",
+      "worker_manifest_records_verified": 20,
+      "frozen_artifacts": [
+        {
+          "path": "local/native-ao-worker-evidence/types/build/win32/bsp_core.dir/Release/light_type_bootstrap.obj",
+          "bytes": 8007,
+          "sha256": "f0753d15c017f4af3c58828ae0e2ac5a04f78fa4ffeacd687c8ed05461c0e0ce"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/types/build/win32/bsp_core.dir/Release/native_stream_type_ids.obj",
+          "bytes": 3048,
+          "sha256": "9727ce36fe27c82f5d3f1232ef5da3ebf92f2c3c218d5bcdebe8086634f527c5"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/types/build/win32/bsp_core.dir/Release/singleton_lifetime.obj",
+          "bytes": 32967,
+          "sha256": "cfdbdf6ff8389c32316f22adba1587a562e672bfbc9bbbedf928a8b5047ec872"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/types/build/win32/Release/bsp_core.lib",
+          "bytes": 43376706,
+          "sha256": "f6022e2eff8542bbb58d676215084ba3e4a2a8cfba7162aedb28a113e0063183"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/types/cmake/startup.cmake",
+          "bytes": 53977,
+          "sha256": "c62b4f09ecbbc33dfa8e11c7508db9bb97e048a7ae073bcf13482c968b5967be"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/types/include/bsp/light_type_bootstrap.hpp",
+          "bytes": 3183,
+          "sha256": "0f591f8d094713dd75dc6e1bfc7c1d1a90970b1c77a1a29674a95ba75f9e5e34"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/types/include/bsp/native_stream_type_ids.hpp",
+          "bytes": 2201,
+          "sha256": "fe99f6ed873cdfae84f3df91aca2b1ade64060d6abfa35cd2ed6834b2b772222"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/types/include/bsp/singleton_lifetime.hpp",
+          "bytes": 4372,
+          "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/types/local/compile_native_stream_type_probe.cmd",
+          "bytes": 393,
+          "sha256": "b557abc9d0dd22939f53e24023b76a732a1df7192499fc54879b87820821b7f0"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/types/local/finalize_native_stream_type_ids.py",
+          "bytes": 4089,
+          "sha256": "37d91df9787b612e47fce2df45e3fd35f8bf52f4ecbe3463cc0589fc57bf75a4"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/types/local/native_stream_type_006fac20.bytes.txt",
+          "bytes": 880,
+          "sha256": "bb015819af9664c8057d66864bf2c4ed1a59ab9db83786ae84ba3b2437dca0e4"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/types/local/native_stream_type_00be4530.bytes.txt",
+          "bytes": 300,
+          "sha256": "4e6c2cd59ac8f04c636861cb752afd8cc74162e08cf9caf3781c1fed93840ba1"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/types/local/native_stream_type_00bea780.bytes.txt",
+          "bytes": 215,
+          "sha256": "2222857a1d334805d35333f02e21253f992d6033aaa6f12341339915afcb6943"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/types/local/native_stream_type_00cd8fc0.bytes.txt",
+          "bytes": 381,
+          "sha256": "77dd4aa6d61c77e68f84e8da9cd77c9775f7231b311f297259c029abc7387ac8"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/types/local/native_stream_type_00cd9030.bytes.txt",
+          "bytes": 381,
+          "sha256": "7a0960b6b60a0c5ab5a0a5031afb4ceaabdc2cf8c35c7c50416896b60f8abde0"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/types/local/native_stream_type_byte_evidence.json",
+          "bytes": 4585,
+          "sha256": "7a3a8381ba42d8fbc045baf5eec9a1c675459288a7872c1d3a39a3c30f66493a"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/types/local/native_stream_type_bytes.hpp",
+          "bytes": 2503,
+          "sha256": "9e5bf739ace2f38f88efd9ddd9ae415d4561df203664b70c449d026f542350df"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/types/local/native_stream_type_ids_build.log",
+          "bytes": 28202,
+          "sha256": "c2dc347fd9eaad63bdeef35c1ad2fa7e3e372f27c75fb0825920c964d48bd37f"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/types/local/native_stream_type_ids_commit.txt",
+          "bytes": 581,
+          "sha256": "1df4dc05b95439701b949eb986e5197a4afd03a2b40edb3d844fa409233a2a19"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/types/local/native_stream_type_ids_provenance.json",
+          "bytes": 8039,
+          "sha256": "ea7af3f2ec373a31ab211db4b11389dfbc680e3246dbc98bb66f1c37eb25d512"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/types/local/native_stream_type_probe.cpp",
+          "bytes": 5888,
+          "sha256": "891473fa876746782f9beee3c92a26659c0d170749d61b231db0883e594533c6"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/types/local/native_stream_type_probe.exe",
+          "bytes": 17920,
+          "sha256": "6f058609196c45a170faaef32219743f62183a75e91883687ad34a1a6b7ad4f8"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/types/local/native_stream_type_probe.log",
+          "bytes": 115,
+          "sha256": "be8d9e2e3c1d22d337697f10f444f090693fa12529757a335c5ddca8d4c31a73"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/types/local/native_stream_type_probe.obj",
+          "bytes": 19353,
+          "sha256": "50edf16167d9a5ce380ebec126fdf28e19f12cff127b8763949f421f4b115e5f"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/types/local/prepare_native_stream_type_probe.py",
+          "bytes": 1944,
+          "sha256": "27b3966accf2b69a601c7603ffa5d9a0b909ee4c147f6dd4aceca5b76bfce6a8"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/types/local/run_native_stream_type_probe.ps1",
+          "bytes": 1043,
+          "sha256": "92546232706cc7321a717f68f5c832ce86e00c9da579b59e762be9b6af259ca2"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/types/reports/native_stream_type_ids.json",
+          "bytes": 14674,
+          "sha256": "8ff8d41cd3d8b653038bc98228c9718ec11b667b3733c5ff12c1e919169591e3"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/types/src/light_type_bootstrap.cpp",
+          "bytes": 6499,
+          "sha256": "435c3f58482ca2ca0ee0c7c9c58f9441dc27caac93ac1cc491de9166f49d24c9"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/types/src/native_stream_type_ids.cpp",
+          "bytes": 3040,
+          "sha256": "acfce0bd756342e1c2a3537d3848fcba540a4d34cc97827aae905d323ba6669f"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/types/src/singleton_lifetime.cpp",
+          "bytes": 13257,
+          "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/types/worker-report.json",
+          "bytes": 14674,
+          "sha256": "8ff8d41cd3d8b653038bc98228c9718ec11b667b3733c5ff12c1e919169591e3"
+        }
+      ],
+      "validation": {
+        "build": "passed scripts/build.ps1 Release; MSVC Win32 /W4 /WX /fp:strict; existing reconstructed_math and native_math_differential CTest suites 2/2 passed",
+        "verify_seeds": "passed: 8 seed routines match installed disk and saved Ghidra bytes",
+        "focused_probe": {
+          "result": "1152 original/source state comparisons; 0 failures; existing counter fast path only",
+          "cases": "16 preset guard masks x 3 counter seeds (0,91,FFFFFFFF) x 4 invocation orders; 192 construction checks plus 960 step comparisons",
+          "boundaries": "both child orders, repeated calls, alternate ECX file target with canonical guard, owner publication swap, current parent words, uint32 wrap",
+          "reference": "installed bytes for006FAC20,00BEA780,00BE4530,00CD8FC0,00CD9030; all five complete ranges match live Ghidra memory bytes",
+          "relocation": "code and mapped process storage shifted by30000000; only decoded absolute operands within01080000..0109FFFF changed; relative calls unchanged; names unchanged; no callee hooks",
+          "scope": "No allocation/registration slow path or actual game startup/runtime execution",
+          "ignored_source": "local/native_stream_type_probe.cpp",
+          "ignored_preparation": "local/prepare_native_stream_type_probe.py",
+          "ignored_runner": "local/run_native_stream_type_probe.ps1",
+          "link": "/MANIFEST:EMBED; safe native_stream_type_probe.exe filename",
+          "log": "local/native_stream_type_probe.log"
+        },
+        "verify_report_calls": {
+          "result": "6 call rows checked, 4 failed; the two calls in defined BE4530 passed",
+          "failures": [
+            {
+              "site": "00CD8FDF",
+              "reason": "call site is in no Ghidra function"
+            },
+            {
+              "site": "00CD8FFA",
+              "reason": "call site is in no Ghidra function"
+            },
+            {
+              "site": "00CD904F",
+              "reason": "call site is in no Ghidra function"
+            },
+            {
+              "site": "00CD906A",
+              "reason": "call site is in no Ghidra function"
+            }
+          ],
+          "integration": "Primary will define the exact raw bodies after worker lease release and rerun verifier. All address/native rows retained."
+        },
+        "ghidra_mutation": "none; ledger names are proposed pending primary annotation",
+        "game_validation": "not performed",
+        "startup_execution": "not established"
+      },
+      "provenance_scope": "Type worker hash manifest was retrospective; parent relinked and reran all1152 comparisons against combined library before freezing current artifacts"
+    },
+    {
+      "packet": "containers",
+      "commit": "e919b6117dba0d83f2a42b1862578ef165e8503e",
+      "report": "reports/native_vfs_container_allocation.json",
+      "worker_manifest_records_verified": 6,
+      "frozen_artifacts": [
+        {
+          "path": "local/native-ao-worker-evidence/containers/build/win32/bsp_core.dir/Release/native_vfs_container_allocation.obj",
+          "bytes": 2588,
+          "sha256": "6684c4bddf84d88c9c205683452855ca45080ff77514942dcb839bb6287784db"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/containers/build/win32/Release/bsp_core.lib",
+          "bytes": 43375356,
+          "sha256": "8e8dfb0f38c2364a94154ed94a384a0b06e47accccfebdc39ce1e7d730166c8a"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/containers/include/bsp/native_vfs_container_allocation.hpp",
+          "bytes": 1917,
+          "sha256": "7aa5f78de45034f75163da77a7630418511918523325ed4a125a676f17e4deeb"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/containers/local/vfs_container_allocation/004c26b0.bytes.txt",
+          "bytes": 272,
+          "sha256": "b7078bc879838a2809bb553e34de2b468cddcb816360d29f3028d383cdf7367c"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/containers/local/vfs_container_allocation/007f82f0.bytes.txt",
+          "bytes": 130,
+          "sha256": "ebbee367b04942fca32dd7c2b6729a9c2c571d8c74b58400a3ad7163fb814006"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/containers/local/vfs_container_allocation/00bda960.bytes.txt",
+          "bytes": 130,
+          "sha256": "01b7532fc44a2e51fc708d0c0b8096ae1c41912b2f13099103354114865dce2e"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/containers/local/vfs_container_allocation/00bda980.bytes.txt",
+          "bytes": 130,
+          "sha256": "1ef34e61b14347523a446fc8d93be610df05e74b49590957f70f197894b7c173"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/containers/local/vfs_container_allocation/00bdaba0.bytes.txt",
+          "bytes": 272,
+          "sha256": "0d2ed77b08d748458e71254312aaa18b3bb20ed0967da3a64fef4dc686503b36"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/containers/local/vfs_container_allocation/00bdabf0.bytes.txt",
+          "bytes": 272,
+          "sha256": "90682ae5ac0d9c900ca6c9b0c31b08fa873bd9170ef2f9419943e303713fae8a"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/containers/local/vfs_container_allocation/allocation_probe.cpp",
+          "bytes": 5685,
+          "sha256": "ca9d8243590b2256ba7ab64cb137a72fe4a0e5d06258707cb125fa4ebae8259e"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/containers/local/vfs_container_allocation/allocation_probe.exe",
+          "bytes": 13824,
+          "sha256": "21f7335bbca92c1894b4932bc788dd90ff16cc3eebaf37bb12a1c0b5700458b9"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/containers/local/vfs_container_allocation/allocation_probe.obj",
+          "bytes": 12761,
+          "sha256": "7622692131ad573965bf9559f977cb1bb5ff5966b3454a251c5a175c5d00ad64"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/containers/local/vfs_container_allocation/build.log",
+          "bytes": 28182,
+          "sha256": "10f09d13190dd25123cd96f81c2f23679c133e5696ec6c59df7332221dc4f9cd"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/containers/local/vfs_container_allocation/build_probe.ps1",
+          "bytes": 1249,
+          "sha256": "af994cb5398e102f03d69ae64f4d6a886bdb9725b3d307cec47cacee6f344594"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/containers/local/vfs_container_allocation/commit-message.txt",
+          "bytes": 591,
+          "sha256": "006a9016d4e9e019df33c91d7d8414f27c03368eb4e8d79a611d20f9d294f97f"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/containers/local/vfs_container_allocation/devshell.log",
+          "bytes": 241,
+          "sha256": "635139e91a212396254a9c59e7183401e3d5ea2e181fafe6c327aab22cf2eca0"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/containers/local/vfs_container_allocation/finalize.py",
+          "bytes": 4591,
+          "sha256": "0ae06f30b63f76547f9eb2aa93959f851022d11a10f786e69c7ec17c2a238b64"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/containers/local/vfs_container_allocation/native_bytes.hpp",
+          "bytes": 1479,
+          "sha256": "b32eb055e977b4de373be83fad1c307deb2359f3d4383fdbc10697e019c40aa6"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/containers/local/vfs_container_allocation/prepare_probe.py",
+          "bytes": 5623,
+          "sha256": "7bc1c33f346d1707ca959a2a2f35750e9dba2627e63750c790c036b690e5c557"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/containers/local/vfs_container_allocation/probe.log",
+          "bytes": 698,
+          "sha256": "4b1d81bdb5b71e2771aef86c438a7901fef328f63bd2e17ce3fa9b415cfe9c04"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/containers/local/vfs_container_allocation/probe_build.log",
+          "bytes": 22,
+          "sha256": "d440ad98f6f552405ef2da735cc4047c7b71578ff8c630a39e2064d09789bb33"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/containers/local/vfs_container_allocation/seeds.log",
+          "bytes": 3034,
+          "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/containers/src/native_vfs_container_allocation.cpp",
+          "bytes": 3577,
+          "sha256": "dbb7ca65319f7d4c07a68a1b2f5df58fa9faf52a0432298490fa81f9669f93ad"
+        },
+        {
+          "path": "local/native-ao-worker-evidence/containers/worker-report.json",
+          "bytes": 18564,
+          "sha256": "74df3867d3142c0093ea4abe995a46963d8abce45a3e008e7e00c578ad67e314"
+        }
+      ],
+      "validation": {
+        "strict_build": {
+          "command": "./scripts/build.ps1",
+          "result": "passed",
+          "configuration": "Release Win32",
+          "existing_tests": [
+            "reconstructed_math passed",
+            "native_math_differential passed"
+          ]
+        },
+        "seed_verification": {
+          "command": "python tools/ghidra_export.py verify-seeds",
+          "result": "passed",
+          "matching_seed_count": 8
+        },
+        "report_calls": {
+          "command": "python tools/verify_report_calls.py reports/native_vfs_container_allocation.json",
+          "checked": 6,
+          "failed": 0
+        },
+        "focused_probe": {
+          "path": "local/vfs_container_allocation/allocation_probe.cpp",
+          "result": "passed all six leaves",
+          "link": "/MANIFEST:EMBED; Release bsp_core.lib; /O2 /W4 /WX /fp:strict /EHsc /MD",
+          "checks": [
+            "243 emitted source bytes match all six original bodies except allocation CALL rel32 fields",
+            "Unmodified source entries allocate through actual shared service and free through matching service",
+            "One allocation with exact native byte count and return pointer preserved",
+            "Private executable copies with only sole CALL redirected to controlled fixture preserve all exact stores, unlisted payload/padding bytes and guards",
+            "Forced null return in private copies skips first store then raises write access violation at address 4 in original and emitted source"
+          ],
+          "boundary": "Controlled allocation is a probe fixture in private code copies, not a production seam; original static CRT allocation failure identity and game runtime are not tested."
+        },
+        "artifacts": {
+          "build.log": "10f09d13190dd25123cd96f81c2f23679c133e5696ec6c59df7332221dc4f9cd",
+          "seeds.log": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+          "probe_build.log": "d440ad98f6f552405ef2da735cc4047c7b71578ff8c630a39e2064d09789bb33",
+          "probe.log": "4b1d81bdb5b71e2771aef86c438a7901fef328f63bd2e17ce3fa9b415cfe9c04",
+          "allocation_probe.cpp": "ca9d8243590b2256ba7ab64cb137a72fe4a0e5d06258707cb125fa4ebae8259e",
+          "allocation_probe.exe": "21f7335bbca92c1894b4932bc788dd90ff16cc3eebaf37bb12a1c0b5700458b9"
+        },
+        "source_sha256": "dbb7ca65319f7d4c07a68a1b2f5df58fa9faf52a0432298490fa81f9669f93ad",
+        "header_sha256": "7aa5f78de45034f75163da77a7630418511918523325ed4a125a676f17e4deeb"
+      },
+      "provenance_scope": "Original worker manifest checked before copying; additional dependency copies recorded at integration"
+    }
+  ],
+  "discovery": {
+    "commit": "f7bdcdf0",
+    "report": "reports/native_vfs_manager_packet_map.json",
+    "direct_call_rows": 31,
+    "finding": "Manager lifetime remains incomplete; six actual allocation producers now reconstructed separately. BE1F60 stored tail and destructor/EH dependencies remain unresolved."
+  },
+  "new_complete_function_count": 11,
+  "new_complete_native_bytes": 535,
+  "ghidra_definitions": {
+    "events": [
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00bf4ff0",
+          "end_address": "00bf5018"
+        },
+        "result": {
+          "success": true,
+          "start_address": "00bf4ff0",
+          "end_address": "00bf5017",
+          "bytes_disassembled": 40,
+          "message": "Successfully disassembled 40 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00bf4ff0",
+          "disassemble_first": false,
+          "name": "BSP_PhysicalStream_QueryType"
+        },
+        "result": {
+          "success": true,
+          "address": "00bf4ff0",
+          "function_name": "BSP_PhysicalStream_QueryType",
+          "entry_point": "00bf4ff0",
+          "body_size": 40,
+          "message": "Function created successfully at 00bf4ff0",
+          "warnings": [
+            "Function name 'BSP_PhysicalStream_QueryType' \u2014 main part 'PhysicalStream_QueryType' is not PascalCase. Expected: PhysicalstreamQuerytype",
+            "Function name 'BSP_PhysicalStream_QueryType' \u2014 main part 'PhysicalStream_QueryType' contains underscores. Use PascalCase after the module prefix.",
+            "Function name 'BSP_PhysicalStream_QueryType' does not start with a recognized verb. First word 'Physical' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+          ]
+        }
+      },
+      {
+        "defined": "00bf4ff0",
+        "end": "00bf5018",
+        "name": "BSP_PhysicalStream_QueryType",
+        "after": "Function: BSP_PhysicalStream_QueryType at 00bf4ff0\nSignature: undefined BSP_PhysicalStream_QueryType(void)\nEntry: 00bf4ff0\nBody: 00bf4ff0 - 00bf5017"
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00cd8fc0",
+          "end_address": "00cd900f"
+        },
+        "result": {
+          "success": true,
+          "start_address": "00cd8fc0",
+          "end_address": "00cd900e",
+          "bytes_disassembled": 79,
+          "message": "Successfully disassembled 79 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00cd8fc0",
+          "disassemble_first": false,
+          "name": "BSP_MemoryFileType_InitializeStatic"
+        },
+        "result": {
+          "success": true,
+          "address": "00cd8fc0",
+          "function_name": "BSP_MemoryFileType_InitializeStatic",
+          "entry_point": "00cd8fc0",
+          "body_size": 79,
+          "message": "Function created successfully at 00cd8fc0",
+          "warnings": [
+            "Function name 'BSP_MemoryFileType_InitializeStatic' \u2014 main part 'MemoryFileType_InitializeStatic' is not PascalCase. Expected: MemoryfiletypeInitializestatic",
+            "Function name 'BSP_MemoryFileType_InitializeStatic' \u2014 main part 'MemoryFileType_InitializeStatic' contains underscores. Use PascalCase after the module prefix.",
+            "Function name 'BSP_MemoryFileType_InitializeStatic' does not start with a recognized verb. First word 'Memory' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+          ]
+        }
+      },
+      {
+        "defined": "00cd8fc0",
+        "end": "00cd900f",
+        "name": "BSP_MemoryFileType_InitializeStatic",
+        "after": "Function: BSP_MemoryFileType_InitializeStatic at 00cd8fc0\nSignature: undefined BSP_MemoryFileType_InitializeStatic(void)\nEntry: 00cd8fc0\nBody: 00cd8fc0 - 00cd900e"
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00cd9030",
+          "end_address": "00cd907f"
+        },
+        "result": {
+          "success": true,
+          "start_address": "00cd9030",
+          "end_address": "00cd907e",
+          "bytes_disassembled": 79,
+          "message": "Successfully disassembled 79 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00cd9030",
+          "disassemble_first": false,
+          "name": "BSP_PhysicalFileType_InitializeStatic"
+        },
+        "result": {
+          "success": true,
+          "address": "00cd9030",
+          "function_name": "BSP_PhysicalFileType_InitializeStatic",
+          "entry_point": "00cd9030",
+          "body_size": 79,
+          "message": "Function created successfully at 00cd9030",
+          "warnings": [
+            "Function name 'BSP_PhysicalFileType_InitializeStatic' \u2014 main part 'PhysicalFileType_InitializeStatic' is not PascalCase. Expected: PhysicalfiletypeInitializestatic",
+            "Function name 'BSP_PhysicalFileType_InitializeStatic' \u2014 main part 'PhysicalFileType_InitializeStatic' contains underscores. Use PascalCase after the module prefix.",
+            "Function name 'BSP_PhysicalFileType_InitializeStatic' does not start with a recognized verb. First word 'Physical' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+          ]
+        }
+      },
+      {
+        "defined": "00cd9030",
+        "end": "00cd907f",
+        "name": "BSP_PhysicalFileType_InitializeStatic",
+        "after": "Function: BSP_PhysicalFileType_InitializeStatic at 00cd9030\nSignature: undefined BSP_PhysicalFileType_InitializeStatic(void)\nEntry: 00cd9030\nBody: 00cd9030 - 00cd907e"
+      },
+      {
+        "endpoint": "save_program",
+        "body": {},
+        "result": {
+          "error": "Unable to lock due to active transaction"
+        }
+      },
+      {
+        "endpoint": "save_program",
+        "body": {},
+        "result": {
+          "success": true,
+          "program": "battlestationspacific.exe",
+          "message": "Program saved successfully"
+        }
+      }
+    ]
+  },
+  "validation": {
+    "build": "Combined strict Win32 Release /W4 /WX /fp:strict and both existing CTests passed",
+    "original_converter": "4 pairs execute original BEF750 and BF4FF0/BF4F20/BF4F90/BF5030 with reconstructed allocator/backing/wrapper dependencies; cached/OS cursors, normalized source32bytes, initialized payloads, lengths/refs/counters agree",
+    "cases": [
+      "exact cached file size",
+      "cached high12345678 low7",
+      "cached requested lengthfile+13 with retained uninitialized tail",
+      "zero cached size"
+    ],
+    "composition": "Native stream descriptors initialize using shared root/counter domain; installed fundamentals/bootstrap/shaders, nested duplicate memory scripts and retained physical FileStore->memory->Lua pass; Platform cleared before physical load and restored by execution",
+    "shutdown": "Counter/string/fundamentals/physical pools and shared lock publications clear; memory counterszero; descriptor guards remainset",
+    "regressions": [
+      "32 original/source FileStore comparisons pass after relink",
+      "1152 original/source descriptor comparisons pass after relink, original counter fast path only"
+    ],
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "remaining": [
+    "Physical context and volatile physical IDs required together; unreadable/changed slots outside domain; invalid_argument is source-domain enforcement",
+    "Zero IDs remain data and can match the unsafe native backing-sharing branch; initialization not automatic",
+    "Real read failures need current manager publication plus callable field90 callback throughBD9E30",
+    "Descriptor/counter/root storage shares one process lifetime domain; source composition exercises counter allocation/registration, original counter slow path not newly proven",
+    "Type initializer invocation order is explicit fixture input, not recovered startup order; manager/mount/FileStore tree population remains seeded",
+    "General archive ownership, original CRT/FH3 identity, complete startup and gameplay remain unvalidated"
+  ],
+  "ghidra_annotations": {
+    "names_verified": 12,
+    "prior_nonempty_comments": 2,
+    "before": {
+      "00bef750": {
+        "address": "00bef750",
+        "function_name": "BSP_Stream_ConvertToMemory",
+        "comment": "[BSP reconstruction 00bef750]\nECX source,RET,newmemorywrapperEAX. Nullsource null; memorysource sharesbacking resetscursor; other seek0,size lowDWORD,uninitializedbacking,oneuncheckedread,wrap and release temporarybacking. Typedphysicalfragment positive1..INT32MAX, requestedlength retained onshortread, hostinitializedprefix/errorreport; VFS/typequery/nativeallocator absent.\n\n[BSP reconstruction 00bef750] update\nECX source,RET,newmemorywrapperEAX. Nullsource null; memorysource sharesbacking resetscursor; other seek0,size lowDWORD,uninitializedbacking,oneuncheckedread,wrap and release temporarybacking. Typedphysicalfragment positive1..INT32MAX, requestedlength retained onshortread, hostinitializedprefix/errorreport; VFS/typequery/nativeallocator absent.\n\nBorrows source without source retain/release. Memory path shares backing and resets only returned cursor. Other path seeks source0, takes low sizeDWORD, makes one unchecked read with null actual pointer, creates wrapper then releases temporary backing. Zero length uses one-byte allocation with logical0 and read0. Physical host projection now accepts0..INT32_MAX; other domains unchanged. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX borrowed source; no stack args; EAX new memory wrapper or null for null source; RET. Evidence: docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00bef750] update\nECX source,RET,newmemorywrapperEAX. Nullsource null; memorysource sharesbacking resetscursor; other seek0,size lowDWORD,uninitializedbacking,oneuncheckedread,wrap and release temporarybacking. Typedphysicalfragment positive1..INT32MAX, requestedlength retained onshortread, hostinitializedprefix/errorreport; VFS/typequery/nativeallocator absent.\n\nBorrows source without source retain/release. Memory path shares backing and resets only returned cursor. Other path seeks source0, takes low sizeDWORD, makes one unchecked read with null actual pointer, creates wrapper then releases temporary backing. Zero length uses one-byte allocation with logical0 and read0. Physical host projection now accepts0..INT32_MAX; other domains unchanged. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX borrowed source; no stack args; EAX new memory wrapper or null for null source; RET. Evidence: docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim. | Complete actual storage 240-byte body; ECX source; EAX stream; RET. Existing native owners and explicit current numeric/callable stream methods. Strict Win32/two existing tests/32 original-instruction comparisons pass. docs/NATIVE_FILESTORE_OPEN.md; reports/native_filestore_open.json. Descriptive hypothesis; no game validation."
+      },
+      "00bf4f20": {
+        "address": "00bf4f20",
+        "function_name": "BSP_PhysicalStream_Seek",
+        "comment": "[BSP reconstruction 00bf4f20]\nECX stream, signed64distance and DWORDorigin stack,RET0Ch. SetFilePointerEx writes cachedposition+10. Typed host returns explicit Win32 error; preserves output state, no normalization."
+      },
+      "00bf4ff0": {
+        "address": "00bf4ff0",
+        "function_name": "BSP_PhysicalStream_QueryType"
+      },
+      "00be4530": {
+        "address": "00be4530",
+        "function_name": "FUN_00be4530"
+      },
+      "00cd8fc0": {
+        "address": "00cd8fc0",
+        "function_name": "BSP_MemoryFileType_InitializeStatic"
+      },
+      "00cd9030": {
+        "address": "00cd9030",
+        "function_name": "BSP_PhysicalFileType_InitializeStatic"
+      },
+      "00bda960": {
+        "address": "00bda960",
+        "function_name": "FUN_00bda960"
+      },
+      "00bda980": {
+        "address": "00bda980",
+        "function_name": "FUN_00bda980"
+      },
+      "00bdabf0": {
+        "address": "00bdabf0",
+        "function_name": "FUN_00bdabf0"
+      },
+      "00bdaba0": {
+        "address": "00bdaba0",
+        "function_name": "FUN_00bdaba0"
+      },
+      "004c26b0": {
+        "address": "004c26b0",
+        "function_name": "FUN_004c26b0"
+      },
+      "007f82f0": {
+        "address": "007f82f0",
+        "function_name": "FUN_007f82f0"
+      }
+    },
+    "after": {
+      "00bef750": {
+        "address": "00bef750",
+        "function_name": "BSP_Stream_ConvertToMemory",
+        "comment": "[BSP reconstruction 00bef750]\nECX source,RET,newmemorywrapperEAX. Nullsource null; memorysource sharesbacking resetscursor; other seek0,size lowDWORD,uninitializedbacking,oneuncheckedread,wrap and release temporarybacking. Typedphysicalfragment positive1..INT32MAX, requestedlength retained onshortread, hostinitializedprefix/errorreport; VFS/typequery/nativeallocator absent.\n\n[BSP reconstruction 00bef750] update\nECX source,RET,newmemorywrapperEAX. Nullsource null; memorysource sharesbacking resetscursor; other seek0,size lowDWORD,uninitializedbacking,oneuncheckedread,wrap and release temporarybacking. Typedphysicalfragment positive1..INT32MAX, requestedlength retained onshortread, hostinitializedprefix/errorreport; VFS/typequery/nativeallocator absent.\n\nBorrows source without source retain/release. Memory path shares backing and resets only returned cursor. Other path seeks source0, takes low sizeDWORD, makes one unchecked read with null actual pointer, creates wrapper then releases temporary backing. Zero length uses one-byte allocation with logical0 and read0. Physical host projection now accepts0..INT32_MAX; other domains unchanged. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX borrowed source; no stack args; EAX new memory wrapper or null for null source; RET. Evidence: docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00bef750] update\nECX source,RET,newmemorywrapperEAX. Nullsource null; memorysource sharesbacking resetscursor; other seek0,size lowDWORD,uninitializedbacking,oneuncheckedread,wrap and release temporarybacking. Typedphysicalfragment positive1..INT32MAX, requestedlength retained onshortread, hostinitializedprefix/errorreport; VFS/typequery/nativeallocator absent.\n\nBorrows source without source retain/release. Memory path shares backing and resets only returned cursor. Other path seeks source0, takes low sizeDWORD, makes one unchecked read with null actual pointer, creates wrapper then releases temporary backing. Zero length uses one-byte allocation with logical0 and read0. Physical host projection now accepts0..INT32_MAX; other domains unchanged. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX borrowed source; no stack args; EAX new memory wrapper or null for null source; RET. Evidence: docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim. | Complete actual storage 240-byte body; ECX source; EAX stream; RET. Existing native owners and explicit current numeric/callable stream methods. Strict Win32/two existing tests/32 original-instruction comparisons pass. docs/NATIVE_FILESTORE_OPEN.md; reports/native_filestore_open.json. Descriptive hypothesis; no game validation.\n\n[BSP reconstruction 00bef750] update\nECX source,RET,newmemorywrapperEAX. Nullsource null; memorysource sharesbacking resetscursor; other seek0,size lowDWORD,uninitializedbacking,oneuncheckedread,wrap and release temporarybacking. Typedphysicalfragment positive1..INT32MAX, requestedlength retained onshortread, hostinitializedprefix/errorreport; VFS/typequery/nativeallocator absent.\n\nBorrows source without source retain/release. Memory path shares backing and resets only returned cursor. Other path seeks source0, takes low sizeDWORD, makes one unchecked read with null actual pointer, creates wrapper then releases temporary backing. Zero length uses one-byte allocation with logical0 and read0. Physical host projection now accepts0..INT32_MAX; other domains unchanged. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX borrowed source; no stack args; EAX new memory wrapper or null for null source; RET. Evidence: docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim. | Complete actual storage 240-byte body; ECX source; EAX stream; RET. Existing native owners and explicit current numeric/callable stream methods. Strict Win32/two existing tests/32 original-instruction comparisons pass. docs/NATIVE_FILESTORE_OPEN.md; reports/native_filestore_open.json. Descriptive hypothesis; no game validation. | Hypothesis, not a recovered symbol. BEF750 now binds numeric D691B0 current typeBF4FF0, seekBF4F20, cached-sizeBF4F90 and readBF5030 through explicit physical services and current descriptors. Memory token precedes profile read; each subsequent slot is fresh; backing data precedes read lookup. Native type initializers share the root/counter lifetime domain. Four original-converter/physical-leaf source pairs pass (normal, low-DWORD truncation, retained short read, zero), including cached and OS cursor checks. Actual physical-backed FileStore Lua load and canonical counter/owner shutdown pass. Memory/callable32-case and native type1152-case regressions pass. Source-domain guards, adapted reference method table, reconstructed reference ownership dependencies, seeded trees, missing error/FH3 handlers and unknown startup initializer order are explicit. docs/NATIVE_PHYSICAL_MEMORY_BINDING.md; reports/native_physical_memory_binding.json."
+      },
+      "00bf4f20": {
+        "address": "00bf4f20",
+        "function_name": "BSP_PhysicalStream_Seek",
+        "comment": "[BSP reconstruction 00bf4f20]\nECX stream, signed64distance and DWORDorigin stack,RET0Ch. SetFilePointerEx writes cachedposition+10. Typed host returns explicit Win32 error; preserves output state, no normalization.\n\n[BSP reconstruction 00bf4f20] update\nECX stream, signed64distance and DWORDorigin stack,RET0Ch. SetFilePointerEx writes cachedposition+10. Typed host returns explicit Win32 error; preserves output state, no normalization. | Actual-storage refinement: complete BF4F20..BF4F3F (32 bytes), ECX actual20h stream; stacked distance low/high/origin, RET0C. Current HANDLE+8 and direct output+10 to real SetFilePointerEx via CE22D8; full BOOL EAX, no error translation or shadow cursor. Strict Win32 build, two existing CTests and original-byte/real-file differential passed. docs/NATIVE_PHYSICAL_STREAM_CONVERSION.md; reports/native_physical_stream_conversion.json"
+      },
+      "00bf4ff0": {
+        "address": "00bf4ff0",
+        "function_name": "BSP_PhysicalStream_QueryType",
+        "comment": "[BSP reconstruction 00bf4ff0]\nDescriptive hypothesis. Complete raw BF4FF0..BF5017 (40 bytes), verified installed PE. ECX overwritten by stack token; compare current contiguous volatile DWORDs0109DC30/34/38 in order, AL Boolean only, RET4. D691B0+0C target. Saved Ghidra definition pending primary; worker read-only. Strict Win32 build and original-byte current-ID differential passed. docs/NATIVE_PHYSICAL_STREAM_CONVERSION.md; reports/native_physical_stream_conversion.json"
+      },
+      "00be4530": {
+        "address": "00be4530",
+        "function_name": "BSP_FileType_InitializeDescriptor",
+        "comment": "[BSP reconstruction 00be4530]\nComplete descriptor initializer 00be4530..00be456d inclusive; guard 0109DB54, actual process storage, shared counter0109DB7C and root0109DB84. Original ABI: ECX target; no stack arguments; saves ESI; RET; no semantic return value. docs/NATIVE_STREAM_TYPE_IDS.md; reports/native_stream_type_ids.json. Proposed descriptive name; Ghidra annotation pending primary; no startup execution or game validation claim."
+      },
+      "00cd8fc0": {
+        "address": "00cd8fc0",
+        "function_name": "BSP_MemoryFileType_InitializeStatic",
+        "comment": "[BSP reconstruction 00cd8fc0]\nComplete descriptor initializer 00cd8fc0..00cd900e inclusive; guard 0109DB94, actual process storage, shared counter0109DB7C and root0109DB84. Original ABI: No arguments; no stack adjustment; RET; EAX/ECX/EDX volatile; no semantic return value. docs/NATIVE_STREAM_TYPE_IDS.md; reports/native_stream_type_ids.json. Proposed descriptive name; Ghidra annotation pending primary; no startup execution or game validation claim."
+      },
+      "00cd9030": {
+        "address": "00cd9030",
+        "function_name": "BSP_PhysicalFileType_InitializeStatic",
+        "comment": "[BSP reconstruction 00cd9030]\nComplete descriptor initializer 00cd9030..00cd907e inclusive; guard 0109DC2C, actual process storage, shared counter0109DB7C and root0109DB84. Original ABI: No arguments; no stack adjustment; RET; EAX/ECX/EDX volatile; no semantic return value. docs/NATIVE_STREAM_TYPE_IDS.md; reports/native_stream_type_ids.json. Proposed descriptive name; Ghidra annotation pending primary; no startup execution or game validation claim."
+      },
+      "00bda960": {
+        "address": "00bda960",
+        "function_name": "BSP_RawListHead_Allocate0C_00bda960",
+        "comment": "[BSP reconstruction 00bda960]\nDescriptive hypothesis, complete 26-byte native allocation leaf; BF681B(0xc), independent destination null tests, exact writes and untouched bytes. EAX raw pointer, no consumed inputs, RET0. Source shared malloc/new-handler service boundary. Live/installed/emitted bytes verified; strict Win32 build, existing tests, original/source allocation-write/null probe passed. Ghidra readonly; proposed ledger name only. docs/NATIVE_VFS_CONTAINER_ALLOCATION.md; reports/native_vfs_container_allocation.json."
+      },
+      "00bda980": {
+        "address": "00bda980",
+        "function_name": "BSP_RawListHead_Allocate28_00bda980",
+        "comment": "[BSP reconstruction 00bda980]\nDescriptive hypothesis, complete 26-byte native allocation leaf; BF681B(0x28), independent destination null tests, exact writes and untouched bytes. EAX raw pointer, no consumed inputs, RET0. Source shared malloc/new-handler service boundary. Live/installed/emitted bytes verified; strict Win32 build, existing tests, original/source allocation-write/null probe passed. Ghidra readonly; proposed ledger name only. docs/NATIVE_VFS_CONTAINER_ALLOCATION.md; reports/native_vfs_container_allocation.json."
+      },
+      "00bdabf0": {
+        "address": "00bdabf0",
+        "function_name": "BSP_RawTreeNode_Allocate24_00bdabf0",
+        "comment": "[BSP reconstruction 00bdabf0]\nDescriptive hypothesis, complete 55-byte native allocation leaf; BF681B(0x24), independent destination null tests, exact writes and untouched bytes. EAX raw pointer, no consumed inputs, RET0. Source shared malloc/new-handler service boundary. Live/installed/emitted bytes verified; strict Win32 build, existing tests, original/source allocation-write/null probe passed. Ghidra readonly; proposed ledger name only. docs/NATIVE_VFS_CONTAINER_ALLOCATION.md; reports/native_vfs_container_allocation.json."
+      },
+      "00bdaba0": {
+        "address": "00bdaba0",
+        "function_name": "BSP_RawTreeNode_Allocate20_00bdaba0",
+        "comment": "[BSP reconstruction 00bdaba0]\nDescriptive hypothesis, complete 55-byte native allocation leaf; BF681B(0x20), independent destination null tests, exact writes and untouched bytes. EAX raw pointer, no consumed inputs, RET0. Source shared malloc/new-handler service boundary. Live/installed/emitted bytes verified; strict Win32 build, existing tests, original/source allocation-write/null probe passed. Ghidra readonly; proposed ledger name only. docs/NATIVE_VFS_CONTAINER_ALLOCATION.md; reports/native_vfs_container_allocation.json."
+      },
+      "004c26b0": {
+        "address": "004c26b0",
+        "function_name": "BSP_RawTreeNode_Allocate18_004c26b0",
+        "comment": "[BSP reconstruction 004c26b0]\nDescriptive hypothesis, complete 55-byte native allocation leaf; BF681B(0x18), independent destination null tests, exact writes and untouched bytes. EAX raw pointer, no consumed inputs, RET0. Source shared malloc/new-handler service boundary. Live/installed/emitted bytes verified; strict Win32 build, existing tests, original/source allocation-write/null probe passed. Ghidra readonly; proposed ledger name only. docs/NATIVE_VFS_CONTAINER_ALLOCATION.md; reports/native_vfs_container_allocation.json."
+      },
+      "007f82f0": {
+        "address": "007f82f0",
+        "function_name": "BSP_RawListHead_Allocate0C_007f82f0",
+        "comment": "[BSP reconstruction 007f82f0]\nDescriptive hypothesis, complete 26-byte native allocation leaf; BF681B(0xc), independent destination null tests, exact writes and untouched bytes. EAX raw pointer, no consumed inputs, RET0. Source shared malloc/new-handler service boundary. Live/installed/emitted bytes verified; strict Win32 build, existing tests, original/source allocation-write/null probe passed. Ghidra readonly; proposed ledger name only. docs/NATIVE_VFS_CONTAINER_ALLOCATION.md; reports/native_vfs_container_allocation.json."
+      }
+    },
+    "checks": [
+      {
+        "address": "00bef750",
+        "previous_name": "BSP_Stream_ConvertToMemory",
+        "current_name": "BSP_Stream_ConvertToMemory",
+        "previous_comment_preserved": true,
+        "current_evidence_present": true
+      },
+      {
+        "address": "00bf4f20",
+        "previous_name": "BSP_PhysicalStream_Seek",
+        "current_name": "BSP_PhysicalStream_Seek",
+        "previous_comment_preserved": true,
+        "current_evidence_present": true
+      },
+      {
+        "address": "00bf4ff0",
+        "previous_name": "BSP_PhysicalStream_QueryType",
+        "current_name": "BSP_PhysicalStream_QueryType",
+        "previous_comment_preserved": true,
+        "current_evidence_present": true
+      },
+      {
+        "address": "00be4530",
+        "previous_name": "FUN_00be4530",
+        "current_name": "BSP_FileType_InitializeDescriptor",
+        "previous_comment_preserved": true,
+        "current_evidence_present": true
+      },
+      {
+        "address": "00cd8fc0",
+        "previous_name": "BSP_MemoryFileType_InitializeStatic",
+        "current_name": "BSP_MemoryFileType_InitializeStatic",
+        "previous_comment_preserved": true,
+        "current_evidence_present": true
+      },
+      {
+        "address": "00cd9030",
+        "previous_name": "BSP_PhysicalFileType_InitializeStatic",
+        "current_name": "BSP_PhysicalFileType_InitializeStatic",
+        "previous_comment_preserved": true,
+        "current_evidence_present": true
+      },
+      {
+        "address": "00bda960",
+        "previous_name": "FUN_00bda960",
+        "current_name": "BSP_RawListHead_Allocate0C_00bda960",
+        "previous_comment_preserved": true,
+        "current_evidence_present": true
+      },
+      {
+        "address": "00bda980",
+        "previous_name": "FUN_00bda980",
+        "current_name": "BSP_RawListHead_Allocate28_00bda980",
+        "previous_comment_preserved": true,
+        "current_evidence_present": true
+      },
+      {
+        "address": "00bdabf0",
+        "previous_name": "FUN_00bdabf0",
+        "current_name": "BSP_RawTreeNode_Allocate24_00bdabf0",
+        "previous_comment_preserved": true,
+        "current_evidence_present": true
+      },
+      {
+        "address": "00bdaba0",
+        "previous_name": "FUN_00bdaba0",
+        "current_name": "BSP_RawTreeNode_Allocate20_00bdaba0",
+        "previous_comment_preserved": true,
+        "current_evidence_present": true
+      },
+      {
+        "address": "004c26b0",
+        "previous_name": "FUN_004c26b0",
+        "current_name": "BSP_RawTreeNode_Allocate18_004c26b0",
+        "previous_comment_preserved": true,
+        "current_evidence_present": true
+      },
+      {
+        "address": "007f82f0",
+        "previous_name": "FUN_007f82f0",
+        "current_name": "BSP_RawListHead_Allocate0C_007f82f0",
+        "previous_comment_preserved": true,
+        "current_evidence_present": true
+      }
+    ],
+    "saved_log": "local/ghidra-annotations-20260912T045735Z.json",
+    "project_saved": true,
+    "exports": "All 12 affected exports force-refreshed through workspace.py shared exports after annotation save",
+    "before_scope": "Names/prototypes captured before definitions; comment snapshots captured after the three missing functions were created, before annotations. Failed earlier comment batch is retained as a failed attempt."
+  },
+  "call_verification": {
+    "direct_rows": 48,
+    "failed": 0,
+    "artifact": "local/native-physical-memory-binding-calls-verification.log",
+    "boundary": "Indirect/IAT rows are explicitly skipped by the direct-call checker; current slot identities and successful conversion paths are separately byte/fixture checked. Raw manager-tail continuations remain labeled outside stored bodies."
+  }
+}
