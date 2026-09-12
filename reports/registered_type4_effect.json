@@ -1,0 +1,132 @@
+{
+  "packet": "orch3_registered_type4_ai",
+  "date": "2026-09-11",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "source": "src/registered_type4_effect.cpp",
+  "header": "include/bsp/registered_type4_effect.hpp",
+  "evidence": "docs/REGISTERED_TYPE4_EFFECT.md",
+  "status": "complete_lifetime_bodies_actual_registry_and_actual_context_owner_probe_passed_family_dispatch_pending",
+  "abi_compatible": false,
+  "game_validated": false,
+  "functions": [
+    {
+      "address": "008744a0",
+      "name": "construct_registered_type4_effect_008744a0",
+      "saved_name": "FUN_008744a0",
+      "saved_entry_comments": null,
+      "proposed_name": "BSP_RegisteredType4Effect_Construct_Provisional",
+      "coverage": "complete",
+      "native_abi": "ECX owner; stack definition, subject; EAX owner; RET8",
+      "native_last_instruction": "0087453b",
+      "native_last_instruction_length": 3,
+      "native_inclusive_end": "0087453d",
+      "eh": {"handler": "00c963a8", "descriptor": "00dc8484", "map": "00dc847c", "state": 0, "next_state": -1, "funclet": "00c963a0", "cleanup": "00858150 base only"}
+    },
+    {
+      "address": "00874540",
+      "name": "destroy_registered_type4_effect_00874540",
+      "saved_name": "FUN_00874540",
+      "saved_entry_comments": null,
+      "proposed_name": "BSP_RegisteredType4Effect_Destroy_Provisional",
+      "coverage": "complete",
+      "native_abi": "ECX owner; RET0; no established return value",
+      "native_last_instruction": "008745e3",
+      "native_last_instruction_length": 1,
+      "native_inclusive_end": "008745e3",
+      "eh": {"handler": "00c963c8", "descriptor": "00dc84b0", "map": "00dc84a8", "state": 0, "next_state": -1, "funclet": "00c963c0", "cleanup": "00858150 base only"}
+    },
+    {
+      "address": "00868d70",
+      "name": "create_registered_type4_effect_00868d70",
+      "saved_name": "FUN_00868d70",
+      "saved_entry_comments": null,
+      "proposed_name": "BSP_RegisteredType4Effect_Create_Provisional",
+      "coverage": "complete",
+      "native_abi": "ECX definition; stack subject; EAX owner or null; RET4",
+      "native_last_instruction": "00868dd3",
+      "native_last_instruction_length": 3,
+      "native_inclusive_end": "00868dd5",
+      "native_allocation_bytes": 60,
+      "eh": {"handler": "00c951cb", "descriptor": "00dc7098", "map": "00dc7090", "state": 0, "next_state": -1, "funclet": "00c951c0", "cleanup": "BF65AC raw allocation free after constructor unwind"}
+    },
+    {
+      "address": "00874610",
+      "name": "delete_registered_type4_effect_00874610",
+      "saved_name": "CG_scalar_deleting_dtor_00874610",
+      "saved_entry_comments": null,
+      "proposed_name": "BSP_RegisteredType4Effect_ScalarDeletingDtor_Provisional",
+      "coverage": "complete",
+      "native_abi": "ECX owner; stack flags DWORD; EAX original address including after free; RET4",
+      "native_last_instruction": "0087462b",
+      "native_last_instruction_length": 3,
+      "native_inclusive_end": "0087462d",
+      "missing_saved_flow": {"start": "00874625", "inclusive_end": "00874627", "instruction": "ADD ESP,4", "bytes": "83c404", "reason": "incorrect free no-return annotation"}
+    }
+  ],
+  "host_steps": [
+    {"function": "00868d70", "address": "00868d8b", "native": "00bf681b", "contract": "allocate actual3Ch; ADD ESP,4 at868D90"},
+    {"function": "00868d70", "address": "00868dab", "native": "008744a0", "contract": "construct actual owner; RET8 consumes definition and subject"},
+    {"function": "008744a0", "address": "0087451e", "native": "004d1100", "contract": "same actual manager singleton; no native arguments"},
+    {"function": "008744a0", "address": "00874525", "native": "00866a10", "contract": "raw borrowed registry append; RET4"},
+    {"function": "00874540", "address": "0087457a", "native": "00b6dfa0", "contract": "captured actual node34 unlink then required virtual18; RET0"},
+    {"function": "00874540", "address": "00874591", "native": "import:InterlockedDecrement", "contract": "captured raw38 actual04 decrement"},
+    {"function": "00874540", "address": "008745a1", "native": "owned38+vtable00", "contract": "current actual zero-count owner terminal"},
+    {"function": "00874540", "address": "008745ab", "native": "004d1100", "contract": "same actual manager singleton after callbacks"},
+    {"function": "00874540", "address": "008745b2", "native": "00866b00", "contract": "remove first raw match; RET4"},
+    {"function": "00874540", "address": "008745ce", "native": "00bd30f0", "contract": "base table CEB130 only; RET0"},
+    {"function": "00874610", "address": "00874613", "native": "00874540", "contract": "complete direct destructor; RET0"},
+    {"function": "00874610", "address": "00874620", "native": "00bf65ac", "contract": "free iff flagsbit0; ADD ESP,4 at874625"}
+  ],
+  "producer_layout": {
+    "canonical_prefix": "NativeRegisteredEffectPrefixStorage",
+    "extent": "3c",
+    "table": "00d0de50",
+    "secondary_table": "00d0de4c",
+    "references04": "sole actual atomic initialized1",
+    "borrowed10": "subject",
+    "borrowed14": "definition",
+    "type18": 4,
+    "state1c": 1,
+    "untouched": ["0d..0f", "20..23"],
+    "zero_float_order": ["24", "28", "30", "2c"],
+    "node34": "null initially; existing actual node lifetime required when nonnull",
+    "owned38": "null initially; raw refcounted owner with actual04"
+  },
+  "all_sites": {
+    "constructor": ["00868dab"],
+    "destructor": ["00874613"],
+    "scalar_data_reference": "00d0de54",
+    "factory_data_reference": "00d0d5ec",
+    "additional_saved_direct_factory_callers": []
+  },
+  "corrections": [
+    {"was": "factory and constructor pseudocode obscure definition in ECX and actual allocation extent", "is": "factory ECX definition, subject on stack; actual3Ch allocation; constructor ECX owner and two stack arguments", "evidence": "868D87 PUSH3Ch,868D89 ESI=ECX,868DA7/A8 subject/definition pushes,868DAB call8744A0,87453B RET8"},
+    {"was": "scalar pseudocode returned extraout_EAX after free and listing omitted stack cleanup", "is": "ADD ESP,4 at874625 then MOV EAX,ESI at874628 returns original owner on both branches", "evidence": "live bytes874618..87462D and complete native RET4"}
+  ],
+  "validation": {
+    "strict_win32_compile": "passed /std:c++17 /O2 /W4 /WX /fp:strict /MD /EHsc",
+    "actual_lifetime_probe": "passed actual3Ch raw registry lifetime, real OS lock/domain, real NativeRenderContextReference zero-only release and callback-before-clear/unregister, unchanged borrowed/count/padding, scalar flags2/1, same-domain shutdown",
+    "probe_source": "local/registered_type4_probe.cpp",
+    "probe_source_sha256": "48fa624d2e2c14c40f7ef766dfbd8227414133c51bac0e85c64ee994da9b8784",
+    "probe_executable_sha256": "33799032dbb17cd967e886e9c8e47170dfe5d8322bde51b20f4ce5a0c2dfbe14",
+    "implementation_sha256": "95b811c038059437deb257e762a98fa2436a1b05a648e4e848dbf6c3e10fd1fd",
+    "manifest": "/link /MANIFEST:EMBED",
+    "seed_verification": "passed all8",
+    "existing_ctest": "reconstructed_math and native_math_differential passed against integrator existing build; not type4 differential tests",
+    "full_cmake_integration": "integrator pending",
+    "nonnull_node34_probe": false,
+    "throwing_unwind_probe": false,
+    "original_machine_code_lifetime_probe": false,
+    "game_host_frame_execution": false
+  },
+  "family_limits": {
+    "phase2_current_virtual28": {"function_address": "00872790", "inclusive_end": "00872bc0", "implemented_here": false},
+    "current_virtual30": {"function_address": "00872060", "inclusive_end": "00872073", "last_instruction": "00872073", "last_instruction_length": 1, "saved_function_missing": true, "implemented_here": false},
+    "no_successful_unsupported_event_stub": true,
+    "no_rumble_companion_registration": true,
+    "current_node_virtual18_and_owned38_terminal_are_required_actual_bindings": true
+  },
+  "annotation_status": "proposed only; integrator owns flow repair, ledger rows, Ghidra annotation/save/export after lease handoff"
+}
