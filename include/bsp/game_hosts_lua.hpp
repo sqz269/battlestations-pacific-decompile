@@ -32,6 +32,7 @@
 
 #include "bsp/mission_load_hosts.hpp"
 #include "bsp/mission_lua_host.hpp"
+#include "bsp/ship_ai_obstacle_tables.hpp"
 #include "bsp/unit_rudder_curve.hpp"
 
 struct lua_State;
@@ -176,6 +177,14 @@ public:
     // `found` is false when the machine or either table is missing, and the
     // curve settings are then left untouched.
     bool read_turn_multipliers_0083ce56(UnitRudderCurveSettings& out);
+
+    // Milestone 2p. The seven AutoThrust keys of the same loader that
+    // 009ec7c0 BSP_UnitBot_ComputeThrottleCeiling consumes, read off
+    // `ShipGlobals["Navigator"]["AutoThrust"]` (docs/GAMEPLAY_SETTINGS.md rows
+    // +6CCh, +6D0h, +6D4h, +6E0h, +6E4h, +6E8h and +6ECh, written by
+    // 0083cc2c..0083ce3c). 0083cc2c itself is not projected; only its reads
+    // run. False leaves the output untouched.
+    bool read_auto_thrust_0083cc2c(ShipAiAutoThrustSettings& out);
 
     // Milestone 2k. The two reads 0087d7b0 makes into the global config object
     // 00432650 hands out: `Globals["Minimap"]["MinimapRange"]` into +6Ch and

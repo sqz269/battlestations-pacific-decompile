@@ -1,0 +1,1011 @@
+{
+  "packet": "cc_exe_2p",
+  "owner": "agent/cc-exe-2p",
+  "milestone": "2p: AI ships move on their own orders",
+  "doc": "docs/GAME_EXECUTABLE.md",
+  "ghidra": "read-only for this packet: no renames, comments, prototypes, function creation or saves. Project C:/Users/sqz269/bsp.gpr, program /battlestationspacific.exe; every live query verified both. Two existing names had run-time evidence appended.",
+  "sources": [
+    "src/game_hosts_ship_ai.cpp",
+    "include/bsp/game_hosts_ship_ai.hpp",
+    "src/game_hosts_units.cpp",
+    "include/bsp/game_hosts_units.hpp",
+    "src/game_hosts_commands.cpp",
+    "include/bsp/game_hosts_commands.hpp",
+    "src/game_hosts_lua.cpp",
+    "include/bsp/game_hosts_lua.hpp",
+    "tools/motion_trace_compare.py"
+  ],
+  "run": {
+    "command": "bsp_game.exe --frames 700 --press-start-frame 30 --menu-select USN02 --mission-frames 500 --mission-frame-seconds 0.05 --mission-complete-frame 490 --order moveto:Java --order-unit Kortenaer --order-frame 5 --trajectory-csv local/traj_2p_base.csv --log local/run_2p_base.log --game-root \"<install>\"",
+    "exit_code": 0,
+    "host_methods_concrete": 531,
+    "host_methods_unimplemented": 456,
+    "baseline_concrete": 495,
+    "baseline_unimplemented": 443,
+    "baseline_note": "milestone 2o's published numbers for the same command line, reproduced on this branch's base commit 1f93aeaf before any of this packet's changes.",
+    "drive_command": "the same, plus --ai-drive Kortenaer=1,0.5 --trajectory-csv local/traj_2p_drive.csv --log local/run_2p_drive.log",
+    "drive_exit_code": 0,
+    "drive_host_methods_concrete": 533,
+    "drive_host_methods_unimplemented": 456,
+    "verify_report_calls": "python tools/verify_report_calls.py reports/game_executable_milestone_2p.json"
+  },
+  "goal_vector_steps": [
+    {
+      "method": "ShipAi::replan_prepare",
+      "address": "009f516c",
+      "native": "009f1420",
+      "function": "009f50e0",
+      "status": "concrete",
+      "note": "chain slot 6, the AI sub-tick. 009F515B gates it on the accumulator ai+0B18h reaching ai+0B14h, so it runs on a re-plan tick and not on every frame: 5048 bodies in 15680 controller steps. Milestone 2o recorded this call site."
+    },
+    {
+      "method": "ShipAiGoal::active_command",
+      "address": "009f146b",
+      "native": "0071eb60",
+      "function": "009f1420",
+      "status": "concrete",
+      "note": "0071EB60([brain+0AB8h]) on the unit's own weapon director. Body read for this packet: director+30h == 1 returns director+58h, == 2 returns director+18Ch, anything else the lazily built empty singleton at 00E19B98. Every AI unit of this mission answers mode 1, so the descriptor is the one 0071E6C0 assigned into slot 0."
+    },
+    {
+      "method": "ShipAiGoal::latch_command_target",
+      "address": "009f1473",
+      "native": "009e2fb0",
+      "function": "009f1420",
+      "status": "concrete",
+      "note": "009E2FB0 on brain+0AF8h, projected by packet cc_ai_goal_vector."
+    },
+    {
+      "method": "ShipAiGoal::resolve_command_target",
+      "address": "009e2fe9",
+      "native": "00521ea0",
+      "function": "009e2fb0",
+      "status": "concrete",
+      "note": "BSP_CommandTarget_ResolveObject on the descriptor. This process numbers its own entities because the handle tables at 00F89A0C / 00F89A60 are not built, so the +2h id is matched against the register_units table."
+    },
+    {
+      "method": "ShipAiGoal::observer_unregister",
+      "address": "009e2ffd",
+      "native": "006952a0",
+      "function": "009e2fb0",
+      "status": "unimplemented",
+      "note": "the observer list the latched record joins is not built in this process; nothing downstream reads it."
+    },
+    {
+      "method": "ShipAiGoal::observer_register",
+      "address": "009e300d",
+      "native": "00694a60",
+      "function": "009e2fb0",
+      "status": "unimplemented",
+      "note": "the same pair."
+    },
+    {
+      "method": "ShipAiGoal::target_is_kind",
+      "address": "009f1491",
+      "native": "00cfc3d0+vtable5c",
+      "function": "009f1420",
+      "status": "indirect",
+      "note": "target->vtable[5Ch](2) with the literal 2 at 009F148D, answered through the recovered class chain 006FE530. A destroyer's ancestry is {7,6,5,4,2,1,0}, so 2 passes and brain+0B24h keeps the raw target."
+    },
+    {
+      "method": "ShipAiGoal::recon_slot",
+      "address": "009f14ec",
+      "native": "008053c0",
+      "function": "009f1420",
+      "status": "unimplemented",
+      "note": "BSP_Recon_EnsureSlot on the unit's own side. The recon slot's intrusive list is empty here, the same substitution milestone 2n makes for the party list."
+    },
+    {
+      "method": "ShipAiGoal::recon_knows_target",
+      "address": "009f14fa",
+      "native": "009dfbe0",
+      "function": "009f1420",
+      "status": "unimplemented",
+      "note": "body not read by any packet. Recorded false, which is the arm that closes the refresh gate brain+0B28h for a target on another side. It is why the six attackmove ships latch their goal once instead of refreshing it every sub-tick."
+    },
+    {
+      "method": "ShipAiGoal::target_is_surface",
+      "address": "009f1519",
+      "native": "00922dc0",
+      "function": "009f1420",
+      "status": "unimplemented",
+      "note": "BSP_Entity_IsSurfaceTarget, a thunk in this image whose body was not read. Recorded false, so the gate stays as the recon test left it."
+    },
+    {
+      "method": "ShipAiGoal::resolve_goal_position",
+      "address": "009f156b",
+      "native": "009dbcc0",
+      "function": "009f1420",
+      "status": "concrete",
+      "note": "009DBCC0 turns the latched triple into a world position. With a command that names an entity the triple is the zero vector 009E2FC4 substituted, so the goal is the target's own world position."
+    },
+    {
+      "method": "ShipAiGoal::refresh_target_pose",
+      "address": "009dbcd9",
+      "native": "00414db0",
+      "function": "009dbcc0",
+      "status": "unimplemented",
+      "note": "the pose-valid byte at target+0C8h is set for every created instance here, so the refresh arm is never taken."
+    },
+    {
+      "method": "ShipAiGoal::transform_by_target_matrix",
+      "address": "009dbced",
+      "native": "004142e0",
+      "function": "009dbcc0",
+      "status": "concrete",
+      "note": "BSP_Vector3f_TransformAffinePoint with the matrix at target+0CCh, run over the created instance's own world matrix."
+    },
+    {
+      "method": "ShipAi::replan_prepare_threat_scan",
+      "native": "009f158a",
+      "status": "unimplemented",
+      "note": "009F158A..009F1BB8, the two further countdowns at brain+0B44h / +0B4Ch and the proximity scan they drive. Not projected by any packet; it is the unprojected half of 009F1420 and is recorded once per sub-tick. No call site: it is the fall-through of the projected half."
+    }
+  ],
+  "path_steps": [
+    {
+      "method": "ShipAi::station_keeping_arm",
+      "native": "009eda28",
+      "function": "009ed6b0",
+      "status": "unimplemented",
+      "note": "009EDA28..009EE57B, gated at 009EDA34 on blk+3A5h and 009EDA41 on blk+3A6h and leaving through 009EE57B JMP 009EF206. blk+3A5h has five writers (009D5B90, 009DA0D0, 009DA3B0, 009DDBC0, 009DE5B0) and all five are records here, two of them chain steps of the same frame, so the byte is never set and the arm was entered 0 times in 15680 steps. No call site: it is a branch of 009ED6B0."
+    },
+    {
+      "method": "ShipAi::pick_path_point",
+      "native": "009ee580",
+      "function": "009ed6b0",
+      "status": "concrete",
+      "note": "009EE580..009EE670, projected by packet cc_ai_goal_vector. Entered 3426 times in the base run, which is the number of controller steps that ended in Navigate or NavigateAstern. No call site: it is the alternative branch to the station-keeping arm."
+    },
+    {
+      "method": "ShipAiPath::refresh_plan_009ed3e0",
+      "address": "009ee5c2",
+      "native": "009ed3e0",
+      "function": "009ed6b0",
+      "status": "unimplemented",
+      "note": "009ED3E0's body was read by packet cc_ai_goal_vector as a host contract, not projected as C++: it hands the latched goal blk+1DCh / +1E0h and the pose blk+184h to the planner at four sites and swaps the front and back paths at blk+2F4h / +2F8h."
+    },
+    {
+      "method": "ShipAiPath::plan_009e3780",
+      "native": "009e3780",
+      "status": "unimplemented",
+      "note": "the path planner. Leased to agent/cc-ai-path-planner for packet cc_ai_path_planner and not on main when this packet ran, so it is a record and this packet neither annotates nor projects it. Its four call sites are inside 009ED3E0 and were not transcribed here."
+    },
+    {
+      "method": "ShipAiPath::next_point_009e3c00",
+      "address": "009ee5f4",
+      "native": "009e3c00",
+      "function": "009ed6b0",
+      "status": "unimplemented",
+      "note": "body not read by any packet and there is no path object to ask, so the 22h-byte record comes back with node_18 = 0 and 009EE5F9 takes the skip. That is why path_publishes is 0 and why the output block from 009EE671 never runs."
+    },
+    {
+      "method": "ShipAiPath::publish_lateral_offset",
+      "address": "009ee66c",
+      "native": "00815f30",
+      "function": "009ed6b0",
+      "status": "unimplemented",
+      "note": "reached only with a path node. 0 calls."
+    },
+    {
+      "method": "ShipAi::navigation_output_block",
+      "native": "009ee671",
+      "function": "009ed6b0",
+      "status": "unimplemented",
+      "note": "src/ship_ai_navigation.cpp projects 009EE671..009EEAA2 and the probe exercises it, but it needs the path point 009E3C00 would have returned. 0 entries here."
+    },
+    {
+      "method": "ShipAi::navigation_arm_tail",
+      "native": "009eeaab",
+      "function": "009ed6b0",
+      "status": "unimplemented",
+      "note": "009EEAAB..009EF228, unprojected by every packet. THIS is what would latch blk+35Ch and form a desired throttle for a ship in Navigate mode: 009ED6B0's own direct-control block skips the latch entirely when the mode is Navigate. It is the record that keeps --ai-drive alive for `movetopos`."
+    }
+  ],
+  "obstacle_steps": [
+    {
+      "method": "ShipAi::refresh_obstacle_sectors",
+      "address": "009f51fa",
+      "native": "009ef230",
+      "function": "009f50e0",
+      "status": "concrete",
+      "note": "chain slot 15, one slot before the throttle ceiling at 009F5248 whose tail runs 009F3F80. 15680 bodies. The round robin on blk+0A18h and the braking distance the store at 009EF32F writes are run as docs/SHIP_AI_OBSTACLE_TABLES.md reads them; three of the twelve sectors refresh per frame."
+    },
+    {
+      "method": "ShipAiSectors::body_axis_speed",
+      "address": "009ef242",
+      "native": "0092d730",
+      "function": "009ef230",
+      "status": "concrete",
+      "note": "the hull's signed forward speed, floored at class+500h * 0.1."
+    },
+    {
+      "method": "ShipAiSectors::scan_sector",
+      "address": "009ef334",
+      "native": "009eb660",
+      "function": "009ef230",
+      "status": "unimplemented",
+      "note": "BSP_ShipAi_ScanObstacleSector, read only partially by packet cc_ai_obstacle_tables: the swept-arc query between 009EB6B7 and 009EBECC is unread, and the neighbour list at blk+608h it walks is empty in this process. No sector is ever marked blocked, so the blocked-sector and escape arms of 009F3F80 are unreachable here. 3 records per controller step."
+    },
+    {
+      "method": "ShipAi::drive_order_ring",
+      "address": "009f50c6",
+      "native": "009f3f80",
+      "function": "009f4da0",
+      "status": "concrete",
+      "note": "unchanged from milestone 2o: 009F4DA0's only exit is this tail call, so 009F3F80 runs on every controller step."
+    },
+    {
+      "method": "ShipAiObstacle::rudder_limit_348",
+      "native": "009f4dbc",
+      "function": "009f4da0",
+      "status": "concrete",
+      "note": "009F4DBC stores 1.0f into blk+348h unconditionally, before the blk+B30h early out at 009F4DC1, so a skipped ceiling step still leaves full rudder authority. The arms that compute blk+344h, 009F4DC7..009F50BA, stay the record milestone 2o kept. No call site: it is a store."
+    },
+    {
+      "method": "ShipAiObstacle::unit_half_width_09cc",
+      "native": "009f4174",
+      "function": "009f3f80",
+      "status": "unimplemented",
+      "note": "the FDIV divisor of the danger ramp. unit+9CCh has no recovered producer anywhere; the executable supplies 1.0f as a neutral divisor and records it. No call site: it is a memory read."
+    },
+    {
+      "method": "ShipAiObstacle::clearance_37c_producer",
+      "native": "009ef910",
+      "status": "unimplemented",
+      "note": "blk+37Ch, the numerator of the same ramp, is written only inside 009EF910 (six sites), which 009F4D10 calls and which no packet has read. The field keeps the zero a fresh block carries, so the ratio is zero and the ramp answers full danger for every ship on every step. That is what the run's danger column of 1.000 measures."
+    },
+    {
+      "method": "ShipAiObstacle::auto_thrust_block_00424c40",
+      "native": "00424c40",
+      "status": "concrete",
+      "note": "BSP_GameSettings_GetSingleton. Milestone 2p loads the seven AutoThrust keys 009EC7C0 reads at +6CCh..+6ECh out of the installation's own ShipGlobals.lua, beside the turn multipliers milestone 2j already loaded: DEG(25), DEG(75), 0.5, DEG(45), DEG(90), 0.75 and 6.0."
+    },
+    {
+      "method": "ShipAi::drive_order_ring_body",
+      "native": "009f40ca",
+      "function": "009f3f80",
+      "status": "concrete",
+      "note": "009F40CA..009F4B98, milestone 2o's one record, now run through bsp::ship_ai_drive_order_ring_middle_009f40ca. 15680 bodies. No call site: it is the routine's middle."
+    },
+    {
+      "method": "ShipAiObstacle::danger_ramp",
+      "address": "009f41a2",
+      "native": "00419010",
+      "function": "009f3f80",
+      "status": "concrete",
+      "note": "InterpolateClamped(1.0, 1.0, 4.0, 0.0, blk+37Ch / unit+9CCh)."
+    },
+    {
+      "method": "ShipAiObstacle::danger_step_rise",
+      "address": "009f42c1",
+      "native": "0042ac60",
+      "function": "009f3f80",
+      "status": "concrete",
+      "note": "the armed rise, 2 per second."
+    },
+    {
+      "method": "ShipAiObstacle::danger_step_band",
+      "address": "009f42e0",
+      "native": "0042ac60",
+      "function": "009f3f80",
+      "status": "concrete",
+      "note": "the inside-the-band arm."
+    },
+    {
+      "method": "ShipAiObstacle::raise_turn_assist_load",
+      "native": "009f438c",
+      "function": "009f3f80",
+      "status": "concrete",
+      "note": "009D4FB0 inlined: a compare and a store. The run raises unit+102Ch to min(2 * danger, 1.5) = 1.5 for every ship, because the danger is saturated by the recorded clearance above. No call site: the body is inlined."
+    },
+    {
+      "method": "ShipAiObstacle::throttle_cap",
+      "address": "009f4406",
+      "native": "00415550",
+      "function": "009f3f80",
+      "status": "concrete",
+      "note": "max(1.0f, blk+344h), the cap handed to the ceiling."
+    },
+    {
+      "method": "ShipAiObstacle::throttle_ceiling",
+      "address": "009f442a",
+      "native": "009ec7c0",
+      "function": "009f3f80",
+      "status": "concrete",
+      "note": "BSP_UnitBot_ComputeThrottleCeiling over the AutoThrust block. Reached only when the latched direction is not Stopped; no ship of this mission ever leaves Stopped, so 0 calls."
+    },
+    {
+      "method": "ShipAiObstacle::throttle_profile",
+      "address": "009f44ae",
+      "native": "009d6b40",
+      "function": "009f3f80",
+      "status": "concrete",
+      "note": "the 65-bin cost profile at blk+4h with the window [-1.5, +1.5]. Nothing in the recovered chain writes those 65 bytes, so every bin is zero and 009D6B87's bin test returns the value untouched: the profile cannot bend a throttle in this process. That is follow-up packet ship_ai_throttle_profile_producer."
+    },
+    {
+      "method": "ShipAiRudder::from_heading_error",
+      "address": "009f44f7",
+      "native": "009da250",
+      "function": "009f3f80",
+      "status": "concrete",
+      "note": "the rudder law, gated at 009F44E4 on blk+1C4h != Rudder. 9310 calls in 15680 steps, up from milestone 2o's 6370: the six attackmove ships now reach it because their approach sub-state writes brain+1CCh = 3."
+    },
+    {
+      "method": "ShipAiRudder::class_yaw_authority_0524",
+      "native": "009da268",
+      "function": "009da250",
+      "producer": "00828f20",
+      "status": "concrete",
+      "note": "the derived class+524h, 0.5 * MaxRotAngle / MaxRotAngleChangeRatio. 009DA268 is an FDIV on [[blk+3FCh]+538h]+524h, not a CALL; 00828F20 is the producer packet ship_ai_class_field_0524 found, and both its keys come out of the installed VehicleClass row. All 9310 calls take the derived value and the positivity gate passed on every one."
+    },
+    {
+      "method": "ShipAiRudder::body_axis_speed",
+      "address": "009da2d7",
+      "native": "0092d730",
+      "function": "009da250",
+      "status": "concrete",
+      "note": "the law's own speed read."
+    },
+    {
+      "method": "ShipAiObstacle::rudder_limit_clamp",
+      "address": "009f4544",
+      "native": "00415690",
+      "function": "009f3f80",
+      "status": "concrete",
+      "note": "clamp(blk+1D4h, -blk+348h, +blk+348h), gated at 009F4506..009F451B on the two direction booleans and on blk+33Ch < 0.0f. blk+33Ch is published by 009F4D10 and its producer was not read, so the gate is closed here."
+    },
+    {
+      "method": "ShipAiObstacle::sector_bearing_error",
+      "address": "009f4681",
+      "native": "00438b10",
+      "function": "009f3f80",
+      "status": "concrete",
+      "note": "the blocked-sector arm. Unreachable: no sector is blocked."
+    },
+    {
+      "method": "ShipAiObstacle::sector_rudder_law",
+      "address": "009f4694",
+      "native": "009da250",
+      "function": "009f3f80",
+      "status": "concrete",
+      "note": "the second store into blk+1D4h. Unreachable for the same reason."
+    },
+    {
+      "method": "ShipAiObstacle::neighbour_closing_speed",
+      "address": "009f477e",
+      "native": "009d8b90",
+      "function": "009f3f80",
+      "status": "concrete",
+      "note": "BSP_ShipAi_NeighbourClosingSpeed. Unreachable: it needs a sector with a blocker."
+    },
+    {
+      "method": "ShipAiObstacle::neighbour_body_axis_speed",
+      "address": "009f47b8",
+      "native": "0092d730",
+      "function": "009f3f80",
+      "status": "unimplemented",
+      "note": "the same value again, for the stall accumulator blk+384h. Unreachable and recorded."
+    },
+    {
+      "method": "ShipAiObstacle::backoff_profile",
+      "address": "009f4878",
+      "native": "009d6b40",
+      "function": "009f3f80",
+      "status": "concrete",
+      "note": "the astern-only window [-1, 0] while the latch blk+380h runs. Unreachable."
+    },
+    {
+      "method": "ShipAiRing::order_ring_hop",
+      "native": "009f4b99",
+      "function": "009f3f80",
+      "status": "concrete",
+      "note": "unchanged from milestone 2o. Every path of the middle converges here."
+    },
+    {
+      "method": "ShipAiRing::hop_deadband_speed",
+      "address": "009f4bd4",
+      "native": "0092d730",
+      "function": "009f3f80",
+      "status": "concrete"
+    },
+    {
+      "method": "ShipAiRing::set_write_slot_rudder",
+      "address": "009f4ce8",
+      "native": "0080e190",
+      "function": "009f3f80",
+      "status": "concrete"
+    },
+    {
+      "method": "ShipAiRing::set_write_slot_throttle",
+      "address": "009f4cfb",
+      "native": "0080e170",
+      "function": "009f3f80",
+      "status": "concrete"
+    },
+    {
+      "method": "ShipMotionBinding::tick_order_ring",
+      "address": "00826121",
+      "native": "00813020",
+      "function": "00825f20",
+      "status": "concrete",
+      "note": "unchanged since milestone 2i."
+    }
+  ],
+  "attackmove_steps": [
+    {
+      "method": "ShipAiState::attackmove_step",
+      "address": "009f5186",
+      "native": "00d219d0+vtable0c",
+      "function": "009f50e0",
+      "status": "indirect",
+      "note": "the state's own vtable +0Ch dispatch, which for `attackmove` is 009E8820."
+    },
+    {
+      "method": "ShipAiAttack::select_substate",
+      "address": "009e88d8",
+      "native": "009e86f0",
+      "function": "009e8820",
+      "status": "concrete",
+      "note": "the sub-state selector, unchanged from milestone 2o but now answered with a real target."
+    },
+    {
+      "method": "ShipAiAttack::brain_target_0b20",
+      "native": "009e8714",
+      "function": "009e86f0",
+      "status": "concrete",
+      "note": "[brain+0B20h]. Milestone 2o recorded it as always null; 009F1420 now writes it from the command's own resolved target, so three of the six attackmove ships carry DeRuyter and three carry Java. No call site: it is a memory read."
+    },
+    {
+      "method": "ShipAiAttack::target_is_kind",
+      "address": "009e8733",
+      "native": "00cfc3d0+vtable5c",
+      "function": "009e86f0",
+      "status": "indirect",
+      "note": "target->vtable[5Ch](8), then (1Ch) at 009E8799. A surface target answers neither, so 009E87B6 puts the machine on state+8h and keeps it there."
+    },
+    {
+      "method": "ShipAiAttack::call_00852860",
+      "address": "009e873b",
+      "native": "00852860",
+      "function": "009e86f0",
+      "status": "unimplemented",
+      "note": "the altitude gate. Its arithmetic is projected but its two inputs at entity+1200h / +1204h have no producer in the ledger. Unreachable here: no target answers the kind-8 test."
+    },
+    {
+      "method": "ShipAiAttack::set_current_substate",
+      "address": "009e87bd",
+      "native": "007b6ee0",
+      "function": "009e86f0",
+      "status": "concrete",
+      "note": "the state machine's member swap, body read by packet ship_ai_state_steps."
+    },
+    {
+      "method": "ShipAiAttack::call_009e85b0",
+      "address": "009e87cd",
+      "native": "009e85b0",
+      "function": "009e86f0",
+      "status": "concrete",
+      "note": "the approach-to-engage gate, projected by packet cc_ai_attackmove_substates and run here over the real destination brain+0B2Ch / +0B34h. It fails on its first conjunct for every ship."
+    },
+    {
+      "method": "ShipAiEngageGate::armament_readiness",
+      "native": "009e85cd",
+      "function": "009e85b0",
+      "status": "unimplemented",
+      "note": "[[unit+538h]+510h] and +514h. The object at unit+538h has no recovered class and neither field has a producer, so the pair is zero and the gate never opens. That is why state+14C0h, the engage sub-state, is never selected. No call site: it is a memory read."
+    },
+    {
+      "method": "ShipAiEngageGate::avoid_zone_list",
+      "address": "009e864c",
+      "native": "0082adc0",
+      "function": "009e85b0",
+      "status": "unimplemented",
+      "note": "the avoid-zone singleton 004218E0 hands out is not built here, so the walk at 009E8658 finds nothing, which is the arm that passes."
+    },
+    {
+      "method": "ShipAiEngageGate::zone_walk",
+      "address": "009e8658",
+      "native": "004178f0",
+      "function": "009e85b0",
+      "status": "unimplemented",
+      "note": "the same."
+    },
+    {
+      "method": "ShipAiAttack::substate_step_vtable0c",
+      "address": "009e88f0",
+      "native": "00d21994+vtable0c",
+      "function": "009e8820",
+      "status": "indirect",
+      "note": "[state+1508h]->vtable[0Ch]. Milestone 2o recorded all 588 of these; milestone 2p dispatches them over bsp::kShipAiAttackMoveSubStates and every one of the 588 reaches a body."
+    },
+    {
+      "method": "ShipAiAttack::approach_step",
+      "native": "009f3240",
+      "status": "concrete",
+      "note": "the sub-state at state+8h, projected whole by packet cc_ai_attackmove_substates. 588 bodies. Selected for all six ships because a surface target answers neither kind test and the engage gate fails. No call site: it is the vtable slot above."
+    },
+    {
+      "method": "ShipAiApproach::nested_update",
+      "address": "009f328f",
+      "native": "009f3090",
+      "function": "009f3240",
+      "status": "unimplemented",
+      "note": "seven calls on the nested ring object in a fixed order (009F1BC0, 009E7FC0, 009E6E80, 009E9190, 009E74D0, 009E76D0, 009E6A90), none of them read by any packet. It is the producer of sub+1214h, +1218h, +1230h and +1238h, so the approach point is the zero 009E5530 seeds and the throttle command at 009F3635 is zero. THIS is the record that keeps --ai-drive alive for `attackmove`."
+    },
+    {
+      "method": "ShipAiApproach::set_navigation_goal",
+      "address": "009f332b",
+      "native": "009de050",
+      "function": "009f3240",
+      "status": "concrete",
+      "note": "009DE050(blk, &goal, keep_mode = 1, final_leg = 0). 588 calls, all with the (0,0) the nested update left."
+    },
+    {
+      "method": "ShipAiApproach::wrap_brain_heading",
+      "address": "009f3360",
+      "native": "00605070",
+      "function": "009f3240",
+      "status": "unimplemented",
+      "note": "the in-place wrap of brain+1E0h, which is blk+1D8h, the desired heading."
+    },
+    {
+      "method": "ShipAiApproach::unit_is_group_leader",
+      "address": "009f3429",
+      "native": "00778890",
+      "function": "009f3240",
+      "status": "unimplemented",
+      "note": "no AI group object exists in this process (milestone 2m: ai_groups=0), so the answer is false and the non-leader arm at 009F35D8 runs."
+    },
+    {
+      "method": "ShipAiApproach::unit_armament_ready",
+      "address": "009f35e3",
+      "native": "00cfc3d0+vtable2c",
+      "function": "009f3240",
+      "status": "indirect",
+      "note": "[unit+538h]->vtable[2Ch](). Recorded false, which leaves the candidate list empty and skips the warn sweep."
+    },
+    {
+      "method": "ShipAiApproach::hold_heading_and_stop",
+      "address": "009f3647",
+      "native": "009e00a0",
+      "function": "009f3240",
+      "status": "concrete",
+      "note": "the exit arm, taken only on a null or retired target. Not reached here."
+    },
+    {
+      "method": "ShipAiAttack::engage_step",
+      "native": "009e23b0",
+      "status": "unimplemented",
+      "note": "state+14C0h. Projected by packet cc_ai_attackmove_substates but never selected: 009E85B0 is the only path to it and it fails on the readiness pair above. 0 records."
+    },
+    {
+      "method": "ShipAiAttack::lead_pursuit_step",
+      "native": "009e26c0",
+      "status": "unimplemented",
+      "note": "state+14CCh. Reached only from the kind-8 arm with the altitude gate open. 0 records."
+    },
+    {
+      "method": "ShipAiAttack::tangent_step",
+      "native": "009f3670",
+      "status": "unimplemented",
+      "note": "state+14E0h. The same arm with brain+0B28h clear. 0 records."
+    },
+    {
+      "method": "ShipAiAttack::initial_step",
+      "native": "007b3dd0",
+      "status": "concrete",
+      "note": "state+14F4h. The whole body is one RET 4, COMDAT-folded across twenty vtables, so running it is running nothing. 0 entries: 009E84F8 seeds state+1500h negative and the first selector call moves the machine off it before the first dispatch."
+    }
+  ],
+  "state_step_steps": [
+    {
+      "method": "ShipAiMoveTo::brain_goal_0b2c",
+      "native": "009e57d0",
+      "function": "009e5770",
+      "status": "concrete",
+      "note": "milestone 2o's `record, no producer anywhere` is gone: 009F1420 writes the triple. Kortenaer's 99 goal sets now carry Java's position (-250.0, -3000.0) instead of (0,0). No call site: it is a memory read."
+    },
+    {
+      "method": "ShipAiMoveTo::director_command_slot",
+      "address": "009e57ed",
+      "native": "0071bff0",
+      "function": "009e5770",
+      "status": "concrete"
+    },
+    {
+      "method": "ShipAiMoveTo::command_final_leg",
+      "address": "009e57f4",
+      "native": "007adc60",
+      "function": "009e5770",
+      "status": "concrete"
+    },
+    {
+      "method": "ShipAiState::set_navigation_goal",
+      "address": "009e580f",
+      "native": "009de050",
+      "function": "009e5770",
+      "status": "concrete",
+      "note": "99 calls for Kortenaer."
+    },
+    {
+      "method": "ShipAiMoveTo::resolve_command_target",
+      "address": "009e5847",
+      "native": "00521ea0",
+      "function": "009e5770",
+      "status": "concrete",
+      "note": "milestone 2o recorded this and the target arm short-circuited on the null at 009E584E. It now resolves Java, and the arm stops one test later, at the kind predicate 009E585F."
+    },
+    {
+      "method": "ShipAiMoveTo::target_is_kind",
+      "address": "009e585f",
+      "native": "00cfc3d0+vtable5c",
+      "function": "009e5770",
+      "status": "indirect",
+      "note": "target->vtable[5Ch](1Ch) through 006FE530. A destroyer's ancestry does not contain 1Ch, so the arm returns and the command never finishes on range."
+    },
+    {
+      "method": "ShipAiStop::outside_world_bounds",
+      "address": "009e14f3",
+      "native": "0071c4f0",
+      "function": "009e14c0",
+      "status": "unimplemented",
+      "note": "unchanged: construct_world 004DE610 is still a load record, so there is no world box."
+    },
+    {
+      "method": "ShipAiStop::set_desired_heading",
+      "address": "009e153c",
+      "native": "009e0040",
+      "function": "009e14c0",
+      "status": "concrete"
+    }
+  ],
+  "auto_target_steps": [
+    {
+      "method": "AutoTarget::director_accepts_new_target",
+      "address": "009f5ed0",
+      "native": "0071df70",
+      "function": "009f5da0",
+      "status": "concrete",
+      "note": "milestone 2o's record is replaced by the corrected predicate of docs/DIRECTOR_TARGET_GATE.md: a hold above 0.0f at director+40h rejects, and a leading command slot of category 1 or 2 rejects. 403 of 403 tested ticks passed rule 1 with the constructed -1.0f; the six attackmove ships are rejected by rule 3."
+    },
+    {
+      "method": "AutoTarget::director_target_hold_0040",
+      "native": "0071df75",
+      "function": "0071df70",
+      "status": "concrete",
+      "note": "the compare against the 0.0f at 00D7A218. 0071DF7C is JBE to the slot scan, so at most 0.0f passes. The field's three producers are 00720225 (-1.0f, the base constructor), 0071F314 (hold -= dt, only while at or above 0.0f) and 00817031 (3.0f, the cleartarget arm). This mission reaches only the first. No call site: it is a memory read."
+    },
+    {
+      "method": "AutoTarget::director_slot_categories",
+      "native": "0071df83",
+      "function": "0071df70",
+      "status": "concrete",
+      "note": "the walk over director+54h, stride 1Ch, stopped at the first null. No call site: it is the scan loop."
+    },
+    {
+      "method": "AutoTarget::command_category_vtable0c",
+      "address": "0071dfae",
+      "native": "00e08f70+vtable0c",
+      "function": "0071df70",
+      "status": "indirect",
+      "note": "command->vtable[0Ch], the category getter of the five-slot command descriptor, answered from bsp::kEntityOrderCommandClasses."
+    },
+    {
+      "method": "AutoTarget::set_fire_target",
+      "native": "00835860",
+      "status": "unimplemented",
+      "note": "BSP_WeaponDirector_SetFireTarget, reached 403 times now that the gate passes. Its body is not projected, so the chosen entity is recorded on this process's own director and nothing reads it back."
+    },
+    {
+      "method": "AutoTarget::issue_attackmove",
+      "native": "0071d980",
+      "status": "unimplemented",
+      "note": "BSP_WeaponDirector_SendOverrideCommand. Still 0 calls: the arm that would reach it is behind a different test of 009F5DA0."
+    }
+  ],
+  "ai_drive_steps": [
+    {
+      "method": "ShipAiDrive::set_desired_throttle",
+      "native": "009dbf90",
+      "status": "diagnostic",
+      "note": "KEPT, and section 6 of the milestone says exactly which states still need it. It is not a call site of the recovered path: the state's own vtable +0Ch at 009F5186 is what would produce a desired throttle, and neither `movetopos` nor `attackmove` does."
+    },
+    {
+      "method": "ShipAiDrive::set_desired_steering",
+      "native": "009dffb0",
+      "status": "diagnostic",
+      "note": "the same."
+    }
+  ],
+  "routines": [
+    {
+      "address": "009f1420",
+      "coverage": "partial: 009F1420-009F158A run, the half packet cc_ai_goal_vector projected. 009F158A-009F1BB8, the countdowns at brain+0B44h / +0B4Ch and the proximity scan they drive, is recorded with its own address."
+    },
+    {
+      "address": "009e2fb0",
+      "coverage": "complete"
+    },
+    {
+      "address": "009dbcc0",
+      "coverage": "complete"
+    },
+    {
+      "address": "0071eb60",
+      "coverage": "complete: the three-way select, read from the decompiled body for this packet"
+    },
+    {
+      "address": "009ed6b0",
+      "coverage": "partial: 009ED6B0-009EDA25 (the direct-control arm, milestone 2n) and 009EE580-009EE670 (the path pick) run. 009EDA28-009EE57B is the station-keeping arm, recorded and never entered; 009EE671-009EEAA2 is projected but unreachable without a path point; 009EEAAB-009EF228 is unprojected everywhere and recorded."
+    },
+    {
+      "address": "009ed3e0",
+      "coverage": "none: one host record"
+    },
+    {
+      "address": "009e3780",
+      "coverage": "none: leased to agent/cc-ai-path-planner, recorded"
+    },
+    {
+      "address": "009e3c00",
+      "coverage": "none: one host record"
+    },
+    {
+      "address": "009ef230",
+      "coverage": "partial: the round robin on blk+0A18h and the braking distance at 009EF32F run. 009EB660's scan is a record."
+    },
+    {
+      "address": "009eb660",
+      "coverage": "none: one host record per visited sector"
+    },
+    {
+      "address": "009f3f80",
+      "coverage": "complete as a host: 009F3FEB..009F3FF2, 009F3FF8..009F402E and 009F4034..009F40C6 from milestone 2o, 009F40CA..009F4B98 from packet cc_ai_obstacle_tables, 009F4B99..009F4D04 the hop. Every span of the routine now runs a projection."
+    },
+    {
+      "address": "009f4da0",
+      "coverage": "partial: 009F4DBC's unconditional store into blk+348h runs; 009F4DC7..009F50BA, the arms that compute blk+344h, stay the record milestone 2o kept."
+    },
+    {
+      "address": "009ec7c0",
+      "coverage": "complete, over the AutoThrust block this milestone loads. 0 calls: the latched direction never leaves Stopped."
+    },
+    {
+      "address": "009d6b40",
+      "coverage": "complete. The 65 profile bytes are all zero because nothing in the recovered chain writes them."
+    },
+    {
+      "address": "009f3240",
+      "coverage": "complete as a host. Its approach point comes from 009F3090, which is a record."
+    },
+    {
+      "address": "009f3090",
+      "coverage": "none: one host record"
+    },
+    {
+      "address": "009e86f0",
+      "coverage": "complete"
+    },
+    {
+      "address": "009e85b0",
+      "coverage": "complete as a host: the destination and the zone walk run, the readiness pair is a record."
+    },
+    {
+      "address": "009e23b0",
+      "coverage": "none in this run: projected on main but never selected"
+    },
+    {
+      "address": "009e26c0",
+      "coverage": "none in this run: projected on main but never selected"
+    },
+    {
+      "address": "009f3670",
+      "coverage": "none in this run: projected on main but never selected"
+    },
+    {
+      "address": "007b3dd0",
+      "coverage": "complete: one RET 4"
+    },
+    {
+      "address": "0071df70",
+      "coverage": "complete: both rules run"
+    }
+  ],
+  "measurements": {
+    "base_run": {
+      "controller_steps": 15680,
+      "gated": 0,
+      "replans": 5048,
+      "states": {"cruise": 13, "stop": 12, "attackmove": 6, "movetopos": 1},
+      "goal_prepasses": 5048,
+      "goal_refreshes": 4466,
+      "units_with_nonzero_goal": 31,
+      "units_with_brain_target": 19,
+      "state_step_goal_sets": 686,
+      "state_step_goal_replans": 1,
+      "units_with_goal": 7,
+      "path_plan_refreshes": 3426,
+      "path_picks": 3426,
+      "path_publishes": 0,
+      "station_keeping_entries": 0,
+      "sector_refreshes": 15680,
+      "middle_runs": 15680,
+      "substate_steps": 588,
+      "substate_concrete": 588,
+      "navigate_mode_steps": 3426,
+      "ring_hops": 15680,
+      "ring_gated_3f5": 0,
+      "ring_writes": 15680,
+      "rudder_law_calls": 9310,
+      "rudder_deadbands": 15680,
+      "live_pair_changes": 0,
+      "auto_target_thinks": 812,
+      "auto_target_scans": 787,
+      "auto_target_accepts": 403,
+      "fire_target_sets": 403,
+      "attackmove_issues": 0,
+      "units_moved": 0,
+      "total_path_length": 0.0,
+      "danger_level_every_ship": 1.0,
+      "throttle_limit_344_every_ship": 1.0,
+      "turn_assist_load_102c_every_ship": 1.5
+    },
+    "drive_run": {
+      "path_plan_refreshes": 2940,
+      "path_picks": 2940,
+      "navigate_mode_steps": 2940,
+      "rudder_law_calls": 8824,
+      "rudder_deadbands": 15194,
+      "live_pair_changes": 14,
+      "units_driven": 1,
+      "kortenaer_distance": 417.54,
+      "kortenaer_path_length": 417.76,
+      "kortenaer_final_position": [-32.0798, -2083.696045],
+      "kortenaer_final_heading_degrees": -44.220619,
+      "kortenaer_final_forward_speed": 18.239912,
+      "kortenaer_final_yaw_rate": -0.034906
+    },
+    "goal_examples": [
+      {"unit": "Kortenaer", "state": "movetopos", "descriptor": "mode=1 object id=2", "target": "Java", "goal": [-250.0, -3000.0], "refreshes": 99},
+      {"unit": "Haguro", "state": "attackmove", "descriptor": "mode=1 object id=1", "target": "DeRuyter", "goal": [250.0, -3000.0], "refreshes": 1},
+      {"unit": "Jintsu", "state": "attackmove", "descriptor": "mode=1 object id=2", "target": "Java", "goal": [-250.0, -3000.0], "refreshes": 1},
+      {"unit": "Yamakaze", "state": "stop", "descriptor": "mode=1 object id=21", "target": "Yamakaze", "goal": [3500.0, -4500.0], "refreshes": 98},
+      {"unit": "Houston", "state": "cruise", "descriptor": "mode=1 position (1200.0, -6000.0)", "target": null, "goal": [1200.0, -6000.0], "refreshes": 245}
+    ],
+    "director_gate": {
+      "rule_1_passes": 403,
+      "rule_3_rejections": "the six attackmove ships, every tick, on slot 0 category 2",
+      "slot0_by_state": {
+        "cruise": "cruise, category 3",
+        "movetopos": "moveto, category 3",
+        "stop": "stop, category 3",
+        "attackmove": "attackmove, category 2"
+      },
+      "units_whose_scan_found_no_candidate": ["DeRuyter", "Perth", "Asagumo", "Yukikaze", "Amatsukaze", "Hatsukaze", "Nachi", "Sazanami", "Naka", "Ushio"]
+    }
+  },
+  "probe_comparison": {
+    "probe": "bsp_ship_motion_probe.exe --class 265 --steps 490 --dt 0.05 --throttle 1 --rudder 0.5",
+    "class": "VehicleClass[265] Tribal class 1941, which is Kortenaer's ShipClasses:PACK3_Icarus=265",
+    "class_note": "the packet brief named --class 20; 265 is the id the scene's `Type = E ShipClasses : PACK3_Icarus` resolves to and the one milestone 2o used, so 265 is what was run.",
+    "tool": "python tools/motion_trace_compare.py --trace local/traj_2p_kortenaer.csv --probe local/probe_2p_class265.txt --align-origin",
+    "raw": {"speed": 0.6750, "heading_deg": 0.4007, "position_m": 4.5044, "yaw": 0.00433,
+            "final_speed": 0.0002, "final_heading_deg": 0.4002, "final_position_m": 4.5042,
+            "first_divergence": "speed at t = 0.20 s"},
+    "engagement_delay_removed": {"shift_seconds": 0.30, "speed": 0.3938, "heading_deg": 0.1996,
+            "position_m": 2.2321, "yaw": 0.00212, "verdict": "no channel left its tolerance over the compared span"},
+    "moveto_probe": "bsp_ship_motion_probe.exe --class 265 --steps 490 --dt 0.05 --moveto -250,-3000",
+    "moveto_result": {"speed": 0.6750, "heading_deg": 44.1620, "position_m": 110.5314, "yaw": 0.03490,
+            "finding": "the probe's chain, given the goal directly, saturates the rudder at 1.0 and turns at -0.06981 rad/s toward Java; the executable's Kortenaer holds the diagnostic switch's 0.5 and turns at -0.034906. The difference is the stand-in, not the motion model: the executable cannot form a rudder from the goal because 009E3C00 gives it no path point and 009EEAAB..009EF228 is unprojected."}
+  },
+  "corrections": [
+    {
+      "was": "milestone 2o section 4 and its host row `the AI goal vector brain+0B2Ch ... record, no producer anywhere`, and its measurement that all 98 goal sets of the run are (0,0)",
+      "is": "009F1420's head is the producer and the executable runs it. 5048 sub-ticks rewrite the triple 4466 times and 31 of the 32 units carry a non-zero goal; 19 carry a resolved brain+0B20h target. Kortenaer's `movetopos` goal is Java's position, not (0,0)",
+      "evidence": "009f516c, 009f146b, 009f1473, 009f156b, 009f1572, and the run's goal-vector table in local/run_2p_base.log"
+    },
+    {
+      "was": "milestone 2n and 2o: the `AutoTarget::director_accepts_new_target` record, whose note says the float at director+40h must be GREATER than 0.0f and that the field has no writer in this process",
+      "is": "the compare runs the other way: 0071DF7C is JBE to the slot scan and the fall-through is XOR AL,AL, so at most 0.0f passes. 00720225 constructs the field at -1.0f through 00720180, which 008363E0 calls at 00836403, so every director here passes rule 1. The think is stopped instead by rule 3, the slot category scan, and only for the six attackmove ships",
+      "evidence": "docs/DIRECTOR_TARGET_GATE.md; the run's gate table, 403 passes and 6 ships rejected at 0071dfc2"
+    },
+    {
+      "was": "milestone 2o section 5: `Every desired throttle in the mission is zero ... For the seven movetopos and attackmove ships it is a boundary, because their states decide a goal or a sub-state and never a throttle`",
+      "is": "still true, and the boundary is now named per state rather than per family. `attackmove` DOES write a desired throttle, at 009F3635, from sub+1218h; the value is zero because the nested update 009F3090 that produces sub+1218h is unread. `movetopos` writes none at all: 009DE050 leaves the block in Navigate and 009ED6B0's direct-control block skips the whole ahead/astern latch for that mode, so nothing between the goal and the ring can form one until 009EEAAB..009EF228 is projected",
+      "evidence": "009f3635, 009f332b, the `if (blk.mode != Navigate)` gate of ship_ai_direct_control_arm_009ed6b0, and the run's slot_thr column of 0.0000 for all 32 ships"
+    },
+    {
+      "was": "milestone 2o's host row `the two unprojected spans 009f40ca - record`",
+      "is": "gone. 009F40CA..009F4B98 runs bsp::ship_ai_drive_order_ring_middle_009f40ca on every one of the 15680 steps, so every span of 009F3F80 now runs a projection",
+      "evidence": "009f40ca, the run's danger, thr_lim and load102c columns"
+    },
+    {
+      "was": "milestone 2o correction 7 and follow-up 5: `tools/motion_trace_compare.py can no longer read the probe's stdout` because its _PROBE_ROW expects eight numeric columns and the probe prints nine",
+      "is": "fixed. The parser accepts nine columns and drops the `y`, and still accepts a pre-Dyn eight-column capture. The comparison in this milestone was run with the tool unmodified in any other way",
+      "evidence": "tools/motion_trace_compare.py, _PROBE_ROW and _PROBE_ROW_LEGACY"
+    },
+    {
+      "was": "implied by milestone 2o's host table: the `attackmove` sub-state step is one record for all five members",
+      "is": "the selector reaches exactly one of them on this mission, state+8h, and it reaches it for all six ships and all 588 dispatches. The other four are not blocked by the dispatch but by two predicates: 009E8733's kind-8 test, which a surface target fails, and 009E85B0's readiness pair, which has no producer",
+      "evidence": "009e8733, 009e8799, 009e85cd; substate_concrete=588 against substate_steps=588"
+    },
+    {
+      "was": "docs/SHIP_AI_ATTACKMOVE_SUBSTATES.md's host method names for 009F3240, which are brain-relative: brain+1CCh a steering mode, brain+1D0h, brain+1D4h, brain+1D8h a command and brain+1E0h a heading",
+      "is": "not contradicted, and now anchored: blk is brain+8h, so those five are blk+1C4h the steering mode, blk+1C8h the throttle hold, blk+1CCh the requested direction, blk+1D0h the desired throttle and blk+1D8h the desired heading. The 00605070 wrap at 009F3360 is the same one 009E0040 applies to blk+1D8h, which is what fixes the mapping. The approach step therefore leaves the block in NavigateAstern (3) with a desired throttle, not in a private brain state",
+      "evidence": "009f3375 writes 3, 009f3360 / 00605070 against 009E0040's own 00605070 on blk+1D8h, 009f3635"
+    }
+  ],
+  "read_for_this_packet": [
+    {
+      "address": "0071eb60",
+      "note": "the whole decompiled body: the two slot arms at +58h and +18Ch, the +30h selector and the lazily built singleton at 00E19B98 with its 00F87574 zero vector."
+    },
+    {
+      "address": "009f3f80",
+      "note": "every CALL of the body, to pin the 24 call sites this report cites (009F41A2, 009F42C1, 009F42E0, 009F4406, 009F442A, 009F44AE, 009F44F7, 009F4544, 009F4681, 009F4694, 009F477E, 009F47B8, 009F4836, 009F4878 among them). Four of them were listed at the wrong address in the packet's own first draft and were corrected from the listing."
+    },
+    {
+      "address": "009ef230",
+      "note": "its two CALLs, 009EF242 into 0092D730 and 009EF334 into 009EB660."
+    },
+    {
+      "address": "009ed6b0",
+      "note": "009EE5B0..009EE680 of the listing, to pin 009EE5C2, 009EE5F4 and 009EE66C."
+    },
+    {
+      "address": "009f50e0",
+      "note": "009F5140..009F5250 of the listing, to pin the chain slots this milestone wires: 009F516C, 009F51FA, 009F5209 and 009F5248."
+    }
+  ],
+  "still_unimplemented": [
+    {
+      "what": "the navigation arm's tail 009EEAAB..009EF228",
+      "addresses": ["009eeaab", "009ef228"],
+      "why": "the single thing between a real goal and a moving `movetopos` ship. 009ED6B0's direct-control block skips the ahead/astern latch and the desired throttle entirely when the mode is Navigate, so this span is where a navigating ship's desired pair has to come from. No packet projects it."
+    },
+    {
+      "what": "the path source 009E3780 and 009E3C00, behind 009ED3E0",
+      "addresses": ["009e3780", "009e3c00", "009ed3e0"],
+      "why": "without a path node the projected output block 009EE671..009EEAA2 never runs, so even the bearing the arm would publish is absent. 009E3780 is leased to agent/cc-ai-path-planner."
+    },
+    {
+      "what": "the approach ring update 009F3090 and its seven callees",
+      "addresses": ["009f3090", "009f1bc0", "009e7fc0", "009e6e80", "009e9190", "009e74d0", "009e76d0", "009e6a90"],
+      "why": "the producer of the approach sub-state's goal, heading and throttle at sub+1214h / +1218h / +1230h / +1238h. Six ships run 009F3240 every frame and all four fields are zero."
+    },
+    {
+      "what": "the clearance 009EF910 and the 65-bin throttle profile at blk+4h",
+      "addresses": ["009ef910", "009d6b40"],
+      "why": "blk+37Ch is the danger ramp's numerator and has no producer, so the danger level saturates at 1.0 for every ship on every step; and no writer of the profile bytes was found, so 009D6B40 cannot move a throttle. Both make the middle of 009F3F80 run without being able to change anything."
+    },
+    {
+      "what": "the obstacle sector scan 009EB660 between 009EB6B7 and 009EBECC",
+      "addresses": ["009eb660"],
+      "why": "the swept-arc query is unread and the neighbour list at blk+608h is empty here, so no sector is ever blocked and the whole blocked-sector and escape half of the middle is unreachable."
+    },
+    {
+      "what": "the unit's armament component at unit+538h",
+      "addresses": ["009e85cd", "009f35e3"],
+      "why": "its +510h / +514h readiness pair is the first conjunct of 009E85B0 and its vtable[2Ch] gates the approach step's warn sweep. Four routines read it and none establishes its class."
+    },
+    {
+      "what": "construct_world 004DE610",
+      "addresses": ["004de610"],
+      "why": "unchanged from milestones 2h through 2o. 0071C4F0's world box is still a record."
+    }
+  ],
+  "names_added": [],
+  "evidence_appended": ["009f1420", "0071eb60"],
+  "no_ghidra_function": [
+    {
+      "start": "009e8820",
+      "end": "009e88f9",
+      "note": "the attackmove composite step, boundary defined by packet ship_ai_state_steps and unchanged here."
+    },
+    {
+      "start": "007b3dd0",
+      "end": "007b3dd2",
+      "note": "the empty sub-state step, boundary defined by packet cc_ai_attackmove_substates and unchanged here."
+    }
+  ]
+}

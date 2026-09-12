@@ -79,6 +79,15 @@ struct GameDirector {
     // nothing changes, so the executable records one row per distinct choice
     // rather than one per step.
     std::uint32_t last_idle_command{0};
+    // Milestone 2p: director+40h, the auto-target re-acquisition hold
+    // 0071DF70 tests first. 00720225 stores -1.0f in the command controller
+    // base constructor 00720180, which 008363E0 calls at 00836403 with ECX
+    // still the director (docs/DIRECTOR_TARGET_GATE.md), so every director in
+    // this process starts there. 0071F314's per-frame `hold -= dt` runs only
+    // while the value is at or above 0.0f, so the -1.0f sentinel never moves,
+    // and 00817031's 3.0f is the `cleartarget` arm, which this mission never
+    // issues.
+    float target_hold_0040{-1.0f};
 };
 
 struct GameCommandsHost::Impl {
@@ -1287,6 +1296,90 @@ std::uint32_t GameCommandsHost::current_command_0071be40(std::size_t unit_index)
     if (unit_index >= host.directors.size()) return 0u;
     const GameDirector& director = host.directors[unit_index];
     return bsp::director_current_command_0071be40(director.mode, director.slot_command[0], 0u);
+}
+
+// ---------------------------------------------------------------------------
+// Milestone 2p: what the ship AI brain reads off the same director
+// ---------------------------------------------------------------------------
+
+bool GameCommandsHost::active_command_descriptor_0071eb60(std::size_t unit_index,
+    bsp::SceneCommandTarget& out, int& mode) const {
+    const Impl& host = *impl_;
+    mode = 0;
+    if (unit_index >= host.directors.size()) return false;
+    const GameDirector& director = host.directors[unit_index];
+    mode = static_cast<int>(director.mode);
+    // 0071EB60's own three-way select, read from the body: mode 1 hands back
+    // director+58h, which 0071E6C0 filled with slot 0's descriptor; mode 2 the
+    // override descriptor at director+18Ch; anything else the lazily built
+    // empty singleton at 00E19B98, whose +1h byte and +14h handle are zero.
+    if (director.mode == bsp::CruiseCommandMode::QueuedSlots) {
+        out = director.slot_target[0];
+        return true;
+    }
+    if (director.mode == bsp::CruiseCommandMode::Override) {
+        // 00835C92 is the only writer of director+18Ch and this process reaches
+        // it through no path: 0071E7F0's queue arm is a record here
+        // (WeaponDirector::queue_command). The descriptor is therefore the one
+        // a fresh director carries, and the caller is told which arm it got.
+        out = bsp::SceneCommandTarget{};
+        return true;
+    }
+    return false;
+}
+
+std::uint32_t GameCommandsHost::resolve_command_target_00521ea0(
+    const bsp::SceneCommandTarget& target) const {
+    // 00521EA0 BSP_CommandTarget_ResolveObject reads the descriptor's +0h kind,
+    // +2h object id and +4h object. This process numbers its own entities
+    // because the two handle tables at 00f89a0c / 00f89a60 are not built, so
+    // the id is matched against the register_units table and the answer is a
+    // one-based created-instance handle.
+    const Impl& host = *impl_;
+    if (target.kind == 0 || target.object_id == 0) return 0u;
+    for (const GameCommandUnit& unit : host.units) {
+        if (unit.object_id != target.object_id) continue;
+        return static_cast<std::uint32_t>(unit.index) + 1u;
+    }
+    return 0u;
+}
+
+float GameCommandsHost::director_target_hold_0040(std::size_t unit_index) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.directors.size()) return 0.0f;
+    return host.directors[unit_index].target_hold_0040;
+}
+
+int GameCommandsHost::director_leading_slot_categories_0071df83(std::size_t unit_index,
+    int* out, int max_out) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.directors.size() || out == nullptr || max_out <= 0) return 0;
+    const GameDirector& director = host.directors[unit_index];
+    // 0071DF83..0071DF9E: walk director+54h in 1Ch steps from index 0 and stop
+    // at the first null command pointer, capped at ten slots. A gap hides every
+    // slot behind it, which is what 0071E6C0's fill-the-first-null and
+    // 00720850's shift-the-tail-down together guarantee.
+    int written = 0;
+    for (int i = 0; i < bsp::kDirectorCommandSlotCount && written < max_out; ++i) {
+        const std::uint32_t command = director.slot_command[i];
+        if (command == 0u) break;
+        const bsp::EntityOrderCommandClass* klass = host.class_of(command);
+        out[written++] = (klass != nullptr) ? klass->category : -1;
+    }
+    return written;
+}
+
+std::uint32_t GameCommandsHost::director_slot_command(std::size_t unit_index,
+    int slot_index) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.directors.size()) return 0u;
+    if (slot_index < 0 || slot_index >= bsp::kDirectorCommandSlotCount) return 0u;
+    return host.directors[unit_index].slot_command[slot_index];
+}
+
+const char* GameCommandsHost::command_name_of(std::uint32_t command_object) const {
+    const bsp::EntityOrderCommandClass* klass = impl_->class_of(command_object);
+    return (klass != nullptr) ? klass->name : "";
 }
 
 bool GameCommandsHost::cruise_step(std::size_t unit_index, bool player_controlled,

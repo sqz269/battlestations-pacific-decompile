@@ -140,6 +140,33 @@ struct GameShipAiRow {
     bool goal_final_leg{false};              // blk+1E4h
     bool avoidance_enabled{false};           // blk+3ECh, what `stop` asks for
     int avoidance_side{-1};                  // blk+3F0h
+    // Milestone 2p: the brain pre-pass 009F1420 and what follows from it.
+    unsigned long long goal_refreshes{0};    // 009F1420 bodies that rewrote the triple
+    unsigned long long goal_prepasses{0};    // 009F1420 bodies run at all
+    float brain_goal_x{0.0f};                // brain+0B2Ch after the last one
+    float brain_goal_y{0.0f};                // brain+0B30h
+    float brain_goal_z{0.0f};                // brain+0B34h
+    std::uint32_t brain_target{0};           // brain+0B20h
+    std::string brain_target_name;           // the created instance it resolves to
+    std::string command_descriptor;          // what 0071EB60 answered with
+    unsigned long long path_plan_refreshes{0};  // 009ED3E0 call sites
+    unsigned long long path_picks{0};        // 009EE580 bodies that passed the gate
+    unsigned long long path_publishes{0};    // 009EE66C, 00815F30
+    unsigned long long station_keeping{0};   // 009EDA28 bodies the gate let in
+    unsigned long long sector_refreshes{0};  // 009EF230 bodies
+    // Milestone 2p: the projected middle of 009F3F80.
+    unsigned long long middle_runs{0};       // 009F40CA..009F4B98 bodies
+    float danger_a84{0.0f};                  // blk+0A84h after the last one
+    float throttle_limit_344{1.0f};          // blk+344h
+    float turn_assist_load_102c{0.0f};       // unit+102Ch
+    // Milestone 2p: the attackmove sub-state the selector settled on.
+    std::uint32_t substate{0};               // state+1508h, by its own offset
+    unsigned long long substate_concrete{0}; // sub-state steps that ran a body
+    // Milestone 2p: 0071DF70's two rules, measured.
+    float director_hold_0040{0.0f};
+    unsigned long long target_gate_tests{0};  // ticks that reached 0071DF70
+    int slot0_category{-1};
+    std::string slot0_command;
     // 009F5DA0, the automatic target selector
     unsigned long long target_thinks{0};   // ticks whose countdown was spent
     unsigned long long target_scans{0};
@@ -175,6 +202,19 @@ struct GameShipAiSummary {
     unsigned long long substate_steps{0};
     unsigned long long navigate_mode_steps{0};  // controller steps that ended in Navigate
     std::size_t units_with_goal{0};
+    // Milestone 2p.
+    unsigned long long goal_prepasses{0};
+    unsigned long long goal_refreshes{0};
+    std::size_t units_with_nonzero_goal{0};
+    std::size_t units_with_brain_target{0};
+    unsigned long long path_plan_refreshes{0};
+    unsigned long long path_picks{0};
+    unsigned long long path_publishes{0};
+    unsigned long long station_keeping{0};
+    unsigned long long sector_refreshes{0};
+    unsigned long long middle_runs{0};
+    unsigned long long substate_concrete{0};
+    std::size_t units_accepting_new_target{0};
     unsigned long long thinks{0};
     unsigned long long scans{0};
     unsigned long long fire_target_sets{0};

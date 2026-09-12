@@ -226,6 +226,9 @@ constexpr const char* kShipGlobalsGlobal = "ShipGlobals";   // 00d0b670
 // bracket the fragment (0083cdd7, 0083ce19) are the AutoThrust fields, so the
 // wrapper the fragment holds at [ESP+0BCh] is ShipGlobals["Navigator"].
 constexpr const char* kNavigatorKey = "Navigator";
+// Milestone 2p: the sub-table 0083cba8..0083ce3c reads the eleven AutoThrust
+// keys from, of which 009ec7c0 consumes seven.
+constexpr const char* kAutoThrustKey = "AutoThrust";
 // Milestone 2k, the two keys 0087d7b0 reads into global config +6Ch and +70h.
 constexpr const char* kGlobalConfigScriptPath = "scripts/datatables/globals.lua";
 constexpr const char* kGlobalsGlobal = "Globals";
@@ -362,6 +365,63 @@ bool GameMissionLuaHost::read_minimap_globals_0087d7b0(float& minimap_range,
     if (!read) return false;
     minimap_range = range;
     visibility_range = visibility;
+    return true;
+}
+
+bool GameMissionLuaHost::read_auto_thrust_0083cc2c(bsp::ShipAiAutoThrustSettings& out) {
+    // Milestone 2p. 0083CBA8..0083CE3C of 0083B5E0, the eleven AutoThrust keys
+    // it writes into 00424C40()+6C4h..+6ECh. This reads the seven
+    // 009EC7C0 BSP_UnitBot_ComputeThrottleCeiling consumes
+    // (docs/GAMEPLAY_SETTINGS.md rows +6CCh, +6D0h, +6D4h, +6E0h, +6E4h, +6E8h
+    // and +6ECh) off the already-loaded `ShipGlobals` table. The loader
+    // fragment itself is not projected, so 0083CC2C stays a record and only
+    // its reads are performed; the values come from the installation's own
+    // Scripts/datatables/ShipGlobals.lua, not from this file.
+    if (state_ == nullptr) return false;
+    const int top = ::lua_gettop(state_);
+    lua_getfield(state_, LUA_GLOBALSINDEX, kShipGlobalsGlobal);
+    if (lua_type(state_, -1) != LUA_TTABLE) {
+        ::lua_settop(state_, top);
+        return false;
+    }
+    ::lua_getfield(state_, -1, kNavigatorKey);
+    if (lua_type(state_, -1) != LUA_TTABLE) {
+        ::lua_settop(state_, top);
+        return false;
+    }
+    ::lua_getfield(state_, -1, kAutoThrustKey);
+    if (lua_type(state_, -1) != LUA_TTABLE) {
+        ::lua_settop(state_, top);
+        return false;
+    }
+    const int table = ::lua_gettop(state_);
+    struct KeyField {
+        const char* key;
+        float bsp::ShipAiAutoThrustSettings::* field;
+    };
+    static const KeyField kKeys[] = {
+        {"HdgDiffValueMin_Slow", &bsp::ShipAiAutoThrustSettings::hdg_diff_value_min_slow},
+        {"HdgDiffValueMax_Slow", &bsp::ShipAiAutoThrustSettings::hdg_diff_value_max_slow},
+        {"ThrustMin_Slow",       &bsp::ShipAiAutoThrustSettings::thrust_min_slow},
+        {"HdgDiffValueMin_Fast", &bsp::ShipAiAutoThrustSettings::hdg_diff_value_min_fast},
+        {"HdgDiffValueMax_Fast", &bsp::ShipAiAutoThrustSettings::hdg_diff_value_max_fast},
+        {"ThrustMin_Fast",       &bsp::ShipAiAutoThrustSettings::thrust_min_fast},
+        {"HdgDiffDangerMul",     &bsp::ShipAiAutoThrustSettings::hdg_diff_danger_mul},
+    };
+    bsp::ShipAiAutoThrustSettings settings{};
+    bool complete = true;
+    for (const KeyField& entry : kKeys) {
+        ::lua_getfield(state_, table, entry.key);
+        if (lua_type(state_, -1) != LUA_TNUMBER) {
+            complete = false;
+        } else {
+            settings.*(entry.field) = static_cast<float>(::lua_tonumber(state_, -1));
+        }
+        ::lua_pop(state_, 1);
+    }
+    ::lua_settop(state_, top);
+    if (!complete) return false;
+    out = settings;
     return true;
 }
 

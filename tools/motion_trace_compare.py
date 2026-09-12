@@ -4,7 +4,10 @@
 The probe (`bsp_ship_motion_probe.exe`, `src/ship_motion_probe.cpp`) prints a
 fixed-width table every ten steps:
 
-       step        t         x         z    heading   fwd_spd   throttle    rudder   yaw_rate
+   step        t         x         y         z    heading   fwd_spd   throttle    rudder   yaw_rate
+
+A capture taken before the Dyn integrator added the `y` column, with eight
+numbers instead of nine, is still accepted.
 
 The live side is a CSV captured from the game under a debugger at the
 `00825F20` breakpoint; `docs/MOTION_DIFFERENTIAL.md` defines the sampling plan
@@ -53,8 +56,15 @@ CURVE_MIN = (0.0, 0.4)   # +444h, +440h   TurnMultiplierMinSpeed
 CURVE_MED = (0.5, 1.5)   # +44Ch, +448h   TurnMultiplierMedSpeed
 CURVE_MAX = (1.0, 2.0)   # +43Ch, +438h   TurnMultiplierMaxSpeed
 
-PROBE_COLUMNS = ("step", "t", "x", "z", "heading", "fwd_spd", "throttle", "rudder", "yaw_rate")
-_PROBE_ROW = re.compile(r"^\s*(\d+)\s+" + r"\s+".join([r"(-?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?)"] * 8) + r"\s*$")
+# The probe's table gained a `y` column when the Dyn integrator landed, so a
+# current run prints nine numbers after the step index and an older capture
+# prints eight. Both forms are accepted and the `y` is dropped, because the
+# comparison is planar. docs/GAME_EXECUTABLE.md milestone 2o, correction 7.
+PROBE_COLUMNS = ("step", "t", "x", "y", "z", "heading", "fwd_spd", "throttle", "rudder", "yaw_rate")
+PROBE_COLUMNS_LEGACY = ("step", "t", "x", "z", "heading", "fwd_spd", "throttle", "rudder", "yaw_rate")
+_PROBE_NUMBER = r"(-?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?)"
+_PROBE_ROW = re.compile(r"^\s*(\d+)\s+" + r"\s+".join([_PROBE_NUMBER] * 9) + r"\s*$")
+_PROBE_ROW_LEGACY = re.compile(r"^\s*(\d+)\s+" + r"\s+".join([_PROBE_NUMBER] * 8) + r"\s*$")
 
 
 class CompareError(RuntimeError):
@@ -116,16 +126,25 @@ def angle_delta(a: float, b: float) -> float:
 def parse_probe_table(text: str) -> List[Sample]:
     """Pull the trajectory rows out of the probe's stdout.
 
-    Rows are matched structurally (an integer step then eight floats) so the
+    Rows are matched structurally (an integer step then nine floats, or eight
+    for a capture taken before the probe's `y` column landed) so the
     surrounding header and trailer lines are ignored without needing to be
     parsed.
     """
     samples: List[Sample] = []
     for line in text.splitlines():
         match = _PROBE_ROW.match(line)
-        if not match:
-            continue
-        _, t, x, z, heading, speed, throttle, rudder, yaw_rate = (float(g) for g in match.groups())
+        if match:
+            _, t, x, _y, z, heading, speed, throttle, rudder, yaw_rate = (
+                float(g) for g in match.groups()
+            )
+        else:
+            match = _PROBE_ROW_LEGACY.match(line)
+            if not match:
+                continue
+            _, t, x, z, heading, speed, throttle, rudder, yaw_rate = (
+                float(g) for g in match.groups()
+            )
         samples.append(
             Sample(
                 t=t,
@@ -141,7 +160,8 @@ def parse_probe_table(text: str) -> List[Sample]:
     if not samples:
         raise CompareError(
             "no probe trajectory rows matched; expected the table printed by "
-            "bsp_ship_motion_probe.exe (columns: " + " ".join(PROBE_COLUMNS) + ")"
+            "bsp_ship_motion_probe.exe (columns: " + " ".join(PROBE_COLUMNS)
+            + "; a pre-Dyn capture without `y` is also accepted)"
         )
     return samples
 

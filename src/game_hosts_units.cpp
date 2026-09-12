@@ -16,6 +16,7 @@
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
 
+#include "bsp/camera_affine.hpp"
 #include "bsp/camera_projection.hpp"
 #include "bsp/controlled_unit.hpp"
 #include "bsp/ocean_height.hpp"
@@ -93,6 +94,12 @@ struct GameUnitSlot {
     bsp::DynBody body{};
 
     int class_id{bsp::kUnitDestroyerClassId};  // unit+C4h, the descriptor's kind
+    // Milestone 2p: the two load latches the middle of 009F3F80 raises with the
+    // inlined bodies of 009D4FB0 (unit+102Ch) and 009D4FE0 (unit+1034h). Their
+    // consumers are not in this process; the fields exist so the raise is a
+    // real store rather than a discarded call, and the report prints them.
+    float turn_assist_load_102c{0.0f};
+    float secondary_load_1034{0.0f};
     bool standing_order{false};
     float standing_throttle{0.0f};
     float standing_rudder{0.0f};
@@ -122,6 +129,10 @@ struct GameUnitsHost::Impl {
     // freshly allocated settings object has, which is why the load runs first.
     bsp::UnitRudderCurveSettings rudder_curve{};
     bool rudder_curve_loaded{false};
+    // Milestone 2p: the seven AutoThrust keys of the same singleton, which
+    // 009EC7C0 reads at +6CCh..+6ECh. Loaded beside the turn multipliers.
+    bsp::ShipAiAutoThrustSettings auto_thrust{};
+    bool auto_thrust_loaded{false};
 
     // The world fields 00c41550 and 00c5b1b0 read: gravity at world+04h..+0Ch,
     // the two sleep speed thresholds at world+3Ch/+40h and the countdown reload
@@ -675,6 +686,30 @@ void GameUnitsHost::load_gameplay_settings_0083b5e0() {
             "MaxRotAngle by zero; the motion path is left with the curve unset");
         return;
     }
+    // Milestone 2p: the AutoThrust half of the same loader, 0083cba8..0083ce3c,
+    // read before the turn multipliers so an incomplete TurnMultipliers table
+    // does not hide it. 009EC7C0 consumes seven of the eleven keys.
+    if (host.lua.read_auto_thrust_0083cc2c(host.auto_thrust)) {
+        host.auto_thrust_loaded = true;
+        host.done("GameSettings::load_auto_thrust", 0x0083cc2cu);
+        host.log.notef("auto thrust loaded from ShipGlobals[\"Navigator\"][\"AutoThrust\"]: "
+            "hdg slow (%.4f, %.4f) thrust_min %.3f, hdg fast (%.4f, %.4f) thrust_min %.3f, "
+            "danger mul %.3f; these are 00424c40()+6cch..+6ech, the block "
+            "009ec7c0 BSP_UnitBot_ComputeThrottleCeiling interpolates over",
+            static_cast<double>(host.auto_thrust.hdg_diff_value_min_slow),
+            static_cast<double>(host.auto_thrust.hdg_diff_value_max_slow),
+            static_cast<double>(host.auto_thrust.thrust_min_slow),
+            static_cast<double>(host.auto_thrust.hdg_diff_value_min_fast),
+            static_cast<double>(host.auto_thrust.hdg_diff_value_max_fast),
+            static_cast<double>(host.auto_thrust.thrust_min_fast),
+            static_cast<double>(host.auto_thrust.hdg_diff_danger_mul));
+    } else {
+        host.record("GameSettings::load_auto_thrust", 0x0083cc2cu);
+        host.log.notef("auto thrust: ShipGlobals[\"Navigator\"][\"AutoThrust\"] is absent or "
+            "incomplete, so 00424c40()+6cch..+6ech keeps the zeroes a fresh settings object "
+            "has and 009ec7c0's five interpolation stages all run on zero endpoints");
+    }
+
     bsp::UnitRudderCurveSettings settings{};
     if (!host.lua.read_turn_multipliers_0083ce56(settings)) {
         host.log.notef("rudder curve: ShipGlobals[\"Navigator\"][\"TurnMultipliers\"] is "
@@ -1312,6 +1347,119 @@ bool GameUnitsHost::unit_pose(std::size_t index, float right[3], float up[3],
         translation[lane] = world[12 + lane];
     }
     return true;
+}
+
+// ---------------------------------------------------------------------------
+// Milestone 2p: what the brain pre-pass and the drive's middle read off a unit
+// ---------------------------------------------------------------------------
+
+bool GameUnitsHost::active_command_descriptor_0071eb60(std::size_t index,
+    bsp::SceneCommandTarget& out, int& mode) const {
+    return impl_->commands.active_command_descriptor_0071eb60(index, out, mode);
+}
+
+std::uint32_t GameUnitsHost::resolve_command_target_00521ea0(
+    const bsp::SceneCommandTarget& target) const {
+    return impl_->commands.resolve_command_target_00521ea0(target);
+}
+
+void GameUnitsHost::transform_by_unit_matrix_004142e0(std::size_t index, float in_x,
+    float in_y, float in_z, float& out_x, float& out_y, float& out_z) const {
+    out_x = in_x;
+    out_y = in_y;
+    out_z = in_z;
+    if (index >= impl_->slots.size()) return;
+    const std::array<float, 3> source{in_x, in_y, in_z};
+    std::array<float, 3> result{};
+    bsp::transform_point_004142e0(source, impl_->slots[index]->world, result);
+    out_x = result[0];
+    out_y = result[1];
+    out_z = result[2];
+}
+
+int GameUnitsHost::unit_side_0054(std::size_t index) const {
+    if (index >= impl_->slots.size()) return -1;
+    // unit+54h is the party the scene record authored, which milestone 2h's
+    // party_class_marks pass already carries on the row.
+    return impl_->slots[index]->row.party;
+}
+
+float GameUnitsHost::director_target_hold_0040(std::size_t index) const {
+    return impl_->commands.director_target_hold_0040(index);
+}
+
+int GameUnitsHost::director_leading_slot_categories_0071df83(std::size_t index, int* out,
+    int max_out) const {
+    return impl_->commands.director_leading_slot_categories_0071df83(index, out, max_out);
+}
+
+std::uint32_t GameUnitsHost::director_slot_command(std::size_t index, int slot_index) const {
+    return impl_->commands.director_slot_command(index, slot_index);
+}
+
+const char* GameUnitsHost::command_name_of(std::uint32_t command_object) const {
+    return impl_->commands.command_name_of(command_object);
+}
+
+const bsp::ShipAiAutoThrustSettings& GameUnitsHost::auto_thrust_settings(bool& loaded) const {
+    loaded = impl_->auto_thrust_loaded;
+    return impl_->auto_thrust;
+}
+
+bsp::ShipAiThrottleCeilingInputs GameUnitsHost::throttle_ceiling_inputs(
+    std::size_t index) const {
+    bsp::ShipAiThrottleCeilingInputs in{};
+    if (index >= impl_->slots.size()) return in;
+    const GameUnitSlot& slot = *impl_->slots[index];
+    // 009EC97B, |unit+980h|: the order ring's published throttle. The absolute
+    // value is taken inside the reconstruction, so the raw field goes in.
+    in.live_throttle = slot.row.throttle;
+    // 009EC99C / 009EC9A4, *(unit+73Ch)+28h and +24h: the commanded-speed pair
+    // milestone 2m put on the navigator parameter block.
+    const bsp::CruiseSpeedSetting speed = impl_->commands.commanded_speed(index);
+    in.commanded_speed = speed.speed;
+    in.commanded_speed_enabled = speed.enable >= 0.0f;
+    // 009EC9AB, blk+3C4h: the cached reference speed, the same 0080FC30 value
+    // 009E12BD divides by.
+    in.reference_speed = bsp::unit_reference_speed_0080fc30(slot.motion.max_speed,
+        bsp::kUnitReferenceSpeedUnscaled);
+    return in;
+}
+
+float GameUnitsHost::unit_half_width_09cc(std::size_t index) const {
+    static_cast<void>(index);
+    // unit+9CCh is read at 009D8FDE and at 009F4174 and has no recovered
+    // producer anywhere; the caller records it. 1.0f is the neutral divisor,
+    // not a recovered value.
+    return 1.0f;
+}
+
+float GameUnitsHost::unit_class_max_speed_0500(std::size_t index) const {
+    if (index >= impl_->slots.size()) return 0.0f;
+    return impl_->slots[index]->fields.max_speed;
+}
+
+void GameUnitsHost::raise_turn_assist_load_102c(std::size_t index, float value) {
+    if (index >= impl_->slots.size()) return;
+    // 009D4FB0 inlined: a compare and a store, so the raise is the whole body.
+    GameUnitSlot& slot = *impl_->slots[index];
+    if (value > slot.turn_assist_load_102c) slot.turn_assist_load_102c = value;
+}
+
+void GameUnitsHost::raise_secondary_load_1034(std::size_t index, float value) {
+    if (index >= impl_->slots.size()) return;
+    GameUnitSlot& slot = *impl_->slots[index];
+    if (value > slot.secondary_load_1034) slot.secondary_load_1034 = value;
+}
+
+float GameUnitsHost::turn_assist_load_102c(std::size_t index) const {
+    if (index >= impl_->slots.size()) return 0.0f;
+    return impl_->slots[index]->turn_assist_load_102c;
+}
+
+float GameUnitsHost::secondary_load_1034(std::size_t index) const {
+    if (index >= impl_->slots.size()) return 0.0f;
+    return impl_->slots[index]->secondary_load_1034;
 }
 
 void GameUnitsHost::unit_class_extents(std::size_t index, float& forward, float& right,
