@@ -1,0 +1,1147 @@
+{
+  "packet": "orch6_dyn_body_e",
+  "worker": "agent/orch6-dyn-body-e",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/dyn_body_creation.cpp",
+  "documentation": "docs/DYN_BODY_CREATION.md",
+  "ghidra_worker_read_only": true,
+  "abi_compatible": false,
+  "game_validated": false,
+  "status": "Win32 Release built; two CTests passed; 4100 original-byte body fixtures and all owned buffers matched",
+  "routines": [
+    {
+      "address": "00c5d580",
+      "body_end_inclusive": "00c5d8f3",
+      "original_abi": "ECX world; stack native 84h descriptor; EAX body; RET4",
+      "implementation": "dyn_world_create_convex_body_00c5d580",
+      "proposed_name": "Dyn_World_CreateBody",
+      "name_provisional": true,
+      "coverage": "partial domain: both body/motion allocation branches and complete convex-only descriptor loop",
+      "unresolved_ranges": [
+        "00C5D8D4 dispatch to sphere/box/cylinder/terrain constructors through 00C5C940"
+      ]
+    },
+    {
+      "address": "00c43ca0",
+      "body_end_inclusive": "00c43e9c",
+      "original_abi": "EAX body, EDX descriptor; RET",
+      "implementation": "dyn_body_storage_init_00c43ca0",
+      "proposed_name": "Dyn_Body_InitFromDescriptor",
+      "name_provisional": true,
+      "coverage": "complete normal-path native storage semantics; explicit allocation/global/vtable inputs; no native SEH ABI",
+      "unresolved_ranges": []
+    },
+    {
+      "address": "00c5c940",
+      "body_end_inclusive": "00c5cab8",
+      "original_abi": "ECX shape descriptor, EDX body; RET",
+      "implementation": "dyn_body_attach_convex_shape_00c5c940",
+      "proposed_name": "Dyn_Body_AttachShapeFromDescriptor",
+      "name_provisional": true,
+      "coverage": "partial function: exact type-4 allocation/construction/link and shared post-switch continuation",
+      "unresolved_ranges": [
+        "00C5C977-00C5CA1E cases 0/1/2",
+        "00C5CA3F-00C5CA68 case 5",
+        "invalid/no-shape cases rejected by API"
+      ]
+    },
+    {
+      "address": "00c57f50",
+      "body_end_inclusive": "00c57fe8",
+      "original_abi": "ECX body; stack shape, descriptor; EAX shape; RET8",
+      "implementation": "dyn_convex_shape_construct_00c57f50",
+      "proposed_name": "Dyn_ConvexMeshShape_Construct",
+      "name_provisional": true,
+      "coverage": "complete normal-path native storage semantics; explicit allocation/global/vtable inputs; no native SEH ABI",
+      "unresolved_ranges": []
+    },
+    {
+      "address": "00c55fc0",
+      "body_end_inclusive": "00c56441",
+      "original_abi": "ESI body; RET",
+      "implementation": "dyn_body_recompute_bounds_00c55fc0",
+      "proposed_name": "Dyn_Body_RecomputeLocalAABB",
+      "name_provisional": true,
+      "coverage": "complete normal-path native storage semantics; explicit allocation/global/vtable inputs; no native SEH ABI",
+      "unresolved_ranges": []
+    },
+    {
+      "address": "00c57c40",
+      "body_end_inclusive": "00c57f46",
+      "original_abi": "ECX shape; RET",
+      "implementation": "dyn_convex_shape_refresh_bounds_00c57c40",
+      "proposed_name": "Dyn_ConvexMeshShape_vslot0",
+      "name_provisional": true,
+      "coverage": "complete normal-path native storage semantics; explicit allocation/global/vtable inputs; no native SEH ABI",
+      "unresolved_ranges": []
+    },
+    {
+      "address": "00c50470",
+      "body_end_inclusive": "00c50731",
+      "original_abi": "ESI body; stack scene; RET4",
+      "implementation": "dyn_body_register_broadphase_00c50470",
+      "proposed_name": "DYN_Body_RegisterSAPBroadPhase_00C50470",
+      "name_provisional": true,
+      "coverage": "complete normal-path body bounds/flag/proxy stores for concrete SAPBroadPhaseManager2 slot 0",
+      "unresolved_ranges": []
+    },
+    {
+      "address": "00c54aa0",
+      "body_end_inclusive": "00c54d96",
+      "original_abi": "ECX manager; stack body, bounds, static-byte; EAX proxy; RET0Ch",
+      "implementation": "dyn_sap_create_proxy_00c54aa0",
+      "proposed_name": "Dyn_SAPBroadPhaseManager2_vslot0",
+      "name_provisional": true,
+      "coverage": "complete normal-path native storage semantics; explicit allocation/global/vtable inputs; no native SEH ABI",
+      "unresolved_ranges": []
+    },
+    {
+      "address": "00c4cda0",
+      "body_end_inclusive": "00c4ce5a",
+      "original_abi": "ECX body, DL static; stack proxy, bounds; EAX proxy; RET8",
+      "implementation": "dyn_sap_proxy_init_00c4cda0",
+      "proposed_name": "DYN_SAPProxy_Construct_00C4CDA0",
+      "name_provisional": true,
+      "coverage": "complete normal-path native storage semantics; explicit allocation/global/vtable inputs; no native SEH ABI",
+      "unresolved_ranges": []
+    },
+    {
+      "address": "00c36f10",
+      "body_end_inclusive": "00c3700e",
+      "original_abi": "stack manager; EAX manager; RET4",
+      "implementation": "dyn_sap_manager_construct_00c36f10",
+      "proposed_name": "DYN_SAPBroadPhaseManager2_Construct_00C36F10",
+      "name_provisional": true,
+      "coverage": "complete normal-path native storage semantics; explicit allocation/global/vtable inputs; no native SEH ABI",
+      "unresolved_ranges": []
+    },
+    {
+      "address": "00409170",
+      "body_end_inclusive": "0040926f",
+      "original_abi": "stack pool; EAX pool; RET4",
+      "implementation": "dyn_body_pool_construct_00409170",
+      "proposed_name": "DYN_BodyPool_Construct_00409170",
+      "name_provisional": true,
+      "coverage": "complete normal-path native storage semantics; explicit allocation/global/vtable inputs; no native SEH ABI",
+      "unresolved_ranges": []
+    },
+    {
+      "address": "00409450",
+      "body_end_inclusive": "0040954f",
+      "original_abi": "stack pool; EAX pool; RET4",
+      "implementation": "dyn_motion_pool_construct_00409450",
+      "proposed_name": "DYN_MotionPool_Construct_00409450",
+      "name_provisional": true,
+      "coverage": "complete normal-path native storage semantics; explicit allocation/global/vtable inputs; no native SEH ABI",
+      "unresolved_ranges": []
+    },
+    {
+      "address": "0040b4a0",
+      "body_end_inclusive": "0040b58d",
+      "original_abi": "ECX pool; EAX pool; RET",
+      "implementation": "dyn_endpoint_pool_construct_0040b4a0",
+      "proposed_name": "DYN_SAPEndpointPool_Construct_0040B4A0",
+      "name_provisional": true,
+      "coverage": "complete normal-path native storage semantics; explicit allocation/global/vtable inputs; no native SEH ABI",
+      "unresolved_ranges": []
+    },
+    {
+      "address": "0040ac90",
+      "body_end_inclusive": "0040ad7f",
+      "original_abi": "stack pool; EAX pool; RET4",
+      "implementation": "dyn_pair_pool_construct_0040ac90",
+      "proposed_name": "DYN_SAPPairPool_Construct_0040AC90",
+      "name_provisional": true,
+      "coverage": "complete normal-path native storage semantics; explicit allocation/global/vtable inputs; no native SEH ABI",
+      "unresolved_ranges": []
+    },
+    {
+      "address": "0040b750",
+      "body_end_inclusive": "0040b83f",
+      "original_abi": "stack pool; EAX pool; RET4",
+      "implementation": "dyn_proxy_pool_construct_0040b750",
+      "proposed_name": "DYN_SAPProxyPool_Construct_0040B750",
+      "name_provisional": true,
+      "coverage": "complete normal-path native storage semantics; explicit allocation/global/vtable inputs; no native SEH ABI",
+      "unresolved_ranges": []
+    },
+    {
+      "address": "00407c70",
+      "body_end_inclusive": "00407d60",
+      "original_abi": "global allocator/registry; EAX allocator; RET",
+      "implementation": "dyn_convex_pool_construct_00407c70",
+      "proposed_name": "Mit_PoolAllocator_532_128_Construct_00407C70",
+      "name_provisional": true,
+      "coverage": "complete normal-path native storage semantics; explicit allocation/global/vtable inputs; no native SEH ABI",
+      "unresolved_ranges": []
+    },
+    {
+      "address": "00407ed0",
+      "body_end_inclusive": "00408031",
+      "original_abi": "global allocator; EAX slot; RET",
+      "implementation": "dyn_convex_shape_allocate_00407ed0",
+      "proposed_name": "Mit_PoolAllocator_532_128_Allocate_00407ED0",
+      "name_provisional": true,
+      "coverage": "complete normal-path native storage semantics; explicit allocation/global/vtable inputs; no native SEH ABI",
+      "unresolved_ranges": []
+    },
+    {
+      "address": "004085f0",
+      "body_end_inclusive": "00408632",
+      "original_abi": "EAX page, EDI page index; EAX page; RET",
+      "implementation": "dyn_convex_pool_page_construct_004085f0",
+      "proposed_name": "Mit_PoolAllocator_532_128_PageConstruct_004085F0",
+      "name_provisional": true,
+      "coverage": "complete normal-path native storage semantics; explicit allocation/global/vtable inputs; no native SEH ABI",
+      "unresolved_ranges": []
+    },
+    {
+      "address": "00408040",
+      "body_end_inclusive": "004080b0",
+      "original_abi": "EAX slot; global allocator; RET",
+      "implementation": "dyn_convex_shape_free_00408040",
+      "proposed_name": "Mit_PoolAllocator_532_128_Free_00408040",
+      "name_provisional": true,
+      "coverage": "complete normal-path native storage semantics; explicit allocation/global/vtable inputs; no native SEH ABI",
+      "unresolved_ranges": []
+    },
+    {
+      "address": "00c41ad0",
+      "body_end_inclusive": "00c420db",
+      "original_abi": "native full constructor: stack world, descriptor; RET8; source is selected pool fragment",
+      "implementation": "dyn_world_body_pool_fragment_00c41ad0",
+      "proposed_name": "Dyn_World_Construct",
+      "name_provisional": true,
+      "coverage": "partial fragment: three pool constructors and final shared motion allocation/zeroing only",
+      "unresolved_ranges": [
+        "00C41AD0-00C41B4C world/settings prefix except pool argument preparation",
+        "00C41B75-00C41FA3 scene, worker tasks and settings; no owning world constructed",
+        "native constructor SEH prologue/epilogue"
+      ]
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00c5d5aa",
+      "function": "00c5d580",
+      "native": "00bf9f1a",
+      "listing": "0x00bf9f1a"
+    },
+    {
+      "address": "00c5d5ec",
+      "function": "00c5d580",
+      "native": "00bf55be",
+      "listing": "0x00bf55be"
+    },
+    {
+      "address": "00c5d61e",
+      "function": "00c5d580",
+      "native": "00bf6989",
+      "listing": "0x00bf6989"
+    },
+    {
+      "address": "00c5d69b",
+      "function": "00c5d580",
+      "native": "00bf9f1a",
+      "listing": "0x00bf9f1a"
+    },
+    {
+      "address": "00c5d6e8",
+      "function": "00c5d580",
+      "native": "00bf55be",
+      "listing": "0x00bf55be"
+    },
+    {
+      "address": "00c5d726",
+      "function": "00c5d580",
+      "native": "00bf6989",
+      "listing": "0x00bf6989"
+    },
+    {
+      "address": "00c5d7a9",
+      "function": "00c5d580",
+      "native": "00bf9f1a",
+      "listing": "0x00bf9f1a"
+    },
+    {
+      "address": "00c5d7fd",
+      "function": "00c5d580",
+      "native": "00bf55be",
+      "listing": "0x00bf55be"
+    },
+    {
+      "address": "00c5d83b",
+      "function": "00c5d580",
+      "native": "00bf6989",
+      "listing": "0x00bf6989"
+    },
+    {
+      "address": "00c5d8b9",
+      "function": "00c5d580",
+      "native": "00c43ca0",
+      "listing": "0x00c43ca0"
+    },
+    {
+      "address": "00c5d8d4",
+      "function": "00c5d580",
+      "native": "00c5c940",
+      "listing": "0x00c5c940"
+    },
+    {
+      "address": "00c5c97d",
+      "function": "00c5c940",
+      "native": "00bf681b",
+      "listing": "0x00bf681b"
+    },
+    {
+      "address": "00c5c99d",
+      "function": "00c5c940",
+      "native": "00c57b90",
+      "listing": "0x00c57b90"
+    },
+    {
+      "address": "00c5c9ac",
+      "function": "00c5c940",
+      "native": "00bf681b",
+      "listing": "0x00bf681b"
+    },
+    {
+      "address": "00c5c9c8",
+      "function": "00c5c940",
+      "native": "00c585b0",
+      "listing": "0x00c585b0"
+    },
+    {
+      "address": "00c5c9ff",
+      "function": "00c5c940",
+      "native": "00bf681b",
+      "listing": "0x00bf681b"
+    },
+    {
+      "address": "00c5ca19",
+      "function": "00c5c940",
+      "native": "00c582e0",
+      "listing": "0x00c582e0"
+    },
+    {
+      "address": "00c5ca20",
+      "function": "00c5c940",
+      "native": "00407ed0",
+      "listing": "0x00407ed0"
+    },
+    {
+      "address": "00c5ca39",
+      "function": "00c5c940",
+      "native": "00c57f50",
+      "listing": "0x00c57f50"
+    },
+    {
+      "address": "00c5ca45",
+      "function": "00c5c940",
+      "native": "00bf681b",
+      "listing": "0x00bf681b"
+    },
+    {
+      "address": "00c5ca61",
+      "function": "00c5c940",
+      "native": "00c58840",
+      "listing": "0x00c58840"
+    },
+    {
+      "address": "00c5ca8d",
+      "function": "00c5c940",
+      "native": "00c55fc0",
+      "listing": "0x00c55fc0"
+    },
+    {
+      "address": "00c5ca9f",
+      "function": "00c5c940",
+      "native": "00c50470",
+      "listing": "0x00c50470"
+    },
+    {
+      "address": "00c57fce",
+      "function": "00c57f50",
+      "native": "00c57c40",
+      "listing": "0x00c57c40"
+    },
+    {
+      "address": "00c562c7",
+      "function": "00c55fc0",
+      "native": "00401170",
+      "listing": "0x00401170"
+    },
+    {
+      "address": "00c562d8",
+      "function": "00c55fc0",
+      "native": "00401170",
+      "listing": "0x00401170"
+    },
+    {
+      "address": "00c562e9",
+      "function": "00c55fc0",
+      "native": "00401170",
+      "listing": "0x00401170"
+    },
+    {
+      "address": "00c562f9",
+      "function": "00c55fc0",
+      "native": "00401170",
+      "listing": "0x00401170"
+    },
+    {
+      "address": "00c56309",
+      "function": "00c55fc0",
+      "native": "00401170",
+      "listing": "0x00401170"
+    },
+    {
+      "address": "00c56319",
+      "function": "00c55fc0",
+      "native": "00401170",
+      "listing": "0x00401170"
+    },
+    {
+      "address": "00c56329",
+      "function": "00c55fc0",
+      "native": "00401170",
+      "listing": "0x00401170"
+    },
+    {
+      "address": "00c56339",
+      "function": "00c55fc0",
+      "native": "00401170",
+      "listing": "0x00401170"
+    },
+    {
+      "address": "00c56349",
+      "function": "00c55fc0",
+      "native": "00401170",
+      "listing": "0x00401170"
+    },
+    {
+      "address": "00c5643a",
+      "function": "00c55fc0",
+      "native": "00D7A160+vtable8",
+      "listing": "EDX"
+    },
+    {
+      "address": "00c57dd5",
+      "function": "00c57c40",
+      "native": "00401170",
+      "listing": "0x00401170"
+    },
+    {
+      "address": "00c57de6",
+      "function": "00c57c40",
+      "native": "00401170",
+      "listing": "0x00401170"
+    },
+    {
+      "address": "00c57df7",
+      "function": "00c57c40",
+      "native": "00401170",
+      "listing": "0x00401170"
+    },
+    {
+      "address": "00c57e07",
+      "function": "00c57c40",
+      "native": "00401170",
+      "listing": "0x00401170"
+    },
+    {
+      "address": "00c57e17",
+      "function": "00c57c40",
+      "native": "00401170",
+      "listing": "0x00401170"
+    },
+    {
+      "address": "00c57e27",
+      "function": "00c57c40",
+      "native": "00401170",
+      "listing": "0x00401170"
+    },
+    {
+      "address": "00c57e37",
+      "function": "00c57c40",
+      "native": "00401170",
+      "listing": "0x00401170"
+    },
+    {
+      "address": "00c57e47",
+      "function": "00c57c40",
+      "native": "00401170",
+      "listing": "0x00401170"
+    },
+    {
+      "address": "00c57e57",
+      "function": "00c57c40",
+      "native": "00401170",
+      "listing": "0x00401170"
+    },
+    {
+      "address": "00c57f3d",
+      "function": "00c57c40",
+      "native": "00c55fc0",
+      "listing": "0x00c55fc0"
+    },
+    {
+      "address": "00c5059e",
+      "function": "00c50470",
+      "native": "00401170",
+      "listing": "0x00401170"
+    },
+    {
+      "address": "00c505af",
+      "function": "00c50470",
+      "native": "00401170",
+      "listing": "0x00401170"
+    },
+    {
+      "address": "00c505c0",
+      "function": "00c50470",
+      "native": "00401170",
+      "listing": "0x00401170"
+    },
+    {
+      "address": "00c505d0",
+      "function": "00c50470",
+      "native": "00401170",
+      "listing": "0x00401170"
+    },
+    {
+      "address": "00c505e0",
+      "function": "00c50470",
+      "native": "00401170",
+      "listing": "0x00401170"
+    },
+    {
+      "address": "00c505f0",
+      "function": "00c50470",
+      "native": "00401170",
+      "listing": "0x00401170"
+    },
+    {
+      "address": "00c50600",
+      "function": "00c50470",
+      "native": "00401170",
+      "listing": "0x00401170"
+    },
+    {
+      "address": "00c50610",
+      "function": "00c50470",
+      "native": "00401170",
+      "listing": "0x00401170"
+    },
+    {
+      "address": "00c50620",
+      "function": "00c50470",
+      "native": "00401170",
+      "listing": "0x00401170"
+    },
+    {
+      "address": "00c50727",
+      "function": "00c50470",
+      "native": "00D7A160+vtable0",
+      "listing": "EDX"
+    },
+    {
+      "address": "00c54ae0",
+      "function": "00c54aa0",
+      "native": "00bf9f1a",
+      "listing": "0x00bf9f1a"
+    },
+    {
+      "address": "00c54b27",
+      "function": "00c54aa0",
+      "native": "00bf55be",
+      "listing": "0x00bf55be"
+    },
+    {
+      "address": "00c54b67",
+      "function": "00c54aa0",
+      "native": "00bf6989",
+      "listing": "0x00bf6989"
+    },
+    {
+      "address": "00c54bdd",
+      "function": "00c54aa0",
+      "native": "00bf9f1a",
+      "listing": "0x00bf9f1a"
+    },
+    {
+      "address": "00c54c25",
+      "function": "00c54aa0",
+      "native": "00bf55be",
+      "listing": "0x00bf55be"
+    },
+    {
+      "address": "00c54c67",
+      "function": "00c54aa0",
+      "native": "00bf6989",
+      "listing": "0x00bf6989"
+    },
+    {
+      "address": "00c54cea",
+      "function": "00c54aa0",
+      "native": "00c4cda0",
+      "listing": "0x00c4cda0"
+    },
+    {
+      "address": "00c54d14",
+      "function": "00c54aa0",
+      "native": "00bf55be",
+      "listing": "0x00bf55be"
+    },
+    {
+      "address": "00c54d57",
+      "function": "00c54aa0",
+      "native": "00bf6989",
+      "listing": "0x00bf6989"
+    },
+    {
+      "address": "00c4ce05",
+      "function": "00c4cda0",
+      "native": "00bf55be",
+      "listing": "0x00bf55be"
+    },
+    {
+      "address": "00c4ce37",
+      "function": "00c4cda0",
+      "native": "00bf6989",
+      "listing": "0x00bf6989"
+    },
+    {
+      "address": "00c36f4a",
+      "function": "00c36f10",
+      "native": "00bf7cd1",
+      "listing": "0x00bf7cd1"
+    },
+    {
+      "address": "00c36f5b",
+      "function": "00c36f10",
+      "native": "0040ac90",
+      "listing": "0x0040ac90"
+    },
+    {
+      "address": "00c36f6c",
+      "function": "00c36f10",
+      "native": "0040b750",
+      "listing": "0x0040b750"
+    },
+    {
+      "address": "00c36f7d",
+      "function": "00c36f10",
+      "native": "0040b750",
+      "listing": "0x0040b750"
+    },
+    {
+      "address": "00c36fad",
+      "function": "00c36f10",
+      "native": "00bf55be",
+      "listing": "0x00bf55be"
+    },
+    {
+      "address": "00c36feb",
+      "function": "00c36f10",
+      "native": "00bf6989",
+      "listing": "0x00bf6989"
+    },
+    {
+      "address": "004091ca",
+      "function": "00409170",
+      "native": "00bf9f1a",
+      "listing": "0x00bf9f1a"
+    },
+    {
+      "address": "0040920c",
+      "function": "00409170",
+      "native": "00bf55be",
+      "listing": "0x00bf55be"
+    },
+    {
+      "address": "0040923d",
+      "function": "00409170",
+      "native": "00bf6989",
+      "listing": "0x00bf6989"
+    },
+    {
+      "address": "004094aa",
+      "function": "00409450",
+      "native": "00bf9f1a",
+      "listing": "0x00bf9f1a"
+    },
+    {
+      "address": "004094ec",
+      "function": "00409450",
+      "native": "00bf55be",
+      "listing": "0x00bf55be"
+    },
+    {
+      "address": "0040951d",
+      "function": "00409450",
+      "native": "00bf6989",
+      "listing": "0x00bf6989"
+    },
+    {
+      "address": "0040b4ea",
+      "function": "0040b4a0",
+      "native": "00bf9f1a",
+      "listing": "0x00bf9f1a"
+    },
+    {
+      "address": "0040b52b",
+      "function": "0040b4a0",
+      "native": "00bf55be",
+      "listing": "0x00bf55be"
+    },
+    {
+      "address": "0040b55d",
+      "function": "0040b4a0",
+      "native": "00bf6989",
+      "listing": "0x00bf6989"
+    },
+    {
+      "address": "0040acd8",
+      "function": "0040ac90",
+      "native": "00bf9f1a",
+      "listing": "0x00bf9f1a"
+    },
+    {
+      "address": "0040ad1a",
+      "function": "0040ac90",
+      "native": "00bf55be",
+      "listing": "0x00bf55be"
+    },
+    {
+      "address": "0040ad4d",
+      "function": "0040ac90",
+      "native": "00bf6989",
+      "listing": "0x00bf6989"
+    },
+    {
+      "address": "0040b7a1",
+      "function": "0040b750",
+      "native": "00bf9f1a",
+      "listing": "0x00bf9f1a"
+    },
+    {
+      "address": "0040b7dd",
+      "function": "0040b750",
+      "native": "00bf55be",
+      "listing": "0x00bf55be"
+    },
+    {
+      "address": "0040b80d",
+      "function": "0040b750",
+      "native": "00bf6989",
+      "listing": "0x00bf6989"
+    },
+    {
+      "address": "00407cca",
+      "function": "00407c70",
+      "native": "dword ptr [0x00ce220c] [indirect]",
+      "listing": "dword ptr [0x00ce220c]"
+    },
+    {
+      "address": "00407d00",
+      "function": "00407c70",
+      "native": "00bf55be",
+      "listing": "0x00bf55be"
+    },
+    {
+      "address": "00407d3d",
+      "function": "00407c70",
+      "native": "00bf6989",
+      "listing": "0x00bf6989"
+    },
+    {
+      "address": "00407ed7",
+      "function": "00407ed0",
+      "native": "dword ptr [0x00ce2218] [indirect]",
+      "listing": "dword ptr [0x00ce2218]"
+    },
+    {
+      "address": "00407f00",
+      "function": "00407ed0",
+      "native": "00bf681b",
+      "listing": "0x00bf681b"
+    },
+    {
+      "address": "00407f12",
+      "function": "00407ed0",
+      "native": "004085f0",
+      "listing": "0x004085f0"
+    },
+    {
+      "address": "00407f3c",
+      "function": "00407ed0",
+      "native": "00bf55be",
+      "listing": "0x00bf55be"
+    },
+    {
+      "address": "00407f79",
+      "function": "00407ed0",
+      "native": "00bf6989",
+      "listing": "0x00bf6989"
+    },
+    {
+      "address": "00408027",
+      "function": "00407ed0",
+      "native": "dword ptr [0x00ce2210] [indirect]",
+      "listing": "dword ptr [0x00ce2210]"
+    },
+    {
+      "address": "00408049",
+      "function": "00408040",
+      "native": "dword ptr [0x00ce2218] [indirect]",
+      "listing": "dword ptr [0x00ce2218]"
+    },
+    {
+      "address": "004080a8",
+      "function": "00408040",
+      "native": "dword ptr [0x00ce2210] [indirect]",
+      "listing": "dword ptr [0x00ce2210]"
+    },
+    {
+      "address": "00c41b4d",
+      "function": "00c41ad0",
+      "native": "00409170",
+      "listing": "0x00409170"
+    },
+    {
+      "address": "00c41b5f",
+      "function": "00c41ad0",
+      "native": "00409170",
+      "listing": "0x00409170"
+    },
+    {
+      "address": "00c41b70",
+      "function": "00c41ad0",
+      "native": "00409450",
+      "listing": "0x00409450"
+    },
+    {
+      "address": "00c41bf2",
+      "function": "00c41ad0",
+      "native": "00bf681b",
+      "listing": "0x00bf681b",
+      "scope": "outside constructor fragment, dependency only"
+    },
+    {
+      "address": "00c41c09",
+      "function": "00c41ad0",
+      "native": "00c38070",
+      "listing": "0x00c38070",
+      "scope": "outside constructor fragment, dependency only"
+    },
+    {
+      "address": "00c41c5d",
+      "function": "00c41ad0",
+      "native": "00bf55be",
+      "listing": "0x00bf55be",
+      "scope": "outside constructor fragment, dependency only"
+    },
+    {
+      "address": "00c41cd8",
+      "function": "00c41ad0",
+      "native": "00bf6989",
+      "listing": "0x00bf6989",
+      "scope": "outside constructor fragment, dependency only"
+    },
+    {
+      "address": "00c41d40",
+      "function": "00c41ad0",
+      "native": "00bf55be",
+      "listing": "0x00bf55be",
+      "scope": "outside constructor fragment, dependency only"
+    },
+    {
+      "address": "00c41d7e",
+      "function": "00c41ad0",
+      "native": "00bf6989",
+      "listing": "0x00bf6989",
+      "scope": "outside constructor fragment, dependency only"
+    },
+    {
+      "address": "00c41df1",
+      "function": "00c41ad0",
+      "native": "00bf55be",
+      "listing": "0x00bf55be",
+      "scope": "outside constructor fragment, dependency only"
+    },
+    {
+      "address": "00c41e6b",
+      "function": "00c41ad0",
+      "native": "00bf6989",
+      "listing": "0x00bf6989",
+      "scope": "outside constructor fragment, dependency only"
+    },
+    {
+      "address": "00c41ed2",
+      "function": "00c41ad0",
+      "native": "00bf55be",
+      "listing": "0x00bf55be",
+      "scope": "outside constructor fragment, dependency only"
+    },
+    {
+      "address": "00c41f10",
+      "function": "00c41ad0",
+      "native": "00bf6989",
+      "listing": "0x00bf6989",
+      "scope": "outside constructor fragment, dependency only"
+    },
+    {
+      "address": "00c41fb6",
+      "function": "00c41ad0",
+      "native": "00bf9f1a",
+      "listing": "0x00bf9f1a",
+      "scope": "outside constructor fragment, dependency only"
+    },
+    {
+      "address": "00c42008",
+      "function": "00c41ad0",
+      "native": "00bf55be",
+      "listing": "0x00bf55be",
+      "scope": "outside constructor fragment, dependency only"
+    },
+    {
+      "address": "00c42048",
+      "function": "00c41ad0",
+      "native": "00bf6989",
+      "listing": "0x00bf6989",
+      "scope": "outside constructor fragment, dependency only"
+    },
+    {
+      "address": "00c420bd",
+      "function": "00c41ad0",
+      "native": "00bf79f0",
+      "listing": "0x00bf79f0"
+    }
+  ],
+  "no_ghidra_function": [],
+  "flow_repairs": {
+    "performed_by": "root under write lock",
+    "initial_allocator_gaps": 3,
+    "dependency_gaps": 12,
+    "world_constructor_gaps": 5,
+    "world_alignment_gaps_left_unchanged": 3,
+    "remaining_required_function_call_gaps": 0,
+    "reports": [
+      "reports/dyn_body_creation_flow_repair.json",
+      "reports/dyn_body_creation_dependency_flow_repair.json",
+      "reports/dyn_body_world_flow_repair.json"
+    ],
+    "integrator_world_fragment_report": "reports/dyn_body_world_flow_repair.json"
+  },
+  "limits": [
+    "Native world/scene collision dispatch, thread tasks, SAP endpoint insertion and body destruction are not implemented here.",
+    "CreateBody and AttachShape support only type 4; all other descriptor types are rejected before mutation.",
+    "Native complete vtables are borrowed, including SAP slot 2 for already-inserted proxies.",
+    "Finite representable inputs and successful allocations; SEH/OOM ABI and asynchronous exception behavior are outside this C++ interface.",
+    "Native motion/body bytes are exposed as storage, reusing existing semantic descriptors and hull data types."
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 Release MSVC Win32; passed",
+    "existing_ctests": {
+      "passed": 2,
+      "failed": 0
+    },
+    "native_spans_verified": [
+      {
+        "address": "00C5D580",
+        "length": 884,
+        "matches": true,
+        "sha256": "b846b480b4bd4497d700977c81aa58adc6b83f53113a79e2e0e70db3ede23ade"
+      },
+      {
+        "address": "00C43CA0",
+        "length": 509,
+        "matches": true,
+        "sha256": "40b79cdcaa9e9d5a969f3f482e607e4aeb94f6237cbc49bd843adbfe13832779"
+      },
+      {
+        "address": "00C5C940",
+        "length": 377,
+        "matches": true,
+        "sha256": "b8f55d6f52c6f9a57db203c10503c20289f605b7b89d3e76f7403aecaff9d626"
+      },
+      {
+        "address": "00C57F50",
+        "length": 153,
+        "matches": true,
+        "sha256": "6462cbf3ff373b68fcef907c5c65701902b4e66c76887a1e851984bc741ab5d9"
+      },
+      {
+        "address": "00C55FC0",
+        "length": 1154,
+        "matches": true,
+        "sha256": "657293e3024ea4d03db154d3dc4b316b88330443bc587b2ee1177d869f69e803"
+      },
+      {
+        "address": "00C57C40",
+        "length": 775,
+        "matches": true,
+        "sha256": "240a9253b8a63ee73ddea289e2b9042015d2cd942b444827119278b8216b113b"
+      },
+      {
+        "address": "00C50470",
+        "length": 706,
+        "matches": true,
+        "sha256": "f8fe139b740e518b7ee0b9fbe9c72804de65995ea8cedeedd033474e2b6d3149"
+      },
+      {
+        "address": "00C54AA0",
+        "length": 759,
+        "matches": true,
+        "sha256": "0ebb0dc47be2d0a3270af595a67cc256c5834b7a95a7e404b0632c269356390f"
+      },
+      {
+        "address": "00C4CDA0",
+        "length": 187,
+        "matches": true,
+        "sha256": "f081077d827df57f19137424c198c5d321bd896f3c3e8118b2a590e9f7a71072"
+      },
+      {
+        "address": "00C36F10",
+        "length": 255,
+        "matches": true,
+        "sha256": "77d65cb81c9eb3fd4c8a799f8c64aeaa912fb33c377b3be2aa8400a58d32dba9"
+      },
+      {
+        "address": "00409170",
+        "length": 256,
+        "matches": true,
+        "sha256": "1d49d363cefa1ed1f79d03b101e26e4967d1a13483163dcbca681476e8380dc6"
+      },
+      {
+        "address": "00409450",
+        "length": 256,
+        "matches": true,
+        "sha256": "55cb527a965f2ec73dbb4fcc8a710418c029864e5062818f498d9f222a05a48b"
+      },
+      {
+        "address": "0040B4A0",
+        "length": 238,
+        "matches": true,
+        "sha256": "009b5cd9a5ec1d18b9cfb2b53a4238b09c51e34bcac5069cfecaf2116a4eb9a5"
+      },
+      {
+        "address": "0040AC90",
+        "length": 240,
+        "matches": true,
+        "sha256": "dc32fa6f8ed5104c538f911cc821e54fb731b77cf779ded9cc1ee1d3329a4960"
+      },
+      {
+        "address": "0040B750",
+        "length": 240,
+        "matches": true,
+        "sha256": "dd28aa81ac81bb7ced0bfc6bef69afe4fc84158e15e1382f91a5670e409a1bcd"
+      },
+      {
+        "address": "00407C70",
+        "length": 241,
+        "matches": true,
+        "sha256": "41f1724bcfbc211f14ce4c67dcf3891d4224c0b538e8ef3e467f656bd10c477b"
+      },
+      {
+        "address": "00407ED0",
+        "length": 354,
+        "matches": true,
+        "sha256": "041763a11ce39b34b53f343b6514ff6ceba44e99ca4c4fdf770535d7913d4d29"
+      },
+      {
+        "address": "004085F0",
+        "length": 67,
+        "matches": true,
+        "sha256": "3c0f9ee3c2c5c9e6f193ec70c01e2fd31c32192d1fd36c37ecb995024d0646af"
+      },
+      {
+        "address": "00408040",
+        "length": 113,
+        "matches": true,
+        "sha256": "04a52ea211a3f19bd7687377eb602fd665c12cfd9674a15cf5b79e5ba5da56ca"
+      },
+      {
+        "address": "00C41AD0",
+        "length": 1548,
+        "matches": true,
+        "sha256": "91c473adbd0f168c4b0158d33b2dd7d8a41e632ec3a6b3e83134bb48f5b0d5f9"
+      }
+    ],
+    "native_probe": {
+      "source": "local/dyn_body_probe.cpp",
+      "linked_library": "build/win32/Release/bsp_core.lib",
+      "body_count": 4100,
+      "static_bodies": 2050,
+      "dynamic_bodies": 2050,
+      "single_shape_bodies": 706,
+      "attached_shapes": 7494,
+      "sap_proxies": 4100,
+      "installed_hull_inputs": 706,
+      "slot_reuse_checks": 130,
+      "allocations_per_arena": 4200,
+      "live_owned_buffers_compared": 4190,
+      "canonical_records_sha256": "9a44aca7d386b637f92ec0e318b979fcd2c3cd3be3bf015c944ac64474abfd72",
+      "comparison": "All bytes, including poison in unspecified ranges; only established pointer fields canonicalized by allocation identity and byte offset.",
+      "comparison_exclusions": [
+        "38h convex allocator header: registry links, CRITICAL_SECTION, lock depth and top-level vector/header words were not directly byte-compared.",
+        "All tested proxies had inserted byte +38=0; actual endpoint update execution was not exercised."
+      ],
+      "native_setup": "Actual original-byte pool constructors and SAP manager constructor; hand transcription of shared-motion tail stores. Original 00C41AD0 tail not executed.",
+      "crt_bindings": "Host allocation/free/memory and constructor iteration; actual Dyn semantic calls and pending SAP slot 2 are native.",
+      "inserted_proxy_update_validated": false,
+      "body_world_destructor_validated": false,
+      "fixture_teardown": "Quiescent arenas discarded and all tracked allocations freed; not native world/body destruction.",
+      "original_byte_image": "local/dyn_hull_native_image.bin plus explicit convex/SAP vtable and 00C5CABC switch-table relocation",
+      "source_scene_sha256": "9235d9a6364b08cbd5cf3c6735ba9828aba5a6e7b2569300dc2eecf6d8dac17b",
+      "extrusion_json_sha256": "5dc602ba766b1c5d866fe4f2367fd0e0e488910964f712553d81c9fd97be212e"
+    },
+    "native_call_checker": {
+      "direct_checked": 107,
+      "failed": 0,
+      "indirect_documented": 7
+    }
+  },
+  "integrator_verification": {
+    "build": "MSVC Win32 Release and existing CTest2/2 passed",
+    "build_log": "local/orch6_dyn_body_e_build.log",
+    "native_probe": {
+      "log": "local/orch6_dyn_body_probe_run.log",
+      "bodies": 4100,
+      "attached_shapes": 7494,
+      "sap_proxies": 4100,
+      "installed_hulls": 706,
+      "slot_reuse_checks": 130,
+      "live_owned_buffers_compared": 4190,
+      "tracked_allocations_after_fixture_disposal": 0,
+      "matching_record_sha256": "7c0261fba7730951c24c70d61fc6da85fda471affb44e8b1131b371f781de967"
+    },
+    "independent_review": "unit-extents-e worker accepted valid-allocation/type4 scope; ownership and lifetime limits reviewed; no code blockers.",
+    "cross_run_hash_audit": {
+      "worker_record_sha256": "9a44aca7d386b637f92ec0e318b979fcd2c3cd3be3bf015c944ac64474abfd72",
+      "integrator_record_sha256": "7c0261fba7730951c24c70d61fc6da85fda471affb44e8b1131b371f781de967",
+      "differing_words": 14988,
+      "distinct_borrowed_hulls": 706,
+      "cause": "Every difference is a borrowed hull-data pointer at shape+210, serialized once per attached shape and once in its owning pool slot. Null-arena hull allocations bypass current creation-arena pointer normalization. These pointers match between native and rebuilt within a run but vary across processes.",
+      "other_bytes_differ": false,
+      "validated_hull_id_normalized_sha256": "a58e17a99c043f1d4b8a203bd45442c38fe9cedc605b606f2df75cf4f45d1491",
+      "scope": "Original-byte body creation comparisons remain valid. Raw record digest is run-specific; normalization audit is separate from C++ probe execution."
+    },
+    "call_check": {
+      "direct_checked": 107,
+      "failed": 0,
+      "indirect_documented": 7,
+      "log": "local/orch6_dyn_body_calls.log"
+    },
+    "ghidra": {
+      "prior_values": "local/ghidra-annotations-20260912T213900Z.json",
+      "existing_comments_preserved": true,
+      "project_saved": true,
+      "exports_refreshed": true,
+      "annotation_log": "local/orch6_worker_annotations_e.log",
+      "export_log": "local/orch6_worker_exports_e.log"
+    }
+  }
+}

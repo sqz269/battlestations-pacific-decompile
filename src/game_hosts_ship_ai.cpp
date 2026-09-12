@@ -50,15 +50,47 @@
 #include "bsp/unit_rudder.hpp"
 #include "bsp/unit_state_message.hpp"
 #include "bsp/vector_helpers.hpp"
+#include "bsp/vehicle_class.hpp"
 #include "bsp/weapon_director.hpp"
 
 namespace bsp::game {
 namespace {
 
-class HullGeometryUnitAccess final : public bsp::ShipAiHullUnitAccess {
+bool has_ship_navigation_class(int kind) noexcept {
+    // Actual VehicleClass.Type leaf kinds. The ship-family virtual+210
+    // reaches00810DD0/009F3F20; other entity families own different brains.
+    switch (static_cast<bsp::VehicleClassKind>(kind)) {
+    case bsp::VehicleClassKind::Destroyer:
+    case bsp::VehicleClassKind::Submarine:
+    case bsp::VehicleClassKind::MotherShip:
+    case bsp::VehicleClassKind::Cruiser:
+    case bsp::VehicleClassKind::Cargo:
+    case bsp::VehicleClassKind::LandingShip:
+    case bsp::VehicleClassKind::BattleShip:
+    case bsp::VehicleClassKind::TorpedoBoat:
+        return true;
+    default:
+        return false;
+    }
+}
+
+class HullGeometryUnitAccess final : public bsp::ShipAiHullPreStepAccess {
 public:
-    HullGeometryUnitAccess(GameUnitsHost& units, std::size_t index)
-        : units_(units), index_(index) {}
+    HullGeometryUnitAccess(GameUnitsHost& units, std::size_t index,
+        const std::uint32_t& class_reference)
+        : units_(units), index_(index), class_reference_(class_reference) {}
+
+    std::uint32_t class_reference_0570() override { return class_reference_; }
+    float unit_reference_speed_0080fc30() override {
+        return units_.throttle_ceiling_inputs(index_).reference_speed;
+    }
+    float unit_turn_circle_00811a30(float fraction) override {
+        // The represented modifier channel5 is empty, so its scale is1.
+        return units_.unit_class_turn_circle_radius_0082e960(index_, fraction);
+    }
+    float unit_full_beam_09cc() override {
+        return units_.unit_half_width_09cc(index_);
+    }
 
     const bsp::CameraMatrix& unit_world_pose_3fc() override {
         if (!units_.unit_pose_valid_00c8(index_)) {
@@ -89,6 +121,7 @@ public:
 private:
     GameUnitsHost& units_;
     std::size_t index_;
+    const std::uint32_t& class_reference_;
     bsp::CameraMatrix world_{};
 };
 
@@ -176,6 +209,7 @@ struct GameShipAiHost::Impl {
     bsp::ShipAiPathSearchTurnRamp path_turn_ramp{};
     bool path_turn_ramp_loaded{};
     unsigned long long hull_geometry_updates{};
+    std::int32_t session_mode{};
 
     // One controller per created unit. `ai` in docs/SHIP_AI_STATES.md is the
     // whole of this record: the timers are ai+0B14h / ai+0B18h, the block is
@@ -281,6 +315,8 @@ struct GameShipAiHost::Impl {
         bsp::ShipAiNavBlockFields nav_block{};
         bool nav_block_built{false};
         bsp::ShipAiHullGeometry hull_geometry{};
+        std::uint32_t class_reference_0570{};
+        bool class_depth_loaded{false};
         // Milestone 2r: the blk half 009EF910 owns - the refresh timer +374h,
         // the clearance +37Ch, the outcome +370h and the hold +354h. Packet
         // cc_ai_clearance_profile. 009F4D87 calls it from inside the publish,
@@ -347,8 +383,8 @@ struct GameShipAiHost::Impl {
     // across the call. Defined below the host bindings it builds.
     void run_navigation_goal_009de050(Controller& ctl, GameShipAiRow& row, std::size_t index,
         float goal_x, float goal_z, bool keep_mode, bool final_leg);
-    void refresh_hull_geometry(Controller& ctl, std::size_t index,
-        const bsp::ShipAiNavBlockFields& fields);
+    void run_hull_pre_step(Controller& ctl, std::size_t index,
+        bsp::ShipAiNavBlockFields& fields, std::uint32_t raw_argument);
     void done(const char* method, std::uint32_t address) {
         char text[16];
         std::snprintf(text, sizeof(text), "%08lx", static_cast<unsigned long>(address));
@@ -2956,11 +2992,9 @@ public:
         owner_.done("ShipAi::sync_state_to_command", 0x009f3dd0u);
         return changed;
     }
-    void pre_step_009e0270(bool) override {
-        owner_.refresh_hull_geometry(ctl_, index_, ctl_.nav_block);
-        // The class+570 depth input and the remaining pre-step stores still
-        // need their runtime producers. The geometry call is now concrete.
-        owner_.record("ShipAi::pre_step", 0x009e0270u);
+    void pre_step_009e0270(bool changed) override {
+        owner_.run_hull_pre_step(ctl_, index_, ctl_.nav_block,
+            static_cast<std::uint32_t>(changed));
     }
     void replan_prepare_009f1420(float elapsed) override {
         // 009F516C, the brain pre-pass, once per AI sub-tick with the
@@ -3725,13 +3759,25 @@ void ControllerUpdateBinding::step_auto_target(float frame_delta) {
     }
 }
 
-void GameShipAiHost::Impl::refresh_hull_geometry(Controller& ctl, std::size_t index,
-    const bsp::ShipAiNavBlockFields& fields) {
-    HullGeometryUnitAccess access(units, index);
-    bsp::ship_ai_hull_geometry_009de2f0(ctl.hull_geometry, fields.hull_scale_3e4,
-        fields.shoulder_offset_1b8, access, application_camera_axes_crt());
+void GameShipAiHost::Impl::run_hull_pre_step(Controller& ctl, std::size_t index,
+    bsp::ShipAiNavBlockFields& fields, std::uint32_t raw_argument) {
+    if (!ctl.class_depth_loaded)
+        throw std::logic_error("ship pre-step requires actual loaded class depth");
+    HullGeometryUnitAccess access(units, index, ctl.class_reference_0570);
+    auto& profile = ctl.throttle_profile.profile;
+    bsp::ShipAiHullPreStepView view{fields.class_reference_168,
+        ctl.obstacle.reference_speed_3c4, ctl.hull_geometry,
+        fields.hull_scale_3e4, fields.shoulder_offset_1b8, ctl.obstacle.sector,
+        fields.flag_3e8, fields.flag_3e9, fields.flag_3ea,
+        profile.bin, profile.bypass_41};
+    bsp::ship_ai_hull_pre_step_009e0270(view, access, raw_argument,
+        application_camera_axes_crt());
+    // Existing semantic consumer projection; the persistent profile above
+    // remains the producer-owned storage also used by009E04E0.
+    ctl.obstacle.profile = profile;
     ++hull_geometry_updates;
     done("ShipAi::hull_geometry_009de2f0", 0x009de2f0u);
+    done("ShipAi::pre_step", 0x009e0270u);
 }
 
 void GameShipAiHost::Impl::run_navigation_goal_009de050(Controller& ctl, GameShipAiRow& row,
@@ -3830,7 +3876,7 @@ void GameShipAiHost::Impl::drive_order_ring_009f3f80(std::size_t index, Controll
     frame.heading = heading;
     frame.heading_error = error;
     frame.unit_half_width_9cc = units.unit_half_width_09cc(index);
-    record("ShipAiObstacle::unit_half_width_09cc", 0x009f4174u);
+    done("ShipAiObstacle::unit_half_width_09cc", 0x009f4174u);
     bool settings_loaded = false;
     const bsp::ShipAiAutoThrustSettings& settings = units.auto_thrust_settings(settings_loaded);
     if (settings_loaded) {
@@ -3838,19 +3884,14 @@ void GameShipAiHost::Impl::drive_order_ring_009f3f80(std::size_t index, Controll
     } else {
         record("ShipAiObstacle::auto_thrust_block_00424c40", 0x00424c40u);
     }
-    const bsp::ShipAiThrottleCeilingInputs ceiling = units.throttle_ceiling_inputs(index);
+    bsp::ShipAiThrottleCeilingInputs ceiling = units.throttle_ceiling_inputs(index);
+    //009EC9AB consumes the cached block field, including009E0270's floor.
+    ceiling.reference_speed = ctl.obstacle.reference_speed_3c4;
     done("ShipAiObstacle::throttle_ceiling_inputs", 0x009ec97bu);
-    // blk+3C4h, the cached reference speed 009EC9AB divides the cruise cap by
-    // and 009F478B scales the neighbour closing test with.
-    ctl.obstacle.reference_speed_3c4 = ceiling.reference_speed;
-    ctl.obstacle.position_x = 0.0f;
-    ctl.obstacle.position_z = 0.0f;
-    {
-        float x = 0.0f, y = 0.0f, z = 0.0f;
-        units.unit_position_00fc(index, x, y, z);
-        ctl.obstacle.position_x = x;
-        ctl.obstacle.position_z = z;
-    }
+    //009E0270 already wrote+3C4h with its exact floor. Keep that value for
+    //009EC9AB/009F478B instead of replacing it with the raw reference speed.
+    ctl.obstacle.position_x = ctl.hull_geometry.position_184[0];
+    ctl.obstacle.position_z = ctl.hull_geometry.position_184[1];
     // blk+37Ch, the clearance the danger ramp divides by unit+9CCh. Its only
     // writer is 009EF910, which 009F4D10 called one chain slot earlier and
     // which milestone 2r runs, so the field carries what that routine left.
@@ -3971,12 +4012,13 @@ public:
     }
     void build_sector_shapes_009e0270(bsp::ShipAiNavBlockFields& fields,
                                       std::uint32_t raw_argument) override {
-        // Geometry consumes the constructor's local output before it is
-        // assigned to Controller::nav_block. Other pre-step fields retain
-        // their separately recorded upstream input boundaries.
-        owner_.refresh_hull_geometry(owner_.controllers[index_], index_, fields);
-        static_cast<void>(raw_argument);
-        owner_.record("ShipAiNavBlock::build_sector_shapes_009e0270", 0x009e0270u);
+        auto& ctl = owner_.controllers[index_];
+        //009E435F/009E4363 precede this callback. Bind the constructor's
+        // actual cleared65 bytes and flag to the persistent profile owner.
+        ctl.throttle_profile.profile.bin.fill(0);
+        ctl.throttle_profile.profile.bypass_41 = fields.flag_45;
+        owner_.run_hull_pre_step(ctl, index_, fields, raw_argument);
+        owner_.done("ShipAiNavBlock::build_sector_shapes_009e0270", 0x009e0270u);
     }
 
 private:
@@ -3986,8 +4028,9 @@ private:
 
 }  // namespace
 
-void GameShipAiHost::register_units() {
+void GameShipAiHost::register_units(GameMissionLuaHost& lua, std::int32_t session_mode) {
     Impl& host = *impl_;
+    host.session_mode = session_mode;
     const std::size_t count = host.units.count();
     host.controllers.assign(count, Impl::Controller{});
     host.rows.assign(count, GameShipAiRow{});
@@ -3999,8 +4042,18 @@ void GameShipAiHost::register_units() {
         // Milestone 2r: 009F118D, the navigation block constructor, once per
         // brain record. Its five turn fields are the inputs the arm tail and
         // the arrival release test read; milestone 2q had them at zero.
-        {
+        const int kind = host.units.unit_class_id(index);
+        host.log.notef("unit hull input unit=%s type_id=%d kind=%d length=%.9g width=%.9g",
+            host.rows[index].unit.c_str(), row != nullptr ? row->type_id : -1, kind,
+            host.units.unit_hull_length_09c8(index), host.units.unit_half_width_09cc(index));
+        if (row != nullptr && row->class_row_found && has_ship_navigation_class(kind)) {
             Impl::Controller& ctl = host.controllers[index];
+            GameShipDepthInput depth{};
+            std::string error;
+            if (!lua.read_ship_depth_input(row->type_id, session_mode, depth, error))
+                throw std::runtime_error("Ship depth load for " + row->name + ": " + error);
+            ctl.class_reference_0570 = depth.class_reference_0570;
+            ctl.class_depth_loaded = true;
             bsp::ShipAiNavBlockUnitInputs in{};
             in.present = row != nullptr;
             in.handle = static_cast<std::uint32_t>(index) + 1u;
@@ -4009,6 +4062,7 @@ void GameShipAiHost::register_units() {
                 = host.units.unit_class_max_rot_angle_04f8(index);
             in.ship_class.max_speed_0500 = host.units.unit_class_max_speed_0500(index);
             in.ship_class.turn_radius_0520 = host.units.unit_class_turn_radius_0520(index);
+            in.ship_class.reference_0570 = ctl.class_reference_0570;
             NavBlockCtorBinding ctor(host, index);
             ctl.nav_block = bsp::ship_ai_nav_block_ctor_009e4330(in, ctor);
             ctl.nav_block_built = true;
@@ -4029,6 +4083,15 @@ void GameShipAiHost::register_units() {
             host.rows[index].nav_hull_length_9c8 = in.hull_length_09c8;
             host.rows[index].hull_mass_00b0 = host.units.unit_hull_mass_00b0(index);
             host.rows[index].hull_material = host.units.unit_hull_material(index);
+            host.log.notef("ship pre-step input unit=%s type_id=%d session=%ld depth=%lu key=%s settings=%04lx source=%04lx reference_speed=%.9g width=%.9g",
+                row->name.c_str(), row->type_id, static_cast<long>(session_mode),
+                static_cast<unsigned long>(ctl.class_reference_0570), depth.class_key,
+                static_cast<unsigned long>(depth.settings_block_offset),
+                static_cast<unsigned long>(depth.scalar_source),
+                ctl.obstacle.reference_speed_3c4, host.units.unit_half_width_09cc(index));
+        } else {
+            host.rows[index].state = row != nullptr && row->class_row_found
+                ? "not_ship" : "no_class";
         }
         // 009F6A20 seeds the think countdown with the negation of a random draw
         // in [0, 1) so the once-a-second thinks of different directors fall on
@@ -4042,11 +4105,8 @@ void GameShipAiHost::register_units() {
         }
     }
     host.summary.units = count;
-    host.log.notef("ship AI controllers: %zu built, one per created instance. 009f50e0 has no "
-        "Ghidra function and no caller, and 009f5da0 is reached only through the derived "
-        "vtable slot at 00d21b4c, so this process runs both once per unit per fixed "
-        "simulation step, before the motion pass whose head at 00825f2c consumes the order "
-        "slot 009f4d10 published", count);
+    host.log.notef("ship navigation controllers: %zu built for actual ship classes among %zu instances; "
+        "generic command/director owners remain separate", host.summary.nav_blocks, count);
 }
 
 void GameShipAiHost::controller_step(float seconds) {
@@ -4057,45 +4117,47 @@ void GameShipAiHost::controller_step(float seconds) {
         Impl::Controller& ctl = host.controllers[index];
         GameShipAiRow& row = host.rows[index];
         if (!host.units.unit_active(index)) continue;
-        ControllerBinding binding(host, ctl, row, index);
-        const bool ran = bsp::ship_ai_controller_step_009f50e0(ctl.timers, seconds, binding);
-        host.done("ShipAi::controller_step", 0x009f50e0u);
-        if (ran) {
-            ++row.controller_steps;
-            ++host.summary.steps;
-        } else {
-            ++row.gated;
-            ++host.summary.gated;
-        }
-        row.steering_mode = static_cast<int>(ctl.blk.mode);
-        row.desired_throttle = ctl.blk.desired_throttle;
-        row.desired_rudder = ctl.blk.desired_rudder;
-        row.desired_heading = ctl.blk.desired_heading;
-        row.latched_direction = static_cast<int>(ctl.blk.direction);
-        row.heading_target = ctl.blk.heading_target_324;
-        row.distance_32c = ctl.blk.distance_32c;
-        row.distance_330 = ctl.blk.distance_330;
-        row.distance_finite = std::isfinite(ctl.blk.distance_32c)
-            && std::isfinite(ctl.blk.distance_330);
-        // Milestone 2o: ring+148h / +14Ch as 00813020 left them on the previous
-        // step. The tick runs inside 00825F20, after this pass, so reading them
-        // here samples the value the motion actually integrated.
-        const float live_a = host.units.unit_ring_current_throttle(index);
-        const float live_b = host.units.unit_ring_current_rudder(index);
-        if (live_a != ctl.live_throttle || live_b != ctl.live_rudder) {
-            ++row.live_pair_changes;
-            ++host.summary.live_pair_changes;
-        }
-        ctl.live_throttle = live_a;
-        ctl.live_rudder = live_b;
-        row.ring_live_throttle = live_a;
-        row.ring_live_rudder = live_b;
-        // 009DE050 forces blk+1C4h to Navigate on every state step but
-        // `cruise`'s, which is what hands the steering to the unprojected
-        // navigation arm rather than to the three setters.
-        if (ctl.blk.mode == bsp::ShipAiSteeringMode::Navigate
-            || ctl.blk.mode == bsp::ShipAiSteeringMode::NavigateAstern) {
-            ++host.summary.navigate_mode_steps;
+        if (ctl.nav_block_built) {
+            ControllerBinding binding(host, ctl, row, index);
+            const bool ran = bsp::ship_ai_controller_step_009f50e0(ctl.timers, seconds, binding);
+            host.done("ShipAi::controller_step", 0x009f50e0u);
+            if (ran) {
+                ++row.controller_steps;
+                ++host.summary.steps;
+            } else {
+                ++row.gated;
+                ++host.summary.gated;
+            }
+            row.steering_mode = static_cast<int>(ctl.blk.mode);
+            row.desired_throttle = ctl.blk.desired_throttle;
+            row.desired_rudder = ctl.blk.desired_rudder;
+            row.desired_heading = ctl.blk.desired_heading;
+            row.latched_direction = static_cast<int>(ctl.blk.direction);
+            row.heading_target = ctl.blk.heading_target_324;
+            row.distance_32c = ctl.blk.distance_32c;
+            row.distance_330 = ctl.blk.distance_330;
+            row.distance_finite = std::isfinite(ctl.blk.distance_32c)
+                && std::isfinite(ctl.blk.distance_330);
+            // Milestone 2o: ring+148h / +14Ch as 00813020 left them on the previous
+            // step. The tick runs inside 00825F20, after this pass, so reading them
+            // here samples the value the motion actually integrated.
+            const float live_a = host.units.unit_ring_current_throttle(index);
+            const float live_b = host.units.unit_ring_current_rudder(index);
+            if (live_a != ctl.live_throttle || live_b != ctl.live_rudder) {
+                ++row.live_pair_changes;
+                ++host.summary.live_pair_changes;
+            }
+            ctl.live_throttle = live_a;
+            ctl.live_rudder = live_b;
+            row.ring_live_throttle = live_a;
+            row.ring_live_rudder = live_b;
+            // 009DE050 forces blk+1C4h to Navigate on every state step but
+            // `cruise`'s, which is what hands the steering to the unprojected
+            // navigation arm rather than to the three setters.
+            if (ctl.blk.mode == bsp::ShipAiSteeringMode::Navigate
+                || ctl.blk.mode == bsp::ShipAiSteeringMode::NavigateAstern) {
+                ++host.summary.navigate_mode_steps;
+            }
         }
         // Milestone 2p: 0071F290, the command controller's own per-frame
         // update, instead of a bare call to the think. Packet
@@ -4118,10 +4180,9 @@ void GameShipAiHost::controller_step(float seconds) {
         state.override_command_present = false;
         state.queue_accepted = false;
         state.override_accepted = false;
-        // [*(00E188A8) + 1FE4h]. There is no world object, so the session mode
-        // is the single-player 1 the rest of this executable already assumes.
-        state.session_mode = 1;
-        host.record("CommandController::session_mode_1fe4", 0x00e188a8u);
+        // Same actual scene/session mode that selected ShipGlobals depth.
+        state.session_mode = host.session_mode;
+        host.done("CommandController::session_mode_1fe4", 0x00e188a8u);
         state.auto_target_present = true;
         ControllerUpdateBinding update(host, ctl, row, index);
         const bsp::CommandControllerUpdateTrace trace
@@ -4137,6 +4198,7 @@ bool GameShipAiHost::promote_order_00825f2c(std::size_t unit_index) {
     Impl& host = *impl_;
     if (unit_index >= host.controllers.size()) return false;
     Impl::Controller& ctl = host.controllers[unit_index];
+    if (!ctl.nav_block_built) return false;
     // The compact helper is a temporary projection, never another owner of
     // scalar order fields. Its only mutations are old.valid and the index.
     bsp::UnitAiOrderPromotion promotion{};
@@ -4225,8 +4287,8 @@ void GameShipAiHost::log_sample(unsigned long long step_index, unsigned long lon
 void GameShipAiHost::report() {
     Impl& host = *impl_;
     if (host.rows.empty()) return;
-    host.log.notef("native ship hull geometry: updates=%llu; pose=cache-valid; "
-        "model=absent; class-depth/pre-step remaining fields unresolved",
+    host.log.notef("native ship pre-step: updates=%llu; pose=cache-valid; "
+        "model=absent; class-depth=loaded; width=loaded; full009e0270=bound",
         host.hull_geometry_updates);
     host.log.notef("  %-20s %-10s %8s %8s %8s %8s %9s %7s %7s %-14s %s", "unit", "state",
         "steps", "replans", "publish", "promote", "heading", "thinks", "scans", "chose",

@@ -1,0 +1,397 @@
+{
+  "packet": "orch6_unit_extents_e",
+  "date": "2026-09-12",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "verification": "bsp ghidra wrappers verify project/program/language/image base each batch; worker made no Ghidra mutations",
+  "source": "src/unit_hull_extents.cpp",
+  "header": "include/bsp/unit_hull_extents.hpp",
+  "documentation": "docs/UNIT_HULL_EXTENTS.md",
+  "functions": [
+    {
+      "address": "00810F60",
+      "body": "00810F60..008110CF",
+      "previous_name": "FUN_00810f60",
+      "proposed_name": "BSP_Unit_InitializeDirectorAndHullDimensions",
+      "name_is_hypothesis": true,
+      "status": "partial_extent_fragment_reconstructed_build_and_native_fixture_checked",
+      "original_abi": "ECX unit (__thiscall), plain RET at008110CF; source fragment has explicit output/class inputs",
+      "abi_compatible": false,
+      "has_ghidra_function": true
+    },
+    {
+      "address": "00810FAF",
+      "body": "00810FAF..00811073",
+      "containing_function": "00810F60",
+      "cpp_function": "bsp::produce_unit_hull_extents_00810faf",
+      "kind": "fragment",
+      "no_ghidra_function": true,
+      "reason": "Interior basic block of00810F60; not a missing function definition",
+      "direct_calls": 0
+    }
+  ],
+  "full_enclosing_function_reconstructed": false,
+  "flow_audit": {
+    "function": "00810F60",
+    "listed_instructions": 100,
+    "gaps": 0,
+    "false_free_flow_gaps": [],
+    "no_repairs": true
+  },
+  "fields": {
+    "unit+538": "nullable class descriptor",
+    "class+50": "nullable model resource",
+    "class+A4": "Width at00960368",
+    "class+A0": "Length at0096039F",
+    "model+28..3C": "local minXYZ/maxXYZ six floats",
+    "unit+9CC": "full width; historical getter unit_half_width_09cc",
+    "unit+9C8": "full length"
+  },
+  "arithmetic": {
+    "model_width": "2 * (maxX > -minX ? maxX : -minX)",
+    "model_length": "2 * (maxZ > -minZ ? maxZ : -minZ)",
+    "ties_and_unordered": "negative minimum selected by native JBE",
+    "scale": {
+      "address": "00D7A308",
+      "type": "double",
+      "bits": "4000000000000000"
+    },
+    "opcode": {
+      "address": "0081100C",
+      "bytes": "dc c9",
+      "meaning": "FMUL ST(1),ST(0); retains scale for length"
+    },
+    "no_model": "x87 copy class+A4 then class+A0",
+    "null_class": "preserve both output fields"
+  },
+  "existing_producers": [
+    {
+      "address": "00960230",
+      "body": "00960230..00963234",
+      "existing_source": "src/vehicle_class_fields.cpp",
+      "scope": "Width/Length lookup/store block only rechecked; no implementation or annotation of whole producer"
+    },
+    {
+      "address": "00B66270",
+      "body": "00B66270..00B66287",
+      "existing_source": "src/lua_numeric.cpp",
+      "scope": "lua_tonumber float32 spill/reload"
+    },
+    {
+      "address": "00B7F430",
+      "body": "00B7F430..00B7F5AB",
+      "existing_source": "src/structured_model.cpp",
+      "scope": "BoundingBox six MOVSS stores resource+28..3C at00B7F525..55C"
+    },
+    {
+      "address": "0081F980",
+      "body": "0081F980..008206EB",
+      "scope": "model-only duplicate stores0081F9C4..0081FA52 corroborate arithmetic; not implemented here"
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00810F7B",
+      "native": "0077E830",
+      "function": "00810F60",
+      "role": "outside fragment: attach Lua self",
+      "implemented_by_this_fragment": false
+    },
+    {
+      "address": "00810F85",
+      "native": "00BF681B",
+      "function": "00810F60",
+      "role": "outside fragment: allocate250h director",
+      "implemented_by_this_fragment": false
+    },
+    {
+      "address": "00810FA0",
+      "native": "008366D0",
+      "function": "00810F60",
+      "role": "outside fragment: construct director",
+      "implemented_by_this_fragment": false
+    },
+    {
+      "address": "0081108D",
+      "native": "0095A880",
+      "function": "00810F60",
+      "role": "outside fragment: kind1 tail",
+      "implemented_by_this_fragment": false
+    },
+    {
+      "address": "008110BE",
+      "native": "00810F60+vtable210",
+      "function": "00810F60",
+      "role": "outside fragment: notification virtual",
+      "implemented_by_this_fragment": false
+    },
+    {
+      "address": "00960354",
+      "native": "00B67800",
+      "function": "00960230",
+      "role": "consumed existing producer: Width lookup"
+    },
+    {
+      "address": "00960363",
+      "native": "00B66270",
+      "function": "00960230",
+      "role": "consumed existing producer: Width number"
+    },
+    {
+      "address": "0096037A",
+      "native": "00B67700",
+      "function": "00960230",
+      "role": "consumed existing producer: Width wrapper release"
+    },
+    {
+      "address": "0096038B",
+      "native": "00B67800",
+      "function": "00960230",
+      "role": "consumed existing producer: Length lookup"
+    },
+    {
+      "address": "0096039A",
+      "native": "00B66270",
+      "function": "00960230",
+      "role": "consumed existing producer: Length number"
+    },
+    {
+      "address": "009603B1",
+      "native": "00B67700",
+      "function": "00960230",
+      "role": "consumed existing producer: Length wrapper release"
+    },
+    {
+      "address": "00B6627B",
+      "native": "00A67770",
+      "function": "00B66270",
+      "role": "consumed existing number wrapper: lua_tonumber"
+    }
+  ],
+  "runtime": {
+    "source": "src/game_hosts_units.cpp",
+    "class_fields_retained": [
+      "class_width_00a4",
+      "motion_class.hull_length"
+    ],
+    "unit_fields_retained": [
+      "hull_extents.width_09cc",
+      "hull_extents.length_09c8"
+    ],
+    "extent_branch": "no model; actual loaded Lua Width/Length",
+    "hydro_consumer": "raw class+A4, never model-derived unit+9CC",
+    "lua_dependency": "zone_wrappers_c adds GameVehicleClassRow.width and Width reader; its files borrowed only for build and omitted from this commit",
+    "missing_class": "preserve prior fields; host fresh zeros do not claim native constructor defaults",
+    "runtime_77_row_correspondence": "primary integrator verifies after integration"
+  },
+  "validation": {
+    "build": "./scripts/build.ps1 Win32 Release,2/2 existing CTests passed",
+    "tracked_tests_added": 0,
+    "native_probe": {
+      "span": "00810FAF..00811073",
+      "bytes": 197,
+      "live_equal_disk": true,
+      "relocations": [
+        "absolute double operand00811008..0081100B to local double2"
+      ],
+      "wrapper": "PUSH ESI; MOV ESI,ECX; SUB ESP,18h; original fragment; ADD ESP,18h; POP ESI; RET",
+      "comparisons": 1449,
+      "edge_comparisons": 816,
+      "installed_comparisons": 633,
+      "mismatches": 0,
+      "compared": [
+        "both float bit patterns",
+        "all unrelated unit bytes",
+        "x87 exception flags",
+        "x87 stack TOP"
+      ],
+      "precision_bits": [
+        24,
+        53,
+        64
+      ],
+      "rounding_modes": 4,
+      "mxcsr": [
+        "00001F80",
+        "00009FC0"
+      ],
+      "excluded": [
+        "x87 condition flags",
+        "register ABI",
+        "unmasked exceptions and SEH",
+        "prefix and tail of enclosing00810F60"
+      ]
+    },
+    "installed_lua": {
+      "rows": 633,
+      "numeric_width": 633,
+      "positive_width": 633,
+      "missing_width": 0,
+      "width_range": [
+        1,
+        136
+      ],
+      "types": {
+        "MotherShip": 18,
+        "Submarine": 9,
+        "Fighter": 28,
+        "CommandBuilding": 7,
+        "BattleShip": 39,
+        "Destroyer": 31,
+        "LandingShip": 6,
+        "TorpedoBomber": 9,
+        "Cruiser": 41,
+        "LandFort": 368,
+        "TorpedoBoat": 3,
+        "LevelBomber": 11,
+        "SmallReconPlane": 5,
+        "Cargo": 13,
+        "DiveBomber": 9,
+        "Kamikaze": 6,
+        "LargeReconPlane": 4,
+        "LandVehicle": 21,
+        "AirField": 2,
+        "Shipyard": 2,
+        "DummyTargetVehicle": 1
+      },
+      "fixture_state": "PC=true; real fundamentals; DEG/KMH/MPH/KTS/isUnlock function text extracted from luamw_init.lua with explicit empty UnlockedClasses fixture input. Unlock fields are not under comparison.",
+      "not_game_validation": true
+    }
+  },
+  "input_provenance": [
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\autoload\\vehicleclasses.lua",
+      "sha256": "0649dddf3a765a8340db2e6d545d04ac86503b4f8ba2e867c88ecbd2d2983650"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\fundamentals.lua",
+      "sha256": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\universe\\scenes\\missions\\USN\\usn_1_marshall.scn",
+      "sha256": "9235d9a6364b08cbd5cf3c6735ba9828aba5a6e7b2569300dc2eecf6d8dac17b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-extents-e\\local\\unit_extent_native.bin",
+      "sha256": "98e8c1190e58968b9d205e7181f43e8713b602fc9d6bbf21c60a4d85aa963efa"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\global\\luamw_init.lua",
+      "sha256": "3a807d3cb53d6e753901ab378a3b10311b2aa6dec5e99b05f5d63d4b98ea7533"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-extents-e\\local\\extent_unlock_function.lua",
+      "sha256": "2136d3901bbb5550ae34efd98cc1db3ce33eb0ebee5d1545d27a5f590bedcd13"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "local/unit_extent_probe.cpp",
+      "sha256": "c36c245bdf5a1b982af3c48475fa4f33d2fe772ede146530dc892bef55956d35"
+    },
+    {
+      "path": "local/build_extent_probe.cmd",
+      "sha256": "2d6a72b5de3c9dd0923b22de3cd6efa00f34f11c61026023df40b4dda9ec44e9"
+    },
+    {
+      "path": "local/prepare_extent_probe.py",
+      "sha256": "e30d3a35282aa46f177c8f62fed9b2f1056f0fe86bd8f899f0c86c4630d785eb"
+    },
+    {
+      "path": "local/unit_extent_native.bin",
+      "sha256": "98e8c1190e58968b9d205e7181f43e8713b602fc9d6bbf21c60a4d85aa963efa"
+    },
+    {
+      "path": "local/native_span_bytes.txt",
+      "sha256": "70a8658128a5c4638d77f2d574b2d8a582a5167d844e40a6cac9ff1deb3d0bba"
+    },
+    {
+      "path": "local/extent_unlock_function.lua",
+      "sha256": "2136d3901bbb5550ae34efd98cc1db3ce33eb0ebee5d1545d27a5f590bedcd13"
+    },
+    {
+      "path": "local/probe_run.json",
+      "sha256": "b970d0cc64032d0b4209a38779974f8faf7a81ae2f0b668ee5dc467ca3a5b906"
+    },
+    {
+      "path": "local/vehicle_class_widths.tsv",
+      "sha256": "2682a5aff51be64c924fd32619929055aa1ad44b0c5c30b79a11919b60705de4"
+    },
+    {
+      "path": "local/unit_extent_probe.exe",
+      "sha256": "792496470444b5c19ca1685868943fd2a010210422a50f2d9ba8fb854e9484e4"
+    },
+    {
+      "path": "local/probe_build.log",
+      "sha256": "8526e3ec7a95d99fa6560f54a55e71d49e2a9d0a168df36facc5965213d34060"
+    },
+    {
+      "path": "local/build.log",
+      "sha256": "005dd15edc258105afcb1845b9de5cdb2ca6b1f33a1f8b98d0d68fd2031ba2c5"
+    },
+    {
+      "path": "local/unit_extent_manifest.json",
+      "sha256": "f31a089eea9ba11963e4ba331b1d9315d73613d20ebb476a551ec80059c2d0b4"
+    }
+  ],
+  "reproduce": {
+    "cwd": "worktree root",
+    "prepare": "python local/prepare_extent_probe.py (requires pefile and preserved live byte export)",
+    "build_probe": "cmd /c .\\local\\build_extent_probe.cmd",
+    "dependencies": [
+      "MSVC x86 vcvarsall",
+      "own build/win32/Release/bsp_core.lib",
+      "own build/win32/Release/bsp_lua511.lib",
+      "local/lua511-src/src headers copied from existing validated build dependency",
+      "read-only installed game files"
+    ],
+    "run": [
+      "local/unit_extent_probe.exe",
+      "local/unit_extent_native.bin",
+      "I:/SteamLibrary/steamapps/common/Battlestations Pacific/scripts/datatables/autoload/vehicleclasses.lua",
+      "local/vehicle_class_widths.tsv"
+    ]
+  },
+  "limits": [
+    "Only extent fragment of00810F60 is reconstructed here; unrelated constructor/notification behavior remains outside this interface.",
+    "Real model resource ownership/publication in GameUnits is absent. Core requires actual local box; fixture model boxes are synthetic.",
+    "Installed row coverage does not establish which77 represented units were created or prove full live-game navigation.",
+    "Width adapter uses lua_tonumber plus existing native float32 spill helper, including numeric strings. The pre-existing Length reader still uses its numeric-or-zero tag helper. Dynamic descriptor reload is not established by this fixture."
+  ],
+  "integrator_verification": {
+    "native_fixture": {
+      "comparisons": 1449,
+      "mismatches": 0,
+      "edge_and_control": 816,
+      "installed_rows": 633,
+      "positive_width_rows": 633,
+      "log": "local/orch6_extent_probe_run.log"
+    },
+    "call_check": {
+      "checked": 11,
+      "failed": 0,
+      "indirect": 1,
+      "log": "local/orch6_extent_calls.log"
+    },
+    "runtime": {
+      "report": "reports/game_ship_navigation_binding.json",
+      "log": "local/orch6_pre_step_e.log",
+      "registered_extent_rows": 77,
+      "actual_ship_rows": 14,
+      "mission_frames": 120,
+      "model_domain": "represented absent model; native class+A0/A4 dimensions"
+    },
+    "ghidra": {
+      "prior_values": "local/ghidra-annotations-20260912T213900Z.json",
+      "existing_comments_preserved": true,
+      "project_saved": true,
+      "exports_refreshed": true,
+      "annotation_log": "local/orch6_worker_annotations_e.log",
+      "export_log": "local/orch6_worker_exports_e.log"
+    }
+  }
+}

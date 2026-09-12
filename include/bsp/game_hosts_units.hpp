@@ -353,7 +353,7 @@ public:
     // 009ec97b / 009ec9a4 / 009ec99c / 009ec9ab, the four live reads the
     // throttle ceiling makes outside the tuning block.
     bsp::ShipAiThrottleCeilingInputs throttle_ceiling_inputs(std::size_t index) const;
-    // unit+9cch, the half width the danger ramp divides the clearance by, and
+    // unit+9cch, the FULL width the danger ramp divides the clearance by, and
     // [[unit+538h]+500h] / +508h, the two class fields 009ef230 builds a
     // sector's braking distance from.
     float unit_half_width_09cc(std::size_t index) const;
