@@ -1,0 +1,285 @@
+{
+  "packet": "cc2_weapon_director",
+  "owner": "agent/cc2-weapon-director",
+  "docs": ["docs/WEAPON_DIRECTOR.md", "docs/GUN_CLASS_FAMILY.md"],
+  "sources": ["include/bsp/weapon_director.hpp", "src/weapon_director.cpp"],
+  "subject": "The unit command controller at unit+738h that the weapon bindings use as the weapon director, and the gun class family behind vtable 00CFE0A8.",
+  "functions": [
+    {
+      "address": "00810f60",
+      "name": "BSP_UnitInstance_ConstructWeaponDirector_partial",
+      "coverage": "partial: only the director allocation and store; the rest of the routine is other subobjects",
+      "calls": [
+        {"address": "00810f85", "native": "00bf681b", "role": "operator new(250h)"},
+        {"address": "00810fa0", "native": "008366d0", "role": "director constructor, ECX = block, arg = unit"}
+      ],
+      "writes": [{"address": "00810fa9", "field": "unit+738h", "value": "the constructed director"}]
+    },
+    {
+      "address": "008366d0",
+      "name": "BSP_WeaponDirector_Construct",
+      "abi": "__thiscall(this)(unit), RET 4 at 00836789",
+      "coverage": "complete",
+      "calls": [
+        {"address": "00836700", "native": "indirect: unit vtable[60h]", "role": "session endpoint, arg 1"},
+        {"address": "00836705", "native": "008363e0", "role": "base constructor, RET 8, second argument reuses the slot pushed at 008366f9"},
+        {"address": "00836753", "native": "00bf681b", "role": "operator new(40h)"},
+        {"address": "0083676a", "native": "009f6a20", "role": "constructs the 40h subobject stored at +38h"}
+      ],
+      "writes": [
+        {"address": "00836717", "field": "+00h", "value": "00d09f58"},
+        {"address": "0083671d", "field": "+1ch", "value": "00d09f40"},
+        {"address": "00836724", "field": "+240h", "value": "1 (torpedoAvoidance)"},
+        {"address": "0083672a", "field": "+241h", "value": "1 (shipCollisionAvoidance)"},
+        {"address": "00836730", "field": "+242h", "value": "1 (landCollisionAvoidance)"},
+        {"address": "00836736", "field": "+243h", "value": "0 (cruiseIsHeading)"},
+        {"address": "0083673d", "field": "+244h", "value": "0.0f (cruiseSteerOrHeading)"},
+        {"address": "00836745", "field": "+248h", "value": "0.0f (cruiseThrust)"},
+        {"address": "0083674d", "field": "+24ch", "value": "the owning unit"},
+        {"address": "00836777", "field": "+38h", "value": "the 40h subobject"}
+      ]
+    },
+    {
+      "address": "008363e0",
+      "name": "BSP_WeaponDirectorBase_Construct",
+      "abi": "__thiscall(this)(endpoint, byte), RET 8 at 00836491",
+      "coverage": "partial: field writes and the two class tests read; 00720180 unread",
+      "calls": [
+        {"address": "00836403", "native": "00720180", "role": "command array construction"}
+      ],
+      "writes": [
+        {"address": "0083642f", "field": "+238h", "value": "0 (the fire target starts null)"}
+      ],
+      "notes": "installs 00d09ec0/00d09ea8, the embedded target reference vtable 00cf938c at +224h, +234h = 1, +23dh = the byte argument; sets +3ch and +3dh to 1 only when endpoint vtable[5ch](0bh) and vtable[5ch](9) are both false"
+    },
+    {
+      "address": "008362a0",
+      "name": "BSP_WeaponDirector_DumpProperties",
+      "abi": "__thiscall(this)(sink)",
+      "coverage": "complete as a name source; the sink vtable[0ch] is unread",
+      "names": {
+        "+240h": "torpedoAvoidance",
+        "+241h": "shipCollisionAvoidance",
+        "+242h": "landCollisionAvoidance",
+        "+243h": "cruiseIsHeading",
+        "+244h": "cruiseSteerOrHeading",
+        "+248h": "cruiseThrust"
+      }
+    },
+    {
+      "address": "0071be80",
+      "name": "BSP_WeaponDirector_SetFireStance",
+      "abi": "__thiscall(director)(int stance), RET 4 at 0071bec2",
+      "coverage": "complete",
+      "calls": [
+        {"address": "0071be8f", "native": "indirect: vtable[24h] = 0071d560", "role": "stance allows fire"},
+        {"address": "0071be9d", "native": "indirect: vtable[28h] = 0071d580", "role": "stance allows move"},
+        {"address": "0071beaf", "native": "indirect: vtable[40h] = 0071da50", "role": "send the fire permission"},
+        {"address": "0071bebd", "native": "indirect: vtable[44h] = 0071dad0", "role": "send the move permission"}
+      ]
+    },
+    {
+      "address": "0071d560",
+      "no_ghidra_function": true,
+      "range": "0071d560-0071d57a",
+      "name": "BSP_WeaponDirector_StanceAllowsFire",
+      "abi": "__thiscall(ECX ignored)(int stance), RET 4",
+      "coverage": "complete, decoded from raw bytes",
+      "body": "EAX = [ESP+4]; true when EAX == 1 or EAX == 2, else 0"
+    },
+    {
+      "address": "0071d580",
+      "no_ghidra_function": true,
+      "range": "0071d580-0071d59a",
+      "name": "BSP_WeaponDirector_StanceAllowsMove",
+      "abi": "__thiscall(ECX ignored)(int stance), RET 4",
+      "coverage": "complete, decoded from raw bytes",
+      "body": "EAX = [ESP+4]; true when EAX == 3 or EAX == 2, else 0"
+    },
+    {
+      "address": "0071da50",
+      "name": "BSP_WeaponDirector_SendFirePermission",
+      "abi": "__thiscall(director)(bool), RET 4 at 0071dac5",
+      "coverage": "complete",
+      "calls": [
+        {"address": "0071da71", "native": "0075b430", "role": "BSP_SessionMessage_ConstructBase(5Ah)"},
+        {"address": "0071dab1", "native": "0077c2a0", "role": "BSP_Session_RouteMessage(msg, 7, 0), ECX = this+34h"}
+      ],
+      "writes": [
+        {"address": "0071da92", "field": "msg+00h", "value": "00cfd9c4"},
+        {"address": "0071da86", "field": "msg+04h", "value": "1"},
+        {"address": "0071da9a", "field": "msg+20h", "value": "0 (sub-kind: allow fire)"},
+        {"address": "0071da9e", "field": "msg+24h", "value": "the boolean argument"}
+      ]
+    },
+    {
+      "address": "0071dad0",
+      "name": "BSP_WeaponDirector_SendMovePermission",
+      "abi": "__thiscall(director)(bool), RET 4",
+      "coverage": "complete",
+      "calls": [
+        {"address": "0071db17", "native": "indirect: message vtable store", "role": "not a call"}
+      ],
+      "writes": [{"address": "0071dad0", "field": "msg+20h", "value": "1 (sub-kind: allow move)"}]
+    },
+    {
+      "address": "0071dfd0",
+      "name": "BSP_WeaponEnable_SendArtilleryMessage",
+      "abi": "__thiscall(director)(bool), RET 4 at 0071e049",
+      "coverage": "complete",
+      "calls": [
+        {"address": "0071dff1", "native": "0075b430", "role": "BSP_SessionMessage_ConstructBase(5Ah)"},
+        {"address": "0071e035", "native": "0077c2a0", "role": "BSP_Session_RouteMessage(msg, 7, 0), ECX = this+34h"}
+      ],
+      "writes": [
+        {"address": "0071e01a", "field": "msg+20h", "value": "3 (sub-kind: artillery enable)"},
+        {"address": "0071e022", "field": "msg+24h", "value": "the boolean argument"}
+      ],
+      "correction": "docs/UNIT_WEAPON_DEVICES.md called this a free function that only null-gates the director; the ECX = [ESI+34h] at 0071e026 shows it is a director method that routes through the director's own session endpoint"
+    },
+    {
+      "address": "0071e0d0",
+      "name": "BSP_WeaponEnable_SendTorpedoMessage",
+      "abi": "__thiscall(director)(bool), RET 4",
+      "coverage": "complete",
+      "writes": [{"address": "0071e112", "field": "msg+00h", "value": "00cfd9c4; sub-kind 5 at msg+20h"}]
+    },
+    {
+      "address": "0071c1e0",
+      "name": "BSP_WeaponDirector_ApplyCommandMessage",
+      "abi": "__thiscall(director)(msg)",
+      "coverage": "complete as a body; its session-side caller is unread",
+      "calls": [
+        {"address": "0071c1fb", "native": "indirect: vtable[64h] = 00836210", "role": "store the fire permission"},
+        {"address": "0071c212", "native": "indirect: vtable[68h] = 0071d5e0", "role": "store the move permission"}
+      ],
+      "writes": [
+        {"address": "0071c231", "field": "+220h", "value": "msg+24h != 0, sub-kind 3"},
+        {"address": "0071c246", "field": "+221h", "value": "msg+24h != 0, sub-kind 4"},
+        {"address": "0071c25b", "field": "+222h", "value": "msg+24h != 0, sub-kind 5"},
+        {"address": "0071c270", "field": "+223h", "value": "msg+24h != 0, sub-kind 6"}
+      ],
+      "entry_points": ["00cfda78 (data slot)", "00835610 (thunk)", "0083568a (tail jump from the derived override)"]
+    },
+    {
+      "address": "00835640",
+      "no_ghidra_function": true,
+      "range": "00835640-0083568e",
+      "name": "BSP_WeaponDirector_ApplyCommandMessageDerived",
+      "abi": "__thiscall(director)(msg), RET 4",
+      "coverage": "complete, decoded from raw bytes",
+      "calls": [
+        {"address": "0083568a", "native": "jmp:0071c1e0", "role": "tail jump to the base apply"}
+      ],
+      "writes": [
+        {"address": "00835653", "field": "+240h", "value": "msg+24h != 0, sub-kind 7"},
+        {"address": "00835668", "field": "+241h", "value": "msg+24h != 0, sub-kind 8"},
+        {"address": "0083567d", "field": "+242h", "value": "msg+24h != 0, sub-kind 9"}
+      ]
+    },
+    {
+      "address": "00836210",
+      "no_ghidra_function": true,
+      "range": "00836210-0083623a",
+      "name": "BSP_WeaponDirector_StoreFirePermission",
+      "abi": "__thiscall(director)(bool), RET 4",
+      "coverage": "complete, decoded from raw bytes",
+      "calls": [
+        {"address": "0083622b", "native": "raw:006952a0", "role": "BSP_Observer_UnregisterPair: release the embedded target observer, ECX = current target, EDX = this+224h. E8 70 F0 E5 FF decoded by hand; the site is inside a body with no Ghidra function, so tools/verify_report_calls.py cannot reach it"}
+      ],
+      "writes": [
+        {"address": "00836216", "field": "+3ch", "value": "the boolean argument"},
+        {"address": "00836230", "field": "+238h", "value": "0, only when fire is forbidden and a target is held"}
+      ]
+    },
+    {
+      "address": "0071d5e0",
+      "no_ghidra_function": true,
+      "range": "0071d5e0-0071d5e9",
+      "name": "BSP_WeaponDirector_StoreMovePermission",
+      "abi": "__thiscall(director)(bool), RET 4",
+      "coverage": "complete, decoded from raw bytes",
+      "writes": [{"address": "0071d5e4", "field": "+3dh", "value": "the boolean argument"}]
+    },
+    {
+      "address": "008364e0",
+      "no_ghidra_function": true,
+      "range": "008364e0-008364e6",
+      "name": "BSP_WeaponDirector_GetFireTarget",
+      "abi": "__thiscall(director)(), RET",
+      "coverage": "complete, decoded from raw bytes",
+      "body": "MOV EAX,[ECX+238h]; RET"
+    },
+    {
+      "address": "00835860",
+      "name": "BSP_WeaponDirector_SetFireTarget",
+      "abi": "__thiscall(director)(target, force)",
+      "coverage": "complete",
+      "calls": [
+        {"address": "00835860", "native": "indirect: 00835740 then 0077c2a0", "role": "build and route the kind 5Eh message; the two exact sites are inside the exception-handled body"}
+      ],
+      "gate": "force != 0 || this[+23ch] == 0 || this[+238h] == 0"
+    },
+    {
+      "address": "00835740",
+      "name": "BSP_WeaponDirector_BuildTargetMessage",
+      "abi": "__thiscall(msg)(target, force), RET 8 at 008357cb",
+      "coverage": "complete",
+      "calls": [
+        {"address": "00835760", "native": "0075b430", "role": "BSP_SessionMessage_ConstructBase(5Eh)"},
+        {"address": "008357a4", "native": "indirect: target vtable[5ch]", "role": "class test with id 2"}
+      ],
+      "writes": [
+        {"address": "00835782", "field": "msg+00h", "value": "00d02e98"},
+        {"address": "0083576e", "field": "msg+04h", "value": "1"},
+        {"address": "00835797", "field": "msg+20h", "value": "target+174h u16 id, 0 when null"},
+        {"address": "008357ba", "field": "msg+22h", "value": "target != 0 && class test 2"},
+        {"address": "008357b7", "field": "msg+23h", "value": "the force byte"}
+      ]
+    },
+    {
+      "address": "00720cd0",
+      "name": "BSP_WeaponDirector_IssueTargetCommand",
+      "abi": "__thiscall(director)(entity)",
+      "coverage": "partial: the slot loop and the command issue; 00720850 and the descriptor 00e08f60 are unread",
+      "calls": [
+        {"address": "00720cd0", "native": "indirect: 00720850 per occupied slot, then vtable[60h]", "role": "clear ten 1ch slots from +54h, then issue command 00e08f60"}
+      ]
+    },
+    {
+      "address": "0089a8b0",
+      "name": "BSP_LuaBinding_SetFireTarget",
+      "coverage": "partial: the three argument branches and the two virtual hops; the Lua tail is unread",
+      "branches": [
+        "nil: BSP_LuaObject_IsNil",
+        "entity: 008889c0 then BSP_ObjectHandle_FromLuaTable",
+        "vector3: operator_new(1e4h) + 004e5980, placed with vtable[98h](0, world+19cch, identity), +c8h = 1, +10ch = 0, +54h = 2"
+      ],
+      "correction": "docs/UNIT_WEAPON_DEVICES.md expected three setters; there is one, 00835860, reached after unit vtable[114h]"
+    },
+    {
+      "address": "0089c360",
+      "name": "BSP_LuaBinding_GetFireTarget",
+      "coverage": "partial: the two virtual hops; the Lua tail is unread",
+      "calls": [
+        {"address": "0089c360", "native": "indirect: unit vtable[114h] then director vtable[2ch]", "role": "director then fire target, then entity+174h as the Lua key"}
+      ]
+    }
+  ],
+  "gun_class_family": [
+    {"vtable": "00cfe0a8", "constructor": "0072e510", "base": "00728960", "class_id": "20h", "name": "base gun", "evidence": "class id written in 0072e510; 00728960 unread"},
+    {"vtable": "00cfe308", "constructor": "00730b80", "base": "0072e510", "class_id": "21h", "name": "MMultipleBombPlatform", "script_name": "MultiBombPlatform", "creator": "00731c80", "record": "00ce45cc"},
+    {"vtable": "00cfbd20", "constructor": "006fdda0", "base": "0072e510", "class_id": "22h", "name": "abstract turning-gun base", "evidence": "no factory record; only reached from 00730e80 and 006fded0"},
+    {"vtable": "00cfe548", "constructor": "00730e80", "base": "006fdda0", "class_id": "23h", "name": "MRFSGun", "script_name": "Rapid_Fixed_Slave_Gun", "creator": "00731d50", "record": "00ce460c"},
+    {"vtable": "00cfbf58", "constructor": "006fded0", "base": "006fdda0", "class_id": "24h", "name": "MRTGun", "script_name": "Rapid_Turning_Gun", "creator": "00731e20", "record": "00ce4640"},
+    {"vtable": "00cfc190", "constructor": "006fdfc0", "base": "006fded0", "class_id": "27h", "name": "MSTGun", "script_name": "Single_Turning_Gun", "creator": "006fe390", "record": "00ce4674"}
+  ],
+  "unread": [
+    "the session-side writer of director+238h (the fire target arrives as an entity id in the kind 5Eh message)",
+    "the caller of 0071c1e0 inside the session dispatcher",
+    "the meaning of sub-kinds 2, 4 and 6",
+    "the class ids 0bh and 9 tested on the object at director+34h",
+    "any periodic director step that aims guns",
+    "00728960, MDepthChargeLauncher and MCatapult vtables and class ids"
+  ]
+}

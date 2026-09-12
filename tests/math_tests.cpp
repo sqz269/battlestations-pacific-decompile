@@ -28,6 +28,7 @@
 #include "bsp/simulation_gate.hpp"
 #include "bsp/title_init.hpp"
 #include "bsp/unit_forces.hpp"
+#include "bsp/weapon_director.hpp"
 #include "bsp/world_deferred_destroy.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/renderer_startup.hpp"
@@ -2185,6 +2186,26 @@ int main() {
             "00879810 turns a positive delta into a repair through 00879070");
     }
 
+
+    {
+        // The two director stance predicates, decoded from the raw bytes at
+        // 0071D560 and 0071D580: fire is free for stances 1 and 2, move for 2
+        // and 3. This is the one behavioural claim the packet recovered from
+        // bodies rather than from the shipped script table.
+        using bsp::FireStance;
+        const bool fire_ok =
+            !bsp::director_stance_allows_fire_0071d560(FireStance::HoldFire) &&
+            bsp::director_stance_allows_fire_0071d560(FireStance::FreeFire) &&
+            bsp::director_stance_allows_fire_0071d560(FireStance::FreeAttack) &&
+            !bsp::director_stance_allows_fire_0071d560(FireStance::MoveOnly);
+        const bool move_ok =
+            !bsp::director_stance_allows_move_0071d580(FireStance::HoldFire) &&
+            !bsp::director_stance_allows_move_0071d580(FireStance::FreeFire) &&
+            bsp::director_stance_allows_move_0071d580(FireStance::FreeAttack) &&
+            bsp::director_stance_allows_move_0071d580(FireStance::MoveOnly);
+        check(fire_ok && move_ok,
+            "0071D560 frees fire for stances 1 and 2, 0071D580 frees move for stances 2 and 3");
+    }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
     return failures ? 1 : 0;
