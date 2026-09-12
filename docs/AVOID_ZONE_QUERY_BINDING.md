@@ -55,3 +55,26 @@ Follow-up: attach the snapshot to the executable's actual layer/zone lifetime,
 then validate a mission path that crosses a loaded avoid zone. Constructor
 scene-path, allocator and parent-vtable bindings must reflect the actual loaded
 scene. No fallback scene or synthetic zone should become runtime behavior.
+
+## Integration verification
+
+Win32 Release build input `29486c49` passed `scripts/build.ps1`, including both
+existing CTest checks and construction of `bsp_game.exe`. One ignored manifested
+integration probe passed 12 checks across transformed scene points, native zone
+construction, derived corners, snapshot ownership, source release, and the five
+query bindings. The inside normalization check uses tolerance2e-7 because the
+native float reciprocal need not produce an exactly unit component.
+
+The integrator reran 00416F30's 96,000 bit comparisons and the segment routines'
+3,027 differential checks successfully against the merged sources. The segment
+fixture shares the reconstructed CRT boundary. The separate clipping fixture
+passed its diamond-to-octagon, retained-bounds, touching-reject and complete
+allocation-release checks. No tracked test cases were added. These results
+cover the stated fixtures; they do not establish whole-query or gameplay parity.
+
+Nine reviewed Ghidra annotations were read back with prior comments preserved.
+Eleven false call-return gaps were repaired in the owner, clipping, clear and
+supporting unwind routines; no call gaps remain in those four functions. Two
+10-byte compiler SEH dispatchers were defined from verified existing bytes.
+All 12 affected exports were refreshed. Mutation records and before/after
+annotations are linked from `reports/avoid_zone_query_binding.json`.
