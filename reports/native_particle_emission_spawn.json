@@ -1,0 +1,170 @@
+{
+  "packet": "orch3_particle_emission_spawn_am",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ghidra_read_only": true,
+  "functions": [
+    {
+      "address": "00b04c80",
+      "end_exclusive": "00b04de7",
+      "inclusive_end": "00b04de6",
+      "final_instruction_address": "00b04de4",
+      "final_instruction_length": 3,
+      "length": 359,
+      "sha256": "52588ea383e7e8ea81649c4a608fd5b93daf91c1b23b999bb6848c9a16091b53",
+      "live_disk_equal": true,
+      "live_prototype": "00b04c80 FUN_00b04c80  undefined FUN_00b04c80(void)  body 00b04c80 - 00b04de6",
+      "original_abi": "ECX actual30h container; stack(definition,record,requested,time,elapsed), RET14h; EAX clamped desired count",
+      "native_calling_convention": "__thiscall",
+      "cpp_symbol": "spawn_native_particle_emission_00b04c80",
+      "ghidra_name": "BSP_NativeParticleEmission_Spawn",
+      "descriptive_name_is_hypothesis": true,
+      "original_abi_compatible": false,
+      "coverage": "complete through explicit required actual services",
+      "source": "src/native_particle_emission_spawn.cpp",
+      "header": "include/bsp/native_particle_emission_spawn.hpp",
+      "xrefs": [
+        "From 00afe911 in FUN_00afe290 [UNCONDITIONAL_CALL]",
+        "From 00aff782 in FUN_00aff700 [UNCONDITIONAL_CALL]"
+      ],
+      "evidence": "AM review: descriptive hypothesis, not recovered symbol. Full installed/live bytes and final RET verified. Actual30h container/108h record storage; native x87 spills, signed clamp, current field reloads and clamped-desired return retained. New EDX access ABI; required real service contracts in docs/NATIVE_PARTICLE_EMISSION_SPAWN.md and reports/native_particle_emission_spawn.json. Native CRT/FH3/gameplay unvalidated.",
+      "native_prototype": "int __thiscall BSP_NativeParticleEmission_Spawn(void * definition, void * record, float requested, float time, float elapsed)"
+    },
+    {
+      "address": "00afdaf0",
+      "end_exclusive": "00afdbe7",
+      "inclusive_end": "00afdbe6",
+      "final_instruction_address": "00afdbe4",
+      "final_instruction_length": 3,
+      "length": 247,
+      "sha256": "3fa9c7697bac4027f6d2b8dfab5b12156cdf677ab64d2b030963aafe7d7fe84b",
+      "live_disk_equal": true,
+      "live_prototype": "00afdaf0 FUN_00afdaf0  undefined FUN_00afdaf0(void)  body 00afdaf0 - 00afdbe6",
+      "original_abi": "ECX108h record; stack(position,direction,unused sequence,fraction), RET10h",
+      "native_calling_convention": "__thiscall",
+      "cpp_symbol": "generate_native_particle_spawn_vectors_00afdaf0",
+      "ghidra_name": "BSP_NativeParticleRecord_GenerateSpawnVectors",
+      "descriptive_name_is_hypothesis": true,
+      "original_abi_compatible": false,
+      "coverage": "complete through explicit required actual services",
+      "source": "src/native_particle_emission_spawn.cpp",
+      "header": "include/bsp/native_particle_emission_spawn.hpp",
+      "xrefs": [
+        "From 00b04d41 in FUN_00b04c80 [UNCONDITIONAL_CALL]"
+      ],
+      "evidence": "AM review: descriptive hypothesis, not recovered symbol. Full installed/live bytes and final RET verified. Actual30h container/108h record storage; native x87 spills, signed clamp, current field reloads and clamped-desired return retained. New EDX access ABI; required real service contracts in docs/NATIVE_PARTICLE_EMISSION_SPAWN.md and reports/native_particle_emission_spawn.json. Native CRT/FH3/gameplay unvalidated.",
+      "native_prototype": "void __thiscall BSP_NativeParticleRecord_GenerateSpawnVectors(float * position, float * direction, int unused_sequence, float fraction)"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b04c90",
+      "native": "00bf85b0",
+      "function": "00b04c80",
+      "stack_cleanup": "one double; ADD ESP8 atB04C9D after float spill/reload",
+      "contract": "actual CRT floor; current modes and exceptional path required"
+    },
+    {
+      "address": "00b04ca0",
+      "native": "00bf7420",
+      "function": "00b04c80",
+      "stack_cleanup": "ST0 input; pops ST0; RET",
+      "contract": "actual CURRENT0109EEA4 conversion; EAX retained"
+    },
+    {
+      "address": "00b04d41",
+      "native": "00afdaf0",
+      "function": "00b04c80",
+      "stack_cleanup": "four stack words; RET10h",
+      "contract": "concrete current definition vector generation and record position interpolation"
+    },
+    {
+      "address": "00b04d74",
+      "native": "00b0ca40",
+      "function": "00b04c80",
+      "stack_cleanup": "six stack words; RET18h",
+      "contract": "required complete6Ch state initialization, definition18 and point-light side effects"
+    },
+    {
+      "address": "00afdb0d",
+      "native": "00afdaf0+vtable0c",
+      "function": "00afdaf0",
+      "stack_cleanup": "three stack words(record,position,direction); actual definition virtual0C RET0C",
+      "contract": "captured recordA0 definition and current vtable0C; source dispatch binding must honor captured target"
+    }
+  ],
+  "game_validated": false,
+  "original_abi_compatible": false,
+  "corrections": [
+    {
+      "was": "B04C80 is a required opaque emission callback",
+      "is": "Concrete desired-count clamp, indexed state generation and actual model statistics; initializer/CRT remain explicit",
+      "evidence": "B04DDC returns clamped requested slot; B04D87 counts actual emissions separately and writes statistics atB04DB8/B04DCA/B04DD6"
+    },
+    {
+      "was": "AFDAF0 decompiler confuses output pointer and interpolation fraction",
+      "is": "Four native stack words, fraction atentry ESP+10h; unused sequence retained; output vector modified after virtual0C",
+      "evidence": "AFDB4E loads stack fraction; AFDBE4 RET10h; three pushes beforeAFDB0D dispatch"
+    }
+  ],
+  "consumer_calls": [
+    {
+      "address": "00afe911",
+      "native": "00b04c80",
+      "function": "00afe290",
+      "stack_cleanup": "five words; RET14h",
+      "contract": "actualAFF690 acquired container, definition, record, requested/time/elapsed; EAX used in accumulated emission subtraction"
+    },
+    {
+      "address": "00aff782",
+      "native": "00b04c80",
+      "function": "00aff700",
+      "stack_cleanup": "five words; RET14h",
+      "contract": "same actual lazy30h container, forwarding definition/record and three floats"
+    }
+  ],
+  "validation": {
+    "strict_win32_production_compile": "PASS /std:c++20 /EHsc /MD /W4 /WX /O2 /Gy /fp:strict /permissive-",
+    "focused_probe": {
+      "original_byte_comparisons": 24,
+      "x87_precision_modes": [
+        24,
+        53,
+        64
+      ],
+      "assertions": 217,
+      "result": "PASS",
+      "local_artifacts": "C:/Users/sqz269/bsp-am-spawn",
+      "compared": [
+        "complete state bytes",
+        "callback argument bits",
+        "return and actual counts",
+        "model statistic bytes",
+        "FP status",
+        "preexisting lower x87 stack value"
+      ],
+      "native_boundaries_redirected": [
+        "BF85B0 fixture floor",
+        "BF7420 fixture SSE2 conversion",
+        "B0CA40 observable initializer fixture",
+        "actual definition virtual0C fixture"
+      ],
+      "alternate_bf7420_mode_tested": false
+    },
+    "call_report": {
+      "direct_rows_checked": 6,
+      "failed": 0,
+      "indirect_rows_not_verified": 1
+    },
+    "combined_build": "primary integrator separately",
+    "gameplay": false
+  },
+  "uncertainties": [
+    "Descriptive names are hypotheses, not recovered symbols",
+    "New EDX access ABI; not original ABI replacement",
+    "Individual dynamic definition implementations and full B0CA40 remain required services",
+    "Native CRT alternate-mode/error behavior and FH3 exceptions were not executed",
+    "No full model/gameplay validation"
+  ]
+}
