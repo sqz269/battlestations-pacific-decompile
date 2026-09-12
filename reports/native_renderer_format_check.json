@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "packet": "native_renderer_format_actual5",
+  "status": "complete_raw_source_worker_library_native_wrapper_COM_queries_and_strict_Win32_checked",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-renderer-format-actual5",
+  "branch": "agent/renderer-format-actual5",
+  "base_commit": "67201d716837fd9bd467c4cf65af0fa306dc1140",
+  "function": {
+    "address": "00b21ec0",
+    "native_end_exclusive": "00b21f0b",
+    "native_bytes": 75,
+    "native_instruction_count": 31,
+    "retained_ghidra_name": "BSP_D3D9Renderer_CheckDeviceFormat",
+    "name_is_hypothesis": true,
+    "cpp_symbol": "bsp::check_native_renderer_device_format_00b21ec0",
+    "source": "src/native_renderer_format_check.cpp",
+    "original_abi": "ECX actual renderer; stack adapter format, engine flags, original resource kind, check format; RET10h; AL signed-HRESULT>=0",
+    "source_interface": "ordinary MSVC Win32 C++ raw renderer plus four captured DWORD values",
+    "native_differential_fixture": true,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "native_evidence": {
+    "utc": "2026-09-12T16:50:30.977422+00:00",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "address": "00b21ec0",
+    "length": 75,
+    "end_exclusive": "00b21f0b",
+    "native_sha256": "9b2ccaf50ee22ad1d6492c4d632e345a808c1046e2c27774748e83501c78b881",
+    "live_disk_equal": true,
+    "live_cli": "python tools/bsp.py ghidra bytes 00B21EC0 --length 75",
+    "byte_query_sha256": "14152a705bf0ceb45cdc6f531fd1db7846b7554269c2bc4e2d7fe05214d167f2",
+    "original_call_operand_offset": 23,
+    "original_call_target": "00b20a80"
+  },
+  "instruction_schedule": [
+    {
+      "start": "00b21ec0",
+      "end_exclusive": "00b21ed6",
+      "behavior": "Capture flags and original kind, preserve ESI/EDI; address private pool/usage output argument slots"
+    },
+    {
+      "start": "00b21ed6",
+      "end_exclusive": "00b21edb",
+      "behavior": "Invoke complete actual B20A80 translation; pool output unused, original kind retained in EDI"
+    },
+    {
+      "start": "00b21edb",
+      "end_exclusive": "00b21efb",
+      "behavior": "Current renderer+1990, object table, method+28; original adapter/check formats and kind; translated usage; fixed adapter0/HAL1"
+    },
+    {
+      "start": "00b21efb",
+      "end_exclusive": "00b21f0b",
+      "behavior": "COM stdcall; signed HRESULT >= 0 boolean; restore EDI/ESI; RET10h"
+    }
+  ],
+  "dependency": {
+    "address": "00b20a80",
+    "symbol": "bsp::translate_native_resource_creation_flags_00b20a80",
+    "source": "src/native_resource_creation_flags.cpp",
+    "prior_evidence": "reports/native_resource_creation_flags_audit.json",
+    "linkage": "Actual complete source provider from same frozen worker bsp_core.lib; no semantic callback or stub"
+  },
+  "raw_domain": {
+    "renderer_extent": "1994h bytes",
+    "provider": "Current actual IDirect3D9 object/table/+28 stdcall method",
+    "DWORD_alignment": 4,
+    "renderer_writes": false,
+    "private_stack_aliases": false
+  },
+  "validation": {
+    "strict_build": {
+      "utc_start": "2026-09-12T16:50:40.814927+00:00",
+      "utc_end": "2026-09-12T16:56:59.152795+00:00",
+      "command": "pwsh -NoProfile -File scripts/build.ps1",
+      "returncode": 0,
+      "child_environment_keys_normalized": true,
+      "changed_prebuild_inputs": []
+    },
+    "ctests_passed": 2,
+    "native_seed_matches": 8,
+    "prebuild_input_pins": 1723,
+    "probe": {
+      "utc": "2026-09-12T16:57:59.117202+00:00",
+      "elapsed_seconds": 0.13868550001643598,
+      "exit_code": 0,
+      "executable_sha256": "15cfcb6401c1e4adc55b890e50296a70a7d62d2f3c2777224816bcd0f0d93ebe",
+      "library_sha256": "fa972dc0bff41ea67519ae1d2a077cab225f1831ab3baf31c5e53f2c71a3662e",
+      "native_relocation": {
+        "offset": 23,
+        "width": 4,
+        "target": "translate_bridge, fixed actual source 00b20a80 provider"
+      },
+      "original_wrapper_bytes": 75,
+      "native_and_source_share_translator": true,
+      "abi_capture_rows": 8,
+      "actual_IDirect3D9_query_rows": 2
+    },
+    "compiled_function_bytes": 77,
+    "compiled_direct_call_relocations": 1,
+    "initial_probe_link_attempt": "The first probe used /MT against the /MD library and the linker rejected the runtime mismatch; preserved first-attempt log/cmd; corrected probe to /MD with no library/source rebuild",
+    "actual_provider_results": {
+      "DF16": {
+        "hresult": "8876086a",
+        "success": false
+      },
+      "D16": {
+        "hresult": "00000000",
+        "success": true
+      }
+    },
+    "probe_scope": "One local fixture: 8 COM capture rows compare all seven arguments, method, signed result, and unchanged renderer; 2 real local IDirect3D9 DF16/D16 queries compare native/source/direct API",
+    "probe_boundary": "Only original 75-byte wrapper executes; one call displacement goes to ABI bridge for shared actual source flags provider, not original translator bytes",
+    "original_game_executed": false,
+    "renderer_startup_wired": false
+  },
+  "source_pins": {
+    "include/bsp/native_renderer_format_check.hpp": {
+      "bytes": 1443,
+      "sha256": "d0165b331dc4274e735fe450a4a76ceb031d64937ace6b90614eb48a09da3f55"
+    },
+    "src/native_renderer_format_check.cpp": {
+      "bytes": 1452,
+      "sha256": "07512586ca32dd7ce87eb7137342fc13168969b526ebc5c21ffaafd80f236e26"
+    },
+    "include/bsp/native_resource_creation_flags.hpp": {
+      "bytes": 627,
+      "sha256": "0fe50fcb3fb45e422e20187e39b1a9dd9df39f4b7d1e4a0e8b256d47a6c09e0c"
+    },
+    "src/native_resource_creation_flags.cpp": {
+      "bytes": 1415,
+      "sha256": "1dcd17fcf4fa8dcf0b628b435e6e02e5bb8461ee2db26d2d61654c4ddfa2d82b"
+    }
+  },
+  "artifacts": {
+    "local_directory": "J:\\PROG\\battlestations-pacific-decompile-renderer-format-actual5\\local\\renderer_format_actual5",
+    "seal": {
+      "bytes": 5037,
+      "sha256": "d6e1f4c704c1728dc28bb982f22533a438acfbd07ec0b5681ef43848652ee9aa"
+    },
+    "sealed_files": 33,
+    "library": {
+      "bytes": 46677222,
+      "sha256": "fa972dc0bff41ea67519ae1d2a077cab225f1831ab3baf31c5e53f2c71a3662e"
+    },
+    "object": {
+      "bytes": 1061,
+      "sha256": "4fe706a683cb4a813168700bd5a9022f8013c8905d39804af892b735b7003739"
+    },
+    "flags_object": {
+      "bytes": 1136,
+      "sha256": "27497975a5b6994ea74665e3b83672a04b48e5efbf7d36174514438308ccb123"
+    },
+    "probe": {
+      "bytes": 12800,
+      "sha256": "15cfcb6401c1e4adc55b890e50296a70a7d62d2f3c2777224816bcd0f0d93ebe"
+    }
+  },
+  "integration": {
+    "required_CMake_source": "src/native_renderer_format_check.cpp",
+    "temporary_worker_registry_restored": true,
+    "worker_ghidra_mutations": false,
+    "shared_ledger_and_annotation_owner": "primary integrator",
+    "proposed_status": "complete_actual_storage_native_wrapper_COM_fixture_and_strict_Win32_checked",
+    "proposed_comment": "Complete B21EC0[75], end exclusive B21F0B. Native ECX raw renderer; stack adapter format, engine flags, original resource kind, check format; RET10h; AL=(signed HRESULT>=0). Full actual B20A80 outputs pool into private flags slot and usage into private kind slot while EDI retains original kind; unused pool. Current renderer+1990/current object table/+28 COM CheckDeviceFormat uses adapter0 HAL1 and caller formats/translated usage/original kind. New raw C++ source interface; not original caller ABI or gameplay proof. See docs/NATIVE_RENDERER_FORMAT_CHECK.md and reports/native_renderer_format_check.json."
+  }
+}
