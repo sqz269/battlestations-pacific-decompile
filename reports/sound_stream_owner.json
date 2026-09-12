@@ -1,0 +1,706 @@
+{
+  "packet": "orch4_sound_stream_owner_z",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "source": [
+    "include/bsp/sound_stream_owner.hpp",
+    "src/sound_stream_owner.cpp"
+  ],
+  "documentation": "docs/SOUND_STREAM_OWNER.md",
+  "routines": [
+    {
+      "address": "00a877d0",
+      "name": "BSP_SoundStream_Construct",
+      "coverage": "complete normal and native EH ordering in documented Win32 actual-storage and throwing-allocation domain",
+      "abi": "ECX actual54h; stack owned8h name and retained4h table; EAX this; RET0C",
+      "final_instruction": "00a87b2c",
+      "final_instruction_length": 3,
+      "end_exclusive": "00a87b2f"
+    },
+    {
+      "address": "00a87390",
+      "name": "BSP_SoundStream_Destroy",
+      "coverage": "complete normal and native EH ordering in documented Win32 actual-storage and throwing-allocation domain",
+      "abi": "ECX actual54h; RET",
+      "final_instruction": "00a874cd",
+      "final_instruction_length": 1,
+      "end_exclusive": "00a874ce"
+    },
+    {
+      "address": "00a87b30",
+      "name": "BSP_SoundStream_ScalarDelete",
+      "coverage": "complete normal and native EH ordering in documented Win32 actual-storage and throwing-allocation domain",
+      "abi": "ECX actual54h; stack flags low byte; EAX original pointer; RET4",
+      "final_instruction": "00a87b4b",
+      "final_instruction_length": 3,
+      "end_exclusive": "00a87b4e"
+    },
+    {
+      "address": "00a79150",
+      "name": "BSP_SoundStreamTable_Construct",
+      "coverage": "complete normal and native EH ordering in documented Win32 actual-storage and throwing-allocation domain",
+      "abi": "ECX actual20h; stack borrowed filename8h; EAX this; RET4",
+      "final_instruction": "00a791c4",
+      "final_instruction_length": 3,
+      "end_exclusive": "00a791c7"
+    },
+    {
+      "address": "00a86540",
+      "name": "BSP_SoundStreamControls_Reserve",
+      "coverage": "complete normal and native EH ordering in documented Win32 actual-storage and throwing-allocation domain",
+      "abi": "ECX actual0Ch vector; stack signed capacity; RET4",
+      "final_instruction": "00a865bf",
+      "final_instruction_length": 3,
+      "end_exclusive": "00a865c2"
+    },
+    {
+      "address": "00a868b0",
+      "name": "BSP_SoundStreamControls_Resize",
+      "coverage": "complete normal and native EH ordering in documented Win32 actual-storage and throwing-allocation domain",
+      "abi": "ECX actual0Ch vector; stack signed count; RET4",
+      "final_instruction": "00a8697d",
+      "final_instruction_length": 3,
+      "end_exclusive": "00a86980"
+    },
+    {
+      "address": "00a86990",
+      "name": "BSP_SoundStreamControls_Destroy",
+      "coverage": "complete normal and native EH ordering in documented Win32 actual-storage and throwing-allocation domain",
+      "abi": "ECX actual0Ch vector; RET",
+      "final_instruction": "00a869a6",
+      "final_instruction_length": 1,
+      "end_exclusive": "00a869a7"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00a87871",
+      "native": "0041dd40",
+      "caller": "00a877d0",
+      "contract": "Resize actual8h string with current source length, preserve1; RET8."
+    },
+    {
+      "address": "00a87888",
+      "native": "00bf7680",
+      "caller": "00a877d0",
+      "contract": "Copy current destination length, or extension current length+1, with current source/data; ADD ESP,0C."
+    },
+    {
+      "address": "00a8789b",
+      "native": "0041dd40",
+      "caller": "00a877d0",
+      "contract": "Resize actual8h string with current source length, preserve1; RET8."
+    },
+    {
+      "address": "00a878b0",
+      "native": "00bf7680",
+      "caller": "00a877d0",
+      "contract": "Copy current destination length, or extension current length+1, with current source/data; ADD ESP,0C."
+    },
+    {
+      "address": "00a878bf",
+      "native": "00bdf4c0",
+      "caller": "00a877d0",
+      "contract": "Resolve current actual+2C mutable name in live VFS; ignore AL; RET4."
+    },
+    {
+      "address": "00a878e1",
+      "native": "0041dd40",
+      "caller": "00a877d0",
+      "contract": "Resize actual8h string with current source length, preserve1; RET8."
+    },
+    {
+      "address": "00a878fc",
+      "native": "00bf7680",
+      "caller": "00a877d0",
+      "contract": "Copy current destination length, or extension current length+1, with current source/data; ADD ESP,0C."
+    },
+    {
+      "address": "00a87918",
+      "native": "00469840",
+      "caller": "00a877d0",
+      "contract": "Construct actual output substring, start0, count DWORD(current resolved length-4); RET0C."
+    },
+    {
+      "address": "00a8792e",
+      "native": "004261a0",
+      "caller": "00a877d0",
+      "contract": "Construct output from actual left substring and right extension; RET8."
+    },
+    {
+      "address": "00a8794a",
+      "native": "0041dd40",
+      "caller": "00a877d0",
+      "contract": "Resize actual8h string with current source length, preserve1; RET8."
+    },
+    {
+      "address": "00a87962",
+      "native": "00bf7680",
+      "caller": "00a877d0",
+      "contract": "Copy current destination length, or extension current length+1, with current source/data; ADD ESP,0C."
+    },
+    {
+      "address": "00a87982",
+      "native": "00419cc0",
+      "caller": "00a877d0",
+      "contract": "Resolve sized pool for captured data, current length+1, mode1; RET0C."
+    },
+    {
+      "address": "00a87989",
+      "native": "00bd1510",
+      "caller": "00a877d0",
+      "contract": "Return captured string block to resolved sized pool; thiscall/RET0C."
+    },
+    {
+      "address": "00a879a6",
+      "native": "00419cc0",
+      "caller": "00a877d0",
+      "contract": "Resolve sized pool for captured data, current length+1, mode1; RET0C."
+    },
+    {
+      "address": "00a879ad",
+      "native": "00bd1510",
+      "caller": "00a877d0",
+      "contract": "Return captured string block to resolved sized pool; thiscall/RET0C."
+    },
+    {
+      "address": "00a879c6",
+      "native": "00419cc0",
+      "caller": "00a877d0",
+      "contract": "Resolve sized pool for captured data, current length+1, mode1; RET0C."
+    },
+    {
+      "address": "00a879cd",
+      "native": "00bd1510",
+      "caller": "00a877d0",
+      "contract": "Return captured string block to resolved sized pool; thiscall/RET0C."
+    },
+    {
+      "address": "00a879f9",
+      "native": "IAT dword ptr [0x00ce221c] ",
+      "caller": "00a877d0",
+      "contract": "InterlockedIncrement of captured incoming table+4; stdcall RET4."
+    },
+    {
+      "address": "00a87a07",
+      "native": "IAT dword ptr [0x00ce2220] ",
+      "caller": "00a877d0",
+      "contract": "InterlockedDecrement of captured table+4; stdcall RET4."
+    },
+    {
+      "address": "00a87a18",
+      "native": "current actual object+vtable00",
+      "caller": "00a877d0",
+      "contract": "Dispatch CURRENT vtable slot0 after actual+4 InterlockedDecrement reaches0; ECX captured object, no stack arguments."
+    },
+    {
+      "address": "00a87a1e",
+      "native": "00bf681b",
+      "caller": "00a877d0",
+      "contract": "Throwing operator new20h; ADD ESP,4 immediately after CALL."
+    },
+    {
+      "address": "00a87a3a",
+      "native": "00a79150",
+      "caller": "00a877d0",
+      "contract": "Construct caller-allocated actual20h table from borrowed definition filename; RET4."
+    },
+    {
+      "address": "00a87a55",
+      "native": "IAT dword ptr [0x00ce2220] ",
+      "caller": "00a877d0",
+      "contract": "InterlockedDecrement of captured table+4; stdcall RET4."
+    },
+    {
+      "address": "00a87a66",
+      "native": "current actual object+vtable00",
+      "caller": "00a877d0",
+      "contract": "Dispatch CURRENT vtable slot0 after actual+4 InterlockedDecrement reaches0; ECX captured object, no stack arguments."
+    },
+    {
+      "address": "00a87a7e",
+      "native": "00a868b0",
+      "caller": "00a877d0",
+      "contract": "Resize actual0Ch control vector to stacked signed count; RET4."
+    },
+    {
+      "address": "00a87ac7",
+      "native": "00419cc0",
+      "caller": "00a877d0",
+      "contract": "Resolve sized pool for captured data, current length+1, mode1; RET0C."
+    },
+    {
+      "address": "00a87ace",
+      "native": "00bd1510",
+      "caller": "00a877d0",
+      "contract": "Return captured string block to resolved sized pool; thiscall/RET0C."
+    },
+    {
+      "address": "00a87aea",
+      "native": "00419cc0",
+      "caller": "00a877d0",
+      "contract": "Resolve sized pool for captured data, current length+1, mode1; RET0C."
+    },
+    {
+      "address": "00a87af1",
+      "native": "00bd1510",
+      "caller": "00a877d0",
+      "contract": "Return captured string block to resolved sized pool; thiscall/RET0C."
+    },
+    {
+      "address": "00a87b06",
+      "native": "IAT dword ptr [0x00ce2220] ",
+      "caller": "00a877d0",
+      "contract": "InterlockedDecrement of captured table+4; stdcall RET4."
+    },
+    {
+      "address": "00a87b16",
+      "native": "current actual object+vtable00",
+      "caller": "00a877d0",
+      "contract": "Dispatch CURRENT vtable slot0 after actual+4 InterlockedDecrement reaches0; ECX captured object, no stack arguments."
+    },
+    {
+      "address": "00a873c3",
+      "native": "00426500",
+      "caller": "00a87390",
+      "contract": "Construct actual18h diagnostic builder; EAX builder; RET."
+    },
+    {
+      "address": "00a873d8",
+      "native": "00bd1a60",
+      "caller": "00a87390",
+      "contract": "Append cStreamAudio destructor literal to builder; RET4."
+    },
+    {
+      "address": "00a873df",
+      "native": "00bd1a20",
+      "caller": "00a87390",
+      "contract": "Append current original name+24 to builder; RET4."
+    },
+    {
+      "address": "00a873ed",
+      "native": "00425f80",
+      "caller": "00a87390",
+      "contract": "Destroy diagnostic builder current string headers +10,+8,+0; RET; no sink."
+    },
+    {
+      "address": "00a873f4",
+      "native": "00a86bf0",
+      "caller": "00a87390",
+      "contract": "Required actual54h runtime stop; poll pending state, capture position, current channel stop/sound release, state reset; RET."
+    },
+    {
+      "address": "00a87400",
+      "native": "00a868b0",
+      "caller": "00a87390",
+      "contract": "Resize actual0Ch control vector to stacked signed count; RET4."
+    },
+    {
+      "address": "00a8740e",
+      "native": "00a868b0",
+      "caller": "00a87390",
+      "contract": "Resize actual0Ch control vector to stacked signed count; RET4."
+    },
+    {
+      "address": "00a87416",
+      "native": "00bf6989",
+      "caller": "00a87390",
+      "contract": "Returning free of current vector allocation; caller ADD ESP,4, including disk-recovered tails."
+    },
+    {
+      "address": "00a87b33",
+      "native": "00a87390",
+      "caller": "00a87b30",
+      "contract": "Destroy actual54h before conditional scalar free; RET."
+    },
+    {
+      "address": "00a87b40",
+      "native": "00bf65ac",
+      "caller": "00a87b30",
+      "contract": "Returning scalar free; ADD ESP,4 atA87B45."
+    },
+    {
+      "address": "00a791ae",
+      "native": "00a87060",
+      "caller": "00a79150",
+      "contract": "Load actual20h table from borrowed filename using existing scanner/string domain; RET4."
+    },
+    {
+      "address": "00a86561",
+      "native": "00bf55be",
+      "caller": "00a86540",
+      "contract": "Operator new[] thunk to throwing BF681B, size DWORD(capacity*12); ADD ESP,4 atA86568."
+    },
+    {
+      "address": "00a865ae",
+      "native": "00bf6989",
+      "caller": "00a86540",
+      "contract": "Returning free of current vector allocation; caller ADD ESP,4, including disk-recovered tails."
+    },
+    {
+      "address": "00a868be",
+      "native": "00a86540",
+      "caller": "00a868b0",
+      "contract": "Reserve actual0Ch vector to stacked signed count; RET4."
+    },
+    {
+      "address": "00a86995",
+      "native": "00a868b0",
+      "caller": "00a86990",
+      "contract": "Resize actual0Ch control vector to stacked signed count; RET4."
+    },
+    {
+      "address": "00a8699d",
+      "native": "00bf6989",
+      "caller": "00a86990",
+      "contract": "Returning free of current vector allocation; caller ADD ESP,4, including disk-recovered tails."
+    },
+    {
+      "address": "00588528",
+      "native": "00a877d0",
+      "caller": "005884a0",
+      "contract": "Allocate54h; copy current menu+40 as owned8h; null table4h; RET0C."
+    },
+    {
+      "address": "0052eeb5",
+      "native": "00a877d0",
+      "caller": "0052ee30",
+      "contract": "Allocate54h; copy current menu+48 as owned8h; null table4h; RET0C."
+    },
+    {
+      "address": "00a784ab",
+      "native": "00a877d0",
+      "caller": "00a783f0",
+      "contract": "Allocate54h; retain logical+28 before copying logical+10 to owned8h; RET0C; caller cleans pre-entry failure and raw allocation."
+    },
+    {
+      "address": "00a7960e",
+      "native": "00a79150",
+      "caller": "00a79480",
+      "contract": "Allocate20h; construct with borrowed temporary definition filename; RET4."
+    }
+  ],
+  "eh_maps": [
+    {
+      "owner": "00a877d0",
+      "handler": "00cb61ea",
+      "func_info": "00dec2e0",
+      "unwind_map": "00dec304",
+      "states": 13
+    },
+    {
+      "owner": "00a87390",
+      "handler": "00cb6127",
+      "func_info": "00dec240",
+      "unwind_map": "00dec264",
+      "states": 7
+    },
+    {
+      "owner": "00a79150",
+      "handler": "00cb4ef3",
+      "func_info": "00deade4",
+      "unwind_map": "00deadd4",
+      "states": 2
+    }
+  ],
+  "eh_steps": [
+    {
+      "owner": "00a877d0",
+      "state": 0,
+      "tail_site": "00cb6173",
+      "callee": "0052e020",
+      "next_state": -1,
+      "object": "incoming retained argument",
+      "kind": "tail_jump"
+    },
+    {
+      "owner": "00a877d0",
+      "state": 1,
+      "tail_site": "00cb617b",
+      "callee": "0041dd20",
+      "next_state": 0,
+      "object": "incoming name argument",
+      "kind": "tail_jump"
+    },
+    {
+      "owner": "00a877d0",
+      "state": 2,
+      "tail_site": "00cb6183",
+      "callee": "00bd30f0",
+      "next_state": 1,
+      "object": "stream root base",
+      "kind": "tail_jump"
+    },
+    {
+      "owner": "00a877d0",
+      "state": 3,
+      "tail_site": "00cb618e",
+      "callee": "0041dd20",
+      "next_state": 2,
+      "object": "stream+24",
+      "kind": "tail_jump"
+    },
+    {
+      "owner": "00a877d0",
+      "state": 4,
+      "tail_site": "00cb6199",
+      "callee": "0041dd20",
+      "next_state": 3,
+      "object": "stream+2C",
+      "kind": "tail_jump"
+    },
+    {
+      "owner": "00a877d0",
+      "state": 5,
+      "tail_site": "00cb61a4",
+      "callee": "0041dd20",
+      "next_state": 4,
+      "object": "stream+34",
+      "kind": "tail_jump"
+    },
+    {
+      "owner": "00a877d0",
+      "state": 6,
+      "tail_site": "00cb61af",
+      "callee": "0052e020",
+      "next_state": 5,
+      "object": "stream+3C",
+      "kind": "tail_jump"
+    },
+    {
+      "owner": "00a877d0",
+      "state": 7,
+      "tail_site": "00cb61ba",
+      "callee": "00a86990",
+      "next_state": 6,
+      "object": "stream+48",
+      "kind": "tail_jump"
+    },
+    {
+      "owner": "00a877d0",
+      "state": 8,
+      "tail_site": "00cb61c2",
+      "callee": "0041dd20",
+      "next_state": 7,
+      "object": "definition temporary",
+      "kind": "tail_jump"
+    },
+    {
+      "owner": "00a877d0",
+      "state": 9,
+      "tail_site": "00cb61ca",
+      "callee": "0041dd20",
+      "next_state": 8,
+      "object": "extension temporary",
+      "kind": "tail_jump"
+    },
+    {
+      "owner": "00a877d0",
+      "state": 10,
+      "tail_site": "00cb61d2",
+      "callee": "0041dd20",
+      "next_state": 9,
+      "object": "substring temporary",
+      "kind": "tail_jump"
+    },
+    {
+      "owner": "00a877d0",
+      "state": 11,
+      "tail_site": "00cb61da",
+      "callee": "0041dd20",
+      "next_state": 10,
+      "object": "concatenation temporary",
+      "kind": "tail_jump"
+    },
+    {
+      "owner": "00a877d0",
+      "state": 12,
+      "tail_site": "00cb61e3",
+      "callee": "00bf65ac",
+      "next_state": 8,
+      "object": "partial20h allocation; CALL, POP ECX, RET",
+      "kind": "call"
+    },
+    {
+      "owner": "00a87390",
+      "state": 0,
+      "tail_site": "00cb60e3",
+      "callee": "00bd30f0",
+      "next_state": -1,
+      "object": "root",
+      "kind": "tail_jump"
+    },
+    {
+      "owner": "00a87390",
+      "state": 1,
+      "tail_site": "00cb60ee",
+      "callee": "0041dd20",
+      "next_state": 0,
+      "object": "+24",
+      "kind": "tail_jump"
+    },
+    {
+      "owner": "00a87390",
+      "state": 2,
+      "tail_site": "00cb60f9",
+      "callee": "0041dd20",
+      "next_state": 1,
+      "object": "+2C",
+      "kind": "tail_jump"
+    },
+    {
+      "owner": "00a87390",
+      "state": 3,
+      "tail_site": "00cb6104",
+      "callee": "0041dd20",
+      "next_state": 2,
+      "object": "+34",
+      "kind": "tail_jump"
+    },
+    {
+      "owner": "00a87390",
+      "state": 4,
+      "tail_site": "00cb610f",
+      "callee": "0052e020",
+      "next_state": 3,
+      "object": "+3C",
+      "kind": "tail_jump"
+    },
+    {
+      "owner": "00a87390",
+      "state": 5,
+      "tail_site": "00cb611a",
+      "callee": "00a86990",
+      "next_state": 4,
+      "object": "+48",
+      "kind": "tail_jump"
+    },
+    {
+      "owner": "00a87390",
+      "state": 6,
+      "tail_site": "00cb6122",
+      "callee": "00425f80",
+      "next_state": 5,
+      "object": "diagnostic builder",
+      "kind": "tail_jump"
+    },
+    {
+      "owner": "00a79150",
+      "state": 0,
+      "tail_site": "00cb4ee3",
+      "callee": "00bd30f0",
+      "next_state": -1,
+      "object": "root",
+      "kind": "tail_jump"
+    },
+    {
+      "owner": "00a79150",
+      "state": 1,
+      "tail_site": "00cb4eee",
+      "callee": "00a790f0",
+      "next_state": 0,
+      "object": "table vector+8",
+      "kind": "tail_jump"
+    }
+  ],
+  "disk_tail_calls": [
+    {
+      "tail_site": "00a8742e",
+      "callee": "dword ptr [0xce2220]",
+      "owner": "00a87390",
+      "evidence": "Disk .text bytes past current Ghidra body endA8741A; full RET A874CD len1."
+    },
+    {
+      "tail_site": "00a8743e",
+      "callee": "eax",
+      "owner": "00a87390",
+      "evidence": "Disk .text bytes past current Ghidra body endA8741A; full RET A874CD len1."
+    },
+    {
+      "tail_site": "00a8745d",
+      "callee": "00419cc0",
+      "owner": "00a87390",
+      "evidence": "Disk .text bytes past current Ghidra body endA8741A; full RET A874CD len1."
+    },
+    {
+      "tail_site": "00a87464",
+      "callee": "00bd1510",
+      "owner": "00a87390",
+      "evidence": "Disk .text bytes past current Ghidra body endA8741A; full RET A874CD len1."
+    },
+    {
+      "tail_site": "00a8747f",
+      "callee": "00419cc0",
+      "owner": "00a87390",
+      "evidence": "Disk .text bytes past current Ghidra body endA8741A; full RET A874CD len1."
+    },
+    {
+      "tail_site": "00a87486",
+      "callee": "00bd1510",
+      "owner": "00a87390",
+      "evidence": "Disk .text bytes past current Ghidra body endA8741A; full RET A874CD len1."
+    },
+    {
+      "tail_site": "00a874a1",
+      "callee": "00419cc0",
+      "owner": "00a87390",
+      "evidence": "Disk .text bytes past current Ghidra body endA8741A; full RET A874CD len1."
+    },
+    {
+      "tail_site": "00a874a8",
+      "callee": "00bd1510",
+      "owner": "00a87390",
+      "evidence": "Disk .text bytes past current Ghidra body endA8741A; full RET A874CD len1."
+    },
+    {
+      "tail_site": "00a874b7",
+      "callee": "00bd30f0",
+      "owner": "00a87390",
+      "evidence": "Disk .text bytes past current Ghidra body endA8741A; full RET A874CD len1."
+    }
+  ],
+  "corrections": [
+    {
+      "was": "A877D0 untyped constructor and semantic-layout assumptions",
+      "evidence": "A78475..A784AB producer; A877D0 fields and A87B2C RET0C; DEC304 consumes arguments",
+      "is": "actual54h, by-value owned8h name plus retained4h table, RET0C"
+    },
+    {
+      "was": "Potential inference that +34 begins a vector and +4C/+50 are references",
+      "evidence": "A87835..A87858 stores; CB619E/CB61A9/CB61B4 cleanup addresses and A87A72..A87A7E",
+      "is": "+34 is a third8h string, +3C retained table, +48 control vector; +10 unwritten"
+    },
+    {
+      "was": "A87390 stored body endsA8741A; A86990 endsA869A1; reserve/scalar interior gaps after free",
+      "evidence": "disk A8741B..A874CD, A869A2..A869A6, A865B3..A865BC, A87B45..A87B47",
+      "is": "Full endsA874CE andA869A7; reserve publishes new pointer/capacity; scalar restores stack"
+    },
+    {
+      "was": "Normal destructor applied to constructor failure would stop FMOD and duplicate ownership cleanup",
+      "evidence": "DEC304 versus DEC264; no stop funclet in ctor map",
+      "is": "native constructor member/argument map distinct from destructor stop and member EH"
+    }
+  ],
+  "boundaries": [
+    "No injected thiscall/SEH replacement or game validation.",
+    "Existing scanner value projection, native post-open scanner leak and reserve prefix leak inherited.",
+    "Required live VFS resolve/runtime stop and current zero-reference dispatch; no default fallback.",
+    "Allocator BF55BE->BF681B is throwing; native null-new branches unreachable in supplied domain.",
+    "Original signed/DWORD address wrap and 16-bit control-zero index retained; invalid storage not made safe."
+  ],
+  "verification": {
+    "build": "scripts/build.ps1 Release MSVC Win32 passed; MSBUILDDISABLENODEREUSE=1",
+    "seed_verification": "8 seeds match installed disk bytes",
+    "ctest": "2/2 passed: reconstructed_math and native_math_differential; these are existing math checks, not stream differential tests",
+    "local_probe": "Ignored local/stream_owner_probe.cpp, /W4 /WX /MD /MANIFEST:EMBED; 8 injected string allocation failures, successful supplied-table construction followed by throwing stop unwind, null-table scanner-construction failure, preserved stream+10 and control+8, forward reserve preservation; passed",
+    "probe_log": "local/stream_owner_probe.log",
+    "probe_source_sha256": "3a78c75d2833b7246320db6b8ad3d18c12a0fb4f9e5fa56a6b102388bdd022f0",
+    "probe_log_sha256": "e1f86f943f76a02089d718cc39bba7ee9c90cc587cfeaab16bb7a09fbf9742f9",
+    "source_sha256": "f09f506eb252ca0c02c5c795721b4bc783410fb864e316a75b898736c1b6b7ca",
+    "report_calls": "44 direct call rows checked, 0 failed; 7 indirect rows explicitly separate; 22 EH funclets and 9 disk-tail calls separately recorded",
+    "game_validation": false,
+    "original_abi_replacement": false,
+    "ghidra_mutations": false
+  }
+}
