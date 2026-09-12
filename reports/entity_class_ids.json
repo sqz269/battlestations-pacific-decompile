@@ -1,0 +1,1709 @@
+{
+ "packet": "cc2_class_id_table",
+ "owner": "agent/cc2-class-id-table",
+ "program": "/battlestationspacific.exe",
+ "summary": "The entity class-id space: 87 compiled class tests decoded from .text, the id -> parent tree, and the id -> class name map.",
+ "class_ids": [
+  {
+   "id": "00",
+   "name": null,
+   "parent": null,
+   "ancestors": [
+    "00"
+   ],
+   "class_test": "0042b8f0",
+   "vtables": [
+    "00d19120",
+    "00d19500"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "01",
+   "name": null,
+   "parent": "00",
+   "ancestors": [
+    "01",
+    "00"
+   ],
+   "class_test": "0047f190",
+   "vtables": [
+    "00ce8bd0",
+    "00ce8d68",
+    "00d192e0"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "02",
+   "name": null,
+   "parent": "01",
+   "ancestors": [
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "004f1750",
+   "vtables": [
+    "00d03e80"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "03",
+   "name": null,
+   "parent": "01",
+   "ancestors": [
+    "03",
+    "01",
+    "00"
+   ],
+   "class_test": "00888ea0",
+   "vtables": [
+    "00d11138"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "04",
+   "name": null,
+   "parent": "02",
+   "ancestors": [
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "006d1610",
+   "vtables": [
+    "00d0df70"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "05",
+   "name": null,
+   "parent": "04",
+   "ancestors": [
+    "05",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "006d1650",
+   "vtables": [
+    "00d1a698"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "06",
+   "name": null,
+   "parent": "05",
+   "ancestors": [
+    "06",
+    "05",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "006dfe50",
+   "vtables": [
+    "00d09678"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "07",
+   "name": "MDestroyer",
+   "parent": "06",
+   "ancestors": [
+    "07",
+    "06",
+    "05",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "006fe530",
+   "vtables": [
+    "00cfc3d0"
+   ],
+   "name_evidence": "node+scene",
+   "creator": "006FE590 / DestroyerGen"
+  },
+  {
+   "id": "08",
+   "name": "MSubmarine",
+   "parent": "06",
+   "ancestors": [
+    "08",
+    "06",
+    "05",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "00853050",
+   "vtables": [
+    "00d0bf80"
+   ],
+   "name_evidence": "node+scene",
+   "creator": "008531A0 / SubmarineGen"
+  },
+  {
+   "id": "09",
+   "name": "MMothership",
+   "parent": "06",
+   "ancestors": [
+    "09",
+    "06",
+    "05",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "00758510",
+   "vtables": [
+    "00d01630"
+   ],
+   "name_evidence": "node+scene",
+   "creator": "00758D30 / MotherShipGen"
+  },
+  {
+   "id": "0A",
+   "name": "MCruiser",
+   "parent": "06",
+   "ancestors": [
+    "0A",
+    "06",
+    "05",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "006fb3d0",
+   "vtables": [
+    "00cfb738"
+   ],
+   "name_evidence": "node",
+   "creator": "006FB430"
+  },
+  {
+   "id": "0B",
+   "name": "MCargo",
+   "parent": "06",
+   "ancestors": [
+    "0B",
+    "06",
+    "05",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "006eb230",
+   "vtables": [
+    "00cfa778"
+   ],
+   "name_evidence": "node",
+   "creator": "006EB290"
+  },
+  {
+   "id": "0C",
+   "name": "MLandingShip",
+   "parent": "06",
+   "ancestors": [
+    "0C",
+    "06",
+    "05",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "0074bc60",
+   "vtables": [
+    "00cffa30"
+   ],
+   "name_evidence": "node+scene",
+   "creator": "0074BE00 / LandingShipGen"
+  },
+  {
+   "id": "0D",
+   "name": "MBattleship",
+   "parent": "06",
+   "ancestors": [
+    "0D",
+    "06",
+    "05",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "006dfe90",
+   "vtables": [
+    "00cf90b0"
+   ],
+   "name_evidence": "node",
+   "creator": "006DFEF0"
+  },
+  {
+   "id": "0E",
+   "name": "MTorpedoBoat",
+   "parent": "06",
+   "ancestors": [
+    "0E",
+    "06",
+    "05",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "00857dc0",
+   "vtables": [
+    "00d0c648"
+   ],
+   "name_evidence": "node+scene",
+   "creator": "00857E20 / TBoatGen"
+  },
+  {
+   "id": "0F",
+   "name": null,
+   "parent": "05",
+   "ancestors": [
+    "0F",
+    "05",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "0074e400",
+   "vtables": [
+    "00d05f20"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "10",
+   "name": "MPlaneBomber",
+   "parent": "0F",
+   "ancestors": [
+    "10",
+    "0F",
+    "05",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "007d77f0",
+   "vtables": [
+    "00d06638"
+   ],
+   "name_evidence": "node",
+   "creator": "007D7850"
+  },
+  {
+   "id": "11",
+   "name": "MPlaneTorpedoBomber",
+   "parent": "0F",
+   "ancestors": [
+    "11",
+    "0F",
+    "05",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "009535c0",
+   "vtables": [
+    "00d1a000"
+   ],
+   "name_evidence": "node",
+   "creator": "009564E0"
+  },
+  {
+   "id": "12",
+   "name": "MPlaneDiveBomber",
+   "parent": "0F",
+   "ancestors": [
+    "12",
+    "0F",
+    "05",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "00953530",
+   "vtables": [
+    "00d19d28"
+   ],
+   "name_evidence": "node",
+   "creator": "00956390"
+  },
+  {
+   "id": "13",
+   "name": "MPlaneFighter",
+   "parent": "0F",
+   "ancestors": [
+    "13",
+    "0F",
+    "05",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "007dda80",
+   "vtables": [
+    "00d06920"
+   ],
+   "name_evidence": "node",
+   "creator": "007DDAE0"
+  },
+  {
+   "id": "14",
+   "name": "MReconPlane",
+   "parent": "0F",
+   "ancestors": [
+    "14",
+    "0F",
+    "05",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "0074e480",
+   "vtables": [
+    "00d00070"
+   ],
+   "name_evidence": "node",
+   "creator": "008091D0"
+  },
+  {
+   "id": "15",
+   "name": "MSmallReconPlane",
+   "parent": "14",
+   "ancestors": [
+    "15",
+    "14",
+    "0F",
+    "05",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "0084c9f0",
+   "vtables": [
+    "00d0ba80"
+   ],
+   "name_evidence": "node",
+   "creator": "0084CA50"
+  },
+  {
+   "id": "16",
+   "name": "MLargeReconPlane",
+   "parent": "14",
+   "ancestors": [
+    "16",
+    "14",
+    "0F",
+    "05",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "0074e4e0",
+   "vtables": [
+    "00d00308"
+   ],
+   "name_evidence": "node",
+   "creator": "0074E540"
+  },
+  {
+   "id": "17",
+   "name": "MPlaneKamikaze",
+   "parent": "0F",
+   "ancestors": [
+    "17",
+    "0F",
+    "05",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "009534a0",
+   "vtables": [
+    "00d1a2d8"
+   ],
+   "name_evidence": "node",
+   "creator": "00956240"
+  },
+  {
+   "id": "18",
+   "name": "PlaneSquadronGen",
+   "parent": "02",
+   "ancestors": [
+    "18",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "007efb00",
+   "vtables": [
+    "00d087c0"
+   ],
+   "name_evidence": "scene",
+   "creator": "004F0AD0"
+  },
+  {
+   "id": "19",
+   "name": "MLandVehicle",
+   "parent": "05",
+   "ancestors": [
+    "19",
+    "05",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "0074dd90",
+   "vtables": [
+    "00cffde0"
+   ],
+   "name_evidence": "node",
+   "creator": "0074DF10"
+  },
+  {
+   "id": "1A",
+   "name": "LandConvoy",
+   "parent": "02",
+   "ancestors": [
+    "1A",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "004f2560",
+   "vtables": [
+    "00cea570"
+   ],
+   "name_evidence": "scene",
+   "creator": "004F2700"
+  },
+  {
+   "id": "1B",
+   "name": "MLandFort",
+   "parent": "05",
+   "ancestors": [
+    "1B",
+    "05",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "006f5890",
+   "vtables": [
+    "00cff3f8"
+   ],
+   "name_evidence": "node+scene",
+   "creator": "00747000 / LandFort"
+  },
+  {
+   "id": "1C",
+   "name": "MCommandBuilding",
+   "parent": "1B",
+   "ancestors": [
+    "1C",
+    "1B",
+    "05",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "006f58e0",
+   "vtables": [
+    "00cfb028"
+   ],
+   "name_evidence": "node+scene",
+   "creator": "006F5C10 / CommandBuilding"
+  },
+  {
+   "id": "1D",
+   "name": "LandingPoint",
+   "parent": "01",
+   "ancestors": [
+    "1D",
+    "01",
+    "00"
+   ],
+   "class_test": "004e9620",
+   "vtables": [
+    "00ce90e0"
+   ],
+   "name_evidence": "scene",
+   "creator": "004E9D40"
+  },
+  {
+   "id": "1E",
+   "name": null,
+   "parent": "04",
+   "ancestors": [
+    "1E",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "006e3d10",
+   "vtables": [
+    "00cfdc58"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "20",
+   "name": null,
+   "parent": "1E",
+   "ancestors": [
+    "20",
+    "1E",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "006e3d50",
+   "vtables": [
+    "00cfe0a8"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "21",
+   "name": "MRFSGun",
+   "parent": "20",
+   "ancestors": [
+    "21",
+    "20",
+    "1E",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "00730bd0",
+   "vtables": [
+    "00cfe308"
+   ],
+   "name_evidence": "node",
+   "creator": "00731C80"
+  },
+  {
+   "id": "22",
+   "name": null,
+   "parent": "20",
+   "ancestors": [
+    "22",
+    "20",
+    "1E",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "006fde40",
+   "vtables": [
+    "00cfbd20"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "23",
+   "name": "MRTGun",
+   "parent": "22",
+   "ancestors": [
+    "23",
+    "22",
+    "20",
+    "1E",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "00730ed0",
+   "vtables": [
+    "00cfe548"
+   ],
+   "name_evidence": "node",
+   "creator": "00731D50"
+  },
+  {
+   "id": "24",
+   "name": "MSTGun",
+   "parent": "22",
+   "ancestors": [
+    "24",
+    "22",
+    "20",
+    "1E",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "006fdf20",
+   "vtables": [
+    "00cfbf58"
+   ],
+   "name_evidence": "node",
+   "creator": "00731E20"
+  },
+  {
+   "id": "25",
+   "name": "MBombPlatform",
+   "parent": "20",
+   "ancestors": [
+    "25",
+    "20",
+    "1E",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "006e3e10",
+   "vtables": [
+    "00cf96a8"
+   ],
+   "name_evidence": "node",
+   "creator": "006E08F0"
+  },
+  {
+   "id": "26",
+   "name": "MMultipleBombPlatform",
+   "parent": "25",
+   "ancestors": [
+    "26",
+    "25",
+    "20",
+    "1E",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "006e43b0",
+   "vtables": [
+    "00cf9918"
+   ],
+   "name_evidence": "node",
+   "creator": "006E0970"
+  },
+  {
+   "id": "27",
+   "name": "MDepthChargeLauncher",
+   "parent": "24",
+   "ancestors": [
+    "27",
+    "24",
+    "22",
+    "20",
+    "1E",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "006fe050",
+   "vtables": [
+    "00cfc190"
+   ],
+   "name_evidence": "node",
+   "creator": "006FE390"
+  },
+  {
+   "id": "28",
+   "name": "MCatapult",
+   "parent": "20",
+   "ancestors": [
+    "28",
+    "20",
+    "1E",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "006ec7b0",
+   "vtables": [
+    "00cfaab8"
+   ],
+   "name_evidence": "node",
+   "creator": "006EC860"
+  },
+  {
+   "id": "29",
+   "name": "MBullet",
+   "parent": "00",
+   "ancestors": [
+    "29",
+    "00"
+   ],
+   "class_test": "006e7c00",
+   "vtables": [
+    "00cf9df0"
+   ],
+   "name_evidence": "node",
+   "creator": "006E8430, also the MArtilleryBullet record"
+  },
+  {
+   "id": "2A",
+   "name": "MBomb",
+   "parent": "02",
+   "ancestors": [
+    "2A",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "006e2790",
+   "vtables": [
+    "00cf9438"
+   ],
+   "name_evidence": "node",
+   "creator": "006E2C00"
+  },
+  {
+   "id": "2B",
+   "name": "MTorpedo",
+   "parent": "2A",
+   "ancestors": [
+    "2B",
+    "2A",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "00856260",
+   "vtables": [
+    "00d0c3e8"
+   ],
+   "name_evidence": "node",
+   "creator": "00856420"
+  },
+  {
+   "id": "2C",
+   "name": "MDepthCharge",
+   "parent": "2A",
+   "ancestors": [
+    "2C",
+    "2A",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "006fca80",
+   "vtables": [
+    "00cfba80"
+   ],
+   "name_evidence": "node",
+   "creator": "006FD210"
+  },
+  {
+   "id": "2D",
+   "name": null,
+   "parent": "2A",
+   "ancestors": [
+    "2D",
+    "2A",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "006fe9f0",
+   "vtables": [
+    "00cfc910"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "2E",
+   "name": "MDummyTarget",
+   "parent": "2D",
+   "ancestors": [
+    "2E",
+    "2D",
+    "2A",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "00700ac0",
+   "vtables": [
+    "00cfd018"
+   ],
+   "name_evidence": "node",
+   "creator": "00700DD0"
+  },
+  {
+   "id": "2F",
+   "name": "MDummyKamikazePlane",
+   "parent": "2D",
+   "ancestors": [
+    "2F",
+    "2D",
+    "2A",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "006fea30",
+   "vtables": [
+    "00cfc698"
+   ],
+   "name_evidence": "node",
+   "creator": "006FF100"
+  },
+  {
+   "id": "30",
+   "name": "MDummySubmarine",
+   "parent": "2D",
+   "ancestors": [
+    "30",
+    "2D",
+    "2A",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "006ff8e0",
+   "vtables": [
+    "00cfcb48"
+   ],
+   "name_evidence": "node",
+   "creator": "006FFFE0"
+  },
+  {
+   "id": "31",
+   "name": "MParatrooper",
+   "parent": "2A",
+   "ancestors": [
+    "31",
+    "2A",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "007aba50",
+   "vtables": [
+    "00d05060"
+   ],
+   "name_evidence": "node",
+   "creator": "007AC4C0"
+  },
+  {
+   "id": "32",
+   "name": "MFlakBullet",
+   "parent": "29",
+   "ancestors": [
+    "32",
+    "29",
+    "00"
+   ],
+   "class_test": "0070cb80",
+   "vtables": [
+    "00cfd5d0"
+   ],
+   "name_evidence": "node",
+   "creator": "0070CC30"
+  },
+  {
+   "id": "33",
+   "name": "MRocket",
+   "parent": "2A",
+   "ancestors": [
+    "33",
+    "2A",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "0080acb0",
+   "vtables": [
+    "00d090e8"
+   ],
+   "name_evidence": "node",
+   "creator": "0080ADE0"
+  },
+  {
+   "id": "34",
+   "name": "MWaterMine",
+   "parent": "2A",
+   "ancestors": [
+    "34",
+    "2A",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "0085eb20",
+   "vtables": [
+    "00d0d130"
+   ],
+   "name_evidence": "node+scene",
+   "creator": "0085F310 / WaterMine"
+  },
+  {
+   "id": "35",
+   "name": null,
+   "parent": "05",
+   "ancestors": [
+    "35",
+    "05",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "007004b0",
+   "vtables": [
+    "00cfcd60"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "36",
+   "name": "Stationary",
+   "parent": "00",
+   "ancestors": [
+    "36",
+    "00"
+   ],
+   "class_test": "00748b40",
+   "vtables": [
+    "00cff678"
+   ],
+   "name_evidence": "scene",
+   "creator": "004F0BE0"
+  },
+  {
+   "id": "37",
+   "name": null,
+   "parent": "00",
+   "ancestors": [
+    "37",
+    "00"
+   ],
+   "class_test": "00470be0",
+   "vtables": [
+    "00ce6490"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "38",
+   "name": null,
+   "parent": "37",
+   "ancestors": [
+    "38",
+    "37",
+    "00"
+   ],
+   "class_test": "00479f60",
+   "vtables": [
+    "00ce6130"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "39",
+   "name": null,
+   "parent": "37",
+   "ancestors": [
+    "39",
+    "37",
+    "00"
+   ],
+   "class_test": "00472870",
+   "vtables": [
+    "00ce5b90"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "3A",
+   "name": null,
+   "parent": "37",
+   "ancestors": [
+    "3A",
+    "37",
+    "00"
+   ],
+   "class_test": "004af840",
+   "vtables": [
+    "00ce7008"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "3B",
+   "name": "Wreck",
+   "parent": "37",
+   "ancestors": [
+    "3B",
+    "37",
+    "00"
+   ],
+   "class_test": "004b1f40",
+   "vtables": [
+    "00ce71a8"
+   ],
+   "name_evidence": "scene",
+   "creator": "004F0CC0"
+  },
+  {
+   "id": "3C",
+   "name": null,
+   "parent": "37",
+   "ancestors": [
+    "3C",
+    "37",
+    "00"
+   ],
+   "class_test": "004740e0",
+   "vtables": [
+    "00ce5cf0"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "3D",
+   "name": "Cloud",
+   "parent": "37",
+   "ancestors": [
+    "3D",
+    "37",
+    "00"
+   ],
+   "class_test": "00476310",
+   "vtables": [
+    "00ce5e68"
+   ],
+   "name_evidence": "scene",
+   "creator": "004E9E40"
+  },
+  {
+   "id": "3E",
+   "name": null,
+   "parent": "37",
+   "ancestors": [
+    "3E",
+    "37",
+    "00"
+   ],
+   "class_test": "00470c10",
+   "vtables": [
+    "00ce5a20"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "3F",
+   "name": null,
+   "parent": "37",
+   "ancestors": [
+    "3F",
+    "37",
+    "00"
+   ],
+   "class_test": "004a7bc0",
+   "vtables": [
+    "00ce6ab0"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "40",
+   "name": null,
+   "parent": "37",
+   "ancestors": [
+    "40",
+    "37",
+    "00"
+   ],
+   "class_test": "004ac8e0",
+   "vtables": [
+    "00ce6e10"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "41",
+   "name": "NavPoint",
+   "parent": "01",
+   "ancestors": [
+    "41",
+    "01",
+    "00"
+   ],
+   "class_test": "004e6970",
+   "vtables": [
+    "00ce8550"
+   ],
+   "name_evidence": "scene",
+   "creator": "004E99B0"
+  },
+  {
+   "id": "42",
+   "name": "MovieCamPos",
+   "parent": "01",
+   "ancestors": [
+    "42",
+    "01",
+    "00"
+   ],
+   "class_test": "004e69c0",
+   "vtables": [
+    "00ce86d8"
+   ],
+   "name_evidence": "scene",
+   "creator": "004E9AE0"
+  },
+  {
+   "id": "43",
+   "name": "MovieCamLookat",
+   "parent": "01",
+   "ancestors": [
+    "43",
+    "01",
+    "00"
+   ],
+   "class_test": "004e6a10",
+   "vtables": [
+    "00ce8860"
+   ],
+   "name_evidence": "scene",
+   "creator": "004E9C10"
+  },
+  {
+   "id": "44",
+   "name": "Landscape",
+   "parent": "01",
+   "ancestors": [
+    "44",
+    "01",
+    "00"
+   ],
+   "class_test": "004f1360",
+   "vtables": [
+    "00cea090"
+   ],
+   "name_evidence": "scene",
+   "creator": "004F1460"
+  },
+  {
+   "id": "45",
+   "name": "MAirfield",
+   "parent": "05",
+   "ancestors": [
+    "45",
+    "05",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "006d20e0",
+   "vtables": [
+    "00cf8c08"
+   ],
+   "name_evidence": "node+scene",
+   "creator": "006D3110 / AirField"
+  },
+  {
+   "id": "46",
+   "name": "MShipyard",
+   "parent": "05",
+   "ancestors": [
+    "46",
+    "05",
+    "04",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "00846c00",
+   "vtables": [
+    "00d0b770"
+   ],
+   "name_evidence": "node+scene",
+   "creator": "00848380 / Shipyard"
+  },
+  {
+   "id": "47",
+   "name": "Path",
+   "parent": "01",
+   "ancestors": [
+    "47",
+    "01",
+    "00"
+   ],
+   "class_test": "00480930",
+   "vtables": [
+    "00ce6290"
+   ],
+   "name_evidence": "scene",
+   "creator": "004EA650"
+  },
+  {
+   "id": "48",
+   "name": null,
+   "parent": "00",
+   "ancestors": [
+    "48",
+    "00"
+   ],
+   "class_test": "0080f9a0",
+   "vtables": [
+    "00d092b8"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "49",
+   "name": null,
+   "parent": "02",
+   "ancestors": [
+    "49",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "007b3320",
+   "vtables": [
+    "00d054d0"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "4A",
+   "name": "CameraPath",
+   "parent": "01",
+   "ancestors": [
+    "4A",
+    "01",
+    "00"
+   ],
+   "class_test": "004e6920",
+   "vtables": [
+    "00ce8390"
+   ],
+   "name_evidence": "scene",
+   "creator": "004EA760"
+  },
+  {
+   "id": "4B",
+   "name": null,
+   "parent": "00",
+   "ancestors": [
+    "4B",
+    "00"
+   ],
+   "class_test": "00a31c60",
+   "vtables": [
+    "00d231a0"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "4C",
+   "name": null,
+   "parent": "00",
+   "ancestors": [
+    "4C",
+    "00"
+   ],
+   "class_test": "0042c010",
+   "vtables": [
+    "00ce3b28",
+    "00cf4410",
+    "00cf4930"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "4D",
+   "name": "SpawnPoint",
+   "parent": "02",
+   "ancestors": [
+    "4D",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "004f1800",
+   "vtables": [
+    "00cea218"
+   ],
+   "name_evidence": "scene",
+   "creator": "004F1A60"
+  },
+  {
+   "id": "4E",
+   "name": null,
+   "parent": "4C",
+   "ancestors": [
+    "4E",
+    "4C",
+    "00"
+   ],
+   "class_test": "004351e0",
+   "vtables": [
+    "00ce3e60",
+    "00ce3fd0"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "4F",
+   "name": null,
+   "parent": "56",
+   "ancestors": [
+    "56",
+    "4F",
+    "4C",
+    "00"
+   ],
+   "class_test": "006508b0",
+   "vtables": [
+    "00cf6250"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "50",
+   "name": null,
+   "parent": "56",
+   "ancestors": [
+    "56",
+    "50",
+    "4C",
+    "00"
+   ],
+   "class_test": "0064b720",
+   "vtables": [
+    "00cf5ce8"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "51",
+   "name": null,
+   "parent": "4C",
+   "ancestors": [
+    "51",
+    "4C",
+    "00"
+   ],
+   "class_test": "006051e0",
+   "vtables": [
+    "00cf4238"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "52",
+   "name": null,
+   "parent": "4C",
+   "ancestors": [
+    "52",
+    "4C",
+    "00"
+   ],
+   "class_test": "0078fac0",
+   "vtables": [
+    "00d044b8"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "53",
+   "name": null,
+   "parent": "4C",
+   "ancestors": [
+    "53",
+    "4C",
+    "00"
+   ],
+   "class_test": "005177d0",
+   "vtables": [
+    "00cec1f8"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "54",
+   "name": null,
+   "parent": "4C",
+   "ancestors": [
+    "54",
+    "4C",
+    "00"
+   ],
+   "class_test": "0079a380",
+   "vtables": [
+    "00d04750"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "55",
+   "name": null,
+   "parent": "4C",
+   "ancestors": [
+    "55",
+    "4C",
+    "00"
+   ],
+   "class_test": "0079d840",
+   "vtables": [
+    "00d04b58"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "56",
+   "name": null,
+   "parent": "4C",
+   "ancestors": [
+    "56",
+    "4C",
+    "00"
+   ],
+   "class_test": "00519380",
+   "vtables": [
+    "00cec440",
+    "00cec5f0"
+   ],
+   "name_evidence": null,
+   "creator": null
+  },
+  {
+   "id": "60",
+   "name": null,
+   "parent": "02",
+   "ancestors": [
+    "60",
+    "02",
+    "01",
+    "00"
+   ],
+   "class_test": "007810f0",
+   "vtables": [
+    "00d040b8"
+   ],
+   "name_evidence": null,
+   "creator": null
+  }
+ ],
+ "no_ghidra_function": [
+  {
+   "address": "0042b8f0",
+   "range": "0042b8f0-0042b8ff",
+   "read": "python tools/bsp.py ghidra bytes",
+   "note": "class test (vtable slot 5Ch); Ghidra has no function at this address"
+  },
+  {
+   "address": "0047f190",
+   "range": "0047f190-0047f1a7",
+   "read": "python tools/bsp.py ghidra bytes",
+   "note": "class test (vtable slot 5Ch); Ghidra has no function at this address"
+  },
+  {
+   "address": "00480930",
+   "range": "00480930-00480953",
+   "read": "python tools/bsp.py ghidra bytes",
+   "note": "class test (vtable slot 5Ch); Ghidra has no function at this address"
+  },
+  {
+   "address": "006d20e0",
+   "range": "006d20e0-006d2109",
+   "read": "python tools/bsp.py ghidra bytes",
+   "note": "class test (vtable slot 5Ch); Ghidra has no function at this address"
+  },
+  {
+   "address": "006e2790",
+   "range": "006e2790-006e27b4",
+   "read": "python tools/bsp.py ghidra bytes",
+   "note": "class test (vtable slot 5Ch); Ghidra has no function at this address"
+  },
+  {
+   "address": "006e3d50",
+   "range": "006e3d50-006e3d80",
+   "read": "python tools/bsp.py ghidra bytes",
+   "note": "class test (vtable slot 5Ch); Ghidra has no function at this address"
+  },
+  {
+   "address": "006fe050",
+   "range": "006fe050-006fe08c",
+   "read": "python tools/bsp.py ghidra bytes",
+   "note": "class test (vtable slot 5Ch); Ghidra has no function at this address"
+  },
+  {
+   "address": "0064b720",
+   "range": "0064b720-0064b747",
+   "read": "python tools/bsp.py ghidra bytes",
+   "note": "class test (vtable slot 5Ch); Ghidra has no function at this address"
+  },
+  {
+   "address": "006508b0",
+   "range": "006508b0-006508d7",
+   "read": "python tools/bsp.py ghidra bytes",
+   "note": "class test (vtable slot 5Ch); Ghidra has no function at this address"
+  }
+ ],
+ "corrections": [
+  {
+   "target": "docs/GUN_CLASS_FAMILY.md",
+   "was": "MMultipleBombPlatform 21h, MRFSGun 23h, MRTGun 24h, MSTGun 27h",
+   "is": "MRFSGun 21h, MRTGun 23h, MSTGun 24h, MBombPlatform 25h, MMultipleBombPlatform 26h, MDepthChargeLauncher 27h, MCatapult 28h",
+   "evidence": "The class-descriptor record's creator is the dword IMMEDIATELY BEFORE the inline name, not the one before the next name. Seven scene-table ids settle the direction: MLandFort 1Bh, MCommandBuilding 1Ch, MWaterMine 34h, MAirfield 45h, MShipyard 46h, LandConvoy 1Ah, PlaneSquadronGen 18h all match the literal PUSH pairs of 004F2800 under this direction and are off by one record under the other. 20h stays the base gun, so vtable[5Ch](20h) is unaffected."
+  },
+  {
+   "target": "docs/UNIT_INSTANCE_LAYOUT.md",
+   "was": "+C4h is written once per level with the level's own depth",
+   "is": "+C4h holds the most derived class id; depth and id merely coincide on the ship chain",
+   "evidence": "The destroyer's levels write 01, 02, 04, 05, 06, 07 and skip 03, which is its own class (test 00888EA0, vtable 00D11138, parent 01). The chain compiled into 006FE530 is 07, 06, 05, 04, 02, 01, 0 with no 03."
+  },
+  {
+   "target": "docs/SCENE_ENTITY_FACTORY.md",
+   "was": "19h is not a registered class id at all, a leftover of a class removed before release",
+   "is": "19h is MLandVehicle, a live class with its own test 0074DD90 and vtable 00CFFDE0; it is simply not scene-registered, because land vehicles come from LandConvoy",
+   "evidence": "Class-descriptor record MLandVehicle at 00D1AA44, creator 0074DF10, whose constructor chain stamps 04h, 05h, 19h. 1Fh is the id with no attestation at all: no class test and no constructor stamp."
+  },
+  {
+   "target": "ledger 007004B0",
+   "was": "BSP_DummyTargetInstance_IsKindOf (packet cc_unit_lists)",
+   "is": "BSP_ClassId35_IsKindOf",
+   "evidence": "The chain at 007004B0 is 35h, 05h, 04h, 02h, 01h, 0, a unit subclass under 05h; that packet's own evidence text already recorded it. The dummy-target class is 2Eh and its test is 00700AC0 with chain 2Eh, 2Dh, 2Ah, 02h, 01h, 0."
+  }
+ ],
+ "routines": [],
+ "is_kind_of_rule": {
+  "form": "query on the owning class's compiled ancestor chain, OR query == the dword at +C4h",
+  "not": [
+   "equality",
+   "range test",
+   "run-time chain walk"
+  ],
+  "abi": "__thiscall, one stack argument, RET 4, returns 0 or 1 in EAX",
+  "vtable_slot": "5Ch",
+  "field": "+C4h, the most derived class id",
+  "inherited_case": "SimpleEffect 5Bh (vtable 00CE8BD0) and PeriodicEffect 5Ch (00CE8D68) install class 01h's test 0047F190; 00D19500 installs the root's 0042B8F0. Their own identity is answered only by the +C4h compare."
+ },
+ "kind_to_class_id": {
+  "rule": "entity-lookup bucket index = class id - 6",
+  "evidence": "0088B1D8 MOV EBX,0FFFFFFFAh for the first bucket, 0088B2CA CMP EBX,5Bh for the last, so the array spans class ids 0..60h; 60h is the highest id with a class test (007810F0)."
+ },
+ "coverage": {
+  "ids_0_to_47h": 72,
+  "with_class_test": 71,
+  "named": 50,
+  "unattested": [
+   "1F"
+  ],
+  "unnamed": [
+   "00",
+   "01",
+   "02",
+   "03",
+   "04",
+   "05",
+   "06",
+   "0F",
+   "1E",
+   "20",
+   "22",
+   "2D",
+   "35",
+   "37",
+   "38",
+   "39",
+   "3A",
+   "3C",
+   "3E",
+   "3F",
+   "40"
+  ],
+  "class_tests_total": 87,
+  "note": "complete for the id -> parent tree in 00h..47h; partial for names (abstract bases have no factory record and therefore no literal)"
+ },
+ "ledger_names": {
+  "added": 79,
+  "evidence_appended_to_existing": 8,
+  "convention": "BSP_<ClassName>_IsKindOf, or BSP_ClassId<XX>_IsKindOf when the id is unnamed"
+ },
+ "provisional": [
+  "MPlaneDiveBomber 12h, MPlaneTorpedoBomber 11h, MPlaneKamikaze 17h: the set is certain, the assignment within it rests on a per-record creator offset of 298h in the three large plane descriptors at 00D19C98..00D1A520.",
+  "4Eh is carried by two class tests 004351E0 and 00435360 with two vtables 00CE3E60 and 00CE3FD0; one class with two vtables or two classes sharing an id was not decided.",
+  "MKamikazePlane (00CFA4A0) and MArtilleryBullet (00CFA464) were not paired with an id."
+ ],
+ "tool_problems": [
+  "bsp.py ledger add-name --append-evidence also updates the name when it differs, so a second pass over addresses that already succeeded both duplicated their evidence text and renamed eight records another packet owned. The duplicate segments were removed and one name (0074E400, BSP_PlaneInstance_IsKindOf) was restored.",
+  "ghidra xrefs under-reports immediate operands, so the 92 +C4h stamps, the 87 class tests and the vtable slot 5Ch pointers were all found by scanning the PE directly with capstone."
+ ]
+}
