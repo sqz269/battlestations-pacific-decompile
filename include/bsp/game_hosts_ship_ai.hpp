@@ -154,6 +154,28 @@ struct GameShipAiRow {
     unsigned long long path_plan_accepts{0}; // 009E3780 calls that answered true
     int path_plan_state{0};                  // plan+1Ch after the last request
     int path_plan_nodes{0};                  // plan+34h
+    // Milestone 2q: 009EC680's own ticks through the 009ED4E4 arm, the swap at
+    // 009ED5BD and what 009E3C00 handed back.
+    unsigned long long path_search_ticks{0};
+    unsigned long long path_plan_swaps{0};
+    unsigned long long path_points{0};       // 009E3C00 calls that produced a point
+    unsigned long long path_corner_arms{0};  // 009E3F1A, the unprojected arm
+    unsigned long long nav_output_blocks{0}; // 009EE671 bodies
+    unsigned long long nav_bearings{0};      // 009EE813, the bearing was taken
+    float path_point_x{0.0f};                // record+8h
+    float path_point_z{0.0f};                // record+0Ch
+    float nav_distance_32c{0.0f};            // blk+32Ch after the last block
+    float nav_heading_324{0.0f};             // blk+324h
+    // Milestone 2q: the completion round trip this unit's state step started.
+    unsigned long long command_events{0};    // 009E595C, 00984300
+    unsigned long long command_endings{0};   // 009E5997 / 009E88C1, 0071E430
+    unsigned long long command_completions{0};  // of those, 00720850 advanced
+    // Milestone 2q: 009EEAAB..009EF226, the navigation arm's tail.
+    unsigned long long arm_tails{0};         // bodies
+    unsigned long long arm_tail_latched{0};  // left blk+35Ch non-zero
+    unsigned long long arm_tail_stops{0};    // took the 009EEFD3 stop request
+    unsigned long long arrival_latches{0};   // 009EF034 set blk+2FEh
+    int latched_direction_35c{0};            // blk+35Ch after the last tail
     unsigned long long approach_frames{0};   // 009F1BC0 bodies
     float approach_point_x{0.0f};            // nested+1228h
     float approach_point_z{0.0f};            // nested+1230h
@@ -228,6 +250,22 @@ struct GameShipAiSummary {
     unsigned long long sector_refreshes{0};
     unsigned long long middle_runs{0};
     unsigned long long substate_concrete{0};
+    // Milestone 2q.
+    unsigned long long path_search_ticks{0};
+    unsigned long long path_plan_swaps{0};
+    unsigned long long path_points{0};
+    unsigned long long path_corner_arms{0};
+    unsigned long long nav_output_blocks{0};
+    unsigned long long nav_bearings{0};
+    std::size_t units_with_path_point{0};
+    unsigned long long command_events{0};
+    unsigned long long command_event_callbacks{0};
+    unsigned long long command_endings{0};
+    unsigned long long command_completions{0};
+    unsigned long long arm_tails{0};
+    unsigned long long arm_tail_latched{0};
+    unsigned long long arm_tail_stops{0};
+    unsigned long long arrival_latches{0};
     std::size_t units_accepting_new_target{0};
     unsigned long long thinks{0};
     unsigned long long scans{0};

@@ -127,6 +127,29 @@ struct GameCommandsSummary {
     std::size_t commanded_speeds{0};        // units whose +28h is active
     std::size_t script_issues{0};           // commands the mission script issued
     std::size_t script_blocked{0};          // of those, stopped at 00816f7c
+    // Milestone 2q: the completion round trip, 0071E430 through 00721A40's 5Dh
+    // arm and out the other side into 00720850.
+    unsigned long long end_commands{0};      // 0071E430 bodies
+    unsigned long long stage_raises{0};      // 0071D810 raises that changed the stage
+    unsigned long long clear_messages{0};    // 0071C730 messages built and routed
+    unsigned long long clear_receives{0};    // 00721A40's 5Dh arm bodies
+    unsigned long long queue_advances{0};    // 00720850 bodies
+    unsigned long long command_events{0};    // 00984300 bodies
+    unsigned long long command_event_callbacks{0};  // Lua handlers the channel matched
+    unsigned long long restarts{0};          // 0071E430's arm D
+};
+
+// What one 0071E430 -> 5Dh -> 00720850 round trip did, for the report.
+struct GameCommandCompletion {
+    bool ran{false};
+    std::string arm;                 // which arm of 0071E430 answered
+    int requested_stage{0};
+    bool raised_queue_stage{false};
+    bool message_routed{false};      // the 5Dh message was built and delivered
+    bool queue_advanced{false};      // 00720850 ran on slot 0
+    bool restarted_head{false};      // arm D
+    std::uint32_t promoted_command{0};  // what slot 0 holds afterwards
+    int stage_after{0};
 };
 
 // The weapon directors this process owns, one per created unit, and the three
@@ -177,6 +200,23 @@ public:
     GameDirectorStepOutcome director_step_00836920(std::size_t unit_index,
         bool player_controlled, float mission_clock, const bsp::UnitOrderRing& ring,
         float heading_radians);
+
+    // Milestone 2q. 0071E430 BSP_WeaponDirector_EndCommand on one unit's
+    // director, and the whole consequence the image gives it: a stage that
+    // reaches 2 builds MT_GAMEUNIT_CLEARCMD (5Dh) through 0071C730, this
+    // process routes that message back into its own receiver 00721A40, whose
+    // 5Dh arm runs 00720850 on the named slot, and the queue advances with the
+    // stage pair cleared by 0071C130. The call sites are 009E5997 (movetopos),
+    // 009E5C70 (moveonpath) and 009E88C1 / 009F3718 (attackmove).
+    GameCommandCompletion end_command_0071e430(std::size_t unit_index,
+        std::uint32_t command_object, bool terminal, bool player_controlled,
+        const bsp::UnitOrderRing& ring, float heading_radians);
+
+    // 00984300 BSP_MissionEvents_ReportCommand with the `finished` literal at
+    // 00D09FD8, the call the state steps make at 009E595C just before they end
+    // the command. Returns how many Lua handlers the `command` channel matched.
+    std::size_t report_command_event_00984300(std::size_t unit_index,
+        std::uint32_t command_object, const char* status);
 
     // Milestone 2p. 0071eb60 on the unit's own weapon director, the routine
     // 009f1420's brain pre-pass calls at 009f146b with ECX = [brain+0ab8h]:

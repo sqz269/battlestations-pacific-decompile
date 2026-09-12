@@ -111,12 +111,20 @@ struct GameUnitRow {
     unsigned long long instance_updates{0};
     unsigned long long motion_ticks{0};
     bool command_applied{false};  // the throttle gate's last answer
+    // Milestone 2q: what 00822C20's property-bag arm seeded at creation, from
+    // the entity's authored `StartSpeed` (docs/CRUISE_SPEED_SETTING.md).
+    bool start_speed_authored{false};  // 00823597, the find returned a record
+    float start_speed{0.0f};           // the authored value, m/s
+    float start_speed_ratio{0.0f};     // 008235CA, the float32 ring throttle
+    float start_speed_axial{0.0f};     // 008235EC, the hull's axial velocity
 };
 
 struct GameUnitsSummary {
     std::size_t units{0};
     std::size_t class_rows{0};
     std::size_t cruise_orders{0};
+    // Milestone 2q: units whose creation ran the `StartSpeed` seed arm.
+    std::size_t start_speed_seeds{0};
     bool controlled_bound{false};
     std::size_t controlled_index{0};
     std::string controlled_name;
@@ -212,6 +220,13 @@ public:
     // 0071be40 on the unit's own weapon director, which 009f3dd0 reads at
     // 009f3de6 to decide which AI state the controller should be in.
     std::uint32_t director_current_command_0071be40(std::size_t index) const;
+    // Milestone 2q: the two calls an AI state step makes when it decides its
+    // command is finished, 009E595C and 009E5997 for `movetopos` and 009E88C1
+    // for `attackmove`. Both go to the unit's own weapon director.
+    std::size_t report_command_event_00984300(std::size_t index,
+        std::uint32_t command_object, const char* status);
+    GameCommandCompletion end_command_0071e430(std::size_t index,
+        std::uint32_t command_object, bool terminal);
     // unit+184h, the player-controlled byte 009f3df3 and 009f5e06 read. In this
     // process the byte is the unit 004c0890 bound.
     bool unit_player_controlled_0184(std::size_t index) const;
