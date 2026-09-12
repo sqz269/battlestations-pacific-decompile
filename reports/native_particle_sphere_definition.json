@@ -1,0 +1,355 @@
+{
+  "packet": "orch3_sphere_definition_an",
+  "project": "bsp",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "implementation_files": [
+    "include/bsp/native_particle_sphere_definition.hpp",
+    "src/native_particle_sphere_definition.cpp",
+    "include/bsp/native_particle_unit_random.hpp",
+    "src/native_particle_unit_random.cpp"
+  ],
+  "documentation": "docs/NATIVE_PARTICLE_SPHERE_DEFINITION.md",
+  "routines": [
+    {
+      "entry": "00b02bc0",
+      "inclusive_end": "00b02c30",
+      "bytes": 113,
+      "last_instruction": "00b02c2e",
+      "last_instruction_length": 3,
+      "sha256": "d83e46c8d0ccf996d79b58071e9256555efafbd73d2aee1f4a597c9e5828255f",
+      "live_ghidra_matches_disk": true,
+      "proposed_name": "BSP_SphereEmitter_CreateParticleRecord",
+      "coverage": "complete_normal_body",
+      "original_abi": "ECX actual8Ch definition; stack(model,time), RET8; EAX actual108h pointer",
+      "new_abi": "original ECX/stack cleanup retained; EDX borrows required access",
+      "uncertainty": "descriptive name is provisional; no game or binary ABI proof",
+      "native_flow_gaps": 0
+    },
+    {
+      "entry": "00b02ce0",
+      "inclusive_end": "00b02f26",
+      "bytes": 583,
+      "last_instruction": "00b02f24",
+      "last_instruction_length": 3,
+      "sha256": "9883323a96a72110b4532d07983535eee4a61fa49a59d68076c83c0231b2516a",
+      "live_ghidra_matches_disk": true,
+      "proposed_name": "BSP_SphereEmitter_GeneratePositionVelocity",
+      "coverage": "complete",
+      "original_abi": "ECX actual8Ch definition; stack(parent108h,position,velocity), RET0C",
+      "new_abi": "original ECX/stack cleanup retained; EDX borrows required access",
+      "uncertainty": "descriptive name is provisional; no game or binary ABI proof",
+      "native_flow_gaps": 0
+    },
+    {
+      "entry": "00b02f30",
+      "inclusive_end": "00b02fa8",
+      "bytes": 121,
+      "last_instruction": "00b02fa6",
+      "last_instruction_length": 3,
+      "sha256": "5f43a522416e2f0b7e04c1b7ab9e4a8863795d80b0d6138720da05c815b0d2a2",
+      "live_ghidra_matches_disk": true,
+      "proposed_name": "BSP_SphereEmitter_GeneratePositionVelocityMatrix",
+      "coverage": "complete",
+      "original_abi": "ECX actual8Ch definition; stack(parent108h,position,velocity,matrix), RET10",
+      "new_abi": "original ECX/stack cleanup retained; EDX borrows required access",
+      "uncertainty": "descriptive name is provisional; no game or binary ABI proof",
+      "native_flow_gaps": 0
+    },
+    {
+      "entry": "00bd2f40",
+      "inclusive_end": "00bd2f84",
+      "bytes": 69,
+      "last_instruction": "00bd2f84",
+      "last_instruction_length": 1,
+      "sha256": "3f4e848120f36b3f98af12f610e6ffc086a71ba5805ee44a575ee12a1fe8aee9",
+      "live_ghidra_matches_disk": true,
+      "proposed_name": "BSP_RandomThreads_NextUnitFloat",
+      "coverage": "complete",
+      "original_abi": "ECX unchecked stream; RET; ST0 float; ECX exits with float result bits popped from scratch",
+      "new_abi": "original ECX/stack cleanup retained; EDX borrows required access",
+      "uncertainty": "descriptive name is provisional; no game or binary ABI proof",
+      "native_flow_gaps": 0
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00b02bc0",
+      "address": "00b02bde",
+      "native": "00bf681b",
+      "kind": "direct_call",
+      "contract": "callee body inspected; canonical implementation or required real service; see document host table"
+    },
+    {
+      "function": "00b02bc0",
+      "address": "00b02c06",
+      "native": "00afe0a0",
+      "kind": "direct_call",
+      "contract": "callee body inspected; canonical implementation or required real service; see document host table"
+    },
+    {
+      "function": "00b02ce0",
+      "address": "00b02ce9",
+      "native": "00bd2f40",
+      "kind": "direct_call",
+      "contract": "callee body inspected; canonical implementation or required real service; see document host table"
+    },
+    {
+      "function": "00b02ce0",
+      "address": "00b02d04",
+      "native": "00bd2f40",
+      "kind": "direct_call",
+      "contract": "callee body inspected; canonical implementation or required real service; see document host table"
+    },
+    {
+      "function": "00b02ce0",
+      "address": "00b02d67",
+      "native": "00bf7030",
+      "kind": "direct_call",
+      "contract": "callee body inspected; canonical implementation or required real service; see document host table"
+    },
+    {
+      "function": "00b02ce0",
+      "address": "00b02dd0",
+      "native": "00affa70",
+      "kind": "direct_call",
+      "contract": "callee body inspected; canonical implementation or required real service; see document host table"
+    },
+    {
+      "function": "00b02ce0",
+      "address": "00b02dd7",
+      "native": "00affae0",
+      "kind": "direct_call",
+      "contract": "callee body inspected; canonical implementation or required real service; see document host table"
+    },
+    {
+      "function": "00b02ce0",
+      "address": "00b02e0a",
+      "native": "00affa70",
+      "kind": "direct_call",
+      "contract": "callee body inspected; canonical implementation or required real service; see document host table"
+    },
+    {
+      "function": "00b02ce0",
+      "address": "00b02e11",
+      "native": "00affae0",
+      "kind": "direct_call",
+      "contract": "callee body inspected; canonical implementation or required real service; see document host table"
+    },
+    {
+      "function": "00b02ce0",
+      "address": "00b02e3c",
+      "native": "00bd2f40",
+      "kind": "direct_call",
+      "contract": "callee body inspected; canonical implementation or required real service; see document host table"
+    },
+    {
+      "function": "00b02ce0",
+      "address": "00b02ed9",
+      "native": "00affa70",
+      "kind": "direct_call",
+      "contract": "callee body inspected; canonical implementation or required real service; see document host table"
+    },
+    {
+      "function": "00b02ce0",
+      "address": "00b02ee0",
+      "native": "00affae0",
+      "kind": "direct_call",
+      "contract": "callee body inspected; canonical implementation or required real service; see document host table"
+    },
+    {
+      "function": "00b02f30",
+      "address": "00b02f45",
+      "native": "00b02f30+vtable0c",
+      "kind": "captured_current_virtual",
+      "contract": "required captured current definition vtable0C exact-target dispatch on the same objects"
+    },
+    {
+      "function": "00b02f30",
+      "address": "00b02f5b",
+      "native": "004134f0",
+      "kind": "direct_call",
+      "contract": "callee body inspected; canonical implementation or required real service; see document host table"
+    },
+    {
+      "function": "00b02f30",
+      "address": "00b02f75",
+      "native": "00b6db60",
+      "kind": "direct_call",
+      "contract": "callee body inspected; canonical implementation or required real service; see document host table"
+    },
+    {
+      "function": "00b02f30",
+      "address": "00b02f7f",
+      "native": "004134f0",
+      "kind": "direct_call",
+      "contract": "callee body inspected; canonical implementation or required real service; see document host table"
+    },
+    {
+      "function": "00b02f30",
+      "address": "00b02f90",
+      "native": "00b6db70",
+      "kind": "direct_call",
+      "contract": "callee body inspected; canonical implementation or required real service; see document host table"
+    },
+    {
+      "function": "00b02f30",
+      "address": "00b02fa0",
+      "native": "004134f0",
+      "kind": "direct_call",
+      "contract": "callee body inspected; canonical implementation or required real service; see document host table"
+    },
+    {
+      "function": "00bd2f40",
+      "address": "00bd2f41",
+      "native": "00bd2ed0",
+      "kind": "direct_call",
+      "contract": "callee body inspected; canonical implementation or required real service; see document host table"
+    },
+    {
+      "function": "00bd2f40",
+      "address": "00bd2f62",
+      "native": "00ba2c20",
+      "kind": "direct_call",
+      "contract": "callee body inspected; canonical implementation or required real service; see document host table"
+    }
+  ],
+  "dependencies": [
+    {
+      "entry": "00afe0a0",
+      "owner": "primary integrator",
+      "implementation": "construct_native_particle_record_00afe0a0",
+      "coverage": "complete sparse108h constructor; independent primary source",
+      "byte_evidence": {
+        "entry": "00afe0a0",
+        "inclusive_end": "00afe192",
+        "bytes": 243,
+        "last_instruction": "00afe190",
+        "last_instruction_length": 3,
+        "sha256": "0e18fa537ebfa67bf486c2c67c831ebaa5ad6792eaf185ac3d3041edab119d84",
+        "live_ghidra_matches_disk": true
+      }
+    },
+    {
+      "entry": "00bd2ed0",
+      "implementation": "RandomThreads::state_00bd2ed0",
+      "scope": "canonical existing thread/stream domain; no replacement owner"
+    },
+    {
+      "entry": "00ba2c20",
+      "implementation": "random_next_u32_00ba2c20",
+      "scope": "existing canonical random-state draw; no MT reimplementation"
+    },
+    {
+      "entry": "00bf7030",
+      "implementation": "native_crt_sqrt_st0_00bf7030",
+      "scope": "existing current CameraAxesCrtAccess and real exception-handler contract; no sqrt substitute"
+    },
+    {
+      "entry": "00affa70",
+      "implementation": "evaluate_native_particle_linear_curve_00affa70"
+    },
+    {
+      "entry": "00affae0",
+      "implementation": "evaluate_native_particle_cubic_curve_00affae0"
+    },
+    {
+      "entry": "004134f0",
+      "implementation": "copy_native_camera_matrix_004134f0"
+    },
+    {
+      "entry": "00b6db60",
+      "implementation": "get_native_node_local_matrix_00b6db60"
+    },
+    {
+      "entry": "00b6db70",
+      "implementation": "refresh_native_camera_world_00b6db70"
+    }
+  ],
+  "producer_evidence": [
+    {
+      "entry": "00b02b90",
+      "fact": "calls AFA280 then installs D5DE88; actual SphereEmitter allocation is8Ch"
+    },
+    {
+      "entry": "00afa280",
+      "fact": "writes definition70 from construction mode"
+    },
+    {
+      "entry": "00b02fd0",
+      "fact": "EmittedSpeed/InnerRadius/OuterRadius producer writes curve pointers to80/84/88; no duplicated layout declared"
+    },
+    {
+      "entry": "00afe0a0",
+      "fact": "actual108h record stores modelA4, definitionA0, time30, sparse zero fields and current one A8/AC/B0/B4; distinct from AFE1A0"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "B02F30 was not a Ghidra function and could not export",
+      "is": "primary integrator created/saved B02F30..B02FA8 and refreshed export; zero flow gaps",
+      "evidence": "D5DE98 data xref;121 live/disk-matching bytes; final B02FA6 RET10 length3"
+    },
+    {
+      "was": "pseudocode omits the fourth stack word of B02F30 and mistypes scalar bits as pointers in B02CE0",
+      "is": "RET10 consumes parent,position,velocity,matrix; explicit x87/SSE instruction transcription preserves float bits",
+      "evidence": "B02F53/B02F7A/B02F95 matrix loads and B02FA6 RET10; B02CE0 assembly"
+    },
+    {
+      "was": "task suggestion AFE1A0 could initialize the new temporary",
+      "is": "B02C06 calls AFE0A0; reuse shared primary constructor with sparse108h writes",
+      "evidence": "B02C06 CALL AFE0A0; AFE0A0 writes differ from AFE1A0"
+    }
+  ],
+  "unreconstructed_native_eh": [
+    {
+      "entry": "00cbb5a0",
+      "stored_inclusive_end": "00cbb5a8",
+      "actual_inclusive_end": "00cbb5aa",
+      "actual_bytes": 11,
+      "gap_start": "00cbb5a9",
+      "gap_bytes": 2,
+      "evidence": "POP ECX atCBB5A9; RET atCBB5AA; reported to primary for repair"
+    },
+    {
+      "entry": "00cbb5ab",
+      "actual_inclusive_end": "00cbb5b4",
+      "actual_bytes": 10,
+      "evidence": "MOV EAX,DF365C; JMP BF6B43 atCBB5B0 length5; compiler handler ABI excluded"
+    }
+  ],
+  "verification": {
+    "production_compile": "passed: MSVC Win32 /W4 /WX /fp:strict /O2 /MD /Gy /c; sphere and unit random objects plus primary AFE0A0 dependency",
+    "native_fixture": "passed single temporary original-byte probe:32 unit draws/current-scalar variants + actual guard null-write fault;6 generation scenarios;4 matrix paths;2 allocation/null paths",
+    "compared": [
+      "unit/sphere float bits",
+      "unit/sphere floating-point status",
+      "whole canonical RandomState and exact draw advancement",
+      "parent and output buffer overlaps",
+      "captured current vtable target",
+      "matrix branches and world-cache writes",
+      "actual108h sparse constructor bytes and unchanged sentinels"
+    ],
+    "original_ranges": "all four packet bodies and primary AFE0A0 verified against live Ghidra and installed PE including last instruction bytes",
+    "original_call_relocation": "same canonical dependencies on each side; this fixture does not independently prove dependency implementations",
+    "scratch": "C:/Users/sqz269/bsp-an-sphere",
+    "replay": [
+      "python reference.py",
+      "cmd /c compile.cmd",
+      "cmd /c probe.cmd"
+    ],
+    "manifest": "temporary probe.exe explicitly linked /MANIFEST:EMBED",
+    "report_calls": "passed:19 direct call rows checked,0 failed;1 captured indirect row recorded separately",
+    "permanent_tests_added": false,
+    "full_build": "primary integration pending",
+    "game_validated": false
+  },
+  "limits": [
+    "new EDX access interfaces are not original binary vtable ABI",
+    "allocation compiler SEH registration and unwind exception path excluded",
+    "CRT sqrt exceptional domain and arbitrary malformed curve segments not exercised by fixture",
+    "concurrent mutations are not validated",
+    "no game/render validation"
+  ],
+  "worker_mutations": "no Ghidra writes, annotations, prototype edits or saves; missing-body repair performed by primary integrator"
+}
