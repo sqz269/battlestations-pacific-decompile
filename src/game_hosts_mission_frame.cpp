@@ -153,6 +153,10 @@ struct GameMissionFrameHost::Impl {
     float order_throttle{0.0f};
     float order_rudder{0.0f};
     bool order_issued{false};
+    // Milestone 2l: --order <command>[:<entity>], the same frame, issued
+    // through the recovered command path instead of the order ring.
+    std::string order_command;
+    std::string order_command_target;
     float mission_frame_seconds{0.0f};  // --mission-frame-seconds S
     // Milestone 2j, --trajectory-csv <path>: one row per unit per fixed step.
     std::string trajectory_csv_path;
@@ -1213,6 +1217,21 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             host.world_host->build_entity_chains_009037f0();
             host.units->issue_authored_commands();
             if (host.units->count() > 0) host.units->set_controlled_unit_004c0890(0);
+            // Milestone 2l: one `thisTable` slot per created instance, which is
+            // what 00928a00 builds for an entity and what the entity tail at
+            // 0089903c pushes. Without it the mission's own script resolves
+            // every FindEntity to nil and its order loops run over empty tables.
+            {
+                std::vector<GameMissionLuaHost::SceneEntity> entities;
+                entities.reserve(host.units->count());
+                for (std::size_t unit = 0; unit < host.units->count(); ++unit) {
+                    const GameUnitRow* row = host.units->unit_row(unit);
+                    if (row == nullptr || row->name.empty()) continue;
+                    entities.push_back(GameMissionLuaHost::SceneEntity{row->name,
+                        static_cast<int>(unit) + 1, row->type_id});
+                }
+                host.lua.attach_scene_entities_00928a00(entities);
+            }
             // Milestone 2k: the two HUD screens that show the world read the same
             // created units. Once 004c0890 has bound one, the interface request
             // can carry it, which is what raises the markers screen and keeps the
@@ -1403,6 +1422,14 @@ bool GameMissionFrameHost::enter_mission_state_004da6c0() {
         host.entry_state.one_shots.session_was_networked ? 1 : 0,
         host.entry_state.one_shots.session_dropped ? 1 : 0,
         host.entry_state.one_shots.not_enough_players ? 1 : 0);
+
+    // Milestone 2l: the mission's own orders. usn_2_java.lua's `luaStageInit`
+    // calls CreateScript("luaInit"), and `luaInit` is where the mission issues
+    // every order it issues: NavigatorMoveToRange, NavigatorAttackMove,
+    // JoinFormation and the rest of the Navigator family. The script manager
+    // that would call it is three records, so the executable calls it here,
+    // once, on the frame the mission enters state 0Dh.
+    host.lua.run_created_scripts();
     return host.entry.entered;
 }
 
@@ -1421,6 +1448,11 @@ void GameMissionFrameHost::set_player_order(long frame, float throttle,
     impl_->order_frame = frame;
     impl_->order_throttle = throttle;
     impl_->order_rudder = rudder;
+}
+
+void GameMissionFrameHost::set_player_command(std::string token, std::string target) {
+    impl_->order_command = std::move(token);
+    impl_->order_command_target = std::move(target);
 }
 
 void GameMissionFrameHost::set_trajectory_csv(std::string path) {
@@ -1513,7 +1545,15 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
         && host.frames.frames + 1 >= static_cast<unsigned long long>(host.order_frame)) {
         host.order_issued = true;
         host.frames.player_order_issued = true;
-        host.units->issue_player_order(host.order_throttle, host.order_rudder);
+        if (!host.order_command.empty()) {
+            // Milestone 2l: the command form. 0046aab0 resolves the name
+            // against the 26-row registry and the whole hop chain runs, which
+            // is the path the authored scene command takes and not the ring.
+            host.units->issue_player_command(host.order_command,
+                host.order_command_target);
+        } else {
+            host.units->issue_player_order(host.order_throttle, host.order_rudder);
+        }
     }
 
     // --mission-complete-frame N: the script's own PlayBinkMovie(name, true),

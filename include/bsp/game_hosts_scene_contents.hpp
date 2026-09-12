@@ -58,6 +58,12 @@ struct GameSceneEntityRecord {
     bool created{false};       // the class creator ran and handed back an instance
     std::string skipped_because;
     float world[16]{};
+    // Milestone 2l: the two strings 004f0520 hands 00469610 at its last step,
+    // the authored `Command = E CommandType : <name>` token and the
+    // `CommandTarget = R "<name>"` value ("" when the entity authored none).
+    // Milestone 2h dropped both at the queue host; the command path needs them.
+    std::string command;
+    std::string command_target;
 };
 
 // Per class token of the scene, the counts the milestone reports.
