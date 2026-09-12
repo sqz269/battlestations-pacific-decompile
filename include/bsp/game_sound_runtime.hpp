@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/sound_lifetime_access.hpp"
 
 #include <array>
 #include <cstddef>
@@ -33,8 +34,9 @@ class SoundChannelRuntime;
 namespace bsp::game {
 
 // Borrowed application services, all alive through explicit shutdown and the
-// destruction of the runtime. The domain's deleting callback routes pointers
-// accepted by owns_registered() to delete_registered(). No private VFS, clock,
+// destruction of the runtime. Bind this runtime in the raw manager's concrete
+// deletion bindings, or route the semantic fixture's deleting callback through
+// owns_registered()/delete_registered(). No private VFS, clock,
 // Lua runtime, singleton domain or alternate-engine implementation is supplied.
 struct GameSoundRuntimeServices {
     VfsMountContext& mounts;
@@ -45,7 +47,7 @@ struct GameSoundRuntimeServices {
     FrameClock& clock;
     NativeStringStorage& strings;
     ResourceLoadEventHost& load_events;
-    SingletonLifetimeDomain& lifetime;
+    SoundLifetimeAccess lifetime;
     const CameraAxesCrtAccess& crt;
     SoundAlternateShutdownHost& alternate_shutdown;
     // Required when an alternate pointer is published. An empty function is
@@ -102,6 +104,10 @@ public:
     GameSoundRuntimeWords& words() noexcept;
     void* volatile& current_alternate() noexcept;
 
+    // Manager/cache dispatch uses allocation identity, independently of the
+    // current publication used by native unregister. Query/alternate owners
+    // remain externally created: their publication must retain their identity
+    // until their actual deleting routine clears it.
     bool owns_registered(void*) const noexcept;
     // Receives native deleting flags. Bit0 releases the separately allocated
     // projection after its recovered destructor. Never shuts the shared domain.

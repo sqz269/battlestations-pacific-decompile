@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/sound_lifetime_access.hpp"
 #include "bsp/gameplay_effect_definition.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/singleton_lifetime.hpp"
@@ -30,7 +31,7 @@ public:
     virtual void invoke_callback230_ecx(void* callback, NativeString& temporary_name) = 0;
 };
 struct SoundAlternateOwnerBindings {
-    SingletonLifetimeDomain& domain;
+    SoundLifetimeAccess domain;
     void* volatile& global_00f8bbcc;
     NativeStringStorage& strings;
     GameplayEffectComponentLifetime& references;

@@ -4,19 +4,22 @@
 
 namespace bsp {
 struct NativeResourceRegistryDeleteBindings;
+namespace game { class GameSoundRuntime; }
 
 // Stable borrowed source bindings. Every nonnull object admitted to the raw
 // manager must carry one of these recovered slot-zero profiles: CE3818,
-// D0DA64, D5E594 or D5E59C. D0DA64 additionally requires its actual publication
-// cell; the two registry profiles require their actual deletion bindings.
+// D0DA64, D5E594, D5E59C, D5B44C, D5B460, D5B478 or D58F78. D0DA64
+// requires its actual publication cell; registry and sound profiles require
+// their concrete borrowed bindings. Sound owners retain C++ projected storage.
 // Profile identity is read when popped, not cached when registered. An unknown
 // profile or missing binding throws a source contract error before dispatch.
 // This finite map is not the original process's arbitrary virtual dispatch.
 struct NativeSingletonDeletionBindings {
     void* volatile* actual_effect_publication_00f87664{};
     const NativeResourceRegistryDeleteBindings* resource_registry{};
+    game::GameSoundRuntime* sound_runtime{};
 };
-static_assert(sizeof(NativeSingletonDeletionBindings) == 8);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 12);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting

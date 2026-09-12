@@ -1,0 +1,103 @@
+{
+  "packet": "orch4_sound_shared_lifetime_z",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source_refinements": [
+    {
+      "address": "00bd0400",
+      "name": "BSP_SingletonLifetime_Destroy",
+      "coverage": "existing native implementation with new borrowed lifetime integration",
+      "original_abi_changed": false,
+      "source_interface_abi_compatible": false
+    },
+    {
+      "address": "00a7b190",
+      "name": "BSP_SoundSystem_RegisterSingletonBase_Provisional",
+      "coverage": "existing native implementation with new borrowed lifetime integration",
+      "original_abi_changed": false,
+      "source_interface_abi_compatible": false
+    },
+    {
+      "address": "00a880e0",
+      "name": "BSP_SoundAuxiliaryTree_RegisterSingletonBase_Provisional",
+      "coverage": "existing native implementation with new borrowed lifetime integration",
+      "original_abi_changed": false,
+      "source_interface_abi_compatible": false
+    },
+    {
+      "address": "00a7b230",
+      "name": "BSP_SoundManager_UnregisterSingletonDestructor",
+      "coverage": "existing native implementation with new borrowed lifetime integration",
+      "original_abi_changed": false,
+      "source_interface_abi_compatible": false
+    },
+    {
+      "address": "00a88180",
+      "name": "BSP_SoundAuxiliaryTree_UnregisterSingletonBase_Provisional",
+      "coverage": "existing native implementation with new borrowed lifetime integration",
+      "original_abi_changed": false,
+      "source_interface_abi_compatible": false
+    },
+    {
+      "address": "00a88770",
+      "name": "BSP_SoundSystem_Initialize",
+      "coverage": "existing native implementation with new borrowed lifetime integration",
+      "original_abi_changed": false,
+      "source_interface_abi_compatible": false
+    },
+    {
+      "address": "00a882c0",
+      "name": "BSP_SoundSystem_Destruct",
+      "coverage": "existing native implementation with new borrowed lifetime integration",
+      "original_abi_changed": false,
+      "source_interface_abi_compatible": false
+    },
+    {
+      "address": "00a778d0",
+      "name": "BSP_StreamedDialogManager_ConstructBase",
+      "coverage": "existing native implementation with new borrowed lifetime integration",
+      "original_abi_changed": false,
+      "source_interface_abi_compatible": false
+    },
+    {
+      "address": "00a77970",
+      "name": "BSP_StreamedDialogManager_DestroyBase",
+      "coverage": "existing native implementation with new borrowed lifetime integration",
+      "original_abi_changed": false,
+      "source_interface_abi_compatible": false
+    },
+    {
+      "address": "00a89a40",
+      "name": "BSP_SoundEventQueryLock_Get",
+      "coverage": "existing native implementation with new borrowed lifetime integration",
+      "original_abi_changed": false,
+      "source_interface_abi_compatible": false
+    }
+  ],
+  "new_native_functions": 0,
+  "source": "src/sound_lifetime_access.cpp",
+  "document": "docs/SOUND_SHARED_LIFETIME.md",
+  "fixed_profiles": [
+    "00d5b44c",
+    "00d5b460",
+    "00d5b478",
+    "00d58f78"
+  ],
+  "validation": {
+    "strict_win32_release": true,
+    "existing_ctests_passed": 2,
+    "semantic_installed_fixture_cases": 5,
+    "raw_installed_fixture_cases": 5,
+    "raw_live_registrations_before_drain": 5,
+    "ownership_balanced": true,
+    "independent_review": "sound_logical_z: cache profile and allocation identity corrections applied",
+    "game_validated": false,
+    "native_object_abi": false,
+    "new_permanent_tests": 0
+  },
+  "remaining": [
+    "GameStartupHost phase5 composition",
+    "Actual dialog playback and application frame integration",
+    "Query/alternate publication identity must survive until their deleting routine clears it"
+  ]
+}
