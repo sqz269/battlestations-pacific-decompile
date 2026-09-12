@@ -207,6 +207,27 @@ struct GameShipAiRow {
     std::string fire_target;               // the entity 00835860 last received
     float fire_target_score{0.0f};
     std::string target_blocked;            // the gate that stopped the think
+    // Milestone 2r: what 009E4330 wrote into this unit's navigation block, and
+    // the hull body 00937C90's tail built for it.
+    float nav_turn_circle_3c8{0.0f};       // blk+3C8h, 0082E960(class, 1.0f)
+    float nav_turn_circle_3cc{0.0f};       // blk+3CCh, 0082E960(class, 0.9f)
+    float nav_yaw_floor_3d0{0.0f};         // blk+3D0h
+    float nav_stop_radius_3d4{0.0f};       // blk+3D4h
+    float nav_start_radius_3d8{0.0f};      // blk+3D8h
+    float nav_hull_length_9c8{0.0f};       // unit+9C8h
+    float hull_mass_00b0{0.0f};            // class+B0h
+    int hull_material{0};                  // what 00937CF1 picked
+    unsigned long long clearance_refreshes{0};  // 009EF910 bodies
+    float clearance_37c{0.0f};             // blk+37Ch after the last one
+    unsigned long long throttle_profiles{0};    // 009E04E0 bodies
+    unsigned long long sector_scans{0};    // 009EB660 bodies
+    unsigned long long sector_marks{0};    // scans that marked the sector blocked
+    unsigned long long ring_scans{0};      // 009E76D0 bodies
+    unsigned long long ring_scan_bearings{0};   // 009E5E90 commits
+    int ring_scan_winner{-1};              // the slot 009E76D0 chose
+    float approach_heading_120c{0.0f};     // nested+120Ch
+    float approach_throttle_1210{0.0f};    // nested+1210h
+    unsigned long long firepower_ratings{0};    // 0095EB40 calls
 };
 
 struct GameShipAiSummary {
@@ -277,6 +298,18 @@ struct GameShipAiSummary {
     std::size_t states_attackmove{0};
     std::size_t states_movetopos{0};
     std::size_t states_other{0};
+    // Milestone 2r.
+    std::size_t nav_blocks{0};                  // 009E4330 bodies, one per unit
+    unsigned long long clearance_refreshes{0};  // 009EF910
+    unsigned long long throttle_profiles{0};    // 009E04E0
+    unsigned long long sector_scans{0};         // 009EB660
+    unsigned long long sector_marks{0};
+    unsigned long long ring_scans{0};           // 009E76D0
+    unsigned long long ring_scan_bearings{0};   // 009E5E90
+    unsigned long long firepower_ratings{0};    // 0095EB40
+    unsigned long long path_follower_points{0}; // 009E3C00 through the full follower
+    unsigned long long path_follower_corners{0};
+    unsigned long long path_follower_advances{0};
 };
 
 // One ship AI controller per created unit, for the whole run.

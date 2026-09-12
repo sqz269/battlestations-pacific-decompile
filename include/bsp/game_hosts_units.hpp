@@ -328,6 +328,30 @@ public:
     // sector's braking distance from.
     float unit_half_width_09cc(std::size_t index) const;
     float unit_class_max_speed_0500(std::size_t index) const;
+    // ---- milestone 2r: what 009e4330 reads to build the navigation block ----
+    // [unit+538h]+4f8h, the Lua key `MaxRotAngle` 009e4574 loads for the yaw
+    // floor at 009e45a9, and [unit+538h]+520h, `MaxSpeed / MaxRotAngle`, which
+    // 0082e960 multiplies the rudder curve by at 0082e970.
+    float unit_class_max_rot_angle_04f8(std::size_t index) const;
+    // [unit+538h]+504h, the Lua key `MaxAccel` 009e054f loads for the contact
+    // horizon.
+    float unit_class_max_accel_0504(std::size_t index) const;
+    float unit_class_turn_radius_0520(std::size_t index) const;
+    // 0082e960 itself, `__thiscall(descriptor)(float throttle)`: the rudder
+    // curve 0082e890 over the settings singleton this host already owns, times
+    // class+520h. 009e44c4 asks for 1.0f and 009e4555 for 0.9f.
+    float unit_class_turn_circle_radius_0082e960(std::size_t index, float throttle);
+    // unit+9c8h, the full hull length 0081106e / 0081fa4d produce. This process
+    // builds no model box at [class+50h], so the producers' fallback applies and
+    // the field is the descriptor's own +a0h `Length`.
+    float unit_hull_length_09c8(std::size_t index) const;
+    // class+b0h `Mass` and the physics record 00937cf1 selects for this hull,
+    // both settled when the body was built.
+    float unit_hull_mass_00b0(std::size_t index) const;
+    int unit_hull_material(std::size_t index) const;
+    // M+b8h / M+bch and M+18h, read back off the body 00937c90's tail built.
+    float unit_hull_linear_damping(std::size_t index) const;
+    float unit_hull_angular_damping(std::size_t index) const;
     // unit+102ch and unit+1034h, the two load latches 009f3f80's middle raises
     // with the inlined bodies of 009d4fb0 and 009d4fe0.
     void raise_turn_assist_load_102c(std::size_t index, float value);
