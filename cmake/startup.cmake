@@ -25,6 +25,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE ${CMAKE_CURRENT_SOURCE
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/sound_stream_owner.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/sound_stream_runtime.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/avoid_zone_boundary.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/avoid_zone_offset.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/avoid_zone_segment_math.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/bot_task_states.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/input_binding_poll.cpp src/sound_class_ownership.cpp src/sound_configuration.cpp src/fmod_configuration_library.cpp)
