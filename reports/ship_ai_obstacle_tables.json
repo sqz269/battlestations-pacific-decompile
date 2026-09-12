@@ -1,0 +1,336 @@
+{
+  "packet": "cc_ai_obstacle_tables",
+  "owner": "agent/cc-ai-obstacle-tables",
+  "date": "2026-09-12",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "read-only: no renames, comments, prototypes, function creation or saves",
+  "doc": "docs/SHIP_AI_OBSTACLE_TABLES.md",
+  "sources": [
+    "include/bsp/ship_ai_obstacle_tables.hpp",
+    "src/ship_ai_obstacle_tables.cpp",
+    "cmake/startup.cmake"
+  ],
+  "question": "Operation by operation, what the middle of 009F3F80 does with blk+1D0h and blk+1D4h before the hop: the heading-error path into 009DA250, what fills the obstacle tables, how an obstacle reverses or reduces the throttle, and the throttle ceiling.",
+  "answer": "The middle is 009F40CA..009F4B98 and it is one routine in six parts. It turns the state's desired pair into a throttle out of 009EC7C0's five AutoThrust stages, limited by blk+344h and snapped by the 65-bin cost profile at blk+4h (009D6B40); a rudder out of 009DA250 on the goal heading error blk+324h, limited by blk+348h; and then, when the obstacle sector the rudder points into is blocked, a rudder out of 009DA250 on that sector's avoidance bearing instead, plus either a reversed throttle band or the one-second astern latch blk+380h, which forces the profile window to [-1, 0]. blk+344h and blk+348h are what 009F4DA0 writes into brain+34Ch and brain+350h one step earlier; the sectors are filled by 009EB660 through 009EF230, the chain slot at 009F51FA.",
+  "routines": [
+    {
+      "address": "009f3f80",
+      "name": "BSP_ShipAi_DriveOrderRing",
+      "body": "009f3f80-009f4d06",
+      "coverage": "partial: 009F40CA..009F4B98 projected operation for operation by ship_ai_drive_order_ring_middle_009f40ca. 009F3F80-009F40C6 and 009F4B99-009F4D04 were projected by packet cc_ai_throttle_ring and are not re-done here. No ledger record was added: 009F3F80 is leased to agent/cc-exe-2o and the evidence is in the doc under 'Evidence for 009F3F80 (apply later)'.",
+      "not_projected": []
+    },
+    {
+      "address": "009d6b40",
+      "name": "BSP_ShipAi_SnapThrottleToProfile",
+      "body": "009d6b40-009d6d57",
+      "coverage": "complete",
+      "reconstruction": "bsp::ship_ai_apply_throttle_profile_009d6b40"
+    },
+    {
+      "address": "009d8b90",
+      "name": "BSP_ShipAi_NeighbourClosingSpeed",
+      "body": "009d8b90-009d8c51",
+      "coverage": "complete",
+      "reconstruction": "bsp::ship_ai_neighbour_closing_speed_009d8b90"
+    },
+    {
+      "address": "009ec7c0",
+      "name": "BSP_UnitBot_ComputeThrottleCeiling",
+      "body": "009ec7c0-009eca1a",
+      "coverage": "complete",
+      "reconstruction": "bsp::ship_ai_throttle_ceiling_009ec7c0"
+    },
+    {
+      "address": "009f4da0",
+      "name": "BSP_ShipAi_ThrottleCeilingStep",
+      "body": "009f4da0-009f50d2",
+      "coverage": "partial: read for what it writes and who reads it. brain+34Ch is blk+344h and brain+350h is blk+348h, the throttle limit and the rudder limit the middle of 009F3F80 consumes. The arms that compute them (009F4DC7..009F50BA, 0070D140, 0070D0F0, 0082E850, 0070E3C0, 00863780) are not projected. Leased to agent/cc-exe-2o: no ledger record was added here.",
+      "not_projected": ["009f4dc7-009f50ba"]
+    },
+    {
+      "address": "009ef230",
+      "name": "BSP_ShipAi_RefreshObstacleSectors",
+      "body": "009ef230-009ef347",
+      "coverage": "read, not projected: the sector schedule and the braking-distance formula are documented, no C++ reconstruction"
+    },
+    {
+      "address": "009eb660",
+      "name": "BSP_ShipAi_ScanObstacleSector",
+      "body": "009eb660-009ec277",
+      "coverage": "partial read, not projected: the entry, the two hit arms and the bearing tail were read; the swept-arc geometry between 009EB6B7 and 009EBECC was not",
+      "not_projected": ["009eb6b7-009ebecc"]
+    }
+  ],
+  "host_steps": [
+    {
+      "step": 1,
+      "host_method": "raise_turn_assist_load_102c",
+      "address": "009f438c",
+      "function": "009f3f80",
+      "inlined_from": "009d4fb0",
+      "note": "MOVSS [ECX+102Ch],XMM0 after the compare at 009F4386. No CALL: 009D4FB0 is inlined here, so this row carries no `native`.",
+      "value": "min(2 * blk+0A84h, 1.5f), only when blk+0A84h > 0.01f"
+    },
+    {
+      "step": 2,
+      "host_method": "rudder_law_009da250",
+      "address": "009f44f7",
+      "native": "009da250",
+      "function": "009f3f80",
+      "note": "gated at 009F44E4 on blk+1C4h != Rudder; the argument is the goal heading error built at 009F40BB"
+    },
+    {
+      "step": 3,
+      "host_method": "raise_secondary_load_1034",
+      "address": "009f4606",
+      "function": "009f3f80",
+      "inlined_from": "009d4fe0",
+      "note": "MOVSS [EBP+1034h],XMM0 after the compare at 009F45F8; value 1.5f, inside the blocked-sector arm"
+    },
+    {
+      "step": 4,
+      "host_method": "raise_turn_assist_load_102c",
+      "address": "009f462a",
+      "function": "009f3f80",
+      "inlined_from": "009d4fb0",
+      "note": "value 1.5f, inside the blocked-sector arm"
+    },
+    {
+      "step": 5,
+      "host_method": "rudder_law_009da250",
+      "address": "009f4694",
+      "native": "009da250",
+      "function": "009f3f80",
+      "note": "the second store of blk+1D4h at 009F46A0; the argument is 00438B10(sector+20h, the reference bearing)"
+    },
+    {
+      "step": 6,
+      "host_method": "neighbour_body_axis_speed_0092d730",
+      "address": "009d8bc1",
+      "native": "0092d730",
+      "function": "009d8b90",
+      "note": "inside 009D8B90, ECX = [[sector.blocker+14h]+1018h]; reached from the 009F477E call site"
+    },
+    {
+      "step": 7,
+      "host_method": "neighbour_body_axis_speed_0092d730",
+      "address": "009f47b8",
+      "native": "0092d730",
+      "function": "009f3f80",
+      "note": "the same neighbour read again, for the stall accumulator blk+384h"
+    },
+    {
+      "step": 8,
+      "host_method": "raise_secondary_load_1034",
+      "address": "009f4912",
+      "function": "009f3f80",
+      "inlined_from": "009d4fe0",
+      "note": "value 1.5f, when all four inner sectors of the current group are blocked"
+    },
+    {
+      "step": 9,
+      "host_method": "raise_turn_assist_load_102c",
+      "address": "009f4a51",
+      "function": "009f3f80",
+      "inlined_from": "009d4fb0",
+      "note": "value 0.5f, with escape request 4"
+    },
+    {
+      "step": 10,
+      "host_method": "raise_secondary_load_1034",
+      "address": "009f4ab4",
+      "function": "009f3f80",
+      "inlined_from": "009d4fe0",
+      "note": "value 0.5f, when the escape flip runs"
+    }
+  ],
+  "pure_calls": [
+    {
+      "address": "009f41a2",
+      "native": "00419010",
+      "function": "009f3f80",
+      "projection": "bsp::clamped_interpolate_00419010",
+      "note": "InterpolateClamped(1.0, 1.0, 4.0, 0.0, blk+37Ch / unit+9CCh): the danger ramp"
+    },
+    {
+      "address": "009f42c1",
+      "native": "0042ac60",
+      "function": "009f3f80",
+      "projection": "bsp::unit_step_towards_0042ac60",
+      "note": "ECX = EBP = &blk+0A84h; the rising and the deadband arms"
+    },
+    {
+      "address": "009f42e0",
+      "native": "0042ac60",
+      "function": "009f3f80",
+      "projection": "bsp::unit_step_towards_0042ac60",
+      "note": "the second StepTowards site, the inside-the-band arm"
+    },
+    {
+      "address": "009f43bd",
+      "native": "00438aa0",
+      "function": "009f3f80",
+      "projection": "bsp::wrapped_angle_add_00438aa0",
+      "note": "the half turn on the obstacle arm's reference bearing"
+    },
+    {
+      "address": "009f4406",
+      "native": "00415550",
+      "function": "009f3f80",
+      "projection": "inline max, src/ship_ai_obstacle_tables.cpp max_by_ref_00415550",
+      "note": "ECX = &1.0f, EDX = &blk+344h: the cap handed to 009EC7C0"
+    },
+    {
+      "address": "009f442a",
+      "native": "009ec7c0",
+      "function": "009f3f80",
+      "projection": "bsp::ship_ai_throttle_ceiling_009ec7c0",
+      "note": "(heading error, blk+0A84h, max(1.0f, blk+344h)); the result is stored at 009F4439"
+    },
+    {
+      "address": "009f44ae",
+      "native": "009d6b40",
+      "function": "009f3f80",
+      "projection": "bsp::ship_ai_apply_throttle_profile_009d6b40",
+      "note": "ECX = blk+4h; (&blk+1D0h, -1.5f, +1.5f), a window wider than the throttle range"
+    },
+    {
+      "address": "009f4544",
+      "native": "00415690",
+      "function": "009f3f80",
+      "projection": "bsp::unit_clamp_00415690",
+      "note": "ECX = &blk+1D4h, the window [-blk+348h, +blk+348h]"
+    },
+    {
+      "address": "009f4681",
+      "native": "00438b10",
+      "function": "009f3f80",
+      "projection": "bsp::wrapped_angle_subtract_00438b10",
+      "note": "(sector+20h avoidance bearing, the reference bearing)"
+    },
+    {
+      "address": "009f46e0",
+      "native": "00415690",
+      "function": "009f3f80",
+      "projection": "bsp::unit_clamp_00415690",
+      "note": "the throttle into [-1, 0] when the hull is making way ahead and the latch is Stopped"
+    },
+    {
+      "address": "009f471b",
+      "native": "00415690",
+      "function": "009f3f80",
+      "projection": "bsp::unit_clamp_00415690",
+      "note": "the throttle into [0, +1] when the hull is making way astern and the latch is Stopped"
+    },
+    {
+      "address": "009f477e",
+      "native": "009d8b90",
+      "function": "009f3f80",
+      "projection": "bsp::ship_ai_neighbour_closing_speed_009d8b90",
+      "note": "ECX = the sector's blocker; (&blk+184h, sector+28h)"
+    },
+    {
+      "address": "009f4836",
+      "native": "009ec7c0",
+      "function": "009f3f80",
+      "projection": "bsp::ship_ai_throttle_ceiling_009ec7c0",
+      "note": "(the sector's bearing error, 1.0f, 1.0f), the obstacle arm's own ceiling"
+    },
+    {
+      "address": "009f4878",
+      "native": "009d6b40",
+      "function": "009f3f80",
+      "projection": "bsp::ship_ai_apply_throttle_profile_009d6b40",
+      "note": "ECX = blk+4h; the window is [-1, 0] while the astern latch runs, else [-0.5, ceiling] or [ceiling, +0.5]"
+    }
+  ],
+  "producer_chain": [
+    {
+      "address": "009f51fa",
+      "native": "009ef230",
+      "function": "009f50e0",
+      "note": "the chain slot that refreshes three of the twelve sectors"
+    },
+    {
+      "address": "009ef334",
+      "native": "009eb660",
+      "function": "009ef230",
+      "note": "ECX = one sector of the array at blk+808h"
+    },
+    {
+      "address": "009f5248",
+      "native": "009f4da0",
+      "function": "009f50e0",
+      "note": "the next chain slot, which writes blk+344h and blk+348h"
+    },
+    {
+      "address": "009f50c6",
+      "native": "009f3f80",
+      "function": "009f4da0",
+      "note": "009F4DA0's own tail, inside its body 009F4DA0-009F50D3, not 009F50E0's. ECX = ESI+8 = blk; a CALL, not a JMP"
+    },
+    {
+      "address": "009e10e2",
+      "native": "009d6b40",
+      "function": "009e04e0",
+      "note": "the second call site of the profile: ECX = ESI+4 = blk+4h, the same object, on a stack local with the window [-1, +1]"
+    }
+  ],
+  "settings": {
+    "singleton": "00424c40",
+    "doc": "docs/GAMEPLAY_SETTINGS.md",
+    "fields": [
+      {"offset": "+6cch", "lua": "Navigator.AutoThrust.HdgDiffValueMin_Slow", "default": "DEG(25)"},
+      {"offset": "+6d0h", "lua": "Navigator.AutoThrust.HdgDiffValueMax_Slow", "default": "DEG(75)"},
+      {"offset": "+6d4h", "lua": "Navigator.AutoThrust.ThrustMin_Slow", "default": "0.5"},
+      {"offset": "+6e0h", "lua": "Navigator.AutoThrust.HdgDiffValueMin_Fast", "default": "DEG(45)"},
+      {"offset": "+6e4h", "lua": "Navigator.AutoThrust.HdgDiffValueMax_Fast", "default": "DEG(90)"},
+      {"offset": "+6e8h", "lua": "Navigator.AutoThrust.ThrustMin_Fast", "default": "0.75"},
+      {"offset": "+6ech", "lua": "Navigator.AutoThrust.HdgDiffDangerMul", "default": "6.0"}
+    ]
+  },
+  "corrections": [
+    {
+      "was": "docs/SHIP_AI_THROTTLE_TO_RING.md uncertainty 3: 'the two 2Ch-stride tables at blk+81Ch and blk+848h, indexed by ((direction * 6) + bucket) * 2Ch'",
+      "is": "One array of twelve 2Ch-byte sectors based at blk+808h. blk+81Ch is sector[i]+14h and blk+848h is sector[i+1]+14h, the same byte of the next sector, which is why 009F4632..009F464E can nudge the index by one.",
+      "evidence": "009F45B3 CMP byte ptr [EAX+ESI+81Ch],0 and 009F45C0 CMP byte ptr [EDI+848h],0 with EDI = EAX+ESI; 009F4653/009F4662/009F4669 read +828h/+82Ch/+830h of the same index; 009EF230 at 009EF30E computes (index)*2Ch + 808h and writes +8h of that; 009EB660 clears this+14h and this+24h of the same record"
+    },
+    {
+      "was": "docs/SHIP_AI_THROTTLE_TO_RING.md uncertainty 3: 'their producer was not read'",
+      "is": "009EB660, once per sector from 009EF230, the chain slot at 009F51FA. 009EF230 refreshes three sectors a frame on the counter blk+0A18h, so the twelve refresh over four frames.",
+      "evidence": "009EF334 CALL 009EB660; 009F51FA CALL 009EF230; 009EF2BD MOV ECX,[EBX+0A18h] and the 0x58 stride at 009EF33C"
+    },
+    {
+      "was": "docs/SHIP_AI_THROTTLE_TO_RING.md follow-up ship_ai_throttle_ceiling: 'what 009F4DA0 computes into brain+34Ch / +350h'",
+      "is": "brain+34Ch is blk+344h and brain+350h is blk+348h, because 009F4DA0's this is the brain and blk = brain+8h. blk+344h is the throttle magnitude limit the middle of 009F3F80 applies at 009F4441..009F4482 and the cap it hands 009EC7C0 at 009F4406; blk+348h is the rudder magnitude limit applied at 009F4525..009F4544. 009F4DA0 sets blk+348h to 1.0f unconditionally at 009F4DBC before anything else.",
+      "evidence": "009F4DAD MOV ESI,ECX and 009F50C0 LEA ECX,[ESI+8]; 009F4DB6 LEA EBP,[ESI+350h]; 009F4DBC MOVSS [EBP],XMM0 with XMM0 = 1.0f from 00D7A24C; the decompiled 009F4DA0 tests param_1+364h against 1 and writes param_1+374h, which are blk+35Ch (an int latch 0/1/2) and blk+36Ch (a byte)"
+    },
+    {
+      "was": "include/bsp/ship_ai_states.hpp ShipAiControlBlock: 'int direction_counter_384; // +384h, zeroed on a direction change'",
+      "is": "blk+384h is a float, not an int: a stall accumulator that grows while a slow neighbour blocks the hull and is compared against 10.0f.",
+      "evidence": "009F3FE3 MOVSS [ESI+384h],XMM1 (zero); 009F47E2 FSUBR double 00D7A308 / 009F47E8 FADD [ESI+384h] / 009F47EE FSTP [ESI+384h]; 009F489E MOVSS XMM1,[ESI+384h] and COMISS against the 10.0f at 00CE38B8; 009F4AFF MOVSS [ESI+384h],XMM0"
+    },
+    {
+      "was": "include/bsp/ship_ai_states.hpp ShipAiControlBlock: 'bool yaw_rate_subtracts_364; // +364h, picks add or subtract'",
+      "is": "Refined, not contradicted: blk+364h is the committed ahead/astern direction. Clear means astern and set means ahead. The comment describes how 009ED6B0 uses the same bit.",
+      "evidence": "009EC9CD CMP byte ptr [EDI+364h],0 then FCHS and the -0.625 floor, so a clear byte negates the whole throttle ceiling; 009F4441 caps the throttle at +blk+344h when set and floors it at -blk+344h when clear; 009F44C3 picks sector group 1 (the astern group) when it is clear and the hull is stopped; 009F4B0F and 009F4B74 flip it, each after zeroing the throttle on the side it is abandoning"
+    }
+  ],
+  "no_ghidra_function": [],
+  "uncertainties": [
+    "blk+37Ch, the clearance the danger ramp divides by unit+9CCh, is written only inside 009EF910 (six sites), which 009F4D10 calls. That routine was not read.",
+    "blk+33Ch, the gate on the rudder limit, is published by 009F4D10 at 009F4D2B and read at 009F4514; its producer was not read.",
+    "blk+368h, the escape dwell timer 009F3F80 sets to 1.0f, is counted down elsewhere. ship_ai_states.hpp attributes the countdown to 009ED6B0; that was not re-checked here.",
+    "The sign convention of 009D8B90's result is read from the listing, not from a run: a positive result above 0.75 * blk+3C4h arms the astern latch, and which of approach or recession that is was not confirmed dynamically.",
+    "No run-time evidence. bsp_game.exe records 009F40CA..009F4B98 (docs/GAME_EXECUTABLE.md milestone 2o) and never runs 009EF230, so the executable cannot reach the obstacle arms until this projection and the sector producer are both wired. src/ship_motion_probe.cpp is owned by another packet this turn and was not touched."
+  ],
+  "build": "scripts/build.ps1, Win32 Release, /W4 /WX clean; ctest reconstructed_math passed 1/1. No new test case was added.",
+  "follow_ups": [
+    "ship_ai_obstacle_sector_scan: 009EB660's swept-arc geometry between 009EB6B7 and 009EBECC, 009DD010, 009D84E0, 009DC2E0, 009D80C0, 009D8160 and the neighbour list blk+604h/+608h.",
+    "ship_ai_clearance_37c: 009EF910, the producer of blk+37Ch and of blk+33Ch, reached from 009F4D10.",
+    "ship_ai_throttle_ceiling_step: 009F4DA0's own arms 009F4DF7..009F50BB, which compute blk+344h and blk+348h out of 0070D140, 0070D0F0, 0082E850, 0070E3C0 and BSP_UnitInstance_GetReferenceSpeed.",
+    "ship_ai_throttle_profile_producer: who writes the 65 bytes at blk+4h and the bypass byte at blk+45h. 009F3F80 and 009E04E0 only consume them."
+  ]
+}
