@@ -1,4 +1,5 @@
 #include "bsp/air_operations.hpp"
+#include "bsp/plane_squadron.hpp"
 #include "bsp/app_bootstrap.hpp"
 #include "bsp/award_grant.hpp"
 #include "bsp/entity_event_queues.hpp"
@@ -2672,6 +2673,25 @@ int main() {
         const bsp::AirOpsLaunchDecision starved = bsp::air_ops_slot_launch_006cd350(input);
         check(starved.launch_count == 0 && starved.clear_slot,
             "006CD414 empties the slot when no stock is free");
+    }
+
+    {
+        // 007F473A..007F476C: an absent WingCount is 3, not the " 1" the
+        // plane.props descriptor declares, and a present value below 1 is
+        // raised to 1. There is no upper clamp, so only the authored enum
+        // PlaneWingCount (1..5) keeps 007F4B55 inside the five-slot array.
+        bsp::SquadronSpawnProperties props;
+        check(bsp::squadron_resolve_wing_count_007f4747(props) == bsp::kSquadronDefaultWingCount,
+            "007F473A defaults an absent WingCount to 3");
+        props.wing_count_present = true;
+        props.wing_count_raw = 0;
+        check(bsp::squadron_resolve_wing_count_007f4747(props) == 1,
+            "007F4764 raises a WingCount below 1 to 1");
+        props.wing_count_raw = 6;
+        check(bsp::squadron_resolve_wing_count_007f4747(props) == 6,
+            "007F476E has no upper clamp on WingCount");
+        check(!bsp::squadron_wing_count_fits_array_007f4b55(6),
+            "six wings would write past the five pointers at squadron+3D0h");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
