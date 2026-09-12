@@ -1,0 +1,136 @@
+{
+  "reason": "Native registers, stack arguments and RET cleanup verified in original listings. unused EDX represents an unconsumed register, not an original argument; source contexts are excluded. Prior names and signatures are preserved in each receipt.",
+  "entries": [
+    {
+      "address": "00a99f10",
+      "proposed": "uint __fastcall FUN_00a99f10(void* self)",
+      "before": "Function: FUN_00a99f10 at 00a99f10\nSignature: undefined FUN_00a99f10(void)\nEntry: 00a99f10\nBody: 00a99f10 - 00a99f16",
+      "apply": "Successfully set prototype for function at 00a99f10 with __fastcall calling convention",
+      "after": "Function: FUN_00a99f10 at 00a99f10\nSignature: uint __fastcall FUN_00a99f10(void * self)\nEntry: 00a99f10\nBody: 00a99f10 - 00a99f16",
+      "readback_verified": true
+    },
+    {
+      "address": "00a99f20",
+      "proposed": "uint __fastcall FUN_00a99f20(void* self)",
+      "before": "Function: FUN_00a99f20 at 00a99f20\nSignature: undefined FUN_00a99f20(void)\nEntry: 00a99f20\nBody: 00a99f20 - 00a99f26",
+      "apply": "Successfully set prototype for function at 00a99f20 with __fastcall calling convention",
+      "after": "Function: FUN_00a99f20 at 00a99f20\nSignature: uint __fastcall FUN_00a99f20(void * self)\nEntry: 00a99f20\nBody: 00a99f20 - 00a99f26",
+      "readback_verified": true
+    },
+    {
+      "address": "00a99f30",
+      "proposed": "uint __fastcall FUN_00a99f30(void* self)",
+      "before": "Function: FUN_00a99f30 at 00a99f30\nSignature: undefined FUN_00a99f30(void)\nEntry: 00a99f30\nBody: 00a99f30 - 00a99f36",
+      "apply": "Successfully set prototype for function at 00a99f30 with __fastcall calling convention",
+      "after": "Function: FUN_00a99f30 at 00a99f30\nSignature: uint __fastcall FUN_00a99f30(void * self)\nEntry: 00a99f30\nBody: 00a99f30 - 00a99f36",
+      "readback_verified": true
+    },
+    {
+      "address": "00a99f40",
+      "proposed": "void __fastcall FUN_00a99f40(void* self, void* unused_edx, uint bits)",
+      "before": "Function: FUN_00a99f40 at 00a99f40\nSignature: undefined FUN_00a99f40(void)\nEntry: 00a99f40\nBody: 00a99f40 - 00a99f4c",
+      "apply": "Successfully set prototype for function at 00a99f40 with __fastcall calling convention",
+      "after": "Function: FUN_00a99f40 at 00a99f40\nSignature: void __fastcall FUN_00a99f40(void * self, void * unused_edx, uint bits)\nEntry: 00a99f40\nBody: 00a99f40 - 00a99f4c",
+      "readback_verified": true
+    },
+    {
+      "address": "00a99f50",
+      "proposed": "void __fastcall FUN_00a99f50(void* self, void* unused_edx, uint bits)",
+      "before": "Function: FUN_00a99f50 at 00a99f50\nSignature: undefined FUN_00a99f50(void)\nEntry: 00a99f50\nBody: 00a99f50 - 00a99f5c",
+      "apply": "Successfully set prototype for function at 00a99f50 with __fastcall calling convention",
+      "after": "Function: FUN_00a99f50 at 00a99f50\nSignature: void __fastcall FUN_00a99f50(void * self, void * unused_edx, uint bits)\nEntry: 00a99f50\nBody: 00a99f50 - 00a99f5c",
+      "readback_verified": true
+    },
+    {
+      "address": "00a99f60",
+      "proposed": "void __fastcall FUN_00a99f60(void* self, void* unused_edx, uint bits)",
+      "before": "Function: FUN_00a99f60 at 00a99f60\nSignature: undefined FUN_00a99f60(void)\nEntry: 00a99f60\nBody: 00a99f60 - 00a99f6c",
+      "apply": "Successfully set prototype for function at 00a99f60 with __fastcall calling convention",
+      "after": "Function: FUN_00a99f60 at 00a99f60\nSignature: void __fastcall FUN_00a99f60(void * self, void * unused_edx, uint bits)\nEntry: 00a99f60\nBody: 00a99f60 - 00a99f6c",
+      "readback_verified": true
+    },
+    {
+      "address": "00a99710",
+      "proposed": "void* __fastcall BSP_JoystickInputDevice_ControlName(void* self, void* unused_edx, void* output, uint code)",
+      "before": "Function: BSP_JoystickInputDevice_ControlName at 00a99710\nSignature: undefined BSP_JoystickInputDevice_ControlName(void)\nEntry: 00a99710\nBody: 00a99710 - 00a998f1",
+      "apply": "Successfully set prototype for function at 00a99710 with __fastcall calling convention",
+      "after": "Function: BSP_JoystickInputDevice_ControlName at 00a99710\nSignature: void * __fastcall BSP_JoystickInputDevice_ControlName(void * self, void * unused_edx, void * output, uint code)\nEntry: 00a99710\nBody: 00a99710 - 00a998f1",
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a99f10",
+        "prototype": "uint __fastcall FUN_00a99f10(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a99f10 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a99f20",
+        "prototype": "uint __fastcall FUN_00a99f20(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a99f20 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a99f30",
+        "prototype": "uint __fastcall FUN_00a99f30(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a99f30 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a99f40",
+        "prototype": "void __fastcall FUN_00a99f40(void* self, void* unused_edx, uint bits)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a99f40 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a99f50",
+        "prototype": "void __fastcall FUN_00a99f50(void* self, void* unused_edx, uint bits)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a99f50 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a99f60",
+        "prototype": "void __fastcall FUN_00a99f60(void* self, void* unused_edx, uint bits)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a99f60 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a99710",
+        "prototype": "void* __fastcall BSP_JoystickInputDevice_ControlName(void* self, void* unused_edx, void* output, uint code)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a99710 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

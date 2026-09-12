@@ -63,10 +63,22 @@ write lock; prior annotations and typed reconstruction records were retained.
 `reports/native_input_virtuals_function_definitions.json` records three previously
 missing leaf starts. The GUID adapter claims no original STL implementation.
 
-Review confirmed the currently connected slots but found further table entries:
-XInput and joystick control names at3Ch, and mouse fields at3Ch through50h. Their
-coverage is tracked separately while the supplemental providers are integrated.
-The dispatcher therefore does not yet claim complete virtual table coverage.
+Review found eight further table entries: XInput and joystick control names at3Ch,
+and mouse fields at3Ch through50h. They are now connected through separate string
+and DWORD signatures, including the raw joystick label provider documented in
+`NATIVE_INPUT_DEVICE_TAIL_VIRTUALS.md`. Primary live byte reads and worker review
+agree on all 82 slot targets. Full extents are keyboard34h, common gamepad38h,
+XInput/joystick3Ch and mouse50h. Six missing mouse leaf starts were defined and
+seven more native signatures saved/read back in the tail metadata receipts.
+
+The focused real SDK lifecycle passed with one keyboard, one mouse and four raw
+XInput devices. The actual singleton manager registered the backend; BD0400 drain
+cleared both publications. Tracked device and backend SDK references remained2/2
+after native destruction, then explicit device-before-backend release reached0/0.
+The preceding read-only inventory found no game controllers. The fixture used an
+unshown, nonactivating window and did not poll devices or send force feedback.
+This proves isolated raw construction/drain with explicit fixture globals and
+source publications; it does not prove application frame attachment.
 
 The application has not yet attached this composition to its frame/input-action
 path. Raw event submission and request-tree insertion remain separate work. A

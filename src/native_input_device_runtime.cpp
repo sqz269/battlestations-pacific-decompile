@@ -1,5 +1,6 @@
 #include "bsp/native_input_device_runtime.hpp"
 #include "bsp/native_input_guid_storage.hpp"
+#include "bsp/native_input_device_tail_virtuals.hpp"
 #include "bsp/input_focus_reset.hpp"
 #include "bsp/sound_system_update.hpp"
 
@@ -219,5 +220,38 @@ std::int32_t NativeInputDeviceRuntime::identifier_vslot34(void* d) {
 float NativeInputDeviceRuntime::mouse_double_click_vslot38(void* d) {
     if (profile(d) != mouse) unbound();
     return native_mouse_double_click_seconds_00a9a380(d);
+}
+NativeString& NativeInputDeviceRuntime::control_name_vslot3c(void* d,
+    NativeString& output, std::uint32_t code) {
+    switch (profile(d)) {
+    case xinput: return name_native_xinput_control_00a9aa40(d, output, code,
+        services_.xinput_tables, services_.strings);
+    case joystick: return native_joystick_control_name_00a99710(d, output, code, services_.strings);
+    default: unbound();
+    }
+}
+std::uint32_t NativeInputDeviceRuntime::mouse_accumulated_x_vslot3c(void* d) {
+    if (profile(d) != mouse) unbound();
+    return native_mouse_accumulated_x_00a99f10(d);
+}
+std::uint32_t NativeInputDeviceRuntime::mouse_accumulated_y_vslot40(void* d) {
+    if (profile(d) != mouse) unbound();
+    return native_mouse_accumulated_y_00a99f20(d);
+}
+std::uint32_t NativeInputDeviceRuntime::mouse_accumulated_z_vslot44(void* d) {
+    if (profile(d) != mouse) unbound();
+    return native_mouse_accumulated_z_00a99f30(d);
+}
+void NativeInputDeviceRuntime::set_mouse_accumulated_x_vslot48(void* d, std::uint32_t bits) {
+    if (profile(d) != mouse) unbound();
+    set_native_mouse_accumulated_x_00a99f40(d, bits);
+}
+void NativeInputDeviceRuntime::set_mouse_accumulated_y_vslot4c(void* d, std::uint32_t bits) {
+    if (profile(d) != mouse) unbound();
+    set_native_mouse_accumulated_y_00a99f50(d, bits);
+}
+void NativeInputDeviceRuntime::set_mouse_accumulated_z_vslot50(void* d, std::uint32_t bits) {
+    if (profile(d) != mouse) unbound();
+    set_native_mouse_accumulated_z_00a99f60(d, bits);
 }
 } // namespace bsp

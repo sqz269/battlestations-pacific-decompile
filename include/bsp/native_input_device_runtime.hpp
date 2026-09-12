@@ -90,6 +90,14 @@ public:
     // Only the mouse has this signature at38. Keyboard has no slot38; gamepad
     // families use force output there. Signature/profile mismatches are errors.
     float mouse_double_click_vslot38(void*);
+    // Slot3C is a string result for XInput/joystick, a DWORD for mouse.
+    NativeString& control_name_vslot3c(void*, NativeString& actual_output, std::uint32_t code);
+    std::uint32_t mouse_accumulated_x_vslot3c(void*);
+    std::uint32_t mouse_accumulated_y_vslot40(void*);
+    std::uint32_t mouse_accumulated_z_vslot44(void*);
+    void set_mouse_accumulated_x_vslot48(void*, std::uint32_t bits);
+    void set_mouse_accumulated_y_vslot4c(void*, std::uint32_t bits);
+    void set_mouse_accumulated_z_vslot50(void*, std::uint32_t bits);
 private:
     NativeInputDeviceRuntimeServices services_;
     NativeGamepadContext gamepad_;
