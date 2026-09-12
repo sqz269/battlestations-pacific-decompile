@@ -1,0 +1,885 @@
+{
+  "packet": "orch3_traceline_geometry_as",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00af3440",
+      "end_inclusive": "00af3748",
+      "end_exclusive": "00af3749",
+      "cpp_symbol": "attach_native_traceline_geometry_00af3440",
+      "ghidra_name": "BSP_NativeTraceline_AttachGeometry",
+      "previous_ghidra_name": "FUN_00af3440",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_NativeTraceline_AttachGeometry(void *payload, void *root)",
+      "original_abi": "ECX actual1BCh Traceline; stack actual80h payload, actual root; RET8 at AF3746. C++ takes the same live NativeModelOwner and canonical root view, plus actual service bindings.",
+      "source": "src/native_traceline_geometry.cpp",
+      "header": "include/bsp/native_traceline_geometry.hpp",
+      "native_byte_count": 777,
+      "native_sha256": "fd2b08d2f48ba31edbcae805bcdf91bf958bde75ea03ab855f16ed5aec641bd7",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete AF3440 normal body over the same actual model, mesh, section, material and parameter owners. Live/disk777-byte parity; 21 original/source prefix comparisons stop before renderer5C or overflow allocation. Full suffix source/build checked only. New C++ ABI, native FH3 and gameplay unverified. Evidence: docs/NATIVE_TRACELINE_GEOMETRY.md; reports/native_traceline_geometry.json.",
+      "status": "full_normal_source_initial_build_prefix_fixture_only"
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "00af34bc",
+      "native": "00bf55be",
+      "function": "00af3440"
+    },
+    {
+      "address": "00af34df",
+      "native": "00b73b60",
+      "function": "00af3440"
+    },
+    {
+      "address": "00af34f3",
+      "native": "00b73d70",
+      "function": "00af3440"
+    },
+    {
+      "address": "00af351e",
+      "native": "00b75170",
+      "function": "00af3440"
+    },
+    {
+      "address": "00af3547",
+      "native": "00b73bb0",
+      "function": "00af3440"
+    },
+    {
+      "address": "00af3562",
+      "native": "00533fa0",
+      "function": "00af3440"
+    },
+    {
+      "address": "00af3579",
+      "native": "0041e870",
+      "function": "00af3440"
+    },
+    {
+      "address": "00af3587",
+      "native": "00535320",
+      "function": "00af3440"
+    },
+    {
+      "address": "00af35a9",
+      "native": "0041e870",
+      "function": "00af3440"
+    },
+    {
+      "address": "00af35b7",
+      "native": "00535320",
+      "function": "00af3440"
+    },
+    {
+      "address": "00af35d4",
+      "native": "0041e870",
+      "function": "00af3440"
+    },
+    {
+      "address": "00af35e2",
+      "native": "00535320",
+      "function": "00af3440"
+    },
+    {
+      "address": "00af3600",
+      "native": "00419cc0",
+      "function": "00af3440"
+    },
+    {
+      "address": "00af3607",
+      "native": "00bd1510",
+      "function": "00af3440"
+    },
+    {
+      "address": "00af361c",
+      "native": "0041dd40",
+      "function": "00af3440"
+    },
+    {
+      "address": "00af3637",
+      "native": "00bf7680",
+      "function": "00af3440"
+    },
+    {
+      "address": "00af3656",
+      "native": "00b18b20",
+      "function": "00af3440"
+    },
+    {
+      "address": "00af3672",
+      "native": "00419cc0",
+      "function": "00af3440"
+    },
+    {
+      "address": "00af3679",
+      "native": "00bd1510",
+      "function": "00af3440"
+    },
+    {
+      "address": "00af368a",
+      "native": "00b189f0",
+      "function": "00af3440"
+    },
+    {
+      "address": "00af3692",
+      "native": "00b864c0",
+      "function": "00af3440"
+    },
+    {
+      "address": "00af36c8",
+      "native": "00b73260",
+      "function": "00af3440"
+    },
+    {
+      "address": "00af36d0",
+      "native": "00b85b80",
+      "function": "00af3440"
+    },
+    {
+      "address": "00af36db",
+      "native": "00b86650",
+      "function": "00af3440"
+    },
+    {
+      "address": "00af36e3",
+      "native": "00b73c60",
+      "function": "00af3440"
+    },
+    {
+      "address": "00af371d",
+      "native": "00b6d890",
+      "function": "00af3440"
+    }
+  ],
+  "no_ghidra_function": [],
+  "returning_free_gaps": [],
+  "verification": {
+    "exit_code": 0,
+    "library_sha256": "f025588545d075228b2df99ddf38089cd2b1e87f8098eb449dfaea5a787e6363",
+    "inputs": {
+      "C:\\Users\\sqz269\\bsp-as-geometry\\probe.cpp": "4d6b021a666f51d1025b7d50190ee81866495aa25dd95a932abd8688efddb560",
+      "C:\\Users\\sqz269\\bsp-as-geometry\\ar_fixture.hpp": "b23d905594148a6a08722764b4c53ba29859392ca96453d0a461b2566d1754e8",
+      "C:\\Users\\sqz269\\bsp-as-geometry\\original.hpp": "6fa9032a06ad2c750074eebf75792a62e0879c8724a63a59a2f9ced044095ef0",
+      "C:\\Users\\sqz269\\bsp-as-geometry\\geometry_bytes.hpp": "5c78942e19cdade6e0ca4c589d9dd501e98fad03e6eadd9e4eee61131e36f3de"
+    },
+    "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\as-geometry-probe.log"
+  },
+  "coverage": {
+    "native_prefix_comparisons": 21,
+    "through": "AF353F before current renderer5C, or BF55BE overflow request",
+    "full_suffix": "assembly/source reviewed and strict build only",
+    "game_validated": false
+  },
+  "composition": {
+    "source": "src/native_particle_tracer_state.cpp",
+    "header": "include/bsp/native_particle_tracer_state.hpp",
+    "known_targets": [
+      "00af32f0",
+      "00af3440",
+      "00b0a110",
+      "0086ade0"
+    ],
+    "curve_entries": [
+      "00affcb0",
+      "00affd20"
+    ],
+    "runtime_validation": "pending combined current-library replay"
+  },
+  "integration_as_review": {
+    "new_native_functions": 1,
+    "full_game_validated": false,
+    "combined_validation": "passed exact merged Win32 build and seven current-library-only probes within documented coverage",
+    "native_signatures": [
+      {
+        "address": "00af3440",
+        "name": "BSP_NativeTraceline_AttachGeometry",
+        "prototype": "void BSP_NativeTraceline_AttachGeometry(void *payload, void *root)",
+        "calling_convention": "__thiscall"
+      }
+    ],
+    "call_rows_verified": true,
+    "call_checks": [
+      [
+        "native_traceline_pool",
+        "reports/native_traceline_pool.json: 17 call rows checked, 0 failed"
+      ],
+      [
+        "native_traceline_lifetime",
+        "reports/native_traceline_lifetime.json: 8 call rows checked, 0 failed"
+      ],
+      [
+        "native_traceline_update",
+        "reports/native_traceline_update.json: 25 call rows checked, 0 failed"
+      ],
+      [
+        "native_traceline_geometry",
+        "reports/native_traceline_geometry.json: 26 call rows checked, 0 failed"
+      ]
+    ],
+    "saved_names_and_original_signatures": 24,
+    "original_signature_readback": "00af19d0 BSP_NativeTracelineSlab_Initialize  void * __thiscall BSP_NativeTracelineSlab_Initialize(void * this, uint slab_id)  body 00af19d0 - 00af1a12\n00af32f0 BSP_NativeTracelinePool_AllocateRawSlot  void * __thiscall BSP_NativeTracelinePool_AllocateRawSlot(void * this)  body 00af32f0 - 00af342b\n00af1d30 BSP_NativeTracelinePool_ReturnRawSlot  void __thiscall BSP_NativeTracelinePool_ReturnRawSlot(void * this, void * slot)  body 00af1d30 - 00af1d9b\n00af1ea0 BSP_NativeTraceline_ReturnRawSlot  void __thiscall BSP_NativeTraceline_ReturnRawSlot(void * this)  body 00af1ea0 - 00af1eab\n00af1ac0 BSP_NativeTracelinePoolTable_FreeBacking  void __thiscall BSP_NativeTracelinePoolTable_FreeBacking(void * this)  body 00af1ac0 - 00af1acd\n00af3170 BSP_NativeTracelinePool_Construct  void * __thiscall BSP_NativeTracelinePool_Construct(void * this)  body 00af3170 - 00af3242\n00af1c70 BSP_NativeTracelinePool_Destroy  void __thiscall BSP_NativeTracelinePool_Destroy(void * this)  body 00af1c70 - 00af1cf9\n00af3250 BSP_NativeTracelinePool_TrimEmptySlabs  void __thiscall BSP_NativeTracelinePool_TrimEmptySlabs(void * this)  body 00af3250 - 00af32ef\n00cd77f0 BSP_StaticNativeTracelinePool_Initialize  int __cdecl BSP_StaticNativeTracelinePool_Initialize(void)  body 00cd77f0 - 00cd7805\n00ce0b70 BSP_StaticNativeTracelinePool_DestroyAtExit  void __cdecl BSP_StaticNativeTracelinePool_DestroyAtExit(void)  body 00ce0b70 - 00ce0b79\n00af1980 BSP_NativeTraceline_Destroy  void __thiscall BSP_NativeTraceline_Destroy(void * this)  body 00af1980 - 00af19a3\n00858380 BSP_NativeTraceline_ScalarDelete  void * __thiscall BSP_NativeTraceline_ScalarDelete(void * this, uint flags)  body 00858380 - 0085839b\n0086ad50 BSP_NativeTracelinePayload_Destroy  void __thiscall BSP_NativeTracelinePayload_Destroy(void * this)  body 0086ad50 - 0086addf\n0086ade0 BSP_NativeTracelinePayload_ScalarDelete  void * __thiscall BSP_NativeTracelinePayload_ScalarDelete(void * this, uint flags)  body 0086ade0 - 0086adfd\n00af22b0 BSP_NativeTraceline_AppendPoint  void __fastcall BSP_NativeTraceline_AppendPoint(void * node, void * point, float interval)  body 00af22b0 - 00af2620\n00af2630 BSP_NativeTraceline_SetPoint  void __thiscall BSP_NativeTraceline_SetPoint(void * this, void * point, float interval)  body 00af2630 - 00af2643\n00b0a110 BSP_NativeParticleTracer_Update  uint __thiscall BSP_NativeParticleTracer_Update(void * this, void * state, float age, uint word, void * matrix, float delta)  body 00b0a110 - 00b0a3eb\n00af3440 BSP_NativeTraceline_AttachGeometry  void __thiscall BSP_NativeTraceline_AttachGeometry(void * this, void * payload, void * root)  body 00af3440 - 00af3748\n00af3430 BSP_NativeTraceline_AllocateSlot  void * __cdecl BSP_NativeTraceline_AllocateSlot(void)  body 00af3430 - 00af3439\n00b0b6a0 BSP_NativeParticleTracer_InitializeState  void __thiscall BSP_NativeParticleTracer_InitializeState(void * this, void * state, void * record)  body 00b0b6a0 - 00b0c80e\n00b0a840 BSP_NativeParticleTracer_CleanupState  uchar __thiscall BSP_NativeParticleTracer_CleanupState(void * this, void * state, uint force)  body 00b0a840 - 00b0a91a\n00affcb0 BSP_ParticleParameter_IntegrateHermite  float __thiscall BSP_ParticleParameter_IntegrateHermite(void * this, float time)  body 00affcb0 - 00affd19\n00affd20 BSP_ParticleParameter_IntegrateLinear  float __thiscall BSP_ParticleParameter_IntegrateLinear(void * this, float time)  body 00affd20 - 00affd6f\n00af26a0 BSP_NativeTraceline_FillAndSubmitGeometry  void __thiscall BSP_NativeTraceline_FillAndSubmitGeometry(void * this, void * render_context, float arg1, float arg2, uint flags)  body 00af26a0 - 00af3168\n",
+    "previous_signature_snapshot": "00af19d0 FUN_00af19d0  undefined FUN_00af19d0(void)  body 00af19d0 - 00af1a12\n00af32f0 FUN_00af32f0  undefined FUN_00af32f0(void)  body 00af32f0 - 00af342b\n00af1d30 FUN_00af1d30  undefined FUN_00af1d30(void)  body 00af1d30 - 00af1d9b\n00af1ea0 FUN_00af1ea0  undefined FUN_00af1ea0(void)  body 00af1ea0 - 00af1eab\n00af1ac0 FUN_00af1ac0  undefined FUN_00af1ac0(void)  body 00af1ac0 - 00af1acd\n00af3170 FUN_00af3170  undefined FUN_00af3170(void)  body 00af3170 - 00af3242\n00af1c70 FUN_00af1c70  undefined FUN_00af1c70(void)  body 00af1c70 - 00af1cf9\n00af3250 FUN_00af3250  undefined FUN_00af3250(void)  body 00af3250 - 00af32ef\n00cd77f0 FUN_00cd77f0  undefined FUN_00cd77f0(void)  body 00cd77f0 - 00cd7805\n00ce0b70 CG_static_init_00ce0b70  undefined CG_static_init_00ce0b70(void)  body 00ce0b70 - 00ce0b79\n00af1980 FUN_00af1980  undefined FUN_00af1980(void)  body 00af1980 - 00af19a3\n00858380 FUN_00858380  undefined FUN_00858380(void)  body 00858380 - 0085839b\n0086ad50 FUN_0086ad50  undefined FUN_0086ad50(void)  body 0086ad50 - 0086addf\n0086ade0 CG_scalar_deleting_dtor_0086ade0  undefined CG_scalar_deleting_dtor_0086ade0(void)  body 0086ade0 - 0086adfd\n00af22b0 FUN_00af22b0  undefined FUN_00af22b0(void)  body 00af22b0 - 00af2620\n00af2630 FUN_00af2630  undefined FUN_00af2630(void)  body 00af2630 - 00af2643\n00b0a110 FUN_00b0a110  undefined FUN_00b0a110(void)  body 00b0a110 - 00b0a3eb\n00af3440 FUN_00af3440  undefined FUN_00af3440(void)  body 00af3440 - 00af3748\n00af3430 BSP_NativeTraceline_AllocateSlot  void * __cdecl BSP_NativeTraceline_AllocateSlot(void)  body 00af3430 - 00af3439\n00b0b6a0 BSP_NativeParticleTracer_InitializeState  void __thiscall BSP_NativeParticleTracer_InitializeState(void * this, void * state, void * record)  body 00b0b6a0 - 00b0c80e\n00b0a840 BSP_NativeParticleTracer_CleanupState  uchar __thiscall BSP_NativeParticleTracer_CleanupState(void * this, void * state, uint force)  body 00b0a840 - 00b0a91a\n00affcb0 BSP_ParticleParameter_IntegrateHermite  float __thiscall BSP_ParticleParameter_IntegrateHermite(void * this, float time)  body 00affcb0 - 00affd19\n00affd20 BSP_ParticleParameter_IntegrateLinear  float __thiscall BSP_ParticleParameter_IntegrateLinear(void * this, float time)  body 00affd20 - 00affd6f\n00af26a0 FUN_00af26a0  undefined FUN_00af26a0(void)  body 00af26a0 - 00af3168\n",
+    "analysis_repairs": {
+      "as-flow-repair.json": {
+        "repairs": [
+          {
+            "function": "00af1ac0",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T22:49:22Z",
+            "decompile_lines_before": 11,
+            "gaps": [
+              {
+                "site": "00af1ac7",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00af1acc",
+                "gap_end_exclusive": "00af1acd",
+                "bytes": 1,
+                "after_call": true,
+                "sha256": "18f5384d58bcb1bba0bcd9e6a6781d1a6ac2cc280c330ecbab6cb7931b721552"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00af1ac7",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00af1acc",
+                  "gap_end_exclusive": "00af1acd",
+                  "bytes": 1,
+                  "after_call": true,
+                  "sha256": "18f5384d58bcb1bba0bcd9e6a6781d1a6ac2cc280c330ecbab6cb7931b721552"
+                },
+                "clear": "Success: Cleared flow override at 00af1ac7 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 1 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 10,
+            "gaps_remaining": 0
+          },
+          {
+            "function": "00af1c70",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T22:49:29Z",
+            "decompile_lines_before": 35,
+            "gaps": [
+              {
+                "site": "00af1c88",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00af1c8d",
+                "gap_end_exclusive": "00af1c98",
+                "bytes": 11,
+                "after_call": true,
+                "sha256": "8dce4cab274cdcac18669cd33a5a3e3b2d5ee45271375a49c6d6aa389c0cfee8"
+              },
+              {
+                "site": "00af1ca0",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00af1ca5",
+                "gap_end_exclusive": "00af1ca8",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00af1c88",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf65ac",
+                  "gap_start": "00af1c8d",
+                  "gap_end_exclusive": "00af1c98",
+                  "bytes": 11,
+                  "after_call": true,
+                  "sha256": "8dce4cab274cdcac18669cd33a5a3e3b2d5ee45271375a49c6d6aa389c0cfee8"
+                },
+                "clear": "Success: Cleared flow override at 00af1c88 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 11 byte(s)"
+              },
+              {
+                "gap": {
+                  "site": "00af1ca0",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00af1ca5",
+                  "gap_end_exclusive": "00af1ca8",
+                  "bytes": 3,
+                  "after_call": true,
+                  "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+                },
+                "clear": "Success: Cleared flow override at 00af1ca0 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 3 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 38,
+            "gaps_remaining": 0
+          },
+          {
+            "function": "00af3170",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T22:49:36Z",
+            "decompile_lines_before": 55,
+            "gaps": [
+              {
+                "site": "00af3224",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00af3229",
+                "gap_end_exclusive": "00af322c",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00af3224",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00af3229",
+                  "gap_end_exclusive": "00af322c",
+                  "bytes": 3,
+                  "after_call": true,
+                  "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+                },
+                "clear": "Success: Cleared flow override at 00af3224 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 3 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 53,
+            "gaps_remaining": 0
+          },
+          {
+            "function": "00af3250",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T22:49:42Z",
+            "decompile_lines_before": 35,
+            "gaps": [
+              {
+                "site": "00af3271",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00af3276",
+                "gap_end_exclusive": "00af32b0",
+                "bytes": 58,
+                "after_call": true,
+                "sha256": "67e700ce4ec9949f0ca8112ff9b32d25d93f8c1af32c1baff831c05cd6cc67e8"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00af3271",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf65ac",
+                  "gap_start": "00af3276",
+                  "gap_end_exclusive": "00af32b0",
+                  "bytes": 58,
+                  "after_call": true,
+                  "sha256": "67e700ce4ec9949f0ca8112ff9b32d25d93f8c1af32c1baff831c05cd6cc67e8"
+                },
+                "clear": "Success: Cleared flow override at 00af3271 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 58 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 49,
+            "gaps_remaining": 0
+          },
+          {
+            "function": "00af32f0",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T22:49:49Z",
+            "decompile_lines_before": 78,
+            "gaps": [
+              {
+                "site": "00af3381",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00af3386",
+                "gap_end_exclusive": "00af3389",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00af3381",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00af3386",
+                  "gap_end_exclusive": "00af3389",
+                  "bytes": 3,
+                  "after_call": true,
+                  "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+                },
+                "clear": "Success: Cleared flow override at 00af3381 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 3 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 76,
+            "gaps_remaining": 0
+          },
+          {
+            "function": "00af1980",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T22:49:56Z",
+            "decompile_lines_before": 13,
+            "gaps": [
+              {
+                "site": "00af1994",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00af1999",
+                "gap_end_exclusive": "00af199c",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00af1994",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00af1999",
+                  "gap_end_exclusive": "00af199c",
+                  "bytes": 3,
+                  "after_call": true,
+                  "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+                },
+                "clear": "Success: Cleared flow override at 00af1994 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 3 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 12,
+            "gaps_remaining": 0
+          },
+          {
+            "function": "0086ad50",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T22:50:03Z",
+            "decompile_lines_before": 39,
+            "gaps": [
+              {
+                "site": "0086adc2",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "0086adc7",
+                "gap_end_exclusive": "0086adcd",
+                "bytes": 6,
+                "after_call": true,
+                "sha256": "2e3a4266eda0d7957574d1720071ed1c87c21c000210142825732dd1fba0216f"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "0086adc2",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "0086adc7",
+                  "gap_end_exclusive": "0086adcd",
+                  "bytes": 6,
+                  "after_call": true,
+                  "sha256": "2e3a4266eda0d7957574d1720071ed1c87c21c000210142825732dd1fba0216f"
+                },
+                "clear": "Success: Cleared flow override at 0086adc2 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 6 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 39,
+            "gaps_remaining": 0
+          },
+          {
+            "function": "0086ade0",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T22:50:09Z",
+            "decompile_lines_before": 14,
+            "gaps": [
+              {
+                "site": "0086adf0",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "0086adf5",
+                "gap_end_exclusive": "0086adf8",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "0086adf0",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf65ac",
+                  "gap_start": "0086adf5",
+                  "gap_end_exclusive": "0086adf8",
+                  "bytes": 3,
+                  "after_call": true,
+                  "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+                },
+                "clear": "Success: Cleared flow override at 0086adf0 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 3 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 11,
+            "gaps_remaining": 0
+          }
+        ]
+      },
+      "as-function-definitions.json": {
+        "events": [
+          {
+            "recreate": "00af1980",
+            "previous": "Function: FUN_00af1980 at 00af1980\nSignature: undefined FUN_00af1980(void)\nEntry: 00af1980\nBody: 00af1980 - 00af19a3",
+            "plate": null
+          },
+          {
+            "endpoint": "delete_function",
+            "body": {
+              "address": "00af1980"
+            },
+            "result": {
+              "success": true,
+              "address": "00af1980",
+              "deleted_function": "FUN_00af1980",
+              "body_size": 33,
+              "message": "Function 'FUN_00af1980' deleted at 00af1980"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00af1980",
+              "end_address": "00af19a4"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00af1980",
+              "end_address": "00af19a3",
+              "bytes_disassembled": 36,
+              "message": "Successfully disassembled 36 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00af1980",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00af1980",
+              "function_name": "FUN_00af1980",
+              "entry_point": "00af1980",
+              "body_size": 36,
+              "message": "Function created successfully at 00af1980"
+            }
+          },
+          {
+            "defined": "00af1980",
+            "end": "00af19a4",
+            "name": null,
+            "after": "Function: FUN_00af1980 at 00af1980\nSignature: undefined FUN_00af1980(void)\nEntry: 00af1980\nBody: 00af1980 - 00af19a3"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00cd77f0",
+              "end_address": "00cd7806"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00cd77f0",
+              "end_address": "00cd7805",
+              "bytes_disassembled": 22,
+              "message": "Successfully disassembled 22 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00cd77f0",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00cd77f0",
+              "function_name": "FUN_00cd77f0",
+              "entry_point": "00cd77f0",
+              "body_size": 22,
+              "message": "Function created successfully at 00cd77f0"
+            }
+          },
+          {
+            "defined": "00cd77f0",
+            "end": "00cd7806",
+            "name": null,
+            "after": "Function: FUN_00cd77f0 at 00cd77f0\nSignature: undefined FUN_00cd77f0(void)\nEntry: 00cd77f0\nBody: 00cd77f0 - 00cd7805"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00af26a0",
+              "end_address": "00af3169"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00af26a0",
+              "end_address": "00af3168",
+              "bytes_disassembled": 2761,
+              "message": "Successfully disassembled 2761 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00af26a0",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00af26a0",
+              "function_name": "FUN_00af26a0",
+              "entry_point": "00af26a0",
+              "body_size": 2761,
+              "message": "Function created successfully at 00af26a0"
+            }
+          },
+          {
+            "defined": "00af26a0",
+            "end": "00af3169",
+            "name": null,
+            "after": "Function: FUN_00af26a0 at 00af26a0\nSignature: undefined FUN_00af26a0(void)\nEntry: 00af26a0\nBody: 00af26a0 - 00af3168"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      }
+    },
+    "worker_review": "Pool reviewed full AF3440; lifetime reviewed canonical Tracer composition; update reviewed captured dispatch and x87 clock/curve boundaries. Sentinel-cell and matching allocator binding gaps fixed and focused probes passed.",
+    "historical_missing_function_correction": "CD77F0 and analyzed-only AF26A0 now defined with verified full ranges. Returning-free gaps in owned pool/lifetime functions repaired without changing CRT callee no-return flags. All listed direct call rows now pass."
+  },
+  "final_merged_validation_as": {
+    "tested_commit": "52fb0101683a7633b9018f935ed624d79d836263",
+    "reviewed_source_commit": "e65a5266f2babf66eb367f504dd3e68d90bd8f61",
+    "build": "Strict MSVC Win32 and both seeded CTests passed; local/as-final-combined-build.log",
+    "reviewed_source_header_hashes": {
+      "include/bsp/native_particle_parameter_loading.hpp": "f3c00ca8d2fcb9669668a4e8083ea8a7c2d8cdaae87a5d2ca2d4917304f294f0",
+      "src/native_particle_parameter_loading.cpp": "6bc2414542ac8ce0edba36c51661c7dcadc5fe4d75270af20420635196935304",
+      "include/bsp/native_particle_tracer_state.hpp": "223ff258775db69eb8f43b80e98d67e57a9303edfaaa09c1c541f96e7566aee5",
+      "src/native_particle_tracer_state.cpp": "7f4668f4dd19249dd64e1a28b6f13e011ca9a6c53951cd433ad299725033ce2c",
+      "include/bsp/native_traceline_pool.hpp": "a960be62f1ef301881f6792d07ec4b08c4981192db2a97f273e3702d54e3d8b6",
+      "src/native_traceline_pool.cpp": "7349f8e83893ca739fa713463aeb43deb4fc90cbaeffdfeb320173dd52b58bb1",
+      "include/bsp/native_traceline_lifetime.hpp": "11fd02ac45e8522edf107ddc9125f1c2ae666f9b8db47e1a99b31d04acecef84",
+      "src/native_traceline_lifetime.cpp": "74f0983114965bdbfd6475cb0978a3ed5f9dbc0aacc2da41f79af935a7e61e9e",
+      "include/bsp/native_traceline_update.hpp": "0beed3578741592b26ad26b2474203b47c3c366478646aa03e36a056e04fffab",
+      "src/native_traceline_update.cpp": "6ca7b2974c03b5e672da8528bdace20a5ebf9abe1ac34eb521aed5e6ac751f79",
+      "include/bsp/native_traceline_geometry.hpp": "2917707bdee2a4f98bb32c6e8f05bdfa6ad2029eaf9dacbabd91ad738b9359c8",
+      "src/native_traceline_geometry.cpp": "26e9f45c3258d8d0dc660de259c7e899c0601f423e2e2532fa2db3550356d323"
+    },
+    "library_sha256": {
+      "bsp_core": "85b27b52d44afbf8e6c471abe8397df9ff67452d09be9124aa2ff08904cca702",
+      "bsp_lua511": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "current_library_replays": [
+      {
+        "label": "pool",
+        "exit_code": 0,
+        "log": "local\\as-pool-current-replay.log",
+        "library_sha256": {
+          "bsp_core": "85b27b52d44afbf8e6c471abe8397df9ff67452d09be9124aa2ff08904cca702",
+          "bsp_lua511": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+          "bsp_zlib121": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+        },
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-as-traceline-pool\\header-snapshot.hpp": "a960be62f1ef301881f6792d07ec4b08c4981192db2a97f273e3702d54e3d8b6",
+          "C:\\Users\\sqz269\\bsp-as-traceline-pool\\original.hpp": "ab53900dfb295d1709a30ddf00a2af07f4a6a68891f9dc8187dc329a1f2213e3",
+          "C:\\Users\\sqz269\\bsp-as-traceline-pool\\probe.cpp": "eeeaef97dc50ebb9f9baf0b96bac60fedf8abd1bc844f668de7280eb4bc79e47",
+          "C:\\Users\\sqz269\\bsp-as-traceline-pool\\source-snapshot.cpp": "7349f8e83893ca739fa713463aeb43deb4fc90cbaeffdfeb320173dd52b58bb1"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-as\\pool-current.cmd",
+        "executable_sha256": "63a926e5029ca3a499a4f2c704b1f399b3145790a309f07eb21ec56c8982b301"
+      },
+      {
+        "label": "lifetime",
+        "exit_code": 0,
+        "log": "local\\as-lifetime-current-replay.log",
+        "library_sha256": {
+          "bsp_core": "85b27b52d44afbf8e6c471abe8397df9ff67452d09be9124aa2ff08904cca702",
+          "bsp_lua511": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+          "bsp_zlib121": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+        },
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-as-traceline-lifetime\\base_probe.hpp": "e7d5086254f4c9164d1756606d44088c1b869cd416b3e5f69f23cfbe14d8089e",
+          "C:\\Users\\sqz269\\bsp-as-traceline-lifetime\\original.hpp": "28483e4fc9e2ae09e2d4f40d01d0db091a809c3aad9a21edd2d103bf7504d132",
+          "C:\\Users\\sqz269\\bsp-as-traceline-lifetime\\probe.cpp": "af92ff2e5a541203129b0cd0a15a27c842c74f8b50e13e06570e9a73af366f71"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-as\\lifetime-current.cmd",
+        "executable_sha256": "2b5a522ffc8609553f9333942bdbd0b0cb7e519b4ec5bb13df6ade64ee33e004"
+      },
+      {
+        "label": "update",
+        "exit_code": 0,
+        "log": "local\\as-update-current-replay.log",
+        "library_sha256": {
+          "bsp_core": "85b27b52d44afbf8e6c471abe8397df9ff67452d09be9124aa2ff08904cca702",
+          "bsp_lua511": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+          "bsp_zlib121": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+        },
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-as-traceline-update\\original.hpp": "0c288f80c280c34ea929930e5997c8229d708fb0953dd277805bbfcd3fc27a9d",
+          "C:\\Users\\sqz269\\bsp-as-traceline-update\\probe.cpp": "1b78133844d06a127cccffbfd8b011815d4367e36e2f798c1829d0f55121999c"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-as\\update-current.cmd",
+        "executable_sha256": "5f056e0e4ab3b6690076e63918fb9a31cce298ce1653cd87e6ae5eb3a2ddf0d2"
+      },
+      {
+        "label": "geometry",
+        "exit_code": 0,
+        "log": "local\\as-geometry-current-replay.log",
+        "library_sha256": {
+          "bsp_core": "85b27b52d44afbf8e6c471abe8397df9ff67452d09be9124aa2ff08904cca702",
+          "bsp_lua511": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+          "bsp_zlib121": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+        },
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-as-geometry\\ar_fixture.hpp": "b23d905594148a6a08722764b4c53ba29859392ca96453d0a461b2566d1754e8",
+          "C:\\Users\\sqz269\\bsp-as-geometry\\geometry_bytes.hpp": "5c78942e19cdade6e0ca4c589d9dd501e98fad03e6eadd9e4eee61131e36f3de",
+          "C:\\Users\\sqz269\\bsp-as-geometry\\original.hpp": "6fa9032a06ad2c750074eebf75792a62e0879c8724a63a59a2f9ced044095ef0",
+          "C:\\Users\\sqz269\\bsp-as-geometry\\probe.cpp": "4d6b021a666f51d1025b7d50190ee81866495aa25dd95a932abd8688efddb560"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-as\\geometry-current.cmd",
+        "executable_sha256": "b12902e659cc20de70894a83493b2285f3224f36247c384cb25c7b555a589389"
+      },
+      {
+        "label": "geometry_guard",
+        "exit_code": 0,
+        "log": "local\\as-geometry_guard-current-replay.log",
+        "library_sha256": {
+          "bsp_core": "85b27b52d44afbf8e6c471abe8397df9ff67452d09be9124aa2ff08904cca702",
+          "bsp_lua511": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+          "bsp_zlib121": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+        },
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-as-geometry-review\\ar_fixture.hpp": "b23d905594148a6a08722764b4c53ba29859392ca96453d0a461b2566d1754e8",
+          "C:\\Users\\sqz269\\bsp-as-geometry-review\\geometry_bytes.hpp": "5c78942e19cdade6e0ca4c589d9dd501e98fad03e6eadd9e4eee61131e36f3de",
+          "C:\\Users\\sqz269\\bsp-as-geometry-review\\original.hpp": "6fa9032a06ad2c750074eebf75792a62e0879c8724a63a59a2f9ced044095ef0",
+          "C:\\Users\\sqz269\\bsp-as-geometry-review\\probe.cpp": "c80c26aa2ce116375a923c2853ab2aeb1d24f5beefdea975e2ad1432136d18ec"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-as\\geometry_guard-current.cmd",
+        "executable_sha256": "7281f19e7a8ff253336468e941c68197a3e35d4b429072ab6dfe825feefc9e0d"
+      },
+      {
+        "label": "legacy_tracer",
+        "exit_code": 0,
+        "log": "local\\as-legacy_tracer-current-replay.log",
+        "library_sha256": {
+          "bsp_core": "85b27b52d44afbf8e6c471abe8397df9ff67452d09be9124aa2ff08904cca702",
+          "bsp_lua511": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+          "bsp_zlib121": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+        },
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-ar-tracer-state\\original.hpp": "6fa9032a06ad2c750074eebf75792a62e0879c8724a63a59a2f9ced044095ef0",
+          "C:\\Users\\sqz269\\bsp-ar-tracer-state\\probe.cpp": "4d79a0fc9426f407e29009d0c3ce883f29ba3b15414e6eccb47037eea0b78d58"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-as\\legacy_tracer-current.cmd",
+        "executable_sha256": "e948e4e3eaff368c12e1e84c1cb110e1aeec0af1bf4eb4fbead10dcd404eb1fa"
+      },
+      {
+        "label": "legacy_dispatch",
+        "exit_code": 0,
+        "log": "local\\as-legacy_dispatch-current-replay.log",
+        "library_sha256": {
+          "bsp_core": "85b27b52d44afbf8e6c471abe8397df9ff67452d09be9124aa2ff08904cca702",
+          "bsp_lua511": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+          "bsp_zlib121": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+        },
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-ar-dispatch\\bind_original.inl": "18990c2b5aa55c760b7dbac138e2e617fc60fd6f25d84ba7b20bca0c1c04e49e",
+          "C:\\Users\\sqz269\\bsp-ar-dispatch\\original_bytes.hpp": "67151ef5b596363dbf1b5491c5c5c04e034e72df57b02337624859c693711e5d",
+          "C:\\Users\\sqz269\\bsp-ar-dispatch\\probe.cpp": "41228226206e975673e5f12ad0873b0c79239faa5e3628b3c000b017a4dcd15e",
+          "C:\\Users\\sqz269\\bsp-ar-dispatch\\probe_support.hpp": "56d85cde9bc35e7004e63c73755729d89cd1e033f1d71ba0413692109b4b0d34",
+          "C:\\Users\\sqz269\\bsp-ar-dispatch\\state_body.inl": "1bb568b321bfb19ab94a56507bd790e74fd4cc27958d423ab220d3e7fe0de568"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-as\\legacy_dispatch-current.cmd",
+        "executable_sha256": "8167075745a5b84a5cca566b8edb8bdbf9d62b12a1c7e69d5a1c1b228b746aea"
+      }
+    ],
+    "new_normal_native_bodies": 18,
+    "existing_interface_refinements": 5,
+    "analyzed_only_functions": 1,
+    "saved_names_and_original_signatures": 24,
+    "checked_numeric_report_call_rows": 76,
+    "indirect_targets": "Verifier logs indirect targets without mechanically resolving them; see per-report profiles and evidence.",
+    "failed_call_rows": 0,
+    "game_validated": false,
+    "original_fh3_validated": false,
+    "coverage": {
+      "pool": "Full bounded allocation/slab/return/trim/lifecycle original-byte comparisons; repeated state/byte counts are not independent test cases. Real CRT exit cleanup observed.",
+      "lifetime": "17 full bounded original-byte lifetime variants plus real scene/backlink teardown, actual owner replacement and optional public cleanup/allocation composition.",
+      "update": "138 full core comparisons; actual current clock and existing integral implementations.",
+      "geometry": "21 original/source prefix comparisons end before renderer5C or overflowing allocation; one added alias rejection. Guard replay repeats the prefix cases. Full suffix source/build only.",
+      "legacy": "Existing Tracer and dispatch probes pass with omitted reconstruction bindings; prior AR coverage limits unchanged."
+    },
+    "remaining_boundaries": [
+      "Full successful AF3440 attachment and its following initial-update composition are not fixture-tested.",
+      "AF26A0 is analyzed geometry filling/submission with no reconstructed body.",
+      "Actual renderer5C stream factory and renderer38 declaration registry/loading remain required application dependencies.",
+      "Canonical root view and constructed-companion registration must be supplied by the application; no substitute native owner is created.",
+      "Original FH3/SEH and complete native ABI/FP environment, concurrency scheduling, rendering and gameplay remain unvalidated."
+    ]
+  }
+}

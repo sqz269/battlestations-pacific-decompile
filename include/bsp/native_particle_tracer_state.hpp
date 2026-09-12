@@ -12,6 +12,32 @@ class NativeModelOwner;
 struct NativeParticlePopulationLockStorage;
 struct NativeHardwareLayoutConstructContext;
 struct NativeParticleTracerStateAccess;
+struct NativeTracelineGeometryAccess;
+struct NativeTracelineUpdateAccess;
+struct NativeTracelineLifetimeAccess;
+class NativeTracelineReference;
+struct RenderNodeRootList;
+
+// Optional concrete dependency composition. Native operations use their actual
+// reconstructed bodies. The two callbacks only resolve/register existing host
+// companions: they must not allocate or construct another native node/root.
+// Bindings and their application companions survive native terminal retirement.
+// State BF681B scalar allocations must match lifetime BF65AC; state and geometry
+// BF55BE arrays must match lifetime BF6989. Composition requires the identical
+// BF6989 callback and identical BF55BE allocation callback across these bindings.
+// Wrappers over the same heap must be bound consistently, not independently.
+struct NativeParticleTracerReconstruction {
+    NativeTracelineGeometryAccess* geometry;
+    const NativeTracelineUpdateAccess* update;
+    NativeTracelineLifetimeAccess* lifetime;
+    void* context;
+    // AFTER caller publishes D0C928, before attachment: bind one canonical
+    // reference over its already constructed NativeModelOwner, in SAME runtime
+    // and retained-owner registry. Preserve all native bytes and actual counts.
+    NativeTracelineReference& (*bind_constructed)(void*,void* actual_node);
+    // Pure lookup of the existing view of actual root+0C/+1C; never raw-cast.
+    RenderNodeRootList& (*resolve_root)(void*,void* actual_root);
+};
 
 // Real application boundaries, all over actual storage. No second particle,
 // scene, resource, reference-count or allocation domain is created here.
@@ -80,6 +106,7 @@ struct NativeParticleTracerStateAccess {
     std::uint32_t layout_key_residue[3];
     // The SAME common.random domain, used by complete BD2F10/BD2E60.
     const NativeParticleUnitRandomAccess* unit_random;
+    const NativeParticleTracerReconstruction* reconstruction = nullptr;
 };
 
 // Complete B0B6A0..B0C80E through the required real services above. Original
