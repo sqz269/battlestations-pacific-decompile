@@ -1847,5 +1847,83 @@
       "sha256": "03457845043fe275f5d5fa3ffa723e2c2b69043ed13841bbf659f0f5e9b4e8fd"
     },
     "immutability": "Seal pins exact final four owned files plus dependency snapshots and all local audit/COFF/archive artifacts."
+  },
+  "primary_review": {
+    "utc": "2026-09-12T01:11:23.727093+00:00",
+    "integration_state": "complete_source_main_build_static_proof_saved_and_registered",
+    "summary": "All64 native bytes/25instructions mapped,52 literal bytes equal and exactly3 provider bindings. Full81 existing provider CODE bodies and all relocations match reviewed worker after collision-free normalization of compiler-generated namespace/lambda identifiers; raw names retained. Three exact archived objects,27 unchanged prebuild inputs,3 actual CL commands and198 frozen read dependencies.",
+    "final_main_library_sha256": "8e1737daf051ec94a3d69ab5d0a73aac7ae925a5223f5c6474dfb63c993f5b40",
+    "final_main_build_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\tracked_release_build_frozen\\manifest.json",
+      "bytes": 78917,
+      "sha256": "158e897adbd3bd196395def6c0018218791c557e849eaf2a96a8dd25e4b2b32a"
+    },
+    "strict_Win32": true,
+    "existing_CTests": 2,
+    "fresh_seed_matches": 8,
+    "vector_replay": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\raw_vector_primary\\vector_replay\\replay_report.json",
+      "bytes": 9180,
+      "sha256": "7c11c55cbb51d8c9ba21bf7bd79f5de105a5ad3a382f6f18c1e33bfcd5873fb7"
+    },
+    "tracked_release_replay": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\raw_vector_primary\\tracked_release_replay\\primary_verified.json",
+      "bytes": 90195,
+      "sha256": "ae5f02c03441da5e0f8361d3ca9f0920ce1b4a22125d100984c32501d9a4fc10"
+    },
+    "sixleaf_objects_identical_in_final_main_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\raw_vector_primary\\final_batch_membership.json",
+      "bytes": 908,
+      "sha256": "72f2130124e8d1bc267891abc8c69733dd5a9c3d372086c0e68c2944f1d4f03a"
+    },
+    "saved_annotations": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_tracked_critical_section_release_annotations.json",
+      "bytes": 2812,
+      "sha256": "a751294664dee3878d0b6d69aed6564a5e6537146099da8f96ce800926da95ec"
+    },
+    "saved_flow_repair": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_tracked_critical_section_release_flow_repair.json",
+      "bytes": 1717,
+      "sha256": "5f8278c0a1360ed90ab5d41059202731acd3026ac8300b540e64f40b51788c82"
+    },
+    "registered_records": [
+      {
+        "kind": "function",
+        "address": "0041cc80",
+        "name": "release_native_tracked_critical_section_0041cc80",
+        "cpp_symbol": "bsp::release_native_tracked_critical_section_0041cc80",
+        "source": "src/native_tracked_critical_section_release.cpp",
+        "native_end_exclusive": "0041ccc0",
+        "status": "complete_source_main_archive_static_proof_checked",
+        "evidence": "reports/native_tracked_critical_section_release_audit.json",
+        "original_abi": "ECX points to actual four-byte owner slot; no stack arguments; plain RET and no semantic result.",
+        "source_abi": "One raw TrackedCriticalSection** in ECX, no additional context. Exact1Ch layout; actual Win32 Leave/Delete imports and existing paired source CRT free boundary.",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "refreshed_exports": [
+      {
+        "address": "0041cc80",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0041cc80\\decompiled.c",
+        "bytes": 3299,
+        "sha256": "13e83329a6985835e0c85ad8387b9d3f0723c9d13d158d9134eb657f25bb9efe"
+      }
+    ],
+    "new_routine_runtime_executed": false,
+    "original_CRT_or_SEH_compatible": false,
+    "original_caller_ABI_compatible": false,
+    "game_validated": false,
+    "current_document": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_TRACKED_CRITICAL_SECTION_RELEASE.md",
+      "bytes": 6283,
+      "sha256": "b7f8b5d3df7d20afb6ac8f6a0e267340da95308d69d37d14f8bc19ed52d59ab9"
+    },
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\raw_vector_primary\\sealed.json",
+      "bytes": 195839,
+      "sha256": "c6a8e0a090da24f8d6acec9fdeca1cfe377eef9baa34da06649e4b56934d8e59"
+    }
   }
 }

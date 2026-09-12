@@ -7812,6 +7812,47 @@
         "reports/native_singleton_manager_raw_discovery.json"
       ],
       "evidence": "reports/native_singleton_manager_raw_discovery.json"
+    },
+    {
+      "id": "native_singleton_vector_leaves6",
+      "packet": "native_singleton_vector_leaves6",
+      "state": "complete_source_main_build_static_proof_saved_and_registered",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00bcf910",
+        "00bd0160",
+        "00bd0180",
+        "00bd0220",
+        "00bd0500",
+        "00bd0560"
+      ],
+      "code_ownership": [
+        "src/native_singleton_vector_leaves.cpp",
+        "include/bsp/native_singleton_vector_leaves.hpp",
+        "docs/NATIVE_SINGLETON_VECTOR_LEAVES.md",
+        "reports/native_singleton_vector_leaves_audit.json"
+      ],
+      "evidence": "reports/native_singleton_vector_leaves_audit.json"
+    },
+    {
+      "id": "native_tracked_critical_section_release1",
+      "packet": "native_tracked_critical_section_release1",
+      "state": "complete_source_main_build_static_proof_saved_and_registered",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "0041cc80"
+      ],
+      "code_ownership": [
+        "src/native_tracked_critical_section_release.cpp",
+        "include/bsp/native_tracked_critical_section_release.hpp",
+        "docs/NATIVE_TRACKED_CRITICAL_SECTION_RELEASE.md",
+        "reports/native_tracked_critical_section_release_audit.json"
+      ],
+      "evidence": "reports/native_tracked_critical_section_release_audit.json"
     }
   ],
   "snapshot_after_analysis": {

@@ -44,3 +44,13 @@ Each leaf occupies one isolated code section of exactly its native length, with 
 The actual build's import libraries map memmove to `VCRUNTIME140.dll`, errno/invalid handling to `api-ms-win-crt-runtime-l1-1-0.dll`, and free to `api-ms-win-crt-heap-l1-1-0.dll`. The same imports are present in the existing built `bsp_game.exe`. These are provider-binding checks: the new leaves are unreferenced members of `bsp_core.lib`, and no claim is made that the game executable links or executes them.
 
 The [audit](../reports/native_singleton_vector_leaves_audit.json) records full native/COFF mappings, captured compiler commands and input dependencies, provider bindings, exact archive membership, and the immutable evidence seal. The worker's ignored CMake hook adds only its owned source; the integrator owns shared CMake registration, ledgers, names and Ghidra annotations. No new tests were added and no game or ad hoc executable was run. Existing math CTests and seed comparisons provide regression evidence, not execution proof for these leaves. Complete raw singleton manager construction/insertion/destruction and current mixed-owner dispatch remain open.
+
+
+Primary integrated the complete source into main and replayed the reviewed
+static verifier against actual archived objects. All232 native leaf bytes except3 explicit calls match exactly; complete94-byte/33-instruction SDK memmove_s and6-byte free provider checked. All7 owned CODE sections326bytes, four actual frozen CRT import libraries and two exact archive members verified. Main19-input snapshot was post-build; four source/header files exactly match worker prebuild pins and185 actual compiler inputs are frozen. The final combined
+main library also contains the two six-leaf proof objects byte-for-byte; both
+main builds passed the two existing CTests and eight reference seeds. Ghidra
+call-flow overrides at BD022B were cleared, with prior values recorded; complete
+post-free instructions, saved names/comments and refreshed exports are present.
+Primary evidence is frozen under `local/raw_vector_primary/`. No lifecycle
+fixture, original static-CRT/SEH compatibility or game behavior is established.

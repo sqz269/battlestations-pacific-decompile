@@ -530,5 +530,188 @@
     "Canonical mixed registered-owner dispatch and registry getter integration remain open. No private manager, typed-layout cast, generic callback or no-op boundary is introduced.",
     "Original CRT errno/encoded-handler ownership, service internals, fault sites, FH3/SEH frames and service-internal register/flag effects remain explicitly qualified source boundaries.",
     "This packet does not complete the continuing game reconstruction goal."
-  ]
+  ],
+  "primary_review": {
+    "utc": "2026-09-12T01:11:23.702993+00:00",
+    "integration_state": "complete_source_main_build_static_proof_saved_and_registered",
+    "summary": "All232 native leaf bytes except3 explicit calls match exactly; complete94-byte/33-instruction SDK memmove_s and6-byte free provider checked. All7 owned CODE sections326bytes, four actual frozen CRT import libraries and two exact archive members verified. Main19-input snapshot was post-build; four source/header files exactly match worker prebuild pins and185 actual compiler inputs are frozen.",
+    "final_main_library_sha256": "8e1737daf051ec94a3d69ab5d0a73aac7ae925a5223f5c6474dfb63c993f5b40",
+    "final_main_build_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\tracked_release_build_frozen\\manifest.json",
+      "bytes": 78917,
+      "sha256": "158e897adbd3bd196395def6c0018218791c557e849eaf2a96a8dd25e4b2b32a"
+    },
+    "strict_Win32": true,
+    "existing_CTests": 2,
+    "fresh_seed_matches": 8,
+    "vector_replay": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\raw_vector_primary\\vector_replay\\replay_report.json",
+      "bytes": 9180,
+      "sha256": "7c11c55cbb51d8c9ba21bf7bd79f5de105a5ad3a382f6f18c1e33bfcd5873fb7"
+    },
+    "tracked_release_replay": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\raw_vector_primary\\tracked_release_replay\\primary_verified.json",
+      "bytes": 90195,
+      "sha256": "ae5f02c03441da5e0f8361d3ca9f0920ce1b4a22125d100984c32501d9a4fc10"
+    },
+    "sixleaf_objects_identical_in_final_main_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\raw_vector_primary\\final_batch_membership.json",
+      "bytes": 908,
+      "sha256": "72f2130124e8d1bc267891abc8c69733dd5a9c3d372086c0e68c2944f1d4f03a"
+    },
+    "saved_annotations": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_singleton_vector_leaves_annotations.json",
+      "bytes": 9463,
+      "sha256": "1c5ad1ef48b9bb3fc142ccfd8ec54713b3d0f43ddd8784775dd25aee9f8f2b38"
+    },
+    "saved_flow_repair": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_singleton_vector_leaves_flow_repair.json",
+      "bytes": 1634,
+      "sha256": "ad251beefbb5ecd0d00d80bfabe4155138b693d4a03b0cf5f52866481399d85f"
+    },
+    "registered_records": [
+      {
+        "kind": "function",
+        "address": "00bcf910",
+        "name": "count_native_singleton_slots_00bcf910",
+        "cpp_symbol": "bsp::count_native_singleton_slots_00bcf910",
+        "source": "src/native_singleton_vector_leaves.cpp",
+        "native_end_exclusive": "00bcf923",
+        "status": "complete_source_main_archive_static_proof_checked",
+        "evidence": "reports/native_singleton_vector_leaves_audit.json",
+        "original_abi": "ECX raw owner; EDX unconsumed; EAX uint32 SAR2 result; RET",
+        "source_abi": "Full naked MSVC Win32 raw DWORD/register/stack schedule. Actual SDK memmove_s and shared source-CRT malloc/free/invalid-handler domain replace original CRT internals; no typed manager projection.",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00bd0160",
+        "name": "assign_native_singleton_slots_00bd0160",
+        "cpp_symbol": "bsp::assign_native_singleton_slots_00bd0160",
+        "source": "src/native_singleton_vector_leaves.cpp",
+        "native_end_exclusive": "00bd017e",
+        "status": "complete_source_main_archive_static_proof_checked",
+        "evidence": "reports/native_singleton_vector_leaves_audit.json",
+        "original_abi": "cdecl stack first,last,value_slot; plain RET; ESI preserved",
+        "source_abi": "Full naked MSVC Win32 raw DWORD/register/stack schedule. Actual SDK memmove_s and shared source-CRT malloc/free/invalid-handler domain replace original CRT internals; no typed manager projection.",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00bd0180",
+        "name": "copy_backward_native_singleton_slots_00bd0180",
+        "cpp_symbol": "bsp::copy_backward_native_singleton_slots_00bd0180",
+        "source": "src/native_singleton_vector_leaves.cpp",
+        "native_end_exclusive": "00bd01af",
+        "status": "complete_source_main_archive_static_proof_checked",
+        "evidence": "reports/native_singleton_vector_leaves_audit.json",
+        "original_abi": "cdecl stack first,last,destination_end; EAX derived begin; RET; ESI preserved",
+        "source_abi": "Full naked MSVC Win32 raw DWORD/register/stack schedule. Actual SDK memmove_s and shared source-CRT malloc/free/invalid-handler domain replace original CRT internals; no typed manager projection.",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00bd0220",
+        "name": "clear_native_singleton_storage_00bd0220",
+        "cpp_symbol": "bsp::clear_native_singleton_storage_00bd0220",
+        "source": "src/native_singleton_vector_leaves.cpp",
+        "native_end_exclusive": "00bd024a",
+        "status": "complete_source_main_archive_static_proof_checked",
+        "evidence": "reports/native_singleton_vector_leaves_audit.json",
+        "original_abi": "ECX raw owner; EDX unconsumed; RET; ESI preserved",
+        "source_abi": "Full naked MSVC Win32 raw DWORD/register/stack schedule. Actual SDK memmove_s and shared source-CRT malloc/free/invalid-handler domain replace original CRT internals; no typed manager projection.",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00bd0500",
+        "name": "copy_native_singleton_slots_00bd0500",
+        "cpp_symbol": "bsp::copy_native_singleton_slots_00bd0500",
+        "source": "src/native_singleton_vector_leaves.cpp",
+        "native_end_exclusive": "00bd0530",
+        "status": "complete_source_main_archive_static_proof_checked",
+        "evidence": "reports/native_singleton_vector_leaves_audit.json",
+        "original_abi": "stdcall stack first,last,destination; ECX unconsumed; EAX advanced destination; RET0C; ESI preserved",
+        "source_abi": "Full naked MSVC Win32 raw DWORD/register/stack schedule. Actual SDK memmove_s and shared source-CRT malloc/free/invalid-handler domain replace original CRT internals; no typed manager projection.",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00bd0560",
+        "name": "fill_native_singleton_slots_00bd0560",
+        "cpp_symbol": "bsp::fill_native_singleton_slots_00bd0560",
+        "source": "src/native_singleton_vector_leaves.cpp",
+        "native_end_exclusive": "00bd058e",
+        "status": "complete_source_main_archive_static_proof_checked",
+        "evidence": "reports/native_singleton_vector_leaves_audit.json",
+        "original_abi": "stdcall stack destination,uint32 count,value_slot; ECX unconsumed; EAX initial destination+count*4; RET0C; ESI/EDI preserved, EBX preserved when used",
+        "source_abi": "Full naked MSVC Win32 raw DWORD/register/stack schedule. Actual SDK memmove_s and shared source-CRT malloc/free/invalid-handler domain replace original CRT internals; no typed manager projection.",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "refreshed_exports": [
+      {
+        "address": "00bcf910",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bcf910\\decompiled.c",
+        "bytes": 2084,
+        "sha256": "bac3f586231830e68985b01d7c8f9a7d5f26e135e8d436e6dda1869c34445d81"
+      },
+      {
+        "address": "00bd0160",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bd0160\\decompiled.c",
+        "bytes": 1193,
+        "sha256": "cc6fc97208df6450cee1589d25763f4ce7ab232568d184e99866a3e3320eb9e2"
+      },
+      {
+        "address": "00bd0180",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bd0180\\decompiled.c",
+        "bytes": 1288,
+        "sha256": "905812eb88643a4684f9fd37f0bb05e22191417353c70fd4f954619718dd1000"
+      },
+      {
+        "address": "00bd0220",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bd0220\\decompiled.c",
+        "bytes": 1218,
+        "sha256": "0fda7e93186e39963b36b78b038f1c8a11b50ae0bcaf08ac926ab6a3c7bebaba"
+      },
+      {
+        "address": "00bd0500",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bd0500\\decompiled.c",
+        "bytes": 1990,
+        "sha256": "ae6c116fa030c02237d0721aab224c22ba0ac9490a2650a8191881629db43ddf"
+      },
+      {
+        "address": "00bd0560",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bd0560\\decompiled.c",
+        "bytes": 1954,
+        "sha256": "3a40ecf9558819cb9fb965dfcca386bb4fe8583e922ba27acae6f236910c5cfa"
+      }
+    ],
+    "new_routine_runtime_executed": false,
+    "original_CRT_or_SEH_compatible": false,
+    "original_caller_ABI_compatible": false,
+    "game_validated": false,
+    "current_document": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_SINGLETON_VECTOR_LEAVES.md",
+      "bytes": 10517,
+      "sha256": "88931eb7d8cab43d9ab6fcc6f5732ee3ca86acbcb8205772dfb9b713d9e9b293"
+    },
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\raw_vector_primary\\sealed.json",
+      "bytes": 195839,
+      "sha256": "c6a8e0a090da24f8d6acec9fdeca1cfe377eef9baa34da06649e4b56934d8e59"
+    }
+  }
 }

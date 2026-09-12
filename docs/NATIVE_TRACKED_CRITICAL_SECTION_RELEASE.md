@@ -86,3 +86,13 @@ the game's static CRT allocator, prove original instruction/return-PC identity,
 hardware-fault/SEH equivalence, or make a drop-in binary replacement. Neither the
 release nor original release body was executed by a dedicated lifecycle fixture;
 the two existing CTests concern math. There is no game/runtime validation claim.
+
+
+Primary integrated the complete source into main and replayed the reviewed
+static verifier against actual archived objects. All64 native bytes/25instructions mapped,52 literal bytes equal and exactly3 provider bindings. Full81 existing provider CODE bodies and all relocations match reviewed worker after collision-free normalization of compiler-generated namespace/lambda identifiers; raw names retained. Three exact archived objects,27 unchanged prebuild inputs,3 actual CL commands and198 frozen read dependencies. The final combined
+main library also contains the two six-leaf proof objects byte-for-byte; both
+main builds passed the two existing CTests and eight reference seeds. Ghidra
+call-flow overrides at 41CCAE were cleared, with prior values recorded; complete
+post-free instructions, saved names/comments and refreshed exports are present.
+Primary evidence is frozen under `local/raw_vector_primary/`. No lifecycle
+fixture, original static-CRT/SEH compatibility or game behavior is established.
