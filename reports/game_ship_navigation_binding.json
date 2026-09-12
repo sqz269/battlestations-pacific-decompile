@@ -1,0 +1,99 @@
+{
+  "packet": "orch6_navigation_runtime_d",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/game_hosts_ship_ai.cpp",
+  "documentation": "docs/GAME_SHIP_NAVIGATION_BINDING.md",
+  "abi_compatible": false,
+  "game_validated": false,
+  "fragments": [
+    {
+      "address": "009ed902",
+      "containing_function": "009ed6b0",
+      "body_end_inclusive": "009ed907",
+      "coverage": "FADD controlled-unit +9C8 hull extent; host reader now consumes actual loaded extent"
+    },
+    {
+      "address": "009e58d4",
+      "containing_function": "009e5770",
+      "body_end_inclusive": "009e58d9",
+      "coverage": "FSUB controlled-unit +9C8 hull extent from target integer range; range itself remains unresolved"
+    }
+  ],
+  "original_abi": {
+    "009ed6b0": "ECX navigation block, stack float seconds, RET4; stored body009ED6B0..009EF228",
+    "009e5770": "ECX state, stack delta, RET4 at009E59B5; body009E5770..009E59B7"
+  },
+  "native_calls": [
+    {
+      "address": "009ed8d1",
+      "native": "0092d730",
+      "function": "009ed6b0"
+    },
+    {
+      "address": "009e58b9",
+      "native": "00414c60",
+      "function": "009e5770"
+    },
+    {
+      "address": "009ebf67",
+      "native": "009d84e0",
+      "function": "009eb660"
+    }
+  ],
+  "no_ghidra_function": [],
+  "register_evidence": [
+    "009ED8DA MOV EAX,[ESI+3FCh];009ED8E4 reads class through[EAX+538h];009ED902 FADD[EAX+9C8h]",
+    "009E58BE MOV ECX,[ESI];009E58C8 MOV EAX,[ECX+AA8h];009E58CE FILD[EDI+7A0h];009E58D4 FSUB[EAX+9C8h]",
+    "00811068 FLD[class+A0h];0081106E FSTP[unit+9C8h] on absent model-box branch"
+  ],
+  "diagnostic_correction": "Passing-corner concrete call counted only when blocking_node>=0; empty-neighbour scan no longer fabricates an unimplemented call count.",
+  "verification": {
+    "build": "MSVC Win32 Release and existing CTest2/2 passed",
+    "log": "local/orch6_navigation_initial_build.log",
+    "source_sha256": "3a76cd5a7c3f04f57fe576a81e98dae7f3265ebf67e96010e656329278cb78c3",
+    "runtime_attempt": {
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\build\\win32\\Release\\bsp_game.exe",
+        "--frames",
+        "360",
+        "--press-start-frame",
+        "3",
+        "--menu-select",
+        "USN01",
+        "--mission-frames",
+        "120",
+        "--mission-frame-seconds",
+        "0.1",
+        "--game-root",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+        "--fmod-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "--fmod-event-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_navigation_length.log",
+        "--order-frame",
+        "0",
+        "--order-unit",
+        "Enterprise",
+        "--order",
+        "moveto:Airfield2"
+      ],
+      "exe_sha256": "fc009733bdf6376cebea49d25a289ceec039a23236bf9efbe56dec93b3bb6034",
+      "exit": 4294967295,
+      "seconds": 16.156280517578125
+    },
+    "runtime_result": "Startup existing-instance error path, no mission frames; concurrent PID102168 in cc-exe-2s worktree independently confirmed live and left untouched",
+    "new_tracked_tests": 0
+  },
+  "limits": [
+    "No mission runtime proof for these new bindings yet; previous120-frame evidence predates this change.",
+    "Model-box extent path, class+A4 width source, target+7A0 range and neighbour population remain unresolved.",
+    "Ship hull geometry, actual class+570 avoidance-depth input and full pre-step binding are separate dependencies."
+  ]
+}

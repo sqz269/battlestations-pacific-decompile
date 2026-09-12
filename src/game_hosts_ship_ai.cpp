@@ -646,8 +646,10 @@ public:
         return 0;
     }
     float unit_radius_09c8() override {
-        owner_.record("ShipAiMoveTo::unit_radius_09c8", 0x009e58d4u);
-        return 0.0f;
+        // 009E58C8 loads the controlled unit from brain+AA8h; 009E58D4
+        // subtracts its full +9C8h hull extent from the target's range.
+        owner_.done("ShipAiMoveTo::unit_radius_09c8", 0x009e58d4u);
+        return owner_.units.unit_hull_length_09c8(index_);
     }
     float planar_length_00414c60(float dx, float dz) override {
         owner_.done("ShipAiMoveTo::planar_length", 0x009e58b9u);
@@ -1904,10 +1906,11 @@ public:
         return owner_.units.unit_retardation_0508(index_);
     }
     float unit_field_09c8() override {
-        // 009ED902, FADD [EAX+9C8h]. No recovered field and no producer, so the
-        // record's neutral zero is added to the stopping distance.
-        owner_.record("ShipAiControls::unit_field_09c8", 0x009ed902u);
-        return 0.0f;
+        // 009ED8DA loads the controlled unit from blk+3FCh; 009ED902 adds
+        // its +9C8h hull extent to the braking distance. The existing unit
+        // owner supplies the native no-model-box fallback from class Length.
+        owner_.done("ShipAiControls::unit_field_09c8", 0x009ed902u);
+        return owner_.units.unit_hull_length_09c8(index_);
     }
     float unit_heading_vtable_0050() override {
         owner_.done("ShipAiControls::unit_heading", 0x009ed95du);
@@ -2265,11 +2268,10 @@ public:
                 owner.done("ShipAiSectors::scan_sector", 0x009eb660u);
                 ++owner.summary.sector_scans;
                 if (result.blocked) ++owner.summary.sector_marks;
-                // 009D84E0, the corner to steer at and the side to pass on. Its
-                // only call site 009EBF51 sits inside the blocked arm, so a run
-                // with no neighbour never reaches it.
-                if (result.blocking_node < 0) {
-                    owner.record("ShipAiSectors::passing_corner_009d84e0", 0x009d84e0u);
+                // The scan executes recovered 009D84E0 at 009EBF67 only for
+                // a blocking neighbour. An empty list reaches no such call.
+                if (result.blocking_node >= 0) {
+                    owner.done("ShipAiSectors::passing_corner_009d84e0", 0x009d84e0u);
                 }
                 ctl.obstacle.sector[static_cast<std::size_t>(sector)].blocked
                     = result.blocked;
