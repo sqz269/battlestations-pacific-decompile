@@ -37,7 +37,14 @@ void unit_promote_ai_order_00825f2c(UnitAiOrderPromotion& state) {
     state.slots[index].valid_4c = false;                // 00825F4E
     const int next = 1 - index;                         // 00825F51, 00825F56
     state.index = next;                                 // 00825F5E
-    state.slots[next] = state.slots[index];             // 00825F77, 00811D10
+    // 00825F77 calls 00811D10 with ECX = slot[next] and the stack argument
+    // slot[index]. That routine copies +00h..+3Fh only (00811D14..00811D71),
+    // so none of the four fields of UnitAiOrderSlot - +40h, +44h, +48h, +4Ch -
+    // crosses the flip. The order the AI just published stays in the slot the
+    // unit has just left, which is exactly the address every reader of the
+    // triple computes: unit + 0A98h + 54h * index. See
+    // docs/UNIT_AI_ORDER_SLOT_READER.md and unit_ai_order_copy_00811d10 in
+    // bsp/ship_ai_navigation.hpp, which projects the copy itself.
 }
 
 UnitOrderedPairSource unit_ordered_pair_source_008266c1(bool unit_flag_0061) noexcept {
