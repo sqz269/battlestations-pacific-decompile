@@ -516,5 +516,25 @@
       "packet": "sound_application_composition",
       "scope": "Bind A88770 and shared owner/services to application phase5; application-host files leased by another orchestrator."
     }
-  ]
+  ],
+  "combined_integration": {
+    "status": "integrated_reviewed_build_and_installed_retained_fixture_tested",
+    "validated_revision": "48a62b5f8e907c08210b7502fe25a8c7133431ec",
+    "source_commit": "77928a47a5c7884303e22d04bfefd6a77eebb43e",
+    "main_base": "211752e7",
+    "integration_log": "local/sound_retained_x_integrate.log",
+    "build": "MSVC Win32 Release on merged revision passed",
+    "tests": "2/2 existing tests passed",
+    "helper_main_moved_after_build": false,
+    "build_log": "local/sound_retained_x_integrate.log",
+    "library_sha256": "e3f150fce58d6d0c761c9fec968a308c6b977d978e189c15d3a24ca1b8564a22",
+    "installed_fixture_log": "local/sound_retained_x_combined_fixture.log",
+    "fixture_revision": "48a62b5f8e907c08210b7502fe25a8c7133431ec",
+    "fixture_sha256": "83c91a2363bad3c8030e3c2ea17f86b9a92de4f3e30e5cef403a5e26b2082eb4",
+    "saved_annotations": 19,
+    "prior_annotation_log": "J:/PROG/battlestations-pacific-decompile/local/ghidra-annotations-20260912T051649Z.json",
+    "native_abi": false,
+    "game_validated": false,
+    "audible_playback": false
+  }
 }
