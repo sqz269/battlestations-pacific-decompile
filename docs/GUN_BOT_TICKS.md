@@ -36,18 +36,42 @@ vtables: the primary at `bot+0h` (base `00CFDFA0`) and a second base at `bot+1Ch
 `bot+38h` and, when the destroyed entity is the bot's own fire target, calls
 `bot->vtable[30h]()` to clear it.
 
-| Ctor | Primary vtable | Second base | Instance size | Class descriptor | Tick |
-| --- | --- | --- | --- | --- | --- |
-| `0072BBD0` | `00CFDFA0` | `00CFDF88` | - (abstract) | argument | `0071C490`, a stub |
-| `008FE740` | `00D180A0` | `00D18088` | `74h` | `[00E19998]` | `00902920` |
-| `008FE9F0` | `00D18140` | `00D18124` | `94h` | `[00E199A0]` | `008FFA20` |
-| `008FEFD0` | `00D18238` | `00D18220` | `6Ch` | `[00E1999C]` | `009030C0` |
-| `008FF260` | `00D182B0` | `00D18294` | `70h` | `[00E1998C]` | `008FFF20` |
-| `0072BE40` | `00CFE000` | `00CFDFE8` | `B8h` | `[00E19990]` | `006DF520` |
+| Class name | Ctor | Primary vtable | Second base | Size | Class descriptor | Tick |
+| --- | --- | --- | --- | --- | --- | --- |
+| - (abstract) | `0072BBD0` | `00CFDFA0` | `00CFDF88` | - | argument | `0071C490`, a stub |
+| `AAGunnerBot` | `008FE740` | `00D180A0` | `00D18088` | `74h` | `[00E19998]` | `00902920` |
+| `TailGunnerBot` | `008FE9F0` | `00D18140` | `00D18124` | `94h` | `[00E199A0]` | `008FFA20` |
+| `AAFlakBot` | `008FEFD0` | `00D18238` | `00D18220` | `6Ch` | `[00E1999C]` | `009030C0` |
+| `TorpedoBot` | `008FF260` | `00D182B0` | `00D18294` | `70h` | `[00E1998C]` | `008FFF20` |
+| `ArtilleryGunnerBot` | `0072BE40` | `00CFE000` | `00CFDFE8` | `B8h` | `[00E19990]` | `006DF520` |
+| `DepthChargeBot` | `008FF4A0` | `00D18338` | `00D1831C` | `64h` | `[00E19988]` | `008FC080` |
 
 Sizes are the `operator_new` arguments in the factory `0072C6A0`. There is no class-id
 byte and no `IsKindOf` on these objects; a bot is identified only by its vtable, so the
 "class test" a caller has is the gun slot it was stored in.
+
+### The class names are recovered strings
+
+`load_robot_config_00901610` builds one class descriptor per name with `00900AF0(ECX =
+name)` and stores each result in the global its constructor reads. `ECX` is loaded one
+instruction before each call and the store lands after the next, so the pairing is exact:
+
+| Name | String | Global | Store | Tick |
+| --- | --- | --- | --- | --- |
+| `PilotBot` | `00D17D44` | `[00F8A30C]` | `009019EB` | outside this packet |
+| `TailGunnerBot` | `00D17D5C` | `[00E199A0]` | `009019FA` | `008FFA20` |
+| `AAFlakBot` | `00D17D50` | `[00E1999C]` | `00901A09` | `009030C0` |
+| `AAGunnerBot` | `00D17D6C` | `[00E19998]` | `00901A18` | `00902920` |
+| `ArtillerySubDirectorBot` | `00D17D78` | `[00E19994]` | `00901A27` | outside this packet |
+| `ArtilleryGunnerBot` | `00D17D90` | `[00E19990]` | `00901A36` | `006DF520` |
+| `TorpedoBot` | `00D17DA4` | `[00E1998C]` | `00901A45` | `008FFF20` |
+| `DepthChargeBot` | `00D17DB0` | `[00E19988]` | `00901A53` | `008FC080` |
+
+`TorpedoBot` landing on the weapon sub-type 7 tick, which `docs/GUN_CLASS_FAMILY.md`
+independently calls the torpedo sub-type, is the cross-check that the pairing is right.
+The ledger already carries `read_<name>_parameters_*` and `validate_<name>_parameters_*`
+routines for seven of the eight names; they are the descriptor's own property readers and
+were not read here.
 
 ### Primary vtable slots
 
@@ -81,13 +105,17 @@ Read from the base `00CFDFA0` and from every override the five classes install.
 
 | Gun slot | Sub-type gate | Extra gate | Class | Site |
 | --- | --- | --- | --- | --- |
-| `+390h` | `== 1` | gun `IsKindOf(22h)`; `00922E90(gun, 0Fh) == 0` | `008FE740` / `00902920` | `0072C736` |
-| `+390h` | `== 1` | gun `IsKindOf(22h)`; `00922E90(gun, 0Fh) != 0` | `008FE9F0` / `008FFA20` | `0072C713` |
-| `+394h` | `== 5` or `== 6` | destroys `+390h`'s bot afterwards | `008FEFD0` / `009030C0` | `0072C79E` |
-| `+398h` | `2`, `3`, `4` or `6` | - | `0072BE40` / `006DF520` | `0072C81D` |
-| `+39Ch` | `== 7` | - | `008FF260` / `008FFF20` | `0072C870` |
-| `+3A0h` | `== 8` | - | `008FF4A0`, outside this packet | `0072C8CB` |
-| `+3A4h` | `== 9` | - | `0072BE40` / `006DF520` | `0072C91D` |
+| `+390h` | `== 1` | gun `IsKindOf(22h)`; `00922E90(gun, 0Fh) == 0` | `AAGunnerBot` `008FE740` / `00902920` | `0072C736` |
+| `+390h` | `== 1` | gun `IsKindOf(22h)`; `00922E90(gun, 0Fh) != 0` | `TailGunnerBot` `008FE9F0` / `008FFA20` | `0072C713` |
+| `+394h` | `== 5` or `== 6` | destroys `+390h`'s bot afterwards | `AAFlakBot` `008FEFD0` / `009030C0` | `0072C79E` |
+| `+398h` | `2`, `3`, `4` or `6` | - | `ArtilleryGunnerBot` `0072BE40` / `006DF520` | `0072C81D` |
+| `+39Ch` | `== 7` | - | `TorpedoBot` `008FF260` / `008FFF20` | `0072C870` |
+| `+3A0h` | `== 8` | - | `DepthChargeBot` `008FF4A0` / `008FC080`, not reconstructed here | `0072C8CB` |
+| `+3A4h` | `== 9` | - | `ArtilleryGunnerBot` `0072BE40` / `006DF520` | `0072C91D` |
+
+The two sub-type 1 classes are an anti-aircraft gunner and a tail gunner, and
+`00922E90(gun, 0Fh)` is what separates them, so entity kind `0Fh` is the owner an aircraft
+tail gun sits under.
 
 `00922E90(this, kind)` walks the entity parent chain - `this+3Ch`, then `+3Ch` of each
 parent - and returns the first entry that answers `IsKindOf(kind)`. So the split between
@@ -389,8 +417,38 @@ inputs are:
    `00727E70` -> `vtable[18h]`.
 4. the side gate, `[gun+1ACh]`, and the player-control inhibit bits of `[gun+3F0h]+634h`.
 
-`director+3Ch` `allowFire` and `director+238h` `fireTarget` are **not** read by any of the
-five ticks. They reach the guns only through the unit-side pass above.
+### `director+3Ch` allowFire does not reach the gun through these bodies
+
+`docs/GUN_PLATFORM_ARC.md` records the six `vtable[1E8h]` dispatch sites and infers that
+the `allowFire` byte must run through the two of them this packet owns. It does not.
+
+| Body | Evidence |
+| --- | --- |
+| `008FFF20` | the whole listing filtered for `0x114` has no hit, so the tick never fetches a director. Its four `[reg+3Ch]` reads are `008FFF62`, `008FFFDF`, `00900062` and `00900131`, all the entity parent chain `00922E90` walks, and the rest are `[ESP+3Ch]` stack slots |
+| `00959C20` | the same filter has no hit either. Its two `+1xxh` unit reads are `[unit+1B4h]` at `00959DA4` and `[unit+1BCh]` at `0095A048`, both passed to `vtable[154h]`, not director fields |
+| `00864FE0` | the unit-side pass that does fetch a director (`0086549C`) has no `[reg+3Ch]` read anywhere in its listing |
+
+So the only weapon-director field any gun-side AI body reads is `director+221h`, at
+`008FFAC9` in `008FFA20`. `director+3Ch` and `director+238h` are **not** read by any of the
+five ticks, and the reader of `allowFire` is still **contract: unread**: a byte-pattern scan
+of the image for the three plausible encodings of a byte load at displacement `3Ch`
+(`80 ?? 3c 00`, `8A ?? 3c`, `0F B6 ?? 3c`) returns one genuine hit, the two-instruction
+predicate at `009F6AD0` (`cmp byte [ecx+3Ch], 0; sete al; ret`), and a scan for the literal
+dword `009F6AD0` finds no reference to it anywhere in the image. Every other hit decodes as
+the first byte of a four-byte displacement.
+
+### The two `vtable[1E8h]` sites with no Ghidra function
+
+`docs/GUN_PLATFORM_ARC.md` left `006DF508` and `008FC22C` undecoded. Both are tail
+dispatches of `gun->vtable[1E8h](0)` inside gun-bot routines Ghidra has no function for.
+
+| Site | Containing routine | Body | What it is |
+| --- | --- | --- | --- |
+| `006DF508` | `006DF4C0` | `006DF4C0-006DF513` | `ArtilleryGunnerBot`'s override of primary slot `+38h` (`SetFireTarget`). It calls the base `006DF170` at `006DF4C8`, runs `0072D5B0(gun, 0, 0)` at `006DF4EC` when the side gate passes, and when `vtable[44h]()` then answers null it tail-jumps `gun->vtable[1E8h](0)` at `006DF50E`: clearing the target drops the fire request in the same call |
+| `008FC22C` | `008FC080` | `008FC080-008FC3F2` | `DepthChargeBot`'s tick, primary vtable `00D18338` slot `+0Ch`. It has the same shape as the other five (`[bot+50h]+1ACh` side gate at `008FC116`, gun cache at `bot+58h`, `vtable[44h]` at `008FC13B`) and tail-jumps `gun->vtable[1E8h](0)` at `008FC232` on its no-shot path. Not reconstructed by this packet |
+
+Both start after `int3` padding (`006DF4B3`-`006DF4BF` and `008FC07F`) and end at a
+`RET 4`, so the extents are exact.
 
 ## 9. Corrections to earlier documents
 
@@ -401,6 +459,9 @@ five ticks. They reach the guns only through the unit-side pass above.
 | `docs/BOT_FIRE_TARGET.md`: `00959C20` "the `0095A1C4` arm is unread" | `0095A1C4` is the loop advance of the kind-4 arm that begins at `0095A1CC`; the arm's aim call is `0095A28F` | the jump table at `0095A5C0` |
 | `include/bsp/bot_fire_target.hpp`: `kGunBotOffGun = 0x68` | `+68h` is the gun cache of the `008FFA20` class only. `00902920` caches at `+5Ch`, `008FFF20` and `006DF520` at `+58h`; the shared field is `bot+50h` | the five attach overrides in section 3 |
 | `docs/FIXED_STEP_JOB_WAVES.md`: "`008759B0`'s sub-list is covered as a rule but its `vtable[+0Ch]` callee is not" | the callee for a gun's sub-list is one of these five ticks, and the `dt` is the wave's `0.05f` | `008FBC8B` linking the bot into `gun+310h` |
+| `docs/GUN_PLATFORM_ARC.md`: "the `allowFire` path therefore runs through the two bodies another packet owns" | neither `008FFF20` nor `00959C20` fetches a weapon director at all, so neither can read `director+3Ch` | both listings filtered for `0x114` have no hit; the section above |
+| `docs/GUN_PLATFORM_ARC.md`: `006DF508` and `008FC22C` are "no Ghidra function / not decoded" | they are tail dispatches inside `006DF4C0` (`006DF4C0-006DF513`) and `008FC080` (`008FC080-008FC3F2`) | `int3` padding before each start and the `RET 4` at `006DF511` and `008FC3F0` |
+| this document's first revision: the `009030C0` class was called "the bomb and depth-charge bot" and the `008FF4A0` class "the sub-type 8 bot" | `009030C0` is `AAFlakBot` and the sub-type 8 class is `DepthChargeBot`; the five class names are recovered strings, not descriptions | the name-to-global pairing in `load_robot_config_00901610`, section 2 |
 
 ## 10. Routine table
 
@@ -418,16 +479,26 @@ five ticks. They reach the guns only through the unit-side pass above.
 | `006DEE40` | `006DEE40..006DEE80` | complete |
 | `006DF170`, `0072BD50`, `008FEA40`, `008FF040`, `008FF310` | - | partial: entry and exit only |
 | `00864FE0` | - | partial: the director lookup and the two bot arms |
+| `006DF4C0` | `006DF4C0..006DF513` | complete; no Ghidra function |
+| `008FC080` | `008FC080..008FC3F2` | `DepthChargeBot`'s tick; no Ghidra function; only the prologue shape and the `008FC232` tail were read |
+| `00901610` | - | partial: the eight `00900AF0` calls and their stores at `009019EB`..`00901A53` |
 | `008FBB00`, `00957BD0`, `00955830`, `00957740`, `004F3730`, `008527E0`, `008FE140`, `008FDBE0`, `006FDF60`, `008FF4A0`, `0085E4D0` | - | contract: unread |
 
 ## 11. Open questions
 
-- The field names of the `00902920`, `009030C0` and `008FFF20` classes. Their name blocks
-  are at `00D180F0`..`00D18218` and `00D18288` and the visitors are `008FE800`/`008FE8F0`,
-  `008FF060`/`008FF130` and `008FF360`/`008FF400`.
-- What the class descriptors at `[00E1998C]`, `[00E19990]`, `[00E19998]`, `[00E1999C]` and
-  `[00E199A0]` are as objects, and where the skill arrays inside them begin. Only
+- The field names of the `AAGunnerBot`, `AAFlakBot` and `TorpedoBot` classes. Their name
+  blocks are at `00D180F0`..`00D18218` and `00D18288` and the visitors are
+  `008FE800`/`008FE8F0`, `008FF060`/`008FF130` and `008FF360`/`008FF400`.
+- Where the skill arrays inside the class descriptors begin. The class names are settled
+  but the objects are not: `00900AF0`, which builds one from a name, and the ledger's
+  `read_<name>_parameters_*` routines (`008FC6D0`, `008FCA10`, `008FCD60`, `008FCF30`,
+  `008FD370`, `008FD640`, `008FD880`, `009973B0`) are **contract: unread**. Only
   descriptor-relative offsets are proven here.
+- Who reads `director+3Ch` `allowFire`. This packet proves it is none of `008FFF20`,
+  `00959C20` or `00864FE0`, and the byte-pattern scan found no reader; the question goes
+  back to whoever owns the weapon director.
+- `008FC080`, `DepthChargeBot`'s tick, and the `ArtillerySubDirectorBot` and `PilotBot`
+  classes at `[00E19994]` and `[00F8A30C]`.
 - The four lead scalars `vtable[100h]` takes, and the `(0.6, 0.6, 0.6)` direction
   (`00CE3D30`) every caller passes as its second argument.
 - `gun+474h` and `008FDBE0`, the `009030C0` step 8 pair.

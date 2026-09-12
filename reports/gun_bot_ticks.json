@@ -1073,80 +1073,153 @@
           "role": "the platform-level filter that produces the value; contract: unread"
         }
       ]
+    },
+    {
+      "address": "00901610",
+      "name": "load_robot_config_00901610",
+      "abi": "the existing ledger name; body 00901610-00901aa3",
+      "coverage": "partial: only the eight 00900AF0 calls at 009019E1..00901A4A and their stores at 009019EB..00901A53, which pair each recovered class name with the class-descriptor global its bot constructor reads",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "009019e1",
+          "native": "00900af0",
+          "role": "build the PilotBot descriptor, name 00D17D44, stored at 009019EB into [00F8A30C]"
+        },
+        {
+          "address": "009019f0",
+          "native": "00900af0",
+          "role": "TailGunnerBot, name 00D17D5C, stored at 009019FA into [00E199A0], the 008FFA20 descriptor"
+        },
+        {
+          "address": "009019ff",
+          "native": "00900af0",
+          "role": "AAFlakBot, name 00D17D50, stored at 00901A09 into [00E1999C], the 009030C0 descriptor"
+        },
+        {
+          "address": "00901a0e",
+          "native": "00900af0",
+          "role": "AAGunnerBot, name 00D17D6C, stored at 00901A18 into [00E19998], the 00902920 descriptor"
+        },
+        {
+          "address": "00901a1d",
+          "native": "00900af0",
+          "role": "ArtillerySubDirectorBot, name 00D17D78, stored at 00901A27 into [00E19994]"
+        },
+        {
+          "address": "00901a2c",
+          "native": "00900af0",
+          "role": "ArtilleryGunnerBot, name 00D17D90, stored at 00901A36 into [00E19990], the 006DF520 descriptor"
+        },
+        {
+          "address": "00901a3b",
+          "native": "00900af0",
+          "role": "TorpedoBot, name 00D17DA4, stored at 00901A45 into [00E1998C], the 008FFF20 descriptor"
+        },
+        {
+          "address": "00901a4a",
+          "native": "00900af0",
+          "role": "DepthChargeBot, name 00D17DB0, stored at 00901A53 into [00E19988], the 008FC080 descriptor"
+        }
+      ]
     }
   ],
   "no_ghidra_function": [
     {
       "address": "008fbc80",
-      "end_address": "008fbcd2",
       "name": "BSP_GunBot_Attach",
-      "note": "Ghidra's enclosing function is 008fbce0's predecessor; read from the raw listing"
+      "note": "Ghidra's enclosing function is 008fbce0's predecessor; read from the raw listing",
+      "body": "008fbc80-008fbcd2"
     },
     {
       "address": "008fbdc0",
-      "end_address": "008fbdf2",
       "name": "BSP_GunBot_AttachLeadClass",
-      "note": "slot +4h of 00d180a0; bot+5Ch = bot+50h, then +60h..+70h zeroed"
+      "note": "slot +4h of 00d180a0; bot+5Ch = bot+50h, then +60h..+70h zeroed",
+      "body": "008fbdc0-008fbdf2"
     },
     {
       "address": "008fbec0",
-      "end_address": "008fbee7",
       "name": "BSP_GunBot_AttachTurretClass",
-      "note": "slot +4h of 00d18140; bot+68h = bot+50h, bot+58h = 0, bot+70h/+74h = 0"
+      "note": "slot +4h of 00d18140; bot+68h = bot+50h, bot+58h = 0, bot+70h/+74h = 0",
+      "body": "008fbec0-008fbee7"
     },
     {
       "address": "008fbef0",
-      "end_address": "008fbf67",
       "name": "BSP_GunBot_SetSkillTurretClass",
-      "note": "slot +18h of 00d18140; loads angleError, aimPeriodMin, aimPeriodMax and shootRange from [00E199A0] + skill*24h"
+      "note": "slot +18h of 00d18140; loads angleError, aimPeriodMin, aimPeriodMax and shootRange from [00E199A0] + skill*24h",
+      "body": "008fbef0-008fbf67"
     },
     {
       "address": "006df1f0",
-      "end_address": "006df252",
       "name": "BSP_GunBot_AttachMuzzleClass",
-      "note": "slot +4h of 00cfe000; bot+58h = bot+50h, ErrorOffset zeroed, bot+74h = 0, bot+78h = 1.0f, then 006deff0"
+      "note": "slot +4h of 00cfe000; bot+58h = bot+50h, ErrorOffset zeroed, bot+74h = 0, bot+78h = 1.0f, then 006deff0",
+      "body": "006df1f0-006df252"
     },
     {
       "address": "0072bd10",
-      "end_address": "0072bd24",
       "name": "BSP_GunBot_HasFireTarget",
-      "note": "slot +40h; bot+39h or bot+38h non-zero"
+      "note": "slot +40h; bot+39h or bot+38h non-zero",
+      "body": "0072bd10-0072bd24"
     },
     {
       "address": "0072bd30",
-      "end_address": "0072bd3f",
       "name": "BSP_GunBot_GetFireTargetEntity",
-      "note": "slot +44h; tail JMP 00521EA0(bot+38h) when the record's first byte is set"
+      "note": "slot +44h; tail JMP 00521EA0(bot+38h) when the record's first byte is set",
+      "body": "0072bd30-0072bd3f"
     },
     {
       "address": "0072bd50",
-      "end_address": "0072bdc3",
       "name": "BSP_GunBot_ClearFireTarget",
-      "note": "slot +30h"
+      "note": "slot +30h",
+      "body": "0072bd50-0072bdc3"
     },
     {
       "address": "0072bc80",
-      "end_address": "0072bc89",
       "name": "BSP_GunBot_SetSkillIndex",
-      "note": "slot +18h base; this+34h = arg"
+      "note": "slot +18h base; this+34h = arg",
+      "body": "0072bc80-0072bc89"
     },
     {
       "address": "0072bce0",
-      "end_address": "0072bcff",
       "name": "BSP_GunBot_OnTargetDestroyed",
-      "note": "slot +8h of the second base 00cfdf88; clears the target when the destroyed entity matches"
+      "note": "slot +8h of the second base 00cfdf88; clears the target when the destroyed entity matches",
+      "body": "0072bce0-0072bcff"
     },
     {
       "address": "008fea40",
-      "end_address": "008fea5d",
       "name": "BSP_GunBot_SetFireTargetTurretClass",
-      "note": "slot +38h of 00d18140; calls 006df170 then bot+6Ch = -1.0f"
+      "note": "slot +38h of 00d18140; calls 006df170 then bot+6Ch = -1.0f",
+      "body": "008fea40-008fea5d"
     },
     {
       "address": "006df170",
-      "end_address": "006df1e8",
       "name": "BSP_GunBot_SetFireTarget",
-      "note": "slot +38h base; compares the resolved target and clears through vtable[30h] before re-binding"
+      "note": "slot +38h base; compares the resolved target and clears through vtable[30h] before re-binding",
+      "body": "006df170-006df1e8"
+    },
+    {
+      "address": "006df4c0",
+      "name": "BSP_GunBot_SetFireTargetArtilleryGunnerClass",
+      "body": "006df4c0-006df513",
+      "note": "ArtilleryGunnerBot's override of primary slot +38h, vtable 00cfe000. Calls the base 006df170 at 006df4c8, runs 0072d5b0(gun, 0, 0) at 006df4ec when the side gate passes, and tail-jumps gun->vtable[1e8h](0) at 006df50e when vtable[44h]() answers null. That tail dispatch is the 006df508 site docs/GUN_PLATFORM_ARC.md could not decode. Starts after int3 padding at 006df4b3-006df4bf and ends at the RET 4 at 006df511."
+    },
+    {
+      "address": "008fc080",
+      "name": "BSP_GunBot_DepthChargeTick",
+      "body": "008fc080-008fc3f2",
+      "note": "DepthChargeBot's tick, primary vtable 00d18338 slot +0Ch, weapon descriptor sub-type 8 at gun+3A0h. Same prologue shape as the five ticks this packet reconstructs: the [bot+50h]+1ACh side gate at 008fc116, the gun cache at bot+58h, bot->vtable[44h] at 008fc13b. It tail-jumps gun->vtable[1e8h](0) at 008fc232, which is the 008fc22c site docs/GUN_PLATFORM_ARC.md could not decode. Starts after the int3 at 008fc07f and ends at the RET 4 at 008fc3f0. Only the prologue and the tail were read; the body is contract: unread and outside this packet."
+    },
+    {
+      "address": "008fc060",
+      "name": "BSP_GunBot_AttachDepthChargeClass",
+      "body": "008fc060-008fc07e",
+      "note": "Primary slot +4h of vtable 00d18338: calls the base 008fbc80 at 008fc068, caches the gun as bot+58h = bot+50h and zeroes bot+5Ch."
+    },
+    {
+      "address": "009f6ad0",
+      "name": "BSP_Unknown_ByteAt3ChIsZero",
+      "body": "009f6ad0-009f6ad7",
+      "note": "cmp byte [ecx+3Ch], 0 / sete al / ret. The only genuine byte load at displacement 3Ch the image contains, found while looking for the reader of the weapon director's allowFire byte. A scan for the literal dword 009f6ad0 finds no reference to it anywhere, so it is not reachable through any vtable this packet can see. Listed because it is the negative evidence behind the allowFire correction, not because it is on a gun-bot path."
     }
   ],
   "corrections": [
@@ -1179,14 +1252,40 @@
       "was": "docs/FIXED_STEP_JOB_WAVES.md: '008759B0's sub-list is covered as a rule but its vtable[+0Ch] callee is not'",
       "is": "for a gun's tick node the sub-list holds these bots, so the callee is one of the five ticks and dt is the wave's 0.05f",
       "evidence": "008fbc8b links the bot into the node at gun+310h with 00876020; the tick is slot +0Ch of every bot vtable (00d1814c, 00d180ac, 00d18244, 00d182bc, 00cfe00c)"
+    },
+    {
+      "was": "docs/GUN_PLATFORM_ARC.md: 'The allowFire path therefore runs through the two bodies another packet owns' (008FFF20 and 00959C20)",
+      "is": "neither body fetches a weapon director, so neither can read director+3Ch. The only director field any gun-side AI body reads is +221h, at 008FFAC9 in 008FFA20. The reader of allowFire is still contract: unread",
+      "evidence": "both listings filtered for the vtable[114h] displacement 0x114 have no hit; 008FFF20's four [reg+3Ch] reads at 008FFF62, 008FFFDF, 00900062 and 00900131 are the entity parent chain 00922E90 walks; 00959C20's only unit reads in that range are [unit+1B4h] at 00959DA4 and [unit+1BCh] at 0095A048; 00864FE0, which does fetch a director at 0086549C, has no [reg+3Ch] read at all"
+    },
+    {
+      "was": "docs/GUN_PLATFORM_ARC.md: 006DF508 and 008FC22C are 'no Ghidra function / not decoded'",
+      "is": "006DF508 is the tail dispatch of ArtilleryGunnerBot's SetFireTarget override 006DF4C0 (body 006df4c0-006df513) and 008FC22C is the tail dispatch of DepthChargeBot's tick 008FC080 (body 008fc080-008fc3f2). Both pass 0, so they release the fire request",
+      "evidence": "int3 padding at 006df4b3-006df4bf and at 008fc07f before each start; RET 4 at 006df511 and 008fc3f0; 008FC080 is slot +0Ch of vtable 00D18338, which 008FF4A0 installs"
+    },
+    {
+      "was": "this report's first revision: 009030C0 was 'the bomb and depth-charge bot' and the 008FF4A0 class 'the sub-type 8 bot, outside this packet'",
+      "is": "009030C0's class is AAFlakBot and the sub-type 8 class is DepthChargeBot. All six class names are recovered strings: AAGunnerBot, TailGunnerBot, AAFlakBot, ArtilleryGunnerBot, TorpedoBot, DepthChargeBot",
+      "evidence": "load_robot_config_00901610 pairs each name string with the class-descriptor global its constructor reads, at the eight stores 009019EB..00901A53; TorpedoBot landing on the weapon sub-type 7 tick cross-checks the pairing against docs/GUN_CLASS_FAMILY.md"
     }
   ],
   "open_questions": [
-    "The property-name blocks of the 00902920, 009030C0 and 008FFF20 classes at 00D180F0-00D18218 and 00D18288 were not attributed to offsets; their visitors are 008FE800/008FE8F0, 008FF060/008FF130 and 008FF360/008FF400.",
-    "Where the skill-record arrays begin inside the class descriptors at [00E1998C], [00E19990], [00E19998], [00E1999C] and [00E199A0]. Only descriptor-relative offsets are proven.",
+    "The property-name blocks of the AAGunnerBot, AAFlakBot and TorpedoBot classes at 00D180F0-00D18218 and 00D18288 were not attributed to offsets; their visitors are 008FE800/008FE8F0, 008FF060/008FF130 and 008FF360/008FF400.",
+    "Where the skill-record arrays begin inside the class descriptors. The class names are settled but the objects are not: 00900AF0 and the ledger's read_<name>_parameters_* routines (008FC6D0, 008FCA10, 008FCD60, 008FCF30, 008FD370, 008FD640, 008FD880, 009973B0) are contract: unread. Only descriptor-relative offsets are proven.",
     "The meaning of the four skill scalars passed to the target entity's vtable[100h], and of the (0.6,0.6,0.6) direction at 00CE3D30 every caller passes as the second argument.",
     "gun+474h and 008FDBE0, the pair 009030C0 uses at 0090330d and 0090331b.",
     "Whether bit 1 of [unit+634h] means 'a human is aiming this gun'. 009030C0 tests bit 0, 006DF520 tests bit 1, 2 or 3 by muzzle kind, and 008FFF20 tests bit 2.",
-    "006FDF60, the vtable[1F0h] immediate fire that 008FFF20 and 006DF520 use; it exists only on the turning-gun vtables, the base 00CFE0A8 ending at +1ECh."
+    "006FDF60, the vtable[1F0h] immediate fire that 008FFF20 and 006DF520 use; it exists only on the turning-gun vtables, the base 00CFE0A8 ending at +1ECh.",
+    "Who reads the weapon director's allowFire byte at director+3Ch. Proven here to be none of 008FFF20, 00959C20 or 00864FE0; a byte-pattern scan for the three plausible encodings of a byte load at displacement 3Ch found no reader. Handed back to the weapon director's owner.",
+    "008FC080, DepthChargeBot's tick, and the ArtillerySubDirectorBot and PilotBot classes at [00E19994] and [00F8A30C]."
+  ],
+  "tool_problems": [
+    {
+      "tool": "tools/verify_report_calls.py",
+      "symptom": "the row {address: 006df623, native: 006deff0} reports 'callee 006deff0 is not a Ghidra function' although Ghidra does have a function there, body 006deff0-006df12b. 184 of 185 rows pass; this is the only failure.",
+      "cause": "line 90 accepts the live get_function_by_address response only when \"'error' not in text.lower()\". The response carries the function's NAME, and once the integrator applied this packet's ledger name BSP_GunBot_RerollAimErrorEnvelope to Ghidra, the substring 'Error' in the name made the guard treat a good response as a bridge error. The same row passed before the name was applied.",
+      "fix": "tighten the guard so it matches an actual error response rather than any occurrence of the word, for example a leading 'error:' or the bridge's own error key, instead of a bare substring test over the whole payload. Any future symbol containing 'error' hits this.",
+      "workaround": "none applied. The name is accurate: the class's own property strings at 006DF260 are 'Error' and 'ErrorOffset', so the routine that rolls that envelope is named for them. Renaming to dodge the substring would hide the defect."
+    }
   ]
 }
