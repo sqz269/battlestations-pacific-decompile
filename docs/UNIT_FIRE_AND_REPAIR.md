@@ -63,7 +63,7 @@ consumer's or a writer's use; the record is `contract: producer unread`.
 | `+A5Ch` | `+3Ch` | u32 | cleared when the water timer expires | `0093C210` | unread |
 | `+A60h` | `+40h` | u32 | cleared when the fire timer expires | `0093C120` | unread |
 | `+A64h` | `+44h` | byte | "already reported repaired" | `0093CADC`, cleared in `0093BED0` | `0093CA20` |
-| `+A65h` | `+45h` | byte | hull repair enabled | message `9Fh` handler, unread | `0093C770` |
+| `+A65h` | `+45h` | byte | hull repair enabled | **no proven writer** (RepairEnable's direct arm writes `unit+378h`, the part-construction byte 0087BD19 sets and the subobject step 0093C860 tests per child, not this field; the `9Fh` handler is unread) | `0093C770` |
 | `+A66h` | `+46h` | byte | failure repair enabled | `00939FE0` | `0093C520` |
 
 Which timer is fire and which is water is **provisional**. The ordering evidence is: the completion
@@ -311,7 +311,7 @@ slots, slot `0` being the object table. Ret is the `BSP_LuaObject_ResultCount` v
 | `00891680` | `GetWaterLoad` | unit | `0074E8F0(unit+10D4h, ...)` then normalises | 7 numbers |
 | `008918D0` | `GetLeaks` | unit | `0074E9C0(unit+10D4h, ...)` then normalises | 7 numbers |
 | `008AD150` | `SetRepairLevel` | unit, string, int | `00827A40(unit, 0081AD40(string), int)` | 0 |
-| `008AD330` | `RepairEnable` | unit, bool | routes session message `9Fh`, vptr `00D03360`, bool at `+1Ch` | 0 |
+| `008AD330` | `RepairEnable` | unit, bool | owned by docs/LUA_BINDING_NAVIGATOR.md (packet cc_lua_navigator); two exclusive arms selected by the class test `vtable[5Ch](6)` at 008AD448..008AD45C (BL, the only write in the body): class 6 routes session message `9Fh` (vptr `00D03360`, bool at `+1Ch`), any other class writes the Lua boolean straight into `unit+378h` at 008AD4E8, so `RepairEnable(false)` on a non-class-6 entity removes it from subobject repair and never touches `task+45h` | 0 |
 | `008AD540` | `FailureRepairEnable` | unit, bool | `00939FE0(unit+A20h, bool)`, i.e. `task+46h` | 0 |
 | `008AD6F0` | `SetRepairPriority` | unit, int | routes session message `A0h`, vptr `00CF5C38`, int at `+1Ch` | 0 |
 | `008AD8D0` | `SetRepairEffectivity` | unit, number | `unit+A48h = number` (`008ADA11`), the hull coefficient | 0 |
@@ -378,7 +378,8 @@ order, `b2, b4, b0, b3, b1, b5`. That is the order of Lua results 2 through 7.
 | `0074E8F0`, `0074E9C0` | complete |
 | `0081AD40`, `00827A40`, `00827960`, `00812A70`, `0080E130`, `00939FE0` | complete |
 | `008ACD10`, `008ACF00`, `008AD8D0`, `008ADA70`, `008ADC40`, `008AD150` | complete |
-| `0088E320`, `0088E790`, `008AD330`, `008AD6F0` | complete up to the routed message; the `9Eh`, `9Fh` and `A0h` handlers are `contract: unread` |
+| `0088E320`, `0088E790`, `008AD6F0` | complete up to the routed message; the `9Eh`, `9Fh` and `A0h` handlers are `contract: unread` |
+| `008AD330` | cited from packet cc_lua_navigator (docs/LUA_BINDING_NAVIGATOR.md), not reconstructed here; its two-arm structure is recorded in the binding table above |
 | `00891680`, `008918D0` | complete |
 | `008C6DD0` | partial: the fan-out is read, `vtable[1B8h]` is `contract: unread` |
 | `008160B0..008160EA`, `00827400..00827455` | raw listing, `no_ghidra_function` |
