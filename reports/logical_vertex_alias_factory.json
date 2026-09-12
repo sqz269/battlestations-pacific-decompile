@@ -1,0 +1,881 @@
+{
+  "packet": "logical_alias_factory4",
+  "status": "new_four_EH_registry_aliases_bounded_negative_owner4C_unresolved",
+  "utc": "2026-09-12T16:14:52.871914+00:00",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "project_file_exists": true,
+  "worktree_head": "8ce8b94a4c1637fc6763cc111ffdc40bc006264a",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "guard": {
+    "entrypoint": "python tools/bsp.py ghidra",
+    "verification": "Each CLI live query creates client() and calls Client.verify: expected project bsp, program /battlestationspacific.exe, x86:LE:32:default, image base00400000. No live mutations."
+  },
+  "provenance": {
+    "prior_alias_report": "reports/native_vertex_stream_alias_escape_discovery.json",
+    "prior_alias_report_sha256": "d3969c65bfcbdc90b08ce29c2031e92e1d01454ddfbfba20f6df993eeed0ca8b",
+    "prior_owner_report": "reports/native_vertex_stream_owner_discovery.json",
+    "prior_owner_report_sha256": "6eb483556416bd6f12b24b838a97dc544e70d08fa13e9a1a7e69e619ca6e913c",
+    "distinction": "Six selected earlier complete spans freshly revalidated; remaining prior spans/provider files are provenance only and not revalidated here."
+  },
+  "spans": [
+    {
+      "address": "00b28a40",
+      "end_exclusive": "00b28a89",
+      "length": 73,
+      "role": "revalidated_full_registration_body",
+      "bytes_hex": "568db1ac1a00008d442408508bcee8adc8ffff8b4608394604751403c083f8017f05b801000000508bcee8a1a2ffff8b4e048b168d048a85c074068b4c24088908834604015ec20400",
+      "sha256": "e7bf38461098c405212a1c4bf851f0c3c069918c92cafcf1b0efa5041c4a943d",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b22d10",
+      "end_exclusive": "00b22d6f",
+      "length": 95,
+      "role": "revalidated_full_pointer_array_reserve_including_returning_free_tail",
+      "bytes_hex": "56578b7c240c83ff018bf17d05bf01000000397e087d438d04bd000000005350e889280d008bd833c083c4043946047e188bcb85c974078b168b1482891183c00183c1043b46047cea8b0650e8283c0d0083c404891e897e085b5f5ec20400",
+      "sha256": "70c57d1530f440247d5a72624ff0c7567d13328133833ecaf2f0d260013034b6",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b25300",
+      "end_exclusive": "00b25368",
+      "length": 104,
+      "role": "revalidated_full_pointer_array_remove_swap_last",
+      "bytes_hex": "8b11538b5904568bc2578d349883cfff3bc67345558b6c24148b6d008d6424003928741683c0043bc672f55d33c083ffff5f5e0f95c05bc204002bc2c1f8028bf883ffff74128d43ff3bf874078b449afc8904ba834104ff5d33c083ffff5f5e0f95c05bc20400cc",
+      "sha256": "9085973f7bdb02851908391e17483e7396007071afe6eb2fd8518cb560c68c31",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b287c0",
+      "end_exclusive": "00b288aa",
+      "length": 234,
+      "role": "revalidated_full_registered_logical_factory",
+      "bytes_hex": "6aff6838d2cb0064a1000000005064892500000000515556578bf9b974000000e88b2b02008944240c33ed3bc5896c241874188b4c24248b542428518b4c242452518bc8e8f73302008be88b87b41a00003987b01a00008db7ac1a0000c7442418ffffffff751403c083f8017f05b801000000508bcee8d5a4ffff8b56048b068d049085c074028928834604018b178b42588bcfffd03c01753a8b87b81900003987b41900008db7b0190000751403c083f8017f05b801000000508bcee88ea4ffff8b4e048b168d048a85c074028928834604018b4c24105f5e8bc55d64890d0000000083c410c20c00",
+      "sha256": "1403a4015028fcf34e9c40de61707a76b03b8fcfc51cd877bcc2413d85725b0b",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b4bc00",
+      "end_exclusive": "00b4bef6",
+      "length": 758,
+      "role": "revalidated_full_standard_logical_constructor",
+      "bytes_hex": "6aff68b0f9cb0064a100000000506489250000000083ec108b44242456578bf15089742410e8f661010033ffc7066c1dd600897e58897e68897e6c897e70803ddcd6080100897c242074138b0d94d3f800894c2414e8767efeff88442410538b5c24348bc383e00f83f803c6442424018bcb772fff2485f8beb400897c240c81c900000100eb1cc744240c01000000eb12c744240c02000000eb08c744240c03000000f6c1107405bf010000008bc125000f00003d000300007722741b3d00010000740f3d00020000752e81cf00400000eb2683cf02eb2183cf40eb1c3d00040000740f3d00050000750e81cf80000000eb0681cf000100008bd181e200f0000081fa00100000750681cf0002000081e100000f0081f900000100750383cf088b0d94d3f8008bc32500f000003d00100000558b6c24307555e87241fdff89465883c00450ff151c22ce008b3d94d3f80081c7f419000057ff151822ce00834718018b4e5856e875f4ffffa194d3f80005f419000083cfff01781850ff151022ce00897e5c8b7c2434e9fd000000c744243000000000e85541fdff8b4c24348b89cc0000008b100fafcd6a008d5c2434538b5c24185333db535751508b4268ffd0395c2430754d3bc374493d7c01768874423d0e000780743b8b0d94d3f800e88cd8fdff8b0d94d3f800e80141fdff8b4c24348b89cc0000008b100fafcd538d5c2434538b5c24185333db535751508b4268ffd06a2ce800aa0a0083c4043bc37430c70030b1ce00c740040100000089580889580c895810c700341ed60089581489581889581c895820895828895824eb0233c08b7c24348b5c24388946588b97cc0000000fafd5528b5424348bc88b008b40145352ffd08b4424308b088b510850ffd2c7465c00000000896e64895e608b5e683bdf5d742b85ff897e68740a83c70457ff151c22ce0085db74168d430450ff152022ce0085c075088b138b028bcbffd0803ddcd6080100c6442424005b740e8b4c2410518b4c2418e81f7cfeff8b4c24185f8bc65e64890d0000000083c41cc20c00",
+      "sha256": "97ebd5030eed737bb80dc522c2aea2112f98b326dd3b06246b703ff3db62fce9",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b4a9b0",
+      "end_exclusive": "00b4aa94",
+      "length": 228,
+      "role": "revalidated_full_shared_physical_logical_constructor",
+      "bytes_hex": "6aff6818f8cb0064a100000000506489250000000051535556578b7c24288bf15789742414e8467401008b44242433ed8bdd3bdf896c241cc7066c1dd600896e58896e5c896e68896e6c896e70894664c7466001000000742b3bfd897e68740a83c70457ff151c22ce003bdd74168d4b0451ff152022ce0085c075088b138b028bcbffd08b7e588b44242c3bf8742b3bc5894658740a83c00450ff151c22ce003bfd74168d4f0451ff152022ce0085c075088b178b028bcfffd08b4c2430894e5c8b0d94d3f80056e8c3dffdff8b4c24145f8bc65e5d5b64890d0000000083c410c21000",
+      "sha256": "263395697f964d336e8a77f0537016227b5ac6193e069c41f2f420454cd77e8c",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b4b370",
+      "end_exclusive": "00b4b37a",
+      "length": 10,
+      "role": "full_pool_entry_overwrites_incoming_ECX",
+      "bytes_hex": "b918fe0801e906fbffff",
+      "sha256": "63ef3af6d5ba3ec51d458f342eada7ecf539f0d158171b1fbb51b321c0e1eb64",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b1fe50",
+      "end_exclusive": "00b1fe57",
+      "length": 7,
+      "role": "full_canonical_renderer_mode_getter_unlisted",
+      "bytes_hex": "8a81ac190000c3",
+      "sha256": "21ca3cc4767dbd86a713e25012472933dee0dae33b2369ef2fb6bec590210be6",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00d5f100",
+      "end_exclusive": "00d5f108",
+      "length": 8,
+      "role": "renderer_profile_plus58_and_plus5C",
+      "bytes_hex": "50feb100c087b200",
+      "sha256": "570a669ce7649d2cb99673edf5f8563201580c7c039915a71c98882d11c863bf",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b25940",
+      "end_exclusive": "00b25990",
+      "length": 80,
+      "role": "full_raw_pointer_array_resize",
+      "bytes_hex": "56578b7c240c8bf13b7e087e0657e8bdd3ffff8b46043bc77d1c8d9b000000008b0e8d0c8185c97406c7010000000083c0013bc77cea3b7e047d0d83c8ff8bff0146043b7e047cf8897e045f5ec20400",
+      "sha256": "1de73759a45a6858f2823a68bd79a9f5f781393cd9dbab2358bfe2a39dd36f00",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b29b20",
+      "end_exclusive": "00b29b37",
+      "length": 23,
+      "role": "full_raw_pointer_array_cleanup_including_returning_free_tail",
+      "bytes_hex": "566a008bf1e816beffff8b0650e857ce0c0083c4045ec3",
+      "sha256": "0e5f6a014028bb11c0b90eb8c6375f038a7b478e9e963b8c09689e907470c687",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00cbdd58",
+      "end_exclusive": "00cbdd69",
+      "length": 17,
+      "role": "full_ctor_secondary_registry_EH_funclet",
+      "bytes_hex": "8b8da4fbffff81c1b0190000e9b7bde6ff",
+      "sha256": "5f8a6dcdf64b0e560ebc019bd441e579fba3b40189a6efd12382e9999ac9d97b",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00cbddbe",
+      "end_exclusive": "00cbddcf",
+      "length": 17,
+      "role": "full_ctor_primary_registry_EH_funclet",
+      "bytes_hex": "8b8da4fbffff81c1ac1a0000e951bde6ff",
+      "sha256": "0fdb4e367afab41991253f6a49aa0ac4d85d37b9c0eeb035446ed13c4f78f0f5",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00cbdf2c",
+      "end_exclusive": "00cbdf3a",
+      "length": 14,
+      "role": "full_destructor_secondary_registry_EH_funclet",
+      "bytes_hex": "8b4dec81c1b0190000e9e6bbe6ff",
+      "sha256": "06a9e04ca9b7622ab6c656c18f69dbc527362eb6015d1b7cddfb5e20f606c7a5",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00cbdf80",
+      "end_exclusive": "00cbdf8e",
+      "length": 14,
+      "role": "full_destructor_primary_registry_EH_funclet",
+      "bytes_hex": "8b4dec81c1ac1a0000e992bbe6ff",
+      "sha256": "db5326d60aa913f122cf10230ebfbc936ed5136a71c1127df1f179d66f116544",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00cbdef5",
+      "end_exclusive": "00cbdeff",
+      "length": 10,
+      "role": "full_renderer_constructor_FH3_handler",
+      "bytes_hex": "b8ec66df00e9448cf3ff",
+      "sha256": "3ff0d750bd771022f993f309c2b819255506047374fa5b579cd9293c17ddd9d8",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00cbe07b",
+      "end_exclusive": "00cbe085",
+      "length": 10,
+      "role": "full_renderer_destructor_FH3_handler",
+      "bytes_hex": "b8f867df00e9be8af3ff",
+      "sha256": "b39d70b95328440cecafef6c0f67f9eb4eb6d6d0344d3ffacb5552e3c6f159d4",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00df66ec",
+      "end_exclusive": "00df6710",
+      "length": 36,
+      "role": "renderer_constructor_FuncInfo",
+      "bytes_hex": "220593191d0000001067df00000000000000000000000000000000000000000001000000",
+      "sha256": "6bd30a153c1410890bc34517c6b3a3a4d8a491ed04b23bd519479f14975ae03e",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00df67f8",
+      "end_exclusive": "00df681c",
+      "length": 36,
+      "role": "renderer_destructor_FuncInfo",
+      "bytes_hex": "220593191d0000001c68df00000000000000000000000000000000000000000001000000",
+      "sha256": "a3178f3cdf63cb442006152500070e0d2017935ad25335696bcb7302bb667383",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00df6730",
+      "end_exclusive": "00df6738",
+      "length": 8,
+      "role": "ctor_unwind_state4_to3_secondary_registry",
+      "bytes_hex": "0300000058ddcb00",
+      "sha256": "bb482143edaad216066b431edf2cfdac9863995693b94e01618c610b26ef0985",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00df6760",
+      "end_exclusive": "00df6768",
+      "length": 8,
+      "role": "ctor_unwind_state10_to9_primary_registry",
+      "bytes_hex": "09000000beddcb00",
+      "sha256": "e1f77d4c5879b286f1fce32c310a3c53acbe9f6eccc457388662f856e90ab5c7",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00df683c",
+      "end_exclusive": "00df6844",
+      "length": 8,
+      "role": "destructor_unwind_state4_to3_secondary_registry",
+      "bytes_hex": "030000002cdfcb00",
+      "sha256": "d132635f88c768276f24401fb532c8367b5a985659bc6d6220b927dfc62377b1",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00df686c",
+      "end_exclusive": "00df6874",
+      "length": 8,
+      "role": "destructor_unwind_state10_to9_primary_registry",
+      "bytes_hex": "0900000080dfcb00",
+      "sha256": "fe5cdae83291558a6a14fad2504082927de7a5b24c9c4f32c91d52e6181ebaf2",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b32410",
+      "end_exclusive": "00b3244e",
+      "length": 62,
+      "role": "constructor_saved_this_and_D5F0A8_install_fragment",
+      "bytes_hex": "6aff68f5decb0064a100000000506489250000000081ec5404000053568bf15789742410e8b75fffff33dbc706a8f0d500c7460ca4f0d500899c24680400",
+      "sha256": "8687a302ccbc20509bcb36c0722ca9b92587819a1de77c9f3710cf310f3d12fa",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b32920",
+      "end_exclusive": "00b32962",
+      "length": 66,
+      "role": "destructor_saved_this_and_D5F0A8_install_fragment",
+      "bytes_hex": "6aff687be0cb0064a100000000506489250000000083ec085355568bf15789742410c706a8f0d500c7460ca4f0d5008d8e9c190000c744242018000000e81ea38eff",
+      "sha256": "d1ebe509356dd820c81146959c4c6cdae97da6791922615a2dff343c0e97f916",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b268e0",
+      "end_exclusive": "00b268f3",
+      "length": 19,
+      "role": "full_primary_raw_registry_unregistration_wrapper",
+      "bytes_hex": "8d4424045081c1ac1a0000e810eaffffc20400",
+      "sha256": "09e0eb72440b883fbdf3027507548e74e4726c0c358a9c4c674a49e8ca1cea72",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00c66bb0",
+      "end_exclusive": "00c66bbe",
+      "length": 14,
+      "role": "game_list_EH_funclet_19B8_distinct_header",
+      "bytes_hex": "8b4de881c1b8190000e972c185ff",
+      "sha256": "b2086bb6ba0a706443451d21333b9019aad04b707f11eb278597e552c841ad05",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00c66e60",
+      "end_exclusive": "00c66e6e",
+      "length": 14,
+      "role": "game_list_EH_funclet_19B8_distinct_header",
+      "bytes_hex": "8b4db081c1b8190000e9c2be85ff",
+      "sha256": "d0be82c48ee269fe07c136464a89c0d657c62f6749d1403d30f79c123fdf23e7",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "007693a0",
+      "end_exclusive": "007693d0",
+      "length": 48,
+      "role": "allocation_size_constant_not_pointer_adjustment_fragment",
+      "bytes_hex": "68b41a0000e871d4480083c4048944240c85c0c7442418050000000f8416f2ffff8bc8e84878ffffc7442418ffffffff",
+      "sha256": "833f5fafa6dc2f803d37e30113eef3a417ea6c98a739eba174a469491fe9c3b1",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00526362",
+      "end_exclusive": "0052639f",
+      "length": 61,
+      "role": "game_singleton_19B8_list_origin_fragment",
+      "bytes_hex": "8b0dd888e1008b118b1da888e1008b425c6a0581c3b81900008bf9ffd084c0750b8b178b425c6a188bcfffd033ed896c2434896c2438896c243c8b7b04",
+      "sha256": "5ec121ceaa108f3e5fae331d20c066466522d55a55f813a48e6a7c9f97fd6317",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00525f80",
+      "end_exclusive": "00525fb8",
+      "length": 56,
+      "role": "game_singleton_19B8_list_origin_fragment",
+      "bytes_hex": "6aff64a10000000068e0b5c600506489250000000083ec305355568b35a888e1008be98b0dd888e1008b018b505c576a0581c6b81900008b",
+      "sha256": "541580d84fbb8507834dbbf248be159e024f7561506f7a9d3a88cc9d82000bb7",
+      "live_ghidra_equals_installed_PE": true
+    }
+  ],
+  "queries": {
+    "factory_xrefs": "From 00d5f104 [DATA]",
+    "registration_callers": "FUN_00b4a9b0 @ 00b4a9b0",
+    "cleanup_callers": "Unwind@00cbdd58 @ 00cbdd58\nUnwind@00cbddbe @ 00cbddbe\nUnwind@00cbdf2c @ 00cbdf2c\nUnwind@00cbdf80 @ 00cbdf80",
+    "constructor_registry_funclet_xrefs": "From 00df6734 [DATA]",
+    "destructor_registry_funclet_xrefs": "From 00df6840 [DATA]",
+    "current_function_count": "live function count 63628; snapshot 63627; changed"
+  },
+  "registry_constant_scan": {
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "method": "Capstone x86-32 section-start linear sweep with skipdata; exact six registry displacement/immediate constants; not CFG or alias proof",
+    "sections": [
+      {
+        "name": ".text",
+        "start": "00401000",
+        "requested_end_exclusive": "00ce2000",
+        "decoded_end_exclusive": "00ce2000",
+        "bytes": 9310208,
+        "sha256": "cb2aaf3dd3d53a675ef199343258ff981020a8ac64a90e2bceb9db1d47d4bef3",
+        "instructions_including_skipdata": 3352745,
+        "skipped_data_bytes": 269
+      }
+    ],
+    "hits": [
+      {
+        "address": "004bfe40",
+        "size": 6,
+        "instruction": "lea ecx, [esi + 0x19b8]",
+        "outside_prior_band": true
+      },
+      {
+        "address": "004c3e99",
+        "size": 6,
+        "instruction": "lea ecx, [esi + 0x19b8]",
+        "outside_prior_band": true
+      },
+      {
+        "address": "004c4052",
+        "size": 6,
+        "instruction": "lea edi, [esi + 0x19b8]",
+        "outside_prior_band": true
+      },
+      {
+        "address": "004dabee",
+        "size": 6,
+        "instruction": "lea ecx, [esi + 0x19b8]",
+        "outside_prior_band": true
+      },
+      {
+        "address": "004dd340",
+        "size": 6,
+        "instruction": "lea ecx, [esi + 0x19b8]",
+        "outside_prior_band": true
+      },
+      {
+        "address": "004dde48",
+        "size": 6,
+        "instruction": "mov dword ptr [esi + 0x19b0], ebx",
+        "outside_prior_band": true
+      },
+      {
+        "address": "004dde4e",
+        "size": 6,
+        "instruction": "mov dword ptr [esi + 0x19b4], ebx",
+        "outside_prior_band": true
+      },
+      {
+        "address": "004dde54",
+        "size": 6,
+        "instruction": "mov dword ptr [esi + 0x19b8], ebx",
+        "outside_prior_band": true
+      },
+      {
+        "address": "00525fb1",
+        "size": 6,
+        "instruction": "add esi, 0x19b8",
+        "outside_prior_band": true
+      },
+      {
+        "address": "00526375",
+        "size": 6,
+        "instruction": "add ebx, 0x19b8",
+        "outside_prior_band": true
+      },
+      {
+        "address": "007693a0",
+        "size": 5,
+        "instruction": "push 0x1ab4",
+        "outside_prior_band": true
+      },
+      {
+        "address": "00b268e5",
+        "size": 6,
+        "instruction": "add ecx, 0x1aac",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b2880b",
+        "size": 6,
+        "instruction": "mov eax, dword ptr [edi + 0x1ab4]",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b28811",
+        "size": 6,
+        "instruction": "cmp dword ptr [edi + 0x1ab0], eax",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b28817",
+        "size": 6,
+        "instruction": "lea esi, [edi + 0x1aac]",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b2885a",
+        "size": 6,
+        "instruction": "mov eax, dword ptr [edi + 0x19b8]",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b28860",
+        "size": 6,
+        "instruction": "cmp dword ptr [edi + 0x19b4], eax",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b28866",
+        "size": 6,
+        "instruction": "lea esi, [edi + 0x19b0]",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b28a41",
+        "size": 6,
+        "instruction": "lea esi, [ecx + 0x1aac]",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b2975b",
+        "size": 6,
+        "instruction": "cmp dword ptr [esi + 0x1ab0], edi",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b29770",
+        "size": 6,
+        "instruction": "mov ecx, dword ptr [esi + 0x1aac]",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b29781",
+        "size": 6,
+        "instruction": "cmp edi, dword ptr [esi + 0x1ab0]",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b299db",
+        "size": 6,
+        "instruction": "cmp dword ptr [esi + 0x1ab0], edi",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b299f0",
+        "size": 6,
+        "instruction": "mov eax, dword ptr [esi + 0x1aac]",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b29a01",
+        "size": 6,
+        "instruction": "cmp edi, dword ptr [esi + 0x1ab0]",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b324ae",
+        "size": 6,
+        "instruction": "mov dword ptr [esi + 0x19b0], ebx",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b324b4",
+        "size": 6,
+        "instruction": "mov dword ptr [esi + 0x19b4], ebx",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b324ba",
+        "size": 6,
+        "instruction": "mov dword ptr [esi + 0x19b8], ebx",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b325b2",
+        "size": 6,
+        "instruction": "mov dword ptr [esi + 0x1aac], ebx",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b325b8",
+        "size": 6,
+        "instruction": "mov dword ptr [esi + 0x1ab0], ebx",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b325be",
+        "size": 6,
+        "instruction": "mov dword ptr [esi + 0x1ab4], ebx",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b334d1",
+        "size": 6,
+        "instruction": "mov eax, dword ptr [esi + 0x1ab4]",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b334f5",
+        "size": 6,
+        "instruction": "cmp dword ptr [esi + 0x1ab0], ebx",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b33504",
+        "size": 6,
+        "instruction": "mov edx, dword ptr [esi + 0x1aac]",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b33514",
+        "size": 6,
+        "instruction": "cmp eax, dword ptr [esi + 0x1ab0]",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b3351c",
+        "size": 6,
+        "instruction": "mov eax, dword ptr [esi + 0x1aac]",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b3352b",
+        "size": 6,
+        "instruction": "mov dword ptr [esi + 0x1aac], edi",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b33531",
+        "size": 6,
+        "instruction": "mov dword ptr [esi + 0x1ab4], ebp",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b33537",
+        "size": 6,
+        "instruction": "mov eax, dword ptr [esi + 0x1ab0]",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b33550",
+        "size": 6,
+        "instruction": "mov eax, dword ptr [esi + 0x1aac]",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b33561",
+        "size": 6,
+        "instruction": "cmp dword ptr [esi + 0x1ab0], ebx",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b33570",
+        "size": 7,
+        "instruction": "add dword ptr [esi + 0x1ab0], -1",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b33577",
+        "size": 6,
+        "instruction": "cmp dword ptr [esi + 0x1ab0], ebx",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b3357f",
+        "size": 6,
+        "instruction": "mov eax, dword ptr [esi + 0x1aac]",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b33586",
+        "size": 6,
+        "instruction": "mov dword ptr [esi + 0x1ab0], ebx",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b336f0",
+        "size": 6,
+        "instruction": "mov eax, dword ptr [esi + 0x19b8]",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b33715",
+        "size": 6,
+        "instruction": "cmp dword ptr [esi + 0x19b4], ebx",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b33724",
+        "size": 6,
+        "instruction": "mov edx, dword ptr [esi + 0x19b0]",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b33735",
+        "size": 6,
+        "instruction": "cmp eax, dword ptr [esi + 0x19b4]",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b3373d",
+        "size": 6,
+        "instruction": "mov eax, dword ptr [esi + 0x19b0]",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b3374c",
+        "size": 6,
+        "instruction": "mov dword ptr [esi + 0x19b0], edi",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b33752",
+        "size": 10,
+        "instruction": "mov dword ptr [esi + 0x19b8], 1",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b3375c",
+        "size": 6,
+        "instruction": "mov eax, dword ptr [esi + 0x19b4]",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b33770",
+        "size": 6,
+        "instruction": "mov eax, dword ptr [esi + 0x19b0]",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b33781",
+        "size": 6,
+        "instruction": "cmp dword ptr [esi + 0x19b4], ebx",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b33790",
+        "size": 6,
+        "instruction": "add dword ptr [esi + 0x19b4], ebp",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b33796",
+        "size": 6,
+        "instruction": "cmp dword ptr [esi + 0x19b4], ebx",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b3379e",
+        "size": 6,
+        "instruction": "mov eax, dword ptr [esi + 0x19b0]",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00b337a5",
+        "size": 6,
+        "instruction": "mov dword ptr [esi + 0x19b4], ebx",
+        "outside_prior_band": false
+      },
+      {
+        "address": "00c66bb3",
+        "size": 6,
+        "instruction": "add ecx, 0x19b8",
+        "outside_prior_band": true
+      },
+      {
+        "address": "00c66e63",
+        "size": 6,
+        "instruction": "add ecx, 0x19b8",
+        "outside_prior_band": true
+      },
+      {
+        "address": "00cbdd5e",
+        "size": 6,
+        "instruction": "add ecx, 0x19b0",
+        "outside_prior_band": true
+      },
+      {
+        "address": "00cbddc4",
+        "size": 6,
+        "instruction": "add ecx, 0x1aac",
+        "outside_prior_band": true
+      },
+      {
+        "address": "00cbdf2f",
+        "size": 6,
+        "instruction": "add ecx, 0x19b0",
+        "outside_prior_band": true
+      },
+      {
+        "address": "00cbdf83",
+        "size": 6,
+        "instruction": "add ecx, 0x1aac",
+        "outside_prior_band": true
+      }
+    ]
+  },
+  "total_spans": 31,
+  "total_fresh_bytes": 2146,
+  "source_ready": false,
+  "reconstructed": false,
+  "build_tested": false,
+  "fixture_tested": false,
+  "ABI_compatible": false,
+  "game_validated": false,
+  "Ghidra_mutations": false,
+  "finding_scope": {
+    "new": "Four adjusted registry aliases in constructor/destructor FH3 cleanup outside prior B10000..B40000 scan reach full B29B20 and B25940. These helpers mutate raw array storage/count and free backing allocation without dereferencing logical stream pointees.",
+    "revalidated": "Factory exact returned constructor alias, raw registration, reserve/swap-last semantics, canonical renderer+58/+5C profile entries and logical constructors.",
+    "not_established": "No nonnull logical+4C writer, incoming retained owner type/profile, or complete final-zero terminal. Whole-lifetime nullness is not proven."
+  },
+  "native_contracts": [
+    {
+      "address": "00b287c0",
+      "abi": "ECX renderer; stack count,flags,declaration; EAX constructor result or zero; RET0C",
+      "origin": "B287E0 calls B4B370. B4B370 overwrites ECX with108FE18 and jumps B4AE80; incoming size-looking74h is discarded. B28802 passes returned CPU slot as unadjusted ECX to B4BC00; B28809 captures constructor EAX in EBP; B2889A returns same EBP.",
+      "escapes": [
+        "B28847 raw primary registry cell at renderer+1AAC",
+        "B2888E raw secondary registry cell at renderer+19B0 only when current renderer virtual+58 returns AL==1",
+        "EAX returned to caller"
+      ],
+      "field4c_write": false,
+      "retain_in_factory": false
+    },
+    {
+      "address": "00b28a40",
+      "abi": "ECX renderer; stack logical pointer; no stable return contract; RET4",
+      "origin": "B4A9B0 passes its exact logical this pointer using current F8D394 renderer; sole observed direct caller.",
+      "escapes": [
+        "header renderer+1AAC passed to B25300 and B22D10",
+        "B28A7F writes unchanged logical pointer to selected raw array cell"
+      ],
+      "pointee_dereference_or_retain": false
+    },
+    {
+      "address": "00b25940",
+      "abi": "ECX array header{data+0,count+4,capacity+8}; stack signed requested count; RET4",
+      "writes": "Grow storage with B22D10 when requested>capacity; zero new raw cells when oldCount<requested; decrement header count while requested<count; finally store requested count. No element dereference or lifetime dispatch."
+    },
+    {
+      "address": "00b29b20",
+      "abi": "ECX raw pointer-array header; no stack arguments; plain RET; no stable return contract",
+      "calls": "B25940(header,0), then BF6989(header.data). Returning continuation B29B32 ADD ESP,4; B29B35 POP ESI; B29B36 RET.",
+      "logical_pointee_dereference": false,
+      "logical_reference_release": false,
+      "post_free_header_clear": false
+    }
+  ],
+  "new_EH_paths": [
+    {
+      "parent": "00b32410",
+      "handler": "00cbdef5",
+      "FuncInfo": "00df66ec",
+      "unwind_map": "00df6710",
+      "frame_this_displacement": "-45C",
+      "prologue_saved_this": "00b32430",
+      "profile_install": "00b3243b:D5F0A8",
+      "states": [
+        {
+          "state": 4,
+          "next_state": 3,
+          "map_entry": "00df6730",
+          "funclet": "00cbdd58",
+          "this_adjustment": "19B0"
+        },
+        {
+          "state": 10,
+          "next_state": 9,
+          "map_entry": "00df6760",
+          "funclet": "00cbddbe",
+          "this_adjustment": "1AAC"
+        }
+      ],
+      "terminal": "tail jump B29B20(header)"
+    },
+    {
+      "parent": "00b32920",
+      "handler": "00cbe07b",
+      "FuncInfo": "00df67f8",
+      "unwind_map": "00df681c",
+      "frame_this_displacement": "-14",
+      "prologue_saved_this": "00b3293e",
+      "profile_install": "00b32942:D5F0A8",
+      "states": [
+        {
+          "state": 4,
+          "next_state": 3,
+          "map_entry": "00df683c",
+          "funclet": "00cbdf2c",
+          "this_adjustment": "19B0"
+        },
+        {
+          "state": 10,
+          "next_state": 9,
+          "map_entry": "00df686c",
+          "funclet": "00cbdf80",
+          "this_adjustment": "1AAC"
+        }
+      ],
+      "terminal": "tail jump B29B20(header)"
+    }
+  ],
+  "analysis_gaps": [
+    {
+      "address": "00b29b20",
+      "current_live_body_ends_after_call": "00b29b31",
+      "fresh_complete_body_end_exclusive": "00b29b37",
+      "cause": "Returning free BF6989 still stops current listing; five-byte continuation preserved from live/disk bytes without mutation."
+    },
+    {
+      "address": "00b1fe50",
+      "issue": "No Ghidra function record; full seven native bytes MOV AL,[ECX+19AC]; RET pinned without defining function."
+    },
+    {
+      "addresses": [
+        "00cbdef5",
+        "00cbe07b"
+      ],
+      "issue": "No current Ghidra function record; exact ten-byte MOV EAX,FuncInfo/JMP BF6B43 native handlers pinned without defining functions."
+    }
+  ],
+  "scan_delta": {
+    "prior_candidates": 47,
+    "current_candidates": 65,
+    "added_in_prior_band": [
+      "00b268e5"
+    ],
+    "outside_prior_band_count": 17,
+    "new_registry_EH_alias_instructions": [
+      "00cbdd5e",
+      "00cbddc4",
+      "00cbdf2f",
+      "00cbdf83"
+    ],
+    "other_outside_candidates": 13,
+    "other_candidate_scope": "Two C66BB0/C66E60 funclets adjust by19B8 then reach distinct linked-list cleanup4C2D30;525FB1/526375 form E188A8 game-side list aliases;7693A0 is a size1AB4 allocation argument. Remaining game-side immediate matches are only search leads, not an alias-closure proof or newly reconstructed routines.",
+    "limits": "Linear section-start decode uses269 skipdata bytes, may decode data or miss instructions across alignment; fixed constants do not capture arithmetic-produced aliases, copied headers, callback/reentrant mutations or other writable/executable memory. All65 hits are preserved."
+  },
+  "remaining_prerequisite": {
+    "field": "logical_stream+4C",
+    "nonnull_writer": null,
+    "retained_profile": null,
+    "final_zero_terminal": null,
+    "action": "Require an exact native assignment/adoption or defensible closed alias-domain proof before implementing a null-only base owner path. Arbitrary equal offsets or knowing D61D6C stream terminal cannot identify independent +4C owner."
+  },
+  "verification_limits": [
+    "31 fresh spans /2146 bytes are live-Ghidra equal to installed PE; full binary hash is pinned.",
+    "No source/CMake/shared ledger/annotation changes, no new tests, no compilation or runtime exercise.",
+    "Allocator/free callbacks and current virtual dispatch preserve possible external effects; no proof against arbitrary corruption or overlapping allocations.",
+    "Primary factory uses captured incoming renderer, while alternate constructor registration uses current F8D394; equality across callbacks is not assumed."
+  ]
+}
