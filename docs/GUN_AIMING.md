@@ -431,3 +431,21 @@ Not read. The turning family is reached from the node factory table shared by sh
 (`docs/GUN_CLASS_FAMILY.md`), and `0085AD80` reads nothing ship-specific - the platform vector at
 `descriptor+94h` belongs to whatever class the unit has - so the same code is expected to serve
 plane mounts. That expectation is not evidence: **contract: unread**.
+
+## Correction from docs/GUN_PLATFORM_ARC.md (packet cc2_gun_platform_arc)
+
+- **Was:** docs/GUN_AIMING.md line 365: 'the four atan2-derived values it stores into gun+4BCh..+4C8h are contract: unread'
+  **Is:** gun+4BCh..+4C8h receive 0085B0F0's own four arguments after the (-pi, pi] wrap, in the order tHorz -> +4C4h, tVert -> +4C8h, horz -> +4BCh, vert -> +4C0h. No atan2 is involved. The atan2 pair in this family is at 0085A467 and 0085A488 inside BSP_TurningGun_SetupFromDescriptor, which builds an arc record and inserts it with 007F5A10 at 0085A4A8.
+  **Evidence:** 0085B17B, 0085B181, 0085B187, 0085B18D store fStack00000010/0000000C/00000008/00000004; the argument order comes from RET 10h and the four fmod wraps at 0085B103, 0085B154, 0085B1A5 and the fourth.
+- **Was:** docs/GUN_AIMING.md line 211: '007F6840's exact predicate is unread'
+  **Is:** 007F6840 is byte-for-byte the 007F5FC0 walk, returning the matching 14h-byte record instead of a bool. 0085B0C5 uses only its truth, so the restore at 0085B0CE fires exactly when no traverse window holds the stepped pair.
+  **Evidence:** 007F6840-007F691E against 007F5FC0-007F609E; TEST EAX,EAX at 0085B0CA.
+- **Was:** docs/GUN_AIMING.md line 327: 'gun+358h, a per-gun counter, contract: unread'
+  **Is:** gun+358h is a destruction level, not an ammunition or barrel count. BSP_Gun_ApplyWreckVisibility (007297B0) shows the gun's own node at visibility 1.0 when it is zero and swaps in the MeshHolder children when it is not. The constructor zeroes it at 0072E61A and BSP_Gun_Fire lets a non-zero gun fire only when the global at [00E188A8]+1FE4h equals 2 (007301A7).
+  **Evidence:** 007297B3, 0072E61A, 007301A7, 00729AA7, 0072EDDF.
+- **Was:** docs/GUN_AIMING.md line 345: 'which routine decides to send opcode 0ADh was not read'
+  **Is:** BSP_Gun_FixedStepTick (0072D130) sends it, once per fixed step, whenever the latch gun+454h is set and unit+720h, gun+3B8h and gun+5Dh are all clear. The latch is written only by BSP_Gun_SetFireRequest (0072D2C0), gun vtable slot 1E8h.
+  **Evidence:** the inline message construction at 0072D252 with opcode 0ADh and the route call at 0072D283; the latch read at 0072D206 and its only writer at 0072D3B8.
+- **Was:** the aiming doc lists 00730A20 as swallowed by BSP_Gun_Fire's body
+  **Is:** BSP_Gun_Fire's Ghidra body is 00730160-00730A1D, so 00730A20 follows it after INT3 padding rather than sitting inside it. The same holds for 004F17F0 against BSP_ClassId02_IsKindOf and for 006E3DC0/006E3DE0 against BSP_ClassId20_IsKindOf (body 006E3D50-006E3D85).
+  **Evidence:** python tools/bsp.py ghidra proto on each address reports no containing function.
