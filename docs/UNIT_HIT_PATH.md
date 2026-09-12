@@ -320,3 +320,11 @@ The dispatch slot above is mis-numbered: `007BBCF0` BSP_UnitInstance_OnHit is vt
 here, is `009239A0`: the impact `0084BC60` queues the record through `00926E80` and the
 drain dispatches `entity->vtable[ECh]` up the parent chain. `0084C430` is the collision
 sweep, not a tracer.
+
+## Corrections from docs/UNIT_FIRE_AND_REPAIR.md (packet cc2_fire_flooding)
+
+The repair task is embedded in the unit at `unit+A20h` (the `+A20h` sub-object of
+docs/UNIT_INSTANCE_SUBOBJECTS.md). Its `+34h`/`+38h` fields are the fire and water countdown
+timers with separate per-second rates at `+2Ch`/`+30h`, not amounts, and `+24h` is the repair
+priority `SetRepairPriority` sets, not an opaque task kind; the priority divides the damage the
+timers apply rather than shortening the burn.
