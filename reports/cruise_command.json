@@ -1,0 +1,192 @@
+{
+  "packet": "cc_cruise_command",
+  "worker": "agent/cc-cruise-command",
+  "date": "2026-09-11",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "read-only: no renames, comments, prototypes, function creation or saves",
+  "docs": ["docs/CRUISE_COMMAND.md", "docs/X87_CONTROL_WORD.md"],
+  "sources": ["include/bsp/cruise_command.hpp", "src/cruise_command.cpp", "src/ship_motion_probe.cpp"],
+  "headline": "The authored `Cruise` carries no parameters. It latches the unit's standing order and heading into the weapon director's cruiseIsHeading / cruiseSteerOrHeading / cruiseThrust (00835AC0 through 00835E17) and re-applies them every AI step (009E1170). The executable runs its float math at a 24-bit mantissa because CreateDevice omits D3DCREATE_FPU_PRESERVE.",
+
+  "host_steps": [
+    {"step": "ordinal to command object", "address": "00816e9c", "native": "0077a050", "function": "00816e30", "this": "ECX = the message", "ret": "the registry object or 0"},
+    {"step": "clear every command slot", "address": "0081733e", "native": "0071d880", "function": "00816e30", "this": "[unit+738h]", "gate": "message +21h != 0"},
+    {"step": "accept gate", "address": "0081734b", "native": "00d09f58+vtable34", "resolves_to": "00835e90", "function": "00816e30", "this": "the director", "gate": "message +21h == 0"},
+    {"step": "issue the command", "address": "0081735d", "native": "0071ecf0", "function": "00816e30", "this": "[unit+738h]", "args": "command, the local descriptor"},
+
+    {"step": "session local entity", "address": "0071ed19", "native": "00d09ec0+vtable140", "function": "0071ecf0", "this": "[director+34h]"},
+    {"step": "entity class query", "address": "0071ed32", "native": "00cfc3d0+vtable5c", "resolves_to": "006fe530", "function": "0071ecf0", "this": "the entity", "args": "2"},
+    {"step": "controller-owner query", "address": "0071ed43", "native": "007788b0", "function": "0071ecf0", "this": "the entity", "gate": "entity+16Ch != 0", "note": "body 007788B0-007788C7 read: [entity+284h] != 0 and [[entity+284h]+14h] != entity"},
+    {"step": "AI group forward", "address": "0071ed54", "native": "00a2bd90", "function": "0071ecf0", "this": "entity+16Ch", "args": "command, descriptor", "gate": "not remote"},
+    {"step": "make room", "address": "0071ed62", "native": "00d09f58+vtable30", "resolves_to": "0071e550", "function": "0071ecf0", "this": "the director"},
+    {"step": "build MT_GAMEUNIT_SETCMD", "address": "0071ed6c", "native": "0071c830", "function": "0071ecf0", "this": "a stack message", "args": "command, descriptor, flag 1"},
+    {"step": "route with flags 7", "address": "0071ed81", "native": "0077c2a0", "function": "0071ecf0", "this": "[director+34h]", "args": "message, 7, 0"},
+
+    {"step": "drop the top slot", "address": "0071e5aa", "native": "0071d900", "function": "0071e550", "this": "the director", "args": "count-1", "gate": "both categories are 1 or 2"},
+
+    {"step": "category 5Ch test", "address": "00721aee", "native": "00cfd9ec+vtable0c", "resolves_to": "0071c900", "function": "00721a40", "this": "the message", "args": "5Ch"},
+    {"step": "descriptor probe", "address": "00721b11", "native": "00721030", "function": "00721a40", "this": "the message", "gate": "session mode 2"},
+    {"step": "descriptor again", "address": "00721b22", "native": "00721030", "function": "00721a40", "this": "the message", "gate": "probe kind != 0"},
+    {"step": "resolve or drop", "address": "00721b29", "native": "00521ea0", "function": "00721a40", "this": "ECX = the descriptor"},
+    {"step": "descriptor (set arm)", "address": "00721b47", "native": "00721030", "function": "00721a40", "this": "the message", "gate": "message +20h != 0"},
+    {"step": "ordinal to object (set arm)", "address": "00721b4f", "native": "007216d0", "function": "00721a40", "this": "the message", "args": "the descriptor, left on the stack by RET 0"},
+    {"step": "director set command", "address": "00721b5a", "native": "00d09f58+vtable60", "resolves_to": "008358d0", "function": "00721a40", "this": "the director"},
+    {"step": "descriptor (queue arm)", "address": "00721b6c", "native": "00721030", "function": "00721a40", "this": "the message", "gate": "message +20h == 0"},
+    {"step": "ordinal to object (queue arm)", "address": "00721b74", "native": "007216d0", "function": "00721a40", "this": "the message"},
+    {"step": "director queue command", "address": "00721b7c", "native": "0071e7f0", "function": "00721a40", "this": "the director", "note": "callee body unread"},
+
+    {"step": "push the slot", "address": "008358df", "native": "0071e6c0", "function": "008358d0", "this": "the director", "args": "command, descriptor"},
+    {"step": "command category", "address": "008358f9", "native": "00cfb554+vtable0c", "resolves_to": "006f8a30 family", "function": "008358d0", "this": "the command"},
+    {"step": "resolve target", "address": "00835907", "native": "00521ea0", "function": "008358d0", "gate": "category 1 or 2"},
+    {"step": "resolve target forced", "address": "00835928", "native": "00521ea0", "function": "008358d0", "gate": "session mode 0 or 1"},
+    {"step": "set fire target", "address": "00835930", "native": "00835860", "function": "008358d0", "this": "the director", "args": "the object, force 1"},
+
+    {"step": "command count", "address": "0071e6c3", "native": "0071d780", "function": "0071e6c0", "this": "the director"},
+    {"step": "previous slot target", "address": "0071e70c", "native": "0071e200", "function": "0071e6c0", "this": "director+3Ch+i*1Ch", "args": "the descriptor", "gate": "i > 0"},
+    {"step": "command allowed", "address": "0071e72a", "native": "0071d6d0", "function": "0071e6c0", "this": "the director", "note": "body 0071D6D0-0071D772 read: the target must resolve and must not carry +5Dh when the command requires one; 009229F0 and 007AC9D0 stay unread"},
+    {"step": "normalise a self target", "address": "0071e73c", "native": "00d09f58+vtable14", "resolves_to": "00836040", "function": "0071e6c0", "this": "the director", "note": "body 00836040-008360BC read: it rewrites the descriptor in place to an empty one when the target resolves to director+34h and the command is cruise or stop, and returns 1"},
+    {"step": "assign the slot target", "address": "0071e76c", "native": "0071db50", "function": "0071e6c0", "this": "director+58h+i*1Ch", "args": "the descriptor"},
+    {"step": "resolve target", "address": "0071e773", "native": "00521ea0", "function": "0071e6c0"},
+    {"step": "resolve target again", "address": "0071e781", "native": "00521ea0", "function": "0071e6c0", "gate": "the first resolve was non-null"},
+    {"step": "observe the target", "address": "0071e78a", "native": "00694a60", "function": "0071e6c0", "this": "the resolved object", "args": "EDX = director+1Ch"},
+    {"step": "command category", "address": "0071e7a8", "native": "00cfb554+vtable0c", "resolves_to": "006f8a30 family", "function": "0071e6c0", "this": "the command"},
+    {"step": "echo gate", "address": "0071e7c9", "native": "006e38e0", "function": "0071e6c0", "this": "[00E188A8]+1EF0h", "note": "body 006E38E0-006E38F7 read: x = [this+0F4h]; x == 0 or x == 1"},
+    {"step": "echo the command", "address": "0071e7d4", "native": "0071e2e0", "function": "0071e6c0", "this": "the director", "note": "callee body unread"},
+
+    {"step": "raise the command stage", "address": "00835e12", "native": "0071d810", "function": "00835c70", "this": "the director", "args": "1"},
+    {"step": "unit heading", "address": "00835e46", "native": "00cfc3d0+vtable50", "function": "00835c70", "this": "the unit"},
+    {"step": "latch the cruise fields", "address": "00835e58", "native": "00835ac0", "function": "00835c70", "this": "the director", "args": "ring+14Ch, heading, ring+148h"},
+
+    {"step": "cruiseThrust", "address": "009e126b", "native": "008356f0", "function": "009e1170", "this": "the director"},
+    {"step": "body axis speed", "address": "009e1282", "native": "0092d730", "function": "009e1170", "this": "unit+1018h"},
+    {"step": "reference speed", "address": "009e12ce", "native": "0080fc30", "function": "009e1170", "this": "the unit", "gate": "*(unit+73Ch)+28h >= 0.0f"},
+    {"step": "role query", "address": "009e12e4", "native": "00521e70", "function": "009e1170", "this": "the unit", "note": "callee body unread"},
+    {"step": "cruiseIsHeading", "address": "009e130e", "native": "008356c0", "function": "009e1170", "this": "the director"},
+    {"step": "cruiseSteerOrHeading as a heading", "address": "009e135c", "native": "008356e0", "function": "009e1170", "this": "the director", "gate": "heading arm, moving"},
+    {"step": "hold the heading", "address": "009e1367", "native": "009e0040", "function": "009e1170", "this": "the state", "note": "callee body unread"},
+    {"step": "set the throttle (heading arm)", "address": "009e1376", "native": "009dbf90", "function": "009e1170", "this": "the state"},
+    {"step": "cruiseSteerOrHeading as a rudder", "address": "009e138c", "native": "008356d0", "function": "009e1170", "this": "the director", "gate": "rudder arm"},
+    {"step": "set the steering", "address": "009e1397", "native": "009dffb0", "function": "009e1170", "this": "the state", "args": "the rudder, or a literal zero from 009E1350"},
+    {"step": "set the throttle (rudder arm)", "address": "009e13a6", "native": "009dbf90", "function": "009e1170", "this": "the state"},
+
+    {"step": "entity command dispatch", "address": "0078061c", "native": "00cfc3d0+vtable160", "resolves_to": "00816e30", "function": "00780120", "this": "the entity", "gate": "message category 58h at 00780607"},
+    {"step": "wrap the weapon director", "address": "00780649", "native": "00778820", "function": "00780120", "this": "a stack word", "args": "the entity", "gate": "message category 59h at 00780636"},
+    {"step": "gameunit message dispatch", "address": "00780653", "native": "00721a40", "function": "00780120", "this": "the wrapper", "args": "the message"}
+  ],
+
+  "path_steps": [
+    {"step": "scene command record queued at load", "address": "0046966c", "native": "00468350", "function": "00469610", "doc": "docs/SCENE_DEFERRED_REFS.md"},
+    {"step": "authored Cruise resolved and issued", "address": "0046ac0b", "native": "0077d600", "function": "0046aab0", "doc": "docs/ENTITY_ORDER_MESSAGE.md", "args": "command 00E08F70, the built descriptor, flags 1"},
+    {"step": "luaMW_NavigatorCruise issues the same shape", "address": "008a7729", "native": "0077d600", "function": "008a75c0", "args": "command 00E08F70, an empty descriptor, flags 1"},
+    {"step": "MT_COMMAND built", "address": "0077d7be", "native": "007798d0", "function": "0077d600", "doc": "docs/ENTITY_ORDER_MESSAGE.md"},
+    {"step": "routed", "address": "0077d7d3", "native": "0077c2a0", "function": "0077d600"},
+    {"step": "queued message dispatched", "address": "007807b8", "native": "00780120", "function": "00780670", "doc": "docs/UNIT_STATE_MESSAGE.md", "gate": "not category 48h"}
+  ],
+
+  "coverage": [
+    {"routine": "00835ac0", "range": "00835AC0-00835B35", "coverage": "complete", "role": "the cruise latch"},
+    {"routine": "0071e550", "range": "0071E550-0071E5BA", "coverage": "complete", "role": "director vtable[30h], make room"},
+    {"routine": "00835e90", "range": "00835E90-00835F02", "coverage": "complete as a body; 0071C0C0 enters as an argument and was read in a second pass", "role": "director vtable[34h], accept gate", "no_ghidra_function": true},
+    {"routine": "0071ecf0", "range": "0071ECF0-0071ED9A", "coverage": "complete", "role": "the director hop"},
+    {"routine": "008358d0", "range": "008358D0-0083593C", "coverage": "complete", "role": "director vtable[60h], set command"},
+    {"routine": "0071e6c0", "range": "0071E6C0-0071E7E1", "coverage": "complete; 0071D6D0, 00836040, 006E38E0 and 0071E200 were read in a second pass, 0071E2E0 stays unread", "role": "the command-slot push"},
+    {"routine": "0071be40", "range": "0071BE40-0071BE5A", "coverage": "complete", "role": "the current command by mode"},
+    {"routine": "00721030", "range": "00721030-00721061", "coverage": "complete", "role": "message payload to SceneCommandTarget"},
+    {"routine": "007216d0", "range": "007216D0-007216F8", "coverage": "complete", "role": "message +21h ordinal to registry object"},
+    {"routine": "0077a050", "range": "0077A050-0077A074", "coverage": "complete", "role": "message +20h ordinal to registry object"},
+    {"routine": "00764d00", "range": "00764D00-00764D1D", "coverage": "complete", "role": "MT_COMMAND category predicate", "no_ghidra_function": true},
+    {"routine": "0071c900", "range": "0071C900-0071C922", "coverage": "complete", "role": "MT_GAMEUNIT_SETCMD category predicate", "no_ghidra_function": true},
+    {"routine": "0071c830", "range": "0071C830-0071C8AC", "coverage": "complete as a builder", "role": "MT_GAMEUNIT_SETCMD"},
+    {"routine": "0071d880", "range": "0071D880-0071D8F5", "coverage": "complete as a builder", "role": "MT_GAMEUNIT_CLEARCMD, +20h=1 and +24h=-1"},
+    {"routine": "008356c0", "range": "008356C0-008356C6", "coverage": "complete", "role": "cruiseIsHeading getter"},
+    {"routine": "008356d0", "range": "008356D0-008356D6", "coverage": "complete", "role": "cruiseSteerOrHeading as a rudder"},
+    {"routine": "008356e0", "range": "008356E0-008356E6", "coverage": "complete", "role": "cruiseSteerOrHeading as a heading"},
+    {"routine": "008356f0", "range": "008356F0-008356F6", "coverage": "complete", "role": "cruiseThrust getter"},
+    {"routine": "009dac20", "range": "009DAC20-009DAC25", "coverage": "complete", "role": "AI cruise state vtable[24h], returns 00E08F70", "no_ghidra_function": true},
+    {"routine": "008a75c0", "range": "008A75C0-...", "coverage": "complete as an argument shape: one Lua entity argument, an empty descriptor, flags 1", "role": "luaMW_NavigatorCruise"},
+    {"routine": "0071c0c0", "range": "0071C0C0-...", "coverage": "complete as a body", "role": "00835E90's base accept test: a non-null command and a free slot"},
+    {"routine": "0071d780", "range": "0071D780-0071D807", "coverage": "complete", "role": "the first empty slot index, with moveonpath counted by its path points"},
+    {"routine": "0071d6d0", "range": "0071D6D0-0071D772", "coverage": "complete apart from 009229F0 and 007AC9D0", "role": "does the command accept this target"},
+    {"routine": "00836040", "range": "00836040-008360BC", "coverage": "complete", "role": "director vtable[14h]: rewrites a self-targeted cruise or stop descriptor to an empty one"},
+    {"routine": "0071e200", "range": "0071E200-0071E2D9", "coverage": "complete", "role": "same object and within 1.0 squared distance"},
+    {"routine": "007788b0", "range": "007788B0-007788C7", "coverage": "complete", "role": "the entity's controller belongs to another entity"},
+    {"routine": "006e38e0", "range": "006E38E0-006E38F7", "coverage": "complete", "role": "session field +F4h is 0 or 1"},
+    {"routine": "009dffb0", "range": "009DFFB0-009E0011", "coverage": "complete apart from 009DA4E0", "role": "steering mode 0, the rudder clamped to [-1,+1] at block +1D4h"},
+    {"routine": "009e0040", "range": "009E0040-009E0095", "coverage": "complete apart from 009DA4E0 and 00605070", "role": "steering mode 1, the held heading unclamped at block +1D8h"},
+    {"routine": "009dbf90", "range": "009DBF90-009DBFD0", "coverage": "complete", "role": "the throttle clamped to [-1,+1] at block +1D0h"},
+    {"routine": "00816e30", "range": "00816E30-00817376", "coverage": "partial: 00816EA6..00817330 is read in pseudocode but not projected; the projection covers the movement fall-through and the tail 00817330..00817374"},
+    {"routine": "00721a40", "range": "00721A40-00721C58", "coverage": "partial: only the 5Ch arm 00721AEE..00721B87; the 5Ah, 5Bh, 5Dh, 5Eh, 5Fh and 60h arms are read but not projected"},
+    {"routine": "00835c70", "range": "00835C70-00835E83", "coverage": "partial: only the cruise arm 00835E0E..00835E5D"},
+    {"routine": "009e1170", "range": "009E1170-009E14B7", "coverage": "partial: only the AI arm 009E1265..009E13B1; 009E1170..009E1265 is read and summarised, 009E13B4..009E14B7 is unread"},
+    {"routine": "00780120", "range": "00780120-0078066A", "coverage": "partial: the category cascade and the 58h and 59h arms; the 4Bh block 00780170..007803D8 and the 4Ch, 57h, 4Eh, 4Fh, 50h, 51h, 52h and 97h arms are not read"},
+    {"routine": "00822b70", "range": "00822B70-...", "coverage": "partial: the tuning copy into *(unit+73Ch)+0h..+18h only"},
+    {"routine": "00825f20", "range": "008266C1-0082674C", "coverage": "partial: only the ring refill block and its unit+61h gate, read to locate the ordered pair's source"}
+  ],
+
+  "x87": {
+    "process_control_word": "027Fh set by _control87 00C2D14E at 00C2D21A, driven by __setdefaultprecision 00C0682E (PUSH 30000h mask, PUSH 10000h _PC_53) from __fpmath 00BF6A58 through _cinit 00BFBC47",
+    "game_calls_to_controlfp": "none; __set_controlfp 00C2C6FF and ___control87_2 00C2CE44 have no cross-references and there is no FNINIT in .text",
+    "fldcw_total": 286,
+    "fldcw_ftol_pairs": 266,
+    "fldcw_permanent": "00C2D21A only",
+    "createdevice_sites": [
+      {"address": "00b2aff9", "native": "00b2aeb0+vtable40", "function": "00b2aeb0", "behavior_flags": "0x44 when the caps carry D3DDEVCAPS_HWTRANSFORMANDLIGHT and the vertex shader version is at least 1.1, else 0x24", "device_type": "1 = D3DDEVTYPE_HAL from EBX, written once at 00B2AF41"},
+      {"address": "00b298ee", "native": "00b29670+vtable40", "function": "00b29670", "behavior_flags": "the same two values, with the 40h spelled as a literal at 00B298A7"}
+    ],
+    "fpu_preserve": false,
+    "conclusion": "The image leaves the process at 027Fh / 53-bit. Because D3DCREATE_FPU_PRESERVE is absent from both CreateDevice calls, d3d9.dll lowers the precision-control field to 24 bits for the life of the device, so 00825F20 runs at control word 007Fh, a 24-bit mantissa, round to nearest, all exceptions masked. The 24-bit write is inside d3d9.dll; no run log was taken."
+  },
+
+  "probe": {
+    "binary": "build/win32/Release/bsp_ship_motion_probe.exe",
+    "new_options": ["--cruise", "--cruise-frame N (default 20)"],
+    "model": "the hand order stands for N steps, then cruise_command_begin_00835e17 latches it and cruise_ordered_values_009e1170 drives every later step",
+    "substitute": "the heading arm issues a zero rudder because 009E0040 and the heading controller behind it are not reconstructed; a ship already on its latched heading is steered with a zero rudder either way, and a Cruise latched off-heading is not covered",
+    "speed_setting": "left disabled (-1.0f, the value 009E11C6 stores) because the producer of *(unit+73Ch)+24h is unread",
+    "class": "VehicleClass[20] DeRuyter class 1935 (Cruiser), MaxSpeed 16.4622, MaxRotAngle 0.122173",
+    "run": "280 steps of 0.05 s = 14.0 s, class-built hull body (column B)",
+    "runs": [
+      {"args": "--throttle 1 --rudder 0", "latched": "-", "arm": "-", "z": 184.8910, "heading_deg": 0.0000, "final_speed": 16.4622, "peak_yaw": 0.00000},
+      {"args": "--throttle 1 --rudder 0 --cruise", "latched": "isHeading true, steerOrHeading 0.0, thrust 1.0", "arm": "heading", "z": 184.8910, "heading_deg": 0.0000, "final_speed": 16.4622, "peak_yaw": 0.00000},
+      {"args": "--throttle 1 --rudder 0.5", "latched": "-", "arm": "-", "z": 187.4494, "heading_deg": -19.9637, "final_speed": 16.4548, "peak_yaw": 0.02757},
+      {"args": "--throttle 1 --rudder 0.5 --cruise", "latched": "isHeading false, steerOrHeading 0.5, thrust 1.0", "arm": "rudder", "z": 187.4494, "heading_deg": -19.9637, "final_speed": 16.4548, "peak_yaw": 0.02757},
+      {"args": "--throttle 1 --rudder 0 --cruise --cruise-frame 0", "latched": "isHeading true, steerOrHeading 0.0, thrust 0.0", "arm": "straight", "z": 0.0000, "heading_deg": 0.0000, "final_speed": 0.0000, "peak_yaw": 0.00000}
+    ],
+    "finding": "The latch reproduces the standing order exactly in both arms, to the last printed digit. Latching before the ring has slewed (slew_a 8.0/s, slew_b 2.0/s from 00812F84/00812F8C) captures thrust 0 and the ship never moves, so in the shipped game something puts a throttle on the mission's 32 Cruise ships before or instead of the latch."
+  },
+
+  "corrections": [
+    {"was": "docs/MOTION_DIFFERENTIAL.md follow-up cruise_command_object: what the authored Cruise writes into the order ring at unit+838h", "is": "Cruise writes nothing into the ring. It writes director+243h, +244h and +248h; the ring is refilled from unit+0FC4h and unit+0FDCh by 00825F20 under the unit+61h gate", "evidence": "00835AF8/00835B06/00835B14 are the latch's only stores; 00826708 and 0082674C are the only ring writes in the motion update and their sources are EDI+0CB4h and EDI+0CCCh with EDI = unit+310h"},
+    {"was": "docs/GAME_EXECUTABLE.md line 2988: what the Cruise token means is not recovered", "is": "recovered as the latch; the executable's stand-in (throttle 1, rudder 0 through 00816A40) is what the latch produces for a ship already running at full throttle with no rudder, and is wrong for a ship at rest", "evidence": "00835E17..00835E58 and the five probe runs above"},
+    {"was": "this packet's own first pass named the 0071E73C host method command_supersedes", "is": "00836040 is not a supersede test: it rewrites the descriptor in place to an empty one when the named target resolves to the director's own endpoint at director+34h and the command is cruise or stop, then returns 1. The host method is normalize_self_target and takes the descriptor by reference.", "evidence": "00836040-008360BC; the stores at 00836064..008360A8 write 00F87574/78/7C and zero kind, id, object and trailer"},
+    {"was": "docs/WEAPON_DIRECTOR.md kDirectorVtableSlotIssueCommand = 0x58 (00720CD0)", "is": "slot 58h is the clear-and-issue helper; the plain command setter is slot 60h = 008358D0, which is what the receive side calls. The existing constant is not renamed; kCruiseDirectorVtableSlotSetCommand names 60h", "evidence": "00D09F58+60h is 008358D0; 00721B56 MOV EDX,[EBX+0x60]"},
+    {"was": "docs/WEAPON_DIRECTOR.md: who calls 0071C1E0 from the session side is contract: unread", "is": "00780120's category 59h arm at 00780636 wraps the director with 00778820 and calls 00721A40, whose 5Ah arm is director->vtable[38h], whose base body is 0071C1E0", "evidence": "00780644..00780653 and 00721A81..00721A93"}
+  ],
+
+  "no_ghidra_function": [
+    {"start": "00835e90", "end_inclusive": "00835f02", "evidence": "PUSH ESI at 00835E90 after the RET 0Ch that ends 00835C70's body at 00835E83, eleven INT3 at 00835F05..00835F0F, and three RET 4 at 00835EA6, 00835EF2 and 00835F02"},
+    {"start": "00764d00", "end_inclusive": "00764d1d", "evidence": "MOV EAX,[ESP+4] at 00764D00 is the MT_COMMAND vtable 00D03630+0Ch target; the next byte after RET 4 starts 00764D20, that vtable's slot 0"},
+    {"start": "0071c900", "end_inclusive": "0071c922", "evidence": "0071C900 is 00CFD9EC+0Ch; 0071C925..0071C92F are INT3 and 0071C930 is the serializer at 00CFD9EC+4h"},
+    {"start": "009dac20", "end_inclusive": "009dac25", "evidence": "MOV EAX,0xE08F70 ; RET, the target of 00D215BC = vtable 00D21598+24h; 009DAC26..009DAC2F are INT3 and 009DAC30 is the next slot's body"}
+  ],
+
+  "follow_up_packets": [
+    {"packet": "unit_autopilot_pair", "addresses": ["unit+61h", "unit+0FC4h", "unit+0FDCh", "009dbf90", "009dffb0", "009e0040", "00834e90"], "why": "the one hop this packet could not close: what writes the pair 00825F20 refills the ring from"},
+    {"packet": "cruise_speed_setting", "addresses": ["unit+73Ch", "00822b70", "00836920", "00895850", "0089f780"], "why": "the commanded speed that would make the mission's Cruise ships move; nothing writes *(unit+73Ch)+24h through a direct displacement"},
+    {"packet": "ship_ai_state_machine", "addresses": ["00d21598", "00d215c8", "009f3d00", "009f3dd0", "009e1170", "009e14c0", "0071be40"], "why": "the state class family whose vtable[24h] returns a command object; the whole moveto/follow/stop set follows the cruise shape"},
+    {"packet": "gameunit_message_arms", "addresses": ["00721a40", "0071e7f0"], "why": "the 5Ah, 5Bh, 5Dh, 5Eh, 5Fh and 60h arms of the receiver"},
+    {"packet": "entity_command_arms", "addresses": ["00816e30"], "why": "the nine non-movement arms of the unit's command apply, 00816EA6..00817330"},
+    {"packet": "motion_live_trace", "addresses": ["00825f20", "00b2aff9"], "why": "one FNSTCW at the top of the fixed step and one after CreateDevice turns the d3d9.dll half of the x87 answer into an observation"},
+    {"packet": "crt_long_double_leak", "addresses": ["00c0ed3c", "00bf8593"], "why": "the one FLDCW in the image that can leave the precision field raised; its reachability from game code was not traced"}
+  ],
+
+  "uncertainties": [
+    "The heading arm of 009E1170 is projected as hold-the-latched-heading and the probe issues a zero rudder for it; 009E0040 and the controller behind it are unread.",
+    "Four callees still enter the projection with unread bodies: 0071E2E0, 0071E7F0, 00521E70 and [director+34h]->vtable[140h]. 0071C0C0, 0071D780, 0071D6D0, 00836040, 0071E200, 007788B0, 006E38E0, 009DFFB0, 009E0040 and 009DBF90 were read in a second pass; 009229F0, 007AC9D0, 00927F10, 00605070 and 009DA4E0 are unread one level down.",
+    "Which MT_GAMEUNIT_SETCMD fields 0071C930 and 0071CA30 put on the wire, and in what quantisation, was not read.",
+    "[00E0AF1C], the default routing flags for the MT_COMMAND hop, is still unread at run time; the second hop overrides it with 7.",
+    "The 24-bit x87 write is performed by d3d9.dll and is documented API behaviour, not an instruction in this image; no run log was taken.",
+    "No number in this report was taken from the running game; the probe rows are the reconstruction driving itself."
+  ]
+}
