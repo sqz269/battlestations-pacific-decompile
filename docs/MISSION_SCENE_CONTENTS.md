@@ -225,3 +225,13 @@ resolvable, mode 9 is forced; with it clear and a network session live, the
   stub, and this packet does not own the executable or the load walk, so the
   claims here are static. Checklist rule 6 is unmet by construction for this
   packet; the integrator's host wiring is what will exercise it.
+
+## Corrections from docs/SCENE_CONTENTS_HOSTS.md (packet cc2_scene_contents_hosts)
+
+Three readings above are corrected by the packet that read the four stubbed steps: the `.nav`
+file is a `TerrainGrid` of `TerrainGridLayer` elements (three 240x240 layers over a 12000 half
+extent with slope limits tan 10/20/70 degrees), not an `AvoidZone` list, and loose `.nav` files
+do exist in the installation (253 parse to their exact length); the weather branch is a
+case-insensitive `sceneFile` compare followed by an `ID` match against the reader's override
+name, not a null-or-empty test; and the constant at `00D7A258` in the cloud scatter is the
+double `0.0` of an x87 accumulator idiom, so the roll range is the sum of the three weights.
