@@ -14,6 +14,7 @@
 
 #include <array>
 #include <cmath>
+#include <deque>
 #include <cstdio>
 #include <memory>
 #include <string>
@@ -21,7 +22,10 @@
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/director_update_arms.hpp"
+#include "bsp/ship_ai_approach_update.hpp"
 #include "bsp/ship_ai_attackmove_substates.hpp"
+#include "bsp/ship_ai_path_planner.hpp"
 #include "bsp/ship_ai_goal_vector.hpp"
 #include "bsp/ship_ai_obstacle_tables.hpp"
 #include "bsp/ship_ai_state_steps.hpp"
@@ -173,6 +177,18 @@ struct GameShipAiHost::Impl {
         // the path refresh and the station-keeping arm computes instead.
         bool flag_3a6{false};
         float speed_scale_39c{0.0f};
+        // The two 68h-byte plan blocks the navigator owns at nav+224h and
+        // nav+28Ch, and the front / back pointers at nav+2F4h / +2F8h that
+        // 009ED3E0 swaps. Packet ship_ai_path_planner, on main at 878325ba.
+        bsp::ShipAiPathPlanBlock plan_a{};
+        bsp::ShipAiPathPlanBlock plan_b{};
+        int plan_front{0};                 // 0 selects plan_a, 1 plan_b
+        // A deque because a push_back never moves an existing element, and the
+        // plan block links the nodes by address.
+        std::deque<bsp::ShipAiPathNode> plan_nodes;
+        // The attackmove approach sub-state's nested ring object, sub+8h.
+        // Packet ship_ai_approach_update, on main at 89d4bb77.
+        bsp::ShipAiApproachState approach{};
     };
     std::vector<Controller> controllers;
     std::vector<GameShipAiRow> rows;
@@ -400,14 +416,22 @@ public:
         owner_.done("ShipAiStop::unit_position", 0x009e14ecu);
         owner_.units.unit_position_00fc(index_, x, y, z);
     }
-    bool position_outside_world_bounds_0071c4f0(float, float, float) override {
-        // 0071C4F0 tests the position against the world object's own box at
-        // [00E188A8] +711Ch / +7124h / +7128h / +7130h. construct_world 004DE610
-        // is a load record in this process, so there is no world object and no
-        // box: the answer is recorded, and the neutral one is "inside", which is
-        // the arm that stops the ship rather than the one that sails it to the
-        // origin.
-        owner_.record("ShipAiStop::outside_world_bounds", 0x0071c4f0u);
+    bool position_outside_world_bounds_0071c4f0(float x, float y, float z) override {
+        // 0071C4F0's body is read (docs/SHIP_AI_STATE_STEPS.md): it answers 0
+        // when the position is INSIDE the box the world object keeps at
+        // [00E188A8] +711Ch / +7124h / +7128h / +7130h, and 1 otherwise. The
+        // rule is applied here; what is missing is the box, because
+        // construct_world 004DE610 is still a load record and this process has
+        // no world object. Running the four comparisons against a zero box
+        // would put every ship of this mission outside a world that does not
+        // exist, so the box is the record and the neutral answer stands.
+        float min_x = 0.0f, max_x = 0.0f, min_z = 0.0f, max_z = 0.0f;
+        if (owner_.units.world_bounds_box_00e188a8(min_x, max_x, min_z, max_z)) {
+            owner_.done("ShipAiStop::outside_world_bounds", 0x0071c4f0u);
+            static_cast<void>(y);
+            return !(x >= min_x && x <= max_x && z >= min_z && z <= max_z);
+        }
+        owner_.record("ShipAiStop::world_bounds_box", 0x004de610u);
         return false;
     }
     void set_navigation_goal_009de050(float goal_x, float goal_z, bool keep_mode,
@@ -690,6 +714,152 @@ private:
 // nested update 009F3090, which no packet has read, so that one step is a
 // record and the four fields it would fill stay at the zeroes 009E5530 seeds.
 
+// bsp::ShipAiApproachPointHost, the call sites inside 009F1BC0's frame state.
+// Packet ship_ai_approach_update landed on main at 89d4bb77 during this
+// packet's turn and was merged in before validation.
+class ApproachPointBinding final : public bsp::ShipAiApproachPointHost {
+public:
+    ApproachPointBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
+                         std::size_t index)
+        : owner_(owner), ctl_(ctl), index_(index) {}
+
+    float unit_heading_vtable_0050() override {
+        owner_.done("ShipAiApproachPoint::unit_heading", 0x009f1c24u);
+        return owner_.units.unit_heading_radians(index_);
+    }
+    void refresh_unit_pose_00414db0() override {
+        owner_.record("ShipAiApproachPoint::refresh_unit_pose", 0x00414db0u);
+    }
+    bsp::ShipAiApproachPoint unit_world_position() override {
+        bsp::ShipAiApproachPoint out{};
+        owner_.done("ShipAiApproachPoint::unit_position", 0x009f1c45u);
+        owner_.units.unit_position_00fc(index_, out.x, out.y, out.z);
+        return out;
+    }
+    bsp::ShipAiApproachPoint brain_goal_0b2c() override {
+        // 009F1C6A, brain+0B2Ch / +0B30h / +0B34h: the goal vector 009F1420
+        // writes. This is the whole reason the approach point is real now.
+        bsp::ShipAiApproachPoint out{};
+        owner_.done("ShipAiApproachPoint::brain_goal", 0x009f1c6au);
+        out.x = ctl_.goal_vector.goal_x_0b2c;
+        out.y = ctl_.goal_vector.goal_y_0b30;
+        out.z = ctl_.goal_vector.goal_z_0b34;
+        return out;
+    }
+    bool unit_is_kind_vtable_005c(int kind) override {
+        owner_.done("ShipAiApproachPoint::unit_is_kind", 0x009f1d0fu);
+        return owner_.units.unit_is_kind_of(index_, kind);
+    }
+    float shipclass_radius_0500() override {
+        owner_.done("ShipAiApproachPoint::shipclass_radius", 0x009f1d1eu);
+        return owner_.units.unit_class_max_speed_0500(index_);
+    }
+    float unit_turn_radius_00811a30(float) override {
+        // 009F1D3C, 00811A30 with ECX = unit and the literal 1.0: the turn
+        // radius at full helm. Body unread by every packet.
+        owner_.record("ShipAiApproachPoint::unit_turn_radius", 0x00811a30u);
+        return 0.0f;
+    }
+    float random_stream1_00bd2f10(float low, float) override {
+        // 009F1DB4, the retarget timer's reseed in [2, 3). 00BD2F10 was not
+        // read; the low end is taken and recorded, which makes the timer
+        // deterministic rather than staggered and says so.
+        owner_.record("ShipAiApproachPoint::random_stream1", 0x00bd2f10u);
+        return low;
+    }
+    int target_zone_group_vtable_002c() override {
+        owner_.record_slot("ShipAiApproachPoint::target_zone_group", "00cfc3d0+vtable2c");
+        return 0;
+    }
+    int unit_zone_group_0570() override {
+        owner_.record("ShipAiApproachPoint::unit_zone_group", 0x009f1e55u);
+        return 0;
+    }
+    float unit_avoid_radius_0082adc0() override {
+        owner_.record("ShipAiApproachPoint::unit_avoid_radius", 0x0082adc0u);
+        return 0.0f;
+    }
+    bsp::ShipAiAttackMoveXZ zone_exit_point_00417b10(const bsp::ShipAiApproachPoint& from,
+                                                     float) override {
+        owner_.record("ShipAiApproachPoint::zone_exit_point", 0x00417b10u);
+        return bsp::ShipAiAttackMoveXZ{from.x, from.z};
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+    std::size_t index_;
+};
+
+// bsp::ShipAiApproachUpdateHost, the seven calls of 009F3090 in their fixed
+// order. Only the first is run: it is the one that produces the approach point
+// and the goal range, and the other six need the 60-slot ring the four unread
+// scorers 009E6400, 009E5DA0, 009E6870 and 009E6640 fill.
+class ApproachUpdateBinding final : public bsp::ShipAiApproachUpdateHost {
+public:
+    ApproachUpdateBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
+                          GameShipAiRow& row, std::size_t index)
+        : owner_(owner), ctl_(ctl), row_(row), index_(index) {}
+
+    void frame_state_009f1bc0(float seconds) override {
+        // 009F309B. The projection covers 009F1BC0-009F1DBF and
+        // 009F1E60-009F1F47: the frame timers, the planar range to the
+        // attackmove destination, the turn radius, the retarget timer and the
+        // approach point itself, which is that destination copied verbatim
+        // unless the target carries a zone object.
+        ApproachPointBinding point(owner_, ctl_, index_);
+        const bool has_target = ctl_.goal_vector.raw_target_0b20 != 0u;
+        // 009F1E36, [target+740h]: the target's own zone object. No producer in
+        // this process, so the displacement arm at 009F1E94 is never taken.
+        owner_.record("ShipAiApproach::target_zone_object_0740", 0x009f1e36u);
+        bsp::ship_ai_approach_frame_state_009f1bc0(ctl_.approach, has_target, false,
+                                                   seconds, point);
+        owner_.done("ShipAiApproach::frame_state", 0x009f1bc0u);
+        owner_.record("ShipAiApproach::frame_state_unread_spans", 0x009f1dbfu);
+        ++row_.approach_frames;
+        ++owner_.summary.approach_frames;
+        row_.approach_point_x = ctl_.approach.point_1228.x;
+        row_.approach_point_z = ctl_.approach.point_1228.z;
+        row_.approach_goal_range = ctl_.approach.goal_range_11e0;
+    }
+    void reset_scores_009e7fc0() override {
+        owner_.record("ShipAiApproach::reset_scores", 0x009e7fc0u);
+    }
+    void choose_standoff_range_009e6e80() override {
+        owner_.record("ShipAiApproach::choose_standoff_range", 0x009e6e80u);
+    }
+    void refresh_avoidance_009e9190(float) override {
+        owner_.record("ShipAiApproach::refresh_avoidance", 0x009e9190u);
+    }
+    void score_evade_009e74d0(float) override {
+        owner_.record("ShipAiApproach::score_evade", 0x009e74d0u);
+    }
+    void select_slot_009e76d0(float) override {
+        // The ring scan. Partially read (the unrolled accept and winner loops
+        // were read in their first and last step only) and, more decisively, it
+        // ranks the 60 slots by five weights the four unread scorers fill, so
+        // its winner - and the commanded heading 009E5E90 builds from it - is
+        // not recoverable here.
+        owner_.record("ShipAiApproach::select_slot", 0x009e76d0u);
+        owner_.record("ShipAiApproach::commanded_heading_009e5e90", 0x009e5e90u);
+    }
+    void limit_throttle_009e6a90() override {
+        // 009E6A90 is complete, and it is the producer of the commanded
+        // throttle at nested+1210h. It is NOT run: its first act is
+        // wrap(heading - nested+120Ch), and nested+120Ch is written by
+        // 009E5E90 behind the recorded ring scan above. Running the seed
+        // against the 0.0f the constructor leaves there would turn an unwritten
+        // field into a throttle that looks recovered and is not.
+        owner_.record("ShipAiApproach::limit_throttle", 0x009e6a90u);
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+    GameShipAiRow& row_;
+    std::size_t index_;
+};
+
 class ApproachStepBinding final : public bsp::ShipAiAttackMoveApproachHost {
 public:
     ApproachStepBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
@@ -711,13 +881,15 @@ public:
         bsp::ship_ai_hold_heading_and_stop_009e00a0(ctl_.blk, hold);
         owner_.done("ShipAiApproach::hold_heading_and_stop", 0x009e00a0u);
     }
-    void nested_update_009f3090(float) override {
-        // 009F328F. Seven calls on the nested ring object in a fixed order
-        // (009F1BC0, 009E7FC0, 009E6E80, 009E9190, 009E74D0, 009E76D0,
-        // 009E6A90); none of the seven bodies was read by any packet. This is
-        // the producer of sub+1214h, +1218h, +1230h and +1238h, so the approach
-        // point below is the zero 009E5530 seeded, not a recovered goal.
-        owner_.record("ShipAiApproach::nested_update", 0x009f3090u);
+    void nested_update_009f3090(float seconds) override {
+        // 009F328F, with ECX = sub+8h (009F3289), so the nested object's
+        // offsets are the sub-state's minus 8. Packet ship_ai_approach_update
+        // projected the driver and six of its seven callees; the executable
+        // runs the driver and the frame state that produces the approach point,
+        // and records the rest with their own addresses.
+        ApproachUpdateBinding update(owner_, ctl_, row_, index_);
+        bsp::ship_ai_approach_update_009f3090(update, seconds);
+        owner_.done("ShipAiApproach::nested_update", 0x009f3090u);
     }
     float unit_depth_reference_0494() override {
         // 009F32A0 / 009F32A6, [unit+494h]. No producer in this process.
@@ -725,21 +897,40 @@ public:
         return 0.0f;
     }
     float sub_throttle_bias_11e8() override {
-        owner_.record("ShipAiApproach::sub_throttle_bias", 0x009f3294u);
-        return 0.0f;
+        // 009F3294, sub+11E8h = nested+11E0h, the planar range from the unit to
+        // the attackmove destination that 009F1BC0 rewrites every frame at
+        // 009F1CDE. A recovered value now.
+        owner_.done("ShipAiApproach::sub_throttle_bias", 0x009f3294u);
+        return ctl_.approach.goal_range_11e0;
     }
     void sub_goal_1230(float& x, float& z) override {
-        owner_.record("ShipAiApproach::sub_goal_1230", 0x009f3300u);
-        x = 0.0f;
-        z = 0.0f;
+        // 009F3300 / 009F32EB, sub+1230h and sub+1238h = nested+1228h/+1230h,
+        // the approach point. 009F1F2D..009F1F3D copies the attackmove
+        // destination into it verbatim unless the target carries a zone object.
+        owner_.done("ShipAiApproach::sub_goal_1230", 0x009f3300u);
+        x = ctl_.approach.point_1228.x;
+        z = ctl_.approach.point_1228.z;
     }
     float sub_heading_command_1214() override {
+        // 009F3314, sub+1214h = nested+120Ch, written by 009E5E90 behind the
+        // recorded ring scan 009E76D0.
         owner_.record("ShipAiApproach::sub_heading_command", 0x009f3314u);
-        return 0.0f;
+        return ctl_.approach.commanded_heading_120c;
     }
     float sub_throttle_command_1218() override {
+        // 009F339A, sub+1218h = nested+1210h. 009F1BF7 seeds this field with
+        // the 9999.0f sentinel at 00CE4C04 on every frame and 009E6A90 is the
+        // only routine that replaces it. 009E6A90 is recorded here, so the
+        // sentinel is still in the field, and 009F3635's clamp to [-1, +1]
+        // would turn it into full ahead - a number that looks like an order and
+        // is only the marker for "the producer has not run". The read is
+        // recorded and the neutral zero is used instead, which is what every
+        // other unproduced value in this file answers with.
         owner_.record("ShipAiApproach::sub_throttle_command", 0x009f339au);
-        return 0.0f;
+        if (static_cast<double>(ctl_.approach.commanded_throttle_1210) > 1000.0) {
+            return 0.0f;
+        }
+        return ctl_.approach.commanded_throttle_1210;
     }
     void set_navigation_goal_009de050(const bsp::ShipAiAttackMoveXZ& goal, int keep_mode,
                                       int final_leg) override {
@@ -1399,23 +1590,114 @@ private:
 // Milestone 2p: bsp::ShipAiPathPickHost, 009EE580..009EE670
 // ---------------------------------------------------------------------------
 
+// bsp::ShipAiPathPlannerHost, the call sites inside 009E3780. Packet
+// ship_ai_path_planner landed on main at 878325ba during this packet's turn and
+// was merged in before validation, so the plan request is no longer a record.
+class PathPlannerBinding final : public bsp::ShipAiPathPlannerHost {
+public:
+    PathPlannerBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
+                       std::size_t index)
+        : owner_(owner), ctl_(ctl), index_(index) {}
+
+    std::uint32_t avoid_zone_manager_004218e0() override {
+        // The avoid-zone singleton is not built in this process, the same
+        // record the attackmove engage gate hits at 009E864C.
+        owner_.record("ShipAiPlanner::avoid_zone_manager", 0x004218e0u);
+        return 0u;
+    }
+    std::uint32_t zone_containing_point_00417e40(std::uint32_t,
+        const std::array<float, 2>&, std::uint32_t) override {
+        owner_.record("ShipAiPlanner::zone_containing_point", 0x00417e40u);
+        return 0u;
+    }
+    std::array<float, 2> push_point_out_of_zone_00417580(std::uint32_t,
+        const std::array<float, 2>& point, float) override {
+        owner_.record("ShipAiPlanner::push_point_out_of_zone", 0x00417580u);
+        return point;
+    }
+    std::uint32_t zone_group_for_layer_004120d0(std::uint32_t, std::uint32_t) override {
+        owner_.record("ShipAiPlanner::zone_group_for_layer", 0x004120d0u);
+        return 0u;
+    }
+    std::array<float, 2> nearest_zone_boundary_0041b840(std::uint32_t,
+        const std::array<float, 2>& point, float, float) override {
+        owner_.record("ShipAiPlanner::nearest_zone_boundary", 0x0041b840u);
+        return point;
+    }
+    bsp::ShipAiPathNode* allocate_path_node_00bf681b(std::size_t) override {
+        // operator new. The nodes belong to the plan block, so this process
+        // owns them for the life of the controller.
+        ctl_.plan_nodes.emplace_back();
+        owner_.done("ShipAiPlanner::allocate_path_node", 0x00bf681bu);
+        return &ctl_.plan_nodes.back();
+    }
+    float owner_seed_vtable50() override {
+        owner_.done("ShipAiPlanner::owner_seed_heading", 0x009e3982u);
+        return owner_.units.unit_heading_radians(index_);
+    }
+    float owner_radius_09c8() override {
+        // 009E3ADB, [ship+9C8h]. No recovered producer anywhere; the same field
+        // the drive's danger ramp records at 009F4174.
+        owner_.record("ShipAiPlanner::owner_radius_09c8", 0x009e3adbu);
+        return 0.0f;
+    }
+    float owner_class_max_speed_0500() override {
+        owner_.done("ShipAiPlanner::owner_class_max_speed", 0x009e3af0u);
+        return owner_.units.unit_class_max_speed_0500(index_);
+    }
+    void release_node_list_vtable0(bsp::ShipAiPathNode*) override {
+        owner_.record_slot("ShipAiPlanner::release_node_list", "00d214f4+vtable00");
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+    std::size_t index_;
+};
+
 class PathPickBinding final : public bsp::ShipAiPathPickHost {
 public:
-    PathPickBinding(GameShipAiHost::Impl& owner, GameShipAiRow& row) : owner_(owner),
-        row_(row) {}
+    PathPickBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
+                    GameShipAiRow& row, std::size_t index)
+        : owner_(owner), ctl_(ctl), row_(row), index_(index) {}
     void refresh_path_plan_009ed3e0(float) override {
-        // 009EE5C2, 009ED3E0(blk)(seconds). Its body was read by packet
-        // cc_ai_goal_vector as a host contract: it hands the latched goal
-        // blk+1DCh / +1E0h and the pose blk+184h to the planner 009E3780 at
-        // four sites and swaps the front and back paths at blk+2F4h / +2F8h
-        // once the back path's status word passes 3. Neither it nor the planner
-        // is projected - 009E3780 is leased to agent/cc-ai-path-planner and was
-        // not on main when this packet ran - so the refresh is one record and
-        // the block keeps no path object.
+        // 009EE5C2, 009ED3E0(blk)(seconds). Its own body is read as a host
+        // contract and not projected: it hands the latched goal blk+1DCh /
+        // +1E0h and the pose blk+184h to the planner 009E3780 at four sites and
+        // swaps the front and back plans at blk+2F4h / +2F8h once the back
+        // plan's status word passes 3. The executable makes the request the
+        // routine makes and records the swap.
         owner_.record("ShipAiPath::refresh_plan_009ed3e0", 0x009ed3e0u);
-        owner_.record("ShipAiPath::plan_009e3780", 0x009e3780u);
         ++row_.path_plan_refreshes;
         ++owner_.summary.path_plan_refreshes;
+
+        bsp::ShipAiPathPlanBlock& plan
+            = (ctl_.plan_front == 0) ? ctl_.plan_a : ctl_.plan_b;
+        plan.owner = &ctl_;
+        float pose_x = 0.0f, pose_y = 0.0f, pose_z = 0.0f;
+        owner_.units.unit_position_00fc(index_, pose_x, pose_y, pose_z);
+        PathPlannerBinding planner(owner_, ctl_, index_);
+        const bsp::ShipAiPathPlanRequestResult result
+            = bsp::ship_ai_path_plan_request_009e3780(plan,
+                std::array<float, 2>{pose_x, pose_z},
+                std::array<float, 2>{ctl_.goal.goal_x_1dc, ctl_.goal.goal_z_1e0},
+                plan.zone_layer, 0.0f, planner);
+        owner_.done("ShipAiPath::plan_009e3780", 0x009e3780u);
+        if (result.seeded) {
+            ++row_.path_plan_seeds;
+            ++owner_.summary.path_plan_seeds;
+        }
+        if (result.accepted) {
+            ++row_.path_plan_accepts;
+            ++owner_.summary.path_plan_accepts;
+        }
+        // 009EC680, the one state transition per navigation tick that fills the
+        // nodes between the two seeds. Leased to agent/cc-ai-path-search and
+        // being read by packet cc_ai_path_search, so it is a record here and
+        // the graph stays the two-node ship-to-goal seed 009E3780 built.
+        owner_.record("ShipAiPath::search_step_009ec680", 0x009ec680u);
+        row_.path_plan_state = plan.search_state;
+        row_.path_plan_nodes = plan.node_count;
     }
     void next_path_point_009e3c00(bsp::ShipAiPathPointRecord& record) override {
         // 009EE5F4, 009E3C00([blk+2F4h])(&record). Body not read by any packet,
@@ -1444,7 +1726,9 @@ public:
 
 private:
     GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
     GameShipAiRow& row_;
+    std::size_t index_;
 };
 
 // ---------------------------------------------------------------------------
@@ -1675,7 +1959,7 @@ public:
         owner_.units.unit_position_00fc(index_, pose_x, pose_y, pose_z);
         pick.pose_x_184 = pose_x;
         pick.pose_z_188 = pose_z;
-        PathPickBinding path(owner_, row_);
+        PathPickBinding path(owner_, ctl_, row_, index_);
         const bsp::ShipAiPathPickResult result = bsp::ship_ai_pick_path_point_009ee580(
             pick, seconds, ctl_.path_point, ctl_.speed_scale_39c, path);
         owner_.done("ShipAi::pick_path_point", 0x009ee580u);
@@ -1720,6 +2004,61 @@ public:
         // body (009F4DAF), so 009F3F80 runs on every step either way.
         owner_.record("ShipAi::throttle_ceiling", 0x009f4da0u);
         owner_.drive_order_ring_009f3f80(index_, ctl_, row_, seconds);
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+    GameShipAiRow& row_;
+    std::size_t index_;
+};
+
+// ---------------------------------------------------------------------------
+// Milestone 2p: 0071F290, the command controller's own per-frame update
+// ---------------------------------------------------------------------------
+//
+// docs/DIRECTOR_UPDATE_ARMS.md (packet cc2_director_update_arms) reads the
+// whole of it: seven arms in order, of which arm 3 is the auto-target hold
+// countdown 0071F314 that 0071DF70 tests, and arm 7 ticks
+// [controller+38h]->vtable[4](dt), which on a director is 009F5DA0, then
+// vtable[7Ch], which is 00836920. Milestone 2n supplied where the think runs;
+// this milestone takes that placement from the routine instead.
+
+class ControllerUpdateBinding final : public bsp::CommandControllerUpdateHost {
+public:
+    ControllerUpdateBinding(GameShipAiHost::Impl& owner,
+                            GameShipAiHost::Impl::Controller& ctl, GameShipAiRow& row,
+                            std::size_t index)
+        : owner_(owner), ctl_(ctl), row_(row), index_(index) {}
+
+    void reset_path_vector() override {
+        // 0071F2D1..0071F2F3, the shared zero vector at 00F87574 into path
+        // object 0's +30h/+34h/+38h. The +1A4h path array is not built here.
+        owner_.record("CommandController::reset_path_vector", 0x0071f2d1u);
+    }
+    bool begin_command(int) override {
+        // vtable[78h], which on a director is 00835C70. Milestone 2l already
+        // runs that body at its own site, right after the push that made a
+        // command current; the two arms here are gated on the accepted bytes
+        // at +44h / +4Ch, which this process does not model, so neither arm
+        // runs and the call is recorded rather than made twice.
+        owner_.record("CommandController::begin_command", 0x00835c70u);
+        return true;
+    }
+    void raise_override_stage(int) override {
+        owner_.record("CommandController::raise_override_stage", 0x0071d9e0u);
+    }
+    void raise_queue_stage(int) override {
+        owner_.record("CommandController::raise_queue_stage", 0x0071d810u);
+    }
+    void step_auto_target(float frame_delta) override;
+    void step_commands() override {
+        // vtable[7Ch] = 00836920 BSP_WeaponDirector_Step. Milestone 2m runs
+        // that body once per unit per fixed step from GameUnitsHost, which is
+        // where the stage ladder, the `stop` arm and the idle tail already run.
+        // Running it here as well would step every director twice, so the arm
+        // is logged at the site it actually runs and not repeated.
+        owner_.done("CommandController::step_commands", 0x00836920u);
     }
 
 private:
@@ -1988,6 +2327,22 @@ private:
 // have made of it. That is stated in the milestone and is a boundary, not a
 // result.
 
+// Defined here because it builds a TargetBinding, which the anonymous namespace
+// above declares after ControllerUpdateBinding.
+void ControllerUpdateBinding::step_auto_target(float frame_delta) {
+    // 0071F395, [controller+38h]->vtable[4](dt) = 009F5DA0, the bot's own
+    // fire-target think. Its countdown is what turns a per-frame call into a
+    // once-a-second think.
+    const float before = ctl_.target.think_countdown;
+    TargetBinding target(owner_, ctl_, row_, index_);
+    bsp::auto_target_tick_009f5da0(target, ctl_.target, nullptr, frame_delta);
+    owner_.done("AutoTarget::tick", 0x009f5da0u);
+    if (!(frame_delta < before)) {
+        ++row_.target_thinks;
+        ++owner_.summary.thinks;
+    }
+}
+
 void GameShipAiHost::Impl::run_navigation_goal_009de050(Controller& ctl, GameShipAiRow& row,
     std::size_t index, float goal_x, float goal_z, bool keep_mode, bool final_leg) {
     // The three fields ShipAiControlBlock and ShipAiGoalPlan both describe, in
@@ -2233,16 +2588,39 @@ void GameShipAiHost::controller_step(float seconds) {
             || ctl.blk.mode == bsp::ShipAiSteeringMode::NavigateAstern) {
             ++host.summary.navigate_mode_steps;
         }
-        // 009F5DA0 beside it, with the same step delta: the selector's own
-        // countdown is what turns a per-step call into a once-a-second think.
-        const float before = ctl.target.think_countdown;
-        TargetBinding target(host, ctl, row, index);
-        bsp::auto_target_tick_009f5da0(target, ctl.target, nullptr, seconds);
-        host.done("AutoTarget::tick", 0x009f5da0u);
-        if (!(seconds < before)) {
-            ++row.target_thinks;
-            ++host.summary.thinks;
-        }
+        // Milestone 2p: 0071F290, the command controller's own per-frame
+        // update, instead of a bare call to the think. Packet
+        // cc2_director_update_arms read the routine whole, and its arm 7 is
+        // where 009F5DA0 runs: [controller+38h]->vtable[4](dt) with the
+        // director's vtable 00D21B48, whose +4h is 009F5DA0. So the think's
+        // position in the frame is recovered here rather than supplied, and
+        // arm 3 is the hold countdown 0071DF70 tests.
+        bsp::CommandControllerUpdateState state{};
+        // Arm 1's session predicate. The session object is this process's own
+        // (docs/GAME_EXECUTABLE.md milestone 2l: 0077C2A0's routing and the
+        // queue are records and the executable delivers synchronously), so the
+        // four lifecycle bytes are the live combination and the gate is open.
+        state.session_present = true;
+        state.session_flags.flag_5c = true;
+        state.path_object0_present = false;
+        state.auto_target_hold = host.units.director_target_hold_0040(index);
+        state.mode = 1;
+        state.slot0_occupied = host.units.director_slot_command(index, 0) != 0u;
+        state.override_command_present = false;
+        state.queue_accepted = false;
+        state.override_accepted = false;
+        // [*(00E188A8) + 1FE4h]. There is no world object, so the session mode
+        // is the single-player 1 the rest of this executable already assumes.
+        state.session_mode = 1;
+        host.record("CommandController::session_mode_1fe4", 0x00e188a8u);
+        state.auto_target_present = true;
+        ControllerUpdateBinding update(host, ctl, row, index);
+        const bsp::CommandControllerUpdateTrace trace
+            = bsp::run_command_controller_update(state, seconds, update);
+        host.done("CommandController::update", 0x0071f290u);
+        ++row.controller_updates;
+        ++host.summary.controller_updates;
+        row.controller_update_session_gate = trace.session_gate_passed;
     }
 }
 
@@ -2391,6 +2769,25 @@ void GameShipAiHost::report() {
     for (const GameShipAiRow& row : host.rows) {
         if (row.goal_sets > 0) ++host.summary.units_with_goal;
     }
+    // Milestone 2p: the path plan 009E3780 builds and the approach point
+    // 009F1BC0 copies, for the units whose state reaches either.
+    host.log.notef("  %-20s %-10s %8s %8s %6s %6s %8s %11s %11s %11s", "unit", "state",
+        "plan_req", "seeds", "state", "nodes", "approach", "point_x", "point_z",
+        "goal_range");
+    for (const GameShipAiRow& row : host.rows) {
+        if (row.path_plan_refreshes == 0 && row.approach_frames == 0) continue;
+        host.log.notef("  %-20s %-10s %8llu %8llu %6d %6d %8llu %11.1f %11.1f %11.1f",
+            row.unit.c_str(), row.state.c_str(), row.path_plan_refreshes,
+            row.path_plan_seeds, row.path_plan_state, row.path_plan_nodes,
+            row.approach_frames, static_cast<double>(row.approach_point_x),
+            static_cast<double>(row.approach_point_z),
+            static_cast<double>(row.approach_goal_range));
+    }
+    host.log.notef("summary mission ship ai plan requests=%llu seeds=%llu accepts=%llu "
+        "approach_frames=%llu controller_updates=%llu",
+        host.summary.path_plan_refreshes, host.summary.path_plan_seeds,
+        host.summary.path_plan_accepts, host.summary.approach_frames,
+        host.summary.controller_updates);
     host.log.notef("summary mission ship ai goal vector prepasses=%llu refreshes=%llu "
         "nonzero_goals=%zu brain_targets=%zu path_plan_refreshes=%llu path_picks=%llu "
         "path_publishes=%llu station_keeping=%llu sector_refreshes=%llu middle_runs=%llu "

@@ -1353,6 +1353,18 @@ bool GameUnitsHost::unit_pose(std::size_t index, float right[3], float up[3],
 // Milestone 2p: what the brain pre-pass and the drive's middle read off a unit
 // ---------------------------------------------------------------------------
 
+bool GameUnitsHost::world_bounds_box_00e188a8(float& min_x, float& max_x, float& min_z,
+    float& max_z) const {
+    min_x = 0.0f;
+    max_x = 0.0f;
+    min_z = 0.0f;
+    max_z = 0.0f;
+    // The world object at [00E188A8] is never built here, so there is no box.
+    // Reporting its absence is what lets 0071C4F0's own rule run at its call
+    // site without four comparisons against zeroes.
+    return false;
+}
+
 bool GameUnitsHost::active_command_descriptor_0071eb60(std::size_t index,
     bsp::SceneCommandTarget& out, int& mode) const {
     return impl_->commands.active_command_descriptor_0071eb60(index, out, mode);
