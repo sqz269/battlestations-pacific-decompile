@@ -345,6 +345,64 @@
     "fixture_libraries": "parent baseline bsp_core.lib,bsp_lua511.lib,bsp_zlib121.lib plus strict new provider object;/MANIFEST:EMBED",
     "permanent_tests_added": 0,
     "repository_build": "passed: ./scripts/build.ps1; complete MSVC Win32 Release build and 1/1 existing CTest reconstructed_math; source registered in cmake/startup.cmake",
-    "report_calls": "passed: 33 call rows checked, 0 failed; two medal current34/current88 calls confirmed indirect and require actual profile dispatch"
+    "report_calls": "passed: 33 call rows checked, 0 failed; two medal current34/current88 calls confirmed indirect and require actual profile dispatch",
+    "final_parent_library": {
+      "status": "passed",
+      "validated_utc": "2026-09-12T20:35:52.001165+00:00",
+      "parent_root": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911",
+      "parent_git_head": "a6b54bfe2cc9629800ad9ebdddd9b1a472b71910",
+      "parent_tracked_source_diff_present": true,
+      "command": "./local/run_profile_display_parent_probe.ps1 -ParentRoot J:/PROG/battlestations-pacific-decompile-orch5-20260911",
+      "composition": "Only local/profile_display_probe.cpp compiled, using parent include tree; exclusively parent bsp_core/lua/zlib production libraries. No worker production object linked. Embedded manifest.",
+      "output": "profile_display_probe.cpp\nprofile_display_probe: PASS (six locale cases, fresh language, signed date words, exact buffer capacity, native8h allocations, real score map)",
+      "build_evidence": "Parent final MSVC Win32 Release build log: reconstructed_math and native_math_differential both passed (2/2). This native math test does not differential-test the date/profile helpers.",
+      "archive": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912",
+      "build_log_sha256": "996a8aee866f579a8ba4b3e670292248f6fad6917ca9723b9c6d0701b528456f",
+      "probe_log_sha256": "1a53169bae2fb27e07c8b2e84190b525d9544d09dd89db40dd99517fcff9c323",
+      "inputs": [
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\include\\bsp\\gui_widget_owner.hpp",
+          "Hash": "621ADB43E7271214CA0FB61A0542448998FD39ECDCCF21A01A7FE2C78E3C24E7"
+        },
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\include\\bsp\\main_menu_profile_display.hpp",
+          "Hash": "9C240D87B59A97CBCFEEB0562D4AB743D2E242D636FF9B9887B1087AF8F7E94F"
+        },
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_core.lib",
+          "Hash": "9DA645DECB05DD4E1C799CB809F74FE9C5CB673C0731024B3A3B58A9CE8F8FC8"
+        },
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_probe.cpp",
+          "Hash": "552EDE6252C9EFC8C6B600248652127D1FE98BBAB7CA8290883820B2406766BA"
+        },
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_parent_probe.exe",
+          "Hash": "6EFCAF3B275CCB6863E713A579BFF41B0768AB0FD6CC4A007B61104FCE68BFE7"
+        },
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\src\\main_menu_profile_display.cpp",
+          "Hash": "B18AFD02982DC7A8067D86B6F574D35B6F4B37183B5372ABE9BE0702B08ABEE5"
+        },
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_lua511.lib",
+          "Hash": "B6C19DD56BCE2C86DCF1ABF5C3044D48DDC2AC2C33EF04E3DC87F022413EE193"
+        },
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_zlib121.lib",
+          "Hash": "2C89BD9AE83D791564EA847C75E8E5EE025E40810C1DF8D55E5799E0C7B8C471"
+        }
+      ],
+      "limits": "Full medal widget body, native date/profile instruction differential, original ABI and game/render execution remain unvalidated."
+    },
+    "peer_review": {
+      "status": "read-only review complete; no open concrete issue after parent correction",
+      "archive": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review",
+      "review_sha256": "9f5829eb2bfdec68c4a2dac360244772df45801af2a7607bfe202b8e11d2e851",
+      "input_manifest_sha256": "2af1e844a0b87a9f5dd3ebaaefa25b5abe1f89b6f8aa02e911978d592db378f7",
+      "scope": "AC06C0,AC0820,580820,AA7970,ACF120,ACEB30 plus current58 adapters",
+      "correction": "Parent corrected missing AC0820 separate x87 width argument spill; revised source rechecked. Suspected pending Text issue retracted after verifying retain_submission throws.",
+      "limits": "Static source/assembly review; inherited resolved-position numeric/native ABI limits and no bounds/FrameBox runtime differential."
+    }
   }
 }
