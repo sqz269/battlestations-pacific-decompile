@@ -1,6 +1,6 @@
 {
   "packet": "orch4_game_sound_dialog_z",
-  "status": "composition_build_and_normal_installed_lifecycle_verified_eof_cleanup_unresolved",
+  "status": "composition_build_and_installed_lifecycle_verified_with_host_adapter_recovery",
   "kind": "application_composition_of_existing_recovered_functions",
   "source": [
     "include/bsp/game_sound_dialog_runtime.hpp",
@@ -225,7 +225,8 @@
         "final_fmod_errors": 0,
         "opens": 2,
         "closes": 1,
-        "remaining": "Native EOF retention produces a 2-open/1-close callback-count imbalance after EventSystemRelease. Post-release metadata query is diagnostic only. Primary/runtime worker investigating SDK ownership and callback attribution; no facade workaround."
+        "remaining": "Native EOF retention produces a 2-open/1-close callback-count imbalance after EventSystemRelease. Post-release metadata query is diagnostic only. Primary/runtime worker investigating SDK ownership and callback attribution; no facade workaround.",
+        "evidence_phase": "historical before host adapter recovery; superseded by integrated_eof_correction"
       }
     },
     "artifact_sha256": {
@@ -237,11 +238,12 @@
     }
   },
   "limitations": [
-    "EOF final FMOD ownership is not yet balanced through EventSystemRelease alone",
+    "Host adapter recovery is an additional application ownership policy after successful SDK release; native EOF Sound/Channel retention remains unchanged",
     "Mission request producers and nonnull callback230 implementation remain required integration",
     "Existing BDF4C0 resolver is a documented fragment",
     "Native late raw allocation failure retains its original leak boundary",
-    "C++ source composition is not original ABI/SEH compatibility or gameplay validation"
+    "C++ source composition is not original ABI/SEH compatibility or gameplay validation",
+    "Application startup/render-loop wiring and gameplay validation are not established by the installed core/facade fixture"
   ],
   "installed_inputs": [
     {
@@ -268,5 +270,83 @@
       "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\sound\\music\\Chance.fsb",
       "sha256": "2a94b23fa8ebc24685de1524feb7b581200d07b193edd2286578c0bcaa72852c"
     }
-  ]
+  ],
+  "integrated_eof_correction": {
+    "evidence_checkout": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910",
+    "evidence_head": "79dc6a83",
+    "source_state": "Primary integration source changes reviewed before its commit; exact reviewed bytes identified by hashes",
+    "artifact_sha256": {
+      "src/game_sound_runtime.cpp": "2f47d95ba7d638db0b07d9045fc5248d5cc155b05445902e62aae5032403c648",
+      "include/bsp/game_sound_runtime.hpp": "025085df643a470d2484274270a1ad9a2385b553a9727ec437b7788918ac0bae",
+      "local/sound_dialog_fixture_z.cpp": "c09f9a7835869867ff721e52d00573bc5870fecb6618f7f302fd1b2471c4eb02",
+      "local/sound_dialog_facade_integrated_z.log": "1493de5d124bd59c1eeeb149ca9e517c57474e1e645577ac4049869f5f477295"
+    },
+    "native_behavior": "State3 retains Sound and Channel words; native stream destruction remains unchanged",
+    "sdk_observation": "Real EventSystem release returns OK but produces only one SDK Close callback for two successful Opens in the EOF case",
+    "host_policy": {
+      "tracked_objects": "Only host-owned VFS adapters created by successful GameSoundRuntime open callbacks; never SDK Sound or Channel pointers",
+      "release": "Forward real EventSystem release and capture result without changing native call order",
+      "reclaim": "After successful release returns, remove each remaining tracked adapter and call sound_file_close_00a7b750(handle,nullptr)",
+      "failed_release": "Do not reclaim adapters or dispose callback/library lifetime when SDK release fails",
+      "sdk_sound_release_after_teardown": false,
+      "native_stream_stop_modified": false,
+      "accounting": "file_closes counts actual SDK callbacks; file_reclaims counts host recovery separately; file_handles_pending counts remaining owned adapters",
+      "ownership_invariant": "file_opens == file_closes + file_reclaims and file_handles_pending == 0"
+    },
+    "fixture": {
+      "passed": true,
+      "source": "local/sound_dialog_fixture_z.cpp",
+      "log": "local/sound_dialog_facade_integrated_z.log",
+      "real_services": "Installed FMOD DLLs and Chance.fsb/.def, VFS/Lua, QPC clock, XLive services, actual raw singleton lifetime and concrete core/facade update route",
+      "before_sdk_release": "Assert native state3 handle words and valid Sound_GetLength after native stream destruction",
+      "after_sdk_release": "No stale Sound query or Sound release; inspect host ownership counters",
+      "normal_runs": [
+        {
+          "shutdown": "explicit_core",
+          "opens": 2,
+          "sdk_closes": 2,
+          "host_reclaims": 0,
+          "pending": 0,
+          "tracked_strings": 0,
+          "samples": 0,
+          "resources": 0,
+          "classes": 0,
+          "fmod_errors": 0,
+          "fmod_calls": 236
+        },
+        {
+          "shutdown": "actual_raw_singleton_drain",
+          "opens": 2,
+          "sdk_closes": 2,
+          "host_reclaims": 0,
+          "pending": 0,
+          "tracked_strings": 0,
+          "samples": 0,
+          "resources": 0,
+          "classes": 0,
+          "fmod_errors": 0,
+          "fmod_calls": 236
+        },
+        {
+          "shutdown": "explicit_core_after_native_eof",
+          "opens": 2,
+          "sdk_closes": 1,
+          "host_reclaims": 1,
+          "pending": 0,
+          "tracked_strings": 0,
+          "samples": 0,
+          "resources": 0,
+          "classes": 0,
+          "fmod_errors": 0,
+          "fmod_calls": 379
+        }
+      ]
+    },
+    "historical_evidence": "Original failing eof_refinement and artifact hashes retained; its post-EventSystemRelease GetLength success was cached-metadata diagnostic only, not proof of a live SDK allocation",
+    "coverage": "Installed-library fixture proof for concrete core/facade composition and host adapter recovery; no application startup/render-loop, mission callback or gameplay validation claim",
+    "documentation_only": true,
+    "new_native_addresses": [],
+    "ghidra_mutations": false,
+    "new_build_run_by_documentation_worker": false
+  }
 }
