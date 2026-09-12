@@ -585,6 +585,15 @@ void GameHudHost::apply_pending_interface_0068aca0() {
         pages.c_str());
 }
 
+void GameHudHost::select_front_end_layout_00518250() {
+    // The load's own row: 004c1ac0(3,0) then 00518250(3,0). Set 3 is the pause
+    // pair GUI_pause / GUI_pause_title (bsp/title_init.hpp's
+    // FrontEndFrameSet::Pause). The 004c1ac0 half is the menu-layout selector on
+    // a second singleton and has no reconstruction here.
+    impl_->log.unimplemented("MissionLoad::select_menu_layout", "004c1ac0");
+    impl_->menu.select_front_end_frame_set_00518250(3, false);
+}
+
 void GameHudHost::release_main_menu_manager_00686c90() {
     impl_->menu.destroy_main_menu_manager_00686c90();
     impl_->log.note("the main-menu manager was destroyed: 00687300 -> 00686c90 -> 00683aa0, "

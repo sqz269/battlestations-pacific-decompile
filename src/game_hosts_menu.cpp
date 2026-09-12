@@ -127,6 +127,9 @@ struct GameMenuHost::Impl {
     TitleHandoverState handover{};
     TitleScreen title_object{};
     FrontEndFrameLayouts frame_layouts{};
+    // Milestone 2i: the layouts 00518250 acquires for the mission's own set 3
+    // are published hidden; see MenuFrameLayoutHost::gui_layout_acquire.
+    bool acquire_hidden{false};
 
     // --- the press-start screen, registry slot 5Ch --------------------------
     PressStartScreen press_start{};
@@ -563,7 +566,12 @@ public:
         if (page != nullptr) {
             // Not screen owned in the native sense; publish the same "shown"
             // byte the title state leaves them at so the rule is explicit.
-            owner_.frontend.commit_page_visibility(*page, true);
+            // Milestone 2i: set 3 is the pause pair, which the mission load
+            // acquires while nothing is paused. No pause screen exists in this
+            // process to publish a byte for them, so the executable publishes
+            // them hidden and says so; that is milestone 2b's substitute rule
+            // for a page no screen owns, with the executable choosing the value.
+            owner_.frontend.commit_page_visibility(*page, !owner_.acquire_hidden);
         }
         return page;
     }
@@ -1508,7 +1516,8 @@ void GameMenuHost::Impl::advance_path(float raw_delta) {
 GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameStateSlot& state,
     long press_start_frame, GameVfsHost& vfs, GameScriptHost& scripts, LocaleTables& locale,
     std::string menu_select, long mission_frames, GameFrameProfiler* profiler,
-    std::string language, long mission_complete_frame)
+    std::string language, long mission_complete_frame, long order_frame,
+    float order_throttle, float order_rudder, float mission_frame_seconds)
     : impl_(std::make_unique<Impl>(log, frontend, state, press_start_frame)) {
     // Milestone 2h: the in-mission HUD registers into the same registry this
     // object owns, so the HUD host is built here and handed to the mission.
@@ -1516,7 +1525,8 @@ GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameSta
     if (!menu_select.empty()) {
         impl_->mission = std::make_unique<GameMissionHost>(log, vfs, scripts, frontend,
             locale, std::move(menu_select), mission_frames, profiler, std::move(language),
-            mission_complete_frame, impl_->hud.get());
+            mission_complete_frame, impl_->hud.get(), order_frame, order_throttle,
+            order_rudder, mission_frame_seconds);
     }
 }
 
@@ -1525,6 +1535,24 @@ GameMenuHost::~GameMenuHost() = default;
 GameMissionHost* GameMenuHost::mission() const noexcept { return impl_->mission.get(); }
 
 GameHudHost* GameMenuHost::hud() const noexcept { return impl_->hud.get(); }
+
+void GameMenuHost::select_front_end_frame_set_00518250(int set, bool commit) {
+    Impl& host = *impl_;
+    const int previous = host.frame_layouts.active_set;
+    // A set the mission load asks for is not a front-end page: nothing in this
+    // process is a pause screen, so its layouts are published hidden.
+    host.acquire_hidden = !commit;
+    MenuFrameLayoutHost layouts(host);
+    bsp::select_front_end_frame_set(host.frame_layouts, layouts, set, commit);
+    host.acquire_hidden = false;
+    host.log.implemented("MissionLoad::select_front_end_frame_set", "00518250");
+    host.log.notef("front-end frame set %d requested with commit=%d: the active set stays %d "
+        "and nothing is released, because 00518250 releases the other sets and records the "
+        "new one only on a committing call (00518272, 0051864a)", set, commit ? 1 : 0,
+        host.frame_layouts.active_set);
+    static_cast<void>(previous);
+    host.frontend.invalidate_bridge();
+}
 
 // ---------------------------------------------------------------------------
 // Milestone 2h: the four registry services the in-mission HUD needs

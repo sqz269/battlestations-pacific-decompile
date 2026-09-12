@@ -1,0 +1,378 @@
+{
+  "packet": "cc_ship_inputs",
+  "date": "2026-09-11",
+  "owner": "agent/cc-ship-inputs",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": "none; this worker was read-only against Ghidra. The write lock was held by agent/orch5-20260911 throughout.",
+  "summary": "The four labelled stand-ins in docs/SHIP_MOTION.md are replaced by reconstructions: the rigid-body integrator (two outlined phases of the Dyn substep), the rudder curve settings producer (a Lua-driven settings loader) with the shipped values, the ocean height sampler, and the gameplay-modifier product. The hull body's own mass, inertia and damping and the library's substep size remain open.",
+  "docs": [
+    "docs/RIGID_BODY_INTEGRATION.md",
+    "docs/UNIT_RUDDER_CURVE.md",
+    "docs/OCEAN_HEIGHT.md"
+  ],
+  "sources": [
+    "include/bsp/rigid_body_integration.hpp",
+    "src/rigid_body_integration.cpp",
+    "include/bsp/unit_rudder_curve.hpp",
+    "src/unit_rudder_curve.cpp",
+    "include/bsp/ocean_height.hpp",
+    "src/ocean_height.cpp",
+    "src/ship_motion_probe.cpp"
+  ],
+
+  "substep_steps": [
+    {
+      "order": 1,
+      "address": "00c5bb5a",
+      "native": "00c41550",
+      "function": "00c5bb30",
+      "name": "Dyn_World_IntegrateVelocities",
+      "what": "First phase of one substep: force to velocity with the inverse mass at M+50h, gravity unless B+50h bit 2, linear damping, the world inverse inertia rebuild, torque to angular velocity, angular damping, then the row-1 lock rebuild.",
+      "reconstruction": "bsp::dyn_body_integrate_velocity_00c41550"
+    },
+    {
+      "order": 2,
+      "address": "00c5bb83",
+      "native": "00c50390",
+      "function": "00c5bb30",
+      "name": "Dyn profiler scope label fetch",
+      "what": "Fetches the rdtsc profiler scope whose image string is CreateGroups; the collision and constraint phases follow and are not read in this packet."
+    },
+    {
+      "order": 3,
+      "address": "00c5bbbe",
+      "native": "00c4b610",
+      "function": "00c5bb30",
+      "name": "Dyn group build",
+      "what": "contract: unread. Runs under the CreateGroups scope on world+448h."
+    },
+    {
+      "order": 4,
+      "address": "00c5c469",
+      "native": "00c50390",
+      "function": "00c5bb30",
+      "name": "Dyn profiler scope label fetch",
+      "what": "Fetches the UpdatePosition scope label, which is how the next call is identified."
+    },
+    {
+      "order": 5,
+      "address": "00c5c491",
+      "native": "00c5b1b0",
+      "function": "00c5bb30",
+      "name": "Dyn_World_IntegratePositions",
+      "what": "Position from velocity plus bias, Rodrigues rotation of rows 2 and 1 with a Gram-Schmidt rebuild, damping again, the two speed clamps, the sleep countdown, and the clearing of the force, torque and bias accumulators.",
+      "reconstruction": "bsp::dyn_body_integrate_position_00c5b1b0"
+    },
+    {
+      "order": 6,
+      "address": "00c5c503",
+      "native": "00c4b550",
+      "function": "00c5bb30",
+      "name": "Dyn group sleep",
+      "what": "contract: unread. Runs under the SleepGroups scope."
+    }
+  ],
+
+  "schedule_steps": [
+    {
+      "address": "00c5c66d",
+      "native": "00c5bb30",
+      "function": "00c5c540",
+      "name": "Dyn_World_Substep",
+      "what": "One full substep of world+00h, taken while the accumulator exceeds it and the budget at world+34h has not run out.",
+      "reconstruction": "bsp::dyn_world_substep_plan_00c5c540"
+    },
+    {
+      "address": "00c5c6bd",
+      "native": "00c5bb30",
+      "function": "00c5c540",
+      "name": "Dyn_World_Substep remainder",
+      "what": "One partial substep of the leftover accumulator, taken when it exceeds the double 5.0e-5 at 00D7A398."
+    }
+  ],
+
+  "body_api": [
+    {"address": "00c5bb5a", "native": "00c41550", "function": "00c5bb30", "name": "velocity phase", "what": "see substep_steps"},
+    {"address": "00447ab5", "native": "00c37f40", "function": "00447510", "name": "Dyn_Body_SetMass", "what": "M+50h = 1.0f/mass, so the stored field is the inverse mass. This is the debris-body call site; no hull-body call site was found."},
+    {"address": "0092b257", "native": "00c37e70", "function": "0092aae0", "name": "Dyn_Body_SetInertia", "what": "M+54h/+58h/+5Ch = 1/I per axis, zero for a zero component. The inertia vector passed here is the body extent scaled by the mass set immediately before it."},
+    {"address": "00932d6b", "native": "0078cf20", "function": "009329c0", "name": "BSP_GameWorld_SampleWaterHeight", "what": "The buoyancy loop's per-element water height; the consumer that settles the sampler's meaning as a world-space y."}
+  ],
+
+  "ocean_steps": [
+    {
+      "address": "0078cf3e",
+      "native": "0078c890",
+      "function": "0078cf20",
+      "name": "BSP_OceanWaveField_SampleHeight",
+      "what": "The wave field on [world+A8h]. Returns 0.0f when the byte at field+F9h is set; otherwise a sample of the object at field+BCh at the fractional parts of x and z scaled by field+B4h, times the amplitude at field+24h.",
+      "reconstruction": "bsp::OceanHeightHost::wave_height_0078c890",
+      "coverage": "partial: 00B960C0, the sample itself, is not read"
+    },
+    {
+      "address": "0078cf5f",
+      "native": "00b9cf50",
+      "function": "0078cf20",
+      "name": "BSP_OceanWaveField_CoverageMask",
+      "what": "A 0..1 attenuation read from a per-region bitmap; exactly 1.0f when no region contains (x, z), which is the open-sea case.",
+      "reconstruction": "bsp::OceanHeightHost::coverage_mask_00b9cf50",
+      "coverage": "complete as a contract"
+    }
+  ],
+
+  "settings_producer_steps": [
+    {
+      "address": "0082e893",
+      "native": "00424c40",
+      "function": "0082e890",
+      "name": "BSP_GameSettings_GetSingleton",
+      "what": "The first of four getter calls in 0082E890. It proves the rudder curve block is on the gameplay settings singleton, not on the unit."
+    },
+    {
+      "address": "0083ce6f",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "name": "BSP_LuaObject_GetByName",
+      "what": "Fetches ShipGlobals[Navigator][TurnMultipliers] into the fragment's temporary."
+    },
+    {
+      "address": "0083ce84",
+      "native": "00b67690",
+      "function": "0083b5e0",
+      "name": "LuaObject assign",
+      "what": "contract: unread. Assigns that wrapper into the current-table slot at [ESP+0BCh], which is what makes the three key lookups run against the sub-table."
+    },
+    {
+      "address": "0083ceb1",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "name": "BSP_LuaObject_GetByName",
+      "what": "Looks up TurnMultiplierMinSpeed on the sub-table."
+    },
+    {
+      "address": "0083ceca",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "name": "BSP_LuaObject_GetByIndex",
+      "what": "Index 1 of that array, the throttle coordinate."
+    },
+    {
+      "address": "0083ced9",
+      "native": "00b66270",
+      "function": "0083b5e0",
+      "name": "BSP_LuaObject_GetNumber",
+      "what": "lua_tonumber rounded to float in ST0; the caller FSTPs it to settings+444h at 0083CEDE."
+    },
+    {
+      "address": "0083cf39",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "name": "BSP_LuaObject_GetByIndex",
+      "what": "Index 2 of the same array, the turn-circle multiplier, stored to settings+440h at 0083CF4D."
+    }
+  ],
+
+  "modifier_steps": [
+    {
+      "address": "0080fc4f",
+      "native": "008e6430",
+      "function": "0080fc30",
+      "name": "BSP_GameplayModifiers_ProductForUnit",
+      "what": "Category 4 for the reference speed, gated on the byte at 00E0C978 and on the list size at manager+B8h. When either gate fails the routine substitutes the same 1.0f at 00D7A24C that an empty list would produce.",
+      "reconstruction": "bsp::gameplay_modifier_product_008e6430"
+    },
+    {
+      "address": "008e6470",
+      "native": "008e4680",
+      "function": "008e6430",
+      "name": "modifier filter",
+      "what": "contract: unread. Called with (node+8h, unit) and ECX = manager; a non-zero AL multiplies node[+1Ch] into the product at 008E647C.",
+      "reconstruction": "bsp::GameplayModifierHost::entry_matches_008e4680"
+    }
+  ],
+
+  "settings_block": {
+    "object": "the 76Ch-byte gameplay settings singleton at [00F8753C], from 00424C40",
+    "fields": [
+      {"offset": "+444h", "lua": "ShipGlobals.Navigator.TurnMultipliers.TurnMultiplierMinSpeed[1]", "store": "0083cede", "shipped": 0.0, "role": "first point, throttle"},
+      {"offset": "+440h", "lua": "ShipGlobals.Navigator.TurnMultipliers.TurnMultiplierMinSpeed[2]", "store": "0083cf4d", "shipped": 0.4, "role": "first point, denominator"},
+      {"offset": "+44Ch", "lua": "ShipGlobals.Navigator.TurnMultipliers.TurnMultiplierMedSpeed[1]", "store": "0083cfbc", "shipped": 0.5, "role": "split point, throttle"},
+      {"offset": "+448h", "lua": "ShipGlobals.Navigator.TurnMultipliers.TurnMultiplierMedSpeed[2]", "store": "0083d02b", "shipped": 1.5, "role": "split point, denominator"},
+      {"offset": "+43Ch", "lua": "ShipGlobals.Navigator.TurnMultipliers.TurnMultiplierMaxSpeed[1]", "store": "0083d09a", "shipped": 1.0, "role": "last point, throttle"},
+      {"offset": "+438h", "lua": "ShipGlobals.Navigator.TurnMultipliers.TurnMultiplierMaxSpeed[2]", "store": "0083d109", "shipped": 2.0, "role": "last point, denominator"}
+    ],
+    "source_file": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/scripts/datatables/shipglobals.lua",
+    "note": "The same file carries a second ShipGlobals[Fordulas] table with the same three keys and a different first denominator (0.5). No push of a Fordulas key appears in the fragment read here."
+  },
+
+  "motion_state_layout": [
+    {"offset": "+00h", "field": "linear velocity", "producer": "00c41550, 00c5b1b0"},
+    {"offset": "+0Ch", "field": "angular velocity", "producer": "00c41550, 00c5b1b0"},
+    {"offset": "+18h", "field": "maximum linear speed", "producer": "00c5b1b0 clamp"},
+    {"offset": "+1Ch", "field": "maximum angular speed", "producer": "00c5b1b0 clamp"},
+    {"offset": "+20h", "field": "linear pseudo-velocity, position only", "producer": "00c5b1b0"},
+    {"offset": "+2Ch", "field": "angular pseudo-velocity", "producer": "00c5b1b0"},
+    {"offset": "+38h", "field": "accumulated force", "producer": "00c32050, 00c35360; cleared by 00c5b1b0"},
+    {"offset": "+44h", "field": "accumulated torque", "producer": "00c32030, 00c35330; cleared by 00c5b1b0"},
+    {"offset": "+50h", "field": "inverse mass", "producer": "00c37f40"},
+    {"offset": "+54h..+5Ch", "field": "body-space inverse inertia diagonal", "producer": "00c37e70"},
+    {"offset": "+60h..+80h", "field": "world-space inverse inertia, rebuilt every substep", "producer": "00c41550"},
+    {"offset": "+84h..+B3h", "field": "previous 3x4 transform", "producer": "00c5c540"},
+    {"offset": "+B4h", "field": "byte, confine torque response to the row-1 axis", "producer": "00c41550 tail"},
+    {"offset": "+B8h", "field": "linear damping rate", "producer": "00c37e00"},
+    {"offset": "+BCh", "field": "angular damping rate", "producer": "00c37de0"}
+  ],
+
+  "body_flags": [
+    {"bit": 0, "mask": "0x1", "meaning": "static; 00C31FC0 returns 0 rather than dividing by a zero inverse mass", "site": "00c31fc1"},
+    {"bit": 1, "mask": "0x2", "meaning": "asleep; set by the countdown in 00C5B1B0", "site": "00c5b1b0"},
+    {"bit": 2, "mask": "0x4", "meaning": "suppress gravity in the velocity phase", "site": "00c41550"},
+    {"bit": 4, "mask": "0x10", "meaning": "exclude from both integration phases", "site": "00c41550, 00c5b1b0"},
+    {"bits": "1 and 4", "mask": "0x12", "meaning": "cleared by every mutator; this is the wake", "site": "00c35330, 00c35360, 00c37e20, 00c37e50, 00c32030, 00c32050"}
+  ],
+
+  "routines": [
+    {"routine": "00c41550", "name": "Dyn_World_IntegrateVelocities", "state": "reconstructed, build-tested, probe-exercised", "coverage": "complete"},
+    {"routine": "00c5b1b0", "name": "Dyn_World_IntegratePositions", "state": "reconstructed, build-tested, probe-exercised", "coverage": "complete"},
+    {"routine": "00c5bb30", "name": "Dyn_World_Substep", "state": "read for its phase order and call sites", "coverage": "partial: the collision and constraint phases 00C5BB5F..00C5C455 are not read"},
+    {"routine": "00c5c540", "name": "DYN_PhysicsWorld_Simulate", "state": "the substep schedule reconstructed", "coverage": "partial: the proxy transform copy and the profiler bookkeeping are described, not reconstructed"},
+    {"routine": "00c31fc0", "name": "Dyn_Body_GetMass", "state": "reconstructed from the full body", "coverage": "complete"},
+    {"routine": "00c37f40", "name": "Dyn_Body_SetMass", "state": "reconstructed from the full body", "coverage": "complete"},
+    {"routine": "00c37e70", "name": "Dyn_Body_SetInertia", "state": "reconstructed from the full body", "coverage": "complete"},
+    {"routine": "00c37de0", "name": "Dyn_Body_SetAngularDamping", "state": "reconstructed from the full body", "coverage": "complete"},
+    {"routine": "00c37e00", "name": "Dyn_Body_SetLinearDamping", "state": "reconstructed from the full body", "coverage": "complete"},
+    {"routine": "0078cf20", "name": "BSP_GameWorld_SampleWaterHeight", "state": "reconstructed, build-tested, probe-exercised", "coverage": "complete"},
+    {"routine": "0078c890", "name": "BSP_OceanWaveField_SampleHeight", "state": "read to its two helper calls", "coverage": "partial: 00B960C0, the field sample, is not read"},
+    {"routine": "00b9cf50", "name": "BSP_OceanWaveField_CoverageMask", "state": "read in full, carried as a host contract", "coverage": "complete as a contract"},
+    {"routine": "008e6430", "name": "BSP_GameplayModifiers_ProductForUnit", "state": "reconstructed, build-tested, probe-exercised", "coverage": "complete"},
+    {"routine": "008e4680", "name": "modifier filter", "state": "not read", "coverage": "none"},
+    {"routine": "0083b5e0", "name": "BSP_GameSettings_LoadFromLuaGlobals", "state": "named and documented for the curve block", "coverage": "partial: only 0083CDC0..0083D10D of 0083B5E0..00842951 read"},
+    {"routine": "00424c40", "name": "BSP_GameSettings_GetSingleton", "state": "named; the lazy-singleton head read", "coverage": "partial: the registration tail 00424CA0..00424CFF not read"},
+    {"routine": "00424a10", "name": "the settings constructor", "state": "scanned for stores to +438h..+44Ch, none found", "coverage": "partial: read only for that question"},
+    {"routine": "00937c90", "name": "the hull piece body builder", "state": "callee set inspected only", "coverage": "none"},
+    {"routine": "0092aae0", "name": "a body creation path", "state": "read for its SetMass/SetInertia sequence", "coverage": "partial: it stores its body at owner+354h, not controller+2Ch, so it is not the hull body"}
+  ],
+
+  "probe": {
+    "binary": "build/win32/Release/bsp_ship_motion_probe.exe",
+    "command": "bsp_ship_motion_probe.exe --class <N> --steps 400 --dt 0.05 --throttle 1.0 --rudder 1.0",
+    "stand_ins_removed": [
+      "the identity rudder curve (all three denominators forced to 1.0)",
+      "a hand-written 0.0f ocean height",
+      "a hand-written 1.0f gameplay scale",
+      "an explicit-Euler position and attitude integrator"
+    ],
+    "still_open": [
+      "the hull body's mass, inertia and damping",
+      "the force channel at unit+10D4h, so nothing pushes force onto the probe's body",
+      "the library's substep size at world+00h; the probe takes one substep of the full 0.05 s game step"
+    ],
+    "results": [
+      {
+        "vehicle_class": 11,
+        "name": "Allen M. Sumner class 1945",
+        "max_speed": 17.4911,
+        "max_rot_angle": 0.15708,
+        "peak_speed_ratio_before": 0.9972,
+        "peak_speed_ratio_after": 0.9993,
+        "peak_yaw_rate_before": 0.15708,
+        "peak_yaw_rate_after": 0.07854,
+        "peak_yaw_over_max_rot_angle_before": 1.0,
+        "peak_yaw_over_max_rot_angle_after": 0.5,
+        "forward_speed_at_20s_before": 10.8477,
+        "forward_speed_at_20s_after": 17.403
+      },
+      {
+        "vehicle_class": 23,
+        "max_speed": 18.7772,
+        "max_rot_angle": 0.13963,
+        "peak_speed_ratio_before": 0.9977,
+        "peak_speed_ratio_after": 0.9994,
+        "peak_yaw_rate_before": 0.13963,
+        "peak_yaw_rate_after": 0.06981,
+        "peak_yaw_over_max_rot_angle_before": 1.0,
+        "peak_yaw_over_max_rot_angle_after": 0.5,
+        "forward_speed_at_20s_before": 13.5392,
+        "forward_speed_at_20s_after": 18.7036
+      }
+    ],
+    "interpretation": "The yaw halving is the shipped curve: the denominator at full throttle is 2.0, so the steady rate is MaxRotAngle/2. The speed differences follow from the slower turn, not from the integrator change: 0092D300 rewrites only the axial velocity component, so a tighter turn bleeds more speed into the lateral one."
+  },
+
+  "corrections": [
+    {
+      "target": "docs/UNIT_CONTROLLER_UPDATE.md, the motion-state table and the 00C31FC0 row",
+      "was": "M+50h is `float mass`; 00C31FC0 is `inverse mass: 0.0f when B+50h & 1, else 1.0f / M+50h`",
+      "is": "M+50h is the inverse mass and 00C31FC0 returns the mass",
+      "evidence": "00C37F40 stores FLD1/FDIVRP of its argument into M+50h at 00C37F53, and 00C41550 forms M[+50h]*dt and multiplies the accumulated force by it, which is an acceleration only if the field is 1/m. 00C31FC0 returns the reciprocal of that field, and its FLDZ for a static body is the 1/0 guard. docs/GAME_DYNAMICS_LIST.md uses it as a mass independently: force = 00C31FC0(body) * 10.0 * submersion / record[+1Ch]."
+    },
+    {
+      "target": "docs/UNIT_CONTROLLER_UPDATE.md, the B+50h bit table",
+      "was": "bit 2 set to freeze",
+      "is": "bit 2 suppresses the gravity term in the velocity phase",
+      "evidence": "The bit's only reader is 00C41550, where a set bit skips `v += world.gravity * dt` and nothing else. The disabled controller path at 00932A16 reads as a freeze only because it zeroes both velocities before setting the bit."
+    },
+    {
+      "target": "docs/UNIT_CONTROLLER_UPDATE.md, the physics library boundary",
+      "was": "Every physics entry point reached from the controller is a leaf: no callees, no strings, no source paths, no RTTI",
+      "is": "The block has RTTI for several classes in a `Dyn` namespace",
+      "evidence": "Dyn::Scene::LCPSolver2Task, TypeDescriptor 00E1736C, vtable 00D7A090 slot 0 at 00403850; also Dyn_ConvexRayIntersection_vslot0 (00C44780), Dyn_CylinderShape_vslot2 (00C47CA0) and Dyn_BoxBoxIntersect_vslot0 (00C49A30). The rest of that section (no middleware string, in-house library) stands."
+    },
+    {
+      "target": "docs/SHIP_MOTION.md, the basis handedness",
+      "was": "Which handedness the three make is not established, so whether the row-0 term rights the hull or capsizes it is provisional",
+      "is": "The triple is right-handed, and the row-0 term at 0092EA5B is a pitch limiter",
+      "evidence": "00C5B1B0 rebuilds the basis every rotating substep as row0 = normalise(row1 x row2) then row1 = row2 x row0, which is the right-handed identity set. Row 0 is therefore the lateral axis, and the damped angle 0042CF10(M21) at 0092E9E9 is the angle of row 2's vertical component, i.e. the pitch, pulled toward the +/-15 degrees at 00D19628. The sign of the correction still depends on the world's axis convention and stays provisional."
+    },
+    {
+      "target": "the packet brief, 'the rudder curve settings block at unit +438h..+44Ch'",
+      "was": "a unit field, filled by an unrecovered producer with 00424C40 and the settings object's constructor as leads",
+      "is": "a field of the gameplay settings singleton 00424C40 returns, filled by the Lua settings loader 0083B5E0",
+      "evidence": "0082E890 calls 00424C40 at 0082E893, 0082E8B0, 0082E8B7, 0082E8BE (and three more on the high branch) and reads +438h..+44Ch off each returned pointer; the routine takes no unit. A pass over 00424A10 finds no store into that range, and a byte-pattern scan of .text for a float store to each of the six offsets finds one writer of all six, inside 0083B5E0."
+    },
+    {
+      "target": "docs/SHIP_MOTION.md and docs/UNIT_FORCE_COMMANDS.md, 0078CF20 as an unread external contract",
+      "was": "not read here; host method",
+      "is": "a two-call wrapper: the product of a wave field and a coverage mask on [world+A8h]",
+      "evidence": "0078CF20's body 0078CF20..0078CF76 calls 0078C890 at 0078CF3E and 00B9CF50 at 0078CF5F with the same (x, z) and the same receiver, spills the first as a double at 0078CF49, multiplies at 0078CF64 and rounds once at 0078CF69. A flat sea returning 0.0f is now evidenced (0078C890's FLDZ at 0078C89F, and the mask's 1.0f when no region covers the point) rather than assumed."
+    }
+  ],
+
+  "no_ghidra_function": "none. Every address named, documented or reconstructed in this packet lies inside an existing Ghidra function body, checked with python tools/bsp.py ghidra proto <addr> --brief.",
+
+  "names_added": [
+    {"address": "00c41550", "name": "Dyn_World_IntegrateVelocities"},
+    {"address": "00c5b1b0", "name": "Dyn_World_IntegratePositions"},
+    {"address": "00c5bb30", "name": "Dyn_World_Substep"},
+    {"address": "00c31fc0", "name": "Dyn_Body_GetMass"},
+    {"address": "00c37f40", "name": "Dyn_Body_SetMass"},
+    {"address": "00c37e70", "name": "Dyn_Body_SetInertia"},
+    {"address": "00c37de0", "name": "Dyn_Body_SetAngularDamping"},
+    {"address": "00c37e00", "name": "Dyn_Body_SetLinearDamping"},
+    {"address": "0078cf20", "name": "BSP_GameWorld_SampleWaterHeight"},
+    {"address": "0078c890", "name": "BSP_OceanWaveField_SampleHeight"},
+    {"address": "00b9cf50", "name": "BSP_OceanWaveField_CoverageMask"},
+    {"address": "008e6430", "name": "BSP_GameplayModifiers_ProductForUnit"},
+    {"address": "0083b5e0", "name": "BSP_GameSettings_LoadFromLuaGlobals"},
+    {"address": "00424c40", "name": "BSP_GameSettings_GetSingleton"}
+  ],
+
+  "follow_up_packets": [
+    {"packet": "dyn_world_construction", "what": "the writer of [game+18h] and the values at world+00h, +34h, +3Ch..+44h: the substep size, the substep budget and the sleep thresholds"},
+    {"packet": "ship_hull_body_creation", "what": "the writer of controller+2Ch and the hull body's mass, inertia and damping"},
+    {"packet": "dyn_contact_solver", "what": "the collision, group and LCP phases of 00C5BB30, and the contact callback through world+24h"},
+    {"packet": "unit_force_channel", "what": "0074F2E0 and the list at unit+10D4h, the channel through which everything outside the physics library pushes force onto a unit"},
+    {"packet": "ship_hydro_settings_row", "what": "bind each drag coefficient in the +4E0h + variant*38h row to its axis using the ShipGlobals[Physics] key names, and settle the variant-1 +50Ch question"},
+    {"packet": "gameplay_modifier_filter", "what": "008E4680: what a modifier record filters on, and who registers one"},
+    {"packet": "settings_lua_block_map", "what": "0083B5E0 in full, as a key-to-offset table for the whole 76Ch settings object"},
+    {"packet": "ocean_wave_field_sample", "what": "00B960C0 and the producers of field+B4h, +BCh, +24h and +F9h"},
+    {"packet": "ocean_coverage_regions", "what": "who builds the region array at field+620h and what the bitmaps come from"}
+  ],
+
+  "verification": {
+    "build": "scripts/build.ps1, MSVC Win32 Release, /W4 /WX: passed",
+    "tests": "the existing reconstructed_math test passed (1/1). No test case was added.",
+    "probe": "bsp_ship_motion_probe.exe run for VehicleClass[11] and VehicleClass[23], 400 steps at 0.05 s, full throttle, hard over; before-numbers measured by rebuilding the probe from its committed state with the new modules present.",
+    "limits": "Nothing here is differentially tested against the executable. The two integration phases are transcribed from the decompiler with the listing consulted for the accessors, the flag bits and the constants; no instruction-level differential probe was run against them. x87 control-word precision is unmodelled, as in docs/SHIP_MOTION.md. No game validation."
+  }
+}

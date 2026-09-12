@@ -52,6 +52,26 @@ struct GameMissionNativeCall {
     int last_argument_count{0};
 };
 
+// Milestone 2i. One row of the installed `VehicleClass` global, read out of the
+// live Lua state the recovered global-script step 00886900 loaded
+// `Scripts/datatables/autoload/vehicleclasses.lua` into. Only the keys the
+// motion path of 00825f20 reads are taken; the full descriptor reader
+// 00831840 / 00960230 is bsp/ship_class_fields.hpp's and needs a descriptor
+// object this process does not build.
+struct GameVehicleClassRow {
+    bool found{false};
+    int index{-1};
+    std::string name;   // "Name"
+    std::string type;   // "Type", the literal 00964790's string chain compares
+    float max_speed{0.0f};                   // class+500h
+    float max_accel{0.0f};                   // class+504h
+    float retardation{0.0f};                 // class+508h
+    float max_rot_angle{0.0f};               // class+4F8h
+    float max_rot_angle_change_ratio{0.0f};  // class+4FCh
+    float length{0.0f};                      // class+A0h, written by 00960230
+    float mass{0.0f};
+};
+
 // One of the four names 004dfb70 invokes.
 struct GameMissionEntryPointRun {
     std::string name;
@@ -110,6 +130,12 @@ public:
     bool run_mission_script_008860b0(const std::string& script_name);
     // 0045f520 (forced) and 0045f440 (thread safe).
     bool call_entry_point(const std::string& name, bool threadsafe);
+
+    // Milestone 2i: `VehicleClass[index]`, from the table the autoload folder
+    // of 00886900 already ran. `index` is the id the scene's
+    // `Type = E ShipClasses : <symbol>` resolved to, which is the same number
+    // the installed table indexes its rows by.
+    GameVehicleClassRow read_vehicle_class_row(int index);
 
     bool started() const noexcept;
     const GameMissionLuaSummary& summary() const noexcept;

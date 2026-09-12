@@ -1,0 +1,982 @@
+{
+  "schema_version": 1,
+  "packet": "native_singleton_manager_raw_discovery",
+  "status": "complete_read_only_discovery_no_source_implementation",
+  "base_commit": "a90f7a0ac275cd56cf605d37c3d33703012ef3a7",
+  "owned_files": [
+    "docs/NATIVE_SINGLETON_MANAGER_RAW_DISCOVERY.md",
+    "reports/native_singleton_manager_raw_discovery.json"
+  ],
+  "evidence": {
+    "seal_path": "J:\\PROG\\battlestations-pacific-decompile-native-singleton-manager-raw-discovery\\local\\singleton_manager_raw\\sealed.json",
+    "seal_sha256": "d992c6b6d68ae04a03e4be9a8b3d09657e8e5a0dd3482d56f9171ef127ad2d8d",
+    "artifact_count": 242,
+    "source_pin_count": 34,
+    "captured_function_count": 33,
+    "captured_function_bytes": 3353,
+    "disk_backed_span_count": 43,
+    "disk_backed_span_bytes": 3884,
+    "saved_virtual_spans": [
+      {
+        "address": "01090aa0",
+        "captured_length": 4,
+        "saved_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "disk_backed": false,
+        "disk_matches_saved": null,
+        "note": "Saved Ghidra virtual bytes only; not installed-runtime state."
+      },
+      {
+        "address": "0109dd64",
+        "captured_length": 4,
+        "saved_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "disk_backed": false,
+        "disk_matches_saved": null,
+        "note": "Saved Ghidra virtual bytes only; not installed-runtime state."
+      },
+      {
+        "address": "0109eea8",
+        "captured_length": 4,
+        "saved_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "disk_backed": false,
+        "disk_matches_saved": null,
+        "note": "Saved Ghidra virtual bytes only; not installed-runtime state."
+      }
+    ],
+    "installed_pe": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "machine": "0x14c",
+      "image_base": "00400000"
+    }
+  },
+  "native_layout": {
+    "manager_bytes": 20,
+    "offset_00": "untouched DWORD in inspected complete family; no installed vptr or callback fields",
+    "offset_04": "begin DWORD",
+    "offset_08": "end DWORD",
+    "offset_0c": "capacity_end DWORD",
+    "offset_10": "actual 1Ch-byte tracked critical-section pointer",
+    "iterator_bytes": 8,
+    "iterator_00": "owner DWORD",
+    "iterator_04": "position DWORD",
+    "publication": "actual mutable 01090AA0, getter capture/read and publication remain distinct",
+    "callbacks": "No manager callback storage in inspected family. Terminal target loaded from current registered object profile slot0; invalid-handler pointer comes from current encoded CRT global0109DD64."
+  },
+  "core_family": {
+    "functions": [
+      "00415350",
+      "00bd0960",
+      "00bd0600",
+      "00bd08d0",
+      "00bd0bc0",
+      "00bd0c30",
+      "00bd0700",
+      "00bcfeb0",
+      "00bd0500",
+      "00bd0560",
+      "00bd0160",
+      "00bd0180",
+      "00bd0220",
+      "00bd0400",
+      "00bcf910",
+      "0041cc80"
+    ],
+    "bytes": 1645
+  },
+  "lifetime_family": {
+    "functions": [
+      "00415350",
+      "00bd0960",
+      "00bd0600",
+      "00bd08d0",
+      "00bd0bc0",
+      "00bd0c30",
+      "00bd0700",
+      "00bcfeb0",
+      "00bd0500",
+      "00bd0560",
+      "00bd0160",
+      "00bd0180",
+      "00bd0220",
+      "00bd0400",
+      "00bcf910",
+      "0041cc80",
+      "00bcfca0",
+      "00bd0d70"
+    ],
+    "bytes": 2234,
+    "additional_operations": "Unregister and sound-driven reorder are family members, not direct B1B730 construction edges."
+  },
+  "function_inventory": [
+    {
+      "address": "00415350",
+      "name": "BSP_SingletonLifetime_GetManager",
+      "saved_signature": "undefined BSP_SingletonLifetime_GetManager(void)",
+      "end_inclusive": "004153b8",
+      "length": 105,
+      "complete_decoded_bytes": 105,
+      "last_instruction": "004153b8: ret ",
+      "direct_transfers": [
+        {
+          "site": "00415371",
+          "operation": "call",
+          "target": "00bf681b"
+        },
+        {
+          "site": "0041538a",
+          "operation": "call",
+          "target": "00bd0960"
+        }
+      ],
+      "indirect_transfers": [],
+      "current_source_scope": "typed_full_only",
+      "current_source_provider": "SingletonLifetimeDomain::get_manager_00415350"
+    },
+    {
+      "address": "00bd0960",
+      "name": "BSP_SingletonLifetime_Construct",
+      "saved_signature": "undefined BSP_SingletonLifetime_Construct(void)",
+      "end_inclusive": "00bd09af",
+      "length": 80,
+      "complete_decoded_bytes": 80,
+      "last_instruction": "00bd09af: ret ",
+      "direct_transfers": [
+        {
+          "site": "00bd0991",
+          "operation": "call",
+          "target": "00bd0600"
+        },
+        {
+          "site": "00bd0996",
+          "operation": "call",
+          "target": "00bd1860"
+        }
+      ],
+      "indirect_transfers": [],
+      "current_source_scope": "typed_full_only",
+      "current_source_provider": "ConcreteSingletonLifetimeManager constructor"
+    },
+    {
+      "address": "00bd0600",
+      "name": "BSP_PointerVector_Reserve",
+      "saved_signature": "undefined BSP_PointerVector_Reserve(void)",
+      "end_inclusive": "00bd06a4",
+      "length": 165,
+      "complete_decoded_bytes": 165,
+      "last_instruction": "00bd06a2: ret 4",
+      "direct_transfers": [
+        {
+          "site": "00bd060f",
+          "operation": "call",
+          "target": "00bd0590"
+        },
+        {
+          "site": "00bd061d",
+          "operation": "jmp",
+          "target": "00bd0627"
+        },
+        {
+          "site": "00bd062f",
+          "operation": "call",
+          "target": "00bcfeb0"
+        },
+        {
+          "site": "00bd063e",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd064c",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd0663",
+          "operation": "call",
+          "target": "00bf67a7"
+        },
+        {
+          "site": "00bd0675",
+          "operation": "jmp",
+          "target": "00bd067f"
+        },
+        {
+          "site": "00bd0684",
+          "operation": "call",
+          "target": "00bf65ac"
+        }
+      ],
+      "indirect_transfers": [],
+      "current_source_scope": "constructor_empty_vector_fragment",
+      "current_source_provider": "constructor / allocate_slots"
+    },
+    {
+      "address": "00bd08d0",
+      "name": "BSP_PointerVector_InsertOneChecked",
+      "saved_signature": "undefined BSP_PointerVector_InsertOneChecked(void)",
+      "end_inclusive": "00bd0958",
+      "length": 137,
+      "complete_decoded_bytes": 137,
+      "last_instruction": "00bd0956: ret 0x10",
+      "direct_transfers": [
+        {
+          "site": "00bd08f0",
+          "operation": "jmp",
+          "target": "00bd0911"
+        },
+        {
+          "site": "00bd08f6",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd0903",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd0920",
+          "operation": "call",
+          "target": "00bd0700"
+        },
+        {
+          "site": "00bd092d",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd0943",
+          "operation": "call",
+          "target": "00bf6713"
+        }
+      ],
+      "indirect_transfers": [],
+      "current_source_scope": "same_owner_fragment",
+      "current_source_provider": "insert_pointer_at_checked_00bd08d0"
+    },
+    {
+      "address": "00bd0bc0",
+      "name": "BSP_PointerVector_Append",
+      "saved_signature": "undefined BSP_PointerVector_Append(void)",
+      "end_inclusive": "00bd0c28",
+      "length": 105,
+      "complete_decoded_bytes": 105,
+      "last_instruction": "00bd0c26: ret 4",
+      "direct_transfers": [
+        {
+          "site": "00bd0bcf",
+          "operation": "jmp",
+          "target": "00bd0bd9"
+        },
+        {
+          "site": "00bd0c09",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd0c1c",
+          "operation": "call",
+          "target": "00bd08d0"
+        }
+      ],
+      "indirect_transfers": [],
+      "current_source_scope": "typed_full_only",
+      "current_source_provider": "append_pointer_00bd0bc0"
+    },
+    {
+      "address": "00bd0c30",
+      "name": "BSP_SingletonLifetime_Register",
+      "saved_signature": "undefined BSP_SingletonLifetime_Register(void)",
+      "end_inclusive": "00bd0c56",
+      "length": 39,
+      "complete_decoded_bytes": 39,
+      "last_instruction": "00bd0c54: ret 4",
+      "direct_transfers": [
+        {
+          "site": "00bd0c3b",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd0c4e",
+          "operation": "call",
+          "target": "00bd0bc0"
+        }
+      ],
+      "indirect_transfers": [],
+      "current_source_scope": "typed_full_only",
+      "current_source_provider": "register_object"
+    },
+    {
+      "address": "00bd0700",
+      "name": "BSP_PointerVector_InsertCopies",
+      "saved_signature": "undefined BSP_PointerVector_InsertCopies(void)",
+      "end_inclusive": "00bd08b3",
+      "length": 436,
+      "complete_decoded_bytes": 436,
+      "last_instruction": "00bd08b1: ret 0x10",
+      "direct_transfers": [
+        {
+          "site": "00bd0718",
+          "operation": "jmp",
+          "target": "00bd0722"
+        },
+        {
+          "site": "00bd0734",
+          "operation": "jmp",
+          "target": "00bd073e"
+        },
+        {
+          "site": "00bd0749",
+          "operation": "call",
+          "target": "00bd0590"
+        },
+        {
+          "site": "00bd0754",
+          "operation": "jmp",
+          "target": "00bd075e"
+        },
+        {
+          "site": "00bd077a",
+          "operation": "jmp",
+          "target": "00bd077e"
+        },
+        {
+          "site": "00bd0784",
+          "operation": "jmp",
+          "target": "00bd078e"
+        },
+        {
+          "site": "00bd079a",
+          "operation": "jmp",
+          "target": "00bd07a4"
+        },
+        {
+          "site": "00bd07ab",
+          "operation": "call",
+          "target": "00bcfeb0"
+        },
+        {
+          "site": "00bd07be",
+          "operation": "call",
+          "target": "00bd0500"
+        },
+        {
+          "site": "00bd07cc",
+          "operation": "call",
+          "target": "00bd0560"
+        },
+        {
+          "site": "00bd07dd",
+          "operation": "call",
+          "target": "00bd0500"
+        },
+        {
+          "site": "00bd07eb",
+          "operation": "jmp",
+          "target": "00bd07f5"
+        },
+        {
+          "site": "00bd07fc",
+          "operation": "call",
+          "target": "00bf65ac"
+        },
+        {
+          "site": "00bd0840",
+          "operation": "call",
+          "target": "00bd0500"
+        },
+        {
+          "site": "00bd085a",
+          "operation": "call",
+          "target": "00bd0560"
+        },
+        {
+          "site": "00bd0872",
+          "operation": "call",
+          "target": "00bd0160"
+        },
+        {
+          "site": "00bd0888",
+          "operation": "call",
+          "target": "00bd0500"
+        },
+        {
+          "site": "00bd0893",
+          "operation": "call",
+          "target": "00bd0180"
+        },
+        {
+          "site": "00bd08a5",
+          "operation": "call",
+          "target": "00bd0160"
+        }
+      ],
+      "indirect_transfers": [],
+      "current_source_scope": "count_one_insertion_fragment",
+      "current_source_provider": "insert_pointer_at_checked_00bd08d0"
+    },
+    {
+      "address": "00bcfeb0",
+      "name": "BSP_PointerVector_AllocateSlots",
+      "saved_signature": "undefined BSP_PointerVector_AllocateSlots(void)",
+      "end_inclusive": "00bcff04",
+      "length": 85,
+      "complete_decoded_bytes": 85,
+      "last_instruction": "00bcff00: call 0xbf6885",
+      "direct_transfers": [
+        {
+          "site": "00bcfec1",
+          "operation": "call",
+          "target": "00bf681b"
+        },
+        {
+          "site": "00bcfee9",
+          "operation": "call",
+          "target": "00bf6340"
+        },
+        {
+          "site": "00bcff00",
+          "operation": "call",
+          "target": "00bf6885"
+        }
+      ],
+      "indirect_transfers": [],
+      "current_source_scope": "typed_full_internal_helper",
+      "current_source_provider": "anonymous allocate_slots"
+    },
+    {
+      "address": "00bd0500",
+      "name": "BSP_PointerVector_CopyRange",
+      "saved_signature": "undefined BSP_PointerVector_CopyRange(void)",
+      "end_inclusive": "00bd052f",
+      "length": 48,
+      "complete_decoded_bytes": 48,
+      "last_instruction": "00bd052d: ret 0xc",
+      "direct_transfers": [
+        {
+          "site": "00bd0522",
+          "operation": "call",
+          "target": "00bf67a7"
+        }
+      ],
+      "indirect_transfers": [],
+      "current_source_scope": "typed_copy_fragment_without_result_abi",
+      "current_source_provider": "anonymous copy_slots"
+    },
+    {
+      "address": "00bd0560",
+      "name": "BSP_PointerVector_FillRange",
+      "saved_signature": "undefined BSP_PointerVector_FillRange(void)",
+      "end_inclusive": "00bd058d",
+      "length": 46,
+      "complete_decoded_bytes": 46,
+      "last_instruction": "00bd058b: ret 0xc",
+      "direct_transfers": [],
+      "indirect_transfers": [],
+      "current_source_scope": "one_value_fill_fragment",
+      "current_source_provider": "single captured-value stores"
+    },
+    {
+      "address": "00bd0160",
+      "name": "FUN_00bd0160",
+      "saved_signature": "undefined FUN_00bd0160(void)",
+      "end_inclusive": "00bd017d",
+      "length": 30,
+      "complete_decoded_bytes": 30,
+      "last_instruction": "00bd017d: ret ",
+      "direct_transfers": [],
+      "indirect_transfers": [],
+      "current_source_scope": "no_source",
+      "current_source_provider": "none"
+    },
+    {
+      "address": "00bd0180",
+      "name": "FUN_00bd0180",
+      "saved_signature": "undefined FUN_00bd0180(void)",
+      "end_inclusive": "00bd01ae",
+      "length": 47,
+      "complete_decoded_bytes": 47,
+      "last_instruction": "00bd01ae: ret ",
+      "direct_transfers": [
+        {
+          "site": "00bd01a3",
+          "operation": "call",
+          "target": "00bf67a7"
+        }
+      ],
+      "indirect_transfers": [],
+      "current_source_scope": "no_source",
+      "current_source_provider": "none"
+    },
+    {
+      "address": "00bd0220",
+      "name": "FUN_00bd0220",
+      "saved_signature": "undefined FUN_00bd0220(void)",
+      "end_inclusive": "00bd0249",
+      "length": 42,
+      "complete_decoded_bytes": 42,
+      "last_instruction": "00bd0249: ret ",
+      "direct_transfers": [
+        {
+          "site": "00bd022b",
+          "operation": "call",
+          "target": "00bf65ac"
+        }
+      ],
+      "indirect_transfers": [],
+      "current_source_scope": "no_named_full_source",
+      "current_source_provider": "typed catch/destruction has related inlined cleanup"
+    },
+    {
+      "address": "00bd0400",
+      "name": "BSP_SingletonLifetime_Destroy",
+      "saved_signature": "undefined BSP_SingletonLifetime_Destroy(void)",
+      "end_inclusive": "00bd04c4",
+      "length": 197,
+      "complete_decoded_bytes": 197,
+      "last_instruction": "00bd04c4: ret ",
+      "direct_transfers": [
+        {
+          "site": "00bd0426",
+          "operation": "call",
+          "target": "00bcf910"
+        },
+        {
+          "site": "00bd0438",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd044e",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd045b",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd0489",
+          "operation": "call",
+          "target": "00bcf910"
+        },
+        {
+          "site": "00bd0496",
+          "operation": "call",
+          "target": "0041cc80"
+        },
+        {
+          "site": "00bd04a3",
+          "operation": "call",
+          "target": "00bf65ac"
+        }
+      ],
+      "indirect_transfers": [
+        {
+          "site": "00bd0485",
+          "operation": "call",
+          "operand": "edx"
+        }
+      ],
+      "current_source_scope": "typed_full_normal_path_with_noexcept_callback",
+      "current_source_provider": "destroy_00bd0400"
+    },
+    {
+      "address": "00bcf910",
+      "name": "BSP_PointerVector_Count",
+      "saved_signature": "undefined BSP_PointerVector_Count(void)",
+      "end_inclusive": "00bcf922",
+      "length": 19,
+      "complete_decoded_bytes": 19,
+      "last_instruction": "00bcf922: ret ",
+      "direct_transfers": [],
+      "indirect_transfers": [],
+      "current_source_scope": "typed_full_only",
+      "current_source_provider": "count_00bcf910"
+    },
+    {
+      "address": "0041cc80",
+      "name": "BSP_CriticalSection_DestroyOwned",
+      "saved_signature": "undefined BSP_CriticalSection_DestroyOwned(void)",
+      "end_inclusive": "0041ccbf",
+      "length": 64,
+      "complete_decoded_bytes": 64,
+      "last_instruction": "0041ccbf: ret ",
+      "direct_transfers": [
+        {
+          "site": "0041ccae",
+          "operation": "call",
+          "target": "00bf65ac"
+        }
+      ],
+      "indirect_transfers": [
+        {
+          "site": "0041cc9d",
+          "operation": "call",
+          "operand": "edi"
+        },
+        {
+          "site": "0041cca7",
+          "operation": "call",
+          "operand": "dword ptr [0xce2214]"
+        }
+      ],
+      "current_source_scope": "typed_layout_source_requires_malloc_pair_and_capture_review",
+      "current_source_provider": "random_threads.cpp and typed manager OwnedCriticalSection"
+    },
+    {
+      "address": "00bcfca0",
+      "name": "BSP_SingletonLifetime_Unregister",
+      "saved_signature": "undefined BSP_SingletonLifetime_Unregister(void)",
+      "end_inclusive": "00bcfd12",
+      "length": 115,
+      "complete_decoded_bytes": 115,
+      "last_instruction": "00bcfd10: ret 4",
+      "direct_transfers": [
+        {
+          "site": "00bcfcaf",
+          "operation": "call",
+          "target": "00bcf910"
+        },
+        {
+          "site": "00bcfccb",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bcfcdd",
+          "operation": "call",
+          "target": "00bcf910"
+        },
+        {
+          "site": "00bcfcfe",
+          "operation": "call",
+          "target": "00bf6713"
+        }
+      ],
+      "indirect_transfers": [],
+      "current_source_scope": "typed_full_only",
+      "current_source_provider": "unregister_object"
+    },
+    {
+      "address": "00bd0d70",
+      "name": "BSP_SingletonLifetime_MoveObjectAfter",
+      "saved_signature": "undefined BSP_SingletonLifetime_MoveObjectAfter(void)",
+      "end_inclusive": "00bd0f49",
+      "length": 474,
+      "complete_decoded_bytes": 474,
+      "last_instruction": "00bd0f47: ret 8",
+      "direct_transfers": [
+        {
+          "site": "00bd0d81",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd0d98",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd0da5",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd0db2",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd0dbc",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd0dca",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd0dd2",
+          "operation": "jmp",
+          "target": "00bd0d90"
+        },
+        {
+          "site": "00bd0dd8",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd0de2",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd0e04",
+          "operation": "call",
+          "target": "00bf67a7"
+        },
+        {
+          "site": "00bd0e18",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd0e25",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd0e38",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd0e45",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd0e52",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd0e5c",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd0e6a",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd0e72",
+          "operation": "jmp",
+          "target": "00bd0e30"
+        },
+        {
+          "site": "00bd0e80",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd0e8f",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd0ea1",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd0eaa",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd0ebe",
+          "operation": "jmp",
+          "target": "00bd0ec8"
+        },
+        {
+          "site": "00bd0ef8",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd0f0b",
+          "operation": "call",
+          "target": "00bd08d0"
+        },
+        {
+          "site": "00bd0f28",
+          "operation": "call",
+          "target": "00bf6713"
+        },
+        {
+          "site": "00bd0f3b",
+          "operation": "call",
+          "target": "00bd08d0"
+        }
+      ],
+      "indirect_transfers": [],
+      "current_source_scope": "typed_full_with_null_owner_checks_excluded",
+      "current_source_provider": "move_object_after_00bd0d70"
+    }
+  ],
+  "already_completed_raw_providers": [
+    {
+      "address": "00bd1860",
+      "source": "src/native_renderer_worker_lifetime.cpp",
+      "symbol": "create_native_tracked_critical_section_00bd1860",
+      "evidence": "Full39-byte body matches disk; raw1Ch allocation through singleton_lifetime_allocate; actual+18 zero after InitializeCriticalSection."
+    },
+    {
+      "address": "00411ee0",
+      "source": "src/native_diagnostic_sink_lifetime.cpp",
+      "symbol": "destroy_native_singleton_guard_00411ee0",
+      "evidence": "Full25-byte body matches disk; capture guard+4, rewriteCE37FC, decrement physical+18 and Leave, retain guard+4."
+    },
+    {
+      "address": "00c04fde",
+      "source": "src/native_crt_pointer_decode.cpp",
+      "symbol": "native_crt_decode_pointer_00c04fde",
+      "evidence": "Current completed source and stable actual TLS/module context inspected and pinned; native body not recaptured in this packet."
+    }
+  ],
+  "exception_edges": [
+    {
+      "from": "00415350",
+      "funcinfo": "00d8418c",
+      "unwind_map": "00d84184",
+      "state": 0,
+      "action": "00c5e0d0",
+      "effect": "Free current saved allocation spill EBP-10; no publication clear."
+    },
+    {
+      "from": "00bd0960",
+      "funcinfo": "00dff4e8",
+      "unwind_map": "00dff4e0",
+      "state": 0,
+      "action": "00cc5490",
+      "effect": "Reload owner EBP-10 and tail BD0220; no section release."
+    },
+    {
+      "from": "00bd0400",
+      "funcinfo": "00dff490",
+      "unwind_map": "00dff488",
+      "state": 0,
+      "action": "00cc5450",
+      "effect": "Reload owner EBP-18 and tail BD0220; state armed before first count/drain and remains through normal teardown."
+    },
+    {
+      "from": "00bd0590",
+      "funcinfo": "00dff4bc",
+      "unwind_map": "00dff4b4",
+      "state": 0,
+      "action": "00cc5470",
+      "effect": "Destroy temporary string at EBP-50 via4072D0; raw FH3/string/length_error exception machinery is not implemented by a std::length_error service call."
+    }
+  ],
+  "service_frontier": [
+    {
+      "addresses": [
+        "00bf681b",
+        "00bf65ac",
+        "00bf9dc8"
+      ],
+      "existing": "singleton_lifetime_allocate/free real malloc/new-handler retry/free",
+      "qualification": "Service boundary, not a claim to full original static CRT heaps, handler globals, bad_alloc RTTI/atexit or SEH internals."
+    },
+    {
+      "addresses": [
+        "00bf67a7"
+      ],
+      "existing": "actual CRT memmove_s in singleton_lifetime.cpp",
+      "qualification": "Full native helper captured: zero count succeeds; bad pointers or short destination set errno and invoke BF66EF; returning handler then permits error return. Raw helpers ignore result. Actual host CRT service does not prove original errno/encoded-handler ownership."
+    },
+    {
+      "addresses": [
+        "00bd0590"
+      ],
+      "existing": "std::length_error(\"vector<T> too long\") at typed insert",
+      "qualification": "Nonreturning source exception service. Original complete throw-site uses408720,411700,BF6885 and unwind4072D0; not a completed raw105-byte provider."
+    },
+    {
+      "addresses": [
+        "00bf6713",
+        "00bf66ef",
+        "00bf65b1",
+        "00c04fd5",
+        "00bfbdfb",
+        "00c04ef3",
+        "00bf65bb"
+      ],
+      "existing": "No completed actual raw invalid-handler dispatcher found; callbacks and abstract interfaces exist",
+      "qualification": "BF6713 sends five zero cdecl arguments; BF66EF decodes current109DD64 via completedC04FDE and tailcalls decoded current handler, or callsC04EF3(2), then tails Watson. C04EF3 ignores parameter and clears109EEA8. BF65B1 stores init-pointers encoded-null input. Native machine tail can return if terminal OS termination returns; no ad hoc throwing/fatal/no-op replacement."
+    },
+    {
+      "addresses": [
+        "00bd0400@00bd0485"
+      ],
+      "existing": "Typed destroy_registered callback and completed registry B1B710 with added EDX bindings",
+      "qualification": "Raw slot0 is ECX owner, stackflag1; D5E59C remains original profile identity. Need fixed canonical registered-owner dispatch/profile-to-source mapping supplying actual publication/pool/invalid-service bindings, and coverage for every admitted owner."
+    }
+  ],
+  "recommended_next_packet": {
+    "id": "native_singleton_vector_leaves6",
+    "readiness": "Ready for complete raw-function source at the existing actual CRT memory-service boundary; this alone does not make raw manager or B1B730 ready.",
+    "addresses": [
+      "00bcf910",
+      "00bd0160",
+      "00bd0180",
+      "00bd0220",
+      "00bd0500",
+      "00bd0560"
+    ],
+    "bytes": 232,
+    "owned_files": [
+      "include/bsp/native_singleton_vector_leaves.hpp",
+      "src/native_singleton_vector_leaves.cpp",
+      "docs/NATIVE_SINGLETON_VECTOR_LEAVES.md",
+      "reports/native_singleton_vector_leaves_audit.json"
+    ],
+    "primary_shared_edits": [
+      "CMakeLists.txt build registration",
+      "sharded names and reconstruction ledgers",
+      "packet metadata",
+      "Ghidra annotations and export refresh"
+    ],
+    "source_abi": [
+      "uint32_t __fastcall native_singleton_vector_count_00bcf910(const void* owner, void* unused_edx): ECX owner; EAX count bits; RET.",
+      "void __cdecl native_singleton_vector_assign_range_00bd0160(void* first, void* last, const void* value_slot): stack3; RET.",
+      "void* __cdecl native_singleton_vector_copy_backward_00bd0180(const void* first, const void* last, void* destination_end): stack3; EAX destination_begin; RET.",
+      "void __fastcall native_singleton_vector_destroy_storage_00bd0220(void* owner, void* unused_edx): ECX owner; RET; actual free and ordered+4/+8/+C clears.",
+      "void* __stdcall native_singleton_vector_copy_range_00bd0500(const void* first, const void* last, void* destination): stack3; EAX advanced destination; RET0Ch; incomingECX unconsumed.",
+      "void* __stdcall native_singleton_vector_fill_count_00bd0560(void* destination, uint32_t count, const void* value_slot): stack3; EAX advanced destination; RET0Ch; incomingECX unconsumed."
+    ],
+    "dependencies": [
+      "Actual singleton_lifetime_free; no arbitrary free callback",
+      "Actual memmove_s service; preserve ignored return",
+      "32-bit address/SAR arithmetic and current source-value rereads; no std::vector replacement"
+    ],
+    "subsequent_packets": [
+      "Complete raw BCFEB0/BD0600/BD0700/BD08D0/BD0BC0/BD0C30 with fixed actual invalid/length-error service boundary and generic count/foreign-owner paths.",
+      "Complete raw415350/BD0960/BD0400/41CC80 and family BCFCA0/BD0D70; bind canonical existing01090AA0 owner storage plus concrete registered-owner terminal dispatch and source exception cleanup.",
+      "Implement fullB1B730 with two separate manager lookups, current F8D41C registration and existing complete registry constructor/raw guard providers; migrate canonical ownership at integration without second private domain."
+    ]
+  },
+  "critical_findings": [
+    "BD0600 returning-free continuation includes ADDESP4 atBD0689; populated reserve preserves separately reloaded retained count and requested stack capacity.",
+    "BD0700 returning-free continuation includes ADDESP4 atBD0801; fullgeneric insertion has both tail<count and tail>=count in-place branches; value is read even when countzero.",
+    "BD08D0 foreign-owner validation only occurs for captured nonzero size. If handler returns it continues on original ECX container, passes foreign owner through to BD0700 which does not consume that argument, and writes result position before result owner.",
+    "BD0220 is a new named dependency from both actual constructor/destructor unwind maps.",
+    "Raw manager teardown has no implicit per-object unregister, lock acquisition, generic callback field or atexit registry registration.",
+    "41CC80 captures section once, tests depth signedpositive, caches Leave import for loop, frees captured pointer via actualfree, clears original slot only afterfree. Existing random_threads delete-based source is not the complete raw provider for malloc-backed section.",
+    "Raw actual publication cannot be a cast of current typed domain published_manager; no newprivate domain is justified."
+  ],
+  "validation": {
+    "native_capture_and_installed_pe": true,
+    "source_inspection": true,
+    "source_edits": false,
+    "ghidra_mutations": false,
+    "ledger_edits": false,
+    "build_run": false,
+    "new_tests": false,
+    "runtime_run": false,
+    "original_abi_compatible": false,
+    "game_validated": false
+  },
+  "uncertainties": [
+    "Original FH3/SEH fault continuation and mutable native EH stack-spill alias behavior are not reproduced by source C++ cleanup.",
+    "Actual registered-owner population and terminal bindings across the whole game remain an integration obligation; registry-specific dispatch alone does not close all manager users.",
+    "Host CRT services are concrete and reusable but are not byte-for-byte static native CRT ownership or exceptional-state reconstruction.",
+    "Saved virtual globals are analysis-image bytes, not observed live game publication or encoded-handler values."
+  ]
+}

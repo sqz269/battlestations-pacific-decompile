@@ -103,6 +103,12 @@ public:
     // front-end pages off the screen when a mission starts.
     void release_main_menu_manager_00686c90();
 
+    // Milestone 2i. The load's `select_front_end_layout` row, 004c1ac0(3,0)
+    // then 00518250(3,0): a non-committing call that loads set 3's pause pair
+    // and releases nothing, so the front-end frame layouts the title bring-up
+    // acquired stay loaded through the mission.
+    void select_front_end_layout_00518250();
+
     // One in-mission frame of BSP_Game_UpdateInterfaceOnly 004c40f0, which is
     // where the screen pump runs while the game state is not 1, 2 or 4.
     void update_interface_only_004c40f0(float raw_delta);

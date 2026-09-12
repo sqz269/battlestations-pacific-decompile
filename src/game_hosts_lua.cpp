@@ -124,6 +124,51 @@ GameMissionLuaHost::~GameMissionLuaHost() {
     }
 }
 
+GameVehicleClassRow GameMissionLuaHost::read_vehicle_class_row(int index) {
+    // Milestone 2i. The table is already in this state: 00886900's autoload
+    // folder ran Scripts/datatables/autoload/vehicleclasses.lua as one of its
+    // scripts. Nothing here parses a file; the read is a plain table lookup
+    // against the interpreter the recovered bring-up built.
+    GameVehicleClassRow row;
+    row.index = index;
+    if (state_ == nullptr || index < 0) return row;
+    const int top = ::lua_gettop(state_);
+    ::lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
+    if (::lua_type(state_, -1) == LUA_TTABLE) {
+        ::lua_pushinteger(state_, index);
+        ::lua_gettable(state_, -2);
+        if (::lua_type(state_, -1) == LUA_TTABLE) {
+            row.found = true;
+            const auto number = [&](const char* key) -> float {
+                ::lua_getfield(state_, -1, key);
+                const float value = ::lua_type(state_, -1) == LUA_TNUMBER
+                    ? static_cast<float>(::lua_tonumber(state_, -1)) : 0.0f;
+                ::lua_settop(state_, ::lua_gettop(state_) - 1);
+                return value;
+            };
+            const auto text = [&](const char* key) -> std::string {
+                ::lua_getfield(state_, -1, key);
+                const char* value = ::lua_type(state_, -1) == LUA_TSTRING
+                    ? ::lua_tolstring(state_, -1, nullptr) : nullptr;
+                std::string out = value != nullptr ? value : "";
+                ::lua_settop(state_, ::lua_gettop(state_) - 1);
+                return out;
+            };
+            row.name = text("Name");
+            row.type = text("Type");
+            row.max_speed = number("MaxSpeed");
+            row.max_accel = number("MaxAccel");
+            row.retardation = number("Retardation");
+            row.max_rot_angle = number("MaxRotAngle");
+            row.max_rot_angle_change_ratio = number("MaxRotAngleChangeRatio");
+            row.length = number("Length");
+            row.mass = number("Mass");
+        }
+    }
+    ::lua_settop(state_, top);
+    return row;
+}
+
 bool GameMissionLuaHost::started() const noexcept { return state_ != nullptr; }
 
 const GameMissionLuaSummary& GameMissionLuaHost::summary() const noexcept { return summary_; }
