@@ -69,6 +69,7 @@
 #include "bsp/entity_think_dispatch.hpp"
 #include "bsp/unit_damage.hpp"
 #include "bsp/unit_hit_path.hpp"
+#include "bsp/unit_parts.hpp"
 #include <algorithm>
 #include <cmath>
 #include <memory>
@@ -2185,6 +2186,28 @@ int main() {
             "00879810 turns a positive delta into a repair through 00879070");
     }
 
+
+    {
+        // 00958B07..00958B20: vtable[204h] is reached only through the composite
+        // test, so a sub-object that answers the secondary test but is not
+        // composite keeps the default break timer. Flattening the short circuit
+        // into a plain OR compiles and silently shortens every such timer.
+        bsp::SubObjectClassFields fields;
+        fields.break_timer_default = 4.0f;  // owner class +190h
+        fields.break_timer_kinded = 9.0f;   // owner class +18Ch
+
+        bsp::SubObjectKindTests secondary_only;
+        secondary_only.secondary_46 = true;
+        bsp::SubObjectKindTests composite = secondary_only;
+        composite.is_composite = true;
+        bsp::SubObjectKindTests direct;
+        direct.is_kind_46 = true;
+
+        check(bsp::unit_subobject_break_timer(secondary_only, fields) == 4.0f
+                  && bsp::unit_subobject_break_timer(composite, fields) == 9.0f
+                  && bsp::unit_subobject_break_timer(direct, fields) == 9.0f,
+            "00958B07 consults vtable[204h] only for a composite sub-object");
+    }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
     return failures ? 1 : 0;
