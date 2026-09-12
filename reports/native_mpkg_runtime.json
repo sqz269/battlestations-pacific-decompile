@@ -1,0 +1,28 @@
+{
+  "packet": "orch2_native_mpkg_runtime_ax",
+  "source": "src/native_mpkg_runtime.cpp",
+  "additional_native_routines": 0,
+  "coverage": "Concrete source dispatch joining the actual archive/provider owners to existing VFS, memory and canonical string-pool services.",
+  "contracts": [
+    "Forward captured manager-open and stream-length targets without rereading owner tables; existing table-based callers retain profile checks.",
+    "Delete the converted stream using captured BB8F90, owner and scalar-deletion flags through the actual retained-memory context.",
+    "Use canonical pool services for shared allocation, free, pool getter and string return.",
+    "Bind a borrowed MPKG provider context explicitly; restore the returned previous binding before the borrowed context expires.",
+    "Dispatch factory BB9D90 and provider scalar deletion BB9EE0 to complete source bodies; preserve caller-owned intrusive reference changes.",
+    "Accept D64390 provider and D15AD8 memory-backing identities; dispatch backing deletion to existing 8D4470.",
+    "Delegate archive construction BB9920 and destruction BB9C10 to actual raw34h source bodies."
+  ],
+  "validation": {
+    "preliminary_strict_win32_build": "local/native-ax-preliminary-build02.log; passed with both CTests using actual sibling source paths through a temporary ignored CMake include",
+    "integrated_build": "pending committed worker merge and removal of temporary CMake include",
+    "independent_review": "pending",
+    "source_binding_fixture": "pending",
+    "game_validated": false
+  },
+  "limits": [
+    "These bindings are new source interfaces, not recovered native ABI bodies.",
+    "MPKG entry-open/compression dispatch remains separate work.",
+    "Missing borrowed contexts and unsupported numeric targets are explicit source errors.",
+    "Original FH3/SEH, native stack aliasing, installed MPKG coverage and gameplay remain unproven."
+  ]
+}

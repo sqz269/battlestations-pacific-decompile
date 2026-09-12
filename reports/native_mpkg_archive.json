@@ -1,0 +1,370 @@
+{
+  "packet": "orch2_native_mpkg_archive_ax",
+  "captured_utc": "2026-09-12T23:18:05.259043+00:00",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program_path": "/battlestationspacific.exe",
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_mpkg_archive.cpp",
+  "bodies": [
+    {
+      "label": "archive_construct",
+      "address": "00bb9920",
+      "end_inclusive": "00bb9c0a",
+      "bytes": 747,
+      "sha256": "ae56080e3ddaa652e2eb8a0453e85bb08fa03043bae163f9957d554915d2502b",
+      "live_equal_installed_pe": true,
+      "direct_calls": [
+        {
+          "address": "00bb995c",
+          "native": "0041dd40",
+          "function": "00bb9920"
+        },
+        {
+          "address": "00bb9971",
+          "native": "00bf7680",
+          "function": "00bb9920"
+        },
+        {
+          "address": "00bb99a6",
+          "native": "00bef750",
+          "function": "00bb9920"
+        },
+        {
+          "address": "00bb99d9",
+          "native": "00bf681b",
+          "function": "00bb9920"
+        },
+        {
+          "address": "00bb99f1",
+          "native": "008d43c0",
+          "function": "00bb9920"
+        },
+        {
+          "address": "00bb9a66",
+          "native": "00bef610",
+          "function": "00bb9920"
+        },
+        {
+          "address": "00bb9ab6",
+          "native": "00bef6d0",
+          "function": "00bb9920"
+        },
+        {
+          "address": "00bb9ad6",
+          "native": "00bb87a0",
+          "function": "00bb9920"
+        },
+        {
+          "address": "00bb9bef",
+          "native": "00bb9700",
+          "function": "00bb9920"
+        }
+      ],
+      "indirect_calls": [
+        {
+          "call_site": "00bb99a0",
+          "operand": "eax",
+          "containing_function": "00bb9920"
+        },
+        {
+          "call_site": "00bb99b5",
+          "operand": "dword ptr [0xce2220]",
+          "containing_function": "00bb9920"
+        },
+        {
+          "call_site": "00bb99c5",
+          "operand": "eax",
+          "containing_function": "00bb9920"
+        },
+        {
+          "call_site": "00bb99cf",
+          "operand": "eax",
+          "containing_function": "00bb9920"
+        },
+        {
+          "call_site": "00bb9aae",
+          "operand": "eax",
+          "containing_function": "00bb9920"
+        },
+        {
+          "call_site": "00bb9ac2",
+          "operand": "dword ptr [0xce2220]",
+          "containing_function": "00bb9920"
+        },
+        {
+          "call_site": "00bb9ad2",
+          "operand": "eax",
+          "containing_function": "00bb9920"
+        },
+        {
+          "call_site": "00bb9ae9",
+          "operand": "edx",
+          "containing_function": "00bb9920"
+        },
+        {
+          "call_site": "00bb9afb",
+          "operand": "eax",
+          "containing_function": "00bb9920"
+        },
+        {
+          "call_site": "00bb9b0d",
+          "operand": "edx",
+          "containing_function": "00bb9920"
+        },
+        {
+          "call_site": "00bb9b1f",
+          "operand": "eax",
+          "containing_function": "00bb9920"
+        },
+        {
+          "call_site": "00bb9b31",
+          "operand": "edx",
+          "containing_function": "00bb9920"
+        },
+        {
+          "call_site": "00bb9b43",
+          "operand": "eax",
+          "containing_function": "00bb9920"
+        },
+        {
+          "call_site": "00bb9b6f",
+          "operand": "edx",
+          "containing_function": "00bb9920"
+        },
+        {
+          "call_site": "00bb9ba7",
+          "operand": "edx",
+          "containing_function": "00bb9920"
+        },
+        {
+          "call_site": "00bb9bdf",
+          "operand": "edx",
+          "containing_function": "00bb9920"
+        }
+      ]
+    },
+    {
+      "label": "archive_destroy",
+      "address": "00bb9c10",
+      "end_inclusive": "00bb9ca0",
+      "bytes": 145,
+      "sha256": "27e72a6707206cee9bb5612a6d27462c8347867bd6ddf3e5994182d3c0e53901",
+      "live_equal_installed_pe": true,
+      "direct_calls": [
+        {
+          "address": "00bb9c5b",
+          "native": "00bb94a0",
+          "function": "00bb9c10"
+        },
+        {
+          "address": "00bb9c63",
+          "native": "00bf6989",
+          "function": "00bb9c10"
+        },
+        {
+          "address": "00bb9c84",
+          "native": "00419cc0",
+          "function": "00bb9c10"
+        },
+        {
+          "address": "00bb9c8b",
+          "native": "00bd1510",
+          "function": "00bb9c10"
+        }
+      ],
+      "indirect_calls": [
+        {
+          "call_site": "00bb9c3d",
+          "operand": "dword ptr [0xce2220]",
+          "containing_function": "00bb9c10"
+        },
+        {
+          "call_site": "00bb9c4d",
+          "operand": "eax",
+          "containing_function": "00bb9c10"
+        }
+      ]
+    }
+  ],
+  "strengthened_existing_memory_leaf": {
+    "label": "memory_data",
+    "address": "00bef610",
+    "end_inclusive": "00bef616",
+    "bytes": 7,
+    "sha256": "92c5e2972d2442d6d750d027a5da0e7ee862ca52fef58c2af20331258d8191ef",
+    "live_equal_installed_pe": true,
+    "direct_calls": [],
+    "indirect_calls": []
+  },
+  "support": [
+    {
+      "label": "application_callback_stores",
+      "address": "0073d63c",
+      "end_inclusive": "0073d65b",
+      "bytes": 32,
+      "sha256": "7aa05a94b4e4f9efca5702c5992f6b1710ac091cf77dc2513ad3dcefa0427a84",
+      "live_equal_installed_pe": true,
+      "direct_calls": [],
+      "indirect_calls": []
+    },
+    {
+      "label": "xor_key",
+      "address": "00e144f0",
+      "end_inclusive": "00e14708",
+      "bytes": 537,
+      "sha256": "26abd3e2995fdbacecb6f352b5c0eb20ff20c9a7ada6312ba619c9d4c6fa6183",
+      "live_equal_installed_pe": true
+    },
+    {
+      "label": "ctor_funcinfo",
+      "address": "00dfe4dc",
+      "end_inclusive": "00dfe4ff",
+      "bytes": 36,
+      "sha256": "f538e8bd58666c0cb4fb0f95791c264cc4d4302dc2af4335c70ad9c72d709b5d",
+      "live_equal_installed_pe": true
+    },
+    {
+      "label": "ctor_unwind_map",
+      "address": "00dfe4c4",
+      "end_inclusive": "00dfe4db",
+      "bytes": 24,
+      "sha256": "5fc8990df06c3d2899fdc832393d355ea4896c1ecefbefbfd3f34adf67314415",
+      "live_equal_installed_pe": true
+    },
+    {
+      "label": "dtor_funcinfo",
+      "address": "00dfe510",
+      "end_inclusive": "00dfe533",
+      "bytes": 36,
+      "sha256": "1c8be5d24393f95f55f74e6d6c779ed6c9adf48aa4ea896e1b783030c33df16d",
+      "live_equal_installed_pe": true
+    },
+    {
+      "label": "dtor_unwind_map",
+      "address": "00dfe500",
+      "end_inclusive": "00dfe50f",
+      "bytes": 16,
+      "sha256": "bb9264c5a575dd45314bb6382b609b90f08459023a8151b5fc07fd882415acff",
+      "live_equal_installed_pe": true
+    },
+    {
+      "label": "ctor_unwind_actions",
+      "address": "00cc4880",
+      "end_inclusive": "00cc48a0",
+      "bytes": 33,
+      "sha256": "b5e39751c8002edde319f4ef524b17c8a7928273ab30bfc5280511403ba3b74a",
+      "live_equal_installed_pe": true,
+      "direct_calls": [
+        {
+          "address": "00cc489a",
+          "native": "00bf65ac",
+          "function": "00cc4896"
+        }
+      ],
+      "indirect_calls": []
+    },
+    {
+      "label": "dtor_unwind_actions",
+      "address": "00cc48b0",
+      "end_inclusive": "00cc48c5",
+      "bytes": 22,
+      "sha256": "17251e3f0c3b5ecc82b5a488dbe92ea6c8af39ee43fce91adcfc649468518223",
+      "live_equal_installed_pe": true,
+      "direct_calls": [],
+      "indirect_calls": []
+    },
+    {
+      "label": "base_manager_profile",
+      "address": "00d685b4",
+      "end_inclusive": "00d685bb",
+      "bytes": 8,
+      "sha256": "a449adb1f0cc3ef42c2835b25f72a2c9f239364129f516b34e7dd078697fb4f8",
+      "live_equal_installed_pe": true
+    },
+    {
+      "label": "derived_manager_profile",
+      "address": "00d68d04",
+      "end_inclusive": "00d68d0b",
+      "bytes": 8,
+      "sha256": "0cd443dfc1ed1b78fd5f31817e21eac8289558129dec17dd9d71eecc46736bf4",
+      "live_equal_installed_pe": true
+    },
+    {
+      "label": "memory_stream_profile",
+      "address": "00d642c0",
+      "end_inclusive": "00d642f7",
+      "bytes": 56,
+      "sha256": "19bc6e25d6f70fc4313cf9b27008c556c74bcaadbb64a9b3ee5da5290479e7be",
+      "live_equal_installed_pe": true
+    },
+    {
+      "label": "backing_profile",
+      "address": "00d15ad8",
+      "end_inclusive": "00d15adf",
+      "bytes": 8,
+      "sha256": "4961e9832015a124713cd4e85d58bfc0ab3700c1bb84d137d4cee67ebfdfc319",
+      "live_equal_installed_pe": true
+    },
+    {
+      "label": "mpkg_provider_profile",
+      "address": "00d64390",
+      "end_inclusive": "00d643bb",
+      "bytes": 44,
+      "sha256": "888d4133abb4a1ee84947195840dc2fb26a73e710087d9f976ab49b48e69b64a",
+      "live_equal_installed_pe": true
+    },
+    {
+      "label": "mpkg_factory_profile",
+      "address": "00cfea14",
+      "end_inclusive": "00cfea1b",
+      "bytes": 8,
+      "sha256": "c51b53e949cb8b0a1cac44b8bc338f7293f1ccc2d2152235e8920a42e83b3656",
+      "live_equal_installed_pe": true
+    }
+  ],
+  "coverage": "Complete actual-storage source bodies; independent assembly review accepted, integrated native fixture pending.",
+  "original_abi": {
+    "00bb9920": "ECX raw34h archive; original8h name-header pointer stacked; EAX owner; RET4.",
+    "00bb9c10": "ECX raw34h archive; no stacked arguments; RET; no semantic result.",
+    "00bef610": "ECX raw14h stream; EDX unused; EAX backing data; RET. Three instructions, seven bytes, in MSVC naked leaf."
+  },
+  "constructor_order": [
+    "Construct current owned path with original alias/reload rules; zero vector and set end-record offset FFFFFFFF.",
+    "Open original name through captured current manager slot4 with mode2, convert actual source, then release original source reference.",
+    "Read converted size low DWORD; allocate/construct raw10h backing; decode each byte with global-index modulo for the final short block.",
+    "Delete converted stream through captured slot4/flags1; create decoded stream, publish archive+C, release backing reference.",
+    "Find end record, seek its current offset, read native fields using one reused DWORD initially holding the backing pointer, then load actual directory."
+  ],
+  "destructor_order": [
+    "Release captured decoded stream reference; current slot0 only at zero.",
+    "Lower state before actual vector resize0/free, lower again before current path getter/return. Retain stale owner fields."
+  ],
+  "source_boundaries": [
+    "Caller supplies concrete current manager/stream methods and actual raw string pool through explicit borrowed services.",
+    "No new ownership rollback, null check, short-read zero-fill, signature validation or bounds clamp is added.",
+    "BB9920 EH owns path/vector and only a backing allocation whose constructor throws. Converted or decoded stream rollback is not added.",
+    "Source C++ exception ordering does not establish original FH3/SEH identity, arbitrary native stack-spill aliases or simultaneous cleanup failures.",
+    "The legacy semantic memory_stream.cpp implementation remains historical evidence; the new7-byte raw leaf strengthens its actual-owner ABI."
+  ],
+  "validation": {
+    "strict_win32_build": "pending integrated build",
+    "native_fixture": "pending",
+    "game_validated": false,
+    "preliminary_strict_win32_build": {
+      "log": "local/native-ax-preliminary-build02.log",
+      "sha256": "7b33001151b96f57b11cdffeee5dbc82669fd43dbdb9cd94095e54d1b2a1709e",
+      "passed": true,
+      "ctests_passed": 2,
+      "scope": "Actual sibling source paths via temporary ignored CMake include; final integrated build and native fixture pending."
+    },
+    "independent_review": {
+      "accepted_source_sha256": "da4dc6298b01885aa8fa00be7b2166e551e1bbdc1ea7b32e1201d0ef506ea843",
+      "manifest_sha256": "2ef58aed2f44fe814b9fb95f11ee450a6b6bfc24e375a5087467f5cce312a9d1",
+      "worker_path": "battlestations-pacific-decompile-orch2-mpkg-entry-vector-ax/local/native-ax-archive-review",
+      "scope": "BB9920, BB9C10, BEF610 and consumed EH/data evidence; source-interface scope, no native execution."
+    }
+  },
+  "flow_repairs": "reports/native_ax_flow_repairs.json",
+  "function_definitions": "reports/native_ax_function_definitions.json",
+  "evidence_directory": "local/native-ax-primary-evidence"
+}

@@ -10,6 +10,7 @@
 #include "bsp/native_filestore_provider_lifetime.hpp"
 #include "bsp/native_physical_provider.hpp"
 #include "bsp/native_file_access_log_owner.hpp"
+#include "bsp/native_mpkg_provider.hpp"
 #include <stdexcept>
 namespace bsp {
 namespace {
@@ -24,7 +25,8 @@ void require_stream(std::uintptr_t table) {
     if(table!=0x00d642c0 && table!=0x00d691b0 && table!=0x00d68db0)unsupported();
 }
 void require_reference_owner(std::uintptr_t table) {
-    if(table!=0x00d69168 && table!=0x00d689e8)require_stream(table);
+    if(table!=0x00d69168 && table!=0x00d689e8 && table!=0x00d64390 &&
+        table!=0x00d15ad8)require_stream(table);
 }
 std::uint32_t memory_seek_result(void* stream,std::uint32_t distance_low,
     std::uint32_t distance_high,std::uint32_t origin) {
@@ -61,8 +63,17 @@ NativeVfsRuntimeBindings::~NativeVfsRuntimeBindings() {
     if(store_.adopted_substreams==this)store_.adopted_substreams=previous_substreams_;
 }
 void* NativeVfsRuntimeBindings::open(std::uintptr_t table,void* manager,const NativeString& name,std::uint32_t flags) {
-    require_manager(table);if(slot(table,4)!=0x00bdf310)unsupported();
-    return open_native_vfs_resource_00bdf310(manager,&name,flags,route_);
+    require_manager(table);
+    return open_manager_entry(slot(table,4),manager,&name,flags);
+}
+void* NativeVfsRuntimeBindings::open_manager_entry(std::uintptr_t entry,void* manager,
+    const void* name,std::uint32_t flags) {
+    if(entry!=0x00bdf310)unsupported();
+    return open_native_vfs_resource_00bdf310(manager,name,flags,route_);
+}
+NativeMpkgProviderContext* NativeVfsRuntimeBindings::bind_mpkg_provider(
+    NativeMpkgProviderContext* context) noexcept {
+    auto* const previous=mpkg_;mpkg_=context;return previous;
 }
 std::uint8_t NativeVfsRuntimeBindings::exists(std::uintptr_t table,void* manager,NativeString& name) {
     require_manager(table);if(slot(table,8)!=0x00bdd440)unsupported();
@@ -81,8 +92,10 @@ std::uint8_t NativeVfsRuntimeBindings::source_is_open(std::uintptr_t entry,void*
     }
 }
 std::uint64_t NativeVfsRuntimeBindings::length(std::uintptr_t table,void* stream) {
-    require_stream(table);
-    switch(slot(table,0x30)) {
+    require_stream(table);return stream_length_entry(slot(table,0x30),stream);
+}
+std::uint64_t NativeVfsRuntimeBindings::stream_length_entry(std::uintptr_t entry,void* stream) {
+    switch(entry) {
     case 0x00bef600:return static_cast<std::uint64_t>(native_memory_stream_length_00bef600(stream,nullptr));
     case 0x00bf4f90:return size_native_physical_stream_00bf4f90(stream);
     case 0x00bf10a0:return length_native_adopted_substream_00bf10a0(stream);
@@ -131,9 +144,10 @@ void NativeVfsRuntimeBindings::source_zero_reference(std::uintptr_t entry,void* 
         // The original invoker reloads current slot4 and supplies flag1.
         const auto table=capture_native_lua_vfs_table(stream);require_reference_owner(table);
         const auto terminal=slot(table,4);
+        if(terminal==0x008d4470) {delete_native_memory_backing_008d4470(stream,1,memory_);return;}
         if(terminal==0x00bb8f90) {delete_native_memory_stream_00bb8f90(stream,1,memory_);return;}
         if(terminal==0x00bf1240) {delete_native_adopted_substream_00bf1240(stream,1,*this);return;}
-        if(terminal==0x00be8090 || terminal==0x00bf4dd0) {
+        if(terminal==0x00be8090 || terminal==0x00bf4dd0 || terminal==0x00bb9ee0) {
             invoke_provider_virtual4_00be1ffd(static_cast<std::uint32_t>(terminal),stream,1);
             return;
         }
@@ -174,6 +188,9 @@ void* NativeVfsRuntimeBindings::factory_create(std::uintptr_t entry,void* factor
     case 0x00bf4df0:
         if(!provider_)unsupported();
         return create_native_physical_provider_00bf4df0(factory,system,virtual_name,*provider_);
+    case 0x00bb9d90:
+        if(!mpkg_)unsupported();
+        return create_native_mpkg_provider_00bb9d90(factory,system,virtual_name,*mpkg_);
     default:unsupported();
     }
 }
@@ -194,6 +211,10 @@ void NativeVfsRuntimeBindings::invoke_provider_virtual4_00be1ffd(std::uint32_t e
     void* owner,std::uint32_t flags) {
     // BE1FFD already captured both owner and target. Never re-read its table.
     switch(entry) {
+    case 0x00bb9ee0:
+        if(!mpkg_)unsupported();
+        (void)delete_native_mpkg_provider_00bb9ee0(owner,flags,*mpkg_);
+        return;
     case 0x00be8090: {
         NativeFileStoreProviderLifetimeContext context{physical_.physical.strings,
             *this,physical_.physical.invalid_parameters};

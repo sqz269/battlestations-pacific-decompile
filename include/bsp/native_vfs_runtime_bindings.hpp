@@ -12,6 +12,7 @@ struct NativeVfsOpenLoggingContext;
 struct NativeRetainedMemoryOwnerContext;
 struct NativePhysicalProviderContext;
 struct NativeFileAccessLogLifetimeBindings;
+struct NativeMpkgProviderContext;
 // Concrete source dispatch for verified native manager/provider/stream methods.
 // Owners retain their original numeric vtable words. The corresponding native
 // table bytes must be readable at those addresses, as required by the existing
@@ -48,6 +49,13 @@ public:
     void source_write(std::uintptr_t,void*,const void*,std::uint32_t,std::uint32_t*) override;
     void source_zero_reference(std::uintptr_t,void*,std::uintptr_t) override;
     void* provider_open(void* provider,const void* name,std::uint32_t flags);
+    // Consume already captured entries without re-reading the owner's table.
+    void* open_manager_entry(std::uintptr_t entry,void* manager,
+        const void* actual_name,std::uint32_t flags);
+    std::uint64_t stream_length_entry(std::uintptr_t entry,void* stream);
+    // Explicit borrowed connection permits constructing the actual recursive
+    // manager/archive service graph. Return the previous binding for disposal.
+    NativeMpkgProviderContext* bind_mpkg_provider(NativeMpkgProviderContext*) noexcept;
     std::uint32_t stream_size_low(void* stream,std::uint32_t argument);
     void log_open(void* manager,const void* name,void* stream,std::uint32_t mount_byte);
     void* factory_create(std::uintptr_t captured_entry, void* actual_factory,
@@ -65,6 +73,7 @@ private:
     NativeRetainedMemoryOwnerContext& memory_;
     NativePhysicalProviderContext* provider_;
     NativeFileAccessLogLifetimeBindings* log_lifetime_;
+    NativeMpkgProviderContext* mpkg_{};
     NativeVfsRuntimeBindings* previous_;
     NativeAdoptedSubstreamDispatch* previous_substreams_;
 };

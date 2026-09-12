@@ -1,0 +1,51 @@
+{
+  "packet": "orch2_native_vfs_startup_callbacks_ax",
+  "bodies": [
+    {
+      "label": "ignore_mount_failure",
+      "address": "00530620",
+      "end_inclusive": "00530620",
+      "bytes": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "live_equal_installed_pe": true,
+      "direct_calls": [],
+      "indirect_calls": []
+    },
+    {
+      "label": "ignore_callback",
+      "address": "00735b30",
+      "end_inclusive": "00735b30",
+      "bytes": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "live_equal_installed_pe": true,
+      "direct_calls": [],
+      "indirect_calls": []
+    }
+  ],
+  "installation_fragment": {
+    "label": "application_callback_stores",
+    "address": "0073d63c",
+    "end_inclusive": "0073d65b",
+    "bytes": 32,
+    "sha256": "7aa05a94b4e4f9efca5702c5992f6b1710ac091cf77dc2513ad3dcefa0427a84",
+    "live_equal_installed_pe": true,
+    "direct_calls": [],
+    "indirect_calls": []
+  },
+  "source": "src/native_vfs_startup_callbacks.cpp",
+  "coverage": "Two complete1-byte RET bodies plus only the32-byte application store fragment.",
+  "scope": "Read current manager/store530620 at+90; read current manager again/store735B30 at+8C. Enclosing application gate, allocation and calls are separate.",
+  "dispatch": "BE18B8 consumes captured target530620 and current publication; verified callback ignores registers and returns. Unknown targets have an explicit source error.",
+  "validation": {
+    "strict_win32_build": "pending",
+    "native_fixture": "pending combined composition",
+    "game_validated": false,
+    "preliminary_strict_win32_build": {
+      "log": "local/native-ax-preliminary-build02.log",
+      "sha256": "7b33001151b96f57b11cdffeee5dbc82669fd43dbdb9cd94095e54d1b2a1709e",
+      "passed": true,
+      "ctests_passed": 2,
+      "scope": "Actual sibling source paths via temporary ignored CMake include; final integrated build and native fixture pending."
+    }
+  }
+}

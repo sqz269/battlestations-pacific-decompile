@@ -15,6 +15,9 @@ bool __fastcall native_memory_stream_open_00bef4c0(
     const void* actual_stream, void* unused_edx) noexcept; // AL=1, RET
 std::int64_t __fastcall native_memory_stream_length_00bef600(
     const void* actual_stream, void* unused_edx) noexcept; // EDX:EAX, RET
+// BEF610: reload backing+08, then its data+08; cursor/end are unconsumed.
+std::uint8_t* __fastcall native_memory_stream_data_00bef610(
+    const void* actual_stream, void* unused_edx) noexcept; // EAX data, RET
 void __fastcall native_memory_stream_read_00bef590(void* actual_stream,
     void* unused_edx, void* destination, std::uint32_t requested,
     std::uint32_t* optional_actual) noexcept; // three stack DWORDs, RET0C

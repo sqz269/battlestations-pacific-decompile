@@ -1,0 +1,471 @@
+{
+ "events": [
+  {
+   "recreate": "00bb9c10",
+   "previous": "Function: BSP_MpkgArchive_Destroy at 00bb9c10\nSignature: undefined BSP_MpkgArchive_Destroy(void)\nEntry: 00bb9c10\nBody: 00bb9c10 - 00bb9c67",
+   "plate": "[BSP reconstruction 00bb9c10]\nECX archive state; no stack args; plain RET Release decoded stream, entry names/array, original path. Full post-free tail ends00bb9ca0. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json"
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00bb9c10"
+   },
+   "result": {
+    "success": true,
+    "address": "00bb9c10",
+    "deleted_function": "BSP_MpkgArchive_Destroy",
+    "body_size": 88,
+    "message": "Function 'BSP_MpkgArchive_Destroy' deleted at 00bb9c10"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00bb9c10",
+    "end_address": "00bb9ca1"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00bb9c10",
+    "end_address": "00bb9ca0",
+    "bytes_disassembled": 145,
+    "message": "Successfully disassembled 145 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00bb9c10",
+    "disassemble_first": false,
+    "name": "BSP_MpkgArchive_Destroy"
+   },
+   "result": {
+    "success": true,
+    "address": "00bb9c10",
+    "function_name": "BSP_MpkgArchive_Destroy",
+    "entry_point": "00bb9c10",
+    "body_size": 145,
+    "message": "Function created successfully at 00bb9c10",
+    "warnings": [
+     "Function name 'BSP_MpkgArchive_Destroy' \u2014 main part 'MpkgArchive_Destroy' is not PascalCase. Expected: MpkgarchiveDestroy",
+     "Function name 'BSP_MpkgArchive_Destroy' \u2014 main part 'MpkgArchive_Destroy' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MpkgArchive_Destroy' does not start with a recognized verb. First word 'Mpkg' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00bb9c10",
+    "comment": "[BSP reconstruction 00bb9c10]\nECX archive state; no stack args; plain RET Release decoded stream, entry names/array, original path. Full post-free tail ends00bb9ca0. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json"
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00bb9c10",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00bb9c10",
+   "end": "00bb9ca1",
+   "name": "BSP_MpkgArchive_Destroy",
+   "after": "Function: BSP_MpkgArchive_Destroy at 00bb9c10\nSignature: undefined BSP_MpkgArchive_Destroy(void)\nEntry: 00bb9c10\nBody: 00bb9c10 - 00bb9ca0"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "recreate": "00bb87a0",
+   "previous": "Function: BSP_MPKG_FindEndOfCentralDirectory at 00bb87a0\nSignature: undefined BSP_MPKG_FindEndOfCentralDirectory(void)\nEntry: 00bb87a0\nBody: 00bb87a0 - 00bb883a",
+   "plate": "[BSP reconstruction 00bb87a0]\nScanslast min(size,FFFFh) bytes backwards forPK0506 ZIP endsignature, storesoffsetstate+1C. Rawbody162bytes throughRET00bb8841, includesrestoration afterfalsenoreturnfree. Not completeZIPparser/validation.\n\n[BSP reconstruction 00bb87a0] update\nScanslast min(size,FFFFh) bytes backwards forPK0506 ZIP endsignature, storesoffsetstate+1C. Rawbody162bytes throughRET00bb8841, includesrestoration afterfalsenoreturnfree. Not completeZIPparser/validation. ECX state; RET; no stable return. Last min(length,65535) tail, search from tail index T-4 down to1 for504b0506; excludes index0; unchecked one read; retainsffffffff on missing marker. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed."
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00bb87a0"
+   },
+   "result": {
+    "success": true,
+    "address": "00bb87a0",
+    "deleted_function": "BSP_MPKG_FindEndOfCentralDirectory",
+    "body_size": 148,
+    "message": "Function 'BSP_MPKG_FindEndOfCentralDirectory' deleted at 00bb87a0"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00bb87a0",
+    "end_address": "00bb8842"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00bb87a0",
+    "end_address": "00bb8841",
+    "bytes_disassembled": 162,
+    "message": "Successfully disassembled 162 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00bb87a0",
+    "disassemble_first": false,
+    "name": "BSP_MPKG_FindEndOfCentralDirectory"
+   },
+   "result": {
+    "success": true,
+    "address": "00bb87a0",
+    "function_name": "BSP_MPKG_FindEndOfCentralDirectory",
+    "entry_point": "00bb87a0",
+    "body_size": 162,
+    "message": "Function created successfully at 00bb87a0",
+    "warnings": [
+     "Function name 'BSP_MPKG_FindEndOfCentralDirectory' \u2014 main part 'MPKG_FindEndOfCentralDirectory' is not PascalCase. Expected: MpkgFindendofcentraldirectory",
+     "Function name 'BSP_MPKG_FindEndOfCentralDirectory' \u2014 main part 'MPKG_FindEndOfCentralDirectory' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00bb87a0",
+    "comment": "[BSP reconstruction 00bb87a0]\nScanslast min(size,FFFFh) bytes backwards forPK0506 ZIP endsignature, storesoffsetstate+1C. Rawbody162bytes throughRET00bb8841, includesrestoration afterfalsenoreturnfree. Not completeZIPparser/validation.\n\n[BSP reconstruction 00bb87a0] update\nScanslast min(size,FFFFh) bytes backwards forPK0506 ZIP endsignature, storesoffsetstate+1C. Rawbody162bytes throughRET00bb8841, includesrestoration afterfalsenoreturnfree. Not completeZIPparser/validation. ECX state; RET; no stable return. Last min(length,65535) tail, search from tail index T-4 down to1 for504b0506; excludes index0; unchecked one read; retainsffffffff on missing marker. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed."
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00bb87a0",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00bb87a0",
+   "end": "00bb8842",
+   "name": "BSP_MPKG_FindEndOfCentralDirectory",
+   "after": "Function: BSP_MPKG_FindEndOfCentralDirectory at 00bb87a0\nSignature: undefined BSP_MPKG_FindEndOfCentralDirectory(void)\nEntry: 00bb87a0\nBody: 00bb87a0 - 00bb8841"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "recreate": "00bb9700",
+   "previous": "Function: BSP_MPKG_LoadDirectoryEntries at 00bb9700\nSignature: undefined BSP_MPKG_LoadDirectoryEntries(void)\nEntry: 00bb9700\nBody: 00bb9700 - 00bb978d",
+   "plate": "[BSP reconstruction 00bb9700]\nECX archive; RET. Seek directly tostored directory offset WITHOUT prefixadjustment; allocate/read archive_length-directory_offset once; parse EOCDentrycount records without bounds/actual guards. Rawret00bb97a2 after_free. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed."
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00bb9700"
+   },
+   "result": {
+    "success": true,
+    "address": "00bb9700",
+    "deleted_function": "BSP_MPKG_LoadDirectoryEntries",
+    "body_size": 142,
+    "message": "Function 'BSP_MPKG_LoadDirectoryEntries' deleted at 00bb9700"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00bb9700",
+    "end_address": "00bb97a3"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00bb9700",
+    "end_address": "00bb97a2",
+    "bytes_disassembled": 163,
+    "message": "Successfully disassembled 163 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00bb9700",
+    "disassemble_first": false,
+    "name": "BSP_MPKG_LoadDirectoryEntries"
+   },
+   "result": {
+    "success": true,
+    "address": "00bb9700",
+    "function_name": "BSP_MPKG_LoadDirectoryEntries",
+    "entry_point": "00bb9700",
+    "body_size": 163,
+    "message": "Function created successfully at 00bb9700",
+    "warnings": [
+     "Function name 'BSP_MPKG_LoadDirectoryEntries' \u2014 main part 'MPKG_LoadDirectoryEntries' is not PascalCase. Expected: MpkgLoaddirectoryentries",
+     "Function name 'BSP_MPKG_LoadDirectoryEntries' \u2014 main part 'MPKG_LoadDirectoryEntries' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00bb9700",
+    "comment": "[BSP reconstruction 00bb9700]\nECX archive; RET. Seek directly tostored directory offset WITHOUT prefixadjustment; allocate/read archive_length-directory_offset once; parse EOCDentrycount records without bounds/actual guards. Rawret00bb97a2 after_free. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed."
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00bb9700",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00bb9700",
+   "end": "00bb97a3",
+   "name": "BSP_MPKG_LoadDirectoryEntries",
+   "after": "Function: BSP_MPKG_LoadDirectoryEntries at 00bb9700\nSignature: undefined BSP_MPKG_LoadDirectoryEntries(void)\nEntry: 00bb9700\nBody: 00bb9700 - 00bb97a2"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "recreate": "00bb9900",
+   "previous": "Function: FUN_00bb9900 at 00bb9900\nSignature: undefined FUN_00bb9900(void)\nEntry: 00bb9900\nBody: 00bb9900 - 00bb9911",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00bb9900"
+   },
+   "result": {
+    "success": true,
+    "address": "00bb9900",
+    "deleted_function": "FUN_00bb9900",
+    "body_size": 18,
+    "message": "Function 'FUN_00bb9900' deleted at 00bb9900"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00bb9900",
+    "end_address": "00bb9917"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00bb9900",
+    "end_address": "00bb9916",
+    "bytes_disassembled": 23,
+    "message": "Successfully disassembled 23 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00bb9900",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00bb9900",
+    "function_name": "FUN_00bb9900",
+    "entry_point": "00bb9900",
+    "body_size": 23,
+    "message": "Function created successfully at 00bb9900"
+   }
+  },
+  {
+   "defined": "00bb9900",
+   "end": "00bb9917",
+   "name": null,
+   "after": "Function: FUN_00bb9900 at 00bb9900\nSignature: undefined FUN_00bb9900(void)\nEntry: 00bb9900\nBody: 00bb9900 - 00bb9916"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "recreate": "00737090",
+   "previous": "Function: CG_scalar_deleting_dtor_00737090 at 00737090\nSignature: undefined CG_scalar_deleting_dtor_00737090(void)\nEntry: 00737090\nBody: 00737090 - 007370c9",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00737090"
+   },
+   "result": {
+    "success": true,
+    "address": "00737090",
+    "deleted_function": "CG_scalar_deleting_dtor_00737090",
+    "body_size": 55,
+    "message": "Function 'CG_scalar_deleting_dtor_00737090' deleted at 00737090"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00737090",
+    "end_address": "007370ca"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00737090",
+    "end_address": "007370c9",
+    "bytes_disassembled": 58,
+    "message": "Successfully disassembled 58 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00737090",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00737090",
+    "function_name": "CG_scalar_deleting_dtor_00737090",
+    "entry_point": "00737090",
+    "body_size": 58,
+    "message": "Function created successfully at 00737090"
+   }
+  },
+  {
+   "defined": "00737090",
+   "end": "007370ca",
+   "name": null,
+   "after": "Function: CG_scalar_deleting_dtor_00737090 at 00737090\nSignature: undefined CG_scalar_deleting_dtor_00737090(void)\nEntry: 00737090\nBody: 00737090 - 007370c9"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00735800",
+    "end_address": "00735829"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00735800",
+    "end_address": "00735828",
+    "bytes_disassembled": 41,
+    "message": "Successfully disassembled 41 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00735800",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00735800",
+    "function_name": "FUN_00735800",
+    "entry_point": "00735800",
+    "body_size": 38,
+    "message": "Function created successfully at 00735800"
+   }
+  },
+  {
+   "defined": "00735800",
+   "end": "00735829",
+   "name": null,
+   "after": "Function: FUN_00735800 at 00735800\nSignature: undefined FUN_00735800(void)\nEntry: 00735800\nBody: 00735800 - 00735828"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00735b30",
+    "end_address": "00735b31"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00735b30",
+    "end_address": "00735b30",
+    "bytes_disassembled": 1,
+    "message": "Successfully disassembled 1 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00735b30",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00735b30",
+    "function_name": "FUN_00735b30",
+    "entry_point": "00735b30",
+    "body_size": 1,
+    "message": "Function created successfully at 00735b30"
+   }
+  },
+  {
+   "defined": "00735b30",
+   "end": "00735b31",
+   "name": null,
+   "after": "Function: FUN_00735b30 at 00735b30\nSignature: undefined FUN_00735b30(void)\nEntry: 00735b30\nBody: 00735b30 - 00735b30"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

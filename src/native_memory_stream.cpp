@@ -71,6 +71,15 @@ __declspec(naked) std::int64_t __fastcall native_memory_stream_length_00bef600(
     }
 }
 
+__declspec(naked) std::uint8_t* __fastcall native_memory_stream_data_00bef610(
+    const void*, void*) noexcept {
+    __asm {
+        mov eax, dword ptr [ecx + 8]
+        mov eax, dword ptr [eax + 8]
+        ret
+    }
+}
+
 __declspec(naked) void __fastcall native_memory_stream_read_00bef590(
     void*, void*, void*, std::uint32_t, std::uint32_t*) noexcept {
     __asm {
