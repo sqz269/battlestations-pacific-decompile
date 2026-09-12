@@ -67,6 +67,7 @@ public:
     void properties_bound(GuiWidgetOwner&, const GuiTable&) override;
     void loaded78(GuiWidgetOwner&) override;
     GuiFrameBoxWidget& state() noexcept { return state_; }
+    void set_state84_00acf070(GuiWidgetOwner&, std::int16_t state);
 private:
     GuiFrameBoxWidget state_;
     GuiFrameBoxRuntimeServices services_;

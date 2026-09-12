@@ -1,0 +1,248 @@
+{
+  "packet": "orch5_icon_frame",
+  "status": "reconstructed_strict_win32_compile_and_numeric_fixture_passed",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "ghidra_worker_mutations": false,
+  "functions": [
+    {
+      "address": "00ab1150",
+      "name": "BSP_GuiIcon_Update",
+      "coverage": "complete derived continuation 00ab1161..00ab11fc; base 00ab1150..00ab1160 delegated to canonical frame integration",
+      "source": "src/gui_icon_runtime.cpp",
+      "original_abi": "ECX Icon; float seconds stack; RET4",
+      "last_instruction": "00ab11fa",
+      "end_inclusive": "00ab11fc",
+      "native_length": 173
+    },
+    {
+      "address": "00ab1110",
+      "name": "BSP_GuiIcon_SelectStateAndStorePair",
+      "coverage": "complete for concrete Icon current88/current80 profile",
+      "source": "src/gui_icon_runtime.cpp",
+      "original_abi": "ECX Icon; immediate DWORD, expiry DWORD, float seconds stack; RET0Ch; only index low16 consumed",
+      "last_instruction": "00ab1147",
+      "end_inclusive": "00ab1149",
+      "native_length": 58
+    },
+    {
+      "address": "00ab27f0",
+      "name": "BSP_GuiIcon_SetRotateAndRefreshFilter",
+      "coverage": "complete for concrete Icon current8C/current80 profile",
+      "source": "src/gui_icon_runtime.cpp",
+      "original_abi": "ECX Icon; float rotation stack; RET4",
+      "last_instruction": "00ab281c",
+      "end_inclusive": "00ab281e",
+      "native_length": 47,
+      "ledger_owner": "primary integrator"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00ab1150",
+      "address": "00ab115c",
+      "native": "00aa87b0",
+      "binding": "Canonical same-owner base exactly once, outgoing float x87 spill; original tail delta retained"
+    },
+    {
+      "function": "00ab1150",
+      "address": "00ab119a",
+      "native": "00ab27f0",
+      "binding": "Actual Icon current44 after x87 rotation sum and two float spills"
+    },
+    {
+      "function": "00ab1150",
+      "address": "00ab11eb",
+      "native": "00ab1710",
+      "binding": "Actual Icon current88, reloaded +12C low16, mode0 ratio1; clear countdown after successful callback"
+    },
+    {
+      "function": "00ab1110",
+      "address": "00ab112a",
+      "native": "00ab1710",
+      "binding": "Actual Icon current88, immediate index low16, mode0 ratio1, before countdown/expiry stores"
+    },
+    {
+      "function": "00ab27f0",
+      "address": "00ab27fb",
+      "native": "00aa7930",
+      "binding": "Base Rotate MOVSS store then owner recomposition"
+    },
+    {
+      "function": "00ab27f0",
+      "address": "00ab2802",
+      "native": "00ab2600",
+      "binding": "Shared actual Icon filter query over same state, texture and transform"
+    },
+    {
+      "function": "00ab27f0",
+      "address": "00ab2819",
+      "native": "00ab10d0",
+      "binding": "Actual Icon current8C after fresh filter differs from reloaded cached134"
+    },
+    {
+      "function": "00aa7930",
+      "address": "00aa793b",
+      "native": "00aa7220",
+      "binding": "Existing actual same-owner model transform publication"
+    },
+    {
+      "function": "00ab10d0",
+      "address": "00ab10e0",
+      "native": "00ab3cb0",
+      "binding": "Actual Icon current80; reload signed16 current-state identity"
+    },
+    {
+      "function": "00ab1710",
+      "address": "00ab17a3",
+      "native": "00ab3cb0",
+      "binding": "Existing actual current80 after mode/ratio stores"
+    },
+    {
+      "function": "00ab2600",
+      "address": "00ab2661",
+      "native": "00ab1230",
+      "binding": "Existing signed16 vector selection only on native-size eligibility path"
+    },
+    {
+      "function": "00ab2600",
+      "address": "00ab2668",
+      "native": "00ab24b0",
+      "binding": "Existing native-size predicate"
+    },
+    {
+      "function": "00ab24b0",
+      "address": "00ab24c0",
+      "native": "00ab17b0",
+      "binding": "Existing captured texture width then height and resolved UV"
+    },
+    {
+      "function": "00ab17b0",
+      "address": "00ab17c0",
+      "native": "texture+vtable48",
+      "binding": "Required actual captured texture width service; existing established texture contract"
+    },
+    {
+      "function": "00ab17b0",
+      "address": "00ab17e5",
+      "native": "texture+vtable4C",
+      "binding": "Required actual same captured texture height service after width; existing established contract"
+    }
+  ],
+  "vtable_cells": [
+    {
+      "cell": "00d5c500",
+      "value": "00ab1150",
+      "role": "Icon current40"
+    },
+    {
+      "cell": "00d5c504",
+      "value": "00ab27f0",
+      "role": "Icon current44"
+    },
+    {
+      "cell": "00d5c544",
+      "value": "00ab1110",
+      "role": "Icon current84"
+    },
+    {
+      "cell": "00d5c548",
+      "value": "00ab1710",
+      "role": "Icon current88"
+    },
+    {
+      "cell": "00d5c54c",
+      "value": "00ab10d0",
+      "role": "Icon current8C"
+    },
+    {
+      "cell": "00d5c540",
+      "value": "00ab3cb0",
+      "role": "Icon current80"
+    }
+  ],
+  "producer_evidence": {
+    "countdown128": "Constructor00AB5D0C zero;00AB1137 MOVSS third argument after current88; existing field renamed state_seconds_remaining_128",
+    "expiry12c": "Constructor00AB5CFF zero;00AB113F second-argument low16 after countdown; existing field renamed expiry_state_12c",
+    "rate130": "Constructor00AB5D14 zero;00AB350D descriptor points +130, tag2 and zero default, string00D5C3E8=AutoRotate, visitor00AB352F",
+    "rotate48": "00AA7936 MOVSS rotation,00AA793B calls00AA7220",
+    "cache134": "Constructor00AB5D06 zero; existing00AB3CB0 cache update",
+    "profile": "Constructor00AB5C91 assigns00D5C4C0; table cells verified live",
+    "zero": "00D7A218 verified00000000; tail takes same canonical live volatile constant alias"
+  },
+  "numerics": {
+    "rotation": "UCOMISS/LAHF/TEST skips only ordered equality, including signed zero. x87 FMUL then FADD without product spill; sum and argument spill to float.",
+    "countdown": "COMISS/JBE skips nonpositive/unordered. Positive subtraction spills to float, is stored to SAME countdown, then FLDZ/FCOMIP expires only ordered <=0. Native unordered remains stored.",
+    "callback_reloads": "Rate read after base; countdown and expiry after current44; cached filter and current state after query; expiry store +0 after current88 returns, overwriting callback rescheduling.",
+    "floating_exception_limit": "FP control environment preserved by services; unmasked exception/trap timing and native SEH not claimed."
+  },
+  "corrections": [
+    {
+      "was": "AutoRotate rejected as unsupported AB6430 consumer in GuiIconRuntime",
+      "is": "Accepted and consumed by actual AB1150 current40 tail, current44=AB27F0",
+      "evidence": "00AB1161 loads+130;00AB119A current44;D5C504 actual target; constructor and reader producer verified"
+    },
+    {
+      "was": "Icon+128/+12C unidentified pair; frame tail described as delayed work",
+      "is": "Existing fields are temporary-state countdown and expiry state, produced by AB1110 then consumed by AB1150",
+      "evidence": "00AB1137/113F stores;00AB119C..11F0 countdown subtract/current88/clear"
+    },
+    {
+      "was": "AB27F0 missing saved Ghidra body",
+      "is": "Primary repaired body to AB27F0..AB281E while worker stayed read-only",
+      "evidence": "Whole disk47-byte body/live byte match, subsequently verified proto+listing"
+    }
+  ],
+  "integration": {
+    "entry": "GuiIconRuntime::update_after_base40_00ab1150(owner, original_seconds, zero_00d7a218)",
+    "base": "Canonical integrator keeps one active owner guard over AA87B0(arg-spill(original)) then tail(original). Tail never invokes AA87B0.",
+    "identity": "Same canonical Icon companion, layout, states, textures, geometry and service owners; preserve concrete profile across callbacks.",
+    "full_build": "Primary pending scripts/build.ps1",
+    "unsupported": "DelayedTextureLoad/AB6430 still rejected; other derived profiles, copied/native widget ABI and arbitrary callback-driven owner/profile mutation unsupported."
+  },
+  "validation": {
+    "strict_win32_compile": "PASS /std:c++17 /EHsc /W4 /WX /O2 /fp:strict; local/icon_frame/compile.cmd",
+    "numerical_fixture": "PASS manifested local/icon_frame/numeric_probe.exe; real production kernels, unspilled-product -2^-46 cancellation witness, equality, NaN rate/timer/delta, signed zero, negative original delta, infinity subtraction",
+    "report_call_verifier": "PASS 13 numeric call rows, zero failures; six resolved indirect targets grounded by verified Icon table cells, two symbolic texture slots retained as existing service contracts",
+    "new_permanent_tests": 0,
+    "whole_icon_resource_runtime": false,
+    "native_byte_differential": false,
+    "game_validated": false,
+    "render_validated": false,
+    "abi_compatible": false
+  },
+  "undefined_at_worker_analysis": [
+    {
+      "address": "00ab27f0",
+      "last_instruction": "00ab281c",
+      "end_inclusive": "00ab281e",
+      "length": 47,
+      "preceding_saved_body_end": "00ab27e6",
+      "preceding_false_free_gap": "00ab27e7..00ab27ef",
+      "following_padding": "00ab281f CC",
+      "resolved": "Primary locked definition read back successfully"
+    }
+  ],
+  "parent_validation": {
+    "build": {
+      "result": "passed",
+      "target": "MSVC Win32 Release",
+      "existing_tests": "2/2 passed",
+      "log": "local/orch5-texture-icon-point-listener-combined-build.log",
+      "log_sha256": "82483326b5d5d218a349daf7e64211b717846933d8b7fd6c97bee21dcedfd206",
+      "source_parent_before_primary_commit": "cbea62dc2219fa835b61aa3aec33f340562a3b0f"
+    },
+    "fixture": {
+      "source": "local/icon_frame/numeric_probe.cpp",
+      "source_sha256": "90ebd22d9f1da8f5a79b95e7f86261a538ce1a9fd0c751e9e289025177736f6d",
+      "log": "local/orch5-icon-numeric-probe.log",
+      "log_sha256": "159d9563df8789ae22c2b963c75762c5923ec47b520bf796a71d952418383a7d",
+      "result": "passed",
+      "scope": "Includes actual production numeric kernels; no full resource-backed Icon frame fixture"
+    },
+    "independent_review": "Section worker: no blocking finding",
+    "game_validated": false,
+    "abi_compatible": false,
+    "supersedes_worker_pending_build_only": true
+  }
+}

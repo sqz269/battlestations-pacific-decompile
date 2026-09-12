@@ -1,4 +1,6 @@
+#include "bsp/land_and_structures.hpp"
 #include "bsp/air_operations.hpp"
+#include "bsp/submarine_model.hpp"
 #include "bsp/plane_flight.hpp"
 #include "bsp/pilot_controls.hpp"
 #include "bsp/cruise_speed_setting.hpp"
@@ -3099,6 +3101,96 @@ int main() {
             "00422500: the backward corner is (100, 100) pushed the same way");
         check(detour.forward_index == 1 && detour.backward_index == 1,
             "00422BCA and 00423173: corner 1 forward, corner 2 backward reported as edge 1");
+    }
+
+    {
+        // 00855250, the submarine air model. Worth pinning because two rules are
+        // easy to lose: the critical edge at SubmarineAirNeedLimit suppresses the
+        // low edge at SubmarineAirWarningLimit on a step that crosses both, and the
+        // needAir latch returns immediately after arming so the disarm test is
+        // skipped on that step. docs/SUBMARINE_MODEL.md section 4.
+        const bsp::SubmarineDepthSettings settings{};   // installed 0.35 / 0.16 / 0.5
+        const bsp::SubmarineAirRates rates{};           // 120.0 / 5.0 seconds
+        const float deep = -50.0f;                      // below the -4.0 breathing line
+
+        bsp::SubmarineAirState both{};
+        both.air = 0.40f;  // one 30-second step crosses 0.35 and 0.16 together
+        const auto crossed_both = bsp::submarine_step_air_00855250(
+            both, 30.0f, deep, -20.0f, rates, settings, false);
+        check(crossed_both.warning == bsp::SubmarineAirWarning::critical,
+            "00855250: a step past both limits reports critical only, never low as well");
+        check(crossed_both.state.need_air,
+            "00855250: the same step arms the needAir latch below SubmarineAirNeedLimit");
+
+        bsp::SubmarineAirState armed{};
+        armed.air = 0.10f;
+        armed.need_air = false;
+        const auto arming = bsp::submarine_step_air_00855250(
+            armed, 0.0f, 0.0f, -20.0f, rates, settings, false);
+        check(arming.state.need_air,
+            "00855250: arming is unconditional below the need limit, surfaced or not");
+
+        bsp::SubmarineAirState latched{};
+        latched.air = 0.49f;
+        latched.need_air = true;
+        const auto still_latched = bsp::submarine_step_air_00855250(
+            latched, 0.0f, 5.0f, -20.0f, rates, settings, false);
+        check(still_latched.state.need_air,
+            "00855250: the latch holds until air passes SubmarineAirEnoughLimit, not the need limit");
+
+        // The breathing line is the flat fallback for every shipped class, because
+        // periscope depth plus three metres is still below the waterline.
+        check(bsp::submarine_air_breathing_line_00855250(-20.0f) ==
+                  bsp::kSubAirBreathingLineFallback,
+            "00855250: a -20 periscope band gives the -4.0 breathing line, not -17.0");
+    }
+
+    {
+        // The LandConvoy's two wraps, 00743060 and 00742400. Worth pinning because
+        // the two are deliberately different: the element slot wraps with loops
+        // (007430DB, 007430FE) while the placement pass wraps with one conditional
+        // each way (00742581-007425A9), so a row gap wider than the path leaves the
+        // group arc outside [0, length). The lateral centring on
+        // (columns - 1) * 0.5 is the other silent-failure candidate.
+        bsp::LandConvoyFormation f;
+        f.rows = 3;
+        f.columns = 4;
+        f.row_gap = 30.0f;
+        f.column_gap = 10.0f;
+        f.speed = 100.0f;
+        f.path_length = 50.0f;
+
+        const bsp::LandConvoyArcStep stepped =
+            bsp::land_convoy_advance_arc_00743060(f, 40.0f, 0.0f, 0.05f);
+        check(std::fabs(stepped.live_arc - 45.0f) < 1e-4f,
+            "00743060: 40 + 0.05*100 = 45 stays inside [0, 50) with no wrap");
+        const bsp::LandConvoyArcStep wrapped =
+            bsp::land_convoy_advance_arc_00743060(f, 48.0f, 0.0f, 0.05f);
+        check(std::fabs(wrapped.live_arc - 3.0f) < 1e-4f,
+            "00743060: the subtract loop brings 53 back to 3");
+
+        f.reverse = true;
+        const bsp::LandConvoyArcStep reversed =
+            bsp::land_convoy_advance_arc_00743060(f, 2.0f, 7.0f, 0.05f);
+        check(std::fabs(reversed.live_arc - 47.0f) < 1e-4f,
+            "00743060: 00D7A260 = -1 sends 2 to -3, and the add loop lifts it to 47");
+        check(std::fabs(reversed.odometer - 12.0f) < 1e-4f,
+            "00743126: the odometer takes |speed|, so a reversed convoy still counts up");
+        f.reverse = false;
+
+        // One conditional only: 0 + 2*30 = 60 wraps once to 10, but group 3 would
+        // reach 90 and wrap only to 40; the loop version would not agree.
+        check(std::fabs(bsp::land_convoy_group_arc_00742400(f, 0.0f, 2) - 10.0f) < 1e-4f,
+            "00742400: the single subtract takes group 2's arc 60 to 10");
+
+        check(std::fabs(bsp::land_convoy_lateral_offset_00742400(f, 0) + 15.0f) < 1e-4f,
+            "00742400: file 0 of four sits at -(4-1)*0.5*10 = -15, the formation is centred");
+        check(std::fabs(bsp::land_convoy_lateral_offset_00742400(f, 3) - 15.0f) < 1e-4f,
+            "00742400: file 3 of four mirrors it at +15");
+
+        const bsp::LandConvoySlot slot = bsp::land_convoy_slot_00742400(f, 9);
+        check(slot.group == 2 && slot.lane == 1,
+            "00742400: index 9 of a 3x4 block is rank 2, file 1");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

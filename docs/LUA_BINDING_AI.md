@@ -309,3 +309,12 @@ under a loaded mission script.
 - Read `00A32500` in full to fix the target-weight record layout, and `00A2EEE0` to settle whether
   `AIGetGroupInfo` returns its table.
 - Read `00A08460` for the target-weight model itself, the largest unread body the packet touched.
+
+## Correction from docs/AI_GROUP_THINK.md (packet cc2_ai_group_think)
+
+- **Was:** group+10h is the member list head, because 00A2D8E0 links the entity there
+  **Is:** group+10h is the group's observer subobject with vtable 00D2306C; the member list is group+563Ch (std::list object), its sentinel node group+5640h and its size group+5644h
+  **Evidence:** 00A2DFCD stores 00CE3CD4 at +10h and 00A2DFEB overwrites it with 00D2306C, a five-slot table (00A2D570, 00A2DA60, 00A2BD40, 00A2DB50, 0042B140). 00A2D8FD is LEA EDX,[ESI+0x10] feeding 00694A60 BSP_Observer_RegisterPair at 00A2D906, and 00A2E3B9/00A2E3BE pass the same +10h to 006956A0 to undo it. The list is built at 00A2DFF2-00A2E027: LEA EBX,[ESI+563Ch], CALL 004C1630, [EBX+4]=EAX, [EBX+8]=0.
+- **Was:** the 00F8A8BC defend-percent array and the 1Ch records at 00F8A8C8 are not disjoint for slots 3 and above (flagged as unresolved)
+  **Is:** the Defend_ResourcePercent array is exactly three dwords, indexed by difficulty 0..2, and the globals loader guards the index so it never overflows; only the unguarded Lua setter can reach the collision
+  **Evidence:** 00A16B46 bounds the brain array with CMP EDI,0xF8A8BC and 00A182EE starts the party records at EBP = 0xF8A8C8 with stride 1Ch and bound 0xF8A9A8, so only three dwords lie between. 00A360F5 is CMP EDI,3 / JGE 00A3613E, skipping the store at 00A36126 for modes 3..6; EDI's only writes before that store are XOR EDI,EDI at 00A3374B and ADD EDI,1 at 00A370D4 (whole-listing filter). The key string at 00D23500 is 'Defend_ResourcePercent'. 00A37E4B stores with ESI = 009FFC80() (0..6) and no bound check.

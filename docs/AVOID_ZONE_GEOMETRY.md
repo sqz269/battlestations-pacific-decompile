@@ -235,3 +235,28 @@ No existing ledger record was replaced by this packet.
 ## no_ghidra_function
 
 none. Every routine read here has a Ghidra function whose body range matches what was read.
+
+## Correction from docs/AVOID_ZONE_OWNER.md and docs/AVOID_ZONE_QUERY_BINDING.md
+
+The concrete native producer is now available in `avoid_zone_owner.hpp`:
+0041CCD0 uses actual scene-point transformation007AF800, strict squared spacing
+greater than25, the four-pass world clipping0041A540, and the existing
+0041A200 derived-record implementation. The semantic `avoid_zone_from_path_points`
+and `avoid_zone_rebuild_corner_data` above remain approximations; the new query
+adapter does not call them. Clipping can create short edges, and it retains
+the original bounds instead of recomputing bounds from the surviving vertices.
+World-bound z inputs cross the adjacent XYZ groups: minimum is world+7130h,
+maximum is world+7124h. See the owner report for the complete load mapping.
+
+Corner+20h has a known reader/writer: 00423190 lazily computes the clearance
+scale described in `SHIP_AI_LATERAL_RECORD.md`. It is not spare storage.
+For compatibility this packet's `AvoidZoneCorner::spare` name remains, but
+`avoid_zone_polygon_snapshot` copies native `clearance_scale` into it verbatim.
+The native pointer-array storage and the semantic vector are distinct layouts;
+do not reinterpret one as the other.
+
+00416F30 and the segment-distance/closest-point dependencies are reconstructed
+in `AVOID_ZONE_OFFSET.md` and `AVOID_ZONE_SEGMENT_MATH.md`. Together with this
+packet's containment implementation and native reciprocal length they supply
+all five boundary-query bindings in `AVOID_ZONE_QUERY_BINDING.md`. Executable
+registration and mission/gameplay validation remain separate follow-up work.

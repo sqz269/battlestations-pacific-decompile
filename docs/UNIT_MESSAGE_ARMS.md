@@ -311,3 +311,9 @@ provenance - but their triggers are unresolved.
 - The five unreferenced constructors: whether they are dead code or reached by a mechanism the byte
   scan cannot see.
 - No run-time evidence for anything here.
+
+## Correction from docs/LAND_AND_STRUCTURES.md (packet cc2_land_and_structures)
+
+- **Was:** message 7Ah senders 00813830 and 009CFBA4
+  **Is:** three senders: 0081386D, 009CFC1B and 00760511 inside FUN_007604C0, which sets the message target from DAT_00E188A8+18CCh + idx*4, the local player's own unit slot
+  **Evidence:** all four references to the arm vptr 00D03310 are 0081386D, 009CFC1B, 0080F984 (the constructor itself) and 00760511

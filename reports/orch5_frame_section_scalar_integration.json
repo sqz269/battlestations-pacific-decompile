@@ -1,0 +1,71 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "abi_compatible": false,
+  "game_validated": false,
+  "render_validated": false,
+  "native_byte_differential": false,
+  "new_permanent_tests": 0,
+  "packet": "orch5_frame_section_scalar_integration",
+  "functions": [
+    {
+      "address": "00abf590",
+      "name": "GuiTextChildDeletion::delete_widget_virtual4_Section",
+      "source": "src/gui_widget_base_lifetime.cpp",
+      "original_abi": "ECX Section; flags DWORD stack; EAX original owner; RET4",
+      "end_inclusive": "00abf5af",
+      "coverage": "partial_projection: canonical Section derived/base normal cleanup and flags bit0; native Section pool ABI and SEH excluded"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00ab1150",
+      "address": "00ab115c",
+      "native": "00aa87b0",
+      "binding": "One active frame spans base outgoing x87 float copy then actual Icon tail with original delta"
+    },
+    {
+      "function": "00abf590",
+      "address": "00abf593",
+      "native": "00abf4f0",
+      "binding": "Section scalar current4 derived cleanup then same shared base"
+    },
+    {
+      "function": "00abf590",
+      "address": "00abf5a5",
+      "native": "00abec40",
+      "binding": "Native flags bit0 pool transport is analyzed only; C++ wrapper allocation disposition is separate"
+    },
+    {
+      "function": "00abf4f0",
+      "address": "00abf562",
+      "native": "00419cc0",
+      "binding": "Same current native string allocator byte length"
+    },
+    {
+      "function": "00abf4f0",
+      "address": "00abf569",
+      "native": "00bd1510",
+      "binding": "Same current native string storage release"
+    },
+    {
+      "function": "00abf4f0",
+      "address": "00abf578",
+      "native": "00aa9730",
+      "binding": "Immediate common base after derived texture/string cleanup"
+    }
+  ],
+  "icon_guard": "Preflight before ActiveFrame; one guard spans base plus derived tail; same Icon owner/profile throughout",
+  "section_cleanup": "Section before_scene_release then destroy_gui_widget_base_00aa9730 on same owner; shared Group/Text/Section retirement; sticky failure blocks retry",
+  "framebox_state": "00acf070 adapter reaches same existing GuiFrameBox state/layout/services",
+  "review": "Section worker independently reviewed final Icon-frame and Section scalar/common-base integration; no findings",
+  "no_ghidra_function": [],
+  "fixture": {
+    "source": "local/gui_widget_base_probe.cpp",
+    "source_sha256": "a2d862f8e97690a5bf2e91fdc1172c8f8ba6f5a1f3fbb065e1f88f38797d855c",
+    "log": "local/orch5-texture-icon-listener-base-probe.log",
+    "log_sha256": "6498a83341b5b5bd4d78ab7296faa0c136ab5294e687ba340e7fc69a6e692aac",
+    "result": "passed",
+    "scope": "Existing recursive Group teardown regression only; no full Section texture/resource lifetime fixture"
+  }
+}
