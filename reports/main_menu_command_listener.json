@@ -1,0 +1,657 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "packet": "orch5_menu_command_listener",
+  "abi_compatible": false,
+  "game_validated": false,
+  "render_validated": false,
+  "native_byte_differential": false,
+  "new_permanent_tests": 0,
+  "functions": [
+    {
+      "address": "005993a0",
+      "name": "BSP_MainMenuWidgetListener_Current04",
+      "source": "src/main_menu_command_listener.cpp",
+      "original_abi": "ECX screen+40; widget stack; RET4",
+      "end_inclusive": "00599d57",
+      "coverage": "complete normal caller sequence with required addressed page/profile/navigation services; native ABI and SEH excluded"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "005993a0",
+      "address": "005993d3",
+      "native": "00aa6980",
+      "dispatch": "resolved_indirect",
+      "binding": "base current4C(FLD1); supported actual profiles"
+    },
+    {
+      "function": "005993a0",
+      "address": "005993d3",
+      "native": "00ab6ad0",
+      "dispatch": "resolved_indirect",
+      "binding": "Text current4C(FLD1); actual lifetime"
+    },
+    {
+      "function": "005993a0",
+      "address": "005993dc",
+      "native": "00a9e110",
+      "dispatch": "resolved_indirect",
+      "binding": "fresh current5C after alpha"
+    },
+    {
+      "function": "005993a0",
+      "address": "0059941a",
+      "native": "00588a80",
+      "dispatch": "direct",
+      "binding": "required existing top-level selection dispatch"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599443",
+      "native": "00425e50",
+      "dispatch": "direct",
+      "binding": "actual selected row pointer; bare RET preserves already pushed listbox"
+    },
+    {
+      "function": "005993a0",
+      "address": "0059944d",
+      "native": "00598b60",
+      "dispatch": "resolved_indirect",
+      "binding": "screen+8 current04, selected row plus captured listbox, RET8"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599469",
+      "native": "00a9c990",
+      "dispatch": "direct",
+      "binding": "actual Listbox selected D8 bits"
+    },
+    {
+      "function": "005993a0",
+      "address": "005994a7",
+      "native": "005806a0",
+      "dispatch": "direct",
+      "binding": "fresh selected MissionRecordData from same actual tables/globals"
+    },
+    {
+      "function": "005993a0",
+      "address": "005994af",
+      "native": "007f8d60",
+      "dispatch": "direct",
+      "binding": "required same profile map contains contract"
+    },
+    {
+      "function": "005993a0",
+      "address": "005994ca",
+      "native": "005806a0",
+      "dispatch": "direct",
+      "binding": "fresh selected MissionRecordData from same actual tables/globals"
+    },
+    {
+      "function": "005993a0",
+      "address": "005994d7",
+      "native": "007fc490",
+      "dispatch": "direct",
+      "binding": "required same profile actual14h copy value"
+    },
+    {
+      "function": "005993a0",
+      "address": "005994f2",
+      "native": "005806a0",
+      "dispatch": "direct",
+      "binding": "fresh selected MissionRecordData from same actual tables/globals"
+    },
+    {
+      "function": "005993a0",
+      "address": "005994fa",
+      "native": "007fc370",
+      "dispatch": "direct",
+      "binding": "required same profile checkpoint class/table predicate"
+    },
+    {
+      "function": "005993a0",
+      "address": "0059951a",
+      "native": "00584750",
+      "dispatch": "direct",
+      "binding": "required addressed vehicle-class/unlock contract, two stack arguments"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599530",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "construct native string temporary"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599546",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "construct native string temporary"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599563",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "construct native string temporary"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599570",
+      "native": "00425d10",
+      "dispatch": "direct",
+      "binding": "fresh actual prompt-screen singleton"
+    },
+    {
+      "function": "005993a0",
+      "address": "0059959c",
+      "native": "00531b00",
+      "dispatch": "direct",
+      "binding": "existing actual prompt owner; ten logical arguments / RET2C"
+    },
+    {
+      "function": "005993a0",
+      "address": "005995aa",
+      "native": "0041dd20",
+      "dispatch": "direct",
+      "binding": "destroy native string temporary; retain native normal cleanup order"
+    },
+    {
+      "function": "005993a0",
+      "address": "005995b8",
+      "native": "0041dd20",
+      "dispatch": "direct",
+      "binding": "destroy native string temporary; retain native normal cleanup order"
+    },
+    {
+      "function": "005993a0",
+      "address": "005995bd",
+      "native": "00425d10",
+      "dispatch": "direct",
+      "binding": "fresh actual prompt-screen singleton"
+    },
+    {
+      "function": "005993a0",
+      "address": "005995c4",
+      "native": "00530670",
+      "dispatch": "direct",
+      "binding": "parent actual prompt first navigation"
+    },
+    {
+      "function": "005993a0",
+      "address": "005995d2",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "construct native string temporary"
+    },
+    {
+      "function": "005993a0",
+      "address": "005995e9",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "construct native string temporary"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599606",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "construct native string temporary"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599621",
+      "native": "0043c130",
+      "dispatch": "direct",
+      "binding": "inline prefix NativeString construct/concatenate/destroy sequence"
+    },
+    {
+      "function": "005993a0",
+      "address": "0059963a",
+      "native": "004261a0",
+      "dispatch": "direct",
+      "binding": "existing actual-header native concatenation"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599649",
+      "native": "00425d10",
+      "dispatch": "direct",
+      "binding": "fresh actual prompt-screen singleton"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599671",
+      "native": "00531b00",
+      "dispatch": "direct",
+      "binding": "existing actual prompt owner; ten logical arguments / RET2C"
+    },
+    {
+      "function": "005993a0",
+      "address": "0059967f",
+      "native": "0041dd20",
+      "dispatch": "direct",
+      "binding": "destroy native string temporary; retain native normal cleanup order"
+    },
+    {
+      "function": "005993a0",
+      "address": "0059968d",
+      "native": "0041dd20",
+      "dispatch": "direct",
+      "binding": "destroy native string temporary; retain native normal cleanup order"
+    },
+    {
+      "function": "005993a0",
+      "address": "0059969a",
+      "native": "0041dd20",
+      "dispatch": "direct",
+      "binding": "destroy native string temporary; retain native normal cleanup order"
+    },
+    {
+      "function": "005993a0",
+      "address": "005996b1",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "construct native string temporary"
+    },
+    {
+      "function": "005993a0",
+      "address": "005996c7",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "construct native string temporary"
+    },
+    {
+      "function": "005993a0",
+      "address": "005996e5",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "construct native string temporary"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599700",
+      "native": "0043c130",
+      "dispatch": "direct",
+      "binding": "inline prefix NativeString construct/concatenate/destroy sequence"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599719",
+      "native": "004261a0",
+      "dispatch": "direct",
+      "binding": "existing actual-header native concatenation"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599728",
+      "native": "00425d10",
+      "dispatch": "direct",
+      "binding": "fresh actual prompt-screen singleton"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599750",
+      "native": "00531b00",
+      "dispatch": "direct",
+      "binding": "existing actual prompt owner; ten logical arguments / RET2C"
+    },
+    {
+      "function": "005993a0",
+      "address": "0059975e",
+      "native": "0041dd20",
+      "dispatch": "direct",
+      "binding": "destroy native string temporary; retain native normal cleanup order"
+    },
+    {
+      "function": "005993a0",
+      "address": "0059976b",
+      "native": "0041dd20",
+      "dispatch": "direct",
+      "binding": "destroy native string temporary; retain native normal cleanup order"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599779",
+      "native": "0041dd20",
+      "dispatch": "direct",
+      "binding": "destroy native string temporary; retain native normal cleanup order"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599787",
+      "native": "0041dd20",
+      "dispatch": "direct",
+      "binding": "destroy native string temporary; retain native normal cleanup order"
+    },
+    {
+      "function": "005993a0",
+      "address": "0059978c",
+      "native": "00425d10",
+      "dispatch": "direct",
+      "binding": "fresh actual prompt-screen singleton"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599793",
+      "native": "00530c20",
+      "dispatch": "direct",
+      "binding": "parent actual prompt last navigation"
+    },
+    {
+      "function": "005993a0",
+      "address": "005997a4",
+      "native": "00436490",
+      "dispatch": "direct",
+      "binding": "temporary14h current NativeString+0C destruction"
+    },
+    {
+      "function": "005993a0",
+      "address": "005997c1",
+      "native": "0058c010",
+      "dispatch": "direct",
+      "binding": "required existing mission detail builder"
+    },
+    {
+      "function": "005993a0",
+      "address": "005997dd",
+      "native": "005922f0",
+      "dispatch": "direct",
+      "binding": "required existing movie/direct mission-start path"
+    },
+    {
+      "function": "005993a0",
+      "address": "005997f9",
+      "native": "00594bf0",
+      "dispatch": "direct",
+      "binding": "required addressed mission-detail accept, downstream body incomplete"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599815",
+      "native": "005885d0",
+      "dispatch": "direct",
+      "binding": "required parent tactical selection/request composition"
+    },
+    {
+      "function": "005993a0",
+      "address": "0059986a",
+      "native": "00584ae0",
+      "dispatch": "direct",
+      "binding": "required existing page builder, select_first=false"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599890",
+      "native": "00aa8240",
+      "dispatch": "direct",
+      "binding": "same backdrop transform position/recompose/bounds"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599898",
+      "native": "00584f50",
+      "dispatch": "direct",
+      "binding": "required addressed page2 builder"
+    },
+    {
+      "function": "005993a0",
+      "address": "005998b4",
+      "native": "00599340",
+      "dispatch": "direct",
+      "binding": "required existing return-to-selected-mission-list path"
+    },
+    {
+      "function": "005993a0",
+      "address": "005998d0",
+      "native": "0058c010",
+      "dispatch": "direct",
+      "binding": "required existing mission detail builder"
+    },
+    {
+      "function": "005993a0",
+      "address": "005999af",
+      "native": "005806a0",
+      "dispatch": "direct",
+      "binding": "fresh selected MissionRecordData from same actual tables/globals"
+    },
+    {
+      "function": "005993a0",
+      "address": "005999d6",
+      "native": "005886c0",
+      "dispatch": "direct",
+      "binding": "required parent tactical request/fields composition"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599a26",
+      "native": "00582130",
+      "dispatch": "direct",
+      "binding": "borrowed same-screen list node payload/debug validity"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599a3e",
+      "native": "00582160",
+      "dispatch": "direct",
+      "binding": "borrowed same-screen list iterator advance"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599a78",
+      "native": "00582130",
+      "dispatch": "direct",
+      "binding": "borrowed same-screen list node payload/debug validity"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599a90",
+      "native": "00582160",
+      "dispatch": "direct",
+      "binding": "borrowed same-screen list iterator advance"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599ada",
+      "native": "00bf6713",
+      "dispatch": "direct",
+      "binding": "native debug validity boundary; C++ invalid input throws"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599ae8",
+      "native": "00bf6713",
+      "dispatch": "direct",
+      "binding": "native debug validity boundary; C++ invalid input throws"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599b04",
+      "native": "00582160",
+      "dispatch": "direct",
+      "binding": "borrowed same-screen list iterator advance"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599b36",
+      "native": "00a9c920",
+      "dispatch": "direct",
+      "binding": "actual Listbox selected ordinal"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599b50",
+      "native": "00a9c7c0",
+      "dispatch": "direct",
+      "binding": "actual Listbox select ordinal and current80(0)"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599ba1",
+      "native": "00683300",
+      "dispatch": "direct",
+      "binding": "same existing scroller direction/step/override"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599bc7",
+      "native": "00683300",
+      "dispatch": "direct",
+      "binding": "same existing scroller direction/step/override"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599bee",
+      "native": "00a9c990",
+      "dispatch": "direct",
+      "binding": "actual Listbox selected D8 bits"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599c1a",
+      "native": "00a9c7c0",
+      "dispatch": "direct",
+      "binding": "actual Listbox select ordinal and current80(0)"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599c31",
+      "native": "00a9c220",
+      "dispatch": "resolved_indirect",
+      "binding": "fresh actual listbox current80(1)"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599c68",
+      "native": "00a9be00",
+      "dispatch": "direct",
+      "binding": "actual Listbox row by ordinal"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599c7e",
+      "native": "00a9c7c0",
+      "dispatch": "direct",
+      "binding": "actual Listbox select ordinal and current80(0)"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599c95",
+      "native": "00a9c220",
+      "dispatch": "resolved_indirect",
+      "binding": "fresh actual listbox current80(1)"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599cb5",
+      "native": "00683300",
+      "dispatch": "direct",
+      "binding": "same existing scroller direction/step/override"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599cd8",
+      "native": "00683300",
+      "dispatch": "direct",
+      "binding": "same existing scroller direction/step/override"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599ced",
+      "native": "00683a40",
+      "dispatch": "direct",
+      "binding": "same existing scroller and actual cursor/widget position host"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599cf9",
+      "native": "00a9e110",
+      "dispatch": "resolved_indirect",
+      "binding": "fresh current5C pressed tail"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599d14",
+      "native": "00ab1710",
+      "dispatch": "resolved_indirect",
+      "binding": "actual Icon current88(2,0,1)"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599d2f",
+      "native": "00a9e110",
+      "dispatch": "resolved_indirect",
+      "binding": "SECOND fresh current5C pressed tail"
+    },
+    {
+      "function": "005993a0",
+      "address": "00599d42",
+      "native": "00acf070",
+      "dispatch": "resolved_indirect",
+      "binding": "actual FrameBox current84(2)"
+    }
+  ],
+  "call_counts": {
+    "direct": 72,
+    "resolved_indirect": 10,
+    "numeric_rows": 82,
+    "distinct_instruction_sites": 81
+  },
+  "corrections": [
+    {
+      "was": "single-argument screen+8 navigation callback inferred from decompile",
+      "is": "598B60 receives selected row then captured actual listbox, RET8",
+      "evidence": "59943F PUSH ECX survives425E50 RET0;599448 PUSH EAX;59944D CALL;59932F RET8;CEFC48+04=598B60"
+    },
+    {
+      "was": "A9C990 and A9C920 data/index roles inferred from arithmetic",
+      "is": "A9C990 selected D8; A9C920 selected ordinal; caller deliberately retains both meanings",
+      "evidence": "callee bodies and separately reconstructed actual Listbox packet"
+    },
+    {
+      "was": "historical mission-detail header attributed5997C1/5998D0 to599340",
+      "is": "both callsites belong to5993A0",
+      "evidence": "live ghidra proto of both sites: body005993a0..00599d57"
+    }
+  ],
+  "producer_evidence": {
+    "listener": "59033A storesCEFC04 atscreen+40; CEFC08=5993A0",
+    "navigation": "59032D storesCEFC48 atscreen+8; CEFC4C=598B60; CEFC50=5966F0 is separate current08",
+    "screen_widget_lists": "59041B..59045B constructs+280,+298,+2A4 with582280 self-linked0Ch sentinel and zero count",
+    "checkpoint_value": "437490 copies3words then deep-copies NativeString+0C; total14h, reused as stack value only",
+    "listbox": "A9DF40 and worker gui_listbox_runtime; same registered widget owner"
+  },
+  "literals": {
+    "00ce69cc": "cd cc 4c be; MOVSS bit-copy to zoom19C",
+    "00ce54a0": "cd cc 4c 3e; MOVSS bit-copy to zoom19C",
+    "00cec178": "6f 12 83 3b; x87 spill before683300",
+    "00cefe6c": "globals.checkpoint_unit_notavailable|.\n|.",
+    "00cefe98": "globals.checkpoint_unit_locked|.\n|.",
+    "00cefebc": "|.\n|globals.continue_without_checkpoint",
+    "00cefee4": "globals.checkpoint_available"
+  },
+  "dependencies_incomplete": [
+    "actual concrete page/profile service provider",
+    "598B60 navigation listener body",
+    "594BF0 mission-detail accept body",
+    "screen280/298/2A4 list producer/provider",
+    "full Listbox constructor/properties/frame/copy/scalar lifetime and factory",
+    "original callback/string/SEH ABI",
+    "resource-backed rendered menu and gameplay"
+  ],
+  "validation": {
+    "strict_compile": "PASS MSVC Win32 /W4 /WX /fp:strict; local/menu_command_compile.log",
+    "independent_review": "Listbox worker PASS: page12 D8 capture/reload versus ordinal; pages4..8 DWORD arithmetic/signed comparison, unconditional getter, fresh1B8 after callbacks, hidden-row gate, pressed-state tail against599B2A..599D0E assembly",
+    "header_dependency": "actual sibling gui_listbox_runtime.hpp; parent merge must register both TUs",
+    "fixture": "not run in worker",
+    "combined_build": "parent integration required",
+    "executable_reachability": "no current game host5993A0 entry found; no new runtime claim",
+    "ghidra_mutation": "none; read-only wrapper queries verified project/program"
+  },
+  "sources_sha256_lf": {
+    "include/bsp/main_menu_command_listener.hpp": "ee49ca2ecb163666e18034568db1bbbeac87266d15e829ff409af5034f24a0af",
+    "src/main_menu_command_listener.cpp": "ed2c82a114aebaa9de17903b15103409ebafe2132a81bc95b9a19d1757969647"
+  }
+}
