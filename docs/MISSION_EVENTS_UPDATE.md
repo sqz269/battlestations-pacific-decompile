@@ -464,3 +464,9 @@ x87 intermediates. No audible playback or original-game validation is claimed.
 The older counts, static-readiness assertion, four-probe description and
 broader source-level implications above are superseded by these findings.
 Combined verification is recorded in reports/warning_voice_order_integration.json.
+
+## Correction from docs/KILL_CREDIT.md (packet cc2_kill_credit)
+
+- **Was:** the entityKilled channel 00986480 has 0077ce60 as its native producer
+  **Is:** 00986480's only caller is 0077d1a0 BSP_UnitInstance_DestroyAndBroadcast, the function starting one byte after 0077ce60's body ends; 0077ce60 produces the hit channel only
+  **Evidence:** ghidra callers 00986480; 0077ce60's Ghidra body is 0077ce60-0077d19f and 00988510 is called at 0077d149

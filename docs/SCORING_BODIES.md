@@ -295,3 +295,18 @@ at `00910410` (`MOV EDI,0x2`) is the last entry, a multiplier of exactly 1. `009
 - Which of `0062C2C0`'s seven `game+650h` sites, if any, renders the bonus list. The screen
   calls `005097D0`, `007FCD90`, `007F93F0`, `007FB990` and `00574050` on the profile; none was
   opened.
+
+## Correction from docs/KILL_CREDIT.md (packet cc2_kill_credit)
+
+- **Was:** victim+2D8h is attacker+180h, falling back to [hit+1Ch] when it exceeds 7
+  **Is:** the fallback fires only when attacker+180h is above 8, and its source is the shot's source record [src+1Ch], not the hit record
+  **Evidence:** 0077cfb7 CMP EBX,0x8 then 0077cfc0 JBE past the store; 0077cfc2 MOV EBX,[EBP+0x1c] with EBP the shot->vtable[108h]() result set at 0077cef1
+- **Was:** victim+2D0h is [[hit+CCh]+54h] and victim+2DCh is [hit+1Ch]
+  **Is:** both read the shot's source record, not the hit record
+  **Evidence:** 0077cf2f MOV ECX,[EBP+0xcc] and 0077cfda MOV ECX,[EBP+0x1c]
+- **Was:** 00959450 reaches 0091BDA0 only on the branch where the owner answers +18h(17h) or +18h(6) with a set byte; otherwise the kill goes to 009813A0 and no tree is touched
+  **Is:** that branch gates 009813A0 alone; 0091BDA0 runs on both arms because 0095950c is the fall-through of the 009813A0 call as well as the JNZ target
+  **Evidence:** 009594fe JNZ 0x0095950c, 00959507 CALL 0x009813a0, then 0095950c in program order
+- **Was:** 0091BDA0's per-slot string counters are over game+18CCh..18ECh
+  **Is:** that range is the loop cursor over the player-record pointers; the counters are the two loss maps in the eight scoring records, at record+1ECh and record+1F8h
+  **Evidence:** 0091bf6e ADD EDI,0x284 beside 0091bf68 ADD EBX,0x4, EDI seeded manager+1FCh at 0091be85

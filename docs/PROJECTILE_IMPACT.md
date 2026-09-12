@@ -465,3 +465,9 @@ The sub-type at descriptor `+8h` is set by the class constructors, not by Lua: 1
 - **Was:** the [shot+0CCh] IsKindOf(0Fh) branch is contract: other caller unread
   **Is:** the caller is 007C0910, the plane's swept collision test, and the branch binds the plane's crash effect
   **Evidence:** 007c0910 passes p+72Ch as the shot, so [shot+0CCh] is the plane, whose class id is 0Fh, the plane base. 0084bf3f and 0084bf66 set EBP to that object and 0084c34b calls 007bc4e0 on it.
+
+## Correction from docs/KILL_CREDIT.md (packet cc2_kill_credit)
+
+- **Was:** the projectile is 284h bytes
+  **Is:** the base class is 284h; the flak subclass allocates and zero-fills 298h, which is what makes +290h and +294h legal
+  **Evidence:** 0070cc4e PUSH 0x298 into 00bf55be and 0070cc5c..0070cc67 memset(obj, 0, 0x298); 006e844b PUSH 0x284 for the base

@@ -381,3 +381,9 @@ Status: build-tested on the Win32 MSVC build with warnings as errors; the existi
 - Whether the `(x, y)` surface lookup is reachable with a non-flat sea in any shipped mission. That
   needs the wave-region data, not the listing.
 - `0070C808`-`0070CAD3`, the flak tick's own sweep-and-impact tail, and `007C0910`'s per-point arm.
+
+## Correction from docs/KILL_CREDIT.md (packet cc2_kill_credit)
+
+- **Was:** neither producer of [shot+45h] nor of [proj+290h] was found
+  **Is:** 006e2353 inside the shot base constructor 006e22d0 sets [shot+45h] to 1; 0070ce6b inside BSP_FlakBulletClass_CreateProjectile writes [proj+290h] = Blast.BlastRange * arg6[+4h]
+  **Evidence:** 006e2353 MOV byte ptr [ESI+0x45],AL with AL set at 006e2313; 0070ce65 FLD [ECX+0x70]; 0070ce68 FMUL [EDX+0x4]; 0070ce6b FSTP [ESI+0x290]
