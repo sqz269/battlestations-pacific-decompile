@@ -1,0 +1,179 @@
+{
+ "events": [
+  {
+   "recreate": "00a94730",
+   "previous": "Function: FUN_00a94730 at 00a94730\nSignature: undefined FUN_00a94730(void)\nEntry: 00a94730\nBody: 00a94730 - 00a94764",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00a94730"
+   },
+   "result": {
+    "success": true,
+    "address": "00a94730",
+    "deleted_function": "FUN_00a94730",
+    "body_size": 42,
+    "message": "Function 'FUN_00a94730' deleted at 00a94730"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a94730",
+    "end_address": "00a94765"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a94730",
+    "end_address": "00a94764",
+    "bytes_disassembled": 53,
+    "message": "Successfully disassembled 53 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a94730",
+    "disassemble_first": false,
+    "name": "FUN_00a94730"
+   },
+   "result": {
+    "success": true,
+    "address": "00a94730",
+    "function_name": "FUN_00a94730",
+    "entry_point": "00a94730",
+    "body_size": 53,
+    "message": "Function created successfully at 00a94730"
+   }
+  },
+  {
+   "defined": "00a94730",
+   "end": "00a94765",
+   "name": "FUN_00a94730",
+   "after": "Function: FUN_00a94730 at 00a94730\nSignature: undefined FUN_00a94730(void)\nEntry: 00a94730\nBody: 00a94730 - 00a94764"
+  },
+  {
+   "recreate": "00a94e90",
+   "previous": "Function: STL_xlen_throw_00a94e90 at 00a94e90\nSignature: undefined STL_xlen_throw_00a94e90(void)\nEntry: 00a94e90\nBody: 00a94e90 - 00a95100",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00a94e90"
+   },
+   "result": {
+    "success": true,
+    "address": "00a94e90",
+    "deleted_function": "STL_xlen_throw_00a94e90",
+    "body_size": 625,
+    "message": "Function 'STL_xlen_throw_00a94e90' deleted at 00a94e90"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a94e90",
+    "end_address": "00a95137"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a94e90",
+    "end_address": "00a95136",
+    "bytes_disassembled": 679,
+    "message": "Successfully disassembled 679 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a94e90",
+    "disassemble_first": false,
+    "name": "STL_xlen_throw_00a94e90"
+   },
+   "result": {
+    "success": true,
+    "address": "00a94e90",
+    "function_name": "STL_xlen_throw_00a94e90",
+    "entry_point": "00a94e90",
+    "body_size": 679,
+    "message": "Function created successfully at 00a94e90",
+    "warnings": [
+     "Function name 'STL_xlen_throw_00a94e90' \u2014 main part 'STL_xlen_throw_00a94e90' is not PascalCase. Expected: StlXlenThrow00a94e90",
+     "Function name 'STL_xlen_throw_00a94e90' \u2014 main part 'STL_xlen_throw_00a94e90' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a94e90",
+   "end": "00a95137",
+   "name": "STL_xlen_throw_00a94e90",
+   "after": "Function: STL_xlen_throw_00a94e90 at 00a94e90\nSignature: undefined STL_xlen_throw_00a94e90(void)\nEntry: 00a94e90\nBody: 00a94e90 - 00a95136"
+  },
+  {
+   "recreate": "00a95a40",
+   "previous": "Function: FUN_00a95a40 at 00a95a40\nSignature: undefined FUN_00a95a40(void)\nEntry: 00a95a40\nBody: 00a95a40 - 00a95a63",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00a95a40"
+   },
+   "result": {
+    "success": true,
+    "address": "00a95a40",
+    "deleted_function": "FUN_00a95a40",
+    "body_size": 36,
+    "message": "Function 'FUN_00a95a40' deleted at 00a95a40"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a95a40",
+    "end_address": "00a95a74"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a95a40",
+    "end_address": "00a95a73",
+    "bytes_disassembled": 52,
+    "message": "Successfully disassembled 52 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a95a40",
+    "disassemble_first": false,
+    "name": "FUN_00a95a40"
+   },
+   "result": {
+    "success": true,
+    "address": "00a95a40",
+    "function_name": "FUN_00a95a40",
+    "entry_point": "00a95a40",
+    "body_size": 52,
+    "message": "Function created successfully at 00a95a40"
+   }
+  },
+  {
+   "defined": "00a95a40",
+   "end": "00a95a74",
+   "name": "FUN_00a95a40",
+   "after": "Function: FUN_00a95a40 at 00a95a40\nSignature: undefined FUN_00a95a40(void)\nEntry: 00a95a40\nBody: 00a95a40 - 00a95a73"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
