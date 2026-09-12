@@ -19,7 +19,18 @@
       "last_instruction_length": 3,
       "old_name": "BSP_Renderer_CreateRegisteredVertexStream",
       "proposed_name": "BSP_Renderer_CreateRegisteredVertexStream",
-      "native_abi": "ECX renderer; stack count,flags,declaration; EAX same raw stream; RET0Ch"
+      "native_abi": "ECX renderer; stack count,flags,declaration; EAX same raw stream; RET0Ch",
+      "cpp_symbol": "create_native_registered_vertex_stream_00b287c0",
+      "ghidra_name": "BSP_Renderer_CreateRegisteredVertexStream",
+      "source": "src/native_logical_vertex_owner.cpp",
+      "header": "include/bsp/native_logical_vertex_owner.hpp",
+      "original_abi": "ECX renderer; stack count,flags,declaration; EAX same raw stream; RET0Ch",
+      "end_inclusive": "00b288a9",
+      "end_exclusive": "00b288aa",
+      "native_prototype": "void * BSP_Renderer_CreateRegisteredVertexStream(unsigned int count, unsigned int flags, void *declaration)",
+      "native_calling_convention": "__thiscall",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage with explicit existing service boundaries. Full live/disk range and original ABI reviewed; targeted native fixtures cover only documented paths. Native EH, whole render/GPU composition and gameplay remain unverified. Evidence: docs/NATIVE_LOGICAL_VERTEX_OWNER.md; reports/native_logical_vertex_owner.json.",
+      "ledger_kind": "function"
     },
     {
       "address": "00b4b370",
@@ -31,7 +42,18 @@
       "last_instruction_length": 5,
       "old_name": "BSP_LogicalVertexStream_AllocateCpuSlot",
       "proposed_name": "BSP_LogicalVertexStream_AllocateCpuSlot",
-      "native_abi": "incoming ECX ignored; EAX slot; tail JMP B4AE80 with ECX actual108FE18 pool"
+      "native_abi": "incoming ECX ignored; EAX slot; tail JMP B4AE80 with ECX actual108FE18 pool",
+      "cpp_symbol": "allocate_native_logical_vertex_stream_00b4b370",
+      "ghidra_name": "BSP_LogicalVertexStream_AllocateCpuSlot",
+      "source": "src/native_logical_vertex_owner.cpp",
+      "header": "include/bsp/native_logical_vertex_owner.hpp",
+      "original_abi": "incoming ECX ignored; EAX slot; tail JMP B4AE80 with ECX actual108FE18 pool",
+      "end_inclusive": "00b4b379",
+      "end_exclusive": "00b4b37a",
+      "native_prototype": "void * BSP_LogicalVertexStream_AllocateCpuSlot(void)",
+      "native_calling_convention": "__thiscall",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage with explicit existing service boundaries. Full live/disk range and original ABI reviewed; targeted native fixtures cover only documented paths. Native EH, whole render/GPU composition and gameplay remain unverified. Evidence: docs/NATIVE_LOGICAL_VERTEX_OWNER.md; reports/native_logical_vertex_owner.json.",
+      "ledger_kind": "function"
     },
     {
       "address": "00b4bc00",
@@ -43,7 +65,18 @@
       "last_instruction_length": 3,
       "old_name": "BSP_D3D9LogicalVertexStream_Construct",
       "proposed_name": "BSP_D3D9LogicalVertexStream_Construct",
-      "native_abi": "ECX owner; stack count,declaration,flags; EAX owner; RET0Ch"
+      "native_abi": "ECX owner; stack count,declaration,flags; EAX owner; RET0Ch",
+      "cpp_symbol": "construct_native_logical_vertex_stream_00b4bc00",
+      "ghidra_name": "BSP_D3D9LogicalVertexStream_Construct",
+      "source": "src/native_logical_vertex_owner.cpp",
+      "header": "include/bsp/native_logical_vertex_owner.hpp",
+      "original_abi": "ECX owner; stack count,declaration,flags; EAX owner; RET0Ch",
+      "end_inclusive": "00b4bef5",
+      "end_exclusive": "00b4bef6",
+      "native_prototype": "void * BSP_D3D9LogicalVertexStream_Construct(unsigned int count, void *declaration, unsigned int flags)",
+      "native_calling_convention": "__thiscall",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage with explicit existing service boundaries. Full live/disk range and original ABI reviewed; targeted native fixtures cover only documented paths. Native EH, whole render/GPU composition and gameplay remain unverified. Evidence: docs/NATIVE_LOGICAL_VERTEX_OWNER.md; reports/native_logical_vertex_owner.json.",
+      "ledger_kind": "function"
     },
     {
       "address": "00b61e20",
@@ -55,7 +88,18 @@
       "last_instruction_length": 3,
       "old_name": "BSP_LogicalVertexStreamBase_Construct",
       "proposed_name": "BSP_LogicalVertexStreamBase_Construct",
-      "native_abi": "ECX owner; stack declaration; EAX owner; RET4"
+      "native_abi": "ECX owner; stack declaration; EAX owner; RET4",
+      "cpp_symbol": "construct_native_logical_vertex_base_00b61e20",
+      "ghidra_name": "BSP_LogicalVertexStreamBase_Construct",
+      "source": "src/native_logical_vertex_owner.cpp",
+      "header": "include/bsp/native_logical_vertex_owner.hpp",
+      "original_abi": "ECX owner; stack declaration; EAX owner; RET4",
+      "end_inclusive": "00b61f83",
+      "end_exclusive": "00b61f84",
+      "native_prototype": "void * BSP_LogicalVertexStreamBase_Construct(void *declaration)",
+      "native_calling_convention": "__thiscall",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage with explicit existing service boundaries. Full live/disk range and original ABI reviewed; targeted native fixtures cover only documented paths. Native EH, whole render/GPU composition and gameplay remain unverified. Evidence: docs/NATIVE_LOGICAL_VERTEX_OWNER.md; reports/native_logical_vertex_owner.json.",
+      "ledger_kind": "function"
     },
     {
       "address": "00b62010",
@@ -67,7 +111,18 @@
       "last_instruction_length": 1,
       "old_name": "FUN_00b62010",
       "proposed_name": "FUN_00b62010",
-      "native_abi": "ECX owner; RET"
+      "native_abi": "ECX owner; RET",
+      "cpp_symbol": "destroy_native_logical_vertex_base_00b62010",
+      "ghidra_name": "BSP_DestroyNativeLogicalVertexBase",
+      "source": "src/native_logical_vertex_owner.cpp",
+      "header": "include/bsp/native_logical_vertex_owner.hpp",
+      "original_abi": "ECX owner; RET",
+      "end_inclusive": "00b62096",
+      "end_exclusive": "00b62097",
+      "native_prototype": "void BSP_DestroyNativeLogicalVertexBase(void)",
+      "native_calling_convention": "__thiscall",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage with explicit existing service boundaries. Full live/disk range and original ABI reviewed; targeted native fixtures cover only documented paths. Native EH, whole render/GPU composition and gameplay remain unverified. Evidence: docs/NATIVE_LOGICAL_VERTEX_OWNER.md; reports/native_logical_vertex_owner.json.",
+      "ledger_kind": "function"
     },
     {
       "address": "00b4b5d0",
@@ -79,7 +134,18 @@
       "last_instruction_length": 1,
       "old_name": "BSP_LogicalVertexStream_Destruct",
       "proposed_name": "BSP_LogicalVertexStream_Destruct",
-      "native_abi": "ECX owner; RET"
+      "native_abi": "ECX owner; RET",
+      "cpp_symbol": "destroy_native_logical_vertex_stream_00b4b5d0",
+      "ghidra_name": "BSP_LogicalVertexStream_Destruct",
+      "source": "src/native_logical_vertex_owner.cpp",
+      "header": "include/bsp/native_logical_vertex_owner.hpp",
+      "original_abi": "ECX owner; RET",
+      "end_inclusive": "00b4b6e7",
+      "end_exclusive": "00b4b6e8",
+      "native_prototype": "void BSP_LogicalVertexStream_Destruct(void)",
+      "native_calling_convention": "__thiscall",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage with explicit existing service boundaries. Full live/disk range and original ABI reviewed; targeted native fixtures cover only documented paths. Native EH, whole render/GPU composition and gameplay remain unverified. Evidence: docs/NATIVE_LOGICAL_VERTEX_OWNER.md; reports/native_logical_vertex_owner.json.",
+      "ledger_kind": "function"
     },
     {
       "address": "00b4bf10",
@@ -91,7 +157,18 @@
       "last_instruction_length": 3,
       "old_name": "FUN_00b4bf10",
       "proposed_name": "FUN_00b4bf10",
-      "native_abi": "ECX owner; stack flags; EAX original owner; RET4"
+      "native_abi": "ECX owner; stack flags; EAX original owner; RET4",
+      "cpp_symbol": "delete_native_logical_vertex_stream_00b4bf10",
+      "ghidra_name": "BSP_DeleteNativeLogicalVertexStream",
+      "source": "src/native_logical_vertex_owner.cpp",
+      "header": "include/bsp/native_logical_vertex_owner.hpp",
+      "original_abi": "ECX owner; stack flags; EAX original owner; RET4",
+      "end_inclusive": "00b4bf2f",
+      "end_exclusive": "00b4bf30",
+      "native_prototype": "void * BSP_DeleteNativeLogicalVertexStream(unsigned int flags)",
+      "native_calling_convention": "__thiscall",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage with explicit existing service boundaries. Full live/disk range and original ABI reviewed; targeted native fixtures cover only documented paths. Native EH, whole render/GPU composition and gameplay remain unverified. Evidence: docs/NATIVE_LOGICAL_VERTEX_OWNER.md; reports/native_logical_vertex_owner.json.",
+      "ledger_kind": "function"
     },
     {
       "address": "00b4ae80",
@@ -103,7 +180,18 @@
       "last_instruction_length": 1,
       "old_name": "BSP_VertexStreamSlabPool_Allocate",
       "proposed_name": "BSP_VertexStreamSlabPool_Allocate",
-      "native_abi": "ECX pool; EAX slot; RET"
+      "native_abi": "ECX pool; EAX slot; RET",
+      "cpp_symbol": "allocate_native_logical_vertex_slot_00b4ae80",
+      "ghidra_name": "BSP_VertexStreamSlabPool_Allocate",
+      "source": "src/native_logical_vertex_owner.cpp",
+      "header": "include/bsp/native_logical_vertex_owner.hpp",
+      "original_abi": "ECX pool; EAX slot; RET",
+      "end_inclusive": "00b4afbb",
+      "end_exclusive": "00b4afbc",
+      "native_prototype": "void * BSP_VertexStreamSlabPool_Allocate(void)",
+      "native_calling_convention": "__thiscall",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage with explicit existing service boundaries. Full live/disk range and original ABI reviewed; targeted native fixtures cover only documented paths. Native EH, whole render/GPU composition and gameplay remain unverified. Evidence: docs/NATIVE_LOGICAL_VERTEX_OWNER.md; reports/native_logical_vertex_owner.json.",
+      "ledger_kind": "function"
     },
     {
       "address": "00b48eb0",
@@ -115,7 +203,18 @@
       "last_instruction_length": 3,
       "old_name": "BSP_VertexStreamSlab_Initialize",
       "proposed_name": "BSP_VertexStreamSlab_Initialize",
-      "native_abi": "ECX slab; stack slab index; EAX slab; RET4"
+      "native_abi": "ECX slab; stack slab index; EAX slab; RET4",
+      "cpp_symbol": "initialize_native_logical_vertex_slab_00b48eb0",
+      "ghidra_name": "BSP_VertexStreamSlab_Initialize",
+      "source": "src/native_logical_vertex_owner.cpp",
+      "header": "include/bsp/native_logical_vertex_owner.hpp",
+      "original_abi": "ECX slab; stack slab index; EAX slab; RET4",
+      "end_inclusive": "00b48eef",
+      "end_exclusive": "00b48ef0",
+      "native_prototype": "void * BSP_VertexStreamSlab_Initialize(unsigned int index)",
+      "native_calling_convention": "__thiscall",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage with explicit existing service boundaries. Full live/disk range and original ABI reviewed; targeted native fixtures cover only documented paths. Native EH, whole render/GPU composition and gameplay remain unverified. Evidence: docs/NATIVE_LOGICAL_VERTEX_OWNER.md; reports/native_logical_vertex_owner.json.",
+      "ledger_kind": "function"
     },
     {
       "address": "00b4b1e0",
@@ -127,7 +226,18 @@
       "last_instruction_length": 3,
       "old_name": "BSP_PhysicalBuffer_RegisterLogicalStream",
       "proposed_name": "BSP_PhysicalBuffer_RegisterLogicalStream",
-      "native_abi": "ECX physical; stack raw stream; RET4"
+      "native_abi": "ECX physical; stack raw stream; RET4",
+      "cpp_symbol": "register_native_physical_vertex_stream_00b4b1e0",
+      "ghidra_name": "BSP_PhysicalBuffer_RegisterLogicalStream",
+      "source": "src/native_logical_vertex_owner.cpp",
+      "header": "include/bsp/native_logical_vertex_owner.hpp",
+      "original_abi": "ECX physical; stack raw stream; RET4",
+      "end_inclusive": "00b4b2b5",
+      "end_exclusive": "00b4b2b6",
+      "native_prototype": "void BSP_PhysicalBuffer_RegisterLogicalStream(void *stream)",
+      "native_calling_convention": "__thiscall",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage with explicit existing service boundaries. Full live/disk range and original ABI reviewed; targeted native fixtures cover only documented paths. Native EH, whole render/GPU composition and gameplay remain unverified. Evidence: docs/NATIVE_LOGICAL_VERTEX_OWNER.md; reports/native_logical_vertex_owner.json.",
+      "ledger_kind": "function"
     },
     {
       "address": "00b22d10",
@@ -139,7 +249,18 @@
       "last_instruction_length": 3,
       "old_name": "BSP_PointerArray_Reserve_00b22d10",
       "proposed_name": "BSP_PointerArray_Reserve_00b22d10",
-      "native_abi": "ECX array; stack signed capacity bits; RET4"
+      "native_abi": "ECX array; stack signed capacity bits; RET4",
+      "cpp_symbol": "reserve_native_renderer_pointer_array_00b22d10",
+      "ghidra_name": "BSP_PointerArray_Reserve_00b22d10",
+      "source": "src/native_logical_vertex_owner.cpp",
+      "header": "include/bsp/native_logical_vertex_owner.hpp",
+      "original_abi": "ECX array; stack signed capacity bits; RET4",
+      "end_inclusive": "00b22d6e",
+      "end_exclusive": "00b22d6f",
+      "native_prototype": "void BSP_PointerArray_Reserve_00b22d10(unsigned int capacity)",
+      "native_calling_convention": "__thiscall",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage with explicit existing service boundaries. Full live/disk range and original ABI reviewed; targeted native fixtures cover only documented paths. Native EH, whole render/GPU composition and gameplay remain unverified. Evidence: docs/NATIVE_LOGICAL_VERTEX_OWNER.md; reports/native_logical_vertex_owner.json.",
+      "ledger_kind": "function"
     },
     {
       "address": "00b1fe50",
@@ -149,10 +270,22 @@
       "inclusive_end": "00b1fe56",
       "last_instruction_address": "00b1fe56",
       "last_instruction_length": 1,
-      "no_ghidra_function": true,
+      "no_ghidra_function": false,
       "old_name": null,
       "proposed_name": "BSP_Renderer_GetSecondaryStreamRegistrationByte",
-      "native_abi": "ECX renderer; AL byte+19AC; RET"
+      "native_abi": "ECX renderer; AL byte+19AC; RET",
+      "cpp_symbol": "native_renderer_secondary_stream_registration_00b1fe50",
+      "ghidra_name": "BSP_Renderer_GetSecondaryStreamRegistrationByte",
+      "source": "src/native_logical_vertex_owner.cpp",
+      "header": "include/bsp/native_logical_vertex_owner.hpp",
+      "original_abi": "ECX renderer; AL byte+19AC; RET",
+      "end_inclusive": "00b1fe56",
+      "end_exclusive": "00b1fe57",
+      "native_prototype": "unsigned char BSP_Renderer_GetSecondaryStreamRegistrationByte(void)",
+      "native_calling_convention": "__thiscall",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage with explicit existing service boundaries. Full live/disk range and original ABI reviewed; targeted native fixtures cover only documented paths. Native EH, whole render/GPU composition and gameplay remain unverified. Evidence: docs/NATIVE_LOGICAL_VERTEX_OWNER.md; reports/native_logical_vertex_owner.json.",
+      "ledger_kind": "function",
+      "worker_reported_no_ghidra_function": true
     },
     {
       "address": "00b47c90",
@@ -164,7 +297,18 @@
       "last_instruction_length": 3,
       "old_name": "BSP_VertexDeclaration_HasSemantic",
       "proposed_name": "BSP_VertexDeclaration_HasSemantic",
-      "native_abi": "ECX declaration; stack usage,occurrence; AL boolean; RET8"
+      "native_abi": "ECX declaration; stack usage,occurrence; AL boolean; RET8",
+      "cpp_symbol": "native_vertex_declaration_has_semantic_00b47c90",
+      "ghidra_name": "BSP_VertexDeclaration_HasSemantic",
+      "source": "src/native_logical_vertex_owner.cpp",
+      "header": "include/bsp/native_logical_vertex_owner.hpp",
+      "original_abi": "ECX declaration; stack usage,occurrence; AL boolean; RET8",
+      "end_inclusive": "00b47cd4",
+      "end_exclusive": "00b47cd5",
+      "native_prototype": "unsigned char BSP_VertexDeclaration_HasSemantic(unsigned int usage, unsigned int occurrence)",
+      "native_calling_convention": "__thiscall",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage with explicit existing service boundaries. Full live/disk range and original ABI reviewed; targeted native fixtures cover only documented paths. Native EH, whole render/GPU composition and gameplay remain unverified. Evidence: docs/NATIVE_LOGICAL_VERTEX_OWNER.md; reports/native_logical_vertex_owner.json.",
+      "ledger_kind": "function"
     },
     {
       "address": "00b47c40",
@@ -176,7 +320,18 @@
       "last_instruction_length": 3,
       "old_name": "BSP_VertexDeclaration_GetSemanticOffset",
       "proposed_name": "BSP_VertexDeclaration_GetSemanticOffset",
-      "native_abi": "ECX declaration; stack usage,occurrence; EAX raw offset; RET8"
+      "native_abi": "ECX declaration; stack usage,occurrence; EAX raw offset; RET8",
+      "cpp_symbol": "native_vertex_declaration_semantic_offset_00b47c40",
+      "ghidra_name": "BSP_VertexDeclaration_GetSemanticOffset",
+      "source": "src/native_logical_vertex_owner.cpp",
+      "header": "include/bsp/native_logical_vertex_owner.hpp",
+      "original_abi": "ECX declaration; stack usage,occurrence; EAX raw offset; RET8",
+      "end_inclusive": "00b47c57",
+      "end_exclusive": "00b47c58",
+      "native_prototype": "unsigned int BSP_VertexDeclaration_GetSemanticOffset(unsigned int usage, unsigned int occurrence)",
+      "native_calling_convention": "__thiscall",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage with explicit existing service boundaries. Full live/disk range and original ABI reviewed; targeted native fixtures cover only documented paths. Native EH, whole render/GPU composition and gameplay remain unverified. Evidence: docs/NATIVE_LOGICAL_VERTEX_OWNER.md; reports/native_logical_vertex_owner.json.",
+      "ledger_kind": "function"
     },
     {
       "address": "00b47ce0",
@@ -188,7 +343,18 @@
       "last_instruction_length": 3,
       "old_name": "BSP_VertexDeclaration_FindSemantic",
       "proposed_name": "BSP_VertexDeclaration_FindSemantic",
-      "native_abi": "ECX declaration; stack usage,occurrence; EAX index or FFFFFFFF; RET8"
+      "native_abi": "ECX declaration; stack usage,occurrence; EAX index or FFFFFFFF; RET8",
+      "cpp_symbol": "native_vertex_declaration_find_semantic_00b47ce0",
+      "ghidra_name": "BSP_VertexDeclaration_FindSemantic",
+      "source": "src/native_logical_vertex_owner.cpp",
+      "header": "include/bsp/native_logical_vertex_owner.hpp",
+      "original_abi": "ECX declaration; stack usage,occurrence; EAX index or FFFFFFFF; RET8",
+      "end_inclusive": "00b47d1d",
+      "end_exclusive": "00b47d1e",
+      "native_prototype": "unsigned int BSP_VertexDeclaration_FindSemantic(unsigned int usage, unsigned int occurrence)",
+      "native_calling_convention": "__thiscall",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage with explicit existing service boundaries. Full live/disk range and original ABI reviewed; targeted native fixtures cover only documented paths. Native EH, whole render/GPU composition and gameplay remain unverified. Evidence: docs/NATIVE_LOGICAL_VERTEX_OWNER.md; reports/native_logical_vertex_owner.json.",
+      "ledger_kind": "function"
     },
     {
       "address": "00b47c20",
@@ -200,7 +366,18 @@
       "last_instruction_length": 3,
       "old_name": "BSP_VertexDeclaration_GetSemanticType",
       "proposed_name": "BSP_VertexDeclaration_GetSemanticType",
-      "native_abi": "ECX declaration; stack usage,occurrence; EAX raw type; RET8"
+      "native_abi": "ECX declaration; stack usage,occurrence; EAX raw type; RET8",
+      "cpp_symbol": "native_vertex_declaration_semantic_type_00b47c20",
+      "ghidra_name": "BSP_VertexDeclaration_GetSemanticType",
+      "source": "src/native_logical_vertex_owner.cpp",
+      "header": "include/bsp/native_logical_vertex_owner.hpp",
+      "original_abi": "ECX declaration; stack usage,occurrence; EAX raw type; RET8",
+      "end_inclusive": "00b47c38",
+      "end_exclusive": "00b47c39",
+      "native_prototype": "unsigned int BSP_VertexDeclaration_GetSemanticType(unsigned int usage, unsigned int occurrence)",
+      "native_calling_convention": "__thiscall",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage with explicit existing service boundaries. Full live/disk range and original ABI reviewed; targeted native fixtures cover only documented paths. Native EH, whole render/GPU composition and gameplay remain unverified. Evidence: docs/NATIVE_LOGICAL_VERTEX_OWNER.md; reports/native_logical_vertex_owner.json.",
+      "ledger_kind": "function"
     },
     {
       "address": "00b47c60",
@@ -212,7 +389,18 @@
       "last_instruction_length": 3,
       "old_name": "BSP_VertexDeclaration_GetSemanticSize",
       "proposed_name": "BSP_VertexDeclaration_GetSemanticSize",
-      "native_abi": "ECX declaration; stack usage,occurrence; EAX raw size; RET8"
+      "native_abi": "ECX declaration; stack usage,occurrence; EAX raw size; RET8",
+      "cpp_symbol": "native_vertex_declaration_semantic_size_00b47c60",
+      "ghidra_name": "BSP_VertexDeclaration_GetSemanticSize",
+      "source": "src/native_logical_vertex_owner.cpp",
+      "header": "include/bsp/native_logical_vertex_owner.hpp",
+      "original_abi": "ECX declaration; stack usage,occurrence; EAX raw size; RET8",
+      "end_inclusive": "00b47c7f",
+      "end_exclusive": "00b47c80",
+      "native_prototype": "unsigned int BSP_VertexDeclaration_GetSemanticSize(unsigned int usage, unsigned int occurrence)",
+      "native_calling_convention": "__thiscall",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage with explicit existing service boundaries. Full live/disk range and original ABI reviewed; targeted native fixtures cover only documented paths. Native EH, whole render/GPU composition and gameplay remain unverified. Evidence: docs/NATIVE_LOGICAL_VERTEX_OWNER.md; reports/native_logical_vertex_owner.json.",
+      "ledger_kind": "function"
     }
   ],
   "host_steps": [
@@ -1193,5 +1381,368 @@
     "New source interfaces are not drop-in original ABI or game/render validation.",
     "Optional guard entry-disabled/exit-enabled transition is outside native valid domain.",
     "Raw null-fault, allocation exceptions and malformed storage are not repaired."
-  ]
+  ],
+  "integration_at_review": {
+    "combined_validation": "pending final exact merged source commit",
+    "game_validated": false,
+    "saved_names_and_signatures": 50,
+    "original_signature_readback": "00b2f910 BSP_NativeDeclarationRecord_Destroy  void __thiscall BSP_NativeDeclarationRecord_Destroy(void * this)  body 00b2f910 - 00b2f987\n00b2fbb0 BSP_NativeDeclarationRecord_CopyConstruct  void * __thiscall BSP_NativeDeclarationRecord_CopyConstruct(void * this, void * source)  body 00b2fbb0 - 00b2fc51\n00b2fe20 BSP_NativeDeclarationRecordArray_Reserve  void __thiscall BSP_NativeDeclarationRecordArray_Reserve(void * this, uint capacity)  body 00b2fe20 - 00b2fefc\n00b300c0 BSP_NativeDeclarationRecordArray_Append  void __thiscall BSP_NativeDeclarationRecordArray_Append(void * this, void * record)  body 00b300c0 - 00b3012e\n00b2c280 BSP_DeclarationRegistry_CopyResolvedName  void * __thiscall BSP_DeclarationRegistry_CopyResolvedName(void * this, void * output, void * name, uint word)  body 00b2c280 - 00b2c2cf\n00b31d20 BSP_DeclarationRegistry_Acquire  void * __thiscall BSP_DeclarationRegistry_Acquire(void * this, void * declaration)  body 00b31d20 - 00b31d34\n00b305f0 BSP_NativeDeclarationRegistry_Load  void * __thiscall BSP_NativeDeclarationRegistry_Load(void * this, void * name, uint word, uchar acquire_new, uchar allow_load)  body 00b305f0 - 00b30b36\n00b317e0 BSP_Renderer_LoadVertexDeclaration  void * __thiscall BSP_Renderer_LoadVertexDeclaration(void * this, void * name)  body 00b317e0 - 00b318a0\n00b2dbd0 BSP_VertexDeclaration_DecodeFormatName  void * __thiscall BSP_VertexDeclaration_DecodeFormatName(void * this, void * name, uint word)  body 00b2dbd0 - 00b2e93a\n00b47680 BSP_NativeVertexDeclarationSlab_Initialize  void * __thiscall BSP_NativeVertexDeclarationSlab_Initialize(void * this, uint index)  body 00b47680 - 00b476c2\n00b47d20 BSP_VertexDeclaration_RecomputeStride  void __thiscall BSP_VertexDeclaration_RecomputeStride(void * this)  body 00b47d20 - 00b47d5b\n00b47d90 BSP_NativeVertexElementArray_Append  void __thiscall BSP_NativeVertexElementArray_Append(void * this, void * record)  body 00b47d90 - 00b47de3\n00b48330 BSP_VertexDeclaration_AppendElement  void __thiscall BSP_VertexDeclaration_AppendElement(void * this, uint type, uint usage, uint offset)  body 00b48330 - 00b4839d\n00b48560 BSP_NativeVertexDeclarationPool_AllocateRawSlot  void * __thiscall BSP_NativeVertexDeclarationPool_AllocateRawSlot(void * this)  body 00b48560 - 00b4869b\n00b488c0 BSP_NativeVertexDeclaration_AllocateRawSlot  void * __thiscall BSP_NativeVertexDeclaration_AllocateRawSlot(void * this)  body 00b488c0 - 00b488c9\n00ce0c10 BSP_NativeVertexFormat_DestroyTypeTokens  void __cdecl BSP_NativeVertexFormat_DestroyTypeTokens(void)  body 00ce0c10 - 00ce0c23\n00ce0c30 BSP_NativeVertexFormat_DestroyUsageTokens  void __cdecl BSP_NativeVertexFormat_DestroyUsageTokens(void)  body 00ce0c30 - 00ce0c43\n00b287c0 BSP_Renderer_CreateRegisteredVertexStream  void * __thiscall BSP_Renderer_CreateRegisteredVertexStream(void * this, uint count, uint flags, void * declaration)  body 00b287c0 - 00b288a9\n00b4b370 BSP_LogicalVertexStream_AllocateCpuSlot  void * __thiscall BSP_LogicalVertexStream_AllocateCpuSlot(void * this)  body 00b4b370 - 00b4b379\n00b4bc00 BSP_D3D9LogicalVertexStream_Construct  void * __thiscall BSP_D3D9LogicalVertexStream_Construct(void * this, uint count, void * declaration, uint flags)  body 00b4bc00 - 00b4bef5\n00b61e20 BSP_LogicalVertexStreamBase_Construct  void * __thiscall BSP_LogicalVertexStreamBase_Construct(void * this, void * declaration)  body 00b61e20 - 00b61f83\n00b62010 BSP_DestroyNativeLogicalVertexBase  void __thiscall BSP_DestroyNativeLogicalVertexBase(void * this)  body 00b62010 - 00b62096\n00b4b5d0 BSP_LogicalVertexStream_Destruct  void __thiscall BSP_LogicalVertexStream_Destruct(void * this)  body 00b4b5d0 - 00b4b6e7\n00b4bf10 BSP_DeleteNativeLogicalVertexStream  void * __thiscall BSP_DeleteNativeLogicalVertexStream(void * this, uint flags)  body 00b4bf10 - 00b4bf2f\n00b4ae80 BSP_VertexStreamSlabPool_Allocate  void * __thiscall BSP_VertexStreamSlabPool_Allocate(void * this)  body 00b4ae80 - 00b4afbb\n00b48eb0 BSP_VertexStreamSlab_Initialize  void * __thiscall BSP_VertexStreamSlab_Initialize(void * this, uint index)  body 00b48eb0 - 00b48eef\n00b4b1e0 BSP_PhysicalBuffer_RegisterLogicalStream  void __thiscall BSP_PhysicalBuffer_RegisterLogicalStream(void * this, void * stream)  body 00b4b1e0 - 00b4b2b5\n00b22d10 BSP_PointerArray_Reserve_00b22d10  void __thiscall BSP_PointerArray_Reserve_00b22d10(void * this, uint capacity)  body 00b22d10 - 00b22d6e\n00b1fe50 BSP_Renderer_GetSecondaryStreamRegistrationByte  uchar __thiscall BSP_Renderer_GetSecondaryStreamRegistrationByte(void * this)  body 00b1fe50 - 00b1fe56\n00b47c90 BSP_VertexDeclaration_HasSemantic  uchar __thiscall BSP_VertexDeclaration_HasSemantic(void * this, uint usage, uint occurrence)  body 00b47c90 - 00b47cd4\n00b47c40 BSP_VertexDeclaration_GetSemanticOffset  uint __thiscall BSP_VertexDeclaration_GetSemanticOffset(void * this, uint usage, uint occurrence)  body 00b47c40 - 00b47c57\n00b47ce0 BSP_VertexDeclaration_FindSemantic  uint __thiscall BSP_VertexDeclaration_FindSemantic(void * this, uint usage, uint occurrence)  body 00b47ce0 - 00b47d1d\n00b47c20 BSP_VertexDeclaration_GetSemanticType  uint __thiscall BSP_VertexDeclaration_GetSemanticType(void * this, uint usage, uint occurrence)  body 00b47c20 - 00b47c38\n00b47c60 BSP_VertexDeclaration_GetSemanticSize  uint __thiscall BSP_VertexDeclaration_GetSemanticSize(void * this, uint usage, uint occurrence)  body 00b47c60 - 00b47c7f\n00af26a0 BSP_NativeTraceline_FillAndSubmitGeometry  void __thiscall BSP_NativeTraceline_FillAndSubmitGeometry(void * this, void * context, float lod, float visibility, uint flags)  body 00af26a0 - 00af3168\n00af1c20 BSP_NativeTracelineVertex_Copy  void * __thiscall BSP_NativeTracelineVertex_Copy(void * this, void * source)  body 00af1c20 - 00af1c6e\n00b71530 BSP_NativeCamera_ClassifySphere  uint __thiscall BSP_NativeCamera_ClassifySphere(void * this, void * sphere)  body 00b71530 - 00b71582\n00b651e0 BSP_NativePlaneSet_ClassifySphere  uint __thiscall BSP_NativePlaneSet_ClassifySphere(void * this, void * sphere, uint flags)  body 00b651e0 - 00b652cb\n00b748e0 BSP_NativeGeneratedModel_Render  void __thiscall BSP_NativeGeneratedModel_Render(void * this, void * context, float lod, float visibility, uint flags)  body 00b748e0 - 00b74b5a\n00b72f80 BSP_NativeMesh_CreateRenderEntries  void __thiscall BSP_NativeMesh_CreateRenderEntries(void * this, void * context, void * model, float lod, float visibility, uint flags)  body 00b72f80 - 00b7325a\n007c1180 BSP_Sphere_TransformAffine  void * __thiscall BSP_Sphere_TransformAffine(void * this, void * output, void * matrix)  body 007c1180 - 007c11d7\n007bb620 BSP_Matrix_GetMaximumBasisLengthSquared  float __thiscall BSP_Matrix_GetMaximumBasisLengthSquared(void * this)  body 007bb620 - 007bb6d6\n00b6e8c0 BSP_Model_GetWorldSphere  void * __thiscall BSP_Model_GetWorldSphere(void * this)  body 00b6e8c0 - 00b6e922\n00415550 BSP_Math_MaxFloatByRef  float __fastcall BSP_Math_MaxFloatByRef(float * left, float * right)  body 00415550 - 0041558d\n00b6d810 BSP_Node_GetNotificationContext  void * __thiscall BSP_Node_GetNotificationContext(void * this)  body 00b6d810 - 00b6d816\n00b6dcb0 BSP_Node_GetBoundsScalar  float __thiscall BSP_Node_GetBoundsScalar(void * this)  body 00b6dcb0 - 00b6dcb3\n006ef890 BSP_Model_AcceptRender  uchar __thiscall BSP_Model_AcceptRender(void * this, void * camera, float lod)  body 006ef890 - 006ef894\n004142e0 BSP_Vector3f_TransformAffinePoint  void * __thiscall BSP_Vector3f_TransformAffinePoint(void * this, void * output, void * matrix)  body 004142e0 - 00414363\n00b51a20 BSP_RenderEntry_Initialize  void __thiscall BSP_RenderEntry_Initialize(void * this, float leading, void * section, void * geometry, void * model, void * camera, float visibility, float depth_override, uint flags)  body 00b51a20 - 00b51aaa\n00bee050 BSP_FrameClock_GetCurrent  void * __thiscall BSP_FrameClock_GetCurrent(void * this)  body 00bee050 - 00bee053\n",
+    "previous_signatures": "00b2f910 FUN_00b2f910  undefined FUN_00b2f910(void)  body 00b2f910 - 00b2f987\n00b2fbb0 FUN_00b2fbb0  undefined FUN_00b2fbb0(void)  body 00b2fbb0 - 00b2fc51\n00b2fe20 FUN_00b2fe20  undefined FUN_00b2fe20(void)  body 00b2fe20 - 00b2fefc\n00b300c0 FUN_00b300c0  undefined FUN_00b300c0(void)  body 00b300c0 - 00b3012e\n00b2c280 BSP_DeclarationRegistry_CopyResolvedName  undefined BSP_DeclarationRegistry_CopyResolvedName(void)  body 00b2c280 - 00b2c2cf\n00b31d20 FUN_00b31d20  undefined FUN_00b31d20(void)  body 00b31d20 - 00b31d34\n00b305f0 FUN_00b305f0  undefined FUN_00b305f0(void)  body 00b305f0 - 00b30b36\n00b317e0 BSP_Renderer_LoadVertexDeclaration  undefined BSP_Renderer_LoadVertexDeclaration(void)  body 00b317e0 - 00b318a0\n00b2dbd0 BSP_VertexDeclaration_DecodeFormatName  undefined BSP_VertexDeclaration_DecodeFormatName(void)  body 00b2dbd0 - 00b2e93a\n00b47680 FUN_00b47680  undefined FUN_00b47680(void)  body 00b47680 - 00b476c2\n00b47d20 BSP_VertexDeclaration_RecomputeStride  undefined BSP_VertexDeclaration_RecomputeStride(void)  body 00b47d20 - 00b47d5b\n00b47d90 FUN_00b47d90  undefined FUN_00b47d90(void)  body 00b47d90 - 00b47de3\n00b48330 BSP_VertexDeclaration_AppendElement  undefined BSP_VertexDeclaration_AppendElement(void)  body 00b48330 - 00b4839d\n00b48560 FUN_00b48560  undefined FUN_00b48560(void)  body 00b48560 - 00b4869b\n00b488c0 CG_static_dtor_stub_00b488c0  undefined CG_static_dtor_stub_00b488c0(void)  body 00b488c0 - 00b488c9\n00ce0c10 FUN_00ce0c10  undefined FUN_00ce0c10(void)  body 00ce0c10 - 00ce0c23\n00ce0c30 FUN_00ce0c30  undefined FUN_00ce0c30(void)  body 00ce0c30 - 00ce0c43\n00b287c0 BSP_Renderer_CreateRegisteredVertexStream  undefined BSP_Renderer_CreateRegisteredVertexStream(void)  body 00b287c0 - 00b288a9\n00b4b370 BSP_LogicalVertexStream_AllocateCpuSlot  undefined BSP_LogicalVertexStream_AllocateCpuSlot(void)  body 00b4b370 - 00b4b379\n00b4bc00 BSP_D3D9LogicalVertexStream_Construct  undefined BSP_D3D9LogicalVertexStream_Construct(void)  body 00b4bc00 - 00b4bef5\n00b61e20 BSP_LogicalVertexStreamBase_Construct  undefined BSP_LogicalVertexStreamBase_Construct(void)  body 00b61e20 - 00b61f83\n00b62010 FUN_00b62010  undefined FUN_00b62010(void)  body 00b62010 - 00b62096\n00b4b5d0 BSP_LogicalVertexStream_Destruct  undefined BSP_LogicalVertexStream_Destruct(void)  body 00b4b5d0 - 00b4b6e7\n00b4bf10 FUN_00b4bf10  undefined FUN_00b4bf10(void)  body 00b4bf10 - 00b4bf2f\n00b4ae80 BSP_VertexStreamSlabPool_Allocate  undefined BSP_VertexStreamSlabPool_Allocate(void)  body 00b4ae80 - 00b4afbb\n00b48eb0 BSP_VertexStreamSlab_Initialize  undefined BSP_VertexStreamSlab_Initialize(void)  body 00b48eb0 - 00b48eef\n00b4b1e0 BSP_PhysicalBuffer_RegisterLogicalStream  undefined BSP_PhysicalBuffer_RegisterLogicalStream(void)  body 00b4b1e0 - 00b4b2b5\n00b22d10 BSP_PointerArray_Reserve_00b22d10  undefined BSP_PointerArray_Reserve_00b22d10(void)  body 00b22d10 - 00b22d6e\n00b1fe50 FUN_00b1fe50  undefined FUN_00b1fe50(void)  body 00b1fe50 - 00b1fe56\n00b47c90 BSP_VertexDeclaration_HasSemantic  undefined BSP_VertexDeclaration_HasSemantic(void)  body 00b47c90 - 00b47cd4\n00b47c40 BSP_VertexDeclaration_GetSemanticOffset  undefined BSP_VertexDeclaration_GetSemanticOffset(void)  body 00b47c40 - 00b47c57\n00b47ce0 BSP_VertexDeclaration_FindSemantic  undefined BSP_VertexDeclaration_FindSemantic(void)  body 00b47ce0 - 00b47d1d\n00b47c20 BSP_VertexDeclaration_GetSemanticType  undefined BSP_VertexDeclaration_GetSemanticType(void)  body 00b47c20 - 00b47c38\n00b47c60 BSP_VertexDeclaration_GetSemanticSize  undefined BSP_VertexDeclaration_GetSemanticSize(void)  body 00b47c60 - 00b47c7f\n00af26a0 BSP_NativeTraceline_FillAndSubmitGeometry  void __thiscall BSP_NativeTraceline_FillAndSubmitGeometry(void * this, void * render_context, float arg1, float arg2, uint flags)  body 00af26a0 - 00af3168\n00af1c20 FUN_00af1c20  undefined FUN_00af1c20(void)  body 00af1c20 - 00af1c6e\n00b71530 FUN_00b71530  undefined FUN_00b71530(void)  body 00b71530 - 00b71582\n00b651e0 FUN_00b651e0  undefined FUN_00b651e0(void)  body 00b651e0 - 00b652cb\n00b748e0 FUN_00b748e0  undefined FUN_00b748e0(void)  body 00b748e0 - 00b74b5a\n00b72f80 FUN_00b72f80  undefined FUN_00b72f80(void)  body 00b72f80 - 00b7325a\n007c1180 BSP_Sphere_TransformAffine  undefined BSP_Sphere_TransformAffine(void)  body 007c1180 - 007c11d7\n007bb620 BSP_Matrix_GetMaximumBasisLengthSquared  undefined BSP_Matrix_GetMaximumBasisLengthSquared(void)  body 007bb620 - 007bb6d6\n00b6e8c0 BSP_Model_GetWorldSphere  undefined BSP_Model_GetWorldSphere(void)  body 00b6e8c0 - 00b6e922\n00415550 BSP_Math_MaxFloatByRef  undefined BSP_Math_MaxFloatByRef(void)  body 00415550 - 0041558d\n00b6d810 TRIV_body_00b6d810  undefined TRIV_body_00b6d810(void)  body 00b6d810 - 00b6d816\n00b6dcb0 TRIV_body_00b6dcb0  undefined TRIV_body_00b6dcb0(void)  body 00b6dcb0 - 00b6dcb3\n006ef890 FUN_006ef890  undefined FUN_006ef890(void)  body 006ef890 - 006ef894\n004142e0 BSP_Vector3f_TransformAffinePoint  undefined BSP_Vector3f_TransformAffinePoint(void)  body 004142e0 - 00414363\n00b51a20 BSP_RenderEntry_Initialize  undefined BSP_RenderEntry_Initialize(void)  body 00b51a20 - 00b51aaa\n00bee050 BSP_FrameClock_GetCurrent  void * __fastcall BSP_FrameClock_GetCurrent(void * self)  body 00bee050 - 00bee053\n",
+    "readback_passed": true,
+    "raw_definitions": {
+      "events": [
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "006ef890",
+            "end_address": "006ef895"
+          },
+          "result": {
+            "success": true,
+            "start_address": "006ef890",
+            "end_address": "006ef894",
+            "bytes_disassembled": 5,
+            "message": "Successfully disassembled 5 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "006ef890",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "006ef890",
+            "function_name": "FUN_006ef890",
+            "entry_point": "006ef890",
+            "body_size": 5,
+            "message": "Function created successfully at 006ef890"
+          }
+        },
+        {
+          "defined": "006ef890",
+          "end": "006ef895",
+          "name": null,
+          "after": "Function: FUN_006ef890 at 006ef890\nSignature: undefined FUN_006ef890(void)\nEntry: 006ef890\nBody: 006ef890 - 006ef894"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00ce0c10",
+            "end_address": "00ce0c24"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00ce0c10",
+            "end_address": "00ce0c23",
+            "bytes_disassembled": 20,
+            "message": "Successfully disassembled 20 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00ce0c10",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00ce0c10",
+            "function_name": "FUN_00ce0c10",
+            "entry_point": "00ce0c10",
+            "body_size": 20,
+            "message": "Function created successfully at 00ce0c10"
+          }
+        },
+        {
+          "defined": "00ce0c10",
+          "end": "00ce0c24",
+          "name": null,
+          "after": "Function: FUN_00ce0c10 at 00ce0c10\nSignature: undefined FUN_00ce0c10(void)\nEntry: 00ce0c10\nBody: 00ce0c10 - 00ce0c23"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00ce0c30",
+            "end_address": "00ce0c44"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00ce0c30",
+            "end_address": "00ce0c43",
+            "bytes_disassembled": 20,
+            "message": "Successfully disassembled 20 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00ce0c30",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00ce0c30",
+            "function_name": "FUN_00ce0c30",
+            "entry_point": "00ce0c30",
+            "body_size": 20,
+            "message": "Function created successfully at 00ce0c30"
+          }
+        },
+        {
+          "defined": "00ce0c30",
+          "end": "00ce0c44",
+          "name": null,
+          "after": "Function: FUN_00ce0c30 at 00ce0c30\nSignature: undefined FUN_00ce0c30(void)\nEntry: 00ce0c30\nBody: 00ce0c30 - 00ce0c43"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00b1fe50",
+            "end_address": "00b1fe57"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00b1fe50",
+            "end_address": "00b1fe56",
+            "bytes_disassembled": 7,
+            "message": "Successfully disassembled 7 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00b1fe50",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00b1fe50",
+            "function_name": "FUN_00b1fe50",
+            "entry_point": "00b1fe50",
+            "body_size": 7,
+            "message": "Function created successfully at 00b1fe50"
+          }
+        },
+        {
+          "defined": "00b1fe50",
+          "end": "00b1fe57",
+          "name": null,
+          "after": "Function: FUN_00b1fe50 at 00b1fe50\nSignature: undefined FUN_00b1fe50(void)\nEntry: 00b1fe50\nBody: 00b1fe50 - 00b1fe56"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        }
+      ]
+    },
+    "owned_flow_repairs": [
+      {
+        "repairs": [
+          {
+            "function": "00b2f910",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T23:23:57Z",
+            "decompile_lines_before": 17,
+            "gaps": [
+              {
+                "site": "00b2f944",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00b2f949",
+                "gap_end_exclusive": "00b2f988",
+                "bytes": 63,
+                "after_call": true,
+                "sha256": "d2b614d5911573e8406a005a33829f9d1c415529ea477aa6aad76b3ab2a18e67"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00b2f944",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf65ac",
+                  "gap_start": "00b2f949",
+                  "gap_end_exclusive": "00b2f988",
+                  "bytes": 63,
+                  "after_call": true,
+                  "sha256": "d2b614d5911573e8406a005a33829f9d1c415529ea477aa6aad76b3ab2a18e67"
+                },
+                "clear": "Success: Cleared flow override at 00b2f944 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 63 byte(s)"
+              },
+              {
+                "explicit_tail_call": "00b2f944",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00b2f944 (was: NONE, now: NONE)"
+                }
+              }
+            ],
+            "explicit_tail_end_exclusive": "00b2f988",
+            "explicit_body_sha256": "ca27c7e6c55f4eaea81008a00d800f6eb6974c2e1b651e623f4bf1edfc4ea776",
+            "body_before": "Function: FUN_00b2f910 at 00b2f910\nSignature: undefined FUN_00b2f910(void)\nEntry: 00b2f910\nBody: 00b2f910 - 00b2f948",
+            "decompile_lines_after": 30,
+            "gaps_remaining": 1,
+            "body_after": "Function: FUN_00b2f910 at 00b2f910\nSignature: undefined FUN_00b2f910(void)\nEntry: 00b2f910\nBody: 00b2f910 - 00b2f948",
+            "stored_body_tail_complete": false,
+            "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+          },
+          {
+            "function": "00b2fe20",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T23:24:08Z",
+            "decompile_lines_before": 43,
+            "gaps": [
+              {
+                "site": "00b2fedb",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b2fee0",
+                "gap_end_exclusive": "00b2feea",
+                "bytes": 10,
+                "after_call": true,
+                "sha256": "f504c0a22c5c06a5d1327cc4c6720a99ac6e4741d712473d5eee249651938e38"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00b2fedb",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b2fee0",
+                  "gap_end_exclusive": "00b2feea",
+                  "bytes": 10,
+                  "after_call": true,
+                  "sha256": "f504c0a22c5c06a5d1327cc4c6720a99ac6e4741d712473d5eee249651938e38"
+                },
+                "clear": "Success: Cleared flow override at 00b2fedb (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 10 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 45,
+            "gaps_remaining": 0
+          }
+        ]
+      },
+      {
+        "repairs": [
+          {
+            "function": "00b48560",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T23:42:26Z",
+            "decompile_lines_before": 78,
+            "gaps": [
+              {
+                "site": "00b485f1",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b485f6",
+                "gap_end_exclusive": "00b485f9",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00b485f1",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b485f6",
+                  "gap_end_exclusive": "00b485f9",
+                  "bytes": 3,
+                  "after_call": true,
+                  "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+                },
+                "clear": "Success: Cleared flow override at 00b485f1 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 3 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 76,
+            "gaps_remaining": 0
+          },
+          {
+            "function": "00b62010",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T23:44:56Z",
+            "decompile_lines_before": 33,
+            "gaps": [
+              {
+                "site": "00b62068",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00b6206d",
+                "gap_end_exclusive": "00b62077",
+                "bytes": 10,
+                "after_call": true,
+                "sha256": "3a2951caf0a31ddee6d729b36a3ca6542b592e9bb95aedda3818f4ab6b199075"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00b62068",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf65ac",
+                  "gap_start": "00b6206d",
+                  "gap_end_exclusive": "00b62077",
+                  "bytes": 10,
+                  "after_call": true,
+                  "sha256": "3a2951caf0a31ddee6d729b36a3ca6542b592e9bb95aedda3818f4ab6b199075"
+                },
+                "clear": "Success: Cleared flow override at 00b62068 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 10 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 33,
+            "gaps_remaining": 0
+          }
+        ]
+      }
+    ],
+    "cross_review": "Cache full assembly/reference schedule reviewed independently; stream retains the same actual declaration; render raw getter layouts, eight-word entry ABI and x87 bridge crossings reviewed independently. No concrete normal-path defect found. Second cache resolved-name scan remains statically reviewed/unexecuted. Actual B1DFF0 and full GPU/render composition remain required."
+  }
 }

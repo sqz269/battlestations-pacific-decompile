@@ -90,18 +90,29 @@ failure ABI parity remain unverified.
 
 Eight complete spans match live Ghidra bytes and the installed executable
 `b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6`.
-Source and focused probe compile under MSVC Win32,
-`/W4 /WX /fp:strict`. Exact integrated build and current-library native probe
-results are recorded in the report after integration. The scratch probe uses
-decoded operand relocations and actual owning pooled strings; it does not
-establish gameplay or native exception compatibility.
+Source and focused probe compile under MSVC Win32, `/W4 /WX /fp:strict`.
+The initial probe passes31 original/source comparisons: record copy/destruction,
+signed capacity growth and append, resolver identity, reference increments,
+hot hits and lookup-only misses, renderer wrapper, and cold valid/null loads.
+Cold paths invoke the actual decoder and an empty actual VFS tree; no mounted
+physical-file date provider is exercised. The fixture binds one declaration
+companion and explicitly drains outstanding references to verify actual+04
+terminal deletion and pool return. It does not implement application registry
+registration or cache destruction/release through B32210/B31D40.
+
+The second resolved-name scan is assembly-reviewed but unexecuted: the admitted
+identity resolver and stable normalization do not produce a changed name.
+The initial native registry vtable is relocated to callable fixture addresses;
+the source run uses the same original identity tokens. Exact integrated build
+and current-library-only replay results are recorded in the report. Native
+FH3/SEH, changed external profiles and gameplay remain unverified.
 
 ## Follow-up packets
 
 Connect the same cached declaration creator reference to the application's
 canonical `NativeVertexDeclarationReference` registry when its full renderer
 owner is composed. Recover actual declaration-registry destruction B32210 and
-release B31D40 before claiming complete registry lifetime. Validate cold-load
-decoder/VFS composition and the changed-resolution branch independently from
-hot lookup coverage. Actual B1DFF0 render-context collection and complete
+release B31D40 before claiming complete registry lifetime. Extend cold-load
+VFS coverage beyond the empty tree and exercise the changed-resolution branch
+through an evidence-supported actual resolver. Actual B1DFF0 render-context collection and complete
 renderer device recreation remain separate owners' reconstruction work.
