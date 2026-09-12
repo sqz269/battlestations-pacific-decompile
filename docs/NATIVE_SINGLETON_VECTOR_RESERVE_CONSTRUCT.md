@@ -1,0 +1,45 @@
+# Raw singleton reserve and construction
+
+This packet reconstructs complete **00BD0600..00BD06A4 (165 bytes)** and **00BD0960..00BD09AF (80 bytes)** against actual raw owner storage. The manager occupies 14h bytes: untouched DWORD+0, begin+4, end+8, capacity-end+0Ch, and actual tracked-section pointer+10h. No typed lifetime-manager projection, private allocation domain, generic callbacks, or populated-reserve shortcut is introduced. Names describe established behavior; they are not recovered symbols.
+
+## Native evidence
+
+Guarded `tools/bsp.py ghidra` captures verify existing project `bsp`, program `/battlestationspacific.exe`, x86 image base00400000 and configured `C:/Users/sqz269/bsp.gpr`. Seven fresh spans /388 bytes match both saved Ghidra memory and the installed PE SHA-256 `b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6`. This includes both full functions, cleanup CC5490[8], handler CC5498[10], completed BD0220[42], completed raw BD1860[39], and the unwind-map/FuncInfo data DFF4E0[44]. All276 prior raw-discovery artifact/source pins were rehashed before reuse. Capstone decodes every code byte; native EH data are decoded as fields rather than instructions.
+
+The saved Ghidra listing omits BD0689 `83 C4 04` because it treats the returning free as terminal. The installed complete reserve body contains that stack adjustment and the populated publication path after it. Raw captures and a complete separate decoder are retained; this packet does not mutate Ghidra or refresh shared exports.
+
+## Complete reserve contract
+
+BD0600 consumes ECX owner and one stack capacity DWORD, ignores incoming EDX, and returns with RET4. Source declares a two-register fastcall plus the stack capacity, and preserves the complete native instruction schedule in a naked Win32 entry.
+
+The unsigned maximum check precedes all capacity inspection. A request above3FFFFFFFh invokes the actual BD0590 source provider; it never returns normally. Otherwise, null begin gives capacity0; nonnull begin gives the raw32 `(capacity_end-begin) SAR2` bit pattern, compared unsigned. Requests at or below current capacity do nothing.
+
+Growth calls actual BCFEB0 with ECX=request/EDX0, then captures current end in EDI and replacement storage in EBX. The first returning validation compares current begin against that captured end. It then captures current begin in EBP and validates the capture against current end. Returning handlers may mutate owner words, but neither captured end nor captured begin is recomputed. Copy uses the raw signed-shift distance, invokes actual `memmove_s` for every nonzero result, supplies equal destination-size and byte-count, and ignores its status.
+
+After copying, reserve reloads current begin and, when nonnull, current end to retain the *current* element count. It frees that captured current begin through the existing paired service. After the returning free it reloads requested capacity from its original stack word and publishes **begin, capacity-end, end**, in that order. Captured retained count determines the final end. Offset0 and section+10h are untouched. No native local EH frame frees replacement storage if validation or copying throws after allocation; source preserves that absence of rollback.
+
+## Constructor and exception effects
+
+BD0960 consumes ECX actual manager, returns the captured owner in EAX and plain RET; source reserves unused EDX in its fastcall declaration. It writes zero to+4,+8,+0Ch, arms its cleanup state, reserves256, calls actual raw BD1860, and only then stores returned section at+10h. Offset0 and old+10h remain untouched until the last store. Null section return is stored as null; no additional validation is added.
+
+Native FuncInfoDFF4E8 has magic19930522, maxState1, mapDFF4E0 and no try/IP map. State0 unwinds to-1 through CC5490, which reloads ECX from original establisher `[EBP-10h]` and tails BD0220. Handler CC5498 loads the FuncInfo and tails BF6B43. State-1 covers the initial writes; state0 is armed before reserve and remains active through section publication until the frame is unlinked. There is no original catch block.
+
+Source C++ encloses reserve, section creation and publication in `try`, calls the completed BD0220 on its captured owner in `catch (...)`, then rethrows. On synchronous source-C++ reserve failure it clears whatever slots are currently published. On synchronous section-creation failure it frees the reserved storage and zeros the slot fields. The section provider still has its original absence of cleanup when `InitializeCriticalSection` fails internally. Neither constructor form frees the manager or changes a global publication slot.
+
+This is qualified effect equivalence for synchronous source C++ exceptions. Source catch selection, exception dispatch phases, EH state numbering, owner-spill location, RTTI, thrown-object identity, terminate behavior and FH3/SEH frames are not original ABI equivalence. Arbitrary mutation of original unwind spills, hardware faults and exceptions from foreign handlers outside their source CRT contract are excluded. Reserve and section creation are actual potentially throwing source calls; cleanup uses the completed noexcept free-paired leaf.
+
+## Concrete provider ownership
+
+Allocation calls the completed `native_singleton_pointer_allocate_00bcfeb0` and the existing `singleton_lifetime_allocate`: actual `malloc`, current CRT new-handler retry and source `std::bad_alloc`. The completed BD0590 provider owns an actual28h legacy exception payload through completed string/exception services and throws `NativeSingletonVectorLengthError`. This is a new C++ catch type, not source `std::length_error` or original RTTI. These provider implementations are compiled as actual source dependencies; no replacement provider is defined here.
+
+Both BF6713 edges bind to a fixed adapter that invokes actual `_invalid_parameter_noinfo`. Returning installed handlers remain possible. The SDK/UCRT implementation supplies five zero arguments and chooses the current thread-local handler before the current global handler; original BF66EF instead uses the original global encoded109DD64 owner. Original BF6713/BF66EF, encoded-handler storage, Watson and errno ownership remain unreconstructed. The fixed provider boundary also applies to the actual SDK `memmove_s` used by reserve.
+
+Free binds to existing `singleton_lifetime_free` and its current `std::free` domain. BD0220 is the completed raw cleanup leaf. BD1860 is completed `create_native_tracked_critical_section_00bd1860`, whose concrete allocation requests1Ch, calls actual `InitializeCriticalSection` and stores physical depth+18h=0. The larger typed section projection is not used.
+
+## Verification boundary
+
+The strict `scripts/build.ps1` Release Win32 build passed with MSVC14.51.36231, SDK10.0.26100.0 and `/MD /W4 /WX /fp:strict /EHsc`; both existing CTests passed and all8 seed ranges matched the installed PE. No tests were added. Reserve matches all165 native bytes except its6 named call relocations. The emitted constructor contains116 bytes of normal code,19 bytes of catch code and6 post-noreturn INT3 bytes, plus a29-byte EH handler,88 bytes of EH data and4 bytes of SafeSEH metadata. Full instructions and relocations are asserted, including owner spill`[EBP-14h]`, state0 before reserve, continued state0 through publication, catch-owner reload, BD0220 call and `_CxxThrowException(0,0)` rethrow. Its source FuncInfo has two states and one `HT_IsStdDotDot` catch, unlike the original one-state unwind-only map.
+
+All452 emitted owned code bytes are classified, including the165-byte reserve, constructor/EH code,6-byte actual invalid-parameter adapter,17-byte unreferenced raw-store helper, and94-byte actual SDK `memmove_s`. The4-byte BSS weak AVX2 fallback comes from MSVC headers; it is not a new manager or handler owner. Remaining object sections are linker directives, debug/frame/checksum records and the complete EH/SafeSEH metadata. Actual reserve/constructor, leaves, allocation, raw-section and singleton-allocation objects appear byte-for-byte as five members of the built `bsp_core.lib`. All12 external relocation symbols in the owned object resolve against the actual built/archive import libraries. Actual provider import-library members bind current CRT memory, invalid-handler and C++ EH services plus `InitializeCriticalSection`; this does not reconstruct runtime DLL internals. All178 pins in the independent allocation packet's immutable seal were verified before retaining its actual-provider audit.
+
+The [audit](../reports/native_singleton_vector_reserve_construct_audit.json) records complete native ranges, emitted code and EH data, actual provider bindings, archive membership and the immutable evidence seal. The ignored worker CMake hook registers this source and the actual external completed allocation/leaves sources; shared CMake, ledgers and Ghidra edits remain with the integrator. Source/native CRT differences prevent a drop-in binary claim. Existing tests and build evidence do not execute this packet or establish game behavior.
