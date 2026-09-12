@@ -1,0 +1,340 @@
+{
+  "schema_version": 1,
+  "packet": "orch5_group_world_sphere",
+  "status": "three_complete_functions_strict_win32_compile_native_differential_and_actual_owner_fixture_passed_parent_getter_integration_pending",
+  "source": "src/native_group_world_sphere.cpp",
+  "header": "include/bsp/native_group_world_sphere.hpp",
+  "documentation": "docs/NATIVE_GROUP_WORLD_SPHERE.md",
+  "ghidra": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "read_only": true,
+    "verification": "bsp wrappers verify saved project/program before every live query and export",
+    "undefined_spans": [],
+    "all_owned_bodies_defined": true
+  },
+  "functions": [
+    {
+      "address": "00b8e980",
+      "name": "BSP_Vector3f_NormalizeAndStoreLength",
+      "cpp_symbol": "bsp::normalize_native_group_sphere_delta_00b8e980",
+      "source": "src/native_group_world_sphere.cpp",
+      "status": "reconstructed_strict_compile_and_focused_fixture_tested",
+      "coverage": "complete",
+      "documentation": "docs/NATIVE_GROUP_WORLD_SPHERE.md",
+      "validation_report": "reports/native_group_world_sphere.json",
+      "original_abi": "ECX output XYZ; EDX input XYZ; stack length output; EAX output XYZ; RET4 at B8E9CB and B8E9E4",
+      "body_inclusive": [
+        "00b8e980",
+        "00b8e9e6"
+      ],
+      "end_exclusive": "00b8e9e7",
+      "ghidra_entry_defined": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not recovered symbol. Actual CRT length, alias-sensitive length store before source reload, ordered-positive divide or positive zeros. Native [00b8e980,00b8e9e7); ECX output XYZ; EDX input XYZ; stack length output; EAX output XYZ; RET4 at B8E9CB and B8E9E4. New C++ ABI; strict Win32 compile, extracted-native numerical differential and actual Group owner fixture passed. No combined-build or game validation claim. docs/NATIVE_GROUP_WORLD_SPHERE.md; reports/native_group_world_sphere.json."
+    },
+    {
+      "address": "00b8e9f0",
+      "name": "BSP_Sphere_MergeEnclosing",
+      "cpp_symbol": "bsp::merge_native_group_sphere_00b8e9f0",
+      "source": "src/native_group_world_sphere.cpp",
+      "status": "reconstructed_strict_compile_and_focused_fixture_tested",
+      "coverage": "complete",
+      "documentation": "docs/NATIVE_GROUP_WORLD_SPHERE.md",
+      "validation_report": "reports/native_group_world_sphere.json",
+      "original_abi": "ECX destination sphere; stack source sphere; EAX same destination; RET4 at B8EAA4, B8EB0D and B8EB1B",
+      "body_inclusive": [
+        "00b8e9f0",
+        "00b8eb1d"
+      ],
+      "end_exclusive": "00b8eb1e",
+      "ghidra_entry_defined": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not recovered symbol. Exact x87 containment/unordered branches, live double D7A280, binary32 radius/product spills and alias-sensitive source reloads. Native [00b8e9f0,00b8eb1e); ECX destination sphere; stack source sphere; EAX same destination; RET4 at B8EAA4, B8EB0D and B8EB1B. New C++ ABI; strict Win32 compile, extracted-native numerical differential and actual Group owner fixture passed. No combined-build or game validation claim. docs/NATIVE_GROUP_WORLD_SPHERE.md; reports/native_group_world_sphere.json."
+    },
+    {
+      "address": "00b8ebe0",
+      "name": "BSP_Group_AggregateWorldSphere",
+      "cpp_symbol": "bsp::aggregate_native_group_world_sphere_00b8ebe0",
+      "source": "src/native_group_world_sphere.cpp",
+      "status": "reconstructed_strict_compile_and_focused_fixture_tested",
+      "coverage": "complete",
+      "documentation": "docs/NATIVE_GROUP_WORLD_SPHERE.md",
+      "validation_report": "reports/native_group_world_sphere.json",
+      "original_abi": "ECX Group; RET at B8EC7A",
+      "body_inclusive": [
+        "00b8ebe0",
+        "00b8ec7a"
+      ],
+      "end_exclusive": "00b8ec7b",
+      "ghidra_entry_defined": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not recovered symbol. Same actual Group owner/cache and captured +178/+17C array, first qualifying seed followed by all trailing elements, final mask30 OR. Native [00b8ebe0,00b8ec7b); ECX Group; RET at B8EC7A. New C++ ABI; strict Win32 compile, extracted-native numerical differential and actual Group owner fixture passed. No combined-build or game validation claim. docs/NATIVE_GROUP_WORLD_SPHERE.md; reports/native_group_world_sphere.json."
+    }
+  ],
+  "analyzed_routines": [
+    {
+      "address": "00b8f100",
+      "name": "BSP_Group_GetWorldSphere",
+      "body_inclusive": [
+        "00b8f100",
+        "00b8f18b"
+      ],
+      "coverage": "full_contract_analyzed_parent_composes_getter",
+      "original_abi": "ECX Group; EAX same+13C; RET",
+      "dynamic_path": [
+        "00b8f118",
+        "00b8f12e"
+      ],
+      "static_path": [
+        "00b8f12f",
+        "00b8f180"
+      ],
+      "implementation": "existing native_point_light_provider.cpp static/cache paths; parent integrates dynamic helper; worker did not edit that file"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00b8e989",
+      "native": "00419440",
+      "function": "00b8e980",
+      "contract": "ECX original vector; ST0 length; shared CameraAxesCrtAccess added in EDX"
+    },
+    {
+      "address": "00b8ea44",
+      "native": "00b8e980",
+      "function": "00b8e9f0",
+      "contract": "ECX local direction, EDX local delta, stack local length; RET4"
+    },
+    {
+      "address": "00b8ec60",
+      "native": "00b8e9f0",
+      "function": "00b8ebe0",
+      "contract": "ECX SAME group+13C; stack returned current child sphere; RET4"
+    },
+    {
+      "address": "00b8f118",
+      "native": "00b8ebe0",
+      "function": "00b8f100",
+      "contract": "Dynamic cache-miss branch; current ECX group; analyzed for parent integration"
+    },
+    {
+      "address": "00b8f13e",
+      "native": "00b6db70",
+      "function": "00b8f100",
+      "contract": "Static sphere branch refreshes SAME world transform; existing parent helper"
+    },
+    {
+      "address": "00b8f152",
+      "native": "007c1180",
+      "function": "00b8f100",
+      "contract": "ECX actual local+08, stack temp output/worldF0; existing finite CW007F/027F contract"
+    },
+    {
+      "address": "00b8f0f7",
+      "native": "00b8ebe0",
+      "function": "00b8f0f0",
+      "kind": "tail_jump",
+      "contract": "Caller writes SAME +175=1 then JMP; caller evidence only"
+    },
+    {
+      "address": "00419491",
+      "native": "00bf7030",
+      "function": "00419440",
+      "contract": "Shared existing recovered length invokes register-input CRT sqrt; dependency unchanged"
+    },
+    {
+      "address": "00b8ec3a",
+      "native": "current child virtual48",
+      "function": "00b8ebe0",
+      "contract": "Required actual current dispatch; no fallback sphere and no invented profile table"
+    },
+    {
+      "address": "00b8ec3a",
+      "native": "00b8f100",
+      "function": "00b8ebe0",
+      "kind": "resolved_indirect",
+      "producer": "00d63540",
+      "contract": "Verified native current +48 entry; service resolves current profile each call"
+    },
+    {
+      "address": "00b8ec3a",
+      "native": "00b6e8c0",
+      "function": "00b8ebe0",
+      "kind": "resolved_indirect",
+      "producer": "00d62e30",
+      "contract": "Verified native current +48 entry; service resolves current profile each call"
+    },
+    {
+      "address": "00b8ec5b",
+      "native": "current child virtual48",
+      "function": "00b8ebe0",
+      "contract": "Required actual current dispatch; no fallback sphere and no invented profile table"
+    },
+    {
+      "address": "00b8ec5b",
+      "native": "00b8f100",
+      "function": "00b8ebe0",
+      "kind": "resolved_indirect",
+      "producer": "00d63540",
+      "contract": "Verified native current +48 entry; service resolves current profile each call"
+    },
+    {
+      "address": "00b8ec5b",
+      "native": "00b6e8c0",
+      "function": "00b8ebe0",
+      "kind": "resolved_indirect",
+      "producer": "00d62e30",
+      "contract": "Verified native current +48 entry; service resolves current profile each call"
+    }
+  ],
+  "producer_evidence": [
+    {
+      "function": "00b8f5e0",
+      "role": "actual18Ch Group constructor",
+      "writes": [
+        "+178/+17C/+180 empty descriptor",
+        "+175=1",
+        "+138 bit2",
+        "local radius CE4970"
+      ]
+    },
+    {
+      "function": "00b8f460",
+      "role": "existing actual attachment registration",
+      "source": "src/native_group_owner.cpp:append_actual; src/native_node_parenting.cpp:register_native_node_attachment_00b8f460",
+      "identity": "SAME physical descriptor, existing CameraTransform* projection; not raw native-pointer ABI"
+    },
+    {
+      "function": "00b8e6b0",
+      "role": "existing Group current40 clears mask30"
+    },
+    {
+      "function": "00b8f0f0",
+      "role": "caller sets +175=1 and tail-jumps aggregation"
+    }
+  ],
+  "constants": [
+    {
+      "address": "00ce4970",
+      "size": 4,
+      "bits": "501502f9",
+      "binding": "SAME owner.environment.constants.bound_00ce4970; MOVSS preserves bits"
+    },
+    {
+      "address": "00d7a280",
+      "size": 8,
+      "bits": "3fe0000000000000",
+      "binding": "borrowed live double pointer in numeric access; FMUL qword at B8EAB0"
+    }
+  ],
+  "register_evidence": [
+    "B8EBE6 EBP=original ECX Group, ESI=EBP+13C, captured EDI=array begin, stack end, BL=seed flag; both current48 calls use freshly loaded child ECX",
+    "B8E983 EDI=EDX source; B8E985 ESI=ECX destination; stack+10 length output after saved registers; CALL419440 precedes length store",
+    "B8E9F5 EDI=stack source; B8E9FB ESI=ECX destination; first source X saved before length; later source Y/Z/radius reload after possible destination stores",
+    "Added EBX binding preserves original numeric frame and callee-saved state; extra normalize wrapper cleanup RET8 is a new ABI"
+  ],
+  "validation": {
+    "strict_compile": {
+      "result": "passed",
+      "command": "local/run_group_sphere_probe.ps1",
+      "flags": "/std:c++17 /W4 /WX /O2 /MD /fp:strict",
+      "source": "src/native_group_world_sphere.cpp",
+      "source_sha256": "6717ee012d35b031b44a822d7bd513ef4b970178820b12863e25e718911dffdb",
+      "source_lf_sha256": "0d4fce4c4bab5017cad245584ce45a2567146091d8f838a62567687e04c62b4f"
+    },
+    "focused_probe": {
+      "result": "passed",
+      "source": "local/group_sphere_probe.cpp",
+      "source_sha256": "ed0138122aea0b44e9c47b481086c43ff66f36c866175a8930beeff8078751b5",
+      "log": "local/group_sphere_validation.log",
+      "log_sha256": "5abcb328bc67af797bfab3bf51ef66b62422e0e691cdb395cc5458cb53395710",
+      "native_bytes": {
+        "game": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+        "range": [
+          "0xb8e980",
+          "0xb8eb1e"
+        ],
+        "sha256": "4e69a4affd3e2291629c16f225b41b1f8ae95a42898e97f9340e14dd3393663e",
+        "bytes": 414
+      },
+      "comparisons": 93600,
+      "x87_modes": 12,
+      "compared": [
+        "all destination/storage words",
+        "x87 exception flags bits0..5",
+        "CRT callback counts",
+        "preserved control word"
+      ],
+      "numeric_cases": [
+        "random raw words",
+        "signed zero",
+        "subnormal",
+        "NaN/Inf",
+        "overlapping sphere source/destination",
+        "normalize output/source/length overlap"
+      ],
+      "owner_cases": [
+        "existing Group pool/type/scene/native-node owners",
+        "empty live CE4970 sentinel",
+        "first qualifying seed then ungated trailing merge",
+        "captured end despite callback count change",
+        "fresh later element after callback replacement",
+        "same actual attachment descriptor; diagnostic vector empty",
+        "unchanged reference words",
+        "actual Group/native pool teardown"
+      ],
+      "limits": [
+        "native and reconstructed helpers share existing recovered 419440/CRT dependency",
+        "no independent original CRT or unmasked exception proof",
+        "x87 condition bits and MXCSR not compared",
+        "parent library supplied existing dependencies; final combined build and getter integration pending"
+      ],
+      "ghidra_installed_bytes_match": true
+    },
+    "new_permanent_tests": 0,
+    "combined_build": "parent_required",
+    "game_validated": false,
+    "mechanical_calls": {
+      "result": "passed",
+      "numeric_rows": 12,
+      "direct_or_tail_rows": 8,
+      "resolved_indirect_rows": 4,
+      "symbolic_unchecked_rows": 2,
+      "failed": 0,
+      "log": "local/group_sphere_calls.log",
+      "limitation": "mechanical verifier recognizes indirect CALL sites; table target resolution was checked separately against live native bytes"
+    }
+  },
+  "boundaries": [
+    "new typed ABI; +178 elements use established companion pointer projection",
+    "required current child48 service; captured storage and reached owners remain live; no concurrent mutation",
+    "static B8F100 uses prior affine finite CW007F/027F boundary, separately from new merge helpers",
+    "no final PointLight population composition, rendering or game claim"
+  ],
+  "annotation_plan": [
+    {
+      "address": "00b8e980",
+      "old_name": "FUN_00b8e980",
+      "name": "BSP_Vector3f_NormalizeAndStoreLength",
+      "comment": "Hypothesis, not recovered symbol. Actual CRT length, alias-sensitive length store before source reload, ordered-positive divide or positive zeros. Native [00b8e980,00b8e9e7); ECX output XYZ; EDX input XYZ; stack length output; EAX output XYZ; RET4 at B8E9CB and B8E9E4. New C++ ABI; strict Win32 compile, extracted-native numerical differential and actual Group owner fixture passed. No combined-build or game validation claim. docs/NATIVE_GROUP_WORLD_SPHERE.md; reports/native_group_world_sphere.json."
+    },
+    {
+      "address": "00b8e9f0",
+      "old_name": "FUN_00b8e9f0",
+      "name": "BSP_Sphere_MergeEnclosing",
+      "comment": "Hypothesis, not recovered symbol. Exact x87 containment/unordered branches, live double D7A280, binary32 radius/product spills and alias-sensitive source reloads. Native [00b8e9f0,00b8eb1e); ECX destination sphere; stack source sphere; EAX same destination; RET4 at B8EAA4, B8EB0D and B8EB1B. New C++ ABI; strict Win32 compile, extracted-native numerical differential and actual Group owner fixture passed. No combined-build or game validation claim. docs/NATIVE_GROUP_WORLD_SPHERE.md; reports/native_group_world_sphere.json."
+    },
+    {
+      "address": "00b8ebe0",
+      "old_name": "FUN_00b8ebe0",
+      "name": "BSP_Group_AggregateWorldSphere",
+      "comment": "Hypothesis, not recovered symbol. Same actual Group owner/cache and captured +178/+17C array, first qualifying seed followed by all trailing elements, final mask30 OR. Native [00b8ebe0,00b8ec7b); ECX Group; RET at B8EC7A. New C++ ABI; strict Win32 compile, extracted-native numerical differential and actual Group owner fixture passed. No combined-build or game validation claim. docs/NATIVE_GROUP_WORLD_SPHERE.md; reports/native_group_world_sphere.json."
+    }
+  ],
+  "cmake_registration": "src/native_group_world_sphere.cpp; parent owns cmake/startup.cmake"
+}
