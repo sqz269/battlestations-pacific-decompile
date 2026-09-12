@@ -219,8 +219,10 @@ void run_mission_scene_load(MissionSceneLoadState& state, MissionSceneLoadHost& 
     host.load_scene_file(state.scene_path, state.scene_override);
     host.construct_world();
     host.reset_shader_globals();
-    if (host.lua_global_exists("thisTable")) {
-        host.lua_clear_global("thisTable");
+    // 004e0249: TEST BL,BL / JZ; the fresh table is created only when thisTable was
+    // nil, so entity self tables survive a scene reload (docs/MISSION_LUA_TEARDOWN.md).
+    if (!host.lua_global_exists("thisTable")) {
+        host.lua_set_global_empty_table("thisTable");
     }
     host.sync_lobby_settings_from_lua();
     host.lua_declare_global("recon");

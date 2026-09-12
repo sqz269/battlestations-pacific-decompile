@@ -193,7 +193,11 @@ struct MissionSceneLoadHost {
     virtual void construct_world() = 0; // 004de610: game+19CCh, game+21D4h, ocean and sky
     virtual void reset_shader_globals() = 0; // 00951560 on 00F89A08 and 00F89A5C
     virtual bool lua_global_exists(const char* name) = 0; // 00b65fb0 on "thisTable"
-    virtual void lua_clear_global(const char* name) = 0; // 00b67580
+    // 00b67580: globals[name] = {} (a fresh empty table). 004e021a..004e029b reads
+    // globals.thisTable, tests it with 00b65fb0 and creates the table ONLY when it
+    // was nil; a non-nil thisTable is kept across the load (docs/MISSION_LUA_TEARDOWN.md,
+    // packet cc2_lobby_settings). Formerly misnamed lua_clear_global.
+    virtual void lua_set_global_empty_table(const char* name) = 0; // 00b67580
     virtual void sync_lobby_settings_from_lua() = 0; // 005e2f00 BSP_Game_SyncLobbySettingsFromLua: opens the LobbySettings global and walks the thirteen slots of 00e08908 (docs/MISSION_LUA_MACHINE.md); it resets no Lua state (2f correction 3)
     virtual void lua_declare_global(const char* name) = 0; // 00b67350 on "recon"
     virtual void resolve_named_scene_objects() = 0; // 004f2800
