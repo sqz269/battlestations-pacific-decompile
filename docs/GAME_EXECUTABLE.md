@@ -3212,9 +3212,12 @@ physics the stand-in integrator replaces, or about what a running game would dra
 4. **`00825F20`'s caller.** 0085542F and 00749B2C have no Ghidra function and 00644A38 is in an
    undefined region; defining the three would settle where in a frame the motion virtual runs
    and remove this packet's own placement decision.
-5. **`cc_unit_subupdates`'s three routines** 008252C0, 00956600 and 00834E90, which are steps 11
-   of every unit update this milestone now runs, and `00815AA0` over effect groups a real unit
-   instance would carry.
+5. **Step 11's three routines** 008252C0, 00956600 and 00834E90, which every unit update this
+   milestone runs reaches and records, and `00815AA0` over effect groups a real unit instance
+   would carry. `include/bsp/unit_timers.hpp` and `include/bsp/unit_water_anchors.hpp` merged
+   from `cc_unit_subupdates` during this packet's turn and reconstruct 00834820, 00834CC0 and
+   00834A70, the bow wave, the stern wave and the spray; none of them is one of the three
+   addresses step 11 calls, so the three stay records here.
 6. **The local player's unit registry**, so walk 0 of 004C3CB0 has its real source and walks 1
    and 2 have one at all.
 
