@@ -171,3 +171,10 @@ Start and inclusive end (the last byte of the final `RET`).
 | --- | --- | --- | --- |
 | `00803B80` | `00803B90` | `00F874B8 = -1.0e-4f`, `void()` | `MOVSS [00F874B8],XMM0` at `00803B88..00803B8F`, `RET` at `00803B90`; `00803B91..00803B9F` are `CC` |
 | `006F23C0` | `006F23CB` | `00F874B8 = 0.0f`, `void()` | `XORPS XMM0,XMM0` at `006F23C0`, `MOVSS` at `006F23C3..006F23CA`, `RET` at `006F23CB`; `006F23CC` is `CC` |
+
+## Correction from docs/BOT_FIRE_TARGET.md
+
+Packet `cc2-bot-fire-target` found that `009F5D30` uses the `EAX` returned by `008053C0` as the list
+owner, so `008053C0` is not `void`: it returns the slot's object pointer (the one it lazily constructs
+into `[index*4 + 00F874BC]`). The row above and the ledger evidence should read `__fastcall void* (int index)`;
+the lazy-construction rule is unchanged.
