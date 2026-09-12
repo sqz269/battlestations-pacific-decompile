@@ -1,0 +1,713 @@
+{
+  "packet": "cc2_scene_contents_hosts",
+  "owner": "agent/cc2-scene-contents-hosts",
+  "date": "2026-09-11",
+  "kind": "analysis+reconstruction",
+  "doc": "docs/SCENE_CONTENTS_HOSTS.md",
+  "headline": "The four scene-contents steps 004D4DF0 delegates to: the effect preload 004D0EE0, the .nav avoid-zone load 004C17D0/004248A0/004239E0 whose element class is TerrainGridLayer, the cloud scatter 004BA870 with 00D7A258 decoded as double 0.0, and the Weathers walk of 0046DF00+1A4h whose selection rule is _stricmp(overrideName, ID).",
+  "abi": {
+    "004d0ee0": "__fastcall(SceneRecord*), RET, ECX = [game+5FCh]",
+    "004c17d0": "int(void), no arguments, returns [00E17620]",
+    "004248a0": "__thiscall(registry, void** streamHolder), RET 4",
+    "004239e0": "__thiscall(layer, void** streamHolder), RET 4",
+    "0041df40": "__thiscall(registry, float value, char value_is_angle), RET 8",
+    "00424680": "__thiscall(layer, float angle_radians), RET 4",
+    "00423960": "__thiscall(layer, int n), RET 4",
+    "004ba870": "__fastcall(SceneRecord*), RET, ECX = [game+5FCh]",
+    "0046df00": "__thiscall(this, const char* scenePath, void*, char instantiate, void* sceneRecord, const char* overrideName, char registration), RET 18h"
+  },
+  "host_steps": [
+    {
+      "step": 1,
+      "address": "004d0f05",
+      "native": "004cb160",
+      "function": "004d0ee0",
+      "name": "clear_effect_handles",
+      "args": "__thiscall(record+D50h, 0)",
+      "gate": "none"
+    },
+    {
+      "step": 1,
+      "address": "004d0f24",
+      "native": "00871ba0",
+      "function": "004d0ee0",
+      "name": "acquire_effect_by_name",
+      "args": "__fastcall(out=[ESP+14h], EDX=[record+C6Ch]+i*8), push 1",
+      "gate": "i < [record+C70h]"
+    },
+    {
+      "step": 1,
+      "address": "004d0f34",
+      "native": "004caf50",
+      "function": "004d0ee0",
+      "name": "push_effect_handle",
+      "args": "__thiscall(record+D50h, EAX)",
+      "gate": "same"
+    },
+    {
+      "step": 1,
+      "address": "004d0f4f",
+      "native": "00ce2220+indirect",
+      "function": "004d0ee0",
+      "name": "release_temporary",
+      "args": "InterlockedDecrement(temp+4), vtable slot 0 at zero",
+      "gate": "temp != 0"
+    },
+    {
+      "step": 2,
+      "address": "004d5251",
+      "native": "004c17d0",
+      "function": "004d4df0",
+      "name": "ensure_registry",
+      "args": "no arguments",
+      "gate": "VFS open succeeded at 004D5232"
+    },
+    {
+      "step": 2,
+      "address": "004d5258",
+      "native": "004248a0",
+      "function": "004d4df0",
+      "name": "load_avoid_zones",
+      "args": "__thiscall(registry, &streamSlot)",
+      "gate": "same"
+    },
+    {
+      "step": 2,
+      "address": "004248c1",
+      "native": "0041ded0",
+      "function": "004248a0",
+      "name": "begin_load",
+      "args": "__thiscall(registry)",
+      "gate": "none"
+    },
+    {
+      "step": 2,
+      "address": "004248d9",
+      "native": "0041c1f0+vtable60",
+      "function": "004248a0",
+      "name": "read_string",
+      "args": "stream vtable +60h, (out, 0); root name TerrainGrid, dropped",
+      "gate": "none"
+    },
+    {
+      "step": 2,
+      "address": "004248e7",
+      "native": "0041c1f0+vtable38",
+      "function": "004248a0",
+      "name": "read_int",
+      "args": "stream vtable +38h, (0) -> layer count",
+      "gate": "none"
+    },
+    {
+      "step": 2,
+      "address": "00424906",
+      "native": "00bf681b",
+      "function": "004248a0",
+      "name": "operator new(28h)",
+      "args": "CRT",
+      "gate": "count > 0"
+    },
+    {
+      "step": 2,
+      "address": "0042492f",
+      "native": "004239e0",
+      "function": "004248a0",
+      "name": "deserialize_layer",
+      "args": "__thiscall(layer, &streamHolder)",
+      "gate": "allocation succeeded"
+    },
+    {
+      "step": 2,
+      "address": "0042494f",
+      "native": "0041c1f0",
+      "function": "004248a0",
+      "name": "append_layer",
+      "args": "__thiscall(registry+4h, head, next, &value)",
+      "gate": "per element"
+    },
+    {
+      "step": 2,
+      "address": "0042495a",
+      "native": "00420140",
+      "function": "004248a0",
+      "name": "list_size_increment",
+      "args": "__thiscall(registry+4h, 1)",
+      "gate": "per element"
+    },
+    {
+      "step": 2,
+      "address": "00424975",
+      "native": "0041e000",
+      "function": "004248a0",
+      "name": "end_load",
+      "args": "__thiscall(registry)",
+      "gate": "none"
+    },
+    {
+      "step": 2,
+      "address": "00423a6d",
+      "native": "004219a0",
+      "function": "004239e0",
+      "name": "grid_resize",
+      "args": "__thiscall(layer+18h, n*n, 0)",
+      "gate": "none"
+    },
+    {
+      "step": 2,
+      "address": "004c1843",
+      "native": "00424730",
+      "function": "004c17d0",
+      "name": "registry_construct",
+      "args": "__thiscall(new(14h))",
+      "gate": "[00E17620] == 0"
+    },
+    {
+      "step": 2,
+      "address": "00424796",
+      "native": "00424680",
+      "function": "00424730",
+      "name": "default_layer_construct",
+      "args": "__thiscall(new(28h), [00CE3990] = 0.17453286)",
+      "gate": "allocation succeeded"
+    },
+    {
+      "step": 2,
+      "address": "004246b4",
+      "native": "00423960",
+      "function": "00424680",
+      "name": "set_dimension",
+      "args": "__thiscall(layer, 10)",
+      "gate": "none"
+    },
+    {
+      "step": 2,
+      "address": "004246c1",
+      "native": "00412e20",
+      "function": "00424680",
+      "name": "tan_radians",
+      "args": "(angle) -> ST0, stored to layer+14h",
+      "gate": "none"
+    },
+    {
+      "step": 2,
+      "address": "0042399e",
+      "native": "004219a0",
+      "function": "00423960",
+      "name": "grid_resize",
+      "args": "__thiscall(layer+18h, n*n, 0)",
+      "gate": "none"
+    },
+    {
+      "step": 2,
+      "address": "0041df62",
+      "native": "00412e20",
+      "function": "0041df40",
+      "name": "tan_radians",
+      "args": "(value) when value_is_angle",
+      "gate": "value_is_angle != 0"
+    },
+    {
+      "step": 2,
+      "address": "00880cee",
+      "native": "004c17d0",
+      "function": "00880cd0",
+      "name": "ensure_registry",
+      "args": "no arguments",
+      "gate": "none"
+    },
+    {
+      "step": 2,
+      "address": "00880cf5",
+      "native": "00423af0",
+      "function": "00880cd0",
+      "name": "reset_layers",
+      "args": "__fastcall(registry)",
+      "gate": "none"
+    },
+    {
+      "step": 2,
+      "address": "007f1da7",
+      "native": "0041df40",
+      "function": "007f1d90",
+      "name": "select_layer_by_slope",
+      "args": "__thiscall(registry, arg1, arg2) -> obj+350h",
+      "gate": "none"
+    },
+    {
+      "step": 2,
+      "address": "007f1dc5",
+      "native": "0041df40",
+      "function": "007f1d90",
+      "name": "select_layer_by_slope",
+      "args": "__thiscall(registry, [00CE380C] = 1.5, 1) -> obj+34Ch",
+      "gate": "none"
+    },
+    {
+      "step": 3,
+      "address": "004d56c5",
+      "native": "004ba870",
+      "function": "004d4df0",
+      "name": "scatter_clouds",
+      "args": "__fastcall(record)",
+      "gate": "none"
+    },
+    {
+      "step": 3,
+      "address": "004ba8d7",
+      "native": "00bf55be",
+      "function": "004ba870",
+      "name": "operator new",
+      "args": "(count*12), the point array; never freed",
+      "gate": "[record+C84h] >= 1"
+    },
+    {
+      "step": 3,
+      "address": "004ba8f6",
+      "native": "00bf55be",
+      "function": "004ba870",
+      "name": "operator new",
+      "args": "(count*4), the separation array",
+      "gate": "same"
+    },
+    {
+      "step": 3,
+      "address": "004ba929",
+      "native": "00bd2f10",
+      "function": "004ba870",
+      "name": "random_range",
+      "args": "ECX = 1, (0.0, w0+w1+w2) -> ST0, the kind roll",
+      "gate": "per point"
+    },
+    {
+      "step": 3,
+      "address": "004ba984",
+      "native": "00bd2f10",
+      "function": "004ba870",
+      "name": "random_range",
+      "args": "ECX = 1, ([record+C88h], [record+C94h]) -> x",
+      "gate": "per attempt"
+    },
+    {
+      "step": 3,
+      "address": "004ba9a2",
+      "native": "00bd2f10",
+      "function": "004ba870",
+      "name": "random_range",
+      "args": "ECX = 1, ([record+C8Ch], [record+C98h]) -> y",
+      "gate": "per attempt"
+    },
+    {
+      "step": 3,
+      "address": "004ba9c0",
+      "native": "00bd2f10",
+      "function": "004ba870",
+      "name": "random_range",
+      "args": "ECX = 1, ([record+C90h], [record+C9Ch]) -> z",
+      "gate": "per attempt"
+    },
+    {
+      "step": 3,
+      "address": "004baa41",
+      "native": "00bf7030",
+      "function": "004ba870",
+      "name": "sqrt",
+      "args": "CRT, ST0",
+      "gate": "d2 > double [00CE3820]"
+    },
+    {
+      "step": 3,
+      "address": "004baaf7",
+      "native": "00bd2f10",
+      "function": "004ba870",
+      "name": "random_range",
+      "args": "ECX = 1, ([00CE684C] = -pi, [00D7A264] = +pi); result popped unused at 004BAB02",
+      "gate": "per point"
+    },
+    {
+      "step": 3,
+      "address": "004bab12",
+      "native": "0046d930",
+      "function": "004ba870",
+      "name": "create_cloud_entity",
+      "args": "ECX = [00E18680], (kind name at 00E081C8+kind*18h, \"Cloud\" 00CE7524, 0)",
+      "gate": "per point"
+    },
+    {
+      "step": 3,
+      "address": "004babb4",
+      "native": "004ba870+vtable88",
+      "function": "004ba870",
+      "name": "place_entity",
+      "args": "__thiscall(entity, &matrix); row-major, 1.0f (00D7A24C) diagonal, point in row 3",
+      "gate": "per point"
+    },
+    {
+      "step": 3,
+      "address": "004babc0",
+      "native": "004ba870+vtabled8",
+      "function": "004ba870",
+      "name": "activate_entity",
+      "args": "__thiscall(entity), no arguments",
+      "gate": "per point"
+    },
+    {
+      "step": 3,
+      "address": "004babe0",
+      "native": "00bf6989",
+      "function": "004ba870",
+      "name": "operator delete",
+      "args": "the separation array only",
+      "gate": "count > 0 branch"
+    },
+    {
+      "step": 4,
+      "address": "0046e0b6",
+      "native": "00b66bd0",
+      "function": "0046df00",
+      "name": "lua_state_owner_construct",
+      "args": "__thiscall(owner at ESP+358h)",
+      "gate": "none"
+    },
+    {
+      "step": 4,
+      "address": "0046e0cc",
+      "native": "00b6a020",
+      "function": "0046df00",
+      "name": "open_lua_state",
+      "args": "__thiscall(owner, 4)",
+      "gate": "none"
+    },
+    {
+      "step": 4,
+      "address": "0046e119",
+      "native": "00b69d40",
+      "function": "0046df00",
+      "name": "run_script",
+      "args": "__thiscall(owner, &NativeString(\"SCRIPTS\\\\datatables\\\\Weather.lua\" 00CE59DC), 0)",
+      "gate": "none"
+    },
+    {
+      "step": 4,
+      "address": "0046e154",
+      "native": "00b67980",
+      "function": "0046df00",
+      "name": "lua_globals",
+      "args": "__thiscall(owner, &out)",
+      "gate": "none"
+    },
+    {
+      "step": 4,
+      "address": "0046e170",
+      "native": "00b67800",
+      "function": "0046df00",
+      "name": "get_weathers_table",
+      "args": "__thiscall(globals, &out, \"Weathers\" 00CE59D0)",
+      "gate": "none"
+    },
+    {
+      "step": 4,
+      "address": "0046e1a9",
+      "native": "00b65fb0",
+      "function": "0046df00",
+      "name": "entry_is_nil",
+      "args": "__thiscall(Weathers[1]) -> AL; nil skips the whole pass",
+      "gate": "none"
+    },
+    {
+      "step": 4,
+      "address": "0046e1f4",
+      "native": "00b67720",
+      "function": "0046df00",
+      "name": "entry_by_index",
+      "args": "__thiscall(Weathers, &out, i), i from 1",
+      "gate": "loop"
+    },
+    {
+      "step": 4,
+      "address": "0046e221",
+      "native": "00b662b0",
+      "function": "0046df00",
+      "name": "entry_scene_file",
+      "args": "__thiscall(field) -> const char*, key \"sceneFile\" 00CE59C4",
+      "gate": "per entry"
+    },
+    {
+      "step": 4,
+      "address": "0046e296",
+      "native": "00bf7fbf",
+      "function": "0046df00",
+      "name": "match_scene_file",
+      "args": "_stricmp([EBP+8] scenePath, entry.sceneFile); both-empty also matches",
+      "gate": "both non-empty"
+    },
+    {
+      "step": 4,
+      "address": "0046e2e4",
+      "native": "00b67800",
+      "function": "0046df00",
+      "name": "get_sub_scenes",
+      "args": "__thiscall(entry, &out, \"SubScenes\" 00CE59B8)",
+      "gate": "sceneFile matched"
+    },
+    {
+      "step": 4,
+      "address": "0046e30d",
+      "native": "00b67720",
+      "function": "0046df00",
+      "name": "sub_scene_by_index",
+      "args": "__thiscall(SubScenes, &out, k), k from 1",
+      "gate": "sceneFile matched"
+    },
+    {
+      "step": 4,
+      "address": "0046e373",
+      "native": "00b67800",
+      "function": "0046df00",
+      "name": "get_id",
+      "args": "__thiscall(subScene, &out, \"ID\" 00CE59B4)",
+      "gate": "per sub-scene"
+    },
+    {
+      "step": 4,
+      "address": "0046e3ea",
+      "native": "00b67800",
+      "function": "0046df00",
+      "name": "get_descriptor",
+      "args": "__thiscall(subScene, &out, \"Descriptor\" 00CE59A8)",
+      "gate": "per sub-scene"
+    },
+    {
+      "step": 4,
+      "address": "0046e4b2",
+      "native": "00bf7fbf",
+      "function": "0046df00",
+      "name": "descriptor_is_empty",
+      "args": "_stricmp(Descriptor, \"\" 00CE3A0C); equal skips the file entirely",
+      "gate": "Descriptor length != 0"
+    },
+    {
+      "step": 4,
+      "address": "0046e52b",
+      "native": "008d9cf0",
+      "function": "0046df00",
+      "name": "descriptor_tokenizer",
+      "args": "__thiscall(tok at ESP+82Ch, &path, \"{}(),;:=\" 00CE599C)",
+      "gate": "Descriptor non-empty"
+    },
+    {
+      "step": 4,
+      "address": "0046e757",
+      "native": "00bf7fbf",
+      "function": "0046df00",
+      "name": "select_sub_scene",
+      "args": "_stricmp([EBP+18h] overrideName, ID); equal takes the 0046E76C branch",
+      "gate": "both non-empty"
+    },
+    {
+      "step": 4,
+      "address": "0046e58a",
+      "native": "008f5a00",
+      "function": "0046df00",
+      "name": "parse_descriptor_discarded",
+      "args": "__thiscall(local bag at ESP+24Ch, &tok, 1, 0)",
+      "gate": "sub-scene not selected"
+    },
+    {
+      "step": 4,
+      "address": "0046e59e",
+      "native": "008f5410",
+      "function": "0046df00",
+      "name": "destroy_local_bag",
+      "args": "__thiscall(bag at ESP+240h)",
+      "gate": "sub-scene not selected"
+    },
+    {
+      "step": 4,
+      "address": "0046e77e",
+      "native": "008f5a00",
+      "function": "0046df00",
+      "name": "parse_descriptor_applied",
+      "args": "__thiscall(reader bag at ESP+134h, &tok, 1, 0)",
+      "gate": "sub-scene selected"
+    },
+    {
+      "step": 4,
+      "address": "0046e7cb",
+      "native": "008f2260",
+      "function": "0046df00",
+      "name": "bag_find_shadow_texture",
+      "args": "__thiscall(bag, \"g_Terrain.g_StaticShadowTexture\" 00CE595C)",
+      "gate": "Lua value not nil"
+    },
+    {
+      "step": 4,
+      "address": "0046e7fb",
+      "native": "008f3370",
+      "function": "0046df00",
+      "name": "set_bag_string",
+      "args": "__thiscall(property, 00B662B0(field))",
+      "gate": "key found"
+    },
+    {
+      "step": 4,
+      "address": "0046e859",
+      "native": "008f2260",
+      "function": "0046df00",
+      "name": "bag_find_shot_offset_x",
+      "args": "__thiscall(bag, \"g_Terrain.ga_StaticShadowShotOffsetX\" 00CE5918)",
+      "gate": "Lua value not nil"
+    },
+    {
+      "step": 4,
+      "address": "0046e881",
+      "native": "00b66270",
+      "function": "0046df00",
+      "name": "lua_number",
+      "args": "__thiscall(field) -> ST0, stored to property+0Ch",
+      "gate": "key found"
+    },
+    {
+      "step": 4,
+      "address": "0046e8ea",
+      "native": "008f2260",
+      "function": "0046df00",
+      "name": "bag_find_shot_offset_z",
+      "args": "__thiscall(bag, \"g_Terrain.ga_StaticShadowShotOffsetZ\" 00CE58D4)",
+      "gate": "Lua value not nil"
+    },
+    {
+      "step": 4,
+      "address": "0046e97f",
+      "native": "008f2260",
+      "function": "0046df00",
+      "name": "bag_find_shot_size",
+      "args": "__thiscall(bag, \"g_Terrain.ga_StaticShadowShotSize\" 00CE5898)",
+      "gate": "Lua value not nil"
+    },
+    {
+      "step": 4,
+      "address": "0046e5b2",
+      "native": "008d9c30",
+      "function": "0046df00",
+      "name": "destroy_tokenizer",
+      "args": "__thiscall(tok)",
+      "gate": "Descriptor non-empty"
+    },
+    {
+      "step": 4,
+      "address": "0046e6a1",
+      "native": "00b67720",
+      "function": "0046df00",
+      "name": "next_entry",
+      "args": "__thiscall(Weathers, &out, i+1)",
+      "gate": "loop"
+    },
+    {
+      "step": 4,
+      "address": "0046e6f9",
+      "native": "00b669a0",
+      "function": "0046df00",
+      "name": "close_lua_state",
+      "args": "__thiscall(owner)",
+      "gate": "none"
+    },
+    {
+      "step": 4,
+      "address": "0046e73b",
+      "native": "00469bf0",
+      "function": "0046df00",
+      "name": "header_block_reader",
+      "args": "__thiscall(this, tokenizer, [EBP+14h] sceneRecord, [EBP+10h] instantiate, &bag); this is where the descriptor bag goes",
+      "gate": "the token is \"header\" 00CE5994"
+    }
+  ],
+  "supporting_calls": [
+    {
+      "address": "0041efdf",
+      "native": "00bf7680",
+      "function": "0041ef90",
+      "name": "TerrainGridLayer name literal",
+      "args": "memcpy of \"TerrainGridLayer\" (pushed at 0041EFD9 from 00CE38D0) into the write buffer; this is the evidence the class name is not AvoidZone",
+      "gate": "buffer allocated"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "007f5239",
+      "note": "CALL 004c17d0 read from the raw listing; no Ghidra function starts here and the enclosing candidate 007f4580 does not cover it as a body. Contract unread.",
+      "range": "007f5239-007f523d inclusive"
+    },
+    {
+      "address": "007f5255",
+      "note": "second CALL 004c17d0 in the same unclaimed region. Contract unread.",
+      "range": "007f5255-007f5259 inclusive"
+    }
+  ],
+  "recorded_names": [
+    {
+      "address": "004239e0",
+      "name": "BSP_TerrainGridLayer_Deserialize"
+    },
+    {
+      "address": "00424680",
+      "name": "BSP_TerrainGridLayer_Construct"
+    },
+    {
+      "address": "00423960",
+      "name": "BSP_TerrainGridLayer_SetDimension"
+    },
+    {
+      "address": "00423af0",
+      "name": "BSP_AvoidZoneRegistry_ResetLayers"
+    },
+    {
+      "address": "0041df40",
+      "name": "BSP_AvoidZoneRegistry_SelectLayerBySlope"
+    },
+    {
+      "address": "0041ef90",
+      "name": "BSP_TerrainGridLayer_Serialize"
+    },
+    {
+      "address": "004cb160",
+      "name": "BSP_EffectHandleVector_Resize"
+    },
+    {
+      "address": "004caf50",
+      "name": "BSP_EffectHandleVector_PushBack"
+    },
+    {
+      "address": "00412e20",
+      "name": "BSP_Math_TangentX87Float",
+      "note": "already correct in the ledger; kept, not renamed"
+    }
+  ],
+  "corrections_offered": [
+    "docs/MISSION_SCENE_CONTENTS.md names the 28h list element AvoidZone from the literal at 00CE38AC. The class name the writer 0041EF90 emits, and that every shipped .nav carries, is TerrainGridLayer (00CE38D0); the container's name is TerrainGrid.",
+    "The same doc says the .nav and .ema files are not present loose in the installation. 253 loose .nav files exist under universe/scenes/**; the grammar derived here parses every one to the exact file length.",
+    "The same doc leaves the constant added to the cloud weight total at 00D7A258 undecoded. It is the double 0.0 of an x87 accumulator idiom (FLD w0 / FADD qword 0.0) and contributes nothing to the total.",
+    "docs/SCENE_FILE_READER.md step 5 branches the weather pass on whether overrideName is null or empty. The branch is _stricmp(overrideName, ID) against the sub-scene's ID, with the image's both-empty rule; the two outcomes are 'parsed into the reader's bag plus the four shadow keys' and 'parsed into a bag destroyed at once'.",
+    "docs/SCENE_FILE_READER.md lists 'which string the Weathers entry name is matched against' as its weakest link. It is the scenePath argument ([EBP+8], argument 1) compared with entry.sceneFile through _stricmp at 0046E296."
+  ],
+  "external_contracts": [
+    "00871ba0 BSP_EffectHandle_AcquireByName: reconstructed in src/gameplay_effect_acquisition.cpp; cited, not re-derived.",
+    "0046d930 scene entity creation by name: docs/SCENE_ENTITY_CREATE.md.",
+    "00bd2f10 ranged random with ECX = 1: used by 225 callers; not reconstructed here.",
+    "008f5a00 / 008f2260 / 008f3370 / 008f41a0 / 008f5410 the scene property bag: docs/SCENE_PROPERTY_BAG.md.",
+    "00b66bd0 / 00b6a020 / 00b669a0 / 00b67980 / 00b67800 / 00b67720 / 00b65fb0 / 00b662b0 / 00b66270 the Lua object API: docs/LUA_OBJECT_API.md. 00b69d40 is leased to agent/orch2-20260910 and was read only as a contract.",
+    "008d9cf0 / 008d9c30 the scene tokenizer and 00469bf0 the header block: docs/SCENE_FILE_READER.md.",
+    "The stream behind the .nav read is the VFS stream of 00be4380; only its vtable slots +24h, +38h, +44h and +60h are used."
+  ],
+  "open_questions": [
+    "TerrainGridLayer+10h: per file, constant across its three layers, 0.005 to 17.19, constructor default 2.0. No reader identified.",
+    "The grid cell byte is a 0..255 value, not a flag, and no sampler was read; the world-to-cell mapping is implied by +04h and +0Ch, not observed.",
+    "007f5239 and 007f5255 call the registry singleton from a region with no Ghidra function; 007f4580, the only caller of 007f1d90, was not read.",
+    "Whether anything reads the reader's property bag after 00469bf0 returns; the bag is destroyed at 0046ED41."
+  ],
+  "runtime_evidence": "none. bsp_game.exe reaches load_scene_contents() only as a stub and this packet owns neither the executable nor the load walk, so checklist rule 6 is unmet by construction, as it was for the parent packet cc_scene_contents.",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "read-only"
+  }
+}
