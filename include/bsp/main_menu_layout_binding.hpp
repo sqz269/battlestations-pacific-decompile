@@ -3,10 +3,12 @@
 #include "bsp/gui_text.hpp"
 #include "bsp/gui_widget_owner.hpp"
 #include "bsp/movie_player.hpp"
+#include "bsp/main_menu_widget_lists.hpp"
 #include <array>
 #include <cstdint>
 #include <string_view>
 #include <vector>
+#include <optional>
 
 namespace bsp {
 
@@ -48,7 +50,14 @@ struct MainMenuLayoutBindings {
     GuiLayoutWidget *briefing_grid_244{}, *briefing_248{}, *primary_text_24c{};
     GuiLayoutWidget *number_text_250{}, *number2_text_254{}, *dest_text_258{}, *dest2_text_25c{};
     GuiTextColor dest2_color_260{}, dest_color_270{};
+    MainMenuObjectiveWidgetList descriptions_280;
     GuiLayoutWidget* highlight_background_294{};
+    MainMenuObjectiveWidgetList descriptions_298, descriptions_2a4;
+    // Native5902E0 leaves these spacing/header fields unwritten. Spacing
+    // stays unresolved until its real producer supplies the existing cells.
+    std::optional<float> field_2b0, field_2b4;
+    GuiLayoutWidget *primary_header_2b8{}, *secondary_header_2bc{}, *hidden_header_2c0{};
+    std::uint8_t field_2c4{}; //594BF0 writes before use; no ctor claim
     // 58F5B0 publishes the authored briefing page and Group pairs here.
     // Values borrow the same GUI tree; 5966F0 reads these vectors via519DC0.
     GuiLayoutWidget* objective_page_2c8{};

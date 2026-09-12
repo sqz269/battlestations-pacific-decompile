@@ -6,6 +6,7 @@
 #include "bsp/main_menu_activation_runtime.hpp"
 
 namespace bsp {
+struct MainMenuObjectiveRowsBindings;
 // C8/CC alias the selection listener; D0/D4 borrow their existing globals.
 MainMenuActivationBindings make_main_menu_activation_bindings(
     MainMenuSelectionListenerBindings&, MainMenuActivationServices&,
@@ -31,6 +32,9 @@ public:
     void bind_activation(MainMenuActivationBindings&);
     void unbind_activation(MainMenuActivationBindings&);
     void call_00598b60(GuiWidgetOwner*, GuiWidgetOwner&) override;
+    void bind_objective_rows(MainMenuObjectiveRowsBindings&);
+    void unbind_objective_rows(MainMenuObjectiveRowsBindings&);
+    void call_00594bf0() override;
 private:
     GuiWidgetOwnerRuntime& owners_;
     MainMenuVehicleUnlockStorage& game_;
@@ -38,6 +42,8 @@ private:
     MainMenuTacticalLibraryBindings& tactical_;
     MainMenuActivationBindings* activation_{};
     std::uint32_t active_activation_calls_{};
+    MainMenuObjectiveRowsBindings* objective_rows_{};
+    std::uint32_t active_objective_calls_{};
 };
 
 // Two native subobjects, one canonical screen binding: CEFC04 at+40 supplies
