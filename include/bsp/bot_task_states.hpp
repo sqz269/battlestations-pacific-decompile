@@ -56,7 +56,7 @@ inline constexpr int kFollowField9C = 0x9C;        // zeroed by the same writers
 // 00D212C4, 00D212E0, 00D212FC, 00D21320 and 00D20AEC.
 // ---------------------------------------------------------------------------
 namespace bot_task_state_vtable {
-inline constexpr int kScalarDeletingDtor = 0x00;
+inline constexpr int kStateScalarDeletingDtor = 0x00;
 inline constexpr int kEnter = 0x04;             // 009A56C0 calls it on the incoming state
 inline constexpr int kExit = 0x08;              // 009A56C0 calls it on the outgoing state
 inline constexpr int kTick = 0x0C;              // __thiscall(this, float dt), RET 4
@@ -75,13 +75,13 @@ inline constexpr int kMoveToSlotCount = 8;
 // ---------------------------------------------------------------------------
 namespace bot_approach_off {
 inline constexpr int kVtable = 0x00;             // four slots at 00D21C74
-inline constexpr int kUnit = 0x04;               // the ECX of every 007BBBA0 release
-inline constexpr int kUnitClassBlock = 0x08;     // unit->+538h
+inline constexpr int kApproachUnit = 0x04;               // the ECX of every 007BBBA0 release
+inline constexpr int kApproachUnitClassBlock = 0x08;     // unit->+538h
 inline constexpr int kPilotControlBlock = 0x0C;  // unit->+9D4h, the altitude limits
 inline constexpr int kCommandBlock = 0x18;       // 009F9980: task+4h, the per-tick output
 inline constexpr int kTaskSub314 = 0x1C;         // 009F9980: task+314h
 inline constexpr int kTaskSub38C = 0x20;         // 009F9980: task+38Ch
-inline constexpr int kSpeedRatio = 0x24;         // max(1.0f, classBlock->+188h / reference speed)
+inline constexpr int kApproachSpeedRatio = 0x24;         // max(1.0f, classBlock->+188h / reference speed)
 
 // Depth-charge fields the release rule reads. 009A3390 writes +34h, +3Ch and +58h.
 inline constexpr int kRoundsRemaining = 0x2C;    // decremented by both release rules
