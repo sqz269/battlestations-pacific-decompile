@@ -163,3 +163,27 @@ The parallel MSBuild invocation remains intermittent: a later documentation-only
 rerun again hit MSB3491 before C++ compilation. The final serial full build and
 both existing CTests passed again on unchanged source. This environment issue
 was recorded rather than changing global permissions or build configuration.
+
+## Correction from AM concrete simulation integration
+
+Model AF6DD0 now invokes concrete AFD410, AFF640 and AFD7A0. Record AFE290
+now directly invokes B04C80 and AFD440 with typed borrowed application access.
+Those kernels include AFDAF0 and AFE1A0/AFDBF0 respectively; real current
+definition virtual generation, state B0CA40 initialization and CRT services
+remain required. Existing assembly access offsets and original stack words
+are preserved. Definition virtual08 must return readable storage through+107,
+because AFCF50 copies the final float at+104; the earlier+9F extent was too small.
+See NATIVE_PARTICLE_EMITTER_UPDATE.md, NATIVE_PARTICLE_RECORD_UPDATE.md,
+NATIVE_PARTICLE_EMISSION_SPAWN.md and NATIVE_PARTICLE_RECORD_CHILDREN.md.
+Earlier isolated fixture service descriptions are historical, not final wiring.
+Full application composition, native exception ABI and gameplay remain unproven.
+
+## AM combined validation and saved analysis
+
+The combined strict MSVC Win32 build and both existing seeded CTests passed.
+Eight call reports check200 direct CALL rows without failures. All seven focused
+replays pass within their documented boundaries. Saved names, native signatures,
+full body ranges and old-comment preservation were read back; affected exports
+were refreshed. The report embeds the earliest annotation preimages and repair
+records. Earlier worker pending notes describe isolated snapshots. No original
+exception ABI, complete application composition or gameplay claim is added.

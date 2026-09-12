@@ -1,4 +1,5 @@
 #include "bsp/native_singleton_destruction.hpp"
+#include "bsp/game_sound_runtime.hpp"
 
 #include "bsp/native_gameplay_effect_destruction.hpp"
 #include "bsp/native_int_pointer_tree18_leaves.hpp"
@@ -41,6 +42,15 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
     case 0x00d5e59c:
         if (bindings.resource_registry != nullptr) {
             delete_native_resource_registry_00b1b710(owner, bindings.resource_registry, flags);
+            return;
+        }
+        break;
+    case 0x00d5b44c:
+    case 0x00d5b460:
+    case 0x00d5b478:
+    case 0x00d58f78:
+        if (bindings.sound_runtime != nullptr && bindings.sound_runtime->owns_registered(owner)) {
+            bindings.sound_runtime->delete_registered(owner, flags);
             return;
         }
         break;

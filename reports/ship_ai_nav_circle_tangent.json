@@ -1,0 +1,228 @@
+{
+  "packet": "orch6_ship_ai_circle_tangent",
+  "owner": "agent/orch6-circle-tangent",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "read-only",
+  "doc": "docs/SHIP_AI_NAV_CIRCLE_TANGENT.md",
+  "header": "include/bsp/ship_ai_nav_circle_tangent.hpp",
+  "source": "src/ship_ai_nav_circle_tangent.cpp",
+  "routines": [
+    {
+      "address": "004f3560",
+      "body": "004f3560-004f3626",
+      "original_abi": "two float stack arguments; RET 8; AL flag",
+      "coverage": "complete",
+      "reconstruction": "circle_relative_equal_004f3560",
+      "proposed_name": "BSP_Math_RelativeEqualFloat",
+      "name_applied": false,
+      "abi_compatible": false,
+      "action": "reconstructed"
+    },
+    {
+      "address": "004f4520",
+      "body": "004f4520-004f47ad",
+      "original_abi": "ECX/EDX centers; radii and two outputs on stack; RET 10h; EAX signed status",
+      "coverage": "complete",
+      "reconstruction": "circle_intersections_004f4520",
+      "proposed_name": "BSP_Circle2f_IntersectionsByCenters",
+      "name_applied": false,
+      "abi_compatible": false,
+      "action": "reconstructed"
+    },
+    {
+      "address": "004f47b0",
+      "body": "004f47b0-004f47d1",
+      "original_abi": "ECX/EDX circles; two outputs on stack; RET 8; EAX signed status",
+      "coverage": "complete",
+      "reconstruction": "circle_intersections_004f47b0",
+      "proposed_name": "BSP_Circle2f_Intersections",
+      "name_applied": false,
+      "abi_compatible": false,
+      "action": "reconstructed"
+    },
+    {
+      "address": "004f3970",
+      "body": "004f3970-004f3b98",
+      "original_abi": "ECX circle; point/base/half-chord on stack; RET 0Ch; AL flag",
+      "coverage": "complete review; existing semantic projection corrected",
+      "reconstruction": "ship_ai_path_tangent_chord_004f3970",
+      "proposed_name": "BSP_Circle2f_TangentChord",
+      "name_applied": false,
+      "abi_compatible": false,
+      "action": "corrected"
+    },
+    {
+      "address": "009d6550",
+      "body": "009d6550-009d65d0",
+      "original_abi": "ECX circle; point/first/second on stack; RET 0Ch; AL flag",
+      "coverage": "complete review; existing projection reused",
+      "reconstruction": "ship_ai_path_tangent_points_009d6550",
+      "proposed_name": "BSP_Circle2f_TangentPointPair",
+      "name_applied": false,
+      "abi_compatible": false,
+      "action": "reused"
+    },
+    {
+      "address": "009d68b0",
+      "body": "009d68b0-009d6ac1",
+      "original_abi": "ECX output, EDX circle; point, clearance, byte-valued side in stack slots; RET 0Ch; EAX output",
+      "coverage": "complete control-flow projection; indeterminate native second scratch represented by explicit seed; default zero is a documented deviation",
+      "reconstruction": "ship_ai_circle_tangent_009d68b0",
+      "proposed_name": "BSP_ShipAi_CircleTangentOrOffsetPoint",
+      "name_applied": false,
+      "abi_compatible": false,
+      "action": "corrected"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "004f36a5",
+      "native": "004f3560",
+      "function": "004f3630",
+      "contract": "denominator versus zero"
+    },
+    {
+      "address": "004f45c2",
+      "native": "004f3560",
+      "function": "004f4520",
+      "contract": "first radius versus second radius"
+    },
+    {
+      "address": "004f46c7",
+      "native": "004f3560",
+      "function": "004f4520",
+      "contract": "distance versus binary32 radius sum"
+    },
+    {
+      "address": "004f4567",
+      "native": "00bf7030",
+      "function": "004f4520",
+      "contract": "center distance sqrt"
+    },
+    {
+      "address": "004f4660",
+      "native": "00bf7030",
+      "function": "004f4520",
+      "contract": "intersection height sqrt"
+    },
+    {
+      "address": "004f4706",
+      "native": "00419260",
+      "function": "004f4520",
+      "contract": "center-vector reciprocal length; existing kernel reused"
+    },
+    {
+      "address": "004f47ca",
+      "native": "004f4520",
+      "function": "004f47b0",
+      "contract": "forward centers, two radii, outputs"
+    },
+    {
+      "address": "004f39c9",
+      "native": "00bf7030",
+      "function": "004f3970",
+      "contract": "query-center distance sqrt"
+    },
+    {
+      "address": "004f3a91",
+      "native": "00bf7030",
+      "function": "004f3970",
+      "contract": "outside tangent length sqrt"
+    },
+    {
+      "address": "004f3b35",
+      "native": "00bf7030",
+      "function": "004f3970",
+      "contract": "inside half-chord length sqrt"
+    },
+    {
+      "address": "009d6562",
+      "native": "004f3970",
+      "function": "009d6550",
+      "contract": "tangent chord to base and half-chord temporaries"
+    },
+    {
+      "address": "009d68ec",
+      "native": "009d6550",
+      "function": "009d68b0",
+      "contract": "tangent/chord endpoint pair"
+    },
+    {
+      "address": "009d695a",
+      "native": "00bf7030",
+      "function": "009d68b0",
+      "contract": "chosen-query separation sqrt"
+    },
+    {
+      "address": "009d69a6",
+      "native": "00bf7030",
+      "function": "009d68b0",
+      "contract": "fallback center-query distance sqrt"
+    },
+    {
+      "address": "009d69dd",
+      "native": "00bd2f10",
+      "function": "009d68b0",
+      "contract": "stream 1 range draw; explicit RNG dependency"
+    },
+    {
+      "address": "009d6a8a",
+      "native": "004f47b0",
+      "function": "009d68b0",
+      "contract": "query/clearance circle intersects target circle; ignores status"
+    },
+    {
+      "address": "009f3829",
+      "native": "009d68b0",
+      "function": "009f3670",
+      "contract": "sole caller passes side=1"
+    },
+    {
+      "address": "009e4162",
+      "native": "009d6550",
+      "function": "009e3c00",
+      "contract": "path follower corner tangent pair"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "009D68B0 side==0 tests the full integer",
+      "evidence": "009D68B7 CMP byte ptr [ESP+3Ch],AL; 009D68C7 SETZ AL",
+      "is": "only the low byte is tested"
+    },
+    {
+      "was": "random fallback combines radius*trig with center before binary32 rounding",
+      "evidence": "009D69EA/69FC; 009D6A16/6A1E FSTP float",
+      "is": "FCOS/FSIN and scaled offsets each spill before center additions"
+    },
+    {
+      "was": "offset first and second outputs are both zero-initialized",
+      "evidence": "009D6A6D points at baseline+18h; second baseline+20h has no producer in complete listing",
+      "is": "first retains chosen; second takes explicit incoming scratch seed, default zero is a defined deviation"
+    },
+    {
+      "was": "004F3970 rejects unordered circle gap",
+      "evidence": "004F3A36 COMISS followed by 004F3A3B JBE",
+      "is": "unordered continues to inside-chord arm"
+    }
+  ],
+  "no_ghidra_function": [],
+  "uncertainty": [
+    "009D68B0 native second scratch is indeterminate on an intersection no-write status. Caller-supplied seed models its bits; default zero is only compatibility behavior.",
+    "Existing 004F3970 and 009D6550 projections retain their documented double-versus-x87 division rounding limitation.",
+    "New interfaces add borrowed CRT and RNG state; not binary replacements, not game-integrated or game-validated.",
+    "FP exceptional state, unusual output aliasing and actual original process RNG/CRT effects are not runtime-validated."
+  ],
+  "validation": {
+    "seed_ranges": "8/8 matched installed image",
+    "report_calls": "18 checked, 0 failed",
+    "build": "MSVC Win32 Release scripts/build.ps1 passed; 2/2 existing CTest checks passed",
+    "focused_probe": "local/run_circle_probe.ps1: 22 checks, 0 failures; /MANIFEST:EMBED; fixture evidence",
+    "game_validated": false,
+    "build_log": "local/circle-build-final.log",
+    "probe_log": "local/circle-probe.log",
+    "probe_source": "local/circle_geometry_probe.cpp",
+    "native_differential_scope": "Existing seed routines only; new geometry is fixture-tested, not native-differential-tested"
+  }
+}

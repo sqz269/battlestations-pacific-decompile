@@ -34,6 +34,7 @@ void require_base_color_slot(const GuiLayoutWidget& widget) {
     case GuiWidgetType::Group:
     case GuiWidgetType::Icon:
     case GuiWidgetType::FrameBox:
+    case GuiWidgetType::Section:
         require(widget.transform.type_id == static_cast<std::int32_t>(widget.type),
             "GUI material binding requires coherent same-owner type fields");
         return;

@@ -174,6 +174,9 @@ struct GuiTypeDispatchFactory::Shared {
             require(services.framebox, "FrameBox type factory has no actual resource services");
             return std::make_unique<GuiFrameBoxTypeImplementation>(owner, services.framebox(owner),
                 services.crt_sse2_conversion);
+        case GuiWidgetType::Section:
+            require(services.section, "Section type factory has no actual resource services");
+            return std::make_unique<GuiSectionRuntimeImplementation>(owner, services.section(owner));
         case GuiWidgetType::Screen: {
             const auto input = script_pages.find(&owner.layout());
             require(input != script_pages.end(), "cGuiLayer requires explicit per-page constructor input");
@@ -184,7 +187,7 @@ struct GuiTypeDispatchFactory::Shared {
                 services.crt_sse2_conversion);
         }
         default:
-            throw std::invalid_argument("GUI type factory supports only Screen1, Group2, Icon6, ClipBox16 and FrameBox18");
+            throw std::invalid_argument("GUI type factory supports only Screen1, Group2, Icon6, ClipBox16, Section17 and FrameBox18");
         }
     }
 };

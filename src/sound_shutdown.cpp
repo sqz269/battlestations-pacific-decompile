@@ -178,7 +178,7 @@ void destroy_sound_system_00a882c0(SoundSystemOwner& owner,
     SoundSystemShutdownContext& context) {
     owner.native_vtable_00 = 0x00d5b44cu;
     SoundBaseUnwind unwind{owner, context};
-    auto* manager = context.lifetime.domain.get_manager_00415350();
+    auto manager = context.lifetime.domain.get_manager_00415350();
     manager->unregister_object(context.alternate_00f8bbcc);
     if (auto* alternate = context.alternate_00f8bbcc) {
         context.virtuals.delete_alternate_slot00(alternate, 1);

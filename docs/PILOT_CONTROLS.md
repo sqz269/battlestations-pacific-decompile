@@ -284,3 +284,21 @@ plane doc's own table has it right, as a consumer.
   readings disagree and the packet did not settle it; treat both labels as provisional.
 * `007C47F0`, `007C4810`, `0077C470`, `004C5070`, `008A5BD0` and `007C11E0`: `contract: unread`.
 * `classDesc+25Ch`, `+274h` and `+190h` have no producer in this packet's reading.
+
+## Correction from docs/PILOT_COMMAND_PATH.md (packet cc2_pilot_command_path)
+
+- **Was:** 0099BEE0's out record is the 0x84-byte block 007C2810 allocates, and the bot's axes reach unit+9E4h over the session message path (marked a hypothesis)
+  **Is:** out is a six-dword stack buffer in 0099ACD0 at [ESP+10h], handed straight to 007B8C90 at 0099B0B9. The 0x84 record is the 0C1h session-message payload cached at owner+0Ch; its first six dwords only share the control block's default (0,0,0,1.0f,0,0)
+  **Evidence:** 0099B086-0099B09A zeroes [ESP+1Ch]..[ESP+30h] and sets [ESP+28h] to 1.0f; 0099B07F pushes LEA ECX,[ESP+18h]; 0099B0B4 LEA EAX,[ESP+10h] then 0099B0B9 CALL 007B8C90 with ECX = [ESI+50h]. 007BDD30 pre-sets msg+38h..+4Ch to the same defaults at 007BDD88-007BDD9B and 007BDEAF-007BDED6 fills them from [&unit+9E4h]
+- **Was:** 00519520 BSP_PlanePilotView_BuildPlayerCommand(view)
+  **Is:** __thiscall(view, float dt), RET 4
+  **Evidence:** 00519520 SUB ESP,28h; PUSH ESI; MOV ESI,ECX, epilogue RET 4 at 00519821; the caller pushes the float at 00519CED-00519CF4
+- **Was:** the control-block writer list names 007D5AC0
+  **Is:** 007D5D20, and it does not store to the block: it passes the field pointers to BSP_LuaReader_ReadField, which writes them
+  **Evidence:** 007D5AC0's Ghidra body ends at its RET at 007D5D1F; 007D5D20 is a separate SEH function ending at 007D771E; its only references to the block are LEA at 007D6983, 007D69BA, 007D69F1, 007D6A28, 007D6A5F, 007D6A90 and 007D6ACD, each stored into a {2, ptr} argument record
+- **Was:** the call sites of 00519520 and 0099BEE0 are open questions (no xref, no vtable entry)
+  **Is:** 00519CF7 inside 00519BB0 and 0099B0A0 inside 0099ACD0, both in undisassembled code; each is the only E8 displacement in the image that lands on its target, and neither target appears as a dword anywhere
+  **Evidence:** a scan of every executable section of the disk image for E8/E9 rel32 targets and for the four-byte little-endian address
+- **Was:** 007D0B80 writes unit+9E8h at 007D1331 and unit+9F0h at 007D134E (the packet brief's reading)
+  **Is:** 007D1331 is the only control-block store in 007D0B80; 007D134E is inside the epilogue (MOV FS:[0],ECX at 007D1343, POP EBX at 007D134A, ADD ESP,88h at 007D134B)
+  **Evidence:** a grep of the exported listing for every 9Exh/9Fxh/A0xh/A1xh displacement returns the single line 007D1331 MOVSS [ESI+9E8h],XMM0

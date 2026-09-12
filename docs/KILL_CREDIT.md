@@ -304,3 +304,12 @@ explicit inputs; `kill_credit_record_unit_kill_0091bda0` is the sequence over
 `include/bsp/projectile_helpers.hpp`. Build-tested on the Win32 MSVC build with warnings as
 errors; the existing `reconstructed_math` suite passes. Not fixture-tested against the binary
 and not ABI-compatible.
+
+## Correction from docs/GAMEPLAY_LOOSE_ENDS_1.md (packet cc2_gameplay_loose_ends_1)
+
+- **Was:** Open: what inserts into the entity -> int map at manager+1488h that 0091BE3F consults.
+  **Is:** Nothing. The map is constructed, cleared and destroyed and only ever read, so the find always misses and the early return it guards never fires.
+  **Evidence:** A complete .text sweep for 0x1488 returns nine instructions. The four that compute the manager's map address are 0091D712 (construction, map+4h = 0063B110()), 009169B1 (an inlined std::map::clear in BSP_MissionPlayerRecords_Reset that ends with MOV dword ptr [EDI+0x8],EBX at 009169E6), 0091CCFF (destruction) and 0091BE18 (the find). The other five are an unrelated class at 008CB59D and 008CC44E and three library stack frames.
+- **Was:** Open: whether +44h of an achievement row really is the Params column. The offset is settled by its consumer, not by 006B9450, so rule 4 is not satisfied for it.
+  **Is:** It is the Params column, now settled by the producer. row+44h is a vector filled from Params[1..21] in order, with 0 substituted when index 1 is absent, so the consumer's vector::at(0) is the first Params entry.
+  **Evidence:** 006B9BA0 PUSH 0xCF8530, the literal string "Params", into BSP_LuaObject_GetByName at 006B9BB1; 006B9BC6 BSP_LuaObject_GetByIndex(value, EDI) with EDI = 1 at 006B9B92 and CMP EDI,0x16 at 006B9C46; 006B9C1D BSP_LuaReference_GetIntegerOrDefault; 006B9C3B LEA ECX,[ESI+0x44] then 006B9C3E CALL 0x00442190. 00CF8538, the neighbouring string, is XLastAchievement and feeds row+40h.

@@ -207,3 +207,9 @@ the rest, and from `[ESI+9D4h]` at `007C3EF8`, the same `+9D4h` field the retarg
 - `[00E0AF1C]`, the default routing flags, was not read at run time, so "the local session applies
   it immediately" is neither confirmed nor denied here.
 - `entity+284h` is a back-pointer whose `+14h` is the owning entity. Its class was not established.
+
+## Correction from docs/AI_GROUP_THINK.md (packet cc2_ai_group_think)
+
+- **Was:** 00A2BD90 forwards both stack arguments to group+564Ch vtable[24h] (transcription correct, effect not stated)
+  **Is:** that slot is 00A0FC90, RET 8, a no-op in every AI command class the group constructor installs, so the notification is discarded; 00A2BD90 is a hook, not a fan-out, and the group's real command distribution is 00A2DB80's retarget phase
+  **Evidence:** 00A0FC90 disassembles to a single RET 8 on disk and Ghidra has no function there. It occurs sixteen times in .rdata, all inside 00D2298C-00D22C68, the AI-command vtable block; 00D22990, 00D229B8 and 00D229E0 all carry it at +24h, and 00A2E11C/00A2E13B/00A2E152 are the only three classes the constructor installs.

@@ -317,3 +317,9 @@ Ghidra function, which is why it is not a `host_steps` row of `reports/sensor_ta
   three values derived from the script's `MaxLevel`.
 * `include/bsp/recon_slot_lists.hpp`'s `ReconSensorEntry` omits `+0h`. The producer writes the
   authored `Dist` there and its square at `+4h`.
+
+## Correction from docs/GAMEPLAY_LOOSE_ENDS_1.md (packet cc2_gameplay_loose_ends_1)
+
+- **Was:** [[game+19CCh]+13Ch] is the world list; no writer of a +13Ch list head was found, so the head is written through a register-held address by a helper this packet did not find.
+  **Is:** There is no separate world list and no missing helper. registry+13Ch is the head dword of the per-class-id list triple for class id 24, in the same registry+18h+id*0Ch array the recon scan's own step 5 walks; plane squadrons are pushed onto it through BSP_UnitList_PushBack.
+  **Evidence:** 0x13C = 0x18 + 24*0xC + 4, and the reader itself uses the array at 008074C7 LEA EAX,[EBX+EBX*0x2] / 008074CA MOV EBP,[EDX+EAX*0x4+0x1C]. The array is built by the 004CB076 vector constructor iterator with PUSH 0x61 count and PUSH 0xC stride. 00484540 BSP_UnitList_PushBack writes the head at list+4h. 007F10C8 ADD ECX,0x138 then 007F10CE CALL 0x00484540 in FUN_007f10b0, at 00D087C0+130h, is the insert; the squadron's primary vptr 00D087C0 is installed at 007F2CAD.

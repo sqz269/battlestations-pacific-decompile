@@ -86,9 +86,10 @@ inline constexpr float kShipAiPathFollowerSteerLengthFloor = 0.1f;
 // ---------------------------------------------------------------------------
 //
 // 009E3D8C dereferences ShipAiPathNode::field_10 and 009E3DD2 reads it again.
-// Only these four floats are read by the follower. The producer is 009D5920
-// out of 00417610 (docs/SHIP_AI_PATH_SEARCH.md, the +10h row); this packet did
-// not read it, so the layout below claims only the fields 009E3C00 touches.
+// Only these four floats are read by the follower. 009D5920 is an interior
+// attach path and 00417610 an accessor; record allocation/position comes from
+// 0041CCD0 and geometry from 0041A200 (docs/SHIP_AI_LATERAL_RECORD.md). This
+// compact semantic projection contains only the fields 009E3C00 touches.
 // The consumer 009EE63A reads the same record's +20h as a width.
 struct ShipAiPathLateralAnchor {
     float x{0.0f};      // +00h, 009E3D96, the anchor point the target is offset from
@@ -129,8 +130,9 @@ struct ShipAiPathTangentChord {
 // 004F3970, `bool __thiscall(circle)(const float2* point, float2* base,
 // float2* half_chord)`, RET 0Ch, body 004F3970-004F3B98, complete. False and
 // no writes when the point is at the centre (004F39F4) or within 1e-6 of the
-// circle itself (004F3A3B). Name proposed, not applied: 004F3970 belongs to the
-// open `ship_ai_nav_circle_tangent` packet.
+// circle itself (004F3A3B). The gap comparison continues on unordered; a NaN
+// radius can produce a valid pair of NaNs. Reviewed again by the circle packet:
+// docs/SHIP_AI_NAV_CIRCLE_TANGENT.md. Ghidra was read-only for that review.
 ShipAiPathTangentChord ship_ai_path_tangent_chord_004f3970(
     const ShipAiCircleTangentCircle& circle,
     const std::array<float, 2>& point) noexcept;

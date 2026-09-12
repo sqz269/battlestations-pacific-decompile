@@ -61,7 +61,7 @@ std::uint32_t gui_mesh_element_count_00b72b40(const void* actual_mesh) noexcept;
 float* native_material_diffuse_00b179f0(NativeMaterialStorage&,
     std::uint32_t ignored_slot) noexcept;
 
-// Actual +50 of base, Group, Icon, FrameBox and Screen. Stores SAME layout
+// Actual +50 of base, Group, Icon, FrameBox, Screen and Section. Stores SAME layout
 // color (and its existing alpha projection), then checks raw node+180 and
 // mesh+58. Resolves element0's actual section+20 through the same model owner
 // domain, verifies its canonical NativeMaterialReference/storage, then writes

@@ -1,3 +1,5 @@
+#include "bsp/native_particle_record_update.hpp"
+#include "bsp/native_particle_emitter_update.hpp"
 #include "bsp/native_particle_model_update.hpp"
 #include "bsp/native_camera_cache_getters.hpp"
 #include "bsp/native_camera_matrix_copy.hpp"
@@ -18,6 +20,8 @@ static_assert(offsetof(NativeParticleModelUpdateAccess, random) == 4);
 static_assert(offsetof(NativeParticleModelUpdateAccess, services) == 8);
 static_assert(offsetof(NativeParticleModelUpdateAccess, floor_00bf85b0) == 12);
 static_assert(offsetof(NativeParticleModelUpdateAccess, free_00bf65ac) == 16);
+static_assert(offsetof(NativeParticleModelUpdateAccess, records) == 20);
+static_assert(offsetof(NativeParticleModelUpdateAccess, emitters) == 24);
 // Verified immutable image words. Keep original widths and load sites.
 const std::uint32_t constant_00d7a218 = 0x00000000u;
 const std::uint32_t constant_00d7a24c = 0x3f800000u;
@@ -37,17 +41,17 @@ void* __fastcall definition_bridge(void* definition, const NativeParticleModelUp
     std::uint32_t captured_target, NativeNodeStorage* model, float time) {
     return access->services->definition_virtual08(definition, captured_target, *model, time);
 }
-void __fastcall append_bridge(void* owner, const NativeParticleModelUpdateAccess* access,
+void __fastcall append_bridge(void* owner, const NativeParticleModelUpdateAccess*,
     const void* temporary) {
-    access->services->call_00afd410(owner, temporary);
+    append_native_particle_record_00afd410(static_cast<NativeParticleModelArraysStorage*>(owner), nullptr, temporary);
 }
 std::int32_t __fastcall emitter_bridge(void* emitter, const NativeParticleModelUpdateAccess* access,
     float delta) {
-    return access->services->call_00aff640(emitter, delta);
+    return update_native_particle_emitter_00aff640(emitter, access->emitters, delta);
 }
 std::int32_t __fastcall step_bridge(void* owner, const NativeParticleModelUpdateAccess* access,
     float time, std::uint8_t mode) {
-    return access->services->call_00afd7a0(owner, time, mode);
+    return update_native_particle_records_00afd7a0(static_cast<NativeParticleModelArraysStorage*>(owner), access->records, time, mode);
 }
 void __fastcall bounds_bridge(void* model, void*, const float* words) noexcept {
     set_native_generated_model_bounds_00b74390(model, words);

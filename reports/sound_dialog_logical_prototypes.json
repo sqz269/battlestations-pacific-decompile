@@ -1,0 +1,169 @@
+{
+  "reason": "Native ABI from verified listing; unused_edx represents an unconsumed register, not an original argument. Stream ctor uses three owned stack DWORDs (8h name plus retained pointer), RET0C.",
+  "entries": [
+    {
+      "address": "00a77820",
+      "proposed": "float __cdecl BSP_LogicalDialog_PrimaryGain()",
+      "before": "Function: BSP_LogicalDialog_PrimaryGain at 00a77820\nSignature: undefined BSP_LogicalDialog_PrimaryGain(void)\nEntry: 00a77820\nBody: 00a77820 - 00a7782b",
+      "apply": "Successfully set prototype for function at 00a77820 with __cdecl calling convention",
+      "after": "Function: BSP_LogicalDialog_PrimaryGain at 00a77820\nSignature: float __cdecl BSP_LogicalDialog_PrimaryGain(void)\nEntry: 00a77820\nBody: 00a77820 - 00a7782b",
+      "readback_verified": true
+    },
+    {
+      "address": "00a77830",
+      "proposed": "float __cdecl BSP_LogicalDialog_SecondaryGain()",
+      "before": "Function: BSP_LogicalDialog_SecondaryGain at 00a77830\nSignature: undefined BSP_LogicalDialog_SecondaryGain(void)\nEntry: 00a77830\nBody: 00a77830 - 00a7783b",
+      "apply": "Successfully set prototype for function at 00a77830 with __cdecl calling convention",
+      "after": "Function: BSP_LogicalDialog_SecondaryGain at 00a77830\nSignature: float __cdecl BSP_LogicalDialog_SecondaryGain(void)\nEntry: 00a77830\nBody: 00a77830 - 00a7783b",
+      "readback_verified": true
+    },
+    {
+      "address": "00a77bb0",
+      "proposed": "void __fastcall BSP_LogicalDialogConfiguration_ClearReferences(void* self)",
+      "before": "Function: FUN_00a77bb0 at 00a77bb0\nSignature: undefined FUN_00a77bb0(void)\nEntry: 00a77bb0\nBody: 00a77bb0 - 00a77bfd",
+      "apply": "Successfully set prototype for function at 00a77bb0 with __fastcall calling convention",
+      "after": "Function: BSP_LogicalDialogConfiguration_ClearReferences at 00a77bb0\nSignature: void __fastcall BSP_LogicalDialogConfiguration_ClearReferences(void * self)\nEntry: 00a77bb0\nBody: 00a77bb0 - 00a77bfd",
+      "readback_verified": true
+    },
+    {
+      "address": "00a78230",
+      "proposed": "void* __fastcall BSP_LogicalDialogRecord_Assign(void* self, void* unused_edx, void* source)",
+      "before": "Function: FUN_00a78230 at 00a78230\nSignature: undefined FUN_00a78230(void)\nEntry: 00a78230\nBody: 00a78230 - 00a782d2",
+      "apply": "Successfully set prototype for function at 00a78230 with __fastcall calling convention",
+      "after": "Function: BSP_LogicalDialogRecord_Assign at 00a78230\nSignature: void * __fastcall BSP_LogicalDialogRecord_Assign(void * self, void * unused_edx, void * source)\nEntry: 00a78230\nBody: 00a78230 - 00a782d2",
+      "readback_verified": true
+    },
+    {
+      "address": "00a785d0",
+      "proposed": "void* __fastcall BSP_LogicalDialogConfiguration_Assign(void* self, void* unused_edx, void* source)",
+      "before": "Function: FUN_00a785d0 at 00a785d0\nSignature: undefined FUN_00a785d0(void)\nEntry: 00a785d0\nBody: 00a785d0 - 00a78619",
+      "apply": "Successfully set prototype for function at 00a785d0 with __fastcall calling convention",
+      "after": "Function: BSP_LogicalDialogConfiguration_Assign at 00a785d0\nSignature: void * __fastcall BSP_LogicalDialogConfiguration_Assign(void * self, void * unused_edx, void * source)\nEntry: 00a785d0\nBody: 00a785d0 - 00a78619",
+      "readback_verified": true
+    },
+    {
+      "address": "00a865f0",
+      "proposed": "int __fastcall BSP_DialogTable_FindRecordByName(void* self, void* unused_edx, void* name)",
+      "before": "Function: FUN_00a865f0 at 00a865f0\nSignature: undefined FUN_00a865f0(void)\nEntry: 00a865f0\nBody: 00a865f0 - 00a86669",
+      "apply": "Successfully set prototype for function at 00a865f0 with __fastcall calling convention",
+      "after": "Function: BSP_DialogTable_FindRecordByName at 00a865f0\nSignature: int __fastcall BSP_DialogTable_FindRecordByName(void * self, void * unused_edx, void * name)\nEntry: 00a865f0\nBody: 00a865f0 - 00a86669",
+      "readback_verified": true
+    },
+    {
+      "address": "00a783f0",
+      "proposed": "void __fastcall BSP_LogicalDialog_Start(void* self)",
+      "before": "Function: FUN_00a783f0 at 00a783f0\nSignature: undefined FUN_00a783f0(void)\nEntry: 00a783f0\nBody: 00a783f0 - 00a785c7",
+      "apply": "Successfully set prototype for function at 00a783f0 with __fastcall calling convention",
+      "after": "Function: BSP_LogicalDialog_Start at 00a783f0\nSignature: void __fastcall BSP_LogicalDialog_Start(void * self)\nEntry: 00a783f0\nBody: 00a783f0 - 00a785c7",
+      "readback_verified": true
+    },
+    {
+      "address": "00a78820",
+      "proposed": "void __fastcall BSP_LogicalDialog_Update(void* self, void* unused_edx, float dt, float gain)",
+      "before": "Function: FUN_00a78820 at 00a78820\nSignature: undefined FUN_00a78820(void)\nEntry: 00a78820\nBody: 00a78820 - 00a7889e",
+      "apply": "Successfully set prototype for function at 00a78820 with __fastcall calling convention",
+      "after": "Function: BSP_LogicalDialog_Update at 00a78820\nSignature: void __fastcall BSP_LogicalDialog_Update(void * self, void * unused_edx, float dt, float gain)\nEntry: 00a78820\nBody: 00a78820 - 00a7889e",
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a77820",
+        "prototype": "float __cdecl BSP_LogicalDialog_PrimaryGain()",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 00a77820 with __cdecl calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a77820",
+        "prototype": "float __cdecl BSP_LogicalDialog_PrimaryGain()",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 00a77820 with __cdecl calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a77830",
+        "prototype": "float __cdecl BSP_LogicalDialog_SecondaryGain()",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 00a77830 with __cdecl calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a77bb0",
+        "prototype": "void __fastcall BSP_LogicalDialogConfiguration_ClearReferences(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a77bb0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a78230",
+        "prototype": "void* __fastcall BSP_LogicalDialogRecord_Assign(void* self, void* unused_edx, void* source)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a78230 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a785d0",
+        "prototype": "void* __fastcall BSP_LogicalDialogConfiguration_Assign(void* self, void* unused_edx, void* source)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a785d0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a865f0",
+        "prototype": "int __fastcall BSP_DialogTable_FindRecordByName(void* self, void* unused_edx, void* name)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a865f0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a783f0",
+        "prototype": "void __fastcall BSP_LogicalDialog_Start(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a783f0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a78820",
+        "prototype": "void __fastcall BSP_LogicalDialog_Update(void* self, void* unused_edx, float dt, float gain)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a78820 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {}
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save_errors": [
+    "save_program {}: {'error': 'Unable to lock due to active transaction'}"
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

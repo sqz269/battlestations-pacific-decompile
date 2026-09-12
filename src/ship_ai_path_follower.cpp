@@ -51,8 +51,8 @@ ShipAiPathTangentChord ship_ai_path_tangent_chord_004f3970(
     // 004F3A21 stores len - radius, 004F3A29-004F3A32 clears its sign bit.
     const float gap = std::fabs(len - circle.radius);
     // 004F3A36 COMISS 1e-6 against |gap|, 004F3A3B JBE continues: a point ON
-    // the circle has no chord. An unordered compare returns here.
-    if (!(kShipAiPathFollowerBisectorEpsilon <= gap)) {
+    // the circle has no chord. JBE also continues on unordered (NaN radius).
+    if (kShipAiPathFollowerBisectorEpsilon > gap) {
         return result;
     }
 

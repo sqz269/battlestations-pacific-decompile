@@ -1,0 +1,869 @@
+{
+  "packet": "orch5_section_owner",
+  "status": "all_three_mode_numeric_stages_fixture_checked_strict_win32_compiled_owner_integration_pending",
+  "documentation": "docs/GUI_SECTION_RUNTIME.md",
+  "source": "src/gui_section_runtime.cpp",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "parent_definition_evidence": "reports/orch5_section_definitions.json",
+  "functions": [
+    {
+      "address": "00abe6e0",
+      "name": "set_values_00abe6e0",
+      "original_abi": "ECX Section; value,start-angle,U0,U1 stack; RET10h",
+      "end_inclusive": "00abe771",
+      "coverage": "complete successful current7C composition"
+    },
+    {
+      "address": "00abe7b0",
+      "name": "update_gui_section_timed_owner_00abe7b0",
+      "original_abi": "ECX timed entry; delta stack; AL changed; RET4",
+      "end_inclusive": "00abe886",
+      "coverage": "partial_projection: ABE7C9..ABE877 owner branch; existing numeric helper and parent current5C gate"
+    },
+    {
+      "address": "00abe960",
+      "name": "normalize_angle",
+      "original_abi": "float stack; x87 ST0 result; RET4",
+      "end_inclusive": "00abe9b8",
+      "coverage": "partial_projection: host CRT fmod instead of original BF857A dispatch; ABE96F..ABE9B8 x87 fold preserved"
+    },
+    {
+      "address": "00abf420",
+      "name": "GuiSectionRuntimeImplementation derived constructor",
+      "original_abi": "ECX destination; EAX destination; RET",
+      "end_inclusive": "00abf4b7",
+      "coverage": "partial_projection: derived-tail initialization after existing AA9390 base owner; no raw Section pool allocation"
+    },
+    {
+      "address": "00abeda0",
+      "name": "constructed74",
+      "original_abi": "ECX Section; RET",
+      "end_inclusive": "00abee57",
+      "coverage": "complete successful native mesh-association and position composition; parent owns definition and ledger"
+    },
+    {
+      "address": "00abf770",
+      "name": "emit7c_00abf770",
+      "original_abi": "ECX Section; RET",
+      "end_inclusive": "00ac0272",
+      "coverage": "all three mapped geometry modes and native skip branches, stream/section/material/layout publication; host CRT/SEH and invalid storage excluded; parent owns definition and ledger"
+    },
+    {
+      "address": "00abe630",
+      "name": "GuiSectionRuntimeImplementation::loaded78",
+      "original_abi": "ECX Section; JMP AA7170, no extra stack arguments",
+      "end_inclusive": "00abe634",
+      "coverage": "complete base-loaded tail jump on canonical owner; matching-byte function defined by parent"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00abe6e0",
+      "containing_range": [
+        "00abe6e0",
+        "00abe771"
+      ],
+      "address": "00abe76d",
+      "native": "Section+vtable7c",
+      "original_abi": "ECX same Section; no stack; RET; D5C964",
+      "instruction": "call edx",
+      "resolved_native": "00abf770"
+    },
+    {
+      "function": "00abe7b0",
+      "containing_range": [
+        "00abe7b0",
+        "00abe886"
+      ],
+      "address": "00abe7be",
+      "native": "widget+vtable5c",
+      "original_abi": "ECX entry.widget; EAX type id; RET; D5C944",
+      "instruction": "call edx",
+      "resolved_native": "00a9e110"
+    },
+    {
+      "function": "00abe7b0",
+      "containing_range": [
+        "00abe7b0",
+        "00abe886"
+      ],
+      "address": "00abe86c",
+      "native": "00abe6e0",
+      "original_abi": "ECX captured same widget; four float stack arguments; RET10h",
+      "instruction": "call 0xabe6e0"
+    },
+    {
+      "function": "00abe960",
+      "containing_range": [
+        "00abe960",
+        "00abe9b8"
+      ],
+      "address": "00abe96a",
+      "native": "00bf857a",
+      "original_abi": "CRT _CIfmod: x87 ST1 value,ST0 divisor; ST0 result; substituted host CRT library operation",
+      "instruction": "call 0xbf857a"
+    },
+    {
+      "function": "00abf420",
+      "containing_range": [
+        "00abf420",
+        "00abf4b7"
+      ],
+      "address": "00abf425",
+      "native": "00aa9390",
+      "original_abi": "ECX same widget; type17 stack; RET4",
+      "instruction": "call 0xaa9390"
+    },
+    {
+      "function": "00abeda0",
+      "containing_range": [
+        "00abeda0",
+        "00abee57"
+      ],
+      "address": "00abedcb",
+      "native": "00b73b60",
+      "original_abi": "incoming ECX BCh ignored; tail-route canonical0108FFF8; EAX C0h mesh slot; RET",
+      "instruction": "call 0xb73b60"
+    },
+    {
+      "function": "00abeda0",
+      "containing_range": [
+        "00abeda0",
+        "00abee57"
+      ],
+      "address": "00abede2",
+      "native": "00b73d70",
+      "original_abi": "ECX BCh mesh payload; EAX same; RET; initializes raw geometry owners/counts",
+      "instruction": "call 0xb73d70"
+    },
+    {
+      "function": "00abeda0",
+      "containing_range": [
+        "00abeda0",
+        "00abee57"
+      ],
+      "address": "00abee0a",
+      "native": "00b75170",
+      "original_abi": "ECX same Model; 0,actual mesh,D7A260,D7A260 stack; RET10h",
+      "instruction": "call 0xb75170"
+    },
+    {
+      "function": "00abeda0",
+      "containing_range": [
+        "00abeda0",
+        "00abee57"
+      ],
+      "address": "00abee13",
+      "native": "InterlockedDecrement",
+      "original_abi": "stdcall actual owner+04 LONG pointer stack; EAX updated count; RET4",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "function": "00abeda0",
+      "containing_range": [
+        "00abeda0",
+        "00abee57"
+      ],
+      "address": "00abee23",
+      "native": "actual-owner+current0",
+      "original_abi": "ECX captured actual owner with count zero; no stack arguments; RET; canonical retained-owner terminal dispatch",
+      "instruction": "call eax"
+    },
+    {
+      "function": "00abeda0",
+      "containing_range": [
+        "00abeda0",
+        "00abee57"
+      ],
+      "address": "00abee43",
+      "native": "00aa7dc0",
+      "original_abi": "ECX same Section; pointer to float3 zero stack; RET4",
+      "instruction": "call 0xaa7dc0"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00abf7c5",
+      "native": "00abe960",
+      "original_abi": "float stack; ST0 float result; RET4",
+      "instruction": "call 0xabe960"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00abf7de",
+      "native": "00b74640",
+      "original_abi": "ECX model; unused0 stack; EAX actual geometry; RET4",
+      "instruction": "call 0xb74640"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00abf7eb",
+      "native": "00b72b20",
+      "original_abi": "ECX mesh; EAX count7C; RET",
+      "instruction": "call 0xb72b20"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00abf801",
+      "native": "0041e870",
+      "original_abi": "ECX empty 8-byte NativeString; char pointer stack; EAX same header; RET4",
+      "instruction": "call 0x41e870"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00abf81e",
+      "native": "renderer+vtable38",
+      "original_abi": "ECX current renderer; NativeString pointer stack; EAX owned declaration; RET4",
+      "instruction": "call eax"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00abf83d",
+      "native": "00419cc0",
+      "original_abi": "no arguments; EAX actual string pool; RET; caller-pushed release arguments remain for following BD1510",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00abf844",
+      "native": "00bd1510",
+      "original_abi": "ECX actual string pool; block,size,unused1 stack; RET0Ch",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00abf85c",
+      "native": "renderer+vtable5c",
+      "original_abi": "ECX reloaded renderer; count146,flags1,actual declaration stack; RET0Ch",
+      "instruction": "call eax"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00abf865",
+      "native": "00b73bb0",
+      "original_abi": "ECX mesh; index0,actual stream stack; RET8",
+      "instruction": "call 0xb73bb0"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00abf86e",
+      "native": "InterlockedDecrement",
+      "original_abi": "stdcall actual owner+04 LONG pointer stack; EAX updated count; RET4",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00abf87e",
+      "native": "actual-owner+current0",
+      "original_abi": "ECX captured actual owner with count zero; no stack arguments; RET; canonical retained-owner terminal dispatch",
+      "instruction": "call eax"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00abf884",
+      "native": "InterlockedDecrement",
+      "original_abi": "stdcall actual owner+04 LONG pointer stack; EAX updated count; RET4",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00abf895",
+      "native": "actual-owner+current0",
+      "original_abi": "ECX captured actual owner with count zero; no stack arguments; RET; canonical retained-owner terminal dispatch",
+      "instruction": "call eax"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00abf8ab",
+      "native": "renderer+vtable60",
+      "original_abi": "ECX reloaded renderer; count432,flags1,format65h stack; RET0Ch",
+      "instruction": "call eax"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00abf8b2",
+      "native": "00b73b70",
+      "original_abi": "ECX mesh; actual index stream stack; RET4",
+      "instruction": "call 0xb73b70"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00abf8bb",
+      "native": "InterlockedDecrement",
+      "original_abi": "stdcall actual owner+04 LONG pointer stack; EAX updated count; RET4",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00abf8cb",
+      "native": "actual-owner+current0",
+      "original_abi": "ECX captured actual owner with count zero; no stack arguments; RET; canonical retained-owner terminal dispatch",
+      "instruction": "call eax"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00abf8d1",
+      "native": "00b73260",
+      "original_abi": "ECX mesh; index0 stack; EAX stream64; RET4",
+      "instruction": "call 0xb73260"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00abf8f9",
+      "native": "00bf7420",
+      "original_abi": "input x87 ST0; EAX signed low integer; no stack; current0109EEA4 conversion mode",
+      "instruction": "call 0xbf7420"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00abf99e",
+      "native": "vertex+vtable10",
+      "original_abi": "ECX captured stream0; count74,offset0,readonly0 stack; RET0Ch",
+      "instruction": "call edx",
+      "resolved_native": "00b49980"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00abfa36",
+      "native": "vertex+vtable10",
+      "original_abi": "ECX captured stream0; count146,offset0,readonly0 stack; RET0Ch",
+      "instruction": "call eax",
+      "resolved_native": "00b49980"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00abfd2c",
+      "native": "vertex+vtable14",
+      "original_abi": "ECX captured vertex; RET",
+      "instruction": "call eax",
+      "resolved_native": "00b49a80"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00abfd3e",
+      "native": "index+vtable0c",
+      "original_abi": "ECX captured mesh+60; count432,offset0,readonly0 stack; RET0Ch",
+      "instruction": "call eax",
+      "resolved_native": "00b49b60"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00abfdb4",
+      "native": "index+vtable10",
+      "original_abi": "ECX captured index; RET",
+      "instruction": "call edx",
+      "resolved_native": "00b49c70"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00ac000f",
+      "native": "vertex+vtable14",
+      "original_abi": "ECX captured vertex; RET",
+      "instruction": "call eax",
+      "resolved_native": "00b49a80"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00ac0021",
+      "native": "index+vtable0c",
+      "original_abi": "ECX captured mesh+60; count216,offset0,readonly0 stack; RET0Ch",
+      "instruction": "call eax",
+      "resolved_native": "00b49b60"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00ac006c",
+      "native": "index+vtable10",
+      "original_abi": "ECX captured index; RET",
+      "instruction": "call eax",
+      "resolved_native": "00b49c70"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00ac0085",
+      "native": "00b72b40",
+      "original_abi": "ECX mesh; EAX section count58; RET",
+      "instruction": "call 0xb72b40"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00ac0095",
+      "native": "00b85ee0",
+      "original_abi": "incoming ECX60h ignored; tail-route canonical010901D4; EAX64h section slot; RET",
+      "instruction": "call 0xb85ee0"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00ac00ae",
+      "native": "00b857f0",
+      "original_abi": "ECX new actual60h section; EAX same; RET",
+      "instruction": "call 0xb857f0"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00ac00d1",
+      "native": "0041dd40",
+      "original_abi": "ECX 8-byte NativeString; length,preserve1 stack; RET8",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00ac00ec",
+      "native": "00bf7680",
+      "original_abi": "cdecl destination,source,count; ADD ESP0Ch follows every listed copy",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00ac0100",
+      "native": "00535320",
+      "original_abi": "ECX native effect-name header; EAX owned material; RET",
+      "instruction": "call 0x535320"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00ac0122",
+      "native": "00419cc0",
+      "original_abi": "no arguments; EAX actual string pool; RET; caller-pushed release arguments remain for following BD1510",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00ac0129",
+      "native": "00bd1510",
+      "original_abi": "ECX actual string pool; block,size,unused1 stack; RET0Ch",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00ac0136",
+      "native": "00b732c0",
+      "original_abi": "ECX mesh; index0 stack; EAX section54[0]; RET4",
+      "instruction": "call 0xb732c0"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00ac0147",
+      "native": "InterlockedIncrement",
+      "original_abi": "stdcall actual owner+04 LONG pointer stack; EAX updated count; RET4",
+      "instruction": "call ebx"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00ac0155",
+      "native": "InterlockedIncrement",
+      "original_abi": "stdcall actual owner+04 LONG pointer stack; EAX updated count; RET4",
+      "instruction": "call ebx"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00ac016d",
+      "native": "0041dd40",
+      "original_abi": "ECX 8-byte NativeString; length,preserve1 stack; RET8",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00ac0188",
+      "native": "00bf7680",
+      "original_abi": "cdecl destination,source,count; ADD ESP0Ch follows every listed copy",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00ac01a6",
+      "native": "00b18b20",
+      "original_abi": "ECX actual material; native name header and SAME overbright94 source pointer stack; RET8",
+      "instruction": "call 0xb18b20"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00ac01c6",
+      "native": "00419cc0",
+      "original_abi": "no arguments; EAX actual string pool; RET; caller-pushed release arguments remain for following BD1510",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00ac01cd",
+      "native": "00bd1510",
+      "original_abi": "ECX actual string pool; block,size,unused1 stack; RET0Ch",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00ac01dd",
+      "native": "00b189f0",
+      "original_abi": "ECX material; slot0,actual texture114 stack; RET8",
+      "instruction": "call 0xb189f0"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00ac01e5",
+      "native": "00b864c0",
+      "original_abi": "ECX section; material stack; RET4",
+      "instruction": "call 0xb864c0"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00ac01ee",
+      "native": "InterlockedDecrement",
+      "original_abi": "stdcall actual owner+04 LONG pointer stack; EAX updated count; RET4",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00ac01ff",
+      "native": "actual-owner+current0",
+      "original_abi": "ECX captured actual owner with count zero; no stack arguments; RET; canonical retained-owner terminal dispatch",
+      "instruction": "call edx"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00ac0225",
+      "native": "00b865a0",
+      "original_abi": "ECX section; same mesh stack; RET4",
+      "instruction": "call 0xb865a0"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00ac0231",
+      "native": "00b73c60",
+      "original_abi": "ECX mesh; section stack; RET4",
+      "instruction": "call 0xb73c60"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00ac023a",
+      "native": "InterlockedDecrement",
+      "original_abi": "stdcall actual owner+04 LONG pointer stack; EAX updated count; RET4",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00ac024a",
+      "native": "actual-owner+current0",
+      "original_abi": "ECX captured actual owner with count zero; no stack arguments; RET; canonical retained-owner terminal dispatch",
+      "instruction": "call edx"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00ac024e",
+      "native": "00aa7220",
+      "original_abi": "ECX same Section base; RET",
+      "instruction": "call 0xaa7220"
+    },
+    {
+      "function": "00abf770",
+      "containing_range": [
+        "00abf770",
+        "00ac0272"
+      ],
+      "address": "00ac025e",
+      "native": "Section+vtable50",
+      "original_abi": "ECX same Section; pointer to its current color50 stack; RET4; D5C938",
+      "instruction": "call edx",
+      "resolved_native": "00aa6870"
+    },
+    {
+      "address": "00abe630",
+      "native": "00aa7170",
+      "function": "00abe630",
+      "kind": "tail_jump",
+      "binding": "Section current78 tail jump to existing base loaded78"
+    }
+  ],
+  "producer": {
+    "allocation_router": "00aa19b0",
+    "default_constructor": "00abf420",
+    "native_size": "0x12c",
+    "derived_tail_size": "0x40",
+    "native_type": 17,
+    "current_profile": "00d5c8e8",
+    "fields": {
+      "f4": "Value",
+      "f8": "StartAngle",
+      "fc": "TextureAngle",
+      "100": "U0",
+      "104": "U1",
+      "108": "RimWidthPercent",
+      "10c": "ClockWise BYTE",
+      "110": "TextureMode",
+      "114": "actual texture",
+      "118..124": "atlas UV",
+      "128": "constructor-unwritten segment count"
+    }
+  },
+  "corrections": [
+    {
+      "was": "ABE6E0 unnamed four-value widget property",
+      "is": "Section Value,StartAngle,U0,U1 setter",
+      "evidence": "ABF420 producer/type17/D5C8E8 and AC0280 descriptors"
+    },
+    {
+      "was": "Section current7C emission unavailable",
+      "is": "all three mapped-buffer writers and native publication implemented on canonical owner",
+      "evidence": "ABF770..AC0272 body, exact mapping slots and six-stage transcription"
+    }
+  ],
+  "numeric_stages": {
+    "native_range": [
+      "00abf8d6",
+      "00ac007e"
+    ],
+    "transcribed_instruction_count": 491,
+    "stage_count": 6,
+    "register_provenance": "EDI incoming ECX at ABF797; ESI stream0 at ABF8E7; EBX mesh+60 at ABF8DC, saved scratch+28 at ABF8EB; live tail/base aliases replace only native field addressing",
+    "scratch": "20 native temporary DWORDs ESP+10..5F; no widget value snapshot; actual logical map/unmap calls stay outside noexcept assembly stages"
+  },
+  "verification": {
+    "strict_msvc_win32_translation_unit": "passed /std:c++17 /EHsc /W4 /WX /fp:strict",
+    "numeric_fixture": "passed modes0/1/2 in both winding directions at fill.25; 18 segments; center/rim first positions; first triangle; white active vertices; x87 TOP/tag balanced",
+    "fixture_implementation": "exact extracted kernel and existing native_render_batch_keys.cpp; no replacement owner/render callbacks",
+    "report_calls": "passed: 36 direct call rows, 0 failed; 28 indirect rows separately evidenced by tables/imports/native setup",
+    "combined_repository_build": "passed MSVC Win32 Release; 2/2 existing tests; exact current numeric kernel rerun passed six cases",
+    "native_differential": false,
+    "full_owner_runtime": false,
+    "game_validated": false,
+    "binary_replacement_abi": false,
+    "full_repository_build": "passed in primary worktree"
+  },
+  "uncertainties": [
+    "AC0280 properties and ABF6F0 texture ownership explicitly unsupported",
+    "ABF5B0 copy and Section raw pool/deleting lifetime unsupported",
+    "host CRT fmod substitutes original CRT dispatch; no old-CRT exceptional/bit-level equivalence",
+    "successful live owner/storage/mapped extents and masked x87 domain only; original SEH/allocation failure behavior excluded",
+    "parent must bind type17 current5C timed dispatch, current50/54/4C/70 profile gates and CMake; no game/runtime claim"
+  ],
+  "parent_integration": {
+    "factory": "Section17 accepted by AA6560 child gate and GuiTypeDispatchServices requires real Section services",
+    "profiles": "D5C8E8 table proves inherited4C/50/54/5C/70; gates now accept Section17",
+    "timed": "same owner08 reloaded after current5C per ABE7C9, then actual Section setter/emitter",
+    "lifetime": "nested constructor/load/emitter permitted; retirement while active and setter reentry during emission rejected; exceptions mark failed state terminal",
+    "exception_limit": "no rollback/unmap continuation or retry; borrowed renderer/stream/material owners must survive callbacks"
+  },
+  "parent_validation": {
+    "build_log": "local/orch5-section-frame-point-final-build.log",
+    "build_log_sha256": "f8e9373ee8de71b75ea3368e94fb00def9769a4bade1830495a1c42535cdc9b0",
+    "fixture": {
+      "source": "local/section_kernel_probe.cpp",
+      "source_sha256": "69736e03f44983d625897f370f841fbec9b907c1cf34460b440b2744523f001b",
+      "log": "local/orch5-final-section-numeric-probe.log",
+      "log_sha256": "b89f691d4f1bebc76c8608eeb9b693f71348001996387152adc4cae8eff0a9fe",
+      "result": "passed",
+      "scope": "exact current staged numeric kernel; no full owner/renderer fixture"
+    },
+    "batch_report": "reports/orch5_section_frame_light_batch.json",
+    "game_validated": false,
+    "drop_in_abi_compatible": false
+  }
+}

@@ -2,6 +2,7 @@
 #include "bsp/gui_framebox.hpp"
 #include "bsp/gui_layer.hpp"
 #include "bsp/gui_widget_owner.hpp"
+#include "bsp/gui_section_runtime.hpp"
 
 namespace bsp {
 // Only the derived cGuiLayer fields. Base transform, tree, visibility propagation
@@ -96,6 +97,7 @@ struct GuiTypeDispatchServices {
     std::function<GuiIconRuntimeServices(GuiWidgetOwner&)> icon;
     std::function<GuiFrameBoxRuntimeServices(GuiWidgetOwner&)> framebox;
     std::function<GuiScreenLayerServices(GuiWidgetOwner&)> screen;
+    std::function<GuiSectionRuntimeServices(GuiWidgetOwner&)> section;
 };
 class GuiTypeDispatchFactory {
 public:

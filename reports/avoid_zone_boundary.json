@@ -1,0 +1,178 @@
+{
+  "packet": "orch6_avoid_zone_boundary",
+  "owner": "agent/orch6-avoid-geometry",
+  "date": "2026-09-12",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "read-only through verifying bsp.py wrappers; no mutations or saves",
+  "docs": [
+    "docs/AVOID_ZONE_BOUNDARY.md"
+  ],
+  "sources": [
+    "include/bsp/avoid_zone_boundary.hpp",
+    "src/avoid_zone_boundary.cpp"
+  ],
+  "routines": [
+    {
+      "address": "0041aea0",
+      "name": "BSP_AvoidZone_DistanceAndBoundaryDirection",
+      "reconstruction": "avoid_zone_distance_normal_0041aea0",
+      "abi": "ECX zone; stack point/slack/out_direction; ST0 distance; RET 0Ch",
+      "body_start": "0041aea0",
+      "body_end_inclusive": "0041b114",
+      "last_instruction": "0041b112",
+      "last_instruction_size": 3,
+      "body_size": 629,
+      "coverage": "complete through required callee bindings",
+      "unread_ranges": [],
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "0041b840",
+      "name": "BSP_AvoidZoneGroup_NearestBoundaryPoint",
+      "reconstruction": "avoid_zone_nearest_boundary_point_0041b840",
+      "abi": "ECX group; stack out/point/slack/push; EAX out; RET 10h",
+      "body_start": "0041b840",
+      "body_end_inclusive": "0041b959",
+      "last_instruction": "0041b957",
+      "last_instruction_size": 3,
+      "body_size": 282,
+      "coverage": "complete through required callee bindings",
+      "unread_ranges": [],
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0041af62",
+      "native": "00416b50",
+      "function": "0041aea0",
+      "contract": "Containment AL, unexpanded half-open bounds then odd ray crossings; callee body and assembly read whole"
+    },
+    {
+      "address": "0041af87",
+      "native": "00416f30",
+      "function": "0041aea0",
+      "contract": "Point, out point, out edge16, out endpoint byte, push=1; RET14h; body and assembly read whole. Closest clamped edge projection plus interpolated vertex offsets. Required external binding; named by address"
+    },
+    {
+      "address": "0041afbd",
+      "native": "00419260",
+      "function": "0041aea0",
+      "contract": "Reciprocal length of projected_point-query; exactly zero length returns0; body and assembly read whole; existing native_vector2_math implementation"
+    },
+    {
+      "address": "0041b069",
+      "native": "00419ab0",
+      "function": "0041aea0",
+      "contract": "ECX previous, EDX current, stack query; RET4, ST0 segment distance; body and assembly read whole. Native cutoff/segment-parameter details remain external"
+    },
+    {
+      "address": "0041b096",
+      "native": "004f4b50",
+      "function": "0041aea0",
+      "contract": "ECX segment, stack output/query; RET8, EAX output; body and assembly read whole. Clamps 004F3630 parameter and interpolates"
+    },
+    {
+      "address": "0041b0bc",
+      "native": "00419260",
+      "function": "0041aea0",
+      "contract": "Reciprocal length of query-closest; exactly zero length returns0; same generic delta contract as inside site"
+    },
+    {
+      "address": "0041b893",
+      "native": "0041aea0",
+      "function": "0041b840",
+      "contract": "Each zone receives original point, unchanged slack, local output direction; reconstructed kernel"
+    }
+  ],
+  "caller_sites": [
+    {
+      "address": "0041b5d0",
+      "native": "0041aea0",
+      "function": "0041b580",
+      "contract": "Point/slack/output direction; assembly argument setup read at 0041B580-0041B5D5. Consumer beyond setup remains external"
+    },
+    {
+      "address": "0041b893",
+      "native": "0041aea0",
+      "function": "0041b840",
+      "contract": "Point/slack/output direction; complete owned wrapper"
+    },
+    {
+      "address": "007abca8",
+      "native": "0041b840",
+      "function": "007abb30",
+      "contract": "Output/point, slack800, push80+3*(unsigned owner word174h modulo23); argument setup 007ABC31-007ABCAD"
+    },
+    {
+      "address": "009e38a2",
+      "native": "0041b840",
+      "function": "009e3780",
+      "contract": "Output/point, slack100000, push1; argument setup 009E3880-009E38A7"
+    }
+  ],
+  "producer_evidence": [
+    "0041CCD0 inspected for relevant stores, not reconstructed: 0041CD43/48 initialize zone+14/+18 from X/Z and 0041CD73/78 initialize +1C/+20; 0041CFB6 passes zone+14 to 00415010 at 0041CFB9. Existing IncludePoint body confirms minX,minZ,maxX,maxZ order.",
+    "0041A200 pseudocode read whole and relevant assembly filtered; producer worker independently confirmed outgoing unit at vertex+8/+C, length+18, normalized summed right-normal at+10/+14. Producer reconstruction and winding repair belong to lateral-record worker.",
+    "No native overlay or new low-level vector type added. Semantic std::array<float,2> data reuse follows existing planner interfaces; borrowed vertex snapshot must preserve order and remain stable."
+  ],
+  "corrections": [
+    {
+      "was": "Planner report coverage lists 0041AEA0 as return-contract-only; describes an outward unit normal without inside offset detail",
+      "is": "All owned body branches read and reconstructed. Inside direction normalizes the push1 offset-boundary point minus query; outside direction normalizes query minus closest. Zero direction remains possible",
+      "evidence": "0041AF6F-0041AFED versus 0041B096-0041B0E5; 00416F30 body reads interpolated vertex+10/+14 offsets"
+    },
+    {
+      "was": "Positive push can be read as an outward clearance margin",
+      "is": "For outside points the wrapper subtracts outward direction times distance+push, crossing the selected boundary toward the interior; it does not guarantee final containment for large pushes",
+      "evidence": "0041B8BA FADD push then 0041B8E4 and 0041B8EF FSUB offsets; square fixture yields (12,5)->(9,5)"
+    },
+    {
+      "was": "Planner note gives body end0041B957",
+      "is": "0041B957 is the start of RET10h, inclusive final byte0041B959",
+      "evidence": "live proto and complete listing; return length3"
+    }
+  ],
+  "verification": {
+    "checklist": "docs/WORKER_VERIFICATION_CHECKLIST.md read once; all ten rules addressed",
+    "callee_before_contract": "All direct callees read whole from pseudocode and assembly; transitive library/math behavior not ported or silently replaced",
+    "boundary_before_attribution": "Live proto on all 10 unique call sites confirms owning body; report checker run required",
+    "all_call_sites": "Live xrefs reports both callers of each owned function; both argument setups read. Every host invocation in the owned kernel appears above",
+    "producer_before_layout": "Producer store evidence above; no new native record layout",
+    "partial_coverage": "Neither owned body partial. Producer/caller context inspection and unimplemented external callees explicitly separate",
+    "runtime_evidence": "No executable wiring: game_hosts_ship_ai.cpp zone_group_for_layer returns0; nearest_zone_boundary logs then returns point. No frame-causation claim or game runtime test",
+    "argument_count": "Owned RET0Ch/RET10h confirms3/4 stack args; 00416F30 RET14h confirms all5 args including ignored edge/endpoint outputs; 00419AB0 RET4 and 004F4B50 RET8 establish hidden register endpoint inputs",
+    "register_provenance": "Whole owned listings filtered for ECX/EBX/ESI/EDI/EBP. Kernel EDI=zone, EBX=query, ESI=normal, EBP=vertex iterator; ECX remains zone at first call, restored0041AF85 then assigned to required locals. Wrapper EBX=query, EDI=group, ESI=zone iterator; reused stack args read as scratch only after spill",
+    "lease_scope": "Only0041AEA0/0041B840 and four new module files claimed; external callees read only; no Ghidra mutation",
+    "report_call_check": "PASS: 11 call rows checked, 0 failed",
+    "build_and_existing_tests": "PASS: ./scripts/build.ps1; 100% tests passed, 0 tests failed out of 1; log local/avoid_zone_boundary_build.log",
+    "fixture": {
+      "source": "local/avoid_zone_boundary_probe.cpp",
+      "command": "./local/run_avoid_zone_boundary_probe.ps1",
+      "worktree": "J:/PROG/battlestations-pacific-decompile-orch6-avoid-geometry",
+      "compile": "cl /nologo /std:c++17 /W4 /WX /fp:strict /EHsc /Iinclude src/avoid_zone_boundary.cpp local/avoid_zone_boundary_probe.cpp /Fe:local/avoid_zone_boundary_probe.exe /Fo:local/ /link /MANIFEST:EMBED",
+      "result": "PASS: point(12,5), square[0,10], slack5, push1 -> (9,5); expanded maxX=15 rejects, clears normal, calls no host, preserves point",
+      "scope": "One synthetic-host fixture; not original-byte differential or installed-game proof. First-tie policy inspected in assembly, not independently executed"
+    }
+  },
+  "no_ghidra_function": [],
+  "limitations": [
+    "Semantic borrowed snapshots and required external callee bindings, no native ABI or storage adapter",
+    "Float operation stages retained; bitwise x87, native exceptions, aliasing and malformed polygon behavior unvalidated",
+    "No Ghidra writes, installed-game modifications, or executable wiring",
+    "004F3630 and transitive cutoff/CRT math behavior remain outside this packet"
+  ],
+  "follow_up_packets": [
+    {
+      "packet": "avoid_zone_boundary_bindings",
+      "work": "Bind real callees and native storage, reuse native_vector2_math, then differential-check original bodies"
+    },
+    {
+      "packet": "existing_avoid_zone_polygon_producer",
+      "work": "Coordinate ownership of00416F30/00419AB0/004F4B50 and their primitives; preserve producer winding and corner offsets"
+    }
+  ]
+}

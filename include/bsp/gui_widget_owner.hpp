@@ -1,6 +1,7 @@
 #pragma once
 #include "bsp/gui_layout_loader.hpp"
 #include "bsp/gui_widget_scene.hpp"
+#include "bsp/gui_widget_base_lifetime.hpp"
 #include "bsp/native_model_owner.hpp"
 #include <functional>
 #include <unordered_map>
@@ -12,6 +13,7 @@ class GuiTextLifetime;
 class GuiTextChildDeletion;
 class GuiTimedEntryOwner;
 class GuiWidgetClipRefreshOperation;
+class GuiWidgetFrameRuntime;
 struct GuiWidgetClipRefreshServices;
 
 // Derived companions operate on the owner's SAME layout/transform. Factory
@@ -47,6 +49,9 @@ public:
     // primary unlink. Text supplies the live descriptor predicate and AB73B0.
     // Existing supported profiles own no secondary scene nodes.
     virtual void release_secondary_scene_nodes(GuiWidgetOwner&) {}
+    // Host lifetime metadata, not a native virtual slot. Active resource
+    // operations must keep this companion and its actual scene owners alive.
+    virtual bool has_active_operation() const noexcept { return false; }
 };
 using GuiWidgetImplementationFactory = std::function<
     std::unique_ptr<GuiWidgetTypeImplementation>(GuiWidgetOwner&)>;
@@ -99,6 +104,7 @@ public:
     GuiTextLifetime* text_lifetime() noexcept { return text_lifetime_; }
     GuiWidgetTypeImplementation& implementation();
     GuiWidgetOwnerRuntime& runtime() noexcept { return runtime_; }
+    const GuiWidgetBaseLifetimeState& base_lifetime_state() const noexcept { return base_lifetime_; }
     GuiTimedEntryOwner& timed_entries(const volatile float& one_00d7a24c);
     void require_timed_entry_ownership() const;
     void retire_timed_entries_00aa9730_fragment();
@@ -121,10 +127,14 @@ public:
     void refresh_clip70();
     void set_position_00aa7dc0(const GuiWidgetPoint&);
     void release_scene_nodes_00aa8320();
+    // Requires an actual frame runtime registered in this same owner domain.
+    void update40(float seconds);
 private:
     friend class GuiWidgetOwnerRuntime;
     friend class GuiTextLifetime;
     friend class GuiTextChildDeletion;
+    friend class GuiWidgetFrameRuntime;
+    friend void destroy_gui_widget_base_00aa9730(GuiWidgetOwner&, GuiTextChildDeletion&);
     GuiWidgetOwner(GuiLayoutWidget&, GuiWidgetOwnerRuntime&);
     GuiLayoutWidget& layout_;
     GuiWidgetOwnerRuntime& runtime_;
@@ -136,6 +146,8 @@ private:
     std::unique_ptr<GuiTimedEntryOwner> timed_entries_;
     std::unique_ptr<GuiWidgetClipRefreshOperation> base_clip_;
     GuiWidgetClipRefreshServices* base_clip_services_{};
+    GuiWidgetBaseLifetimeState base_lifetime_;
+    bool scene_release_active_{};
 };
 
 // Lifetime associations only. GUI storage is owned by GuiLayoutPage; native
@@ -193,10 +205,15 @@ public:
 private:
     friend class GuiWidgetOwner;
     friend class GuiTextChildDeletion;
+    friend class GuiWidgetFrameRuntime;
+    friend void destroy_gui_widget_base_00aa9730(GuiWidgetOwner&, GuiTextChildDeletion&);
     struct ModelRecord;
     GuiWidgetOwnerEnvironment environment_;
     std::unordered_map<GuiLayoutWidget*, std::unique_ptr<GuiWidgetOwner>> widgets_;
     std::unordered_map<void*, std::unique_ptr<ModelRecord>> models_;
+    GuiWidgetFrameRuntime* frame_runtime_{}; // borrowed, registered for its live lifetime
+    void bind_frame_runtime(GuiWidgetFrameRuntime&);
+    void unbind_frame_runtime(GuiWidgetFrameRuntime&) noexcept;
     GuiWidgetOwner& construct_base(GuiLayoutWidget&);
     NativeNodeBinding* create_model(const std::string&,
         NativeNodeBinding** publication_before_name_release = nullptr);

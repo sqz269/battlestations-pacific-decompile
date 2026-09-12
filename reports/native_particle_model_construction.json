@@ -1132,5 +1132,106 @@
     ],
     "actual_names": "required identity with access.parameters.parameter_names",
     "full_constructor_execution": false
+  },
+  "integration_am": {
+    "concrete_callees": [
+      "00af40e0",
+      "00af9f50",
+      "00af10a0",
+      "00af10b0",
+      "00af1120",
+      "00af10f0",
+      "00b0d130",
+      "00b0d140",
+      "00b4cb10",
+      "00b4d170",
+      "007099c0",
+      "00afd130",
+      "00afd220",
+      "00afcd90",
+      "00afdac0"
+    ],
+    "remaining_boundaries": [
+      "actual member virtual14/0C",
+      "canonical mesh/material/section/derived-profile bindings",
+      "renderer current virtual5C stream factory",
+      "canonical random range BD2F10"
+    ],
+    "full_constructor_execution": false,
+    "full_build": "passed standard scripts/build.ps1 strict MSVC Win32 and both seeded CTests",
+    "tested_source_commit": "43c83a7deb1af1a030c1f1d755aad0ab297b6bdc",
+    "build_log": "local/am-first-combined-build.log",
+    "combined_library_sha256": "b5aee7ed0e30c940c912e27f0fc02fb27e7b208c8f4003bcf45044fcb5ea4f3b",
+    "source_hashes": {
+      "include/bsp/native_particle_model_construction.hpp": "7f5bd53cb3fed8ecdc0bdf678f766105e082bdef949d79cb5f3c4a40ab8721e8",
+      "src/native_particle_model_construction.cpp": "1081e0cdf6470efa389ac8f1abf96863c02ad66f2caa9a6e7ac01adeea89bccc"
+    },
+    "call_reports": "200 direct CALL rows across8 reports,0failed; indirect/tail boundaries retain manual/native-fixture coverage limits",
+    "saved_analysis": "saved and read back;41 name/evidence rows,33 native signatures,43 refreshed exports",
+    "fixture": "helpers tested separately; fullAF74A0 execution unvalidated",
+    "original_exception_and_gameplay": false
+  },
+  "ghidra_annotation_audit_am": {
+    "attempt_records": [
+      "local/ghidra-annotations-20260912T174341Z.json",
+      "local/ghidra-annotations-20260912T174629Z.json"
+    ],
+    "earliest_preimages_preserved": true,
+    "old_comments_preserved": true,
+    "project_saved": true,
+    "readback_verified": true,
+    "changes": [
+      {
+        "address": "00af74a0",
+        "before": {
+          "address": "00af74a0",
+          "function_name": "BSP_NativeParticleModel_Construct",
+          "comment": "[BSP reconstruction 00af74a0]\n AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete through required real application callees; ECX raw2DCh, stack selected variant, EAX same, RET4 atAF7F2F len3. See docs/NATIVE_PARTICLE_MODEL_CONSTRUCTION.md and reports/native_particle_model_construction.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "after": {
+          "address": "00af74a0",
+          "name": "BSP_NativeParticleModel_Construct",
+          "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete through required real application callees; ECX raw2DCh, stack selected variant, EAX same, RET4 atAF7F2F len3. See docs/NATIVE_PARTICLE_MODEL_CONSTRUCTION.md and reports/native_particle_model_construction.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated. | Provisional descriptive hypothesis, not a recovered symbol. AM source integration correction. Direct recovered preparation/resource/shadow/hierarchy and cookie-array helpers replace outer call bindings; actual virtual member/renderer/random/canonical ownership services remain required. See reports/native_particle_model_construction.json. No full application/native exception/gameplay claim."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afd2e0",
+        "before": {
+          "address": "00afd2e0",
+          "function_name": "BSP_NativeParticleModelArrays_Construct",
+          "comment": "[BSP reconstruction 00afd2e0]\n AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete through required real array element constructors and destructors; ECX raw18h, stack model then signed count, EAX same, RET8 atAFD363 len3. See docs/NATIVE_PARTICLE_MODEL_CONSTRUCTION.md and reports/native_particle_model_construction.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "after": {
+          "address": "00afd2e0",
+          "name": "BSP_NativeParticleModelArrays_Construct",
+          "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete through required real array element constructors and destructors; ECX raw18h, stack model then signed count, EAX same, RET8 atAFD363 len3. See docs/NATIVE_PARTICLE_MODEL_CONSTRUCTION.md and reports/native_particle_model_construction.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated. | Provisional descriptive hypothesis, not a recovered symbol. AM source integration correction. Direct recovered AFD130/AFD220 use same actual byte/record cookie arrays and current one-bit pattern; sparse initialization and reverse unwind preserved. See reports/native_particle_model_construction.json. No full application/native exception/gameplay claim."
+        },
+        "status": "applied"
+      }
+    ]
+  },
+  "ghidra_signature_audit_am": {
+    "project_saved": true,
+    "readback_verified": true,
+    "before": {},
+    "changes": []
+  },
+  "final_merged_validation_am": {
+    "tested_commit": "98b5bc67287460ad1e15f36f388cc013bb753fcb",
+    "build": "local/am-final-combined-build.log: standard scripts/build.ps1 strict Win32 and both existing seeded CTests passed",
+    "fixtures": [
+      "am-fixture-preparation.log",
+      "am-fixture-arrays.log",
+      "am-fixture-record-update.log",
+      "am-fixture-emitter-update.log",
+      "am-fixture-spawn.log",
+      "am-fixture-record-children.log",
+      "am-fixture-model-composition.log"
+    ],
+    "reviewed_source_commit": "cc993c1dc7768a79abfe1cb820670ab527f09b04",
+    "all16_owned_source_header_hashes_preserved": true,
+    "library_sha256": "0dc405a61fadfc8d09ff86522dae3e54359944191221c35627ebc08567b5c67d",
+    "full_application_native_EH_and_gameplay": false
   }
 }

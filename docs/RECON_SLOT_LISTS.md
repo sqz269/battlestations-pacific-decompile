@@ -367,3 +367,9 @@ None. Every routine named in this document has a Ghidra function.
 - **Was:** entry +0Ch is a clamp the gain is reduced against
   **Is:** it is one of exactly three values derived from the script's MaxLevel: 0 -> 0.0f, 1 -> 0.25f, 2 (the default) -> 1.0f, which are the published-level thresholds
   **Evidence:** 0080865A PUSH 2 into 00B66380, then 0080866B-00808685 with 00CE3868 and 00D7A24C
+
+## Correction from docs/GAMEPLAY_LOOSE_ENDS_1.md (packet cc2_gameplay_loose_ends_1)
+
+- **Was:** The world list step 4 resets is read but not identified; which units are on it is unread.
+  **Is:** It is the class-id-24 list and its members are plane squadrons, not units. Step 4 therefore resets one detection record per squadron, and 00807480's LEA ECX,[ECX + EAX*0x34 + 0x1E8] indexes a squadron's record block.
+  **Evidence:** The same arithmetic and insert as the docs/SENSOR_TABLES.md correction above. 006FE620 BSP_UnitInstance_RegisterInWorldLists, the unit's implementation of the same +130h virtual at 00CFC3D0+130h, joins ids 2, 4, 5, 6 and 7 only (ADD ECX,0x30/0x48/0x54/0x60/0x6C), never id 24.

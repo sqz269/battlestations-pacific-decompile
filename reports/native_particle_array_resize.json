@@ -1,0 +1,769 @@
+{
+  "packet": "orch3_particle_arrays_am",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ghidra_read_only": true,
+  "functions": [
+    {
+      "address": "00afd130",
+      "end_exclusive": "00afd1cf",
+      "inclusive_end": "00afd1ce",
+      "final_instruction_address": "00afd1cc",
+      "final_instruction_length": 3,
+      "length": 159,
+      "sha256": "1a82bcd4248e5d19fa0ea872dfd7f9eac95d670e88cea53d5e45b6704b712050",
+      "live_disk_equal": true,
+      "live_prototype": "00afd130 CG_vector_deleting_dtor_00afd130  undefined CG_vector_deleting_dtor_00afd130(void)  body 00afd130 - 00afd1ce",
+      "xrefs": [
+        "From 00afd329 in BSP_NativeParticleModelArrays_Construct [UNCONDITIONAL_CALL]"
+      ],
+      "cpp_symbol": "resize_native_particle_model_byte_array_00afd130",
+      "source": "src/native_particle_array_resize.cpp",
+      "header": "include/bsp/native_particle_array_resize.hpp",
+      "original_abi": "ECX actual8h byte header; stack signed count; RET4",
+      "original_abi_compatible": false,
+      "coverage": "complete for valid native cookie-backed storage",
+      "ghidra_name": "BSP_NativeParticleModelBytes_Resize",
+      "descriptive_name_is_hypothesis": true,
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_NativeParticleModelBytes_Resize(int count)",
+      "evidence": "AM review: descriptive hypothesis, not recovered symbol. Complete installed/live bytes and final RET verified; new C++ source ABI. Actual cookie storage, sparse108h initialization, allocation publication/failure ordering and raw MOVSS constant preserved. See docs/NATIVE_PARTICLE_ARRAY_RESIZE.md and reports/native_particle_array_resize.json. Original FH3 exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual8h byte header; stack signed count; RET4. Complete live/installed span and final instruction verified. See reports/native_particle_array_resize.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
+      "end_inclusive": "00afd1ce"
+    },
+    {
+      "address": "00afd220",
+      "end_exclusive": "00afd2d5",
+      "inclusive_end": "00afd2d4",
+      "final_instruction_address": "00afd2d2",
+      "final_instruction_length": 3,
+      "length": 181,
+      "sha256": "a583af4ccb774443a13fe8868f73ecf757662a23847d1f07856d0017d4d28edb",
+      "live_disk_equal": true,
+      "live_prototype": "00afd220 CG_vector_deleting_dtor_00afd220  undefined CG_vector_deleting_dtor_00afd220(void)  body 00afd220 - 00afd2d4",
+      "xrefs": [
+        "From 00afd331 in BSP_NativeParticleModelArrays_Construct [UNCONDITIONAL_CALL]"
+      ],
+      "cpp_symbol": "resize_native_particle_model_record_array_00afd220",
+      "source": "src/native_particle_array_resize.cpp",
+      "header": "include/bsp/native_particle_array_resize.hpp",
+      "original_abi": "ECX actual8h record header; stack signed count; RET4",
+      "original_abi_compatible": false,
+      "coverage": "complete for valid native cookie-backed storage",
+      "ghidra_name": "BSP_NativeParticleModelRecords_Resize",
+      "descriptive_name_is_hypothesis": true,
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_NativeParticleModelRecords_Resize(int count)",
+      "evidence": "AM review: descriptive hypothesis, not recovered symbol. Complete installed/live bytes and final RET verified; new C++ source ABI. Actual cookie storage, sparse108h initialization, allocation publication/failure ordering and raw MOVSS constant preserved. See docs/NATIVE_PARTICLE_ARRAY_RESIZE.md and reports/native_particle_array_resize.json. Original FH3 exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual8h record header; stack signed count; RET4. Complete live/installed span and final instruction verified. See reports/native_particle_array_resize.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
+      "end_inclusive": "00afd2d4"
+    },
+    {
+      "address": "00afcd90",
+      "end_exclusive": "00afcd96",
+      "inclusive_end": "00afcd95",
+      "final_instruction_address": "00afcd95",
+      "final_instruction_length": 1,
+      "length": 6,
+      "sha256": "643a9b227f3b8bc93142e908d080e8b01a97ebcffea9da65e5062be083708e0e",
+      "live_disk_equal": true,
+      "live_prototype": "00afcd90 FUN_00afcd90  undefined FUN_00afcd90(void)  body 00afcd90 - 00afcd95",
+      "xrefs": [
+        "From 00afd19d in CG_vector_deleting_dtor_00afd130 [DATA]"
+      ],
+      "cpp_symbol": "construct_native_particle_array_byte_00afcd90",
+      "source": "src/native_particle_array_resize.cpp",
+      "header": "include/bsp/native_particle_array_resize.hpp",
+      "original_abi": "ECX actual byte; EAX same pointer; RET",
+      "original_abi_compatible": false,
+      "coverage": "complete for valid native cookie-backed storage",
+      "ghidra_name": "BSP_NativeParticleArrayByte_Construct",
+      "descriptive_name_is_hypothesis": true,
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_NativeParticleArrayByte_Construct(void)",
+      "evidence": "AM review: descriptive hypothesis, not recovered symbol. Complete installed/live bytes and final RET verified; new C++ source ABI. Actual cookie storage, sparse108h initialization, allocation publication/failure ordering and raw MOVSS constant preserved. See docs/NATIVE_PARTICLE_ARRAY_RESIZE.md and reports/native_particle_array_resize.json. Original FH3 exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual byte; EAX same pointer; RET. Complete live/installed span and final instruction verified. See reports/native_particle_array_resize.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
+      "end_inclusive": "00afcd95"
+    },
+    {
+      "address": "00afdac0",
+      "end_exclusive": "00afdae1",
+      "inclusive_end": "00afdae0",
+      "final_instruction_address": "00afdae0",
+      "final_instruction_length": 1,
+      "length": 33,
+      "sha256": "543bbe8fd9cfc218a5f56710f98dafd8c388bb326e7a0b29d4f8ffcde1a30e27",
+      "live_disk_equal": true,
+      "live_prototype": "00afdac0 FUN_00afdac0  undefined FUN_00afdac0(void)  body 00afdac0 - 00afdae0",
+      "xrefs": [
+        "From 00afd2a0 in CG_vector_deleting_dtor_00afd220 [DATA]"
+      ],
+      "cpp_symbol": "construct_native_particle_record_00afdac0",
+      "source": "src/native_particle_array_resize.cpp",
+      "header": "include/bsp/native_particle_array_resize.hpp",
+      "original_abi": "ECX actual108h record; EAX same pointer; RET",
+      "original_abi_compatible": false,
+      "coverage": "complete for valid native cookie-backed storage",
+      "ghidra_name": "BSP_NativeParticleRecord_Construct",
+      "descriptive_name_is_hypothesis": true,
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_NativeParticleRecord_Construct(void)",
+      "evidence": "AM review: descriptive hypothesis, not recovered symbol. Complete installed/live bytes and final RET verified; new C++ source ABI. Actual cookie storage, sparse108h initialization, allocation publication/failure ordering and raw MOVSS constant preserved. See docs/NATIVE_PARTICLE_ARRAY_RESIZE.md and reports/native_particle_array_resize.json. Original FH3 exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual108h record; EAX same pointer; RET. Complete live/installed span and final instruction verified. See reports/native_particle_array_resize.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
+      "end_inclusive": "00afdae0"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00afd15f",
+      "native": "00bf7c6e",
+      "function": "00afd130",
+      "stack_cleanup": "four stack words; RET10h",
+      "contract": "read: see docs/NATIVE_PARTICLE_ARRAY_RESIZE.md"
+    },
+    {
+      "address": "00afd165",
+      "native": "00bf6989",
+      "function": "00afd130",
+      "stack_cleanup": "one stack word; ADD ESP4 atAFD16A",
+      "contract": "read: see docs/NATIVE_PARTICLE_ARRAY_RESIZE.md"
+    },
+    {
+      "address": "00afd180",
+      "native": "00bf55be",
+      "function": "00afd130",
+      "stack_cleanup": "one stack word; ADD ESP4 atAFD185",
+      "contract": "read: see docs/NATIVE_PARTICLE_ARRAY_RESIZE.md"
+    },
+    {
+      "address": "00afd1ab",
+      "native": "00bf7cd1",
+      "function": "00afd130",
+      "stack_cleanup": "five stack words; RET14h",
+      "contract": "read: see docs/NATIVE_PARTICLE_ARRAY_RESIZE.md"
+    },
+    {
+      "address": "00afd252",
+      "native": "00bf7c6e",
+      "function": "00afd220",
+      "stack_cleanup": "four stack words; RET10h",
+      "contract": "read: see docs/NATIVE_PARTICLE_ARRAY_RESIZE.md"
+    },
+    {
+      "address": "00afd258",
+      "native": "00bf6989",
+      "function": "00afd220",
+      "stack_cleanup": "one stack word; ADD ESP4 atAFD25D",
+      "contract": "read: see docs/NATIVE_PARTICLE_ARRAY_RESIZE.md"
+    },
+    {
+      "address": "00afd283",
+      "native": "00bf55be",
+      "function": "00afd220",
+      "stack_cleanup": "one stack word; ADD ESP4 atAFD288",
+      "contract": "read: see docs/NATIVE_PARTICLE_ARRAY_RESIZE.md"
+    },
+    {
+      "address": "00afd2b1",
+      "native": "00bf7cd1",
+      "function": "00afd220",
+      "stack_cleanup": "five stack words; RET14h",
+      "contract": "read: see docs/NATIVE_PARTICLE_ARRAY_RESIZE.md"
+    }
+  ],
+  "names_are_descriptive_hypotheses": true,
+  "original_abi_compatible": false,
+  "game_validated": false,
+  "unwind_evidence": [
+    {
+      "entry": "00cbb1b0",
+      "inclusive_end": "00cbb1ba",
+      "final_instruction_address": "00cbb1ba",
+      "final_instruction_length": 1,
+      "sha256": "07c5a6b818ba8592010d957756528478c50782dfe4bdd73d80a875683b380f40",
+      "live_disk_equal": true,
+      "live_prototype": "00cbb1b0 Unwind@00cbb1b0  undefined Unwind@00cbb1b0(void)  body 00cbb1b0 - 00cbb1b8",
+      "ownership": "unowned evidence only; primary coordinates definitions"
+    },
+    {
+      "entry": "00cbb1bb",
+      "inclusive_end": "00cbb1c4",
+      "final_instruction_address": "00cbb1c0",
+      "final_instruction_length": 5,
+      "sha256": "95e2d18363f6bb9973ff8193c403ac603073abf39f50a672e0afc9e36b4790d6",
+      "live_disk_equal": true,
+      "live_prototype": "00cbb1bb ?  ?  body ?",
+      "ownership": "unowned evidence only; primary coordinates definitions"
+    },
+    {
+      "entry": "00cbb1d0",
+      "inclusive_end": "00cbb1da",
+      "final_instruction_address": "00cbb1da",
+      "final_instruction_length": 1,
+      "sha256": "c9b638dbe4477be12626c14dfdace90a33bff1f77d56611d6e444120318694c6",
+      "live_disk_equal": true,
+      "live_prototype": "00cbb1d0 Unwind@00cbb1d0  undefined Unwind@00cbb1d0(void)  body 00cbb1d0 - 00cbb1d8",
+      "ownership": "unowned evidence only; primary coordinates definitions"
+    },
+    {
+      "entry": "00cbb1db",
+      "inclusive_end": "00cbb1e4",
+      "final_instruction_address": "00cbb1e0",
+      "final_instruction_length": 5,
+      "sha256": "6973bb8dd236f28e7529d2565de037e50ff274dcd5fed0b6476a3ad2ead25088",
+      "live_disk_equal": true,
+      "live_prototype": "00cbb1db ?  ?  body ?",
+      "ownership": "unowned evidence only; primary coordinates definitions"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Array resize remained a required host callback; record constructor was unresolved",
+      "is": "Concrete actual cookie allocations with complete byte and108h element constructors",
+      "evidence": "AFD130/220 allocate after freeing; AFCD90 writes one zero byte; AFDAC0 captures D7A24C raw bits, writes A4=0/A0=0/B4=bits"
+    },
+    {
+      "was": "CG_vector_deleting_dtor names suggest deletion wrappers",
+      "is": "Destructive resize replacing all elements; zero count allocates a4h cookie",
+      "evidence": "Unconditional BF55BE after old free; count published atAFD1BC/AFD2C2"
+    }
+  ],
+  "validation": {
+    "strict_production_win32_compile": "passed /std:c++20 /EHsc /MD /W4 /WX /O2 /Gy /fp:strict /permissive-",
+    "call_report_verifier": {
+      "checked": 8,
+      "failed": 0
+    },
+    "focused_fixture": {
+      "original_byte_comparisons": 31,
+      "source_allocation_throw_checks": 2,
+      "assertions": 160,
+      "result": "PASS",
+      "local_artifacts": "C:/Users/sqz269/bsp-am-arrays",
+      "native_boundaries_redirected": [
+        "BF55BE real malloc fixture with size recording/null injection",
+        "BF6989 real free fixture with event recording",
+        "BF7CD1 signed construction iterator fixture invoking relocated original leaves",
+        "BF7C6E reverse destruction iterator fixture invoking literal-RET leaf"
+      ],
+      "source_boundaries_instrumented": [
+        "canonical singleton allocation/free names redirected only in local probe compilation",
+        "canonical AFD0F0/AFD1E0 unchanged source compiled into probe"
+      ],
+      "native_fh3_exception_execution": false
+    },
+    "full_repository_build": "deferred to primary combined build",
+    "full_model_constructor_execution": false,
+    "gameplay": false
+  },
+  "storage_contract": {
+    "existing_type": "NativeParticleArrayStorage from native_particle_model_construction.hpp",
+    "source_producer": "00AFD2E0",
+    "record_stride": "108h",
+    "cookie_bytes": 4,
+    "old_count_source": "signed DWORD at data-4, not descriptor count04",
+    "record_writes_in_order": [
+      "A4=0",
+      "A0=0",
+      "B4=captured current D7A24C raw bits"
+    ],
+    "untouched_record_bytes": 252,
+    "allocation_failure": "old data freed, original header remains stale",
+    "zero_count": "allocates4h cookie",
+    "size_overflow": "unsigned saturation toFFFFFFFF",
+    "existing_cookie_domain": "actual valid allocated spans and nonnegative signed old cookie counts"
+  },
+  "integration_am": {
+    "source_review": "complete; preparation/constructor additionally independently reviewed",
+    "saved_analysis": "saved and read back;41 name/evidence rows,33 native signatures,43 refreshed exports",
+    "full_build": "passed standard scripts/build.ps1 strict MSVC Win32 and both seeded CTests",
+    "gameplay": false,
+    "tested_source_commit": "43c83a7deb1af1a030c1f1d755aad0ab297b6bdc",
+    "build_log": "local/am-first-combined-build.log",
+    "combined_library_sha256": "b5aee7ed0e30c940c912e27f0fc02fb27e7b208c8f4003bcf45044fcb5ea4f3b",
+    "source_hashes": {
+      "include/bsp/native_particle_array_resize.hpp": "ece2c14087be5d247e7189e127b67fa3da5252efa123ae1a0adf0a599de9921f",
+      "src/native_particle_array_resize.cpp": "c83783ea5d88cfb8b7d1474fbfd0aae3e59f9d1bf035a099a2b9a29c0be0ce19"
+    },
+    "call_reports": "200 direct CALL rows across8 reports,0failed; indirect/tail boundaries retain manual/native-fixture coverage limits",
+    "fixture": "local/am-fixture-arrays.log",
+    "original_exception_and_gameplay": false
+  },
+  "status": "reconstructed_strict_win32_build_tested_bounded_fixture_tested_saved_analysis_verified",
+  "ghidra_annotation_audit_am": {
+    "attempt_records": [
+      "local/ghidra-annotations-20260912T174341Z.json",
+      "local/ghidra-annotations-20260912T174629Z.json"
+    ],
+    "earliest_preimages_preserved": true,
+    "old_comments_preserved": true,
+    "project_saved": true,
+    "readback_verified": true,
+    "changes": [
+      {
+        "address": "00afcd90",
+        "before": {
+          "address": "00afcd90",
+          "function_name": "FUN_00afcd90"
+        },
+        "after": {
+          "address": "00afcd90",
+          "name": "BSP_NativeParticleArrayByte_Construct",
+          "evidence": "AM review: descriptive hypothesis, not recovered symbol. Complete installed/live bytes and final RET verified; new C++ source ABI. Actual cookie storage, sparse108h initialization, allocation publication/failure ordering and raw MOVSS constant preserved. See docs/NATIVE_PARTICLE_ARRAY_RESIZE.md and reports/native_particle_array_resize.json. Original FH3 exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual byte; EAX same pointer; RET. Complete live/installed span and final instruction verified. See reports/native_particle_array_resize.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afd130",
+        "before": {
+          "address": "00afd130",
+          "function_name": "CG_vector_deleting_dtor_00afd130"
+        },
+        "after": {
+          "address": "00afd130",
+          "name": "BSP_NativeParticleModelBytes_Resize",
+          "evidence": "AM review: descriptive hypothesis, not recovered symbol. Complete installed/live bytes and final RET verified; new C++ source ABI. Actual cookie storage, sparse108h initialization, allocation publication/failure ordering and raw MOVSS constant preserved. See docs/NATIVE_PARTICLE_ARRAY_RESIZE.md and reports/native_particle_array_resize.json. Original FH3 exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual8h byte header; stack signed count; RET4. Complete live/installed span and final instruction verified. See reports/native_particle_array_resize.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afd220",
+        "before": {
+          "address": "00afd220",
+          "function_name": "CG_vector_deleting_dtor_00afd220"
+        },
+        "after": {
+          "address": "00afd220",
+          "name": "BSP_NativeParticleModelRecords_Resize",
+          "evidence": "AM review: descriptive hypothesis, not recovered symbol. Complete installed/live bytes and final RET verified; new C++ source ABI. Actual cookie storage, sparse108h initialization, allocation publication/failure ordering and raw MOVSS constant preserved. See docs/NATIVE_PARTICLE_ARRAY_RESIZE.md and reports/native_particle_array_resize.json. Original FH3 exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual8h record header; stack signed count; RET4. Complete live/installed span and final instruction verified. See reports/native_particle_array_resize.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afdac0",
+        "before": {
+          "address": "00afdac0",
+          "function_name": "FUN_00afdac0"
+        },
+        "after": {
+          "address": "00afdac0",
+          "name": "BSP_NativeParticleRecord_Construct",
+          "evidence": "AM review: descriptive hypothesis, not recovered symbol. Complete installed/live bytes and final RET verified; new C++ source ABI. Actual cookie storage, sparse108h initialization, allocation publication/failure ordering and raw MOVSS constant preserved. See docs/NATIVE_PARTICLE_ARRAY_RESIZE.md and reports/native_particle_array_resize.json. Original FH3 exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual108h record; EAX same pointer; RET. Complete live/installed span and final instruction verified. See reports/native_particle_array_resize.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cbb1bb",
+        "before": {
+          "address": "00cbb1bb",
+          "function_name": "FUN_00cbb1bb"
+        },
+        "after": {
+          "address": "00cbb1bb",
+          "name": "BSP_NativeParticleModelBytes_Resize_FH3Dispatcher",
+          "evidence": "Provisional descriptive hypothesis, not a recovered symbol. Compiler FH3 dispatcher CBB1BB..CBB1C4, final JMP BF6B43 atCBB1C0 length5. Analyzed only. Complete live/disk bytes verified and function defined; original FH3 execution not established."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cbb1db",
+        "before": {
+          "address": "00cbb1db",
+          "function_name": "FUN_00cbb1db"
+        },
+        "after": {
+          "address": "00cbb1db",
+          "name": "BSP_NativeParticleModelRecords_Resize_FH3Dispatcher",
+          "evidence": "Provisional descriptive hypothesis, not a recovered symbol. Compiler FH3 dispatcher CBB1DB..CBB1E4, final JMP BF6B43 atCBB1E0 length5. Analyzed only. Complete live/disk bytes verified and function defined; original FH3 execution not established."
+        },
+        "status": "applied"
+      }
+    ]
+  },
+  "ghidra_signature_audit_am": {
+    "project_saved": true,
+    "readback_verified": true,
+    "before": {
+      "00afd130": "00afd130 BSP_NativeParticleModelBytes_Resize  undefined BSP_NativeParticleModelBytes_Resize(void)  body 00afd130 - 00afd1ce\n",
+      "00afd220": "00afd220 BSP_NativeParticleModelRecords_Resize  undefined BSP_NativeParticleModelRecords_Resize(void)  body 00afd220 - 00afd2d4\n",
+      "00afcd90": "00afcd90 BSP_NativeParticleArrayByte_Construct  undefined BSP_NativeParticleArrayByte_Construct(void)  body 00afcd90 - 00afcd95\n",
+      "00afdac0": "00afdac0 BSP_NativeParticleRecord_Construct  undefined BSP_NativeParticleRecord_Construct(void)  body 00afdac0 - 00afdae0\n"
+    },
+    "changes": [
+      {
+        "address": "00afd130",
+        "prototype": "void __thiscall BSP_NativeParticleModelBytes_Resize(int count)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00afd130 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00afd220",
+        "prototype": "void __thiscall BSP_NativeParticleModelRecords_Resize(int count)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00afd220 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00afcd90",
+        "prototype": "void * __thiscall BSP_NativeParticleArrayByte_Construct(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00afcd90 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00afdac0",
+        "prototype": "void * __thiscall BSP_NativeParticleRecord_Construct(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00afdac0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ]
+  },
+  "analysis_repairs_am": {
+    "am-arrays-flow.json": {
+      "repairs": [
+        {
+          "function": "00cbb1b0",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-12T17:27:11Z",
+          "decompile_lines_before": 10,
+          "gaps": [
+            {
+              "site": "00cbb1b4",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00cbb1b9",
+              "gap_end_exclusive": "00cbb1bb",
+              "bytes": 2,
+              "after_call": true,
+              "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00cbb1b4",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00cbb1b9",
+                "gap_end_exclusive": "00cbb1bb",
+                "bytes": 2,
+                "after_call": true,
+                "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+              },
+              "clear": "Success: Cleared flow override at 00cbb1b4 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 2 byte(s)"
+            },
+            {
+              "explicit_tail_call": "00cbb1b4",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00cbb1b4 (was: NONE, now: NONE)"
+              }
+            }
+          ],
+          "explicit_tail_end_exclusive": "00cbb1bb",
+          "explicit_body_sha256": "07c5a6b818ba8592010d957756528478c50782dfe4bdd73d80a875683b380f40",
+          "body_before": "Function: Unwind@00cbb1b0 at 00cbb1b0\nSignature: undefined Unwind@00cbb1b0(void)\nEntry: 00cbb1b0\nBody: 00cbb1b0 - 00cbb1b8",
+          "decompile_lines_after": 10,
+          "gaps_remaining": 1,
+          "body_after": "Function: Unwind@00cbb1b0 at 00cbb1b0\nSignature: undefined Unwind@00cbb1b0(void)\nEntry: 00cbb1b0\nBody: 00cbb1b0 - 00cbb1b8",
+          "stored_body_tail_complete": false,
+          "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+        },
+        {
+          "function": "00cbb1d0",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-12T17:27:24Z",
+          "decompile_lines_before": 10,
+          "gaps": [
+            {
+              "site": "00cbb1d4",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00cbb1d9",
+              "gap_end_exclusive": "00cbb1db",
+              "bytes": 2,
+              "after_call": true,
+              "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00cbb1d4",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00cbb1d9",
+                "gap_end_exclusive": "00cbb1db",
+                "bytes": 2,
+                "after_call": true,
+                "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+              },
+              "clear": "Success: Cleared flow override at 00cbb1d4 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 2 byte(s)"
+            },
+            {
+              "explicit_tail_call": "00cbb1d4",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00cbb1d4 (was: NONE, now: NONE)"
+              }
+            }
+          ],
+          "explicit_tail_end_exclusive": "00cbb1db",
+          "explicit_body_sha256": "c9b638dbe4477be12626c14dfdace90a33bff1f77d56611d6e444120318694c6",
+          "body_before": "Function: Unwind@00cbb1d0 at 00cbb1d0\nSignature: undefined Unwind@00cbb1d0(void)\nEntry: 00cbb1d0\nBody: 00cbb1d0 - 00cbb1d8",
+          "decompile_lines_after": 10,
+          "gaps_remaining": 1,
+          "body_after": "Function: Unwind@00cbb1d0 at 00cbb1d0\nSignature: undefined Unwind@00cbb1d0(void)\nEntry: 00cbb1d0\nBody: 00cbb1d0 - 00cbb1d8",
+          "stored_body_tail_complete": false,
+          "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+        }
+      ]
+    },
+    "am-arrays-definitions.json": {
+      "events": [
+        {
+          "recreate": "00cbb1b0",
+          "previous": "Function: Unwind@00cbb1b0 at 00cbb1b0\nSignature: undefined Unwind@00cbb1b0(void)\nEntry: 00cbb1b0\nBody: 00cbb1b0 - 00cbb1b8",
+          "plate": null
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00cbb1b0"
+          },
+          "result": {
+            "success": true,
+            "address": "00cbb1b0",
+            "deleted_function": "Unwind@00cbb1b0",
+            "body_size": 9,
+            "message": "Function 'Unwind@00cbb1b0' deleted at 00cbb1b0"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbb1b0",
+            "end_address": "00cbb1bb"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbb1b0",
+            "end_address": "00cbb1ba",
+            "bytes_disassembled": 11,
+            "message": "Successfully disassembled 11 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbb1b0",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbb1b0",
+            "function_name": "Unwind@00cbb1b0",
+            "entry_point": "00cbb1b0",
+            "body_size": 11,
+            "message": "Function created successfully at 00cbb1b0"
+          }
+        },
+        {
+          "defined": "00cbb1b0",
+          "end": "00cbb1bb",
+          "name": null,
+          "after": "Function: Unwind@00cbb1b0 at 00cbb1b0\nSignature: undefined Unwind@00cbb1b0(void)\nEntry: 00cbb1b0\nBody: 00cbb1b0 - 00cbb1ba"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        },
+        {
+          "recreate": "00cbb1d0",
+          "previous": "Function: Unwind@00cbb1d0 at 00cbb1d0\nSignature: undefined Unwind@00cbb1d0(void)\nEntry: 00cbb1d0\nBody: 00cbb1d0 - 00cbb1d8",
+          "plate": null
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00cbb1d0"
+          },
+          "result": {
+            "success": true,
+            "address": "00cbb1d0",
+            "deleted_function": "Unwind@00cbb1d0",
+            "body_size": 9,
+            "message": "Function 'Unwind@00cbb1d0' deleted at 00cbb1d0"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbb1d0",
+            "end_address": "00cbb1db"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbb1d0",
+            "end_address": "00cbb1da",
+            "bytes_disassembled": 11,
+            "message": "Successfully disassembled 11 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbb1d0",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbb1d0",
+            "function_name": "Unwind@00cbb1d0",
+            "entry_point": "00cbb1d0",
+            "body_size": 11,
+            "message": "Function created successfully at 00cbb1d0"
+          }
+        },
+        {
+          "defined": "00cbb1d0",
+          "end": "00cbb1db",
+          "name": null,
+          "after": "Function: Unwind@00cbb1d0 at 00cbb1d0\nSignature: undefined Unwind@00cbb1d0(void)\nEntry: 00cbb1d0\nBody: 00cbb1d0 - 00cbb1da"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbb1bb",
+            "end_address": "00cbb1c5"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbb1bb",
+            "end_address": "00cbb1c4",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbb1bb",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbb1bb",
+            "function_name": "FUN_00cbb1bb",
+            "entry_point": "00cbb1bb",
+            "body_size": 10,
+            "message": "Function created successfully at 00cbb1bb"
+          }
+        },
+        {
+          "defined": "00cbb1bb",
+          "end": "00cbb1c5",
+          "name": null,
+          "after": "Function: FUN_00cbb1bb at 00cbb1bb\nSignature: undefined FUN_00cbb1bb(void)\nEntry: 00cbb1bb\nBody: 00cbb1bb - 00cbb1c4"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbb1db",
+            "end_address": "00cbb1e5"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbb1db",
+            "end_address": "00cbb1e4",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbb1db",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbb1db",
+            "function_name": "FUN_00cbb1db",
+            "entry_point": "00cbb1db",
+            "body_size": 10,
+            "message": "Function created successfully at 00cbb1db"
+          }
+        },
+        {
+          "defined": "00cbb1db",
+          "end": "00cbb1e5",
+          "name": null,
+          "after": "Function: FUN_00cbb1db at 00cbb1db\nSignature: undefined FUN_00cbb1db(void)\nEntry: 00cbb1db\nBody: 00cbb1db - 00cbb1e4"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        }
+      ]
+    }
+  },
+  "final_merged_validation_am": {
+    "tested_commit": "98b5bc67287460ad1e15f36f388cc013bb753fcb",
+    "build": "local/am-final-combined-build.log: standard scripts/build.ps1 strict Win32 and both existing seeded CTests passed",
+    "fixtures": [
+      "am-fixture-preparation.log",
+      "am-fixture-arrays.log",
+      "am-fixture-record-update.log",
+      "am-fixture-emitter-update.log",
+      "am-fixture-spawn.log",
+      "am-fixture-record-children.log",
+      "am-fixture-model-composition.log"
+    ],
+    "reviewed_source_commit": "cc993c1dc7768a79abfe1cb820670ab527f09b04",
+    "all16_owned_source_header_hashes_preserved": true,
+    "library_sha256": "0dc405a61fadfc8d09ff86522dae3e54359944191221c35627ebc08567b5c67d",
+    "full_application_native_EH_and_gameplay": false
+  }
+}

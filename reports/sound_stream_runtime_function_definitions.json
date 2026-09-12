@@ -1,0 +1,61 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a87b60",
+    "end_address": "00a87b67"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a87b60",
+    "end_address": "00a87b66",
+    "bytes_disassembled": 7,
+    "message": "Successfully disassembled 7 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a87b60",
+    "disassemble_first": false,
+    "name": "BSP_SoundSystem_GetStreamSpeakerLayout"
+   },
+   "result": {
+    "success": true,
+    "address": "00a87b60",
+    "function_name": "BSP_SoundSystem_GetStreamSpeakerLayout",
+    "entry_point": "00a87b60",
+    "body_size": 7,
+    "message": "Function created successfully at 00a87b60",
+    "warnings": [
+     "Function name 'BSP_SoundSystem_GetStreamSpeakerLayout' \u2014 main part 'SoundSystem_GetStreamSpeakerLayout' is not PascalCase. Expected: SoundsystemGetstreamspeakerlayout",
+     "Function name 'BSP_SoundSystem_GetStreamSpeakerLayout' \u2014 main part 'SoundSystem_GetStreamSpeakerLayout' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_SoundSystem_GetStreamSpeakerLayout' does not start with a recognized verb. First word 'Sound' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a87b60",
+   "end": "00a87b67",
+   "name": "BSP_SoundSystem_GetStreamSpeakerLayout",
+   "after": "Function: BSP_SoundSystem_GetStreamSpeakerLayout at 00a87b60\nSignature: undefined BSP_SoundSystem_GetStreamSpeakerLayout(void)\nEntry: 00a87b60\nBody: 00a87b60 - 00a87b66"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

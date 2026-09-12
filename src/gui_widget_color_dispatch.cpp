@@ -49,7 +49,8 @@ bool gui_widget_has_base_color54_profile(GuiWidgetType type) noexcept {
 bool gui_widget_has_base_alpha4c_profile(GuiWidgetType type) noexcept {
     switch (type) {
     case GuiWidgetType::Group: case GuiWidgetType::Icon: case GuiWidgetType::Screen:
-    case GuiWidgetType::ClipBox: case GuiWidgetType::FrameBox: return true;
+    case GuiWidgetType::ClipBox: case GuiWidgetType::FrameBox:
+    case GuiWidgetType::Section: return true;
     default: return false;
     }
 }

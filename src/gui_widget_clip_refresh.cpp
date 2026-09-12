@@ -96,6 +96,7 @@ bool gui_widget_uses_base_clip70_profile(GuiWidgetType type) noexcept {
     case GuiWidgetType::Icon:
     case GuiWidgetType::ClipBox:
     case GuiWidgetType::FrameBox:
+    case GuiWidgetType::Section:
         return true;
     default:
         return false;
