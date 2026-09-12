@@ -1,0 +1,446 @@
+{
+  "packet": "orch4_native_input_action_owner_ac",
+  "status": "reconstructed_actual_owner_strict_build_raw_getter_and_concrete_nonempty_provider_fixture_verified",
+  "source": [
+    "include/bsp/native_input_action_owner.hpp",
+    "src/native_input_action_owner.cpp"
+  ],
+  "document": "docs/NATIVE_INPUT_ACTION_OWNER.md",
+  "analysis_project": "C:/Users/sqz269/bsp.gpr",
+  "analysis_program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "functions": [
+    {
+      "address": "004bec00",
+      "name": "BSP_InputManager_GetSingleton",
+      "implementation": "get_native_input_action_owner_004bec00",
+      "source": "src/native_input_action_owner.cpp",
+      "document": "docs/NATIVE_INPUT_ACTION_OWNER.md",
+      "coverage": "complete owner schedule over actual storage in stated provider/C++ exception domain; required nonempty record providers external",
+      "original_abi": "No native inputs; EAX pointer; RET",
+      "last_instruction": "004becbc",
+      "last_instruction_length": 1,
+      "end_inclusive": "004becbc",
+      "end_exclusive": "004becbd",
+      "span": 189,
+      "sha256": "23f34f5a2abc03b23f6f8ad4f45849de32550cc262c4948c3771bd189d906e79",
+      "disk_analysis_equal": true,
+      "name_is_hypothesis": true,
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a93da0",
+      "name": "BSP_InputActionOwner_Construct",
+      "implementation": "construct_native_input_action_owner_00a93da0",
+      "source": "src/native_input_action_owner.cpp",
+      "document": "docs/NATIVE_INPUT_ACTION_OWNER.md",
+      "coverage": "complete owner schedule over actual storage in stated provider/C++ exception domain; required nonempty record providers external",
+      "original_abi": "ECX actual24h allocation; EAX same address; RET",
+      "last_instruction": "00a93dc7",
+      "last_instruction_length": 1,
+      "end_inclusive": "00a93dc7",
+      "end_exclusive": "00a93dc8",
+      "span": 40,
+      "sha256": "c3884770a50e5c67f50afe08c0436bec57f732a071d2b5adf328ad06fe1eaca8",
+      "disk_analysis_equal": true,
+      "name_is_hypothesis": true,
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a93dd0",
+      "name": "BSP_InputActionOwner_Destroy",
+      "implementation": "destroy_native_input_action_owner_00a93dd0",
+      "source": "src/native_input_action_owner.cpp",
+      "document": "docs/NATIVE_INPUT_ACTION_OWNER.md",
+      "coverage": "complete owner schedule over actual storage in stated provider/C++ exception domain; required nonempty record providers external",
+      "original_abi": "ECX actual24h owner; no stack arguments/result; RET",
+      "last_instruction": "00a93e4f",
+      "last_instruction_length": 1,
+      "end_inclusive": "00a93e4f",
+      "end_exclusive": "00a93e50",
+      "span": 128,
+      "sha256": "26adcd3fbc36c4756358dfe175b8a5d2d794a9a7c5c8bcefc75742c034ad06e9",
+      "disk_analysis_equal": true,
+      "name_is_hypothesis": true,
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a93e50",
+      "name": "BSP_InputActionOwner_ScalarDeletingDestructor",
+      "implementation": "scalar_delete_native_input_action_owner_00a93e50",
+      "source": "src/native_input_action_owner.cpp",
+      "document": "docs/NATIVE_INPUT_ACTION_OWNER.md",
+      "coverage": "complete owner schedule over actual storage in stated provider/C++ exception domain; required nonempty record providers external",
+      "original_abi": "ECX actual24h owner; stack flagsDWORD; EAX captured address bits; RET4",
+      "last_instruction": "00a93e6b",
+      "last_instruction_length": 3,
+      "end_inclusive": "00a93e6d",
+      "end_exclusive": "00a93e6e",
+      "span": 30,
+      "sha256": "9749c52a3d938483eb37ba3e4bcb43763db6689a5f23ab32004eeb91e6a65f6e",
+      "disk_analysis_equal": true,
+      "name_is_hypothesis": true,
+      "native_abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "004bec26",
+      "native": "00415350",
+      "caller": "004bec00",
+      "service": "First shared manager getter; capture actual section+10"
+    },
+    {
+      "address": "004bec3f",
+      "native": "00ce2218+import",
+      "caller": "004bec00",
+      "service": "EnterCriticalSection(captured); stdcall4; then increment actual section+18"
+    },
+    {
+      "address": "004bec5c",
+      "native": "00bf681b",
+      "caller": "004bec00",
+      "service": "operator_new(24h); cdecl ADD ESP4 at4BEC61"
+    },
+    {
+      "address": "004bec73",
+      "native": "00a93da0",
+      "caller": "004bec00",
+      "service": "ECX captured allocation, EAX same address; RET"
+    },
+    {
+      "address": "004bec86",
+      "native": "00415350",
+      "caller": "004bec00",
+      "service": "Second manager getter BEFORE publication argument reload4BEC8B"
+    },
+    {
+      "address": "004bec94",
+      "native": "00bd0c30",
+      "caller": "004bec00",
+      "service": "ECX current second manager; stack reloaded F8BBF8 pointer; RET4"
+    },
+    {
+      "address": "004beca2",
+      "native": "00ce2210+import",
+      "caller": "004bec00",
+      "service": "Decrement then LeaveCriticalSection(captured); stdcall4; slow reload afterward"
+    },
+    {
+      "address": "00a93e03",
+      "native": "0086a430",
+      "caller": "00a93dd0",
+      "service": "ECX owner+10 actual DWORD header; signed count0; RET4"
+    },
+    {
+      "address": "00a93e0b",
+      "native": "00bf6989",
+      "caller": "00a93dd0",
+      "service": "Free post-resize captured header10 base; cdecl ADD ESP4 atA93E10"
+    },
+    {
+      "address": "00a93e1f",
+      "native": "00a93c10",
+      "caller": "00a93dd0",
+      "service": "ECX owner+4 actual30h action table; signed count0; RET4; state0 already armed"
+    },
+    {
+      "address": "00a93e27",
+      "native": "00bf6989",
+      "caller": "00a93dd0",
+      "service": "Free post-resize captured header04 base; cdecl ADD ESP4 atA93E30"
+    },
+    {
+      "address": "00a93e53",
+      "native": "00a93dd0",
+      "caller": "00a93e50",
+      "service": "ECX original owner, RET; test low flags bit only afterward"
+    },
+    {
+      "address": "00a93e60",
+      "native": "00bf65ac",
+      "caller": "00a93e50",
+      "service": "Free original owner iff flags&1; cdecl ADD ESP4 atA93E65"
+    },
+    {
+      "address": "00c64d43",
+      "native": "00411ee0",
+      "caller": "00c64d40",
+      "service": "Unowned getter state0 funclet: captured guard at EBP-14",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c64d4c",
+      "native": "00bf65ac",
+      "caller": "00c64d48",
+      "service": "Unowned getter state1 funclet: saved allocation EBP-18; POP ECX atC64D51 outside old body"
+    },
+    {
+      "address": "00cb6823",
+      "native": "00a92180",
+      "caller": "00cb6820",
+      "service": "Unowned destructor state0 funclet: original owner EBP-10; unconditional publication clear/base stamp",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb682e",
+      "native": "00a93d80",
+      "caller": "00cb6828",
+      "service": "Unowned destructor state1 funclet: actual action header at saved owner+4",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00a93d85",
+      "native": "00a93c10",
+      "caller": "00a93d80",
+      "service": "Unowned consumed unwind helper: actual header, signed count0; RET4"
+    },
+    {
+      "address": "00a93d8d",
+      "native": "00bf6989",
+      "caller": "00a93d80",
+      "service": "Unowned consumed unwind helper: post-resize base; ADD ESP4 in excluded tail A93D92"
+    }
+  ],
+  "borrowed_services": [
+    "actual mutable F8BBF8 publication",
+    "SoundLifetimeAccess using shared actual01090AA0 or pre-existing fixture manager",
+    "CapturedSoundLifetimeSection",
+    "existing singleton_lifetime_allocate/free",
+    "required call_0086a430(actual12h header,int32 count)",
+    "required call_00a93c10(actual12h header,int32 count)"
+  ],
+  "storage": {
+    "allocation_bytes": 36,
+    "publication": "00f8bbf8",
+    "profile": "00d5b630",
+    "base_profile": "00ce3818",
+    "fields": {
+      "00": "profileDWORD",
+      "04/08/0c": "action-record base/signed count/signed capacity",
+      "10/14/18": "DWORD base/signed count/signed capacity",
+      "1c": "byte1",
+      "1d-1f": "untouched",
+      "20": "DWORD1"
+    },
+    "producer": "00a93da0",
+    "no_copied_canonical_state": true
+  },
+  "exception_maps": [
+    {
+      "owner": "004bec00",
+      "handler": "00c64d53",
+      "func_info": "00d8d2ac",
+      "unwind_map": "00d8d29c",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "funclet": "00c64d40",
+          "effect": "release first captured guard"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "funclet": "00c64d48",
+          "effect": "free saved allocation; ends before publication/registration"
+        }
+      ]
+    },
+    {
+      "owner": "00a93dd0",
+      "handler": "00cb6833",
+      "func_info": "00decb7c",
+      "unwind_map": "00decb6c",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "funclet": "00cb6820",
+          "effect": "clear current F8BBF8 and stamp original owner CE3818"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "funclet": "00cb6828",
+          "effect": "resize/free action table; applies during DWORD resize/free only"
+        }
+      ]
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "entry": "00c64d53",
+      "role": "unowned getter EH handler",
+      "last_instruction": "00c64d58",
+      "last_instruction_length": 5,
+      "end_inclusive": "00c64d5c",
+      "end_exclusive": "00c64d5d",
+      "tail_site": "00c64d58",
+      "callee": "00bf6b43"
+    },
+    {
+      "entry": "00cb6833",
+      "role": "unowned destructor EH handler",
+      "last_instruction": "00cb6838",
+      "last_instruction_length": 5,
+      "end_inclusive": "00cb683c",
+      "end_exclusive": "00cb683d",
+      "tail_site": "00cb6838",
+      "callee": "00bf6b43"
+    }
+  ],
+  "excluded_tails": [
+    {
+      "function": "00a93d80",
+      "current_body_end": "00a93d91",
+      "range_start": "00a93d92",
+      "last_instruction": "00a93d96",
+      "last_instruction_length": 1,
+      "end_inclusive": "00a93d96",
+      "end_exclusive": "00a93d97",
+      "instructions": [
+        "ADD ESP,4",
+        "POP ESI",
+        "RET"
+      ],
+      "calls": []
+    },
+    {
+      "function": "00c64d48",
+      "current_body_end": "00c64d50",
+      "range_start": "00c64d51",
+      "last_instruction": "00c64d52",
+      "last_instruction_length": 1,
+      "end_inclusive": "00c64d52",
+      "end_exclusive": "00c64d53",
+      "instructions": [
+        "POP ECX",
+        "RET"
+      ],
+      "calls": []
+    }
+  ],
+  "corrections": [
+    {
+      "was": "A93DA0 decompiler void result",
+      "evidence": "A93DA0 MOV EAX,ECX; getter stores EAX at4BEC81",
+      "is": "EAX original ECX allocation"
+    },
+    {
+      "was": "A93DD0 truncated after first free A93E0B",
+      "evidence": "fresh prototype/listing and128live bytes equal installed PE",
+      "is": "primary repaired complete body throughA93E4F before worker;37instructions0gaps"
+    },
+    {
+      "was": "A93E50 listing gapA93E65..67",
+      "evidence": "live/disk83c404; caller returns throughRET4 atA93E6B",
+      "is": "ADD ESP,4 within existing scalar body"
+    },
+    {
+      "was": "Destructor unregister or conditional current-publication clear",
+      "evidence": "A93E33 andA92180; caller-owned early unregister remains external",
+      "is": "No unregister; unconditional clear after both normal frees or base unwind"
+    }
+  ],
+  "verification": {
+    "native_disk_live_bytes": 387,
+    "native_seed_checks": "8/8 matched installed PE",
+    "build": "scripts/build.ps1 Win32 Release /W4 /WX /fp:strict exit0; MSBUILDDISABLENODEREUSE=1",
+    "existing_ctests": "reconstructed_math and native_math_differential both passed;2/2",
+    "report_calls": "17 direct CALL/JMP rows passed;2 OS-import rows manually checked",
+    "runtime_fixture": {
+      "runner": "local/run_input_action_owner_probe.ps1",
+      "source": "local/input_action_owner_probe.cpp",
+      "log": "local/input_action_owner_probe.log",
+      "exit_code": 0,
+      "manifest": "/link /MANIFEST:EMBED",
+      "actual_native_constructor_preimages": 4,
+      "compared_owner_bytes_each": 36,
+      "actual_raw_manager": true,
+      "raw_publication_registered_identity": true,
+      "fast_return_does_not_create_manager": true,
+      "registration_callback_replacement_and_final_reload": true,
+      "registration_exception_keeps_publication_allocation": true,
+      "captured_section_final_depth": 0,
+      "record_providers_reached": false,
+      "cleanup": "fixture explicitly unregisters/frees allocated empty action objects then uses real raw-manager drain; no action destructor closure claim",
+      "nonempty_destructor_validated": false
+    },
+    "application_reached": false,
+    "artifact_sha256": {
+      "local/input_action_owner_probe.log": "2ad35dc5f38c5493d23e16f1cf74518bad991e57439e9e23c36bddca23da6a71",
+      "local/input_action_owner_probe.exe": "55f0e8a4bd27af1f4b82752b6e0379c8d54417d879f814d84560663b7e4857d3",
+      "build/win32/Release/bsp_core.lib": "6673e8b715afd6a354b9ddb544dbfcb30c6fd5bf926ad2150fb7d8eb07db1b19",
+      "local/input_action_owner_build.log": "ca66680ca7054c7b4b1a8e54232b427a0e78dfaf115fbcd55d8a28817d312220"
+    },
+    "nonempty_provider_fixture": {
+      "runner": "local/run_input_action_owner_probe.ps1 -CoreWorktree J:/PROG/battlestations-pacific-decompile-orch4-20260910",
+      "log": "local/input_action_owner_nonempty_probe.log",
+      "exit_code": 0,
+      "linkage": "primary includes and bsp_core.lib/bsp_lua511.lib plus explicitly compiled worker src/native_input_action_owner.cpp; not primary archive-only until merge",
+      "concrete_providers": [
+        "primary src/native_input_action_records.cpp",
+        "primary src/native_input_binding_storage.cpp"
+      ],
+      "native_record_constructor_preimages": 4,
+      "compared_record_bytes_each": 48,
+      "native_record_constructor_sha256": "dcafd6cdd5661cd1de4e698ca69977d7d3b3bbacb00c191d06ee8b3a0c8b8df7",
+      "nested_storage": "two30h actions;34h bindings;two14h modifier arrays per binding",
+      "checks": [
+        "original owner and record constructor all-byte differential",
+        "untouched action/binding/modifier padding",
+        "full fifth modifier DWORD copy",
+        "binding+14 full DWORD copy",
+        "independent nested deep copies",
+        "reserve copy/old destruction listener retain balance3->1",
+        "flags0 surviving owner/base profile and flags1 freed-address return identity",
+        "injected listener exception leaves listener slot, clears nested counts, owner base cleanup without outer-array/owner free",
+        "real raw manager explicitly unregistered then empty/drained"
+      ],
+      "normal_listener_slot0": "required and unreached; borrowed actual raw reference count remains1",
+      "listener_exception": "explicit source fault injection only; no native listener implementation claim",
+      "application_or_device_validated": false,
+      "sha256": {
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-input-actions-ac\\local\\input_action_owner_nonempty_probe.log": "5ba47b42ac9789142c3d51033613b8633c1a07a5ba987b11103a69dc1d207fd4",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-input-actions-ac\\local\\input_action_owner_probe.exe": "2779e47a613887c9c16bdc3550323df33db209e0550e06a1f2cc8c9b273d99ba",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\build\\win32\\Release\\bsp_core.lib": "1138dce6619c05d887c011d379df85fc61a59123bdf18013859fd85ecf5791d0",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\src\\native_input_action_records.cpp": "cda40a46350c2913f8f4d3714bd72dd9d579e17afcc523b85290f3aa66f1aa23",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\src\\native_input_binding_storage.cpp": "9d8ddb3a12f46ebd5431fd568762087dd9335a872c03ebdb7a74453bf81a77d7"
+      }
+    }
+  },
+  "remaining": [
+    "Primary merges this owner with separately owned concrete action/binding/vector providers",
+    "Raw D5B630 finite deletion dispatcher integration and explicit early unregister application schedule",
+    "Real listener slot0 profile/body remains required; normal fixture retains external reference",
+    "Shared canonical action-record producer/frame-consumer integration; no InputTickState pointer substitution",
+    "No device enumeration, application input run or game validation",
+    "Original FH3/SEH/hardware-fault and arbitrary EH-spill/register ABI not reconstructed"
+  ],
+  "caller_evidence": [
+    {
+      "call_site": "004c43c0",
+      "containing_function": "004c43c0",
+      "meaning": "getter has no arguments; returned raw action base+4 indexed with30h stride; caller itself RET4"
+    },
+    {
+      "call_site": "004c4310",
+      "containing_function": "004c4300",
+      "meaning": "no getter arguments; EAX captured in EBP then used as receiver for action operations"
+    }
+  ],
+  "external_review": [
+    {
+      "source": "primary src/native_input_binding_storage.cpp",
+      "was": "unconditional live one load on resize/shrink",
+      "is": "primary corrected to growth-only load before fixture build",
+      "evidence": "A9352F count compare; JGE A93531 skips MOVSS D7A24C atA93533; read-only reviewed with primary",
+      "remaining_review": "no other mismatch found in bounded record/copy/refcount/EH/reserve/modifier review"
+    }
+  ]
+}
