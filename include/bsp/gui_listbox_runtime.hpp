@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/gui_input_runtime.hpp"
 #include "bsp/gui_widget_attach.hpp"
 #include "bsp/render_tail.hpp"
 #include "bsp/input_action_classifier.hpp"
@@ -60,7 +61,7 @@ struct GuiListboxFrameServices {
     const GuiListboxHighlightServices& highlight;
     GuiListboxFrameCalls& calls;
     const std::function<GuiListboxInputSample()>& input_callback_f8bc08;
-    InputBindingDeviceGroups* const& input_groups_00f8bbf4;
+    GuiInputSource input_groups_00f8bbf4;
     const volatile float& zero_00d7a218;
 };
 
@@ -238,6 +239,10 @@ public:
     // A9BE60: current34(0), remove EVERY matching FC entry without detaching or
     // deleting the widget, selected=end, previous110=null, current80(0),7C.
     void remove_row_00a9be60(GuiWidgetOwner& row);
+    // A9BEC0: temporarily clear114, delete FC rows through current04(1),
+    // clear FC, select end, restore captured114, clear110, current80(false).
+    // Same list nodes survive callbacks; deleting profiles must complete.
+    void clear_rows_00a9bec0(GuiTextChildDeletion&);
 
 private:
     friend bool has_selectable_gui_listbox_row_00a9ba40(const GuiListboxRuntime&) noexcept;
