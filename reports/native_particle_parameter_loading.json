@@ -1012,15 +1012,15 @@
   },
   "integration_ao": {
     "strict_win32_build_and_two_seeded_ctests": true,
-    "combined_library_sha256": "0eb8e2a94a7fe7a48b15b36f472d7ed33813be49fdc55058a44525a0416a273a",
+    "combined_library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
     "current_library_fixture": {
       "label": "parameters",
       "exit_code": 0,
       "log": "local\\ao-parameters-current-replay.log",
-      "library_sha256": "0eb8e2a94a7fe7a48b15b36f472d7ed33813be49fdc55058a44525a0416a273a",
+      "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
       "source_sha256": "2c6bf74c361c624a9779945487b3e76f84aade6e2184c0b4319d5783d173aa6f",
       "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\parameters-current.cmd",
-      "executable_sha256": "f9e78c6f3fd4759e308b0271ca4b274b9b9d773336a46ff28373e28ee6451f3f"
+      "executable_sha256": "15f890b0ba9179e5006f816069b0bfaf856354537cb92b02d7af5a36ad81604b"
     },
     "source_hashes": {
       "include/bsp/native_particle_parameter_loading.hpp": "fa890306dc96f8522a4644fdcf9369a8357687f389a52cd12586ac22e6002ab8",
@@ -2565,5 +2565,58 @@
         ]
       }
     }
+  },
+  "final_merged_validation_ao": {
+    "tested_commit": "fe3ae2c51c2cd681a975c2e15db7092dc06f97cf",
+    "reviewed_source_commit": "89e23a18ccb60f8ec18cefb50e90ceb532783c65",
+    "build": "local/ao-final-combined-build.log: strict MSVC Win32 and both seeded CTests passed",
+    "all10_reviewed_source_header_hashes_preserved": true,
+    "all54_name_evidence_rows_preserved": true,
+    "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+    "current_library_replays": [
+      {
+        "label": "text",
+        "exit_code": 0,
+        "log": "local\\ao-text-current-replay.log",
+        "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+        "source_sha256": "9cad29f895a90fb0af2863f17e0f5485348770c31b8a5f5f020e91c3eb0da257",
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\text-current.cmd",
+        "executable_sha256": "f1e546aa348f230e99378114963a239de0d3f09202f57a801313d0d910c343c3"
+      },
+      {
+        "label": "parameters",
+        "exit_code": 0,
+        "log": "local\\ao-parameters-current-replay.log",
+        "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+        "source_sha256": "2c6bf74c361c624a9779945487b3e76f84aade6e2184c0b4319d5783d173aa6f",
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\parameters-current.cmd",
+        "executable_sha256": "15f890b0ba9179e5006f816069b0bfaf856354537cb92b02d7af5a36ad81604b"
+      },
+      {
+        "label": "definition-loading",
+        "exit_code": 0,
+        "log": "local\\ao-definition-loading-current-replay.log",
+        "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+        "source_sha256": "01fe7404a896ff634fd05e114351533b0146a66bcdd6025808217935a11809b6",
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\definition-loading-current.cmd",
+        "executable_sha256": "bbc30283999b97b67eb05cb8d53efee8b17bf737d8916f03b62bade2702cb0f5"
+      },
+      {
+        "label": "state",
+        "exit_code": 0,
+        "log": "local\\ao-state-current-replay.log",
+        "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+        "source_sha256": "7c50ba3fb0915561548435540ea4f1b2274cddd75018d471bb3ca3ffe5858f71",
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\state-current.cmd",
+        "executable_sha256": "35ab09a74173ac78d5b4a006cea89e525a1183dbc03be3f2e375b0d4a36d6394"
+      }
+    ],
+    "new_functions": 45,
+    "revised_spawn_functions": 1,
+    "native_signatures": 46,
+    "analyzed_bodies": 8,
+    "direct_call_rows": 484,
+    "failed_call_rows": 0,
+    "original_fh3_and_gameplay": false
   }
 }

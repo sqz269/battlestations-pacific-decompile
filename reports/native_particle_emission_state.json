@@ -389,15 +389,15 @@
   },
   "integration_ao": {
     "strict_win32_build_and_two_seeded_ctests": true,
-    "combined_library_sha256": "0eb8e2a94a7fe7a48b15b36f472d7ed33813be49fdc55058a44525a0416a273a",
+    "combined_library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
     "current_library_fixture": {
       "label": "state",
       "exit_code": 0,
       "log": "local\\ao-state-current-replay.log",
-      "library_sha256": "0eb8e2a94a7fe7a48b15b36f472d7ed33813be49fdc55058a44525a0416a273a",
+      "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
       "source_sha256": "7c50ba3fb0915561548435540ea4f1b2274cddd75018d471bb3ca3ffe5858f71",
       "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\state-current.cmd",
-      "executable_sha256": "77f2149696927c92a034bb0c918c67a9d9010e86952a561d2b738e47b803e404"
+      "executable_sha256": "35ab09a74173ac78d5b4a006cea89e525a1183dbc03be3f2e375b0d4a36d6394"
     },
     "source_hashes": {
       "include/bsp/native_particle_emission_state.hpp": "59f8bec84e416457e6b4a002e749e2f5a099db139eb2b0be81c2589ed0ccd3a3",
@@ -701,6 +701,34 @@
         "address": "00b0ca40",
         "function_name": "FUN_00b0ca40",
         "comment": "[BSP reconstruction 00b0ca40]\nHypothesis, not a recovered symbol. Actual raw PointLight population chain and particle volume-producer fragment B0CAE1..B0CBA6 preserve raw identity, alias-sensitive loads/stores, strict sphere comparisons and duplicate reciprocal backlinks. Model/cache-static Group paths supported; dynamic Group and complete particle/Text providers remain open. docs/NATIVE_POINT_LIGHT_PROVIDER.md; reports/native_point_light_provider.json. Parent combined Win32 build2/2 and scoped local probes passed; no original ABI or game validation."
+      },
+      "00c855c0": {
+        "address": "00c855c0",
+        "function_name": "Unwind@00c855c0"
+      },
+      "00c855c8": {
+        "address": "00c855c8",
+        "function_name": "FUN_00c855c8"
+      },
+      "00c85600": {
+        "address": "00c85600",
+        "function_name": "Unwind@00c85600"
+      },
+      "00c85608": {
+        "address": "00c85608",
+        "function_name": "Unwind@00c85608"
+      },
+      "00c85613": {
+        "address": "00c85613",
+        "function_name": "FUN_00c85613"
+      },
+      "00cbbbc0": {
+        "address": "00cbbbc0",
+        "function_name": "Unwind@00cbbbc0"
+      },
+      "00cbbbc8": {
+        "address": "00cbbbc8",
+        "function_name": "FUN_00cbbbc8"
       }
     },
     "current_comments": {
@@ -732,6 +760,491 @@
     },
     "game_validated": false,
     "original_fh3_abi_validated": false,
-    "independent_review": "Pooled-text worker reviewed all5bodies and direct spawn wiring; corrected linked-light/null-root reference formation, then original-byte state and composed spawn comparisons passed."
+    "independent_review": "Pooled-text worker reviewed all5bodies and direct spawn wiring; corrected linked-light/null-root reference formation, then original-byte state and composed spawn comparisons passed.",
+    "function_repairs": {
+      "ao-state-flow.json": {
+        "repairs": [
+          {
+            "function": "0072cc90",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T19:12:35Z",
+            "decompile_lines_before": 17,
+            "gaps": [
+              {
+                "site": "0072ccb9",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "0072ccbe",
+                "gap_end_exclusive": "0072ccc1",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "0072ccb9",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf65ac",
+                  "gap_start": "0072ccbe",
+                  "gap_end_exclusive": "0072ccc1",
+                  "bytes": 3,
+                  "after_call": true,
+                  "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+                },
+                "clear": "Success: Cleared flow override at 0072ccb9 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 3 byte(s)"
+              },
+              {
+                "explicit_tail_call": "0072ccb9",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 0072ccb9 (was: NONE, now: NONE)"
+                }
+              }
+            ],
+            "explicit_tail_end_exclusive": "0072ccc7",
+            "explicit_body_sha256": "86f3203bc2b4d6953cb1539163b867aa9f98ae2e66d2a908980862968e66d9d6",
+            "body_before": "Function: CG_scalar_deleting_dtor_0072cc90 at 0072cc90\nSignature: undefined CG_scalar_deleting_dtor_0072cc90(void)\nEntry: 0072cc90\nBody: 0072cc90 - 0072ccc6",
+            "decompile_lines_after": 14,
+            "gaps_remaining": 0,
+            "body_after": "Function: CG_scalar_deleting_dtor_0072cc90 at 0072cc90\nSignature: undefined CG_scalar_deleting_dtor_0072cc90(void)\nEntry: 0072cc90\nBody: 0072cc90 - 0072ccc6",
+            "stored_body_tail_complete": true
+          }
+        ]
+      },
+      "ao-state-definitions.json": {
+        "events": [
+          {
+            "recreate": "0072cc90",
+            "previous": "Function: CG_scalar_deleting_dtor_0072cc90 at 0072cc90\nSignature: undefined CG_scalar_deleting_dtor_0072cc90(void)\nEntry: 0072cc90\nBody: 0072cc90 - 0072ccc6",
+            "plate": null
+          },
+          {
+            "endpoint": "delete_function",
+            "body": {
+              "address": "0072cc90"
+            },
+            "result": {
+              "success": true,
+              "address": "0072cc90",
+              "deleted_function": "CG_scalar_deleting_dtor_0072cc90",
+              "body_size": 52,
+              "message": "Function 'CG_scalar_deleting_dtor_0072cc90' deleted at 0072cc90"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "0072cc90",
+              "end_address": "0072ccc7"
+            },
+            "result": {
+              "success": true,
+              "start_address": "0072cc90",
+              "end_address": "0072ccc6",
+              "bytes_disassembled": 55,
+              "message": "Successfully disassembled 55 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "0072cc90",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "0072cc90",
+              "function_name": "CG_scalar_deleting_dtor_0072cc90",
+              "entry_point": "0072cc90",
+              "body_size": 55,
+              "message": "Function created successfully at 0072cc90"
+            }
+          },
+          {
+            "defined": "0072cc90",
+            "end": "0072ccc7",
+            "name": null,
+            "after": "Function: CG_scalar_deleting_dtor_0072cc90 at 0072cc90\nSignature: undefined CG_scalar_deleting_dtor_0072cc90(void)\nEntry: 0072cc90\nBody: 0072cc90 - 0072ccc6"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      },
+      "ao-state-handler-definitions.json": {
+        "events": [
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00c855c8",
+              "end_address": "00c855d2"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00c855c8",
+              "end_address": "00c855d1",
+              "bytes_disassembled": 10,
+              "message": "Successfully disassembled 10 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00c855c8",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00c855c8",
+              "function_name": "FUN_00c855c8",
+              "entry_point": "00c855c8",
+              "body_size": 10,
+              "message": "Function created successfully at 00c855c8"
+            }
+          },
+          {
+            "defined": "00c855c8",
+            "end": "00c855d2",
+            "name": null,
+            "after": "Function: FUN_00c855c8 at 00c855c8\nSignature: undefined FUN_00c855c8(void)\nEntry: 00c855c8\nBody: 00c855c8 - 00c855d1"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00c85613",
+              "end_address": "00c8561d"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00c85613",
+              "end_address": "00c8561c",
+              "bytes_disassembled": 10,
+              "message": "Successfully disassembled 10 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00c85613",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00c85613",
+              "function_name": "FUN_00c85613",
+              "entry_point": "00c85613",
+              "body_size": 10,
+              "message": "Function created successfully at 00c85613"
+            }
+          },
+          {
+            "defined": "00c85613",
+            "end": "00c8561d",
+            "name": null,
+            "after": "Function: FUN_00c85613 at 00c85613\nSignature: undefined FUN_00c85613(void)\nEntry: 00c85613\nBody: 00c85613 - 00c8561c"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00cbbbc8",
+              "end_address": "00cbbbd2"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00cbbbc8",
+              "end_address": "00cbbbd1",
+              "bytes_disassembled": 10,
+              "message": "Successfully disassembled 10 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00cbbbc8",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00cbbbc8",
+              "function_name": "FUN_00cbbbc8",
+              "entry_point": "00cbbbc8",
+              "body_size": 10,
+              "message": "Function created successfully at 00cbbbc8"
+            }
+          },
+          {
+            "defined": "00cbbbc8",
+            "end": "00cbbbd2",
+            "name": null,
+            "after": "Function: FUN_00cbbbc8 at 00cbbbc8\nSignature: undefined FUN_00cbbbc8(void)\nEntry: 00cbbbc8\nBody: 00cbbbc8 - 00cbbbd1"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      },
+      "ao-state-funclet-flow.json": {
+        "repairs": [
+          {
+            "function": "00c85608",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T19:15:31Z",
+            "decompile_lines_before": 10,
+            "gaps": [
+              {
+                "site": "00c8560c",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00c85611",
+                "gap_end_exclusive": "00c85613",
+                "bytes": 2,
+                "after_call": true,
+                "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00c8560c",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf65ac",
+                  "gap_start": "00c85611",
+                  "gap_end_exclusive": "00c85613",
+                  "bytes": 2,
+                  "after_call": true,
+                  "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+                },
+                "clear": "Success: Cleared flow override at 00c8560c (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 2 byte(s)"
+              },
+              {
+                "explicit_tail_call": "00c8560c",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00c8560c (was: NONE, now: NONE)"
+                }
+              }
+            ],
+            "explicit_tail_end_exclusive": "00c85613",
+            "explicit_body_sha256": "d2c835847057e5d7ef791582b957fcbdb219910ad53f88cff76bfff700790db8",
+            "body_before": "Function: Unwind@00c85608 at 00c85608\nSignature: undefined Unwind@00c85608(void)\nEntry: 00c85608\nBody: 00c85608 - 00c85610",
+            "decompile_lines_after": 10,
+            "gaps_remaining": 1,
+            "body_after": "Function: Unwind@00c85608 at 00c85608\nSignature: undefined Unwind@00c85608(void)\nEntry: 00c85608\nBody: 00c85608 - 00c85610",
+            "stored_body_tail_complete": false,
+            "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+          }
+        ]
+      },
+      "ao-state-funclet-definitions.json": {
+        "events": [
+          {
+            "recreate": "00c85608",
+            "previous": "Function: Unwind@00c85608 at 00c85608\nSignature: undefined Unwind@00c85608(void)\nEntry: 00c85608\nBody: 00c85608 - 00c85610",
+            "plate": null
+          },
+          {
+            "endpoint": "delete_function",
+            "body": {
+              "address": "00c85608"
+            },
+            "result": {
+              "success": true,
+              "address": "00c85608",
+              "deleted_function": "Unwind@00c85608",
+              "body_size": 9,
+              "message": "Function 'Unwind@00c85608' deleted at 00c85608"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00c85608",
+              "end_address": "00c85613"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00c85608",
+              "end_address": "00c85612",
+              "bytes_disassembled": 11,
+              "message": "Successfully disassembled 11 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00c85608",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00c85608",
+              "function_name": "Unwind@00c85608",
+              "entry_point": "00c85608",
+              "body_size": 11,
+              "message": "Function created successfully at 00c85608"
+            }
+          },
+          {
+            "defined": "00c85608",
+            "end": "00c85613",
+            "name": null,
+            "after": "Function: Unwind@00c85608 at 00c85608\nSignature: undefined Unwind@00c85608(void)\nEntry: 00c85608\nBody: 00c85608 - 00c85612"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "final_merged_validation_ao": {
+    "tested_commit": "fe3ae2c51c2cd681a975c2e15db7092dc06f97cf",
+    "reviewed_source_commit": "89e23a18ccb60f8ec18cefb50e90ceb532783c65",
+    "build": "local/ao-final-combined-build.log: strict MSVC Win32 and both seeded CTests passed",
+    "all10_reviewed_source_header_hashes_preserved": true,
+    "all54_name_evidence_rows_preserved": true,
+    "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+    "current_library_replays": [
+      {
+        "label": "text",
+        "exit_code": 0,
+        "log": "local\\ao-text-current-replay.log",
+        "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+        "source_sha256": "9cad29f895a90fb0af2863f17e0f5485348770c31b8a5f5f020e91c3eb0da257",
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\text-current.cmd",
+        "executable_sha256": "f1e546aa348f230e99378114963a239de0d3f09202f57a801313d0d910c343c3"
+      },
+      {
+        "label": "parameters",
+        "exit_code": 0,
+        "log": "local\\ao-parameters-current-replay.log",
+        "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+        "source_sha256": "2c6bf74c361c624a9779945487b3e76f84aade6e2184c0b4319d5783d173aa6f",
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\parameters-current.cmd",
+        "executable_sha256": "15f890b0ba9179e5006f816069b0bfaf856354537cb92b02d7af5a36ad81604b"
+      },
+      {
+        "label": "definition-loading",
+        "exit_code": 0,
+        "log": "local\\ao-definition-loading-current-replay.log",
+        "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+        "source_sha256": "01fe7404a896ff634fd05e114351533b0146a66bcdd6025808217935a11809b6",
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\definition-loading-current.cmd",
+        "executable_sha256": "bbc30283999b97b67eb05cb8d53efee8b17bf737d8916f03b62bade2702cb0f5"
+      },
+      {
+        "label": "state",
+        "exit_code": 0,
+        "log": "local\\ao-state-current-replay.log",
+        "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+        "source_sha256": "7c50ba3fb0915561548435540ea4f1b2274cddd75018d471bb3ca3ffe5858f71",
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\state-current.cmd",
+        "executable_sha256": "35ab09a74173ac78d5b4a006cea89e525a1183dbc03be3f2e375b0d4a36d6394"
+      }
+    ],
+    "new_functions": 45,
+    "revised_spawn_functions": 1,
+    "native_signatures": 46,
+    "analyzed_bodies": 8,
+    "direct_call_rows": 484,
+    "failed_call_rows": 0,
+    "original_fh3_and_gameplay": false
   }
 }
