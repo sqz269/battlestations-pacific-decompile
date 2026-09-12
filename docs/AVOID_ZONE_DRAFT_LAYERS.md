@@ -196,3 +196,8 @@ partition parameter bits. No tracked tests were added. This is build and
 fixture evidence, not native whole-function differential, ABI compatibility,
 runtime physics integration or game validation. Call rows are checked in
 `reports/avoid_zone_draft_layers.json`.
+
+
+## Integration review correction
+
+The descriptor projection returns the final create-body inputs. Besides stores00424204..004243E5, it consumes the shape-vector end increment at0042445C and flags OR at00424463 (through00424469). The intervening native vector execution remains unresolved; coverage is discontiguous. An independent assembly review accepted the implemented stages after this coverage correction. Nine false free-call fallthrough gaps in00423C50 were repaired under the Ghidra write lock;00424D00 already had no remaining call gap. See reports/avoid_zone_draft_flow_repair.json.

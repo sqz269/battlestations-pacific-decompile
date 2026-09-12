@@ -28,7 +28,8 @@
       "unresolved_ranges": [
         "00423cf2-00423d44",
         "0042414e-00424203",
-        "004243e6-0042465a"
+        "004243e6-0042445b",
+        "0042446a-0042465a"
       ]
     },
     {
@@ -65,9 +66,14 @@
     },
     {
       "address": "00424204",
-      "body_end_inclusive": "004243e5",
+      "body_end_inclusive": "00424469",
       "containing_function": "00423c50",
-      "name": "avoid_zone_draft_body_inputs_00424204"
+      "name": "avoid_zone_draft_body_inputs_00424204",
+      "covered_ranges": [
+        "00424204-004243e5",
+        "0042445c-00424469"
+      ],
+      "coverage": "discontiguous final descriptor inputs; intervening native vector execution remains unresolved"
     }
   ],
   "no_ghidra_function": [],
@@ -904,7 +910,9 @@
     "abi_compatible": false,
     "game_validated": false,
     "runtime_physics_integration": false,
-    "executable_wiring_changed": false
+    "executable_wiring_changed": false,
+    "independent_review": "Accepted after correcting final descriptor coverage to include0042445C shape-vector end increment and00424463 flag OR; instruction bytes through00424469. No runtime physics claim.",
+    "flow_repair": "reports/avoid_zone_draft_flow_repair.json: nine CALL_RETURN gaps repaired in00423C50;00424D00 had no remaining call gap and alignment was retained"
   },
   "ghidra_annotation_policy": {
     "applied": false,

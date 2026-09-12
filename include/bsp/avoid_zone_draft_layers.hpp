@@ -104,7 +104,8 @@ struct AvoidZoneDraftBodyInputs {
     AvoidZoneDraftShapeInputs shape;
 };
 
-// Partial 00423C50, descriptor stores only. Call only after 00C32D20>=4 and
+// Partial 00423C50, final descriptor inputs: stores 00424204..004243E5 plus
+// shape-vector count/flags stores 0042445C..00424469. Call only after 00C32D20>=4 and
 // 0041C0F0/00C40F50 have copied the hull into the manager's +6Ch list. The
 // borrowed handle must remain alive through the resulting world's use.
 // Does not execute 00C5D580 or append its result to manager+5Ch.
