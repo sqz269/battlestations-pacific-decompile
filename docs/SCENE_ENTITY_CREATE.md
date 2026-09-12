@@ -276,3 +276,14 @@ reader are contracts, not ports.
 | `scene_entity_creator_fields` | 004e9e40 004e9920 | Which creator instruction writes the entity name, class, party and the u16 at `+174h`, for the `Cloud` exemplar |
 | `scene_property_bag_merge` | 008f54f0 008f33f0 008f4f60 | The merge rule and the meaning of the `1` argument |
 | `scene_record_map` | 00468cd0 | What fills the record map at `SceneDatabase+18h` and the full record layout |
+
+## Correction from docs/SCENE_RECORD_MAP.md (packet cc2_scene_record_map)
+
+The map at `SceneDatabase+18h` that `0046D930` resolves the name in is the **hidden-entity
+record map**: `std::map<NativeString, SceneHiddenEntityRecord*, LessCaseInsensitive>`, filled by
+`BSP_SceneFile_ReadEntityBlock` only for entities authored with the `Hidden` property (parsed,
+never instantiated during the read), and read by the `FindHiddenEntity` binding `008A9E10`.
+So `BSP_SceneDatabase_CreateEntityByName` instantiates an authored *hidden* entity by name, which
+is what `Spawn` and `GenerateObject` do; `record+8h` is the strdup'd entity name, not a class-name
+length, and the record is `5Ch` bytes (vftable `00CE5640`, bag `+4h`, name `+8h`, class name
+`+0Ch`, party `+10h`, sixteen floats `+14h`, parent name `+54h/+58h`).
