@@ -253,6 +253,2940 @@
     "program": "battlestationspacific.exe",
     "message": "Program saved successfully"
    }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0042c010",
+    "end_address": "0042c032"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0042c010",
+    "end_address": "0042c031",
+    "bytes_disassembled": 34,
+    "message": "Successfully disassembled 34 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0042c010",
+    "disassemble_first": false,
+    "name": "BSP_ClassId4C_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "0042c010",
+    "function_name": "BSP_ClassId4C_IsKindOf",
+    "entry_point": "0042c010",
+    "body_size": 34,
+    "message": "Function created successfully at 0042c010",
+    "warnings": [
+     "Function name 'BSP_ClassId4C_IsKindOf' \u2014 main part 'ClassId4C_IsKindOf' is not PascalCase. Expected: Classid4cIskindof",
+     "Function name 'BSP_ClassId4C_IsKindOf' \u2014 main part 'ClassId4C_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ClassId4C_IsKindOf' does not start with a recognized verb. First word 'Class' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "0042c010",
+   "end": "0042c032",
+   "name": "BSP_ClassId4C_IsKindOf",
+   "after": "Function: BSP_ClassId4C_IsKindOf at 0042c010\nSignature: undefined BSP_ClassId4C_IsKindOf(void)\nEntry: 0042c010\nBody: 0042c010 - 0042c031"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004351e0",
+    "end_address": "00435207"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004351e0",
+    "end_address": "00435206",
+    "bytes_disassembled": 39,
+    "message": "Successfully disassembled 39 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004351e0",
+    "disassemble_first": false,
+    "name": "BSP_ClassId4E_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "004351e0",
+    "function_name": "BSP_ClassId4E_IsKindOf",
+    "entry_point": "004351e0",
+    "body_size": 39,
+    "message": "Function created successfully at 004351e0",
+    "warnings": [
+     "Function name 'BSP_ClassId4E_IsKindOf' \u2014 main part 'ClassId4E_IsKindOf' is not PascalCase. Expected: Classid4eIskindof",
+     "Function name 'BSP_ClassId4E_IsKindOf' \u2014 main part 'ClassId4E_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ClassId4E_IsKindOf' does not start with a recognized verb. First word 'Class' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "004351e0",
+   "end": "00435207",
+   "name": "BSP_ClassId4E_IsKindOf",
+   "after": "Function: BSP_ClassId4E_IsKindOf at 004351e0\nSignature: undefined BSP_ClassId4E_IsKindOf(void)\nEntry: 004351e0\nBody: 004351e0 - 00435206"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00470be0",
+    "end_address": "00470c02"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00470be0",
+    "end_address": "00470c01",
+    "bytes_disassembled": 34,
+    "message": "Successfully disassembled 34 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00470be0",
+    "disassemble_first": false,
+    "name": "BSP_ClassId37_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "00470be0",
+    "function_name": "BSP_ClassId37_IsKindOf",
+    "entry_point": "00470be0",
+    "body_size": 34,
+    "message": "Function created successfully at 00470be0",
+    "warnings": [
+     "Function name 'BSP_ClassId37_IsKindOf' \u2014 main part 'ClassId37_IsKindOf' is not PascalCase. Expected: Classid37Iskindof",
+     "Function name 'BSP_ClassId37_IsKindOf' \u2014 main part 'ClassId37_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ClassId37_IsKindOf' does not start with a recognized verb. First word 'Class' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00470be0",
+   "end": "00470c02",
+   "name": "BSP_ClassId37_IsKindOf",
+   "after": "Function: BSP_ClassId37_IsKindOf at 00470be0\nSignature: undefined BSP_ClassId37_IsKindOf(void)\nEntry: 00470be0\nBody: 00470be0 - 00470c01"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00470c10",
+    "end_address": "00470c37"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00470c10",
+    "end_address": "00470c36",
+    "bytes_disassembled": 39,
+    "message": "Successfully disassembled 39 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00470c10",
+    "disassemble_first": false,
+    "name": "BSP_ClassId3E_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "00470c10",
+    "function_name": "BSP_ClassId3E_IsKindOf",
+    "entry_point": "00470c10",
+    "body_size": 39,
+    "message": "Function created successfully at 00470c10",
+    "warnings": [
+     "Function name 'BSP_ClassId3E_IsKindOf' \u2014 main part 'ClassId3E_IsKindOf' is not PascalCase. Expected: Classid3eIskindof",
+     "Function name 'BSP_ClassId3E_IsKindOf' \u2014 main part 'ClassId3E_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ClassId3E_IsKindOf' does not start with a recognized verb. First word 'Class' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00470c10",
+   "end": "00470c37",
+   "name": "BSP_ClassId3E_IsKindOf",
+   "after": "Function: BSP_ClassId3E_IsKindOf at 00470c10\nSignature: undefined BSP_ClassId3E_IsKindOf(void)\nEntry: 00470c10\nBody: 00470c10 - 00470c36"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00472870",
+    "end_address": "00472897"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00472870",
+    "end_address": "00472896",
+    "bytes_disassembled": 39,
+    "message": "Successfully disassembled 39 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00472870",
+    "disassemble_first": false,
+    "name": "BSP_ClassId39_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "00472870",
+    "function_name": "BSP_ClassId39_IsKindOf",
+    "entry_point": "00472870",
+    "body_size": 39,
+    "message": "Function created successfully at 00472870",
+    "warnings": [
+     "Function name 'BSP_ClassId39_IsKindOf' \u2014 main part 'ClassId39_IsKindOf' is not PascalCase. Expected: Classid39Iskindof",
+     "Function name 'BSP_ClassId39_IsKindOf' \u2014 main part 'ClassId39_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ClassId39_IsKindOf' does not start with a recognized verb. First word 'Class' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00472870",
+   "end": "00472897",
+   "name": "BSP_ClassId39_IsKindOf",
+   "after": "Function: BSP_ClassId39_IsKindOf at 00472870\nSignature: undefined BSP_ClassId39_IsKindOf(void)\nEntry: 00472870\nBody: 00472870 - 00472896"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004740e0",
+    "end_address": "00474107"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004740e0",
+    "end_address": "00474106",
+    "bytes_disassembled": 39,
+    "message": "Successfully disassembled 39 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004740e0",
+    "disassemble_first": false,
+    "name": "BSP_ClassId3C_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "004740e0",
+    "function_name": "BSP_ClassId3C_IsKindOf",
+    "entry_point": "004740e0",
+    "body_size": 39,
+    "message": "Function created successfully at 004740e0",
+    "warnings": [
+     "Function name 'BSP_ClassId3C_IsKindOf' \u2014 main part 'ClassId3C_IsKindOf' is not PascalCase. Expected: Classid3cIskindof",
+     "Function name 'BSP_ClassId3C_IsKindOf' \u2014 main part 'ClassId3C_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ClassId3C_IsKindOf' does not start with a recognized verb. First word 'Class' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "004740e0",
+   "end": "00474107",
+   "name": "BSP_ClassId3C_IsKindOf",
+   "after": "Function: BSP_ClassId3C_IsKindOf at 004740e0\nSignature: undefined BSP_ClassId3C_IsKindOf(void)\nEntry: 004740e0\nBody: 004740e0 - 00474106"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00476310",
+    "end_address": "00476337"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00476310",
+    "end_address": "00476336",
+    "bytes_disassembled": 39,
+    "message": "Successfully disassembled 39 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00476310",
+    "disassemble_first": false,
+    "name": "BSP_Cloud_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "00476310",
+    "function_name": "BSP_Cloud_IsKindOf",
+    "entry_point": "00476310",
+    "body_size": 39,
+    "message": "Function created successfully at 00476310",
+    "warnings": [
+     "Function name 'BSP_Cloud_IsKindOf' \u2014 main part 'Cloud_IsKindOf' is not PascalCase. Expected: CloudIskindof",
+     "Function name 'BSP_Cloud_IsKindOf' \u2014 main part 'Cloud_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Cloud_IsKindOf' does not start with a recognized verb. First word 'Cloud_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00476310",
+   "end": "00476337",
+   "name": "BSP_Cloud_IsKindOf",
+   "after": "Function: BSP_Cloud_IsKindOf at 00476310\nSignature: undefined BSP_Cloud_IsKindOf(void)\nEntry: 00476310\nBody: 00476310 - 00476336"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00479f60",
+    "end_address": "00479f87"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00479f60",
+    "end_address": "00479f86",
+    "bytes_disassembled": 39,
+    "message": "Successfully disassembled 39 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00479f60",
+    "disassemble_first": false,
+    "name": "BSP_ClassId38_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "00479f60",
+    "function_name": "BSP_ClassId38_IsKindOf",
+    "entry_point": "00479f60",
+    "body_size": 39,
+    "message": "Function created successfully at 00479f60",
+    "warnings": [
+     "Function name 'BSP_ClassId38_IsKindOf' \u2014 main part 'ClassId38_IsKindOf' is not PascalCase. Expected: Classid38Iskindof",
+     "Function name 'BSP_ClassId38_IsKindOf' \u2014 main part 'ClassId38_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ClassId38_IsKindOf' does not start with a recognized verb. First word 'Class' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00479f60",
+   "end": "00479f87",
+   "name": "BSP_ClassId38_IsKindOf",
+   "after": "Function: BSP_ClassId38_IsKindOf at 00479f60\nSignature: undefined BSP_ClassId38_IsKindOf(void)\nEntry: 00479f60\nBody: 00479f60 - 00479f86"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004a7bc0",
+    "end_address": "004a7be7"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004a7bc0",
+    "end_address": "004a7be6",
+    "bytes_disassembled": 39,
+    "message": "Successfully disassembled 39 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004a7bc0",
+    "disassemble_first": false,
+    "name": "BSP_ClassId3F_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "004a7bc0",
+    "function_name": "BSP_ClassId3F_IsKindOf",
+    "entry_point": "004a7bc0",
+    "body_size": 39,
+    "message": "Function created successfully at 004a7bc0",
+    "warnings": [
+     "Function name 'BSP_ClassId3F_IsKindOf' \u2014 main part 'ClassId3F_IsKindOf' is not PascalCase. Expected: Classid3fIskindof",
+     "Function name 'BSP_ClassId3F_IsKindOf' \u2014 main part 'ClassId3F_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ClassId3F_IsKindOf' does not start with a recognized verb. First word 'Class' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "004a7bc0",
+   "end": "004a7be7",
+   "name": "BSP_ClassId3F_IsKindOf",
+   "after": "Function: BSP_ClassId3F_IsKindOf at 004a7bc0\nSignature: undefined BSP_ClassId3F_IsKindOf(void)\nEntry: 004a7bc0\nBody: 004a7bc0 - 004a7be6"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004ac8e0",
+    "end_address": "004ac907"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004ac8e0",
+    "end_address": "004ac906",
+    "bytes_disassembled": 39,
+    "message": "Successfully disassembled 39 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004ac8e0",
+    "disassemble_first": false,
+    "name": "BSP_ClassId40_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "004ac8e0",
+    "function_name": "BSP_ClassId40_IsKindOf",
+    "entry_point": "004ac8e0",
+    "body_size": 39,
+    "message": "Function created successfully at 004ac8e0",
+    "warnings": [
+     "Function name 'BSP_ClassId40_IsKindOf' \u2014 main part 'ClassId40_IsKindOf' is not PascalCase. Expected: Classid40Iskindof",
+     "Function name 'BSP_ClassId40_IsKindOf' \u2014 main part 'ClassId40_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ClassId40_IsKindOf' does not start with a recognized verb. First word 'Class' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "004ac8e0",
+   "end": "004ac907",
+   "name": "BSP_ClassId40_IsKindOf",
+   "after": "Function: BSP_ClassId40_IsKindOf at 004ac8e0\nSignature: undefined BSP_ClassId40_IsKindOf(void)\nEntry: 004ac8e0\nBody: 004ac8e0 - 004ac906"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004af840",
+    "end_address": "004af867"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004af840",
+    "end_address": "004af866",
+    "bytes_disassembled": 39,
+    "message": "Successfully disassembled 39 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004af840",
+    "disassemble_first": false,
+    "name": "BSP_ClassId3A_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "004af840",
+    "function_name": "BSP_ClassId3A_IsKindOf",
+    "entry_point": "004af840",
+    "body_size": 39,
+    "message": "Function created successfully at 004af840",
+    "warnings": [
+     "Function name 'BSP_ClassId3A_IsKindOf' \u2014 main part 'ClassId3A_IsKindOf' is not PascalCase. Expected: Classid3aIskindof",
+     "Function name 'BSP_ClassId3A_IsKindOf' \u2014 main part 'ClassId3A_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ClassId3A_IsKindOf' does not start with a recognized verb. First word 'Class' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "004af840",
+   "end": "004af867",
+   "name": "BSP_ClassId3A_IsKindOf",
+   "after": "Function: BSP_ClassId3A_IsKindOf at 004af840\nSignature: undefined BSP_ClassId3A_IsKindOf(void)\nEntry: 004af840\nBody: 004af840 - 004af866"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004b1f40",
+    "end_address": "004b1f67"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004b1f40",
+    "end_address": "004b1f66",
+    "bytes_disassembled": 39,
+    "message": "Successfully disassembled 39 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004b1f40",
+    "disassemble_first": false,
+    "name": "BSP_Wreck_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "004b1f40",
+    "function_name": "BSP_Wreck_IsKindOf",
+    "entry_point": "004b1f40",
+    "body_size": 39,
+    "message": "Function created successfully at 004b1f40",
+    "warnings": [
+     "Function name 'BSP_Wreck_IsKindOf' \u2014 main part 'Wreck_IsKindOf' is not PascalCase. Expected: WreckIskindof",
+     "Function name 'BSP_Wreck_IsKindOf' \u2014 main part 'Wreck_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Wreck_IsKindOf' does not start with a recognized verb. First word 'Wreck_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "004b1f40",
+   "end": "004b1f67",
+   "name": "BSP_Wreck_IsKindOf",
+   "after": "Function: BSP_Wreck_IsKindOf at 004b1f40\nSignature: undefined BSP_Wreck_IsKindOf(void)\nEntry: 004b1f40\nBody: 004b1f40 - 004b1f66"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004e6920",
+    "end_address": "004e6947"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004e6920",
+    "end_address": "004e6946",
+    "bytes_disassembled": 39,
+    "message": "Successfully disassembled 39 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004e6920",
+    "disassemble_first": false,
+    "name": "BSP_CameraPath_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "004e6920",
+    "function_name": "BSP_CameraPath_IsKindOf",
+    "entry_point": "004e6920",
+    "body_size": 39,
+    "message": "Function created successfully at 004e6920",
+    "warnings": [
+     "Function name 'BSP_CameraPath_IsKindOf' \u2014 main part 'CameraPath_IsKindOf' is not PascalCase. Expected: CamerapathIskindof",
+     "Function name 'BSP_CameraPath_IsKindOf' \u2014 main part 'CameraPath_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_CameraPath_IsKindOf' does not start with a recognized verb. First word 'Camera' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "004e6920",
+   "end": "004e6947",
+   "name": "BSP_CameraPath_IsKindOf",
+   "after": "Function: BSP_CameraPath_IsKindOf at 004e6920\nSignature: undefined BSP_CameraPath_IsKindOf(void)\nEntry: 004e6920\nBody: 004e6920 - 004e6946"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004e6970",
+    "end_address": "004e6997"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004e6970",
+    "end_address": "004e6996",
+    "bytes_disassembled": 39,
+    "message": "Successfully disassembled 39 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004e6970",
+    "disassemble_first": false,
+    "name": "BSP_NavPoint_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "004e6970",
+    "function_name": "BSP_NavPoint_IsKindOf",
+    "entry_point": "004e6970",
+    "body_size": 39,
+    "message": "Function created successfully at 004e6970",
+    "warnings": [
+     "Function name 'BSP_NavPoint_IsKindOf' \u2014 main part 'NavPoint_IsKindOf' is not PascalCase. Expected: NavpointIskindof",
+     "Function name 'BSP_NavPoint_IsKindOf' \u2014 main part 'NavPoint_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_NavPoint_IsKindOf' does not start with a recognized verb. First word 'Nav' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "004e6970",
+   "end": "004e6997",
+   "name": "BSP_NavPoint_IsKindOf",
+   "after": "Function: BSP_NavPoint_IsKindOf at 004e6970\nSignature: undefined BSP_NavPoint_IsKindOf(void)\nEntry: 004e6970\nBody: 004e6970 - 004e6996"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004e69c0",
+    "end_address": "004e69e7"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004e69c0",
+    "end_address": "004e69e6",
+    "bytes_disassembled": 39,
+    "message": "Successfully disassembled 39 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004e69c0",
+    "disassemble_first": false,
+    "name": "BSP_MovieCamPos_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "004e69c0",
+    "function_name": "BSP_MovieCamPos_IsKindOf",
+    "entry_point": "004e69c0",
+    "body_size": 39,
+    "message": "Function created successfully at 004e69c0",
+    "warnings": [
+     "Function name 'BSP_MovieCamPos_IsKindOf' \u2014 main part 'MovieCamPos_IsKindOf' is not PascalCase. Expected: MoviecamposIskindof",
+     "Function name 'BSP_MovieCamPos_IsKindOf' \u2014 main part 'MovieCamPos_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MovieCamPos_IsKindOf' does not start with a recognized verb. First word 'Movie' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "004e69c0",
+   "end": "004e69e7",
+   "name": "BSP_MovieCamPos_IsKindOf",
+   "after": "Function: BSP_MovieCamPos_IsKindOf at 004e69c0\nSignature: undefined BSP_MovieCamPos_IsKindOf(void)\nEntry: 004e69c0\nBody: 004e69c0 - 004e69e6"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004e6a10",
+    "end_address": "004e6a37"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004e6a10",
+    "end_address": "004e6a36",
+    "bytes_disassembled": 39,
+    "message": "Successfully disassembled 39 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004e6a10",
+    "disassemble_first": false,
+    "name": "BSP_MovieCamLookat_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "004e6a10",
+    "function_name": "BSP_MovieCamLookat_IsKindOf",
+    "entry_point": "004e6a10",
+    "body_size": 39,
+    "message": "Function created successfully at 004e6a10",
+    "warnings": [
+     "Function name 'BSP_MovieCamLookat_IsKindOf' \u2014 main part 'MovieCamLookat_IsKindOf' is not PascalCase. Expected: MoviecamlookatIskindof",
+     "Function name 'BSP_MovieCamLookat_IsKindOf' \u2014 main part 'MovieCamLookat_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MovieCamLookat_IsKindOf' does not start with a recognized verb. First word 'Movie' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "004e6a10",
+   "end": "004e6a37",
+   "name": "BSP_MovieCamLookat_IsKindOf",
+   "after": "Function: BSP_MovieCamLookat_IsKindOf at 004e6a10\nSignature: undefined BSP_MovieCamLookat_IsKindOf(void)\nEntry: 004e6a10\nBody: 004e6a10 - 004e6a36"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004e9620",
+    "end_address": "004e9647"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004e9620",
+    "end_address": "004e9646",
+    "bytes_disassembled": 39,
+    "message": "Successfully disassembled 39 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004e9620",
+    "disassemble_first": false,
+    "name": "BSP_LandingPoint_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "004e9620",
+    "function_name": "BSP_LandingPoint_IsKindOf",
+    "entry_point": "004e9620",
+    "body_size": 39,
+    "message": "Function created successfully at 004e9620",
+    "warnings": [
+     "Function name 'BSP_LandingPoint_IsKindOf' \u2014 main part 'LandingPoint_IsKindOf' is not PascalCase. Expected: LandingpointIskindof",
+     "Function name 'BSP_LandingPoint_IsKindOf' \u2014 main part 'LandingPoint_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_LandingPoint_IsKindOf' does not start with a recognized verb. First word 'Landing' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "004e9620",
+   "end": "004e9647",
+   "name": "BSP_LandingPoint_IsKindOf",
+   "after": "Function: BSP_LandingPoint_IsKindOf at 004e9620\nSignature: undefined BSP_LandingPoint_IsKindOf(void)\nEntry: 004e9620\nBody: 004e9620 - 004e9646"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004f1360",
+    "end_address": "004f1387"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004f1360",
+    "end_address": "004f1386",
+    "bytes_disassembled": 39,
+    "message": "Successfully disassembled 39 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004f1360",
+    "disassemble_first": false,
+    "name": "BSP_Landscape_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "004f1360",
+    "function_name": "BSP_Landscape_IsKindOf",
+    "entry_point": "004f1360",
+    "body_size": 39,
+    "message": "Function created successfully at 004f1360",
+    "warnings": [
+     "Function name 'BSP_Landscape_IsKindOf' \u2014 main part 'Landscape_IsKindOf' is not PascalCase. Expected: LandscapeIskindof",
+     "Function name 'BSP_Landscape_IsKindOf' \u2014 main part 'Landscape_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Landscape_IsKindOf' does not start with a recognized verb. First word 'Landscape_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "004f1360",
+   "end": "004f1387",
+   "name": "BSP_Landscape_IsKindOf",
+   "after": "Function: BSP_Landscape_IsKindOf at 004f1360\nSignature: undefined BSP_Landscape_IsKindOf(void)\nEntry: 004f1360\nBody: 004f1360 - 004f1386"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004f1750",
+    "end_address": "004f1777"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004f1750",
+    "end_address": "004f1776",
+    "bytes_disassembled": 39,
+    "message": "Successfully disassembled 39 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004f1750",
+    "disassemble_first": false,
+    "name": "BSP_ClassId02_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "004f1750",
+    "function_name": "BSP_ClassId02_IsKindOf",
+    "entry_point": "004f1750",
+    "body_size": 39,
+    "message": "Function created successfully at 004f1750",
+    "warnings": [
+     "Function name 'BSP_ClassId02_IsKindOf' \u2014 main part 'ClassId02_IsKindOf' is not PascalCase. Expected: Classid02Iskindof",
+     "Function name 'BSP_ClassId02_IsKindOf' \u2014 main part 'ClassId02_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ClassId02_IsKindOf' does not start with a recognized verb. First word 'Class' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "004f1750",
+   "end": "004f1777",
+   "name": "BSP_ClassId02_IsKindOf",
+   "after": "Function: BSP_ClassId02_IsKindOf at 004f1750\nSignature: undefined BSP_ClassId02_IsKindOf(void)\nEntry: 004f1750\nBody: 004f1750 - 004f1776"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004f1800",
+    "end_address": "004f182c"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004f1800",
+    "end_address": "004f182b",
+    "bytes_disassembled": 44,
+    "message": "Successfully disassembled 44 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004f1800",
+    "disassemble_first": false,
+    "name": "BSP_SpawnPoint_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "004f1800",
+    "function_name": "BSP_SpawnPoint_IsKindOf",
+    "entry_point": "004f1800",
+    "body_size": 44,
+    "message": "Function created successfully at 004f1800",
+    "warnings": [
+     "Function name 'BSP_SpawnPoint_IsKindOf' \u2014 main part 'SpawnPoint_IsKindOf' is not PascalCase. Expected: SpawnpointIskindof",
+     "Function name 'BSP_SpawnPoint_IsKindOf' \u2014 main part 'SpawnPoint_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "004f1800",
+   "end": "004f182c",
+   "name": "BSP_SpawnPoint_IsKindOf",
+   "after": "Function: BSP_SpawnPoint_IsKindOf at 004f1800\nSignature: undefined BSP_SpawnPoint_IsKindOf(void)\nEntry: 004f1800\nBody: 004f1800 - 004f182b"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004f2560",
+    "end_address": "004f258c"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004f2560",
+    "end_address": "004f258b",
+    "bytes_disassembled": 44,
+    "message": "Successfully disassembled 44 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004f2560",
+    "disassemble_first": false,
+    "name": "BSP_LandConvoy_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "004f2560",
+    "function_name": "BSP_LandConvoy_IsKindOf",
+    "entry_point": "004f2560",
+    "body_size": 44,
+    "message": "Function created successfully at 004f2560",
+    "warnings": [
+     "Function name 'BSP_LandConvoy_IsKindOf' \u2014 main part 'LandConvoy_IsKindOf' is not PascalCase. Expected: LandconvoyIskindof",
+     "Function name 'BSP_LandConvoy_IsKindOf' \u2014 main part 'LandConvoy_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_LandConvoy_IsKindOf' does not start with a recognized verb. First word 'Land' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "004f2560",
+   "end": "004f258c",
+   "name": "BSP_LandConvoy_IsKindOf",
+   "after": "Function: BSP_LandConvoy_IsKindOf at 004f2560\nSignature: undefined BSP_LandConvoy_IsKindOf(void)\nEntry: 004f2560\nBody: 004f2560 - 004f258b"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "005177d0",
+    "end_address": "005177f7"
+   },
+   "result": {
+    "success": true,
+    "start_address": "005177d0",
+    "end_address": "005177f6",
+    "bytes_disassembled": 39,
+    "message": "Successfully disassembled 39 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "005177d0",
+    "disassemble_first": false,
+    "name": "BSP_ClassId53_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "005177d0",
+    "function_name": "BSP_ClassId53_IsKindOf",
+    "entry_point": "005177d0",
+    "body_size": 39,
+    "message": "Function created successfully at 005177d0",
+    "warnings": [
+     "Function name 'BSP_ClassId53_IsKindOf' \u2014 main part 'ClassId53_IsKindOf' is not PascalCase. Expected: Classid53Iskindof",
+     "Function name 'BSP_ClassId53_IsKindOf' \u2014 main part 'ClassId53_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ClassId53_IsKindOf' does not start with a recognized verb. First word 'Class' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "005177d0",
+   "end": "005177f7",
+   "name": "BSP_ClassId53_IsKindOf",
+   "after": "Function: BSP_ClassId53_IsKindOf at 005177d0\nSignature: undefined BSP_ClassId53_IsKindOf(void)\nEntry: 005177d0\nBody: 005177d0 - 005177f6"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00519380",
+    "end_address": "005193a7"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00519380",
+    "end_address": "005193a6",
+    "bytes_disassembled": 39,
+    "message": "Successfully disassembled 39 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00519380",
+    "disassemble_first": false,
+    "name": "BSP_ClassId56_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "00519380",
+    "function_name": "BSP_ClassId56_IsKindOf",
+    "entry_point": "00519380",
+    "body_size": 39,
+    "message": "Function created successfully at 00519380",
+    "warnings": [
+     "Function name 'BSP_ClassId56_IsKindOf' \u2014 main part 'ClassId56_IsKindOf' is not PascalCase. Expected: Classid56Iskindof",
+     "Function name 'BSP_ClassId56_IsKindOf' \u2014 main part 'ClassId56_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ClassId56_IsKindOf' does not start with a recognized verb. First word 'Class' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00519380",
+   "end": "005193a7",
+   "name": "BSP_ClassId56_IsKindOf",
+   "after": "Function: BSP_ClassId56_IsKindOf at 00519380\nSignature: undefined BSP_ClassId56_IsKindOf(void)\nEntry: 00519380\nBody: 00519380 - 005193a6"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006051e0",
+    "end_address": "00605207"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006051e0",
+    "end_address": "00605206",
+    "bytes_disassembled": 39,
+    "message": "Successfully disassembled 39 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006051e0",
+    "disassemble_first": false,
+    "name": "BSP_ClassId51_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "006051e0",
+    "function_name": "BSP_ClassId51_IsKindOf",
+    "entry_point": "006051e0",
+    "body_size": 39,
+    "message": "Function created successfully at 006051e0",
+    "warnings": [
+     "Function name 'BSP_ClassId51_IsKindOf' \u2014 main part 'ClassId51_IsKindOf' is not PascalCase. Expected: Classid51Iskindof",
+     "Function name 'BSP_ClassId51_IsKindOf' \u2014 main part 'ClassId51_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ClassId51_IsKindOf' does not start with a recognized verb. First word 'Class' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "006051e0",
+   "end": "00605207",
+   "name": "BSP_ClassId51_IsKindOf",
+   "after": "Function: BSP_ClassId51_IsKindOf at 006051e0\nSignature: undefined BSP_ClassId51_IsKindOf(void)\nEntry: 006051e0\nBody: 006051e0 - 00605206"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006d1610",
+    "end_address": "006d163c"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006d1610",
+    "end_address": "006d163b",
+    "bytes_disassembled": 44,
+    "message": "Successfully disassembled 44 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006d1610",
+    "disassemble_first": false,
+    "name": "BSP_ClassId04_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "006d1610",
+    "function_name": "BSP_ClassId04_IsKindOf",
+    "entry_point": "006d1610",
+    "body_size": 44,
+    "message": "Function created successfully at 006d1610",
+    "warnings": [
+     "Function name 'BSP_ClassId04_IsKindOf' \u2014 main part 'ClassId04_IsKindOf' is not PascalCase. Expected: Classid04Iskindof",
+     "Function name 'BSP_ClassId04_IsKindOf' \u2014 main part 'ClassId04_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ClassId04_IsKindOf' does not start with a recognized verb. First word 'Class' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "006d1610",
+   "end": "006d163c",
+   "name": "BSP_ClassId04_IsKindOf",
+   "after": "Function: BSP_ClassId04_IsKindOf at 006d1610\nSignature: undefined BSP_ClassId04_IsKindOf(void)\nEntry: 006d1610\nBody: 006d1610 - 006d163b"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006d1650",
+    "end_address": "006d1681"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006d1650",
+    "end_address": "006d1680",
+    "bytes_disassembled": 49,
+    "message": "Successfully disassembled 49 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006d1650",
+    "disassemble_first": false,
+    "name": "BSP_ClassId05_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "006d1650",
+    "function_name": "BSP_ClassId05_IsKindOf",
+    "entry_point": "006d1650",
+    "body_size": 49,
+    "message": "Function created successfully at 006d1650",
+    "warnings": [
+     "Function name 'BSP_ClassId05_IsKindOf' \u2014 main part 'ClassId05_IsKindOf' is not PascalCase. Expected: Classid05Iskindof",
+     "Function name 'BSP_ClassId05_IsKindOf' \u2014 main part 'ClassId05_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ClassId05_IsKindOf' does not start with a recognized verb. First word 'Class' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "006d1650",
+   "end": "006d1681",
+   "name": "BSP_ClassId05_IsKindOf",
+   "after": "Function: BSP_ClassId05_IsKindOf at 006d1650\nSignature: undefined BSP_ClassId05_IsKindOf(void)\nEntry: 006d1650\nBody: 006d1650 - 006d1680"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006dfe50",
+    "end_address": "006dfe86"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006dfe50",
+    "end_address": "006dfe85",
+    "bytes_disassembled": 54,
+    "message": "Successfully disassembled 54 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006dfe50",
+    "disassemble_first": false,
+    "name": "BSP_ClassId06_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "006dfe50",
+    "function_name": "BSP_ClassId06_IsKindOf",
+    "entry_point": "006dfe50",
+    "body_size": 54,
+    "message": "Function created successfully at 006dfe50",
+    "warnings": [
+     "Function name 'BSP_ClassId06_IsKindOf' \u2014 main part 'ClassId06_IsKindOf' is not PascalCase. Expected: Classid06Iskindof",
+     "Function name 'BSP_ClassId06_IsKindOf' \u2014 main part 'ClassId06_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ClassId06_IsKindOf' does not start with a recognized verb. First word 'Class' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "006dfe50",
+   "end": "006dfe86",
+   "name": "BSP_ClassId06_IsKindOf",
+   "after": "Function: BSP_ClassId06_IsKindOf at 006dfe50\nSignature: undefined BSP_ClassId06_IsKindOf(void)\nEntry: 006dfe50\nBody: 006dfe50 - 006dfe85"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006dfe90",
+    "end_address": "006dfecb"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006dfe90",
+    "end_address": "006dfeca",
+    "bytes_disassembled": 59,
+    "message": "Successfully disassembled 59 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006dfe90",
+    "disassemble_first": false,
+    "name": "BSP_MBattleship_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "006dfe90",
+    "function_name": "BSP_MBattleship_IsKindOf",
+    "entry_point": "006dfe90",
+    "body_size": 59,
+    "message": "Function created successfully at 006dfe90",
+    "warnings": [
+     "Function name 'BSP_MBattleship_IsKindOf' \u2014 main part 'MBattleship_IsKindOf' is not PascalCase. Expected: MbattleshipIskindof",
+     "Function name 'BSP_MBattleship_IsKindOf' \u2014 main part 'MBattleship_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "006dfe90",
+   "end": "006dfecb",
+   "name": "BSP_MBattleship_IsKindOf",
+   "after": "Function: BSP_MBattleship_IsKindOf at 006dfe90\nSignature: undefined BSP_MBattleship_IsKindOf(void)\nEntry: 006dfe90\nBody: 006dfe90 - 006dfeca"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006e3d10",
+    "end_address": "006e3d41"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006e3d10",
+    "end_address": "006e3d40",
+    "bytes_disassembled": 49,
+    "message": "Successfully disassembled 49 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006e3d10",
+    "disassemble_first": false,
+    "name": "BSP_ClassId1E_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "006e3d10",
+    "function_name": "BSP_ClassId1E_IsKindOf",
+    "entry_point": "006e3d10",
+    "body_size": 49,
+    "message": "Function created successfully at 006e3d10",
+    "warnings": [
+     "Function name 'BSP_ClassId1E_IsKindOf' \u2014 main part 'ClassId1E_IsKindOf' is not PascalCase. Expected: Classid1eIskindof",
+     "Function name 'BSP_ClassId1E_IsKindOf' \u2014 main part 'ClassId1E_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ClassId1E_IsKindOf' does not start with a recognized verb. First word 'Class' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "006e3d10",
+   "end": "006e3d41",
+   "name": "BSP_ClassId1E_IsKindOf",
+   "after": "Function: BSP_ClassId1E_IsKindOf at 006e3d10\nSignature: undefined BSP_ClassId1E_IsKindOf(void)\nEntry: 006e3d10\nBody: 006e3d10 - 006e3d40"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006e3e10",
+    "end_address": "006e3e4b"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006e3e10",
+    "end_address": "006e3e4a",
+    "bytes_disassembled": 59,
+    "message": "Successfully disassembled 59 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006e3e10",
+    "disassemble_first": false,
+    "name": "BSP_MBombPlatform_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "006e3e10",
+    "function_name": "BSP_MBombPlatform_IsKindOf",
+    "entry_point": "006e3e10",
+    "body_size": 59,
+    "message": "Function created successfully at 006e3e10",
+    "warnings": [
+     "Function name 'BSP_MBombPlatform_IsKindOf' \u2014 main part 'MBombPlatform_IsKindOf' is not PascalCase. Expected: MbombplatformIskindof",
+     "Function name 'BSP_MBombPlatform_IsKindOf' \u2014 main part 'MBombPlatform_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "006e3e10",
+   "end": "006e3e4b",
+   "name": "BSP_MBombPlatform_IsKindOf",
+   "after": "Function: BSP_MBombPlatform_IsKindOf at 006e3e10\nSignature: undefined BSP_MBombPlatform_IsKindOf(void)\nEntry: 006e3e10\nBody: 006e3e10 - 006e3e4a"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006e43b0",
+    "end_address": "006e43f0"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006e43b0",
+    "end_address": "006e43ef",
+    "bytes_disassembled": 64,
+    "message": "Successfully disassembled 64 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006e43b0",
+    "disassemble_first": false,
+    "name": "BSP_MMultipleBombPlatform_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "006e43b0",
+    "function_name": "BSP_MMultipleBombPlatform_IsKindOf",
+    "entry_point": "006e43b0",
+    "body_size": 64,
+    "message": "Function created successfully at 006e43b0",
+    "warnings": [
+     "Function name 'BSP_MMultipleBombPlatform_IsKindOf' \u2014 main part 'MMultipleBombPlatform_IsKindOf' is not PascalCase. Expected: MmultiplebombplatformIskindof",
+     "Function name 'BSP_MMultipleBombPlatform_IsKindOf' \u2014 main part 'MMultipleBombPlatform_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "006e43b0",
+   "end": "006e43f0",
+   "name": "BSP_MMultipleBombPlatform_IsKindOf",
+   "after": "Function: BSP_MMultipleBombPlatform_IsKindOf at 006e43b0\nSignature: undefined BSP_MMultipleBombPlatform_IsKindOf(void)\nEntry: 006e43b0\nBody: 006e43b0 - 006e43ef"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006e7c00",
+    "end_address": "006e7c22"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006e7c00",
+    "end_address": "006e7c21",
+    "bytes_disassembled": 34,
+    "message": "Successfully disassembled 34 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006e7c00",
+    "disassemble_first": false,
+    "name": "BSP_MBullet_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "006e7c00",
+    "function_name": "BSP_MBullet_IsKindOf",
+    "entry_point": "006e7c00",
+    "body_size": 34,
+    "message": "Function created successfully at 006e7c00",
+    "warnings": [
+     "Function name 'BSP_MBullet_IsKindOf' \u2014 main part 'MBullet_IsKindOf' is not PascalCase. Expected: MbulletIskindof",
+     "Function name 'BSP_MBullet_IsKindOf' \u2014 main part 'MBullet_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "006e7c00",
+   "end": "006e7c22",
+   "name": "BSP_MBullet_IsKindOf",
+   "after": "Function: BSP_MBullet_IsKindOf at 006e7c00\nSignature: undefined BSP_MBullet_IsKindOf(void)\nEntry: 006e7c00\nBody: 006e7c00 - 006e7c21"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006eb230",
+    "end_address": "006eb26b"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006eb230",
+    "end_address": "006eb26a",
+    "bytes_disassembled": 59,
+    "message": "Successfully disassembled 59 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006eb230",
+    "disassemble_first": false,
+    "name": "BSP_MCargo_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "006eb230",
+    "function_name": "BSP_MCargo_IsKindOf",
+    "entry_point": "006eb230",
+    "body_size": 59,
+    "message": "Function created successfully at 006eb230",
+    "warnings": [
+     "Function name 'BSP_MCargo_IsKindOf' \u2014 main part 'MCargo_IsKindOf' is not PascalCase. Expected: McargoIskindof",
+     "Function name 'BSP_MCargo_IsKindOf' \u2014 main part 'MCargo_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "006eb230",
+   "end": "006eb26b",
+   "name": "BSP_MCargo_IsKindOf",
+   "after": "Function: BSP_MCargo_IsKindOf at 006eb230\nSignature: undefined BSP_MCargo_IsKindOf(void)\nEntry: 006eb230\nBody: 006eb230 - 006eb26a"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006ec7b0",
+    "end_address": "006ec7eb"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006ec7b0",
+    "end_address": "006ec7ea",
+    "bytes_disassembled": 59,
+    "message": "Successfully disassembled 59 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006ec7b0",
+    "disassemble_first": false,
+    "name": "BSP_MCatapult_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "006ec7b0",
+    "function_name": "BSP_MCatapult_IsKindOf",
+    "entry_point": "006ec7b0",
+    "body_size": 59,
+    "message": "Function created successfully at 006ec7b0",
+    "warnings": [
+     "Function name 'BSP_MCatapult_IsKindOf' \u2014 main part 'MCatapult_IsKindOf' is not PascalCase. Expected: McatapultIskindof",
+     "Function name 'BSP_MCatapult_IsKindOf' \u2014 main part 'MCatapult_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "006ec7b0",
+   "end": "006ec7eb",
+   "name": "BSP_MCatapult_IsKindOf",
+   "after": "Function: BSP_MCatapult_IsKindOf at 006ec7b0\nSignature: undefined BSP_MCatapult_IsKindOf(void)\nEntry: 006ec7b0\nBody: 006ec7b0 - 006ec7ea"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006f58e0",
+    "end_address": "006f591b"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006f58e0",
+    "end_address": "006f591a",
+    "bytes_disassembled": 59,
+    "message": "Successfully disassembled 59 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006f58e0",
+    "disassemble_first": false,
+    "name": "BSP_MCommandBuilding_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "006f58e0",
+    "function_name": "BSP_MCommandBuilding_IsKindOf",
+    "entry_point": "006f58e0",
+    "body_size": 59,
+    "message": "Function created successfully at 006f58e0",
+    "warnings": [
+     "Function name 'BSP_MCommandBuilding_IsKindOf' \u2014 main part 'MCommandBuilding_IsKindOf' is not PascalCase. Expected: McommandbuildingIskindof",
+     "Function name 'BSP_MCommandBuilding_IsKindOf' \u2014 main part 'MCommandBuilding_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "006f58e0",
+   "end": "006f591b",
+   "name": "BSP_MCommandBuilding_IsKindOf",
+   "after": "Function: BSP_MCommandBuilding_IsKindOf at 006f58e0\nSignature: undefined BSP_MCommandBuilding_IsKindOf(void)\nEntry: 006f58e0\nBody: 006f58e0 - 006f591a"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006fb3d0",
+    "end_address": "006fb40b"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006fb3d0",
+    "end_address": "006fb40a",
+    "bytes_disassembled": 59,
+    "message": "Successfully disassembled 59 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006fb3d0",
+    "disassemble_first": false,
+    "name": "BSP_MCruiser_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "006fb3d0",
+    "function_name": "BSP_MCruiser_IsKindOf",
+    "entry_point": "006fb3d0",
+    "body_size": 59,
+    "message": "Function created successfully at 006fb3d0",
+    "warnings": [
+     "Function name 'BSP_MCruiser_IsKindOf' \u2014 main part 'MCruiser_IsKindOf' is not PascalCase. Expected: McruiserIskindof",
+     "Function name 'BSP_MCruiser_IsKindOf' \u2014 main part 'MCruiser_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "006fb3d0",
+   "end": "006fb40b",
+   "name": "BSP_MCruiser_IsKindOf",
+   "after": "Function: BSP_MCruiser_IsKindOf at 006fb3d0\nSignature: undefined BSP_MCruiser_IsKindOf(void)\nEntry: 006fb3d0\nBody: 006fb3d0 - 006fb40a"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006fca80",
+    "end_address": "006fcab1"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006fca80",
+    "end_address": "006fcab0",
+    "bytes_disassembled": 49,
+    "message": "Successfully disassembled 49 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006fca80",
+    "disassemble_first": false,
+    "name": "BSP_MDepthCharge_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "006fca80",
+    "function_name": "BSP_MDepthCharge_IsKindOf",
+    "entry_point": "006fca80",
+    "body_size": 49,
+    "message": "Function created successfully at 006fca80",
+    "warnings": [
+     "Function name 'BSP_MDepthCharge_IsKindOf' \u2014 main part 'MDepthCharge_IsKindOf' is not PascalCase. Expected: MdepthchargeIskindof",
+     "Function name 'BSP_MDepthCharge_IsKindOf' \u2014 main part 'MDepthCharge_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "006fca80",
+   "end": "006fcab1",
+   "name": "BSP_MDepthCharge_IsKindOf",
+   "after": "Function: BSP_MDepthCharge_IsKindOf at 006fca80\nSignature: undefined BSP_MDepthCharge_IsKindOf(void)\nEntry: 006fca80\nBody: 006fca80 - 006fcab0"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006fde40",
+    "end_address": "006fde7b"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006fde40",
+    "end_address": "006fde7a",
+    "bytes_disassembled": 59,
+    "message": "Successfully disassembled 59 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006fde40",
+    "disassemble_first": false,
+    "name": "BSP_ClassId22_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "006fde40",
+    "function_name": "BSP_ClassId22_IsKindOf",
+    "entry_point": "006fde40",
+    "body_size": 59,
+    "message": "Function created successfully at 006fde40",
+    "warnings": [
+     "Function name 'BSP_ClassId22_IsKindOf' \u2014 main part 'ClassId22_IsKindOf' is not PascalCase. Expected: Classid22Iskindof",
+     "Function name 'BSP_ClassId22_IsKindOf' \u2014 main part 'ClassId22_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ClassId22_IsKindOf' does not start with a recognized verb. First word 'Class' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "006fde40",
+   "end": "006fde7b",
+   "name": "BSP_ClassId22_IsKindOf",
+   "after": "Function: BSP_ClassId22_IsKindOf at 006fde40\nSignature: undefined BSP_ClassId22_IsKindOf(void)\nEntry: 006fde40\nBody: 006fde40 - 006fde7a"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006fdf20",
+    "end_address": "006fdf60"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006fdf20",
+    "end_address": "006fdf5f",
+    "bytes_disassembled": 64,
+    "message": "Successfully disassembled 64 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006fdf20",
+    "disassemble_first": false,
+    "name": "BSP_MSTGun_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "006fdf20",
+    "function_name": "BSP_MSTGun_IsKindOf",
+    "entry_point": "006fdf20",
+    "body_size": 64,
+    "message": "Function created successfully at 006fdf20",
+    "warnings": [
+     "Function name 'BSP_MSTGun_IsKindOf' \u2014 main part 'MSTGun_IsKindOf' is not PascalCase. Expected: MstgunIskindof",
+     "Function name 'BSP_MSTGun_IsKindOf' \u2014 main part 'MSTGun_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "006fdf20",
+   "end": "006fdf60",
+   "name": "BSP_MSTGun_IsKindOf",
+   "after": "Function: BSP_MSTGun_IsKindOf at 006fdf20\nSignature: undefined BSP_MSTGun_IsKindOf(void)\nEntry: 006fdf20\nBody: 006fdf20 - 006fdf5f"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006fe9f0",
+    "end_address": "006fea21"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006fe9f0",
+    "end_address": "006fea20",
+    "bytes_disassembled": 49,
+    "message": "Successfully disassembled 49 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006fe9f0",
+    "disassemble_first": false,
+    "name": "BSP_ClassId2D_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "006fe9f0",
+    "function_name": "BSP_ClassId2D_IsKindOf",
+    "entry_point": "006fe9f0",
+    "body_size": 49,
+    "message": "Function created successfully at 006fe9f0",
+    "warnings": [
+     "Function name 'BSP_ClassId2D_IsKindOf' \u2014 main part 'ClassId2D_IsKindOf' is not PascalCase. Expected: Classid2dIskindof",
+     "Function name 'BSP_ClassId2D_IsKindOf' \u2014 main part 'ClassId2D_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ClassId2D_IsKindOf' does not start with a recognized verb. First word 'Class' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "006fe9f0",
+   "end": "006fea21",
+   "name": "BSP_ClassId2D_IsKindOf",
+   "after": "Function: BSP_ClassId2D_IsKindOf at 006fe9f0\nSignature: undefined BSP_ClassId2D_IsKindOf(void)\nEntry: 006fe9f0\nBody: 006fe9f0 - 006fea20"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006fea30",
+    "end_address": "006fea66"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006fea30",
+    "end_address": "006fea65",
+    "bytes_disassembled": 54,
+    "message": "Successfully disassembled 54 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006fea30",
+    "disassemble_first": false,
+    "name": "BSP_MDummyKamikazePlane_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "006fea30",
+    "function_name": "BSP_MDummyKamikazePlane_IsKindOf",
+    "entry_point": "006fea30",
+    "body_size": 54,
+    "message": "Function created successfully at 006fea30",
+    "warnings": [
+     "Function name 'BSP_MDummyKamikazePlane_IsKindOf' \u2014 main part 'MDummyKamikazePlane_IsKindOf' is not PascalCase. Expected: MdummykamikazeplaneIskindof",
+     "Function name 'BSP_MDummyKamikazePlane_IsKindOf' \u2014 main part 'MDummyKamikazePlane_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "006fea30",
+   "end": "006fea66",
+   "name": "BSP_MDummyKamikazePlane_IsKindOf",
+   "after": "Function: BSP_MDummyKamikazePlane_IsKindOf at 006fea30\nSignature: undefined BSP_MDummyKamikazePlane_IsKindOf(void)\nEntry: 006fea30\nBody: 006fea30 - 006fea65"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006ff8e0",
+    "end_address": "006ff916"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006ff8e0",
+    "end_address": "006ff915",
+    "bytes_disassembled": 54,
+    "message": "Successfully disassembled 54 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006ff8e0",
+    "disassemble_first": false,
+    "name": "BSP_MDummySubmarine_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "006ff8e0",
+    "function_name": "BSP_MDummySubmarine_IsKindOf",
+    "entry_point": "006ff8e0",
+    "body_size": 54,
+    "message": "Function created successfully at 006ff8e0",
+    "warnings": [
+     "Function name 'BSP_MDummySubmarine_IsKindOf' \u2014 main part 'MDummySubmarine_IsKindOf' is not PascalCase. Expected: MdummysubmarineIskindof",
+     "Function name 'BSP_MDummySubmarine_IsKindOf' \u2014 main part 'MDummySubmarine_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "006ff8e0",
+   "end": "006ff916",
+   "name": "BSP_MDummySubmarine_IsKindOf",
+   "after": "Function: BSP_MDummySubmarine_IsKindOf at 006ff8e0\nSignature: undefined BSP_MDummySubmarine_IsKindOf(void)\nEntry: 006ff8e0\nBody: 006ff8e0 - 006ff915"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00700ac0",
+    "end_address": "00700af6"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00700ac0",
+    "end_address": "00700af5",
+    "bytes_disassembled": 54,
+    "message": "Successfully disassembled 54 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00700ac0",
+    "disassemble_first": false,
+    "name": "BSP_MDummyTarget_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "00700ac0",
+    "function_name": "BSP_MDummyTarget_IsKindOf",
+    "entry_point": "00700ac0",
+    "body_size": 54,
+    "message": "Function created successfully at 00700ac0",
+    "warnings": [
+     "Function name 'BSP_MDummyTarget_IsKindOf' \u2014 main part 'MDummyTarget_IsKindOf' is not PascalCase. Expected: MdummytargetIskindof",
+     "Function name 'BSP_MDummyTarget_IsKindOf' \u2014 main part 'MDummyTarget_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00700ac0",
+   "end": "00700af6",
+   "name": "BSP_MDummyTarget_IsKindOf",
+   "after": "Function: BSP_MDummyTarget_IsKindOf at 00700ac0\nSignature: undefined BSP_MDummyTarget_IsKindOf(void)\nEntry: 00700ac0\nBody: 00700ac0 - 00700af5"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0070cb80",
+    "end_address": "0070cba7"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0070cb80",
+    "end_address": "0070cba6",
+    "bytes_disassembled": 39,
+    "message": "Successfully disassembled 39 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0070cb80",
+    "disassemble_first": false,
+    "name": "BSP_MFlakBullet_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "0070cb80",
+    "function_name": "BSP_MFlakBullet_IsKindOf",
+    "entry_point": "0070cb80",
+    "body_size": 39,
+    "message": "Function created successfully at 0070cb80",
+    "warnings": [
+     "Function name 'BSP_MFlakBullet_IsKindOf' \u2014 main part 'MFlakBullet_IsKindOf' is not PascalCase. Expected: MflakbulletIskindof",
+     "Function name 'BSP_MFlakBullet_IsKindOf' \u2014 main part 'MFlakBullet_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "0070cb80",
+   "end": "0070cba7",
+   "name": "BSP_MFlakBullet_IsKindOf",
+   "after": "Function: BSP_MFlakBullet_IsKindOf at 0070cb80\nSignature: undefined BSP_MFlakBullet_IsKindOf(void)\nEntry: 0070cb80\nBody: 0070cb80 - 0070cba6"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00730bd0",
+    "end_address": "00730c0b"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00730bd0",
+    "end_address": "00730c0a",
+    "bytes_disassembled": 59,
+    "message": "Successfully disassembled 59 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00730bd0",
+    "disassemble_first": false,
+    "name": "BSP_MRFSGun_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "00730bd0",
+    "function_name": "BSP_MRFSGun_IsKindOf",
+    "entry_point": "00730bd0",
+    "body_size": 59,
+    "message": "Function created successfully at 00730bd0",
+    "warnings": [
+     "Function name 'BSP_MRFSGun_IsKindOf' \u2014 main part 'MRFSGun_IsKindOf' is not PascalCase. Expected: MrfsgunIskindof",
+     "Function name 'BSP_MRFSGun_IsKindOf' \u2014 main part 'MRFSGun_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00730bd0",
+   "end": "00730c0b",
+   "name": "BSP_MRFSGun_IsKindOf",
+   "after": "Function: BSP_MRFSGun_IsKindOf at 00730bd0\nSignature: undefined BSP_MRFSGun_IsKindOf(void)\nEntry: 00730bd0\nBody: 00730bd0 - 00730c0a"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00730ed0",
+    "end_address": "00730f10"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00730ed0",
+    "end_address": "00730f0f",
+    "bytes_disassembled": 64,
+    "message": "Successfully disassembled 64 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00730ed0",
+    "disassemble_first": false,
+    "name": "BSP_MRTGun_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "00730ed0",
+    "function_name": "BSP_MRTGun_IsKindOf",
+    "entry_point": "00730ed0",
+    "body_size": 64,
+    "message": "Function created successfully at 00730ed0",
+    "warnings": [
+     "Function name 'BSP_MRTGun_IsKindOf' \u2014 main part 'MRTGun_IsKindOf' is not PascalCase. Expected: MrtgunIskindof",
+     "Function name 'BSP_MRTGun_IsKindOf' \u2014 main part 'MRTGun_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00730ed0",
+   "end": "00730f10",
+   "name": "BSP_MRTGun_IsKindOf",
+   "after": "Function: BSP_MRTGun_IsKindOf at 00730ed0\nSignature: undefined BSP_MRTGun_IsKindOf(void)\nEntry: 00730ed0\nBody: 00730ed0 - 00730f0f"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00748b40",
+    "end_address": "00748b62"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00748b40",
+    "end_address": "00748b61",
+    "bytes_disassembled": 34,
+    "message": "Successfully disassembled 34 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00748b40",
+    "disassemble_first": false,
+    "name": "BSP_Stationary_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "00748b40",
+    "function_name": "BSP_Stationary_IsKindOf",
+    "entry_point": "00748b40",
+    "body_size": 34,
+    "message": "Function created successfully at 00748b40",
+    "warnings": [
+     "Function name 'BSP_Stationary_IsKindOf' \u2014 main part 'Stationary_IsKindOf' is not PascalCase. Expected: StationaryIskindof",
+     "Function name 'BSP_Stationary_IsKindOf' \u2014 main part 'Stationary_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Stationary_IsKindOf' does not start with a recognized verb. First word 'Stationary_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00748b40",
+   "end": "00748b62",
+   "name": "BSP_Stationary_IsKindOf",
+   "after": "Function: BSP_Stationary_IsKindOf at 00748b40\nSignature: undefined BSP_Stationary_IsKindOf(void)\nEntry: 00748b40\nBody: 00748b40 - 00748b61"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0074bc60",
+    "end_address": "0074bc9b"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0074bc60",
+    "end_address": "0074bc9a",
+    "bytes_disassembled": 59,
+    "message": "Successfully disassembled 59 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0074bc60",
+    "disassemble_first": false,
+    "name": "BSP_MLandingShip_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "0074bc60",
+    "function_name": "BSP_MLandingShip_IsKindOf",
+    "entry_point": "0074bc60",
+    "body_size": 59,
+    "message": "Function created successfully at 0074bc60",
+    "warnings": [
+     "Function name 'BSP_MLandingShip_IsKindOf' \u2014 main part 'MLandingShip_IsKindOf' is not PascalCase. Expected: MlandingshipIskindof",
+     "Function name 'BSP_MLandingShip_IsKindOf' \u2014 main part 'MLandingShip_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "0074bc60",
+   "end": "0074bc9b",
+   "name": "BSP_MLandingShip_IsKindOf",
+   "after": "Function: BSP_MLandingShip_IsKindOf at 0074bc60\nSignature: undefined BSP_MLandingShip_IsKindOf(void)\nEntry: 0074bc60\nBody: 0074bc60 - 0074bc9a"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0074dd90",
+    "end_address": "0074ddc6"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0074dd90",
+    "end_address": "0074ddc5",
+    "bytes_disassembled": 54,
+    "message": "Successfully disassembled 54 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0074dd90",
+    "disassemble_first": false,
+    "name": "BSP_MLandVehicle_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "0074dd90",
+    "function_name": "BSP_MLandVehicle_IsKindOf",
+    "entry_point": "0074dd90",
+    "body_size": 54,
+    "message": "Function created successfully at 0074dd90",
+    "warnings": [
+     "Function name 'BSP_MLandVehicle_IsKindOf' \u2014 main part 'MLandVehicle_IsKindOf' is not PascalCase. Expected: MlandvehicleIskindof",
+     "Function name 'BSP_MLandVehicle_IsKindOf' \u2014 main part 'MLandVehicle_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "0074dd90",
+   "end": "0074ddc6",
+   "name": "BSP_MLandVehicle_IsKindOf",
+   "after": "Function: BSP_MLandVehicle_IsKindOf at 0074dd90\nSignature: undefined BSP_MLandVehicle_IsKindOf(void)\nEntry: 0074dd90\nBody: 0074dd90 - 0074ddc5"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0074e480",
+    "end_address": "0074e4bb"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0074e480",
+    "end_address": "0074e4ba",
+    "bytes_disassembled": 59,
+    "message": "Successfully disassembled 59 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0074e480",
+    "disassemble_first": false,
+    "name": "BSP_MReconPlane_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "0074e480",
+    "function_name": "BSP_MReconPlane_IsKindOf",
+    "entry_point": "0074e480",
+    "body_size": 59,
+    "message": "Function created successfully at 0074e480",
+    "warnings": [
+     "Function name 'BSP_MReconPlane_IsKindOf' \u2014 main part 'MReconPlane_IsKindOf' is not PascalCase. Expected: MreconplaneIskindof",
+     "Function name 'BSP_MReconPlane_IsKindOf' \u2014 main part 'MReconPlane_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "0074e480",
+   "end": "0074e4bb",
+   "name": "BSP_MReconPlane_IsKindOf",
+   "after": "Function: BSP_MReconPlane_IsKindOf at 0074e480\nSignature: undefined BSP_MReconPlane_IsKindOf(void)\nEntry: 0074e480\nBody: 0074e480 - 0074e4ba"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0074e4e0",
+    "end_address": "0074e520"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0074e4e0",
+    "end_address": "0074e51f",
+    "bytes_disassembled": 64,
+    "message": "Successfully disassembled 64 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0074e4e0",
+    "disassemble_first": false,
+    "name": "BSP_MLargeReconPlane_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "0074e4e0",
+    "function_name": "BSP_MLargeReconPlane_IsKindOf",
+    "entry_point": "0074e4e0",
+    "body_size": 64,
+    "message": "Function created successfully at 0074e4e0",
+    "warnings": [
+     "Function name 'BSP_MLargeReconPlane_IsKindOf' \u2014 main part 'MLargeReconPlane_IsKindOf' is not PascalCase. Expected: MlargereconplaneIskindof",
+     "Function name 'BSP_MLargeReconPlane_IsKindOf' \u2014 main part 'MLargeReconPlane_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "0074e4e0",
+   "end": "0074e520",
+   "name": "BSP_MLargeReconPlane_IsKindOf",
+   "after": "Function: BSP_MLargeReconPlane_IsKindOf at 0074e4e0\nSignature: undefined BSP_MLargeReconPlane_IsKindOf(void)\nEntry: 0074e4e0\nBody: 0074e4e0 - 0074e51f"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00758510",
+    "end_address": "0075854b"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00758510",
+    "end_address": "0075854a",
+    "bytes_disassembled": 59,
+    "message": "Successfully disassembled 59 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00758510",
+    "disassemble_first": false,
+    "name": "BSP_MMothership_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "00758510",
+    "function_name": "BSP_MMothership_IsKindOf",
+    "entry_point": "00758510",
+    "body_size": 59,
+    "message": "Function created successfully at 00758510",
+    "warnings": [
+     "Function name 'BSP_MMothership_IsKindOf' \u2014 main part 'MMothership_IsKindOf' is not PascalCase. Expected: MmothershipIskindof",
+     "Function name 'BSP_MMothership_IsKindOf' \u2014 main part 'MMothership_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00758510",
+   "end": "0075854b",
+   "name": "BSP_MMothership_IsKindOf",
+   "after": "Function: BSP_MMothership_IsKindOf at 00758510\nSignature: undefined BSP_MMothership_IsKindOf(void)\nEntry: 00758510\nBody: 00758510 - 0075854a"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "007810f0",
+    "end_address": "0078111c"
+   },
+   "result": {
+    "success": true,
+    "start_address": "007810f0",
+    "end_address": "0078111b",
+    "bytes_disassembled": 44,
+    "message": "Successfully disassembled 44 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "007810f0",
+    "disassemble_first": false,
+    "name": "BSP_ClassId60_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "007810f0",
+    "function_name": "BSP_ClassId60_IsKindOf",
+    "entry_point": "007810f0",
+    "body_size": 44,
+    "message": "Function created successfully at 007810f0",
+    "warnings": [
+     "Function name 'BSP_ClassId60_IsKindOf' \u2014 main part 'ClassId60_IsKindOf' is not PascalCase. Expected: Classid60Iskindof",
+     "Function name 'BSP_ClassId60_IsKindOf' \u2014 main part 'ClassId60_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ClassId60_IsKindOf' does not start with a recognized verb. First word 'Class' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "007810f0",
+   "end": "0078111c",
+   "name": "BSP_ClassId60_IsKindOf",
+   "after": "Function: BSP_ClassId60_IsKindOf at 007810f0\nSignature: undefined BSP_ClassId60_IsKindOf(void)\nEntry: 007810f0\nBody: 007810f0 - 0078111b"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0078fac0",
+    "end_address": "0078fae7"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0078fac0",
+    "end_address": "0078fae6",
+    "bytes_disassembled": 39,
+    "message": "Successfully disassembled 39 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0078fac0",
+    "disassemble_first": false,
+    "name": "BSP_ClassId52_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "0078fac0",
+    "function_name": "BSP_ClassId52_IsKindOf",
+    "entry_point": "0078fac0",
+    "body_size": 39,
+    "message": "Function created successfully at 0078fac0",
+    "warnings": [
+     "Function name 'BSP_ClassId52_IsKindOf' \u2014 main part 'ClassId52_IsKindOf' is not PascalCase. Expected: Classid52Iskindof",
+     "Function name 'BSP_ClassId52_IsKindOf' \u2014 main part 'ClassId52_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ClassId52_IsKindOf' does not start with a recognized verb. First word 'Class' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "0078fac0",
+   "end": "0078fae7",
+   "name": "BSP_ClassId52_IsKindOf",
+   "after": "Function: BSP_ClassId52_IsKindOf at 0078fac0\nSignature: undefined BSP_ClassId52_IsKindOf(void)\nEntry: 0078fac0\nBody: 0078fac0 - 0078fae6"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0079a380",
+    "end_address": "0079a3a7"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0079a380",
+    "end_address": "0079a3a6",
+    "bytes_disassembled": 39,
+    "message": "Successfully disassembled 39 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0079a380",
+    "disassemble_first": false,
+    "name": "BSP_ClassId54_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "0079a380",
+    "function_name": "BSP_ClassId54_IsKindOf",
+    "entry_point": "0079a380",
+    "body_size": 39,
+    "message": "Function created successfully at 0079a380",
+    "warnings": [
+     "Function name 'BSP_ClassId54_IsKindOf' \u2014 main part 'ClassId54_IsKindOf' is not PascalCase. Expected: Classid54Iskindof",
+     "Function name 'BSP_ClassId54_IsKindOf' \u2014 main part 'ClassId54_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ClassId54_IsKindOf' does not start with a recognized verb. First word 'Class' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "0079a380",
+   "end": "0079a3a7",
+   "name": "BSP_ClassId54_IsKindOf",
+   "after": "Function: BSP_ClassId54_IsKindOf at 0079a380\nSignature: undefined BSP_ClassId54_IsKindOf(void)\nEntry: 0079a380\nBody: 0079a380 - 0079a3a6"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0079d840",
+    "end_address": "0079d867"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0079d840",
+    "end_address": "0079d866",
+    "bytes_disassembled": 39,
+    "message": "Successfully disassembled 39 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0079d840",
+    "disassemble_first": false,
+    "name": "BSP_ClassId55_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "0079d840",
+    "function_name": "BSP_ClassId55_IsKindOf",
+    "entry_point": "0079d840",
+    "body_size": 39,
+    "message": "Function created successfully at 0079d840",
+    "warnings": [
+     "Function name 'BSP_ClassId55_IsKindOf' \u2014 main part 'ClassId55_IsKindOf' is not PascalCase. Expected: Classid55Iskindof",
+     "Function name 'BSP_ClassId55_IsKindOf' \u2014 main part 'ClassId55_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ClassId55_IsKindOf' does not start with a recognized verb. First word 'Class' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "0079d840",
+   "end": "0079d867",
+   "name": "BSP_ClassId55_IsKindOf",
+   "after": "Function: BSP_ClassId55_IsKindOf at 0079d840\nSignature: undefined BSP_ClassId55_IsKindOf(void)\nEntry: 0079d840\nBody: 0079d840 - 0079d866"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "007aba50",
+    "end_address": "007aba81"
+   },
+   "result": {
+    "success": true,
+    "start_address": "007aba50",
+    "end_address": "007aba80",
+    "bytes_disassembled": 49,
+    "message": "Successfully disassembled 49 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "007aba50",
+    "disassemble_first": false,
+    "name": "BSP_MParatrooper_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "007aba50",
+    "function_name": "BSP_MParatrooper_IsKindOf",
+    "entry_point": "007aba50",
+    "body_size": 49,
+    "message": "Function created successfully at 007aba50",
+    "warnings": [
+     "Function name 'BSP_MParatrooper_IsKindOf' \u2014 main part 'MParatrooper_IsKindOf' is not PascalCase. Expected: MparatrooperIskindof",
+     "Function name 'BSP_MParatrooper_IsKindOf' \u2014 main part 'MParatrooper_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "007aba50",
+   "end": "007aba81",
+   "name": "BSP_MParatrooper_IsKindOf",
+   "after": "Function: BSP_MParatrooper_IsKindOf at 007aba50\nSignature: undefined BSP_MParatrooper_IsKindOf(void)\nEntry: 007aba50\nBody: 007aba50 - 007aba80"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "007b3320",
+    "end_address": "007b334c"
+   },
+   "result": {
+    "success": true,
+    "start_address": "007b3320",
+    "end_address": "007b334b",
+    "bytes_disassembled": 44,
+    "message": "Successfully disassembled 44 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "007b3320",
+    "disassemble_first": false,
+    "name": "BSP_ClassId49_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "007b3320",
+    "function_name": "BSP_ClassId49_IsKindOf",
+    "entry_point": "007b3320",
+    "body_size": 44,
+    "message": "Function created successfully at 007b3320",
+    "warnings": [
+     "Function name 'BSP_ClassId49_IsKindOf' \u2014 main part 'ClassId49_IsKindOf' is not PascalCase. Expected: Classid49Iskindof",
+     "Function name 'BSP_ClassId49_IsKindOf' \u2014 main part 'ClassId49_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ClassId49_IsKindOf' does not start with a recognized verb. First word 'Class' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "007b3320",
+   "end": "007b334c",
+   "name": "BSP_ClassId49_IsKindOf",
+   "after": "Function: BSP_ClassId49_IsKindOf at 007b3320\nSignature: undefined BSP_ClassId49_IsKindOf(void)\nEntry: 007b3320\nBody: 007b3320 - 007b334b"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "007d77f0",
+    "end_address": "007d782b"
+   },
+   "result": {
+    "success": true,
+    "start_address": "007d77f0",
+    "end_address": "007d782a",
+    "bytes_disassembled": 59,
+    "message": "Successfully disassembled 59 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "007d77f0",
+    "disassemble_first": false,
+    "name": "BSP_MPlaneBomber_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "007d77f0",
+    "function_name": "BSP_MPlaneBomber_IsKindOf",
+    "entry_point": "007d77f0",
+    "body_size": 59,
+    "message": "Function created successfully at 007d77f0",
+    "warnings": [
+     "Function name 'BSP_MPlaneBomber_IsKindOf' \u2014 main part 'MPlaneBomber_IsKindOf' is not PascalCase. Expected: MplanebomberIskindof",
+     "Function name 'BSP_MPlaneBomber_IsKindOf' \u2014 main part 'MPlaneBomber_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "007d77f0",
+   "end": "007d782b",
+   "name": "BSP_MPlaneBomber_IsKindOf",
+   "after": "Function: BSP_MPlaneBomber_IsKindOf at 007d77f0\nSignature: undefined BSP_MPlaneBomber_IsKindOf(void)\nEntry: 007d77f0\nBody: 007d77f0 - 007d782a"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "007dda80",
+    "end_address": "007ddabb"
+   },
+   "result": {
+    "success": true,
+    "start_address": "007dda80",
+    "end_address": "007ddaba",
+    "bytes_disassembled": 59,
+    "message": "Successfully disassembled 59 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "007dda80",
+    "disassemble_first": false,
+    "name": "BSP_MPlaneFighter_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "007dda80",
+    "function_name": "BSP_MPlaneFighter_IsKindOf",
+    "entry_point": "007dda80",
+    "body_size": 59,
+    "message": "Function created successfully at 007dda80",
+    "warnings": [
+     "Function name 'BSP_MPlaneFighter_IsKindOf' \u2014 main part 'MPlaneFighter_IsKindOf' is not PascalCase. Expected: MplanefighterIskindof",
+     "Function name 'BSP_MPlaneFighter_IsKindOf' \u2014 main part 'MPlaneFighter_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "007dda80",
+   "end": "007ddabb",
+   "name": "BSP_MPlaneFighter_IsKindOf",
+   "after": "Function: BSP_MPlaneFighter_IsKindOf at 007dda80\nSignature: undefined BSP_MPlaneFighter_IsKindOf(void)\nEntry: 007dda80\nBody: 007dda80 - 007ddaba"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0080acb0",
+    "end_address": "0080ace1"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0080acb0",
+    "end_address": "0080ace0",
+    "bytes_disassembled": 49,
+    "message": "Successfully disassembled 49 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0080acb0",
+    "disassemble_first": false,
+    "name": "BSP_MRocket_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "0080acb0",
+    "function_name": "BSP_MRocket_IsKindOf",
+    "entry_point": "0080acb0",
+    "body_size": 49,
+    "message": "Function created successfully at 0080acb0",
+    "warnings": [
+     "Function name 'BSP_MRocket_IsKindOf' \u2014 main part 'MRocket_IsKindOf' is not PascalCase. Expected: MrocketIskindof",
+     "Function name 'BSP_MRocket_IsKindOf' \u2014 main part 'MRocket_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "0080acb0",
+   "end": "0080ace1",
+   "name": "BSP_MRocket_IsKindOf",
+   "after": "Function: BSP_MRocket_IsKindOf at 0080acb0\nSignature: undefined BSP_MRocket_IsKindOf(void)\nEntry: 0080acb0\nBody: 0080acb0 - 0080ace0"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0080f9a0",
+    "end_address": "0080f9c2"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0080f9a0",
+    "end_address": "0080f9c1",
+    "bytes_disassembled": 34,
+    "message": "Successfully disassembled 34 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0080f9a0",
+    "disassemble_first": false,
+    "name": "BSP_ClassId48_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "0080f9a0",
+    "function_name": "BSP_ClassId48_IsKindOf",
+    "entry_point": "0080f9a0",
+    "body_size": 34,
+    "message": "Function created successfully at 0080f9a0",
+    "warnings": [
+     "Function name 'BSP_ClassId48_IsKindOf' \u2014 main part 'ClassId48_IsKindOf' is not PascalCase. Expected: Classid48Iskindof",
+     "Function name 'BSP_ClassId48_IsKindOf' \u2014 main part 'ClassId48_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ClassId48_IsKindOf' does not start with a recognized verb. First word 'Class' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "0080f9a0",
+   "end": "0080f9c2",
+   "name": "BSP_ClassId48_IsKindOf",
+   "after": "Function: BSP_ClassId48_IsKindOf at 0080f9a0\nSignature: undefined BSP_ClassId48_IsKindOf(void)\nEntry: 0080f9a0\nBody: 0080f9a0 - 0080f9c1"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0084c9f0",
+    "end_address": "0084ca30"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0084c9f0",
+    "end_address": "0084ca2f",
+    "bytes_disassembled": 64,
+    "message": "Successfully disassembled 64 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0084c9f0",
+    "disassemble_first": false,
+    "name": "BSP_MSmallReconPlane_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "0084c9f0",
+    "function_name": "BSP_MSmallReconPlane_IsKindOf",
+    "entry_point": "0084c9f0",
+    "body_size": 64,
+    "message": "Function created successfully at 0084c9f0",
+    "warnings": [
+     "Function name 'BSP_MSmallReconPlane_IsKindOf' \u2014 main part 'MSmallReconPlane_IsKindOf' is not PascalCase. Expected: MsmallreconplaneIskindof",
+     "Function name 'BSP_MSmallReconPlane_IsKindOf' \u2014 main part 'MSmallReconPlane_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "0084c9f0",
+   "end": "0084ca30",
+   "name": "BSP_MSmallReconPlane_IsKindOf",
+   "after": "Function: BSP_MSmallReconPlane_IsKindOf at 0084c9f0\nSignature: undefined BSP_MSmallReconPlane_IsKindOf(void)\nEntry: 0084c9f0\nBody: 0084c9f0 - 0084ca2f"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00853050",
+    "end_address": "0085308b"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00853050",
+    "end_address": "0085308a",
+    "bytes_disassembled": 59,
+    "message": "Successfully disassembled 59 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00853050",
+    "disassemble_first": false,
+    "name": "BSP_MSubmarine_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "00853050",
+    "function_name": "BSP_MSubmarine_IsKindOf",
+    "entry_point": "00853050",
+    "body_size": 59,
+    "message": "Function created successfully at 00853050",
+    "warnings": [
+     "Function name 'BSP_MSubmarine_IsKindOf' \u2014 main part 'MSubmarine_IsKindOf' is not PascalCase. Expected: MsubmarineIskindof",
+     "Function name 'BSP_MSubmarine_IsKindOf' \u2014 main part 'MSubmarine_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00853050",
+   "end": "0085308b",
+   "name": "BSP_MSubmarine_IsKindOf",
+   "after": "Function: BSP_MSubmarine_IsKindOf at 00853050\nSignature: undefined BSP_MSubmarine_IsKindOf(void)\nEntry: 00853050\nBody: 00853050 - 0085308a"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00856260",
+    "end_address": "00856291"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00856260",
+    "end_address": "00856290",
+    "bytes_disassembled": 49,
+    "message": "Successfully disassembled 49 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00856260",
+    "disassemble_first": false,
+    "name": "BSP_MTorpedo_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "00856260",
+    "function_name": "BSP_MTorpedo_IsKindOf",
+    "entry_point": "00856260",
+    "body_size": 49,
+    "message": "Function created successfully at 00856260",
+    "warnings": [
+     "Function name 'BSP_MTorpedo_IsKindOf' \u2014 main part 'MTorpedo_IsKindOf' is not PascalCase. Expected: MtorpedoIskindof",
+     "Function name 'BSP_MTorpedo_IsKindOf' \u2014 main part 'MTorpedo_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00856260",
+   "end": "00856291",
+   "name": "BSP_MTorpedo_IsKindOf",
+   "after": "Function: BSP_MTorpedo_IsKindOf at 00856260\nSignature: undefined BSP_MTorpedo_IsKindOf(void)\nEntry: 00856260\nBody: 00856260 - 00856290"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00857dc0",
+    "end_address": "00857dfb"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00857dc0",
+    "end_address": "00857dfa",
+    "bytes_disassembled": 59,
+    "message": "Successfully disassembled 59 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00857dc0",
+    "disassemble_first": false,
+    "name": "BSP_MTorpedoBoat_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "00857dc0",
+    "function_name": "BSP_MTorpedoBoat_IsKindOf",
+    "entry_point": "00857dc0",
+    "body_size": 59,
+    "message": "Function created successfully at 00857dc0",
+    "warnings": [
+     "Function name 'BSP_MTorpedoBoat_IsKindOf' \u2014 main part 'MTorpedoBoat_IsKindOf' is not PascalCase. Expected: MtorpedoboatIskindof",
+     "Function name 'BSP_MTorpedoBoat_IsKindOf' \u2014 main part 'MTorpedoBoat_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00857dc0",
+   "end": "00857dfb",
+   "name": "BSP_MTorpedoBoat_IsKindOf",
+   "after": "Function: BSP_MTorpedoBoat_IsKindOf at 00857dc0\nSignature: undefined BSP_MTorpedoBoat_IsKindOf(void)\nEntry: 00857dc0\nBody: 00857dc0 - 00857dfa"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0085eb20",
+    "end_address": "0085eb51"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0085eb20",
+    "end_address": "0085eb50",
+    "bytes_disassembled": 49,
+    "message": "Successfully disassembled 49 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0085eb20",
+    "disassemble_first": false,
+    "name": "BSP_MWaterMine_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "0085eb20",
+    "function_name": "BSP_MWaterMine_IsKindOf",
+    "entry_point": "0085eb20",
+    "body_size": 49,
+    "message": "Function created successfully at 0085eb20",
+    "warnings": [
+     "Function name 'BSP_MWaterMine_IsKindOf' \u2014 main part 'MWaterMine_IsKindOf' is not PascalCase. Expected: MwatermineIskindof",
+     "Function name 'BSP_MWaterMine_IsKindOf' \u2014 main part 'MWaterMine_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "0085eb20",
+   "end": "0085eb51",
+   "name": "BSP_MWaterMine_IsKindOf",
+   "after": "Function: BSP_MWaterMine_IsKindOf at 0085eb20\nSignature: undefined BSP_MWaterMine_IsKindOf(void)\nEntry: 0085eb20\nBody: 0085eb20 - 0085eb50"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00888ea0",
+    "end_address": "00888ec7"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00888ea0",
+    "end_address": "00888ec6",
+    "bytes_disassembled": 39,
+    "message": "Successfully disassembled 39 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00888ea0",
+    "disassemble_first": false,
+    "name": "BSP_ClassId03_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "00888ea0",
+    "function_name": "BSP_ClassId03_IsKindOf",
+    "entry_point": "00888ea0",
+    "body_size": 39,
+    "message": "Function created successfully at 00888ea0",
+    "warnings": [
+     "Function name 'BSP_ClassId03_IsKindOf' \u2014 main part 'ClassId03_IsKindOf' is not PascalCase. Expected: Classid03Iskindof",
+     "Function name 'BSP_ClassId03_IsKindOf' \u2014 main part 'ClassId03_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ClassId03_IsKindOf' does not start with a recognized verb. First word 'Class' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00888ea0",
+   "end": "00888ec7",
+   "name": "BSP_ClassId03_IsKindOf",
+   "after": "Function: BSP_ClassId03_IsKindOf at 00888ea0\nSignature: undefined BSP_ClassId03_IsKindOf(void)\nEntry: 00888ea0\nBody: 00888ea0 - 00888ec6"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "009534a0",
+    "end_address": "009534db"
+   },
+   "result": {
+    "success": true,
+    "start_address": "009534a0",
+    "end_address": "009534da",
+    "bytes_disassembled": 59,
+    "message": "Successfully disassembled 59 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "009534a0",
+    "disassemble_first": false,
+    "name": "BSP_MPlaneKamikaze_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "009534a0",
+    "function_name": "BSP_MPlaneKamikaze_IsKindOf",
+    "entry_point": "009534a0",
+    "body_size": 59,
+    "message": "Function created successfully at 009534a0",
+    "warnings": [
+     "Function name 'BSP_MPlaneKamikaze_IsKindOf' \u2014 main part 'MPlaneKamikaze_IsKindOf' is not PascalCase. Expected: MplanekamikazeIskindof",
+     "Function name 'BSP_MPlaneKamikaze_IsKindOf' \u2014 main part 'MPlaneKamikaze_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "009534a0",
+   "end": "009534db",
+   "name": "BSP_MPlaneKamikaze_IsKindOf",
+   "after": "Function: BSP_MPlaneKamikaze_IsKindOf at 009534a0\nSignature: undefined BSP_MPlaneKamikaze_IsKindOf(void)\nEntry: 009534a0\nBody: 009534a0 - 009534da"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00953530",
+    "end_address": "0095356b"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00953530",
+    "end_address": "0095356a",
+    "bytes_disassembled": 59,
+    "message": "Successfully disassembled 59 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00953530",
+    "disassemble_first": false,
+    "name": "BSP_MPlaneDiveBomber_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "00953530",
+    "function_name": "BSP_MPlaneDiveBomber_IsKindOf",
+    "entry_point": "00953530",
+    "body_size": 59,
+    "message": "Function created successfully at 00953530",
+    "warnings": [
+     "Function name 'BSP_MPlaneDiveBomber_IsKindOf' \u2014 main part 'MPlaneDiveBomber_IsKindOf' is not PascalCase. Expected: MplanedivebomberIskindof",
+     "Function name 'BSP_MPlaneDiveBomber_IsKindOf' \u2014 main part 'MPlaneDiveBomber_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00953530",
+   "end": "0095356b",
+   "name": "BSP_MPlaneDiveBomber_IsKindOf",
+   "after": "Function: BSP_MPlaneDiveBomber_IsKindOf at 00953530\nSignature: undefined BSP_MPlaneDiveBomber_IsKindOf(void)\nEntry: 00953530\nBody: 00953530 - 0095356a"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "009535c0",
+    "end_address": "009535fb"
+   },
+   "result": {
+    "success": true,
+    "start_address": "009535c0",
+    "end_address": "009535fa",
+    "bytes_disassembled": 59,
+    "message": "Successfully disassembled 59 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "009535c0",
+    "disassemble_first": false,
+    "name": "BSP_MPlaneTorpedoBomber_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "009535c0",
+    "function_name": "BSP_MPlaneTorpedoBomber_IsKindOf",
+    "entry_point": "009535c0",
+    "body_size": 59,
+    "message": "Function created successfully at 009535c0",
+    "warnings": [
+     "Function name 'BSP_MPlaneTorpedoBomber_IsKindOf' \u2014 main part 'MPlaneTorpedoBomber_IsKindOf' is not PascalCase. Expected: MplanetorpedobomberIskindof",
+     "Function name 'BSP_MPlaneTorpedoBomber_IsKindOf' \u2014 main part 'MPlaneTorpedoBomber_IsKindOf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "009535c0",
+   "end": "009535fb",
+   "name": "BSP_MPlaneTorpedoBomber_IsKindOf",
+   "after": "Function: BSP_MPlaneTorpedoBomber_IsKindOf at 009535c0\nSignature: undefined BSP_MPlaneTorpedoBomber_IsKindOf(void)\nEntry: 009535c0\nBody: 009535c0 - 009535fa"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a31c60",
+    "end_address": "00a31c82"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a31c60",
+    "end_address": "00a31c81",
+    "bytes_disassembled": 34,
+    "message": "Successfully disassembled 34 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a31c60",
+    "disassemble_first": false,
+    "name": "BSP_ClassId4B_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "00a31c60",
+    "function_name": "BSP_ClassId4B_IsKindOf",
+    "entry_point": "00a31c60",
+    "body_size": 34,
+    "message": "Function created successfully at 00a31c60",
+    "warnings": [
+     "Function name 'BSP_ClassId4B_IsKindOf' \u2014 main part 'ClassId4B_IsKindOf' is not PascalCase. Expected: Classid4bIskindof",
+     "Function name 'BSP_ClassId4B_IsKindOf' \u2014 main part 'ClassId4B_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ClassId4B_IsKindOf' does not start with a recognized verb. First word 'Class' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a31c60",
+   "end": "00a31c82",
+   "name": "BSP_ClassId4B_IsKindOf",
+   "after": "Function: BSP_ClassId4B_IsKindOf at 00a31c60\nSignature: undefined BSP_ClassId4B_IsKindOf(void)\nEntry: 00a31c60\nBody: 00a31c60 - 00a31c81"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
   }
  ]
 }
