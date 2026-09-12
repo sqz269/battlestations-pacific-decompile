@@ -1,0 +1,454 @@
+{
+  "packet": "native_vfs_mount_records_aw",
+  "status": "four_complete_actual_source_bodies_strict_win32_and_frozen_native_composition_passed",
+  "new_complete_routine_count": 4,
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "routines": [
+    {
+      "entry": "00584110",
+      "inclusive_end": "00584165",
+      "bytes": 86,
+      "name": "BSP_NativeString_TrimRightSet",
+      "name_status": "hypothesis, not recovered symbol",
+      "coverage": "complete stored body and logical cleanup, explicit source interface",
+      "source": "src/native_vfs_mount_records.cpp",
+      "source_symbol": "trim_native_string_right_00584110",
+      "original_abi": "ECX actual8h string; one stacked C-string trim set; RET4; no meaningful return value."
+    },
+    {
+      "entry": "00bdce40",
+      "inclusive_end": "00bdce9b",
+      "bytes": 92,
+      "name": "BSP_NativeVfsMountRecord_CopyConstruct",
+      "name_status": "hypothesis, not recovered symbol",
+      "coverage": "complete stored body and logical cleanup, explicit source interface",
+      "source": "src/native_vfs_mount_records.cpp",
+      "source_symbol": "copy_native_vfs_mount_record_00bdce40",
+      "original_abi": "ECX raw14h destination; one stacked raw14h source pointer; EAX captured destination; RET4."
+    },
+    {
+      "entry": "00bdcfc0",
+      "inclusive_end": "00bdd01c",
+      "bytes": 93,
+      "name": "BSP_NativeVfsMountRecord_ConstructFromPayload",
+      "name_status": "hypothesis, not recovered symbol",
+      "coverage": "complete stored body and logical cleanup, explicit source interface",
+      "source": "src/native_vfs_mount_records.cpp",
+      "source_symbol": "construct_native_vfs_mount_record_00bdcfc0",
+      "original_abi": "ECX raw14h destination; stacked priority DWORD pointer then raw10h payload pointer; EAX captured destination; RET8."
+    },
+    {
+      "entry": "00bdeec0",
+      "inclusive_end": "00bdef43",
+      "bytes": 132,
+      "name": "BSP_NativeVfsPriorityRecord_ConstructConsumePayload",
+      "name_status": "hypothesis, not recovered symbol",
+      "coverage": "complete stored body and logical cleanup, explicit source interface",
+      "source": "src/native_vfs_mount_records.cpp",
+      "source_symbol": "construct_native_vfs_priority_record_00bdeec0",
+      "original_abi": "ECX raw14h destination, EDX full priority bits; actual10h by-value stack payload, not one pointer; EAX captured destination; RET10h."
+    }
+  ],
+  "layout": {
+    "record_bytes": 20,
+    "record": "priorityDWORD+0, lengthDWORD+4, dataDWORD+8, providerDWORD+C, flagBYTE+10h; padding+11h..13h untouched",
+    "payload_bytes": 16,
+    "payload": "lengthDWORD+0,dataDWORD+4,providerDWORD+8,flagBYTE+Ch; padding+Dh..Fh untouched",
+    "ownership": "No provider acquisition or deletion; BDEEC0 consumes only current argument string; no private lifetime domains."
+  },
+  "host_steps": [
+    {
+      "address": "0058413c",
+      "native": "00bf86f0",
+      "function": "00584110",
+      "contract": "CRT _strchr(set, sign-extended current byte); ADD ESP8; all11 external trim sites checked."
+    },
+    {
+      "address": "0058415b",
+      "native": "0041dd40",
+      "function": "00584110",
+      "contract": "Current cursor minus reloaded data plus1; ECX captured header, stacked length then preserve1; actual resize RET8, including equal-length path."
+    },
+    {
+      "address": "00bdce6b",
+      "native": "0041dd40",
+      "function": "00bdce40",
+      "contract": "Source priority captured and destination header zeroed before actual resize(current source length,1); self-header skips this call."
+    },
+    {
+      "address": "00bdce80",
+      "native": "00bf7680",
+      "function": "00bdce40",
+      "contract": "Reload source length; if nonzero capture current destination length then current source/destination data. CRT _memcpy has backward overlap path; ADD ESPCh."
+    },
+    {
+      "address": "00bdcfec",
+      "native": "0041dd40",
+      "function": "00bdcfc0",
+      "contract": "Capture *priority pointer before stores, zero destination string then actual resize(current source length,1); header self-alias skips call."
+    },
+    {
+      "address": "00bdd001",
+      "native": "00bf7680",
+      "function": "00bdcfc0",
+      "contract": "Same current length/data captures as BDCE80; provider and flag reloaded afterward; no provider ownership."
+    },
+    {
+      "address": "00bdeeff",
+      "native": "00bdcfc0",
+      "function": "00bdeec0",
+      "contract": "EDX captured local priority, actual stack argument address; pass priority pointer/payload pointer, ECX captured destination; RET8."
+    },
+    {
+      "address": "00bdef24",
+      "native": "00419cc0",
+      "function": "00bdeec0",
+      "contract": "Load current argument data before setting completed bit/state0; capture current length+1, block, flags1 before canonical getter."
+    },
+    {
+      "address": "00bdef2b",
+      "native": "00bd1510",
+      "function": "00bdeec0",
+      "contract": "ECX getter result; stacked captured block, size,1; actual pool return RETCh; argument bytes unchanged."
+    }
+  ],
+  "consumed_call_evidence": [
+    {
+      "address": "00bdb560",
+      "native": "00419cc0",
+      "function": "00bdb550",
+      "contract": "Capture current argument data and length+1, push1/size/block before getter."
+    },
+    {
+      "address": "00bdb567",
+      "native": "00bd1510",
+      "function": "00bdb550",
+      "contract": "Return captured argument block using getter result; RETCh dependency, RET cleanup."
+    },
+    {
+      "address": "00bdb581",
+      "native": "00419cc0",
+      "function": "00bdb570",
+      "contract": "Capture current record+8 data and record+4 length+1 before getter."
+    },
+    {
+      "address": "00bdb588",
+      "native": "00bd1510",
+      "function": "00bdb570",
+      "contract": "Return captured record string block using getter result; RETCh dependency, RET cleanup."
+    },
+    {
+      "address": "00cc6523",
+      "native": "00bdb550",
+      "function": "00cc6520",
+      "contract": "State1->0: argument ECX=EBP+4.",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cc653b",
+      "native": "00bdb570",
+      "function": "00cc6528",
+      "contract": "State0->-1: test and clear completion bit EBP-14h; captured destination ECX=[EBP-10h].",
+      "kind": "tail_jump"
+    }
+  ],
+  "callsite_contract_evidence": [
+    {
+      "address": "00590f2b",
+      "native": "00584110",
+      "function": "00590e60",
+      "contract": "Bounded exact call-site context and current owning stored body verified; no whole-caller reconstruction claim."
+    },
+    {
+      "address": "00623b6c",
+      "native": "00584110",
+      "function": "00623710",
+      "contract": "Bounded exact call-site context and current owning stored body verified; no whole-caller reconstruction claim."
+    },
+    {
+      "address": "008ec75d",
+      "native": "00584110",
+      "function": "008ec650",
+      "contract": "Bounded exact call-site context and current owning stored body verified; no whole-caller reconstruction claim."
+    },
+    {
+      "address": "008ed84a",
+      "native": "00584110",
+      "function": "008ed720",
+      "contract": "Bounded exact call-site context and current owning stored body verified; no whole-caller reconstruction claim."
+    },
+    {
+      "address": "00a068c6",
+      "native": "00584110",
+      "function": "00a06840",
+      "contract": "Bounded exact call-site context and current owning stored body verified; no whole-caller reconstruction claim."
+    },
+    {
+      "address": "00a07353",
+      "native": "00584110",
+      "function": "00a072d0",
+      "contract": "Bounded exact call-site context and current owning stored body verified; no whole-caller reconstruction claim."
+    },
+    {
+      "address": "00b6a608",
+      "native": "00584110",
+      "function": "00b6a390",
+      "contract": "Bounded exact call-site context and current owning stored body verified; no whole-caller reconstruction claim."
+    },
+    {
+      "address": "00b6a616",
+      "native": "00584110",
+      "function": "00b6a390",
+      "contract": "Bounded exact call-site context and current owning stored body verified; no whole-caller reconstruction claim."
+    },
+    {
+      "address": "00bdba8c",
+      "native": "00584110",
+      "function": "00bdba50",
+      "contract": "Bounded exact call-site context and current owning stored body verified; no whole-caller reconstruction claim."
+    },
+    {
+      "address": "00be078c",
+      "native": "00584110",
+      "function": "00be0750",
+      "contract": "Bounded exact call-site context and current owning stored body verified; no whole-caller reconstruction claim."
+    },
+    {
+      "address": "00be177a",
+      "native": "00584110",
+      "function": "00be1740",
+      "contract": "Bounded exact call-site context and current owning stored body verified; no whole-caller reconstruction claim."
+    },
+    {
+      "address": "00be17dc",
+      "native": "00bdeec0",
+      "function": "00be1740",
+      "contract": "Bounded exact call-site context and current owning stored body verified; no whole-caller reconstruction claim."
+    },
+    {
+      "address": "00be17eb",
+      "native": "00bdce40",
+      "function": "00be1740",
+      "contract": "Bounded exact call-site context and current owning stored body verified; no whole-caller reconstruction claim."
+    }
+  ],
+  "call_counts": {
+    "complete_body_direct_calls": 9,
+    "consumed_cleanup_direct_and_tail_calls": 6,
+    "external_incoming_call_sites": 13,
+    "qualified_raw_handler_tail_transfer": 1,
+    "numeric_rows_checked": 28
+  },
+  "no_ghidra_function": [
+    {
+      "start": "00cc6541",
+      "inclusive_end": "00cc654a",
+      "bytes": 10,
+      "no_ghidra_function": true,
+      "instruction_site": "00cc6546",
+      "instruction": "JMP 00bf6b43",
+      "evidence": "Exact live/installed bytes and independent disassembly; handler loads EAX=E00A6C. Raw range, not attributed to a stored function or counted as reconstructed. Outside stored-function verifier rows."
+    }
+  ],
+  "cleanup": {
+    "funcinfo": {
+      "start": "00e00a6c",
+      "inclusive_end": "00e00a8f",
+      "bytes": 36
+    },
+    "map": {
+      "start": "00e00a5c",
+      "inclusive_end": "00e00a6b",
+      "bytes": 16
+    },
+    "states": [
+      {
+        "state": 1,
+        "next": 0,
+        "action": "00cc6520",
+        "argument": "EBP+4"
+      },
+      {
+        "state": 0,
+        "next": -1,
+        "action": "00cc6528",
+        "condition": "completion bit0 EBP-14h; clear before record cleanup",
+        "destination": "[EBP-10h]"
+      }
+    ],
+    "source_unwind": "Inner construction exception releases consumed argument once and skips incomplete destination; completed-destination cleanup represented but unreachable through existing noexcept release contract."
+  },
+  "native_capture": {
+    "spans": [
+      {
+        "entry": "00584110",
+        "inclusive_end": "00584165",
+        "bytes": 86,
+        "label": "trim",
+        "kind": "body",
+        "sha256": "931e1956c83024441bf3bfa9bd8b21411311deab674692b5b004c14242c9602b",
+        "live_equals_installed_PE": true
+      },
+      {
+        "entry": "00bdce40",
+        "inclusive_end": "00bdce9b",
+        "bytes": 92,
+        "label": "copy",
+        "kind": "body",
+        "sha256": "a5ef499d39c97ffb41adf8b97c96715a54f480569e907537c16dcf53088d5e24",
+        "live_equals_installed_PE": true
+      },
+      {
+        "entry": "00bdcfc0",
+        "inclusive_end": "00bdd01c",
+        "bytes": 93,
+        "label": "construct",
+        "kind": "body",
+        "sha256": "86a4b69aebf4bb19542b9012beb92207f22bfc14494b9b00ed37c7b344254d1a",
+        "live_equals_installed_PE": true
+      },
+      {
+        "entry": "00bdeec0",
+        "inclusive_end": "00bdef43",
+        "bytes": 132,
+        "label": "consume",
+        "kind": "body",
+        "sha256": "911b1ad5bc216b610aab60ba98df257ce9d971d4df10dbb55d7a7f3718e486c7",
+        "live_equals_installed_PE": true
+      },
+      {
+        "entry": "00bdb550",
+        "inclusive_end": "00bdb56c",
+        "bytes": 29,
+        "label": "argument_cleanup",
+        "kind": "dependency",
+        "sha256": "47731efa19ebefbc90f848b8ad7df88d8aa5591af5c72a1085920f8fcd96c540",
+        "live_equals_installed_PE": true
+      },
+      {
+        "entry": "00bdb570",
+        "inclusive_end": "00bdb58d",
+        "bytes": 30,
+        "label": "record_cleanup",
+        "kind": "dependency",
+        "sha256": "9a3df34668c6887bb9812a13b322a2d8f49ad1739a28cc955e1ead5a7a56511b",
+        "live_equals_installed_PE": true
+      },
+      {
+        "entry": "00cc6520",
+        "inclusive_end": "00cc6527",
+        "bytes": 8,
+        "label": "unwind_argument",
+        "kind": "eh",
+        "sha256": "e6b03d7892f9acf8c5c2a01a049fea8d0fdf057e7056ef802361b5f2b9231137",
+        "live_equals_installed_PE": true
+      },
+      {
+        "entry": "00cc6528",
+        "inclusive_end": "00cc6540",
+        "bytes": 25,
+        "label": "unwind_completed",
+        "kind": "eh",
+        "sha256": "16d4925651f50daebac3e1ef55dd52c03af2e77f42087ffd12ad8f0e558cec4c",
+        "live_equals_installed_PE": true
+      },
+      {
+        "entry": "00cc6541",
+        "inclusive_end": "00cc654a",
+        "bytes": 10,
+        "label": "handler",
+        "kind": "eh",
+        "sha256": "203f5d217a41795e50fc27ba8ab1d30c768e176b096ab050757f3c2d046200a8",
+        "live_equals_installed_PE": true
+      },
+      {
+        "entry": "00e00a5c",
+        "inclusive_end": "00e00a6b",
+        "bytes": 16,
+        "label": "unwind_map",
+        "kind": "data",
+        "sha256": "3e3d9083da9e7e01b5906f517d3161d5766074077ad6f41ccfe7e75af693dc8d",
+        "live_equals_installed_PE": true
+      },
+      {
+        "entry": "00e00a6c",
+        "inclusive_end": "00e00a8f",
+        "bytes": 36,
+        "label": "funcinfo",
+        "kind": "data",
+        "sha256": "3261bbe15dbb811736da66f2799d60520a0fea24e72b081e9ea7ff73df22d547",
+        "live_equals_installed_PE": true
+      }
+    ],
+    "total_bytes": 557,
+    "complete_body_bytes": 403,
+    "whole_listing_register_provenance": true,
+    "ghidra_mutations": false
+  },
+  "verification": {
+    "build": "scripts/build.ps1 with MSBUILDDISABLENODEREUSE=1, MSVC Win32 Release /W4 /WX /fp:strict; verify-seeds and both existing CTests passed.",
+    "build_log": "local/mount-records-aw/build01.log",
+    "permanent_tests_added": 0,
+    "fixture": {
+      "passed": true,
+      "case_pairs": 9,
+      "source_only_unwind": true,
+      "native_FH3_SEH_game_validated": false,
+      "frozen_inputs": 518,
+      "linked_archive_members": 120,
+      "native_body_bytes": 403,
+      "native_spans": 11,
+      "native_capture_bytes": 557,
+      "manifest_before_sha256": "de7e9e16c77dc82fb4b545143f7b42369ab31b94db6b2ddf3fe274850a627db8",
+      "exe_sha256": "0ae6e64d1122f3e17e8f3be43f96d5d68f0f23452750ff890aef4bd8d74b10e4",
+      "head": "2c0cba7f7b0a52a07788bfba03d895f7fde37caa",
+      "execution_last_line": "PASS 9 native/source states; 711 checks; actual raw canonical string pool and source-only constructor unwind; original FH3/SEH and game unvalidated.",
+      "attempt": "local/mount-records-aw/attempt01",
+      "cases": "local/mount-records-aw/attempt01/cases.json",
+      "before": "local/mount-records-aw/attempt01/manifest_before.json",
+      "after": "local/mount-records-aw/attempt01/manifest_after.json",
+      "core_library_sha256": "5ba0c42fdba50d8dfa22d370d3890f6bdc7b3845752ccae45ebdcbc82563ee82",
+      "header_sha256": "2c9cbe30f44cf92f60ba0a8d3480c3b5c4deea2c0f6d741f5f51addaccc483e7",
+      "source_sha256": "dea213d5363de39549d3300be177cdc994bbeedfed28595b104a6f53bbc2d6fe",
+      "checks": 711,
+      "relative_transfers": 21,
+      "external_bridges": 5,
+      "normal_original_bodies_unchanged": true
+    },
+    "case_scope": [
+      "trim ordinary suffix",
+      "trim all-set retains first byte",
+      "trim sign-extended high-bit byte",
+      "trim null/empty set guards and equal-length resize",
+      "BDCE40 post-allocation current length/provider/flag reload",
+      "BDCE40 self-header clears without old-block release",
+      "BDCFC0 aliased priority capture and header self-alias",
+      "BDEEC0 nonempty16-byte by-value consumption",
+      "BDEEC0 empty16-byte by-value consumption"
+    ],
+    "source_only_case": "BDEEC0 state1 allocation failure: consumed argument returned exactly once; incomplete destination provider/flag/padding untouched.",
+    "freeze": "All physical actual linked source/BSP headers/objects==archive members/libs/probe object/exe/native inputs sealed before first execution and hashes rechecked after; 518 files,120 members.",
+    "driver": "python local/mount-records-aw/run.py --repo <exact-checkout> --attempt <new-absolute-directory>",
+    "retained_failures": "One preparation caller-context query began at a noninstruction and failed before fixture compilation/execution; capture-failure.json retained; repaired by exact current stored listings. First fixture attempt passed.",
+    "report_call_check": {
+      "command": "python tools/verify_report_calls.py reports/native_vfs_mount_records.json",
+      "checked": 28,
+      "passed": 27,
+      "failed": 1,
+      "log": "local/mount-records-aw/verify-report-calls.log",
+      "issue": "Exact 0058413C CALL BF86F0 retained. Live _strchr body minimum BF86E0 differs from callable prologue BF86F0; checker currently treats body minimum as entry. Primary reviewing entry-vs-body range; worker made no Ghidra change."
+    }
+  },
+  "limitations": [
+    "Explicit C++ storage/service interfaces are not original stack ABI, mutable native EH spill identity, FH3 or SEH replacements.",
+    "Existing NativeStringStorage release and string destructor are noexcept; throwing native pool getter/cleanup and simultaneous exceptions are outside this source contract.",
+    "Zero-byte memmove is omitted after original field reads; valid original storage/CRT preconditions retained.",
+    "Original bodies execute with five explicit bridges to actual reviewed source/CRT dependencies. Native exception handler paths unexecuted; one exception case is source-only.",
+    "No unlinked code, bsp_game reachability, gameplay, binary replacement, provider ownership or other mount registration paths are validated."
+  ],
+  "documentation": "docs/NATIVE_VFS_MOUNT_RECORDS.md"
+}
