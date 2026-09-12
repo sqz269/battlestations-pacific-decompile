@@ -216,6 +216,12 @@
       "behavior": "ID vector then base on IPC exception; storage remains"
     }
   },
+  "allocation_identity_integration": {
+    "packet": "orch4_xlive_owner_lifetime_ac",
+    "report": "reports/xlive_owner_lifetime.json",
+    "contract": "Original semantic domain/getter and projection scalar returns retained. Borrowed SoundLifetimeAccess admits canonical XLiveOwnerAllocation identities with storage.vtable_00 at allocation+0; one typed F8ABE8 publication is reloaded for registration/removal. Allocation scalar overloads return the captured allocation after optional free; borrowed runtime survives.",
+    "flow_recheck": "A3F670/A3FDC0 now include post-free ADD ESP4 and have zero live listing gaps; earlier flow_gaps entries are historical, not pending AC repair."
+  },
   "validation": {
     "win32_release_build": "passed scripts/build.ps1; local/xlive-owner-final-build.log",
     "ctests": "2/2 passed (reconstructed_math, native_math_differential)",

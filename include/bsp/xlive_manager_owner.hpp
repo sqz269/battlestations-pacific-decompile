@@ -1,11 +1,12 @@
 #pragma once
 
-#include "bsp/singleton_lifetime.hpp"
+#include "bsp/sound_lifetime_access.hpp"
 #include "bsp/xlive_manager_runtime.hpp"
 
 namespace bsp {
 
 struct XLiveManagerOwner;
+class XLiveOwnerAllocation;
 
 // Additional native fields. Supply their preimage; this is not a constructor.
 // All fields already present in online/flags/pump/signin remain canonical there.
@@ -35,11 +36,20 @@ class XLiveManagerLifetimeAccess final {
 public:
     XLiveManagerLifetimeAccess(SingletonLifetimeDomain&,
         XLiveManagerOwner* volatile& published_00f8abe8) noexcept;
+    XLiveManagerLifetimeAccess(SoundLifetimeAccess,
+        XLiveManagerOwner* volatile& published_00f8abe8) noexcept;
+    // Retained semantic-domain API. Raw callers use manager_view_00415350.
     ConcreteSingletonLifetimeManager& manager_00415350();
+    SoundLifetimeManagerView manager_view_00415350() const;
+    SoundLifetimeAccess lifetime_access() const noexcept { return access_; }
+    // Reload publication, then derive its exact registered identity. Raw
+    // owners require XLiveOwnerAllocation; semantic owners retain &owner.
+    void* published_registration_identity() const;
     XLiveManagerOwner* published_owner() const noexcept;
     void publish(XLiveManagerOwner*) noexcept;
 private:
-    SingletonLifetimeDomain& domain_;
+    SingletonLifetimeDomain* semantic_domain_{};
+    SoundLifetimeAccess access_;
     XLiveManagerOwner* volatile& published_;
 };
 
@@ -54,6 +64,9 @@ struct XLiveManagerOwner {
     XLiveManagerOwnerStorage& storage;
     XLiveManagerLifetimeAccess& lifetime;
     XLiveManagerOwnerHost& host;
+    // Set only by XLiveOwnerAllocation. No independently published slot and
+    // no copy of any native field; legacy semantic aggregates omit this.
+    XLiveOwnerAllocation* allocation_identity{};
 };
 
 // ECX=output slot, RET. Null slot -> E_INVALIDARG; otherwise call actual IPC
@@ -82,7 +95,8 @@ XLiveManagerOwner* construct_xlive_manager_00a40df0(XLiveManagerOwner&,
 void destroy_xlive_manager_00a3f9d0(XLiveManagerOwner&);
 
 // ECX=owner, flags stack, RET4. Only flag bit0 frees the supplied owner storage;
-// both return the original address, even after freeing it. Exceptions propagate
+// These legacy projection overloads return &owner, even after freeing it.
+// XLiveOwnerAllocation overloads return the allocation identity. Exceptions propagate
 // before free. The borrowed field owners are never implicitly destroyed here.
 XLiveManagerOwner* delete_xlive_manager_00a3fdc0(XLiveManagerOwner&, std::uint8_t flags);
 XLiveManagerOwner* delete_xlive_manager_base_00a3f670(XLiveManagerOwner&, std::uint8_t flags);
