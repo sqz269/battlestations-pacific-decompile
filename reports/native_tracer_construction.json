@@ -1,0 +1,536 @@
+{
+  "packet": "orch3_tracer_construction_al",
+  "generated_utc": "2026-09-12T16:36:26.715017+00:00",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "target": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "routines": [
+    {
+      "address": "00bad6f0",
+      "end_inclusive": "00badc6d",
+      "bytes": 1406,
+      "coverage": "complete through required real renderer and canonical owner bindings",
+      "native_abi": "ECX actual7ACh; stack source/unused/texture0/texture1/template; EAX same owner; BADC6B RET14h",
+      "cpp_symbol": "construct_native_tracer_00bad6f0",
+      "proposed_name": "BSP_NativeTracer_Construct",
+      "ghidra_name_preimage": "FUN_00bad6f0",
+      "ghidra_signature_preimage": "undefined FUN_00bad6f0(void)",
+      "disk_sha256": "360f755a0d5d50a2a3345797b5092d78114693c820054ed5fc866570cc475fad",
+      "live_sha256": "360f755a0d5d50a2a3345797b5092d78114693c820054ed5fc866570cc475fad",
+      "live_equals_installed": true
+    },
+    {
+      "address": "00bac070",
+      "end_inclusive": "00bac12a",
+      "bytes": 187,
+      "coverage": "complete native-valid header and backing domain",
+      "native_abi": "ECX actual0Ch header; signed capacity/count stack; RET4",
+      "cpp_symbol": "reserve_native_tracer_points_00bac070",
+      "proposed_name": "BSP_NativeTracerPoints_Reserve",
+      "ghidra_name_preimage": "FUN_00bac070",
+      "ghidra_signature_preimage": "undefined FUN_00bac070(void)",
+      "disk_sha256": "a920a585f3bbe9464960eb94832733d7ebb7d2c006c76d351a08da18595334f0",
+      "live_sha256": "a920a585f3bbe9464960eb94832733d7ebb7d2c006c76d351a08da18595334f0",
+      "live_equals_installed": true
+    },
+    {
+      "address": "00bac310",
+      "end_inclusive": "00bac363",
+      "bytes": 84,
+      "coverage": "complete native-valid header and backing domain",
+      "native_abi": "ECX actual0Ch header; signed capacity/count stack; RET4",
+      "cpp_symbol": "resize_native_tracer_points_00bac310",
+      "proposed_name": "BSP_NativeTracerPoints_Resize",
+      "ghidra_name_preimage": "FUN_00bac310",
+      "ghidra_signature_preimage": "undefined FUN_00bac310(void)",
+      "disk_sha256": "ee68b96bc83e882a0e5226f1c928fa31fbc427e4a015e7d89aa80aa635fe2eb0",
+      "live_sha256": "ee68b96bc83e882a0e5226f1c928fa31fbc427e4a015e7d89aa80aa635fe2eb0",
+      "live_equals_installed": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00bad723",
+      "native": "0041dd40",
+      "function": "00bad6f0",
+      "contract": "Existing native string resize; length17,preserve1, RET8"
+    },
+    {
+      "address": "00bad73e",
+      "native": "00bf7680",
+      "function": "00bad6f0",
+      "contract": "Existing CRT memcpy of current length+1; ADD ESP,C"
+    },
+    {
+      "address": "00bad751",
+      "native": "00b75030",
+      "function": "00bad6f0",
+      "contract": "Same canonical NativeModelOwner base constructor; native name header, RET4"
+    },
+    {
+      "address": "00bad76e",
+      "native": "00419cc0",
+      "function": "00bad6f0",
+      "contract": "Existing actual string-pool getter, reached inside explicit NativeStringStorage release"
+    },
+    {
+      "address": "00bad775",
+      "native": "00bd1510",
+      "function": "00bad6f0",
+      "contract": "Existing actual sized string return; raw pointer,current length+1,1"
+    },
+    {
+      "address": "00bad913",
+      "native": "00bac310",
+      "function": "00bad6f0",
+      "contract": "Actual194 ring resize from current template190+10; RET4"
+    },
+    {
+      "address": "00bad91d",
+      "native": "00b18780",
+      "function": "00bad6f0",
+      "contract": "Existing actualF8D3AC material allocation thunk"
+    },
+    {
+      "address": "00bad939",
+      "native": "00b18900",
+      "function": "00bad6f0",
+      "contract": "Existing110h material/effect constructor; RET4"
+    },
+    {
+      "address": "00bad951",
+      "native": "00b18a40",
+      "function": "00bad6f0",
+      "contract": "Existing same raw model parameter owner, retain byte0; RET8"
+    },
+    {
+      "address": "00bad962",
+      "native": "00b189f0",
+      "function": "00bad6f0",
+      "contract": "Existing texture slots0/1 with actual retained owners; RET8"
+    },
+    {
+      "address": "00bad974",
+      "native": "00b189f0",
+      "function": "00bad6f0",
+      "contract": "Existing texture slots0/1 with actual retained owners; RET8"
+    },
+    {
+      "address": "00bad982",
+      "native": "00b172d0",
+      "function": "00bad6f0",
+      "contract": "Read leaf body: effect+B8 actual8h name header"
+    },
+    {
+      "address": "00bad996",
+      "native": "00bf9440",
+      "function": "00bad6f0",
+      "contract": "Existing CRT strstr(current effect name, static); ADD ESP,8"
+    },
+    {
+      "address": "00bad9b3",
+      "native": "0041e870",
+      "function": "00bad6f0",
+      "contract": "Existing native string constructor from literal; RET4"
+    },
+    {
+      "address": "00bad9d9",
+      "native": "0041e870",
+      "function": "00bad6f0",
+      "contract": "Existing native string constructor from literal; RET4"
+    },
+    {
+      "address": "00bad9f7",
+      "native": "00b18ac0",
+      "function": "00bad6f0",
+      "contract": "Read wrapper: register4*vector_count DWORDs,matrix0 via existing B17E10; RETC"
+    },
+    {
+      "address": "00bada1a",
+      "native": "00419cc0",
+      "function": "00bad6f0",
+      "contract": "Existing actual string-pool getter, reached inside explicit NativeStringStorage release"
+    },
+    {
+      "address": "00bada21",
+      "native": "00bd1510",
+      "function": "00bad6f0",
+      "contract": "Existing actual sized string return; raw pointer,current length+1,1"
+    },
+    {
+      "address": "00bada2f",
+      "native": "0041e870",
+      "function": "00bad6f0",
+      "contract": "Existing native string constructor from literal; RET4"
+    },
+    {
+      "address": "00bada4d",
+      "native": "00b18ac0",
+      "function": "00bad6f0",
+      "contract": "Read wrapper: register4*vector_count DWORDs,matrix0 via existing B17E10; RETC"
+    },
+    {
+      "address": "00bada70",
+      "native": "00419cc0",
+      "function": "00bad6f0",
+      "contract": "Existing actual string-pool getter, reached inside explicit NativeStringStorage release"
+    },
+    {
+      "address": "00bada77",
+      "native": "00bd1510",
+      "function": "00bad6f0",
+      "contract": "Existing actual sized string return; raw pointer,current length+1,1"
+    },
+    {
+      "address": "00bada85",
+      "native": "0041e870",
+      "function": "00bad6f0",
+      "contract": "Existing native string constructor from literal; RET4"
+    },
+    {
+      "address": "00badaa3",
+      "native": "00b18ac0",
+      "function": "00bad6f0",
+      "contract": "Read wrapper: register4*vector_count DWORDs,matrix0 via existing B17E10; RETC"
+    },
+    {
+      "address": "00badac0",
+      "native": "00419cc0",
+      "function": "00bad6f0",
+      "contract": "Existing actual string-pool getter, reached inside explicit NativeStringStorage release"
+    },
+    {
+      "address": "00badac7",
+      "native": "00bd1510",
+      "function": "00bad6f0",
+      "contract": "Existing actual sized string return; raw pointer,current length+1,1"
+    },
+    {
+      "address": "00badad5",
+      "native": "0041e870",
+      "function": "00bad6f0",
+      "contract": "Existing native string constructor from literal; RET4"
+    },
+    {
+      "address": "00badaf3",
+      "native": "00b18ac0",
+      "function": "00bad6f0",
+      "contract": "Read wrapper: register4*vector_count DWORDs,matrix0 via existing B17E10; RETC"
+    },
+    {
+      "address": "00badb10",
+      "native": "00419cc0",
+      "function": "00bad6f0",
+      "contract": "Existing actual string-pool getter, reached inside explicit NativeStringStorage release"
+    },
+    {
+      "address": "00badb17",
+      "native": "00bd1510",
+      "function": "00bad6f0",
+      "contract": "Existing actual sized string return; raw pointer,current length+1,1"
+    },
+    {
+      "address": "00badb21",
+      "native": "00b73b60",
+      "function": "00bad6f0",
+      "contract": "Existing canonical0108FFF8 raw mesh allocation thunk"
+    },
+    {
+      "address": "00badb35",
+      "native": "00b73d70",
+      "function": "00bad6f0",
+      "contract": "Existing actualBCh mesh constructor, preserves poolBC"
+    },
+    {
+      "address": "00badb49",
+      "native": "00b73260",
+      "function": "00bad6f0",
+      "contract": "Existing actual mesh+64[0] stream getter; RET4"
+    },
+    {
+      "address": "00badb87",
+      "native": "00b73bb0",
+      "function": "00bad6f0",
+      "contract": "Existing actual mesh stream0 retain assignment; RET8"
+    },
+    {
+      "address": "00badb99",
+      "native": "00b73b70",
+      "function": "00bad6f0",
+      "contract": "Existing actual mesh index retain assignment; RET4"
+    },
+    {
+      "address": "00badb9e",
+      "native": "00533fa0",
+      "function": "00bad6f0",
+      "contract": "Existing canonical010901D4 draw section allocation/construction"
+    },
+    {
+      "address": "00badbc5",
+      "native": "00b865a0",
+      "function": "00bad6f0",
+      "contract": "Existing full actual section vertex-layout rebuild; RET4"
+    },
+    {
+      "address": "00badbd3",
+      "native": "00b864c0",
+      "function": "00bad6f0",
+      "contract": "Existing same canonical material retain assignment; RET4"
+    },
+    {
+      "address": "00badbdb",
+      "native": "00b73c60",
+      "function": "00bad6f0",
+      "contract": "Existing actual mesh draw section append/retain; RET4"
+    },
+    {
+      "address": "00badc0a",
+      "native": "00b75170",
+      "function": "00bad6f0",
+      "contract": "Existing canonical model geometry assignment with x87-duplicated D7A260 sentinel; RET10"
+    },
+    {
+      "address": "00badc13",
+      "native": "00b9a4b0",
+      "function": "00bad6f0",
+      "contract": "Read leaf body: actual source+14 root pointer"
+    },
+    {
+      "address": "00badc1b",
+      "native": "00b6d890",
+      "function": "00bad6f0",
+      "contract": "Existing full canonical root propagation with same node transform; RET4"
+    },
+    {
+      "address": "00badc2a",
+      "native": "00b74390",
+      "function": "00bad6f0",
+      "contract": "Existing four forward x87 bounds stores from template+38; RET4"
+    },
+    {
+      "address": "00bac093",
+      "native": "00bf55be",
+      "function": "00bac070",
+      "contract": "Existing ordinary CRT allocation/new-handler retry, size(capacity*30) wraps32; ADD ESP4 at BAC09A"
+    },
+    {
+      "address": "00bac118",
+      "native": "00bf6989",
+      "function": "00bac070",
+      "contract": "Existing returning CRT free, ADD ESP4 at BAC11D; then current data/capacity publication"
+    },
+    {
+      "address": "00bac31e",
+      "native": "00bac070",
+      "function": "00bac310",
+      "contract": "Full actual ring reserve if requested count exceeds capacity; RET4"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "site": "00bad8e7",
+      "function": "00bad6f0",
+      "instruction": "call dword ptr [0xce221c]",
+      "contract": "actual InterlockedIncrement/Decrement via IAT CE221C/CE2220"
+    },
+    {
+      "site": "00bad8f5",
+      "function": "00bad6f0",
+      "instruction": "call dword ptr [0xce2220]",
+      "contract": "actual InterlockedIncrement/Decrement via IAT CE221C/CE2220"
+    },
+    {
+      "site": "00bad905",
+      "function": "00bad6f0",
+      "instruction": "call eax",
+      "contract": "current actual virtual0 after decrement reaches zero"
+    },
+    {
+      "site": "00badb6b",
+      "function": "00bad6f0",
+      "instruction": "call eax",
+      "contract": "current source stream virtual24, captured renderer table then late current5C slot"
+    },
+    {
+      "site": "00badb7b",
+      "function": "00bad6f0",
+      "instruction": "call edx",
+      "contract": "current source stream virtual24, captured renderer table then late current5C slot"
+    },
+    {
+      "site": "00badbe4",
+      "function": "00bad6f0",
+      "instruction": "call dword ptr [0xce2220]",
+      "contract": "actual InterlockedIncrement/Decrement via IAT CE221C/CE2220"
+    },
+    {
+      "site": "00badbf4",
+      "function": "00bad6f0",
+      "instruction": "call eax",
+      "contract": "current actual virtual0 after decrement reaches zero"
+    },
+    {
+      "site": "00badc38",
+      "function": "00bad6f0",
+      "instruction": "call dword ptr [0xce2220]",
+      "contract": "actual InterlockedIncrement/Decrement via IAT CE221C/CE2220"
+    },
+    {
+      "site": "00badc49",
+      "function": "00bad6f0",
+      "instruction": "call edx",
+      "contract": "current actual virtual0 after decrement reaches zero"
+    }
+  ],
+  "actual_storage": {
+    "payload_bytes": 1964,
+    "pool_stride": 1968,
+    "pool_id_offset": 1964,
+    "canonical_base": "same NativeModelOwner and NativeNodeBinding; same actual04 atomic/model180 geometry; no NativeModelReference or188h scalar return",
+    "ring": "actual194/198/19C;30h records; reserve copies ten x87 float words then unchanged links28/2C; resize initializes links only",
+    "second_array": "actual1A0/1A4/1A8; producer initializes empty; sibling lifetime owns complete BAC130/BAC370/BAC880",
+    "material": "actual1BC, canonical110h material, parameter source points inside same7ACh allocation",
+    "stream": "actual248 holds returned renderer-owned reference; mesh stream0 retains separately; success does not release248",
+    "source": "actual244 is borrowed first source argument; source+14 gives real root",
+    "strings": "requires base.environment.actual_names == parameters.parameter_names == materials.parameter_names; root canonical model extension routes base construction and destruction through that same NativeStringStorage"
+  },
+  "producers": [
+    {
+      "producer": "00BAD6F0",
+      "evidence": "BAD786..BAD7A2 zero190/194..1A8; BAD7A8..BAD8C8 scalar/flag/source stores; BAD8DD retains190; BADB81 owns248; BADC4F zero250/BADC55 byte24C=1"
+    },
+    {
+      "producer": "00BADC70",
+      "coverage": "read-only producer inspection, not reconstructed here",
+      "evidence": "BADC9D actual04=1, BADCAE D63F94, BADCB4 source08, BADD16/BADD54 effect14, BADD81 count10; calls BAD150 or BACBD0 for template geometry"
+    },
+    {
+      "producer": "00BACBD0 / 00BAD150",
+      "coverage": "read-only producer inspection, not reconstructed here",
+      "evidence": "static BACC06 writes08; both construct actual mesh0C with real vertex/index streams; skinned BAD172 increments30; their38..44 stores produce local bounds; these same original template fields feed constructor"
+    },
+    {
+      "producer": "00872790",
+      "evidence": "8728C8 raw7AC allocation then 8728FA..87290D pushes template EBX+A4, texture1 EBX+9C, texture0 EBX+98, current app19EC (unread), current app19F0+A8 (source)."
+    }
+  ],
+  "exception_cleanup": {
+    "descriptor": "00DFD694",
+    "handler": "00CC3E94..00CC3E9D",
+    "map": "00DFD6B8..00DFD717,12entries",
+    "states": [
+      {
+        "state": 0,
+        "to": -1,
+        "action": "CC3E30 ->41DD20 initial temp name"
+      },
+      {
+        "state": 1,
+        "to": 0,
+        "action": "CC3E38 ->B750C0 base, then initial name"
+      },
+      {
+        "state": 2,
+        "to": -1,
+        "action": "CC3E38 ->B750C0 base; initial name already destroyed"
+      },
+      {
+        "state": 3,
+        "to": 2,
+        "action": "CC3E40 ->BAC860 actual194 point array"
+      },
+      {
+        "state": 4,
+        "to": 3,
+        "action": "CC3E4E ->BAC880 actual1A0 pointer array"
+      },
+      {
+        "state": 5,
+        "to": 4,
+        "action": "CC3E5C ->B17D70 raw failed material slot"
+      },
+      {
+        "state": "6..10",
+        "to": 4,
+        "action": "CC3E64/6C/74/7C/84 ->41DD20 parameter temp name"
+      },
+      {
+        "state": 11,
+        "to": 4,
+        "action": "CC3E8C ->B72F70 raw failed mesh slot"
+      }
+    ],
+    "cpp_binding": "restore_native_tracer_model_profile BEFORE B750C0; no reference companion exists until full success. Destructor throwing during active C++ unwind terminates.",
+    "native_nonrollback": "No retained190 template, constructed1BC material, owned248 stream, already constructed raw mesh/section reference rollback. Do not invent RAII release; parent returns failed raw tracer through BAC2B0."
+  },
+  "corrections": [
+    {
+      "was": "BAC070 pseudocode returns after free without assigning backing/capacity",
+      "is": "BAC11D ADD ESP4; BAC120 publishes EBP data; BAC122 publishes EDI capacity; BAC125 POP EBP",
+      "evidence": "live and installed bytes equal83c404892e897e085d, missing saved disassembly only"
+    },
+    {
+      "was": "BAD6F0 pseudocode uses param3/template mixed values and param2 for final bounds",
+      "is": "second stack argument is unread; actual fifth stack argument supplies all template reads including final bounds38",
+      "evidence": "ESI actual owner, EBX zero throughout; ESP+3C fifth argument, ESP+2C first source before final POP EDI; stack slot34 overwritten by mesh allocation before pseudocode reuses it"
+    },
+    {
+      "was": "A ring copy can be memcpy and links can be rebased",
+      "is": "ten x87 FLD/FSTP32 pairs and two MOV link words, no rebasing",
+      "evidence": "BAC0BF..BAC106; original-byte fixture signaling NaN/status differences prevent memcpy replacement"
+    }
+  ],
+  "analysis_repairs": [
+    {
+      "function": "00bac070",
+      "add_flow_start": "00bac11d",
+      "end_inclusive": "00bac125",
+      "final_instruction": "00bac125 POP EBP,1byte",
+      "full_function_end_inclusive": "00bac12a",
+      "full_final_instruction": "00bac128 RET4,3bytes",
+      "reason": "returning-free continuation; preserve old comments and refresh export after root repair"
+    },
+    {
+      "function": "00cc3e94",
+      "kind": "missing_function_start",
+      "start": "00cc3e94",
+      "end_inclusive": "00cc3e9d",
+      "final_instruction": "00cc3e99 JMP00BF6B43,5bytes",
+      "reason": "BAD6F0 FH3 dispatcher loads descriptor00DFD694; current live proto has no function",
+      "native_bytes": "b894d6df00e9a52cf3ff"
+    }
+  ],
+  "validation": {
+    "strict_object_compile": "passed MSVC Win32 /std:c++17 /EHsc /fp:strict /O2 /Oy- /MD /Gy /Gw /W4 /WX; source includes root actual_names header and sibling lifetime header",
+    "standard_build": "attempted scripts/build.ps1; failed C1085 no space left on device and MSB6003 IOException; J free0. Only owned freshly generated build/win32 deleted after exact path verification, freeing772MB. Root owns one combined build.",
+    "fixture": {
+      "status": "passed",
+      "source": "local/tracer_ring_probe.cpp",
+      "log": "local/tracer-ring-fixture.log",
+      "original_bytes": 271,
+      "modifications": "exactly two four-byte rel32 targets for existing CRT allocate/free; all other bytes checked unchanged at runtime; INT3 outside represented bodies",
+      "pairs": 102,
+      "coverage": "96reserve pairs=12CW modes*8numeric seeds; six full384byte no-grow resize/shrink/regrow pairs; minimum1 and no-grow checks; ten float words incl sNaN/subnormals/signed0/infinity, unchanged raw link words; compare x87 status/CW",
+      "limits": "does not execute BAD6F0 full constructor or original EH dispatcher; allocated reserve-tail bytes intentionally not compared because they are uninitialized native preimages",
+      "source_sha256": "e6292e6e6132d12c6fae7dc4a95f1c22eb466d18a65fd07eafa8242380105377",
+      "binary_sha256": "1aef39186a13579b467f69fe0bfb522e29925dac3687baa2c8c2bac158262fc6",
+      "build_command": "local/build_tracer_ring_probe.cmd; native_tracer_construction.obj + sibling native_tracer_lifetime.obj + existing main bsp_core.lib; /MANIFEST:EMBED"
+    },
+    "live_call_checker": "passed:46 numeric call rows,0failed; local/tracer-construction-call-check.log",
+    "seed_bytes": "tools/ghidra_export.py verify-seeds passed all8 installed/live seed checks; full combined CTests remain root integration work",
+    "strict_object_sha256": "74e5f4aeb11507256ec1612c273fdae580609fc8c781953af5c82055a2058e7b"
+  },
+  "limitations": [
+    "New C++ interfaces are not drop-in native ABI replacements.",
+    "Full template BADC70/static BACBD0/skinned BAD150 production remains required; this packet consumes the actual template and does not make synthetic template/streams.",
+    "Required concrete renderer current24/current5C and canonical owner references must be supplied by application composition; pure methods have no successful fallback.",
+    "Original Win32 EH/SEH dispatch, native allocation-failure trap behavior, full constructor original-byte runtime, rendering and gameplay remain unvalidated.",
+    "Native-valid aligned storage/header/counts and actual matching CRT/string/owner lifetimes required."
+  ],
+  "integration_dependencies": [
+    "native_tracer_lifetime.hpp/.cpp sibling publishes actual profile and supplies BAC860/BAC880 member destruction",
+    "root NativeModelEnvironment.actual_names appended and routed through existing explicit native node string overloads",
+    "root CMake registration, name/reconstruction ledger integration, saved-analysis repairs and final strict combined build"
+  ]
+}
