@@ -132,9 +132,9 @@ settings at 00424c40()+438h..+44Ch were never recovered, so the three denominato
 are forced to 1 (the same stand-in src/ship_motion_probe.cpp uses)"*. That sentence is
 stale on both counts - the knots were recovered, and the probe no longer forces them.
 
-So **`bsp_game.exe` turns the mission's ships at twice the authored rate**, and every
-milestone-2i number that depends on heading or on a turning hull's path is wrong by that
-factor. Its straight-line distances are unaffected. This is a divergence between two
+So **`bsp_game.exe` at milestone 2i turned the mission's ships at twice the authored rate**
+(closed by milestone 2j on 2026-09-12, see Corrections), and every milestone-2i number that
+depends on heading or on a turning hull's path is wrong by that factor. Its straight-line distances are unaffected. This is a divergence between two
 reconstructions, not a proven divergence from the game; but the game's own authored data
 is the tie-breaker, and it agrees with the probe.
 
@@ -240,6 +240,15 @@ Exercised three ways, all reproducible from `local/`:
 
 ## Corrections
 
+- **2026-09-12, milestone 2j closed the harness divergence.** `src/game_hosts_units.cpp` now runs the
+  real loader head `0083B5E0`, reads `ShipGlobals["Navigator"]["TurnMultipliers"]` through the `0083CE56`
+  fragment and logs the six values; a missing or incomplete table leaves the fields unset instead of
+  falling back to 1. The integrator re-ran the comparison on main bf9dae41 (`--order-frame 0`,
+  `throttle=1,rudder=1`, `--mission-frame-seconds 0.05`) against `bsp_ship_motion_probe.exe --class 20`:
+  280 samples over 14 s, peak deltas speed 0.22 m/s, heading 0.043 deg, position 0.10 m, yaw 0.001 rad/s,
+  final heading delta 0.0005 deg; no channel left its tolerance. The executable settles at -0.06109 rad/s,
+  `MaxRotAngle / 2.0`. The section 2 table stays as the record of the 2i state.
+
 **To this packet's own protocol.** One mutating Ghidra call was made in error:
 `disassemble_bytes` over `00826866..0082692F`, which reported 202 bytes disassembled. That
 range is already inside `00825F20`'s existing function body, so it re-disassembled
@@ -286,7 +295,7 @@ wrong. No C++ was changed in this packet.
 
 | packet | addresses / files | why |
 | --- | --- | --- |
-| `game_harness_rudder_curve` | `src/game_hosts_units.cpp` `yaw_rate_target`, `0082ECB0`, `0082E890` | Give `bsp_game.exe` the authored knots the probe already reads, then re-run milestone 2i. Every heading and turning path in that milestone is currently out by the denominator. This is the one follow-up that changes shipped numbers. |
+| ~~`game_harness_rudder_curve`~~ | `src/game_hosts_units.cpp` `yaw_rate_target`, `0082ECB0`, `0082E890` | **Closed by milestone 2j (main c1e9691e)**: `bsp_game.exe` loads the knots through `0083B5E0` / `0083CE56` and the comparison passes (see Corrections). The original text: give `bsp_game.exe` the authored knots the probe already reads, then re-run milestone 2i. Every heading and turning path in that milestone is currently out by the denominator. This is the one follow-up that changes shipped numbers. |
 | `motion_live_trace` | `00825F20`, `[00F8753C]+438h..+44Ch` | The live run of section 3, once a person can drive the menus to USN02. The two one-shot reads need only a main menu. |
 | `cruise_command_object` | `00469610`, `0046AAB0`, `unit+838h` ring | What the authored `Cruise` order writes into the ring. Section 3 captures it as a side effect; milestone 2i lists it as open, and the probe cannot reproduce the mission's ships without it. |
 | `unit_pose_refresh` | `00414DB0`, `00825A64`, `unit+0CCh..+100h` | Already proposed by `docs/UNIT_INSTANCE_UPDATE.md`. This packet pinned the translation at `+0FCh/+100h/+104h` and the three basis rows from the keel-point arithmetic, which is most of it. |
