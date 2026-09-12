@@ -292,6 +292,62 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
                 return false;
             }
             mission_complete_frame = std::strtol(argv[++index], nullptr, 10);
+        } else if (std::strcmp(argument, "--order-frame") == 0) {
+            // Milestone 2i: the in-mission frame the player order is issued on.
+            if (index + 1 >= argc) {
+                error = "--order-frame needs a frame number";
+                return false;
+            }
+            order_frame = std::strtol(argv[++index], nullptr, 10);
+        } else if (std::strcmp(argument, "--order") == 0) {
+            // Milestone 2i: throttle=<f>,rudder=<f>, the two parameters
+            // 00816a40 publishes into the controlled unit's order ring.
+            if (index + 1 >= argc) {
+                error = "--order needs throttle=<f>,rudder=<f>";
+                return false;
+            }
+            const std::string text = argv[++index];
+            std::size_t begin = 0;
+            bool seen = false;
+            while (begin <= text.size()) {
+                const std::size_t comma = text.find(',', begin);
+                const std::string field = text.substr(begin,
+                    comma == std::string::npos ? std::string::npos : comma - begin);
+                const std::size_t equals = field.find('=');
+                if (equals != std::string::npos) {
+                    const std::string key = field.substr(0, equals);
+                    const float value
+                        = static_cast<float>(std::atof(field.c_str() + equals + 1));
+                    if (key == "throttle") {
+                        order_throttle = value;
+                        seen = true;
+                    } else if (key == "rudder") {
+                        order_rudder = value;
+                        seen = true;
+                    } else {
+                        error = "--order takes throttle=<f> and rudder=<f>";
+                        return false;
+                    }
+                }
+                if (comma == std::string::npos) break;
+                begin = comma + 1;
+            }
+            if (!seen) {
+                error = "--order takes throttle=<f> and rudder=<f>";
+                return false;
+            }
+        } else if (std::strcmp(argument, "--mission-frame-seconds") == 0) {
+            // Milestone 2i: a fixed in-mission frame delta, so a headless run
+            // accumulates simulated time deterministically.
+            if (index + 1 >= argc) {
+                error = "--mission-frame-seconds needs a duration";
+                return false;
+            }
+            mission_frame_seconds = static_cast<float>(std::atof(argv[++index]));
+            if (!(mission_frame_seconds >= 0.0f)) {
+                error = "--mission-frame-seconds needs a non-negative duration";
+                return false;
+            }
         } else if (std::strcmp(argument, "--hardware-probe-commit") == 0) {
             hardware_probe_commit = true;
         } else {
@@ -1133,7 +1189,8 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     profiler_ = new GameFrameProfiler(log_, 8);
     menu_ = new GameMenuHost(log_, *frontend_, game_state_, options_.press_start_frame,
         *vfs_, *scripts_, locale_->tables(), options_.menu_select, options_.mission_frames,
-        profiler_, summary_.language, options_.mission_complete_frame);
+        profiler_, summary_.language, options_.mission_complete_frame, options_.order_frame,
+        options_.order_throttle, options_.order_rudder, options_.mission_frame_seconds);
     menu_->run_title_init_004c9a70();
     const GameFrontendSummary& frontend = frontend_->summary();
     summary_.gui_pages_loaded = frontend.pages_loaded;

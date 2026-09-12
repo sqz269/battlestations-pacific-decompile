@@ -89,6 +89,18 @@ struct GameMissionFrameRunSummary {
     unsigned long long exit_frames{0};
     bool exit_completed{false};
     bool complete_injected{false};    // --mission-complete-frame fired
+    // Milestone 2i: the world walk and the units under it.
+    unsigned long long world_walks{0};
+    unsigned long long entities_walked{0};
+    unsigned long long entities_updated{0};
+    unsigned long long unit_motion_ticks{0};
+    std::size_t units{0};
+    std::size_t merged_unit_list{0};
+    float simulated_seconds{0.0f};
+    float controlled_distance{0.0f};
+    float total_path_length{0.0f};
+    std::string controlled_unit;
+    bool player_order_issued{false};
 };
 
 // Everything milestone 2f adds behind the mission load request. Owned for the
@@ -123,6 +135,15 @@ public:
     // 0089a480 -> 0089a390 -> 004cd390 with the debrief byte set. Negative or
     // zero injects nothing and the run ends on the frame count as 2f did.
     void set_mission_complete_frame(long frame) noexcept;
+
+    // Milestone 2i, --order-frame N with --order throttle=<f>,rudder=<f>: the
+    // in-mission frame on which one player order is issued to the controlled
+    // unit, through the same 00816a40 the authored command takes. A negative
+    // frame issues nothing.
+    void set_player_order(long frame, float throttle, float rudder) noexcept;
+    // Milestone 2i, --mission-frame-seconds S: a fixed in-mission frame delta
+    // instead of the wall clock. Zero keeps the wall clock.
+    void set_mission_frame_seconds(float seconds) noexcept;
 
     // game+2198h, the mission key the record commit 009205e0 writes under.
     void set_mission_key(std::string key);

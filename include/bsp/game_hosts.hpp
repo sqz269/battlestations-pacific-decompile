@@ -155,6 +155,19 @@ struct GameExecutableOptions {
     // leaves state 0Dh through the recovered path instead of a frame count.
     // Negative injects nothing.
     long mission_complete_frame{-1};
+    // --order-frame N and --order throttle=<f>,rudder=<f>, milestone 2i: on
+    // in-mission frame N the executable issues one player order to the
+    // controlled unit through the order record 00816a40 builds, which is the
+    // same path the authored `Cruise` command takes. Negative issues nothing.
+    long order_frame{-1};
+    float order_throttle{0.0f};
+    float order_rudder{0.0f};
+    // --mission-frame-seconds S, milestone 2i: run each in-mission frame with a
+    // fixed delta instead of the wall clock, so a headless run accumulates
+    // simulated time deterministically and the fixed-step driver's own clock
+    // does not depend on how fast the machine presents. Zero keeps the wall
+    // clock, which is what every earlier milestone's run used.
+    float mission_frame_seconds{0.0f};
     // --hardware-probe-commit: let the phase-2 probe 0073c3b0 raise its message box and
     // write the machine profile back to HKLM. Off by default so an unattended run cannot
     // block on a dialog or rewrite a machine's stored profile.

@@ -28,7 +28,9 @@
 #include "bsp/game_hosts_menu.hpp"
 #include "bsp/game_hosts_mission_result.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
+#include "bsp/game_hosts_units.hpp"
 #include "bsp/game_hosts_vfs.hpp"
+#include "bsp/game_hosts_world.hpp"
 #include "bsp/award_trackers.hpp"
 #include "bsp/game_dynamics_list.hpp"
 #include "bsp/game_frame_control.hpp"
@@ -141,6 +143,16 @@ struct GameMissionFrameHost::Impl {
     // Milestone 2h: 004d4df0, the scene contents pass. Built on the load walk's
     // own row, because the "2_" file block it opens belongs to that step.
     std::unique_ptr<GameSceneContentsHost> scene_contents;
+    // Milestone 2i: the created units and the world chain the walk reads. Both
+    // are built on the load's own load_scene_contents row, because that is the
+    // step that creates the instances.
+    std::unique_ptr<GameUnitsHost> units;
+    std::unique_ptr<GameWorldHost> world_host;
+    long order_frame{-1};             // --order-frame N
+    float order_throttle{0.0f};
+    float order_rudder{0.0f};
+    bool order_issued{false};
+    float mission_frame_seconds{0.0f};  // --mission-frame-seconds S
     // Milestone 2h: the in-mission HUD, owned by GameMenuHost because its
     // screens register into that object's copy of the registry at 00e18b60.
     GameHudHost* hud{nullptr};
@@ -309,6 +321,14 @@ public:
         // tail hook's own gate is tested once per step alongside them, because
         // 00875fd1 is the last thing the driver does with the same clock.
         owner_.fixed_step->run_subsystems_00875e0c(step, world_active);
+        // Milestone 2i: the ship motion virtual 00825f20. Its own caller is not
+        // established - docs/SHIP_MOTION.md names three call sites (0085542f,
+        // 00749b2c, 00644a38) and reads none - so the position in the frame is
+        // the executable's decision. It is run here because 00825f20's order
+        // ring is written for the fixed step's 0.05 s period
+        // (kUnitStateMessageTickSeconds == kFixedSimulationStepFloat), which is
+        // the step this call receives.
+        if (owner_.units != nullptr) owner_.units->motion_step_00825f20(step);
     }
     void run_interpolation_wave_00875670(float leftover, std::uint8_t run_pass) override {
         owner_.fixed_step->run_interpolation_wave_00875670(leftover, run_pass);
@@ -403,6 +423,15 @@ public:
     }
 
     void build_local_player_unit_lists_004c3cb0() override {
+        // Milestone 2i: milestone 2f ran the guard and recorded the body,
+        // because the eight list heads are filled from a registry no unit had
+        // reached. The world host now runs the whole routine: the guard, the
+        // clear, the three walks and the merge tail.
+        if (owner_.world_host != nullptr) {
+            owner_.world_host->build_local_player_unit_lists_004c3cb0();
+            owner_.unit_lists_built = true;
+            return;
+        }
         bsp::UnitListsGate gate{};
         gate.already_built = owner_.unit_lists_built;
         gate.slot_index = 0;
@@ -414,7 +443,13 @@ public:
         if (ran) owner_.record("InMissionTick::build_unit_lists", 0x004bfdf0u);
     }
 
-    void update_world_entities_00904bf0(float) override {
+    void update_world_entities_00904bf0(float scaled_delta) override {
+        // Milestone 2i: 004c40ce, the walk over [[world+4]] with the gate at
+        // entity+5Ch and the sibling link at entity+38h, then 00904600.
+        if (owner_.world_host != nullptr) {
+            owner_.world_host->run_world_entity_update_00904bf0(scaled_delta);
+            return;
+        }
         owner_.record("InMissionTick::update_world_entities", 0x00904bf0u);
     }
 
@@ -1133,6 +1168,32 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                 host.scene_state.session_mode != 0);
             host.done(label, step.address);
             ++host.load.concrete;
+            // Milestone 2i: the instances the instantiate pass created become
+            // one state object each, and the chain 009037f0 allocates is built
+            // over them so the world walk has something to walk. Every unit's
+            // authored `Command` token is then queued, and the first created
+            // instance becomes the controlled unit through 004c0890.
+            host.units = std::make_unique<GameUnitsHost>(host.log, host.lua);
+            host.units->create_units(host.scene_contents->entities());
+            host.world_host = std::make_unique<GameWorldHost>(host.log, *host.units);
+            host.world_host->build_entity_chains_009037f0();
+            host.units->issue_authored_commands();
+            if (host.units->count() > 0) host.units->set_controlled_unit_004c0890(0);
+            continue;
+        }
+        if (method == "select_front_end_layout") {
+            // Milestone 2i: 004c1ac0(3,0) then 00518250(3,0). Milestone 2h
+            // reported the front-end frame as still on screen during the
+            // mission and left it at milestone 2b's caveat; this row is what
+            // the game does about it, and the answer is that it does not
+            // release them, because the call does not commit.
+            if (host.hud != nullptr) {
+                host.hud->select_front_end_layout_00518250();
+                ++host.load.concrete;
+            } else {
+                host.record(label, step.address);
+                ++host.load.records;
+            }
             continue;
         }
         if (method == "load_scene_file") {
@@ -1299,6 +1360,17 @@ void GameMissionFrameHost::set_mission_key(std::string key) {
     impl_->result->set_mission_key(std::move(key));
 }
 
+void GameMissionFrameHost::set_player_order(long frame, float throttle,
+    float rudder) noexcept {
+    impl_->order_frame = frame;
+    impl_->order_throttle = throttle;
+    impl_->order_rudder = rudder;
+}
+
+void GameMissionFrameHost::set_mission_frame_seconds(float seconds) noexcept {
+    impl_->mission_frame_seconds = seconds;
+}
+
 bool GameMissionFrameHost::in_mission_phase() const noexcept {
     return impl_->control.state
         == static_cast<std::uint32_t>(bsp::GameStateId::kInMission);
@@ -1308,9 +1380,16 @@ bool GameMissionFrameHost::exit_path_finished() const noexcept {
     return impl_->exit_path_finished;
 }
 
-bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta) {
+bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
     Impl& host = *impl_;
     if (!host.entry.entered) return false;
+
+    // Milestone 2i, --mission-frame-seconds S. Executable plumbing, the same
+    // kind as --frames: it replaces the wall-clock frame interval so a headless
+    // run accumulates simulated time deterministically and the fixed-step
+    // driver's own clock at 00f876a4 does not depend on the frame rate.
+    const float raw_delta
+        = host.mission_frame_seconds > 0.0f ? host.mission_frame_seconds : raw_delta_in;
 
     host.world_clock += raw_delta;
     host.frame_state.raw_delta = raw_delta;
@@ -1366,6 +1445,17 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta) {
         return true;
     }
 
+    // --order-frame N with --order throttle=<f>,rudder=<f>: one player order to
+    // the controlled unit, through the same 00816a40 the authored command
+    // takes. A running game issues it from the HUD's own order path; no input
+    // backend exists here, so the executable issues it and says so.
+    if (host.order_frame >= 0 && !host.order_issued && host.units != nullptr
+        && host.frames.frames + 1 >= static_cast<unsigned long long>(host.order_frame)) {
+        host.order_issued = true;
+        host.frames.player_order_issued = true;
+        host.units->issue_player_order(host.order_throttle, host.order_rudder);
+    }
+
     // --mission-complete-frame N: the script's own PlayBinkMovie(name, true),
     // injected on the frame the switch names because no script on this
     // installation reaches it in a headless run.
@@ -1389,11 +1479,35 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta) {
     host.frames.script_calls = host.lua.summary().native_calls;
     if (result.mission_completion_requested) host.frames.completion_requested = true;
 
+    // Milestone 2i: what the world walk and the units did this frame.
+    if (host.world_host != nullptr) {
+        const GameWorldSummary& world_summary = host.world_host->summary();
+        host.frames.world_walks = world_summary.walks;
+        host.frames.entities_walked = world_summary.entities_walked;
+        host.frames.entities_updated = world_summary.entities_updated;
+        host.frames.merged_unit_list = world_summary.list_counts[7];
+    }
+    if (host.units != nullptr) {
+        const GameUnitsSummary& units = host.units->summary();
+        host.frames.units = units.units;
+        host.frames.unit_motion_ticks = units.motion_ticks;
+        host.frames.simulated_seconds = units.simulated_seconds;
+        host.frames.controlled_distance = units.controlled_distance;
+        host.frames.total_path_length = units.total_path_length;
+        host.frames.controlled_unit = units.controlled_name;
+    }
+
     host.log.notef("  mission frame %llu simulated=%d paused=%d units=%llu events=%llu "
         "script_calls=%llu erased=%d", host.frames.frames, result.simulated ? 1 : 0,
         result.paused ? 1 : 0, host.frames.units_ticked,
         host.frames.mission_events_applied, host.frames.script_calls,
         result.input_entries_erased);
+    // The world walk's own per-frame line, and the controlled unit's trajectory
+    // every ten in-mission frames.
+    if (host.world_host != nullptr) host.world_host->log_frame(host.frames.frames);
+    if (host.units != nullptr && host.frames.frames % 10 == 0) {
+        host.units->log_controlled_trajectory(host.frames.frames);
+    }
     // A frame that asked to leave state 0Dh is not the last frame any more: the
     // request it enqueued is dispatched by the next frame's drain, which is
     // where the exit path runs.
@@ -1422,6 +1536,8 @@ void GameMissionFrameHost::report(long requested_frames) {
     host.fixed_step->report();
     host.result->report();
     if (host.hud != nullptr) host.hud->report();
+    if (host.world_host != nullptr) host.world_host->report();
+    if (host.units != nullptr) host.units->report();
     if (host.scene_contents) {
         // Milestone 2h. The scene contents pass created unit records, and the
         // frame's unit passes ticked none of them. That is not an empty scene:
@@ -1436,11 +1552,18 @@ void GameMissionFrameHost::report(long requested_frames) {
             scene.instantiate_entities, scene.generated, scene.rejected, scene.created,
             scene.registration_bodies, scene.party_class_marks, scene.property_groups,
             scene.enum_tables);
-        host.log.notef("summary mission unit passes: %zu unit record(s) exist and every unit "
-            "pass of the frame and of the fixed step ticked 0 of them, because "
-            "construct_world 004de610 is a load record: the entity manager at game+21A0h "
-            "is null and the fixed step's world gate 00875e69 reads a world that does not "
-            "exist", scene.created);
+        // Milestone 2i supersedes milestone 2h's "every unit pass ticked 0 of
+        // them" for the world walk and the motion virtual: the executable owns
+        // the chain header 009037f0 allocates, so 00904bf0 and 00825f20 now run
+        // over the created units. The passes that still tick nothing are the
+        // ones that read the world object itself, which construct_world 004de610
+        // does not build: the entity manager at game+21A0h is null and the fixed
+        // step's world gate 00875e69 reads a world that does not exist.
+        host.log.notef("summary mission unit passes: %zu unit record(s) exist; the world walk "
+            "00904bf0 updated %llu of them and the motion virtual 00825f20 ticked %llu, "
+            "while every pass that reads the world object itself still ticks none, because "
+            "construct_world 004de610 is a load record", scene.created,
+            host.frames.entities_updated, host.frames.unit_motion_ticks);
     }
     host.log.notef("summary mission fixed steps=%llu at %.3f s each (00875bb0's own clock "
         "at 00f876a4/00f876ac)", host.fixed_steps,
@@ -1455,6 +1578,17 @@ void GameMissionFrameHost::report(long requested_frames) {
         host.frames.exit_completed ? 1 : 0, host.control.state);
     host.log.notef("summary mission exit reachable=%d: %s",
         host.frames.exit_reachable ? 1 : 0, host.frames.exit_note.c_str());
+    if (host.world_host != nullptr && host.units != nullptr) {
+        host.log.notef("summary mission world units=%zu walked=%llu updated=%llu "
+            "motion_ticks=%llu simulated=%.2f s controlled=%s moved=%.2f total_path=%.2f",
+            host.frames.units, host.frames.entities_walked, host.frames.entities_updated,
+            host.frames.unit_motion_ticks,
+            static_cast<double>(host.frames.simulated_seconds),
+            host.frames.controlled_unit.empty() ? "(none)"
+                                                : host.frames.controlled_unit.c_str(),
+            static_cast<double>(host.frames.controlled_distance),
+            static_cast<double>(host.frames.total_path_length));
+    }
 }
 
 }  // namespace bsp::game

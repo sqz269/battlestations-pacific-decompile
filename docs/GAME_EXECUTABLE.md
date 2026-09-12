@@ -1,6 +1,6 @@
-# bsp_game.exe, milestones 1 through 2h
+# bsp_game.exe, milestones 1 through 2i
 
-Milestone 2h is the current state of the executable, and its section corrects the earlier
+Milestone 2i is the current state of the executable, and its section corrects the earlier
 ones. Milestone 1 is the spine it was all built on.
 
 Addresses added by milestone 2a: 0073d604-0073d899 (the phase-2 VFS block of Init), 00beda60
@@ -2873,6 +2873,252 @@ world object every one of those passes needs does not exist.
 8. **What raises the in-mission interface manager.** Its vtable slot +08h is 00684700, the base
    Activate, but no direct caller of 00684700 is this manager and nothing in the reconstructed
    load reaches the dispatch. Until it is found, the manager's +3Ch byte is the executable's.
+
+## Milestone 2i: the destroyers tick and move
+
+Addresses: 009037f0 with its call site 004de69c (the two 0Ch chain headers at world+4h and
+world+8h), 00904bf0 at 004c40ce with the gate 00904c00, the dispatch 00904c18 and the link
+00904c1a, 00904600 at 00904c2b with 00904ae3 / 00904b09 / 00904b2a and the producer 00905080;
+004c3cb0 at 004c40b4 with 004bfdf0 at 004c3ce3, the three walk heads 004c3cf8 / 004c3d61 /
+004c3eb4, 008ddf90 at 004c3e90 and the merge 004c2be0; 008255b0 with its twelve steps'
+call sites 00825608, 00825640, 0082571d, 008257f5, 0082584b, 0082586b, 008258cf, 00825920,
+008259b9, 008259c9, 008259df, 008259e6, 00825a54, 00825af4, 00825bcf, 00825c0c, 00825c74,
+00825d5a, 00825d6c, 00825d7e and 00825db4; 00825f20 with 00813020 at 00826121, 0078cf20 at
+00826985, 008e6430 at 00826a21, 00937440 at 00826a6d, 0080fc30 at 00826aab, 0092d300 at
+00826b29, 0092e8c0 at 00826b54, 0092be80 at 00826b6a and the tail virtual at 00826b84;
+00816a40 with the clamp 00815440; 004c0890 with 004c0893, 004c08f7 and 00b0d7b0 at 004c0905;
+and the load's own 004c1ac0 at 004e04e7 with 00518250 at 004e04ee. Packet `cc_exe_2i`, owner
+`agent/cc-exe-2i`. Sources: `src/game_hosts_world.cpp`, `include/bsp/game_hosts_world.hpp`,
+`src/game_hosts_units.cpp`, `include/bsp/game_hosts_units.hpp`, plus edits to
+`src/game_hosts_mission_frame.cpp`, `src/game_hosts_lua.cpp`, `src/game_hosts_hud.cpp`,
+`src/game_hosts_menu.cpp`, `src/game_hosts_mission.cpp`, `src/game_hosts.cpp` and their
+headers. Report: `reports/game_executable_milestone_2i.json`. Ghidra was read-only.
+
+Milestone 2h created the mission's 32 units and reported the one number it could not improve:
+every unit pass of the frame and of the fixed step ticked 0 of them, because nothing walked
+them. This milestone is the other half of that. **It was not run.** See the validation section:
+Direct3D 9 reports zero adapters in this session, so the executable exits before its window,
+and the same is true of the binary built from main before this packet.
+
+### The new switches
+
+`--order throttle=<f>,rudder=<f>` and `--order-frame N` issue one player order to the
+controlled unit on the in-mission frame the second switch names. `--mission-frame-seconds S`
+runs each in-mission frame with a fixed delta instead of the wall clock, so a headless run
+accumulates simulated time deterministically and the fixed-step driver's own clock does not
+depend on how fast the machine presents; zero, the default, keeps the wall clock, which is what
+every earlier milestone's run used. Every earlier switch is unchanged, and a run without
+`--menu-select` is still byte-for-byte the milestone 2d run.
+
+### 1. The world walk
+
+`00904BF0` reads exactly one thing from the world object: `[[world+4]]`, the head field of a
+0Ch-byte chain header that `009037F0` allocates at `004DE69C`, immediately after the
+constructor (docs/WORLD_ENTITY_UPDATE.md). The executable owns that header instead of the
+world, which is why the walk can run while `construct_world` 004DE610 is still a load record.
+The chain is the instantiate pass's creation order; the gate is the byte at entity+5Ch
+(00904C00) and the link is entity+38h (00904C1A), which is the whole of the routine.
+
+Each entity's `vtable[0DCh]` is `008255B0` for a unit, and it runs: `GameUnitsHost` holds one
+`bsp::UnitInstanceState` per created instance over a canonical `bsp::PoseRefreshView` of the
++74h, +C8h, +CCh and +10Ch fields. Of the twelve steps' call sites, two run a reconstruction
+(`0092D730`, the body-axis forward speed, and `0092BE80`, the controller step whose recovered
+body is one RET) and the rest are records with their own addresses. The recovered timer
+fragments inside the routine do real work: the age at +524h, the two countdowns at +6D8h and
++728h, the bubble timer at +BC8h and the hit latch at +1010h/+1011h all advance.
+
+The walk closes with `00904600` at 00904C2B. The list at world+4B0h is **empty**, and the
+reason is recovered: its only producer is `00905080`, the `AddMatrixInterpolator` Lua binding,
+which is one of the 560 binding rows and a host record, and no script of this mission called
+it. So the pass runs, visits nothing and retires nothing, and its four call sites
+(00904AE3, 00904B09, 00904B2A) are records that were not reached.
+
+`004C3CB0` is no longer a guard with a recorded body. The clear `004BFDF0`, the three walks and
+the five-call merge tail all run. One thing is a stand-in and is recorded as one: walk 0 reads
+`[[game+18CCh + slot*4]+30h]+DDCh`, the local player's unit registry, which nothing in this
+process fills, and docs/LOCAL_PLAYER_UNIT_LISTS.md is explicit that what each of the registry's
+five triples holds is not settled. The executable hands walk 0 the created units so the
+recovered classify chain runs over real class ids, and records the heads of walks 1 and 2.
+
+### 2. The motion
+
+The class descriptor comes out of the installed data through recovered loading. The scene's
+`Type = E ShipClasses : <symbol>` resolves through the enum library milestone 2h added, and
+that id **is** the index of the installed `VehicleClass[N]` row: 19 Northampton, 20 DeRuyter,
+21 York, 25 Clemson, 70 Kuma, 73 Fubuki, 263 leander, 265 Tribal, 276 Kagero, 289 Shiratsuyu
+and 293 Myoko all match the scene's own symbols. The table is already in the mission Lua state,
+because `Scripts/datatables/autoload/vehicleclasses.lua` is one of the 21 scripts the recovered
+global-script step `00886900` runs, so the executable reads `MaxSpeed`, `MaxAccel`,
+`Retardation`, `MaxRotAngle`, `MaxRotAngleChangeRatio` and `Type` straight out of it. `Type`
+then selects the leaf class id through the recovered `vehicle_class_kind_row`, which is why a
+DeRuyter is an `MCruiser` (0Ah) and a Kagero an `MDestroyer` (7) even though both are
+`DestroyerGen` in the scene.
+
+`00825F20` is **not** reached from `008255B0`; it is a separate virtual, and
+docs/SHIP_MOTION.md names three call sites (0085542F, 00749B2C, 00644A38) and reads none. Where
+it runs in a frame is therefore the executable's decision, and it is recorded as one: it runs
+once per unit per fixed simulation step, because 0.05 s is the period the order ring is written
+for (`kUnitStateMessageTickSeconds` and `kFixedSimulationStepFloat` are the same constant at
+00D0DE84). Inside it the recovered chain runs whole: the ring tick 00813020, the keel sample
+point, the throttle gate against the local wave height, the target-speed product, the force
+model 00937440 through the controller's vtable slot 0, the boost block, the speed command
+0092D300, the steering half 0092E8C0 and the controller step 0092BE80.
+
+Every unit's authored `Command` is `Cruise`. What that token means is not recovered: 00469610
+queues it and 0046AAB0 resolves it against a command registry whose command objects have no
+reconstruction. The executable turns it into one order-ring order of throttle 1 and rudder 0
+through the recovered `00816A40`, whose `00815440` clamps both into [-2,+2], and says so. The
+order under the write cursor is refilled every step so the order keeps standing, which is what
+`src/ship_motion_probe.cpp` does for the same reason.
+
+The controlled unit is the first created instance, bound through `bsp::set_controlled_unit_004c0890`.
+A ship answers IsKindOf(5), so the resolution picks the unit itself; it answers neither
+IsKindOf(0Fh) nor IsKindOf(18h), so the routine takes its zero path and the listener handle at
+00E188DC is cleared rather than published. That is the routine's second contract, not an error.
+`00645600`, the HUD root's own select sequence, is not run: it needs a HUD root this process
+does not own.
+
+Four stand-ins are the same four `src/ship_motion_probe.cpp` reports, each a host record that
+says so: the ocean sampler 0078CF20 (a flat sea at y = 0), the gameplay scale 008E6430 (the
+literal 1.0f at 00D7A24C), the rudder curve settings at 00424C40()+438h..+44Ch (the three
+denominator knots forced to 1) and the rigid-body integrator (an explicit Euler step, because
+the game integrates in the physics library behind 00C32000 / 00C37E20 / 00C37E50). The two hull
+dimensions the keel point uses are left at zero: only class+A0h has a recovered Lua key, and
+with a flat sea and an upright hull the gate at 00826994 passes either way.
+
+### 3. The front-end frame, and why it stays
+
+The mission load's own `select_front_end_layout` row runs now. It is `004C1AC0(3,0)` at
+004E04E7 followed by `00518250(3,0)` at 004E04EE, and set 3 is the pause pair `GUI_pause` /
+`GUI_pause_title` (`bsp/title_init.hpp`, `FrontEndFrameSet::Pause`). **The call does not
+commit**, and `00518250` releases the other sets' handles and records the requested set only on
+a committing call (00518272, 0051864A). So the answer to "do the front-end frame pages come
+down when the mission starts" is no: `FE_frame` and `FE_frame_title` stay loaded, exactly as
+milestone 2h's capture showed, and what decides whether they are drawn is the GUI layer's own
+consumer of the 0x164 singleton, which is milestone 2b's unchanged caveat. The pause layouts
+this row loads are published hidden, because no pause screen exists here to publish a byte for
+them; that is the executable's value for milestone 2b's substitute rule, and it is logged.
+
+The minimap's unit markers were **not** added. `GUI_minimap` carries the six team groups
+(`minimap_units_blue_Group` and its five siblings) each with one `item_ship_Icon` template, and
+`bsp/hud_updates.hpp` already reconstructs the placement (`hud_minimap_icon_position`, the
+anisotropic 1/1024 and 1/768 divisors, and `hud_minimap_icon_rotation`, pi/2 minus the
+heading). What is missing is the conversion into that space: 005C0F20 gets its per-unit
+position from `00427EB0`, which returns an icon-space float3 and has not been read, and the map
+half-extents from `00432650`, which has not either. Placing markers without them would be an
+invented scale, so it is a follow-up rather than a stand-in.
+
+### What it looks like on screen
+
+Not observed. The run that would have produced a capture could not start; see the validation
+section.
+
+### Host methods
+
+Not obtained: the run did not reach a frame. The per-step table with the call site and callee
+of every row this packet adds is `reports/game_executable_milestone_2i.json`
+(`world_steps`, `unit_instance_steps`, `motion_steps`, `controlled_unit_steps`,
+`load_steps`). The counts by group:
+
+| Group | Steps | Concrete | Records | Stand-ins |
+| --- | --- | --- | --- | --- |
+| The world walk and the interpolator pass | 7 | 4 | 3 | 0 |
+| The eight local-player unit lists | 6 | 2 | 3 | 1 |
+| The unit instance update 008255b0 | 21 | 2 | 19 | 0 |
+| The motion virtual 00825f20 | 16 | 8 | 4 | 4 |
+| The controlled-unit bind 004c0890 | 4 | 2 | 2 | 0 |
+| The load's front-end layout row | 3 | 2 | 1 | 0 |
+
+### Corrections
+
+1. **Milestone 2h's "every unit pass of the frame and of the fixed step ticked 0 of them" is
+   superseded for two of those passes.** The world walk 00904BF0 and the motion virtual
+   00825F20 run over the created units, because the only thing 00904BF0 reads from the world is
+   the chain header 009037F0 allocates, and the executable owns it. What still ticks nothing is
+   every pass that reads the world object itself: the entity manager at game+21A0h is null and
+   the fixed step's world gate at 00875E69 reads a world that does not exist, so rows 9 to 13
+   of the fan-out are still skipped. The run summary line says both halves.
+2. **This packet's brief asked for the front-end frame pages to be hidden "if the state
+   machine's screen sets say they are gone". They do not say that.** Section 3: the load's own
+   00518250 call does not commit, so it releases nothing.
+3. **This packet's brief read milestone 2h's `Error` tile as an atlas miss.** Milestone 2h
+   already recorded that it is the page's own authored texture: `minimap_islandmap_Icon` names
+   `error.tga` with the material `minimap_terrain.mshd`, and the running game replaces it with
+   the mission's island map. Resolving a different atlas would not change it.
+4. **The scene's `Type` id is the `VehicleClass` row index.** Milestone 2h used it only to name
+   the class. All eleven of this mission's symbols index the matching installed row.
+
+### Code with no Ghidra function
+
+| Start | End (inclusive) | Note |
+| --- | --- | --- |
+| — | — | none |
+
+Every address this packet touched already has a Ghidra function and a reviewed ledger name. No
+name was added; run-time evidence could not be appended, because there was no run.
+
+### Validation
+
+`scripts/build.ps1` Release Win32 with `/W4 /WX /fp:strict`, no warnings. The existing ctest
+case `reconstructed_math` passes, 1 of 1. No test cases were added.
+`python tools/verify_report_calls.py reports/game_executable_milestone_2i.json` checks 40 call
+rows and reports 0 failures; seven rows are reported as indirect because the native call goes
+through a register or a vtable slot.
+
+**The executable could not be run in this session, and no host counts, frame numbers,
+trajectory or capture exist for this milestone.** The run stops during Init:
+
+```
+host RendererHost::direct3d_create [00b32410] concrete
+startup failed: Renderer adapter identification failed
+summary window_created=0 device_created=0 device_hr=0x80004005 back_buffer=0x0
+        frames_presented=0 loop_finished=0 exit_code=1
+```
+
+The cause is the machine's Windows session, not this packet. A standalone probe over
+`Direct3DCreate9` reports `adapter count = 0` on the same machine, `query user` reports the
+only interactive session as disconnected, and `bsp_game.exe` built from `main` before this
+packet fails at the same line with the same `0x80004005`. Every run-dependent claim of this
+section is therefore marked as not observed, and re-running the milestone command on a
+connected session is the first thing the next packet should do:
+
+```
+bsp_game.exe --frames 600 --press-start-frame 30 --menu-select USN02 --mission-frames 300
+    --order-frame 20 --order throttle=1,rudder=0.5 --mission-complete-frame 280
+    --screenshot local/run.png --screenshot-mission-frame 200 --log local/game_run.log
+    --game-root "<install>"
+```
+
+and the deterministic variant, which is what makes the motion visible in a headless run:
+`--mission-frame-seconds 0.05` turns 300 in-mission frames into 15 s of simulated time and 300
+fixed steps, against the one or two seconds a wall-clock run of the same length accumulates.
+
+This is a build-tested packet, not a runtime-validated one. It proves that the recovered world
+walk, the unit instance update, the matrix-interpolator pass, the eight local-player unit
+lists, the ship motion chain and the controlled-unit bind compile against the state the
+executable holds. It proves nothing about what they do at run time.
+
+### Follow-up packets
+
+1. **Re-run the milestone command on a connected session** and fill in this section's host
+   counts, the per-frame world line, the controlled unit's trajectory, the distance table and
+   the capture. Nothing else in the executable is blocked on it.
+2. **`construct_world` 004DE610**, still milestone 2h's follow-up 1 and still the single step
+   between this executable and the passes that read the world object: the entity manager at
+   game+21A0h, the +4ACh ready byte and the fixed step's gate at 00875E69.
+3. **`00427EB0` and `00432650`**, the icon-space conversion and the map half-extents the
+   minimap's unit-icon pass needs. With them the six team groups' `item_ship_Icon` templates
+   can be placed through the already reconstructed `hud_minimap_icon_position`.
+4. **The `Cruise` command object**, and the rest of the `CommandType` registry 0046AAB0
+   resolves against: it is what turns an authored scene command into a real order.
+5. **`00825F20`'s caller.** 0085542F and 00749B2C have no Ghidra function and 00644A38 is in an
+   undefined region; defining the three would settle where in a frame the motion virtual runs
+   and remove this packet's own placement decision.
+6. **`cc_unit_subupdates`'s three routines** 008252C0, 00956600 and 00834E90, which are steps 11
+   of every unit update this milestone now runs, and `00815AA0` over effect groups a real unit
+   instance would carry.
+7. **The local player's unit registry**, so walk 0 of 004C3CB0 has its real source and walks 1
+   and 2 have one at all.
 
 ## Next milestones
 
