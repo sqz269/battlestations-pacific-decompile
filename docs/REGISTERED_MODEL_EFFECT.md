@@ -147,3 +147,16 @@ not pretend to implement any successful particle-model allocation/construction.
 Probe result: PASS. No complete model construction, full application execution,
 rendering, original ABI substitution, or gameplay was tested. The root owns the
 full build/CTest/CMake and final report-call verification integration.
+
+## AI integration verification
+
+The primary integrator registered this source, passed the combined strict Win32
+build and both existing CTests, and replayed the focused fixture against that
+library (`local/model_probe_ai_merged_ai.log`). The same destructor, scalar,
+suppression and injected constructor-failure checks passed. Successful model
+construction and gameplay remain unvalidated.
+
+Ghidra now contains the restored `874605 ADD ESP,4`, recovered signatures and
+evidence comments with their previous values retained in the report. The correct
+`CG_scalar_deleting_dtor_008745f0` name is preserved. Consumed `871FE0` and
+`AF5F20` stop functions are defined; this packet does not reconstruct them in C++.

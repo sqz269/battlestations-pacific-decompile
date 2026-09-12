@@ -99,3 +99,27 @@ listing after the incorrectly no-return free call: live bytes `83 C4 04` are
 `ADD ESP,4`; the existing body continues at `874628` and ends at `87462D`.
 `872060` is not a saved function; its last instruction is `872073 RET`, length1.
 These are reported to the integrator; no worker flow repair or annotation ran.
+
+## AI integration correction and additional verification
+
+The combined strict Win32 build and both existing CTests passed. The primary
+integrator restored the `874625` stack cleanup, defined `872060`, saved recovered
+signatures/evidence, preserved the compiler scalar-destructor name, and refreshed
+exports. The report retains the worker's original observations and mutation audit.
+
+The extended fixture now also exercises nonnull `+34` with a real pooled174h
+node, canonical `NativePlainNodeReference`, actual string storage and existing
+node bindings. With the same node at `+34` and `+38`, actual references pass
+`2 -> 1 -> 0`. Logical release marks node byte44, then `+34` clears before the
+`+38` terminal lookup. The registry entry and `+38` identity remain present during
+canonical physical destruction, unbinding and pool return; only then does `+38`
+clear and the event unregister. The returned pool slot was immediately reusable.
+Both context and node cases passed against the combined library in
+`local/registered_type4_probe_merged_ai.log`.
+
+This plain-node fixture establishes the existing lifetime-interface ordering.
+The later inspected `BAD6F0` producer identifies the phase2 owner as a
+generated-model-derived7ACh `SkinedWaterTracer` with table `D63FA0`. Its real
+construction/update, original type4 machine-code execution, throwing unwind and
+gameplay remain unvalidated. `872060` and its47-byte `BA9820` callee form a small
+next deactivation packet over borrowed actual tracer storage.

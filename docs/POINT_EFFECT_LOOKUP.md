@@ -103,3 +103,12 @@ The host CRT's non-ASCII locale/invalid-parameter behavior was not compared with
 the original VS2005 CRT. Real game child factories remain required bindings.
 No new permanent tests, ledger edits, Ghidra mutations, or CMake edits belong to
 this worker packet. The primary integrator owns the combined build and annotations.
+
+The AI primary integration passed the combined strict Win32 build and both
+existing CTests, then replayed both original-byte probes against the combined
+library. All seven component states, seven wrapper states and two C++ exception
+states passed. Ghidra signatures explicitly reflect the native stack arguments
+and AL-only component result; names/evidence were saved with prior comments
+preserved. Missing consumed exception dispatchers `C94DB1` and `C94DC8` are now
+defined. These additions do not execute the original exception dispatcher or
+establish the remaining game-specific factory and gameplay bindings.

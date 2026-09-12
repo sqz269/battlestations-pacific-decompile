@@ -3,7 +3,6 @@
   "date": "2026-09-11",
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
-  "ghidra_read_only": true,
   "source": "src/registered_type4_effect.cpp",
   "header": "include/bsp/registered_type4_effect.hpp",
   "evidence": "docs/REGISTERED_TYPE4_EFFECT.md",
@@ -22,7 +21,23 @@
       "native_last_instruction": "0087453b",
       "native_last_instruction_length": 3,
       "native_inclusive_end": "0087453d",
-      "eh": {"handler": "00c963a8", "descriptor": "00dc8484", "map": "00dc847c", "state": 0, "next_state": -1, "funclet": "00c963a0", "cleanup": "00858150 base only"}
+      "eh": {
+        "handler": "00c963a8",
+        "descriptor": "00dc8484",
+        "map": "00dc847c",
+        "state": 0,
+        "next_state": -1,
+        "funclet": "00c963a0",
+        "cleanup": "00858150 base only"
+      },
+      "cpp_symbol": "construct_registered_type4_effect_008744a0",
+      "source": "src/registered_type4_effect.cpp",
+      "ghidra_name": "BSP_RegisteredType4Effect_Construct_Provisional",
+      "original_abi": "ECX owner; stack definition, subject; EAX owner; RET8",
+      "length": 158,
+      "sha256": "f7e816f139661ade43c4d5ade53f0b17c1bff54b29b87aaaba635b7975ddc9fa",
+      "live_disk_equal": true,
+      "evidence": "Actual3Ch constructor; sole atomic04=1, borrowed subject10/definition14, type18=4, current tablesD0DE50/D0DE4C, preserves padding0D..0F/20..23, zeros node34/owned38/state floats in native order, state1C=1, then actual4D1100 manager/866A10 borrowed registration; base-only exception cleanup. All4 entry spans match live/disk. New typed ABI; original type4 bytes and native EH not executed, phase2 tracer update and gameplay unvalidated. docs/REGISTERED_TYPE4_EFFECT.md."
     },
     {
       "address": "00874540",
@@ -35,7 +50,23 @@
       "native_last_instruction": "008745e3",
       "native_last_instruction_length": 1,
       "native_inclusive_end": "008745e3",
-      "eh": {"handler": "00c963c8", "descriptor": "00dc84b0", "map": "00dc84a8", "state": 0, "next_state": -1, "funclet": "00c963c0", "cleanup": "00858150 base only"}
+      "eh": {
+        "handler": "00c963c8",
+        "descriptor": "00dc84b0",
+        "map": "00dc84a8",
+        "state": 0,
+        "next_state": -1,
+        "funclet": "00c963c0",
+        "cleanup": "00858150 base only"
+      },
+      "cpp_symbol": "destroy_registered_type4_effect_00874540",
+      "source": "src/registered_type4_effect.cpp",
+      "ghidra_name": "BSP_RegisteredType4Effect_Destroy_Provisional",
+      "original_abi": "ECX owner; RET0; no established return value",
+      "length": 164,
+      "sha256": "d7e620e31ad4492c192e7e06e070039414b1093a514fdc2ce2dc9f751990cb25",
+      "live_disk_equal": true,
+      "evidence": "Actual3Ch destructor; current tables, capture node34 and canonical B6DFA0 unlink/current18 logical release, clear34, capture owned38 and release sole actual04/current zero terminal before clear38, actual manager/866B00 unregister, base tables; preserves event count and borrowed pointers. Canonical pooled174h node fixture proves count2->1->0, released44, callback-before-clear/unregister and physical pool return. All4 entry spans match live/disk. New typed ABI; original type4 bytes and native EH not executed, phase2 tracer update and gameplay unvalidated. docs/REGISTERED_TYPE4_EFFECT.md."
     },
     {
       "address": "00868d70",
@@ -49,7 +80,23 @@
       "native_last_instruction_length": 3,
       "native_inclusive_end": "00868dd5",
       "native_allocation_bytes": 60,
-      "eh": {"handler": "00c951cb", "descriptor": "00dc7098", "map": "00dc7090", "state": 0, "next_state": -1, "funclet": "00c951c0", "cleanup": "BF65AC raw allocation free after constructor unwind"}
+      "eh": {
+        "handler": "00c951cb",
+        "descriptor": "00dc7098",
+        "map": "00dc7090",
+        "state": 0,
+        "next_state": -1,
+        "funclet": "00c951c0",
+        "cleanup": "BF65AC raw allocation free after constructor unwind"
+      },
+      "cpp_symbol": "create_registered_type4_effect_00868d70",
+      "source": "src/registered_type4_effect.cpp",
+      "ghidra_name": "BSP_RegisteredType4Effect_Create_Provisional",
+      "original_abi": "ECX definition; stack subject; EAX owner or null; RET4",
+      "length": 102,
+      "sha256": "4352b3471c85796a6dc3c5dd0070d6f1523453b8e74d98d43e3a6839fe14fa92",
+      "live_disk_equal": true,
+      "evidence": "Complete actual3Ch allocation/factory, ECX definition and stack subject; constructor receives both stack inputs; raw allocation freed after constructor unwind. No added admission or ownership. All4 entry spans match live/disk. New typed ABI; original type4 bytes and native EH not executed, phase2 tracer update and gameplay unvalidated. docs/REGISTERED_TYPE4_EFFECT.md."
     },
     {
       "address": "00874610",
@@ -62,22 +109,96 @@
       "native_last_instruction": "0087462b",
       "native_last_instruction_length": 3,
       "native_inclusive_end": "0087462d",
-      "missing_saved_flow": {"start": "00874625", "inclusive_end": "00874627", "instruction": "ADD ESP,4", "bytes": "83c404", "reason": "incorrect free no-return annotation"}
+      "missing_saved_flow": {
+        "start": "00874625",
+        "inclusive_end": "00874627",
+        "instruction": "ADD ESP,4",
+        "bytes": "83c404",
+        "reason": "incorrect free no-return annotation"
+      },
+      "cpp_symbol": "delete_registered_type4_effect_00874610",
+      "source": "src/registered_type4_effect.cpp",
+      "ghidra_name": "CG_scalar_deleting_dtor_00874610",
+      "original_abi": "ECX owner; stack flags DWORD; EAX original address including after free; RET4",
+      "length": 30,
+      "sha256": "a09c1ae0862656961b4a037ab6cc01de3785f696d460a7c122effbe5a1598833",
+      "live_disk_equal": true,
+      "evidence": "Complete scalar destructor: direct874540, free only flagsbit0, return original address. Repaired incorrect CALL_RETURN at874620 to restore874625 ADD ESP4; preserve correct compiler name. All4 entry spans match live/disk. New typed ABI; original type4 bytes and native EH not executed, phase2 tracer update and gameplay unvalidated. docs/REGISTERED_TYPE4_EFFECT.md."
     }
   ],
   "host_steps": [
-    {"function": "00868d70", "address": "00868d8b", "native": "00bf681b", "contract": "allocate actual3Ch; ADD ESP,4 at868D90"},
-    {"function": "00868d70", "address": "00868dab", "native": "008744a0", "contract": "construct actual owner; RET8 consumes definition and subject"},
-    {"function": "008744a0", "address": "0087451e", "native": "004d1100", "contract": "same actual manager singleton; no native arguments"},
-    {"function": "008744a0", "address": "00874525", "native": "00866a10", "contract": "raw borrowed registry append; RET4"},
-    {"function": "00874540", "address": "0087457a", "native": "00b6dfa0", "contract": "captured actual node34 unlink then required virtual18; RET0"},
-    {"function": "00874540", "address": "00874591", "native": "import:InterlockedDecrement", "contract": "captured raw38 actual04 decrement"},
-    {"function": "00874540", "address": "008745a1", "native": "owned38+vtable00", "contract": "current actual zero-count owner terminal"},
-    {"function": "00874540", "address": "008745ab", "native": "004d1100", "contract": "same actual manager singleton after callbacks"},
-    {"function": "00874540", "address": "008745b2", "native": "00866b00", "contract": "remove first raw match; RET4"},
-    {"function": "00874540", "address": "008745ce", "native": "00bd30f0", "contract": "base table CEB130 only; RET0"},
-    {"function": "00874610", "address": "00874613", "native": "00874540", "contract": "complete direct destructor; RET0"},
-    {"function": "00874610", "address": "00874620", "native": "00bf65ac", "contract": "free iff flagsbit0; ADD ESP,4 at874625"}
+    {
+      "function": "00868d70",
+      "address": "00868d8b",
+      "native": "00bf681b",
+      "contract": "allocate actual3Ch; ADD ESP,4 at868D90"
+    },
+    {
+      "function": "00868d70",
+      "address": "00868dab",
+      "native": "008744a0",
+      "contract": "construct actual owner; RET8 consumes definition and subject"
+    },
+    {
+      "function": "008744a0",
+      "address": "0087451e",
+      "native": "004d1100",
+      "contract": "same actual manager singleton; no native arguments"
+    },
+    {
+      "function": "008744a0",
+      "address": "00874525",
+      "native": "00866a10",
+      "contract": "raw borrowed registry append; RET4"
+    },
+    {
+      "function": "00874540",
+      "address": "0087457a",
+      "native": "00b6dfa0",
+      "contract": "captured actual node34 unlink then required virtual18; RET0"
+    },
+    {
+      "function": "00874540",
+      "address": "00874591",
+      "native": "import:InterlockedDecrement",
+      "contract": "captured raw38 actual04 decrement"
+    },
+    {
+      "function": "00874540",
+      "address": "008745a1",
+      "native": "owned38+vtable00",
+      "contract": "current actual zero-count owner terminal"
+    },
+    {
+      "function": "00874540",
+      "address": "008745ab",
+      "native": "004d1100",
+      "contract": "same actual manager singleton after callbacks"
+    },
+    {
+      "function": "00874540",
+      "address": "008745b2",
+      "native": "00866b00",
+      "contract": "remove first raw match; RET4"
+    },
+    {
+      "function": "00874540",
+      "address": "008745ce",
+      "native": "00bd30f0",
+      "contract": "base table CEB130 only; RET0"
+    },
+    {
+      "function": "00874610",
+      "address": "00874613",
+      "native": "00874540",
+      "contract": "complete direct destructor; RET0"
+    },
+    {
+      "function": "00874610",
+      "address": "00874620",
+      "native": "00bf65ac",
+      "contract": "free iff flagsbit0; ADD ESP,4 at874625"
+    }
   ],
   "producer_layout": {
     "canonical_prefix": "NativeRegisteredEffectPrefixStorage",
@@ -89,44 +210,280 @@
     "borrowed14": "definition",
     "type18": 4,
     "state1c": 1,
-    "untouched": ["0d..0f", "20..23"],
-    "zero_float_order": ["24", "28", "30", "2c"],
+    "untouched": [
+      "0d..0f",
+      "20..23"
+    ],
+    "zero_float_order": [
+      "24",
+      "28",
+      "30",
+      "2c"
+    ],
     "node34": "null initially; existing actual node lifetime required when nonnull",
     "owned38": "null initially; raw refcounted owner with actual04"
   },
   "all_sites": {
-    "constructor": ["00868dab"],
-    "destructor": ["00874613"],
+    "constructor": [
+      "00868dab"
+    ],
+    "destructor": [
+      "00874613"
+    ],
     "scalar_data_reference": "00d0de54",
     "factory_data_reference": "00d0d5ec",
     "additional_saved_direct_factory_callers": []
   },
   "corrections": [
-    {"was": "factory and constructor pseudocode obscure definition in ECX and actual allocation extent", "is": "factory ECX definition, subject on stack; actual3Ch allocation; constructor ECX owner and two stack arguments", "evidence": "868D87 PUSH3Ch,868D89 ESI=ECX,868DA7/A8 subject/definition pushes,868DAB call8744A0,87453B RET8"},
-    {"was": "scalar pseudocode returned extraout_EAX after free and listing omitted stack cleanup", "is": "ADD ESP,4 at874625 then MOV EAX,ESI at874628 returns original owner on both branches", "evidence": "live bytes874618..87462D and complete native RET4"}
+    {
+      "was": "factory and constructor pseudocode obscure definition in ECX and actual allocation extent",
+      "is": "factory ECX definition, subject on stack; actual3Ch allocation; constructor ECX owner and two stack arguments",
+      "evidence": "868D87 PUSH3Ch,868D89 ESI=ECX,868DA7/A8 subject/definition pushes,868DAB call8744A0,87453B RET8"
+    },
+    {
+      "was": "scalar pseudocode returned extraout_EAX after free and listing omitted stack cleanup",
+      "is": "ADD ESP,4 at874625 then MOV EAX,ESI at874628 returns original owner on both branches",
+      "evidence": "live bytes874618..87462D and complete native RET4"
+    }
   ],
   "validation": {
     "strict_win32_compile": "passed /std:c++17 /O2 /W4 /WX /fp:strict /MD /EHsc",
     "actual_lifetime_probe": "passed actual3Ch raw registry lifetime, real OS lock/domain, real NativeRenderContextReference zero-only release and callback-before-clear/unregister, unchanged borrowed/count/padding, scalar flags2/1, same-domain shutdown",
     "probe_source": "local/registered_type4_probe.cpp",
-    "probe_source_sha256": "48fa624d2e2c14c40f7ef766dfbd8227414133c51bac0e85c64ee994da9b8784",
-    "probe_executable_sha256": "33799032dbb17cd967e886e9c8e47170dfe5d8322bde51b20f4ce5a0c2dfbe14",
+    "probe_source_sha256": "4ed16afadc2f7b85ab3f6d0e6b9d4686fdd4bacbb14231409a31d418b8bca531",
+    "probe_executable_sha256": "c4faac4c13200a16d389d1c08f0d0b8c605e1a4ae4979aec71d883db0294daa0",
     "implementation_sha256": "95b811c038059437deb257e762a98fa2436a1b05a648e4e848dbf6c3e10fd1fd",
     "manifest": "/link /MANIFEST:EMBED",
     "seed_verification": "passed all8",
     "existing_ctest": "reconstructed_math and native_math_differential passed against integrator existing build; not type4 differential tests",
-    "full_cmake_integration": "integrator pending",
-    "nonnull_node34_probe": false,
+    "full_cmake_integration": "local/effect-event-ai-full-build.log: strict MSVC Win32 combined four-module build and both existing CTests passed",
+    "nonnull_node34_probe": true,
     "throwing_unwind_probe": false,
     "original_machine_code_lifetime_probe": false,
-    "game_host_frame_execution": false
+    "game_host_frame_execution": false,
+    "actual_node34_evidence": {
+      "packet": "orch3_registered_type4_ai",
+      "validation": "additional_nonnull_node34_actual_lifetime_probe_passed",
+      "source": "local/registered_type4_probe.cpp",
+      "executable": "local/registered_type4_probe.exe",
+      "log": "local/registered_type4_probe.log",
+      "source_sha256": "4ed16afadc2f7b85ab3f6d0e6b9d4686fdd4bacbb14231409a31d418b8bca531",
+      "executable_sha256": "49a02f1d849fec00152ae3905858fe803ce53538e600f852fa6c7d50c830df40",
+      "production_source_sha256": "95b811c038059437deb257e762a98fa2436a1b05a648e4e848dbf6c3e10fd1fd",
+      "compile": "MSVC Win32 /std:c++17 /O2 /W4 /WX /fp:strict /MD /EHsc /link /MANIFEST:EMBED",
+      "actual_components": [
+        "NativeRegisteredType4EffectStorage actual3Ch",
+        "same actual live manager F8765C and deletion lock F87654",
+        "real SingletonLifetimeDomain and OS lock",
+        "actual38h node pool and actual174h node construction",
+        "ActualNativeStringPoolStorage",
+        "NativeNodeBinding on existing SceneAttachmentRuntime",
+        "NativePlainNodeReference on existing GeneratedModelLifetimeRuntime",
+        "verified current node virtual18=B6F310",
+        "canonical current node virtual0=BD30E0 and scalar B6F8D0"
+      ],
+      "evidence": [
+        "actual node04 count2 before destructor",
+        "node38 zero lookup sees count0 and released44=1 from real virtual18",
+        "node34 is already null at node38 zero lookup",
+        "node38 raw identity and manager registry count1 remain during terminal",
+        "same actual node association is present until canonical terminal",
+        "canonical terminal unbinds the same node association",
+        "real pool slot immediately reusable before owned38 clear and unregister",
+        "after destruction node34 and owned38 are null and registry count0",
+        "actual manager, lock, string pool and node pool shutdown succeeded"
+      ],
+      "retained_limits": [
+        "Fixture uses canonical plain174h node, not phase2-created particle subclass",
+        "No original machine-code execution of type4 lifetime",
+        "Throwing unwind remains untested",
+        "Phase2 virtual28=872790 and virtual30=872060 remain unsupported",
+        "No production edits or new tracked commit"
+      ]
+    },
+    "previous_probe_source_sha256": "48fa624d2e2c14c40f7ef766dfbd8227414133c51bac0e85c64ee994da9b8784",
+    "previous_probe_executable_sha256": "33799032dbb17cd967e886e9c8e47170dfe5d8322bde51b20f4ce5a0c2dfbe14",
+    "probe_executable": "local/registered_type4_probe_merged_ai.exe",
+    "merged_fixture": "local/registered_type4_probe_merged_ai.log: PASS actual context and actual nonnull node lifetimes"
   },
   "family_limits": {
-    "phase2_current_virtual28": {"function_address": "00872790", "inclusive_end": "00872bc0", "implemented_here": false},
-    "current_virtual30": {"function_address": "00872060", "inclusive_end": "00872073", "last_instruction": "00872073", "last_instruction_length": 1, "saved_function_missing": true, "implemented_here": false},
+    "phase2_current_virtual28": {
+      "function_address": "00872790",
+      "inclusive_end": "00872bc0",
+      "implemented_here": false
+    },
+    "current_virtual30": {
+      "function_address": "00872060",
+      "inclusive_end": "00872073",
+      "last_instruction": "00872073",
+      "last_instruction_length": 1,
+      "saved_function_missing": false,
+      "implemented_here": false
+    },
     "no_successful_unsupported_event_stub": true,
     "no_rumble_companion_registration": true,
-    "current_node_virtual18_and_owned38_terminal_are_required_actual_bindings": true
+    "current_node_virtual18_and_owned38_terminal_are_required_actual_bindings": true,
+    "tracer_producer_followup": "BAD6F0 publishes D63FA0 and SkinedWaterTracer; generated-model-derived7ACh owner. The plain174h node fixture does not establish actual tracer construction or phase2 behavior."
   },
-  "annotation_status": "proposed only; integrator owns flow repair, ledger rows, Ghidra annotation/save/export after lease handoff"
+  "annotation_status": "proposed only; integrator owns flow repair, ledger rows, Ghidra annotation/save/export after lease handoff",
+  "ghidra_worker_read_only": true,
+  "flow_repair": {
+    "repairs": [
+      {
+        "function": "00874610",
+        "owner": "agent/orch3-20260910",
+        "when": "2026-09-12T03:37:59Z",
+        "decompile_lines_before": 14,
+        "gaps": [
+          {
+            "site": "00874620",
+            "mnemonic": "CALL",
+            "operands": "0x00bf65ac",
+            "gap_start": "00874625",
+            "gap_end_exclusive": "00874628",
+            "bytes": 3,
+            "after_call": true,
+            "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+          }
+        ],
+        "events": [
+          {
+            "gap": {
+              "site": "00874620",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "00874625",
+              "gap_end_exclusive": "00874628",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            },
+            "clear": "Success: Cleared flow override at 00874620 (was: CALL_RETURN, now: NONE)",
+            "disassemble": "Successfully disassembled 3 byte(s)"
+          }
+        ],
+        "decompile_lines_after": 11,
+        "gaps_remaining": 0
+      }
+    ]
+  },
+  "ghidra_signature_audit": {
+    "record": "local/effect-event-signatures-ai.json",
+    "project_saved": true,
+    "before": {
+      "00868d70": "00868d70 FUN_00868d70  undefined FUN_00868d70(void)  body 00868d70 - 00868dd5\n",
+      "00874540": "00874540 FUN_00874540  undefined FUN_00874540(void)  body 00874540 - 008745e3\n",
+      "00874610": "00874610 CG_scalar_deleting_dtor_00874610  undefined CG_scalar_deleting_dtor_00874610(void)  body 00874610 - 0087462d\n",
+      "008744a0": "008744a0 FUN_008744a0  undefined FUN_008744a0(void)  body 008744a0 - 0087453d\n"
+    },
+    "changes": [
+      {
+        "address": "008744a0",
+        "prototype": "void * __thiscall BSP_RegisteredType4Effect_Construct_Provisional(void * definition, void * subject)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 008744a0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00874540",
+        "prototype": "void __thiscall BSP_RegisteredType4Effect_Destroy_Provisional(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00874540 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00868d70",
+        "prototype": "void * __thiscall BSP_RegisteredType4Effect_Create_Provisional(void * subject)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00868d70 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00874610",
+        "prototype": "void * __thiscall CG_scalar_deleting_dtor_00874610(uint flags)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00874610 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ],
+    "after_lines": [
+      "008744a0 BSP_RegisteredType4Effect_Construct_Provisional  void * __thiscall BSP_RegisteredType4Effect_Construct_Provisional(void * this, void * definition, void * subject)  body 008744a0 - 0087453d",
+      "00874540 BSP_RegisteredType4Effect_Destroy_Provisional  void __thiscall BSP_RegisteredType4Effect_Destroy_Provisional(void * this)  body 00874540 - 008745e3",
+      "00868d70 BSP_RegisteredType4Effect_Create_Provisional  void * __thiscall BSP_RegisteredType4Effect_Create_Provisional(void * this, void * subject)  body 00868d70 - 00868dd5",
+      "00874610 CG_scalar_deleting_dtor_00874610  void * __thiscall CG_scalar_deleting_dtor_00874610(void * this, uint flags)  body 00874610 - 0087462d"
+    ],
+    "parameter_note": "Ghidra supplies ECX this automatically; prototype text contains only native stack arguments. Both scalar destructors retain correct compiler names and return original primary; AL-only lookup result uses byte. Unknown native structures remain void pointers."
+  },
+  "integration_validation": {
+    "build": "local/effect-event-ai-full-build.log: strict MSVC Win32 combined four-module build and both existing CTests passed",
+    "source_sha256": {
+      "src/registered_type4_effect.cpp": "95b811c038059437deb257e762a98fa2436a1b05a648e4e848dbf6c3e10fd1fd"
+    },
+    "bsp_core_sha256": "66d0c39a46c9f3d68bae08bf9b722428c3cf77fd0ab265c45a373ac4161cd8f2",
+    "game_validated": false,
+    "native_object_vtable_abi_compatible": false,
+    "new_permanent_tests": false,
+    "call_verification": "local/effect-event-ai-call-verification.log: all direct native call rows verified with zero failures"
+  },
+  "ghidra_annotation_audit": {
+    "record": "local/ghidra-annotations-20260912T035213Z.json",
+    "readback": "local/effect-event-ai-comments.json",
+    "project_saved": true,
+    "names_and_evidence_verified": true,
+    "prior_comments_preserved": true,
+    "changes": [
+      {
+        "address": "00868d70",
+        "before": {
+          "address": "00868d70",
+          "function_name": "BSP_RegisteredType4Effect_Create_Provisional"
+        },
+        "after": {
+          "address": "00868d70",
+          "name": "BSP_RegisteredType4Effect_Create_Provisional",
+          "evidence": "Hypothesis, not a recovered symbol. Complete actual3Ch allocation/factory, ECX definition and stack subject; constructor receives both stack inputs; raw allocation freed after constructor unwind. No added admission or ownership. All4 entry spans match live/disk. New typed ABI; original type4 bytes and native EH not executed, phase2 tracer update and gameplay unvalidated. docs/REGISTERED_TYPE4_EFFECT.md. Parameters: ECX definition; stack subject; EAX owner or null; RET4. Live/disk SHA256 4352b3471c85796a6dc3c5dd0070d6f1523453b8e74d98d43e3a6839fe14fa92. reports/registered_type4_effect.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "008744a0",
+        "before": {
+          "address": "008744a0",
+          "function_name": "BSP_RegisteredType4Effect_Construct_Provisional"
+        },
+        "after": {
+          "address": "008744a0",
+          "name": "BSP_RegisteredType4Effect_Construct_Provisional",
+          "evidence": "Hypothesis, not a recovered symbol. Actual3Ch constructor; sole atomic04=1, borrowed subject10/definition14, type18=4, current tablesD0DE50/D0DE4C, preserves padding0D..0F/20..23, zeros node34/owned38/state floats in native order, state1C=1, then actual4D1100 manager/866A10 borrowed registration; base-only exception cleanup. All4 entry spans match live/disk. New typed ABI; original type4 bytes and native EH not executed, phase2 tracer update and gameplay unvalidated. docs/REGISTERED_TYPE4_EFFECT.md. Parameters: ECX owner; stack definition, subject; EAX owner; RET8. Live/disk SHA256 f7e816f139661ade43c4d5ade53f0b17c1bff54b29b87aaaba635b7975ddc9fa. reports/registered_type4_effect.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00874540",
+        "before": {
+          "address": "00874540",
+          "function_name": "BSP_RegisteredType4Effect_Destroy_Provisional"
+        },
+        "after": {
+          "address": "00874540",
+          "name": "BSP_RegisteredType4Effect_Destroy_Provisional",
+          "evidence": "Hypothesis, not a recovered symbol. Actual3Ch destructor; current tables, capture node34 and canonical B6DFA0 unlink/current18 logical release, clear34, capture owned38 and release sole actual04/current zero terminal before clear38, actual manager/866B00 unregister, base tables; preserves event count and borrowed pointers. Canonical pooled174h node fixture proves count2->1->0, released44, callback-before-clear/unregister and physical pool return. All4 entry spans match live/disk. New typed ABI; original type4 bytes and native EH not executed, phase2 tracer update and gameplay unvalidated. docs/REGISTERED_TYPE4_EFFECT.md. Parameters: ECX owner; RET0; no established return value. Live/disk SHA256 d7e620e31ad4492c192e7e06e070039414b1093a514fdc2ce2dc9f751990cb25. reports/registered_type4_effect.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00874610",
+        "before": {
+          "address": "00874610",
+          "function_name": "CG_scalar_deleting_dtor_00874610"
+        },
+        "after": {
+          "address": "00874610",
+          "name": "CG_scalar_deleting_dtor_00874610",
+          "evidence": "Hypothesis, not a recovered symbol. Complete scalar destructor: direct874540, free only flagsbit0, return original address. Repaired incorrect CALL_RETURN at874620 to restore874625 ADD ESP4; preserve correct compiler name. All4 entry spans match live/disk. New typed ABI; original type4 bytes and native EH not executed, phase2 tracer update and gameplay unvalidated. docs/REGISTERED_TYPE4_EFFECT.md. Parameters: ECX owner; stack flags DWORD; EAX original address including after free; RET4. Live/disk SHA256 a09c1ae0862656961b4a037ab6cc01de3785f696d460a7c122effbe5a1598833. reports/registered_type4_effect.json."
+        },
+        "status": "applied"
+      }
+    ]
+  }
 }

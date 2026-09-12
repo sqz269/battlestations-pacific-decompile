@@ -67,65 +67,350 @@
     }
   ],
   "host_steps": [
-    {"function":"00866cd0","address":"00866cf4","native":"00866440","contract":"existing canonical actual effect-manager lifetime getter; body read"},
-    {"function":"00866cd0","address":"00866d0d","native":"IAT00CE2218:EnterCriticalSection","contract":"enter captured actual manager04 section then increment physical18"},
-    {"function":"00866cd0","address":"00866d3e","native":"0086b100","contract":"complete current definition component/name lookup"},
-    {"function":"00866cd0","address":"00866d6c","native":"IAT00CE2220:InterlockedDecrement","contract":"failure path actual component04 decrement"},
-    {"function":"00866cd0","address":"00866d80","native":"component+vtable00","contract":"current zero-reference component terminal, GameplayEffectComponentLifetime"},
-    {"function":"00866cd0","address":"00866da6","native":"component+vtable18","contract":"required current actual component factory, one owned nullable child result"},
-    {"function":"00866cd0","address":"00866dc2","native":"006fbeb0","contract":"source capture then publish/retain/release; body and full assembly read"},
-    {"function":"00866cd0","address":"00866dd3","native":"IAT00CE2220:InterlockedDecrement","contract":"release captured factory temporary"},
-    {"function":"00866cd0","address":"00866de3","native":"child+vtable00","contract":"current zero-reference child terminal, borrowed nonthrowing companion"},
-    {"function":"00866cd0","address":"00866e03","native":"IAT00CE221C:InterlockedIncrement","contract":"retain selected current child after output publication"},
-    {"function":"00866cd0","address":"00866e24","native":"IAT00CE2220:InterlockedDecrement","contract":"normal captured component release after output construction flag/state1"},
-    {"function":"00866cd0","address":"00866e34","native":"component+vtable00","contract":"current component terminal may reenter or throw; no retry"},
-    {"function":"00866cd0","address":"00866e43","native":"IAT00CE2210:LeaveCriticalSection","contract":"decrement physical18 then leave captured section"},
-    {"function":"00866e60","address":"00866e86","native":"00866440","contract":"existing canonical actual effect-manager lifetime getter"},
-    {"function":"00866e60","address":"00866e93","native":"IAT00CE2218:EnterCriticalSection","contract":"capture actual manager04 section"},
-    {"function":"00866e60","address":"00866ee2","native":"IAT00CE2210:LeaveCriticalSection","contract":"not-found branch captured-section leave"},
-    {"function":"00866e60","address":"00866f16","native":"IAT00CE221C:InterlockedIncrement","contract":"found branch retain captured child after output clear/publication"},
-    {"function":"00866e60","address":"00866f25","native":"IAT00CE2210:LeaveCriticalSection","contract":"found branch captured-section leave"},
-    {"function":"0086b100","address":"0086b14b","native":"00bf7fbf","contract":"VS2005 CRT __stricmp body read; two arguments ADD ESP8 at86B150"},
-    {"function":"0086b100","address":"0086b185","native":"IAT00CE221C:InterlockedIncrement","contract":"retain newly published actual component sole04"},
-    {"function":"0086b100","address":"0086b193","native":"IAT00CE2220:InterlockedDecrement","contract":"release captured prior output actual component04"},
-    {"function":"0086b100","address":"0086b1a3","native":"component+vtable00","contract":"current prior-component terminal; replacement output preserved; index written after return"}
+    {
+      "function": "00866cd0",
+      "address": "00866cf4",
+      "native": "00866440",
+      "contract": "existing canonical actual effect-manager lifetime getter; body read"
+    },
+    {
+      "function": "00866cd0",
+      "address": "00866d0d",
+      "native": "IAT00CE2218:EnterCriticalSection",
+      "contract": "enter captured actual manager04 section then increment physical18"
+    },
+    {
+      "function": "00866cd0",
+      "address": "00866d3e",
+      "native": "0086b100",
+      "contract": "complete current definition component/name lookup"
+    },
+    {
+      "function": "00866cd0",
+      "address": "00866d6c",
+      "native": "IAT00CE2220:InterlockedDecrement",
+      "contract": "failure path actual component04 decrement"
+    },
+    {
+      "function": "00866cd0",
+      "address": "00866d80",
+      "native": "component+vtable00",
+      "contract": "current zero-reference component terminal, GameplayEffectComponentLifetime"
+    },
+    {
+      "function": "00866cd0",
+      "address": "00866da6",
+      "native": "component+vtable18",
+      "contract": "required current actual component factory, one owned nullable child result"
+    },
+    {
+      "function": "00866cd0",
+      "address": "00866dc2",
+      "native": "006fbeb0",
+      "contract": "source capture then publish/retain/release; body and full assembly read"
+    },
+    {
+      "function": "00866cd0",
+      "address": "00866dd3",
+      "native": "IAT00CE2220:InterlockedDecrement",
+      "contract": "release captured factory temporary"
+    },
+    {
+      "function": "00866cd0",
+      "address": "00866de3",
+      "native": "child+vtable00",
+      "contract": "current zero-reference child terminal, borrowed nonthrowing companion"
+    },
+    {
+      "function": "00866cd0",
+      "address": "00866e03",
+      "native": "IAT00CE221C:InterlockedIncrement",
+      "contract": "retain selected current child after output publication"
+    },
+    {
+      "function": "00866cd0",
+      "address": "00866e24",
+      "native": "IAT00CE2220:InterlockedDecrement",
+      "contract": "normal captured component release after output construction flag/state1"
+    },
+    {
+      "function": "00866cd0",
+      "address": "00866e34",
+      "native": "component+vtable00",
+      "contract": "current component terminal may reenter or throw; no retry"
+    },
+    {
+      "function": "00866cd0",
+      "address": "00866e43",
+      "native": "IAT00CE2210:LeaveCriticalSection",
+      "contract": "decrement physical18 then leave captured section"
+    },
+    {
+      "function": "00866e60",
+      "address": "00866e86",
+      "native": "00866440",
+      "contract": "existing canonical actual effect-manager lifetime getter"
+    },
+    {
+      "function": "00866e60",
+      "address": "00866e93",
+      "native": "IAT00CE2218:EnterCriticalSection",
+      "contract": "capture actual manager04 section"
+    },
+    {
+      "function": "00866e60",
+      "address": "00866ee2",
+      "native": "IAT00CE2210:LeaveCriticalSection",
+      "contract": "not-found branch captured-section leave"
+    },
+    {
+      "function": "00866e60",
+      "address": "00866f16",
+      "native": "IAT00CE221C:InterlockedIncrement",
+      "contract": "found branch retain captured child after output clear/publication"
+    },
+    {
+      "function": "00866e60",
+      "address": "00866f25",
+      "native": "IAT00CE2210:LeaveCriticalSection",
+      "contract": "found branch captured-section leave"
+    },
+    {
+      "function": "0086b100",
+      "address": "0086b14b",
+      "native": "00bf7fbf",
+      "contract": "VS2005 CRT __stricmp body read; two arguments ADD ESP8 at86B150"
+    },
+    {
+      "function": "0086b100",
+      "address": "0086b185",
+      "native": "IAT00CE221C:InterlockedIncrement",
+      "contract": "retain newly published actual component sole04"
+    },
+    {
+      "function": "0086b100",
+      "address": "0086b193",
+      "native": "IAT00CE2220:InterlockedDecrement",
+      "contract": "release captured prior output actual component04"
+    },
+    {
+      "function": "0086b100",
+      "address": "0086b1a3",
+      "native": "component+vtable00",
+      "contract": "current prior-component terminal; replacement output preserved; index written after return"
+    }
   ],
   "corrections": [
-    {"was":"86B100 row08/0C might be type or opaque fields","is":"actual eight-byte NativeString length/data","evidence":"producer86BC80 zero stores and870400 Lua string key41E350 into component08, consumed with length gate then CRT stricmp"},
-    {"was":"866E60 pseudocode appears to reload point count and backing","is":"captures countEDX and backingESI once","evidence":"866E9D MOV EDX,[ESI+10],866EA6 MOV ESI,[ESI+C],866ECB CMP EAX,EDX and866EFF MOV EAX,[ESI+EAX*4]"},
-    {"was":"both child getters could use one conventional retained assignment for output","is":"construct output without prior release; CD0 clears before source load, E60 captures selected before clear","evidence":"866DF2..DF7 versus866EFF..F08; original-body alias differential passed"}
+    {
+      "was": "86B100 row08/0C might be type or opaque fields",
+      "is": "actual eight-byte NativeString length/data",
+      "evidence": "producer86BC80 zero stores and870400 Lua string key41E350 into component08, consumed with length gate then CRT stricmp"
+    },
+    {
+      "was": "866E60 pseudocode appears to reload point count and backing",
+      "is": "captures countEDX and backingESI once",
+      "evidence": "866E9D MOV EDX,[ESI+10],866EA6 MOV ESI,[ESI+C],866ECB CMP EAX,EDX and866EFF MOV EAX,[ESI+EAX*4]"
+    },
+    {
+      "was": "both child getters could use one conventional retained assignment for output",
+      "is": "construct output without prior release; CD0 clears before source load, E60 captures selected before clear",
+      "evidence": "866DF2..DF7 versus866EFF..F08; original-body alias differential passed"
+    }
   ],
   "exception_map": {
-    "handler":"00c94db1",
-    "func_info":"00dc6bec",
-    "unwind_map":"00dc6bcc",
-    "states":["0:conditional constructed output C94D90 ->6CF070","1:captured lock C94D80 ->411EE0","2:component C94D88 ->866C30","3:event temporary C94DA9 ->6CF070"],
-    "normal_cleanup":"state2 ->1 before component release; output construction bit is already set",
-    "cpp_limit":"event companion terminal/assignment are nonthrowing; native throwing-event state3 and original EH dispatcher are unexecuted"
+    "handler": "00c94db1",
+    "func_info": "00dc6bec",
+    "unwind_map": "00dc6bcc",
+    "states": [
+      "0:conditional constructed output C94D90 ->6CF070",
+      "1:captured lock C94D80 ->411EE0",
+      "2:component C94D88 ->866C30",
+      "3:event temporary C94DA9 ->6CF070"
+    ],
+    "normal_cleanup": "state2 ->1 before component release; output construction bit is already set",
+    "cpp_limit": "event companion terminal/assignment are nonthrowing; native throwing-event state3 and original EH dispatcher are unexecuted"
   },
   "existing_exception_funclets": [
-    {"entry":"00c94d80","last_instruction":"00c94d83","last_instruction_length":5,"inclusive_end":"00c94d87","bytes":8,"purpose":"captured lock EH cleanup"},
-    {"entry":"00c94d88","last_instruction":"00c94d8b","last_instruction_length":5,"inclusive_end":"00c94d8f","bytes":8,"purpose":"component EH cleanup"},
-    {"entry":"00c94d90","last_instruction":"00c94da8","last_instruction_length":1,"inclusive_end":"00c94da8","bytes":25,"purpose":"conditional constructed output EH cleanup"},
-    {"entry":"00c94da9","last_instruction":"00c94dac","last_instruction_length":5,"inclusive_end":"00c94db0","bytes":8,"purpose":"factory temporary EH cleanup"},
-    {"entry":"00c94dc0","last_instruction":"00c94dc3","last_instruction_length":5,"inclusive_end":"00c94dc7","bytes":8,"purpose":"866E60 lock EH cleanup"}
+    {
+      "entry": "00c94d80",
+      "last_instruction": "00c94d83",
+      "last_instruction_length": 5,
+      "inclusive_end": "00c94d87",
+      "bytes": 8,
+      "purpose": "captured lock EH cleanup"
+    },
+    {
+      "entry": "00c94d88",
+      "last_instruction": "00c94d8b",
+      "last_instruction_length": 5,
+      "inclusive_end": "00c94d8f",
+      "bytes": 8,
+      "purpose": "component EH cleanup"
+    },
+    {
+      "entry": "00c94d90",
+      "last_instruction": "00c94da8",
+      "last_instruction_length": 1,
+      "inclusive_end": "00c94da8",
+      "bytes": 25,
+      "purpose": "conditional constructed output EH cleanup"
+    },
+    {
+      "entry": "00c94da9",
+      "last_instruction": "00c94dac",
+      "last_instruction_length": 5,
+      "inclusive_end": "00c94db0",
+      "bytes": 8,
+      "purpose": "factory temporary EH cleanup"
+    },
+    {
+      "entry": "00c94dc0",
+      "last_instruction": "00c94dc3",
+      "last_instruction_length": 5,
+      "inclusive_end": "00c94dc7",
+      "bytes": 8,
+      "purpose": "866E60 lock EH cleanup"
+    }
   ],
   "missing_ghidra_functions": [
-    {"entry":"00c94db1","last_instruction":"00c94db6","last_instruction_length":5,"inclusive_end":"00c94dba","bytes":10,"purpose":"866CD0 FuncInfoDC6BEC dispatcher"},
-    {"entry":"00c94dc8","last_instruction":"00c94dcd","last_instruction_length":5,"inclusive_end":"00c94dd1","bytes":10,"purpose":"866E60 FuncInfoDC6C18 dispatcher"}
+    {
+      "entry": "00c94db1",
+      "last_instruction": "00c94db6",
+      "last_instruction_length": 5,
+      "inclusive_end": "00c94dba",
+      "bytes": 10,
+      "purpose": "866CD0 FuncInfoDC6BEC dispatcher"
+    },
+    {
+      "entry": "00c94dc8",
+      "last_instruction": "00c94dcd",
+      "last_instruction_length": 5,
+      "inclusive_end": "00c94dd1",
+      "bytes": 10,
+      "purpose": "866E60 FuncInfoDC6C18 dispatcher"
+    }
   ],
-  "uncontained_caller_sites":["0085734d ->866E60 with type4","00857417 ->866E60 with type4; enclosing function absent"],
+  "uncontained_caller_sites": [
+    "0085734d ->866E60 with type4",
+    "00857417 ->866E60 with type4; enclosing function absent"
+  ],
   "validation": {
-    "strict_compile":"PASS MSVC Win32 /std:c++20 /EHsc /permissive- /W4 /WX /MD /O2",
-    "component_probe":"local/point_lookup_probe.cpp: PASS seven full-original180-byte paired name/ownership states",
-    "wrapper_probe":"local/point_lookup_wrappers_probe.cpp: PASS seven full-original400/226-byte paired states plus two C++ exception states",
-    "original_probe_bindings":"full original routines with only external rel32/IAT operands relocated; BF7FBF calls hostCRT;866440 uses actual reconstructed manager/shared lifetime/Win32lock;6FBEB0 uses controlled native reference helper; factory/terminal are controlled actual owners",
-    "stack_and_lock":"native caller ESP before/after equal; result-slot EAX correct; actual manager lock recursion18 returns0; domain shutdown releases manager",
-    "permanent_tests_added":false,
-    "combined_build":"primary integrator owns CMake addition and scripts/build.ps1",
-    "ghidra_mutations":"none by worker; exports only",
-    "game_validated":false,
-    "native_abi_drop_in":false,
-    "limitations":["No original EH dispatcher/throwing-event terminal execution","Host CRT non-ASCII locale/invalid parameter behavior not compared","Actual game-specific row factory and component terminal remain required runtime bindings"]
+    "strict_compile": "PASS MSVC Win32 /std:c++20 /EHsc /permissive- /W4 /WX /MD /O2",
+    "component_probe": "local/point_lookup_probe.cpp: PASS seven full-original180-byte paired name/ownership states",
+    "wrapper_probe": "local/point_lookup_wrappers_probe.cpp: PASS seven full-original400/226-byte paired states plus two C++ exception states",
+    "original_probe_bindings": "full original routines with only external rel32/IAT operands relocated; BF7FBF calls hostCRT;866440 uses actual reconstructed manager/shared lifetime/Win32lock;6FBEB0 uses controlled native reference helper; factory/terminal are controlled actual owners",
+    "stack_and_lock": "native caller ESP before/after equal; result-slot EAX correct; actual manager lock recursion18 returns0; domain shutdown releases manager",
+    "permanent_tests_added": false,
+    "combined_build": "primary integrator owns CMake addition and scripts/build.ps1",
+    "ghidra_mutations": "none by worker; exports only",
+    "game_validated": false,
+    "native_abi_drop_in": false,
+    "limitations": [
+      "No original EH dispatcher/throwing-event terminal execution",
+      "Host CRT non-ASCII locale/invalid parameter behavior not compared",
+      "Actual game-specific row factory and component terminal remain required runtime bindings"
+    ],
+    "combined_integration_build": "local/effect-event-ai-full-build.log: strict MSVC Win32 combined four-module build and both existing CTests passed",
+    "merged_library_replay": [
+      "local/point_lookup_probe_merged_ai.log: seven complete180-byte original paired name/ownership states passed",
+      "local/point_lookup_wrappers_probe_merged_ai.log: seven complete400/226-byte original paired wrapper states and two C++ exception states passed"
+    ]
+  },
+  "ghidra_signature_audit": {
+    "record": "local/effect-event-signatures-ai.json",
+    "project_saved": true,
+    "before": {
+      "00866cd0": "00866cd0 FUN_00866cd0  undefined FUN_00866cd0(void)  body 00866cd0 - 00866e5f\n",
+      "00866e60": "00866e60 FUN_00866e60  undefined FUN_00866e60(void)  body 00866e60 - 00866f41\n",
+      "0086b100": "0086b100 FUN_0086b100  undefined FUN_0086b100(void)  body 0086b100 - 0086b1b3\n"
+    },
+    "changes": [
+      {
+        "address": "00866cd0",
+        "prototype": "void ** __thiscall BSP_PointEffect_FindOrCreateNamedChild(void ** output, void * name)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00866cd0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00866e60",
+        "prototype": "void ** __thiscall BSP_PointEffect_FindChildByType(void ** output, uint type)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00866e60 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "0086b100",
+        "prototype": "byte __thiscall BSP_GameplayEffectDefinition_FindComponentByName(void * name, void ** component_output, int * index_output)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 0086b100 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ],
+    "after_lines": [
+      "00866cd0 BSP_PointEffect_FindOrCreateNamedChild  void * * __thiscall BSP_PointEffect_FindOrCreateNamedChild(void * this, void * * output, void * name)  body 00866cd0 - 00866e5f",
+      "00866e60 BSP_PointEffect_FindChildByType  void * * __thiscall BSP_PointEffect_FindChildByType(void * this, void * * output, uint type)  body 00866e60 - 00866f41",
+      "0086b100 BSP_GameplayEffectDefinition_FindComponentByName  byte __thiscall BSP_GameplayEffectDefinition_FindComponentByName(void * this, void * name, void * * component_output, int * index_output)  body 0086b100 - 0086b1b3"
+    ],
+    "parameter_note": "Ghidra supplies ECX this automatically; prototype text contains only native stack arguments. Both scalar destructors retain correct compiler names and return original primary; AL-only lookup result uses byte. Unknown native structures remain void pointers."
+  },
+  "integration_validation": {
+    "build": "local/effect-event-ai-full-build.log: strict MSVC Win32 combined four-module build and both existing CTests passed",
+    "source_sha256": {
+      "src/point_effect_lookup.cpp": "a50e5b65039d801cdd400cd6ed7ed68bf0b78533a50c00a401ba28bbf6a440e5"
+    },
+    "bsp_core_sha256": "66d0c39a46c9f3d68bae08bf9b722428c3cf77fd0ab265c45a373ac4161cd8f2",
+    "game_validated": false,
+    "native_object_vtable_abi_compatible": false,
+    "new_permanent_tests": false,
+    "call_verification": "local/effect-event-ai-call-verification.log: all direct native call rows verified with zero failures"
+  },
+  "ghidra_annotation_audit": {
+    "record": "local/ghidra-annotations-20260912T035213Z.json",
+    "readback": "local/effect-event-ai-comments.json",
+    "project_saved": true,
+    "names_and_evidence_verified": true,
+    "prior_comments_preserved": true,
+    "changes": [
+      {
+        "address": "00866cd0",
+        "before": {
+          "address": "00866cd0",
+          "function_name": "BSP_PointEffect_FindOrCreateNamedChild"
+        },
+        "after": {
+          "address": "00866cd0",
+          "name": "BSP_PointEffect_FindOrCreateNamedChild",
+          "evidence": "Hypothesis, not a recovered symbol. Complete actual866440 lock/current definition84 lookup; retained actual component; create current row virtual18 only for null indexed child, without admission/autostart gate; reload backing after factory and captured result release; canonical6FBEB0 assignment; clear output before current selected slot read; retain output before component release/unlock. DC6BCC EH state2 component then state1 lock then conditional state0 output; normal component release disarms before call. Full400-byte original comparison with real manager/lifetime/lock, reentry/alias/ESP passed; two C++ exception partial-state fixtures passed. docs/POINT_EFFECT_LOOKUP.md. New C++ interface, original SEH ABI and gameplay unvalidated. Parameters: ECX actual114h point; stack output-slot pointer, native8h name-header pointer; EAX same output slot; RET8. Live/disk SHA256 46a7449ece6daadd2c54e8154c54fc87c832ad49c4aff6fcba91a461d9e56adc. reports/point_effect_lookup.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00866e60",
+        "before": {
+          "address": "00866e60",
+          "function_name": "BSP_PointEffect_FindChildByType"
+        },
+        "after": {
+          "address": "00866e60",
+          "name": "BSP_PointEffect_FindChildByType",
+          "evidence": "Hypothesis, not a recovered symbol. Complete actual866440 captured lock; capture signed countEDX/backingESI once866E9D..866EAD; first nonnull exact current type18 match; capture selected pointer866EFF BEFORE output clear866F08, then retain. Nonpositive count clears output. No prior-output release, factory, option or active gate. Full226-byte original comparison real manager/lifetime/lock, alias/ESP passed. docs/POINT_EFFECT_LOOKUP.md. New C++ interface, original SEH ABI and gameplay unvalidated. Parameters: ECX actual114h point; stack output-slot pointer, type DWORD; EAX same output slot; RET8 at866EFC and866F3F. Live/disk SHA256 d5bdba9a916c2413cf4bbb1456a8829fc8deed07762ff8243f06b1211fa84ceb. reports/point_effect_lookup.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0086b100",
+        "before": {
+          "address": "0086b100",
+          "function_name": "BSP_GameplayEffectDefinition_FindComponentByName"
+        },
+        "after": {
+          "address": "0086b100",
+          "name": "BSP_GameplayEffectDefinition_FindComponentByName",
+          "evidence": "Hypothesis, not a recovered symbol. Complete captured actual definition span; actual row NativeString08/0C producer-confirmed by86BC80/870400. Length equality precedesBF7FBF stricmp; zero lengths match without data reads. Reload selected slot; identity no-op; publish/retain incoming actual04 then release captured old/current virtual00; index written only after release returns. Miss preserves both outputs. Seven full180-byte original differential ownership/name states passed, including output replacement by terminal callback. docs/POINT_EFFECT_LOOKUP.md. New C++ API, non-ASCII/invalid CRT paths and gameplay unvalidated. Parameters: ECX actual24h definition; stack native8h name header, actual-component output slot, index output; AL boolean with stale upperEAX; RET0C at86B16C and86B1B1. Live/disk SHA256 970e40aae2823bc167fd63eebdf5ad5c66e1f26972e41fc9db20ec309296548f. reports/point_effect_lookup.json."
+        },
+        "status": "applied"
+      }
+    ]
   }
 }

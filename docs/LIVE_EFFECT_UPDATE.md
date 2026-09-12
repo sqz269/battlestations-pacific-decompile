@@ -104,3 +104,22 @@ for the original values, new values, body hashes, bridge details, and limits.
 These checks do not establish native object/vtable ABI replacement, execution
 of the original exception dispatcher, physical device output, or gameplay.
 Other event families require their existing application implementations.
+
+## Correction from docs/LIVE_EFFECT_EVENT_REGISTRY.md
+
+The AI packet recovered the native producers of `references_1c`. The type1/model
+constructor `008742A0` and type4 constructor `008744A0` register borrowed raw
+events through `00866A10`; their destructors remove them through `00866B00`.
+Registration and removal use the actual `F87654` lock and do not retain or
+release event ownership. These producers explain why the serial child updater
+skips virtual28 for types1 and4: their updates use the separate phase2 jobs.
+
+The earlier AH rumble entries were manually supplied and refreshed by the
+fixture. That comparison establishes manager/job mechanics, not native rumble
+registration. AI adds complete typed registration, model/type4 lifetime and
+child-lookup bodies, with combined Win32/CTest and focused fixture validation.
+Canonical registered-event companions, point-row factory composition and the
+actual model/tracer update dependencies remain open. See
+[REGISTERED_MODEL_EFFECT.md](REGISTERED_MODEL_EFFECT.md),
+[REGISTERED_TYPE4_EFFECT.md](REGISTERED_TYPE4_EFFECT.md) and
+[POINT_EFFECT_LOOKUP.md](POINT_EFFECT_LOOKUP.md). Gameplay remains unvalidated.
