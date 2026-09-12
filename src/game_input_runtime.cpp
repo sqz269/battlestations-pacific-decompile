@@ -138,6 +138,9 @@ void GameInputRuntime::update_backend(float seconds) {
     const auto profile = *static_cast<const volatile std::uint32_t*>(backend);
     impl_->backend_vslot04(backend, profile, seconds);
 }
+void GameInputRuntime::backend_update_vslot04(void* backend, std::uint32_t profile, float seconds) {
+    impl_->backend_vslot04(backend, profile, seconds);
+}
 void* GameInputRuntime::action_owner() { return get_native_input_action_owner_004bec00(impl_->actions); }
 void GameInputRuntime::release_sdk_after_native_drain() {
     if (impl_->bound.backend_00f8bbf4 || impl_->bound.actions_00f8bbf8)

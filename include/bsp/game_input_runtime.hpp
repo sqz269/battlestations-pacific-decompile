@@ -48,6 +48,8 @@ public:
     void set_rumble_enabled_00a94c50(bool enabled);
     void update_cursor(bool loading);
     void update_backend(float seconds);
+    // Entry for a raw caller which already captured its receiver/profile.
+    void backend_update_vslot04(void*, std::uint32_t captured_profile, float seconds);
     void* action_owner();
     // Call after the shared raw manager drain while window and DLLs still live.
     // Does not initiate a second raw drain or repair surviving native state.
