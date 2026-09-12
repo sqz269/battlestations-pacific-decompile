@@ -514,12 +514,62 @@
   "no_ghidra_function": [],
   "names_added": [],
   "run": {
-    "state": "not obtained",
-    "reason": "Direct3D 9 reports zero adapters in this session, so the executable cannot create its device and exits before the window: the run log ends at `startup failed: Renderer adapter identification failed` with device_hr=0x80004005. The user's Windows session (id 1) is disconnected; a standalone probe over Direct3DCreate9 reports `adapter count = 0`, and the executable built from main before this packet fails identically, so the cause is the session and not this packet.",
+    "state": "obtained",
+    "command": "bsp_game.exe --frames 600 --press-start-frame 30 --menu-select USN02 --mission-frames 300 --order-frame 20 --order throttle=1,rudder=0.5 --mission-complete-frame 280 --screenshot local/run.png --screenshot-mission-frame 200 --log local/game_run.log --game-root \"<install>\"",
+    "exit_code": 0,
+    "host_methods": {"concrete": 306, "unimplemented": 331},
+    "milestone_2h_for_comparison": {"concrete": 290, "unimplemented": 318},
+    "world": {
+      "chain_entities": 32,
+      "mission_frames": 280,
+      "entities_walked": 8960,
+      "entities_updated": 8960,
+      "interpolator_records": 0,
+      "unit_lists": {"walk0_ships": 32, "walk0_rest": 32, "ships": 0, "squadrons": 0,
+        "airfields": 0, "shipyards": 0, "land_forts": 0, "merged": 0},
+      "fixed_steps": 18,
+      "motion_ticks": 576,
+      "simulated_seconds": 0.90,
+      "controlled_unit": "DeRuyter",
+      "controlled_moved_metres": 1.15,
+      "total_path_metres": 35.19
+    },
+    "deterministic_run": {
+      "extra_switch": "--mission-frame-seconds 0.05",
+      "exit_code": 0,
+      "host_methods": {"concrete": 305, "unimplemented": 331},
+      "method_not_reached": "FixedStep::interpolation_wave, because the driver runs that wave only while the accumulator is still above zero after its steps (00875f43) and a frame delta of exactly one step leaves it at zero",
+      "fixed_steps": 280,
+      "motion_ticks": 8960,
+      "simulated_seconds": 14.0,
+      "controlled_unit": {
+        "name": "DeRuyter",
+        "class_id": "0Ah MCruiser",
+        "max_speed_table": 16.4622,
+        "forward_speed_reached": 16.451,
+        "speed_ratio": 0.999,
+        "max_rot_angle_table": 0.122173,
+        "yaw_rate_at_rudder_half": 0.06109,
+        "yaw_ratio": 0.5,
+        "heading_degrees": [0.0, -38.591],
+        "moved_metres": 195.17
+      },
+      "units_moved_metres_range": [163.05, 209.52],
+      "total_path_metres": 6210.07
+    },
+    "regressions_rechecked": [
+      "120 frames with --press-start-frame 30 and no --menu-select: exit 0, 154 concrete, 80 unimplemented (milestone 2d)",
+      "40 frame title-only: exit 0, 129 concrete, 49 unimplemented (milestone 2d)",
+      "--vfs-probe fonts/fonts.lua: exit 0; --vfs-probe does/not/exist.lua: exit 3",
+      "--mission-frames 60 with no --mission-complete-frame: exit 0, 301 concrete, 322 unimplemented, summary mission exit reachable=0"
+    ],
+    "screenshot": "unchanged from milestone 2h: the front-end frame and the four level-1 HUD pages, 70 sprite-bridge quads of which 29 are glyphs. The mission's units are not drawn, because the mission render block 004ca440 / 004ca1f0 is a record and the HUD's own per-unit icon pass needs 00427eb0",
+    "environment_note": "Direct3D 9 reports `adapter count = 0` while the machine's interactive Windows session is disconnected, and the executable then exits during Init with `startup failed: Renderer adapter identification failed` and device_hr=0x80004005. A bsp_game.exe built from main fails identically, so the cause is the session. A run needs a connected session.",
     "validated": [
       "scripts/build.ps1 Release Win32 with /W4 /WX /fp:strict, no warnings",
       "the existing ctest case reconstructed_math passes, 1 of 1",
-      "no test cases were added"
+      "no test cases were added",
+      "python tools/verify_report_calls.py: 40 call rows checked, 0 failed"
     ]
   }
 }

@@ -119,6 +119,7 @@ struct GameUnitsHost::Impl {
     bool logged_curve{false};
     bool logged_integrator{false};
     bool logged_cruise{false};
+    bool logged_gate{false};
 
     void record(const char* method, std::uint32_t address) {
         char text[16];
@@ -761,6 +762,23 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
         const double dz = static_cast<double>(slot.motion.position[2]) - before[2];
         slot.row.path_length += static_cast<float>(std::sqrt(dx * dx + dy * dy + dz * dz));
         slot.row.command_applied = result.gate.command_applies;
+        if (!host.logged_gate) {
+            host.logged_gate = true;
+            // 00826994: the command is suppressed when the keel sample point has
+            // risen above half the local wave height. With the flat-sea stand-in
+            // that is a test of the authored hull height against zero, so a
+            // reader can tell a closed gate from a missing class row.
+            host.log.notef("ship motion gate on \"%s\": keel=(%.2f, %.2f, %.2f) wave=%.2f "
+                "applies=%d throttle=%.3f target_speed=%.3f engine_gate=%.1f",
+                slot.row.name.c_str(), static_cast<double>(result.keel_point.x),
+                static_cast<double>(result.keel_point.y),
+                static_cast<double>(result.keel_point.z),
+                static_cast<double>(result.wave_height),
+                result.gate.command_applies ? 1 : 0,
+                static_cast<double>(result.gate.throttle),
+                static_cast<double>(result.target_speed),
+                static_cast<double>(result.engine_gate));
+        }
         ++slot.row.motion_ticks;
         ++host.summary.motion_ticks;
         host.done("World::unit_motion_tick", 0x00825f20u);
@@ -829,15 +847,16 @@ void GameUnitsHost::report() {
         "simulated time, %llu instance update(s) of 008255b0",
         host.summary.motion_steps, host.summary.motion_ticks,
         static_cast<double>(host.summary.simulated_seconds), host.summary.instance_updates);
-    host.log.notef("  %-20s %-12s %5s %9s %9s %9s %9s %8s", "unit", "type", "party",
-        "start x", "start z", "x", "z", "moved");
+    host.log.notef("  %-20s %-12s %5s %5s %9s %9s %9s %9s %8s %5s", "unit", "type", "party",
+        "class", "start x", "start z", "x", "z", "moved", "gate");
     for (const std::unique_ptr<GameUnitSlot>& owned : host.slots) {
         const GameUnitRow& row = owned->row;
-        host.log.notef("  %-20s %-12s %5d %9.1f %9.1f %9.1f %9.1f %8.2f%s",
-            row.name.c_str(), row.type_symbol.c_str(), row.party,
+        host.log.notef("  %-20s %-12s %5d %5d %9.1f %9.1f %9.1f %9.1f %8.2f %5d%s",
+            row.name.c_str(), row.type_symbol.c_str(), row.party, owned->class_id,
             static_cast<double>(row.start[0]), static_cast<double>(row.start[2]),
             static_cast<double>(row.position[0]), static_cast<double>(row.position[2]),
-            static_cast<double>(row.distance), row.controlled ? "  <- controlled" : "");
+            static_cast<double>(row.distance), row.command_applied ? 1 : 0,
+            row.controlled ? "  <- controlled" : "");
     }
 }
 
