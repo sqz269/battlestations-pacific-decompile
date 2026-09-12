@@ -471,3 +471,12 @@ taken from the disk bytes; the next referenced entry point begins at `007C6760`,
 - **Was:** 007D1676 and 007D1333 belong to "a block Ghidra has no function for; start not established"
   **Is:** both starts are established. 007D1333 is in the raw block 007D0B80-007D1353, whose SEH prologue 6A FF / 64 A1 00000000 begins at 007D0B80 right after the two int3 at 007D0B7E; 007D1676 is in the raw block 007D1360-007D1B4B, which follows the twelve int3 at 007D1354
   **Evidence:** ghidra bytes 007D0B78 gives 00 00 83 C4 3C C3 CC CC 6A FF 64 A1 00 00 00 00; disasm-raw 007D1354 gives twelve int3 then 007D1360 MOV EAX,[00E188A8]; SUB ESP,8Ch; the next int3 run after each block is at 007D1354 and 007D1B4C, and the byte before each is C2 04 00, RET 4
+
+## Correction from docs/PLANE_GROUND_OPS.md (packet cc2_plane_ground_ops)
+
+- **Was:** the motion dispatch's surface arm is gated on a second enum, "surface | unit+5F0h == 6 | 007CECAF 007CBA50", and the doc's open question asks what unit+900h's six values mean
+  **Is:** the gate is unit+900h == 6, the Water value of the eight-value enum; there is no enum at unit+5F0h
+  **Evidence:** in 007CEC30-007CECB4 EDI is the unit and ESI is unit+310h: 007CECB4 LEA ECX,[ESI+364h] feeds 0085DC80, which the same doc writes as unit+674h, and 007CEC30 MOV EDX,[ESI+41Ch] is its own unit+72Ch. 007CEC99 CMP dword ptr [ESI+5F0h],6 under the same bias is unit+900h == 6, and 007CEC4E FADD [ESI+5F8h] is unit+908h, the airborne clock the doc's own free-flight row describes
+- **Was:** the per-class gain table attributes `+1E0h WheelBrake` to the "ground arm"
+  **Is:** WheelBrake is read in 007DB680 BSP_PlaneFlight_CoreLaw, the law all three arms share, not in the ground arm 007CBFA0 or the ground law 007DCCF0
+  **Evidence:** a scan of every disp32 access at displacement 1E0h in .text finds exactly two: the class-field writer 007D22BD and the read 007DBEF6 FLD dword ptr [EAX+1E0h], whose containing function is 007DB680 (body 007DB680-007DC82A)
