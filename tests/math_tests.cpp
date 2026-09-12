@@ -88,6 +88,7 @@
 #include "bsp/unit_hit_path.hpp"
 #include "bsp/unit_parts.hpp"
 #include "bsp/projectile_impact.hpp"
+#include "bsp/recon_slot_lists.hpp"
 #include "bsp/blast_damage.hpp"
 #include "bsp/bot_fire_target.hpp"
 #include "bsp/collision_shapes.hpp"
@@ -2811,6 +2812,26 @@ int main() {
             bsp::torpedo_intercept_time_008fb8d0(shooter, target, 20.0f, still);
         check(parked.root_count >= 1 && std::fabs(parked.first - 50.0f) < 1e-3f,
             "008FB8D0 is exact against a stationary target: 1000 / 20");
+    }
+
+    {
+        // 008065FF..0080672B: the recon membership relation over every
+        // (slot index, unit party) pair the three slots can see. The slot 2 arm
+        // is its own branch, not the general rule, so it is pinned here.
+        using bsp::ReconRelation;
+        using bsp::recon_relation_for_008065ff;
+        check(recon_relation_for_008065ff(0, 0) == ReconRelation::own
+                && recon_relation_for_008065ff(0, 1) == ReconRelation::enemy
+                && recon_relation_for_008065ff(0, 2) == ReconRelation::neutral,
+            "008065FF: slot 0 sees party 0 own, party 1 enemy, party 2 neutral");
+        check(recon_relation_for_008065ff(1, 1) == ReconRelation::own
+                && recon_relation_for_008065ff(1, 0) == ReconRelation::enemy
+                && recon_relation_for_008065ff(1, 2) == ReconRelation::neutral,
+            "008065FF: slot 1 sees party 1 own, party 0 enemy, party 2 neutral");
+        check(recon_relation_for_008065ff(2, 2) == ReconRelation::own
+                && recon_relation_for_008065ff(2, 0) == ReconRelation::neutral
+                && recon_relation_for_008065ff(2, 1) == ReconRelation::neutral,
+            "00806721: slot 2 has no enemy, every other party is neutral");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
