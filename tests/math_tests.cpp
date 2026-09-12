@@ -80,6 +80,7 @@
 #include "bsp/unit_parts.hpp"
 #include "bsp/projectile_impact.hpp"
 #include "bsp/blast_damage.hpp"
+#include "bsp/collision_shapes.hpp"
 #include <algorithm>
 #include <cmath>
 #include <memory>
@@ -2509,6 +2510,21 @@ int main() {
             bsp::decide_party_reassignment(unit, slots, 4, empty_party);
         check(unbound.action == bsp::PartyReassignAction::kUnbindOwner,
             "an empty party roster takes the vtable +148h(1FFh, 8) arm");
+    }
+
+    {
+        // 0098AAE0's node reject, 0098AB4B-0098ABA2. Every branch rejects only on
+        // a strict separation, so a sphere that exactly touches the node bounds
+        // still reaches the shape array. An off-by-one to >= here would silently
+        // drop the grazing blast, which is the reason for this case.
+        const float node_min[3] = {0.0f, 0.0f, 0.0f};
+        const float node_max[3] = {10.0f, 10.0f, 10.0f};
+        const float touching[3] = {-2.0f, 5.0f, 5.0f};
+        const float clear[3] = {-3.0f, 5.0f, 5.0f};
+        check(bsp::collision_node_sphere_aabb_overlap(node_min, node_max, touching, 2.0f),
+            "0098AB62 keeps a sphere whose max exactly meets the node min");
+        check(!bsp::collision_node_sphere_aabb_overlap(node_min, node_max, clear, 2.0f),
+            "0098AB62 rejects once the sphere clears the node min");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
