@@ -43,3 +43,15 @@ The strict `scripts/build.ps1` Release Win32 build passed with MSVC14.51.36231, 
 All452 emitted owned code bytes are classified, including the165-byte reserve, constructor/EH code,6-byte actual invalid-parameter adapter,17-byte unreferenced raw-store helper, and94-byte actual SDK `memmove_s`. The4-byte BSS weak AVX2 fallback comes from MSVC headers; it is not a new manager or handler owner. Remaining object sections are linker directives, debug/frame/checksum records and the complete EH/SafeSEH metadata. Actual reserve/constructor, leaves, allocation, raw-section and singleton-allocation objects appear byte-for-byte as five members of the built `bsp_core.lib`. All12 external relocation symbols in the owned object resolve against the actual built/archive import libraries. Actual provider import-library members bind current CRT memory, invalid-handler and C++ EH services plus `InitializeCriticalSection`; this does not reconstruct runtime DLL internals. All178 pins in the independent allocation packet's immutable seal were verified before retaining its actual-provider audit.
 
 The [audit](../reports/native_singleton_vector_reserve_construct_audit.json) records complete native ranges, emitted code and EH data, actual provider bindings, archive membership and the immutable evidence seal. The ignored worker CMake hook registers this source and the actual external completed allocation/leaves sources; shared CMake, ledgers and Ghidra edits remain with the integrator. Source/native CRT differences prevent a drop-in binary claim. Existing tests and build evidence do not execute this packet or establish game behavior.
+
+
+Primary integrated both allocation/throw and reserve/constructor packets into
+main and replayed the reviewed static verifiers against actual archived objects.
+Four complete source entries cover435 native bytes. One strict main build contains7 exact archived objects with35 unchanged prebuild inputs,7 actual compiler commands and206 frozen compiler dependencies. Five unchanged worker verifiers replay successfully against those main objects. All464 relevant CODE/data/EH sections match across9 main/worker object pairs, including232 complete CODE sections totaling14832 bytes; repeated provider comparisons are counted per pair. Only collision-checked compiler namespace/lambda spellings and resolved SafeSEH symbol indices are normalized. Native35 disk spans2693bytes and10 fresh guarded Ghidra spans559bytes verified. The strict Win32 build passed both existing CTests and all eight native
+reference seeds. Ghidra names/comments are saved and all four exports refreshed.
+The BD0684 CALL_RETURN override was cleared, recording the old value and restoring
+the original BD0689 ADD ESP,4 instruction. Earlier typed or constructor-only
+entries remain historical source interfaces; these new raw entries cover the full
+logical bodies under the stated source service contracts. Immutable primary
+evidence is under `local/vector_construct_primary/`. Existing tests do not execute
+these four entries; original exception/runtime ABI and game behavior remain unproven.

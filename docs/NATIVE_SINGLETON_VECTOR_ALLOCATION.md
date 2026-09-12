@@ -36,3 +36,15 @@ The existing SBO provider covers allocation failure and returning CRT services, 
 The strict Win32 Release build passed using the unchanged scripts/build.ps1 and an ignored source-registration hook. Both existing CTests passed, and all eight native math seeds matched disk. These checks are separate from native-byte, emitted-COFF and archive verification. The emitted allocation/throw entries, owning transport constructor/copy/destructor, cleanup funclets, throw metadata and actual source-provider relocations are retained in the immutable evidence. Existing math tests do not exercise allocation failure or vector length exceptions. No routine tests were added.
 
 This is a complete logical reconstruction under the documented allocation/string/exception service contracts. It is not a reconstruction of the full original CRT, original exception catch/RTTI/FH3 identity, arbitrary stack-spill alias mutation, hardware-fault timing, source register-clobber identity or game runtime behavior. Register/stack shape for the raw allocator alone does not establish drop-in binary compatibility for its exception paths. The packet does not complete reserve/insertion, the raw manager, registration or the canonical manager's registered-owner dispatch.
+
+
+Primary integrated both allocation/throw and reserve/constructor packets into
+main and replayed the reviewed static verifiers against actual archived objects.
+Four complete source entries cover435 native bytes. One strict main build contains7 exact archived objects with35 unchanged prebuild inputs,7 actual compiler commands and206 frozen compiler dependencies. Five unchanged worker verifiers replay successfully against those main objects. All464 relevant CODE/data/EH sections match across9 main/worker object pairs, including232 complete CODE sections totaling14832 bytes; repeated provider comparisons are counted per pair. Only collision-checked compiler namespace/lambda spellings and resolved SafeSEH symbol indices are normalized. Native35 disk spans2693bytes and10 fresh guarded Ghidra spans559bytes verified. The strict Win32 build passed both existing CTests and all eight native
+reference seeds. Ghidra names/comments are saved and all four exports refreshed.
+The BD0684 CALL_RETURN override was cleared, recording the old value and restoring
+the original BD0689 ADD ESP,4 instruction. Earlier typed or constructor-only
+entries remain historical source interfaces; these new raw entries cover the full
+logical bodies under the stated source service contracts. Immutable primary
+evidence is under `local/vector_construct_primary/`. Existing tests do not execute
+these four entries; original exception/runtime ABI and game behavior remain unproven.

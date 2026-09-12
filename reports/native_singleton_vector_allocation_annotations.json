@@ -1,0 +1,29 @@
+[
+  {
+    "address": "00bcfeb0",
+    "before": {
+      "address": "00bcfeb0",
+      "function_name": "BSP_PointerVector_AllocateSlots",
+      "comment": "[BSP reconstruction 00bcfeb0]\nUnsigned count*4 overflow throws bad_alloc, else explicit native/host pointer-size allocation boundary. Original ABI: ECX count; callers zero EDX; EAX raw pointer; RET. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_allocator_helper; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation."
+    },
+    "after": {
+      "address": "00bcfeb0",
+      "name": "BSP_PointerVector_AllocateSlots",
+      "evidence": "Supersedes the earlier typed or constructor-only reconstruction scope for this complete raw source entry. Complete 85-byte original function. Zero requests0; positive UINT_MAX/count>=4 admits count*4; overflow throws source std::bad_alloc; actual shared allocator provider. Count consumed from ECX once. Original BF681B reloads its byte argument before each malloc/new-handler call. Source actual allocator reloads request.host_bytes before each real CRT call. void* __fastcall(uint32_t count, void* unused_edx); Raw count/pointer ABI shape only; current source CRT allocation, bad_alloc, exception and new-handler ownership. Strict main Win32 build, both existing CTests and8 reference seeds passed. Actual main archive SHA256 92e383410f1bcb7d3ae8fd7ec50bf9232d1b021261c6f5654eab10466bd63f48;7 exact archived objects,35 unchanged prebuild inputs. Full main/worker CODE and data/EH relocation comparison plus unchanged static verifier replay. Source CRT allocation, invalid-handler and exception identity differ from the original. No packet execution, original ABI equivalence or game validation. Descriptive names are hypotheses; correct STL throw name retained. reports/native_singleton_vector_allocation_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00bd0590",
+    "before": {
+      "address": "00bd0590",
+      "function_name": "STL_xlen_throw_00bd0590"
+    },
+    "after": {
+      "address": "00bd0590",
+      "name": "STL_xlen_throw_00bd0590",
+      "evidence": "Supersedes the earlier typed or constructor-only reconstruction scope for this complete raw source entry. Complete 105-byte original function. No-init1Ch temporary; capacity15, length0, first-byteNUL; assign18; arm state0; actual28h legacy constructor; D69260; owning source throw. Temporary writes precede assign18. State0 only after assign returns. Constructor reads the completed temporary through existing current-storage string services. D69260 publication follows successful owner construction. [[noreturn]] void __cdecl(); Actual payload storage and ownership through existing services; new transport catch type/RTTI and source EH runtime. Strict main Win32 build, both existing CTests and8 reference seeds passed. Actual main archive SHA256 92e383410f1bcb7d3ae8fd7ec50bf9232d1b021261c6f5654eab10466bd63f48;7 exact archived objects,35 unchanged prebuild inputs. Full main/worker CODE and data/EH relocation comparison plus unchanged static verifier replay. Source CRT allocation, invalid-handler and exception identity differ from the original. No packet execution, original ABI equivalence or game validation. Descriptive names are hypotheses; correct STL throw name retained. reports/native_singleton_vector_allocation_audit.json"
+    },
+    "status": "applied"
+  }
+]

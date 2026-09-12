@@ -788,5 +788,99 @@
     "original_eh_abi_compatible": false,
     "drop_in_binary_replacement": false,
     "game_validated": false
+  },
+  "primary_review": {
+    "utc": "2026-09-12T03:29:01.354432+00:00",
+    "integration_state": "complete_source_main_build_static_proof_saved_and_registered",
+    "summary": "Four complete source entries cover435 native bytes. One strict main build contains7 exact archived objects with35 unchanged prebuild inputs,7 actual compiler commands and206 frozen compiler dependencies. Five unchanged worker verifiers replay successfully against those main objects. All464 relevant CODE/data/EH sections match across9 main/worker object pairs, including232 complete CODE sections totaling14832 bytes; repeated provider comparisons are counted per pair. Only collision-checked compiler namespace/lambda spellings and resolved SafeSEH symbol indices are normalized. Native35 disk spans2693bytes and10 fresh guarded Ghidra spans559bytes verified.",
+    "main_library_sha256": "92e383410f1bcb7d3ae8fd7ec50bf9232d1b021261c6f5654eab10466bd63f48",
+    "main_build_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vector_construct_build_frozen\\manifest.json",
+      "bytes": 86386,
+      "sha256": "0fb460562bc2e693f83f0e4c27cc5623f1a4b7bc222d427dae68468db330f40c"
+    },
+    "strict_Win32": true,
+    "existing_CTests": 2,
+    "fresh_seed_matches": 8,
+    "main_replay": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vector_construct_primary\\replay_results.json",
+      "bytes": 17864,
+      "sha256": "eab20d37c81d498f1956e5abaee62ff806c1458147a4307cfe0dc312e9c6e5d3"
+    },
+    "full_code_data_and_eh_parity": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vector_construct_primary\\full_object_parity.json",
+      "bytes": 613871,
+      "sha256": "9cda20d031e2c02b84c71e03b5b0210e6a0bffc6c785aa8ce9356e7875b99e24"
+    },
+    "saved_annotations": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_singleton_vector_reserve_construct_annotations.json",
+      "bytes": 4774,
+      "sha256": "441bd5b41e3273d4e4b3a4a62e46880e35f3c9b980b37189fdfb6d990b0a8534"
+    },
+    "registered_records": [
+      {
+        "kind": "function",
+        "address": "00bd0600",
+        "name": "reserve_native_singleton_slots_00bd0600",
+        "cpp_symbol": "bsp::reserve_native_singleton_slots_00bd0600",
+        "source": "src/native_singleton_vector_reserve_construct.cpp",
+        "native_end_exclusive": "00bd06a5",
+        "status": "complete_source_main_archive_static_proof_checked",
+        "evidence": "reports/native_singleton_vector_reserve_construct_audit.json",
+        "original_abi": "ECX raw owner; incoming EDX unused; one stack capacity DWORD; RET4; no declared return value",
+        "source_abi": "MSVC Win32 __fastcall(void* owner, void* unused_edx, uint32_t capacity); actual raw owner and concrete source CRT services. Source synchronous C++ cleanup effects only, not original FH3/SEH/catch ABI.",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00bd0960",
+        "name": "construct_native_singleton_manager_00bd0960",
+        "cpp_symbol": "bsp::construct_native_singleton_manager_00bd0960",
+        "source": "src/native_singleton_vector_reserve_construct.cpp",
+        "native_end_exclusive": "00bd09b0",
+        "status": "complete_source_main_archive_static_proof_checked",
+        "evidence": "reports/native_singleton_vector_reserve_construct_audit.json",
+        "original_abi": "ECX actual14h owner; no consumed EDX/stack input; EAX same owner; RET",
+        "source_abi": "MSVC Win32 void* __fastcall(void* owner, void* unused_edx); actual raw owner and concrete source CRT services. Source synchronous C++ cleanup effects only, not original FH3/SEH/catch ABI.",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "refreshed_exports": [
+      {
+        "address": "00bd0600",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bd0600\\decompiled.c",
+        "bytes": 3271,
+        "sha256": "7e1a604293a83fc8694dd7b6e6b904a3e982ecace81f5e7d3c2d1c4544856ce9"
+      },
+      {
+        "address": "00bd0960",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bd0960\\decompiled.c",
+        "bytes": 2903,
+        "sha256": "4ea195d5bd2d4a13b707027967dde49530efce00b6ee79c6df195e3b0d4dde2f"
+      }
+    ],
+    "new_routine_runtime_executed": false,
+    "original_CRT_or_SEH_compatible": false,
+    "original_caller_ABI_compatible": false,
+    "game_validated": false,
+    "saved_flow_repair": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_singleton_vector_reserve_construct_flow_repair.json",
+      "bytes": 1686,
+      "sha256": "cc67024ae7cf98fba1815b1519e41bee26ce206a95b62f4318bbc027ff878573"
+    },
+    "current_document": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_SINGLETON_VECTOR_RESERVE_CONSTRUCT.md",
+      "bytes": 10574,
+      "sha256": "4cc61ddf6749847dc33dd98d80f6431805936a04d4f8f10f6cc01aa9bd3a3719"
+    },
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vector_construct_primary\\sealed.json",
+      "bytes": 283964,
+      "sha256": "f12fc424b308cb21a3a56a08d7182dc068008a4e7d574c4988b72f85cf3d6965"
+    }
   }
 }

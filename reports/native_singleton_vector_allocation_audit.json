@@ -374,5 +374,94 @@
     "Original FH3 stack records, arbitrary mutable unwind/argument-spill aliases, volatile-register clobbers and hardware-fault timing are excluded.",
     "Legacy string/exception providers retain their existing source ABI and explicit source CRT/EH boundaries.",
     "The packet does not complete append/register, reserve/insertion, the raw manager or canonical registered-owner dispatch."
-  ]
+  ],
+  "primary_review": {
+    "utc": "2026-09-12T03:29:01.332877+00:00",
+    "integration_state": "complete_source_main_build_static_proof_saved_and_registered",
+    "summary": "Four complete source entries cover435 native bytes. One strict main build contains7 exact archived objects with35 unchanged prebuild inputs,7 actual compiler commands and206 frozen compiler dependencies. Five unchanged worker verifiers replay successfully against those main objects. All464 relevant CODE/data/EH sections match across9 main/worker object pairs, including232 complete CODE sections totaling14832 bytes; repeated provider comparisons are counted per pair. Only collision-checked compiler namespace/lambda spellings and resolved SafeSEH symbol indices are normalized. Native35 disk spans2693bytes and10 fresh guarded Ghidra spans559bytes verified.",
+    "main_library_sha256": "92e383410f1bcb7d3ae8fd7ec50bf9232d1b021261c6f5654eab10466bd63f48",
+    "main_build_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vector_construct_build_frozen\\manifest.json",
+      "bytes": 86386,
+      "sha256": "0fb460562bc2e693f83f0e4c27cc5623f1a4b7bc222d427dae68468db330f40c"
+    },
+    "strict_Win32": true,
+    "existing_CTests": 2,
+    "fresh_seed_matches": 8,
+    "main_replay": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vector_construct_primary\\replay_results.json",
+      "bytes": 17864,
+      "sha256": "eab20d37c81d498f1956e5abaee62ff806c1458147a4307cfe0dc312e9c6e5d3"
+    },
+    "full_code_data_and_eh_parity": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vector_construct_primary\\full_object_parity.json",
+      "bytes": 613871,
+      "sha256": "9cda20d031e2c02b84c71e03b5b0210e6a0bffc6c785aa8ce9356e7875b99e24"
+    },
+    "saved_annotations": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_singleton_vector_allocation_annotations.json",
+      "bytes": 3696,
+      "sha256": "2c00cde4382e9dfa44c559e96da3c94ac4f135329043be1ffc3f71b33c6bd5b1"
+    },
+    "registered_records": [
+      {
+        "kind": "function",
+        "address": "00bcfeb0",
+        "name": "native_singleton_pointer_allocate_00bcfeb0",
+        "cpp_symbol": "bsp::native_singleton_pointer_allocate_00bcfeb0",
+        "source": "src/native_singleton_vector_allocation.cpp",
+        "native_end_exclusive": "00bcff05",
+        "status": "complete_source_main_archive_static_proof_checked",
+        "evidence": "reports/native_singleton_vector_allocation_audit.json",
+        "original_abi": "ECX unsigned count; EDX unconsumed; no stack input; EAX pointer; RET0",
+        "source_abi": "void* __fastcall(uint32_t count, void* unused_edx); Raw count/pointer ABI shape only; current source CRT allocation, bad_alloc, exception and new-handler ownership.",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00bd0590",
+        "name": "native_singleton_length_error_00bd0590",
+        "cpp_symbol": "bsp::native_singleton_length_error_00bd0590",
+        "source": "src/native_singleton_vector_allocation.cpp",
+        "native_end_exclusive": "00bd05f9",
+        "status": "complete_source_main_archive_static_proof_checked",
+        "evidence": "reports/native_singleton_vector_allocation_audit.json",
+        "original_abi": "No consumed input; genuine C++ throw path; no normal return",
+        "source_abi": "[[noreturn]] void __cdecl(); Actual payload storage and ownership through existing services; new transport catch type/RTTI and source EH runtime.",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "refreshed_exports": [
+      {
+        "address": "00bcfeb0",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bcfeb0\\decompiled.c",
+        "bytes": 2462,
+        "sha256": "82cda3568e6a4e5bf225cf3ea4621020d43ef67411201312e6433adad17c9e28"
+      },
+      {
+        "address": "00bd0590",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bd0590\\decompiled.c",
+        "bytes": 2000,
+        "sha256": "b769684f44557425cd468b2a72370fdfb83140115da0387845009c6c1b8a00ac"
+      }
+    ],
+    "new_routine_runtime_executed": false,
+    "original_CRT_or_SEH_compatible": false,
+    "original_caller_ABI_compatible": false,
+    "game_validated": false,
+    "current_document": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_SINGLETON_VECTOR_ALLOCATION.md",
+      "bytes": 8958,
+      "sha256": "29a6cf8740b4af286d7786051b7bb27738f24a0d360b426c2adae545ada330c5"
+    },
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vector_construct_primary\\sealed.json",
+      "bytes": 283964,
+      "sha256": "f12fc424b308cb21a3a56a08d7182dc068008a4e7d574c4988b72f85cf3d6965"
+    }
+  }
 }
