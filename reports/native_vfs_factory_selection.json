@@ -1,0 +1,200 @@
+{
+  "packet": "native_vfs_factory_selection_aw",
+  "generated_utc": "2026-09-12T21:50:36.796547+00:00",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program_path": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ghidra_mutations": "none; worker read-only; retain existing descriptive name and comments",
+  "functions": [
+    {
+      "label": "selector",
+      "entry": "00bdb040",
+      "end_inclusive": "00bdb094",
+      "bytes": 85,
+      "sha256": "9dbd9f846719a65b27a7342b4228b82b38f9bfb652fc1b0227f4c2ac4176fbce",
+      "live_equal_installed_pe": true,
+      "name": "select_native_vfs_factory_00bdb040",
+      "ghidra_name": "BSP_VFS_CreateProviderForPath",
+      "previous_name": "BSP_VFS_CreateProviderForPath",
+      "coverage": "complete",
+      "source": "src/native_vfs_factory_selection.cpp",
+      "native_abi": "ECX manager; stack system/virtual raw headers; EAX first nonnull provider/null; RET8",
+      "domain": "actual Win32 storage, explicit captured Create dispatch and returning CRT callback"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00bdb057",
+      "native": "00bf6713",
+      "function": "00bdb040",
+      "contract": "Returning invalid-parameter callback",
+      "reachability": "unreachable: CMP EDI,EDI then flag-preserving MOV then JZ"
+    },
+    {
+      "address": "00bdb065",
+      "native": "00bf6713",
+      "function": "00bdb040",
+      "contract": "Returning invalid-parameter callback; continue using retained cursor; factory is read after return"
+    },
+    {
+      "address": "00bdb078",
+      "native": "captured_factory_table+4",
+      "function": "00bdb040",
+      "kind": "indirect",
+      "contract": "CALL EDX; ECX captured factory; system and virtual raw headers; RET8; captured target is explicit service argument",
+      "manual_evidence": "BDB06A capture factory, BDB06D table, BDB073 entry, BDB076/77 push both headers, BDB078 FF D2; current D688B8=BE8120"
+    },
+    {
+      "address": "00bdb083",
+      "native": "00bf6713",
+      "function": "00bdb040",
+      "contract": "Returning invalid-parameter callback after null result; read retained cursor next only after return"
+    },
+    {
+      "address": "00be18a5",
+      "native": "captured_manager_table+18",
+      "function": "00be1890",
+      "kind": "indirect",
+      "contract": "CALL EDX; ECX manager; system/virtual headers; native manager slots D685CC and D68D1C contain BDB040",
+      "manual_evidence": "BE18A0 MOV EDX,[EAX+18]; PUSH EBX; PUSH EBP; BE18A5 FF D2; containing body BE1890..BE190E"
+    }
+  ],
+  "no_ghidra_function": [],
+  "corrections": [
+    {
+      "was": "Earlier typed VfsProviderFactories fragment only",
+      "is": "Complete actual raw-list selector with explicit current-entry service",
+      "evidence": "Whole 85-byte native body, producer stores, five frozen native/source cases"
+    },
+    {
+      "was": "Potential interpretation that all three invalid CALLs can run normally",
+      "is": "BDB057 is unreachable; BDB065 and BDB083 remain returning boundaries",
+      "evidence": "CMP EDI,EDI BDB050 and flag-preserving MOV BDB052 followed by JZ BDB055"
+    },
+    {
+      "was": "Potential caching of next/head across factory dispatch",
+      "is": "Current head after null callback, then current next of retained cursor after returning validation",
+      "evidence": "BDB07E/BDB083/BDB088 and fixture mutation cases2/3"
+    }
+  ],
+  "producer_and_call_evidence": [
+    {
+      "label": "registration_producer",
+      "entry": "00be0660",
+      "end_inclusive": "00be0692",
+      "bytes": 51,
+      "sha256": "64b1f5922acf4608540f732fafe2da7e36e710fc7347484c48b9b24785456eac",
+      "live_equal_installed_pe": true
+    },
+    {
+      "label": "node_producer",
+      "entry": "00bdab20",
+      "end_inclusive": "00bdab52",
+      "bytes": 51,
+      "sha256": "750901321ffb614889a237ff7928d25d551e209d8283866c73d2be2312e461d9",
+      "live_equal_installed_pe": true
+    },
+    {
+      "label": "invalid_service",
+      "entry": "00bf6713",
+      "end_inclusive": "00bf6722",
+      "bytes": 16,
+      "sha256": "cd349dae43dbf63016fe6ea9339dab15c59041e3224e48cf8a53004224b45e77",
+      "live_equal_installed_pe": true
+    },
+    {
+      "label": "incoming_manager_call",
+      "entry": "00be1890",
+      "end_inclusive": "00be18a6",
+      "bytes": 23,
+      "sha256": "2552e8c40a531b1d813dff07b52e6f28ff341c017b558550dae0f6df6f94c5db",
+      "live_equal_installed_pe": true
+    },
+    {
+      "label": "manager_factory_slot",
+      "entry": "00d685cc",
+      "end_inclusive": "00d685cf",
+      "bytes": 4,
+      "sha256": "c3ecffb38caedbf444f9482f6441f9e7ced227e3e9f304dc3e8cc746754ab08b",
+      "live_equal_installed_pe": true
+    },
+    {
+      "label": "derived_manager_factory_slot",
+      "entry": "00d68d1c",
+      "end_inclusive": "00d68d1f",
+      "bytes": 4,
+      "sha256": "c3ecffb38caedbf444f9482f6441f9e7ced227e3e9f304dc3e8cc746754ab08b",
+      "live_equal_installed_pe": true
+    },
+    {
+      "label": "factory_profile",
+      "entry": "00d688b4",
+      "end_inclusive": "00d688bb",
+      "bytes": 8,
+      "sha256": "8260797d126cb31869df4254a37b40e194bb78e7a7a929c9ec6c4f7e70f1dd05",
+      "live_equal_installed_pe": true
+    }
+  ],
+  "layout": {
+    "list": "manager+30; head+4; count+8 not read",
+    "node": "0Ch; next/previous/factory +0/+4/+8",
+    "producers": "BE1DC0/BDA960 manager-head setup, BDAB20 node allocation, BE0660 registration stores"
+  },
+  "checklist": {
+    "callee_before_contract": "BF6713 complete body read; Create callback defined by captured indirect site and concrete BE8120 source interface",
+    "all_call_sites": "Complete BDB040 body; live xrefs D685CC/D68D1C; BE18A5 current manager+18 invocation inspected",
+    "boundary_before_attribution": "Every row has containing function; indirect instructions and slots manually verified",
+    "producer_before_layout": "Current raw producer assembly and registered-node source agree",
+    "partial_projection": "Complete source domain; unsupported native factory implementations remain explicit callbacks",
+    "runtime_evidence": "No startup/game explanation claimed",
+    "stack_cleanup": "BDB092 RET8; Create target BE8120 RET8; BF6713 RET and its inner ADD ESP,14h",
+    "register_provenance": "Whole listing inspected: EDI list, ESI retained cursor, EBP virtual, EBX current head; system stack pointer reloaded before Create",
+    "lease_scope": "BDB040 and four output files only; parent-authorized CMake registry append",
+    "report_evidence": "Five host rows including two qualified indirect sites; coverage/corrections/raw absence explicit"
+  },
+  "validation": {
+    "strict_win32_build": "local\\factory_selection_aw\\build01.log",
+    "build_log_sha256": "8b8a96108ee0406d68293ef12f22324f3472a11ef070fec1154ef91a3f5c4d14",
+    "ctests": "2/2 passed reconstructed_math and native_math_differential",
+    "seeds": "eight original PE seed comparisons; local\\factory_selection_aw\\seeds01.log",
+    "fixture": {
+      "exit_code": 0,
+      "all_preexecution_hashes_unchanged": true,
+      "files_rechecked": 119,
+      "seal_sha256": "44bdb6c9b3915c806862c484b65ecd045f58b03fde336aaf333dedb6decce37e",
+      "exe_sha256": "e234bb63a02ad856dbd1ec765819c8eb96f7088410e1cdc2870cff2529984f0a",
+      "library_sha256": "c70016c51c6b181efba9253da5d1219cbf147bb4b47f92041775159f66e36c80",
+      "execution_sha256": "578221e6350c35e2eb692f16eae43f9c51487b046deb792f7daaf3a4e47a8e9d",
+      "native_source_cases": 5,
+      "native_FH3_SEH_executed": false,
+      "checks": 67,
+      "linked_objects_equal_archive_members": 28,
+      "attempt": "local\\factory_selection_aw\\attempt01",
+      "driver": "local\\factory_selection_aw\\run_fixture.py",
+      "relink": "python run_fixture.py --repo <built repo> --attempt <new directory> --build-log <log>"
+    },
+    "fixture_boundaries": [
+      "Original selector executed; only three direct invalid CALL displacements rebound",
+      "Explicit callback mutation/return boundaries; no fake physical/MPKG/MPAK factories",
+      "Genuine source BE8120 create/cache/rejection and BE8090 provider disposal, shared by both sides",
+      "Actual pool context borrowed; empty provider does not test populated string/stream lifetime",
+      "Original FH3/SEH excluded; no exceptions thrown through copied native code"
+    ],
+    "failed_fixture_attempts": [],
+    "report_calls": {
+      "direct_rows": 3,
+      "failed": 0,
+      "indirect_rows": 2,
+      "indirect_evidence": "Manually verified CALL EDX, argument setup, containing bodies and current vtable slots; generic verifier explicitly skips indirect targets",
+      "log": "local/factory_selection_aw/report_calls01.log",
+      "sha256": "20b65a695517dc08a4f75c5ce232591d742bacad61f66487c56a1bc32c358349"
+    }
+  },
+  "remaining": [
+    "New C++ ABI and explicit callback policy, original CRT/FH3/SEH identity unvalidated",
+    "Concurrent head mutation between consecutive reads and arbitrary stack aliases untested",
+    "No original FileStore dependency-body retest or populated provider composition",
+    "BE1890/BE1740 parent AW packet and MPKG BB9D90/MPAK BB83A0 separate; full startup/game unvalidated"
+  ]
+}
