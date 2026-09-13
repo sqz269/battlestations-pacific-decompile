@@ -1,0 +1,141 @@
+{
+ "events": [
+  {
+   "recreate": "00b2fa10",
+   "previous": "Function: BSP_MaterialEffectCacheEntry_DestroyStorage at 00b2fa10\nSignature: undefined BSP_MaterialEffectCacheEntry_DestroyStorage(void)\nEntry: 00b2fa10\nBody: 00b2fa10 - 00b2fa48",
+   "plate": "[BSP reconstruction 00b2fa10]\nCorrect body through00b2fa87 RET; initial saved body truncated by erroneous CALL_RETURN override at call00b2fa44 to free00bf65ac. Alias/name storage only; no effect release. Evidence: docs/FONT_EFFECT_CACHE_OWNERSHIP.md; reports/font_effect_cache_ownership_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00b2fa10"
+   },
+   "result": {
+    "success": true,
+    "address": "00b2fa10",
+    "deleted_function": "BSP_MaterialEffectCacheEntry_DestroyStorage",
+    "body_size": 57,
+    "message": "Function 'BSP_MaterialEffectCacheEntry_DestroyStorage' deleted at 00b2fa10"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b2fa10",
+    "end_address": "00b2fa88"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b2fa10",
+    "end_address": "00b2fa87",
+    "bytes_disassembled": 120,
+    "message": "Successfully disassembled 120 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b2fa10",
+    "disassemble_first": false,
+    "name": "BSP_MaterialEffectCacheEntry_DestroyStorage"
+   },
+   "result": {
+    "success": true,
+    "address": "00b2fa10",
+    "function_name": "BSP_MaterialEffectCacheEntry_DestroyStorage",
+    "entry_point": "00b2fa10",
+    "body_size": 120,
+    "message": "Function created successfully at 00b2fa10",
+    "warnings": [
+     "Function name 'BSP_MaterialEffectCacheEntry_DestroyStorage' \u2014 main part 'MaterialEffectCacheEntry_DestroyStorage' is not PascalCase. Expected: MaterialeffectcacheentryDestroystorage",
+     "Function name 'BSP_MaterialEffectCacheEntry_DestroyStorage' \u2014 main part 'MaterialEffectCacheEntry_DestroyStorage' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MaterialEffectCacheEntry_DestroyStorage' does not start with a recognized verb. First word 'Material' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00b2fa10",
+    "comment": "[BSP reconstruction 00b2fa10]\nCorrect body through00b2fa87 RET; initial saved body truncated by erroneous CALL_RETURN override at call00b2fa44 to free00bf65ac. Alias/name storage only; no effect release. Evidence: docs/FONT_EFFECT_CACHE_OWNERSHIP.md; reports/font_effect_cache_ownership_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00b2fa10",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00b2fa10",
+   "end": "00b2fa88",
+   "name": "BSP_MaterialEffectCacheEntry_DestroyStorage",
+   "after": "Function: BSP_MaterialEffectCacheEntry_DestroyStorage at 00b2fa10\nSignature: undefined BSP_MaterialEffectCacheEntry_DestroyStorage(void)\nEntry: 00b2fa10\nBody: 00b2fa10 - 00b2fa87"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ],
+ "metadata_before_record": "local/effect-cache-destroy-metadata-before.json",
+ "recreation_review": "Original signature undefined(void), no parameters, only default undefined4 local_4/local_c/local_10. Existing name and plate are retained by the supported definition helper; instruction comments are not cleared.",
+ "repairs": [
+  {
+   "function": "00b2fa10",
+   "owner": "agent/orch5-20260911",
+   "when": "2026-09-13T05:25:24Z",
+   "decompile_lines_before": 23,
+   "gaps": [
+    {
+     "site": "00b2fa44",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "00b2fa49",
+     "gap_end_exclusive": "00b2fa88",
+     "bytes": 63,
+     "after_call": true,
+     "sha256": "775d66e77e0f229de78047e7bbf08f6684c9f9fd6ce66d2d361f22701640e71c"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00b2fa44",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "00b2fa49",
+      "gap_end_exclusive": "00b2fa88",
+      "bytes": 63,
+      "after_call": true,
+      "sha256": "775d66e77e0f229de78047e7bbf08f6684c9f9fd6ce66d2d361f22701640e71c"
+     },
+     "clear": "Success: Cleared flow override at 00b2fa44 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 63 byte(s)"
+    },
+    {
+     "explicit_tail_call": "00b2fa44",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b2fa44 (was: NONE, now: NONE)"
+     }
+    }
+   ],
+   "explicit_tail_end_exclusive": "00b2fa88",
+   "explicit_body_sha256": "03051b56c87b9cc7b6774a82914d4a2253504e7386f6a4b920aaf6f511eac709",
+   "body_before": "Function: BSP_MaterialEffectCacheEntry_DestroyStorage at 00b2fa10\nSignature: undefined BSP_MaterialEffectCacheEntry_DestroyStorage(void)\nEntry: 00b2fa10\nBody: 00b2fa10 - 00b2fa48",
+   "decompile_lines_after": 36,
+   "gaps_remaining": 1,
+   "body_after": "Function: BSP_MaterialEffectCacheEntry_DestroyStorage at 00b2fa10\nSignature: undefined BSP_MaterialEffectCacheEntry_DestroyStorage(void)\nEntry: 00b2fa10\nBody: 00b2fa10 - 00b2fa48",
+   "stored_body_tail_complete": false,
+   "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+  }
+ ]
+}

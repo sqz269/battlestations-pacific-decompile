@@ -1,0 +1,709 @@
+{
+  "packet": "orch5_cursor_prefix_native",
+  "baseline": "43d53129",
+  "address": "00ab8910",
+  "implementation": [
+    "include/bsp/gui_text_copy.hpp",
+    "src/gui_text_copy.cpp",
+    "include/bsp/gui_text_sections.hpp",
+    "include/bsp/gui_widget_owner.hpp",
+    "src/gui_widget_owner.cpp"
+  ],
+  "evidence": "docs/GUI_TEXT_CURSOR_MODEL_PREFIX.md",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "verified BSP wrappers; read only, no mutations"
+  },
+  "routines": [
+    {
+      "address": "00ab8910",
+      "end_inclusive": "00ab8c24",
+      "byte_length": 789,
+      "instruction_count": 236,
+      "flow_gaps": 0,
+      "last_instruction": "00ab8c24",
+      "last_instruction_length": 1,
+      "abi": "ECX SAME Text; no stack arguments; RET",
+      "coverage": "actual Model prefix, retained host registration failure, one name header and caller FH3 cleanup; existing supported normal tail preserved; composed factory internal unwind remains explicit"
+    }
+  ],
+  "callers": [
+    {
+      "address": "00ab9246",
+      "function": "00ab9240",
+      "containing_body": "00ab9240..00ab95e5",
+      "native": "00ab8910",
+      "binding": "ECX unchanged Text, ESI copies it atAB9244; no pushes for call"
+    },
+    {
+      "address": "00ab95fd",
+      "function": "00ab95f0",
+      "containing_body": "00ab95f0..00ab964c",
+      "native": "00ab8910",
+      "binding": "ECX unchanged Text after store to Text17C; no pushes for call"
+    },
+    {
+      "address": "00abb5fa",
+      "function": "00abb2c0",
+      "containing_body": "00abb2c0..00abb623",
+      "native": "00ab8910",
+      "binding": "ECX=ESI destination atABB5ED, no pushes for call"
+    }
+  ],
+  "calls": [
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8947",
+      "native": "00b74eb0",
+      "producer_evidence": "AB8942 sets ECX=184h; B74EB0 overwrites ECX with1090054; ESI/raw local capture EAX; no stack inputs",
+      "binding": "tracked Cursor overload, SAME canonical Model pool and ModelRecord map",
+      "callee_abi": "allocation-context ECX ignored by canonical pool entry; EAX slot; RET",
+      "coverage": "tracked actual Model prefix reconstructed in this packet"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8963",
+      "native": "0041e870",
+      "producer_evidence": "ECX stack name header, C string gui_cursor",
+      "binding": "SAME caller temporary_name header, constructor arm only after normal return",
+      "callee_abi": "ECX zeroed header; C string pointer stack; EAX header; RET4",
+      "coverage": "tracked actual Model prefix reconstructed in this packet"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab897d",
+      "native": "00b75030",
+      "producer_evidence": "ECX=ESI model slot; stack temporary name header; Text184 published AB898C BEFORE name release",
+      "binding": "construct_native_model_00b75030 then canonical registration, caller-retained live Model on host registration failure",
+      "callee_abi": "ECX allocated Model; name header stack; EAX Model; RET4",
+      "coverage": "tracked actual Model prefix reconstructed in this packet"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab89ab",
+      "native": "00419cc0",
+      "producer_evidence": "three stack words already pushed for following BD1510, not inputs to singleton helper",
+      "binding": "existing NativeStringStorage release boundary; native_string_pool_owner.cpp when actual pool is bound",
+      "callee_abi": "NO inputs, EAX pool, RET; three pushed arguments belong to FOLLOWING BD1510",
+      "coverage": "tracked actual Model prefix reconstructed in this packet"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab89b2",
+      "native": "00bd1510",
+      "producer_evidence": "ECX=EAX pool from helper; gui_cursor name block,length+1,1 stack",
+      "binding": "existing native string storage sized release; native_string_pool_storage.cpp",
+      "callee_abi": "ECX pool; captured block,length+1,unused1 stack; RET0Ch",
+      "coverage": "tracked actual Model prefix reconstructed in this packet"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab89ce",
+      "native": "00b6e680",
+      "producer_evidence": "ECX reread Text184; parent reread Text4C",
+      "binding": "set_native_node_parent_00b6e680; SAME parenting/node domain and current primary parent",
+      "callee_abi": "ECX cursor Model; parent stack; RET4",
+      "coverage": "existing normal-tail provider contract; current full listing checked"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8a56",
+      "native": "cursor.current38",
+      "producer_evidence": "EDX=current cursor vtable38 at AB8A4C/4E; matrix live one and negative sentinel; supported D62DE8 profile",
+      "binding": "set_transform_local_matrix_00b6db10; validate Model current38 profile D62DE8",
+      "callee_abi": "ECX cursor; matrix pointer stack; RET4",
+      "dispatch_operand": "EDX",
+      "coverage": "existing normal-tail provider contract; current full listing checked",
+      "resolved_native": "00b6db10"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8a65",
+      "native": "00b6da70",
+      "producer_evidence": "ECX reread Text184; FLDZ supplies0.0f and EBP stillzero supplies false",
+      "binding": "GuiWidgetOwnerRuntime::set_node_visibility_factor_00b6da70; SAME actual cursor",
+      "callee_abi": "ECX cursor; x87 zero float,false stack; RET8",
+      "coverage": "existing normal-tail provider contract; current full listing checked"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8a6f",
+      "native": "00b73b60",
+      "producer_evidence": "ECX=BCh requested payload; EAX slot",
+      "binding": "GuiNativeGeometryOwners::create_mesh; canonical mesh allocator native_mesh_owner.cpp",
+      "callee_abi": "ECX requested BCh, allocation-context entry selects same native pool; EAX slot; RET",
+      "coverage": "existing normal-tail provider contract; current full listing checked"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8a86",
+      "native": "00b73d70",
+      "producer_evidence": "ECX slot, EBP receives captured actual mesh",
+      "binding": "GuiNativeGeometryOwners::create_mesh; native_mesh_owner.cpp actual mesh constructor",
+      "callee_abi": "ECX slot; no stack inputs; EAX mesh; RET",
+      "coverage": "existing normal-tail provider contract; current full listing checked"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8aaa",
+      "native": "00b75170",
+      "producer_evidence": "ECX reread Text184; zero,EBP mesh,two x87 stores from ONE new D7A260 load",
+      "binding": "set_native_model_geometry_00b75170; same actual Model/mesh/reference domain",
+      "callee_abi": "ECX current cursor; unused0,mesh,sentinel,sentinel stack; RET10h",
+      "coverage": "existing normal-tail provider contract; current full listing checked"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8ab8",
+      "native": "0041e870",
+      "producer_evidence": "ECX stack format header; simplecolor.mvfm",
+      "binding": "SAME caller temporary_name header, constructor arm only after normal return",
+      "callee_abi": "ECX zeroed header; C string pointer stack; EAX header; RET4",
+      "coverage": "existing normal-tail provider contract; current full listing checked"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8ad5",
+      "native": "current renderer virtual38",
+      "producer_evidence": "ECX=[F8D394] at AB8ABD; stack format header; EAX owned declaration; RET4 native ABI binding",
+      "binding": "existing load_gui_text_native_declaration_current38, same domain and tracked declaration_factory",
+      "callee_abi": "ECX=[F8D394] at AB8ABD; stack format header; EAX owned declaration; RET4 native ABI binding",
+      "dispatch_operand": "EAX",
+      "coverage": "existing normal-tail provider contract; current full listing checked"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8af4",
+      "native": "00419cc0",
+      "producer_evidence": "three stack words for following name release only",
+      "binding": "existing NativeStringStorage release boundary; native_string_pool_owner.cpp when actual pool is bound",
+      "callee_abi": "NO inputs, EAX pool, RET; three pushed arguments belong to FOLLOWING BD1510",
+      "coverage": "existing normal-tail provider contract; current full listing checked"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8afb",
+      "native": "00bd1510",
+      "producer_evidence": "ECX returned pool; format block,length+1,1",
+      "binding": "existing native string storage sized release; native_string_pool_storage.cpp",
+      "callee_abi": "ECX pool; captured block,length+1,unused1 stack; RET0Ch",
+      "coverage": "existing normal-tail provider contract; current full listing checked"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8b10",
+      "native": "current renderer virtual5C",
+      "producer_evidence": "ECX RELOADED [F8D394] after name release at AB8B00; stack4,1,ESI declaration; EAX owned vertex; RET0Ch",
+      "binding": "existing create_gui_text_native_vertex_current5c, fresh renderer and tracked vertex_factory",
+      "callee_abi": "ECX RELOADED [F8D394] after name release at AB8B00; stack4,1,ESI declaration; EAX owned vertex; RET0Ch",
+      "dispatch_operand": "EAX",
+      "coverage": "existing normal-tail provider contract; current full listing checked"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8b19",
+      "native": "00b73bb0",
+      "producer_evidence": "ECX=EBP captured mesh; stack0,EBX actual vertex",
+      "binding": "set_native_mesh_vertex_stream_00b73bb0; same actual owners",
+      "callee_abi": "ECX captured mesh; index0,actual vertex stack; RET8",
+      "coverage": "existing normal-tail provider contract; current full listing checked"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8b22",
+      "native": "InterlockedDecrement via IAT [00CE2220]",
+      "producer_evidence": "stack captured declaration+04; stdcall RET4; decrement before vertex creator",
+      "binding": "release_native_render_actual_owner, same canonical actual registry and current terminal dispatch",
+      "callee_abi": "stack captured declaration+04; stdcall RET4; decrement before vertex creator",
+      "dispatch_operand": "dword ptr [0x00ce2220]",
+      "coverage": "existing normal-tail provider contract; current full listing checked"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8b32",
+      "native": "current declaration virtual0",
+      "producer_evidence": "ECX captured ESI declaration, only after zero count; no stack args; canonical actual terminal dispatch",
+      "binding": "release_native_render_actual_owner, same canonical actual registry and current terminal dispatch",
+      "callee_abi": "ECX captured ESI declaration, only after zero count; no stack args; canonical actual terminal dispatch",
+      "dispatch_operand": "EAX",
+      "coverage": "existing normal-tail provider contract; current full listing checked"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8b38",
+      "native": "InterlockedDecrement via IAT [00CE2220]",
+      "producer_evidence": "stack captured vertex+04; stdcall RET4",
+      "binding": "release_native_render_actual_owner, same canonical actual registry and current terminal dispatch",
+      "callee_abi": "stack captured vertex+04; stdcall RET4",
+      "dispatch_operand": "dword ptr [0x00ce2220]",
+      "coverage": "existing normal-tail provider contract; current full listing checked"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8b48",
+      "native": "current vertex virtual0",
+      "producer_evidence": "ECX captured EBX vertex, only after zero count; no stack args; canonical actual terminal dispatch",
+      "binding": "release_native_render_actual_owner, same canonical actual registry and current terminal dispatch",
+      "callee_abi": "ECX captured EBX vertex, only after zero count; no stack args; canonical actual terminal dispatch",
+      "dispatch_operand": "EAX",
+      "coverage": "existing normal-tail provider contract; current full listing checked"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8b4a",
+      "native": "00533fa0",
+      "producer_evidence": "EAX captured into ESI section; native then stores primitive5 and ranges0,4,0,2",
+      "binding": "GuiNativeGeometryOwners::create_section; native_mesh_section.cpp canonical pool",
+      "callee_abi": "no semantic input; EAX section; RET",
+      "coverage": "existing normal-tail provider contract; current full listing checked"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8b78",
+      "native": "0041e870",
+      "producer_evidence": "ECX stack effect-name header; GuiCursor.mshd",
+      "binding": "SAME caller temporary_name header, constructor arm only after normal return",
+      "callee_abi": "ECX zeroed header; C string pointer stack; EAX header; RET4",
+      "coverage": "existing normal-tail provider contract; current full listing checked"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8b85",
+      "native": "00535320",
+      "producer_evidence": "ECX effect-name header; EBX captures returned material",
+      "binding": "GuiNativeGeometryOwners::create_material_for_effect_00535320; native_material_factory.cpp",
+      "callee_abi": "ECX effect-name header; no stack inputs; EAX actual material; RET",
+      "coverage": "unchanged actual material factory; internal failure acquisitions remain provider boundary"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8ba7",
+      "native": "00419cc0",
+      "producer_evidence": "three stack words for following name release only",
+      "binding": "existing NativeStringStorage release boundary; native_string_pool_owner.cpp when actual pool is bound",
+      "callee_abi": "NO inputs, EAX pool, RET; three pushed arguments belong to FOLLOWING BD1510",
+      "coverage": "existing normal-tail provider contract; current full listing checked"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8bae",
+      "native": "00bd1510",
+      "producer_evidence": "ECX returned pool; effect name block,length+1,1",
+      "binding": "existing native string storage sized release; native_string_pool_storage.cpp",
+      "callee_abi": "ECX pool; captured block,length+1,unused1 stack; RET0Ch",
+      "coverage": "existing normal-tail provider contract; current full listing checked"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8bb8",
+      "native": "00b18a40",
+      "producer_evidence": "ECX=EBX material; EDI is original actual Text, push1 thenEDI; required actual Text+04 retention",
+      "binding": "required GuiTextCursorParameterOwnerServices calls existing set_native_material_parameter_owner_00b18a40 using actual Text identity; semantic refcount cannot bind",
+      "callee_abi": "ECX material; actual Text pointer,retain byte1 stack; RET8",
+      "coverage": "existing normal-tail provider contract; current full listing checked"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8bc0",
+      "native": "00b864c0",
+      "producer_evidence": "ECX=ESI section; stack captured EBX material",
+      "binding": "set_native_mesh_section_material_00b864c0; same actual retained owners",
+      "callee_abi": "ECX section; actual material stack; RET4",
+      "coverage": "existing normal-tail provider contract; current full listing checked"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8bcf",
+      "native": "captured InterlockedDecrement in EDI",
+      "producer_evidence": "EDI loaded from IAT CE2220 at AB8BC5; stack material EBX+04; stdcall RET4",
+      "binding": "release_native_render_actual_owner, same canonical actual registry and current terminal dispatch",
+      "callee_abi": "EDI loaded from IAT CE2220 at AB8BC5; stack material EBX+04; stdcall RET4",
+      "dispatch_operand": "EDI",
+      "coverage": "existing normal-tail provider contract; current full listing checked"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8bdb",
+      "native": "current material virtual0",
+      "producer_evidence": "ECX captured EBX material after zero count; same actual material owner; no stack args",
+      "binding": "release_native_render_actual_owner, same canonical actual registry and current terminal dispatch",
+      "callee_abi": "ECX captured EBX material after zero count; same actual material owner; no stack args",
+      "dispatch_operand": "EDX",
+      "coverage": "existing normal-tail provider contract; current full listing checked"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8be0",
+      "native": "00b865a0",
+      "producer_evidence": "ECX=ESI section; stack EBP actual mesh",
+      "binding": "rebuild_native_mesh_section_vertex_layout_00b865a0; current real renderer40 required",
+      "callee_abi": "ECX section; actual mesh stack; RET4",
+      "coverage": "existing normal-tail provider contract; current full listing checked"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8be8",
+      "native": "00b73c60",
+      "producer_evidence": "ECX=EBP mesh; stack ESI section; append AFTER layout rebuild",
+      "binding": "append_native_mesh_draw_section_00b73c60; canonical section retain",
+      "callee_abi": "ECX captured mesh; actual section stack; RET4",
+      "coverage": "existing normal-tail provider contract; current full listing checked"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8bf1",
+      "native": "captured InterlockedDecrement in EDI",
+      "producer_evidence": "EDI still captured CE2220; stack section ESI+04; stdcall RET4",
+      "binding": "release_native_render_actual_owner, same canonical actual registry and current terminal dispatch",
+      "callee_abi": "EDI still captured CE2220; stack section ESI+04; stdcall RET4",
+      "dispatch_operand": "EDI",
+      "coverage": "existing normal-tail provider contract; current full listing checked"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8bfd",
+      "native": "current section virtual0",
+      "producer_evidence": "ECX captured ESI section after zero count; same actual section owner; no stack args",
+      "binding": "release_native_render_actual_owner, same canonical actual registry and current terminal dispatch",
+      "callee_abi": "ECX captured ESI section after zero count; same actual section owner; no stack args",
+      "dispatch_operand": "EAX",
+      "coverage": "existing normal-tail provider contract; current full listing checked"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8c03",
+      "native": "captured InterlockedDecrement in EDI",
+      "producer_evidence": "EDI still captured CE2220; stack mesh EBP+04; stdcall RET4",
+      "binding": "release_native_render_actual_owner, same canonical actual registry and current terminal dispatch",
+      "callee_abi": "EDI still captured CE2220; stack mesh EBP+04; stdcall RET4",
+      "dispatch_operand": "EDI",
+      "coverage": "existing normal-tail provider contract; current full listing checked"
+    },
+    {
+      "function": "00ab8910",
+      "containing_body": "00ab8910..00ab8c24",
+      "address": "00ab8c11",
+      "native": "current mesh virtual0",
+      "producer_evidence": "ECX captured EBP mesh after zero count; same actual mesh owner; no stack args",
+      "binding": "release_native_render_actual_owner, same canonical actual registry and current terminal dispatch",
+      "callee_abi": "ECX captured EBP mesh after zero count; same actual mesh owner; no stack args",
+      "dispatch_operand": "EAX",
+      "coverage": "existing normal-tail provider contract; current full listing checked"
+    },
+    {
+      "function": "00cb7f90",
+      "address": "00cb7f93",
+      "native": "00b748c0",
+      "kind": "tail_jump",
+      "binding": "ECX=[EH EBP-58], captured raw Model; canonical slot return"
+    },
+    {
+      "function": "00cb7f98",
+      "address": "00cb7fab",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "binding": "test/clear mask1 at[EH EBP-5C]; ECX=SAME header[EH EBP-54]; next state0"
+    },
+    {
+      "function": "00cb7fb1",
+      "address": "00cb7fb4",
+      "native": "00b72f70",
+      "kind": "tail_jump",
+      "binding": "ECX=[EH EBP-58], raw mesh; internal composed mesh factory boundary"
+    },
+    {
+      "function": "00cb7fb9",
+      "address": "00cb7fbc",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "binding": "ECX=SAME header[EH EBP-54], declaration format name state4"
+    },
+    {
+      "function": "00cb7fc1",
+      "address": "00cb7fc4",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "binding": "ECX=SAME header[EH EBP-54], cursor effect name state5"
+    }
+  ],
+  "shared_shadow_prefix_calls": [
+    {
+      "function": "00ab8530",
+      "address": "00ab8565",
+      "native": "00b74eb0",
+      "binding": "ECX184 discarded by canonical Model pool forwarder; EAX raw188h slot"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab8581",
+      "native": "0041e870",
+      "binding": "ECX reused actual8h temporary header; stack const char*, RET4"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab859b",
+      "native": "00b75030",
+      "binding": "ECX allocated actual Model; stack pointer to SAME temporary NativeString; RET4"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab85c9",
+      "native": "00419cc0",
+      "binding": "no explicit arguments; caller-pushed (buffer,length+1,1) remain for subsequent BD1510"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab85d0",
+      "native": "00bd1510",
+      "binding": "ECX actual pool; stack(buffer,length+1,1), RET0Ch; same-header destruction via string storage boundary"
+    },
+    {
+      "function": "00cb7f20",
+      "address": "00cb7f23",
+      "native": "00b748c0",
+      "binding": "ECX [EH EBP-18], captured raw Model; tail to canonical slot return",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cb7f28",
+      "address": "00cb7f3b",
+      "native": "0041dd20",
+      "binding": "test/clear mask1 at[EH EBP-1C]; ECX same[EH EBP-14] string header",
+      "kind": "tail_jump"
+    }
+  ],
+  "cleanup_evidence": {
+    "handler": {
+      "address": "00cb7fc9",
+      "end_inclusive": "00cb7fd2",
+      "byte_length": 10,
+      "instruction_count": 2,
+      "no_ghidra_function": true,
+      "instructions": [
+        "00cb7fc9 MOV EAX,00deedbc",
+        "00cb7fce JMP00bf6b43"
+      ],
+      "source": "live10 bytes, verified no Ghidra function, bounded disk disasm"
+    },
+    "func_info": "00deedbc",
+    "map": "00deede0",
+    "count": 6,
+    "entries": [
+      [
+        -1,
+        "00cb7f90"
+      ],
+      [
+        0,
+        "00cb7f98"
+      ],
+      [
+        -1,
+        "00cb7f98"
+      ],
+      [
+        -1,
+        "00cb7fb1"
+      ],
+      [
+        -1,
+        "00cb7fb9"
+      ],
+      [
+        -1,
+        "00cb7fc1"
+      ]
+    ],
+    "funclet_ranges": [
+      [
+        "00cb7f90",
+        "00cb7f97",
+        8
+      ],
+      [
+        "00cb7f98",
+        "00cb7fb0",
+        25
+      ],
+      [
+        "00cb7fb1",
+        "00cb7fb8",
+        8
+      ],
+      [
+        "00cb7fb9",
+        "00cb7fc0",
+        8
+      ],
+      [
+        "00cb7fc1",
+        "00cb7fc8",
+        8
+      ]
+    ],
+    "temporary": "same native header[EH EBP-54]; bit1 at[EH EBP-5C]; raw slot at[EH EBP-58]",
+    "state2": "map entry exists but no state2 store in normal body",
+    "order": "prefix construction throw: clear conditional name bit, destroy SAME header, prepared/dead metadata removal, canonical raw-slot return; native ctor performs its own node unwind",
+    "host_registration_failure": "after B75030 normal return: keep live ModelRecord/owner and temporary in SAME frame; model_metadata_failure=true and model_failure_phase=reference_registration; no native rollback or publication claimed"
+  },
+  "publication": {
+    "site": "00ab898c",
+    "field": "SAME Text+184",
+    "name_release": "00ab89b2",
+    "description": "clear creator bookkeeping before noexcept release callback; no helper owner/map dereference afterward; caller reloads field atAB89B7"
+  },
+  "boundaries": [
+    "Composed mesh raw acquisition/constructor state3 remains inside current create_mesh; no invented raw-slot identity on failure.",
+    "Completed creators and live publications persist; no rerun, native SEH ABI or automatic failed-frame recovery.",
+    "Material factory migration remains separate; missing internal effect/material acquisitions are not claimed recovered here.",
+    "Renderer38/5C actual providers and tracked acquisition records are reused; no fake success provider.",
+    "Existing tail matrix/x87 projection preserved, no new extended-precision equivalence claim.",
+    "No whole AB8910 runtime or game validation claim; focused prefix fixture excludes host post-constructor registration failure."
+  ],
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "compiler": "MSVC Win32 /W4 /WX /fp:strict",
+      "result": "passed",
+      "ctest": "1/1 reconstructed_math passed",
+      "log": "local/cursor_prefix_build_final.log",
+      "source_pin": "baseline43d53129 plus owned production source hashes below; final source later committed without source edits"
+    },
+    "fixture": {
+      "result": "passed",
+      "command": "./local/run_cursor_model_prefix_probe.ps1",
+      "translation_units": [
+        "local/cursor_model_prefix_probe.cpp"
+      ],
+      "links": "current built bsp_core.lib and bsp_lua511.lib, /MANIFEST:EMBED",
+      "log": "local/cursor_model_prefix_probe.log",
+      "observations": [
+        "Actual B75030 node-name allocation throws after gui_cursor temporary succeeds",
+        "Cursor name header destroyed, bits preserved with length10",
+        "failure_site AB897D, cleanup_site CB7F93, raw slot returned",
+        "No publication, retained Model, or completed creator; slab free count32 and allocator list empty after pool destruction"
+      ],
+      "limits": "Prefix only; fixture type/profile publications and instrumented actual string allocator. No complete AB8910, renderer/material calls, actual Text admission, host registration-failure injection or game execution."
+    },
+    "shared_helper_regression": {
+      "result": "passed",
+      "command": "./local/run_text_sections_model_prefix_probe.ps1",
+      "source": "unchanged archived prior sections prefix probe copied read-only to ignored local files",
+      "log": "local/shadow_model_prefix_replay.log",
+      "observations": "Same existing actual Model allocation interruption remains cleaned at AB859B/CB7F23 with Shadow length6 and balanced raw pool"
+    },
+    "report_calls": {
+      "command": "python tools/verify_report_calls.py reports/gui_text_cursor_model_prefix.json",
+      "checked": 38,
+      "failed": 0,
+      "indirect_reviewed": 13,
+      "log": "local/cursor_prefix_calls.log"
+    }
+  },
+  "artifacts": [
+    "local/cursor_prefix_native.asm",
+    "local/cursor_prefix_configure.log",
+    "local/cursor_prefix_build.log",
+    "local/cursor_model_prefix_probe.cpp",
+    "local/run_cursor_model_prefix_probe.ps1",
+    "local/cursor_prefix_build_final.log",
+    "local/cursor_prefix_calls.log",
+    "local/cursor_model_prefix_probe.log",
+    "local/cursor_model_prefix_probe.exe",
+    "local/cursor_model_prefix_probe.obj",
+    "local/text_sections_model_prefix_probe.cpp",
+    "local/run_text_sections_model_prefix_probe.ps1",
+    "local/shadow_model_prefix_replay.log",
+    "local/text_sections_model_prefix_probe.exe",
+    "local/text_sections_model_prefix_probe.obj"
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "sha256": {
+    "local/cursor_prefix_native.asm": "17489651cf2b1c0afe1c3509aa108d3acfcc6972414fb8bbac5839905f27a17c",
+    "local/cursor_prefix_configure.log": "4fb26006bb1d1dd355b978ab4d27e795726efddb3e9015f92a555e8d12ef206a",
+    "local/cursor_prefix_build.log": "f4db402ab4b217b17c57b2e87d54fe0cb53b08d72740b6643e352157dc475f22",
+    "local/cursor_model_prefix_probe.cpp": "d8d6dfc2510f2bf057b5a38e323734455d25f9cf64cb22e2fe7bb4466893b149",
+    "local/run_cursor_model_prefix_probe.ps1": "27dd336e6a830e8c7e077d29c59dadf6fa4ef8d5ef900e160d2a6cb818fec9df",
+    "local/cursor_prefix_build_final.log": "5079f0068d74086187c8354228d1b488ff41e6918108d04f1243bf66a0d3dd71",
+    "local/cursor_prefix_calls.log": "35a9f5cc1da7cf6d64ae631e3a71f554b79b5cc72e7f74b9459d80852cf3e206",
+    "local/cursor_model_prefix_probe.log": "b2e7e5105186a4ed83b3a52f7a80b60abaa7d41ae3d0fde1f49aa17ed03a1763",
+    "local/cursor_model_prefix_probe.exe": "8705a105a2844f75c2293dbe8889e677a43b73f23bc5a29c6e377be9016ba540",
+    "local/cursor_model_prefix_probe.obj": "68012f7530a5638b7b5cfa0aaab70980fe154d0624331becc5311f4c4ffd3e2d",
+    "local/text_sections_model_prefix_probe.cpp": "66e0f122755d129da454a16effd6b06168f91f10c9a90c53b31b6389b3cc15c0",
+    "local/run_text_sections_model_prefix_probe.ps1": "eef33794ef50b1d9227a6629b824ad6810c12c571387dcd0dc34890c5c1e8b13",
+    "local/shadow_model_prefix_replay.log": "a7fc69fe29003ac13379a4e2447fc8379bdec69ea075d43ffa65f99904952595",
+    "local/text_sections_model_prefix_probe.exe": "98463a6a54cce08ea7c459f3f1d7e4ce1745c758e56b42b7d4d4cce1b9dbcfec",
+    "local/text_sections_model_prefix_probe.obj": "52665ea125bf2124eae37279a8a15590374d095a07a47bf48ccd27e1f13eb6fd",
+    "include/bsp/gui_text_copy.hpp": "b8c5f957ee55507eeb78a126fbf42d10656a6fb43d9c7da626f45e250cbd0e53",
+    "src/gui_text_copy.cpp": "5ac944d70e7414a84d14f6fdce446ccc0f556b9710a74633be7dbd2c84d0d330",
+    "include/bsp/gui_text_sections.hpp": "40dc62e3d1c112fdeca5ddcfdca003af12ebc4533b3499a917628cb9b6167ccb",
+    "include/bsp/gui_widget_owner.hpp": "67ac98cc695f80f8b1112e7fc35b9b28a99efb4554a14ff9332ca89c00c54bc6",
+    "src/gui_widget_owner.cpp": "22f3a326b20aa1da707b3d6b263bef1529fdd358ec13f87adcfb9b6dd88ba917",
+    "build/win32/Release/bsp_core.lib": "fffd668cb65dacb80f30d84714e9899febf12ea3e134d3bc52d5fa4d6922e5eb",
+    "build/win32/Release/bsp_lua511.lib": "b356600d18055504b0037228bcb995b14cb11ca68123a8c1e6ba27661e8772c5"
+  },
+  "integrated_validation": {
+    "commit": "f999c89ad8e6fa2992f4e3d2971a8c31cfd8ee88",
+    "batch": "reports/native_material_effect_integration.json",
+    "win32_build": true,
+    "ctest_passed": 2,
+    "full_cold_effect_load": false,
+    "complete_text": false,
+    "gameplay": false,
+    "prefix_fixtures": [
+      {
+        "name": "cursor_prefix",
+        "exit_code": 0,
+        "source": "local/effect-native-workers/cursor/local/cursor_model_prefix_probe.cpp",
+        "source_sha256": "D8D6DFC2510F2BF057B5A38E323734455D25F9CF64CB22E2FE7BB4466893B149",
+        "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\effect-native-validation\\cursor_prefix-run.log",
+        "log_sha256": "8AE483B5E297A41308F1BEDCBC209E6AEEE1E66CBA31788771B5DF8071AE71C1"
+      },
+      {
+        "name": "shadow_prefix",
+        "exit_code": 0,
+        "source": "local/effect-native-workers/cursor/local/text_sections_model_prefix_probe.cpp",
+        "source_sha256": "66E0F122755D129DA454A16EFFD6B06168F91F10C9A90C53B31B6389B3CC15C0",
+        "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\effect-native-validation\\shadow_prefix-run.log",
+        "log_sha256": "DBED9D34D0073EBF79C7F2EA75ED440ABF3500641CA886C9BEEC8BFD1E72DD66"
+      }
+    ]
+  }
+}

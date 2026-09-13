@@ -1,0 +1,285 @@
+{
+  "packet": "orch5_effect_loading_native",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "baseline": "43d53129",
+  "functions": [
+    {
+      "address": "00b2ebb0",
+      "end_exclusive": "00b2eed3",
+      "cpp_symbol": "load_native_material_effect_00b2ebb0",
+      "original_abi": "ECX unused registry; name/ignored DWORD stack; EAX owned effect; RET8",
+      "source": "src/native_material_effect_loading.cpp",
+      "native_sha256": "37f556ad7a43d3d46354018093dd878008b10fba5f01e75bf803a2f09327a725",
+      "native_byte_count": 803,
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b18f70",
+      "end_exclusive": "00b18fa9",
+      "cpp_symbol": "set_native_material_effect_name_00b18f70",
+      "original_abi": "ECX actual effect; native8h header stack; RET4",
+      "source": "src/native_material_effect_loading.cpp",
+      "native_sha256": "e6dd31323c292ab2d422d6188e614a373ef614e238791de05def6c3ec38346a3",
+      "native_byte_count": 57,
+      "live_matches_installed": true
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "00b2ebef",
+      "function": "00b2ebb0",
+      "instruction": "call 0x41dd40",
+      "native": "0041dd40"
+    },
+    {
+      "address": "00b2ec06",
+      "function": "00b2ebb0",
+      "instruction": "call 0xbf7680",
+      "native": "00bf7680"
+    },
+    {
+      "address": "00b2ec27",
+      "function": "00b2ebb0",
+      "instruction": "call 0x41dd40",
+      "native": "0041dd40"
+    },
+    {
+      "address": "00b2ec3e",
+      "function": "00b2ebb0",
+      "instruction": "call 0xbf7680",
+      "native": "00bf7680"
+    },
+    {
+      "address": "00b2ec5b",
+      "function": "00b2ebb0",
+      "instruction": "call 0x41dd40",
+      "native": "0041dd40"
+    },
+    {
+      "address": "00b2ec76",
+      "function": "00b2ebb0",
+      "instruction": "call 0xbf7680",
+      "native": "00bf7680"
+    },
+    {
+      "address": "00b2ec93",
+      "function": "00b2ebb0",
+      "instruction": "call 0x41dd40",
+      "native": "0041dd40"
+    },
+    {
+      "address": "00b2ecae",
+      "function": "00b2ebb0",
+      "instruction": "call 0xbf7680",
+      "native": "00bf7680"
+    },
+    {
+      "address": "00b2ecce",
+      "function": "00b2ebb0",
+      "instruction": "call 0x4cad40",
+      "native": "004cad40"
+    },
+    {
+      "address": "00b2ece7",
+      "function": "00b2ebb0",
+      "instruction": "call 0x419cc0",
+      "native": "00419cc0"
+    },
+    {
+      "address": "00b2ecee",
+      "function": "00b2ebb0",
+      "instruction": "call 0xbd1510",
+      "native": "00bd1510"
+    },
+    {
+      "address": "00b2ed07",
+      "function": "00b2ebb0",
+      "instruction": "call 0x419cc0",
+      "native": "00419cc0"
+    },
+    {
+      "address": "00b2ed0e",
+      "function": "00b2ebb0",
+      "instruction": "call 0xbd1510",
+      "native": "00bd1510"
+    },
+    {
+      "address": "00b2ed1e",
+      "function": "00b2ebb0",
+      "instruction": "call 0xbdf4c0",
+      "native": "00bdf4c0"
+    },
+    {
+      "address": "00b2ed2c",
+      "function": "00b2ebb0",
+      "instruction": "call 0xbf681b",
+      "native": "00bf681b"
+    },
+    {
+      "address": "00b2ed43",
+      "function": "00b2ebb0",
+      "instruction": "call 0xb407a0",
+      "native": "00b407a0"
+    },
+    {
+      "address": "00b2ed5a",
+      "function": "00b2ebb0",
+      "instruction": "call 0xb46950",
+      "native": "00b46950"
+    },
+    {
+      "address": "00b2ed62",
+      "function": "00b2ebb0",
+      "instruction": "call 0xb18f70",
+      "native": "00b18f70"
+    },
+    {
+      "address": "00b2ed78",
+      "function": "00b2ebb0",
+      "instruction": "call 0x41e870",
+      "native": "0041e870"
+    },
+    {
+      "address": "00b2ed8c",
+      "function": "00b2ebb0",
+      "instruction": "call 0x43c130",
+      "native": "0043c130"
+    },
+    {
+      "address": "00b2eda2",
+      "function": "00b2ebb0",
+      "instruction": "call 0x4261a0",
+      "native": "004261a0"
+    },
+    {
+      "address": "00b2edbf",
+      "function": "00b2ebb0",
+      "instruction": "call 0x419cc0",
+      "native": "00419cc0"
+    },
+    {
+      "address": "00b2edc6",
+      "function": "00b2ebb0",
+      "instruction": "call 0xbd1510",
+      "native": "00bd1510"
+    },
+    {
+      "address": "00b2ede3",
+      "function": "00b2ebb0",
+      "instruction": "call 0x419cc0",
+      "native": "00419cc0"
+    },
+    {
+      "address": "00b2edea",
+      "function": "00b2ebb0",
+      "instruction": "call 0xbd1510",
+      "native": "00bd1510"
+    },
+    {
+      "address": "00b2ee1b",
+      "function": "00b2ebb0",
+      "instruction": "call 0x419cc0",
+      "native": "00419cc0"
+    },
+    {
+      "address": "00b2ee22",
+      "function": "00b2ebb0",
+      "instruction": "call 0xbd1510",
+      "native": "00bd1510"
+    },
+    {
+      "address": "00b2ee30",
+      "function": "00b2ebb0",
+      "instruction": "call 0x41e870",
+      "native": "0041e870"
+    },
+    {
+      "address": "00b2ee66",
+      "function": "00b2ebb0",
+      "instruction": "call 0x419cc0",
+      "native": "00419cc0"
+    },
+    {
+      "address": "00b2ee6d",
+      "function": "00b2ebb0",
+      "instruction": "call 0xbd1510",
+      "native": "00bd1510"
+    },
+    {
+      "address": "00b2ee8a",
+      "function": "00b2ebb0",
+      "instruction": "call 0x419cc0",
+      "native": "00419cc0"
+    },
+    {
+      "address": "00b2ee91",
+      "function": "00b2ebb0",
+      "instruction": "call 0xbd1510",
+      "native": "00bd1510"
+    },
+    {
+      "address": "00b2eeb1",
+      "function": "00b2ebb0",
+      "instruction": "call 0x419cc0",
+      "native": "00419cc0"
+    },
+    {
+      "address": "00b2eeb8",
+      "function": "00b2ebb0",
+      "instruction": "call 0xbd1510",
+      "native": "00bd1510"
+    },
+    {
+      "address": "00b18f87",
+      "function": "00b18f70",
+      "instruction": "call 0x41dd40",
+      "native": "0041dd40"
+    },
+    {
+      "address": "00b18f9c",
+      "function": "00b18f70",
+      "instruction": "call 0xbf7680",
+      "native": "00bf7680"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "address": "00b2edfd",
+      "function": "00b2ebb0",
+      "instruction": "call dword ptr [0xce2274]"
+    },
+    {
+      "address": "00b2ee4a",
+      "function": "00b2ebb0",
+      "instruction": "call edx"
+    }
+  ],
+  "scope": "Actual B2EBB0 normal schedule and B18F70 body, with required actual VFS, shader children and callable constructor texture64 dependency. Not a complete cold-load runtime or native EH/ABI replacement.",
+  "host_continuation": "Completed creator is published before B46950. Failed program child retains the exact resolved8h header and allocation, unlike native local FH3 unwinding. Program descriptor bindings transfer into the same canonical effect record only after complete pass population.",
+  "validation": {
+    "build": "passed exact combined Win32 build; CTest2/2",
+    "runtime": "full loader not executed"
+  },
+  "unresolved_dependencies": [
+    "Actual mutable-manager BDF4C0 resolver",
+    "Actual B319B0/B30B40 texture64 acquisition for error.tga",
+    "B43B00 descriptor reader",
+    "B3C3A0 compiler",
+    "B26500/B265C0/B26680 state caches"
+  ],
+  "no_ghidra_function": [],
+  "indirect_review": {
+    "00b2edfd": "IAT CE2274 OutputDebugStringA: message pointer or live empty string108D5A4",
+    "00b2ee4a": "Current renderer48 B318B0: ECX captured renderer, stack actual error.shfx8h; owned EAX, RET4"
+  },
+  "integrated_validation": {
+    "commit": "f999c89ad8e6fa2992f4e3d2971a8c31cfd8ee88",
+    "batch": "reports/native_material_effect_integration.json",
+    "win32_build": true,
+    "ctest_passed": 2,
+    "full_cold_effect_load": false,
+    "complete_text": false,
+    "gameplay": false
+  }
+}

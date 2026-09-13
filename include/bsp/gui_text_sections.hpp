@@ -20,11 +20,37 @@ enum class GuiTextSectionModelPhase { not_started, metadata, allocation, name, c
 enum class GuiTextSectionFactory { none, mesh, section, material };
 enum class GuiTextSectionReleasePhase { not_called, entered, returned };
 
+// Shared source bookkeeping for the independently recovered AB8530/AB8910
+// prefixes. No native field, owner, retain, destructor cleanup or retry. Each
+// caller supplies its own sites/FH3 states and retains this SAME subobject.
+struct GuiTextAuxiliaryModelAcquired {
+    GuiTextAuxiliaryModelAcquired() noexcept = default;
+    GuiTextAuxiliaryModelAcquired(const GuiTextAuxiliaryModelAcquired&) = delete;
+    GuiTextAuxiliaryModelAcquired& operator=(const GuiTextAuxiliaryModelAcquired&) = delete;
+    std::uint32_t native_site{};
+    std::uint32_t failure_site{};
+    std::uint32_t cleanup_site{};
+    std::int32_t native_unwind_state{-1};
+    // One eight-byte native header, reused only after cleanup. Destruction
+    // leaves its bits intact; these booleans are source bookkeeping only.
+    NativeString temporary_name;
+    NativeStringStorage* temporary_name_storage{};
+    bool name_live{};
+    bool name_cleanup_armed{};
+    bool name_constructing{};
+    GuiTextSectionModelPhase model_phase{GuiTextSectionModelPhase::not_started};
+    GuiTextSectionModelPhase model_failure_phase{GuiTextSectionModelPhase::not_started};
+    bool model_metadata_failure{};
+    void* unconstructed_model_slot{};
+    NativeModelOwner* constructed_model_owner{};
+    NativeModelReference* model_creator{};
+};
+
 // One AB8530 invocation's native locals and diagnostic progress, held by the
 // SAME Text lifetime. These are creator references, not additional retains or
 // native objects. Keep this frame and its providers alive after a failure.
 // No destructor releases or rolls back native state. Failed work cannot rerun.
-struct GuiTextSectionOperation final {
+struct GuiTextSectionOperation final : GuiTextAuxiliaryModelAcquired {
     GuiTextSectionOperation() noexcept = default;
     GuiTextSectionOperation(const GuiTextSectionOperation&) = delete;
     GuiTextSectionOperation& operator=(const GuiTextSectionOperation&) = delete;
@@ -33,31 +59,12 @@ struct GuiTextSectionOperation final {
     }
 
     GuiTextSectionPhase phase{GuiTextSectionPhase::not_started};
-    std::uint32_t native_site{};
-    std::uint32_t failure_site{};
-    std::uint32_t cleanup_site{};
-    std::int32_t native_unwind_state{-1};
     // A failed composed factory records its native caller entry site, not an
     // invented instruction inside its allocation/registration implementation.
     GuiTextSectionFactory factory_in_flight{GuiTextSectionFactory::none};
 
-    // One reused native eight-byte header: Shadow, shadow effect, main effect.
-    // Destroyed headers retain their bits, as 0041DD20 does. name_live is host
-    // bookkeeping; name_cleanup_armed follows the recovered FH3 state only.
-    NativeString temporary_name;
-    NativeStringStorage* temporary_name_storage{};
-    bool name_live{};
-    bool name_cleanup_armed{};
-    bool name_constructing{};
-
-    // Native raw-slot cleanup is armed only until construction completes.
-    // The actual Model creator transfers to live Text+188 before name release.
-    GuiTextSectionModelPhase model_phase{GuiTextSectionModelPhase::not_started};
-    GuiTextSectionModelPhase model_failure_phase{GuiTextSectionModelPhase::not_started};
-    bool model_metadata_failure{};
-    void* unconstructed_model_slot{};
-    NativeModelOwner* constructed_model_owner{};
-    NativeModelReference* model_creator{};
+    // The inherited name header serves Shadow, shadow effect and main effect.
+    // Its actual Model creator transfers to live Text+188 before name release.
     NativeMeshStorage* mesh{};
     NativeMeshSectionStorage* section{};
     NativeMaterialStorage* material{};
