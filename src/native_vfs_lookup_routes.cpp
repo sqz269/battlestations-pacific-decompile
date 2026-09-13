@@ -1,10 +1,13 @@
 #include "bsp/native_vfs_lookup_routes.hpp"
 
+#include "bsp/native_mpak_enumeration.hpp"
+#include "bsp/native_mpak_open.hpp"
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/native_pooled_resource_path.hpp"
 #include "bsp/native_pooled_string_substring.hpp"
 #include "bsp/native_string_pool_storage.hpp"
 #include "bsp/native_vfs_date_route.hpp"
+#include "bsp/native_vfs_device_route.hpp"
 #include "bsp/native_vfs_lookup_leaves.hpp"
 #include "bsp/singleton_lifetime.hpp"
 
@@ -47,6 +50,9 @@ std::uint32_t lookup_visitor_slot(const void* visitor, std::uint32_t offset,
     switch (word(visitor)) {
     case 0x00d68398: profile = context.actual_exists_profile_00d68398; break;
     case 0x00d683e8: profile = context.actual_name_probe_profile_00d683e8; break;
+    case 0x00d683f4:
+        if (!context.device) throw std::invalid_argument("Native VFS device route is not bound");
+        profile = context.device->actual_device_profile_00d683f4; break;
     default: throw std::invalid_argument("Unimplemented native VFS lookup visitor identity");
     }
     return word(profile, offset);
@@ -56,6 +62,9 @@ void dispatch_lookup_visit(void* visitor, const void* payload, const void* name,
     switch (lookup_visitor_slot(visitor, 4, context)) {
     case 0x00bd90d0: read_native_vfs_exists_provider_00bd90d0(visitor, payload, name, context); return;
     case 0x00bdbc00: read_native_vfs_name_probe_provider_00bdbc00(visitor, payload, name, context); return;
+    case 0x00bdbc70:
+        if (!context.device) throw std::invalid_argument("Native VFS device route is not bound");
+        read_native_vfs_device_provider_00bdbc70(visitor, payload, name, *context.device); return;
     default: throw std::invalid_argument("Unimplemented current VFS lookup visitor call slot");
     }
 }
@@ -63,6 +72,7 @@ std::uint8_t dispatch_lookup_stop(const void* visitor, NativeVfsLookupRouteConte
     switch (lookup_visitor_slot(visitor, 8, context)) {
     case 0x00bd90f0: return read_native_vfs_exists_result_00bd90f0(visitor);
     case 0x00bdb5d0: return read_native_vfs_name_probe_result_00bdb5d0(visitor);
+    case 0x00bdb670: return read_native_vfs_device_result_00bdb670(visitor);
     default: throw std::invalid_argument("Unimplemented current VFS lookup visitor stop slot");
     }
 }
@@ -78,10 +88,8 @@ std::uint8_t read_native_vfs_name_probe_result_00bdb5d0(const void* visitor) noe
     return byte(visitor, 4);
 }
 
-void read_native_vfs_exists_provider_00bd90d0(void* visitor, const void* payload,
-    const void* name, NativeVfsLookupRouteContext& context) {
-    auto* provider = pointer(payload, 8);
-    const auto selected = word(pointer(provider), 0x10);
+std::uint8_t invoke_native_vfs_provider_contains(std::uintptr_t selected,
+    void* provider, const void* name, NativeVfsLookupRouteContext& context) {
     std::uint8_t result;
     switch (selected) {
     case 0x00be5c00:
@@ -92,8 +100,18 @@ void read_native_vfs_exists_provider_00bd90d0(void* visitor, const void* payload
         result = contains_native_msar_file_00bba710(provider, name, context.physical.invalid_parameters); break;
     case 0x00bf3f70:
         result = exists_native_physical_path_00bf3f70(provider, name, context.physical); break;
+    case 0x00bb4b20:
+        result = contains_native_mpak_file_00bb4b20(provider, name, context.physical.invalid_parameters); break;
     default: throw std::invalid_argument("Unimplemented current VFS provider contains slot");
     }
+    return result;
+}
+
+void read_native_vfs_exists_provider_00bd90d0(void* visitor, const void* payload,
+    const void* name, NativeVfsLookupRouteContext& context) {
+    auto* provider = pointer(payload, 8);
+    const auto selected = word(pointer(provider), 0x10);
+    const auto result = invoke_native_vfs_provider_contains(selected, provider, name, context);
     put_byte(visitor, 4, result);
 }
 
@@ -110,6 +128,7 @@ void read_native_vfs_name_probe_provider_00bdbc00(void* visitor, const void* pay
         result = probe_native_file_store_name_00be5c40(provider, owned_name, context.physical.invalid_parameters); break;
     case 0x00bb8640: result = probe_native_mpkg_name_00bb8640(provider, owned_name); break;
     case 0x00bba080: result = probe_native_msar_name_00bba080(provider, owned_name); break;
+    case 0x00bb40c0: result = reject_native_mpak_probe_00bb40c0(owned_name); break;
     case 0x00bf39c0:
         result = replace_native_physical_path_00bf39c0(provider, owned_name, context.physical); break;
     default: throw std::invalid_argument("Unimplemented current VFS provider name probe slot");
