@@ -2,13 +2,14 @@
 #include "bsp/sound_lifetime_access.hpp"
 
 #include "bsp/native_singleton_destruction.hpp"
+#include "bsp/native_game_resource_factory.hpp"
 #include <memory>
 
 namespace bsp::game {
 class GameHostLog;
 class GameObserverRuntime;
 
-// One application-owned raw14h manager and raw10h gameplay-effect owner.
+// One application-owned raw14h manager, raw10h effect owner and raw8h factory.
 // Private publications outlive the menu and all shutdown calls. Admitted
 // registrations use recovered fixed deletion profiles. Sound binds its
 // concrete runtime before registering and keeps it alive through the drain.
@@ -19,6 +20,9 @@ public:
     GameSingletonHost(const GameSingletonHost&) = delete;
     GameSingletonHost& operator=(const GameSingletonHost&) = delete;
 
+    // 008F840B obtains the factory; 008F8414 stores its separate alias.
+    // The owner context and both cells survive the complete raw drain.
+    void publish_game_resource_factory_008f840b();
     void probe_gameplay_effect_memory(const char* label);
     SoundLifetimeAccess sound_lifetime() noexcept;
     void bind_sound_runtime(GameSoundRuntime*) noexcept;
@@ -45,6 +49,11 @@ private:
     GameHostLog& log_;
     void* volatile manager_publication_01090aa0_{nullptr};
     void* volatile effect_publication_00f87664_{nullptr};
+    void* volatile game_resource_factory_publication_00e19b90_{nullptr};
+    // Native owner deletion clears E19B90, leaving this WinMain alias intact.
+    void* volatile game_resource_factory_alias_00f8d31c_{nullptr};
+    NativeGameResourceFactoryContext game_resource_factory_context_{
+        manager_publication_01090aa0_, game_resource_factory_publication_00e19b90_};
     NativeSingletonDeletionBindings deletion_bindings_;
     std::unique_ptr<GameObserverRuntime> observers_;
 };
