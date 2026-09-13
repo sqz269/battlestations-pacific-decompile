@@ -70,6 +70,14 @@ const char* outcome_name(bsp::SceneCommandOutcome outcome) noexcept {
 // stride 1ch), the command mode at +30h, the stage counter at +48h and the
 // three cruise autopilot fields at +243h / +244h / +248h.
 struct GameDirector {
+    // The existing WeaponDirectorState defaults carry the unconditional
+    // 00836724/0083672A/00836730 stores. Project only these three bytes: this
+    // does not invoke or claim the full endpoint/subobject constructor.
+    GameDirectorAvoidance avoidance = [] {
+        const bsp::WeaponDirectorState constructed{};
+        return GameDirectorAvoidance{constructed.torpedo_avoidance,
+            constructed.ship_collision_avoidance, constructed.land_collision_avoidance};
+    }();
     std::uint32_t slot_command[bsp::kDirectorCommandSlotCount]{};
     bsp::SceneCommandTarget slot_target[bsp::kDirectorCommandSlotCount]{};
     bsp::CruiseCommandMode mode{bsp::CruiseCommandMode::None};
@@ -211,7 +219,20 @@ struct ChainState {
     // desired-value setters run their reconstructions instead of recording.
     bsp::ShipAiControlBlock* ai_block{nullptr};
     bsp::ShipAiSetterHost* ai_setters{nullptr};
+    bsp::ShipAiAvoidanceRequest* avoidance_request{nullptr};
+    const bsp::ShipAiCruiseAvoidanceInputs* avoidance_inputs{nullptr};
 };
+
+void publish_cruise_avoidance(ChainState& chain) {
+    if (chain.avoidance_request == nullptr) return;
+    bsp::ShipAiAvoidanceRequestBlock block{*chain.avoidance_request,
+        chain.ai_block->early_out_3f5};
+    bsp::ship_ai_cruise_step_request_009e11d6(block, *chain.avoidance_inputs);
+    *chain.avoidance_request = block.request;
+    chain.ai_block->early_out_3f5 = block.early_out_3f5;
+    chain.avoidance_request = nullptr; // each cruise step publishes once
+    chain.owner.done("CruiseState::publish_avoidance_request", 0x009e12ebu);
+}
 
 // ---------------------------------------------------------------------------
 // bsp::SceneDeferredReferenceHost, one method per call site inside 0046aab0
@@ -667,6 +688,9 @@ public:
         return chain_.owner.params_of(chain_.unit.index);
     }
     void set_desired_steering(float rudder) override {
+        // The request stores 009E12EB..009E12FF precede either steering
+        // setter, after the speed/commanded-speed reads in the compiled arm.
+        publish_cruise_avoidance(chain_);
         // Milestone 2n: 009dffb0, complete in src/ship_ai_states.cpp. It clears
         // the two timers and switches the mode on a change, then stores the
         // argument clamped into [-1,+1] at blk+1D4h.
@@ -680,6 +704,7 @@ public:
         desired_rudder = rudder;
     }
     void set_desired_heading(float heading_radians) override {
+        publish_cruise_avoidance(chain_);
         if (chain_.ai_block != nullptr && chain_.ai_setters != nullptr) {
             bsp::ship_ai_set_desired_heading_009e0040(*chain_.ai_block, heading_radians,
                 *chain_.ai_setters);
@@ -937,6 +962,39 @@ void GameCommandsHost::register_units(std::vector<GameCommandUnit> units) {
     host.navigator_params.assign(host.units.size(), bsp::CruiseSpeedSetting{});
     host.summary.units = host.units.size();
     host.build_registry();
+}
+
+bool GameCommandsHost::director_avoidance(std::size_t unit_index,
+    GameDirectorAvoidance& out) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.directors.size()) return false;
+    out = host.directors[unit_index].avoidance;
+    return true;
+}
+
+bool GameCommandsHost::apply_director_avoidance_message_00835640(
+    std::size_t unit_index, const bsp::DirectorCommandMessage& message) {
+    Impl& host = *impl_;
+    if (unit_index >= host.directors.size() || message.base_kind != 0x5a) return false;
+    GameDirectorAvoidance& flags = host.directors[unit_index].avoidance;
+    // Exactly the three derived switch arms. Other fields belong to the
+    // existing command owner; no dummy WeaponDirectorHost or temporary full
+    // state is used to run unrelated base-message behavior.
+    switch (static_cast<bsp::DirectorCommandSubKind>(message.sub_kind)) {
+    case bsp::DirectorCommandSubKind::TorpedoAvoidance:
+        flags.torpedo = message.value != 0; // 00835653
+        break;
+    case bsp::DirectorCommandSubKind::ShipCollisionAvoidance:
+        flags.ship = message.value != 0;    // 00835668
+        break;
+    case bsp::DirectorCommandSubKind::LandCollisionAvoidance:
+        flags.land = message.value != 0;    // 0083567D
+        break;
+    default:
+        return false;
+    }
+    host.done("WeaponDirector::apply_avoidance_message", 0x00835640u);
+    return true;
 }
 
 namespace {
@@ -1827,9 +1885,33 @@ const char* GameCommandsHost::command_name_of(std::uint32_t command_object) cons
 
 bool GameCommandsHost::cruise_step(std::size_t unit_index, bool player_controlled,
     float body_axis_speed, float reference_speed, bsp::CruiseOrderedValues& out,
-    bsp::ShipAiControlBlock* blk, bsp::ShipAiSetterHost* setters) {
+    bsp::ShipAiControlBlock* blk, bsp::ShipAiSetterHost* setters,
+    bsp::ShipAiAvoidanceRequest* request,
+    const bsp::ShipAiCruiseAvoidanceInputs* avoidance_inputs) {
     Impl& host = *impl_;
+    if ((request == nullptr) != (avoidance_inputs == nullptr) || (request && !blk))
+        return false;
     if (!holds_cruise(unit_index)) return false;
+    bsp::ShipAiCruiseAvoidanceInputs live_inputs{};
+    if (request != nullptr) {
+        live_inputs = *avoidance_inputs;
+        live_inputs.unit_player_controlled = player_controlled;
+        const auto arm = bsp::ship_ai_cruise_step_arm_009e11a5(live_inputs);
+        if (arm != bsp::ShipAiCruiseAvoidanceArm::CruiseRule) {
+            bsp::ShipAiAvoidanceRequestBlock block{*request, blk->early_out_3f5};
+            bsp::ship_ai_cruise_step_request_009e11d6(block, live_inputs);
+            *request = block.request;
+            blk->early_out_3f5 = block.early_out_3f5;
+            if (arm == bsp::ShipAiCruiseAvoidanceArm::HelmHeldByPlayer) {
+                host.done("CruiseState::publish_helm_avoidance_request", 0x009e13b6u);
+                host.record("CruiseState::helm_drive_arm", 0x009e13b4u);
+            } else {
+                host.done("CruiseState::publish_player_avoidance_request", 0x009e11d6u);
+                host.record("CruiseState::player_controlled_arm", 0x009e11e8u);
+            }
+            return false;
+        }
+    }
     if (player_controlled) {
         // 009e11e8..009e1262: with unit+184h set 009e1170 forwards the ring's
         // confirmed pair at unit+998h / unit+994h to 009dffb0 and 009dbf90 and
@@ -1856,7 +1938,8 @@ bool GameCommandsHost::cruise_step(std::size_t unit_index, bool player_controlle
             "docs/UNIT_AUTOPILOT_PAIR.md)");
     }
     ChainState chain{host, host.units[unit_index], host.directors[unit_index], nullptr,
-        nullptr, 0.0f, bsp::SceneCommandTarget{}, 0u, 0u, blk, setters};
+        nullptr, 0.0f, bsp::SceneCommandTarget{}, 0u, 0u, blk, setters,
+        request, request != nullptr ? &live_inputs : nullptr};
     DirectorBinding binding(chain);
     binding.body_speed = body_axis_speed;
     binding.reference = reference_speed;

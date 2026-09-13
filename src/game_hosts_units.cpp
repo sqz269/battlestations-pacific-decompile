@@ -1822,6 +1822,15 @@ std::uint32_t GameUnitsHost::director_current_command_0071be40(std::size_t index
     return impl_->commands.current_command_0071be40(index);
 }
 
+bool GameUnitsHost::director_avoidance(std::size_t index, GameDirectorAvoidance& out) const {
+    return impl_->commands.director_avoidance(index, out);
+}
+
+bool GameUnitsHost::apply_director_avoidance_message_00835640(std::size_t index,
+    const bsp::DirectorCommandMessage& message) {
+    return impl_->commands.apply_director_avoidance_message_00835640(index, message);
+}
+
 std::size_t GameUnitsHost::report_command_event_00984300(std::size_t index,
     std::uint32_t command_object, const char* status) {
     return impl_->commands.report_command_event_00984300(index, command_object, status);
@@ -1900,6 +1909,21 @@ bool GameUnitsHost::run_cruise_state_step_009e1170(std::size_t index,
         bsp::unit_reference_speed_0080fc30(slot.motion.max_speed,
             bsp::kUnitReferenceSpeedUnscaled),
         ordered, &blk, &setters);
+}
+
+bool GameUnitsHost::run_cruise_state_step_009e1170(std::size_t index,
+    bsp::ShipAiControlBlock& blk, bsp::ShipAiSetterHost& setters,
+    bsp::ShipAiAvoidanceRequest& request,
+    const bsp::ShipAiCruiseAvoidanceInputs& avoidance_inputs) {
+    Impl& host = *impl_;
+    if (index >= host.slots.size()) return false;
+    GameUnitSlot& slot = *host.slots[index];
+    bsp::CruiseOrderedValues ordered{};
+    return host.commands.cruise_step(index, host.is_controlled(slot),
+        unit_forward_speed_0092d730(index),
+        bsp::unit_reference_speed_0080fc30(slot.motion.max_speed,
+            bsp::kUnitReferenceSpeedUnscaled),
+        ordered, &blk, &setters, &request, &avoidance_inputs);
 }
 
 // ---------------------------------------------------------------------------
