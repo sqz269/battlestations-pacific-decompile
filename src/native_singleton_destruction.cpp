@@ -13,6 +13,7 @@
 #include "bsp/native_physical_factory.hpp"
 #include "bsp/native_physical_stream_open.hpp"
 #include "bsp/native_render_batch_lifetime.hpp"
+#include "bsp/light_type_bootstrap.hpp"
 #include "bsp/native_filestore_factory.hpp"
 #include "bsp/native_mpak_factory.hpp"
 #include "bsp/native_pak_registry.hpp"
@@ -148,6 +149,13 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
         if (bindings.render_batch_lifetime != nullptr) {
             bindings.render_batch_lifetime->delete_lock_owner_00b1d530(
                 static_cast<NativeRenderBatchLockOwner*>(owner), flags);
+            return;
+        }
+        break;
+    case 0x00cfb6c4:
+        if (bindings.type_id_counter_lifetime != nullptr) {
+            bindings.type_id_counter_lifetime->deleting_destructor_006fad40(
+                static_cast<TypeIdCounterStorage*>(owner), flags);
             return;
         }
         break;
