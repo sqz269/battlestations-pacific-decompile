@@ -1,0 +1,95 @@
+{
+  "packet": "orch2_native_game_resource_factory_process_bb",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "installed_binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "installed_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "address": "008f81f0",
+  "call_site": "008f840b",
+  "alias_store_site": "008f8414",
+  "status": "actual_process_binding_source_strict_win32_and_bounded_60_frame_runtime_passed_final_merged_gate_separate",
+  "source": "src/game_hosts.cpp",
+  "owner_source": "src/game_hosts_singletons.cpp",
+  "header": "include/bsp/game_hosts_singletons.hpp",
+  "doc": "docs/NATIVE_GAME_RESOURCE_FACTORY_PROCESS.md",
+  "original_body_count_added": 0,
+  "native_fragment": {
+    "start": "008f840b",
+    "bytes": 14,
+    "sha256": "8d0a5a397596c5189d479818bdbe30659452d7fae36e71162b6a0e26a6200973",
+    "live_and_installed_match": true
+  },
+  "original_abi": "WinMain stdcall four unused arguments; getter007175D0 no arguments, EAX pointer, RET. Source host/context ABI is new.",
+  "cells": {
+    "manager": "01090aa0",
+    "factory_publication": "00e19b90",
+    "separate_alias": "00f8d31c"
+  },
+  "registration": "Getter registers exact factory+4; stable context is bound before getter; CFD84C dispatches00716520 and only the callee subtracts4.",
+  "cleanup": "Same raw manager/context through normal and fallback drain; E19B90 cleared by registered owner deletion; F8D31C alias bits retained.",
+  "exception_limits": [
+    "Native registration failure retains allocation/publication without guaranteeing a manager slot; no rollback invented.",
+    "Existing game_main closes file log before host destructor; fallback cleanup may appear only on stdout."
+  ],
+  "preserved_peer_integration": "GameObserverRuntime construction, fields, binding and post-drain accounting.",
+  "build": {
+    "status": "passed",
+    "log": "local/native-game-resource-factory-process-bc/development-build.log",
+    "base_head": "a4aa7914fbf1c7113f373fcc27ee7ed479824cf1",
+    "source_overlay": true,
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ]
+  },
+  "final_validation": "Exact commit build and bounded executable runtime receipt under local/native-game-resource-factory-process-bc; not claimed by this development report.",
+  "calls": [
+    {
+      "address": "008f840b",
+      "native": "007175d0",
+      "function": "008f81f0"
+    }
+  ],
+  "production_sha256": {
+    "src/game_hosts.cpp": "4bd96b3cf84309f1da8839eaebabc9bbd953f0571731f22bd27b1ac2d2d68b0a",
+    "src/game_hosts_singletons.cpp": "fceee89bab5f82ded76bdb0d9cf4e1216608a6d91b7e3cc3c8d8414b1d60a01e",
+    "include/bsp/game_hosts_singletons.hpp": "5863b8bd6527441fca9357b2a18f7d826187f80a4232bc39955e5444ee3aadb5"
+  },
+  "incomplete": [
+    "0071b870 Create",
+    "raw resource-manager/cache loading",
+    "parser dependencies"
+  ],
+  "binary_abi_compatible": false,
+  "native_FH3_tested": false,
+  "gameplay_validated": false,
+  "initial_exact_commit_runtime": {
+    "head": "486771757d98edf57d507fe5ff80e991ee6a3332",
+    "status": "passed",
+    "frames_presented": 60,
+    "exit_code": 0,
+    "registered_slots": 6,
+    "nonnull_owner_and_matching_alias": true,
+    "owner_publication_cleared_and_alias_bits_preserved": true,
+    "build_proof": "local/native-game-resource-factory-process-bc/attempt02-build-proof.json",
+    "build_proof_sha256": "68ce453b19b587cab2aaab14f799cebfdfa0cf2c58074e7f6b1699a6d017ed04",
+    "runtime_result": "local/native-game-resource-factory-process-bc/runtime-attempt03/result.json",
+    "runtime_result_sha256": "e7b7063088f1fde8a4dd52b192eea287ea255df464a1d0a3bc69269a023e2df2",
+    "runtime_selection": "Explicit documented private Microsoft XLive2.0.0673.0 with matching msidcrl40 dependency",
+    "later_merged_candidate_requires_new_validation": true
+  },
+  "retained_runtime_failures": [
+    {
+      "attempt": "runtime-attempt01",
+      "exit_code": 3221225477,
+      "stage": "game-local XLive DLL loading",
+      "diagnostic": "debugger-attempt03: xlive RVA319049 writes90909090 to unmappedAA0F5E; invalid-handle debugger exception explicitly handled for this capture only"
+    },
+    {
+      "attempt": "runtime-attempt02",
+      "exit_code": 1,
+      "stage": "system Microsoft XLive without matching private dependency",
+      "diagnostic": "LoadLibrary Win32 error182"
+    }
+  ]
+}

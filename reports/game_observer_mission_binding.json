@@ -1,0 +1,26 @@
+{
+  "packet": "orch6_unit_observer_menu_binding_t",
+  "source": "src/game_hosts_menu.cpp",
+  "doc": "docs/GAME_OBSERVER_MISSION_BINDING.md",
+  "coverage": "Source application composition; new mission borrows existing GameSingletonHost observer runtime before loading.",
+  "native_claim": "No new native routine reconstruction or ABI claim.",
+  "lifecycle": "Mission/frame/units borrow one live runtime. Mission releases HUD/Lua/world borrowers and endpoints before application raw manager drain.",
+  "validation": {
+    "build": "MSVC Win32 Release and2existingCTests passed",
+    "compiled_commit": "9fa6cfb89f582f989f5a29a729b745e657bc0928",
+    "exe_sha256": "639a8a9947a800875a804f960eac40160c00e04ab6f91ea17e701ebefb9b77a9",
+    "process_run": {
+      "units": 77,
+      "callback_then_observed": true,
+      "dispatch_owner_live_through_teardown": true,
+      "teardown_before_manager_drain": true
+    },
+    "process_exit": 0,
+    "runtime_artifact": "local/orch6_combined_9fa6cfb8.json"
+  },
+  "component_evidence": "reports/game_unit_observer_binding.json",
+  "limits": [
+    "Complete native constructors and destructors remain partial.",
+    "Repeated installed-mission load and nonempty gameplay delivery are not claimed."
+  ]
+}

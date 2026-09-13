@@ -1217,8 +1217,8 @@ void GameStartupHost::set_thread_affinity_to_first_processor() {
 }
 
 void GameStartupHost::publish_game_resource_factory() {
-    // BSP_GameResourceFactory_GetSingleton into 00f8d31c. The factory is not reconstructed.
-    log_.unimplemented("StartupHost::publish_game_resource_factory", "008f840b");
+    singletons_->publish_game_resource_factory_008f840b();
+    log_.implemented("StartupHost::publish_game_resource_factory", "008f840b");
 }
 
 void GameStartupHost::application_construct() {

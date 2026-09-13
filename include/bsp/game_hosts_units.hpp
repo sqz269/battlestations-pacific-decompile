@@ -53,18 +53,21 @@
 #include <cstddef>
 #include <cstdint>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "bsp/game_hosts_commands.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/hit_narrowphase.hpp"
+#include "bsp/native_unit_observer_endpoint.hpp"
 #include "bsp/ship_ai_obstacle_tables.hpp"
 
 namespace bsp::game {
 
 class GameHostLog;
 class GameMissionLuaHost;
+class GameObserverRuntime;
 // Milestone 2n, defined in bsp/game_hosts_ship_ai.hpp. Held by pointer so this
 // header stays independent of the ship AI types.
 class GameShipAiHost;
@@ -181,6 +184,12 @@ public:
     ~GameUnitsHost();
     GameUnitsHost(const GameUnitsHost&) = delete;
     GameUnitsHost& operator=(const GameUnitsHost&) = delete;
+
+    // Borrow the application's actual observer manager until all units die.
+    // An unbound source fixture may create units, but cannot expose endpoints.
+    // Binding requires a live dispatch owner and resolved creator projections;
+    // switching a bound host to another runtime is an explicit error.
+    void bind_observer_runtime(GameObserverRuntime&);
 
     // Milestone 2j. The head of 0083b5e0 on the live Lua state: run
     // Scripts\datatables\ShipGlobals.lua and read
@@ -445,6 +454,15 @@ public:
     // Stable identity shared with world_list_node_unit; not a native address,
     // scene ID, Lua handle, or index+1 token. Valid for this host's lifetime.
     const void* unit_identity(std::size_t index) const noexcept;
+    // Borrowed aliases into that same stable slot, never a native whole-unit
+    // cast. Only known creator prefixes with a live bound runtime are exposed.
+    // Tables identify native profiles; they are not executable process vtables.
+    // The alias expires when its unit begins teardown; callers must finish all
+    // endpoint operations before the frame/units owner is destroyed or replaced.
+    std::optional<bsp::NativeUnitObserverAlias> observer_alias(
+        const void* canonical_identity) noexcept;
+    const void* unit_identity_from_observer(
+        const bsp::NativeObserverOwnerStorage* endpoint) const noexcept;
     // One canonical owner: UnitInstanceState holds+5C/+5D; the same slot holds
     // missing+5E/+5F/+60. SceneNodeFlags is a snapshot, never a second owner.
     // Only resolved creator slots have native constructor/init provenance.

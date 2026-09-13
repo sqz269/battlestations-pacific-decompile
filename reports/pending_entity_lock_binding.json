@@ -1,0 +1,26 @@
+{
+  "packet": "orch6_pending_lock_deletion_binding_t",
+  "source": "src/native_singleton_destruction.cpp",
+  "doc": "docs/PENDING_ENTITY_LOCK_BINDING.md",
+  "coverage": "Finite native-profile map source binding for D190C4 to9256D0 with the same process-static F899E8 publication used by the process getter.",
+  "host_steps": [],
+  "actual_profile": "00D190C4",
+  "native_target": "009256D0",
+  "actual_publication": "00F899E8",
+  "validation": {
+    "build": "MSVC Win32 Release and2existingCTests passed",
+    "compiled_commit": "9fa6cfb89f582f989f5a29a729b745e657bc0928",
+    "fixture": "local/pending_lock_binding_probe.cpp",
+    "result": "PASS actual process getter/registration/reuse/finite-map drain",
+    "manifest": "local/pending_lock_binding_proof/manifest.json",
+    "manifest_sha256": "4cca37d0b9f695890735612e39912ce274519e5d65320b293da3b40793e6bcd1",
+    "artifacts": 43,
+    "runtime_scope": "Source composition probe; mission run retained empty queues and does not prove pending-lock gameplay use."
+  },
+  "component_evidence": "reports/native_pending_entity_lock.json",
+  "limits": [
+    "D190C8 is a separate table; no second slot inferred.",
+    "Explicit alternate-publication fixture owners are outside this process-map binding.",
+    "Original FH3, concurrent publication and nonempty mission queue use are not validated."
+  ]
+}
