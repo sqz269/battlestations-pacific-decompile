@@ -1,0 +1,328 @@
+{
+  "packet": "orch6_unit_wreck_tail_w",
+  "base_commit": "3b64f090",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "STRICT READ ONLY formal BSP CLI; no annotations, functions, instruction/body membership, saves or exports changed",
+  "source": "src/native_unit_wreck_tail.cpp",
+  "header": "include/bsp/native_unit_wreck_tail.hpp",
+  "doc": "docs/NATIVE_UNIT_WRECK_TAIL.md",
+  "new_complete_functions": 0,
+  "fragments": [
+    {
+      "address": "00824F39",
+      "parent_function": "00824B60",
+      "native_end_exclusive": "00824FE5",
+      "native_bytes": 172,
+      "name": "native_unit_wreck_effect_release_00824f39",
+      "coverage": "partial_projection: complete normal00824F39..00824FE4 fragment only",
+      "original_abi": "internal block entry ESI actual whole unit from00824B7E; no new stack arguments or return; all normal exits continue00824FE5",
+      "source_abi": "new borrowed C++ view/context; explicit continuation enum00824FE5; not callable as original handler",
+      "remaining_ranges": [
+        "00824B60..00824F38",
+        "00824FE5..008252B0"
+      ],
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00824F70",
+      "native": "004D1100",
+      "function": "00824B60",
+      "contract": "actual no-input manager getter; preceding PUSH captured9EC belongs to following8674C0; getter plainRET"
+    },
+    {
+      "address": "00824F77",
+      "native": "008674C0",
+      "function": "00824B60",
+      "contract": "ECX returned actual manager; pending stack word captured9EC; RET4"
+    },
+    {
+      "address": "00824F80",
+      "native": "00484620",
+      "function": "00824B60",
+      "contract": "ECX actual9EC cell, PUSH0; current owner loaded inside assignment after previous provider; EAX cell; RET4"
+    },
+    {
+      "address": "00824FA0",
+      "native": "004D1100",
+      "function": "00824B60",
+      "contract": "same no-input getter, current actual publication; pending captured9F0 remains on stack"
+    },
+    {
+      "address": "00824FA7",
+      "native": "008674C0",
+      "function": "00824B60",
+      "contract": "ECX returned manager, captured9F0 stack word; RET4"
+    },
+    {
+      "address": "00824FB0",
+      "native": "00484620",
+      "function": "00824B60",
+      "contract": "actual9F0 cell, literal0; current old owner and terminal callback order retained by required provider; RET4"
+    },
+    {
+      "address": "00824FD0",
+      "native": "004D1100",
+      "function": "00824B60",
+      "contract": "same no-input getter, current actual publication; pending captured9F4 remains on stack"
+    },
+    {
+      "address": "00824FD7",
+      "native": "008674C0",
+      "function": "00824B60",
+      "contract": "ECX returned manager, captured9F4 stack word; RET4"
+    },
+    {
+      "address": "00824FE0",
+      "native": "00484620",
+      "function": "00824B60",
+      "contract": "actual9F4 cell, literal0; returns before required824FE5 continuation; RET4"
+    }
+  ],
+  "provider_evidence": [
+    {
+      "address": "008674E0",
+      "native": "008673B0",
+      "function": "008674C0",
+      "contract": "body read; matching actual pointer from captured manager+10/count14 span; null filter selects all; no stack inputs/plainRET"
+    },
+    {
+      "address": "0048462E",
+      "native": "IAT00CE2220:InterlockedDecrement",
+      "function": "00484620",
+      "contract": "actual captured old owner+4; WINAPI consumes one DWORD"
+    },
+    {
+      "address": "0048463E",
+      "native": "owner+vtable00",
+      "function": "00484620",
+      "contract": "current terminal target on captured old owner after decrement yields0; clear current cell only after return"
+    }
+  ],
+  "storage_provenance": {
+    "unit": "same canonical alias and actual9EC/9F0/9F4 pointer lvalues; no semantic presence-bool cast",
+    "producers": [
+      {
+        "function": "00822C20",
+        "site": "008246D0",
+        "field": "9EC",
+        "evidence": "store EAX then retain owner+4"
+      },
+      {
+        "function": "00822C20",
+        "site": "00823FBA",
+        "field": "9F0",
+        "evidence": "replace owning pointer and retain/release sequence"
+      },
+      {
+        "function": "00822C20",
+        "site": "0082406F",
+        "field": "9F4",
+        "evidence": "replace owning pointer and retain/release sequence"
+      }
+    ],
+    "game": "capture actualE188A8 once, actual game+38 checked then reloaded, actual session+60 tested against4 once",
+    "manager": "existing NativeLiveEffectManagerStorage and concrete live_effect_manager_singleton_004d1100 with required actual publication and SingletonLifetimeDomain",
+    "unresolved_providers": "8674C0 and484620 are explicit required address-named call boundaries; no new port or successful production default"
+  },
+  "control_evidence": {
+    "registers": "entire stored handler listing read and filtered; ESI is assigned only fromECX at824B7E and is the fragment input; EBP/previousx87 values are unconsumed by fragment",
+    "fh3": "entry paths have state-1; effect-loop temporary sets state0 at824DF9 and resets-1 at824F02 before final iteration exit; no fragment cleanup introduced",
+    "x87": "full handler contains x87 scale/clamp/inertia/anchor expressions; this bounded fragment has none and does not reconstruct those expressions",
+    "coverage": "full envelope1873 bytes retained, fragment172 copied/verified; two3-byte free continuations absent from stored listing remain recorded outside fragment"
+  },
+  "corrections": [
+    {
+      "was": "old doc described824B60..824FE4 only as effect/sound teardown outline",
+      "is": "824B60..824F38 is effect creation plus two allocation/copy/reference loops; this packet recovers only mode4 release824F39..824FE4",
+      "evidence": "full live stored listing;calls824DE4 to8687C0 andgrowth/free loops824C73..824CDE,824E0A..824EBC"
+    },
+    {
+      "was": "pseudocode returned after free at824CD6/824EB4",
+      "is": "exact bytes824CDB/824EB9 are ADD ESP,4 and continue pointer publication; earlier range remains unimplemented",
+      "evidence": "PE/live bytes and gaps in stored instruction listing"
+    },
+    {
+      "was": "releasing a captured handle could be modeled as clearing that captured value",
+      "is": "8674C0 consumes captured pointer, then484620 rereads actual current cell after callbacks; later cells sampled in order",
+      "evidence": "three repeated capture/getter/call/LEAcell/PUSH0 sequences and mutation-sensitive native/source fixture"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00C9184D",
+      "length": 10,
+      "role": "consumed original handler thunk, liveproto has no stored function; retained exact bytes, not reconstructed"
+    }
+  ],
+  "verification": {
+    "build_tested": true,
+    "fixture_tested": true,
+    "abi_compatible": false,
+    "native_eh_validated": false,
+    "game_validated": false,
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "log": "local/wreck_build.log",
+      "ctest": "2/2 passed: reconstructed_math and native_math_differential"
+    },
+    "native_seeds": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "verified": 8,
+      "log": "local/wreck_verify_seeds.log"
+    },
+    "call_verifier": {
+      "command": "python tools/verify_report_calls.py reports/native_unit_wreck_tail.json",
+      "direct_rows": 10,
+      "indirect_rows": 2,
+      "failures": 0,
+      "log": "local/wreck_report_calls.log"
+    },
+    "fixture": {
+      "normal_native_source_pairs": 8,
+      "source_only_failure_cases": 1,
+      "input_bytes": 22752,
+      "record_bytes": 2080,
+      "input_sha256": "eaf8246e10ba32ce45023d59cb3f8c93e5c624bfc746444ed7ea5448ca57c32e",
+      "record_sha256": "ca2cb07d8ee678d81e643a91693330f4832826163b5f7b50c08db0fc38070b1b",
+      "relocations": [
+        {
+          "operand": "00824F3A",
+          "original_operand": "00E188A8",
+          "relocated_operand": "0079FD88"
+        },
+        {
+          "operand": "00824F71",
+          "original_operand": "FFCAC18B",
+          "relocated_operand": "FF531FC4"
+        },
+        {
+          "operand": "00824F78",
+          "original_operand": "00042544",
+          "relocated_operand": "FF53212D"
+        },
+        {
+          "operand": "00824F81",
+          "original_operand": "FFC5F69B",
+          "relocated_operand": "FF531BD4"
+        },
+        {
+          "operand": "00824FA1",
+          "original_operand": "FFCAC15B",
+          "relocated_operand": "FF531F94"
+        },
+        {
+          "operand": "00824FA8",
+          "original_operand": "00042514",
+          "relocated_operand": "FF5320FD"
+        },
+        {
+          "operand": "00824FB1",
+          "original_operand": "FFC5F66B",
+          "relocated_operand": "FF531BA4"
+        },
+        {
+          "operand": "00824FD1",
+          "original_operand": "FFCAC12B",
+          "relocated_operand": "FF531F64"
+        },
+        {
+          "operand": "00824FD8",
+          "original_operand": "000424E4",
+          "relocated_operand": "FF5320CD"
+        },
+        {
+          "operand": "00824FE1",
+          "original_operand": "FFC5F63B",
+          "relocated_operand": "FF531B74"
+        }
+      ],
+      "result": "PASS native/source fragment pairs=8 record_bytes=2080 relocations=10 source_failure_cases=1 continuation=00824FE5"
+    },
+    "proof_manifest": "local/wreck_proof/manifest.json",
+    "proof_manifest_sha256": "ffff9b8faeb8fc8872de83ae3bc193f91b2fef6c4c4e9bd6320c26b35f438930",
+    "retained_files": 107,
+    "retained_libraries": 19,
+    "retained_toolchain": 14
+  },
+  "limitations": [
+    "Only172-byte fragment, not complete1873-byte wreck handler. Required next native boundary824FE5 is explicit.",
+    "The two release providers remain unresolved production contracts. Fixture captures/mutates fields at these external calls and does not prove their reference-count internals.",
+    "Native copied-byte proof excludes original handler FH3 setup/transport, prior effect construction and subsequent sink/epilogue execution.",
+    "No installed game runtime route, semantic/native cast, synthetic production vtable, shadow owner, sink timer or STL/CRT port added."
+  ],
+  "native_evidence": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00824F39",
+        "length": 172,
+        "sha256": "9f6d19e9a4a135b544a02a7920edfba1684f1722dcf0c8ebf67ecd6fe77eb496",
+        "file": "local/wreck_fragment.bin",
+        "live_file": "local/wreck_fragment.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00824B60",
+        "length": 1873,
+        "sha256": "4e3a73084647b62ce89a9fd9c0995ab4746d6edb13acb20239d6a44d5e203608",
+        "file": "local/wreck_full.bin",
+        "live_file": "local/wreck_full.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00C9184D",
+        "length": 10,
+        "sha256": "1f90832bbeef6c3fa50b5041e9ea5058eceb6a33fbc26b80a6f1780273fed5b8",
+        "file": "local/wreck_eh_handler.bin",
+        "live_file": "local/wreck_eh_handler.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00DC293C",
+        "length": 36,
+        "sha256": "b0182540cfc7f72c18bae55445240a2972fdc5155f363551d20292d39e5110d0",
+        "file": "local/wreck_eh_funcinfo.bin",
+        "live_file": "local/wreck_eh_funcinfo.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00DC2924",
+        "length": 24,
+        "sha256": "e01600279d90b0bfa7cabd174fee0ff9483b9a4c0a4b27f186d34c13519f4a3f",
+        "file": "local/wreck_eh_unwindmap.bin",
+        "live_file": "local/wreck_eh_unwindmap.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00C91800",
+        "length": 77,
+        "sha256": "4c758b30caf9ab3a85ecade488b738deb93435732a7ad629d4c015a65a862c94",
+        "file": "local/wreck_eh_cleanup.bin",
+        "live_file": "local/wreck_eh_cleanup.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00824CDB",
+        "length": 3,
+        "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d",
+        "file": "local/wreck_free_continue0.bin",
+        "live_file": "local/wreck_free_continue0.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00824EB9",
+        "length": 3,
+        "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d",
+        "file": "local/wreck_free_continue1.bin",
+        "live_file": "local/wreck_free_continue1.bytes",
+        "live_disk_equal": true
+      }
+    ]
+  }
+}

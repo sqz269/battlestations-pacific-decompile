@@ -1,0 +1,1183 @@
+{
+  "packet": "orch6_native_unit_killed_base_w",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "STRICTLY READ ONLY formal verified BSP CLI, no names/comments/save/body mutations; root owns metadata",
+  "source": "src/native_unit_killed_base.cpp",
+  "header": "include/bsp/native_unit_killed_base.hpp",
+  "documentation": "docs/NATIVE_UNIT_KILLED_BASE.md",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "native_spans": [
+    {
+      "address": "00928c80",
+      "length": 709,
+      "end_exclusive": "00928f45",
+      "hex": "64a1000000006aff68d070ca00506489250000000083ec44568bf18b867801000085c00f843002000057e8c188b9ff8b780485ffc7442410fc37ce00897c2414740b57ff151822ce00834718018d442438508bcec744245800000000e85feeffff6808adcf008d4c240cc644245801e87c5bafff6a008d4c240c518d4c2440c644245c02e827e823008b4c240c85c9c64424540174178b4424086a0183c0015051e89a0fafff8bc8e8e3872a00685494d1008d4c240ce8355bafff8d542408528d4c243cc644245803e832e823008b4c240c85c9c64424540174178b4424086a0183c0015051e8550fafff8bc8e89e872a0053685494d1008d44242c508d4c2444e87aea230080bec800000000b304885c245875078bcee814c0aefff30f108600010000d986fc000000f30f11442420d95c241cf30f1086040100006888b4ce008d4c2410f30f11442428e8a05aafffd944241c518d4c2410d91c24518d4c2430c644246005e815e623008b4c241085c9885c245874178b44240c6a0183c0015051e8b90eafff8bc8e802872a0068f845d0008d4c2410e8545aafffd9442420518d542410d91c24528d4c2430c644246006e8c9e523008b4c241085c9885c245874178b44240c6a0183c0015051e86d0eafff8bc8e8b6862a006818d7cf008d4c2410e8085aafffd9442424518d442410d91c24508d4c2430c644246007e87de523008b4c241085c9885c24585b74178b4424086a0183c0015051e8200eafff8bc8e869862a008d4c2424c644245401e84be823008d4c2438c644245400e83de8230083c8ff85ff89442454740a01471857ff151022ce005f83be54010000008b8ec40000008b0c8d80cde00074118b865801000085c0750cb8c89af800eb05b87038ce000fb79674010000515052683894d100e897c5afff83c410837e3000740c8b068b90340100008bceffd28bcee81ba1ffff8b4c24485e64890d0000000083c450c3",
+      "sha256": "950ffccc0a71c6f1232b23c62adb23bdad62203f818acd5288bfe40c065d4b46",
+      "live_disk_equal": true,
+      "pe_loader_zero_fill": false
+    },
+    {
+      "address": "004c1570",
+      "length": 189,
+      "end_exclusive": "004c162d",
+      "hex": "64a1000000006aff68934fc6005064892500000000a1fc78f80083ec0c85c00f858900000056e8b53df5ff8b701085f6c7442408fc37ce008974240c740b56ff151822ce0083461801c744241800000000833dfc78f80000753f6a08e84a52730083c4048944240485c0c64424180174098bc8e868bbffffeb0233c0c644241800a3fc78f800e8553df5ff8b0dfc78f800518bc8e827f6700085f6740b834618ff56ff151022ce00a1fc78f8005e8b4c240c64890d0000000083c418c3",
+      "sha256": "4ef35feca69df4c9a8168564d10f23e669ee24528406dc9c7e29244d100c524d",
+      "live_disk_equal": true,
+      "pe_loader_zero_fill": false
+    },
+    {
+      "address": "004bd150",
+      "length": 69,
+      "end_exclusive": "004bd195",
+      "hex": "6aff68284dc60064a100000000506489250000000051568bf189742404c744241000000000c7064875ce00e8e04671008b4c24088946048bc65e64890d0000000083c410c3",
+      "sha256": "487f77cd3925b437117c6f0d249ee9bb83a1c32463668b95cb2a34602a78d1ea",
+      "live_disk_equal": true,
+      "pe_loader_zero_fill": false
+    },
+    {
+      "address": "00927b40",
+      "length": 162,
+      "end_exclusive": "00927be2",
+      "hex": "6aff68f96eca0064a100000000506489250000000083ec2c568bf1c7442404000000008b0da888e1008d44241c81c10c1a000050e807fe2300689474ce008d4c240c518bc8c744244001000000e86efc230081c678010000568b742444568bc8c644244002e8560524008d4c2408c744240401000000c644243801e840fb23008d4c241cc644243800e832fb23008b4c24308bc65e64890d0000000083c438c20400",
+      "sha256": "d4159c61c2e00e51c124822cfe423e116e66e326cb972f1677f9be959082ff31",
+      "live_disk_equal": true,
+      "pe_loader_zero_fill": false
+    },
+    {
+      "address": "00b67530",
+      "length": 80,
+      "end_exclusive": "00b67580",
+      "hex": "568bf18b068b4804ba02000000e8aefdefff8b4424088b088b400485c07505b82cff0801518b0e8b49048bd0e8af04f0ff8b068b54240c8b4804e87106f0ff8b0e8b56088b4904e89408f0ff5ec20800",
+      "sha256": "2bad5f77474880bcffa0f70fac669462a842a0d7d493bf4d42012da50bcb340e",
+      "live_disk_equal": true,
+      "pe_loader_zero_fill": false
+    },
+    {
+      "address": "00b67580",
+      "length": 80,
+      "end_exclusive": "00b675d0",
+      "hex": "568bf18b068b4804ba02000000e85efdefff8b4424088b088b400485c07505b82cff0801518b0e8b49048bd0e85f04f0ff8b068b48046a0033d2e85107f0ff8b0e8b56088b4904e84408f0ff5ec20400",
+      "sha256": "85ad4a13a1660b0d31161c837b1c0b37e6a91304916bc714ee44cf818e4602bb",
+      "live_disk_equal": true,
+      "pe_loader_zero_fill": false
+    },
+    {
+      "address": "00b67400",
+      "length": 86,
+      "end_exclusive": "00b67456",
+      "hex": "568bf18b068b4804ba02000000e8defeefff8b4424088b088b400485c07505b82cff0801518b0e8b49048bd0e8df05f0ffd944240c8b168b4a0483ec08dd1c24e88b05f0ff8b068b56088b4804e8be09f0ff5ec20800",
+      "sha256": "9b8ba44c3a4980773cc4f83eee88e281d8cfcd232cf760b6cd85c9a2e7dbec86",
+      "live_disk_equal": true,
+      "pe_loader_zero_fill": false
+    },
+    {
+      "address": "00b67800",
+      "length": 219,
+      "end_exclusive": "00b678db",
+      "hex": "51568bf1837e04038b068b480457c744240800000000ba01000000742ee8cefaefff8b5424148bc28d7801eb038d49008a0883c00184c975f78b0e8b49042bc750e8ca01f0ff8b5608eb30e8a0faefff8b5424148bc28d78018da424000000008a0883c00184c975f78b0e8b49042bc750e89a01f0ffbaeed8ffff8b068b4804e89b03f0ff8b0e8b4904e841fbefff8b168bf88b4424108910c7400402000000897808c7400c00000000c64010018b4a0c03cf3b8ac40400007c098d710189b2c40400008d0c498d4cca148b51145f890491834114015e59c20800",
+      "sha256": "44fdc629195c04c5858ad007742cf4029427581463d96d8dc250ef0878fffd56",
+      "live_disk_equal": true,
+      "pe_loader_zero_fill": false
+    },
+    {
+      "address": "00b67700",
+      "length": 32,
+      "end_exclusive": "00b67720",
+      "hex": "568bf1837e040074158b46088b0e6a015056e8c9f6ffffc74604000000005ec3",
+      "sha256": "dd241c309928580a80eb641bc498914c6af6c30c59f9d7a7ff8556b8349e43a6",
+      "live_disk_equal": true,
+      "pe_loader_zero_fill": false
+    },
+    {
+      "address": "00414db0",
+      "length": 89,
+      "end_exclusive": "00414e09",
+      "hex": "83ec40568bf180bec80000000075458b4e3c85c97405e8e5ffffff8b463c85c0741505cc000000508d442408508d4e74e83bebffffeb038d4674508d8ecc000000e8fae6ffffc686c800000001c6860c010000005e83c440c3",
+      "sha256": "ca7360fd4d5ae3ae386c44374188b3b807eb8a1bb039f508d47f0da2116ab175",
+      "live_disk_equal": true,
+      "pe_loader_zero_fill": false
+    },
+    {
+      "address": "0041e870",
+      "length": 83,
+      "end_exclusive": "0041e8c3",
+      "hex": "56578b7c240c8bf18bc7c70600000000c74604000000008d50018d9b000000008a0883c00184c975f72bc26a01508bcee89bf4ffff8b460485c074108b0e83c101515750e8c78d7d0083c40c5f8bc65ec20400",
+      "sha256": "f32abf313aaccbee4a0686891e75d082fd051777ac277f8f6d68ff90750826c7",
+      "live_disk_equal": true,
+      "pe_loader_zero_fill": false
+    },
+    {
+      "address": "0041dd20",
+      "length": 29,
+      "end_exclusive": "0041dd3d",
+      "hex": "8b510485d274158b016a0183c0015052e88bbfffff8bc8e8d4377b00c3",
+      "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+      "live_disk_equal": true,
+      "pe_loader_zero_fill": false
+    },
+    {
+      "address": "00411ee0",
+      "length": 25,
+      "end_exclusive": "00411ef9",
+      "hex": "8b410485c0c701fc37ce00740b834018ff50ff151022ce00c3",
+      "sha256": "bc62d20fb11c300342533b8e94fc0319bb550dcd5bb5ecd734f2e03c92cc3382",
+      "live_disk_equal": true,
+      "pe_loader_zero_fill": false
+    },
+    {
+      "address": "004254b0",
+      "length": 1,
+      "end_exclusive": "004254b1",
+      "hex": "c3",
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "live_disk_equal": true,
+      "pe_loader_zero_fill": false
+    },
+    {
+      "address": "00923050",
+      "length": 1,
+      "end_exclusive": "00923051",
+      "hex": "c3",
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "live_disk_equal": true,
+      "pe_loader_zero_fill": false
+    },
+    {
+      "address": "00ca7090",
+      "length": 74,
+      "end_exclusive": "00ca70da",
+      "hex": "8d4db8e948ae76ff8d4de0e96006ecff8d4db0e9786c77ff8d4db0e9706c77ff8d4dcce94806ecff8d4db0e9606c77ff8d4db0e9586c77ff8d4db0e9506c77ffb8e4a4dd00e969faf4ff",
+      "sha256": "6e86784f78600323c9b5fa98af7441b406ea2107367b690f009bfe47e9a42cda",
+      "live_disk_equal": true,
+      "pe_loader_zero_fill": false
+    },
+    {
+      "address": "00dda4e4",
+      "length": 100,
+      "end_exclusive": "00dda548",
+      "hex": "220593190800000008a5dd00000000000000000000000000000000000000000001000000ffffffff9070ca00000000009870ca0001000000a070ca0001000000a870ca0001000000b070ca0004000000b870ca0004000000c070ca0004000000c870ca00",
+      "sha256": "51125c525153000c2f72adbdfba3affb731b09f478cbc39c2ba9fa648c44e33a",
+      "live_disk_equal": true,
+      "pe_loader_zero_fill": false
+    },
+    {
+      "address": "00cfad08",
+      "length": 4,
+      "end_exclusive": "00cfad0c",
+      "hex": "50747200",
+      "sha256": "bfc83f550634e6dcf9d4f88a8fb175152914a31c9fb20b00390eef8a71c1d0a4",
+      "live_disk_equal": true,
+      "pe_loader_zero_fill": false
+    },
+    {
+      "address": "00d19454",
+      "length": 13,
+      "end_exclusive": "00d19461",
+      "hex": "4c617374506f736974696f6e00",
+      "sha256": "8716f7bc9cb5bbae802d8cd586ffd2fd81cbd60ce73b5bf94612501aa08f4f7a",
+      "live_disk_equal": true,
+      "pe_loader_zero_fill": false
+    },
+    {
+      "address": "00ceb488",
+      "length": 2,
+      "end_exclusive": "00ceb48a",
+      "hex": "7800",
+      "sha256": "14f825b2bbc32dd8d196367fa8776873069c12a8954d8da7513aa7704ddd09eb",
+      "live_disk_equal": true,
+      "pe_loader_zero_fill": false
+    },
+    {
+      "address": "00d045f8",
+      "length": 2,
+      "end_exclusive": "00d045fa",
+      "hex": "7900",
+      "sha256": "6a75da5da0cd28492372c3dde802e4bbe80564f01926cc1af00066623653770c",
+      "live_disk_equal": true,
+      "pe_loader_zero_fill": false
+    },
+    {
+      "address": "00cfd718",
+      "length": 2,
+      "end_exclusive": "00cfd71a",
+      "hex": "7a00",
+      "sha256": "c03ad57f5b1b1bddf59ddb5c973b459f432291edad374fe9d051c59d102d8742",
+      "live_disk_equal": true,
+      "pe_loader_zero_fill": false
+    },
+    {
+      "address": "00ce3870",
+      "length": 12,
+      "end_exclusive": "00ce387c",
+      "hex": "3c6e756c6c206e616d653e00",
+      "sha256": "ef6301b36b4fbfcd505980057a2edac06faa8523d59483627e9cb8f5520f42d6",
+      "live_disk_equal": true,
+      "pe_loader_zero_fill": false
+    },
+    {
+      "address": "00f89ac8",
+      "length": 1,
+      "end_exclusive": "00f89ac9",
+      "hex": "00",
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "live_disk_equal": true,
+      "pe_loader_zero_fill": true
+    },
+    {
+      "address": "00d19438",
+      "length": 28,
+      "end_exclusive": "00d19454",
+      "hex": "456e74697479202575206b696c6c65643a2025732028257329000000",
+      "sha256": "9c9e2bd6f2346e22bff53082d5e7636dd9ee698d939892b401d86d80a01a5a5a",
+      "live_disk_equal": true,
+      "pe_loader_zero_fill": false
+    }
+  ],
+  "routines": [
+    {
+      "address": "00928c80",
+      "end_inclusive": "00928f44",
+      "length": 709,
+      "source_symbol": "killed_native_unit_base_00928c80",
+      "original_abi": "ECX canonical unit, no stack arguments, callee-saved ESI/EDI/EBX, RET at928F44; original FH3 ABI external",
+      "coverage": "complete_normal_actual_borrowed_owner_source_with_required_wrapper_and_virtual_contracts",
+      "unread_normal_ranges": [],
+      "excluded": [
+        "native FH3/SEH, hardware faults, stack aliases, FPU status/control identity",
+        "complete external lock/self/setter wrapper application bindings",
+        "gameplay",
+        "Lua library error/longjmp execution and unrestricted wrapper error branches"
+      ],
+      "coverage_ranges": [
+        {
+          "start": "00928c80",
+          "end_inclusive": "00928ca8",
+          "meaning": "native frame setup and actual key-length gate"
+        },
+        {
+          "start": "00928ca9",
+          "end_inclusive": "00928ce0",
+          "meaning": "capture/enter lock and construct actual self"
+        },
+        {
+          "start": "00928ce1",
+          "end_inclusive": "00928d71",
+          "meaning": "Ptr and new LastPosition, scratch key returns"
+        },
+        {
+          "start": "00928d72",
+          "end_inclusive": "00928dcb",
+          "meaning": "get actual LastPosition, dirty-pose refresh, y/x/z capture, x-name construction"
+        },
+        {
+          "start": "00928dd0",
+          "end_inclusive": "00928ea6",
+          "meaning": "three captured number writes and each pooled key return"
+        },
+        {
+          "start": "00928ea7",
+          "end_inclusive": "00928ed8",
+          "meaning": "LastPosition then self destruction, captured lock release"
+        },
+        {
+          "start": "00928ed9",
+          "end_inclusive": "00928f1b",
+          "meaning": "current diagnostic argument loads and distinct inert4254B0"
+        },
+        {
+          "start": "00928f1c",
+          "end_inclusive": "00928f44",
+          "meaning": "current+30 gate/profile134, distinct inert923050, native frame restore"
+        }
+      ]
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00928caa",
+      "native": "004c1570",
+      "function": "00928c80",
+      "role": "required actual F878FC getter then capture holder+4",
+      "callee_abi": "no args, EAX owner, RET",
+      "evidence": "complete native listing and callee-before-contract reads retained under local/killed_callee_*"
+    },
+    {
+      "address": "00928cdc",
+      "native": "00927b40",
+      "function": "00928c80",
+      "role": "required current mission owner/current unit key self-object construction",
+      "callee_abi": "ECXunit, output stack, EAXoutput, RET4 at927BDF",
+      "evidence": "complete native listing and callee-before-contract reads retained under local/killed_callee_*"
+    },
+    {
+      "address": "00928cef",
+      "native": "0041e870",
+      "function": "00928c80",
+      "role": "canonical NativeString constructor on same8h scratch",
+      "callee_abi": "ECXkey/text stack, RET4 at41E8C0",
+      "evidence": "complete native listing and callee-before-contract reads retained under local/killed_callee_*"
+    },
+    {
+      "address": "00928d04",
+      "native": "00b67530",
+      "function": "00928c80",
+      "role": "required actual stack-object lightuserdata setter",
+      "callee_abi": "ECXobject/key/value0 stack, RET8 atB6757D",
+      "evidence": "complete native listing and callee-before-contract reads retained under local/killed_callee_*"
+    },
+    {
+      "address": "00928d21",
+      "native": "00419cc0",
+      "function": "00928c80",
+      "role": "canonical raw-pool getter; no consumption of pending return arguments",
+      "callee_abi": "no args, EAXpool, RET",
+      "evidence": "complete native listing and callee-before-contract reads retained under local/killed_callee_*"
+    },
+    {
+      "address": "00928d28",
+      "native": "00bd1510",
+      "function": "00928c80",
+      "role": "canonical raw-pool return with captured pointer/length+1/literal1",
+      "callee_abi": "ECXpool, block/size/1 stack, RET0C",
+      "evidence": "complete native listing and callee-before-contract reads retained under local/killed_callee_*"
+    },
+    {
+      "address": "00928d36",
+      "native": "0041e870",
+      "function": "00928c80",
+      "role": "canonical NativeString constructor on same8h scratch",
+      "callee_abi": "ECXkey/text stack, RET4 at41E8C0",
+      "evidence": "complete native listing and callee-before-contract reads retained under local/killed_callee_*"
+    },
+    {
+      "address": "00928d49",
+      "native": "00b67580",
+      "function": "00928c80",
+      "role": "required actual stack-object newtable setter",
+      "callee_abi": "ECXobject/key stack, RET4 atB675CD",
+      "evidence": "complete native listing and callee-before-contract reads retained under local/killed_callee_*"
+    },
+    {
+      "address": "00928d66",
+      "native": "00419cc0",
+      "function": "00928c80",
+      "role": "canonical raw-pool getter; no consumption of pending return arguments",
+      "callee_abi": "no args, EAXpool, RET",
+      "evidence": "complete native listing and callee-before-contract reads retained under local/killed_callee_*"
+    },
+    {
+      "address": "00928d6d",
+      "native": "00bd1510",
+      "function": "00928c80",
+      "role": "canonical raw-pool return with captured pointer/length+1/literal1",
+      "callee_abi": "ECXpool, block/size/1 stack, RET0C",
+      "evidence": "complete native listing and callee-before-contract reads retained under local/killed_callee_*"
+    },
+    {
+      "address": "00928d81",
+      "native": "00b67800",
+      "function": "00928c80",
+      "role": "canonical actual tracked Lua lookup",
+      "callee_abi": "ECXtable/output/name stack, EAXoutput, RET8",
+      "evidence": "complete native listing and callee-before-contract reads retained under local/killed_callee_*"
+    },
+    {
+      "address": "00928d97",
+      "native": "00414db0",
+      "function": "00928c80",
+      "role": "canonical current borrowed pose refresh",
+      "callee_abi": "ECXunit no args, RET at414E08",
+      "evidence": "complete native listing and callee-before-contract reads retained under local/killed_callee_*"
+    },
+    {
+      "address": "00928dcb",
+      "native": "0041e870",
+      "function": "00928c80",
+      "role": "canonical NativeString constructor on same8h scratch",
+      "callee_abi": "ECXkey/text stack, RET4 at41E8C0",
+      "evidence": "complete native listing and callee-before-contract reads retained under local/killed_callee_*"
+    },
+    {
+      "address": "00928de6",
+      "native": "00b67400",
+      "function": "00928c80",
+      "role": "required actual stack-object number setter",
+      "callee_abi": "ECXobject/key/float32 stack, RET8 atB67453; library conversion to double",
+      "evidence": "complete native listing and callee-before-contract reads retained under local/killed_callee_*"
+    },
+    {
+      "address": "00928e02",
+      "native": "00419cc0",
+      "function": "00928c80",
+      "role": "canonical raw-pool getter; no consumption of pending return arguments",
+      "callee_abi": "no args, EAXpool, RET",
+      "evidence": "complete native listing and callee-before-contract reads retained under local/killed_callee_*"
+    },
+    {
+      "address": "00928e09",
+      "native": "00bd1510",
+      "function": "00928c80",
+      "role": "canonical raw-pool return with captured pointer/length+1/literal1",
+      "callee_abi": "ECXpool, block/size/1 stack, RET0C",
+      "evidence": "complete native listing and callee-before-contract reads retained under local/killed_callee_*"
+    },
+    {
+      "address": "00928e17",
+      "native": "0041e870",
+      "function": "00928c80",
+      "role": "canonical NativeString constructor on same8h scratch",
+      "callee_abi": "ECXkey/text stack, RET4 at41E8C0",
+      "evidence": "complete native listing and callee-before-contract reads retained under local/killed_callee_*"
+    },
+    {
+      "address": "00928e32",
+      "native": "00b67400",
+      "function": "00928c80",
+      "role": "required actual stack-object number setter",
+      "callee_abi": "ECXobject/key/float32 stack, RET8 atB67453; library conversion to double",
+      "evidence": "complete native listing and callee-before-contract reads retained under local/killed_callee_*"
+    },
+    {
+      "address": "00928e4e",
+      "native": "00419cc0",
+      "function": "00928c80",
+      "role": "canonical raw-pool getter; no consumption of pending return arguments",
+      "callee_abi": "no args, EAXpool, RET",
+      "evidence": "complete native listing and callee-before-contract reads retained under local/killed_callee_*"
+    },
+    {
+      "address": "00928e55",
+      "native": "00bd1510",
+      "function": "00928c80",
+      "role": "canonical raw-pool return with captured pointer/length+1/literal1",
+      "callee_abi": "ECXpool, block/size/1 stack, RET0C",
+      "evidence": "complete native listing and callee-before-contract reads retained under local/killed_callee_*"
+    },
+    {
+      "address": "00928e63",
+      "native": "0041e870",
+      "function": "00928c80",
+      "role": "canonical NativeString constructor on same8h scratch",
+      "callee_abi": "ECXkey/text stack, RET4 at41E8C0",
+      "evidence": "complete native listing and callee-before-contract reads retained under local/killed_callee_*"
+    },
+    {
+      "address": "00928e7e",
+      "native": "00b67400",
+      "function": "00928c80",
+      "role": "required actual stack-object number setter",
+      "callee_abi": "ECXobject/key/float32 stack, RET8 atB67453; library conversion to double",
+      "evidence": "complete native listing and callee-before-contract reads retained under local/killed_callee_*"
+    },
+    {
+      "address": "00928e9b",
+      "native": "00419cc0",
+      "function": "00928c80",
+      "role": "canonical raw-pool getter; no consumption of pending return arguments",
+      "callee_abi": "no args, EAXpool, RET",
+      "evidence": "complete native listing and callee-before-contract reads retained under local/killed_callee_*"
+    },
+    {
+      "address": "00928ea2",
+      "native": "00bd1510",
+      "function": "00928c80",
+      "role": "canonical raw-pool return with captured pointer/length+1/literal1",
+      "callee_abi": "ECXpool, block/size/1 stack, RET0C",
+      "evidence": "complete native listing and callee-before-contract reads retained under local/killed_callee_*"
+    },
+    {
+      "address": "00928eb0",
+      "native": "00b67700",
+      "function": "00928c80",
+      "role": "canonical actual tracked Lua object destruction",
+      "callee_abi": "ECXobject, no args, RET",
+      "evidence": "complete native listing and callee-before-contract reads retained under local/killed_callee_*"
+    },
+    {
+      "address": "00928ebe",
+      "native": "00b67700",
+      "function": "00928c80",
+      "role": "canonical actual tracked Lua object destruction",
+      "callee_abi": "ECXobject, no args, RET",
+      "evidence": "complete native listing and callee-before-contract reads retained under local/killed_callee_*"
+    },
+    {
+      "address": "00928f14",
+      "native": "004254b0",
+      "function": "00928c80",
+      "role": "distinct verified one-byte RET, argument evaluations retained",
+      "callee_abi": "cdecl format/id/name/type; ADD ESP10 at928F19",
+      "evidence": "complete native listing and callee-before-contract reads retained under local/killed_callee_*"
+    },
+    {
+      "address": "00928f30",
+      "native": "00923050",
+      "function": "00928c80",
+      "role": "distinct verified one-byte RET, no invented behavior",
+      "callee_abi": "ECXunit no args, RET",
+      "evidence": "complete native listing and callee-before-contract reads retained under local/killed_callee_*"
+    },
+    {
+      "address": "00928cc3",
+      "native": "IAT00CE2218",
+      "function": "00928c80",
+      "role": "actual EnterCriticalSection/captured pointer, stdcallRET4"
+    },
+    {
+      "address": "00928ed2",
+      "native": "IAT00CE2210",
+      "function": "00928c80",
+      "role": "actual LeaveCriticalSection/same captured pointer, stdcallRET4"
+    },
+    {
+      "address": "00928f2c",
+      "native": "00928c80+vtable134",
+      "function": "00928c80",
+      "role": "required current profile target, same canonical ECXunit/no arguments"
+    },
+    {
+      "address": "00ca7093",
+      "native": "00411ee0",
+      "function": "00ca7090",
+      "kind": "tail_jump",
+      "role": "captured lock cleanup; complete8-byte LEA/JMP"
+    },
+    {
+      "address": "00ca709b",
+      "native": "00b67700",
+      "function": "00ca7098",
+      "kind": "tail_jump",
+      "role": "self cleanup; complete8-byte LEA/JMP"
+    },
+    {
+      "address": "00ca70a3",
+      "native": "0041dd20",
+      "function": "00ca70a0",
+      "kind": "tail_jump",
+      "role": "Ptr string cleanup; complete8-byte LEA/JMP"
+    },
+    {
+      "address": "00ca70ab",
+      "native": "0041dd20",
+      "function": "00ca70a8",
+      "kind": "tail_jump",
+      "role": "LastPosition string cleanup; complete8-byte LEA/JMP"
+    },
+    {
+      "address": "00ca70b3",
+      "native": "00b67700",
+      "function": "00ca70b0",
+      "kind": "tail_jump",
+      "role": "LastPosition object cleanup; complete8-byte LEA/JMP"
+    },
+    {
+      "address": "00ca70bb",
+      "native": "0041dd20",
+      "function": "00ca70b8",
+      "kind": "tail_jump",
+      "role": "x string cleanup; complete8-byte LEA/JMP"
+    },
+    {
+      "address": "00ca70c3",
+      "native": "0041dd20",
+      "function": "00ca70c0",
+      "kind": "tail_jump",
+      "role": "y string cleanup; complete8-byte LEA/JMP"
+    },
+    {
+      "address": "00ca70cb",
+      "native": "0041dd20",
+      "function": "00ca70c8",
+      "kind": "tail_jump",
+      "role": "z string cleanup; complete8-byte LEA/JMP"
+    },
+    {
+      "address": "00ca70d5",
+      "native": "00bf6b43",
+      "function": "00ca70d0",
+      "kind": "tail_jump",
+      "role": "original handler loadsDDA4E4; historical no_ghidra_function resolved independently by root, tail now verified"
+    },
+    {
+      "address": "00779b58",
+      "native": "00928c80",
+      "function": "00779af0",
+      "kind": "tail_jump",
+      "role": "same canonical unit ECX, no arguments; no post-call work"
+    }
+  ],
+  "eh": {
+    "func_info": "00DDA4E4",
+    "map": "00DDA508",
+    "states": [
+      {
+        "state": 0,
+        "next": -1,
+        "funclet": "00ca7090",
+        "frame_offset": -72,
+        "object": "captured lock"
+      },
+      {
+        "state": 1,
+        "next": 0,
+        "funclet": "00ca7098",
+        "frame_offset": -32,
+        "object": "self"
+      },
+      {
+        "state": 2,
+        "next": 1,
+        "funclet": "00ca70a0",
+        "frame_offset": -80,
+        "object": "Ptr string"
+      },
+      {
+        "state": 3,
+        "next": 1,
+        "funclet": "00ca70a8",
+        "frame_offset": -80,
+        "object": "LastPosition string"
+      },
+      {
+        "state": 4,
+        "next": 1,
+        "funclet": "00ca70b0",
+        "frame_offset": -52,
+        "object": "LastPosition object"
+      },
+      {
+        "state": 5,
+        "next": 4,
+        "funclet": "00ca70b8",
+        "frame_offset": -80,
+        "object": "x string"
+      },
+      {
+        "state": 6,
+        "next": 4,
+        "funclet": "00ca70c0",
+        "frame_offset": -80,
+        "object": "y string"
+      },
+      {
+        "state": 7,
+        "next": 4,
+        "funclet": "00ca70c8",
+        "frame_offset": -80,
+        "object": "z string"
+      }
+    ],
+    "handler": {
+      "entry": "00CA70D0",
+      "length": 10,
+      "instructions": "MOV EAX,DDA4E4; JMP BF6B43",
+      "historical_status": "no_ghidra_function",
+      "current_status": "00ca70d0 EH_MissionEntity_OnKilledReleaseLuaSelf  undefined EH_MissionEntity_OnKilledReleaseLuaSelf(void)  body 00ca70d0 - 00ca70d9",
+      "resolution": "root commitc8000b51 formal definition/save/export, worker readback retained separately; owned928C80 untouched"
+    },
+    "source": "Guard declaration and arm/disarm order releases key before LastPosition/self/section; disarm before normal cleanup; only completed constructors owned",
+    "native_execution": "unproved, handler operand disabled in clone; no native exceptions injected"
+  },
+  "required_external_contracts": [
+    {
+      "entry": "004c1570",
+      "contract": "required actual F878FC getter then capture holder+4",
+      "coverage": "full callee read, required external wrapper; no default/no-op adapter"
+    },
+    {
+      "entry": "00927b40",
+      "contract": "required current mission owner/current unit key self-object construction",
+      "coverage": "full callee read, required external wrapper; no default/no-op adapter"
+    },
+    {
+      "entry": "00b67530",
+      "contract": "required actual stack-object lightuserdata setter",
+      "coverage": "full callee read, required external wrapper; no default/no-op adapter"
+    },
+    {
+      "entry": "00b67580",
+      "contract": "required actual stack-object newtable setter",
+      "coverage": "full callee read, required external wrapper; no default/no-op adapter"
+    },
+    {
+      "entry": "00b67400",
+      "contract": "required actual stack-object number setter",
+      "coverage": "full callee read, required external wrapper; no default/no-op adapter"
+    },
+    {
+      "entry": "virtual134",
+      "contract": "actual producer-selected target captured from current primary table after+30 gate",
+      "coverage": "required external virtual, no universal default"
+    }
+  ],
+  "register_provenance": {
+    "evidence": "complete local/killed_listing.txt",
+    "ESI": "ECX captured928C99, never reassigned; callee-saved",
+    "EDI": "captured holder section928CAF, reused through928ED2 and then restored",
+    "EBX": "saved928D72, BL=4 at928D8D for native EH state; restored928E8D; no entity-value role",
+    "pose": "MOVSS y928D9C, x87 x928DA4/DB0, MOVSS z928DB4, all before x-name allocation928DCB",
+    "id": "MOVZX word928F05, no signed-ID coercion"
+  },
+  "compiled_schedule_review": {
+    "evidence": "local/killed_object_disasm.txt",
+    "section": "getter+46; borrowed+4 lvalue loaded+4C; enter+59; captured leave+2E3",
+    "pose": "C8 reload+166; refresh+16E; y load+17C; x87 x+195/+197; z load+1B2; x key constructor+1C3",
+    "cleanup": "key disarmed+2A9/destroy+2AE, last disarmed+2B6/destroy+2BB, self disarmed+2C3/destroy+2C8, captured section release+2E3",
+    "tail": "name length+2EC/type+2F1/table+2F6/conditional name data+300/16bit id+305; owner30+30B; current profile+313/virtual provider+31F",
+    "limits": "Exact RET bodies optimize away; volatile input reads retained, no logging/teardown callback invented. Source new ABI, FPU status and native EH frame not identical."
+  },
+  "corrections": [
+    {
+      "was": "Existing semantic handler covers complete on-killed behavior",
+      "is": "It covers Lua/log projection; native tail also reloads+30/current134 and calls exact RET923050",
+      "evidence": "928F1C..928F44 complete listing"
+    },
+    {
+      "was": "All entity fields can be read once into MissionEntityLuaRecord",
+      "is": "Native gate/pose-valid/name/type/id/owner/profile have distinct read times; pose y/x/z alone are explicitly captured before setter callbacks",
+      "evidence": "full709-byte listing and metamethod fixture"
+    },
+    {
+      "was": "004254B0 call implies emitted log text",
+      "is": "004254B0 is exactlyRET; argument reads survive but no log callback is added",
+      "evidence": "live/disk one-byte callee"
+    },
+    {
+      "was": "F89AC8 always has a file-backed byte at its RVA",
+      "is": "It is PE-loader zero-fill; initial naive raw-offset read failed and was retained",
+      "evidence": "local/killed_evidence_failure01.txt plus corrected PE section bounds"
+    },
+    {
+      "was": "Pool live_2004B0 is outstanding allocations",
+      "is": "It counts cached returned blocks; return increments and cache allocation decrements",
+      "evidence": "src/native_string_pool_storage.cpp and retained fixture assertion failure"
+    }
+  ],
+  "validation": {
+    "status": "passed within explicit wrapper/native-EH boundaries",
+    "native_fixture": {
+      "returncode": 0,
+      "stdout": "case0 SOURCE\nvirtual134A:depth0,0:key0:valid1:profile0:owner1:pose-1,-2,-3\nfinal:depth0,0:key0:valid1:profile0:owner1:pose-1,-2,-3\nNATIVE\nvirtual134A:depth0,0:key0:valid1:profile0:owner1:pose-1,-2,-3\nfinal:depth0,0:key0:valid1:profile0:owner1:pose-1,-2,-3\ncase1 SOURCE\nrequired4C1570:depth0,0:key1:valid1:profile0:owner0:pose-1,-2,-3\nrequired927B40:depth1,0:key1:valid1:profile0:owner0:pose-1,-2,-3\nrequiredB67530:depth1,0:key1:valid1:profile0:owner0:pose-1,-2,-3\nPtr:depth1,0:key1:valid1:profile0:owner0:pose-1,-2,-3\nrequiredB67580:depth1,0:key0:valid1:profile0:owner0:pose-1,-2,-3\nLastPosition:depth1,0:key0:valid1:profile0:owner0:pose-1,-2,-3\nrequiredB67400 x=1.25:depth1,0:key0:valid1:profile0:owner0:pose1.25,2.5,3.75\nx:depth1,0:key0:valid1:profile0:owner0:pose1.25,2.5,3.75\nrequiredB67400 y=2.5:depth1,0:key0:valid0:profile1:owner1:pose90,91,92\ny:depth1,0:key0:valid0:profile1:owner1:pose90,91,92\nrequiredB67400 z=3.75:depth1,0:key0:valid0:profile1:owner1:pose90,91,92\nz:depth1,0:key0:valid0:profile1:owner1:pose90,91,92\nvirtual134B:depth0,0:key0:valid0:profile1:owner1:pose90,91,92\nfinal:depth0,0:key0:valid0:profile1:owner1:pose90,91,92\nNATIVE\nrequired4C1570:depth0,0:key1:valid1:profile0:owner0:pose-1,-2,-3\nrequired927B40:depth1,0:key1:valid1:profile0:owner0:pose-1,-2,-3\nrequiredB67530:depth1,0:key1:valid1:profile0:owner0:pose-1,-2,-3\nPtr:depth1,0:key1:valid1:profile0:owner0:pose-1,-2,-3\nrequiredB67580:depth1,0:key0:valid1:profile0:owner0:pose-1,-2,-3\nLastPosition:depth1,0:key0:valid1:profile0:owner0:pose-1,-2,-3\nrequiredB67400 x=1.25:depth1,0:key0:valid1:profile0:owner0:pose1.25,2.5,3.75\nx:depth1,0:key0:valid1:profile0:owner0:pose1.25,2.5,3.75\nrequiredB67400 y=2.5:depth1,0:key0:valid0:profile1:owner1:pose90,91,92\ny:depth1,0:key0:valid0:profile1:owner1:pose90,91,92\nrequiredB67400 z=3.75:depth1,0:key0:valid0:profile1:owner1:pose90,91,92\nz:depth1,0:key0:valid0:profile1:owner1:pose90,91,92\nvirtual134B:depth0,0:key0:valid0:profile1:owner1:pose90,91,92\nfinal:depth0,0:key0:valid0:profile1:owner1:pose90,91,92\nPASS source-only setter exception cleanup; original FH3 not exercised\nPASS two paired709-byte cases; actual Lua objects/Lua5.1.1/raw pool/pose/sections; required wrapper contracts isolated; native FH3 unproved\n",
+      "stderr": ""
+    },
+    "native_relocations": [
+      {
+        "call_site": "00928caa",
+        "operand_offset": "02b",
+        "original_target": "004c1570",
+        "target": "exact ABI bridge to required wrapper/canonical provider, or separate original RET clone; full addresses in runtime relocation file"
+      },
+      {
+        "call_site": "00928cdc",
+        "operand_offset": "05d",
+        "original_target": "00927b40",
+        "target": "exact ABI bridge to required wrapper/canonical provider, or separate original RET clone; full addresses in runtime relocation file"
+      },
+      {
+        "call_site": "00928cef",
+        "operand_offset": "070",
+        "original_target": "0041e870",
+        "target": "exact ABI bridge to required wrapper/canonical provider, or separate original RET clone; full addresses in runtime relocation file"
+      },
+      {
+        "call_site": "00928d04",
+        "operand_offset": "085",
+        "original_target": "00b67530",
+        "target": "exact ABI bridge to required wrapper/canonical provider, or separate original RET clone; full addresses in runtime relocation file"
+      },
+      {
+        "call_site": "00928d21",
+        "operand_offset": "0a2",
+        "original_target": "00419cc0",
+        "target": "exact ABI bridge to required wrapper/canonical provider, or separate original RET clone; full addresses in runtime relocation file"
+      },
+      {
+        "call_site": "00928d28",
+        "operand_offset": "0a9",
+        "original_target": "00bd1510",
+        "target": "exact ABI bridge to required wrapper/canonical provider, or separate original RET clone; full addresses in runtime relocation file"
+      },
+      {
+        "call_site": "00928d36",
+        "operand_offset": "0b7",
+        "original_target": "0041e870",
+        "target": "exact ABI bridge to required wrapper/canonical provider, or separate original RET clone; full addresses in runtime relocation file"
+      },
+      {
+        "call_site": "00928d49",
+        "operand_offset": "0ca",
+        "original_target": "00b67580",
+        "target": "exact ABI bridge to required wrapper/canonical provider, or separate original RET clone; full addresses in runtime relocation file"
+      },
+      {
+        "call_site": "00928d66",
+        "operand_offset": "0e7",
+        "original_target": "00419cc0",
+        "target": "exact ABI bridge to required wrapper/canonical provider, or separate original RET clone; full addresses in runtime relocation file"
+      },
+      {
+        "call_site": "00928d6d",
+        "operand_offset": "0ee",
+        "original_target": "00bd1510",
+        "target": "exact ABI bridge to required wrapper/canonical provider, or separate original RET clone; full addresses in runtime relocation file"
+      },
+      {
+        "call_site": "00928d81",
+        "operand_offset": "102",
+        "original_target": "00b67800",
+        "target": "exact ABI bridge to required wrapper/canonical provider, or separate original RET clone; full addresses in runtime relocation file"
+      },
+      {
+        "call_site": "00928d97",
+        "operand_offset": "118",
+        "original_target": "00414db0",
+        "target": "exact ABI bridge to required wrapper/canonical provider, or separate original RET clone; full addresses in runtime relocation file"
+      },
+      {
+        "call_site": "00928dcb",
+        "operand_offset": "14c",
+        "original_target": "0041e870",
+        "target": "exact ABI bridge to required wrapper/canonical provider, or separate original RET clone; full addresses in runtime relocation file"
+      },
+      {
+        "call_site": "00928de6",
+        "operand_offset": "167",
+        "original_target": "00b67400",
+        "target": "exact ABI bridge to required wrapper/canonical provider, or separate original RET clone; full addresses in runtime relocation file"
+      },
+      {
+        "call_site": "00928e02",
+        "operand_offset": "183",
+        "original_target": "00419cc0",
+        "target": "exact ABI bridge to required wrapper/canonical provider, or separate original RET clone; full addresses in runtime relocation file"
+      },
+      {
+        "call_site": "00928e09",
+        "operand_offset": "18a",
+        "original_target": "00bd1510",
+        "target": "exact ABI bridge to required wrapper/canonical provider, or separate original RET clone; full addresses in runtime relocation file"
+      },
+      {
+        "call_site": "00928e17",
+        "operand_offset": "198",
+        "original_target": "0041e870",
+        "target": "exact ABI bridge to required wrapper/canonical provider, or separate original RET clone; full addresses in runtime relocation file"
+      },
+      {
+        "call_site": "00928e32",
+        "operand_offset": "1b3",
+        "original_target": "00b67400",
+        "target": "exact ABI bridge to required wrapper/canonical provider, or separate original RET clone; full addresses in runtime relocation file"
+      },
+      {
+        "call_site": "00928e4e",
+        "operand_offset": "1cf",
+        "original_target": "00419cc0",
+        "target": "exact ABI bridge to required wrapper/canonical provider, or separate original RET clone; full addresses in runtime relocation file"
+      },
+      {
+        "call_site": "00928e55",
+        "operand_offset": "1d6",
+        "original_target": "00bd1510",
+        "target": "exact ABI bridge to required wrapper/canonical provider, or separate original RET clone; full addresses in runtime relocation file"
+      },
+      {
+        "call_site": "00928e63",
+        "operand_offset": "1e4",
+        "original_target": "0041e870",
+        "target": "exact ABI bridge to required wrapper/canonical provider, or separate original RET clone; full addresses in runtime relocation file"
+      },
+      {
+        "call_site": "00928e7e",
+        "operand_offset": "1ff",
+        "original_target": "00b67400",
+        "target": "exact ABI bridge to required wrapper/canonical provider, or separate original RET clone; full addresses in runtime relocation file"
+      },
+      {
+        "call_site": "00928e9b",
+        "operand_offset": "21c",
+        "original_target": "00419cc0",
+        "target": "exact ABI bridge to required wrapper/canonical provider, or separate original RET clone; full addresses in runtime relocation file"
+      },
+      {
+        "call_site": "00928ea2",
+        "operand_offset": "223",
+        "original_target": "00bd1510",
+        "target": "exact ABI bridge to required wrapper/canonical provider, or separate original RET clone; full addresses in runtime relocation file"
+      },
+      {
+        "call_site": "00928eb0",
+        "operand_offset": "231",
+        "original_target": "00b67700",
+        "target": "exact ABI bridge to required wrapper/canonical provider, or separate original RET clone; full addresses in runtime relocation file"
+      },
+      {
+        "call_site": "00928ebe",
+        "operand_offset": "23f",
+        "original_target": "00b67700",
+        "target": "exact ABI bridge to required wrapper/canonical provider, or separate original RET clone; full addresses in runtime relocation file"
+      },
+      {
+        "call_site": "00928f14",
+        "operand_offset": "295",
+        "original_target": "004254b0",
+        "target": "exact ABI bridge to required wrapper/canonical provider, or separate original RET clone; full addresses in runtime relocation file"
+      },
+      {
+        "call_site": "00928f30",
+        "operand_offset": "2b1",
+        "original_target": "00923050",
+        "target": "exact ABI bridge to required wrapper/canonical provider, or separate original RET clone; full addresses in runtime relocation file"
+      },
+      {
+        "operand_offset": "062",
+        "original": "00cfad08",
+        "target": "same fixture literal/type table/actual OS import cell; exact mapping in killed_probe.cpp"
+      },
+      {
+        "operand_offset": "0ae",
+        "original": "00d19454",
+        "target": "same fixture literal/type table/actual OS import cell; exact mapping in killed_probe.cpp"
+      },
+      {
+        "operand_offset": "0f4",
+        "original": "00d19454",
+        "target": "same fixture literal/type table/actual OS import cell; exact mapping in killed_probe.cpp"
+      },
+      {
+        "operand_offset": "13d",
+        "original": "00ceb488",
+        "target": "same fixture literal/type table/actual OS import cell; exact mapping in killed_probe.cpp"
+      },
+      {
+        "operand_offset": "18f",
+        "original": "00d045f8",
+        "target": "same fixture literal/type table/actual OS import cell; exact mapping in killed_probe.cpp"
+      },
+      {
+        "operand_offset": "1db",
+        "original": "00cfd718",
+        "target": "same fixture literal/type table/actual OS import cell; exact mapping in killed_probe.cpp"
+      },
+      {
+        "operand_offset": "281",
+        "original": "00ce3870",
+        "target": "same fixture literal/type table/actual OS import cell; exact mapping in killed_probe.cpp"
+      },
+      {
+        "operand_offset": "27a",
+        "original": "00f89ac8",
+        "target": "same fixture literal/type table/actual OS import cell; exact mapping in killed_probe.cpp"
+      },
+      {
+        "operand_offset": "290",
+        "original": "00d19438",
+        "target": "same fixture literal/type table/actual OS import cell; exact mapping in killed_probe.cpp"
+      },
+      {
+        "operand_offset": "269",
+        "original": "00e0cd80",
+        "target": "same fixture literal/type table/actual OS import cell; exact mapping in killed_probe.cpp"
+      },
+      {
+        "operand_offset": "045",
+        "original": "00ce2218",
+        "target": "same fixture literal/type table/actual OS import cell; exact mapping in killed_probe.cpp"
+      },
+      {
+        "operand_offset": "254",
+        "original": "00ce2210",
+        "target": "same fixture literal/type table/actual OS import cell; exact mapping in killed_probe.cpp"
+      },
+      {
+        "operand_offset": "009",
+        "original": "00ca70d0",
+        "target": "zero; native FH3 disabled, unproved"
+      }
+    ],
+    "actual_providers": [
+      "Lua5.1.1 library and canonical tracked NativeLuaObjectStorage get/destruct",
+      "actual raw8AD4A0 string pool, actual publication, constructor/string allocator/return",
+      "actual PoseRefreshView refresh",
+      "actual BD1860/41CC80 tracked Win32 sections"
+    ],
+    "fixture_boundaries": [
+      "4C1570 getter and927B40 self wrapper contracts",
+      "B67530/B67580/B67400 required wrappers using Lua API and real metamethods",
+      "producer-specific virtual134"
+    ],
+    "native_exception_execution": "unproved; one source-only setter exception cleanup case",
+    "gameplay": "unproved; no runtime binding",
+    "failures": [
+      {
+        "stage": "initial evidence script",
+        "error": "BSS raw-offset read differs from live zero byte",
+        "resolution": "honor PE raw size and loader zero-fill",
+        "file": "local/killed_evidence_failure01.txt"
+      },
+      {
+        "stage": "initial fixture assertion",
+        "error": "cached-block counter misread as outstanding allocations",
+        "resolution": "read actual provider and assert0 cached blocks for empty gate,4 distinct cached blocks after full/exception returns",
+        "file": "local/killed_probe_failure01.json"
+      }
+    ],
+    "existing_ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "ctest_result": "2/2 passed",
+    "seed_byte_checks": "8/8 live/disk equal",
+    "direct_call_checks": 38,
+    "failed_call_checks": 0,
+    "indirect_rows": 3,
+    "ghidra_readonly_proof": "owned928C80 full documentation unchanged; root separately defined unowned handlerCA70D0; old/current snapshots retained",
+    "toolchain": {
+      "platform": "Win32 Release",
+      "generator": "Visual Studio 18 2026",
+      "tools": [
+        {
+          "Name": "cl.exe",
+          "Source": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe",
+          "FileVersion": "19.51.36244.0"
+        },
+        {
+          "Name": "link.exe",
+          "Source": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\link.exe",
+          "FileVersion": "14.51.36244.0"
+        },
+        {
+          "Name": "dumpbin.exe",
+          "Source": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\dumpbin.exe",
+          "FileVersion": "14.51.36244.0"
+        },
+        {
+          "Name": "mt.exe",
+          "Source": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\\\x64\\mt.exe",
+          "FileVersion": "10.0.26100.8249 (WinBuild.160101.0800)"
+        }
+      ],
+      "msvc": "14.51.36231",
+      "windows_sdk": "10.0.26100.0",
+      "flags": "/std:c++17 /EHsc /O2 /MD /W4 /WX /fp:strict",
+      "link_flags": "/MANIFEST:EMBED /VERBOSE:LIB /MAP:local/killed_probe.map"
+    },
+    "owned_object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-killed-base-w\\build\\win32\\bsp_core.dir\\Release\\native_unit_killed_base.obj",
+      "bytes": 9602,
+      "sha256": "74223d438205bf8acd188ded9a134be6383586da66e90986149b2a5ab05d4ada"
+    },
+    "core_library": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-killed-base-w\\build\\win32\\Release\\bsp_core.lib",
+      "bytes": 55460048,
+      "sha256": "ee2c6a33023e7720b17f90b2868b797abf659ce002db298959f9e7c834cfaac8"
+    },
+    "linked_core_objects": [
+      "camera_multiply.obj",
+      "camera_projection.obj",
+      "gui_layout_loader.obj",
+      "gui_lua_reader.obj",
+      "native_legacy_exception_owner.obj",
+      "native_legacy_sbo_string.obj",
+      "native_lua_objects.obj",
+      "native_renderer_worker_lifetime.obj",
+      "native_singleton_publication.obj",
+      "native_singleton_vector_allocation.obj",
+      "native_singleton_vector_insert_count.obj",
+      "native_singleton_vector_leaves.obj",
+      "native_singleton_vector_registration_wrappers.obj",
+      "native_singleton_vector_reserve_construct.obj",
+      "native_string.obj",
+      "native_string_pool_owner.obj",
+      "native_string_pool_storage.obj",
+      "native_unit_killed_base.obj",
+      "native_unit_observer_endpoint.obj",
+      "pose_refresh.obj",
+      "random_threads.obj",
+      "singleton_lifetime.obj"
+    ],
+    "linked_lua_objects": [
+      "lapi.obj",
+      "lauxlib.obj",
+      "ldebug.obj",
+      "ldo.obj",
+      "lfunc.obj",
+      "lgc.obj",
+      "llex.obj",
+      "lmem.obj",
+      "lobject.obj",
+      "lopcodes.obj",
+      "lparser.obj",
+      "lstate.obj",
+      "lstring.obj",
+      "ltable.obj",
+      "ltm.obj",
+      "lvm.obj",
+      "lzio.obj"
+    ],
+    "linked_libraries": [
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\um\\x86\\d3d9.lib",
+        "bytes": 5692,
+        "sha256": "f7efc12189fc46406762aebe66a80a44181bbd93e40e7adfe051af0db3bd53af"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\um\\x86\\kernel32.lib",
+        "bytes": 329914,
+        "sha256": "0916cf9c90410acf8fe000b23443f54c467bdecb14078034f3c9ec086200afc7"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\um\\x86\\user32.lib",
+        "bytes": 179898,
+        "sha256": "ab26e29a6f06b0eba87861aebb9e61874a22f297d03d66e08296066ce0dbdbeb"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\ucrt\\x86\\ucrt.lib",
+        "bytes": 299244,
+        "sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\MSVCRT.lib",
+        "bytes": 8263656,
+        "sha256": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\OLDNAMES.lib",
+        "bytes": 158090,
+        "sha256": "3af0bc33f96a74105b9a83eea9238b7191885764b36bec144ec783a8fba59457"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcprt.lib",
+        "bytes": 5365666,
+        "sha256": "5043c6d473b6f5d0f767df241b4004175ad9b60d01ae4565b7caaea1709ab55f"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\vcruntime.lib",
+        "bytes": 400312,
+        "sha256": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-killed-base-w\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 55460048,
+        "sha256": "ee2c6a33023e7720b17f90b2868b797abf659ce002db298959f9e7c834cfaac8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-killed-base-w\\build\\win32\\Release\\bsp_lua511.lib",
+        "bytes": 455544,
+        "sha256": "6a50f3526b06f59d2897b8fd40a0fb9d7a79e1b90108c5d63d4114ecf9971f80"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-killed-base-w\\build\\win32\\Release\\bsp_zlib121.lib",
+        "bytes": 72006,
+        "sha256": "613ccacd2f88e53900e4c8552372b99f23bc41bae8f7ee7f1b383f4676b2f96d"
+      }
+    ],
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-killed-base-w\\local\\killed_manifest.json",
+      "bytes": 66137,
+      "sha256": "4ea709dced130e41f269fce9266de0923d31f8b747f2aeb483b220999134f5a4"
+    }
+  }
+}

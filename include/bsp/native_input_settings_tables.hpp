@@ -10,7 +10,6 @@ namespace bsp {
 // Existing keyboard-library calls share the same settings/device/tree storage.
 struct NativeInputSettingsTableCalls {
     virtual ~NativeInputSettingsTableCalls() = default;
-    virtual void call_006a7540(void* tree, void* subtree) = 0;
     virtual void* call_0055a9a0(void* tree, const NativeString* key) = 0;
     virtual void* call_0069fa40(void* tree, void* output, const std::int32_t* key) = 0;
     virtual void* call_006a1e70(void* tree, const NativeString* key) = 0;
