@@ -1,0 +1,192 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "packet": "orch3_string_raw_pool_context_ay",
+  "status": "concrete_raw_context_extension_exact_build_and_bounded_parent_fixture_passed",
+  "implemented_new_native_bodies": 0,
+  "functions": [
+    {
+      "address": "0041dd20",
+      "end_inclusive": "0041dd3c",
+      "ghidra_name": "BSP_NativeString_DestroyStorage",
+      "cpp_symbol": "destroy_native_string_header_0041dd20",
+      "native_prototype": "void BSP_NativeString_DestroyStorage(void)",
+      "native_calling_convention": "__thiscall",
+      "native_abi": "ECX actual8h header; zero stacked slots, RET",
+      "source": "src/native_string.cpp",
+      "header": "include/bsp/native_string.hpp",
+      "new_native_body": false,
+      "coverage": "complete existing body with additional concrete raw-context overload",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete original body retained; AY adds a concrete raw-pool-context overload using current 00419CC0 before BD1120/BD1510, including returns with large blocks or disabled small returns. Getter exceptions propagate, no header cleanup/rollback added, and raw preserve-copy honors BF7680 overlap branch. Existing host overload contract remains. Original ECX/stack ABI is separate from added context. No additional reconstructed body or unrestricted native EH/SEH/gameplay claim. Evidence: docs/NATIVE_STRING_RAW_POOL_CONTEXT.md; reports/native_string_raw_pool_context.json."
+    },
+    {
+      "address": "0041dd40",
+      "end_inclusive": "0041dde3",
+      "ghidra_name": "BSP_NativeString_Resize",
+      "cpp_symbol": "resize_native_string_header_0041dd40",
+      "native_prototype": "void BSP_NativeString_Resize(unsigned int length, unsigned int preserve_slot)",
+      "native_calling_convention": "__thiscall",
+      "native_abi": "ECX actual8h header; two DWORD slots; preserve consumes low byte; RET8",
+      "source": "src/native_string.cpp",
+      "header": "include/bsp/native_string.hpp",
+      "new_native_body": false,
+      "coverage": "complete existing body with additional concrete raw-context overload",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete original body retained; AY adds a concrete raw-pool-context overload using current 00419CC0 before BD1120/BD1510, including returns with large blocks or disabled small returns. Getter exceptions propagate, no header cleanup/rollback added, and raw preserve-copy honors BF7680 overlap branch. Existing host overload contract remains. Original ECX/stack ABI is separate from added context. No additional reconstructed body or unrestricted native EH/SEH/gameplay claim. Evidence: docs/NATIVE_STRING_RAW_POOL_CONTEXT.md; reports/native_string_raw_pool_context.json."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0041dd30",
+      "native": "00419cc0",
+      "function": "0041dd20",
+      "contract": "Capture nonnull data then wrapping length+1 before current concrete getter; getter exceptions escape."
+    },
+    {
+      "address": "0041dd37",
+      "native": "00bd1510",
+      "function": "0041dd20",
+      "contract": "Return captured data/size through returned owner; no header stores."
+    },
+    {
+      "address": "0041dd64",
+      "native": "00419cc0",
+      "function": "0041dd40",
+      "contract": "Zero-length request with nonnull old data resolves current getter before release; no early large/gate shortcut."
+    },
+    {
+      "address": "0041dd6b",
+      "native": "00bd1510",
+      "function": "0041dd40",
+      "contract": "Header clears pointer then length only after returning release."
+    },
+    {
+      "address": "0041dd83",
+      "native": "00419cc0",
+      "function": "0041dd40",
+      "contract": "Nonzero changed length resolves current getter before allocation."
+    },
+    {
+      "address": "0041dd90",
+      "native": "00bd1120",
+      "function": "0041dd40",
+      "contract": "Allocate wrapping requested length+1; current old header remains unpublished."
+    },
+    {
+      "address": "0041ddb1",
+      "native": "00bf7680",
+      "function": "0041dd40",
+      "contract": "Preserve min(requested,current length), using current source pointer; native helper admits backward overlap; zero count omitted in source."
+    },
+    {
+      "address": "0041ddc9",
+      "native": "00419cc0",
+      "function": "0041dd40",
+      "contract": "Fresh current old pointer and length+1 captured before another getter."
+    },
+    {
+      "address": "0041ddd0",
+      "native": "00bd1510",
+      "function": "0041dd40",
+      "contract": "Return captured old block; only success then publishes new pointer/length/terminator."
+    }
+  ],
+  "live_disk_spans": [
+    {
+      "address": "0041dd20",
+      "end_inclusive": "0041dd3c",
+      "length": 29,
+      "live_disk_equal": true,
+      "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626"
+    },
+    {
+      "address": "0041dd40",
+      "end_inclusive": "0041dde3",
+      "length": 164,
+      "live_disk_equal": true,
+      "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977"
+    },
+    {
+      "address": "00bf7694",
+      "end_inclusive": "00bf769b",
+      "length": 8,
+      "live_disk_equal": true,
+      "sha256": "689996b2fd80e32c6a352e00cfb7e682f1d3f3bc7a8b547ae1022dd4cf224e07"
+    },
+    {
+      "address": "00bf7844",
+      "end_inclusive": "00bf7862",
+      "length": 31,
+      "live_disk_equal": true,
+      "sha256": "b279311f6e774bcc28d3fbd3a19782550c2c45115d088625af2432ac39700745"
+    }
+  ],
+  "source_hashes": {
+    "src/native_string.cpp": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c",
+    "include/bsp/native_string.hpp": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f"
+  },
+  "cross_review": "BeginFrame worker independently checked all current overload branches against full41DD20/41DD40 listings and its caller requirements; no blocker found.",
+  "provider_contracts": {
+    "00419cc0": "Complete existing raw manager/publication getter from native_string_pool_owner; exceptions are permitted.",
+    "00bd1120": "Complete actual allocator from native_string_pool_storage, no null normalization.",
+    "00bd1510": "Complete actual return provider; raw overload resolves getter even when this provider later skips owner reads for large/gated returns.",
+    "00bf7680": "Existing library identity retained. BF7694..769A selects backward overlap; BF785F STD, BF7860 REP MOVSD, BF7862 CLD. Use standard memmove for valid nonzero spans; do not port CRT."
+  },
+  "limits": [
+    "Raw context references must be the same actual pool/gate/manager publications used by the application.",
+    "Source C++ contexts and exception propagation do not establish original caller ABI, full FH3/SEH or concurrency.",
+    "Existing host storage release remains noexcept; only new raw context removes that intervening exception boundary.",
+    "Zero-byte native copy remains omitted; valid pointer ranges required.",
+    "BeginFrame does not prove native argument/EH spill aliases, invalid ranges, arbitrary wrapped counts, double exceptions or unrestricted concurrency."
+  ],
+  "game_validated": false,
+  "validation": {
+    "strict_win32_build": "PASS",
+    "build_log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\ay-string-raw-initial-build.log",
+    "build_log_sha256": "f5c1b4917aa1646da14246b05eedbd4f74a3a31c4f6092b12c932c12ec8e5ee8",
+    "existing_ctests_passed": 2,
+    "report_call_rows": 9,
+    "failed_call_rows": 0,
+    "native_signatures_and_full_body_readback": {
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "changes": [
+        {
+          "address": "0041dd20",
+          "prototype": "void BSP_NativeString_DestroyStorage(void)",
+          "result": {
+            "raw_response": "Successfully set prototype for function at 0041dd20 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+          }
+        },
+        {
+          "address": "0041dd40",
+          "prototype": "void BSP_NativeString_Resize(unsigned int length, unsigned int preserve_slot)",
+          "result": {
+            "raw_response": "Successfully set prototype for function at 0041dd40 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+          }
+        }
+      ],
+      "before_by_address": {
+        "0041dd20": "0041dd20 BSP_NativeString_DestroyStorage  undefined BSP_NativeString_DestroyStorage(void)  body 0041dd20 - 0041dd3c",
+        "0041dd40": "0041dd40 BSP_NativeString_Resize  undefined BSP_NativeString_Resize(void)  body 0041dd40 - 0041dde3"
+      },
+      "save": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      },
+      "after": "0041dd20 BSP_NativeString_DestroyStorage  void __thiscall BSP_NativeString_DestroyStorage(void * this)  body 0041dd20 - 0041dd3c\n0041dd40 BSP_NativeString_Resize  void __thiscall BSP_NativeString_Resize(void * this, uint length, uint preserve_slot)  body 0041dd40 - 0041dde3\n",
+      "readback_passed": true,
+      "stored_body_limits": {}
+    },
+    "parent_fixture": {
+      "report": "reports/native_renderer_startup_ay_validation.json",
+      "tested_commit": "71ff3f1220fecd9e4e9ff7ad7ffc54b3a38477f4",
+      "coverage": "20 original/source pairs,167745 normalized state bytes and1829 event DWORDs. Full BeginFrame/record operations, actual raw pool/manager, nonempty clear/middle erase, scalar overlap, returning CRT validation, second-getter throw with first-header cleanup and first-getter throw after cleanup disarm.",
+      "new_native_bodies": 0
+    },
+    "new_native_bodies": 0
+  },
+  "worker_capture_status": "concrete_raw_context_extension_source_reviewed_strict_win32_build_passed_parent_fixture_pending"
+}

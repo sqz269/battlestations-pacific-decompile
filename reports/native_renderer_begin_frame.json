@@ -1,0 +1,678 @@
+{
+  "packet": "orch3_renderer_begin_frame_ay",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "status": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+  "owned_native_bytes": 816,
+  "source": "src/native_renderer_begin_frame.cpp",
+  "header": "include/bsp/native_renderer_begin_frame.hpp",
+  "documentation": "docs/NATIVE_RENDERER_BEGIN_FRAME.md",
+  "host_steps": [
+    {
+      "function": "00B2B200",
+      "address": "00B2B229",
+      "native": "00B2ABD0",
+      "contract": "Full actual renderer Reset; ECX renderer; RET"
+    },
+    {
+      "function": "00B2B200",
+      "address": "00B2B24F",
+      "native": "device+vtableA4",
+      "contract": "Current device+1A10, current vtable+A4 BeginScene; stdcall device slot; HRESULT ignored"
+    },
+    {
+      "function": "00B2B200",
+      "address": "00B2B25B",
+      "native": "00B15090",
+      "contract": "Fresh nonnull F8D39C actual service; ECX service; RET"
+    },
+    {
+      "function": "00B15090",
+      "address": "00B150A4",
+      "native": "00BF6713",
+      "contract": "Fixed CRT no-info invalid-parameter service, may return; no arguments"
+    },
+    {
+      "function": "00B15090",
+      "address": "00B150B1",
+      "native": "00BF6713",
+      "contract": "Second current bounds check; fixed returning CRT service"
+    },
+    {
+      "function": "00B15090",
+      "address": "00B150C1",
+      "native": "00B14480",
+      "contract": "ECX service+68C; five DWORD slots; RET14"
+    },
+    {
+      "function": "00B14480",
+      "address": "00B14492",
+      "native": "00BF6713",
+      "contract": "First owner must be nonnull/equal last owner, without equality to ECX; returning service"
+    },
+    {
+      "function": "00B14480",
+      "address": "00B144BF",
+      "native": "00B13630",
+      "contract": "Six caller slots; first3 last.record/captured end/first.record; ADD ESP18 at B144C9"
+    },
+    {
+      "function": "00B14480",
+      "address": "00B144D4",
+      "native": "00B10740",
+      "contract": "Ascending destruction from recomputed new end to post-copy current end; ECX record; RET"
+    },
+    {
+      "function": "00B13630",
+      "address": "00B1365E",
+      "native": "00B13280",
+      "contract": "Six cdecl slots; first3 first/last/output; ADD ESP18 at B1367C; returned EAX ignored"
+    },
+    {
+      "function": "00B13280",
+      "address": "00B13296",
+      "native": "00B13180",
+      "contract": "ECX current destination, stack current source; RET4"
+    },
+    {
+      "function": "00B13180",
+      "address": "00B13224",
+      "native": "0041DD40",
+      "contract": "Actual destination+11C, captured source+11C length, preserve1; RET8; concrete raw pool overload"
+    },
+    {
+      "function": "00B13180",
+      "address": "00B13239",
+      "native": "00BF7680",
+      "contract": "Current destination data/current source data/current destination length; ADD ESP0C at B1323E; native overlap behavior"
+    },
+    {
+      "function": "00B13180",
+      "address": "00B13258",
+      "native": "0041DD40",
+      "contract": "Actual destination+124, captured source+124 length, preserve1; RET8; concrete raw pool overload"
+    },
+    {
+      "function": "00B13180",
+      "address": "00B1326D",
+      "native": "00BF7680",
+      "contract": "Current destination data/current source data/current destination length; ADD ESP0C at B13272; native overlap behavior"
+    },
+    {
+      "function": "00B10740",
+      "address": "00B1077C",
+      "native": "00419CC0",
+      "contract": "Fresh actual raw getter before second-string return; no native arguments; exceptions retain state0"
+    },
+    {
+      "function": "00B10740",
+      "address": "00B10783",
+      "native": "00BD1510",
+      "contract": "ECX just-returned pool; captured second data, wrapped size, unused1; RET0C"
+    },
+    {
+      "function": "00B10740",
+      "address": "00B107A7",
+      "native": "00419CC0",
+      "contract": "Fresh actual raw getter before first-string return; no native arguments; state already disarmed"
+    },
+    {
+      "function": "00B10740",
+      "address": "00B107AE",
+      "native": "00BD1510",
+      "contract": "ECX just-returned pool; captured current first data, wrapped size, unused1; RET0C"
+    },
+    {
+      "function": "00CBBC80",
+      "address": "00CBBC89",
+      "native": "0041DD20",
+      "kind": "tail_jump",
+      "contract": "Existing native unwind action: saved record from [EBP-10]+11C; current first header; concrete throwing raw pool overload"
+    }
+  ],
+  "producer_evidence": [
+    {
+      "function": "00B14A10",
+      "sites": [
+        "00B14A31",
+        "00B14A36",
+        "00B14C35",
+        "00B14C3B",
+        "00B14C41"
+      ],
+      "evidence": "Actual6ACh service calls B0F020, installs D5E480, zeros +690/+694/+698; +68C prefix unused"
+    },
+    {
+      "function": "00B0F020",
+      "sites": [
+        "00B0F076"
+      ],
+      "evidence": "Publishes this exact service into F8D39C"
+    },
+    {
+      "function": "00B13180",
+      "sites": [
+        "00B1318C",
+        "00B131A0",
+        "00B131B5",
+        "00B131D0",
+        "00B131E8",
+        "00B13200",
+        "00B1320D",
+        "00B13241"
+      ],
+      "evidence": "One initial DWORD plus five groups of14, total11Ch opaque prefix; actual8h headers11C/124; total stride12Ch"
+    },
+    {
+      "function": "00BF7680",
+      "sites": [
+        "00BF7694",
+        "00BF7696",
+        "00BF7698",
+        "00BF769A",
+        "00BF7844",
+        "00BF79E4"
+      ],
+      "evidence": "CMP dst/src, JBE forward; CMP dst/(src+count), JC backward; backward path BF7844..BF79E4. Raw final and preserve copies use memmove for positive counts."
+    }
+  ],
+  "eh": {
+    "unwind_action": "00CBBC80..00CBBC8D",
+    "handler": "00CBBC8E..00CBBC97",
+    "handler_definition_at_worker_capture": "missing; root owns definition/annotation",
+    "handler_definition_after_integrator_sync": "Root defined/saved FUN_00cbbc8e, exact CBBC8E..CBBC97; worker live proto verified before commit; root reports/native_renderer_ay_analysis_sync.json",
+    "handler_raw_hex": "b8103fdf00e9abaef3ff",
+    "handler_semantics": "MOV EAX,00DF3F10; JMP 00BF6B43",
+    "unwind_map": "00DF3F08..00DF3F0F: (-1,00CBBC80)",
+    "func_info": "00DF3F10..00DF3F33: 19930522, maxState1, mapDF3F08, no try/IP maps, EHflags1",
+    "state0": "Armed at B10765 before second pointer null branch; covers second getter/return; cleanup reads current first header",
+    "disarmed": "At B10790 after current first pointer load, before first length/getter",
+    "source": "RAII first-header cleanup using throwing raw41DD20; nested C++ cleanup failure terminates; native stack/SEH not claimed"
+  },
+  "corrections": [
+    {
+      "was": "F8D39C can be treated as absent for a full BeginFrame reconstruction",
+      "is": "Non-null publication clears the actual embedded vector through all six complete record providers",
+      "evidence": "B2B251..B2B25B and B15090..B150CC"
+    },
+    {
+      "was": "NativeStringStorage noexcept release can model the initial lazy getter during destruction",
+      "is": "Use current concrete raw getter/return without noexcept; retain state0 cleanup",
+      "evidence": "B1077C/B107A7, CBBC80, fixture cases16/17"
+    },
+    {
+      "was": "Opaque11Ch payload may use bulk copy",
+      "is": "One plus five groups of14 ordered DWORD load/stores preserve forward overlap cascade",
+      "evidence": "B13180..B1320B and fixture case13"
+    },
+    {
+      "was": "BF7680 means a C++ memcpy-only contract",
+      "is": "Native routine checks overlap and copies backward; raw positive string copies use memmove",
+      "evidence": "BF7694..BF769A and BF7844..BF79E4"
+    },
+    {
+      "was": "B13630 simply returns forward copy output",
+      "is": "It ignores returned EAX and recomputes from wrapped signed difference divided by300",
+      "evidence": "B13663..B1367F"
+    }
+  ],
+  "validation": {
+    "strict_owned_source_compile": "passed MSVC Win32 /W4 /WX /O2 /EHsc /fp:strict",
+    "repository_build": "passed scripts/build.ps1 Release Win32; local/ay-build.log; owned source compiled explicitly pending root CMake enrollment",
+    "existing_ctests": "passed2/2: reconstructed_math and native_math_differential; no new repository tests",
+    "call_rows": "passed19 direct/tail rows,0 failed;1 explicit indirect current-device+A4 row",
+    "native_seed_verification": "passed all eight existing seeds match saved Ghidra/original PE",
+    "fixture": "C:/Users/sqz269/bsp-ay-begin-frame/fixture_report.json",
+    "fixture_status": "passed20 original/source cases;167745 normalized state bytes;1829 event DWORDs",
+    "pinned_bytes": "816 owned body bytes plus68 EH bytes;9 spans live-Ghidra/original-PE equal",
+    "relocations": "7 exact4-byte operands: F8D39C cell, handler trampoline, two resize CALLs, two getter CALLs, cleanup tail JMP",
+    "branches": [
+      "active bypass",
+      "inhibit decrement2->1 and1->0",
+      "lost gate",
+      "null service",
+      "nonempty4-record clear",
+      "ignored BeginScene failure HRESULT",
+      "BeginScene exception preserves records",
+      "fresh service after BeginScene",
+      "full real hidden HAL Reset success",
+      "Reset C++ failure retains active/lost/nonempty records",
+      "middle erase with nonempty tail copy",
+      "returning invalid owner on empty range",
+      "clear first validation changes begin and extends current end",
+      "forward scalar cascading overlap",
+      "exact self assignment",
+      "empty cdecl copy and retained synthetic output",
+      "real raw lazy getter registration failure triggers current-first-header original FH3 cleanup",
+      "first getter registration failure is disarmed",
+      "returning actual manager validation changes source length during resize",
+      "disabled small plus large return"
+    ],
+    "compared_state": "Opaque record bytes/current headers and small string contents; defined pool arena bytes; complete ring indices/live/peak/normalized queued block order; renderer state/current service and failure flags; recorded actual API event sequence",
+    "fixture_import_domain": "Concrete raw getter/manager/resize/return bridges; current CRT memmove/invalid parameter/FH3; actual existing Reset providers; real private HAL BeginScene/Reset; controlled documented CRT/COM observers",
+    "preservation": "Own PE reservation; /MANIFEST:EMBED; original AX fixture unchanged; foreground/focus preserved and private scenes/windows closed",
+    "combined_library_replay": "pending primary integrator source enrollment and replay"
+  },
+  "limits": [
+    "New C++ contexts are not original thiscall/cdecl/FH3/SEH binary replacements.",
+    "No native argument/EH spill aliasing, all invalid-address paths, huge signed-wrap record range, double-exception, concurrency or gameplay claim.",
+    "Source routine names are descriptive hypotheses. Actual full diagnostic service construction/lifetime is borrowed, not added here.",
+    "Zero-byte library copies omitted after preserving header reads; unused native tag/iterator padding is nonsemantic.",
+    "Root centralizes CMake, ledgers, Ghidra definition/annotation and final combined-library replay."
+  ],
+  "worker_routines": [
+    {
+      "address": "00B2B200",
+      "end": "00B2B263",
+      "bytes": 100,
+      "coverage": "complete",
+      "name": "begin_native_renderer_frame_00b2b200",
+      "original_abi": "ECX renderer; RET; AL1 only"
+    },
+    {
+      "address": "00B15090",
+      "end": "00B150CC",
+      "bytes": 61,
+      "coverage": "complete",
+      "name": "clear_native_renderer_records_00b15090",
+      "original_abi": "ECX actual6ACh service; RET; no semantic result"
+    },
+    {
+      "address": "00B14480",
+      "end": "00B144FD",
+      "bytes": 126,
+      "coverage": "complete",
+      "name": "erase_native_renderer_records_00b14480",
+      "original_abi": "ECX vector; five DWORD slots: out, first.owner, first.record, last.owner, last.record; RET14 at B144FB; EAX out"
+    },
+    {
+      "address": "00B13630",
+      "end": "00B13687",
+      "bytes": 88,
+      "coverage": "complete",
+      "name": "copy_native_renderer_record_tail_00b13630",
+      "original_abi": "cdecl six DWORD slots, only first/last/output semantic; RET; EAX recomputed output end"
+    },
+    {
+      "address": "00B13280",
+      "end": "00B132B7",
+      "bytes": 56,
+      "coverage": "complete",
+      "name": "copy_native_renderer_records_00b13280",
+      "original_abi": "cdecl six DWORD slots, only first/last/output semantic; RET; EAX output end"
+    },
+    {
+      "address": "00B13180",
+      "end": "00B1327D",
+      "bytes": 254,
+      "coverage": "complete",
+      "name": "assign_native_renderer_record_00b13180",
+      "original_abi": "ECX destination; stack source; RET4 at B1327B; EAX destination"
+    },
+    {
+      "address": "00B10740",
+      "end": "00B107C2",
+      "bytes": 131,
+      "coverage": "complete",
+      "name": "destroy_native_renderer_record_00b10740",
+      "original_abi": "ECX raw12Ch record; RET; no semantic result; FH3 state0 first-header cleanup"
+    }
+  ],
+  "functions": [
+    {
+      "address": "00b2b200",
+      "end": "00B2B263",
+      "bytes": 100,
+      "coverage": "complete",
+      "name": "begin_native_renderer_frame_00b2b200",
+      "original_abi": "ECX renderer; RET; AL1 only",
+      "end_inclusive": "00b2b263",
+      "end_exclusive": "00b2b264",
+      "cpp_symbol": "begin_native_renderer_frame_00b2b200",
+      "source": "src/native_renderer_begin_frame.cpp",
+      "header": "include/bsp/native_renderer_begin_frame.hpp",
+      "module": "native_renderer_begin_frame",
+      "new_native_body": true,
+      "ghidra_name": "BSP_D3D9Renderer_BeginFrame",
+      "native_prototype": "unsigned char BSP_D3D9Renderer_BeginFrame(void)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": null,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete 00b2b200..00b2b263 normal native body over actual storage and current concrete profiles. Full native listing, original register/stack/return ABI, producer domain, current read/output order and live/disk spans reviewed. Source uses new borrowed context interfaces; bounded original-byte comparisons do not establish original caller ABI, unrestricted EH/SEH/concurrency or gameplay. See docs/NATIVE_RENDERER_BEGIN_FRAME.md and reports/native_renderer_begin_frame.json."
+    },
+    {
+      "address": "00b15090",
+      "end": "00B150CC",
+      "bytes": 61,
+      "coverage": "complete",
+      "name": "clear_native_renderer_records_00b15090",
+      "original_abi": "ECX actual6ACh service; RET; no semantic result",
+      "end_inclusive": "00b150cc",
+      "end_exclusive": "00b150cd",
+      "cpp_symbol": "clear_native_renderer_records_00b15090",
+      "source": "src/native_renderer_begin_frame.cpp",
+      "header": "include/bsp/native_renderer_begin_frame.hpp",
+      "module": "native_renderer_begin_frame",
+      "new_native_body": true,
+      "ghidra_name": "BSP_RendererRecords_Clear",
+      "native_prototype": "void BSP_RendererRecords_Clear(void)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": null,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete 00b15090..00b150cc normal native body over actual storage and current concrete profiles. Full native listing, original register/stack/return ABI, producer domain, current read/output order and live/disk spans reviewed. Source uses new borrowed context interfaces; bounded original-byte comparisons do not establish original caller ABI, unrestricted EH/SEH/concurrency or gameplay. See docs/NATIVE_RENDERER_BEGIN_FRAME.md and reports/native_renderer_begin_frame.json."
+    },
+    {
+      "address": "00b14480",
+      "end": "00B144FD",
+      "bytes": 126,
+      "coverage": "complete",
+      "name": "erase_native_renderer_records_00b14480",
+      "original_abi": "ECX vector; five DWORD slots: out, first.owner, first.record, last.owner, last.record; RET14 at B144FB; EAX out",
+      "end_inclusive": "00b144fd",
+      "end_exclusive": "00b144fe",
+      "cpp_symbol": "erase_native_renderer_records_00b14480",
+      "source": "src/native_renderer_begin_frame.cpp",
+      "header": "include/bsp/native_renderer_begin_frame.hpp",
+      "module": "native_renderer_begin_frame",
+      "new_native_body": true,
+      "ghidra_name": "BSP_RendererRecords_Erase",
+      "native_prototype": "void * BSP_RendererRecords_Erase(void * output, void * first_owner, void * first_record, void * last_owner, void * last_record)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": null,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete 00b14480..00b144fd normal native body over actual storage and current concrete profiles. Full native listing, original register/stack/return ABI, producer domain, current read/output order and live/disk spans reviewed. Source uses new borrowed context interfaces; bounded original-byte comparisons do not establish original caller ABI, unrestricted EH/SEH/concurrency or gameplay. See docs/NATIVE_RENDERER_BEGIN_FRAME.md and reports/native_renderer_begin_frame.json."
+    },
+    {
+      "address": "00b13630",
+      "end": "00B13687",
+      "bytes": 88,
+      "coverage": "complete",
+      "name": "copy_native_renderer_record_tail_00b13630",
+      "original_abi": "cdecl six DWORD slots, only first/last/output semantic; RET; EAX recomputed output end",
+      "end_inclusive": "00b13687",
+      "end_exclusive": "00b13688",
+      "cpp_symbol": "copy_native_renderer_record_tail_00b13630",
+      "source": "src/native_renderer_begin_frame.cpp",
+      "header": "include/bsp/native_renderer_begin_frame.hpp",
+      "module": "native_renderer_begin_frame",
+      "new_native_body": true,
+      "ghidra_name": "BSP_RendererRecords_CopyTail",
+      "native_prototype": "void * BSP_RendererRecords_CopyTail(void * first, void * last, void * output, unsigned int ignored_slot4, unsigned int ignored_slot5, unsigned int ignored_slot6)",
+      "native_calling_convention": "__cdecl",
+      "worker_evidence": null,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete 00b13630..00b13687 normal native body over actual storage and current concrete profiles. Full native listing, original register/stack/return ABI, producer domain, current read/output order and live/disk spans reviewed. Source uses new borrowed context interfaces; bounded original-byte comparisons do not establish original caller ABI, unrestricted EH/SEH/concurrency or gameplay. See docs/NATIVE_RENDERER_BEGIN_FRAME.md and reports/native_renderer_begin_frame.json."
+    },
+    {
+      "address": "00b13280",
+      "end": "00B132B7",
+      "bytes": 56,
+      "coverage": "complete",
+      "name": "copy_native_renderer_records_00b13280",
+      "original_abi": "cdecl six DWORD slots, only first/last/output semantic; RET; EAX output end",
+      "end_inclusive": "00b132b7",
+      "end_exclusive": "00b132b8",
+      "cpp_symbol": "copy_native_renderer_records_00b13280",
+      "source": "src/native_renderer_begin_frame.cpp",
+      "header": "include/bsp/native_renderer_begin_frame.hpp",
+      "module": "native_renderer_begin_frame",
+      "new_native_body": true,
+      "ghidra_name": "BSP_RendererRecords_CopyForward",
+      "native_prototype": "void * BSP_RendererRecords_CopyForward(void * first, void * last, void * output, unsigned int ignored_slot4, unsigned int ignored_slot5, unsigned int ignored_slot6)",
+      "native_calling_convention": "__cdecl",
+      "worker_evidence": null,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete 00b13280..00b132b7 normal native body over actual storage and current concrete profiles. Full native listing, original register/stack/return ABI, producer domain, current read/output order and live/disk spans reviewed. Source uses new borrowed context interfaces; bounded original-byte comparisons do not establish original caller ABI, unrestricted EH/SEH/concurrency or gameplay. See docs/NATIVE_RENDERER_BEGIN_FRAME.md and reports/native_renderer_begin_frame.json."
+    },
+    {
+      "address": "00b13180",
+      "end": "00B1327D",
+      "bytes": 254,
+      "coverage": "complete",
+      "name": "assign_native_renderer_record_00b13180",
+      "original_abi": "ECX destination; stack source; RET4 at B1327B; EAX destination",
+      "end_inclusive": "00b1327d",
+      "end_exclusive": "00b1327e",
+      "cpp_symbol": "assign_native_renderer_record_00b13180",
+      "source": "src/native_renderer_begin_frame.cpp",
+      "header": "include/bsp/native_renderer_begin_frame.hpp",
+      "module": "native_renderer_begin_frame",
+      "new_native_body": true,
+      "ghidra_name": "BSP_RendererRecord_Assign",
+      "native_prototype": "void * BSP_RendererRecord_Assign(void * source)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": null,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete 00b13180..00b1327d normal native body over actual storage and current concrete profiles. Full native listing, original register/stack/return ABI, producer domain, current read/output order and live/disk spans reviewed. Source uses new borrowed context interfaces; bounded original-byte comparisons do not establish original caller ABI, unrestricted EH/SEH/concurrency or gameplay. See docs/NATIVE_RENDERER_BEGIN_FRAME.md and reports/native_renderer_begin_frame.json."
+    },
+    {
+      "address": "00b10740",
+      "end": "00B107C2",
+      "bytes": 131,
+      "coverage": "complete",
+      "name": "destroy_native_renderer_record_00b10740",
+      "original_abi": "ECX raw12Ch record; RET; no semantic result; FH3 state0 first-header cleanup",
+      "end_inclusive": "00b107c2",
+      "end_exclusive": "00b107c3",
+      "cpp_symbol": "destroy_native_renderer_record_00b10740",
+      "source": "src/native_renderer_begin_frame.cpp",
+      "header": "include/bsp/native_renderer_begin_frame.hpp",
+      "module": "native_renderer_begin_frame",
+      "new_native_body": true,
+      "ghidra_name": "BSP_RendererRecord_Destroy",
+      "native_prototype": "void BSP_RendererRecord_Destroy(void)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": null,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete 00b10740..00b107c2 normal native body over actual storage and current concrete profiles. Full native listing, original register/stack/return ABI, producer domain, current read/output order and live/disk spans reviewed. Source uses new borrowed context interfaces; bounded original-byte comparisons do not establish original caller ABI, unrestricted EH/SEH/concurrency or gameplay. See docs/NATIVE_RENDERER_BEGIN_FRAME.md and reports/native_renderer_begin_frame.json."
+    }
+  ],
+  "integration_ay_review": {
+    "combined_validation": "passed exact merged Win32 build and four current-library-only probes within documented coverage",
+    "game_validated": false,
+    "saved_function_names_and_original_signatures": 16,
+    "signature_readback_passed": true,
+    "full_stored_normal_function_bodies": true,
+    "previous_signatures": {
+      "00b0cc10": "00b0cc10 FUN_00b0cc10  undefined FUN_00b0cc10(void)  body 00b0cc10 - 00b0cca1",
+      "00b0ccb0": "00b0ccb0 FUN_00b0ccb0  undefined FUN_00b0ccb0(void)  body 00b0ccb0 - 00b0cccb",
+      "00b0cce0": "00b0cce0 FUN_00b0cce0  undefined FUN_00b0cce0(void)  body 00b0cce0 - 00b0cd50",
+      "00b2b200": "00b2b200 BSP_D3D9Renderer_BeginFrame  undefined BSP_D3D9Renderer_BeginFrame(void)  body 00b2b200 - 00b2b263",
+      "00b15090": "00b15090 STL_inst_00b15090  undefined STL_inst_00b15090(void)  body 00b15090 - 00b150cc",
+      "00b14480": "00b14480 FUN_00b14480  undefined FUN_00b14480(void)  body 00b14480 - 00b144fd",
+      "00b13630": "00b13630 FUN_00b13630  undefined FUN_00b13630(void)  body 00b13630 - 00b13687",
+      "00b13280": "00b13280 FUN_00b13280  undefined FUN_00b13280(void)  body 00b13280 - 00b132b7",
+      "00b13180": "00b13180 FUN_00b13180  undefined FUN_00b13180(void)  body 00b13180 - 00b1327d",
+      "00b10740": "00b10740 FUN_00b10740  undefined FUN_00b10740(void)  body 00b10740 - 00b107c2",
+      "00b2aeb0": "00b2aeb0 BSP_D3D9Renderer_InitializeDeviceAndResources  void __thiscall BSP_D3D9Renderer_InitializeDeviceAndResources(void * this, void * window, bool fullscreen, uint width, uint height, int backbuffer_format, uint backbuffer_count, int multisample, int depth_format, uint presentation_sync, uint fullscreen_refresh_rate)  body 00b2aeb0 - 00b2b1f1",
+      "00b49940": "00b49940 FUN_00b49940  undefined FUN_00b49940(void)  body 00b49940 - 00b4994b",
+      "00b49950": "00b49950 FUN_00b49950  undefined FUN_00b49950(void)  body 00b49950 - 00b4995b",
+      "004c11f0": "004c11f0 BSP_RenderCommandQueue_GetSingleton  undefined BSP_RenderCommandQueue_GetSingleton(void)  body 004c11f0 - 004c12ac",
+      "00b51df0": "00b51df0 BSP_RenderBatch_PrepareSort  undefined BSP_RenderBatch_PrepareSort(void)  body 00b51df0 - 00b51f0b",
+      "00b1bf70": "00b1bf70 BSP_RenderBatchPreparationJob_Invoke  undefined BSP_RenderBatchPreparationJob_Invoke(void)  body 00b1bf70 - 00b1bf81"
+    },
+    "original_signature_readback": "00b0cc10 BSP_RenderFrameCounters_ClearBank  void __thiscall BSP_RenderFrameCounters_ClearBank(void * this)  body 00b0cc10 - 00b0cca1\n00b0ccb0 BSP_RenderFrameCounters_PublishAndClear  void __thiscall BSP_RenderFrameCounters_PublishAndClear(void * this)  body 00b0ccb0 - 00b0cccb\n00b0cce0 BSP_RenderFrameCounters_Construct  void * __thiscall BSP_RenderFrameCounters_Construct(void * this)  body 00b0cce0 - 00b0cd50\n00b2b200 BSP_D3D9Renderer_BeginFrame  uchar __thiscall BSP_D3D9Renderer_BeginFrame(void * this)  body 00b2b200 - 00b2b263\n00b15090 BSP_RendererRecords_Clear  void __thiscall BSP_RendererRecords_Clear(void * this)  body 00b15090 - 00b150cc\n00b14480 BSP_RendererRecords_Erase  void * __thiscall BSP_RendererRecords_Erase(void * this, void * output, void * first_owner, void * first_record, void * last_owner, void * last_record)  body 00b14480 - 00b144fd\n00b13630 BSP_RendererRecords_CopyTail  void * __cdecl BSP_RendererRecords_CopyTail(void * first, void * last, void * output, uint ignored_slot4, uint ignored_slot5, uint ignored_slot6)  body 00b13630 - 00b13687\n00b13280 BSP_RendererRecords_CopyForward  void * __cdecl BSP_RendererRecords_CopyForward(void * first, void * last, void * output, uint ignored_slot4, uint ignored_slot5, uint ignored_slot6)  body 00b13280 - 00b132b7\n00b13180 BSP_RendererRecord_Assign  void * __thiscall BSP_RendererRecord_Assign(void * this, void * source)  body 00b13180 - 00b1327d\n00b10740 BSP_RendererRecord_Destroy  void __thiscall BSP_RendererRecord_Destroy(void * this)  body 00b10740 - 00b107c2\n00b2aeb0 BSP_D3D9Renderer_InitializeDeviceAndResources  void __thiscall BSP_D3D9Renderer_InitializeDeviceAndResources(void * this, uint window, uint fullscreen_slot, uint width, uint height, uint format, uint count, uint multisample, uint depth_format, uint sync_slot, uint refresh)  body 00b2aeb0 - 00b2b1f1\n00b49940 BSP_NativePhysicalIndexPool_ReturnSlot  void __thiscall BSP_NativePhysicalIndexPool_ReturnSlot(void * this)  body 00b49940 - 00b4994b\n00b49950 BSP_NativePhysicalVertexPool_ReturnSlot  void __thiscall BSP_NativePhysicalVertexPool_ReturnSlot(void * this)  body 00b49950 - 00b4995b\n004c11f0 BSP_RenderCommandQueue_GetSingleton  void * __cdecl BSP_RenderCommandQueue_GetSingleton(void)  body 004c11f0 - 004c12ac\n00b51df0 BSP_RenderBatch_PrepareSort  void __thiscall BSP_RenderBatch_PrepareSort(void * this, uint index_slot)  body 00b51df0 - 00b51f0b\n00b1bf70 BSP_RenderBatchPreparationJob_Invoke  void __thiscall BSP_RenderBatchPreparationJob_Invoke(void * this, void * batch)  body 00b1bf70 - 00b1bf81\n",
+    "function_definitions": {
+      "events": [
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbbc8e",
+            "end_address": "00cbbc98"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbbc8e",
+            "end_address": "00cbbc97",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbbc8e",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbbc8e",
+            "function_name": "FUN_00cbbc8e",
+            "entry_point": "00cbbc8e",
+            "body_size": 10,
+            "message": "Function created successfully at 00cbbc8e"
+          }
+        },
+        {
+          "defined": "00cbbc8e",
+          "end": "00cbbc98",
+          "name": null,
+          "after": "Function: FUN_00cbbc8e at 00cbbc8e\nSignature: undefined FUN_00cbbc8e(void)\nEntry: 00cbbc8e\nBody: 00cbbc8e - 00cbbc97"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbd436",
+            "end_address": "00cbd440"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbd436",
+            "end_address": "00cbd43f",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbd436",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbd436",
+            "function_name": "FUN_00cbd436",
+            "entry_point": "00cbd436",
+            "body_size": 10,
+            "message": "Function created successfully at 00cbd436"
+          }
+        },
+        {
+          "defined": "00cbd436",
+          "end": "00cbd440",
+          "name": null,
+          "after": "Function: FUN_00cbd436 at 00cbd436\nSignature: undefined FUN_00cbd436(void)\nEntry: 00cbd436\nBody: 00cbd436 - 00cbd43f"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00c64f13",
+            "end_address": "00c64f1d"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00c64f13",
+            "end_address": "00c64f1c",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00c64f13",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00c64f13",
+            "function_name": "FUN_00c64f13",
+            "entry_point": "00c64f13",
+            "body_size": 10,
+            "message": "Function created successfully at 00c64f13"
+          }
+        },
+        {
+          "defined": "00c64f13",
+          "end": "00c64f1d",
+          "name": null,
+          "after": "Function: FUN_00c64f13 at 00c64f13\nSignature: undefined FUN_00c64f13(void)\nEntry: 00c64f13\nBody: 00c64f13 - 00c64f1c"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        }
+      ]
+    },
+    "cleanup_flow": {
+      "repairs": [
+        {
+          "function": "00c64f08",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-13T07:48:14Z",
+          "decompile_lines_before": 10,
+          "gaps": [
+            {
+              "site": "00c64f0c",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "00c64f11",
+              "gap_end_exclusive": "00c64f13",
+              "bytes": 2,
+              "after_call": true,
+              "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00c64f0c",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00c64f11",
+                "gap_end_exclusive": "00c64f13",
+                "bytes": 2,
+                "after_call": true,
+                "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+              },
+              "clear": "Success: Cleared flow override at 00c64f0c (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 2 byte(s)"
+            },
+            {
+              "explicit_tail_call": "00c64f0c",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00c64f0c (was: NONE, now: NONE)"
+              }
+            }
+          ],
+          "explicit_tail_end_exclusive": "00c64f13",
+          "explicit_body_sha256": "aa1668d6ed4bcdc142812fc048a1abb2835721628ec5a87e4aafbbcae28f32b9",
+          "body_before": "Function: Unwind@00c64f08 at 00c64f08\nSignature: undefined Unwind@00c64f08(void)\nEntry: 00c64f08\nBody: 00c64f08 - 00c64f10",
+          "decompile_lines_after": 10,
+          "gaps_remaining": 1,
+          "body_after": "Function: Unwind@00c64f08 at 00c64f08\nSignature: undefined Unwind@00c64f08(void)\nEntry: 00c64f08\nBody: 00c64f08 - 00c64f10",
+          "stored_body_tail_complete": false,
+          "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+        }
+      ]
+    },
+    "cleanup_flow_limit": "C64F08 free-return tail C64F11 POP ECX/C64F12 RET decoded; stored EH body still ends C64F10. Analysis-only tail metadata remains incomplete.",
+    "cross_review": "Root reviewed complete statistics and BeginFrame listings, source read/write/call order and batch getter/preparation/job bodies. Independent startup review checked all 225 startup instructions, both pool-return thunks, x87/gamma, COM outputs, EH metadata and all nine saved state/event pairs. Batch trivial storage lifetime begins without initialization, retaining native preexisting control bytes. Existing raw string overloads were independently compared with full listings and exercised by BeginFrame raw-manager exception cases. Original ABI, general EH/SEH/concurrency and gameplay remain separate.",
+    "current_report_call_check": "reports/native_renderer_begin_frame.json: 19 call rows checked, 0 failed"
+  },
+  "worker_capture_status": "complete_source_strict_compile_build_existing_ctests_original_byte_fixture_passed",
+  "final_merged_validation_ay": {
+    "report": "reports/native_renderer_startup_ay_validation.json",
+    "tested_commit": "71ff3f1220fecd9e4e9ff7ad7ffc54b3a38477f4",
+    "existing_ctests_passed": 2,
+    "four_current_library_only_replays_passed": true,
+    "game_validated": false
+  }
+}
