@@ -156,3 +156,7 @@ retain/release, and the zero setter path releases its captured current object.
 
 The completed evidence supports a precise producer frontier, not a claim that
 the cockpit's shipped concrete class or gameplay lifetime has been validated.
+
+## Root analysis follow-up for BF
+
+Root independently verified resourceCFD8CC virtual+08 atCFD8D4, both padding boundaries, and all21livebytes against the installedPE. Ghidra now stores7137F0..713804 as a seven-instruction function, including the7137FD call. The project was saved and its export refreshed; see `reports/native_cockpit_resource_forwarder_bf_analysis.json`. The earlier missing-function finding is resolved. This adds analysis containment only, with no C++ or runtime credit. The attachment document has also been corrected to recognize the existing canonical lookup and the now-contained7BC707 caller.
