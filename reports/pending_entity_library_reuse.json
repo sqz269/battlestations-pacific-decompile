@@ -1,0 +1,175 @@
+{
+  "packet": "orch6_pending_entity_library_reuse_u",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "spans": [
+    {
+      "address": "00924b10",
+      "length": 51,
+      "sha256": "9da069855279706a4cf34876bd99997d884a2fb01ef5e26e20b2ae1ac2991ab8",
+      "live": "local\\pending_library_00924b10.json",
+      "retained": "local\\pending_library_proof\\00924b10.bin"
+    },
+    {
+      "address": "008665f0",
+      "length": 51,
+      "sha256": "994114c3aa18969d9f6fcb73411652e2b921292038922e72ea8f7d641ef504f3",
+      "live": "local\\pending_library_008665f0.json",
+      "retained": "local\\pending_library_proof\\008665f0.bin"
+    },
+    {
+      "address": "009267f0",
+      "length": 147,
+      "sha256": "93cfe623cf8b10e4902c9d2d64953ccc0c74c820f97a4314ea8899a0cd5acdc2",
+      "live": "local\\pending_library_009267f0.json",
+      "retained": "local\\pending_library_proof\\009267f0.bin"
+    },
+    {
+      "address": "008675e0",
+      "length": 147,
+      "sha256": "857627f7c124471ac22403de6f91c8c44688fd2746156ae7773fb1b4e8bc5133",
+      "live": "local\\pending_library_008675e0.json",
+      "retained": "local\\pending_library_proof\\008675e0.bin"
+    },
+    {
+      "address": "00ca6d58",
+      "length": 10,
+      "sha256": "e239dd817df44e22548db799159f64c43d227dce7a6c9c195fc39fbed426ca0a",
+      "live": "local\\pending_library_00ca6d58.json",
+      "retained": "local\\pending_library_proof\\00ca6d58.bin"
+    },
+    {
+      "address": "00c94ea8",
+      "length": 10,
+      "sha256": "7f98113763c449f83a7d76ddec372ace7e0f51bda9489e42ff8ccaede87b6fd2",
+      "live": "local\\pending_library_00c94ea8.json",
+      "retained": "local\\pending_library_proof\\00c94ea8.bin"
+    },
+    {
+      "address": "00dda008",
+      "length": 36,
+      "sha256": "b67add34a31ea977d6b6658933751e635d08cd6baf15b464f2d05a55dffb9409",
+      "live": "local\\pending_library_00dda008.json",
+      "retained": "local\\pending_library_proof\\00dda008.bin"
+    },
+    {
+      "address": "00dc6d28",
+      "length": 36,
+      "sha256": "2be5f648c97204f03ca74040e45b5c594b20c7ddfb995560f598668cf52ce659",
+      "live": "local\\pending_library_00dc6d28.json",
+      "retained": "local\\pending_library_proof\\00dc6d28.bin"
+    },
+    {
+      "address": "00dda000",
+      "length": 8,
+      "sha256": "30d3a454578da227d9eda9adfecdee8e4d1803fbbdb7dfb2f51c3acfdc416222",
+      "live": "local\\pending_library_00dda000.json",
+      "retained": "local\\pending_library_proof\\00dda000.bin"
+    },
+    {
+      "address": "00dc6d20",
+      "length": 8,
+      "sha256": "76d60da53d4a9f1d24800e09bf20399817f03dd2067e1eb4fa0299dc4856ce80",
+      "live": "local\\pending_library_00dc6d20.json",
+      "retained": "local\\pending_library_proof\\00dc6d20.bin"
+    },
+    {
+      "address": "00ca6d50",
+      "length": 8,
+      "sha256": "a5dc8ffea08d8a8423108e9a26cf57e367c2d03b8c4f238a3fc9e67451736843",
+      "live": "local\\pending_library_00ca6d50.json",
+      "retained": "local\\pending_library_proof\\00ca6d50.bin"
+    },
+    {
+      "address": "00c94ea0",
+      "length": 8,
+      "sha256": "043f80b31ee5c48af650afa4b8efc31531ab8f0358dbdf108e040d6a3b66272b",
+      "live": "local\\pending_library_00c94ea0.json",
+      "retained": "local\\pending_library_proof\\00c94ea0.bin"
+    }
+  ],
+  "node": {
+    "native": "00924B10",
+    "canonical": "008665F0",
+    "bytes_each": 51,
+    "normalized_sha256": "f6002f5259dbee5a3f531c64d61c6e7051e2bd51653429e3c0400fe79650d429",
+    "calls": [
+      {
+        "offset": 2,
+        "opcode": "call",
+        "target": "00bf681b"
+      }
+    ],
+    "provider": "create_effect_deletion_node_008665f0",
+    "source": "src/effect_deletion_queue.cpp"
+  },
+  "count": {
+    "native": "009267F0",
+    "canonical": "008675E0",
+    "bytes_each": 147,
+    "normalized_sha256": "7a7f99386de970c318d0090129143e457858791f77808aa6cca34715bb2d0d57",
+    "calls": [
+      {
+        "offset": 76,
+        "opcode": "call",
+        "target": "00408720"
+      },
+      {
+        "offset": 97,
+        "opcode": "call",
+        "target": "00411700"
+      },
+      {
+        "offset": 120,
+        "opcode": "call",
+        "target": "00bf6885"
+      }
+    ],
+    "provider": "grow_effect_deletion_list_count_008675e0",
+    "source": "src/effect_deletion_queue.cpp"
+  },
+  "eh": {
+    "handler": "00CA6D58",
+    "canonical_handler": "00C94EA8",
+    "function_info": [
+      "00DDA008",
+      "00DC6D28"
+    ],
+    "unwind_map": [
+      "00DDA000",
+      "00DC6D20"
+    ],
+    "cleanup": [
+      "00CA6D50",
+      "00C94EA0"
+    ],
+    "cleanup_calls": [
+      {
+        "offset": 3,
+        "opcode": "jmp",
+        "target": "004072d0"
+      }
+    ],
+    "normalized_funcinfo_words": [
+      429065506,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "conclusion": "Matching full handler/FuncInfo/single-state unwind graph after identity normalization; same captured EBP-50 cleanup and shared4072D0 target."
+  },
+  "no_ghidra_function": [],
+  "function_definitions": "reports/pending_entity_library_function_definitions.json;CA6D58 formally defined and saved as10bytes after disk/live verification",
+  "validation": "All12spans match verified-live Ghidra reads and installed PE bytes. Full body instruction decodes consume complete spans; only relative operands and proven matching EH identities normalized.",
+  "limits": [
+    "No new STL body implementation. Existing canonical provider source is reused.",
+    "Native exception ABI/transport is not established by static EH graph identity.",
+    "Runtime producer composition remains a separate check."
+  ]
+}

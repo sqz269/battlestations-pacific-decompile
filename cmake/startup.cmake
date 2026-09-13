@@ -13,6 +13,7 @@
 #
 # The integrator folds entries into CMakeLists.txt when the owning packet closes.
 cmake_minimum_required(VERSION 3.19)
+# Native pending entity cancellation 00925A00; explicit external removal provider.
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/native_input_action_binding_runtime.cpp")
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/native_input_action_configuration.cpp")
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/native_input_class_configuration.cpp")
@@ -57,6 +58,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_enume
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_settings_lifetime.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_settings_startup.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_settings_tables.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_settings_vector_storage.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_joystick.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_keyboard_mouse.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_lua_objects.cpp src/native_shader_state_reader.cpp)
@@ -72,6 +74,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_physical_st
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_physical_stream_open.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_ref_counted.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_resource_cache_pair.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_lifecycle_notify.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_shader_state_definitions.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_vfs_derived_manager.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_vfs_factory_registration.cpp)
@@ -507,7 +510,9 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_cor
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_particle_type_state_dispatch.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_particle_unit_random.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_path_canonicalizer.cpp)
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_pending_entity_cancel.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_pending_entity_owners.cpp)
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_pending_entity_producers.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_physical_index_tree.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_physical_pending_records.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_physical_provider.cpp)
@@ -866,7 +871,6 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_gam
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/unit_gunnery_pass.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/unit_message_arms.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/unit_neighbour_fields.cpp)
-cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_settings_vector_storage.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_ambient_construction.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_scene_registry_storage_leaves.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_render_service_vector_cleanup.cpp)
