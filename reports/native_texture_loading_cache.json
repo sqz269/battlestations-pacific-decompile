@@ -73,10 +73,10 @@
     {
       "address": "00b2c2d0",
       "end_exclusive": "00b2c897",
-      "cpp_symbol": "load_native_texture_2d_00b2c2d0",
+      "cpp_symbol": "load_native_texture_00b2c2d0",
       "source": "src/native_texture_loading_cache.cpp",
       "original_abi": "ECX unused; stack name/nullable ECX callback; EAX logical texture; RET8",
-      "coverage": "common/2D source fragment only; cube/volume arms inventoried but unreconstructed; image-info failing/unwritten output excluded; required retry/callback bindings remain explicit",
+      "coverage": "Common, 2D, cube, volume and unsupported-resource normal source schedules in the actual-provider domain; persistent typed outputs/constructor child and same canonical count. Image-info failing/unwritten output excluded; reached retry/callback bindings remain required; not native FH3 ABI.",
       "native_sha256": "b9cde0abf2b8b2efd6bda382f436c26ce66aa1b19e73350e6a48030f5ad221b3",
       "native_byte_count": 1479,
       "live_matches_installed": true
@@ -145,6 +145,17 @@
       "coverage": "additional actual string-pool overload of existing full body; semantic overload preserved",
       "native_sha256": "89407e355f323828c0800e9a4e0686134ae6854a6d7973b8acb7bfb7bc974000",
       "native_byte_count": 221,
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b3f2d0",
+      "end_exclusive": "00b3f2da",
+      "cpp_symbol": "allocate_native_volume_texture_00b3f2d0",
+      "source": "src/native_texture_loading_cache.cpp",
+      "original_abi": "No stack arguments; incoming ECX size ignored/overwritten with 0108DBA8; tail JMP B3ED40; EAX raw slot",
+      "coverage": "Complete two-instruction normal body using the same borrowed actual volume-pool companion.",
+      "native_sha256": "805a4ecb22eafcfadb9b0228c1b6cf07a59eac39e26f4bab58b719c7a7b6372d",
+      "native_byte_count": 10,
       "live_matches_installed": true
     }
   ],
@@ -1147,6 +1158,13 @@
       "function": "00b2ff00",
       "native": "00bf6989",
       "instruction": "call 0xbf6989"
+    },
+    {
+      "address": "00b3f2d5",
+      "function": "00b3f2d0",
+      "native": "00b3ed40",
+      "kind": "tail_jump",
+      "instruction": "jmp 0xb3ed40"
     }
   ],
   "dispatch_evidence": {
@@ -1172,7 +1190,6 @@
   },
   "limits": [
     "No original image execution, binary ABI, native FH3, game or full Text success claim.",
-    "B2C2D0 cube B3CED0 and volume B3CFA0 named-owner constructors remain explicit retained boundaries; inventory contains their calls but source does not claim those arms.",
     "Resolver BDF4C0, retry B29670 and nonzero post-load word require actual same-manager/current-renderer body bindings; no fake success fallback.",
     "Real D3DX image-info failure can leave native output unwritten; source retains memory and rejects that domain. Native HRESULT acceptance with nonnull create output is preserved.",
     "BEF750 is existing complete actual conversion without an acquired subframe for its internal failure. This packet preserves its input and returned memory identities but does not claim recovery of its hidden partial allocations.",
@@ -1180,7 +1197,8 @@
     "Failed acquired frames must remain alive until actual resources are externally resolved; destructors terminate on unresolved frames, and no retry or implicit native rollback exists.",
     "Record copies never retain resources. B319B0 fresh flag0 returns the original loader count; B31BD0 bootstrap flag1 adds one; hot hits add one. Teardown B316C0 invokes registry release for rows; no extra source-side cache count was invented.",
     "Canonical metadata callbacks must be transactional and the registry/domain must outlive actual resources. Companion terminal unbinds after complete actual destruction.",
-    "Original registry B31DA0/B316C0 teardown is not newly routed through canonical TextureLoadOwners by this packet; complete renderer shutdown must supply that composition before retiring these bindings."
+    "Original registry B31DA0/B316C0 teardown is not newly routed through canonical TextureLoadOwners by this packet; complete renderer shutdown must supply that composition before retiring these bindings.",
+    "Cube/volume normal successful loads and transactional metadata-bind failure are fixture-tested with real HAL/D3DX9_40, actual VFS/physical HANDLE/memory conversion and native terminals. This does not execute original B2C2D0, full cache resolution/bootstrap, device retry, 2D callback, native FH3 or game behavior."
   ],
   "validation": {
     "registered_build": {
@@ -1262,5 +1280,71 @@
       "local/texture-resolution-failure-registered-probe.log": "b528a52f24b4d8a3c0259d3855e2121591d535cfa30808237a77d1a8c589c8a3"
     },
     "limits": "Production record/holder fixtures pass. Throwing resolver is diagnostic injection; no actual successful texture-cache or GPU load is claimed."
+  },
+  "special_loading_extension": {
+    "packet": "orch5_texture_special_loading",
+    "baseline": "072a4132",
+    "old_analysis_name_00b3f2d0": "CG_static_dtor_stub_00b3f2d0",
+    "annotation_status": "Repository evidence/name ledger only; primary must preserve live comments, annotate and export under write lock.",
+    "native_byte_pins": "local/special-loading-native-byte-pins.json",
+    "actual_domains": "SAME canonical registry/count and existing cube/volume/2D owner contexts, string pool, notification, retained memory, renderer profile and shared serial.",
+    "native_schedule": "Capture device before image-info; each special attempt rereads memory size then base; actual four-argument D3DX import; nonnull typed COM output before native slot allocation; named constructor; source B23640 at cube+2C/volume+30; canonical metadata without retain; optional guard leave at B2C82E BEFORE common memory release at B2C837.",
+    "failure_contract": "Required native retry/imports remain boundaries; output/raw slot/constructor child/creator/source/companion are retained as reached. Transactional bind failure leaves unbound companion and actual resources; explicit external cleanup only; no replay or automatic rollback.",
+    "compatibility": "Optional borrowed special contexts and trailing import fields preserve existing 2D source callers. Former 2D loader spelling forwards the exact arguments and acquisition to generic resource dispatch.",
+    "validation": {
+      "registered_build": {
+        "command": "./scripts/build.ps1",
+        "log": "local/special-loading-build.log",
+        "exit_code": 0,
+        "ctest": "1/1 reconstructed_math",
+        "evidence": "Retained uninterrupted-worker PASS log; source/header/registry precede built library and are pinned unchanged at finalization."
+      },
+      "fixture": {
+        "source": "local/special_loading_probe.cpp",
+        "runner": "local/special_loading_runner.cmd",
+        "log": "local/special-loading-probe.log",
+        "exit_code": 0,
+        "coverage": "Generated cube 8x8x6 and volume 8x4x2 DDS files loaded through actual VFS/physical HANDLE/BEF750/installed D3DX9_40; actual named constructors and +04 canonical counts; source retention; shared serial wrap; native B3F410/B3F430 terminals; zero COM/memory counters and actual pool/type/string shutdown. Real volume load followed by injected transactional metadata-bind failure retains resources until explicit actual cleanup.",
+        "original_loader_execution": false,
+        "game_validated": false,
+        "setup": "Raw mount/provider/renderer preimages; actual CD8FC0/CD9030 stream type IDs with TypeIdCounterLifetime/root descriptor and SAME physical context. Read-only original D1/D5/D6 numeric table pages mapped before GUI DLL loads using linker /DELAYLOAD:user32.dll and /DELAYLOAD:d3d9.dll; /MANIFEST:EMBED."
+      },
+      "call_verifier": {
+        "log": "local/special-loading-call-verification.log",
+        "checked": 145,
+        "failed": 0,
+        "direct_calls": 140,
+        "tail_jumps": 1,
+        "resolved_indirect": 4,
+        "symbolic_indirect_unchecked": 19
+      }
+    },
+    "sha256": {
+      "src/native_texture_loading_cache.cpp": "708020170abaf5a9bc22f522843dd766a97e67617f4716227d852fdd1a63e03c",
+      "include/bsp/native_texture_loading_cache.hpp": "dc142e19b3565df24bd6a88b7e495a56c9c1e47dd67512824e34ca1b2f63773d",
+      "src/native_named_special_textures.cpp": "73267086543b780a967d9432358d2ac5b4e352bf11a2f4532c4dd20e3c6f4e1a",
+      "include/bsp/native_named_special_textures.hpp": "e45d4b6240621387599ecf4e0d27d65e1f3abe4d6528d761d58db5df4e6f043e",
+      "cmake/startup.cmake": "d72188ba2d982692f2eebbf80485a2087d185e4ce71924bbca3f6832cb56beec",
+      "scripts/build.ps1": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c",
+      "local/special_loading_probe.cpp": "7dac6a3df1b94c7ea31a77a9506ed500162184beb8389ead801c44023b7739a2",
+      "local/special_loading_runner.cmd": "3b75f78dea72d45a2db410fbd0665537863c8ae8e573334021e824b65a1b2d8c",
+      "local/special-loading-build.log": "d3ef3198416c4ea946e48830fcf9ae036ae65f2d7c269f908cccb86cf76e3a98",
+      "local/special-loading-probe.log": "e620588dc6f7681c7268c77951df593dbcfe2b40c470eb254337a87785451850",
+      "local/special-loading-native-byte-pins.json": "76294850f2517d32038bbd91c205d50e51a5394c85b288087ed974d86d2020c6",
+      "local/special-loading-b2c2d0-live-bytes.txt": "dfd8c9e29bc7d311a180aec79c7e40fa982bc607dbbd4744e5f2d1c1aa4775db",
+      "local/special-loading-b3f2d0-live-bytes.txt": "c32120347d654dc869b8258e61e188a9a4ca38718dae1a883f9f2899f678303b",
+      "local/special-loading-b3f2d0-disasm.txt": "068c15c45c2b995652dee035efe06b071c56534db096d219a84db804f283cb25",
+      "local/special-loading-b3f2d0-proto.txt": "a2b931d0f88f689debcd099211436c7cceb45fe9ebd5714a5a27e0a38ff40e2e",
+      "local/special_loading_probe.exe": "0b8d12a79e169516bc6fdb70fe1e844c72a955871b605b947cf4120bacf213d6",
+      "local/special_cube.dds": "49cb2ab1a5ad360b84345a30b60ff31c8e45cc29b4b14381037e450eda842a8c",
+      "local/special_volume.dds": "fc12efbd6fcbb2f1bd93da689ded571a8e371dadc77d117898307488fec06a81",
+      "build/win32/Release/bsp_core.lib": "603bfd76c55e734e96bbb6bfa7a88658831b9b166d1fc44ecd37146943abfe97",
+      "local/special-loading-call-verification.log": "40bfd2f8fab96959b6dfee74dafae96bc4aa485c8201ab3f9917872d533a91af",
+      "docs/NATIVE_TEXTURE_LOADING_CACHE.md": "dadfca4f99dfbf758bc51fb8c81d831c4a84cd31a7f4fe94ecb6d528910d8098"
+    },
+    "limitations": [
+      "Cube/volume normal successful loads and transactional metadata-bind failure are fixture-tested with real HAL/D3DX9_40, actual VFS/physical HANDLE/memory conversion and native terminals. This does not execute original B2C2D0, full cache resolution/bootstrap, device retry, 2D callback, native FH3 or game behavior.",
+      "Image-info failure with unwritten output remains excluded. Null allocation would reach native null-plus-source store; source retains resources and rejects that domain. BEF750 internal failure acquisitions remain outside this frame. Guard-enabled reentry and retry/error output combinations were assembly-reviewed, not executed by this fixture."
+    ]
   }
 }

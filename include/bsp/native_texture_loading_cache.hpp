@@ -3,6 +3,7 @@
 #include "bsp/d3d9_texture.hpp"
 #include "bsp/gui_native_geometry.hpp"
 #include "bsp/native_texture_2d_owner.hpp"
+#include "bsp/native_named_special_textures.hpp"
 #include "bsp/native_render_resource_record.hpp"
 #include <memory>
 
@@ -71,6 +72,8 @@ struct NativeTextureLoadAcquired final {
     bool memory_release_started{};
     IDirect3DDevice9* captured_device{};
     IDirect3DTexture9* texture{};
+    IDirect3DCubeTexture9* cube_texture{};
+    IDirect3DVolumeTexture9* volume_texture{};
     HRESULT last_hresult{};
     std::uint32_t resource_type{};
     void* raw_slot{};
@@ -81,25 +84,44 @@ struct NativeTextureLoadAcquired final {
     RenderCommandReference* companion{};
     void* owner_record{};
     bool registered{};
+    NativeNamedSpecialTextureAcquired special_constructor;
+};
+
+// Borrow the existing actual cube/volume owner contexts, SAME notification,
+// memory and shared serial domains as the 2D owner, and original numeric tables.
+// Optional only while no cube/volume operation is reached; no private pools.
+struct NativeTextureSpecialOwnerContexts {
+    NativeCubeTextureOwnerContext& cube;
+    NativeNamedVolumeTextureContext& volume;
+    const volatile std::uint32_t* profile_00d61870;
+    const volatile std::uint32_t* profile_00d618b0;
 };
 
 // Stable companions use the application's SAME canonical registration and
 // actual +04 counter. A creator is published before companion registration;
-// bind failure does not release it. Destruction runs actual B3F590, then
+// bind failure does not release it. Current-profile destruction runs actual
+// B3F590, B3F410 or B3F430, then
 // unbinds and retires that single companion. No second cache or owner map.
 class NativeTextureLoadOwners final {
 public:
     NativeTextureLoadOwners(GuiNativeGeometryOwners&, NativeTexture2DOwnerContext&,
-        const volatile std::uint32_t* profile_00d61948);
+        const volatile std::uint32_t* profile_00d61948,
+        NativeTextureSpecialOwnerContexts* = nullptr);
     ~NativeTextureLoadOwners();
     NativeTextureLoadOwners(const NativeTextureLoadOwners&) = delete;
     NativeTextureLoadOwners& operator=(const NativeTextureLoadOwners&) = delete;
     void register_completed_creator(NativeTextureLoadAcquired&);
     NativeTexture2DOwnerContext& texture_context() noexcept;
+    NativeTextureSpecialOwnerContexts& special_contexts();
 private:
     struct Impl;
     std::unique_ptr<Impl> impl_;
 };
+
+using CreateNativeCubeTextureFromMemory = HRESULT (WINAPI *)(IDirect3DDevice9*,
+    const void*, UINT, IDirect3DCubeTexture9**);
+using CreateNativeVolumeTextureFromMemory = HRESULT (WINAPI *)(IDirect3DDevice9*,
+    const void*, UINT, IDirect3DVolumeTexture9**);
 
 struct NativeTextureLoadingContext {
     ActualNativeStringPoolStorage& strings;
@@ -121,6 +143,10 @@ struct NativeTextureLoadingContext {
     void (*retry_device_00b29670)(void*, const void* current_renderer);
     void (*post_load_callback)(void*, std::uint32_t captured_target, void* texture);
     NativeTextureCacheContext* cache{};
+    // Actual C2DFE0/CE2404 and C2DFDA/CE2408 D3DX imports. Required at their
+    // reached arm only. Four stdcall arguments, SAME previously captured device.
+    CreateNativeCubeTextureFromMemory create_cube_texture_00c2dfe0{};
+    CreateNativeVolumeTextureFromMemory create_volume_texture_00c2dfda{};
 };
 
 struct NativeTextureCacheContext {
@@ -182,10 +208,17 @@ void* load_native_cached_texture_00b30b40(void* registry, const void* name,
 void* load_native_renderer_texture_00b319b0(void* renderer, const void* name,
     std::uint32_t post_load_word, NativeTextureCacheContext&,
     NativeTextureCacheAcquired* acquired = nullptr);
-// B2C2D0 common and 2D arms, unused ECX, name/nullable callback stack, RET8.
-// Actual VFS open/BEF750, real D3DX imports, actual B3F930 and retained source.
-// Cube/volume named constructors remain explicit retained source boundaries.
+// B3F2D0: ignores incoming ECX size word, selects actual108DBA8 and tails
+// B3ED40. Borrow that same volume pool companion; no new static binding/pool.
+void* allocate_native_volume_texture_00b3f2d0(D3D9SurfacePool& actual_volume_pool);
+// B2C2D0 common/2D/cube/volume arms, unused ECX, name/callback stack, RET8.
+// Actual VFS/BEF750, D3DX imports, native owner construction and retained source.
+// Cube/volume do not execute the nullable 2D-only callback or quality policy.
 // D3DX image-info failure with unwritten output is outside this source domain.
+void* load_native_texture_00b2c2d0(const void* name, std::uint32_t post_load_word,
+    NativeTextureLoadingContext&, NativeTextureLoadAcquired&);
+// Source-compatible spelling retained for existing reconstructed cache callers;
+// forwards the same arguments/frame and has the same resource-type dispatch.
 void* load_native_texture_2d_00b2c2d0(const void* name, std::uint32_t post_load_word,
     NativeTextureLoadingContext&, NativeTextureLoadAcquired&);
 } // namespace bsp
