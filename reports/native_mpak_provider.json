@@ -1,6 +1,6 @@
 {
   "packet": "orch2_native_mpak_provider_ay",
-  "status": "complete_actual_storage_strict_win32_and_independent_review_fixture_pending",
+  "status": "complete_actual_storage_strict_win32_independent_assembly_review_and_generated_native_source_fixture",
   "source": "src/native_mpak_provider.cpp",
   "header": "include/bsp/native_mpak_provider.hpp",
   "documentation": "docs/NATIVE_MPAK_PROVIDER.md",
@@ -639,9 +639,9 @@
   },
   "validation": {
     "strict_win32": {
-      "commit": "c4ec22e5def2f10118ee7e42d2bfdd1d03899e55",
-      "log": "J:\\PROG\\battlestations-pacific-decompile-orch2-20260910\\local\\native-ay-integrated-build01.log",
-      "sha256": "a603f39eb26e2c3e1b2553de26de0748e2f1c190894166231a5aa1362ae09ab8",
+      "commit": "7665d4eb69556b3a88c6b7cf857749037e521a11",
+      "log": "local/native-ay-integrated-build02.log",
+      "sha256": "4b13cc0c0eb7f0d93e2aeba0267e82358163b53de4f1b6770dc6a7d70f2c732f",
       "result": "passed"
     },
     "ctest": {
@@ -652,17 +652,81 @@
       ],
       "count": 2
     },
-    "native_source_fixture": "pending",
+    "native_source_fixture": {
+      "family": "provider",
+      "attempt": "local/native-ay-integrated/provider/attempt03",
+      "manifest_execution_head": "7665d4eb69556b3a88c6b7cf857749037e521a11",
+      "source_repo": "J:\\PROG\\battlestations-pacific-decompile-orch2-20260910",
+      "before_sha256": "026d6998746175f7538acd044048d8f467d4d3fdf9c1bfd6ce4527a7cd090a3d",
+      "after_sha256": "9dc76c318699300b6dcdee0606f9d6c22bbd414889e3c86f2e4ed507cf49025a",
+      "native_source_comparisons_or_states": 3,
+      "checks": 3484,
+      "source_only_cases": 1,
+      "reconstructed_complete_bodies": 9,
+      "reconstructed_native_bytes": 2418,
+      "frozen_inputs": 757,
+      "physical_files": 767,
+      "linked_objects": 125,
+      "binary_pairs": [
+        {
+          "case": 0,
+          "native": "case_0_native.bin",
+          "source": "case_0_source.bin",
+          "bytes": 1328,
+          "sha256": "cf708a5618a5055a9278e82db1876fcc73a6011a561fee8514373fed0f89718d",
+          "source_sha256": "cf708a5618a5055a9278e82db1876fcc73a6011a561fee8514373fed0f89718d",
+          "equal": true
+        },
+        {
+          "case": 1,
+          "native": "case_1_native.bin",
+          "source": "case_1_source.bin",
+          "bytes": 1348,
+          "sha256": "a6ce7c90dab1433e2ef4f5c80d292e305ffe1b1141eb97062898d65ace8d848d",
+          "source_sha256": "a6ce7c90dab1433e2ef4f5c80d292e305ffe1b1141eb97062898d65ace8d848d",
+          "equal": true
+        },
+        {
+          "case": 2,
+          "native": "case_2_native.bin",
+          "source": "case_2_source.bin",
+          "bytes": 148,
+          "sha256": "9dd86edc685c313aad394855f5fb7a78d21bd5650d0d5a92a4517a33142f7bf4",
+          "source_sha256": "9dd86edc685c313aad394855f5fb7a78d21bd5650d0d5a92a4517a33142f7bf4",
+          "equal": true
+        }
+      ],
+      "core_library_sha256": "6a2ce7c28bc5499f818da889dee7624a5dd144d1809e0d58ddf3684296c322d5",
+      "provider_scope": "nine reconstructed provider/parser/destructor/cache bodies; generated populated archives and actual raw lifetime owners",
+      "source_only_scope": "first-read exception retains held lock and opened stream, releases provider allocation/base",
+      "oracle_scope": "52 original STL or support spans, 6523 bytes, outside reconstructed provider coverage; normal operations called on both sides",
+      "original_STL_or_support_oracle_bodies": 52,
+      "original_STL_or_support_oracle_bytes": 6523,
+      "source_only_output_bytes": 204,
+      "generated_archive": {
+        "files": 3,
+        "offsets": 6,
+        "directories": 2,
+        "members": 5
+      },
+      "failed_attempts_retained": [
+        "local/native-ay-integrated/provider/attempt01",
+        "local/native-ay-integrated/provider/attempt02"
+      ],
+      "failure_correction": "Harness omitted CE2220 InterlockedDecrement binding. AV located at imported thunk 00A056E8; attempt03 binds the verified actual Win32 import. Production source unchanged."
+    },
     "call_rows": {
       "direct_checked": 62,
       "failed": 0,
       "indirect_manually_reviewed": 7
-    }
+    },
+    "native_overlap_copy_execution": false
   },
   "limitations": [
     "Original STL implementations remain explicit contracts, not reconstructed source.",
     "New C++ interfaces are not drop-in ABI/FH3 replacements.",
     "No native FH3/SEH, arbitrary stack-spill alias, simultaneous cleanup failure or short-read indeterminate-byte proof.",
-    "No installed archive fixture or gameplay validation."
+    "No installed archive fixture or gameplay validation.",
+    "BF7680 backward-overlap correction is assembly-reviewed; fixture binds host CRT memmove on both sides and does not independently execute that original library copy."
   ]
 }

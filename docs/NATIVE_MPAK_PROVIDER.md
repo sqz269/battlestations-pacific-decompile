@@ -147,12 +147,23 @@ created.
 
 ## Validation boundary and follow-up packets
 
-Validation results are recorded in `reports/native_mpak_provider.json` and
-`reports/native_ay_integration.json` after execution. Until populated there,
-the new provider source is not claimed build-tested or fixture-tested. Original
+The strict Win32 build and both CTests passed at source commit `7665d4eb`.
+The sealed generated provider fixture passed three native/source comparisons
+with 3,484 checks, plus one source-only first-read exception case. Independent
+output decoding checked three files, six offsets, two directories, five member
+names, current-cursor reload after allocation, and canonical raw lifetime drain.
+The nine provider bodies total 2,418 bytes. The 52 original STL or support spans
+(6,523 bytes) execute as explicit library oracles shared by both fixture sides;
+they are outside reconstructed provider coverage. Results and physical input
+hashes are in `reports/native_mpak_provider.json` and
+`reports/native_ay_integration.json`.
+
+The first two provider attempts remain sealed harness failures: the destructor
+reached an unbound `InterlockedDecrement` import. The successful third attempt
+binds the verified Win32 operation; no production change was required. Original
 FH3/SEH, simultaneous cleanup exceptions, arbitrary aliases into native stack
-spills, short-read indeterminate stack bytes, original STL binary identity and
-gameplay are not established by source compilation or generated fixtures.
+spills, short-read indeterminate stack bytes, an independent execution of the
+original backward-overlap copy, installed archives and gameplay remain unproven.
 
 Follow-up work includes a concrete compatible library binding for the three
 STL insertion specializations and vector destructors; provider lookup/open
