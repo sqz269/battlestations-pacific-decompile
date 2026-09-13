@@ -8,7 +8,7 @@ bytes. Existing ledger identities and prior reconstruction evidence remain;
 two analysis-only EH definitions add no normal-body count.
 
 Reviewed source `72d5e9199db74bee41f8933bb7cf53d543564ec0` was merged with main.
-Exact combined source `eedda791230482a4ac7ccd26a6d1f214b72bd6ba` passed the strict Win32 build, both
+Exact combined source `927c45a032828a09be40e18a98247d3796b20953` passed the strict Win32 build, both
 existing CTests and five probes linked only to the three current libraries.
 All 27 original signatures and complete stored ranges were saved and verified;
 all 42 numeric call rows pass.

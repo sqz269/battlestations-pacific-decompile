@@ -1,5 +1,5 @@
 {
-  "tested_commit": "eedda791230482a4ac7ccd26a6d1f214b72bd6ba",
+  "tested_commit": "927c45a032828a09be40e18a98247d3796b20953",
   "reviewed_source_commit": "72d5e9199db74bee41f8933bb7cf53d543564ec0",
   "source_header_hashes": {
     "src/native_camera_axes.cpp": "ebd5fb40eeee382a88e7f575546985c2d7fde5c98dba6fd4629138a863bdb103",
@@ -14,7 +14,7 @@
     "include/bsp/native_render_service_parameters.hpp": "e77c0c49073c6b525672a187701efffaa5d3a2c2077d2e59e9f227f86e0aa27a"
   },
   "library_sha256": {
-    "bsp_core.lib": "05c9029ca6d911b649bab073353b9e84c65eea25b8056d7ca291ee5fc28f9b4c",
+    "bsp_core.lib": "7d7fe323af3fcee4645c888b56097249bbd12e24a737c9ceea82db9119eb3b53",
     "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
     "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
   },
@@ -22,7 +22,7 @@
   "build_log": "local/az-final-combined-build.log",
   "existing_ctests_passed": 2,
   "current_library_replays": {
-    "commit": "eedda791230482a4ac7ccd26a6d1f214b72bd6ba",
+    "commit": "927c45a032828a09be40e18a98247d3796b20953",
     "source_header_sha256": {
       "src/native_camera_axes.cpp": "ebd5fb40eeee382a88e7f575546985c2d7fde5c98dba6fd4629138a863bdb103",
       "include/bsp/native_camera_axes.hpp": "f07d649a1ac4575a8d4f7061106800a28d4b2c8c4641a70fc879da206b3baa0b",
@@ -37,7 +37,7 @@
     },
     "passed": true,
     "libraries": {
-      "bsp_core.lib": "05c9029ca6d911b649bab073353b9e84c65eea25b8056d7ca291ee5fc28f9b4c",
+      "bsp_core.lib": "7d7fe323af3fcee4645c888b56097249bbd12e24a737c9ceea82db9119eb3b53",
       "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
       "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
     },
@@ -97,9 +97,9 @@
           "/DYNAMICBASE"
         ],
         "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\az-current-camera.log",
-        "log_sha256": "b38ba8dd62fd91d563bc89cb5e399c149078e93c4a043246c50436f4d02cf8e5",
+        "log_sha256": "76fcebb5925f3134a74053ececffdfd7e3920323d5b70f436a0a739b1960639b",
         "executable": "C:\\Users\\sqz269\\bsp-az-camera-axes\\az_current_camera_probe.exe",
-        "executable_sha256": "7f3579245ae8ba08d4e3d1764781950c301a3bd2c33221da09a170a02d145eb0",
+        "executable_sha256": "d62a957e6e2fbaa12fed9e47a5f5e4e88bc76fe3b90a4ea728e333d87d0215ca",
         "attempts": 1,
         "retry_policy": "none",
         "pass_lines": [
@@ -172,7 +172,7 @@
         "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\az-current-slots.log",
         "log_sha256": "43a79b4cced36ce5f4de57e2f5160f27c62ddba1023c39833650ea075fabb8f9",
         "executable": "C:\\Users\\sqz269\\bsp-az-system-parameter-slots\\az_current_slots_probe.exe",
-        "executable_sha256": "60ba03732a17f79847111fb3800a23a46512c5886fd600b707ff43cbb43c6a5b",
+        "executable_sha256": "d8ebd5c2c03ecee5af1c5f2513893513aff7dfc3b4643ebe8790cbbf8a05f538",
         "attempts": 1,
         "retry_policy": "none",
         "pass_lines": [
@@ -239,7 +239,7 @@
         "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\az-current-fog.log",
         "log_sha256": "dd79fbf3d03e180100297c10d685fba0dbceb605e7dbfa7b0b79bbd0862c3de2",
         "executable": "C:\\Users\\sqz269\\bsp-az-fog-access\\az_current_fog_probe.exe",
-        "executable_sha256": "44de63c4e27e46c56945057f39289781939467ffabdd39b96d027eeed86ab7f3",
+        "executable_sha256": "81b2c2124e6d727444ab1c4f52fa7ab38edb9f132478cd843e368a602b960bba",
         "attempts": 1,
         "retry_policy": "none",
         "pass_lines": [
@@ -331,7 +331,7 @@
         "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\az-current-base.log",
         "log_sha256": "6e8c4e1a068bac684736378b1b1f50ac3d86e8c15d2950d4246cb87e5d440c0f",
         "executable": "C:\\Users\\sqz269\\bsp-az-render-service-base\\az_current_base_probe.exe",
-        "executable_sha256": "b1756d5bb75421993b259f0900700aa52b877f214e4f7ccddfcf9fa8d7371cd1",
+        "executable_sha256": "7c6f808fde4fc3fbec7fe14bb2771f89ebf5be92eaaa38d62a7a256f2746ecd5",
         "attempts": 1,
         "retry_policy": "none",
         "pass_lines": [
@@ -343,8 +343,8 @@
           "generator": "C:\\Users\\sqz269\\bsp-az-render-service-base\\reserve_image_section.py",
           "generator_sha256": "44afce6ef45359a9369f31dbb1b9fb73dbb3f8877eb4c5cd31f3d630ee73a1d8",
           "record": {
-            "input_sha256": "35f873272f4ea704ac071674a3309605d09363a837db50f5f8811e019cf60c7a",
-            "output_sha256": "b1756d5bb75421993b259f0900700aa52b877f214e4f7ccddfcf9fa8d7371cd1",
+            "input_sha256": "78f9142f2e5e63d16e4ca26a95a1fdd228ac91583e5712c25f80f9ecb5afcdb7",
+            "output_sha256": "7c6f808fde4fc3fbec7fe14bb2771f89ebf5be92eaaa38d62a7a256f2746ecd5",
             "image_base": "00400000",
             "section_name": ".azbase",
             "section_rva": "0000b000",
@@ -370,7 +370,7 @@
             "existing_section_bytes_unchanged": true,
             "process_memory_mutation": "none by generator; OS loader maps this fixture-owned image section before startup; probe verifies MEM_IMAGE ownership before protection changes and writing fixture bytes"
           },
-          "report_sha256": "c55df3aac23eeca4b5e2535c1ffdd56210e81c4a4390a0e932a3646ed83fcda3"
+          "report_sha256": "b258b43c1a90d68190c0ea41bc435f5187e65e7d4ad3383529c7a4771baaf3ec"
         }
       },
       {
@@ -429,7 +429,7 @@
         "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\az-current-parameters.log",
         "log_sha256": "767bf3b191b9e3ed7a89ef2178209a766c27a32afd2dab585da0b07708c9cf3a",
         "executable": "C:\\Users\\sqz269\\bsp-az-render-service-parameters\\az_current_parameters_probe.exe",
-        "executable_sha256": "513a6c7206a9aeb6c6ec4c14de737b1c17ffe1b75b135fa74e46409ebdce42d5",
+        "executable_sha256": "b6169327a0aa1095cde012fbcdcdf28db0f446a58e2b16fd168570df8fdc5dd1",
         "attempts": 1,
         "retry_policy": "none",
         "pass_lines": [
