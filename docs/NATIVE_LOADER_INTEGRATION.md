@@ -1,46 +1,44 @@
-# Native compiler and texture integration checkpoint
+# Native loader integration
 
-Addresses: 00B43B00, 00BDF4C0, 00B26500, 00B265C0, 00B26680, 00B3C3A0, 00B354D0, 00B35930, 00B3A7E0, 00B3B3C0, 00B319B0, 00B30B40, 00B31BD0, 00B31C20, 00B2C2D0
+Addresses: 00B43B00, 00BDF4C0, 00B26500, 00B265C0, 00B26680, 00B3C3A0, 00B354D0, 00B35930, 00B3A7E0, 00B3B3C0, 00B319B0, 00B30B40, 00B31BD0, 00B31C20, 00B2C2D0, 00B3B1E0, 00B3B260, 00B3CED0, 00B3CFA0
 
-The isolated `agent/orch5-20260911` branch combines the actual shader reader,
-VFS resolver and state caches with the recovered compiler builder/wrapper
-prefix and corrected texture-loading cache. The effect adapter publishes the
-actual compiler operation before work. Texture binding creates a distinct,
-persistent actual VFS operation for each invocation and checks both the actual
-string pool and current-manager publication slot. The cache fix keeps name
-headers alive through failed child teardown; consumed headers are preimages.
+Exact validated and promoted code: `b18f5477069e6db5da7e11a65ee527aefed3d7f0`.
+Seven previously deferred sources are now registered in `cmake/startup.cmake`.
+The normal `scripts/build.ps1` Win32 Release build with warnings as errors and
+both existing CTests passed, followed by seven focused fixtures against that
+exact combined library. All 824 direct and four resolved indirect numeric
+call rows passed; remaining indirect calls retain separate evidence.
 
-Exact validated code: `8bcdfac3299c82a89eb670b576091c17f38f4ba0`. MSVC Win32 Release with
-warnings as errors and both existing CTests passed. Five focused fixtures
-link against the combined `bsp_core`: original compiler builder/lifetime,
-original state caches, actual installed shader/VFS parsing, texture record
-growth, and deliberately injected resolver failure with persistent headers.
-All 788 direct and four resolved indirect call rows passed verification.
-Remaining indirect calls retain separate evidence.
+The batch combines the actual descriptor reader, VFS name resolver, state
+caches, compiler builder/wrapper prefix, texture cache, D61810 reflection-owner
+lifetime/arrays, and named cube/volume constructors. Persistent child operations
+publish before native work. The texture correction keeps actual name headers
+alive through failed resolver teardown; the shader array guard prevents silent
+discard of a failed operation's unpublished allocation. Compiler and texture
+bindings check their actual string and owner domains.
 
-The build uses a temporary additive source include under `local/` because
-another orchestrator's lease still covers `cmake/startup.cmake`. Five source
-registrations and promotion to main remain pending. This checkpoint does not
-claim a default registered build or a runnable reconstructed game.
+The fixtures cover original compiler builder/lifetime, state caches, installed
+shader/VFS parsing, texture record growth, deliberate resolver failure, actual
+shader-owner lifetime and a real-HAL named cube/volume comparison. Each keeps
+its original scope: actual full texture-cache loading, complete native compiler,
+native FH3 execution and gameplay are not established by these checks.
 
-Eighteen new function annotations were saved, read back and exported. Seven
-post-free gaps in B3A7E0 were repaired, then its full body was recreated through
-the B3AE9B return: 618 instructions, zero gaps. The 23 formerly unowned tail
-calls now pass verification. Five compiler comments also record this repair
-while preserving prior evidence. Compiler and texture worker artifacts were
-archived with hashes; their source-only texture import remains explicit.
+Saved Ghidra analysis includes the full compiler destructor through B3AE9B
+(618 instructions, zero gaps), the shader-owner destructor through B3B23C
+(28 instructions, zero gaps), and the reviewed post-free reserve/delete repairs.
+Annotations preserve prior values and comments; affected exports were refreshed.
+Reports and ignored immutable checkpoint archives pin sources, library hashes,
+original-byte inputs, fixture recipes/logs and saved-analysis journals.
 
 ## Follow-up packets
 
-Register the five sources after the external lease clears, then validate the
-exact merged commit before promotion. Complete the required compiler tail at
-B3B513/B3B536 using the actual D61810 reflection owner under review. Integrate
-the separately recovered named cube/volume constructors into the real texture
-loader and canonical ownership path. Retry/nonzero callbacks and renderer
-registry teardown remain explicit dependencies.
+The active workers are recovering actual shader reflection, unconditional
+vertex/pixel system-field appends, and cube/volume texture-loading branches with
+canonical companions. These are separate contracts within the remaining native
+compiler and texture path; they do not yet provide a complete cold effect load.
+Registry production, remaining field/source generation, callbacks and complete
+renderer teardown still require concrete reconstruction. The game rebuild and
+required gameplay validation remain unfinished.
 
-The new adapters have independent source review; their complete runtime
-composition is not fixture-tested. The resolver fault case uses a diagnostic
-throwing provider, not successful GPU/cache execution. Full cold effect load,
-original binary ABI and gameplay remain unvalidated. Detailed source, artifact
-and validation pins are in `reports/native_loader_integration.json`.
+`reports/native_loader_integration.json` is the current integration record.
+The earlier temporary-include checkpoints are historical and superseded.

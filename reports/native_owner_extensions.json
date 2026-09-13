@@ -1,0 +1,27 @@
+{
+  "packet": "orch5_owner_extensions_checkpoint",
+  "code_commit": "b18f5477069e6db5da7e11a65ee527aefed3d7f0",
+  "default_registered": true,
+  "promoted_to_main": true,
+  "worker_commits": {
+    "compiled_shader": "f862463677a079b9ad0977e6d54ab6e268cb4e8a",
+    "named_special": "c929c120d5ee74f832c5a07a842099dd6be8dc58"
+  },
+  "validation": "reports/native_loader_integration.json",
+  "source_sha256": {
+    "include/bsp/native_compiled_shader_owner.hpp": "90c998746a1b1ba47f97f53f10064bec273cf8cb0a06470adb73d1f94fa56199",
+    "src/native_compiled_shader_owner.cpp": "8526339b94c9dea0a78a098273fe3cc5a354e10353ada6c1e1d7ea24cdbfcc43",
+    "include/bsp/native_named_special_textures.hpp": "e45d4b6240621387599ecf4e0d27d65e1f3abe4d6528d761d58db5df4e6f043e",
+    "src/native_named_special_textures.cpp": "73267086543b780a967d9432358d2ac5b4e352bf11a2f4532c4dd20e3c6f4e1a"
+  },
+  "review": "Independent final-source acceptance; failed-operation disposal guard corrected before acceptance.",
+  "archive_manifests": {
+    "local/loader-native-workers/compiled-shader/manifest.json": "921396a4a3b0504b494ff4aaf16d3821dc50fa4c72a5302e97d657725d6bd0db",
+    "local/loader-native-workers/named-special/manifest.json": "531238502fdabe9b5d92340405db4a174b93ba19d026aaa5ba3f19344a3ce7f8"
+  },
+  "limitations": [
+    "Full reflection/compiler population is a separate packet.",
+    "Named constructors do not establish actual cache loading/canonical registration.",
+    "Original private FH3 and gameplay were not executed."
+  ]
+}

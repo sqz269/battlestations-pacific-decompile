@@ -1733,5 +1733,12 @@
     "combined_library_fixture": "local/native_material_program_probe.log",
     "combined_library_fixture_sha256": "d64dd1b4d601c8c42804aa5a1c43926572a61452c48821919b6226c2e5980a98",
     "fixture_limits": "Original/source constructor, field copies and complete normal destructor only; wrapper/compiler-tail/virtual child/failure paths not executed."
+  },
+  "integrated_validation": {
+    "code_commit": "b18f5477069e6db5da7e11a65ee527aefed3d7f0",
+    "default_source_registration": true,
+    "ctest_passed": 2,
+    "report": "reports/native_loader_integration.json",
+    "game_validated": false
   }
 }

@@ -17,7 +17,7 @@
     "build": "Win32 /W4 /WX combined bsp_core target through temporary additive CMAKE_PROJECT_INCLUDE passed",
     "ctest_passed": 2,
     "ctest_failed": 0,
-    "default_source_registration": false,
+    "default_source_registration": true,
     "adapter_runtime_fixture": false,
     "full_cold_effect": false,
     "abi_compatible": false,
@@ -26,12 +26,19 @@
     "log_sha256": "08593b90c9aa43b7cfac8375dc81431e824e30d7a39bd531b895fe4d368bc863",
     "review": "Independent source acceptance: compiler child published before work; distinct VFS children; actual string and manager-slot identity; borrowed contexts must survive retained failures."
   },
-  "pending": "Default source registration awaits external lease release, then default build and main promotion. Compiler native tail, complete cold effect and GPU texture cache remain open.",
+  "pending": "Complete mandatory compiler tail and runtime composition; no full cold-effect or texture-cache success claimed.",
   "texture_resolution": "bind_native_texture_vfs_name_resolution validates same actual pool and current-manager publication slot; factory creates one actual retained VFS operation per invocation.",
   "prior_integrated_checkpoint": {
     "code_commit": "c5e1427f80bef38c28277c22c437345856e37d52",
     "report": "reports/native_loader_integration.json",
     "default_registration_complete": false,
     "promoted_to_main": false
+  },
+  "integrated_validation": {
+    "code_commit": "b18f5477069e6db5da7e11a65ee527aefed3d7f0",
+    "default_source_registration": true,
+    "ctest_passed": 2,
+    "report": "reports/native_loader_integration.json",
+    "game_validated": false
   }
 }
