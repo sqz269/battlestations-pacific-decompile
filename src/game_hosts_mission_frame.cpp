@@ -23,6 +23,7 @@
 #include <stdexcept>
 
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_observer_runtime.hpp"
 #include "bsp/game_hosts_fixed_step.hpp"
 #include "bsp/game_hosts_hud.hpp"
 #include "bsp/game_hosts_lua.hpp"
@@ -108,9 +109,25 @@ struct GameMissionFrameHost::Impl {
         fixed_step->attach_subsystems(step_subsystems.get());
     }
 
+    ~Impl() { release_units(); }
+
+    void release_units() noexcept {
+        // HUD persists across frames; Lua persists until after this frame dies.
+        // Release every outward borrow before destroying the canonical slots.
+        if (hud != nullptr && units != nullptr) hud->detach_world_2k();
+        lua.attach_script_orders(nullptr);
+        if (step_subsystems != nullptr) step_subsystems->attach_units(nullptr);
+        if (units != nullptr) units->set_ship_ai(nullptr);
+        ship_ai.reset();
+        script_orders.reset();
+        world_host.reset();
+        units.reset();
+    }
+
     GameHostLog& log;
     GameVfsHost& vfs;
     GameMissionLuaHost& lua;
+    GameObserverRuntime* observer_runtime{nullptr};
     bsp::SessionParticipantPools& participants; // persistent GameMissionHost owner
     GameFrameProfiler* profiler{};
     std::string language;
@@ -1150,6 +1167,15 @@ GameMissionFrameHost::GameMissionFrameHost(GameHostLog& log, GameVfsHost& vfs,
 
 GameMissionFrameHost::~GameMissionFrameHost() = default;
 
+void GameMissionFrameHost::bind_observer_runtime(GameObserverRuntime& runtime) {
+    if (!runtime.has_live_dispatch_owner())
+        throw std::logic_error("mission frame observer binding requires a live dispatch owner");
+    if (impl_->observer_runtime != nullptr && impl_->observer_runtime != &runtime)
+        throw std::logic_error("mission frame observer runtime cannot change while the host lives");
+    if (impl_->units != nullptr) impl_->units->bind_observer_runtime(runtime);
+    impl_->observer_runtime = &runtime;
+}
+
 const GameMissionLoadRunSummary& GameMissionFrameHost::load_summary() const noexcept {
     return impl_->load;
 }
@@ -1339,6 +1365,7 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             continue;
         }
         if (method == "load_scene_contents") {
+            host.release_units();
             // 004d4df0 at 004e03e5. Milestone 2f recorded this step; it now runs
             // the reconstruction of the routine, which runs both scene-file
             // passes over the selected mission's .scn. Every host method inside
@@ -1368,6 +1395,8 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             // authored `Command` token is then queued, and the first created
             // instance becomes the controlled unit through 004c0890.
             host.units = std::make_unique<GameUnitsHost>(host.log, host.lua);
+            if (host.observer_runtime != nullptr)
+                host.units->bind_observer_runtime(*host.observer_runtime);
             // Milestone 2j: the gameplay settings singleton's rudder curve block
             // is filled before any unit exists, because 0083b5e0 runs from the
             // settings object's own construction and every ship reads the one

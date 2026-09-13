@@ -13,6 +13,7 @@
 #include "bsp/game_hosts_units.hpp"
 
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_observer_runtime.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
@@ -54,6 +55,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <exception>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -208,11 +210,17 @@ struct GameUnitWorldLists {
 
 struct GameUnitSlot {
     GameUnitSlot() {
+        // Partial projections of the two actual bases, not a whole unit ctor.
+        bsp::initialize_unit_observed_prefix_00925cff(observer_prefix);
+        bsp::initialize_unit_callback_prefix_00925d13(observer_prefix);
+        bsp::publish_scene_observer_tables_00925d44(observer_prefix);
         //00928713..00928748: current assignments, not the +188h policy table.
         for (std::int32_t& role : current_roles_01ac) role = bsp::kUnitRoleTableFill;
     }
 
     GameUnitRow row;
+    bsp::NativeUnitObserverPrefixStorage observer_prefix;
+    bool observer_prefix_ready{false};
     UnitMotionDispatch motion_dispatch;
     GameUnitWorldLists* world_parent_0030{};
     std::size_t process_index{}; // metadata, not a native unit field
@@ -305,6 +313,7 @@ struct GameUnitsHost::Impl {
 
     GameHostLog& log;
     GameMissionLuaHost& lua;
+    GameObserverRuntime* observer_runtime{nullptr}; // application-owned, borrowed
     // Milestone 2l: the weapon director of every created unit, and the three
     // message hops between the authored `Command` token and its command slot.
     GameCommandsHost commands;
@@ -1271,7 +1280,42 @@ private:
 GameUnitsHost::GameUnitsHost(GameHostLog& log, GameMissionLuaHost& lua)
     : impl_(std::make_unique<Impl>(log, lua)) {}
 
-GameUnitsHost::~GameUnitsHost() = default;
+GameUnitsHost::~GameUnitsHost() {
+    Impl& host = *impl_;
+    // Directors borrow units. Frame-level borrowers have already been released.
+    host.gunnery.reset();
+    if (host.observer_runtime == nullptr || host.slots.empty()) return;
+    if (!host.observer_runtime->has_live_dispatch_owner()) {
+        host.log.note("unit observer teardown requires the live application dispatch owner");
+        std::terminate();
+    }
+    std::size_t destroyed = 0;
+    for (const auto& slot : host.slots) {
+        // Withdraw lookup before lifetime callbacks can re-enter this host.
+        // Already borrowed aliases expire here; native array frees retain bytes.
+        slot->observer_prefix_ready = false;
+        // 0092589D precedes 009258AC: callback +10h, then observed +0h.
+        // The slot and all other endpoint owners remain alive throughout.
+        auto& lifetime = host.observer_runtime->lifetime();
+        lifetime.destroy_callback_owner_00695870(slot->observer_prefix.callback_10);
+        lifetime.destroy_observed_owner_00695760(slot->observer_prefix.observed_00);
+        ++destroyed;
+    }
+    host.log.notef("unit observer teardown: units=%zu callback_then_observed=1 live_owner=1", destroyed);
+}
+
+void GameUnitsHost::bind_observer_runtime(GameObserverRuntime& runtime) {
+    Impl& host = *impl_;
+    if (!runtime.has_live_dispatch_owner())
+        throw std::logic_error("unit observer binding requires a live dispatch owner");
+    if (host.observer_runtime != nullptr && host.observer_runtime != &runtime)
+        throw std::logic_error("unit observer runtime cannot change while the host lives");
+    for (const auto& slot : host.slots) {
+        if (!slot->observer_prefix_ready)
+            throw std::logic_error("unit observer binding requires a known native creator");
+    }
+    host.observer_runtime = &runtime;
+}
 
 void GameUnitsHost::load_gameplay_settings_0083b5e0() {
     Impl& host = *impl_;
@@ -1367,6 +1411,15 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         const bsp::VehicleClassDescriptorRow* kind = lua_row.found
             ? bsp::vehicle_class_kind_row(lua_row.type.c_str()) : nullptr;
         slot->motion_dispatch = unit_motion_dispatch(kind);
+        bsp::publish_game_entity_observer_tables_00928662(slot->observer_prefix);
+        slot->observer_prefix_ready = bsp::publish_unit_leaf_observer_tables_for_creator(
+            slot->observer_prefix, slot->motion_dispatch.creator);
+        if (host.observer_runtime != nullptr) {
+            if (!host.observer_runtime->has_live_dispatch_owner())
+                throw std::logic_error("unit creation requires the live bound observer owner");
+            if (!slot->observer_prefix_ready)
+                throw std::logic_error("unit observer creator projection is unavailable");
+        }
         host.log.notef("unit motion dispatch: unit=%s creator=%08lx tick_vtable=%08lx "
             "entry=%08lx coverage=%s", row.name.c_str(),
             static_cast<unsigned long>(slot->motion_dispatch.creator),
@@ -2326,6 +2379,29 @@ bool GameUnitsHost::unit_active(std::size_t index) const noexcept {
 
 const void* GameUnitsHost::unit_identity(std::size_t index) const noexcept {
     return index < impl_->slots.size() ? impl_->slots[index].get() : nullptr;
+}
+
+std::optional<bsp::NativeUnitObserverAlias> GameUnitsHost::observer_alias(
+    const void* identity) noexcept {
+    if (impl_->observer_runtime == nullptr ||
+        !impl_->observer_runtime->has_live_dispatch_owner()) return std::nullopt;
+    for (const auto& slot : impl_->slots) {
+        if (slot.get() == identity && slot->observer_prefix_ready)
+            return bsp::NativeUnitObserverAlias{slot.get(), slot->observer_prefix};
+    }
+    return std::nullopt;
+}
+
+const void* GameUnitsHost::unit_identity_from_observer(
+    const bsp::NativeObserverOwnerStorage* endpoint) const noexcept {
+    if (impl_->observer_runtime == nullptr ||
+        !impl_->observer_runtime->has_live_dispatch_owner()) return nullptr;
+    for (const auto& slot : impl_->slots) {
+        if (slot->observer_prefix_ready &&
+            (endpoint == &slot->observer_prefix.observed_00 ||
+                endpoint == &slot->observer_prefix.callback_10)) return slot.get();
+    }
+    return nullptr;
 }
 
 bool GameUnitsHost::unit_scene_node_flags(std::size_t index,
