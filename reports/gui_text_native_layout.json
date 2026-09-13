@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "orch5_text_native_layout",
-  "status": "implemented_initial_Win32_build_passed_combined_fixture_pending",
+  "status": "integrated_real_HAL_layout_and_canonical_retirement_fixture_checked",
   "generated_utc": "2026-09-13T04:41:48.851753+00:00",
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
@@ -89,8 +89,16 @@
   ],
   "validation": {
     "initial_build": "local/text-native-layout-build.log: Win32 Release /W4 /WX, 2 existing tests passed",
-    "combined_exact_commit": null,
-    "hardware_fixture": null
+    "combined_exact_commit": "943be54cd2dd956915d3d2d0d95004f7f5a026f3",
+    "hardware_fixture": {
+      "source_sha256": "DD536630252E2D6D3AE3FF4B45627EFEC880D3BCB43D3B392DEAC9BA21690F58",
+      "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\text-native-validation\\text_layout-run.log",
+      "exit_code": 0,
+      "log_sha256": "E3EAD271439E283A4F4922961F00F72F16E33B8DA59A09C06513F14FCA01F238",
+      "source": "local/text-native-workers/renderer/local/text_layout_probe.cpp",
+      "name": "text_layout"
+    },
+    "batch": "reports/gui_text_native_integration.json"
   },
   "limits": [
     "New C++ service ABI and host acquisition metadata; not a binary replacement or gameplay validation.",
