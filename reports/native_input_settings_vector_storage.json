@@ -1,0 +1,1795 @@
+{
+  "packet": "orch4_input_settings_vector_storage_au",
+  "status": "seven_vector_resize_and_two_nested_destructor_contracts_integrated_settings_strict_win32_native_differential_passed",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe"
+  },
+  "source": [
+    "src/native_input_settings_vector_storage.cpp",
+    "include/bsp/native_input_settings_vector_storage.hpp",
+    "src/native_input_settings_tables.cpp",
+    "src/native_input_settings_lifetime.cpp"
+  ],
+  "documentation": "docs/NATIVE_INPUT_SETTINGS_VECTOR_STORAGE.md",
+  "byte_spans": [
+    {
+      "address": "006a0db0",
+      "end_inclusive": "006a0e87",
+      "bytes": 216,
+      "sha256": "709aec5e0a4c911575be0f61d1bf3b9aa7068ad5a4c081e093cc9eb533985a94",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_006a0db0 at 006a0db0\nSignature: undefined FUN_006a0db0(void)\nEntry: 006a0db0\nBody: 006a0db0 - 006a0e87",
+      "returns": [
+        {
+          "site": "006a0e1e",
+          "operation": "ret",
+          "operand": "0x18"
+        },
+        {
+          "site": "006a0e85",
+          "operation": "ret",
+          "operand": "0x18"
+        }
+      ]
+    },
+    {
+      "address": "00492210",
+      "end_inclusive": "004922c2",
+      "bytes": 179,
+      "sha256": "1e28c1d05aebce48d2d5cfe33f3d68ebd26bc84dc5394b1b1fd1f94ce567c44e",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00492210 at 00492210\nSignature: undefined FUN_00492210(void)\nEntry: 00492210\nBody: 00492210 - 004922c2",
+      "returns": [
+        {
+          "site": "00492268",
+          "operation": "ret",
+          "operand": "8"
+        },
+        {
+          "site": "004922c0",
+          "operation": "ret",
+          "operand": "8"
+        }
+      ]
+    },
+    {
+      "address": "0049df50",
+      "end_inclusive": "0049dfd3",
+      "bytes": 132,
+      "sha256": "8aa3c204158ce8c52be70ec0e346a2b62448449077dac4e4b33fdad70edbd77d",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_0049df50 at 0049df50\nSignature: undefined FUN_0049df50(void)\nEntry: 0049df50\nBody: 0049df50 - 0049dfd3",
+      "returns": [
+        {
+          "site": "0049df82",
+          "operation": "ret",
+          "operand": "8"
+        },
+        {
+          "site": "0049dfd1",
+          "operation": "ret",
+          "operand": "8"
+        }
+      ]
+    },
+    {
+      "address": "0049e050",
+      "end_inclusive": "0049e143",
+      "bytes": 244,
+      "sha256": "f0c46828c6cf6e1095c57a394e9c4fdff0565405f6b07254f68a2a10a3256005",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_0049e050 at 0049e050\nSignature: undefined FUN_0049e050(void)\nEntry: 0049e050\nBody: 0049e050 - 0049e143",
+      "returns": [
+        {
+          "site": "0049e141",
+          "operation": "ret",
+          "operand": "0xc"
+        }
+      ]
+    },
+    {
+      "address": "006a6350",
+      "end_inclusive": "006a644c",
+      "bytes": 253,
+      "sha256": "0cd48b052eb368cadc2fc75e2337adc89dd77fb728419fb4542e93b718fa282f",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_006a6350 at 006a6350\nSignature: undefined FUN_006a6350(void)\nEntry: 006a6350\nBody: 006a6350 - 006a644c",
+      "returns": [
+        {
+          "site": "006a644a",
+          "operation": "ret",
+          "operand": "0x14"
+        }
+      ]
+    },
+    {
+      "address": "006a79a0",
+      "end_inclusive": "006a7a9c",
+      "bytes": 253,
+      "sha256": "3bddea2bc1bcb4ebc1a4e31da57ca0873b40e65d392e722de6c86172036b4b83",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_006a79a0 at 006a79a0\nSignature: undefined FUN_006a79a0(void)\nEntry: 006a79a0\nBody: 006a79a0 - 006a7a9c",
+      "returns": [
+        {
+          "site": "006a7a9a",
+          "operation": "ret",
+          "operand": "0x14"
+        }
+      ]
+    },
+    {
+      "address": "006a4710",
+      "end_inclusive": "006a47ef",
+      "bytes": 224,
+      "sha256": "9d5f1067c2f367fd682efa99dd471ba5c3bfd08c758d48c920356c0a4e1e97fb",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_006a4710 at 006a4710\nSignature: undefined FUN_006a4710(void)\nEntry: 006a4710\nBody: 006a4710 - 006a47ef",
+      "returns": [
+        {
+          "site": "006a47ed",
+          "operation": "ret",
+          "operand": "0x14"
+        }
+      ]
+    },
+    {
+      "address": "0069eea0",
+      "end_inclusive": "0069eed5",
+      "bytes": 54,
+      "sha256": "b7fbe0920d1de9e9e9c2e9f6055065b7a6cbc69ce294355ee4be9d3b78ca6eee",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_0069eea0 at 0069eea0\nSignature: undefined FUN_0069eea0(void)\nEntry: 0069eea0\nBody: 0069eea0 - 0069eed5",
+      "returns": [
+        {
+          "site": "0069eed3",
+          "operation": "ret",
+          "operand": "8"
+        }
+      ]
+    },
+    {
+      "address": "006a6ee0",
+      "end_inclusive": "006a6f27",
+      "bytes": 72,
+      "sha256": "d15a8b8857f4b92a1a42c53503be41da46354c29fbb5caa93061cb090bab1d99",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_006a6ee0 at 006a6ee0\nSignature: undefined FUN_006a6ee0(void)\nEntry: 006a6ee0\nBody: 006a6ee0 - 006a6f27",
+      "returns": [
+        {
+          "site": "006a6f25",
+          "operation": "ret",
+          "operand": "8"
+        }
+      ]
+    },
+    {
+      "address": "0069ff40",
+      "end_inclusive": "006a01e8",
+      "bytes": 681,
+      "sha256": "905a921aa645abe767ac9a761006ea439c102b25c005ca9b99e9b6520ae56e8b",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_0069ff40 at 0069ff40\nSignature: undefined FUN_0069ff40(void)\nEntry: 0069ff40\nBody: 0069ff40 - 006a01e8",
+      "returns": [
+        {
+          "site": "006a00f3",
+          "operation": "ret",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a019a",
+          "operation": "ret",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a01e6",
+          "operation": "ret",
+          "operand": "0x10"
+        }
+      ]
+    },
+    {
+      "address": "006a5c50",
+      "end_inclusive": "006a5ee3",
+      "bytes": 660,
+      "sha256": "5d23a4d9e34fa749980461669d86250a6006d8fd348e10edbd9733d7c76b455f",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_006a5c50 at 006a5c50\nSignature: undefined FUN_006a5c50(void)\nEntry: 006a5c50\nBody: 006a5c50 - 006a5ee3",
+      "returns": [
+        {
+          "site": "006a5ee1",
+          "operation": "ret",
+          "operand": "0x10"
+        }
+      ]
+    },
+    {
+      "address": "006a7690",
+      "end_inclusive": "006a7923",
+      "bytes": 660,
+      "sha256": "e847f290606df645b9803d0b79f27860351818d9d15e41a8f068fa52d29d29c4",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_006a7690 at 006a7690\nSignature: undefined FUN_006a7690(void)\nEntry: 006a7690\nBody: 006a7690 - 006a7923",
+      "returns": [
+        {
+          "site": "006a7921",
+          "operation": "ret",
+          "operand": "0x10"
+        }
+      ]
+    },
+    {
+      "address": "006a3d30",
+      "end_inclusive": "006a3fa3",
+      "bytes": 628,
+      "sha256": "dde703a7215e52d145e97588beec48756a8e284b39f1bc92b796178276a29a95",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_006a3d30 at 006a3d30\nSignature: undefined FUN_006a3d30(void)\nEntry: 006a3d30\nBody: 006a3d30 - 006a3fa3",
+      "returns": [
+        {
+          "site": "006a3fa1",
+          "operation": "ret",
+          "operand": "0x10"
+        }
+      ]
+    },
+    {
+      "address": "00441860",
+      "end_inclusive": "00441a13",
+      "bytes": 436,
+      "sha256": "0639a11928442c4a0417e7c16741dcd41ccff6ca043d76b8f1594a411f23cf79",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00441860 at 00441860\nSignature: undefined FUN_00441860(void)\nEntry: 00441860\nBody: 00441860 - 00441a13",
+      "returns": [
+        {
+          "site": "00441979",
+          "operation": "ret",
+          "operand": "0x10"
+        },
+        {
+          "site": "004419de",
+          "operation": "ret",
+          "operand": "0x10"
+        },
+        {
+          "site": "00441a11",
+          "operation": "ret",
+          "operand": "0x10"
+        }
+      ]
+    },
+    {
+      "address": "0055a3a0",
+      "end_inclusive": "0055a3e7",
+      "bytes": 72,
+      "sha256": "bda201e25e28b0d6bbac56d05c557cc8ec83d132aed85e9d49455c34197214e4",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_0055a3a0 at 0055a3a0\nSignature: undefined FUN_0055a3a0(void)\nEntry: 0055a3a0\nBody: 0055a3a0 - 0055a3e7",
+      "returns": [
+        {
+          "site": "0055a3e5",
+          "operation": "ret",
+          "operand": "8"
+        }
+      ]
+    },
+    {
+      "address": "00491170",
+      "end_inclusive": "00491323",
+      "bytes": 436,
+      "sha256": "36f711d824f22ba13b6b5347c66bebb1816cd8809fff1c5c2291fa6e55f6f994",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00491170 at 00491170\nSignature: undefined FUN_00491170(void)\nEntry: 00491170\nBody: 00491170 - 00491323",
+      "returns": [
+        {
+          "site": "00491289",
+          "operation": "ret",
+          "operand": "0x10"
+        },
+        {
+          "site": "004912ee",
+          "operation": "ret",
+          "operand": "0x10"
+        },
+        {
+          "site": "00491321",
+          "operation": "ret",
+          "operand": "0x10"
+        }
+      ]
+    },
+    {
+      "address": "00557bc0",
+      "end_inclusive": "00557c83",
+      "bytes": 196,
+      "sha256": "edfa0655e0565c8030714cba399db5ba7910bd1e2a2ef9721061ea01a63279dd",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00557bc0 at 00557bc0\nSignature: undefined FUN_00557bc0(void)\nEntry: 00557bc0\nBody: 00557bc0 - 00557c83",
+      "returns": [
+        {
+          "site": "00557c81",
+          "operation": "ret",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "0055b150",
+      "end_inclusive": "0055b215",
+      "bytes": 198,
+      "sha256": "efb7e75edc62c2ec46ac642a60560d0e799b3b26edcf2eb89d54c11defa73d93",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_0055b150 at 0055b150\nSignature: undefined FUN_0055b150(void)\nEntry: 0055b150\nBody: 0055b150 - 0055b215",
+      "returns": [
+        {
+          "site": "0055b213",
+          "operation": "ret",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "004f6210",
+      "end_inclusive": "004f62a3",
+      "bytes": 148,
+      "sha256": "759e79b7fdfc009c2b3181e404b5e579b1955c660ab8d722bdf6937d8ded3f42",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_004f6210 at 004f6210\nSignature: undefined FUN_004f6210(void)\nEntry: 004f6210\nBody: 004f6210 - 004f62a3",
+      "returns": [
+        {
+          "site": "004f62a1",
+          "operation": "ret",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "006a2310",
+      "end_inclusive": "006a23ec",
+      "bytes": 221,
+      "sha256": "a47da39420d8bd907d93845e8f95a6695038d4c439ce3d284d1c95f15752510e",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_006a2310 at 006a2310\nSignature: undefined FUN_006a2310(void)\nEntry: 006a2310\nBody: 006a2310 - 006a23ec",
+      "returns": [
+        {
+          "site": "006a23ea",
+          "operation": "ret",
+          "operand": "0x10"
+        }
+      ]
+    },
+    {
+      "address": "006a3200",
+      "end_inclusive": "006a32f2",
+      "bytes": 243,
+      "sha256": "3f9697e225fe17412d6979ee81ef7b5a1d8f12425dd2d159362b79378a8dcb29",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_006a3200 at 006a3200\nSignature: undefined FUN_006a3200(void)\nEntry: 006a3200\nBody: 006a3200 - 006a32f2",
+      "returns": [
+        {
+          "site": "006a32f0",
+          "operation": "ret",
+          "operand": "0x10"
+        }
+      ]
+    },
+    {
+      "address": "006a6d20",
+      "end_inclusive": "006a6e12",
+      "bytes": 243,
+      "sha256": "11b372403d3aa4ec7141a0dc375fc8a9066d660af08cd308cacadf1d3ca143db",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_006a6d20 at 006a6d20\nSignature: undefined FUN_006a6d20(void)\nEntry: 006a6d20\nBody: 006a6d20 - 006a6e12",
+      "returns": [
+        {
+          "site": "006a6e10",
+          "operation": "ret",
+          "operand": "0x10"
+        }
+      ]
+    }
+  ],
+  "calls": [
+    {
+      "function": "006a0db0",
+      "address": "006a0e04",
+      "native": "00bf6713",
+      "byte_span": "006a0db0",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a0db0",
+      "address": "006a0e15",
+      "native": "0069ff40",
+      "byte_span": "006a0db0",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a0db0",
+      "address": "006a0e45",
+      "native": "00bf6713",
+      "byte_span": "006a0db0",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a0db0",
+      "address": "006a0e52",
+      "native": "00bf6713",
+      "byte_span": "006a0db0",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a0db0",
+      "address": "006a0e6c",
+      "native": "00bf6713",
+      "byte_span": "006a0db0",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a0db0",
+      "address": "006a0e7c",
+      "native": "0069e750",
+      "byte_span": "006a0db0",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00492210",
+      "address": "0049224b",
+      "native": "00bf6713",
+      "byte_span": "00492210",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00492210",
+      "address": "0049225c",
+      "native": "00441860",
+      "byte_span": "00492210",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00492210",
+      "address": "00492281",
+      "native": "00bf6713",
+      "byte_span": "00492210",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00492210",
+      "address": "0049228e",
+      "native": "00bf6713",
+      "byte_span": "00492210",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00492210",
+      "address": "004922a4",
+      "native": "00bf6713",
+      "byte_span": "00492210",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00492210",
+      "address": "004922b4",
+      "native": "004685a0",
+      "byte_span": "00492210",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0049df50",
+      "address": "0049df70",
+      "native": "0048f290",
+      "byte_span": "0049df50",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0049df50",
+      "address": "0049df77",
+      "native": "0049cc50",
+      "byte_span": "0049df50",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0049df50",
+      "address": "0049df8f",
+      "native": "00bf6713",
+      "byte_span": "0049df50",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0049df50",
+      "address": "0049dfaa",
+      "native": "0048f290",
+      "byte_span": "0049df50",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0049df50",
+      "address": "0049dfba",
+      "native": "0048f2e0",
+      "byte_span": "0049df50",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0049df50",
+      "address": "0049dfc6",
+      "native": "00499700",
+      "byte_span": "0049df50",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0049e050",
+      "address": "0049e0a2",
+      "native": "00bf6713",
+      "byte_span": "0049e050",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0049e050",
+      "address": "0049e0b3",
+      "native": "0044f410",
+      "byte_span": "0049e050",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0049e050",
+      "address": "0049e0d0",
+      "native": "00bf6713",
+      "byte_span": "0049e050",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0049e050",
+      "address": "0049e0dd",
+      "native": "00bf6713",
+      "byte_span": "0049e050",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0049e050",
+      "address": "0049e0f3",
+      "native": "00bf6713",
+      "byte_span": "0049e050",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0049e050",
+      "address": "0049e103",
+      "native": "004954f0",
+      "byte_span": "0049e050",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0049e050",
+      "address": "0049e127",
+      "native": "00419cc0",
+      "byte_span": "0049e050",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0049e050",
+      "address": "0049e12e",
+      "native": "00bd1510",
+      "byte_span": "0049e050",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a6350",
+      "address": "006a63a2",
+      "native": "00bf6713",
+      "byte_span": "006a6350",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a6350",
+      "address": "006a63b3",
+      "native": "006a5c50",
+      "byte_span": "006a6350",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a6350",
+      "address": "006a63d0",
+      "native": "00bf6713",
+      "byte_span": "006a6350",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a6350",
+      "address": "006a63dd",
+      "native": "00bf6713",
+      "byte_span": "006a6350",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a6350",
+      "address": "006a63f5",
+      "native": "00bf6713",
+      "byte_span": "006a6350",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a6350",
+      "address": "006a6405",
+      "native": "006a5bf0",
+      "byte_span": "006a6350",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a6350",
+      "address": "006a642a",
+      "native": "00432050",
+      "byte_span": "006a6350",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a6350",
+      "address": "006a6430",
+      "native": "00bf65ac",
+      "byte_span": "006a6350",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a79a0",
+      "address": "006a79f2",
+      "native": "00bf6713",
+      "byte_span": "006a79a0",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a79a0",
+      "address": "006a7a03",
+      "native": "006a7690",
+      "byte_span": "006a79a0",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a79a0",
+      "address": "006a7a20",
+      "native": "00bf6713",
+      "byte_span": "006a79a0",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a79a0",
+      "address": "006a7a2d",
+      "native": "00bf6713",
+      "byte_span": "006a79a0",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a79a0",
+      "address": "006a7a45",
+      "native": "00bf6713",
+      "byte_span": "006a79a0",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a79a0",
+      "address": "006a7a55",
+      "native": "006a7630",
+      "byte_span": "006a79a0",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a79a0",
+      "address": "006a7a7a",
+      "native": "0055a3a0",
+      "byte_span": "006a79a0",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a79a0",
+      "address": "006a7a80",
+      "native": "00bf65ac",
+      "byte_span": "006a79a0",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a4710",
+      "address": "006a4762",
+      "native": "00bf6713",
+      "byte_span": "006a4710",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a4710",
+      "address": "006a4773",
+      "native": "006a3d30",
+      "byte_span": "006a4710",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a4710",
+      "address": "006a4790",
+      "native": "00bf6713",
+      "byte_span": "006a4710",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a4710",
+      "address": "006a479d",
+      "native": "00bf6713",
+      "byte_span": "006a4710",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a4710",
+      "address": "006a47b5",
+      "native": "00bf6713",
+      "byte_span": "006a4710",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a4710",
+      "address": "006a47c5",
+      "native": "006a2160",
+      "byte_span": "006a4710",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a4710",
+      "address": "006a47d7",
+      "native": "00bf65ac",
+      "byte_span": "006a4710",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0069eea0",
+      "address": "0069eeb8",
+      "native": "00bf65ac",
+      "byte_span": "0069eea0",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a6ee0",
+      "address": "006a6eff",
+      "native": "0055a3a0",
+      "byte_span": "006a6ee0",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a6ee0",
+      "address": "006a6f08",
+      "native": "00bf65ac",
+      "byte_span": "006a6ee0",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0069ff40",
+      "address": "0069ffd8",
+      "native": "00556d50",
+      "byte_span": "0069ff40",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0069ff40",
+      "address": "006a0040",
+      "native": "00552f00",
+      "byte_span": "0069ff40",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0069ff40",
+      "address": "006a004d",
+      "native": "005536a0",
+      "byte_span": "0069ff40",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0069ff40",
+      "address": "006a0070",
+      "native": "0069c930",
+      "byte_span": "0069ff40",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0069ff40",
+      "address": "006a007d",
+      "native": "0069e1f0",
+      "byte_span": "0069ff40",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0069ff40",
+      "address": "006a0096",
+      "native": "0069c930",
+      "byte_span": "0069ff40",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0069ff40",
+      "address": "006a00c3",
+      "native": "00bf65ac",
+      "byte_span": "0069ff40",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a00f6",
+      "address": "006a00fa",
+      "native": "00bf65ac",
+      "byte_span": "0069ff40",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0069ff40",
+      "address": "006a013e",
+      "native": "0069e900",
+      "byte_span": "0069ff40",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0069ff40",
+      "address": "006a016c",
+      "native": "0069e1f0",
+      "byte_span": "0069ff40",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0069ff40",
+      "address": "006a0182",
+      "native": "0069b6f0",
+      "byte_span": "0069ff40",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0069ff40",
+      "address": "006a01b0",
+      "native": "0069e900",
+      "byte_span": "0069ff40",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0069ff40",
+      "address": "006a01c1",
+      "native": "0069dce0",
+      "byte_span": "0069ff40",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0069ff40",
+      "address": "006a01ce",
+      "native": "0069b6f0",
+      "byte_span": "0069ff40",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a5c50",
+      "address": "006a5c7d",
+      "native": "00557bc0",
+      "byte_span": "006a5c50",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a5c50",
+      "address": "006a5cbc",
+      "native": "00556c90",
+      "byte_span": "006a5c50",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a5c50",
+      "address": "006a5d1d",
+      "native": "00553300",
+      "byte_span": "006a5c50",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a5c50",
+      "address": "006a5d40",
+      "native": "006a3200",
+      "byte_span": "006a5c50",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a5c50",
+      "address": "006a5d50",
+      "native": "006a5170",
+      "byte_span": "006a5c50",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a5c50",
+      "address": "006a5d6c",
+      "native": "006a3200",
+      "byte_span": "006a5c50",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a5c50",
+      "address": "006a5d99",
+      "native": "0055a3a0",
+      "byte_span": "006a5c50",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a5c50",
+      "address": "006a5da2",
+      "native": "00bf65ac",
+      "byte_span": "006a5c50",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a5dc5",
+      "address": "006a5dd0",
+      "native": "0055ac60",
+      "byte_span": "006a5c50",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a5dc5",
+      "address": "006a5dd6",
+      "native": "00bf65ac",
+      "byte_span": "006a5c50",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a5c50",
+      "address": "006a5e0a",
+      "native": "006a4b50",
+      "byte_span": "006a5c50",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a5c50",
+      "address": "006a5e27",
+      "native": "006a5170",
+      "byte_span": "006a5c50",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a5c50",
+      "address": "006a5e44",
+      "native": "006a2a00",
+      "byte_span": "006a5c50",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a5e4e",
+      "address": "006a5e63",
+      "native": "0055ac60",
+      "byte_span": "006a5c50",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a5e4e",
+      "address": "006a5e6c",
+      "native": "00bf6885",
+      "byte_span": "006a5c50",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a5c50",
+      "address": "006a5e82",
+      "native": "006a4b50",
+      "byte_span": "006a5c50",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a5c50",
+      "address": "006a5e90",
+      "native": "006a4b80",
+      "byte_span": "006a5c50",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a5c50",
+      "address": "006a5ea0",
+      "native": "006a2a00",
+      "byte_span": "006a5c50",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a5c50",
+      "address": "006a5ec3",
+      "native": "00432050",
+      "byte_span": "006a5c50",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a5c50",
+      "address": "006a5ec9",
+      "native": "00bf65ac",
+      "byte_span": "006a5c50",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a7690",
+      "address": "006a76bd",
+      "native": "0055b150",
+      "byte_span": "006a7690",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a7690",
+      "address": "006a76fc",
+      "native": "0069f1a0",
+      "byte_span": "006a7690",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a7690",
+      "address": "006a775d",
+      "native": "0069b360",
+      "byte_span": "006a7690",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a7690",
+      "address": "006a7780",
+      "native": "006a6d20",
+      "byte_span": "006a7690",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a7690",
+      "address": "006a7790",
+      "native": "006a7500",
+      "byte_span": "006a7690",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a7690",
+      "address": "006a77ac",
+      "native": "006a6d20",
+      "byte_span": "006a7690",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a7690",
+      "address": "006a77d9",
+      "native": "006a6ee0",
+      "byte_span": "006a7690",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a7690",
+      "address": "006a77e2",
+      "native": "00bf65ac",
+      "byte_span": "006a7690",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a7805",
+      "address": "006a7810",
+      "native": "006a7190",
+      "byte_span": "006a7690",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a7805",
+      "address": "006a7816",
+      "native": "00bf65ac",
+      "byte_span": "006a7690",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a7690",
+      "address": "006a784a",
+      "native": "006a70e0",
+      "byte_span": "006a7690",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a7690",
+      "address": "006a7867",
+      "native": "006a7500",
+      "byte_span": "006a7690",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a7690",
+      "address": "006a7884",
+      "native": "006a6ca0",
+      "byte_span": "006a7690",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a788e",
+      "address": "006a78a3",
+      "native": "006a7190",
+      "byte_span": "006a7690",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a788e",
+      "address": "006a78ac",
+      "native": "00bf6885",
+      "byte_span": "006a7690",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a7690",
+      "address": "006a78c2",
+      "native": "006a70e0",
+      "byte_span": "006a7690",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a7690",
+      "address": "006a78d0",
+      "native": "006a7110",
+      "byte_span": "006a7690",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a7690",
+      "address": "006a78e0",
+      "native": "006a6ca0",
+      "byte_span": "006a7690",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a7690",
+      "address": "006a7903",
+      "native": "0055a3a0",
+      "byte_span": "006a7690",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a7690",
+      "address": "006a7909",
+      "native": "00bf65ac",
+      "byte_span": "006a7690",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a3d30",
+      "address": "006a3d5d",
+      "native": "004f6210",
+      "byte_span": "006a3d30",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a3d30",
+      "address": "006a3d9c",
+      "native": "0069f110",
+      "byte_span": "006a3d30",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a3d30",
+      "address": "006a3dfd",
+      "native": "0069b9b0",
+      "byte_span": "006a3d30",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a3d30",
+      "address": "006a3e20",
+      "native": "006a2310",
+      "byte_span": "006a3d30",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a3d30",
+      "address": "006a3e30",
+      "native": "006a30c0",
+      "byte_span": "006a3d30",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a3d30",
+      "address": "006a3e4c",
+      "native": "006a2310",
+      "byte_span": "006a3d30",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a3d30",
+      "address": "006a3e72",
+      "native": "0069eea0",
+      "byte_span": "006a3d30",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a3d30",
+      "address": "006a3e7b",
+      "native": "00bf65ac",
+      "byte_span": "006a3d30",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a3e9e",
+      "address": "006a3ea9",
+      "native": "0069fb50",
+      "byte_span": "006a3d30",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a3e9e",
+      "address": "006a3eaf",
+      "native": "00bf65ac",
+      "byte_span": "006a3d30",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a3d30",
+      "address": "006a3ee3",
+      "native": "006a3180",
+      "byte_span": "006a3d30",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a3d30",
+      "address": "006a3f00",
+      "native": "006a30c0",
+      "byte_span": "006a3d30",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a3d30",
+      "address": "006a3f1d",
+      "native": "006a1d00",
+      "byte_span": "006a3d30",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a3f27",
+      "address": "006a3f3c",
+      "native": "0069fb50",
+      "byte_span": "006a3d30",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a3f27",
+      "address": "006a3f45",
+      "native": "00bf6885",
+      "byte_span": "006a3d30",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a3d30",
+      "address": "006a3f5b",
+      "native": "006a3180",
+      "byte_span": "006a3d30",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a3d30",
+      "address": "006a3f69",
+      "native": "006a31b0",
+      "byte_span": "006a3d30",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a3d30",
+      "address": "006a3f79",
+      "native": "006a1d00",
+      "byte_span": "006a3d30",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a3d30",
+      "address": "006a3f89",
+      "native": "00bf65ac",
+      "byte_span": "006a3d30",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00441860",
+      "address": "004418a9",
+      "native": "00441440",
+      "byte_span": "00441860",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00441860",
+      "address": "0044190b",
+      "native": "0043f6a0",
+      "byte_span": "00441860",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00441860",
+      "address": "0044191e",
+      "native": "00440c70",
+      "byte_span": "00441860",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00441860",
+      "address": "0044192c",
+      "native": "00441180",
+      "byte_span": "00441860",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00441860",
+      "address": "0044193d",
+      "native": "00440c70",
+      "byte_span": "00441860",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00441860",
+      "address": "0044195c",
+      "native": "00bf65ac",
+      "byte_span": "00441860",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00441860",
+      "address": "004419a0",
+      "native": "00440c70",
+      "byte_span": "00441860",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00441860",
+      "address": "004419ba",
+      "native": "00441180",
+      "byte_span": "00441860",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00441860",
+      "address": "004419d2",
+      "native": "0043f9e0",
+      "byte_span": "00441860",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00441860",
+      "address": "004419e8",
+      "native": "00440c70",
+      "byte_span": "00441860",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00441860",
+      "address": "004419f3",
+      "native": "00440140",
+      "byte_span": "00441860",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00441860",
+      "address": "00441a05",
+      "native": "0043f9e0",
+      "byte_span": "00441860",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0055a3a0",
+      "address": "0055a3bf",
+      "native": "00432050",
+      "byte_span": "0055a3a0",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0055a3a0",
+      "address": "0055a3c8",
+      "native": "00bf65ac",
+      "byte_span": "0055a3a0",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00491170",
+      "address": "004911b9",
+      "native": "00490d50",
+      "byte_span": "00491170",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00491170",
+      "address": "0049121b",
+      "native": "0047ed80",
+      "byte_span": "00491170",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00491170",
+      "address": "0049122e",
+      "native": "0048d830",
+      "byte_span": "00491170",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00491170",
+      "address": "0049123c",
+      "native": "0048e600",
+      "byte_span": "00491170",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00491170",
+      "address": "0049124d",
+      "native": "0048d830",
+      "byte_span": "00491170",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00491170",
+      "address": "0049126c",
+      "native": "00bf65ac",
+      "byte_span": "00491170",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00491170",
+      "address": "004912b0",
+      "native": "0048d830",
+      "byte_span": "00491170",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00491170",
+      "address": "004912ca",
+      "native": "0048e600",
+      "byte_span": "00491170",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00491170",
+      "address": "004912e2",
+      "native": "00486a70",
+      "byte_span": "00491170",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00491170",
+      "address": "004912f8",
+      "native": "0048d830",
+      "byte_span": "00491170",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00491170",
+      "address": "00491303",
+      "native": "00486a90",
+      "byte_span": "00491170",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00491170",
+      "address": "00491315",
+      "native": "00486a70",
+      "byte_span": "00491170",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00557bc0",
+      "address": "00557c13",
+      "native": "00431f70",
+      "byte_span": "00557bc0",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00557bc0",
+      "address": "00557c1c",
+      "native": "0042bf40",
+      "byte_span": "00557bc0",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00557bc0",
+      "address": "00557c3c",
+      "native": "00bf6713",
+      "byte_span": "00557bc0",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00557bc0",
+      "address": "00557c4c",
+      "native": "00bf6713",
+      "byte_span": "00557bc0",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "00557bc0",
+      "address": "00557c67",
+      "native": "00556b10",
+      "byte_span": "00557bc0",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0055b150",
+      "address": "0055b1a3",
+      "native": "00556c90",
+      "byte_span": "0055b150",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0055b150",
+      "address": "0055b1ac",
+      "native": "00553300",
+      "byte_span": "0055b150",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0055b150",
+      "address": "0055b1ce",
+      "native": "00bf6713",
+      "byte_span": "0055b150",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0055b150",
+      "address": "0055b1de",
+      "native": "00bf6713",
+      "byte_span": "0055b150",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "0055b150",
+      "address": "0055b1f9",
+      "native": "00559e00",
+      "byte_span": "0055b150",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "004f6210",
+      "address": "004f6243",
+      "native": "00441440",
+      "byte_span": "004f6210",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "004f6210",
+      "address": "004f624c",
+      "native": "0043f6a0",
+      "byte_span": "004f6210",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "004f6210",
+      "address": "004f6265",
+      "native": "00bf6713",
+      "byte_span": "004f6210",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "004f6210",
+      "address": "004f6273",
+      "native": "00bf6713",
+      "byte_span": "004f6210",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "004f6210",
+      "address": "004f6290",
+      "native": "00bf67a7",
+      "byte_span": "004f6210",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a2310",
+      "address": "006a2368",
+      "native": "004f6210",
+      "byte_span": "006a2310",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a239e",
+      "address": "006a23b3",
+      "native": "0069e9b0",
+      "byte_span": "006a2310",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a239e",
+      "address": "006a23c3",
+      "native": "00bf6885",
+      "byte_span": "006a2310",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a2310",
+      "address": "006a23d0",
+      "native": "00bf65ac",
+      "byte_span": "006a2310",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a3200",
+      "address": "006a3259",
+      "native": "00557bc0",
+      "byte_span": "006a3200",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a3290",
+      "address": "006a32a3",
+      "native": "00559dc0",
+      "byte_span": "006a3200",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a3290",
+      "address": "006a32b3",
+      "native": "00bf6885",
+      "byte_span": "006a3200",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a3200",
+      "address": "006a32d0",
+      "native": "00432050",
+      "byte_span": "006a3200",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a3200",
+      "address": "006a32d6",
+      "native": "00bf65ac",
+      "byte_span": "006a3200",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a6d20",
+      "address": "006a6d79",
+      "native": "0055b150",
+      "byte_span": "006a6d20",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a6db0",
+      "address": "006a6dc3",
+      "native": "006a6ce0",
+      "byte_span": "006a6d20",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a6db0",
+      "address": "006a6dd3",
+      "native": "00bf6885",
+      "byte_span": "006a6d20",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a6d20",
+      "address": "006a6df0",
+      "native": "0055a3a0",
+      "byte_span": "006a6d20",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    },
+    {
+      "function": "006a6d20",
+      "address": "006a6df6",
+      "native": "00bf65ac",
+      "byte_span": "006a6d20",
+      "evidence": "Direct CALL assigned to its actual live Ghidra owner; byte-envelope presence does not imply original FH3 or full general insertion reconstruction."
+    }
+  ],
+  "unowned_exception_tail_calls": [
+    {
+      "call_site": "006a0106",
+      "callee": "00bf6885",
+      "byte_span": "0069ff40",
+      "evidence": "Decoded site has no saved function owner. Explicitly excluded from ownership-audit passes; source exception limits remain."
+    },
+    {
+      "call_site": "006a5de2",
+      "callee": "00bf6885",
+      "byte_span": "006a5c50",
+      "evidence": "Decoded site has no saved function owner. Explicitly excluded from ownership-audit passes; source exception limits remain."
+    },
+    {
+      "call_site": "006a7822",
+      "callee": "00bf6885",
+      "byte_span": "006a7690",
+      "evidence": "Decoded site has no saved function owner. Explicitly excluded from ownership-audit passes; source exception limits remain."
+    },
+    {
+      "call_site": "006a3ebb",
+      "callee": "00bf6885",
+      "byte_span": "006a3d30",
+      "evidence": "Decoded site has no saved function owner. Explicitly excluded from ownership-audit passes; source exception limits remain."
+    }
+  ],
+  "reconstructed": [
+    "006a0db0",
+    "00492210",
+    "0049df50",
+    "0049e050",
+    "006a6350",
+    "006a79a0",
+    "006a4710",
+    "0069eea0",
+    "006a6ee0"
+  ],
+  "analyzed_helpers": [
+    "0069ff40",
+    "006a5c50",
+    "006a7690",
+    "006a3d30",
+    "00441860",
+    "0055a3a0",
+    "00491170",
+    "00557bc0",
+    "0055b150",
+    "004f6210",
+    "006a2310",
+    "006a3200",
+    "006a6d20"
+  ],
+  "removed_required_callbacks": [
+    "call_006a0db0",
+    "call_00492210",
+    "call_0049df50",
+    "call_0049e050",
+    "call_006a6350",
+    "call_006a79a0",
+    "call_006a4710",
+    "call_0069eea0",
+    "call_006a6ee0"
+  ],
+  "remaining_table_tree_callbacks": [
+    "006a7540",
+    "0055a9a0",
+    "0069fa40",
+    "006a1e70",
+    "006a6900",
+    "006a1f80"
+  ],
+  "flow_repair": "reports/native_input_settings_vector_storage_au_flow_repair.json",
+  "annotations": "reports/native_input_settings_vector_storage_au_annotations.json",
+  "limits": [
+    "Valid consistent owned storage; allocation callbacks must not structurally mutate vectors/source values.",
+    "Resize/end-insertion source contracts only. General insertion, original STL/CRT/FH3 ABI, malformed ranges, private-stack aliases and hardware-fault behavior are unvalidated.",
+    "Native fixture retains original tree providers. Remaining source tree providers, application wiring and gameplay are pending."
+  ],
+  "correction": "Native comparison exposed copied nested capacity 11 instead of retained 13. Existing nested elements now transfer begin/end/capacity through empty-header swaps; fill values still deep-copy. Original comparisons retained.",
+  "no_subagents_dispatched": true,
+  "game_validated": false,
+  "native_abi": {
+    "006a0db0": "ECX header; stack count plus five DWORD descriptor; RET18h.",
+    "00492210": "ECX header; stack count plus DWORD fill; RET8.",
+    "0049df50": "ECX 14h packed-bit header; stack count plus fill (low byte only); RET8.",
+    "0049e050": "ECX header; stack count plus two DWORD owning string value; RET0Ch.",
+    "006a6350": "ECX header; stack count plus four DWORD owning string-vector value; RET14h.",
+    "006a79a0": "ECX header; stack count plus four DWORD owning string-vector-group value; RET14h.",
+    "006a4710": "ECX header; stack count plus four DWORD owning DWORD-vector value; RET14h.",
+    "0069eea0": "ECX first, EDX last; two unused stack words; RET8.",
+    "006a6ee0": "ECX first, EDX last; two unused stack words; RET8."
+  },
+  "final_validation": {
+    "utc": "2026-09-13T16:30:52.267590+00:00",
+    "source_revision": "ffd07c596e8f098b4f57f15757937a97ee8aa3f4",
+    "merged_main_revision": "33de8d33822267e3b11dc377fa31820f9cfb2667",
+    "code_files": 2353,
+    "code_manifest": "local/input_settings_vectors_au_source_manifest.json",
+    "code_manifest_sha256": "75e6f8c862f1afa435328a1f7ce7868585fd12fc9cea09b5ac25a80e80e4ee4c",
+    "core_archive_sha256": "5f35a3a64091775e0cc5a9b279f3061530bf04e4563ed9c5faab747e52085ec6",
+    "game_executable_sha256": "52b6c1bb29413902773a6907c5e48588013e3bf5c66ef2b4c04a9495a1ae9f72",
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "lifetime_words_equal": 122545,
+    "vector_storage_words_equal": 1448,
+    "checked_string_words_equal": 335,
+    "native_fixture_spans": 418,
+    "freshly_verified_storage_spans": 22,
+    "owned_call_rows_checked": 180,
+    "owned_call_rows_failed": 0,
+    "unowned_exception_rethrow_sites": 4,
+    "disk_live_seed_spans_equal": 8,
+    "build_log": "local/input_settings_vectors_au_combined_build.log",
+    "build_log_sha256": "12f5db1bb6d1b5accc739e2eec916639f8f082c0644a4aab6851c5d3813429c1",
+    "fixture_log": "local/input_settings_vectors_au_combined_probe.log",
+    "fixture_log_sha256": "bd28842166c89fea6ce338c6164b851285a4384891bb01f3eb83d7285a3c8011",
+    "fixture_source": "local/input_settings_vectors_au_probe.cpp",
+    "fixture_source_sha256": "3a3d3441c6ac00adf215c595816f0414c9e05c07d376403f18635e7edfb66fc5",
+    "fixture_header": "local/input_settings_lifetime_aq_native.hpp",
+    "fixture_header_sha256": "c09d896ff6ed7fdf366fe7f95df2327584e5d370f59093a887e7aeda84b5307a",
+    "fixture_runner": "local/run_input_settings_vectors_au_probe.ps1",
+    "fixture_runner_sha256": "77c8f6955f764813c2928d98d6538f2933e5ab823d3cdabd0a2a4a4036c82a7f",
+    "fixture_data_image_sha256": "9721bf146bb9ea9e290ccab5edda17f312d2294dbedbf194512973d9e68297be",
+    "call_audit_log": "local/input_settings_vectors_au_calls.log",
+    "call_audit_log_sha256": "3b4ecf1a7deb9108222eb6f6672976a5be1646077cc560e504f39c027b05a817",
+    "annotation_receipt_sha256": "d08e1aa833c8a251390dd642c620344e60da4d45e09ce2df3fb03f08203dde2c",
+    "saved_annotation_entries": 25,
+    "original_abis_restored": 9,
+    "nine_required_storage_callbacks_removed": true,
+    "actual_settings_parser_and_lifetime_use_source_vector_storage": true,
+    "populated_settings_destruction_and_source_constructor_unwind_passed": true,
+    "actual_raw_manager_settings_drain_passed": true,
+    "nonempty_consumed_values_and_nested_capacity_preservation_passed": true,
+    "packed_bits_cross_word_boundaries_passed": true,
+    "source_and_native_pooled_allocation_release_counts_equal": true,
+    "pooled_strings_remaining": 0,
+    "original_fh3_executed": false,
+    "original_abi_compatible": false,
+    "game_validated": false,
+    "no_subagents_dispatched": true
+  }
+}

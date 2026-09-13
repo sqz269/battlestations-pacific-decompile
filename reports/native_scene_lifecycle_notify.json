@@ -1,0 +1,377 @@
+{
+  "packet": "orch6_native_scene_lifecycle_notify_u",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "STRICTLY READ ONLY through verified formal BSP CLI; no annotation, comment, save, body, instruction or data mutations; root owns annotation application",
+  "source": "src/native_scene_lifecycle_notify.cpp",
+  "header": "include/bsp/native_scene_lifecycle_notify.hpp",
+  "documentation": "docs/NATIVE_SCENE_LIFECYCLE_NOTIFY.md",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "native_spans": [
+    {
+      "address": "00926390",
+      "length": 34,
+      "end_exclusive": "009263b2",
+      "hex": "568bf1807e5d007517b00188465d884660e8eaf8ffff8b068b507c8bce5effe25ec3",
+      "sha256": "01bc886c7827e8e455102804713e4f406ff1da6d0c38437654c1811bdb1423f3",
+      "live_disk_equal": true
+    },
+    {
+      "address": "009263c0",
+      "length": 85,
+      "end_exclusive": "00926415",
+      "hex": "568bf18b068b5018ffd285c0741c8b068b5018578b3ddc88e1008bceffd23bc75f750733c9e89666b9ff807e5e007523b0018bce88465d88465e88465fc6465c00e83af8ffff8b068b90800000008bce5effe25ec3",
+      "sha256": "c28662ce5faf52510e9bfedf67aeafe62194f427268e8572c4e1a3740ffca893",
+      "live_disk_equal": true
+    },
+    {
+      "address": "004bca80",
+      "length": 19,
+      "end_exclusive": "004bca93",
+      "hex": "890ddc88e100518b0d9cd3f800e81e0d6500c3",
+      "sha256": "3d0f01d0b495865e9cbd899d9564c215eeff02479cae49992124726f705fb4c7",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00b0d7b0",
+      "length": 25,
+      "end_exclusive": "00b0d7c9",
+      "hex": "8b4424048981c00100008b493085c97405e8ca140400c20400",
+      "sha256": "8f024f498c2c33bcb06fa0d49b2b4a7de76c138f2704c19935d21dcba9b862b3",
+      "live_disk_equal": true
+    },
+    {
+      "address": "006d1e80",
+      "length": 7,
+      "end_exclusive": "006d1e87",
+      "hex": "8b81a4040000c3",
+      "sha256": "0e28ae6d970647be6cbf4557ee0c392348362ca146b2315a0118c3cda8b20799",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00cfc3e8",
+      "length": 4,
+      "end_exclusive": "00cfc3ec",
+      "hex": "801e6d00",
+      "sha256": "b5315842afe786fffe915e5350a614043f82f9bca06a0d203783f8f7cb7cee77",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00cfc444",
+      "length": 16,
+      "end_exclusive": "00cfc454",
+      "hex": "9063920050b94200604b8200b01f9500",
+      "sha256": "ec3ed6f8a2cbe6e281200f2181a232ca962a70dcc9b0a9f0b4b4d477f91e54f1",
+      "live_disk_equal": true
+    }
+  ],
+  "routines": [
+    {
+      "address": "00926390",
+      "end_inclusive": "009263b1",
+      "length": 34,
+      "coverage": "complete_source_behavior",
+      "source_symbol": "notify_native_scene_destroyed_00926390",
+      "original_abi": "ECX unit; no stack inputs; RET or JMP current table slot7C",
+      "gaps": []
+    },
+    {
+      "address": "009263c0",
+      "end_inclusive": "00926414",
+      "length": 85,
+      "coverage": "complete_source_behavior",
+      "source_symbol": "remove_native_scene_immediate_009263c0",
+      "original_abi": "ECX unit; no stack inputs; RET or JMP current table slot80",
+      "gaps": []
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "009263a1",
+      "native": "00925c90",
+      "function": "00926390",
+      "contract": "existing actual conditional slot08 observer notification"
+    },
+    {
+      "address": "009263c8",
+      "native": "unit+vtable18",
+      "function": "009263c0",
+      "contract": "external producer-selected first current-table getter"
+    },
+    {
+      "address": "009263dc",
+      "native": "unit+vtable18",
+      "function": "009263c0",
+      "contract": "external independently reloaded table getter after captured E188DC read"
+    },
+    {
+      "address": "009263e5",
+      "native": "004bca80",
+      "function": "009263c0",
+      "contract": "external complete setter; ECX literal0; publish same actualE188DC before currentF8D39C/B0D7B0"
+    },
+    {
+      "address": "00926401",
+      "native": "00925c40",
+      "function": "009263c0",
+      "contract": "existing actual conditional slot04 observer notification"
+    },
+    {
+      "address": "009263ae",
+      "native": "unit+vtable7c",
+      "function": "00926390",
+      "kind": "indirect_tail_jump",
+      "contract": "external producer-selected current-table target after observer notification; body unread in U"
+    },
+    {
+      "address": "00926411",
+      "native": "unit+vtable80",
+      "function": "009263c0",
+      "kind": "indirect_tail_jump",
+      "contract": "external producer-selected current-table target after observer notification; body unread in U"
+    }
+  ],
+  "provider_evidence": [
+    {
+      "address": "004bca8d",
+      "native": "00b0d7b0",
+      "function": "004bca80",
+      "contract": "current renderer owner, stack supplied handle, RET4 callee"
+    },
+    {
+      "address": "00b0d7c1",
+      "native": "00b4ec90",
+      "function": "00b0d7b0",
+      "contract": "current renderer+30 when nonnull; ECX receiver; RET"
+    }
+  ],
+  "storage": {
+    "alias": "NativeUnitObserverAlias",
+    "flags": "borrowed volatile uint8 lvalues5C/5D/5E/5F/60; no snapshots",
+    "producer": "00925CE0 stores00925E08/0B/0E/11/14",
+    "observer": "same existing actual first endpoint, lock, dispatch owner and callbacks",
+    "listener": "borrowed actual E188DC publication"
+  },
+  "ordering": {
+    "destroy": "test5D;store5D=1;store60=1;conditional08;reload profile;tail7C",
+    "remove": "first getter18; if nonnull reload profile;capture listener;second getter18;compare captured listener;optional4BCA80(0);reload5E;store5D/5E/5F=1,5C=0;conditional04;reload profile;tail80",
+    "observer": "sample count with first lock acquisition; release; saved predicate gates existing dispatcher with its own acquisition"
+  },
+  "reachability": {
+    "remove_009263c0": "No references found on current live xref query",
+    "destroy_slot": {
+      "table": "00cfc3d0",
+      "offset": "74",
+      "entry": "00926390"
+    },
+    "runtime_binding": "not included"
+  },
+  "unresolved": [
+    {
+      "address": "006d1e80",
+      "status": "no_ghidra_function",
+      "role": "MDestroyer slot18 target from tableCFC3E8",
+      "bytes": "8b81a4040000c3",
+      "observation": "MOV EAX,[ECX+4A4];RET from bytes, no standalone reconstruction or definition"
+    },
+    {
+      "role": "arbitrary producer-selected slot18/7C/80 targets",
+      "status": "external_required_no_universal_defaults"
+    },
+    {
+      "address": "004bca80",
+      "status": "body_read_external_complete_renderer_setter_contract"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "flag-only scene_node_remove projection suggested complete009263C0 behavior",
+      "evidence": "owned85byte assembly and existing projection inspected; old files unchanged",
+      "is": "complete wrapper additionally orders two virtual getters, captured listener comparison, callback-mutated5E reload, actual observer notification and tail provider"
+    },
+    {
+      "was": "legacy hit_narrowphase comment places guard at009263E2",
+      "evidence": "live owned listing and complete PE span",
+      "is": "actual CMP byte[ESI+5E],0 at009263EA, after optional detach"
+    },
+    {
+      "was": "semantic host comparison expression did not explicitly capture controlled listener before second getter",
+      "evidence": "009263D4 MOV EDI,[E188DC];009263DC CALL EDX;009263DE CMP EAX,EDI",
+      "is": "new wrapper explicitly captures before second callback"
+    }
+  ],
+  "validation": {
+    "status": "passed",
+    "build": "./scripts/build.ps1",
+    "build_log": "local/scene_lifecycle_build.txt",
+    "native_fixture": "local/scene_lifecycle_probe.cpp",
+    "native_entry_bytes": 119,
+    "paired_scenarios": 6,
+    "existing_ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "ctest_result": "2/2 passed",
+    "direct_call_checks": 5,
+    "indirect_rows": 4,
+    "failed_call_checks": 0,
+    "fixture_run": {
+      "command": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-scene-lifecycle-notify-u\\local\\scene_lifecycle_probe.exe"
+      ],
+      "returncode": 0,
+      "stdout": "case0\nfinal:table0:flags1,2,0,0,0,:listener4369:depth0\ncase1\nobserver08:table0:flags1,1,0,0,1,:listener4369:depth1\nexternal7C:table2:flags7,0,0,0,1,:listener4369:depth0\nfinal:table2:flags7,0,0,0,1,:listener4369:depth0\ncase2\nrenderA:table0:flags1,0,0,0,0,:listener4369:depth0\nearlier80:table1:flags0,1,1,1,0,:listener4369:depth0\nfinal:table1:flags0,1,1,1,0,:listener4369:depth0\ncase3\nrenderA:table0:flags1,0,0,0,0,:listener4369:depth0\nrenderB:table1:flags1,0,0,0,0,:listener4369:depth0\nexternal4BCA80:table1:flags1,0,0,0,0,:listener0:depth0\nobserver04:table1:flags0,1,1,1,0,:listener0:depth1\nexternal80:table2:flags7,0,1,1,0,:listener0:depth0\nfinal:table2:flags7,0,1,1,0,:listener0:depth0\ncase4\nrenderA:table0:flags1,0,0,0,0,:listener4369:depth0\nrenderB:table1:flags1,0,0,0,0,:listener4369:depth0\nexternal4BCA80:table1:flags1,0,0,0,0,:listener0:depth0\nfinal:table1:flags1,0,9,0,0,:listener0:depth0\ncase5\nrenderA:table0:flags1,0,0,0,0,:listener4369:depth0\nrenderB:table1:flags1,0,0,0,0,:listener4369:depth0\nobserver04:table1:flags0,1,1,1,0,:listener8738:depth1\nexternal80:table2:flags7,0,1,1,0,:listener8738:depth0\nfinal:table2:flags7,0,1,1,0,:listener8738:depth0\nPASS: six paired source/native scenarios, actual observer construction/registration/sampling/delivery/cleanup; external virtual and controlled-listener boundaries only\n",
+      "stderr": "",
+      "seconds": 0.040183199977036566,
+      "utc": "2026-09-13T16:31:21.130107+00:00",
+      "executable_sha256": "981b650b012c5d44ebd95aba36b81c23a79144021c686ce5fbfb79e2d3b1e07c"
+    },
+    "failures": [],
+    "ghidra_readonly_proof": "Full documentation records for both leased entries unchanged between before/after formal CLI reads",
+    "native_relocations": [
+      {
+        "entry": "00926390",
+        "call_offset": "11",
+        "target": "actual notify_observer_slot08_if_present_00925c90 via ABI bridge"
+      },
+      {
+        "entry": "009263c0",
+        "call_offset": "25",
+        "target": "explicit external4BCA80 boundary implementation"
+      },
+      {
+        "entry": "009263c0",
+        "call_offset": "41",
+        "target": "actual notify_observer_slot04_if_present_00925c40 via ABI bridge"
+      },
+      {
+        "entry": "009263c0",
+        "operand_offset": "16",
+        "target": "same fixture actual controlled-listener publication"
+      }
+    ],
+    "fixture_cases": [
+      "5D already nonzero skips destroy entirely",
+      "destroy with observer08 profile/flag mutation and current tail7C",
+      "first render getter null/noobservers and tail80",
+      "second getter mutates listener but matches captured value; detach thenobserver04/currenttail80",
+      "detach callback sets5E and gates all remaining work",
+      "second getter mismatch skips detach but not observer04/currenttail80"
+    ],
+    "toolchain": {
+      "generator": "Visual Studio 18 2026",
+      "platform": "Win32",
+      "msvc_tools": "14.51.36231",
+      "cl_file_version": "19.51.36244.0",
+      "windows_sdk": "10.0.26100.0",
+      "flags": "/std:c++17 /EHsc /O2 /MD /W4 /WX /fp:strict",
+      "link_flags": "/MANIFEST:EMBED /VERBOSE:LIB /MAP:local/scene_lifecycle_probe.map"
+    },
+    "owned_object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-scene-lifecycle-notify-u\\build\\win32\\bsp_core.dir\\Release\\native_scene_lifecycle_notify.obj",
+      "bytes": 1881,
+      "sha256": "f829113fb81c5192784e8d81ae15eb4c93d7f9637e3d68fdf1ee25ddc0768812"
+    },
+    "core_library": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-scene-lifecycle-notify-u\\build\\win32\\Release\\bsp_core.lib",
+      "bytes": 55451712,
+      "sha256": "364da31d2db32d099f156738c14766280a7bf48240939f061571abaa558337db"
+    },
+    "linked_core_objects": [
+      "native_legacy_exception_owner.obj",
+      "native_legacy_sbo_string.obj",
+      "native_renderer_worker_lifetime.obj",
+      "native_scene_lifecycle_notify.obj",
+      "native_singleton_publication.obj",
+      "native_singleton_vector_allocation.obj",
+      "native_singleton_vector_insert_count.obj",
+      "native_singleton_vector_leaves.obj",
+      "native_singleton_vector_registration_wrappers.obj",
+      "native_singleton_vector_reserve_construct.obj",
+      "native_tracked_critical_section_release.obj",
+      "native_unit_observer_endpoint.obj",
+      "observer_dispatch_owner.obj",
+      "observer_dispatch_schedule.obj",
+      "observer_edges.obj",
+      "observer_event_producer.obj",
+      "observer_lifetime.obj",
+      "singleton_lifetime.obj",
+      "sound_lifetime_access.obj"
+    ],
+    "linked_libraries": [
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\um\\x86\\d3d9.lib",
+        "bytes": 5692,
+        "sha256": "f7efc12189fc46406762aebe66a80a44181bbd93e40e7adfe051af0db3bd53af"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\um\\x86\\kernel32.lib",
+        "bytes": 329914,
+        "sha256": "0916cf9c90410acf8fe000b23443f54c467bdecb14078034f3c9ec086200afc7"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\um\\x86\\user32.lib",
+        "bytes": 179898,
+        "sha256": "ab26e29a6f06b0eba87861aebb9e61874a22f297d03d66e08296066ce0dbdbeb"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\ucrt\\x86\\ucrt.lib",
+        "bytes": 299244,
+        "sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\MSVCRT.lib",
+        "bytes": 8263656,
+        "sha256": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\OLDNAMES.lib",
+        "bytes": 158090,
+        "sha256": "3af0bc33f96a74105b9a83eea9238b7191885764b36bec144ec783a8fba59457"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcprt.lib",
+        "bytes": 5365666,
+        "sha256": "5043c6d473b6f5d0f767df241b4004175ad9b60d01ae4565b7caaea1709ab55f"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\vcruntime.lib",
+        "bytes": 400312,
+        "sha256": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-scene-lifecycle-notify-u\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 55451712,
+        "sha256": "364da31d2db32d099f156738c14766280a7bf48240939f061571abaa558337db"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-scene-lifecycle-notify-u\\build\\win32\\Release\\bsp_lua511.lib",
+        "bytes": 455692,
+        "sha256": "f565bdd490ea7f0cf078cdde10a1e602dbd24331ee6139a7537ab1a99413deb3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-scene-lifecycle-notify-u\\build\\win32\\Release\\bsp_zlib121.lib",
+        "bytes": 72066,
+        "sha256": "72d43265d0a1ddbc6093689fe26aa1d7d015ad2cb30ce9abad946d3bda685e10"
+      }
+    ],
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-scene-lifecycle-notify-u\\local\\scene_lifecycle_manifest.json",
+      "bytes": 31593,
+      "sha256": "f4138cafe35e3fad194d152f345ff6ff900473f971540b26e645d7ab3e60eab5"
+    }
+  },
+  "limits": [
+    "New C++ source ABI; native tailcall ABI and hardware-fault semantics excluded",
+    "No host/runtime binding or gameplay validation",
+    "Renderer setter and arbitrary slot18/7C/80 implementations remain externally required",
+    "Native fixture uses explicit virtual and renderer boundary implementations; it does not validate those game algorithms",
+    "Observer provider implementations shared by native/source sides are exercised, not independently differential-tested by U"
+  ],
+  "compiled_schedule_review": {
+    "evidence": "local/scene_lifecycle_object_disasm.txt",
+    "destroy": "5D test+06;5D store+13;60 store+19;notify08+22;profile reload+27;tailprovider+36",
+    "remove": "first profile+0B/getter+17;second profile+1E;listener capture+28;getter+30;compare saved+33;detach+3F;5E reload/test+42/+45;stores+4D/+53/+59/+5F;notify04+65;profile reload+6A;tailprovider+79"
+  }
+}
