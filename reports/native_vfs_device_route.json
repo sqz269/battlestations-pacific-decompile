@@ -1,0 +1,461 @@
+{
+  "packet": "orch2_native_vfs_device_route_az",
+  "status": "complete_actual_storage_strict_win32_and_live_call_checked",
+  "source": "src/native_vfs_device_route.cpp",
+  "header": "include/bsp/native_vfs_device_route.hpp",
+  "documentation": "docs/NATIVE_VFS_DEVICE_ROUTE.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "installed_executable": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "verification_utc": "2026-09-13T05:33:46.197752+00:00",
+  "functions": [
+    {
+      "address": "00bdd850",
+      "inclusive_end": "00bdd980",
+      "bytes": 305,
+      "coverage": "complete",
+      "source": "src/native_vfs_device_route.cpp",
+      "source_name": "select_native_vfs_device_00bdd850",
+      "ghidra_name": "BSP_VFS_SelectDeviceInMounts",
+      "previous_name": "FUN_00bdd850",
+      "original_abi": "ECX captured manager; stack name/unused; RET8; EAX signed device or -1",
+      "native_sha256": "1f95f2c9ee13aebef5bf7b85d711350a72ab681a4216bd62da7ee04a0fbd7315",
+      "fresh_live_matches_disk": true,
+      "export_assembly_sha256": "d0b4d38175badfca92edaf1f211ecc93b4f14313a11c003fc4e57d725821b3ba"
+    },
+    {
+      "address": "00bdbc70",
+      "inclusive_end": "00bdbdfb",
+      "bytes": 396,
+      "coverage": "complete",
+      "source": "src/native_vfs_device_route.cpp",
+      "source_name": "read_native_vfs_device_provider_00bdbc70",
+      "ghidra_name": "BSP_VFS_ResolveMountCallback",
+      "previous_name": "BSP_VFS_ResolveMountCallback",
+      "original_abi": "ECX actual14h visitor; stack payload/suffix; RET8",
+      "native_sha256": "03f512991938e529b88dc099991ba4c091b835a7d5bd88d75d7c725087b63198",
+      "fresh_live_matches_disk": true,
+      "export_assembly_sha256": "f46e8d16de2be2236701bc189b41de86621f2b568e8c88c11650a043c31d407a"
+    },
+    {
+      "address": "00bdb680",
+      "inclusive_end": "00bdb6d7",
+      "bytes": 88,
+      "coverage": "complete",
+      "source": "src/native_vfs_device_route.cpp",
+      "source_name": "destroy_native_vfs_device_visitor_00bdb680",
+      "ghidra_name": "BSP_VfsDeviceRouteVisitor_Destroy",
+      "previous_name": "FUN_00bdb680",
+      "original_abi": "ECX actual14h visitor; RET",
+      "native_sha256": "7e6ef1ffd5ef9be5d5c21c3b91eca027a84b3967cdbecfec333c84be9617e924",
+      "fresh_live_matches_disk": true,
+      "export_assembly_sha256": "9f1abe232621903f5849f0ca4549b2cb473ef03f458cb3672ee396cf18497adc"
+    },
+    {
+      "address": "00bdb670",
+      "inclusive_end": "00bdb673",
+      "bytes": 4,
+      "coverage": "complete",
+      "source": "src/native_vfs_device_route.cpp",
+      "source_name": "read_native_vfs_device_result_00bdb670",
+      "ghidra_name": "BSP_VfsDeviceRouteVisitor_Result",
+      "previous_name": "FUN_00bdb670",
+      "original_abi": "ECX actual visitor; RET; raw AL=current byte4",
+      "native_sha256": "e0eb8cffec07b89f095aa1e60d89eed1f3338b76216e649ad3aeb3ba92dc7d04",
+      "fresh_live_matches_disk": true,
+      "export_assembly_sha256": "1958c7decc3ab8b18aec5a2cf183542e439b17207f9ccc5cdf2c83b928fde766"
+    },
+    {
+      "address": "00bdbe00",
+      "inclusive_end": "00bdbe1d",
+      "bytes": 30,
+      "coverage": "complete",
+      "source": "src/native_vfs_device_route.cpp",
+      "source_name": "delete_native_vfs_device_visitor_00bdbe00",
+      "ghidra_name": "CG_scalar_deleting_dtor_00bdbe00",
+      "previous_name": "CG_scalar_deleting_dtor_00bdbe00",
+      "original_abi": "ECX actual visitor; stack flags; RET4; EAX captured visitor",
+      "native_sha256": "6d7d00643d5605d6aa66db3a31c438390cc725e5a1dc39caac525b6d95c1d781",
+      "fresh_live_matches_disk": true,
+      "export_assembly_sha256": "b78f5c89563c28bfdd1012d05f9534435d0886d3af6c1584b0549d83ef5effba"
+    },
+    {
+      "address": "00bf0fb0",
+      "inclusive_end": "00bf0ffa",
+      "bytes": 75,
+      "coverage": "complete",
+      "source": "src/native_vfs_device_route.cpp",
+      "source_name": "resolve_native_provider_logical_name_00bf0fb0",
+      "ghidra_name": "BSP_FileProvider_ResolveLogicalName",
+      "previous_name": "BSP_FileProvider_ResolveLogicalName",
+      "original_abi": "ECX actual provider; stack suffix/output; RET8; normalized AL0/1",
+      "native_sha256": "a7052b969ac9845090521079e1a3c025b01679e131f13ab309efa5f8c84fdb47",
+      "fresh_live_matches_disk": true,
+      "export_assembly_sha256": "b629e10e88bb3b9c30475c1b219cb88c444957fa1e87bbc50189e5dac31602fc"
+    }
+  ],
+  "new_function_count": 6,
+  "new_original_bytes": 898,
+  "extensions": [
+    {
+      "address": "00bdd0a0",
+      "source": "src/native_vfs_lookup_routes.cpp",
+      "coverage": "existing complete 672-byte traversal with D683F4 profile dispatch extension only; not recounted"
+    },
+    {
+      "address": "00bd90d0",
+      "source": "src/native_vfs_lookup_routes.cpp",
+      "coverage": "existing contains callback factors captured-entry dispatch and adds actual MPAK BB4B20"
+    },
+    {
+      "address": "00bdbc00",
+      "source": "src/native_vfs_lookup_routes.cpp",
+      "coverage": "existing name-probe callback adds actual MPAK BB40C0 false leaf"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00bdd8ac",
+      "native": "0041dd40",
+      "function": "00bdd850",
+      "contract": "Actual copied-name resize from current input length, preserve1; RET8. Visitor already owned; name not yet owned."
+    },
+    {
+      "address": "00bdd8c3",
+      "native": "00bf7680",
+      "function": "00bdd850",
+      "contract": "Inline constructor copy after fresh source guard/current destination count and pointers; ADD ESP,0C; host memmove."
+    },
+    {
+      "address": "00bdd8d4",
+      "native": "00bee690",
+      "function": "00bdd850",
+      "contract": "Normalize copied actual header; original input unchanged; RET."
+    },
+    {
+      "address": "00bdd8e5",
+      "native": "00bdd0a0",
+      "function": "00bdd850",
+      "contract": "Existing actual traversal on captured manager, copied name, actual stack14h visitor; RET8."
+    },
+    {
+      "address": "00bdd90b",
+      "native": "00419cc0",
+      "function": "00bdd850",
+      "contract": "Success: captured copied-name data/current length+1/unused1 prepared for actual pool getter."
+    },
+    {
+      "address": "00bdd912",
+      "native": "00bd1510",
+      "function": "00bdd850",
+      "contract": "Success: return copied-name block via current actual pool; RET0C."
+    },
+    {
+      "address": "00bdd923",
+      "native": "00bdb680",
+      "function": "00bdd850",
+      "contract": "Success: destroy visitor after name cleanup; captured device survives."
+    },
+    {
+      "address": "00bdd94d",
+      "native": "00419cc0",
+      "function": "00bdd850",
+      "contract": "Failure: captured copied-name data/current length+1/unused1 prepared for actual pool getter."
+    },
+    {
+      "address": "00bdd954",
+      "native": "00bd1510",
+      "function": "00bdd850",
+      "contract": "Failure: return copied-name block; RET0C."
+    },
+    {
+      "address": "00bdd965",
+      "native": "00bdb680",
+      "function": "00bdd850",
+      "contract": "Failure: destroy visitor; return -1 without reading device field."
+    },
+    {
+      "address": "00bdbcbc",
+      "native": "provider+vtable24",
+      "function": "00bdbc70",
+      "contract": "CALL EAX; capture current payload+8/provider table+24; suffix and provider-name temporary output; original RET8 contract."
+    },
+    {
+      "address": "00bdbcca",
+      "native": "0041e870",
+      "function": "00bdbc70",
+      "contract": "Construct slash actual header from CE7898; RET4; arm only after return."
+    },
+    {
+      "address": "00bdbce0",
+      "native": "004261a0",
+      "function": "00bdbc70",
+      "contract": "ECX current mount payload; stack prefixed output/slash; RET8."
+    },
+    {
+      "address": "00bdbcf6",
+      "native": "004261a0",
+      "function": "00bdbc70",
+      "contract": "ECX first returned header; stack complete output/provider-name; RET8."
+    },
+    {
+      "address": "00bdbd10",
+      "native": "0041dd40",
+      "function": "00bdbc70",
+      "contract": "Identity-guarded inline visitor-name assignment, current final-name length and preserve1; RET8."
+    },
+    {
+      "address": "00bdbd25",
+      "native": "00bf7680",
+      "function": "00bdbc70",
+      "contract": "Current destination length, destination data, source data; ADD ESP,0C; host memmove preserves overlap."
+    },
+    {
+      "address": "00bdbd47",
+      "native": "00419cc0",
+      "function": "00bdbc70",
+      "contract": "Actual pool getter for complete name after state3->2."
+    },
+    {
+      "address": "00bdbd4e",
+      "native": "00bd1510",
+      "function": "00bdbc70",
+      "contract": "Return complete name using current length+1; RET0C."
+    },
+    {
+      "address": "00bdbd6b",
+      "native": "00419cc0",
+      "function": "00bdbc70",
+      "contract": "Actual pool getter for prefixed mount after state2->1."
+    },
+    {
+      "address": "00bdbd72",
+      "native": "00bd1510",
+      "function": "00bdbc70",
+      "contract": "Return prefixed mount; RET0C."
+    },
+    {
+      "address": "00bdbd8f",
+      "native": "00419cc0",
+      "function": "00bdbc70",
+      "contract": "Actual pool getter for slash after state1->0."
+    },
+    {
+      "address": "00bdbd96",
+      "native": "00bd1510",
+      "function": "00bdbc70",
+      "contract": "Return slash; RET0C."
+    },
+    {
+      "address": "00bdbdb6",
+      "native": "00419cc0",
+      "function": "00bdbc70",
+      "contract": "Actual pool getter for provider name after state0->-1."
+    },
+    {
+      "address": "00bdbdbd",
+      "native": "00bd1510",
+      "function": "00bdbc70",
+      "contract": "Return provider name; RET0C."
+    },
+    {
+      "address": "00bdbdd5",
+      "native": "provider+vtable24",
+      "function": "00bdbc70",
+      "contract": "CALL EDX; empty-mount path captures current provider slot24 with suffix/visitor+8 output; original RET8 contract."
+    },
+    {
+      "address": "00bdb6b6",
+      "native": "00419cc0",
+      "function": "00bdb680",
+      "contract": "Captured current visitor+0C data/current length8+1/unused1 prepared before pool getter."
+    },
+    {
+      "address": "00bdb6bd",
+      "native": "00bd1510",
+      "function": "00bdb680",
+      "contract": "Return name block then write D68380 base identity; RET0C."
+    },
+    {
+      "address": "00bdbe03",
+      "native": "00bdb680",
+      "function": "00bdbe00",
+      "contract": "Destroy actual visitor before testing flags."
+    },
+    {
+      "address": "00bdbe10",
+      "native": "00bf65ac",
+      "function": "00bdbe00",
+      "contract": "Flags bit0 only: current host free boundary; ADD ESP,4; return captured visitor."
+    },
+    {
+      "address": "00bf0fbb",
+      "native": "provider+vtable10",
+      "function": "00bf0fb0",
+      "contract": "CALL EDX; captured current contains target, provider and original suffix; RET4 contract."
+    },
+    {
+      "address": "00bf0fd1",
+      "native": "0041dd40",
+      "function": "00bf0fb0",
+      "contract": "True branch only; identity guarded original-suffix assignment with preserve1; RET8."
+    },
+    {
+      "address": "00bf0fe6",
+      "native": "00bf7680",
+      "function": "00bf0fb0",
+      "contract": "Current destination count, original source data and destination data; ADD ESP,0C; host memmove."
+    },
+    {
+      "address": "00bdd281",
+      "native": "visitor+vtable04",
+      "function": "00bdd0a0",
+      "contract": "Existing CALL EDX now supports actual D683F4/BDBC70; actual payload and copied callback name, RET8 contract."
+    },
+    {
+      "address": "00bdd28a",
+      "native": "visitor+vtable08",
+      "function": "00bdd0a0",
+      "contract": "Existing CALL EDX reloads visitor table after work; now supports BDB670 raw-byte getter."
+    },
+    {
+      "address": "00bd90e4",
+      "native": "provider+vtable10",
+      "function": "00bd90d0",
+      "contract": "Existing CALL EDX factored into captured-entry source dispatch; adds actual MPAK BB4B20."
+    },
+    {
+      "address": "00bdbc41",
+      "native": "provider+vtable18",
+      "function": "00bdbc00",
+      "contract": "Existing CALL EAX gains actual MPAK BB40C0 false probe leaf after original assignment."
+    }
+  ],
+  "no_ghidra_function": [],
+  "worker_ghidra_mutations": false,
+  "existing_primary_repairs": [
+    "BDB670 exact4-byte function defined before packet",
+    "BDBE00 free fall-through repaired before packet"
+  ],
+  "lookup_profile": {
+    "identity": "00d683f4",
+    "slots": [
+      "00bdbe00",
+      "00bdbc70",
+      "00bdb670"
+    ],
+    "storage": "borrowed actual table; current identity and slots reread"
+  },
+  "constructor_layout": {
+    "producer": "00bdd850",
+    "size": "14h",
+    "writes": {
+      "0": "D683F4",
+      "4": "byte0",
+      "8": "DWORD0",
+      "0C": "DWORD0",
+      "10": "FFFFFFFF"
+    },
+    "untouched": "padding5..7"
+  },
+  "unwind_evidence": [
+    {
+      "handler": "00cc63b0",
+      "func_info": "00e00874",
+      "map": "00e00864",
+      "transitions": [
+        "1->0 CC63A8 name EBP-28h ->41DD20",
+        "0->-1 CC63A0 visitor EBP-20h ->BDB680"
+      ]
+    },
+    {
+      "handler": "00cc6130",
+      "func_info": "00e004ec",
+      "map": "00e004cc",
+      "transitions": [
+        "3->2 CC6128 complete EBP-1Ch ->41DD20",
+        "2->1 CC6120 prefixed EBP-14h ->41DD20",
+        "1->0 CC6118 slash EBP-24h ->41DD20",
+        "0->-1 CC6110 provider name EBP-2Ch ->41DD20"
+      ]
+    },
+    {
+      "handler": "00cc6038",
+      "func_info": "00e00388",
+      "map": "00e00380",
+      "transitions": [
+        "0->-1 CC6030 saved this EBP-10h ->BD8FE0"
+      ]
+    }
+  ],
+  "corrections": [
+    {
+      "was": "BF0FB0 stale decompile shows successful return without assignment",
+      "is": "Complete75-byte listing has contains, conditional original-header assignment and normalized return",
+      "evidence": "BF0FCA..BF0FED inline resize/copy; live flow34 listed instructions and zero gaps"
+    },
+    {
+      "was": "BF7680 commonly labelled memcpy",
+      "is": "Owned inline source copies use overlap-capable host memmove",
+      "evidence": "Live BF769A backward-overlap branch to BF7844; owned callers BDD8C3/BDBD25/BF0FE6"
+    }
+  ],
+  "preserved_names": [
+    "CG_scalar_deleting_dtor_00bdbe00",
+    "BSP_VFS_ResolveMountCallback",
+    "BSP_FileProvider_ResolveLogicalName"
+  ],
+  "dependency_commits": {
+    "mpak_open": "7f68848726f5d7bd2de942ca2c7f26adb037c0be",
+    "mpak_enumeration": "7cde1c94b7cbca3f80045e1c7a16955ef6470afe",
+    "dependency_merge": "8bedc62d"
+  },
+  "validation": {
+    "fresh_owned_spans": 6,
+    "fresh_owned_bytes": 898,
+    "fresh_live_disk_matches": true,
+    "verified_seeds": 8,
+    "strict_win32_build": "passed: scripts/build.ps1 Release; MSBUILDDISABLENODEREUSE=1",
+    "existing_ctests": "2/2 passed: reconstructed_math and native_math_differential",
+    "new_tests": 0,
+    "expected_direct_call_rows": 29,
+    "manually_reviewed_indirect_rows": 7,
+    "call_verifier": "passed:29 direct rows,0 failed;7 indirect rows separately reviewed from complete listings",
+    "build_log": "local/native_vfs_device_route_build.log",
+    "build_log_sha256": "d079aa5b57b72067b392c72bf4ff1af4bb02bcd72608c6c96093b99f828bb8c6",
+    "native_source_fixture": false,
+    "gameplay": false
+  },
+  "limits": [
+    "New source interfaces, not original Win32 ABI/FH3/SEH replacements",
+    "Actual string pool release noexcept does not establish throwing native cleanup/getter behavior",
+    "Existing shared native string/concat/normalization helpers retain separately documented limits",
+    "Original CRT/STL are current host/library boundaries; no library ports",
+    "Concurrent storage and native stack-spill aliases are not established",
+    "Runtime provider resolution maps and optional context lifetime wiring belong to integrator; no fallback supplied",
+    "Completed MPAK open packet source/report unchanged"
+  ],
+  "source_pins": [
+    {
+      "path": "src/native_vfs_device_route.cpp",
+      "sha256": "09bb76bd0bc6f98253f261c9f8280edcf489ec9718beef72273b6c47780888d8"
+    },
+    {
+      "path": "include/bsp/native_vfs_device_route.hpp",
+      "sha256": "49a502542511e8e860b8f030baa3aa796131ed9a69d3b892e62f768ed94cd445"
+    },
+    {
+      "path": "src/native_vfs_lookup_routes.cpp",
+      "sha256": "ae41d84456d67ddcc5665ae0e0525d539cf034e7e0e7eb0791a6eb08c1697147"
+    },
+    {
+      "path": "include/bsp/native_vfs_lookup_routes.hpp",
+      "sha256": "51821992edd0334d7d3c8b25594f94146860bab11a5327c05743c1a8fa451238"
+    },
+    {
+      "path": "docs/NATIVE_VFS_DEVICE_ROUTE.md",
+      "sha256": "c17f445297dc7e705aad7e7b86692540c71b8d3145673458521da7abc373f6cb"
+    }
+  ]
+}

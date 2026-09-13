@@ -169,3 +169,11 @@ Follow-up work includes a concrete compatible library binding for the three
 STL insertion specializations and vector destructors; provider lookup/open
 methods at BB79E0/BB7A00 and their dependencies; real startup/VFS reachability;
 and installed archive/gameplay validation when an actual fixture is available.
+
+## Correction from docs/NATIVE_MPAK_AZ_INTEGRATION.md
+
+The D641F8 table establishes BB5BB0 as open and BB4B20 as contains. BB79E0 is a
+false default and BB7A00 clears 14h bytes; they are not the lookup/open methods
+proposed above. AZ adds the actual provider operations, raw inflater ownership
+and stream methods, and borrowed numeric VFS bindings. The earlier library,
+startup-reachability and installed-game validation boundaries still apply.

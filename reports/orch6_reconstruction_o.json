@@ -147,12 +147,45 @@
   },
   "evidence_archive": {
     "index": "local/orch6_worker_archive_o.json",
-    "artifacts": 106,
+    "artifacts": 109,
     "worktree_counts": {
-      "battlestations-pacific-decompile-orch6-brain-producers-o": 28,
+      "battlestations-pacific-decompile-orch6-brain-producers-o": 31,
       "battlestations-pacific-decompile-orch6-neighbour-box-math-o": 78
     },
-    "scope": "Ignored hashed artifacts are retained locally; tracked source and reports remain in the worker commits."
+    "scope": "Ignored local and build library artifacts are retained locally; tracked source and reports remain in the worker commits.",
+    "historical_build_library_audit": {
+      "expected_build_references": 3,
+      "candidates_checked": 218,
+      "rows": [
+        {
+          "batch": "n",
+          "manifest": "local\\worker_evidence_n\\orch6-neighbour-candidates-n\\neighbour_candidate_artifact_manifest.json",
+          "worker": "orch6-neighbour-candidates-n",
+          "path": "build/win32/Release/bsp_core.lib",
+          "sha256": "4947bb2d4590b039971f8ee52993309f3266d40a6bd922ab9d0587738aeb92cd",
+          "status": "historical_build_library_not_retained",
+          "limit": "Earlier archiver covered local/ artifacts but omitted build/ library references. The exact worker library is unavailable in retained worktrees/archives. Preserved fixture executables, sources, original-byte blobs and results remain separate evidence; a relink with this historical library cannot be reproduced from the archive alone."
+        },
+        {
+          "batch": "lm",
+          "manifest": "local\\worker_evidence_lm\\orch6-generic-input-m\\generic_input_artifact_manifest.json",
+          "worker": "orch6-generic-input-m",
+          "path": "build/win32/Release/bsp_core.lib",
+          "sha256": "b8529594d38ef1d4109bfbf6d1e019c79d19da5437b73ed52b98e993cdd29d29",
+          "status": "historical_build_library_not_retained",
+          "limit": "Earlier archiver covered local/ artifacts but omitted build/ library references. The exact worker library is unavailable in retained worktrees/archives. Preserved fixture executables, sources, original-byte blobs and results remain separate evidence; a relink with this historical library cannot be reproduced from the archive alone."
+        },
+        {
+          "batch": "lm",
+          "manifest": "local\\worker_evidence_lm\\orch6-generic-motion-l\\generic_motion_artifact_manifest.json",
+          "worker": "orch6-generic-motion-l",
+          "path": "build/win32/Release/bsp_core.lib",
+          "sha256": "8e8f89428fb502403cbd8ce43678c745344a72d7b40fc8e90ace6a7476424043",
+          "status": "historical_build_library_not_retained",
+          "limit": "Earlier archiver covered local/ artifacts but omitted build/ library references. The exact worker library is unavailable in retained worktrees/archives. Preserved fixture executables, sources, original-byte blobs and results remain separate evidence; a relink with this historical library cannot be reproduced from the archive alone."
+        }
+      ]
+    }
   },
   "abi_compatible": false,
   "game_validated": false,
