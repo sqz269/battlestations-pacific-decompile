@@ -163,4 +163,64 @@ void destroy_native_render_resource_record_00b2f990(
     }
 }
 
+
+NativeRenderResourceRecord& assign_native_render_resource_record_00b30510(
+    NativeRenderResourceRecord& destination_record,
+    const NativeRenderResourceRecord& source_record, ActualNativeStringPoolStorage& actual_string_pool,
+    const SingletonLifetimeCallbacks& callbacks) {
+    volatile auto& destination = destination_record;
+    const volatile auto& source = source_record;
+    if (&destination_record != &source_record) {
+        auto& storage = actual_string_pool;
+        resize_native_string_header_0041dd40(
+            &destination_record, storage, source.name_length_00, true);
+        if (source.name_length_00 != 0) { // Reread after resize and its callbacks.
+            const auto copied = destination.name_length_00;
+            auto* const source_data = source.name_data_04;
+            auto* const destination_data = destination.name_data_04;
+            // As in the existing raw-string helpers, omit a zero-byte memcpy
+            // that could pass null pointers to the standard host library.
+            if (copied != 0) std::memmove(destination_data, source_data, copied);
+        }
+    }
+
+    auto* const destination_owner = reinterpret_cast<unsigned char*>(&destination_record) + 8;
+    auto* const source_owner = reinterpret_cast<unsigned char*>(
+        const_cast<NativeRenderResourceRecord*>(&source_record)) + 8;
+    if (destination_owner != source_owner) {
+        auto* const source_end = source.sentinel_0c;
+        volatile auto* const captured_end = source_end;
+        auto* const source_first = captured_end->next_00;
+        clear_native_render_resource_aliases_004d05e0(destination_owner, actual_string_pool);
+        volatile auto* const current_destination_end = destination.sentinel_0c;
+        auto* const destination_first = current_destination_end->next_00;
+        insert_native_render_alias_range_004d26a0(destination_owner,
+            {destination_owner, destination_first}, {source_owner, source_first},
+            {source_owner, source_end}, actual_string_pool, callbacks);
+    }
+
+    // 00B30582..00B305A3: each source read immediately precedes its store.
+    // Keep these stores for exact identity, and do not snapshot the tail before
+    // name/list calls or infer ownership from the final resource pointer.
+    for (unsigned i = 0; i != 5; ++i)
+        destination.payload_14_24[i] = source.payload_14_24[i];
+    destination.resource_28 = source.resource_28;
+    return destination_record;
+}
+
+void destroy_native_render_resource_record_00b2f990(
+    NativeRenderResourceRecord& record, ActualNativeStringPoolStorage& strings) {
+    try {
+        clear_native_render_resource_aliases_004d05e0(
+            reinterpret_cast<unsigned char*>(&record) + 8, strings);
+        singleton_lifetime_free(record.sentinel_0c);
+        record.sentinel_0c = nullptr;
+    } catch (...) {
+        destroy_native_string_header_0041dd20(&record, strings);
+        throw;
+    }
+    auto* const data = record.name_data_04;
+    if (data) strings.release(data, record.name_length_00 + 1u);
+}
+
 }

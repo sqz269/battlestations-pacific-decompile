@@ -4,6 +4,7 @@
 
 namespace bsp {
 class SizedStoragePool;
+class ActualNativeStringPoolStorage;
 struct SingletonLifetimeCallbacks;
 
 // Borrowed actual immutable native tables, each at least four DWORDs. Numeric
@@ -35,6 +36,11 @@ std::uint32_t native_resource_zero_accounted_size_00a82250() noexcept;
 // Native EH registration and game execution are separate validation boundaries.
 void remove_native_render_resource_by_alias_00b31dc0(void* actual_container,
     const void* actual_name_header, SizedStoragePool& actual_string_pool,
+    const SingletonLifetimeCallbacks&, const NativeRenderResourceAccountingTables&);
+// Identical record/alias/accounting schedule in the actual owning string-pool
+// domain, including record assignment/destruction. No semantic pool copy.
+void remove_native_render_resource_by_alias_00b31dc0(void* actual_container,
+    const void* actual_name_header, ActualNativeStringPoolStorage&,
     const SingletonLifetimeCallbacks&, const NativeRenderResourceAccountingTables&);
 
 } // namespace bsp
