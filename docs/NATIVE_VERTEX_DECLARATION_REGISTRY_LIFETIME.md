@@ -141,3 +141,13 @@ native SEH/FH3 exception, CRT allocation ABI parity, or gameplay behavior.
 The registry is not wired into a complete actual renderer owner in this packet.
 Full renderer/device recreation and application registration of decoded
 declaration companions remain their respective owners' integration work.
+
+## AU saved-analysis limitation
+
+Names, original signatures and evidence were saved and read back. The returning
+free-call tails for B316A0 and B32030 are decoded and their complete
+native byte spans were checked, but Ghidra still stores shorter function bodies.
+The script API refused the narrow stored-body extension because script execution
+is disabled. Complete source and original-byte fixture coverage does not imply
+that these two stored Ghidra bodies are repaired. The constructor placement
+fragment B32534..B32555 is an EOL comment within B32410; its parent name remains.

@@ -40,6 +40,8 @@ struct NativeInstanceCollectionAccess {
 // storage, successful allocations and canonical completed companions required.
 // Native C++ temporary cleanup is retained; hardware-fault/SEH unwind and
 // application renderer composition are not established by this interface.
+// The CRT/math-error callback must return without throwing through the naked
+// visibility helper; its explicit dummy frame has no native EH registration.
 void collect_native_instance_entry_00b1dff0(void* actual_command,
     void* actual_entry, NativeInstanceCollectionAccess&);
 
@@ -70,7 +72,8 @@ void append_native_render_batch_entry_00b51cb0(NativeRenderBatchStorage&, void*)
 
 // Complete 43C130. Original ECX output8h, EDX C-string prefix, stack right8h,
 // RET4/EAX output. Construct prefix, concatenate then release current prefix.
-// Native ownership-bit unwind also releases completed output if necessary.
+// Native ownership-bit unwind can release a completed output if prefix
+// cleanup throws; this interface admits nonthrowing current pool cleanup.
 void* prefix_native_string_header_0043c130(void* output, const char* prefix,
     const void* right, ActualNativeStringPoolStorage&);
 } // namespace bsp

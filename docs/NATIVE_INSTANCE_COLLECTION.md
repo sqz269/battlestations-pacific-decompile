@@ -93,6 +93,10 @@ cleanup C5F358. Its bit is set only after4261A0 returns. Current string release
 is nonthrowing; exceptions during concatenation release the prefix while the
 callee supplies its own output cleanup. Hardware faults, invalid pointers and
 original FH3/SEH interoperability remain outside the source contract.
+The visibility prefix's CRT/math-error callback must return without throwing:
+its naked helper preserves original local offsets with dummy frame words and
+does not register a native exception frame. The callback's C++ type alone does
+not enforce that application binding requirement.
 
 `NativeInstanceCollectingRenderServices` supplies the concrete B1DFF0 method
 for the existing `NativeTracelineRenderServices`. Its remaining current-profile
@@ -114,7 +118,26 @@ probe-only current-library replay are recorded separately. No gameplay or
 complete GPU render proof is claimed. Cold creation requires the actual
 `native_instance_geometry` module and its concrete runtime domains.
 
+The existing B1D760/B1D8E0 group destructor/deleting-destructor now also accepts
+`ActualNativeStringPoolStorage`, preserving the same release/array/name order.
+This closes the group's name allocation/release pairing without routing an
+actual name into the older semantic pool. The old pool interface remains.
+
 Next compose the application's canonical command lifetime with the same actual
 string pool, close the remaining actual command execution/upload providers,
 and validate the composed scene/render path. B29670 device recreation remains
 a separate packet; this reconstruction does not supply a fallback device.
+
+## AU cold collection composition evidence
+
+The original B1DFF0 caller now invokes original B4C8D0 twice in a focused
+original/source fixture:593 normalized DWORDs passed across the command, group,
+cache, colors and two generated model graphs. External call adapters use the
+current actual source ownership domains, with a real D3D9 HAL device,16MiB
+shared vertex buffer and COM declaration. Full group retirement uses the same
+ActualNativeStringPoolStorage as name allocation. Borrowed effect/binding
+records, disabled visibility, null source index, effect identity normalization
+and two normalized pool-slot preimages bound this evidence. The initial probe
+compiled the new source objects; final current-library-only replay and its
+exact source commit are recorded separately in the report. No visible scene
+or gameplay result is established.

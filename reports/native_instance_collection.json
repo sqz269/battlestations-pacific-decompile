@@ -18,7 +18,8 @@
       "native_byte_count": 1720,
       "native_sha256": "df649377f1b426eb5a4c70afd35cce4f6696d7607ab888ccf0bfe8e9b5ebbc40",
       "coverage": "complete normal body over actual producer-created storage and current canonical services",
-      "evidence": "Descriptive hypothesis, not a recovered symbol. Actual visibility, pointer batching, binding-indexed group publication and two generated models. x87/SSE/low-DWORD category semantics and current pointer reloads preserved. Full live/disk bytes and assembly; new source ABI; gameplay unverified. Evidence: docs/NATIVE_INSTANCE_COLLECTION.md; reports/native_instance_collection.json."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage and canonical existing service domains; original register/stack ABI and full live/disk body reviewed. Targeted original-byte fixtures cover only documented paths; whole render composition and gameplay remain unverified. Evidence: docs/NATIVE_INSTANCE_COLLECTION.md; reports/native_instance_collection.json.",
+      "ledger_kind": "function"
     },
     {
       "address": "00b172d0",
@@ -34,7 +35,8 @@
       "native_byte_count": 7,
       "native_sha256": "b26137ce17a8386215bb1fde2b53f227d965b04ec16598700dc9cd28de01928f",
       "coverage": "complete normal body over actual producer-created storage and current canonical services",
-      "evidence": "Descriptive hypothesis, not a recovered symbol. Actual visibility, pointer batching, binding-indexed group publication and two generated models. x87/SSE/low-DWORD category semantics and current pointer reloads preserved. Full live/disk bytes and assembly; new source ABI; gameplay unverified. Evidence: docs/NATIVE_INSTANCE_COLLECTION.md; reports/native_instance_collection.json."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage and canonical existing service domains; original register/stack ABI and full live/disk body reviewed. Targeted original-byte fixtures cover only documented paths; whole render composition and gameplay remain unverified. Evidence: docs/NATIVE_INSTANCE_COLLECTION.md; reports/native_instance_collection.json.",
+      "ledger_kind": "function"
     },
     {
       "address": "00b17300",
@@ -50,7 +52,8 @@
       "native_byte_count": 7,
       "native_sha256": "eab8cac485e65db727b90692b58689cbc6e0afc5fa86e1fffe05b10e54faa89d",
       "coverage": "complete normal body over actual producer-created storage and current canonical services",
-      "evidence": "Descriptive hypothesis, not a recovered symbol. Actual visibility, pointer batching, binding-indexed group publication and two generated models. x87/SSE/low-DWORD category semantics and current pointer reloads preserved. Full live/disk bytes and assembly; new source ABI; gameplay unverified. Evidence: docs/NATIVE_INSTANCE_COLLECTION.md; reports/native_instance_collection.json."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage and canonical existing service domains; original register/stack ABI and full live/disk body reviewed. Targeted original-byte fixtures cover only documented paths; whole render composition and gameplay remain unverified. Evidence: docs/NATIVE_INSTANCE_COLLECTION.md; reports/native_instance_collection.json.",
+      "ledger_kind": "function"
     },
     {
       "address": "00b73770",
@@ -66,7 +69,8 @@
       "native_byte_count": 139,
       "native_sha256": "fdc084707cea40aba2b2da3f0a61755e0b36afb3c2db9635cea0cb3955123954",
       "coverage": "complete normal body over actual producer-created storage and current canonical services",
-      "evidence": "Descriptive hypothesis, not a recovered symbol. Actual visibility, pointer batching, binding-indexed group publication and two generated models. x87/SSE/low-DWORD category semantics and current pointer reloads preserved. Full live/disk bytes and assembly; new source ABI; gameplay unverified. Evidence: docs/NATIVE_INSTANCE_COLLECTION.md; reports/native_instance_collection.json."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage and canonical existing service domains; original register/stack ABI and full live/disk body reviewed. Targeted original-byte fixtures cover only documented paths; whole render composition and gameplay remain unverified. Evidence: docs/NATIVE_INSTANCE_COLLECTION.md; reports/native_instance_collection.json.",
+      "ledger_kind": "function"
     },
     {
       "address": "00b51cb0",
@@ -82,7 +86,8 @@
       "native_byte_count": 60,
       "native_sha256": "7934397a2c8d680f6e37355b0119c240f614c4734aa70ae3d375705fc261d24e",
       "coverage": "complete normal body over actual producer-created storage and current canonical services",
-      "evidence": "Descriptive hypothesis, not a recovered symbol. Actual visibility, pointer batching, binding-indexed group publication and two generated models. x87/SSE/low-DWORD category semantics and current pointer reloads preserved. Full live/disk bytes and assembly; new source ABI; gameplay unverified. Evidence: docs/NATIVE_INSTANCE_COLLECTION.md; reports/native_instance_collection.json."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage and canonical existing service domains; original register/stack ABI and full live/disk body reviewed. Targeted original-byte fixtures cover only documented paths; whole render composition and gameplay remain unverified. Evidence: docs/NATIVE_INSTANCE_COLLECTION.md; reports/native_instance_collection.json.",
+      "ledger_kind": "function"
     },
     {
       "address": "0043c130",
@@ -92,13 +97,14 @@
       "ghidra_name": "BSP_NativeString_ConstructPrefixedHeader",
       "native_calling_convention": "__fastcall",
       "native_prototype": "void * BSP_NativeString_ConstructPrefixedHeader(void *output, char *prefix, void *right)",
-      "original_abi": "__fastcall; original stack (void *output, char *prefix, void *right); complete native listing and cleanup in docs/NATIVE_INSTANCE_COLLECTION.md.",
+      "original_abi": "ECX output8h; EDX prefix C-string; only right8h on stack; EAX output; RET4.",
       "source": "src/native_instance_collection.cpp",
       "header": "include/bsp/native_instance_collection.hpp",
       "native_byte_count": 134,
       "native_sha256": "e7c7a3dbf9b0d3917fb4e046611c1b56ca7a97e2056afdc81a857c6424eb0f31",
       "coverage": "complete normal body over actual producer-created storage and current canonical services",
-      "evidence": "Descriptive hypothesis, not a recovered symbol. Actual visibility, pointer batching, binding-indexed group publication and two generated models. x87/SSE/low-DWORD category semantics and current pointer reloads preserved. Full live/disk bytes and assembly; new source ABI; gameplay unverified. Evidence: docs/NATIVE_INSTANCE_COLLECTION.md; reports/native_instance_collection.json."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage and canonical existing service domains; original register/stack ABI and full live/disk body reviewed. Targeted original-byte fixtures cover only documented paths; whole render composition and gameplay remain unverified. Evidence: docs/NATIVE_INSTANCE_COLLECTION.md; reports/native_instance_collection.json.",
+      "ledger_kind": "function"
     }
   ],
   "call_sites": [
@@ -349,5 +355,206 @@
     "source_sha256": "069a083a942d7b3390b0b9bf1ae7340b92c87e0218650e520215a4acc5c3ec09",
     "command": "./local/run_collection_au.ps1",
     "mode": "two new source modules linked to existing library; final probe-only current-library replay pending"
+  },
+  "dependency_changes": [
+    {
+      "addresses": [
+        "00b1d760",
+        "00b1d8e0"
+      ],
+      "source": "src/native_render_group_lifetime.cpp",
+      "header": "include/bsp/native_render_group_lifetime.hpp",
+      "change": "Existing full destructor/scalar-delete sequence gains ActualNativeStringPoolStorage overload; same allocation/release domain as actual B1DFF0 name; old interface retained without added noexcept behavior.",
+      "new_native_body": false,
+      "validation": "Initial cold original/source fixture PASS593 normalized DWORDs, full actual-string group cleanup; final merged current-library replay pending"
+    }
+  ],
+  "integration_au_review": {
+    "combined_validation": "pending exact merged source build and current-library replay",
+    "game_validated": false,
+    "saved_function_names_and_signatures": 21,
+    "saved_constructor_fragments": 1,
+    "original_signature_readback": "00b1dff0 BSP_RenderContext_CollectInstanceEntry  void __thiscall BSP_RenderContext_CollectInstanceEntry(void * this, void * entry)  body 00b1dff0 - 00b1e6a7\n00b172d0 BSP_Effect_GetName  void * __thiscall BSP_Effect_GetName(void * this)  body 00b172d0 - 00b172d6\n00b17300 BSP_Effect_GetBatchIndex  uint __thiscall BSP_Effect_GetBatchIndex(void * this)  body 00b17300 - 00b17306\n00b73770 BSP_StreamParameters_ComputeThresholdFade  float __thiscall BSP_StreamParameters_ComputeThresholdFade(void * this, float leading, float fraction)  body 00b73770 - 00b737fa\n00b51cb0 BSP_RenderBatch_AppendEntry  void __thiscall BSP_RenderBatch_AppendEntry(void * this, void * entry)  body 00b51cb0 - 00b51ceb\n0043c130 BSP_NativeString_ConstructPrefixedHeader  void * __fastcall BSP_NativeString_ConstructPrefixedHeader(void * output, char * prefix, void * right)  body 0043c130 - 0043c1b5\n00b4c8d0 BSP_InstanceGeometry_CreateGeneratedModel  void * __fastcall BSP_InstanceGeometry_CreateGeneratedModel(void * name, void * generator, void * mesh, void * section)  body 00b4c8d0 - 00b4caca\n00b556b0 BSP_InstanceGenerator_GetInstanceDeclaration  void * __thiscall BSP_InstanceGenerator_GetInstanceDeclaration(void * this)  body 00b556b0 - 00b556b3\n00b556c0 BSP_InstanceGenerator_GetCombinedLayout  void * __thiscall BSP_InstanceGenerator_GetCombinedLayout(void * this)  body 00b556c0 - 00b556c3\n00b30270 BSP_NativeDeclarationRecordArray_Resize  void __thiscall BSP_NativeDeclarationRecordArray_Resize(void * this, uint count)  body 00b30270 - 00b3033b\n00b31630 BSP_NativeDeclarationRegistry_Flush  void __thiscall BSP_NativeDeclarationRegistry_Flush(void * this)  body 00b31630 - 00b31698\n00b316a0 BSP_NativeDeclarationRecordArray_Destroy  void __thiscall BSP_NativeDeclarationRecordArray_Destroy(void * this)  body 00b316a0 - 00b316b1\n00b31d40 BSP_NativeDeclarationRegistry_Release  void __thiscall BSP_NativeDeclarationRegistry_Release(void * this, void * declaration)  body 00b31d40 - 00b31d5e\n00b32030 BSP_NativeDeclarationRegistry_Destroy  void __thiscall BSP_NativeDeclarationRegistry_Destroy(void * this)  body 00b32030 - 00b3207b\n00b32210 BSP_NativeDeclarationRegistry_ScalarDelete  void * __thiscall BSP_NativeDeclarationRegistry_ScalarDelete(void * this, uint flags)  body 00b32210 - 00b3222d\n00b24840 BSP_D3D9Renderer_BindVertexStream  void __thiscall BSP_D3D9Renderer_BindVertexStream(void * this, uint index, void * stream)  body 00b24840 - 00b24a37\n00b23710 BSP_AssignNativeRendererVertexOwner  void * __fastcall BSP_AssignNativeRendererVertexOwner(void * destination, void * source)  body 00b23710 - 00b2374a\n00b24bf0 BSP_D3D9Renderer_ResetBindingsBeforeRecreation  void __thiscall BSP_D3D9Renderer_ResetBindingsBeforeRecreation(void * this)  body 00b24bf0 - 00b24db4\n00b48cf0 BSP_D3D9LogicalVertexStream_GetBuffer  void * __thiscall BSP_D3D9LogicalVertexStream_GetBuffer(void * this)  body 00b48cf0 - 00b48cf9\n00b1d760 BSP_InstanceGroup_Destroy  void __thiscall BSP_InstanceGroup_Destroy(void * this)  body 00b1d760 - 00b1d81a\n00b1d8e0 BSP_InstanceGroup_ScalarDeletingDestructor  void * __thiscall BSP_InstanceGroup_ScalarDeletingDestructor(void * this, uint flags)  body 00b1d8e0 - 00b1d8fd\n",
+    "previous_signatures": "00b1dff0 BSP_RenderContext_CollectInstanceEntry  undefined BSP_RenderContext_CollectInstanceEntry(void)  body 00b1dff0 - 00b1e6a7\n00b172d0 TRIV_body_00b172d0  undefined TRIV_body_00b172d0(void)  body 00b172d0 - 00b172d6\n00b17300 TRIV_body_00b17300  undefined TRIV_body_00b17300(void)  body 00b17300 - 00b17306\n00b73770 BSP_StreamParameters_ComputeThresholdFade  undefined BSP_StreamParameters_ComputeThresholdFade(void)  body 00b73770 - 00b737fa\n00b51cb0 BSP_RenderBatch_AppendEntry  undefined BSP_RenderBatch_AppendEntry(void)  body 00b51cb0 - 00b51ceb\n0043c130 FUN_0043c130  undefined FUN_0043c130(void)  body 0043c130 - 0043c1b5\n00b4c8d0 BSP_InstanceGeometry_CreateGeneratedModel  undefined BSP_InstanceGeometry_CreateGeneratedModel(void)  body 00b4c8d0 - 00b4caca\n00b556b0 BSP_InstanceGenerator_GetInstanceDeclaration  undefined BSP_InstanceGenerator_GetInstanceDeclaration(void)  body 00b556b0 - 00b556b3\n00b556c0 BSP_InstanceGenerator_GetCombinedLayout  undefined BSP_InstanceGenerator_GetCombinedLayout(void)  body 00b556c0 - 00b556c3\n00b30270 FUN_00b30270  undefined FUN_00b30270(void)  body 00b30270 - 00b3033b\n00b31630 FUN_00b31630  undefined FUN_00b31630(void)  body 00b31630 - 00b31698\n00b316a0 FUN_00b316a0  undefined FUN_00b316a0(void)  body 00b316a0 - 00b316b1\n00b31d40 FUN_00b31d40  undefined FUN_00b31d40(void)  body 00b31d40 - 00b31d5e\n00b32030 FUN_00b32030  undefined FUN_00b32030(void)  body 00b32030 - 00b3207b\n00b32210 CG_scalar_deleting_dtor_00b32210  undefined CG_scalar_deleting_dtor_00b32210(void)  body 00b32210 - 00b3222d\n00b24840 BSP_D3D9Renderer_BindVertexStream  undefined BSP_D3D9Renderer_BindVertexStream(void)  body 00b24840 - 00b24a37\n00b23710 FUN_00b23710  undefined FUN_00b23710(void)  body 00b23710 - 00b2374a\n00b24bf0 BSP_D3D9Renderer_ResetBindingsBeforeRecreation  undefined BSP_D3D9Renderer_ResetBindingsBeforeRecreation(void)  body 00b24bf0 - 00b24db4\n00b48cf0 BSP_D3D9LogicalVertexStream_GetBuffer  undefined BSP_D3D9LogicalVertexStream_GetBuffer(void)  body 00b48cf0 - 00b48cf9\n00b1d760 BSP_InstanceGroup_Destroy  undefined BSP_InstanceGroup_Destroy(void)  body 00b1d760 - 00b1d81a\n00b1d8e0 BSP_InstanceGroup_ScalarDeletingDestructor  undefined BSP_InstanceGroup_ScalarDeletingDestructor(void)  body 00b1d8e0 - 00b1d8fd\n",
+    "signature_readback_passed": true,
+    "stored_body_tail_limits": {
+      "00b316a0": {
+        "readback": "00b316a0 BSP_NativeDeclarationRecordArray_Destroy  void __thiscall BSP_NativeDeclarationRecordArray_Destroy(void * this)  body 00b316a0 - 00b316b1",
+        "full_native_end_inclusive": "00b316b6",
+        "reason": "Decoded returning-free tails remain outside stored function metadata. run_script_inline refused: Script execution disabled. Full native disk/live spans and fixture coverage are separate evidence."
+      },
+      "00b32030": {
+        "readback": "00b32030 BSP_NativeDeclarationRegistry_Destroy  void __thiscall BSP_NativeDeclarationRegistry_Destroy(void * this)  body 00b32030 - 00b3207b",
+        "full_native_end_inclusive": "00b3208e",
+        "reason": "Decoded returning-free tails remain outside stored function metadata. run_script_inline refused: Script execution disabled. Full native disk/live spans and fixture coverage are separate evidence."
+      }
+    },
+    "owned_flow_repairs": {
+      "repairs": [
+        {
+          "function": "00b32030",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-13T03:59:43Z",
+          "decompile_lines_before": 20,
+          "gaps": [
+            {
+              "site": "00b32077",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b3207c",
+              "gap_end_exclusive": "00b3208f",
+              "bytes": 19,
+              "after_call": true,
+              "sha256": "e7ce22dbe8169080e63b1547dd78c3b12e6b84a78e109d22d6969dfdb70fe47b"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00b32077",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b3207c",
+                "gap_end_exclusive": "00b3208f",
+                "bytes": 19,
+                "after_call": true,
+                "sha256": "e7ce22dbe8169080e63b1547dd78c3b12e6b84a78e109d22d6969dfdb70fe47b"
+              },
+              "clear": "Success: Cleared flow override at 00b32077 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 19 byte(s)"
+            },
+            {
+              "explicit_tail_call": "00b32077",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00b32077 (was: NONE, now: NONE)"
+              }
+            }
+          ],
+          "explicit_tail_end_exclusive": "00b3208f",
+          "explicit_body_sha256": "be78e023f4bf3b4db0968b8924e23af60726cff37826b8e0152233fbf1ada968",
+          "body_before": "Function: FUN_00b32030 at 00b32030\nSignature: undefined FUN_00b32030(void)\nEntry: 00b32030\nBody: 00b32030 - 00b3207b",
+          "decompile_lines_after": 21,
+          "gaps_remaining": 1,
+          "body_after": "Function: FUN_00b32030 at 00b32030\nSignature: undefined FUN_00b32030(void)\nEntry: 00b32030\nBody: 00b32030 - 00b3207b",
+          "stored_body_tail_complete": false,
+          "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+        },
+        {
+          "function": "00b316a0",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-13T03:59:52Z",
+          "decompile_lines_before": 9,
+          "gaps": [
+            {
+              "site": "00b316ad",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b316b2",
+              "gap_end_exclusive": "00b316b7",
+              "bytes": 5,
+              "after_call": true,
+              "sha256": "246cfe16160ada23624a604f2cc9ecac6fc5ea9c3cff8bfee109c4cc2e366440"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00b316ad",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b316b2",
+                "gap_end_exclusive": "00b316b7",
+                "bytes": 5,
+                "after_call": true,
+                "sha256": "246cfe16160ada23624a604f2cc9ecac6fc5ea9c3cff8bfee109c4cc2e366440"
+              },
+              "clear": "Success: Cleared flow override at 00b316ad (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 5 byte(s)"
+            },
+            {
+              "explicit_tail_call": "00b316ad",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00b316ad (was: NONE, now: NONE)"
+              }
+            }
+          ],
+          "explicit_tail_end_exclusive": "00b316b7",
+          "explicit_body_sha256": "4a32e49259309ceb9c5ef91e65b71c871c17214eeece6f0f708dc63587f538bf",
+          "body_before": "Function: FUN_00b316a0 at 00b316a0\nSignature: undefined FUN_00b316a0(void)\nEntry: 00b316a0\nBody: 00b316a0 - 00b316b1",
+          "decompile_lines_after": 9,
+          "gaps_remaining": 1,
+          "body_after": "Function: FUN_00b316a0 at 00b316a0\nSignature: undefined FUN_00b316a0(void)\nEntry: 00b316a0\nBody: 00b316a0 - 00b316b1",
+          "stored_body_tail_complete": false,
+          "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+        },
+        {
+          "function": "00b32210",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-13T04:00:02Z",
+          "decompile_lines_before": 14,
+          "gaps": [
+            {
+              "site": "00b32220",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "00b32225",
+              "gap_end_exclusive": "00b32228",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00b32220",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00b32225",
+                "gap_end_exclusive": "00b32228",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              },
+              "clear": "Success: Cleared flow override at 00b32220 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 3 byte(s)"
+            },
+            {
+              "explicit_tail_call": "00b32220",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00b32220 (was: NONE, now: NONE)"
+              }
+            }
+          ],
+          "explicit_tail_end_exclusive": "00b3222e",
+          "explicit_body_sha256": "4e3c52aa56b4bb234d8b1bcf186e9979900af2f8d45601be222b9e5b3139ca0e",
+          "body_before": "Function: CG_scalar_deleting_dtor_00b32210 at 00b32210\nSignature: undefined CG_scalar_deleting_dtor_00b32210(void)\nEntry: 00b32210\nBody: 00b32210 - 00b3222d",
+          "decompile_lines_after": 11,
+          "gaps_remaining": 0,
+          "body_after": "Function: CG_scalar_deleting_dtor_00b32210 at 00b32210\nSignature: undefined CG_scalar_deleting_dtor_00b32210(void)\nEntry: 00b32210\nBody: 00b32210 - 00b3222d",
+          "stored_body_tail_complete": true
+        }
+      ]
+    },
+    "analysis_limit": "Decoded free continuations are verified, but two stored Ghidra bodies remain short. The bridge refused run_script_inline because script execution is disabled. No full stored-body repair claimed.",
+    "cross_review": "Independent full B1DFF0 listing, hidden register inputs, x87 offsets/category and repeated callback reads reviewed; original 43C130 ECX/EDX/RET4 ABI corrected in documentation. Registry six normal bodies and placement fragment independently reviewed against full listings, including current-record reloads and unwind states. No supported normal-path source defect found.",
+    "initial_combined_build": "Strict MSVC Win32 passed; two existing CTests passed; final exact merged source build remains pending",
+    "initial_cold_fixture": {
+      "status": "PASS initial original/source fixture",
+      "normalized_dwords": 593,
+      "native_composition": "Original B1DFF0 calls original B4C8D0 twice; external ABI adapters call existing actual source bodies",
+      "actual_resources": "real D3D9 HAL, 16MiB shared vertex buffer, real combined COM declaration, canonical model/stream/material owners",
+      "cleanup": "Full B1D760/B1D8E0 current source using the same ActualNativeStringPoolStorage publication",
+      "limits": [
+        "Borrowed effect and binding records; their runtime producer identity/lifetime not proven",
+        "Visibility flag zero, no fade, null source index",
+        "Two pool slot preimages and effect identity normalized",
+        "Initial executable included new source objects; final current-library-only replay is separate"
+      ],
+      "artifact": "C:/Users/sqz269/bsp-orch3-au/geometry/collection_cold.cpp"
+    }
   }
 }

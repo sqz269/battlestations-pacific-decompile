@@ -136,3 +136,17 @@ primary/physical registrations but leaves the secondary raw list entry.
 The integrated current-library-only rerun belongs to the integrator after CMake
 registration. No installed gameplay, renderer draw submission or visible scene
 equivalence is claimed.
+
+## AU cold collection composition evidence
+
+The original B1DFF0 caller now invokes original B4C8D0 twice in a focused
+original/source fixture:593 normalized DWORDs passed across the command, group,
+cache, colors and two generated model graphs. External call adapters use the
+current actual source ownership domains, with a real D3D9 HAL device,16MiB
+shared vertex buffer and COM declaration. Full group retirement uses the same
+ActualNativeStringPoolStorage as name allocation. Borrowed effect/binding
+records, disabled visibility, null source index, effect identity normalization
+and two normalized pool-slot preimages bound this evidence. The initial probe
+compiled the new source objects; final current-library-only replay and its
+exact source commit are recorded separately in the report. No visible scene
+or gameplay result is established.
