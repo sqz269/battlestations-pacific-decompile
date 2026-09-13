@@ -67,6 +67,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_material_fa
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_material_owner.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_material_pools.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_mpak_entry.cpp src/native_raw_inflate_owner.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_pending_entity_drain.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_pending_entity_lock.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_physical_factory.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_physical_provider_pool.cpp)
