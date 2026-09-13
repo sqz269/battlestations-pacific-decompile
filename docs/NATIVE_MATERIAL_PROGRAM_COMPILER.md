@@ -128,3 +128,11 @@ not register this new source:
 cmake/startup.cmake is held by another harness and must be appended by the
 integrator before a combined build. No permanent test, original FH3 parity,
 full cold material load, shader draw, or gameplay validation is claimed.
+
+## Integrator body repair
+
+Seven post-free Ghidra flow gaps were repaired under the write lock and the
+B3A7E0 body recreated through its actual B3AE9B return, preserving prior
+metadata. The verified full body contains 618 instructions and no gaps.
+Twenty-three previously raw tail call rows now belong to this function;
+the original worker status remains in the report as historical evidence.

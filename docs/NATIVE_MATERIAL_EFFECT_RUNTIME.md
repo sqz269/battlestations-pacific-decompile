@@ -30,3 +30,12 @@ Evidence comes from `NATIVE_SHADER_DESCRIPTOR_READER.md`,
 `NATIVE_MATERIAL_EFFECT_PROGRAMS.md`. Individual original/source and installed
 asset fixtures do not establish a complete cold effect load through this
 adapter. Source registration/build status is recorded separately in the report.
+
+The concrete compiler binding now publishes `NativeMaterialProgramCompileOperation`
+before executing the actual B3C3A0 wrapper and recovered builder/field prefix.
+The remaining B3B3C0 continuation is still mandatory at B3B513 or B3B536.
+Texture configuration can bind the corrected persistent cache headers directly
+to the actual VFS resolver. Each factory result contains a separate retained
+VFS operation and is published by the texture cache before invocation. Binding
+checks the actual string pool and manager publication; configure it before
+loading and keep the borrowed VFS context alive with failed operations.

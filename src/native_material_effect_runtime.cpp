@@ -6,6 +6,8 @@
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/native_string_pool_storage.hpp"
 #include "bsp/native_material_state_cache.hpp"
+#include "bsp/native_material_program_compiler.hpp"
+#include "bsp/native_texture_loading_cache.hpp"
 #include <exception>
 #include <stdexcept>
 
@@ -17,6 +19,20 @@ void require_empty(const NativeMaterialProgramChild& child) {
 struct NameFrame final : NativeMaterialProgramChildFrame {
     NativeVfsNameResolutionAcquired acquired;
 };
+class TextureNameOperation final : public NativeTextureNameResolutionOperation {
+public:
+    explicit TextureNameOperation(NativeVfsNameResolutionContext& context) : context_(context) {}
+    bool resolve(void* manager, void* name) override {
+        return resolve_native_vfs_existing_name_00bdf4c0(manager, name, context_, acquired_);
+    }
+private:
+    NativeVfsNameResolutionContext& context_;
+    NativeVfsNameResolutionAcquired acquired_;
+};
+std::unique_ptr<NativeTextureNameResolutionOperation> make_texture_name_operation(void* context) {
+    if (!context) throw std::invalid_argument("texture VFS name context is missing");
+    return std::make_unique<TextureNameOperation>(*static_cast<NativeVfsNameResolutionContext*>(context));
+}
 struct StateFrame final : NativeMaterialProgramChildFrame {
     NativeMaterialStateCacheAcquired acquired;
     ~StateFrame() override {
@@ -37,6 +53,29 @@ NativeMaterialStateOwnerStorage* cache_state(void* renderer,
     return call(renderer, *input, context, stable->acquired);
 }
 } // namespace
+
+NativeMaterialEffectCompilerBinding::NativeMaterialEffectCompilerBinding(
+    NativeMaterialEffectDestructionAccess& lifetime, NativeMaterialProgramCompileContext& context)
+    : context_(context) {
+    if (&lifetime.strings != &context.strings)
+        throw std::invalid_argument("material compiler requires the parent's actual string domain");
+}
+NativeMaterialPassStorage* NativeMaterialEffectCompilerBinding::build_program_00b3c3a0(
+    const NativeMaterialProgramRequest& request, NativeMaterialProgramChild& child) {
+    require_empty(child);
+    auto frame = std::make_unique<NativeMaterialProgramCompileOperation>();
+    auto* const stable = frame.get();
+    child = std::move(frame);
+    return compile_native_material_program_00b3c3a0(request, context_, *stable);
+}
+void bind_native_texture_vfs_name_resolution(NativeTextureLoadingContext& textures,
+    NativeVfsNameResolutionContext& names) {
+    if (&textures.strings != &names.device.lookup.physical.strings ||
+        &textures.current_vfs_0109ceec != &names.device.lookup.physical.manager_0109ceec)
+        throw std::invalid_argument("texture resolver requires the same actual pool and VFS publication");
+    textures.resolution_context = &names;
+    textures.make_resolution_operation = &make_texture_name_operation;
+}
 
 NativeMaterialEffectNativeChildren::NativeMaterialEffectNativeChildren(
     NativeMaterialEffectDestructionAccess& lifetime, NativeShaderDescriptorReadContext& descriptors,
