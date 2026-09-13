@@ -1,0 +1,541 @@
+{
+  "packet": "orch5_native_interpolators",
+  "base_commit": "4900b5c3fa0586fc8095565f58fc2db091767544",
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mode": "worker_read_only_verified_bsp_wrappers"
+  },
+  "source": "src/native_shader_interpolators.cpp",
+  "header": "include/bsp/native_shader_interpolators.hpp",
+  "documentation": "docs/NATIVE_SHADER_INTERPOLATORS.md",
+  "routines": [
+    {
+      "name": "select",
+      "address": "00b36800",
+      "end": "00b36e2b",
+      "length": 1580,
+      "instructions": 481,
+      "sha256": "79d5a24cf74ad9c1f1eb60483a51027217478e898ea8520953b5fcac42bb6ead",
+      "calls": [
+        {
+          "address": "00b3682c",
+          "native": "00bf681b",
+          "caller": "00b36800"
+        },
+        {
+          "address": "00b3684b",
+          "native": "0041e870",
+          "caller": "00b36800"
+        },
+        {
+          "address": "00b3686b",
+          "native": "00b34e20",
+          "caller": "00b36800"
+        },
+        {
+          "address": "00b36896",
+          "native": "00b34680",
+          "caller": "00b36800"
+        },
+        {
+          "address": "00b368cf",
+          "native": "00419cc0",
+          "caller": "00b36800"
+        },
+        {
+          "address": "00b368d6",
+          "native": "00bd1510",
+          "caller": "00b36800"
+        },
+        {
+          "address": "00b36a74",
+          "native": "00bf681b",
+          "caller": "00b36800"
+        },
+        {
+          "address": "00b36ae6",
+          "native": "0041dd40",
+          "caller": "00b36800"
+        },
+        {
+          "address": "00b36afb",
+          "native": "00bf7680",
+          "caller": "00b36800"
+        },
+        {
+          "address": "00b36b46",
+          "native": "00b34680",
+          "caller": "00b36800"
+        },
+        {
+          "address": "00b36d10",
+          "native": "00bf681b",
+          "caller": "00b36800"
+        },
+        {
+          "address": "00b36d82",
+          "native": "0041dd40",
+          "caller": "00b36800"
+        },
+        {
+          "address": "00b36d97",
+          "native": "00bf7680",
+          "caller": "00b36800"
+        },
+        {
+          "address": "00b36de2",
+          "native": "00b34680",
+          "caller": "00b36800"
+        }
+      ],
+      "symbol": "select_native_shader_interpolator_fields_00b36800",
+      "original_abi": "ECX actualB0h builder; stacked TEXCOORD usage, COLOR usage, actual0Ch output; RET0Ch at00b36e29",
+      "coverage": "complete_normal_readable_domain_body_with_retained_host_failures"
+    },
+    {
+      "name": "mapping",
+      "address": "00b34aa0",
+      "end": "00b34be2",
+      "length": 323,
+      "instructions": 108,
+      "sha256": "e446629cb09d4a39ef105178d4011bb93e9f8ce99295c509623624809bae8058",
+      "calls": [
+        {
+          "address": "00b34b0e",
+          "native": "00b346e0",
+          "caller": "00b34aa0"
+        },
+        {
+          "address": "00b34b7d",
+          "native": "00b346e0",
+          "caller": "00b34aa0"
+        }
+      ],
+      "symbol": "append_native_shader_interpolator_mapping_00b34aa0",
+      "original_abi": "ECX actualB0h builder; stacked actual0Ch field header; RET4 at00b34be0",
+      "coverage": "complete_normal_readable_domain_body_with_retained_host_failures"
+    },
+    {
+      "name": "reserve",
+      "address": "00b346e0",
+      "end": "00b3473d",
+      "length": 94,
+      "instructions": 39,
+      "sha256": "bac2e3e4ae222de215eafc4834da9080d9da08f36f8a7fda651af9f42091ef78",
+      "calls": [
+        {
+          "address": "00b346fc",
+          "native": "00bf55be",
+          "caller": "00b346e0"
+        },
+        {
+          "address": "00b3472b",
+          "native": "00bf6989",
+          "caller": "00b346e0"
+        }
+      ],
+      "symbol": "reserve_native_shader_interpolator_words_00b346e0",
+      "original_abi": "ECX actual0Ch two-byte array header; signed stacked capacity; RET4 at00b3473b",
+      "coverage": "complete_normal_readable_domain_body_with_retained_host_failures"
+    }
+  ],
+  "original_fixture_dependencies": [
+    {
+      "name": "field",
+      "address": "00b34e20",
+      "end": "00b34e84",
+      "length": 101,
+      "instructions": 36,
+      "sha256": "fc690345fb5f9323c25aa045fead940a1409829e4ad7e66e7a4e64a6394ef13d",
+      "calls": [
+        {
+          "address": "00b34e3e",
+          "native": "0041dd40",
+          "caller": "00b34e20"
+        },
+        {
+          "address": "00b34e53",
+          "native": "00bf7680",
+          "caller": "00b34e20"
+        }
+      ]
+    },
+    {
+      "name": "pointer_reserve",
+      "address": "00b34680",
+      "end": "00b346de",
+      "length": 95,
+      "instructions": 38,
+      "sha256": "f56f05447d6e481297ce0d6f8b387219fd16180e5f233a5d4f982001ba7f1b2c",
+      "calls": [
+        {
+          "address": "00b346a0",
+          "native": "00bf55be",
+          "caller": "00b34680"
+        },
+        {
+          "address": "00b346cc",
+          "native": "00bf6989",
+          "caller": "00b34680"
+        }
+      ]
+    }
+  ],
+  "caller_sites": [
+    {
+      "address": "00b3b522",
+      "native": "00b36800",
+      "caller": "00b3b3c0",
+      "contract": "null/null, output builder1C, between vertex and pixel system-field append"
+    },
+    {
+      "address": "00b3b910",
+      "native": "00b36800",
+      "caller": "00b3b3c0",
+      "contract": "actual stack usage arrays, output builder28; caller clears count before call"
+    },
+    {
+      "address": "00b3bab2",
+      "native": "00b36800",
+      "caller": "00b3b3c0",
+      "contract": "null/null, output builder1C; caller clears count before call"
+    },
+    {
+      "address": "00b3b52a",
+      "native": "00b34aa0",
+      "caller": "00b3b3c0",
+      "contract": "actual builder1C header; mapping does not clear"
+    },
+    {
+      "address": "00b3ba26",
+      "native": "00b34aa0",
+      "caller": "00b3b3c0",
+      "contract": "actual builder28 header after caller mapping-array clear"
+    }
+  ],
+  "call_abi_evidence": {
+    "00b36800": "RET0Ch, three stack arguments; allocation ADD ESP4, memcpy ADD ESP0Ch; first constructor RET18h",
+    "00b34aa0": "RET4; both B346E0 calls consume one signed request",
+    "00b346e0": "RET4; BF55BE and BF6989 cdecl calls each ADD ESP4; repaired tail checked in assembly"
+  },
+  "corrections": [
+    {
+      "was": "semantic vectors only; B36800 descriptions say base/effect",
+      "is": "same actualB0h builder, actual1Ch records; descriptor70 and mode_descriptor74, no effect78 traversal",
+      "evidence": "B36A92..B36AC9 and B36D2E..B36D65; existing B354D0/B3C3A0 layout"
+    },
+    {
+      "was": "B346E0 sometimes described as byte append; 9-byte post-free gap in saved listing",
+      "is": "two-byte array reserve; data then capacity published after returning free; gap repaired by primary and export refreshed",
+      "evidence": "B346F7, B34714..B3471A, B3472B..B34738; primary local/interpolator-array-flow-repair.json"
+    },
+    {
+      "was": "early B3B522 selection call alone could imply always-null usage",
+      "is": "B3B910 supplies both actual usage arrays; B3BAB2 later supplies null/null again",
+      "evidence": "all three exact call sites and stack argument setup checked"
+    }
+  ],
+  "ownership": {
+    "actual_builder_size": 176,
+    "actual_field_size": 28,
+    "actual_array_size": 12,
+    "mapping_element_size": 2,
+    "same_native_types": [
+      "NativeMaterialProgramBuilderStorage",
+      "NativeShaderFieldStorage",
+      "NativeShaderDescriptorArray",
+      "NativeString"
+    ],
+    "allocator": "shared singleton_lifetime_allocate/free CRT service; original BF681B/BF55BE/BF6989 roles verified",
+    "strings": "supplied NativeStringStorage; fixture ActualNativeStringPoolStorage plus NativeStringPoolLifetimeBinding and same SingletonLifetimeDomain",
+    "operation": "address-stable retained raw field/temp name/current source/scalars/index/usage offsets/pending word allocation; failed replay/destruction rejected; caller holds borrowed owners out of teardown"
+  },
+  "flow": {
+    "owned_gap_count": 0,
+    "no_ghidra_function": [],
+    "primary_repair": {
+      "address": "00b346e0",
+      "after_call": "00b3472b",
+      "gap_start": "00b34730",
+      "gap_end": "00b34738",
+      "gap_length": 9,
+      "status": "repaired_saved_refreshed_by_primary",
+      "journal": "../battlestations-pacific-decompile-orch5-20260911/local/interpolator-array-flow-repair.json"
+    },
+    "caller_outside_packet_post_free_gaps": {
+      "status": "repaired_saved_refreshed_by_primary",
+      "ranges": [
+        "00b3b8bf..00b3b8cc",
+        "00b3b958..00b3b969",
+        "00b3b9e2..00b3b9f3",
+        "00b3ba6e..00b3ba7e",
+        "00b3bc78..00b3bc7b",
+        "00b3bf90..00b3bf93"
+      ],
+      "journal": "../battlestations-pacific-decompile-orch5-20260911/local/compiler-tail-flow-repair.json",
+      "remaining_call_gaps": 0,
+      "intentional_jump_padding": "00b3b8dd..00b3b8df"
+    }
+  },
+  "validation": {
+    "status": "default_registered_strict_win32_build_and_original_source_fixture_passed",
+    "byte_identity": {
+      "executable": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "comparison": "all five complete bodies equal saved Ghidra bytes"
+    },
+    "fixture_original_bytes": 2193,
+    "fixture_original_instructions": 702,
+    "fixture": "local/native_interpolator_probe.cpp",
+    "runner": "local/run_native_interpolator_probe.ps1",
+    "registration": "both new interpolator source and accepted system-field dependency are in cmake/startup.cmake; unleased transactional append; no temporary include used for final validation",
+    "build": {
+      "command": "./scripts/build.ps1",
+      "log": "local/interpolators-registered-build.log",
+      "configuration": "Release Win32",
+      "compile_flags": [
+        "/W4",
+        "/WX",
+        "/fp:strict"
+      ],
+      "ctest_passed": 1,
+      "ctest_failed": 0
+    },
+    "original_source_fixture": {
+      "status": "passed",
+      "log": "local/interpolators-probe.log",
+      "normal_paths_only": true,
+      "actual_string_pool": true,
+      "fixture_descriptor_provenance": "explicit inputs through existing actual descriptor and field constructors",
+      "fixture_uses_combined_library_only": true,
+      "preserve_native_addresses": "D5/D6 reserved before reading PE; user32/d3d9 imports delayed; no original data relocation"
+    },
+    "call_verification": {
+      "command": "python tools/verify_report_calls.py reports/native_shader_interpolators.json",
+      "rows": 27,
+      "failed": 0,
+      "log": "local/interpolators-call-verification.log"
+    },
+    "initial_build_attempt": {
+      "log": "local/interpolators-default-build.log",
+      "status": "failed_during_CMake_regeneration",
+      "cause": "registry appended while fresh baseline build was still running; parallel automatic reconfiguration raced FetchContent files",
+      "resolution": "waited for that build process to terminate, then reran unchanged standard build with stable final registry; passed"
+    },
+    "source_revision": {
+      "base_commit": "4900b5c3fa0586fc8095565f58fc2db091767544",
+      "change": "owned new module/header/default registry changes; exact file hashes below"
+    },
+    "artifacts": [
+      {
+        "path": "include/bsp/native_shader_interpolators.hpp",
+        "size": 3889,
+        "sha256": "ebf867ab80ede60c823fbcb613681f56cfd4f11a7a6b5df343c838dfbfb9e3f0"
+      },
+      {
+        "path": "src/native_shader_interpolators.cpp",
+        "size": 13060,
+        "sha256": "55c76c11ab0b14fbf84bd88ed48197f7f583fc633df16e0eefd324c2412c4eb9"
+      },
+      {
+        "path": "docs/NATIVE_SHADER_INTERPOLATORS.md",
+        "size": 6643,
+        "sha256": "3affc67168c0339efc5900f6ab2df53ffb4e8287c3015f040b7081bf2935591f"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "size": 99101,
+        "sha256": "ef5eceae158d0e22b2cc3c15d0d9361ebb1447b84825faea67330ce9f063d69b"
+      },
+      {
+        "path": "CMakeLists.txt",
+        "size": 14869,
+        "sha256": "0bad51a21cd02eb4d8b196a345a3f86418d0dab144d66912f0ad8db06881c5a8"
+      },
+      {
+        "path": "scripts/build.ps1",
+        "size": 1657,
+        "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+      },
+      {
+        "path": "include/bsp/native_shader_system_fields.hpp",
+        "size": 3113,
+        "sha256": "5789fd5e806b6f158a4c9f2ca49069c9666b147ef6c611fd2a3f7cd46e5b96b2"
+      },
+      {
+        "path": "src/native_shader_system_fields.cpp",
+        "size": 9348,
+        "sha256": "5b21c616d24968286e688d063eab13394149818e2c03d4aee23a5c7feac36e99"
+      },
+      {
+        "path": "include/bsp/native_material_program_compiler.hpp",
+        "size": 7328,
+        "sha256": "c2eb2196fe4ae5fe9a381d91464f8d0feeb828ca7261bba737387947eb501548"
+      },
+      {
+        "path": "src/native_material_program_compiler.cpp",
+        "size": 12921,
+        "sha256": "0143f236502451b563897f9e8f59bd15289dd7eb113975f364cdbb14cca9b3a7"
+      },
+      {
+        "path": "include/bsp/native_shader_field_reader.hpp",
+        "size": 2605,
+        "sha256": "98322ab1c82d2735ffcbbf3c8540e8cd61de69f98b96a62af7f596a2b178bb19"
+      },
+      {
+        "path": "src/native_shader_field_reader.cpp",
+        "size": 5960,
+        "sha256": "51e974194f69fa45f4f8fda06e71dad204d19699d14ad1828d35d2e28af16cd9"
+      },
+      {
+        "path": "include/bsp/native_shader_descriptor_owner.hpp",
+        "size": 4068,
+        "sha256": "4846aaf3f02e8967ae57c00135455b2ee3b6b913c82d790ba32dab80545b2d2e"
+      },
+      {
+        "path": "src/native_shader_descriptor_owner.cpp",
+        "size": 6193,
+        "sha256": "007c75c946ecfee303586f2bc8e1f3fbc2cbef485df899e47f87acf38d9a8b48"
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "size": 6719,
+        "sha256": "da175f7edd3aa2228c4fecae76bb637f92ee1377618957e5987e6c0add104f72"
+      },
+      {
+        "path": "src/native_string.cpp",
+        "size": 6430,
+        "sha256": "766956ef99c0d3cd30cada7e9942ac8147172812aede18dd689d5f28fb00707a"
+      },
+      {
+        "path": "src/native_string_pool_storage.cpp",
+        "size": 5103,
+        "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5"
+      },
+      {
+        "path": "src/native_string_pool_owner.cpp",
+        "size": 8443,
+        "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e"
+      },
+      {
+        "path": "src/native_physical_file_date.cpp",
+        "size": 15546,
+        "sha256": "203658be8e2820c639399053fdbb1ebdb1f1482b48729de0161cd29cb8135443"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "size": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "path": "local/native_interpolator_probe.cpp",
+        "size": 13868,
+        "sha256": "12c5b1061de5186c427bc2cbd87de88a230ffb44413e1e9f56a8d17f475cd9fb"
+      },
+      {
+        "path": "local/interpolator_original.hpp",
+        "size": 12634,
+        "sha256": "0e1022a636bbcc383bcd650036b931c55ae347897e0797fb345fe1969865dcb9"
+      },
+      {
+        "path": "local/run_native_interpolator_probe.ps1",
+        "size": 1391,
+        "sha256": "bb9ccebac360afb38fd4eac5ceae188dd5022bfc52ad1d28b1e1a3bf98ec0bf4"
+      },
+      {
+        "path": "local/prepare_interpolator_fixture.py",
+        "size": 2758,
+        "sha256": "105df36b6e5254907e4542293eef32ac3ff2ccbb630588caeff9f25fe22567cb"
+      },
+      {
+        "path": "local/interpolator_original_evidence.json",
+        "size": 4201,
+        "sha256": "861bf452cf3489b8382b839b2dd23a1e8067cf65f74861e7e59b0e14c9cfa71d"
+      },
+      {
+        "path": "local/interpolators-registration.json",
+        "size": 681,
+        "sha256": "d4ce01350d7d18dc463aba13762adfa56f0ce8a76ff9ef4c5f88d8cee569bb2d"
+      },
+      {
+        "path": "local/interpolators-registered-build.log",
+        "size": 4499,
+        "sha256": "5f641a0b2aecdf9ff4bda5b67ea99f5f074d935264c120608452e73d9f29a985"
+      },
+      {
+        "path": "local/interpolators-probe-compile.log",
+        "size": 205,
+        "sha256": "f5fe9046d9dcd8a95a43f209d4eb6673c2dd7ec994f8c5a582057b459e885b4d"
+      },
+      {
+        "path": "local/interpolators-probe.log",
+        "size": 531,
+        "sha256": "4f6bcb8e5061e4fc5b421c32f1374b10dc594ff4e6f8347758f0a29d08067fe3"
+      },
+      {
+        "path": "local/interpolators-call-verification.log",
+        "size": 74,
+        "sha256": "24b4cb25cf15f68f64258b2a8ee7fcd6e067564f021e0fb1cbcbc11f28ffa96a"
+      },
+      {
+        "path": "local/interpolators-flow.log",
+        "size": 218,
+        "sha256": "ca891a0b2b92ef9b744c363a27e3cbd095152a4c6a3309d201cc4742beca4b88"
+      },
+      {
+        "path": "local/interpolator-select-ghidra-bytes.txt",
+        "size": 7607,
+        "sha256": "b0053b4aaec4d31c0034f53dfebb2f27d0cf6bdce1849a4981fee7e92c46af07"
+      },
+      {
+        "path": "local/interpolator-mapping-ghidra-bytes.txt",
+        "size": 1565,
+        "sha256": "c95e4b7001ce01358bc7e438b84931168d1d4a8d14d824c9796b612ac9d2ce00"
+      },
+      {
+        "path": "local/interpolator-reserve-ghidra-bytes.txt",
+        "size": 454,
+        "sha256": "0981aaf9c3e88ab41875c0ab584ce022e0c23330e40ab20ccdb7526c4401838a"
+      },
+      {
+        "path": "local/interpolator-field-ghidra-bytes.txt",
+        "size": 495,
+        "sha256": "b43141fe6f9a80a79f022fbecfda65a88175c073085e98e982a91efe29e2b8d8"
+      },
+      {
+        "path": "local/interpolator-pointer-reserve-ghidra-bytes.txt",
+        "size": 458,
+        "sha256": "1fc1bbd425d304466c164d51d18774ef1c3095c747c9a7de7efb85e4de29df61"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "size": 55102744,
+        "sha256": "a02971c40316622b1cb5c667bcb6817559dad5eed2e3317160ea8546ed297d2e"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "size": 455580,
+        "sha256": "867d41f0a4e2c308a51da8afd8574cd95b3d3d2d0d158a52dab432083bf3f366"
+      },
+      {
+        "path": "build/win32/Release/bsp_zlib121.lib",
+        "size": 72026,
+        "sha256": "e51f28e568bdf381f8d41a621a9cf7685ddcff32e54d6ee7490fabac4c504113"
+      },
+      {
+        "path": "local/native_interpolator_probe.exe",
+        "size": 69120,
+        "sha256": "ed22f16ceee96cc8d76a005f15d3fd73486d36676426309afb954d1b7e08933d"
+      }
+    ]
+  },
+  "limits": [
+    "descriptive names are hypotheses",
+    "readable nonnegative extents and adequate usage buffers required; no invalid pointer/overflow allocation/asynchronous race guarantee",
+    "source interfaces differ from original thiscall ABI; not a binary drop-in",
+    "original differential executes normal branches with production string/CRT services; host failure fixture does not claim native FH3 unwind",
+    "fixture descriptors are explicit actual-constructor inputs; no installed descriptor-loading assertion",
+    "no full material compiler/source generation/pass or game validation"
+  ]
+}
