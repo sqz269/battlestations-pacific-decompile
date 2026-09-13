@@ -112,3 +112,13 @@ layouts, changed current constants, helper overlaps and DWORD index wrap.
 This bounds arithmetic and ordering evidence. It does not prove original caller
 ABI, unrestricted unmasked exceptions or SEH unwinding, races, full initialization
 of the native owner, the larger authored-world path, B46A70, or gameplay.
+
+## AZ integration analysis refresh
+
+The integrator saved and read back all 27 AZ original signatures and complete
+normal-body ranges, and refreshed exports. CBBBF0 and CBBC10 are ten-byte
+analysis-only EH handlers defined under leases and the write lock. Earlier
+missing-function observations remain worker capture history. The batch adds
+22 complete body records and extends five existing bodies with raw interfaces;
+the two EH definitions add no normal-body count. Exact combined validation
+follows separately from worker fixture evidence.

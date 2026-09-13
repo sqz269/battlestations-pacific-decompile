@@ -26,7 +26,12 @@
       "native_prototype": "void * BSP_RenderService_InitializeParameters(void)",
       "native_calling_convention": "__thiscall",
       "new_native_body": true,
-      "evidence": "Complete 49-instruction native body; 23 live/disk spans cover 300 body bytes, 39 caller bytes and 21 actual constant words. Source retains 21 ordered current MOVSS reads and 26 nonascending stores with held-register reuse. Stable borrowed reference bindings are distinct from the current referent words. Parameter meanings are provisional. See docs/NATIVE_RENDER_SERVICE_PARAMETERS.md and reports/native_render_service_parameters.json."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b0cd80..00b0ceab over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_RENDER_SERVICE_PARAMETERS.md; reports/native_render_service_parameters.json.",
+      "module": "native_render_service_parameters",
+      "ghidra_name": "BSP_RenderService_InitializeParameters",
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "initialize_native_render_service_parameters_00b0cd80",
+      "worker_evidence": "Complete 49-instruction native body; 23 live/disk spans cover 300 body bytes, 39 caller bytes and 21 actual constant words. Source retains 21 ordered current MOVSS reads and 26 nonascending stores with held-register reuse. Stable borrowed reference bindings are distinct from the current referent words. Parameter meanings are provisional. See docs/NATIVE_RENDER_SERVICE_PARAMETERS.md and reports/native_render_service_parameters.json."
     }
   ],
   "native_structure": {
@@ -965,5 +970,15 @@
     "No invalid-address SEH, concurrent mutation, or asynchronous store-event trace equivalence claim.",
     "Does not construct the complete 6ACh service, establish F8D39C publication, or define parameter semantics. Full B14A10 and game validation remain incomplete.",
     "The fixture deliberately relocates constant operands into synthetic alias arrangements; this verifies load/store schedule and does not establish that the game uses those arrangements."
-  ]
+  ],
+  "integration_az_review": {
+    "combined_validation": "pending exact merged source build and current-library replay",
+    "game_validated": false,
+    "saved_batch_function_names_and_original_signatures": 27,
+    "signature_readback_passed": true,
+    "full_stored_normal_function_bodies": true,
+    "analysis_only_eh_definitions_report": "reports/native_system_sources_az_analysis_sync.json",
+    "cross_review": "Complete original bodies, producer and ABI evidence reviewed. Root reviewed camera, fog leaves, five parameter publishers and service publication/cleanup against listings. Independent reviews checked camera providers/fixtures and initializer ordered MOVSS reads/stores including held-register reuse. Existing typed body records retain their previous identities and evidence. New raw interfaces do not prove original binary ABI, general FH3/SEH, concurrency or gameplay.",
+    "current_report_call_check": "reports/native_render_service_parameters.json: 0 call rows checked, 0 failed"
+  }
 }

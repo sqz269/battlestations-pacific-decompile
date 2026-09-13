@@ -48,3 +48,13 @@ full original-caller ABI, owner-constructor, concurrency or gameplay proof.
 The fixture explicitly compiled this new source alongside the current three
 libraries; registration and exact combined build/replay follow separately.
 No repository test cases or framework were added.
+
+## AZ integration analysis refresh
+
+The integrator saved and read back all 27 AZ original signatures and complete
+normal-body ranges, and refreshed exports. CBBBF0 and CBBC10 are ten-byte
+analysis-only EH handlers defined under leases and the write lock. Earlier
+missing-function observations remain worker capture history. The batch adds
+22 complete body records and extends five existing bodies with raw interfaces;
+the two EH definitions add no normal-body count. Exact combined validation
+follows separately from worker fixture evidence.

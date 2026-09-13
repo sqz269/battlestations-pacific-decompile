@@ -96,3 +96,13 @@ or gameplay claim. The larger B14A10 constructor remains incomplete. The alias f
 operand remapping; it does not establish that the game uses those alias arrangements.
 The immutable worker_capture.zip and adjacent preservation_manifest.json retain
 source, bytes, recipes, results and exact baseline library copies.
+
+## AZ integration analysis refresh
+
+The integrator saved and read back all 27 AZ original signatures and complete
+normal-body ranges, and refreshed exports. CBBBF0 and CBBC10 are ten-byte
+analysis-only EH handlers defined under leases and the write lock. Earlier
+missing-function observations remain worker capture history. The batch adds
+22 complete body records and extends five existing bodies with raw interfaces;
+the two EH definitions add no normal-body count. Exact combined validation
+follows separately from worker fixture evidence.

@@ -18,7 +18,20 @@
       "new_cpp_interface": "__fastcall ECX actual camera, EDX concrete context pointer, EAX pointer, RET",
       "prior_ledger_kind": "function",
       "prior_ledger_status": "typed_implementation_integrated_strict_win32_build_and_focused_evidence_checked",
-      "raw_storage_extension": true
+      "raw_storage_extension": true,
+      "end_exclusive": "00b70fd7",
+      "cpp_symbol": "get_native_camera_axis_y_00b70ea0",
+      "module": "native_camera_axes",
+      "source": "src/native_camera_axes.cpp",
+      "header": "include/bsp/native_camera_axes.hpp",
+      "ghidra_name": "BSP_Camera_GetProjectedYAxis",
+      "new_native_body": false,
+      "existing_body_raw_extension": true,
+      "ledger_record_name": "BSP_Camera_GetProjectedYAxis",
+      "native_prototype": "void * BSP_Camera_GetProjectedYAxis(void)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": null,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b70ea0..00b70fd6 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. Existing typed function record extended to the actual raw implementation; previous reconstruction retained, no new body count. Evidence: docs/NATIVE_CAMERA_AXES.md; reports/native_camera_axes.json."
     },
     {
       "address": "00b70fe0",
@@ -33,7 +46,20 @@
       "new_cpp_interface": "__fastcall ECX actual camera, EDX concrete context pointer, EAX pointer, RET",
       "prior_ledger_kind": "function",
       "prior_ledger_status": "typed_implementation_integrated_strict_win32_build_and_focused_evidence_checked",
-      "raw_storage_extension": true
+      "raw_storage_extension": true,
+      "end_exclusive": "00b71117",
+      "cpp_symbol": "get_native_camera_axis_x_00b70fe0",
+      "module": "native_camera_axes",
+      "source": "src/native_camera_axes.cpp",
+      "header": "include/bsp/native_camera_axes.hpp",
+      "ghidra_name": "BSP_Camera_GetProjectedXAxis",
+      "new_native_body": false,
+      "existing_body_raw_extension": true,
+      "ledger_record_name": "BSP_Camera_GetProjectedXAxis",
+      "native_prototype": "void * BSP_Camera_GetProjectedXAxis(void)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": null,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b70fe0..00b71116 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. Existing typed function record extended to the actual raw implementation; previous reconstruction retained, no new body count. Evidence: docs/NATIVE_CAMERA_AXES.md; reports/native_camera_axes.json."
     },
     {
       "address": "00b6feb0",
@@ -48,7 +74,20 @@
       "new_cpp_interface": "__fastcall ECX actual camera, EAX unchanged raw +43C pointer, RET",
       "prior_ledger_kind": "function",
       "prior_ledger_status": "typed_implementation_integrated_strict_win32_build_and_focused_evidence_checked",
-      "raw_storage_extension": true
+      "raw_storage_extension": true,
+      "end_exclusive": "00b6feb7",
+      "cpp_symbol": "get_native_camera_context_00b6feb0",
+      "module": "native_camera_axes",
+      "source": "src/native_camera_axes.cpp",
+      "header": "include/bsp/native_camera_axes.hpp",
+      "ghidra_name": "BSP_Camera_GetContextDepthScale43C",
+      "new_native_body": false,
+      "existing_body_raw_extension": true,
+      "ledger_record_name": "get_camera_context_depth_scale_00b6feb0",
+      "native_prototype": "void * BSP_Camera_GetContextDepthScale43C(void)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": null,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b6feb0..00b6feb6 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. Existing typed function record extended to the actual raw implementation; previous reconstruction retained, no new body count. Evidence: docs/NATIVE_CAMERA_AXES.md; reports/native_camera_axes.json."
     }
   ],
   "newly_discovered_ghidra_functions": 0,
@@ -365,5 +404,15 @@
     "manifest": "C:\\Users\\sqz269\\bsp-az-camera-axes\\worker_capture_manifest.json",
     "verified": true,
     "includes": "all fixture sources, native bytes, probe binary/outcomes, exact verified worker libraries, initial root library snapshot, strict compile object/listing, scripts and build/call/seed logs"
+  },
+  "integration_az_review": {
+    "combined_validation": "pending exact merged source build and current-library replay",
+    "game_validated": false,
+    "saved_batch_function_names_and_original_signatures": 27,
+    "signature_readback_passed": true,
+    "full_stored_normal_function_bodies": true,
+    "analysis_only_eh_definitions_report": "reports/native_system_sources_az_analysis_sync.json",
+    "cross_review": "Complete original bodies, producer and ABI evidence reviewed. Root reviewed camera, fog leaves, five parameter publishers and service publication/cleanup against listings. Independent reviews checked camera providers/fixtures and initializer ordered MOVSS reads/stores including held-register reuse. Existing typed body records retain their previous identities and evidence. New raw interfaces do not prove original binary ABI, general FH3/SEH, concurrency or gameplay.",
+    "current_report_call_check": "reports/native_camera_axes.json: 22 call rows checked, 0 failed"
   }
 }

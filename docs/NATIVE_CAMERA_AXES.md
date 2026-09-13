@@ -118,3 +118,13 @@ modes are outside this fixture. The source is a complete raw-storage extension
 for these three bodies, not closure of B46A70's remaining lighting/time/service
 dependencies. No gameplay, renderer-parent execution or runnable-game claim is
 made here, and no repository test was added.
+
+## AZ integration analysis refresh
+
+The integrator saved and read back all 27 AZ original signatures and complete
+normal-body ranges, and refreshed exports. CBBBF0 and CBBC10 are ten-byte
+analysis-only EH handlers defined under leases and the write lock. Earlier
+missing-function observations remain worker capture history. The batch adds
+22 complete body records and extends five existing bodies with raw interfaces;
+the two EH definitions add no normal-body count. Exact combined validation
+follows separately from worker fixture evidence.

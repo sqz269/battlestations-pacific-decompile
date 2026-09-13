@@ -31,7 +31,13 @@
       "header": "include/bsp/native_system_parameter_slots.hpp",
       "module": "native_system_parameter_slots",
       "new_native_body": true,
-      "evidence": "Complete stored body and live listing reviewed; raw actual storage and current argument/constant reads; x87 operations, quotient spill/reload, reciprocal side effect and publication alias order preserved. New C++ ABI. See docs/NATIVE_SYSTEM_PARAMETER_SLOTS.md."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b40860..00b4087f over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_SYSTEM_PARAMETER_SLOTS.md; reports/native_system_parameter_slots.json.",
+      "ghidra_name": "BSP_SystemParameters_PublishSlot",
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "publish_native_system_parameter_slot_00b40860",
+      "native_prototype": "void BSP_SystemParameters_PublishSlot(unsigned int index, void * source)",
+      "native_calling_convention": "__fastcall",
+      "worker_evidence": "Complete stored body and live listing reviewed; raw actual storage and current argument/constant reads; x87 operations, quotient spill/reload, reciprocal side effect and publication alias order preserved. New C++ ABI. See docs/NATIVE_SYSTEM_PARAMETER_SLOTS.md."
     },
     {
       "address": "00b9a030",
@@ -51,7 +57,13 @@
       "header": "include/bsp/native_system_parameter_slots.hpp",
       "module": "native_system_parameter_slots",
       "new_native_body": true,
-      "evidence": "Complete stored body and live listing reviewed; raw actual storage and current argument/constant reads; x87 operations, quotient spill/reload, reciprocal side effect and publication alias order preserved. New C++ ABI. See docs/NATIVE_SYSTEM_PARAMETER_SLOTS.md."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b9a030..00b9a078 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_SYSTEM_PARAMETER_SLOTS.md; reports/native_system_parameter_slots.json.",
+      "ghidra_name": "BSP_SystemParameters_SetSlot0",
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "set_native_system_parameter_slot0_00b9a030",
+      "native_prototype": "void BSP_SystemParameters_SetSlot0(unsigned int slot0, unsigned int slot1, unsigned int slot2, unsigned int slot3)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": "Complete stored body and live listing reviewed; raw actual storage and current argument/constant reads; x87 operations, quotient spill/reload, reciprocal side effect and publication alias order preserved. New C++ ABI. See docs/NATIVE_SYSTEM_PARAMETER_SLOTS.md."
     },
     {
       "address": "00b9a080",
@@ -71,7 +83,13 @@
       "header": "include/bsp/native_system_parameter_slots.hpp",
       "module": "native_system_parameter_slots",
       "new_native_body": true,
-      "evidence": "Complete stored body and live listing reviewed; raw actual storage and current argument/constant reads; x87 operations, quotient spill/reload, reciprocal side effect and publication alias order preserved. New C++ ABI. See docs/NATIVE_SYSTEM_PARAMETER_SLOTS.md."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b9a080..00b9a0c8 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_SYSTEM_PARAMETER_SLOTS.md; reports/native_system_parameter_slots.json.",
+      "ghidra_name": "BSP_SystemParameters_SetSlot2",
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "set_native_system_parameter_slot2_00b9a080",
+      "native_prototype": "void BSP_SystemParameters_SetSlot2(unsigned int slot0, unsigned int slot1, unsigned int slot2)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": "Complete stored body and live listing reviewed; raw actual storage and current argument/constant reads; x87 operations, quotient spill/reload, reciprocal side effect and publication alias order preserved. New C++ ABI. See docs/NATIVE_SYSTEM_PARAMETER_SLOTS.md."
     },
     {
       "address": "00b9a0d0",
@@ -91,7 +109,13 @@
       "header": "include/bsp/native_system_parameter_slots.hpp",
       "module": "native_system_parameter_slots",
       "new_native_body": true,
-      "evidence": "Complete stored body and live listing reviewed; raw actual storage and current argument/constant reads; x87 operations, quotient spill/reload, reciprocal side effect and publication alias order preserved. New C++ ABI. See docs/NATIVE_SYSTEM_PARAMETER_SLOTS.md."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b9a0d0..00b9a126 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_SYSTEM_PARAMETER_SLOTS.md; reports/native_system_parameter_slots.json.",
+      "ghidra_name": "BSP_SystemParameters_SetSlot3AndReciprocal",
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "set_native_system_parameter_slot3_00b9a0d0",
+      "native_prototype": "void BSP_SystemParameters_SetSlot3AndReciprocal(unsigned int slot0, unsigned int slot1, unsigned int slot2)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": "Complete stored body and live listing reviewed; raw actual storage and current argument/constant reads; x87 operations, quotient spill/reload, reciprocal side effect and publication alias order preserved. New C++ ABI. See docs/NATIVE_SYSTEM_PARAMETER_SLOTS.md."
     },
     {
       "address": "00b9a130",
@@ -111,7 +135,13 @@
       "header": "include/bsp/native_system_parameter_slots.hpp",
       "module": "native_system_parameter_slots",
       "new_native_body": true,
-      "evidence": "Complete stored body and live listing reviewed; raw actual storage and current argument/constant reads; x87 operations, quotient spill/reload, reciprocal side effect and publication alias order preserved. New C++ ABI. See docs/NATIVE_SYSTEM_PARAMETER_SLOTS.md."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b9a130..00b9a17a over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_SYSTEM_PARAMETER_SLOTS.md; reports/native_system_parameter_slots.json.",
+      "ghidra_name": "BSP_SystemParameters_SetSlot1",
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "set_native_system_parameter_slot1_00b9a130",
+      "native_prototype": "void BSP_SystemParameters_SetSlot1(unsigned int slot0, unsigned int slot1)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": "Complete stored body and live listing reviewed; raw actual storage and current argument/constant reads; x87 operations, quotient spill/reload, reciprocal side effect and publication alias order preserved. New C++ ABI. See docs/NATIVE_SYSTEM_PARAMETER_SLOTS.md."
     }
   ],
   "native_evidence": {
@@ -295,5 +325,15 @@
     "concurrency and private C++ argument/local aliasing outside contract",
     "actual owner constructor, 0078c9b0 and 00b46a70 remain incomplete",
     "not game-validated"
-  ]
+  ],
+  "integration_az_review": {
+    "combined_validation": "pending exact merged source build and current-library replay",
+    "game_validated": false,
+    "saved_batch_function_names_and_original_signatures": 27,
+    "signature_readback_passed": true,
+    "full_stored_normal_function_bodies": true,
+    "analysis_only_eh_definitions_report": "reports/native_system_sources_az_analysis_sync.json",
+    "cross_review": "Complete original bodies, producer and ABI evidence reviewed. Root reviewed camera, fog leaves, five parameter publishers and service publication/cleanup against listings. Independent reviews checked camera providers/fixtures and initializer ordered MOVSS reads/stores including held-register reuse. Existing typed body records retain their previous identities and evidence. New raw interfaces do not prove original binary ABI, general FH3/SEH, concurrency or gameplay.",
+    "current_report_call_check": "reports/native_system_parameter_slots.json: 8 call rows checked, 0 failed"
+  }
 }

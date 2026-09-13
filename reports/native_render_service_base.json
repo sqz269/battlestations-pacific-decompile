@@ -26,8 +26,11 @@
       "native_calling_convention": "__thiscall",
       "native_prototype": "void * BSP_RenderService_PublishBase(void)",
       "original_abi": "ECX actual raw receiver, no stack arguments, plain RET. EAX returns the saved receiver, not current publication.",
-      "evidence": "Full live native listing, ABI, current-field/cleanup schedule and live/disk spans reviewed. See docs/NATIVE_RENDER_SERVICE_BASE.md and reports/native_render_service_base.json. Descriptive names are hypotheses, not recovered symbols.",
-      "uncertainty": "New explicit context/raw-pointer C++ interfaces, not original callable ABI. Valid actual native storage, actual provider and source CRT domains required. Native private EH-stack aliases, hardware faults, original exception/CRT identity, concurrent access, full derived lifetime and gameplay unproved. Destructor validation failure is forced between native reads in the private fixture only, not naturally reached."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b0f020..00b0f0b0 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_RENDER_SERVICE_BASE.md; reports/native_render_service_base.json.",
+      "uncertainty": "New explicit context/raw-pointer C++ interfaces, not original callable ABI. Valid actual native storage, actual provider and source CRT domains required. Native private EH-stack aliases, hardware faults, original exception/CRT identity, concurrent access, full derived lifetime and gameplay unproved. Destructor validation failure is forced between native reads in the private fixture only, not naturally reached.",
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "publish_native_render_service_base_00b0f020",
+      "worker_evidence": "Full live native listing, ABI, current-field/cleanup schedule and live/disk spans reviewed. See docs/NATIVE_RENDER_SERVICE_BASE.md and reports/native_render_service_base.json. Descriptive names are hypotheses, not recovered symbols."
     },
     {
       "address": "00b0f0c0",
@@ -48,8 +51,11 @@
       "native_calling_convention": "__thiscall",
       "native_prototype": "void BSP_RenderService_DestroyBase(void)",
       "original_abi": "ECX actual raw receiver, no stack arguments, plain RET. No semantic EAX result; unregister current publication, clear only on success.",
-      "evidence": "Full live native listing, ABI, current-field/cleanup schedule and live/disk spans reviewed. See docs/NATIVE_RENDER_SERVICE_BASE.md and reports/native_render_service_base.json. Descriptive names are hypotheses, not recovered symbols.",
-      "uncertainty": "New explicit context/raw-pointer C++ interfaces, not original callable ABI. Valid actual native storage, actual provider and source CRT domains required. Native private EH-stack aliases, hardware faults, original exception/CRT identity, concurrent access, full derived lifetime and gameplay unproved. Destructor validation failure is forced between native reads in the private fixture only, not naturally reached."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b0f0c0..00b0f158 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_RENDER_SERVICE_BASE.md; reports/native_render_service_base.json.",
+      "uncertainty": "New explicit context/raw-pointer C++ interfaces, not original callable ABI. Valid actual native storage, actual provider and source CRT domains required. Native private EH-stack aliases, hardware faults, original exception/CRT identity, concurrent access, full derived lifetime and gameplay unproved. Destructor validation failure is forced between native reads in the private fixture only, not naturally reached.",
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "destroy_native_render_service_base_00b0f0c0",
+      "worker_evidence": "Full live native listing, ABI, current-field/cleanup schedule and live/disk spans reviewed. See docs/NATIVE_RENDER_SERVICE_BASE.md and reports/native_render_service_base.json. Descriptive names are hypotheses, not recovered symbols."
     },
     {
       "address": "00412430",
@@ -70,8 +76,11 @@
       "native_calling_convention": "__thiscall",
       "native_prototype": "void BSP_SingletonBase_ResetProfile(void)",
       "original_abi": "ECX actual raw receiver, no stack arguments, plain RET. No semantic EAX result; store CE3818 only.",
-      "evidence": "Full live native listing, ABI, current-field/cleanup schedule and live/disk spans reviewed. See docs/NATIVE_RENDER_SERVICE_BASE.md and reports/native_render_service_base.json. Descriptive names are hypotheses, not recovered symbols.",
-      "uncertainty": "New explicit context/raw-pointer C++ interfaces, not original callable ABI. Valid actual native storage, actual provider and source CRT domains required. Native private EH-stack aliases, hardware faults, original exception/CRT identity, concurrent access, full derived lifetime and gameplay unproved. Destructor validation failure is forced between native reads in the private fixture only, not naturally reached."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00412430..00412436 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_RENDER_SERVICE_BASE.md; reports/native_render_service_base.json.",
+      "uncertainty": "New explicit context/raw-pointer C++ interfaces, not original callable ABI. Valid actual native storage, actual provider and source CRT domains required. Native private EH-stack aliases, hardware faults, original exception/CRT identity, concurrent access, full derived lifetime and gameplay unproved. Destructor validation failure is forced between native reads in the private fixture only, not naturally reached.",
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "destroy_native_generic_singleton_base_00412430",
+      "worker_evidence": "Full live native listing, ABI, current-field/cleanup schedule and live/disk spans reviewed. See docs/NATIVE_RENDER_SERVICE_BASE.md and reports/native_render_service_base.json. Descriptive names are hypotheses, not recovered symbols."
     },
     {
       "address": "00b0cf30",
@@ -92,8 +101,11 @@
       "native_calling_convention": "__thiscall",
       "native_prototype": "void * BSP_RenderService_GetRegion84(void)",
       "original_abi": "ECX actual raw receiver, no stack arguments, plain RET. EAX raw ECX+84 identity with 32-bit wrapping.",
-      "evidence": "Full live native listing, ABI, current-field/cleanup schedule and live/disk spans reviewed. See docs/NATIVE_RENDER_SERVICE_BASE.md and reports/native_render_service_base.json. Descriptive names are hypotheses, not recovered symbols.",
-      "uncertainty": "New explicit context/raw-pointer C++ interfaces, not original callable ABI. Valid actual native storage, actual provider and source CRT domains required. Native private EH-stack aliases, hardware faults, original exception/CRT identity, concurrent access, full derived lifetime and gameplay unproved. Destructor validation failure is forced between native reads in the private fixture only, not naturally reached."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b0cf30..00b0cf36 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. Existing typed function record extended to the actual raw implementation; previous reconstruction retained, no new body count. Evidence: docs/NATIVE_RENDER_SERVICE_BASE.md; reports/native_render_service_base.json.",
+      "uncertainty": "New explicit context/raw-pointer C++ interfaces, not original callable ABI. Valid actual native storage, actual provider and source CRT domains required. Native private EH-stack aliases, hardware faults, original exception/CRT identity, concurrent access, full derived lifetime and gameplay unproved. Destructor validation failure is forced between native reads in the private fixture only, not naturally reached.",
+      "existing_body_raw_extension": true,
+      "ledger_record_name": "render_time_region_00b0cf30",
+      "worker_evidence": "Full live native listing, ABI, current-field/cleanup schedule and live/disk spans reviewed. See docs/NATIVE_RENDER_SERVICE_BASE.md and reports/native_render_service_base.json. Descriptive names are hypotheses, not recovered symbols."
     },
     {
       "address": "00b0d100",
@@ -114,8 +126,11 @@
       "native_calling_convention": "__thiscall",
       "native_prototype": "void * BSP_RenderService_GetSystemMatrix1D8(void)",
       "original_abi": "ECX actual raw receiver, no stack arguments, plain RET. EAX raw ECX+1D8 identity with 32-bit wrapping.",
-      "evidence": "Full live native listing, ABI, current-field/cleanup schedule and live/disk spans reviewed. See docs/NATIVE_RENDER_SERVICE_BASE.md and reports/native_render_service_base.json. Descriptive names are hypotheses, not recovered symbols.",
-      "uncertainty": "New explicit context/raw-pointer C++ interfaces, not original callable ABI. Valid actual native storage, actual provider and source CRT domains required. Native private EH-stack aliases, hardware faults, original exception/CRT identity, concurrent access, full derived lifetime and gameplay unproved. Destructor validation failure is forced between native reads in the private fixture only, not naturally reached."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b0d100..00b0d106 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. Existing typed function record extended to the actual raw implementation; previous reconstruction retained, no new body count. Evidence: docs/NATIVE_RENDER_SERVICE_BASE.md; reports/native_render_service_base.json.",
+      "uncertainty": "New explicit context/raw-pointer C++ interfaces, not original callable ABI. Valid actual native storage, actual provider and source CRT domains required. Native private EH-stack aliases, hardware faults, original exception/CRT identity, concurrent access, full derived lifetime and gameplay unproved. Destructor validation failure is forced between native reads in the private fixture only, not naturally reached.",
+      "existing_body_raw_extension": true,
+      "ledger_record_name": "get_system_camera_service_matrix_00b0d100",
+      "worker_evidence": "Full live native listing, ABI, current-field/cleanup schedule and live/disk spans reviewed. See docs/NATIVE_RENDER_SERVICE_BASE.md and reports/native_render_service_base.json. Descriptive names are hypotheses, not recovered symbols."
     }
   ],
   "owned_files": [
@@ -465,5 +480,15 @@
     "Full derived B0CD80 initializer in separate packet.",
     "Full actual B46A70 system constants remains independently incomplete.",
     "Full service destruction and executable/gameplay integration remain separate."
-  ]
+  ],
+  "integration_az_review": {
+    "combined_validation": "pending exact merged source build and current-library replay",
+    "game_validated": false,
+    "saved_batch_function_names_and_original_signatures": 27,
+    "signature_readback_passed": true,
+    "full_stored_normal_function_bodies": true,
+    "analysis_only_eh_definitions_report": "reports/native_system_sources_az_analysis_sync.json",
+    "cross_review": "Complete original bodies, producer and ABI evidence reviewed. Root reviewed camera, fog leaves, five parameter publishers and service publication/cleanup against listings. Independent reviews checked camera providers/fixtures and initializer ordered MOVSS reads/stores including held-register reuse. Existing typed body records retain their previous identities and evidence. New raw interfaces do not prove original binary ABI, general FH3/SEH, concurrency or gameplay.",
+    "current_report_call_check": "reports/native_render_service_base.json: 12 call rows checked, 0 failed"
+  }
 }
