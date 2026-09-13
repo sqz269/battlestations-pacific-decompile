@@ -90,11 +90,18 @@ inline constexpr const char* kPositionTableKeyY = "y";  // 00D045F8
 inline constexpr const char* kPositionTableKeyZ = "z";  // 00CFD718
 
 // GetMeasure 0088D8E0. `0088D9BD CMP byte ptr [00F88988],0x0`, `JZ` to the metric
-// arm. Both arms push the *value at a dotted globals path*, through 00B672B0, so
-// the binding answers the localised unit name the globals table carries, not a
-// literal of its own.
-inline constexpr const char* kMeasureMetricGlobalPath = "globals.kilometer";    // 0088D9DA arm
-inline constexpr const char* kMeasureImperialGlobalPath = "globals.mile";       // 00CF5914
+// arm at 0088DA04. Each arm assigns one literal to a NativeString through 0041E870
+// and hands that string to 00B672B0.
+//
+// Corrected by packet cc_lua_find_entity: 00B672B0 is not a globals-table lookup.
+// Its body is `lua_checkstack(L, 1)` (00A672F0) then `lua_pushlstring(L, data,
+// length)` (00A67A10), with the empty literal at 0108FF2C standing in for a null
+// data pointer; those two are its only callees. The binding therefore answers the
+// **text key itself**, and `luaMetric` in usn_2_java.lua:923 compares its result
+// against the literals "globals.mile" and "globals.kilometer", which is what the
+// key spelling is for.
+inline constexpr const char* kMeasureMetricGlobalPath = "globals.kilometer";    // 00CF5900, 0088DA04 arm
+inline constexpr const char* kMeasureImperialGlobalPath = "globals.mile";       // 00CF5914, 0088D9CF arm
 inline constexpr std::uint32_t kMeasureImperialFlagAddress = 0x00F88988u;       // 0088D9BD
 
 // GameTime 008A9320. `008A93FE FLD float ptr [00F876A4]`, the mission clock the
@@ -170,7 +177,9 @@ struct LuaBindingMissionHost {
 
     // --- GetMeasure 0088D8E0 ----------------------------------------------
     virtual bool measure_is_imperial_0088d9bd() = 0;
-    // 0088D9EA / 00B672B0: push the value the globals table holds at a dotted path.
+    // 0088D9EA / 0088DA1F: 00B672B0 pushes this string, byte for byte. The
+    // parameter keeps its name for the callers that already spell it; what the
+    // method must do is `lua_pushlstring` of the text, not a lookup.
     virtual void push_global_path_value_00b672b0(const char* dotted_path) = 0;
 
     // --- GameTime 008A9320 -------------------------------------------------

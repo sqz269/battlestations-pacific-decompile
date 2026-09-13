@@ -28,6 +28,7 @@
 #include "bsp/vehicle_class_lua_load.hpp"
 #include "bsp/vehicle_class.hpp"
 #include "bsp/native_string.hpp"
+#include "bsp/recon_values.hpp"
 #include "bsp/vfs_locale_runtime.hpp"
 #include "bsp/vfs_provider_manager.hpp"
 
@@ -94,7 +95,11 @@ int binding_trampoline(lua_State* state) {
         // 00928a00 seeds, so this is the same identity the native carries.
         if (argc >= 1 && lua_type(state, 1) == LUA_TTABLE) {
             lua_getfield(state, 1, "ID");
-            if (lua_type(state, -1) == LUA_TNUMBER) {
+            // `ID` is the key text (00928BA5 through 00B67630's lua_pushlstring).
+            // lua_tonumber converts a numeric string, so both spellings resolve
+            // and nothing else in this process depends on which one arrives.
+            const int type = lua_type(state, -1);
+            if (type == LUA_TNUMBER || type == LUA_TSTRING) {
                 host->note_binding_subject(static_cast<std::size_t>(row),
                     static_cast<int>(lua_tonumber(state, -1)));
             }
@@ -768,6 +773,39 @@ void GameMissionLuaHost::create_self_table_004e0305() {
         bsp::kMissionReconGlobal);
 }
 
+namespace {
+
+// bsp::ReconLuaInstanceView is a reference to the instance's own mutable state
+// slot (native game+1A08 -> host+04 -> instance+04). This process has one
+// machine, so the slot is this adapter's own member and the reconstruction sees
+// the same identity rule it was written against.
+class ReconShellHost final : public bsp::ReconValuesHost {
+public:
+    explicit ReconShellHost(lua_State* state) : state_(state) {}
+
+    bsp::ReconLuaInstanceView current_mission_lua_instance_1a08_04() override {
+        return bsp::ReconLuaInstanceView{state_};
+    }
+
+private:
+    lua_State* state_;
+};
+
+}  // namespace
+
+void GameMissionLuaHost::install_recon_tables_00803a40() {
+    if (state_ == nullptr) return;
+    ReconShellHost host(state_);
+    bsp::ReconValuesContext context{host, bsp::recon_category_names_00e0b590.data()};
+    bsp::install_recon_values_00803a40(context);
+    log_.unimplemented("Recon::publish_slot_table", "00806b10");
+    log_.notef("recon shell built by 00803a40: three party indices, each with enemy, "
+        "neutral, unknown and own, each of those with the nineteen category maps of "
+        "00E0B590. Every map is empty: 00806b10 and 00805d90 fill them from the recon "
+        "slot lists and this process builds none, so a script that asks for detected "
+        "units gets an empty list rather than an error");
+}
+
 void GameMissionLuaHost::note_error(const std::string& message) {
     if (summary_.first_error.empty() && !message.empty()) {
         summary_.first_error = message;
@@ -1188,7 +1226,15 @@ std::size_t GameMissionLuaHost::attach_scene_entities_00928a00(
         // itself; this process has no such object, so the slot carries the
         // entity's own id as a light pointer and nothing dereferences it.
         lua_createtable(state_, 0, 3);
-        lua_pushnumber(state_, static_cast<lua_Number>(entity.id));
+        // Corrected by packet cc_lua_find_entity: `ID` is the key **text**, not a
+        // number. 00928BA5 hands 00B67630 the same NativeString the key was
+        // formatted into, and 00B67630's second push is 00A67A10
+        // `lua_pushlstring` (docs/MISSION_LUA_SELF_TABLE.md line 93 already said
+        // so). It matters because every shipped helper that takes an entity
+        // table indexes `thisTable[Obj.ID]`, and a number key and a string key
+        // are different keys: with a number here, luaGetDistance3D read
+        // `thisTable[<number>]` as nil and answered a distance of zero.
+        ::lua_pushstring(state_, key);
         lua_setfield(state_, -2, "ID");
         lua_pushboolean(state_, 0);
         lua_setfield(state_, -2, "Dead");
@@ -1212,7 +1258,10 @@ std::size_t GameMissionLuaHost::attach_scene_entities_00928a00(
             ::lua_settop(state_, ::lua_gettop(state_) - 1);
         }
         lua_setfield(state_, -2, key);
-        scene_entity_ids_[entity.name] = entity.id;
+        // Packet cc_lua_find_entity: the slot is built for every entity that
+        // reaches virtual slot 39; only the entities whose world bucket
+        // 0088B1B0 walks enter the name index the FindEntity tail uses.
+        if (entity.findable) scene_entity_ids_[entity.name] = entity.id;
         ++made;
     }
     ::lua_settop(state_, ::lua_gettop(state_) - 1);
@@ -1384,6 +1433,80 @@ std::size_t GameMissionLuaHost::run_created_scripts() {
         summary_.natives.size() - natives_before, summary_.native_calls - calls_before);
     report_entity_subjects();
     return ran;
+}
+
+void GameMissionLuaHost::report_mission_script_state() {
+    if (state_ == nullptr) return;
+    const int base = ::lua_gettop(state_);
+    lua_getfield(state_, LUA_GLOBALSINDEX, "Mission");
+    if (!lua_istable(state_, -1)) {
+        ::lua_settop(state_, base);
+        log_.notef("summary mission script state: the shipped script's `Mission` table "
+            "is not a table, so the run did not reach its stage init");
+        return;
+    }
+    const int mission = ::lua_gettop(state_);
+    struct Field {
+        const char* key;
+        const char* label;
+    };
+    static const Field kFields[] = {
+        {"MissionPhase", "MissionPhase"}, {"EndMission", "EndMission"},
+        {"Party", "Party"}, {"Distance", "Distance"}, {"Measure", "Measure"},
+        {"MissionComplete", "MissionCompleteRan"},
+        {"MissionFailed", "MissionFailedRan"},
+    };
+    std::string line;
+    for (const Field& field : kFields) {
+        lua_getfield(state_, mission, field.key);
+        const int type = lua_type(state_, -1);
+        std::string value;
+        if (type == LUA_TNIL) {
+            value = "nil";
+        } else if (type == LUA_TBOOLEAN) {
+            value = lua_toboolean(state_, -1) != 0 ? "true" : "false";
+        } else if (type == LUA_TNUMBER || type == LUA_TSTRING) {
+            const char* text = lua_tolstring(state_, -1, nullptr);
+            value = (text != nullptr) ? text : "?";
+        } else {
+            value = "(other)";
+        }
+        ::lua_settop(state_, mission);
+        if (!line.empty()) line += ' ';
+        line += field.label;
+        line += '=';
+        line += value;
+    }
+    // The shape the shipped `luaGetOwnUnits` walks: recon[Mission.Party].own,
+    // whose members are the nineteen category maps. Reported as a count so the
+    // log says whether the mission-end path would find a table or raise.
+    lua_getfield(state_, mission, "Party");
+    const bool party_number = lua_type(state_, -1) == LUA_TNUMBER;
+    const lua_Number party = party_number ? lua_tonumber(state_, -1) : 0;
+    ::lua_settop(state_, mission);
+    int own_categories = -1;
+    if (party_number) {
+        lua_getfield(state_, LUA_GLOBALSINDEX, bsp::kMissionReconGlobal);
+        if (lua_istable(state_, -1)) {
+            lua_pushnumber(state_, party);
+            ::lua_gettable(state_, -2);
+            if (lua_istable(state_, -1)) {
+                lua_getfield(state_, -1, "own");
+                if (lua_istable(state_, -1)) {
+                    own_categories = 0;
+                    lua_pushnil(state_);
+                    while (lua_next(state_, -2) != 0) {
+                        ++own_categories;
+                        ::lua_settop(state_, ::lua_gettop(state_) - 1);
+                    }
+                }
+            }
+        }
+    }
+    ::lua_settop(state_, base);
+    log_.notef("summary mission script state: %s entity_resolves=%llu "
+        "self_table_entities=%zu recon_own_categories=%d", line.c_str(),
+        summary_.entity_resolves, summary_.self_table_entities, own_categories);
 }
 
 void GameMissionLuaHost::report_natives(std::size_t limit) {

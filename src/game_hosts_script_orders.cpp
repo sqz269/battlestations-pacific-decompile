@@ -54,6 +54,11 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // Packet cc_mission_blackout: the fade whose completion callback is the only
     // route from the intro movie to `luaIn`. src/mission_blackout.cpp.
     {"Blackout", 0x008d1340u},
+    // Packet cc_lua_find_entity: usn_2_java.lua:54 is `this.Party = SetParty(this,
+    // PARTY_ALLIED)`, so the mission's own party number is this binding's return
+    // value and nothing else in the shipped scripts assigns it. The body is
+    // already reconstructed in src/lua_binding_core.cpp.
+    {"SetParty", 0x008a8930u},
 };
 
 // The id the first script entity takes. The created scene instances number from 1
@@ -85,9 +90,30 @@ public:
     void vehicle_class_get_or_create(int, bool) override {}
     void music_director_set_level(int) override {}
     void session_send_music_level(int) override {}
-    bool entity_vcall_5c(void*, int) override { return false; }
-    void entity_vcall_2c(void*, int, std::uint32_t) override {}
-    void session_route_party_message(void*, int) override {}
+    // The two SetParty virtuals and the session route. docs/LUA_BINDING_CORE.md
+    // records that neither virtual has a resolved concrete vtable, so both are
+    // named by slot and both are reported rather than answered; the false here
+    // is the no-session-message arm taken by choice, not a recovered answer.
+    bool entity_vcall_5c(void* entity, int selector) override {
+        static_cast<void>(entity);
+        static_cast<void>(selector);
+        owner_.record_unimplemented("LuaBindingCore::entity_party_query_vtable_5c",
+            "008a8a83");
+        return false;
+    }
+    void entity_vcall_2c(void* entity, int party, std::uint32_t field_58) override {
+        static_cast<void>(entity);
+        static_cast<void>(party);
+        static_cast<void>(field_58);
+        owner_.record_unimplemented("LuaBindingCore::entity_set_party_vtable_2c",
+            "008a8ae3");
+    }
+    void session_route_party_message(void* entity, int party) override {
+        static_cast<void>(entity);
+        static_cast<void>(party);
+        owner_.record_unimplemented("LuaBindingCore::session_route_party_message",
+            "008a8ac4");
+    }
     void scoring_set_real_play_time_running(bool) override {}
     void scoring_set_final_scoring_function_name(const std::string&) override {}
     void message_map_load(const std::string&, int) override {}
@@ -137,6 +163,31 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
 // The argument reads
 // ---------------------------------------------------------------------------
 
+void GameScriptOrdersHost::record_unimplemented(const char* method,
+    const char* address) {
+    log_.unimplemented(method, address);
+}
+
+void GameScriptOrdersHost::register_scene_marker(int id, const std::string& name,
+    const float world_position[3]) {
+    if (id <= 0) return;
+    SceneMarker marker;
+    marker.id = id;
+    marker.name = name;
+    marker.position[0] = world_position[0];
+    marker.position[1] = world_position[1];
+    marker.position[2] = world_position[2];
+    markers_.push_back(marker);
+}
+
+const GameScriptOrdersHost::SceneMarker* GameScriptOrdersHost::marker_for_id(
+    int id) const noexcept {
+    for (const SceneMarker& marker : markers_) {
+        if (marker.id == id) return &marker;
+    }
+    return nullptr;
+}
+
 void* GameScriptOrdersHost::entity_from_argument(int index) {
     // 00888aa0 BSP_ObjectHandle_FromLuaTable. The native validates the table and
     // converts its `Ptr` to the entity object; this process has no such object,
@@ -147,12 +198,17 @@ void* GameScriptOrdersHost::entity_from_argument(int index) {
     if (slot > argument_count_) return nullptr;
     if (lua_type(state_, slot) != LUA_TTABLE) return nullptr;
     lua_getfield(state_, slot, "ID");
-    const bool number = lua_type(state_, -1) == LUA_TNUMBER;
+    // 00928BA5 seeds `ID` as the key text; lua_tonumber converts it.
+    const int type = lua_type(state_, -1);
+    const bool number = type == LUA_TNUMBER || type == LUA_TSTRING;
     const int id = number ? static_cast<int>(lua_tonumber(state_, -1)) : 0;
     lua_settop(state_, argument_count_);
     if (!number || id <= 0) return nullptr;
     const std::size_t unit = static_cast<std::size_t>(id - 1);
-    if (unit >= units_.count()) return nullptr;
+    // Packet cc_lua_find_entity: the native's 00888AA0 validates the table and
+    // converts its `Ptr`, and every entity that reached virtual slot 39 has one,
+    // unit or not. A scene marker is therefore as resolvable here as a unit is.
+    if (unit >= units_.count() && marker_for_id(id) == nullptr) return nullptr;
     return reinterpret_cast<void*>(static_cast<std::uintptr_t>(id));
 }
 
@@ -165,7 +221,10 @@ std::size_t GameScriptOrdersHost::index_of(void* entity) const noexcept {
 std::string GameScriptOrdersHost::name_of(void* entity) const {
     const std::size_t index = index_of(entity);
     const GameUnitRow* row = (index < units_.count()) ? units_.unit_row(index) : nullptr;
-    return (row != nullptr) ? row->name : std::string();
+    if (row != nullptr) return row->name;
+    const SceneMarker* marker
+        = marker_for_id(static_cast<int>(reinterpret_cast<std::uintptr_t>(entity)));
+    return (marker != nullptr) ? marker->name : std::string();
 }
 
 bool GameScriptOrdersHost::argument_id_field_is_nil(int index) {
@@ -217,7 +276,8 @@ std::uint16_t GameScriptOrdersHost::entity_object_id(void* entity) {
     // in for it, which is the same substitution GameCommandUnit already makes.
     log_.unimplemented("LuaBinding::entity_object_id", "0088a88e");
     const std::size_t index = index_of(entity);
-    if (index >= units_.count()) return 0;
+    const int id = static_cast<int>(reinterpret_cast<std::uintptr_t>(entity));
+    if (index >= units_.count() && marker_for_id(id) == nullptr) return 0;
     return static_cast<std::uint16_t>(index + 1);
 }
 
@@ -473,6 +533,15 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         // this file supplies its one callee rather than restating the binding.
         SetThinkCoreHost core(*this);
         results = bsp::lua_binding_set_think(*this, core);
+    } else if (std::strcmp(binding->name, "SetParty") == 0) {
+        // 008A8930's own body, over the same adapter SetThink uses. The two
+        // entity virtuals it dispatches through have no resolved concrete
+        // vtable (docs/LUA_BINDING_CORE.md), so the adapter records both and
+        // takes the no-session-message arm; the number the binding pushes back
+        // is the argument, which is what usn_2_java.lua:54 stores in
+        // Mission.Party and what recon[Mission.Party] is then indexed with.
+        SetThinkCoreHost core(*this);
+        results = bsp::lua_binding_set_party(*this, *this, core);
     } else if (std::strcmp(binding->name, "SetWait") == 0) {
         results = bsp::lua_binding_set_wait(*this, *this);
     } else if (std::strcmp(binding->name, "ClearThink") == 0) {
@@ -585,7 +654,8 @@ bool GameScriptOrdersHost::is_entity_table(int index) {
     lua_settop(state_, argument_count_);
     if (has_ptr) return true;
     lua_getfield(state_, slot, "ID");
-    const bool has_id = lua_type(state_, -1) == LUA_TNUMBER;
+    const int id_type = lua_type(state_, -1);
+    const bool has_id = id_type == LUA_TNUMBER || id_type == LUA_TSTRING;
     lua_settop(state_, argument_count_);
     return has_id;
 }
@@ -640,7 +710,10 @@ bool GameScriptOrdersHost::build_script_self_table(const GameScriptEntity& entit
     std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat,
         static_cast<int>(entity.id));
     lua_createtable(state_, 0, 3);
-    lua_pushnumber(state_, static_cast<lua_Number>(entity.id));
+    // Corrected by packet cc_lua_find_entity: 00928BA5 seeds `ID` with the key
+    // text through 00B67630's lua_pushlstring, and the shipped helpers index
+    // thisTable with it.
+    lua_pushstring(state_, key);
     lua_setfield(state_, -2, "ID");
     lua_pushboolean(state_, entity.dead ? 1 : 0);
     lua_setfield(state_, -2, "Dead");
@@ -680,6 +753,24 @@ void GameScriptOrdersHost::call_script_global(const GameScriptEntity& entity,
     // the caller's own Lua stack slots stack_first..stack_last.
     if (state_ == nullptr || name.empty()) return;
     const int base = lua_gettop(state_);
+    // The native passes errfunc 0 (docs/MISSION_NAMED_CALL_ARGS.md) and keeps only
+    // the message. This process installs `debug.traceback` as the handler purely
+    // so a failure names the shipped-script call chain in the log; the traceback
+    // is the executable's diagnostic, not a change to what the mission sees,
+    // because a failed call still returns nothing either way.
+    lua_getfield(state_, LUA_GLOBALSINDEX, "debug");
+    int errfunc = 0;
+    if (lua_istable(state_, -1)) {
+        lua_getfield(state_, -1, "traceback");
+        lua_remove(state_, -2);
+        if (lua_isfunction(state_, -1)) {
+            errfunc = lua_gettop(state_);
+        } else {
+            lua_settop(state_, base);
+        }
+    } else {
+        lua_settop(state_, base);
+    }
     lua_getfield(state_, LUA_GLOBALSINDEX, name.c_str());
     if (!lua_isfunction(state_, -1)) {
         lua_settop(state_, base);
@@ -699,7 +790,7 @@ void GameScriptOrdersHost::call_script_global(const GameScriptEntity& entity,
             ++pushed;
         }
     }
-    if (lua_pcall(state_, pushed, 0, 0) != 0) {
+    if (lua_pcall(state_, pushed, 0, errfunc) != 0) {
         ++timers_.call_failures;
         const char* message = lua_tolstring(state_, -1, nullptr);
         if (timers_.first_error.empty() && message != nullptr) {
@@ -785,10 +876,21 @@ bool GameScriptOrdersHost::entity_pose_translation_008a7c3c(void* entity, float 
     out[2] = 0.0f;
     const std::size_t index = index_of(entity);
     const GameUnitRow* row = (index < units_.count()) ? units_.unit_row(index) : nullptr;
-    if (row == nullptr) return false;
-    out[0] = row->position[0];
-    out[1] = row->position[1];
-    out[2] = row->position[2];
+    if (row != nullptr) {
+        out[0] = row->position[0];
+        out[1] = row->position[1];
+        out[2] = row->position[2];
+        return true;
+    }
+    // Packet cc_lua_find_entity: 008A7C3C reads entity+0FCh, the world matrix
+    // translation row, for whatever entity the argument resolved to. A scene
+    // marker's is the composed `localframe` the scene file authored.
+    const SceneMarker* marker
+        = marker_for_id(static_cast<int>(reinterpret_cast<std::uintptr_t>(entity)));
+    if (marker == nullptr) return false;
+    out[0] = marker->position[0];
+    out[1] = marker->position[1];
+    out[2] = marker->position[2];
     return true;
 }
 
@@ -811,32 +913,16 @@ bool GameScriptOrdersHost::measure_is_imperial_0088d9bd() {
 }
 
 void GameScriptOrdersHost::push_global_path_value_00b672b0(const char* dotted_path) {
-    // 00B672B0 walks the dotted path over the globals table and pushes what it
-    // finds, nil included. `globals` is an installed script's table, so this
-    // resolves for real whenever the autoload folder loaded it.
+    // Corrected by packet cc_lua_find_entity. 00B672B0 does not walk the path:
+    // its two callees are 00A672F0 `lua_checkstack(L, 1)` and 00A67A10
+    // `lua_pushlstring(L, data, length)` over the NativeString the caller built
+    // at 0088D9D8 / 0088DA0D, with the empty literal at 0108FF2C standing in for
+    // a null data pointer (00B672CD). GetMeasure therefore answers the text key
+    // "globals.kilometer" or "globals.mile" itself, which is what usn_2_java's
+    // own luaMetric (line 923) compares against and what the "#Mission.Measure#"
+    // substitution in its score line expects.
     if (state_ == nullptr || dotted_path == nullptr) return;
-    std::string path(dotted_path);
-    int depth = 0;
-    std::size_t start = 0;
-    lua_pushvalue(state_, LUA_GLOBALSINDEX);
-    ++depth;
-    while (start <= path.size()) {
-        const std::size_t dot = path.find('.', start);
-        const std::string part = path.substr(start,
-            dot == std::string::npos ? std::string::npos : dot - start);
-        if (!lua_istable(state_, -1)) {
-            lua_settop(state_, lua_gettop(state_) - depth);
-            lua_pushnil(state_);
-            return;
-        }
-        lua_getfield(state_, -1, part.c_str());
-        ++depth;
-        if (dot == std::string::npos) break;
-        start = dot + 1;
-    }
-    // Keep the resolved value, drop every table on the way to it.
-    lua_insert(state_, -depth);
-    lua_settop(state_, lua_gettop(state_) - (depth - 1));
+    lua_pushstring(state_, dotted_path);
 }
 
 float GameScriptOrdersHost::game_clock_seconds_008a93fe() { return mission_clock_; }
