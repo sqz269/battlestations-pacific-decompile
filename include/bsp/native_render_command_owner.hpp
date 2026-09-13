@@ -28,6 +28,19 @@ struct NativeRenderCommandEnvironment {
     const char* default_diagnostic_00ce9a38;
 };
 
+// The full command lifetime using the SAME actual419CC0 publication and pool
+// as instance collection/group names. Every reached allocation/return reloads
+// that publication through ActualNativeStringPoolStorage. No extra owner or
+// native field; canonical associations and all other domains remain shared.
+struct NativeRenderCommandActualEnvironment {
+    NativeRenderBatchLifetime& batches;
+    NativeRenderBatchReferences& batch_references;
+    NativeRenderActualOwners& owners;
+    NativeRenderGroupModels& models;
+    ActualNativeStringPoolStorage& strings;
+    const char* default_diagnostic_00ce9a38;
+};
+
 // Association only: prepare stable host storage/capacity BEFORE entering the
 // native initializer. These calls cannot allocate, throw, retain, publish any
 // native field, or run ownership behavior. Return the one concrete companion
@@ -69,5 +82,23 @@ void destroy_native_render_command_00b1ddd0(NativeRenderCommandStorage&,
 // Full B1E6B0: destroy, ordinary-free iff flags&1, return original address; RET4.
 NativeRenderCommandStorage* delete_native_render_command_00b1e6b0(
     NativeRenderCommandStorage*, NativeRenderCommandEnvironment&, std::uint32_t flags);
+
+// Same complete native schedules/valid-storage domain, with actual string
+// allocation and cleanup. Existing environment overloads retain their behavior.
+// Actual pool release requires the returning/nonthrowing getter domain of the
+// established NativeStringStorage interface; full native FH3/SEH is not implied.
+void initialize_native_render_command_00b1edc0(NativeRenderCommandStorage&,
+    NativeRenderCommandActualEnvironment&, NativeRenderCommandAssociations&,
+    void* scene, void* camera, void* second_owner, void* target);
+NativeRenderCommandStorage* construct_native_render_command_00b1f1f0(void* actual44h,
+    NativeRenderCommandActualEnvironment&, NativeRenderCommandAssociations&,
+    void* scene, void* camera, void* second_owner, void* target);
+NativeRenderCommandStorage* construct_native_render_command_00b1f170(void* actual44h,
+    NativeRenderCommandActualEnvironment&, NativeRenderCommandAssociations&,
+    void* scene, void* camera, void* target);
+void destroy_native_render_command_00b1ddd0(NativeRenderCommandStorage&,
+    NativeRenderCommandActualEnvironment&);
+NativeRenderCommandStorage* delete_native_render_command_00b1e6b0(
+    NativeRenderCommandStorage*, NativeRenderCommandActualEnvironment&, std::uint32_t flags);
 
 } // namespace bsp

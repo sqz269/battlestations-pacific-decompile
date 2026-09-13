@@ -1,0 +1,349 @@
+{
+  "scope": "Five existing actual-storage command routines extended to the actual string domain; not five newly reconstructed native bodies",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00b1f170",
+      "end_inclusive": "00b1f1ef",
+      "end_exclusive": "00b1f1f0",
+      "length": 128,
+      "native_sha256": "18c2429c14851703f8fbc2b1b0bc558f4d4f271973a4edf8bd7288bc8f12506b",
+      "live_disk_equal": true,
+      "ghidra_name": "BSP_RenderCommand_Construct",
+      "cpp_symbol": "construct_native_render_command_00b1f170",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * BSP_RenderCommand_Construct(void *scene, void *camera, void *target)",
+      "original_abi": "ECX actual44h placement; three stack pointers; EAX same; RET0Ch",
+      "source": "src/native_render_command_owner.cpp",
+      "header": "include/bsp/native_render_command_owner.hpp",
+      "coverage": "Complete existing native normal body; actual-string-domain overload added without a new native routine",
+      "new_native_body": false,
+      "evidence": "Extension of the existing complete actual command lifetime using the SAME ActualNativeStringPoolStorage publication/pool as B1DFF0 group names. Original ordered field publication, captured diagnostic pointer/current length, actual owners and cleanup scopes retained; old pool overload behavior preserved. New source interfaces, not original FH3/SEH or gameplay validation. Evidence: docs/NATIVE_RENDER_COMMAND_ACTUAL_STRINGS.md; reports/native_render_command_actual_strings.json."
+    },
+    {
+      "address": "00b1f1f0",
+      "end_inclusive": "00b1f273",
+      "end_exclusive": "00b1f274",
+      "length": 132,
+      "native_sha256": "6466cdc16d146d16f93253c655dc29b4bef19a497d821ea0fb3c69244cf882d2",
+      "live_disk_equal": true,
+      "ghidra_name": "BSP_RenderCommand_ConstructWithSeparateOwner",
+      "cpp_symbol": "construct_native_render_command_00b1f1f0",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * BSP_RenderCommand_ConstructWithSeparateOwner(void *scene, void *camera, void *second_owner, void *target)",
+      "original_abi": "ECX actual44h placement; four stack pointers; EAX same; RET10h",
+      "source": "src/native_render_command_owner.cpp",
+      "header": "include/bsp/native_render_command_owner.hpp",
+      "coverage": "Complete existing native normal body; actual-string-domain overload added without a new native routine",
+      "new_native_body": false,
+      "evidence": "Extension of the existing complete actual command lifetime using the SAME ActualNativeStringPoolStorage publication/pool as B1DFF0 group names. Original ordered field publication, captured diagnostic pointer/current length, actual owners and cleanup scopes retained; old pool overload behavior preserved. New source interfaces, not original FH3/SEH or gameplay validation. Evidence: docs/NATIVE_RENDER_COMMAND_ACTUAL_STRINGS.md; reports/native_render_command_actual_strings.json."
+    },
+    {
+      "address": "00b1edc0",
+      "end_inclusive": "00b1ef56",
+      "end_exclusive": "00b1ef57",
+      "length": 407,
+      "native_sha256": "3ccd954c39f0392cf91cd771e9ebb44fea8b15a6deb493aeef7ebd66225146ef",
+      "live_disk_equal": true,
+      "ghidra_name": "BSP_RenderCommand_InitializeContextAndBatches",
+      "cpp_symbol": "initialize_native_render_command_00b1edc0",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_RenderCommand_InitializeContextAndBatches(void *scene, void *camera, void *second_owner, void *target)",
+      "original_abi": "ECX actual44h command; four stack pointers; RET10h",
+      "source": "src/native_render_command_owner.cpp",
+      "header": "include/bsp/native_render_command_owner.hpp",
+      "coverage": "Complete existing native normal body; actual-string-domain overload added without a new native routine",
+      "new_native_body": false,
+      "evidence": "Extension of the existing complete actual command lifetime using the SAME ActualNativeStringPoolStorage publication/pool as B1DFF0 group names. Original ordered field publication, captured diagnostic pointer/current length, actual owners and cleanup scopes retained; old pool overload behavior preserved. New source interfaces, not original FH3/SEH or gameplay validation. Evidence: docs/NATIVE_RENDER_COMMAND_ACTUAL_STRINGS.md; reports/native_render_command_actual_strings.json."
+    },
+    {
+      "address": "00b1ddd0",
+      "end_inclusive": "00b1dfec",
+      "end_exclusive": "00b1dfed",
+      "length": 541,
+      "native_sha256": "9e3af05b25a5e27fd13cb2c3a26e0e2e1d2867d6faff725727e5572e230097b6",
+      "live_disk_equal": true,
+      "ghidra_name": "BSP_RenderCommand_Destroy",
+      "cpp_symbol": "destroy_native_render_command_00b1ddd0",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_RenderCommand_Destroy(void)",
+      "original_abi": "ECX actual44h command; RET",
+      "source": "src/native_render_command_owner.cpp",
+      "header": "include/bsp/native_render_command_owner.hpp",
+      "coverage": "Complete existing native normal body; actual-string-domain overload added without a new native routine",
+      "new_native_body": false,
+      "evidence": "Extension of the existing complete actual command lifetime using the SAME ActualNativeStringPoolStorage publication/pool as B1DFF0 group names. Original ordered field publication, captured diagnostic pointer/current length, actual owners and cleanup scopes retained; old pool overload behavior preserved. New source interfaces, not original FH3/SEH or gameplay validation. Evidence: docs/NATIVE_RENDER_COMMAND_ACTUAL_STRINGS.md; reports/native_render_command_actual_strings.json."
+    },
+    {
+      "address": "00b1e6b0",
+      "end_inclusive": "00b1e6cd",
+      "end_exclusive": "00b1e6ce",
+      "length": 30,
+      "native_sha256": "dbf33f27c668530de58ac462c24b2294d30754bab8b9a0be1af22510f918dbe2",
+      "live_disk_equal": true,
+      "ghidra_name": "BSP_RenderCommand_ScalarDeletingDestructor",
+      "cpp_symbol": "delete_native_render_command_00b1e6b0",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * BSP_RenderCommand_ScalarDeletingDestructor(unsigned int flags)",
+      "original_abi": "ECX actual44h command; flags DWORD; original EAX address even after free; RET4",
+      "source": "src/native_render_command_owner.cpp",
+      "header": "include/bsp/native_render_command_owner.hpp",
+      "coverage": "Complete existing native normal body; actual-string-domain overload added without a new native routine",
+      "new_native_body": false,
+      "evidence": "Extension of the existing complete actual command lifetime using the SAME ActualNativeStringPoolStorage publication/pool as B1DFF0 group names. Original ordered field publication, captured diagnostic pointer/current length, actual owners and cleanup scopes retained; old pool overload behavior preserved. New source interfaces, not original FH3/SEH or gameplay validation. Evidence: docs/NATIVE_RENDER_COMMAND_ACTUAL_STRINGS.md; reports/native_render_command_actual_strings.json."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b1f1d7",
+      "native": "00b1edc0",
+      "function": "00b1f170"
+    },
+    {
+      "address": "00b1f25b",
+      "native": "00b1edc0",
+      "function": "00b1f1f0"
+    },
+    {
+      "address": "00b1edc5",
+      "native": "00bf681b",
+      "function": "00b1edc0"
+    },
+    {
+      "address": "00b1eee0",
+      "native": "00b1e870",
+      "function": "00b1edc0"
+    },
+    {
+      "address": "00b1eee8",
+      "native": "00b1d5b0",
+      "function": "00b1edc0"
+    },
+    {
+      "address": "00b1ef01",
+      "native": "00419cc0",
+      "function": "00b1edc0"
+    },
+    {
+      "address": "00b1ef0b",
+      "native": "00bd1120",
+      "function": "00b1edc0"
+    },
+    {
+      "address": "00b1ef21",
+      "native": "00419cc0",
+      "function": "00b1edc0"
+    },
+    {
+      "address": "00b1ef28",
+      "native": "00bd1510",
+      "function": "00b1edc0"
+    },
+    {
+      "address": "00b1ef4b",
+      "native": "00bf7680",
+      "function": "00b1edc0"
+    },
+    {
+      "address": "00b1de3a",
+      "native": "00b1d760",
+      "function": "00b1ddd0"
+    },
+    {
+      "address": "00b1de40",
+      "native": "00bf65ac",
+      "function": "00b1ddd0"
+    },
+    {
+      "address": "00b1dead",
+      "native": "00bf55be",
+      "function": "00b1ddd0"
+    },
+    {
+      "address": "00b1dedb",
+      "native": "00bf6989",
+      "function": "00b1ddd0"
+    },
+    {
+      "address": "00b1df25",
+      "native": "00bf6989",
+      "function": "00b1ddd0"
+    },
+    {
+      "address": "00b1df3f",
+      "native": "00bf55be",
+      "function": "00b1ddd0"
+    },
+    {
+      "address": "00b1df6d",
+      "native": "00bf6989",
+      "function": "00b1ddd0"
+    },
+    {
+      "address": "00b1dfb2",
+      "native": "00bf6989",
+      "function": "00b1ddd0"
+    },
+    {
+      "address": "00b1dfcf",
+      "native": "00419cc0",
+      "function": "00b1ddd0"
+    },
+    {
+      "address": "00b1dfd6",
+      "native": "00bd1510",
+      "function": "00b1ddd0"
+    },
+    {
+      "address": "00b1e6b3",
+      "native": "00b1ddd0",
+      "function": "00b1e6b0"
+    },
+    {
+      "address": "00b1e6c0",
+      "native": "00bf65ac",
+      "function": "00b1e6b0"
+    }
+  ],
+  "indirect_steps": [
+    {
+      "address": "00b1ee1e",
+      "instruction": "call ebp",
+      "function": "00b1edc0",
+      "coverage": "Original import/current owner virtual dispatch; canonical existing providers and original fixture cover reached paths"
+    },
+    {
+      "address": "00b1ee28",
+      "instruction": "call ebx",
+      "function": "00b1edc0",
+      "coverage": "Original import/current owner virtual dispatch; canonical existing providers and original fixture cover reached paths"
+    },
+    {
+      "address": "00b1ee34",
+      "instruction": "call eax",
+      "function": "00b1edc0",
+      "coverage": "Original import/current owner virtual dispatch; canonical existing providers and original fixture cover reached paths"
+    },
+    {
+      "address": "00b1ee51",
+      "instruction": "call ebp",
+      "function": "00b1edc0",
+      "coverage": "Original import/current owner virtual dispatch; canonical existing providers and original fixture cover reached paths"
+    },
+    {
+      "address": "00b1ee5b",
+      "instruction": "call ebx",
+      "function": "00b1edc0",
+      "coverage": "Original import/current owner virtual dispatch; canonical existing providers and original fixture cover reached paths"
+    },
+    {
+      "address": "00b1ee67",
+      "instruction": "call eax",
+      "function": "00b1edc0",
+      "coverage": "Original import/current owner virtual dispatch; canonical existing providers and original fixture cover reached paths"
+    },
+    {
+      "address": "00b1ee84",
+      "instruction": "call ebp",
+      "function": "00b1edc0",
+      "coverage": "Original import/current owner virtual dispatch; canonical existing providers and original fixture cover reached paths"
+    },
+    {
+      "address": "00b1ee8e",
+      "instruction": "call ebx",
+      "function": "00b1edc0",
+      "coverage": "Original import/current owner virtual dispatch; canonical existing providers and original fixture cover reached paths"
+    },
+    {
+      "address": "00b1ee9a",
+      "instruction": "call eax",
+      "function": "00b1edc0",
+      "coverage": "Original import/current owner virtual dispatch; canonical existing providers and original fixture cover reached paths"
+    },
+    {
+      "address": "00b1eeb7",
+      "instruction": "call ebp",
+      "function": "00b1edc0",
+      "coverage": "Original import/current owner virtual dispatch; canonical existing providers and original fixture cover reached paths"
+    },
+    {
+      "address": "00b1eec1",
+      "instruction": "call ebx",
+      "function": "00b1edc0",
+      "coverage": "Original import/current owner virtual dispatch; canonical existing providers and original fixture cover reached paths"
+    },
+    {
+      "address": "00b1eecd",
+      "instruction": "call eax",
+      "function": "00b1edc0",
+      "coverage": "Original import/current owner virtual dispatch; canonical existing providers and original fixture cover reached paths"
+    },
+    {
+      "address": "00b1de09",
+      "instruction": "call dword ptr [0xce2220]",
+      "function": "00b1ddd0",
+      "coverage": "Original import/current owner virtual dispatch; canonical existing providers and original fixture cover reached paths"
+    },
+    {
+      "address": "00b1de19",
+      "instruction": "call eax",
+      "function": "00b1ddd0",
+      "coverage": "Original import/current owner virtual dispatch; canonical existing providers and original fixture cover reached paths"
+    },
+    {
+      "address": "00b1de65",
+      "instruction": "call dword ptr [0xce2220]",
+      "function": "00b1ddd0",
+      "coverage": "Original import/current owner virtual dispatch; canonical existing providers and original fixture cover reached paths"
+    },
+    {
+      "address": "00b1de75",
+      "instruction": "call eax",
+      "function": "00b1ddd0",
+      "coverage": "Original import/current owner virtual dispatch; canonical existing providers and original fixture cover reached paths"
+    },
+    {
+      "address": "00b1de85",
+      "instruction": "call dword ptr [0xce2220]",
+      "function": "00b1ddd0",
+      "coverage": "Original import/current owner virtual dispatch; canonical existing providers and original fixture cover reached paths"
+    },
+    {
+      "address": "00b1de95",
+      "instruction": "call eax",
+      "function": "00b1ddd0",
+      "coverage": "Original import/current owner virtual dispatch; canonical existing providers and original fixture cover reached paths"
+    }
+  ],
+  "no_ghidra_function": [],
+  "source_hashes": {
+    "include\\bsp\\native_render_command_owner.hpp": "a4c5397ff2764c14dfa1890ad68530046ecbb0b4b3789be97c677e30cdc59c30",
+    "src\\native_render_command_owner.cpp": "5d97fb0c22f2f6d79062bb4a8a6fee5ad897e41f6c96988c63e439a3c080298d"
+  },
+  "initial_validation": {
+    "strict_source_compile": true,
+    "actual_string_original_source_probe": "PASS1459 normalized words; full three/four-argument constructors and populated teardown with actual pooled diagnostic/small group name, large group name, retained context/model/batch, flags2 and pool reuse/shutdown",
+    "old_interface_original_source_probe": "PASS1451 normalized words including callback-mutated current indexed end",
+    "fixture_correction": "The earlier fixture context_id could match a dead address reused by another allocation; lookup now requires context_live. No source behavior changed for this fixture correction.",
+    "mode": "New source object plus existing bsp_core and bundled libraries; final exact merged current-library-only replay pending"
+  },
+  "fixture": {
+    "directory": "C:\\Users\\sqz269\\bsp-av-command",
+    "generator": "local/prepare_command_probe_av.py",
+    "runner": "local/run_command_probe_av.ps1",
+    "current_library_mode": "-CurrentLibraryOnly; optional -OldInterface",
+    "actual_probe_cpp": "probe.cpp",
+    "old_probe_cpp": "native_command_owner_check.cpp"
+  },
+  "boundaries": [
+    "Native command original FH3/SEH paths remain statically reviewed, not executed by these two probes",
+    "Actual release follows the existing NativeStringStorage noexcept returning-getter domain",
+    "The actual-string probe checks normal current pool ring state and paired small/large names; original getter/allocator helpers use existing concrete source adapters",
+    "The old-interface probe exercises callback-mutated indexed end; that mutation is not repeated in the actual-string probe",
+    "Actual command execution B1D950, queue creators, and complete scene/render application composition remain separate",
+    "No original ABI replacement or game rendering/gameplay claim"
+  ]
+}
