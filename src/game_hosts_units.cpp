@@ -58,6 +58,70 @@ namespace {
 
 constexpr double kPi = 3.14159265358979323846;
 
+// Dispatch coverage only; direct_ship_body retains the existing partial
+// 00825F20 reconstruction described in SHIP_MOTION.md.
+enum class UnitMotionCoverage {
+    unresolved,
+    direct_ship_body,
+    ship_base_fragment,
+};
+
+struct UnitMotionDispatch {
+    std::uint32_t creator{};
+    std::uint32_t tick_vtable{};
+    std::uint32_t entry{};
+    UnitMotionCoverage coverage{UnitMotionCoverage::unresolved};
+
+    bool runs_ship_base() const noexcept {
+        return coverage != UnitMotionCoverage::unresolved;
+    }
+};
+
+// Actual leaf constructor stores at unit+310h, then that table's +8h slot.
+// Select through the existing descriptor allocator identity, not MaxSpeed or
+// the navigation-controller classifier. These are evidence addresses, not
+// callable vtables in this process. See SHIP_MOTION_NONFINITE_ORIGIN.md.
+constexpr UnitMotionDispatch kUnitMotionDispatches[] = {
+    {0x006fe590, 0x00cfc38c, 0x00825f20, UnitMotionCoverage::direct_ship_body},
+    {0x006fb430, 0x00cfb6f0, 0x00825f20, UnitMotionCoverage::direct_ship_body},
+    {0x0074be00, 0x00cff9ec, 0x00749b20, UnitMotionCoverage::ship_base_fragment},
+    {0x006eb290, 0x00cfa730, 0x00825f20, UnitMotionCoverage::direct_ship_body},
+    {0x006dfef0, 0x00cf9068, 0x00825f20, UnitMotionCoverage::direct_ship_body},
+    {0x008531a0, 0x00d0bf3c, 0x00855420, UnitMotionCoverage::ship_base_fragment},
+    {0x00857e20, 0x00d0c604, 0x00825f20, UnitMotionCoverage::direct_ship_body},
+    {0x00758d30, 0x00d015e8, 0x00758270, UnitMotionCoverage::ship_base_fragment},
+    {0x008091d0, 0x00d0002c, 0x007ce040, UnitMotionCoverage::unresolved},
+    {0x0084ca50, 0x00d0ba3c, 0x007ce040, UnitMotionCoverage::unresolved},
+    {0x0074e540, 0x00d002c4, 0x007ce040, UnitMotionCoverage::unresolved},
+    {0x007ddae0, 0x00d068dc, 0x007ce040, UnitMotionCoverage::unresolved},
+    {0x00956390, 0x00d19ce4, 0x007ce040, UnitMotionCoverage::unresolved},
+    {0x009564e0, 0x00d19fbc, 0x007ce040, UnitMotionCoverage::unresolved},
+    {0x00956240, 0x00d1a294, 0x007ce040, UnitMotionCoverage::unresolved},
+    {0x007d7850, 0x00d065f4, 0x007ce040, UnitMotionCoverage::unresolved},
+    {0x006d3110, 0x00cf8bc0, 0x006d2510, UnitMotionCoverage::unresolved},
+    {0x00848380, 0x00d0b728, 0x00846320, UnitMotionCoverage::unresolved},
+    {0x0074df10, 0x00cffd9c, 0x00953cc0, UnitMotionCoverage::unresolved},
+    {0x00747000, 0x00cff3b4, 0x00953cc0, UnitMotionCoverage::unresolved},
+    {0x006f5c10, 0x00cfafe0, 0x00953cc0, UnitMotionCoverage::unresolved},
+};
+
+UnitMotionDispatch unit_motion_dispatch(const bsp::VehicleClassDescriptorRow* descriptor) {
+    if (descriptor != nullptr) {
+        for (const UnitMotionDispatch& dispatch : kUnitMotionDispatches) {
+            if (dispatch.creator == descriptor->allocate_instance) return dispatch;
+        }
+    }
+    return {};
+}
+
+const char* unit_motion_coverage_name(UnitMotionCoverage coverage) {
+    switch (coverage) {
+    case UnitMotionCoverage::direct_ship_body: return "direct_ship_body";
+    case UnitMotionCoverage::ship_base_fragment: return "ship_base_fragment";
+    default: return "unresolved";
+    }
+}
+
 float heading_degrees_of(const bsp::ShipMotionState& state) {
     return static_cast<float>(std::atan2(static_cast<double>(state.pose_row2[0]),
                                   static_cast<double>(state.pose_row2[2]))
@@ -99,6 +163,7 @@ constexpr int kBuoyancyElementCount = 8;
 
 struct GameUnitSlot {
     GameUnitRow row;
+    UnitMotionDispatch motion_dispatch;
 
     // The pose the canonical projection borrows: +74h local, +C8h valid, +CCh
     // world, +10Ch derived-valid, with no parent because every entity of this
@@ -273,6 +338,14 @@ struct GameUnitsHost::Impl {
         char text[16];
         std::snprintf(text, sizeof(text), "%08lx", static_cast<unsigned long>(address));
         log.unimplemented(method, text);
+    }
+    void record_motion_phase(const char* phase, std::uint32_t entry) {
+        // GameHostLog aggregates by method name, so retain each native entry
+        // in that key as well as in the evidence-address column.
+        char method[96];
+        std::snprintf(method, sizeof(method), "UnitMotion::%s_%08lx", phase,
+            static_cast<unsigned long>(entry));
+        record(method, entry);
     }
     void done(const char* method, std::uint32_t address) {
         char text[16];
@@ -1176,6 +1249,15 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         const GameVehicleClassRow lua_row = host.lua.read_vehicle_class_row(row.type_id);
         row.class_row_found = lua_row.found;
         row.class_row_name = lua_row.name;
+        const bsp::VehicleClassDescriptorRow* kind = lua_row.found
+            ? bsp::vehicle_class_kind_row(lua_row.type.c_str()) : nullptr;
+        slot->motion_dispatch = unit_motion_dispatch(kind);
+        host.log.notef("unit motion dispatch: unit=%s creator=%08lx tick_vtable=%08lx "
+            "entry=%08lx coverage=%s", row.name.c_str(),
+            static_cast<unsigned long>(slot->motion_dispatch.creator),
+            static_cast<unsigned long>(slot->motion_dispatch.tick_vtable),
+            static_cast<unsigned long>(slot->motion_dispatch.entry),
+            unit_motion_coverage_name(slot->motion_dispatch.coverage));
         if (lua_row.found) {
             ++host.summary.class_rows;
             row.max_speed = lua_row.max_speed;
@@ -1190,8 +1272,6 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
             // allocator constructs the instance. Its constructor stamps +C4h:
             // e.g. 006FE590 -> 006FE460, store 7 at 006FE4B3. The recovered
             // descriptor kind and instance class id coincide for these leaves.
-            const bsp::VehicleClassDescriptorRow* kind
-                = bsp::vehicle_class_kind_row(lua_row.type.c_str());
             if (kind != nullptr) slot->class_id = static_cast<int>(kind->kind);
         }
         if (slot->class_id == bsp::kVehicleClassKindUnknown) {
@@ -1238,7 +1318,7 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         // The seed has to happen here, before issue_authored_commands latches
         // the scene's queued `Cruise` at 00835E17, because the latch captures
         // the ring's live throttle (docs/CRUISE_SPEED_SETTING.md).
-        {
+        if (slot->motion_dispatch.runs_ship_base()) {
             StartSpeedSeedBinding seed_host(host, *slot, entity);
             const bsp::SceneStartSpeedSeed seed = bsp::run_start_speed_arm_0082356c(
                 seed_host, static_cast<std::uint32_t>(host.slots.size()) + 1u,
@@ -1276,7 +1356,7 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         // which 00C37E70 turns into a zero inverse inertia. Nothing here
         // applies a torque, so that decides nothing this run measures; it is
         // the same default the probe takes.
-        {
+        if (slot->motion_dispatch.runs_ship_base()) {
             bsp::ShipHullBodyInputs hull{};
             hull.mass = slot->motion_class.hull_mass;             // 009399F7
             // 00937CFD calls virtual slot 5Ch with category 8 (MSubmarine);
@@ -1292,8 +1372,8 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
             bsp::ship_hull_body_create_00937c90(hull, slot->body, slot->motion_state);
             slot->hull_material = bsp::ship_hull_material_00937cf1(hull.unit_category_8,
                 hull.mass);
+            slot->body.motion = &slot->motion_state;
         }
-        slot->body.motion = &slot->motion_state;
 
         // Milestone 2s: the buoyancy element list at class+52Ch..+530h, which
         // 009329C0 walks. This is a STAND-IN and the doc says so: the producer
@@ -1310,7 +1390,7 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         // exactly its own weight against the world gravity of 10. A class row
         // that carries no Length or Height produces no list at all, and the
         // hydrodynamic step is then skipped rather than run on invented data.
-        {
+        if (slot->motion_dispatch.runs_ship_base()) {
             const float length = slot->motion_class.hull_length;
             const float height = slot->motion_class.hull_height;
             const float mass = slot->motion_class.hull_mass;
@@ -1667,6 +1747,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     for (std::size_t index = 0; index < host.slots.size(); ++index) {
         GameUnitSlot& slot = *host.slots[index];
         if (!slot.state->active) continue;
+        // The native receiver is the class's unit+310h tick node. AirField's
+        // 8E4h allocation, for example, has entry 006D2510 and cannot contain
+        // the ship-only +9C0h/+1018h fields. Resolve before any ship operation.
+        if (!slot.motion_dispatch.runs_ship_base()) {
+            if (slot.motion_dispatch.entry != 0) {
+                host.record_motion_phase("unreconstructed_phase", slot.motion_dispatch.entry);
+            } else {
+                host.record_slot("UnitMotion::unresolved_dispatch", "unit+310h/vtable+8h");
+            }
+            continue;
+        }
         // 00825f2c..00825f7c, the head of BSP_UnitInstance_UpdateShipMotion:
         // the promotion of the slot the AI controller just published, before
         // anything else the routine does.
@@ -1690,6 +1781,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
         const bsp::ShipMotionStepResult result
             = bsp::ship_motion_step_00825f20(slot.motion, slot.motion_class, motion,
                 step_seconds);
+        // 00749B2C, 0085542F and 0075827B pass the unchanged tick receiver and
+        // float argument to 00825F20 before any branch. Only that base-call
+        // fragment runs here; each native override's following work is open.
+        if (slot.motion_dispatch.coverage == UnitMotionCoverage::ship_base_fragment) {
+            host.record_motion_phase("unreconstructed_override_remainder",
+                slot.motion_dispatch.entry);
+        }
         // The Dyn library's own two integration phases, in the order 00c5bb30
         // runs them. The motion tick has just written both velocities onto the
         // body through 00c37e50 / 00c37e20, so the velocity phase 00c41550 sees
