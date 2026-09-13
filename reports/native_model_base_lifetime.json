@@ -1,0 +1,261 @@
+{
+  "status": "reconstructed, strict Win32 TU build-tested, baseline build-tested, worker-source lifecycle fixture-tested; integration and game validation pending",
+  "base": "dbf67b7ac228f2de90aab0d00e58dfba047de14d",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "bridge": "http://127.0.0.1:8089",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "routines": [
+    {
+      "entry": "00b743c0",
+      "end": "00b743d8",
+      "bytes": 25,
+      "coverage": "complete",
+      "abi": "ECX actual node, stack actual name header, EAX original, RET4",
+      "original_bytes_hex": "8b44240456508bf1e8d3b1ffffc706782dd6008bc65ec20400",
+      "original_bytes_sha256": "592b1f80ecb1f35ee021799d92fb0e46e7c737c4fb446765103d5f7177529793"
+    },
+    {
+      "entry": "00b74b60",
+      "end": "00b74b7f",
+      "bytes": 32,
+      "coverage": "complete",
+      "abi": "ECX actual node, stack flags, EAX original, RET4",
+      "original_bytes_hex": "568bf1e8d8a8fffff644240801740b56b98c000901e81699ffff8bc65ec20400",
+      "original_bytes_sha256": "2f987b3ce17ef28c51715c0ae821bf617f195f14ff02b2c9e7171014ef738982"
+    },
+    {
+      "entry": "00b86720",
+      "end": "00b8677e",
+      "bytes": 95,
+      "coverage": "complete",
+      "abi": "incoming ECX unused, stack actual name header, EAX actual node or null, RET4",
+      "original_bytes_hex": "6aff683825cc0064a100000000506489250000000051b974010000e880e7feff89042485c0c744240c00000000741d8b4c2414518bc8e865dcfeff8b4c240464890d0000000083c410c204008b4c240433c064890d0000000083c410c20400",
+      "original_bytes_sha256": "10ec1583b26ec4b060b4186f2bdccaf1f716e2ad268ba378a04d3ce5e2cda7ec"
+    },
+    {
+      "entry": "00b74ec0",
+      "end": "00b74ec9",
+      "bytes": 10,
+      "coverage": "complete",
+      "abi": "incoming ECX size ignored; ECX actual0109008C tail B6EB00, RET",
+      "original_bytes_hex": "b98c000901e9369cffff",
+      "original_bytes_sha256": "9504b05dbcc24fadf895417fac059b1dcf38985fe4a831a78355e008d04c3709"
+    },
+    {
+      "entry": "00b748d0",
+      "end": "00b748db",
+      "bytes": 12,
+      "coverage": "complete",
+      "abi": "ECX actual slot, RET; callee B6E490 RET4",
+      "original_bytes_hex": "51b98c000901e8b59bffffc3",
+      "original_bytes_sha256": "1a75637f830fec4d9e01d199b340fa0c7631bf5ce20036a5fc2447f4cfe048bc"
+    },
+    {
+      "entry": "00b743e0",
+      "end": "00b74407",
+      "bytes": 40,
+      "coverage": "complete",
+      "abi": "ECX unused, stack token, AL bool, RET4",
+      "original_bytes_hex": "8b4c2404b8440009018da424000000003908740f83c0043d5000090175f232c0c20400b001c20400",
+      "original_bytes_sha256": "f8795845d1043b5da03ca6d94866753fe18f8a61a7b3ca813113984760217634"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b743c8",
+      "native": "00b6f5a0",
+      "preparation": "[ESP+4] actual name captured EAX, PUSH ESI; PUSH EAX; ESI=ECX actual owner; B6F5A0 RET4.",
+      "function": "00b743c0"
+    },
+    {
+      "address": "00b74b63",
+      "native": "00b6f440",
+      "preparation": "PUSH ESI; ESI=ECX actual owner; no stack args; callee RET.",
+      "function": "00b74b60"
+    },
+    {
+      "address": "00b74b75",
+      "native": "00b6e490",
+      "preparation": "Only flags&1: PUSH ESI original slot; ECX=0109008C; RET4.",
+      "function": "00b74b60"
+    },
+    {
+      "address": "00b8673b",
+      "native": "00b74ec0",
+      "preparation": "FH3 frame, PUSH ECX scratch; ECX=174h size; callee overwrites ECX actual pool; RET.",
+      "function": "00b86720"
+    },
+    {
+      "address": "00b86756",
+      "native": "00b743c0",
+      "preparation": "EAX allocation nonnull; [ESP]=EAX; state[ESP+C]=0; ECX=[ESP+14] actual caller name; PUSH ECX; ECX=EAX actual slot; RET4.",
+      "function": "00b86720"
+    },
+    {
+      "address": "00b74ec5",
+      "native": "00b6eb00",
+      "preparation": "MOV ECX,0109008C; tail JMP with original return address and no added stack argument.",
+      "function": "00b74ec0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00b748d6",
+      "native": "00b6e490",
+      "preparation": "PUSH ECX actual slot; ECX=0109008C; callee RET4, wrapper RET.",
+      "function": "00b748d0"
+    }
+  ],
+  "unwind": {
+    "factory_handler": "00cc2538 MOV EAX,00DFB970; tail CRT FH3",
+    "function_info": "DFB970, maxState1, unwindMapDFB968",
+    "state0": "DFB968 [-1,00CC2530]; CC2530 ECX=[EBP-10], JMP B748D0",
+    "source_contract": "C++ constructor failure returns captured slot once then rethrows; original FH3/SEH identity not claimed"
+  },
+  "profiles": {
+    "node": "00d62d78",
+    "table_bytes_hex": "e030bd00604bb7007043b700e043b700f0f8b6008043b70010f3b600b0d7b60090d9b60050e1b60020d8b600b0dab600e0dab60070e8b60010dbb600c0dbb600e0dbb6001044b700c0e8b60020dcb60080edb60010eeb600",
+    "pool": "00d62c78",
+    "pool_owner": "0109008c",
+    "pool_bytes": 56,
+    "payload_bytes": 372,
+    "physical_slot_bytes": 376,
+    "startup_evidence": "CD7F20 MOV ECX,0109008C; CALL B6E980; registers CE0E60 -> B6E3D0. Startup not implemented by this module."
+  },
+  "incoming_preparation": {
+    "constructor": "B8674F..56 supplies caller original actual name header and allocated EAX; sole live direct caller",
+    "scalar": "D62D78+4=B74B60; BD30E0 current virtual+4 receives pushed1; no direct callers in Ghidra",
+    "factory": "Default resource virtual factory selection established by cockpit producer evidence; no direct Ghidra xrefs. ABI established complete body, not assumed thiscall receiver.",
+    "allocate": "B86736 ECX174h -> B8673B, discarded by B74EC0",
+    "return": "CC2530 captures allocated frame slot in ECX then tailcalls B748D0",
+    "type": "D62D78+C; compares stack token against current01090044,48,4C in that order; early match stops reads"
+  },
+  "limits": [
+    "Explicit initialized actual pool, actual type cells, raw string publication context and current constants remain upstream preconditions.",
+    "C++ companion/source ABI, no native FH3 or binary replacement claim.",
+    "Factory returns actual node only; caller supplies stable canonical node binding and persistent companion registration.",
+    "No asset evidence selecting default D62D78 over group/resource override; no game validation.",
+    "Factory exception branch is source-domain recovery; original allocation failure lock/publication behavior remains inherited from B6EB00."
+  ],
+  "no_ghidra_function": [
+    {
+      "entry": "00b743e0",
+      "end_inclusive": "00b74407",
+      "bytes": 40,
+      "evidence": "Exact original disk bytes; recovered three-cell loop ending RET4. Integrator owns definition after lease release."
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Generated-model D62DE8 terminal could stand in for default factory nodes",
+      "is": "Default B86720 constructs distinct D62D78 with B74B60 scalar and B743E0 type leaf",
+      "evidence": "B743CD profile store; original22DWORD D62D78 table; full B86720 body"
+    },
+    {
+      "was": "B74EC0 Ghidra label suggests a static destructor stub",
+      "is": "Actual size-ignoring allocator tail thunk selecting0109008C and B6EB00",
+      "evidence": "B74EC0 MOV ECX0109008C; B74EC5 JMPB6EB00; B86736 ECX174h before call"
+    },
+    {
+      "was": "Model companion overwrote shared context without restoring node-phase context",
+      "is": "Capture original scene binding context, restore immediately before terminal B6F440",
+      "evidence": "Root review of B6F440 dispatch transition; focused retirement assertion"
+    }
+  ],
+  "verification": {
+    "strict_win32_translation_unit": "passed /std:c++17 /EHsc /O2 /W4 /WX /fp:strict /MD",
+    "baseline_build": "scripts/build.ps1 Release passed; reconstructed_math 1/1,0 failures. New TU is intentionally awaiting integrator central source registration.",
+    "call_rows": "tools/verify_report_calls.py:7 checked,0 failed",
+    "worker_probe": "PASS adapted existing lifecycle: original B74B60/B6F440/BD30E0, flags2/1, names7/149; real factory source smoke; canonical actual+04 lookup/terminal; live type-cell changes; original context restoration observed at retirement; reentrant retirement; no pool return after source C++ destructor failure.",
+    "game_validated": false,
+    "probe_control": "Worker-source control: external probe plus src/native_model_base_lifetime.cpp and all3 worker baseline libraries. Integrator must register module then replay external probe plus selected current3 libraries ONLY.",
+    "manifest": "mt extracted RT_MANIFEST #1; requestedExecutionLevel asInvoker, uiAccess false",
+    "external_directory": "J:\\PROG\\battlestations-pacific-decompile-orch3-model-base-lifetime-bf\\local\\model_base_probe",
+    "captured_tool_session": 5241
+  },
+  "artifact_seals": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-model-base-lifetime-bf\\include\\bsp\\native_model_base_lifetime.hpp",
+      "bytes": 6061,
+      "sha256": "d230bec733aeb615ae4b549fe3193d3a4650a70a9962f7391f5082f42971e17a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-model-base-lifetime-bf\\src\\native_model_base_lifetime.cpp",
+      "bytes": 6744,
+      "sha256": "6334196702e90ec68fe5b63ecf01bf86f2e45578fdd6e081120a402582199681"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-model-base-lifetime-bf\\docs\\NATIVE_MODEL_BASE_LIFETIME.md",
+      "bytes": 7530,
+      "sha256": "eefa1ea4c2012ea49f3b0c92df19285849324a773cf6a54ab0d61a99a0e0cf1a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-model-base-lifetime-bf\\local\\model_base_probe\\probe.cpp",
+      "bytes": 13875,
+      "sha256": "817a3a46f4f3d6f5ab7f76c4b0bcc07a6731ab9e7fdba4744192b5bb402d6098"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-model-base-lifetime-bf\\local\\model_base_probe\\native_bytes.hpp",
+      "bytes": 2154,
+      "sha256": "79e27087bb9f506e9e8583b9f8ccff489714bc1f7886eecb36ee0b79351843bd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-model-base-lifetime-bf\\local\\model_base_probe\\original_evidence.json",
+      "bytes": 2531,
+      "sha256": "641718b959cb13f04a2c51c25b16cd98f55c94e861b176e2b25ce69100ca6024"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-model-base-lifetime-bf\\local\\model_base_probe\\run.cmd",
+      "bytes": 516,
+      "sha256": "1bc2ed1651176b2b9d81177ff4dd36f084f41873fed2f1b6173935e0bb65510f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-model-base-lifetime-bf\\local\\model_base_probe\\compile.cmd",
+      "bytes": 270,
+      "sha256": "fcc0980e711969a3ea36a42b60251faf3da5aeb25ca4ce8d12c72a0ab901fa5f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-model-base-lifetime-bf\\local\\compile-model-base.cmd",
+      "bytes": 276,
+      "sha256": "8d7cf45bba26e77698f3551c571d67836b4c28ee68b46d9e14c46b099168b9b7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-model-base-lifetime-bf\\local\\model_base_probe\\probe.exe",
+      "bytes": 68608,
+      "sha256": "a80dc2ba79e1506f6934592a8a6388708d740f1279b9b1ebd6b0a47d76f89212"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-model-base-lifetime-bf\\local\\model_base_probe\\probe-output.txt",
+      "bytes": 368,
+      "sha256": "250bbb6fa92b1a004dba409be9207c70d3421cabae7e74d6a0e37c63040b7f62"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-model-base-lifetime-bf\\local\\model_base_probe\\probe.manifest",
+      "bytes": 406,
+      "sha256": "be8918559280a2e74748bf8f6238b568ed7cbf75183b2180a6a8a979a1ebf243"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-model-base-lifetime-bf\\local\\model_base_probe\\baseline-build.log",
+      "bytes": 44057,
+      "sha256": "8f6394f84ad62d2dce9fec713480660d3566c9f5626625ab12d9e7c144be891c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-model-base-lifetime-bf\\build\\win32\\Release\\bsp_core.lib",
+      "bytes": 56366070,
+      "sha256": "31a390183c9a0b2a9d8fb894b1034a5ee51826c0a396775c5f018a0dca6ea3da"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-model-base-lifetime-bf\\build\\win32\\Release\\bsp_lua511.lib",
+      "bytes": 455656,
+      "sha256": "cd3916e680c26d240dfd44d3a9b1bd29c20fbec8e109b2ab265728aafaa5b8f9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-model-base-lifetime-bf\\build\\win32\\Release\\bsp_zlib121.lib",
+      "bytes": 72046,
+      "sha256": "78468ee85768d884db4f2a567495e3c5c4489cc1acbdaccb60f0f66f83227fdf"
+    }
+  ]
+}
