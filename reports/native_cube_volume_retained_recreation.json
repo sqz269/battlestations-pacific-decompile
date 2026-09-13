@@ -1,0 +1,588 @@
+{
+  "schema_version": 1,
+  "packet": "orch3_texture_cube_volume_aw",
+  "generated_utc": "2026-09-13T05:42:56.213869+00:00",
+  "status": "complete_actual_storage_strict_Win32_worker_source_native_byte_real_D3DX_D3D9_fixture_pending_integrator_library_registration",
+  "base_commit": "e9b644130839f0ac03b78aac45e100178d55477b",
+  "owned_addresses": [
+    "00b3d7c0",
+    "00b3d800",
+    "00b3e1f0",
+    "00b3e230"
+  ],
+  "owned_files": [
+    "include/bsp/native_cube_volume_retained_recreation.hpp",
+    "src/native_cube_volume_retained_recreation.cpp",
+    "docs/NATIVE_CUBE_VOLUME_RETAINED_RECREATION.md",
+    "reports/native_cube_volume_retained_recreation.json"
+  ],
+  "functions": [
+    {
+      "address": "00b3d7c0",
+      "end_inclusive": "00b3d7f3",
+      "bytes": 52,
+      "cpp_symbol": "release_native_cube_texture_retained_00b3d7c0",
+      "name": "BSP_CubeTexture_ReleaseRetainedDeviceResource",
+      "old_name": "FUN_00b3d7c0",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_CubeTexture_ReleaseRetainedDeviceResource(void)",
+      "original_abi": "ECX actual raw owner; zero stack arguments; ESI/EDI preserved; plain RET; no semantic result. Recreation leaves incidental ignored D3DX HRESULT in EAX.",
+      "source": "src/native_cube_volume_retained_recreation.cpp",
+      "header": "include/bsp/native_cube_volume_retained_recreation.hpp",
+      "source_line": 60,
+      "coverage": "complete",
+      "status": "complete_actual_storage_strict_Win32_worker_source_native_byte_real_D3DX_D3D9_fixture",
+      "evidence": {
+        "body": "full verified Ghidra assembly and exact disk/live bytes",
+        "profile": "00d61870",
+        "report": "reports/native_cube_volume_retained_recreation.json"
+      },
+      "uncertainty": "Descriptive C++/Ghidra name is a reconstruction hypothesis, not a recovered symbol. New source interface; not native caller ABI, SEH/FH3, complete device-reset, gameplay or visual validation."
+    },
+    {
+      "address": "00b3d800",
+      "end_inclusive": "00b3d833",
+      "bytes": 52,
+      "cpp_symbol": "release_native_volume_texture_retained_00b3d800",
+      "name": "BSP_VolumeTexture_ReleaseRetainedDeviceResource",
+      "old_name": "FUN_00b3d800",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_VolumeTexture_ReleaseRetainedDeviceResource(void)",
+      "original_abi": "ECX actual raw owner; zero stack arguments; ESI/EDI preserved; plain RET; no semantic result. Recreation leaves incidental ignored D3DX HRESULT in EAX.",
+      "source": "src/native_cube_volume_retained_recreation.cpp",
+      "header": "include/bsp/native_cube_volume_retained_recreation.hpp",
+      "source_line": 63,
+      "coverage": "complete",
+      "status": "complete_actual_storage_strict_Win32_worker_source_native_byte_real_D3DX_D3D9_fixture",
+      "evidence": {
+        "body": "full verified Ghidra assembly and exact disk/live bytes",
+        "profile": "00d618b0",
+        "report": "reports/native_cube_volume_retained_recreation.json"
+      },
+      "uncertainty": "Descriptive C++/Ghidra name is a reconstruction hypothesis, not a recovered symbol. New source interface; not native caller ABI, SEH/FH3, complete device-reset, gameplay or visual validation."
+    },
+    {
+      "address": "00b3e1f0",
+      "end_inclusive": "00b3e221",
+      "bytes": 50,
+      "cpp_symbol": "recreate_native_cube_texture_retained_00b3e1f0",
+      "name": "BSP_CubeTexture_RecreateFromRetainedMemory",
+      "old_name": "FUN_00b3e1f0",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_CubeTexture_RecreateFromRetainedMemory(void)",
+      "original_abi": "ECX actual raw owner; zero stack arguments; ESI/EDI preserved; plain RET; no semantic result. Recreation leaves incidental ignored D3DX HRESULT in EAX.",
+      "source": "src/native_cube_volume_retained_recreation.cpp",
+      "header": "include/bsp/native_cube_volume_retained_recreation.hpp",
+      "source_line": 67,
+      "coverage": "complete",
+      "status": "complete_actual_storage_strict_Win32_worker_source_native_byte_real_D3DX_D3D9_fixture",
+      "evidence": {
+        "body": "full verified Ghidra assembly and exact disk/live bytes",
+        "profile": "00d61870",
+        "report": "reports/native_cube_volume_retained_recreation.json"
+      },
+      "uncertainty": "Descriptive C++/Ghidra name is a reconstruction hypothesis, not a recovered symbol. New source interface; not native caller ABI, SEH/FH3, complete device-reset, gameplay or visual validation."
+    },
+    {
+      "address": "00b3e230",
+      "end_inclusive": "00b3e261",
+      "bytes": 50,
+      "cpp_symbol": "recreate_native_volume_texture_retained_00b3e230",
+      "name": "BSP_VolumeTexture_RecreateFromRetainedMemory",
+      "old_name": "FUN_00b3e230",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_VolumeTexture_RecreateFromRetainedMemory(void)",
+      "original_abi": "ECX actual raw owner; zero stack arguments; ESI/EDI preserved; plain RET; no semantic result. Recreation leaves incidental ignored D3DX HRESULT in EAX.",
+      "source": "src/native_cube_volume_retained_recreation.cpp",
+      "header": "include/bsp/native_cube_volume_retained_recreation.hpp",
+      "source_line": 79,
+      "coverage": "complete",
+      "status": "complete_actual_storage_strict_Win32_worker_source_native_byte_real_D3DX_D3D9_fixture",
+      "evidence": {
+        "body": "full verified Ghidra assembly and exact disk/live bytes",
+        "profile": "00d618b0",
+        "report": "reports/native_cube_volume_retained_recreation.json"
+      },
+      "uncertainty": "Descriptive C++/Ghidra name is a reconstruction hypothesis, not a recovered symbol. New source interface; not native caller ABI, SEH/FH3, complete device-reset, gameplay or visual validation."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b3d7d1",
+      "native": "COM+vtable04",
+      "function": "00b3d7c0",
+      "operation": "captured AddRef"
+    },
+    {
+      "address": "00b3d7d9",
+      "native": "COM+vtable08",
+      "function": "00b3d7c0",
+      "operation": "captured object refreshed-table Release"
+    },
+    {
+      "address": "00b3d7e8",
+      "native": "COM+vtable08",
+      "function": "00b3d7c0",
+      "operation": "reloaded owner current COM Release, clear only afterward"
+    },
+    {
+      "address": "00b3d811",
+      "native": "COM+vtable04",
+      "function": "00b3d800",
+      "operation": "captured AddRef"
+    },
+    {
+      "address": "00b3d819",
+      "native": "COM+vtable08",
+      "function": "00b3d800",
+      "operation": "captured object refreshed-table Release"
+    },
+    {
+      "address": "00b3d828",
+      "native": "COM+vtable08",
+      "function": "00b3d800",
+      "operation": "reloaded owner current COM Release, clear only afterward"
+    },
+    {
+      "address": "00b3e1fa",
+      "native": "00b1fef0",
+      "function": "00b3e1f0",
+      "operation": "current renderer borrowed device"
+    },
+    {
+      "address": "00b3e20d",
+      "native": "00bef600",
+      "function": "00b3e1f0",
+      "operation": "current D642C0 virtual+30 length, low DWORD"
+    },
+    {
+      "address": "00b3e213",
+      "native": "00bef610",
+      "function": "00b3e1f0",
+      "operation": "reloaded retained source backing data"
+    },
+    {
+      "address": "00b3e21a",
+      "native": "00c2dfe0",
+      "function": "00b3e1f0",
+      "operation": "simple cube D3DX import, direct owner+10 output"
+    },
+    {
+      "address": "00b3e23a",
+      "native": "00b1fef0",
+      "function": "00b3e230",
+      "operation": "current renderer borrowed device"
+    },
+    {
+      "address": "00b3e24d",
+      "native": "00bef600",
+      "function": "00b3e230",
+      "operation": "current D642C0 virtual+30 length, low DWORD"
+    },
+    {
+      "address": "00b3e253",
+      "native": "00bef610",
+      "function": "00b3e230",
+      "operation": "reloaded retained source backing data"
+    },
+    {
+      "address": "00b3e25a",
+      "native": "00c2dfda",
+      "function": "00b3e230",
+      "operation": "simple volume D3DX import, direct owner+10 output"
+    }
+  ],
+  "native_context": {
+    "type": "NativeCubeVolumeRetainedRecreationContext",
+    "fields": [
+      "const void* actual_renderer_global_f8d394",
+      "NativeRetainedMemoryOwnerContext& retained_memory",
+      "const NativeD3dx9CubeVolumeMemoryImports& imports"
+    ],
+    "dependency_providers": [
+      "get_native_renderer_device_00b1fef0",
+      "dispatch_native_memory_stream_length -> native_memory_stream_length_00bef600",
+      "native_memory_stream_data_00bef610"
+    ],
+    "supported_stream": "current numeric D642C0 owner and borrowed original profile whose +30 word is BEF600",
+    "domain": "Borrow actual raw owner/publication/renderer/COM/stream/backing/profile/module storage. No copied owner or generic callbacks. All reached extents remain valid."
+  },
+  "concrete_imports": [
+    {
+      "thunk": "00c2dfe0",
+      "iat": "00ce2404",
+      "export": "D3DXCreateCubeTextureFromFileInMemory",
+      "abi": "__stdcall",
+      "arguments": 4,
+      "cleanup": "callee RET16; callback POP EDI / POP ESI / RET with no caller ADD ESP"
+    },
+    {
+      "thunk": "00c2dfda",
+      "iat": "00ce2408",
+      "export": "D3DXCreateVolumeTextureFromFileInMemory",
+      "abi": "__stdcall",
+      "arguments": 4,
+      "cleanup": "callee RET16; callback POP EDI / POP ESI / RET with no caller ADD ESP"
+    }
+  ],
+  "producer_evidence": [
+    {
+      "function": "00b3ced0",
+      "body": "00b3ced0..00b3cf50",
+      "profile_write": "00b3cf0d",
+      "retained_zero": "00b3cf13",
+      "retained_offset": "2c"
+    },
+    {
+      "function": "00b3cfa0",
+      "body": "00b3cfa0..00b3d02e",
+      "profile_write": "00b3cfdd",
+      "retained_zero": "00b3cfe3",
+      "retained_offset": "30"
+    },
+    {
+      "function": "00b2c2d0",
+      "cube_slot": "00b2c730",
+      "volume_slot": "00b2c807",
+      "assignment": "00b2c80e -> 00b23640"
+    }
+  ],
+  "caller_evidence": {
+    "all_live_direct_xrefs": [
+      {
+        "callback": "00b3d7c0",
+        "slot": "00d61898"
+      },
+      {
+        "callback": "00b3e1f0",
+        "slot": "00d6189c"
+      },
+      {
+        "callback": "00b3d800",
+        "slot": "00d618d8"
+      },
+      {
+        "callback": "00b3e230",
+        "slot": "00d618dc"
+      }
+    ],
+    "interpretation": "Data-only profile xrefs; raw release/recreation slots +28/+2C. Renderer dynamic orchestrator belongs to separate integrator packet."
+  },
+  "corrections": [
+    {
+      "was": "Pseudocode passes pending output and length pushes into ECX-only stream leaves and hides stream reloads.",
+      "is": "BEF600 and BEF610 consume no stack arguments. Pending pushes belong to final four-DWORD D3DX stdcall. Current retained stream is independently reread before BEF610.",
+      "evidence": "B3E209/E212/E218/E219 then E21A; B3E249/E252/E258/E259 then E25A; BEF600 RET at BEF60A and BEF610 RET at BEF616."
+    }
+  ],
+  "fresh_original_evidence": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "bridge": "http://127.0.0.1:8089",
+    "verification": "Every bsp.py ghidra command client() calls Client.verify(). Worker made no Ghidra mutations.",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00b3d7c0",
+        "end_inclusive": "00b3d7f3",
+        "bytes": 52,
+        "sha256": "2bc928946d026bfbaa637d1eb620027fa21a180c5df12c9c65cf2e64c33900ab",
+        "hex": "568bf1578b7e1085ff74108b078b480457ffd18b178b420857ffd08b461085c0740f8b088b510850ffd2c74610000000005f5ec3",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00b3d800",
+        "end_inclusive": "00b3d833",
+        "bytes": 52,
+        "sha256": "2bc928946d026bfbaa637d1eb620027fa21a180c5df12c9c65cf2e64c33900ab",
+        "hex": "568bf1578b7e1085ff74108b078b480457ffd18b178b420857ffd08b461085c0740f8b088b510850ffd2c74610000000005f5ec3",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00b3e1f0",
+        "end_inclusive": "00b3e221",
+        "bytes": 50,
+        "sha256": "208b212b16ee653c404ceff97d44d8b8084453c19cc2558ace819dc69fdf7a15",
+        "hex": "568bf18b0d94d3f80057e8f11cfeff8b4e2c8b118bf88d4610508b4230ffd08b4e2c50e8f8130b005057e8c1fd0e005f5ec3",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00b3e230",
+        "end_inclusive": "00b3e261",
+        "bytes": 50,
+        "sha256": "fd8c71f1d35f3b1c2f4ad1774947d0183d070acdde30a52517443266ae6309f0",
+        "hex": "568bf18b0d94d3f80057e8b11cfeff8b4e308b118bf88d4610508b4230ffd08b4e3050e8b8130b005057e87bfd0e005f5ec3",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00b1fef0",
+        "end_inclusive": "00b1fef6",
+        "bytes": 7,
+        "sha256": "8e2f8eda5033d3403561544aec8eccd01530285ea93dcd284ef49a1308e871a6",
+        "hex": "8b81101a0000c3",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00bef600",
+        "end_inclusive": "00bef60a",
+        "bytes": 11,
+        "sha256": "3868b670bd048da71266ed078741a94b1706b40c90a35cdc4a51c6ecad47cd36",
+        "hex": "8b51088b410c2b420899c3",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00bef610",
+        "end_inclusive": "00bef616",
+        "bytes": 7,
+        "sha256": "92c5e2972d2442d6d750d027a5da0e7ee862ca52fef58c2af20331258d8191ef",
+        "hex": "8b41088b4008c3",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00c2dfe0",
+        "end_inclusive": "00c2dfe5",
+        "bytes": 6,
+        "sha256": "acce3e6b9331e34de667f66453a2529b74229bd605f8fe95e5715ff09f8ce507",
+        "hex": "ff250424ce00",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00c2dfda",
+        "end_inclusive": "00c2dfdf",
+        "bytes": 6,
+        "sha256": "bbd5f0be47588e1d6fad444518f36575b07c4d6a5ed98f088fbc656401e3d757",
+        "hex": "ff250824ce00",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00d642c0",
+        "end_inclusive": "00d642f3",
+        "bytes": 52,
+        "sha256": "2b1932e6aa0f9ed1ee97f2a8450cf5e9afebc6ba651116eea1b2245e1ef6e566",
+        "hex": "e030bd00908fbb00a0f4be00608fbb00209d6f00b0f4be00c0f4be0040f5be0080f5be0090f5be00f0f5be00a041be0000f6be00",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00d15ad8",
+        "end_inclusive": "00d15adf",
+        "bytes": 8,
+        "sha256": "4961e9832015a124713cd4e85d58bfc0ab3700c1bb84d137d4cee67ebfdfc319",
+        "hex": "e030bd0070448d00",
+        "live_matches_disk": true
+      }
+    ]
+  },
+  "fixture": {
+    "directory": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained",
+    "status": "passed_worker_mode",
+    "comparison_count": 14,
+    "recreation_comparisons": 8,
+    "release_comparisons": 6,
+    "details": "Actual installed SysWOW64 d3dx9_40 exports and hidden HAL D3D9 device. Valid/invalid cube/volume DDS and empty/populated output. Compare resource descriptions, mip count and all level-zero pixels. Retained raw owner/stream/cursor/counters preserved. Release null/captured/current/vtable-swap schedules and forwarded real COM reference postimages match.",
+    "success_hashes": {
+      "cube": "b5db5e92",
+      "volume": "10abe383"
+    },
+    "failure_postimage": "Invalid DDS preserves preexisting output; null remains null. Native and source match.",
+    "output_lifetime": "Successful D3DX replaces old output without releasing its old reference. Fixture separately releases detached old reference.",
+    "original_execution": {
+      "delta": "20000000",
+      "reason": "Original low address B30000 reservation returned Win32 487 because of process mappings.",
+      "code_operand_relocations": [
+        "00b3e1f5",
+        "00b3e235",
+        "00c2dfe2",
+        "00c2dfdc"
+      ],
+      "unchanged": "All direct relative calls, instruction schedules and every release-body byte.",
+      "data_relocations": "Stream profile address and table length target relocate only for the original invocation; full stream postimage is checked before restoring source-domain numeric identities. Actual import addresses fill original relocated IAT slots."
+    },
+    "replay_default": "run.ps1 compiles probe.cpp only plus supplied current CoreLibrary/LuaLibrary/ZlibLibrary; SourceRoot selects current headers.",
+    "worker_mode": "Explicit -WorkerMode adds only src/native_cube_volume_retained_recreation.cpp. No private archive rebuild or default source injection.",
+    "limitations": [
+      "C++ exceptions/native faults not injected",
+      "not a full device-reset or gameplay run",
+      "no native caller ABI or SEH/FH3 equivalence claim"
+    ]
+  },
+  "validation": {
+    "seed_bytes": "verify-seeds passed all eight ranges",
+    "strict_compile": "/W4 /WX /O2 /Oy- /MD /fp:strict MSVC 14.51.36231 Win32 SDK 10.0.26100.0",
+    "repository_build": "passed existing build and 2/2 CTest",
+    "current_library_contains_new_source": false,
+    "final_current_library_replay": "pending integrator CMake registration",
+    "report_call_verifier": "passed: 8 numeric call rows, 0 failed; 6 COM virtual rows explicitly indirect; two length calls indirect-resolved and independently profile-verified",
+    "game_validated": false,
+    "source_build_tested": true,
+    "native_differential_fixture": true
+  },
+  "no_ghidra_function": [],
+  "not_counted_internal_adapters": [
+    "NativeD3dx9CubeVolumeMemoryImports constructor and two import forwarding methods",
+    "private pointer/resolve/release helpers"
+  ],
+  "artifacts": [
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\00b1fef0.bin",
+      "bytes": 7,
+      "sha256": "8e2f8eda5033d3403561544aec8eccd01530285ea93dcd284ef49a1308e871a6"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\00b1fef0.live.txt",
+      "bytes": 41,
+      "sha256": "e545de402c70014ce8028c562c73dd3b8128bacff7b7687cdc5838416d0c1de8"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\00b3d7c0.bin",
+      "bytes": 52,
+      "sha256": "2bc928946d026bfbaa637d1eb620027fa21a180c5df12c9c65cf2e64c33900ab"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\00b3d7c0.live.txt",
+      "bytes": 260,
+      "sha256": "6bfab2176dcaa1fb36a5c9325c05b6747d3bf2cf3e99d750046e33f11aff22d4"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\00b3d800.bin",
+      "bytes": 52,
+      "sha256": "2bc928946d026bfbaa637d1eb620027fa21a180c5df12c9c65cf2e64c33900ab"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\00b3d800.live.txt",
+      "bytes": 260,
+      "sha256": "952b82dfe366727d2fdf1e1d48a2c7dd68c152f69987d3a199ddf57d7bf19ab0"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\00b3e1f0.bin",
+      "bytes": 50,
+      "sha256": "208b212b16ee653c404ceff97d44d8b8084453c19cc2558ace819dc69fdf7a15"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\00b3e1f0.live.txt",
+      "bytes": 252,
+      "sha256": "e601a04c6a40496cdf0ab5de1c679055c4201b5d74828b22e20b4f0e162627d0"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\00b3e230.bin",
+      "bytes": 50,
+      "sha256": "fd8c71f1d35f3b1c2f4ad1774947d0183d070acdde30a52517443266ae6309f0"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\00b3e230.live.txt",
+      "bytes": 252,
+      "sha256": "082bc3d891547740778539fa6a73551d6fc00f2ea9f22bd9f2d1fb6faae4ec37"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\00bef600.bin",
+      "bytes": 11,
+      "sha256": "3868b670bd048da71266ed078741a94b1706b40c90a35cdc4a51c6ecad47cd36"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\00bef600.live.txt",
+      "bytes": 57,
+      "sha256": "337e562ba9b20792003ac1105771624427e5bcbb5bae9ae4e4cdb14dd5bc6468"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\00bef610.bin",
+      "bytes": 7,
+      "sha256": "92c5e2972d2442d6d750d027a5da0e7ee862ca52fef58c2af20331258d8191ef"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\00bef610.live.txt",
+      "bytes": 41,
+      "sha256": "e6b032db3f52ba73323aea9edda0f23af6b202c8afd3a8926f19395c83c39b2f"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\00c2dfda.bin",
+      "bytes": 6,
+      "sha256": "bbd5f0be47588e1d6fad444518f36575b07c4d6a5ed98f088fbc656401e3d757"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\00c2dfda.live.txt",
+      "bytes": 37,
+      "sha256": "bb4472e7e51e7446529a938613035aba58e78cb777d057bbc46ee39c9cb1ce03"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\00c2dfe0.bin",
+      "bytes": 6,
+      "sha256": "acce3e6b9331e34de667f66453a2529b74229bd605f8fe95e5715ff09f8ce507"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\00c2dfe0.live.txt",
+      "bytes": 37,
+      "sha256": "d6923e927eed1fb40e819eec4f283df537857b0dfa464413d1b5e6842e15c226"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\00d15ad8.bin",
+      "bytes": 8,
+      "sha256": "4961e9832015a124713cd4e85d58bfc0ab3700c1bb84d137d4cee67ebfdfc319"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\00d15ad8.live.txt",
+      "bytes": 45,
+      "sha256": "1865440048b5a66da33c48daaa1266a965a51d1715cb8470f204890857835be9"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\00d642c0.bin",
+      "bytes": 52,
+      "sha256": "2b1932e6aa0f9ed1ee97f2a8450cf5e9afebc6ba651116eea1b2245e1ef6e566"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\00d642c0.live.txt",
+      "bytes": 260,
+      "sha256": "3ca84efb8b07fdba9e48cb90cb09d012756831461328ab0b7bb348153bedc04c"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\aw_texture_probe.exe",
+      "bytes": 24064,
+      "sha256": "a4bee64690515d032a422f1861e4d0bbd6824c69c05efbbe901e4d23d82b251c"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\build.log",
+      "bytes": 40249,
+      "sha256": "922be41fbd2893e71a23d54ab7d70d133c77baed4d877a3beb0eefcba772af6d"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\call_verifier.log",
+      "bytes": 809,
+      "sha256": "7a3246dadd3344a558cf81063eccbb40f161805ac61ee1741ece49bf5fba7c46"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\generate.py",
+      "bytes": 2733,
+      "sha256": "d1a8b7ebe3c7bd9614e2d711ec00d8dad514a492c58ff77abb8235e77709c266"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\native_spans.hpp",
+      "bytes": 3238,
+      "sha256": "23c83eed84596fe1e0859c29269940e80413e7b9882248e305128a651fe34fdf"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\probe.cpp",
+      "bytes": 13230,
+      "sha256": "449011be96104f16fcc14fe8d783a9d8b2a4fde12eb23e6f73889e287f38aa68"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\report.py",
+      "bytes": 9928,
+      "sha256": "8bafb1a510467805e9cf629e4cedc0c8aebe20a98a711777d18ec0c2c4ba4447"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\run.ps1",
+      "bytes": 1885,
+      "sha256": "1814b9fcdee08862fa7442c78ebb1d0e7abda5e9dbed4891f13417a97e3185ae"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\spans.json",
+      "bytes": 3419,
+      "sha256": "f9b2efda31898395f480d1ce1054f3ea9c528d4fbd59c6b161282042bc598e1c"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\worker.log",
+      "bytes": 2648,
+      "sha256": "5d3c8f457a58e6e39b81af0b5ecc8d89afabad150180f376588b426b69c34a74"
+    }
+  ]
+}
