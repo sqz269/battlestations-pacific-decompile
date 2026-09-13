@@ -73,6 +73,33 @@ NativeNodeStorage& construct_native_node_00b6f5a0(void* actual_slot,
 NativeNodeStorage& construct_native_node_00b6f5a0(void* actual_slot,
     std::size_t slot_bytes, const void* actual_name_header, NativeStringStorage& strings);
 
+// Bind the actual current DWORD cells, not a snapshot or floating conversion.
+// Each reference must remain accessible throughout construction. Reads occur
+// twice, three times, and once respectively, in native instruction order.
+struct NativeNodeRawConstants {
+    const volatile std::uint32_t& positive_bound_00ce4970;
+    const volatile std::uint32_t& one_00d7a24c;
+    const volatile std::uint32_t& negative_bound_00ce4adc;
+};
+
+// Actual-header/current-pool extension of the existing 814-byte body. Before
+// establishing the typed prefix lifetime, raw stores execute through B6F5FA,
+// including the first current positive-bound read. Default construction then
+// initializes the atomic and name subobjects; +4 is restored to 1 before any
+// callback/current read. Only +4,+54,+58 may be touched by materialization.
+// This supported boundary excludes its transient writes, asynchronous and
+// fault-time observations, private-frame identity, and native FH3/CRT exception
+// identity; it does not promise identical native store counts or a binary ABI.
+// Name headers/data may alias accessible actual storage; preserve current
+// reloads and overlap behavior; a zero-byte CRT copy alone is omitted after
+// those reads. Pool calls must preserve the fresh empty +164
+// descriptor (no foreign backing). Ordinary C++ failures consume array/name/
+// base cleanup states once; physical slot return still belongs to the caller.
+// The pool context must remain valid through every required name cleanup.
+NativeNodeStorage& construct_native_node_00b6f5a0(void* actual_slot,
+    std::size_t slot_bytes, const void* actual_name_header,
+    NativeStringRawPoolContext& strings, const NativeNodeRawConstants& constants);
+
 // Existing callers using the semantic SizedStoragePool retain their adapter;
 // both overloads execute the same constructor body and member cleanup.
 NativeNodeStorage& construct_native_node_00b6f5a0(void* actual_slot,
