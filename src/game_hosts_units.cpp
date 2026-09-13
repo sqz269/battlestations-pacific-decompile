@@ -36,6 +36,7 @@
 #include "bsp/unit_controller.hpp"
 #include "bsp/unit_forces.hpp"
 #include "bsp/unit_instance.hpp"
+#include "bsp/unit_instance_layout.hpp"
 #include "bsp/unit_kind_query.hpp"
 #include "bsp/unit_order_record.hpp"
 #include "bsp/unit_rudder.hpp"
@@ -162,8 +163,16 @@ bool parse_order_position(const std::string& text, float& x, float& z) {
 constexpr int kBuoyancyElementCount = 8;
 
 struct GameUnitSlot {
+    GameUnitSlot() {
+        //00928713..00928748: current assignments, not the +188h policy table.
+        for (std::int32_t& role : current_roles_01ac) role = bsp::kUnitRoleTableFill;
+    }
+
     GameUnitRow row;
     UnitMotionDispatch motion_dispatch;
+    // This unit owns the canonical current roles for every process consumer.
+    // Actual 4Bh receive-side assignment and its side effects remain pending.
+    std::int32_t current_roles_01ac[bsp::kUnitRoleTableEntries];
 
     // The pose the canonical projection borrows: +74h local, +C8h valid, +CCh
     // world, +10Ch derived-valid, with no parent because every entity of this
@@ -1946,6 +1955,15 @@ GameCommandCompletion GameUnitsHost::end_command_0071e430(std::size_t index,
 bool GameUnitsHost::unit_player_controlled_0184(std::size_t index) const {
     const Impl& host = *impl_;
     return host.controlled_bound && host.controlled_index == index;
+}
+
+bool GameUnitsHost::unit_current_role_slot(std::size_t index, std::int32_t role_index,
+    std::int32_t& out) const {
+    const Impl& host = *impl_;
+    if (index >= host.slots.size() || role_index < 0
+        || role_index >= bsp::kUnitRoleTableEntries) return false;
+    out = host.slots[index]->current_roles_01ac[role_index];
+    return true;
 }
 
 bool GameUnitsHost::unit_flag_005d(std::size_t index) const {
