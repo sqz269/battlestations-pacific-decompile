@@ -99,6 +99,7 @@ GuiWidgetOwner::GuiWidgetOwner(GuiLayoutWidget& layout, GuiWidgetOwnerRuntime& r
     scene_.authored_visible = layout.visible;
 }
 GuiWidgetTypeImplementation& GuiWidgetOwner::implementation() {
+    if (base_copy_constructor_) return *base_copy_constructor_;
     if (!implementation_) throw std::logic_error("GUI type implementation is not constructed");
     return *implementation_;
 }
@@ -138,9 +139,17 @@ bool GuiWidgetOwner::has_pending_base_clip() const noexcept {
     return base_clip_ && base_clip_->has_pending();
 }
 void GuiWidgetOwner::require_no_active_owned_operation() const {
+    require_no_active_owned_operation_impl(nullptr, false);
+}
+void GuiWidgetOwner::require_no_active_owned_operation_impl(
+    const GuiWidgetCopySourceBorrow* authorized_source, bool constructor_admission) const {
     if (base_lifetime_.phase != GuiWidgetBaseDeletionPhase::not_started || scene_release_active_ ||
-        base_copy_active_ || (text_lifetime_ && text_lifetime_->has_incomplete_copy()) ||
+        base_copy_active_ ||
+        (base_copy_source_borrow_ && base_copy_source_borrow_ != authorized_source) ||
+        (!constructor_admission && (base_copy_constructor_ ||
+            (text_lifetime_ && text_lifetime_->has_incomplete_copy()))) ||
         (implementation_ && implementation_->has_active_operation()) ||
+        (base_copy_constructor_ && base_copy_constructor_->has_active_operation()) ||
         (runtime_.frame_runtime_ && runtime_.frame_runtime_->operation_active(*this)) ||
         has_pending_base_clip() || (timed_entries_ && timed_entries_->operation_active()))
         throw std::logic_error("widget still owns an active or pending native operation");

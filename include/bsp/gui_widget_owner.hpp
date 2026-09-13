@@ -14,6 +14,7 @@ class GuiTextChildDeletion;
 class GuiTimedEntryOwner;
 class GuiWidgetClipRefreshOperation;
 class GuiWidgetFrameRuntime;
+class GuiWidgetCopySourceBorrow;
 struct GuiWidgetClipRefreshServices;
 struct GuiWidgetBaseCopyPreimage;
 struct GuiWidgetCopyServices;
@@ -144,9 +145,12 @@ private:
     friend class GuiTextLifetime;
     friend class GuiTextChildDeletion;
     friend class GuiWidgetFrameRuntime;
+    friend class GuiWidgetCopySourceBorrow;
     friend void destroy_gui_widget_base_00aa9730(GuiWidgetOwner&, GuiTextChildDeletion&);
     GuiWidgetOwner(GuiLayoutWidget&, GuiWidgetOwnerRuntime&);
     GuiWidgetOwner(GuiLayoutWidget&, GuiWidgetOwnerRuntime&, const GuiWidgetBaseCopyPreimage&);
+    void require_no_active_owned_operation_impl(
+        const GuiWidgetCopySourceBorrow* authorized_source, bool constructor_admission) const;
     GuiLayoutWidget& layout_;
     GuiWidgetOwnerRuntime& runtime_;
     GuiWidgetSceneFlags scene_;
@@ -154,6 +158,7 @@ private:
     NativeNodeBinding* node_{};
     GuiTextLifetime* text_lifetime_{};
     std::unique_ptr<GuiWidgetTypeImplementation> implementation_;
+    GuiWidgetTypeImplementation* base_copy_constructor_{}; // borrowed from the one copy operation
     std::unique_ptr<GuiTimedEntryOwner> timed_entries_;
     std::unique_ptr<GuiWidgetClipRefreshOperation> base_clip_;
     GuiWidgetClipRefreshServices* base_clip_services_{};
@@ -162,6 +167,7 @@ private:
     bool base_copy_untyped_{}; // host admission only, never a native widget flag
     bool base_copy_active_{};
     bool base_copy_complete_{};
+    const GuiWidgetCopySourceBorrow* base_copy_source_borrow_{};
 };
 
 // Lifetime associations only. GUI storage is owned by GuiLayoutPage; native
@@ -187,7 +193,12 @@ public:
     // creators with the caller; inspect/retire it, never restart the copy.
     GuiWidgetOwner& construct_base_copy_00aa9520(GuiLayoutWidget& destination,
         GuiWidgetOwner& source, const GuiWidgetBaseCopyPreimage&,
-        const GuiWidgetCopyServices&, NativeGuiTextModelCloneAcquired&);
+        const GuiWidgetCopyServices&, NativeGuiTextModelCloneAcquired&,
+        const GuiWidgetCopySourceBorrow* authorized_source = nullptr);
+    // The copy operation owns the implementation while native derived work is
+    // pending. Internal constructor dispatch sees that SAME implementation;
+    // external owned operations stay blocked until final ownership transfer.
+    void begin_base_copy_type_admission(GuiWidgetOwner&, GuiWidgetTypeImplementation&);
     void finish_base_copy_type_admission(GuiWidgetOwner&,
         std::unique_ptr<GuiWidgetTypeImplementation>&);
     // Host cleanup before derived admission, not reconstructed native EH.
