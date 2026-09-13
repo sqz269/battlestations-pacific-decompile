@@ -19,3 +19,5 @@ renderer/declaration/material/layout services, and the retained derived copy
 continuation. The raw Text pool allocation remains opaque transport until its
 actual native identity/lifetime producer is established. Build and focused
 validation are recorded separately in the batch report.
+
+The integrated positive Group base-copy fixture passed against code `b1f047dd60333c96d0f836464bd22a181eaf4ca1`: real D3D9 vertex/INDEX16 streams were copied to distinct same-domain owners, modified independently, published by AA9520, and retired with their Model/mesh owners. It does not cover positive sections/materials/lights/children, copied Text/type admission or native global producers. See the batch report for exact source/library hashes.

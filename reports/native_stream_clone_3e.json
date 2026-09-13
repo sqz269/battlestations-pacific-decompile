@@ -683,7 +683,29 @@
     ],
     "definition_bounds": "each exact four-byte MOV/RET body; exclusive end=start+4; following CC alignment excluded",
     "widget_binding": "src/gui_widget_model_copy.cpp",
-    "positive_widget_copy_fixture": "pending exact primary library replay",
-    "original_worker_no_function_entries": "historical worker snapshot; definitions were added and saved by primary under the Ghidra write lock"
+    "positive_widget_copy_fixture": {
+      "source_sha256": "952FA67A7B533FDE6A48DD7A31959F47A40C55B7C5AFF2F182EAA5CF2C735A03",
+      "log_sha256": "368DFFE99B9B503854878533317FCB3B5A4819FC702506082BFC562C7AFC8164",
+      "name": "widget_model_copy",
+      "exit_code": 0,
+      "source": "local/stream-text-workers/model/local/widget_model_copy_probe.cpp",
+      "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\stream-text-validation\\widget_model_copy-run.log"
+    },
+    "original_worker_no_function_entries": "historical worker snapshot; definitions were added and saved by primary under the Ghidra write lock",
+    "primary_validation": {
+      "build": {
+        "commit": "b1f047dd60333c96d0f836464bd22a181eaf4ca1",
+        "build": "MSVC Win32 Release /W4 /WX; two CTests passed",
+        "batch": "reports\\orch5_stream_text_copy_batch.json"
+      },
+      "stream_fixture": {
+        "source_sha256": "18027DD3E395C758FBEBB5DA75C54297C09709B94C687821F6E3DA69E71751B2",
+        "log_sha256": "C51B5E4154EA1C57E9EA821DE52D3E72DD7F62009C4ACA26BD17107E7A214C68",
+        "name": "stream_clone",
+        "exit_code": 0,
+        "source": "local/stream-text-workers/stream/local/stream_clone_probe.cpp",
+        "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\stream-text-validation\\stream_clone-run.log"
+      }
+    }
   }
 }

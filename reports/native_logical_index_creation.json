@@ -346,6 +346,21 @@
         "address": "00b22d70",
         "name": "BSP_Renderer_ReserveIndexPointerArray"
       }
-    ]
+    ],
+    "primary_validation": {
+      "build": {
+        "commit": "b1f047dd60333c96d0f836464bd22a181eaf4ca1",
+        "build": "MSVC Win32 Release /W4 /WX; two CTests passed",
+        "batch": "reports\\orch5_stream_text_copy_batch.json"
+      },
+      "fixture": {
+        "source_sha256": "39A1CC399315C218E0B70BFA70C4F70734EEA150675B2BCA670AF73F3FDEA485",
+        "log_sha256": "7A46903ADD2C8FBCC06F90DFD8FC919B1951561073DEC405C7721B2B78544E98",
+        "name": "index_creation",
+        "exit_code": 0,
+        "source": "local/stream-text-workers/index/local/index_creation_probe.cpp",
+        "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\stream-text-validation\\index_creation-run.log"
+      }
+    }
   }
 }

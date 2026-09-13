@@ -33,7 +33,7 @@ and annotation preimages are preserved. Names remain reconstruction hypotheses.
 
 Worker validation and exact integrated validation are separate in
 `reports/orch5_stream_text_copy_batch.json`. The final code pin, production
-library hashes and replayed fixture evidence will be recorded after integration.
+library hashes and replayed fixture evidence are recorded in that report.
 The fixtures use a real D3D9 HAL device with explicit renderer, immutable-profile,
 declaration and pool-header inputs. These inputs do not establish native global
 producers, original binary ABI compatibility, rendered Text or gameplay.
@@ -51,3 +51,10 @@ producers, original binary ABI compatibility, rendered Text or gameplay.
   it does not reconstruct this callee's SEH/unwind.
 - Integrate the established menu/widget path into executable startup and validate
   visible behavior. The reconstruction goal remains active.
+
+Exact built/promoted code commit: `b1f047dd60333c96d0f836464bd22a181eaf4ca1`. The MSVC Win32
+build and both CTests passed. Four fixtures were rebuilt against its production
+headers and libraries: retained source-borrow prefix, actual index creation,
+actual stream cloning, and positive AA9520 Model/mesh/stream copy with final4C/138
+publication and balanced retirement. Full copied Text and gameplay remain
+unvalidated. Worker artifacts and annotation preimages are hash-pinned.

@@ -1,6 +1,6 @@
 {
   "packet": "orch5_widget_copy",
-  "status": "normal_base_copy_composed_with_actual_model_flags26_3e_pending_exact_fixture",
+  "status": "normal_base_copy_with_actual_flags3e_model_and_streams_primary_fixture_passed",
   "ghidra_project": "C:/Users/sqz269/bsp.gpr",
   "ghidra_program": "/battlestationspacific.exe",
   "ghidra_mutations": false,
@@ -98,10 +98,9 @@
     "unprojectedC8..D0"
   ],
   "uncertainty": [
-    "Actual Model3E mesh index/vertex stream copies remain mandatory provider operations; no flags26 substitution",
-    "Copied Text concrete implementation/factory admission remains external; separate Text lifetime continuation required",
-    "Host owner admission/cleanup is not compiler SEH or native allocation-failure reconstruction",
-    "No binary ABI or game execution validation"
+    "Full copied Text requires actual raw Text retained identity and executable cursor/renderer/material/layout providers.",
+    "Host owner admission and cleanup do not reconstruct compiler SEH or native allocation-failure behavior.",
+    "Positive base copy fixture does not exercise sections/materials/lights/children, complete derived Text admission, original entry ABI or game behavior."
   ],
   "validation": {
     "build": {
@@ -155,6 +154,33 @@
     "batch": "reports/orch5_stream_text_copy_batch.json",
     "coverage": "same-domain actual Model flags26/3E provider now implemented; prior provider-boundary fixture and scopes remain historical evidence",
     "creator_validation": "includes pending stream creator, companion and mapping phase",
-    "text_runtime": "stable copied factory adoption implemented; positive raw Text identity/provider path remains unvalidated"
-  }
+    "text_runtime": "stable copied factory adoption implemented; positive raw Text identity/provider path remains unvalidated",
+    "validation": {
+      "commit": "b1f047dd60333c96d0f836464bd22a181eaf4ca1",
+      "build": "MSVC Win32 Release /W4 /WX; two CTests passed",
+      "batch": "reports\\orch5_stream_text_copy_batch.json"
+    },
+    "fixture": {
+      "source_sha256": "952FA67A7B533FDE6A48DD7A31959F47A40C55B7C5AFF2F182EAA5CF2C735A03",
+      "log_sha256": "368DFFE99B9B503854878533317FCB3B5A4819FC702506082BFC562C7AFC8164",
+      "name": "widget_model_copy",
+      "exit_code": 0,
+      "source": "local/stream-text-workers/model/local/widget_model_copy_probe.cpp",
+      "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\stream-text-validation\\widget_model_copy-run.log"
+    },
+    "source_borrow_fixture": {
+      "source_sha256": "E8EC2E93A5AFBB67BE8BA55B37F39F4C5BCE48FFA8714E3D3956FF1A326C6EE6",
+      "log_sha256": "FF4BE49853B6DF7FC4BC3D7D8E4918FF2ABC89388A47E8246D2BEC1986B15DE8",
+      "name": "source_borrow",
+      "exit_code": 0,
+      "source": "local/widget_copy_source_borrow_probe.cpp",
+      "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\stream-text-validation\\source_borrow-run.log"
+    }
+  },
+  "original_scope_uncertainty": [
+    "Actual Model3E mesh index/vertex stream copies remain mandatory provider operations; no flags26 substitution",
+    "Copied Text concrete implementation/factory admission remains external; separate Text lifetime continuation required",
+    "Host owner admission/cleanup is not compiler SEH or native allocation-failure reconstruction",
+    "No binary ABI or game execution validation"
+  ]
 }

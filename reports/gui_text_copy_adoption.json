@@ -216,5 +216,14 @@
     "positive_copied_Text_fixture": "not run; actual raw Text-retention/runtime provider unavailable",
     "native_abi_compatible": false,
     "game_validated": false
+  },
+  "integrated_validation": {
+    "build": {
+      "commit": "b1f047dd60333c96d0f836464bd22a181eaf4ca1",
+      "build": "MSVC Win32 Release /W4 /WX; two CTests passed",
+      "batch": "reports\\orch5_stream_text_copy_batch.json"
+    },
+    "positive_copied_text": "unvalidated; no synthetic retained Text or successful provider fixture",
+    "model_dependency": "actual flags3E Model/stream adapter passed a positive Group base-copy fixture; this does not exercise copied Text construction or its actual retained identity"
   }
 }
