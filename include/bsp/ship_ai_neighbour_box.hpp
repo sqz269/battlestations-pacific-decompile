@@ -49,7 +49,7 @@ inline constexpr double kShipAiNeighbourBoxSpeedRatioBias = 1.0;                
 inline constexpr double kShipAiNeighbourBoxSpeedRatioScale = 0.5;                        // 00D7A280, 009EB393
 inline constexpr double kShipAiNeighbourBoxMinProjectedTravel = 0.10000000149011612;     // 00D7A3A0, 009EB3F6
 inline constexpr float  kShipAiNeighbourBoxTurnLimit = 1.5707963705062866f;              // 00CE3C64 / 00CE3CCC, 009EB40A
-inline constexpr double kShipAiNeighbourBoxArcThreshold = 0.052359877559829890;          // 00D1A8A0, 3 degrees, 009EB466
+inline constexpr double kShipAiNeighbourBoxArcThreshold = 0.052359879016876220703125;    // 00D1A8A0, widened binary32 3 degrees, 009EB466
 
 // ---------------------------------------------------------------------------
 // The node fields ShipAiObstacleNode does not carry
@@ -286,13 +286,18 @@ float ship_ai_neighbour_lookahead_009eaeca(float settings_pos_speed_corrig_1a8,
 // 009EB14D..009EB182: the closing speed the arrival times divide by. The dot of
 // the relative velocity on the unit vector from the node's near centre to the
 // observer, plus ShipAvoidance.NearbyShip_GoAwaySpdAdd, floored at 1.0f.
+// The floor comparison is ordered; a NaN closing value is retained.
 float ship_ai_neighbour_closing_speed_009eb14d(const std::array<float, 2>& relative_velocity,
                                                const std::array<float, 2>& direction_to_self,
                                                float go_away_spd_add_1d0) noexcept;
 
 // 009EB277..009EB2AB: the factor both avoid-box extents are scaled by. Above
 // zero it shrinks the box the further ahead the projection reaches; at or below
-// zero 009EAFC0 gives up and sets node+68h.
+// zero 009EAFC0 gives up and sets node+68h. An unordered shrink continues
+// through the projection with node+68h clear; a later distance gate can still
+// copy the near box without setting that byte. The native min selects its
+// second operand on unordered comparison. See SHIP_AI_NEIGHBOUR_BOX_MATH.md.
+// Its arithmetic honors the caller's x87 precision and original float spills.
 float ship_ai_neighbour_extent_shrink_009eb277(float body_axis_speed,
                                                float reference_speed_0080fc30,
                                                float near_half_length_38,
