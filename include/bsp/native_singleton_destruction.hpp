@@ -24,13 +24,16 @@ namespace game { class GameSoundRuntime; }
 // manager must carry one of these recovered slot-zero profiles: CE3818,
 // D0DA64, D5E594, D5E59C, D5B44C, D5B460, D5B478, D58F78, D24138,
 // D2413C, D5B5F4, D5B5F8, D5B72C, D5B630, D68200, D68CF8, D68D04 or
-// D688B0, CFEA1C, D6418C, CF7E70, CF7E74, CF81CC, D68B94 or CFD84C. D0DA64
+// D688B0, CFEA1C, D6418C, CF7E70, CF7E74, D190C4, CF81CC, D68B94 or CFD84C. D0DA64
 // requires its actual publication cell; registry and sound profiles require
 // their concrete borrowed bindings. Sound and XLive owners retain C++ projected
 // storage; XLive additionally requires the exact allocation identity. Input
 // contexts borrow the same raw manager/publications as construction and must
 // outlive drain. Input dispatch does not require current-publication identity:
 // native destructors themselves implement its reload/unregister/clear rules.
+// D190C4 uses the actual process-static F899E8 publication directly. Owners
+// reconstructed against a different publication cell are outside that profile
+// binding; no new private pending-lock context or automatic teardown is added.
 // Profile identity is read when popped, not cached when registered. An unknown
 // profile or missing binding throws a source contract error before dispatch.
 // This finite map is not the original process's arbitrary virtual dispatch.

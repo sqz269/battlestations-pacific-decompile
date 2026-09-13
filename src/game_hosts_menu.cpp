@@ -1539,6 +1539,7 @@ GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameSta
             order_rudder, mission_frame_seconds, std::move(trajectory_csv),
             std::move(order_command), std::move(order_command_target), order_speed,
             order_speed_set);
+        impl_->mission->bind_observer_runtime(singletons.observers());
     }
 }
 
