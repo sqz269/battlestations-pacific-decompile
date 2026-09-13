@@ -76,6 +76,6 @@ current libraries. Preserve the sealed ZIP before replaying the working director
 Coverage excludes nonzero helper+08/+18, the unknown retained18 producer, original
 B3C800 construction, native FH3/SEH exceptions, and a native releasing caller above
 the fixture-driven count transition. Source failure handling was reviewed only.
-The camera field is never a substitute model node; renderer bindings and real
-semantic pools are inherited unchanged. This is bounded fixture evidence, not
+The camera field is never a substitute model node; renderer bindings and actual
+raw string-pool providers are inherited unchanged from BF. This is bounded fixture evidence, not
 drop-in ABI compatibility or game validation.
