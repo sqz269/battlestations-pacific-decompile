@@ -18,6 +18,7 @@
 #include "bsp/world_entity_update.hpp"
 
 #include <cstdio>
+#include <stdexcept>
 #include <vector>
 
 namespace bsp::game {
@@ -164,13 +165,14 @@ public:
     }
 
     bsp::UnitListFilterFlags unit_filter_flags(bsp::UnitRef unit) override {
-        bsp::UnitListFilterFlags flags{};
         const std::size_t index = static_cast<std::size_t>(unit) - 1;
-        flags.active_5c = owner_.units.unit_active(index);
-        flags.flag_5d = false;
-        flags.flag_5e = false;
-        flags.flag_60 = false;
-        return flags;
+        bsp::SceneNodeFlags flags;
+        bool pending_destroy;
+        if (!owner_.units.unit_scene_node_flags(index, flags) ||
+            !owner_.units.unit_pending_destroy_0060(index, pending_destroy)) {
+            throw std::logic_error("registered unit has no canonical scene flags");
+        }
+        return {flags.active, flags.torn_down, pending_destroy, flags.destroyed};
     }
 
     bool unit_is_kind_of(bsp::UnitRef unit, int class_id) override {
