@@ -1,0 +1,124 @@
+{
+  "events": [
+    {
+      "recreate": "00cbed09",
+      "previous": "Function: Unwind@00cbed09 at 00cbed09\nSignature: undefined Unwind@00cbed09(void)\nEntry: 00cbed09\nBody: 00cbed09 - 00cbed11",
+      "plate": null
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00cbed09"
+      },
+      "result": {
+        "success": true,
+        "address": "00cbed09",
+        "deleted_function": "Unwind@00cbed09",
+        "body_size": 9,
+        "message": "Function 'Unwind@00cbed09' deleted at 00cbed09"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cbed09",
+        "end_address": "00cbed14"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00cbed09",
+        "end_address": "00cbed13",
+        "bytes_disassembled": 11,
+        "message": "Successfully disassembled 11 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cbed09",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00cbed09",
+        "function_name": "Unwind@00cbed09",
+        "entry_point": "00cbed09",
+        "body_size": 11,
+        "message": "Function created successfully at 00cbed09"
+      }
+    },
+    {
+      "defined": "00cbed09",
+      "end": "00cbed14",
+      "name": null,
+      "after": "Function: Unwind@00cbed09 at 00cbed09\nSignature: undefined Unwind@00cbed09(void)\nEntry: 00cbed09\nBody: 00cbed09 - 00cbed13"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "analysis_only": true,
+  "new_reconstructed_entries": 0,
+  "original_prototypes_before_repair": "00b3c6c0 CG_scalar_deleting_dtor_00b3c6c0  undefined CG_scalar_deleting_dtor_00b3c6c0(void)  body 00b3c6c0 - 00b3c6dd\n00cbed09 Unwind@00cbed09  undefined Unwind@00cbed09(void)  body 00cbed09 - 00cbed11\n00b1f8f0 BSP_Viewport_DeletingDestructor  undefined BSP_Viewport_DeletingDestructor(void)  body 00b1f8f0 - 00b1f913\n",
+  "native_handler_prologues": {
+    "00cbecc8": {
+      "caller": "00b3c5c2",
+      "func_info": "00df74a0"
+    },
+    "00cbed14": {
+      "caller": "00b3c802",
+      "func_info": "00df74c4"
+    },
+    "00cbccb8": {
+      "caller": "00b1f852",
+      "func_info": "00df51e0"
+    }
+  },
+  "uncertainty": "Analysis body/flow corrections only; no new reconstructed body, native FH3/SEH runtime, original binary ABI, or game validation.",
+  "metadata_restoration": [
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cbed09",
+        "new_name": "Unwind@00cbed09"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Renamed function at 00cbed09 from 'Unwind@00cbed09' to 'Unwind@00cbed09'",
+        "warnings": [
+          "Function name 'Unwind@00cbed09' \u2014 main part 'Unwind@00cbed09' is not PascalCase. Expected: Unwind@00cbed09",
+          "Function name 'Unwind@00cbed09' does not start with a recognized verb. First word 'Unwind@00cbed09' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "final_listings": {
+    "00b3c6c0": "00b3c6c0: PUSH ESI \n00b3c6c1: MOV ESI,ECX \n00b3c6c3: CALL 0x00b3c5c0 \n00b3c6c8: TEST byte ptr [ESP + 0x8],0x1 \n00b3c6cd: JZ 0x00b3c6d8 \n00b3c6cf: PUSH ESI \n00b3c6d0: CALL 0x00bf65ac \n00b3c6d5: ADD ESP,0x4 \n00b3c6d8: MOV EAX,ESI \n00b3c6da: POP ESI \n00b3c6db: RET 0x4 \n",
+    "00cbed09": "00cbed09: MOV EAX,dword ptr [EBP + -0x18] \n00cbed0c: PUSH EAX \n00cbed0d: CALL 0x00bf65ac \n00cbed12: POP ECX \n00cbed13: RET \n",
+    "00cbecc8": "00cbecc8: MOV EAX,0xdf74a0 \n00cbeccd: JMP 0x00bf6b43 \n",
+    "00cbed14": "00cbed14: MOV EAX,0xdf74c4 \n00cbed19: JMP 0x00bf6b43 \n",
+    "00b1f8f0": "00b1f8f0: PUSH ESI \n00b1f8f1: MOV ESI,ECX \n00b1f8f3: MOV dword ptr [ESI],0xd5e5f8 \n00b1f8f9: CALL 0x00bd30f0 \n00b1f8fe: TEST byte ptr [ESP + 0x8],0x1 \n00b1f903: JZ 0x00b1f90e \n00b1f905: PUSH ESI \n00b1f906: CALL 0x00bf65ac \n00b1f90b: ADD ESP,0x4 \n00b1f90e: MOV EAX,ESI \n00b1f910: POP ESI \n00b1f911: RET 0x4 \n",
+    "00cbccb8": "00cbccb8: MOV EAX,0xdf51e0 \n00cbccbd: JMP 0x00bf6b43 \n"
+  },
+  "final_full_body_readback": "00b3c6c0 CG_scalar_deleting_dtor_00b3c6c0  undefined CG_scalar_deleting_dtor_00b3c6c0(void)  body 00b3c6c0 - 00b3c6dd\n00cbed09 Unwind@00cbed09  undefined Unwind@00cbed09(void)  body 00cbed09 - 00cbed13\n00cbecc8 FUN_00cbecc8  undefined FUN_00cbecc8(void)  body 00cbecc8 - 00cbecd1\n00cbed14 FUN_00cbed14  undefined FUN_00cbed14(void)  body 00cbed14 - 00cbed1d\n00b1f8f0 BSP_Viewport_DeletingDestructor  undefined BSP_Viewport_DeletingDestructor(void)  body 00b1f8f0 - 00b1f913\n00cbccb8 FUN_00cbccb8  undefined FUN_00cbccb8(void)  body 00cbccb8 - 00cbccc1\n",
+  "original_names_and_prototypes_preserved": true,
+  "saved_and_exports_refreshed": true,
+  "byte_verification": "Each changed or defined span compared against original PE by the guarded mutation tools."
+}

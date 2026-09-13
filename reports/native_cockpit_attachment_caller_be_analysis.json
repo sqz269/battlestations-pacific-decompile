@@ -1,0 +1,70 @@
+{
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "007bc690",
+        "end_address": "007bc798"
+      },
+      "result": {
+        "success": true,
+        "start_address": "007bc690",
+        "end_address": "007bc797",
+        "bytes_disassembled": 264,
+        "message": "Successfully disassembled 264 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "007bc690",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "007bc690",
+        "function_name": "FUN_007bc690",
+        "entry_point": "007bc690",
+        "body_size": 264,
+        "message": "Function created successfully at 007bc690"
+      }
+    },
+    {
+      "defined": "007bc690",
+      "end": "007bc798",
+      "name": null,
+      "after": "Function: FUN_007bc690 at 007bc690\nSignature: undefined FUN_007bc690(void)\nEntry: 007bc690\nBody: 007bc690 - 007bc797"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "analysis_only": true,
+  "new_reconstructed_entries": 0,
+  "extent": {
+    "address": "007bc690",
+    "inclusive_end": "007bc797",
+    "bytes": 264
+  },
+  "boundary_evidence": "Native RET at7BC680 followed by15CC bytes before entry; native RET at7BC797 followed by8CC bytes before7BC7A0. Eight exact entry DATA xrefs independently observed. Live span matched installed PE in define tool.",
+  "attribution": "Contained7BC707 callsB3C650 with current F8D39C service+0C in ECX and stackzero, RET4 callee.",
+  "final_full_body_readback": "007bc690 FUN_007bc690  undefined FUN_007bc690(void)  body 007bc690 - 007bc797\n007bc707 FUN_007bc690  undefined FUN_007bc690(void)  body 007bc690 - 007bc797\n",
+  "final_call_preparation": "007bc6f6: MOV byte ptr [ESI + 0xa9d],0x0 \n007bc6fd: MOV EAX,[0x00f8d39c] \n007bc702: MOV ECX,dword ptr [EAX + 0xc] \n007bc705: PUSH 0x0 \n007bc707: CALL 0x00b3c650 \n007bc70c: XORPS XMM0,XMM0 \n007bc70f: MOVSS XMM1,dword ptr [0x00d7a24c] \n007bc717: LEA ECX,[ESP + 0x10] \n007bc71b: PUSH ECX \n... 24 more lines of 33 (use --start 9 or --lines)\n",
+  "uncertainty": "Analysis containment only. Entity semantics, x87/SIMD behavior and full native/runtime/ABI reconstruction of this264byte caller are not claimed.",
+  "saved_and_export_refreshed": true
+}
