@@ -1,0 +1,258 @@
+{
+  "packet": "orch6_reconstruction_x",
+  "status": "listener_effect_providers_and_mission_lock_integrated_and_checked",
+  "packets": [
+    {
+      "packet": "orch6-listener-renderer-x",
+      "commit": "edb89b5564064f8918cc645a3f0fda1b6805939e",
+      "report": "reports\\native_listener_renderer.json",
+      "report_sha256": "fed96e1f961541b2411f8a27287637fda1032083d4d7024a2e3d072d4ea7f7eb",
+      "coverage": "Complete25-byte listener update and43-byte invalidation loop using canonical node-root propagation.",
+      "validation": "3 original-byte/source cases,7direct/tail call rows; node provider executed as existing source through explicit native ABI bridge.",
+      "limits": "Requires actual renderer/invalidation/root bindings; full renderer gameplay environment unproved.",
+      "archived_artifacts": 368
+    },
+    {
+      "packet": "orch6-wreck-effect-providers-x",
+      "commit": "2aa42082a0dd89fee5b2397978704c5194ff6eaf",
+      "report": "reports\\native_wreck_effect_providers.json",
+      "report_sha256": "f24f1d90a51843dfd5cd33997be2ed4d2b0bfb939531d51906fedb5662b84766",
+      "coverage": "Complete50-byte manager scan and exact64-byte484620 reuse of canonical54D510 with actual volatile reference cells.",
+      "validation": "16 native/source comparisons and2source failure checks;19direct call rows.8virtual-dispatch bytes replaced in fixture; static full-body identity separate.",
+      "limits": "8673B0 cleanup remains required; native destructor bodies, EH and full wreck behavior unproved.",
+      "archived_artifacts": 246
+    },
+    {
+      "packet": "orch6-mission-entity-lock-x",
+      "commit": "30ea83581e73da8b568d2679521fb068e1c9048f",
+      "report": "reports\\native_mission_entity_lock.json",
+      "report_sha256": "443f47604324c605faab60aa521affd5f0250255df1d639fabefeec732a4c735",
+      "coverage": "Five complete normal bodies:69-byte constructor,189-byte getter,17-byte base unwind,35-byte destructor,55-byte scalar deleter; actual raw8owner/F878FC publication.",
+      "validation": "Original-byte/source five-entry fixture with live first/second manager/publication rebinding; source allocation/section/registration failure cleanup;15direct/tail rows pass.",
+      "limits": "Native FH3/SEH is not executed; known scalar/funclet Ghidra membership gaps remain documented separately.",
+      "archived_artifacts": 208
+    }
+  ],
+  "volatile_read_correction": {
+    "commit": "a919d153",
+    "report": "reports/volatile_reference_adoption.json",
+    "result": "Before/after x86 object code proves one slot read in corrected overloads, identical corrected overload bytes, unchanged volatile body."
+  },
+  "mission_lock_route": {
+    "report": "reports/native_mission_entity_lock_domain.json",
+    "coverage": "CE7548 finite deletion dispatch to4C4890 using same processF878FC publication.",
+    "fixture": "Actual getter/raw-manager registration/fast reuse; replace publication before manager drain; original popped owner deleted, same cell cleared, replacement untouched."
+  },
+  "validation": {
+    "compiled_commit": "d026dc1f5c9a4e120d8d38ba60f1045d7188f583",
+    "exe_sha256": "e60deb9311b9528ca3433385617cde3594dc940b874cab109c4d0f23792dbae1",
+    "build": "MSVC Win32 Release and2existingCTests passed",
+    "build_record": {
+      "compiled_commit": "d026dc1f5c9a4e120d8d38ba60f1045d7188f583",
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "log": "local\\orch6_publish_build_x_20260913T110647.log"
+    },
+    "process_run": {
+      "compiled_commit": "d026dc1f5c9a4e120d8d38ba60f1045d7188f583",
+      "run_commit": "d026dc1f5c9a4e120d8d38ba60f1045d7188f583",
+      "compiled_input_drift": [],
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_d026dc1f.exe",
+        "--frames",
+        "360",
+        "--press-start-frame",
+        "3",
+        "--menu-select",
+        "USN01",
+        "--mission-frames",
+        "120",
+        "--mission-frame-seconds",
+        "0.1",
+        "--game-root",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+        "--fmod-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "--fmod-event-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_x.log",
+        "--order-frame",
+        "0",
+        "--order-unit",
+        "Enterprise",
+        "--order",
+        "moveto:Airfield2",
+        "--trajectory-csv",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_x.csv"
+      ],
+      "exe_sha256": "e60deb9311b9528ca3433385617cde3594dc940b874cab109c4d0f23792dbae1",
+      "preserved_executable": "local\\orch6_combined_d026dc1f.exe",
+      "source_sha256": {
+        "src/game_hosts_ship_ai.cpp": "d13cf757bd05be794cf8fc7f7fc8fe99ec40f8b4d8fedc9adece77b251a985e3",
+        "src/game_hosts_units.cpp": "753659a4da3654b78ff13fd3b3dbb3881f5061baebcc81245fb8f1a93f365f0c",
+        "src/game_hosts_lua.cpp": "b9a66e97a871069a585a79501bd98b25a471140b943c79694c89552d9ea97e09",
+        "src/game_avoid_zone_runtime.cpp": "6bac077630082ea2097f53078dcf59bbdeb0fcd5d3260250a92ada5e18c0241b",
+        "src/ship_ai_avoidance_request.cpp": "ac52fdb77798b31f10b6a1927b80d6357844186c2bce0a38176827320df863fc",
+        "src/ship_ai_search_storage.cpp": "5fcc7208710274d7ef3523e23cc1ae74d4483225fd1842373d6066e5808f20e4",
+        "src/session_participant_pools.cpp": "4b3caa17635856f7f32fce4f2af65bc56c96fcde096716374a78a1912956a697",
+        "src/game_ship_avoidance_tuning_lua.cpp": "85243079baf1f442ce313cfd9825fab73fe94920c2087165847bcb494aa8840e",
+        "src/game_hosts_mission_frame.cpp": "650678575f86a3ecdad80750d1ef6aaab7b0245e2e178396b0c26f195606b2d9",
+        "src/game_hosts.cpp": "4bd96b3cf84309f1da8839eaebabc9bbd953f0571731f22bd27b1ac2d2d68b0a",
+        "src/game_hosts_ready.cpp": "e7d4c0d14f4efbfb37b4066c33a9bea10513f4b260a3d32ae7e1d7952e044e8c",
+        "src/game_pending_entity_runtime.cpp": "35124d70097985f350b412243bcce14204b308e43ad16d1102e6274f9dc92236",
+        "include/bsp/game_pending_entity_runtime.hpp": "16292f64307a3de3c93fd96606daad31f31a079e180e6bbb3a2b5e050c546303",
+        "src/game_hosts_menu.cpp": "55e4a8d91840389ada9bb3fb1e719eee782b7bffd95bbedcd50b0f5a528e2f0a",
+        "src/native_pending_entity_lock.cpp": "2b3a8b04354b0733b934a7bc39bd4b455784be805fa706b4feff3b885e17807a",
+        "src/native_singleton_destruction.cpp": "2270d642ebe0d41359dc4e847635fa5dcc5919f34e97f97008852fe3ab835134"
+      },
+      "process_check": "No matching reconstructed game process before launch",
+      "exit": 0,
+      "seconds": 11.799511432647705,
+      "trajectory_audit": {
+        "rows": 18557,
+        "nonfinite_rows": 0,
+        "nonfinite_units": [],
+        "airfield_samples": 241,
+        "airfield_unchanged": true
+      },
+      "avoidance_search": {
+        "queries": 2400,
+        "refills": 10,
+        "clears": 12
+      },
+      "cruise_owners": {
+        "reads": 1080,
+        "unavailable": 0
+      },
+      "generic_tick": {
+        "calls": 10080,
+        "unavailable": 0,
+        "units": 42,
+        "input_one": 42
+      },
+      "participant_pool": {
+        "scene_present": 1,
+        "scene_slots": 8,
+        "mode": 0
+      },
+      "world_registration": {
+        "unavailable": 0,
+        "nodes": 420,
+        "invalid_lists": 0,
+        "ships": 14,
+        "planes": 20
+      },
+      "world_expected_from_native_report": {
+        "created": 77,
+        "unknown": [],
+        "nodes": 420,
+        "counts": {
+          "1": 77,
+          "2": 77,
+          "4": 77,
+          "5": 77,
+          "6": 14,
+          "7": 4,
+          "9": 1,
+          "10": 3,
+          "11": 6,
+          "15": 20,
+          "16": 6,
+          "17": 4,
+          "18": 5,
+          "22": 5,
+          "27": 42,
+          "28": 1,
+          "69": 1
+        }
+      },
+      "observer_runtime": {
+        "initialized": true,
+        "drained": true
+      },
+      "unit_observer_lifetime": {
+        "units": 77,
+        "callback_then_observed": true,
+        "dispatch_owner_live_through_teardown": true,
+        "teardown_before_manager_drain": true
+      },
+      "pending_entity_runtime": {
+        "initial_counts": [
+          0,
+          0
+        ],
+        "atexit_status": [
+          0,
+          0
+        ],
+        "final_counts": [
+          0,
+          0
+        ],
+        "frame_passes": 240,
+        "storage": "same process raw24h owner pair",
+        "exit_scope": "Clean process exit; detailed real CRT callback observations remain in the S actual-library lifecycle fixture."
+      },
+      "limits": [
+        "Process-run evidence, not original-game visual or gameplay parity.",
+        "Constructor-owned unit roles remain unassigned until actual role-message delivery is recovered.",
+        "Obstacle node refresh, several state writers and motion phase remainders remain partial.",
+        "Untouched native cache bounds are preserved; original allocation history is not reproduced."
+      ]
+    },
+    "scope": "Application compatibility only. Pending queues stay empty; new killed/wreck/renderer paths are fixture-checked, not established by this mission run."
+  },
+  "evidence_archive": {
+    "worker_manifest": "local\\orch6_worker_archive_x.json",
+    "worker_sha256": "1b962302f3d768e6d03f31ce0e446bc8475d6821e880a62470ac26dca0a89d5f",
+    "worker_artifacts": 822,
+    "root_proofs": [
+      {
+        "manifest": "local/volatile_adoption_codegen_x/manifest.json",
+        "sha256": "16a1e525ddccb2c9132ac83a3de663ff8b01e204d70c6fdcb4753a81d3e8eafc",
+        "artifacts": 307
+      },
+      {
+        "manifest": "local/mission_lock_binding_proof_x/manifest.json",
+        "sha256": "bd49cea92bf8957787e2d887ce3544015a9608daf49fb5ee272b79f086d1a662",
+        "artifacts": 233
+      }
+    ],
+    "metadata_manifest": "local\\orch6_metadata_proof_x.json",
+    "metadata_sha256": "98096d15d1bf9f1e048d39196dbac1df25e4d4bba005c2c2c1f5023dd6bce9f0",
+    "metadata_artifacts": 6
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved": true,
+    "definitions": [
+      "reports/native_mission_entity_lock_function_definitions.json"
+    ],
+    "annotations": "Formal locked names/comments with prior values preserved and affected exports refreshed.",
+    "limits": "Existing function bodies are never recreated; five unattributed adoption call sites and scalar/funclet membership gaps remain explicit."
+  },
+  "corrections": [
+    "W discarded volatile reference expression generated an extra read; corrected by binding the returned reference and discarding its address.",
+    "CE7548 has exactly one slot; adjacentCE754C belongs to another owner. Shutdown clears actualF878FC even when publication differs."
+  ],
+  "limitations": [
+    "Full wreck handler and actual gameplay lifecycle/renderer bindings remain incomplete.",
+    "Unknown native destructor, Lua wrapper, item cleanup and other providers remain required contracts.",
+    "Native ABI,FH3/SEH,concurrency and original-game visual/gameplay parity unproved."
+  ],
+  "follow_up": [
+    "Y complete unit scene initialization955420 with explicit unresolved providers.",
+    "Y actual per-effect cleanup8673B0 and canonical raw-array reuse.",
+    "Resolve scene holder+04 kind-discriminator stale header comment from producer evidence."
+  ]
+}
