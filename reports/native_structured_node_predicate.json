@@ -1,0 +1,133 @@
+{
+  "packet": "orch2_structured_node_predicate_bg",
+  "functions": [
+    {
+      "address": "00715bf0",
+      "native": "BSP_StructuredNode_HasRemaining",
+      "name": "native_structured_node_has_remaining_00715bf0",
+      "source": "src/native_structured_node_predicate.cpp",
+      "header": "include/bsp/native_structured_node_predicate.hpp",
+      "coverage": "complete",
+      "end_inclusive": "00715c04",
+      "original_bytes": 21,
+      "original_abi": "ECX valid wrapper; zero stack arguments; EAX boolean0/1; plain RET. Listing corrects missing ECX in decompiler prototype.",
+      "behavior": "Load wrapper DWORD; null node returns false; otherwise node+20h DWORD nonzero. No wrapper-null, attachment, sign or bounds check.",
+      "native_sha256": "e2c4563a684fe923d920d08c6e8f037df0ad838f959eac124a5decce01e5c145",
+      "pe_live_equal": true,
+      "calls": []
+    }
+  ],
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "Verified BSP CLI; read only; existing descriptive name retained."
+  },
+  "executable": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256_first": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "sha256_second": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "no_ghidra_function": [],
+  "evidence": {
+    "listing": "local/predicate-listing.txt",
+    "prototype": "local/predicate-proto.txt",
+    "bytes": "local/predicate-bytes.txt",
+    "binary": "local/predicate-native.bin"
+  },
+  "validation": {
+    "status": "strict_win32_build_and_two_existing_ctests_passed",
+    "new_tests": 0,
+    "fixture_executed": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "build_log": "local/build-predicate-retry.log",
+    "build_log_sha256": "84a9928f1610c5c8b359af2503e89a419293f813c41372e1bfd85f6af279dd72",
+    "existing_ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "compiler_flags": [
+      "/W4",
+      "/WX",
+      "/EHsc",
+      "/MD",
+      "/fp:strict"
+    ],
+    "object_sha256": "5de1c2ac5bf589638f9ab7d19b76e5ac65de023473311b7e6208b47060bf94e5",
+    "archive_sha256": "391cadd961fb866c85ce7a22aa53c662045198c30841738677c0d33419e29b84",
+    "unique_archive_member_matches": true
+  },
+  "uncertainty": "New C++ bool ABI; requires actual accessible Win32 wrapper/node storage. This leaf does not establish raw reader lifecycle, hierarchy producer completion, native exception ABI or gameplay behavior.",
+  "failure_history": [
+    {
+      "log": "local/build-predicate.log",
+      "sha256": "b72ad5973cdc230816159c243bdb915fff1bf6de8fbd9ea7e56925f9eeb2f265",
+      "failure": "Initial immediate target_sources registration ran before bsp_core existed. Corrected to repository DEFER registration; fresh build and both CTests passed."
+    }
+  ],
+  "current_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-structured-node-predicate-bg\\src\\native_structured_node_predicate.cpp",
+      "copy": "current-artifacts/src/native_structured_node_predicate.cpp",
+      "bytes": 411,
+      "sha256_first": "d8a5489505b30a66726b4c89cd9542b8561874f39fba896315b4ab32926f9417",
+      "sha256_second": "d8a5489505b30a66726b4c89cd9542b8561874f39fba896315b4ab32926f9417"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-structured-node-predicate-bg\\include\\bsp\\native_structured_node_predicate.hpp",
+      "copy": "current-artifacts/include/bsp/native_structured_node_predicate.hpp",
+      "bytes": 359,
+      "sha256_first": "0153d5985325332f27e54a4f26a61bb9998d1a2732dbf9d7b3fe1a3d4ab5c3a2",
+      "sha256_second": "0153d5985325332f27e54a4f26a61bb9998d1a2732dbf9d7b3fe1a3d4ab5c3a2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-structured-node-predicate-bg\\build\\win32\\bsp_core.dir\\Release\\native_structured_node_predicate.obj",
+      "copy": "current-artifacts/build/win32/bsp_core.dir/Release/native_structured_node_predicate.obj",
+      "bytes": 777,
+      "sha256_first": "5de1c2ac5bf589638f9ab7d19b76e5ac65de023473311b7e6208b47060bf94e5",
+      "sha256_second": "5de1c2ac5bf589638f9ab7d19b76e5ac65de023473311b7e6208b47060bf94e5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-structured-node-predicate-bg\\build\\win32\\Release\\bsp_core.lib",
+      "copy": "current-artifacts/build/win32/Release/bsp_core.lib",
+      "bytes": 56590948,
+      "sha256_first": "391cadd961fb866c85ce7a22aa53c662045198c30841738677c0d33419e29b84",
+      "sha256_second": "391cadd961fb866c85ce7a22aa53c662045198c30841738677c0d33419e29b84"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-structured-node-predicate-bg\\build\\win32\\bsp_core.vcxproj",
+      "copy": "current-artifacts/build/win32/bsp_core.vcxproj",
+      "bytes": 211758,
+      "sha256_first": "400c499f98a83803823154e4c559af14b831652887ff74073e8e7c7973f46bc7",
+      "sha256_second": "400c499f98a83803823154e4c559af14b831652887ff74073e8e7c7973f46bc7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-structured-node-predicate-bg\\build\\win32\\CMakeCache.txt",
+      "copy": "current-artifacts/build/win32/CMakeCache.txt",
+      "bytes": 18999,
+      "sha256_first": "f09ef05f3163a4b9034b6801e58f62569e4502b4c33a03708c5a5f70402308e7",
+      "sha256_second": "f09ef05f3163a4b9034b6801e58f62569e4502b4c33a03708c5a5f70402308e7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-structured-node-predicate-bg\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.command.1.tlog",
+      "copy": "current-artifacts/build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.command.1.tlog",
+      "bytes": 2316352,
+      "sha256_first": "4eba8c113aaf31c08fe2a2d18564ac8e49658ef526d6dcd0b076c6e15677a166",
+      "sha256_second": "4eba8c113aaf31c08fe2a2d18564ac8e49658ef526d6dcd0b076c6e15677a166"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-structured-node-predicate-bg\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.read.1.tlog",
+      "copy": "current-artifacts/build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+      "bytes": 35788748,
+      "sha256_first": "4f32a79235d8f505af14d2ba15f7654fe02017675a113c327e7cf6d51bb82836",
+      "sha256_second": "4f32a79235d8f505af14d2ba15f7654fe02017675a113c327e7cf6d51bb82836"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-structured-node-predicate-bg\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.write.1.tlog",
+      "copy": "current-artifacts/build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.write.1.tlog",
+      "bytes": 567890,
+      "sha256_first": "a43c5788845d4808c277d2a40670f73abf4895d0a77264697d942d594c4550e0",
+      "sha256_second": "a43c5788845d4808c277d2a40670f73abf4895d0a77264697d942d594c4550e0"
+    }
+  ]
+}
