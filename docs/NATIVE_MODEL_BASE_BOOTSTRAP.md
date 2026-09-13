@@ -1,5 +1,7 @@
 # Model-base static bootstrap
 
+Addresses: 00CD7EB0, 00CD7F20, 00CE0E60
+
 The new Win32 C++ interfaces reconstruct three complete bodies, with original
 no-argument signatures. The descriptive names remain hypotheses. The type
 adapter borrows the actual guard, descriptor words, shared node/root descriptor
