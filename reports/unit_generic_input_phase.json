@@ -1,0 +1,306 @@
+{
+  "packet": "orch6_generic_input_m",
+  "status": "reconstructed_build_fixture_tested_borrowed_runtime_inputs",
+  "base_commit": "4c18bf8be86f2bb906a56ee7fa80af38588e1384",
+  "dependency_merge_commit": "660bd1bf262cec54da115b07286e41c302473724",
+  "dependency_commit": "e3b27dad7242a121ecb9515704dd8ecae388193d",
+  "source": "src/unit_generic_input_phase.cpp",
+  "header": "include/bsp/unit_generic_input_phase.hpp",
+  "routines": [
+    {
+      "address": "0095DC40",
+      "native": "0095DC40",
+      "end_inclusive": "0095DDF8",
+      "bytes": 441,
+      "coverage": "complete caller control/state/arithmetic sequence over borrowed fields, canonical cells and existing input/settings getter interfaces",
+      "abi": "native thiscall ECX=unit; one float; RET4 at0095DD6E/0095DDE0/0095DDF6; new C++ interface is not ABI-compatible",
+      "cpp": "unit_generic_input_phase_0095dc40"
+    },
+    {
+      "entry": "0095DD71",
+      "containing_function": "0095DC40",
+      "ranges_inclusive": [
+        [
+          "0095DD71",
+          "0095DD91"
+        ],
+        [
+          "0095DDF1",
+          "0095DDF8"
+        ]
+      ],
+      "coverage": "complete false-predicate arm, partial relative to containing function; no separate native function",
+      "cpp": "unit_generic_input_unassigned_0095dd71",
+      "contract": "store1 at unit+63C; execute following COMISS1 versus field; equality joins epilogue. No other state or singleton/global-pointer reads."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0095DC4B",
+      "native": "00927F30",
+      "function": "0095DC40",
+      "contract": "Native unit receiver and role4; fixed-role operation inlined with unsigned local-slot guard."
+    },
+    {
+      "address": "0095DC6F",
+      "native": "004BEC00",
+      "function": "0095DC40",
+      "contract": "Actual input singleton; capture its action base+4 then record153 (+1CB0), byte+28/value+24."
+    },
+    {
+      "address": "0095DCE7",
+      "native": "00424C40",
+      "function": "0095DC40",
+      "contract": "Settings return, read first threshold +30."
+    },
+    {
+      "address": "0095DCFE",
+      "native": "00424C40",
+      "function": "0095DC40",
+      "contract": "Retain returned object for +30; do not snapshot before next getter."
+    },
+    {
+      "address": "0095DD05",
+      "native": "00424C40",
+      "function": "0095DC40",
+      "contract": "Second retained return for +34; sum with first retained object+30 using x87."
+    },
+    {
+      "address": "0095DD36",
+      "native": "00424C40",
+      "function": "0095DC40",
+      "contract": "Read stored decay rate +40 after positive-value guard."
+    },
+    {
+      "address": "0095DD92",
+      "native": "00424C40",
+      "function": "0095DC40",
+      "contract": "Read stored recovery rate +38 or +3C after less-than-one guard."
+    }
+  ],
+  "read_only_callees": [
+    {
+      "entry": "00927F30",
+      "end_inclusive": "00927F59",
+      "coverage": "complete read-only predicate; original bytes executed by fixture",
+      "abi": "thiscall unit plus role; RET4 at00927F52/00927F57",
+      "operation": "Read game+18EC; unsigned >7 returns false before role read; otherwise compare current-role array[role]. Fixed role4 is +1BC."
+    },
+    {
+      "entry": "004BEC00",
+      "coverage": "existing complete raw input singleton owner implementation reused as external provider contract",
+      "source": "src/native_input_action_owner.cpp",
+      "abi": "cdecl no arguments, pointer EAX, plain RET"
+    },
+    {
+      "entry": "00424C40",
+      "coverage": "read-only complete lazy singleton body; existing GameplayTuningSettings projection reused",
+      "abi": "cdecl no arguments, pointer EAX, plain RET"
+    }
+  ],
+  "producer_evidence": {
+    "common_constructor": "0095CC90",
+    "stores": [
+      {
+        "site": "0095CD9E",
+        "field": "unit+63C",
+        "bits": "3F800000"
+      },
+      {
+        "site": "0095CF02",
+        "field": "byte unit+644",
+        "bits": "00"
+      },
+      {
+        "site": "0095CF38",
+        "field": "unit+708",
+        "bits": "BF800000"
+      }
+    ],
+    "untouched": "No +640 store in common constructor. Borrowed view introduces no initialization.",
+    "registers": "ESI=ECX at0095CCAC; EBX=0 at0095CCE0; XMM1=1 at0095CD63 then -1 at0095CEE8 for the corresponding stores; intervening writes checked.",
+    "current_roles": "Canonical nine-role owner from00928630 initializes8; fixed role4 cell +1BC distinct from policy array.",
+    "input_record": "Existing30h input records, action153 at1CB0; current state byte+28 and input value float+24, produced by native_input_action_records/tick.",
+    "settings": "Existing GameplayTuningSettings +30/+34 durations, +38/+3C/+40 native clamped reciprocal rates.",
+    "view_global": "Actual borrowed E198C4 slot -> pointer+CC -> dword+4C; owning view production not reconstructed in this packet."
+  },
+  "register_and_stack_audit": {
+    "unit_receiver": "ESI=ECX at0095DC47 and preserved across getters.",
+    "BL": "XOR BL,BL at0095DC49, then SETNZ BL at0095DCE4; remaining callees preserve EBX.",
+    "retained_settings": "PUSH EDI0095DCFD, first getter0095DCFE, MOV EDI,EAX0095DD03, second getter0095DD05; read both pointers then POP EDI0095DD14.",
+    "float_stack": "Native float parameter at ESP+14 after prologue; private elapsed at+8 (temporarily+C while EDI saved); source retains explicit arithmetic spills instead of native frame ABI."
+  },
+  "corrections": [
+    {
+      "was": "Older PLANE_FLIGHT materials interpret0095DC40 as a turbo double-tap detector.",
+      "is": "Settings producer identifies PlayerArtilleryThrow timing/rates; generic phase keeps actual fields and neutral input API.",
+      "evidence": "Existing GameplayTuningSettings names and native0083D998..0083DB4E producers."
+    },
+    {
+      "was": "Base gameplay_settings.cpp stores raw ThrowIncrement/DecrementTime durations at+38/+3C/+40.",
+      "is": "This consumer requires native reciprocal stored rates; separate throw-rates-m packet owns producer correction.",
+      "evidence": "FDIVRP at0083DA5A/0083DACF/0083DB44 followed stores0083DA64/0083DAD9/0083DB4E; no producer edits here."
+    }
+  ],
+  "runtime_limits": [
+    "Borrowed fields/canonical role/local cells and global slots must outlive call; no new full native unit or singleton/view owner.",
+    "Current role4==8 proves false for every possible local slot; standalone false-arm helper requires only actual writable+63C.",
+    "Assigned path requires action record153, valid timestamp/cutoff fields, actual clock/view chain and native-format settings rates.",
+    "Do not infer role, player, input or target defaults from missing runtime producers.",
+    "Synchronous callbacks may mutate live storage; arbitrary aliases, concurrent mutation, trap/SEH and native binary ABI remain outside contract.",
+    "GameUnitsHost/ShipAI/MissionFrame unchanged; no game execution claimed."
+  ],
+  "no_ghidra_function": [],
+  "false_free_call_gaps": [],
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "read_only": true,
+    "flow": "111 instructions, zero gaps"
+  },
+  "proof": {
+    "bytes": {
+      "original_executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "live_equals_disk": true,
+      "pieces": [
+        {
+          "name": "Body",
+          "entry": "0095DC40",
+          "size": 441,
+          "sha256": "34a055cb0d48d6bb4dc4e14ff6b5afff4cf6dbc46577807247e9f140dfed7e05"
+        },
+        {
+          "name": "Role",
+          "entry": "00927F30",
+          "size": 42,
+          "sha256": "aee2fd9534cd033d743d8d2a8f6faa578cdeec24e27de15f1430c04828ce743c"
+        }
+      ],
+      "absolute": [
+        {
+          "piece": "Body",
+          "offset": 28,
+          "target": 16283300,
+          "site": "0095DC58"
+        },
+        {
+          "piece": "Body",
+          "offset": 73,
+          "target": 14131736,
+          "site": "0095DC86"
+        },
+        {
+          "piece": "Body",
+          "offset": 150,
+          "target": 14784708,
+          "site": "0095DCD5"
+        },
+        {
+          "piece": "Body",
+          "offset": 236,
+          "target": 14131736,
+          "site": "0095DD29"
+        },
+        {
+          "piece": "Body",
+          "offset": 309,
+          "target": 14131788,
+          "site": "0095DD71"
+        },
+        {
+          "piece": "Body",
+          "offset": 325,
+          "target": 14131788,
+          "site": "0095DD81"
+        },
+        {
+          "piece": "Body",
+          "offset": 399,
+          "target": 14131788,
+          "site": "0095DDCB"
+        },
+        {
+          "piece": "Role",
+          "offset": 1,
+          "target": 14780584,
+          "site": "00927F30"
+        }
+      ],
+      "calls": [
+        {
+          "piece": "Body",
+          "offset": 12,
+          "target": 9600816,
+          "site": "0095DC4B"
+        },
+        {
+          "piece": "Body",
+          "offset": 48,
+          "target": 4975616,
+          "site": "0095DC6F"
+        },
+        {
+          "piece": "Body",
+          "offset": 168,
+          "target": 4344896,
+          "site": "0095DCE7"
+        },
+        {
+          "piece": "Body",
+          "offset": 191,
+          "target": 4344896,
+          "site": "0095DCFE"
+        },
+        {
+          "piece": "Body",
+          "offset": 198,
+          "target": 4344896,
+          "site": "0095DD05"
+        },
+        {
+          "piece": "Body",
+          "offset": 247,
+          "target": 4344896,
+          "site": "0095DD36"
+        },
+        {
+          "piece": "Body",
+          "offset": 339,
+          "target": 4344896,
+          "site": "0095DD92"
+        }
+      ]
+    },
+    "result": {
+      "cases": 48,
+      "native_bytes": 483,
+      "compared_unit_bytes": 89088,
+      "events_per_side": 165,
+      "mismatches": 0,
+      "x87_status_matches": true,
+      "stack_cleanup_matches": true
+    },
+    "exit_code": 0,
+    "source_compilation": "Ignored probe compiles src/unit_generic_input_phase.cpp directly with MSVC Win32 /O2 /fp:strict /W4 /WX and /MANIFEST:EMBED. Separate full CMake build verifies integration.",
+    "native_execution": "Full441-byte0095DC40 plus real42-byte00927F30. Seven CALL displacements and eight absolute operands relocated exactly from decoder metadata.",
+    "seams": "Only two singleton getter bodies are substituted by observed fixture providers returning actual-layout input/settings storage. Role predicate executes original bytes.",
+    "input_projections": "Game+18EC, E198C4/+CC/+4C and raw owner/action records are explicit fixture inputs, not native-owner construction or game setup.",
+    "comparison": "All740h unit bytes for48 paired cases, no masking/normalization. Getter event snapshots include+63C/+640/+644. Full x87 status words and native ESP cleanup compared.",
+    "cases": "16 branch/arithmetic scenarios at x87 precision24/53/64, selected quiet/signaling NaNs, zero/one clamps, invalid local slot, original role8 arm, retained settings returns with later mutation and clock capture before getter.",
+    "excluded": "Complete global/owner/settings buffers, MXCSR status, native singleton initialization/input polling/Lua loading/view production, arbitrary float environments and aliases, exceptions/traps and full game execution.",
+    "build": "scripts/build.ps1 Win32 Release; reconstructed_math and native_math_differential passed after verify-seeds",
+    "new_tracked_tests": 0,
+    "artifact_manifest": "local/generic_input_artifact_manifest.json"
+  },
+  "compiled_source_hashes": {
+    "include/bsp/unit_generic_input_phase.hpp": "b28e44507b1836990ce311e4abfd43ed65c2f1a1c600b111536d195a137f7ae4",
+    "src/unit_generic_input_phase.cpp": "f74b50b38b84d4fdadb1048eaf11eeffafd251cd15951fd7657b6fe14eeb52fc",
+    "local/generic_input_probe.cpp": "e08743eeaf8a990f87c57781f4708dae67a36e308192938f254222079083731d",
+    "build/win32/Release/bsp_core.lib": "b8529594d38ef1d4109bfbf6d1e019c79d19da5437b73ed52b98e993cdd29d29"
+  },
+  "verification_call_gate": {
+    "checked_rows": 7,
+    "failed_rows": 0,
+    "log": "local/generic_input_call_gate.txt"
+  }
+}
