@@ -1,0 +1,31 @@
+{
+  "packet": "orch3_cockpit_node_producer_be",
+  "date": "2026-09-13",
+  "base": "6be9ccb1185e85b84e4128b67802becd8beacd02",
+  "status": "producer_chain_recovered_asset_selected_profile_unresolved",
+  "target": {"project_file": "C:/Users/sqz269/bsp.gpr", "program_path": "/battlestationspacific.exe", "bridge": 8089},
+  "mutation": false,
+  "build_or_runtime_validation": false,
+  "field": "plane+808",
+  "name": "belsocockpit",
+  "name_address": "00ceb6ac",
+  "zero_writer": "007cfdba",
+  "lookup_call": "007d73d9",
+  "producer_write": "007d73de",
+  "helper_call": "007bc677",
+  "lookup": {"entry": "0071ad50", "last_byte": "0071ae0e", "abi": "ECX partSet, stack name, EAX borrowed node/null, RET4", "vector_offset": "7c", "record_stride": 8, "metadata_offset": 0, "node_offset": 4},
+  "resource_source": {"load_call": "00879763", "descriptor_50_write": "00879768", "resource_profile": "00cfd8cc", "instantiate_slot_08": "007137f0", "plane_selector": 6, "normal_scale_bits": "3f800000"},
+  "missing_definition": {"entry": "007137f0", "last_byte": "00713804", "size": 21, "instruction_count": 7, "abi": "ECX resource, stack selector then float scale, RET8", "callee": "00b891a0", "following_padding": "00713805..0071380f"},
+  "part_set": {"allocate": "0071aed0", "construct": "0071acd0", "size": 140, "profile": "00cfd8e0", "owner_store": "unitPart+160", "named_map_append_call": "0071b7f4", "source_resource_retain": "00b89f20"},
+  "factory_selection": {"default": "00d63218", "last_nonnull_override": "00b8924b", "force_group_test": "00b89474", "force_group_mask": 1, "force_group_field": "hierarchy+58", "create_call": "00b894bb"},
+  "note": {"profile": "00cfd860", "type_key_address": "00e19b54", "attach_slot_18": "00b86820", "factory_slot_1c": "006f9d30", "factory_result": null},
+  "profiles": [
+    {"kind": "model_base_default", "factory": "00b86720", "constructor": "00b743c0", "profile": "00d62d78", "terminal_00": "00bd30e0", "deleting_04": "00b74b60", "release_18": "00b6f310", "source_exact_provider_found": false},
+    {"kind": "group_flag_branch", "factory": "00b86780", "profile": "00d634f8", "terminal_00": "00bd30e0", "deleting_04": "00b8f8c0", "source_exact_provider": "NativeGroupReference"},
+    {"kind": "generated_model_existing_but_not_default", "profile": "00d62de8", "deleting_04": "00b75290", "source_exact_provider": "NativeModelReference"}
+  ],
+  "existing_registry": "GeneratedModelLifetimeRuntime::find_actual_node",
+  "search_scope": {"all_808_literal_matches": 129, "plane_direct_writers_checked": ["007cfdba", "007d73de"], "not_excluded": ["indexed or bulk writes", "aliases outside plane region", "runtime mutation"]},
+  "remaining": ["Selected Mesh hierarchy belsocockpit record flags and all attached factory results", "Exact runtime node profile and canonical companion binding", "Full part-set destructor and plane teardown ordering"],
+  "next_action": "Inspect asset-selected flags/factories or actual +808 vtable. Reuse existing registry and matching group/model-base/override provider; recover D62D78-specific terminal if default selected."
+}
