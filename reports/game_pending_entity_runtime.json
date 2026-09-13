@@ -1,0 +1,464 @@
+{
+  "packet": "orch6_pending_entity_runtime_s",
+  "base_commit": "fa1816859f4bb6805f934c172595f2edad1224ac",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_url": "http://127.0.0.1:8089",
+  "source": "src/game_pending_entity_runtime.cpp",
+  "header": "include/bsp/game_pending_entity_runtime.hpp",
+  "documentation": "docs/GAME_PENDING_ENTITY_RUNTIME.md",
+  "scope": "Concrete process-static ownership and real CRT callback binding over complete R wrappers; startup/frame/queue integration remains external",
+  "storage": {
+    "cpp_type": "NativePendingEntityOwners",
+    "cpp_identity": "bsp::game anonymous namespace process_owners",
+    "actual_destroy": "00f899a8",
+    "actual_kill": "00f899b4",
+    "bytes": 24,
+    "native_file_backed_bytes": 0,
+    "native_loader_zero_filled_bytes": 24,
+    "implicit_native_initialization": false,
+    "implicit_nontrivial_cpp_destruction": false,
+    "per_host_instance": false,
+    "reference_api": "bsp::game::game_pending_entity_owners()",
+    "reference_stability": "same raw pair before startup, after caller scope returns, and throughout both real CRT callbacks"
+  },
+  "coverage": [
+    {
+      "address": "00cd3910",
+      "source_symbol": "bsp::game::initialize_game_pending_destroy_owner_00cd3910",
+      "original_abi": "no native inputs, EAX registration status, RET",
+      "coverage": "complete process binding to R wrapper; new C++ lifetime composition, not new native algorithm"
+    },
+    {
+      "address": "00cd3940",
+      "source_symbol": "bsp::game::initialize_game_pending_kill_owner_00cd3940",
+      "original_abi": "no native inputs, EAX registration status, RET",
+      "coverage": "complete process binding to R wrapper; new C++ lifetime composition, not new native algorithm"
+    },
+    {
+      "address": "00cdf4a0",
+      "source_symbol": "pending_destroy_shutdown_00cdf4a0 (private)",
+      "original_abi": "no native inputs; ECX=F899A8; tail JMP924A70",
+      "coverage": "complete process binding to R wrapper; new C++ lifetime composition, not new native algorithm"
+    },
+    {
+      "address": "00cdf4b0",
+      "source_symbol": "pending_kill_shutdown_00cdf4b0 (private)",
+      "original_abi": "no native inputs; ECX=F899B4; tail JMP924A70",
+      "coverage": "complete process binding to R wrapper; new C++ lifetime composition, not new native algorithm"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00cd3915",
+      "native": "00924a50",
+      "function": "00cd3910",
+      "contract": "R provider: create actual sentinel, ECX unconsumed; EAX sentinel"
+    },
+    {
+      "address": "00cd392e",
+      "native": "00bf6ff5",
+      "function": "00cd3910",
+      "contract": "R provider: actual CRT registration; single callback argument, POP ECX after call, EAX unchanged"
+    },
+    {
+      "address": "00cd3945",
+      "native": "00924a50",
+      "function": "00cd3940",
+      "contract": "R provider: create actual sentinel, ECX unconsumed; EAX sentinel"
+    },
+    {
+      "address": "00cd395e",
+      "native": "00bf6ff5",
+      "function": "00cd3940",
+      "contract": "R provider: actual CRT registration; single callback argument, POP ECX after call, EAX unchanged"
+    },
+    {
+      "address": "00cdf4a5",
+      "native": "00924a70",
+      "function": "00cdf4a0",
+      "contract": "R provider: tail teardown of same process destroy list",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cdf4b5",
+      "native": "00924a70",
+      "function": "00cdf4b0",
+      "contract": "R provider: tail teardown of same process kill list",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cd2d85",
+      "native": "008d7710",
+      "function": "00cd2d80",
+      "contract": "ordering evidence only: call_008d7710 external existing settings provider"
+    },
+    {
+      "address": "00cd2d8f",
+      "native": "00bf6ff5",
+      "function": "00cd2d80",
+      "contract": "ordering evidence only: registerCDEEC0, POP ECX consumes callback pointer"
+    },
+    {
+      "address": "00ccd6a0",
+      "native": "00696360",
+      "function": "00ccd6a0",
+      "contract": "ordering evidence only: existing observer getter; this initializer itself makes no atexit call"
+    },
+    {
+      "address": "00cdeec5",
+      "native": "008d78d0",
+      "function": "00cdeec0",
+      "contract": "ordering evidence only: external target of earlier registeredCDEEC0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00bf6ff9",
+      "native": "00bf6fb9",
+      "function": "00bf6ff5",
+      "contract": "native CRT evidence: atexit forwards callback to locked registration"
+    },
+    {
+      "address": "00bf6fd1",
+      "native": "00bf6ed1",
+      "function": "00bf6fb9",
+      "contract": "native CRT evidence: locked registration forwards callback to append implementation"
+    },
+    {
+      "address": "00bfbc8b",
+      "native": "00bf6ff5",
+      "function": "00bfbc47",
+      "contract": "native CRT evidence: earlier CRT registration before ascending C++ table walk"
+    }
+  ],
+  "spans": [
+    {
+      "address": "00cd3910",
+      "length": 37,
+      "end_exclusive": "00cd3935",
+      "role": "pending_initializer",
+      "sha256": "487d8179429391db5afac8822371dea845a7955bfac57a0baad3b2d12367be63",
+      "live_matches_pe_loaded_image": true,
+      "section": ".text",
+      "file_backed_bytes": 37,
+      "loader_zero_filled_bytes": 0
+    },
+    {
+      "address": "00cd3940",
+      "length": 37,
+      "end_exclusive": "00cd3965",
+      "role": "pending_initializer",
+      "sha256": "f3bdf1af8ad9300476799d9756e00c46571a8edc92c6828729ca4c373d4638bf",
+      "live_matches_pe_loaded_image": true,
+      "section": ".text",
+      "file_backed_bytes": 37,
+      "loader_zero_filled_bytes": 0
+    },
+    {
+      "address": "00cdf4a0",
+      "length": 10,
+      "end_exclusive": "00cdf4aa",
+      "role": "pending_exit_thunk",
+      "sha256": "0b0fba43879c441982cacc313d1cd77552abdb61a64ca1161a14269a60846fdd",
+      "live_matches_pe_loaded_image": true,
+      "section": ".text",
+      "file_backed_bytes": 10,
+      "loader_zero_filled_bytes": 0
+    },
+    {
+      "address": "00cdf4b0",
+      "length": 10,
+      "end_exclusive": "00cdf4ba",
+      "role": "pending_exit_thunk",
+      "sha256": "8dfcc09d36c2987b3bc6aca33419ed220eee6f9a4db1b2d9b2358b254f2a5f51",
+      "live_matches_pe_loaded_image": true,
+      "section": ".text",
+      "file_backed_bytes": 10,
+      "loader_zero_filled_bytes": 0
+    },
+    {
+      "address": "00ccd6a0",
+      "length": 14,
+      "end_exclusive": "00ccd6ae",
+      "role": "earlier_observer_initializer",
+      "sha256": "5bc27e98c8c903cfcb835a8880eaacaf2603697195d315069bc6d689c2e0946c",
+      "live_matches_pe_loaded_image": true,
+      "section": ".text",
+      "file_backed_bytes": 14,
+      "loader_zero_filled_bytes": 0
+    },
+    {
+      "address": "00cd2d80",
+      "length": 22,
+      "end_exclusive": "00cd2d96",
+      "role": "earlier_settings_initializer",
+      "sha256": "1f99bd5288799e10472ebc9cbd10af8f87681e74f33f122dd99dc25cb58481b8",
+      "live_matches_pe_loaded_image": true,
+      "section": ".text",
+      "file_backed_bytes": 22,
+      "loader_zero_filled_bytes": 0
+    },
+    {
+      "address": "00cdeec0",
+      "length": 10,
+      "end_exclusive": "00cdeeca",
+      "role": "settings_exit_thunk",
+      "sha256": "831ee0e3e00c225b2f374334380da0557767db9ad5eaf6d545fcb0ee222fbb9d",
+      "live_matches_pe_loaded_image": true,
+      "section": ".text",
+      "file_backed_bytes": 10,
+      "loader_zero_filled_bytes": 0
+    },
+    {
+      "address": "00bfbc47",
+      "length": 146,
+      "end_exclusive": "00bfbcd9",
+      "role": "cxx_initializer_walker",
+      "sha256": "f7ec982f84c4a0c364ffb44ddb181f37268086f5ae5240bbc575143d373922f1",
+      "live_matches_pe_loaded_image": true,
+      "section": ".text",
+      "file_backed_bytes": 146,
+      "loader_zero_filled_bytes": 0
+    },
+    {
+      "address": "00bf6ed1",
+      "length": 185,
+      "end_exclusive": "00bf6f8a",
+      "role": "onexit_append",
+      "sha256": "43495f9c2d74fd78ba0322b149e03dc4f39121d32f5516c72400488952e85f15",
+      "live_matches_pe_loaded_image": true,
+      "section": ".text",
+      "file_backed_bytes": 185,
+      "loader_zero_filled_bytes": 0
+    },
+    {
+      "address": "00bf6fb9",
+      "length": 54,
+      "end_exclusive": "00bf6fef",
+      "role": "onexit_registration_lock",
+      "sha256": "7608521a2c02ea42523f647610e04e419867cc0280d686d18b595d6e3ca2215f",
+      "live_matches_pe_loaded_image": true,
+      "section": ".text",
+      "file_backed_bytes": 54,
+      "loader_zero_filled_bytes": 0
+    },
+    {
+      "address": "00bf6ff5",
+      "length": 18,
+      "end_exclusive": "00bf7007",
+      "role": "atexit_status_wrapper",
+      "sha256": "09942fe4905f48be972c0e6824f517bcc0cde802100baff5d8a61369ddad30b6",
+      "live_matches_pe_loaded_image": true,
+      "section": ".text",
+      "file_backed_bytes": 18,
+      "loader_zero_filled_bytes": 0
+    },
+    {
+      "address": "00bfbcd9",
+      "length": 226,
+      "end_exclusive": "00bfbdbb",
+      "role": "exit_backward_walker",
+      "sha256": "cd17c5ca7e5249c6c12791b90ee601d95aaf8c06138e43dfeebcecce841194bb",
+      "live_matches_pe_loaded_image": true,
+      "section": ".text",
+      "file_backed_bytes": 226,
+      "loader_zero_filled_bytes": 0
+    },
+    {
+      "address": "00ce2734",
+      "length": 4016,
+      "end_exclusive": "00ce36e4",
+      "role": "complete_cxx_initializer_table",
+      "sha256": "1cd1050e082b0044f85199f8575e894f3162063f254f3a98df89de22d344bab8",
+      "live_matches_pe_loaded_image": true,
+      "section": ".rdata",
+      "file_backed_bytes": 4016,
+      "loader_zero_filled_bytes": 0
+    },
+    {
+      "address": "00f899a8",
+      "length": 24,
+      "end_exclusive": "00f899c0",
+      "role": "actual_static_owner_preimage",
+      "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0",
+      "live_matches_pe_loaded_image": true,
+      "section": ".data",
+      "file_backed_bytes": 0,
+      "loader_zero_filled_bytes": 24
+    }
+  ],
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "initializer_table": {
+    "begin": "00ce2734",
+    "end_exclusive": "00ce36e4",
+    "cells": 1004,
+    "ordered_entries": [
+      {
+        "target": "00ccd6a0",
+        "table_index": 286,
+        "pointer_slot": "00ce2bac",
+        "occurrences_in_table": 1
+      },
+      {
+        "target": "00cd2d80",
+        "table_index": 584,
+        "pointer_slot": "00ce3054",
+        "occurrences_in_table": 1
+      },
+      {
+        "target": "00cd3910",
+        "table_index": 611,
+        "pointer_slot": "00ce30c0",
+        "occurrences_in_table": 1
+      },
+      {
+        "target": "00cd3940",
+        "table_index": 612,
+        "pointer_slot": "00ce30c4",
+        "occurrences_in_table": 1
+      }
+    ],
+    "direction": "increasing address; BFBCA7 indirect call; ADD ESI,4 atBFBCA9"
+  },
+  "native_atexit": {
+    "append": "BF6F6A store encoded callback, BF6F6C ADD EDI,4, BF6F76 publish encoded end",
+    "reverse_dispatch": "BFBD35 SUB ESI,4 before bound check; BFBD57 indirect callback; BFBD59 jump back",
+    "relative_pending_exit_order": [
+      "00cdf4b0",
+      "00cdf4a0",
+      "00cdeec0"
+    ],
+    "observer_direct_registration": false,
+    "conditions": "all three registrations succeed, normal CRT shutdown; intervening unrelated callbacks not reconstructed"
+  },
+  "indirect_order_sites": [
+    {
+      "call_site": "00bfbca7",
+      "containing_function": "00bfbc47",
+      "target_expression": "EAX from ascending initializer table",
+      "verification": "complete table+walker bytes; direct-call gate does not validate target resolution"
+    },
+    {
+      "call_site": "00bfbd57",
+      "containing_function": "00bfbcd9",
+      "target_expression": "decoded callback at predecremented ESI",
+      "verification": "complete backward-walker bytes; original CRT code not executed"
+    }
+  ],
+  "crt_binding": {
+    "registration_provider": "std::atexit",
+    "registration_context": "nullptr; not retained or dereferenced",
+    "callbacks": "private noncapturing process functions calling R destructors against same raw process storage",
+    "success_order": [
+      "00cdf4b0",
+      "00cdf4a0"
+    ],
+    "failure_behavior": "return actual status unchanged; keep initialized list; no invented callback or rollback",
+    "once_only_startup": "required precondition; no implicit initializer or repeated-startup guard",
+    "default_unknown_identity": "std::terminate binding guard; unreachable from both fixed R wrappers; not a recovered native branch"
+  },
+  "verification": {
+    "strict_win32_release_build": "PASS scripts/build.ps1",
+    "existing_ctests": {
+      "passed": 2,
+      "failed": 0,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential"
+      ]
+    },
+    "seed_ranges_matched": 8,
+    "source_composition_cases": 1,
+    "real_crt_exit_witness_phases": 3,
+    "fixture_exit_code": 0,
+    "provider_interception_or_rebinding": false,
+    "explicit_fixture_teardown": false,
+    "library_member_proof": [
+      "game_pending_entity_runtime.obj",
+      "native_pending_entity_owners.obj",
+      "native_live_effect_manager.obj",
+      "singleton_lifetime.obj"
+    ],
+    "library_member_map": "local/pending-runtime-proof/pending_runtime_probe.map",
+    "object_symbol_proof": "one static process_owners; external _atexit; no dynamic initializer/destructor or .CRT$XCU entry",
+    "direct_call_rows_passed": 13,
+    "direct_call_rows_failed": 0,
+    "native_indirect_order_sites": 2,
+    "new_native_algorithm_cases": 0,
+    "original_native_crt_executed": false,
+    "game_executed": false,
+    "real_registration_failure_forced": false,
+    "failure_semantics": "static direct-return composition; R separately tested failed registration and allocation",
+    "permanent_tests_added": 0,
+    "build_failures": [],
+    "fixture_failures": [],
+    "packaging_failure": {
+      "stage": "initial dependency lookup in write-report.py, followed by premature report gate",
+      "exit_code": 1,
+      "first_error": "FileNotFoundError: original R local/pending-owner-proof/manifest.json",
+      "second_error": "FileNotFoundError: reports/game_pending_entity_runtime.json (first script had not written it)",
+      "cause": "Primary integrator had completed the verified R archive and removed its original worktree before S dependency copying.",
+      "missing_path": "J:/PROG/battlestations-pacific-decompile-orch6-native-pending-entity-owners-r/local/pending-owner-proof/manifest.json",
+      "remedy": "Use the integrator-provided retained archive path, assert the unchanged expected R manifest SHA256, retain its archive map and a local copy of both. Gate runs after successful report generation.",
+      "archived_manifest": "J:/PROG/battlestations-pacific-decompile-orch6-20260912/local/worker_evidence_r/orch6-native-pending-entity-owners-r/local/pending-owner-proof/manifest.json",
+      "expected_sha256": "3a2af5b68fa8a7d74350fcf29db2f640c261c5fa2a5bffce47ab6a943d58a124",
+      "failed_input_script": "local/pending-runtime-proof/write-report-initial.py",
+      "build_or_fixture_failure": false
+    }
+  },
+  "ghidra_mutations": false,
+  "ghidra_names": "R names applied by primary integrator during S read-only evidence collection; final four-name readback retained",
+  "remaining": [
+    "Root startup ordering integration",
+    "Existing PendingEntityQueueHost borrowing and drain/producer/cancel operations",
+    "Whole event delivery and entity payload lifetime",
+    "Original CRT/EH execution and game validation",
+    "Concurrent shutdown/corrupted rings/module unloading"
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "original_native_crt_executed": false,
+  "r_dependency_manifest": {
+    "source_path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\worker_evidence_r\\orch6-native-pending-entity-owners-r\\local\\pending-owner-proof\\manifest.json",
+    "retained_copy": "local/pending-runtime-proof/r-owner-manifest.json",
+    "sha256": "3a2af5b68fa8a7d74350fcf29db2f640c261c5fa2a5bffce47ab6a943d58a124",
+    "role": "R native behavior/canonical-provider proof dependency; S fixture does not rerun the R native differential cases",
+    "historical_internal_paths": "Original R worktree was archived and removed by primary integrator. Resolve its 145 artifacts through retained r-archive-map.json."
+  },
+  "r_dependency_archive_map": {
+    "source_path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_worker_archive_r.json",
+    "retained_copy": "local/pending-runtime-proof/r-archive-map.json",
+    "sha256": "9ee4b6ee45246ff69dec1ff6fc22fed2c230227e48117de423086b5b8986e368"
+  },
+  "compiler_provenance_erratum": {
+    "r_manifest_unchanged": true,
+    "was": "R retained Hostx64/x86 compiler and linker binary artifacts; fixture command invoked vcvars32.bat",
+    "is": "vcvars32.bat selects x86 and S where-cl/where-link resolution is Hostx86/x86. R lacked hashes of those fixture compiler/linker binaries; S records resolved paths and hashes.",
+    "evidence": "local/pending-runtime-proof/toolchain.log; actual vcvars32.bat in S artifact manifest",
+    "resolved_fixture_tools": [
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\cl.exe",
+        "sha256": "33ee095d65686e5f4caedd7d52b74fbba8447b2ef4b07019a9dca58c5cb74e5c"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\link.exe",
+        "sha256": "b00f360e373955590d61ca2a5e43f504365edf555d9e80d28fd1cbc0bcd59438"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\dumpbin.exe",
+        "sha256": "61954eaf4559430bbee7429b6dc63457fdf42e1f6a3949ac6eabdc6590738410"
+      }
+    ],
+    "vcvars32": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvars32.bat",
+      "sha256": "e0f12ba374968f55ce898ee0384eb9c9b989cc3b499e3c0d553368ad223e28c8"
+    },
+    "limit": "No change to immutable R proof or independently verified source/library/object/executable/result artifacts."
+  },
+  "evidence_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-pending-entity-runtime-s\\local\\pending-runtime-proof\\manifest.json",
+    "relative_path": "local/pending-runtime-proof/manifest.json",
+    "sha256": "11f5450de59ed72c6466f6ca33f1b61b894941e4e3def4c9033a0085683bd652",
+    "artifacts": 143
+  }
+}
