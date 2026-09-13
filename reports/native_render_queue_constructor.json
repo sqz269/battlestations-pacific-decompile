@@ -1,6 +1,6 @@
 {
   "packet": "orch3_render_queue_constructor_ax",
-  "status": "reconstructed_complete_owned_source_strict_compiled_standard_build_and_original_fixture_passed",
+  "status": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
   "port": 8089,
@@ -435,7 +435,7 @@
   },
   "corrections": [],
   "integration_ax_review": {
-    "combined_validation": "pending exact merged source build and current-library replay",
+    "combined_validation": "passed exact merged Win32 build and three current-library-only probes within documented coverage",
     "game_validated": false,
     "saved_function_names_and_original_signatures": 4,
     "signature_readback_passed": true,
@@ -574,5 +574,13 @@
     },
     "cross_review": "Independent complete-listing reviews checked the queue constructor preexisting control and EH cleanup, raw presentation flags and six native slots, current profiles and gamma outgoing x87 slot, and complete Reset flag-read/retry/focus/HRESULT/Sleep/output ordering. Readiness corrections establish initialization B2B1CC writes pending1 and B2B1D2 calls Reset, alongside BeginFrame B2B229.",
     "current_report_call_check": "reports/native_render_queue_constructor.json: 9 call rows checked, 0 failed"
-  }
+  },
+  "final_merged_validation_ax": {
+    "report": "reports/native_renderer_reset_ax_validation.json",
+    "tested_commit": "16dcc9e774a8d33eab4cb9565155d4c151bbd242",
+    "existing_ctests_passed": 2,
+    "three_current_library_only_replays_passed": true,
+    "game_validated": false
+  },
+  "worker_capture_status": "reconstructed_complete_owned_source_strict_compiled_standard_build_and_original_fixture_passed"
 }

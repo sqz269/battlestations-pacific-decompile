@@ -10228,6 +10228,64 @@
       "evidence": "reports/native_renderer_device_recreation_actual.json",
       "new_native_bodies": 1,
       "boundary": "Actual owner/service domains and bounded parent/leaf fixture coverage; whole Reset/startup/render/gameplay unverified; see reports/native_renderer_device_recreation_aw_validation.json"
+    },
+    {
+      "id": "orch3_native_render_queue_constructor_ax",
+      "packet": "orch3_native_render_queue_constructor_ax",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+      "function_addresses": [
+        "00b1f280"
+      ],
+      "code_ownership": [
+        "include/bsp/native_render_queue_constructor.hpp",
+        "src/native_render_queue_constructor.cpp",
+        "docs/NATIVE_RENDER_QUEUE_CONSTRUCTOR.md",
+        "reports/native_render_queue_constructor.json"
+      ],
+      "evidence": "reports/native_render_queue_constructor.json",
+      "new_native_bodies": 1,
+      "boundary": "Actual owner/service domains and bounded original-byte fixtures; whole startup/render/gameplay unverified; see reports/native_renderer_reset_ax_validation.json"
+    },
+    {
+      "id": "orch3_native_renderer_presentation_mode_ax",
+      "packet": "orch3_native_renderer_presentation_mode_ax",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+      "function_addresses": [
+        "00b29e60"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_presentation_mode.hpp",
+        "src/native_renderer_presentation_mode.cpp",
+        "docs/NATIVE_RENDERER_PRESENTATION_MODE.md",
+        "reports/native_renderer_presentation_mode.json"
+      ],
+      "evidence": "reports/native_renderer_presentation_mode.json",
+      "new_native_bodies": 1,
+      "boundary": "Actual owner/service domains and bounded original-byte fixtures; whole startup/render/gameplay unverified; see reports/native_renderer_reset_ax_validation.json"
+    },
+    {
+      "id": "orch3_native_renderer_reset_process_ax",
+      "packet": "orch3_native_renderer_reset_process_ax",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+      "function_addresses": [
+        "00b2abd0",
+        "00bec230"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_reset_process.hpp",
+        "src/native_renderer_reset_process.cpp",
+        "docs/NATIVE_RENDERER_RESET_PROCESS.md",
+        "reports/native_renderer_reset_process.json"
+      ],
+      "evidence": "reports/native_renderer_reset_process.json",
+      "new_native_bodies": 2,
+      "boundary": "Actual owner/service domains and bounded original-byte fixtures; whole startup/render/gameplay unverified; see reports/native_renderer_reset_ax_validation.json"
     }
   ],
   "snapshot_after_analysis": {

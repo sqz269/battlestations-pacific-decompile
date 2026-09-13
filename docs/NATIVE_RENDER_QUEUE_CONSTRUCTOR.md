@@ -111,3 +111,12 @@ the Ghidra write lock. Missing-function observations above describe the
 earlier worker capture. EH definitions are analysis metadata, not additional
 reconstructed normal-body claims. Combined final-commit validation remains
 separate from the worker fixture evidence.
+
+## AX exact merged validation
+
+The exact combined source commit `16dcc9e774a8d33eab4cb9565155d4c151bbd242` passed the Win32 build,
+both existing tests and three current-library-only original-byte fixtures.
+Full counts, original-byte relocation, exception branches and Reset coverage
+are recorded in `reports/native_renderer_reset_ax_validation.json`.
+Earlier pending statements describe initial capture stages. These results
+do not establish whole-game rendering, native ABI identity or general concurrency.
