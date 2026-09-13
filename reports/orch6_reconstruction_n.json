@@ -1,48 +1,34 @@
 {
-  "packet": "orch6_world_registration_live_n",
-  "status": "integrated_build_and_process_tested_normal_registration_binding",
-  "source": "src/game_hosts_units.cpp",
-  "header": "include/bsp/game_hosts_units.hpp",
-  "calls": [
+  "packet": "orch6_reconstruction_n",
+  "status": "Three N packets and actual runtime registrar binding integrated and checked",
+  "packets": [
     {
-      "address": "00484546",
-      "native": "00BF681B",
-      "function": "00484540",
-      "binding": "normal12-byte node allocation; native null-return and EH behavior not emulated"
+      "packet": "neighbour-admission-n",
+      "commit": "4d8ba32e73c51a406513fc450d6e7df349e7614e",
+      "report": "reports/ship_ai_neighbour_admission.json",
+      "fixture": "23 original-byte cases and 3532 words matched; allocator-throw source case also passed.",
+      "call_rows_checked": 22
     },
     {
-      "address": "004CB076",
-      "native": "00BF7CD1",
-      "function": "004CB030",
-      "binding": "native vector constructor evidence for97 triples, constructor004B7EC0"
+      "packet": "neighbour-candidates-n",
+      "commit": "0cb8628da499686d90113ae008b3c47f23c1b4ad",
+      "report": "reports/ship_ai_neighbour_candidates.json",
+      "fixture": "27 walk plus 15 timer cases across x87 PC24/53/64 matched; 153 events per side.",
+      "call_rows_checked": 13
     },
     {
-      "address": "009288F1",
-      "native": "unit+vtable130",
-      "function": "00928860",
-      "kind": "indirect",
-      "binding": "21 actual descriptor creators map to constructor-proven primary tables and registrars; tables checked in N report"
+      "packet": "unit-world-registration-n",
+      "commit": "f35fbfc45c1ead1372a04bc86bb635dea24a1f4f",
+      "report": "reports/unit_world_registration.json",
+      "fixture": "23 original bodies and 42 stable/mutating-parent scenarios; 488 pushes per side matched.",
+      "call_rows_checked": 176
     }
   ],
-  "producer_evidence": {
-    "parent_store": "00925906 copies native world argument into unit+30h",
-    "triple_constructor": "004B7EC0..004B7ECC clears count/head/tail",
-    "constructor_argument": "004CB065 PUSH004B7EC0",
-    "destructor_argument": "004CB060 PUSH004C2D30",
-    "node_sequence": "00484554..00484594 preserves payload,prev,next,head,tail,count order"
-  },
-  "dependencies": [
-    "reports/unit_world_registration.json"
-  ],
-  "no_ghidra_function": [],
-  "abi_compatible": false,
-  "game_validated": false,
-  "limits": [
-    "The runtime registry is a semantic mission owner, not a raw4BCh native world.",
-    "Full placement, parent locking, activation/hierarchy links and scene-node construction remain separate.",
-    "Native allocator null-return behavior, EH unwind and world/observer teardown are not claimed.",
-    "Candidate collection, RNG/timer/lock and complete observer ownership are not enabled by this binding.",
-    "Original-byte registrar fixtures and actual runtime list audits establish separate scopes."
+  "root_corrections": [
+    "Runtime selects the actual creator-proven primary-vtable registrar; all units no longer use the destroyer registrar.",
+    "Mission-owned registry retains 97 count/head/tail triples and stable 12-byte direct-unit nodes; parent is reloaded at each push.",
+    "004CB030 vector callbacks corrected: 004B7EC0 constructor, 004C2D30 destructor.",
+    "00963C80/00963E90 class predicates formally defined, evidence-named, saved and exported."
   ],
   "validation": {
     "compiled_commit": "6978250300d3dbcb59ca24c4ac631f6291ff8f7e",
@@ -168,5 +154,27 @@
       ]
     },
     "scope": "Original-byte worker fixtures and the combined reconstructed process establish separate scopes; neither proves original-game visual/gameplay equivalence."
-  }
+  },
+  "evidence_archive": {
+    "index": "local/orch6_worker_archive_n.json",
+    "artifacts": 346,
+    "worktree_counts": {
+      "battlestations-pacific-decompile-orch6-neighbour-admission-n": 44,
+      "battlestations-pacific-decompile-orch6-neighbour-candidates-n": 24,
+      "battlestations-pacific-decompile-orch6-unit-world-registration-n": 278
+    },
+    "verification": "All archived file hashes matched before cleanup; nested manifest maps included."
+  },
+  "abi_compatible": false,
+  "game_validated": false,
+  "limits": [
+    "The runtime registry is a semantic mission owner, not a raw4BCh native world.",
+    "Full placement, parent locking, activation/hierarchy links and scene-node construction remain separate.",
+    "Native allocator null-return behavior, EH unwind and world/observer teardown are not claimed.",
+    "Candidate collection, RNG/timer/lock and complete observer ownership are not enabled by this binding.",
+    "Original-byte registrar fixtures and actual runtime list audits establish separate scopes.",
+    "Admission complete node construction remains an injected owner service; partial fields do not establish observer lifetime.",
+    "Candidate collection remains unbound until actual timer, RNG, lock, flags and observer owners are established.",
+    "Finite 120-frame USN01 process evidence does not establish repeat-load or original-game visual/gameplay parity."
+  ]
 }
