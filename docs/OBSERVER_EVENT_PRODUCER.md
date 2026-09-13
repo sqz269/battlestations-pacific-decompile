@@ -151,6 +151,11 @@ are native/source alternatives in this fixture. The shared scheduler, Q node
 callback and lifetime operations are dependencies; this probe does not
 independently establish their equivalence to the original algorithms.
 
+The final dependency uses the scheduler's private size-restoration adapter
+and existing canonical count insertion. It introduces no standalone STL
+resize/erase implementation. Its guarantee requires valid vector storage;
+returning validation handlers that mutate that storage are outside coverage.
+
 Both sides use the recovered dispatcher, Q node constructor/callback/lifetime,
 actual edge arrays and locks, and actual14h dispatch owner plus00CCD6A0
 publication. A single existing semantic fixture lifetime domain bootstraps
@@ -194,7 +199,7 @@ as targets. Seven additional symbolic indirect/import rows are reported as
 skipped. Their targets and stack behavior are supported separately by the
 retained listings, live/installed table words and exercised native bytes.
 
-`local/event_proof_manifest.json` preserves the probe source, executables,
+`local/event_proof_manifest_final.json` preserves the probe source, executables,
 objects, original bytes, records, scripts and build logs, including the
 interrupted build and the report-generator syntax failure. It retains all
 nine distinct archives searched by the verbose link: the three explicitly
@@ -203,3 +208,7 @@ does not mean every library contributed an object. The peer schedule source
 and header used for this build are copied only under ignored
 `local/event_dependency`; a clean integrated build requires the separately
 owned schedule packet.
+
+The earlier dependency build and probe remain intact at
+`local/event_proof_manifest.json`. The final manifest records the reviewed
+peer source/header hashes and refreshed libraries, build and probe results.

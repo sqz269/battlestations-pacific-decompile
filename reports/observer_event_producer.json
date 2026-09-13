@@ -488,15 +488,16 @@
   ],
   "dependencies": {
     "peer_schedule_source": "local/event_dependency/src/observer_dispatch_schedule.cpp",
-    "peer_schedule_sha256": "cf0ffbe854b600d48c78743e7c25abf007cb7e896b589ad9fd13066b895f0cfa",
-    "peer_header_sha256": "93809b11c29c8f1403dacf8b573eb81bf6df174e769ccd7f936b1067f961b0cc",
+    "peer_schedule_sha256": "f85eaa653bb4447a54c06cd24d823d1a2a0304ee85ce6c9942a25955bc72beec",
+    "peer_header_sha256": "beeefe771d92181c3cd8c196da8f9328e61c865665da58a0c99175366b4a540a",
     "root_short_function_definitions": "reports/observer_event_function_definitions.json",
+    "schedule_review": "Final peer uses private size restoration and canonical count insertion, without standalone STL erase/resize copies; requires valid storage and excludes returning validation handlers that mutate it",
     "declaration": "ObserverEventDeliveryContext borrows the existing lifetime, actual E198E4 publication and callback providers; no new runtime owner or scheduler"
   },
   "validation": {
     "build": "MSVC Win32 Release passed",
     "ctest_passed": 2,
-    "seed_verification": "local/event_verify_seeds_resume.txt",
+    "seed_verification": "local/event_verify_seeds_refreshed.txt",
     "paired_probe": {
       "pairs": 5,
       "record_words_per_side": 913,
@@ -515,8 +516,10 @@
       "evidence": "local/event_report_calls.txt",
       "limit": "Verifier checks bodies but cannot verify indirect numeric targets; these targets use separate table/listing/native evidence"
     },
-    "manifest": "local/event_proof_manifest.json",
-    "manifest_sha256": "257a087fbb1e597d50c9c54d1a5099354a3d665212dd0b1fc789eae5d9c2c1b2",
+    "manifest": "local/event_proof_manifest_final.json",
+    "manifest_sha256": "0d31860794c93bc53bf808aaae9261adb00ac0d15d7bdb170523ff8be1fd25bd",
+    "prior_manifest": "local/event_proof_manifest.json",
+    "prior_manifest_sha256": "257a087fbb1e597d50c9c54d1a5099354a3d665212dd0b1fc789eae5d9c2c1b2",
     "library_archive_count": 9,
     "explicit_release_library_count": 3,
     "boundary": "Only R wrappers/getters are native/source alternatives. Recovered schedule, Q node constructor/callback/lifetime and CRT/Win32 services are shared dependencies; five fixture pairs do not independently validate those algorithms."
@@ -524,6 +527,7 @@
   "limits": [
     "New C++ ABI; not native ABI-compatible.",
     "No game validation, full native unit constructor, arbitrary callback table, EH/OOM or concurrency equivalence.",
+    "The reviewed schedule dependency requires valid vector storage; mutation by returning validation handlers is outside the private restoration adapter guarantee.",
     "Selected state/order only: canonical endpoint/node identities, actual lock counts and vector occupancy, node owner/flags and 83 constructor-untouched bytes. Not whole heap/lock/private-byte equivalence.",
     "Initial interrupted build log and successful resumed/verbose probe attempts retained; no failure logs discarded.",
     "Full reconstructed dispatcher is a separately owned peer dependency, temporarily copied only under ignored local for this build. Integrator must merge the peer packet before a clean production build."
