@@ -1,0 +1,668 @@
+{
+  "packet": "orch2_native_az_ledger_audit",
+  "status": "read_only_structural_audit_passed_two_metadata_corrections_reported",
+  "role": "Independent integrated source, report, name, range, count and registration audit; no source or Ghidra ownership.",
+  "new_native_bodies": 0,
+  "new_native_bytes": 0,
+  "audited_new_native_bodies": 30,
+  "audited_native_bytes": 3792,
+  "snapshot": {
+    "primary_worktree": "J:\\PROG\\battlestations-pacific-decompile-orch2-20260910",
+    "primary_head": "529025f3fd6bd28f55c7ac69d5a5c4826b9b62d0",
+    "captured_at_utc": "2026-09-13T06:05:52.332856+00:00",
+    "working_tree_note": "Primary integration metadata was still being finalized; source and report file hashes identify the inspected state beyond HEAD.",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "integration_status_at_inspection": "components_integrated_combined_win32_passed_final_replays_pending",
+    "input_sha256": {
+      "src/native_mpak_entry.cpp": "5632ab4ce80a066ebcbc48e2e83a83495b9c6308b5769857211cb9baec011e90",
+      "include/bsp/native_mpak_entry.hpp": "4052c590148137374139d668e318ad9c10181f968a3605d4cf45837b5f1a5152",
+      "reports/native_mpak_entry.json": "09d21baeed3957f6edd82a3d671731d281b4e2ed9e242ec1dd18901c32c17141",
+      "src/native_raw_inflate_owner.cpp": "cee75de05b43224f6343fe582602ffbe6af6c1d66e0fbfa66ff3a0343b24a086",
+      "include/bsp/native_raw_inflate_owner.hpp": "261cdd63b5234e3b7ad739bfe778748ecb35323e0f0d687a050f5118e02b3ce8",
+      "src/native_mpak_open.cpp": "c5e49b207b469434b0706417711e070c6f8a67762ec494da1e6e0d6f5a2afb3c",
+      "include/bsp/native_mpak_open.hpp": "099a4915b4f2601e25cd14e1853c30af104399d17bda7762e8241931432ead9e",
+      "reports/native_mpak_open.json": "f843ec28616c7f883e3b3f78219d6bc89f718b716e5a3675857bffcb226ed2b7",
+      "src/native_mpak_enumeration.cpp": "3953519e42a1b42f7c56912403e110a6e6c39f375964fdfc44ed1eb906049c7b",
+      "include/bsp/native_mpak_enumeration.hpp": "05e721b244747f0b23d1b5b80b4ef4066fdbfd290a3c3cc80033e475bf415fc7",
+      "reports/native_mpak_enumeration.json": "47f3acd4448331ad30c62ce9899909f6d044c85e1321cc8fb8a5e231d9676c10",
+      "src/native_raw_inflate_stream.cpp": "53a62985979ad90643e8eae6b0d563f6c9f3419d653f4897bf934c903ac920e2",
+      "include/bsp/native_raw_inflate_stream.hpp": "2bb588f4ab21a525dd3ca03197767ed6bf7ea665b8859e972af14dd099ff2ee8",
+      "reports/native_raw_inflate_stream.json": "840e955c428ea00d7f36f733034d31ac5a4b0f85b8e831c80a65402a251eb444",
+      "src/native_vfs_device_route.cpp": "09bb76bd0bc6f98253f261c9f8280edcf489ec9718beef72273b6c47780888d8",
+      "include/bsp/native_vfs_device_route.hpp": "49a502542511e8e860b8f030baa3aa796131ed9a69d3b892e62f768ed94cd445",
+      "reports/native_vfs_device_route.json": "9c5cf51e7a63caa88f493aeabc2d224d97de0a2bd4b0f7261b1758a9c05cbc49",
+      "src/native_mpak_runtime.cpp": "14d8c7958a4df95763863d53b6958b1b4151efb39ca4d82f46445bc5668d7b12",
+      "include/bsp/native_mpak_runtime.hpp": "1c61dd3620f95e637487c492a6e29644ca3414e7b318f74945fae9b44571cca0",
+      "reports/native_mpak_runtime.json": "fad6dcfdb480d5dfa039bbf025ddeb8c566684268313ec50c3236d187a360d94",
+      "cmake/startup.cmake": "c46f68d9c276d7ba088fbb25c8d4bf77884496fee3b2e48cb1ec5a78fcee666a",
+      "reports/native_az_integration.json": "9f2805e52037a0ca3e304bc2f9fe5b2c2ba8258876785a03b15116b0da4fd555"
+    },
+    "selected_ledger_cards": "local/az_ledger_cards.json",
+    "selected_ledger_cards_sha256": "a7a6bb98c71b81c1f08a0276b392a0539f3e25c6cf30d32c8836d6b95cd2f37a",
+    "local_verification": "local/az_ledger_audit/verification.json",
+    "local_verification_sha256": "87453e232bd33a50daef5d9de8f8faff4c5f8f1b57f14603ce6502e31211b270",
+    "query_evidence_sha256": {
+      "00d641f8-bytes.txt": "a8bb8b79c1f5449ca3793acdc41d332a195329f8aad84c8069d7c30c0f05ed3c",
+      "00d64400-bytes.txt": "51357b6f682ecec6f60891a883aa76a2ecae3378e0d9c0109691f7b5903e539c",
+      "current-proto.txt": "dc32cfd05293072a3b11ae68aefcca839de77036f1689db65458e2eef59715f5",
+      "library-proto.txt": "a849723e173af3433ce1a140c36408664633a8603db5b175990d9ac3cd6852d5"
+    }
+  },
+  "components": [
+    {
+      "report": "reports/native_mpak_entry.json",
+      "complete_bodies": 2,
+      "native_bytes": 749,
+      "addresses": [
+        "00bb5080",
+        "00bbc1d0"
+      ]
+    },
+    {
+      "report": "reports/native_mpak_open.json",
+      "complete_bodies": 3,
+      "native_bytes": 488,
+      "addresses": [
+        "00bb4a60",
+        "00bb4b20",
+        "00bb5bb0"
+      ]
+    },
+    {
+      "report": "reports/native_mpak_enumeration.json",
+      "complete_bodies": 7,
+      "native_bytes": 769,
+      "addresses": [
+        "00bb5f40",
+        "00bb68f0",
+        "00bb40c0",
+        "00bb79e0",
+        "00bb79f0",
+        "00bb7a00",
+        "00bee340"
+      ]
+    },
+    {
+      "report": "reports/native_raw_inflate_stream.json",
+      "complete_bodies": 10,
+      "native_bytes": 870,
+      "addresses": [
+        "00bbbdc0",
+        "00bbbdd0",
+        "00bbbe10",
+        "00bbbe50",
+        "00bbbf00",
+        "00bbc060",
+        "00bbc140",
+        "00bbc1c0",
+        "00bbc320",
+        "00bbc3e0"
+      ]
+    },
+    {
+      "report": "reports/native_vfs_device_route.json",
+      "complete_bodies": 6,
+      "native_bytes": 898,
+      "addresses": [
+        "00bdd850",
+        "00bdbc70",
+        "00bdb680",
+        "00bdb670",
+        "00bdbe00",
+        "00bf0fb0"
+      ]
+    },
+    {
+      "report": "reports/native_mpak_runtime.json",
+      "complete_bodies": 2,
+      "native_bytes": 18,
+      "addresses": [
+        "00bef580",
+        "00bf4f40"
+      ]
+    }
+  ],
+  "checks": {
+    "report_unique_address_count": 30,
+    "sum_of_report_lengths": 3792,
+    "nonoverlapping_native_ranges": true,
+    "all_ranges_match_current_verified_ghidra_proto": true,
+    "all_report_native_hashes_match_installed_pe": true,
+    "all_names_match_current_verified_ghidra_proto": true,
+    "all_actual_source_function_ledger_records_present": true,
+    "all_actual_source_definitions_and_header_declarations_present": true,
+    "source_modules_registered_exactly_once_in_cmake_startup": 7,
+    "all_actual_ledger_coverage_complete": true,
+    "no_selected_actual_ledger_row_claims_binary_abi_or_game_validation": true,
+    "direct_call_validation": "Not rerun: this audit adds no source body or call mapping. Existing component call reports remain authoritative.",
+    "runtime_tests": "Not rerun: the 1305-check raw fixture, 1468-check compressed caller fixture, and promotion gate are separate evidence."
+  },
+  "excluded_from_new_body_count": [
+    {
+      "address": "00bd90d0",
+      "end_inclusive": "00bd90ec",
+      "reason": "Existing complete body receives source dispatch or profile domain extension only."
+    },
+    {
+      "address": "00bdbc00",
+      "end_inclusive": "00bdbc4b",
+      "reason": "Existing complete body receives source dispatch or profile domain extension only."
+    },
+    {
+      "address": "00bdd0a0",
+      "end_inclusive": "00bdd33f",
+      "reason": "Existing complete body receives source dispatch or profile domain extension only."
+    },
+    {
+      "address": "00bef750",
+      "end_inclusive": "00bef83f",
+      "reason": "Existing complete body receives source dispatch or profile domain extension only."
+    },
+    {
+      "source": "src/native_mpak_runtime.cpp",
+      "reason": "NativeMpakRuntime composition methods are source wrappers; only BEF580/BF4F40 original leaves count."
+    },
+    {
+      "addresses": [
+        "00cc4360",
+        "00cc4ad8",
+        "00cc4ae3"
+      ],
+      "reason": "Three 11-byte compiler unwind funclets repaired by primary; support evidence, not additional reconstructed bodies."
+    },
+    {
+      "addresses": [
+        "00bbc1d0",
+        "00bbbf00",
+        "00bbc060",
+        "00bbc140",
+        "00bee340",
+        "00bf0fb0",
+        "00bef580"
+      ],
+      "reason": "Historical projections or prior source interfaces are retained ledger records, not extra actual-storage bodies."
+    }
+  ],
+  "library_boundaries": [
+    {
+      "address": "00bb4140",
+      "current_name": "STL_inst_00bb4140",
+      "source_contract": "NativeMpakOpenLibrary::file_at_00bb4140"
+    },
+    {
+      "address": "00bb4f40",
+      "current_name": "FUN_00bb4f40",
+      "source_contract": "NativeMpakDirectorySearchLibrary::find_member_directory_00bb4f40; read-only original container/search contract"
+    },
+    {
+      "address": "005efba0",
+      "current_name": "FUN_005efba0",
+      "source_contract": "Nested original member string-vector search boundary; no reconstructed library body"
+    }
+  ],
+  "profile_and_correction_checks": {
+    "00d641f8": {
+      "08": "00bb5bb0",
+      "0c": "00bb79e0",
+      "10": "00bb4b20",
+      "14": "00bb5f40",
+      "18": "00bb40c0",
+      "20": "00bb7a00",
+      "24": "00bb68f0",
+      "28": "00bb79f0"
+    },
+    "00d64400": {
+      "00": "00bd30e0",
+      "04": "00bbc3e0",
+      "0c": "00bb8b80",
+      "18": "00bbbdc0",
+      "1c": "00bbc060",
+      "20": "00bbbe50",
+      "24": "00bbc140",
+      "28": "00bbc1c0",
+      "30": "00bbbdd0"
+    },
+    "raw_buffer_header": {
+      "00": "begin",
+      "04": "buffered end",
+      "08": "allocation end",
+      "0c": "current cursor"
+    },
+    "profile_scope": "Selected live table DWORDs agree with actual source dispatch and corrected docs; D64234 is not the raw owner table.",
+    "00bb4a60_old_tag_absent": true,
+    "00bb4a60_prior_tag_preserved_in_integration_report": {
+      "address": "00bb4a60",
+      "before_tag": {
+        "address": "00bb4a60",
+        "name": "",
+        "category": "stl_probable",
+        "confidence": "medium",
+        "action": "bookmark",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0029"
+      },
+      "correction": "Custom MPAK provider file24h-vector index search: same length, then case-insensitive name comparison. Original BB4140 remains an STL contract.",
+      "evidence": "docs/NATIVE_MPAK_OPEN.md; reports/native_mpak_open.json",
+      "ghidra_bookmark_removed": true,
+      "bookmark_result": {
+        "success": true,
+        "deleted": 1,
+        "address": "00bb4a60"
+      }
+    },
+    "00bbc320": "Current CLI reports complete BBC320..BBC3D9 (186 bytes). Primary separately verified 59 instructions and no flow gaps; this audit does not repeat flow analysis."
+  },
+  "findings": [
+    {
+      "id": "AZ-L01",
+      "severity": "metadata",
+      "status": "reported_to_primary_for_correction",
+      "addresses": [
+        "00bbbdc0",
+        "00bbbdd0",
+        "00bbbe10",
+        "00bbbe50",
+        "00bbbf00",
+        "00bbc060",
+        "00bbc140",
+        "00bbc1c0",
+        "00bbc320",
+        "00bbc3e0"
+      ],
+      "locations": [
+        "config/names/00bb0000.jsonl",
+        "config/reconstruction/00bb0000.jsonl"
+      ],
+      "observed": "Ten actual raw method reconstruction rows retain Independent native fixture pending; their name evidence retains native/source fixture is separate pending work.",
+      "correction": "Refer to the completed independent 1305-check fixture and preserve shared stock-zlib/support, original FH3/stack-spill and gameplay limits. Historical prior projections remain separately identified.",
+      "current_authoritative_evidence": "reports/native_raw_inflate_stream.json; reports/native_raw_inflate_validation.json"
+    },
+    {
+      "id": "AZ-L02",
+      "severity": "metadata",
+      "status": "reported_to_primary_for_correction",
+      "addresses": [
+        "00bb5080"
+      ],
+      "locations": [
+        "config/reconstruction/00bb0000.jsonl"
+      ],
+      "observed": "Entry reconstruction evidence says compressed conversion remains unvalidated without qualifying this as the original entry packet scope.",
+      "correction": "Retain the sealed initial 218-check entry/constructor evidence and add the later 1468-check, three-entry-pair compressed caller composition scope. Shared actual constructor/raw/conversion support is not independent full original-path proof.",
+      "current_authoritative_evidence": "reports/native_raw_inflate_validation.json"
+    }
+  ],
+  "audited_bodies": [
+    {
+      "address": "00bb5080",
+      "end_inclusive": "00bb521e",
+      "native_bytes": 415,
+      "native_sha256": "1a2770cc16843e304ffd2f14a5cf9a0bd88f990744ca63f3a7f9130d1eeee874",
+      "ghidra_name": "BSP_MpakProvider_MaterializeEntry",
+      "source": "src/native_mpak_entry.cpp",
+      "source_function": "materialize_native_mpak_entry_00bb5080",
+      "header": "include/bsp/native_mpak_entry.hpp",
+      "ledger_status": "complete_actual_storage_strict_win32_build_raw_path_original_source_fixture_checked",
+      "ledger_coverage": "complete"
+    },
+    {
+      "address": "00bbc1d0",
+      "end_inclusive": "00bbc31d",
+      "native_bytes": 334,
+      "native_sha256": "e452dcd3c3ea85998071d0b82885e92bec5e174c9ad732225e2215355f091e86",
+      "ghidra_name": "BSP_RawInflateStream_Construct",
+      "source": "src/native_raw_inflate_owner.cpp",
+      "source_function": "construct_native_raw_inflate_owner_00bbc1d0",
+      "header": "include/bsp/native_raw_inflate_owner.hpp",
+      "ledger_status": "complete_actual_storage_strict_win32_build_constructor_original_source_fixture_checked",
+      "ledger_coverage": "complete"
+    },
+    {
+      "address": "00bb4a60",
+      "end_inclusive": "00bb4b15",
+      "native_bytes": 182,
+      "native_sha256": "6f6e1e118d4abfea7ae3de393d660279e3f0429861fcf567b6e379d7154d1aa2",
+      "ghidra_name": "BSP_MpakProvider_FindFileIndex",
+      "source": "src/native_mpak_open.cpp",
+      "source_function": "find_native_mpak_file_index_00bb4a60",
+      "header": "include/bsp/native_mpak_open.hpp",
+      "ledger_status": "complete_actual_storage_strict_win32_and_live_call_checked",
+      "ledger_coverage": "complete"
+    },
+    {
+      "address": "00bb4b20",
+      "end_inclusive": "00bb4b35",
+      "native_bytes": 22,
+      "native_sha256": "6679a1e79194d48b4d8915b6da25489f7442b526a071750bf890b89cfa40b998",
+      "ghidra_name": "BSP_MpakProvider_ContainsFile",
+      "source": "src/native_mpak_open.cpp",
+      "source_function": "contains_native_mpak_file_00bb4b20",
+      "header": "include/bsp/native_mpak_open.hpp",
+      "ledger_status": "complete_actual_storage_strict_win32_and_live_call_checked",
+      "ledger_coverage": "complete"
+    },
+    {
+      "address": "00bb5bb0",
+      "end_inclusive": "00bb5ccb",
+      "native_bytes": 284,
+      "native_sha256": "4113e4522b9cd92740bef9205b4d648b873d455a6710e3344efe7e04497d0f95",
+      "ghidra_name": "BSP_MpakProvider_OpenFile",
+      "source": "src/native_mpak_open.cpp",
+      "source_function": "open_native_mpak_file_00bb5bb0",
+      "header": "include/bsp/native_mpak_open.hpp",
+      "ledger_status": "complete_actual_storage_strict_win32_and_live_call_checked",
+      "ledger_coverage": "complete"
+    },
+    {
+      "address": "00bb5f40",
+      "end_inclusive": "00bb60c5",
+      "native_bytes": 390,
+      "native_sha256": "9699872484a036ac3062f6b2160885f8bbb64e13baca44361f927e8664521b68",
+      "ghidra_name": "BSP_MpakProvider_AppendFilteredNames",
+      "source": "src/native_mpak_enumeration.cpp",
+      "source_function": "append_native_mpak_names_00bb5f40",
+      "header": "include/bsp/native_mpak_enumeration.hpp",
+      "ledger_status": "actual_storage_reconstructed_build_native_instruction_fixture_tested_external_library_contracts",
+      "ledger_coverage": "complete"
+    },
+    {
+      "address": "00bb68f0",
+      "end_inclusive": "00bb69f8",
+      "native_bytes": 265,
+      "native_sha256": "fdd3a16a3c868a752d4ede288483d70e6d41cd148e60efb110d995fb361eaf7c",
+      "ghidra_name": "BSP_MpakProvider_SelectMemberDirectory",
+      "source": "src/native_mpak_enumeration.cpp",
+      "source_function": "select_native_mpak_member_directory_00bb68f0",
+      "header": "include/bsp/native_mpak_enumeration.hpp",
+      "ledger_status": "actual_storage_reconstructed_build_native_instruction_fixture_tested_external_library_contracts",
+      "ledger_coverage": "complete"
+    },
+    {
+      "address": "00bb40c0",
+      "end_inclusive": "00bb40c4",
+      "native_bytes": 5,
+      "native_sha256": "cc0e3cb106eb0fdec984d44a563d98c3da80700bbb8d2be4e66ebd54a9919626",
+      "ghidra_name": "BSP_MpakProvider_RejectProbeDefault",
+      "source": "src/native_mpak_enumeration.cpp",
+      "source_function": "reject_native_mpak_probe_00bb40c0",
+      "header": "include/bsp/native_mpak_enumeration.hpp",
+      "ledger_status": "actual_storage_reconstructed_build_native_instruction_fixture_tested_external_library_contracts",
+      "ledger_coverage": "complete"
+    },
+    {
+      "address": "00bb79e0",
+      "end_inclusive": "00bb79e4",
+      "native_bytes": 5,
+      "native_sha256": "6497f6ef3c5212d03a0d37de5a4cff8b12711fe6dc5d836fb5deb981a9f5b2d9",
+      "ghidra_name": "BSP_MpakProvider_RejectOperationDefault",
+      "source": "src/native_mpak_enumeration.cpp",
+      "source_function": "reject_native_mpak_operation_00bb79e0",
+      "header": "include/bsp/native_mpak_enumeration.hpp",
+      "ledger_status": "actual_storage_reconstructed_build_native_instruction_fixture_tested_external_library_contracts",
+      "ledger_coverage": "complete"
+    },
+    {
+      "address": "00bb79f0",
+      "end_inclusive": "00bb79f0",
+      "native_bytes": 1,
+      "native_sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "ghidra_name": "BSP_MpakProvider_NoopDefault",
+      "source": "src/native_mpak_enumeration.cpp",
+      "source_function": "noop_native_mpak_default_00bb79f0",
+      "header": "include/bsp/native_mpak_enumeration.hpp",
+      "ledger_status": "actual_storage_reconstructed_build_native_instruction_fixture_tested_external_library_contracts",
+      "ledger_coverage": "complete"
+    },
+    {
+      "address": "00bb7a00",
+      "end_inclusive": "00bb7a16",
+      "native_bytes": 23,
+      "native_sha256": "43a4fe4be93b647f42859db4995e29d6a9661d11f1b27a014656c2a6a15537db",
+      "ghidra_name": "BSP_MpakProvider_ClearResultDefault",
+      "source": "src/native_mpak_enumeration.cpp",
+      "source_function": "clear_native_mpak_result_00bb7a00",
+      "header": "include/bsp/native_mpak_enumeration.hpp",
+      "ledger_status": "actual_storage_reconstructed_build_native_instruction_fixture_tested_external_library_contracts",
+      "ledger_coverage": "complete"
+    },
+    {
+      "address": "00bee340",
+      "end_inclusive": "00bee38f",
+      "native_bytes": 80,
+      "native_sha256": "9344ea2e15d5bbdad619ff5284c46806f3c3a5f1f6e059f83e9bfec3fdc83a3b",
+      "ghidra_name": "BSP_ProviderName_MatchesEnumerationFilter",
+      "source": "src/native_mpak_enumeration.cpp",
+      "source_function": "matches_native_provider_enumeration_00bee340",
+      "header": "include/bsp/native_mpak_enumeration.hpp",
+      "ledger_status": "actual_storage_reconstructed_build_native_instruction_fixture_tested_external_library_contracts",
+      "ledger_coverage": "complete"
+    },
+    {
+      "address": "00bbbdc0",
+      "end_inclusive": "00bbbdc3",
+      "native_bytes": 4,
+      "native_sha256": "d577cc6b1b05cb0c2be7f658f60d7baf98684eeaad579cd874c21150f6dd70ab",
+      "ghidra_name": "BSP_RawInflateStream_IsOpen",
+      "source": "src/native_raw_inflate_stream.cpp",
+      "source_function": "open_native_raw_inflate_stream_00bbbdc0",
+      "header": "include/bsp/native_raw_inflate_stream.hpp",
+      "ledger_status": "actual_storage_win32_build_passed",
+      "ledger_coverage": "complete"
+    },
+    {
+      "address": "00bbbdd0",
+      "end_inclusive": "00bbbdd5",
+      "native_bytes": 6,
+      "native_sha256": "83fbd357367e7a31f9338401e419f053221a7291adc49979e5732ecf63914914",
+      "ghidra_name": "BSP_RawInflateStream_GetLength",
+      "source": "src/native_raw_inflate_stream.cpp",
+      "source_function": "length_native_raw_inflate_stream_00bbbdd0",
+      "header": "include/bsp/native_raw_inflate_stream.hpp",
+      "ledger_status": "actual_storage_win32_build_passed",
+      "ledger_coverage": "complete"
+    },
+    {
+      "address": "00bbbe10",
+      "end_inclusive": "00bbbe41",
+      "native_bytes": 50,
+      "native_sha256": "44fbaedf220800085a67c0969e10d806d0dcc905b608efbd31ada85b74183c3d",
+      "ghidra_name": "BSP_RawInflateStream_ResetDecoderAndCounters",
+      "source": "src/native_raw_inflate_stream.cpp",
+      "source_function": "reset_native_raw_inflate_stream_00bbbe10",
+      "header": "include/bsp/native_raw_inflate_stream.hpp",
+      "ledger_status": "actual_storage_win32_build_passed",
+      "ledger_coverage": "complete"
+    },
+    {
+      "address": "00bbbe50",
+      "end_inclusive": "00bbbe55",
+      "native_bytes": 6,
+      "native_sha256": "635c2569f0b6d1e8a5a00ce8d22ae047641a78786f0f7f311ea2c7ef031a1ea4",
+      "ghidra_name": "BSP_RawInflateStream_GetPosition",
+      "source": "src/native_raw_inflate_stream.cpp",
+      "source_function": "position_native_raw_inflate_stream_00bbbe50",
+      "header": "include/bsp/native_raw_inflate_stream.hpp",
+      "ledger_status": "actual_storage_win32_build_passed",
+      "ledger_coverage": "complete"
+    },
+    {
+      "address": "00bbbf00",
+      "end_inclusive": "00bbc000",
+      "native_bytes": 257,
+      "native_sha256": "61dd0e75f92566b2d8ba514893c0faf7dbf29fc755d04fb48d2f67a93e931dbb",
+      "ghidra_name": "BSP_RawInflateStream_RefillOutput",
+      "source": "src/native_raw_inflate_stream.cpp",
+      "source_function": "refill_native_raw_inflate_stream_00bbbf00",
+      "header": "include/bsp/native_raw_inflate_stream.hpp",
+      "ledger_status": "actual_storage_win32_build_passed",
+      "ledger_coverage": "complete"
+    },
+    {
+      "address": "00bbc060",
+      "end_inclusive": "00bbc131",
+      "native_bytes": 210,
+      "native_sha256": "a9f24e87c9f54adec80cd743a69d0ab71f44d6afecb4dc6a0cb060e1afce0072",
+      "ghidra_name": "BSP_RawInflateStream_Seek",
+      "source": "src/native_raw_inflate_stream.cpp",
+      "source_function": "seek_native_raw_inflate_stream_00bbc060",
+      "header": "include/bsp/native_raw_inflate_stream.hpp",
+      "ledger_status": "actual_storage_win32_build_passed",
+      "ledger_coverage": "complete"
+    },
+    {
+      "address": "00bbc140",
+      "end_inclusive": "00bbc1b5",
+      "native_bytes": 118,
+      "native_sha256": "94570804ad4861df0695ed31e04bfebc81445d9f81c2be2b5972eca6f173f06d",
+      "ghidra_name": "BSP_RawInflateStream_Read",
+      "source": "src/native_raw_inflate_stream.cpp",
+      "source_function": "read_native_raw_inflate_stream_00bbc140",
+      "header": "include/bsp/native_raw_inflate_stream.hpp",
+      "ledger_status": "actual_storage_win32_build_passed",
+      "ledger_coverage": "complete"
+    },
+    {
+      "address": "00bbc1c0",
+      "end_inclusive": "00bbc1c2",
+      "native_bytes": 3,
+      "native_sha256": "dbd1a662565b07272069f88faadf4327acaf51b7d14f236c84c0a9679d07cef3",
+      "ghidra_name": "BSP_RawInflateStream_WriteNoop",
+      "source": "src/native_raw_inflate_stream.cpp",
+      "source_function": "write_native_raw_inflate_stream_00bbc1c0",
+      "header": "include/bsp/native_raw_inflate_stream.hpp",
+      "ledger_status": "actual_storage_win32_build_passed",
+      "ledger_coverage": "complete"
+    },
+    {
+      "address": "00bbc320",
+      "end_inclusive": "00bbc3d9",
+      "native_bytes": 186,
+      "native_sha256": "fa39ded96a5501adf264511a8f061a57ca12fd12a49edcfbff017c412dca459a",
+      "ghidra_name": "BSP_RawInflateStream_Destroy",
+      "source": "src/native_raw_inflate_stream.cpp",
+      "source_function": "destroy_native_raw_inflate_stream_00bbc320",
+      "header": "include/bsp/native_raw_inflate_stream.hpp",
+      "ledger_status": "actual_storage_win32_build_passed",
+      "ledger_coverage": "complete"
+    },
+    {
+      "address": "00bbc3e0",
+      "end_inclusive": "00bbc3fd",
+      "native_bytes": 30,
+      "native_sha256": "a944f499cfed74a9b4906bace1fb1c5f061a052c41b7a228c5d86f770c4bc41a",
+      "ghidra_name": "CG_scalar_deleting_dtor_00bbc3e0",
+      "source": "src/native_raw_inflate_stream.cpp",
+      "source_function": "delete_native_raw_inflate_stream_00bbc3e0",
+      "header": "include/bsp/native_raw_inflate_stream.hpp",
+      "ledger_status": "actual_storage_win32_build_passed",
+      "ledger_coverage": "complete"
+    },
+    {
+      "address": "00bdd850",
+      "end_inclusive": "00bdd980",
+      "native_bytes": 305,
+      "native_sha256": "1f95f2c9ee13aebef5bf7b85d711350a72ab681a4216bd62da7ee04a0fbd7315",
+      "ghidra_name": "BSP_VFS_SelectDeviceInMounts",
+      "source": "src/native_vfs_device_route.cpp",
+      "source_function": "select_native_vfs_device_00bdd850",
+      "header": "include/bsp/native_vfs_device_route.hpp",
+      "ledger_status": "complete_actual_storage_strict_win32_and_live_call_checked",
+      "ledger_coverage": "complete"
+    },
+    {
+      "address": "00bdbc70",
+      "end_inclusive": "00bdbdfb",
+      "native_bytes": 396,
+      "native_sha256": "03f512991938e529b88dc099991ba4c091b835a7d5bd88d75d7c725087b63198",
+      "ghidra_name": "BSP_VFS_ResolveMountCallback",
+      "source": "src/native_vfs_device_route.cpp",
+      "source_function": "read_native_vfs_device_provider_00bdbc70",
+      "header": "include/bsp/native_vfs_device_route.hpp",
+      "ledger_status": "complete_actual_storage_strict_win32_and_live_call_checked",
+      "ledger_coverage": "complete"
+    },
+    {
+      "address": "00bdb680",
+      "end_inclusive": "00bdb6d7",
+      "native_bytes": 88,
+      "native_sha256": "7e6ef1ffd5ef9be5d5c21c3b91eca027a84b3967cdbecfec333c84be9617e924",
+      "ghidra_name": "BSP_VfsDeviceRouteVisitor_Destroy",
+      "source": "src/native_vfs_device_route.cpp",
+      "source_function": "destroy_native_vfs_device_visitor_00bdb680",
+      "header": "include/bsp/native_vfs_device_route.hpp",
+      "ledger_status": "complete_actual_storage_strict_win32_and_live_call_checked",
+      "ledger_coverage": "complete"
+    },
+    {
+      "address": "00bdb670",
+      "end_inclusive": "00bdb673",
+      "native_bytes": 4,
+      "native_sha256": "e0eb8cffec07b89f095aa1e60d89eed1f3338b76216e649ad3aeb3ba92dc7d04",
+      "ghidra_name": "BSP_VfsDeviceRouteVisitor_Result",
+      "source": "src/native_vfs_device_route.cpp",
+      "source_function": "read_native_vfs_device_result_00bdb670",
+      "header": "include/bsp/native_vfs_device_route.hpp",
+      "ledger_status": "complete_actual_storage_strict_win32_and_live_call_checked",
+      "ledger_coverage": "complete"
+    },
+    {
+      "address": "00bdbe00",
+      "end_inclusive": "00bdbe1d",
+      "native_bytes": 30,
+      "native_sha256": "6d7d00643d5605d6aa66db3a31c438390cc725e5a1dc39caac525b6d95c1d781",
+      "ghidra_name": "CG_scalar_deleting_dtor_00bdbe00",
+      "source": "src/native_vfs_device_route.cpp",
+      "source_function": "delete_native_vfs_device_visitor_00bdbe00",
+      "header": "include/bsp/native_vfs_device_route.hpp",
+      "ledger_status": "complete_actual_storage_strict_win32_and_live_call_checked",
+      "ledger_coverage": "complete"
+    },
+    {
+      "address": "00bf0fb0",
+      "end_inclusive": "00bf0ffa",
+      "native_bytes": 75,
+      "native_sha256": "a7052b969ac9845090521079e1a3c025b01679e131f13ab309efa5f8c84fdb47",
+      "ghidra_name": "BSP_FileProvider_ResolveLogicalName",
+      "source": "src/native_vfs_device_route.cpp",
+      "source_function": "resolve_native_provider_logical_name_00bf0fb0",
+      "header": "include/bsp/native_vfs_device_route.hpp",
+      "ledger_status": "complete_actual_storage_strict_win32_and_live_call_checked",
+      "ledger_coverage": "complete"
+    },
+    {
+      "address": "00bef580",
+      "end_inclusive": "00bef58a",
+      "native_bytes": 11,
+      "native_sha256": "1a708b39f19bc2f6f4e716cdb74bc8e5f82f2418f1862155773fbc46c6c8c688",
+      "ghidra_name": "BSP_MemoryStream_GetPosition",
+      "source": "src/native_mpak_runtime.cpp",
+      "source_function": "position_native_memory_stream_00bef580",
+      "header": "include/bsp/native_mpak_runtime.hpp",
+      "ledger_status": "actual_storage_reconstructed_strict_win32_original_instruction_fixture_tested",
+      "ledger_coverage": "complete"
+    },
+    {
+      "address": "00bf4f40",
+      "end_inclusive": "00bf4f46",
+      "native_bytes": 7,
+      "native_sha256": "4b3af58ba7c272747e6702d82e289d42df26deb497874ab80ee331f7176f28f7",
+      "ghidra_name": "BSP_PhysicalStream_GetPosition",
+      "source": "src/native_mpak_runtime.cpp",
+      "source_function": "position_native_physical_stream_00bf4f40",
+      "header": "include/bsp/native_mpak_runtime.hpp",
+      "ledger_status": "actual_storage_reconstructed_strict_win32_original_instruction_fixture_tested",
+      "ledger_coverage": "complete"
+    }
+  ],
+  "boundaries": [
+    "Read-only integration consistency audit, not another reconstruction packet or a fresh native/source execution result.",
+    "Reports and selected ledger records are pinned at inspection; primary owns corrections and the subsequent exact-commit promotion gate.",
+    "Live proto queries verify current saved body extents and names; installed PE hashes verify original body bytes. Prior live-byte equality evidence remains in component reports.",
+    "No Ghidra mutations, original installation changes, source edits, duplicate library implementations or successful fallback bindings were introduced.",
+    "Generated fixture success, strict build success, original ABI/FH3 compatibility, installed archive execution and gameplay validation remain distinct claims."
+  ]
+}
