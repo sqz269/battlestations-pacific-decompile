@@ -915,3 +915,5 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_cor
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_vector_map_index.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_keyboard_iterators.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_keyboard_storage.cpp)
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_cockpit_helper_lifetime.cpp)
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_model_base_bootstrap.cpp)

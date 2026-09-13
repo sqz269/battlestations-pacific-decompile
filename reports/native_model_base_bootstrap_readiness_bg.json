@@ -1,0 +1,148 @@
+{
+  "packet": "orch3_model_base_bootstrap_bg",
+  "status": "evidence_only_source_packet_ready_functions_defined_named_and_saved",
+  "ghidra": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "bridge": "http://127.0.0.1:8089",
+    "mutated": false
+  },
+  "native_body_credit": false,
+  "routines": [
+    {
+      "address": "00cd7eb0",
+      "end_inclusive": "00cd7efe",
+      "proposed_name": "BSP_ModelBase_InitializeStaticTypeDescriptor",
+      "coverage": "complete aligned raw body and live bytes; no Ghidra function",
+      "abi": "no stack arguments; RET; return unspecified"
+    },
+    {
+      "address": "00cd7f20",
+      "end_inclusive": "00cd7f35",
+      "proposed_name": "BSP_ModelBase_InitializeStaticNodePool",
+      "coverage": "complete aligned raw body and live bytes; no Ghidra function",
+      "abi": "no stack arguments; RET; EAX atexit status"
+    },
+    {
+      "address": "00ce0e60",
+      "end_inclusive": "00ce0e69",
+      "proposed_name": "BSP_ModelBase_DestroyStaticNodePool",
+      "coverage": "complete live disassembly",
+      "abi": "ECX selected internally; tail jump"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00cd7eb0",
+      "address": "00cd7ecf",
+      "native": "00b6f110",
+      "preparation": "ECX=0108FF90; guard01090031=1; name01090050=D62DE0"
+    },
+    {
+      "function": "00cd7eb0",
+      "address": "00cd7eea",
+      "native": "006fac20",
+      "preparation": "load both node/root tokens then store01090048/4C; postincrement returned+04 then store old at01090044"
+    },
+    {
+      "function": "00cd7f20",
+      "address": "00cd7f25",
+      "native": "00b6e980",
+      "preparation": "ECX=0109008C actual38h owner"
+    },
+    {
+      "function": "00cd7f20",
+      "address": "00cd7f2f",
+      "native": "00bf6ff5",
+      "preparation": "PUSH00CE0E60; POP ECX cleanup atCD7F34; EAX status retained"
+    },
+    {
+      "function": "00ce0e60",
+      "address": "00ce0e65",
+      "native": "00b6e3d0",
+      "kind": "tail_jump",
+      "preparation": "ECX=0109008C"
+    }
+  ],
+  "crt_table_evidence": [
+    {
+      "cell": "00ce356c",
+      "value": "00cd7eb0"
+    },
+    {
+      "cell": "00ce3570",
+      "value": "00cd7f00"
+    },
+    {
+      "cell": "00ce3574",
+      "value": "00cd7f20"
+    }
+  ],
+  "reusable_concrete_providers": [
+    "LightTypeBootstrap::initialize_node_00b6f110",
+    "TypeIdCounterLifetime::get_006fac20",
+    "initialize_native_node_pool_00b6e980",
+    "destroy_native_node_pool_00b6e3d0",
+    "trim_native_node_pool_00b6ea60",
+    "AllocatorListDomain"
+  ],
+  "ready_packet": {
+    "addresses": [
+      "00cd7eb0",
+      "00cd7f20",
+      "00ce0e60"
+    ],
+    "files": [
+      "include/bsp/native_model_base_bootstrap.hpp",
+      "src/native_model_base_bootstrap.cpp"
+    ],
+    "ownership": "new module only; integrator owns CMake and Ghidra/ledger changes",
+    "prerequisites": [
+      "define missing function bodies under lock",
+      "same actual shared root/node/counter storage and SingletonLifetimeDomain",
+      "same actual E188B4 AllocatorListDomain",
+      "separate0109008C raw38h pool binding and concrete trim callback"
+    ]
+  },
+  "partial_coverage": [
+    "CRT table walker/caller not recovered",
+    "lower allocation/new-handler and unwind implementations reused, not re-audited",
+    "application startup wiring not proven"
+  ],
+  "validation": {
+    "build": "not run; evidence-only",
+    "game": "not run",
+    "verify_report_calls": "executed: exit1, 5 call rows checked, 4 failed solely because CD7ECF/CD7EEA/CD7F25/CD7F2F are in no Ghidra function; CE0E65 tail jump passed"
+  },
+  "worker_no_ghidra_function": [
+    {
+      "address": "00cd7eb0",
+      "end_inclusive": "00cd7efe"
+    },
+    {
+      "address": "00cd7f20",
+      "end_inclusive": "00cd7f35"
+    }
+  ],
+  "no_ghidra_function": [],
+  "root_followup": {
+    "definitions": "reports/native_model_base_bootstrap_bg_function_definitions.json",
+    "call_rows_checked": 5,
+    "call_rows_failed": 0,
+    "call_verifier_output": "reports/native_model_base_bootstrap_readiness_bg.json: 5 call rows checked, 0 failed\n",
+    "named_and_original_prototypes_saved": true,
+    "exports_refreshed": true,
+    "new_cpp_body_credit": 0
+  },
+  "neighbor_recheck_bg": {
+    "correction": "BG neighbor recheck: CD7F00/B74B80/CE0E50 are already complete NativeModelPool providers in src/native_model_pool.cpp and include/bsp/native_model_pool.hpp, introduced by 7372836d92c03f93cf01c0e53a860dcafe9a465e and integrated by 4ff70e294b22fdd8a9318e974a8bae137f48eaad. Current Ghidra owns CD7F00..CD7F15, B74B80..B74C52 and CE0E50..CE0E59. The earlier incomplete-neighbor statements are superseded by this recheck. Reuse the distinct canonical 01090054/D62DD0 NativeModelPool and the shared AllocatorListDomain; do not duplicate these bodies or substitute the 0109008C/D62C78 model-base pool. CRT walker/invocation order and application startup/lifetime wiring remain unverified.",
+    "provider_source_commit": "daa9706c969f965ceb70790ccd2ef68f68ca0b1b",
+    "new_native_body_credit": false
+  },
+  "historical_partial_coverage_before_neighbor_recheck": [
+    "CRT table walker/caller not recovered",
+    "neighbor CD7F00/B74B80/CE0E50 not reconstructed",
+    "lower allocation/new-handler and unwind implementations reused, not re-audited",
+    "application startup wiring not proven"
+  ]
+}
