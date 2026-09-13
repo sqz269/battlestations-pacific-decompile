@@ -701,5 +701,17 @@
     "include/bsp/native_material_effect_cache.hpp": "783c1fcca72e773681e8e5c692629cc90260e88531a08ee85fae3ef66afe0059",
     "src/native_material_effect_cache.cpp": "b167d7dd6c45116823c265dea053dc869d98b6419908751f21cbc7e76d9fb2b2",
     "docs/NATIVE_MATERIAL_EFFECT_CACHE.md": "7626790ace3d05bcaa04b40c839c0826179ae22cef41ad28dc802e85997e23bd"
+  },
+  "integration_flow_repair": {
+    "destroy": "reports/native_material_effect_cache_flow_destroy.json",
+    "reserve": "reports/native_material_effect_cache_flow_reserve.json",
+    "saved": true,
+    "full_body_ranges": [
+      "00b2fa10..00b2fa87",
+      "00b2ffe0..00b300bc"
+    ],
+    "numeric_call_rows": 89,
+    "failed": 0,
+    "note": "Worker verifier failures are superseded by this saved body repair and successful rerun. Six indirect rows remain separately reviewed."
   }
 }

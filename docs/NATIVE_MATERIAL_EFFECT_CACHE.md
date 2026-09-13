@@ -116,3 +116,5 @@ these source bindings do not establish full Text material creation or rendering.
 Build status, call-verifier output and any focused runtime evidence are recorded
 in `reports/native_material_effect_cache.json`; exported, source-reconstructed,
 compiled and runtime-proven coverage are distinguished there.
+
+Correction from `docs/NATIVE_MATERIAL_EFFECT_INTEGRATION.md`: both returning-free tails are repaired and saved. B2FA10 now owns bytes through B2FA87; B2FFE0 owns through B300BC. The destructor had only default undefined locals and no parameters; its existing name and plate comment were preserved by the supported recreation helper. All 89 numeric call rows now pass; indirect sites remain separate evidence. The isolated extracted-leaf fixture experiment is not accepted runtime evidence; the combined-library record fixture is recorded in the batch report.

@@ -1,0 +1,127 @@
+{
+  "packet": "orch5_effect_native_integration",
+  "status": "combined_build_passed_exact_promotion_pending",
+  "baseline": "43d53129",
+  "workers": {
+    "cache": [
+      "orch5-effect-cache",
+      "beeb92a1d9b62eeab6d2af2e9a6fd56f0d650e95"
+    ],
+    "programs": [
+      "orch5-effect-programs",
+      "44437b08"
+    ],
+    "cursor": [
+      "orch5-cursor-prefix",
+      "0d856a905e0e1cfceea20b096ca4867249d55501"
+    ]
+  },
+  "source_build_commit": "4aed6b013788a230b31b7efba9d0011555a0b3a9",
+  "validation": {
+    "win32_build": "passed /W4 /WX",
+    "ctest_passed": 2,
+    "ctest_failed": 0,
+    "exact_promotion": "pending",
+    "cold_effect_load": false,
+    "complete_text": false,
+    "native_abi_replacement": false,
+    "gameplay": false,
+    "pre_promotion_fixtures": {
+      "libraries": [
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_core.lib",
+          "Hash": "3C483C30C3950562DDD6EF5C76C85E8552113DBD542431A81259A582F9339B81"
+        },
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_lua511.lib",
+          "Hash": "B6C19DD56BCE2C86DCF1ABF5C3044D48DDC2AC2C33EF04E3DC87F022413EE193"
+        },
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_zlib121.lib",
+          "Hash": "2C89BD9AE83D791564EA847C75E8E5EE025E40810C1DF8D55E5799E0C7B8C471"
+        }
+      ],
+      "fixtures": [
+        {
+          "source": "local/effect-native-workers/cache/local/effect_record_probe.cpp",
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\effect-native-validation\\effect_record-run.log",
+          "source_sha256": "C9673AC30DEE78BBBD3182F9DDF2D4FEEAD2099CFA562B73C08881ED9E2702C1",
+          "exit_code": 0,
+          "log_sha256": "82995698D2D907D016619A5BEB8AA0E14234248AC84D66DE8757EDBC575F99F7",
+          "name": "effect_record"
+        },
+        {
+          "source": "local/effect-native-workers/programs/local/native_effect_program_probe.cpp",
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\effect-native-validation\\program_pruning-run.log",
+          "source_sha256": "4039EB99FB9979B0B9B5623022123EF6C1118743AB4C0CCB47E09B7E59AFAACF",
+          "exit_code": 0,
+          "log_sha256": "5F7C49C581FCF0E802E9CD30B947195AC620370D796AC4EAE597322A7147D393",
+          "name": "program_pruning"
+        },
+        {
+          "source": "local/effect-native-workers/cursor/local/cursor_model_prefix_probe.cpp",
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\effect-native-validation\\cursor_prefix-run.log",
+          "source_sha256": "D8D6DFC2510F2BF057B5A38E323734455D25F9CF64CB22E2FE7BB4466893B149",
+          "exit_code": 0,
+          "log_sha256": "8AE483B5E297A41308F1BEDCBC209E6AEEE1E66CBA31788771B5DF8071AE71C1",
+          "name": "cursor_prefix"
+        },
+        {
+          "source": "local/effect-native-workers/cursor/local/text_sections_model_prefix_probe.cpp",
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\effect-native-validation\\shadow_prefix-run.log",
+          "source_sha256": "66E0F122755D129DA454A16EFFD6B06168F91F10C9A90C53B31B6389B3CC15C0",
+          "exit_code": 0,
+          "log_sha256": "DBED9D34D0073EBF79C7F2EA75ED440ABF3500641CA886C9BEEC8BFD1E72DD66",
+          "name": "shadow_prefix"
+        }
+      ],
+      "game_validated": false,
+      "support_files": [
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\effect-native-workers\\programs\\local\\program_probe_original.hpp",
+          "Hash": "5AF84DA38B1EFC4A60CFEDF57AB85AB9F5FAAE2364E31B425B0767737A3CF12C"
+        }
+      ],
+      "commit": "4aed6b013788a230b31b7efba9d0011555a0b3a9",
+      "complete_text_validated": false,
+      "compile_scope": "four fixture translation units against the same primary production libraries",
+      "cold_effect_load_validated": false
+    },
+    "call_verification": {
+      "numeric_rows": 247,
+      "failed": 0,
+      "indirect": "separately reviewed; not established by numeric row check",
+      "log": "local/effect-native-all-calls.log",
+      "sha256": "ee1d5507505556e4d8679114e2d6cfe6287ac9f3c9ed16c8b453fb6fa8d8d0ba"
+    }
+  },
+  "reports": [
+    "reports/native_material_effect_loading.json",
+    "reports/native_material_effect_cache.json",
+    "reports/native_material_effect_programs.json",
+    "reports/gui_text_cursor_model_prefix.json"
+  ],
+  "native_flow_repairs": [
+    "reports/native_material_effect_cache_flow_destroy.json",
+    "reports/native_material_effect_cache_flow_reserve.json"
+  ],
+  "limits": [
+    "Actual texture64 loading and callable/numeric renderer composition remain incomplete",
+    "Actual BDF4C0 mutable VFS, B43B00 parser, B3C3A0 compiler and three state caches remain required children",
+    "Failed program frames retain exact resolved-name storage; this is host continuation behavior, not native FH3 parity",
+    "No full cold effect load or complete Text render was executed"
+  ],
+  "follow_up": [
+    "actual texture-cache and constructor renderer64 binding",
+    "actual descriptor reader and compiler",
+    "actual mutable VFS candidate resolver",
+    "migrate Text/material callers with persistent cache acquisitions"
+  ],
+  "analysis": {
+    "annotations_saved": 17,
+    "exports_refreshed": 17,
+    "worker_archive_files": 55,
+    "annotation_log": "local/effect-native-annotations.log",
+    "annotation_log_sha256": "c228b0470ae4acc85c2220dac886ac9ec873d4255c4c8e772091471c36d505e3"
+  }
+}
