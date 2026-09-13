@@ -7,6 +7,7 @@
 #include <Windows.h>
 
 #include <exception>
+#include <stdexcept>
 
 namespace bsp {
 namespace {
@@ -47,7 +48,10 @@ struct RawSlotCleanup {
 } // namespace
 
 void* get_or_create_native_hardware_layout_00b2f710(
-    const void* key, NativeHardwareLayoutConstructContext& context) {
+    const void* key, NativeHardwareLayoutConstructContext& context,
+    void** acquired_before_insertion) {
+    if (acquired_before_insertion && *acquired_before_insertion)
+        throw std::logic_error("hardware layout acquisition output must start empty");
     auto& owner_context = context.actual_owner;
     auto* const actual_tree = owner_context.actual_tree_0108d530;
     auto* const actual_pool = owner_context.actual_hardware_layout_pool_0108fe9c;
@@ -65,6 +69,7 @@ void* get_or_create_native_hardware_layout_00b2f710(
             invalid.invalid_parameter(invalid.context);
         auto* const selected_owner = pointer(word(address(selected_node, 0x20)));
         InterlockedIncrement(static_cast<volatile LONG*>(address(selected_owner, 4)));
+        if (acquired_before_insertion) *acquired_before_insertion = selected_owner;
         return selected_owner;
     }
 
@@ -73,6 +78,7 @@ void* get_or_create_native_hardware_layout_00b2f710(
     void* result = nullptr;
     if (raw_slot) result = construct_native_hardware_layout_00b60cb0(raw_slot, key, context);
     cleanup.armed = false;
+    if (acquired_before_insertion) *acquired_before_insertion = result;
 
     // Original scratch pairs are uninitialized: only reached key words,
     // current count and value are written by the existing complete helpers.

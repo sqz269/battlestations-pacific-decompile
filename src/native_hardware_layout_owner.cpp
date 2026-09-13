@@ -1,6 +1,8 @@
 #include "bsp/native_hardware_layout_owner.hpp"
 #include "bsp/native_hardware_layout_tree.hpp"
 #include "bsp/native_vertex_declaration_owner.hpp"
+#include "bsp/native_vertex_declaration_loading.hpp"
+#include "bsp/native_render_context.hpp"
 
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -9,6 +11,7 @@
 
 #include <cstring>
 #include <exception>
+#include <stdexcept>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native hardware layout owners require MSVC Win32.
@@ -137,8 +140,19 @@ void destroy_native_hardware_layout_record_00b483f0(
         // BD30E0 rereads the current table before its deleting-slot call.
         const auto deleting_terminal = word(declaration_table(declaration, context), 4);
         __assume(deleting_terminal == 0x00b48ca0);
-        delete_native_vertex_declaration_00b48ca0(declaration, 1,
-            context.actual_declaration_pool_0108fd38, context.actual_type_sizes_00d61cc0);
+        if (context.canonical_declaration_owners) {
+            auto& reference = context.canonical_declaration_owners->resolve_actual(declaration);
+            auto* canonical = dynamic_cast<NativeVertexDeclarationReference*>(&reference);
+            if (!canonical || canonical->storage() != declaration ||
+                !canonical->matches_context(context.actual_declaration_pool_0108fd38,
+                    context.actual_type_sizes_00d61cc0, context.actual_declaration_profile_00d61d1c) ||
+                static_cast<void*>(&reference.reference_count) != at(declaration, 4))
+                throw std::logic_error("layout declaration terminal must use its same actual declaration companion");
+            reference.release_zero_references(); // Counter already decremented above.
+        } else {
+            delete_native_vertex_declaration_00b48ca0(declaration, 1,
+                context.actual_declaration_pool_0108fd38, context.actual_type_sizes_00d61cc0);
+        }
     }
     put(record, 0, 0);
 }

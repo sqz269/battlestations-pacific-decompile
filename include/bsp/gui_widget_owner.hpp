@@ -18,6 +18,7 @@ class GuiWidgetCopySourceBorrow;
 struct GuiWidgetClipRefreshServices;
 struct GuiWidgetBaseCopyPreimage;
 struct GuiWidgetCopyServices;
+struct GuiTextSectionOperation;
 struct NativeGuiTextModelCloneAcquired;
 
 // Derived companions operate on the owner's SAME layout/transform. Factory
@@ -87,7 +88,6 @@ struct GuiWidgetOwnerEnvironment {
 // of replacement nodes is constructed. Additional fields cover native offsets
 // absent from that projection; constructor-unwritten fields are marked below.
 struct GuiWidgetBaseExtraFields {
-    std::int32_t references_04{1};
     float fields_30_44[6]{};
     std::uint8_t byte_79{};
     float fields_7c_80[2]{};
@@ -159,6 +159,7 @@ private:
     GuiTextLifetime* text_lifetime_{};
     std::unique_ptr<GuiWidgetTypeImplementation> implementation_;
     GuiWidgetTypeImplementation* base_copy_constructor_{}; // borrowed from the one copy operation
+    GuiWidgetTypeImplementation* default_constructor_{}; // borrowed from the retained factory allocation
     std::unique_ptr<GuiTimedEntryOwner> timed_entries_;
     std::unique_ptr<GuiWidgetClipRefreshOperation> base_clip_;
     GuiWidgetClipRefreshServices* base_clip_services_{};
@@ -181,6 +182,14 @@ public:
     GuiWidgetOwnerRuntime(const GuiWidgetOwnerRuntime&) = delete;
     GuiWidgetOwnerRuntime& operator=(const GuiWidgetOwnerRuntime&) = delete;
     GuiWidgetOwner& construct_child_00aa6560(GuiLayoutWidget&);
+    // Host admission only: factory keeps its one shell/lifetime in the actual
+    // allocation record before publishing this borrow. Failure preserves the
+    // same owner and before_destroy callback. No native flag/count is added.
+    void begin_default_type_admission(GuiWidgetOwner&, GuiWidgetTypeImplementation&);
+    // construct_base invokes this only after make_type returns the SAME shell
+    // into implementation_. Factory code must not clear admission early.
+    void finish_default_type_admission(GuiWidgetOwner&);
+
     // AB9650 construction used by AB98F0 before copying the template model.
     // Creates the SAME base/type companion, leaving the primary model null;
     // does not allocate an ordinary named model, attach, or invoke74/78.
@@ -215,6 +224,12 @@ public:
     // retired through the existing node lifetime binding, not a second owner.
     void create_auxiliary_model_00ab8530_fragment(NativeNodeBinding*& publication,
         const std::string& name);
+    // Tracked AB8565..AB85D0 for the same AB8530 frame. Native ctor failure
+    // destroys its conditional temporary name then returns the unconstructed
+    // slot. Metadata failure after construction retains the actual live owner
+    // in this runtime and frame; it never rolls back a published +188 Model.
+    void create_auxiliary_model_00ab8530_fragment(NativeNodeBinding*& publication,
+        NativeStringStorage& temporary_strings, GuiTextSectionOperation&);
     // B752D1..B7530A: allocate from the SAME Model pool, then construct from
     // the source's CURRENT actual name header. No temporary name or source
     // snapshot. Register the created owner/reference in this runtime's one

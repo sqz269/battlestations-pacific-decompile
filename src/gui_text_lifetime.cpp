@@ -36,7 +36,8 @@ void GuiTextLifetime::require_owner() const {
         throw std::logic_error("Text lifetime requires its same retained type3 widget owner");
 }
 
-GuiTextLifetime::GuiTextLifetime(GuiWidgetOwner& widget, GuiTextBufferServices& buffers,
+GuiTextLifetime::GuiTextLifetime(GuiTextDeferredDefaultAdmission,
+    GuiWidgetOwner& widget, GuiTextBufferServices& buffers,
     GuiTextGlyphChildCalls& children, const GuiTextConstructorConstants& constants)
     : widget_(widget), buffers_(buffers), child_calls_(children) {
     require_owner();
@@ -76,19 +77,15 @@ GuiTextLifetime::GuiTextLifetime(GuiWidgetOwner& widget, GuiTextBufferServices& 
     // All derived defaults exist before AB8530 can call back into this owner.
     // The companion may be queried here, but scalar deletion rejects construction.
     widget_.text_lifetime_ = this;
-    try {
-        ensure_gui_text_draw_sections_00ab8530(widget_, text_, shadow_188_, buffers_);
-    } catch (...) {
-        // C++ failed-construction cleanup only, not native SEH equivalence.
-        try {
-            release_shadow_00ab73b0();
-        } catch (...) {
-            widget_.text_lifetime_ = nullptr;
-            throw;
-        }
-        widget_.text_lifetime_ = nullptr;
-        throw;
-    }
+}
+
+void GuiTextLifetime::complete_default_construction_00ab9650() {
+    require_owner();
+    if (after_base_copy_ || default_completion_entered_ || phase_ != Phase::constructing ||
+        widget_.text_lifetime_ != this)
+        throw std::logic_error("Text default completion requires its retained fresh lifetime");
+    default_completion_entered_ = true;
+    ensure_gui_text_draw_sections_00ab8530(widget_, text_, shadow_188_, buffers_, sections_);
     phase_ = Phase::live;
 }
 
@@ -102,7 +99,7 @@ GuiTextLifetime::GuiTextLifetime(GuiTextAfterBaseCopy00aa9520,
         &widget == &source.widget_ || widget.text_lifetime_ ||
         source.phase_ != Phase::live || source.widget_.text_lifetime_ != &source ||
         source.scalar_phase_ != GuiTextScalarDeletionPhase::not_started ||
-        source.has_incomplete_copy() ||
+        source.has_incomplete_copy() || source.has_incomplete_native_resources() ||
         &buffers != &source.buffers_ || &children != &source.child_calls_ ||
         !widget.node_binding() || !source.widget_.node_binding() ||
         widget.node_binding() == source.widget_.node_binding())
@@ -159,7 +156,7 @@ GuiTextLifetime::GuiTextLifetime(GuiTextAfterBaseCopy00aa9520,
 GuiTextLifetime::~GuiTextLifetime() noexcept {
     // A failed/pending copy still owns native caller effects/continuations.
     // Destroying this canonical companion cannot silently discard them.
-    if (has_incomplete_copy()) std::terminate();
+    if (has_incomplete_copy() || has_incomplete_native_resources()) std::terminate();
     // Explicit scalar completion already removed the borrowed association and
     // may have erased the owner record; an externally embedded companion must
     // not dereference that dead owner during its later C++ member destruction.
@@ -214,8 +211,8 @@ void GuiTextLifetime::release_secondary_scene_nodes_00aa8320_fragment(
 }
 
 void GuiTextLifetime::destroy_derived_00ab8250_fragment() {
-    if (has_incomplete_copy())
-        throw std::logic_error("Text copy must complete before derived retirement");
+    if (has_incomplete_copy() || has_incomplete_native_resources())
+        throw std::logic_error("Text native construction/resource operation must complete before derived retirement");
     if (phase_ == Phase::destroyed) return; // C++ destructor after explicit teardown.
     if (phase_ != Phase::live)
         throw std::logic_error("Text destruction requires a live, non-reentrant companion");
