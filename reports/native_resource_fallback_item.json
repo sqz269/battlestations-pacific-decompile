@@ -1,0 +1,275 @@
+{
+  "packet": "orch2_native_resource_fallback_bf",
+  "status": "complete_source_strict_win32_and_original_capsule_tested_finite_profile",
+  "native_identity": {
+    "frozen_before_source": true,
+    "utc": "2026-09-13T17:55:56.848633+00:00",
+    "config": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "name": "ctor",
+        "address": "00b86930",
+        "end_inclusive": "00b86945",
+        "size": 22,
+        "live_sha256": "9f15be6a4d09f701b2ca12226f70f5f94310bfce0d45b7ecbad36b64a40d33c4",
+        "pe_sha256": "9f15be6a4d09f701b2ca12226f70f5f94310bfce0d45b7ecbad36b64a40d33c4",
+        "match": true
+      },
+      {
+        "name": "scalar",
+        "address": "00b86990",
+        "end_inclusive": "00b869b3",
+        "size": 36,
+        "live_sha256": "1f4062b9bb39888b7519404ccda4ba96ff1fa5db42caaa371db969b0348165fc",
+        "pe_sha256": "1f4062b9bb39888b7519404ccda4ba96ff1fa5db42caaa371db969b0348165fc",
+        "match": true
+      },
+      {
+        "name": "invoker",
+        "address": "00bd30e0",
+        "end_inclusive": "00bd30ed",
+        "size": 14,
+        "live_sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+        "pe_sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+        "match": true
+      },
+      {
+        "name": "base",
+        "address": "00bd30f0",
+        "end_inclusive": "00bd30f6",
+        "size": 7,
+        "live_sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+        "pe_sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+        "match": true
+      },
+      {
+        "name": "producer",
+        "address": "00b7e970",
+        "end_inclusive": "00b7eadd",
+        "size": 366,
+        "live_sha256": "58afa219ee9071f633dc27b22438c1a53466966277f62731ef96d14f94b216eb",
+        "pe_sha256": "58afa219ee9071f633dc27b22438c1a53466966277f62731ef96d14f94b216eb",
+        "match": true
+      },
+      {
+        "name": "table",
+        "address": "00d631c0",
+        "end_inclusive": "00d631e3",
+        "size": 36,
+        "live_sha256": "361789f21a0e667e59eb470fd110c215e98b53bb2700fbf8606238c4fb4f57c3",
+        "pe_sha256": "361789f21a0e667e59eb470fd110c215e98b53bb2700fbf8606238c4fb4f57c3",
+        "match": true
+      }
+    ]
+  },
+  "original_baseline": {
+    "utc": "2026-09-13T17:57:31.325770+00:00",
+    "production_source_exists": false,
+    "artifacts": [
+      {
+        "file": "native-spans.json",
+        "sha256": "ed91900029be9f77faab463908e84096a59a3d3383c67305ffaf887892a6451f"
+      },
+      {
+        "file": "native_bytes.hpp",
+        "sha256": "f6d5ebeb08abbde963466aa1120fe73dffdde1efb0d5c2ce9ca75a45e6296be7"
+      },
+      {
+        "file": "original-probe-frozen.cpp",
+        "sha256": "d3c7d7851695fca7c50bb47051ca5f1a4748d547f4afbac59b73ab0cb1eef968"
+      },
+      {
+        "file": "original_probe.obj",
+        "sha256": "670b225ef8528b40a043bc9095bb6dcc3f8b2bc9e582653bd23ef4eb747e10fa"
+      },
+      {
+        "file": "original_probe.exe",
+        "sha256": "59cd0fcadcd33f628a3413f6a30dd1e42d7da8b517bd8c3025f2f39ff1d9a0b1"
+      },
+      {
+        "file": "original-outcomes.txt",
+        "sha256": "c07a4288693a40ee04e7a2bdc14fa80193948c480459fe565cbda03f5019d8b2"
+      }
+    ]
+  },
+  "routines": [
+    {
+      "address": "00b86930",
+      "end_inclusive": "00b86945",
+      "bytes": 22,
+      "name": "construct_native_resource_fallback_item_00b86930",
+      "source": "src/native_resource_fallback_item.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX8-byte storage; EAXsame; plainRET. Ordered CEB130,count1,D631C0 stores.",
+      "source_abi": "void*(void*) noexcept; new C++ ABI."
+    },
+    {
+      "address": "00b86990",
+      "end_inclusive": "00b869b3",
+      "bytes": 36,
+      "name": "scalar_delete_native_resource_fallback_item_00b86990",
+      "source": "src/native_resource_fallback_item.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX item; one stack flags DWORD, byte bit0 tested; RET4; EAX original pointer even after optionalfree. ESI saved/restored; no null test or count operation.",
+      "source_abi": "void*(void*,uint32_t) noexcept; new C++ ABI."
+    }
+  ],
+  "provider": {
+    "name": "NativeResourceFallbackDeleteCalls",
+    "base_interface": "NativeRefCountedDeleteCalls",
+    "finite_profile": "00d631c0",
+    "native_slot00": "00bd30e0",
+    "native_slot04": "00b86990",
+    "current_profile_source": "Existing BD30E0 captures the current owner profile before provider invocation; provider resolves the supplied captured identity and does not perform another read or decrement.",
+    "outside_domain": "std::invalid_argument before mutation for other captured profiles. This is an explicit source binding policy, not recovered arbitrary native dispatch."
+  },
+  "source_hashes": {
+    "src/native_resource_fallback_item.cpp": "406cdb0fa91f1ca04e36e7eaa881c7d12d7dc17782664f1e109f2cd95296f136",
+    "include/bsp/native_resource_fallback_item.hpp": "dafdd268d5d82fdcf6bb31a124a77ea5eb427b740fe44b723ec4007a6a8c0178",
+    "src/native_ref_counted.cpp": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9",
+    "include/bsp/native_ref_counted.hpp": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+  },
+  "call_rows": [
+    {
+      "address": "00b86999",
+      "native": "00bd30f0",
+      "function": "00b86990",
+      "contract": "ESI captures originalECX atB86991. VolatileD5C104 stamp precedes complete actualBD30F0 storeCEB130. Existing source reused."
+    },
+    {
+      "address": "00b869a6",
+      "native": "00bf65ac",
+      "function": "00b86990",
+      "contract": "Only flagsbyteESP+8 bit0. Push sameESI; returningfree followedADD ESP4 atB869AB. Existing singleton_lifetime_free service."
+    },
+    {
+      "address": "00bd30eb",
+      "native": "current_profile+vtable04",
+      "function": "00bd30e0",
+      "contract": "NullableECX check; EAX=[ECX],EDX=[EAX+4],PUSH1,CALL EDX,RET. No refcount decrement."
+    },
+    {
+      "address": "00b7ea6a",
+      "native": "00bf681b",
+      "function": "00b7e970",
+      "contract": "Observed external producer PUSH8 atB7EA68 andADD ESP4 atB7EA6F. No allocating producer implemented."
+    },
+    {
+      "address": "00b7ea81",
+      "native": "00b86930",
+      "function": "00b7e970",
+      "contract": "AllocationEAX moved intoECX atB7EA7F; returned pointer capturedESI before skip and append."
+    },
+    {
+      "address": "00b7ea95",
+      "native": "00be9c40",
+      "function": "00b7e970",
+      "contract": "Existing external skip path; no localitemrelease added by this packet."
+    },
+    {
+      "address": "00b7eaa7",
+      "native": "resource+vtable0c",
+      "function": "00b7e970",
+      "contract": "Push same capturedESI atB7EAA6; current resource reloaded frommanager+24. Not implemented here."
+    },
+    {
+      "address": "00b7eab5",
+      "native": "00be9ed0",
+      "function": "00b7e970",
+      "contract": "Existing external child-handle cleanup after append; not a fallback item release."
+    }
+  ],
+  "observed_layout": {
+    "bytes": 8,
+    "00": "volatile native profile identity",
+    "04": "volatile refcount initialized1; no decrement in either implemented body",
+    "other": "No payload or hidden pool slot word. Adjacent guards unchanged in capsule. Borrowed source storage owns no lifetime."
+  },
+  "fallback_table": {
+    "start": "00d631c0",
+    "end_inclusive": "00d631e3",
+    "slots": [
+      "00bd30e0",
+      "00b86990",
+      "00b86860",
+      "00b86950",
+      "006f9d20",
+      "00b86870",
+      "00b86880",
+      "006f9d30",
+      "00b868a0"
+    ],
+    "implemented_provider_scope": "Deletion slots00/04 only; seven other method bodies, token initialization and raw function definitions stay external."
+  },
+  "calls_and_unwind": {
+    "constructor_incoming": "Exactly one live direct caller B7EA81; current xrefs retained.",
+    "scalar_incoming": "No live direct caller; table datarefD631C4; common current-slot04 thunk suppliesflags1.",
+    "local_frames": "Neither implemented body has a local FH3 frame.",
+    "producer_unwind_external": "Existing discovery mapDFB124/infoDFB134 frees allocated raw pointer only during construction, then protects the child handle; constructed-item rollback around skip/append is not provided. This packet does not implement that producer or map."
+  },
+  "verification": {
+    "native_bytes": "6 code/data spans freshly matched through verified read-only CLI; source-owned original bytes58.",
+    "frozen_capsule": "Single ignored local capsule; original source/bytes/object/executable/nine outcomes hashed before production source existed. Six flags:0,1,100h,101h,80000000h,FFFFFFFFh. Sentinelcount and guard words; nonnull and null sharedinvoker.",
+    "substitution": "Both original and source use same test-only free observer. Original scalar two CALL displacements relocated to copied nativeBD30F0 and observer; originalBD30E0 uses relocated two-entry table. No allocator-runtime/nativeunwind proof.",
+    "current_and_copied_closure": "Source capsule links actual current and copied unique bsp_core archives, selecting actual fallback/refbase members. Linker verbose/map, object disassembly, include/compiler paths and file identities retained in local delivery.",
+    "build": "Strict Win32 scripts/build.ps1 retry passed with reconstructed_math and native_math_differential; final commit separately gated with MSBUILDDISABLENODEREUSE=1, recorded in delivery.json.",
+    "final_record": "local/resource-fallback-bf/delivery.json",
+    "whole_local_manifest": "local/resource-fallback-bf/whole-local-manifest.json",
+    "test_changes": "No tracked tests. One ignored focused capsule only.",
+    "call_verifier": {
+      "direct_rows": 6,
+      "failures": 0,
+      "indirect_rows": 2
+    },
+    "capsule_result": {
+      "rows": 9,
+      "current_and_copied_equal_original": true,
+      "outcome_sha256": "c07a4288693a40ee04e7a2bdc14fa80193948c480459fe565cbda03f5019d8b2",
+      "unknown_profile_policy_check": "passed"
+    },
+    "retained_failure": {
+      "path": "local/resource-fallback-bf/build-first.txt",
+      "error": "CMake could not restore generate.stamp timestamp: Access is denied, in unrelated bsp_ship_motion_probe custom build.",
+      "resolution": "Unchanged-source retry passed. Generated file remains Archive attribute, not ReadOnly; no owned MSBuild process remained at diagnosis; no attribute change or process termination performed."
+    }
+  },
+  "closed_dependencies": [
+    "Existing BD30F0 concrete naked Win32 source reused unchanged",
+    "Existing BD30E0 concrete source reused unchanged with new finiteD631C0 provider",
+    "Existing singleton_lifetime_free BF65AC boundary reused unchanged"
+  ],
+  "remaining_external": [
+    "B868B0/B86890 general item base",
+    "Seven fallback nondeleting methods and their token initialization",
+    "Thirteen registered parser-result deleting profiles and payload ownership",
+    "Allocating producer B7E970, item append/classification, B88430 and runtimewiring",
+    "Manager/cache, pointer arrays, hierarchyfields/pool; rawhierarchyparent is not itemvtable",
+    "Original allocator runtime, exceptionunwind, binarydropin compatibility and game validation"
+  ],
+  "ghidra_mutations": false,
+  "names_preserved": [
+    "BSP_UnknownResourceItem_Construct",
+    "BSP_UnknownResourceItem_ScalarDeletingDestructor"
+  ],
+  "evidence_directory": "local/resource-fallback-bf",
+  "discovery_retention": {
+    "worktree": "J:/PROG/battlestations-pacific-decompile-orch2-resource-item-frontier-bf",
+    "commit": "dc639ffa9a7b5b198a8f0453c451318770e5430d",
+    "manifest": "local/resource-item-frontier-bf/whole-local-manifest.json",
+    "files": 475,
+    "policy": "Retain unchanged; all current source/evidence are in fresh worktree."
+  }
+}
