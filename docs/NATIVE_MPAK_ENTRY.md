@@ -65,7 +65,7 @@ BBC1D0 writes reference base/count1, source+0C, then profile D64400 and byte+9=1
 Bytes8, A and B remain untouched. It reads and stores descriptor words
 sequentially into+10/+14/+18; an aliasing descriptor is not copied in advance.
 Its native stacked capacity values are entirely unused. It allocates two raw
-10h headers; each holds begin, cursor, allocation-end and buffered-end at
+10h headers; each holds begin, buffered-end, allocation-end and cursor at
 0/4/8/C. The input allocation is always4000h, the output always10000h. Each
 initial cursor/buffered-end equals begin.
 
