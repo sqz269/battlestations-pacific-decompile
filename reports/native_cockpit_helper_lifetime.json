@@ -1,0 +1,135 @@
+{
+  "packet": "orch3_cockpit_lifetime_bg",
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "status": "reconstructed_explicit_actual_binding_domain",
+  "functions": [
+    {
+      "address": "00b3c5c0",
+      "end": "00b3c649",
+      "bytes": 138,
+      "coverage": "complete body in explicit actual binding domain; C++ base-only exception projection",
+      "abi": "ECX actual24h helper; RET",
+      "end_inclusive": "00b3c649",
+      "end_exclusive": "00b3c64a",
+      "cpp_symbol": "destroy_native_cockpit_helper_00b3c5c0",
+      "source": "src/native_cockpit_helper_lifetime.cpp",
+      "header": "include/bsp/native_cockpit_helper_lifetime.hpp",
+      "report": "reports/native_cockpit_helper_lifetime.json",
+      "doc": "docs/NATIVE_COCKPIT_HELPER_LIFETIME.md",
+      "ghidra_name": "BSP_CockpitHelper_Destroy",
+      "native_prototype": "void BSP_CockpitHelper_Destroy(void)",
+      "native_calling_convention": "__thiscall",
+      "original_abi": "ECX actual24h helper; RET",
+      "new_native_body": true,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b3c5c0..00b3c649 over already-constructed actual24h helper. Original ECX/stack ABI and complete body/calls/live-PE bytes reviewed. Current camera then fresh attached node use real canonical B6DFA0 hierarchy/logical release; current retained18 requires a registered actual count and profile-aware terminal. Clear each field only after success; failure consumes base-only cleanup. Scalar captures allocation and frees only after normal destruction. Actual+04 terminal companion retires after native free with no subsequent access. No B3C800 construction, unknown nonzero retained18 producer, native FH3/SEH, binary ABI or gameplay claim. Evidence: docs/NATIVE_COCKPIT_HELPER_LIFETIME.md; reports/native_cockpit_helper_lifetime.json.",
+      "sha256": "daab7de7896485c38c3b3d243e84175c6b8440156dbb7ee855a75090d8372c0d",
+      "live_PE_equal": true
+    },
+    {
+      "address": "00b3c6c0",
+      "end": "00b3c6dd",
+      "bytes": 30,
+      "coverage": "complete body in existing BF681B/free domain",
+      "abi": "ECX helper; DWORD flags; RET4; EAX captured allocation",
+      "end_inclusive": "00b3c6dd",
+      "end_exclusive": "00b3c6de",
+      "cpp_symbol": "delete_native_cockpit_helper_00b3c6c0",
+      "source": "src/native_cockpit_helper_lifetime.cpp",
+      "header": "include/bsp/native_cockpit_helper_lifetime.hpp",
+      "report": "reports/native_cockpit_helper_lifetime.json",
+      "doc": "docs/NATIVE_COCKPIT_HELPER_LIFETIME.md",
+      "ghidra_name": "BSP_CockpitHelper_ScalarDeletingDestructor",
+      "native_prototype": "void * BSP_CockpitHelper_ScalarDeletingDestructor(unsigned int flags)",
+      "native_calling_convention": "__thiscall",
+      "original_abi": "ECX helper; DWORD flags; RET4; EAX captured allocation",
+      "new_native_body": true,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b3c6c0..00b3c6dd over already-constructed actual24h helper. Original ECX/stack ABI and complete body/calls/live-PE bytes reviewed. Current camera then fresh attached node use real canonical B6DFA0 hierarchy/logical release; current retained18 requires a registered actual count and profile-aware terminal. Clear each field only after success; failure consumes base-only cleanup. Scalar captures allocation and frees only after normal destruction. Actual+04 terminal companion retires after native free with no subsequent access. No B3C800 construction, unknown nonzero retained18 producer, native FH3/SEH, binary ABI or gameplay claim. Evidence: docs/NATIVE_COCKPIT_HELPER_LIFETIME.md; reports/native_cockpit_helper_lifetime.json.",
+      "sha256": "f79e368ea3bd27830c7c66dd9bdbdf26b818aca0b37d60a11cb0426a368e8b2c",
+      "live_PE_equal": true
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00b3c5f2",
+      "native": "00b6dfa0",
+      "containing_function": "00b3c5c0",
+      "preparation": "ECX current helper+0C; no stack args"
+    },
+    {
+      "address": "00b3c601",
+      "native": "00b6dfa0",
+      "containing_function": "00b3c5c0",
+      "preparation": "ECX reloaded helper+08; no stack args"
+    },
+    {
+      "address": "00b3c633",
+      "native": "00bd30f0",
+      "containing_function": "00b3c5c0",
+      "preparation": "ECX helper, state already -1"
+    },
+    {
+      "address": "00b3c6c3",
+      "native": "00b3c5c0",
+      "containing_function": "00b3c6c0",
+      "preparation": "ECX captured helper"
+    },
+    {
+      "address": "00b3c6d0",
+      "native": "00bf65ac",
+      "containing_function": "00b3c6c0",
+      "preparation": "PUSH ESI captured allocation; ADD ESP,4 at B3C6D5"
+    },
+    {
+      "address": "00cbecc3",
+      "native": "00bd30f0",
+      "containing_function": "00cbecc0",
+      "kind": "tail_jump",
+      "preparation": "tail JMP; ECX [EBP-10]"
+    }
+  ],
+  "indirect_transfers": [
+    {
+      "address": "00b3c614",
+      "target": "IAT CE2220 InterlockedDecrement",
+      "preparation": "captured owner EDI+04 pushed"
+    },
+    {
+      "address": "00b3c624",
+      "target": "captured owner's current profile slot0",
+      "preparation": "load profile after zero decrement; ECX captured EDI"
+    }
+  ],
+  "eh": {
+    "func_info": "00df74a0",
+    "map": "00df7498",
+    "state0_next": -1,
+    "action": "00cbecc0",
+    "coverage": "C++ exceptions only; noexcept member callbacks may terminate"
+  },
+  "limits": [
+    "B3C800 not implemented; binds constructed actual24h storage without initialization",
+    "Nonzero+18 producer unestablished; requires existing actual-count binding and current-profile-aware zero callback",
+    "Persistent canonical actual node descriptors required for +08/+0C",
+    "No native ABI, FH3/SEH, fixture execution, gameplay or Ghidra mutation claim"
+  ],
+  "verification": {
+    "strict_new_tu": "passed MSVC Win32 /std:c++17 /EHsc /W4 /WX /permissive- /MD; separate TU only",
+    "standard_build": "scripts/build.ps1 passed; existing reconstructed_math and native_math_differential both passed; new source is not CMake registered in worker",
+    "seeds": "8 of 8 matched",
+    "report_calls": "6 checked, 0 failed",
+    "artifacts": "integrator local/bg-cockpit-sealed plus local/bg-cockpit-standard-build.log; no helper fixture execution"
+  },
+  "integration_bg_review": {
+    "combined_validation": "pending registered source build and current-library helper fixture",
+    "game_validated": false
+  },
+  "final_combined_validation_bg": {
+    "report": "reports/native_bg_integration_validation.json",
+    "tested_commit": "daa9706c969f965ceb70790ccd2ef68f68ca0b1b",
+    "strict_win32_build_passed": true,
+    "existing_ctests_passed": 2,
+    "current_library_only_fixtures_passed": 2,
+    "game_validated": false
+  }
+}
