@@ -126,3 +126,13 @@ Initial replay uses the explicit `-WorkerSource` switch plus the pinned
 `fbab26c3` three-library snapshot. After integration, `run.ps1 -Root <checkout>
 -LibraryRoot <checkout>` defaults to compiling only `probe.cpp` and linking the
 three supplied current libraries. No worker object is silently included.
+
+## AX integration analysis refresh
+
+The integrator saved all four AX original signatures and reviewed names,
+verified their complete stored bodies and refreshed exports. Three ten-byte
+EH handlers CBCC0E, CBD348 and CBD408 were defined under owned leases and
+the Ghidra write lock. Missing-function observations above describe the
+earlier worker capture. EH definitions are analysis metadata, not additional
+reconstructed normal-body claims. Combined final-commit validation remains
+separate from the worker fixture evidence.

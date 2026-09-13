@@ -23,8 +23,12 @@
       "native_calling_convention": "__thiscall",
       "native_prototype": "void * BSP_RenderCommandQueue_Construct(void)",
       "ledger_kind": "function",
-      "evidence": "Full assembly, fresh live/installed 161-byte body, sole producer/caller and all raw FH3 data/actions, concrete current providers; five original/source differential pairs. docs/NATIVE_RENDER_QUEUE_CONSTRUCTOR.md; reports/native_render_queue_constructor.json.",
-      "uncertainty": "New source context ABI and represented C++ cleanup scopes. Actual-profile/same-domain preconditions. Complete native frame ABI/general SEH, arbitrary concurrent mutation, getter/execution/destruction and gameplay unproved."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete 00b1f280..00b1f320 normal native body over actual storage and current concrete profiles. Reviewed native ECX/stack-slot/return ABI, current read/callback/output ordering and live/disk spans reviewed. Source adds borrowed contexts; bounded original-byte fixture evidence is separate from original caller ABI, unrestricted FH3/SEH/concurrency and gameplay. Evidence: docs/NATIVE_RENDER_QUEUE_CONSTRUCTOR.md; reports/native_render_queue_constructor.json.",
+      "uncertainty": "New source context ABI and represented C++ cleanup scopes. Actual-profile/same-domain preconditions. Complete native frame ABI/general SEH, arbitrary concurrent mutation, getter/execution/destruction and gameplay unproved.",
+      "end_exclusive": "00b1f321",
+      "module": "native_render_queue_constructor",
+      "new_native_body": true,
+      "worker_evidence": "Full assembly, fresh live/installed 161-byte body, sole producer/caller and all raw FH3 data/actions, concrete current providers; five original/source differential pairs. docs/NATIVE_RENDER_QUEUE_CONSTRUCTOR.md; reports/native_render_queue_constructor.json."
     }
   ],
   "owned_files": [
@@ -429,5 +433,146 @@
     "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
     "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
   },
-  "corrections": []
+  "corrections": [],
+  "integration_ax_review": {
+    "combined_validation": "pending exact merged source build and current-library replay",
+    "game_validated": false,
+    "saved_function_names_and_original_signatures": 4,
+    "signature_readback_passed": true,
+    "full_stored_function_bodies": true,
+    "previous_signatures": {
+      "00b1f280": "00b1f280 FUN_00b1f280  undefined FUN_00b1f280(void)  body 00b1f280 - 00b1f320",
+      "00b29e60": "00b29e60 BSP_D3D9Renderer_ChangePresentationMode  undefined BSP_D3D9Renderer_ChangePresentationMode(void)  body 00b29e60 - 00b2a063",
+      "00b2abd0": "00b2abd0 BSP_D3D9Renderer_ProcessDeviceReset  undefined BSP_D3D9Renderer_ProcessDeviceReset(void)  body 00b2abd0 - 00b2ae1c",
+      "00bec230": "00bec230 BSP_Platform_GetWindow_Provisional  undefined BSP_Platform_GetWindow_Provisional(void)  body 00bec230 - 00bec233"
+    },
+    "original_signature_readback": "00b1f280 BSP_RenderCommandQueue_Construct  void * __thiscall BSP_RenderCommandQueue_Construct(void * this)  body 00b1f280 - 00b1f320\n00b29e60 BSP_D3D9Renderer_ChangePresentationMode  uchar __thiscall BSP_D3D9Renderer_ChangePresentationMode(void * this, uint width_slot, uint height_slot, uint fullscreen_slot, uint multisample_slot, uint interval_selector_slot, uint force_slot)  body 00b29e60 - 00b2a063\n00b2abd0 BSP_D3D9Renderer_ProcessDeviceReset  void __thiscall BSP_D3D9Renderer_ProcessDeviceReset(void * this)  body 00b2abd0 - 00b2ae1c\n00bec230 BSP_Platform_GetWindow_Provisional  void * __thiscall BSP_Platform_GetWindow_Provisional(void * this)  body 00bec230 - 00bec233\n",
+    "function_definitions": {
+      "events": [
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbcc0e",
+            "end_address": "00cbcc18"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbcc0e",
+            "end_address": "00cbcc17",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbcc0e",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbcc0e",
+            "function_name": "FUN_00cbcc0e",
+            "entry_point": "00cbcc0e",
+            "body_size": 10,
+            "message": "Function created successfully at 00cbcc0e"
+          }
+        },
+        {
+          "defined": "00cbcc0e",
+          "end": "00cbcc18",
+          "name": null,
+          "after": "Function: FUN_00cbcc0e at 00cbcc0e\nSignature: undefined FUN_00cbcc0e(void)\nEntry: 00cbcc0e\nBody: 00cbcc0e - 00cbcc17"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbd348",
+            "end_address": "00cbd352"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbd348",
+            "end_address": "00cbd351",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbd348",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbd348",
+            "function_name": "FUN_00cbd348",
+            "entry_point": "00cbd348",
+            "body_size": 10,
+            "message": "Function created successfully at 00cbd348"
+          }
+        },
+        {
+          "defined": "00cbd348",
+          "end": "00cbd352",
+          "name": null,
+          "after": "Function: FUN_00cbd348 at 00cbd348\nSignature: undefined FUN_00cbd348(void)\nEntry: 00cbd348\nBody: 00cbd348 - 00cbd351"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbd408",
+            "end_address": "00cbd412"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbd408",
+            "end_address": "00cbd411",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbd408",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbd408",
+            "function_name": "FUN_00cbd408",
+            "entry_point": "00cbd408",
+            "body_size": 10,
+            "message": "Function created successfully at 00cbd408"
+          }
+        },
+        {
+          "defined": "00cbd408",
+          "end": "00cbd412",
+          "name": null,
+          "after": "Function: FUN_00cbd408 at 00cbd408\nSignature: undefined FUN_00cbd408(void)\nEntry: 00cbd408\nBody: 00cbd408 - 00cbd411"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        }
+      ]
+    },
+    "cross_review": "Independent complete-listing reviews checked the queue constructor preexisting control and EH cleanup, raw presentation flags and six native slots, current profiles and gamma outgoing x87 slot, and complete Reset flag-read/retry/focus/HRESULT/Sleep/output ordering. Readiness corrections establish initialization B2B1CC writes pending1 and B2B1D2 calls Reset, alongside BeginFrame B2B229.",
+    "current_report_call_check": "reports/native_render_queue_constructor.json: 9 call rows checked, 0 failed"
+  }
 }

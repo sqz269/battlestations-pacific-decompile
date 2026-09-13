@@ -1,0 +1,839 @@
+{
+  "packet": "orch3_renderer_reset_process_ax",
+  "status": "reconstructed_static_reviewed_initial_combined_build_and_worker_fixture_passed_final_merge_pending",
+  "draft_only": false,
+  "functions": [
+    {
+      "address": "00b2abd0",
+      "end_inclusive": "00b2ae1c",
+      "length": 589,
+      "coverage": "complete",
+      "source": "src/native_renderer_reset_process.cpp",
+      "header": "include/bsp/native_renderer_reset_process.hpp",
+      "cpp_symbol": "process_native_renderer_device_reset_00b2abd0",
+      "old_name": "BSP_D3D9Renderer_ProcessDeviceReset",
+      "ghidra_name": "BSP_D3D9Renderer_ProcessDeviceReset",
+      "suggested_name": "BSP_D3D9Renderer_ProcessDeviceReset",
+      "name_is_hypothesis": true,
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_D3D9Renderer_ProcessDeviceReset(void)",
+      "original_abi": "ECX actual renderer, no stack arguments, plain RET, no semantic return. Sole optional-guard state0/cleanup; no lifecycle lock.",
+      "ledger_kind": "function",
+      "status": "reconstructed_normal_body_combined_validation_pending",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete 00b2abd0..00b2ae1c normal native body over actual storage and current concrete profiles. Reviewed native ECX/stack-slot/return ABI, current read/callback/output ordering and live/disk spans reviewed. Source adds borrowed contexts; bounded original-byte fixture evidence is separate from original caller ABI, unrestricted FH3/SEH/concurrency and gameplay. Evidence: docs/NATIVE_RENDERER_RESET_PROCESS.md; reports/native_renderer_reset_process.json.",
+      "uncertainty": "New source interfaces; same actual publication/global/owner/profile domains required. No independent complete native ABI/FH3/SEH/concurrency/startup/gameplay proof.",
+      "end_exclusive": "00b2ae1d",
+      "module": "native_renderer_reset_process",
+      "new_native_body": true,
+      "worker_evidence": "Complete listing and current source independently reviewed; live/disk spans equal. Exact native ABI, imports, optional cleanup, retry/focus/HRESULT/Sleep/current output order. Initial combined Win32 build and separate bounded worker fixture pass; final merged replay pending."
+    },
+    {
+      "address": "00bec230",
+      "end_inclusive": "00bec233",
+      "length": 4,
+      "coverage": "complete",
+      "source": "src/native_renderer_reset_process.cpp",
+      "header": "include/bsp/native_renderer_reset_process.hpp",
+      "cpp_symbol": "native_platform_window_00bec230",
+      "old_name": "BSP_Platform_GetWindow_Provisional",
+      "ghidra_name": "BSP_Platform_GetWindow_Provisional",
+      "suggested_name": "BSP_Platform_GetWindow",
+      "name_is_hypothesis": true,
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * BSP_Platform_GetWindow_Provisional(void)",
+      "original_abi": "ECX actual raw platform, EAX raw HWND from+30, no stack arguments, plain RET.",
+      "ledger_kind": "function",
+      "status": "reconstructed_normal_body_combined_validation_pending",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete 00bec230..00bec233 normal native body over actual storage and current concrete profiles. Reviewed native ECX/stack-slot/return ABI, current read/callback/output ordering and live/disk spans reviewed. Source adds borrowed contexts; bounded original-byte fixture evidence is separate from original caller ABI, unrestricted FH3/SEH/concurrency and gameplay. Evidence: docs/NATIVE_RENDERER_RESET_PROCESS.md; reports/native_renderer_reset_process.json.",
+      "uncertainty": "New source interfaces; same actual publication/global/owner/profile domains required. No independent complete native ABI/FH3/SEH/concurrency/startup/gameplay proof.",
+      "end_exclusive": "00bec234",
+      "module": "native_renderer_reset_process",
+      "new_native_body": true,
+      "worker_evidence": "Complete listing and current source independently reviewed; live/disk spans equal. Exact native ABI, imports, optional cleanup, retry/focus/HRESULT/Sleep/current output order. Initial combined Win32 build and separate bounded worker fixture pass; final merged replay pending."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b2abfa",
+      "native": "00b33ad0",
+      "function": "00b2abd0",
+      "contract": "Current mode nonzero only; ECX original renderer, returned AL stored to guard byte; no stack args, RET."
+    },
+    {
+      "address": "00b2ac07",
+      "native": "KERNEL32.dll!GetCurrentThreadId",
+      "function": "00b2abd0",
+      "contract": "Real stdcall with no arguments; EAX compared to current render-thread DWORD after return; optional cleanup already armed.",
+      "iat_address": "00ce223c"
+    },
+    {
+      "address": "00b2ac32",
+      "native": "00b33b00",
+      "function": "00b2abd0",
+      "contract": "Wrong-thread normal cleanup: ECX saved renderer; stacked full guard DWORD; RET4. Current mode read before disarm."
+    },
+    {
+      "address": "00b2ac71",
+      "native": "IDirect3DDevice9+vtable0C",
+      "function": "00b2abd0",
+      "contract": "Current renderer device and current table; stdcall TestCooperativeLevel(device), one stacked DWORD/RET4, full HRESULT retained."
+    },
+    {
+      "address": "00b2acaa",
+      "native": "USER32.dll!GetFocus",
+      "function": "00b2abd0",
+      "contract": "Real stdcall no args; compare HWND result to +30 of captured platform EDI AFTER return.",
+      "iat_address": "00ce2310"
+    },
+    {
+      "address": "00b2acc1",
+      "native": "00b29670",
+      "function": "00b2abd0",
+      "contract": "DEVICELOST branch only after wrapping retry result>10 and captured active/focus predicate. Reset retry DWORD first. ECX renderer, no stack args/RET. No Sleep path."
+    },
+    {
+      "address": "00b2aceb",
+      "native": "USER32.dll!GetFocus",
+      "function": "00b2abd0",
+      "contract": "Real stdcall no args; compare HWND result to +30 of captured platform EBP AFTER return. Failed focus exits before late fallback/Sleep.",
+      "iat_address": "00ce2310"
+    },
+    {
+      "address": "00b2ad33",
+      "native": "KERNEL32.dll!Sleep",
+      "function": "00b2abd0",
+      "contract": "First captured Sleep target from CE2230 at B2AD1A; mark renderer lost before call; stack100, stdcall RET4.",
+      "iat_address": "00ce2230",
+      "captured_import_site": "00b2ad1a"
+    },
+    {
+      "address": "00b2ad37",
+      "native": "00b237d0",
+      "function": "00b2abd0",
+      "contract": "ECX original renderer, no stack args/RET; complete current dynamic-buffer release with same optional-guard globals."
+    },
+    {
+      "address": "00b2ad3e",
+      "native": "00b262c0",
+      "function": "00b2abd0",
+      "contract": "ECX original renderer, no stack args/RET; complete current binding/cache/resource release domain."
+    },
+    {
+      "address": "00b2ad45",
+      "native": "KERNEL32.dll!Sleep",
+      "function": "00b2abd0",
+      "contract": "Second use of captured Sleep; stack100, stdcall RET4; after both release providers.",
+      "iat_address": "00ce2230",
+      "captured_import_site": "00b2ad1a"
+    },
+    {
+      "address": "00b2ad4d",
+      "native": "00bec230",
+      "function": "00b2abd0",
+      "contract": "ECX freshly reloaded actual platform0109CF04; no stack args/RET; raw HWND EAX stored directly to renderer+1A44."
+    },
+    {
+      "address": "00b2ad6b",
+      "native": "IDirect3DDevice9+vtable40",
+      "function": "00b2abd0",
+      "contract": "Current device/table after HWND store; stdcall Reset(device,actual writable renderer+1A28 presentation block), two DWORDs/RET8; only HRESULT exactly0 succeeds."
+    },
+    {
+      "address": "00b2ad83",
+      "native": "00b23b10",
+      "function": "00b2abd0",
+      "contract": "ECX renderer/no stack args/RET; clear lost1D8A then inhibit1D90=2 before complete current resource restore."
+    },
+    {
+      "address": "00b2ad8a",
+      "native": "00b1fd90",
+      "function": "00b2abd0",
+      "contract": "ECX renderer/no stack args/RET; full raw readiness/dynamic restore with current ready/lost gates and four admitted physical profiles."
+    },
+    {
+      "address": "00b2ada2",
+      "native": "00b24460",
+      "function": "00b2abd0",
+      "contract": "ECX renderer, stackA1 and freshly normalized renderer+1A38!=0; two DWORDs/RET8; same guard globals."
+    },
+    {
+      "address": "00b2ada9",
+      "native": "00b26170",
+      "function": "00b2abd0",
+      "contract": "ECX renderer/no stack args/RET; complete ordered defaults before gamma."
+    },
+    {
+      "address": "00b2adc2",
+      "native": "00b21960",
+      "function": "00b2abd0",
+      "contract": "FLD renderer196C at B2ADAE before current profile/slot read; reserve DWORD then FSTP at B2ADBF; ECX renderer, stacked actual float slot/RET4. Current D5F0A8+F0=D5F198 selects B21960.",
+      "resolved_profile": "00d5f0a8",
+      "slot_offset": "f0",
+      "slot_address": "00d5f198"
+    },
+    {
+      "address": "00b2add8",
+      "native": "00b20c50",
+      "function": "00b2abd0",
+      "contract": "ECX freshly reloaded platform/no stack args/RET. Complete actual active/focus predicate, original AL alone gates AW; concrete provider returns full EAX0/1."
+    },
+    {
+      "address": "00b2ade3",
+      "native": "00b29670",
+      "function": "00b2abd0",
+      "contract": "Late fallback only when B20C50 AL nonzero; ECX renderer/no stack args/RET. Preserve completed failed Reset/release state."
+    },
+    {
+      "address": "00b2adea",
+      "native": "KERNEL32.dll!Sleep",
+      "function": "00b2abd0",
+      "contract": "Final use of captured Sleep; stack100/stdcall RET4. Reached by successful Reset and late fallback, including false late predicate; absent from early exits and threshold AW.",
+      "iat_address": "00ce2230",
+      "captured_import_site": "00b2ad1a"
+    },
+    {
+      "address": "00b2ae05",
+      "native": "00b33b00",
+      "function": "00b2abd0",
+      "contract": "Shared normal cleanup, including inline-focus early failure; ECX saved renderer, stacked full guard DWORD/RET4, current-mode check then state disarm."
+    },
+    {
+      "address": "00cbd403",
+      "native": "00b21110",
+      "function": "00cbd400",
+      "contract": "Only EH terminal: ECX address of original optional guard [EBP-14], no stack args/RET; no lifecycle-lock cleanup.",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00b2b1d2",
+      "native": "00b2abd0",
+      "function": "00b2aeb0",
+      "contract": "Initialization sets pending=1 at B2B1CC (BL=1 from B2AF41), then ECX original renderer/no stack args/RET."
+    },
+    {
+      "address": "00b2b229",
+      "native": "00b2abd0",
+      "function": "00b2b200",
+      "contract": "BeginFrame captures renderer in ESI, marks frame-active and optionally decrements inhibit, then ECX original renderer/no stack args/RET."
+    },
+    {
+      "address": "00a9a157",
+      "native": "00bec230",
+      "function": "00a9a140",
+      "contract": "ECX actual platform from0109CF04; no stack arguments, raw EAX result, plain RET. Returned HWND forwarded to current DirectInput device SetCooperativeLevel; pending flags are arguments to that later call, not this getter."
+    },
+    {
+      "address": "00a49489",
+      "native": "00bec230",
+      "function": "00a493c0",
+      "contract": "ECX actual platform from0109CF04; no stack arguments, raw EAX result, plain RET. ECX current platform captured at A4943B, no intervening ECX write; returned HWND stored in local descriptor for A4D5F0."
+    },
+    {
+      "address": "00a99cf6",
+      "native": "00bec230",
+      "function": "00a99940",
+      "contract": "ECX actual platform from0109CF04; no stack arguments, raw EAX result, plain RET. Returned HWND forwarded to joystick current DirectInput SetCooperativeLevel with flags5."
+    },
+    {
+      "address": "00a9a447",
+      "native": "00bec230",
+      "function": "00a9a3e0",
+      "contract": "ECX actual platform from0109CF04; no stack arguments, raw EAX result, plain RET. Returned HWND forwarded to keyboard current DirectInput SetCooperativeLevel with flags6."
+    },
+    {
+      "address": "00a9a1b0",
+      "native": "00bec230",
+      "function": "00a9a180",
+      "contract": "ECX actual platform from0109CF04; no stack arguments, raw EAX result, plain RET. Returned HWND forwarded to mouse current DirectInput SetCooperativeLevel with flags5."
+    }
+  ],
+  "host_call_coverage": {
+    "main_native_CALL_count": 22,
+    "main_rows": 22,
+    "all_recorded_rows": 30,
+    "all_six_raw_window_getter_callsites_inspected": true,
+    "raw_handler_exception": "CBD40D is separately recorded below because CBD408 has no saved Ghidra function; do not fake containing-function ownership to pass the call checker."
+  },
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "live_verification": "Client.verify before batch; bsp.py ghidra verifies before every individual query",
+  "binary": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "spans": [
+    {
+      "address": "00b2abd0",
+      "end_inclusive": "00b2ae1c",
+      "length": 589,
+      "kind": "complete_reset_body",
+      "sha256": "923113874aa3e3eca6eb973e7ce7b7f157d10fb53c3d4acfc4d16cee80b8567a",
+      "live_matches_installed": true,
+      "bytes_file": "00b2abd0.bin"
+    },
+    {
+      "address": "00bec230",
+      "end_inclusive": "00bec233",
+      "length": 4,
+      "kind": "complete_raw_window_leaf",
+      "sha256": "c8cc0b90c656bd6a43ec1c5684c1a494142d2fce4803153d9b1a0944cad7e281",
+      "live_matches_installed": true,
+      "bytes_file": "00bec230.bin"
+    },
+    {
+      "address": "00cbd400",
+      "end_inclusive": "00cbd411",
+      "length": 18,
+      "kind": "unwind_action_and_raw_handler",
+      "sha256": "d3176069d18c7a735323504c56889518e3563752daccbf853ec911ebeab0f655",
+      "live_matches_installed": true,
+      "bytes_file": "00cbd400.bin"
+    },
+    {
+      "address": "00df5c50",
+      "end_inclusive": "00df5c7b",
+      "length": 44,
+      "kind": "unwind_map_and_FuncInfo",
+      "sha256": "669a93d389a76979cc45c9e48183cef9cb97552df17a80b43efe1a635206c407",
+      "live_matches_installed": true,
+      "bytes_file": "00df5c50.bin"
+    },
+    {
+      "address": "00ce2230",
+      "end_inclusive": "00ce2233",
+      "length": 4,
+      "kind": "Sleep_IAT",
+      "sha256": "ddcd45aae82a9735f434f46bae5d5af844cf584644f41563f33589113ec6b46d",
+      "live_matches_installed": true,
+      "bytes_file": "00ce2230.bin"
+    },
+    {
+      "address": "00ce223c",
+      "end_inclusive": "00ce223f",
+      "length": 4,
+      "kind": "GetCurrentThreadId_IAT",
+      "sha256": "8313ff565762f8dc934724835bd0b2eeac44ebbb4d9c215e603f8f177c4645fb",
+      "live_matches_installed": true,
+      "bytes_file": "00ce223c.bin"
+    },
+    {
+      "address": "00ce2310",
+      "end_inclusive": "00ce2313",
+      "length": 4,
+      "kind": "GetFocus_IAT",
+      "sha256": "e743d9a286ef2c7cfcffb826115e1b4125bd42aaedfe5ea05126446a1c7f3b78",
+      "live_matches_installed": true,
+      "bytes_file": "00ce2310.bin"
+    },
+    {
+      "address": "00d5f198",
+      "end_inclusive": "00d5f19b",
+      "length": 4,
+      "kind": "D5F0A8_gamma_slot_F0",
+      "sha256": "eebaec6ba405711c2d19b0a7ed19e7fcf434d931c53dc153ad657746028054a3",
+      "live_matches_installed": true,
+      "bytes_file": "00d5f198.bin"
+    }
+  ],
+  "span_count": 8,
+  "total_live_installed_bytes": 671,
+  "raw_imports": [
+    {
+      "iat_address": "00ce2310",
+      "dll": "USER32.dll",
+      "name": "GetFocus",
+      "unbound_disk_dword": "00a073a2",
+      "actual_binding": "Source uses real Win32 API; current loaded runtime address and immutable binding are caller/runtime conditions, not established by an unbound PE IAT value."
+    },
+    {
+      "iat_address": "00ce2230",
+      "dll": "KERNEL32.dll",
+      "name": "Sleep",
+      "unbound_disk_dword": "00a05746",
+      "actual_binding": "Source uses real Win32 API; current loaded runtime address and immutable binding are caller/runtime conditions, not established by an unbound PE IAT value."
+    },
+    {
+      "iat_address": "00ce223c",
+      "dll": "KERNEL32.dll",
+      "name": "GetCurrentThreadId",
+      "unbound_disk_dword": "00a0576c",
+      "actual_binding": "Source uses real Win32 API; current loaded runtime address and immutable binding are caller/runtime conditions, not established by an unbound PE IAT value."
+    }
+  ],
+  "source_draft_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\ax-reset-draft\\native_renderer_reset_process.cpp",
+      "sha256": "cffe429cb2aad4c7bbc99af11db7dbfe6dc80ec04cdf87226aedbb8fa5e0e14d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\ax-reset-draft\\include\\bsp\\native_renderer_reset_process.hpp",
+      "sha256": "e504be1e907b9940d3238709b0b25912891a359e4a0a0f06dbc824d3146792ce"
+    }
+  ],
+  "providers": [
+    {
+      "entry": "00b33ad0",
+      "cpp_symbol": "enter_native_renderer_optional_guard_00b33ad0",
+      "module": "native_renderer_synchronization_actual",
+      "contract": "Actual renderer/global synchronization entry; AL record field; same globals as outer cleanup."
+    },
+    {
+      "entry": "00b33b00",
+      "cpp_symbol": "leave_native_renderer_optional_guard_00b33b00",
+      "module": "native_renderer_synchronization_actual",
+      "contract": "Full-word saved argument/current-mode leave with RET4 native boundary."
+    },
+    {
+      "entry": "00b21110",
+      "cpp_symbol": "destroy_native_renderer_optional_guard_00b21110",
+      "module": "native_renderer_synchronization_actual",
+      "contract": "Actual8-byte optional guard; current mode gates any saved-field read; skipped entry remains uninitialized."
+    },
+    {
+      "entry": "00b29670",
+      "cpp_symbol": "recreate_native_renderer_device_00b29670",
+      "module": "native_renderer_device_recreation_actual",
+      "contract": "Complete AW parent in actual owner/profile/tree/publication domains; only its optional guard unwinds, no rollback or lifecycle-lock unwind."
+    },
+    {
+      "entry": "00b237d0",
+      "cpp_symbol": "release_native_dynamic_buffers_for_reset_00b237d0",
+      "module": "native_dynamic_buffer_device_release",
+      "contract": "Current actual renderer and dynamic wrappers; exact COM reload/release and optional guard."
+    },
+    {
+      "entry": "00b262c0",
+      "cpp_symbol": "release_native_renderer_resources_00b262c0",
+      "module": "native_renderer_resource_release",
+      "contract": "Full actual bindings/cache/resource traversal; borrow recreation.release."
+    },
+    {
+      "entry": "00b23b10",
+      "cpp_symbol": "restore_native_renderer_resources_00b23b10",
+      "module": "native_renderer_resource_restore",
+      "contract": "Full current actual registry/output restoration; borrow recreation.restore and the same publication cell."
+    },
+    {
+      "entry": "00b1fd90",
+      "cpp_symbol": "restore_native_renderer_dynamic_buffers_00b1fd90",
+      "module": "native_renderer_reset_readiness",
+      "contract": "Full70-byte current ready/lost gates and publish-before-first-call ordering; four actual pooled/private profiles from recreation."
+    },
+    {
+      "entry": "00b24460",
+      "cpp_symbol": "set_native_renderer_render_state_00b24460",
+      "module": "native_renderer_cached_states",
+      "contract": "Full raw state setter; uint32 state/value, same synchronization globals, real current COM."
+    },
+    {
+      "entry": "00b26170",
+      "cpp_symbol": "initialize_native_renderer_default_states_00b26170",
+      "module": "native_renderer_cached_states",
+      "contract": "Full ordered render/sampler defaults via complete cached-state providers."
+    },
+    {
+      "entry": "00b21960",
+      "cpp_symbol": "set_native_renderer_gamma_00b21960",
+      "module": "native_renderer_gamma",
+      "contract": "Full gamma provider borrows outgoing volatile float slot and same actual gamma/global constants; no host-pow or FP normalization."
+    },
+    {
+      "entry": "00b20c50",
+      "cpp_symbol": "native_platform_has_focus_00b20c50",
+      "module": "native_renderer_reset_readiness",
+      "contract": "Full31-byte actual raw platform predicate, real GetFocus and current HWND+30 read; full EAX exactly0/1."
+    }
+  ],
+  "current_provider_pins": [
+    {
+      "path": "src/native_dynamic_buffer_device_release.cpp",
+      "sha256": "fa5831aba9f17409663e65536fd01f4199d86ef1f45d118b5f3e08534e438b3e"
+    },
+    {
+      "path": "include/bsp/native_dynamic_buffer_device_release.hpp",
+      "sha256": "babfdf147351f9157c834933c1f0c4b25b747f98c96350da8b13cfcb5070dba1"
+    },
+    {
+      "path": "src/native_renderer_cached_states.cpp",
+      "sha256": "1f59014cce73ade28bda43c65e222711a15ccef8bb6e666473fff728d10b98c4"
+    },
+    {
+      "path": "include/bsp/native_renderer_cached_states.hpp",
+      "sha256": "0110b089dcfaabadee32b902a486cec6e4640849c502fa164190bd04c42b2295"
+    },
+    {
+      "path": "src/native_renderer_device_recreation_actual.cpp",
+      "sha256": "eef9c1ff2522fc0a0f6e2ea4c17eb67ee89b651f42445f62f86193aaac606473"
+    },
+    {
+      "path": "include/bsp/native_renderer_device_recreation_actual.hpp",
+      "sha256": "906a48ce4998c07524af0bae8ef4d6db422eaf717a97f4ca0e2e9d9ffa9684e7"
+    },
+    {
+      "path": "src/native_renderer_gamma.cpp",
+      "sha256": "e741208a329062fd8664702cd981c4e392f57a446e6d17163a34e8cbbf3d0847"
+    },
+    {
+      "path": "include/bsp/native_renderer_gamma.hpp",
+      "sha256": "bdf4eff66fec707b16101473e14f09955cc8f9a469dce76e72ca2c8d140d5738"
+    },
+    {
+      "path": "src/native_renderer_reset_readiness.cpp",
+      "sha256": "d155d185bcd1583e17bcd101d9adc77b9cef6431b4e5d46b0737eb12a52bbc50"
+    },
+    {
+      "path": "include/bsp/native_renderer_reset_readiness.hpp",
+      "sha256": "5cb42380989032741ff8835d3d37cef4ac57b32fa2595a107a77ffea43dadb19"
+    },
+    {
+      "path": "src/native_renderer_resource_release.cpp",
+      "sha256": "c2afc920bcccfcac41120ca589a7fdb5d475a43bd63f8f7206a65213558ed359"
+    },
+    {
+      "path": "include/bsp/native_renderer_resource_release.hpp",
+      "sha256": "809ac960625203986aa35240da5ce75301a3bd59fbc19d00f8197ab03983caa0"
+    },
+    {
+      "path": "src/native_renderer_resource_restore.cpp",
+      "sha256": "05a765b85d3c3ccd7f0d23cb30ecae1679e1f827394048755bcbbdeaf3737c47"
+    },
+    {
+      "path": "include/bsp/native_renderer_resource_restore.hpp",
+      "sha256": "0198b3f63a67ef9379888fbddb5cb2308990d6fffac40e97484facce5a59e01d"
+    },
+    {
+      "path": "src/native_renderer_synchronization_actual.cpp",
+      "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a"
+    },
+    {
+      "path": "include/bsp/native_renderer_synchronization_actual.hpp",
+      "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0"
+    }
+  ],
+  "native_EH_dependencies": [
+    {
+      "entry": "00cbd400",
+      "end_inclusive": "00cbd407",
+      "length": 8,
+      "kind": "existing_unwind_action",
+      "receiver": "LEA ECX,[EBP-14]",
+      "terminal_call_site": "00cbd403",
+      "terminal_address": "00b21110",
+      "counted_as_new_body": false
+    },
+    {
+      "entry": "00cbd408",
+      "end_inclusive": "00cbd411",
+      "length": 10,
+      "kind": "analysis_only_handler_defined_and_saved_by_integrator",
+      "code": "MOV EAX,DF5C58; JMP BF6B43",
+      "terminal_call_site": "00cbd40d",
+      "terminal_address": "00bf6b43",
+      "counted_as_new_body": false,
+      "mechanical_call_check": "Not a function-owned call row until explicitly defined by integrator; exact raw bytes were captured and decoded.",
+      "worker_capture_kind": "raw_handler_no_Ghidra_function",
+      "current_function": "FUN_00cbd408",
+      "definition_record": "reports/native_renderer_ax_analysis_sync.json",
+      "current_body_readback": "00cbd408..00cbd411"
+    },
+    {
+      "entry": "00df5c50",
+      "end_inclusive": "00df5c57",
+      "length": 8,
+      "kind": "unwind_map",
+      "predecessor": -1,
+      "action": "00cbd400"
+    },
+    {
+      "entry": "00df5c58",
+      "end_inclusive": "00df5c7b",
+      "length": 36,
+      "kind": "FuncInfo",
+      "magic": "19930522",
+      "state_count": 1,
+      "unwind_map": "00df5c50"
+    },
+    {
+      "entry": "00bf6b43",
+      "kind": "existing_library_runtime",
+      "identity": "FID_conflict:___CxxFrameHandler3",
+      "preserve_existing_library_name": true
+    }
+  ],
+  "state_order": [
+    {
+      "sites": "B2ABEB..B2AC0D",
+      "behavior": "Optional entry based on current mode; save renderer then AL only if entered. Arm sole cleanup before real thread ID call, then read current authorized-thread DWORD."
+    },
+    {
+      "sites": "B2AC48..B2AC63",
+      "behavior": "Read pending first and lost unconditionally second; bothzero returns. Initialize cooperative result0; only captured lost requests TestCooperativeLevel."
+    },
+    {
+      "sites": "B2AC7D..B2ACC6",
+      "behavior": "DEVICELOST increments wrapping unsigned retryDWORD, stores it, marks1D8A. Unsigned result>10 plus captured platform active41/focus30 clears retry then AW. No Sleep."
+    },
+    {
+      "sites": "B2ACCB..B2AD14",
+      "behavior": "DEVICENOTRESET skips second pending read. Other result, including initialized0, rereads pending. Capture current platform, check active41, call real GetFocus, then read captured HWND30. Failure returns through normal cleanup, before late fallback."
+    },
+    {
+      "sites": "B2AD1A..B2AD6B",
+      "behavior": "Capture immutable Sleep target; result0 or DEVICENOTRESET marks lost, Sleep100, dynamic release, resource release, Sleep100, fresh platform raw-window getter, direct1A44 store, current device/table Reset(actual writable1A28 block)."
+    },
+    {
+      "sites": "B2AD6D..B2ADCA",
+      "behavior": "Only exact HRESULT0: clear1D8A, set1D90=2, resources restore, full dynamic readiness, A1 from fresh1A38!=0, defaults, x87 FLD/currentprofile/FSTP argument/full gamma; clear pending then lost."
+    },
+    {
+      "sites": "B2ADD2..B2ADEA",
+      "behavior": "Unknown cooperative result or failed Reset reloads platform for full B20C50; only AL nonzero calls AW. Both fallback variants and Reset success then Sleep100."
+    },
+    {
+      "sites": "B2AC15..B2AC32; B2ACF6..B2AD0F; B2ADEC..B2AE05",
+      "behavior": "Normal exits reread current mode before disarming cleanup and use full saved guardDWORD if enabled. No lifecycle lock or rollback."
+    }
+  ],
+  "storage_and_producers": [
+    {
+      "field": "actual renderer",
+      "producer": "B32410 captured ECX in ESI; existing actual renderer domain",
+      "limit": "No new full renderer constructor or lifecycle owner is reconstructed here."
+    },
+    {
+      "field": "0108D4C8 render thread",
+      "producer": "B2AEB0: B2B01A GetCurrentThreadId, B2B021 store EAX",
+      "limit": "Must bind the application actual cell; full initialization/startup execution is outside this evidence."
+    },
+    {
+      "field": "0108D4B8 pending",
+      "producer": "B32410 B327B7 clears via BL=0 from B32439; initialization B2B1CC sets1 via EBX=1 at B2AF41, then B2B1D2 Reset; mode B29FBC sets1 via EBX=1 at B29F70; successful Reset clears at B2ADC4. Whole function EBX/BL write audits confirm these values."
+    },
+    {
+      "field": "0108D4B9 lost",
+      "producer": "B32410 B327BD clears via BL=0. B2D8E0 current device Present+44 call B2DB7A is compared with88760868 at B2DB7C; equality sets1 at B2DB83. Successful Reset clears at B2ADCA."
+    },
+    {
+      "field": "0108D4C4 retries",
+      "producer": "This full Reset body reads/adds/stores and conditionally zeroes actual DWORD. No private counter or wider signed arithmetic."
+    },
+    {
+      "field": "renderer1A28..1A5F presentation",
+      "producer": "B2AEB0 pushes38h,0,actual renderer+1A28 and calls BF79F0 at B2AEDC, ADD ESP,0C at B2AF2C; fills actual fields before device creation. Reset passes the SAME writable block and stores fresh platform HWND into1A44."
+    },
+    {
+      "field": "platform0109CF04/+30/+41",
+      "producer": "Borrow current actual platform cell/raw storage; no replacement platform struct. Complete raw BEC230 returns+30, existing B20C50 checks+41 then real focus against current+30; six getter callsites all pass the actual platform and consume EAX as window/descriptor input.",
+      "limit": "General platform owner/constructor and publication lifecycle are not reconstructed by this packet. Never reinterpret Win32PlatformState as the actual raw storage."
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Readiness note listed B2B200 as the direct Reset caller.",
+      "is": "Two direct caller functions: B2AEB0 at B2B1D2 and B2B200 at B2B229.",
+      "evidence": "Fresh guarded callers query and exact current listing/prototype ownership at both callsites."
+    },
+    {
+      "was": "Readiness note described initialization B2B1CC as clearing pending.",
+      "is": "B2B1CC sets pending to1, immediately before Reset; mode B29FBC also sets1.",
+      "evidence": "Whole B2AEB0 EBX/BL audit: MOV EBX,1 at B2AF41, no later EBX/BL write before B2B1CC. Whole mode audit: MOV EBX,1 at B29F70, then B29FBC."
+    }
+  ],
+  "verification": {
+    "static_review": "PASS complete reviewed source/header versus complete native listings, actual current providers and raw imports; no concrete defect found.",
+    "live_disk_bytes": "PASS eight spans,671 bytes, including both complete bodies, raw EH, three IAT slots and gamma slot.",
+    "strict_compile": "Root reported a strict compile pass; this evidence task did not compile or import a compile log. Integration must record its own exact source/build evidence.",
+    "call_rows": "PASS verify_report_calls.py:22 numeric rows checked,0 failed, out of30 recorded host rows. Eight API/COM rows are nonnumeric and not mechanically checked; one numeric current-profile call is indirect and separately byte-resolved. Raw handler transfer remains separately classified because no saved function exists.",
+    "runtime_fixture": "Separate reset_fixture_ax capture reports PASS; linked and hashed, not rerun by this evidence task. Final merged source/library replay is pending.",
+    "standard_build": "Root reports initial combined build and2/2 existing tests passed. Exact final integrated validation must be supplied by root; no build performed by this evidence task.",
+    "ABI_compatible": "not established; new C++ context and raw-leaf interfaces",
+    "game_validated": false
+  },
+  "runtime_fixture": {
+    "worker": "reset_fixture_ax",
+    "status": "separate_worker_capture_pass_final_merged_replay_pending",
+    "this_task_ran_fixture": false,
+    "final_merged_replay_pass": false,
+    "capture_path": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\fixture_report.json",
+    "capture_sha256": "ba74d83f22154d75dedf5cad9ea7c37e9d8c3895d5d6a61339e14e7ffdc20f25",
+    "capture_summary": {
+      "full_reset_parent_pairs": 14,
+      "raw_window_getter_pairs": 14,
+      "normalized_state_bytes_compared": 113904,
+      "event_dwords_compared": 6384,
+      "real_hal_reset_calls": 6,
+      "full_aw_recreation_calls": 4,
+      "native_fh3_exception_pairs": 1
+    },
+    "provenance_boundary": "Worker-captured result, read from the separate report after initial static draft. Do not attribute an exact final merged commit/library pass to this evidence."
+  },
+  "limits": [
+    "Current immutable real Win32 imports and valid reached raw memory/profile domains are preconditions.",
+    "The source branch checks full B20C50 result, equivalent to native AL only because that concrete provider returns exactly0/1.",
+    "Optional guard skipped-entry storage is uninitialized; enabling cleanup later is outside valid native caller domain.",
+    "Only optional-guard EH is represented; no original FH3 frame identity, arbitrary hardware SEH or general concurrent mutation proof.",
+    "Separate worker runtime capture is linked; final merged source/library replay, complete startup/BeginFrame/EndFrame/device-mode lifecycle and gameplay proof remain pending.",
+    "No source or Ghidra mutation, test additions, shared metadata or build registration by this evidence task."
+  ],
+  "worker_capture_status": "draft_static_evidence_with_separate_worker_capture_final_merged_replay_pending",
+  "evidence_draft_provenance": "Only root local/ax-reset-evidence written. No tracked source/docs/report, ledger, Ghidra, test or CMake changes by this evidence task.",
+  "reviewed_source_pins": [
+    {
+      "path": "src/native_renderer_reset_process.cpp",
+      "sha256": "cffe429cb2aad4c7bbc99af11db7dbfe6dc80ec04cdf87226aedbb8fa5e0e14d",
+      "identical_to_reviewed_local_draft": true
+    },
+    {
+      "path": "include/bsp/native_renderer_reset_process.hpp",
+      "sha256": "e504be1e907b9940d3238709b0b25912891a359e4a0a0f06dbc824d3146792ce",
+      "identical_to_reviewed_local_draft": true
+    }
+  ],
+  "initial_combined_build": {
+    "result": "PASS strict Win32 and both existing CTests",
+    "log": "local/ax-initial-combined-build.log",
+    "core_sha256": "ddd88012ac0668de32959d531a2f07039a90297da0a7bf4263ad072a86ce4e67",
+    "exact_final_merged_commit": "pending"
+  },
+  "integration_ax_review": {
+    "combined_validation": "pending exact merged source build and current-library replay",
+    "game_validated": false,
+    "saved_function_names_and_original_signatures": 4,
+    "signature_readback_passed": true,
+    "full_stored_function_bodies": true,
+    "previous_signatures": {
+      "00b1f280": "00b1f280 FUN_00b1f280  undefined FUN_00b1f280(void)  body 00b1f280 - 00b1f320",
+      "00b29e60": "00b29e60 BSP_D3D9Renderer_ChangePresentationMode  undefined BSP_D3D9Renderer_ChangePresentationMode(void)  body 00b29e60 - 00b2a063",
+      "00b2abd0": "00b2abd0 BSP_D3D9Renderer_ProcessDeviceReset  undefined BSP_D3D9Renderer_ProcessDeviceReset(void)  body 00b2abd0 - 00b2ae1c",
+      "00bec230": "00bec230 BSP_Platform_GetWindow_Provisional  undefined BSP_Platform_GetWindow_Provisional(void)  body 00bec230 - 00bec233"
+    },
+    "original_signature_readback": "00b1f280 BSP_RenderCommandQueue_Construct  void * __thiscall BSP_RenderCommandQueue_Construct(void * this)  body 00b1f280 - 00b1f320\n00b29e60 BSP_D3D9Renderer_ChangePresentationMode  uchar __thiscall BSP_D3D9Renderer_ChangePresentationMode(void * this, uint width_slot, uint height_slot, uint fullscreen_slot, uint multisample_slot, uint interval_selector_slot, uint force_slot)  body 00b29e60 - 00b2a063\n00b2abd0 BSP_D3D9Renderer_ProcessDeviceReset  void __thiscall BSP_D3D9Renderer_ProcessDeviceReset(void * this)  body 00b2abd0 - 00b2ae1c\n00bec230 BSP_Platform_GetWindow_Provisional  void * __thiscall BSP_Platform_GetWindow_Provisional(void * this)  body 00bec230 - 00bec233\n",
+    "function_definitions": {
+      "events": [
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbcc0e",
+            "end_address": "00cbcc18"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbcc0e",
+            "end_address": "00cbcc17",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbcc0e",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbcc0e",
+            "function_name": "FUN_00cbcc0e",
+            "entry_point": "00cbcc0e",
+            "body_size": 10,
+            "message": "Function created successfully at 00cbcc0e"
+          }
+        },
+        {
+          "defined": "00cbcc0e",
+          "end": "00cbcc18",
+          "name": null,
+          "after": "Function: FUN_00cbcc0e at 00cbcc0e\nSignature: undefined FUN_00cbcc0e(void)\nEntry: 00cbcc0e\nBody: 00cbcc0e - 00cbcc17"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbd348",
+            "end_address": "00cbd352"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbd348",
+            "end_address": "00cbd351",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbd348",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbd348",
+            "function_name": "FUN_00cbd348",
+            "entry_point": "00cbd348",
+            "body_size": 10,
+            "message": "Function created successfully at 00cbd348"
+          }
+        },
+        {
+          "defined": "00cbd348",
+          "end": "00cbd352",
+          "name": null,
+          "after": "Function: FUN_00cbd348 at 00cbd348\nSignature: undefined FUN_00cbd348(void)\nEntry: 00cbd348\nBody: 00cbd348 - 00cbd351"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbd408",
+            "end_address": "00cbd412"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbd408",
+            "end_address": "00cbd411",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbd408",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbd408",
+            "function_name": "FUN_00cbd408",
+            "entry_point": "00cbd408",
+            "body_size": 10,
+            "message": "Function created successfully at 00cbd408"
+          }
+        },
+        {
+          "defined": "00cbd408",
+          "end": "00cbd412",
+          "name": null,
+          "after": "Function: FUN_00cbd408 at 00cbd408\nSignature: undefined FUN_00cbd408(void)\nEntry: 00cbd408\nBody: 00cbd408 - 00cbd411"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        }
+      ]
+    },
+    "cross_review": "Independent complete-listing reviews checked the queue constructor preexisting control and EH cleanup, raw presentation flags and six native slots, current profiles and gamma outgoing x87 slot, and complete Reset flag-read/retry/focus/HRESULT/Sleep/output ordering. Readiness corrections establish initialization B2B1CC writes pending1 and B2B1D2 calls Reset, alongside BeginFrame B2B229.",
+    "current_report_call_check": "reports/native_renderer_reset_process.json: 22 call rows checked, 0 failed"
+  }
+}

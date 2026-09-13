@@ -101,3 +101,13 @@ source. This is bounded composition and exception evidence, not independent
 original execution of every provider, an original binary replacement, general
 concurrency/SEH proof, full queue lifecycle or gameplay validation. No permanent
 test suite or game installation files were added or changed.
+
+## AX integration analysis refresh
+
+The integrator saved all four AX original signatures and reviewed names,
+verified their complete stored bodies and refreshed exports. Three ten-byte
+EH handlers CBCC0E, CBD348 and CBD408 were defined under owned leases and
+the Ghidra write lock. Missing-function observations above describe the
+earlier worker capture. EH definitions are analysis metadata, not additional
+reconstructed normal-body claims. Combined final-commit validation remains
+separate from the worker fixture evidence.

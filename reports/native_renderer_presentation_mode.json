@@ -21,7 +21,8 @@
       "header": "include/bsp/native_renderer_presentation_mode.hpp",
       "module": "native_renderer_presentation_mode",
       "new_native_body": true,
-      "evidence": "Descriptive hypothesis, not recovered symbol. Complete B29E60..B2A063 actual presentation-mode body. Current optional/lifecycle guards, raw six-slot flag comparisons, zero-size retention, ordered D3D writes, raw Windowed change versus pending update, full AW recreation, current output dimensions and x87 gamma spill, current frame-active/BeginScene and exit-lock reloads preserved. Native AL-only/RET18 and sole optional-guard EH map established; nine original/source fixture comparisons pass. New source interface, not unrestricted FH3/SEH/concurrency/gameplay validation. Evidence: docs/NATIVE_RENDERER_PRESENTATION_MODE.md; reports/native_renderer_presentation_mode.json."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete 00b29e60..00b2a063 normal native body over actual storage and current concrete profiles. Reviewed native ECX/stack-slot/return ABI, current read/callback/output ordering and live/disk spans reviewed. Source adds borrowed contexts; bounded original-byte fixture evidence is separate from original caller ABI, unrestricted FH3/SEH/concurrency and gameplay. Evidence: docs/NATIVE_RENDERER_PRESENTATION_MODE.md; reports/native_renderer_presentation_mode.json.",
+      "worker_evidence": "Descriptive hypothesis, not recovered symbol. Complete B29E60..B2A063 actual presentation-mode body. Current optional/lifecycle guards, raw six-slot flag comparisons, zero-size retention, ordered D3D writes, raw Windowed change versus pending update, full AW recreation, current output dimensions and x87 gamma spill, current frame-active/BeginScene and exit-lock reloads preserved. Native AL-only/RET18 and sole optional-guard EH map established; nine original/source fixture comparisons pass. New source interface, not unrestricted FH3/SEH/concurrency/gameplay validation. Evidence: docs/NATIVE_RENDERER_PRESENTATION_MODE.md; reports/native_renderer_presentation_mode.json."
     }
   ],
   "host_steps": [
@@ -329,5 +330,146 @@
   ],
   "ghidra_mutations": "None; worker read-only. Primary integrator owns annotation/ledger/save/export.",
   "independent_review": "Primary integrator reviewed the full native listing against source and found no concrete defect; NEG/SBB helper is flag-equivalent across intervening native MOVs.",
-  "recorded_utc": "2026-09-13T06:19:18.393245+00:00"
+  "recorded_utc": "2026-09-13T06:19:18.393245+00:00",
+  "integration_ax_review": {
+    "combined_validation": "pending exact merged source build and current-library replay",
+    "game_validated": false,
+    "saved_function_names_and_original_signatures": 4,
+    "signature_readback_passed": true,
+    "full_stored_function_bodies": true,
+    "previous_signatures": {
+      "00b1f280": "00b1f280 FUN_00b1f280  undefined FUN_00b1f280(void)  body 00b1f280 - 00b1f320",
+      "00b29e60": "00b29e60 BSP_D3D9Renderer_ChangePresentationMode  undefined BSP_D3D9Renderer_ChangePresentationMode(void)  body 00b29e60 - 00b2a063",
+      "00b2abd0": "00b2abd0 BSP_D3D9Renderer_ProcessDeviceReset  undefined BSP_D3D9Renderer_ProcessDeviceReset(void)  body 00b2abd0 - 00b2ae1c",
+      "00bec230": "00bec230 BSP_Platform_GetWindow_Provisional  undefined BSP_Platform_GetWindow_Provisional(void)  body 00bec230 - 00bec233"
+    },
+    "original_signature_readback": "00b1f280 BSP_RenderCommandQueue_Construct  void * __thiscall BSP_RenderCommandQueue_Construct(void * this)  body 00b1f280 - 00b1f320\n00b29e60 BSP_D3D9Renderer_ChangePresentationMode  uchar __thiscall BSP_D3D9Renderer_ChangePresentationMode(void * this, uint width_slot, uint height_slot, uint fullscreen_slot, uint multisample_slot, uint interval_selector_slot, uint force_slot)  body 00b29e60 - 00b2a063\n00b2abd0 BSP_D3D9Renderer_ProcessDeviceReset  void __thiscall BSP_D3D9Renderer_ProcessDeviceReset(void * this)  body 00b2abd0 - 00b2ae1c\n00bec230 BSP_Platform_GetWindow_Provisional  void * __thiscall BSP_Platform_GetWindow_Provisional(void * this)  body 00bec230 - 00bec233\n",
+    "function_definitions": {
+      "events": [
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbcc0e",
+            "end_address": "00cbcc18"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbcc0e",
+            "end_address": "00cbcc17",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbcc0e",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbcc0e",
+            "function_name": "FUN_00cbcc0e",
+            "entry_point": "00cbcc0e",
+            "body_size": 10,
+            "message": "Function created successfully at 00cbcc0e"
+          }
+        },
+        {
+          "defined": "00cbcc0e",
+          "end": "00cbcc18",
+          "name": null,
+          "after": "Function: FUN_00cbcc0e at 00cbcc0e\nSignature: undefined FUN_00cbcc0e(void)\nEntry: 00cbcc0e\nBody: 00cbcc0e - 00cbcc17"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbd348",
+            "end_address": "00cbd352"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbd348",
+            "end_address": "00cbd351",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbd348",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbd348",
+            "function_name": "FUN_00cbd348",
+            "entry_point": "00cbd348",
+            "body_size": 10,
+            "message": "Function created successfully at 00cbd348"
+          }
+        },
+        {
+          "defined": "00cbd348",
+          "end": "00cbd352",
+          "name": null,
+          "after": "Function: FUN_00cbd348 at 00cbd348\nSignature: undefined FUN_00cbd348(void)\nEntry: 00cbd348\nBody: 00cbd348 - 00cbd351"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbd408",
+            "end_address": "00cbd412"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbd408",
+            "end_address": "00cbd411",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbd408",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbd408",
+            "function_name": "FUN_00cbd408",
+            "entry_point": "00cbd408",
+            "body_size": 10,
+            "message": "Function created successfully at 00cbd408"
+          }
+        },
+        {
+          "defined": "00cbd408",
+          "end": "00cbd412",
+          "name": null,
+          "after": "Function: FUN_00cbd408 at 00cbd408\nSignature: undefined FUN_00cbd408(void)\nEntry: 00cbd408\nBody: 00cbd408 - 00cbd411"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        }
+      ]
+    },
+    "cross_review": "Independent complete-listing reviews checked the queue constructor preexisting control and EH cleanup, raw presentation flags and six native slots, current profiles and gamma outgoing x87 slot, and complete Reset flag-read/retry/focus/HRESULT/Sleep/output ordering. Readiness corrections establish initialization B2B1CC writes pending1 and B2B1D2 calls Reset, alongside BeginFrame B2B229.",
+    "current_report_call_check": "reports/native_renderer_presentation_mode.json: 8 call rows checked, 0 failed"
+  }
 }
