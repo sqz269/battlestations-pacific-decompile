@@ -190,8 +190,10 @@ struct UnitInstanceState {
     // No copied pose values or default pose; the binding must outlive the state.
     PoseRefreshView& pose;
     int class_id{kUnitDestroyerClassId}; // +0C4h
-    bool active{true};                   // +05Ch, the world tick gate
-    bool simulate{true};                 // +05Dh
+    // Actual byte cells: lifecycle views borrow these same lvalues. Boolean
+    // readers test nonzero; source defaults retain the former true/true state.
+    std::uint8_t active{1};              // +05Ch, the world tick gate
+    std::uint8_t simulate{1};            // +05Dh
     bool intensity_override{false};      // +2F0h
     float intensity_scale{1.0f};         // +2F4h
     float intensity_product{0.0f};       // +10A4h
