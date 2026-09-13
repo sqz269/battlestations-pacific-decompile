@@ -1,0 +1,394 @@
+{
+  "schema_version": 1,
+  "packet": "orch5_texture_special_owners",
+  "generated_utc": "2026-09-13T07:05:18.278000+00:00",
+  "base_commit": "9bff4b174f832631c7448358058bc5ac706c15b7",
+  "status": "complete_named_constructor_bodies_strict_Win32_real_HAL_original_source_checked_registry_integration_pending",
+  "owned_addresses": [
+    "00b3ced0",
+    "00b3cfa0",
+    "00b34280",
+    "00b342d0"
+  ],
+  "owned_files": [
+    "include/bsp/native_named_special_textures.hpp",
+    "src/native_named_special_textures.cpp",
+    "docs/NATIVE_NAMED_SPECIAL_TEXTURES.md",
+    "reports/native_named_special_textures.json"
+  ],
+  "functions": [
+    {
+      "address": "00b3ced0",
+      "end_exclusive": "00b3cf51",
+      "bytes": 129,
+      "sha256": "5e5b136cccd90bff6451b7b819e67403af000e012e603daf828871817f2fd9b6",
+      "name": "BSP_CubeTexture_ConstructNamed",
+      "cpp_symbol": "construct_native_named_cube_texture_00b3ced0",
+      "source": "src/native_named_special_textures.cpp",
+      "header": "include/bsp/native_named_special_textures.hpp",
+      "source_line": 115,
+      "original_ABI": "ECX actual owner; stacked actual eight-byte name header pointer, input COM pointer, flags; EAX same owner; RET0C",
+      "status": "complete_actual_storage_strict_Win32_and_real_HAL_original_source_normal_path_fixture_checked",
+      "behavior": "Actual B34280; D61870 then source+2C=0; captured input COM current44 GetLevelDesc; width+24; refreshed current34 GetLevelCount; count+14 then current descriptor format+18; preserve opaque+28 and slot+30."
+    },
+    {
+      "address": "00b3cfa0",
+      "end_exclusive": "00b3d02f",
+      "bytes": 143,
+      "sha256": "7dbdef0ad3341e85326ca272714eeab415b8dafd6cfcc253cc980545ebab73d4",
+      "name": "BSP_VolumeTexture_ConstructNamed",
+      "cpp_symbol": "construct_native_named_volume_texture_00b3cfa0",
+      "source": "src/native_named_special_textures.cpp",
+      "header": "include/bsp/native_named_special_textures.hpp",
+      "source_line": 140,
+      "original_ABI": "ECX actual owner; stacked actual eight-byte name header pointer, input COM pointer, flags; EAX same owner; RET0C",
+      "status": "complete_actual_storage_strict_Win32_and_real_HAL_original_source_normal_path_fixture_checked",
+      "behavior": "Actual B342D0; D618B0 then source+30=0; captured input COM current44 GetLevelDesc; capture Width/Height/Depth then store Height+28 Width+24 Depth+2C; refreshed current34 GetLevelCount; capture Format then store count+14/format+18; preserve slot+34."
+    },
+    {
+      "address": "00b34280",
+      "end_exclusive": "00b342a5",
+      "bytes": 37,
+      "sha256": "ff6cfccfebde0b4b60c801832313b450d4a47be165381542a7d0f685090dfbe6",
+      "name": "BSP_LogicalTextureBase_ConstructNamed_D5F280",
+      "cpp_symbol": "construct_native_named_cube_texture_base_00b34280",
+      "source": "src/native_named_special_textures.cpp",
+      "header": "include/bsp/native_named_special_textures.hpp",
+      "source_line": 102,
+      "original_ABI": "ECX actual owner; stacked actual eight-byte name header pointer, input COM pointer, flags; EAX same owner; RET0C",
+      "status": "complete_actual_storage_strict_Win32_and_real_HAL_original_source_normal_path_fixture_checked",
+      "behavior": "Actual B34120 then D5F280; same owner, actual string pool, input COM and shared serial; no second count or serial consumption."
+    },
+    {
+      "address": "00b342d0",
+      "end_exclusive": "00b342f5",
+      "bytes": 37,
+      "sha256": "709a8e3835d9d09a5c53bf43f0c7cabd6853dc6f3838c24bd399bb55e769c283",
+      "name": "BSP_LogicalTextureBase_ConstructNamed_D5F2C0",
+      "cpp_symbol": "construct_native_named_volume_texture_base_00b342d0",
+      "source": "src/native_named_special_textures.cpp",
+      "header": "include/bsp/native_named_special_textures.hpp",
+      "source_line": 108,
+      "original_ABI": "ECX actual owner; stacked actual eight-byte name header pointer, input COM pointer, flags; EAX same owner; RET0C",
+      "status": "complete_actual_storage_strict_Win32_and_real_HAL_original_source_normal_path_fixture_checked",
+      "behavior": "Actual B34120 then D5F2C0; same owner, actual string pool, input COM and shared serial; no second count or serial consumption."
+    }
+  ],
+  "calls": [
+    {
+      "address": "00b3cf01",
+      "native": "00b34280",
+      "function": "00b3ced0",
+      "meaning": "Native ECX=ESI owner; pushed flags/input EDI/name, RET0C"
+    },
+    {
+      "address": "00b3cf21",
+      "native": "captured_input_COM+vtable44",
+      "function": "00b3ced0",
+      "meaning": "CALL EDX; stdcall input COM, level0, actual32-byte descriptor; EH state0 armed before invocation"
+    },
+    {
+      "address": "00b3cf30",
+      "native": "captured_input_COM+vtable34",
+      "function": "00b3ced0",
+      "meaning": "CALL EDX; refreshed input table, stdcall input COM, returns level count"
+    },
+    {
+      "address": "00b3cfd1",
+      "native": "00b342d0",
+      "function": "00b3cfa0",
+      "meaning": "Native ECX=ESI owner; pushed flags/input EDI/name, RET0C"
+    },
+    {
+      "address": "00b3cff1",
+      "native": "captured_input_COM+vtable44",
+      "function": "00b3cfa0",
+      "meaning": "CALL EDX; stdcall input COM, level0, actual28-byte descriptor; EH state0 armed before invocation"
+    },
+    {
+      "address": "00b3d00e",
+      "native": "captured_input_COM+vtable34",
+      "function": "00b3cfa0",
+      "meaning": "CALL ECX; refreshed input table, stdcall input COM, returns level count"
+    },
+    {
+      "address": "00b34294",
+      "native": "00b34120",
+      "function": "00b34280",
+      "meaning": "Established actual named logical base; same raw owner/string pool/serial"
+    },
+    {
+      "address": "00b342e4",
+      "native": "00b34120",
+      "function": "00b342d0",
+      "meaning": "Established actual named logical base; same raw owner/string pool/serial"
+    }
+  ],
+  "all_observed_callers": [
+    {
+      "address": "00b2c724",
+      "native": "00b3ced0",
+      "function": "00b2c2d0",
+      "meaning": "Only observed cube caller: allocation B3F2C0 precedes ECX raw/name EBP/COM ESP+14/flags0"
+    },
+    {
+      "address": "00b2c7f7",
+      "native": "00b3cfa0",
+      "function": "00b2c2d0",
+      "meaning": "Only observed volume caller: allocation B3F2D0 precedes ECX raw/name EBP/COM ESP+14/flags0"
+    },
+    {
+      "function": "00b34280",
+      "only_caller": "00b3ced0",
+      "site": "00b3cf01"
+    },
+    {
+      "function": "00b342d0",
+      "only_caller": "00b3cfa0",
+      "site": "00b3cfd1"
+    }
+  ],
+  "supporting_cleanup_tails": [
+    {
+      "address": "00cbed23",
+      "native": "00b34090",
+      "function": "00cbed20",
+      "meaning": "Recover actual cube owner ECX from EBP-30; existing named base cleanup only",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cbed43",
+      "native": "00b340f0",
+      "function": "00cbed40",
+      "meaning": "Recover actual volume owner ECX from EBP-2C; existing named base cleanup only",
+      "kind": "tail_jump"
+    }
+  ],
+  "ownership": {
+    "producer": "B2C2D0 owns raw cube/volume slot and completed D3DX COM acquisition before the constructor call.",
+    "base": "B34120 initializes actual+04=1, copies actual name, stores incoming COM/flags and consumes SAME0108D6E8 serial once; wrappers only change profile.",
+    "success": "Same raw owner creator; existing native cube/volume terminal consumes incoming COM reference. No constructor COM AddRef or private reference count.",
+    "failure": "Completed named base cleanup releases only current name/base, leaves raw slot and COM acquisition to caller; optional acquired record retains identity and cleanup completion, without rollback.",
+    "contexts": "Require SAME ActualNativeStringPoolStorage as existing notification/destruction domain. Volume adds reference to same shared serial to its existing owner context. No private pool/cache/companion registry.",
+    "acquired": "Optional diagnostic frame; fresh-only before domain check/native writes. Records raw_owner,input_com,native_site,named_base_complete,cleanup_started,named_base_unwound,completed creator. Failed attempt cannot replay.",
+    "registration": "Caller canonical domain remains responsible; constructors do not create or register companions."
+  },
+  "exception_evidence": {
+    "cube": {
+      "handler": "00cbed28",
+      "funcinfo": "00df7518",
+      "unwind_map": "00df7510",
+      "max_state": 1,
+      "cleanup": "00cbed20",
+      "try_count": 0,
+      "state_armed": "00b3cf1d"
+    },
+    "volume": {
+      "handler": "00cbed48",
+      "funcinfo": "00df7544",
+      "unwind_map": "00df753c",
+      "max_state": 1,
+      "cleanup": "00cbed40",
+      "try_count": 0,
+      "state_armed": "00b3cfed"
+    },
+    "host": "Armed RAII invokes existing actual B34090/B340F0; same established termination boundary for second C++ exception during cleanup. No original FH3 runtime dispatch proof."
+  },
+  "missing_owned_body_ranges": [],
+  "supporting_analysis_gaps": [
+    {
+      "start": "00cbed28",
+      "end_exclusive": "00cbed32",
+      "bytes": "b81875df00e9117ef3ff",
+      "jump_site": "00cbed2d",
+      "jump_target": "00bf6b43",
+      "reason": "Handler stub is not a live Ghidra function; pinned bytes load EAX=DF7518 then JMP existing CxxFrameHandler3. Supporting evidence only, not an owned/reconstructed function."
+    },
+    {
+      "start": "00cbed48",
+      "end_exclusive": "00cbed52",
+      "bytes": "b84475df00e9f17df3ff",
+      "jump_site": "00cbed4d",
+      "jump_target": "00bf6b43",
+      "reason": "Handler stub is not a live Ghidra function; pinned bytes load EAX=DF7544 then JMP existing CxxFrameHandler3. Supporting evidence only, not an owned/reconstructed function."
+    }
+  ],
+  "assembly_corrections": [
+    "Ignore malformed pseudo-code stack puVar2/EH values: actual COM calls are stdcall12 and stdcall4; original constructor RET0C is visible in each full body.",
+    "Cube final profile store precedes source+2C clear; captured input EDI, not mutable owner+10, supplies both freshly read COM tables.",
+    "Cube reads Format only after storing returned count. Volume captures all dimensions before any dimension store; reads Format before count store.",
+    "Descriptors remain uninitialized; HRESULT ignored; no deterministic values claimed when a real COM query fails to write fields."
+  ],
+  "evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mode": "read_only_BSP_wrappers",
+    "live_function_count": 63879,
+    "installed_exe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "all_eight_live_PE_spans_match": true,
+    "primary_bytes": 346,
+    "spans": [
+      {
+        "name": "cube_body",
+        "address": "00b3ced0",
+        "end_exclusive": "00b3cf51",
+        "length": 129,
+        "sha256": "5e5b136cccd90bff6451b7b819e67403af000e012e603daf828871817f2fd9b6",
+        "hex": "6aff6828edcb0064a100000000506489250000000083ec248b44243c56578b7c24408bf18b4c243c5057518bce89742414e87a73ffff33c08d4c240c51c7067018d60089462c8b178b5244505789442440ffd28b4424248946248b0f8b513457ffd28b4c242c8946148b44240c8946185f8bc65e64890d0000000083c430c20c00"
+      },
+      {
+        "name": "volume_body",
+        "address": "00b3cfa0",
+        "end_exclusive": "00b3d02f",
+        "length": 143,
+        "sha256": "7dbdef0ad3341e85326ca272714eeab415b8dafd6cfcc253cc980545ebab73d4",
+        "hex": "6aff6848edcb0064a100000000506489250000000083ec208b44243856578b7c243c8bf18b4c24385057518bce89742414e8fa72ffff33c08d4c240c51c706b018d6008946308b178b524450578944243cffd28b44241c8b4c24208b542424894e2889462489562c8b078b483457ffd18b54240c8b4c24288946148956185f8bc65e64890d0000000083c42cc20c00"
+      },
+      {
+        "name": "cube_base_body",
+        "address": "00b34280",
+        "end_exclusive": "00b342a5",
+        "length": 37,
+        "sha256": "ff6cfccfebde0b4b60c801832313b450d4a47be165381542a7d0f685090dfbe6",
+        "hex": "8b44240c8b542404568bf18b4c240c5051528bcee887feffffc70680f2d5008bc65ec20c00"
+      },
+      {
+        "name": "volume_base_body",
+        "address": "00b342d0",
+        "end_exclusive": "00b342f5",
+        "length": 37,
+        "sha256": "709a8e3835d9d09a5c53bf43f0c7cabd6853dc6f3838c24bd399bb55e769c283",
+        "hex": "8b44240c8b542404568bf18b4c240c5051528bcee837feffffc706c0f2d5008bc65ec20c00"
+      },
+      {
+        "name": "cube_unwind",
+        "address": "00cbed20",
+        "end_exclusive": "00cbed32",
+        "length": 18,
+        "sha256": "bbb1babd5096e0fbb8169f0a7c9be089a86b55ff761df5ed605cb41e7ca27046",
+        "hex": "8b4dd0e96853e7ffb81875df00e9117ef3ff"
+      },
+      {
+        "name": "volume_unwind",
+        "address": "00cbed40",
+        "end_exclusive": "00cbed52",
+        "length": 18,
+        "sha256": "52a85815e9c6bdbf554e1d622d843519f4d304b684895159c12276873b41bd71",
+        "hex": "8b4dd4e9a853e7ffb84475df00e9f17df3ff"
+      },
+      {
+        "name": "unwind_maps",
+        "address": "00df7510",
+        "end_exclusive": "00df7568",
+        "length": 88,
+        "sha256": "204e2c8bc8805dfd78a233922b98635fc9aa8bcfc8ad25db3bced5c494a4ef8a",
+        "hex": "ffffffff20edcb0022059319010000001075df00000000000000000000000000000000000000000001000000ffffffff40edcb0022059319010000003c75df00000000000000000000000000000000000000000001000000"
+      },
+      {
+        "name": "renderer_profile",
+        "address": "00d5f0a8",
+        "end_exclusive": "00d5f118",
+        "length": 112,
+        "sha256": "052f09bea75b9e3fa49fe469b27c5f02422844ef1d01f72047499833fa5cb1f9",
+        "hex": "f039b300b0aeb2003014b20000b2b200b0f4b200a0f4b2005084b2006084b20010feb100207cb200f07cb20020feb10060ffb100a064b200e017b3001029b30010f7b200c0f4b200b018b30030feb10040feb1007085b20050feb100c087b200b088b200b019b300c01ab3005022b300"
+      }
+    ]
+  },
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "log": "local/named-special-build.log",
+      "original_session": 87160,
+      "exit_code": 0,
+      "configuration": "MSVC Win32 Release /W4 /WX",
+      "ctest": "1/1 passed; native differential seed test not enabled in this fresh worktree"
+    },
+    "new_source_compile": {
+      "command": "cmd /c local\\named_special_runner.cmd",
+      "log": "local/named-special-probe.log",
+      "exit_code": 0,
+      "flags": "/std:c++17 /EHsc /W4 /WX /MD /O2 /fp:strict /link /MANIFEST:EMBED",
+      "library": "build/win32/Release/bsp_core.lib"
+    },
+    "fixture": {
+      "source": "local/named_special_probe.cpp",
+      "runner": "local/named_special_runner.cmd",
+      "executable": "local/named_special_probe.exe",
+      "result": "PASS",
+      "original_execution": "All346 installed/live-pinned bytes copied into isolated VirtualAlloc page. Two constructor CALLs relocated to copied base wrappers; two B34120 CALLs relocated to concrete production actual named-base callee. No original EH handlers invoked.",
+      "actual_producers": [
+        "Direct3DCreate9 and HAL CreateDevice",
+        "Real CreateCubeTexture(8, all mips, A8R8G8B8, MANAGED)",
+        "Real CreateVolumeTexture(8,4,2, all mips, A8R8G8B8, MANAGED)",
+        "ActualNativeStringPoolStorage singleton allocation/copy/release",
+        "Actual cube pool B3F090/B3F170 and actual volume storage through B3EC60/B3ED40 shared algorithm"
+      ],
+      "checks": [
+        "Original/source owner DWORD and actual name agreement",
+        "Native count1 and same serial wrapping/increment",
+        "No constructor COM AddRef",
+        "Cube opaque+28 and slot+30; volume slot+34 preserved",
+        "Completed source acquired identity",
+        "Real InterlockedDecrement to zero then B3F410/B3F430 terminals",
+        "Original numeric renderer table+6C dispatch to actual B32250/B31DC0 on empty raw registry",
+        "Exactly one incoming COM reference consumed by each owner terminal",
+        "All cube/volume slots returned; native pools/shared allocator list drained; actual string singleton shut down"
+      ],
+      "limits": [
+        "B34120 is shared concrete source callee, not original copied callee",
+        "Normal original constructor returns only; no original FH3 exceptions",
+        "Renderer and empty registry supplied as actual raw preimages; no tested renderer factory/canonical companion registration",
+        "No D3DX image decode/cache load, retained-stream assignment, device reset or game proof"
+      ]
+    },
+    "registry": {
+      "integrated": false,
+      "reason": "cmake/startup.cmake actively leased by agent/orch6-native-neighbour-node-q:orch6_native_neighbour_registration_q at final build. No CMake lease claimed or edit performed. Parent must append source when registry becomes free."
+    },
+    "call_report": {
+      "command": "python tools/verify_report_calls.py reports/native_named_special_textures.json",
+      "log": "local/named-special-call-report.log",
+      "checked": 8,
+      "failed": 0,
+      "indirect": 4
+    }
+  },
+  "artifacts": [
+    "local/named-special-build.log",
+    "local/named-special-probe.log",
+    "local/named_special_probe.cpp",
+    "local/named_special_runner.cmd",
+    "local/named_special_probe.exe",
+    "local/named_special_pin.py",
+    "local/named_special_bytes.hpp",
+    "local/named-special-pin.json",
+    "local/named_special_live_pin.py",
+    "local/named-special-live-bytes.log",
+    "local/named-special-native-listing.txt",
+    "local/named-special-call-report.log"
+  ],
+  "limitations": [
+    "New C++ source interfaces are not original binary ABI entries",
+    "No descriptor HRESULT success fallback; failed unwritten descriptors remain nondeterministic",
+    "No pool ownership, canonical registration or renderer lifetime expansion",
+    "B2C2D0 cube/volume integration and broader texture cache/loading remain parent-owned",
+    "Unrelated renderer teardown and device-reset routes remain outside this packet"
+  ],
+  "artifact_sha256": {
+    "include/bsp/native_named_special_textures.hpp": "e45d4b6240621387599ecf4e0d27d65e1f3abe4d6528d761d58db5df4e6f043e",
+    "src/native_named_special_textures.cpp": "73267086543b780a967d9432358d2ac5b4e352bf11a2f4532c4dd20e3c6f4e1a",
+    "local/named-special-build.log": "88cc6798ec8702658f15390c639c5024bcfa72a11bc40e1023bac677ced3d251",
+    "local/named-special-probe.log": "4d59ae1bb969cd00a88e17219da215ee4db9ac401d46b6c01e2c9e1c4e5a490e",
+    "local/named_special_probe.cpp": "c69012ff46ee4a1646e6750b3c5dc1bc9ed25ffcf3ee069fdc1b9a89ffac8afc",
+    "local/named_special_runner.cmd": "a1cf6b58e05e5de6b55a7474bf6767a4156dab649ad0191700f77cc87a398e98",
+    "local/named_special_probe.exe": "1451cfde1e6d30024297557471ad52c9822ddaafa5013703f48b71a184f276a2",
+    "local/named_special_pin.py": "d3122ac57aa058e18fe84d41eece046e3c76a0a235465e9834e3f85a1e25be5d",
+    "local/named_special_bytes.hpp": "e6d7e9eb0efb8befb854a43da3320edfef9dfe740db05532e3c7fb307a543e31",
+    "local/named-special-pin.json": "260812ba4f80d08ba55629c9be2fc202f7940dc5decdb4856d64f042e6d6ea48",
+    "local/named_special_live_pin.py": "43c5acaa5f65272b11baf2774dd7cc992923e935fd87469e66f9a313e7ae2cf9",
+    "local/named-special-live-bytes.log": "701dc292951d2ce34fc3ae6f1d41c34ea7ba2b25c962174d3e0e4aca6afc9f42",
+    "local/named-special-native-listing.txt": "ed42ab495cf4244cb313f6b0dfdfed0ee5f50492ccfed27478b738a1e3b811f7",
+    "local/named-special-call-report.log": "41b4a2fb6425e5d9999869b4f72e5faf38bb43e2a28d6e5bdddd2f73aa2bab12"
+  }
+}
