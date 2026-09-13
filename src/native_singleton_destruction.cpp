@@ -4,6 +4,8 @@
 #include "bsp/game_sound_runtime.hpp"
 #include "bsp/native_input_action_owner.hpp"
 #include "bsp/native_input_settings_lifetime.hpp"
+#include "bsp/native_debug_feature_owner.hpp"
+#include "bsp/native_game_resource_factory.hpp"
 #include "bsp/native_input_backend_owner.hpp"
 #include "bsp/native_physical_factory.hpp"
 #include "bsp/native_filestore_factory.hpp"
@@ -171,6 +173,20 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
         if (bindings.pak_registry != nullptr) {
             delete_native_pak_registry_secondary_00bb4ff0(owner, flags,
                 *bindings.pak_registry);
+            return;
+        }
+        break;
+    case 0x00d68b94:
+        if (bindings.debug_features != nullptr) {
+            delete_native_debug_feature_owner_00be9600(owner, flags,
+                *bindings.debug_features);
+            return;
+        }
+        break;
+    case 0x00cfd84c:
+        if (bindings.game_resource_factory != nullptr) {
+            delete_native_game_resource_factory_secondary_00716520(owner, flags,
+                *bindings.game_resource_factory);
             return;
         }
         break;
