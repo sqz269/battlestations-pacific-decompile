@@ -1,0 +1,135 @@
+{
+ "events": [
+  {
+   "recreate": "00b523c0",
+   "previous": "Function: FUN_00b523c0 at 00b523c0\nSignature: undefined FUN_00b523c0(void)\nEntry: 00b523c0\nBody: 00b523c0 - 00b523d1",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00b523c0"
+   },
+   "result": {
+    "success": true,
+    "address": "00b523c0",
+    "deleted_function": "FUN_00b523c0",
+    "body_size": 18,
+    "message": "Function 'FUN_00b523c0' deleted at 00b523c0"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b523c0",
+    "end_address": "00b523d7"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b523c0",
+    "end_address": "00b523d6",
+    "bytes_disassembled": 23,
+    "message": "Successfully disassembled 23 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b523c0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00b523c0",
+    "function_name": "FUN_00b523c0",
+    "entry_point": "00b523c0",
+    "body_size": 23,
+    "message": "Function created successfully at 00b523c0"
+   }
+  },
+  {
+   "defined": "00b523c0",
+   "end": "00b523d7",
+   "name": null,
+   "after": "Function: FUN_00b523c0 at 00b523c0\nSignature: undefined FUN_00b523c0(void)\nEntry: 00b523c0\nBody: 00b523c0 - 00b523d6"
+  },
+  {
+   "recreate": "00b523e0",
+   "previous": "Function: FUN_00b523e0 at 00b523e0\nSignature: undefined FUN_00b523e0(void)\nEntry: 00b523e0\nBody: 00b523e0 - 00b523f1",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00b523e0"
+   },
+   "result": {
+    "success": true,
+    "address": "00b523e0",
+    "deleted_function": "FUN_00b523e0",
+    "body_size": 18,
+    "message": "Function 'FUN_00b523e0' deleted at 00b523e0"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b523e0",
+    "end_address": "00b523f7"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b523e0",
+    "end_address": "00b523f6",
+    "bytes_disassembled": 23,
+    "message": "Successfully disassembled 23 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b523e0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00b523e0",
+    "function_name": "FUN_00b523e0",
+    "entry_point": "00b523e0",
+    "body_size": 23,
+    "message": "Function created successfully at 00b523e0"
+   }
+  },
+  {
+   "defined": "00b523e0",
+   "end": "00b523f7",
+   "name": null,
+   "after": "Function: FUN_00b523e0 at 00b523e0\nSignature: undefined FUN_00b523e0(void)\nEntry: 00b523e0\nBody: 00b523e0 - 00b523f6"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ],
+ "final_readback": "00b51fc0 FUN_00b51fc0  undefined FUN_00b51fc0(void)  body 00b51fc0 - 00b5203e\n00b52040 FUN_00b52040  undefined FUN_00b52040(void)  body 00b52040 - 00b520c1\n00b523c0 FUN_00b523c0  undefined FUN_00b523c0(void)  body 00b523c0 - 00b523d6\n00b523e0 FUN_00b523e0  undefined FUN_00b523e0(void)  body 00b523e0 - 00b523f6\n",
+ "full_stored_ranges_verified": true,
+ "exports_refreshed": [
+  "00b51fc0",
+  "00b52040",
+  "00b523c0",
+  "00b523e0"
+ ],
+ "scope": "Analysis-only repair of four returning-free gaps; two truncated functions recreated from verified original bytes preserving old values in events. Earlier flow report tail warnings describe the intermediate stage and are resolved by this body readback. No C++ or new native-body count."
+}
