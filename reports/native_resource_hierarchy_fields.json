@@ -1,0 +1,415 @@
+{
+  "packet": "orch2_native_resource_hierarchy_fields_bf",
+  "status": "complete_bounded_source_delivery",
+  "base_head": "b3a2048678df04be952bbb9f68cd8884aa85ded0",
+  "identity": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "verification": "Every live analysis batch uses bsp.py ghidra client verification; report verifier independently verifies identity. Ghidra read-only; no source exports or mutations. Strict Win32 and2 existing CTests; no new permanent tests/game.",
+  "original_body_bytes": 290,
+  "functions": [
+    {
+      "address": "00b7d640",
+      "end": "00b7d69e",
+      "byte_count": 95,
+      "sha256": "187139a5c3029c2e23e569f9b9babdbd7b10d4801348a4699b5faad7c2343689",
+      "live_equals_pe": true,
+      "instruction_count": 38,
+      "decoded_to_end": true,
+      "name": "reserve_native_hierarchy_reference_array_00b7d640",
+      "original_abi": "ECX actual 0Ch data/count/capacity header; stack signed capacity; RET4; no meaningful result.",
+      "status": "raw_source_strict_win32_existing_ctests_and_bounded_capsule_checked",
+      "coverage": "complete",
+      "missing_listing_instruction_addresses": [
+        "00b7d691",
+        "00b7d694",
+        "00b7d696",
+        "00b7d699"
+      ],
+      "direct_calls": [
+        {
+          "function": "00b7d640",
+          "address": "00b7d660",
+          "native": "00bf55be"
+        },
+        {
+          "function": "00b7d640",
+          "address": "00b7d68c",
+          "native": "00bf6989"
+        }
+      ],
+      "behavior": [
+        "Capture requested signed capacity in EDI; clamp below8 to8; return if CURRENT signed capacity+8 suffices.",
+        "BF55BE receives exactly one DWORD byte count (capacity*4 moduloDWORD), caller ADD ESP,4 at B7D669. It jumps to existing BF681B allocation service.",
+        "Capture new data in EBX; read CURRENT count after allocation. For signed index from0, skip only a null computed destination, otherwise reload CURRENT old data and copy one DWORD; reread CURRENT count on every loop test.",
+        "Free CURRENT old data through BF6989 at B7D68C. Missing fallthrough is ADD ESP,4; MOV [ESI],EBX; MOV [ESI+8],EDI; POP EBX at B7D691..699. Publish data/capacity only after free; count remains unchanged.",
+        "No pointee work, unused-slot clearing, overflow check, rollback or null-allocation recovery. Preserve original valid-memory domain and current-header reloads. No local EH frame."
+      ],
+      "reviewed_name": "BSP_HierarchyReferenceArray_ReserveDwords",
+      "source": "src/native_resource_hierarchy_fields.cpp",
+      "header": "include/bsp/native_resource_hierarchy_fields.hpp",
+      "source_abi": "new cdecl Win32 interface; explicit raw string context added for B88180; not original ECX/RET entry ABI",
+      "previous_name": "FUN_00b7d640",
+      "previous_comments": [],
+      "previous_documentation_hash": "9329a4e2f4e596fee6ed3bc178c744e1e8eb532f14f9f158df84dc23e90e2a61",
+      "live_xrefs_text": "From 00b7d7de in FUN_00b7d7d0 [UNCONDITIONAL_CALL]\nFrom 00b7eccb in BSP_StructuredResource_ParseHierarchyItem [UNCONDITIONAL_CALL]\nFrom 00b7d9e9 in FUN_00b7d9d0 [UNCONDITIONAL_CALL]"
+    },
+    {
+      "address": "00b7d7d0",
+      "end": "00b7d81f",
+      "byte_count": 80,
+      "sha256": "aec8299aa9ddf8f6b0a37e7e76645b6b38edde5c1f24ea866ee14fa9cd977756",
+      "live_equals_pe": true,
+      "instruction_count": 31,
+      "decoded_to_end": true,
+      "name": "resize_native_hierarchy_reference_array_00b7d7d0",
+      "original_abi": "ECX actual 0Ch data/count/capacity header; stack signed count; RET4; no meaningful result.",
+      "status": "raw_source_strict_win32_existing_ctests_and_bounded_capsule_checked",
+      "coverage": "complete",
+      "missing_listing_instruction_addresses": [],
+      "direct_calls": [
+        {
+          "function": "00b7d7d0",
+          "address": "00b7d7de",
+          "native": "00b7d640"
+        }
+      ],
+      "behavior": [
+        "Capture signed requested count in EDI; call B7D640(request) only when it exceeds CURRENT signed capacity+8.",
+        "Read CURRENT count after reserve; zero each computed added slot if nonnull, reloading data each iteration. Do not retain or release values.",
+        "Then compare request against CURRENT count again; decrement actual count repeatedly while greater than request, then store request unconditionally. Negative counts/capacities are not clamped. No local EH frame."
+      ],
+      "reviewed_name": "BSP_HierarchyReferenceArray_ResizeDwords",
+      "source": "src/native_resource_hierarchy_fields.cpp",
+      "header": "include/bsp/native_resource_hierarchy_fields.hpp",
+      "source_abi": "new cdecl Win32 interface; explicit raw string context added for B88180; not original ECX/RET entry ABI",
+      "previous_name": "FUN_00b7d7d0",
+      "previous_comments": [],
+      "previous_documentation_hash": "2827d75f61dba52bf1dcf2e27cb10ff806ab7fad17346e7561c30d0f6b0f6e2e",
+      "live_xrefs_text": "From 00b881ad in BSP_HierarchyItem_DestroyFields [UNCONDITIONAL_CALL]"
+    },
+    {
+      "address": "00b88180",
+      "end": "00b881f2",
+      "byte_count": 115,
+      "sha256": "132032b08d4c4332642609822f1cf277aa0947b4e361841691e8cdd324a47dc6",
+      "live_equals_pe": true,
+      "instruction_count": 37,
+      "decoded_to_end": true,
+      "name": "destroy_native_hierarchy_fields_00b88180",
+      "original_abi": "ECX actual hierarchy record; no stack arguments; RET; local FH3 state0 cleans name.",
+      "status": "raw_source_strict_win32_existing_ctests_and_bounded_capsule_checked",
+      "coverage": "complete",
+      "missing_listing_instruction_addresses": [],
+      "direct_calls": [
+        {
+          "function": "00b88180",
+          "address": "00b881ad",
+          "native": "00b7d7d0"
+        },
+        {
+          "function": "00b88180",
+          "address": "00b881b5",
+          "native": "00bf6989"
+        },
+        {
+          "function": "00b88180",
+          "address": "00b881d6",
+          "native": "00419cc0"
+        },
+        {
+          "function": "00b88180",
+          "address": "00b881dd",
+          "native": "00bd1510"
+        }
+      ],
+      "behavior": [
+        "Capture record ESI and header address EDI=record+4C; arm name unwind state0 before B7D7D0(header,0) at B881AD.",
+        "Reload CURRENT data from header after resize; BF6989(data) at B881B5, ADD ESP,4 at B881BD. Array count is zero, but data/capacity remain stale. If capacity was negative, resize0 can allocate32 bytes before this free.",
+        "Load CURRENT name data from record+8 after free. Set unwind state-1 at B881C2 before the pointer test branch/name release. Nonnull data then reads CURRENT length+4, captures length+1, and prepares three stack words for BD1510.",
+        "B881D6 calls 419CC0 with NO native arguments; its plain RET leaves the prepared pointer,size,flag1 stack words for B881DD BD1510. ECX for BD1510 is returned actual pool; RET0C consumes all three words. Use the completed NativeStringRawPoolContext overload so getter exceptions can escape.",
+        "Name and array headers are not cleared. No virtual call, primary-item decrement, record-slot return, hierarchy traversal or payload-field cleanup occurs here.",
+        "If resize/free escapes before state-1, FH3 map DFB9C0 state0 -> CC2570 ->41DD20(record+4). It does not free the numeric backing array or return the88h pool slot as an added unwind action."
+      ],
+      "reviewed_name": "BSP_HierarchyItem_DestroyFields",
+      "source": "src/native_resource_hierarchy_fields.cpp",
+      "header": "include/bsp/native_resource_hierarchy_fields.hpp",
+      "source_abi": "new cdecl Win32 interface; explicit raw string context added for B88180; not original ECX/RET entry ABI",
+      "previous_name": "BSP_HierarchyItem_DestroyFields",
+      "previous_comments": [],
+      "previous_documentation_hash": "2601b1dc69c25f754042b2b1d92d811fdc9adf1f47affc6096219583432fcabf",
+      "live_xrefs_text": "From 00b884bc in BSP_Resource_Destroy [UNCONDITIONAL_CALL]\nFrom 00b88323 in FUN_00b88320 [UNCONDITIONAL_CALL]"
+    }
+  ],
+  "all_incoming_calls": [
+    {
+      "function": "00b7d7d0",
+      "address": "00b7d7de",
+      "native": "00b7d640",
+      "arguments": "ECX unchanged header; stack requested count EDI; RET4."
+    },
+    {
+      "function": "00b7eb90",
+      "address": "00b7eccb",
+      "native": "00b7d640",
+      "arguments": "ECX=record+4C; stack max(capacity+4,8) signed; EDI captures BE9A00 scalar result before reserve; EBX zero throughout producer."
+    },
+    {
+      "function": "00b7d9d0",
+      "address": "00b7d9e9",
+      "native": "00b7d640",
+      "arguments": "ECX original header unchanged; stack max(capacity+4,8); RET4."
+    },
+    {
+      "function": "00b88180",
+      "address": "00b881ad",
+      "native": "00b7d7d0",
+      "arguments": "ECX=record+4C; stack0; RET4."
+    },
+    {
+      "function": "00b88430",
+      "address": "00b884bc",
+      "native": "00b88180",
+      "arguments": "ECX nonnull CURRENT hierarchy pointer EDI; no stack args. Resource kept in ESI; array index EBX."
+    },
+    {
+      "function": "00b88320",
+      "address": "00b88323",
+      "native": "00b88180",
+      "arguments": "ECX original record; no stack args; ESI retains it for conditional pool return."
+    }
+  ],
+  "unwind_action": {
+    "address": "00cc2570",
+    "end": "00cc257a",
+    "byte_count": 11,
+    "sha256": "7aadb0fce5caaff895bf4802694272e05e91d0a634418622d776dae3aab1860f",
+    "live_equals_pe": true,
+    "instruction_count": 3,
+    "decoded_to_end": true,
+    "name": "Hierarchy name unwind",
+    "original_abi": "FH3 funclet; EBP parent frame; load record [EBP-10], add4; tail JMP41DD20.",
+    "status": "existing_unwind_leaf_consumed",
+    "coverage": "complete",
+    "missing_listing_instruction_addresses": [],
+    "direct_calls": [
+      {
+        "function": "00cc2570",
+        "address": "00cc2576",
+        "native": "0041dd20",
+        "kind": "tail_jump"
+      }
+    ],
+    "live_xrefs_text": "From 00dfb9c4 [DATA]"
+  },
+  "unwind_map": {
+    "function": "00b88180",
+    "handler": "00cc257b",
+    "handler_span": {
+      "address": "00cc257b",
+      "end": "00cc2584",
+      "byte_count": 10,
+      "sha256": "095880e65053270076600f4662b24b7ba164863ac29a89cb0c99d1bed88b7ca3",
+      "live_equals_pe": true,
+      "instruction_count": 2,
+      "decoded_to_end": true
+    },
+    "info": "00dfb9c8",
+    "magic": "19930522",
+    "max_state": 1,
+    "map": "00dfb9c0",
+    "states": [
+      {
+        "state": 0,
+        "to_state": -1,
+        "action": "00cc2570",
+        "meaning": "name header at current parent record+4"
+      }
+    ],
+    "no_record_slot_return": true,
+    "no_array_cleanup_action": true
+  },
+  "fresh_unwind_data_span": {
+    "address": "00dfb9c0",
+    "end": "00dfb9eb",
+    "byte_count": 44,
+    "sha256": "8036a57a4cc8e430fe033f8a8f022ecfacf886c1b848fcf9814386bb966914cb",
+    "live_equals_pe": true,
+    "instruction_count": 0,
+    "decoded_to_end": false
+  },
+  "source_dependency_bindings": [
+    {
+      "native": "00bf55be",
+      "actual_body": "JMP BF681B",
+      "source": "singleton_lifetime_allocate",
+      "contract": "Existing concrete malloc/new-handler retry/throw service; requested native/host bytes are identical wrappedDWORD capacity*4. No source injected allocator."
+    },
+    {
+      "native": "00bf6989",
+      "actual_body": "JMP BF65AC",
+      "source": "singleton_lifetime_free",
+      "contract": "Existing concrete returning CRT free, noexcept source boundary; preserve all following header/name work."
+    },
+    {
+      "native": "00419cc0",
+      "source": "native_string_pool_get_or_create_00419cc0(publication1090AA8,manager1090AA0)",
+      "contract": "No original stack arguments. Raw getter can throw; no semantic/private lifetime domain or cached owner."
+    },
+    {
+      "native": "00bd1510",
+      "source": "return_native_string_pool_00bd1510(pool,capturedData,capturedLengthPlus1,gate1090AA4)",
+      "contract": "NativeRET0C(pointer,size,unused1); new provider omits unused native third word. Capture fields before getter."
+    },
+    {
+      "native": "0041dd20",
+      "source": "destroy_native_string_header_0041dd20(currentNameHeader,NativeStringRawPoolContext&)",
+      "contract": "Used only by armed source catch. Read data once; null skips length/getter; capture length+1 before current getter; preserve header; getter exception escapes. No noexcept NativeStringStorage substitution."
+    }
+  ],
+  "source_unwind": {
+    "state0_armed": "before numeric resize0",
+    "state_minus1": "after post-array-free CURRENT data read and before normal length/getter/return",
+    "catch_action": "if armed, raw41DD20(record+4), then rethrow",
+    "not_added": [
+      "array rollback",
+      "second array free",
+      "record88h slab return",
+      "pointee cleanup",
+      "header clear"
+    ],
+    "limit": "C++ exceptions represented. Original FH3/asynchronous faults not executed or claimed equivalent; concrete source free is noexcept."
+  },
+  "corrections": [
+    {
+      "was": "B7D640 pseudocode returns immediately after BF6989",
+      "is": "Returning-free fallthrough publishes new pointer/capacity and restoresEBX before normalRET4",
+      "evidence": "9 live/PE-matched bytes B7D691..699:83c404891e897e085b; read-only flow confirms missing instructions"
+    },
+    {
+      "was": "Earlier decompiler-based comments present419CC0(pointer,length+1,1)",
+      "is": "419CC0 takes no native arguments and plainRET; the3 prepared stack words belong to BD1510 whichRET0C",
+      "evidence": "B881CF..DD plus complete419CC0/Bd1510 live body register/stack inspection"
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 Release:MSVC Win32 /W4 /WX /fp:strict",
+    "ctest": "reconstructed_math and native_math_differential passed",
+    "native_seed_verification": "8 original spans match disk; native differential enabled after verify-seeds and successful reconfigure/build",
+    "report_calls": "14 direct call rows checked,0 failed",
+    "capsule": {
+      "original_frozen_files_unchanged": 12,
+      "original_source_matched_cases": 3,
+      "source_only_exception_cases": 2,
+      "exact_cmake_object_equals_unique_archive_member": true,
+      "files": [
+        {
+          "path": "include/bsp/native_resource_hierarchy_fields.hpp",
+          "bytes": 1804,
+          "sha256": "1d72bb0e181986294296435b4b881c8d3b842363217931d5f3d4504e61c2821d"
+        },
+        {
+          "path": "src/native_resource_hierarchy_fields.cpp",
+          "bytes": 3743,
+          "sha256": "837e3c3bdf6492fb203a2f5488985ab2c80ab9020557f48ff3d729eaa7ccc27e"
+        },
+        {
+          "path": "cmake/startup.cmake",
+          "bytes": 105353,
+          "sha256": "8121c6df419836e93f661b059bd3423a97b067ba1fd049ba34d1ffcd7930e0c4"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_resource_hierarchy_fields.obj",
+          "bytes": 5123,
+          "sha256": "428958fa5021d06b1714cee663d97d834b2529202810d383a11ee523ae6f7f57"
+        },
+        {
+          "path": "local/hierarchy-fields-bf/candidate_hierarchy_bf.obj",
+          "bytes": 5123,
+          "sha256": "428958fa5021d06b1714cee663d97d834b2529202810d383a11ee523ae6f7f57"
+        },
+        {
+          "path": "local/hierarchy-fields-bf/candidate_hierarchy_bf.lib",
+          "bytes": 6034,
+          "sha256": "778bb2a2c56ceeadbf9e70d3307e8930bac5602b573fbc5b41fe8388301269b9"
+        },
+        {
+          "path": "local/hierarchy-fields-bf/source_hierarchy_probe.exe",
+          "bytes": 14848,
+          "sha256": "26a8afc4bff18d5dc046e60dc56df2fb6811f6d7c720f7da454b570fe721abe1"
+        },
+        {
+          "path": "local/hierarchy-fields-bf/source-trace.txt",
+          "bytes": 271,
+          "sha256": "dc99f24211351e9524c5a491e6184b1800266c360a5b25b75efca01c3ed1344b"
+        },
+        {
+          "path": "local/hierarchy-fields-bf/original-frozen.json",
+          "bytes": 2204,
+          "sha256": "c8cbf0cfd1353334779bc08e8ad850a0af55d216ecb78c4554300970afa65974"
+        },
+        {
+          "path": "build/win32/bsp_core.vcxproj",
+          "bytes": 207166,
+          "sha256": "79c8ba9f17ae87f3cf98aaee685c9abbe8d9c7972d484711cc236666af907095"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.command.1.tlog",
+          "bytes": 2251584,
+          "sha256": "4a4860d7b0c9f362e29a607e9ad0abd7374a321460f37d62bf5f759bb566bcf5"
+        },
+        {
+          "path": "build/win32/Testing/Temporary/LastTest.log",
+          "bytes": 1793,
+          "sha256": "6637585c95858de828d98be5368a4288baa17c6354539061d57ae066284293f5"
+        }
+      ],
+      "limits": "Calls to already identified allocation/free/getter/string-return dependencies are intercepted only in this local capsule. It isolates new candidate bodies, not complete CRT/string-pool integration. Original FH3 exceptions were not executed."
+    },
+    "initial_build_attempt": "CMake registration initially used a nonexistent target; corrected to actual bsp_core before compilation. Initial configure log retained; final build uses exactly one owned append.",
+    "no_game": true,
+    "no_ghidra_mutation": true
+  },
+  "discovery_preserved": {
+    "commit": "70d75bb30100d2b1265d1771e91750d30679d9ff",
+    "files": 165,
+    "bytes": 24769938,
+    "manifest_sha256": "d3feba091233eeba3d43d1dc66be0d8188a7953214e2a86876dfd2bf2286fb6d",
+    "root_retained": "local/native-resource-hierarchy-frontier-be-worker-delivery",
+    "old_worktree_unchanged": true
+  },
+  "ownership": {
+    "addresses": [
+      "00b7d640",
+      "00b7d7d0",
+      "00b88180"
+    ],
+    "files": [
+      "include/bsp/native_resource_hierarchy_fields.hpp",
+      "src/native_resource_hierarchy_fields.cpp",
+      "docs/NATIVE_RESOURCE_HIERARCHY_FIELDS.md",
+      "reports/native_resource_hierarchy_fields.json"
+    ],
+    "shared_append": "one target_sources bsp_core line in cmake/startup.cmake",
+    "ledgers": "only owned3 address records in names/reconstruction shards"
+  },
+  "remaining_named_dependencies": [
+    "actual hierarchy109022C binding andB87A90/CD82D0/CE0ED0 wrappers",
+    "B17AF0/B88320 return/scalar wrappers using existing88h pool mechanics",
+    "nativeB7EB90 producer andB87AE0 append ownership",
+    "finite primary-item scalar profiles includingB86990",
+    "actual4C1400/B801C0/B7E7B0/B7FA60 manager/cache path",
+    "B88430 integration"
+  ],
+  "evidence_directory": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-fields-bf\\local\\hierarchy-fields-bf",
+  "final_commit_proof": "local/hierarchy-fields-bf/final-commit-proof.json is created after commit and pins committed file bytes to the compiled object/archive/capsule evidence."
+}
