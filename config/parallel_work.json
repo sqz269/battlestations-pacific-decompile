@@ -10730,6 +10730,124 @@
       "new_native_bodies": 0,
       "existing_body_extensions": 1,
       "boundary": "Actual storage and bounded module validation; full service/camera, native ABI and gameplay remain open; reports/native_node_lifetime_bd_validation.json"
+    },
+    {
+      "id": "orch4_input_device_index_ax",
+      "worker": "orch4-device-tree-ax",
+      "done": false,
+      "state": "dispatched_source_reconstruction",
+      "function_addresses": [
+        "0055c110",
+        "00554980",
+        "0055b520",
+        "0055ba80",
+        "0055bf00"
+      ],
+      "code_ownership": [
+        "include/bsp/native_input_device_index.hpp",
+        "src/native_input_device_index.cpp",
+        "docs/NATIVE_INPUT_DEVICE_INDEX.md",
+        "reports/native_input_device_index.json"
+      ],
+      "dependencies": [
+        "reports/native_input_settings_tree_insertion.json",
+        "reports/native_input_settings_tree_cleanup.json",
+        "reports/native_input_settings_vector_storage.json"
+      ],
+      "boundary": "Actual native storage and complete normal root contracts; shared APIs and Ghidra mutations owned by orch4 integrator. No game interaction. Helpers may have explicitly bounded reached-path coverage."
+    },
+    {
+      "id": "orch4_input_vector_map_index_ax",
+      "worker": "orch4-vector-maps-ax",
+      "done": false,
+      "state": "dispatched_source_reconstruction",
+      "function_addresses": [
+        "006a44b0",
+        "006a45c0",
+        "006a4ca0",
+        "005548c0",
+        "006a1a20",
+        "006a38b0",
+        "006a19a0",
+        "006a3ab0",
+        "0069ccf0",
+        "006a20d0",
+        "006a47f0",
+        "0069cd50"
+      ],
+      "code_ownership": [
+        "include/bsp/native_input_vector_map_index.hpp",
+        "src/native_input_vector_map_index.cpp",
+        "docs/NATIVE_INPUT_VECTOR_MAP_INDEX.md",
+        "reports/native_input_vector_map_index.json"
+      ],
+      "dependencies": [
+        "reports/native_input_settings_tree_insertion.json",
+        "reports/native_input_settings_tree_cleanup.json",
+        "reports/native_input_settings_vector_storage.json"
+      ],
+      "boundary": "Actual native storage and complete normal root contracts; shared APIs and Ghidra mutations owned by orch4 integrator. No game interaction. Helpers may have explicitly bounded reached-path coverage."
+    },
+    {
+      "id": "orch4_input_scale_maps_ax",
+      "worker": "orch4-scale-maps-ax",
+      "done": false,
+      "state": "dispatched_source_reconstruction",
+      "function_addresses": [
+        "0055b400",
+        "0055b490",
+        "00444be0",
+        "006a5aa0",
+        "00443d60",
+        "00444910",
+        "00554ec0",
+        "00558570",
+        "006a4dc0",
+        "00554cd0",
+        "0055b300"
+      ],
+      "code_ownership": [
+        "include/bsp/native_input_scale_maps.hpp",
+        "src/native_input_scale_maps.cpp",
+        "docs/NATIVE_INPUT_SCALE_MAPS.md",
+        "reports/native_input_scale_maps.json"
+      ],
+      "dependencies": [
+        "reports/native_input_settings_tree_insertion.json",
+        "reports/native_input_settings_tree_cleanup.json",
+        "reports/native_input_settings_vector_storage.json"
+      ],
+      "boundary": "Actual native storage and complete normal root contracts; shared APIs and Ghidra mutations owned by orch4 integrator. No game interaction. Helpers may have explicitly bounded reached-path coverage."
+    },
+    {
+      "id": "orch4_input_keyboard_iterators_ax",
+      "worker": "orch4-20260910",
+      "done": false,
+      "state": "integrator_source_and_fixture_work",
+      "function_addresses": [
+        "00546840",
+        "00552770",
+        "0048d3b0",
+        "00552d40",
+        "0055b230",
+        "005540c0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_input_keyboard_iterators.hpp",
+        "src/native_input_keyboard_iterators.cpp",
+        "docs/NATIVE_INPUT_KEYBOARD_ITERATORS.md",
+        "reports/native_input_keyboard_iterators.json",
+        "include/bsp/native_input_keyboard_apply.hpp",
+        "src/native_input_keyboard_apply.cpp",
+        "include/bsp/native_input_settings_tables.hpp",
+        "src/native_input_settings_tables.cpp"
+      ],
+      "dependencies": [
+        "reports/native_input_settings_tree_insertion.json",
+        "reports/native_input_settings_tree_cleanup.json",
+        "reports/native_input_settings_vector_storage.json"
+      ],
+      "boundary": "Actual native storage and complete normal root contracts; shared APIs and Ghidra mutations owned by orch4 integrator. No game interaction. Helpers may have explicitly bounded reached-path coverage."
     }
   ],
   "snapshot_after_analysis": {
