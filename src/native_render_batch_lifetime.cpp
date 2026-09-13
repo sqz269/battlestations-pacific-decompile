@@ -12,25 +12,6 @@ constexpr std::uint32_t pool_table = 0x00d5e5dc;
 constexpr std::uint32_t lock_table = 0x00d5e5d4;
 constexpr std::uint32_t simple_owner_table = 0x00ce3818;
 
-// Capture the section, not its publication. Adjust the actual native counter
-// on the same side of each OS call as ADD [section+18],+1/-1.
-class ManagerGuard final {
-public:
-    explicit ManagerGuard(SystemSingletonCriticalSection* section) : section_(section) {
-        if (section_) {
-            singleton_enter_critical_section(*section_);
-            ++section_->recursion_18;
-        }
-    }
-    ~ManagerGuard() {
-        if (section_) {
-            --section_->recursion_18;
-            singleton_leave_critical_section(*section_);
-        }
-    }
-private:
-    SystemSingletonCriticalSection* section_;
-};
 class BatchGuard final {
 public:
     explicit BatchGuard(TrackedCriticalSection* section) : section_(section) {
@@ -144,18 +125,18 @@ void destroy_native_render_batch_free_slots_00b1d8a0(NativeRenderBatchFreeSlots&
     singleton_lifetime_free(slots.data_00);
 }
 
-NativeRenderBatchLifetime::NativeRenderBatchLifetime(SingletonLifetimeDomain& domain,
+NativeRenderBatchLifetime::NativeRenderBatchLifetime(SoundLifetimeAccess lifetime,
     NativeRenderBatchPoolStorage* volatile& pool,
     NativeRenderBatchLockOwner* volatile& lock,
     const volatile std::uint32_t* table)
-    : domain_(domain), global_0108fe8c_(pool), global_0109dbbc_(lock),
+    : lifetime_(lifetime), global_0108fe8c_(pool), global_0109dbbc_(lock),
       vtable_00d5e5ac_(table) {
     if (!table) throw std::invalid_argument("Native render batch requires actual D5E5AC table");
 }
 NativeRenderBatchPoolStorage* NativeRenderBatchLifetime::pool_00b1e870() {
     if (auto* current = global_0108fe8c_) return current;
     {
-        ManagerGuard guard(domain_.get_manager_00415350()->system_owner().section_10);
+        CapturedSoundLifetimeSection guard(lifetime_);
         if (!global_0108fe8c_) {
             void* storage = singleton_lifetime_allocate({SingletonAllocationKind::object,
                 0x10, sizeof(NativeRenderBatchPoolStorage)});
@@ -168,8 +149,8 @@ NativeRenderBatchPoolStorage* NativeRenderBatchLifetime::pool_00b1e870() {
                 owner->native_vtable_00 = pool_table;
             }
             global_0108fe8c_ = owner;
-            auto* manager = domain_.get_manager_00415350();
-            manager->register_object(global_0108fe8c_);
+            auto manager = lifetime_.get_manager_00415350();
+            manager.register_object(global_0108fe8c_);
         }
     }
     // The native final reload is AFTER unlocking, which can expose a changed
@@ -196,7 +177,7 @@ void NativeRenderBatchLifetime::unwind_lock_owner_00b1c3a0(
 NativeRenderBatchLockOwner* NativeRenderBatchLifetime::lock_owner_00b1cd90() {
     if (auto* current = global_0109dbbc_) return current;
     {
-        ManagerGuard guard(domain_.get_manager_00415350()->system_owner().section_10);
+        CapturedSoundLifetimeSection guard(lifetime_);
         if (!global_0109dbbc_) {
             void* storage = singleton_lifetime_allocate({SingletonAllocationKind::object,
                 8, sizeof(NativeRenderBatchLockOwner)});
@@ -208,8 +189,8 @@ NativeRenderBatchLockOwner* NativeRenderBatchLifetime::lock_owner_00b1cd90() {
                 throw;
             }
             global_0109dbbc_ = owner;
-            auto* manager = domain_.get_manager_00415350();
-            manager->register_object(global_0109dbbc_);
+            auto manager = lifetime_.get_manager_00415350();
+            manager.register_object(global_0109dbbc_);
         }
     }
     return global_0109dbbc_;

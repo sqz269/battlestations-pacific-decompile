@@ -1,11 +1,12 @@
 #pragma once
 
+#include "bsp/sound_lifetime_access.hpp"
+
 #include <cstdint>
 
 namespace bsp {
 struct NativePhysicalFileDateContext;
 class ActualNativeStringPoolStorage;
-class SingletonLifetimeDomain;
 class NativeRenderBatchLifetime;
 
 // Borrow the application's actual publications and canonical owner services.
@@ -17,7 +18,7 @@ class NativeRenderBatchLifetime;
 struct NativePhysicalStreamOpenContext {
     NativePhysicalFileDateContext& physical;
     void* volatile& pool_0109dc28;
-    SingletonLifetimeDomain& lifetime;
+    SoundLifetimeAccess lifetime;
     NativeRenderBatchLifetime& batch_lifetime;
 };
 

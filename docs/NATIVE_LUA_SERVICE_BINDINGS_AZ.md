@@ -1,0 +1,24 @@
+# Native Lua source service bindings (AZ)
+
+`NativeLuaServiceBindings` is a source-level routing component. It borrows an existing `NativeLuaFundamentalsContext`, the caller's X360 flag and region string. Its `files()` and `bootstrap()` references publish that context's exact string storage, VFS dispatcher and volatile manager reference. The bundle does not construct or own the fundamentals lifetime, raw VFS owner, manager, strings, flag or region.
+
+Both service structs receive the same zero-upvalue `DoFile(lua_State*)` trampoline. It routes to `do_native_lua_file_00b69e00` with the active bundle's strings and file services. The override trampoline takes the manager passed by `run_native_lua_file_00b69d40` and forwards it unchanged to `append_native_lua_script_overrides_00bdef90` with the active bundle's strings and VFS. The fundamentals callback is the existing concrete `native_lua_fundamentals_callback`. No Lua state, upvalue, registry or owner layout changes are needed.
+
+Construct `NativeLuaServiceBindings::Activation` around **every synchronous entry into Lua execution** using these callbacks, including bootstrap, direct file runs, settings/table/configuration/shader execution, and any close path capable of invoking Lua callbacks. Activation is thread-local source routing. Nested calls for the same or a different bundle restore the previous binding in LIFO order. A saved `DoFile` alias also needs the correct active binding when called. Execution without a binding throws `std::logic_error`; it never reports success or silently selects another owner. A different thread needs its own activation. The bundle and every borrowed owner/reference must outlive all activations and Lua states that can call these functions; in particular, teardown must keep them alive through Lua close.
+
+This component is dependency-ready, not wired to an executable production host. The host still needs a genuine raw VFS manager/provider, plus the game/input-settings/Lua ownership graph. The TLS slot is an explicit source service route, not a claim about an original process-global symbol. Native FH3, longjmp and hardware exception behavior, and exception propagation across Lua's C callback boundary, are outside this source contract.
+
+## Native evidence
+
+- `open_native_lua_state_00b6a020` installs `DoFile` as a zero-upvalue closure; the reconstructed bootstrap does this in `src/native_lua_bootstrap.cpp:53`.
+- `run_native_lua_file_00b69d40` reads manager `0x0109CEEC` and calls override helper `0x00BDEF90` at `0x00B69D8B`, so the source callback must forward the manager argument.
+- `do_native_lua_file_00b69e00` calls `run_native_lua_file_00b69d40` at `0x00B69E82`; its source implementation owns the concrete file execution/cleanup path.
+- `append_native_lua_script_overrides_00bdef90` receives its manager in ECX and uses the manager's suffixes with the VFS dispatcher. The bundle does not substitute a projected host.
+
+The original callback service routing between multiple live Lua owners is not established by these addresses. This design supplies explicit source routing without claiming binary ABI equivalence.
+
+## Focused source fixture
+
+The ignored `local/native_lua_service_bindings_az_fixture.cpp` and runner exercise the built Win32 archive with the same DoFile pointer in both service structs, explicit unbound rejection, and nested same/different bundle activation restored after C++ stack unwinding. The real override function receives a valid passed manager while the bundle's manager publication deliberately points elsewhere; empty suffix storage keeps this a focused route check without inventing VFS results. Per-bundle counting string storage confirms which active bundle supplies the callback. The fixture does not execute a populated VFS Lua file, run the game, or establish original exception/longjmp behavior.
+
+The ignored `local/native_lua_service_bindings_az_composition.cpp` adapts the retained `orch2` VFS composition fixture by replacing its prior process-wide fixture callbacks with `NativeLuaServiceBindings::files()`/`bootstrap()` and one `Activation` covering bootstrap, file execution and Lua close. Against the built Win32 archive it loads installed shader files through the actual physical HANDLE provider, then executes a populated FileStore memory tree where `cache.lua` invokes nested `DoFile('nested.lua')` and two registered `pc` suffixes produce `order == "MCPP"`. It also checks stream cursors/references, the retained physical and adopted substream paths, and canonical shutdown with zero memory counters. This is source fixture execution using retained copied native instruction/table evidence and read-only installed files; it does not launch the game. The fixture still uses the pre-raw semantic fundamentals context and does not prove the future production raw VFS owner composition or game reachability.

@@ -1,0 +1,331 @@
+{
+  "packet": "orch4_input_lua_vfs_services_az",
+  "status": "source_services_integrated_exact_combined_win32_build_and_five_fixtures_passed",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe"
+  },
+  "documentation": "docs/INPUT_LUA_VFS_SERVICES_AZ.md",
+  "annotations": "reports/input_lua_vfs_services_az_annotations.json",
+  "new_storage_addresses": [
+    "00bb4140",
+    "00bb4f40",
+    "00bb6180"
+  ],
+  "reused_helper": "005efba0",
+  "worker_reports": [
+    "reports/native_lua_service_bindings_az.json",
+    "reports/native_mpak_lookup_storage_az.json",
+    "reports/native_mpak_offset_copy_storage_az.json"
+  ],
+  "byte_spans": [
+    {
+      "address": "00bb4140",
+      "bytes": 60,
+      "end_inclusive": "00bb417b",
+      "sha256": "3a757ccf97cbcdb388a61808269c3b63a65c7021ff26c5d5b8c6cb7e673b6c23",
+      "live_disk_equal": true,
+      "before_annotation": "Function: STL_inst_00bb4140 at 00bb4140\nSignature: undefined STL_inst_00bb4140(void)\nEntry: 00bb4140\nBody: 00bb4140 - 00bb417b",
+      "instructions": 24,
+      "all_instruction_owners_verified": true,
+      "returns": [
+        {
+          "site": "00bb4179",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00bb4f40",
+      "bytes": 52,
+      "end_inclusive": "00bb4f73",
+      "sha256": "83c76d0d3deb873de5e120009ad5b46f798c8fac36be31dffaa40d5f06534b1c",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00bb4f40 at 00bb4f40\nSignature: undefined FUN_00bb4f40(void)\nEntry: 00bb4f40\nBody: 00bb4f40 - 00bb4f73",
+      "instructions": 26,
+      "all_instruction_owners_verified": true,
+      "returns": [
+        {
+          "site": "00bb4f6a",
+          "operand": "4"
+        },
+        {
+          "site": "00bb4f71",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00bb6180",
+      "bytes": 148,
+      "end_inclusive": "00bb6213",
+      "sha256": "9746968a73bfd21f593f2ce6ca9e3edf4ac11f9c33e202ca3ca325cf0dc64775",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00bb6180 at 00bb6180\nSignature: undefined FUN_00bb6180(void)\nEntry: 00bb6180\nBody: 00bb6180 - 00bb6213",
+      "instructions": 57,
+      "all_instruction_owners_verified": true,
+      "returns": [
+        {
+          "site": "00bb6211",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "005efba0",
+      "bytes": 118,
+      "end_inclusive": "005efc15",
+      "sha256": "da62e19f30397ded6702195281f777a492349f783a84d105428ed58ffc089def",
+      "live_disk_equal": true,
+      "before_annotation": "Function: BSP_NativeStringVector_FindCaseInsensitive at 005efba0\nSignature: undefined BSP_NativeStringVector_FindCaseInsensitive(void)\nEntry: 005efba0\nBody: 005efba0 - 005efc15",
+      "instructions": 53,
+      "all_instruction_owners_verified": true,
+      "returns": [
+        {
+          "site": "005efc04",
+          "operand": "4"
+        },
+        {
+          "site": "005efc13",
+          "operand": "4"
+        }
+      ]
+    }
+  ],
+  "calls": [
+    {
+      "function": "00bb4140",
+      "address": "00bb4169",
+      "native": "00bf6713",
+      "evidence": "Direct CALL in its owning saved function with complete live/disk envelope."
+    },
+    {
+      "function": "00bb4f40",
+      "address": "00bb4f54",
+      "native": "005efba0",
+      "evidence": "Direct CALL in its owning saved function with complete live/disk envelope."
+    },
+    {
+      "function": "00bb6180",
+      "address": "00bb61b3",
+      "native": "00a40ad0",
+      "evidence": "Direct CALL in its owning saved function with complete live/disk envelope."
+    },
+    {
+      "function": "00bb6180",
+      "address": "00bb61bc",
+      "native": "00a3e910",
+      "evidence": "Direct CALL in its owning saved function with complete live/disk envelope."
+    },
+    {
+      "function": "00bb6180",
+      "address": "00bb61d5",
+      "native": "00bf6713",
+      "evidence": "Direct CALL in its owning saved function with complete live/disk envelope."
+    },
+    {
+      "function": "00bb6180",
+      "address": "00bb61e3",
+      "native": "00bf6713",
+      "evidence": "Direct CALL in its owning saved function with complete live/disk envelope."
+    },
+    {
+      "function": "00bb6180",
+      "address": "00bb6200",
+      "native": "00bf67a7",
+      "evidence": "Direct CALL in its owning saved function with complete live/disk envelope."
+    },
+    {
+      "function": "005efba0",
+      "address": "005efbe5",
+      "native": "00bf7fbf",
+      "evidence": "Direct CALL in its owning saved function with complete live/disk envelope."
+    }
+  ],
+  "indirect_calls": [],
+  "instruction_ownership_failures": [],
+  "table_data_spans": [
+    {
+      "address": "00d685b4",
+      "bytes": 28,
+      "hex": "c025be0010f3bd0040d4bd0020d5bd00b0c8bd00f091bd0040b0bd00",
+      "sha256": "b54a3f07237b2871c3fc9f5e1913ab48c7635ef2df5bd696328dfaedccffeca5",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d642c0",
+      "bytes": 56,
+      "hex": "e030bd00908fbb00a0f4be00608fbb00209d6f00b0f4be00c0f4be0040f5be0080f5be0090f5be00f0f5be00a041be0000f6be00e042be00",
+      "sha256": "19bc6e25d6f70fc4313cf9b27008c556c74bcaadbb64a9b3ee5da5290479e7be",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d691b0",
+      "bytes": 56,
+      "hex": "a055bf009050bf00e04ebf00f04fbf00209d6f00f04ebf002050bf00204fbf00404fbf003050bf00504fbf00a04fbf00904fbf00e042be00",
+      "sha256": "de659fff2329d0be3e4828318c88eb4bcefd4aed941d5a13d1b9ddbfd64e7a58",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d641f8",
+      "bytes": 32,
+      "hex": "e030bd00807bbb00b05bbb00e079bb00204bbb00405fbb00c040bb004055bb00",
+      "sha256": "40c53ad8b9caa05e0b3c0f215f0f881a04ba8a040797a49b30b2dd8acac2f3dc",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d62c18",
+      "bytes": 4,
+      "hex": "806bb600",
+      "sha256": "b7a82d4959f23e8c4e65a9db52f0c8121c31c91bda71ab0e73164bacc2c27381",
+      "live_disk_equal": true
+    }
+  ],
+  "native_abi": {
+    "00bb4140": "ECX actual10h vector; stacked DWORD index; EAX24h row; RET4.",
+    "00bb4f40": "ECX first14h row; EDX captured end; stacked8h key; EAX row/end; RET4.",
+    "00bb6180": "ECX actual10h destination; stacked actual10h source; EAX destination; RET4."
+  },
+  "data_service_report": "reports/game_native_readonly_data_az.json",
+  "component_validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "lookup_native_source_checks": 8,
+    "offset_copy_native_source_cases": 5,
+    "read_only_data_bytes_equal": 196608,
+    "readonly_nonexecutable_pages_checked": 48,
+    "lua_nested_dofile_order": "MCPP",
+    "physical_handle_and_filestore_reads": true,
+    "zero_memory_counters": true,
+    "required_data_bands": [
+      "00d10000",
+      "00d50000",
+      "00d60000"
+    ]
+  },
+  "limits": [
+    "No original game or gameplay validation; no production raw VFS manager graph.",
+    "Source TLS activation excludes original multi-owner/cross-thread/longjmp/FH3 equivalence.",
+    "Offset copy comparison instruments the allocation call in unchanged source and copied native code; not original CRT/allocator identity.",
+    "Data fixture retains seeded VFS records, explicit writable descriptor pages and semantic lifetime. Physical/render-batch/type-counter raw ownership remains.",
+    "MPAK container growth/EH native validation is a separate ongoing packet; real archive loading is not enabled."
+  ],
+  "pending_followup_analysis": [
+    {
+      "packet": "orch4_physical_stream_lifetime_ba",
+      "unowned_saved_instruction": "00bf4398"
+    },
+    {
+      "packet": "orch4_mpak_container_storage_az",
+      "unowned_saved_instructions": [
+        "00bb623d",
+        "00bb6e82",
+        "00bb721a"
+      ]
+    }
+  ],
+  "final_validation": {
+    "utc": "2026-09-13T23:32:47.368418+00:00",
+    "source_revision": "754f1a4fe3cae7a1949662b5450381b95e330fb2",
+    "merged_main_revision": "58145d5526c832581d6ef11edd95f8f8db7ecdfb",
+    "code_files": 2457,
+    "code_manifest": "local/input_lua_vfs_services_az_source_manifest.json",
+    "code_manifest_sha256": "521584e6de25fc95a2efc92f709086fa7fc3834fdbf4aeb92bed3fb597765f45",
+    "core_archive_sha256": "f5b77ef60324df5882f2342fe9b093839903d62fd1b67399a4955ea914f2ab12",
+    "game_executable_sha256": "eaf0ace3ed8a80f9942fc3e8ad73f882135bc1dcca2b578a8c072e47f0adb9ad",
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "build_log": "local/input_lua_vfs_services_az_combined_build.log",
+    "build_log_sha256": "54799d6dd02a1fb8dfe7703c699d0ec1c961ddc5fb7f813214b2248d1f3e474c",
+    "fixtures": [
+      {
+        "name": "routing",
+        "source": "local/native_lua_service_bindings_az_fixture.cpp",
+        "runner": "local/run_native_lua_service_bindings_az_fixture.ps1",
+        "executable": "local/native_lua_service_bindings_az_fixture.exe",
+        "log": "local/input_lua_vfs_services_az_combined_routing_probe.log",
+        "source_sha256": "43dcfe651047a8c6041d3d3b14ba61995ff5dcac3a9b8621cf9e560d30cdd364",
+        "runner_sha256": "ac57b07750cde72260114f84e1e62bdb81f06c06542d35085c888eb117bded86",
+        "executable_sha256": "123acdb39f74d60e775561dbb69552ca088ef943a5b46cdcf6d22341e1d8d418",
+        "log_sha256": "bec91fce288362520a4283e285647056ad6e59c5698c415e72183baa9a048567"
+      },
+      {
+        "name": "lua",
+        "source": "local/native_lua_service_bindings_az_composition.cpp",
+        "runner": "local/run_native_lua_service_bindings_az_composition.ps1",
+        "executable": "local/native_lua_service_bindings_az_composition.exe",
+        "log": "local/input_lua_vfs_services_az_combined_lua_probe.log",
+        "source_sha256": "4eb206627becdd5e4e85e765c23b556747498437840d8fe240ff8dfa1947b9c6",
+        "runner_sha256": "f6514f25d55cd178680dafb2b2000e0e15fc005154de933f132417cde846fe28",
+        "executable_sha256": "60f0e5946f69c18c0006609645e783088bfaa7283a1c10252216aa37ad531446",
+        "log_sha256": "6cf19cca1a0d29172bdb9799ed7dbc5d6cfac2e706129dff7cb8c702c1a53061"
+      },
+      {
+        "name": "data",
+        "source": "local/game_native_readonly_data_az_probe.cpp",
+        "runner": "local/run_game_native_readonly_data_az_probe.ps1",
+        "executable": "local/game_native_readonly_data_az_probe.exe",
+        "log": "local/input_lua_vfs_services_az_combined_data_probe.log",
+        "source_sha256": "566697ed084b4bd8538de8d5f5417cac522206e1f6092906353529a30fbead94",
+        "runner_sha256": "1137264c75c129cc197e5e7fc1a7864f6e66b4e51ff443527dcf23f0fcac6ff0",
+        "executable_sha256": "973f8335b2991ca2535dba091912bc032a796e6c18ed1c473e7b1f618596ffe0",
+        "log_sha256": "1dc4116aad586883d805321222015ac3e5d108a46fd3bc69ea8c4359d2781371"
+      },
+      {
+        "name": "lookup",
+        "source": "local/mpak_lookup_az_evidence/probe.cpp",
+        "runner": "local/run_mpak_lookup_az_probe.ps1",
+        "executable": "local/mpak_lookup_az_probe.exe",
+        "log": "local/input_lua_vfs_services_az_combined_lookup_probe.log",
+        "source_sha256": "ab204b141e73590ed317430686b0edf4b9bed2ffd25ea7f5cf6cfec316195049",
+        "runner_sha256": "3c14cc4519745787019cccfb7c3bd40c68923d6a612fe002d3fd01a2daff66e3",
+        "executable_sha256": "e95fc4e72d4951e9d3b2b7a9a55801879d768351b9a1c7ff7a608cea08f50099",
+        "log_sha256": "8fa8ea76a7872bab7b5125d6e399307c8eade6440117af043133070e2d3e479e"
+      },
+      {
+        "name": "offset",
+        "source": "local/mpak_offset_copy_az_probe.cpp",
+        "runner": "local/run_mpak_offset_copy_az_probe.ps1",
+        "executable": "local/mpak_offset_copy_az_probe.exe",
+        "log": "local/input_lua_vfs_services_az_combined_offset_probe.log",
+        "source_sha256": "c426892bfdb5a854c5e1ebc85e7cf6b0ebf6f4248a8c4ead632f42881a62dce8",
+        "runner_sha256": "7f1cd79abb35fd58ac5c1ea637811a092bcb7bdd63dd429a7ed500a5d44c7dab",
+        "executable_sha256": "6469c863948b1809b648534829c10f1464a91c0f7c77fe46b3dbeaca550d8a92",
+        "log_sha256": "eb41fe04b8de037444e100143035bcbbb53cd8822683ab77566f6dfa06b7983f"
+      }
+    ],
+    "support_hashes": {
+      "local/mpak_lookup_az_evidence/original_data.hpp": "b9dbfe64b222513386a1972deb3d0400f2af746fce67692a2d7279d20681d592",
+      "local/mpak_lookup_az_evidence/manifest.json": "9cb4085a200b5c081d44c1891767da583c5e3da6f1ff03cfdb588e419b085138",
+      "local/mpak_offset_copy_az_bytes.hpp": "602d4cc6d328b08f31ea73acb491c29807c30a3e8c5fe724e3cbd274b3c99dd5",
+      "local/mpak_offset_copy_az_manifest.json": "49f3f26aead23809fba366103aaf33536023af8b60597f1c248d46bd375feac2",
+      "local/make_mpak_offset_copy_az_bytes.py": "9a816b09226d91d6154a0fd36e4a738bda6c3bf874ab4e2189a9fe1b5a3346a5",
+      "local/make_game_native_readonly_data_az_probe.py": "28bca6476863d51d05825db6f12af3f2d20f7e2510dfa29202e919fd7d27ec77",
+      "local/adapt_native_data_az_span_probe.py": "507290f167638cd8f5e8365e4c9e3a7447067ab2c66063eca7f849bc1dd34705",
+      "local/audit_input_lua_vfs_services_az.py": "56db2faf8f31c9a877d23e6b34869745bf08aad6c056f0a59b474a91b1930efe",
+      "local/annotate_input_lua_vfs_services_az.py": "b3bec478e6de399d3c7b043f32f55b272031601c825ffbd666525a0781cc0797",
+      "local/input_lua_vfs_services_az_calls.log": "d09af36b65224ab88b447322b7fc8feb28004698c93292ac097fbd8863f35624",
+      "local/input_lua_vfs_services_az_seeds.log": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+      "local/mpak_lookup_az_evidence/005efba0.bin": "da62e19f30397ded6702195281f777a492349f783a84d105428ed58ffc089def",
+      "local/mpak_lookup_az_evidence/00bb4140.bin": "3a757ccf97cbcdb388a61808269c3b63a65c7021ff26c5d5b8c6cb7e673b6c23",
+      "local/mpak_lookup_az_evidence/00bb4f40.bin": "83c76d0d3deb873de5e120009ad5b46f798c8fac36be31dffaa40d5f06534b1c"
+    },
+    "installed_executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "installed_script_sha256": {
+      "scripts/fundamentals.lua": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526",
+      "shaderfx/common/debugshader.shfx": "d45e91ef1a3f11c654b97ac3a9d293b9a24b597b68fb315d611638d3b6933476",
+      "shaderfx/common/alphablend.shfx": "37cc55352deb1ea4b9685eb4dd3d0f89cb9958bd7a786d24bb34857ed9747f64"
+    },
+    "unique_owned_direct_call_sites": 18,
+    "call_report_rows": 26,
+    "call_rows_failed": 0,
+    "live_disk_function_envelopes": 4,
+    "saved_annotations_readback": 3,
+    "disk_live_seed_spans_equal": 8,
+    "annotation_receipt_sha256": "a974ea97be8dc91b22e025c2cc6b73b8d7aa401fc7344934c7f1a4735a94216f",
+    "original_abi_compatible": false,
+    "original_fh3_executed": false,
+    "production_host_reachable": false,
+    "game_validated": false
+  }
+}
