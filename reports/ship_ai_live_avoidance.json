@@ -90,6 +90,43 @@
       },
       "actual_host_probe_checks": 56,
       "participant_reads_in_run": "none required: current roles retain constructor value8"
+    },
+    "publication_after_shared_merge": {
+      "compiled_commit": "130f17ba063dae9d043ec0cc223cbdcf54d57928",
+      "exe_sha256": "77d8ea1ccc73bd8657baa3961771497caf38bf9fd2ac04c9bbe06acb48ce850b",
+      "record": "local/orch6_combined_130f17ba.json",
+      "existing_ctests_passed": 2,
+      "build_log": "local\\orch6_exact_build_130f17ba_20260912T215138.log",
+      "changed_shared_inputs": [
+        "cmake/startup.cmake",
+        "include/bsp/native_mpak_factory.hpp",
+        "include/bsp/native_mpak_provider.hpp",
+        "include/bsp/native_pak_registry.hpp",
+        "include/bsp/native_singleton_destruction.hpp",
+        "include/bsp/native_stream_copy_range.hpp",
+        "src/native_mpak_factory.cpp",
+        "src/native_mpak_provider.cpp",
+        "src/native_pak_registry.cpp",
+        "src/native_physical_file_date.cpp",
+        "src/native_singleton_destruction.cpp",
+        "src/native_stream_copy_range.cpp"
+      ],
+      "trajectory": {
+        "rows": 18557,
+        "nonfinite_rows": 0,
+        "nonfinite_units": [],
+        "airfield_samples": 241,
+        "airfield_unchanged": true
+      },
+      "search": {
+        "queries": 2400,
+        "refills": 10,
+        "clears": 12
+      },
+      "cruise": {
+        "reads": 1080,
+        "unavailable": 0
+      }
     }
   },
   "remaining": [
