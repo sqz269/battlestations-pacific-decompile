@@ -88,3 +88,18 @@ actual cache-name removal, item deletion profiles, hierarchy-pool return and
 array unwind helpers. Existing typed reader/parser/model implementations remain
 separate and available. No dummy owning resource, stubbed load result or process
 success path was introduced.
+
+## Integrator correction: cleanup body ranges
+
+The earlier missing-tail description records the worker snapshot. The integrator
+has now saved both complete 11-byte cleanup bodies, `C84FA0..C84FAA` and
+`CC25B0..CC25BA`, after verifying the installed bytes. Clearing the erroneous
+returning-free call overrides decoded the tails but left the stored body ranges
+short; the supported locked definition tool then recreated those exact ranges.
+Both prior `Unwind@` names and plate comments are unchanged. Fresh exports and
+follow-up scans show five instructions and zero remaining call gaps in each.
+The [repair record](../reports/native_resource_construction_flow_repairs.json)
+preserves the original metadata, intermediate limitation and final body ranges.
+This repairs analysis metadata and adds no reconstructed body or FH3 execution
+claim. Independent review accepted the construction source and retained worker
+evidence; a fresh merged-candidate build and fixture gate remain required.

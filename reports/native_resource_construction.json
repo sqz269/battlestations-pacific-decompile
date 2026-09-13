@@ -452,26 +452,6 @@
     "Actual B80720 load/cache, raw reader/node storage and parser result ownership are not completed by creation. Existing typed reader/parsers/StructuredModel are retained and are not native storage.",
     "No process success stub, dummy owning result, singleton registration or global resource publication introduced."
   ],
-  "pending_root_ghidra_repairs": [
-    {
-      "entry": "00c84fa0",
-      "returning_call": "00c84fa4",
-      "callee": "00bf65ac",
-      "current_body_end": "00c84fa8",
-      "verified_extra_span": "00c84fa9-00c84faa",
-      "bytes": "59 c3",
-      "reason": "POP ECX;RET excluded after returning free. Verified in frontier auxiliary span; worker made no mutation."
-    },
-    {
-      "entry": "00cc25b0",
-      "returning_call": "00cc25b4",
-      "callee": "00bf65ac",
-      "current_body_end": "00cc25b8",
-      "verified_extra_span": "00cc25b9-00cc25ba",
-      "bytes": "59 c3",
-      "reason": "POP ECX;RET excluded after returning free. Verified in frontier auxiliary span; worker made no mutation."
-    }
-  ],
   "validation": {
     "strict_win32_build": "local/resource-construction-development-build.log",
     "ctests_passed": 2,
@@ -520,5 +500,40 @@
     "local/resource-construction-fixture-bc",
     "local/resource-construction-attempts"
   ],
-  "annotation_status": "Repository names and reconstruction rows only; original comments preserved via append-evidence. Root applies reviewed names/comments and returning-free-tail repairs under its write lock."
+  "annotation_status": "Four reviewed names and evidence comments applied under root lease/write lock, prior comments preserved, saved and exports refreshed.",
+  "resolved_root_ghidra_repairs": [
+    {
+      "entry": "00c84fa0",
+      "returning_call": "00c84fa4",
+      "callee": "00bf65ac",
+      "current_body_end": "00c84fa8",
+      "verified_extra_span": "00c84fa9-00c84faa",
+      "bytes": "59 c3",
+      "reason": "POP ECX;RET excluded after returning free. Verified in frontier auxiliary span; worker made no mutation.",
+      "status": "saved_full_body_verified_names_and_comments_preserved"
+    },
+    {
+      "entry": "00cc25b0",
+      "returning_call": "00cc25b4",
+      "callee": "00bf65ac",
+      "current_body_end": "00cc25b8",
+      "verified_extra_span": "00cc25b9-00cc25ba",
+      "bytes": "59 c3",
+      "reason": "POP ECX;RET excluded after returning free. Verified in frontier auxiliary span; worker made no mutation.",
+      "status": "saved_full_body_verified_names_and_comments_preserved"
+    }
+  ],
+  "pending_root_ghidra_repairs": [],
+  "root_flow_repair_report": "reports/native_resource_construction_flow_repairs.json",
+  "worker_annotation_status": "Repository names and reconstruction rows only; original comments preserved via append-evidence. Root applies reviewed names/comments and returning-free-tail repairs under its write lock.",
+  "root_annotation_evidence": [
+    {
+      "path": "local/ghidra-annotations-20260913T165516Z.json",
+      "sha256": "0fdd02e44c0ed6901557902df9fb232df7189ded47b723527b5ad6888cb98bbe"
+    },
+    {
+      "path": "local/native-resource-construction-after-annotations.json",
+      "sha256": "94ee5a1796de47bd541a2c3be799ceedfe9730c49689f4f26f856fd973600684"
+    }
+  ]
 }
