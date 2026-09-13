@@ -33,7 +33,7 @@ That load retains existing storage owners, clears their borrowed selected lists
 and invalidates cache keys before replacing geometry. This is process lifetime
 management, not a recovered native loader store. The first combined run at
 3db73f6e exposed and preserved an access violation caused by incorrectly
-destroying those owners during geometry load; the correction awaits rerun.
+destroying those owners during geometry load. The corrected 87f9a9e0 run passes.
 
 ## Current verification and remaining connections
 
@@ -62,10 +62,17 @@ remains unassigned until the actual role-assignment receiver is connected.
 The borrowed participant object must outlive the ship AI host. Its mission
 publication is tracked in the separate session-owner packet.
 
-The new cruise connection has not yet been built or exercised in the combined
-mission. No active mission avoidance or gameplay validation is claimed at this
-checkpoint. The remaining state/request writers and obstacle refresh producer
-are separate work; recovered point predicates are not yet bound to unproduced
-geometry.
+The corrected combined Win32 build and both existing tests pass at 87f9a9e0.
+The 120-frame mission exits normally with 18,557 finite trajectory rows and
+241 unchanged Airfield2 samples. The live search executes 2,400 queries,
+10 refills and 12 disable clears. All 1,080 cruise-owner reads are available;
+the constructor-owned role8 path does not need a participant lookup. The
+session pool is not yet published by MissionFrame at this checkpoint.
+
+This verifies execution of the process avoidance path. It does not establish
+original-game avoidance, visual or gameplay parity. The remaining state/request
+writers and obstacle refresh producer are separate work; recovered point
+predicates are not yet bound to unproduced geometry. Exact executable, source
+identity and the failed predecessor are recorded in ORCH6_RECONSTRUCTION_IJK.md.
 
 See `reports/ship_ai_live_avoidance.json` for the checkpoint evidence paths.
