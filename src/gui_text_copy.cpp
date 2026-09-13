@@ -163,7 +163,7 @@ GuiTextCopyPhase GuiTextCopyContinuation::run_derived_00abb2c0() {
         phase_ = GuiTextCopyPhase::sections;
         auto binding = lifetime_.content_binding();
         ensure_gui_text_draw_sections_00ab8530(binding.widget, binding.text,
-            binding.shadow_188, services_.cursor.buffers);
+            binding.shadow_188, services_.cursor.buffers, lifetime_.section_operation());
         phase_ = GuiTextCopyPhase::rebuilding;
         auto result = rebuild_gui_text_content_00abb1d0(lifetime_, services_.submit);
         pending_ = std::move(result.pending);

@@ -8,8 +8,8 @@ namespace bsp {
 // identity, then perform set_native_material_parameter_owner_00b18a40 with
 // retain_flag=1 and the supplied canonical actual-owner domain. The identity
 // must have the real atomic +04 and current terminal virtual0 binding, and
-// outlive the material's final release. A GuiWidgetOwner address or its
-// semantic extra_fields().references_04 cannot be used as that raw storage.
+// outlive the material's final release. A GuiWidgetOwner address cannot stand
+// in for the canonical factory's actual eight-byte native prefix.
 // Native order: release the old owner iff old byte10D; clear after callback;
 // publish new owner+0C/byte10D=1; increment incoming+04. Equal identity still
 // releases/reacquires; no protective retain. Missing binding must throw before

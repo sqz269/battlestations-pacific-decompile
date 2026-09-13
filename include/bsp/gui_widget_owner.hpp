@@ -88,7 +88,6 @@ struct GuiWidgetOwnerEnvironment {
 // of replacement nodes is constructed. Additional fields cover native offsets
 // absent from that projection; constructor-unwritten fields are marked below.
 struct GuiWidgetBaseExtraFields {
-    std::int32_t references_04{1};
     float fields_30_44[6]{};
     std::uint8_t byte_79{};
     float fields_7c_80[2]{};

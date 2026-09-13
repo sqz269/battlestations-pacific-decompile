@@ -48,16 +48,4 @@ void create_gui_text_glyph_buffers_00ab8400(std::uint32_t glyph_capacity,
     NativeMeshStorage&, void* const volatile& current_renderer_00f8d394,
     NativeStringStorage&, NativeRenderActualOwners&);
 
-//00AB8530 complete supported normal path, native ECX Text/RET. The widget,
-// existing GuiTextWidget and LIVE shadow+188 association describe one Text.
-// Creates actual Shadow/model geometry/sections/materials using canonical
-// pools and owners; no secondary hierarchy or Text state. Existing shadow
-// skips all shadow creation/repair. Main has no geometry -> no section added.
-// Publish Shadow before name release; append section BEFORE material creation;
-// release creator references in native order; reread flags/shadow after calls.
-// No buffer upload, shader-font setup, draw or Text destructor is supplied.
-// Valid actual owners/callable renderer profiles and successful native
-// allocations are prerequisites; pool/SEH failure behavior is not claimed.
-void ensure_gui_text_draw_sections_00ab8530(GuiWidgetOwner&, GuiTextWidget&,
-    NativeNodeBinding*& shadow_188, GuiTextBufferServices&);
 } // namespace bsp

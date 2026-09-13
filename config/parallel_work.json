@@ -9720,6 +9720,122 @@
       "done": true,
       "next_work": "See the named follow-up packets and explicit remaining contracts in the batch doc/report.",
       "validation": "Exact promoted code b1f047dd60333c96d0f836464bd22a181eaf4ca1 passed Win32/CTest2/2 and four scoped fixtures; Text composition is build-checked only. See batch report for individual scope and remaining contracts."
+    },
+    {
+      "id": "orch5_text_identity_native",
+      "state": "reconstructed_awaiting_combined_validation",
+      "worker": "orch5-20260911",
+      "integration_owner": "primary",
+      "function_addresses": [
+        "00aa9390",
+        "00aa9520",
+        "00ab9650",
+        "00abb2c0",
+        "00ab8ee0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_gui_text_identity.hpp",
+        "src/native_gui_text_identity.cpp"
+      ],
+      "output_files": [
+        "reports/native_gui_text_identity.json",
+        "docs/GUI_TEXT_NATIVE_INTEGRATION.md"
+      ],
+      "contract": "Proven eight-byte prefix and same-count current Text terminal; remaining raw payload unconstructed.",
+      "integration_report": "reports/gui_text_native_integration.json",
+      "done": false,
+      "next_work": "Compose the documented actual effect48 and caller-lifetime boundaries before positive full Text validation."
+    },
+    {
+      "id": "orch5_text_factory_identity",
+      "state": "reconstructed_awaiting_combined_validation",
+      "worker": "orch5-20260911",
+      "integration_owner": "primary",
+      "function_addresses": [
+        "00aa1380",
+        "00ab9650",
+        "00ab8ee0"
+      ],
+      "code_ownership": [
+        "include/bsp/gui_text_runtime_factory.hpp",
+        "src/gui_text_runtime_factory.cpp"
+      ],
+      "output_files": [
+        "reports/native_gui_text_factory_identity.json",
+        "docs/GUI_TEXT_NATIVE_INTEGRATION.md"
+      ],
+      "contract": "Same factory allocation and canonical registry; retained default/copy admission and explicit/count-zero deletion routes; full Text execution unverified.",
+      "integration_report": "reports/gui_text_native_integration.json",
+      "done": false,
+      "next_work": "Compose the documented actual effect48 and caller-lifetime boundaries before positive full Text validation."
+    },
+    {
+      "id": "orch5_text_renderer_native",
+      "state": "reconstructed_awaiting_combined_validation",
+      "worker": "orch5-20260911",
+      "integration_owner": "primary",
+      "function_addresses": [
+        "00ab8400",
+        "00ab8910",
+        "00b317e0"
+      ],
+      "code_ownership": [
+        "include/bsp/gui_text_native_renderer.hpp",
+        "src/gui_text_native_renderer.cpp"
+      ],
+      "output_files": [
+        "reports/gui_text_native_renderer.json",
+        "docs/GUI_TEXT_NATIVE_INTEGRATION.md"
+      ],
+      "contract": "Actual renderer38/5C/60 and canonical declaration reuse with persistent acquisitions; effect48 remains required.",
+      "integration_report": "reports/gui_text_native_integration.json",
+      "done": false,
+      "next_work": "Compose the documented actual effect48 and caller-lifetime boundaries before positive full Text validation."
+    },
+    {
+      "id": "orch5_text_sections_native",
+      "state": "reconstructed_awaiting_combined_validation",
+      "worker": "orch5-20260911",
+      "integration_owner": "primary",
+      "function_addresses": [
+        "00ab8530"
+      ],
+      "code_ownership": [
+        "include/bsp/gui_text_sections.hpp",
+        "src/gui_text_sections.cpp"
+      ],
+      "output_files": [
+        "reports/gui_text_section_operation.json",
+        "docs/GUI_TEXT_NATIVE_INTEGRATION.md"
+      ],
+      "contract": "Retained native caller locals and actual Shadow raw-slot cleanup; same owner default admission. Factory internal failures remain bounded.",
+      "integration_report": "reports/gui_text_native_integration.json",
+      "done": false,
+      "next_work": "Compose the documented actual effect48 and caller-lifetime boundaries before positive full Text validation."
+    },
+    {
+      "id": "orch5_text_native_layout",
+      "state": "reconstructed_awaiting_combined_validation",
+      "worker": "orch5-20260911",
+      "integration_owner": "primary",
+      "function_addresses": [
+        "00b2f710",
+        "00b483f0",
+        "00b60770",
+        "00b48ce0"
+      ],
+      "code_ownership": [
+        "include/bsp/gui_text_native_layout.hpp",
+        "src/gui_text_native_layout.cpp"
+      ],
+      "output_files": [
+        "reports/gui_text_native_layout.json",
+        "docs/GUI_TEXT_NATIVE_INTEGRATION.md"
+      ],
+      "contract": "Actual current40 layout factory and canonical hardware/CPU declaration terminal cleanup.",
+      "integration_report": "reports/gui_text_native_integration.json",
+      "done": false,
+      "next_work": "Compose the documented actual effect48 and caller-lifetime boundaries before positive full Text validation."
     }
   ],
   "snapshot_after_analysis": {
