@@ -1,0 +1,276 @@
+{
+  "packet": "orch5_index_stream_owner",
+  "status": "complete_normal_actual_index_creation_factory_pool_and_reference",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "source": "src/native_logical_index_owner.cpp",
+  "header": "include/bsp/native_logical_index_owner.hpp",
+  "documentation": "docs/NATIVE_LOGICAL_INDEX_CREATION.md",
+  "functions": [
+    {
+      "address": "00b288b0",
+      "end_inclusive": "00b28999",
+      "last_instruction": "00b28997",
+      "last_instruction_length": 3,
+      "byte_length": 234,
+      "listed_instructions": 77,
+      "coverage": "complete normal factory and allocation unwind; existing actual providers",
+      "original_abi": "ECX renderer; stack count,flags,format; EAX raw stream; RET0C",
+      "gaps": []
+    },
+    {
+      "address": "00b4bf30",
+      "end_inclusive": "00b4c1d5",
+      "last_instruction": "00b4c1d3",
+      "last_instruction_length": 3,
+      "byte_length": 678,
+      "listed_instructions": 208,
+      "coverage": "complete normal and guard/base C++ unwind order; B29670 mandatory actual service",
+      "original_abi": "ECX logical; stack count,format,flags; EAX same logical; RET0C",
+      "gaps": []
+    },
+    {
+      "address": "00b4b380",
+      "end_inclusive": "00b4b389",
+      "last_instruction": "00b4b385",
+      "last_instruction_length": 5,
+      "byte_length": 10,
+      "listed_instructions": 2,
+      "coverage": "complete actual global pool forwarding",
+      "original_abi": "incoming ECX discarded; ECX=0108FE50; tail JMP B4B0A0",
+      "gaps": []
+    },
+    {
+      "address": "00b22d70",
+      "end_inclusive": "00b22dce",
+      "last_instruction": "00b22dcc",
+      "last_instruction_length": 3,
+      "byte_length": 95,
+      "listed_instructions": 34,
+      "coverage": "complete including omitted post-free publication",
+      "original_abi": "ECX actual12-byte array; stack signed capacity; RET4",
+      "gaps": [
+        {
+          "start": "00b22dc1",
+          "end_inclusive": "00b22dc9",
+          "bytes": 9,
+          "resolution": "disk disasm: ADD ESP4; MOV [ESI],EBX; MOV [ESI+8],EDI; no Ghidra change"
+        }
+      ]
+    },
+    {
+      "address": "00b4b0a0",
+      "end_inclusive": "00b4b1db",
+      "last_instruction": "00b4b1db",
+      "last_instruction_length": 1,
+      "byte_length": 316,
+      "listed_instructions": 108,
+      "coverage": "complete including omitted post-free stack cleanup; unreachable alignment excluded from semantics",
+      "original_abi": "ECX actual pool; EAX actual28h slot; RET",
+      "gaps": [
+        {
+          "start": "00b4b136",
+          "end_inclusive": "00b4b138",
+          "bytes": 3,
+          "resolution": "disk disasm ADD ESP4; original free returns"
+        },
+        {
+          "start": "00b4b197",
+          "end_inclusive": "00b4b19f",
+          "bytes": 9,
+          "resolution": "unreachable alignment between JMP B4B1A0 and its target; bytes8DA42400000000 8BFF decode LEA ESP,[ESP]; MOV EDI,EDI"
+        }
+      ]
+    },
+    {
+      "address": "00b48f70",
+      "end_inclusive": "00b48faf",
+      "last_instruction": "00b48fad",
+      "last_instruction_length": 3,
+      "byte_length": 64,
+      "listed_instructions": 23,
+      "coverage": "complete slab producer",
+      "original_abi": "ECX actual544h slab; stack slab index; EAX slab; RET4",
+      "gaps": []
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00b288b0",
+      "address": "00b288d0",
+      "native": "00b4b380",
+      "binding": "ECX24 discarded by wrapper; actual global pool0108FE50"
+    },
+    {
+      "function": "00b288b0",
+      "address": "00b288f4",
+      "native": "00b4bf30",
+      "binding": "ECX raw allocation; stack count,format,flags; RET0C"
+    },
+    {
+      "function": "00b288b0",
+      "address": "00b28926",
+      "native": "00b22d70",
+      "binding": "ECX renderer+1AB8; stack signed growth=max(2*capacity,1); RET4"
+    },
+    {
+      "function": "00b288b0",
+      "address": "00b28944",
+      "native": "renderer+vtable58",
+      "binding": "current observedD5F0A8 targetB1FE50; AL must equal1"
+    },
+    {
+      "function": "00b288b0",
+      "address": "00b2896d",
+      "native": "00b22d70",
+      "binding": "ECX renderer+19C4; stack signed growth; RET4"
+    },
+    {
+      "function": "00b4bf30",
+      "address": "00b4bf89",
+      "native": "00b33ad0",
+      "binding": "captured current renderer; ECX; AL guard result; RET"
+    },
+    {
+      "function": "00b4bf30",
+      "address": "00b4c066",
+      "native": "00b1fef0",
+      "binding": "current renderer; ECX; EAX actual device+1A10; RET"
+    },
+    {
+      "function": "00b4bf30",
+      "address": "00b4c0a8",
+      "native": "device+vtable6c",
+      "binding": "stdcall CreateIndexBuffer(device,count*width,usage,format,pool,&temporary,0); 7 DWORDs"
+    },
+    {
+      "function": "00b4bf30",
+      "address": "00b4c0c8",
+      "native": "00b29670",
+      "binding": "current renderer; mandatory actual recreation on null output and nonzero HRESULT excluding8876017C/8007000E"
+    },
+    {
+      "function": "00b4bf30",
+      "address": "00b4c0d3",
+      "native": "00b1fef0",
+      "binding": "fresh current renderer after recreation; ECX; RET"
+    },
+    {
+      "function": "00b4bf30",
+      "address": "00b4c10f",
+      "native": "device+vtable6c",
+      "binding": "same7 DWORD CreateIndexBuffer call with freshly retrieved device; result ignored"
+    },
+    {
+      "function": "00b4bf30",
+      "address": "00b4c115",
+      "native": "00bf681b",
+      "binding": "cdecl allocate2Ch; ADD ESP4"
+    },
+    {
+      "function": "00b4bf30",
+      "address": "00b4c187",
+      "native": "physical+vtable14",
+      "binding": "D61E10 targetB4C250; ECX physical; COM,original flags,count*width; RET0C"
+    },
+    {
+      "function": "00b4bf30",
+      "address": "00b4c193",
+      "native": "COM+vtable08",
+      "binding": "captured current temporary; stdcall Release(this), unconditional"
+    },
+    {
+      "function": "00b4bf30",
+      "address": "00b4c1ba",
+      "native": "00b33b00",
+      "binding": "ECX captured entry renderer; saved whole guard word; RET4"
+    },
+    {
+      "function": "00b4b380",
+      "address": "00b4b385",
+      "native": "00b4b0a0",
+      "binding": "ECX canonical0108FE50; tail jump",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00b4b0a0",
+      "address": "00b4b0aa",
+      "native": "IAT[00ce2218]",
+      "binding": "EnterCriticalSection(pool+0C), WINAPI"
+    },
+    {
+      "function": "00b4b0a0",
+      "address": "00b4b0cb",
+      "native": "00bf681b",
+      "binding": "allocate544h slab; ADD ESP4"
+    },
+    {
+      "function": "00b4b0a0",
+      "address": "00b4b0dd",
+      "native": "00b48f70",
+      "binding": "ECX new slab; current pool+34 index; RET4"
+    },
+    {
+      "function": "00b4b0a0",
+      "address": "00b4b0ff",
+      "native": "00bf55be",
+      "binding": "pointer-array bytes=(2*capacity+2)*4, cdecl ADD ESP4"
+    },
+    {
+      "function": "00b4b0a0",
+      "address": "00b4b131",
+      "native": "00bf6989",
+      "binding": "free actual old slab array; recovered returning ADD ESP4"
+    },
+    {
+      "function": "00b4b0a0",
+      "address": "00b4b1bb",
+      "native": "IAT[00ce2210]",
+      "binding": "LeaveCriticalSection after exhausted scan; WINAPI"
+    },
+    {
+      "function": "00b4b0a0",
+      "address": "00b4b1cf",
+      "native": "IAT[00ce2210]",
+      "binding": "LeaveCriticalSection ordinary tail; WINAPI"
+    },
+    {
+      "function": "00b22d70",
+      "address": "00b22d90",
+      "native": "00bf55be",
+      "binding": "allocate4*requested capacity; cdecl ADD ESP4"
+    },
+    {
+      "function": "00b22d70",
+      "address": "00b22dbc",
+      "native": "00bf6989",
+      "binding": "free actual old pointer array; recovered ADD ESP4 then pointer/capacity publish"
+    }
+  ],
+  "profile_evidence": {
+    "00d61de0": "BD30E0/B4C1F0 canonical logical terminal;11 DWORDs checked",
+    "00d61e10": "private physical9 DWORDs checked; current14=B4C250, terminalBB20",
+    "00d5f100": "current58=B1FE50;5C=B287C0;60=B288B0"
+  },
+  "consumed_exact_leaf": {"address": "00b1fe50", "no_ghidra_function": true, "end_inclusive": "00b1fe56", "byte_length": 7, "last_instruction": "00b1fe56", "last_instruction_length": 1, "bytes": "8A81AC190000C3", "coverage": "existing vertex-owner implementation reused; live bytes verified"},
+  "original_flags_provenance": "entry ESP-34h makes [ESP+40h] original entryESP+0Ch flags. BF92 loads ECX; BFB4 OR ECX10000 never stores to argument. After C175 PUSH byte count, C176 MOV EDX,[ESP+44h] and C17A PUSH EDX supply original flags to C187 Attach. C195 MOV EAX,[ESP+40h]; C19C MOV [EBP+10h],EAX stores original flags.",
+  "unwind_evidence": {
+    "constructor_FuncInfo": "DF84D0 count2,mapDF84C0: (-1,CBF9C0),(0,CBF9C8)",
+    "constructor_actions": "CBF9C0 MOV ECX,[EBP-18]; JMP B49420 -> BD30F0 base profile; CBF9C8 LEA ECX,[EBP-14]; JMP B21110 guard",
+    "factory_FuncInfo": "DF59F4 count1,mapDF59EC: (-1,CBD250)",
+    "factory_action": "CBD250 MOV ECX,[EBP-10]; JMP B49970 -> B495E0 canonical pool return"
+  },
+  "uncertainty": [
+    "B29670 device recreation remains mandatory real provider, reused from vertex contract; no successful no-op",
+    "Entry-disabled/exit-enabled optional guard is outside valid native preimage domain",
+    "Null COM/allocation faults and native SEH invalid-memory behavior are not repaired",
+    "Native global/renderer/pool-header constructors and full game adoption are not established by this packet"
+  ],
+  "validation": {
+    "build": {"outcome": "passed", "command": "./scripts/build.ps1", "configuration": "MSVC Win32 Release /W4 /WX /fp:strict", "ctest": "1/1 passed", "baseline_commit": "2f9da1dd", "log": "local/index_creation_build_final.log", "core_sha256": "871B0B97602E2F3D1BB057109E2EC691900F3495C1BE642D33F545F66D654116"},
+    "fixture": {"outcome": "passed", "source": "local/index_creation_probe.cpp", "script": "local/run_index_creation_probe.ps1", "log": "local/index_creation_probe.log", "production_library_sha256": "871B0B97602E2F3D1BB057109E2EC691900F3495C1BE642D33F545F66D654116", "coverage": "production pool33 allocation/return; one real D3D9 HAL managed INDEX16 stream; both renderer registrations; production map/write/unmap/read; canonical same-counter terminal and slot return", "limitations": "explicit renderer/global/pool-header/profile fixture publications; no native producer or device-recreation/failure/optional-sync/game proof; no relocated-native differential claim", "linkage": "fixture TU only against built production libraries; /MANIFEST:EMBED"},
+    "report_calls": {"direct_checked": 17, "failed": 0, "indirect_or_import": 8, "log": "local/index_creation_calls.log"},
+    "artifacts": {"source_sha256": "D2DE40F465F482DC1AD6511ED2A848E587718279BC47958C07B9763BC788A2A8", "header_sha256": "C0AE53059FBA249F589990B7D41D1986A2134CD86B99CD5D6DB7AB2C849B38CB", "object_sha256": "1AC79C7D80893BF386A90B3DFF81ADE43AED2D228591D11D6279A73677B87995", "object_listing": "local/index_creation_object.asm"}
+  }
+}
