@@ -1,4 +1,5 @@
 #include "bsp/gui_text_runtime_factory.hpp"
+#include "bsp/gui_text_child_lifetime.hpp"
 #include "bsp/native_mesh_owner.hpp"
 #include <cstring>
 #include <exception>
@@ -22,6 +23,10 @@ void require_services(GuiTextRuntimeFactoryServices& s) {
     auto& b = s.buffers;
     auto& content = s.properties.submit.content;
     auto& actual = b.geometry.actual_owners();
+    const auto& registration = b.geometry.registration();
+    require(&registration.owners == &actual && registration.bind && registration.unbind && registration.find &&
+        dynamic_cast<GuiTextChildDeletion*>(&s.children),
+        "Text identity requires its same canonical registration and concrete child deletion transport");
     require(&s.dispatch.buffers == &b && &s.clip.buffers == &b &&
         &content.content.buffers == &b &&
         &s.properties.font_names.names.widgets == &b.widgets &&
@@ -139,16 +144,88 @@ std::unique_ptr<GuiWidgetTypeImplementation> GuiTextRuntimeFactory::make_type(Gu
     require(allocations_.count(&owner.layout()) == 0, "Text layout already has raw allocation transport");
     void* slot = allocate_gui_text_raw_slot_00ab79e0(services_.pool);
     if (!slot) throw std::bad_alloc();
-    bool published = false;
+    // Reserve the host record BEFORE any native prefix/body construction.
     try {
-        published = allocations_.emplace(&owner.layout(), Allocation{slot, false}).second;
-        require(published, "Text allocation callback occupied the canonical layout transport");
-        return std::unique_ptr<GuiWidgetTypeImplementation>(new GuiTextRuntimeImplementation(*this, owner));
+        require(allocations_.try_emplace(&owner.layout()).second,
+            "Text allocation callback occupied the canonical layout transport");
     } catch (...) {
-        if (published) allocations_.erase(&owner.layout());
         return_gui_text_failed_slot_00ab76f0(slot, services_.pool);
         throw;
     }
+    auto& allocation = allocations_.at(&owner.layout());
+    allocation.raw_slot = slot;
+    // The current host runtime established its semantic base before make_type.
+    // No native base callbacks are replayed here: this is the actual prefix
+    // admission boundary, not a claim of full default AA9390 callback ordering.
+    allocation.prefix = initialize_native_gui_widget_identity_00aa9390_fragment(slot);
+    try {
+        allocation.default_construction = std::unique_ptr<GuiTextRuntimeImplementation>(
+            new GuiTextRuntimeImplementation(*this, owner, GuiTextRuntimeImplementation::DefaultAdmission{}));
+        services_.buffers.widgets.begin_default_type_admission(owner, *allocation.default_construction);
+        bind_identity(owner);
+        allocation.default_construction->initialize_default();
+        // construct_base receives this SAME shell and only then clears its
+        // borrowed constructor admission. On throw the record keeps it alive.
+        return std::move(allocation.default_construction);
+    } catch (...) {
+        allocation.failure = std::current_exception();
+        throw; // Preserve the raw prefix, registration and native acquired effects.
+    }
+}
+void GuiTextRuntimeFactory::bind_identity(GuiWidgetOwner& owner) {
+    auto& allocation = allocations_.at(&owner.layout());
+    require(allocation.prefix && !allocation.identity && !allocation.registered,
+        "Text canonical identity may be bound exactly once after prefix construction");
+    auto* deletion = dynamic_cast<GuiTextChildDeletion*>(&services_.children);
+    require(deletion != nullptr, "Text terminal requires its concrete canonical deletion transport");
+    const auto& registration = services_.buffers.geometry.registration();
+    require(registration.find(registration.context, allocation.raw_slot) == nullptr,
+        "Text pool returned an identity already present in the canonical registry");
+    allocation.identity = std::make_unique<NativeGuiTextIdentityReference>(
+        *allocation.prefix, owner, *deletion);
+    registration.bind(registration.context, allocation.raw_slot, *allocation.identity);
+    allocation.registered = true;
+    require(registration.find(registration.context, allocation.raw_slot) == allocation.identity.get(),
+        "Text identity registration did not publish the same canonical companion");
+}
+NativeGuiTextIdentityReference& GuiTextRuntimeFactory::actual_identity(GuiWidgetOwner& owner) {
+    const auto found = allocations_.find(&owner.layout());
+    require(found != allocations_.end() && !found->second.completed_flags0 &&
+        found->second.identity && found->second.registered &&
+        &found->second.identity->canonical_owner() == &owner &&
+        &owner.runtime() == &services_.buffers.widgets,
+        "Text actual identity requires its same live factory allocation and canonical owner");
+    const auto& registration = services_.buffers.geometry.registration();
+    require(registration.find(registration.context, found->second.raw_slot) == found->second.identity.get(),
+        "Text actual identity lost its original canonical registry binding");
+    return *found->second.identity;
+}
+GuiWidgetOwner& GuiTextRuntimeFactory::canonical_owner(void* raw) {
+    // Check the allocation before dereferencing a companion's owner: flags0
+    // may retain storage/companion after the C++ widget owner was retired.
+    for (auto& entry : allocations_) {
+        auto& allocation = entry.second;
+        if (allocation.raw_slot != raw) continue;
+        require(!allocation.completed_flags0 && allocation.identity && allocation.registered,
+            "completed or unbound Text storage has no live canonical body");
+        auto& owner = allocation.identity->canonical_owner();
+        require(&actual_identity(owner) == allocation.identity.get(),
+            "Text material body lookup must use its original factory identity");
+        return owner;
+    }
+    throw std::invalid_argument("raw identity is not this factory's canonical Text allocation");
+}
+void GuiTextRuntimeFactory::bind_retained_text_00b18a40(NativeMaterialStorage& material,
+    GuiWidgetOwner& owner, NativeRenderActualOwners& actual) {
+    require(&actual == &services_.buffers.geometry.actual_owners(),
+        "cursor material and Text must share the original actual-owner domain");
+    auto& identity = actual_identity(owner);
+    bind_retained_native_gui_text_parameter_owner_00b18a40(material, identity, actual);
+}
+const std::exception_ptr& GuiTextRuntimeFactory::construction_failure(GuiLayoutWidget& layout) const {
+    const auto found = allocations_.find(&layout);
+    require(found != allocations_.end(), "Text construction has no retained allocation record");
+    return found->second.failure;
 }
 std::unique_ptr<GuiTextRuntimeCopyOperation> GuiTextRuntimeFactory::begin_copy_00aa1380(
     GuiWidgetOwner& source, std::unique_ptr<GuiLayoutWidget>& destination,
@@ -165,12 +242,15 @@ std::unique_ptr<GuiTextRuntimeCopyOperation> GuiTextRuntimeFactory::begin_copy_0
     const auto allocation = allocations_.find(&source.layout());
     require(allocation != allocations_.end() && !allocation->second.completed_flags0,
         "copied Text source must have its live original pool allocation transport");
+    require(actual_identity(source).reference_count.load(std::memory_order_relaxed) > 0,
+        "copied Text source requires its live actual native count");
     require(destination && destination.get() != &source.layout() &&
         !destination->before_destroy && !destination->parent && !destination->transform.parent &&
         destination->children.empty() && destination->transform.children.empty() &&
         !allocations_.count(destination.get()),
         "copied Text factory requires a fresh distinct destination layout");
     require(&services.cursor.buffers == &services_.buffers &&
+        &services.cursor.parameter_owner == this &&
         &services.cursor.layouts == &services_.properties.submit.content.nonempty.layouts &&
         &services.cursor.one_00d7a24c == &services_.constructor.one_00d7a24c,
         "copied Text factory must use its same cursor/content/live constant bindings");
@@ -220,17 +300,19 @@ GuiTextRuntimeCopyPhase GuiTextRuntimeCopyOperation::run_00aa1380() {
         "copied Text factory constructor must run exactly once");
     phase_ = GuiTextRuntimeCopyPhase::running;
     try {
-        // AA139E precedes ABB2E5's base copy. The raw1F4h payload stays opaque;
-        // allocating a slot does not construct a raw Text header or count.
+        // AA139E precedes ABB2E5's base copy. Only the proven raw8-byte prefix
+        // is constructed; remaining Text body stays with its canonical owner.
         raw_slot_ = allocate_gui_text_raw_slot_00ab79e0(factory_.services_.pool);
         if (!raw_slot_) {
             phase_ = GuiTextRuntimeCopyPhase::null_allocation;
             release_source_borrow(); // Native AA13F2 returns zero, no Text created.
             return phase_;
         }
-        require(factory_.allocations_.emplace(destination_.get(),
-            GuiTextRuntimeFactory::Allocation{raw_slot_, false}).second,
+        require(factory_.allocations_.try_emplace(destination_.get()).second,
             "copied Text allocation callback occupied its destination transport");
+        auto& allocation = factory_.allocations_.at(destination_.get());
+        allocation.raw_slot = raw_slot_;
+        allocation.prefix = initialize_native_gui_widget_identity_00aa9520_fragment(raw_slot_);
         auto& owner = factory_.services_.buffers.widgets.construct_base_copy_00aa9520(
             *destination_, source_, preimage_, services_.base, base_acquired_, source_borrow_.get());
         auto copied = std::unique_ptr<GuiTextRuntimeImplementation>(new GuiTextRuntimeImplementation(
@@ -241,6 +323,7 @@ GuiTextRuntimeCopyPhase GuiTextRuntimeCopyOperation::run_00aa1380() {
         // Its active-operation query rejects retirement even if lifetime
         // allocation or copied-string construction throws before association.
         factory_.services_.buffers.widgets.begin_base_copy_type_admission(owner, *copied_implementation_);
+        factory_.bind_identity(owner);
         copied_implementation_->initialize_copy(source_implementation_.lifetime(), services_.cursor);
         copied_implementation_->copy_operation_ = this;
         if (copied_implementation_->run_copy() == GuiTextCopyPhase::pending_content) {
@@ -251,6 +334,8 @@ GuiTextRuntimeCopyPhase GuiTextRuntimeCopyOperation::run_00aa1380() {
         return phase_;
     } catch (...) {
         failure_ = std::current_exception();
+        const auto found = factory_.allocations_.find(destination_.get());
+        if (found != factory_.allocations_.end()) found->second.failure = failure_;
         phase_ = GuiTextRuntimeCopyPhase::failed;
         throw; // All published ownership and source borrow remain on this frame.
     }
@@ -281,6 +366,8 @@ GuiTextRuntimeCopyPhase GuiTextRuntimeCopyOperation::resume_after_glyph_child() 
         return phase_;
     } catch (...) {
         failure_ = std::current_exception();
+        const auto found = factory_.allocations_.find(destination_.get());
+        if (found != factory_.allocations_.end()) found->second.failure = failure_;
         phase_ = GuiTextRuntimeCopyPhase::failed;
         throw;
     }
@@ -298,34 +385,73 @@ std::unique_ptr<GuiLayoutWidget> GuiTextRuntimeCopyOperation::take_completed_lay
 std::unique_ptr<GuiLayoutWidget> GuiTextRuntimeFactory::construct_unbound_glyph_child() {
     auto child = std::make_unique<GuiLayoutWidget>();
     child->type = GuiWidgetType::Text;
-    auto& owner = services_.buffers.widgets.construct_unbound_text_00ab9650(*child);
-    auto* implementation = dynamic_cast<GuiTextRuntimeImplementation*>(&owner.implementation());
-    require(implementation && &implementation->factory_ == this &&
-        owner.text_lifetime() != nullptr && !owner.node_binding(),
-        "Text glyph prerequisite must retain the constructed primary-null companion");
-    return child;
+    try {
+        auto& owner = services_.buffers.widgets.construct_unbound_text_00ab9650(*child);
+        auto* implementation = dynamic_cast<GuiTextRuntimeImplementation*>(&owner.implementation());
+        require(implementation && &implementation->factory_ == this &&
+            owner.text_lifetime() != nullptr && !owner.node_binding(),
+            "Text glyph prerequisite must retain the constructed primary-null companion");
+        return child;
+    } catch (...) {
+        const auto found = allocations_.find(child.get());
+        if (found != allocations_.end()) {
+            found->second.failure = std::current_exception();
+            // This function owns the wrapper until successful return. Retain
+            // that SAME wrapper with its failed native frame rather than let
+            // its C++ destructor retire the still-constructing canonical owner.
+            found->second.failed_default_layout = std::move(child);
+        }
+        throw;
+    }
 }
 void GuiTextRuntimeFactory::implementation_destroyed(GuiLayoutWidget& layout, bool flags0) noexcept {
     const auto found = allocations_.find(&layout);
-    if (found == allocations_.end() || found->second.completed_flags0) std::terminate();
+    if (found == allocations_.end() || found->second.completed_flags0 ||
+        !found->second.identity || !found->second.registered ||
+        found->second.default_construction || found->second.failure) std::terminate();
+    // Explicit scalar deletion already performed the exact base end hook.
+    // Host-tree retirement completes its bounded base effects before removing
+    // the implementation, so that route finalizes the same prefix here.
+    if (found->second.prefix->native_vtable_00 != 0x00ceb130u)
+        finish_native_gui_widget_identity_destruction_00aa9730_fragment(*found->second.prefix);
     if (flags0) {
         found->second.completed_flags0 = true;
         return;
     }
-    services_.pool.return_raw_slot_00ab75a0(found->second.raw_slot);
-    allocations_.erase(found);
+    return_completed_allocation(layout);
+}
+void GuiTextRuntimeFactory::return_completed_allocation(GuiLayoutWidget& layout) noexcept {
+    const auto found = allocations_.find(&layout);
+    if (found == allocations_.end() || !found->second.identity ||
+        !found->second.registered) std::terminate();
+    auto* const raw = found->second.raw_slot;
+    auto* const identity = found->second.identity.get();
+    const auto& registration = services_.buffers.geometry.registration();
+    // Keep the SAME companion/lookup through native releases and pool return.
+    // unbind's contract neither reads returned storage nor changes its count.
+    services_.pool.return_raw_slot_00ab75a0(raw);
+    registration.unbind(registration.context, raw, *identity);
+    allocations_.erase(found); // Companion destructor does not release/count-gate.
 }
 void GuiTextRuntimeFactory::release_completed_storage(GuiLayoutWidget& layout) {
     const auto found = allocations_.find(&layout);
     require(found != allocations_.end() && found->second.completed_flags0 && !layout.before_destroy,
         "Text storage release requires the retained completed flags0 wrapper");
-    services_.pool.return_raw_slot_00ab75a0(found->second.raw_slot);
-    allocations_.erase(found);
+    return_completed_allocation(layout);
 }
 GuiTextRuntimeImplementation::GuiTextRuntimeImplementation(GuiTextRuntimeFactory& factory,
-    GuiWidgetOwner& owner) : factory_(factory), owner_(owner) {
+    GuiWidgetOwner& owner, DefaultAdmission) : factory_(factory), owner_(owner), default_admission_(true) {}
+void GuiTextRuntimeImplementation::initialize_default() {
+    require(default_admission_ && !default_completed_ && !lifetime_,
+        "default Text may initialize its one retained lifetime exactly once");
     auto& s = factory_.services_;
-    lifetime_ = std::make_unique<GuiTextLifetime>(owner, s.buffers, s.children, s.constructor);
+    publish_native_gui_text_identity_00ab9650_fragment(native_identity().storage());
+    lifetime_ = std::make_unique<GuiTextLifetime>(GuiTextDeferredDefaultAdmission{},
+        owner_, s.buffers, s.children, s.constructor);
+    // The lifetime, its tracked AB8530 frame, prefix and shell are retained
+    // before any auxiliary model/mesh/section/material creator can be acquired.
+    lifetime_->complete_default_construction_00ab9650();
+    default_completed_ = true;
 }
 GuiTextRuntimeImplementation::GuiTextRuntimeImplementation(GuiTextRuntimeFactory& factory,
     GuiWidgetOwner& owner, CopiedAdmission) : factory_(factory), owner_(owner), copied_admission_(true) {}
@@ -334,6 +460,7 @@ void GuiTextRuntimeImplementation::initialize_copy(const GuiTextLifetime& source
     require(copied_admission_ && !lifetime_ && !copy_ && !copy_services_,
         "copied Text shell may admit its sole lifetime only once");
     auto& services = factory_.services_;
+    publish_native_gui_text_identity_00abb2c0_fragment(native_identity().storage());
     lifetime_ = std::make_unique<GuiTextLifetime>(GuiTextAfterBaseCopy00aa9520{},
         owner_, services.buffers, services.children, source);
     copy_services_.emplace(GuiTextCopyServices{cursor, services.properties.submit});
@@ -357,12 +484,16 @@ GuiTextRuntimeImplementation::~GuiTextRuntimeImplementation() noexcept {
     lifetime_.reset();
     factory_.implementation_destroyed(layout, flags0);
 }
+NativeGuiTextIdentityReference& GuiTextRuntimeImplementation::native_identity() {
+    return factory_.actual_identity(owner_);
+}
 void GuiTextRuntimeImplementation::require_owner(GuiWidgetOwner& owner) const {
     require(&owner == &owner_ && owner.text_lifetime() == lifetime_.get(),
         "Text virtual dispatch requires its same canonical implementation/lifetime");
 }
 bool GuiTextRuntimeImplementation::has_pending_operation() const noexcept {
-    return properties_ || submission_ || clip_.has_value() ||
+    return (default_admission_ && !default_completed_) || properties_ || submission_ || clip_.has_value() ||
+        (lifetime_ && lifetime_->has_incomplete_native_resources()) ||
         (copied_admission_ && (!lifetime_ || !copy_ ||
             copy_->phase() != GuiTextCopyPhase::complete || lifetime_->has_incomplete_copy()));
 }
@@ -416,7 +547,9 @@ void GuiTextRuntimeImplementation::before_scalar_deletion4(GuiWidgetOwner& owner
 void GuiTextRuntimeImplementation::before_scene_release(GuiWidgetOwner& owner) {
     require_owner(owner); require_idle();
     owner.require_timed_entry_ownership();
+    begin_native_gui_text_identity_destruction_00ab8250_fragment(native_identity().storage());
     lifetime_->destroy_derived_00ab8250_fragment();
+    begin_native_gui_widget_identity_destruction_00aa9730_fragment(native_identity().storage());
 }
 void GuiTextRuntimeImplementation::release_secondary_scene_nodes(GuiWidgetOwner& owner) {
     require_owner(owner); require_idle();
