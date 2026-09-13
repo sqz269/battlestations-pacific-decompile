@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "packet": "orch2_native_resource_cache_pair_bc",
+  "utc": "2026-09-13T16:00:24.245950+00:00",
+  "status": "complete_actual_storage_strict_win32_and_focused_original_body_direct_action_fixture_passed",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "functions": [
+    {
+      "address": "00b7f290",
+      "end_inclusive": "00b7f330",
+      "bytes": 161,
+      "sha256": "36810d3cd7124a84c3d9b5e2d8f64dd65edfe0b2023e9405e6b21e125042924c",
+      "matches_installed_binary": true,
+      "decoded_instructions": 56,
+      "calls": [
+        {
+          "address": "00b7f2da",
+          "native": "0041dd40",
+          "function": "00b7f290"
+        },
+        {
+          "address": "00b7f2eb",
+          "native": "00bf7680",
+          "function": "00b7f290"
+        },
+        {
+          "address": "00b7f30e",
+          "native": "00419cc0",
+          "function": "00b7f290"
+        },
+        {
+          "address": "00b7f315",
+          "native": "00bd1510",
+          "function": "00b7f290"
+        }
+      ],
+      "indirect_calls": [],
+      "name": "construct_native_resource_cache_pair_00b7f290",
+      "source": "src/native_resource_cache_pair.cpp",
+      "original_abi": "ECX destination0Ch; EDX resource; stack by-value owned native8h name; EAX same destination; RET8; x86FH3 frame.",
+      "abi_compatible": false,
+      "behavior": [
+        "Capture input data/length/resource before zeroing destination name.",
+        "Retain actual input-header identity. Resize from captured length, copy captured data using current destination fields.",
+        "Write resource+8 without AddRef/release. Set completed flag then state0 before normal return.",
+        "Normal input return uses captured pointer and captured length+1 with DWORD wrap through current actual419CC0/BD1510.",
+        "Initial failure destroys current input header only. Normal return failure destroys current completed destination name; flag cleared before cleanup."
+      ],
+      "classification": "Specific game custom-string/raw-resource pair; no generic STL pair/tree algorithm or template provenance claim."
+    }
+  ],
+  "calls": [
+    {
+      "address": "00b80910",
+      "native": "00b7f290",
+      "function": "00b80720"
+    }
+  ],
+  "unwind": {
+    "handler": "00cc2051",
+    "descriptor": "00dfb1c8",
+    "map": "00dfb1b8",
+    "state1": {
+      "action": "00cc2030",
+      "next_state": 0,
+      "cleanup": "current input header atEBP+4 ->0041DD20"
+    },
+    "state0": {
+      "action": "00cc2038",
+      "next_state": -1,
+      "cleanup": "test/clear completed flag then saved current destination ->B7E8F0"
+    },
+    "equivalent_source_cleanup": "Complete raw0041DD20 has same current-header return schedule asB7E8F0; no new body counted for that helper."
+  },
+  "source_dependencies": [
+    "NativeStringRawPoolContext actual pool1090AA8, return gate1090AA4, raw manager1090AA0; no owned/private pool.",
+    "Complete raw41DD40 and41DD20 overloads, actual419CC0/BD1120/BD1510; source never routes through noexcept NativeStringStorage.",
+    "Host memmove for BF7680 overlap semantics; zero-byte call omitted as in existing raw strings."
+  ],
+  "original_evidence": [
+    {
+      "address": "00cc2030",
+      "bytes": 44,
+      "hex": "8d4d04e9e8bc75ff8b45ec83e0010f840c0000008365ecfe8b4df0e9a0c8ebffc3b8c8b1df00e9e84af3ffcc",
+      "sha256": "92adf12161461f2eb49911b957f71834fbbef71ba8f6aee512bf44080aeffe0f",
+      "matches_installed_binary": true,
+      "role": "auxiliary data or unwind dependency window; not an additional recovered routine contract"
+    },
+    {
+      "address": "00dfb1b8",
+      "bytes": 52,
+      "hex": "ffffffff3820cc00000000003020cc002205931902000000b8b1df00000000000000000000000000000000000000000001000000",
+      "sha256": "03be643b593e898751eb18aef12264ec06195236527c53925e721d8744240086",
+      "matches_installed_binary": true,
+      "role": "auxiliary data or unwind dependency window; not an additional recovered routine contract"
+    },
+    {
+      "address": "00b7e8f0",
+      "bytes": 45,
+      "hex": "8b510485d274158b016a0183c0015052e8bbb389ff8bc8e8042c0500c3cccccc8b510485d274158b016a0183c0",
+      "sha256": "45067b2984fb2bcd609865f733347750d391f1329bbbe899bc5f043a0921e1cd",
+      "matches_installed_binary": true,
+      "role": "auxiliary data or unwind dependency window; not an additional recovered routine contract"
+    }
+  ],
+  "validation": {
+    "body_bytes": 161,
+    "original_call_rows": "5 checked, 0 failed (4 body direct calls and 1 caller edge)",
+    "flow_gaps": 0,
+    "build": "scripts/build.ps1; strictMSVCWin32 passed",
+    "tests": [
+      "reconstructed_math passed",
+      "native_math_differential passed"
+    ],
+    "fixture_cases": 3,
+    "normal_original_body_cases": 1,
+    "direct_original_unwind_action_cases": 2,
+    "original_unwind_action_bytes": 33,
+    "fixture_support": "Four test-only raw helper contracts shared by original adapters and source object. The actual lower pool/string implementations are not replayed.",
+    "native_eh_boundary": "Original action code invoked directly for pre-established metadata states; no original FH3 dispatch/throw-through-body claim.",
+    "candidate_object_verified_unique_archive_member": true,
+    "fixture_sha256": "42d15d12a2f8e88b5866b7f72bdfa3a11fda67ecf826537f376ee610d683e978",
+    "replay_sha256": "4bae272192196ffd32fb2425d7664596b9675878de7936cddd7c3b2d84fd577b",
+    "fixed_baseline_original_output": "{\"case\":0,\"events\":\"get:0:0;return:1:6;\"}\n{\"case\":1,\"events\":\"destroy:9:2;get:0:0;return:2:10;\"}\n{\"case\":2,\"events\":\"destroy:3:3;get:0:0;return:3:4;\"}\n",
+    "fixed_baseline_sha256": "e9c432542c14e79446d2bb9f576b4137003db25e9fc5103b60d18e65c4376d95",
+    "fixture_header_count": 221,
+    "attempts": [
+      "attempt01: test adapter reserved out identifier compile failure",
+      "attempt02: test adapter regular EBP helper compile failure",
+      "attempt03: passed",
+      "replay01: passed fixed baseline"
+    ],
+    "permanent_tests_added": 0
+  },
+  "boundaries": [
+    "New C++ API is not original ECX/EDX/RET8 ABI.",
+    "OriginalFH3 dispatch, throw-through-native-body, nested cleanup exceptions andSEHfaults unproved.",
+    "Fixture substitutes shared test-only raw helper contracts; it does not replay actual pool/string helpers.",
+    "No resource cache tree population/insertion, manager startup integration, resource release or game validation.",
+    "Ghidra annotations not changed; existing prior descriptive name retained for primary review."
+  ],
+  "artifact_pins": [
+    {
+      "path": "src/native_resource_cache_pair.cpp",
+      "sha256": "a49a6dc277049092d1c4bd9ebba57074292f78ee25cdba3fd2a2b631589b4126"
+    },
+    {
+      "path": "include/bsp/native_resource_cache_pair.hpp",
+      "sha256": "b40a00160fc11de560a645da42474786ad853000871246b782f7b12c5dc455cc"
+    },
+    {
+      "path": "local/replay_resource_cache_pair.py",
+      "sha256": "398cb38c7d80916047a6283f4a13c46d8a70facf1e3bff2572e652fee8d51e78"
+    },
+    {
+      "path": "local/resource_cache_pair_fixture.cpp",
+      "sha256": "22a466c9e8ffd1f24f84590ac6cfdbd49af29fc3f1515e11883103761cd5d2c4"
+    },
+    {
+      "path": "local/native-resource-cache-pair-build.log",
+      "sha256": "90a2b39d08d7bf2537914bd888670cd39ca5fec2f2215b62508a262a79042b80"
+    },
+    {
+      "path": "local/native-resource-cache-pair-build-with-seeds.log",
+      "sha256": "3ccf13514af1e1df5b5199179769cce10410f271c07f7755aa8b6a1cb8fc2fbb"
+    },
+    {
+      "path": "local/native-resource-cache-pair-verify-seeds.log",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    }
+  ],
+  "fixture_artifacts": [
+    {
+      "path": "local/native-resource-cache-pair-fixture-attempt03/manifest.json",
+      "sha256": "42d15d12a2f8e88b5866b7f72bdfa3a11fda67ecf826537f376ee610d683e978"
+    },
+    {
+      "path": "local/native-resource-cache-pair-fixture-attempt03/original.jsonl",
+      "sha256": "e9c432542c14e79446d2bb9f576b4137003db25e9fc5103b60d18e65c4376d95"
+    },
+    {
+      "path": "local/native-resource-cache-pair-fixture-attempt03/source.jsonl",
+      "sha256": "e9c432542c14e79446d2bb9f576b4137003db25e9fc5103b60d18e65c4376d95"
+    },
+    {
+      "path": "local/native-resource-cache-pair-fixture-attempt03/pair_probe.map",
+      "sha256": "b6063064c5a78580a211b55ca8e2a93d9d8ced8137dd1066113fcec706d1c153"
+    },
+    {
+      "path": "local/native-resource-cache-pair-fixture-replay01/manifest.json",
+      "sha256": "4bae272192196ffd32fb2425d7664596b9675878de7936cddd7c3b2d84fd577b"
+    }
+  ]
+}
