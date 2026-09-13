@@ -72,13 +72,26 @@
   "validation": {
     "exact_built_promoted_code": null,
     "fixtures": null,
-    "call_verification": null,
+    "call_verification": {
+      "numeric_rows": 105,
+      "failed": 0,
+      "log": "local/text-native-all-calls.log",
+      "indirect": "separately reviewed numeric profile/IAT evidence; excluded from direct CALL count"
+    },
     "full_text": false,
     "game": false
   },
   "analysis": {
     "layout_annotation_preimages": "local/ghidra-annotations-20260913T044220Z.json",
-    "annotations_saved": true
+    "annotations_saved": true,
+    "annotation_preimages": [
+      "local/ghidra-annotations-20260913T044220Z.json",
+      "local/ghidra-annotations-20260913T044852Z.json",
+      "local/ghidra-annotations-20260913T045032Z.json"
+    ],
+    "annotated_addresses": 14,
+    "exports_refreshed": true,
+    "index_refreshed": true
   },
   "remaining_contracts": [
     "Actual renderer48 B318B0/B31090 effect-cache loading and actual material property resolution for canonical Text.",
@@ -86,5 +99,19 @@
     "B317E0/cache internal post-decode record/date/append failure cannot publish decoded creator through current API.",
     "External page/loader caller frames must remain retained after constructor failure; default base callback ordering precedes actual prefix admission in current host interface.",
     "Positive full copied/default Text, native full payload/SEH ABI, device recreation and gameplay remain unvalidated."
-  ]
+  ],
+  "worker_commits": {
+    "identity": "b248adce",
+    "renderer": "28420545",
+    "sections": "3b34ff5772d157bd064f102c2c9172f8054c0acb",
+    "factory_identity": "c5dcfbd3",
+    "integrated_factory_identity": "6b8684d9"
+  },
+  "fixture_runner": "local/run_text_native_fixtures.ps1",
+  "archive_manifests": [
+    "local/text-native-workers/renderer-manifest.json",
+    "local/text-native-workers/sections-manifest.json",
+    "local/text-native-workers/identity-manifest.json"
+  ],
+  "review": "Independent renderer worker reviewed new hooks; copied Text legacy section call found and fixed; no additional concrete bug found. Source review only."
 }
