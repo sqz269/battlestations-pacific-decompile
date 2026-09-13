@@ -1,0 +1,61 @@
+{
+  "reason": "Original registers, stack arguments and RET cleanup verified in native listings; source interfaces are not original ABI. Names remain hypotheses. Prior names/signatures/comments preserved.",
+  "entries": [
+    {
+      "address": "006ab6b0",
+      "before": "Function: BSP_InputSettings_Construct at 006ab6b0\nSignature: undefined BSP_InputSettings_Construct(void)\nEntry: 006ab6b0\nBody: 006ab6b0 - 006ab7fb",
+      "before_comment": {
+        "address": "006ab6b0",
+        "function_name": "BSP_InputSettings_Construct",
+        "comment": "[BSP reconstruction 006ab6b0]\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, returns this. Sole caller 005547d0. Sets vtable 00cf81cc, builds five red-black tree heads (_Isnil at +0x99, +0x29, +0x15, +0x21 and +0x99) and three checked vectors, constructs the persistent Lua script wrapper at this+0x78 through 00b66bd0, clears the flag bytes at +0x04 and +0x05, then calls 006a7be0 on itself. Object size 0x540; full member table in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json.\n\n[BSP reconstruction 006ab6b0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, returns this. Sole caller 005547d0. Sets vtable 00cf81cc, builds five red-black tree heads (_Isnil at +0x99, +0x29, +0x15, +0x21 and +0x99) and three checked vectors, constructs the persistent Lua script wrapper at this+0x78 through 00b66bd0, clears the flag bytes at +0x04 and +0x05, then calls 006a7be0 on itself. Object size 0x540; full member table in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json. | orch2_input_script_startup: constructor normal-flow composition owns InputSettings and persistent presets owner, clears separate+4/+5 flags then loads immediately. Current assembly006ab7d1 constructs owner+78;006ab7dd/+e0 clear flags;006ab7e3 invokes loader;006ab7ed returns this and006ab7fb RET. Native unused trees+54/+6c, vtable/layout/allocator and singleton remain outside typed constructor fragment. Installed-script and exact Lua lifetime fixture pass. Evidence: docs/INPUT_SCRIPT_STARTUP.md; reports/input_script_startup.json.\n\n[BSP reconstruction 006ab6b0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, returns this. Sole caller 005547d0. Sets vtable 00cf81cc, builds five red-black tree heads (_Isnil at +0x99, +0x29, +0x15, +0x21 and +0x99) and three checked vectors, constructs the persistent Lua script wrapper at this+0x78 through 00b66bd0, clears the flag bytes at +0x04 and +0x05, then calls 006a7be0 on itself. Object size 0x540; full member table in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json. | orch2_input_script_startup: constructor normal-flow composition owns InputSettings and persistent presets owner, clears separate+4/+5 flags then loads immediately. Current assembly006ab7d1 constructs owner+78;006ab7dd/+e0 clear flags;006ab7e3 invokes loader;006ab7ed returns this and006ab7fb RET. Native unused trees+54/+6c, vtable/layout/allocator and singleton remain outside typed constructor fragment. Installed-script and exact Lua lifetime fixture pass. Evidence: docs/INPUT_SCRIPT_STARTUP.md; reports/input_script_startup.json. | Hypothesis, not a recovered symbol. Existing InputScriptStartup constructor now runs in persistent GameScriptHost before options load. Its VFS/files/runtime/globals outlive the input Lua owner; native object/vtable/allocator layout is not implied. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof."
+      },
+      "proposed": "void* __fastcall BSP_InputSettings_Construct(void* self, void* unused_edx)",
+      "apply": "Successfully set prototype for function at 006ab6b0 with __fastcall calling convention",
+      "after": "Function: BSP_InputSettings_Construct at 006ab6b0\nSignature: void * __fastcall BSP_InputSettings_Construct(void * self, void * unused_edx)\nEntry: 006ab6b0\nBody: 006ab6b0 - 006ab7fb",
+      "readback_verified": true
+    },
+    {
+      "address": "006a7be0",
+      "before": "Function: BSP_InputSettings_LoadDataTables at 006a7be0\nSignature: undefined BSP_InputSettings_LoadDataTables(void)\nEntry: 006a7be0\nBody: 006a7be0 - 006a9843",
+      "before_comment": {
+        "address": "006a7be0",
+        "function_name": "BSP_InputSettings_LoadDataTables",
+        "comment": "[BSP reconstruction 006a7be0]\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073da9b right after the input settings singleton. References Scripts\\datatables\\ControllerInputNames.lua, Scripts\\datatables\\KeyboardSetup.lua, Scripts/datatables/ControlPresets.lua and the table keys Inputs, DEVINPUTS, Pairs, Groups, Conflicts, InputNames, AxisPairs, BaseSensitivities, Sensitivities and Min1SensHacks. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, void. Guarded by the byte at this+0x04, which it sets first, so it runs once per object; reached from 006ab6b0 and again from 0073da9b. Runs Scripts/datatables/ControlPresets.lua in the persistent wrapper at this+0x78 and never reads a table out of it, then runs Scripts\\datatables\\KeyboardSetup.lua and Scripts\\datatables\\ControllerInputNames.lua in one stack-local wrapper. Clears only the device map at this+0x08 (006a7540) and the name vector at this+0x14 (004954f0). Fills this+0x08 device records, this+0x14 names, this+0x24 InputNames, this+0x30 Conflicts.Groups, this+0x40 Conflicts.Pairs, this+0x50 DEVINPUTS and this+0x60 ControllerInputNames. Full Lua schema and the per-key destinations are in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, void. Guarded by the byte at this+0x04, which it sets first, so it runs once per object; reached from 006ab6b0 and again from 0073da9b. Runs Scripts/datatables/ControlPresets.lua in the persistent wrapper at this+0x78 and never reads a table out of it, then runs Scripts\\datatables\\KeyboardSetup.lua and Scripts\\datatables\\ControllerInputNames.lua in one stack-local wrapper. Clears only the device map at this+0x08 (006a7540) and the name vector at this+0x14 (004954f0). Fills this+0x08 device records, this+0x14 names, this+0x24 InputNames, this+0x30 Conflicts.Groups, this+0x40 Conflicts.Pairs, this+0x50 DEVINPUTS and this+0x60 ControllerInputNames. Full Lua schema and the per-key destinations are in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json. | orch2_input_script_startup: normal-flow startup now composed in InputScriptStartup using actual VFS/Lua/DoFile and existing schema readers. Assembly006a7c09..25 proves+4 guard set before mask1 persistent open;006a7c74..cb7 separate mask1 temporary owner;006a947a parses DEVINPUTS before006a94bd controller script;006a9829 closes only temporary state. Persistent ControlPresets retained; +5 unchanged. Win32/existing tests and installed-script lifetime/override fixture pass. New C++ ABI, not game/native-differential validated. Evidence: docs/INPUT_SCRIPT_STARTUP.md; reports/input_script_startup.json.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, void. Guarded by the byte at this+0x04, which it sets first, so it runs once per object; reached from 006ab6b0 and again from 0073da9b. Runs Scripts/datatables/ControlPresets.lua in the persistent wrapper at this+0x78 and never reads a table out of it, then runs Scripts\\datatables\\KeyboardSetup.lua and Scripts\\datatables\\ControllerInputNames.lua in one stack-local wrapper. Clears only the device map at this+0x08 (006a7540) and the name vector at this+0x14 (004954f0). Fills this+0x08 device records, this+0x14 names, this+0x24 InputNames, this+0x30 Conflicts.Groups, this+0x40 Conflicts.Pairs, this+0x50 DEVINPUTS and this+0x60 ControllerInputNames. Full Lua schema and the per-key destinations are in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json. | orch2_input_script_startup: normal-flow startup now composed in InputScriptStartup using actual VFS/Lua/DoFile and existing schema readers. Assembly006a7c09..25 proves+4 guard set before mask1 persistent open;006a7c74..cb7 separate mask1 temporary owner;006a947a parses DEVINPUTS before006a94bd controller script;006a9829 closes only temporary state. Persistent ControlPresets retained; +5 unchanged. Win32/existing tests and installed-script lifetime/override fixture pass. New C++ ABI, not game/native-differential validated. Evidence: docs/INPUT_SCRIPT_STARTUP.md; reports/input_script_startup.json. | Hypothesis, not a recovered symbol. Executable keeps loaded InputSettings and persistent presets Lua; explicit application reload after constructor observes the native once flag. Cold globals are proven false/unset image state. Runtime input devices/profile application remain unbound. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof."
+      },
+      "proposed": "void __fastcall BSP_InputSettings_LoadDataTables(void* self, void* unused_edx)",
+      "apply": "Successfully set prototype for function at 006a7be0 with __fastcall calling convention",
+      "after": "Function: BSP_InputSettings_LoadDataTables at 006a7be0\nSignature: void __fastcall BSP_InputSettings_LoadDataTables(void * self, void * unused_edx)\nEntry: 006a7be0\nBody: 006a7be0 - 006a9843",
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006ab6b0",
+        "prototype": "void* __fastcall BSP_InputSettings_Construct(void* self, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006ab6b0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006a7be0",
+        "prototype": "void __fastcall BSP_InputSettings_LoadDataTables(void* self, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006a7be0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}
