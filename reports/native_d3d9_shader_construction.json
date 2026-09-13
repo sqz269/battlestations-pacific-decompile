@@ -1606,5 +1606,12 @@
       "sha256": "16fd909aeb68d0d1aca8529dc7f78880b97d6649d70ce8d03a2c858bc28e216b",
       "preserved_in_place": true
     }
-  ]
+  ],
+  "integrator_terminal_composition": {
+    "report": "reports/native_d3d9_shader_lifetime.json",
+    "manifest": "local/compiler-path-workers/shader-lifetime/manifest.json",
+    "sha256": "ae6af99c18dd64b18298cc4ca713f3cf255f2214c05c8548fdbae33bffba0eb9",
+    "evidence": "Eight original/source real-HAL-COM lifetime comparisons; both actual pass-slot setters use the concrete canonical same-atomic terminal provider; all wrapper acquisitions and companions cleaned.",
+    "limits": "Historical worker fixture unchanged; no private FH3, fixed-address ABI, drawing or gameplay validation."
+  }
 }

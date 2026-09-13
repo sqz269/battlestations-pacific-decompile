@@ -92,3 +92,15 @@ and libraries needed to reproduce these construction-only observations.
 Thirty numeric direct-call rows pass the live verifier; four dynamic COM sites
 are documented separately. All eight linked bodies differ from original bytes
 only at direct CALL operands. The +0C field remains explicitly opaque.
+
+## Integrator terminal-lifetime composition
+
+The separately implemented actual shader lifetime providers now compose with
+these routines. `NativeD3d9ShaderReference` borrows the same raw+04 atomic;
+both pass-slot setters exercise actual scalar destruction, registry removal,
+COM Release, singleton heap free and canonical companion retirement. Eight
+original/source lifetime comparisons use B5F9B0/B5FAF0-produced wrappers and
+real HAL shader COM objects. See `docs/NATIVE_D3D9_SHADER_LIFETIME.md` and
+`reports/native_d3d9_shader_lifetime.json` for the independent fixture and its
+input hashes. This new composition does not change the narrower historical
+worker fixture or establish private FH3, fixed-address ABI, drawing or gameplay.

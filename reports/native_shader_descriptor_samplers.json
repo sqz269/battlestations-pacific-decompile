@@ -840,5 +840,19 @@
       "bytes": 7366,
       "sha256": "4281c8bba03dc6726c29a84441b4a52da98b0143ee0aa3bd7e3018bb8192e45c"
     }
-  ]
+  ],
+  "integrator_unwind_repair": {
+    "address": "00cbf400",
+    "end_inclusive": "00cbf40a",
+    "bytes": 11,
+    "instructions": 5,
+    "gaps": 0,
+    "original_name_preserved": "Unwind@00cbf400",
+    "saved_readback_exported": true,
+    "previous_incomplete_attempt": "local/sampler-binding-unwind-flow-repair.json",
+    "before": "local/sampler-binding-unwind-before-recreation.json",
+    "recreation": "local/sampler-binding-unwind-recreation.json",
+    "readback": "local/shader-owner-first-readback.json",
+    "limits": "Stored-body repair only; no original private FH3 runtime claim."
+  }
 }

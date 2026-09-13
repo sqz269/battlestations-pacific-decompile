@@ -926,5 +926,12 @@
     "drop_in_binary_compatible": false
   },
   "ghidra_mutations": "None by worker. Root repaired B5F6F5..B5F6F7 and B5F715..B5F717 under official write lock, saved/re-exported; refreshed each11-instruction scalar wrapper has zero gaps.",
-  "artifact_manifest": "local/native-pass-shader-slots-final-manifest.json"
+  "artifact_manifest": "local/native-pass-shader-slots-final-manifest.json",
+  "integrator_terminal_composition": {
+    "report": "reports/native_d3d9_shader_lifetime.json",
+    "manifest": "local/compiler-path-workers/shader-lifetime/manifest.json",
+    "sha256": "ae6af99c18dd64b18298cc4ca713f3cf255f2214c05c8548fdbae33bffba0eb9",
+    "evidence": "Eight original/source real-HAL-COM lifetime comparisons; both actual pass-slot setters use the concrete canonical same-atomic terminal provider; all wrapper acquisitions and companions cleaned.",
+    "limits": "Historical worker fixture unchanged; no private FH3, fixed-address ABI, drawing or gameplay validation."
+  }
 }

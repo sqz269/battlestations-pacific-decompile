@@ -119,3 +119,16 @@ failures check retained scratch, constructor raw-free, preallocation name count,
 replay rejection, explicit diagnostic cleanup and failed-frame exit 77. Native
 exceptions are not executed by the copied bodies. No full B3B280, real texture
 loading, shader compilation, rendering or gameplay validation is claimed.
+
+## Completed integrator unwind-body repair
+
+The earlier incomplete repair remains preserved in its worker archive. The
+integrator recorded the original `Unwind@00cbf400` name/comment, retained that
+name in the ledger, and used the official function-definition tool to recreate
+the verified eleven-byte body. Ghidra now records CBF400..CBF40A, all five
+instructions and zero gaps with the explicit CBF40B exclusive tail bound.
+The project was saved and the name/comment read back and exported. Evidence:
+`local/sampler-binding-unwind-before-recreation.json`,
+`local/sampler-binding-unwind-recreation.json` and
+`local/shader-owner-first-readback.json`. No bytes or native unwind semantics
+were changed, and the copied-body fixture still does not execute original FH3.

@@ -147,3 +147,15 @@ or drop-in ABI compatibility is claimed.
 Root repaired two saved Ghidra scalar-wrapper continuation gaps under the
 official write lock and re-exported them. Refreshed B5F6E0/B5F700 each have
 11 instructions and zero gaps; this worker performed only Ghidra reads.
+
+## Integrator terminal-lifetime composition
+
+The separately implemented actual shader lifetime providers now compose with
+these routines. `NativeD3d9ShaderReference` borrows the same raw+04 atomic;
+both pass-slot setters exercise actual scalar destruction, registry removal,
+COM Release, singleton heap free and canonical companion retirement. Eight
+original/source lifetime comparisons use B5F9B0/B5FAF0-produced wrappers and
+real HAL shader COM objects. See `docs/NATIVE_D3D9_SHADER_LIFETIME.md` and
+`reports/native_d3d9_shader_lifetime.json` for the independent fixture and its
+input hashes. This new composition does not change the narrower historical
+worker fixture or establish private FH3, fixed-address ABI, drawing or gameplay.
