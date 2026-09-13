@@ -1,0 +1,426 @@
+{
+  "schema": 1,
+  "packet": "orch3_native_node_raw_destruction_bd",
+  "utc": "2026-09-13T17:41:45.531534+00:00",
+  "status": "complete_existing_body_raw_context_extension_current_library_fixture_passed",
+  "normal_body_count": 1,
+  "existing_body_extension_count": 1,
+  "new_native_body_count": 0,
+  "native_body_bytes": 297,
+  "native_instruction_count": 95,
+  "functions": [
+    {
+      "address": "00b6f440",
+      "bytes": 297,
+      "end_inclusive": "00b6f568",
+      "sha256": "cfeb48c0b3dfa08412b09500b8c56534222189488695f4b0b0a370480a9c0fd8",
+      "live_PE_equal": true,
+      "coverage": "complete",
+      "body_kind": "normal_body",
+      "module": "native_node_destruction",
+      "cpp_symbol": "destroy_native_node_00b6f440",
+      "source": "src/native_node_destruction.cpp",
+      "header": "include/bsp/native_node_destruction.hpp",
+      "existing_body_extension": true,
+      "new_native_body": false,
+      "original_abi": "ECX actual node prefix, zero stack arguments, RET atB6F568; no semantic return; no physical slot return",
+      "evidence": "Full fresh native body, caller preparations including EH JMPs, current normal cleanup state instructions and original FH3 map. Existing actual associations/valid matching point-light backing, new raw pool context; preserve typed APIs."
+    }
+  ],
+  "files": [
+    "include/bsp/native_node_destruction.hpp",
+    "src/native_node_destruction.cpp",
+    "docs/NATIVE_NODE_RAW_DESTRUCTION.md",
+    "reports/native_node_raw_destruction.json"
+  ],
+  "calls": [
+    {
+      "function": "00aa6e10",
+      "address": "00aa6e16",
+      "native": "00bd30f0",
+      "kind": "tail_jump",
+      "contract": "Saved original EH frame/ECX; no new stack arguments. Handler EAX=DFA900, or array/name/base offset from saved owner. Consumed state2->1->0->-1."
+    },
+    {
+      "function": "00b6f3e0",
+      "address": "00b6f3e5",
+      "native": "00b6ec70",
+      "contract": "ECX actual node+164 pointer/count/capacity; stack signed0; RET4; only valid nonnegative/matching-backing domain"
+    },
+    {
+      "function": "00b6f3e0",
+      "address": "00b6f3ed",
+      "native": "00bf6989",
+      "contract": "cdecl current backing after shrink; ADD ESP4; existing matching CRT free domain"
+    },
+    {
+      "function": "00b6f440",
+      "address": "00b6f47a",
+      "native": "00b8f4c0",
+      "contract": "ECX current node+A0 attachment, stack actual node; RET4; existing actual attachment association"
+    },
+    {
+      "function": "00b6f440",
+      "address": "00b6f488",
+      "native": "00b6e680",
+      "contract": "ECX node, stack zero requested parent; RET4; only existing null-parent path used"
+    },
+    {
+      "function": "00b6f440",
+      "address": "00b6f4a6",
+      "native": "00b72220",
+      "contract": "ECX current root, stack actual node; RET4; current doubly linked root list"
+    },
+    {
+      "function": "00b6f440",
+      "address": "00b6f4bb",
+      "native": "00b6d890",
+      "contract": "ECX current child, stack null requested root; RET4; current hierarchy/scene associations"
+    },
+    {
+      "function": "00b6f440",
+      "address": "00b6f4d5",
+      "native": "InterlockedDecrement IAT00CE2220",
+      "kind": "indirect_import",
+      "contract": "stdcall one pointer argument to captured retained owner+4; returns new count; source atomic fetch_sub uses same native word"
+    },
+    {
+      "function": "00b6f440",
+      "address": "00b6f4e5",
+      "native": "captured node+130 owner current virtual00",
+      "kind": "indirect_external",
+      "contract": "ECX captured actual retained owner, zero args. Required canonical binding supplies its real zero-count terminal; no fabricated successful destructor or generic profile support."
+    },
+    {
+      "function": "00b6f440",
+      "address": "00b6f4fe",
+      "native": "00b6ee10",
+      "contract": "ECX node, stack captured current scene and recursion1; RET8; +130 cleared before call"
+    },
+    {
+      "function": "00b6f440",
+      "address": "00b6f511",
+      "native": "00b6ec70",
+      "contract": "ECX actual node+164 pointer/count/capacity; stack signed0; RET4; only valid nonnegative/matching-backing domain"
+    },
+    {
+      "function": "00b6f440",
+      "address": "00b6f519",
+      "native": "00bf6989",
+      "contract": "cdecl current backing after shrink; ADD ESP4; existing matching CRT free domain"
+    },
+    {
+      "function": "00b6f440",
+      "address": "00b6f536",
+      "native": "00419cc0",
+      "contract": "No native arguments; RET/EAX current raw pool. Name return args already pushed. State0 already active."
+    },
+    {
+      "function": "00b6f440",
+      "address": "00b6f53d",
+      "native": "00bd1510",
+      "contract": "ECX fresh getter result; stack captured data,current length+1,unused1; RET0C; current return gate"
+    },
+    {
+      "function": "00b6f440",
+      "address": "00b6f552",
+      "native": "00bd30f0",
+      "contract": "ECX actual prefix, zero args/RET; writes CEB130 only, reference count unchanged"
+    },
+    {
+      "function": "00b6f8d0",
+      "address": "00b6f8d3",
+      "native": "00b6f440",
+      "kind": "direct",
+      "contract": "ECX captured actual node prefix; zero stack args/RET. EH JMP callers load saved owner from EBP-10, except CC1AD0 from EBP-28; scalar deletion flag remains for caller disposal."
+    },
+    {
+      "function": "00b71f10",
+      "address": "00b71fba",
+      "native": "00b6f440",
+      "kind": "direct",
+      "contract": "ECX captured actual node prefix; zero stack args/RET. EH JMP callers load saved owner from EBP-10, except CC1AD0 from EBP-28; scalar deletion flag remains for caller disposal."
+    },
+    {
+      "function": "00b74b60",
+      "address": "00b74b63",
+      "native": "00b6f440",
+      "kind": "direct",
+      "contract": "ECX captured actual node prefix; zero stack args/RET. EH JMP callers load saved owner from EBP-10, except CC1AD0 from EBP-28; scalar deletion flag remains for caller disposal."
+    },
+    {
+      "function": "00b750c0",
+      "address": "00b7514e",
+      "native": "00b6f440",
+      "kind": "direct",
+      "contract": "ECX captured actual node prefix; zero stack args/RET. EH JMP callers load saved owner from EBP-10, except CC1AD0 from EBP-28; scalar deletion flag remains for caller disposal."
+    },
+    {
+      "function": "00b7c5b0",
+      "address": "00b7c693",
+      "native": "00b6f440",
+      "kind": "direct",
+      "contract": "ECX captured actual node prefix; zero stack args/RET. EH JMP callers load saved owner from EBP-10, except CC1AD0 from EBP-28; scalar deletion flag remains for caller disposal."
+    },
+    {
+      "function": "00b8f680",
+      "address": "00b8f6d0",
+      "native": "00b6f440",
+      "kind": "direct",
+      "contract": "ECX captured actual node prefix; zero stack args/RET. EH JMP callers load saved owner from EBP-10, except CC1AD0 from EBP-28; scalar deletion flag remains for caller disposal."
+    },
+    {
+      "function": "00b91c00",
+      "address": "00b91c09",
+      "native": "00b6f440",
+      "kind": "direct",
+      "contract": "ECX captured actual node prefix; zero stack args/RET. EH JMP callers load saved owner from EBP-10, except CC1AD0 from EBP-28; scalar deletion flag remains for caller disposal."
+    },
+    {
+      "function": "00cc19e0",
+      "address": "00cc19e3",
+      "native": "00aa6e10",
+      "kind": "tail_jump",
+      "contract": "Saved original EH frame/ECX; no new stack arguments. Handler EAX=DFA900, or array/name/base offset from saved owner. Consumed state2->1->0->-1."
+    },
+    {
+      "function": "00cc19e8",
+      "address": "00cc19ee",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "contract": "Saved original EH frame/ECX; no new stack arguments. Handler EAX=DFA900, or array/name/base offset from saved owner. Consumed state2->1->0->-1."
+    },
+    {
+      "function": "00cc19f3",
+      "address": "00cc19fc",
+      "native": "00b6f3e0",
+      "kind": "tail_jump",
+      "contract": "Saved original EH frame/ECX; no new stack arguments. Handler EAX=DFA900, or array/name/base offset from saved owner. Consumed state2->1->0->-1."
+    },
+    {
+      "function": "00cc1a01",
+      "address": "00cc1a06",
+      "native": "00bf6b43",
+      "kind": "tail_jump",
+      "contract": "Saved original EH frame/ECX; no new stack arguments. Handler EAX=DFA900, or array/name/base offset from saved owner. Consumed state2->1->0->-1."
+    },
+    {
+      "function": "00cc1ad0",
+      "address": "00cc1ad3",
+      "native": "00b6f440",
+      "kind": "tail_jump",
+      "contract": "ECX captured actual node prefix; zero stack args/RET. EH JMP callers load saved owner from EBP-10, except CC1AD0 from EBP-28; scalar deletion flag remains for caller disposal."
+    },
+    {
+      "function": "00cc1b00",
+      "address": "00cc1b03",
+      "native": "00b6f440",
+      "kind": "tail_jump",
+      "contract": "ECX captured actual node prefix; zero stack args/RET. EH JMP callers load saved owner from EBP-10, except CC1AD0 from EBP-28; scalar deletion flag remains for caller disposal."
+    },
+    {
+      "function": "00cc1b20",
+      "address": "00cc1b23",
+      "native": "00b6f440",
+      "kind": "tail_jump",
+      "contract": "ECX captured actual node prefix; zero stack args/RET. EH JMP callers load saved owner from EBP-10, except CC1AD0 from EBP-28; scalar deletion flag remains for caller disposal."
+    },
+    {
+      "function": "00cc1c50",
+      "address": "00cc1c53",
+      "native": "00b6f440",
+      "kind": "tail_jump",
+      "contract": "ECX captured actual node prefix; zero stack args/RET. EH JMP callers load saved owner from EBP-10, except CC1AD0 from EBP-28; scalar deletion flag remains for caller disposal."
+    },
+    {
+      "function": "00cc1ed0",
+      "address": "00cc1ed3",
+      "native": "00b6f440",
+      "kind": "tail_jump",
+      "contract": "ECX captured actual node prefix; zero stack args/RET. EH JMP callers load saved owner from EBP-10, except CC1AD0 from EBP-28; scalar deletion flag remains for caller disposal."
+    },
+    {
+      "function": "00cc2af0",
+      "address": "00cc2af3",
+      "native": "00b6f440",
+      "kind": "tail_jump",
+      "contract": "ECX captured actual node prefix; zero stack args/RET. EH JMP callers load saved owner from EBP-10, except CC1AD0 from EBP-28; scalar deletion flag remains for caller disposal."
+    }
+  ],
+  "numeric_transfer_rows": 30,
+  "unresolved_indirect_rows": 2,
+  "tail_jump_rows": 11,
+  "native_evidence": {
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00b6f440",
+        "bytes": 297,
+        "end_inclusive": "00b6f568",
+        "sha256": "cfeb48c0b3dfa08412b09500b8c56534222189488695f4b0b0a370480a9c0fd8",
+        "live_PE_equal": true
+      },
+      {
+        "address": "00b6f3e0",
+        "bytes": 23,
+        "end_inclusive": "00b6f3f6",
+        "sha256": "e2a03d2a46a899ebc1effeef6f9282ab970f26569b9d8cb0aeb545b1c52e2518",
+        "live_PE_equal": true
+      },
+      {
+        "address": "00cc19e0",
+        "bytes": 43,
+        "end_inclusive": "00cc1a0a",
+        "sha256": "711590c46ec58640583179e7e1b9e002c81a603628196ed392d306c585bba549",
+        "live_PE_equal": true
+      },
+      {
+        "address": "00dfa8e8",
+        "bytes": 60,
+        "end_inclusive": "00dfa923",
+        "sha256": "44d770e07ef48a26cb35afa73f8296382eb43271e7efc070ec86c0367c7fec8f",
+        "live_PE_equal": true
+      }
+    ],
+    "instructions": 95
+  },
+  "caller_preparations": {
+    "xref_sites": 13,
+    "captured_contained_sites": 13,
+    "normal_calls": 7,
+    "eh_tail_jumps": 6,
+    "evidence_file": "caller-preparations.txt",
+    "full_listings": "caller-<entry>.txt",
+    "saved_owner": "All normal callers capture incoming ECX in ESI and preserve it before B6F440. Scalar wrappers preserve caller flags for later pool disposal. EH thunks restore original owner from EBP-10 or EBP-28; camera/copy frames are captured separately."
+  },
+  "cleanup_states": {
+    "metadata": "CC1A01 handler ->BF6B43, FuncInfoDFA900, unwind mapDFA8E8..DFA8FF",
+    "state2": "Attachment/hierarchy/retained-owner/scene work; on supported failure, array then name then base",
+    "state1": "Set B6F50C before normal B6EC70(0)/BF6989; array already consumed",
+    "state0": "Capture data B6F51E, set state0 B6F526, capture current length+1 B6F52C/B6F531, getter B6F536 then return B6F53D; name already consumed",
+    "state_minus1": "B6F544 before D5C104 store/B D30F0 base; source uses volatile intermediate profile plus established raw base leaf",
+    "normal_getter_failure": "Catch sees state0, consumes it and runs base only. Name and freed array words remain, never replay destructor; explicit failed-name ownership remains external."
+  },
+  "array_domain": {
+    "claimed_full_helper_B6F3E0": false,
+    "claimed_new_array_body": false,
+    "semantics": "Existing point_lights matching allocation registry, valid nonnegative capacity/count. Shrink0 changes count and preserves elements/pointer/capacity, then free current backing; foreign backing terminates. Negative capacity/count/overflow and arbitrary allocator adoption remain outside this packet."
+  },
+  "runtime_construction_audit": {
+    "blocking_field": "NativeNodeDestructionRuntime::strings is a mandatory public SizedStoragePool& and its only constructor requires it.",
+    "current_raw_overload": "Does not read that semantic pool during its body; the runtime still cannot be instantiated with only raw pool cells.",
+    "concrete_followup": "Separate the optional borrowed semantic-name domain from the scene/attachment/point-light runtime. Add a constructor requiring only those actual services and a raw name context (or separate explicit raw name binding), keep the existing semantic constructor/typed entry points, require an actual bound semantic domain in semantic accessors, and forward raw context through camera normal construction, constructor unwind and finish_node. Do not allocate a fallback/dummy pool.",
+    "direct_semantic_accesses": {
+      "src/directional_light_reference.cpp": [
+        137,
+        152
+      ],
+      "src/gui_widget_owner.cpp": [
+        414
+      ],
+      "src/gui_camera_store_owner.cpp": [
+        61,
+        68,
+        90
+      ],
+      "src/native_camera_owner.cpp": [
+        179
+      ],
+      "src/native_group_owner.cpp": [
+        195
+      ],
+      "src/native_model_owner.cpp": [
+        177
+      ],
+      "src/native_node_destruction.cpp": [
+        270
+      ],
+      "src/native_point_light_owner.cpp": [
+        275,
+        290
+      ]
+    },
+    "camera_finish_node": "native_camera_owner.cpp122..128 currently calls the two-argument semantic destructor; constructor/destructor catch paths invoke it at242/273 and normal tail277.",
+    "scope": "Source composition migration, no automatic new native-body credit. Preserve terminal/noexcept boundaries and existing typed behavior; raw camera forwarding remains a separate two-existing-body packet."
+  },
+  "corrections": [
+    {
+      "was": "Normal name/base cleanup outside try; destroy_name always noexcept; changing only storage type would skip base on getter failure.",
+      "is": "Shared typed/raw implementation consumes ordered state before every cleanup; raw normal getter may throw and remaining base cleanup runs.",
+      "evidence": "B6F50C/B6F526/B6F544 and native CC19E0/E8/F3 map; real raw getter failure fixture reaches baseCEB130 without repeated array/name."
+    }
+  ],
+  "checks": {
+    "strict_source": "PASS MSVC Win32 /W4 /WX /O2 /EHsc /MD /fp:strict",
+    "strict_probe": "PASS",
+    "baseline_build": "PASS822b99f0 full build and2CTest; first fixture link demonstrated this build still had the old destructor object, so it was not used for final raw-path proof",
+    "modified_build": "PASS subsequent scripts/build.ps1 rebuilt the changed source and dependents, both CTests pass",
+    "verify_seeds": "PASS8 live/PE spans",
+    "current_library_fixture": "PASS default recipe, no WorkerSource",
+    "numeric_call_verification": "PASS; two runtime/IAT rows explicitly indirect and not mechanically resolved",
+    "repository_tests_added": 0,
+    "cmake_ledger_ghidra_edits": "none"
+  },
+  "source_sha256": {
+    "include/bsp/native_node_destruction.hpp": "bb0bc236dc6e0f3c0a6546c89eb3fc30420cd635378948f2d619da257f5f86e1",
+    "src/native_node_destruction.cpp": "25808d695345c6f075fa82d48c715e88644575ca4395f41561f8b535ed0bf1d4"
+  },
+  "fixture": {
+    "directory": "C:\\Users\\sqz269\\bsp-bd-node-destruction",
+    "cases": 1,
+    "subphases": [
+      "existing typed normal control",
+      "raw normal-name-getter allocation failure"
+    ],
+    "current_library_only": true,
+    "worker_source": false,
+    "actual_providers": "Typed control uses runtime SizedStoragePool for both native node name allocation/return. Raw phase uses existing NativeStringStorage bridge to actual raw singleton pool, actual node constructor/binding/type bootstrap, matching point-light allocation, complete419CC0/raw manager/current CRT allocation, and raw pool/manager teardown.",
+    "fault": "Only this disposable probe joins its unnamed Win32 job; process commit limit is current PrivateUsage+2MiB, causing the second actual8AD4A0 pool allocation to fail with bad_alloc. Quota is disabled after catch; no harness/desktop/game process is assigned.",
+    "observations": "FinalCEB130 base profile, count1 and actual178h slot tail unchanged; freed backing pointer/capacity retained with count0; unchanged raw name length/data and pool return count; no repeated array free (matching registry would terminate); caller explicitly restores old pool publication and cleans retained name after failed call.",
+    "base_once_evidence": "State0 is consumed once before base call in source; fixture observes final base phase. It does not instrument native FH3 or count writes to a hardware watchpoint.",
+    "limits": [
+      "No original-byte exception/FH3 execution",
+      "No arbitrary negative/foreign point-light descriptor",
+      "No second-exception search or hardware-fault unwind identity",
+      "No fully raw runtime constructor",
+      "No original caller ABI, concurrency or gameplay proof"
+    ],
+    "default_recipe": "run.ps1 -Repo <selected integrated root> compiles only external probe.cpp and links selectedroot bsp_core.lib,bsp_lua511.lib,bsp_zlib121.lib; embedded manifest",
+    "libraries": {
+      "bsp_core.lib": "e63d9d4d53efa96fc9f6e31f79aa9bc07736937201d4bd728c2cba210bf75070",
+      "bsp_lua511.lib": "32fba859073b8699b42d6e11e6a3d9092b979805a81579e6479fc281900721ed",
+      "bsp_zlib121.lib": "30efe379d35884ae3c14931092690ee5f51a1ceadc5622769a48869ad964e6c8"
+    },
+    "library_build_base": "822b99f0767784e60c6d58fdadc7082f2b5a82ce",
+    "library_build_inputs": "modified-source-inputs.zip: all exact physical source/header inputs, baseline with only two owned code files changed",
+    "library_build_inputs_sha256": "197f42f8ea2a6821957ff4922276b348b2c61c0e5f4779693293818432467d1f",
+    "input_pins_unchanged": true,
+    "immutable_archive": {
+      "path": "C:\\Users\\sqz269\\bsp-bd-node-destruction\\worker_capture.zip",
+      "sha256": "bd728286b04d5f2290c9ef02c9b51f5cb1326c8c67cca1847d8e8fd3056a15fa",
+      "members": 65,
+      "uncompressed_bytes": 70125706,
+      "bytes": 23590317,
+      "immutable": true
+    }
+  },
+  "ownership": {
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch3-node-destruction-bd",
+    "branch": "agent/orch3-node-destruction-bd",
+    "lease": "orch3_native_node_raw_destruction_bd",
+    "address": "00b6f440",
+    "four_owned_files": true,
+    "no_merge_push": true
+  }
+}
