@@ -1,0 +1,132 @@
+{
+ "repairs": [
+  {
+   "function": "00be9560",
+   "owner": "agent/orch2-20260910",
+   "when": "2026-09-13T07:18:00Z",
+   "decompile_lines_before": 17,
+   "gaps": [
+    {
+     "site": "00be9595",
+     "mnemonic": "CALL",
+     "operands": "0x00bf6989",
+     "gap_start": "00be959a",
+     "gap_end_exclusive": "00be95fc",
+     "bytes": 98,
+     "after_call": true,
+     "sha256": "9bd5393f7d2d5e711078a93e05b1ff663a8eaf548c57272c90cbcc42f2f27a50"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00be9595",
+      "mnemonic": "CALL",
+      "operands": "0x00bf6989",
+      "gap_start": "00be959a",
+      "gap_end_exclusive": "00be95fc",
+      "bytes": 98,
+      "after_call": true,
+      "sha256": "9bd5393f7d2d5e711078a93e05b1ff663a8eaf548c57272c90cbcc42f2f27a50"
+     },
+     "clear": "Success: Cleared flow override at 00be9595 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 98 byte(s)"
+    },
+    {
+     "explicit_tail_call": "00be9595",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00be9595 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00be95d3",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00be95d3 (was: NONE, now: NONE)"
+     }
+    }
+   ],
+   "explicit_tail_end_exclusive": "00be95fc",
+   "explicit_body_sha256": "c8712a76a7d55280eef319dc813a64862a1deb65c5d8a948c6f78c08ba2f2779",
+   "body_before": "Function: FUN_00be9560 at 00be9560\nSignature: undefined FUN_00be9560(void)\nEntry: 00be9560\nBody: 00be9560 - 00be9599",
+   "decompile_lines_after": 34,
+   "gaps_remaining": 1,
+   "body_after": "Function: FUN_00be9560 at 00be9560\nSignature: undefined FUN_00be9560(void)\nEntry: 00be9560\nBody: 00be9560 - 00be9599",
+   "stored_body_tail_complete": false,
+   "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+  },
+  {
+   "function": "00be8df0",
+   "owner": "agent/orch2-20260910",
+   "when": "2026-09-13T07:18:07Z",
+   "decompile_lines_before": 69,
+   "gaps": [
+    {
+     "site": "00be8efa",
+     "mnemonic": "CALL",
+     "operands": "0x00bf6989",
+     "gap_start": "00be8eff",
+     "gap_end_exclusive": "00be8f12",
+     "bytes": 19,
+     "after_call": true,
+     "sha256": "b5bccb4892506f28ca9b7235a4894b0114d242800968450fa73319a3fb986bed"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00be8efa",
+      "mnemonic": "CALL",
+      "operands": "0x00bf6989",
+      "gap_start": "00be8eff",
+      "gap_end_exclusive": "00be8f12",
+      "bytes": 19,
+      "after_call": true,
+      "sha256": "b5bccb4892506f28ca9b7235a4894b0114d242800968450fa73319a3fb986bed"
+     },
+     "clear": "Success: Cleared flow override at 00be8efa (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 19 byte(s)"
+    }
+   ],
+   "decompile_lines_after": 72,
+   "gaps_remaining": 0
+  },
+  {
+   "function": "00be9600",
+   "owner": "agent/orch2-20260910",
+   "when": "2026-09-13T07:29:18Z",
+   "decompile_lines_before": 23,
+   "gaps": [
+    {
+     "site": "00be9610",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "00be9615",
+     "gap_end_exclusive": "00be9618",
+     "bytes": 3,
+     "after_call": true,
+     "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00be9610",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "00be9615",
+      "gap_end_exclusive": "00be9618",
+      "bytes": 3,
+      "after_call": true,
+      "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+     },
+     "clear": "Success: Cleared flow override at 00be9610 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 3 byte(s)"
+    }
+   ],
+   "decompile_lines_after": 20,
+   "gaps_remaining": 0
+  }
+ ]
+}

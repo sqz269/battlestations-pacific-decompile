@@ -1,7 +1,9 @@
 #include "bsp/native_singleton_destruction.hpp"
 #include "bsp/observer_lifetime.hpp"
+#include "bsp/observer_dispatch_owner.hpp"
 #include "bsp/game_sound_runtime.hpp"
 #include "bsp/native_input_action_owner.hpp"
+#include "bsp/native_input_settings_lifetime.hpp"
 #include "bsp/native_input_backend_owner.hpp"
 #include "bsp/native_physical_factory.hpp"
 #include "bsp/native_filestore_factory.hpp"
@@ -106,6 +108,13 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
             return;
         }
         break;
+    case 0x00cf81cc:
+        if (bindings.input_settings != nullptr) {
+            scalar_delete_native_input_settings_006ab800(owner, flags,
+                *bindings.input_settings);
+            return;
+        }
+        break;
     case 0x00d68200:
         if (bindings.actual_string_pool_publication_01090aa8 != nullptr &&
             bindings.actual_string_returns_disabled_01090aa4 != nullptr) {
@@ -147,6 +156,14 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
         if (bindings.observer_lifetime != nullptr) {
             bindings.observer_lifetime->delete_lock_owner_00694ea0(
                 static_cast<NativeObserverLockOwner*>(owner), flags);
+            return;
+        }
+        break;
+    case 0x00cf7e74:
+        if (bindings.actual_observer_dispatch_owner_00e198dc != nullptr) {
+            delete_observer_dispatch_owner_00695f40(
+                static_cast<NativeObserverDispatchOwner*>(owner), flags,
+                *bindings.actual_observer_dispatch_owner_00e198dc);
             return;
         }
         break;
