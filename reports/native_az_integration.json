@@ -23,7 +23,7 @@
       }
     }
   ],
-  "status": "components_integrated_combined_win32_passed_final_replays_pending",
+  "status": "reviewed_components_and_fixed_fixtures_passed_exact_candidate_gate_required",
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
   "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
@@ -175,6 +175,10 @@
       {
         "path": "local/native-az-runtime-annotations-after.json",
         "sha256": "247e7c120b8eb1b94f4c89347ec21c781f45c913339cb0574c74958b9e2c2999"
+      },
+      {
+        "path": "local/native-az-final-fixture-annotations-after.json",
+        "sha256": "425547f585965bc8bce0d11ea65b0dd2be4e96530e42d4b946d4585eba9bf395"
       }
     ]
   },
@@ -191,5 +195,62 @@
     "Original stack-spill aliases, arbitrary malformed input, concurrency and original exception handling unverified.",
     "STL/zlib/CRT remain explicit library dependencies; shared fixture adapters are not independent proof of those original bodies.",
     "Readable numeric profiles and borrowed service graph are explicit source-runtime preconditions; real startup reachability and runnable-game objective remain open."
-  ]
+  ],
+  "independent_reviews": {
+    "ledger": "reports/native_az_ledger_audit.json",
+    "gate": "reports/native_az_promotion_review.json",
+    "unresolved_findings": 0
+  },
+  "fixture_families": [
+    {
+      "name": "raw",
+      "checks": 1305,
+      "report": "reports/native_raw_inflate_validation.json"
+    },
+    {
+      "name": "compressed",
+      "checks": 1468,
+      "entry_pairs": 3,
+      "decoded_bytes": 450369,
+      "report": "reports/native_raw_inflate_validation.json"
+    },
+    {
+      "name": "enumeration",
+      "report": "reports/native_mpak_enumeration.json",
+      "allocations": 48,
+      "releases": 48
+    },
+    {
+      "name": "runtime",
+      "report": "reports/native_mpak_runtime.json",
+      "position_native_comparisons": 2,
+      "decoded_bytes": 32
+    },
+    {
+      "name": "device",
+      "report": "reports/native_vfs_device_composition.json",
+      "variants": 8,
+      "original_routines": 4,
+      "original_bytes": 793
+    }
+  ],
+  "promotion_procedure": {
+    "status": "required_after_final_candidate_merge",
+    "anchor": "local/native-az-fixture-anchor-v1/anchor.json",
+    "anchor_sha256": "8587a6943a4f517e8e77c1eaecfded1e4076e3f4b3e52c06786695474f631dbf",
+    "immutable_anchor_files": 60,
+    "gate": "local/validate_native_az_promotion.py",
+    "gate_sha256": "32f424e2815e4dc7adebb6b37cf8778a57ca7d09fd31b41975e2fdce96edd5c2",
+    "checks": [
+      "Clean exact HEAD before and after each stage",
+      "MSVC Win32 Release strict build and both existing CTests",
+      "All compiler-recorded source/header/toolchain inputs stable before build through final sealing",
+      "All five fixed fixture results match original captured outcomes or explicitly source-only results",
+      "Every linked game/library object matches the unique member of the current strict-built archive",
+      "Immutable attempt payload plus external passed receipt after post-seal current-input verification",
+      "Ordinary Git fast-forward of the validated SHA; moving main requires a new merged-candidate gate"
+    ],
+    "receipt_pattern": "local/native-az-promotion-checks/<timestamp>-<head>-receipt.json",
+    "record_boundary": "This tracked report describes pre-promotion evidence. Only the immutable external receipt records a final candidate pass; no self-referential commit claim."
+  }
 }
