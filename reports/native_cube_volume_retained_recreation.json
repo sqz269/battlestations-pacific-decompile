@@ -25,19 +25,24 @@
       "name": "BSP_CubeTexture_ReleaseRetainedDeviceResource",
       "old_name": "FUN_00b3d7c0",
       "native_calling_convention": "__thiscall",
-      "native_prototype": "void __thiscall BSP_CubeTexture_ReleaseRetainedDeviceResource(void)",
+      "native_prototype": "void BSP_CubeTexture_ReleaseRetainedDeviceResource(void)",
       "original_abi": "ECX actual raw owner; zero stack arguments; ESI/EDI preserved; plain RET; no semantic result. Recreation leaves incidental ignored D3DX HRESULT in EAX.",
       "source": "src/native_cube_volume_retained_recreation.cpp",
       "header": "include/bsp/native_cube_volume_retained_recreation.hpp",
       "source_line": 60,
       "coverage": "complete",
       "status": "complete_actual_storage_strict_Win32_worker_source_native_byte_real_D3DX_D3D9_fixture",
-      "evidence": {
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete 00b3d7c0..00b3d7f3 normal native body over actual storage and current concrete profiles. Native ECX and zero-stack-argument ABI, current read/callback/output ordering and live/disk spans reviewed. Source adds borrowed contexts; bounded original-byte fixture evidence is separate from original caller ABI, unrestricted FH3/SEH/concurrency and gameplay. Evidence: docs/NATIVE_CUBE_VOLUME_RETAINED_RECREATION.md; reports/native_cube_volume_retained_recreation.json.",
+      "uncertainty": "Descriptive C++/Ghidra name is a reconstruction hypothesis, not a recovered symbol. New source interface; not native caller ABI, SEH/FH3, complete device-reset, gameplay or visual validation.",
+      "end_exclusive": "00b3d7f4",
+      "module": "native_cube_volume_retained_recreation",
+      "new_native_body": true,
+      "ghidra_name": "BSP_CubeTexture_ReleaseRetainedDeviceResource",
+      "worker_evidence": {
         "body": "full verified Ghidra assembly and exact disk/live bytes",
         "profile": "00d61870",
         "report": "reports/native_cube_volume_retained_recreation.json"
-      },
-      "uncertainty": "Descriptive C++/Ghidra name is a reconstruction hypothesis, not a recovered symbol. New source interface; not native caller ABI, SEH/FH3, complete device-reset, gameplay or visual validation."
+      }
     },
     {
       "address": "00b3d800",
@@ -47,19 +52,24 @@
       "name": "BSP_VolumeTexture_ReleaseRetainedDeviceResource",
       "old_name": "FUN_00b3d800",
       "native_calling_convention": "__thiscall",
-      "native_prototype": "void __thiscall BSP_VolumeTexture_ReleaseRetainedDeviceResource(void)",
+      "native_prototype": "void BSP_VolumeTexture_ReleaseRetainedDeviceResource(void)",
       "original_abi": "ECX actual raw owner; zero stack arguments; ESI/EDI preserved; plain RET; no semantic result. Recreation leaves incidental ignored D3DX HRESULT in EAX.",
       "source": "src/native_cube_volume_retained_recreation.cpp",
       "header": "include/bsp/native_cube_volume_retained_recreation.hpp",
       "source_line": 63,
       "coverage": "complete",
       "status": "complete_actual_storage_strict_Win32_worker_source_native_byte_real_D3DX_D3D9_fixture",
-      "evidence": {
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete 00b3d800..00b3d833 normal native body over actual storage and current concrete profiles. Native ECX and zero-stack-argument ABI, current read/callback/output ordering and live/disk spans reviewed. Source adds borrowed contexts; bounded original-byte fixture evidence is separate from original caller ABI, unrestricted FH3/SEH/concurrency and gameplay. Evidence: docs/NATIVE_CUBE_VOLUME_RETAINED_RECREATION.md; reports/native_cube_volume_retained_recreation.json.",
+      "uncertainty": "Descriptive C++/Ghidra name is a reconstruction hypothesis, not a recovered symbol. New source interface; not native caller ABI, SEH/FH3, complete device-reset, gameplay or visual validation.",
+      "end_exclusive": "00b3d834",
+      "module": "native_cube_volume_retained_recreation",
+      "new_native_body": true,
+      "ghidra_name": "BSP_VolumeTexture_ReleaseRetainedDeviceResource",
+      "worker_evidence": {
         "body": "full verified Ghidra assembly and exact disk/live bytes",
         "profile": "00d618b0",
         "report": "reports/native_cube_volume_retained_recreation.json"
-      },
-      "uncertainty": "Descriptive C++/Ghidra name is a reconstruction hypothesis, not a recovered symbol. New source interface; not native caller ABI, SEH/FH3, complete device-reset, gameplay or visual validation."
+      }
     },
     {
       "address": "00b3e1f0",
@@ -69,19 +79,24 @@
       "name": "BSP_CubeTexture_RecreateFromRetainedMemory",
       "old_name": "FUN_00b3e1f0",
       "native_calling_convention": "__thiscall",
-      "native_prototype": "void __thiscall BSP_CubeTexture_RecreateFromRetainedMemory(void)",
+      "native_prototype": "void BSP_CubeTexture_RecreateFromRetainedMemory(void)",
       "original_abi": "ECX actual raw owner; zero stack arguments; ESI/EDI preserved; plain RET; no semantic result. Recreation leaves incidental ignored D3DX HRESULT in EAX.",
       "source": "src/native_cube_volume_retained_recreation.cpp",
       "header": "include/bsp/native_cube_volume_retained_recreation.hpp",
       "source_line": 67,
       "coverage": "complete",
       "status": "complete_actual_storage_strict_Win32_worker_source_native_byte_real_D3DX_D3D9_fixture",
-      "evidence": {
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete 00b3e1f0..00b3e221 normal native body over actual storage and current concrete profiles. Native ECX and zero-stack-argument ABI, current read/callback/output ordering and live/disk spans reviewed. Source adds borrowed contexts; bounded original-byte fixture evidence is separate from original caller ABI, unrestricted FH3/SEH/concurrency and gameplay. Evidence: docs/NATIVE_CUBE_VOLUME_RETAINED_RECREATION.md; reports/native_cube_volume_retained_recreation.json.",
+      "uncertainty": "Descriptive C++/Ghidra name is a reconstruction hypothesis, not a recovered symbol. New source interface; not native caller ABI, SEH/FH3, complete device-reset, gameplay or visual validation.",
+      "end_exclusive": "00b3e222",
+      "module": "native_cube_volume_retained_recreation",
+      "new_native_body": true,
+      "ghidra_name": "BSP_CubeTexture_RecreateFromRetainedMemory",
+      "worker_evidence": {
         "body": "full verified Ghidra assembly and exact disk/live bytes",
         "profile": "00d61870",
         "report": "reports/native_cube_volume_retained_recreation.json"
-      },
-      "uncertainty": "Descriptive C++/Ghidra name is a reconstruction hypothesis, not a recovered symbol. New source interface; not native caller ABI, SEH/FH3, complete device-reset, gameplay or visual validation."
+      }
     },
     {
       "address": "00b3e230",
@@ -91,19 +106,24 @@
       "name": "BSP_VolumeTexture_RecreateFromRetainedMemory",
       "old_name": "FUN_00b3e230",
       "native_calling_convention": "__thiscall",
-      "native_prototype": "void __thiscall BSP_VolumeTexture_RecreateFromRetainedMemory(void)",
+      "native_prototype": "void BSP_VolumeTexture_RecreateFromRetainedMemory(void)",
       "original_abi": "ECX actual raw owner; zero stack arguments; ESI/EDI preserved; plain RET; no semantic result. Recreation leaves incidental ignored D3DX HRESULT in EAX.",
       "source": "src/native_cube_volume_retained_recreation.cpp",
       "header": "include/bsp/native_cube_volume_retained_recreation.hpp",
       "source_line": 79,
       "coverage": "complete",
       "status": "complete_actual_storage_strict_Win32_worker_source_native_byte_real_D3DX_D3D9_fixture",
-      "evidence": {
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete 00b3e230..00b3e261 normal native body over actual storage and current concrete profiles. Native ECX and zero-stack-argument ABI, current read/callback/output ordering and live/disk spans reviewed. Source adds borrowed contexts; bounded original-byte fixture evidence is separate from original caller ABI, unrestricted FH3/SEH/concurrency and gameplay. Evidence: docs/NATIVE_CUBE_VOLUME_RETAINED_RECREATION.md; reports/native_cube_volume_retained_recreation.json.",
+      "uncertainty": "Descriptive C++/Ghidra name is a reconstruction hypothesis, not a recovered symbol. New source interface; not native caller ABI, SEH/FH3, complete device-reset, gameplay or visual validation.",
+      "end_exclusive": "00b3e262",
+      "module": "native_cube_volume_retained_recreation",
+      "new_native_body": true,
+      "ghidra_name": "BSP_VolumeTexture_RecreateFromRetainedMemory",
+      "worker_evidence": {
         "body": "full verified Ghidra assembly and exact disk/live bytes",
         "profile": "00d618b0",
         "report": "reports/native_cube_volume_retained_recreation.json"
-      },
-      "uncertainty": "Descriptive C++/Ghidra name is a reconstruction hypothesis, not a recovered symbol. New source interface; not native caller ABI, SEH/FH3, complete device-reset, gameplay or visual validation."
+      }
     }
   ],
   "host_steps": [
@@ -418,7 +438,6 @@
     "source_build_tested": true,
     "native_differential_fixture": true
   },
-  "no_ghidra_function": [],
   "not_counted_internal_adapters": [
     "NativeD3dx9CubeVolumeMemoryImports constructor and two import forwarding methods",
     "private pointer/resolve/release helpers"
@@ -584,5 +603,161 @@
       "bytes": 2648,
       "sha256": "5d3c8f457a58e6e39b81af0b5ecc8d89afabad150180f376588b426b69c34a74"
     }
-  ]
+  ],
+  "integration_aw_review": {
+    "combined_validation": "pending exact merged source build and current-library replay",
+    "game_validated": false,
+    "saved_function_names_and_original_signatures": 10,
+    "signature_readback_passed": true,
+    "full_stored_function_bodies": true,
+    "previous_signatures": {
+      "00b3d7b0": "00b3d7b0 FUN_00b3d7b0  undefined FUN_00b3d7b0(void)  body 00b3d7b0 - 00b3d7b6",
+      "00b3e190": "00b3e190 BSP_D3D9Texture_CreateFromRetainedMemory  undefined BSP_D3D9Texture_CreateFromRetainedMemory(void)  body 00b3e190 - 00b3e1ec",
+      "00b3d7c0": "00b3d7c0 FUN_00b3d7c0  undefined FUN_00b3d7c0(void)  body 00b3d7c0 - 00b3d7f3",
+      "00b3d800": "00b3d800 FUN_00b3d800  undefined FUN_00b3d800(void)  body 00b3d800 - 00b3d833",
+      "00b3e1f0": "00b3e1f0 FUN_00b3e1f0  undefined FUN_00b3e1f0(void)  body 00b3e1f0 - 00b3e221",
+      "00b3e230": "00b3e230 FUN_00b3e230  undefined FUN_00b3e230(void)  body 00b3e230 - 00b3e261",
+      "00b28a90": "00b28a90 BSP_D3D9Renderer_StopWorkerMode  undefined BSP_D3D9Renderer_StopWorkerMode(void)  body 00b28a90 - 00b28abb",
+      "00b26920": "00b26920 FUN_00b26920  undefined FUN_00b26920(void)  body 00b26920 - 00b26a00",
+      "00b33bf0": "00b33bf0 BSP_RenderWorker_RequestStop  undefined BSP_RenderWorker_RequestStop(void)  body 00b33bf0 - 00b33bfd",
+      "00b29670": "00b29670 BSP_D3D9Renderer_RecreateDevice  undefined BSP_D3D9Renderer_RecreateDevice(void)  body 00b29670 - 00b29b16"
+    },
+    "original_signature_readback": "00b3d7b0 BSP_D3D9Texture_DispatchRetainedRelease  void __thiscall BSP_D3D9Texture_DispatchRetainedRelease(void * this)  body 00b3d7b0 - 00b3d7b6\n00b3e190 BSP_D3D9Texture_CreateFromRetainedMemory  void __thiscall BSP_D3D9Texture_CreateFromRetainedMemory(void * this)  body 00b3e190 - 00b3e1ec\n00b3d7c0 BSP_CubeTexture_ReleaseRetainedDeviceResource  void __thiscall BSP_CubeTexture_ReleaseRetainedDeviceResource(void * this)  body 00b3d7c0 - 00b3d7f3\n00b3d800 BSP_VolumeTexture_ReleaseRetainedDeviceResource  void __thiscall BSP_VolumeTexture_ReleaseRetainedDeviceResource(void * this)  body 00b3d800 - 00b3d833\n00b3e1f0 BSP_CubeTexture_RecreateFromRetainedMemory  void __thiscall BSP_CubeTexture_RecreateFromRetainedMemory(void * this)  body 00b3e1f0 - 00b3e221\n00b3e230 BSP_VolumeTexture_RecreateFromRetainedMemory  void __thiscall BSP_VolumeTexture_RecreateFromRetainedMemory(void * this)  body 00b3e230 - 00b3e261\n00b28a90 BSP_D3D9Renderer_StopWorkerMode  void __thiscall BSP_D3D9Renderer_StopWorkerMode(void * this)  body 00b28a90 - 00b28abb\n00b26920 BSP_D3D9Renderer_ClearStopPipeline  void __thiscall BSP_D3D9Renderer_ClearStopPipeline(void * this)  body 00b26920 - 00b26a00\n00b33bf0 BSP_RenderWorker_RequestStop  uint __thiscall BSP_RenderWorker_RequestStop(void * this)  body 00b33bf0 - 00b33bfd\n00b29670 BSP_D3D9Renderer_RecreateDevice  void __thiscall BSP_D3D9Renderer_RecreateDevice(void * this)  body 00b29670 - 00b29b16\n",
+    "function_definitions": [
+      {
+        "events": [
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00b3d7b0",
+              "end_address": "00b3d7b7"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00b3d7b0",
+              "end_address": "00b3d7b6",
+              "bytes_disassembled": 7,
+              "message": "Successfully disassembled 7 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00b3d7b0",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00b3d7b0",
+              "function_name": "FUN_00b3d7b0",
+              "entry_point": "00b3d7b0",
+              "body_size": 7,
+              "message": "Function created successfully at 00b3d7b0"
+            }
+          },
+          {
+            "defined": "00b3d7b0",
+            "end": "00b3d7b7",
+            "name": null,
+            "after": "Function: FUN_00b3d7b0 at 00b3d7b0\nSignature: undefined FUN_00b3d7b0(void)\nEntry: 00b3d7b0\nBody: 00b3d7b0 - 00b3d7b6"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      },
+      {
+        "events": [
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00cbd2fb",
+              "end_address": "00cbd305"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00cbd2fb",
+              "end_address": "00cbd304",
+              "bytes_disassembled": 10,
+              "message": "Successfully disassembled 10 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00cbd2fb",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00cbd2fb",
+              "function_name": "FUN_00cbd2fb",
+              "entry_point": "00cbd2fb",
+              "body_size": 10,
+              "message": "Function created successfully at 00cbd2fb"
+            }
+          },
+          {
+            "defined": "00cbd2fb",
+            "end": "00cbd305",
+            "name": null,
+            "after": "Function: FUN_00cbd2fb at 00cbd2fb\nSignature: undefined FUN_00cbd2fb(void)\nEntry: 00cbd2fb\nBody: 00cbd2fb - 00cbd304"
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00cbd168",
+              "end_address": "00cbd172"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00cbd168",
+              "end_address": "00cbd171",
+              "bytes_disassembled": 10,
+              "message": "Successfully disassembled 10 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00cbd168",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00cbd168",
+              "function_name": "FUN_00cbd168",
+              "entry_point": "00cbd168",
+              "body_size": 10,
+              "message": "Function created successfully at 00cbd168"
+            }
+          },
+          {
+            "defined": "00cbd168",
+            "end": "00cbd172",
+            "name": null,
+            "after": "Function: FUN_00cbd168 at 00cbd168\nSignature: undefined FUN_00cbd168(void)\nEntry: 00cbd168\nBody: 00cbd168 - 00cbd171"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      }
+    ],
+    "cross_review": "Independent complete-listing reviews checked retained 2D signatures, successful loader-to-record provenance and null-record boundary, optional-guard EH and lifecycle scope, full old-device/current-output access order, caps flags, x87 gamma outgoing slot, physical-buffer publication order and unsigned/tree/record traversal. The publication cell qualifier boundary was explicitly cast and strict compilation passed.",
+    "current_report_call_check": "reports/native_cube_volume_retained_recreation.json: 8 call rows checked, 0 failed"
+  },
+  "worker_capture_no_ghidra_function": []
 }

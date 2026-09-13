@@ -1,0 +1,548 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "live_disk_spans": [
+    {
+      "address": "00b29670",
+      "length": 1191,
+      "end_inclusive": "00b29b16",
+      "sha256": "40bcbd2182d3da8c7ed3b77394c30d595c65a95cfa896432e76cd063afaa65e4",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00cbd2f0",
+      "length": 21,
+      "end_inclusive": "00cbd304",
+      "sha256": "ca4ec119e89c59e6c700394f5a9fd5f0854ac20090a102608aa9025e7c891b7f",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00df5ac8",
+      "length": 44,
+      "end_inclusive": "00df5af3",
+      "sha256": "9a252e185bb5635eaa1451cdf67137be7e5bb110923fe2f5d7849537791a3c62",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d5f0a8",
+      "length": 316,
+      "end_inclusive": "00d5f1e3",
+      "sha256": "bd602fc1258e6ea0848d349d6bc04a86bd86246765fdb62f12b739bf9ac0c92f",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d61948",
+      "length": 48,
+      "end_inclusive": "00d61977",
+      "sha256": "da172f4cfec213fd950f49b8e79547fe13d185cb910bd8c9c04a0225f54a9fdc",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d61870",
+      "length": 48,
+      "end_inclusive": "00d6189f",
+      "sha256": "67eb81d8c8d65b457567c8630765cc63bed6ce7ce5ca00b4468dab30cfd312e2",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d618b0",
+      "length": 48,
+      "end_inclusive": "00d618df",
+      "sha256": "aba2031da698177d20ce472833c85b5a633bd2f517c3cdcfb06e2888459b3632",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d5f088",
+      "length": 20,
+      "end_inclusive": "00d5f09b",
+      "sha256": "744d4f63ee4562f3ec7aaf2fd4fa4495edc15a5f3092e6ad6d52363645069566",
+      "live_disk_equal": true
+    }
+  ],
+  "packet": "orch3_renderer_device_recreation_aw",
+  "functions": [
+    {
+      "address": "00b29670",
+      "end_inclusive": "00b29b16",
+      "end_exclusive": "00b29b17",
+      "native_byte_count": 1191,
+      "native_sha256": "40bcbd2182d3da8c7ed3b77394c30d595c65a95cfa896432e76cd063afaa65e4",
+      "cpp_symbol": "recreate_native_renderer_device_00b29670",
+      "ghidra_name": "BSP_D3D9Renderer_RecreateDevice",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_D3D9Renderer_RecreateDevice(void)",
+      "original_abi": "ECX actual renderer, zero stack arguments, plain RET at B29B16; no semantic result; EBP/ESP alignment and native FH3 remain original ABI details, added context is source ABI only",
+      "coverage": "complete normal body",
+      "source": "src/native_renderer_device_recreation_actual.cpp",
+      "header": "include/bsp/native_renderer_device_recreation_actual.hpp",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete 00b29670..00b29b16 normal native body over actual storage and current concrete profiles. Native ECX and zero-stack-argument ABI, current read/callback/output ordering and live/disk spans reviewed. Source adds borrowed contexts; bounded original-byte fixture evidence is separate from original caller ABI, unrestricted FH3/SEH/concurrency and gameplay. Evidence: docs/NATIVE_RENDERER_DEVICE_RECREATION_ACTUAL.md; reports/native_renderer_device_recreation_actual.json.",
+      "module": "native_renderer_device_recreation_actual",
+      "new_native_body": true,
+      "worker_evidence": "Descriptive hypothesis, not a recovered symbol. Complete B29670 normal body over actual renderer/tree/owner storage and concrete dependency providers. Full live/disk 1191-byte body, every native call and original ECX/no-stack-argument ABI reviewed; exact optional-guard FH3 map, current lock/COM/profile/count reloads, output cells and x87 outgoing slot preserved. New source context ABI, not game or unrestricted concurrency validation. Evidence: docs/NATIVE_RENDERER_DEVICE_RECREATION_ACTUAL.md; reports/native_renderer_device_recreation_actual.json."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b296a4",
+      "native": "00b33ad0",
+      "function": "00b29670",
+      "contract": "Current optional mode gates guard entry; save renderer and entered AL before state0."
+    },
+    {
+      "address": "00b296bf",
+      "instruction": "call dword ptr [0xce2218]",
+      "function": "00b29670",
+      "native": "kernel32!EnterCriticalSection",
+      "contract": "Captured lifecycle lock+199C, state0 armed before call; increment that captured lock+18 after return."
+    },
+    {
+      "address": "00b296dc",
+      "instruction": "call edx",
+      "function": "00b29670",
+      "native": "00b24e70",
+      "contract": "Current D5F0A8+98 target captured before byte1D8A clear; full actual frame-target bind(null)."
+    },
+    {
+      "address": "00b296e0",
+      "native": "00b24bf0",
+      "function": "00b29670",
+      "contract": "Full actual binding reset after frame-target clear."
+    },
+    {
+      "address": "00b296e7",
+      "native": "00b237d0",
+      "function": "00b29670",
+      "contract": "Full dynamic-buffer reset release using same synchronization domain."
+    },
+    {
+      "address": "00b296ee",
+      "native": "00b262c0",
+      "function": "00b29670",
+      "contract": "Full actual resource/cache release; complete AV provider."
+    },
+    {
+      "address": "00b29722",
+      "native": "00bf6713",
+      "function": "00b29670",
+      "contract": "Established checked-iterator invalid-parameter service; callback may return or throw."
+    },
+    {
+      "address": "00b2972f",
+      "native": "00bf6713",
+      "function": "00b29670",
+      "contract": "Established checked-iterator invalid-parameter service; callback may return or throw."
+    },
+    {
+      "address": "00b29739",
+      "native": "00bf6713",
+      "function": "00b29670",
+      "contract": "Established checked-iterator invalid-parameter service; callback may return or throw."
+    },
+    {
+      "address": "00b29741",
+      "native": "00b600b0",
+      "function": "00b29670",
+      "contract": "Current node+20 full hardware-layout device release."
+    },
+    {
+      "address": "00b2974a",
+      "native": "00b20dc0",
+      "function": "00b29670",
+      "contract": "Actual two-word checked tree iterator, current head/owner/node semantics."
+    },
+    {
+      "address": "00b29779",
+      "native": "00b49d00",
+      "function": "00b29670",
+      "contract": "Actual logical vertex owner device save; current count/base each iteration."
+    },
+    {
+      "address": "00b297a9",
+      "native": "00b49f80",
+      "function": "00b29670",
+      "contract": "Actual logical index owner device save; current count/base each iteration."
+    },
+    {
+      "address": "00b297d9",
+      "native": "00b5e810",
+      "function": "00b29670",
+      "contract": "Actual vertex shader bytecode save/device release."
+    },
+    {
+      "address": "00b29809",
+      "native": "00b5e750",
+      "function": "00b29670",
+      "contract": "Actual pixel shader bytecode save/device release."
+    },
+    {
+      "address": "00b29838",
+      "instruction": "call edx",
+      "function": "00b29670",
+      "native": "retained-resource-profile+28",
+      "contract": "Current record+28 owner/current profile. D61948:B3D7B0; D61870:B3D7C0; D618B0:B3D800."
+    },
+    {
+      "address": "00b29859",
+      "native": "00c2f1c6",
+      "function": "00b29670",
+      "contract": "Existing concrete XLive ordinal5006 adapter; reached only current F8ABE8 is nonzero."
+    },
+    {
+      "address": "00b29875",
+      "instruction": "call edx",
+      "function": "00b29670",
+      "native": "IDirect3DDevice9::AddRef",
+      "contract": "Captured old device+1A10, captured object current table+4."
+    },
+    {
+      "address": "00b2987e",
+      "instruction": "call ecx",
+      "function": "00b29670",
+      "native": "IDirect3DDevice9::Release",
+      "contract": "Reload captured object table+8 after AddRef."
+    },
+    {
+      "address": "00b29888",
+      "instruction": "call eax",
+      "function": "00b29670",
+      "native": "IDirect3DDevice9::Release",
+      "contract": "Independently reload renderer current+1A10; unconditional release, no null repair."
+    },
+    {
+      "address": "00b298a5",
+      "instruction": "call eax",
+      "function": "00b29670",
+      "native": "IDirect3D9::GetDeviceCaps",
+      "contract": "Capture D3D+1990 before clearing device+1A10, then current table+38; HAL adapter0, uninitialized real output, ignored HRESULT."
+    },
+    {
+      "address": "00b298ee",
+      "instruction": "call edx",
+      "function": "00b29670",
+      "native": "IDirect3D9::CreateDevice",
+      "contract": "Fresh D3D+1990 and table+40; HAL adapter0, current HWND1A44, behavior20/40 OR4, actual1A28 parameters and actual1A10 output, ignored HRESULT."
+    },
+    {
+      "address": "00b29903",
+      "native": "00b24460",
+      "function": "00b29670",
+      "contract": "Full actual render-state cache provider, stateA1=(current1A38!=0)."
+    },
+    {
+      "address": "00b2990a",
+      "native": "00b26170",
+      "function": "00b29670",
+      "contract": "Complete ordered nineteen render defaults and twenty sampler banks."
+    },
+    {
+      "address": "00b29923",
+      "instruction": "call eax",
+      "function": "00b29670",
+      "native": "00b21960",
+      "contract": "FLD renderer196C precedes current D5F0A8+F0; FSTP actual outgoing float slot forwarded to full gamma provider."
+    },
+    {
+      "address": "00b29927",
+      "native": "00b23b10",
+      "function": "00b29670",
+      "contract": "Full actual resource restoration, same profiles/renderer publication."
+    },
+    {
+      "address": "00b29953",
+      "instruction": "call edx",
+      "function": "00b29670",
+      "native": "physical-buffer-profile+20",
+      "contract": "First owner1974 then device1A10 then ready1D8C=1 then current owner table/slot. Four concrete pooled/private providers."
+    },
+    {
+      "address": "00b29963",
+      "instruction": "call eax",
+      "function": "00b29670",
+      "native": "physical-buffer-profile+20",
+      "contract": "Second owner1978 then current owner table then current device1A10 then slot20; genuine one-stack-argument providers."
+    },
+    {
+      "address": "00b29972",
+      "native": "00c2f1c0",
+      "function": "00b29670",
+      "contract": "Existing concrete XLive ordinal5005 adapter with current device and captured actual parameters."
+    },
+    {
+      "address": "00b299a2",
+      "native": "00bf6713",
+      "function": "00b29670",
+      "contract": "Established checked-iterator invalid-parameter service; callback may return or throw."
+    },
+    {
+      "address": "00b299af",
+      "native": "00bf6713",
+      "function": "00b29670",
+      "contract": "Established checked-iterator invalid-parameter service; callback may return or throw."
+    },
+    {
+      "address": "00b299b9",
+      "native": "00bf6713",
+      "function": "00b29670",
+      "contract": "Established checked-iterator invalid-parameter service; callback may return or throw."
+    },
+    {
+      "address": "00b299c1",
+      "native": "00b60a10",
+      "function": "00b29670",
+      "contract": "Complete hardware-layout create-if-missing using same actual owner/string services."
+    },
+    {
+      "address": "00b299ca",
+      "native": "00b20dc0",
+      "function": "00b29670",
+      "contract": "Actual two-word checked tree iterator, current head/owner/node semantics."
+    },
+    {
+      "address": "00b299f9",
+      "native": "00b49dc0",
+      "function": "00b29670",
+      "contract": "Full logical vertex restore and actual physical attachment/locking."
+    },
+    {
+      "address": "00b29a29",
+      "native": "00b4a040",
+      "function": "00b29670",
+      "contract": "Full logical index restore and actual physical attachment/locking."
+    },
+    {
+      "address": "00b29a59",
+      "native": "00b5e8e0",
+      "function": "00b29670",
+      "contract": "Full vertex shader restore from same current renderer publication cell."
+    },
+    {
+      "address": "00b29a89",
+      "native": "00b5e890",
+      "function": "00b29670",
+      "contract": "Full pixel shader restore from same current renderer publication cell."
+    },
+    {
+      "address": "00b29ab8",
+      "instruction": "call eax",
+      "function": "00b29670",
+      "native": "retained-resource-profile+2C",
+      "contract": "Current record+28 owner/current profile. D61948:B3E190; D61870:B3E1F0; D618B0:B3E230."
+    },
+    {
+      "address": "00b29add",
+      "instruction": "call dword ptr [0xce2210]",
+      "function": "00b29670",
+      "native": "kernel32!LeaveCriticalSection",
+      "contract": "Reload current lifecycle lock199C, decrement its18 depth, then leave. Exceptional paths do not perform this cleanup."
+    },
+    {
+      "address": "00b29afc",
+      "native": "00b33b00",
+      "function": "00b29670",
+      "contract": "Current-mode conditional normal leave, after disarming and loading full saved guard DWORD."
+    }
+  ],
+  "exception_evidence": {
+    "handler": "CBD2FB..CBD304 MOV EAX,DF5AD0; JMP BF6B43",
+    "unwind_map": "DF5AC8: state0 {-1,CBD2F0}; FuncInfo DF5AD0 statecount1",
+    "action": "CBD2F0..CBD2FA LEA ECX,[EBP-148]; JMP B21110",
+    "scope": "Optional guard only. State0 armed before EnterCriticalSection; no lifecycle-lock cleanup or rollback on throw. Current mode precedes normal state=-1 and full-word guard leave."
+  },
+  "producer_evidence": {
+    "successful_owner_chain": [
+      "B3256E installs D5F088 manager at renderer+1A74; array header starts+1A78",
+      "B319B0 at B31A55 reaches B30B40; current manager slot+8 at B30DBD resolves B2C2D0",
+      "B2C60D/B2C724/B2C7F7 call constructors B3F930/B3CED0/B3CFA0 establishing D61948/D61870/D618B0",
+      "B23640 retains backing owner into 2D+4C, cube+2C, volume+30; loader local backing released afterwards",
+      "B30F46 stores loaded EBX into temporary record+28; B30F4A calls B30130 to append stride2C",
+      "B2FCEE in full B2FC60 record copy preserves resource+28 unchanged"
+    ],
+    "failure_boundary": "Append precedes TEST EBX at B30F4F; failed loading may append null. Parent native/source dereference without null check; supported execution requires reached live nonnull owners. Full loader is analyzed provenance, not newly reconstructed here."
+  },
+  "initial_validation": {
+    "strict_owned_source_compile": true,
+    "combined_Win32_build": true,
+    "existing_CTests_passed": 2,
+    "full_original_parent_fixture": "pending",
+    "exact_final_merged_commit_build": "pending"
+  },
+  "independent_review": {
+    "2D_worker": "Full producer chain, texture traversal, 2D context and EH/state ordering reviewed; no semantic defect. Nonnull producer qualification preserved.",
+    "cube_volume_worker": "Full device release/GetCaps/CreateDevice, gamma x87 stack forwarding, physical owner loads and array/tree traversal reviewed. Fixed publication-address volatile conversion; strict compile now passes."
+  },
+  "boundaries": [
+    "Borrow same actual renderer publication cell across logical/shader/2D/cube/volume/surface providers; same ownership/string/cache/synchronization domains",
+    "Renderer extends through1D8C; current native profile tables and every accessed tree/owner/cursor remain valid; retained texture tables extend through2F",
+    "No surrogate records, host simulation methods, copied ownership state or unchecked numeric game call targets",
+    "Skipped optional guard storage is uninitialized; subsequent mode enabling into that cleanup is outside supported caller domain",
+    "Unwritten GetDeviceCaps output bytes remain unspecified; ignored HRESULT behavior is retained",
+    "Native ABI/FS chain identity, general SEH/foreign exceptions, worker concurrency, whole Reset processorB2ABD0, visible submission and gameplay remain unproved"
+  ],
+  "source_sha256": "eef9c1ff2522fc0a0f6e2ea4c17eb67ee89b651f42445f62f86193aaac606473",
+  "header_sha256": "906a48ce4998c07524af0bae8ef4d6db422eaf717a97f4ca0e2e9d9ffa9684e7",
+  "integration_aw_review": {
+    "combined_validation": "pending exact merged source build and current-library replay",
+    "game_validated": false,
+    "saved_function_names_and_original_signatures": 10,
+    "signature_readback_passed": true,
+    "full_stored_function_bodies": true,
+    "previous_signatures": {
+      "00b3d7b0": "00b3d7b0 FUN_00b3d7b0  undefined FUN_00b3d7b0(void)  body 00b3d7b0 - 00b3d7b6",
+      "00b3e190": "00b3e190 BSP_D3D9Texture_CreateFromRetainedMemory  undefined BSP_D3D9Texture_CreateFromRetainedMemory(void)  body 00b3e190 - 00b3e1ec",
+      "00b3d7c0": "00b3d7c0 FUN_00b3d7c0  undefined FUN_00b3d7c0(void)  body 00b3d7c0 - 00b3d7f3",
+      "00b3d800": "00b3d800 FUN_00b3d800  undefined FUN_00b3d800(void)  body 00b3d800 - 00b3d833",
+      "00b3e1f0": "00b3e1f0 FUN_00b3e1f0  undefined FUN_00b3e1f0(void)  body 00b3e1f0 - 00b3e221",
+      "00b3e230": "00b3e230 FUN_00b3e230  undefined FUN_00b3e230(void)  body 00b3e230 - 00b3e261",
+      "00b28a90": "00b28a90 BSP_D3D9Renderer_StopWorkerMode  undefined BSP_D3D9Renderer_StopWorkerMode(void)  body 00b28a90 - 00b28abb",
+      "00b26920": "00b26920 FUN_00b26920  undefined FUN_00b26920(void)  body 00b26920 - 00b26a00",
+      "00b33bf0": "00b33bf0 BSP_RenderWorker_RequestStop  undefined BSP_RenderWorker_RequestStop(void)  body 00b33bf0 - 00b33bfd",
+      "00b29670": "00b29670 BSP_D3D9Renderer_RecreateDevice  undefined BSP_D3D9Renderer_RecreateDevice(void)  body 00b29670 - 00b29b16"
+    },
+    "original_signature_readback": "00b3d7b0 BSP_D3D9Texture_DispatchRetainedRelease  void __thiscall BSP_D3D9Texture_DispatchRetainedRelease(void * this)  body 00b3d7b0 - 00b3d7b6\n00b3e190 BSP_D3D9Texture_CreateFromRetainedMemory  void __thiscall BSP_D3D9Texture_CreateFromRetainedMemory(void * this)  body 00b3e190 - 00b3e1ec\n00b3d7c0 BSP_CubeTexture_ReleaseRetainedDeviceResource  void __thiscall BSP_CubeTexture_ReleaseRetainedDeviceResource(void * this)  body 00b3d7c0 - 00b3d7f3\n00b3d800 BSP_VolumeTexture_ReleaseRetainedDeviceResource  void __thiscall BSP_VolumeTexture_ReleaseRetainedDeviceResource(void * this)  body 00b3d800 - 00b3d833\n00b3e1f0 BSP_CubeTexture_RecreateFromRetainedMemory  void __thiscall BSP_CubeTexture_RecreateFromRetainedMemory(void * this)  body 00b3e1f0 - 00b3e221\n00b3e230 BSP_VolumeTexture_RecreateFromRetainedMemory  void __thiscall BSP_VolumeTexture_RecreateFromRetainedMemory(void * this)  body 00b3e230 - 00b3e261\n00b28a90 BSP_D3D9Renderer_StopWorkerMode  void __thiscall BSP_D3D9Renderer_StopWorkerMode(void * this)  body 00b28a90 - 00b28abb\n00b26920 BSP_D3D9Renderer_ClearStopPipeline  void __thiscall BSP_D3D9Renderer_ClearStopPipeline(void * this)  body 00b26920 - 00b26a00\n00b33bf0 BSP_RenderWorker_RequestStop  uint __thiscall BSP_RenderWorker_RequestStop(void * this)  body 00b33bf0 - 00b33bfd\n00b29670 BSP_D3D9Renderer_RecreateDevice  void __thiscall BSP_D3D9Renderer_RecreateDevice(void * this)  body 00b29670 - 00b29b16\n",
+    "function_definitions": [
+      {
+        "events": [
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00b3d7b0",
+              "end_address": "00b3d7b7"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00b3d7b0",
+              "end_address": "00b3d7b6",
+              "bytes_disassembled": 7,
+              "message": "Successfully disassembled 7 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00b3d7b0",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00b3d7b0",
+              "function_name": "FUN_00b3d7b0",
+              "entry_point": "00b3d7b0",
+              "body_size": 7,
+              "message": "Function created successfully at 00b3d7b0"
+            }
+          },
+          {
+            "defined": "00b3d7b0",
+            "end": "00b3d7b7",
+            "name": null,
+            "after": "Function: FUN_00b3d7b0 at 00b3d7b0\nSignature: undefined FUN_00b3d7b0(void)\nEntry: 00b3d7b0\nBody: 00b3d7b0 - 00b3d7b6"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      },
+      {
+        "events": [
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00cbd2fb",
+              "end_address": "00cbd305"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00cbd2fb",
+              "end_address": "00cbd304",
+              "bytes_disassembled": 10,
+              "message": "Successfully disassembled 10 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00cbd2fb",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00cbd2fb",
+              "function_name": "FUN_00cbd2fb",
+              "entry_point": "00cbd2fb",
+              "body_size": 10,
+              "message": "Function created successfully at 00cbd2fb"
+            }
+          },
+          {
+            "defined": "00cbd2fb",
+            "end": "00cbd305",
+            "name": null,
+            "after": "Function: FUN_00cbd2fb at 00cbd2fb\nSignature: undefined FUN_00cbd2fb(void)\nEntry: 00cbd2fb\nBody: 00cbd2fb - 00cbd304"
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00cbd168",
+              "end_address": "00cbd172"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00cbd168",
+              "end_address": "00cbd171",
+              "bytes_disassembled": 10,
+              "message": "Successfully disassembled 10 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00cbd168",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00cbd168",
+              "function_name": "FUN_00cbd168",
+              "entry_point": "00cbd168",
+              "body_size": 10,
+              "message": "Function created successfully at 00cbd168"
+            }
+          },
+          {
+            "defined": "00cbd168",
+            "end": "00cbd172",
+            "name": null,
+            "after": "Function: FUN_00cbd168 at 00cbd168\nSignature: undefined FUN_00cbd168(void)\nEntry: 00cbd168\nBody: 00cbd168 - 00cbd171"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      }
+    ],
+    "cross_review": "Independent complete-listing reviews checked retained 2D signatures, successful loader-to-record provenance and null-record boundary, optional-guard EH and lifecycle scope, full old-device/current-output access order, caps flags, x87 gamma outgoing slot, physical-buffer publication order and unsigned/tree/record traversal. The publication cell qualifier boundary was explicitly cast and strict compilation passed.",
+    "current_report_call_check": "reports/native_renderer_device_recreation_actual.json: 30 call rows checked, 0 failed"
+  },
+  "worker_capture_no_ghidra_function": [
+    {
+      "address": "00cbd2fb",
+      "end_inclusive": "00cbd304",
+      "length": 10,
+      "role": "Worker-capture raw EH metadata dependency; integrator has now defined/saved it, not a new reconstructed normal body"
+    }
+  ]
+}

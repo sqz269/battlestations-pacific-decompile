@@ -152,3 +152,13 @@ supplied current libraries (`-CoreLibrary`, `-LuaLibrary`, `-ZlibLibrary`), usin
 `-SourceRoot` for current headers. Before registration, explicit `-WorkerMode`
 adds this one packet's source. No private archive rebuilding or hidden source
 injection is part of the default replay. The executable embeds its manifest.
+
+## AW integration analysis refresh
+
+The integrator saved all ten AW original signatures and reviewed names,
+verified their complete stored bodies and refreshed exports. The seven-byte
+B3D7B0 body and two ten-byte EH handlers CBD2FB/CBD168 were defined under
+owned leases and the Ghidra write lock. Missing-function observations above
+describe the earlier worker capture. EH definitions are analysis metadata,
+not additional reconstructed normal-body claims. Combined final-commit
+validation remains separate from the worker fixture evidence.

@@ -1,5 +1,7 @@
 # Actual renderer stop and pipeline
 
+Addresses: 00b28a90, 00b26920, 00b33bf0
+
 This packet reconstructs the complete normal bodies at `00B28A90`,
 `00B26920` and `00B33BF0` over borrowed actual renderer, worker, owner,
 event and synchronization storage. Names are descriptive hypotheses.
@@ -149,3 +151,13 @@ bridges invoke current complete binding/cache/color/synchronization providers,
 so this is a parent-composition differential check, not independent native
 proof of every nested provider. Full worker lifecycle, native caller ABI,
 general FH3/SEH behavior, arbitrary concurrency and gameplay remain unproved.
+
+## AW integration analysis refresh
+
+The integrator saved all ten AW original signatures and reviewed names,
+verified their complete stored bodies and refreshed exports. The seven-byte
+B3D7B0 body and two ten-byte EH handlers CBD2FB/CBD168 were defined under
+owned leases and the Ghidra write lock. Missing-function observations above
+describe the earlier worker capture. EH definitions are analysis metadata,
+not additional reconstructed normal-body claims. Combined final-commit
+validation remains separate from the worker fixture evidence.

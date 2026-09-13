@@ -1,5 +1,7 @@
 # Native retained 2D texture recreation
 
+Addresses: 00b3d7b0, 00b3e190
+
 Packet AW implements both complete current-profile bodies over the existing
 actual storage and provider domains. Descriptive names remain provisional.
 
@@ -133,3 +135,13 @@ calls verify; the checker labels the stream virtual indirect, and the profile
 bytes establish its concrete provider. The
 primary may eliminate that structural failure only by defining the exact raw
 function, then applying annotations while preserving existing names/comments.
+
+## AW integration analysis refresh
+
+The integrator saved all ten AW original signatures and reviewed names,
+verified their complete stored bodies and refreshed exports. The seven-byte
+B3D7B0 body and two ten-byte EH handlers CBD2FB/CBD168 were defined under
+owned leases and the Ghidra write lock. Missing-function observations above
+describe the earlier worker capture. EH definitions are analysis metadata,
+not additional reconstructed normal-body claims. Combined final-commit
+validation remains separate from the worker fixture evidence.
