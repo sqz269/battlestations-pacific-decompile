@@ -69,6 +69,10 @@ public:
     // pool slot, preserving its entire preimage. Registers only the external
     // scene association. Call B71A80 below before using any native fields.
     NativeCameraOwner(void* actual_slot, std::size_t slot_bytes, NativeCameraEnvironment&);
+    // Consume only a prepared host scene-binding credit; native construction
+    // and raw-slot ownership remain explicit. No token is retained by the owner.
+    NativeCameraOwner(void* actual_slot, std::size_t slot_bytes, NativeCameraEnvironment&,
+        SceneAttachmentRuntime::BindingAdmission&&);
     NativeCameraOwner(const NativeCameraOwner&) = delete;
     NativeCameraOwner& operator=(const NativeCameraOwner&) = delete;
     // Abandoned preparation only removes its host association and ends the
@@ -85,6 +89,9 @@ public:
     CameraFrameState frame;
     const CameraPoseAccess pose;
     Phase phase{Phase::prepared}; // external lifetime bookkeeping, no native word
+private:
+    NativeCameraOwner(void*, std::size_t, NativeCameraEnvironment&,
+        SceneAttachmentRuntime::BindingAdmission*);
 };
 
 // Original ECX=actual slot, stack name pointer, EAX=same slot, RET4. Runs the

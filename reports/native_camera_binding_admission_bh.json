@@ -1,0 +1,71 @@
+{
+  "packet": "orch3_camera_binding_admission_bh",
+  "status": "host_camera_admission_overloads_implemented_build_verified",
+  "coverage": "complete scoped host overloads; no native body",
+  "base_commit": "9ea01f7c0b80ac93d69b13f020b0acd7822076e7",
+  "branch": "agent/orch3-registry-admission-impl-bh",
+  "approved_contract": "docs/NATIVE_COCKPIT_REGISTRY_ADMISSION_BH.md",
+  "source_files": [
+    "include/bsp/native_camera_owner.hpp",
+    "src/native_camera_owner.cpp",
+    "include/bsp/native_camera_reference.hpp",
+    "src/native_camera_reference.cpp"
+  ],
+  "source_sha256": {
+    "include/bsp/native_camera_owner.hpp": "DCFDA0FCB24A3415787D43EB5204116AFB18BD77D7A4D0B4A297351CD02E4153",
+    "src/native_camera_owner.cpp": "CA6A751F6956C2989073F072359F78FE64E2DF1EE6071BDFB2AF9F8CBE4C69E1",
+    "include/bsp/native_camera_reference.hpp": "5920175404A18B464C3CE826162C8279B98C12405AC28D52363241CD2D79415E",
+    "src/native_camera_reference.cpp": "C877DD80459C1F7EBF2E9E20C4F6FD3F0C349E0FF3B4DBEB8F6553A0FB9BADAB"
+  },
+  "no_ghidra_function": [],
+  "reconstructed_functions": [],
+  "native_calls": [],
+  "native_body_credit_bytes": 0,
+  "implementation": {
+    "delegation": "Each legacy constructor delegates nullptr and each new rvalue-reference constructor delegates the token address to one private pointer-taking constructor.",
+    "bind_selection": "The original bind site selects ordinary or admitted binding directly; no prior ordinary bind occurs on the admitted path.",
+    "owner_failure": "Original try/catch ends tail and node typed storage on bind failure; native construction has not run and raw-slot return remains the caller's duty.",
+    "reference_validation": "Original live owner, disposal callback, positive actual count and supported profile checks precede the selected lifetime bind.",
+    "reference_failure": "Failure occurs inside the private target constructor before complete-object construction; the bound-phase destructor is not invoked. Public delegating bodies are empty.",
+    "token_lifetime": "Admission pointer is a constructor parameter only, never a field. Registry success consumes the token; rejection preserves an active named token.",
+    "unchanged": "No token retention, native retains/count initialization/stores, viewport allocation changes, or terminal ordering changes."
+  },
+  "verification": {
+    "worker_checklist": "docs/WORKER_VERIFICATION_CHECKLIST.md",
+    "source_review": "Current constructors, storage preparation, preconstruction node binding, borrowed reference-count constructor, frame backing and terminal paths inspected.",
+    "build": "PASS scripts/build.ps1, MSVC Win32 Release whole-worker target build; existing fresh matching-header build directory reused, affected targets rebuilt.",
+    "ctests": ["PASS reconstructed_math", "PASS native_math_differential"],
+    "seed_ranges": 8,
+    "seed_result": "PASS all eight configured Ghidra/disk byte ranges",
+    "ghidra_mutations": false,
+    "source_input_count": 2593,
+    "input_hashes_unchanged": true,
+    "input_manifest_sha256": "4AEB49CE4A27F398D0E092A9D274839A76B9AB92F8D5E5ECE81906B11C43492D",
+    "repository_tests_added": 0,
+    "external_fixture_run": false,
+    "fixture_owner": "Parent integrator runs the coupled current-library camera/helper fixture; no duplicate worker fixture.",
+    "native_call_row_verifier": "not applicable: zero numeric native call rows and no new native semantics"
+  },
+  "source_boundary": "Build ran on the base commit plus exactly four source/header changes before evidence commit. Final external manifest verifies committed bytes equal the build input hashes.",
+  "external_evidence": {
+    "archive": "J:/PROG/bsp-evidence/orch3-camera-binding-admission-bh-20260913.zip",
+    "archive_sha256": "D48ACCA8D8C828ED176653B055CE00ADCBEAB561205A6D375A0779FEF8819796",
+    "archive_bytes": 19131237,
+    "payload_files": 2609,
+    "payload_manifest_sha256": "547AB504B41C3B2E725067A4EE96986EB0AABBCEAE9646155EFC8216E3115944",
+    "committed_source_manifest": "J:/PROG/bsp-evidence/orch3-camera-binding-admission-bh-20260913.manifest.json",
+    "library_sha256": {
+      "bsp_core.lib": "00B1B66D9D4A490F729A4613172CC5DACA6E6FA14E512E605DE15A8F8029D474",
+      "bsp_lua511.lib": "9B9A1C3FF442A64FE502888B80E2C5EFCF1DDD5BA80250A9C4A2DDA33B270DE4",
+      "bsp_zlib121.lib": "2186FFCAE0758433633DAF8D481556730DD92C37C6F880362772D36CA16F2D90"
+    }
+  },
+  "limitations": [
+    "Parent combined-tree build and coupled camera/helper fixture remain required.",
+    "No complete camera/helper allocation-free execution claim from source review or the two existing math CTests.",
+    "Registry serialized owning-thread, stable-runtime and nonallocating leaf-identity preconditions still apply.",
+    "Invalid contract diagnostics may allocate and throw; no native retain, native cleanup or raw-slot return is supplied by token cancellation.",
+    "Persistent cockpit/viewport companion composition remains separate.",
+    "No original ABI, native exception/unwind, native construction/runtime or gameplay validation."
+  ]
+}
