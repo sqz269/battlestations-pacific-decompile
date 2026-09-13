@@ -1,0 +1,71 @@
+{
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "007137f0",
+        "end_address": "00713805"
+      },
+      "result": {
+        "success": true,
+        "start_address": "007137f0",
+        "end_address": "00713804",
+        "bytes_disassembled": 21,
+        "message": "Successfully disassembled 21 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "007137f0",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "007137f0",
+        "function_name": "FUN_007137f0",
+        "entry_point": "007137f0",
+        "body_size": 21,
+        "message": "Function created successfully at 007137f0"
+      }
+    },
+    {
+      "defined": "007137f0",
+      "end": "00713805",
+      "name": null,
+      "after": "Function: FUN_007137f0 at 007137f0\nSignature: undefined FUN_007137f0(void)\nEntry: 007137f0\nBody: 007137f0 - 00713804"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "analysis_only": true,
+  "new_reconstructed_entries": 0,
+  "extent": {
+    "address": "007137f0",
+    "end_inclusive": "00713804",
+    "bytes": 21,
+    "instructions": 7
+  },
+  "boundary_evidence": "Eight observed preceding CC padding bytes; RET8 followed by elevenCC bytes through71380F. Exact DATA reference CFD8D4 is resourceCFD8CC virtual+08. Define tool compared complete21livebytes against installedPE.",
+  "original_abi": "ECX resource retained; stack word at+4 and float32 at+8; FLD/FSTP32 scale forwarding then CALLB891A0; RET8. Numeric selector6/scale1 from plane caller is not evidence of all possible callers.",
+  "final_full_body_readback": "007137f0 FUN_007137f0  undefined FUN_007137f0(void)  body 007137f0 - 00713804\n007137fd FUN_007137f0  undefined FUN_007137f0(void)  body 007137f0 - 00713804\n",
+  "final_listing": "007137f0: FLD float ptr [ESP + 0x8] \n007137f4: MOV EAX,dword ptr [ESP + 0x4] \n007137f8: PUSH ECX \n007137f9: FSTP float ptr [ESP] \n007137fc: PUSH EAX \n007137fd: CALL 0x00b891a0 \n00713802: RET 0x8 \n",
+  "uncertainty": "Analysis definition only; no reconstructed C++ body, exhaustive virtual caller contract, original ABI/runtime execution or x87 parity is claimed.",
+  "saved_and_export_refreshed": true
+}

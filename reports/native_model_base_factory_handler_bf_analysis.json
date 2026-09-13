@@ -1,0 +1,68 @@
+{
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cc2538",
+        "end_address": "00cc2542"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00cc2538",
+        "end_address": "00cc2541",
+        "bytes_disassembled": 10,
+        "message": "Successfully disassembled 10 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cc2538",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00cc2538",
+        "function_name": "FUN_00cc2538",
+        "entry_point": "00cc2538",
+        "body_size": 10,
+        "message": "Function created successfully at 00cc2538"
+      }
+    },
+    {
+      "defined": "00cc2538",
+      "end": "00cc2542",
+      "name": null,
+      "after": "Function: FUN_00cc2538 at 00cc2538\nSignature: undefined FUN_00cc2538(void)\nEntry: 00cc2538\nBody: 00cc2538 - 00cc2541"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "analysis_only": true,
+  "new_reconstructed_entries": 0,
+  "native_bytes": "b870b9df00e90146f3ff",
+  "native_prologue": "B86722 pushes CC2538 before linking its actual FS exception frame.",
+  "func_info": "DFB970, magic19930522, maxState1, mapDFB968: nextStateFFFFFFFF, funcletCC2530.",
+  "cleanup": "CC2530 MOV ECX,[EBP-10]; CC2533 JMP B748D0. Return the saved actual raw slot through its original pool provider.",
+  "byte_verification": "Define tool matched all ten live bytes against configured original PE before mutation.",
+  "final_full_body_readback": "00cc2538 FUN_00cc2538  undefined FUN_00cc2538(void)  body 00cc2538 - 00cc2541\n",
+  "final_listing": "00cc2538: MOV EAX,0xdfb970 \n00cc253d: JMP 0x00bf6b43 \n",
+  "uncertainty": "Analysis definition only; no reconstructed C++ entry or original FH3/SEH runtime compatibility credit.",
+  "saved_and_export_refreshed": true
+}

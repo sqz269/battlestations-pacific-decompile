@@ -1,0 +1,1599 @@
+{
+  "reason": "Recover complete returning-free tails in device and controller-name payload destructors; no callee no-return or script capability changes.",
+  "entries": [
+    {
+      "address": "0055ac80",
+      "end_exclusive": "0055af58",
+      "bytes": 728,
+      "sha256": "638c0878447e730da33a473ea065ce03c37e97cd6ba946bedcfb039d9e6c163a",
+      "before": "Function: STL_xlen_throw_0055ac80 at 0055ac80\nSignature: undefined STL_xlen_throw_0055ac80(void)\nEntry: 0055ac80\nBody: 0055ac80 - 0055af0f",
+      "before_documentation": {
+        "hash": "f2086e75c59130fe53668bd2e25f8408eed5796d0f7bd09cc84e006ab48aad28",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "0055ac80",
+        "function_name": "STL_xlen_throw_0055ac80",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "piVar4",
+            "type": "int *",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "unused_edx",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "uVar6",
+            "type": "undefined8",
+            "storage": "(VARIABLE, 0x0, 8)"
+          },
+          {
+            "name": "piVar5",
+            "type": "int *",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "extraout_EDX_01",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_03",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_02",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "extraout_EDX",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "piVar3",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_58",
+            "type": "undefined1[8]"
+          },
+          {
+            "name": "local_4c",
+            "type": "undefined1",
+            "storage": "(stack, 0xffffffffffffffb4, 1)"
+          },
+          {
+            "name": "local_50",
+            "type": "undefined1[4]"
+          },
+          {
+            "name": "local_38",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc8, 4)"
+          },
+          {
+            "name": "local_3c",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_34",
+            "type": "undefined * *[10]",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 118,
+            "name": "LAB_0055acf6"
+          },
+          {
+            "relative_offset": 145,
+            "name": "LAB_0055ad11"
+          },
+          {
+            "relative_offset": 158,
+            "name": "LAB_0055ad1e"
+          },
+          {
+            "relative_offset": 169,
+            "name": "LAB_0055ad29"
+          },
+          {
+            "relative_offset": 181,
+            "name": "LAB_0055ad35"
+          },
+          {
+            "relative_offset": 194,
+            "name": "LAB_0055ad42"
+          },
+          {
+            "relative_offset": 202,
+            "name": "LAB_0055ad4a"
+          },
+          {
+            "relative_offset": 205,
+            "name": "LAB_0055ad4d"
+          },
+          {
+            "relative_offset": 222,
+            "name": "LAB_0055ad5e"
+          },
+          {
+            "relative_offset": 229,
+            "name": "LAB_0055ad65"
+          },
+          {
+            "relative_offset": 231,
+            "name": "LAB_0055ad67"
+          },
+          {
+            "relative_offset": 256,
+            "name": "LAB_0055ad80"
+          },
+          {
+            "relative_offset": 268,
+            "name": "LAB_0055ad8c"
+          },
+          {
+            "relative_offset": 285,
+            "name": "LAB_0055ad9d"
+          },
+          {
+            "relative_offset": 297,
+            "name": "LAB_0055ada9"
+          },
+          {
+            "relative_offset": 311,
+            "name": "LAB_0055adb7"
+          },
+          {
+            "relative_offset": 324,
+            "name": "LAB_0055adc4"
+          },
+          {
+            "relative_offset": 335,
+            "name": "LAB_0055adcf"
+          },
+          {
+            "relative_offset": 338,
+            "name": "LAB_0055add2"
+          },
+          {
+            "relative_offset": 356,
+            "name": "LAB_0055ade4"
+          },
+          {
+            "relative_offset": 384,
+            "name": "LAB_0055ae00"
+          },
+          {
+            "relative_offset": 428,
+            "name": "LAB_0055ae2c"
+          },
+          {
+            "relative_offset": 449,
+            "name": "LAB_0055ae41"
+          },
+          {
+            "relative_offset": 479,
+            "name": "LAB_0055ae5f"
+          },
+          {
+            "relative_offset": 502,
+            "name": "LAB_0055ae76"
+          },
+          {
+            "relative_offset": 527,
+            "name": "LAB_0055ae8f"
+          },
+          {
+            "relative_offset": 548,
+            "name": "LAB_0055aea4"
+          },
+          {
+            "relative_offset": 552,
+            "name": "LAB_0055aea8"
+          },
+          {
+            "relative_offset": 571,
+            "name": "LAB_0055aebb"
+          },
+          {
+            "relative_offset": 600,
+            "name": "LAB_0055aed8"
+          },
+          {
+            "relative_offset": 620,
+            "name": "LAB_0055aeec"
+          },
+          {
+            "relative_offset": 623,
+            "name": "LAB_0055aeef"
+          }
+        ],
+        "completeness_score": 80.0
+      },
+      "before_instruction_ownership": [
+        {
+          "address": "0055ac80",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ac82",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ac87",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ac8d",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ac8e",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ac95",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ac98",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ac9c",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aca0",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aca1",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aca3",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aca4",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aca8",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055acaa",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055acac",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055acae",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055acb3",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055acb7",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055acbf",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055acc3",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055acc8",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055accd",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055acd1",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055acd2",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055acd6",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055acda",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055acdf",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ace4",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ace8",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ace9",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055acf1",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055acf6",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055acf7",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055acf8",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055acfc",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055acfe",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad03",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad06",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad0a",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad0c",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad0f",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad11",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad14",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad18",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad1a",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad1c",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad1e",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad22",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad24",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad27",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad29",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad2d",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad30",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad32",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad35",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad38",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad3b",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad3d",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad40",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad42",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad44",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad46",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad48",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad4a",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad4d",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad50",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad52",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad54",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad58",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad5a",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad5c",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad5e",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad60",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad65",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad67",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad6b",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad6e",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad71",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad73",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad77",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad79",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad7b",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad7e",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad80",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad82",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad87",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad8a",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad8c",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad8f",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad92",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad94",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad97",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad99",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad9b",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ad9d",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ada1",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ada4",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ada6",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ada9",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055adab",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055adae",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055adb1",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055adb4",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055adb7",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055adba",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055adbd",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055adbf",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055adc2",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055adc4",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055adc7",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055adc9",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055adcb",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055adcd",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055adcf",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055add2",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055add5",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055add8",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055addb",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055adde",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ade1",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ade4",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ade6",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ade9",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055adef",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055adf3",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055adf6",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055adf9",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055adff",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae00",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae03",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae09",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae0b",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae0d",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae0f",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae12",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae16",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae18",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae1b",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae1c",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae20",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae25",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae28",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae2c",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae30",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae32",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae34",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae37",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae39",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae3c",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae3f",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae41",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae44",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae47",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae49",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae4b",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae4e",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae4f",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae53",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae58",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae5b",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae5f",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae62",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae65",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae68",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae6b",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae6c",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae6f",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae74",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae76",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae7a",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae7c",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae7f",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae80",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae84",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae89",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae8b",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae8f",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae93",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae95",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae98",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae9b",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae9d",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055ae9f",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aea2",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aea4",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aea8",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aeab",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aead",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aeb0",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aeb3",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aeb9",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aebb",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aebd",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aec0",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aec2",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aec5",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aec8",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aec9",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aecd",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aed2",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aed4",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aed8",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aedb",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aede",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aee1",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aee3",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aee4",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aee7",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aeec",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aeef",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aef2",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aef4",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aef7",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aef8",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aef9",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aefa",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aefb",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055aeff",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055af00",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055af02",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055af07",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055af0a",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055af0b",
+          "owner": "0055ac80"
+        },
+        {
+          "address": "0055af10",
+          "owner": null
+        },
+        {
+          "address": "0055af12",
+          "owner": null
+        },
+        {
+          "address": "0055af13",
+          "owner": null
+        },
+        {
+          "address": "0055af16",
+          "owner": null
+        },
+        {
+          "address": "0055af19",
+          "owner": null
+        },
+        {
+          "address": "0055af1e",
+          "owner": null
+        },
+        {
+          "address": "0055af22",
+          "owner": null
+        },
+        {
+          "address": "0055af25",
+          "owner": null
+        },
+        {
+          "address": "0055af28",
+          "owner": null
+        },
+        {
+          "address": "0055af2a",
+          "owner": null
+        },
+        {
+          "address": "0055af2b",
+          "owner": null
+        },
+        {
+          "address": "0055af2c",
+          "owner": null
+        },
+        {
+          "address": "0055af2e",
+          "owner": null
+        },
+        {
+          "address": "0055af31",
+          "owner": null
+        },
+        {
+          "address": "0055af34",
+          "owner": null
+        },
+        {
+          "address": "0055af38",
+          "owner": null
+        },
+        {
+          "address": "0055af3c",
+          "owner": null
+        },
+        {
+          "address": "0055af40",
+          "owner": null
+        },
+        {
+          "address": "0055af42",
+          "owner": null
+        },
+        {
+          "address": "0055af46",
+          "owner": null
+        },
+        {
+          "address": "0055af47",
+          "owner": null
+        },
+        {
+          "address": "0055af4a",
+          "owner": null
+        },
+        {
+          "address": "0055af4b",
+          "owner": null
+        },
+        {
+          "address": "0055af52",
+          "owner": null
+        },
+        {
+          "address": "0055af55",
+          "owner": null
+        }
+      ],
+      "after": "Function: STL_xlen_throw_0055ac80 at 0055ac80\nSignature: void * __fastcall STL_xlen_throw_0055ac80(void * tree, void * unused_edx, void * output, void * owner, void * node)\nEntry: 0055ac80\nBody: 0055ac80 - 0055af57",
+      "after_documentation": {
+        "hash": "fcab6a27f271bae3eed63583e37886608a432b3fd698e625b97ad4c9f1af1c0a",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "0055ac80",
+        "function_name": "STL_xlen_throw_0055ac80",
+        "return_type": "void *",
+        "calling_convention": "__fastcall",
+        "plate_comment": "",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "tree",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "unused_edx",
+            "type": "void *"
+          },
+          {
+            "ordinal": 2,
+            "name": "output",
+            "type": "void *"
+          },
+          {
+            "ordinal": 3,
+            "name": "owner",
+            "type": "void *"
+          },
+          {
+            "ordinal": 4,
+            "name": "node",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "extraout_EDX_03",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "piVar4",
+            "type": "int *",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "piVar5",
+            "type": "int *",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "extraout_EDX",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_01",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_02",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "uVar6",
+            "type": "undefined8",
+            "storage": "(VARIABLE, 0x0, 8)"
+          },
+          {
+            "name": "local_58",
+            "type": "undefined1[8]"
+          },
+          {
+            "name": "local_3c",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc4, 4)"
+          },
+          {
+            "name": "local_38",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc8, 4)"
+          },
+          {
+            "name": "local_50",
+            "type": "undefined1[4]"
+          },
+          {
+            "name": "local_4c",
+            "type": "undefined1",
+            "storage": "(stack, 0xffffffffffffffb4, 1)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_34",
+            "type": "undefined * *[10]",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "piVar3",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 118,
+            "name": "LAB_0055acf6"
+          },
+          {
+            "relative_offset": 145,
+            "name": "LAB_0055ad11"
+          },
+          {
+            "relative_offset": 158,
+            "name": "LAB_0055ad1e"
+          },
+          {
+            "relative_offset": 169,
+            "name": "LAB_0055ad29"
+          },
+          {
+            "relative_offset": 181,
+            "name": "LAB_0055ad35"
+          },
+          {
+            "relative_offset": 194,
+            "name": "LAB_0055ad42"
+          },
+          {
+            "relative_offset": 202,
+            "name": "LAB_0055ad4a"
+          },
+          {
+            "relative_offset": 205,
+            "name": "LAB_0055ad4d"
+          },
+          {
+            "relative_offset": 222,
+            "name": "LAB_0055ad5e"
+          },
+          {
+            "relative_offset": 229,
+            "name": "LAB_0055ad65"
+          },
+          {
+            "relative_offset": 231,
+            "name": "LAB_0055ad67"
+          },
+          {
+            "relative_offset": 256,
+            "name": "LAB_0055ad80"
+          },
+          {
+            "relative_offset": 268,
+            "name": "LAB_0055ad8c"
+          },
+          {
+            "relative_offset": 285,
+            "name": "LAB_0055ad9d"
+          },
+          {
+            "relative_offset": 297,
+            "name": "LAB_0055ada9"
+          },
+          {
+            "relative_offset": 311,
+            "name": "LAB_0055adb7"
+          },
+          {
+            "relative_offset": 324,
+            "name": "LAB_0055adc4"
+          },
+          {
+            "relative_offset": 335,
+            "name": "LAB_0055adcf"
+          },
+          {
+            "relative_offset": 338,
+            "name": "LAB_0055add2"
+          },
+          {
+            "relative_offset": 356,
+            "name": "LAB_0055ade4"
+          },
+          {
+            "relative_offset": 384,
+            "name": "LAB_0055ae00"
+          },
+          {
+            "relative_offset": 428,
+            "name": "LAB_0055ae2c"
+          },
+          {
+            "relative_offset": 449,
+            "name": "LAB_0055ae41"
+          },
+          {
+            "relative_offset": 479,
+            "name": "LAB_0055ae5f"
+          },
+          {
+            "relative_offset": 502,
+            "name": "LAB_0055ae76"
+          },
+          {
+            "relative_offset": 527,
+            "name": "LAB_0055ae8f"
+          },
+          {
+            "relative_offset": 548,
+            "name": "LAB_0055aea4"
+          },
+          {
+            "relative_offset": 552,
+            "name": "LAB_0055aea8"
+          },
+          {
+            "relative_offset": 571,
+            "name": "LAB_0055aebb"
+          },
+          {
+            "relative_offset": 600,
+            "name": "LAB_0055aed8"
+          },
+          {
+            "relative_offset": 620,
+            "name": "LAB_0055aeec"
+          },
+          {
+            "relative_offset": 623,
+            "name": "LAB_0055aeef"
+          },
+          {
+            "relative_offset": 692,
+            "name": "LAB_0055af34"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "complete_body": true,
+      "prior_evidence_preserved": true,
+      "after_instruction_ownership_verified": 248
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "0055af0b"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 0055af0b (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "0055af19"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 0055af19 (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "0055ac80"
+      },
+      "result": "{\"success\": true, \"address\": \"0055ac80\", \"deleted_function\": \"STL_xlen_throw_0055ac80\", \"body_size\": 656, \"message\": \"Function 'STL_xlen_throw_0055ac80' deleted at 0055ac80\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "0055ac80",
+        "end_address": "0055af58"
+      },
+      "result": "{\"success\": true, \"start_address\": \"0055ac80\", \"end_address\": \"0055af57\", \"bytes_disassembled\": 728, \"message\": \"Successfully disassembled 728 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "0055ac80",
+        "name": "STL_xlen_throw_0055ac80",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"0055ac80\", \"function_name\": \"STL_xlen_throw_0055ac80\", \"entry_point\": \"0055ac80\", \"body_size\": 728, \"message\": \"Function created successfully at 0055ac80\", \"warnings\": [\"Function name 'STL_xlen_throw_0055ac80' \\u2014 main part 'STL_xlen_throw_0055ac80' is not PascalCase. Expected: StlXlenThrow0055ac80\", \"Function name 'STL_xlen_throw_0055ac80' \\u2014 main part 'STL_xlen_throw_0055ac80' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0055ac80",
+        "prototype": "void* __fastcall STL_xlen_throw_0055ac80(void* tree, void* unused_edx, void* output, void* owner, void* node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0055ac80 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "0055ac80",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 0055ac80\"}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "state": "complete_bodies_saved_prior_evidence_retained",
+  "exports_refreshed": [
+    "0055ac80"
+  ]
+}

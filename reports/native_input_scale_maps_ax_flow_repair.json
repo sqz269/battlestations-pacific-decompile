@@ -1,0 +1,59 @@
+{
+ "repairs": [
+  {
+   "function": "006a5aa0",
+   "owner": "agent/orch4-scale-maps-ax",
+   "when": "2026-09-13T21:19:16Z",
+   "decompile_lines_before": 68,
+   "gaps": [
+    {
+     "site": "006a5b7d",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "006a5b82",
+     "gap_end_exclusive": "006a5bc4",
+     "bytes": 66,
+     "after_call": true,
+     "sha256": "2e6bbf3122cf739db9a9043f312cc99fb726d492e95d0a7694d9f54cee71fe8f"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "006a5b7d",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "006a5b82",
+      "gap_end_exclusive": "006a5bc4",
+      "bytes": 66,
+      "after_call": true,
+      "sha256": "2e6bbf3122cf739db9a9043f312cc99fb726d492e95d0a7694d9f54cee71fe8f"
+     },
+     "clear": "Success: Cleared flow override at 006a5b7d (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 66 byte(s)"
+    },
+    {
+     "explicit_tail_call": "006a5b7d",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 006a5b7d (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "006a5bb4",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 006a5bb4 (was: NONE, now: NONE)"
+     }
+    }
+   ],
+   "explicit_tail_end_exclusive": "006a5bef",
+   "explicit_body_sha256": "821a3fe9fcb16cd3425ae3b29513a55832aa49b147e34595b420f519e069c077",
+   "body_before": "Function: FUN_006a5aa0 at 006a5aa0\nSignature: undefined FUN_006a5aa0(void)\nEntry: 006a5aa0\nBody: 006a5aa0 - 006a5bee",
+   "decompile_lines_after": 77,
+   "gaps_remaining": 0,
+   "body_after": "Function: FUN_006a5aa0 at 006a5aa0\nSignature: undefined FUN_006a5aa0(void)\nEntry: 006a5aa0\nBody: 006a5aa0 - 006a5bee",
+   "stored_body_tail_complete": true
+  }
+ ]
+}

@@ -1,0 +1,37 @@
+{
+  "packet": "orch4_input_host_gap_ax",
+  "status": "static_source_routing_audit_complete",
+  "target": {"project": "bsp", "program": "battlestationspacific.exe"},
+  "documentation": "docs/NATIVE_INPUT_HOST_INTEGRATION_GAP_AX.md",
+  "native_mutations": [],
+  "source_mutations": [],
+  "observed_static_route": [
+    {"source":"src/game_hosts.cpp:932-989","behavior":"InputServices owns GameInputRuntime and binds backend/action deletion contexts"},
+    {"source":"src/game_hosts.cpp:1470-1474","behavior":"application constructs and starts raw backend"},
+    {"source":"src/game_hosts.cpp:1326-1332","behavior":"application separately consumes projected InputSettings"},
+    {"source":"src/game_hosts.cpp:1023-1035","behavior":"raw singleton drain precedes input SDK release and InputServices destruction"}
+  ],
+  "absent_host_calls_by_source_search": [
+    "get_native_input_settings_005547d0",
+    "construct_native_input_configuration_00698680",
+    "load_native_input_configuration_00698a10",
+    "GameInputActions constructor"
+  ],
+  "required_production_bindings": [
+    {"name":"settings_publication_and_delete","evidence":"include/bsp/native_input_settings_lifetime.hpp:5-9; include/bsp/native_singleton_destruction.hpp:72-75; src/game_hosts_singletons.cpp:12-40"},
+    {"name":"native_table_scripts_and_keyboard_storage","evidence":"include/bsp/native_input_settings_tables.hpp:9-18; primary uncommitted include/bsp/native_input_keyboard_storage.hpp:10-30"},
+    {"name":"actual_raw_lua_vfs","evidence":"include/bsp/native_lua_bootstrap.hpp:15-23; include/bsp/native_lua_file_loading.hpp:10-15; src/game_hosts_vfs.cpp:54-81"},
+    {"name":"game_embedded_configuration","evidence":"include/bsp/native_input_configuration_owner.hpp:5-25; include/bsp/native_input_configuration_runtime.hpp:6-11"},
+    {"name":"shared_action_configuration_tick_and_keyboard","evidence":"src/game_input_actions.cpp:30-69; include/bsp/native_input_keyboard_apply.hpp:35-79; include/bsp/native_input_settings_defaults.hpp:10-25"},
+    {"name":"game_deadline_callback","evidence":"include/bsp/game_input_actions.hpp:18-44"}
+  ],
+  "next_dependency_complete_packet": {
+    "scope": "production raw Lua/VFS and settings-table singleton composition through the Phase 5 getter, retaining a stable deletion context",
+    "files": ["src/game_hosts.cpp", "include/bsp/game_hosts.hpp", "src/game_hosts_singletons.cpp", "include/bsp/game_hosts_singletons.hpp", "new input service source/header", "cmake/startup.cmake"],
+    "requires": ["actual raw 0109CEEC VFS publication and callable dispatch", "fundamentals and zero-upvalue DoFile bridge", "native pooled string service", "documented table constants/preimages", "primary fourteen-method keyboard storage provider"],
+    "not_yet_covers": "full game embedded configuration and 006AA640 keyboard application"
+  },
+  "subsequent_packet": "actual game+3C configuration ownership and full 00698A10 loader; share action contexts, callback/map and keyboard/default services",
+  "validation": "read-only source and named-document inspection; no build, tests, native fixture, game run or Ghidra mutation",
+  "runtime_claim": "none"
+}
