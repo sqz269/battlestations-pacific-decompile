@@ -53,16 +53,16 @@
     "Win32 fixture and process-run proof are distinct from original-game gameplay and visual validation."
   ],
   "validation": {
-    "compiled_commit": "fdb806e25116119a52a43ffca58b6382137c98e7",
-    "exe_sha256": "a350f0a0c41fb73b323f0b30c55622e1b04e9b7f598b30b4feb3b9b5326b40bb",
+    "compiled_commit": "bc9aef8837ba2577a26c3168a09d1b2c8e09d3bf",
+    "exe_sha256": "3e4701f2f6215622a29cf47243103e0b1183afb0967bc22565172cefea3d1e86",
     "build": "MSVC Win32 Release passed",
     "ctest": "2 existing tests passed",
     "process_run": {
-      "compiled_commit": "fdb806e25116119a52a43ffca58b6382137c98e7",
-      "run_commit": "fdb806e25116119a52a43ffca58b6382137c98e7",
+      "compiled_commit": "bc9aef8837ba2577a26c3168a09d1b2c8e09d3bf",
+      "run_commit": "bc9aef8837ba2577a26c3168a09d1b2c8e09d3bf",
       "compiled_input_drift": [],
       "args": [
-        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_fdb806e2.exe",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_bc9aef88.exe",
         "--frames",
         "360",
         "--press-start-frame",
@@ -94,8 +94,8 @@
         "--trajectory-csv",
         "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_m.csv"
       ],
-      "exe_sha256": "a350f0a0c41fb73b323f0b30c55622e1b04e9b7f598b30b4feb3b9b5326b40bb",
-      "preserved_executable": "local\\orch6_combined_fdb806e2.exe",
+      "exe_sha256": "3e4701f2f6215622a29cf47243103e0b1183afb0967bc22565172cefea3d1e86",
+      "preserved_executable": "local\\orch6_combined_bc9aef88.exe",
       "source_sha256": {
         "src/game_hosts_ship_ai.cpp": "d13cf757bd05be794cf8fc7f7fc8fe99ec40f8b4d8fedc9adece77b251a985e3",
         "src/game_hosts_units.cpp": "f1200eb7b5023a137fd01e977ef3749eb36361350701cc4cf38a62f0258c0488",
@@ -109,7 +109,7 @@
       },
       "process_check": "No matching reconstructed game process before launch",
       "exit": 0,
-      "seconds": 11.98841381072998,
+      "seconds": 13.151796340942383,
       "trajectory_audit": {
         "rows": 18557,
         "nonfinite_rows": 0,
@@ -146,13 +146,14 @@
     },
     "artifacts": {
       "local/orch6_worker_archive_lm.json": "ba353f03681e30e8a40733896db31f21e42382897de789b651b45e5cf26778d6",
-      "local/orch6_report_calls_lm.log": "322ea4153f6bd99555ec7fd341ae6361de3f0f7c2a8f3defece1c79c2e3de08b",
-      "local/orch6_integrate_m_20260912T222716.log": "3a3167862346fb9c5e246191553c36636e3fac52b8a1034d9a16cbddefa5b8f4",
-      "local/orch6_combined_fdb806e2.exe": "a350f0a0c41fb73b323f0b30c55622e1b04e9b7f598b30b4feb3b9b5326b40bb",
-      "local/orch6_combined_fdb806e2.json": "889ff0e6eab490af9551a9ca477127b5714f2d91ddaadc2637a69bfde157d6ad",
-      "local/orch6_combined_fdb806e2.log": "fa1ef666cdaeeaa646bb4284a1744f16ecbe18049bf36cc25289422fe1ff5065",
-      "local/orch6_combined_fdb806e2.csv": "6b7aa369bbef93660fe469c8be21c2e741ae5fdaa053cbb22d81e45cf1c7e573",
-      "local/orch6_combined_fdb806e2_stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      "local/orch6_worker_archive_throw_m.json": "d418382618142e46b54da261079c4100efb483c5e4b2de337cb419fae22daa69",
+      "local/orch6_report_calls_lm.log": "eb7e5bc14026e05e2994327ac81d047729fb7bfb32c204e98e840cab48995224",
+      "local/orch6_integrate_m_20260912T223538.log": "1cf2b7dd968a5226782197f28865adce1c8be6b2130b7f90f0960c66bb3c85c1",
+      "local/orch6_combined_bc9aef88.exe": "3e4701f2f6215622a29cf47243103e0b1183afb0967bc22565172cefea3d1e86",
+      "local/orch6_combined_bc9aef88.json": "5aa12604e8622b8d02c2ce1f60162ec9c892acffe4dd40dd744376805e40e87c",
+      "local/orch6_combined_bc9aef88.log": "bb8b05a082a765f2b6f8a2aaae91b4625e0698f97b6a6c133b277e9da382daf2",
+      "local/orch6_combined_bc9aef88.csv": "6b7aa369bbef93660fe469c8be21c2e741ae5fdaa053cbb22d81e45cf1c7e573",
+      "local/orch6_combined_bc9aef88_stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
   }
 }

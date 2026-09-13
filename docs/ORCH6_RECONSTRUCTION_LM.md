@@ -40,3 +40,21 @@ runtime registers every unit through006FE620; inspected +130h slots for
 LandFort and CommandBuilding instead target006F59B0 and006F5A50. The existing
 avoid-box shrink-NaN discrepancy also remains open. Candidate-loop and
 admission workers are recovering those adjacent contracts in separate trees.
+
+## Final combined M verification
+
+Commit `bc9aef8837ba2577a26c3168a09d1b2c8e09d3bf` also includes the third M
+packet, which corrects the three artillery throw settings to stored reciprocal
+rates. Its installed durations 2 / 4 / 2 produce 0.5 / 0.25 / 0.5. The helper
+preserves the native widened-0.1f clamp, unordered NaN branch and x87 stores;
+240 numerical/FP-state cases and six ordered-prefix cases passed with Lua
+callbacks explicitly redirected.
+
+This final combined commit passed Win32 Release and both existing CTests.
+Its 120-frame run again produced 18,557 finite rows, 10,080 generic ticks
+across 42 units, 2,400 avoidance queries and 1,080 cruise-owner reads, with
+zero unavailable generic ticks or cruise reads. The final executable hash is
+`3e4701f2f6215622a29cf47243103e0b1183afb0967bc22565172cefea3d1e86`.
+Root review now totals 88 call rows with zero failures, including the same
+six indirect contracts. The two archive manifests retain 197 artifacts.
+The earlier fdb806e2 executable and runtime record remain separately preserved.
