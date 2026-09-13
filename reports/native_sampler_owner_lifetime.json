@@ -1,0 +1,409 @@
+{
+  "packet": "orch5_native_sampler_owner_lifetime",
+  "base_commit": "7638b900cc0494402c9fdb97b6fe817af498cb25",
+  "source": "src/native_sampler_owner_lifetime.cpp",
+  "source_sha256": "4a0cf0bca7b441de44dd937600bd6aa7656d9053d0108210c517fe11de7dbcb7",
+  "header": "include/bsp/native_sampler_owner_lifetime.hpp",
+  "header_sha256": "1551528393bd30bd8ae3cda1f986654bd5524b2486ae4ed55b4eeb53237139d3",
+  "documentation": "docs/NATIVE_SAMPLER_OWNER_LIFETIME.md",
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "ghidra_worker_writes": false
+  },
+  "original_pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "original_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routines": [
+    {
+      "address": "004dc410",
+      "bytes": 204,
+      "end_inclusive": "004dc4db",
+      "sha256": "92fe6a11dfd0a9384aac242baf0cc794edd44777f5ebb0994fe9203421b0682d",
+      "coverage": "complete normal body; concrete qualified canonical resource domain",
+      "original_abi": "ECX actual0Ch record header; stack signed count; RET4",
+      "abi_compatible": false,
+      "game_validated": false,
+      "original_fixture_entry_executed": true
+    },
+    {
+      "address": "004dda40",
+      "bytes": 84,
+      "end_inclusive": "004dda93",
+      "sha256": "6a968969ae7b08b6a38a49c8e4cf5e232866381e31408b5d5028830696d1e5f1",
+      "coverage": "complete normal body; concrete qualified canonical resource domain",
+      "original_abi": "ECX secondary cache; plainRET; no semantic result",
+      "abi_compatible": false,
+      "game_validated": false,
+      "original_fixture_entry_executed": true
+    },
+    {
+      "address": "004ddb40",
+      "bytes": 31,
+      "end_inclusive": "004ddb5e",
+      "sha256": "1071027371a9ce2f817139cbfde3b2eb3ef9061595d7348715c459167dea677f",
+      "coverage": "complete normal body; concrete qualified canonical resource domain",
+      "original_abi": "ECX unused; stack nonnull actual resource; RET4; no semantic result",
+      "abi_compatible": false,
+      "game_validated": false,
+      "original_fixture_entry_executed": true
+    },
+    {
+      "address": "004ddaa0",
+      "bytes": 23,
+      "end_inclusive": "004ddab6",
+      "sha256": "4f051e0d2d7e6bc49c9416594b2d6d3e19d652e517204ea5d7a40a0d3e1d657f",
+      "coverage": "complete normal body; concrete qualified canonical resource domain",
+      "original_abi": "ECX actual0Ch record header; plainRET",
+      "abi_compatible": false,
+      "game_validated": false,
+      "original_fixture_entry_executed": false
+    },
+    {
+      "address": "004de290",
+      "bytes": 95,
+      "end_inclusive": "004de2ee",
+      "sha256": "8bf7b0c241edb4b0336c26465cb29ae74067453c5b865df3d566a9357210be56",
+      "coverage": "complete normal body; concrete qualified canonical resource domain",
+      "original_abi": "ECX secondary cache; plainRET",
+      "abi_compatible": false,
+      "game_validated": false,
+      "original_fixture_entry_executed": true
+    },
+    {
+      "address": "004b4f10",
+      "bytes": 17,
+      "end_inclusive": "004b4f20",
+      "sha256": "c663d2852ae875ca1d07a9a096b66942af425f33d767d89e7bb35d79805f789b",
+      "coverage": "complete normal body; concrete qualified canonical resource domain",
+      "original_abi": "ECX primary1Ch owner; plainRET",
+      "abi_compatible": false,
+      "game_validated": false,
+      "original_fixture_entry_executed": false
+    },
+    {
+      "address": "00b1b680",
+      "bytes": 89,
+      "end_inclusive": "00b1b6d8",
+      "sha256": "dcd2d39096ce43bf8160c2071bd316991bf064577a3caa7afb3f7634ebbd9a3d",
+      "coverage": "complete normal body; concrete qualified canonical resource domain",
+      "original_abi": "ECX primary1Ch owner; plainRET",
+      "abi_compatible": false,
+      "game_validated": false,
+      "original_fixture_entry_executed": true
+    },
+    {
+      "address": "004de340",
+      "bytes": 30,
+      "end_inclusive": "004de35d",
+      "sha256": "a436f22b03ad7062c5b18fb2d81c6573184fa30c2b6ad2a4ec134ed0eb4a607a",
+      "coverage": "complete normal body; concrete qualified canonical resource domain",
+      "original_abi": "ECX primary1Ch owner; stack flags low bit0; EAX captured primary address; RET4",
+      "abi_compatible": false,
+      "game_validated": false,
+      "original_fixture_entry_executed": true
+    },
+    {
+      "address": "004de360",
+      "bytes": 8,
+      "end_inclusive": "004de367",
+      "sha256": "ce521d978bd6fe4b54d56addf5f39ef6640d949531ed61e3d6aaac638ad9b314",
+      "coverage": "complete normal body; concrete qualified canonical resource domain",
+      "original_abi": "ECX secondary; subtract4 then tail-forward same flags; EAX primary; RET4 through target",
+      "abi_compatible": false,
+      "game_validated": false,
+      "original_fixture_entry_executed": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "004dc43a",
+      "native": "004da180",
+      "function": "004dc410"
+    },
+    {
+      "address": "004dc470",
+      "native": "004c3020",
+      "function": "004dc410"
+    },
+    {
+      "address": "004dc4bc",
+      "native": "004d45a0",
+      "function": "004dc410"
+    },
+    {
+      "address": "004dda78",
+      "native": "004d45a0",
+      "function": "004dda40"
+    },
+    {
+      "address": "004dda8c",
+      "native": "004dc410",
+      "function": "004dda40"
+    },
+    {
+      "address": "004ddaa5",
+      "native": "004dc410",
+      "function": "004ddaa0"
+    },
+    {
+      "address": "004ddaad",
+      "native": "00bf6989",
+      "function": "004ddaa0"
+    },
+    {
+      "address": "004de2bb",
+      "native": "004dda40",
+      "function": "004de290"
+    },
+    {
+      "address": "004de2cf",
+      "native": "004dc410",
+      "function": "004de290"
+    },
+    {
+      "address": "004de2d7",
+      "native": "00bf6989",
+      "function": "004de290"
+    },
+    {
+      "address": "00b1b6b4",
+      "native": "004de290",
+      "function": "00b1b680"
+    },
+    {
+      "address": "004de343",
+      "native": "00b1b680",
+      "function": "004de340"
+    },
+    {
+      "address": "004de350",
+      "native": "00bf65ac",
+      "function": "004de340"
+    },
+    {
+      "address": "004de363",
+      "native": "004de340",
+      "function": "004de360",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cbc793",
+      "native": "004b4f10",
+      "function": "00cbc790",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c66f86",
+      "native": "004ddaa0",
+      "function": "00c66f80",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c669b0",
+      "native": "00401130",
+      "function": "00c669a0"
+    },
+    {
+      "address": "00c669bc",
+      "native": "0041dd20",
+      "function": "00c669b9",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "004de2f3",
+      "native": "004de290",
+      "function": "004de2f0"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "site": "004dda65",
+      "profile_views": [
+        "00ce7d08",
+        "00ce7d24"
+      ],
+      "slot": "10",
+      "selector": "004ddb40",
+      "contract": "capture current count/data/resource, then current cache profile/slot; existing canonical release"
+    },
+    {
+      "site": "004ddb49",
+      "iat": "00ce2220",
+      "contract": "InterlockedDecrement actual resource+04, represented by existing canonical atomic decrement"
+    },
+    {
+      "site": "004ddb59",
+      "slot": "0",
+      "contract": "only at zero, resolve same canonical companion, verify exact same atomic and invoke its real current-profile terminal; no second map/count"
+    }
+  ],
+  "canonical_contract": {
+    "provider": "NativeRenderActualOwners and release_native_render_actual_owner",
+    "same_counter": true,
+    "zero_only_lookup": true,
+    "second_registry": false,
+    "missing_owner": "error; never successful noop",
+    "null_resource": "native accesses raw+04; no added null skip",
+    "fresh_procedural_companions": "BBC6F0/BBC810 raw creators not yet admitted; D64478/D644B4 terminal companions and C304A0/resource-array dependencies remain outside this packet"
+  },
+  "producer_evidence": {
+    "owner": "existing4DE4B0 actual1Ch owner CE7D38/CE7D24; shared NativeSamplerLoaderSingletonStorage, untouched18",
+    "vector": "existing NativeResourceRecordVectorStorage at owner08/secondary04",
+    "record": "existing2Ch NativeRenderResourceRecord; unknown08 and resource28 untouched on default growth; sentinel0C/count10 and five payload DWORDs established from4DC410/4C3020",
+    "old_projection": "particle_clock_lifetime remains separate typed evidence"
+  },
+  "unwind": {
+    "spans": [
+      {
+        "address": "00cbc790",
+        "bytes": 18,
+        "end_inclusive": "00cbc7a1",
+        "sha256": "017b67e9de2fcacd900df1bc48e6813c0a18fdd2915c925286b8c05b393d2b66",
+        "kind": "owner_unwind_code"
+      },
+      {
+        "address": "00c66f80",
+        "bytes": 21,
+        "end_inclusive": "00c66f94",
+        "sha256": "14dd21a372180040b7e4cc723052bc0ebb4fc2e3d0c3f3624681a2263c81c775",
+        "kind": "cache_unwind_code"
+      },
+      {
+        "address": "00c669a0",
+        "bytes": 43,
+        "end_inclusive": "00c669ca",
+        "sha256": "d614cbac42bfead0acb35ef974ae032a1c98b5ab55ef067a2b9772c97cea2f0f",
+        "kind": "resize_unwind_code"
+      },
+      {
+        "address": "00df4afc",
+        "bytes": 44,
+        "end_inclusive": "00df4b27",
+        "sha256": "810d6a9810fa54600c5a9e207b6f701f4fdd82efab08a511ea67a86139b7210b",
+        "kind": "owner_unwind_metadata"
+      },
+      {
+        "address": "00d8fcac",
+        "bytes": 44,
+        "end_inclusive": "00d8fcd7",
+        "sha256": "d25a48b0c2a567523746a2b6da42f7461d642fe2670a9f8c949821fafa410171",
+        "kind": "cache_unwind_metadata"
+      },
+      {
+        "address": "00d8f888",
+        "bytes": 52,
+        "end_inclusive": "00d8f8bb",
+        "sha256": "deb7a3e778994398b661bbd75e9a583a4c520b0bc5b118359e5be0b10add30b9",
+        "kind": "resize_unwind_metadata"
+      }
+    ],
+    "owner": "DF4B04/mapDF4AFC state0 ->CBC790->4B4F10; unconditional current F8D420 clear, then CE3818 even on failed secondary destruction",
+    "cache": "D8FCB4/mapD8FCAC state0 ->C66F80->4DDAA0 on captured secondary+4; resize0/current-array free. Normal tail disarms before resize/free",
+    "resize": "D8F898/mapD8F888 state1 ->C669B9->41DD20 current failed record name; then state0 ->C669A0 current array-base/captured-index/placement-pointer reads ->RET-only401130; no array/prefix rollback",
+    "native_fh3_reproduced": false,
+    "limits": "source C++ exceptions and established pool noexcept/child orphan limits; native hardware faults/double-unwind delivery not reproduced"
+  },
+  "no_ghidra_function": [
+    {
+      "start": "00cbc798",
+      "end_inclusive": "00cbc7a1",
+      "last_instruction": "JMP atCBC79D length5"
+    },
+    {
+      "start": "00c66f8b",
+      "end_inclusive": "00c66f94",
+      "last_instruction": "JMP atC66F90 length5"
+    },
+    {
+      "start": "00c669c1",
+      "end_inclusive": "00c669ca",
+      "last_instruction": "JMP atC669C6 length5"
+    }
+  ],
+  "call_return_repairs_pending": [
+    {
+      "caller": "004de340",
+      "callsite": "004de350",
+      "callee": "00bf65ac",
+      "gap_start": "004de355",
+      "gap_end_inclusive": "004de357",
+      "bytes": 3,
+      "raw_hex": "83c404",
+      "body_end_inclusive": "004de35d",
+      "kind": "interior CALL_RETURN gap"
+    },
+    {
+      "caller": "004de290",
+      "callsite": "004de2d7",
+      "callee": "00bf6989",
+      "stored_end": "004de2db",
+      "gap_start": "004de2dc",
+      "gap_end_inclusive": "004de2ee",
+      "bytes": 19,
+      "body_end_inclusive": "004de2ee",
+      "last_instruction": "RET4DE2EE length1",
+      "kind": "stored-body truncated after CALL_RETURN"
+    },
+    {
+      "caller": "004ddaa0",
+      "callsite": "004ddaad",
+      "callee": "00bf6989",
+      "stored_end": "004ddab1",
+      "gap_start": "004ddab2",
+      "gap_end_inclusive": "004ddab6",
+      "bytes": 5,
+      "raw_hex": "83c4045ec3",
+      "body_end_inclusive": "004ddab6",
+      "kind": "stored-body truncated after CALL_RETURN"
+    }
+  ],
+  "profile_spans": [
+    {
+      "address": "00ce7d08",
+      "bytes": 52,
+      "end_inclusive": "00ce7d3b",
+      "sha256": "8ffbbbe3799d5540498ed1e3713c21e2b4545bb520c83b70839a1cca978de34f",
+      "kind": "cache_profiles"
+    },
+    {
+      "address": "00d5e5c4",
+      "bytes": 8,
+      "end_inclusive": "00d5e5cb",
+      "sha256": "0eeeccf08ee7e596f5b8059481d2d0b0e1cbca1fd5e1e608da5371288438511f",
+      "kind": "fixture_context_profile"
+    }
+  ],
+  "operation": "one-shot persistent frame; captured resources retained before profile qualification; completed cleanup flags may identify already-freed arrays; failed frames reject replay and require explicit diagnostic acknowledgement; exclude external retirement/frame mutation",
+  "validation": {
+    "strict_win32_build": "passed scripts/build.ps1 /W4 /WX",
+    "existing_ctests": {
+      "passed": 2,
+      "failed": 0
+    },
+    "seeds": "verified",
+    "call_rows": 19,
+    "fixture_runner": "local/run_native_sampler_owner_probe.ps1",
+    "library_root_argument": true,
+    "fixture": "copied complete original bodies and source growth, primary flags0, secondary flags1, current-count mutation after real resource terminal; actual pooled record construction/destruction; literal readonly cache/context profiles",
+    "canonical_terminal": "existing actual NativeRenderContextReference on actual18h storage initialized byB1EDC0 fragment, real+04 atomic and real B1D570 destruction/free; one canonical companion per admitted identity",
+    "fixture_original_boundary": "all nine original bodies installed; seven normal entries reached. Original4DDAA0/4B4F10 entry bodies are not executed; their concrete source effects are reached during source failure/base cleanup. B1B680 normal contains inline base stores. External record/vector/sentinel/allocator/canonical terminals use existing actual library providers; original native FH3 not executed",
+    "source_failure": "canonical lookup failure after actual decrement; array resize/free and owner publication/base unwind complete, scalar free skipped; zero-count resource retained for diagnostic terminal; replay rejected",
+    "failed_retirement_exit": 77,
+    "growth_unwind": "static evidence only",
+    "arenas": "raw singleton manager/string pool retained until process exit; count-mutation orphan record/resource cleaned diagnostically after comparison",
+    "fresh_procedural_resource_terminal_proved": false,
+    "game_validated": false
+  },
+  "evidence_totals": {
+    "implemented_normal_code_bytes": 581,
+    "profile_bytes": 60,
+    "unwind_code_metadata_bytes": 222
+  },
+  "remaining": [
+    "integrator repairs three saved Ghidra tails after lease release",
+    "fresh procedural-source terminal companions and resource-array dependencies",
+    "actual singleton-manager terminal profile dispatch/admission and registration drain integration",
+    "full loader entry/platform route, native binary ABI/FH3 and game validation"
+  ],
+  "artifact_manifest": "local/native-sampler-owner-final-manifest.json"
+}
