@@ -26,6 +26,7 @@
 #include "bsp/game_hosts_menu.hpp"
 #include "bsp/game_hosts_singletons.hpp"
 #include "bsp/game_observer_runtime.hpp"
+#include "bsp/game_pending_entity_runtime.hpp"
 #include "bsp/game_hosts_mission.hpp"
 #include "bsp/font_registry_startup.hpp"
 #include "bsp/fingerprint_payload.hpp"
@@ -995,6 +996,18 @@ GameStartupHost::GameStartupHost(GameHostLog& log, HINSTANCE instance,
     // Keep context/publication cells alive if later source construction fails.
     singletons->observers().initialize_dispatch_00ccd6a0();
     initialize_static_game_settings_00cd2d80(settings_);
+    // The represented CRT entries then reach CE30C0/CD3910 and CE30C4/CD3940.
+    // These are process owners, with real CRT shutdown callbacks, not members
+    // of GameStartupHost. The native initializer table ignores returned status.
+    const int destroy_registration = initialize_game_pending_destroy_owner_00cd3910();
+    const int kill_registration = initialize_game_pending_kill_owner_00cd3940();
+    const auto& pending = game_pending_entity_owners();
+    log_.notef("pending entity CRT owners initialized: destroy=%s kill=%s "
+        "counts=%u/%u atexit=%d/%d storage=process_raw24h",
+        pending.destroy_00f899a8.head_04 != nullptr ? "present" : "null",
+        pending.kill_00f899b4.head_04 != nullptr ? "present" : "null",
+        pending.destroy_00f899a8.count_08, pending.kill_00f899b4.count_08,
+        destroy_registration, kill_registration);
     singletons_ = singletons.release();
 }
 

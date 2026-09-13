@@ -211,5 +211,30 @@
     "S: actual primary/secondary raw unit observer prefixes and explicit aliases from stable GameUnitSlot.",
     "S: primary observed endpoint detach/destruction and original unit teardown order.",
     "S: concrete process-lifetime pending-list storage and real CRT exit registration, before existing frame consumer binding."
-  ]
+  ],
+  "compiler_artifact_provenance_erratum": {
+    "r_manifest_unchanged": true,
+    "was": "R retained Hostx64/x86 compiler and linker binary artifacts; fixture command invoked vcvars32.bat",
+    "is": "vcvars32.bat selects x86 and S where-cl/where-link resolution is Hostx86/x86. R lacked hashes of those fixture compiler/linker binaries; S records resolved paths and hashes.",
+    "evidence": "local/pending-runtime-proof/toolchain.log; actual vcvars32.bat in S artifact manifest",
+    "resolved_fixture_tools": [
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\cl.exe",
+        "sha256": "33ee095d65686e5f4caedd7d52b74fbba8447b2ef4b07019a9dca58c5cb74e5c"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\link.exe",
+        "sha256": "b00f360e373955590d61ca2a5e43f504365edf555d9e80d28fd1cbc0bcd59438"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\dumpbin.exe",
+        "sha256": "61954eaf4559430bbee7429b6dc63457fdf42e1f6a3949ac6eabdc6590738410"
+      }
+    ],
+    "vcvars32": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvars32.bat",
+      "sha256": "e0f12ba374968f55ce898ee0384eb9c9b989cc3b499e3c0d553368ad223e28c8"
+    },
+    "limit": "No change to immutable R proof or independently verified source/library/object/executable/result artifacts."
+  }
 }

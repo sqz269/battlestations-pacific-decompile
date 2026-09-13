@@ -1,0 +1,1076 @@
+{
+  "packet": "orch6_unit_observer_endpoint_s",
+  "base_commit": "9cc35911",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "read-only formal BSP CLI; root separately defined two deleting adjustment thunks",
+  "header": "include/bsp/native_unit_observer_endpoint.hpp",
+  "source": "src/native_unit_observer_endpoint.cpp",
+  "doc": "docs/NATIVE_UNIT_OBSERVER_ENDPOINT.md",
+  "complete_functions_reconstructed": 0,
+  "fragments": [
+    {
+      "address": "00925CFF",
+      "containing_function": "00925CE0",
+      "reconstruction": "bsp::initialize_unit_observed_prefix_00925cff",
+      "creator": null,
+      "coverage": "partial_projection: four observed-prefix stores; native frame operations omitted in source only; all other constructor instructions remain outside this source API",
+      "native_envelope": {
+        "entry": "00925CFF",
+        "length": 20,
+        "kind": 0,
+        "creator": 0,
+        "offset": 0,
+        "sha256": "d9397138cdcf8c5c705ea566e58859c9115e97c349a03023efd56caf9645f792",
+        "instructions": 6
+      },
+      "original_abi": "In-function ESI=actual unit; first two fragments use EBX=0; not independently callable native bodies",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00925D13",
+      "containing_function": "00925CE0",
+      "reconstruction": "bsp::initialize_unit_callback_prefix_00925d13",
+      "creator": null,
+      "coverage": "partial_projection: four callback-prefix stores only; all other constructor instructions remain outside this source API",
+      "native_envelope": {
+        "entry": "00925D13",
+        "length": 16,
+        "kind": 1,
+        "creator": 0,
+        "offset": 22,
+        "sha256": "245aa3cd0107b0737ecd5dd19b5d677339bd6a5b7436e28badef2f1a7c6e4793",
+        "instructions": 4
+      },
+      "original_abi": "In-function ESI=actual unit; first two fragments use EBX=0; not independently callable native bodies",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00925D44",
+      "containing_function": "00925CE0",
+      "reconstruction": "bsp::publish_scene_observer_tables_00925d44",
+      "creator": null,
+      "coverage": "partial_projection: two scene table stores only; all other constructor instructions remain outside this source API",
+      "native_envelope": {
+        "entry": "00925D44",
+        "length": 13,
+        "kind": 2,
+        "creator": 0,
+        "offset": 39,
+        "sha256": "37a0c63669a13ca59b831856c459bd1ab551bf0f2694245c269ae757595bf5d7",
+        "instructions": 2
+      },
+      "original_abi": "In-function ESI=actual unit; first two fragments use EBX=0; not independently callable native bodies",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00928662",
+      "containing_function": "00928630",
+      "reconstruction": "bsp::publish_game_entity_observer_tables_00928662",
+      "creator": null,
+      "coverage": "partial_projection: two game-entity table stores only; all other constructor instructions remain outside this source API",
+      "native_envelope": {
+        "entry": "00928662",
+        "length": 13,
+        "kind": 3,
+        "creator": 0,
+        "offset": 53,
+        "sha256": "b60f1e95c0629d968b678e7c2c15e201957c21a91950a6c8f636ae99934b285e",
+        "instructions": 2
+      },
+      "original_abi": "In-function ESI=actual unit; first two fragments use EBX=0; not independently callable native bodies",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "006FE46D",
+      "containing_function": "006FE460",
+      "reconstruction": "bsp::publish_unit_leaf_observer_tables_for_creator",
+      "creator": "006FE590",
+      "coverage": "partial_projection: two actual leaf table stores for this exact creator only; all other constructor instructions remain outside this source API",
+      "native_envelope": {
+        "entry": "006FE46D",
+        "length": 13,
+        "kind": 4,
+        "creator": 7333264,
+        "offset": 67,
+        "sha256": "38fd7b0515668a06a4bfe24e2d989ec43f2df9b99c27cac309f0521684cafaf9",
+        "instructions": 2
+      },
+      "original_abi": "In-function ESI=actual unit; first two fragments use EBX=0; not independently callable native bodies",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "006FB30D",
+      "containing_function": "006FB300",
+      "reconstruction": "bsp::publish_unit_leaf_observer_tables_for_creator",
+      "creator": "006FB430",
+      "coverage": "partial_projection: two actual leaf table stores for this exact creator only; all other constructor instructions remain outside this source API",
+      "native_envelope": {
+        "entry": "006FB30D",
+        "length": 13,
+        "kind": 4,
+        "creator": 7320624,
+        "offset": 81,
+        "sha256": "8c63cde5b5da42bbc4242674db3e80841d1fe6f11f9ed4ad8c9dfd0643189826",
+        "instructions": 2
+      },
+      "original_abi": "In-function ESI=actual unit; first two fragments use EBX=0; not independently callable native bodies",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "0074BB2C",
+      "containing_function": "0074BB00",
+      "reconstruction": "bsp::publish_unit_leaf_observer_tables_for_creator",
+      "creator": "0074BE00",
+      "coverage": "partial_projection: two actual leaf table stores for this exact creator only; all other constructor instructions remain outside this source API",
+      "native_envelope": {
+        "entry": "0074BB2C",
+        "length": 13,
+        "kind": 4,
+        "creator": 7650816,
+        "offset": 95,
+        "sha256": "54435382d1812ca7886ff1ec99f777ead0ac18b900799a74b661f15b183a4305",
+        "instructions": 2
+      },
+      "original_abi": "In-function ESI=actual unit; first two fragments use EBX=0; not independently callable native bodies",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "006EB170",
+      "containing_function": "006EB160",
+      "reconstruction": "bsp::publish_unit_leaf_observer_tables_for_creator",
+      "creator": "006EB290",
+      "coverage": "partial_projection: two actual leaf table stores for this exact creator only; all other constructor instructions remain outside this source API",
+      "native_envelope": {
+        "entry": "006EB170",
+        "length": 13,
+        "kind": 4,
+        "creator": 7254672,
+        "offset": 109,
+        "sha256": "fb08e24b2f8e77feb7f437e8277cd766ec953628842035c5b22f6b2e6265ed31",
+        "instructions": 2
+      },
+      "original_abi": "In-function ESI=actual unit; first two fragments use EBX=0; not independently callable native bodies",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "006DFC9D",
+      "containing_function": "006DFC90",
+      "reconstruction": "bsp::publish_unit_leaf_observer_tables_for_creator",
+      "creator": "006DFEF0",
+      "coverage": "partial_projection: two actual leaf table stores for this exact creator only; all other constructor instructions remain outside this source API",
+      "native_envelope": {
+        "entry": "006DFC9D",
+        "length": 13,
+        "kind": 4,
+        "creator": 7208688,
+        "offset": 123,
+        "sha256": "c29f65e6a62ca2e5b08196116b66f0260b963637651952d65c893b481195eea3",
+        "instructions": 2
+      },
+      "original_abi": "In-function ESI=actual unit; first two fragments use EBX=0; not independently callable native bodies",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00852F27",
+      "containing_function": "00852F10",
+      "reconstruction": "bsp::publish_unit_leaf_observer_tables_for_creator",
+      "creator": "008531A0",
+      "coverage": "partial_projection: two actual leaf table stores for this exact creator only; all other constructor instructions remain outside this source API",
+      "native_envelope": {
+        "entry": "00852F27",
+        "length": 13,
+        "kind": 4,
+        "creator": 8728992,
+        "offset": 137,
+        "sha256": "e7d6053c3aa6ee2d208ff620134ec96775e7a3aa1fabd6538fcff6cd798bbf6f",
+        "instructions": 2
+      },
+      "original_abi": "In-function ESI=actual unit; first two fragments use EBX=0; not independently callable native bodies",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00857CDD",
+      "containing_function": "00857CD0",
+      "reconstruction": "bsp::publish_unit_leaf_observer_tables_for_creator",
+      "creator": "00857E20",
+      "coverage": "partial_projection: two actual leaf table stores for this exact creator only; all other constructor instructions remain outside this source API",
+      "native_envelope": {
+        "entry": "00857CDD",
+        "length": 13,
+        "kind": 4,
+        "creator": 8748576,
+        "offset": 151,
+        "sha256": "e8e354e28f846e7b83a1e7e5b8529e22ee9ab234296a1121e12e3b21a5f79d5d",
+        "instructions": 2
+      },
+      "original_abi": "In-function ESI=actual unit; first two fragments use EBX=0; not independently callable native bodies",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00758598",
+      "containing_function": "00758550",
+      "reconstruction": "bsp::publish_unit_leaf_observer_tables_for_creator",
+      "creator": "00758D30",
+      "coverage": "partial_projection: two actual leaf table stores for this exact creator only; all other constructor instructions remain outside this source API",
+      "native_envelope": {
+        "entry": "00758598",
+        "length": 13,
+        "kind": 4,
+        "creator": 7703856,
+        "offset": 165,
+        "sha256": "45dda5570a6ee9f99646cddbf901eccafada82fbd6a704e6261a5a3f221414ff",
+        "instructions": 2
+      },
+      "original_abi": "In-function ESI=actual unit; first two fragments use EBX=0; not independently callable native bodies",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "0074E0FF",
+      "containing_function": "0074E0F0",
+      "reconstruction": "bsp::publish_unit_leaf_observer_tables_for_creator",
+      "creator": "008091D0",
+      "coverage": "partial_projection: two actual leaf table stores for this exact creator only; all other constructor instructions remain outside this source API",
+      "native_envelope": {
+        "entry": "0074E0FF",
+        "length": 13,
+        "kind": 4,
+        "creator": 8425936,
+        "offset": 179,
+        "sha256": "951b40fb88285748b76385e36fd17187c71db6982d0aa0385dd4b9752de4a006",
+        "instructions": 2
+      },
+      "original_abi": "In-function ESI=actual unit; first two fragments use EBX=0; not independently callable native bodies",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "0084C92D",
+      "containing_function": "0084C920",
+      "reconstruction": "bsp::publish_unit_leaf_observer_tables_for_creator",
+      "creator": "0084CA50",
+      "coverage": "partial_projection: two actual leaf table stores for this exact creator only; all other constructor instructions remain outside this source API",
+      "native_envelope": {
+        "entry": "0084C92D",
+        "length": 13,
+        "kind": 4,
+        "creator": 8702544,
+        "offset": 193,
+        "sha256": "8529727a7d491a314e81ebf1822f584c39979c99f9ea0db4a584734794ea9974",
+        "instructions": 2
+      },
+      "original_abi": "In-function ESI=actual unit; first two fragments use EBX=0; not independently callable native bodies",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "0074E2DD",
+      "containing_function": "0074E2D0",
+      "reconstruction": "bsp::publish_unit_leaf_observer_tables_for_creator",
+      "creator": "0074E540",
+      "coverage": "partial_projection: two actual leaf table stores for this exact creator only; all other constructor instructions remain outside this source API",
+      "native_envelope": {
+        "entry": "0074E2DD",
+        "length": 13,
+        "kind": 4,
+        "creator": 7660864,
+        "offset": 207,
+        "sha256": "a8658276e37cb82d74f72156e47f020831d0b49e3d833dce4910637102bde95b",
+        "instructions": 2
+      },
+      "original_abi": "In-function ESI=actual unit; first two fragments use EBX=0; not independently callable native bodies",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "007DD9BF",
+      "containing_function": "007DD9B0",
+      "reconstruction": "bsp::publish_unit_leaf_observer_tables_for_creator",
+      "creator": "007DDAE0",
+      "coverage": "partial_projection: two actual leaf table stores for this exact creator only; all other constructor instructions remain outside this source API",
+      "native_envelope": {
+        "entry": "007DD9BF",
+        "length": 13,
+        "kind": 4,
+        "creator": 8248032,
+        "offset": 221,
+        "sha256": "710a3c62c74c668e1b54d8452f6925b9eb87b73172015ecc6587974c045ed121",
+        "instructions": 2
+      },
+      "original_abi": "In-function ESI=actual unit; first two fragments use EBX=0; not independently callable native bodies",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00951B6F",
+      "containing_function": "00951B60",
+      "reconstruction": "bsp::publish_unit_leaf_observer_tables_for_creator",
+      "creator": "00956390",
+      "coverage": "partial_projection: two actual leaf table stores for this exact creator only; all other constructor instructions remain outside this source API",
+      "native_envelope": {
+        "entry": "00951B6F",
+        "length": 13,
+        "kind": 4,
+        "creator": 9790352,
+        "offset": 235,
+        "sha256": "d09037d507f443818281859b680f0b89f43f25a7ee1efe807b4859fc749f3073",
+        "instructions": 2
+      },
+      "original_abi": "In-function ESI=actual unit; first two fragments use EBX=0; not independently callable native bodies",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00951C4F",
+      "containing_function": "00951C40",
+      "reconstruction": "bsp::publish_unit_leaf_observer_tables_for_creator",
+      "creator": "009564E0",
+      "coverage": "partial_projection: two actual leaf table stores for this exact creator only; all other constructor instructions remain outside this source API",
+      "native_envelope": {
+        "entry": "00951C4F",
+        "length": 13,
+        "kind": 4,
+        "creator": 9790688,
+        "offset": 249,
+        "sha256": "1c745dfd968bc55f0dd27bcaf8955c740aefb8b58c0f1dde55c69226d85433f2",
+        "instructions": 2
+      },
+      "original_abi": "In-function ESI=actual unit; first two fragments use EBX=0; not independently callable native bodies",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00951D2F",
+      "containing_function": "00951D20",
+      "reconstruction": "bsp::publish_unit_leaf_observer_tables_for_creator",
+      "creator": "00956240",
+      "coverage": "partial_projection: two actual leaf table stores for this exact creator only; all other constructor instructions remain outside this source API",
+      "native_envelope": {
+        "entry": "00951D2F",
+        "length": 13,
+        "kind": 4,
+        "creator": 9790016,
+        "offset": 263,
+        "sha256": "da6fd467db1b5cae89d0c1113327dd11d8d46b1d7d0affcd884cda2dc0833e1c",
+        "instructions": 2
+      },
+      "original_abi": "In-function ESI=actual unit; first two fragments use EBX=0; not independently callable native bodies",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "007D772F",
+      "containing_function": "007D7720",
+      "reconstruction": "bsp::publish_unit_leaf_observer_tables_for_creator",
+      "creator": "007D7850",
+      "coverage": "partial_projection: two actual leaf table stores for this exact creator only; all other constructor instructions remain outside this source API",
+      "native_envelope": {
+        "entry": "007D772F",
+        "length": 13,
+        "kind": 4,
+        "creator": 8222800,
+        "offset": 277,
+        "sha256": "686dd9f77a7f471579e6d48c57e71f6427b295623296fd4a50893a315fe9677c",
+        "instructions": 2
+      },
+      "original_abi": "In-function ESI=actual unit; first two fragments use EBX=0; not independently callable native bodies",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "006D1C68",
+      "containing_function": "006D1C20",
+      "reconstruction": "bsp::publish_unit_leaf_observer_tables_for_creator",
+      "creator": "006D3110",
+      "coverage": "partial_projection: two actual leaf table stores for this exact creator only; all other constructor instructions remain outside this source API",
+      "native_envelope": {
+        "entry": "006D1C68",
+        "length": 13,
+        "kind": 4,
+        "creator": 7155984,
+        "offset": 291,
+        "sha256": "6f77e6dc1d0760b990dd1a8ec89aca6b2e00c9ac94ee79a861eb2f1780cf758e",
+        "instructions": 2
+      },
+      "original_abi": "In-function ESI=actual unit; first two fragments use EBX=0; not independently callable native bodies",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "008480B1",
+      "containing_function": "00848080",
+      "reconstruction": "bsp::publish_unit_leaf_observer_tables_for_creator",
+      "creator": "00848380",
+      "coverage": "partial_projection: two actual leaf table stores for this exact creator only; all other constructor instructions remain outside this source API",
+      "native_envelope": {
+        "entry": "008480B1",
+        "length": 13,
+        "kind": 4,
+        "creator": 8684416,
+        "offset": 305,
+        "sha256": "c1170042d8166b8b174c729915c572a1d7090812576ad2f37f062215595c52a1",
+        "instructions": 2
+      },
+      "original_abi": "In-function ESI=actual unit; first two fragments use EBX=0; not independently callable native bodies",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "0074DCCF",
+      "containing_function": "0074DCC0",
+      "reconstruction": "bsp::publish_unit_leaf_observer_tables_for_creator",
+      "creator": "0074DF10",
+      "coverage": "partial_projection: two actual leaf table stores for this exact creator only; all other constructor instructions remain outside this source API",
+      "native_envelope": {
+        "entry": "0074DCCF",
+        "length": 13,
+        "kind": 4,
+        "creator": 7659280,
+        "offset": 319,
+        "sha256": "594e6ffe791dc99b7522bb0eb05694806899b24730a36f34a8fb620125a73bde",
+        "instructions": 2
+      },
+      "original_abi": "In-function ESI=actual unit; first two fragments use EBX=0; not independently callable native bodies",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "0074597D",
+      "containing_function": "00745940",
+      "reconstruction": "bsp::publish_unit_leaf_observer_tables_for_creator",
+      "creator": "00747000",
+      "coverage": "partial_projection: two actual leaf table stores for this exact creator only; all other constructor instructions remain outside this source API",
+      "native_envelope": {
+        "entry": "0074597D",
+        "length": 13,
+        "kind": 4,
+        "creator": 7630848,
+        "offset": 333,
+        "sha256": "b434b01d39fc6af16d5a774890e1104f80c08c08abb7e52cda82262915e3acd6",
+        "instructions": 2
+      },
+      "original_abi": "In-function ESI=actual unit; first two fragments use EBX=0; not independently callable native bodies",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "006F564E",
+      "containing_function": "006F5610",
+      "reconstruction": "bsp::publish_unit_leaf_observer_tables_for_creator",
+      "creator": "006F5C10",
+      "coverage": "partial_projection: two actual leaf table stores for this exact creator only; all other constructor instructions remain outside this source API",
+      "native_envelope": {
+        "entry": "006F564E",
+        "length": 13,
+        "kind": 4,
+        "creator": 7298064,
+        "offset": 347,
+        "sha256": "60d5cc7e7f4c2da34ccaaba00134ec90650adf3658102ab47e0524b20fd6dc25",
+        "instructions": 2
+      },
+      "original_abi": "In-function ESI=actual unit; first two fragments use EBX=0; not independently callable native bodies",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "calls": [
+    {
+      "address": "00925D34",
+      "native": "00925490",
+      "function": "00925CE0",
+      "contract": "Distinct unit+24h weak-owner constructor, outside observer store projections",
+      "kind": "call"
+    },
+    {
+      "address": "00928651",
+      "native": "00925CE0",
+      "function": "00928630",
+      "contract": "Actual parent construction precedes later game-entity table stores",
+      "kind": "call"
+    },
+    {
+      "address": "0092589D",
+      "native": "00695870",
+      "function": "00925780",
+      "contract": "ECX=unit+10h actual callback prefix; first of the two endpoint destruction calls",
+      "kind": "call"
+    },
+    {
+      "address": "009258AC",
+      "native": "00695760",
+      "function": "00925780",
+      "contract": "ECX=unit actual observed prefix, after callback destruction",
+      "kind": "call"
+    },
+    {
+      "address": "00928847",
+      "native": "00925780",
+      "function": "009287B0",
+      "contract": "Game-entity destructor invokes actual scene/entity parent destructor",
+      "kind": "call"
+    },
+    {
+      "address": "00925F03",
+      "native": "00925780",
+      "function": "00925F00",
+      "contract": "Whole entity scalar deletion invokes actual destructor",
+      "kind": "call"
+    },
+    {
+      "address": "00925F10",
+      "native": "00BF6989",
+      "function": "00925F00",
+      "contract": "Flags bit0 gates allocation release; raw ADD ESP,4 at00925F15 is outside current Ghidra body membership",
+      "kind": "call"
+    },
+    {
+      "address": "009289E3",
+      "native": "009287B0",
+      "function": "009289E0",
+      "contract": "Whole game-entity scalar deletion invokes actual destructor",
+      "kind": "call"
+    },
+    {
+      "address": "009289F0",
+      "native": "00BF6989",
+      "function": "009289E0",
+      "contract": "Flags bit0 gates allocation release; raw ADD ESP,4 at009289F5 has missing body membership",
+      "kind": "call"
+    },
+    {
+      "address": "009258E3",
+      "native": "00925F00",
+      "function": "009258E0",
+      "contract": "SUB ECX,10h adjusts secondary callback base to actual whole entity, stack flags unchanged",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "009287A3",
+      "native": "009289E0",
+      "function": "009287A0",
+      "contract": "SUB ECX,10h adjusts secondary callback base to actual whole game entity, stack flags unchanged",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "006957EA",
+      "native": "006953C0",
+      "function": "00695760",
+      "contract": "Primary endpoint destruction conditionally detaches by edge.first_04",
+      "kind": "call"
+    },
+    {
+      "address": "006958FA",
+      "native": "00695530",
+      "function": "00695870",
+      "contract": "Secondary endpoint destruction conditionally detaches by edge.callback_owner_08",
+      "kind": "call"
+    },
+    {
+      "address": "00926401",
+      "native": "00925C40",
+      "function": "009263C0",
+      "contract": "Existing immediate notification uses original observed endpoint after flag stores",
+      "kind": "call"
+    },
+    {
+      "address": "00927510",
+      "native": "00696330",
+      "function": "009273A0",
+      "contract": "Existing queued notification has its own prior presence sample; use direct selector",
+      "kind": "call"
+    }
+  ],
+  "layout": {
+    "size": 32,
+    "observed_offset": 0,
+    "callback_offset": 16,
+    "member_type": "existing NativeObserverOwnerStorage",
+    "independent_role_tables": [
+      "00CECCC8",
+      "00CE3CD4"
+    ],
+    "untouched": "Other prefix remains untouched by each initial producer; both arrays remain untouched by later two-table publications; all owner bytes beyond20h untouched"
+  },
+  "leaf_table_evidence": {
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "candidate_source": "docs/UNIT_WORLD_REGISTRATION.md",
+    "source_sha256": "99532268002bf357716c463b5b10e1e5f1b91c5e54738c7a73a3f82957676d92",
+    "rows": [
+      {
+        "label": "Destroyer",
+        "creator": "006FE590",
+        "constructor": "006FE460",
+        "primary_table": "00CFC3D0",
+        "callback_table": "00CFC3B8",
+        "primary_store": "006FE46D",
+        "callback_store": "006FE473",
+        "end_inclusive": "006FE479",
+        "native_bytes": 13,
+        "sha256": "38fd7b0515668a06a4bfe24e2d989ec43f2df9b99c27cac309f0521684cafaf9",
+        "primary_slot00": "006FE570",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "006FE520",
+        "callback_slot04": "0080DFC0",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "Cruiser",
+        "creator": "006FB430",
+        "constructor": "006FB300",
+        "primary_table": "00CFB738",
+        "callback_table": "00CFB71C",
+        "primary_store": "006FB30D",
+        "callback_store": "006FB313",
+        "end_inclusive": "006FB319",
+        "native_bytes": 13,
+        "sha256": "8c63cde5b5da42bbc4242674db3e80841d1fe6f11f9ed4ad8c9dfd0643189826",
+        "primary_slot00": "006FB410",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "006FB3B0",
+        "callback_slot04": "0080DFC0",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "LandingShip",
+        "creator": "0074BE00",
+        "constructor": "0074BB00",
+        "primary_table": "00CFFA30",
+        "callback_table": "00CFFA18",
+        "primary_store": "0074BB2C",
+        "callback_store": "0074BB32",
+        "end_inclusive": "0074BB38",
+        "native_bytes": 13,
+        "sha256": "54435382d1812ca7886ff1ec99f777ead0ac18b900799a74b661f15b183a4305",
+        "primary_slot00": "0074BDA0",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "0074BC50",
+        "callback_slot04": "0080DFC0",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "Cargo",
+        "creator": "006EB290",
+        "constructor": "006EB160",
+        "primary_table": "00CFA778",
+        "callback_table": "00CFA75C",
+        "primary_store": "006EB170",
+        "callback_store": "006EB176",
+        "end_inclusive": "006EB17C",
+        "native_bytes": 13,
+        "sha256": "fb08e24b2f8e77feb7f437e8277cd766ec953628842035c5b22f6b2e6265ed31",
+        "primary_slot00": "006EB270",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "006EB1F0",
+        "callback_slot04": "0080DFC0",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "BattleShip",
+        "creator": "006DFEF0",
+        "constructor": "006DFC90",
+        "primary_table": "00CF90B0",
+        "callback_table": "00CF9094",
+        "primary_store": "006DFC9D",
+        "callback_store": "006DFCA3",
+        "end_inclusive": "006DFCA9",
+        "native_bytes": 13,
+        "sha256": "c29f65e6a62ca2e5b08196116b66f0260b963637651952d65c893b481195eea3",
+        "primary_slot00": "006DFED0",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "006DFE10",
+        "callback_slot04": "0080DFC0",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "Submarine",
+        "creator": "008531A0",
+        "constructor": "00852F10",
+        "primary_table": "00D0BF80",
+        "callback_table": "00D0BF68",
+        "primary_store": "00852F27",
+        "callback_store": "00852F2D",
+        "end_inclusive": "00852F33",
+        "native_bytes": 13,
+        "sha256": "e7d6053c3aa6ee2d208ff620134ec96775e7a3aa1fabd6538fcff6cd798bbf6f",
+        "primary_slot00": "00853380",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "00853040",
+        "callback_slot04": "0080DFC0",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "TorpedoBoat",
+        "creator": "00857E20",
+        "constructor": "00857CD0",
+        "primary_table": "00D0C648",
+        "callback_table": "00D0C630",
+        "primary_store": "00857CDD",
+        "callback_store": "00857CE3",
+        "end_inclusive": "00857CE9",
+        "native_bytes": 13,
+        "sha256": "e8e354e28f846e7b83a1e7e5b8529e22ee9ab234296a1121e12e3b21a5f79d5d",
+        "primary_slot00": "00857E00",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "00857DB0",
+        "callback_slot04": "0080DFC0",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "MotherShip",
+        "creator": "00758D30",
+        "constructor": "00758550",
+        "primary_table": "00D01630",
+        "callback_table": "00D01614",
+        "primary_store": "00758598",
+        "callback_store": "0075859E",
+        "end_inclusive": "007585A4",
+        "native_bytes": 13,
+        "sha256": "45dda5570a6ee9f99646cddbf901eccafada82fbd6a704e6261a5a3f221414ff",
+        "primary_slot00": "00758610",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "00758490",
+        "callback_slot04": "0080DFC0",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "ReconPlane",
+        "creator": "008091D0",
+        "constructor": "0074E0F0",
+        "primary_table": "00D00070",
+        "callback_table": "00D00058",
+        "primary_store": "0074E0FF",
+        "callback_store": "0074E105",
+        "end_inclusive": "0074E10B",
+        "native_bytes": 13,
+        "sha256": "951b40fb88285748b76385e36fd17187c71db6982d0aa0385dd4b9752de4a006",
+        "primary_slot00": "0074E4C0",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "0074E3D0",
+        "callback_slot04": "007C6E90",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "SmallReconPlane",
+        "creator": "0084CA50",
+        "constructor": "0084C920",
+        "primary_table": "00D0BA80",
+        "callback_table": "00D0BA68",
+        "primary_store": "0084C92D",
+        "callback_store": "0084C933",
+        "end_inclusive": "0084C939",
+        "native_bytes": 13,
+        "sha256": "8529727a7d491a314e81ebf1822f584c39979c99f9ea0db4a584734794ea9974",
+        "primary_slot00": "0084CA30",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "0084C9E0",
+        "callback_slot04": "007C6E90",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "LargeReconPlane",
+        "creator": "0074E540",
+        "constructor": "0074E2D0",
+        "primary_table": "00D00308",
+        "callback_table": "00D002F0",
+        "primary_store": "0074E2DD",
+        "callback_store": "0074E2E3",
+        "end_inclusive": "0074E2E9",
+        "native_bytes": 13,
+        "sha256": "a8658276e37cb82d74f72156e47f020831d0b49e3d833dce4910637102bde95b",
+        "primary_slot00": "0074E520",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "0074E3E0",
+        "callback_slot04": "007C6E90",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "Fighter",
+        "creator": "007DDAE0",
+        "constructor": "007DD9B0",
+        "primary_table": "00D06920",
+        "callback_table": "00D06908",
+        "primary_store": "007DD9BF",
+        "callback_store": "007DD9C5",
+        "end_inclusive": "007DD9CB",
+        "native_bytes": 13,
+        "sha256": "710a3c62c74c668e1b54d8452f6925b9eb87b73172015ecc6587974c045ed121",
+        "primary_slot00": "007DDAC0",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "007DDA70",
+        "callback_slot04": "007C6E90",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "DiveBomber",
+        "creator": "00956390",
+        "constructor": "00951B60",
+        "primary_table": "00D19D28",
+        "callback_table": "00D19D10",
+        "primary_store": "00951B6F",
+        "callback_store": "00951B75",
+        "end_inclusive": "00951B7B",
+        "native_bytes": 13,
+        "sha256": "d09037d507f443818281859b680f0b89f43f25a7ee1efe807b4859fc749f3073",
+        "primary_slot00": "00953570",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "009530D0",
+        "callback_slot04": "007C6E90",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "TorpedoBomber",
+        "creator": "009564E0",
+        "constructor": "00951C40",
+        "primary_table": "00D1A000",
+        "callback_table": "00D19FE8",
+        "primary_store": "00951C4F",
+        "callback_store": "00951C55",
+        "end_inclusive": "00951C5B",
+        "native_bytes": 13,
+        "sha256": "1c745dfd968bc55f0dd27bcaf8955c740aefb8b58c0f1dde55c69226d85433f2",
+        "primary_slot00": "00953600",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "00953080",
+        "callback_slot04": "007C6E90",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "Kamikaze",
+        "creator": "00956240",
+        "constructor": "00951D20",
+        "primary_table": "00D1A2D8",
+        "callback_table": "00D1A2C0",
+        "primary_store": "00951D2F",
+        "callback_store": "00951D35",
+        "end_inclusive": "00951D3B",
+        "native_bytes": 13,
+        "sha256": "da6fd467db1b5cae89d0c1113327dd11d8d46b1d7d0affcd884cda2dc0833e1c",
+        "primary_slot00": "009534E0",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "009530E0",
+        "callback_slot04": "007C6E90",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "LevelBomber",
+        "creator": "007D7850",
+        "constructor": "007D7720",
+        "primary_table": "00D06638",
+        "callback_table": "00D06620",
+        "primary_store": "007D772F",
+        "callback_store": "007D7735",
+        "end_inclusive": "007D773B",
+        "native_bytes": 13,
+        "sha256": "686dd9f77a7f471579e6d48c57e71f6427b295623296fd4a50893a315fe9677c",
+        "primary_slot00": "007D7830",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "007D77E0",
+        "callback_slot04": "007C6E90",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "AirField",
+        "creator": "006D3110",
+        "constructor": "006D1C20",
+        "primary_table": "00CF8C08",
+        "callback_table": "00CF8BEC",
+        "primary_store": "006D1C68",
+        "callback_store": "006D1C6E",
+        "end_inclusive": "006D1C74",
+        "native_bytes": 13,
+        "sha256": "6f77e6dc1d0760b990dd1a8ec89aca6b2e00c9ac94ee79a861eb2f1780cf758e",
+        "primary_slot00": "006D40D0",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "006D1DB0",
+        "callback_slot04": "00952050",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "Shipyard",
+        "creator": "00848380",
+        "constructor": "00848080",
+        "primary_table": "00D0B770",
+        "callback_table": "00D0B754",
+        "primary_store": "008480B1",
+        "callback_store": "008480B7",
+        "end_inclusive": "008480BD",
+        "native_bytes": 13,
+        "sha256": "c1170042d8166b8b174c729915c572a1d7090812576ad2f37f062215595c52a1",
+        "primary_slot00": "00847610",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "00846BE0",
+        "callback_slot04": "00952050",
+        "callback_slot08": "008455A0",
+        "live_equals_disk": true
+      },
+      {
+        "label": "LandVehicle",
+        "creator": "0074DF10",
+        "constructor": "0074DCC0",
+        "primary_table": "00CFFDE0",
+        "callback_table": "00CFFDC8",
+        "primary_store": "0074DCCF",
+        "callback_store": "0074DCD5",
+        "end_inclusive": "0074DCDB",
+        "native_bytes": 13,
+        "sha256": "594e6ffe791dc99b7522bb0eb05694806899b24730a36f34a8fb620125a73bde",
+        "primary_slot00": "0074DFA0",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "0074DD60",
+        "callback_slot04": "00952050",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "LandFort",
+        "creator": "00747000",
+        "constructor": "00745940",
+        "primary_table": "00CFF3F8",
+        "callback_table": "00CFF3E0",
+        "primary_store": "0074597D",
+        "callback_store": "00745983",
+        "end_inclusive": "00745989",
+        "native_bytes": 13,
+        "sha256": "b434b01d39fc6af16d5a774890e1104f80c08c08abb7e52cda82262915e3acd6",
+        "primary_slot00": "00747090",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "00745A90",
+        "callback_slot04": "00952050",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "CommandBuilding",
+        "creator": "006F5C10",
+        "constructor": "006F5610",
+        "primary_table": "00CFB028",
+        "callback_table": "00CFB00C",
+        "primary_store": "006F564E",
+        "callback_store": "006F5654",
+        "end_inclusive": "006F565A",
+        "native_bytes": 13,
+        "sha256": "60d5cc7e7f4c2da34ccaaba00134ec90650adf3658102ab47e0524b20fd6dc25",
+        "primary_slot00": "006F5CA0",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "006F5850",
+        "callback_slot04": "00952050",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      }
+    ]
+  },
+  "mapping": {
+    "canonical_identity": "existing stable GameUnitSlot* stored in the actual world lists",
+    "raw_storage": "One NativeUnitObserverPrefixStorage member embedded in that same existing slot; no separate owning allocation",
+    "borrowed_binding": "NativeUnitObserverAlias{&slot, slot.observer_prefix}",
+    "observed_identity": "&alias.prefixes.observed_00 used consistently in edges, node+14, notification and getter equality",
+    "callback_identity": "&alias.prefixes.callback_10; exactly16 bytes from the raw prefix base, not from semantic GameUnitSlot*",
+    "reverse_mapping": "Resolve via same existing slot ownership/binding; no blind reinterpret cast and no second authoritative semantic unit registry",
+    "source_deletion": "Subtracting16 from secondary alias identifies the raw prefix only; resolve canonical unit through the binding before its whole-unit deleting provider, never free an embedded prefix member",
+    "lifetime": "Same application observer lifetime/publication; stable prefix member outlives every retained edge, dispatch slot and callback; full owner freed only by its owning unit path",
+    "runtime_binding_implemented": false
+  },
+  "corrections": [
+    {
+      "was": "Primary and secondary prefixes could be initialized or destroyed through one inferred role",
+      "is": "Actual producer stamps different tables; destruction uses distinct helpers and receiver bases",
+      "evidence": "00925CFF/00925D13;0092589D->00695870(unit+10);009258AC->00695760(unit)"
+    },
+    {
+      "was": "Semantic canonical unit pointer could be cast to actual observer prefix",
+      "is": "GameUnitSlot begins with semantic GameUnitRow; borrow one explicitly produced raw prefix member from the same stable owner",
+      "evidence": "src/game_hosts_units.cpp GameUnitSlot definition and world_list_push_back_00484540 retain &unit"
+    }
+  ],
+  "external_gaps": [
+    {
+      "entries": [
+        "0080DFC0",
+        "00952050"
+      ],
+      "status": "missing native callback function definitions; not reconstructed or substituted"
+    },
+    {
+      "entries": [
+        "007C6E90",
+        "008455A0"
+      ],
+      "status": "native callback bodies exist; behavior unread and externally owned"
+    },
+    {
+      "sites": [
+        "00925F15",
+        "009289F5"
+      ],
+      "status": "Live/disk ADD ESP,4 bytes after release call have no Ghidra function membership; consumed context only"
+    },
+    {
+      "entries": [
+        "006953C0",
+        "00695760"
+      ],
+      "status": "Primary observed lifetime implemented by separate S worker; this packet adds no lifetime method"
+    }
+  ],
+  "validation": {
+    "build": "MSVC Win32 Release passed",
+    "ctest_passed": 2,
+    "seed_verification": "local/unit_observer_seeds.txt",
+    "probe": {
+      "pairs": 25,
+      "bytes_per_side": 3200,
+      "unsupported_inputs": 1,
+      "mismatches": 0
+    },
+    "report_calls": {
+      "direct_rows_checked": 15,
+      "failures": 0,
+      "evidence": "local/unit_observer_report_calls.txt"
+    },
+    "native_envelope_bytes": 335,
+    "represented_owner_store_bytes": 330,
+    "synthetic_fixture_glue_bytes": 26,
+    "relocations": 0,
+    "manifest": "local/unit_observer_proof_manifest.json",
+    "manifest_sha256": "a0cb6f580f348ac0203f6d1ede9501a1243469b868e1650c2da6f2108583f6f8",
+    "linked_archive_count": 9,
+    "limits": "128-byte store-state comparisons only, no complete constructor, destructor, callback, FH3/SEH, OOM, concurrency or game validation"
+  },
+  "integration": {
+    "source_registry_append": "Root adds src/native_unit_observer_endpoint.cpp to bsp_core; worker uses ignored local registration only",
+    "runtime": "Root owns GameUnitSlot/GameObserverRuntime/game_hosts binding; no changes made here",
+    "root_definitions": "reports/observer_endpoint_function_definitions.json"
+  }
+}

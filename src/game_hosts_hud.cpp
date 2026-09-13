@@ -648,6 +648,18 @@ void GameHudHost::attach_world_2k(GameUnitsHost& units, GameMissionLuaHost& lua)
     impl.markers->attach_world(units);
 }
 
+void GameHudHost::detach_world_2k() noexcept {
+    Impl& impl = *impl_;
+    impl.units = nullptr;
+    impl.unit_request_pending = false;
+    impl.unit_request_applied = false;
+    impl.unit_interface_id = 0;
+    // The child hosts borrow units and Lua. Their default destructors release
+    // source caches without invoking their borrowed owners.
+    impl.markers.reset();
+    impl.minimap.reset();
+}
+
 void GameHudHost::request_scene_interface_for_unit_004cc460() {
     Impl& impl = *impl_;
     if (impl.units == nullptr || !impl.units->controlled_bound()) return;
