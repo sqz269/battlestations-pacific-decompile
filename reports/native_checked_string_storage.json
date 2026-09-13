@@ -1,0 +1,363 @@
+{
+  "packet": "orch4_input_checked_string_storage_at",
+  "status": "source_storage_implemented_validation_pending",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe"
+  },
+  "source": [
+    "src/native_checked_string_storage.cpp",
+    "include/bsp/native_checked_string_storage.hpp",
+    "src/native_input_settings_tables.cpp",
+    "src/native_input_settings_lifetime.cpp"
+  ],
+  "documentation": "docs/NATIVE_CHECKED_STRING_STORAGE.md",
+  "byte_spans": [
+    {
+      "address": "00450540",
+      "end_inclusive": "004505c2",
+      "bytes": 131,
+      "sha256": "b78e4c1224ccfaca9b23e5da76842bdc791be527bdac8df87c0897e2bc390c3d",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00450540 at 00450540\nSignature: undefined FUN_00450540(void)\nEntry: 00450540\nBody: 00450540 - 004505c2"
+    },
+    {
+      "address": "004954f0",
+      "end_inclusive": "0049556d",
+      "bytes": 126,
+      "sha256": "527e8bc06eee9b4aed5d6e1321a29982e0e69ced13cf532876f1bb82fcd7bd63",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_004954f0 at 004954f0\nSignature: undefined FUN_004954f0(void)\nEntry: 004954f0\nBody: 004954f0 - 0049556d"
+    },
+    {
+      "address": "0048da50",
+      "end_inclusive": "0048daa1",
+      "bytes": 82,
+      "sha256": "445ff8c48a9f34a88f0c10b81aca1bf0c3e143b79ea280746f9e8f97f8c60374",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_0048da50 at 0048da50\nSignature: undefined FUN_0048da50(void)\nEntry: 0048da50\nBody: 0048da50 - 0048daa1"
+    },
+    {
+      "address": "00450180",
+      "end_inclusive": "00450208",
+      "bytes": 137,
+      "sha256": "6da0780c9510caeca5668555ac0edb9194e189033c18b8466c447f5343e2bbcf",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00450180 at 00450180\nSignature: undefined FUN_00450180(void)\nEntry: 00450180\nBody: 00450180 - 00450208"
+    },
+    {
+      "address": "0044ce20",
+      "end_inclusive": "0044ceaa",
+      "bytes": 139,
+      "sha256": "093820df05a3293b5ca4b482a538d90dd7de826b5f882a5bb9768741e7b23589",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_0044ce20 at 0044ce20\nSignature: undefined FUN_0044ce20(void)\nEntry: 0044ce20\nBody: 0044ce20 - 0044ceaa"
+    },
+    {
+      "address": "0044f410",
+      "end_inclusive": "0044f6eb",
+      "bytes": 732,
+      "sha256": "9faffefbc39b8eef20caeda65d3950e1966d9a8660ced3aaefa9f0c70b4136de",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_0044f410 at 0044f410\nSignature: undefined FUN_0044f410(void)\nEntry: 0044f410\nBody: 0044f410 - 0044f6eb"
+    }
+  ],
+  "calls": [
+    {
+      "function": "00450540",
+      "address": "00450589",
+      "native": "0044ce20",
+      "byte_span": "00450540",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "00450540",
+      "address": "004505a3",
+      "native": "00bf6713",
+      "byte_span": "00450540",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "00450540",
+      "address": "004505b6",
+      "native": "00450180",
+      "byte_span": "00450540",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "004954f0",
+      "address": "00495505",
+      "native": "00bf6713",
+      "byte_span": "004954f0",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "004954f0",
+      "address": "00495535",
+      "native": "0048da50",
+      "byte_span": "004954f0",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "004954f0",
+      "address": "00495551",
+      "native": "00432050",
+      "byte_span": "004954f0",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "0048da50",
+      "address": "0048da6e",
+      "native": "0041dd40",
+      "byte_span": "0048da50",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "0048da50",
+      "address": "0048da83",
+      "native": "00bf7680",
+      "byte_span": "0048da50",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "00450180",
+      "address": "004501a6",
+      "native": "00bf6713",
+      "byte_span": "00450180",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "00450180",
+      "address": "004501b3",
+      "native": "00bf6713",
+      "byte_span": "00450180",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "00450180",
+      "address": "004501d0",
+      "native": "0044f410",
+      "byte_span": "00450180",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "00450180",
+      "address": "004501dd",
+      "native": "00bf6713",
+      "byte_span": "00450180",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "00450180",
+      "address": "004501f3",
+      "native": "00bf6713",
+      "byte_span": "00450180",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "0044ce20",
+      "address": "0044ce5d",
+      "native": "0044bcb0",
+      "byte_span": "0044ce20",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "0044ce6d",
+      "address": "0044ce83",
+      "native": "00431f40",
+      "byte_span": "0044ce20",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "0044ce6d",
+      "address": "0044ce93",
+      "native": "00bf6885",
+      "byte_span": "0044ce20",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "0044f410",
+      "address": "0044f450",
+      "native": "0041dd40",
+      "byte_span": "0044f410",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "0044f410",
+      "address": "0044f465",
+      "native": "00bf7680",
+      "byte_span": "0044f410",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "0044f410",
+      "address": "0044f4ab",
+      "native": "00431f70",
+      "byte_span": "0044f410",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "0044f410",
+      "address": "0044f51b",
+      "native": "0042bf40",
+      "byte_span": "0044f410",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "0044f410",
+      "address": "0044f542",
+      "native": "0044d0c0",
+      "byte_span": "0044f410",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "0044f410",
+      "address": "0044f555",
+      "native": "0044db60",
+      "byte_span": "0044f410",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "0044f410",
+      "address": "0044f570",
+      "native": "0044d0c0",
+      "byte_span": "0044f410",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "0044f410",
+      "address": "0044f5a0",
+      "native": "00432050",
+      "byte_span": "0044f410",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "0044f410",
+      "address": "0044f5a9",
+      "native": "00bf65ac",
+      "byte_span": "0044f410",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "0044f5c8",
+      "address": "0044f5d3",
+      "native": "00432360",
+      "byte_span": "0044f410",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "0044f5c8",
+      "address": "0044f5d9",
+      "native": "00bf65ac",
+      "byte_span": "0044f410",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "0044f410",
+      "address": "0044f60c",
+      "native": "0044f170",
+      "byte_span": "0044f410",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "0044f410",
+      "address": "0044f62c",
+      "native": "0044db60",
+      "byte_span": "0044f410",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "0044f410",
+      "address": "0044f649",
+      "native": "0044c770",
+      "byte_span": "0044f410",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "0044f653",
+      "address": "0044f66b",
+      "native": "00432360",
+      "byte_span": "0044f410",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "0044f653",
+      "address": "0044f674",
+      "native": "00bf6885",
+      "byte_span": "0044f410",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "0044f410",
+      "address": "0044f68e",
+      "native": "0044f170",
+      "byte_span": "0044f410",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "0044f410",
+      "address": "0044f69c",
+      "native": "0044d850",
+      "byte_span": "0044f410",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "0044f410",
+      "address": "0044f6ad",
+      "native": "0044c770",
+      "byte_span": "0044f410",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "0044f410",
+      "address": "0044f6cd",
+      "native": "00419cc0",
+      "byte_span": "0044f410",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    },
+    {
+      "function": "0044f410",
+      "address": "0044f6d4",
+      "native": "00bd1510",
+      "byte_span": "0044f410",
+      "evidence": "Direct CALL at its actual live Ghidra owner; separately owned exception handlers are not attributed to the enclosing library entry. Source contract coverage is stated separately."
+    }
+  ],
+  "unowned_exception_tail_calls": [
+    {
+      "handler_start": "0044f5c8",
+      "call_site": "0044f5e5",
+      "callee": "00bf6885",
+      "evidence": "Decoded rethrow in the separately owned insert-allocation catch tail after free; saved catch ownership does not include this site. Original FH3 execution is outside the source storage contract; this row is not an ownership-audit pass."
+    }
+  ],
+  "reconstructed": [
+    "00450540 normal append storage contract",
+    "004954f0 normal erase storage contract",
+    "0048da50 forward range assignment contract"
+  ],
+  "analyzed_library_boundaries": [
+    "00450180 checked insertion wrapper",
+    "0044ce20 uninitialized fill/catch",
+    "0044f410 count1 end-insertion growth path; no general insert port"
+  ],
+  "reused": [
+    "0041dd40 actual pooled string resize",
+    "00be0a30 actual string assignment fragment",
+    "00432050 actual pooled string range destruction",
+    "existing singleton allocation/length-error source domain"
+  ],
+  "removed_required_callbacks": [
+    "NativeInputSettingsTableCalls::call_00450540",
+    "NativeInputSettingsTableCalls::call_004954f0",
+    "NativeInputSettingsDestructionCalls::call_00432050"
+  ],
+  "flow_repair": "reports/native_checked_string_storage_at_flow_repair.json",
+  "limits": [
+    "Valid consistent native headers/ranges and owned pooled strings. Allocation callbacks must not structurally mutate vector/source range.",
+    "Source storage contracts, not general44F410 insertion or original library/CRT/FH3 ABI. Original private-stack aliases, malformed storage and hardware faults are unvalidated.",
+    "Remaining tree and nonstring-vector providers, application wiring and gameplay are pending."
+  ],
+  "no_subagents_dispatched": true,
+  "game_validated": false
+}

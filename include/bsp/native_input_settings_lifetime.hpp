@@ -19,7 +19,6 @@ struct NativeInputSettingsDestructionCalls {
     // the header address. Private downstream stack aliases are not promised.
     virtual void call_0069eea0(void* begin, void* end, void* owner, void* opaque) = 0;
     virtual void call_006a6ee0(void* begin, void* end, void* owner, void* opaque) = 0;
-    virtual void call_00432050(void* begin, void* end, void* owner, void* opaque) = 0;
 };
 
 struct NativeInputSettingsLifetimeContext {
