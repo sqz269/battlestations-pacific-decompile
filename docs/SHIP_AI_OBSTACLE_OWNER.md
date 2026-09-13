@@ -208,3 +208,12 @@ The preparation script uses Python pefile/capstone and the existing configured
 PE/Ghidra connection. The probe uses VS 2026 Community vcvars32, /O2 /fp:strict,
 the current bsp_core.lib, and /MANIFEST:EMBED. Reported artifact hashes preserve
 the exact sources, original bytes, relocation manifest, records and logs.
+
+## Correction from the neighbour-frame producer review
+
+The earlier next-binding assessment's “self class+241” label is incorrect.
+At 009F1067, 0080E160 returns the director pointer from unit+738. The subsequent
+filter therefore reads director+241, together with the persistent request and
+stored settings+4. The original getter body is MOV EAX,[ECX+738]; RET.
+The constructor projection and its fixture are unaffected. This correction
+supersedes the earlier class-getter wording retained above and in the report.
