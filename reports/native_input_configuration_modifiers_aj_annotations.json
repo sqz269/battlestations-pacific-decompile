@@ -1,0 +1,81 @@
+{
+  "reason": "Original registers, stack arguments and RET cleanup verified in native listings; source interfaces are not original ABI. Names remain hypotheses. Prior names/signatures/comments preserved.",
+  "entries": [
+    {
+      "address": "00698a10",
+      "before": "Function: BSP_InputConfiguration_Load at 00698a10\nSignature: void __fastcall BSP_InputConfiguration_Load(void * self, void * unused_edx)\nEntry: 00698a10\nBody: 00698a10 - 00699b7d",
+      "before_comment": {
+        "address": "00698a10",
+        "function_name": "BSP_InputConfiguration_Load",
+        "comment": "[BSP reconstruction 00698a10]\nHypothesis, not a recovered symbol. AI actual-storage reconstruction: docs/NATIVE_INPUT_CONFIGURATION_LOAD.md; reports/native_input_configuration_load.json. Native registers and stack cleanup verified; original comments retained. New C++ service ABI; no gameplay validation. Complete534byte descriptor6974F0;698A10 source covers ONLY the335byte script prefix through698B5E, before globals/parser. Lua owner is at ZERO;4CC is a live swap flag byte. Always execute Inputs.lua, conditionally open Lua. Native/source component fixture passes; full parser and original ABI/game validation remain."
+      },
+      "proposed": "void __fastcall BSP_InputConfiguration_Load(void* self, void* unused_edx)",
+      "apply": "Successfully set prototype for function at 00698a10 with __fastcall calling convention",
+      "after": "Function: BSP_InputConfiguration_Load at 00698a10\nSignature: void __fastcall BSP_InputConfiguration_Load(void * self, void * unused_edx)\nEntry: 00698a10\nBody: 00698a10 - 00699b7d",
+      "readback_verified": true
+    },
+    {
+      "address": "00697f40",
+      "before": "Function: FUN_00697f40 at 00697f40\nSignature: undefined FUN_00697f40(void)\nEntry: 00697f40\nBody: 00697f40 - 00697fc2",
+      "before_comment": {
+        "address": "00697f40",
+        "function_name": "FUN_00697f40"
+      },
+      "proposed": "void __fastcall LIBSTL_CheckedDwordVector_Append_00697F40(void* self, void* unused_edx, void* value)",
+      "apply": "Successfully set prototype for function at 00697f40 with __fastcall calling convention",
+      "after": "Function: LIBSTL_CheckedDwordVector_Append_00697F40 at 00697f40\nSignature: void __fastcall LIBSTL_CheckedDwordVector_Append_00697F40(void * self, void * unused_edx, void * value)\nEntry: 00697f40\nBody: 00697f40 - 00697fc2",
+      "readback_verified": true
+    },
+    {
+      "address": "00698980",
+      "before": "Function: FUN_00698980 at 00698980\nSignature: undefined FUN_00698980(void)\nEntry: 00698980\nBody: 00698980 - 00698a02",
+      "before_comment": {
+        "address": "00698980",
+        "function_name": "FUN_00698980"
+      },
+      "proposed": "void __fastcall LIBSTL_CheckedDwordVectorRows_Append_00698980(void* self, void* unused_edx, void* row)",
+      "apply": "Successfully set prototype for function at 00698980 with __fastcall calling convention",
+      "after": "Function: LIBSTL_CheckedDwordVectorRows_Append_00698980 at 00698980\nSignature: void __fastcall LIBSTL_CheckedDwordVectorRows_Append_00698980(void * self, void * unused_edx, void * row)\nEntry: 00698980\nBody: 00698980 - 00698a02",
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00698a10",
+        "prototype": "void __fastcall BSP_InputConfiguration_Load(void* self, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00698a10 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00697f40",
+        "prototype": "void __fastcall LIBSTL_CheckedDwordVector_Append_00697F40(void* self, void* unused_edx, void* value)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00697f40 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00698980",
+        "prototype": "void __fastcall LIBSTL_CheckedDwordVectorRows_Append_00698980(void* self, void* unused_edx, void* row)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00698980 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

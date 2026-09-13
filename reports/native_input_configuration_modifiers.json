@@ -1,0 +1,779 @@
+{
+  "packet": "orch4_input_modifiers_aj",
+  "status": "modifier_prefix_reconstructed_native_component_fixture_passed_final_integration_pending",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "source": [
+    "include/bsp/native_input_configuration_modifiers.hpp",
+    "src/native_input_configuration_modifiers.cpp"
+  ],
+  "documentation": "docs/NATIVE_INPUT_CONFIGURATION_MODIFIERS.md",
+  "functions": [
+    {
+      "address": "00698a10",
+      "coverage": "script and modifier prefix only through00699039",
+      "source_entry": "load_native_input_configuration_modifiers_prefix_00698a10"
+    }
+  ],
+  "byte_spans": [
+    {
+      "address": "00698a10",
+      "end_exclusive": "0069903a",
+      "bytes": 1578,
+      "sha256": "fcc2f107e233eda2aee2eee160951ca4ccf365896a5cb67ea9c149e10d8bfb59",
+      "disk_live_equal": true,
+      "role": "prefix"
+    },
+    {
+      "address": "00697f40",
+      "end_exclusive": "00697fc3",
+      "bytes": 131,
+      "sha256": "5d03321f7205f5ba7b7648748d98d63467b8865f8613aa6f07ccefac345501b5",
+      "disk_live_equal": true,
+      "role": "word_append"
+    },
+    {
+      "address": "00698040",
+      "end_exclusive": "00698a04",
+      "bytes": 2500,
+      "sha256": "47e9967e94d7e6661a91dc8c6898cc2ff947d206436d808fed524c97ad3ef13e",
+      "disk_live_equal": true,
+      "role": "rows"
+    },
+    {
+      "address": "00557590",
+      "end_exclusive": "00557654",
+      "bytes": 196,
+      "sha256": "fc049fe6c7110270e0d0e6324de98ae28f0cbf81c8578ba88ad358cb82e8025d",
+      "disk_live_equal": true,
+      "role": "row_copy"
+    },
+    {
+      "address": "00555000",
+      "end_exclusive": "00555026",
+      "bytes": 38,
+      "sha256": "05af6819c3b96517ac02f40647d76ca373be619a871579246e5dd53f7248483b",
+      "disk_live_equal": true,
+      "role": "copy_words"
+    },
+    {
+      "address": "004d49b0",
+      "end_exclusive": "004d49e6",
+      "bytes": 54,
+      "sha256": "0b0cf5dd95a4c58091d690158c6f53d2e2feed4e8f0f1538863a7a24065a1d27",
+      "disk_live_equal": true,
+      "role": "destroy_rows"
+    },
+    {
+      "address": "004d29d0",
+      "end_exclusive": "004d29fe",
+      "bytes": 46,
+      "sha256": "f77de825202168a7f5bc40bb25b1c34d4d018d3f7e782a9643e66410c2b5ef91",
+      "disk_live_equal": true,
+      "role": "destroy_row"
+    },
+    {
+      "address": "006970d0",
+      "end_exclusive": "006970f6",
+      "bytes": 38,
+      "sha256": "240e117dee314b7d4acc124791688150e9666c57c81bf8373dab968dceee7234",
+      "disk_live_equal": true,
+      "role": "fill_word"
+    }
+  ],
+  "calls": [
+    {
+      "function": "00698a10",
+      "address": "00698a2f",
+      "native": "00698730",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698a43",
+      "native": "00b6a020",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698a5c",
+      "native": "0041e870",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698a6f",
+      "native": "00b66c60",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698a98",
+      "native": "0041e870",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698aaf",
+      "native": "00b66c60",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698ad1",
+      "native": "00419cc0",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698ad8",
+      "native": "00bd1510",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698aed",
+      "native": "0041dd40",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698b08",
+      "native": "00bf7680",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698b23",
+      "native": "00b69d40",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698b42",
+      "native": "00419cc0",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698b49",
+      "native": "00bd1510",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698b5f",
+      "native": "00b67980",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698ba1",
+      "native": "00b67800",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698bbf",
+      "native": "00b67800",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698bd0",
+      "native": "00b65f50",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698be1",
+      "native": "00b65f50",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698bfd",
+      "native": "00b67080",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698c0b",
+      "native": "00b66420",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698c3d",
+      "native": "00698980",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698c52",
+      "native": "00bf65ac",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698c73",
+      "native": "00b67720",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698c82",
+      "native": "00b66290",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698c93",
+      "native": "00bf6713",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698ca9",
+      "native": "00bf6713",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698cb6",
+      "native": "00bf6713",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698cc2",
+      "native": "00697f40",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698cd2",
+      "native": "00b67700",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698ce2",
+      "native": "00b67720",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698cf1",
+      "native": "00b66290",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698d02",
+      "native": "00bf6713",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698d18",
+      "native": "00bf6713",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698d25",
+      "native": "00bf6713",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698d31",
+      "native": "00697f40",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698d41",
+      "native": "00b67700",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698d54",
+      "native": "00b67190",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698d62",
+      "native": "00b66420",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698d80",
+      "native": "00b67800",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698d92",
+      "native": "00b67690",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698da2",
+      "native": "00b67700",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698db5",
+      "native": "00b67080",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698dc3",
+      "native": "00b66420",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698dd6",
+      "native": "00b66290",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698de6",
+      "native": "00697f40",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698df9",
+      "native": "00b67190",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698e07",
+      "native": "00b66420",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698e21",
+      "native": "00b67800",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698e33",
+      "native": "00b67690",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698e43",
+      "native": "00b67700",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698e56",
+      "native": "00b67080",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698e64",
+      "native": "00b66420",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698e77",
+      "native": "00b66290",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698e87",
+      "native": "00697f40",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698e9a",
+      "native": "00b67190",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698ea8",
+      "native": "00b66420",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698ec2",
+      "native": "00b67800",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698ed4",
+      "native": "00b67690",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698ee4",
+      "native": "00b67700",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698ef7",
+      "native": "00b67080",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698f05",
+      "native": "00b66420",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698f18",
+      "native": "00b66290",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698f28",
+      "native": "00697f40",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698f3b",
+      "native": "00b67190",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698f49",
+      "native": "00b66420",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698f63",
+      "native": "00b67800",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698f75",
+      "native": "00b67690",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698f85",
+      "native": "00b67700",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698f98",
+      "native": "00b67080",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698fa6",
+      "native": "00b66420",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698fb9",
+      "native": "00b66290",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698fc9",
+      "native": "00697f40",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698fdc",
+      "native": "00b67190",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698fea",
+      "native": "00b66420",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00698fff",
+      "native": "00b67700",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00699010",
+      "native": "00b67700",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00699021",
+      "native": "00b67700",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698a10",
+      "address": "00699035",
+      "native": "00b67700",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00697f40",
+      "address": "00697f89",
+      "native": "006970d0",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00697f40",
+      "address": "00697fa3",
+      "native": "00bf6713",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00697f40",
+      "address": "00697fb6",
+      "native": "00697dc0",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698980",
+      "address": "006989c9",
+      "native": "00698040",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698980",
+      "address": "006989e3",
+      "native": "00bf6713",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    },
+    {
+      "function": "00698980",
+      "address": "006989f6",
+      "native": "006988f0",
+      "evidence": "Native CALL and complete containing function verified; ABI and call setup reviewed in bounded listing."
+    }
+  ],
+  "native_abi": {
+    "00698a10": "ECX configuration, no stack inputs, RET; source prefix ends before CALL69903A and returns globals through a new source interface.",
+    "00697f40": "ECX actual checked DWORD vector, stack value pointer, RET4; source is a storage adapter.",
+    "00698980": "ECX actual checked row vector, stack row pointer, RET4; source is a storage adapter."
+  },
+  "recovered_behavior": {
+    "gate": "If outer pair begin is null or signed(end-begin)>>4 is zero, populate ALL five groups; otherwise skip all modifier reads.",
+    "order": [
+      "SwapStickPairs +4D0",
+      "SwapStickGeneral +500",
+      "SwapStickMap +510",
+      "InvertCameraY +4E0",
+      "InvertPlaneY +4F0"
+    ],
+    "pairs": "Append empty actual10h row before Lua index1 lookup. Lookup, integer conversion, three captured-end checks, append and destroy; repeat for index2. Then advance Lua key/value.",
+    "flat": "Assign each newly looked-up table into the retained table object, destroy lookup temporary, iterate values; convert integers and append without sorting or deduplicating.",
+    "lifetime": "Destroy value, key, table and InputModifiers in that order. Globals stays owned by caller until remaining Inputs parser completes."
+  },
+  "storage_contracts": {
+    "word": "Existing concrete single-word insertion for growth, plus exact append fast path; opaque0 is preserved.",
+    "row": "Stateless source deep-copy adapter over actual checked10h rows; allocator/growth/copy/delete order established from557590,698040,698400,6988F0,698980. No STL library source port or original ABI replacement.",
+    "flow_repair": "reports/native_input_configuration_modifiers_aj_flow.json"
+  },
+  "fixture": {
+    "prefix_bytes": 1578,
+    "native_storage_graph": true,
+    "relocations": 139,
+    "absolute_relocations": 10,
+    "explicit_return_tail_hex": "8d8c2440010000e8000000008d8c2440010000e8000000005e5b8b8c24600100005f5d64890d0000000081c464010000c3"
+  },
+  "limitations": [
+    "Full Inputs/actions parser beginning69903A and final device tick remain unimplemented by this module.",
+    "Native fixture uses real source Lua/file leaves and fixture streams, not native physical/archive VFS routing.",
+    "No original FH3 execution, malformed ranges, arbitrary stack aliases, hardware polling or game validation."
+  ],
+  "exception_evidence": {
+    "handler": "00c7ee45",
+    "func_info": "00dabb8c",
+    "spans": {
+      "input_modifiers_aj_eh_info.txt": {
+        "address": "00dabb8c",
+        "bytes": 36,
+        "sha256": "37ff69f8c6930aef5f2207ff14ebfddebca439d6f8c3b98eeefde1b93ac1972c",
+        "disk_live_equal": true
+      },
+      "input_modifiers_aj_eh_map.txt": {
+        "address": "00dabbb0",
+        "bytes": 280,
+        "sha256": "9c40cca73ba4bae4fc3c621e421a97c331ea008f159fca6b9b5510519a643f16",
+        "disk_live_equal": true
+      },
+      "input_modifiers_aj_eh_thunks.txt": {
+        "address": "00c7ecf1",
+        "bytes": 129,
+        "sha256": "a82bd6b59dbb97368332ea75317c3caf526dc4d8332c519cf5e48b2647a65904",
+        "disk_live_equal": true
+      }
+    },
+    "states": [
+      {
+        "state": 3,
+        "unwind_to": -1,
+        "thunk": "00c7ecf1",
+        "instructions": [
+          "lea ecx, [ebp - 0x34]",
+          "jmp 0xb67700"
+        ]
+      },
+      {
+        "state": 4,
+        "unwind_to": 3,
+        "thunk": "00c7ecf9",
+        "instructions": [
+          "lea ecx, [ebp - 0xe8]",
+          "jmp 0xb67700"
+        ]
+      },
+      {
+        "state": 5,
+        "unwind_to": 4,
+        "thunk": "00c7ed04",
+        "instructions": [
+          "lea ecx, [ebp - 0x144]",
+          "jmp 0xb67700"
+        ]
+      },
+      {
+        "state": 6,
+        "unwind_to": 5,
+        "thunk": "00c7ed0f",
+        "instructions": [
+          "lea ecx, [ebp - 0x160]",
+          "jmp 0xb67700"
+        ]
+      },
+      {
+        "state": 7,
+        "unwind_to": 6,
+        "thunk": "00c7ed1a",
+        "instructions": [
+          "lea ecx, [ebp - 0x130]",
+          "jmp 0xb67700"
+        ]
+      },
+      {
+        "state": 8,
+        "unwind_to": 7,
+        "thunk": "00c7ed25",
+        "instructions": [
+          "lea ecx, [ebp - 0x114]",
+          "jmp 0x4cdce0"
+        ]
+      },
+      {
+        "state": 9,
+        "unwind_to": 7,
+        "thunk": "00c7ed30",
+        "instructions": [
+          "lea ecx, [ebp - 0x100]",
+          "jmp 0xb67700"
+        ]
+      },
+      {
+        "state": 10,
+        "unwind_to": 7,
+        "thunk": "00c7ed3b",
+        "instructions": [
+          "lea ecx, [ebp - 0x100]",
+          "jmp 0xb67700"
+        ]
+      },
+      {
+        "state": 11,
+        "unwind_to": 7,
+        "thunk": "00c7ed46",
+        "instructions": [
+          "lea ecx, [ebp - 0x100]",
+          "jmp 0xb67700"
+        ]
+      },
+      {
+        "state": 12,
+        "unwind_to": 7,
+        "thunk": "00c7ed51",
+        "instructions": [
+          "lea ecx, [ebp - 0x100]",
+          "jmp 0xb67700"
+        ]
+      },
+      {
+        "state": 13,
+        "unwind_to": 7,
+        "thunk": "00c7ed5c",
+        "instructions": [
+          "lea ecx, [ebp - 0x100]",
+          "jmp 0xb67700"
+        ]
+      },
+      {
+        "state": 14,
+        "unwind_to": 7,
+        "thunk": "00c7ed67",
+        "instructions": [
+          "lea ecx, [ebp - 0x100]",
+          "jmp 0xb67700"
+        ]
+      }
+    ],
+    "original_fh3_executed": false
+  },
+  "component_validation": {
+    "probe_log": "local\\input_modifiers_aj_probe.log",
+    "probe_sha256": "179a83bd397dd63d4a504014923dbea410b5ea82612f2cd3a954a152530af49f",
+    "words_compared": 1186,
+    "calls_checked": 84,
+    "calls_failed": 0,
+    "seeds_equal": 8,
+    "fixture_source": "local/input_modifiers_aj_probe.cpp",
+    "fixture_source_sha256": "41d96d6cfb2906ffda907da9689f98f5c4e1911510574b41fede3afaf7cf479a",
+    "fixture_header_sha256": "faee6c96c7667e082f08912fb585204a88e6c9f80839d2e5bb56d2fc3c43b1b2",
+    "game_validated": false,
+    "original_abi_compatible": false,
+    "assets": {
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\fundamentals.lua": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\Inputs.lua": "b9b3f16dd14f264fa055d84cd80b5adf02f3f2c90234d29025cb2af1dd622ac5"
+    }
+  }
+}
