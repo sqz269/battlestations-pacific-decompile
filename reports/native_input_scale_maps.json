@@ -1,0 +1,36 @@
+{
+  "packet": "orch4_input_scale_maps_ax",
+  "status": "native_raw_map_source_build_and_report_calls_passed",
+  "target": {"project": "bsp", "program": "battlestationspacific.exe"},
+  "source": ["include/bsp/native_input_scale_maps.hpp", "src/native_input_scale_maps.cpp"],
+  "documentation": "docs/NATIVE_INPUT_SCALE_MAPS.md",
+  "body_envelopes": [
+    {"address": "0055b400", "end_inclusive": "0055b470", "bytes": 113, "evidence": "live Ghidra proto and saved body"},
+    {"address": "0055b490", "end_inclusive": "0055b4b3", "bytes": 36, "evidence": "live Ghidra proto and saved body"},
+    {"address": "00444be0", "end_inclusive": "00444cd8", "bytes": 761, "evidence": "live Ghidra proto and saved body"},
+    {"address": "006a5aa0", "end_inclusive": "006a5bee", "bytes": 335, "evidence": "live repaired Ghidra proto and body"}
+  ],
+  "routines": [
+    {"address": "0055b400", "coverage": "complete normal populated copy", "original_abi": "thiscall ECX destination, source* stack, EAX destination, RET4", "proposed_name": "copy_native_input_scale_map"},
+    {"address": "0055b490", "coverage": "complete normal populated destruction", "original_abi": "fastcall ECX map, RET", "proposed_name": "destroy_native_input_scale_map"},
+    {"address": "00444be0", "coverage": "complete normal valid-tree lookup/insert", "original_abi": "thiscall ECX map, name* stack, EAX float*, RET4", "proposed_name": "lookup_or_insert_native_input_float"},
+    {"address": "006a5aa0", "coverage": "complete normal valid-tree lookup/insert", "original_abi": "fastcall ECX map, EDX unused, signed-key* stack, EAX inner-map*, RET4", "proposed_name": "lookup_or_insert_native_input_scalar_tree"}
+  ],
+  "host_steps": [
+    {"function": "BSP_InputSettings_ApplyKeyboardBindings", "address": "006aa6fe", "native": "0055b400", "contract": "deep copy populated outer and inner trees"},
+    {"function": "BSP_InputSettings_ApplyKeyboardBindings", "address": "006aa75f", "native": "00444be0", "contract": "case-insensitive borrowed float index"},
+    {"function": "BSP_InputSettings_ApplyKeyboardBindings", "address": "006aa7e9", "native": "006a5aa0", "contract": "signed-key borrowed inner tree index"},
+    {"function": "BSP_InputSettings_ApplyKeyboardBindings", "address": "006aa9a2", "native": "006a5aa0", "contract": "signed-key borrowed inner tree index"},
+    {"function": "FUN_0055b400", "address": "0055b426", "native": "00554cd0", "contract": "allocate 20h outer head"},
+    {"function": "FUN_0055b400", "address": "0055b457", "native": "0055b300", "contract": "populate copied outer tree"},
+    {"function": "FUN_0055b490", "address": "0055b4a6", "native": "0055b230", "contract": "erase full outer range including nested ownership"},
+    {"function": "BSP_WeatherFloatMap_LookupOrInsert", "address": "00444c02", "native": "00443d60", "contract": "native string-CI lower bound"},
+    {"function": "BSP_WeatherFloatMap_LookupOrInsert", "address": "00444c1e", "native": "00443d00", "contract": "strict case-insensitive comparison"},
+    {"function": "BSP_WeatherFloatMap_LookupOrInsert", "address": "00444c81", "native": "00444910", "contract": "hinted insertion and rebalancing"},
+    {"function": "FUN_006a5aa0", "address": "006a5afc", "native": "00554ec0", "contract": "allocate default inner head"},
+    {"function": "FUN_006a5aa0", "address": "006a5b38", "native": "00558570", "contract": "copy default into pair inner head"},
+    {"function": "FUN_006a5aa0", "address": "006a5b50", "native": "006a4dc0", "contract": "insert pair by hinted outer map insertion"},
+    {"function": "FUN_006a5aa0", "address": "006a5b73", "native": "005572f0", "contract": "erase temporary default inner tree"}
+  ],
+  "uncertainty": ["Original allocator/CRT/EH ABI and fresh nested opaque dword preimage are not controlled", "Other callers of shared 00444BE0 excluded", "Primary owns keyboard call-site rewiring and Ghidra writes", "Gameplay not validated"]
+}
