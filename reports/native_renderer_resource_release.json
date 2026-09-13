@@ -1,0 +1,177 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "functions": [
+    {
+      "address": "00b262c0",
+      "end_inclusive": "00b26493",
+      "end_exclusive": "00b26494",
+      "native_byte_count": 468,
+      "native_sha256": "b267293435d48a5841ad373e91ab258f36260557523c1afd72031fd06673b83a",
+      "cpp_symbol": "release_native_renderer_resources_00b262c0",
+      "ghidra_name": "BSP_D3D9Renderer_ReleaseResourcesForReset",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_D3D9Renderer_ReleaseResourcesForReset(void)",
+      "original_abi": "ECX actual renderer; no stack arguments; plain RET at B26493; no semantic return",
+      "coverage": "Complete normal body over actual storage and concrete native resource/binding/cache providers",
+      "source": "src/native_renderer_resource_release.cpp",
+      "header": "include/bsp/native_renderer_resource_release.hpp",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete actual B262C0 normal resource-release composition: optional guard and ready-byte timing, twenty textures/four vertex index0/index reset, current raw surface/query/texture traversal, callback-free record walk, full B241C0 cache clear. Current profiles select established native providers. Exact byte evidence and source interface, not original ABI/FH3/SEH/gameplay validation. Evidence: docs/NATIVE_RENDERER_RESOURCE_RELEASE.md; reports/native_renderer_resource_release.json."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b262e8",
+      "native": "00b33ad0",
+      "function": "00b262c0"
+    },
+    {
+      "address": "00b26460",
+      "native": "00b241c0",
+      "function": "00b262c0"
+    },
+    {
+      "address": "00b2647f",
+      "native": "00b33b00",
+      "function": "00b262c0"
+    }
+  ],
+  "indirect_steps": [
+    {
+      "address": "00b2633d",
+      "instruction": "call eax",
+      "function": "00b262c0"
+    },
+    {
+      "address": "00b2635e",
+      "instruction": "call eax",
+      "function": "00b262c0"
+    },
+    {
+      "address": "00b26371",
+      "instruction": "call eax",
+      "function": "00b262c0"
+    },
+    {
+      "address": "00b26382",
+      "instruction": "call eax",
+      "function": "00b262c0"
+    },
+    {
+      "address": "00b2639b",
+      "instruction": "call eax",
+      "function": "00b262c0"
+    },
+    {
+      "address": "00b263be",
+      "instruction": "call eax",
+      "function": "00b262c0"
+    },
+    {
+      "address": "00b263e7",
+      "instruction": "call eax",
+      "function": "00b262c0"
+    },
+    {
+      "address": "00b2641b",
+      "instruction": "call eax",
+      "function": "00b262c0"
+    }
+  ],
+  "live_disk_spans": [
+    {
+      "address": "00b262c0",
+      "length": 468,
+      "end_inclusive": "00b26493",
+      "sha256": "b267293435d48a5841ad373e91ab258f36260557523c1afd72031fd06673b83a",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00cbd120",
+      "length": 18,
+      "end_inclusive": "00cbd131",
+      "sha256": "dcc0e0f4eca89ac0b58951c2f2fc5fedf0db0a47eef27380293162e6008a8605",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00df5814",
+      "length": 44,
+      "end_inclusive": "00df583f",
+      "sha256": "8038bc4d8de4ccde432b482cdbc415150ba5318a15002096083d0df7c9bc551c",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d5f1d8",
+      "length": 12,
+      "end_inclusive": "00d5f1e3",
+      "sha256": "d1d488699a057e9905ed7ccb8dab9df561ea84f6ec6fd631ca531ff8b86d2320",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d619dc",
+      "length": 4,
+      "end_inclusive": "00d619df",
+      "sha256": "c0c7fb18f846d85125c730a84ade836df9b1d023486cd20eb277dc2512d0fe83",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d62ae8",
+      "length": 4,
+      "end_inclusive": "00d62aeb",
+      "sha256": "23ed3b6f4e2291f35e549a98d0a4ce29f1aa030fbcf85568f461bca37a37be1c",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d61968",
+      "length": 4,
+      "end_inclusive": "00d6196b",
+      "sha256": "0614579c21d23a2f8a13085283f782a32261153d2043411979aad5b7e6e9b1a9",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d61890",
+      "length": 4,
+      "end_inclusive": "00d61893",
+      "sha256": "1c870e328f14bdf2b0b6ea05206f9a40d0955026e301779b28a418f3806ba6e0",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d618d0",
+      "length": 4,
+      "end_inclusive": "00d618d3",
+      "sha256": "1c870e328f14bdf2b0b6ea05206f9a40d0955026e301779b28a418f3806ba6e0",
+      "live_disk_equal": true
+    }
+  ],
+  "no_ghidra_function": [],
+  "profiles": {
+    "renderer+130": "B24710",
+    "renderer+134": "B24840",
+    "renderer+138": "B24B00",
+    "D619A0+3C": "B3D510",
+    "D62AD0+18": "B5FE20",
+    "D61948+20": "B3DD30",
+    "D61870+20": "B33F10",
+    "D618B0+20": "B33F10"
+  },
+  "exception_evidence": {
+    "handler": "CBD128..CBD131 -> BF6B43 with FuncInfo DF581C",
+    "unwind_map": "DF5814: state0 -> CBD120; prior state -1",
+    "action": "CBD120..CBD127 LEA ECX,[EBP-14]; JMP B21110",
+    "scope": "Ready byte read at B262F1 precedes state0 write B262F8. Normal mode read precedes state=-1 then conditional leave; skipped entry leaves guard uninitialized. No resource rollback."
+  },
+  "initial_validation": {
+    "strict_owned_source_compile": true,
+    "full_original_body_fixture": "pending",
+    "exact_merged_build": "pending"
+  },
+  "boundaries": [
+    "Current immutable native profile words and genuine actual service/owner/renderer domains required",
+    "Pointer extents and cursor/current-end mutation must remain native-valid; no safer replacement traversal",
+    "Current mode must not expose an uninitialized skipped-entry guard",
+    "Source maps current numeric profile/slot selectors to concrete implementations, never calls numeric game pointers",
+    "Full hardware SEH/concurrency/ABI compatibility and B29670 device recreation are not established",
+    "No visible render submission or gameplay validation"
+  ]
+}
