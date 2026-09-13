@@ -136,4 +136,42 @@ NativeRenderResourceRecord& copy_construct_native_render_resource_record_00b2fc6
     return actual_destination;
 }
 
+
+NativeRenderResourceRecord& copy_construct_native_render_resource_record_00b2fc60(
+    NativeRenderResourceRecord& actual_destination,
+    const NativeRenderResourceRecord& actual_source, ActualNativeStringPoolStorage& actual_string_pool,
+    const SingletonLifetimeCallbacks& callbacks) {
+    volatile auto& destination = actual_destination;
+    const volatile auto& source = actual_source;
+    const bool identical = &actual_destination == &actual_source;
+    destination.name_length_00 = 0;
+    destination.name_data_04 = nullptr;
+    auto& storage = actual_string_pool;
+    if (!identical) {
+        const auto requested = source.name_length_00;
+        resize_native_string_header_0041dd40(&actual_destination, storage, requested, true);
+        if (source.name_length_00 != 0) {
+            const auto copied = destination.name_length_00;
+            auto* const data = destination.name_data_04;
+            const auto* const source_data = source.name_data_04;
+            if (copied != 0) std::memmove(data, source_data, copied);
+        }
+    }
+    // 00B2FCBC arms current-name cleanup only after initial name copy succeeds.
+    try {
+        copy_construct_native_render_alias_list_004d48a0(
+            reinterpret_cast<unsigned char*>(&actual_destination) + 8,
+            reinterpret_cast<const unsigned char*>(&actual_source) + 8,
+            actual_string_pool, callbacks);
+        for (unsigned index = 0; index != 5; ++index)
+            destination.payload_14_24[index] = source.payload_14_24[index];
+        destination.resource_28 = source.resource_28;
+    } catch (...) {
+        // DF6200 -> CBD900: cleanup only the current actual name header.
+        destroy_native_string_header_0041dd20(&actual_destination, storage);
+        throw;
+    }
+    return actual_destination;
+}
+
 } // namespace bsp

@@ -1,0 +1,607 @@
+{
+  "packet": "orch6_unit_scene_flags_q",
+  "owner": "agent/orch6-unit-scene-flags-q",
+  "base_commit": "522cabd13d7f3c4a6cc57119d1f073f0701b4b07",
+  "doc": "docs/UNIT_SCENE_FLAGS_LIVE.md",
+  "sources": [
+    "include/bsp/game_hosts_units.hpp",
+    "src/game_hosts_units.cpp",
+    "src/game_hosts_ready.cpp",
+    "src/game_hosts_world.cpp"
+  ],
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "Read-only BSP wrappers verifying target for every native analysis batch; no worker Ghidra mutations"
+  },
+  "coverage": "Canonical retained process flag storage and existing reader/store-hook bindings for supported creators in represented kind1 initialization. No complete native constructor, initializer, queue or destruction implementation.",
+  "abi_compatible": false,
+  "addresses_annotated": [],
+  "source_file_lease": "agent/orch6-unit-scene-flags-q:orch6_unit_scene_flags_q",
+  "native_abi": {
+    "00925CE0": "ECX receiver, EAX receiver result, plain RET; store fragment uses ESI=receiver and BL=0 from00925CFD.",
+    "00923840": "ECX receiver, no stack inputs, plain RET at0092385E. Caller-visible EAX unspecified except low byte1 on normal paths. No calls.",
+    "009277E0": "Five-byte tail JMP00923840; no argument transformation.",
+    "00922F30/00922F80": "ECX receiver plus one stack argument; RET4. Store-only existing helpers do not model virtual/child work.",
+    "00926C80": "ECX receiver plus one stack argument; RET4 at00926D88 (3-byte instruction, inclusive end00926D8A)."
+  },
+  "canonical_fields": [
+    {
+      "offset": "005C",
+      "owner": "UnitInstanceState.active",
+      "constructor_site": "00925E0E",
+      "initial": false,
+      "represented_init_site": "00923855",
+      "represented_init": true
+    },
+    {
+      "offset": "005D",
+      "owner": "UnitInstanceState.simulate",
+      "constructor_site": "00925E14",
+      "initial": false,
+      "meaning": "Native torn-down/deadMeat flag; historical simulate member name retained"
+    },
+    {
+      "offset": "005E",
+      "owner": "GameUnitSlot.scene_destroyed_005e",
+      "constructor_site": "00925E11",
+      "initial": false
+    },
+    {
+      "offset": "005F",
+      "owner": "GameUnitSlot.scene_removed_005f",
+      "constructor_site": "00925E0B",
+      "initial": false
+    },
+    {
+      "offset": "0060",
+      "owner": "GameUnitSlot.scene_pending_destroy_0060",
+      "constructor_site": "00925E08",
+      "initial": false
+    }
+  ],
+  "producer_proof": {
+    "constructor_body": [
+      "00925CE0",
+      "00925EF3"
+    ],
+    "constructor_fragment": [
+      "00925E08",
+      "00925E16"
+    ],
+    "register_provenance": "Whole saved constructor EBX-use filter: XOR EBX,EBX00925CFD; no other writes until saved EBX restore00925EE8. BL supplies all five flag stores. ESI holds incoming ECX.",
+    "activation_body": [
+      "00923840",
+      "0092385E"
+    ],
+    "activation_behavior": "Conditional parent Race inheritance precedes unconditional AL=1 then5C andBD stores. Runtime projects5C only; complete native body is fixture-executed on positive Race arm.",
+    "kind1": "GameSceneEntityRecord is produced by scene property bag/00922E20. Full kind2/kind3 delivery is absent.",
+    "supported_identity_source": "kUnitMotionDispatches resolves actual VehicleClass.Type creator. Unknown creator remains unavailable; no destroyer ancestry/default substitute.",
+    "dispatch_identity_source": "reports/unit_world_registration.json constructor primary-vtable stores reused; original PE +A0 words newly read."
+  },
+  "activation_dispatch_rows": [
+    {
+      "type": "Destroyer",
+      "creator": "0x006fe590",
+      "primary": "00cfc3d0",
+      "slot": "00cfc470",
+      "entry": "00822c20"
+    },
+    {
+      "type": "Cruiser",
+      "creator": "0x006fb430",
+      "primary": "00cfb738",
+      "slot": "00cfb7d8",
+      "entry": "00822c20"
+    },
+    {
+      "type": "LandingShip",
+      "creator": "0x0074be00",
+      "primary": "00cffa30",
+      "slot": "00cffad0",
+      "entry": "0074bec0"
+    },
+    {
+      "type": "Cargo",
+      "creator": "0x006eb290",
+      "primary": "00cfa778",
+      "slot": "00cfa818",
+      "entry": "00822c20"
+    },
+    {
+      "type": "BattleShip",
+      "creator": "0x006dfef0",
+      "primary": "00cf90b0",
+      "slot": "00cf9150",
+      "entry": "00822c20"
+    },
+    {
+      "type": "Submarine",
+      "creator": "0x008531a0",
+      "primary": "00d0bf80",
+      "slot": "00d0c020",
+      "entry": "00853630"
+    },
+    {
+      "type": "TorpedoBoat",
+      "creator": "0x00857e20",
+      "primary": "00d0c648",
+      "slot": "00d0c6e8",
+      "entry": "00857c80"
+    },
+    {
+      "type": "MotherShip",
+      "creator": "0x00758d30",
+      "primary": "00d01630",
+      "slot": "00d016d0",
+      "entry": "007593d0"
+    },
+    {
+      "type": "ReconPlane",
+      "creator": "0x008091d0",
+      "primary": "00d00070",
+      "slot": "00d00110",
+      "entry": "007d5d20"
+    },
+    {
+      "type": "SmallReconPlane",
+      "creator": "0x0084ca50",
+      "primary": "00d0ba80",
+      "slot": "00d0bb20",
+      "entry": "007d5d20"
+    },
+    {
+      "type": "LargeReconPlane",
+      "creator": "0x0074e540",
+      "primary": "00d00308",
+      "slot": "00d003a8",
+      "entry": "007d5d20"
+    },
+    {
+      "type": "Fighter",
+      "creator": "0x007ddae0",
+      "primary": "00d06920",
+      "slot": "00d069c0",
+      "entry": "007d5d20"
+    },
+    {
+      "type": "DiveBomber",
+      "creator": "0x00956390",
+      "primary": "00d19d28",
+      "slot": "00d19dc8",
+      "entry": "007d5d20"
+    },
+    {
+      "type": "TorpedoBomber",
+      "creator": "0x009564e0",
+      "primary": "00d1a000",
+      "slot": "00d1a0a0",
+      "entry": "007d5d20"
+    },
+    {
+      "type": "Kamikaze",
+      "creator": "0x00956240",
+      "primary": "00d1a2d8",
+      "slot": "00d1a378",
+      "entry": "007d5d20"
+    },
+    {
+      "type": "LevelBomber",
+      "creator": "0x007d7850",
+      "primary": "00d06638",
+      "slot": "00d066d8",
+      "entry": "007d5d20"
+    },
+    {
+      "type": "AirField",
+      "creator": "0x006d3110",
+      "primary": "00cf8c08",
+      "slot": "00cf8ca8",
+      "entry": "006d3c10"
+    },
+    {
+      "type": "Shipyard",
+      "creator": "0x00848380",
+      "primary": "00d0b770",
+      "slot": "00d0b810",
+      "entry": "00849a30"
+    },
+    {
+      "type": "LandVehicle",
+      "creator": "0x0074df10",
+      "primary": "00cffde0",
+      "slot": "00cffe80",
+      "entry": "0074d800"
+    },
+    {
+      "type": "LandFort",
+      "creator": "0x00747000",
+      "primary": "00cff3f8",
+      "slot": "00cff498",
+      "entry": "007482b0"
+    },
+    {
+      "type": "CommandBuilding",
+      "creator": "0x006f5c10",
+      "primary": "00cfb028",
+      "slot": "00cfb0c8",
+      "entry": "006f2780"
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "006FE468",
+      "native": "0081ED40",
+      "function": "006FE460",
+      "evidence": "Existing constructor chain reaches common five flag clears; receiver provenance in retained listing, surrounding services remain external."
+    },
+    {
+      "address": "0081ED6A",
+      "native": "0095CC90",
+      "function": "0081ED40",
+      "evidence": "Existing constructor chain reaches common five flag clears; receiver provenance in retained listing, surrounding services remain external."
+    },
+    {
+      "address": "0095CCB3",
+      "native": "0087B670",
+      "function": "0095CC90",
+      "evidence": "Existing constructor chain reaches common five flag clears; receiver provenance in retained listing, surrounding services remain external."
+    },
+    {
+      "address": "0087B694",
+      "native": "0077EED0",
+      "function": "0087B670",
+      "evidence": "Existing constructor chain reaches common five flag clears; receiver provenance in retained listing, surrounding services remain external."
+    },
+    {
+      "address": "0077EEF9",
+      "native": "00928630",
+      "function": "0077EED0",
+      "evidence": "Existing constructor chain reaches common five flag clears; receiver provenance in retained listing, surrounding services remain external."
+    },
+    {
+      "address": "00928651",
+      "native": "00925CE0",
+      "function": "00928630",
+      "evidence": "Existing constructor chain reaches common five flag clears; receiver provenance in retained listing, surrounding services remain external."
+    },
+    {
+      "address": "00926110",
+      "native": "00925F20+vtableA0",
+      "function": "00925F20",
+      "evidence": "ECX is node+8 at00926105; primary table+A0 loaded0092610A. Creator-specific slot words retained in activation_dispatch_rows."
+    },
+    {
+      "address": "00822CDB",
+      "native": "00955420",
+      "function": "00822C20",
+      "evidence": "All inspected normal paths reach base initialization; ECX remains/restores saved unit, preserved in entry-to-call listing."
+    },
+    {
+      "address": "0074BEE7",
+      "native": "00822C20",
+      "function": "0074BEC0",
+      "evidence": "All inspected normal paths reach base initialization; ECX remains/restores saved unit, preserved in entry-to-call listing."
+    },
+    {
+      "address": "0085364C",
+      "native": "00822C20",
+      "function": "00853630",
+      "evidence": "All inspected normal paths reach base initialization; ECX remains/restores saved unit, preserved in entry-to-call listing."
+    },
+    {
+      "address": "00857C83",
+      "native": "00822C20",
+      "function": "00857C80",
+      "evidence": "All inspected normal paths reach base initialization; ECX remains/restores saved unit, preserved in entry-to-call listing."
+    },
+    {
+      "address": "007593EC",
+      "native": "00822C20",
+      "function": "007593D0",
+      "evidence": "All inspected normal paths reach base initialization; ECX remains/restores saved unit, preserved in entry-to-call listing."
+    },
+    {
+      "address": "007D5DAC",
+      "native": "00955420",
+      "function": "007D5D20",
+      "evidence": "All inspected normal paths reach base initialization; ECX remains/restores saved unit, preserved in entry-to-call listing."
+    },
+    {
+      "address": "006D3C2D",
+      "native": "00955420",
+      "function": "006D3C10",
+      "evidence": "All inspected normal paths reach base initialization; ECX remains/restores saved unit, preserved in entry-to-call listing."
+    },
+    {
+      "address": "00849A51",
+      "native": "00955420",
+      "function": "00849A30",
+      "evidence": "All inspected normal paths reach base initialization; ECX remains/restores saved unit, preserved in entry-to-call listing."
+    },
+    {
+      "address": "007482D5",
+      "native": "00955420",
+      "function": "007482B0",
+      "evidence": "All inspected normal paths reach base initialization; ECX remains/restores saved unit, preserved in entry-to-call listing."
+    },
+    {
+      "address": "006F2783",
+      "native": "007482B0",
+      "function": "006F2780",
+      "evidence": "All inspected normal paths reach base initialization; ECX remains/restores saved unit, preserved in entry-to-call listing."
+    },
+    {
+      "address": "0074D81E",
+      "native": "00955420",
+      "function": "0074D800",
+      "evidence": "All inspected normal paths reach base initialization; ECX remains/restores saved unit, preserved in entry-to-call listing."
+    },
+    {
+      "address": "00955424",
+      "native": "0087BCC0",
+      "function": "00955420",
+      "evidence": "All inspected normal paths reach base initialization; ECX remains/restores saved unit, preserved in entry-to-call listing."
+    },
+    {
+      "address": "0087BCDC",
+      "native": "0077F0E0",
+      "function": "0087BCC0",
+      "evidence": "All inspected normal paths reach base initialization; ECX remains/restores saved unit, preserved in entry-to-call listing."
+    },
+    {
+      "address": "0077F11F",
+      "native": "009277E0",
+      "function": "0077F0E0",
+      "evidence": "All inspected normal paths reach base initialization; ECX remains/restores saved unit, preserved in entry-to-call listing."
+    },
+    {
+      "address": "009277E0",
+      "native": "00923840",
+      "function": "009277E0",
+      "evidence": "Five-byte JMP preserving ECX; complete target ends0092385E with plain RET.",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "0092729F",
+      "native": "00922F80",
+      "function": "00927050",
+      "evidence": "Type3 _entity.active false arm, one stack zero argument, native callee RET4; not applied to represented kind1 records."
+    },
+    {
+      "address": "009261E4",
+      "native": "00922F30",
+      "function": "00925F20",
+      "evidence": "Type2 StartEnabled true arm child propagation; explicit one stack argument, RET4."
+    },
+    {
+      "address": "00926218",
+      "native": "00922F80",
+      "function": "00925F20",
+      "evidence": "Type2 StartEnabled false arm child propagation; explicit one stack argument, RET4."
+    }
+  ],
+  "corrections": [
+    {
+      "was": "PendingQueueBinding returned a fresh SceneNodeFlags and discarded every store.",
+      "evidence": "game_hosts_ready.cpp PendingQueueBinding and retained real-host fixture",
+      "is": "Hooks read/store the attached Units canonical stable-slot owner; invalid identity throws."
+    },
+    {
+      "was": "World filters supplied false for5D/60/5E and alive/visible read only5C/5D.",
+      "evidence": "004C3D0C..004C3D1E and0043F080; existing UnitListFilterFlags field order",
+      "is": "Both consume retained5C/5D/60/5E with exact aggregate order;5F does not add a condition."
+    },
+    {
+      "was": "Existing active=true initialization lacked a named concrete producer in the binding.",
+      "evidence": "Native full constructor register filter,21 creator+A0 words/base calls, full00923840 body",
+      "is": "Represented kind1 constructor clears all five, common00923855 initialization sets5C before property branches."
+    },
+    {
+      "was": "LandVehicle+A0 entry0074D800 was undefined in Ghidra.",
+      "evidence": "local/scene_flags_0074d800_formal_asm.txt; root reports/unit_scene_flags_function_definitions.json",
+      "is": "Integrator formally defined0074D800..0074DA0C, final C3 length1; worker read-back agrees."
+    }
+  ],
+  "other_writers": [
+    {
+      "function": "00925F20",
+      "coverage": "Type2 StartEnabled override only",
+      "sites": [
+        "009261D0",
+        "00926207"
+      ],
+      "runtime": "Unrepresented input domain"
+    },
+    {
+      "function": "00927050",
+      "coverage": "Type3 active/deadMeat delivery only",
+      "sites": [
+        "0092729F",
+        "009272EF",
+        "009272F3"
+      ],
+      "runtime": "Unrepresented input domain"
+    },
+    {
+      "function": "00922F30",
+      "coverage": "Existing enable helper store projection",
+      "sites": [
+        "00922F4B"
+      ]
+    },
+    {
+      "function": "00922F80",
+      "coverage": "Existing disable helper store projection",
+      "sites": [
+        "00922F9B"
+      ]
+    },
+    {
+      "function": "00922FD0",
+      "coverage": "Existing kill helper store projection; child/virtual work external",
+      "sites": [
+        "00922FDE",
+        "00922FE1",
+        "00922FE4"
+      ]
+    },
+    {
+      "function": "009263C0",
+      "coverage": "Existing remove store projection; render/controller/observer/virtual services external",
+      "sites": [
+        "009263F4",
+        "009263F7",
+        "009263FA",
+        "009263FD"
+      ]
+    },
+    {
+      "function": "009273A0",
+      "coverage": "Existing inline removal stores; actual pending owner/delivery unavailable",
+      "sites": [
+        "009274CE",
+        "009274D2",
+        "009274D6",
+        "009274DA"
+      ]
+    },
+    {
+      "function": "00926C80",
+      "coverage": "Destroy pending flag with lock/cause/child/list compound operation",
+      "sites": [
+        "00926CD5"
+      ]
+    },
+    {
+      "function": "00926390",
+      "coverage": "Destroy delivery sets5D/60 before helper and virtual tail",
+      "sites": [
+        "0092639B",
+        "0092639E"
+      ]
+    },
+    {
+      "function": "00925A00",
+      "coverage": "Cancel conditional hierarchy/queue flag clears",
+      "sites": [
+        "00925A58",
+        "00925A70",
+        "00925A73"
+      ]
+    }
+  ],
+  "no_ghidra_function": [],
+  "flow_gaps": [],
+  "limitations": [
+    "No native queue population, rendering/controller destruction, observer or virtual kill/delete delivery is enabled. Zero pending counts are existing inactive boundary behavior, not proof of native empty queues.",
+    "Snapshots and explicit stores do not execute compound Kill/Destroy/Remove services.",
+    "Only represented kind1 initialization has availability; complete type2 StartEnabled and type3 active/deadMeat delivery remain absent.",
+    "Local-player walk0 source still substitutes instantiated units for unavailable participant registry; only its flag reads are corrected.",
+    "Byte displacement candidate scan is not exhaustive for alias/bulk writers or unrelated object layouts.",
+    "Unit6B8 DummyObjectID remains a separate owner/property-delivery issue.",
+    "No mission/gameplay/camera run performed by this packet; fixture uses explicit supplied descriptors/scene records."
+  ],
+  "verification": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release /fp:strict",
+      "result": "passed",
+      "ctest": {
+        "reconstructed_math": "passed",
+        "native_math_differential": "passed"
+      },
+      "log": "local/scene_flags_build_final.txt",
+      "seed_verification": "local/scene_flags_seed_verify.txt",
+      "compiled_executable": {
+        "retained_path": "local/scene_flags_buildlibs/bsp_game.exe",
+        "sha256": "1bf80fc19a7f55d9e45e7d1d0b6ca3a4d60a318627cdb152f25baefcca3670c1"
+      }
+    },
+    "call_gate": {
+      "command": "python tools/verify_report_calls.py reports/unit_scene_flags_live.json",
+      "checked": 24,
+      "failed": 0,
+      "indirect": 1,
+      "log": "local/scene_flags_call_gate.txt"
+    },
+    "fixture": {
+      "result": "passed",
+      "checks": 249,
+      "command": "./local/build_scene_flags_probe.ps1",
+      "source": "local/scene_flags_probe.cpp",
+      "source_sha256": "049af443694ecfcd8df1ea5ac1d5a895db3f3fbfcb071180a7e9b45e21183d9f",
+      "exe": "local/scene_flags_probe.exe",
+      "exe_sha256": "bb5afb749c326579d07c38cf94ed49722a008b9d127a2ce520c665bcf0def760",
+      "log": "local/scene_flags_probe_build_run.txt",
+      "host_log": "local/scene_flags_host.log",
+      "inputs": "Explicit fixture VehicleClass row90001 Destroyer and two known plus one unresolved created scene record; positive Race2 original activation record; initial other bytesA5. All are retained in fixture source.",
+      "scope": "Actual public Lua and Units create/read/store APIs, production PendingQueueBinding flag hooks compiled unchanged from source, new world consumer for each state over retained Units owner. No native pending owner/population or destruction callbacks exercised.",
+      "first_attempt": {
+        "result": "fixture assertion failed",
+        "cause": "Repeated GameWorldHost list rebuild calls are suppressed by its existing one-shot guard; fixture had incorrectly expected a new filter walk.",
+        "corrected": "Fresh world consumer per state, same canonical Units owner; no production gate changes.",
+        "artifacts": "local/scene_flags_fixture_first_gate_attempt/"
+      },
+      "game_objects": "local/scene_flags_game_objects.json",
+      "game_library_boundary": "All actual bsp_game objects except game_main.obj and game_hosts_ready.obj, grouped in scene_flags_game_hosts.lib. Ready source compiled directly in probe TU to expose internal production queue hooks without fabricating actual queue delivery.",
+      "link_libraries": [
+        {
+          "build_path": "build/win32/Release/bsp_core.lib",
+          "retained_path": "local/scene_flags_buildlibs/bsp_core.lib",
+          "sha256": "b4562e853efb2140ab082b5f55e8a76cbd37fb0afbb96a265c6319ddc125b9cf",
+          "bytes": 54307112
+        },
+        {
+          "build_path": "build/win32/Release/bsp_lua511.lib",
+          "retained_path": "local/scene_flags_buildlibs/bsp_lua511.lib",
+          "sha256": "f4c2fd377c7b9885e297ebb3c370b9845a2043a7c2c2592fdcb52f13097eb634",
+          "bytes": 455544
+        },
+        {
+          "build_path": "build/win32/Release/bsp_zlib121.lib",
+          "retained_path": "local/scene_flags_buildlibs/bsp_zlib121.lib",
+          "sha256": "0995c138eecdb4a5af475c1218d2208c17da5c79e02fdd845f48100d1e6e01d6",
+          "bytes": 72006
+        },
+        {
+          "build_path": "local/scene_flags_game_hosts.lib",
+          "retained_path": "local/scene_flags_game_hosts.lib",
+          "sha256": "4d99080ce192075fd6a2725771194236f93990963397eea02ec9ac2725f161b7",
+          "bytes": 12866642
+        }
+      ],
+      "unexercised_fp_state": "No x87 control/status/TOP or MXCSR comparisons; original byte-store arithmetic has none. Complete native activation parent/Race-copy arm is not exercised."
+    },
+    "native_fragments": [
+      {
+        "name": "kConstructorFlagStores",
+        "start": "00925e08",
+        "end_inclusive": "00925e16",
+        "length": 15,
+        "sha256": "747ec824af63aec2d41f04984ee3405aac8ce54fff8e7862be79e5d20e94222f",
+        "bytes": "885e60885e5f885e5c885e5e885e5d"
+      },
+      {
+        "name": "kCommonActivation",
+        "start": "00923840",
+        "end_inclusive": "0092385e",
+        "length": 31,
+        "sha256": "9b15dff239bb5b8fb09b82246877e038b1f9395ea28aab3ed72f6a17142cd00f",
+        "bytes": "837958007d0d8b413c85c074068b4058894158b00188415c8881bd000000c3"
+      }
+    ],
+    "comparison_scope": "Original15-byte ctor flag stores with ESI=this,BL=0; complete31-byte00923840 on positive Race arm. Compare output bytes and actual host state/filters/identity. No x87/MXCSR state comparison is relevant to these byte-store fragments; no surrounding native constructor/queue services exercised.",
+    "artifacts_manifest": "local/scene_flags_manifest.json",
+    "source_hashes": {
+      "include/bsp/game_hosts_units.hpp": "8dd66a157a9e01a5faedf15079348459daa3c99bf212b5dc5478b88e82cf5e9c",
+      "src/game_hosts_units.cpp": "f81183a82574f358c01bb6f2decad179932197aeb5fa46d2187981d4f170b7a0",
+      "src/game_hosts_ready.cpp": "61d945db445a990237a37a3cb77ebaa459d1b6038d42318e24dd896b76acc879",
+      "src/game_hosts_world.cpp": "2fc0a6a3ca6c47e8b5f878a0913cb5d61143eea6c9d85ba36d565788f5c6981e"
+    }
+  },
+  "original_image": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  }
+}

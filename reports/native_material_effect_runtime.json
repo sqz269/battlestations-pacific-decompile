@@ -1,0 +1,44 @@
+{
+  "packet": "orch5_material_effect_runtime",
+  "coverage": "Host composition of existing native children, actual B3C3A0 wrapper/builder-prefix binding, and distinct persistent actual BDF4C0 operations for texture name resolution. No new native bodies counted.",
+  "source_sha256": {
+    "include/bsp/native_material_effect_runtime.hpp": "405fea0c8ae9ad74407b148198ba7c77f3a748eb8566b624bfc3f1b90eed4ab5",
+    "src/native_material_effect_runtime.cpp": "8487121fd202fa3ad647daeef793db74b17993a706f26a67c04e01db2f30ebe4"
+  },
+  "native_children": {
+    "00b43b00": "src/native_shader_descriptor_reader.cpp",
+    "00bdf4c0": "src/native_vfs_name_resolution.cpp",
+    "00b26500": "src/native_material_state_cache.cpp",
+    "00b265c0": "src/native_material_state_cache.cpp",
+    "00b26680": "src/native_material_state_cache.cpp"
+  },
+  "required_compiler": "NativeMaterialEffectCompilerBinding supplies actual wrapper/builder prefix. NativeMaterialProgramCompilerTail remains mandatory at B3B513 or B3B536; no fake pass/null success.",
+  "validation": {
+    "build": "Win32 /W4 /WX combined bsp_core target through temporary additive CMAKE_PROJECT_INCLUDE passed",
+    "ctest_passed": 2,
+    "ctest_failed": 0,
+    "default_source_registration": true,
+    "adapter_runtime_fixture": false,
+    "full_cold_effect": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "log": "local/native-loader-bindings-build.log",
+    "log_sha256": "08593b90c9aa43b7cfac8375dc81431e824e30d7a39bd531b895fe4d368bc863",
+    "review": "Independent source acceptance: compiler child published before work; distinct VFS children; actual string and manager-slot identity; borrowed contexts must survive retained failures."
+  },
+  "pending": "Complete mandatory compiler tail and runtime composition; no full cold-effect or texture-cache success claimed.",
+  "texture_resolution": "bind_native_texture_vfs_name_resolution validates same actual pool and current-manager publication slot; factory creates one actual retained VFS operation per invocation.",
+  "prior_integrated_checkpoint": {
+    "code_commit": "c5e1427f80bef38c28277c22c437345856e37d52",
+    "report": "reports/native_loader_integration.json",
+    "default_registration_complete": false,
+    "promoted_to_main": false
+  },
+  "integrated_validation": {
+    "code_commit": "b18f5477069e6db5da7e11a65ee527aefed3d7f0",
+    "default_source_registration": true,
+    "ctest_passed": 2,
+    "report": "reports/native_loader_integration.json",
+    "game_validated": false
+  }
+}

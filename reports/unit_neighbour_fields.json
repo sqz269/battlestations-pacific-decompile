@@ -1,0 +1,637 @@
+{
+  "packet": "orch6_unit_neighbour_fields_o",
+  "owner": "agent/orch6-unit-neighbour-fields-o",
+  "base_commit": "e21be33a98db74881482cc33c7b98bb32c0ed7ff",
+  "doc": "docs/UNIT_NEIGHBOUR_FIELDS.md",
+  "sources": [
+    "include/bsp/unit_neighbour_fields.hpp",
+    "src/unit_neighbour_fields.cpp"
+  ],
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "read-only BSP wrappers, verifying target per batch; root defined00953250/00953A80 under its lock"
+  },
+  "coverage": "complete control/store/call schedule00953A80 through borrowed actual storage and required HUD/visibility/queued-kill services; constructors and other writers are evidence only",
+  "abi_compatible": false,
+  "game_validated": false,
+  "native_abi": "ECX=unit; one signed stackID at entryESP+4; preservedEDI/ESI; RET4 at00953AC4 and00953B7C. Stored Ghidra prototype has no recovered arguments; listing establishes actual ABI.",
+  "body": {
+    "entry": "00953A80",
+    "end_inclusive": "00953B7E",
+    "byte_length": 255,
+    "last_instruction": {
+      "site": "00953B7C",
+      "length": 3,
+      "instruction": "RET4"
+    },
+    "first_store": "00953A87 unit+6B8=requested ID before world lookup"
+  },
+  "call_coverage": "all four CALL instructions in implemented body; remaining rows are explicitly selected producer/registration/consumer context calls, not whole external body claims",
+  "calls": [
+    {
+      "address": "00953AF7",
+      "native": "00953A80+vtable140",
+      "function": "00953A80",
+      "purpose": "ECX=unit, no stack arguments; unit identity getter0047F320 on normal primary tables; preserve dispatch and result"
+    },
+    {
+      "address": "00953B03",
+      "native": "00647300",
+      "function": "00953A80",
+      "purpose": "Reload frontend after virtual140; ECX=[frontend+40], PUSH returned unit; RET4"
+    },
+    {
+      "address": "00953B5D",
+      "native": "006E0B40",
+      "function": "00953A80",
+      "purpose": "ECX=matched dummy; PUSH0; RET4; visibility service remains external"
+    },
+    {
+      "address": "00953B75",
+      "native": "00926D90",
+      "function": "00953A80",
+      "purpose": "After game/session reload, mode!=2; ECX=dummy, PUSH2; RET4; actual queued kill external"
+    },
+    {
+      "address": "0095E8B3",
+      "native": "008F2260",
+      "function": "0095E5B0",
+      "purpose": "ECX=[unit+C0]+8 property bag, PUSH DummyObjectID; only container kind1"
+    },
+    {
+      "address": "0095E8D0",
+      "native": "0095E5B0+vtable1BC",
+      "function": "0095E5B0",
+      "purpose": "Nonnull kind0 property+0C passed to unit slot1BC"
+    },
+    {
+      "address": "008201A7",
+      "native": "0081F980+vtable1BC",
+      "function": "0081F980",
+      "purpose": "Kind2 container payload+120 loaded into EDI; signed nonnegative; ECX=unit and PUSH EDI"
+    },
+    {
+      "address": "007D643A",
+      "native": "007D5D20+vtable1BC",
+      "function": "007D5D20",
+      "purpose": "Plane record+12C held in EBP, signed nonnegative; ECX=unit and PUSH EBP"
+    },
+    {
+      "address": "0095CCB3",
+      "native": "0087B670",
+      "function": "0095CC90",
+      "purpose": "Existing constructor chain, same primary receiver; context evidence only"
+    },
+    {
+      "address": "0087B694",
+      "native": "0077EED0",
+      "function": "0087B670",
+      "purpose": "Existing constructor chain, same primary receiver; context evidence only"
+    },
+    {
+      "address": "0077EEF9",
+      "native": "00928630",
+      "function": "0077EED0",
+      "purpose": "Existing constructor chain, same primary receiver; context evidence only"
+    },
+    {
+      "address": "00928651",
+      "native": "00925CE0",
+      "function": "00928630",
+      "purpose": "Existing constructor chain, same primary receiver; context evidence only"
+    },
+    {
+      "address": "006D1C47",
+      "native": "0095CC90",
+      "function": "006D1C20",
+      "purpose": "All seven direct xref callers of existing unit constructor; no new full constructor implementation"
+    },
+    {
+      "address": "0081ED6A",
+      "native": "0095CC90",
+      "function": "0081ED40",
+      "purpose": "All seven direct xref callers of existing unit constructor; no new full constructor implementation"
+    },
+    {
+      "address": "00745967",
+      "native": "0095CC90",
+      "function": "00745940",
+      "purpose": "All seven direct xref callers of existing unit constructor; no new full constructor implementation"
+    },
+    {
+      "address": "0070059A",
+      "native": "0095CC90",
+      "function": "00700590",
+      "purpose": "All seven direct xref callers of existing unit constructor; no new full constructor implementation"
+    },
+    {
+      "address": "0074DCCA",
+      "native": "0095CC90",
+      "function": "0074DCC0",
+      "purpose": "All seven direct xref callers of existing unit constructor; no new full constructor implementation"
+    },
+    {
+      "address": "007CFD4B",
+      "native": "0095CC90",
+      "function": "007CFD20",
+      "purpose": "All seven direct xref callers of existing unit constructor; no new full constructor implementation"
+    },
+    {
+      "address": "008480A2",
+      "native": "0095CC90",
+      "function": "00848080",
+      "purpose": "All seven direct xref callers of existing unit constructor; no new full constructor implementation"
+    },
+    {
+      "address": "006FF414",
+      "native": "006E2670",
+      "function": "006FF3F0",
+      "purpose": "Existing dummy constructor base call; compound writer does not reconstruct the dummy constructor"
+    },
+    {
+      "address": "006FEA83",
+      "native": "00928560",
+      "function": "006FEA80",
+      "purpose": "Dummy registration first appends parent list1"
+    },
+    {
+      "address": "006FEA8F",
+      "native": "00484540",
+      "function": "006FEA80",
+      "purpose": "ECX=reloaded dummy parent+30, PUSH direct dummy; RET4"
+    },
+    {
+      "address": "006FEA9E",
+      "native": "00484540",
+      "function": "006FEA80",
+      "purpose": "ECX=reloaded dummy parent+210, PUSH direct dummy; RET4"
+    },
+    {
+      "address": "006FEAAD",
+      "native": "00484540",
+      "function": "006FEA80",
+      "purpose": "ECX=reloaded dummy parent+234, PUSH direct dummy; RET4"
+    },
+    {
+      "address": "009F104D",
+      "native": "009EAE20",
+      "function": "009F0EA0",
+      "purpose": "Owner live gate at009F1034 precedes retained-object bounds call"
+    }
+  ],
+  "supported_primary_tables": [
+    {
+      "type": "Destroyer",
+      "creator": "0x006fe590",
+      "primary_table": "00CFC3D0",
+      "primary_store_evidence": [
+        "006fe46d: MOV dword ptr [ESI],0xcfc3d0 "
+      ],
+      "slot_1bc": "00CFC58C",
+      "slot_bytes": "803a9500",
+      "target": "00953A80",
+      "slot_140_target": "0047F320"
+    },
+    {
+      "type": "Cruiser",
+      "creator": "0x006fb430",
+      "primary_table": "00CFB738",
+      "primary_store_evidence": [
+        "006fb30d: MOV dword ptr [ESI],0xcfb738 "
+      ],
+      "slot_1bc": "00CFB8F4",
+      "slot_bytes": "803a9500",
+      "target": "00953A80",
+      "slot_140_target": "0047F320"
+    },
+    {
+      "type": "LandingShip",
+      "creator": "0x0074be00",
+      "primary_table": "00CFFA30",
+      "primary_store_evidence": [
+        "0074bb2c: MOV dword ptr [ESI],0xcffa30 "
+      ],
+      "slot_1bc": "00CFFBEC",
+      "slot_bytes": "803a9500",
+      "target": "00953A80",
+      "slot_140_target": "0047F320"
+    },
+    {
+      "type": "Cargo",
+      "creator": "0x006eb290",
+      "primary_table": "00CFA778",
+      "primary_store_evidence": [
+        "006eb170: MOV dword ptr [ESI],0xcfa778 "
+      ],
+      "slot_1bc": "00CFA934",
+      "slot_bytes": "803a9500",
+      "target": "00953A80",
+      "slot_140_target": "0047F320"
+    },
+    {
+      "type": "BattleShip",
+      "creator": "0x006dfef0",
+      "primary_table": "00CF90B0",
+      "primary_store_evidence": [
+        "006dfc9d: MOV dword ptr [ESI],0xcf90b0 "
+      ],
+      "slot_1bc": "00CF926C",
+      "slot_bytes": "803a9500",
+      "target": "00953A80",
+      "slot_140_target": "0047F320"
+    },
+    {
+      "type": "Submarine",
+      "creator": "0x008531a0",
+      "primary_table": "00D0BF80",
+      "primary_store_evidence": [
+        "00852f27: MOV dword ptr [ESI],0xd0bf80 "
+      ],
+      "slot_1bc": "00D0C13C",
+      "slot_bytes": "803a9500",
+      "target": "00953A80",
+      "slot_140_target": "0047F320"
+    },
+    {
+      "type": "TorpedoBoat",
+      "creator": "0x00857e20",
+      "primary_table": "00D0C648",
+      "primary_store_evidence": [
+        "00857cdd: MOV dword ptr [ESI],0xd0c648 "
+      ],
+      "slot_1bc": "00D0C804",
+      "slot_bytes": "803a9500",
+      "target": "00953A80",
+      "slot_140_target": "0047F320"
+    },
+    {
+      "type": "MotherShip",
+      "creator": "0x00758d30",
+      "primary_table": "00D01630",
+      "primary_store_evidence": [
+        "00758598: MOV dword ptr [ESI],0xd01630 "
+      ],
+      "slot_1bc": "00D017EC",
+      "slot_bytes": "803a9500",
+      "target": "00953A80",
+      "slot_140_target": "0047F320"
+    },
+    {
+      "type": "ReconPlane",
+      "creator": "0x008091d0",
+      "primary_table": "00D00070",
+      "primary_store_evidence": [
+        "0074e0ff: MOV dword ptr [ESI],0xd00070 "
+      ],
+      "slot_1bc": "00D0022C",
+      "slot_bytes": "803a9500",
+      "target": "00953A80",
+      "slot_140_target": "007B97E0"
+    },
+    {
+      "type": "SmallReconPlane",
+      "creator": "0x0084ca50",
+      "primary_table": "00D0BA80",
+      "primary_store_evidence": [
+        "0084c92d: MOV dword ptr [ESI],0xd0ba80 "
+      ],
+      "slot_1bc": "00D0BC3C",
+      "slot_bytes": "803a9500",
+      "target": "00953A80",
+      "slot_140_target": "007B97E0"
+    },
+    {
+      "type": "LargeReconPlane",
+      "creator": "0x0074e540",
+      "primary_table": "00D00308",
+      "primary_store_evidence": [
+        "0074e2dd: MOV dword ptr [ESI],0xd00308 "
+      ],
+      "slot_1bc": "00D004C4",
+      "slot_bytes": "803a9500",
+      "target": "00953A80",
+      "slot_140_target": "007B97E0"
+    },
+    {
+      "type": "Fighter",
+      "creator": "0x007ddae0",
+      "primary_table": "00D06920",
+      "primary_store_evidence": [
+        "007dd9bf: MOV dword ptr [ESI],0xd06920 "
+      ],
+      "slot_1bc": "00D06ADC",
+      "slot_bytes": "803a9500",
+      "target": "00953A80",
+      "slot_140_target": "007B97E0"
+    },
+    {
+      "type": "DiveBomber",
+      "creator": "0x00956390",
+      "primary_table": "00D19D28",
+      "primary_store_evidence": [
+        "00951b6f: MOV dword ptr [ESI],0xd19d28 "
+      ],
+      "slot_1bc": "00D19EE4",
+      "slot_bytes": "803a9500",
+      "target": "00953A80",
+      "slot_140_target": "007B97E0"
+    },
+    {
+      "type": "TorpedoBomber",
+      "creator": "0x009564e0",
+      "primary_table": "00D1A000",
+      "primary_store_evidence": [
+        "00951c4f: MOV dword ptr [ESI],0xd1a000 "
+      ],
+      "slot_1bc": "00D1A1BC",
+      "slot_bytes": "803a9500",
+      "target": "00953A80",
+      "slot_140_target": "007B97E0"
+    },
+    {
+      "type": "Kamikaze",
+      "creator": "0x00956240",
+      "primary_table": "00D1A2D8",
+      "primary_store_evidence": [
+        "00951d2f: MOV dword ptr [ESI],0xd1a2d8 "
+      ],
+      "slot_1bc": "00D1A494",
+      "slot_bytes": "803a9500",
+      "target": "00953A80",
+      "slot_140_target": "007B97E0"
+    },
+    {
+      "type": "LevelBomber",
+      "creator": "0x007d7850",
+      "primary_table": "00D06638",
+      "primary_store_evidence": [
+        "007d772f: MOV dword ptr [ESI],0xd06638 "
+      ],
+      "slot_1bc": "00D067F4",
+      "slot_bytes": "803a9500",
+      "target": "00953A80",
+      "slot_140_target": "007B97E0"
+    },
+    {
+      "type": "AirField",
+      "creator": "0x006d3110",
+      "primary_table": "00CF8C08",
+      "primary_store_evidence": [
+        "006d1c68: MOV dword ptr [ESI],0xcf8c08 "
+      ],
+      "slot_1bc": "00CF8DC4",
+      "slot_bytes": "803a9500",
+      "target": "00953A80",
+      "slot_140_target": "0047F320"
+    },
+    {
+      "type": "Shipyard",
+      "creator": "0x00848380",
+      "primary_table": "00D0B770",
+      "primary_store_evidence": [
+        "008480b1: MOV dword ptr [ESI],0xd0b770 "
+      ],
+      "slot_1bc": "00D0B92C",
+      "slot_bytes": "803a9500",
+      "target": "00953A80",
+      "slot_140_target": "0047F320"
+    },
+    {
+      "type": "LandVehicle",
+      "creator": "0x0074df10",
+      "primary_table": "00CFFDE0",
+      "primary_store_evidence": [
+        "0074dccf: MOV dword ptr [ESI],0xcffde0 "
+      ],
+      "slot_1bc": "00CFFF9C",
+      "slot_bytes": "803a9500",
+      "target": "00953A80",
+      "slot_140_target": "0074CDA0"
+    },
+    {
+      "type": "LandFort",
+      "creator": "0x00747000",
+      "primary_table": "00CFF3F8",
+      "primary_store_evidence": [
+        "0074597d: MOV dword ptr [ESI],0xcff3f8 "
+      ],
+      "slot_1bc": "00CFF5B4",
+      "slot_bytes": "803a9500",
+      "target": "00953A80",
+      "slot_140_target": "006F57A0"
+    },
+    {
+      "type": "CommandBuilding",
+      "creator": "0x006f5c10",
+      "primary_table": "00CFB028",
+      "primary_store_evidence": [
+        "006f564e: MOV dword ptr [ESI],0xcfb028 "
+      ],
+      "slot_1bc": "00CFB1E4",
+      "slot_bytes": "803a9500",
+      "target": "00953A80",
+      "slot_140_target": "006F57A0"
+    }
+  ],
+  "virtual_0140_contracts": [
+    {
+      "entry": "0047F320",
+      "end_inclusive": "0047F322",
+      "result": "ECX this"
+    },
+    {
+      "entry": "006F57A0",
+      "end_inclusive": "006F57AC",
+      "result": "[this+738] if nonnull, otherwise this"
+    },
+    {
+      "entry": "0074CDA0",
+      "end_inclusive": "0074CDA6",
+      "result": "[this+738], including null"
+    },
+    {
+      "entry": "007B97E0",
+      "end_inclusive": "007B97E6",
+      "result": "[this+9D4], including null"
+    }
+  ],
+  "index_producers": [
+    {
+      "entry": "0095CC90",
+      "end_inclusive": "0095CF7E",
+      "coverage": "constructor field evidence only",
+      "store": "0095CDE9 MOV[ESI+6B8],EAX",
+      "value": -1,
+      "provenance": "0095CCAC ESI=ECX;0095CDBE OR EAX,-1; no EAX write before store; next EAX write0095CE98",
+      "native_cleanup": "0095CF7C RET8, length3"
+    },
+    {
+      "entry": "00953250",
+      "end_inclusive": "0095325C",
+      "coverage": "evidence-only setter; no duplicate C++ wrapper",
+      "store": "00953254 MOV[ECX+6B8],EAX from entry stack+4",
+      "native_cleanup": "0095325A RET4, length3",
+      "xrefs": []
+    },
+    {
+      "entry": "0095E5B0",
+      "coverage": "only type1 property input arm read as producer",
+      "key": "DummyObjectID",
+      "literal": "00CFC840",
+      "gates": "container+4==1, property nonnull, property+4==0",
+      "value": "property+0C; no default"
+    },
+    {
+      "entry": "0081F980",
+      "coverage": "only type2 input arm; underlying record parser not reconstructed",
+      "value": "[unit+C0]+8 record+120, signed nonnegative"
+    },
+    {
+      "entry": "007D5D20",
+      "coverage": "only type2 plane input arm; underlying record parser not reconstructed",
+      "value": "record+12C, signed nonnegative"
+    }
+  ],
+  "dummy_owner": {
+    "constructor": "006FF3F0",
+    "end_inclusive": "006FF50E",
+    "primary_store": "006FF41B ->00CFC910",
+    "kind_store": "006FF4A0 unit+C4=2D",
+    "registration_slot": "00CFCA40",
+    "slot_bytes": "80ea6f00",
+    "registrar": "006FEA80",
+    "registrar_end_inclusive": "006FEAB3",
+    "list_ids_in_order": [
+      1,
+      2,
+      42,
+      45
+    ],
+    "list45_head_offset": "238",
+    "node_offsets": {
+      "next": 4,
+      "direct_payload": 8
+    },
+    "counter": "00E19ABC",
+    "counter_initial_image_bytes": "00000000",
+    "counter_xrefs": [
+      "006FF4C0 read",
+      "006FF4CC read",
+      "006FF4DC write",
+      "006FF4F8 read/write"
+    ],
+    "counter_schedule": "Store current counter atdummy+484 first (006FF4C6); signed current<250 increments at006FF4F8; otherwise resets at006FF4DC using EBP=0 from006FF419. Normal0..250 inclusive then wrap; no per-scene reset is inferred.",
+    "coverage": "constructor/registrar producer evidence only; no new dummy storage or constructor",
+    "counter_image_storage": "00E19ABC lies beyond .data raw size10000 in its virtual extent; PE loader zero-fill and Ghidra bytes both yield00000000."
+  },
+  "destroyed_byte": {
+    "owner": "observed scene owner at retained object+14, SceneNodeFlags.destroyed",
+    "initial_store": "00925E11 MOV byte[ESI+5E],BL; EBX=0 from00925CFD",
+    "constructor_range": [
+      "00925CE0",
+      "00925EF3"
+    ],
+    "writers": [
+      {
+        "entry": "00922FD0",
+        "end_inclusive": "00923011",
+        "store": "00922FDE",
+        "value": 1,
+        "coverage": "existing store projection; native includes child recursion and virtual84"
+      },
+      {
+        "entry": "009263C0",
+        "end_inclusive": "00926414",
+        "store": "009263F7",
+        "value": 1,
+        "coverage": "existing remove_killed_entity_009263c0 host sequence"
+      },
+      {
+        "entry": "009273A0",
+        "end_inclusive": "009275D1",
+        "store": "009274D2",
+        "value": 1,
+        "coverage": "existing pending flush inline remove sequence"
+      },
+      {
+        "entry": "00925A00",
+        "end_inclusive": "00925A89",
+        "store": "00925A58",
+        "value": 0,
+        "coverage": "evidence-only cancellation with parent eligibility, lock, pending list erases and other flag clears"
+      }
+    ]
+  },
+  "scans": {
+    "files": [
+      "local/neighbour_write_candidates.json",
+      "local/neighbour_dispatch_candidates.json"
+    ],
+    "scope": "candidate direct-displacement scans only; overlap decodes require instruction-start validation; no arbitrary alias/bulk-store completeness",
+    "rejected_overlap_starts": [
+      "0098B517",
+      "00A27403"
+    ],
+    "unresolved_indirect_candidates": "Undefined candidate areas such as0042DA34/004534E0/0045429F/004542BB/006E33BA/007F4D72 are not attributed callers; no complete function boundaries claimed. Other virtual1BC receivers include weapons; does not prove exhaustive virtual caller set."
+  },
+  "runtime_limits": [
+    "No canonical live DummyObjectID, dummy owner/registry delivery or queued scene flags owner bound by this packet.",
+    "At base e21be33a GameReady returns fresh SceneNodeFlags and discards stores; GameWorld hardcodes flag5e=false; these are not native live state evidence.",
+    "Future host binding must provide actual property/record values, list45 owner and dummy index lifecycle, frontend/HUD/visibility and queued kill services, and existing SceneNodeFlags/observer queue owner.",
+    "No candidate-walker or GameHosts edits; constructor values are initial state only."
+  ],
+  "no_ghidra_function": [],
+  "flow_gaps": [],
+  "body_definition_note": "Root defined00953250..0095325C and00953A80..00953B7E; implemented target is complete. Unattributed scan candidates have no invented extents.",
+  "validation": {
+    "fixture": {
+      "original_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "original_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "body": {
+        "start": "00953A80",
+        "end_inclusive": "00953B7E",
+        "size": 255,
+        "sha256": "172eeca78ea9a6591b93ff0ef2c29b1135349d590e98bcae3e25a56284b47d17"
+      },
+      "redirected_direct_calls": [
+        "00953B03 ->00647300",
+        "00953B5D ->006E0B40",
+        "00953B75 ->00926D90"
+      ],
+      "virtual_call": "00953AF7 primary+140 supplied callback; cases include returned identity, another identity and null, plus frontend-owner mutation. Actual supported getters0047F320/006F57A0/0074CDA0/007B97E0 remain external.",
+      "inputs": "neighbour_probe.cpp initialize defines all 12 original-byte input cases; no full game constructor or game process execution",
+      "compared": "ID/raw float words/ordered HUD, visibility and kill calls with symbolic receiver and argument identities",
+      "not_compared": "x87 CW/status/TOP, MXCSR, CPU flags/register residue, exception/unwind behavior"
+    },
+    "fixture_cases": 12,
+    "fixture_result": "pass",
+    "result_path": "local/neighbour_probe_result.txt",
+    "build": {
+      "result": "passed",
+      "platform": "MSVC Win32 Release",
+      "command": "./scripts/build.ps1",
+      "tests": {
+        "reconstructed_math": "passed",
+        "native_math_differential": "passed"
+      },
+      "log": "local/neighbour_win32_build.txt",
+      "game_executable_sha256": "e23260c92de5865aaa9a86d9fbe772f90fde7e22c3fb4e2867c3f32769767df8"
+    },
+    "call_verification": {
+      "command": "python tools/verify_report_calls.py reports/unit_neighbour_fields.json",
+      "direct_rows_checked": 21,
+      "failures": 0,
+      "indirect_rows": 4,
+      "note": "Indirect listings and concrete vtable producers separately inspected; checker does not prove dynamic target resolution.",
+      "log": "local/neighbour_call_verification.txt"
+    },
+    "game_runtime": "not run; no binding added",
+    "artifact_manifest": "local/neighbour_manifest.json",
+    "artifact_manifest_sha256": "f0bfcfedabffe78a71cfefd52c097b9d6ce2c38522a24c80aea39b8a599a440e"
+  },
+  "compiled_source_sha256": {
+    "include/bsp/unit_neighbour_fields.hpp": "8ad37c6fd93de31a88d43199a29948df9b9c5d89daf4d9215c25d8d2cbb82495",
+    "src/unit_neighbour_fields.cpp": "a8194d02a629d2b38eb4abe70d2d55efe900c46ecef8c0d06d22a147e4db8e0a"
+  }
+}

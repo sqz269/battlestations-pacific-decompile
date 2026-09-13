@@ -16,6 +16,9 @@ namespace bsp {
 void reserve_native_render_resource_record_array_00b2ff00(
     void* actual_array_header, std::uint32_t requested_capacity,
     SizedStoragePool& actual_string_pool, const SingletonLifetimeCallbacks&);
+void reserve_native_render_resource_record_array_00b2ff00(
+    void* actual_array_header, std::uint32_t requested_capacity,
+    ActualNativeStringPoolStorage&, const SingletonLifetimeCallbacks&);
 
 // Complete 00B30340..00B3040C. Grow in current storage with actual empty names,
 // allocated alias sentinels and descending zero stores at record +24..+14.

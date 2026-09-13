@@ -1,0 +1,199 @@
+{
+  "packet": "orch6_reconstruction_p",
+  "status": "reviewed_integrated_build_fixture_and_combined_process_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "packets": [
+    {
+      "packet": "brain-prepass-schedule-p",
+      "commit": "557aa13f22b2ce6c431e08372d15a13340bdb5ce",
+      "report": "reports/ship_ai_brain_prepass_schedule.json",
+      "call_rows_checked": 18,
+      "coverage": "Normal post-goal009F158A..009F1B9F, excluding interleaved earlier goal and native EH bookkeeping. Both timers, captured scan lock, torpedo/list6/special-chain order, release before AC4 helper and avoidance tail.",
+      "fixture": "18 original/source pairs,1558 original bytes,225 callback events per side,zero mismatches and matching full x87 status.",
+      "root_correction": "Naming only after worker proof:world+21C/220 is torpedo list slot43, not dummy slot45; API now world_torpedo_count_021c/world_torpedo_head_0220. Worker fixture records retain historical interface; combined build checks corrected names."
+    },
+    {
+      "packet": "throttle-clamp-p",
+      "commit": "00783eda1e41d49bd384e046b36d8e4465fa462e",
+      "report": "reports/ship_ai_throttle_clamp.json",
+      "call_rows_checked": 40,
+      "coverage": "00415620 retains NaN;00811D80 unordered upper takes ordinary arm, while ordered negative swaps and negates. Existing distance expression preserved.",
+      "fixture": "18 original/source pairs at PC24/PC53;316 original bytes including all four clamp calls;2136 compared result/preservation bytes;zero failures. Preserved old source fails12 cases.",
+      "limit": "Selected masked quiet-NaN proof; not all floating-point inputs, pointer-read ordering, unmasked traps or gameplay."
+    },
+    {
+      "packet": "unit-neighbour-fields-o",
+      "commit": "8e8fc1956a5fe507e07a589137d5c04458900ef4",
+      "report": "reports/unit_neighbour_fields.json",
+      "call_rows_checked": 21,
+      "coverage": "Complete normal00953A80:store DummyObjectID, scan actual dummy list45 with first-match semantics, optional HUD transfer, raw visibility-word copies, hide, fresh session mode and conditional kill.",
+      "fixture": "12 whole255-byte original-body cases, including signaling-NaN bit copies, duplicate IDs, callback and singleton reloads.",
+      "limit": "Four textual indirect rows resolved separately by actual tables; HUD/dummy visibility/kill runtime owners remain external."
+    },
+    {
+      "packet": "observer-raw-lifetime-q",
+      "commit": "2845df31",
+      "report": "reports/observer_raw_lifetime.json",
+      "call_rows_checked": 9,
+      "coverage": "Observer lock shares actual raw application singleton manager through SoundLifetimeAccess; captured first-manager section and fresh publication/registration reload order retained. Matching malloc-backed section helpers; CF7E70 deleting dispatcher bound.",
+      "fixture": "Focused source lifecycle over actual raw manager:real lock, duplicate edge registration/refcount decrement/detach, callback cleanup and manager drain. Not a native differential fixture.",
+      "limit": "No GameStartup observer owner instantiation yet. CF7E74 dispatch owner binding is a separate Q packet."
+    }
+  ],
+  "validation": {
+    "compiled_commit": "0f074d19734406a92937ee7a06a6db9c1f8b4ab2",
+    "exe_sha256": "8a1f1496371d35e0c6ed69176e39debfabfc797a29d0bb0950610c72a7cec998",
+    "build": "MSVC Win32 Release passed",
+    "ctest": "Both existing CTests passed",
+    "build_record": {
+      "compiled_commit": "0f074d19734406a92937ee7a06a6db9c1f8b4ab2",
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "-u",
+        "tools/integrate_workers.py",
+        "agent/orch6-20260912",
+        "--no-push"
+      ],
+      "log": "local\\orch6_integrate_p_20260913T000432.log"
+    },
+    "process_run": {
+      "compiled_commit": "0f074d19734406a92937ee7a06a6db9c1f8b4ab2",
+      "run_commit": "0f074d19734406a92937ee7a06a6db9c1f8b4ab2",
+      "compiled_input_drift": [],
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_0f074d19.exe",
+        "--frames",
+        "360",
+        "--press-start-frame",
+        "3",
+        "--menu-select",
+        "USN01",
+        "--mission-frames",
+        "120",
+        "--mission-frame-seconds",
+        "0.1",
+        "--game-root",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+        "--fmod-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "--fmod-event-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_p.log",
+        "--order-frame",
+        "0",
+        "--order-unit",
+        "Enterprise",
+        "--order",
+        "moveto:Airfield2",
+        "--trajectory-csv",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_p.csv"
+      ],
+      "exe_sha256": "8a1f1496371d35e0c6ed69176e39debfabfc797a29d0bb0950610c72a7cec998",
+      "preserved_executable": "local\\orch6_combined_0f074d19.exe",
+      "source_sha256": {
+        "src/game_hosts_ship_ai.cpp": "d13cf757bd05be794cf8fc7f7fc8fe99ec40f8b4d8fedc9adece77b251a985e3",
+        "src/game_hosts_units.cpp": "68261da96ddb13ad78764ea022c8a4f9a48997f840d9a83cf464865b17ce3f0f",
+        "src/game_hosts_lua.cpp": "b9a66e97a871069a585a79501bd98b25a471140b943c79694c89552d9ea97e09",
+        "src/game_avoid_zone_runtime.cpp": "6bac077630082ea2097f53078dcf59bbdeb0fcd5d3260250a92ada5e18c0241b",
+        "src/ship_ai_avoidance_request.cpp": "ac52fdb77798b31f10b6a1927b80d6357844186c2bce0a38176827320df863fc",
+        "src/ship_ai_search_storage.cpp": "5fcc7208710274d7ef3523e23cc1ae74d4483225fd1842373d6066e5808f20e4",
+        "src/session_participant_pools.cpp": "4b3caa17635856f7f32fce4f2af65bc56c96fcde096716374a78a1912956a697",
+        "src/game_ship_avoidance_tuning_lua.cpp": "85243079baf1f442ce313cfd9825fab73fe94920c2087165847bcb494aa8840e",
+        "src/game_hosts_mission_frame.cpp": "1c3e51a5bc559b3e4d9490a647d7b0261560f7b356e6dedd247d69af3727951b"
+      },
+      "process_check": "No matching reconstructed game process before launch",
+      "exit": 0,
+      "seconds": 12.296918630599976,
+      "trajectory_audit": {
+        "rows": 18557,
+        "nonfinite_rows": 0,
+        "nonfinite_units": [],
+        "airfield_samples": 241,
+        "airfield_unchanged": true
+      },
+      "avoidance_search": {
+        "queries": 2400,
+        "refills": 10,
+        "clears": 12
+      },
+      "cruise_owners": {
+        "reads": 1080,
+        "unavailable": 0
+      },
+      "generic_tick": {
+        "calls": 10080,
+        "unavailable": 0,
+        "units": 42,
+        "input_one": 42
+      },
+      "participant_pool": {
+        "scene_present": 1,
+        "scene_slots": 8,
+        "mode": 0
+      },
+      "world_registration": {
+        "unavailable": 0,
+        "nodes": 420,
+        "invalid_lists": 0,
+        "ships": 14,
+        "planes": 20
+      },
+      "world_expected_from_native_report": {
+        "created": 77,
+        "unknown": [],
+        "nodes": 420,
+        "counts": {
+          "1": 77,
+          "2": 77,
+          "4": 77,
+          "5": 77,
+          "6": 14,
+          "7": 4,
+          "9": 1,
+          "10": 3,
+          "11": 6,
+          "15": 20,
+          "16": 6,
+          "17": 4,
+          "18": 5,
+          "22": 5,
+          "27": 42,
+          "28": 1,
+          "69": 1
+        }
+      },
+      "limits": [
+        "Process-run evidence, not original-game visual or gameplay parity.",
+        "Constructor-owned unit roles remain unassigned until actual role-message delivery is recovered.",
+        "Obstacle node refresh, several state writers and motion phase remainders remain partial.",
+        "Untouched native cache bounds are preserved; original allocation history is not reproduced."
+      ]
+    }
+  },
+  "evidence_archive": {
+    "manifest": "local/orch6_worker_archive_p.json",
+    "manifest_sha256": "26952d95f57ba41e870933c349ced968bd86ae4d1341dd5679bb6c5dd182729e",
+    "artifacts": 245,
+    "includes": "Recorded local and build artifacts, including exact worker Release libraries.",
+    "cache_drift": []
+  },
+  "review_corrections_commit": "ca6de819",
+  "analysis_metadata_limit": "Decoded false-free gaps do not imply stored Ghidra function-body membership. See native_neighbour_node_flow_repair.json and observer_dispatch_flow_repair.json; supported inline script endpoint was disabled and configuration was preserved.",
+  "limits": [
+    "Process evidence covers the recorded compiled commit, not later shared-main descendants.",
+    "The new prepass, dummy binding and observer adapter are build/fixture checked; this mission run does not establish their execution.",
+    "Candidate collection and several actual runtime owner/delivery paths remain unbound.",
+    "New C++ interfaces are not drop-in binary ABI replacements; no original-game visual or gameplay parity claim."
+  ],
+  "follow_up": [
+    "Integrate and bind actual dispatch-vector singleton owner and CRT alias producer.",
+    "Integrate raw90h obstacle node with actual callback/event owner contracts.",
+    "Project evidenced canonical scene flag cells in existing game unit owners before enabling further runtime candidate paths."
+  ]
+}

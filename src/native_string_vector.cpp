@@ -44,4 +44,17 @@ void append_native_string_vector_004cdc20(NativeStringVectorStorage& names,const
     if(destination){destination->length_00=0;destination->data_04=nullptr;copy_native_string_header_00be0a30_fragment(destination,strings,&source);}
     ++names.count_04;
 }
+NativeStringVectorStorage& copy_native_string_vector_00543e50(
+    NativeStringVectorStorage& destination,const NativeStringVectorStorage& source,
+    NativeStringStorage& strings){
+    const volatile NativeStringVectorStorage& current=source;
+    resize_native_string_vector_00427110(destination,0,strings);
+    reserve_native_string_vector_00426520(destination,current.count_04,strings);
+    for(std::int32_t index=0;index<current.count_04;++index){
+        const auto* const name=at(current.data_00,index);
+        append_native_string_vector_004cdc20(destination,
+            *reinterpret_cast<const NativeString*>(name),strings);
+    }
+    return destination;
+}
 } // namespace bsp

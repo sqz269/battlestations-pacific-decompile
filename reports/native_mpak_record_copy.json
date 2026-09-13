@@ -1,0 +1,506 @@
+{
+  "schema": "bsp-native-mpak-record-copy-ba-v1",
+  "packet": "orch2_native_mpak_record_copy_ba",
+  "status": "complete_actual_storage_build_and_focused_fixture_passed_pending_primary_annotation_and_integration",
+  "provenance": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "worker_branch": "agent/orch2-mpak-container-ba",
+    "analysis_base": "22a4613e44db8b0ad5897ec6706ad1014c3a972b"
+  },
+  "new_complete_bodies": 3,
+  "new_complete_bytes": 332,
+  "functions": [
+    {
+      "address": "00bb65a0",
+      "name": "copy_construct_native_mpak_file_00bb65a0",
+      "provisional_ghidra_name": "BSP_MpakFileRecord_CopyConstruct",
+      "source": "src/native_mpak_record_copy.cpp",
+      "header": "include/bsp/native_mpak_record_copy.hpp",
+      "status": "complete_actual_storage_strict_win32_fixture_original_body_and_direct_unwind_action_compared",
+      "coverage": "complete",
+      "native_end_inclusive": "00bb662f",
+      "native_byte_count": 144,
+      "native_sha256": "0fd0bd9f8e09b069b8ef9a2042657d7b51b6222c6861e48ef8aa2d7d46d7757b",
+      "original_abi": "ECX destination24h; stack source24h; EAX destination; RET4. Clear name before self-alias test, copy current name then DWORD8/C and byte10, preserve padding/allocator, call explicit STL6180; nested failure releases current name only.",
+      "evidence": [
+        "docs/NATIVE_MPAK_RECORD_COPY.md",
+        "reports/native_mpak_record_copy.json"
+      ],
+      "uncertainty": "Descriptive symbol is provisional, not recovered. Explicit original STL6180 contract; shared helper dependencies. New C++ interfaces; no native FH3/SEH ABI or gameplay claim."
+    },
+    {
+      "address": "00bb6630",
+      "name": "copy_construct_native_mpak_directory_00bb6630",
+      "provisional_ghidra_name": "BSP_MpakDirectoryRecord_CopyConstruct",
+      "source": "src/native_mpak_record_copy.cpp",
+      "header": "include/bsp/native_mpak_record_copy.hpp",
+      "status": "complete_actual_storage_strict_win32_fixture_original_body_and_direct_unwind_action_compared",
+      "coverage": "complete",
+      "native_end_inclusive": "00bb66ac",
+      "native_byte_count": 125,
+      "native_sha256": "a752cff820a9ae1b52b162dd9c13f4d2c4a984bbdfe70d0f0f4e7b10f3abb076",
+      "original_abi": "ECX destination14h; stack source14h; EAX destination; RET4. Clear/copy name, arm name-only cleanup, zero custom member-vector header, call actual543E50; no partial-member rollback.",
+      "evidence": [
+        "docs/NATIVE_MPAK_RECORD_COPY.md",
+        "reports/native_mpak_record_copy.json"
+      ],
+      "uncertainty": "Descriptive symbol is provisional, not recovered. Explicit original STL6180 contract; shared helper dependencies. New C++ interfaces; no native FH3/SEH ABI or gameplay claim."
+    },
+    {
+      "address": "00543e50",
+      "name": "copy_native_string_vector_00543e50",
+      "provisional_ghidra_name": "BSP_NativeStringVector_CopyContents",
+      "source": "src/native_string_vector.cpp",
+      "header": "include/bsp/native_string_vector.hpp",
+      "status": "complete_actual_storage_strict_win32_fixture_original_body_and_direct_unwind_action_compared",
+      "coverage": "complete",
+      "native_end_inclusive": "00543e8e",
+      "native_byte_count": 63,
+      "native_sha256": "992372985c6d75815dcd0a20b3ef40bda01257500707492f14e38af3414f89b1",
+      "original_abi": "ECX destination0Ch; stack source0Ch; EAX destination; RET4. Resize destination0, reserve current source count, append using signed current count/current data. Self-copy empties the vector; no local EH rollback.",
+      "evidence": [
+        "docs/NATIVE_MPAK_RECORD_COPY.md",
+        "reports/native_mpak_record_copy.json"
+      ],
+      "uncertainty": "Descriptive symbol is provisional, not recovered. Explicit original STL6180 contract; shared helper dependencies. New C++ interfaces; no native FH3/SEH ABI or gameplay claim."
+    }
+  ],
+  "direct_call_evidence": [
+    {
+      "function": "00bb65a0",
+      "address": "00bb65d8",
+      "native": "0041dd40",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00bb65a0",
+      "address": "00bb65ed",
+      "native": "00bf7680",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00bb65a0",
+      "address": "00bb6616",
+      "native": "00bb6180",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00bb6630",
+      "address": "00bb6663",
+      "native": "0041dd40",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00bb6630",
+      "address": "00bb6677",
+      "native": "00bf7680",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00bb6630",
+      "address": "00bb6692",
+      "native": "00543e50",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00543e50",
+      "address": "00543e57",
+      "native": "00427110",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00543e50",
+      "address": "00543e66",
+      "native": "00426520",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00543e50",
+      "address": "00543e7a",
+      "native": "004cdc20",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00cc44f0",
+      "address": "00cc44f3",
+      "native": "0041dd20",
+      "scope": "direct_instruction_identity; semantics_described_in_doc",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc4510",
+      "address": "00cc4513",
+      "native": "0041dd20",
+      "scope": "direct_instruction_identity; semantics_described_in_doc",
+      "kind": "tail_jump"
+    }
+  ],
+  "shared_helper_callsite_evidence": [
+    {
+      "function": "00bb6630",
+      "address": "00bb6692",
+      "native": "00543e50",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00544540",
+      "address": "0054454b",
+      "native": "00543e50",
+      "scope": "callsite_argument_setup_only; caller_not_reconstructed",
+      "setup": "ECX=owner+0c; stack=source argument; existing destination"
+    },
+    {
+      "function": "005f52c0",
+      "address": "005f5470",
+      "native": "00543e50",
+      "scope": "callsite_argument_setup_only; caller_not_reconstructed",
+      "setup": "ECX=destination+98; stack=source+98"
+    },
+    {
+      "function": "005f52c0",
+      "address": "005f5482",
+      "native": "00543e50",
+      "scope": "callsite_argument_setup_only; caller_not_reconstructed",
+      "setup": "ECX=destination+a4; stack=source+a4"
+    },
+    {
+      "function": "00b80c70",
+      "address": "00b80cfa",
+      "native": "00543e50",
+      "scope": "callsite_argument_setup_only; caller_not_reconstructed",
+      "setup": "ECX=fresh backing+index*12, zeroed; stack=old backing+index*12"
+    },
+    {
+      "function": "00bf0bd0",
+      "address": "00bf0c2f",
+      "native": "00543e50",
+      "scope": "callsite_argument_setup_only; caller_not_reconstructed",
+      "setup": "ECX=next 0ch element, zeroed; stack=source argument"
+    },
+    {
+      "function": "00bf2120",
+      "address": "00bf215b",
+      "native": "00543e50",
+      "scope": "callsite_argument_setup_only; caller_not_reconstructed",
+      "setup": "ECX=destination+10h, zeroed; stack=source argument+4"
+    },
+    {
+      "function": "00bf2560",
+      "address": "00bf25d2",
+      "native": "00543e50",
+      "scope": "callsite_argument_setup_only; caller_not_reconstructed",
+      "setup": "ECX=zeroed stack vector; stack=earlier empty stack vector"
+    },
+    {
+      "function": "00bf2560",
+      "address": "00bf25f9",
+      "native": "00543e50",
+      "scope": "callsite_argument_setup_only; caller_not_reconstructed",
+      "setup": "ECX=second zeroed stack vector; stack=preceding copied stack vector"
+    }
+  ],
+  "exception_maps": [
+    {
+      "function": "00bb65a0",
+      "handler_stub": "00cc44f8",
+      "func_info": "00dfde68",
+      "unwind_map": "00dfde60",
+      "states": 1,
+      "next_state": -1,
+      "action": "00cc44f0",
+      "action_identity": {
+        "entry": "00cc44f0",
+        "end_inclusive": "00cc44f7",
+        "byte_count": 8,
+        "sha256": "56191bb218e92a57f5b3b788c52997ba3ad3c3e0157e7c0c5e2d2ea93cf8c2be",
+        "live_equals_disk": true
+      },
+      "armed_at": "00bb660e",
+      "cleanup": "41dd20 on saved destination name only"
+    },
+    {
+      "function": "00bb6630",
+      "handler_stub": "00cc4518",
+      "func_info": "00dfde94",
+      "unwind_map": "00dfde8c",
+      "states": 1,
+      "next_state": -1,
+      "action": "00cc4510",
+      "action_identity": {
+        "entry": "00cc4510",
+        "end_inclusive": "00cc4517",
+        "byte_count": 8,
+        "sha256": "42bb6374b8f8ed6a310d99c157ea9cd6bbabe78e9b3c15d8dec84c4d212f2701",
+        "live_equals_disk": true
+      },
+      "armed_at": "00bb6686",
+      "cleanup": "41dd20 on saved destination name only"
+    }
+  ],
+  "layouts": {
+    "stl_vector_10h": {
+      "allocator_debug_word": "00",
+      "begin": "04",
+      "end": "08",
+      "capacity_end": "0c"
+    },
+    "file_record_24h": {
+      "name_length": "00",
+      "name_pointer": "04",
+      "first_dword": "08",
+      "second_dword": "0c",
+      "flag_byte": "10",
+      "untouched_padding": [
+        "11",
+        "12",
+        "13"
+      ],
+      "offset_vector": "14",
+      "producer": "00bb6870",
+      "copy_producer": "00bb65a0"
+    },
+    "directory_record_14h": {
+      "name_length": "00",
+      "name_pointer": "04",
+      "custom_string_vector_data": "08",
+      "custom_string_vector_count": "0c",
+      "custom_string_vector_capacity": "10",
+      "producer": "00bb7c50",
+      "copy_producer": "00bb6630"
+    }
+  },
+  "library_contract": {
+    "entry": "00bb6180",
+    "class": "NativeMpakOffsetVectorCopyLibrary",
+    "method": "copy_00bb6180",
+    "original_abi": "ECX destination10h; stack source10h; EAX destination; RET4",
+    "storage": "allocator+0 untouched; begin/end/capacity+4/+8/+C",
+    "implementation": "not_supplied_no_success_stub",
+    "fixture_binding": "fixed valid three-DWORD copy plus explicit injected partial publication; shared both sides; not original STL comparison"
+  },
+  "reused_actual_dependencies": [
+    "0041dd40",
+    "0041dd20",
+    "00427110",
+    "00426520",
+    "004cdc20"
+  ],
+  "ghidra_mutations": false,
+  "annotations_pending": true,
+  "prior_ghidra_names": {
+    "00bb65a0": "FUN_00bb65a0",
+    "00bb6630": "FUN_00bb6630",
+    "00543e50": "FUN_00543e50"
+  },
+  "no_ghidra_function": [],
+  "validation": {
+    "strict_win32": {
+      "status": "passed",
+      "command": "./scripts/build.ps1",
+      "log": "local/native-mpak-record-copy-build03.log",
+      "log_sha256": "17e9fedfe7768fe0158d8fc88c07ab118e6ccfa1a18833b9d248406868245f3a",
+      "existing_ctests": [
+        "reconstructed_math",
+        "native_math_differential"
+      ],
+      "ctests_passed": 2,
+      "native_seed_spans_verified": 8
+    },
+    "mechanical_calls": {
+      "status": "passed",
+      "checked": 20,
+      "failed": 0
+    },
+    "fixture": {
+      "status": "passed",
+      "development_attempt": "local/mpak-record-copy-attempts/attempt03",
+      "manifest_sha256": "fe50e913167beba27db1e0d295241ff0794d91c2e631b2fc6e754e12735ed6f8",
+      "development_head": "22a4613e44db8b0ad5897ec6706ad1014c3a972b",
+      "implementation_uncommitted_during_development_fixture": true,
+      "comparison_pairs": 6,
+      "assertions": 606,
+      "normalized_state_and_event_words": 171,
+      "original_bodies": 3,
+      "original_body_bytes": 332,
+      "direct_original_unwind_actions": 2,
+      "unwind_action_bytes": 16,
+      "linked_objects_verified_unique_archive_members": [
+        {
+          "library": "bsp_core",
+          "name": "native_legacy_exception_owner.obj"
+        },
+        {
+          "library": "bsp_core",
+          "name": "native_legacy_sbo_string.obj"
+        },
+        {
+          "library": "bsp_core",
+          "name": "native_mpak_record_copy.obj"
+        },
+        {
+          "library": "bsp_core",
+          "name": "native_renderer_worker_lifetime.obj"
+        },
+        {
+          "library": "bsp_core",
+          "name": "native_singleton_publication.obj"
+        },
+        {
+          "library": "bsp_core",
+          "name": "native_singleton_vector_allocation.obj"
+        },
+        {
+          "library": "bsp_core",
+          "name": "native_singleton_vector_insert_count.obj"
+        },
+        {
+          "library": "bsp_core",
+          "name": "native_singleton_vector_leaves.obj"
+        },
+        {
+          "library": "bsp_core",
+          "name": "native_singleton_vector_registration_wrappers.obj"
+        },
+        {
+          "library": "bsp_core",
+          "name": "native_singleton_vector_reserve_construct.obj"
+        },
+        {
+          "library": "bsp_core",
+          "name": "native_string.obj"
+        },
+        {
+          "library": "bsp_core",
+          "name": "native_string_pool_owner.obj"
+        },
+        {
+          "library": "bsp_core",
+          "name": "native_string_pool_storage.obj"
+        },
+        {
+          "library": "bsp_core",
+          "name": "native_string_vector.obj"
+        },
+        {
+          "library": "bsp_core",
+          "name": "singleton_lifetime.obj"
+        }
+      ],
+      "compiler_observed_headers": 283,
+      "input_pins": 1376,
+      "executable_sha256": "40c9591da8ddd7d6db99bc44b7ec24cc978f11a4e54d00448ef4331b70b8771b",
+      "link_map_sha256": "b662fadd0d4c7eeb2b74753a9239bc839ec3d3134663fe74fe28652923089a70",
+      "original_outcomes": [
+        "ORIGINAL 0 [0,0,1,7,1,99,104,97,110,103,101,100,2882400001,270544960,126,165,165,165,165,165,165,165,3,3,13,82140,4294967295,5,659724,8,8,24960,2779096485]",
+        "ORIGINAL 1 [1,0,3,7,1,98,101,102,111,114,101,33,1,2,2,3,1,111,110,101,6,1,115,101,99,111,110,100,9,659724,8,8,659724,4,16,659724,7,20]",
+        "ORIGINAL 2 [2,0,0,1,0,2,6,62702,7,16,62702,4,12]",
+        "ORIGINAL 3 [3,1,1,7,1,98,101,102,111,114,101,33,287454020,1432778632,1,165,165,165,165,165,165,165,1,3,13,9,659724,8,8,24960,2779096485,64017,62702,8,8]",
+        "ORIGINAL 4 [4,1,3,7,1,98,101,102,111,114,101,33,1,1,2,3,1,111,110,101,12,659724,8,8,659724,4,16,659724,7,64017,62702,8,8]",
+        "ORIGINAL 5 [5,1,1,0,0,2779096485,2779096485,165,165,165,165,165,165,165,165,3,659724,8,64017]"
+      ],
+      "result": {
+        "passed": true,
+        "comparison_pairs": 6,
+        "original_bodies": 3,
+        "original_body_bytes": 332,
+        "original_unwind_actions": 2,
+        "original_unwind_bytes": 16,
+        "original_fh3_dispatch": false,
+        "shared_stl_test_contract": true
+      },
+      "cases": [
+        "file_copy_current_fields_after_allocation_callback",
+        "directory_copy_two_members",
+        "shared_vector_self_copy",
+        "file_nested_failure_name_only_cleanup",
+        "directory_second_member_failure_name_only_cleanup",
+        "initial_name_failure_no_armed_cleanup"
+      ],
+      "original_failure_method": "execute original prefix; controlled wrapper restore of registers/stack/FS; invoke retained original action when armed; no original FH3 dispatch",
+      "shared_dependencies": "existing actual pooled strings and custom string-vector helpers; fixed test-only STL6180 contract",
+      "private_probe_image_base": "20000000",
+      "original_relocation_delta": "30000000",
+      "original_spans": [
+        {
+          "entry": "00bb65a0",
+          "end_inclusive": "00bb662f",
+          "byte_count": 144,
+          "sha256": "0fd0bd9f8e09b069b8ef9a2042657d7b51b6222c6861e48ef8aa2d7d46d7757b",
+          "live_equals_disk": true
+        },
+        {
+          "entry": "00bb6630",
+          "end_inclusive": "00bb66ac",
+          "byte_count": 125,
+          "sha256": "a752cff820a9ae1b52b162dd9c13f4d2c4a984bbdfe70d0f0f4e7b10f3abb076",
+          "live_equals_disk": true
+        },
+        {
+          "entry": "00543e50",
+          "end_inclusive": "00543e8e",
+          "byte_count": 63,
+          "sha256": "992372985c6d75815dcd0a20b3ef40bda01257500707492f14e38af3414f89b1",
+          "live_equals_disk": true
+        },
+        {
+          "entry": "00cc44f0",
+          "end_inclusive": "00cc44f7",
+          "byte_count": 8,
+          "sha256": "56191bb218e92a57f5b3b788c52997ba3ad3c3e0157e7c0c5e2d2ea93cf8c2be",
+          "live_equals_disk": true
+        },
+        {
+          "entry": "00cc4510",
+          "end_inclusive": "00cc4517",
+          "byte_count": 8,
+          "sha256": "42bb6374b8f8ed6a310d99c157ea9cd6bbabe78e9b3c15d8dec84c4d212f2701",
+          "live_equals_disk": true
+        }
+      ],
+      "cpp_warning_scope": "C4733 disabled only around fixture restoration of captured FS:0; production /W4 /WX unchanged",
+      "portable_runner": "local/replay_mpak_record_copy.py",
+      "result_file": "manifest.json",
+      "portable_files": [
+        "replay_mpak_record_copy.py",
+        "mpak_record_copy_probe.cpp",
+        "mpak_record_copy_native.hpp",
+        "mpak_record_copy_native_manifest.json",
+        "mpak_record_copy_expected.json",
+        "mpak_record_copy_original_outcomes.json",
+        "mpak_record_copy_fixture_support.py"
+      ],
+      "permanent_tests_added": 0
+    },
+    "game_validation": "not_run",
+    "installed_archive_validation": "not_run",
+    "original_fh3_dispatch": "not_tested"
+  },
+  "retained_failures": [
+    {
+      "artifact": "local/native-mpak-record-copy-build.log",
+      "phase": "configure",
+      "reason": "initial registry line lacked CMake DEFER; fixed only owned registration"
+    },
+    {
+      "artifact": "local/mpak-record-copy-attempts/attempt01",
+      "phase": "compile",
+      "reason": "fixture C4733 on captured FS-chain restoration; narrowly scoped suppression"
+    },
+    {
+      "artifact": "local/mpak-record-copy-attempts/attempt02",
+      "phase": "before_original_execution",
+      "reason": "low address VirtualAlloc collision; original bodies relocated +30000000h"
+    }
+  ],
+  "limits": [
+    "Complete reconstructed schedules do not supply compatible outer-container or STL6180 bindings.",
+    "STL6180 is a fixed shared fixture contract, never counted as original-tested or reconstructed.",
+    "Existing actual shared string/vector helpers are dependencies, not independently original-tested by this packet.",
+    "Original prefixes/direct unwind actions are compared; original FH3 dispatch and simultaneous cleanup failure are not.",
+    "No arbitrary native-stack spill alias, malformed native container, CRT/STL allocation-failure, native ABI, archive or gameplay claim.",
+    "Development build/fixture file pins precede the implementation commit; primary must validate its exact integrated candidate."
+  ]
+}

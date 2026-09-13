@@ -1,0 +1,388 @@
+{
+  "packet": "orch5_loader_integration",
+  "status": "default_registered_exact_code_promoted_and_seven_scoped_fixtures_passed",
+  "branch": "agent/orch5-20260911",
+  "exact_validated_code_commit": "b18f5477069e6db5da7e11a65ee527aefed3d7f0",
+  "main_at_checkpoint": "0f074d19734406a92937ee7a06a6db9c1f8b4ab2",
+  "promoted_to_main": true,
+  "previous_checkpoint": {
+    "report_commit": "08bfffb72178e7c48a3151b26c851910b3039a4a",
+    "validated_code": "c5e1427f80bef38c28277c22c437345856e37d52",
+    "report_sha256": "07b3007be643a0b1ce009eb45e008640bf9c415666c68086c383a3bc098fb487"
+  },
+  "components": {
+    "surface_string_domain": "41e22da9",
+    "state_caches": "dd837838",
+    "shader_reader": "0ea46a3a",
+    "vfs_name_resolution": "8992dd4b",
+    "five_child_adapter": "c5e1427f",
+    "compiler": "8ddf225dc2ea42040cc6d80afcfba3ead3c8e95b",
+    "corrected_texture": "9bff4b174f832631c7448358058bc5ac706c15b7",
+    "texture_source_import": "d3daf4f1960d44fa54156eaf098a59b16ec8d61e",
+    "compiler_and_texture_vfs_bindings": "8bcdfac3299c82a89eb670b576091c17f38f4ba0",
+    "compiled_shader_owner": "f862463677a079b9ad0977e6d54ab6e268cb4e8a",
+    "named_special_textures": "c929c120d5ee74f832c5a07a842099dd6be8dc58",
+    "named_special_source_import": "072a4132",
+    "source_registration": "02480336"
+  },
+  "source_sha256": {
+    "include/bsp/native_surface_owner.hpp": "be315e0675574dfefe39c9200e4a3bc47824aa27376839950e733c294545eafb",
+    "src/native_surface_owner.cpp": "01b33cf76b7e6b642bd41f4edeea5685568123671e5d89a4cbf92dc73a348a45",
+    "include/bsp/native_material_state_cache.hpp": "4079a8a77f751e920c616234e4aa8ace10551b1d2afd4c12995d34617ed00c8f",
+    "src/native_material_state_cache.cpp": "6d2be9e41ba9876728707cbebcff1d9b642180a02e92e77dc2c5bb15c0ac69ce",
+    "include/bsp/native_shader_descriptor_reader.hpp": "30d52e53bf0bced56cfced728097595404b2146445569185a393d109c874cf2c",
+    "src/native_shader_descriptor_reader.cpp": "37740c3cda68afb0ea707a222a4c24dba8ca7aa8592da37e10ba582617c454d9",
+    "include/bsp/native_vfs_name_resolution.hpp": "149e85bbc3e03e968a28ffad46a23d4afc7e10c3986d30f9591a6894e958378a",
+    "src/native_vfs_name_resolution.cpp": "3518ea9da4307dfe6f646f02ae77690577abf7e38d83811aa498e2cbd48acec5",
+    "include/bsp/native_material_effect_runtime.hpp": "405fea0c8ae9ad74407b148198ba7c77f3a748eb8566b624bfc3f1b90eed4ab5",
+    "src/native_material_effect_runtime.cpp": "8487121fd202fa3ad647daeef793db74b17993a706f26a67c04e01db2f30ebe4",
+    "include/bsp/native_material_program_compiler.hpp": "c2eb2196fe4ae5fe9a381d91464f8d0feeb828ca7261bba737387947eb501548",
+    "src/native_material_program_compiler.cpp": "0143f236502451b563897f9e8f59bd15289dd7eb113975f364cdbb14cca9b3a7",
+    "include/bsp/native_texture_loading_cache.hpp": "f1ac2aae0cb9f29e28bf168e73d706a5183d1dc5fd2ffc9e369d87156791b7aa",
+    "src/native_texture_loading_cache.cpp": "20c2a9d694e693c136efdaa161fd6e04bc4c236f1e0dd9f0a8c83abe2956afaa",
+    "include/bsp/native_render_resource_record_array.hpp": "fc57e0b04c667a0facc5d6f22fb02c1f4ade015798651abb11e5205cd9a0e48b",
+    "src/native_render_resource_record_array.cpp": "762ab6e47c555450d4fdbe947e630606aafcf43bfdd2c1a42baf357793c97a58",
+    "include/bsp/native_render_resource_record.hpp": "98f3ef8e236d812ed68f17bdee180a24a24732a1f266c2e2da7d47c92c5a5f6c",
+    "src/native_render_resource_record.cpp": "ef87fb3eaa2479bf707edf5a8dee72dbd77b7c37856e39d4c817a44a1eda07d9",
+    "include/bsp/native_renderer_texture_name_notification.hpp": "5157ead757f9082a87a57fe9f06694025ac2bc5888b244156b6e2526aa9407a4",
+    "src/native_renderer_texture_name_notification.cpp": "d142aaad67bf22f9b68734110d2dfd22b04332c16d973e4b12e31a65f8a4e1c3",
+    "include/bsp/native_compiled_shader_owner.hpp": "90c998746a1b1ba47f97f53f10064bec273cf8cb0a06470adb73d1f94fa56199",
+    "src/native_compiled_shader_owner.cpp": "8526339b94c9dea0a78a098273fe3cc5a354e10353ada6c1e1d7ea24cdbfcc43",
+    "include/bsp/native_named_special_textures.hpp": "e45d4b6240621387599ecf4e0d27d65e1f3abe4d6528d761d58db5df4e6f043e",
+    "src/native_named_special_textures.cpp": "73267086543b780a967d9432358d2ac5b4e352bf11a2f4532c4dd20e3c6f4e1a"
+  },
+  "validation": {
+    "build": "Default scripts/build.ps1, MSVC Win32 Release /W4 /WX; all seven sources registered normally",
+    "ctest_passed": 2,
+    "ctest_failed": 0,
+    "verifier_counted_rows": 828,
+    "direct_call_rows_checked": 824,
+    "resolved_indirect_rows_checked": 4,
+    "call_rows_failed": 0,
+    "fixtures": {
+      "compiler_builder": "Original/source B354D0/B35930/B3A7E0: 2507 bytes, 855 instructions, installed Lua descriptor inputs, five owning field lists, actual string cleanup. Wrapper/tail/virtual child/failure execution not covered.",
+      "state_caches": "Nine original bodies, three profiles, directional duplicates, initial growth, hit transfer, statistics and 36 canonical terminals. Hit-time terminal reentry and populated growth not covered.",
+      "shader_vfs": "Actual direct physical BDF4C0 route and gated SRCH builder, two installed B43B00 parses, same actual VFS/Lua/string domains and canonical shutdown. Alternate candidate routes not exercised.",
+      "texture_records": "Actual pool, deep ordered aliases, null record, growth64-to65 and source/old-array cleanup.",
+      "texture_failed_resolution": "Production retained headers/child holders with deliberate throwing provider; distinct children, retained consumed header preimages, one-shot factory/invoke and child-before-header teardown.",
+      "shader_owner": "Original/source nine ranges (1014 bytes,329 instructions), real pool/CRT, same raw+04 canonical lifetime, retained reserve failure and failed-frame destructor termination; no full reflection/compiler/native exception execution.",
+      "named_special_textures": "Original/source four bodies (346 bytes), real HAL COM queries/counts, actual name/shared serial, pool metadata and real terminals/shutdown; B34120 uses concrete source, original FH3/canonical cache registration not exercised."
+    },
+    "fixtures_link_combined_bsp_core": true,
+    "runtime_adapter_source_review": true,
+    "runtime_adapter_execution_fixture": false,
+    "actual_texture_vfs_factory_success_fixture": false,
+    "full_gpu_texture_load": false,
+    "full_cold_effect_load": false,
+    "original_binary_abi": false,
+    "game_validated": false,
+    "exact_commit_fixtures": [
+      {
+        "name": "compiler_builder",
+        "source": "local/native_material_program_probe.cpp",
+        "runner": "local/run_native_material_program_registered_probe.ps1",
+        "log": "local/native_material_program_probe.log",
+        "exit_code": 0,
+        "compiled_from_combined_library": true
+      },
+      {
+        "name": "state_cache",
+        "source": "local/native_state_cache_probe.cpp",
+        "runner": "local/run_native_state_cache_probe.ps1",
+        "log": "local/native-state-cache-registered-probe.log",
+        "exit_code": 0,
+        "compiled_from_combined_library": true
+      },
+      {
+        "name": "shader_vfs",
+        "source": "local/native_loader_shader_probe.cpp",
+        "runner": "local/run_native_loader_shader_probe.ps1",
+        "log": "local/native-loader-shader-probe.log",
+        "exit_code": 0,
+        "compiled_from_combined_library": true
+      },
+      {
+        "name": "texture_records",
+        "source": "local/texture_record_probe.cpp",
+        "runner": "local/loader-native-workers/texture/local/run_texture_record_probe.cmd",
+        "log": "local/texture-record-registered-probe.log",
+        "exit_code": 0,
+        "compiled_from_combined_library": true
+      },
+      {
+        "name": "texture_failure",
+        "source": "local/texture_resolution_failure_probe.cpp",
+        "runner": "local/loader-native-workers/texture/local/run_texture_resolution_failure_probe.cmd",
+        "log": "local/texture-resolution-failure-registered-probe.log",
+        "exit_code": 0,
+        "compiled_from_combined_library": true
+      },
+      {
+        "name": "shader_owner",
+        "source": "local/native_compiled_shader_probe.cpp",
+        "runner": "local/run_native_compiled_shader_registered_probe.ps1",
+        "log": "local/native_compiled_shader_probe.log",
+        "exit_code": 0,
+        "compiled_from_combined_library": true
+      },
+      {
+        "name": "named_special",
+        "source": "local/named_special_probe.cpp",
+        "runner": "local/named_special_registered_runner.cmd",
+        "log": "local/named-special-registered-probe.log",
+        "exit_code": 0,
+        "compiled_from_combined_library": true
+      }
+    ]
+  },
+  "analysis": {
+    "new_unique_annotations_saved_read_back_exported": 18,
+    "compiler_comments_corrected_after_body_repair": 5,
+    "compiler_destructor": "B3A7E0..B3AE9B: 7 post-free flow repairs, recreated full body, 618 instructions, zero gaps; 23 previously raw tail calls now owned and verified.",
+    "new_worker_archive_counts": {
+      "compiler": 27,
+      "texture": 49,
+      "compiled_shader": 27,
+      "named_special": 18
+    },
+    "owner_extensions": {
+      "functions_annotated_saved_read_back_exported": 11,
+      "post_free_repairs": 3,
+      "shader_destructor": "B3B1E0..B3B23C, 28 instructions, zero gaps. Reserve/delete have no call gaps; unreachable JMP padding preserved."
+    },
+    "immutable_current_validation_artifacts": {
+      "cmake/startup.cmake": {
+        "archive": "local/checkpoints/b18f5477/cmake/startup.cmake",
+        "sha256": "6423ba0c0aeeb39aae64c9c696ebb1247ed2ef9339e34d22020607928d17b59f"
+      },
+      "local/compiled-shader-delete-flow.json": {
+        "archive": "local/checkpoints/b18f5477/local/compiled-shader-delete-flow.json",
+        "sha256": "44440fe2488f2aef96ca9479f96e361e250ccd9e8a9865ccac31fa230638f467"
+      },
+      "local/compiled-shader-dtor-definition.json": {
+        "archive": "local/checkpoints/b18f5477/local/compiled-shader-dtor-definition.json",
+        "sha256": "e7cc1405710f91fa4c105b4aaa62e37eb8482ce2ce31b7fd23173dd5e6b95ffe"
+      },
+      "local/compiled-shader-dtor-flow.json": {
+        "archive": "local/checkpoints/b18f5477/local/compiled-shader-dtor-flow.json",
+        "sha256": "2f9157972e467c8c85094e41897aa283de718650a3a7e932dd681e2ddeb57f56"
+      },
+      "local/compiled-shader-flow-verification.log": {
+        "archive": "local/checkpoints/b18f5477/local/compiled-shader-flow-verification.log",
+        "sha256": "baf97e8ff4fb8292703dd2c56176ebdbbebb6edabeab6d0e98fddfef3f9035a5"
+      },
+      "local/compiled-shader-reserve-flow.json": {
+        "archive": "local/checkpoints/b18f5477/local/compiled-shader-reserve-flow.json",
+        "sha256": "a49e0de776cf0eec7e86b25890fda6535218da49ee742fc4a67d249a7c27334b"
+      },
+      "local/compiler_original.hpp": {
+        "archive": "local/checkpoints/b18f5477/local/compiler_original.hpp",
+        "sha256": "7cce2ce1e25e9e2d0d7f3fd0ae6447b1e1c6d884cf970fa6f2463cdf45769fef"
+      },
+      "local/ghidra-annotations-20260913T070910Z.json": {
+        "archive": "local/checkpoints/b18f5477/local/ghidra-annotations-20260913T070910Z.json",
+        "sha256": "d48e70ea5b191db49390a27a1dee273d5729ef7e7b99af0b92f12c224896ec46"
+      },
+      "local/ghidra-annotations-20260913T071307Z.json": {
+        "archive": "local/checkpoints/b18f5477/local/ghidra-annotations-20260913T071307Z.json",
+        "sha256": "d18405a233b6bbd875fd47e5edfba25ad4d64fd10123c5cfd6918c2cdd256b16"
+      },
+      "local/ghidra-annotations-20260913T071603Z.json": {
+        "archive": "local/checkpoints/b18f5477/local/ghidra-annotations-20260913T071603Z.json",
+        "sha256": "337ed3efbdbad787613745dd14d28b9ed99928dc441b3b827effcb7588c26a16"
+      },
+      "local/loader-native-workers/texture/local/run_texture_record_probe.cmd": {
+        "archive": "local/checkpoints/b18f5477/local/loader-native-workers/texture/local/run_texture_record_probe.cmd",
+        "sha256": "cafef9109b640acf78140c86dc9684fe6c5a8779f15641edc27539c66531c47b"
+      },
+      "local/loader-native-workers/texture/local/run_texture_resolution_failure_probe.cmd": {
+        "archive": "local/checkpoints/b18f5477/local/loader-native-workers/texture/local/run_texture_resolution_failure_probe.cmd",
+        "sha256": "cad2679f7816e21907a465e515a16457c6b94b8395660f5fc94f5caf2194ec28"
+      },
+      "local/named-special-registered-probe.log": {
+        "archive": "local/checkpoints/b18f5477/local/named-special-registered-probe.log",
+        "sha256": "17d9a4d8deff8daeff7a81183917c3595577e7a9f2b0cc533a35f06c3c0bbffe"
+      },
+      "local/named_special_bytes.hpp": {
+        "archive": "local/checkpoints/b18f5477/local/named_special_bytes.hpp",
+        "sha256": "e6d7e9eb0efb8befb854a43da3320edfef9dfe740db05532e3c7fb307a543e31"
+      },
+      "local/named_special_probe.cpp": {
+        "archive": "local/checkpoints/b18f5477/local/named_special_probe.cpp",
+        "sha256": "c69012ff46ee4a1646e6750b3c5dc1bc9ed25ffcf3ee069fdc1b9a89ffac8afc"
+      },
+      "local/named_special_registered_runner.cmd": {
+        "archive": "local/checkpoints/b18f5477/local/named_special_registered_runner.cmd",
+        "sha256": "bda81a2b5c20f83b52cd3fbfd254da1466c20a801fcb5647d3581d11e302f1d6"
+      },
+      "local/native-compiler-repaired-comments.json": {
+        "archive": "local/checkpoints/b18f5477/local/native-compiler-repaired-comments.json",
+        "sha256": "fdcbe8d5bc2a444df44628965f1086288830e389be49db7434be60e7d159ff82"
+      },
+      "local/native-compiler-texture-comments.json": {
+        "archive": "local/checkpoints/b18f5477/local/native-compiler-texture-comments.json",
+        "sha256": "59f9eb7e02473690d0e32cf15cb5183371884299241363204ff7aac2df76810f"
+      },
+      "local/native-loader-final-calls.log": {
+        "archive": "local/checkpoints/b18f5477/local/native-loader-final-calls.log",
+        "sha256": "8eb2bc342c896b344e6efc135e4ecb037a3e9a3a4ba96c0f1f4a396ba6f78855"
+      },
+      "local/native-loader-main-build.log": {
+        "archive": "local/checkpoints/b18f5477/local/native-loader-main-build.log",
+        "sha256": "a45919b3b3729b2a98e1afbcd6d9bac9eefd44ba3413f6979243a3e6d3106bf2"
+      },
+      "local/native-loader-registration.json": {
+        "archive": "local/checkpoints/b18f5477/local/native-loader-registration.json",
+        "sha256": "787bef682acff00ff9daa7c86d0f92d36a03a7fe9b5d8728e7e2a078acde626d"
+      },
+      "local/native-loader-shader-probe.log": {
+        "archive": "local/checkpoints/b18f5477/local/native-loader-shader-probe.log",
+        "sha256": "2eac7161d43d6ca8ee78360a428c937537b24fd614e1bd7f6969a2e1e4f78b72"
+      },
+      "local/native-owner-extensions-comments.json": {
+        "archive": "local/checkpoints/b18f5477/local/native-owner-extensions-comments.json",
+        "sha256": "b1c86e1af730e4fb8e5ace7705bf76ba28d88d6c820fee289c78e7226e0a58c5"
+      },
+      "local/native-owner-extensions-export.log": {
+        "archive": "local/checkpoints/b18f5477/local/native-owner-extensions-export.log",
+        "sha256": "9a8f3d1a0535bbf4887c37c0af5f3a8a28394d34bc9a4173ee244f4b7c2edf0c"
+      },
+      "local/native-program-builder-tail-definition.json": {
+        "archive": "local/checkpoints/b18f5477/local/native-program-builder-tail-definition.json",
+        "sha256": "83fec192086f85b5ffc9703d98e40380c0cd43c9b15cb430f6d3d21a36b4efdd"
+      },
+      "local/native-program-builder-tail-flow.json": {
+        "archive": "local/checkpoints/b18f5477/local/native-program-builder-tail-flow.json",
+        "sha256": "b41e068e07701b1254813df3d0b401d8fa7f07433c91bdc0c32a84df94285ee3"
+      },
+      "local/native-state-cache-registered-probe.log": {
+        "archive": "local/checkpoints/b18f5477/local/native-state-cache-registered-probe.log",
+        "sha256": "2050c2fffa15d4ffab78df2a011721a210a017b641ffb4c5a75fd3907f08204a"
+      },
+      "local/native_compiled_shader_probe.cpp": {
+        "archive": "local/checkpoints/b18f5477/local/native_compiled_shader_probe.cpp",
+        "sha256": "f7f0bbda095bb7aaff95bf41de8a4443974dcaaa5ee74fca843a9d9ad62b5247"
+      },
+      "local/native_compiled_shader_probe.log": {
+        "archive": "local/checkpoints/b18f5477/local/native_compiled_shader_probe.log",
+        "sha256": "1dddf921bcca463a326867c3772af803e5b65aeaefa405bb253f190406f1f795"
+      },
+      "local/native_loader_shader_probe.cpp": {
+        "archive": "local/checkpoints/b18f5477/local/native_loader_shader_probe.cpp",
+        "sha256": "a453e9878dd4232b24166110d18e40766d55827270570adc7372c95481d7528d"
+      },
+      "local/native_material_program_probe.cpp": {
+        "archive": "local/checkpoints/b18f5477/local/native_material_program_probe.cpp",
+        "sha256": "1a4679d9725f42b97c6cf509ea1e5d24a704f25617128bc1bb675169e0228f06"
+      },
+      "local/native_material_program_probe.log": {
+        "archive": "local/checkpoints/b18f5477/local/native_material_program_probe.log",
+        "sha256": "d64dd1b4d601c8c42804aa5a1c43926572a61452c48821919b6226c2e5980a98"
+      },
+      "local/native_state_cache_probe.cpp": {
+        "archive": "local/checkpoints/b18f5477/local/native_state_cache_probe.cpp",
+        "sha256": "a2f5b8e2a8d41b03e6f3d8be1869b9a9c5bf41f0168902c22f8b7ae2b7c38948"
+      },
+      "local/run_native_compiled_shader_registered_probe.ps1": {
+        "archive": "local/checkpoints/b18f5477/local/run_native_compiled_shader_registered_probe.ps1",
+        "sha256": "757f4de714c2ee1796e93c00ab50892d4b6bc28cfd2a4098c593af2016979aab"
+      },
+      "local/run_native_loader_shader_probe.ps1": {
+        "archive": "local/checkpoints/b18f5477/local/run_native_loader_shader_probe.ps1",
+        "sha256": "bd9fadcb7c378f652a7a9f96b7189a88c00c514ffc65812529d7c81ce320015c"
+      },
+      "local/run_native_material_program_registered_probe.ps1": {
+        "archive": "local/checkpoints/b18f5477/local/run_native_material_program_registered_probe.ps1",
+        "sha256": "3b3b218e426fe2060d3efe30101ad53cb01276ffcf3c12c6d05e6ba40a6d6849"
+      },
+      "local/run_native_state_cache_probe.ps1": {
+        "archive": "local/checkpoints/b18f5477/local/run_native_state_cache_probe.ps1",
+        "sha256": "533d41636176f23bf64c14a89248f5c862acbee88d17b90f1b58412c59b26540"
+      },
+      "local/shader_original.hpp": {
+        "archive": "local/checkpoints/b18f5477/local/shader_original.hpp",
+        "sha256": "022a704342d872461d0ed2e9ed7a3268a526a6169943a3f8be885373e94d8f86"
+      },
+      "local/state_cache_original.hpp": {
+        "archive": "local/checkpoints/b18f5477/local/state_cache_original.hpp",
+        "sha256": "ae6c8200d6144dcd7c0fc2209bc55ee9c1afdef9a6ed049dd9466c6c7ca236be"
+      },
+      "local/texture-record-registered-probe.log": {
+        "archive": "local/checkpoints/b18f5477/local/texture-record-registered-probe.log",
+        "sha256": "478b10f516038bd1652e0297ad3daf0c647eb96f78aa65cb8f55b5ac68f23a7b"
+      },
+      "local/texture-resolution-failure-registered-probe.log": {
+        "archive": "local/checkpoints/b18f5477/local/texture-resolution-failure-registered-probe.log",
+        "sha256": "b528a52f24b4d8a3c0259d3855e2121591d535cfa30808237a77d1a8c589c8a3"
+      },
+      "local/texture_record_probe.cpp": {
+        "archive": "local/checkpoints/b18f5477/local/texture_record_probe.cpp",
+        "sha256": "d7c3a4c635921dab383539635e5757e14ed6e5d14b8cf832c4b2cf56ffa8637a"
+      },
+      "local/texture_resolution_failure_probe.cpp": {
+        "archive": "local/checkpoints/b18f5477/local/texture_resolution_failure_probe.cpp",
+        "sha256": "21217be01b6c3b974c1bfebd2c26ac7ed486c7f894d50dbc8c63113f1ba016e7"
+      },
+      "scripts/build.ps1": {
+        "archive": "local/checkpoints/b18f5477/scripts/build.ps1",
+        "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+      }
+    },
+    "historical_temporary_include": "Superseded artifacts reconstructed at local/checkpoints/8bcdfac3 with exact original hashes; all other a85815eb artifact hashes remained unchanged before current validation.",
+    "historical_compiler_texture_artifacts": {
+      "local/native_material_program_probe.log": "d64dd1b4d601c8c42804aa5a1c43926572a61452c48821919b6226c2e5980a98",
+      "local/native-state-cache-registered-probe.log": "2050c2fffa15d4ffab78df2a011721a210a017b641ffb4c5a75fd3907f08204a",
+      "local/native-loader-shader-probe.log": "2eac7161d43d6ca8ee78360a428c937537b24fd614e1bd7f6969a2e1e4f78b72",
+      "local/texture-record-registered-probe.log": "478b10f516038bd1652e0297ad3daf0c647eb96f78aa65cb8f55b5ac68f23a7b",
+      "local/texture-resolution-failure-registered-probe.log": "b528a52f24b4d8a3c0259d3855e2121591d535cfa30808237a77d1a8c589c8a3",
+      "local/build_native_loader_validation.ps1": "43f0192c5af9f4b4b5b3b606c14b267dae981f11249b7b357898796343990277",
+      "local/native-loader-bindings-pinned-build.log": "be6f1e1cffb6cbd7356218f69dccd66abc26df08630d913d7e75baf78e2098dc",
+      "local/native-loader-current-calls.log": "68750168c5f42631107b11be41299865e53a1218efc5d29bf8d6c0d58d6e2772",
+      "local/native_material_program_probe.cpp": "1a4679d9725f42b97c6cf509ea1e5d24a704f25617128bc1bb675169e0228f06",
+      "local/compiler_original.hpp": "7cce2ce1e25e9e2d0d7f3fd0ae6447b1e1c6d884cf970fa6f2463cdf45769fef",
+      "local/run_native_material_program_registered_probe.ps1": "3b3b218e426fe2060d3efe30101ad53cb01276ffcf3c12c6d05e6ba40a6d6849",
+      "local/native_loader_shader_probe.cpp": "a453e9878dd4232b24166110d18e40766d55827270570adc7372c95481d7528d",
+      "local/run_native_loader_shader_probe.ps1": "bd9fadcb7c378f652a7a9f96b7189a88c00c514ffc65812529d7c81ce320015c",
+      "local/native_state_cache_probe.cpp": "a2f5b8e2a8d41b03e6f3d8be1869b9a9c5bf41f0168902c22f8b7ae2b7c38948",
+      "local/state_cache_original.hpp": "ae6c8200d6144dcd7c0fc2209bc55ee9c1afdef9a6ed049dd9466c6c7ca236be",
+      "local/run_native_state_cache_probe.ps1": "533d41636176f23bf64c14a89248f5c862acbee88d17b90f1b58412c59b26540",
+      "local/texture_record_probe.cpp": "d7c3a4c635921dab383539635e5757e14ed6e5d14b8cf832c4b2cf56ffa8637a",
+      "local/texture_resolution_failure_probe.cpp": "21217be01b6c3b974c1bfebd2c26ac7ed486c7f894d50dbc8c63113f1ba016e7",
+      "local/native-program-builder-tail-flow.json": "b41e068e07701b1254813df3d0b401d8fa7f07433c91bdc0c32a84df94285ee3",
+      "local/native-program-builder-tail-definition.json": "83fec192086f85b5ffc9703d98e40380c0cd43c9b15cb430f6d3d21a36b4efdd",
+      "local/ghidra-annotations-20260913T065730Z.json": "bb06f5475e8ca17f48d4227d7ce9b5741b043fce73f4365292ebcba66c253abd",
+      "local/ghidra-annotations-20260913T070137Z.json": "bd2e17782d655f69561f1ddc1ef34334ecd47dd2051d76c970ccee85d442c00d",
+      "local/native-compiler-texture-comments.json": "59f9eb7e02473690d0e32cf15cb5183371884299241363204ff7aac2df76810f",
+      "local/native-compiler-repaired-comments.json": "fdcbe8d5bc2a444df44628965f1086288830e389be49db7434be60e7d159ff82",
+      "local/native-compiler-texture-export.log": "0e883baab79bcfa4694603eeb43e1aa403dabe8a7b1b1b4d05dbc61eaeae974b",
+      "local/native-compiler-repaired-export.log": "f97d0e251c4a96452a23b30db99e1cf013142a6efb63b7eb33a2604e19a02665",
+      "local/loader-native-workers/compiler/manifest.json": "1b6fe8e0ef7247cb4362b504bd8b16cae99e8e4787d0e033b1c1818d3db439dc",
+      "local/loader-native-workers/texture/manifest.json": "2aeaa296a092df08bc838d96dd626a3ac292f0ddb0614ae3e9705862038f6b63",
+      "local/loader-native-workers/shader/manifest.json": "d3efe1ce2d9d42f08e07f17cdc51617063c22365214d070cbcfe162d16d97368",
+      "local/loader-native-workers/vfs/manifest.json": "05a73227356fd68514449556e37822e06deb137eac2f3f8168c191507a15b3a7",
+      "local/corrected-texture-source-import.json": "b30c2a9dda106ae6f4df344cc80daf27ed77ac6f40241ce4cca1440bb088d9b3",
+      "local/checkpoints/8bcdfac3/native-loader-validation-pin.json": "33ee48ae6502e20dd52cd26da8d23c930a8be6d9641fa332ecbe431ed7fa7676",
+      "local/checkpoints/8bcdfac3/native-loader-validation.cmake": "fd74bd7d23bc6a9b69ecd93676323e0333c19d2c68faf6ee9b7c919db7c933a2"
+    }
+  },
+  "default_registration_pending": [],
+  "registry_lease_observation": "Seven source registrations appended while unleased, checked inside the existing lease transaction; default build subsequently passed.",
+  "frontier": {
+    "compiler": "Actual B3B3C0 continuation remains required; workers are reconstructing B3AEA0 reflection and B35BE0/B372D0 system-field appends. Registry B5BF70 producer, remaining field/source generation and separate COM owners still need concrete composition.",
+    "texture": "Worker is implementing actual cube/volume B2C2D0 load arms and canonical companions. Full cache, retry/nonzero callback and registry teardown composition remain scoped dependencies.",
+    "game": "No complete cold effect load, original ABI, whole reconstructed game or gameplay validation is claimed."
+  },
+  "default_registration_complete": true,
+  "prior_checkpoints": [
+    "08bfffb72178e7c48a3151b26c851910b3039a4a",
+    "a85815eb"
+  ],
+  "promotion": {
+    "validated_code": "b18f5477069e6db5da7e11a65ee527aefed3d7f0",
+    "promoted_code": "b18f5477069e6db5da7e11a65ee527aefed3d7f0",
+    "main_before_promotion": "4f4c6b1e30333310f2d864938aa4bb1835d76d88",
+    "validation_pin": "local/checkpoints/b18f5477/validation.json",
+    "validation_pin_sha256": "b933b1310e6466d24435d7e761d965657653a1ad336e16e2dbb88c38a68269ca",
+    "publication": "Final report commit changes only docs/reports; source and default registry are the exact validated code."
+  }
+}

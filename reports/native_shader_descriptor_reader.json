@@ -1,0 +1,1202 @@
+{
+  "packet": "orch5_shader_descriptor_reader_native",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "ghidra_mutated": false
+  },
+  "source": "src/native_shader_descriptor_reader.cpp",
+  "header": "include/bsp/native_shader_descriptor_reader.hpp",
+  "document": "docs/NATIVE_SHADER_DESCRIPTOR_READER.md",
+  "routines": [
+    {
+      "address": "00B43B00",
+      "end_inclusive": "00B44684",
+      "byte_length": 2949,
+      "instruction_count": 805,
+      "coverage": "complete_normal_actual_parser_composition_retained_Cpp_failure_not_original_SEH",
+      "abi": "ECX actual110h descriptor; stack actual8h name,unsigned generation; RET8 atB44682; no useful return established"
+    },
+    {
+      "address": "00B69D40",
+      "stored_end_inclusive": "00B69DCC",
+      "actual_end_inclusive": "00B69DE4",
+      "byte_length": 165,
+      "coverage": "existing_actual_body_reused_not_reimplemented",
+      "source": "src/native_lua_file_loading.cpp",
+      "abi": "ECX actual4C8h Lua owner; stack actual8h name,obfuscationDWORD low byte; RET8 atB69DE2",
+      "saved_body_limit": "24-byte tailB69DCD..B69DE4 is outside stored body; read-only bytes inspected, no worker repair or full saved-flow claim"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00B43B25",
+      "native": "00B66BD0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43B3B",
+      "native": "00B6A020",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43B4E",
+      "native": "00B69D40",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43B5C",
+      "native": "00B67980",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43B75",
+      "native": "00B67800",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43B8A",
+      "native": "00B67700",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43B9D",
+      "native": "00B67800",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43BAE",
+      "native": "00B66380",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43BC1",
+      "native": "00B67700",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43BD4",
+      "native": "00B67800",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43BE5",
+      "native": "00B66380",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43BF8",
+      "native": "00B67700",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43C0B",
+      "native": "00B67800",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43C24",
+      "native": "00B685C0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43C41",
+      "native": "0041DD40",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43C57",
+      "native": "00BF7680",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43C7A",
+      "native": "00419CC0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43C81",
+      "native": "00BD1510",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43C91",
+      "native": "00B67700",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43CA4",
+      "native": "00B67800",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43CB5",
+      "native": "00B662F0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43CC8",
+      "native": "00B67700",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43CDB",
+      "native": "00B67800",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43CF4",
+      "native": "00B685C0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43D15",
+      "native": "0041DD40",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43D2B",
+      "native": "00BF7680",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43D4E",
+      "native": "00419CC0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43D55",
+      "native": "00BD1510",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43D65",
+      "native": "00B67700",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43D81",
+      "native": "00B67800",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43D92",
+      "native": "00B662F0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43DA5",
+      "native": "00B67700",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43DB8",
+      "native": "00B67800",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43DD1",
+      "native": "00B66330",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43DE4",
+      "native": "00B67700",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43DF7",
+      "native": "00B67800",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43E08",
+      "native": "00B66380",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43E1E",
+      "native": "00B67700",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43E31",
+      "native": "00B67800",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43E42",
+      "native": "00B662F0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43E55",
+      "native": "00B67700",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43E68",
+      "native": "00B67800",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43E79",
+      "native": "00B662F0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43E8C",
+      "native": "00B67700",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43E9F",
+      "native": "00B67800",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43EB0",
+      "native": "00B662F0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43EC3",
+      "native": "00B67700",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43ED6",
+      "native": "00B67800",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43EE7",
+      "native": "00B662F0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43EFA",
+      "native": "00B67700",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43F0D",
+      "native": "00B67800",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43F1E",
+      "native": "00B662F0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43F31",
+      "native": "00B67700",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43F44",
+      "native": "00B67800",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43F58",
+      "native": "00B66380",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43F6B",
+      "native": "00B67700",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43F7E",
+      "native": "00B67800",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43F97",
+      "native": "00B685C0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43FB4",
+      "native": "0041DD40",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43FCA",
+      "native": "00BF7680",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43FED",
+      "native": "00419CC0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B43FF4",
+      "native": "00BD1510",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44004",
+      "native": "00B67700",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44017",
+      "native": "00B67800",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44029",
+      "native": "00B662F0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B4403C",
+      "native": "00B67700",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B4404F",
+      "native": "00B67800",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44060",
+      "native": "00B662F0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44073",
+      "native": "00B67700",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44086",
+      "native": "00B67800",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44096",
+      "native": "00B662F0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B440A9",
+      "native": "00B67700",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B440BC",
+      "native": "00B67800",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B440CC",
+      "native": "00B662F0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B440DF",
+      "native": "00B67700",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B440F2",
+      "native": "00B67800",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44101",
+      "native": "00B660A0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44115",
+      "native": "00B67700",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B4412F",
+      "native": "00B67800",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B4413E",
+      "native": "00B662B0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44164",
+      "native": "0041DD40",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44176",
+      "native": "00BF7680",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44189",
+      "native": "00B67700",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B441AA",
+      "native": "0041E350",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B441BD",
+      "native": "00B67800",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B441CC",
+      "native": "00B660A0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B441E0",
+      "native": "00B67700",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B441FA",
+      "native": "00B67800",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44209",
+      "native": "00B662B0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44234",
+      "native": "0041DD40",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44246",
+      "native": "00BF7680",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44259",
+      "native": "00B67700",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B4427A",
+      "native": "0041E350",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B4428D",
+      "native": "00B67800",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B4429C",
+      "native": "00B661B0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B442B0",
+      "native": "00B67700",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B442CA",
+      "native": "00B67800",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B442E9",
+      "native": "00B579B0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B442F9",
+      "native": "00B67700",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B4430E",
+      "native": "0041DD40",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44329",
+      "native": "00BF7680",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44349",
+      "native": "00B439C0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44368",
+      "native": "00419CC0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B4436F",
+      "native": "00BD1510",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B4437B",
+      "native": "00B41830",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44390",
+      "native": "0041DD40",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B443AB",
+      "native": "00BF7680",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B443CE",
+      "native": "00B419B0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B443ED",
+      "native": "00419CC0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B443F4",
+      "native": "00BD1510",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44409",
+      "native": "0041DD40",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44424",
+      "native": "00BF7680",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44447",
+      "native": "00B419B0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44466",
+      "native": "00419CC0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B4446D",
+      "native": "00BD1510",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44480",
+      "native": "00B67800",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44499",
+      "native": "00B685C0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B444B9",
+      "native": "0041DD40",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B444CF",
+      "native": "00BF7680",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B444F2",
+      "native": "00419CC0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B444F9",
+      "native": "00BD1510",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44509",
+      "native": "00B67700",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B4451C",
+      "native": "00B67800",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44535",
+      "native": "00B685C0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44555",
+      "native": "0041DD40",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B4456B",
+      "native": "00BF7680",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B4458E",
+      "native": "00419CC0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44595",
+      "native": "00BD1510",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B445A5",
+      "native": "00B67700",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B445B8",
+      "native": "00B67800",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B445D1",
+      "native": "00B685C0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B445F1",
+      "native": "0041DD40",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44606",
+      "native": "00BF7680",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44629",
+      "native": "00419CC0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44630",
+      "native": "00BD1510",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44640",
+      "native": "00B67700",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44651",
+      "native": "00B67700",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B44665",
+      "native": "00B669A0",
+      "function": "00B43B00",
+      "contract": "Complete native call-site inventory from inspected assembly; composed actual Lua/string/table operation or its native CRT/pool lowering"
+    },
+    {
+      "address": "00B69D68",
+      "native": "00B66CA0",
+      "function": "00B69D40",
+      "contract": "Existing actual file/override/vector implementation reused without source mutation"
+    },
+    {
+      "address": "00B69D8B",
+      "native": "00BDEF90",
+      "function": "00B69D40",
+      "contract": "Existing actual file/override/vector implementation reused without source mutation"
+    },
+    {
+      "address": "00B69DA4",
+      "native": "00B66CA0",
+      "function": "00B69D40",
+      "contract": "Existing actual file/override/vector implementation reused without source mutation"
+    },
+    {
+      "address": "00B69DBE",
+      "native": "00427110",
+      "function": "00B69D40",
+      "contract": "Existing actual file/override/vector implementation reused without source mutation"
+    },
+    {
+      "address": "00B69DC8",
+      "native": "00BF6989",
+      "function": "00B69D40",
+      "contract": "Existing actual file/override/vector implementation reused without source mutation"
+    },
+    {
+      "address": "00B45F5E",
+      "native": "00B43B00",
+      "function": "00B45EE0",
+      "contract": "All four actual program-population calls pass same descriptor/name identities and generation3"
+    },
+    {
+      "address": "00B46104",
+      "native": "00B43B00",
+      "function": "00B45EE0",
+      "contract": "All four actual program-population calls pass same descriptor/name identities and generation3"
+    },
+    {
+      "address": "00B46528",
+      "native": "00B43B00",
+      "function": "00B45EE0",
+      "contract": "All four actual program-population calls pass same descriptor/name identities and generation3"
+    },
+    {
+      "address": "00B465C3",
+      "native": "00B43B00",
+      "function": "00B45EE0",
+      "contract": "All four actual program-population calls pass same descriptor/name identities and generation3"
+    }
+  ],
+  "raw_producers": [
+    {
+      "offset": "04",
+      "kind": "DWORD",
+      "field": "PipeID",
+      "fallback": 0
+    },
+    {
+      "offset": "08",
+      "kind": "DWORD",
+      "field": "Priority",
+      "fallback": 0
+    },
+    {
+      "offset": "0C",
+      "kind": "actual8h string",
+      "field": "VertexFormat",
+      "fallback": "simple.mvfm"
+    },
+    {
+      "offset": "15",
+      "kind": "byte",
+      "field": "ReceiveShadows",
+      "fallback": false
+    },
+    {
+      "offset": "100",
+      "kind": "actual8h string",
+      "field": "ShadowShader",
+      "fallback": ""
+    },
+    {
+      "offset": "14",
+      "kind": "byte",
+      "field": "current name100 length !=0"
+    },
+    {
+      "offset": "16",
+      "kind": "byte",
+      "field": "FinalLODFadeOut",
+      "fallback": false
+    },
+    {
+      "offset": "18",
+      "kind": "float32",
+      "field": "FinalLODFadeOutRange",
+      "fallback_bits": "3C23D70A"
+    },
+    {
+      "offset": "108",
+      "kind": "DWORD",
+      "field": "RTCount",
+      "fallback": 1
+    },
+    {
+      "offset": "44",
+      "kind": "byte",
+      "field": "VisilityFade",
+      "fallback": true
+    },
+    {
+      "offset": "1C",
+      "kind": "byte",
+      "field": "AlphaToCoverage",
+      "fallback": false
+    },
+    {
+      "offset": "1D",
+      "kind": "byte",
+      "field": "NoBandingFix",
+      "fallback": false
+    },
+    {
+      "offset": "1E",
+      "kind": "byte",
+      "field": "DisableAlphaToCoverage",
+      "fallback": false
+    },
+    {
+      "offset": "1F",
+      "kind": "byte",
+      "field": "CompressedVertices",
+      "fallback": true
+    },
+    {
+      "offset": "20",
+      "kind": "DWORD",
+      "field": "CompressedElemCount",
+      "fallback": 999
+    },
+    {
+      "offset": "28",
+      "kind": "actual8h string",
+      "field": "InstanceGenerator",
+      "fallback": ""
+    },
+    {
+      "offset": "30",
+      "kind": "byte",
+      "field": "PixelPositionRegister",
+      "fallback": false
+    },
+    {
+      "offset": "31",
+      "kind": "byte",
+      "field": "OutputAlpha",
+      "fallback": true
+    },
+    {
+      "offset": "32",
+      "kind": "byte",
+      "field": "LoResBlend",
+      "fallback": false
+    },
+    {
+      "offset": "45",
+      "kind": "byte",
+      "field": "WriteDepth",
+      "fallback": false
+    },
+    {
+      "offset": "34",
+      "kind": "actual8h string",
+      "field": "VSVersion",
+      "fallback": "unsigned generation<3 ? vs_2_a : vs_3_0"
+    },
+    {
+      "offset": "3C",
+      "kind": "actual8h string",
+      "field": "PSVersion",
+      "fallback": "unsigned generation<3 ? ps_2_b : ps_3_0"
+    },
+    {
+      "offset": "B8",
+      "kind": "actual12h array",
+      "field": "RenderStates",
+      "callee": "00B579B0"
+    },
+    {
+      "offset": "48",
+      "kind": "actual14 strings",
+      "field": "Combiners",
+      "callee": "00B439C0"
+    },
+    {
+      "offset": "C4",
+      "kind": "actual owner pointer array",
+      "field": "Samplers",
+      "callee": "00B41830"
+    },
+    {
+      "offset": "D0",
+      "kind": "actual field owner pointer array",
+      "field": "VertexInput",
+      "callee": "00B419B0"
+    },
+    {
+      "offset": "DC",
+      "kind": "actual field owner pointer array",
+      "field": "Interpolators",
+      "callee": "00B419B0"
+    },
+    {
+      "offset": "E8",
+      "kind": "actual8h string",
+      "field": "Constants",
+      "fallback": ""
+    },
+    {
+      "offset": "F0",
+      "kind": "actual8h string",
+      "field": "VS",
+      "fallback": ""
+    },
+    {
+      "offset": "F8",
+      "kind": "actual8h string",
+      "field": "PS",
+      "fallback": ""
+    }
+  ],
+  "preserved": [
+    "vtable00 including caller callable binding",
+    "byte17",
+    "DWORD24",
+    "byte33",
+    "bytes46/47",
+    "DWORD10C",
+    "unselected mode strings",
+    "existing array entries under actual append/unique child behavior"
+  ],
+  "assembly_corrections": {
+    "unreachable_blocks": [
+      "00B4431B",
+      "00B4435D",
+      "00B4439D",
+      "00B443E2",
+      "00B44416",
+      "00B4445B",
+      "00B444E7",
+      "00B44583",
+      "00B4461E"
+    ],
+    "generation": "CMP unsigned stack[ESP+534],3 atB44192/B44262; not a return address",
+    "floating": "B43DBD FLD D7A238 bits3C23D70A, B43DC6 FSTP stack, B43DD1 actual number-or, B43DD6 FSTP descriptor18",
+    "literal_bytes": "D61A48..D61BE7, D5EFBC, CFF268, D237A4 and CE3A0C read through BSP wrappers"
+  },
+  "integration": {
+    "context": "NativeShaderDescriptorReadContext: same strings/bootstrap/files/definitions0108FE90/sampler binding/CRT conversion/combiner and field stack preimages",
+    "child": "NativeShaderDescriptorReadOperation derives NativeMaterialProgramChildFrame, must be retained before native parser call",
+    "identity": "same actual110h descriptor, same root/mode name8h supplied by program frame; no semantic projection or vtable replacement",
+    "success": "actual Lua objects and owner closed before metadata child retirement",
+    "failure": "one-shot operation records active native call, keeps its own actual Lua/string state and borrowed name/descriptor; no automatic native rollback",
+    "cmake": "not edited while another harness owns cmake/startup.cmake; integrator must append src/native_shader_descriptor_reader.cpp then run combined build"
+  },
+  "fixture": {
+    "status": "passed",
+    "source": "local/native_shader_descriptor_probe.cpp",
+    "runner": "local/run_native_shader_descriptor_probe.ps1",
+    "source_origin": "verified read-only copy of orch2 local/native-lua-vfs-binding-composition.cpp",
+    "origin_sha256": "c93ddc56426c85a84ea7a9a7165db459eb20e7a63441c1995d797ab91b17ef09",
+    "inputs": "explicit seeded actual mount/provider records and original read-only numeric profiles, real HANDLE streams and actual Lua/fundamentals/string/state-definition/sampler pools",
+    "stack_preimages": "nonzero negative diagnostic preimages; installed numeric ordinal entries overwrite the fields they produce",
+    "scope": "same descriptor parses two installed files with generations2/3; checks appends, preserved bytes/identity, direct descriptor deletion and canonical shutdown",
+    "counts": {
+      "debug": {
+        "state_pairs": 2,
+        "samplers": 0,
+        "vertex_fields": 2,
+        "interpolators": 1
+      },
+      "after_alpha_same_descriptor": {
+        "state_pairs": 5,
+        "samplers": 1,
+        "vertex_fields": 5,
+        "interpolators": 2
+      },
+      "state_note": "Native registry recognizes ZWRITE and ZTEST; asset key ZENABLE is absent and ignored"
+    },
+    "log": "local/native_shader_descriptor_probe.log",
+    "production_sha256": "37740c3cda68afb0ea707a222a4c24dba8ca7aa8592da37e10ba582617c454d9",
+    "fixture_sha256": "0139d6f491703deaeac85bd1b1d39c00c6395e642e68bc741171f7771c2eca63",
+    "runner_sha256": "1e8467d09121a16eb6748172d3d73ec122d4255caa83ee0f5e1a4c1d7faa6905"
+  },
+  "installed_assets": [
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/Scripts/fundamentals.lua",
+      "bytes": 657,
+      "sha256": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/shaderfx/dx9_lua.inc",
+      "bytes": 3117,
+      "sha256": "7766adc9c116a9e396b3dd77e9d97b3ea6d55c84601cb2a5a49a64362605b11f"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/shaderfx/common/debugshader.shfx",
+      "bytes": 806,
+      "sha256": "d45e91ef1a3f11c654b97ac3a9d293b9a24b597b68fb315d611638d3b6933476"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/shaderfx/common/alphablend.shfx",
+      "bytes": 1196,
+      "sha256": "37cc55352deb1ea4b9685eb4dd3d0f89cb9958bd7a786d24bb34857ed9747f64"
+    }
+  ],
+  "validation": {
+    "call_sites": "147 numeric rows verified; 0 failed; local/native_shader_descriptor_calls.log",
+    "exact_new_source": "MSVC Win32 stdc++17 EHsc O2 fpstrict W4 WX object compilation passed; local/native_shader_descriptor_source_compile.log",
+    "baseline_build": "scripts/build.ps1 passed Win32 Release W4 WX and existing reconstructed_math CTest1/1; local/native_shader_descriptor_baseline_build.log; new source not registered in baseline CMake due active foreign lease",
+    "abi_compatible": false,
+    "game_validated": false,
+    "compiled_material_program": false,
+    "original_SEH_validated": false
+  },
+  "limits": [
+    "existing B69D40/B66CA0 unprotected Lua and allocation/stream error contracts remain",
+    "native parser original FH3 local unwinding differs from retained C++ failure",
+    "complete child exception acquisition recovery and arbitrary allocator/VM reentry not claimed",
+    "no successful compiler, renderer program, drawing or gameplay claim"
+  ],
+  "integrated_checkpoint": {
+    "code_commit": "c5e1427f80bef38c28277c22c437345856e37d52",
+    "report": "reports/native_loader_integration.json",
+    "default_registration_complete": false,
+    "promoted_to_main": false
+  }
+}

@@ -1,0 +1,1744 @@
+{
+  "packet": "orch5_material_program_compiler_native",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "ghidra_mutated": false
+  },
+  "source": "src/native_material_program_compiler.cpp",
+  "header": "include/bsp/native_material_program_compiler.hpp",
+  "document": "docs/NATIVE_MATERIAL_PROGRAM_COMPILER.md",
+  "routines": [
+    {
+      "address": "00B3C3A0",
+      "end_inclusive": "00B3C4B1",
+      "bytes": 274,
+      "instructions": 64,
+      "sha256": "48dbcaa41b64278d8beee1f846d8d9cb64f53eb8f9dbb2914f5d9dee7ababafe",
+      "coverage": "normal_wrapper_with_required_native_child_tail",
+      "original_abi": "ECX effect; EDX root descriptor; stack mode descriptor,mode byte,RTCount,descriptor byte,name8h,policy byte,generation; EAX pass; RET1C"
+    },
+    {
+      "address": "00B354D0",
+      "end_inclusive": "00B3553C",
+      "bytes": 109,
+      "instructions": 35,
+      "sha256": "c0ff7519fdcdb321955aa4bd1e0d45ffb1555fbd963f4220d443d7ed94c390d0",
+      "coverage": "complete_producer",
+      "original_abi": "ECX actualB0h builder; EAX same; RET"
+    },
+    {
+      "address": "00B3A7E0",
+      "end_inclusive": "00B3AE9B",
+      "bytes": 1724,
+      "instructions": 618,
+      "sha256": "f283eea0905e677ecb149638c991b801e1685123883f774712aa71fe5dfeef56",
+      "coverage": "normal_valid_nonnegative_extents_original_FH3_not_reproduced",
+      "original_abi": "ECX actualB0h builder; RET atB3AE9B"
+    },
+    {
+      "address": "00B35930",
+      "end_inclusive": "00B35BD1",
+      "bytes": 674,
+      "instructions": 202,
+      "sha256": "b8674a00cc7d6b3769247be837cc266579860e21aa36a0287bee49e7a7d683a5",
+      "coverage": "complete_normal_raw_field_copy_retained_host_failure",
+      "original_abi": "ECX actualB0h builder; RET"
+    },
+    {
+      "address": "00B3B3C0",
+      "end_inclusive": "00B3C390",
+      "bytes": 4049,
+      "instructions": 1282,
+      "sha256": "190350a4fbf442dd6820d2b5caad70f55f4f9b2eb1be3bbb97c5b944a1ed0757",
+      "coverage": "partial_prefix_B3B3C0_through_B3B50E_actual_B35930_then_required_tail_B3B513_or_B3B536",
+      "original_abi": "ECX actualB0h builder; stack effect,root descriptor,mode descriptor; EAX pass; RET0C"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00B3C3C6",
+      "native": "00B354D0",
+      "function": "00B3C3A0",
+      "instruction": "call 0xb354d0",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3C3F4",
+      "native": "0041DD40",
+      "function": "00B3C3A0",
+      "instruction": "call 0x41dd40",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3C412",
+      "native": "00BF7680",
+      "function": "00B3C3A0",
+      "instruction": "call 0xbf7680",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3C47B",
+      "native": "00B3B3C0",
+      "function": "00B3C3A0",
+      "instruction": "call 0xb3b3c0",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3C491",
+      "native": "00B3A7E0",
+      "function": "00B3C3A0",
+      "instruction": "call 0xb3a7e0",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "call_site": "00B3A829",
+      "indirect": "eax",
+      "function": "00B3A7E0",
+      "coverage": "current_callable_virtual0_flags1"
+    },
+    {
+      "address": "00B3A85E",
+      "native": "00419CC0",
+      "function": "00B3A7E0",
+      "instruction": "call 0x419cc0",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3A865",
+      "native": "00BD1510",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbd1510",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3A86B",
+      "native": "00BF65AC",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbf65ac",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3A8A5",
+      "native": "00419CC0",
+      "function": "00B3A7E0",
+      "instruction": "call 0x419cc0",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3A8AC",
+      "native": "00BD1510",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbd1510",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3A8B2",
+      "native": "00BF65AC",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbf65ac",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3A8ED",
+      "native": "00419CC0",
+      "function": "00B3A7E0",
+      "instruction": "call 0x419cc0",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3A8F4",
+      "native": "00BD1510",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbd1510",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3A8FA",
+      "native": "00BF65AC",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbf65ac",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3A934",
+      "native": "00419CC0",
+      "function": "00B3A7E0",
+      "instruction": "call 0x419cc0",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3A93B",
+      "native": "00BD1510",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbd1510",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3A941",
+      "native": "00BF65AC",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbf65ac",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3A97D",
+      "native": "00419CC0",
+      "function": "00B3A7E0",
+      "instruction": "call 0x419cc0",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3A984",
+      "native": "00BD1510",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbd1510",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3A98A",
+      "native": "00BF65AC",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbf65ac",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3A9BC",
+      "native": "00419CC0",
+      "function": "00B3A7E0",
+      "instruction": "call 0x419cc0",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3A9C3",
+      "native": "00BD1510",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbd1510",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3A9DB",
+      "native": "00BF55BE",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbf55be",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3AA0D",
+      "native": "00BF6989",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbf6989",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3AA64",
+      "native": "00BF6989",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbf6989",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "native": "00BF55BE",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbf55be",
+      "coverage": "actual_composed_body",
+      "call_site": "00B3AA81",
+      "body_status": "owned_by_repaired_00b3a7e0",
+      "evidence": "complete disk span matched to fresh BSP-wrapper Ghidra bytes; original-body fixture where stated",
+      "address": "00B3AA81",
+      "worker_body_status": "no_ghidra_function",
+      "integration_evidence": "Ghidra full body B3A7E0..B3AE9B recreated after seven post-free flow repairs; 618 instructions and zero gaps."
+    },
+    {
+      "native": "00BF6989",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbf6989",
+      "coverage": "actual_composed_body",
+      "call_site": "00B3AAB1",
+      "body_status": "owned_by_repaired_00b3a7e0",
+      "evidence": "complete disk span matched to fresh BSP-wrapper Ghidra bytes; original-body fixture where stated",
+      "address": "00B3AAB1",
+      "worker_body_status": "no_ghidra_function",
+      "integration_evidence": "Ghidra full body B3A7E0..B3AE9B recreated after seven post-free flow repairs; 618 instructions and zero gaps."
+    },
+    {
+      "native": "00BF6989",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbf6989",
+      "coverage": "actual_composed_body",
+      "call_site": "00B3AAFF",
+      "body_status": "owned_by_repaired_00b3a7e0",
+      "evidence": "complete disk span matched to fresh BSP-wrapper Ghidra bytes; original-body fixture where stated",
+      "address": "00B3AAFF",
+      "worker_body_status": "no_ghidra_function",
+      "integration_evidence": "Ghidra full body B3A7E0..B3AE9B recreated after seven post-free flow repairs; 618 instructions and zero gaps."
+    },
+    {
+      "native": "00419CC0",
+      "function": "00B3A7E0",
+      "instruction": "call 0x419cc0",
+      "coverage": "actual_composed_body",
+      "call_site": "00B3AB1D",
+      "body_status": "owned_by_repaired_00b3a7e0",
+      "evidence": "complete disk span matched to fresh BSP-wrapper Ghidra bytes; original-body fixture where stated",
+      "address": "00B3AB1D",
+      "worker_body_status": "no_ghidra_function",
+      "integration_evidence": "Ghidra full body B3A7E0..B3AE9B recreated after seven post-free flow repairs; 618 instructions and zero gaps."
+    },
+    {
+      "native": "00BD1510",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbd1510",
+      "coverage": "actual_composed_body",
+      "call_site": "00B3AB24",
+      "body_status": "owned_by_repaired_00b3a7e0",
+      "evidence": "complete disk span matched to fresh BSP-wrapper Ghidra bytes; original-body fixture where stated",
+      "address": "00B3AB24",
+      "worker_body_status": "no_ghidra_function",
+      "integration_evidence": "Ghidra full body B3A7E0..B3AE9B recreated after seven post-free flow repairs; 618 instructions and zero gaps."
+    },
+    {
+      "native": "00BF55BE",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbf55be",
+      "coverage": "actual_composed_body",
+      "call_site": "00B3AB3C",
+      "body_status": "owned_by_repaired_00b3a7e0",
+      "evidence": "complete disk span matched to fresh BSP-wrapper Ghidra bytes; original-body fixture where stated",
+      "address": "00B3AB3C",
+      "worker_body_status": "no_ghidra_function",
+      "integration_evidence": "Ghidra full body B3A7E0..B3AE9B recreated after seven post-free flow repairs; 618 instructions and zero gaps."
+    },
+    {
+      "native": "00BF6989",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbf6989",
+      "coverage": "actual_composed_body",
+      "call_site": "00B3AB6B",
+      "body_status": "owned_by_repaired_00b3a7e0",
+      "evidence": "complete disk span matched to fresh BSP-wrapper Ghidra bytes; original-body fixture where stated",
+      "address": "00B3AB6B",
+      "worker_body_status": "no_ghidra_function",
+      "integration_evidence": "Ghidra full body B3A7E0..B3AE9B recreated after seven post-free flow repairs; 618 instructions and zero gaps."
+    },
+    {
+      "native": "00BF6989",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbf6989",
+      "coverage": "actual_composed_body",
+      "call_site": "00B3ABB2",
+      "body_status": "owned_by_repaired_00b3a7e0",
+      "evidence": "complete disk span matched to fresh BSP-wrapper Ghidra bytes; original-body fixture where stated",
+      "address": "00B3ABB2",
+      "worker_body_status": "no_ghidra_function",
+      "integration_evidence": "Ghidra full body B3A7E0..B3AE9B recreated after seven post-free flow repairs; 618 instructions and zero gaps."
+    },
+    {
+      "native": "00BF55BE",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbf55be",
+      "coverage": "actual_composed_body",
+      "call_site": "00B3ABD1",
+      "body_status": "owned_by_repaired_00b3a7e0",
+      "evidence": "complete disk span matched to fresh BSP-wrapper Ghidra bytes; original-body fixture where stated",
+      "address": "00B3ABD1",
+      "worker_body_status": "no_ghidra_function",
+      "integration_evidence": "Ghidra full body B3A7E0..B3AE9B recreated after seven post-free flow repairs; 618 instructions and zero gaps."
+    },
+    {
+      "native": "00BF6989",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbf6989",
+      "coverage": "actual_composed_body",
+      "call_site": "00B3ABFF",
+      "body_status": "owned_by_repaired_00b3a7e0",
+      "evidence": "complete disk span matched to fresh BSP-wrapper Ghidra bytes; original-body fixture where stated",
+      "address": "00B3ABFF",
+      "worker_body_status": "no_ghidra_function",
+      "integration_evidence": "Ghidra full body B3A7E0..B3AE9B recreated after seven post-free flow repairs; 618 instructions and zero gaps."
+    },
+    {
+      "native": "00BF6989",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbf6989",
+      "coverage": "actual_composed_body",
+      "call_site": "00B3AC42",
+      "body_status": "owned_by_repaired_00b3a7e0",
+      "evidence": "complete disk span matched to fresh BSP-wrapper Ghidra bytes; original-body fixture where stated",
+      "address": "00B3AC42",
+      "worker_body_status": "no_ghidra_function",
+      "integration_evidence": "Ghidra full body B3A7E0..B3AE9B recreated after seven post-free flow repairs; 618 instructions and zero gaps."
+    },
+    {
+      "native": "00BF55BE",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbf55be",
+      "coverage": "actual_composed_body",
+      "call_site": "00B3AC5C",
+      "body_status": "owned_by_repaired_00b3a7e0",
+      "evidence": "complete disk span matched to fresh BSP-wrapper Ghidra bytes; original-body fixture where stated",
+      "address": "00B3AC5C",
+      "worker_body_status": "no_ghidra_function",
+      "integration_evidence": "Ghidra full body B3A7E0..B3AE9B recreated after seven post-free flow repairs; 618 instructions and zero gaps."
+    },
+    {
+      "native": "00BF6989",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbf6989",
+      "coverage": "actual_composed_body",
+      "call_site": "00B3AC8B",
+      "body_status": "owned_by_repaired_00b3a7e0",
+      "evidence": "complete disk span matched to fresh BSP-wrapper Ghidra bytes; original-body fixture where stated",
+      "address": "00B3AC8B",
+      "worker_body_status": "no_ghidra_function",
+      "integration_evidence": "Ghidra full body B3A7E0..B3AE9B recreated after seven post-free flow repairs; 618 instructions and zero gaps."
+    },
+    {
+      "native": "00BF6989",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbf6989",
+      "coverage": "actual_composed_body",
+      "call_site": "00B3ACD2",
+      "body_status": "owned_by_repaired_00b3a7e0",
+      "evidence": "complete disk span matched to fresh BSP-wrapper Ghidra bytes; original-body fixture where stated",
+      "address": "00B3ACD2",
+      "worker_body_status": "no_ghidra_function",
+      "integration_evidence": "Ghidra full body B3A7E0..B3AE9B recreated after seven post-free flow repairs; 618 instructions and zero gaps."
+    },
+    {
+      "native": "00BF55BE",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbf55be",
+      "coverage": "actual_composed_body",
+      "call_site": "00B3ACEC",
+      "body_status": "owned_by_repaired_00b3a7e0",
+      "evidence": "complete disk span matched to fresh BSP-wrapper Ghidra bytes; original-body fixture where stated",
+      "address": "00B3ACEC",
+      "worker_body_status": "no_ghidra_function",
+      "integration_evidence": "Ghidra full body B3A7E0..B3AE9B recreated after seven post-free flow repairs; 618 instructions and zero gaps."
+    },
+    {
+      "native": "00BF6989",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbf6989",
+      "coverage": "actual_composed_body",
+      "call_site": "00B3AD1B",
+      "body_status": "owned_by_repaired_00b3a7e0",
+      "evidence": "complete disk span matched to fresh BSP-wrapper Ghidra bytes; original-body fixture where stated",
+      "address": "00B3AD1B",
+      "worker_body_status": "no_ghidra_function",
+      "integration_evidence": "Ghidra full body B3A7E0..B3AE9B recreated after seven post-free flow repairs; 618 instructions and zero gaps."
+    },
+    {
+      "native": "00BF6989",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbf6989",
+      "coverage": "actual_composed_body",
+      "call_site": "00B3AD62",
+      "body_status": "owned_by_repaired_00b3a7e0",
+      "evidence": "complete disk span matched to fresh BSP-wrapper Ghidra bytes; original-body fixture where stated",
+      "address": "00B3AD62",
+      "worker_body_status": "no_ghidra_function",
+      "integration_evidence": "Ghidra full body B3A7E0..B3AE9B recreated after seven post-free flow repairs; 618 instructions and zero gaps."
+    },
+    {
+      "native": "00BF55BE",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbf55be",
+      "coverage": "actual_composed_body",
+      "call_site": "00B3AD7C",
+      "body_status": "owned_by_repaired_00b3a7e0",
+      "evidence": "complete disk span matched to fresh BSP-wrapper Ghidra bytes; original-body fixture where stated",
+      "address": "00B3AD7C",
+      "worker_body_status": "no_ghidra_function",
+      "integration_evidence": "Ghidra full body B3A7E0..B3AE9B recreated after seven post-free flow repairs; 618 instructions and zero gaps."
+    },
+    {
+      "native": "00BF6989",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbf6989",
+      "coverage": "actual_composed_body",
+      "call_site": "00B3ADAB",
+      "body_status": "owned_by_repaired_00b3a7e0",
+      "evidence": "complete disk span matched to fresh BSP-wrapper Ghidra bytes; original-body fixture where stated",
+      "address": "00B3ADAB",
+      "worker_body_status": "no_ghidra_function",
+      "integration_evidence": "Ghidra full body B3A7E0..B3AE9B recreated after seven post-free flow repairs; 618 instructions and zero gaps."
+    },
+    {
+      "native": "00BF6989",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbf6989",
+      "coverage": "actual_composed_body",
+      "call_site": "00B3ADF2",
+      "body_status": "owned_by_repaired_00b3a7e0",
+      "evidence": "complete disk span matched to fresh BSP-wrapper Ghidra bytes; original-body fixture where stated",
+      "address": "00B3ADF2",
+      "worker_body_status": "no_ghidra_function",
+      "integration_evidence": "Ghidra full body B3A7E0..B3AE9B recreated after seven post-free flow repairs; 618 instructions and zero gaps."
+    },
+    {
+      "native": "00BF55BE",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbf55be",
+      "coverage": "actual_composed_body",
+      "call_site": "00B3AE0B",
+      "body_status": "owned_by_repaired_00b3a7e0",
+      "evidence": "complete disk span matched to fresh BSP-wrapper Ghidra bytes; original-body fixture where stated",
+      "address": "00B3AE0B",
+      "worker_body_status": "no_ghidra_function",
+      "integration_evidence": "Ghidra full body B3A7E0..B3AE9B recreated after seven post-free flow repairs; 618 instructions and zero gaps."
+    },
+    {
+      "native": "00BF6989",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbf6989",
+      "coverage": "actual_composed_body",
+      "call_site": "00B3AE3B",
+      "body_status": "owned_by_repaired_00b3a7e0",
+      "evidence": "complete disk span matched to fresh BSP-wrapper Ghidra bytes; original-body fixture where stated",
+      "address": "00B3AE3B",
+      "worker_body_status": "no_ghidra_function",
+      "integration_evidence": "Ghidra full body B3A7E0..B3AE9B recreated after seven post-free flow repairs; 618 instructions and zero gaps."
+    },
+    {
+      "native": "00BF6989",
+      "function": "00B3A7E0",
+      "instruction": "call 0xbf6989",
+      "coverage": "actual_composed_body",
+      "call_site": "00B3AE82",
+      "body_status": "owned_by_repaired_00b3a7e0",
+      "evidence": "complete disk span matched to fresh BSP-wrapper Ghidra bytes; original-body fixture where stated",
+      "address": "00B3AE82",
+      "worker_body_status": "no_ghidra_function",
+      "integration_evidence": "Ghidra full body B3A7E0..B3AE9B recreated after seven post-free flow repairs; 618 instructions and zero gaps."
+    },
+    {
+      "address": "00B35972",
+      "native": "00BF681B",
+      "function": "00B35930",
+      "instruction": "call 0xbf681b",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B359F9",
+      "native": "0041DD40",
+      "function": "00B35930",
+      "instruction": "call 0x41dd40",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B35A0E",
+      "native": "00BF7680",
+      "function": "00B35930",
+      "instruction": "call 0xbf7680",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B35A60",
+      "native": "00B34680",
+      "function": "00B35930",
+      "instruction": "call 0xb34680",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B35AA4",
+      "native": "00BF681B",
+      "function": "00B35930",
+      "instruction": "call 0xbf681b",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B35B2B",
+      "native": "0041DD40",
+      "function": "00B35930",
+      "instruction": "call 0x41dd40",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B35B40",
+      "native": "00BF7680",
+      "function": "00B35930",
+      "instruction": "call 0xbf7680",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B35B92",
+      "native": "00B34680",
+      "function": "00B35930",
+      "instruction": "call 0xb34680",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3B420",
+      "native": "0041DD40",
+      "function": "00B3B3C0",
+      "instruction": "call 0x41dd40",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3B437",
+      "native": "00BF7680",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbf7680",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3B461",
+      "native": "004254B0",
+      "function": "00B3B3C0",
+      "instruction": "call 0x4254b0",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3B475",
+      "native": "004BCB80",
+      "function": "00B3B3C0",
+      "instruction": "call 0x4bcb80",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3B490",
+      "native": "00469840",
+      "function": "00B3B3C0",
+      "instruction": "call 0x469840",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3B4AE",
+      "native": "0041DD40",
+      "function": "00B3B3C0",
+      "instruction": "call 0x41dd40",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3B4C5",
+      "native": "00BF7680",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbf7680",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3B4EE",
+      "native": "00419CC0",
+      "function": "00B3B3C0",
+      "instruction": "call 0x419cc0",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3B4F5",
+      "native": "00BD1510",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbd1510",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3B50E",
+      "native": "00B35930",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb35930",
+      "coverage": "actual_composed_body"
+    },
+    {
+      "address": "00B3B515",
+      "native": "00B35BE0",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb35be0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B522",
+      "native": "00B36800",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb36800",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B52A",
+      "native": "00B34AA0",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb34aa0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B531",
+      "native": "00B372D0",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb372d0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B53B",
+      "native": "00B41820",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb41820",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B552",
+      "native": "00B44B10",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb44b10",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B56E",
+      "native": "00BF681B",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbf681b",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B5B0",
+      "native": "00BF79F0",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbf79f0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B5C8",
+      "native": "00BF681B",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbf681b",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B60A",
+      "native": "00BF79F0",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbf79f0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B688",
+      "native": "00B39880",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb39880",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B6C1",
+      "native": "00B61280",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb61280",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B6EA",
+      "native": "00419CC0",
+      "function": "00B3B3C0",
+      "instruction": "call 0x419cc0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B6F1",
+      "native": "00BD1510",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbd1510",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B763",
+      "native": "00B20190",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb20190",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B7B3",
+      "native": "0041DD40",
+      "function": "00B3B3C0",
+      "instruction": "call 0x41dd40",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B7CE",
+      "native": "00BF7680",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbf7680",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B7EF",
+      "native": "004261A0",
+      "function": "00B3B3C0",
+      "instruction": "call 0x4261a0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B7FB",
+      "native": "00B34890",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb34890",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B81B",
+      "native": "00419CC0",
+      "function": "00B3B3C0",
+      "instruction": "call 0x419cc0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B822",
+      "native": "00BD1510",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbd1510",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B83A",
+      "native": "00419CC0",
+      "function": "00B3B3C0",
+      "instruction": "call 0x419cc0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B841",
+      "native": "00BD1510",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbd1510",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B854",
+      "native": "00B3AEA0",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb3aea0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B85F",
+      "native": "00B1FEF0",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb1fef0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "call_site": "00B3B876",
+      "indirect": "eax",
+      "function": "00B3B3C0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B88E",
+      "native": "00BF55BE",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbf55be",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B8BA",
+      "native": "00BF6989",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbf6989",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B910",
+      "native": "00B36800",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb36800",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B923",
+      "native": "00BF55BE",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbf55be",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B953",
+      "native": "00BF6989",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbf6989",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B9A9",
+      "native": "00BF55BE",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbf55be",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3B9DD",
+      "native": "00BF6989",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbf6989",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BA26",
+      "native": "00B34AA0",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb34aa0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BA3C",
+      "native": "00BF55BE",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbf55be",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BA69",
+      "native": "00BF6989",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbf6989",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BAB2",
+      "native": "00B36800",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb36800",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BAB9",
+      "native": "00B39110",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb39110",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BAE9",
+      "native": "00B60F60",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb60f60",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BB14",
+      "native": "00419CC0",
+      "function": "00B3B3C0",
+      "instruction": "call 0x419cc0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BB1B",
+      "native": "00BD1510",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbd1510",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "call_site": "00B3BB37",
+      "indirect": "eax",
+      "function": "00B3B3C0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BB3E",
+      "native": "00BF55BE",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbf55be",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "call_site": "00B3BB5C",
+      "indirect": "edx",
+      "function": "00B3B3C0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BB69",
+      "native": "00B3AEA0",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb3aea0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BB8D",
+      "native": "0041DD40",
+      "function": "00B3B3C0",
+      "instruction": "call 0x41dd40",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BBA8",
+      "native": "00BF7680",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbf7680",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BBC9",
+      "native": "004261A0",
+      "function": "00B3B3C0",
+      "instruction": "call 0x4261a0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "call_site": "00B3BBF7",
+      "indirect": "eax",
+      "function": "00B3B3C0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "call_site": "00B3BC03",
+      "indirect": "eax",
+      "function": "00B3B3C0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "call_site": "00B3BC14",
+      "indirect": "edx",
+      "function": "00B3B3C0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BC3B",
+      "native": "00419CC0",
+      "function": "00B3B3C0",
+      "instruction": "call 0x419cc0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BC42",
+      "native": "00BD1510",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbd1510",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BC62",
+      "native": "00419CC0",
+      "function": "00B3B3C0",
+      "instruction": "call 0x419cc0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BC69",
+      "native": "00BD1510",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbd1510",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BC73",
+      "native": "00BF6989",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbf6989",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BC7F",
+      "native": "00BF681B",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbf681b",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BC9E",
+      "native": "00B5FAF0",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb5faf0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "call_site": "00B3BCBF",
+      "indirect": "eax",
+      "function": "00B3B3C0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BCC8",
+      "native": "00B5F0C0",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb5f0c0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "call_site": "00B3BCD1",
+      "indirect": "dword ptr [0xce2220]",
+      "function": "00B3B3C0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "call_site": "00B3BCE1",
+      "indirect": "eax",
+      "function": "00B3B3C0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BD1E",
+      "native": "0041DD40",
+      "function": "00B3B3C0",
+      "instruction": "call 0x41dd40",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BD39",
+      "native": "00BF7680",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbf7680",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BD5A",
+      "native": "004261A0",
+      "function": "00B3B3C0",
+      "instruction": "call 0x4261a0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BD66",
+      "native": "00B34890",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb34890",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BD86",
+      "native": "00419CC0",
+      "function": "00B3B3C0",
+      "instruction": "call 0x419cc0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BD8D",
+      "native": "00BD1510",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbd1510",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BDA5",
+      "native": "00419CC0",
+      "function": "00B3B3C0",
+      "instruction": "call 0x419cc0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BDAC",
+      "native": "00BD1510",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbd1510",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BDBF",
+      "native": "00B3AEA0",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb3aea0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BDCA",
+      "native": "00B1FEF0",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb1fef0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "call_site": "00B3BDE1",
+      "indirect": "eax",
+      "function": "00B3B3C0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BDF2",
+      "native": "00B39880",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb39880",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BE30",
+      "native": "00B61280",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb61280",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "call_site": "00B3BE51",
+      "indirect": "eax",
+      "function": "00B3B3C0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BE58",
+      "native": "00BF55BE",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbf55be",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "call_site": "00B3BE76",
+      "indirect": "edx",
+      "function": "00B3B3C0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BE7F",
+      "native": "00B3AEA0",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb3aea0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BEA3",
+      "native": "0041DD40",
+      "function": "00B3B3C0",
+      "instruction": "call 0x41dd40",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BEBE",
+      "native": "00BF7680",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbf7680",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BEDF",
+      "native": "004261A0",
+      "function": "00B3B3C0",
+      "instruction": "call 0x4261a0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "call_site": "00B3BF0F",
+      "indirect": "eax",
+      "function": "00B3B3C0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "call_site": "00B3BF1B",
+      "indirect": "eax",
+      "function": "00B3B3C0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "call_site": "00B3BF2C",
+      "indirect": "edx",
+      "function": "00B3B3C0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BF53",
+      "native": "00419CC0",
+      "function": "00B3B3C0",
+      "instruction": "call 0x419cc0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BF5A",
+      "native": "00BD1510",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbd1510",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BF7A",
+      "native": "00419CC0",
+      "function": "00B3B3C0",
+      "instruction": "call 0x419cc0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BF81",
+      "native": "00BD1510",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbd1510",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BF8B",
+      "native": "00BF6989",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbf6989",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BF97",
+      "native": "00BF681B",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbf681b",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BFB6",
+      "native": "00B5F9B0",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb5f9b0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "call_site": "00B3BFD7",
+      "indirect": "eax",
+      "function": "00B3B3C0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3BFDE",
+      "native": "00B5F080",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb5f080",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "call_site": "00B3BFE7",
+      "indirect": "dword ptr [0xce2220]",
+      "function": "00B3B3C0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "call_site": "00B3BFF7",
+      "indirect": "eax",
+      "function": "00B3B3C0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C018",
+      "native": "00B3B280",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb3b280",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C024",
+      "native": "00B3B280",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb3b280",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C030",
+      "native": "00B34920",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb34920",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C03C",
+      "native": "00B34920",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb34920",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C060",
+      "native": "00B5EFF0",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb5eff0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "call_site": "00B3C08D",
+      "indirect": "edx",
+      "function": "00B3B3C0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C0AD",
+      "native": "00B5EC40",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb5ec40",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C0C4",
+      "native": "0041DD40",
+      "function": "00B3B3C0",
+      "instruction": "call 0x41dd40",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C0DF",
+      "native": "00BF7680",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbf7680",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C0EF",
+      "native": "00B347E0",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb347e0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C105",
+      "native": "00419CC0",
+      "function": "00B3B3C0",
+      "instruction": "call 0x419cc0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C10C",
+      "native": "00BD1510",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbd1510",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C12B",
+      "native": "0041DD40",
+      "function": "00B3B3C0",
+      "instruction": "call 0x41dd40",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C146",
+      "native": "00BF7680",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbf7680",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C180",
+      "native": "00B347E0",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb347e0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C19D",
+      "native": "00419CC0",
+      "function": "00B3B3C0",
+      "instruction": "call 0x419cc0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C1A4",
+      "native": "00BD1510",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbd1510",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C1BB",
+      "native": "0041DD40",
+      "function": "00B3B3C0",
+      "instruction": "call 0x41dd40",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C1D6",
+      "native": "00BF7680",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbf7680",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C1E6",
+      "native": "00B347E0",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb347e0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C1FC",
+      "native": "00419CC0",
+      "function": "00B3B3C0",
+      "instruction": "call 0x419cc0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C203",
+      "native": "00BD1510",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbd1510",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C222",
+      "native": "0041DD40",
+      "function": "00B3B3C0",
+      "instruction": "call 0x41dd40",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C23D",
+      "native": "00BF7680",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbf7680",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C27D",
+      "native": "00B347E0",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb347e0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C29A",
+      "native": "00419CC0",
+      "function": "00B3B3C0",
+      "instruction": "call 0x419cc0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C2A1",
+      "native": "00BD1510",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbd1510",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C2C8",
+      "native": "00B5ED60",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb5ed60",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C2D7",
+      "native": "00B5ED60",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb5ed60",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C2E6",
+      "native": "00B5ED60",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb5ed60",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C2F5",
+      "native": "00B5ED60",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb5ed60",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C309",
+      "native": "00B5ED60",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb5ed60",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C318",
+      "native": "00B5ED60",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb5ed60",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C327",
+      "native": "00B5ED60",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb5ed60",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C336",
+      "native": "00B5ED60",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb5ed60",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C345",
+      "native": "00B5ED60",
+      "function": "00B3B3C0",
+      "instruction": "call 0xb5ed60",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C368",
+      "native": "00419CC0",
+      "function": "00B3B3C0",
+      "instruction": "call 0x419cc0",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B3C36F",
+      "native": "00BD1510",
+      "function": "00B3B3C0",
+      "instruction": "call 0xbd1510",
+      "coverage": "required_unimplemented_tail_inventory"
+    },
+    {
+      "address": "00B4631E",
+      "native": "00B3C3A0",
+      "function": "00B45EE0",
+      "coverage": "incoming_call_site"
+    },
+    {
+      "address": "00B46795",
+      "native": "00B3C3A0",
+      "function": "00B45EE0",
+      "coverage": "incoming_call_site"
+    },
+    {
+      "address": "00B3B243",
+      "native": "00B3A7E0",
+      "function": "00B3B240",
+      "coverage": "incoming_call_site"
+    },
+    {
+      "address": "00CBECA6",
+      "native": "00B3A7E0",
+      "function": "00CBECA0",
+      "coverage": "incoming_call_site",
+      "kind": "tail_jump"
+    }
+  ],
+  "saved_body_limits": "Historical worker body truncation repaired by integrator; full destructor body now owned. Historical raw_call_rule retained for provenance.",
+  "raw_call_rule": "call_site/native rows marked no_ghidra_function are explicitly outside the mechanical verifier coverage; numeric address/native rows are verifier-eligible saved instructions",
+  "validation": {
+    "source_compile": "passed Win32 stdc++17 EHsc O2 MD fpstrict W4 WX; local/native_material_program_source_compile.log",
+    "baseline_build": "passed scripts/build.ps1 Win32 W4 WX; reconstructed_math CTest1/1; new source not CMake-registered because active foreign lease",
+    "fixture": "passed original/source B354D0 B35930 B3A7E0 actual builder/field/lifetime comparison using installed descriptor inputs; no successful compiler tail execution",
+    "call_verification": "185 numeric direct call rows checked after saved-body repair, 0 failed; indirect call rows retain separate evidence.",
+    "abi_compatible": false,
+    "native_SEH": false,
+    "complete_native_compiler": false,
+    "compiled_pass_success": false,
+    "game_validated": false,
+    "baseline_build_log": "local/native_material_program_baseline_build.log",
+    "fixture_runner": "local/run_native_material_program_probe.ps1",
+    "fixture_log": "local/native_material_program_probe.log",
+    "call_log": "local/native_material_program_calls.log",
+    "original_body_fixture_bytes": 2507,
+    "original_body_fixture_instructions": 855,
+    "call_verification_at_worker_commit": "162 verifier-eligible numeric rows checked, 0 failed; 23 raw CALL sites have no saved Ghidra function and are separately covered by disk bytes and original destructor execution"
+  },
+  "integration": {
+    "function": "compile_native_material_program_00b3c3a0(const NativeMaterialProgramRequest&,NativeMaterialProgramCompileContext&,NativeMaterialProgramCompileOperation&)",
+    "context": "same actual strings; references to live0108D6F0/F1; required NativeMaterialProgramCompilerTail",
+    "retention": "stable actualB0h builder and local names; captured request values/borrowed identities; unpublished actual1Ch field and downstream child attached before later calls",
+    "normal": "tail completes local name cleanup and transfers canonical held pass or real native null; wrapper then destroys builder; no extra retain",
+    "failure": "retain exact frame, no replay/destructor rollback, not original FH3",
+    "CMake": "not registered while cmake/startup.cmake is leased; integration must append new source then build"
+  },
+  "raw_writes": {
+    "B354D0": [
+      "vtable00=D5F314",
+      "DWORDs04..68=0",
+      "byte6C/6D=FF",
+      "name9C/A0=0"
+    ],
+    "B3C3A0_order": [
+      "copy actual name9C",
+      "byteA9=descriptor_flag",
+      "DWORDAC=generation",
+      "DWORDA4=RTCount",
+      "byteA8=mode_flag",
+      "byteAA=policy",
+      "byte98=unsigned generation<3"
+    ],
+    "B3B3C0_prefix": [
+      "effect78",
+      "root70",
+      "mode74",
+      "actual local copy of name9C",
+      "slash-only basename replacement",
+      "liveF0/F1 branch",
+      "B35930 copies root then mode actual D0/D4 fields"
+    ]
+  },
+  "limits": [
+    "Native source/field generators after B35930 remain semantic-only source implementations",
+    "D61810 raw88h reflection owners, native compile/reflection/COM/cache tail not implemented",
+    "No default/unavailable provider returns successful or null pass",
+    "Actual private FH3, negative counts/corrupt extents and arbitrary callbacks outside valid storage not covered",
+    "Machine fixture does not execute successful B3C3A0/B3B3C0 compilation or builder40 child path"
+  ],
+  "fixture_sources": {
+    "local/native_material_program_probe.cpp": "a26ec168140bcbe57b6de61318dc2d2003c92152cba836a692dd12f8179be7d5",
+    "local/run_native_material_program_probe.ps1": "0c366eb6deddd86c68b396a3773916118c9b77f5936411ad5304269616f39b27",
+    "local/compiler_original.hpp": "7cce2ce1e25e9e2d0d7f3fd0ae6447b1e1c6d884cf970fa6f2463cdf45769fef",
+    "local/compiler_original_manifest.json": "33ac18da597fa660f9bd93cbbdbbe3dfb3f3f6a4a8835807b3e419fabdb051a1",
+    "local/reader_support.cpp": "c29c4e5a1ee9601c3beca71a57b3fff612cfc96eabf60cd0e3b4942c3ed212e2",
+    "local/reader_support.hpp": "30d52e53bf0bced56cfced728097595404b2146445569185a393d109c874cf2c"
+  },
+  "source_sha256": {
+    "src/native_material_program_compiler.cpp": "0143f236502451b563897f9e8f59bd15289dd7eb113975f364cdbb14cca9b3a7",
+    "include/bsp/native_material_program_compiler.hpp": "c2eb2196fe4ae5fe9a381d91464f8d0feeb828ca7261bba737387947eb501548"
+  },
+  "fixture_origin": {
+    "reader_commit": "0ea46a3a",
+    "source_fixture_sha256": "0139d6f491703deaeac85bd1b1d39c00c6395e642e68bc741171f7771c2eca63",
+    "verified_manifest": "orch5-shader-reader/local/native_shader_descriptor_artifacts.json",
+    "support_adaptation": "only local include name changed in exact reader source; fixture adds builder comparison; existing original profile/mount/HANDLE/Lua/string domains preserved"
+  },
+  "fixture_assets": [
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/Scripts/fundamentals.lua",
+      "sha256": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/shaderfx/dx9_lua.inc",
+      "sha256": "7766adc9c116a9e396b3dd77e9d97b3ea6d55c84601cb2a5a49a64362605b11f"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/shaderfx/common/debugshader.shfx",
+      "sha256": "d45e91ef1a3f11c654b97ac3a9d293b9a24b597b68fb315d611638d3b6933476"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/shaderfx/common/alphablend.shfx",
+      "sha256": "37cc55352deb1ea4b9685eb4dd3d0f89cb9958bd7a786d24bb34857ed9747f64"
+    }
+  ],
+  "integration_body_repair": {
+    "complete_body": "00B3A7E0..00B3AE9B",
+    "instructions": 618,
+    "gaps": 0,
+    "newly_owned_call_rows": 23,
+    "artifacts": {
+      "local/native-program-builder-tail-flow.json": "b41e068e07701b1254813df3d0b401d8fa7f07433c91bdc0c32a84df94285ee3",
+      "local/native-program-builder-tail-definition.json": "83fec192086f85b5ffc9703d98e40380c0cd43c9b15cb430f6d3d21a36b4efdd"
+    },
+    "saved_body_limits_at_worker_commit": {
+      "B3A7E0": {
+        "saved_end_inclusive": "00B3AA68",
+        "actual_end_inclusive": "00B3AE9B",
+        "no_ghidra_function_ranges_inclusive": [
+          [
+            "00B3A870",
+            "00B3A878"
+          ],
+          [
+            "00B3A8B7",
+            "00B3A8BF"
+          ],
+          [
+            "00B3A8FF",
+            "00B3A907"
+          ],
+          [
+            "00B3A946",
+            "00B3A94E"
+          ],
+          [
+            "00B3A98F",
+            "00B3A997"
+          ],
+          [
+            "00B3AA12",
+            "00B3AA1E"
+          ],
+          [
+            "00B3AA69",
+            "00B3AE9B"
+          ]
+        ]
+      }
+    }
+  },
+  "integration_review": {
+    "accepted_worker_commit": "8ddf225dc2ea42040cc6d80afcfba3ead3c8e95b",
+    "archive": "local/loader-native-workers/compiler/manifest.json",
+    "combined_library_fixture": "local/native_material_program_probe.log",
+    "combined_library_fixture_sha256": "d64dd1b4d601c8c42804aa5a1c43926572a61452c48821919b6226c2e5980a98",
+    "fixture_limits": "Original/source constructor, field copies and complete normal destructor only; wrapper/compiler-tail/virtual child/failure paths not executed."
+  },
+  "integrated_validation": {
+    "code_commit": "b18f5477069e6db5da7e11a65ee527aefed3d7f0",
+    "default_source_registration": true,
+    "ctest_passed": 2,
+    "report": "reports/native_loader_integration.json",
+    "game_validated": false
+  }
+}
