@@ -161,7 +161,7 @@ operations keep that distinction and require the documented diagnostic cleanup.
 
 Pixel compilation creates the actual shader before diagnostics. With both mask
 pointers present, disassembly sets the returned HRESULT. The texcoord 500 sentinel
-separately for filename selection and post-stream parsing. Parsing preserves
+is read separately for filename selection and post-stream parsing. Parsing preserves
 captured line pointers, per-component OR writes and the final captured full-string
 release. Root review corrected newline searches to subtract CURRENT full-string
 data after strstr and changed the inline copy to the original overlap-capable
