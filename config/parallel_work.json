@@ -9720,6 +9720,93 @@
       "done": true,
       "next_work": "See the named follow-up packets and explicit remaining contracts in the batch doc/report.",
       "validation": "Exact promoted code b1f047dd60333c96d0f836464bd22a181eaf4ca1 passed Win32/CTest2/2 and four scoped fixtures; Text composition is build-checked only. See batch report for individual scope and remaining contracts."
+    },
+    {
+      "id": "orch3_native_instance_collection_au",
+      "packet": "orch3_native_instance_collection_au",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+      "function_addresses": [
+        "00b1dff0",
+        "00b172d0",
+        "00b17300",
+        "00b73770",
+        "00b51cb0",
+        "0043c130"
+      ],
+      "code_ownership": [
+        "include/bsp/native_instance_collection.hpp",
+        "src/native_instance_collection.cpp",
+        "docs/NATIVE_INSTANCE_COLLECTION.md",
+        "reports/native_instance_collection.json"
+      ],
+      "evidence": "reports/native_instance_collection.json",
+      "boundary": "Current actual owners/services required; visible render composition/gameplay unverified; see final_merged_validation_au for exact source and fixture limits"
+    },
+    {
+      "id": "orch3_native_instance_geometry_au",
+      "packet": "orch3_native_instance_geometry_au",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+      "function_addresses": [
+        "00b4c8d0",
+        "00b556b0",
+        "00b556c0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_instance_geometry.hpp",
+        "src/native_instance_geometry.cpp",
+        "docs/NATIVE_INSTANCE_GEOMETRY.md",
+        "reports/native_instance_geometry.json"
+      ],
+      "evidence": "reports/native_instance_geometry.json",
+      "boundary": "Current actual owners/services required; visible render composition/gameplay unverified; see final_merged_validation_au for exact source and fixture limits"
+    },
+    {
+      "id": "orch3_native_vertex_declaration_registry_lifetime_au",
+      "packet": "orch3_native_vertex_declaration_registry_lifetime_au",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+      "function_addresses": [
+        "00b30270",
+        "00b31630",
+        "00b316a0",
+        "00b31d40",
+        "00b32030",
+        "00b32210"
+      ],
+      "code_ownership": [
+        "include/bsp/native_vertex_declaration_registry_lifetime.hpp",
+        "src/native_vertex_declaration_registry_lifetime.cpp",
+        "docs/NATIVE_VERTEX_DECLARATION_REGISTRY_LIFETIME.md",
+        "reports/native_vertex_declaration_registry_lifetime.json"
+      ],
+      "evidence": "reports/native_vertex_declaration_registry_lifetime.json",
+      "boundary": "Current actual owners/services required; visible render composition/gameplay unverified; see final_merged_validation_au for exact source and fixture limits"
+    },
+    {
+      "id": "orch3_native_renderer_vertex_binding_au",
+      "packet": "orch3_native_renderer_vertex_binding_au",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+      "function_addresses": [
+        "00b24840",
+        "00b23710",
+        "00b24bf0",
+        "00b48cf0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_vertex_binding.hpp",
+        "src/native_renderer_vertex_binding.cpp",
+        "docs/NATIVE_RENDERER_VERTEX_BINDING.md",
+        "reports/native_renderer_vertex_binding.json"
+      ],
+      "evidence": "reports/native_renderer_vertex_binding.json",
+      "boundary": "Current actual owners/services required; visible render composition/gameplay unverified; see final_merged_validation_au for exact source and fixture limits"
     }
   ],
   "snapshot_after_analysis": {
