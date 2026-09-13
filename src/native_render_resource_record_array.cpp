@@ -113,4 +113,41 @@ void resize_native_render_resource_record_array_00b30340(
     field<std::uint32_t>(actual_header, 4) = requested_count;
 }
 
+
+void reserve_native_render_resource_record_array_00b2ff00(
+    void* actual_header, std::uint32_t requested_capacity,
+    ActualNativeStringPoolStorage& actual_string_pool, const SingletonLifetimeCallbacks& callbacks) {
+    if (signed_bits(requested_capacity) < 64) requested_capacity = 64;
+    if (signed_bits(field<std::uint32_t>(actual_header, 8)) >=
+        signed_bits(requested_capacity)) return;
+
+    const auto allocated_bytes = requested_capacity * 0x2cu;
+    auto* const replacement = singleton_lifetime_allocate({
+        SingletonAllocationKind::object, allocated_bytes, allocated_bytes});
+    std::uint32_t index = 0;
+    while (signed_bits(index) < signed_bits(current_count(actual_header))) {
+        auto* destination = record_at(replacement, index);
+        if (destination != nullptr) {
+            // Start this raw record's lifetime without initializing its fields.
+            destination = ::new (destination) NativeRenderResourceRecord;
+            auto* const source = record_at(current_begin(actual_header), index);
+            copy_construct_native_render_resource_record_00b2fc60(
+                *destination, *source, actual_string_pool, callbacks);
+        }
+        ++index;
+    }
+    // CBD970 only computes two pointer arguments and calls RET leaf 00401130.
+    // There is no replacement free or completed-record unwind on copy failure.
+    index = 0;
+    while (signed_bits(index) < signed_bits(current_count(actual_header))) {
+        auto* const record = record_at(current_begin(actual_header), index);
+        destroy_native_render_resource_record_00b2f990(*record, actual_string_pool);
+        ++index;
+    }
+    singleton_lifetime_free(current_begin(actual_header));
+    field<NativeRenderResourceRecord*>(actual_header, 0) =
+        static_cast<NativeRenderResourceRecord*>(replacement);
+    field<std::uint32_t>(actual_header, 8) = requested_capacity;
+}
+
 } // namespace bsp

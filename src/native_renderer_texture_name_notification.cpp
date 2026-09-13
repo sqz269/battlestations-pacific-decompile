@@ -1,5 +1,6 @@
 #include "bsp/native_renderer_texture_name_notification.hpp"
 #include "bsp/native_string.hpp"
+#include "bsp/native_string_pool_storage.hpp"
 
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -7,8 +8,24 @@
 
 #include <cstring>
 #include <exception>
+#include <stdexcept>
 
 namespace bsp {
+NativeRendererTextureNameNotificationContext::NativeRendererTextureNameNotificationContext(
+    const void* volatile& renderer, NativeRendererSynchronizationGlobals& sync,
+    NativeStringStorage& strings, SizedStoragePool& pool,
+    const SingletonLifetimeCallbacks& validation,
+    const NativeRenderResourceAccountingTables& tables) noexcept
+    : actual_renderer_00f8d394(renderer), synchronization(sync), actual_string_storage(strings),
+      actual_string_pool(&pool), callbacks(validation), accounting_tables(tables),
+      actual_native_string_pool(nullptr) {}
+NativeRendererTextureNameNotificationContext::NativeRendererTextureNameNotificationContext(
+    const void* volatile& renderer, NativeRendererSynchronizationGlobals& sync,
+    ActualNativeStringPoolStorage& strings, const SingletonLifetimeCallbacks& validation,
+    const NativeRenderResourceAccountingTables& tables) noexcept
+    : actual_renderer_00f8d394(renderer), synchronization(sync), actual_string_storage(strings),
+      actual_string_pool(nullptr), callbacks(validation), accounting_tables(tables),
+      actual_native_string_pool(&strings) {}
 namespace {
 static_assert(sizeof(void*) == 4);
 
@@ -94,9 +111,19 @@ void notify_native_renderer_texture_name_removal_00b32250(
     // State 1 begins after copying, not when storage first becomes owned.
     cleanup.string_armed = true;
     lowercase_native_string_header_004bcc00(name);
-    remove_native_render_resource_by_alias_00b31dc0(
-        address(actual_receiver, 0x1a74), original_name,
-        context.actual_string_pool, context.callbacks, context.accounting_tables);
+    if (context.actual_native_string_pool) {
+        if (&context.actual_string_storage != context.actual_native_string_pool)
+            throw std::invalid_argument("texture notification requires the same actual string pool");
+        remove_native_render_resource_by_alias_00b31dc0(
+            address(actual_receiver, 0x1a74), original_name,
+            *context.actual_native_string_pool, context.callbacks, context.accounting_tables);
+    } else {
+        if (!context.actual_string_pool)
+            throw std::invalid_argument("texture notification requires its string pool");
+        remove_native_render_resource_by_alias_00b31dc0(
+            address(actual_receiver, 0x1a74), original_name,
+            *context.actual_string_pool, context.callbacks, context.accounting_tables);
+    }
 
     cleanup.string_armed = false; // State 0 before normal string release.
     if (captured_data) {
