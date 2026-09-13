@@ -239,6 +239,13 @@ struct GameUnitSlot {
     bsp::PoseRefreshView* parent{nullptr};
     std::unique_ptr<bsp::PoseRefreshView> pose;
     std::unique_ptr<bsp::UnitInstanceState> state;
+    // Retained cells absent from UnitInstanceState. Its active/simulate cells
+    // remain the only owners of+5C/+5D. Constructor00925CE0 stores BL=0 at
+    //00925E11/+5E,00925E0B/+5F,00925E08/+60; later stores use this same slot.
+    bool scene_destroyed_005e{false};
+    bool scene_removed_005f{false};
+    bool scene_pending_destroy_0060{false};
+    bool scene_flags_available{false}; // process provenance, not a native byte
     bsp::UnitClassBlock class_block{};
 
     // The motion half.
@@ -1140,6 +1147,7 @@ private:
 
 void GameUnitsHost::Impl::refresh_row(GameUnitSlot& slot) {
     GameUnitRow& row = slot.row;
+    row.active = slot.state != nullptr && slot.state->active;
     for (int i = 0; i < 3; ++i) row.position[i] = slot.motion.position[i];
     row.heading_degrees = heading_degrees_of(slot.motion);
     bsp::UnitBodyAxisSpeedInputs speed{};
@@ -1534,8 +1542,14 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         slot->state = std::make_unique<bsp::UnitInstanceState>(
             bsp::UnitInstanceState{*slot->pose});
         slot->state->class_id = slot->class_id;
-        slot->state->active = true;      // +5Ch, the world tick gate
-        slot->state->simulate = false;   // +5Dh; the list filter requires it clear
+        // The represented kind1 scene path reaches00923840 through each
+        // supported creator's primary+A0 initializer.00923855 writes+5C=1;
+        // this is initialization, not the constructor's initial zero.
+        //00925E14 clears+5D; type3 deadMeat delivery is not represented here.
+        slot->state->active = true;
+        slot->state->simulate = false;
+        slot->scene_flags_available = slot->motion_dispatch.creator != 0;
+        row.active = slot->state->active;
         slot->state->has_scene_node = false;  // +4A4h, 00928860 is a 2h record
         slot->state->part_count = 0;     // +A18h, the instance has no parts here
         // The actual descriptor creator selects the native+130h override;
@@ -2310,6 +2324,64 @@ bool GameUnitsHost::unit_active(std::size_t index) const noexcept {
     return impl_->slots[index]->state->active;
 }
 
+const void* GameUnitsHost::unit_identity(std::size_t index) const noexcept {
+    return index < impl_->slots.size() ? impl_->slots[index].get() : nullptr;
+}
+
+bool GameUnitsHost::unit_scene_node_flags(std::size_t index,
+    bsp::SceneNodeFlags& out) const noexcept {
+    if (index >= impl_->slots.size()) return false;
+    const GameUnitSlot& slot = *impl_->slots[index];
+    if (!slot.scene_flags_available || slot.state == nullptr) return false;
+    out = {slot.state->active, slot.state->simulate,
+        slot.scene_destroyed_005e, slot.scene_removed_005f};
+    return true;
+}
+
+bool GameUnitsHost::read_scene_node_flags(const void* identity,
+    bsp::SceneNodeFlags& out) const noexcept {
+    // Compare identities before dereferencing: pending queues must hand over
+    // the same stable slot as the world registry, not an index-shaped token.
+    for (std::size_t index = 0; index < impl_->slots.size(); ++index) {
+        if (impl_->slots[index].get() == identity) return unit_scene_node_flags(index, out);
+    }
+    return false;
+}
+
+bool GameUnitsHost::store_scene_node_flags(const void* identity,
+    const bsp::SceneNodeFlags& flags) noexcept {
+    for (const auto& owned : impl_->slots) {
+        if (owned.get() != identity) continue;
+        GameUnitSlot& slot = *owned;
+        if (!slot.scene_flags_available || slot.state == nullptr) return false;
+        slot.state->active = flags.active;
+        slot.state->simulate = flags.torn_down;
+        slot.scene_destroyed_005e = flags.destroyed;
+        slot.scene_removed_005f = flags.removed;
+        slot.row.active = flags.active;
+        return true;
+    }
+    return false;
+}
+
+bool GameUnitsHost::unit_pending_destroy_0060(std::size_t index, bool& out) const noexcept {
+    if (index >= impl_->slots.size()) return false;
+    const GameUnitSlot& slot = *impl_->slots[index];
+    if (!slot.scene_flags_available) return false;
+    out = slot.scene_pending_destroy_0060;
+    return true;
+}
+
+bool GameUnitsHost::store_pending_destroy_0060(const void* identity, bool pending) noexcept {
+    for (const auto& owned : impl_->slots) {
+        if (owned.get() != identity) continue;
+        if (!owned->scene_flags_available) return false;
+        owned->scene_pending_destroy_0060 = pending;
+        return true;
+    }
+    return false;
+}
+
 bool GameUnitsHost::unit_is_kind_of(std::size_t index, int class_id) const {
     if (index >= impl_->slots.size()) return false;
     return bsp::unit_is_kind_of(impl_->slots[index]->class_id, class_id);
@@ -2321,10 +2393,12 @@ int GameUnitsHost::unit_class_id(std::size_t index) const noexcept {
 }
 
 bool GameUnitsHost::unit_alive_and_visible(std::size_t index) const {
-    if (index >= impl_->slots.size()) return false;
-    const bsp::UnitInstanceState& state = *impl_->slots[index]->state;
+    bsp::SceneNodeFlags flags;
+    bool pending_destroy;
+    if (!unit_scene_node_flags(index, flags) ||
+        !unit_pending_destroy_0060(index, pending_destroy)) return false;
     // 0043f080: [+5Ch] != 0 && [+5Dh] == 0 && [+60h] == 0 && [+5Eh] == 0.
-    return state.active && !state.simulate;
+    return flags.active && !flags.torn_down && !pending_destroy && !flags.destroyed;
 }
 
 bool GameUnitsHost::unit_pose(std::size_t index, float right[3], float up[3],

@@ -14,6 +14,7 @@
 #include "bsp/spatial_index.hpp"
 
 #include <cstdio>
+#include <stdexcept>
 
 namespace bsp::game {
 namespace {
@@ -222,8 +223,11 @@ private:
 // ---------------------------------------------------------------------------
 class PendingQueueBinding final : public bsp::PendingEntityQueueHost {
 public:
-    explicit PendingQueueBinding(GameHostLog& log) : log_(log) {}
+    PendingQueueBinding(GameHostLog& log, GameUnitsHost* units) : log_(log), units_(units) {}
 
+    // Population/delivery of the native pending owners remains unavailable.
+    // These existing inactive counts do not establish native empty queues.
+    // The flag hooks below are real retained storage if a valid unit arrives.
     std::size_t pending_destroy_count() override { return 0; }
     std::size_t pending_kill_count() override { return 0; }
     void copy_pending_lists_00926fa0() override {
@@ -255,12 +259,16 @@ public:
         log_.unimplemented("EntityQueues::clear_controlled_unit_handle", "004bca80");
     }
     bsp::SceneNodeFlags scene_node_flags(void* entity) override {
-        static_cast<void>(entity);
-        return bsp::SceneNodeFlags{};
+        bsp::SceneNodeFlags flags;
+        if (units_ == nullptr || !units_->read_scene_node_flags(entity, flags)) {
+            throw std::logic_error("pending entity has no canonical unit scene flags");
+        }
+        return flags;
     }
     void store_scene_node_flags(void* entity, const bsp::SceneNodeFlags& flags) override {
-        static_cast<void>(entity);
-        static_cast<void>(flags);
+        if (units_ == nullptr || !units_->store_scene_node_flags(entity, flags)) {
+            throw std::logic_error("pending entity has no canonical unit scene flags");
+        }
     }
     bool sample_has_observers_00925c40(void* entity) override {
         static_cast<void>(entity);
@@ -278,6 +286,7 @@ public:
 
 private:
     GameHostLog& log_;
+    GameUnitsHost* units_;
 };
 
 // ---------------------------------------------------------------------------
@@ -519,7 +528,7 @@ void GameStepSubsystemsHost::run_due_entity_think_00929460(float step) {
 }
 
 void GameStepSubsystemsHost::flush_pending_entity_queues_009273a0() {
-    PendingQueueBinding binding(log_);
+    PendingQueueBinding binding(log_, units_);
     bsp::flush_pending_entity_queues_009273a0(binding);
     ++summary_.pending_queue_passes;
 }

@@ -58,6 +58,7 @@
 
 #include "bsp/game_hosts_commands.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
+#include "bsp/hit_narrowphase.hpp"
 #include "bsp/ship_ai_obstacle_tables.hpp"
 
 namespace bsp::game {
@@ -441,6 +442,20 @@ public:
 
     std::size_t count() const noexcept;
     bool unit_active(std::size_t index) const noexcept;
+    // Stable identity shared with world_list_node_unit; not a native address,
+    // scene ID, Lua handle, or index+1 token. Valid for this host's lifetime.
+    const void* unit_identity(std::size_t index) const noexcept;
+    // One canonical owner: UnitInstanceState holds+5C/+5D; the same slot holds
+    // missing+5E/+5F/+60. SceneNodeFlags is a snapshot, never a second owner.
+    // Only resolved creator slots have native constructor/init provenance.
+    // Invalid/foreign/unresolved identities return false and preserve outputs.
+    bool unit_scene_node_flags(std::size_t index, bsp::SceneNodeFlags& out) const noexcept;
+    bool read_scene_node_flags(const void* identity, bsp::SceneNodeFlags& out) const noexcept;
+    // Stores accept state produced by an actual caller/compiled helper; they
+    // do not perform kill/remove callbacks, notify observers or enqueue.
+    bool store_scene_node_flags(const void* identity, const bsp::SceneNodeFlags& flags) noexcept;
+    bool unit_pending_destroy_0060(std::size_t index, bool& out) const noexcept;
+    bool store_pending_destroy_0060(const void* identity, bool pending) noexcept;
     // Instance vtable+5Ch dispatch using the class selected by VehicleClass.Type
     // and the compiled predicates in unit_kind_query.hpp. Missing/unrecognized
     // identity and invalid indices answer false. docs/GAME_UNIT_KIND_BINDING.md.
@@ -451,8 +466,7 @@ public:
     // ---- milestone 2k: what the two HUD world screens read off a unit ------
     // 0043f080 BSP_UnitInstance_IsAliveAndVisible, the four-byte filter both the
     // minimap walk (005c1628..005c164a) and the marker gate (006431a8) run.
-    // bsp/unit_instance.hpp carries +5Ch and +5Dh; +5Eh and +60h have no field
-    // there, so they are treated as the clear a created instance leaves them at.
+    // Reads all four persistent cells; unavailable native state fails the gate.
     bool unit_alive_and_visible(std::size_t index) const;
     // The world matrix rows 0063a6c0 and 00427eb0 read: +CCh right, +DCh up,
     // +ECh forward and +FCh translation. False when the index is out of range.
