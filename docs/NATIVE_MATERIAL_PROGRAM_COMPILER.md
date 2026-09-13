@@ -136,3 +136,23 @@ B3A7E0 body recreated through its actual B3AE9B return, preserving prior
 metadata. The verified full body contains 618 instructions and no gaps.
 Twenty-three previously raw tail call rows now belong to this function;
 the original worker status remains in the report as historical evidence.
+
+## Correction from docs/NATIVE_COMPILER_PATH_INTEGRATION.md
+
+Actual storage implementations are now available for B35BE0/B372D0 system
+fields, B36800/B34AA0 interpolators, the B5BF70 system registry and B3AEA0
+reflection with its 88h owner. Their original/source fixtures exercise the
+existing pooled names and raw record/array owners; the actual 52-row registry
+also feeds the original/source reflection comparison through one live publication
+and shared singleton shutdown. The older semantic implementations and worker
+registration status above remain historical evidence.
+
+These helpers do not install a successful B3B3C0 continuation. Full native source
+generation, compiled-cache cursor handling, shader compilation and the remaining
+pass transitions still require their own composition and validation. The caller
+must exclude builder retirement while field/interpolator failure frames remain
+live; those frames do not install a canonical builder lifetime guard.
+
+The primary also repaired six post-free gaps in the stored B3B3C0 listing under
+the Ghidra write lock. Its refreshed export has zero post-CALL gaps; the three
+bytes after the unconditional jump at B3B8DB remain intentionally untouched.

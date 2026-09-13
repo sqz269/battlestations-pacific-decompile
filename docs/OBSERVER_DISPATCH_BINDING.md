@@ -11,3 +11,7 @@ MSVC Win32 and both existing CTests passed. One focused source lifecycle creates
 The exact probe, source, command, object and three Release libraries are archived with hashes in `local/observer_dispatch_binding_artifact_manifest.json`; the report records source hashes and validation scope. No new permanent tests were added.
 
 GameStartup does not yet instantiate these observers. Runtime integration must place the recovered CRT publication before observer users and complete all edge cleanup before singleton drain. Recreating only the owner getter does not repair the old alias. Native exception, allocation-failure, concurrency and gameplay behavior remain outside this check. Q's Ghidra body-membership gaps remain separately recorded despite complete PE destructor bytes.
+
+## Correction from docs/GAME_OBSERVER_RUNTIME.md
+
+Application startup now instantiates the actual dispatch owner through the existing raw singleton manager. The 120-frame process run records publication and manager teardown; the alias remains unchanged and the unused lock stays lazy. This replaces the earlier startup-instantiation follow-up only; actual unit event delivery remains separate.

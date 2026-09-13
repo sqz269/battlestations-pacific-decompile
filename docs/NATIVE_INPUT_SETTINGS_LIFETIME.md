@@ -107,17 +107,31 @@ destructor. The manager then releases its section and vector storage.
 
 The fixture contains 418 native spans. Four owned routines were freshly checked
 against live bytes; reused library spans retain the prior AP live evidence and
-their disk hashes were checked again. Eighteen CALL rows pass the live function
-ownership audit. Fourteen further direct CALLs in the complete destructor tail
-are recorded separately as pending saved ownership, alongside the getter's two
-Win32 import calls. They are not counted as passed ownership checks.
+their disk hashes were checked again. The original AQ audit passed eighteen
+CALL rows and recorded fourteen destructor-tail calls as pending saved
+ownership, alongside the getter's two Win32 import calls. The AS closeout below
+resolves that ownership gap; it does not replace the earlier native fixture.
 
 Flow repair decoded the destructor tail after its returning free call, but the
-saved Ghidra body still ends at 006AA4CA. Extending the body was rejected by the
+saved Ghidra body initially ended at 006AA4CA. Extending the body was rejected by the
 bridge because script execution is disabled. The attempted operation and prior
-metadata are preserved in the body-extension report; no full saved-body repair
-is claimed. This limitation is distinct from the complete live/disk byte check
-and native execution of 006AA460..006AA63F.
+metadata are preserved in the body-extension report. The subsequent AS repair
+used supported function deletion/recreation over the already decoded,
+live/disk-equal 480-byte range, with `disassemble_first=false`. It restored and
+verified the existing name, original prototype, parameters and complete plate
+comment. All 169 instructions now belong to 006AA460 through 006AA63F, including
+the three default labels in the newly owned tail. The full exported decompiler
+body now includes the remaining cleanup and final publication/base writes.
+
+All 32 direct CALL rows now pass the live ownership, instruction and callee
+audit, including the fourteen previously pending sites. The two Win32 import
+calls remain separately recorded. No callee no-return flags were changed, and
+bridge script execution was neither used nor enabled. The saved repair receipt
+is `reports/native_input_settings_lifetime_as_body_repair.json`; the main report
+retains the earlier audit counts as historical evidence and records the new
+ownership audit separately. This closeout changes analysis metadata and
+documentation; the earlier build and native fixture results retain their
+original source revisions.
 
 Production tree/vector providers remain required. The borrowed settings context
 must outlive raw manager drain and provide those same container services.

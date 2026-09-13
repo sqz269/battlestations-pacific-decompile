@@ -294,6 +294,8 @@ void ship_on_health_changed_00827a90(UnitDamageHost& host, std::uint32_t entity)
 void unit_react_to_health_change_00958a30(UnitDamageHost& host, std::uint32_t entity);
 void entity_set_invincible_0042ed80(UnitDamageHost& host, std::uint32_t entity, float value);
 void unit_sink_008110f0(UnitDamageHost& host, std::uint32_t entity);
+// Only recurse's low byte gates children. After each accepting child predicate,
+// reread the parent's cause and clear the child's cause if that value is zero.
 void entity_destroy_00926c80(UnitDamageHost& host, std::uint32_t entity, int recurse);
 void entity_kill_00926d90(UnitDamageHost& host, std::uint32_t entity, int cause);
 void unit_destroy_and_broadcast_0077d1a0(UnitDamageHost& host, std::uint32_t entity, int recurse);
