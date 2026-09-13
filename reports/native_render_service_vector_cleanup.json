@@ -1,0 +1,293 @@
+{
+  "schema": 1,
+  "packet": "orch3_native_render_service_vector_cleanup_ba",
+  "status": "complete_raw_source_worker_strict_compile_baseline_build_and_bounded_fixture_passed",
+  "base_commit": "d6d7ff627dd4ec5087c52fa217d8d501d3820d04",
+  "files": [
+    "include/bsp/native_render_service_vector_cleanup.hpp",
+    "src/native_render_service_vector_cleanup.cpp",
+    "docs/NATIVE_RENDER_SERVICE_VECTOR_CLEANUP.md",
+    "reports/native_render_service_vector_cleanup.json"
+  ],
+  "functions": [
+    {
+      "address": "00b14500",
+      "end_inclusive": "00b14548",
+      "bytes": 73,
+      "sha256": "47aa02e1ff56fdc254a1ff0b20051e9372ba5888c7222c4bd6e04c6c65f7c1f8",
+      "live_equals_disk": true,
+      "instructions": 26,
+      "cpp_symbol": "destroy_native_renderer_record_vector_00b14500",
+      "proposed_ghidra_name": "BSP_RendererRecordVector_DestroyStorage",
+      "original_abi": "ECX=actual vector; no stack arguments; plain RET; no semantic result.",
+      "is_forwarding_thunk": false,
+      "new_full_function_entry": true,
+      "evidence": "Complete raw storage, current-pool provider composition and full refreshed listing; descriptive names are hypotheses, native binary ABI and gameplay remain unproved."
+    },
+    {
+      "address": "00b14590",
+      "end_inclusive": "00b14594",
+      "bytes": 5,
+      "sha256": "bf5cfd587b9ea2058021d387ea166107741f8ae4bfa39b85553ea5028f8b978a",
+      "live_equals_disk": true,
+      "instructions": 1,
+      "cpp_symbol": "destroy_native_renderer_record_vector_thunk_00b14590",
+      "proposed_ghidra_name": "BSP_RendererRecordVector_DestroyStorageThunk",
+      "original_abi": "ECX=actual vector; no stack arguments; tail JMP B14500, eventual plain RET; no semantic result.",
+      "is_forwarding_thunk": true,
+      "new_full_function_entry": true,
+      "evidence": "Complete raw storage, current-pool provider composition and full refreshed listing; descriptive names are hypotheses, native binary ABI and gameplay remain unproved."
+    },
+    {
+      "address": "004324a0",
+      "end_inclusive": "004324dc",
+      "bytes": 61,
+      "sha256": "c0029c11547d995aa42942b42494c61df20000bfe0addf04762bcdd610165c98",
+      "live_equals_disk": true,
+      "instructions": 21,
+      "cpp_symbol": "destroy_native_string_header_vector_004324a0",
+      "proposed_ghidra_name": "BSP_NativeStringVector_DestroyStorage",
+      "original_abi": "ECX=actual vector; no stack arguments; plain RET; no semantic result.",
+      "is_forwarding_thunk": false,
+      "new_full_function_entry": true,
+      "evidence": "Complete raw storage, current-pool provider composition and full refreshed listing; descriptive names are hypotheses, native binary ABI and gameplay remain unproved."
+    },
+    {
+      "address": "00432050",
+      "end_inclusive": "00432087",
+      "bytes": 56,
+      "sha256": "e8abffe39675157186112a03d0467b990eb892f5847d452436f2f86aae171b53",
+      "live_equals_disk": true,
+      "instructions": 24,
+      "cpp_symbol": "destroy_native_string_header_range_00432050",
+      "proposed_ghidra_name": "STL_NativeStringRange_Destroy_00432050",
+      "original_abi": "ECX=begin; EDX=end; two unused DWORD stack arguments; RET8; no semantic result.",
+      "is_forwarding_thunk": false,
+      "new_full_function_entry": true,
+      "evidence": "Complete raw storage, current-pool provider composition and full refreshed listing; descriptive names are hypotheses, native binary ABI and gameplay remain unproved."
+    }
+  ],
+  "normal_function_entries": 4,
+  "forwarding_thunks": 1,
+  "native_body_bytes": 195,
+  "calls": [
+    {
+      "function": "00b14500",
+      "address": "00b14515",
+      "native": "00b10740",
+      "kind": "call"
+    },
+    {
+      "function": "00b14500",
+      "address": "00b14528",
+      "native": "00bf65ac",
+      "kind": "call"
+    },
+    {
+      "function": "00b14590",
+      "address": "00b14590",
+      "native": "00b14500",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "004324a0",
+      "address": "004324b4",
+      "native": "00432050",
+      "kind": "call"
+    },
+    {
+      "function": "004324a0",
+      "address": "004324bd",
+      "native": "00bf65ac",
+      "kind": "call"
+    },
+    {
+      "function": "00432050",
+      "address": "00432070",
+      "native": "00419cc0",
+      "kind": "call"
+    },
+    {
+      "function": "00432050",
+      "address": "00432077",
+      "native": "00bd1510",
+      "kind": "call"
+    }
+  ],
+  "native_evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "original_pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00b14500",
+        "end_inclusive": "00b14548",
+        "bytes": 73,
+        "sha256": "47aa02e1ff56fdc254a1ff0b20051e9372ba5888c7222c4bd6e04c6c65f7c1f8",
+        "live_equals_disk": true,
+        "instructions": 26
+      },
+      {
+        "address": "00b14590",
+        "end_inclusive": "00b14594",
+        "bytes": 5,
+        "sha256": "bf5cfd587b9ea2058021d387ea166107741f8ae4bfa39b85553ea5028f8b978a",
+        "live_equals_disk": true,
+        "instructions": 1
+      },
+      {
+        "address": "004324a0",
+        "end_inclusive": "004324dc",
+        "bytes": 61,
+        "sha256": "c0029c11547d995aa42942b42494c61df20000bfe0addf04762bcdd610165c98",
+        "live_equals_disk": true,
+        "instructions": 21
+      },
+      {
+        "address": "00432050",
+        "end_inclusive": "00432087",
+        "bytes": 56,
+        "sha256": "e8abffe39675157186112a03d0467b990eb892f5847d452436f2f86aae171b53",
+        "live_equals_disk": true,
+        "instructions": 24
+      }
+    ]
+  },
+  "source_interface": "New C++ raw-pointer interfaces with borrowed actual NativeStringRawPoolContext; not original register/stack/EH binary replacements.",
+  "preserved_prior_record": {
+    "address": "00432050",
+    "kind": "fragment",
+    "name": "destroy_global_config_name_range_00432050",
+    "source": "src/global_config.cpp",
+    "name_ledger": "STL_NativeStringRange_Destroy_00432050",
+    "unchanged": true
+  },
+  "analysis_repair": {
+    "report": "reports/native_service_vector_cleanup_ba_flow_repair.json",
+    "root_commit": "d6d7ff62",
+    "worker_ghidra_writes": false,
+    "refreshed_full_instruction_listing": true
+  },
+  "validation": {
+    "strict_source_compile": {
+      "passed": true,
+      "log": "C:\\Users\\sqz269\\bsp-ba-service-vector-cleanup\\compile-build.log",
+      "record": "C:\\Users\\sqz269\\bsp-ba-service-vector-cleanup\\compile-validation.json",
+      "flags": "/std:c++17 /W4 /WX /O2 /Oy- /MD /fp:strict",
+      "emitted_assembly": "C:\\Users\\sqz269\\bsp-ba-service-vector-cleanup\\strict_source.asm",
+      "review": "Ordered current begin reload after the loop; equality/12Ch and 8h strides; three separate ordered field stores."
+    },
+    "baseline": {
+      "passed": true,
+      "native_seed_count": 8,
+      "seed_log": "C:\\Users\\sqz269\\bsp-ba-service-vector-cleanup\\verify-seeds.log",
+      "build_log": "C:\\Users\\sqz269\\bsp-ba-service-vector-cleanup\\baseline-build.log",
+      "existing_ctests_passed": 2,
+      "limitation": "Module is not registered in CMake: this build verifies existing dependencies, while strict source compilation and the explicit-source fixture verify the new code."
+    },
+    "numeric_calls": {
+      "checked": 7,
+      "failed": 0,
+      "log": "C:\\Users\\sqz269\\bsp-ba-service-vector-cleanup\\calls.log"
+    },
+    "fixture": {
+      "directory": "C:\\Users\\sqz269\\bsp-ba-service-vector-cleanup",
+      "pairs": 10,
+      "compared_state_bytes": 36819,
+      "compared_event_dwords": 10,
+      "owned_original_bytes": 195,
+      "operand_relocations": 7,
+      "passed": true,
+      "crt_import_restored": true,
+      "case_descriptions": [
+        "null begin on both vectors and equal empty range; dirty end/capacity are cleared, untouched prefixes retained",
+        "two nonempty actual 12Ch records; four actual pooled string releases and CRT vector free",
+        "B14590 original forwarding thunk with one complete nonempty record",
+        "two nonempty actual eight-byte string headers and CRT vector free",
+        "standalone three-header range with a null middle pointer and unchanged length preimage",
+        "actual pool-registration invalid handler returns, mutates vector begin/end; captured two-record end survives and current replacement allocation is freed",
+        "same genuine returning-handler mutation for captured string-header range and current-vector free",
+        "actual pool-registration invalid handler throws during second-header lookup; existing B10740 first-header cleanup runs; no vector free/clear",
+        "actual pool-registration invalid handler throws during first string lookup; no range completion/free/clear",
+        "same genuine getter exception in standalone range"
+      ],
+      "worker_source_recompiled": true,
+      "worker_source_and_library_inputs_preserved": true,
+      "worker_validation": "C:\\Users\\sqz269\\bsp-ba-service-vector-cleanup\\worker-validation.json",
+      "library_sha256": {
+        "bsp_core.lib": "6da82377ca0fd4904701fb4a59081100196a5e233dbb422d6a4fc863da271bf8",
+        "bsp_lua511.lib": "157409ac878c51487e96c5eccafd2a559403c1196eee06b402452e10a194e1f2",
+        "bsp_zlib121.lib": "60d70a5cdef08049fb1ce7c3975c83de14882049c4904f5e29672ae39936bc98"
+      },
+      "original_parent_bytes": "195 complete bytes with seven explicitly recorded rel32 operand relocations; no fixed native address reservation or PE generator.",
+      "shared_providers": [
+        "Complete raw B10740 renderer record cleanup including its current C++ cleanup",
+        "Actual 419CC0 raw singleton getter, manager and registration; actual BD1510 pool return",
+        "Current CRT free via observed private executable import, restored exactly after forwarding each call"
+      ],
+      "observation": "Own executable free import is redirected temporarily to an observer that copies backing before deallocation and forwards to the original CRT function. No library on disk or repository provider source is changed.",
+      "exception_evidence": "Deliberately invalid actual manager vector bounds reach its real current CRT validation service. The handler heals the manager and either returns after vector-field mutation or throws; no synthetic provider success/failure stub.",
+      "compared_scope": "Full 6ACh service backing, actual element bytes (captured before CRT free if needed), written pool arena/ring fields and used ring slots, manager count/depth, exception/free/validation outcomes and event order. Pointers are normalized by actual allocation domain.",
+      "remaining_limits": "Original parents share established rebuilt providers. Original FH3/SEH entry compatibility, arbitrary stack aliases, concurrent mutation and original descendants are not independently replayed."
+    }
+  },
+  "limitations": [
+    "Complete service constructor/destructor and all generic caller domains remain separate.",
+    "Shared current-source providers do not independently prove every original descendant.",
+    "Native binary ABI, private stack aliases, unrestricted FH3/SEH, concurrent mutation and gameplay remain unvalidated."
+  ],
+  "source_sha256": "fd7c581522967ab66036064404d62838eba860ae93677314e4594c9628dd3d41",
+  "header_sha256": "34035e6bef6840298913a0d50a25991a1567546dd576578dc5857d9e69174c80",
+  "fixture_rebuild": {
+    "default_powershell": "powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/sqz269/bsp-ba-service-vector-cleanup/run.ps1 -Root <selected source root> -LibraryRoot <selected library root>",
+    "default_inputs": "Only external probe.cpp and the selected root bsp_core.lib, bsp_lua511.lib, bsp_zlib121.lib plus Windows libraries; omit -WorkerSource after registration.",
+    "worker_switch": "-WorkerSource explicitly recompiles the unregistered new source for the initial worker fixture only.",
+    "compiler_flags": [
+      "/nologo",
+      "/EHsc",
+      "/std:c++17",
+      "/W4",
+      "/WX",
+      "/O2",
+      "/Oy-",
+      "/MD",
+      "/Gy",
+      "/Gw",
+      "/fp:strict",
+      "/IJ:\\PROG\\battlestations-pacific-decompile-orch3-service-vector-cleanup-ba/include",
+      "/IC:\\Users\\sqz269\\bsp-ba-service-vector-cleanup",
+      "C:\\Users\\sqz269\\bsp-ba-service-vector-cleanup\\probe.cpp",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-service-vector-cleanup-ba\\src\\native_render_service_vector_cleanup.cpp",
+      "/FoC:\\Users\\sqz269\\bsp-ba-service-vector-cleanup/",
+      "/FeC:\\Users\\sqz269\\bsp-ba-service-vector-cleanup/service_vector_probe.exe",
+      "/link",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-service-vector-cleanup-ba\\build\\win32\\Release\\bsp_core.lib",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-service-vector-cleanup-ba\\build\\win32\\Release\\bsp_lua511.lib",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-service-vector-cleanup-ba\\build\\win32\\Release\\bsp_zlib121.lib",
+      "user32.lib",
+      "d3d9.lib",
+      "advapi32.lib",
+      "shell32.lib",
+      "/MANIFEST:EMBED",
+      "/SAFESEH:NO",
+      "/OPT:REF",
+      "/OPT:NOICF",
+      "/INCREMENTAL:NO",
+      "/DYNAMICBASE"
+    ],
+    "manifest_embedded": true,
+    "pe_generator": null,
+    "fixed_address_reservation": false
+  },
+  "capture_archive": {
+    "path": "C:\\Users\\sqz269\\bsp-ba-service-vector-cleanup\\worker_capture.zip",
+    "sha256": "4081000b52e18b394c8ccf9d979f753958e725f03af0fbccf0907ad8fa464109",
+    "members": 2428,
+    "verified_manifest_rows": 2427,
+    "uncompressed_bytes": 76970007,
+    "manifest": "C:\\Users\\sqz269\\bsp-ba-service-vector-cleanup\\worker_capture_manifest.json",
+    "original_capture_immutable": true,
+    "includes": "All loose fixture code/bytes/state/event/log evidence, native listings/readiness/repair captures, source/header/build-input snapshots and the three exact libraries. Archive report snapshot precedes adding this final archive hash to the tracked report."
+  }
+}
