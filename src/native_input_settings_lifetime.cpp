@@ -1,6 +1,7 @@
 #include "bsp/native_input_settings_lifetime.hpp"
 #include "bsp/global_config.hpp"
 #include "bsp/native_input_settings_vector_storage.hpp"
+#include "bsp/native_input_settings_tree_cleanup.hpp"
 #include "bsp/sound_lifetime_access.hpp"
 #include <cstring>
 
@@ -19,7 +20,7 @@ template<class T = Word> void write(void* p, Word o, T value) noexcept {
 }
 
 // Consumed full-member cleanup contracts from constructor/destructor unwind.
-// Tree payload and range destruction remain required library operations.
+// Tree payload, range and vector destruction use concrete source storage.
 struct Members {
     void* settings;
     NativeInputSettingsLifetimeContext& context;
@@ -40,12 +41,12 @@ struct Members {
         void* const first_node = read<void*>(head);
         NativeKeyboardTreeIterator output;
         const NativeKeyboardTreeIterator first{header,first_node}, last{header,head};
-        auto& c = context.containers;
+        auto& strings = context.tables.scripts.strings;
         switch (offset) {
-        case 8: case 0x6c: c.call_006a7aa0(header,&output,first,last); break;
-        case 0x60: c.call_006a6a20(header,&output,first,last); break;
-        case 0x54: c.call_0069fe70(header,&output,first,last); break;
-        case 0x24: c.call_006a1aa0(header,&output,first,last); break;
+        case 8: case 0x6c: erase_native_input_device_tree_range_006a7aa0(header,&output,first,last,strings); break;
+        case 0x60: erase_native_input_controller_tree_range_006a6a20(header,&output,first,last,strings); break;
+        case 0x54: erase_native_input_default_tree_range_0069fe70(header,&output,first,last,strings); break;
+        case 0x24: erase_native_input_preset_tree_range_006a1aa0(header,&output,first,last,strings); break;
         }
         singleton_lifetime_free(read<void*>(header,4));
         write(header,4,0u); write(header,8,0u);

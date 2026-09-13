@@ -1,0 +1,7636 @@
+{
+  "reason": "Recover complete returning-free tails in device and controller-name payload destructors; no callee no-return or script capability changes.",
+  "entries": [
+    {
+      "address": "0055b690",
+      "end_exclusive": "0055b8a6",
+      "bytes": 534,
+      "sha256": "fb15798e9e63ad6df0cd9f7916cc8d11d5226a58b35cc448679efebebe8021a7",
+      "before": "Function: FUN_0055b690 at 0055b690\nSignature: undefined FUN_0055b690(void)\nEntry: 0055b690\nBody: 0055b690 - 0055b6d9",
+      "before_documentation": {
+        "hash": "87653400a5ec93feb6ab2aba6feeb8855fe6131ef062223d2a58c19b22e633c6",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "0055b690",
+        "function_name": "FUN_0055b690",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "undefined1[8]"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 50.0
+      },
+      "before_instruction_ownership": [
+        {
+          "address": "0055b690",
+          "owner": "0055b690"
+        },
+        {
+          "address": "0055b692",
+          "owner": "0055b690"
+        },
+        {
+          "address": "0055b697",
+          "owner": "0055b690"
+        },
+        {
+          "address": "0055b69d",
+          "owner": "0055b690"
+        },
+        {
+          "address": "0055b69e",
+          "owner": "0055b690"
+        },
+        {
+          "address": "0055b6a5",
+          "owner": "0055b690"
+        },
+        {
+          "address": "0055b6a8",
+          "owner": "0055b690"
+        },
+        {
+          "address": "0055b6a9",
+          "owner": "0055b690"
+        },
+        {
+          "address": "0055b6aa",
+          "owner": "0055b690"
+        },
+        {
+          "address": "0055b6ac",
+          "owner": "0055b690"
+        },
+        {
+          "address": "0055b6ad",
+          "owner": "0055b690"
+        },
+        {
+          "address": "0055b6b1",
+          "owner": "0055b690"
+        },
+        {
+          "address": "0055b6b4",
+          "owner": "0055b690"
+        },
+        {
+          "address": "0055b6b6",
+          "owner": "0055b690"
+        },
+        {
+          "address": "0055b6b9",
+          "owner": "0055b690"
+        },
+        {
+          "address": "0055b6ba",
+          "owner": "0055b690"
+        },
+        {
+          "address": "0055b6bb",
+          "owner": "0055b690"
+        },
+        {
+          "address": "0055b6bc",
+          "owner": "0055b690"
+        },
+        {
+          "address": "0055b6bd",
+          "owner": "0055b690"
+        },
+        {
+          "address": "0055b6c1",
+          "owner": "0055b690"
+        },
+        {
+          "address": "0055b6c2",
+          "owner": "0055b690"
+        },
+        {
+          "address": "0055b6c4",
+          "owner": "0055b690"
+        },
+        {
+          "address": "0055b6cc",
+          "owner": "0055b690"
+        },
+        {
+          "address": "0055b6d1",
+          "owner": "0055b690"
+        },
+        {
+          "address": "0055b6d4",
+          "owner": "0055b690"
+        },
+        {
+          "address": "0055b6d5",
+          "owner": "0055b690"
+        },
+        {
+          "address": "0055b6da",
+          "owner": null
+        },
+        {
+          "address": "0055b6dc",
+          "owner": null
+        },
+        {
+          "address": "0055b6df",
+          "owner": null
+        },
+        {
+          "address": "0055b6e2",
+          "owner": null
+        },
+        {
+          "address": "0055b6e5",
+          "owner": null
+        },
+        {
+          "address": "0055b6e7",
+          "owner": null
+        },
+        {
+          "address": "0055b6ea",
+          "owner": null
+        },
+        {
+          "address": "0055b6ed",
+          "owner": null
+        },
+        {
+          "address": "0055b6ee",
+          "owner": null
+        },
+        {
+          "address": "0055b6ef",
+          "owner": null
+        },
+        {
+          "address": "0055b6f0",
+          "owner": null
+        },
+        {
+          "address": "0055b6f1",
+          "owner": null
+        },
+        {
+          "address": "0055b6f5",
+          "owner": null
+        },
+        {
+          "address": "0055b6f6",
+          "owner": null
+        },
+        {
+          "address": "0055b6f8",
+          "owner": null
+        },
+        {
+          "address": "0055b6fd",
+          "owner": null
+        },
+        {
+          "address": "0055b702",
+          "owner": null
+        },
+        {
+          "address": "0055b705",
+          "owner": null
+        },
+        {
+          "address": "0055b706",
+          "owner": null
+        },
+        {
+          "address": "0055b70b",
+          "owner": null
+        },
+        {
+          "address": "0055b70e",
+          "owner": null
+        },
+        {
+          "address": "0055b711",
+          "owner": null
+        },
+        {
+          "address": "0055b714",
+          "owner": null
+        },
+        {
+          "address": "0055b717",
+          "owner": null
+        },
+        {
+          "address": "0055b71a",
+          "owner": null
+        },
+        {
+          "address": "0055b71c",
+          "owner": null
+        },
+        {
+          "address": "0055b721",
+          "owner": null
+        },
+        {
+          "address": "0055b723",
+          "owner": null
+        },
+        {
+          "address": "0055b727",
+          "owner": null
+        },
+        {
+          "address": "0055b72a",
+          "owner": null
+        },
+        {
+          "address": "0055b72b",
+          "owner": null
+        },
+        {
+          "address": "0055b72c",
+          "owner": null
+        },
+        {
+          "address": "0055b731",
+          "owner": null
+        },
+        {
+          "address": "0055b734",
+          "owner": null
+        },
+        {
+          "address": "0055b735",
+          "owner": null
+        },
+        {
+          "address": "0055b73a",
+          "owner": null
+        },
+        {
+          "address": "0055b73d",
+          "owner": null
+        },
+        {
+          "address": "0055b740",
+          "owner": null
+        },
+        {
+          "address": "0055b743",
+          "owner": null
+        },
+        {
+          "address": "0055b746",
+          "owner": null
+        },
+        {
+          "address": "0055b749",
+          "owner": null
+        },
+        {
+          "address": "0055b74b",
+          "owner": null
+        },
+        {
+          "address": "0055b74e",
+          "owner": null
+        },
+        {
+          "address": "0055b74f",
+          "owner": null
+        },
+        {
+          "address": "0055b750",
+          "owner": null
+        },
+        {
+          "address": "0055b751",
+          "owner": null
+        },
+        {
+          "address": "0055b752",
+          "owner": null
+        },
+        {
+          "address": "0055b756",
+          "owner": null
+        },
+        {
+          "address": "0055b757",
+          "owner": null
+        },
+        {
+          "address": "0055b759",
+          "owner": null
+        },
+        {
+          "address": "0055b75e",
+          "owner": null
+        },
+        {
+          "address": "0055b763",
+          "owner": null
+        },
+        {
+          "address": "0055b766",
+          "owner": null
+        },
+        {
+          "address": "0055b767",
+          "owner": null
+        },
+        {
+          "address": "0055b76c",
+          "owner": null
+        },
+        {
+          "address": "0055b76f",
+          "owner": null
+        },
+        {
+          "address": "0055b772",
+          "owner": null
+        },
+        {
+          "address": "0055b775",
+          "owner": null
+        },
+        {
+          "address": "0055b778",
+          "owner": null
+        },
+        {
+          "address": "0055b77b",
+          "owner": null
+        },
+        {
+          "address": "0055b77d",
+          "owner": null
+        },
+        {
+          "address": "0055b782",
+          "owner": null
+        },
+        {
+          "address": "0055b784",
+          "owner": null
+        },
+        {
+          "address": "0055b788",
+          "owner": null
+        },
+        {
+          "address": "0055b78b",
+          "owner": null
+        },
+        {
+          "address": "0055b78c",
+          "owner": null
+        },
+        {
+          "address": "0055b78d",
+          "owner": null
+        },
+        {
+          "address": "0055b792",
+          "owner": null
+        },
+        {
+          "address": "0055b795",
+          "owner": null
+        },
+        {
+          "address": "0055b796",
+          "owner": null
+        },
+        {
+          "address": "0055b79b",
+          "owner": null
+        },
+        {
+          "address": "0055b79e",
+          "owner": null
+        },
+        {
+          "address": "0055b7a1",
+          "owner": null
+        },
+        {
+          "address": "0055b7a4",
+          "owner": null
+        },
+        {
+          "address": "0055b7a7",
+          "owner": null
+        },
+        {
+          "address": "0055b7aa",
+          "owner": null
+        },
+        {
+          "address": "0055b7ac",
+          "owner": null
+        },
+        {
+          "address": "0055b7af",
+          "owner": null
+        },
+        {
+          "address": "0055b7b4",
+          "owner": null
+        },
+        {
+          "address": "0055b7b6",
+          "owner": null
+        },
+        {
+          "address": "0055b7ba",
+          "owner": null
+        },
+        {
+          "address": "0055b7bd",
+          "owner": null
+        },
+        {
+          "address": "0055b7be",
+          "owner": null
+        },
+        {
+          "address": "0055b7bf",
+          "owner": null
+        },
+        {
+          "address": "0055b7c4",
+          "owner": null
+        },
+        {
+          "address": "0055b7c7",
+          "owner": null
+        },
+        {
+          "address": "0055b7c8",
+          "owner": null
+        },
+        {
+          "address": "0055b7cd",
+          "owner": null
+        },
+        {
+          "address": "0055b7d0",
+          "owner": null
+        },
+        {
+          "address": "0055b7d3",
+          "owner": null
+        },
+        {
+          "address": "0055b7d6",
+          "owner": null
+        },
+        {
+          "address": "0055b7d9",
+          "owner": null
+        },
+        {
+          "address": "0055b7dc",
+          "owner": null
+        },
+        {
+          "address": "0055b7de",
+          "owner": null
+        },
+        {
+          "address": "0055b7e1",
+          "owner": null
+        },
+        {
+          "address": "0055b7e2",
+          "owner": null
+        },
+        {
+          "address": "0055b7e3",
+          "owner": null
+        },
+        {
+          "address": "0055b7e4",
+          "owner": null
+        },
+        {
+          "address": "0055b7e5",
+          "owner": null
+        },
+        {
+          "address": "0055b7e9",
+          "owner": null
+        },
+        {
+          "address": "0055b7ea",
+          "owner": null
+        },
+        {
+          "address": "0055b7ec",
+          "owner": null
+        },
+        {
+          "address": "0055b7f1",
+          "owner": null
+        },
+        {
+          "address": "0055b7f6",
+          "owner": null
+        },
+        {
+          "address": "0055b7f9",
+          "owner": null
+        },
+        {
+          "address": "0055b7fa",
+          "owner": null
+        },
+        {
+          "address": "0055b7ff",
+          "owner": null
+        },
+        {
+          "address": "0055b802",
+          "owner": null
+        },
+        {
+          "address": "0055b805",
+          "owner": null
+        },
+        {
+          "address": "0055b808",
+          "owner": null
+        },
+        {
+          "address": "0055b80a",
+          "owner": null
+        },
+        {
+          "address": "0055b80d",
+          "owner": null
+        },
+        {
+          "address": "0055b810",
+          "owner": null
+        },
+        {
+          "address": "0055b811",
+          "owner": null
+        },
+        {
+          "address": "0055b812",
+          "owner": null
+        },
+        {
+          "address": "0055b813",
+          "owner": null
+        },
+        {
+          "address": "0055b814",
+          "owner": null
+        },
+        {
+          "address": "0055b818",
+          "owner": null
+        },
+        {
+          "address": "0055b819",
+          "owner": null
+        },
+        {
+          "address": "0055b81b",
+          "owner": null
+        },
+        {
+          "address": "0055b820",
+          "owner": null
+        },
+        {
+          "address": "0055b825",
+          "owner": null
+        },
+        {
+          "address": "0055b828",
+          "owner": null
+        },
+        {
+          "address": "0055b829",
+          "owner": null
+        },
+        {
+          "address": "0055b82e",
+          "owner": null
+        },
+        {
+          "address": "0055b831",
+          "owner": null
+        },
+        {
+          "address": "0055b834",
+          "owner": null
+        },
+        {
+          "address": "0055b837",
+          "owner": null
+        },
+        {
+          "address": "0055b839",
+          "owner": null
+        },
+        {
+          "address": "0055b83c",
+          "owner": null
+        },
+        {
+          "address": "0055b83f",
+          "owner": null
+        },
+        {
+          "address": "0055b840",
+          "owner": null
+        },
+        {
+          "address": "0055b841",
+          "owner": null
+        },
+        {
+          "address": "0055b842",
+          "owner": null
+        },
+        {
+          "address": "0055b843",
+          "owner": null
+        },
+        {
+          "address": "0055b847",
+          "owner": null
+        },
+        {
+          "address": "0055b848",
+          "owner": null
+        },
+        {
+          "address": "0055b84a",
+          "owner": null
+        },
+        {
+          "address": "0055b84e",
+          "owner": null
+        },
+        {
+          "address": "0055b853",
+          "owner": null
+        },
+        {
+          "address": "0055b856",
+          "owner": null
+        },
+        {
+          "address": "0055b857",
+          "owner": null
+        },
+        {
+          "address": "0055b85c",
+          "owner": null
+        },
+        {
+          "address": "0055b85f",
+          "owner": null
+        },
+        {
+          "address": "0055b862",
+          "owner": null
+        },
+        {
+          "address": "0055b865",
+          "owner": null
+        },
+        {
+          "address": "0055b868",
+          "owner": null
+        },
+        {
+          "address": "0055b86a",
+          "owner": null
+        },
+        {
+          "address": "0055b86b",
+          "owner": null
+        },
+        {
+          "address": "0055b86c",
+          "owner": null
+        },
+        {
+          "address": "0055b86d",
+          "owner": null
+        },
+        {
+          "address": "0055b86e",
+          "owner": null
+        },
+        {
+          "address": "0055b872",
+          "owner": null
+        },
+        {
+          "address": "0055b873",
+          "owner": null
+        },
+        {
+          "address": "0055b875",
+          "owner": null
+        },
+        {
+          "address": "0055b87d",
+          "owner": null
+        },
+        {
+          "address": "0055b882",
+          "owner": null
+        },
+        {
+          "address": "0055b885",
+          "owner": null
+        },
+        {
+          "address": "0055b886",
+          "owner": null
+        },
+        {
+          "address": "0055b88b",
+          "owner": null
+        },
+        {
+          "address": "0055b88f",
+          "owner": null
+        },
+        {
+          "address": "0055b892",
+          "owner": null
+        },
+        {
+          "address": "0055b895",
+          "owner": null
+        },
+        {
+          "address": "0055b898",
+          "owner": null
+        },
+        {
+          "address": "0055b899",
+          "owner": null
+        },
+        {
+          "address": "0055b89a",
+          "owner": null
+        },
+        {
+          "address": "0055b89b",
+          "owner": null
+        },
+        {
+          "address": "0055b8a2",
+          "owner": null
+        },
+        {
+          "address": "0055b8a5",
+          "owner": null
+        }
+      ],
+      "after": "Function: FUN_0055b690 at 0055b690\nSignature: void __fastcall FUN_0055b690(void * self, void * unused_edx)\nEntry: 0055b690\nBody: 0055b690 - 0055b8a5",
+      "after_documentation": {
+        "hash": "17bbd47ef8ea9f937b06cbfec1612c20126454e6e3b26ad5201415a7d27eb86e",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "0055b690",
+        "function_name": "FUN_0055b690",
+        "return_type": "void",
+        "calling_convention": "__fastcall",
+        "plate_comment": "",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "self",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "unused_edx",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "undefined1[8]"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 173,
+            "name": "LAB_0055b73d"
+          },
+          {
+            "relative_offset": 270,
+            "name": "LAB_0055b79e"
+          },
+          {
+            "relative_offset": 320,
+            "name": "LAB_0055b7d0"
+          }
+        ],
+        "completeness_score": 70.0
+      },
+      "complete_body": true,
+      "prior_evidence_preserved": true,
+      "after_instruction_ownership_verified": 195
+    },
+    {
+      "address": "006a2bb0",
+      "end_exclusive": "006a2c3f",
+      "bytes": 143,
+      "sha256": "db3c7a400bc18b8688c2d601ba866d3dd575a548d459bcf7ec7649469bccaf70",
+      "before": "Function: FUN_006a2bb0 at 006a2bb0\nSignature: undefined FUN_006a2bb0(void)\nEntry: 006a2bb0\nBody: 006a2bb0 - 006a2bf8",
+      "before_documentation": {
+        "hash": "7202ac474fd8996e0df29271135d738b17f7d9fd1f3c421cc1dcaa96c30fe9f5",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "006a2bb0",
+        "function_name": "FUN_006a2bb0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "undefined1[8]"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 50.0
+      },
+      "before_instruction_ownership": [
+        {
+          "address": "006a2bb0",
+          "owner": "006a2bb0"
+        },
+        {
+          "address": "006a2bb2",
+          "owner": "006a2bb0"
+        },
+        {
+          "address": "006a2bb7",
+          "owner": "006a2bb0"
+        },
+        {
+          "address": "006a2bbd",
+          "owner": "006a2bb0"
+        },
+        {
+          "address": "006a2bbe",
+          "owner": "006a2bb0"
+        },
+        {
+          "address": "006a2bc5",
+          "owner": "006a2bb0"
+        },
+        {
+          "address": "006a2bc8",
+          "owner": "006a2bb0"
+        },
+        {
+          "address": "006a2bc9",
+          "owner": "006a2bb0"
+        },
+        {
+          "address": "006a2bca",
+          "owner": "006a2bb0"
+        },
+        {
+          "address": "006a2bcc",
+          "owner": "006a2bb0"
+        },
+        {
+          "address": "006a2bd0",
+          "owner": "006a2bb0"
+        },
+        {
+          "address": "006a2bd3",
+          "owner": "006a2bb0"
+        },
+        {
+          "address": "006a2bd5",
+          "owner": "006a2bb0"
+        },
+        {
+          "address": "006a2bd8",
+          "owner": "006a2bb0"
+        },
+        {
+          "address": "006a2bd9",
+          "owner": "006a2bb0"
+        },
+        {
+          "address": "006a2bda",
+          "owner": "006a2bb0"
+        },
+        {
+          "address": "006a2bdb",
+          "owner": "006a2bb0"
+        },
+        {
+          "address": "006a2bdc",
+          "owner": "006a2bb0"
+        },
+        {
+          "address": "006a2be0",
+          "owner": "006a2bb0"
+        },
+        {
+          "address": "006a2be1",
+          "owner": "006a2bb0"
+        },
+        {
+          "address": "006a2be3",
+          "owner": "006a2bb0"
+        },
+        {
+          "address": "006a2beb",
+          "owner": "006a2bb0"
+        },
+        {
+          "address": "006a2bf0",
+          "owner": "006a2bb0"
+        },
+        {
+          "address": "006a2bf3",
+          "owner": "006a2bb0"
+        },
+        {
+          "address": "006a2bf4",
+          "owner": "006a2bb0"
+        },
+        {
+          "address": "006a2bf9",
+          "owner": null
+        },
+        {
+          "address": "006a2c00",
+          "owner": null
+        },
+        {
+          "address": "006a2c07",
+          "owner": null
+        },
+        {
+          "address": "006a2c0a",
+          "owner": null
+        },
+        {
+          "address": "006a2c0d",
+          "owner": null
+        },
+        {
+          "address": "006a2c0f",
+          "owner": null
+        },
+        {
+          "address": "006a2c17",
+          "owner": null
+        },
+        {
+          "address": "006a2c19",
+          "owner": null
+        },
+        {
+          "address": "006a2c1b",
+          "owner": null
+        },
+        {
+          "address": "006a2c1d",
+          "owner": null
+        },
+        {
+          "address": "006a2c20",
+          "owner": null
+        },
+        {
+          "address": "006a2c21",
+          "owner": null
+        },
+        {
+          "address": "006a2c22",
+          "owner": null
+        },
+        {
+          "address": "006a2c27",
+          "owner": null
+        },
+        {
+          "address": "006a2c29",
+          "owner": null
+        },
+        {
+          "address": "006a2c2e",
+          "owner": null
+        },
+        {
+          "address": "006a2c32",
+          "owner": null
+        },
+        {
+          "address": "006a2c33",
+          "owner": null
+        },
+        {
+          "address": "006a2c34",
+          "owner": null
+        },
+        {
+          "address": "006a2c3b",
+          "owner": null
+        },
+        {
+          "address": "006a2c3e",
+          "owner": null
+        }
+      ],
+      "after": "Function: FUN_006a2bb0 at 006a2bb0\nSignature: void __fastcall FUN_006a2bb0(void * self, void * unused_edx)\nEntry: 006a2bb0\nBody: 006a2bb0 - 006a2c3e",
+      "after_documentation": {
+        "hash": "d0619dd95bd13f12b028435c850fe1ed6186b120e5b183190b09d00f97790fbe",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "006a2bb0",
+        "function_name": "FUN_006a2bb0",
+        "return_type": "void",
+        "calling_convention": "__fastcall",
+        "plate_comment": "",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "self",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "unused_edx",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffdc, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "undefined1[8]"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 126,
+            "name": "LAB_006a2c2e"
+          }
+        ],
+        "completeness_score": 70.0
+      },
+      "complete_body": true,
+      "prior_evidence_preserved": true,
+      "after_instruction_ownership_verified": 46
+    },
+    {
+      "address": "006a71b0",
+      "end_exclusive": "006a74f8",
+      "bytes": 840,
+      "sha256": "d33d41e5aa4af1b37b51c19f703d7ab7afb34bac1ab82085af905e5075c6d94e",
+      "before": "Function: STL_xlen_throw_006a71b0 at 006a71b0\nSignature: undefined STL_xlen_throw_006a71b0(void)\nEntry: 006a71b0\nBody: 006a71b0 - 006a74c1",
+      "before_documentation": {
+        "hash": "ef3ec1ff820d10303f364bb08ebe99bfa58ba27930189e5d6d4258aa5e89e455",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "006a71b0",
+        "function_name": "STL_xlen_throw_006a71b0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_50",
+            "type": "undefined1[4]"
+          },
+          {
+            "name": "local_38",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc8, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "local_34",
+            "type": "undefined * *[10]",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "local_4c",
+            "type": "undefined1",
+            "storage": "(stack, 0xffffffffffffffb4, 1)"
+          },
+          {
+            "name": "local_3c",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc4, 4)"
+          },
+          {
+            "name": "piVar5",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "piVar6",
+            "type": "int *",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "piVar3",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar4",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 117,
+            "name": "LAB_006a7225"
+          },
+          {
+            "relative_offset": 150,
+            "name": "LAB_006a7246"
+          },
+          {
+            "relative_offset": 166,
+            "name": "LAB_006a7256"
+          },
+          {
+            "relative_offset": 177,
+            "name": "LAB_006a7261"
+          },
+          {
+            "relative_offset": 192,
+            "name": "LAB_006a7270"
+          },
+          {
+            "relative_offset": 205,
+            "name": "LAB_006a727d"
+          },
+          {
+            "relative_offset": 213,
+            "name": "LAB_006a7285"
+          },
+          {
+            "relative_offset": 216,
+            "name": "LAB_006a7288"
+          },
+          {
+            "relative_offset": 240,
+            "name": "LAB_006a72a0"
+          },
+          {
+            "relative_offset": 247,
+            "name": "LAB_006a72a7"
+          },
+          {
+            "relative_offset": 249,
+            "name": "LAB_006a72a9"
+          },
+          {
+            "relative_offset": 281,
+            "name": "LAB_006a72c9"
+          },
+          {
+            "relative_offset": 293,
+            "name": "LAB_006a72d5"
+          },
+          {
+            "relative_offset": 309,
+            "name": "LAB_006a72e5"
+          },
+          {
+            "relative_offset": 324,
+            "name": "LAB_006a72f4"
+          },
+          {
+            "relative_offset": 338,
+            "name": "LAB_006a7302"
+          },
+          {
+            "relative_offset": 351,
+            "name": "LAB_006a730f"
+          },
+          {
+            "relative_offset": 362,
+            "name": "LAB_006a731a"
+          },
+          {
+            "relative_offset": 365,
+            "name": "LAB_006a731d"
+          },
+          {
+            "relative_offset": 395,
+            "name": "LAB_006a733b"
+          },
+          {
+            "relative_offset": 432,
+            "name": "LAB_006a7360"
+          },
+          {
+            "relative_offset": 490,
+            "name": "LAB_006a739a"
+          },
+          {
+            "relative_offset": 528,
+            "name": "LAB_006a73c0"
+          },
+          {
+            "relative_offset": 563,
+            "name": "LAB_006a73e3"
+          },
+          {
+            "relative_offset": 603,
+            "name": "LAB_006a740b"
+          },
+          {
+            "relative_offset": 635,
+            "name": "LAB_006a742b"
+          },
+          {
+            "relative_offset": 665,
+            "name": "LAB_006a7449"
+          },
+          {
+            "relative_offset": 672,
+            "name": "LAB_006a7450"
+          },
+          {
+            "relative_offset": 691,
+            "name": "LAB_006a7463"
+          },
+          {
+            "relative_offset": 724,
+            "name": "LAB_006a7484"
+          },
+          {
+            "relative_offset": 758,
+            "name": "LAB_006a74a6"
+          },
+          {
+            "relative_offset": 764,
+            "name": "LAB_006a74ac"
+          }
+        ],
+        "completeness_score": 80.0
+      },
+      "before_instruction_ownership": [
+        {
+          "address": "006a71b0",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a71b6",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a71b8",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a71bd",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a71be",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a71c5",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a71c9",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a71cc",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a71d3",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a71d4",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a71d5",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a71d7",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a71d9",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a71db",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a71dd",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a71e2",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a71e6",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a71ee",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a71f2",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a71f7",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a71fc",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7200",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7201",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7205",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7209",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a720e",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7213",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7217",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7218",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7220",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7225",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7226",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7228",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7229",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a722d",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7231",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7236",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7238",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a723f",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7241",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7244",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7246",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7249",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7250",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7252",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7254",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7256",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a725a",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a725c",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a725f",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7261",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7268",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a726b",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a726d",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7270",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7273",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7276",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7278",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a727b",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a727d",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a727f",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7281",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7283",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7285",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7288",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a728b",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a728d",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7291",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7293",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a729a",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a729c",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a729e",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72a0",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72a2",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72a7",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72a9",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72ac",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72b0",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72b3",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72b9",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72c0",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72c2",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72c4",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72c7",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72c9",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72cb",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72d0",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72d3",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72d5",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72d8",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72da",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72dc",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72df",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72e1",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72e3",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72e5",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72ec",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72ef",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72f1",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72f4",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72f6",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72f9",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72fc",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a72ff",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7302",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7305",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7308",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a730a",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a730d",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a730f",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7312",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7314",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7316",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7318",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a731a",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a731d",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7320",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7323",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7329",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a732f",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7335",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a733b",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a733f",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7341",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7347",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a734d",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7350",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7353",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7359",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7360",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7366",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a736c",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a736e",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7370",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7376",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7379",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7380",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7382",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7388",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7389",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a738b",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7392",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7397",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a739a",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a73a1",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a73a7",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a73a9",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a73af",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a73b1",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a73b4",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a73ba",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a73c0",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a73c3",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a73c9",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a73cb",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a73d1",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a73d2",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a73d4",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a73db",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a73e0",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a73e3",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a73e9",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a73ef",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a73f5",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a73f8",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a73f9",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a73fb",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7401",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7406",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a740b",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7412",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7414",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a741a",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a741b",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a741d",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7424",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7429",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a742b",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7432",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7434",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7437",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a743d",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a743f",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7441",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7447",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7449",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7450",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7453",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7455",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7458",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a745b",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7461",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7463",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7465",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a746b",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a746d",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7473",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7474",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7476",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a747d",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7482",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7484",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a748a",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7490",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7496",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7498",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a7499",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a749b",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a74a1",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a74a6",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a74ac",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a74b0",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a74b3",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a74b8",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a74bc",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a74bd",
+          "owner": "006a71b0"
+        },
+        {
+          "address": "006a74c2",
+          "owner": null
+        },
+        {
+          "address": "006a74c5",
+          "owner": null
+        },
+        {
+          "address": "006a74c8",
+          "owner": null
+        },
+        {
+          "address": "006a74ca",
+          "owner": null
+        },
+        {
+          "address": "006a74cb",
+          "owner": null
+        },
+        {
+          "address": "006a74cc",
+          "owner": null
+        },
+        {
+          "address": "006a74ce",
+          "owner": null
+        },
+        {
+          "address": "006a74d1",
+          "owner": null
+        },
+        {
+          "address": "006a74d4",
+          "owner": null
+        },
+        {
+          "address": "006a74d8",
+          "owner": null
+        },
+        {
+          "address": "006a74dc",
+          "owner": null
+        },
+        {
+          "address": "006a74e0",
+          "owner": null
+        },
+        {
+          "address": "006a74e2",
+          "owner": null
+        },
+        {
+          "address": "006a74e6",
+          "owner": null
+        },
+        {
+          "address": "006a74e7",
+          "owner": null
+        },
+        {
+          "address": "006a74ea",
+          "owner": null
+        },
+        {
+          "address": "006a74eb",
+          "owner": null
+        },
+        {
+          "address": "006a74f2",
+          "owner": null
+        },
+        {
+          "address": "006a74f5",
+          "owner": null
+        }
+      ],
+      "after": "Function: STL_xlen_throw_006a71b0 at 006a71b0\nSignature: void * __fastcall STL_xlen_throw_006a71b0(void * tree, void * unused_edx, void * output, void * owner, void * node)\nEntry: 006a71b0\nBody: 006a71b0 - 006a74f7",
+      "after_documentation": {
+        "hash": "8591f9aa60f58406faef75880da94a1c5d47fb9dd20ad9ddebeb63d2194cf456",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "006a71b0",
+        "function_name": "STL_xlen_throw_006a71b0",
+        "return_type": "void *",
+        "calling_convention": "__fastcall",
+        "plate_comment": "",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "tree",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "unused_edx",
+            "type": "void *"
+          },
+          {
+            "ordinal": 2,
+            "name": "output",
+            "type": "void *"
+          },
+          {
+            "ordinal": 3,
+            "name": "owner",
+            "type": "void *"
+          },
+          {
+            "ordinal": 4,
+            "name": "node",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "piVar4",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "piVar2",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "piVar6",
+            "type": "int *",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "piVar5",
+            "type": "int *",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "local_50",
+            "type": "undefined1[4]"
+          },
+          {
+            "name": "local_38",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc8, 4)"
+          },
+          {
+            "name": "local_34",
+            "type": "undefined * *[10]",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_4c",
+            "type": "undefined1",
+            "storage": "(stack, 0xffffffffffffffb4, 1)"
+          },
+          {
+            "name": "local_3c",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc4, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 117,
+            "name": "LAB_006a7225"
+          },
+          {
+            "relative_offset": 150,
+            "name": "LAB_006a7246"
+          },
+          {
+            "relative_offset": 166,
+            "name": "LAB_006a7256"
+          },
+          {
+            "relative_offset": 177,
+            "name": "LAB_006a7261"
+          },
+          {
+            "relative_offset": 192,
+            "name": "LAB_006a7270"
+          },
+          {
+            "relative_offset": 205,
+            "name": "LAB_006a727d"
+          },
+          {
+            "relative_offset": 213,
+            "name": "LAB_006a7285"
+          },
+          {
+            "relative_offset": 216,
+            "name": "LAB_006a7288"
+          },
+          {
+            "relative_offset": 240,
+            "name": "LAB_006a72a0"
+          },
+          {
+            "relative_offset": 247,
+            "name": "LAB_006a72a7"
+          },
+          {
+            "relative_offset": 249,
+            "name": "LAB_006a72a9"
+          },
+          {
+            "relative_offset": 281,
+            "name": "LAB_006a72c9"
+          },
+          {
+            "relative_offset": 293,
+            "name": "LAB_006a72d5"
+          },
+          {
+            "relative_offset": 309,
+            "name": "LAB_006a72e5"
+          },
+          {
+            "relative_offset": 324,
+            "name": "LAB_006a72f4"
+          },
+          {
+            "relative_offset": 338,
+            "name": "LAB_006a7302"
+          },
+          {
+            "relative_offset": 351,
+            "name": "LAB_006a730f"
+          },
+          {
+            "relative_offset": 362,
+            "name": "LAB_006a731a"
+          },
+          {
+            "relative_offset": 365,
+            "name": "LAB_006a731d"
+          },
+          {
+            "relative_offset": 395,
+            "name": "LAB_006a733b"
+          },
+          {
+            "relative_offset": 432,
+            "name": "LAB_006a7360"
+          },
+          {
+            "relative_offset": 490,
+            "name": "LAB_006a739a"
+          },
+          {
+            "relative_offset": 528,
+            "name": "LAB_006a73c0"
+          },
+          {
+            "relative_offset": 563,
+            "name": "LAB_006a73e3"
+          },
+          {
+            "relative_offset": 603,
+            "name": "LAB_006a740b"
+          },
+          {
+            "relative_offset": 635,
+            "name": "LAB_006a742b"
+          },
+          {
+            "relative_offset": 665,
+            "name": "LAB_006a7449"
+          },
+          {
+            "relative_offset": 672,
+            "name": "LAB_006a7450"
+          },
+          {
+            "relative_offset": 691,
+            "name": "LAB_006a7463"
+          },
+          {
+            "relative_offset": 724,
+            "name": "LAB_006a7484"
+          },
+          {
+            "relative_offset": 758,
+            "name": "LAB_006a74a6"
+          },
+          {
+            "relative_offset": 764,
+            "name": "LAB_006a74ac"
+          },
+          {
+            "relative_offset": 804,
+            "name": "LAB_006a74d4"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "complete_body": true,
+      "prior_evidence_preserved": true,
+      "after_instruction_ownership_verified": 235
+    },
+    {
+      "address": "006a6010",
+      "end_exclusive": "006a62c3",
+      "bytes": 691,
+      "sha256": "bc9bb66d9f344d67171221039110f207a30a80cede911f807cd3e4f54d3e6f5a",
+      "before": "Function: STL_xlen_throw_006a6010 at 006a6010\nSignature: undefined STL_xlen_throw_006a6010(void)\nEntry: 006a6010\nBody: 006a6010 - 006a628c",
+      "before_documentation": {
+        "hash": "7e146fc9717914eff722b3fe8c7a195f6e904bfa273c00dd0f848616ce48a196",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "006a6010",
+        "function_name": "STL_xlen_throw_006a6010",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "piVar5",
+            "type": "int *",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "uVar6",
+            "type": "undefined8",
+            "storage": "(VARIABLE, 0x0, 8)"
+          },
+          {
+            "name": "unused_edx",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "piVar4",
+            "type": "int *",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "local_4c",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffb4, 4)"
+          },
+          {
+            "name": "local_3c",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc4, 4)"
+          },
+          {
+            "name": "local_50",
+            "type": "undefined1[4]"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_38",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc8, 4)"
+          },
+          {
+            "name": "local_34",
+            "type": "undefined * *[10]",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "extraout_EDX_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_01",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "piVar3",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "extraout_EDX",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 114,
+            "name": "LAB_006a6082"
+          },
+          {
+            "relative_offset": 144,
+            "name": "LAB_006a60a0"
+          },
+          {
+            "relative_offset": 157,
+            "name": "LAB_006a60ad"
+          },
+          {
+            "relative_offset": 168,
+            "name": "LAB_006a60b8"
+          },
+          {
+            "relative_offset": 180,
+            "name": "LAB_006a60c4"
+          },
+          {
+            "relative_offset": 193,
+            "name": "LAB_006a60d1"
+          },
+          {
+            "relative_offset": 201,
+            "name": "LAB_006a60d9"
+          },
+          {
+            "relative_offset": 204,
+            "name": "LAB_006a60dc"
+          },
+          {
+            "relative_offset": 225,
+            "name": "LAB_006a60f1"
+          },
+          {
+            "relative_offset": 232,
+            "name": "LAB_006a60f8"
+          },
+          {
+            "relative_offset": 234,
+            "name": "LAB_006a60fa"
+          },
+          {
+            "relative_offset": 259,
+            "name": "LAB_006a6113"
+          },
+          {
+            "relative_offset": 271,
+            "name": "LAB_006a611f"
+          },
+          {
+            "relative_offset": 287,
+            "name": "LAB_006a612f"
+          },
+          {
+            "relative_offset": 299,
+            "name": "LAB_006a613b"
+          },
+          {
+            "relative_offset": 313,
+            "name": "LAB_006a6149"
+          },
+          {
+            "relative_offset": 326,
+            "name": "LAB_006a6156"
+          },
+          {
+            "relative_offset": 337,
+            "name": "LAB_006a6161"
+          },
+          {
+            "relative_offset": 340,
+            "name": "LAB_006a6164"
+          },
+          {
+            "relative_offset": 358,
+            "name": "LAB_006a6176"
+          },
+          {
+            "relative_offset": 385,
+            "name": "LAB_006a6191"
+          },
+          {
+            "relative_offset": 427,
+            "name": "LAB_006a61bb"
+          },
+          {
+            "relative_offset": 448,
+            "name": "LAB_006a61d0"
+          },
+          {
+            "relative_offset": 474,
+            "name": "LAB_006a61ea"
+          },
+          {
+            "relative_offset": 499,
+            "name": "LAB_006a6203"
+          },
+          {
+            "relative_offset": 522,
+            "name": "LAB_006a621a"
+          },
+          {
+            "relative_offset": 543,
+            "name": "LAB_006a622f"
+          },
+          {
+            "relative_offset": 547,
+            "name": "LAB_006a6233"
+          },
+          {
+            "relative_offset": 566,
+            "name": "LAB_006a6246"
+          },
+          {
+            "relative_offset": 590,
+            "name": "LAB_006a625e"
+          },
+          {
+            "relative_offset": 612,
+            "name": "LAB_006a6274"
+          },
+          {
+            "relative_offset": 615,
+            "name": "LAB_006a6277"
+          }
+        ],
+        "completeness_score": 80.0
+      },
+      "before_instruction_ownership": [
+        {
+          "address": "006a6010",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6016",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6018",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a601d",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a601e",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6025",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6029",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a602c",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6030",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6031",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6032",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6034",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6036",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6038",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a603a",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a603f",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6043",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a604b",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a604f",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6054",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6059",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a605d",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a605e",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6062",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6066",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a606b",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6070",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6074",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6075",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a607d",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6082",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6083",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6085",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6086",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a608a",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a608e",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6093",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6095",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6099",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a609b",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a609e",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60a0",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60a3",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60a7",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60a9",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60ab",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60ad",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60b1",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60b3",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60b6",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60b8",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60bc",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60bf",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60c1",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60c4",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60c7",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60ca",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60cc",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60cf",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60d1",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60d3",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60d5",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60d7",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60d9",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60dc",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60df",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60e1",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60e5",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60e7",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60eb",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60ed",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60ef",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60f1",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60f3",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60f8",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60fa",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a60fd",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6101",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6104",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6106",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a610a",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a610c",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a610e",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6111",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6113",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6115",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a611a",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a611d",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a611f",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6122",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6124",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6126",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6129",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a612b",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a612d",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a612f",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6133",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6136",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6138",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a613b",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a613d",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6140",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6143",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6146",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6149",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a614c",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a614f",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6151",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6154",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6156",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6159",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a615b",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a615d",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a615f",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6161",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6164",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6167",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a616a",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a616d",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6170",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6173",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6176",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a617a",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a617c",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a617f",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6185",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6188",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a618b",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6191",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6194",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a619a",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a619c",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a619e",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61a0",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61a3",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61a7",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61a9",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61ac",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61ad",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61af",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61b3",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61b8",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61bb",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61bf",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61c1",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61c3",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61c6",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61c8",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61cb",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61ce",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61d0",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61d3",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61d6",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61d8",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61db",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61dc",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61de",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61e2",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61e7",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61ea",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61ed",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61f0",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61f3",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61f6",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61f7",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61f9",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a61fc",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6201",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6203",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6207",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6209",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a620c",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a620d",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a620f",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6213",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6218",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a621a",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a621e",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6220",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6223",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6226",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6228",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a622a",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a622d",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a622f",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6233",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6236",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6238",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a623b",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a623e",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6244",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6246",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6248",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a624b",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a624d",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6250",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6251",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6253",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6257",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a625c",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a625e",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6261",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6264",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6267",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6269",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a626a",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a626c",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a626f",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6274",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6277",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a627b",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a627e",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6283",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6287",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a6288",
+          "owner": "006a6010"
+        },
+        {
+          "address": "006a628d",
+          "owner": null
+        },
+        {
+          "address": "006a6290",
+          "owner": null
+        },
+        {
+          "address": "006a6293",
+          "owner": null
+        },
+        {
+          "address": "006a6295",
+          "owner": null
+        },
+        {
+          "address": "006a6296",
+          "owner": null
+        },
+        {
+          "address": "006a6297",
+          "owner": null
+        },
+        {
+          "address": "006a6299",
+          "owner": null
+        },
+        {
+          "address": "006a629c",
+          "owner": null
+        },
+        {
+          "address": "006a629f",
+          "owner": null
+        },
+        {
+          "address": "006a62a3",
+          "owner": null
+        },
+        {
+          "address": "006a62a7",
+          "owner": null
+        },
+        {
+          "address": "006a62ab",
+          "owner": null
+        },
+        {
+          "address": "006a62ad",
+          "owner": null
+        },
+        {
+          "address": "006a62b1",
+          "owner": null
+        },
+        {
+          "address": "006a62b2",
+          "owner": null
+        },
+        {
+          "address": "006a62b5",
+          "owner": null
+        },
+        {
+          "address": "006a62b6",
+          "owner": null
+        },
+        {
+          "address": "006a62bd",
+          "owner": null
+        },
+        {
+          "address": "006a62c0",
+          "owner": null
+        }
+      ],
+      "after": "Function: STL_xlen_throw_006a6010 at 006a6010\nSignature: void * __fastcall STL_xlen_throw_006a6010(void * tree, void * unused_edx, void * output, void * owner, void * node)\nEntry: 006a6010\nBody: 006a6010 - 006a62c2",
+      "after_documentation": {
+        "hash": "0ae8d163fdce42feaa1a2e1c88f82d27a21a69f897a5b98c365ebf4780e1509f",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "006a6010",
+        "function_name": "STL_xlen_throw_006a6010",
+        "return_type": "void *",
+        "calling_convention": "__fastcall",
+        "plate_comment": "",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "tree",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "unused_edx",
+            "type": "void *"
+          },
+          {
+            "ordinal": 2,
+            "name": "output",
+            "type": "void *"
+          },
+          {
+            "ordinal": 3,
+            "name": "owner",
+            "type": "void *"
+          },
+          {
+            "ordinal": 4,
+            "name": "node",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_50",
+            "type": "undefined1[4]"
+          },
+          {
+            "name": "local_4c",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffb4, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "extraout_EDX_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "local_34",
+            "type": "undefined * *[10]",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "extraout_EDX",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_3c",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc4, 4)"
+          },
+          {
+            "name": "piVar2",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "local_38",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc8, 4)"
+          },
+          {
+            "name": "piVar4",
+            "type": "int *",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "piVar3",
+            "type": "int *",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "unused_edx_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_01",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "in_stack_00000014",
+            "type": "undefined4",
+            "storage": "(stack, 0x14, 4)"
+          },
+          {
+            "name": "in_stack_00000010",
+            "type": "undefined4",
+            "storage": "(stack, 0x10, 4)"
+          },
+          {
+            "name": "uVar5",
+            "type": "undefined8",
+            "storage": "(VARIABLE, 0x0, 8)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 114,
+            "name": "LAB_006a6082"
+          },
+          {
+            "relative_offset": 144,
+            "name": "LAB_006a60a0"
+          },
+          {
+            "relative_offset": 157,
+            "name": "LAB_006a60ad"
+          },
+          {
+            "relative_offset": 168,
+            "name": "LAB_006a60b8"
+          },
+          {
+            "relative_offset": 180,
+            "name": "LAB_006a60c4"
+          },
+          {
+            "relative_offset": 193,
+            "name": "LAB_006a60d1"
+          },
+          {
+            "relative_offset": 201,
+            "name": "LAB_006a60d9"
+          },
+          {
+            "relative_offset": 204,
+            "name": "LAB_006a60dc"
+          },
+          {
+            "relative_offset": 225,
+            "name": "LAB_006a60f1"
+          },
+          {
+            "relative_offset": 232,
+            "name": "LAB_006a60f8"
+          },
+          {
+            "relative_offset": 234,
+            "name": "LAB_006a60fa"
+          },
+          {
+            "relative_offset": 259,
+            "name": "LAB_006a6113"
+          },
+          {
+            "relative_offset": 271,
+            "name": "LAB_006a611f"
+          },
+          {
+            "relative_offset": 287,
+            "name": "LAB_006a612f"
+          },
+          {
+            "relative_offset": 299,
+            "name": "LAB_006a613b"
+          },
+          {
+            "relative_offset": 313,
+            "name": "LAB_006a6149"
+          },
+          {
+            "relative_offset": 326,
+            "name": "LAB_006a6156"
+          },
+          {
+            "relative_offset": 337,
+            "name": "LAB_006a6161"
+          },
+          {
+            "relative_offset": 340,
+            "name": "LAB_006a6164"
+          },
+          {
+            "relative_offset": 358,
+            "name": "LAB_006a6176"
+          },
+          {
+            "relative_offset": 385,
+            "name": "LAB_006a6191"
+          },
+          {
+            "relative_offset": 427,
+            "name": "LAB_006a61bb"
+          },
+          {
+            "relative_offset": 448,
+            "name": "LAB_006a61d0"
+          },
+          {
+            "relative_offset": 474,
+            "name": "LAB_006a61ea"
+          },
+          {
+            "relative_offset": 499,
+            "name": "LAB_006a6203"
+          },
+          {
+            "relative_offset": 522,
+            "name": "LAB_006a621a"
+          },
+          {
+            "relative_offset": 543,
+            "name": "LAB_006a622f"
+          },
+          {
+            "relative_offset": 547,
+            "name": "LAB_006a6233"
+          },
+          {
+            "relative_offset": 566,
+            "name": "LAB_006a6246"
+          },
+          {
+            "relative_offset": 590,
+            "name": "LAB_006a625e"
+          },
+          {
+            "relative_offset": 612,
+            "name": "LAB_006a6274"
+          },
+          {
+            "relative_offset": 615,
+            "name": "LAB_006a6277"
+          },
+          {
+            "relative_offset": 655,
+            "name": "LAB_006a629f"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "complete_body": true,
+      "prior_evidence_preserved": true,
+      "after_instruction_ownership_verified": 234
+    },
+    {
+      "address": "0069f690",
+      "end_exclusive": "0069f937",
+      "bytes": 679,
+      "sha256": "39708d0d1a4b88c1b29a281e9be0cbf0b62965ffd8c7c7285603c1b9b63bca0f",
+      "before": "Function: STL_Tree_EraseIter_IntKey_N18B_0069f690 at 0069f690\nSignature: undefined STL_Tree_EraseIter_IntKey_N18B_0069f690(void)\nEntry: 0069f690\nBody: 0069f690 - 0069f900",
+      "before_documentation": {
+        "hash": "8e71a05f2b3455ebdf432a65bd7adf4ae12642e010fb632ed1bf8f8c0ebff235",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "0069f690",
+        "function_name": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 0069f690]\nHypothesis, not a recovered symbol. erase(const_iterator): throws out_of_range 'invalid map/set<T> iterator' on a nil _Ptr, unlinks the node with the red-black delete fixup over _Color +0x14, then --_Mysize and frees the node; __thiscall, RET 0xC recovered from the undefined epilogue bytes at 0069f901. Instantiation N18B: node 0x18 (signed int key +0x0c, mapped +0x10; _Color+0x14,_Isnil+0x15); separate instantiation from N18A: its _Insert 0069f210 uses _Buynode 0069d2d0 and rotates 0069c220/0069a610.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "uVar4",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "piVar3",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_4c",
+            "type": "undefined1",
+            "storage": "(stack, 0xffffffffffffffb4, 1)"
+          },
+          {
+            "name": "piVar6",
+            "type": "int *",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "local_50",
+            "type": "undefined1[4]"
+          },
+          {
+            "name": "piVar5",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_38",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc8, 4)"
+          },
+          {
+            "name": "local_3c",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_34",
+            "type": "undefined * *[10]",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 114,
+            "name": "LAB_0069f702"
+          },
+          {
+            "relative_offset": 144,
+            "name": "LAB_0069f720"
+          },
+          {
+            "relative_offset": 157,
+            "name": "LAB_0069f72d"
+          },
+          {
+            "relative_offset": 168,
+            "name": "LAB_0069f738"
+          },
+          {
+            "relative_offset": 180,
+            "name": "LAB_0069f744"
+          },
+          {
+            "relative_offset": 193,
+            "name": "LAB_0069f751"
+          },
+          {
+            "relative_offset": 201,
+            "name": "LAB_0069f759"
+          },
+          {
+            "relative_offset": 204,
+            "name": "LAB_0069f75c"
+          },
+          {
+            "relative_offset": 225,
+            "name": "LAB_0069f771"
+          },
+          {
+            "relative_offset": 232,
+            "name": "LAB_0069f778"
+          },
+          {
+            "relative_offset": 234,
+            "name": "LAB_0069f77a"
+          },
+          {
+            "relative_offset": 259,
+            "name": "LAB_0069f793"
+          },
+          {
+            "relative_offset": 271,
+            "name": "LAB_0069f79f"
+          },
+          {
+            "relative_offset": 287,
+            "name": "LAB_0069f7af"
+          },
+          {
+            "relative_offset": 299,
+            "name": "LAB_0069f7bb"
+          },
+          {
+            "relative_offset": 313,
+            "name": "LAB_0069f7c9"
+          },
+          {
+            "relative_offset": 326,
+            "name": "LAB_0069f7d6"
+          },
+          {
+            "relative_offset": 337,
+            "name": "LAB_0069f7e1"
+          },
+          {
+            "relative_offset": 340,
+            "name": "LAB_0069f7e4"
+          },
+          {
+            "relative_offset": 358,
+            "name": "LAB_0069f7f6"
+          },
+          {
+            "relative_offset": 385,
+            "name": "LAB_0069f811"
+          },
+          {
+            "relative_offset": 427,
+            "name": "LAB_0069f83b"
+          },
+          {
+            "relative_offset": 448,
+            "name": "LAB_0069f850"
+          },
+          {
+            "relative_offset": 474,
+            "name": "LAB_0069f86a"
+          },
+          {
+            "relative_offset": 499,
+            "name": "LAB_0069f883"
+          },
+          {
+            "relative_offset": 522,
+            "name": "LAB_0069f89a"
+          },
+          {
+            "relative_offset": 543,
+            "name": "LAB_0069f8af"
+          },
+          {
+            "relative_offset": 547,
+            "name": "LAB_0069f8b3"
+          },
+          {
+            "relative_offset": 566,
+            "name": "LAB_0069f8c6"
+          },
+          {
+            "relative_offset": 590,
+            "name": "LAB_0069f8de"
+          },
+          {
+            "relative_offset": 612,
+            "name": "LAB_0069f8f4"
+          },
+          {
+            "relative_offset": 615,
+            "name": "LAB_0069f8f7"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "before_instruction_ownership": [
+        {
+          "address": "0069f690",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f696",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f698",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f69d",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f69e",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f6a5",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f6a9",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f6ac",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f6b0",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f6b1",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f6b2",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f6b4",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f6b6",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f6b8",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f6ba",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f6bf",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f6c3",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f6cb",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f6cf",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f6d4",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f6d9",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f6dd",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f6de",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f6e2",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f6e6",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f6eb",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f6f0",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f6f4",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f6f5",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f6fd",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f702",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f703",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f705",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f706",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f70a",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f70e",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f713",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f715",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f719",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f71b",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f71e",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f720",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f723",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f727",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f729",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f72b",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f72d",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f731",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f733",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f736",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f738",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f73c",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f73f",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f741",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f744",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f747",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f74a",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f74c",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f74f",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f751",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f753",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f755",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f757",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f759",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f75c",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f75f",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f761",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f765",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f767",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f76b",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f76d",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f76f",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f771",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f773",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f778",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f77a",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f77d",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f781",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f784",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f786",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f78a",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f78c",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f78e",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f791",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f793",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f795",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f79a",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f79d",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f79f",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7a2",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7a4",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7a6",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7a9",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7ab",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7ad",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7af",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7b3",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7b6",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7b8",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7bb",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7bd",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7c0",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7c3",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7c6",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7c9",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7cc",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7cf",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7d1",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7d4",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7d6",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7d9",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7db",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7dd",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7df",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7e1",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7e4",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7e7",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7ea",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7ed",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7f0",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7f3",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7f6",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7fa",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7fc",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f7ff",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f805",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f808",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f80b",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f811",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f814",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f81a",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f81c",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f81e",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f820",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f823",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f827",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f829",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f82c",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f82d",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f82f",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f833",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f838",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f83b",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f83f",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f841",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f843",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f846",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f848",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f84b",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f84e",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f850",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f853",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f856",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f858",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f85b",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f85c",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f85e",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f862",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f867",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f86a",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f86d",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f870",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f873",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f876",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f877",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f879",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f87c",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f881",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f883",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f887",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f889",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f88c",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f88d",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f88f",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f893",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f898",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f89a",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f89e",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8a0",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8a3",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8a6",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8a8",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8aa",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8ad",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8af",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8b3",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8b6",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8b8",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8bb",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8be",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8c4",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8c6",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8c8",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8cb",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8cd",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8d0",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8d1",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8d3",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8d7",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8dc",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8de",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8e1",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8e4",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8e7",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8e9",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8ea",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8ec",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8ef",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8f4",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8f7",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8fb",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f8fc",
+          "owner": "0069f690"
+        },
+        {
+          "address": "0069f901",
+          "owner": null
+        },
+        {
+          "address": "0069f904",
+          "owner": null
+        },
+        {
+          "address": "0069f907",
+          "owner": null
+        },
+        {
+          "address": "0069f909",
+          "owner": null
+        },
+        {
+          "address": "0069f90a",
+          "owner": null
+        },
+        {
+          "address": "0069f90b",
+          "owner": null
+        },
+        {
+          "address": "0069f90d",
+          "owner": null
+        },
+        {
+          "address": "0069f910",
+          "owner": null
+        },
+        {
+          "address": "0069f913",
+          "owner": null
+        },
+        {
+          "address": "0069f917",
+          "owner": null
+        },
+        {
+          "address": "0069f91b",
+          "owner": null
+        },
+        {
+          "address": "0069f91f",
+          "owner": null
+        },
+        {
+          "address": "0069f921",
+          "owner": null
+        },
+        {
+          "address": "0069f925",
+          "owner": null
+        },
+        {
+          "address": "0069f926",
+          "owner": null
+        },
+        {
+          "address": "0069f929",
+          "owner": null
+        },
+        {
+          "address": "0069f92a",
+          "owner": null
+        },
+        {
+          "address": "0069f931",
+          "owner": null
+        },
+        {
+          "address": "0069f934",
+          "owner": null
+        }
+      ],
+      "after": "Function: STL_Tree_EraseIter_IntKey_N18B_0069f690 at 0069f690\nSignature: void * __fastcall STL_Tree_EraseIter_IntKey_N18B_0069f690(void * tree, void * unused_edx, void * output, void * owner, void * node)\nEntry: 0069f690\nBody: 0069f690 - 0069f936",
+      "after_documentation": {
+        "hash": "e5ce2a49b945b6090e0e5b9b322e848d43d3e94f1ffe07d90b82195613c79b71",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "0069f690",
+        "function_name": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+        "return_type": "void *",
+        "calling_convention": "__fastcall",
+        "plate_comment": "[BSP reconstruction 0069f690]\nHypothesis, not a recovered symbol. erase(const_iterator): throws out_of_range 'invalid map/set<T> iterator' on a nil _Ptr, unlinks the node with the red-black delete fixup over _Color +0x14, then --_Mysize and frees the node; __thiscall, RET 0xC recovered from the undefined epilogue bytes at 0069f901. Instantiation N18B: node 0x18 (signed int key +0x0c, mapped +0x10; _Color+0x14,_Isnil+0x15); separate instantiation from N18A: its _Insert 0069f210 uses _Buynode 0069d2d0 and rotates 0069c220/0069a610.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "tree",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "unused_edx",
+            "type": "void *"
+          },
+          {
+            "ordinal": 2,
+            "name": "output",
+            "type": "void *"
+          },
+          {
+            "ordinal": 3,
+            "name": "owner",
+            "type": "void *"
+          },
+          {
+            "ordinal": 4,
+            "name": "node",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "piVar4",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "piVar2",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "piVar6",
+            "type": "int *",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "piVar5",
+            "type": "int *",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "local_3c",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc4, 4)"
+          },
+          {
+            "name": "local_38",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc8, 4)"
+          },
+          {
+            "name": "local_50",
+            "type": "undefined1[4]"
+          },
+          {
+            "name": "local_4c",
+            "type": "undefined1",
+            "storage": "(stack, 0xffffffffffffffb4, 1)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_34",
+            "type": "undefined * *[10]",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 114,
+            "name": "LAB_0069f702"
+          },
+          {
+            "relative_offset": 144,
+            "name": "LAB_0069f720"
+          },
+          {
+            "relative_offset": 157,
+            "name": "LAB_0069f72d"
+          },
+          {
+            "relative_offset": 168,
+            "name": "LAB_0069f738"
+          },
+          {
+            "relative_offset": 180,
+            "name": "LAB_0069f744"
+          },
+          {
+            "relative_offset": 193,
+            "name": "LAB_0069f751"
+          },
+          {
+            "relative_offset": 201,
+            "name": "LAB_0069f759"
+          },
+          {
+            "relative_offset": 204,
+            "name": "LAB_0069f75c"
+          },
+          {
+            "relative_offset": 225,
+            "name": "LAB_0069f771"
+          },
+          {
+            "relative_offset": 232,
+            "name": "LAB_0069f778"
+          },
+          {
+            "relative_offset": 234,
+            "name": "LAB_0069f77a"
+          },
+          {
+            "relative_offset": 259,
+            "name": "LAB_0069f793"
+          },
+          {
+            "relative_offset": 271,
+            "name": "LAB_0069f79f"
+          },
+          {
+            "relative_offset": 287,
+            "name": "LAB_0069f7af"
+          },
+          {
+            "relative_offset": 299,
+            "name": "LAB_0069f7bb"
+          },
+          {
+            "relative_offset": 313,
+            "name": "LAB_0069f7c9"
+          },
+          {
+            "relative_offset": 326,
+            "name": "LAB_0069f7d6"
+          },
+          {
+            "relative_offset": 337,
+            "name": "LAB_0069f7e1"
+          },
+          {
+            "relative_offset": 340,
+            "name": "LAB_0069f7e4"
+          },
+          {
+            "relative_offset": 358,
+            "name": "LAB_0069f7f6"
+          },
+          {
+            "relative_offset": 385,
+            "name": "LAB_0069f811"
+          },
+          {
+            "relative_offset": 427,
+            "name": "LAB_0069f83b"
+          },
+          {
+            "relative_offset": 448,
+            "name": "LAB_0069f850"
+          },
+          {
+            "relative_offset": 474,
+            "name": "LAB_0069f86a"
+          },
+          {
+            "relative_offset": 499,
+            "name": "LAB_0069f883"
+          },
+          {
+            "relative_offset": 522,
+            "name": "LAB_0069f89a"
+          },
+          {
+            "relative_offset": 543,
+            "name": "LAB_0069f8af"
+          },
+          {
+            "relative_offset": 547,
+            "name": "LAB_0069f8b3"
+          },
+          {
+            "relative_offset": 566,
+            "name": "LAB_0069f8c6"
+          },
+          {
+            "relative_offset": 590,
+            "name": "LAB_0069f8de"
+          },
+          {
+            "relative_offset": 612,
+            "name": "LAB_0069f8f4"
+          },
+          {
+            "relative_offset": 615,
+            "name": "LAB_0069f8f7"
+          },
+          {
+            "relative_offset": 643,
+            "name": "LAB_0069f913"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "complete_body": true,
+      "prior_evidence_preserved": true,
+      "after_instruction_ownership_verified": 231
+    },
+    {
+      "address": "006a04a0",
+      "end_exclusive": "006a076c",
+      "bytes": 716,
+      "sha256": "7ca7d510453e98009711dacd9fcda6f3c30e428e37adabed338b5d85815890b2",
+      "before": "Function: STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0 at 006a04a0\nSignature: undefined STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0(void)\nEntry: 006a04a0\nBody: 006a04a0 - 006a0731",
+      "before_documentation": {
+        "hash": "b354919d1df0f366944665cc65ae36b14a555d92c8024d28130277aa3cd66636",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "006a04a0",
+        "function_name": "STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 006a04a0]\nHypothesis, not a recovered symbol. erase(const_iterator): 'invalid map/set<T> iterator' guard, _Lmost/_Rmost fixups via 0069a530/0069a9e0, the red-black delete fixup over _Color +0x28, then the node's pooled key string is released and the node freed; __thiscall, RET 0xC recovered from the undefined epilogue bytes at 006a0732. Instantiation N2C: node 0x2c (_Myval+0x0c[28]: pooled string key count +0x0c / buffer +0x10 compared with __stricmp, mapped 20 bytes at +0x14; _Color+0x28,_Isnil+0x29); _Insert 0069fbc0 checks _Mysize>0x9249247 so sizeof(value_type)=28; _Buynode 0069f5f0, rotates 0069c1c0/0069a560.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "piVar2",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_50",
+            "type": "undefined1[4]"
+          },
+          {
+            "name": "local_4c",
+            "type": "undefined1",
+            "storage": "(stack, 0xffffffffffffffb4, 1)"
+          },
+          {
+            "name": "piVar3",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar6",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffff90, 4)"
+          },
+          {
+            "name": "piVar5",
+            "type": "int *",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "local_34",
+            "type": "undefined * *[10]",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "uVar7",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffff98, 4)"
+          },
+          {
+            "name": "local_3c",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc4, 4)"
+          },
+          {
+            "name": "local_38",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc8, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 118,
+            "name": "LAB_006a0516"
+          },
+          {
+            "relative_offset": 145,
+            "name": "LAB_006a0531"
+          },
+          {
+            "relative_offset": 158,
+            "name": "LAB_006a053e"
+          },
+          {
+            "relative_offset": 169,
+            "name": "LAB_006a0549"
+          },
+          {
+            "relative_offset": 181,
+            "name": "LAB_006a0555"
+          },
+          {
+            "relative_offset": 194,
+            "name": "LAB_006a0562"
+          },
+          {
+            "relative_offset": 202,
+            "name": "LAB_006a056a"
+          },
+          {
+            "relative_offset": 205,
+            "name": "LAB_006a056d"
+          },
+          {
+            "relative_offset": 222,
+            "name": "LAB_006a057e"
+          },
+          {
+            "relative_offset": 229,
+            "name": "LAB_006a0585"
+          },
+          {
+            "relative_offset": 231,
+            "name": "LAB_006a0587"
+          },
+          {
+            "relative_offset": 256,
+            "name": "LAB_006a05a0"
+          },
+          {
+            "relative_offset": 268,
+            "name": "LAB_006a05ac"
+          },
+          {
+            "relative_offset": 285,
+            "name": "LAB_006a05bd"
+          },
+          {
+            "relative_offset": 297,
+            "name": "LAB_006a05c9"
+          },
+          {
+            "relative_offset": 311,
+            "name": "LAB_006a05d7"
+          },
+          {
+            "relative_offset": 324,
+            "name": "LAB_006a05e4"
+          },
+          {
+            "relative_offset": 335,
+            "name": "LAB_006a05ef"
+          },
+          {
+            "relative_offset": 338,
+            "name": "LAB_006a05f2"
+          },
+          {
+            "relative_offset": 356,
+            "name": "LAB_006a0604"
+          },
+          {
+            "relative_offset": 386,
+            "name": "LAB_006a0622"
+          },
+          {
+            "relative_offset": 430,
+            "name": "LAB_006a064e"
+          },
+          {
+            "relative_offset": 451,
+            "name": "LAB_006a0663"
+          },
+          {
+            "relative_offset": 481,
+            "name": "LAB_006a0681"
+          },
+          {
+            "relative_offset": 504,
+            "name": "LAB_006a0698"
+          },
+          {
+            "relative_offset": 529,
+            "name": "LAB_006a06b1"
+          },
+          {
+            "relative_offset": 550,
+            "name": "LAB_006a06c6"
+          },
+          {
+            "relative_offset": 554,
+            "name": "LAB_006a06ca"
+          },
+          {
+            "relative_offset": 573,
+            "name": "LAB_006a06dd"
+          },
+          {
+            "relative_offset": 602,
+            "name": "LAB_006a06fa"
+          },
+          {
+            "relative_offset": 622,
+            "name": "LAB_006a070e"
+          },
+          {
+            "relative_offset": 625,
+            "name": "LAB_006a0711"
+          },
+          {
+            "relative_offset": 652,
+            "name": "LAB_006a072c"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "before_instruction_ownership": [
+        {
+          "address": "006a04a0",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a04a2",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a04a7",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a04ad",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a04ae",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a04b5",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a04b8",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a04bc",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a04c0",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a04c1",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a04c3",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a04c4",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a04c8",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a04ca",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a04cc",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a04ce",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a04d3",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a04d7",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a04df",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a04e3",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a04e8",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a04ed",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a04f1",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a04f2",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a04f6",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a04fa",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a04ff",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0504",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0508",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0509",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0511",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0516",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0517",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0518",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a051c",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a051e",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0523",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0526",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a052a",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a052c",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a052f",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0531",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0534",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0538",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a053a",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a053c",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a053e",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0542",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0544",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0547",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0549",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a054d",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0550",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0552",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0555",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0558",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a055b",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a055d",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0560",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0562",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0564",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0566",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0568",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a056a",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a056d",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0570",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0572",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0574",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0578",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a057a",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a057c",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a057e",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0580",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0585",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0587",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a058b",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a058e",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0591",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0593",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0597",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0599",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a059b",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a059e",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05a0",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05a2",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05a7",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05aa",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05ac",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05af",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05b2",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05b4",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05b7",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05b9",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05bb",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05bd",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05c1",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05c4",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05c6",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05c9",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05cb",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05ce",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05d1",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05d4",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05d7",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05da",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05dd",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05df",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05e2",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05e4",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05e7",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05e9",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05eb",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05ed",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05ef",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05f2",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05f5",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05f8",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05fb",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a05fe",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0601",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0604",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0609",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a060c",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0612",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0616",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0619",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a061c",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0622",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0625",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a062b",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a062d",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a062f",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0631",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0634",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0638",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a063a",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a063d",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a063e",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0642",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0647",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a064a",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a064e",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0652",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0654",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0656",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0659",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a065b",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a065e",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0661",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0663",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0666",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0669",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a066b",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a066d",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0670",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0671",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0675",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a067a",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a067d",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0681",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0684",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0687",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a068a",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a068d",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a068e",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0691",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0696",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0698",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a069c",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a069e",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06a1",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06a2",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06a6",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06ab",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06ad",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06b1",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06b5",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06b7",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06ba",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06bd",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06bf",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06c1",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06c4",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06c6",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06ca",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06cd",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06cf",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06d2",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06d5",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06db",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06dd",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06df",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06e2",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06e4",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06e7",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06ea",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06eb",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06ef",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06f4",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06f6",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06fa",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a06fd",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0700",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0703",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0705",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0706",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0709",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a070e",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0711",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0714",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0716",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0718",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a071b",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a071c",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a071e",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a071f",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0720",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0725",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0727",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a072c",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a072d",
+          "owner": "006a04a0"
+        },
+        {
+          "address": "006a0732",
+          "owner": null
+        },
+        {
+          "address": "006a0736",
+          "owner": null
+        },
+        {
+          "address": "006a0739",
+          "owner": null
+        },
+        {
+          "address": "006a073c",
+          "owner": null
+        },
+        {
+          "address": "006a073e",
+          "owner": null
+        },
+        {
+          "address": "006a073f",
+          "owner": null
+        },
+        {
+          "address": "006a0740",
+          "owner": null
+        },
+        {
+          "address": "006a0742",
+          "owner": null
+        },
+        {
+          "address": "006a0745",
+          "owner": null
+        },
+        {
+          "address": "006a0748",
+          "owner": null
+        },
+        {
+          "address": "006a074c",
+          "owner": null
+        },
+        {
+          "address": "006a0750",
+          "owner": null
+        },
+        {
+          "address": "006a0754",
+          "owner": null
+        },
+        {
+          "address": "006a0756",
+          "owner": null
+        },
+        {
+          "address": "006a075a",
+          "owner": null
+        },
+        {
+          "address": "006a075b",
+          "owner": null
+        },
+        {
+          "address": "006a075e",
+          "owner": null
+        },
+        {
+          "address": "006a075f",
+          "owner": null
+        },
+        {
+          "address": "006a0766",
+          "owner": null
+        },
+        {
+          "address": "006a0769",
+          "owner": null
+        }
+      ],
+      "after": "Function: STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0 at 006a04a0\nSignature: void * __fastcall STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0(void * tree, void * unused_edx, void * output, void * owner, void * node)\nEntry: 006a04a0\nBody: 006a04a0 - 006a076b",
+      "after_documentation": {
+        "hash": "d5807660c0d3acf1b321eb4a95da8a8dc85062b8f340c5370b3eea4feb45e897",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "006a04a0",
+        "function_name": "STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0",
+        "return_type": "void *",
+        "calling_convention": "__fastcall",
+        "plate_comment": "[BSP reconstruction 006a04a0]\nHypothesis, not a recovered symbol. erase(const_iterator): 'invalid map/set<T> iterator' guard, _Lmost/_Rmost fixups via 0069a530/0069a9e0, the red-black delete fixup over _Color +0x28, then the node's pooled key string is released and the node freed; __thiscall, RET 0xC recovered from the undefined epilogue bytes at 006a0732. Instantiation N2C: node 0x2c (_Myval+0x0c[28]: pooled string key count +0x0c / buffer +0x10 compared with __stricmp, mapped 20 bytes at +0x14; _Color+0x28,_Isnil+0x29); _Insert 0069fbc0 checks _Mysize>0x9249247 so sizeof(value_type)=28; _Buynode 0069f5f0, rotates 0069c1c0/0069a560.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "tree",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "unused_edx",
+            "type": "void *"
+          },
+          {
+            "ordinal": 2,
+            "name": "output",
+            "type": "void *"
+          },
+          {
+            "ordinal": 3,
+            "name": "owner",
+            "type": "void *"
+          },
+          {
+            "ordinal": 4,
+            "name": "node",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "piVar4",
+            "type": "int *",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "piVar2",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "piVar1",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_50",
+            "type": "undefined1[4]"
+          },
+          {
+            "name": "uVar7",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffff98, 4)"
+          },
+          {
+            "name": "iVar6",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffff90, 4)"
+          },
+          {
+            "name": "piVar5",
+            "type": "int *",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "local_38",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc8, 4)"
+          },
+          {
+            "name": "local_34",
+            "type": "undefined * *[10]",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "local_4c",
+            "type": "undefined1",
+            "storage": "(stack, 0xffffffffffffffb4, 1)"
+          },
+          {
+            "name": "local_3c",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc4, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 118,
+            "name": "LAB_006a0516"
+          },
+          {
+            "relative_offset": 145,
+            "name": "LAB_006a0531"
+          },
+          {
+            "relative_offset": 158,
+            "name": "LAB_006a053e"
+          },
+          {
+            "relative_offset": 169,
+            "name": "LAB_006a0549"
+          },
+          {
+            "relative_offset": 181,
+            "name": "LAB_006a0555"
+          },
+          {
+            "relative_offset": 194,
+            "name": "LAB_006a0562"
+          },
+          {
+            "relative_offset": 202,
+            "name": "LAB_006a056a"
+          },
+          {
+            "relative_offset": 205,
+            "name": "LAB_006a056d"
+          },
+          {
+            "relative_offset": 222,
+            "name": "LAB_006a057e"
+          },
+          {
+            "relative_offset": 229,
+            "name": "LAB_006a0585"
+          },
+          {
+            "relative_offset": 231,
+            "name": "LAB_006a0587"
+          },
+          {
+            "relative_offset": 256,
+            "name": "LAB_006a05a0"
+          },
+          {
+            "relative_offset": 268,
+            "name": "LAB_006a05ac"
+          },
+          {
+            "relative_offset": 285,
+            "name": "LAB_006a05bd"
+          },
+          {
+            "relative_offset": 297,
+            "name": "LAB_006a05c9"
+          },
+          {
+            "relative_offset": 311,
+            "name": "LAB_006a05d7"
+          },
+          {
+            "relative_offset": 324,
+            "name": "LAB_006a05e4"
+          },
+          {
+            "relative_offset": 335,
+            "name": "LAB_006a05ef"
+          },
+          {
+            "relative_offset": 338,
+            "name": "LAB_006a05f2"
+          },
+          {
+            "relative_offset": 356,
+            "name": "LAB_006a0604"
+          },
+          {
+            "relative_offset": 386,
+            "name": "LAB_006a0622"
+          },
+          {
+            "relative_offset": 430,
+            "name": "LAB_006a064e"
+          },
+          {
+            "relative_offset": 451,
+            "name": "LAB_006a0663"
+          },
+          {
+            "relative_offset": 481,
+            "name": "LAB_006a0681"
+          },
+          {
+            "relative_offset": 504,
+            "name": "LAB_006a0698"
+          },
+          {
+            "relative_offset": 529,
+            "name": "LAB_006a06b1"
+          },
+          {
+            "relative_offset": 550,
+            "name": "LAB_006a06c6"
+          },
+          {
+            "relative_offset": 554,
+            "name": "LAB_006a06ca"
+          },
+          {
+            "relative_offset": 573,
+            "name": "LAB_006a06dd"
+          },
+          {
+            "relative_offset": 602,
+            "name": "LAB_006a06fa"
+          },
+          {
+            "relative_offset": 622,
+            "name": "LAB_006a070e"
+          },
+          {
+            "relative_offset": 625,
+            "name": "LAB_006a0711"
+          },
+          {
+            "relative_offset": 652,
+            "name": "LAB_006a072c"
+          },
+          {
+            "relative_offset": 680,
+            "name": "LAB_006a0748"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "complete_body": true,
+      "prior_evidence_preserved": true,
+      "after_instruction_ownership_verified": 241
+    },
+    {
+      "address": "0055af60",
+      "end_exclusive": "0055afc6",
+      "bytes": 102,
+      "sha256": "dbd2cd8b19918916b2d0f42f22c9a108f9434d506680ee53dc96ad98dc938fef",
+      "before": "Function: FUN_0055af60 at 0055af60\nSignature: undefined FUN_0055af60(void)\nEntry: 0055af60\nBody: 0055af60 - 0055afc5",
+      "before_documentation": {
+        "hash": "cf0230b95d98ad4cd99b583563121a67e6a2cf20f511832599127e1cdde45128",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "0055af60",
+        "function_name": "FUN_0055af60",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_8",
+            "type": "undefined1[8]"
+          },
+          {
+            "name": "piVar2",
+            "type": "int *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(unique, 0x17000, 1)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 21,
+            "name": "LAB_0055af75"
+          },
+          {
+            "relative_offset": 93,
+            "name": "LAB_0055afbd"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "before_instruction_ownership": [
+        {
+          "address": "0055af60",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055af63",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055af64",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055af65",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055af69",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055af6d",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055af6e",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055af70",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055af72",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055af74",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055af75",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055af78",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055af79",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055af7b",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055af80",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055af83",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055af85",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055af87",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055af8a",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055af8b",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055af8c",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055af8d",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055af8e",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055af92",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055af93",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055af95",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055af9a",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055af9d",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055af9e",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055afa3",
+          "owner": null
+        },
+        {
+          "address": "0055afa5",
+          "owner": null
+        },
+        {
+          "address": "0055afa6",
+          "owner": null
+        },
+        {
+          "address": "0055afa9",
+          "owner": null
+        },
+        {
+          "address": "0055afac",
+          "owner": null
+        },
+        {
+          "address": "0055afb1",
+          "owner": null
+        },
+        {
+          "address": "0055afb4",
+          "owner": null
+        },
+        {
+          "address": "0055afb8",
+          "owner": null
+        },
+        {
+          "address": "0055afba",
+          "owner": null
+        },
+        {
+          "address": "0055afbc",
+          "owner": null
+        },
+        {
+          "address": "0055afbd",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055afbe",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055afbf",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055afc0",
+          "owner": "0055af60"
+        },
+        {
+          "address": "0055afc3",
+          "owner": "0055af60"
+        }
+      ],
+      "after": "Function: FUN_0055af60 at 0055af60\nSignature: void __fastcall FUN_0055af60(void * tree, void * unused_edx, void * node)\nEntry: 0055af60\nBody: 0055af60 - 0055afc5",
+      "after_documentation": {
+        "hash": "b0585f44f63740a71b61b1c539b67d62cb12590d88b216b0eec947d4de5d97b2",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "0055af60",
+        "function_name": "FUN_0055af60",
+        "return_type": "void",
+        "calling_convention": "__fastcall",
+        "plate_comment": "",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "tree",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "unused_edx",
+            "type": "void *"
+          },
+          {
+            "ordinal": 2,
+            "name": "node",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "local_8",
+            "type": "undefined1[8]"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(unique, 0x17000, 1)"
+          },
+          {
+            "name": "extraout_EDX",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "piVar2",
+            "type": "int *",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 21,
+            "name": "LAB_0055af75"
+          },
+          {
+            "relative_offset": 93,
+            "name": "LAB_0055afbd"
+          }
+        ],
+        "completeness_score": 70.0
+      },
+      "complete_body": true,
+      "prior_evidence_preserved": true,
+      "after_instruction_ownership_verified": 44
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "0055b690"
+      },
+      "result": "{\"success\": true, \"address\": \"0055b690\", \"deleted_function\": \"FUN_0055b690\", \"body_size\": 74, \"message\": \"Function 'FUN_0055b690' deleted at 0055b690\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "0055b690",
+        "end_address": "0055b8a6"
+      },
+      "result": "{\"success\": true, \"start_address\": \"0055b690\", \"end_address\": \"0055b8a5\", \"bytes_disassembled\": 534, \"message\": \"Successfully disassembled 534 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "0055b690",
+        "name": "FUN_0055b690",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"0055b690\", \"function_name\": \"FUN_0055b690\", \"entry_point\": \"0055b690\", \"body_size\": 74, \"message\": \"Function created successfully at 0055b690\"}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0055b690",
+        "prototype": "void __fastcall FUN_0055b690(void* self, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0055b690 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "0055b6d5"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 0055b6d5 (was: CALL_RETURN, now: NONE)\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "0055b706"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 0055b706 (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "0055b735"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 0055b735 (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "0055b767"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 0055b767 (was: CALL_RETURN, now: NONE)\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "0055b796"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 0055b796 (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "0055b7c8"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 0055b7c8 (was: CALL_RETURN, now: NONE)\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "0055b7fa"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 0055b7fa (was: CALL_RETURN, now: NONE)\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "0055b829"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 0055b829 (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "0055b857"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 0055b857 (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "0055b886"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 0055b886 (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "0055b690"
+      },
+      "result": "{\"success\": true, \"address\": \"0055b690\", \"deleted_function\": \"FUN_0055b690\", \"body_size\": 74, \"message\": \"Function 'FUN_0055b690' deleted at 0055b690\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "0055b690",
+        "end_address": "0055b8a6"
+      },
+      "result": "{\"success\": true, \"start_address\": \"0055b690\", \"end_address\": \"0055b8a5\", \"bytes_disassembled\": 534, \"message\": \"Successfully disassembled 534 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "0055b690",
+        "name": "FUN_0055b690",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"0055b690\", \"function_name\": \"FUN_0055b690\", \"entry_point\": \"0055b690\", \"body_size\": 534, \"message\": \"Function created successfully at 0055b690\"}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0055b690",
+        "prototype": "void __fastcall FUN_0055b690(void* self, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0055b690 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "0055b690",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 0055b690\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "006a2bf4"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 006a2bf4 (was: CALL_RETURN, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "006a2bb0"
+      },
+      "result": "{\"success\": true, \"address\": \"006a2bb0\", \"deleted_function\": \"FUN_006a2bb0\", \"body_size\": 73, \"message\": \"Function 'FUN_006a2bb0' deleted at 006a2bb0\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "006a2bb0",
+        "end_address": "006a2c3f"
+      },
+      "result": "{\"success\": true, \"start_address\": \"006a2bb0\", \"end_address\": \"006a2c3e\", \"bytes_disassembled\": 143, \"message\": \"Successfully disassembled 143 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "006a2bb0",
+        "name": "FUN_006a2bb0",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"006a2bb0\", \"function_name\": \"FUN_006a2bb0\", \"entry_point\": \"006a2bb0\", \"body_size\": 143, \"message\": \"Function created successfully at 006a2bb0\"}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006a2bb0",
+        "prototype": "void __fastcall FUN_006a2bb0(void* self, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006a2bb0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "006a2bb0",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 006a2bb0\"}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "006a74bd"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 006a74bd (was: CALL_RETURN, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "006a71b0"
+      },
+      "result": "{\"success\": true, \"address\": \"006a71b0\", \"deleted_function\": \"STL_xlen_throw_006a71b0\", \"body_size\": 786, \"message\": \"Function 'STL_xlen_throw_006a71b0' deleted at 006a71b0\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "006a71b0",
+        "end_address": "006a74f8"
+      },
+      "result": "{\"success\": true, \"start_address\": \"006a71b0\", \"end_address\": \"006a74f7\", \"bytes_disassembled\": 840, \"message\": \"Successfully disassembled 840 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "006a71b0",
+        "name": "STL_xlen_throw_006a71b0",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"006a71b0\", \"function_name\": \"STL_xlen_throw_006a71b0\", \"entry_point\": \"006a71b0\", \"body_size\": 840, \"message\": \"Function created successfully at 006a71b0\", \"warnings\": [\"Function name 'STL_xlen_throw_006a71b0' \\u2014 main part 'STL_xlen_throw_006a71b0' is not PascalCase. Expected: StlXlenThrow006a71b0\", \"Function name 'STL_xlen_throw_006a71b0' \\u2014 main part 'STL_xlen_throw_006a71b0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006a71b0",
+        "prototype": "void* __fastcall STL_xlen_throw_006a71b0(void* tree, void* unused_edx, void* output, void* owner, void* node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006a71b0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "006a71b0",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 006a71b0\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "006a6288"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 006a6288 (was: CALL_RETURN, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "006a6010"
+      },
+      "result": "{\"success\": true, \"address\": \"006a6010\", \"deleted_function\": \"STL_xlen_throw_006a6010\", \"body_size\": 637, \"message\": \"Function 'STL_xlen_throw_006a6010' deleted at 006a6010\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "006a6010",
+        "end_address": "006a62c3"
+      },
+      "result": "{\"success\": true, \"start_address\": \"006a6010\", \"end_address\": \"006a62c2\", \"bytes_disassembled\": 691, \"message\": \"Successfully disassembled 691 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "006a6010",
+        "name": "STL_xlen_throw_006a6010",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"006a6010\", \"function_name\": \"STL_xlen_throw_006a6010\", \"entry_point\": \"006a6010\", \"body_size\": 691, \"message\": \"Function created successfully at 006a6010\", \"warnings\": [\"Function name 'STL_xlen_throw_006a6010' \\u2014 main part 'STL_xlen_throw_006a6010' is not PascalCase. Expected: StlXlenThrow006a6010\", \"Function name 'STL_xlen_throw_006a6010' \\u2014 main part 'STL_xlen_throw_006a6010' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006a6010",
+        "prototype": "void* __fastcall STL_xlen_throw_006a6010(void* tree, void* unused_edx, void* output, void* owner, void* node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006a6010 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "006a6010",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 006a6010\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "0069f8fc"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 0069f8fc (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "0069f690"
+      },
+      "result": "{\"success\": true, \"address\": \"0069f690\", \"deleted_function\": \"STL_Tree_EraseIter_IntKey_N18B_0069f690\", \"body_size\": 625, \"message\": \"Function 'STL_Tree_EraseIter_IntKey_N18B_0069f690' deleted at 0069f690\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "0069f690",
+        "end_address": "0069f937"
+      },
+      "result": "{\"success\": true, \"start_address\": \"0069f690\", \"end_address\": \"0069f936\", \"bytes_disassembled\": 679, \"message\": \"Successfully disassembled 679 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "0069f690",
+        "name": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"0069f690\", \"function_name\": \"STL_Tree_EraseIter_IntKey_N18B_0069f690\", \"entry_point\": \"0069f690\", \"body_size\": 679, \"message\": \"Function created successfully at 0069f690\", \"warnings\": [\"Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' \\u2014 main part 'Tree_EraseIter_IntKey_N18B_0069f690' is not PascalCase. Expected: TreeEraseiterIntkeyN18b0069f690\", \"Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' \\u2014 main part 'Tree_EraseIter_IntKey_N18B_0069f690' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'STL_Tree_EraseIter_IntKey_N18B_0069f690' does not start with a recognized verb. First word 'Tree_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0069f690",
+        "prototype": "void* __fastcall STL_Tree_EraseIter_IntKey_N18B_0069f690(void* tree, void* unused_edx, void* output, void* owner, void* node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0069f690 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "0069f690",
+        "comment": "[BSP reconstruction 0069f690]\nHypothesis, not a recovered symbol. erase(const_iterator): throws out_of_range 'invalid map/set<T> iterator' on a nil _Ptr, unlinks the node with the red-black delete fixup over _Color +0x14, then --_Mysize and frees the node; __thiscall, RET 0xC recovered from the undefined epilogue bytes at 0069f901. Instantiation N18B: node 0x18 (signed int key +0x0c, mapped +0x10; _Color+0x14,_Isnil+0x15); separate instantiation from N18A: its _Insert 0069f210 uses _Buynode 0069d2d0 and rotates 0069c220/0069a610."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 0069f690\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "006a072d"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 006a072d (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "006a04a0"
+      },
+      "result": "{\"success\": true, \"address\": \"006a04a0\", \"deleted_function\": \"STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0\", \"body_size\": 658, \"message\": \"Function 'STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0' deleted at 006a04a0\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "006a04a0",
+        "end_address": "006a076c"
+      },
+      "result": "{\"success\": true, \"start_address\": \"006a04a0\", \"end_address\": \"006a076b\", \"bytes_disassembled\": 716, \"message\": \"Successfully disassembled 716 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "006a04a0",
+        "name": "STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"006a04a0\", \"function_name\": \"STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0\", \"entry_point\": \"006a04a0\", \"body_size\": 716, \"message\": \"Function created successfully at 006a04a0\", \"warnings\": [\"Function name 'STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0' \\u2014 main part 'Tree_EraseIter_StrKeyCI_N2C_006a04a0' is not PascalCase. Expected: TreeEraseiterStrkeyciN2c006a04a0\", \"Function name 'STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0' \\u2014 main part 'Tree_EraseIter_StrKeyCI_N2C_006a04a0' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0' does not start with a recognized verb. First word 'Tree_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006a04a0",
+        "prototype": "void* __fastcall STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0(void* tree, void* unused_edx, void* output, void* owner, void* node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006a04a0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "006a04a0",
+        "comment": "[BSP reconstruction 006a04a0]\nHypothesis, not a recovered symbol. erase(const_iterator): 'invalid map/set<T> iterator' guard, _Lmost/_Rmost fixups via 0069a530/0069a9e0, the red-black delete fixup over _Color +0x28, then the node's pooled key string is released and the node freed; __thiscall, RET 0xC recovered from the undefined epilogue bytes at 006a0732. Instantiation N2C: node 0x2c (_Myval+0x0c[28]: pooled string key count +0x0c / buffer +0x10 compared with __stricmp, mapped 20 bytes at +0x14; _Color+0x28,_Isnil+0x29); _Insert 0069fbc0 checks _Mysize>0x9249247 so sizeof(value_type)=28; _Buynode 0069f5f0, rotates 0069c1c0/0069a560."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 006a04a0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "0055af9e"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 0055af9e (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "0055afac"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 0055afac (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "0055af60"
+      },
+      "result": "{\"success\": true, \"address\": \"0055af60\", \"deleted_function\": \"FUN_0055af60\", \"body_size\": 76, \"message\": \"Function 'FUN_0055af60' deleted at 0055af60\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "0055af60",
+        "end_address": "0055afc6"
+      },
+      "result": "{\"success\": true, \"start_address\": \"0055af60\", \"end_address\": \"0055afc5\", \"bytes_disassembled\": 102, \"message\": \"Successfully disassembled 102 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "0055af60",
+        "name": "FUN_0055af60",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"0055af60\", \"function_name\": \"FUN_0055af60\", \"entry_point\": \"0055af60\", \"body_size\": 102, \"message\": \"Function created successfully at 0055af60\"}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0055af60",
+        "prototype": "void __fastcall FUN_0055af60(void* tree, void* unused_edx, void* node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0055af60 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "0055af60",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 0055af60\"}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "state": "complete_bodies_saved_prior_evidence_retained",
+  "exports_refreshed": [
+    "0055b690",
+    "006a2bb0",
+    "006a71b0",
+    "006a6010",
+    "0069f690",
+    "006a04a0",
+    "0055af60"
+  ]
+}
