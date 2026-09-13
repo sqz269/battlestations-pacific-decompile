@@ -104,3 +104,11 @@ handler exits77: destroying the failed operation reaches that expected exit.
 Normal diagnostic cleanup instead acknowledges the distinct retired state.
 Required next work remains the real B3B3C0 compiler tail and B3AEA0/B3A750/
 B5BC60 reflection population, along with the separate actual COM shader owners.
+
+## Integrator saved-body repair
+
+All three omitted post-free blocks were repaired under the Ghidra write lock.
+B3B1E0 was recreated through B3B23C, preserving prior metadata: 28 instructions
+and no gaps. B38390 and B3B260 have no remaining call gaps; the three unreachable
+padding bytes after B3842B remain untouched. B3B227 to BD30F0 is now owned
+by the full destructor and included in numeric call verification.

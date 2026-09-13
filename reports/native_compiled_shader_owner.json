@@ -238,28 +238,11 @@
       "native": "00bd30f0",
       "caller": "00b3b1e0",
       "call_site": "00b3b227",
-      "body_status": "no_ghidra_function",
-      "intended_function": "00b3b1e0"
-    }
-  ],
-  "body_gaps": [
-    {
-      "start": "00b38466",
-      "end": "00b38474",
-      "body_status": "no_ghidra_function",
-      "reason": "Saved free no-return omission hides replacement data/capacity publication; enclosing min/max bounds do not include these bytes."
-    },
-    {
-      "start": "00b3b21a",
-      "end": "00b3b23c",
-      "body_status": "no_ghidra_function",
-      "reason": "Saved destructor ends after BF6989. Raw tail calls BD30F0 and returns normally."
-    },
-    {
-      "start": "00b3b275",
-      "end": "00b3b277",
-      "body_status": "no_ghidra_function",
-      "reason": "Saved scalar delete omits post-free ADD ESP4."
+      "body_status": "owned_after_integrator_body_repair",
+      "intended_function": "00b3b1e0",
+      "address": "00b3b227",
+      "function": "00b3b1e0",
+      "worker_body_status": "no_ghidra_function"
     }
   ],
   "corrections": [
@@ -380,5 +363,39 @@
       "address": "00bd30f0",
       "evidence": "Existing complete naked actual base stamp, ECX owner, RET; no count write"
     }
-  ]
+  ],
+  "worker_body_gaps": [
+    {
+      "start": "00b38466",
+      "end": "00b38474",
+      "body_status": "no_ghidra_function",
+      "reason": "Saved free no-return omission hides replacement data/capacity publication; enclosing min/max bounds do not include these bytes."
+    },
+    {
+      "start": "00b3b21a",
+      "end": "00b3b23c",
+      "body_status": "no_ghidra_function",
+      "reason": "Saved destructor ends after BF6989. Raw tail calls BD30F0 and returns normally."
+    },
+    {
+      "start": "00b3b275",
+      "end": "00b3b277",
+      "body_status": "no_ghidra_function",
+      "reason": "Saved scalar delete omits post-free ADD ESP4."
+    }
+  ],
+  "body_gaps": [],
+  "integration_body_repair": {
+    "repairs": 3,
+    "remaining_call_gaps": 0,
+    "unused_padding": "B3842D..B3842F follows unconditional JMP; deliberately not disassembled.",
+    "destructor": "B3B1E0..B3B23C recreated, 28 instructions, zero gaps; prior name/comment preserved.",
+    "artifacts": {
+      "local/compiled-shader-reserve-flow.json": "a49e0de776cf0eec7e86b25890fda6535218da49ee742fc4a67d249a7c27334b",
+      "local/compiled-shader-dtor-flow.json": "2f9157972e467c8c85094e41897aa283de718650a3a7e932dd681e2ddeb57f56",
+      "local/compiled-shader-delete-flow.json": "44440fe2488f2aef96ca9479f96e361e250ccd9e8a9865ccac31fa230638f467",
+      "local/compiled-shader-dtor-definition.json": "e7cc1405710f91fa4c105b4aaa62e37eb8482ce2ce31b7fd23173dd5e6b95ffe",
+      "local/compiled-shader-flow-verification.log": "baf97e8ff4fb8292703dd2c56176ebdbbebb6edabeab6d0e98fddfef3f9035a5"
+    }
+  }
 }
