@@ -1,6 +1,6 @@
 {
   "packet": "orch4_mpak_offset_copy_storage_az",
-  "status": "source_implementation_win32_build_tested",
+  "status": "source_implementation_win32_build_and_native_comparison_passed",
   "target": {
     "project": "bsp",
     "program": "battlestationspacific.exe"
@@ -54,7 +54,12 @@
       "contract": "memmove_s with same destination and copy size; return ignored"
     }
   ],
-  "validation": ["./scripts/build.ps1 with BSP_AGENT=agent/orch4-mpak-offset-copy-az, MSBUILDDISABLENODEREUSE=1 and CMAKE_BUILD_PARALLEL_LEVEL=2 passed Win32 build", "Existing reconstructed_math CTest passed", "tools/verify_report_calls.py checked all six direct CALL rows"],
+  "validation": [
+    "./scripts/build.ps1 with BSP_AGENT=agent/orch4-mpak-offset-copy-az, MSBUILDDISABLENODEREUSE=1 and CMAKE_BUILD_PARALLEL_LEVEL=2 passed Win32 build",
+    "Existing reconstructed_math CTest passed",
+    "tools/verify_report_calls.py checked all six direct CALL rows",
+    "One ignored Win32 native/source comparison passed five focused scenarios with /MANIFEST:EMBED"
+  ],
   "uncertainty": [
     "Source allocation and exception transport are not original STL/CRT/FH3 ABI",
     "No parser, startup or game path validated"
@@ -65,5 +70,57 @@
     "bytes": 148,
     "sha256": "9746968a73bfd21f593f2ce6ca9e3edf4ac11f9c33e202ca3ca325cf0dc64775",
     "live_disk_equal": true
+  },
+  "native_comparison": {
+    "manifest": "local/mpak_offset_copy_az_manifest.json",
+    "runner": "local/run_mpak_offset_copy_az_probe.ps1",
+    "body_ownership": "57 Capstone instructions exactly cover 00bb6180..00bb6213; five direct CALL sites/targets match saved Ghidra listing; sixth caller at 00bb6616 verified",
+    "scenarios": [
+      {
+        "name": "empty",
+        "invalid_calls": 0,
+        "end_delta": 0,
+        "equal": true
+      },
+      {
+        "name": "populated",
+        "invalid_calls": 0,
+        "end_delta": 8,
+        "copied_words": [
+          "11111111",
+          "22222222"
+        ],
+        "equal": true
+      },
+      {
+        "name": "first_returning_invalid",
+        "invalid_calls": 1,
+        "end_delta": 8,
+        "equal": true
+      },
+      {
+        "name": "second_invalid_and_memmove_error",
+        "invalid_calls": 3,
+        "published_raw_end": "00000004",
+        "equal": true
+      },
+      {
+        "name": "self_alias",
+        "invalid_calls": 0,
+        "allocated_begin_equals_end": true,
+        "equal": true
+      }
+    ],
+    "allocator_word_preserved_in_all_scenarios": true,
+    "injection_boundary": "Copied native body redirects five external calls; the unchanged source body is compiled with only its allocation call redirected to the same instrumented valid-memory fixture allocator. CRT invalid handler returns and can alter the source/destination headers. Original native operator-new, EH and full CRT identities are not claimed.",
+    "sha256": {
+      "fixture_source": "c426892bfdb5a854c5e1ebc85e7cf6b0ebf6f4248a8c4ead632f42881a62dce8",
+      "runner": "7f1cd79abb35fd58ac5c1ea637811a092bcb7bdd63dd429a7ed500a5d44c7dab",
+      "byte_generator": "9a816b09226d91d6154a0fd36e4a738bda6c3bf874ab4e2189a9fe1b5a3346a5",
+      "byte_header": "602d4cc6d328b08f31ea73acb491c29807c30a3e8c5fe724e3cbd274b3c99dd5",
+      "fixture_executable": "3868eb0319bdf2747184fca72628c76496ec8982e528411307aca30709b53af7",
+      "source_provider": "28be7e3a250407430bda8ab9fbe43e8040902b233e7b01a8b554776e13062712",
+      "core_archive": "00816a318a073a3904ab309260b3fd0d1d846881087051a8b87d3dc69a0d20f4"
+    }
   }
 }
