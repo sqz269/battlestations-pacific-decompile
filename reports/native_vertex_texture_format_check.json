@@ -1,0 +1,215 @@
+{
+  "packet": "orch5_native_vertex_texture_format_check",
+  "source": "src/native_renderer_format_check.cpp",
+  "header": "include/bsp/native_renderer_format_check.hpp",
+  "documentation": "docs/NATIVE_VERTEX_TEXTURE_FORMAT_CHECK.md",
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mode": "identity-verified BSP wrappers; saved annotation with previous values, readback and refreshed export"
+  },
+  "routines": [
+    {
+      "address": "00b20190",
+      "end_inclusive": "00b201b9",
+      "bytes": 42,
+      "instructions": 16,
+      "original_abi": "ECX renderer; stacked format DWORD; RET4; EAX boolean0/1",
+      "coverage": "complete normal valid-COM body",
+      "cpp_symbol": "check_native_renderer_vertex_texture_render_target_00b20190",
+      "sha256": "119e4d47aaa7231e4812a79c2c136b9bdd522c4c6bf76d5a4fa97677657a7fba"
+    }
+  ],
+  "byte_evidence": {
+    "function": "00b20190",
+    "end_inclusive": "00b201b9",
+    "bytes": 42,
+    "instruction_count": 16,
+    "sha256": "119e4d47aaa7231e4812a79c2c136b9bdd522c4c6bf76d5a4fa97677657a7fba",
+    "installed_binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "body_matches_live_and_disk": true,
+    "original_relocations": 0,
+    "indirect_call": "00b201ae",
+    "producer": {
+      "function": "00b32410",
+      "factory_call": "00b32479",
+      "factory_store": "00b3247e",
+      "offset": "1990"
+    },
+    "sdk_constants": {
+      "adapter": 0,
+      "device_type": 1,
+      "adapter_format": 22,
+      "usage": 1048577,
+      "resource_type": 3,
+      "caller_format": 113
+    }
+  },
+  "host_steps": [
+    {
+      "address": "00b201ae",
+      "native": "IDirect3D9::CheckDeviceFormat table+28",
+      "function": "00b20190",
+      "contract": "Indirect COM stdcall: factory,adapter0,HAL1,X8R8G8B8=22,usage100001h,texture3,current caller format. HRESULT exactly0 only."
+    },
+    {
+      "address": "00b3b763",
+      "native": "00b20190",
+      "function": "00b3b3c0",
+      "contract": "ECX actual renderer from F8D394; push71h; testAL."
+    },
+    {
+      "address": "00ba15ba",
+      "native": "00b20190",
+      "function": "00ba1400",
+      "contract": "ECX actual renderer from F8D394; push71h; storeAL at current owner10h."
+    },
+    {
+      "address": "00b32479",
+      "native": "00a4c2a8",
+      "function": "00b32410",
+      "contract": "Push SDK20h to Direct3DCreate9; returned EAX published at renderer1990 byB3247E."
+    }
+  ],
+  "no_ghidra_function": [],
+  "gaps": [],
+  "validation": {
+    "default_win32_build": "passed",
+    "existing_ctests": "2/2 passed",
+    "original_source_com_capture_rows": 3,
+    "real_direct3d9_rows": [
+      {
+        "format": "00000071",
+        "hresult": "00000000",
+        "supported": true
+      },
+      {
+        "format": "ffffffff",
+        "hresult": "8876086a",
+        "supported": false
+      }
+    ],
+    "fixture": "Whole42-byte original copy without relocation; exact COM arguments/result and unchanged raw renderer bytes; real local Direct3D9 query agreement.",
+    "numeric_call_rows": 3,
+    "numeric_call_failures": 0,
+    "indirect_com_rows_separately_verified": 1
+  },
+  "limits": [
+    "Ordinary C++ ABI; no original register/stack replacement.",
+    "Raw renderer publication fixture does not execute full renderer construction, create a device/window, render or validate gameplay.",
+    "Indirect COM call is checked by assembly, SDK layout and original/source/real-provider fixture, not assigned a fake numeric game address."
+  ],
+  "artifacts": [
+    {
+      "path": "include/bsp/native_renderer_format_check.hpp",
+      "sha256": "726d380da6546ced4d18387115c4c5e24e44c4dcdfcbea202673446dbbbd2dcf",
+      "bytes": 2020
+    },
+    {
+      "path": "src/native_renderer_format_check.cpp",
+      "sha256": "2ff0427d616a5d924fc080a116d7c1e2dbf3cfd369594c8c0ad4849ba9f92b2e",
+      "bytes": 1886
+    },
+    {
+      "path": "docs/NATIVE_VERTEX_TEXTURE_FORMAT_CHECK.md",
+      "sha256": "e9c9c8b342708853019346de3405e5ef9eab72ba6d600e81bfb8df6fd84c603c",
+      "bytes": 2698
+    },
+    {
+      "path": "local/vertex-texture-format-original-bytes.txt",
+      "sha256": "704e52e70c754b19242e84437e22b9ca014412ff9264cb8585ae6cec205b9c41",
+      "bytes": 207
+    },
+    {
+      "path": "local/vertex-texture-format-original-manifest.json",
+      "sha256": "d1dd5a960658f7ce740a00329e4f36f824a72b5319047963e0f75c165ffecc10",
+      "bytes": 806
+    },
+    {
+      "path": "local/vertex_texture_format_original.hpp",
+      "sha256": "94ccef12d8af2fd6dea53e8b3b3b3352e62d961cab60b64b36f6705cf86e00eb",
+      "bytes": 291
+    },
+    {
+      "path": "local/native_vertex_texture_format_probe.cpp",
+      "sha256": "36ee892a50f8f4e72c601e78433dac969762773d9b043bfeb7413e7a6983f0d4",
+      "bytes": 3504
+    },
+    {
+      "path": "local/run_native_vertex_texture_format_probe.ps1",
+      "sha256": "4510acfb0563e6215771dad73f2c20f3047d8e45c32f8a50c848943e786514b2",
+      "bytes": 1399
+    },
+    {
+      "path": "local/prepare_vertex_texture_format_evidence.py",
+      "sha256": "67c3667f42f24e8718ca16c422eb9bbde17269c462a3e5fd885e3f675bc9cef3",
+      "bytes": 1563
+    },
+    {
+      "path": "local/record_vertex_texture_format_evidence.py",
+      "sha256": "e9ccafe6d886fe6897d3d774249352b4dcf7b09422426a1ea4014ed1f8d5c3ca",
+      "bytes": 5184
+    },
+    {
+      "path": "local/vertex-texture-format-build.log",
+      "sha256": "4449b47e779b2e9cdb1c9284bb7164da40c4f56433ac413332bf414736b25fc5",
+      "bytes": 2496
+    },
+    {
+      "path": "local/vertex-texture-format-probe-compile.log",
+      "sha256": "dcba15b822f396411845ba5636b05bf1b38016c3e074bd2fa1fa9f75282e2f31",
+      "bytes": 40
+    },
+    {
+      "path": "local/vertex-texture-format-probe.log",
+      "sha256": "5138fc92e86171a6a4ee30935f34dfda6eef675df73c4030dc8eb84169f4aaa1",
+      "bytes": 426
+    },
+    {
+      "path": "local/native_vertex_texture_format_probe.exe",
+      "sha256": "2c580a42bb6399bd92a90404bcbdad282ccf80e6694a9a0657a335b03683f8cb",
+      "bytes": 13312
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "sha256": "fc278d4f999435a59f3a4dfd329708d221070951aae34790cb63830c8b9dcaac",
+      "bytes": 55778562
+    },
+    {
+      "path": "build/win32/Release/bsp_lua511.lib",
+      "sha256": "b6c19dd56bce2c86dcf1abf5c3044d48ddc2ac2c33ef04e3dc87f022413ee193",
+      "bytes": 455244
+    },
+    {
+      "path": "build/win32/Release/bsp_zlib121.lib",
+      "sha256": "2c89bd9ae83d791564ea847c75e8e5ee025e40810c1df8d55e5799e0c7b8c471",
+      "bytes": 71906
+    },
+    {
+      "path": "local/vertex-texture-format-callcheck.log",
+      "bytes": 177,
+      "sha256": "9697153865b907a49072a075d34614baa5f8619c8f37cbeca47cc45571d25a41"
+    },
+    {
+      "path": "local/vertex-texture-format-annotations.log",
+      "bytes": 216,
+      "sha256": "d6eb9214accb90a82fc15157d3368721cb279ed632136cc81098db4a1929b0d8"
+    },
+    {
+      "path": "local/vertex-texture-format-readback.json",
+      "bytes": 752,
+      "sha256": "f095981c73c18b94f25f2c16c82e3c8757fa5987486c9c54aacf67d9b54ecb43"
+    },
+    {
+      "path": "local/vertex-texture-format-export.log",
+      "bytes": 125,
+      "sha256": "0eea78605d02e198df536d9f6a927b22f7426b853c3373a5ccf393849c6d2bda"
+    },
+    {
+      "path": "local/ghidra-annotations-20260913T170414Z.json",
+      "bytes": 823,
+      "sha256": "95c31d28694b4f80bfdc8892bb4d1ece635616375ad04b0195b846cba11d830c"
+    }
+  ]
+}
