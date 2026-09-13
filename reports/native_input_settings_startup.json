@@ -1,6 +1,6 @@
 {
   "packet": "orch4_input_settings_ao",
-  "status": "raw_settings_construction_and_script_prefixes_component_validated_integration_pending",
+  "status": "raw_settings_construction_and_script_prefixes_strict_win32_native_fixture_passed_parser_and_full_lifetime_pending",
   "target": {
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe"
@@ -312,5 +312,33 @@
       "coverage": "258-byte prefix through6A7CE1 and guarded early return; stops before tree clearing/parsing at6A7CE2. Temporary Lua owner retained for continuation.",
       "kind": "fragment"
     }
+  ],
+  "final_validation": {
+    "utc": "2026-09-13T06:27:45.359210+00:00",
+    "source_revision": "a1936667447c5e2a76e5cb4faeb1b8f384d63fae",
+    "merged_main_revision": "3e29fad155f6fd49ee66b19053eadfa1c4c8e38b",
+    "code_files": 2233,
+    "code_manifest": "local\\input_settings_ao_source_manifest.json",
+    "code_manifest_sha256": "f1ebc086b422d4f16fedb388cc06706bae778987416f4cfa9f1e9faddcbea189",
+    "core_archive_sha256": "287bcbe37cfb8d4d1adc2e2712f9dba27c5ed23f08e166452beac12cd4a46715",
+    "game_executable_sha256": "cbf81351ed7626a513a429a961f2110b4fa92175ab25ffd12a4c802933a44c4f",
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "build_log": "local\\input_settings_ao_combined_build.log",
+    "build_log_sha256": "297539978df2a86f6c85a115c4e74b7abc42bbfc67c91d0737b64e97bc4e74f5",
+    "fixture_log": "local\\input_settings_ao_combined_probe.log",
+    "fixture_log_sha256": "06e65b15dc51452457b536e386075669c95238ddb76d49ad0f5da155e7eff570",
+    "native_source_words_equal": 482,
+    "calls_checked": 21,
+    "calls_failed": 0,
+    "disk_live_seeds_equal": 8,
+    "same_fixture_and_native_bytes_as_component_comparison": true,
+    "game_validated": false,
+    "original_abi_compatible": false,
+    "no_subagents_dispatched": true
+  },
+  "affected_caller_exports_refreshed": [
+    "005547d0",
+    "0073d410"
   ]
 }
