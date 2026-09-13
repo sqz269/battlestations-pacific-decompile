@@ -1,0 +1,334 @@
+{
+  "packet": "orch6_native_listener_renderer_x",
+  "base_commit": "68b53fcefa66153545dffa0d0a119728ed7f0d69",
+  "status": "reconstructed_complete_normal_bodies_canonical_provider_build_and_native_byte_fixture_tested",
+  "ghidra": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "mode": "strict read-only, verified tools/bsp.py ghidra CLI",
+    "prior_function_and_comments": "local/listener_renderer_00b0d7b0_proto.txt and _comments.txt; same files for 00b4ec90",
+    "annotation_owner": "primary integrator"
+  },
+  "routines": [
+    {
+      "address": "00b0d7b0",
+      "name": "update_native_listener_renderer_00b0d7b0",
+      "source": "src/native_listener_renderer.cpp",
+      "coverage": "complete normal 25-byte body 00B0D7B0..00B0D7C8",
+      "original_abi": "ECX=renderer, stack handle, RET4; EAX loads argument, ECX replaced with current renderer+30",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b4ec90",
+      "name": "invalidate_native_listener_roots_00b4ec90",
+      "source": "src/native_listener_renderer.cpp",
+      "coverage": "complete normal 43-byte body 00B4EC90..00B4ECBA",
+      "original_abi": "ECX=owner, no stack arguments, bare RET; ESI preserves original receiver and is restored",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b0d7c1",
+      "native": "00b4ec90",
+      "function": "00b0d7b0",
+      "operation": "After exact listener pointer store, call only for current nonnull +30 owner, same captured receiver"
+    },
+    {
+      "address": "00b4ecab",
+      "native": "00b6d890",
+      "function": "00b4ec90",
+      "operation": "Reload current +3C/+0C, ECX=head, PUSH0, callee RET4; full canonical provider supplies root/head mutation and child recursion"
+    }
+  ],
+  "reviewed_incoming_sites": [
+    {
+      "address": "004bca8d",
+      "native": "00b0d7b0",
+      "function": "004bca80",
+      "operation": "PUSH original ECX handle after actual E188DC store; current F8D39C receiver"
+    },
+    {
+      "address": "004c0905",
+      "native": "00b0d7b0",
+      "function": "004c0890",
+      "operation": "PUSH EAX from dynamic primary+18; same handle published to E188DC; current F8D39C receiver"
+    },
+    {
+      "address": "004c091e",
+      "native": "00b0d7b0",
+      "function": "004c0890",
+      "operation": "PUSH0 after zero publication to E188DC; current F8D39C receiver"
+    },
+    {
+      "address": "004e4b02",
+      "native": "00b0d7b0",
+      "function": "004e4a40",
+      "operation": "PUSH EAX from dynamic primary+18, same E188DC publication; containing function verified at 004E4A40"
+    },
+    {
+      "address": "00b0d187",
+      "native": "00b4ec90",
+      "function": "00b0d180",
+      "kind": "tail_jump",
+      "operation": "ECX replaced with current +30; nonnull path tail-jumps, no listener store"
+    }
+  ],
+  "native_order": [
+    "B0D7B4 writes actual +1C0 before B0D7BA reads current +30; null handle is not an early exit.",
+    "B4EC91 captures ECX in ESI. B4EC93 captures +3C in EAX before B4EC96 writes +250=1.",
+    "B4EC9D tests the captured EAX owner +0C. Nonempty iteration reloads ESI+3C and owner+0C at B4ECA3/A6.",
+    "B4ECB0/B3 reread current owner and head after provider before JNZ. Next iteration reads both again. Caller never removes, releases, guesses a next sibling or adds a loop bound."
+  ],
+  "field_provenance": [
+    {
+      "field": "renderer listener+1C0",
+      "existing_declaration": "controlled_unit.hpp kRenderResourcesListenerSlot",
+      "producer": "00B0D7B4 writes supplied stack handle, confirmed null and nonnull caller arguments"
+    },
+    {
+      "field": "renderer owner+30",
+      "meaning": "Opaque existing invalidation owner; no complete renderer type inferred",
+      "evidence": "B0D7BA and B0D180 dispatch B4EC90 on it; cleanup B0FAB8 reads it, releases actual +4 count/virtual00 then B0FAD1 clears it; ESI original receiver at B0F6E3, EBX zero at B0F6F7"
+    },
+    {
+      "field": "invalidation owner root+3C",
+      "producer": "B4F583 ESI=ECX; B4FD19 calls existing B724E0 scene constructor, B4FD20 supplies zero on failed allocation, B4FD2A stores EAX at original owner+3C",
+      "retained_span": "00B4FD0D[32] plus bounded containing-function listing"
+    },
+    {
+      "field": "invalidation byte+250",
+      "producer": "00B4EC96 writes one; retained as address-qualified byte, no inferred complete class layout"
+    },
+    {
+      "field": "root owner head+0C and scene+1C",
+      "existing_declarations": "NativeGuiSceneStorage first_root_0c/lighting_1c; RenderNodeRootList borrowed references",
+      "producer": "Existing B724E0 source/constructor initializes these actual fields. B721F0 and B72220 maintain the same root head."
+    }
+  ],
+  "provider_composition": {
+    "cpp": "NativeListenerRendererBindings::propagate_node_root_00b6d890",
+    "kind": "source_adapter",
+    "no_ghidra_function": true,
+    "meaning": "This new source adapter has no native function of its own. It directly calls the separately reconstructed native target below.",
+    "native_target": "00b6d890",
+    "existing_source": "src/native_node_destruction.cpp",
+    "contract": "Complete root propagation through existing NativeNodeDestructionRuntime and CameraTransform/RenderNodeRootList. Unlink current root when unparented, publish requested root, optional native scene attachment for nonnull root, recurse children with live next reload. All native body bytes and source read; no rewritten provider or list surgery.",
+    "required_mappings": "Side-effect-free resolution of actual +30 owner and actual +3C root owner into their existing borrowed views; no fallback, private list or copied publication.",
+    "fixture": "Both sides delegate to this canonical source operation. Test wrapper changes root-owner publication after the canonical call to stress caller reloads; native callee itself is not executed by the new fixture."
+  },
+  "annotation_plan": [
+    {
+      "address": "00b0d7b0",
+      "was": "FUN_00b0d7b0",
+      "is": "BSP_RenderResources_SetListenerHandle",
+      "evidence": "Complete 25-byte pointer store/current receiver/conditional call/RET4; descriptive hypothesis, root to apply"
+    },
+    {
+      "address": "00b4ec90",
+      "was": "FUN_00b4ec90",
+      "is": "BSP_RenderListener_InvalidateRootRegistration",
+      "evidence": "Complete 43-byte capture-before-flag store and current owner/head reload loop; descriptive hypothesis, root to apply"
+    }
+  ],
+  "verification": {
+    "build": "PASS scripts/build.ps1, strict MSVC Win32 Release",
+    "ctest": "PASS both existing CTests: reconstructed_math and native_math_differential, 2/2, 0 failures",
+    "verify_seeds": "PASS all 8 installed-binary spans; generated seed_reference.hpp present before configure",
+    "verify_report_calls": "PASS: 7 direct/tail call rows checked, 0 failed; local/listener_renderer_calls.log",
+    "fixture_command": "./local/run_listener_renderer_probe.ps1",
+    "fixture_source": "local/listener_renderer_probe.cpp",
+    "fixture_results": "local/listener_renderer_probe_result.json",
+    "fixture_manifest": "local/listener_renderer_probe_manifest.json",
+    "fixture_hash_count": 355,
+    "fixture_result": "PASS 3 full original-byte/source paired cases",
+    "fixture_cases": [
+      "Nonzero listener, null +30: exact publication without invalidation",
+      "Null listener, nonnull owner with empty root list: flag one, no node call",
+      "Nonempty roots: actual canonical unlink/child recursion; owner publication changes after calls cause order0,2,1; last call rebinds listener; all unrelated storage preserved"
+    ],
+    "fixture_owner_scope": "NativeGuiSceneStorage, RenderNodeRootList and NativeNodeStorage/NativeNodeBinding use existing host representation. Copied caller forwards the established head representation through an explicit ABI bridge; this is not native node pointer/layout ABI parity. Different native/source renderer and invalidation layouts are tested.",
+    "fixture_unused_contracts": "Type query and scene attachment throw if reached, with unavailable zero runtime tokens. Requested root is always null; neither dependency is invoked. No complete native constructor or renderer environment is claimed.",
+    "toolchain": "MSVC19.51.36244.0 x86, linker14.51.36244.0, WindowsSDK10.0.26100.0; /std:c++17 /EHsc /O2 /MD /showIncludes; /link /MANIFEST:EMBED /MACHINE:X86 /VERBOSE:LIB; extracted asInvoker manifest",
+    "abi_compatible": false,
+    "game_validated": false,
+    "artifact_hashes": [
+      {
+        "path": "local/listener_renderer_probe_manifest.json",
+        "bytes": 84813,
+        "sha256": "b000af5e16890604f36a501a39e38ffc387ae59b7904f310bb0a0ff5869d0868"
+      },
+      {
+        "path": "local/listener_renderer_probe.cpp",
+        "bytes": 10349,
+        "sha256": "7731e2b0f337773093c2c81d8cfe417554c71a3c07f1d81e7c07d2934c2491ef"
+      },
+      {
+        "path": "local/listener_renderer_probe.exe",
+        "bytes": 36352,
+        "sha256": "1a86be455973df4dfebb5caf0e29c7da98462cdc25b65eafdcc76d29d047c374"
+      },
+      {
+        "path": "local/listener_renderer_probe_result.json",
+        "bytes": 301,
+        "sha256": "231ba4eb052b784bd909da651aca532a734716a55a47ae408614a19ffb76820c"
+      },
+      {
+        "path": "local/listener_renderer_byte_evidence.json",
+        "bytes": 2121,
+        "sha256": "f1bfa5541fc8d40a40064fd9740fbed0c0b8e669abda472ae59adc1babd52d9a"
+      },
+      {
+        "path": "local/listener_renderer_build.log",
+        "bytes": 42758,
+        "sha256": "7ccbb17445e00888c2d08bddb96a2fb98fb55d04756a6c18ba90c65e22831477"
+      },
+      {
+        "path": "local/listener_renderer_calls.log",
+        "bytes": 70,
+        "sha256": "92bac4acf741d92f056cd8b9060101f39778ab746495901ecf78eac639329c21"
+      },
+      {
+        "path": "local/listener_renderer_seeds.json",
+        "bytes": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+      },
+      {
+        "path": "local/seed_reference.hpp",
+        "bytes": 2995,
+        "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+      },
+      {
+        "path": "local/listener_renderer_root_owner_producer_listing.txt",
+        "bytes": 24057,
+        "sha256": "4eaa2a0bafa71b13bcc86fb7d9be62ab6c7a7b9963aa2e762500531ceaab742d"
+      },
+      {
+        "path": "local/listener_renderer_renderer_owner_clear_listing.txt",
+        "bytes": 16332,
+        "sha256": "4c99c864a8cb053a070019a78f551afecf9d2e6a2b39336f7a87488b862ce6e3"
+      },
+      {
+        "path": "local/listener_renderer_on_move_listing.txt",
+        "bytes": 22555,
+        "sha256": "fc7751a1bc76315e28a2b9e954e71061eebae72ceabe6d0190816be56ebc7795"
+      },
+      {
+        "path": "local/listener_renderer_00b0d7b0_proto.txt",
+        "bytes": 79,
+        "sha256": "ef12686b0b1f48fb618322dc8c0d6eae524e862926ed1f0f03cd0cce60bdc0a6"
+      },
+      {
+        "path": "local/listener_renderer_00b0d7b0_comments.txt",
+        "bytes": 127,
+        "sha256": "db8cdf5daee65432957406d9bbd81972d88d862e1751a98968b027a8f76b7fc7"
+      },
+      {
+        "path": "local/listener_renderer_00b4ec90_proto.txt",
+        "bytes": 79,
+        "sha256": "733f3d159c533f775360f092035db2a166fe8b4ba2a820662faf75478b9fffca"
+      },
+      {
+        "path": "local/listener_renderer_00b4ec90_comments.txt",
+        "bytes": 127,
+        "sha256": "9818bf26966858882c6276449ffffc9e0dd64bf9e5fbfc3c3a452f91f8004a8a"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_listener_renderer.obj",
+        "bytes": 3235,
+        "sha256": "3cac04fe14630791a986b318f7f3aad711afc54b8499888c91f8dd54dc068ed5"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 55535902,
+        "sha256": "76af18a24a74f93a64ba37666bee4abe7c9c2c4857ab622a197d69f4a43d29e7"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 2037248,
+        "sha256": "044d8786962fb5bc66ee19e69a72ba08f12d9310b5c1af742681a429cd5dcb46"
+      },
+      {
+        "path": "build/win32/Release/bsp_native_math_tests.exe",
+        "bytes": 18432,
+        "sha256": "b3cd4c484b4e9e363668cc062e83a555ee408c18c15d644244e368777f0b9895"
+      }
+    ],
+    "compiled_source_hashes": [
+      {
+        "path": "include/bsp/native_listener_renderer.hpp",
+        "bytes": 2726,
+        "sha256": "9d591ec0a6ab64a6f68e07440fcc6356544600aab4026ce76d0fe3ee9bf2db9c"
+      },
+      {
+        "path": "src/native_listener_renderer.cpp",
+        "bytes": 1158,
+        "sha256": "cd44a9018cc231dfed790c2403e504c3f8da50b5cf9d3c3e0d41d5fdff0b4c09"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 103350,
+        "sha256": "b19606cc2fa67e1e755f0ebcfa608dc34460e0e0e2d383618e0e4286ea52a758"
+      }
+    ]
+  },
+  "native_evidence": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00b0d7b0",
+        "length": 25,
+        "hex": "8b4424048981c00100008b493085c97405e8ca140400c20400",
+        "sha256": "8f024f498c2c33bcb06fa0d49b2b4a7de76c138f2704c19935d21dcba9b862b3",
+        "ghidra_matches_disk": true
+      },
+      {
+        "address": "00b4ec90",
+        "length": 43,
+        "hex": "568bf18b463cc686500200000183780c0074168b4e3c8b490c6a00e8e0eb01008b563c837a0c0075ea5ec3",
+        "sha256": "8e81d2622014a808f93924c8deb88944bf0e99f9a7b42caafc39583f5fd877e5",
+        "ghidra_matches_disk": true
+      },
+      {
+        "address": "00b6d890",
+        "length": 164,
+        "hex": "538b5c2408568bf18b8ea40000003bcb750a837e30000f858300000085c9740c837e3000750656e86449000085db899ea400000074508b463085c0752e568bcbe81b49000083be700100000075388b8ea4000000578b3e6a0083c750e81f480000508b078bceffd05feb1b83be700100000075128b168b80700100008b52506a00508bceffd28b763485f674128d4900538bcee868ffffff8b763c85f675f15e5bc20400",
+        "sha256": "516179fbacd42b170c285388abc621ee25354af3d078620ac960fdee21c6aa05",
+        "ghidra_matches_disk": true
+      },
+      {
+        "address": "00b4fd0d",
+        "length": 32,
+        "hex": "8d542414528bcfc644243811e8c2270200eb0233c083cdfff64424100489463c",
+        "sha256": "7c5ee8783efb81e28d237219b20c486ea32e29e8fd1340631567fee23689fd3f",
+        "ghidra_matches_disk": true
+      }
+    ],
+    "relocations": [
+      {
+        "function": "00b0d7b0",
+        "offset": 18,
+        "kind": "rel32_call",
+        "original_target": "00b4ec90"
+      },
+      {
+        "function": "00b4ec90",
+        "offset": 28,
+        "kind": "rel32_call",
+        "original_target": "00b6d890"
+      }
+    ],
+    "fixture_boundary": "Copied B0 calls copied B4; copied B4 calls a bridge to the same canonical B6D890 provider used by source. No list surgery is supplied by the caller."
+  },
+  "limitations": [
+    "No renderer/process binding, extra scene/node owner, library/Lua port or reconstructed whole rendering engine.",
+    "Owner mappings and canonical providers must refer to the same live actual objects. Invalid root-owner bindings have no silent fallback.",
+    "Native exception/FH3/SEH, concurrent mutation, full ABI and gameplay parity remain unproved.",
+    "Canonical B6D890 source is reused as an externally owned dependency; its previous broader evidence is separate from this caller fixture."
+  ]
+}
