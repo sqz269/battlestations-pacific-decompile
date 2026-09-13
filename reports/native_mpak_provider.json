@@ -1,6 +1,6 @@
 {
   "packet": "orch2_native_mpak_provider_ay",
-  "status": "source_written_independently_reviewed_build_and_fixture_pending",
+  "status": "complete_actual_storage_strict_win32_and_independent_review_fixture_pending",
   "source": "src/native_mpak_provider.cpp",
   "header": "include/bsp/native_mpak_provider.hpp",
   "documentation": "docs/NATIVE_MPAK_PROVIDER.md",
@@ -18,7 +18,9 @@
       "original_abi": "ECX record24h; RET",
       "source": "src/native_mpak_provider.cpp",
       "export_assembly_sha256": "c5302776117dc032c8c2383273fb3c45a962f195b35792a36a6b643fb323e86f",
-      "scope": "complete owned body with explicit existing source and library contracts"
+      "scope": "complete owned body with explicit existing source and library contracts",
+      "ghidra_name": "BSP_MpakFileRecord_Destroy",
+      "previous_name": "FUN_00bb5430"
     },
     {
       "address": "00bb5630",
@@ -29,7 +31,9 @@
       "original_abi": "ECX cursorDWORD; stack output8h; EAX output; RET4",
       "source": "src/native_mpak_provider.cpp",
       "export_assembly_sha256": "19ecdd35b603a8b1fde9a7f71df87fe42dd156a3c0ccc30ace023c5d96cc8780",
-      "scope": "complete owned body with explicit existing source and library contracts"
+      "scope": "complete owned body with explicit existing source and library contracts",
+      "ghidra_name": "BSP_MpakCursor_ReadString",
+      "previous_name": "FUN_00bb5630"
     },
     {
       "address": "00bb6500",
@@ -40,7 +44,9 @@
       "original_abi": "ECX record14h; RET",
       "source": "src/native_mpak_provider.cpp",
       "export_assembly_sha256": "60c8002e079199229cbb8e3c74a10974bd6a02c77abb34100ec8c7906c382799",
-      "scope": "complete owned body with explicit existing source and library contracts"
+      "scope": "complete owned body with explicit existing source and library contracts",
+      "ghidra_name": "BSP_MpakDirectoryRecord_Destroy",
+      "previous_name": "FUN_00bb6500"
     },
     {
       "address": "00bb6870",
@@ -51,7 +57,9 @@
       "original_abi": "ECX record24h; stack name/first/second/flag; EAX record; RET10h",
       "source": "src/native_mpak_provider.cpp",
       "export_assembly_sha256": "afc274890534137b1fac01db0db8003aaa7f082256f3f15c175d7baa107d5612",
-      "scope": "complete owned body with explicit existing source and library contracts"
+      "scope": "complete owned body with explicit existing source and library contracts",
+      "ghidra_name": "BSP_MpakFileRecord_Construct",
+      "previous_name": "FUN_00bb6870"
     },
     {
       "address": "00bb7c50",
@@ -62,7 +70,9 @@
       "original_abi": "ECX provider44h; RET",
       "source": "src/native_mpak_provider.cpp",
       "export_assembly_sha256": "22d350fb19d98b630cd82893e1a58de24f3e713731602ca4bbe9e097f540224b",
-      "scope": "complete owned body with explicit existing source and library contracts"
+      "scope": "complete owned body with explicit existing source and library contracts",
+      "ghidra_name": "BSP_MpakProvider_LoadDirectory",
+      "previous_name": "FUN_00bb7c50"
     },
     {
       "address": "00bb7920",
@@ -73,7 +83,9 @@
       "original_abi": "ECX provider44h; RET",
       "source": "src/native_mpak_provider.cpp",
       "export_assembly_sha256": "feedcd4b15b364f0ce15c9bb4c6c9c6aeb4eb34d925cfa5849edce2c5eaf3aed",
-      "scope": "complete owned body with explicit existing source and library contracts"
+      "scope": "complete owned body with explicit existing source and library contracts",
+      "ghidra_name": "BSP_MpakProvider_Destroy",
+      "previous_name": "FUN_00bb7920"
     },
     {
       "address": "00bb7b80",
@@ -84,7 +96,9 @@
       "original_abi": "ECX provider44h; stack flags; EAX captured owner; RET4",
       "source": "src/native_mpak_provider.cpp",
       "export_assembly_sha256": "972ddabc7a3eaead33ba7d008691885d60d3a49f6af9876ddb5ca64c3834c29b",
-      "scope": "complete owned body with explicit existing source and library contracts"
+      "scope": "complete owned body with explicit existing source and library contracts",
+      "ghidra_name": "CG_scalar_deleting_dtor_00bb7b80",
+      "previous_name": "CG_scalar_deleting_dtor_00bb7b80"
     },
     {
       "address": "00bb8240",
@@ -95,7 +109,9 @@
       "original_abi": "ECX provider44h; stack original8h system name; EAX owner; RET4",
       "source": "src/native_mpak_provider.cpp",
       "export_assembly_sha256": "738f551d1fb34b466657823fd37e031c06709f67c2b79d0cb681f32460472493",
-      "scope": "complete owned body with explicit existing source and library contracts"
+      "scope": "complete owned body with explicit existing source and library contracts",
+      "ghidra_name": "BSP_MpakProvider_Construct",
+      "previous_name": "FUN_00bb8240"
     },
     {
       "address": "00bb82f0",
@@ -106,7 +122,9 @@
       "original_abi": "ECX actual8h name; RET; incoming ESI overwritten",
       "source": "src/native_mpak_provider.cpp",
       "export_assembly_sha256": "b0a4a00ab7a0e1267426ad024cea18ce70ceb09567f4700596f90caf383ba974",
-      "scope": "complete owned body with explicit existing source and library contracts"
+      "scope": "complete owned body with explicit existing source and library contracts",
+      "ghidra_name": "BSP_MpakProvider_ReplaceCached",
+      "previous_name": "FUN_00bb82f0"
     }
   ],
   "complete_function_count": 9,
@@ -620,9 +638,26 @@
     "result": "No remaining concrete discrepancy after overlap and byte-load wording corrections."
   },
   "validation": {
-    "strict_win32": "pending",
-    "ctest": "pending",
-    "native_source_fixture": "pending"
+    "strict_win32": {
+      "commit": "c4ec22e5def2f10118ee7e42d2bfdd1d03899e55",
+      "log": "J:\\PROG\\battlestations-pacific-decompile-orch2-20260910\\local\\native-ay-integrated-build01.log",
+      "sha256": "a603f39eb26e2c3e1b2553de26de0748e2f1c190894166231a5aa1362ae09ab8",
+      "result": "passed"
+    },
+    "ctest": {
+      "result": "passed",
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential"
+      ],
+      "count": 2
+    },
+    "native_source_fixture": "pending",
+    "call_rows": {
+      "direct_checked": 62,
+      "failed": 0,
+      "indirect_manually_reviewed": 7
+    }
   },
   "limitations": [
     "Original STL implementations remain explicit contracts, not reconstructed source.",
