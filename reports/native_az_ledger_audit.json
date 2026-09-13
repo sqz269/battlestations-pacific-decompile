@@ -1,6 +1,6 @@
 {
   "packet": "orch2_native_az_ledger_audit",
-  "status": "read_only_structural_audit_passed_two_metadata_corrections_reported",
+  "status": "read_only_structural_audit_passed_metadata_findings_resolved",
   "role": "Independent integrated source, report, name, range, count and registration audit; no source or Ghidra ownership.",
   "new_native_bodies": 0,
   "new_native_bytes": 0,
@@ -260,7 +260,7 @@
     {
       "id": "AZ-L01",
       "severity": "metadata",
-      "status": "reported_to_primary_for_correction",
+      "status": "resolved_by_primary_verified_selected_record_reread",
       "addresses": [
         "00bbbdc0",
         "00bbbdd0",
@@ -279,12 +279,13 @@
       ],
       "observed": "Ten actual raw method reconstruction rows retain Independent native fixture pending; their name evidence retains native/source fixture is separate pending work.",
       "correction": "Refer to the completed independent 1305-check fixture and preserve shared stock-zlib/support, original FH3/stack-spill and gameplay limits. Historical prior projections remain separately identified.",
-      "current_authoritative_evidence": "reports/native_raw_inflate_stream.json; reports/native_raw_inflate_validation.json"
+      "current_authoritative_evidence": "reports/native_raw_inflate_stream.json; reports/native_raw_inflate_validation.json",
+      "resolution": "Current actual records reference completed bounded fixture results; raw name evidence explicitly supersedes earlier pending wording. Prior evidence is preserved in the initial audit snapshot."
     },
     {
       "id": "AZ-L02",
       "severity": "metadata",
-      "status": "reported_to_primary_for_correction",
+      "status": "resolved_by_primary_verified_selected_record_reread",
       "addresses": [
         "00bb5080"
       ],
@@ -293,7 +294,8 @@
       ],
       "observed": "Entry reconstruction evidence says compressed conversion remains unvalidated without qualifying this as the original entry packet scope.",
       "correction": "Retain the sealed initial 218-check entry/constructor evidence and add the later 1468-check, three-entry-pair compressed caller composition scope. Shared actual constructor/raw/conversion support is not independent full original-path proof.",
-      "current_authoritative_evidence": "reports/native_raw_inflate_validation.json"
+      "current_authoritative_evidence": "reports/native_raw_inflate_validation.json",
+      "resolution": "Current actual records reference completed bounded fixture results; raw name evidence explicitly supersedes earlier pending wording. Prior evidence is preserved in the initial audit snapshot."
     }
   ],
   "audited_bodies": [
@@ -306,8 +308,9 @@
       "source": "src/native_mpak_entry.cpp",
       "source_function": "materialize_native_mpak_entry_00bb5080",
       "header": "include/bsp/native_mpak_entry.hpp",
-      "ledger_status": "complete_actual_storage_strict_win32_build_raw_path_original_source_fixture_checked",
-      "ledger_coverage": "complete"
+      "ledger_coverage": "complete",
+      "ledger_status_at_initial_inspection": "complete_actual_storage_strict_win32_build_raw_path_original_source_fixture_checked",
+      "ledger_status_at_resolution": "actual_storage_win32_native_source_fixture_passed"
     },
     {
       "address": "00bbc1d0",
@@ -318,8 +321,8 @@
       "source": "src/native_raw_inflate_owner.cpp",
       "source_function": "construct_native_raw_inflate_owner_00bbc1d0",
       "header": "include/bsp/native_raw_inflate_owner.hpp",
-      "ledger_status": "complete_actual_storage_strict_win32_build_constructor_original_source_fixture_checked",
-      "ledger_coverage": "complete"
+      "ledger_coverage": "complete",
+      "ledger_status_at_initial_inspection": "complete_actual_storage_strict_win32_build_constructor_original_source_fixture_checked"
     },
     {
       "address": "00bb4a60",
@@ -330,8 +333,8 @@
       "source": "src/native_mpak_open.cpp",
       "source_function": "find_native_mpak_file_index_00bb4a60",
       "header": "include/bsp/native_mpak_open.hpp",
-      "ledger_status": "complete_actual_storage_strict_win32_and_live_call_checked",
-      "ledger_coverage": "complete"
+      "ledger_coverage": "complete",
+      "ledger_status_at_initial_inspection": "complete_actual_storage_strict_win32_and_live_call_checked"
     },
     {
       "address": "00bb4b20",
@@ -342,8 +345,8 @@
       "source": "src/native_mpak_open.cpp",
       "source_function": "contains_native_mpak_file_00bb4b20",
       "header": "include/bsp/native_mpak_open.hpp",
-      "ledger_status": "complete_actual_storage_strict_win32_and_live_call_checked",
-      "ledger_coverage": "complete"
+      "ledger_coverage": "complete",
+      "ledger_status_at_initial_inspection": "complete_actual_storage_strict_win32_and_live_call_checked"
     },
     {
       "address": "00bb5bb0",
@@ -354,8 +357,8 @@
       "source": "src/native_mpak_open.cpp",
       "source_function": "open_native_mpak_file_00bb5bb0",
       "header": "include/bsp/native_mpak_open.hpp",
-      "ledger_status": "complete_actual_storage_strict_win32_and_live_call_checked",
-      "ledger_coverage": "complete"
+      "ledger_coverage": "complete",
+      "ledger_status_at_initial_inspection": "complete_actual_storage_strict_win32_and_live_call_checked"
     },
     {
       "address": "00bb5f40",
@@ -366,8 +369,8 @@
       "source": "src/native_mpak_enumeration.cpp",
       "source_function": "append_native_mpak_names_00bb5f40",
       "header": "include/bsp/native_mpak_enumeration.hpp",
-      "ledger_status": "actual_storage_reconstructed_build_native_instruction_fixture_tested_external_library_contracts",
-      "ledger_coverage": "complete"
+      "ledger_coverage": "complete",
+      "ledger_status_at_initial_inspection": "actual_storage_reconstructed_build_native_instruction_fixture_tested_external_library_contracts"
     },
     {
       "address": "00bb68f0",
@@ -378,8 +381,8 @@
       "source": "src/native_mpak_enumeration.cpp",
       "source_function": "select_native_mpak_member_directory_00bb68f0",
       "header": "include/bsp/native_mpak_enumeration.hpp",
-      "ledger_status": "actual_storage_reconstructed_build_native_instruction_fixture_tested_external_library_contracts",
-      "ledger_coverage": "complete"
+      "ledger_coverage": "complete",
+      "ledger_status_at_initial_inspection": "actual_storage_reconstructed_build_native_instruction_fixture_tested_external_library_contracts"
     },
     {
       "address": "00bb40c0",
@@ -390,8 +393,8 @@
       "source": "src/native_mpak_enumeration.cpp",
       "source_function": "reject_native_mpak_probe_00bb40c0",
       "header": "include/bsp/native_mpak_enumeration.hpp",
-      "ledger_status": "actual_storage_reconstructed_build_native_instruction_fixture_tested_external_library_contracts",
-      "ledger_coverage": "complete"
+      "ledger_coverage": "complete",
+      "ledger_status_at_initial_inspection": "actual_storage_reconstructed_build_native_instruction_fixture_tested_external_library_contracts"
     },
     {
       "address": "00bb79e0",
@@ -402,8 +405,8 @@
       "source": "src/native_mpak_enumeration.cpp",
       "source_function": "reject_native_mpak_operation_00bb79e0",
       "header": "include/bsp/native_mpak_enumeration.hpp",
-      "ledger_status": "actual_storage_reconstructed_build_native_instruction_fixture_tested_external_library_contracts",
-      "ledger_coverage": "complete"
+      "ledger_coverage": "complete",
+      "ledger_status_at_initial_inspection": "actual_storage_reconstructed_build_native_instruction_fixture_tested_external_library_contracts"
     },
     {
       "address": "00bb79f0",
@@ -414,8 +417,8 @@
       "source": "src/native_mpak_enumeration.cpp",
       "source_function": "noop_native_mpak_default_00bb79f0",
       "header": "include/bsp/native_mpak_enumeration.hpp",
-      "ledger_status": "actual_storage_reconstructed_build_native_instruction_fixture_tested_external_library_contracts",
-      "ledger_coverage": "complete"
+      "ledger_coverage": "complete",
+      "ledger_status_at_initial_inspection": "actual_storage_reconstructed_build_native_instruction_fixture_tested_external_library_contracts"
     },
     {
       "address": "00bb7a00",
@@ -426,8 +429,8 @@
       "source": "src/native_mpak_enumeration.cpp",
       "source_function": "clear_native_mpak_result_00bb7a00",
       "header": "include/bsp/native_mpak_enumeration.hpp",
-      "ledger_status": "actual_storage_reconstructed_build_native_instruction_fixture_tested_external_library_contracts",
-      "ledger_coverage": "complete"
+      "ledger_coverage": "complete",
+      "ledger_status_at_initial_inspection": "actual_storage_reconstructed_build_native_instruction_fixture_tested_external_library_contracts"
     },
     {
       "address": "00bee340",
@@ -438,8 +441,8 @@
       "source": "src/native_mpak_enumeration.cpp",
       "source_function": "matches_native_provider_enumeration_00bee340",
       "header": "include/bsp/native_mpak_enumeration.hpp",
-      "ledger_status": "actual_storage_reconstructed_build_native_instruction_fixture_tested_external_library_contracts",
-      "ledger_coverage": "complete"
+      "ledger_coverage": "complete",
+      "ledger_status_at_initial_inspection": "actual_storage_reconstructed_build_native_instruction_fixture_tested_external_library_contracts"
     },
     {
       "address": "00bbbdc0",
@@ -450,8 +453,9 @@
       "source": "src/native_raw_inflate_stream.cpp",
       "source_function": "open_native_raw_inflate_stream_00bbbdc0",
       "header": "include/bsp/native_raw_inflate_stream.hpp",
-      "ledger_status": "actual_storage_win32_build_passed",
-      "ledger_coverage": "complete"
+      "ledger_coverage": "complete",
+      "ledger_status_at_initial_inspection": "actual_storage_win32_build_passed",
+      "ledger_status_at_resolution": "actual_storage_win32_native_source_fixture_passed"
     },
     {
       "address": "00bbbdd0",
@@ -462,8 +466,9 @@
       "source": "src/native_raw_inflate_stream.cpp",
       "source_function": "length_native_raw_inflate_stream_00bbbdd0",
       "header": "include/bsp/native_raw_inflate_stream.hpp",
-      "ledger_status": "actual_storage_win32_build_passed",
-      "ledger_coverage": "complete"
+      "ledger_coverage": "complete",
+      "ledger_status_at_initial_inspection": "actual_storage_win32_build_passed",
+      "ledger_status_at_resolution": "actual_storage_win32_native_source_fixture_passed"
     },
     {
       "address": "00bbbe10",
@@ -474,8 +479,9 @@
       "source": "src/native_raw_inflate_stream.cpp",
       "source_function": "reset_native_raw_inflate_stream_00bbbe10",
       "header": "include/bsp/native_raw_inflate_stream.hpp",
-      "ledger_status": "actual_storage_win32_build_passed",
-      "ledger_coverage": "complete"
+      "ledger_coverage": "complete",
+      "ledger_status_at_initial_inspection": "actual_storage_win32_build_passed",
+      "ledger_status_at_resolution": "actual_storage_win32_native_source_fixture_passed"
     },
     {
       "address": "00bbbe50",
@@ -486,8 +492,9 @@
       "source": "src/native_raw_inflate_stream.cpp",
       "source_function": "position_native_raw_inflate_stream_00bbbe50",
       "header": "include/bsp/native_raw_inflate_stream.hpp",
-      "ledger_status": "actual_storage_win32_build_passed",
-      "ledger_coverage": "complete"
+      "ledger_coverage": "complete",
+      "ledger_status_at_initial_inspection": "actual_storage_win32_build_passed",
+      "ledger_status_at_resolution": "actual_storage_win32_native_source_fixture_passed"
     },
     {
       "address": "00bbbf00",
@@ -498,8 +505,9 @@
       "source": "src/native_raw_inflate_stream.cpp",
       "source_function": "refill_native_raw_inflate_stream_00bbbf00",
       "header": "include/bsp/native_raw_inflate_stream.hpp",
-      "ledger_status": "actual_storage_win32_build_passed",
-      "ledger_coverage": "complete"
+      "ledger_coverage": "complete",
+      "ledger_status_at_initial_inspection": "actual_storage_win32_build_passed",
+      "ledger_status_at_resolution": "actual_storage_win32_native_source_fixture_passed"
     },
     {
       "address": "00bbc060",
@@ -510,8 +518,9 @@
       "source": "src/native_raw_inflate_stream.cpp",
       "source_function": "seek_native_raw_inflate_stream_00bbc060",
       "header": "include/bsp/native_raw_inflate_stream.hpp",
-      "ledger_status": "actual_storage_win32_build_passed",
-      "ledger_coverage": "complete"
+      "ledger_coverage": "complete",
+      "ledger_status_at_initial_inspection": "actual_storage_win32_build_passed",
+      "ledger_status_at_resolution": "actual_storage_win32_native_source_fixture_passed"
     },
     {
       "address": "00bbc140",
@@ -522,8 +531,9 @@
       "source": "src/native_raw_inflate_stream.cpp",
       "source_function": "read_native_raw_inflate_stream_00bbc140",
       "header": "include/bsp/native_raw_inflate_stream.hpp",
-      "ledger_status": "actual_storage_win32_build_passed",
-      "ledger_coverage": "complete"
+      "ledger_coverage": "complete",
+      "ledger_status_at_initial_inspection": "actual_storage_win32_build_passed",
+      "ledger_status_at_resolution": "actual_storage_win32_native_source_fixture_passed"
     },
     {
       "address": "00bbc1c0",
@@ -534,8 +544,9 @@
       "source": "src/native_raw_inflate_stream.cpp",
       "source_function": "write_native_raw_inflate_stream_00bbc1c0",
       "header": "include/bsp/native_raw_inflate_stream.hpp",
-      "ledger_status": "actual_storage_win32_build_passed",
-      "ledger_coverage": "complete"
+      "ledger_coverage": "complete",
+      "ledger_status_at_initial_inspection": "actual_storage_win32_build_passed",
+      "ledger_status_at_resolution": "actual_storage_win32_native_source_fixture_passed"
     },
     {
       "address": "00bbc320",
@@ -546,8 +557,9 @@
       "source": "src/native_raw_inflate_stream.cpp",
       "source_function": "destroy_native_raw_inflate_stream_00bbc320",
       "header": "include/bsp/native_raw_inflate_stream.hpp",
-      "ledger_status": "actual_storage_win32_build_passed",
-      "ledger_coverage": "complete"
+      "ledger_coverage": "complete",
+      "ledger_status_at_initial_inspection": "actual_storage_win32_build_passed",
+      "ledger_status_at_resolution": "actual_storage_win32_native_source_fixture_passed"
     },
     {
       "address": "00bbc3e0",
@@ -558,8 +570,9 @@
       "source": "src/native_raw_inflate_stream.cpp",
       "source_function": "delete_native_raw_inflate_stream_00bbc3e0",
       "header": "include/bsp/native_raw_inflate_stream.hpp",
-      "ledger_status": "actual_storage_win32_build_passed",
-      "ledger_coverage": "complete"
+      "ledger_coverage": "complete",
+      "ledger_status_at_initial_inspection": "actual_storage_win32_build_passed",
+      "ledger_status_at_resolution": "actual_storage_win32_native_source_fixture_passed"
     },
     {
       "address": "00bdd850",
@@ -570,8 +583,8 @@
       "source": "src/native_vfs_device_route.cpp",
       "source_function": "select_native_vfs_device_00bdd850",
       "header": "include/bsp/native_vfs_device_route.hpp",
-      "ledger_status": "complete_actual_storage_strict_win32_and_live_call_checked",
-      "ledger_coverage": "complete"
+      "ledger_coverage": "complete",
+      "ledger_status_at_initial_inspection": "complete_actual_storage_strict_win32_and_live_call_checked"
     },
     {
       "address": "00bdbc70",
@@ -582,8 +595,8 @@
       "source": "src/native_vfs_device_route.cpp",
       "source_function": "read_native_vfs_device_provider_00bdbc70",
       "header": "include/bsp/native_vfs_device_route.hpp",
-      "ledger_status": "complete_actual_storage_strict_win32_and_live_call_checked",
-      "ledger_coverage": "complete"
+      "ledger_coverage": "complete",
+      "ledger_status_at_initial_inspection": "complete_actual_storage_strict_win32_and_live_call_checked"
     },
     {
       "address": "00bdb680",
@@ -594,8 +607,8 @@
       "source": "src/native_vfs_device_route.cpp",
       "source_function": "destroy_native_vfs_device_visitor_00bdb680",
       "header": "include/bsp/native_vfs_device_route.hpp",
-      "ledger_status": "complete_actual_storage_strict_win32_and_live_call_checked",
-      "ledger_coverage": "complete"
+      "ledger_coverage": "complete",
+      "ledger_status_at_initial_inspection": "complete_actual_storage_strict_win32_and_live_call_checked"
     },
     {
       "address": "00bdb670",
@@ -606,8 +619,8 @@
       "source": "src/native_vfs_device_route.cpp",
       "source_function": "read_native_vfs_device_result_00bdb670",
       "header": "include/bsp/native_vfs_device_route.hpp",
-      "ledger_status": "complete_actual_storage_strict_win32_and_live_call_checked",
-      "ledger_coverage": "complete"
+      "ledger_coverage": "complete",
+      "ledger_status_at_initial_inspection": "complete_actual_storage_strict_win32_and_live_call_checked"
     },
     {
       "address": "00bdbe00",
@@ -618,8 +631,8 @@
       "source": "src/native_vfs_device_route.cpp",
       "source_function": "delete_native_vfs_device_visitor_00bdbe00",
       "header": "include/bsp/native_vfs_device_route.hpp",
-      "ledger_status": "complete_actual_storage_strict_win32_and_live_call_checked",
-      "ledger_coverage": "complete"
+      "ledger_coverage": "complete",
+      "ledger_status_at_initial_inspection": "complete_actual_storage_strict_win32_and_live_call_checked"
     },
     {
       "address": "00bf0fb0",
@@ -630,8 +643,8 @@
       "source": "src/native_vfs_device_route.cpp",
       "source_function": "resolve_native_provider_logical_name_00bf0fb0",
       "header": "include/bsp/native_vfs_device_route.hpp",
-      "ledger_status": "complete_actual_storage_strict_win32_and_live_call_checked",
-      "ledger_coverage": "complete"
+      "ledger_coverage": "complete",
+      "ledger_status_at_initial_inspection": "complete_actual_storage_strict_win32_and_live_call_checked"
     },
     {
       "address": "00bef580",
@@ -642,8 +655,8 @@
       "source": "src/native_mpak_runtime.cpp",
       "source_function": "position_native_memory_stream_00bef580",
       "header": "include/bsp/native_mpak_runtime.hpp",
-      "ledger_status": "actual_storage_reconstructed_strict_win32_original_instruction_fixture_tested",
-      "ledger_coverage": "complete"
+      "ledger_coverage": "complete",
+      "ledger_status_at_initial_inspection": "actual_storage_reconstructed_strict_win32_original_instruction_fixture_tested"
     },
     {
       "address": "00bf4f40",
@@ -654,8 +667,8 @@
       "source": "src/native_mpak_runtime.cpp",
       "source_function": "position_native_physical_stream_00bf4f40",
       "header": "include/bsp/native_mpak_runtime.hpp",
-      "ledger_status": "actual_storage_reconstructed_strict_win32_original_instruction_fixture_tested",
-      "ledger_coverage": "complete"
+      "ledger_coverage": "complete",
+      "ledger_status_at_initial_inspection": "actual_storage_reconstructed_strict_win32_original_instruction_fixture_tested"
     }
   ],
   "boundaries": [
@@ -664,5 +677,14 @@
     "Live proto queries verify current saved body extents and names; installed PE hashes verify original body bytes. Prior live-byte equality evidence remains in component reports.",
     "No Ghidra mutations, original installation changes, source edits, duplicate library implementations or successful fallback bindings were introduced.",
     "Generated fixture success, strict build success, original ABI/FH3 compatibility, installed archive execution and gameplay validation remain distinct claims."
-  ]
+  ],
+  "metadata_resolution": {
+    "captured_at_utc": "2026-09-13T06:11:38.919720+00:00",
+    "primary_head": "529025f3fd6bd28f55c7ac69d5a5c4826b9b62d0",
+    "scope": "Selected 11 actual reconstruction records and ten raw name corrections reread only; original source/header/registration hashes unchanged.",
+    "selected_record_evidence": "local/az_ledger_audit/resolved-selected-records.json",
+    "selected_record_evidence_sha256": "3e08fe75e234f783ed74dd6f91383978af2eacce90e6d1f3bb61433e1911843b",
+    "native_body_audit_or_fixtures_repeated": false,
+    "unresolved_findings": 0
+  }
 }

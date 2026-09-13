@@ -3,7 +3,8 @@
 The read-only audit found all **30 actual-storage bodies / 3,792 bytes** present
 and consistently registered. No source, native range, name or body-count
 correction is required. Two stale validation descriptions in the selected
-ledger records were reported to the primary integrator for correction.
+ledger records were corrected by the primary integrator and independently
+checked with a selected-record reread. No audit finding remains unresolved.
 
 The inspected primary checkout was
 `J:/PROG/battlestations-pacific-decompile-orch2-20260910`, HEAD
@@ -49,19 +50,28 @@ selected tag record; the integration report preserves its removed
 `STL_inst_00bb4140`; BB4F40 and 5EFBA0 remain explicit original library/search
 contracts without newly reconstructed library bodies.
 
-The two metadata findings concern completed validation:
+The two inspection-time metadata findings concerned completed validation:
 
-- **AZ-L01:** all ten raw-method reconstruction rows still say an independent
-  fixture is pending, and their name evidence repeats that status. The current
+- **AZ-L01:** all ten raw-method reconstruction rows still said an independent
+  fixture was pending, and their name evidence repeated that status. The current
   raw report and independent validation report already record the completed
   1,305-check fixture. The correction should reference that result while
   preserving shared stock-zlib/support and native FH3/stack-spill/game limits.
-- **AZ-L02:** BB5080's reconstruction evidence says compressed conversion
-  remains unvalidated without restricting that statement to the initial
+- **AZ-L02:** BB5080's reconstruction evidence said compressed conversion
+  remained unvalidated without restricting that statement to the initial
   entry packet. The later fixture compares three compressed entry caller
   pairs with 1,468 checks, using shared actual constructor, raw methods and
   conversion support. That is bounded caller composition evidence. The sealed
   initial 218-check fixture remains unchanged.
+
+The follow-up reread verifies all eleven actual reconstruction records now use
+`actual_storage_win32_native_source_fixture_passed`. The ten raw name records
+explicitly supersede their earlier pending wording with the bounded 1,305-check
+result. BB5080 now identifies the initial 218 checks and later 1,468 checks,
+three compressed caller pairs and 450,369 decoded bytes, with shared-support
+limits preserved. Source, header and registration hashes are unchanged. The
+report retains the original inspection snapshot and separately pins the
+resolution evidence; no body audit or fixture was repeated.
 
 The audit adds no native bodies, source changes or tests. It does not rerun the
 1,305/1,468-check fixtures, assert original ABI/FH3 compatibility, or establish
