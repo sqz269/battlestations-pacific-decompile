@@ -10690,6 +10690,46 @@
       "new_native_bodies": 1,
       "existing_body_extensions": 0,
       "boundary": "Actual storage and bounded module validation; full service/camera, native ABI and gameplay remain open; reports/native_render_service_construction_bc_validation.json"
+    },
+    {
+      "id": "orch3_native_node_raw_construction_bd",
+      "packet": "orch3_native_node_raw_construction_bd",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "reconstructed_build_tested_bounded_fixture_coverage",
+      "function_addresses": [
+        "00b6f5a0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_node_construction.hpp",
+        "src/native_node_construction.cpp",
+        "docs/NATIVE_NODE_RAW_CONSTRUCTION.md",
+        "reports/native_node_raw_construction.json"
+      ],
+      "evidence": "reports/native_node_raw_construction.json",
+      "new_native_bodies": 0,
+      "existing_body_extensions": 1,
+      "boundary": "Actual storage and bounded module validation; full service/camera, native ABI and gameplay remain open; reports/native_node_lifetime_bd_validation.json"
+    },
+    {
+      "id": "orch3_native_node_raw_destruction_bd",
+      "packet": "orch3_native_node_raw_destruction_bd",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "reconstructed_build_tested_bounded_fixture_coverage",
+      "function_addresses": [
+        "00b6f440"
+      ],
+      "code_ownership": [
+        "include/bsp/native_node_destruction.hpp",
+        "src/native_node_destruction.cpp",
+        "docs/NATIVE_NODE_RAW_DESTRUCTION.md",
+        "reports/native_node_raw_destruction.json"
+      ],
+      "evidence": "reports/native_node_raw_destruction.json",
+      "new_native_bodies": 0,
+      "existing_body_extensions": 1,
+      "boundary": "Actual storage and bounded module validation; full service/camera, native ABI and gameplay remain open; reports/native_node_lifetime_bd_validation.json"
     }
   ],
   "snapshot_after_analysis": {

@@ -34,8 +34,10 @@ inline constexpr std::uint32_t kSceneCreateRecordParentNameData = 0x58;
 // The only entity field 0046D930 writes (0046DB9B, 0046DBE0).
 inline constexpr std::uint32_t kSceneCreateEntityPropertyBagRef = 0xc0;
 
-// The 12-byte intrusively counted property-bag holder built by 00922E20:
-// {vtable +0, refs +4, bag +8}. The bag is always a private clone.
+// The 12-byte kind-1 property-bag holder built by 00922E20:
+// {vtable +0, kind +4, bag +8}. This constructor makes a private bag clone.
+// 00922DE0 dispatches on the kind; 00774DC0 constructs kind 2. +4 is not a
+// reference count. The historical InitialRefs constant below names kind 1.
 inline constexpr std::uint32_t kScenePropertyBagRefSize = 0x0c;
 inline constexpr std::uint32_t kScenePropertyBagRefVtable = 0x00d03d94;
 inline constexpr std::uint32_t kScenePropertyBagRefInitialRefs = 1;

@@ -1,0 +1,19 @@
+{
+  "packet": "orch6_mission_entity_lock_route_x",
+  "source": "src/native_singleton_destruction.cpp",
+  "native_profile": "00CE7548 single slot0=004C4890; adjacent CE754C belongs to distinct004BF9A0 owner",
+  "change": "Finite deletion map passes popped actual owner and flags to complete4C4890 using actual process F878FC cell, even when publication differs. No private context or new cleanup owner.",
+  "verification": {
+    "build": "Combined Win32 and2existingCTests passed",
+    "compiled_commit": "d026dc1f5c9a4e120d8d38ba60f1045d7188f583",
+    "fixture": "One actual process-cell/raw-manager composition: getter, same-owner fast reuse, one raw registration, replacement publication before drain; popped owner freed, same cell cleared, replacement untouched, manager empty.",
+    "result": "PASS: actual process F878FC owner, raw manager registration and fast reuse, CE7548 finite-map deletion, replacement publication cleared, replacement untouched and manager empty",
+    "manifest": "local\\mission_lock_binding_proof_x\\manifest.json",
+    "manifest_sha256": "bd49cea92bf8957787e2d887ce3544015a9608daf49fb5ee272b79f086d1a662",
+    "retained_artifacts": 233
+  },
+  "limits": [
+    "This is source composition, not original-byte/ABI/native EH/gameplay proof.",
+    "Owners constructed against another publication cell cannot use this process profile binding."
+  ]
+}

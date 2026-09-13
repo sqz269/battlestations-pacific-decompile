@@ -293,3 +293,12 @@ length, and the record is `5Ch` bytes (vftable `00CE5640`, bag `+4h`, name `+8h`
 Packet `cc_cruise_speed_setting` (main 677c93cd): the holder at `entity+0C0h` carries a kind tag
 at `+4h`, not a reference count. `00922E20` stores 1 and `00774DC0` stores 2, and nothing
 increments or decrements the field.
+
+## Header correction from docs/NATIVE_UNIT_SCENE_INITIALIZATION.md
+
+The header now describes the same kind discriminator. The complete 00922DE0
+copy routine dispatches on the copied kind, clones the bag only for kind 1,
+and handles kind 3 separately; 00922E20 and 00774DC0 construct kinds 1 and 2.
+The historical `kScenePropertyBagRefInitialRefs` identifier remains for source
+compatibility and denotes kind 1. This corrects documentation without changing
+the stored value or introducing reference-count behavior.

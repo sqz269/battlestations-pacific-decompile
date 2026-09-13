@@ -2,6 +2,7 @@
 #include "bsp/native_checked_string_storage.hpp"
 #include "bsp/native_input_settings_vector_storage.hpp"
 #include "bsp/native_input_settings_tree_cleanup.hpp"
+#include "bsp/native_input_settings_tree_insertion.hpp"
 #include "bsp/native_input_configuration_modifiers.hpp"
 #include "bsp/native_input_deadline_map_lookup_adapter.hpp"
 #include <cstdlib>
@@ -143,7 +144,7 @@ void codes(Frame& f, Object table, Object value, void* header,
 }
 
 void parse_tables(void* settings, NativeLuaStateStorage& lua, NativeInputSettingsTableServices& s) {
-    Frame f(s.scripts.strings); auto& c = s.containers; auto& trees = s.trees;
+    Frame f(s.scripts.strings); auto& trees = s.trees;
     void* tree = at(settings,8);
     destroy_native_input_device_subtree_006a7540(tree,pointer(read(pointer(read(tree,4)),4)),s.scripts.strings);
     void* head = read<void*>(tree,4); write(head,4,address(head)); write(tree,8,0u);
@@ -179,7 +180,7 @@ void parse_tables(void* settings, NativeLuaStateStorage& lua, NativeInputSetting
         for (Word i = 1; f.present(Section,i); ++i) {
             f.index(Number,Section,i); f.index(Scratch,Number,1);
             f.make(SensitivityName,native_lua_string_00b662b0(f.obj(Scratch))); f.close(Scratch);
-            void* sensitivity = c.call_0055a9a0(at(device,0x18),f.str(SensitivityName));
+            void* sensitivity = index_native_input_sensitivity_tree_0055a9a0(at(device,0x18),f.str(SensitivityName),s.sensitivity_default_stack_preimage,s.scripts.strings);
             append_checked_native_string_storage(at(device,0x40),f.str(SensitivityName),s.scripts.strings);
             f.index(Element,Number,2); write(sensitivity,0,static_cast<Word>(integer(f,Element,s))); f.close(Element);
             f.index(Probe,Number,3); codes(f,Probe,Element,at(sensitivity,4),s);
@@ -210,7 +211,7 @@ void parse_tables(void* settings, NativeLuaStateStorage& lua, NativeInputSetting
         if (!native_lua_is_nil_00b65fb0(f.obj(Section))) {
             for (Word i = 1; f.present(Section,i); ++i) {
                 f.index(Scratch,Section,i); auto key = integer(f,Scratch,s); std::array<Word,3> inserted;
-                c.call_0069fa40(at(device,0x78),inserted.data(),&key); f.close(Scratch);
+                insert_native_input_integer_key_0069fa40(at(device,0x78),inserted.data(),&key); f.close(Scratch);
             }
         }
         f.close(OuterValue); f.close(OuterKey); f.close(Section); f.close(DeviceName); f.close(Device);
@@ -219,7 +220,7 @@ void parse_tables(void* settings, NativeLuaStateStorage& lua, NativeInputSetting
     f.empty(NamesKey); f.empty(NamesValue); first(f,Names,NamesKey,NamesValue);
     while (!ended(f,NamesKey)) {
         f.make(SharedName,native_lua_string_00b662b0(f.obj(NamesKey)));
-        void* record = c.call_006a1e70(at(settings,0x24),f.str(SharedName)); f.close(SharedName);
+        void* record = index_native_input_preset_tree_006a1e70(at(settings,0x24),f.str(SharedName),s.descriptor_flag_stack_preimage,s.scripts.strings); f.close(SharedName);
         f.index(NameValue,NamesValue,1); write(record,0,static_cast<Word>(integer(f,NameValue,s))); f.close(NameValue);
         f.index(NameValue,NamesValue,2); write(record,0xc,static_cast<Word>(integer(f,NameValue,s))); f.close(NameValue);
         next(f,Names,NamesKey,NamesValue);
@@ -261,11 +262,11 @@ void parse_tables(void* settings, NativeLuaStateStorage& lua, NativeInputSetting
     first(f,Controllers,NamesKey,NamesValue);
     while (!ended(f,NamesKey)) {
         f.make(SharedName,native_lua_string_00b662b0(f.obj(NamesKey)));
-        void* controller = c.call_006a6900(at(settings,0x60),f.str(SharedName)); f.close(SharedName);
+        void* controller = index_native_input_controller_tree_006a6900(at(settings,0x60),f.str(SharedName),s.scripts.strings); f.close(SharedName);
         f.empty(OuterKey); f.empty(Element); first(f,NamesValue,OuterKey,Element);
         while (!ended(f,OuterKey)) {
             auto code = integer(f,OuterKey,s); const char* text = native_lua_string_00b662b0(f.obj(Element));
-            void* name = c.call_006a1f80(controller,&code); overwrite_string(name,text,s.scripts.strings);
+            void* name = index_native_input_controller_name_006a1f80(controller,&code,s.scripts.strings); overwrite_string(name,text,s.scripts.strings);
             next(f,NamesValue,OuterKey,Element);
         }
         f.close(Element); f.close(OuterKey); next(f,Controllers,NamesKey,NamesValue);

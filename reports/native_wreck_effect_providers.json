@@ -1,0 +1,420 @@
+{
+  "packet": "orch6_wreck_effect_providers_x",
+  "base_commit": "5f36331ab99e29aecd890b1da5f4c7f4c02a04d5",
+  "dependency_commit": "4286736f",
+  "dependency_merge": "1d92ec99",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "STRICT READ ONLY via formal BSP CLI; annotation/save/export left to integrator",
+  "source": "src/native_wreck_effect_providers.cpp",
+  "header": "include/bsp/native_wreck_effect_providers.hpp",
+  "doc": "docs/NATIVE_WRECK_EFFECT_PROVIDERS.md",
+  "new_library_ports": 0,
+  "new_complete_native_interfaces": 2,
+  "functions": [
+    {
+      "address": "008674C0",
+      "end_inclusive": "008674F1",
+      "native_bytes": 50,
+      "name": "stop_native_wreck_effects_008674c0",
+      "coverage": "complete normal control sequence over actual captured manager span; required008673B0 body external",
+      "original_abi": "ECX actual28h manager; filter stack DWORD; RET4; no defined result",
+      "abi_compatible": false
+    },
+    {
+      "address": "00484620",
+      "end_inclusive": "0048465F",
+      "native_bytes": 64,
+      "name": "adopt_native_wreck_effect_00484620",
+      "coverage": "complete normal sequence by exact existing0054D510 provider reuse within required nonthrowing actual reference domain",
+      "original_abi": "ECX actual pointer cell; replacement stack DWORD; EAX same cell; RET4",
+      "abi_compatible": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "008674E0",
+      "native": "008673B0",
+      "function": "008674C0",
+      "contract": "freshly loaded actual cell, including null if filter is null; ECX receiver; no stack arguments; plain RET; full238-byte callee read"
+    },
+    {
+      "address": "0048462E",
+      "native": "IAT00CE2220:InterlockedDecrement",
+      "function": "00484620",
+      "contract": "stdcall actual captured owner+04 atomic; returns new count with DWORD wrap"
+    },
+    {
+      "address": "0048463E",
+      "native": "current-owner-virtual0",
+      "function": "00484620",
+      "contract": "ECX captured old owner; no stack arguments; current table loaded only after decrement returns0; required terminal domain"
+    }
+  ],
+  "reuse_graph_calls": [
+    {
+      "address": "0054D51E",
+      "native": "IAT00CE2220:InterlockedDecrement",
+      "function": "0054D510",
+      "contract": "identical operand and stack/return use"
+    },
+    {
+      "address": "0054D52E",
+      "native": "current-owner-virtual0",
+      "function": "0054D510",
+      "contract": "identical eight-byte load/call graph and callback-following stores"
+    },
+    {
+      "address": "00BD30EB",
+      "native": "current-owner-virtual04",
+      "function": "00BD30E0",
+      "contract": "fixture actual tables select BD30E0 virtual0; whole14-byte body reads current virtual04 and supplies literal1; destructor remains observed required boundary"
+    }
+  ],
+  "storage_producer_calls": [
+    {
+      "address": "004CF730",
+      "native": "004C3200",
+      "function": "004CF700",
+      "contract": "actual0Ch sentinel allocation; same existing manager/list constructor provider reused"
+    }
+  ],
+  "callers": [
+    {
+      "address": "00731F51",
+      "native": "00484620",
+      "function": "00731EF0",
+      "contract": "callee consumes one arbitrary pointer stack word, RET4; exact setup retained in caller evidence"
+    },
+    {
+      "address": "0074612F",
+      "native": "00484620",
+      "function": "007460E0",
+      "contract": "callee consumes one arbitrary pointer stack word, RET4; exact setup retained in caller evidence"
+    },
+    {
+      "address": "00746227",
+      "native": "00484620",
+      "function": "007460E0",
+      "contract": "callee consumes one arbitrary pointer stack word, RET4; exact setup retained in caller evidence"
+    },
+    {
+      "address": "00824F80",
+      "native": "00484620",
+      "function": "00824B60",
+      "contract": "callee consumes one arbitrary pointer stack word, RET4; exact setup retained in caller evidence"
+    },
+    {
+      "address": "00824FB0",
+      "native": "00484620",
+      "function": "00824B60",
+      "contract": "callee consumes one arbitrary pointer stack word, RET4; exact setup retained in caller evidence"
+    },
+    {
+      "address": "00824FE0",
+      "native": "00484620",
+      "function": "00824B60",
+      "contract": "callee consumes one arbitrary pointer stack word, RET4; exact setup retained in caller evidence"
+    },
+    {
+      "address": "0095705A",
+      "native": "00484620",
+      "function": "00956EE0",
+      "contract": "callee consumes one arbitrary pointer stack word, RET4; exact setup retained in caller evidence"
+    },
+    {
+      "address": "0048A251",
+      "native": "00484620",
+      "function": "0048A1E0",
+      "contract": "callee consumes one arbitrary pointer stack word, RET4; exact setup retained in caller evidence"
+    },
+    {
+      "address": "0060AB94",
+      "native": "00484620",
+      "function": "00609BD0",
+      "contract": "callee consumes one arbitrary pointer stack word, RET4; exact setup retained in caller evidence"
+    },
+    {
+      "address": "00745C89",
+      "native": "00484620",
+      "function": "00745BE0",
+      "contract": "callee consumes one arbitrary pointer stack word, RET4; exact setup retained in caller evidence"
+    },
+    {
+      "address": "00745F80",
+      "native": "00484620",
+      "function": "00745BE0",
+      "contract": "callee consumes one arbitrary pointer stack word, RET4; exact setup retained in caller evidence"
+    },
+    {
+      "address": "00854D1A",
+      "native": "00484620",
+      "function": "00854650",
+      "contract": "callee consumes one arbitrary pointer stack word, RET4; exact setup retained in caller evidence"
+    },
+    {
+      "address": "0093AB36",
+      "native": "00484620",
+      "function": "0093AA90",
+      "contract": "callee consumes one arbitrary pointer stack word, RET4; exact setup retained in caller evidence"
+    },
+    {
+      "address": "00824F77",
+      "native": "008674C0",
+      "function": "00824B60",
+      "contract": "callee consumes one arbitrary pointer stack word, RET4; exact setup retained in caller evidence"
+    },
+    {
+      "address": "00824FA7",
+      "native": "008674C0",
+      "function": "00824B60",
+      "contract": "callee consumes one arbitrary pointer stack word, RET4; exact setup retained in caller evidence"
+    },
+    {
+      "address": "00824FD7",
+      "native": "008674C0",
+      "function": "00824B60",
+      "contract": "callee consumes one arbitrary pointer stack word, RET4; exact setup retained in caller evidence"
+    },
+    {
+      "address": "008CB6DB",
+      "native": "008674C0",
+      "function": "008CB5B0",
+      "contract": "callee consumes one arbitrary pointer stack word, RET4; exact setup retained in caller evidence"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "0060AF26",
+      "target": "00484620",
+      "status": "PE stream only; no Ghidra function attribution"
+    },
+    {
+      "address": "0060B092",
+      "target": "00484620",
+      "status": "PE stream only; no Ghidra function attribution"
+    },
+    {
+      "address": "0060B439",
+      "target": "00484620",
+      "status": "PE stream only; no Ghidra function attribution"
+    },
+    {
+      "address": "0060B479",
+      "target": "00484620",
+      "status": "PE stream only; no Ghidra function attribution"
+    },
+    {
+      "address": "0094FB0D",
+      "target": "00484620",
+      "status": "PE stream only; no Ghidra function attribution"
+    }
+  ],
+  "caller_evidence": "local/wreck_providers_caller_evidence.json",
+  "storage_provenance": {
+    "manager": "existing NativeLiveEffectManagerStorage28h; producer004CF70097bytes; count+14 before data+10 captures; no new owning fields",
+    "reference": "existing NativeRenderContextStorage18h fixture owner; constructor fragmentB1EDD3..B1EDF1 sets actual+04 atomic and publishes numeric native profiles; production accepts required canonical actual owners, not semantic casts",
+    "destination": "actual void* volatile& throughout, including0054D510 canonical overload; no shadow pointer, no qualification stripping",
+    "release": "existing release_native_render_actual_owner uses captured raw+04 seq_cst fetch_sub; resolve only when oldcount1; companion atomic address validation; current virtual0 terminal required"
+  },
+  "native_evidence": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00484620",
+        "length": 64,
+        "sha256": "1889e26d7ce5fa09743b922f26c14bcf01f4df885b8f64de5afa2b4b8a9bc801",
+        "file": "local/wreck_providers_assign.bin",
+        "live_file": "local/wreck_providers_assign.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "0054D510",
+        "length": 64,
+        "sha256": "1889e26d7ce5fa09743b922f26c14bcf01f4df885b8f64de5afa2b4b8a9bc801",
+        "file": "local/wreck_providers_existing_adopt.bin",
+        "live_file": "local/wreck_providers_existing_adopt.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "0042D9A0",
+        "length": 64,
+        "sha256": "1889e26d7ce5fa09743b922f26c14bcf01f4df885b8f64de5afa2b4b8a9bc801",
+        "file": "local/wreck_providers_parent_adopt.bin",
+        "live_file": "local/wreck_providers_parent_adopt.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "008674C0",
+        "length": 50,
+        "sha256": "b58664d6d50bd3152445582d3ea5b8d3a2f7e9a7f94b0f96c5b05a7e3e29a607",
+        "file": "local/wreck_providers_scan.bin",
+        "live_file": "local/wreck_providers_scan.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "008673B0",
+        "length": 238,
+        "sha256": "5d4be4644fddc446dbbdbbdf2f02a669568044d00207925d90804439bcac358c",
+        "file": "local/wreck_providers_group_clear.bin",
+        "live_file": "local/wreck_providers_group_clear.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "004CF700",
+        "length": 97,
+        "sha256": "130030f570dfac398781997cdf04373854e0d886ac9c43537339b5f35aa39947",
+        "file": "local/wreck_providers_manager_producer.bin",
+        "live_file": "local/wreck_providers_manager_producer.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00B1EDD3",
+        "length": 31,
+        "sha256": "b7a65827772c3e6f220fa07ebb6a746ce1c4f9dc37ea7b94ccfeaf44bf2dc8cf",
+        "file": "local/wreck_providers_reference_producer.bin",
+        "live_file": "local/wreck_providers_reference_producer.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00D5E5C4",
+        "length": 8,
+        "sha256": "0eeeccf08ee7e596f5b8059481d2d0b0e1cbca1fd5e1e608da5371288438511f",
+        "file": "local/wreck_providers_context_table.bin",
+        "live_file": "local/wreck_providers_context_table.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00CEB130",
+        "length": 8,
+        "sha256": "ecb7fc5e6c0036cd9c36d890067ca9b9a097cbc04ad1d75578a5cd1a77b2c60d",
+        "file": "local/wreck_providers_reference_table.bin",
+        "live_file": "local/wreck_providers_reference_table.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00BD30E0",
+        "length": 14,
+        "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+        "file": "local/wreck_providers_terminal.bin",
+        "live_file": "local/wreck_providers_terminal.bytes",
+        "live_disk_equal": true
+      }
+    ],
+    "adoption_reuse": {
+      "addresses": [
+        "00484620",
+        "0054D510",
+        "0042D9A0"
+      ],
+      "complete_bytes": 64,
+      "identical": true,
+      "relative_calls": [],
+      "iat_address": "00CE2220",
+      "iat_import": [
+        "KERNEL32.dll",
+        "InterlockedDecrement"
+      ],
+      "virtual0_sequence": "8B178B028BCFFFD0",
+      "virtual0_native": "00484638..0048463F",
+      "native_eh_metadata": false
+    }
+  },
+  "compiled_evidence": {
+    "caller": "local/wreck_providers_compiled_caller.asm",
+    "canonical": "local/wreck_providers_compiled_canonical.asm",
+    "actual_release": "local/wreck_providers_compiled_actual_release.asm",
+    "observed": "X calls volatile overload directly; canonical captures old once, releases, loads replacement, stores0, stores replacement, returns same cell; actual helper LOCK XADD(raw+4,-1), compare old1, then resolve/validate/call",
+    "other_overload_observation": "Root4286736f nonvolatile delegator emits an extra discarded volatile read MOV ECX,[ESI] at+23. X never takes that overload; integrator owns the follow-up. Retained compiled canonical object records this exact tested revision."
+  },
+  "corrections": [
+    {
+      "was": "008674C0 remained an external W provider",
+      "is": "complete captured span scan with required008673B0 dispatch is available",
+      "evidence": "full50-byte8674C0 listing and differential cases"
+    },
+    {
+      "was": "00484620 remained an external W provider",
+      "is": "full64-byte alias reuses canonical0054D510 volatile overload and actual atomic release helper",
+      "evidence": "fullPE/live alias bytes, sameIAT/currentvirtualgraph, compiled object and fixture"
+    }
+  ],
+  "boundaries": {
+    "required_unimplemented": [
+      "008673B0 child/auxiliary cleanup and native EH",
+      "actual current-profile dynamic destructor/pool-return providers",
+      "remaining00824B60 outside W fragment and00824FE5 continuation"
+    ],
+    "source_reference_domain": "nonthrowing terminal callbacks; invalid missing/mismatched owner terminates through noexcept VoiceReferenceHost, unlike unproved native exception transport",
+    "fixture_virtual_bridge": "eight bytes00484638..0048463F replaced by MOV ECX,EDI; CALL capturebridge; NOP. Original/replacement bytes retained. Not unmodified full64-byte execution or original dynamic dispatch/destructor execution.",
+    "native_eh_validated": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "concurrent_pointer_mutation_validated": false
+  },
+  "verification": {
+    "build_tested": true,
+    "fixture_tested": true,
+    "abi_compatible": false,
+    "native_eh_validated": false,
+    "game_validated": false,
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "log": "local/wreck_providers_build.log",
+      "ctest": "2/2 passed: reconstructed_math and native_math_differential"
+    },
+    "native_seeds": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "verified": 8,
+      "log": "local/wreck_providers_verify_seeds.log"
+    },
+    "call_verifier": {
+      "command": "python tools/verify_report_calls.py reports/native_wreck_effect_providers.json",
+      "direct_rows": 19,
+      "indirect_rows": 5,
+      "failures": 0,
+      "log": "local/wreck_providers_report_calls.log"
+    },
+    "fixture": {
+      "normal_native_source_pairs": 16,
+      "seeds": 8,
+      "source_only_failure_cases": 2,
+      "input_bytes": 2496,
+      "record_bytes": 4288,
+      "input_sha256": "7ccb8fd8d80f33fcd4f4bf648c4e986fbd2b3b0d13d602e02da4fd182a9cd5ee",
+      "record_sha256": "660663bec9586e8d62508076e66d349b90917e38e314ff68a3ec7128f8cb0b6d",
+      "relocations": [
+        {
+          "address": "008674E1",
+          "length": 4,
+          "original": "cbfeffff",
+          "replacement": "1b1f4f00",
+          "boundary": "call/IAT operand relocation"
+        },
+        {
+          "address": "00484630",
+          "length": 4,
+          "original": "2022ce00",
+          "replacement": "68c2dd00",
+          "boundary": "call/IAT operand relocation"
+        },
+        {
+          "address": "00484638",
+          "length": 8,
+          "original": "8b178b028bcfffd0",
+          "replacement": "8bcfe8a11f4f0090",
+          "boundary": "required virtual0 fixture bridge"
+        }
+      ],
+      "result": "PASS native/source provider pairs=16 seeds=8; explicit virtual0 bridge; source failure=1"
+    },
+    "proof_manifest": "local/wreck_providers_proof/manifest.json",
+    "proof_manifest_sha256": "a11e27b9b6b5cce6ff2222fec06f05a536007c32b548c907cc70daa45898810f",
+    "retained_files": 171,
+    "retained_libraries": 19,
+    "retained_toolchain": 15,
+    "retained_runtime_dlls": 1
+  }
+}
