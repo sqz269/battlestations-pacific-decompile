@@ -3849,6 +3849,14 @@
     "call_audit_log": "local\\input_settings_body_as_calls.log",
     "call_audit_log_sha256": "79a26213795ab502f97ed00568334506a37aba16cbfd3bd735242e1167eb94b6",
     "repair_receipt": "reports/native_input_settings_lifetime_as_body_repair.json",
-    "repair_receipt_sha256": "5e902da4351544f816c4743a49c3c0ebf806bdf18950c153befb98f192773a04"
+    "repair_receipt_sha256": "5e902da4351544f816c4743a49c3c0ebf806bdf18950c153befb98f192773a04",
+    "publication_preparation": {
+      "utc": "2026-09-13T08:22:59.743856+00:00",
+      "closeout_revision": "677ca6d7f37aff0066cc179b2e89e390b002c093",
+      "merged_main_revision": "99cdd7fdfd48ff167cf8b13a17d9752a40a8d4fc",
+      "code_diff_from_merged_main": [],
+      "verification_scope": "Saved Ghidra body, all direct lifetime call sites, annotation preservation, refreshed export/snapshot and metadata. No C++ change from merged main; no new build or runtime execution claimed.",
+      "prior_cpp_validation": "component_validation and final_validation retain the AQ source/build/fixture revisions and historical ownership counts; saved_body_repair_validation_as supplies the current ownership result."
+    }
   }
 }

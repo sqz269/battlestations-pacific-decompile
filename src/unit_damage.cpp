@@ -363,10 +363,15 @@ void entity_destroy_00926c80(UnitDamageHost& host, std::uint32_t entity, int rec
                                   : static_cast<int>(UnitKillCause::normal);
             host.write_death_cause(entity, cause);
         }
-        if (recurse != 0) {
+        // 00926CF7 compares only the incoming stack argument's low byte.
+        if (static_cast<std::uint8_t>(recurse) != 0) {
             for (std::uint32_t child = host.first_child(entity); child != 0;
                  child = host.next_sibling(child)) {
                 if (host.destroy_child_predicate(child, entity)) {  // 00926D0E
+                    // 00926D14 reloads the parent cause after the predicate;
+                    // a still-zero cause clears this child's cause first.
+                    if (host.entity_death_cause(entity) == 0)
+                        host.write_death_cause(child, 0);           // 00926D1A
                     host.dispatch_destroy(child, 1);                // 00926D2A
                 }
             }
