@@ -110,9 +110,23 @@ public:
     // locked count query, detach-all, unlock, and array free. Does not free owner.
     void destroy_callback_owner_00695870(NativeObserverOwnerStorage&);
 
+    // Native006953C0 ECX=observed/first endpoint base, RET. Invalidate copied
+    // dispatch entries by edge.first_04, detach its array, then remove both
+    // endpoint registrations and delete every captured edge regardless of refs.
+    void detach_observed_006953c0(NativeObserverOwnerStorage&);
+    // Native00695760 ECX=observed/first endpoint base, RET. Stamp00CECCC8,
+    // take outer and nested count-query locks, detach if nonempty, then unlock
+    // and free the backing array without freeing the endpoint or clearing its
+    // pointer/count/capacity bytes. For an actual unit this base is unit+0;
+    // its separate callback-owner base is unit+10h and uses00695870 instead.
+    // Source exceptions unwind the guard then free the current array; original
+    // FH3/SEH identity and asynchronous faults are outside this new C++ ABI.
+    void destroy_observed_owner_00695760(NativeObserverOwnerStorage&);
+
 private:
     void remove_from_endpoints_and_delete(NativeObserverEdgeStorage&);
-    void invalidate_dispatch_slots(NativeObserverEdgeStorage*, NativeObserverOwnerStorage*);
+    void invalidate_dispatch_slots(NativeObserverEdgeStorage*, NativeObserverOwnerStorage*,
+        bool match_first_endpoint = false);
 
     SoundLifetimeAccess domain_;
     NativeObserverLockOwner* volatile& global_00e198e0_;

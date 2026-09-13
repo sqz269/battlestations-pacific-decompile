@@ -11,6 +11,7 @@ namespace {
 constexpr std::uint32_t lock_table = 0x00cf7e70;
 constexpr std::uint32_t simple_owner_table = 0x00ce3818;
 constexpr std::uint32_t callback_owner_table = 0x00ce3cd4;
+constexpr std::uint32_t observed_owner_table = 0x00ceccc8;
 
 std::uintptr_t address(const void* p) noexcept {
     return reinterpret_cast<std::uintptr_t>(p);
@@ -209,7 +210,8 @@ NativeObserverEdgeStorage* NativeObserverLifetime::find_pair_006949d0(
 }
 
 void NativeObserverLifetime::invalidate_dispatch_slots(
-    NativeObserverEdgeStorage* selected_edge, NativeObserverOwnerStorage* selected_owner) {
+    NativeObserverEdgeStorage* selected_edge, NativeObserverOwnerStorage* selected_owner,
+    bool match_first_endpoint) {
     auto* const captured_owner = global_00e198e4_;
     auto** cursor = captured_owner->slots_04.begin;
     auto*** const captured_end_field = &captured_owner->slots_04.end;
@@ -228,7 +230,8 @@ void NativeObserverLifetime::invalidate_dispatch_slots(
             services_.invalid_parameter_00bf6713();
         auto* edge = static_cast<NativeObserverEdgeStorage*>(*cursor);
         const bool matches = selected_edge ? edge == selected_edge
-            : edge && edge->callback_owner_08 == selected_owner;
+            : edge && (match_first_endpoint ? edge->first_04 : edge->callback_owner_08)
+                == selected_owner;
         if (matches) {
             if (address(cursor) >= address(*captured_end_field))
                 services_.invalid_parameter_00bf6713();
@@ -291,5 +294,41 @@ void NativeObserverLifetime::destroy_callback_owner_00695870(NativeObserverOwner
     }
     free_slots(owner.edges_04.data_00); // reload after callbacks and unlock
     // Native leaves pointer/count/capacity bytes as they stand at destruction.
+}
+
+void NativeObserverLifetime::detach_observed_006953c0(NativeObserverOwnerStorage& owner) {
+    ObserverGuard guard(lock_owner_00694280()->section_04);
+    //00695465 compares edge+4 with the actual observed base. The callback
+    // path00695530 compares edge+8 and cannot substitute for this operation.
+    invalidate_dispatch_slots(nullptr, &owner, true);
+    TemporarySlots detached;
+    exchange_observer_edge_arrays_006944c0(detached.slots, owner.edges_04);
+    auto** cursor = detached.slots.data_00;
+    auto** const end = offset(cursor, detached.slots.count_04);
+    while (cursor != end) {
+        auto* edge = *cursor;
+        remove_from_endpoints_and_delete(*edge); // no reference-count decrement
+        cursor = offset(cursor, 1);
+    }
+    // C7EA18 destroys the temporary array before C7EA10 releases this guard.
+}
+
+void NativeObserverLifetime::destroy_observed_owner_00695760(NativeObserverOwnerStorage& owner) {
+    owner.native_vtable_00 = observed_owner_table;
+    try {
+        ObserverGuard outer(lock_owner_00694280()->section_04);
+        std::uint32_t count;
+        {
+            ObserverGuard nested(lock_owner_00694280()->section_04);
+            count = owner.edges_04.count_04;
+        }
+        if (count != 0) detach_observed_006953c0(owner);
+    } catch (...) {
+        // C7EA7B releases the outer guard; C7EA70 then destroys owner+4.
+        free_slots(owner.edges_04.data_00);
+        throw;
+    }
+    free_slots(owner.edges_04.data_00); // reload after callbacks and outer unlock
+    // The native destructor retains all array fields, including a freed pointer.
 }
 } // namespace bsp

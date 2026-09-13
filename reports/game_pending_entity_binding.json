@@ -1,0 +1,69 @@
+{
+  "packet": "orch6_pending_entity_application_s",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "sources": [
+    "src/game_hosts.cpp",
+    "src/game_hosts_ready.cpp"
+  ],
+  "header_dependency": "include/bsp/game_pending_entity_runtime.hpp",
+  "coverage": "Application process ownership and actual pending-count bindings; not a new native body or a complete producer/drain reconstruction.",
+  "host_steps": [
+    {
+      "address": "00bfbca7",
+      "native": "00cd3910",
+      "function": "00bfbc47",
+      "kind": "indirect_table_call",
+      "operation": "ascending CRT table CE30C0 initializes the destroy owner"
+    },
+    {
+      "address": "00bfbca7",
+      "native": "00cd3940",
+      "function": "00bfbc47",
+      "kind": "indirect_table_call",
+      "operation": "next CRT table CE30C4 initializes the kill owner"
+    }
+  ],
+  "order": [
+    {
+      "slot": "00ce2bac",
+      "initializer": "00ccd6a0"
+    },
+    {
+      "slot": "00ce3054",
+      "initializer": "00cd2d80"
+    },
+    {
+      "slot": "00ce30c0",
+      "initializer": "00cd3910"
+    },
+    {
+      "slot": "00ce30c4",
+      "initializer": "00cd3940"
+    }
+  ],
+  "behavior": [
+    "GameStartup initializes the actual process-static owner pair after represented settings initialization, in the verified relative CRT order.",
+    "Actual std::atexit registrations retain their return values; the application logs them and does not synthesize teardown after registration failure. Native initializer iteration ignores these return values.",
+    "Frame pending-count methods borrow the same process owner pair and read count08. A null head is an explicit source-binding precondition failure, not a fabricated empty queue.",
+    "Existing unimplemented copy/clear hooks fail explicitly if a nonempty queue reaches them; they no longer report those absent operations as implemented.",
+    "Raw owner storage outlives GameStartup and borrowed unit payloads are not destroyed by CRT ring teardown. No manual second teardown is added."
+  ],
+  "dependencies": [
+    "reports/native_pending_entity_owners.json",
+    "reports/game_pending_entity_runtime.json",
+    "reports/entity_event_queues.json"
+  ],
+  "observer_liveness_support": "GameObserverRuntime::has_live_dispatch_owner reads the actual owner cell, because the native owner+4 alias is intentionally retained after shutdown. This supports the continuing T unit binding.",
+  "validation": {
+    "build": "pending combined S MSVC Win32 build and existing tests",
+    "process": "pending combined S120-frame run",
+    "component_fixture": "S actual-library fixture verifies three observations through real CRT process exit; this is source composition, not native CRT execution."
+  },
+  "limits": [
+    "The application executes one represented startup per process; no repeated-startup guard or second native owner is provided.",
+    "Only relative order among the four represented CRT initializers is claimed.",
+    "Native queue producers, cancellation, copy/clear, notification and gameplay validation remain incomplete.",
+    "The empty mission pass does not prove nonempty queue delivery or original exception/concurrency behavior."
+  ]
+}
