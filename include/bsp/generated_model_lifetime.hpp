@@ -44,8 +44,34 @@ public:
 // binding. Bindings and scene runtime must outlive their registered models.
 class GeneratedModelLifetimeRuntime {
 public:
+    // Host registration credit only; runtime and tokens share one serialized
+    // owning thread. Identity getters are stable, nonallocating leaf accessors.
+    class BindingAdmission final {
+    public:
+        BindingAdmission() noexcept = default;
+        BindingAdmission(const BindingAdmission&) = delete;
+        BindingAdmission& operator=(const BindingAdmission&) = delete;
+        BindingAdmission(BindingAdmission&&) noexcept;
+        BindingAdmission& operator=(BindingAdmission&&) noexcept;
+        ~BindingAdmission() noexcept;
+        void cancel() noexcept;
+        explicit operator bool() const noexcept { return runtime_ != nullptr; }
+    private:
+        friend class GeneratedModelLifetimeRuntime;
+        explicit BindingAdmission(GeneratedModelLifetimeRuntime& runtime) noexcept : runtime_(&runtime) {}
+        GeneratedModelLifetimeRuntime* runtime_{};
+    };
     explicit GeneratedModelLifetimeRuntime(SceneAttachmentRuntime& scenes) noexcept : scenes(scenes) {}
+    GeneratedModelLifetimeRuntime(const GeneratedModelLifetimeRuntime&) = delete;
+    GeneratedModelLifetimeRuntime& operator=(const GeneratedModelLifetimeRuntime&) = delete;
+    GeneratedModelLifetimeRuntime(GeneratedModelLifetimeRuntime&&) = delete;
+    GeneratedModelLifetimeRuntime& operator=(GeneratedModelLifetimeRuntime&&) = delete;
+    ~GeneratedModelLifetimeRuntime() noexcept;
+    [[nodiscard]] BindingAdmission reserve_binding();
     void bind(GeneratedModelNodeLifetime&);
+    // Successful admission does not allocate and requires the exact canonical
+    // scene attachment and a unique actual key. Failure leaves the token active.
+    void bind(GeneratedModelNodeLifetime&, BindingAdmission&&);
     void unbind(GeneratedModelNodeLifetime&) noexcept;
     GeneratedModelNodeLifetime& resolve(CameraTransform&) const noexcept;
     // Association lookup only, using the same scene binding's actual Win32 key.
@@ -57,7 +83,10 @@ public:
     GeneratedModelAttachmentLinks& attachment(void* identity) const noexcept;
     SceneAttachmentRuntime& scenes;
 private:
+    void validate_binding(GeneratedModelNodeLifetime&) const;
+    void reserve_binding_capacity();
     std::vector<GeneratedModelNodeLifetime*> nodes_;
+    std::size_t pending_bindings_{}; // nodes_.size() + pending <= capacity
     std::vector<GeneratedModelAttachmentLinks*> attachments_;
 };
 
