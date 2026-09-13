@@ -186,3 +186,11 @@ still requires a root whose build contains this overload.
 A separately hashed `final_verification.zip` records the six additional cleanup
 rows and the final baseline29-byte materializer observation. It changes no sealed
 source, library, probe, recipe, or runtime input. Both archive hashes are in the report.
+
+## BD integration checkpoint
+
+The integrator reviewed the complete native body and actual producer/provider
+evidence, saved its original analysis signature and full stored range in the
+existing BSP project, and registered the source where needed. Exact combined
+validation follows separately from worker checks. No original binary entry,
+unrestricted FH3/SEH, whole owner lifetime or gameplay claim follows.

@@ -97,3 +97,11 @@ probe/recipe, original bytes/listings, input hashes and logs. Default
 run.ps1 -Repo <integrated root> compiles only external probe.cpp against that
 root's current libraries with an embedded manifest. Root owns integration,
 analysis repairs and any later raw camera/runtime composition work.
+
+## BD integration checkpoint
+
+The integrator reviewed the complete native body and actual producer/provider
+evidence, saved its original analysis signature and full stored range in the
+existing BSP project, and registered the source where needed. Exact combined
+validation follows separately from worker checks. No original binary entry,
+unrestricted FH3/SEH, whole owner lifetime or gameplay claim follows.

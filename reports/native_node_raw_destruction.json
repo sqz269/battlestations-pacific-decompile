@@ -24,7 +24,17 @@
       "existing_body_extension": true,
       "new_native_body": false,
       "original_abi": "ECX actual node prefix, zero stack arguments, RET atB6F568; no semantic return; no physical slot return",
-      "evidence": "Full fresh native body, caller preparations including EH JMPs, current normal cleanup state instructions and original FH3 map. Existing actual associations/valid matching point-light backing, new raw pool context; preserve typed APIs."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b6f440..00b6f568 reviewed against current assembly, original register/stack ABI, live/PE bytes and actual producer/provider contracts. Preserve current raw reads, ordered stores and bit/copy/cleanup behavior. Added C++ interfaces remain distinct from original binary ABI, unrestricted FH3/SEH, concurrency and gameplay. Existing function record extended to the current raw-storage implementation; prior reconstruction retained, no new body count. Evidence: docs/NATIVE_NODE_RAW_DESTRUCTION.md; reports/native_node_raw_destruction.json.",
+      "end_exclusive": "00b6f569",
+      "packet_key": "destruction",
+      "report": "reports/native_node_raw_destruction.json",
+      "doc": "docs/NATIVE_NODE_RAW_DESTRUCTION.md",
+      "ghidra_name": "BSP_Node_Destroy",
+      "existing_body_raw_extension": true,
+      "ledger_record_name": "destroy_native_node_00b6f440",
+      "native_prototype": "void BSP_Node_Destroy(void)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": "Full fresh native body, caller preparations including EH JMPs, current normal cleanup state instructions and original FH3 map. Existing actual associations/valid matching point-light backing, new raw pool context; preserve typed APIs."
     }
   ],
   "files": [
@@ -422,5 +432,13 @@
     "address": "00b6f440",
     "four_owned_files": true,
     "no_merge_push": true
+  },
+  "integration_bd_review": {
+    "combined_validation": "pending current combined build and applicable current-library validation",
+    "game_validated": false,
+    "current_report_call_check": "reports/native_node_raw_destruction.json: 30 call rows checked, 0 failed",
+    "saved_original_signature_readback": true,
+    "saved_full_body_ranges": true,
+    "current_signature_audit_count": 2
   }
 }

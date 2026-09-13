@@ -22,7 +22,24 @@
       "coverage": "complete",
       "accounting": "existing typed body extension",
       "new_bodies": 0,
-      "scope": "Complete instruction schedule in documented raw current-pool/current-cell C++ domain; native FH3 identity excluded"
+      "scope": "Complete instruction schedule in documented raw current-pool/current-cell C++ domain; native FH3 identity excluded",
+      "end_exclusive": "00b6f8ce",
+      "cpp_symbol": "construct_native_node_00b6f5a0",
+      "module": "native_node_construction",
+      "packet_key": "construction",
+      "source": "src/native_node_construction.cpp",
+      "header": "include/bsp/native_node_construction.hpp",
+      "report": "reports/native_node_raw_construction.json",
+      "doc": "docs/NATIVE_NODE_RAW_CONSTRUCTION.md",
+      "ghidra_name": "BSP_Node_Construct",
+      "new_native_body": false,
+      "existing_body_raw_extension": true,
+      "ledger_record_name": "construct_native_node_00b6f5a0",
+      "native_prototype": "void * BSP_Node_Construct(void * name)",
+      "native_calling_convention": "__thiscall",
+      "original_abi": "ECX actual slot; stack actual8h name header; EAX original slot; RET4 at00B6F8CB",
+      "worker_evidence": null,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b6f5a0..00b6f8cd reviewed against current assembly, original register/stack ABI, live/PE bytes and actual producer/provider contracts. Preserve current raw reads, ordered stores and bit/copy/cleanup behavior. Added C++ interfaces remain distinct from original binary ABI, unrestricted FH3/SEH, concurrency and gameplay. Existing function record extended to the current raw-storage implementation; prior reconstruction retained, no new body count. Evidence: docs/NATIVE_NODE_RAW_CONSTRUCTION.md; reports/native_node_raw_construction.json."
     }
   ],
   "abi": {
@@ -1034,5 +1051,13 @@
       "contract": "D5C104 profile followed by CEB130",
       "cleanup": "BD30F6 RET"
     }
-  ]
+  ],
+  "integration_bd_review": {
+    "combined_validation": "pending current combined build and applicable current-library validation",
+    "game_validated": false,
+    "current_report_call_check": "reports/native_node_raw_construction.json: 28 call rows checked, 0 failed",
+    "saved_original_signature_readback": true,
+    "saved_full_body_ranges": true,
+    "current_signature_audit_count": 2
+  }
 }
