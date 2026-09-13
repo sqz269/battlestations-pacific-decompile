@@ -1,0 +1,133 @@
+{
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cbecc8",
+        "end_address": "00cbecd2"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00cbecc8",
+        "end_address": "00cbecd1",
+        "bytes_disassembled": 10,
+        "message": "Successfully disassembled 10 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cbecc8",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00cbecc8",
+        "function_name": "FUN_00cbecc8",
+        "entry_point": "00cbecc8",
+        "body_size": 10,
+        "message": "Function created successfully at 00cbecc8"
+      }
+    },
+    {
+      "defined": "00cbecc8",
+      "end": "00cbecd2",
+      "name": null,
+      "after": "Function: FUN_00cbecc8 at 00cbecc8\nSignature: undefined FUN_00cbecc8(void)\nEntry: 00cbecc8\nBody: 00cbecc8 - 00cbecd1"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cbed14",
+        "end_address": "00cbed1e"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00cbed14",
+        "end_address": "00cbed1d",
+        "bytes_disassembled": 10,
+        "message": "Successfully disassembled 10 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cbed14",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00cbed14",
+        "function_name": "FUN_00cbed14",
+        "entry_point": "00cbed14",
+        "body_size": 10,
+        "message": "Function created successfully at 00cbed14"
+      }
+    },
+    {
+      "defined": "00cbed14",
+      "end": "00cbed1e",
+      "name": null,
+      "after": "Function: FUN_00cbed14 at 00cbed14\nSignature: undefined FUN_00cbed14(void)\nEntry: 00cbed14\nBody: 00cbed14 - 00cbed1d"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cbccb8",
+        "end_address": "00cbccc2"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00cbccb8",
+        "end_address": "00cbccc1",
+        "bytes_disassembled": 10,
+        "message": "Successfully disassembled 10 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cbccb8",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00cbccb8",
+        "function_name": "FUN_00cbccb8",
+        "entry_point": "00cbccb8",
+        "body_size": 10,
+        "message": "Function created successfully at 00cbccb8"
+      }
+    },
+    {
+      "defined": "00cbccb8",
+      "end": "00cbccc2",
+      "name": null,
+      "after": "Function: FUN_00cbccb8 at 00cbccb8\nSignature: undefined FUN_00cbccb8(void)\nEntry: 00cbccb8\nBody: 00cbccb8 - 00cbccc1"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "final_resolution": {
+    "body_analysis_report": "reports/native_cockpit_viewport_be_body_analysis.json",
+    "saved_and_exports_refreshed": true,
+    "all_six_ranges_complete": true,
+    "analysis_only": true,
+    "new_reconstructed_entries": 0,
+    "full_readback": "00b3c6c0 CG_scalar_deleting_dtor_00b3c6c0  undefined CG_scalar_deleting_dtor_00b3c6c0(void)  body 00b3c6c0 - 00b3c6dd\n00cbed09 Unwind@00cbed09  undefined Unwind@00cbed09(void)  body 00cbed09 - 00cbed13\n00cbecc8 FUN_00cbecc8  undefined FUN_00cbecc8(void)  body 00cbecc8 - 00cbecd1\n00cbed14 FUN_00cbed14  undefined FUN_00cbed14(void)  body 00cbed14 - 00cbed1d\n00b1f8f0 BSP_Viewport_DeletingDestructor  undefined BSP_Viewport_DeletingDestructor(void)  body 00b1f8f0 - 00b1f913\n00cbccb8 FUN_00cbccb8  undefined FUN_00cbccb8(void)  body 00cbccb8 - 00cbccc1\n"
+  }
+}

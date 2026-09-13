@@ -44,6 +44,7 @@ struct GuiScreenSceneRuntime::Shared {
     explicit Shared(GuiScreenSceneEnvironment supplied) : environment(supplied) {
         require(&environment.scenes.nodes == &environment.cameras.nodes,
             "GUI scene and camera must use the same native node runtime");
+        environment.scenes.nodes.require_semantic_name_pool();
         const auto* table = environment.directional_vtable_00d62fb0;
         require(table && table[0] == 0x00bd30e0u && table[1] == 0x00b7c820u &&
             table[0x18 / 4] == 0x00b6f310u && table[0x34 / 4] == 0x00b6e870u &&
@@ -96,13 +97,13 @@ struct GuiScreenSceneRuntime::Shared {
             }
             state.owns_store_f4 = true;
             {
-                ScreenString name(env.scenes.nodes.strings, state.name_100);
+                ScreenString name(env.scenes.nodes.require_semantic_name_pool(), state.name_100);
                 scene = allocate_native_gui_scene_00b724e0(env.scenes, name.value);
                 state.scene_ec = &scene->storage;
             }
             NativeCameraReference* camera;
             {
-                ScreenString name(env.scenes.nodes.strings, "GuiCam_" + state.name_100);
+                ScreenString name(env.scenes.nodes.require_semantic_name_pool(), "GuiCam_" + state.name_100);
                 camera = allocate_native_gui_camera(env.cameras, name.value);
             }
             state.store_f0 = create_gui_camera_store_00aa5070(env.stores, *camera, *scene, state.key_108);
@@ -110,8 +111,8 @@ struct GuiScreenSceneRuntime::Shared {
             shared.bind(*state.store_f0, *camera, *scene);
             ConcreteSystemSceneResource* lights;
             {
-                ScreenString name(env.scenes.nodes.strings, "GuiLights");
-                lights = allocate_system_scene_resource_00b83c50(env.scenes.nodes.strings,
+                ScreenString name(env.scenes.nodes.require_semantic_name_pool(), "GuiLights");
+                lights = allocate_system_scene_resource_00b83c50(env.scenes.nodes.require_semantic_name_pool(),
                     name.value, env.directional_lights);
             }
             set_native_gui_scene_lighting_00b723f0(*scene, lights);
@@ -129,7 +130,7 @@ struct GuiScreenSceneRuntime::Shared {
             set_system_fog_camera_owner_00b71940(SystemFogSlotRef(camera_owner.storage.camera.fog_184), fog);
             release_system_fog_owner(*fog);
             GuiScreenDirectionalAllocation directional = [&] {
-                ScreenString name(env.scenes.nodes.strings, "GuiDirectionalLight");
+                ScreenString name(env.scenes.nodes.require_semantic_name_pool(), "GuiDirectionalLight");
                 return env.native.allocate_directional_light_00b7c6b0(name.value);
             }();
             auto& light = directional.owner;

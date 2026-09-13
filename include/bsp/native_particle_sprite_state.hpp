@@ -10,7 +10,7 @@ struct NativeParticlePopulationLockStorage;
 // the same native PointLight pool/node domains used by emission and cleanup.
 // strings is the application's existing temporary-string storage; actual
 // native publications use ActualNativeStringPoolStorage. The light's retained
-// name uses the environment's established nodes.strings constructor contract.
+// name uses the environment's checked semantic node-name pool contract.
 struct NativeParticleSpriteLightAccess {
     NativePointLightEnvironment& environment;
     NativeStringStorage& strings;
