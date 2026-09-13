@@ -122,3 +122,11 @@ inputs were rehashed unchanged; source, recipe and runtime evidence are retained
 
 No Ghidra mutation, source registration, shared test change, original ABI
 compatibility, full camera lifetime or gameplay claim belongs to this worker packet.
+
+## BC integration checkpoint
+
+The integrator reviewed the complete native body and actual producer/provider
+evidence, saved its original analysis signature and full stored range in the
+existing BSP project, and registered the source where needed. Exact combined
+validation follows separately from worker checks. No original binary entry,
+unrestricted FH3/SEH, whole owner lifetime or gameplay claim follows.

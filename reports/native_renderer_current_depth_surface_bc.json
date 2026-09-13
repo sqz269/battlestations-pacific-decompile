@@ -23,7 +23,21 @@
       "original_abi": "__thiscall; ECX actual renderer; zero stack arguments; EAX current DWORD198C; RET.",
       "source_abi": "__fastcall with the same physical receiver and return locations; EDX unused.",
       "existing_ghidra_name": "BSP_D3D9Renderer_GetField198C_Provisional",
-      "name_is_hypothesis": true
+      "name_is_hypothesis": true,
+      "end_exclusive": "00b20097",
+      "module": "native_renderer_current_depth_surface",
+      "packet_key": "depth",
+      "report": "reports/native_renderer_current_depth_surface_bc.json",
+      "doc": "docs/NATIVE_RENDERER_CURRENT_DEPTH_SURFACE_BC.md",
+      "ghidra_name": "BSP_D3D9Renderer_GetCurrentDepthSurfaceOwner",
+      "prior_ledger_name": "BSP_D3D9Renderer_GetField198C_Provisional",
+      "new_native_body": true,
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "get_native_renderer_current_depth_surface_00b20090",
+      "native_prototype": "void * BSP_D3D9Renderer_GetCurrentDepthSurfaceOwner(void)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": null,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b20090..00b20096 reviewed against current assembly, original register/stack ABI, live/PE bytes and actual producer/provider contracts. Preserve current raw reads, ordered stores and bit/copy/cleanup behavior. Added C++ interfaces remain distinct from original binary ABI, unrestricted FH3/SEH, concurrency and gameplay. New complete normal-body implementation over actual storage. Evidence: docs/NATIVE_RENDERER_CURRENT_DEPTH_SURFACE_BC.md; reports/native_renderer_current_depth_surface_bc.json. Correct prior provisional field-only name BSP_D3D9Renderer_GetField198C_Provisional: B23A7A publishes the B3F630 surface-owner wrapper at renderer+198C; current D5F1D4 slot points here and B14DC9 forwards the returned wrapper to B1FB00. This is not a raw COM surface pointer."
     }
   ],
   "calls": [
@@ -213,5 +227,13 @@
     "verified_manifest_rows": 34,
     "scope": "Leaf source/header/doc/report snapshot, exact original/COFF bytes and object, full producer/consumer evidence, scripts, logs and baseline input/library hashes. No runtime fixture or archived baseline libraries; final registered-library check belongs to root.",
     "archive_report_snapshot_precedes_archive_hash": true
+  },
+  "integration_bc_review": {
+    "combined_validation": "pending current combined build and applicable current-library validation",
+    "game_validated": false,
+    "current_report_call_check": "reports/native_renderer_current_depth_surface_bc.json: 4 call rows checked, 0 failed",
+    "saved_original_signature_readback": true,
+    "saved_full_body_ranges": true,
+    "current_signature_audit_count": 7
   }
 }

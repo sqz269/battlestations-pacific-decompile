@@ -28,7 +28,18 @@
       "original_abi": "__thiscall; ECX=actual eight-byte header; stack const char* nonnull NUL-terminated text; RET4; EAX=saved destination.",
       "existing_body_raw_extension": true,
       "typed_overload_unchanged": true,
-      "new_context": "NativeStringRawPoolContext&; original native ABI has no context argument."
+      "new_context": "NativeStringRawPoolContext&; original native ABI has no context argument.",
+      "end_exclusive": "0041e8c3",
+      "module": "native_physical_file_date",
+      "packet_key": "string",
+      "report": "reports/native_string_cstring_raw_bc.json",
+      "doc": "docs/NATIVE_STRING_CSTRING_RAW_BC.md",
+      "new_native_body": false,
+      "ledger_record_name": "construct_native_string_cstring_0041e870",
+      "native_prototype": "void * BSP_NativeString_Assign(char * source)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": null,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 0041e870..0041e8c2 reviewed against current assembly, original register/stack ABI, live/PE bytes and actual producer/provider contracts. Preserve current raw reads, ordered stores and bit/copy/cleanup behavior. Added C++ interfaces remain distinct from original binary ABI, unrestricted FH3/SEH, concurrency and gameplay. Existing function record extended to the current raw-storage implementation; prior reconstruction retained, no new body count. Evidence: docs/NATIVE_STRING_CSTRING_RAW_BC.md; reports/native_string_cstring_raw_bc.json."
     }
   ],
   "calls": [
@@ -200,5 +211,13 @@
     "manifest": "C:\\Users\\sqz269\\bsp-bc-string-cstring\\worker_capture_manifest.json",
     "original_capture_immutable": true,
     "includes": "All loose fixture/native/caller/state/event/log evidence, probe and recipes, every pinned repository input and all three exact current worker libraries. The archived report snapshot precedes adding the archive hash to the tracked report."
+  },
+  "integration_bc_review": {
+    "combined_validation": "pending current combined build and applicable current-library validation",
+    "game_validated": false,
+    "current_report_call_check": "reports/native_string_cstring_raw_bc.json: 3 call rows checked, 0 failed",
+    "saved_original_signature_readback": true,
+    "saved_full_body_ranges": true,
+    "current_signature_audit_count": 7
   }
 }

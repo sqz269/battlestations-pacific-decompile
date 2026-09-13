@@ -45,3 +45,11 @@ COFF/native equality with zero code relocations, four numeric producer/consumer
 call rows, current indirect dispatch bytes/profile slot, eight native seeds,
 and both baseline CTests. No runtime fixture or new repository test was added.
 The baseline excludes this unregistered leaf; root must check its final library.
+
+## BC integration checkpoint
+
+The integrator reviewed the complete native body and actual producer/provider
+evidence, saved its original analysis signature and full stored range in the
+existing BSP project, and registered the source where needed. Exact combined
+validation follows separately from worker checks. No original binary entry,
+unrestricted FH3/SEH, whole owner lifetime or gameplay claim follows.

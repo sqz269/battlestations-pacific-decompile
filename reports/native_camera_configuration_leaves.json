@@ -44,7 +44,13 @@
         "00b6fc08: RET 0x4 "
       ],
       "effect": "Capture MOVSS raw argument before AND of current camera+2F0 with FFFFFF41, then MOVSS to 0x1d4",
-      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native body 00b6fbf0..00b6fc0a; original memory order and raw bits retained. Original RET4 has a declared new ABI substitution to ECX/EDX/plain RET. Actual camera offsets reconciled against B71A80 and existing NativeCameraTailStorage. Extends the existing typed record without adding a native-body count or replacing its interface. No camera lifetime, private-stack alias, unrestricted SEH/concurrency or gameplay claim. See docs/NATIVE_CAMERA_CONFIGURATION_LEAVES.md and reports/native_camera_configuration_leaves.json."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b6fbf0..00b6fc0a reviewed against current assembly, original register/stack ABI, live/PE bytes and actual producer/provider contracts. Preserve current raw reads, ordered stores and bit/copy/cleanup behavior. Added C++ interfaces remain distinct from original binary ABI, unrestricted FH3/SEH, concurrency and gameplay. Existing function record extended to the current raw-storage implementation; prior reconstruction retained, no new body count. Evidence: docs/NATIVE_CAMERA_CONFIGURATION_LEAVES.md; reports/native_camera_configuration_leaves.json.",
+      "packet_key": "camera",
+      "report": "reports/native_camera_configuration_leaves.json",
+      "doc": "docs/NATIVE_CAMERA_CONFIGURATION_LEAVES.md",
+      "native_prototype": "void BSP_Camera_SetNearPlane(float value)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": "Descriptive hypothesis, not a recovered symbol. Complete native body 00b6fbf0..00b6fc0a; original memory order and raw bits retained. Original RET4 has a declared new ABI substitution to ECX/EDX/plain RET. Actual camera offsets reconciled against B71A80 and existing NativeCameraTailStorage. Extends the existing typed record without adding a native-body count or replacing its interface. No camera lifetime, private-stack alias, unrestricted SEH/concurrency or gameplay claim. See docs/NATIVE_CAMERA_CONFIGURATION_LEAVES.md and reports/native_camera_configuration_leaves.json."
     },
     {
       "address": "00b6fc10",
@@ -74,7 +80,13 @@
         "00b6fc28: RET 0x4 "
       ],
       "effect": "Capture MOVSS raw argument before AND of current camera+2F0 with FFFFFF41, then MOVSS to 0x1d8",
-      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native body 00b6fc10..00b6fc2a; original memory order and raw bits retained. Original RET4 has a declared new ABI substitution to ECX/EDX/plain RET. Actual camera offsets reconciled against B71A80 and existing NativeCameraTailStorage. Extends the existing typed record without adding a native-body count or replacing its interface. No camera lifetime, private-stack alias, unrestricted SEH/concurrency or gameplay claim. See docs/NATIVE_CAMERA_CONFIGURATION_LEAVES.md and reports/native_camera_configuration_leaves.json."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b6fc10..00b6fc2a reviewed against current assembly, original register/stack ABI, live/PE bytes and actual producer/provider contracts. Preserve current raw reads, ordered stores and bit/copy/cleanup behavior. Added C++ interfaces remain distinct from original binary ABI, unrestricted FH3/SEH, concurrency and gameplay. Existing function record extended to the current raw-storage implementation; prior reconstruction retained, no new body count. Evidence: docs/NATIVE_CAMERA_CONFIGURATION_LEAVES.md; reports/native_camera_configuration_leaves.json.",
+      "packet_key": "camera",
+      "report": "reports/native_camera_configuration_leaves.json",
+      "doc": "docs/NATIVE_CAMERA_CONFIGURATION_LEAVES.md",
+      "native_prototype": "void BSP_Camera_SetFarPlane(float value)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": "Descriptive hypothesis, not a recovered symbol. Complete native body 00b6fc10..00b6fc2a; original memory order and raw bits retained. Original RET4 has a declared new ABI substitution to ECX/EDX/plain RET. Actual camera offsets reconciled against B71A80 and existing NativeCameraTailStorage. Extends the existing typed record without adding a native-body count or replacing its interface. No camera lifetime, private-stack alias, unrestricted SEH/concurrency or gameplay claim. See docs/NATIVE_CAMERA_CONFIGURATION_LEAVES.md and reports/native_camera_configuration_leaves.json."
     },
     {
       "address": "00b6fe10",
@@ -103,7 +115,13 @@
         "00b6fe1a: RET 0x4 "
       ],
       "effect": "Read complete DWORD, store to +188 and return it unchanged",
-      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native body 00b6fe10..00b6fe1c; original memory order and raw bits retained. Original RET4 has a declared new ABI substitution to ECX/EDX/plain RET. Actual camera offsets reconciled against B71A80 and existing NativeCameraTailStorage. Extends the existing typed record without adding a native-body count or replacing its interface. No camera lifetime, private-stack alias, unrestricted SEH/concurrency or gameplay claim. See docs/NATIVE_CAMERA_CONFIGURATION_LEAVES.md and reports/native_camera_configuration_leaves.json."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b6fe10..00b6fe1c reviewed against current assembly, original register/stack ABI, live/PE bytes and actual producer/provider contracts. Preserve current raw reads, ordered stores and bit/copy/cleanup behavior. Added C++ interfaces remain distinct from original binary ABI, unrestricted FH3/SEH, concurrency and gameplay. Existing function record extended to the current raw-storage implementation; prior reconstruction retained, no new body count. Evidence: docs/NATIVE_CAMERA_CONFIGURATION_LEAVES.md; reports/native_camera_configuration_leaves.json.",
+      "packet_key": "camera",
+      "report": "reports/native_camera_configuration_leaves.json",
+      "doc": "docs/NATIVE_CAMERA_CONFIGURATION_LEAVES.md",
+      "native_prototype": "unsigned int BSP_Camera_SetClearFlags(unsigned int value)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": "Descriptive hypothesis, not a recovered symbol. Complete native body 00b6fe10..00b6fe1c; original memory order and raw bits retained. Original RET4 has a declared new ABI substitution to ECX/EDX/plain RET. Actual camera offsets reconciled against B71A80 and existing NativeCameraTailStorage. Extends the existing typed record without adding a native-body count or replacing its interface. No camera lifetime, private-stack alias, unrestricted SEH/concurrency or gameplay claim. See docs/NATIVE_CAMERA_CONFIGURATION_LEAVES.md and reports/native_camera_configuration_leaves.json."
     },
     {
       "address": "00b6fe20",
@@ -132,7 +150,13 @@
         "00b6fe2e: RET 0x4 "
       ],
       "effect": "Read MOVSS raw argument, MOVSS to +18C, no flags update",
-      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native body 00b6fe20..00b6fe30; original memory order and raw bits retained. Original RET4 has a declared new ABI substitution to ECX/EDX/plain RET. Actual camera offsets reconciled against B71A80 and existing NativeCameraTailStorage. One new complete actual-storage body. No camera lifetime, private-stack alias, unrestricted SEH/concurrency or gameplay claim. See docs/NATIVE_CAMERA_CONFIGURATION_LEAVES.md and reports/native_camera_configuration_leaves.json."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b6fe20..00b6fe30 reviewed against current assembly, original register/stack ABI, live/PE bytes and actual producer/provider contracts. Preserve current raw reads, ordered stores and bit/copy/cleanup behavior. Added C++ interfaces remain distinct from original binary ABI, unrestricted FH3/SEH, concurrency and gameplay. New complete normal-body implementation over actual storage. Evidence: docs/NATIVE_CAMERA_CONFIGURATION_LEAVES.md; reports/native_camera_configuration_leaves.json.",
+      "packet_key": "camera",
+      "report": "reports/native_camera_configuration_leaves.json",
+      "doc": "docs/NATIVE_CAMERA_CONFIGURATION_LEAVES.md",
+      "native_prototype": "void BSP_Camera_SetClearDepth(float value)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": "Descriptive hypothesis, not a recovered symbol. Complete native body 00b6fe20..00b6fe30; original memory order and raw bits retained. Original RET4 has a declared new ABI substitution to ECX/EDX/plain RET. Actual camera offsets reconciled against B71A80 and existing NativeCameraTailStorage. One new complete actual-storage body. No camera lifetime, private-stack alias, unrestricted SEH/concurrency or gameplay claim. See docs/NATIVE_CAMERA_CONFIGURATION_LEAVES.md and reports/native_camera_configuration_leaves.json."
     }
   ],
   "original_image": {
@@ -1997,5 +2021,13 @@
     "shared_test_edits": 0,
     "merge": false,
     "push": false
+  },
+  "integration_bc_review": {
+    "combined_validation": "pending current combined build and applicable current-library validation",
+    "game_validated": false,
+    "current_report_call_check": "reports/native_camera_configuration_leaves.json: 66 call rows checked, 0 failed",
+    "saved_original_signature_readback": true,
+    "saved_full_body_ranges": true,
+    "current_signature_audit_count": 7
   }
 }

@@ -108,3 +108,11 @@ Original FH3/SEH identity, second-exception search ordering, hardware-fault
 unwinding, private context/frame aliases, allocation failure, unrestricted ABI,
 concurrency and gameplay remain unproved. Current raw storage must be valid
 at each native access. No executable path or frame behavior is claimed here.
+
+## BC integration checkpoint
+
+The integrator reviewed the complete native body and actual producer/provider
+evidence, saved its original analysis signature and full stored range in the
+existing BSP project, and registered the source where needed. Exact combined
+validation follows separately from worker checks. No original binary entry,
+unrestricted FH3/SEH, whole owner lifetime or gameplay claim follows.

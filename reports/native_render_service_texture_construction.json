@@ -26,7 +26,16 @@
       "proposed_ghidra_name": "BSP_RenderServiceTextureHelper_Construct",
       "name_status": "descriptive_hypothesis_not_recovered_symbol",
       "original_abi": "ECX actual CCh allocation from B14EC6; no stack arguments; EAX same owner; RET at B5283F",
-      "evidence": "Full242-instruction fresh live listing, complete sole caller/EBX provenance, saved dimension producer B3F930, 1232 live/PE body/profile/literal/EH bytes. Reuse actual cache, four persistent acquired frames, raw strings/pool/manager, native vectors and saved dimension targets; source API and bounded exceptions, not original ABI certification."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b52550..00b5283f reviewed against current assembly, original register/stack ABI, live/PE bytes and actual producer/provider contracts. Preserve current raw reads, ordered stores and bit/copy/cleanup behavior. Added C++ interfaces remain distinct from original binary ABI, unrestricted FH3/SEH, concurrency and gameplay. New complete normal-body implementation over actual storage. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_CONSTRUCTION.md; reports/native_render_service_texture_construction.json.",
+      "packet_key": "texture",
+      "report": "reports/native_render_service_texture_construction.json",
+      "doc": "docs/NATIVE_RENDER_SERVICE_TEXTURE_CONSTRUCTION.md",
+      "ghidra_name": "BSP_RenderServiceTextureHelper_Construct",
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "construct_native_render_service_textures_00b52550",
+      "native_prototype": "void * BSP_RenderServiceTextureHelper_Construct(void)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": "Full242-instruction fresh live listing, complete sole caller/EBX provenance, saved dimension producer B3F930, 1232 live/PE body/profile/literal/EH bytes. Reuse actual cache, four persistent acquired frames, raw strings/pool/manager, native vectors and saved dimension targets; source API and bounded exceptions, not original ABI certification."
     }
   ],
   "files": [
@@ -506,5 +515,13 @@
     "exactly_four_owned_files": true,
     "no_merge_push": true,
     "retained_worktree": true
+  },
+  "integration_bc_review": {
+    "combined_validation": "pending current combined build and applicable current-library validation",
+    "game_validated": false,
+    "current_report_call_check": "reports/native_render_service_texture_construction.json: 39 call rows checked, 0 failed",
+    "saved_original_signature_readback": true,
+    "saved_full_body_ranges": true,
+    "current_signature_audit_count": 7
   }
 }
