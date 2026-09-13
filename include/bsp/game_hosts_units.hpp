@@ -168,6 +168,7 @@ struct GameUnitsSummary {
     // those made, and `class_6_list` the length of the one list the ship AI's
     // brain pre-pass walks for neighbour candidates.
     unsigned long long world_registrations{0};
+    unsigned long long world_registration_unavailable{0};
     unsigned long long world_list_pushes{0};
     std::size_t world_class_6_list{0};
 };
@@ -417,10 +418,10 @@ public:
     // [[00E188A8]+19CCh] holds 97 {count, head, tail} triples at
     // registry+18h + id*0Ch (004CB076's vector-constructor iterator inside
     // 004CB030). A created unit joins them through its entity virtual slot
-    // +130h: 006FE620 BSP_UnitInstance_RegisterInWorldLists, whose body is
-    // 00928560 (which pushes id 1) followed by five 00484540 push-backs onto
-    // ids 2, 4, 5, 6 and 7 (ADD ECX,0x30/0x48/0x54/0x60/0x6C at
-    // 006FE62C..006FE65C). docs/GAMEPLAY_LOOSE_ENDS_1.md section 2.
+    // +130h, selected through its actual descriptor creator. Every recovered
+    // registrar starts with00928560 (id1), then joins its own ordered lists.
+    // Ships join6, planes15; buildings use their own class lists. See
+    // docs/UNIT_WORLD_REGISTRATION.md and UNIT_WORLD_REGISTRATION_LIVE.md.
     //
     // Id 6 is the list BSP_ShipAi_BrainPrePass reads at 009F1877: it loads
     // [00E188A8], then +19CCh, then the head at +64h and the count at +60h,
@@ -432,6 +433,11 @@ public:
     // count when the position is past the end. The order is 00484540's own:
     // appended at the tail, walked from the head.
     std::size_t world_list_entry(int class_id, std::size_t position) const noexcept;
+    // Stable nodes from the actual runtime registry. Payload is the direct
+    // unit identity; next is read live, including after candidate callbacks.
+    const void* world_list_head(int class_id) const noexcept;
+    static const void* world_list_node_unit(const void* node) noexcept;
+    static const void* world_list_node_next(const void* node) noexcept;
 
     std::size_t count() const noexcept;
     bool unit_active(std::size_t index) const noexcept;

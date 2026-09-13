@@ -34,7 +34,9 @@ inline constexpr std::uint32_t kWorldVTable = 0x00CE7784; // 004CB04C
 inline constexpr std::uint32_t kWorldScalarDeletingDestructor = 0x004CB0B0; // slot 0
 
 // The eh_vector_constructor_iterator at 004CB076: 61h elements of stride 0Ch
-// starting at +18h, element constructor 004C2D30 and destructor 004B7EC0. The
+// starting at +18h, element constructor004B7EC0 and destructor004C2D30.
+//004CB060 pushes destructor,004CB065 pushes constructor;004B7EC0 clears
+// count/head/tail. UNIT_WORLD_REGISTRATION_LIVE.md corrects the older reversal. The
 // array therefore ends at +18h + 61h*0Ch = +4A4h.
 inline constexpr std::size_t kWorldSlotArrayOffset = 0x18;
 inline constexpr std::size_t kWorldSlotStride = 0x0C;
