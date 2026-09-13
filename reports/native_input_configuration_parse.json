@@ -1,6 +1,6 @@
 {
   "packet": "orch4_input_parser_ak",
-  "status": "actual_inputs_parser_prefix_and_binding_producers_reconstructed_native_component_fixture_passed_final_integration_pending",
+  "status": "actual_inputs_parser_prefix_and_binding_producers_reconstructed_strict_win32_native_component_fixture_passed_final_tail_pending",
   "target": {
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe"
@@ -1947,5 +1947,29 @@
       "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\fundamentals.lua": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526",
       "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\Inputs.lua": "b9b3f16dd14f264fa055d84cd80b5adf02f3f2c90234d29025cb2af1dd622ac5"
     }
+  },
+  "final_validation": {
+    "utc": "2026-09-13T04:48:04.992897+00:00",
+    "source_revision": "c7012a98bbdef19a187e3288db8f9c92eed84c5e",
+    "merged_main_revision": "87f9a9e0290d8470357b50cb26e4b3963ace46e7",
+    "code_files": 2181,
+    "code_manifest": "local\\input_parser_ak_source_manifest.json",
+    "code_manifest_sha256": "5d3aba42784c6533885d1da25404bd9b9bc5882c9bcfadcd6c7f34830d16fb41",
+    "core_archive_sha256": "88e1b0aa30077cc061fbaa222984cadbb5411df613ec472cac918ddbcdbb5356",
+    "game_executable_sha256": "845b8d512a47a443d4c6bea9de2a58aa084ea91aca5ed0c98fc90553ec4668d6",
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "build_log": "local\\input_parser_ak_combined_build.log",
+    "build_log_sha256": "20ef38f5d7a3cf8686ffa24b3a46e9f799d30038622ee1bc1046b8be004c54ed",
+    "fixture_log": "local\\input_parser_ak_combined_probe.log",
+    "fixture_log_sha256": "66689ffbf1337c4983e9fffd6b0e553c5224385dd44e3df99c7a21dad95408ff",
+    "native_source_words_equal": 14015,
+    "calls_checked": 210,
+    "calls_failed": 0,
+    "disk_live_seeds_equal": 8,
+    "same_fixture_and_native_bytes_as_component_comparison": true,
+    "game_validated": false,
+    "original_abi_compatible": false,
+    "no_subagents_dispatched": true
   }
 }
