@@ -1,0 +1,69 @@
+{
+  "packet": "orch4_mpak_offset_copy_storage_az",
+  "status": "source_implementation_win32_build_tested",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe"
+  },
+  "source": [
+    "include/bsp/native_mpak_offset_copy_storage.hpp",
+    "src/native_mpak_offset_copy_storage.cpp"
+  ],
+  "documentation": "docs/NATIVE_MPAK_OFFSET_COPY_STORAGE_AZ.md",
+  "routine": {
+    "address": "00bb6180",
+    "coverage": "complete normal actual-header copy with explicit library boundaries",
+    "original_abi": "ECX destination10h, source10h* stack, EAX destination, RET4",
+    "proposed_name": "copy_mpak_offset_dword_vector"
+  },
+  "host_steps": [
+    {
+      "function": "BSP_MpakFileRecord_CopyConstruct",
+      "address": "00bb6616",
+      "native": "00bb6180",
+      "contract": "copy embedded offset vector after name is armed"
+    },
+    {
+      "function": "FUN_00bb6180",
+      "address": "00bb61b3",
+      "native": "00a40ad0",
+      "contract": "length error for count above 3fffffff"
+    },
+    {
+      "function": "FUN_00bb6180",
+      "address": "00bb61bc",
+      "native": "00a3e910",
+      "contract": "allocate count times four bytes"
+    },
+    {
+      "function": "FUN_00bb6180",
+      "address": "00bb61d5",
+      "native": "00bf6713",
+      "contract": "first returning invalid-parameter diagnostic"
+    },
+    {
+      "function": "FUN_00bb6180",
+      "address": "00bb61e3",
+      "native": "00bf6713",
+      "contract": "second returning invalid-parameter diagnostic"
+    },
+    {
+      "function": "FUN_00bb6180",
+      "address": "00bb6200",
+      "native": "00bf67a7",
+      "contract": "memmove_s with same destination and copy size; return ignored"
+    }
+  ],
+  "validation": ["./scripts/build.ps1 with BSP_AGENT=agent/orch4-mpak-offset-copy-az, MSBUILDDISABLENODEREUSE=1 and CMAKE_BUILD_PARALLEL_LEVEL=2 passed Win32 build", "Existing reconstructed_math CTest passed", "tools/verify_report_calls.py checked all six direct CALL rows"],
+  "uncertainty": [
+    "Source allocation and exception transport are not original STL/CRT/FH3 ABI",
+    "No parser, startup or game path validated"
+  ],
+  "body_envelope": {
+    "address": "00bb6180",
+    "end_inclusive": "00bb6213",
+    "bytes": 148,
+    "sha256": "9746968a73bfd21f593f2ce6ca9e3edf4ac11f9c33e202ca3ca325cf0dc64775",
+    "live_disk_equal": true
+  }
+}
