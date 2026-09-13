@@ -1,5 +1,7 @@
 # Native interpolator source emission
 
+Addresses: 00b35540, 00b36e30, 00b37000.
+
 Addresses: `00B35540`, `00B36E30`, `00B37000`.
 
 These normal-path reconstructions append directly to the actual B0h builder's

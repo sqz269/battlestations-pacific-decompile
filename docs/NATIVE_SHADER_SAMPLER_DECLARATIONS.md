@@ -1,5 +1,7 @@
 # Native shader sampler declarations
 
+Addresses: 00b37ef0, 00b38080.
+
 This packet appends sampler declarations to the existing actual B0h builder's
 string at `+4C`. It consumes the same actual 110h descriptors at builder `+70`
 and `+74`, their `+C4` pointer arrays and `+C8` counts, and actual 2Ch sampler

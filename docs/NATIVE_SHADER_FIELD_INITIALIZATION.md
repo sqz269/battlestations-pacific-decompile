@@ -1,5 +1,7 @@
 # Native field zeroing and vertex input decoding
 
+Addresses: 00b34e90, 00b357d0, 00b35820.
+
 This packet supplies actual-storage B357D0, B35820 and B34E90 implementations for the remaining source-generator reconstruction. It operates on the existing B0h builder, 1Ch field and 0Ch pointer-array layouts and the same pooled eight-byte strings. The old semantic emitters in `shader_source.cpp` remain separate; whole vertex/pixel generator wiring is still outstanding.
 
 Source and contracts are in `src/native_shader_field_initialization.cpp` and `include/bsp/native_shader_field_initialization.hpp`. `reports/native_shader_field_initialization.json` records numeric calls, byte/literal hashes, ABI, validation and limits. Names are evidence-backed descriptive hypotheses, not recovered symbols.
