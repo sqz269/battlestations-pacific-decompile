@@ -110,3 +110,5 @@ all five numeric edges and exited1: CD7ECF/CD7EEA/CD7F25/CD7F2F fail solely
 because the sites are in no Ghidra function. CE0E65 tail jump passed. Integration
 must define the missing bodies and repeat this check. This is static readiness, not reconstructed,
 build-tested, ABI-compatible, or game-validated completion.
+
+Integrator follow-up: both missing bodies are now defined, all three descriptive names and original no-argument prototypes are saved, and affected exports are refreshed. The five numeric call rows now all pass. Prior missing-body verifier failures above record the worker snapshot, not current state. Analysis only; source implementation follows separately.
