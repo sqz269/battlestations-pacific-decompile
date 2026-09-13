@@ -90,14 +90,15 @@ and state0 the base. Failed feature cleanup is not retried.
 
 ## Verification and remaining integration
 
-The discovery's call schema has been corrected from `site/operand` to include
-`address/native/function`. There are **24 direct call rows and 2 explicit Win32
-import boundaries**. The initial live verifier checks all 24 direct rows and
-finds the four expected missing-tail call sites BE95B3/BE95BA/BE95CB/BE95D3.
-Ghidra still ends BE9560 at BE9599; primary must repair its returning free flow,
-extend through BE95FB, refresh exports, and rerun the verifier. BE8DF0's full
-body exists but its decompiler also needs returning-free flow restored. The
-worker used complete disk listings and performed no Ghidra writes.
+The discovery's call schema includes `address/native/function`: **24 direct
+call rows and 2 explicit Win32 import boundaries**. After primary repaired
+returning-free flow and recreated BE9560 through BE95FB, both the implementation
+and discovery reports pass all 24 direct rows. The complete destructor contains
+156 bytes / 48 listed instructions with no gaps. BE8DF0 has no remaining call
+gaps; its six alignment bytes after the unconditional jump at BE8E48 remain
+untouched. Historical failed audits and prior function metadata are retained.
+All eight reviewed names and evidence comments were applied and saved, then
+their exports refreshed. See the report's `primary_analysis_acceptance` pins.
 
 The strict Win32 build and two existing CTests are recorded in the report;
 final native/source fixture coordination belongs to primary. No permanent

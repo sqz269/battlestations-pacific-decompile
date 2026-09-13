@@ -16,9 +16,10 @@ All eight proposed body spans match the installed PE and live Ghidra bytes.
 
 Implementation follow-up corrected the mechanical call schema: all26 original
 rows now also carry `address/native/function`, so the verifier consumes24 direct
-rows and reports2 explicit Win32 imports. Its four remaining failures are the
-known BE9560 tail sites awaiting primary flow/body repair; the old site/operand
-fields alone were not a successful mechanical call audit.
+rows and reports2 explicit Win32 imports. Primary subsequently repaired the
+BE9560 returning-free flow and recreated its complete156-byte body. Both
+reports now pass all24 direct rows; the old site/operand fields alone were
+not a successful mechanical call audit. Prior failures remain recorded.
 
 ## Target and evidence boundary
 
@@ -83,10 +84,11 @@ owner, and returns that original owner in EAX with RET4. Ghidra's apparent
 incidental free return is disproved by the final `MOV EAX,ESI`.
 The separate base cleanup BE8210 clears DB70 and stores CE3818.
 
-BE9560 needs a locked, documented returning-flow/body repair and refreshed
-export before implementation is accepted. BE8DF0 already spans its full
-308-byte body, but its decompiler also stops after BF6989; its tail publishes
-the new backing and requested capacity. This packet performs neither repair.
+Primary completed the locked BE9560 returning-flow/body repair and refreshed
+all eight exports. BE8DF0 already spanned its full308-byte body; primary restored
+its returning-free tail, which publishes the new backing and capacity. It has
+no remaining call gaps. Six alignment bytes after an unconditional jump were
+left untouched. This discovery packet itself performed neither repair.
 
 The report records all cleanup-map entries. Getter state1 deletes the captured
 allocation before state0 releases the captured guard. Registration failure

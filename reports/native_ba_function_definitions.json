@@ -1,0 +1,72 @@
+{
+ "events": [
+  {
+   "recreate": "00be9560",
+   "previous": "Function: FUN_00be9560 at 00be9560\nSignature: undefined FUN_00be9560(void)\nEntry: 00be9560\nBody: 00be9560 - 00be9599",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00be9560"
+   },
+   "result": {
+    "success": true,
+    "address": "00be9560",
+    "deleted_function": "FUN_00be9560",
+    "body_size": 58,
+    "message": "Function 'FUN_00be9560' deleted at 00be9560"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00be9560",
+    "end_address": "00be95fc"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00be9560",
+    "end_address": "00be95fb",
+    "bytes_disassembled": 156,
+    "message": "Successfully disassembled 156 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00be9560",
+    "disassemble_first": false,
+    "name": "BSP_DebugFeatureOwner_Destruct"
+   },
+   "result": {
+    "success": true,
+    "address": "00be9560",
+    "function_name": "BSP_DebugFeatureOwner_Destruct",
+    "entry_point": "00be9560",
+    "body_size": 156,
+    "message": "Function created successfully at 00be9560",
+    "warnings": [
+     "Function name 'BSP_DebugFeatureOwner_Destruct' \u2014 main part 'DebugFeatureOwner_Destruct' is not PascalCase. Expected: DebugfeatureownerDestruct",
+     "Function name 'BSP_DebugFeatureOwner_Destruct' \u2014 main part 'DebugFeatureOwner_Destruct' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_DebugFeatureOwner_Destruct' does not start with a recognized verb. First word 'Debug' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00be9560",
+   "end": "00be95fc",
+   "name": "BSP_DebugFeatureOwner_Destruct",
+   "after": "Function: BSP_DebugFeatureOwner_Destruct at 00be9560\nSignature: undefined BSP_DebugFeatureOwner_Destruct(void)\nEntry: 00be9560\nBody: 00be9560 - 00be95fb"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

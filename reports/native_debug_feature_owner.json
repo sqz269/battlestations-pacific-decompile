@@ -488,7 +488,7 @@
     "Raw reads/writes are volatile DWORD/byte operations; do not zero the whole owner or its untouched padding.",
     "Native numeric profile D68B94 is identity only; scalar deletion receives unadjusted owner and flags. Central dispatch belongs to primary.",
     "Getter uses existing raw manager getter and registration, captures the first physical section, and preserves current publication reload timing and retained publication on registration failure.",
-    "BE9560 complete disk tail is implemented despite stored Ghidra truncation; primary must repair and refresh before accepting live call verification.",
+    "BE9560 complete disk tail is implemented; primary restored returning flow, recreated the full 156-byte body, refreshed all eight exports, and verified all 24 direct call rows.",
     "The 427880 cleanup contract is composed from existing FULL427110 resize and current-backing source free. The older mesh-only no-grow fragment is not used, so negative signed capacity is not silently ignored.",
     "Record payload uses32 forward DWORD loads/stores matching REP MOVSD overlap propagation, not a memcpy/memmove substitution.",
     "Record reserve has no cleanup of newly allocated backing/previous copies on allocation failure inside a later string copy; native unwind calls bare RET401130.",
@@ -586,13 +586,15 @@
       "observed_body_end": "00be9599",
       "disk_end": "00be95fb",
       "reason": "BF6989 no-return modeling truncates free fallthrough; full disk tail cleans owner+10 string, owner+04 array and publication.",
-      "action": "Primary acquires address lease/write lock, preserves documentation, repairs returning flow, recreates full body if needed, saves and refreshes exports."
+      "action": "Primary acquires address lease/write lock, preserves documentation, repairs returning flow, recreates full body if needed, saves and refreshes exports.",
+      "completion": "Completed by primary; historical discovery observation retained. See primary_analysis_acceptance."
     },
     {
       "address": "00be8df0",
       "observed_body_end": "00be8f23",
       "disk_end": "00be8f23",
-      "reason": "Body covers range, but pseudocode stops after free at BE8EFA; restore returning fallthrough before claiming decompiler flow. No mutation performed."
+      "reason": "Body covers range, but pseudocode stops after free at BE8EFA; restore returning fallthrough before claiming decompiler flow. No mutation performed.",
+      "completion": "Completed by primary; historical discovery observation retained. See primary_analysis_acceptance."
     }
   ],
   "startup_and_consumers": {
@@ -662,25 +664,11 @@
     "build_log": "local/native-debug-feature-owner-build.log",
     "build_log_sha256": "3803028ef51a63526cfa4acfd5e73e79d4a5c1114d1f03f583fb8449f6d90085",
     "native_span_bytes_match": 8,
-    "direct_calls_pending_four_tail_repairs": true,
+    "direct_calls_pending_four_tail_repairs": false,
     "permanent_tests_added": 0,
     "native_fixture": "primary final integration coordination requested",
     "game_validated": false,
     "abi_compatible": false,
-    "mechanical_call_audit": {
-      "direct_rows": 24,
-      "import_boundaries": 2,
-      "failed_rows": 4,
-      "expected_sites": [
-        "00be95b3",
-        "00be95ba",
-        "00be95cb",
-        "00be95d3"
-      ],
-      "log": "local/native-debug-feature-owner-calls-before-repair.log",
-      "sha256": "41b7415d2d42989de947311aa97c569d75504d93d872af1d763943b7a99c9fa0",
-      "reason": "stored Ghidra BE9560 body truncation, primary repair pending"
-    },
     "initial_full_build": {
       "log": "local/native-debug-feature-owner-build-initial-one-test.log",
       "sha256": "e35d504580f89c3f0b18f24f7e298d0938b48051ce6842b52384b0375acbea14",
@@ -702,7 +690,32 @@
         "sha256": "c20f9359fcb6e95c092df0c97949d834a1d6cac8ebecdc749fca82837755d0ce",
         "bytes": 18432
       }
-    ]
+    ],
+    "mechanical_call_audit_before_primary_repair": {
+      "direct_rows": 24,
+      "import_boundaries": 2,
+      "failed_rows": 4,
+      "expected_sites": [
+        "00be95b3",
+        "00be95ba",
+        "00be95cb",
+        "00be95d3"
+      ],
+      "log": "local/native-debug-feature-owner-calls-before-repair.log",
+      "sha256": "41b7415d2d42989de947311aa97c569d75504d93d872af1d763943b7a99c9fa0",
+      "reason": "stored Ghidra BE9560 body truncation, primary repair pending"
+    },
+    "mechanical_call_audit": {
+      "direct_rows": 24,
+      "failed_rows": 0,
+      "import_boundaries": 2,
+      "import_boundaries_mechanically_checked": false,
+      "log": {
+        "path": "local/native-ba-debug-calls-after-repair.log",
+        "sha256": "eb381a0cf21cd5f7293b9f61c8e16a2b60286a0614c665bcc396e3f42b1baf5e"
+      },
+      "note": "Each report independently consumed 24 direct rows after the complete destructor body was recreated."
+    }
   },
   "source_sha256": "8ab8e346938dd00937cdcdcc8f85332a401a368d7603bb1878f130d736636cd4",
   "header_sha256": "b98ea37efd50376fd2e1170bd15c7ada5bdf05be654c362f745f3e557d7b3e55",
@@ -710,5 +723,58 @@
     "docs/NATIVE_DEBUG_FEATURE_OWNER.md",
     "docs/NATIVE_FILESTORE_SERVICE_BA_DISCOVERY.md",
     "reports/native_filestore_service_ba_discovery.json"
-  ]
+  ],
+  "primary_analysis_acceptance": {
+    "status": "saved_exported_and_call_audited",
+    "flow_repairs": {
+      "path": "reports/native_ba_flow_repairs.json",
+      "sha256": "958e6764703ecc894a73a277dd892940bb8abf439f0411043f5cba755c15c284"
+    },
+    "body_definition": {
+      "path": "reports/native_ba_function_definitions.json",
+      "sha256": "532f54aa2e5954d8bc79a4dcb08f4aa13a8a701b3d69d8f2dc354b90c9f83f04"
+    },
+    "destructor": {
+      "address": "00be9560",
+      "end_inclusive": "00be95fb",
+      "bytes": 156,
+      "listed_instructions": 48,
+      "remaining_gaps": 0,
+      "flow": {
+        "path": "local/native-ba-debug-destructor-flow.txt",
+        "sha256": "84bafb0a31d4fbff0e7c48fc09b4dc94d0ad8ab27ea10f0d64400f0ca3d172aa"
+      }
+    },
+    "reserve": {
+      "address": "00be8df0",
+      "bytes": 308,
+      "remaining_call_gaps": 0,
+      "untouched_noncall_gap": "00be8e4a..00be8e50: six alignment bytes after an unconditional jump",
+      "flow": {
+        "path": "local/native-ba-debug-reserve-flow.txt",
+        "sha256": "22ef48f6546adc166b4d363b3105addaae50eec220ab41968e02faf2ba6c0683"
+      }
+    },
+    "annotation_history": {
+      "path": "local/ghidra-annotations-20260913T072404Z.json",
+      "sha256": "1bf26cedc684445801499b1f83eeb4be24bc90bfd9cb79e41afd203d6f242a3f"
+    },
+    "annotation_readback": {
+      "path": "local/native-ba-debug-annotation-readback.json",
+      "sha256": "b123e1eec92dcfdb7c56214adfee826dca2346ce221d07a76baa1641b908caca"
+    },
+    "names_applied_and_exports_refreshed": 8,
+    "call_audit": {
+      "direct_rows": 24,
+      "failed_rows": 0,
+      "import_boundaries": 2,
+      "import_boundaries_mechanically_checked": false,
+      "log": {
+        "path": "local/native-ba-debug-calls-after-repair.log",
+        "sha256": "eb381a0cf21cd5f7293b9f61c8e16a2b60286a0614c665bcc396e3f42b1baf5e"
+      },
+      "note": "Each report independently consumed 24 direct rows after the complete destructor body was recreated."
+    },
+    "boundary": "Analysis repair and source evidence only; final integrated fixture and gameplay remain separate."
+  }
 }

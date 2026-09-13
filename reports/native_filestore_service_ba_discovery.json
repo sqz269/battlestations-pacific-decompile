@@ -453,13 +453,15 @@
       "observed_body_end": "00be9599",
       "disk_end": "00be95fb",
       "reason": "BF6989 no-return modeling truncates free fallthrough; full disk tail cleans owner+10 string, owner+04 array and publication.",
-      "action": "Primary acquires address lease/write lock, preserves documentation, repairs returning flow, recreates full body if needed, saves and refreshes exports."
+      "action": "Primary acquires address lease/write lock, preserves documentation, repairs returning flow, recreates full body if needed, saves and refreshes exports.",
+      "completion": "Completed by primary; historical discovery observation retained. See primary_analysis_acceptance."
     },
     {
       "address": "00be8df0",
       "observed_body_end": "00be8f23",
       "disk_end": "00be8f23",
-      "reason": "Body covers range, but pseudocode stops after free at BE8EFA; restore returning fallthrough before claiming decompiler flow. No mutation performed."
+      "reason": "Body covers range, but pseudocode stops after free at BE8EFA; restore returning fallthrough before claiming decompiler flow. No mutation performed.",
+      "completion": "Completed by primary; historical discovery observation retained. See primary_analysis_acceptance."
     }
   ],
   "eh": {
@@ -810,6 +812,70 @@
     "direct_rows": 24,
     "import_rows": 2,
     "total_rows": 26,
-    "pending_live_repair": "BE9560 tail calls BE95B3, BE95BA, BE95CB and BE95D3 remain outside its truncated stored body until primary repair. Disk/live whole-span bytes have already matched."
+    "historical_pending_live_repair": "BE9560 tail calls BE95B3, BE95BA, BE95CB and BE95D3 remain outside its truncated stored body until primary repair. Disk/live whole-span bytes have already matched.",
+    "current_call_audit": {
+      "direct_rows": 24,
+      "failed_rows": 0,
+      "import_boundaries": 2,
+      "import_boundaries_mechanically_checked": false,
+      "log": {
+        "path": "local/native-ba-debug-calls-after-repair.log",
+        "sha256": "eb381a0cf21cd5f7293b9f61c8e16a2b60286a0614c665bcc396e3f42b1baf5e"
+      },
+      "note": "Each report independently consumed 24 direct rows after the complete destructor body was recreated."
+    }
+  },
+  "primary_analysis_acceptance": {
+    "status": "saved_exported_and_call_audited",
+    "flow_repairs": {
+      "path": "reports/native_ba_flow_repairs.json",
+      "sha256": "958e6764703ecc894a73a277dd892940bb8abf439f0411043f5cba755c15c284"
+    },
+    "body_definition": {
+      "path": "reports/native_ba_function_definitions.json",
+      "sha256": "532f54aa2e5954d8bc79a4dcb08f4aa13a8a701b3d69d8f2dc354b90c9f83f04"
+    },
+    "destructor": {
+      "address": "00be9560",
+      "end_inclusive": "00be95fb",
+      "bytes": 156,
+      "listed_instructions": 48,
+      "remaining_gaps": 0,
+      "flow": {
+        "path": "local/native-ba-debug-destructor-flow.txt",
+        "sha256": "84bafb0a31d4fbff0e7c48fc09b4dc94d0ad8ab27ea10f0d64400f0ca3d172aa"
+      }
+    },
+    "reserve": {
+      "address": "00be8df0",
+      "bytes": 308,
+      "remaining_call_gaps": 0,
+      "untouched_noncall_gap": "00be8e4a..00be8e50: six alignment bytes after an unconditional jump",
+      "flow": {
+        "path": "local/native-ba-debug-reserve-flow.txt",
+        "sha256": "22ef48f6546adc166b4d363b3105addaae50eec220ab41968e02faf2ba6c0683"
+      }
+    },
+    "annotation_history": {
+      "path": "local/ghidra-annotations-20260913T072404Z.json",
+      "sha256": "1bf26cedc684445801499b1f83eeb4be24bc90bfd9cb79e41afd203d6f242a3f"
+    },
+    "annotation_readback": {
+      "path": "local/native-ba-debug-annotation-readback.json",
+      "sha256": "b123e1eec92dcfdb7c56214adfee826dca2346ce221d07a76baa1641b908caca"
+    },
+    "names_applied_and_exports_refreshed": 8,
+    "call_audit": {
+      "direct_rows": 24,
+      "failed_rows": 0,
+      "import_boundaries": 2,
+      "import_boundaries_mechanically_checked": false,
+      "log": {
+        "path": "local/native-ba-debug-calls-after-repair.log",
+        "sha256": "eb381a0cf21cd5f7293b9f61c8e16a2b60286a0614c665bcc396e3f42b1baf5e"
+      },
+      "note": "Each report independently consumed 24 direct rows after the complete destructor body was recreated."
+    },
+    "boundary": "Analysis repair and source evidence only; final integrated fixture and gameplay remain separate."
   }
 }
