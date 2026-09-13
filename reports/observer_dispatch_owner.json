@@ -1,0 +1,1269 @@
+{
+  "packet": "orch6_observer_dispatch_owner_q",
+  "base_commit": "522cabd1",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "Worker read-only formal BSP CLI; root definitions/flow repair under its write lock",
+  "source": "src/observer_dispatch_owner.cpp",
+  "header": "include/bsp/observer_dispatch_owner.hpp",
+  "doc": "docs/OBSERVER_DISPATCH_OWNER.md",
+  "routines": [
+    {
+      "address": "00693C70",
+      "native": "00693C70",
+      "proposed_name": "BSP_ObserverDispatchOwnerBase_Clear",
+      "reconstruction": "bsp::clear_observer_dispatch_owner_base_00693c70",
+      "original_bytes": {
+        "address": "00693C70",
+        "end_inclusive": "00693C80",
+        "offset": 0,
+        "bytes": 17,
+        "instructions": 3,
+        "sha256": "d9af89a5987c070fb3882cb78494b0ada6c5a086459f5f630a4abc86013bbe4e"
+      },
+      "coverage": "complete normal native behavior; source ABI and exception limits explicit",
+      "native_abi": "ECX=owner, RET",
+      "abi_compatible": false,
+      "last_instruction": "00693C80",
+      "last_instruction_length": 1,
+      "ghidra_body_membership": "entry and inclusive envelope verified"
+    },
+    {
+      "address": "00693E10",
+      "native": "00693E10",
+      "proposed_name": "BSP_ObserverDispatchOwnerBase_ScalarDelete",
+      "reconstruction": "bsp::delete_observer_dispatch_owner_base_00693e10",
+      "original_bytes": {
+        "address": "00693E10",
+        "end_inclusive": "00693E38",
+        "offset": 32,
+        "bytes": 41,
+        "instructions": 12,
+        "sha256": "38b0bdc1b53a48c8bc059144fac2e68b3d36d85ef0a41f7a9b279618f7955e3a"
+      },
+      "coverage": "complete normal native behavior; source ABI and exception limits explicit",
+      "native_abi": "ECX=owner, one stack flags DWORD, EAX=original owner, RET4",
+      "abi_compatible": false,
+      "last_instruction": "00693E36",
+      "last_instruction_length": 3,
+      "ghidra_body_membership": "entry and inclusive envelope verified"
+    },
+    {
+      "address": "00695ED0",
+      "native": "00695ED0",
+      "proposed_name": "BSP_ObserverDispatchOwner_Construct",
+      "reconstruction": "bsp::construct_observer_dispatch_owner_00695ed0",
+      "original_bytes": {
+        "address": "00695ED0",
+        "end_inclusive": "00695F07",
+        "offset": 96,
+        "bytes": 56,
+        "instructions": 16,
+        "sha256": "90340bc5eae8aaeaf00879a3b7f654e173d995dd2f135eeef8c2054854b2570b"
+      },
+      "coverage": "complete normal native behavior; source ABI and exception limits explicit",
+      "native_abi": "ECX=raw14h storage, EAX=owner, RET",
+      "abi_compatible": false,
+      "last_instruction": "00695F07",
+      "last_instruction_length": 1,
+      "ghidra_body_membership": "entry and inclusive envelope verified"
+    },
+    {
+      "address": "00695F10",
+      "native": "00695F10",
+      "proposed_name": "BSP_ObserverDispatchOwner_Destroy",
+      "reconstruction": "bsp::destroy_observer_dispatch_owner_00695f10",
+      "original_bytes": {
+        "address": "00695F10",
+        "end_inclusive": "00695F3D",
+        "offset": 160,
+        "bytes": 46,
+        "instructions": 18,
+        "sha256": "2d3b3b93e302056bbcdbe635f3740f27162bccc1d59471ab64397409c3c0e906"
+      },
+      "coverage": "complete normal native behavior; source ABI and exception limits explicit",
+      "native_abi": "ECX=owner, RET",
+      "abi_compatible": false,
+      "last_instruction": "00695F3D",
+      "last_instruction_length": 1,
+      "ghidra_body_membership": "restored decoding but specified body-membership holes remain"
+    },
+    {
+      "address": "00695F40",
+      "native": "00695F40",
+      "proposed_name": "CG_scalar_deleting_dtor_00695f40",
+      "reconstruction": "bsp::delete_observer_dispatch_owner_00695f40",
+      "original_bytes": {
+        "address": "00695F40",
+        "end_inclusive": "00695F81",
+        "offset": 224,
+        "bytes": 66,
+        "instructions": 24,
+        "sha256": "09df414fbd554eef8fd3e82dfcd50ef05a67d749602c299760470f6addb036ad"
+      },
+      "coverage": "complete normal native behavior; source ABI and exception limits explicit",
+      "native_abi": "ECX=owner, one stack flags DWORD, EAX=original owner, RET4",
+      "abi_compatible": false,
+      "last_instruction": "00695F7F",
+      "last_instruction_length": 3,
+      "ghidra_body_membership": "restored decoding but specified body-membership holes remain"
+    },
+    {
+      "address": "00696360",
+      "native": "00696360",
+      "proposed_name": "BSP_ObserverDispatchOwner_Get",
+      "reconstruction": "bsp::get_observer_dispatch_owner_00696360",
+      "original_bytes": {
+        "address": "00696360",
+        "end_inclusive": "0069641C",
+        "offset": 320,
+        "bytes": 189,
+        "instructions": 51,
+        "sha256": "44eeb5a3d29601aa205dae731c0c59aaf697b2a62070226217f9097bedfc2f09"
+      },
+      "coverage": "complete normal native behavior; source ABI and exception limits explicit",
+      "native_abi": "No native inputs, EAX=owner, RET",
+      "abi_compatible": false,
+      "last_instruction": "0069641C",
+      "last_instruction_length": 1,
+      "ghidra_body_membership": "entry and inclusive envelope verified"
+    },
+    {
+      "address": "00696420",
+      "native": "00696420",
+      "proposed_name": "BSP_ObserverDispatchOwner_GetThunk",
+      "reconstruction": "bsp::observer_dispatch_owner_thunk_00696420",
+      "original_bytes": {
+        "address": "00696420",
+        "end_inclusive": "00696424",
+        "offset": 512,
+        "bytes": 5,
+        "instructions": 1,
+        "sha256": "0873af1117bd7228ee29e0b904b306310d0b12e225a6dd1bb9836b1a2e9ddb6c"
+      },
+      "coverage": "complete normal native behavior; source ABI and exception limits explicit",
+      "native_abi": "Tail JMP00696360; same no-input/EAX contract",
+      "abi_compatible": false,
+      "last_instruction": "00696420",
+      "last_instruction_length": 5,
+      "ghidra_body_membership": "entry and inclusive envelope verified"
+    },
+    {
+      "address": "00CCD6A0",
+      "native": "00CCD6A0",
+      "proposed_name": "BSP_ObserverDispatchStorage_StaticPublish",
+      "reconstruction": "bsp::publish_observer_dispatch_storage_00ccd6a0",
+      "original_bytes": {
+        "address": "00CCD6A0",
+        "end_inclusive": "00CCD6AD",
+        "offset": 544,
+        "bytes": 14,
+        "instructions": 4,
+        "sha256": "5bc27e98c8c903cfcb835a8880eaacaf2603697195d315069bc6d689c2e0946c"
+      },
+      "coverage": "complete normal native behavior; source ABI and exception limits explicit",
+      "native_abi": "No native inputs, void initializer contract, RET; EAX physically holds alias",
+      "abi_compatible": false,
+      "last_instruction": "00CCD6AD",
+      "last_instruction_length": 1,
+      "ghidra_body_membership": "entry and inclusive envelope verified"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00693E2B",
+      "native": "00BF65AC",
+      "function": "00693E10",
+      "offset": 60,
+      "kind": "call"
+    },
+    {
+      "address": "00695F1E",
+      "native": "00BF65AC",
+      "function": "00695F10",
+      "offset": 175,
+      "kind": "call"
+    },
+    {
+      "address": "00695F4E",
+      "native": "00BF65AC",
+      "function": "00695F40",
+      "offset": 239,
+      "kind": "call"
+    },
+    {
+      "address": "00695F73",
+      "native": "00BF65AC",
+      "function": "00695F40",
+      "offset": 276,
+      "kind": "call"
+    },
+    {
+      "address": "00696386",
+      "native": "00415350",
+      "function": "00696360",
+      "offset": 359,
+      "kind": "call"
+    },
+    {
+      "address": "006963BC",
+      "native": "00BF681B",
+      "function": "00696360",
+      "offset": 413,
+      "kind": "call"
+    },
+    {
+      "address": "006963D3",
+      "native": "00695ED0",
+      "function": "00696360",
+      "offset": 436,
+      "kind": "call"
+    },
+    {
+      "address": "006963E6",
+      "native": "00415350",
+      "function": "00696360",
+      "offset": 455,
+      "kind": "call"
+    },
+    {
+      "address": "006963F4",
+      "native": "00BD0C30",
+      "function": "00696360",
+      "offset": 469,
+      "kind": "call"
+    },
+    {
+      "address": "00696420",
+      "native": "00696360",
+      "function": "00696420",
+      "offset": 513,
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00CCD6A0",
+      "native": "00696360",
+      "function": "00CCD6A0",
+      "offset": 545,
+      "kind": "call"
+    },
+    {
+      "address": "0069639F",
+      "native": "EXTERNAL:0000015B",
+      "iat_slot": "00CE2218",
+      "function": "00696360",
+      "kind": "IAT import",
+      "contract": "Actual EnterCriticalSection; increment captured section+18 after return; external target identity, not a direct CALL target"
+    },
+    {
+      "address": "00696402",
+      "native": "EXTERNAL:00000159",
+      "iat_slot": "00CE2210",
+      "function": "00696360",
+      "kind": "IAT import",
+      "contract": "Actual LeaveCriticalSection; captured section+18 already decremented"
+    },
+    {
+      "address": "00C7EAF3",
+      "native": "00693C70",
+      "function": "00C7EAF0",
+      "kind": "tail_jump",
+      "contract": "Constructor metadata target; normal-path probe does not execute this unwind handler"
+    },
+    {
+      "address": "00C7EB53",
+      "native": "00411EE0",
+      "function": "00C7EB50",
+      "kind": "tail_jump",
+      "contract": "Getter captured guard state0 cleanup; source uses existing CapturedSoundLifetimeSection; native handler not executed"
+    },
+    {
+      "address": "00C7EB5C",
+      "native": "00BF65AC",
+      "function": "00C7EB58",
+      "kind": "unwind CALL",
+      "contract": "Getter allocation state1 cleanup; POP/RET tail missing from current Ghidra body; not executed"
+    },
+    {
+      "address": "00BFBCA7",
+      "native": "00CCD6A0",
+      "function": "00BFBC47",
+      "kind": "indirect initializer-table call",
+      "contract": "Resolved by actual pointer at00CE2BAC inside [00CE2734,00CE36E4), index286; indirect target not mechanically verified by call gate"
+    }
+  ],
+  "storage": {
+    "owner_bytes": 20,
+    "owning_publication": "00E198DC",
+    "derived_profile": "00CF7E74",
+    "scalar_deleter": "00695F40",
+    "embedded_alias_publication": "00E198E4",
+    "embedded_offset": 4,
+    "canonical_types": [
+      "NativeObserverDispatchStorage",
+      "SingletonPointerSlots"
+    ],
+    "writes": {
+      "constructor": [
+        "profile+00=CF7E74",
+        "begin+08=0",
+        "end+0C=0",
+        "capacity+10=0"
+      ],
+      "preserved": "owner+04/vector+00",
+      "destructor": [
+        "capture/free begin+08 if nonnull",
+        "zero+08/+0C/+10",
+        "clearE198DC",
+        "profile+00=CE3818"
+      ],
+      "alias": "E198E4 is untouched by every getter/destructor; only00CCD6A0 publishes result+4"
+    }
+  },
+  "static_initialization": {
+    "publication_instruction": "00CCD6A8",
+    "operand_scan_hit": "00CCD6A9",
+    "pointer_slot": "00CE2BAC",
+    "pointer_value": "00CCD6A0",
+    "table_begin": "00CE2734",
+    "table_end_exclusive": "00CE36E4",
+    "index": 286,
+    "loop": "__cinit00BFBC47:00BFBC90..00BFBCAE, indirectCALL00BFBCA7",
+    "policy": "Sequential CRT table invocation. This initializer only calls getter/adds4/publishes; no atexit, reorder or separate owner allocation. Application supplies this exact startup stage.",
+    "null": "Native32 ADD4 preserved; a null getter result would publish address4, notnull. Structural branch, not fixture-driven allocator failure."
+  },
+  "registration": {
+    "manager": "Existing SoundLifetimeAccess borrowed over actual01090AA0; its raw branch calls existing00415350/BD0C30",
+    "sequence": [
+      "capture first owner publication for fast return",
+      "resolve first manager and capture its actual+10 section",
+      "enter then increment captured+18",
+      "recheck owning publication",
+      "allocate14h and construct when nonnull",
+      "publish owning pointer at006963E1",
+      "resolve manager again at006963E6",
+      "read current owner at006963EB and register it at006963F4",
+      "decrement/leave original captured section",
+      "slow final owner reload"
+    ],
+    "destructor": "No unregister or edge deletion in owner destructor; existing manager drain owns pop-before-delete. Alias must outlive all observer cleanup.",
+    "exception": "Source allocation failure precedes constructor state1; registration failures retain publication and release captured lock. Native constructor has only stores; FH3/SEH/hardware-fault cleanup is not emulated."
+  },
+  "corrections": [
+    {
+      "was": "Dispatch publication producer unresolved; indexed E198E4 xrefs showed only consumer reads.",
+      "is": "Undefined00CCD6A0 writes embedded getter result+4; owning singleton isE198DC,20bytes withCF7E74 profile.",
+      "evidence": "Raw PE operand scan00CCD6A9, verified full14-byte initializer, table slotCE2BAC and__cinit loop."
+    },
+    {
+      "was": "An independently allocated/published dispatch owner could have been inferred from E198E4.",
+      "is": "E198E4 is an embedded alias; constructor preserves owner+4 and clears only owner+8/+C/+10.",
+      "evidence": "00695EEA..00695EF6 and00CCD6A5..00CCD6AD; full owner layout and preseeded byte comparison."
+    },
+    {
+      "was": "Decoded free fall-through repairs might be treated as complete Ghidra body membership.",
+      "is": "All three ADDESP4 instructions decode, but live proto still returns no containing function at00695F23/53/78.",
+      "evidence": "Saved body_gap_*.txt queries and root repair report; original PE spans independently verified."
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00CCD6A0",
+      "native": "00CCD6A0",
+      "status": "initially missing, formally defined/saved/exported by root before completion",
+      "inclusive_end": "00CCD6AD",
+      "last_instruction": "00CCD6AD",
+      "last_instruction_length": 1
+    },
+    {
+      "address": "00696360",
+      "native": "00696360",
+      "status": "initially missing, formally defined/saved/exported by root before completion",
+      "inclusive_end": "0069641C",
+      "last_instruction": "0069641C",
+      "last_instruction_length": 1
+    },
+    {
+      "address": "00696420",
+      "native": "00696420",
+      "status": "initially missing, formally defined/saved/exported by root before completion",
+      "inclusive_end": "00696424",
+      "last_instruction": "00696420",
+      "last_instruction_length": 5
+    },
+    {
+      "address": "00693E10",
+      "native": "00693E10",
+      "status": "initially missing, formally defined/saved/exported by root before completion",
+      "inclusive_end": "00693E38",
+      "last_instruction": "00693E36",
+      "last_instruction_length": 3
+    }
+  ],
+  "unresolved_function_definition_requests": [],
+  "ghidra_body_membership_holes": [
+    {
+      "function": "00695F10",
+      "start": "00695F23",
+      "end_inclusive": "00695F25"
+    },
+    {
+      "function": "00695F40",
+      "start": "00695F53",
+      "end_inclusive": "00695F55"
+    },
+    {
+      "function": "00695F40",
+      "start": "00695F78",
+      "end_inclusive": "00695F7A"
+    }
+  ],
+  "false_free_flow_gaps": [
+    {
+      "function": "00695F10",
+      "start": "00695F23",
+      "end_inclusive": "00695F25",
+      "bytes": "83C404",
+      "decoding": "restored by root",
+      "body_membership": "still missing"
+    },
+    {
+      "function": "00695F40",
+      "start": "00695F53",
+      "end_inclusive": "00695F55",
+      "bytes": "83C404",
+      "decoding": "restored by root",
+      "body_membership": "still missing"
+    },
+    {
+      "function": "00695F40",
+      "start": "00695F78",
+      "end_inclusive": "00695F7A",
+      "bytes": "83C404",
+      "decoding": "restored by root",
+      "body_membership": "still missing"
+    }
+  ],
+  "external_unwind_tail": {
+    "function": "00C7EB58",
+    "current_body_last_byte": "00C7EB60",
+    "verified_unowned_tail": [
+      "00C7EB61:59 POP ECX",
+      "00C7EB62:C3 RET"
+    ],
+    "status": "reported to root; native exceptional path outside source/probe coverage"
+  },
+  "root_repair_records": [
+    "local/observer_dispatch_function_definitions.json",
+    "local/observer_dispatch_flow_repair.json"
+  ],
+  "native_fixture": {
+    "status": "passed",
+    "native_manifest": {
+      "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "spans": [
+        {
+          "address": "00693C70",
+          "end_inclusive": "00693C80",
+          "offset": 0,
+          "bytes": 17,
+          "instructions": 3,
+          "sha256": "d9af89a5987c070fb3882cb78494b0ada6c5a086459f5f630a4abc86013bbe4e"
+        },
+        {
+          "address": "00693E10",
+          "end_inclusive": "00693E38",
+          "offset": 32,
+          "bytes": 41,
+          "instructions": 12,
+          "sha256": "38b0bdc1b53a48c8bc059144fac2e68b3d36d85ef0a41f7a9b279618f7955e3a"
+        },
+        {
+          "address": "00695ED0",
+          "end_inclusive": "00695F07",
+          "offset": 96,
+          "bytes": 56,
+          "instructions": 16,
+          "sha256": "90340bc5eae8aaeaf00879a3b7f654e173d995dd2f135eeef8c2054854b2570b"
+        },
+        {
+          "address": "00695F10",
+          "end_inclusive": "00695F3D",
+          "offset": 160,
+          "bytes": 46,
+          "instructions": 18,
+          "sha256": "2d3b3b93e302056bbcdbe635f3740f27162bccc1d59471ab64397409c3c0e906"
+        },
+        {
+          "address": "00695F40",
+          "end_inclusive": "00695F81",
+          "offset": 224,
+          "bytes": 66,
+          "instructions": 24,
+          "sha256": "09df414fbd554eef8fd3e82dfcd50ef05a67d749602c299760470f6addb036ad"
+        },
+        {
+          "address": "00696360",
+          "end_inclusive": "0069641C",
+          "offset": 320,
+          "bytes": 189,
+          "instructions": 51,
+          "sha256": "44eeb5a3d29601aa205dae731c0c59aaf697b2a62070226217f9097bedfc2f09"
+        },
+        {
+          "address": "00696420",
+          "end_inclusive": "00696424",
+          "offset": 512,
+          "bytes": 5,
+          "instructions": 1,
+          "sha256": "0873af1117bd7228ee29e0b904b306310d0b12e225a6dd1bb9836b1a2e9ddb6c"
+        },
+        {
+          "address": "00CCD6A0",
+          "end_inclusive": "00CCD6AD",
+          "offset": 544,
+          "bytes": 14,
+          "instructions": 4,
+          "sha256": "5bc27e98c8c903cfcb835a8880eaacaf2603697195d315069bc6d689c2e0946c"
+        }
+      ],
+      "image_sha256": "4952f5849d9cbb4929138cc467536179adff28a8b99945dc9aec5a9b19744b03",
+      "calls": [
+        {
+          "address": "00693E2B",
+          "native": "00BF65AC",
+          "function": "00693E10",
+          "offset": 60,
+          "kind": "call"
+        },
+        {
+          "address": "00695F1E",
+          "native": "00BF65AC",
+          "function": "00695F10",
+          "offset": 175,
+          "kind": "call"
+        },
+        {
+          "address": "00695F4E",
+          "native": "00BF65AC",
+          "function": "00695F40",
+          "offset": 239,
+          "kind": "call"
+        },
+        {
+          "address": "00695F73",
+          "native": "00BF65AC",
+          "function": "00695F40",
+          "offset": 276,
+          "kind": "call"
+        },
+        {
+          "address": "00696386",
+          "native": "00415350",
+          "function": "00696360",
+          "offset": 359,
+          "kind": "call"
+        },
+        {
+          "address": "006963BC",
+          "native": "00BF681B",
+          "function": "00696360",
+          "offset": 413,
+          "kind": "call"
+        },
+        {
+          "address": "006963D3",
+          "native": "00695ED0",
+          "function": "00696360",
+          "offset": 436,
+          "kind": "call"
+        },
+        {
+          "address": "006963E6",
+          "native": "00415350",
+          "function": "00696360",
+          "offset": 455,
+          "kind": "call"
+        },
+        {
+          "address": "006963F4",
+          "native": "00BD0C30",
+          "function": "00696360",
+          "offset": 469,
+          "kind": "call"
+        },
+        {
+          "address": "00696420",
+          "native": "00696360",
+          "function": "00696420",
+          "offset": 513,
+          "kind": "tail_jump"
+        },
+        {
+          "address": "00CCD6A0",
+          "native": "00696360",
+          "function": "00CCD6A0",
+          "offset": 545,
+          "kind": "call"
+        }
+      ],
+      "data_patches": [
+        {
+          "address": "00693C70",
+          "native_data": "00E198DC",
+          "offset": 2,
+          "data_offset": 592
+        },
+        {
+          "address": "00693E18",
+          "native_data": "00E198DC",
+          "offset": 42,
+          "data_offset": 592
+        },
+        {
+          "address": "00695F2F",
+          "native_data": "00E198DC",
+          "offset": 193,
+          "data_offset": 592
+        },
+        {
+          "address": "00695F64",
+          "native_data": "00E198DC",
+          "offset": 262,
+          "data_offset": 592
+        },
+        {
+          "address": "00696375",
+          "native_data": "00E198DC",
+          "offset": 342,
+          "data_offset": 592
+        },
+        {
+          "address": "0069639F",
+          "native_data": "00CE2218",
+          "offset": 385,
+          "data_offset": 584
+        },
+        {
+          "address": "006963B1",
+          "native_data": "00E198DC",
+          "offset": 403,
+          "data_offset": 592
+        },
+        {
+          "address": "006963E1",
+          "native_data": "00E198DC",
+          "offset": 450,
+          "data_offset": 592
+        },
+        {
+          "address": "006963EB",
+          "native_data": "00E198DC",
+          "offset": 461,
+          "data_offset": 592
+        },
+        {
+          "address": "00696402",
+          "native_data": "00CE2210",
+          "offset": 484,
+          "data_offset": 576
+        },
+        {
+          "address": "00696408",
+          "native_data": "00E198DC",
+          "offset": 489,
+          "data_offset": 592
+        },
+        {
+          "address": "00CCD6A8",
+          "native_data": "00E198E4",
+          "offset": 553,
+          "data_offset": 600
+        }
+      ],
+      "data": [
+        {
+          "address": "00CE2210",
+          "offset": 576,
+          "bytes": 4
+        },
+        {
+          "address": "00CE2218",
+          "offset": 584,
+          "bytes": 4
+        },
+        {
+          "address": "00E198DC",
+          "offset": 592,
+          "bytes": 4
+        },
+        {
+          "address": "00E198E4",
+          "offset": 600,
+          "bytes": 4
+        }
+      ],
+      "preserved_immediates": [
+        {
+          "instruction": "00693C7A",
+          "value": "00CE3818",
+          "meaning": "native profile identity or FH3 handler; handler not executed in normal-path proof"
+        },
+        {
+          "instruction": "00693E22",
+          "value": "00CE3818",
+          "meaning": "native profile identity or FH3 handler; handler not executed in normal-path proof"
+        },
+        {
+          "instruction": "00695ED2",
+          "value": "00C7EAF8",
+          "meaning": "native profile identity or FH3 handler; handler not executed in normal-path proof"
+        },
+        {
+          "instruction": "00695EEA",
+          "value": "00CF7E74",
+          "meaning": "native profile identity or FH3 handler; handler not executed in normal-path proof"
+        },
+        {
+          "instruction": "00695F36",
+          "value": "00CE3818",
+          "meaning": "native profile identity or FH3 handler; handler not executed in normal-path proof"
+        },
+        {
+          "instruction": "00695F6A",
+          "value": "00CE3818",
+          "meaning": "native profile identity or FH3 handler; handler not executed in normal-path proof"
+        },
+        {
+          "instruction": "00696368",
+          "value": "00C7EB63",
+          "meaning": "native profile identity or FH3 handler; handler not executed in normal-path proof"
+        },
+        {
+          "instruction": "00696390",
+          "value": "00CE37FC",
+          "meaning": "native profile identity or FH3 handler; handler not executed in normal-path proof"
+        }
+      ],
+      "live_equals_installed": true,
+      "boundaries": "Eight original owner routines. Manager getter and registration share existing actual raw source providers; alloc/free share actual source CRT family; Enter/LeaveCriticalSection are real Win32 imports. Original manager/library bodies and native FH3/SEH handlers are not executed."
+    },
+    "canonical_result_words": 41,
+    "original_instructions": "All eight new owner routines; slow getter+constructor+static publication, fast getter/thunk, nondeleting/derived/base deletions",
+    "shared_providers": [
+      "actual raw manager getter00415350",
+      "actual raw manager registrationBD0C30",
+      "actual CRT allocator/free family",
+      "real Win32 Enter/LeaveCriticalSection"
+    ],
+    "native_schedule_assertions": "slow getter resolves manager twice, registers once and allocates20bytes once; fast getter/thunk add no registration; native three free calls are buffer/buffer/owner",
+    "compared": "All5 owner DWORDs in preseeded construction/base/destruction phases; canonical owner/alias identity, empty slots, real manager count1/capacity256/current registered identity, actual depth0/RecursionCount0, alias/no-unregister after deletion and edge marker preservation",
+    "exclusions": [
+      "Uninitialized heap owner+4 cross-allocation value; separately proven preserved overA5 input",
+      "raw manager unproduced+0, allocator metadata, other OS-internal fields, bytes after free",
+      "original manager/CRT implementation, native FH3/unwind/SEH, source/native service register and exception identity",
+      "allocator failure, reentrant new-handler/registration changes, concurrent destruction, event producer/dispatch and gameplay"
+    ],
+    "cleanup": "Fixture unregisters dead identity, releases real raw manager section/vector/storage, then releases mapped native image. This is not mixed-profile manager-drain proof.",
+    "source": "local/observer_dispatch_probe.cpp",
+    "prepare": "local/prepare_observer_dispatch_probe.py",
+    "build": "local/build_observer_dispatch_probe.cmd",
+    "records": "local/observer_dispatch_probe_records.json",
+    "log": "local/observer_dispatch_probe.log"
+  },
+  "validation": {
+    "win32_release": "passed after final source edit; object timestamp06:58:58Z newer than source06:57:46Z",
+    "existing_ctest": "2/2 passed",
+    "build_log": "local/build.log",
+    "new_tracked_tests": 0,
+    "report_call_gate": "local/call_gate.log",
+    "report_call_gate_result": "26 rows checked,0failed; two external Win32 imports and one resolved indirect CRT call target not directly verified",
+    "game_validated": false
+  },
+  "integration": {
+    "profile": "BindCF7E74 to delete_observer_dispatch_owner_00695f40 with actualE198DC and flags1",
+    "alias": "Supply the static owner+4 alias to NativeObserverLifetime. No alias clear/recreate policy invented.",
+    "untouched_files": [
+      "observer_lifetime.*",
+      "native_singleton_destruction.*"
+    ],
+    "root_followup": "Actual raw registered-delete adapter and process startup/destruction order; source module does not create a new host initializer or private manager."
+  },
+  "artifacts": [
+    {
+      "path": "local/00693c70.asm.txt",
+      "bytes": 100,
+      "sha256": "c4923fbdf09948b1c28f854688b5a6b79fcef3ffbf5a19ebc53b5f9b6f5b6901",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/00693e10.asm.txt",
+      "bytes": 334,
+      "sha256": "ab1bfb244952c578862da9fdc40b8c8ba6725232a8b9331f225e840579e6db21",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/00695ed0.asm.txt",
+      "bytes": 496,
+      "sha256": "472132db3a472f6225e5b9a0da99d416d8eae15074872098f7d2b5f3e7aaed2b",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/00695f10.asm.txt",
+      "bytes": 522,
+      "sha256": "f9e82809bb9aa24822f6049dc4a9f668138121b06a64ca2498540ac26a17e741",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/00695f40.asm.txt",
+      "bytes": 691,
+      "sha256": "d724ff7ad4e516e072bc152da453d8369f46b2cf60bc021edc8f271005fb11fe",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/00696360.asm.txt",
+      "bytes": 1557,
+      "sha256": "c065bfdd0cb77c91195b71c224f3a591dac2641492d22e028255cc8ed274e180",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/00696420.asm.txt",
+      "bytes": 27,
+      "sha256": "cde957dedb40775fab455090e515ac12b1a390f916d8215ec01a1ec9d78326ea",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/00ccd6a0.asm.txt",
+      "bytes": 101,
+      "sha256": "d74ae4f823e38664fb912f96cfef4b92b031247aef5ab5990e02ef9bcb6f6c90",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/body_gap_00695f23.txt",
+      "bytes": 23,
+      "sha256": "1e60df59ca6b47dca04eee9464c36e721526f323ef0d6411548745b428d8f065",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/body_gap_00695f53.txt",
+      "bytes": 23,
+      "sha256": "dfabdc8119f0949d606576a81487cc52da9b88b529bab9c5951fad4f74cb64f9",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/body_gap_00695f78.txt",
+      "bytes": 23,
+      "sha256": "c66c7cf6dbb010d880f7da47df6823d7152da91c3572a1970c3fc7c8cbf1b3fe",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/bsp_index.sqlite",
+      "bytes": 24182784,
+      "sha256": "333b6e88e1b811260f597549abfe3db38fc8ca2f5d5b4babd897322ef2218a29",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/build.log",
+      "bytes": 40196,
+      "sha256": "09a518f3b250369b0aec0a127fb0cfbb4bb0f5c08bc0b3bddc1ce2cdb9e0a55a",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/build_observer_dispatch_probe.cmd",
+      "bytes": 357,
+      "sha256": "d01e340e89e3c2da1e3a6c21581d060b1485394d51ce038781745469889cde3f",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/bytes_00693C70.txt",
+      "bytes": 94,
+      "sha256": "24a51d7feb7de3eeddbed3838fd94c9a73ae9a7f9f9a234ad3fdc6f6f638d57c",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/bytes_00693E10.txt",
+      "bytes": 203,
+      "sha256": "651a7f0a41114eeb2d9358fb38d68ae3c04c37c164e3d8d9890d549926015e39",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/bytes_00695ED0.txt",
+      "bytes": 276,
+      "sha256": "0b32c57f1fe36890286054eb03a7859d05a8eb73f5dcc0df9e29b4f111b8c01b",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/bytes_00695F10.txt",
+      "bytes": 223,
+      "sha256": "41a2fe40bcd8bd513546549f69dd1f1b4e1a1c97c242f8c66845901d7c8ecfea",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/bytes_00695F40.txt",
+      "bytes": 329,
+      "sha256": "119b49b9f18e4e9639051f6adbfcc102d65f67c282ce372b27a8060bebdd6b31",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/bytes_00696360.txt",
+      "bytes": 912,
+      "sha256": "2823e9b5d302a604839d325cf4c97408b17d9aea5c26ecf836cebd05882bc22d",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/bytes_00696420.txt",
+      "bytes": 33,
+      "sha256": "35e93838d467d68af5c438fad996ce90437bc9b968f97c9a2aa28179b27541c4",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/bytes_00C7EAF0.txt",
+      "bytes": 45,
+      "sha256": "174561dd5d418f7f7c61c6f23445bbb75b8287af008938b85490aab66c1b78c1",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/bytes_00C7EB50.txt",
+      "bytes": 102,
+      "sha256": "54a57bb66a188e75daefa9857abb328183b54f691ef367b3b21afdf38f7e9df9",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/bytes_00CCD6A0.txt",
+      "bytes": 69,
+      "sha256": "b2b88f154d1e4d49015d20470d827733694e56e0fde74ae2d59a16ad3039217a",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/bytes_00CE2210.txt",
+      "bytes": 29,
+      "sha256": "9c7a8c8d73114bbf9ba79c4dc3b4aa970a607e7da87395bf02fb3dbc6e1ad134",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/bytes_00CE2218.txt",
+      "bytes": 29,
+      "sha256": "ee5099081c36f9c261ece4cb33d2bd0aaf07633d77eae228411563b1be9b0bfc",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/bytes_00CE2BAC.txt",
+      "bytes": 29,
+      "sha256": "1ce9a39b590971ef1779575371ca13a2c815b521e3a8a64e7a4f0923a4fc3ad4",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/bytes_00CF7E6C.txt",
+      "bytes": 61,
+      "sha256": "c33c98ea0cb442f06f9a9e50f37eb15d4e4fe50f254ebda14233c5d1fea0f726",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/bytes_00DAB7D0.txt",
+      "bytes": 231,
+      "sha256": "99e40610f772f3261f9ea33649fe94b8ff5c79bab9127efaad3dce25e47c9e70",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/bytes_00DAB854.txt",
+      "bytes": 260,
+      "sha256": "ac86f9c35c18d3c90dd07f9669c83c6326471740ac0b65cc8d78e216965004f2",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/bytes_00E198DC.txt",
+      "bytes": 29,
+      "sha256": "e1aaad8ff99881bf765ff6f58a50310c6eed0461d695ec78ecf67119b1724790",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/bytes_00E198E4.txt",
+      "bytes": 29,
+      "sha256": "0c87d9607402bb8e6c71f0e6eafa60de160953b249b08d2c553f2921e945667a",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/call_gate.log",
+      "bytes": 359,
+      "sha256": "5021d9b8c1350f73d57d75fca8bda30e5a35a194f349105538ec2a023e14bd3f",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/commit-msg.txt",
+      "bytes": 763,
+      "sha256": "eb1d8249ed85c9f4bf62173b7c50375f9986d36cfe3a0252cfc9a2a7084dbb16",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/crt_initializer_loop.asm.txt",
+      "bytes": 1302,
+      "sha256": "8b789ae19d92ff4ac1be67d1cc468e93ba2cba8ecf3538657d325e16384b569e",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/crt_loop_bytes.txt",
+      "bytes": 154,
+      "sha256": "cf55a95aa401c304a79be948bbc59d38c3ee476c62665712c3c2e4456065a734",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/eh_tail_membership.txt",
+      "bytes": 23,
+      "sha256": "5169843ec1d6c50b0a06cd503ff2fdfdc883bc7ead96dc2268efecb57b36dd4c",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/evidence_00C7EAF0.bin",
+      "bytes": 8,
+      "sha256": "498e26155247e9d23ae8ca7fb307099363bf012dd1dbe7c26173d83c37d80a40",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/evidence_00C7EB50.bin",
+      "bytes": 19,
+      "sha256": "29ae6b50b2e08160f8e75901b7efa2dc29cc2bc59680bba7f2b8e19880b0ed2e",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/evidence_00CE2BAC.bin",
+      "bytes": 4,
+      "sha256": "819e7093cd0a1c506ab8c785850f19492a8e1841f5b41b37032932a3f19e3690",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/evidence_00CF7E6C.bin",
+      "bytes": 12,
+      "sha256": "ea3dea358100fd3c7f355f282b88b874c4ef58d7a678e015c093a4c5f18e8741",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/evidence_00DAB7D0.bin",
+      "bytes": 48,
+      "sha256": "462c0e3906127f4580c613ea19c210c887f8d5336cf50139d719aa92ad8c74b0",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/evidence_00DAB854.bin",
+      "bytes": 52,
+      "sha256": "1d17b9c6606b614591b43cde16bbe32b0d273110b3a8d4c53e6b73477dcef4aa",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/exports.log",
+      "bytes": 862,
+      "sha256": "948c52cfd35a0cd10cfe74b13df13ca06977ebdeb8c35dc994dd97bd72c5d27b",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/ledger_rows.json",
+      "bytes": 14590,
+      "sha256": "30df31bf42783324ad08cd9f3fc635f99883e159f29e6bfa5c703af7218a8e05",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/manager_boundary.asm.txt",
+      "bytes": 832,
+      "sha256": "f3fb4ec5038f3e968ddf68aa496c330d4a670a392cb6d119ba4427252e75c019",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/observer_dispatch_flow_repair.json",
+      "bytes": 2736,
+      "sha256": "b164bb710cfc5c98791c3495ecb3fabd6eb62f58986fc48b8e385e8112d251ca",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/observer_dispatch_function_definitions.json",
+      "bytes": 2929,
+      "sha256": "f511ebfe5ddf024ad5b5c14e79ccb58b68f1553554040d6514042909aa29e048",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/observer_dispatch_native_image.bin",
+      "bytes": 608,
+      "sha256": "4952f5849d9cbb4929138cc467536179adff28a8b99945dc9aec5a9b19744b03",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/observer_dispatch_native_manifest.json",
+      "bytes": 7533,
+      "sha256": "30312c1d2df78ee41a413650aa078b1b31d9f63656011b68e38327b145d01c78",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/observer_dispatch_probe.cpp",
+      "bytes": 11986,
+      "sha256": "263b3234b548cdd652607ebcf1577e433d47fa5000147dde81d480209b2bcb4d",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/observer_dispatch_probe.exe",
+      "bytes": 44032,
+      "sha256": "80b439cfa24735f1f34acc19972535a712f500c4e6516a985e65b7a279bd8cf4",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/observer_dispatch_probe.log",
+      "bytes": 72,
+      "sha256": "ae37a01f8f96e8dc4c521021be3e85809e0247760b4bf073fb3068ab33324b2a",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/observer_dispatch_probe.obj",
+      "bytes": 158155,
+      "sha256": "24385c341d6b7bb73d379d498075a550f0599128bf82cef7760e73c020c2edfa",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/observer_dispatch_probe_patches.hpp",
+      "bytes": 718,
+      "sha256": "cc304e58e6077e8269aa4ba8046e393ccd19cdb6ae28ad588fa90816d1f80868",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/observer_dispatch_probe_records.json",
+      "bytes": 494,
+      "sha256": "0f43e0cb4958e010925e51fcf237293fe49e4945f96d55af97e8471dde6ee977",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/original_00693C70.bin",
+      "bytes": 17,
+      "sha256": "d9af89a5987c070fb3882cb78494b0ada6c5a086459f5f630a4abc86013bbe4e",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/original_00693E10.bin",
+      "bytes": 41,
+      "sha256": "38b0bdc1b53a48c8bc059144fac2e68b3d36d85ef0a41f7a9b279618f7955e3a",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/original_00695ED0.bin",
+      "bytes": 56,
+      "sha256": "90340bc5eae8aaeaf00879a3b7f654e173d995dd2f135eeef8c2054854b2570b",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/original_00695F10.bin",
+      "bytes": 46,
+      "sha256": "2d3b3b93e302056bbcdbe635f3740f27162bccc1d59471ab64397409c3c0e906",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/original_00695F40.bin",
+      "bytes": 66,
+      "sha256": "09df414fbd554eef8fd3e82dfcd50ef05a67d749602c299760470f6addb036ad",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/original_00696360.bin",
+      "bytes": 189,
+      "sha256": "44eeb5a3d29601aa205dae731c0c59aaf697b2a62070226217f9097bedfc2f09",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/original_00696420.bin",
+      "bytes": 5,
+      "sha256": "0873af1117bd7228ee29e0b904b306310d0b12e225a6dd1bb9836b1a2e9ddb6c",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/original_00CCD6A0.bin",
+      "bytes": 14,
+      "sha256": "5bc27e98c8c903cfcb835a8880eaacaf2603697195d315069bc6d689c2e0946c",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/prepare_observer_dispatch_probe.py",
+      "bytes": 5639,
+      "sha256": "050a97deeb33172236752eb7d238f71bbd7032cd99dea8c71bf255f6c06d6579",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/prepare_probe.log",
+      "bytes": 79,
+      "sha256": "cdb3f9d1f15110303f5e1159d8c06636d92aa57f8b32d6ee4ed64c0ca62a0284",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/probe_build.log",
+      "bytes": 29,
+      "sha256": "7a7af4a03ffb0913838c65ca1314b80251a31df971d3e75512ef75e23d6678ba",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/seed_reference.hpp",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/seed_verification.log",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+      "role": "source/evidence"
+    },
+    {
+      "path": "local/write_observer_dispatch_report.py",
+      "bytes": 14069,
+      "sha256": "d6d7a26a07fa2a1da19641bd9ec1abbfc1cd2be9d19ea86c3e57bc6664ff0296",
+      "role": "source/evidence"
+    },
+    {
+      "path": "src/observer_dispatch_owner.cpp",
+      "bytes": 4287,
+      "sha256": "d217bfac73d6e9cc4e96c980710dacc1a19150d4922817428ab9c6cc812696f1",
+      "role": "source/evidence"
+    },
+    {
+      "path": "include/bsp/observer_dispatch_owner.hpp",
+      "bytes": 4437,
+      "sha256": "df1d3fa1f228d80e2103ef93f86305b2f076e39ba46d8f46e01f5f6649c46eba",
+      "role": "source/evidence"
+    },
+    {
+      "path": "docs/OBSERVER_DISPATCH_OWNER.md",
+      "bytes": 10254,
+      "sha256": "76ac67f575a8b1ee94d6f4ab846e236edecef51b7e18dabbe4b3ffe2c374df47",
+      "role": "source/evidence"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 96475,
+      "sha256": "585943e3fd4191fcc88cff60488a7e70c2df386e2789693545bb64b7892ffd58",
+      "role": "source/evidence"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 54322060,
+      "sha256": "cc37f794e0b6561804f45bc9451e3bccd2b26bdef3a740f80dc12b12b711f25f",
+      "role": "probe link input"
+    },
+    {
+      "path": "build/win32/Release/bsp_lua511.lib",
+      "bytes": 455720,
+      "sha256": "a1d1fb1950b3e0cf10330d1c5d0ced5a1b0cb3bd55d5b79cdc5a4b8fcda72bf0",
+      "role": "build library (not probe link input)"
+    },
+    {
+      "path": "build/win32/Release/bsp_zlib121.lib",
+      "bytes": 72086,
+      "sha256": "8712bf0fc7598253c223764498556865b70a0b3291073d4a8f46feaf5d753676",
+      "role": "build library (not probe link input)"
+    },
+    {
+      "path": "build/win32/Release/xlive_stub.lib",
+      "bytes": 8334,
+      "sha256": "6dfcb5bf13947ffb6883edfde9d189c4c7ae0d702ec8bd81daebf3749e5f1c67",
+      "role": "build library (not probe link input)"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/observer_dispatch_owner.obj",
+      "bytes": 5682,
+      "sha256": "d2c94a8e87678fd96e7f5afddfaec5301e49e0003b3beb3b77c8ea6517ea9591",
+      "role": "source/evidence"
+    }
+  ]
+}
