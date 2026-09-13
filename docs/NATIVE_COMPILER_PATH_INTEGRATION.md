@@ -185,3 +185,55 @@ with the earlier 184-artifact checkpoint preserved. Samplers, field initializati
 and interpolator source emission continue in separate leased worktrees. Full
 native source generation, B3B3C0 continuation, FH3, rendering and gameplay remain
 unproven.
+
+## Actual sampler, field, interpolator and shadow helpers
+
+Ten native helper bodies now operate on the existing actual builder and pooled
+string domain. Sampler declarations preserve stage-byte selection, shared slots
+and current descriptor/list reloads. Field decoding captures its unsigned prefix
+limit once and rereads field pointers after swizzle allocation. Interpolator
+pack/struct/unpack preserves signed group arithmetic, current mappings and the
+original captured-versus-current temporary release lengths. Shadow helpers read
+builder byte AA only after the intro append returns, then retain that branch.
+
+The default Win32 build and both CTests passed at `743847de`. All 21 focused
+fixture programs passed at `743847de`; the three library hashes
+and 192 runner/transitive input hashes remained unchanged.
+The new fixtures compare original/source text and pooled traces, selected live
+mutations and retained failure/retirement behavior. The interpolator packet also
+received an independent review of all 587 owned assembly instructions.
+
+Thirteen component reports have 1,249 checked numeric rows and zero failures,
+including the same four resolved indirect rows. Ten names/comments were saved,
+read back and exported; prior values remain in the checkpoint journals. The
+immutable checkpoint is `local/checkpoints/743847de/native-generation-helpers-default/validation.json` (408 artifacts), with the earlier
+213-artifact checkpoint preserved. Full vertex/pixel source generators continue
+in separate leased worktrees. Full compiler continuation, native FH3, rendering
+and gameplay remain unproven.
+
+## Complete actual vertex and pixel source generation
+
+Six more normal bodies are reconstructed: B39110/B39880 source generation,
+B347E0/B34890/B34920 compiler lookups/state application, and the B20190
+vertex-texture/render-target format query. They use the existing actual
+storage and preserve captured versus current reads and retained failure state.
+B34C70 is separately defined and named as an analyzed record producer.
+
+The default Win32 build and both CTests passed at `e2abc28f`. All 25
+focused fixtures passed at `e2abc28f` against unchanged
+library hashes and 208 runner/transitive input hashes.
+Seventeen reports contain 1,547 checked numeric call rows and zero failures.
+Seven names/comments were saved, read back and exported with old values retained.
+The checkpoint is `local/checkpoints/e2abc28f/native-compiler-source-default/validation.json` (448 artifacts); earlier checkpoints remain.
+
+The vertex fixture reads installed descriptors and compiles byte-identical
+source to identical vs_3_0 bytecode. Pixel fixtures compare ten complete
+original/source outputs and pool traces over actual producer storage populated
+locally; the no-fog depth output compiles as ps_3_0. Both fog outputs produce
+the same missing-cFogDirColor error with comment-only descriptor Constants.
+Descriptor/pipeline context remains unresolved and its negative evidence is
+preserved. The format query also agrees with actual Direct3D9 for two formats.
+
+Full compiler continuation, sampler loader prerequisites, concrete shader
+deletion providers, native FH3, rendering and gameplay remain unproven.
+The separate CBF400 post-free tail repair still lacks full stored-body coverage.

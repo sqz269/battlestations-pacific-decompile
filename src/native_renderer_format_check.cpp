@@ -39,4 +39,13 @@ bool check_native_renderer_device_format_00b21ec0(
     return result >= 0;
 }
 
+bool check_native_renderer_vertex_texture_render_target_00b20190(
+    void* renderer, U32 check_format) {
+    void* const factory = reinterpret_cast<void*>(load(renderer, 0x1990));
+    void* const table = reinterpret_cast<void*>(load(factory, 0));
+    const auto method = reinterpret_cast<CheckDeviceFormat>(load(table, 0x28));
+    const I32 result = method(factory, 0, 1, 0x16, 0x100001, 3, check_format);
+    return result == 0;
+}
+
 } // namespace bsp
