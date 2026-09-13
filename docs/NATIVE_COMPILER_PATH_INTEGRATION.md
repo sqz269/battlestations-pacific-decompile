@@ -299,3 +299,10 @@ body through CBF40A, and exported all five instructions with no gap. Earlier
 checkpoints remain unchanged. Source exception cleanup evidence does not prove
 original FH3 delivery. Full sampler/event/online-manager and compiler closure,
 shader binding/drawing/readback and gameplay remain unproven.
+
+Publication merge `4c3c5585` incorporates concurrent reconstruction and
+passes the default Win32 build and both CTests. All21 shader module source/header
+hashes match the29-fixture checkpoint `a50d1fc3`. That fixture result remains
+tied to the earlier libraries; 2 transitive fixture input files
+changed in the concurrent merge. Its separate build evidence is
+`local/checkpoints/4c3c5585/shader-owner-publication-build/validation.json`.

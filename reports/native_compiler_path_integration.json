@@ -428,5 +428,70 @@
     "Actual B1A51D..B1AA29 cache continuation worker is in progress. Full B1A4F0/B1B4D0 remain incomplete pending actual platform event and online-manager closure.",
     "Actual A40110 notification prerequisites are independently in progress; full A409F0 pump and BECB20/BECCD0 closure remain incomplete.",
     "Full B3B280/B3B3C0 compiler orchestration, native FH3, shader drawing and gameplay remain outstanding."
+  ],
+  "publication_merges": [
+    {
+      "code_commit": "4c3c55851bf461dfd08224453478ac8ce481330d",
+      "imported_paths": [
+        "config/names/00b60000.jsonl",
+        "config/parallel_work.json",
+        "config/reconstruction/00b60000.jsonl",
+        "docs/NATIVE_NODE_LIFETIME_BD_INTEGRATION.md",
+        "docs/NATIVE_NODE_RAW_CONSTRUCTION.md",
+        "docs/NATIVE_NODE_RAW_DESTRUCTION.md",
+        "include/bsp/native_node_construction.hpp",
+        "include/bsp/native_node_destruction.hpp",
+        "reports/native_camera_destruction_handler_bd_analysis.json",
+        "reports/native_node_lifetime_bd_validation.json",
+        "reports/native_node_raw_construction.json",
+        "reports/native_node_raw_destruction.json",
+        "src/native_node_construction.cpp",
+        "src/native_node_destruction.cpp"
+      ],
+      "default_build": "MSVC Win32 scripts/build.ps1 passed;2/2 CTests",
+      "build_log": "local/shader-owner-concurrent-build-1.log",
+      "build_log_sha256": "e9f45562d96fc43ec63aee143094ec511d2a5f58b8377ea62857e681bfa91624",
+      "shader_module_source_and_header_hashes_unchanged": true,
+      "fixture_checkpoint_code_commit": "a50d1fc3582f1225ec0b1b00a2df3cf9ef7d0084",
+      "fixture_input_changes_since_checkpoint": [
+        "include/bsp/native_node_destruction.hpp",
+        "include/bsp/native_node_construction.hpp"
+      ],
+      "limits": "The29 focused fixture programs ran at the exact earlier checkpoint. This subsequent concurrent merge has its own default build and2CTest result; no claim that the fixtures were rerun on these newer libraries.",
+      "artifacts": {
+        "local/shader-owner-concurrent-build-1.log": {
+          "sha256": "e9f45562d96fc43ec63aee143094ec511d2a5f58b8377ea62857e681bfa91624",
+          "bytes": 7385
+        },
+        "build/win32/Testing/Temporary/LastTest.log": {
+          "sha256": "8f1dd744caa7b7c35bdfe3444f63d53e76cee657997b87d78e3be35a58264b7c",
+          "bytes": 1713
+        },
+        "build/win32/CMakeCache.txt": {
+          "sha256": "04c033f5f9cd56fe831ffd05fa219698ea0173c5b0527bda448dbabbfaa37805",
+          "bytes": 18839
+        },
+        "cmake/startup.cmake": {
+          "sha256": "f4bae550b4326c7abf0817c1b6f9319c708d25ee14949ed1585ab634c50469ee",
+          "bytes": 107638
+        },
+        "build/win32/Release/bsp_core.lib": {
+          "sha256": "6ed1d021b9e6e90a14d7cb27e787fa250712ec0bda95f3e6883420b80c8b4dd4",
+          "bytes": 56328056
+        },
+        "build/win32/Release/bsp_lua511.lib": {
+          "sha256": "b6c19dd56bce2c86dcf1abf5c3044d48ddc2ac2c33ef04e3dc87f022413ee193",
+          "bytes": 455244
+        },
+        "build/win32/Release/bsp_zlib121.lib": {
+          "sha256": "2c89bd9ae83d791564ea847c75e8e5ee025e40810c1df8d55e5799e0c7b8c471",
+          "bytes": 71906
+        }
+      },
+      "manifest": {
+        "path": "local/checkpoints/4c3c5585/shader-owner-publication-build/validation.json",
+        "sha256": "bc00d0a1c64a7ddbdff97859a0a1f5da41f706db0624f84d3d9c64c96f4592e1"
+      }
+    }
   ]
 }
