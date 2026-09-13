@@ -13,7 +13,8 @@ enum class NativeGuiTextModelBaseCopyResult {
     copied
 };
 
-// Partial B6F150 for the Text caller's flags26h,parent=null branch. Source and
+// B6F150 for flags26h/3Eh,parent=null. Other flags/parents remain outside this
+// fragment. Source and
 // destination are distinct LIVE canonical Models in the SAME environment; the
 // destination has already been pool-allocated and constructed from the current
 // source name. Positive lists append each actual light and raw node backlink
@@ -56,7 +57,7 @@ struct NativeGuiTextModelCloneAcquired {
     NativeMeshCloneAcquired mesh;
 };
 
-// Compose B752B0 for the actual Text caller flags26h,parent0. Allocates and
+// Compose B752B0 for the glyph route's flags26h,parent0. Allocates and
 // constructs a Model from the live source name, performs base copy, clones
 // current mesh geometry into the same actual owner domain, associates it,
 // releases the geometry creator, then executes the retained174/pose tail.
@@ -71,6 +72,18 @@ NativeGuiTextModelBaseCopyResult clone_native_gui_text_model_00b752b0(
     const volatile std::uint32_t* mesh_current_vtable_00d62d60,
     NativeGuiTextModelCloneAcquired& acquired);
 
-// Other flags/parent combinations remain outside the composed Text route. Raw slots cannot be cast to C++ owners.
+// Exact AA9520 Text/type3 flags3E,parent0 route. Same Model/base/association
+// tail as26, with actual separately owned geometry streams. This does not adopt
+// a copied Text runtime or retain a raw Text allocation. Reached stream factory,
+// registration/map interruptions remain on acquired.mesh.stream.
+NativeGuiTextModelBaseCopyResult clone_native_gui_text_model_00b752b0_flags3e(
+    NativeModelOwner& source, GuiWidgetOwnerRuntime&, GuiNativeGeometryOwners&,
+    NativeMaterialDestructionAccess&,
+    const volatile std::uint32_t* material_current_vtable_00d5e520,
+    const volatile std::uint32_t* mesh_current_vtable_00d62d60,
+    NativeGuiTextModelCloneAcquired&, NativeStreamCloneServices&);
+
+// Other flags/parent combinations remain outside these composed Text routes.
+// Raw slots cannot be cast to C++ owners.
 // New MSVC Win32 interfaces, not native binary entry replacements.
 } // namespace bsp

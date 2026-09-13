@@ -43,7 +43,7 @@ Source and destination are distinct owners in one runtime. Source copy and desti
 
 `retire_base_copy_admission` is explicit host cleanup for an untyped owner with no attached derived lifetime, children, or timed state. It releases only an already transferred primary through the existing node lifetime domain. Independent acquired creators remain the caller's responsibility. It is not a claim about native copy-constructor unwind. The standard layout cleanup routes untyped admissions here instead of invoking a nonexistent derived implementation.
 
-After complete base copy, the separate Text packet's `GuiTextAfterBaseCopy00aa9520` admission can attach the sole Text lifetime, and its copy continuation performs ABB2C0's remaining operations. Concrete copied `GuiTextRuntimeImplementation` ownership/factory admission remains a required integration. No default Text constructor is run by this packet. The shared owner preflight must incorporate the Text packet's `has_incomplete_copy()` guard when both commits are integrated.
+After complete base copy, the separate Text packet's `GuiTextAfterBaseCopy00aa9520` admission can attach the sole Text lifetime, and its copy continuation performs ABB2C0's remaining operations. Concrete copied `GuiTextRuntimeImplementation` ownership/factory admission remains a required integration. No default Text constructor is run by this packet. The shared owner preflight incorporates the Text packet's `has_incomplete_copy()` guard.
 
 The finish seam takes the caller's `unique_ptr` by reference and transfers it only after preflight succeeds. A rejected admission leaves that sole implementation/lifetime owned by the caller.
 
@@ -52,3 +52,29 @@ The finish seam takes the caller's `unique_ptr` by reference and transfers it on
 The ignored fixture `local/widget_copy_probe.cpp` uses production Group and actual Model constructors and links built production libraries. It checks x87 versus raw signaling-NaN handling, destination allocation preimages, no default copy factory, both callback-time retirement guards, and an acquired actual Model creator surviving an explicit flags3E boundary. It does not simulate a successful Model copy. Final4C/138 publication, complete Model3E, derived Text copy, and the game path remain unexercised by that fixture.
 
 Build, report verification, and object-inspection results are recorded in `reports/gui_widget_copy_runtime.json`. No Ghidra changes or permanent tests are included.
+
+
+## Retained constructor ownership
+
+`GuiWidgetCopySourceBorrow` protects the admitted source across pool callbacks
+and pending derived construction. Only its matching token may pass the AA9520
+source preflight. This is host lifetime metadata, with no native AddRef or copied
+widget state. Releasing the token restores ordinary retirement eligibility.
+
+`begin_base_copy_type_admission` publishes a borrowed implementation owned by
+the one constructor operation. `implementation()` resolves that same object for
+native constructor callbacks. External owner operations remain blocked while
+the constructor pointer or an incomplete Text lifetime exists. The concrete
+implementation must distinguish permitted constructor reads from external
+mutation. Final admission requires the same implementation and completed Text
+continuation before transferring its unique ownership into the widget.
+
+The combined Win32 build and both CTests passed. One existing actual-owner
+prefix fixture was extended locally to verify token authorization and retained
+source protection after an interrupted Model provider; it passed. Borrowed
+constructor dispatch is build-checked here and requires the separate copied
+Text runtime integration for execution. No permanent test was added.
+
+## Correction from docs/GUI_WIDGET_MODEL_COPY.md
+
+The concrete adapter now supplies the actual Model flags3E/26 composition previously left as a required provider. AA9520 keeps the same final Model ownership transfer, and validates any outstanding stream creator/companion/map phase with the existing acquisitions. `GuiTextRuntimeCopyOperation` uses the retained source and constructor admission hooks above; full positive copied Text remains dependent on its actual retained native identity and cursor/executable providers. Exact integrated build and positive base-copy evidence are recorded in `reports/orch5_stream_text_copy_batch.json`.

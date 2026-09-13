@@ -160,3 +160,7 @@ count/reload and captured-source ordering. Five actual node destruction adapters
 remove backlinks through this runtime. Full PointLight construction/type/pool
 ownership and other Model clone branches remain external. See
 NATIVE_POINT_LIGHT_LINKS.md and reports/orch5_timed_clip_batch.json.
+
+## Correction from docs/NATIVE_STREAM_CLONE_3E.md
+
+The later stream packet implements actual B729A0/B72A70 factory/map/copy/unmap and extends the supported mesh/Model composition from flags26 to exact flags26/3E,parent0. `GuiWidgetModelCopyRuntime` connects AA9520 to that composition. The earlier flags3E boundary in this document describes its original scope. Current implementation and validation are in `docs/NATIVE_STREAM_CLONE_3E.md`, `docs/GUI_WIDGET_MODEL_COPY.md` and `reports/orch5_stream_text_copy_batch.json`. Full retained raw Text identity, native SEH, other flags/parent and gameplay remain separate.
