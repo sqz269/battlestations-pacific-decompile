@@ -1,0 +1,204 @@
+{
+  "schema": 1,
+  "packet": "orch3_native_string_cstring_raw_bc",
+  "status": "existing_full_body_raw_context_extension_worker_build_and_fixture_passed",
+  "base_commit": "f5ce17eb75540d6f5546ac40eb6b88d737a521e5",
+  "normal_body_count": 1,
+  "new_native_body_count": 0,
+  "existing_body_extensions": 1,
+  "native_body_bytes": 83,
+  "files": [
+    "include/bsp/native_physical_file_date.hpp",
+    "src/native_physical_file_date.cpp",
+    "docs/NATIVE_STRING_CSTRING_RAW_BC.md",
+    "reports/native_string_cstring_raw_bc.json"
+  ],
+  "functions": [
+    {
+      "address": "0041e870",
+      "end_inclusive": "0041e8c2",
+      "bytes": 83,
+      "sha256": "f32abf313aaccbee4a0686891e75d082fd051777ac277f8f6d68ff90750826c7",
+      "live_equals_disk": true,
+      "instructions": 32,
+      "cpp_symbol": "construct_native_string_cstring_0041e870",
+      "source": "src/native_physical_file_date.cpp",
+      "header": "include/bsp/native_physical_file_date.hpp",
+      "ghidra_name": "BSP_NativeString_Assign",
+      "original_abi": "__thiscall; ECX=actual eight-byte header; stack const char* nonnull NUL-terminated text; RET4; EAX=saved destination.",
+      "existing_body_raw_extension": true,
+      "typed_overload_unchanged": true,
+      "new_context": "NativeStringRawPoolContext&; original native ABI has no context argument."
+    }
+  ],
+  "calls": [
+    {
+      "function": "0041e870",
+      "address": "0041e8a0",
+      "native": "0041dd40"
+    },
+    {
+      "function": "0041e870",
+      "address": "0041e8b4",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00b3c800",
+      "address": "00b3c86c",
+      "native": "0041e870"
+    }
+  ],
+  "native_evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "original_pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "0041e870",
+        "end_inclusive": "0041e8c2",
+        "bytes": 83,
+        "sha256": "f32abf313aaccbee4a0686891e75d082fd051777ac277f8f6d68ff90750826c7",
+        "live_equals_disk": true,
+        "instructions": 32
+      },
+      {
+        "address": "0041dd40",
+        "end_inclusive": "0041dde3",
+        "bytes": 164,
+        "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977",
+        "live_equals_disk": true,
+        "instructions": 65
+      },
+      {
+        "address": "00bf7680",
+        "end_inclusive": "00bf79e4",
+        "bytes": 869,
+        "sha256": "2eb4a27b7f2608f44cc78077c476658ebbc91ea1f736a39cde93a0194d5dd6c3",
+        "live_equals_disk": true,
+        "instructions": 247
+      },
+      {
+        "address": "00b3c800",
+        "end_inclusive": "00b3c952",
+        "bytes": 339,
+        "sha256": "21fc45bafe861070036aad3aedb79758e5e3a50bb275e3f189cde9e8fea9d3df",
+        "live_equals_disk": true,
+        "instructions": 108
+      }
+    ],
+    "caller_functions": 1261,
+    "xrefs": 3698,
+    "verified_direct_call_or_jump_sites": 3698,
+    "other_xrefs": [],
+    "caller_proof_scope": "Complete current supported caller/xref inventory and disk instruction-target validation for every direct E8/E9 transfer; no assertion of every caller ownership domain or complete argument preparation."
+  },
+  "source_sha256": "c182b78332b3be7f693c1a20babf703024feca128753ece593b0e50d6f770a02",
+  "header_sha256": "a7489c4fff08b5289bb2906b72d4b35e27291e23e4fa83061109c0e895460788",
+  "prior_reconstruction_capture": "C:\\Users\\sqz269\\bsp-bc-string-cstring\\prior-reconstruction.json",
+  "preservation": {
+    "existing_typed_constructor_unchanged": true,
+    "all_other_cpp_source_exactly_unchanged": true,
+    "ledger_unchanged": true,
+    "ghidra_readonly": true
+  },
+  "validation": {
+    "strict_source_compile": "passed; MSVC Win32 /W4 /WX /O2 /fp:strict",
+    "baseline_build": "passed; existing registered module includes the raw overload",
+    "ctest": {
+      "passed": 2,
+      "failed": 0,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential"
+      ]
+    },
+    "native_seeds_verified": 8,
+    "numeric_call_rows_verified": 3,
+    "fixture": {
+      "passed": true,
+      "pairs": 8,
+      "compared_state_bytes": 11396,
+      "compared_event_dwords": 6,
+      "original_bytes": 83,
+      "operand_relocations": 2
+    },
+    "pinned_input_count": 2356,
+    "input_hashes_unchanged_before_after_current_replay": true,
+    "source_sha256": "c182b78332b3be7f693c1a20babf703024feca128753ece593b0e50d6f770a02",
+    "header_sha256": "a7489c4fff08b5289bb2906b72d4b35e27291e23e4fa83061109c0e895460788",
+    "libraries": {
+      "bsp_core.lib": "c6513a12374ca1a756bb73855656c0df915144d8932372d4331f978eeb4cb7bf",
+      "bsp_lua511.lib": "c5aa112fbd9d23f0db90c3d5e41e93b5ceeba9b476cdcb49b090a2595158b142",
+      "bsp_zlib121.lib": "ec9d6f97dab6c5a7d2aeaa521476e45a09f608eee7e7dfa91244049abb9055a1"
+    },
+    "build_identity": "Worker base_commit plus the exact source/header hashes above; the worker source was uncommitted during the build. Final combined commit requires integrator build/replay.",
+    "logs": [
+      "compile-build.log",
+      "compile-validation.json",
+      "baseline-build.log",
+      "verify-seeds.log",
+      "calls.log",
+      "current-build.log",
+      "current-run.log",
+      "current-validation.json"
+    ]
+  },
+  "limitations": [
+    "Extends one complete function, no new native body count.",
+    "No claim about every caller argument preparation or ownership from the full reference inventory.",
+    "New context is a C++ interface; native entry/FH3/SEH/private-stack/concurrency/gameplay remain unvalidated.",
+    "Original parent fixture composes with current providers; descendant machine bodies are not independently re-certified by this packet.",
+    "The inherited zero-byte C++ copy-call omission remains documented; full machine entry, register and stack compatibility are not claimed."
+  ],
+  "external_fixture": {
+    "directory": "C:\\Users\\sqz269\\bsp-bc-string-cstring",
+    "recipe": "run.ps1 -Root <selected checkout> [-LibraryRoot <selected library checkout>]",
+    "default_source_inputs": [
+      "external probe.cpp"
+    ],
+    "default_library_inputs": [
+      "bsp_core.lib",
+      "bsp_lua511.lib",
+      "bsp_zlib121.lib"
+    ],
+    "source_recompiled_in_default_recipe": false,
+    "embedded_manifest": true,
+    "original_parent_bytes": 83,
+    "operand_relocations": [
+      {
+        "call": "0041e8a0",
+        "original_target": "0041dd40",
+        "bridge": "existing complete raw resize with the actual current NativeStringRawPoolContext"
+      },
+      {
+        "call": "0041e8b4",
+        "original_target": "00bf7680",
+        "bridge": "current CRT overlap-safe memmove"
+      }
+    ],
+    "cases": [
+      "Empty input clears both header words and skips pool acquisition.",
+      "Source inside header becomes empty after initial clears.",
+      "Source starts two bytes before header: captured scan length 2, final copy AB plus current header byte 02.",
+      "CockpitCamera nonempty input.",
+      "Actual pool arena source overlaps the later destination and requires backward copying.",
+      "Actual pool terminator aliases header length; constructor observes current count 1.",
+      "Real current pool getter registration handler mutates source/header, repairs actual manager, and returns; captured scan length and current copy bytes remain distinct.",
+      "Same real pool getter registration handler throws 77; current source/header mutations remain and exception escapes."
+    ],
+    "comparison_scope": "Full normalized owner backing, source bytes, header/return/exception state, written actual arena bytes, actual pool and manager counters/ring state, and handler event order.",
+    "providers": "Existing full raw 41DD40, current 419CC0 lazy getter, BD1120 allocation, BD1510 return, actual manager registration and current CRT memmove; no synthetic allocator success stub.",
+    "retained_failed_expectation": "attempt1-current-* logs preserve initial fixture assertion failure: prefix alias expected AB NUL but native final copy observes AB 02. Only fixture expectation changed; implementation remained unchanged."
+  },
+  "capture_archive": {
+    "path": "C:\\Users\\sqz269\\bsp-bc-string-cstring\\worker_capture.zip",
+    "sha256": "e3d20b175293611a31afcce93efbeef9d2a36830a1744e521b3b014a0829291b",
+    "members": 2432,
+    "verified_manifest_rows": 2431,
+    "uncompressed_bytes": 79152047,
+    "manifest": "C:\\Users\\sqz269\\bsp-bc-string-cstring\\worker_capture_manifest.json",
+    "original_capture_immutable": true,
+    "includes": "All loose fixture/native/caller/state/event/log evidence, probe and recipes, every pinned repository input and all three exact current worker libraries. The archived report snapshot precedes adding the archive hash to the tracked report."
+  }
+}
