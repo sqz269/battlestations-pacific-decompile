@@ -23,8 +23,16 @@ Win32 and both existing CTests. A 120-frame USN01 run retained 18,557 finite
 trajectory rows and the N batch's 420 valid nodes, 14 ships and 20 planes.
 This is a process regression check; execution of the new producer and avoid-box
 branches is established by their separate fixtures, not by that mission run.
-Exact hashes and limits are in `reports/orch6_reconstruction_o.json`; 106 ignored
+Exact hashes and limits are in `reports/orch6_reconstruction_o.json`; 109 ignored
 worker artifacts were archived and hash-verified. Tracked evidence stays in Git.
+
+A wider manifest audit found three historical `bsp_core.lib` references omitted
+by the earlier archive's local-only filter: neighbour-candidates N, generic-input
+M and generic-motion L. No matching library was found among 218 retained build
+or archive candidates. Their exact fixture executables, original-byte data,
+sources and results are retained, but those historical libraries cannot be used
+to reproduce a relink from the archive alone. The current O archive includes its
+three referenced build libraries; the JSON records every missing historical hash.
 
 ## Follow-up packets
 
