@@ -1,0 +1,358 @@
+{
+  "packet": "orch6_participant_live_l",
+  "status": "process_bound_build_and_runtime_verified_with_explicit_limits",
+  "base_commit": "87f9a9e0290d8470357b50cb26e4b3963ace46e7",
+  "doc": "docs/SESSION_PARTICIPANT_LIVE_OWNER.md",
+  "owned_files": [
+    "include/bsp/game_hosts_mission_frame.hpp",
+    "src/game_hosts_mission_frame.cpp",
+    "src/game_hosts_mission.cpp",
+    "docs/SESSION_PARTICIPANT_LIVE_OWNER.md",
+    "reports/session_participant_live_owner.json"
+  ],
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mode": "read-only bsp.py wrappers, no annotations or writes",
+    "addresses_leased": [],
+    "scope": "Host binding of existing reconstructed cores; read-only native caller/store evidence"
+  },
+  "calls": [
+    {
+      "address": "0073e155",
+      "native": "00bf55be",
+      "function": "0073d410",
+      "contract": "Prior K evidence: allocation used by following game zeroing; no allocator reconstruction here"
+    },
+    {
+      "address": "0073e163",
+      "native": "00bf79f0",
+      "function": "0073d410",
+      "contract": "Prior K evidence: zero71A0 bytes; explicit ZeroedGameAllocation provenance"
+    },
+    {
+      "address": "004ddd6c",
+      "native": "00bf7cd1",
+      "function": "004ddb90",
+      "contract": "Prior K evidence: eight player elements, stride118, constructor004D6BA0 retains8/9/E"
+    },
+    {
+      "address": "004ddd8e",
+      "native": "00bf7cd1",
+      "function": "004ddb90",
+      "contract": "Prior K evidence: same constructor array over mission records"
+    },
+    {
+      "address": "004dfd18",
+      "native": "004bb160",
+      "function": "004dfb70",
+      "contract": "Actual local load calls reset before player claim"
+    },
+    {
+      "address": "004dfd57",
+      "native": "004bb440",
+      "function": "004dfb70",
+      "contract": "Nine stack words, RET24; following004DFD5C publishes returned pointer"
+    },
+    {
+      "address": "004db95d",
+      "native": "00a91020",
+      "function": "004db920",
+      "contract": "Existing device-arm input service; actual device delivery not supplied by this packet"
+    },
+    {
+      "address": "004db983",
+      "native": "00425d10",
+      "function": "004db920",
+      "contract": "Existing device-arm menu getter; no implementation changes"
+    },
+    {
+      "address": "004db9ad",
+      "native": "004bec00",
+      "function": "004db920",
+      "contract": "Existing singleton getter, zero float remains on stack for the following update"
+    },
+    {
+      "address": "004db9b4",
+      "native": "00a92c40",
+      "function": "004db920",
+      "contract": "Existing input update with float zero; device arm bypasses participant count"
+    },
+    {
+      "address": "004dba42",
+      "native": "0075b430",
+      "function": "004db920",
+      "contract": "Observed existing count-arm event construction; not enabled by this host binding"
+    },
+    {
+      "address": "004dba68",
+      "native": "0076a9f0",
+      "function": "004db920",
+      "contract": "Observed existing count-arm event dispatch; no session routing synthesized"
+    },
+    {
+      "address": "004dba8f",
+      "native": "007848f0",
+      "function": "004db920",
+      "contract": "Observed existing count-arm peer-buffer service; not reconstructed here"
+    },
+    {
+      "address": "004dba96",
+      "native": "004da6c0",
+      "function": "004db920",
+      "contract": "Existing convergence into mission entry after successful arm"
+    },
+    {
+      "address": "00469d09",
+      "native": "008f5a00",
+      "function": "00469bf0",
+      "contract": "Existing header-properties parser, actual bag required before count availability"
+    },
+    {
+      "address": "00469d45",
+      "native": "004f1d70",
+      "function": "00469bf0",
+      "contract": "Actual header applies bag to non-null record; ECX bag, EDX record, one stack word; callee RET4"
+    },
+    {
+      "address": "004f2143",
+      "native": "008f2260",
+      "function": "004f1d70",
+      "contract": "Existing property lookup of MaxPlayerNum literal00CEA450; found dword stored at214F, absent fallback8 at2157"
+    },
+    {
+      "address": "00469d23",
+      "native": "008f54f0",
+      "function": "00469bf0",
+      "contract": "Existing keep-existing merge; authored MaxPlayerNum survives defaults. Full registry binding outside packet."
+    },
+    {
+      "address": "00469d37",
+      "native": "008f23e0",
+      "function": "00469bf0",
+      "contract": "Existing assign-existing weather override; tested installed Weathers table empty, no override supplied"
+    },
+    {
+      "address": "0046e73b",
+      "native": "00469bf0",
+      "function": "0046df00",
+      "contract": "Actual header caller passes its weather bag from local128; no weather loader reconstructed here"
+    }
+  ],
+  "native_contracts": [
+    {
+      "function": "004dfb70",
+      "body_inclusive": [
+        "004dfb70",
+        "004e18d9"
+      ],
+      "original_abi": "ECX game, no stack arguments, RET at004E18D9",
+      "coverage": "Only actual reset/claim/pointer publication caller fragment is newly bound; other scene-load work retains existing process scope"
+    },
+    {
+      "function": "004bb160",
+      "body_inclusive": [
+        "004bb160",
+        "004bb3db"
+      ],
+      "original_abi": "ECX game, no stack arguments",
+      "coverage": "Reuse existing partial pool pointers and8/9 stores; native other record fields remain unrepresented"
+    },
+    {
+      "function": "004bb440",
+      "body_inclusive": [
+        "004bb440",
+        "004bb541"
+      ],
+      "original_abi": "ECX game, nine stack words, RET24",
+      "coverage": "Reuse existing first-free player selection and8 store only"
+    },
+    {
+      "function": "004db920",
+      "body_inclusive": [
+        "004db920",
+        "004dbaac"
+      ],
+      "original_abi": "ECX game, no stack arguments, RET at004DBAAC",
+      "coverage": "Existing compiled driver, now actual selected-record9/E view; mode0 input edge remains an existing harness injection"
+    },
+    {
+      "function": "004c6e30",
+      "fragment_inclusive": [
+        "004c6e50",
+        "004c6ec5"
+      ],
+      "original_abi": "Inline fragment, ESI game; count in EDX and SETG BL, not a callable function",
+      "coverage": "Existing helper count receives actual selected pointer and8/9 fields"
+    },
+    {
+      "function": "00927f10",
+      "body_inclusive": [
+        "00927f10",
+        "00927f26"
+      ],
+      "original_abi": "stdcall(slot), RET4, raw AL, no ECX input or bounds check",
+      "coverage": "Prior K typed availability API; this packet binds its owner into ShipAI, with no assigned-role delivery claim"
+    }
+  ],
+  "ownership": {
+    "canonical_owner": "GameMissionHost::Impl::participants",
+    "initialization": "ParticipantPoolInitialization::ZeroedGameAllocation, once per GameMissionHost",
+    "pools": "Eight player identities at native game+748 and eight mission identities at game+1008, stride118; active[8] corresponds to game+18CC",
+    "frame": "Required borrowed reference passed at GameMissionFrameHost construction",
+    "ship_ai": "bind_session_participants called once after construction and before register_units, using identical owner",
+    "lifetime": "Owner declared before Lua/frame members; reverse destruction destroys frame/AI before owner; frame replacement retains pools",
+    "scene_input": "Actual selected SceneRecord pointer establishes presence. Separate path-keyed GameMissionHost::participant_scene_counts supplies signed native988 only after successful scene-header properties parsing. Missing count stops a present scene; no-scene branch needs no count; >8 rejected. Empty side_blocks is not used as zero.",
+    "removed": "Independent SceneSlotRecord[8] and MissionEntryPlayerSlot[8] defaults; unconditional device_bound=true",
+    "consumers": "Entry samples9/E; frame control samples pointer/8/9; fixed-step samples active local identity; ShipAI borrows same owner"
+  },
+  "store_schedule": [
+    {
+      "address": "004dfd18",
+      "effect": "reset pointers and proven8/9 fields with actual scene presence/count"
+    },
+    {
+      "address": "004dfd57",
+      "effect": "first-free player record claim,8=1"
+    },
+    {
+      "address": "004dfd5c",
+      "effect": "current[0]=returned player identity"
+    },
+    {
+      "address": "004dfd77",
+      "effect": "native local slot index0; existing local host index agrees"
+    }
+  ],
+  "device_writer": {
+    "function": "004dfb70",
+    "fragment_inclusive": [
+      "004e0844",
+      "004e085e"
+    ],
+    "last_instruction": "004E085B MOV byte ptr[EAX+18],0, length4",
+    "selected_identity": "EAX=game[18EC]; EAX=game[18CC+EAX*4]",
+    "stores": [
+      "004E0851 byte[EAX+E]=1",
+      "004E0855 word[EAX+10]=FFFD",
+      "004E085B byte[EAX+18]=0"
+    ],
+    "reaching_registers": "EDI reloaded from saved original game[EBP+4C] at004E07FE; saved at004DFBB5. EBX re-zeroed at004E07AA, unchanged through CMP004E080A.",
+    "gate": "004E080C skips for mode0; mode2 event arm jumps past; nonzero/non2 reaches stores",
+    "live_binding": "Not delivered. Mode0 retains actual prior+E, initially knownzero; mode1/session delivery remains unsupported.",
+    "correction": "004BB440 does not write+E; historical host comment and all-ready initialization removed"
+  },
+  "entry_control": {
+    "arm": "device arm when mode==0 OR session29C!=0; count arm only reaches record walk for mode1 and session29C==0",
+    "count": "004DB9E0..004DBA2D counts selected9==0 AND E==0, without8 check",
+    "availability": "Missing selected9/E view stops only the actual mode1 count consumer; unused mode0 count cannot block device arm",
+    "existing_inputs": "Current live host mode0, session flagfalse,624zero and injected device edge are unchanged by this packet"
+  },
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "platform": "MSVC Win32 Release",
+      "result": "passed",
+      "tests": [
+        "reconstructed_math passed",
+        "native_math_differential passed"
+      ],
+      "log": "local/participant_live_build_corrected.log"
+    },
+    "call_gate": {
+      "command": "python tools/verify_report_calls.py reports/session_participant_live_owner.json",
+      "log": "local/participant_live_call_check.txt",
+      "expected_rows": 20,
+      "result": "passed"
+    },
+    "runtime": {
+      "result": "passed",
+      "exit": 0,
+      "seconds": 10.115850100002717,
+      "frames": 120,
+      "scene_count": 8,
+      "scene_count_authored": true,
+      "entry_unbound": 1,
+      "entry_player_count_arm": false,
+      "entry_state": "0D",
+      "avoidance_queries": 2400,
+      "refills": 10,
+      "clears": 12,
+      "cruise_owner_reads": 1080,
+      "cruise_owner_unavailable": 0,
+      "assigned_role_participant_lookup_exercised": false,
+      "record": "local/participant_live_runtime.json",
+      "inputs": "local/participant_live_runtime_inputs.json",
+      "log": "local/participant_live_runtime.log",
+      "extract": "local/participant_live_runtime_extract.txt",
+      "binary": "local/participant_live_game.exe",
+      "binary_sha256": "3e6609b426f244c03a40158a2d0a6970484d9f2c660f508c6e065bececc76169",
+      "log_sha256": "335e730cc2213589848fdb220d31f217e6f61ea5d5da201f912ac4392ee32b82",
+      "compiled_sources": {
+        "include/bsp/game_hosts_mission_frame.hpp": "c77b5ef5afa3b4565a982cf46d1c4853fbccae5cc5b2d9ce832aa7403e7d4a59",
+        "src/game_hosts_mission_frame.cpp": "1c3e51a5bc559b3e4d9490a647d7b0261560f7b356e6dedd247d69af3727951b",
+        "src/game_hosts_mission.cpp": "7713335d0e841f3fe82ffe247dc963ab96410b3b18515b6dd894a8289bec00ce",
+        "src/game_hosts_ship_ai.cpp": "d13cf757bd05be794cf8fc7f7fc8fe99ec40f8b4d8fedc9adece77b251a985e3",
+        "src/session_participant_pools.cpp": "4b3caa17635856f7f32fce4f2af65bc56c96fcde096716374a78a1912956a697"
+      },
+      "service_boundary": "Actual vendor XLive/msidcrl private runtime and installed fmod inputs retained in args; existing injected device edge"
+    },
+    "prior_run": {
+      "record": "local/participant_live_pre_correction_runtime.json",
+      "binary": "local/participant_live_pre_correction_game.exe",
+      "log": "local/participant_live_pre_correction_runtime.log",
+      "exit": 0,
+      "frames": 120,
+      "unbound": 8,
+      "invalid_native_count_provenance": true,
+      "scope": "Pre-correction process observation only: empty semantic vector was not actual native988. Excluded as native-count/AI-byte producer proof."
+    }
+  },
+  "coverage_limits": [
+    "Only8/9/E and selected identities are canonical in the existing participant projection; no full118-byte record synthesized",
+    "Native claim names/callbacks and post-claim20/24/28 stores remain outside this host binding",
+    "Mode1 readiness, network startup and assigned unit-role message delivery remain unsupported",
+    "Fixed-step10 ready-word retains its pre-existing separate entry projection; it is not canonical device ownership",
+    "Lifetime permits repeated scene loads, but one local mission run does not prove repeated-load retention at runtime",
+    "Existing injected device edge does not validate real device delivery"
+  ],
+  "no_ghidra_function": [],
+  "flow_gaps": [],
+  "instruction_query_correction": "004E07A0 is the second byte of JZ004E079F(length2), not a missing function or flow gap; readiness stores resolve to004DFB70",
+  "evidence": {
+    "directory": "local",
+    "manifest": "local/participant_live_manifest.json",
+    "manifest_sha256": "035df41d93cc977d793421576ca101aefd1d1293f67fe1683bd59b35562c9fe3",
+    "source_count": 10,
+    "artifact_count": 47
+  },
+  "dependencies": [
+    "d4651cfba6225fb9527a57a4af971464682eedc6 participant core",
+    "187efac2 borrowed ShipAI binding API",
+    "87f9a9e0 query owner lifetime correction"
+  ],
+  "scalar_producer": {
+    "existing_api": "read_scene_record_slot_table_004f1d70(document.header.properties)",
+    "availability": "Requires successful scene read plus has_header and header.has_properties; prior path value erased at read start",
+    "identity": "std::map scene_path -> actual signed MaxPlayerNum; selected record path performs lookup",
+    "original_abi": "004F1D70: ECX bag, EDX record, one stack word; RET4 at004F23E0 and004F2404",
+    "body_inclusive": [
+      "004f1d70",
+      "004f2406"
+    ],
+    "registers": "EBX=ECX at004F1D8F, EBP=EDX at004F1D96; neither overwritten before004F214F/2157",
+    "stores": [
+      "004F214F record988=property+C",
+      "004F2157 record988=8 only when property absent"
+    ],
+    "unchanged_limit": "Party/Race and semantic side_blocks population remain unresolved and are not synthesized",
+    "effective_bag_scope": "Authored MaxPlayerNum survives keep-existing default merge. Installed Weather.lua leaves Weathers={} after its one long comment; no assignment from native weather bag on tested data. Arbitrary modified weather/inherited registry behavior is outside new host binding.",
+    "installed_observation": {
+      "path": "universe/Scenes/missions/USN/usn_1_marshall.scn",
+      "line": 401,
+      "literal": "MaxPlayerNum = I 8 ;",
+      "runtime_parsed_count": 8,
+      "runtime_authored": true
+    }
+  }
+}
