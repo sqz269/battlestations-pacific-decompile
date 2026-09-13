@@ -1,0 +1,242 @@
+{
+  "events": [
+    {
+      "recreate": "00cbc3c2",
+      "previous": "Function: Unwind@00cbc3c2 at 00cbc3c2\nSignature: undefined Unwind@00cbc3c2(void)\nEntry: 00cbc3c2\nBody: 00cbc3c2 - 00cbc3ca",
+      "plate": null
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00cbc3c2"
+      },
+      "result": {
+        "success": true,
+        "address": "00cbc3c2",
+        "deleted_function": "Unwind@00cbc3c2",
+        "body_size": 9,
+        "message": "Function 'Unwind@00cbc3c2' deleted at 00cbc3c2"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cbc3c2",
+        "end_address": "00cbc3cd"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00cbc3c2",
+        "end_address": "00cbc3cc",
+        "bytes_disassembled": 11,
+        "message": "Successfully disassembled 11 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cbc3c2",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00cbc3c2",
+        "function_name": "Unwind@00cbc3c2",
+        "entry_point": "00cbc3c2",
+        "body_size": 11,
+        "message": "Function created successfully at 00cbc3c2"
+      }
+    },
+    {
+      "defined": "00cbc3c2",
+      "end": "00cbc3cd",
+      "name": null,
+      "after": "Function: Unwind@00cbc3c2 at 00cbc3c2\nSignature: undefined Unwind@00cbc3c2(void)\nEntry: 00cbc3c2\nBody: 00cbc3c2 - 00cbc3cc"
+    },
+    {
+      "recreate": "00cbc3dd",
+      "previous": "Function: Unwind@00cbc3dd at 00cbc3dd\nSignature: undefined Unwind@00cbc3dd(void)\nEntry: 00cbc3dd\nBody: 00cbc3dd - 00cbc3e5",
+      "plate": null
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00cbc3dd"
+      },
+      "result": {
+        "success": true,
+        "address": "00cbc3dd",
+        "deleted_function": "Unwind@00cbc3dd",
+        "body_size": 9,
+        "message": "Function 'Unwind@00cbc3dd' deleted at 00cbc3dd"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cbc3dd",
+        "end_address": "00cbc3e8"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00cbc3dd",
+        "end_address": "00cbc3e7",
+        "bytes_disassembled": 11,
+        "message": "Successfully disassembled 11 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cbc3dd",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00cbc3dd",
+        "function_name": "Unwind@00cbc3dd",
+        "entry_point": "00cbc3dd",
+        "body_size": 11,
+        "message": "Function created successfully at 00cbc3dd"
+      }
+    },
+    {
+      "defined": "00cbc3dd",
+      "end": "00cbc3e8",
+      "name": null,
+      "after": "Function: Unwind@00cbc3dd at 00cbc3dd\nSignature: undefined Unwind@00cbc3dd(void)\nEntry: 00cbc3dd\nBody: 00cbc3dd - 00cbc3e7"
+    },
+    {
+      "recreate": "00cbc3e8",
+      "previous": "Function: Unwind@00cbc3e8 at 00cbc3e8\nSignature: undefined Unwind@00cbc3e8(void)\nEntry: 00cbc3e8\nBody: 00cbc3e8 - 00cbc3f0",
+      "plate": null
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00cbc3e8"
+      },
+      "result": {
+        "success": true,
+        "address": "00cbc3e8",
+        "deleted_function": "Unwind@00cbc3e8",
+        "body_size": 9,
+        "message": "Function 'Unwind@00cbc3e8' deleted at 00cbc3e8"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cbc3e8",
+        "end_address": "00cbc3f3"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00cbc3e8",
+        "end_address": "00cbc3f2",
+        "bytes_disassembled": 11,
+        "message": "Successfully disassembled 11 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cbc3e8",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00cbc3e8",
+        "function_name": "Unwind@00cbc3e8",
+        "entry_point": "00cbc3e8",
+        "body_size": 11,
+        "message": "Function created successfully at 00cbc3e8"
+      }
+    },
+    {
+      "defined": "00cbc3e8",
+      "end": "00cbc3f3",
+      "name": null,
+      "after": "Function: Unwind@00cbc3e8 at 00cbc3e8\nSignature: undefined Unwind@00cbc3e8(void)\nEntry: 00cbc3e8\nBody: 00cbc3e8 - 00cbc3f2"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cbc3f3",
+        "end_address": "00cbc3fd"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00cbc3f3",
+        "end_address": "00cbc3fc",
+        "bytes_disassembled": 10,
+        "message": "Successfully disassembled 10 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cbc3f3",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00cbc3f3",
+        "function_name": "FUN_00cbc3f3",
+        "entry_point": "00cbc3f3",
+        "body_size": 10,
+        "message": "Function created successfully at 00cbc3f3"
+      }
+    },
+    {
+      "defined": "00cbc3f3",
+      "end": "00cbc3fd",
+      "name": null,
+      "after": "Function: FUN_00cbc3f3 at 00cbc3f3\nSignature: undefined FUN_00cbc3f3(void)\nEntry: 00cbc3f3\nBody: 00cbc3f3 - 00cbc3fc"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "analysis_only": true,
+  "new_reconstructed_entries": 0,
+  "final_full_body_readback": "00cbc3c2 Unwind@00cbc3c2  undefined Unwind@00cbc3c2(void)  body 00cbc3c2 - 00cbc3cc\n00cbc3dd Unwind@00cbc3dd  undefined Unwind@00cbc3dd(void)  body 00cbc3dd - 00cbc3e7\n00cbc3e8 Unwind@00cbc3e8  undefined Unwind@00cbc3e8(void)  body 00cbc3e8 - 00cbc3f2\n00cbc3f3 FUN_00cbc3f3  undefined FUN_00cbc3f3(void)  body 00cbc3f3 - 00cbc3fc\n",
+  "final_listing_review": {
+    "free_cleanup_instructions": 5,
+    "handler_instructions": 2,
+    "all_listings_have_no_gaps": true,
+    "all_three_pop_ecx_ret_tails_present": true
+  },
+  "saved_and_exports_refreshed": true,
+  "defined_handler": {
+    "address": "00cbc3f3",
+    "bytes": 10,
+    "func_info": "00df45b4",
+    "target": "00bf6b43"
+  },
+  "uncertainty": "Analysis boundaries only; no reconstruction or original native exception compatibility is established."
+}

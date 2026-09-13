@@ -159,6 +159,21 @@ void* construct_native_string_cstring_0041e870(void* destination, const char* so
     return destination;
 }
 
+void* construct_native_string_cstring_0041e870(void* destination, const char* source,
+    NativeStringRawPoolContext& strings) {
+    clear_header(destination);
+    const auto length = cstring_length(source);
+    resize_native_string_header_0041dd40(destination, strings, length, true);
+    auto* data = pointer(destination, 4);
+    if (data) {
+        const auto count = word(destination) + 1u;
+        // BF7680 also copies backward for overlap. Keep the established
+        // zero-byte C++ call omission; no header or source snapshot is added.
+        if (count != 0) std::memmove(data, source, count);
+    }
+    return destination;
+}
+
 void* lower_bound_native_physical_index_00bda260(void* tree, const void* key) {
     auto* candidate = pointer(tree, 4);
     auto* node = pointer(candidate, 4);

@@ -5,6 +5,7 @@
 namespace bsp {
 class NativeStringStorage;
 class ActualNativeStringPoolStorage;
+struct NativeStringRawPoolContext;
 struct SingletonLifetimeCallbacks;
 
 // Raw eight-byte headers; no wrapper object or copied std::string is required.
@@ -30,6 +31,15 @@ void* assign_native_string_cstring_0041e350(void* destination, const char* sourc
 // 41E870: nonnull source, clears header first, copies current length+1, RET4.
 void* construct_native_string_cstring_0041e870(void* destination, const char* source,
     NativeStringStorage&);
+// Same complete 41E870..41E8C2 body over the application's actual pool domain.
+// Clear length/data BEFORE the byte scan, including source/header aliases.
+// Raw41DD40 preserve1 resolves the current pool and permits getter exceptions;
+// read current data then current length+1 afterward and use overlap-safe copy.
+// Empty text takes the equal-zero resize path without acquiring a pool.
+// Original ECX header, stack nonnull text, RET4, EAX header; this overload's
+// borrowed context is a new C++ interface, not original binary/EH ABI proof.
+void* construct_native_string_cstring_0041e870(void* destination, const char* source,
+    NativeStringRawPoolContext&);
 
 // Actual index: tree+4=head; node links +0/+4/+8, basename +C/+10,
 // full name +14/+18, nil byte+1D. Iterator is {owner,node}, two DWORDs.

@@ -1,0 +1,324 @@
+{
+  "packet": "orch6_native_unit_killed_tail_w",
+  "base_commit": "a78293c53a5db892d7fb8ba1fea6ffdf996f2e54",
+  "status": "reconstructed_complete_normal_body_native_byte_fixture_tested_required_providers",
+  "ghidra": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "mode": "strict read-only, verified tools/bsp.py ghidra CLI",
+    "function": "00779AF0 BSP_MissionEntity_OnKilledPlayerUnit",
+    "previous_values": "local/unit_killed_tail_previous_function.txt; local/unit_killed_tail_previous_comments.txt",
+    "annotations": "Primary integrator owns any comment update; existing descriptive name retained"
+  },
+  "routines": [
+    {
+      "address": "00779af0",
+      "source": "src/native_unit_killed_tail.cpp",
+      "name": "native_unit_on_killed_00779af0",
+      "coverage": "complete normal body, 109 bytes, 00779AF0..00779B5C; callees remain explicit required providers",
+      "original_abi": "ECX=unit, no stack arguments; EBX/ESI/EDI restored; final JMP 00928C80",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00779afa",
+      "native": "00779af0+vtable18",
+      "function": "00779af0",
+      "operation": "First dynamic primary +18 query on actual canonical unit; no arguments; EAX pointer"
+    },
+    {
+      "address": "00779b0d",
+      "native": "00779af0+vtable18",
+      "function": "00779af0",
+      "operation": "Second dynamic primary +18 query only after first nonnull; table reloaded, actual E188DC captured at 00779B05 before call"
+    },
+    {
+      "address": "00779b15",
+      "native": "004bca80",
+      "function": "00779af0",
+      "operation": "ECX=0; actual E188DC publication then current render singleton listener delegation",
+      "callee_review": "Full 004BCA80 and 00B0D7B0 read; no fallback or port"
+    },
+    {
+      "address": "00779b43",
+      "native": "00803ba0",
+      "function": "00779af0",
+      "operation": "ECX=index 0..2, only signed effective detection level >0; no stack arguments",
+      "callee_review": "Full 00803BA0 read; sets present slot +25 then current local-player-context gate may clear world+193C"
+    },
+    {
+      "address": "00779b58",
+      "native": "00928c80",
+      "function": "00779af0",
+      "kind": "tail_jump",
+      "operation": "Restore original ECX and saved registers, JMP complete base handler, no work afterwards",
+      "callee_review": "Full pseudocode and existing source reviewed; existing source helper is partial Lua/log and omits +134 virtual plus 00923050"
+    }
+  ],
+  "reviewed_incoming_sites": [
+    {
+      "address": "007f3b14",
+      "native": "00779af0",
+      "function": "007f3b10",
+      "kind": "call",
+      "operation": "Aircraft destroyed handler saves original ECX in ESI and calls with unchanged receiver"
+    },
+    {
+      "address": "00742209",
+      "native": "00779af0",
+      "function": "00742180",
+      "kind": "tail_jump",
+      "operation": "Land convoy restores ECX from EBP then jumps after list loop"
+    },
+    {
+      "address": "00951fba",
+      "native": "00779af0",
+      "function": "00951fb0",
+      "kind": "tail_jump",
+      "operation": "Actual scene handle +4A4 cleared; unchanged receiver; full proof retained by V packet"
+    }
+  ],
+  "field_provenance": [
+    {
+      "field": "unit detection records",
+      "existing_declarations": "include/bsp/recon_slot_lists.hpp: kReconUnitDetectionArrayOffset/Stride/Count and field offsets",
+      "producer": "0077EEF1 ESI=ECX; 0077EF08 count3; 0077EF10 stride34; 0077EF12 ECX=unit+1E8; 0077EF22 existing library array constructor with 00805A70; library identity retained, no port"
+    },
+    {
+      "field": "record normal+4 / forced+8 / force+10",
+      "producer": "00805A89 EDI=ECX; 00805A94 EBX=0; 00805AB3/AB6/ABE zero stores; 00805AF0 subsequently writes normal level at 00805B73",
+      "view": "live signed int32 and byte references, no enum normalization or copied records"
+    },
+    {
+      "field": "actual E188DC publication",
+      "existing_declaration": "controlled_unit.hpp kGameControlledListenerAddress",
+      "producer": "004BCA80 stores supplied ECX at 004BCA80 before render delegation",
+      "read": "00779B05 captures after first nonnull query, before second query"
+    },
+    {
+      "field": "current world +193C latch",
+      "existing_declaration": "in_mission_subsystem_tick.hpp kUnitListsBuiltLatchOffset",
+      "producer": "004C3CDC sets the existing latch after its gate; 00779B1F clears it; 004C3CB7 is the read/test, not the producer",
+      "read": "current actual E188A8 resolved at 00779B1A after optional listener callback; borrowed accessor must be side-effect-free"
+    }
+  ],
+  "register_provenance": {
+    "EBX": "Original ECX stored at 00779AF1; no writes until final POP; restored to ECX at 00779B55",
+    "ESI": "Captured E188DC at 00779B05; replaced by unit+1F0 at 00779B28, advanced by34 each loop; original ESI restored",
+    "EDI": "Saved before providers; zero at 00779B26, increment at 00779B48, bound3; callee-saved index passed in ECX to 00803BA0",
+    "stack": "No pushed arguments in this routine; three callee-saved pushes matched by pops; base tail returns to original caller; no EH frame in 109-byte body"
+  },
+  "reuse_assessment": {
+    "actual_unit": "Existing NativeUnitObserverAlias, no extra unit or scene owner",
+    "records": "Borrow existing actual detection fields using established metadata; no raw semantic owner cast",
+    "scene_getter": "Dynamic required primary +18 provider can use the proved V getter when its actual table and cell binding are available; never hardcoded for all incoming classes",
+    "base_lua": "mission_entity_on_killed_00928c80 covers gated Lua and log only. Complete base provider must also supply detach virtual and00923050; do not wrap the partial helper as complete",
+    "other_providers": "ControlledUnitGlobals and source host booleans do not preserve actual pointer publication identity. Existing recon helpers do not implement complete 00803BA0. Required providers retain actual owners and behavior."
+  },
+  "verification": {
+    "build": "PASS scripts/build.ps1: strict MSVC Win32 Release; initial clean build log retained separately",
+    "ctest": "PASS: reconstructed_math and native_math_differential, 2/2, 0 failures; final configure occurred after verify-seeds generated local/seed_reference.hpp",
+    "verify_report_calls": "PASS: 6 direct/tail rows checked, 0 failed; 2 explicit indirect +18 rows are skipped by this checker and inspected in the complete listing",
+    "verify_seeds": "PASS all 8 installed binary seed spans",
+    "fixture_result": "PASS 3 paired complete-original-body cases",
+    "fixture_source": "local/unit_killed_tail_probe.cpp",
+    "fixture_command": "./local/run_unit_killed_tail_probe.ps1",
+    "fixture_results": "local/unit_killed_tail_probe_result.json",
+    "fixture_manifest": "local/unit_killed_tail_probe_manifest.json",
+    "fixture_hash_count": 239,
+    "fixture_cases": [
+      "First query null: no second query or listener call, selected signed levels nonpositive, current world latch cleared, same-unit base tail",
+      "First query changes table/publication, second query changes publication: compare captured prior value; listener callback changes world; mark0 changes next record to forced positive; mark1 and base mutate state which survives",
+      "Second result equals newly changed publication but differs from captured value: no listener call; nonzero force bytes, INT_MIN skip and INT_MAX positive slot2; current world replacement honored"
+    ],
+    "fixture_boundaries": "Test-only required providers record and deliberately mutate actual fixture cells. Native 004BCA80,00803BA0,00928C80 and slot18 bodies are not executed. Raw native and semantic source owner layouts differ; entire unrelated storage is checked.",
+    "toolchain": "MSVC 19.51.36244.0 x86, linker 14.51.36244.0, Windows SDK 10.0.26100.0; /std:c++17 /EHsc /O2 /MD /showIncludes; explicit /link /MANIFEST:EMBED /MACHINE:X86; extracted asInvoker manifest",
+    "abi_compatible": false,
+    "game_validated": false,
+    "artifact_hashes": [
+      {
+        "path": "local/unit_killed_tail_probe_manifest.json",
+        "bytes": 57004,
+        "sha256": "169e9a4d375fd36e07f24202c383a453095d2b9cbab0a99247c5056849fda8db"
+      },
+      {
+        "path": "local/unit_killed_tail_probe.cpp",
+        "bytes": 10653,
+        "sha256": "c3046fe6544a4327cfa89a1714b5c62443c2e3e7b339315feb7604c9fed1f2dd"
+      },
+      {
+        "path": "local/unit_killed_tail_probe.exe",
+        "bytes": 14336,
+        "sha256": "a49335168cd5a41a6d771670999567302593c33cd5358cb1fd9d8ae6935e10cf"
+      },
+      {
+        "path": "local/unit_killed_tail_probe_result.json",
+        "bytes": 392,
+        "sha256": "cdd9d7b9102bc302b298e842d54ec0091afc74d6719db9c15e1be05017271091"
+      },
+      {
+        "path": "local/unit_killed_tail_byte_evidence.json",
+        "bytes": 2745,
+        "sha256": "19df9111c33bf599c2b4bc55c7f83246654916a9b97d474c32ad558ad62d1a74"
+      },
+      {
+        "path": "local/unit_killed_tail_build.log",
+        "bytes": 4247,
+        "sha256": "32e12b928cd07ad1ebe4fadcf60c280f1ab2e6c2477acf2f498b95f0441d0f96"
+      },
+      {
+        "path": "local/unit_killed_tail_initial_build.log",
+        "bytes": 42306,
+        "sha256": "e6122207408ea2871c720e165572a19aaada0b2d9a101994fc13ff848ba0fcd5"
+      },
+      {
+        "path": "local/unit_killed_tail_calls.log",
+        "bytes": 221,
+        "sha256": "56dfce69b6c2a9c4621abe5c79650cc9735eea664a162f988a3816074049eb24"
+      },
+      {
+        "path": "local/unit_killed_tail_seeds.json",
+        "bytes": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+      },
+      {
+        "path": "local/seed_reference.hpp",
+        "bytes": 2995,
+        "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+      },
+      {
+        "path": "local/unit_killed_tail_previous_function.txt",
+        "bytes": 127,
+        "sha256": "fa387ca1fb2a6d60aa1da205455ecd828c23edbe07a583e7e7ecfc235a1fba51"
+      },
+      {
+        "path": "local/unit_killed_tail_previous_comments.txt",
+        "bytes": 850,
+        "sha256": "50396aa97a12fdc96184ae6a377e6e8d7dc3a3e44b0529ea1ff8582805369dc1"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_unit_killed_tail.obj",
+        "bytes": 1623,
+        "sha256": "6504ad6a0ee8d362c18bc7c00c3399c75e2c4778121d078ee120c6ec0bfe7df8"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 55530662,
+        "sha256": "945fea4ff69c8a9908b231259691e3d678a29b26e21adb1d458a586a8bf2cb3a"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 2037248,
+        "sha256": "fc59e9dfaad0a5e932d2efd74038ac0d1fe478f6279d8ab99b7d1d785385f68f"
+      },
+      {
+        "path": "build/win32/Release/bsp_native_math_tests.exe",
+        "bytes": 18432,
+        "sha256": "8cfa0d71991ea7f3acef4a7b9a506d159d70121ab3f7ec5d9cbfce5fde8320d6"
+      },
+      {
+        "path": "local/unit_killed_tail_world_latch_producer.txt",
+        "bytes": 495,
+        "sha256": "57d9f9f8f7b69c0ad1341f9a00a5d6b74bb956533360216ce65761bd4b9dfc5b"
+      }
+    ],
+    "compiled_source_hashes": [
+      {
+        "path": "include/bsp/native_unit_killed_tail.hpp",
+        "bytes": 2890,
+        "sha256": "18a7d70759df48d890f2dd5eaa97a110f9c87831fe02a9a0e20a78a4787a9f2a"
+      },
+      {
+        "path": "src/native_unit_killed_tail.cpp",
+        "bytes": 1005,
+        "sha256": "f1ed4ff344794fd8f39c7416e44fd0c157f4f4407deb6102a0a40a000be5c438"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 103165,
+        "sha256": "c6f46c19a440ae7ff4b442d95f355ff5a4291791e248d07b577e066117696cfb"
+      }
+    ]
+  },
+  "native_evidence": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "body": "00779af0..00779b5c",
+    "spans": [
+      {
+        "address": "00779af0",
+        "length": 109,
+        "hex": "538bd98b038b50185657ffd285c0741a8b038b50188b35dc88e1008bcbffd23bc6750733c9e8662fd4ffa1a888e100c6803c1900000033ff8db3f00100008bff807e080074048b06eb038b46fc85c07e078bcfe858a0080083c70183c63483ff037cdd5f5e8bcb5be923f11a00",
+        "sha256": "650c77abeb8af672dd2c47f2a4402eb8ba18bca98db0ac302a5b775e42760b01",
+        "ghidra_matches_disk": true
+      },
+      {
+        "address": "00805ab3",
+        "length": 14,
+        "hex": "895f04895f08f30f11470c885f10",
+        "sha256": "40771ff90b8d5f1adba85ed5c17ae530ace78ad3a196b40146f473b33d58c7b7",
+        "ghidra_matches_disk": true
+      },
+      {
+        "address": "0077eed0",
+        "length": 87,
+        "hex": "6aff68c8a0c80064a100000000506489250000000083ec088b44241853555657508bf16a018974241ce832971a00680043800068705a80006a038dbee40100006a348d4f0433db51895c2434c707983dd000e8aa8d4700",
+        "sha256": "44b2ea64dfc3ca77883e8180146f374ad98bbc7d9e6014abc9efd2d4cc523774",
+        "ghidra_matches_disk": true
+      },
+      {
+        "address": "004bca80",
+        "length": 19,
+        "hex": "890ddc88e100518b0d9cd3f800e81e0d6500c3",
+        "sha256": "3d0f01d0b495865e9cbd899d9564c215eeff02479cae49992124726f705fb4c7",
+        "ghidra_matches_disk": true
+      },
+      {
+        "address": "00803ba0",
+        "length": 56,
+        "hex": "8b048dbc74f80085c07404c64025018b15a888e1008b82ec18000085c07c1883f8077f138b8482cc1800003b48287507c6823c19000000c3",
+        "sha256": "4fd0c88ae8793f27f7c73e27c5912534c4a3dab699cc330f3920fc630521dfc6",
+        "ghidra_matches_disk": true
+      }
+    ],
+    "relocations": [
+      {
+        "offset": 23,
+        "kind": "absolute32",
+        "original_target": "00e188dc"
+      },
+      {
+        "offset": 43,
+        "kind": "absolute32",
+        "original_target": "00e188a8"
+      },
+      {
+        "offset": 38,
+        "kind": "rel32_call",
+        "original_target": "004bca80"
+      },
+      {
+        "offset": 84,
+        "kind": "rel32_call",
+        "original_target": "00803ba0"
+      },
+      {
+        "offset": 105,
+        "kind": "rel32_tail_jump",
+        "original_target": "00928c80"
+      }
+    ],
+    "native_abi": "ECX=unit, no stack arguments; EBX/ESI/EDI restored; final JMP 00928C80",
+    "fixture_relocations": "Two actual publication cells and three required recording providers; indirect +18 dispatch uses test vtables. No callee body is emulated or executed."
+  },
+  "limitations": [
+    "No actual scene/GameUnitsHost runtime binding is introduced.",
+    "No complete native provider implementation or library/Lua/listener port is supplied.",
+    "No native exception, FH3/SEH, binary ABI or gameplay parity claim. Required providers may throw; caller adds no automatic cleanup or rollback.",
+    "All aliases, record references and publication cells must refer to the same live actual owners throughout delegation."
+  ]
+}

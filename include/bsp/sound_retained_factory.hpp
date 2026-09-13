@@ -11,6 +11,10 @@ SoundClassLevel* const* sound_class_slot_00a7f0f0(SoundSystemOwner&, std::int32_
 // Release the captured old pointer, clear after its callback, then adopt the
 // replacement without retaining. Same-pointer adoption is NOT an early exit.
 void*& adopt_sound_reference_0054d510(void*&, void*, VoiceReferenceHost&);
+// Same actual slot operations for volatile pointer cells. Qualification is
+// preserved; both interfaces share this implementation and the same host
+// release contract. Volatile does not provide inter-thread synchronization.
+void* volatile& adopt_sound_reference_0054d510(void* volatile&, void*, VoiceReferenceHost&);
 
 struct SoundRetainedFactoryContext {
     SoundInstanceContext& instance;
