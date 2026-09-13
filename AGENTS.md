@@ -33,21 +33,33 @@
   index with `python tools/bsp.py index --if-stale` after snapshots or ledger edits. Add records with
   `python tools/bsp.py ledger add-name|add-function|add-fragment`. If a legacy monolithic
   `config/*.json` ledger exists, run `python tools/bsp.py ledger migrate` before committing.
-- Context discipline (measured: whole-file reads were 77% of tool output and the average model call
-  carried 132k tokens; step latency follows context size):
-  - Start a turn with `python tools/bsp.py state` (one screen). Do not re-read AGENTS.md, ROADMAP or
-    docs for orientation; AGENTS.md is injected automatically and `state` lists packets and freshness.
-  - Read code through `python tools/bsp.py show <address>` (capped; `--asm` for the listing, `--start`
-    to page). Take one representation at a time; open the assembly only when the pseudocode shows
-    register inputs, x87, overlapping globals or a suspect no-return. Never `Get-Content`/`cat` a whole
-    export, ledger, functions.json or doc; use `--lines`, `-TotalCount`, or `rg -n -C` on a known term.
+- Context discipline. Measured over 371 sessions and 305k shell commands in September 2026: a tool
+  output is re-sent on every later request until compaction, 45x on average, so output size is what
+  costs money and call count is nearly free. One extra round trip costs about 40x what one more
+  command inside the same call costs. Reads are already 92% paged; the rules below target what is left.
+  - Start a turn with `python tools/bsp.py brief` (one call: state, dirty files, ready packets). Do not
+    re-read AGENTS.md, ROADMAP or docs for orientation; AGENTS.md is injected automatically.
+  - `bsp.py` caps its own output at 2000 tokens, writes the whole result to `local/output/` and prints
+    the path. When you see that marker, page the spilled file with `rg -n` or `sed -n`. Do not re-run
+    with `--full` to get the rest, and never draw a conclusion from the head alone.
+  - Size, not path, is the rule for reading: no single command may return more than roughly 2000 tokens.
+    That applies to a header or a `.cpp` as much as to a ledger or an export. Use `--lines`, `--limit`,
+    `-TotalCount`, `Select-Object -Skip N -First M`, or `rg -n -C` on a known term. Whole-file reads of
+    `src/` and `include/` are the largest remaining uncapped source of context.
+  - Batch independent reads, greps and status checks into one shell call; a round trip costs far more
+    than an extra command. Keep any single command that can exceed roughly 4 KB in its own call, since
+    an output cap applies to the concatenated result. Commands that consume the previous command's
+    output cannot be batched with it.
+  - Never re-read a path already in this context. If you need a different part of it, page to that part.
+  - Read code through `python tools/bsp.py show <address>` (`--asm` for the listing, `--start` to page).
+    Take one representation at a time; open the assembly only when the pseudocode shows register inputs,
+    x87, overlapping globals or a suspect no-return.
   - Live Ghidra questions go through `python tools/bsp.py ghidra count|proto|xrefs|callers|callees|bytes|comments|
     decompile|disasm|export` instead of inline Python; when a query repeats twice, add a subcommand.
-  - Cap every command's output (`--limit`, `head`, `Select-Object -First`); write anything larger to
-    `local/` and grep it. A truncated output is wasted work.
+  - `python tools/bsp.py cheatsheet` is the argument reference. Do not spend a call on `--help`.
   - Take snapshots with `python tools/bsp.py snapshot` (skips unless Ghidra's function count changed).
-  - `git status --short` once per turn; commit in batches and push once per batch, not per commit.
-  - Workers: size a packet to fill a whole turn, start it with `state` plus the packet, and wait for
+  - Commit in batches and push once per batch, not per commit.
+  - Workers: size a packet to fill a whole turn, start it with `brief` plus the packet, and wait for
     completion notices rather than polling `wait_agent`. Prefer a fresh thread with a short handoff
     over working near the context window limit.
 - Multi-harness coordination (see `docs/COORDINATION.md`; reading a named doc you are pointed to is
