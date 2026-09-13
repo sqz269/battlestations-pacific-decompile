@@ -1,0 +1,40 @@
+{
+  "packet": "orch5_surface_actual_strings",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source_sha256": {
+    "include/bsp/native_surface_owner.hpp": "be315e0675574dfefe39c9200e4a3bc47824aa27376839950e733c294545eafb",
+    "src/native_surface_owner.cpp": "01b33cf76b7e6b642bd41f4edeea5685568123671e5d89a4cbf92dc73a348a45"
+  },
+  "functions": [
+    {
+      "address": "00b3f630",
+      "end_exclusive": "00b3f7ae",
+      "original_abi": "ECX raw slot; stack COM/flags/kind; EAX owner; RET0Ch"
+    },
+    {
+      "address": "00b3f4e0",
+      "end_exclusive": "00b3f588",
+      "original_abi": "ECX owner; RET"
+    },
+    {
+      "address": "00b3f5b0",
+      "end_exclusive": "00b3f5d0",
+      "original_abi": "ECX owner; stack flags; EAX original owner; RET4"
+    }
+  ],
+  "coverage": "Host string-domain adapter only; actual native storage and existing owner call schedule unchanged. No second pool or semantic native header overlay.",
+  "prior_native_evidence": [
+    "docs/NATIVE_SURFACE_OWNER.md",
+    "reports/native_surface_owner_audit.json"
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 Win32 Release /W4 /WX passed",
+    "ctest_passed": 2,
+    "ctest_failed": 0,
+    "build_log": "local/surface-actual-strings-build.log",
+    "build_log_sha256": "d7dc9c8461fa8830b50766f0aff879653059ed8cc91bbd843eb51e51d58de4fe",
+    "actual_surface_pool_fixture": false,
+    "gameplay": false
+  }
+}
