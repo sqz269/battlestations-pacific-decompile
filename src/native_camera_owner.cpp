@@ -172,11 +172,12 @@ NativeCameraOwner::~NativeCameraOwner() {
 void* construct_native_camera_00b71a80(NativeCameraOwner& owner, const NativeString& name) {
     if (owner.phase != NativeCameraOwner::Phase::prepared)
         throw std::logic_error("camera constructor requires its unused prepared slot");
+    auto& name_pool = owner.environment.nodes.require_semantic_name_pool();
     owner.phase = NativeCameraOwner::Phase::constructing;
     try {
         // Same-type placement transparently replaces the prefix; every binding
         // still addresses the actual fields. B6F5A0 owns its own failure cleanup.
-        construct_native_node_00b6f5a0(&owner.storage.node, 0x45c, name, owner.environment.nodes.strings);
+        construct_native_node_00b6f5a0(&owner.storage.node, 0x45c, name, name_pool);
     } catch (...) {
         end_tail(owner);
         throw;

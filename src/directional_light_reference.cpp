@@ -127,6 +127,7 @@ DirectionalLightReference* allocate_native_directional_light(
         !environment.light_virtual_0c ||
         &environment.nodes.scenes != &environment.nodes.attachments.scenes)
         throw std::invalid_argument("directional allocation requires actual pool, phase predicates and shared runtimes");
+    auto& name_pool = environment.nodes.require_semantic_name_pool();
     void* raw = environment.pool_01090154.allocate_raw_slot_00b7bac0();
     if (!raw) throw std::bad_alloc();
     DirectionalLightOwner* owner{};
@@ -134,7 +135,7 @@ DirectionalLightReference* allocate_native_directional_light(
     bool scene_bound = false;
     try {
         auto storage = construct_native_directional_light_00b7c6b0(raw,
-            DirectionalLightPool::slot_bytes, name, environment.nodes.strings);
+            DirectionalLightPool::slot_bytes, name, name_pool);
         constructed = true;
         owner = new DirectionalLightOwner(storage, environment.pool_01090154,
             environment.nodes, environment.directional_virtual_0c,
@@ -149,7 +150,7 @@ DirectionalLightReference* allocate_native_directional_light(
         } else if (constructed) {
             discard_unbound_fresh_storage({*static_cast<NativeNodeStorage*>(raw),
                 *reinterpret_cast<NativeLightTailStorage*>(static_cast<std::byte*>(raw) + 0x174)},
-                environment.nodes.strings);
+                name_pool);
         }
         delete owner;
         environment.pool_01090154.return_raw_slot_00b7b2f0(raw);

@@ -24,9 +24,18 @@ struct NativeNodeRetainedOwnerBinding {
 // All supplied bindings/allocators must remain live while a call uses them.
 class NativeNodeDestructionRuntime final {
 public:
+    // Exactly one immutable borrowed name domain. Raw construction calls no
+    // getter and owns no pool; its context, publication cells and providers
+    // must outlive all name cleanup. A wrong-domain accessor throws.
     NativeNodeDestructionRuntime(SceneAttachmentRuntime&,
         GeneratedModelLifetimeRuntime& actual_attachment_bindings,
         SizedStoragePool& actual_string_pool, SceneTypePredicate actual_node_virtual_0c);
+    NativeNodeDestructionRuntime(SceneAttachmentRuntime&,
+        GeneratedModelLifetimeRuntime& actual_attachment_bindings,
+        NativeStringRawPoolContext& actual_string_pool, SceneTypePredicate actual_node_virtual_0c);
+    SizedStoragePool& require_semantic_name_pool() const;
+    NativeStringRawPoolContext& require_raw_name_pool() const;
+    bool uses_raw_name_pool() const noexcept;
     void bind_retained_owner(NativeNodeRetainedOwnerBinding&);
     void unbind_retained_owner(NativeNodeRetainedOwnerBinding&) noexcept;
     void release_retained_owner(void* captured_owner);
@@ -34,9 +43,10 @@ public:
     NativePointLightLinksRuntime point_lights; // actual descriptors and matching backing domain
     SceneAttachmentRuntime& scenes;
     GeneratedModelLifetimeRuntime& attachments;
-    SizedStoragePool& strings;
     SceneTypePredicate node_virtual_0c; // actual B6F570 with initialized node/root tokens
 private:
+    SizedStoragePool* const semantic_name_pool_;
+    NativeStringRawPoolContext* const raw_name_pool_;
     std::vector<NativeNodeRetainedOwnerBinding*> retained_owners_;
 };
 

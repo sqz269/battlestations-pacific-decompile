@@ -68,11 +68,12 @@ float __fastcall range_bridge(RandomStream s,const NativeParticleTracerStateAcce
     return native_particle_random_range_00bd2f10(s,a->unit_random,lo,hi);
 }
 void* __fastcall light_allocate_bridge(void*,const NativeParticleTracerStateAccess* a) {
+    a->point_lights->nodes.require_semantic_name_pool();
     return a->point_lights->pool_0109011c.allocate_raw_slot_00b7b810();
 }
 void* __fastcall light_construct_bridge(void* p,const NativeParticleTracerStateAccess* a,const void* name) {
     auto storage=construct_native_point_light_00b7c710(p,NativePointLightPool::slot_bytes,
-        *static_cast<const NativeString*>(name),a->point_lights->nodes.strings);
+        *static_cast<const NativeString*>(name),a->point_lights->nodes.require_semantic_name_pool());
     adopt_constructed_native_point_light(*a->point_lights,storage);
     return p;
 }

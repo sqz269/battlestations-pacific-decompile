@@ -189,10 +189,11 @@ NativeGroupOwner::~NativeGroupOwner() {
 void* construct_native_group_00b8f5e0(NativeGroupOwner& owner, const NativeString& name) {
     if (owner.phase != NativeGroupOwner::Phase::prepared)
         throw std::logic_error("group construction requires an unused prepared slot");
+    auto& name_pool = owner.environment.nodes.require_semantic_name_pool();
     owner.phase = NativeGroupOwner::Phase::constructing;
     try {
         construct_native_group_00b8f5e0(&owner.storage.node, NativeGroupPool::slot_bytes, name,
-            owner.environment.nodes.strings, owner.environment.constants);
+            name_pool, owner.environment.constants);
     } catch (...) { end_tail(owner); throw; }
     publish_group_phase(owner);
     owner.phase = NativeGroupOwner::Phase::live;

@@ -56,6 +56,7 @@ void __fastcall initialize_light(void* definition, const NativeParticleSpriteSta
     void* state) {
     const auto& light_access=*access->lights;
     auto& environment=light_access.environment;
+    auto& name_pool=environment.nodes.require_semantic_name_pool();
     auto& strings=light_access.strings;
     auto* lock=get_native_particle_population_lock_0072b740(
         light_access.actual_manager_01090aa0, light_access.actual_lock_0108ff50);
@@ -76,7 +77,7 @@ void __fastcall initialize_light(void* definition, const NativeParticleSpriteSta
                 concatenate_native_string_headers_004261a0(&prefix,&joined,parent+8,strings);
                 joined_live=true;
                 auto storage=construct_native_point_light_00b7c710(raw,
-                    NativePointLightPool::slot_bytes,joined,environment.nodes.strings);
+                    NativePointLightPool::slot_bytes,joined,name_pool);
                 slot_owned=false;
                 auto* reference=adopt_constructed_native_point_light(environment,storage);
                 publish_light(state,&reference->light_owner().node.storage);
