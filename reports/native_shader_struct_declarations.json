@@ -1,0 +1,910 @@
+{
+  "packet": "orch5_native_struct_declarations",
+  "base_commit": "486bc004bcc0df6442b08d9c5262642e5d26ce4e",
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mode": "worker_read_only_verified_bsp_wrappers"
+  },
+  "source": "src/native_shader_struct_declarations.cpp",
+  "header": "include/bsp/native_shader_struct_declarations.hpp",
+  "documentation": "docs/NATIVE_SHADER_STRUCT_DECLARATIONS.md",
+  "installed_pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routines": [
+    {
+      "address": "00b34f20",
+      "end_inclusive": "00b3502f",
+      "bytes": 272,
+      "sha256": "79fd6843400442bfc5dc45697048c338b874a87748fdd3640aee5a9003c69e5d",
+      "direct_calls": 11,
+      "instructions": 95,
+      "export_assembly_sha256": "146758e5d64cf91bea46a2f467ec873cb88a946bbd5865c112a5f98d250c728d",
+      "role": "owned",
+      "name": "BSP_ShaderSource_AppendCStringLine",
+      "cpp_symbol": "append_native_shader_cstring_line_00b34f20",
+      "original_abi": "ECX actual8h destination; stack C string; RET4 at B3502D",
+      "coverage": "complete normal body"
+    },
+    {
+      "address": "00b35030",
+      "end_inclusive": "00b3510b",
+      "bytes": 220,
+      "sha256": "b4d6824f68dead82ca379647352206925f0a2aeba6884aa4901a40226bf5266b",
+      "direct_calls": 8,
+      "instructions": 79,
+      "export_assembly_sha256": "07897230c731e83e1095c32337eab4e69aa6f8529727713d1ad39105670dbcca",
+      "role": "owned",
+      "name": "BSP_ShaderSource_AppendStringLine",
+      "cpp_symbol": "append_native_shader_string_line_00b35030",
+      "original_abi": "ECX actual8h destination; stack actual8h source; RET4 at B35109",
+      "coverage": "complete normal body"
+    },
+    {
+      "address": "00b385b0",
+      "end_inclusive": "00b38a41",
+      "bytes": 1170,
+      "sha256": "e3e0bd161b3d5b7b54ada86d715a8d5f789c6b29f6f83f9b36fb1e4e3e986294",
+      "direct_calls": 48,
+      "instructions": 357,
+      "export_assembly_sha256": "22c94a9e19c7a19a606bfaab24453a5977d90594ab193140dd38de49af00297b",
+      "role": "owned",
+      "name": "BSP_ShaderField_FormatDeclaration",
+      "cpp_symbol": "format_native_shader_field_00b385b0",
+      "original_abi": "ECX actual1Ch field; stack output8h/semantics low byte; EAX output; RET8 at B38A3F",
+      "coverage": "complete normal body"
+    },
+    {
+      "address": "00b38b50",
+      "end_inclusive": "00b38c54",
+      "bytes": 261,
+      "sha256": "6acc1ba6238208db603e071173da2c6d18130b7e5f2d05fd5fa1910b79cde438",
+      "direct_calls": 7,
+      "instructions": 84,
+      "export_assembly_sha256": "923ac6846fe2f2bf3bc2696b0122398a11cde92f16aae13eefbcb9c58aeed23a",
+      "role": "owned",
+      "name": "BSP_ShaderBuilder_AppendStructDeclaration",
+      "cpp_symbol": "append_native_shader_struct_00b38b50",
+      "original_abi": "ECX actualB0h builder; stack unsigned start/name8h/list0Ch/semantics low byte/allow-vpos low byte; RET14h at B38C52",
+      "coverage": "complete normal body"
+    }
+  ],
+  "dependencies": [
+    {
+      "address": "00b35110",
+      "end_inclusive": "00b35267",
+      "bytes": 344,
+      "sha256": "77930fda7245b1b5a04f0062d866d411892277567034d50040e6f90afe09d4e8",
+      "direct_calls": 13,
+      "instructions": 120,
+      "export_assembly_sha256": "fbaa6ee3f9cb358361883156c9b87187b5751cc871ad69c899c80566b8f0181b",
+      "role": "existing_dependency_original_fixture",
+      "coverage": "existing complete normal body reused unchanged",
+      "source": "src/native_shader_constant_header.cpp"
+    },
+    {
+      "address": "00711370",
+      "end_inclusive": "00711454",
+      "bytes": 229,
+      "sha256": "16929cf21ca8ab9db69667821281efa78c14eea9ee53c382807cf286df839c25",
+      "direct_calls": 7,
+      "instructions": 82,
+      "export_assembly_sha256": "5dc252c842603de813c2260eb082af8c92bb12e510c29537f8911c5d98f32ebe",
+      "role": "existing_dependency_original_fixture",
+      "coverage": "existing complete normal body reused unchanged",
+      "source": "src/native_material_effect_programs.cpp"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b34f47",
+      "native": "0041e870",
+      "function": "00b34f20",
+      "contract": "Existing actual8h C-string constructor. Entered/non-returned helper state is not a guarantee of live ownership."
+    },
+    {
+      "address": "00b34f68",
+      "native": "0041dd40",
+      "function": "00b34f20",
+      "contract": "Existing actual8h NativeString resize with supplied SAME actual pool domain."
+    },
+    {
+      "address": "00b34f75",
+      "native": "00bf7680",
+      "function": "00b34f20",
+      "contract": "Original library memcpy has overlap branch; owned inline copies use host memmove."
+    },
+    {
+      "address": "00b34f92",
+      "native": "00419cc0",
+      "function": "00b34f20",
+      "contract": "Established actual string-pool singleton getter through supplied NativeStringStorage."
+    },
+    {
+      "address": "00b34f99",
+      "native": "00bd1510",
+      "function": "00b34f20",
+      "contract": "Established actual sized block return; existing noexcept release boundary."
+    },
+    {
+      "address": "00b34fae",
+      "native": "0041dd40",
+      "function": "00b34f20",
+      "contract": "Existing actual8h NativeString resize with supplied SAME actual pool domain."
+    },
+    {
+      "address": "00b34fc9",
+      "native": "00bf7680",
+      "function": "00b34f20",
+      "contract": "Original library memcpy has overlap branch; owned inline copies use host memmove."
+    },
+    {
+      "address": "00b34fe7",
+      "native": "0041dd40",
+      "function": "00b34f20",
+      "contract": "Existing actual8h NativeString resize with supplied SAME actual pool domain."
+    },
+    {
+      "address": "00b34ff4",
+      "native": "00bf7680",
+      "function": "00b34f20",
+      "contract": "Original library memcpy has overlap branch; owned inline copies use host memmove."
+    },
+    {
+      "address": "00b3500f",
+      "native": "00419cc0",
+      "function": "00b34f20",
+      "contract": "Established actual string-pool singleton getter through supplied NativeStringStorage."
+    },
+    {
+      "address": "00b35016",
+      "native": "00bd1510",
+      "function": "00b34f20",
+      "contract": "Established actual sized block return; existing noexcept release boundary."
+    },
+    {
+      "address": "00b35060",
+      "native": "0041dd40",
+      "function": "00b35030",
+      "contract": "Existing actual8h NativeString resize with supplied SAME actual pool domain."
+    },
+    {
+      "address": "00b35070",
+      "native": "00bf7680",
+      "function": "00b35030",
+      "contract": "Original library memcpy has overlap branch; owned inline copies use host memmove."
+    },
+    {
+      "address": "00b3508a",
+      "native": "0041dd40",
+      "function": "00b35030",
+      "contract": "Existing actual8h NativeString resize with supplied SAME actual pool domain."
+    },
+    {
+      "address": "00b350a5",
+      "native": "00bf7680",
+      "function": "00b35030",
+      "contract": "Original library memcpy has overlap branch; owned inline copies use host memmove."
+    },
+    {
+      "address": "00b350c3",
+      "native": "0041dd40",
+      "function": "00b35030",
+      "contract": "Existing actual8h NativeString resize with supplied SAME actual pool domain."
+    },
+    {
+      "address": "00b350d0",
+      "native": "00bf7680",
+      "function": "00b35030",
+      "contract": "Original library memcpy has overlap branch; owned inline copies use host memmove."
+    },
+    {
+      "address": "00b350eb",
+      "native": "00419cc0",
+      "function": "00b35030",
+      "contract": "Established actual string-pool singleton getter through supplied NativeStringStorage."
+    },
+    {
+      "address": "00b350f2",
+      "native": "00bd1510",
+      "function": "00b35030",
+      "contract": "Established actual sized block return; existing noexcept release boundary."
+    },
+    {
+      "address": "00b38607",
+      "native": "0041e350",
+      "function": "00b385b0",
+      "contract": "Existing actual8h nullable C-string assignment with preserve=false; library helper failure boundary retained unchanged."
+    },
+    {
+      "address": "00b3861e",
+      "native": "0041e870",
+      "function": "00b385b0",
+      "contract": "Existing actual8h C-string constructor. Entered/non-returned helper state is not a guarantee of live ownership."
+    },
+    {
+      "address": "00b38631",
+      "native": "00711370",
+      "function": "00b385b0",
+      "contract": "Unchanged construct_native_material_program_number_00711370, two pooled copies, UNSIGNED conversion; its temporary cleanup remains a borrowed helper boundary."
+    },
+    {
+      "address": "00b38643",
+      "native": "004261a0",
+      "function": "00b385b0",
+      "contract": "Existing actual8h concatenation; partial output is freed on failed append after initial copy. Stale header is not owned."
+    },
+    {
+      "address": "00b38660",
+      "native": "0041dd40",
+      "function": "00b385b0",
+      "contract": "Existing actual8h NativeString resize with supplied SAME actual pool domain."
+    },
+    {
+      "address": "00b38670",
+      "native": "00bf7680",
+      "function": "00b385b0",
+      "contract": "Original library memcpy has overlap branch; owned inline copies use host memmove."
+    },
+    {
+      "address": "00b38694",
+      "native": "00419cc0",
+      "function": "00b385b0",
+      "contract": "Established actual string-pool singleton getter through supplied NativeStringStorage."
+    },
+    {
+      "address": "00b3869b",
+      "native": "00bd1510",
+      "function": "00b385b0",
+      "contract": "Established actual sized block return; existing noexcept release boundary."
+    },
+    {
+      "address": "00b386b8",
+      "native": "00419cc0",
+      "function": "00b385b0",
+      "contract": "Established actual string-pool singleton getter through supplied NativeStringStorage."
+    },
+    {
+      "address": "00b386bf",
+      "native": "00bd1510",
+      "function": "00b385b0",
+      "contract": "Established actual sized block return; existing noexcept release boundary."
+    },
+    {
+      "address": "00b386dc",
+      "native": "00419cc0",
+      "function": "00b385b0",
+      "contract": "Established actual string-pool singleton getter through supplied NativeStringStorage."
+    },
+    {
+      "address": "00b386e3",
+      "native": "00bd1510",
+      "function": "00b385b0",
+      "contract": "Established actual sized block return; existing noexcept release boundary."
+    },
+    {
+      "address": "00b386ea",
+      "native": "0041e870",
+      "function": "00b385b0",
+      "contract": "Existing actual8h C-string constructor. Entered/non-returned helper state is not a guarantee of live ownership."
+    },
+    {
+      "address": "00b38709",
+      "native": "0041dd40",
+      "function": "00b385b0",
+      "contract": "Existing actual8h NativeString resize with supplied SAME actual pool domain."
+    },
+    {
+      "address": "00b38719",
+      "native": "00bf7680",
+      "function": "00b385b0",
+      "contract": "Original library memcpy has overlap branch; owned inline copies use host memmove."
+    },
+    {
+      "address": "00b38739",
+      "native": "00419cc0",
+      "function": "00b385b0",
+      "contract": "Established actual string-pool singleton getter through supplied NativeStringStorage."
+    },
+    {
+      "address": "00b38740",
+      "native": "00bd1510",
+      "function": "00b385b0",
+      "contract": "Established actual sized block return; existing noexcept release boundary."
+    },
+    {
+      "address": "00b38759",
+      "native": "0041dd40",
+      "function": "00b385b0",
+      "contract": "Existing actual8h NativeString resize with supplied SAME actual pool domain."
+    },
+    {
+      "address": "00b38769",
+      "native": "00bf7680",
+      "function": "00b385b0",
+      "contract": "Original library memcpy has overlap branch; owned inline copies use host memmove."
+    },
+    {
+      "address": "00b38785",
+      "native": "0041e870",
+      "function": "00b385b0",
+      "contract": "Existing actual8h C-string constructor. Entered/non-returned helper state is not a guarantee of live ownership."
+    },
+    {
+      "address": "00b387a4",
+      "native": "0041dd40",
+      "function": "00b385b0",
+      "contract": "Existing actual8h NativeString resize with supplied SAME actual pool domain."
+    },
+    {
+      "address": "00b387b4",
+      "native": "00bf7680",
+      "function": "00b385b0",
+      "contract": "Original library memcpy has overlap branch; owned inline copies use host memmove."
+    },
+    {
+      "address": "00b387d4",
+      "native": "00419cc0",
+      "function": "00b385b0",
+      "contract": "Established actual string-pool singleton getter through supplied NativeStringStorage."
+    },
+    {
+      "address": "00b387db",
+      "native": "00bd1510",
+      "function": "00b385b0",
+      "contract": "Established actual sized block return; existing noexcept release boundary."
+    },
+    {
+      "address": "00b38800",
+      "native": "0041e870",
+      "function": "00b385b0",
+      "contract": "Existing actual8h C-string constructor. Entered/non-returned helper state is not a guarantee of live ownership."
+    },
+    {
+      "address": "00b38820",
+      "native": "0041e870",
+      "function": "00b385b0",
+      "contract": "Existing actual8h C-string constructor. Entered/non-returned helper state is not a guarantee of live ownership."
+    },
+    {
+      "address": "00b3883b",
+      "native": "0041e870",
+      "function": "00b385b0",
+      "contract": "Existing actual8h C-string constructor. Entered/non-returned helper state is not a guarantee of live ownership."
+    },
+    {
+      "address": "00b3885b",
+      "native": "0041e870",
+      "function": "00b385b0",
+      "contract": "Existing actual8h C-string constructor. Entered/non-returned helper state is not a guarantee of live ownership."
+    },
+    {
+      "address": "00b3887b",
+      "native": "0041e870",
+      "function": "00b385b0",
+      "contract": "Existing actual8h C-string constructor. Entered/non-returned helper state is not a guarantee of live ownership."
+    },
+    {
+      "address": "00b38896",
+      "native": "0041e870",
+      "function": "00b385b0",
+      "contract": "Existing actual8h C-string constructor. Entered/non-returned helper state is not a guarantee of live ownership."
+    },
+    {
+      "address": "00b388b6",
+      "native": "0041e870",
+      "function": "00b385b0",
+      "contract": "Existing actual8h C-string constructor. Entered/non-returned helper state is not a guarantee of live ownership."
+    },
+    {
+      "address": "00b388d3",
+      "native": "0041e870",
+      "function": "00b385b0",
+      "contract": "Existing actual8h C-string constructor. Entered/non-returned helper state is not a guarantee of live ownership."
+    },
+    {
+      "address": "00b388eb",
+      "native": "0041e870",
+      "function": "00b385b0",
+      "contract": "Existing actual8h C-string constructor. Entered/non-returned helper state is not a guarantee of live ownership."
+    },
+    {
+      "address": "00b38908",
+      "native": "0041e870",
+      "function": "00b385b0",
+      "contract": "Existing actual8h C-string constructor. Entered/non-returned helper state is not a guarantee of live ownership."
+    },
+    {
+      "address": "00b38925",
+      "native": "0041e870",
+      "function": "00b385b0",
+      "contract": "Existing actual8h C-string constructor. Entered/non-returned helper state is not a guarantee of live ownership."
+    },
+    {
+      "address": "00b38939",
+      "native": "00425e10",
+      "function": "00b385b0",
+      "contract": "Existing native string append using current source data after destination resize."
+    },
+    {
+      "address": "00b38947",
+      "native": "0041dd20",
+      "function": "00b385b0",
+      "contract": "Existing actual8h header destructor; current data/length read then same-domain release."
+    },
+    {
+      "address": "00b38954",
+      "native": "00711370",
+      "function": "00b385b0",
+      "contract": "Unchanged construct_native_material_program_number_00711370, two pooled copies, UNSIGNED conversion; its temporary cleanup remains a borrowed helper boundary."
+    },
+    {
+      "address": "00b38973",
+      "native": "0041dd40",
+      "function": "00b385b0",
+      "contract": "Existing actual8h NativeString resize with supplied SAME actual pool domain."
+    },
+    {
+      "address": "00b38983",
+      "native": "00bf7680",
+      "function": "00b385b0",
+      "contract": "Original library memcpy has overlap branch; owned inline copies use host memmove."
+    },
+    {
+      "address": "00b389a3",
+      "native": "00419cc0",
+      "function": "00b385b0",
+      "contract": "Established actual string-pool singleton getter through supplied NativeStringStorage."
+    },
+    {
+      "address": "00b389aa",
+      "native": "00bd1510",
+      "function": "00b385b0",
+      "contract": "Established actual sized block return; existing noexcept release boundary."
+    },
+    {
+      "address": "00b389c1",
+      "native": "0041dd40",
+      "function": "00b385b0",
+      "contract": "Existing actual8h NativeString resize with supplied SAME actual pool domain."
+    },
+    {
+      "address": "00b389dc",
+      "native": "00bf7680",
+      "function": "00b385b0",
+      "contract": "Original library memcpy has overlap branch; owned inline copies use host memmove."
+    },
+    {
+      "address": "00b389fa",
+      "native": "0041dd40",
+      "function": "00b385b0",
+      "contract": "Existing actual8h NativeString resize with supplied SAME actual pool domain."
+    },
+    {
+      "address": "00b38a07",
+      "native": "00bf7680",
+      "function": "00b385b0",
+      "contract": "Original library memcpy has overlap branch; owned inline copies use host memmove."
+    },
+    {
+      "address": "00b38a1f",
+      "native": "00419cc0",
+      "function": "00b385b0",
+      "contract": "Established actual string-pool singleton getter through supplied NativeStringStorage."
+    },
+    {
+      "address": "00b38a26",
+      "native": "00bd1510",
+      "function": "00b385b0",
+      "contract": "Established actual sized block return; existing noexcept release boundary."
+    },
+    {
+      "address": "00b38b8c",
+      "native": "00b35110",
+      "function": "00b38b50",
+      "contract": "Unchanged actual formatted-line operation; original/source fixture executes copied full original body. Nested failed child retained explicitly."
+    },
+    {
+      "address": "00b38bb2",
+      "native": "00b385b0",
+      "function": "00b38b50",
+      "contract": "Owned native-storage normal body; original ABI recorded by routine."
+    },
+    {
+      "address": "00b38bd2",
+      "native": "00b35110",
+      "function": "00b38b50",
+      "contract": "Unchanged actual formatted-line operation; original/source fixture executes copied full original body. Nested failed child retained explicitly."
+    },
+    {
+      "address": "00b38bf5",
+      "native": "00419cc0",
+      "function": "00b38b50",
+      "contract": "Established actual string-pool singleton getter through supplied NativeStringStorage."
+    },
+    {
+      "address": "00b38bfc",
+      "native": "00bd1510",
+      "function": "00b38b50",
+      "contract": "Established actual sized block return; existing noexcept release boundary."
+    },
+    {
+      "address": "00b38c2e",
+      "native": "00b35110",
+      "function": "00b38b50",
+      "contract": "Unchanged actual formatted-line operation; original/source fixture executes copied full original body. Nested failed child retained explicitly."
+    },
+    {
+      "address": "00b38c3d",
+      "native": "00b34f20",
+      "function": "00b38b50",
+      "contract": "Owned native-storage normal body; original ABI recorded by routine."
+    },
+    {
+      "address": "00b3513b",
+      "native": "00c03cee",
+      "function": "00b35110",
+      "contract": "Original library vsprintf; unchanged B35110 host CRT formats into SAME0108D6F8 scratch."
+    },
+    {
+      "address": "00b35167",
+      "native": "0041dd40",
+      "function": "00b35110",
+      "contract": "Existing actual8h NativeString resize with supplied SAME actual pool domain."
+    },
+    {
+      "address": "00b35182",
+      "native": "00bf7680",
+      "function": "00b35110",
+      "contract": "Original library memcpy has overlap branch; owned inline copies use host memmove."
+    },
+    {
+      "address": "00b351a0",
+      "native": "0041dd40",
+      "function": "00b35110",
+      "contract": "Existing actual8h NativeString resize with supplied SAME actual pool domain."
+    },
+    {
+      "address": "00b351ad",
+      "native": "00bf7680",
+      "function": "00b35110",
+      "contract": "Original library memcpy has overlap branch; owned inline copies use host memmove."
+    },
+    {
+      "address": "00b351ca",
+      "native": "00419cc0",
+      "function": "00b35110",
+      "contract": "Established actual string-pool singleton getter through supplied NativeStringStorage."
+    },
+    {
+      "address": "00b351d1",
+      "native": "00bd1510",
+      "function": "00b35110",
+      "contract": "Established actual sized block return; existing noexcept release boundary."
+    },
+    {
+      "address": "00b351e6",
+      "native": "0041dd40",
+      "function": "00b35110",
+      "contract": "Existing actual8h NativeString resize with supplied SAME actual pool domain."
+    },
+    {
+      "address": "00b35201",
+      "native": "00bf7680",
+      "function": "00b35110",
+      "contract": "Original library memcpy has overlap branch; owned inline copies use host memmove."
+    },
+    {
+      "address": "00b3521f",
+      "native": "0041dd40",
+      "function": "00b35110",
+      "contract": "Existing actual8h NativeString resize with supplied SAME actual pool domain."
+    },
+    {
+      "address": "00b3522c",
+      "native": "00bf7680",
+      "function": "00b35110",
+      "contract": "Original library memcpy has overlap branch; owned inline copies use host memmove."
+    },
+    {
+      "address": "00b35249",
+      "native": "00419cc0",
+      "function": "00b35110",
+      "contract": "Established actual string-pool singleton getter through supplied NativeStringStorage."
+    },
+    {
+      "address": "00b35250",
+      "native": "00bd1510",
+      "function": "00b35110",
+      "contract": "Established actual sized block return; existing noexcept release boundary."
+    },
+    {
+      "address": "007113a4",
+      "native": "00bf7a6a",
+      "function": "00711370",
+      "contract": "Original library sprintf used by unchanged 711370; source helper lowers unsigned decimal to to_chars."
+    },
+    {
+      "address": "007113d2",
+      "native": "0041dd40",
+      "function": "00711370",
+      "contract": "Existing actual8h NativeString resize with supplied SAME actual pool domain."
+    },
+    {
+      "address": "007113ed",
+      "native": "00bf7680",
+      "function": "00711370",
+      "contract": "Original library memcpy has overlap branch; owned inline copies use host memmove."
+    },
+    {
+      "address": "00711406",
+      "native": "0041dd40",
+      "function": "00711370",
+      "contract": "Existing actual8h NativeString resize with supplied SAME actual pool domain."
+    },
+    {
+      "address": "00711417",
+      "native": "00bf7680",
+      "function": "00711370",
+      "contract": "Original library memcpy has overlap branch; owned inline copies use host memmove."
+    },
+    {
+      "address": "00711432",
+      "native": "00419cc0",
+      "function": "00711370",
+      "contract": "Established actual string-pool singleton getter through supplied NativeStringStorage."
+    },
+    {
+      "address": "00711439",
+      "native": "00bd1510",
+      "function": "00711370",
+      "contract": "Established actual sized block return; existing noexcept release boundary."
+    }
+  ],
+  "switch_table": {
+    "address": "00b38a44",
+    "bytes": 44,
+    "sha256": "ceeeb82e8b43d163c325a3654abb5334f49363ee488f14319e964effd8bf297e",
+    "destinations": [
+      "00b387f7",
+      "00b38817",
+      "00b38832",
+      "00b38852",
+      "00b38872",
+      "00b3888d",
+      "00b388ad",
+      "00b388ca",
+      "00b388e2",
+      "00b388ff",
+      "00b3891c"
+    ]
+  },
+  "producer_layout": {
+    "builder": "Existing B354D0 initializer, B0h actual storage; source string4C and current descriptor pointers70/74.",
+    "field": "Existing B34E20 constructor produces same1Ch: owning name8h, scalar08/count0C/mask10/semantic14/index18. Fixture constructs each field through it.",
+    "list": "Existing NativeShaderDescriptorArray actual0Ch: pointer table00/count04/capacity08; this routine never owns or changes list."
+  },
+  "evidence": {
+    "owned_flow": "All four full saved bodies have zero post-call gaps; decompiler unreachable warnings contradict current complete assembly.",
+    "borrowed_flow": "711370 has only unexecuted JMP alignment gap7113BD..BF; all return-path instructions present; borrowed code unchanged.",
+    "unsigned_correction": "B38631/B38954 call711370, not signed5F1840. Width comparison is unsigned>1 and width reload follows tab allocation.",
+    "temporal_reads": "B35030 captures source length before resize, data afterward. B38B50 reloads count/data per row and current builder70/74+30 only after rows; descriptor byte reads short-circuit.",
+    "punctuation": "B34F20/B35030/B385B0 independently allocate a one-character pooled newline/semicolon and retain captured data/length across output resize."
+  },
+  "source_hashes": {
+    "src/native_shader_struct_declarations.cpp": "dcb38a4d136fe8caddcb05407fef3a8601429fd4e7013b1f4df4108ece6d2884",
+    "include/bsp/native_shader_struct_declarations.hpp": "455df0ca817ee8fe909c975dbca7a103d5538e5f7a9aa1564ae2057739156772"
+  },
+  "validation": {
+    "build": {
+      "status": "passed",
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release /W4 /WX /fp:strict",
+      "default_registration": "cmake/startup.cmake appended transactionally while unleased, before build; no shared registry lease.",
+      "log": "local/struct_build_final.log",
+      "existing_ctest": "reconstructed_math and native_math_differential after verify-seeds"
+    },
+    "fixture": {
+      "status": "passed",
+      "command": "./local/run_native_struct_declarations_probe.ps1",
+      "linkage": "Only fixture translation unit and default-registered bsp_core/bsp_lua511/bsp_zlib121 libraries, no extra production translation units.",
+      "original_bodies": 6,
+      "original_bytes": 2496,
+      "direct_calls": 94,
+      "switch_destinations": 11,
+      "scope": "Exact text and actual pooled allocation/release traces; same B34E20-produced1Ch fields/B354D0-producedB0h builder; aliases/source-pointer reload, all semantic tokens/unknown enums/unsigned limits, start/low-byte gates, live list/count/descriptor replacement, builder/field preimages. Source allocation failure retention/replay rejection, borrowed concat cleanup boundary and frame-retirement exit77.",
+      "original_execution_boundaries": {
+        "0041dd40": "Existing actual8h NativeString resize with supplied SAME actual pool domain.",
+        "0041e870": "Existing actual8h C-string constructor. Entered/non-returned helper state is not a guarantee of live ownership.",
+        "0041e350": "Existing actual8h nullable C-string assignment with preserve=false; library helper failure boundary retained unchanged.",
+        "004261a0": "Existing actual8h concatenation; partial output is freed on failed append after initial copy. Stale header is not owned.",
+        "00425e10": "Existing native string append using current source data after destination resize.",
+        "0041dd20": "Existing actual8h header destructor; current data/length read then same-domain release.",
+        "00419cc0": "Established actual string-pool singleton getter through supplied NativeStringStorage.",
+        "00bd1510": "Established actual sized block return; existing noexcept release boundary.",
+        "00bf7680": "Original library memcpy has overlap branch; owned inline copies use host memmove.",
+        "00bf7a6a": "Original library sprintf used by unchanged 711370; source helper lowers unsigned decimal to to_chars.",
+        "00c03cee": "Original library vsprintf; unchanged B35110 host CRT formats into SAME0108D6F8 scratch.",
+        "00711370": "Unchanged construct_native_material_program_number_00711370, two pooled copies, UNSIGNED conversion; its temporary cleanup remains a borrowed helper boundary.",
+        "00b35110": "Unchanged actual formatted-line operation; original/source fixture executes copied full original body. Nested failed child retained explicitly."
+      },
+      "relocation": "Copied full normal bodies, verified E8 operands redirected to copied bodies or existing actual-storage bridges; only B387F3 absolute switch-table operand relocated to same eleven mapped branch offsets. Native branches/FH3 registration bytes unchanged; exception handlers not invoked.",
+      "log": "local/native_struct_declarations_probe.log",
+      "guard_log": "local/native_struct_declarations_guard_probe.log"
+    }
+  },
+  "limits": [
+    "These explicit C++ interfaces are not original thiscall/SEH binary replacements.",
+    "Private FH3 handlers are not emitted or exercised on failure. Existing child cleanup is preserved as its own explicit boundary; entered/non-returned headers may be stale freed preimages.",
+    "Caller must retain builder/list/field/string/context and exclude teardown after failed work. Frame destruction/replay are guarded, raw owner teardown is not automatically intercepted.",
+    "Readable actual pointer graphs and sufficiently sized shared formatting scratch are required, including valid descriptor70/74 pointers when vPos reads reach them. Native scratch reentry/concurrency restriction remains.",
+    "This packet does not wire full vertex/pixel source generation, compile shader bytecode, create a game runtime or prove rendering/gameplay."
+  ],
+  "artifacts": [
+    {
+      "path": "src/native_shader_struct_declarations.cpp",
+      "bytes": 11035,
+      "sha256": "dcb38a4d136fe8caddcb05407fef3a8601429fd4e7013b1f4df4108ece6d2884"
+    },
+    {
+      "path": "include/bsp/native_shader_struct_declarations.hpp",
+      "bytes": 4602,
+      "sha256": "455df0ca817ee8fe909c975dbca7a103d5538e5f7a9aa1564ae2057739156772"
+    },
+    {
+      "path": "local/prepare_struct_evidence.py",
+      "bytes": 3672,
+      "sha256": "a3fe9899213beb8574a0564d7b08e9a91a73eb244e4fe05a3629d27a7c335a3c"
+    },
+    {
+      "path": "local/struct_original.hpp",
+      "bytes": 14481,
+      "sha256": "3e571ca93007cf6602b732d9cdee36d275c77641ce43df3b328912e7521d6b3c"
+    },
+    {
+      "path": "local/struct_original_manifest.json",
+      "bytes": 12782,
+      "sha256": "0a32bc3306d618058b9b1f17215248e6112c372bc7d6cd2e6306a186585a3c3e"
+    },
+    {
+      "path": "local/native_struct_declarations_probe.cpp",
+      "bytes": 17876,
+      "sha256": "2c68e9ac517df164e433e5501ba14962ab0c00eca33f114921dccd93ada95ad0"
+    },
+    {
+      "path": "local/run_native_struct_declarations_probe.ps1",
+      "bytes": 1730,
+      "sha256": "6054a592a4bf762ecc484ff7d2b7d4cd7cdc1777be96ca88377f640d5f2cb163"
+    },
+    {
+      "path": "local/register_struct.py",
+      "bytes": 671,
+      "sha256": "9e0a588718f2f89b3f72a21db843c3f965c5bdb1ce534f58dfddbb2b341ebf8e"
+    },
+    {
+      "path": "local/struct_build_final.log",
+      "bytes": 4495,
+      "sha256": "44df0eb1e8d42b24baad535cfc09d628c705cdfb7b8c75e804ff8797ccc02d14"
+    },
+    {
+      "path": "local/native_struct_declarations_probe_compile.log",
+      "bytes": 38,
+      "sha256": "0e6239fb68d76f53683f79560be5eaee5859404b9edb43d05fac6b6f2190911f"
+    },
+    {
+      "path": "local/native_struct_declarations_probe.log",
+      "bytes": 1116,
+      "sha256": "a7c44c68e7528e771084f042cbff792fc8bd3601870ca0777c20648bb534b93c"
+    },
+    {
+      "path": "local/native_struct_declarations_guard_probe.log",
+      "bytes": 876,
+      "sha256": "8facfc215329b9a93ce8e77b91c1ff7f06a30712513ffcb0721491768fdf768f"
+    },
+    {
+      "path": "local/native_struct_declarations_probe.exe",
+      "bytes": 84480,
+      "sha256": "1c2355f45c647dc4950e5a27f9588708cd5a717797bcf52133180fc193e22943"
+    },
+    {
+      "path": "local/struct_call_verification.log",
+      "bytes": 80,
+      "sha256": "44a0d182d7abd7dfb4c13515812dfc751875f0947d166856210644caa3f19ee1"
+    },
+    {
+      "path": "local/struct_verify_seeds.log",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/struct_owned_flow.log",
+      "bytes": 261,
+      "sha256": "fbfdbdd74f259458f8a3a4e319e0d9903c19436d7e188a7a08bc62e1e4c6ba57"
+    },
+    {
+      "path": "local/struct_dependency_flow.log",
+      "bytes": 226,
+      "sha256": "8ccc6b642f7624b13c6297e675c01c30cc4b772b19da94c7e3e48622b25d9b48"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 55455550,
+      "sha256": "98fafd289904b836cb79dcd004a6df377dac14b6138ec37f61ebc791cf489121"
+    },
+    {
+      "path": "build/win32/Release/bsp_lua511.lib",
+      "bytes": 455768,
+      "sha256": "dc2faf027d65760ab42bc6b59a9f66981d72a00569a4d07c7e65ab3432f06150"
+    },
+    {
+      "path": "build/win32/Release/bsp_zlib121.lib",
+      "bytes": 72086,
+      "sha256": "3700c532034131f13296f28f74c8ae515f6101fd1a70c615e7e596364f318e78"
+    },
+    {
+      "path": "local/struct_00711370_bytes.txt",
+      "bytes": 1111,
+      "sha256": "4e3afd2ccbc0ebe55a971723d3aff7fa6635bb85ccccc120e0193663c467c123"
+    },
+    {
+      "path": "local/struct_00b34f20_bytes.txt",
+      "bytes": 1309,
+      "sha256": "97e680b1a067f3fd7d117faf41dfeae9ff534f4839e5cef84075d657c0746619"
+    },
+    {
+      "path": "local/struct_00b35030_bytes.txt",
+      "bytes": 1062,
+      "sha256": "fb9ea5ae86406e244d0496deaa739a26860e48052a32f5a6383904fb9f3294b6"
+    },
+    {
+      "path": "local/struct_00b35110_bytes.txt",
+      "bytes": 1662,
+      "sha256": "c4cd5da4be13577473a8c4a48bafb326a21f4e1185cd8f9ca1e885597bc820c6"
+    },
+    {
+      "path": "local/struct_00b385b0_bytes.txt",
+      "bytes": 5642,
+      "sha256": "8fcc0cae872988e7c7ed4aa9a0cd8a242dce449d2f5170f36a2b59b8c16b7a09"
+    },
+    {
+      "path": "local/struct_00b38b50_bytes.txt",
+      "bytes": 1265,
+      "sha256": "95a8132956257f1a7b9f9f08bfce736f708490ce2f691c23cf4d51f12d5c8ae1"
+    },
+    {
+      "path": "local/struct_switch_bytes.txt",
+      "bytes": 215,
+      "sha256": "b8b97e5ad658ecff9bf6b8fa91280c6037ae67b9b48fad5ff1ff130c60091e00"
+    },
+    {
+      "path": "local/struct_00711370_assembly.txt",
+      "bytes": 2175,
+      "sha256": "5dc252c842603de813c2260eb082af8c92bb12e510c29537f8911c5d98f32ebe"
+    },
+    {
+      "path": "local/struct_00b34f20_assembly.txt",
+      "bytes": 2534,
+      "sha256": "146758e5d64cf91bea46a2f467ec873cb88a946bbd5865c112a5f98d250c728d"
+    },
+    {
+      "path": "local/struct_00b35030_assembly.txt",
+      "bytes": 2103,
+      "sha256": "07897230c731e83e1095c32337eab4e69aa6f8529727713d1ad39105670dbcca"
+    },
+    {
+      "path": "local/struct_00b35110_assembly.txt",
+      "bytes": 3203,
+      "sha256": "fbaa6ee3f9cb358361883156c9b87187b5751cc871ad69c899c80566b8f0181b"
+    },
+    {
+      "path": "local/struct_00b385b0_assembly.txt",
+      "bytes": 10095,
+      "sha256": "22c94a9e19c7a19a606bfaab24453a5977d90594ab193140dd38de49af00297b"
+    },
+    {
+      "path": "local/struct_00b38b50_assembly.txt",
+      "bytes": 2408,
+      "sha256": "923ac6846fe2f2bf3bc2696b0122398a11cde92f16aae13eefbcb9c58aeed23a"
+    }
+  ]
+}
