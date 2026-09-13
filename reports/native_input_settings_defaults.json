@@ -1,6 +1,6 @@
 {
   "packet": "orch4_input_defaults_am",
-  "status": "raw_default_binding_preservation_reconstructed_component_validated_integration_pending",
+  "status": "actual_default_binding_preservation_reconstructed_strict_win32_native_fixture_passed_raw_keyboard_and_settings_loader_pending",
   "target": {
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe"
@@ -786,5 +786,32 @@
     "body_restored": true,
     "receipt": "reports/native_input_settings_defaults_am_definitions.json",
     "library_no_return_flags_changed": false
-  }
+  },
+  "final_validation": {
+    "utc": "2026-09-13T05:30:20.352243+00:00",
+    "source_revision": "79562bdaf8be5fc335867469dc232b5e9b91b960",
+    "merged_main_revision": "fdb806e25116119a52a43ffca58b6382137c98e7",
+    "code_files": 2215,
+    "code_manifest": "local\\input_defaults_am_source_manifest.json",
+    "code_manifest_sha256": "6c52bfa7cf9c25dc4f051862b7e816c6c5feea65ce12aa3e87bb04db577196d3",
+    "core_archive_sha256": "032076d287b9fc08d4ba797a4e0e51ad66c11a27ef38eb9a368529c2b3a7a3a0",
+    "game_executable_sha256": "39aa239170e3ff14fe9eef3cfbac549510bc260137f9d8a221e3179054e1957a",
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "build_log": "local\\input_defaults_am_combined_build.log",
+    "build_log_sha256": "c8e939f0594084a454869fd1bc06c9fa6a69bb06d9747d9f2ee59e4336f113bf",
+    "fixture_log": "local\\input_defaults_am_combined_probe.log",
+    "fixture_log_sha256": "c54565b8d2f9288a252a66b9d7ca8614fad2fbf4834d9714649bd10a8582d628",
+    "native_source_words_equal": 1680,
+    "calls_checked": 90,
+    "calls_failed": 0,
+    "disk_live_seeds_equal": 8,
+    "same_fixture_and_native_bytes_as_component_comparison": true,
+    "game_validated": false,
+    "original_abi_compatible": false,
+    "no_subagents_dispatched": true
+  },
+  "affected_caller_exports_refreshed": [
+    "00698a10"
+  ]
 }
