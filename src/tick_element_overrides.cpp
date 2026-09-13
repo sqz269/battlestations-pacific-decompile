@@ -115,7 +115,7 @@ void unit_tick_advance_sim_00953cc0(UnitTickAdvanceState& state, float step,
     // 00953CC4: JL skips the call, so the test is signed and >= 0 runs it. The
     // pushed code is the literal 9 at 00953CDD, not the field.
     if (state.notify_code_528h >= 0) {
-        host.unit_virtual_5c_notify(9);
+        host.unit_virtual_5c_is_kind_of(9);
     }
 
     host.unit_virtual_1f0_advance(step);
@@ -137,11 +137,12 @@ void unit_tick_advance_sim_00953cc0(UnitTickAdvanceState& state, float step,
     // 00953D60: role 8 skips the check entirely.
     if (state.role_1ach != 8) {
         if (!host.unit_role_still_available_00927f10(state.role_1ach)) {
-            state.enabled_520h = false;
+            state.suppress_1d8_520h = false;
         }
     }
 
-    if (!state.enabled_520h) {
+    //00953D84 JNZ skips the call when the byte is nonzero.
+    if (state.suppress_1d8_520h) {
         return;
     }
     host.unit_virtual_1d8_advance(step);
