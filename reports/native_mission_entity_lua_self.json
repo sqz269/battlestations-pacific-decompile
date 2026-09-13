@@ -1,0 +1,572 @@
+{
+  "packet": "orch6_native_mission_entity_lua_self_y",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_mission_entity_lua_self.cpp",
+  "header": "include/bsp/native_mission_entity_lua_self.hpp",
+  "documentation": "docs/NATIVE_MISSION_ENTITY_LUA_SELF.md",
+  "native_spans": [
+    {
+      "address": "00927b40",
+      "length": 162,
+      "end_exclusive": "00927be2",
+      "hex": "6aff68f96eca0064a100000000506489250000000083ec2c568bf1c7442404000000008b0da888e1008d44241c81c10c1a000050e807fe2300689474ce008d4c240c518bc8c744244001000000e86efc230081c678010000568b742444568bc8c644244002e8560524008d4c2408c744240401000000c644243801e840fb23008d4c241cc644243800e832fb23008b4c24308bc65e64890d0000000083c438c20400",
+      "sha256": "d4159c61c2e00e51c124822cfe423e116e66e326cb972f1677f9be959082ff31",
+      "live_disk_equal": true,
+      "file_backed_bytes": 162,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00ca6ed0",
+      "length": 8,
+      "end_exclusive": "00ca6ed8",
+      "hex": "8d4de0e92808ecff",
+      "sha256": "e30229acf040f954d126565b139a96d700e61a6fe58710d715116f5eb44585cd",
+      "live_disk_equal": true,
+      "file_backed_bytes": 8,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00ca6ed8",
+      "length": 8,
+      "end_exclusive": "00ca6ee0",
+      "hex": "8d4dcce92008ecff",
+      "sha256": "c206af03781e0b56bd83114a40fe64b0a201280cd83095e5ef088d51c73811fa",
+      "live_disk_equal": true,
+      "file_backed_bytes": 8,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00ca6ee0",
+      "length": 25,
+      "end_exclusive": "00ca6ef9",
+      "hex": "8b45c883e0010f840c0000008365c8fe8b4d04e90808ecffc3",
+      "sha256": "92ae664d5a46764b16a09213ffc19ed512fe65abff482e86053176905a8f58b8",
+      "live_disk_equal": true,
+      "file_backed_bytes": 25,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00ca6ef9",
+      "length": 10,
+      "end_exclusive": "00ca6f03",
+      "hex": "b8c4a2dd00e940fcf4ff",
+      "sha256": "eb0632c04b019729417d44b3bdaf4781c86d0dd9dc173ab448159f79cf99386f",
+      "live_disk_equal": true,
+      "file_backed_bytes": 10,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00dda2ac",
+      "length": 60,
+      "end_exclusive": "00dda2e8",
+      "hex": "ffffffffe06eca0000000000d06eca0001000000d86eca002205931903000000aca2dd00000000000000000000000000000000000000000001000000",
+      "sha256": "b870ba74ad788e9b12c55604af50b0df6e60aa43bcdc9bab553432e517352108",
+      "live_disk_equal": true,
+      "file_backed_bytes": 60,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00b67980",
+      "length": 36,
+      "end_exclusive": "00b679a4",
+      "hex": "518b44240833d28914248908c7400401000000c74008eed8ffff89500c88501059c20400",
+      "sha256": "3f8195c6a220f13b94455d41e525eea9dee3822d6d7145161aff94497eebde29",
+      "live_disk_equal": true,
+      "file_backed_bytes": 36,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00b67800",
+      "length": 219,
+      "end_exclusive": "00b678db",
+      "hex": "51568bf1837e04038b068b480457c744240800000000ba01000000742ee8cefaefff8b5424148bc28d7801eb038d49008a0883c00184c975f78b0e8b49042bc750e8ca01f0ff8b5608eb30e8a0faefff8b5424148bc28d78018da424000000008a0883c00184c975f78b0e8b49042bc750e89a01f0ffbaeed8ffff8b068b4804e89b03f0ff8b0e8b4904e841fbefff8b168bf88b4424108910c7400402000000897808c7400c00000000c64010018b4a0c03cf3b8ac40400007c098d710189b2c40400008d0c498d4cca148b51145f890491834114015e59c20800",
+      "sha256": "44fdc629195c04c5858ad007742cf4029427581463d96d8dc250ef0878fffd56",
+      "live_disk_equal": true,
+      "file_backed_bytes": 219,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00b68100",
+      "length": 43,
+      "end_exclusive": "00b6812b",
+      "hex": "518b44240c8b400485c0c70424000000007505b82cff0801568b74240c5056e8dcf6ffff8bc65e59c20800",
+      "sha256": "caef88f8e937f5c0e192b031b0132533ac69c5e9e9f056ad6b73610a649225a2",
+      "live_disk_equal": true,
+      "file_backed_bytes": 43,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00b67700",
+      "length": 32,
+      "end_exclusive": "00b67720",
+      "hex": "568bf1837e040074158b46088b0e6a015056e8c9f6ffffc74604000000005ec3",
+      "sha256": "dd241c309928580a80eb641bc498914c6af6c30c59f9d7a7ff8556b8349e43a6",
+      "live_disk_equal": true,
+      "file_backed_bytes": 32,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00b66de0",
+      "length": 336,
+      "end_exclusive": "00b66f30",
+      "hex": "53558b6c240c807d10008bd90f843901000056578b7b0c037c24188d047f8d14c38b4a288d72148d0c8e3bf18bc6730b3928745483c0043bc172f583c8ff83f8ff74158b4e148d69ff3bc574078b4c8efc890c86834614ff837a28000f85e7000000807c241c00742b8b4b04e87f05f0ff8b5424183bd08b4b047513bafeffffffe87a05f0ffeb0c2bc6c1f802ebafe8bc05f0ff8b93c404000083ea013bfa0f84a40000008b8bc40400008bd68d0c498d4ccbfc3bd18bc28944241c74478d4a1833f63971147e1c8bf92bf88d6424008b2c07892883c60183c0043b71147cf08b44241c8b71148971fc8bb3c40400008d347683c0188d74f3fc83c1183bc68944241c75bcc74014000000008b83c40400008d04408d4cc3143bd1742c83ceff33c03942147e0e8b0c8201710883c0013b42147cf28b83c40400008d044083c2188d4cc3143bd175d75f5e5d5bc20c00",
+      "sha256": "175ceb4f1064a59d5a1495502d65bbb65419b2b185bb755548fa54861419f9fa",
+      "live_disk_equal": true,
+      "file_backed_bytes": 336,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00ce7494",
+      "length": 10,
+      "end_exclusive": "00ce749e",
+      "hex": "746869735461626c6500",
+      "sha256": "748de318fc4edaf321ebbafa764c7e1f0125d02a749a84194c35344623c87f4a",
+      "live_disk_equal": true,
+      "file_backed_bytes": 10,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "0108ff2c",
+      "length": 1,
+      "end_exclusive": "0108ff2d",
+      "hex": "00",
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "live_disk_equal": true,
+      "file_backed_bytes": 0,
+      "pe_loader_zero_fill_bytes": 1
+    }
+  ],
+  "routines": [
+    {
+      "address": "00927b40",
+      "name": "BSP_MissionEntity_LuaSelfObject",
+      "source_symbol": "construct_native_mission_entity_lua_self_00927b40",
+      "coverage": "complete_source_behavior_162_bytes",
+      "begin": "00927b40",
+      "end_inclusive": "00927be1",
+      "stored_body_gaps": [],
+      "original_abi": "ECX actual entity; fresh14h output pointer on stack; EAX captured output; RET4 at927BDF"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00927b40",
+      "address": "00927b74",
+      "native": "00b67980",
+      "kind": "call"
+    },
+    {
+      "function": "00927b40",
+      "address": "00927b8d",
+      "native": "00b67800",
+      "kind": "call"
+    },
+    {
+      "function": "00927b40",
+      "address": "00927ba5",
+      "native": "00b68100",
+      "kind": "call"
+    },
+    {
+      "function": "00927b40",
+      "address": "00927bbb",
+      "native": "00b67700",
+      "kind": "call"
+    },
+    {
+      "function": "00927b40",
+      "address": "00927bc9",
+      "native": "00b67700",
+      "kind": "call"
+    },
+    {
+      "function": "00ca6ed0",
+      "address": "00ca6ed3",
+      "native": "00b67700",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00ca6ed8",
+      "address": "00ca6edb",
+      "native": "00b67700",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00ca6ee0",
+      "address": "00ca6ef3",
+      "native": "00b67700",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00ca6ef9",
+      "address": "00ca6efe",
+      "native": "00bf6b43",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00928c80",
+      "address": "00928cdc",
+      "native": "00927b40",
+      "kind": "call"
+    }
+  ],
+  "storage": {
+    "world_publication": "00e188a8",
+    "world_load": "00927b63 captured once",
+    "lua_owner_offset": "1a0c embedded existing NativeLuaStateStorage",
+    "world_producer": "004DDE8A LEA ECX,[ESI+1A0C];004DDE9B CALL B66BD0",
+    "existing_offset": "kMissionLuaStateOwnerField",
+    "entity_key": "actual NativeString+178: length178,data17C",
+    "key_producer": "928A23 reads u16+174;928A2F formats;928A36/54/6A assigns pooled key178",
+    "unused_fields": [
+      "u16 network ID174",
+      "stored string length178"
+    ],
+    "key_load": "B68105 loads current key.data AFTER first GetByName; null uses0108FF2C",
+    "globals_literal": {
+      "address": "00ce7494",
+      "value": "thisTable"
+    },
+    "lua_object_size": 20,
+    "lua_state_size": 1224
+  },
+  "eh": {
+    "funcinfo": "00dda2c4",
+    "map": "00dda2ac",
+    "states": [
+      {
+        "state": 0,
+        "to": -1,
+        "cleanup": "00ca6ee0",
+        "length": 25,
+        "coverage": "complete_conditional_output_effects_original_FH3_ABI_excluded",
+        "captured": "flagbit0[EBP-38],output[EBP+4];clearbitbeforedestructor"
+      },
+      {
+        "state": 1,
+        "to": 0,
+        "cleanup": "00ca6ed0",
+        "length": 8,
+        "coverage": "complete_globals_cleanup_effects_original_FH3_ABI_excluded",
+        "captured": "globals[EBP-20]"
+      },
+      {
+        "state": 2,
+        "to": 1,
+        "cleanup": "00ca6ed8",
+        "length": 8,
+        "coverage": "complete_thisTable_cleanup_effects_original_FH3_ABI_excluded",
+        "captured": "thisTable[EBP-34]"
+      }
+    ],
+    "handler": {
+      "address": "00ca6ef9",
+      "length": 10,
+      "initial_status": "no_ghidra_function",
+      "coverage": "complete_selector_bytes_read_original_FH3_unexecuted",
+      "current_status": "root_formally_defined_named_and_saved",
+      "current_name": "EH_MissionEntity_LuaSelfObject",
+      "readback": "local/lua_self_handler_root_resolution.txt"
+    },
+    "source": "CompletedObject guards arm only completed objects; explicit cleanup disarms before destructor; completed output last on exception",
+    "native_exception_execution": false
+  },
+  "providers": [
+    {
+      "address": "00b67980",
+      "coverage": "complete_existing_actual_source",
+      "source": "native_lua_globals_00b67980",
+      "contract": "fresh untrackedkind1 globals object, ownerpointer not Lua registryreference"
+    },
+    {
+      "address": "00b67800",
+      "coverage": "complete_existing_actual_source",
+      "source": "native_lua_get_by_name_00b67800",
+      "contract": "current actual table/owner/index around actual Lua5.1.1 CAPI calls; trackedkind2 output"
+    },
+    {
+      "address": "00b68100",
+      "coverage": "complete_existing_actual_source",
+      "source": "native_lua_get_by_string_00b68100",
+      "contract": "capture current data;null emptyCString;GetByName;returncapturedoutput"
+    },
+    {
+      "address": "00b67700",
+      "coverage": "complete_existing_actual_source",
+      "source": "destroy_native_lua_object_00b67700",
+      "contract": "kind0skip;releasecapturedowner/index thenclearcurrentkind"
+    },
+    {
+      "address": "00b66de0",
+      "coverage": "complete_existing_actual_source",
+      "source": "release_native_lua_tracked_object_00b66de0",
+      "contract": "actual stack removal/reference-slot shifts/current surviving indices;highwaterstale retained"
+    }
+  ],
+  "stack_cleanup": [
+    "B679A1 RET4: output pointer",
+    "B678D8 RET8: output,keyCString",
+    "B68128 RET8: output,NativeStringpointer",
+    "B66F2D RETC: object,index,remove_stack1",
+    "927BDF RET4: caller output pointer"
+  ],
+  "incoming_call_census": {
+    "evidence": "local/lua_self_all_call_sites.json",
+    "site_count": 39,
+    "stored_containing_function_sites": 35,
+    "no_ghidra_function_sites": [
+      "0074b29b",
+      "0077b101",
+      "007c97e3",
+      "0081bf6b"
+    ],
+    "scope": "incoming argument evidence; not reconstructed caller functions and not distinct function count"
+  },
+  "corrections": [
+    {
+      "was": "historical mission doc cites25 callers",
+      "evidence": "formal xrefs/protos and PE argument setups local/lua_self_all_call_sites.json",
+      "is": "current39incoming site refs;35stored containing identities and4no_function sites; not39distinct callers"
+    },
+    {
+      "was": "networkID174 and keylength178 could be treated as getter inputs",
+      "evidence": "complete162byte body,full B68100/B67800,producer928A00",
+      "is": "getter ignores both;B68100 uses data17C as NULterminatedCString after globals.thisTable callback"
+    },
+    {
+      "was": "completed output might be treated as caller-owned before temporary destruction",
+      "evidence": "927BAE flag1;DDA2AC state0 CA6EE0;state changesbefore927BBB/927BC9",
+      "is": "state0 flag isarmedafterGetByNativeString and output remains conditionalcleanup target until return"
+    }
+  ],
+  "annotation_audit": {
+    "worker_ghidra_mutations": false,
+    "owned_before": "local/lua_self_documentation_before.json",
+    "policy": "retain existingBSP_MissionEntity_LuaSelfObject name/comments; append ownedledger evidence only; root handlesallGhidra writes",
+    "owned_after": "local/lua_self_documentation_after.json",
+    "exact_diff": "local/lua_self_documentation_diff.json",
+    "preservation": "name/comments/stored hashes and all other fields unchanged; synthesizedstack-8 local puStack_8 undefined1* -> pcStack_8 undefined* after root handler definition"
+  },
+  "integration": "Wconstruct_self resolves existingcanonicalalias tosameactualNativeString178 lvalue;passfreshNativeLuaObjectStorage andactualE188A8cell. No host/runtime/sharedfiles edited.",
+  "validation": {
+    "status": "passed_with_original_FH3_Lua_error_and_gameplay_limits",
+    "build_log": "local/lua_self_build.txt",
+    "build_command": "./scripts/build.ps1",
+    "seeds": "local/lua_self_verify_seeds.txt",
+    "probe_source": "local/lua_self_probe.cpp",
+    "probe_build_command": "./local/lua_self_probe_build.ps1",
+    "native_scope": "full162bytes;5ABI adapters to actual Lua-object providers;explicitworldcell/literalrelocations;FH3unbound",
+    "callback_scope": "actual Lua globals/table__index Cfunctions mutate actualpooledkey andworldpublication; noLua library ports",
+    "cleanup_scope": "actual normaltemporaryandoutput tracking cleanup; noexceptioninjection",
+    "existing_ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "ctest_result": "2/2 passed",
+    "seed_byte_checks": "8/8 live/PE equal",
+    "direct_call_checks": 10,
+    "failed_call_checks": 0,
+    "indirect_rows": 0,
+    "probe_runs": [
+      {
+        "args": [
+          "local/lua_self_probe.exe",
+          "native"
+        ],
+        "returncode": 0,
+        "stdout": "TRACE: current-worldA-empty=7; current-worldB-empty=99; capture-worldA -> global-callback-key/world-change -> current-key-after -> key-callback-late -> result42 -> temporary-index2-to1 -> caller-cleanup\nPASS: native full162-byte getter; actual Lua5.1.1/pooled NativeString/tracked objects; output identity,padding,stack/high-water cleanup; native FH3 unexecuted\n",
+        "stderr": ""
+      },
+      {
+        "args": [
+          "local/lua_self_probe.exe",
+          "source"
+        ],
+        "returncode": 0,
+        "stdout": "TRACE: current-worldA-empty=7; current-worldB-empty=99; capture-worldA -> global-callback-key/world-change -> current-key-after -> key-callback-late -> result42 -> temporary-index2-to1 -> caller-cleanup\nPASS: source full162-byte getter; actual Lua5.1.1/pooled NativeString/tracked objects; output identity,padding,stack/high-water cleanup; native FH3 unexecuted\n",
+        "stderr": ""
+      }
+    ],
+    "relocation_proof": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-mission-entity-lua-self-y\\local\\lua_self_relocation_proof.json",
+      "bytes": 5832,
+      "sha256": "9598737c0a9fa01568473f09e69aa7799f569e22cff46d6d84aaf73c71ab36b2"
+    },
+    "failures": [
+      {
+        "stage": "initial evidence collection",
+        "error": "formal disasm on known undefinedCA6EF9 returned failure",
+        "resolution": "retained error and exact raw selector bytes; root later formallydefined selector; finalverifierpasses",
+        "log": "local/lua_self_evidence_initial.txt"
+      },
+      {
+        "stage": "initial call validation",
+        "error": "selectorCA6EFE in noGhidrafunction",
+        "resolution": "rootdefinedEH_MissionEntity_LuaSelfObject;10finalrowsverified",
+        "log": "local/lua_self_report_calls_initial.txt"
+      }
+    ],
+    "toolchain": {
+      "generator": "Visual Studio 18 2026",
+      "platform": "Win32 Release",
+      "msvc_tools": "14.51.36231",
+      "windows_sdk": "10.0.26100.0",
+      "resolved_tools": [
+        {
+          "Name": "cl.exe",
+          "Source": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe",
+          "FileVersion": "19.51.36244.0"
+        },
+        {
+          "Name": "link.exe",
+          "Source": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\link.exe",
+          "FileVersion": "14.51.36244.0"
+        },
+        {
+          "Name": "dumpbin.exe",
+          "Source": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\dumpbin.exe",
+          "FileVersion": "14.51.36244.0"
+        },
+        {
+          "Name": "mt.exe",
+          "Source": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\\\x64\\mt.exe",
+          "FileVersion": "10.0.26100.8249 (WinBuild.160101.0800)"
+        }
+      ],
+      "flags": "/std:c++17 /EHsc /O2 /MD /W4 /WX /fp:strict",
+      "link_flags": "/MANIFEST:EMBED /VERBOSE:LIB /MAP:local/lua_self_probe.map"
+    },
+    "owned_object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-mission-entity-lua-self-y\\build\\win32\\bsp_core.dir\\Release\\native_mission_entity_lua_self.obj",
+      "bytes": 5437,
+      "sha256": "c831af43e9b9806348cfc1d67ce8f50d45a44128a13784efa8324329d60bf501"
+    },
+    "core_library": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-mission-entity-lua-self-y\\build\\win32\\Release\\bsp_core.lib",
+      "bytes": 55483800,
+      "sha256": "c931037b8febf29c1e9a7de9290e6abd2c5884486eca2f1ddee0ce51a5ce5873"
+    },
+    "linked_core_objects": [
+      "gui_layout_loader.obj",
+      "gui_lua_reader.obj",
+      "native_legacy_exception_owner.obj",
+      "native_legacy_sbo_string.obj",
+      "native_lua_objects.obj",
+      "native_mission_entity_lua_self.obj",
+      "native_renderer_worker_lifetime.obj",
+      "native_singleton_publication.obj",
+      "native_singleton_vector_allocation.obj",
+      "native_singleton_vector_insert_count.obj",
+      "native_singleton_vector_leaves.obj",
+      "native_singleton_vector_registration_wrappers.obj",
+      "native_singleton_vector_reserve_construct.obj",
+      "native_string.obj",
+      "native_string_pool_owner.obj",
+      "native_string_pool_storage.obj",
+      "singleton_lifetime.obj"
+    ],
+    "linked_lua_objects": [
+      "lapi.obj",
+      "lauxlib.obj",
+      "ldebug.obj",
+      "ldo.obj",
+      "lfunc.obj",
+      "lgc.obj",
+      "llex.obj",
+      "lmem.obj",
+      "lobject.obj",
+      "lopcodes.obj",
+      "lparser.obj",
+      "lstate.obj",
+      "lstring.obj",
+      "ltable.obj",
+      "ltm.obj",
+      "lvm.obj",
+      "lzio.obj"
+    ],
+    "linked_libraries": [
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\um\\x86\\d3d9.lib",
+        "bytes": 5692,
+        "sha256": "f7efc12189fc46406762aebe66a80a44181bbd93e40e7adfe051af0db3bd53af"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\um\\x86\\kernel32.lib",
+        "bytes": 329914,
+        "sha256": "0916cf9c90410acf8fe000b23443f54c467bdecb14078034f3c9ec086200afc7"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\um\\x86\\user32.lib",
+        "bytes": 179898,
+        "sha256": "ab26e29a6f06b0eba87861aebb9e61874a22f297d03d66e08296066ce0dbdbeb"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\um\\x86\\uuid.lib",
+        "bytes": 8973686,
+        "sha256": "c67dde91ba590a490ed57c09ce6b3c8b6ef90e60a78dbde6acf7f11e1eefbfc0"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\ucrt\\x86\\ucrt.lib",
+        "bytes": 299244,
+        "sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\MSVCRT.lib",
+        "bytes": 8263656,
+        "sha256": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\OLDNAMES.lib",
+        "bytes": 158090,
+        "sha256": "3af0bc33f96a74105b9a83eea9238b7191885764b36bec144ec783a8fba59457"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcprt.lib",
+        "bytes": 5365666,
+        "sha256": "5043c6d473b6f5d0f767df241b4004175ad9b60d01ae4565b7caaea1709ab55f"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\vcruntime.lib",
+        "bytes": 400312,
+        "sha256": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-mission-entity-lua-self-y\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 55483800,
+        "sha256": "c931037b8febf29c1e9a7de9290e6abd2c5884486eca2f1ddee0ce51a5ce5873"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-mission-entity-lua-self-y\\build\\win32\\Release\\bsp_lua511.lib",
+        "bytes": 455720,
+        "sha256": "0759086099bbd914a7f6d39b2034a22fd451abb150a32d8f801386d59a4ae142"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-mission-entity-lua-self-y\\build\\win32\\Release\\bsp_zlib121.lib",
+        "bytes": 72086,
+        "sha256": "8da09ad8d5dac3dddc6fd684c29d86f08e8b4c4dd4e87688b7a57ba6bc1b70e9"
+      }
+    ],
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-mission-entity-lua-self-y\\local\\lua_self_manifest.json",
+      "bytes": 82333,
+      "sha256": "d9b2aa5f81ade8427f8a1a08f7d139e5eb753e26e9ad7a55fab38a38570619d1"
+    },
+    "probe_manifest": "embedded asInvoker verified with resolved SDK mt"
+  },
+  "limits": [
+    "New borrowed C++ ABI, not a binary replacement or semantic-unit cast",
+    "Original FH3,hardwarefaults,native stack argument/spill aliases,cleanup failure, Lua errors/longjmp unproved",
+    "Four incomingxref sites lack storedcaller identity; ownedmainbodycomplete",
+    "Tracking limits and liveworld/Luaowner are required nativecontracts",
+    "No gamevalidation or runtimehost binding"
+  ],
+  "compiled_schedule_review": {
+    "evidence": "local/lua_self_object_disasm.txt",
+    "sequence": "worldcapture+55;embeddedoffset+5A;globals+65;armglobals+72;GetByName+78;armtable+80;GetByNativeString+84;armoutput+8C;disarmtable+91;destroytable+95;disarmglobals+9D;destroyglobals+A2;capturedoutputreturn+AA",
+    "argument_cleanup": "sourcecdecl accumulated ADD ESP28 for five calls; newABI differs from originalfastcall/thiscall",
+    "limit": "Original stackaliases/FH3/Luaerror-longjmp and exceptional cleanup execution unproved"
+  }
+}
