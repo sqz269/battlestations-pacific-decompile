@@ -1,0 +1,2106 @@
+{
+  "packet": "orch2_native_resource_item_frontier_bf",
+  "generated_utc": "2026-09-13T17:46:38.240137+00:00",
+  "status": "read_only_byte_verified_discovery_no_source_build_test_or_game_claim",
+  "identity": {
+    "configuration": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "verification_route": "Every live batch used python tools/bsp.py ghidra, whose client() calls Client.verify() before query. No Ghidra write/export/save/repair.",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-item-frontier-bf",
+  "core_routines": [
+    {
+      "start": "00b86930",
+      "end_inclusive": "00b86945",
+      "size": 22,
+      "live_sha256": "9f15be6a4d09f701b2ca12226f70f5f94310bfce0d45b7ecbad36b64a40d33c4",
+      "pe_sha256": "9f15be6a4d09f701b2ca12226f70f5f94310bfce0d45b7ecbad36b64a40d33c4",
+      "match": true,
+      "coverage": "complete",
+      "original_abi": "ECX eight-byte storage; EAX same storage; plain RET; no stack arguments.",
+      "evidence": "local/resource-item-frontier-bf/00b86930-decoded.txt"
+    },
+    {
+      "start": "00b86990",
+      "end_inclusive": "00b869b3",
+      "size": 36,
+      "live_sha256": "1f4062b9bb39888b7519404ccda4ba96ff1fa5db42caaa371db969b0348165fc",
+      "pe_sha256": "1f4062b9bb39888b7519404ccda4ba96ff1fa5db42caaa371db969b0348165fc",
+      "match": true,
+      "coverage": "complete",
+      "original_abi": "ECX original item; low byte of one stack flags DWORD; RET4; EAX original item even when freed; ESI saved/restored; no refcount decrement or null check.",
+      "evidence": "local/resource-item-frontier-bf/00b86990-decoded.txt"
+    },
+    {
+      "start": "00b868b0",
+      "end_inclusive": "00b868c5",
+      "size": 22,
+      "live_sha256": "5f9b49f61cd35e004d0586edab26b309b09361e6b41b95cd4b8d322f9cba57a6",
+      "pe_sha256": "5f9b49f61cd35e004d0586edab26b309b09361e6b41b95cd4b8d322f9cba57a6",
+      "match": true,
+      "coverage": "complete",
+      "original_abi": "ECX resource-item base; EAX same; plain RET; stampCEB130/count1/D631A0.",
+      "evidence": "local/resource-item-frontier-bf/00b868b0-decoded.txt"
+    },
+    {
+      "start": "00b86890",
+      "end_inclusive": "00b8689a",
+      "size": 11,
+      "live_sha256": "64f1d4dddbc5ef7051658d3c70adf2333573f1b90d43bf3eed1f8404c35eaadc",
+      "pe_sha256": "64f1d4dddbc5ef7051658d3c70adf2333573f1b90d43bf3eed1f8404c35eaadc",
+      "match": true,
+      "coverage": "complete",
+      "original_abi": "ECX unchanged; no stack args; stampD5C104 then tailBD30F0.",
+      "evidence": "local/resource-item-frontier-bf/00b86890-decoded.txt"
+    },
+    {
+      "start": "00bd30e0",
+      "end_inclusive": "00bd30ed",
+      "size": 14,
+      "live_sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+      "pe_sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+      "match": true,
+      "coverage": "complete",
+      "original_abi": "ECX optional owner; no stack arguments; plain RET; nonnull current slot04(1); no decrement.",
+      "evidence": "local/resource-item-frontier-bf/00bd30e0-decoded.txt"
+    },
+    {
+      "start": "00bd30f0",
+      "end_inclusive": "00bd30f6",
+      "size": 7,
+      "live_sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+      "pe_sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+      "match": true,
+      "coverage": "complete",
+      "original_abi": "ECX owner; plain RET; writeCEB130 only; no null test.",
+      "evidence": "local/resource-item-frontier-bf/00bd30f0-decoded.txt"
+    }
+  ],
+  "source_status": {
+    "00b86930": "00b86930  BSP_UnknownResourceItem_Construct  thunk=no  export=none\nsegment 89 [00b80fd0-00b86e10] 99 candidates wave 2  keywords: cSceneResource, resourcedump_, refcounter, cNullSceneResource\nledger name: BSP_UnknownResourceItem_Construct - ECX8-byte object;EAXsame;RET. Vtable00d631c0,refcount+4=1. Used by Resource dispatch when no registered child parser. Evidence: docs/STRUCTURED_RESOURCE_DISPATCH.md; reports/structured_resource_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\ncallers (1): 00b7e970 BSP_ResourceManager_DispatchItems\ncallees (0): \ndocs (1): docs/STRUCTURED_RESOURCE_DISPATCH.md (Structured resource factory and dispatch)\n",
+    "00b86990": "00b86990  BSP_UnknownResourceItem_ScalarDeletingDestructor  thunk=no  export=none\nsegment 89 [00b80fd0-00b86e10] 99 candidates wave 2  keywords: cSceneResource, resourcedump_, refcounter, cNullSceneResource\nledger name: BSP_UnknownResourceItem_ScalarDeletingDestructor - ECX eight-byte fallback item; byte flags in one stack slot; RET4; EAX original object pointer. Set00d5c104 intermediate vtable and call00bd30f0 base destructor; free object through00bf65ac iff flags bit0. No owned payload. Matched complete body00b86990-00b869b3 to installed PE; normal-path audit onl\ncallers (0): \ncallees (2): 00bd30f0 BSP_RefCounted_DestroyBase, 00bf65ac _free\ndocs (1): docs/RESOURCE_ITEM_OWNERSHIP.md (Resource and hierarchy-item ownership)\n",
+    "00b86890": "00b86890  BSP_ResourceItem_DestroyReferenceBase  thunk=no  export=none\nsegment 89 [00b80fd0-00b86e10] 99 candidates wave 2  keywords: cSceneResource, resourcedump_, refcounter, cNullSceneResource\nledger name: BSP_ResourceItem_DestroyReferenceBase - ECXitem;noadjustment. Setsvtable00d5c104 thenTAIL JMP00bd30f0 (basevt00ceb130,RET). Existing CG_adjustor_thunk label is classification, not recoveredsymbol; matchedbody has no thisadjustment. Original ABI: ECX item; no explicit stack arguments; writes vtable00d5c104 then tail JMP00bd30f0, which writ\ncallers (26): 006f9d70 FUN_006f9d70, 00717cd0 FUN_00717cd0, 00717e00 FUN_00717e00 ...\ncallees (1): 00bd30f0 BSP_RefCounted_DestroyBase\ndocs (2): docs/MESH_OBJECT_LIFETIME.md (Mesh object lifetime); docs/RESOURCE_NOTE_PARSER.md (Note resource parser)\n",
+    "00b868b0": "00b868b0  BSP_ResourceItem_ConstructReferenceBase  thunk=no  export=none\nsegment 89 [00b80fd0-00b86e10] 99 candidates wave 2  keywords: cSceneResource, resourcedump_, refcounter, cNullSceneResource\nledger name: BSP_ResourceItem_ConstructReferenceBase - ECX item,EAXsame,RET. vtable00ceb130 thenrefcount+4=1 thenvtable00d631a0. New Note parser00719000 overwrites primaryvtable00cfd860. Original ABI: ECX item, EAX same, RET. Writes initial vtable00ceb130, refcount+4=1, final vtable00d631a0.. Evidence: docs/RESOURCE_NOTE_PARSER.md; reports/resource_note\ncallers (24): 006f9cd0 FUN_006f9cd0, 00717c70 FUN_00717c70, 00717da0 FUN_00717da0 ...\ncallees (0): \ndocs (3): docs/MESH_SUBSET_LOD_FIELDS.md (Mesh subset, LOD, and name fields); docs/RESOURCE_MESH_PARSER_BOUNDARY.md (Mesh resource parser boundary); docs/RESOURCE_NOTE_PARSER.md (Note resource parser)\n",
+    "00bd30e0": "00bd30e0  BSP_RefCounted_InvokeDeletingDestructor  thunk=no  export=exports/bsp/functions/00bd30e0\nsegment 95 [00bd2f10-00bd9210] 82 candidates wave 2  keywords: \nledger name: BSP_RefCounted_InvokeDeletingDestructor - ECX object; no stack arguments; plain RET. Existing recovered name preserved: if object nonnull call vtable+4 with flag1; no reference count decrement. Matched complete body00bd30e0-00bd30ed to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_au\nreconstruction: function invoke_native_ref_counted_delete_00bd30e0 status=raw_source_build_tested_required_profile_provider source=src/native_ref_counted.cpp\ncallers (0): \ncallees (0): \ndocs (52): docs/APP_INIT_VFS_SINGLETONS.md (VFS singletons and resource parsers in cSkeletonAp); docs/AUTHORED_FOG_SOURCE.md (Authored environment fog source); docs/DIRECTIONAL_LIGHT_REFERENCE.md (Directional light canonical reference)\n",
+    "00bd30f0": "00bd30f0  BSP_RefCounted_DestroyBase  thunk=no  export=exports/bsp/functions/00bd30f0\nsegment 95 [00bd2f10-00bd9210] 82 candidates wave 2  keywords: \nledger name: BSP_RefCounted_DestroyBase - ECX base object; store00ceb130 primary vtable; RET. Body7 bytes. Descriptive class name is a reconstruction hypothesis. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX base object; no stack args; RET; set ba\nreconstruction: function destroy_native_ref_counted_base_00bd30f0 status=raw_source_build_tested_required_profile_provider source=src/native_ref_counted.cpp\ncallers (295): 004f9f40 CG_scalar_deleting_dtor_004f9f40, 004fd080 FUN_004fd080, 006e9e80 BSP_BulletClass_Destruct ...\ncallees (0): \ndocs (33): docs/DIRECTIONAL_SHADOW_OWNER_NEXT.md (Directional-light shadow owner: next implementatio); docs/FILE_BLOCK_LIFETIME.md (FileBlock destruction and paired VFS block exit); docs/FONT_CONTEXT_OWNERSHIP.md (Text-context update and retained geometry ownershi)\n"
+  },
+  "fallback_layout": {
+    "allocation_bytes": 8,
+    "offset00": "current native profile identity; constructor transitionsCEB130->D631C0; scalar transitionsD5C104->CEB130",
+    "offset04": "reference count initialized1; neitherBD30E0 norB86990 norBD30F0 decrements it",
+    "no_other_fields": "Only eight allocated bytes; scalar has no owned payload cleanup. Hierarchy record+00 is a separate numeric parent, not this vtable."
+  },
+  "fallback_table": {
+    "address": "00d631c0",
+    "slots": [
+      {
+        "offset": "00",
+        "target": "00bd30e0"
+      },
+      {
+        "offset": "04",
+        "target": "00b86990"
+      },
+      {
+        "offset": "08",
+        "target": "00b86860"
+      },
+      {
+        "offset": "0c",
+        "target": "00b86950"
+      },
+      {
+        "offset": "10",
+        "target": "006f9d20"
+      },
+      {
+        "offset": "14",
+        "target": "00b86870"
+      },
+      {
+        "offset": "18",
+        "target": "00b86880"
+      },
+      {
+        "offset": "1c",
+        "target": "006f9d30"
+      },
+      {
+        "offset": "20",
+        "target": "00b868a0"
+      }
+    ],
+    "meanings": [
+      "final-delete thunk, nullableECX, current slot04(1)",
+      "scalar deleting destructor",
+      "EAX=current DWORD at109021C; RET",
+      "AL membership of stack token in three DWORDs109021C/220/224; RET4; ECX owner unused",
+      "EAX0; RET8; arguments ignored",
+      "EAX=current DWORD1090228; RET",
+      "empty RET10h; no register result guarantee",
+      "EAX0; RET",
+      "empty RET4; no register result guarantee"
+    ],
+    "type_domain_boundary": "CD82C0 loadsECX=109021C then tail-jumpsB86A00. That initialization/type-token domain remains external to the deleting-profile packet. Runtime token values were not observed."
+  },
+  "provenance": {
+    "fallback_constructor_call": "Only live incoming direct call isB7EA81 inB7E970. PUSH8 atB7EA68; BF681B atB7EA6A; ADD ESP4 atB7EA6F; MOV ECX,EAX atB7EA7F. No pooled allocation or hidden tail word.",
+    "fallback_transfer": "ESI captures constructor resultEAX atB7EA93 before skip. Resource pointer is reloaded from saved manager+24; sameESI pushed atB7EAA6 and current resource slot0C called atB7EAA7. Only node-handle cleanup follows. Null allocation yields null appended item.",
+    "raw_primary_append": "B87AA0 copies the stack pointer into primary data[count], incrementing count withoutAddRef; 71BB40 calls it before classification and performs no refcount operation. Classification helpers remain separate dependencies.",
+    "zero_release": "B88430 reloads actual primary data and count, captures elementEBP, invokes imported decrement onEBP+4, calls its current slot0 only on returned zero. Every duplicate primary slot supplies one decrement. No null check.",
+    "scalar_registers": "B86990 savesESI, setsESI=ECX before BD30F0, tests flags byte atESP+8, pushes sameESI toBF65AC, ADD ESP4, returnsESI inEAX and RET4. Count+4 untouched.",
+    "thunk_registers": "BD30E0 checksECX, readsEAX=[ECX], EDX=[EAX+4], PUSH1; CALL EDX; RET. It adds no count operation or generic profile support."
+  },
+  "call_rows": [
+    {
+      "address": "00b86999",
+      "native": "00bd30f0",
+      "function": "00b86990",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbd30f0"
+    },
+    {
+      "address": "00b869a6",
+      "native": "00bf65ac",
+      "function": "00b86990",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf65ac"
+    },
+    {
+      "address": "00b86896",
+      "native": "00bd30f0",
+      "function": "00b86890",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbd30f0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00bd30eb",
+      "native": "indirect:edx",
+      "function": "00bd30e0",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "edx"
+    },
+    {
+      "address": "00b7e99a",
+      "native": "00715bf0",
+      "function": "00b7e970",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0x715bf0"
+    },
+    {
+      "address": "00b7e9b2",
+      "native": "00bea680",
+      "function": "00b7e970",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbea680"
+    },
+    {
+      "address": "00b7e9c9",
+      "native": "00b7df40",
+      "function": "00b7e970",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb7df40"
+    },
+    {
+      "address": "00b7e9d8",
+      "native": "00bf6713",
+      "function": "00b7e970",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf6713"
+    },
+    {
+      "address": "00b7ea02",
+      "native": "00bf7fbf",
+      "function": "00b7e970",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf7fbf"
+    },
+    {
+      "address": "00b7ea37",
+      "native": "00bf6713",
+      "function": "00b7e970",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf6713"
+    },
+    {
+      "address": "00b7ea46",
+      "native": "00bf6713",
+      "function": "00b7e970",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf6713"
+    },
+    {
+      "address": "00b7ea50",
+      "native": "00bf6713",
+      "function": "00b7e970",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf6713"
+    },
+    {
+      "address": "00b7ea62",
+      "native": "indirect:edx",
+      "function": "00b7e970",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "edx"
+    },
+    {
+      "address": "00b7ea6a",
+      "native": "00bf681b",
+      "function": "00b7e970",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf681b"
+    },
+    {
+      "address": "00b7ea81",
+      "native": "00b86930",
+      "function": "00b7e970",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb86930"
+    },
+    {
+      "address": "00b7ea95",
+      "native": "00be9c40",
+      "function": "00b7e970",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbe9c40"
+    },
+    {
+      "address": "00b7eaa7",
+      "native": "indirect:eax",
+      "function": "00b7e970",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "eax"
+    },
+    {
+      "address": "00b7eab5",
+      "native": "00be9ed0",
+      "function": "00b7e970",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbe9ed0"
+    },
+    {
+      "address": "00b7eabd",
+      "native": "00715bf0",
+      "function": "00b7e970",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0x715bf0"
+    },
+    {
+      "address": "00b87abc",
+      "native": "00b872f0",
+      "function": "00b87aa0",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb872f0"
+    },
+    {
+      "address": "0071bb49",
+      "native": "00b87aa0",
+      "function": "0071bb40",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb87aa0"
+    },
+    {
+      "address": "0071bb60",
+      "native": "indirect:edx",
+      "function": "0071bb40",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "edx"
+    },
+    {
+      "address": "0071bb7c",
+      "native": "0071b9b0",
+      "function": "0071bb40",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0x71b9b0"
+    },
+    {
+      "address": "0071bb8d",
+      "native": "006f9a80",
+      "function": "0071bb40",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0x6f9a80"
+    },
+    {
+      "address": "0071bb98",
+      "native": "indirect:edx",
+      "function": "0071bb40",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "edx"
+    },
+    {
+      "address": "0071bbb4",
+      "native": "0071b940",
+      "function": "0071bb40",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0x71b940"
+    },
+    {
+      "address": "0071bbc5",
+      "native": "00721c90",
+      "function": "0071bb40",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0x721c90"
+    },
+    {
+      "address": "0071bbd0",
+      "native": "indirect:edx",
+      "function": "0071bb40",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "edx"
+    },
+    {
+      "address": "0071bbe8",
+      "native": "0071b8d0",
+      "function": "0071bb40",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0x71b8d0"
+    },
+    {
+      "address": "00cc1fd3",
+      "native": "00be9ed0",
+      "function": "00cc1fd0",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbe9ed0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cc1fdc",
+      "native": "00bf65ac",
+      "function": "00cc1fd8",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf65ac"
+    },
+    {
+      "address": "00cc25d3",
+      "native": "00bd30f0",
+      "function": "00cc25d0",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbd30f0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cc25de",
+      "native": "0041dd20",
+      "function": "00cc25d8",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0x41dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cc25e9",
+      "native": "00b87b20",
+      "function": "00cc25e3",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb87b20",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cc25f4",
+      "native": "00b87b40",
+      "function": "00cc25ee",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb87b40",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00b947cb",
+      "native": "00b94710",
+      "function": "00b947a0",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb94710"
+    },
+    {
+      "address": "00b947d2",
+      "native": "00bf681b",
+      "function": "00b947a0",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf681b"
+    },
+    {
+      "address": "00b947ef",
+      "native": "00b868b0",
+      "function": "00b947a0",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb868b0"
+    },
+    {
+      "address": "00b94808",
+      "native": "indirect:dword ptr [0xce221c]",
+      "function": "00b947a0",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "dword ptr [0xce221c]"
+    },
+    {
+      "address": "00b94822",
+      "native": "indirect:dword ptr [0xce2220]",
+      "function": "00b947a0",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "dword ptr [0xce2220]"
+    },
+    {
+      "address": "00b94832",
+      "native": "indirect:eax",
+      "function": "00b947a0",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "eax"
+    },
+    {
+      "address": "00b9487b",
+      "native": "00b94710",
+      "function": "00b94850",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb94710"
+    },
+    {
+      "address": "00b94882",
+      "native": "00bf681b",
+      "function": "00b94850",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf681b"
+    },
+    {
+      "address": "00b9489f",
+      "native": "00b868b0",
+      "function": "00b94850",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb868b0"
+    },
+    {
+      "address": "00b948b8",
+      "native": "indirect:dword ptr [0xce221c]",
+      "function": "00b94850",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "dword ptr [0xce221c]"
+    },
+    {
+      "address": "00b948d8",
+      "native": "indirect:dword ptr [0xce2220]",
+      "function": "00b94850",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "dword ptr [0xce2220]"
+    },
+    {
+      "address": "00b948e8",
+      "native": "indirect:eax",
+      "function": "00b94850",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "eax"
+    },
+    {
+      "address": "00b92f3a",
+      "native": "00bf681b",
+      "function": "00b92f20",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf681b"
+    },
+    {
+      "address": "00b92f54",
+      "native": "00b868b0",
+      "function": "00b92f20",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb868b0"
+    },
+    {
+      "address": "00b92f7b",
+      "native": "00b92cd0",
+      "function": "00b92f20",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb92cd0"
+    },
+    {
+      "address": "00b9492b",
+      "native": "00b94710",
+      "function": "00b94900",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb94710"
+    },
+    {
+      "address": "00b94932",
+      "native": "00bf681b",
+      "function": "00b94900",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf681b"
+    },
+    {
+      "address": "00b9494f",
+      "native": "00b868b0",
+      "function": "00b94900",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb868b0"
+    },
+    {
+      "address": "00b94968",
+      "native": "indirect:dword ptr [0xce221c]",
+      "function": "00b94900",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "dword ptr [0xce221c]"
+    },
+    {
+      "address": "00b94988",
+      "native": "indirect:dword ptr [0xce2220]",
+      "function": "00b94900",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "dword ptr [0xce2220]"
+    },
+    {
+      "address": "00b94998",
+      "native": "indirect:eax",
+      "function": "00b94900",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "eax"
+    },
+    {
+      "address": "00b8b259",
+      "native": "00bf681b",
+      "function": "00b8b240",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf681b"
+    },
+    {
+      "address": "00b8b275",
+      "native": "00b868b0",
+      "function": "00b8b240",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb868b0"
+    },
+    {
+      "address": "00b8b2a1",
+      "native": "00b8b0b0",
+      "function": "00b8b240",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb8b0b0"
+    },
+    {
+      "address": "00b8eb69",
+      "native": "00bf681b",
+      "function": "00b8eb50",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf681b"
+    },
+    {
+      "address": "00b8eb85",
+      "native": "00b868b0",
+      "function": "00b8eb50",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb868b0"
+    },
+    {
+      "address": "00b8eba8",
+      "native": "indirect:edx",
+      "function": "00b8eb50",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "edx"
+    },
+    {
+      "address": "00b8a92a",
+      "native": "00bf681b",
+      "function": "00b8a910",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf681b"
+    },
+    {
+      "address": "00b8a944",
+      "native": "00b868b0",
+      "function": "00b8a910",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb868b0"
+    },
+    {
+      "address": "00b8a970",
+      "native": "indirect:edx",
+      "function": "00b8a910",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "edx"
+    },
+    {
+      "address": "00b8a9a9",
+      "native": "00bf681b",
+      "function": "00b8a990",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf681b"
+    },
+    {
+      "address": "00b8a9c5",
+      "native": "00b868b0",
+      "function": "00b8a990",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb868b0"
+    },
+    {
+      "address": "00b8a9f6",
+      "native": "indirect:edx",
+      "function": "00b8a990",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "edx"
+    },
+    {
+      "address": "0071b5d9",
+      "native": "00bf681b",
+      "function": "0071b5c0",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf681b"
+    },
+    {
+      "address": "0071b5f1",
+      "native": "0071abb0",
+      "function": "0071b5c0",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0x71abb0"
+    },
+    {
+      "address": "0071b607",
+      "native": "0071b3e0",
+      "function": "0071b5c0",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0x71b3e0"
+    },
+    {
+      "address": "00719259",
+      "native": "00bf681b",
+      "function": "00719240",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf681b"
+    },
+    {
+      "address": "00719275",
+      "native": "00b868b0",
+      "function": "00719240",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb868b0"
+    },
+    {
+      "address": "007192a5",
+      "native": "00719080",
+      "function": "00719240",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0x719080"
+    },
+    {
+      "address": "00719019",
+      "native": "00bf681b",
+      "function": "00719000",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf681b"
+    },
+    {
+      "address": "00719035",
+      "native": "00b868b0",
+      "function": "00719000",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb868b0"
+    },
+    {
+      "address": "00719065",
+      "native": "00718f50",
+      "function": "00719000",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0x718f50"
+    },
+    {
+      "address": "00727aa9",
+      "native": "00bf681b",
+      "function": "00727a90",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf681b"
+    },
+    {
+      "address": "00727ac1",
+      "native": "007268d0",
+      "function": "00727a90",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0x7268d0"
+    },
+    {
+      "address": "00727ad7",
+      "native": "00727310",
+      "function": "00727a90",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0x727310"
+    },
+    {
+      "address": "006faf19",
+      "native": "00bf681b",
+      "function": "006faf00",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf681b"
+    },
+    {
+      "address": "006faf31",
+      "native": "006f9cd0",
+      "function": "006faf00",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0x6f9cd0"
+    },
+    {
+      "address": "006faf47",
+      "native": "006fad70",
+      "function": "006faf00",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0x6fad70"
+    },
+    {
+      "address": "0071abc9",
+      "native": "00b868b0",
+      "function": "0071abb0",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb868b0"
+    },
+    {
+      "address": "007268e9",
+      "native": "00b868b0",
+      "function": "007268d0",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb868b0"
+    },
+    {
+      "address": "006f9ced",
+      "native": "00b868b0",
+      "function": "006f9cd0",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb868b0"
+    },
+    {
+      "address": "006f9d03",
+      "native": "00c32d50",
+      "function": "006f9cd0",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xc32d50"
+    },
+    {
+      "address": "00b93b43",
+      "native": "00b93910",
+      "function": "00b93b40",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb93910"
+    },
+    {
+      "address": "00b93b50",
+      "native": "00bf65ac",
+      "function": "00b93b40",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf65ac"
+    },
+    {
+      "address": "00b93b63",
+      "native": "00b93910",
+      "function": "00b93b60",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb93910"
+    },
+    {
+      "address": "00b93b70",
+      "native": "00bf65ac",
+      "function": "00b93b60",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf65ac"
+    },
+    {
+      "address": "00b92fa3",
+      "native": "00b92ec0",
+      "function": "00b92fa0",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb92ec0"
+    },
+    {
+      "address": "00b92fb0",
+      "native": "00bf65ac",
+      "function": "00b92fa0",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf65ac"
+    },
+    {
+      "address": "00b93b83",
+      "native": "00b93910",
+      "function": "00b93b80",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb93910"
+    },
+    {
+      "address": "00b93b90",
+      "native": "00bf65ac",
+      "function": "00b93b80",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf65ac"
+    },
+    {
+      "address": "00b8b2c3",
+      "native": "00b8aa60",
+      "function": "00b8b2c0",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb8aa60"
+    },
+    {
+      "address": "00b8b2d0",
+      "native": "00bf65ac",
+      "function": "00b8b2c0",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf65ac"
+    },
+    {
+      "address": "00b8ebc3",
+      "native": "00b86890",
+      "function": "00b8ebc0",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb86890"
+    },
+    {
+      "address": "00b8ebd0",
+      "native": "00bf65ac",
+      "function": "00b8ebc0",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf65ac"
+    },
+    {
+      "address": "00b8a763",
+      "native": "00b8a680",
+      "function": "00b8a760",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb8a680"
+    },
+    {
+      "address": "00b8a770",
+      "native": "00bf65ac",
+      "function": "00b8a760",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf65ac"
+    },
+    {
+      "address": "00b8af13",
+      "native": "00b8a8a0",
+      "function": "00b8af10",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb8a8a0"
+    },
+    {
+      "address": "00b8af20",
+      "native": "00bf65ac",
+      "function": "00b8af10",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf65ac"
+    },
+    {
+      "address": "0071acb3",
+      "native": "0071ac40",
+      "function": "0071acb0",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0x71ac40"
+    },
+    {
+      "address": "0071acc0",
+      "native": "00bf65ac",
+      "function": "0071acb0",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf65ac"
+    },
+    {
+      "address": "0071879d",
+      "native": "00bf65ac",
+      "function": "00718790",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf65ac"
+    },
+    {
+      "address": "007187b6",
+      "native": "00b86890",
+      "function": "00718790",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb86890"
+    },
+    {
+      "address": "007187c3",
+      "native": "00bf65ac",
+      "function": "00718790",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf65ac"
+    },
+    {
+      "address": "0071871d",
+      "native": "00bf65ac",
+      "function": "00718710",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf65ac"
+    },
+    {
+      "address": "00718736",
+      "native": "00b86890",
+      "function": "00718710",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xb86890"
+    },
+    {
+      "address": "00718743",
+      "native": "00bf65ac",
+      "function": "00718710",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf65ac"
+    },
+    {
+      "address": "007269e3",
+      "native": "00726960",
+      "function": "007269e0",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0x726960"
+    },
+    {
+      "address": "007269f0",
+      "native": "00bf65ac",
+      "function": "007269e0",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf65ac"
+    },
+    {
+      "address": "006f9dd3",
+      "native": "006f9d70",
+      "function": "006f9dd0",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0x6f9d70"
+    },
+    {
+      "address": "006f9de0",
+      "native": "00bf65ac",
+      "function": "006f9dd0",
+      "contract": "external address-specific dependency; no implementation claim",
+      "operand": "0xbf65ac"
+    },
+    {
+      "address": "00b8847a",
+      "native": "IAT00ce2220:KERNEL32.dll!InterlockedDecrement",
+      "function": "00b88430",
+      "contract": "EBX loaded atB88467; pushEBP+4 atB88479; EBP is current primary array element; no null test.",
+      "operand": "EBX"
+    },
+    {
+      "address": "00b88487",
+      "native": "item+vtable00",
+      "function": "00b88430",
+      "contract": "Only after returnedEAX==0; ECX=current itemEBP; slot0 reload atB88480/B88483.",
+      "operand": "EAX"
+    },
+    {
+      "address": "00b88763",
+      "native": "00b88430",
+      "function": "00b88760",
+      "contract": "ECX original base resource; scalar wrapper destroys fields unconditionally."
+    },
+    {
+      "address": "0071886b",
+      "native": "00b88430",
+      "function": "00718810",
+      "contract": "ECX restored original concrete resource after three classification backing arrays are freed and cleared.",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c84f73",
+      "native": "00b88430",
+      "function": "00c84f70",
+      "contract": "Construction unwind loads saved resource fromEBP-10.",
+      "kind": "tail_jump"
+    }
+  ],
+  "live_incoming_evidence": {
+    "00b88430": "From 00c84f73 in Unwind@00c84f70 [UNCONDITIONAL_CALL]\nFrom 00b88763 in BSP_Resource_ScalarDeletingDestructor [UNCONDITIONAL_CALL]\nFrom 0071886b in BSP_GameResource_Destroy [UNCONDITIONAL_CALL]\n",
+    "00b86890": "From 00c837b3 in Unwind@00c837b0 [UNCONDITIONAL_CALL]\nFrom 00c837d3 in Unwind@00c837d0 [UNCONDITIONAL_CALL]\nFrom 00c84eb3 in Unwind@00c84eb0 [UNCONDITIONAL_CALL]\nFrom 00c85423 in Unwind@00c85420 [UNCONDITIONAL_CALL]\nFrom 00c85453 in Unwind@00c85450 [UNCONDITIONAL_CALL]\nFrom 00cc1cb3 in Unwind@00cc1cb0 [UNCONDITIONAL_CALL]\nFrom 00cc1d13 in Unwind@00cc1d10 [UNCONDITIONAL_CALL]\nFrom 00cc2833 in Unwind@00cc2830 [UNCONDITIONAL_CALL]\nFrom 00cc2873 in Unwind@00cc2870 [UNCONDITIONAL_CALL]\nFrom 00cc28d3 in Unwind@00cc28d0 [UNCONDITIONAL_CALL]\nFrom 00cc2d53 in Unwind@00cc2d50 [UNCONDITIONAL_CALL]\nFrom 00cc2df3 in Unwind@00cc2df0 [UNCONDITIONAL_CALL]\nFrom 006f9dad in FUN_006f9d70 [UNCONDITIONAL_CALL]\nFrom 00718736 in CG_scalar_deleting_dtor_00718710 [UNCONDITIONAL_CALL]\nFrom 007187b6 in CG_scalar_deleting_dtor_00718790 [UNCONDITIONAL_CALL]\nFrom 007269c8 in FUN_00726960 [UNCONDITIONAL_CALL]\nFrom 00b8a8ec in FUN_00b8a8a0 [UNCONDITIONAL_CALL]\nFrom 00b8aaac in FUN_00b8aa60 [UNCONDITIONAL_CALL]\nFrom 00b8ebc3 in CG_scalar_deleting_dtor_00b8ebc0 [UNCONDITIONAL_CALL]\nFrom 00b9395f in BSP_ResourceMeshItem_Destroy [UNCONDITIONAL_CALL]\nFrom 00717cf7 in FUN_00717cd0 [UNCONDITIONAL_CALL]\nFrom 00717e27 in FUN_00717e00 [UNCONDITIONAL_CALL]\nFrom 0071aca1 in FUN_0071ac40 [UNCONDITIONAL_CALL]\n",
+    "00b86990": "From 00d631c4 [DATA]\n",
+    "00b86930": "From 00b7ea81 in BSP_ResourceManager_DispatchItems [UNCONDITIONAL_CALL]\n"
+  },
+  "incoming_scope": "All live direct/data references to the listed entries are retained. B86990 has no direct call sites and onlyD631C4 data reference. B88430 has exactly the three listed incoming calls/jumps. Xrefs cannot enumerate every possible indirect zero-release caller globally; no exhaustive global claim.",
+  "unwind": {
+    "fallback_dispatch": {
+      "handler": "00cc1fe3",
+      "info": "00dfb134",
+      "map": "00dfb124",
+      "states": [
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00cc1fd8",
+          "effect": "free raw allocation savedEBP-2C throughBF65AC; POP ECX/RET tail missing from Ghidra"
+        },
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cc1fd0",
+          "effect": "release child handle atEBP-34 throughBE9ED0"
+        }
+      ],
+      "boundary": "State1 is armed only around fallback construction; reset to0 before skip and append. There is no post-construction item release action for skip/append failure. ScalarB86990, constructorB86930 and common reference bodies have no local FH3 frame."
+    },
+    "resource_release": {
+      "handler": "00cc25f9",
+      "info": "00dfba64",
+      "map": "00dfba44",
+      "states": [
+        {
+          "state": 3,
+          "next": 2,
+          "action": "00cc25ee",
+          "target": "00b87b40",
+          "receiver": "resource+1C"
+        },
+        {
+          "state": 2,
+          "next": 1,
+          "action": "00cc25e3",
+          "target": "00b87b20",
+          "receiver": "resource+10"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00cc25d8",
+          "target": "0041dd20",
+          "receiver": "resource+08"
+        },
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cc25d0",
+          "target": "00bd30f0",
+          "receiver": "resource"
+        }
+      ],
+      "boundary": "No per-primary-element cleanup progress record, retry, or additional item release appears in this four-action map. Arrays/hierarchy/cache remain owned externally."
+    }
+  },
+  "remaining_registered_profiles": [
+    {
+      "label": "Mesh",
+      "parser_entry": "00b947a0",
+      "allocation_bytes": 16,
+      "construction_installed_profile": "00d63738",
+      "slot00": "00bd30e0",
+      "slot04": "00b93b40",
+      "parser_span": {
+        "start": "00b947a0",
+        "end_inclusive": "00b94848",
+        "size": 169,
+        "live_sha256": "85c378ad242a531f08f3190f9e1b1c73fc23684d2e22cc88b98c288f2a7736bd",
+        "pe_sha256": "85c378ad242a531f08f3190f9e1b1c73fc23684d2e22cc88b98c288f2a7736bd",
+        "match": true,
+        "coverage": "partial: allocation, initial profile, receiver/return and local reference transfers only; delegated payload functions and complete exceptional lifetime not audited",
+        "original_abi": "Incoming parserECX unused; stack node-handle pointer; EAX item; RET4.",
+        "evidence": "local/resource-item-frontier-bf/00b947a0-decoded.txt"
+      },
+      "scalar_span": {
+        "start": "00b93b40",
+        "end_inclusive": "00b93b5d",
+        "size": 30,
+        "live_sha256": "69275ae587c949768e84b7961079d4f1e1401c63c2ed6313597f4510a6928c9e",
+        "pe_sha256": "69275ae587c949768e84b7961079d4f1e1401c63c2ed6313597f4510a6928c9e",
+        "match": true,
+        "coverage": "complete outer scalar body; delegated field cleanup remains external",
+        "original_abi": "ECX original item; low byte of one stack flags DWORD; RET4; EAX original item even when freed; ESI saved/restored; no refcount decrement or null check.",
+        "evidence": "local/resource-item-frontier-bf/00b93b40-decoded.txt"
+      },
+      "field_cleanup_dependency": "00b93910",
+      "native_scalar_source": "No reconstruction entry or address-backed src/include implementation found in this checkout; typed payload providers do not satisfy native item ownership.",
+      "profile_data": {
+        "start": "00d63738",
+        "end_inclusive": "00d6375b",
+        "size": 36,
+        "live_sha256": "a9eff10f2e0737889209f868fdc9daf73425567d9ba1dbf5f19715b23c1186c7",
+        "pe_sha256": "a9eff10f2e0737889209f868fdc9daf73425567d9ba1dbf5f19715b23c1186c7",
+        "match": true
+      },
+      "data_window_caution": "Only first two words are asserted to be deletion slots; the 36-byte matched window can include following literal data.",
+      "remaining": "Concrete current-profile provider, payload field ownership, any nested zero-reference profiles, allocation/free pairing and parser-result handoff including failure/unwind.",
+      "normal_handoff": "Wrapper+08 gets local mesh, +0C gets prefix DWORD. InterlockedIncrement(mesh+04), then release local mesh through InterlockedDecrement and current slot0 at zero; item base count remains initial1 in this wrapper."
+    },
+    {
+      "label": "SkinedMesh",
+      "parser_entry": "00b94850",
+      "allocation_bytes": 16,
+      "construction_installed_profile": "00d6375c",
+      "slot00": "00bd30e0",
+      "slot04": "00b93b60",
+      "parser_span": {
+        "start": "00b94850",
+        "end_inclusive": "00b948fe",
+        "size": 175,
+        "live_sha256": "5be7694e018725684e50cecd52791505083a722752ea1541e0d2ff58c0f2d330",
+        "pe_sha256": "5be7694e018725684e50cecd52791505083a722752ea1541e0d2ff58c0f2d330",
+        "match": true,
+        "coverage": "partial: allocation, initial profile, receiver/return and local reference transfers only; delegated payload functions and complete exceptional lifetime not audited",
+        "original_abi": "Incoming parserECX unused; stack node-handle pointer; EAX item; RET4.",
+        "evidence": "local/resource-item-frontier-bf/00b94850-decoded.txt"
+      },
+      "scalar_span": {
+        "start": "00b93b60",
+        "end_inclusive": "00b93b7d",
+        "size": 30,
+        "live_sha256": "cedbd527a9f64709a5e1b332edb96db8e519bf4402ce5a487f311d41c7a37b91",
+        "pe_sha256": "cedbd527a9f64709a5e1b332edb96db8e519bf4402ce5a487f311d41c7a37b91",
+        "match": true,
+        "coverage": "complete outer scalar body; delegated field cleanup remains external",
+        "original_abi": "ECX original item; low byte of one stack flags DWORD; RET4; EAX original item even when freed; ESI saved/restored; no refcount decrement or null check.",
+        "evidence": "local/resource-item-frontier-bf/00b93b60-decoded.txt"
+      },
+      "field_cleanup_dependency": "00b93910",
+      "native_scalar_source": "No reconstruction entry or address-backed src/include implementation found in this checkout; typed payload providers do not satisfy native item ownership.",
+      "profile_data": {
+        "start": "00d6375c",
+        "end_inclusive": "00d6377f",
+        "size": 36,
+        "live_sha256": "364629527ff30834c3f0b415202897f5243055b220384db97699e49e00f4a6f4",
+        "pe_sha256": "364629527ff30834c3f0b415202897f5243055b220384db97699e49e00f4a6f4",
+        "match": true
+      },
+      "data_window_caution": "Only first two words are asserted to be deletion slots; the 36-byte matched window can include following literal data.",
+      "remaining": "Concrete current-profile provider, payload field ownership, any nested zero-reference profiles, allocation/free pairing and parser-result handoff including failure/unwind.",
+      "normal_handoff": "Wrapper+08 gets local mesh, +0C gets prefix DWORD. InterlockedIncrement(mesh+04), then release local mesh through InterlockedDecrement and current slot0 at zero; item base count remains initial1 in this wrapper."
+    },
+    {
+      "label": "SkinedMeshAnimation",
+      "parser_entry": "00b92f20",
+      "allocation_bytes": 24,
+      "construction_installed_profile": "00d63700",
+      "slot00": "00bd30e0",
+      "slot04": "00b92fa0",
+      "parser_span": {
+        "start": "00b92f20",
+        "end_inclusive": "00b92f94",
+        "size": 117,
+        "live_sha256": "63f419c29c848724b4b727940c526d9dcec605e7131419a4c7e7335ba662f781",
+        "pe_sha256": "63f419c29c848724b4b727940c526d9dcec605e7131419a4c7e7335ba662f781",
+        "match": true,
+        "coverage": "partial: allocation, initial profile, receiver/return and local reference transfers only; delegated payload functions and complete exceptional lifetime not audited",
+        "original_abi": "Incoming parserECX unused; stack node-handle pointer; EAX item; RET4.",
+        "evidence": "local/resource-item-frontier-bf/00b92f20-decoded.txt"
+      },
+      "scalar_span": {
+        "start": "00b92fa0",
+        "end_inclusive": "00b92fbd",
+        "size": 30,
+        "live_sha256": "50dd0475293f46a8b11a888ba673d2d148d1d796ee971c6437cfdb7180a8ffb3",
+        "pe_sha256": "50dd0475293f46a8b11a888ba673d2d148d1d796ee971c6437cfdb7180a8ffb3",
+        "match": true,
+        "coverage": "complete outer scalar body; delegated field cleanup remains external",
+        "original_abi": "ECX original item; low byte of one stack flags DWORD; RET4; EAX original item even when freed; ESI saved/restored; no refcount decrement or null check.",
+        "evidence": "local/resource-item-frontier-bf/00b92fa0-decoded.txt"
+      },
+      "field_cleanup_dependency": "00b92ec0",
+      "native_scalar_source": "No reconstruction entry or address-backed src/include implementation found in this checkout; typed payload providers do not satisfy native item ownership.",
+      "profile_data": {
+        "start": "00d63700",
+        "end_inclusive": "00d63723",
+        "size": 36,
+        "live_sha256": "7722ce8d2921d32ab93e4e03d2fc5e3889f6c809d5235408e73e09b792e20243",
+        "pe_sha256": "7722ce8d2921d32ab93e4e03d2fc5e3889f6c809d5235408e73e09b792e20243",
+        "match": true
+      },
+      "data_window_caution": "Only first two words are asserted to be deletion slots; the 36-byte matched window can include following literal data.",
+      "remaining": "Concrete current-profile provider, payload field ownership, any nested zero-reference profiles, allocation/free pairing and parser-result handoff including failure/unwind.",
+      "normal_handoff": "Fresh storage callsB868B0 directly or through the recorded constructor. The wrapper returns its captured pointer after delegated parse. Initial count/profile writes are proven; delegated mutations and nested ownership are not generalized."
+    },
+    {
+      "label": "MatrixIndexedMesh",
+      "parser_entry": "00b94900",
+      "allocation_bytes": 16,
+      "construction_installed_profile": "00d63780",
+      "slot00": "00bd30e0",
+      "slot04": "00b93b80",
+      "parser_span": {
+        "start": "00b94900",
+        "end_inclusive": "00b949ae",
+        "size": 175,
+        "live_sha256": "67265bd5ee69ef95f4ca08e9ae5171b40c5e2834f31abea73721a440797e45ec",
+        "pe_sha256": "67265bd5ee69ef95f4ca08e9ae5171b40c5e2834f31abea73721a440797e45ec",
+        "match": true,
+        "coverage": "partial: allocation, initial profile, receiver/return and local reference transfers only; delegated payload functions and complete exceptional lifetime not audited",
+        "original_abi": "Incoming parserECX unused; stack node-handle pointer; EAX item; RET4.",
+        "evidence": "local/resource-item-frontier-bf/00b94900-decoded.txt"
+      },
+      "scalar_span": {
+        "start": "00b93b80",
+        "end_inclusive": "00b93b9d",
+        "size": 30,
+        "live_sha256": "f4bd36fd05c46d4aa6bd3e128335674be90e6255d3678040535fdfcead7432cd",
+        "pe_sha256": "f4bd36fd05c46d4aa6bd3e128335674be90e6255d3678040535fdfcead7432cd",
+        "match": true,
+        "coverage": "complete outer scalar body; delegated field cleanup remains external",
+        "original_abi": "ECX original item; low byte of one stack flags DWORD; RET4; EAX original item even when freed; ESI saved/restored; no refcount decrement or null check.",
+        "evidence": "local/resource-item-frontier-bf/00b93b80-decoded.txt"
+      },
+      "field_cleanup_dependency": "00b93910",
+      "native_scalar_source": "No reconstruction entry or address-backed src/include implementation found in this checkout; typed payload providers do not satisfy native item ownership.",
+      "profile_data": {
+        "start": "00d63780",
+        "end_inclusive": "00d637a3",
+        "size": 36,
+        "live_sha256": "1918c9fef44618e49cfcfd400ea8c57b49f72404c2cdcb627a8467c642449643",
+        "pe_sha256": "1918c9fef44618e49cfcfd400ea8c57b49f72404c2cdcb627a8467c642449643",
+        "match": true
+      },
+      "data_window_caution": "Only first two words are asserted to be deletion slots; the 36-byte matched window can include following literal data.",
+      "remaining": "Concrete current-profile provider, payload field ownership, any nested zero-reference profiles, allocation/free pairing and parser-result handoff including failure/unwind.",
+      "normal_handoff": "Wrapper+08 gets local mesh, +0C gets prefix DWORD. InterlockedIncrement(mesh+04), then release local mesh through InterlockedDecrement and current slot0 at zero; item base count remains initial1 in this wrapper."
+    },
+    {
+      "label": "Camera",
+      "parser_entry": "00b8b240",
+      "allocation_bytes": 24,
+      "construction_installed_profile": "00d632dc",
+      "slot00": "00bd30e0",
+      "slot04": "00b8b2c0",
+      "parser_span": {
+        "start": "00b8b240",
+        "end_inclusive": "00b8b2b9",
+        "size": 122,
+        "live_sha256": "51f64a4ee3e4dd568ca515c91b54dda166ae969dd4dc75214b1e8dff6bbcc1bd",
+        "pe_sha256": "51f64a4ee3e4dd568ca515c91b54dda166ae969dd4dc75214b1e8dff6bbcc1bd",
+        "match": true,
+        "coverage": "partial: allocation, initial profile, receiver/return and local reference transfers only; delegated payload functions and complete exceptional lifetime not audited",
+        "original_abi": "Incoming parserECX unused; stack node-handle pointer; EAX item; RET4.",
+        "evidence": "local/resource-item-frontier-bf/00b8b240-decoded.txt"
+      },
+      "scalar_span": {
+        "start": "00b8b2c0",
+        "end_inclusive": "00b8b2dd",
+        "size": 30,
+        "live_sha256": "00e1f9f720845f49bec1af4556317d94eccd1bc36bd4f39856f127ddf648f3f3",
+        "pe_sha256": "00e1f9f720845f49bec1af4556317d94eccd1bc36bd4f39856f127ddf648f3f3",
+        "match": true,
+        "coverage": "complete outer scalar body; delegated field cleanup remains external",
+        "original_abi": "ECX original item; low byte of one stack flags DWORD; RET4; EAX original item even when freed; ESI saved/restored; no refcount decrement or null check.",
+        "evidence": "local/resource-item-frontier-bf/00b8b2c0-decoded.txt"
+      },
+      "field_cleanup_dependency": "00b8aa60",
+      "native_scalar_source": "No reconstruction entry or address-backed src/include implementation found in this checkout; typed payload providers do not satisfy native item ownership.",
+      "profile_data": {
+        "start": "00d632dc",
+        "end_inclusive": "00d632ff",
+        "size": 36,
+        "live_sha256": "5abc4c5f3a6eabef0980a4c22d5ddd6c0a283665ce555ee0c5be0cf03aaae684",
+        "pe_sha256": "5abc4c5f3a6eabef0980a4c22d5ddd6c0a283665ce555ee0c5be0cf03aaae684",
+        "match": true
+      },
+      "data_window_caution": "Only first two words are asserted to be deletion slots; the 36-byte matched window can include following literal data.",
+      "remaining": "Concrete current-profile provider, payload field ownership, any nested zero-reference profiles, allocation/free pairing and parser-result handoff including failure/unwind.",
+      "normal_handoff": "Fresh storage callsB868B0 directly or through the recorded constructor. The wrapper returns its captured pointer after delegated parse. Initial count/profile writes are proven; delegated mutations and nested ownership are not generalized."
+    },
+    {
+      "label": "GroupParams",
+      "parser_entry": "00b8eb50",
+      "allocation_bytes": 12,
+      "construction_installed_profile": "00d634b0",
+      "slot00": "00bd30e0",
+      "slot04": "00b8ebc0",
+      "parser_span": {
+        "start": "00b8eb50",
+        "end_inclusive": "00b8ebbd",
+        "size": 110,
+        "live_sha256": "87cd8f0e28d5224af3cf2b2c643a307a9f67881df0ed17c2eb3d92414bd21b73",
+        "pe_sha256": "87cd8f0e28d5224af3cf2b2c643a307a9f67881df0ed17c2eb3d92414bd21b73",
+        "match": true,
+        "coverage": "partial: allocation, initial profile, receiver/return and local reference transfers only; delegated payload functions and complete exceptional lifetime not audited",
+        "original_abi": "Incoming parserECX unused; stack node-handle pointer; EAX item; RET4.",
+        "evidence": "local/resource-item-frontier-bf/00b8eb50-decoded.txt"
+      },
+      "scalar_span": {
+        "start": "00b8ebc0",
+        "end_inclusive": "00b8ebdd",
+        "size": 30,
+        "live_sha256": "668aab6ad1cf2551603badcb79d4bca3edaa5ee2ce2f6bbfce2be540464ba8d5",
+        "pe_sha256": "668aab6ad1cf2551603badcb79d4bca3edaa5ee2ce2f6bbfce2be540464ba8d5",
+        "match": true,
+        "coverage": "complete outer scalar body; delegated field cleanup remains external",
+        "original_abi": "ECX original item; low byte of one stack flags DWORD; RET4; EAX original item even when freed; ESI saved/restored; no refcount decrement or null check.",
+        "evidence": "local/resource-item-frontier-bf/00b8ebc0-decoded.txt"
+      },
+      "field_cleanup_dependency": "00b86890",
+      "native_scalar_source": "No reconstruction entry or address-backed src/include implementation found in this checkout; typed payload providers do not satisfy native item ownership.",
+      "profile_data": {
+        "start": "00d634b0",
+        "end_inclusive": "00d634d3",
+        "size": 36,
+        "live_sha256": "b7fe3c332a6fd9ed4b20b10646cb61ce5795c0cc6a1d81f95bb9cd11cc05fe83",
+        "pe_sha256": "b7fe3c332a6fd9ed4b20b10646cb61ce5795c0cc6a1d81f95bb9cd11cc05fe83",
+        "match": true
+      },
+      "data_window_caution": "Only first two words are asserted to be deletion slots; the 36-byte matched window can include following literal data.",
+      "remaining": "Concrete current-profile provider, payload field ownership, any nested zero-reference profiles, allocation/free pairing and parser-result handoff including failure/unwind.",
+      "scalar_observation": "Scalar callsB86890 and conditionally frees outer12 bytes; no field+08 release occurs in this body. This does not establish the parse slot20 implementation."
+    },
+    {
+      "label": "AnimationChannels",
+      "parser_entry": "00b8a910",
+      "allocation_bytes": 20,
+      "construction_installed_profile": "00d6328c",
+      "slot00": "00bd30e0",
+      "slot04": "00b8a760",
+      "parser_span": {
+        "start": "00b8a910",
+        "end_inclusive": "00b8a986",
+        "size": 119,
+        "live_sha256": "33ba396b9697eb6c9be501bf33ac93c802d5c5e21b874401a7ed774c62d9d2e1",
+        "pe_sha256": "33ba396b9697eb6c9be501bf33ac93c802d5c5e21b874401a7ed774c62d9d2e1",
+        "match": true,
+        "coverage": "partial: allocation, initial profile, receiver/return and local reference transfers only; delegated payload functions and complete exceptional lifetime not audited",
+        "original_abi": "Incoming parserECX unused; stack node-handle pointer; EAX item; RET4.",
+        "evidence": "local/resource-item-frontier-bf/00b8a910-decoded.txt"
+      },
+      "scalar_span": {
+        "start": "00b8a760",
+        "end_inclusive": "00b8a77d",
+        "size": 30,
+        "live_sha256": "4e97858b8789a8b17fdfbd581c9d784f6e0b6c5879896f557e0b2f1ee97dc099",
+        "pe_sha256": "4e97858b8789a8b17fdfbd581c9d784f6e0b6c5879896f557e0b2f1ee97dc099",
+        "match": true,
+        "coverage": "complete outer scalar body; delegated field cleanup remains external",
+        "original_abi": "ECX original item; low byte of one stack flags DWORD; RET4; EAX original item even when freed; ESI saved/restored; no refcount decrement or null check.",
+        "evidence": "local/resource-item-frontier-bf/00b8a760-decoded.txt"
+      },
+      "field_cleanup_dependency": "00b8a680",
+      "native_scalar_source": "No reconstruction entry or address-backed src/include implementation found in this checkout; typed payload providers do not satisfy native item ownership.",
+      "profile_data": {
+        "start": "00d6328c",
+        "end_inclusive": "00d632af",
+        "size": 36,
+        "live_sha256": "0e5b6e11d005a2eecf25baeda574dfa9b648b589e2ecaa82757914e2774d2fd7",
+        "pe_sha256": "0e5b6e11d005a2eecf25baeda574dfa9b648b589e2ecaa82757914e2774d2fd7",
+        "match": true
+      },
+      "data_window_caution": "Only first two words are asserted to be deletion slots; the 36-byte matched window can include following literal data.",
+      "remaining": "Concrete current-profile provider, payload field ownership, any nested zero-reference profiles, allocation/free pairing and parser-result handoff including failure/unwind.",
+      "normal_handoff": "Fresh storage callsB868B0 directly or through the recorded constructor. The wrapper returns its captured pointer after delegated parse. Initial count/profile writes are proven; delegated mutations and nested ownership are not generalized."
+    },
+    {
+      "label": "Bone",
+      "parser_entry": "00b8a990",
+      "allocation_bytes": 44,
+      "construction_installed_profile": "00d632b8",
+      "slot00": "00bd30e0",
+      "slot04": "00b8af10",
+      "parser_span": {
+        "start": "00b8a990",
+        "end_inclusive": "00b8aa0b",
+        "size": 124,
+        "live_sha256": "322185bc8880f9d702ed60ec423f28dafd3738a71a603de2a386a6d5b9ff8462",
+        "pe_sha256": "322185bc8880f9d702ed60ec423f28dafd3738a71a603de2a386a6d5b9ff8462",
+        "match": true,
+        "coverage": "partial: allocation, initial profile, receiver/return and local reference transfers only; delegated payload functions and complete exceptional lifetime not audited",
+        "original_abi": "Incoming parserECX unused; stack node-handle pointer; EAX item; RET4.",
+        "evidence": "local/resource-item-frontier-bf/00b8a990-decoded.txt"
+      },
+      "scalar_span": {
+        "start": "00b8af10",
+        "end_inclusive": "00b8af2d",
+        "size": 30,
+        "live_sha256": "828b09835da557b5a9ed96fae6afb216d8a3b0f599f6b5cf6c2c2c05951ed507",
+        "pe_sha256": "828b09835da557b5a9ed96fae6afb216d8a3b0f599f6b5cf6c2c2c05951ed507",
+        "match": true,
+        "coverage": "complete outer scalar body; delegated field cleanup remains external",
+        "original_abi": "ECX original item; low byte of one stack flags DWORD; RET4; EAX original item even when freed; ESI saved/restored; no refcount decrement or null check.",
+        "evidence": "local/resource-item-frontier-bf/00b8af10-decoded.txt"
+      },
+      "field_cleanup_dependency": "00b8a8a0",
+      "native_scalar_source": "No reconstruction entry or address-backed src/include implementation found in this checkout; typed payload providers do not satisfy native item ownership.",
+      "profile_data": {
+        "start": "00d632b8",
+        "end_inclusive": "00d632db",
+        "size": 36,
+        "live_sha256": "6b8a357d573195a33d0dfaccd6893a0be0eb51f374e87c060ce45c3374adf9d8",
+        "pe_sha256": "6b8a357d573195a33d0dfaccd6893a0be0eb51f374e87c060ce45c3374adf9d8",
+        "match": true
+      },
+      "data_window_caution": "Only first two words are asserted to be deletion slots; the 36-byte matched window can include following literal data.",
+      "remaining": "Concrete current-profile provider, payload field ownership, any nested zero-reference profiles, allocation/free pairing and parser-result handoff including failure/unwind.",
+      "normal_handoff": "Fresh storage callsB868B0 directly or through the recorded constructor. The wrapper returns its captured pointer after delegated parse. Initial count/profile writes are proven; delegated mutations and nested ownership are not generalized."
+    },
+    {
+      "label": "Aux",
+      "parser_entry": "0071b5c0",
+      "allocation_bytes": 84,
+      "construction_installed_profile": "00cfd8fc",
+      "slot00": "00bd30e0",
+      "slot04": "0071acb0",
+      "parser_span": {
+        "start": "0071b5c0",
+        "end_inclusive": "0071b61f",
+        "size": 96,
+        "live_sha256": "120533ad2177ac7525cb894d4d31f2254331bb92ac15c0f0c7ec9f0e376f5d17",
+        "pe_sha256": "120533ad2177ac7525cb894d4d31f2254331bb92ac15c0f0c7ec9f0e376f5d17",
+        "match": true,
+        "coverage": "partial: allocation, initial profile, receiver/return and local reference transfers only; delegated payload functions and complete exceptional lifetime not audited",
+        "original_abi": "Incoming parserECX unused; stack node-handle pointer; EAX item; RET4.",
+        "evidence": "local/resource-item-frontier-bf/0071b5c0-decoded.txt"
+      },
+      "scalar_span": {
+        "start": "0071acb0",
+        "end_inclusive": "0071accd",
+        "size": 30,
+        "live_sha256": "2ea54d5966876e5a44f14cacf761efc1220817e4ecb95d5142341e49d361071f",
+        "pe_sha256": "2ea54d5966876e5a44f14cacf761efc1220817e4ecb95d5142341e49d361071f",
+        "match": true,
+        "coverage": "complete outer scalar body; delegated field cleanup remains external",
+        "original_abi": "ECX original item; low byte of one stack flags DWORD; RET4; EAX original item even when freed; ESI saved/restored; no refcount decrement or null check.",
+        "evidence": "local/resource-item-frontier-bf/0071acb0-decoded.txt"
+      },
+      "field_cleanup_dependency": "0071ac40",
+      "native_scalar_source": "No reconstruction entry or address-backed src/include implementation found in this checkout; typed payload providers do not satisfy native item ownership.",
+      "profile_data": {
+        "start": "00cfd8fc",
+        "end_inclusive": "00cfd91f",
+        "size": 36,
+        "live_sha256": "95eea85d4455f9d1e4fc10d5b885572b18866e5899f11a92710aa1bc117ce56a",
+        "pe_sha256": "95eea85d4455f9d1e4fc10d5b885572b18866e5899f11a92710aa1bc117ce56a",
+        "match": true
+      },
+      "data_window_caution": "Only first two words are asserted to be deletion slots; the 36-byte matched window can include following literal data.",
+      "remaining": "Concrete current-profile provider, payload field ownership, any nested zero-reference profiles, allocation/free pairing and parser-result handoff including failure/unwind.",
+      "normal_handoff": "Fresh storage callsB868B0 directly or through the recorded constructor. The wrapper returns its captured pointer after delegated parse. Initial count/profile writes are proven; delegated mutations and nested ownership are not generalized."
+    },
+    {
+      "label": "ZoneDesc",
+      "parser_entry": "00719240",
+      "allocation_bytes": 64,
+      "construction_installed_profile": "00cfd888",
+      "slot00": "00bd30e0",
+      "slot04": "00718790",
+      "parser_span": {
+        "start": "00719240",
+        "end_inclusive": "007192bd",
+        "size": 126,
+        "live_sha256": "4f2699377c8a705cb9eeb2c442ad0bdcf2cf95cdd671d5ccdd0c3d1e98b6bace",
+        "pe_sha256": "4f2699377c8a705cb9eeb2c442ad0bdcf2cf95cdd671d5ccdd0c3d1e98b6bace",
+        "match": true,
+        "coverage": "partial: allocation, initial profile, receiver/return and local reference transfers only; delegated payload functions and complete exceptional lifetime not audited",
+        "original_abi": "Incoming parserECX unused; stack node-handle pointer; EAX item; RET4.",
+        "evidence": "local/resource-item-frontier-bf/00719240-decoded.txt"
+      },
+      "scalar_span": {
+        "start": "00718790",
+        "end_inclusive": "007187d0",
+        "size": 65,
+        "live_sha256": "abc5d8e1f09bdf61b28238009e3ecda73af75726dace45d8b9cbd49e5b6f7089",
+        "pe_sha256": "abc5d8e1f09bdf61b28238009e3ecda73af75726dace45d8b9cbd49e5b6f7089",
+        "match": true,
+        "coverage": "complete outer scalar body; delegated field cleanup remains external",
+        "original_abi": "ECX original item; low byte of one stack flags DWORD; RET4; EAX original item even when freed; ESI saved/restored; no refcount decrement or null check.",
+        "evidence": "local/resource-item-frontier-bf/00718790-decoded.txt"
+      },
+      "field_cleanup_dependency": "inline SSO then00b86890",
+      "native_scalar_source": "No reconstruction entry or address-backed src/include implementation found in this checkout; typed payload providers do not satisfy native item ownership.",
+      "profile_data": {
+        "start": "00cfd888",
+        "end_inclusive": "00cfd8ab",
+        "size": 36,
+        "live_sha256": "96f8725b1a0890d7b605f7554f2685600c485d0ebf694e3fb46ee263129bc1cd",
+        "pe_sha256": "96f8725b1a0890d7b605f7554f2685600c485d0ebf694e3fb46ee263129bc1cd",
+        "match": true
+      },
+      "data_window_caution": "Only first two words are asserted to be deletion slots; the 36-byte matched window can include following literal data.",
+      "remaining": "Concrete current-profile provider, payload field ownership, any nested zero-reference profiles, allocation/free pairing and parser-result handoff including failure/unwind.",
+      "scalar_observation": "Native SSO scalar wrapper is fully decoded, including conditional heap free, reset to size0/capacity15/NUL, base destruction and optional object free; native SSO/library identity is not supplied by a std::string payload."
+    },
+    {
+      "label": "Note",
+      "parser_entry": "00719000",
+      "allocation_bytes": 40,
+      "construction_installed_profile": "00cfd860",
+      "slot00": "00bd30e0",
+      "slot04": "00718710",
+      "parser_span": {
+        "start": "00719000",
+        "end_inclusive": "0071907d",
+        "size": 126,
+        "live_sha256": "f06757cce2449c6f5543f0e13e2ba7cf574e7b5cd3a584fc0f4348c24d783d37",
+        "pe_sha256": "f06757cce2449c6f5543f0e13e2ba7cf574e7b5cd3a584fc0f4348c24d783d37",
+        "match": true,
+        "coverage": "partial: allocation, initial profile, receiver/return and local reference transfers only; delegated payload functions and complete exceptional lifetime not audited",
+        "original_abi": "Incoming parserECX unused; stack node-handle pointer; EAX item; RET4.",
+        "evidence": "local/resource-item-frontier-bf/00719000-decoded.txt"
+      },
+      "scalar_span": {
+        "start": "00718710",
+        "end_inclusive": "00718750",
+        "size": 65,
+        "live_sha256": "3332cab4ca9b82f12a63e9c4ef92bf18d5e54466a28dd9a16774ee96e94a48e1",
+        "pe_sha256": "3332cab4ca9b82f12a63e9c4ef92bf18d5e54466a28dd9a16774ee96e94a48e1",
+        "match": true,
+        "coverage": "complete outer scalar body; delegated field cleanup remains external",
+        "original_abi": "ECX original item; low byte of one stack flags DWORD; RET4; EAX original item even when freed; ESI saved/restored; no refcount decrement or null check.",
+        "evidence": "local/resource-item-frontier-bf/00718710-decoded.txt"
+      },
+      "field_cleanup_dependency": "inline SSO then00b86890",
+      "native_scalar_source": "No reconstruction entry or address-backed src/include implementation found in this checkout; typed payload providers do not satisfy native item ownership.",
+      "profile_data": {
+        "start": "00cfd860",
+        "end_inclusive": "00cfd883",
+        "size": 36,
+        "live_sha256": "2db56ae612f1877bab2e03be5e6f46a63db3ade8d7fdfc129fa9e4da48e11447",
+        "pe_sha256": "2db56ae612f1877bab2e03be5e6f46a63db3ade8d7fdfc129fa9e4da48e11447",
+        "match": true
+      },
+      "data_window_caution": "Only first two words are asserted to be deletion slots; the 36-byte matched window can include following literal data.",
+      "remaining": "Concrete current-profile provider, payload field ownership, any nested zero-reference profiles, allocation/free pairing and parser-result handoff including failure/unwind.",
+      "scalar_observation": "Native SSO scalar wrapper is fully decoded, including conditional heap free, reset to size0/capacity15/NUL, base destruction and optional object free; native SSO/library identity is not supplied by a std::string payload."
+    },
+    {
+      "label": "GeomMesh",
+      "parser_entry": "00727a90",
+      "allocation_bytes": 80,
+      "construction_installed_profile": "00cfdbd8",
+      "slot00": "00bd30e0",
+      "slot04": "007269e0",
+      "parser_span": {
+        "start": "00727a90",
+        "end_inclusive": "00727aef",
+        "size": 96,
+        "live_sha256": "4637ff45283c195a0977a56da8b3ffabac9d8436a1fb9965f7eb627aeb149629",
+        "pe_sha256": "4637ff45283c195a0977a56da8b3ffabac9d8436a1fb9965f7eb627aeb149629",
+        "match": true,
+        "coverage": "partial: allocation, initial profile, receiver/return and local reference transfers only; delegated payload functions and complete exceptional lifetime not audited",
+        "original_abi": "Incoming parserECX unused; stack node-handle pointer; EAX item; RET4.",
+        "evidence": "local/resource-item-frontier-bf/00727a90-decoded.txt"
+      },
+      "scalar_span": {
+        "start": "007269e0",
+        "end_inclusive": "007269fd",
+        "size": 30,
+        "live_sha256": "bc185c7d6d1305474f547f791c97c0ed7d09489aea765c2d6e0dcbbbaead9259",
+        "pe_sha256": "bc185c7d6d1305474f547f791c97c0ed7d09489aea765c2d6e0dcbbbaead9259",
+        "match": true,
+        "coverage": "complete outer scalar body; delegated field cleanup remains external",
+        "original_abi": "ECX original item; low byte of one stack flags DWORD; RET4; EAX original item even when freed; ESI saved/restored; no refcount decrement or null check.",
+        "evidence": "local/resource-item-frontier-bf/007269e0-decoded.txt"
+      },
+      "field_cleanup_dependency": "00726960",
+      "native_scalar_source": "No reconstruction entry or address-backed src/include implementation found in this checkout; typed payload providers do not satisfy native item ownership.",
+      "profile_data": {
+        "start": "00cfdbd8",
+        "end_inclusive": "00cfdbfb",
+        "size": 36,
+        "live_sha256": "9430cc9ad9d63a24a4493d34f3801e605f531134a45728a7fb4a87aa6796dc73",
+        "pe_sha256": "9430cc9ad9d63a24a4493d34f3801e605f531134a45728a7fb4a87aa6796dc73",
+        "match": true
+      },
+      "data_window_caution": "Only first two words are asserted to be deletion slots; the 36-byte matched window can include following literal data.",
+      "remaining": "Concrete current-profile provider, payload field ownership, any nested zero-reference profiles, allocation/free pairing and parser-result handoff including failure/unwind.",
+      "normal_handoff": "Fresh storage callsB868B0 directly or through the recorded constructor. The wrapper returns its captured pointer after delegated parse. Initial count/profile writes are proven; delegated mutations and nested ownership are not generalized."
+    },
+    {
+      "label": "ConvexObject",
+      "parser_entry": "006faf00",
+      "allocation_bytes": 44,
+      "construction_installed_profile": "00cfb6a4",
+      "slot00": "00bd30e0",
+      "slot04": "006f9dd0",
+      "parser_span": {
+        "start": "006faf00",
+        "end_inclusive": "006faf5f",
+        "size": 96,
+        "live_sha256": "455054360c9352408ebe7cda02ba4edc5851068c9c2b4ec88c0f96e08aaf6253",
+        "pe_sha256": "455054360c9352408ebe7cda02ba4edc5851068c9c2b4ec88c0f96e08aaf6253",
+        "match": true,
+        "coverage": "partial: allocation, initial profile, receiver/return and local reference transfers only; delegated payload functions and complete exceptional lifetime not audited",
+        "original_abi": "Incoming parserECX unused; stack node-handle pointer; EAX item; RET4.",
+        "evidence": "local/resource-item-frontier-bf/006faf00-decoded.txt"
+      },
+      "scalar_span": {
+        "start": "006f9dd0",
+        "end_inclusive": "006f9ded",
+        "size": 30,
+        "live_sha256": "56ca6b2adef64cfcb49e23d2806fe970da364e596af1e36949e9dde896d7e9c5",
+        "pe_sha256": "56ca6b2adef64cfcb49e23d2806fe970da364e596af1e36949e9dde896d7e9c5",
+        "match": true,
+        "coverage": "complete outer scalar body; delegated field cleanup remains external",
+        "original_abi": "ECX original item; low byte of one stack flags DWORD; RET4; EAX original item even when freed; ESI saved/restored; no refcount decrement or null check.",
+        "evidence": "local/resource-item-frontier-bf/006f9dd0-decoded.txt"
+      },
+      "field_cleanup_dependency": "006f9d70",
+      "native_scalar_source": "No reconstruction entry or address-backed src/include implementation found in this checkout; typed payload providers do not satisfy native item ownership.",
+      "profile_data": {
+        "start": "00cfb6a4",
+        "end_inclusive": "00cfb6c7",
+        "size": 36,
+        "live_sha256": "70629ff299a5426fe35740708e09541d6bd3e4416fe6f0319b703335681ea7de",
+        "pe_sha256": "70629ff299a5426fe35740708e09541d6bd3e4416fe6f0319b703335681ea7de",
+        "match": true
+      },
+      "data_window_caution": "Only first two words are asserted to be deletion slots; the 36-byte matched window can include following literal data.",
+      "remaining": "Concrete current-profile provider, payload field ownership, any nested zero-reference profiles, allocation/free pairing and parser-result handoff including failure/unwind.",
+      "normal_handoff": "Fresh storage callsB868B0 directly or through the recorded constructor. The wrapper returns its captured pointer after delegated parse. Initial count/profile writes are proven; delegated mutations and nested ownership are not generalized."
+    }
+  ],
+  "supporting_spans": [
+    {
+      "start": "00b7e970",
+      "end_inclusive": "00b7eadd",
+      "size": 366,
+      "live_sha256": "58afa219ee9071f633dc27b22438c1a53466966277f62731ef96d14f94b216eb",
+      "pe_sha256": "58afa219ee9071f633dc27b22438c1a53466966277f62731ef96d14f94b216eb",
+      "match": true,
+      "coverage": "partial: ownership transfer/incoming route only; full native bytes matched",
+      "original_abi": "Original ECX/stack and return behavior recorded in decoded evidence",
+      "evidence": "local/resource-item-frontier-bf/00b7e970-decoded.txt"
+    },
+    {
+      "start": "00b88430",
+      "end_inclusive": "00b886ab",
+      "size": 636,
+      "live_sha256": "8cc36729f1cf5c5d0c7aa421a2833e5ff2589e55a9d5ad1d32c5f544e9d52158",
+      "pe_sha256": "8cc36729f1cf5c5d0c7aa421a2833e5ff2589e55a9d5ad1d32c5f544e9d52158",
+      "match": true,
+      "coverage": "partial: ownership transfer/incoming route only; full native bytes matched",
+      "original_abi": "Original ECX/stack and return behavior recorded in decoded evidence",
+      "evidence": "local/resource-item-frontier-bf/00b88430-decoded.txt"
+    },
+    {
+      "start": "00b87aa0",
+      "end_inclusive": "00b87ada",
+      "size": 59,
+      "live_sha256": "06a57c4008e675f655884ebe8f67db6cfa6583df06c8f8a4e34b3831e008b4ce",
+      "pe_sha256": "06a57c4008e675f655884ebe8f67db6cfa6583df06c8f8a4e34b3831e008b4ce",
+      "match": true,
+      "coverage": "partial: ownership transfer/incoming route only; full native bytes matched",
+      "original_abi": "Original ECX/stack and return behavior recorded in decoded evidence",
+      "evidence": "local/resource-item-frontier-bf/00b87aa0-decoded.txt"
+    },
+    {
+      "start": "0071bb40",
+      "end_inclusive": "0071bbf2",
+      "size": 179,
+      "live_sha256": "640802636e9915ff2aea9a92853a6059f1fd047c9a5340c9ca47455ca7d76a70",
+      "pe_sha256": "640802636e9915ff2aea9a92853a6059f1fd047c9a5340c9ca47455ca7d76a70",
+      "match": true,
+      "coverage": "partial: ownership transfer/incoming route only; full native bytes matched",
+      "original_abi": "Original ECX/stack and return behavior recorded in decoded evidence",
+      "evidence": "local/resource-item-frontier-bf/0071bb40-decoded.txt"
+    },
+    {
+      "start": "00718810",
+      "end_inclusive": "0071886f",
+      "size": 96,
+      "live_sha256": "e1491471b9009f7c578c522b2ae0bf4f7b70c64d17a14cd0b65cf15fd5d21fb7",
+      "pe_sha256": "e1491471b9009f7c578c522b2ae0bf4f7b70c64d17a14cd0b65cf15fd5d21fb7",
+      "match": true,
+      "coverage": "partial: ownership transfer/incoming route only; full native bytes matched",
+      "original_abi": "Original ECX/stack and return behavior recorded in decoded evidence",
+      "evidence": "local/resource-item-frontier-bf/00718810-decoded.txt"
+    },
+    {
+      "start": "00b88760",
+      "end_inclusive": "00b8877d",
+      "size": 30,
+      "live_sha256": "c25d8a744ca68f28cf800baf752ea1a1caf95eaae3671cc8829f266528948c3e",
+      "pe_sha256": "c25d8a744ca68f28cf800baf752ea1a1caf95eaae3671cc8829f266528948c3e",
+      "match": true,
+      "coverage": "partial: ownership transfer/incoming route only; full native bytes matched",
+      "original_abi": "Original ECX/stack and return behavior recorded in decoded evidence",
+      "evidence": "local/resource-item-frontier-bf/00b88760-decoded.txt"
+    },
+    {
+      "start": "00c84f70",
+      "end_inclusive": "00c84f77",
+      "size": 8,
+      "live_sha256": "d61c8dc48104a821b49ced78975dd54b076bc43077a01066551988bd32d5067a",
+      "pe_sha256": "d61c8dc48104a821b49ced78975dd54b076bc43077a01066551988bd32d5067a",
+      "match": true,
+      "coverage": "partial: ownership transfer/incoming route only; full native bytes matched",
+      "original_abi": "Original ECX/stack and return behavior recorded in decoded evidence",
+      "evidence": "local/resource-item-frontier-bf/00c84f70-decoded.txt"
+    }
+  ],
+  "data_spans": [
+    {
+      "start": "00d631c0",
+      "end_inclusive": "00d631e3",
+      "size": 36,
+      "live_sha256": "361789f21a0e667e59eb470fd110c215e98b53bb2700fbf8606238c4fb4f57c3",
+      "pe_sha256": "361789f21a0e667e59eb470fd110c215e98b53bb2700fbf8606238c4fb4f57c3",
+      "match": true
+    },
+    {
+      "start": "00d631a0",
+      "end_inclusive": "00d631bf",
+      "size": 32,
+      "live_sha256": "37b621c58ecb447371c0ef23a83835759f5f9c02920299fcb15108456cc848c4",
+      "pe_sha256": "37b621c58ecb447371c0ef23a83835759f5f9c02920299fcb15108456cc848c4",
+      "match": true
+    },
+    {
+      "start": "00d5c104",
+      "end_inclusive": "00d5c10b",
+      "size": 8,
+      "live_sha256": "ba0627b9b86e3b10d35e621b4f76fea08a54d4a6113f710c3621818d84e01404",
+      "pe_sha256": "ba0627b9b86e3b10d35e621b4f76fea08a54d4a6113f710c3621818d84e01404",
+      "match": true
+    },
+    {
+      "start": "00dfb124",
+      "end_inclusive": "00dfb133",
+      "size": 16,
+      "live_sha256": "a0b8d257264aec3e2b32fdb444363977f2cfb6e4f6af8be5baee907dbb56e19e",
+      "pe_sha256": "a0b8d257264aec3e2b32fdb444363977f2cfb6e4f6af8be5baee907dbb56e19e",
+      "match": true
+    },
+    {
+      "start": "00dfb134",
+      "end_inclusive": "00dfb157",
+      "size": 36,
+      "live_sha256": "0c3a3964f075e24d08e493e647de11d8817b078a348d6395bf38a05be0338aee",
+      "pe_sha256": "0c3a3964f075e24d08e493e647de11d8817b078a348d6395bf38a05be0338aee",
+      "match": true
+    },
+    {
+      "start": "00dfba24",
+      "end_inclusive": "00dfba67",
+      "size": 68,
+      "live_sha256": "efd46fcd39096c53bcab94e433f3db100d816f827915e5760d4c1a863099395a",
+      "pe_sha256": "efd46fcd39096c53bcab94e433f3db100d816f827915e5760d4c1a863099395a",
+      "match": true
+    },
+    {
+      "start": "00dfba64",
+      "end_inclusive": "00dfba87",
+      "size": 36,
+      "live_sha256": "b72226bc4af260ebfc70579dbc7a0321726b1e8f6f585b03afcb60c861dd03b6",
+      "pe_sha256": "b72226bc4af260ebfc70579dbc7a0321726b1e8f6f585b03afcb60c861dd03b6",
+      "match": true
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "00b86860",
+      "end_inclusive": "00b86865",
+      "size": 6,
+      "live_sha256": "096ba7e04cee6fea0dd2a6509a73fd3af2ff112b4eee481ce57491f92300bd22",
+      "pe_sha256": "096ba7e04cee6fea0dd2a6509a73fd3af2ff112b4eee481ce57491f92300bd22",
+      "match": true,
+      "coverage": "complete matched raw span; no Ghidra function defined",
+      "original_abi": "See decoded instructions; definition/annotation left to integrator",
+      "evidence": "local/resource-item-frontier-bf/00b86860-decoded.txt",
+      "no_ghidra_function": true
+    },
+    {
+      "start": "00b86950",
+      "end_inclusive": "00b86977",
+      "size": 40,
+      "live_sha256": "53a23911faa23c10d5a30ddf2522f726c92a3075d01f2c0c90c5e89eb029b8e7",
+      "pe_sha256": "53a23911faa23c10d5a30ddf2522f726c92a3075d01f2c0c90c5e89eb029b8e7",
+      "match": true,
+      "coverage": "complete matched raw span; no Ghidra function defined",
+      "original_abi": "See decoded instructions; definition/annotation left to integrator",
+      "evidence": "local/resource-item-frontier-bf/00b86950-decoded.txt",
+      "no_ghidra_function": true
+    },
+    {
+      "start": "006f9d20",
+      "end_inclusive": "006f9d24",
+      "size": 5,
+      "live_sha256": "3df6af1ec778d46a61b8d7160523ba89fe1af814222acb1175be5a7b1748e06b",
+      "pe_sha256": "3df6af1ec778d46a61b8d7160523ba89fe1af814222acb1175be5a7b1748e06b",
+      "match": true,
+      "coverage": "complete matched raw span; no Ghidra function defined",
+      "original_abi": "See decoded instructions; definition/annotation left to integrator",
+      "evidence": "local/resource-item-frontier-bf/006f9d20-decoded.txt",
+      "no_ghidra_function": true
+    },
+    {
+      "start": "00b86870",
+      "end_inclusive": "00b86875",
+      "size": 6,
+      "live_sha256": "ff506516a322aa511b89a8e37a0600eed552bf3246ff4273a9fbadb688d63c4f",
+      "pe_sha256": "ff506516a322aa511b89a8e37a0600eed552bf3246ff4273a9fbadb688d63c4f",
+      "match": true,
+      "coverage": "complete matched raw span; no Ghidra function defined",
+      "original_abi": "See decoded instructions; definition/annotation left to integrator",
+      "evidence": "local/resource-item-frontier-bf/00b86870-decoded.txt",
+      "no_ghidra_function": true
+    },
+    {
+      "start": "00b86880",
+      "end_inclusive": "00b86882",
+      "size": 3,
+      "live_sha256": "3ad36c6eeda528589a7a06f48684d3318576059d93d51f445ab60d280620edc7",
+      "pe_sha256": "3ad36c6eeda528589a7a06f48684d3318576059d93d51f445ab60d280620edc7",
+      "match": true,
+      "coverage": "complete matched raw span; no Ghidra function defined",
+      "original_abi": "See decoded instructions; definition/annotation left to integrator",
+      "evidence": "local/resource-item-frontier-bf/00b86880-decoded.txt",
+      "no_ghidra_function": true
+    },
+    {
+      "start": "006f9d30",
+      "end_inclusive": "006f9d32",
+      "size": 3,
+      "live_sha256": "4bc724f3b1d0caf4fe369c18cba3102e6c4ea057f63fe1587e3973134a7f755e",
+      "pe_sha256": "4bc724f3b1d0caf4fe369c18cba3102e6c4ea057f63fe1587e3973134a7f755e",
+      "match": true,
+      "coverage": "complete matched raw span; no Ghidra function defined",
+      "original_abi": "See decoded instructions; definition/annotation left to integrator",
+      "evidence": "local/resource-item-frontier-bf/006f9d30-decoded.txt",
+      "no_ghidra_function": true
+    },
+    {
+      "start": "00b868a0",
+      "end_inclusive": "00b868a2",
+      "size": 3,
+      "live_sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+      "pe_sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+      "match": true,
+      "coverage": "complete matched raw span; no Ghidra function defined",
+      "original_abi": "See decoded instructions; definition/annotation left to integrator",
+      "evidence": "local/resource-item-frontier-bf/00b868a0-decoded.txt",
+      "no_ghidra_function": true
+    },
+    {
+      "start": "00cd82c0",
+      "end_inclusive": "00cd82c9",
+      "size": 10,
+      "live_sha256": "6284e94b5f4795635e0b946e9af5919309f9d54f0986121b0354577f890ed5e3",
+      "pe_sha256": "6284e94b5f4795635e0b946e9af5919309f9d54f0986121b0354577f890ed5e3",
+      "match": true,
+      "coverage": "complete matched raw span; no Ghidra function defined",
+      "original_abi": "See decoded instructions; definition/annotation left to integrator",
+      "evidence": "local/resource-item-frontier-bf/00cd82c0-decoded.txt",
+      "no_ghidra_function": true
+    },
+    {
+      "start": "00cc1fe3",
+      "end_inclusive": "00cc1fec",
+      "size": 10,
+      "live_sha256": "03a94fa595f6dff8b3f3400877af4d1f9a875821c9619084211d88aba0c9f06d",
+      "pe_sha256": "03a94fa595f6dff8b3f3400877af4d1f9a875821c9619084211d88aba0c9f06d",
+      "match": true,
+      "coverage": "complete matched raw span; no Ghidra function defined",
+      "original_abi": "See decoded instructions; definition/annotation left to integrator",
+      "evidence": "local/resource-item-frontier-bf/00cc1fe3-decoded.txt",
+      "no_ghidra_function": true
+    },
+    {
+      "start": "00cc25f9",
+      "end_inclusive": "00cc2602",
+      "size": 10,
+      "live_sha256": "4b7d8f5146fda97bbe416334f3510db011cebea67f56f4aae0f5f1971b533401",
+      "pe_sha256": "4b7d8f5146fda97bbe416334f3510db011cebea67f56f4aae0f5f1971b533401",
+      "match": true,
+      "coverage": "complete matched raw span; no Ghidra function defined",
+      "original_abi": "See decoded instructions; definition/annotation left to integrator",
+      "evidence": "local/resource-item-frontier-bf/00cc25f9-decoded.txt",
+      "no_ghidra_function": true
+    }
+  ],
+  "missing_ghidra_tails": [
+    {
+      "function": "00b93b60",
+      "start": "00b93b75",
+      "end_inclusive": "00b93b77",
+      "bytes": "83c404",
+      "instruction": "add esp, 4",
+      "no_ghidra_function": true,
+      "reason": "Returning-free fallthrough instruction absent from stored function body/listing; containing native function is recorded separately. No repair applied."
+    },
+    {
+      "function": "00b92fa0",
+      "start": "00b92fb5",
+      "end_inclusive": "00b92fb7",
+      "bytes": "83c404",
+      "instruction": "add esp, 4",
+      "no_ghidra_function": true,
+      "reason": "Returning-free fallthrough instruction absent from stored function body/listing; containing native function is recorded separately. No repair applied."
+    },
+    {
+      "function": "00b93b80",
+      "start": "00b93b95",
+      "end_inclusive": "00b93b97",
+      "bytes": "83c404",
+      "instruction": "add esp, 4",
+      "no_ghidra_function": true,
+      "reason": "Returning-free fallthrough instruction absent from stored function body/listing; containing native function is recorded separately. No repair applied."
+    },
+    {
+      "function": "00b8b2c0",
+      "start": "00b8b2d5",
+      "end_inclusive": "00b8b2d7",
+      "bytes": "83c404",
+      "instruction": "add esp, 4",
+      "no_ghidra_function": true,
+      "reason": "Returning-free fallthrough instruction absent from stored function body/listing; containing native function is recorded separately. No repair applied."
+    },
+    {
+      "function": "00b8ebc0",
+      "start": "00b8ebd5",
+      "end_inclusive": "00b8ebd7",
+      "bytes": "83c404",
+      "instruction": "add esp, 4",
+      "no_ghidra_function": true,
+      "reason": "Returning-free fallthrough instruction absent from stored function body/listing; containing native function is recorded separately. No repair applied."
+    },
+    {
+      "function": "00b8a760",
+      "start": "00b8a775",
+      "end_inclusive": "00b8a777",
+      "bytes": "83c404",
+      "instruction": "add esp, 4",
+      "no_ghidra_function": true,
+      "reason": "Returning-free fallthrough instruction absent from stored function body/listing; containing native function is recorded separately. No repair applied."
+    },
+    {
+      "function": "00b8af10",
+      "start": "00b8af25",
+      "end_inclusive": "00b8af27",
+      "bytes": "83c404",
+      "instruction": "add esp, 4",
+      "no_ghidra_function": true,
+      "reason": "Returning-free fallthrough instruction absent from stored function body/listing; containing native function is recorded separately. No repair applied."
+    },
+    {
+      "function": "0071acb0",
+      "start": "0071acc5",
+      "end_inclusive": "0071acc7",
+      "bytes": "83c404",
+      "instruction": "add esp, 4",
+      "no_ghidra_function": true,
+      "reason": "Returning-free fallthrough instruction absent from stored function body/listing; containing native function is recorded separately. No repair applied."
+    },
+    {
+      "function": "00718790",
+      "start": "007187a2",
+      "end_inclusive": "007187a4",
+      "bytes": "83c404",
+      "instruction": "add esp, 4",
+      "no_ghidra_function": true,
+      "reason": "Returning-free fallthrough instruction absent from stored function body/listing; containing native function is recorded separately. No repair applied."
+    },
+    {
+      "function": "00718790",
+      "start": "007187c8",
+      "end_inclusive": "007187ca",
+      "bytes": "83c404",
+      "instruction": "add esp, 4",
+      "no_ghidra_function": true,
+      "reason": "Returning-free fallthrough instruction absent from stored function body/listing; containing native function is recorded separately. No repair applied."
+    },
+    {
+      "function": "007269e0",
+      "start": "007269f5",
+      "end_inclusive": "007269f7",
+      "bytes": "83c404",
+      "instruction": "add esp, 4",
+      "no_ghidra_function": true,
+      "reason": "Returning-free fallthrough instruction absent from stored function body/listing; containing native function is recorded separately. No repair applied."
+    },
+    {
+      "function": "006f9dd0",
+      "start": "006f9de5",
+      "end_inclusive": "006f9de7",
+      "bytes": "83c404",
+      "instruction": "add esp, 4",
+      "no_ghidra_function": true,
+      "reason": "Returning-free fallthrough instruction absent from stored function body/listing; containing native function is recorded separately. No repair applied."
+    },
+    {
+      "function": "00cc1fd8",
+      "start": "00cc1fe1",
+      "end_inclusive": "00cc1fe2",
+      "bytes": "59c3",
+      "instruction": "POP ECX; RET",
+      "no_ghidra_function": true,
+      "reason": "Function body ends atCC1FE0 free call; matched native allocation-cleanup continuation. No repair applied."
+    }
+  ],
+  "imports": [
+    {
+      "iat": "00ce221c",
+      "dll": "KERNEL32.dll",
+      "name": "InterlockedIncrement"
+    },
+    {
+      "iat": "00ce2220",
+      "dll": "KERNEL32.dll",
+      "name": "InterlockedDecrement"
+    }
+  ],
+  "ready_packet": {
+    "functions": [
+      "00b86930",
+      "00b86990"
+    ],
+    "original_bytes": 58,
+    "minimal_delete_only_bytes": 36,
+    "proposed_files": [
+      "include/bsp/native_resource_fallback_item.hpp",
+      "src/native_resource_fallback_item.cpp",
+      "docs/NATIVE_RESOURCE_FALLBACK_ITEM.md",
+      "reports/native_resource_fallback_item.json"
+    ],
+    "closed_callees": [
+      "BD30F0 concrete seven-byte source primitive",
+      "BD30E0 concrete source thunk composed with finite D631C0 NativeRefCountedDeleteCalls provider",
+      "BF65AC existing singleton_lifetime_free service; retain library identity",
+      "BF681B existing singleton_lifetime_allocate service when constructing via source allocation; use native_bytes=host_bytes=8 for raw prefix"
+    ],
+    "requirements": [
+      "Separate raw8-byte native storage from host virtual interfaces; no parallel count or invented payload.",
+      "Implement constructor exact ordered writes and EAX same-pointer return; no new state clear.",
+      "Implement full scalar including current stampD5C104 thenBD30F0, flagbit0-onlyfree, stale same-pointer return.",
+      "Provider must resolve exact captured currentD631C0 profile toB86990; unknown/other registered profiles are not silently handled.",
+      "No extra decrement, retain, null scalar shortcut, array/pool/cache teardown, or general resource owner.",
+      "36-byte scalar plus finite provider is sufficient for existing formed fallback objects; adding constructor closes formation as58-byte packet.",
+      "Recheck leases, strict Win32 build and existing relevant checks; source interface change is not native ABI/game proof."
+    ],
+    "not_required_for_delete_profile": [
+      "type-token virtual methods andCD82C0/B86A00 startup domain",
+      "B868B0/B86890 are not called by the fallback constructor/scalar",
+      "the13registered result profiles and their payload destructors",
+      "resource manager/cache, pointer-array siblings, hierarchy pool andB88430"
+    ]
+  },
+  "library_boundaries": [
+    "Reuse BF681B allocation and BF65AC free services. Do not reconstruct CRT allocator/exception/new-handler internals.",
+    "Native Note/ZoneDesc SSO is a separate library/layout contract; typed std::string is not evidence of binary compatibility.",
+    "No STL/Lua/zlib/CRT algorithm port, stubs or invented native globals/types."
+  ],
+  "limitations": [
+    "Static code/data comparison only; no source implementation, build, fixture, native ABI, runtime or game validation.",
+    "13 profiles correspond to eight manager/application and five game registrations observed in existing registration docs; registry openness and later/indirect registrations remain possible. Registration wrappers were not re-audited here.",
+    "Parser initial profiles/allocations and scalar entry points were freshly matched. Delegated payload functions may have further ownership and mutation paths; no blanket parser-result lifetime closure.",
+    "LeafB86950 and other raw method bodies are fully decoded but their domain meaning is provisional.",
+    "All Ghidra mutations and source packet integration are left to the primary integrator."
+  ],
+  "corrections": [
+    {
+      "was": "Fallback dependency treated as though sharedBD30E0 itself were unimplemented.",
+      "is": "BD30E0 already has concrete source; missing is finite D631C0 provider and B86990 scalar, with B86930 formation optional for deletion-only scope.",
+      "evidence": "src/native_ref_counted.cpp; current lookup evidence; matched native bodies."
+    },
+    {
+      "was": "Potential conflation of first DWORD of hierarchy records with primary item vtable.",
+      "is": "Primary items have vtable/refcount; hierarchy+0 is numeric parent in distinct84h payload/88h slot and never uses this profile.",
+      "evidence": "Current B88430 primary/hierarchy branch separation and sibling NATIVE_RESOURCE_HIERARCHY_FRONTIER_BE."
+    },
+    {
+      "was": "A generic returning-free gap assumption would also gateB86990 unnecessarily.",
+      "is": "Current live B86990 includes ADD ESP4 and complete return; 0 flow gaps. Other recorded scalars retain12 three-byte gaps.",
+      "evidence": "core-flow.txt and deletion_spans.json."
+    }
+  ],
+  "evidence_directory": "local/resource-item-frontier-bf",
+  "verification": {
+    "verify_report_calls": {
+      "direct_rows_checked": 100,
+      "failures": 0,
+      "indirect_rows_retained_not_checked": 20
+    },
+    "code_or_build_changes": false,
+    "ghidra_mutations": false,
+    "game_or_ui_actions": false
+  },
+  "local_manifest": {
+    "path": "local/resource-item-frontier-bf/whole-local-manifest.json",
+    "scope": "Every file under worktree local/, excluding only the manifest itself; includes source snapshots, code/data bytes, query outputs, scripts and SQLite index."
+  }
+}
