@@ -401,7 +401,7 @@
   },
   "worker_capture_no_ghidra_function": [],
   "final_merged_validation_av": {
-    "tested_commit": "27536bbbbc390367893844f114c5209c376042e9",
+    "tested_commit": "8d224ed49b2bf8ab78d31777cbc609b05e6454f0",
     "reviewed_source_commit": "f66b1f18ac44801765897540f916327935d84d64",
     "build": "Strict MSVC Win32 passed; local/av-final-combined-build.log",
     "existing_ctests_passed": 2,
@@ -423,7 +423,7 @@
       "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
     },
     "current_library_replays": {
-      "commit": "27536bbbbc390367893844f114c5209c376042e9",
+      "commit": "8d224ed49b2bf8ab78d31777cbc609b05e6454f0",
       "passed": true,
       "libraries": {
         "bsp_core.lib": "6796f4dff7b8ff67df1fbdd69770ed1a4042c091774f2cbca7784a0dcd75b54c",
@@ -478,7 +478,7 @@
           "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\av-current-command_actual.log",
           "log_sha256": "b01661d43b6c2798d01f7362da4cbf4f585b06106d77e8d39d6c10b06ede68d9",
           "executable": "C:\\Users\\sqz269\\bsp-av-command\\av_command_actual_probe.exe",
-          "executable_sha256": "37143d356d125d910385e299cab55a0a3bf8dbda905b9a6bf940206b7e89047d",
+          "executable_sha256": "c8f36585a35e5d570c1aad82e3b0aa6c43d7620eddd7bd9fe514175a76322b7f",
           "attempts": 1,
           "retry_policy": "none",
           "pass_lines": [
@@ -532,7 +532,7 @@
           "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\av-current-command_old.log",
           "log_sha256": "7d97a926615aed132657abd65a0bfe4829c6ce30f0b93493f49fd134cff544a4",
           "executable": "C:\\Users\\sqz269\\bsp-av-command\\av_command_old_probe.exe",
-          "executable_sha256": "dd5380a5fce1aa25b21ee8dc2b27fde45948b503f8f756353ed09be9e15073ea",
+          "executable_sha256": "d9bc0b29eab2d46847904bccdcf8250bd607edebbee838d20bb4efa05d9110b5",
           "attempts": 1,
           "retry_policy": "none",
           "pass_lines": [
@@ -581,7 +581,7 @@
           "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\av-current-camera.log",
           "log_sha256": "476c2cdc8e5242e688c491852c381e0a21c351de42c457f79ab00767c08e291e",
           "executable": "C:\\Users\\sqz269\\bsp-orch3-av\\camera\\av_camera_probe.exe",
-          "executable_sha256": "1af93bebb113ba6d5421e6616137a6bc263db2428737be2fb3d236b12a2c2359",
+          "executable_sha256": "057e229285a41048d02bbbbeaf9c4f1fd1f4b87dee70feec99094a2162bbb91a",
           "attempts": 1,
           "retry_policy": "none",
           "pass_lines": [
@@ -670,7 +670,7 @@
           "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\av-current-upload.log",
           "log_sha256": "ddc5908c43bad7cb011171fed3e6f61250a9d402ff363bb58849cd3768f8b37e",
           "executable": "C:\\Users\\sqz269\\bsp-orch3-av\\upload\\av_upload_probe.exe",
-          "executable_sha256": "2345eb26aeaa4f1b257fea390590b892939b22fdaab8e1a71f02232b891cfd4e",
+          "executable_sha256": "459caaa4d5f09197a865402c4e9775868e84bb8c2b016cef5c574a99a190c764",
           "attempts": 1,
           "retry_policy": "none",
           "pass_lines": [
@@ -720,10 +720,10 @@
             "/MAP:C:\\Users\\sqz269\\bsp-av-cache-clear\\resource_release/av_resource_probe.map"
           ],
           "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\av-current-resource.log",
-          "log_sha256": "951213a5a35a96312b0c229644090e2fd3956ba99e4bc32a3245f4d3c023b6f3",
+          "log_sha256": "e45eab31a60a64677eeaa7fea69e7349350be2a67981d65a9bfb25b6aa819ec2",
           "executable": "C:\\Users\\sqz269\\bsp-av-cache-clear\\resource_release\\av_resource_probe.exe",
-          "executable_sha256": "71cc69d85e6961c96822f3ae61cb206cd2c39f94585dfce78d6ce403524cfc53",
-          "attempts": 1,
+          "executable_sha256": "439ca6f45e73115d90246f471bd385fb23048bec830cfa85ea73473d2a070fac",
+          "attempts": 3,
           "retry_policy": "only pre-execution address-occupied exit77, up to8",
           "pass_lines": [
             "PASS B262C0 full-parent 4 comparisons 43840 bytes; ready0/1,20 textures,four stream0 calls,actual counts/current query rows/current texture+surface cursor ends,callback-free records,full B241C0,original FH3 throw99 cleanup. Exactly3 global DWORD relocations and1 EH-registration DWORD to jump-only host trampoline; concrete dependency bridges; no gameplay/ABI claim."
@@ -767,10 +767,10 @@
             "/MAP:C:\\Users\\sqz269\\bsp-av-cache-clear/av_cache_probe.map"
           ],
           "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\av-current-cache.log",
-          "log_sha256": "e84d1d78412392771171ba753f4318935dde5609c62d5582fb3d66e337498bd9",
+          "log_sha256": "5ca2c14d53ad8dcc13afd41d60b5b190512544b9a537be0ffb3730139ef7d650",
           "executable": "C:\\Users\\sqz269\\bsp-av-cache-clear\\av_cache_probe.exe",
-          "executable_sha256": "d99bcf00965c1a205abebc049ec07d05be061d8efe10af5c5d26d8b03265def5",
-          "attempts": 5,
+          "executable_sha256": "0460e356cc94d7f59ed3fb519c6dec4d2b68507b865d24b7278d536fd50eee5b",
+          "attempts": 1,
           "retry_policy": "only pre-execution address-occupied exit77, up to8",
           "pass_lines": [
             "PASS 7 original-parent/source comparisons, 54704 postimage bytes; actual material/cube/frame terminals; all26 retained; current owner/row reloads and throws73/91; original bytes and dependency bridges explicit."
@@ -804,5 +804,6 @@
       "observation": "One cache replay launch batch exhausted8 pre-execution original-page-occupied exit77 attempts; focused relaunch passed. No native routine ran on rejected mappings and no behavioral failure was retried."
     }
   },
-  "status": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed"
+  "status": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+  "worker_capture_status": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed"
 }
