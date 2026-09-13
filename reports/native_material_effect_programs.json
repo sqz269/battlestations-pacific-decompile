@@ -1,0 +1,662 @@
+{
+  "packet": "orch5_effect_programs_native",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "ghidra_mutated": false
+  },
+  "source": "src/native_material_effect_programs.cpp",
+  "header": "include/bsp/native_material_effect_programs.hpp",
+  "document": "docs/NATIVE_MATERIAL_EFFECT_PROGRAMS.md",
+  "routines": [
+    {
+      "address": "00B45EE0",
+      "end_inclusive": "00B46907",
+      "coverage": "normal_control_flow_composition_required_native_children",
+      "abi": "ECX effect178h; stack name8h,policyDWORD low byte,overrideDWORD; AL result; RET0C",
+      "remaining": "actual B43B00 and B3C3A0, original SEH, arbitrary allocator callbacks mutating unrelated stack locals"
+    },
+    {
+      "address": "00B46950",
+      "end_inclusive": "00B4699D",
+      "coverage": "retained_wrapper_with_explicit_unsafe_unwritten_slot_error",
+      "abi": "ECX effect; stack actual name8h; AL; RET4",
+      "remaining": "child requirements; first early-failure cleanup on unwritten preimages intentionally rejected"
+    },
+    {
+      "address": "00B17DD0",
+      "end_inclusive": "00B17E06",
+      "coverage": "actual_stores_and_counter_with_required_current0C_children",
+      "abi": "ECX effect; stack actual pass; RET4"
+    },
+    {
+      "address": "00B5F160",
+      "end_inclusive": "00B5F3EC",
+      "coverage": "complete_body_over_actual_pass_states_and_callable_renderer104",
+      "abi": "ECX pass; RET"
+    },
+    {
+      "address": "00B5F6A0",
+      "end_inclusive": "00B5F6DF",
+      "coverage": "actual_ordered_composition_with_required_renderer_caches",
+      "abi": "ECX pass; RET"
+    },
+    {
+      "address": "00711370",
+      "end_inclusive": "00711454",
+      "coverage": "actual_string_body_CRT_decimal_format_lowered_to_to_chars",
+      "abi": "ECX fresh actual8h output; stack unsignedDWORD; EAX output; RET4"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00B45F29",
+      "native": "00BF681B",
+      "function": "00B45EE0",
+      "contract": "actual110h descriptor allocation"
+    },
+    {
+      "address": "00B45F3F",
+      "native": "00B43700",
+      "function": "00B45EE0",
+      "contract": "actual root descriptor construction before C4 publication"
+    },
+    {
+      "address": "00B45F5E",
+      "native": "00B43B00",
+      "function": "00B45EE0",
+      "contract": "required entire raw descriptor parser after root publication"
+    },
+    {
+      "address": "00B45FC9",
+      "native": "004BCB80",
+      "function": "00B45EE0",
+      "contract": "last-dot search in counted stem"
+    },
+    {
+      "address": "00B45FDE",
+      "native": "00469840",
+      "function": "00B45EE0",
+      "contract": "actual substring then stem replacement"
+    },
+    {
+      "address": "00B46070",
+      "native": "00BF681B",
+      "function": "00B45EE0",
+      "contract": "actual mode descriptor allocation"
+    },
+    {
+      "address": "00B46087",
+      "native": "00B43700",
+      "function": "00B45EE0",
+      "contract": "mode constructor"
+    },
+    {
+      "address": "00B460F6",
+      "native": "00BDF4C0",
+      "function": "00B45EE0",
+      "contract": "required current actual VFS mutable mode name"
+    },
+    {
+      "address": "00B46104",
+      "native": "00B43B00",
+      "function": "00B45EE0",
+      "contract": "mode parser generation3"
+    },
+    {
+      "address": "00B4614E",
+      "native": "00711370",
+      "function": "00B45EE0",
+      "contract": "mode unsigned decimal actual8h string"
+    },
+    {
+      "address": "00B46162",
+      "native": "004261A0",
+      "function": "00B45EE0",
+      "contract": "stem and mode concatenation"
+    },
+    {
+      "address": "00B46291",
+      "native": "00711370",
+      "function": "00B45EE0",
+      "contract": "generation unsigned decimal string"
+    },
+    {
+      "address": "00B4631E",
+      "native": "00B3C3A0",
+      "function": "00B45EE0",
+      "contract": "required actual compiler: ECX effect, EDX root, seven stack words, RET1C"
+    },
+    {
+      "address": "00B46334",
+      "native": "00B172B0",
+      "function": "00B45EE0",
+      "contract": "borrowed pass14 after primary publication"
+    },
+    {
+      "address": "00B46341",
+      "native": "00B46930",
+      "function": "00B45EE0",
+      "contract": "indirect actual mode descriptor current0 flags1"
+    },
+    {
+      "address": "00B463B6",
+      "native": "00B45E00",
+      "function": "00B45EE0",
+      "contract": "actual secondary14 producer and canonical pass registration"
+    },
+    {
+      "address": "00B463D2",
+      "native": "00B5F6A0",
+      "function": "00B45EE0",
+      "contract": "indirect primary current0C for verified D61BE8/D62A80"
+    },
+    {
+      "address": "00B463DF",
+      "native": "00B5F6A0",
+      "function": "00B45EE0",
+      "contract": "reload secondary after preceding callback; indirect current0C"
+    },
+    {
+      "address": "00B463F6",
+      "native": "00B17DD0",
+      "function": "00B45EE0",
+      "contract": "primary0 finalize, borrowed14, retained9C append and actual count increment"
+    },
+    {
+      "address": "00B46410",
+      "native": "00BF681B",
+      "function": "00B45EE0",
+      "contract": "shadow passthrough descriptor allocation"
+    },
+    {
+      "address": "00B4642D",
+      "native": "00B43700",
+      "function": "00B45EE0",
+      "contract": "shadow passthrough constructor"
+    },
+    {
+      "address": "00B46445",
+      "native": "00B46930",
+      "function": "00B45EE0",
+      "contract": "native mode compiler-null direct descriptor deletion"
+    },
+    {
+      "address": "00B4651A",
+      "native": "00BDF4C0",
+      "function": "00B45EE0",
+      "contract": "resolve exact22-byte shadow_passtrough.shfx"
+    },
+    {
+      "address": "00B46528",
+      "native": "00B43B00",
+      "function": "00B45EE0",
+      "contract": "parse passthrough"
+    },
+    {
+      "address": "00B46589",
+      "native": "00BDF4C0",
+      "function": "00B45EE0",
+      "contract": "resolve root name100 before second shadow allocation"
+    },
+    {
+      "address": "00B46593",
+      "native": "00BF681B",
+      "function": "00B45EE0",
+      "contract": "second shadow descriptor allocation"
+    },
+    {
+      "address": "00B465AA",
+      "native": "00B43700",
+      "function": "00B45EE0",
+      "contract": "second shadow constructor"
+    },
+    {
+      "address": "00B465C3",
+      "native": "00B43B00",
+      "function": "00B45EE0",
+      "contract": "second shadow reader"
+    },
+    {
+      "address": "00B46626",
+      "native": "004261A0",
+      "function": "00B45EE0",
+      "contract": "stem plus sha"
+    },
+    {
+      "address": "00B4670A",
+      "native": "00711370",
+      "function": "00B45EE0",
+      "contract": "generation string for shadow key"
+    },
+    {
+      "address": "00B46795",
+      "native": "00B3C3A0",
+      "function": "00B45EE0",
+      "contract": "shadow compiler ECX effect, EDX second shadow descriptor, seven stack words"
+    },
+    {
+      "address": "00B467AC",
+      "native": "00B46930",
+      "function": "00B45EE0",
+      "contract": "shadow-null passthrough direct deletion"
+    },
+    {
+      "address": "00B467B6",
+      "native": "00B46930",
+      "function": "00B45EE0",
+      "contract": "shadow-null second descriptor direct deletion"
+    },
+    {
+      "address": "00B46821",
+      "native": "00B5F6A0",
+      "function": "00B45EE0",
+      "contract": "indirect actual138 current0C"
+    },
+    {
+      "address": "00B4682A",
+      "native": "00B172B0",
+      "function": "00B45EE0",
+      "contract": "borrowed14 after finalization"
+    },
+    {
+      "address": "00B46853",
+      "native": "00B46930",
+      "function": "00B45EE0",
+      "contract": "successful passthrough direct deletion"
+    },
+    {
+      "address": "00B4685D",
+      "native": "00B46930",
+      "function": "00B45EE0",
+      "contract": "successful second shadow direct deletion"
+    },
+    {
+      "address": "00B46966",
+      "native": "00B45EE0",
+      "function": "00B46950",
+      "contract": "first flag variant: name,0,3"
+    },
+    {
+      "address": "00B4696D",
+      "native": "00B41B10",
+      "function": "00B46950",
+      "contract": "derived owners release, no blanket slot repair"
+    },
+    {
+      "address": "00B46974",
+      "native": "00B187A0",
+      "function": "00B46950",
+      "contract": "base owners release"
+    },
+    {
+      "address": "00B46980",
+      "native": "00B45EE0",
+      "function": "00B46950",
+      "contract": "second flag variant: name,1,3"
+    },
+    {
+      "address": "00B46995",
+      "native": "00B45EE0",
+      "function": "00B46950",
+      "contract": "flag0: name,0,0"
+    },
+    {
+      "address": "00B17DDF",
+      "native": "00B5F6A0",
+      "function": "00B17DD0",
+      "contract": "indirect current0C before borrowed14, live retained-count append and actual count increment"
+    },
+    {
+      "address": "00B5F191",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F19A",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F1A6",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F1E2",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F1EE",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F1FA",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F22C",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F235",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F26C",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F275",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F2AC",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F2B5",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F2BE",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F2C7",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F2D0",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F2D9",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F2E2",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F314",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F320",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F349",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F355",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F361",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F36D",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F379",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F385",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F391",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F39D",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F3A9",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F3B5",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F3C1",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F3CD",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F3D9",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F3E5",
+      "native": "00B5EE00",
+      "function": "00B5F160",
+      "contract": "actual state removal; original instruction fixture checks row order"
+    },
+    {
+      "address": "00B5F6A3",
+      "native": "00B5F160",
+      "function": "00B5F6A0",
+      "contract": "prune then required canonical state-cache result, preserving next-input capture ordering"
+    },
+    {
+      "address": "00B5F6B2",
+      "native": "00B26500",
+      "function": "00B5F6A0",
+      "contract": "prune then required canonical state-cache result, preserving next-input capture ordering"
+    },
+    {
+      "address": "00B5F6C4",
+      "native": "00B265C0",
+      "function": "00B5F6A0",
+      "contract": "prune then required canonical state-cache result, preserving next-input capture ordering"
+    },
+    {
+      "address": "00B5F6D6",
+      "native": "00B26680",
+      "function": "00B5F6A0",
+      "contract": "prune then required canonical state-cache result, preserving next-input capture ordering"
+    },
+    {
+      "address": "007113D2",
+      "native": "0041DD40",
+      "function": "00711370",
+      "contract": "actual pooled temporary/output copy"
+    },
+    {
+      "address": "00711406",
+      "native": "0041DD40",
+      "function": "00711370",
+      "contract": "actual pooled temporary/output copy"
+    },
+    {
+      "address": "00711432",
+      "native": "00419CC0",
+      "function": "00711370",
+      "contract": "captured normal temporary data/length pool selection"
+    },
+    {
+      "address": "00711439",
+      "native": "00BD1510",
+      "function": "00711370",
+      "contract": "captured normal temporary return"
+    }
+  ],
+  "table_evidence": {
+    "00D61BE8": [
+      "00BD30E0",
+      "00B46910",
+      "00B454D0",
+      "00B5F6A0",
+      "00B44BF0"
+    ],
+    "00D62A80": [
+      "00BD30E0",
+      "00B5F990",
+      "00B5E5E0",
+      "00B5F6A0",
+      "00B44BF0"
+    ],
+    "descriptor_callable": "existing NativeShaderDescriptorCallableBinding binds SAME110h to B46930 current0 deletion; no descriptor+04 refcount"
+  },
+  "incoming_call_sites": {
+    "00B45EE0": [
+      "00B46966",
+      "00B46980",
+      "00B46995"
+    ],
+    "00B46950": [
+      "00B2ED5A",
+      "00B469FF",
+      "00B46A33"
+    ],
+    "00B17DD0": [
+      "00B463F6"
+    ],
+    "00B5F6A0": [
+      "00D61BF4 data",
+      "00D62A8C data"
+    ],
+    "00B5F160": [
+      "00B5F6A3"
+    ],
+    "00711370": [
+      "0078A87F",
+      "007118A1",
+      "00B4614E",
+      "00B46291",
+      "00B4670A",
+      "00B38631",
+      "00B38954",
+      "00B39C12",
+      "00B39D03",
+      "00B3A274"
+    ]
+  },
+  "unclassified_incoming_code": "B469FF/B46A33 remain outside saved function bodies. Read-only bytesB469A0..B46A4F show releases before both calls; no reload/error-path or independent native ABI claim.",
+  "ownership": {
+    "primary": "14 progressive writes, no old releases, native compiler null preserves current/later primary and all secondary preimages",
+    "secondary": "existing B45E00 actual14 initialization; no extra creator retain",
+    "descriptor": "frame retains callable companions across variant release and through final effect destruction",
+    "failure": "one-shot failed frame retains actual descriptors, strings and child; no rollback, retry or fabricated AL",
+    "identity": "same native effect/pass/state storage and canonical domain, no semantic CompiledMaterialEffect/Pass overlay",
+    "shadow": "138 publication even on null; successful138 overwrites primary2 without old release then increments actual04"
+  },
+  "required_children": [
+    {
+      "entry": "00B43B00",
+      "body": "00B43B00..00B44684",
+      "status": "raw caller incomplete",
+      "available": "actual Lua owner/getters, B579B0/B439C0/B41830/B419B0 readers",
+      "remaining": "actual file execution B69D40 and scalar/string/table caller wiring; decompiler unreachable/alias defects need assembly"
+    },
+    {
+      "entry": "00B3C3A0",
+      "body": "00B3C3A0..00B3C4B1",
+      "status": "raw builder incomplete",
+      "remaining": "actual B354D0 builder, B3B3C0 compiler, B3A7E0 destruction/source/COM; seven stack words plus EDX descriptor verified"
+    },
+    {
+      "entry": "00B26500",
+      "body": "00B26500..00B265BE",
+      "status": "actual render-state cache incomplete"
+    },
+    {
+      "entry": "00B265C0",
+      "body": "00B265C0..00B2667E",
+      "status": "actual third-state cache incomplete"
+    },
+    {
+      "entry": "00B26680",
+      "body": "00B26680..00B26734",
+      "status": "actual sampler-state cache incomplete"
+    },
+    {
+      "entry": "00BDF4C0",
+      "status": "requires actual mutable VFS binding; existing semantic resource lookup is not a raw header adapter"
+    }
+  ],
+  "validation": {
+    "call_sites": "tools/verify_report_calls.py passed84 call rows,0 failed; indirect current0/current0C targets additionally supported by descriptor binding and D61BE8/D62A80 table evidence",
+    "build": "scripts/build.ps1 MSVC Win32 Release W4 WX passed; reconstructed_math1/1; initial local/native_material_effect_programs_build.log and final local/native_material_effect_programs_final_build.log",
+    "fixture": "PASS local/native_effect_program_probe.exe links production bsp_core; full653byte original B5F160,33 direct calls relocated to real B5EE00, same actual row bytes/order for caps3D0/1, unchanged counts,12 real canonical state terminals, UINT32MAX native string",
+    "fixture_source": "local/native_effect_program_probe.cpp; local/make_program_probe.py; ignored, no permanent tests",
+    "fixture_log": "local/native_effect_program_probe.log",
+    "abi_compatible": false,
+    "game_validated": false,
+    "successful_descriptor_or_compiler_executed": false,
+    "successful_effect_program_load_executed": false
+  }
+}
