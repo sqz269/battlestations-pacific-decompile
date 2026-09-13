@@ -92,6 +92,13 @@ public:
 // in native order. Constructor unwind follows states0/1/2; it does not release
 // published +180/+184. The caller still owns the physical slot on failure.
 void* construct_native_camera_00b71a80(NativeCameraOwner&, const NativeString&);
+// Actual header forwarded unchanged; the persistent runtime selects raw cleanup.
+// Context, publication cells, providers and companions outlive retained references.
+// Node and viewport must borrow the same actual D7A24C cell; mode/identity
+// rejection leaves prepared lifetimes intact. Direct cleanup can throw; queue
+// callbacks retain their noexcept boundary.
+void* construct_native_camera_00b71a80(NativeCameraOwner&, const void* actual_name_header,
+    const NativeNodeRawConstants&);
 // Actual raw +180 publication, retain new, release captured old; same identity
 // skips both counts. Supports the concrete D5E5F8 viewport profile.
 void set_native_camera_viewport_00b71990(NativeCameraOwner&, NativeViewportOwner*);
