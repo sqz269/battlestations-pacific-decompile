@@ -1,0 +1,607 @@
+{
+  "schema_version": 1,
+  "packet": "orch3_texture_2d_aw",
+  "status": "complete_actual_storage_worker_object_real_D3DX_D3D9_original_body_differential_checked",
+  "generated_utc": "2026-09-13T05:41:03.767783+00:00",
+  "source_base": "e9b644130839f0ac03b78aac45e100178d55477b",
+  "functions": [
+    {
+      "address": "00b3d7b0",
+      "end_inclusive": "00b3d7b6",
+      "name": "BSP_D3D9Texture_DispatchRetainedRelease",
+      "names_provisional": true,
+      "cpp_symbol": "bsp::release_native_texture_2d_retained_00b3d7b0",
+      "coverage": "complete",
+      "source": "src/native_texture_2d_retained_recreation.cpp",
+      "header": "include/bsp/native_texture_2d_retained_recreation.hpp",
+      "native_bytes": 7,
+      "original_abi": "ECX actual 50h owner; no stack arguments; no semantic result; JMP through current profile+20; target RET",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_D3D9Texture_DispatchRetainedRelease(void)",
+      "current_Ghidra_function_defined": false,
+      "no_ghidra_function": true,
+      "integration_requires_bounded_function_definition": true,
+      "new_source_API_is_not_binary_ABI_replacement": true,
+      "evidence": [
+        "docs/NATIVE_TEXTURE_2D_RETAINED_RECREATION.md",
+        "All owned bytes fresh live Ghidra / installed PE equality",
+        "Whole assembly inspected including every call and register write",
+        "C:\\Users\\sqz269\\bsp-aw-retained2d\\evidence.json"
+      ]
+    },
+    {
+      "address": "00b3e190",
+      "end_inclusive": "00b3e1ec",
+      "name": "BSP_D3D9Texture_CreateFromRetainedMemory",
+      "names_provisional": true,
+      "cpp_symbol": "bsp::recreate_native_texture_2d_retained_00b3e190",
+      "coverage": "complete",
+      "source": "src/native_texture_2d_retained_recreation.cpp",
+      "header": "include/bsp/native_texture_2d_retained_recreation.hpp",
+      "native_bytes": 93,
+      "original_abi": "ECX actual 50h owner; no stack arguments; no semantic result; PUSH/POP ESI and EDI; RET",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_D3D9Texture_CreateFromRetainedMemory(void)",
+      "current_Ghidra_function_defined": true,
+      "no_ghidra_function": false,
+      "integration_requires_bounded_function_definition": false,
+      "new_source_API_is_not_binary_ABI_replacement": true,
+      "evidence": [
+        "docs/NATIVE_TEXTURE_2D_RETAINED_RECREATION.md",
+        "All owned bytes fresh live Ghidra / installed PE equality",
+        "Whole assembly inspected including every call and register write",
+        "C:\\Users\\sqz269\\bsp-aw-retained2d\\evidence.json"
+      ]
+    }
+  ],
+  "source_sha256": "ad4e3cdf8473d7138698fc0143037e9bfe0c014154ba5c54783f33b53bbad0de",
+  "header_sha256": "4c448a59c606b549a5bcd2e807f19c2b5187ca6a3efd553d1d7cc2773cb75a32",
+  "no_ghidra_function": [
+    {
+      "address": "00b3d7b0",
+      "end_inclusive": "00b3d7b6",
+      "bytes": 7,
+      "reason": "Guarded live proto at entry and B3D7B5 reports no saved function; raw complete tail-dispatch. Root must define exact inclusive range."
+    }
+  ],
+  "context": {
+    "type": "bsp::NativeTexture2DRetainedRecreationContext",
+    "borrowed": [
+      "Actual F8D394 renderer publication",
+      "Existing NativeRetainedMemoryOwnerContext",
+      "Actual immutable D61948 profile words through +20",
+      "Existing NativeTextureResetSurfaceProfile",
+      "Live real D3DXCreateTextureFromFileInMemoryEx import cell"
+    ],
+    "profiles": {
+      "texture": "D61948/+20=B3DD30",
+      "stream": "D642C0/+30=BEF600",
+      "surface": "D619A0/+3C=B3D510 through existing reset provider"
+    },
+    "no_copied_owners_or_custom_destructor_callbacks": true
+  },
+  "native_evidence": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "guard": "Every bsp.py ghidra bytes invocation verifies project/program/language/image base.",
+    "spans": [
+      {
+        "address": "00b3d7b0",
+        "length": 7,
+        "kind": "owned",
+        "offset": 7591856,
+        "hex": "8b018b5020ffe2",
+        "sha256": "8ea925aff327acddfd70cca66f20bbf11495e2551b1b873c70bb0eb4e6b44ee7",
+        "fresh_live_Ghidra_matches_installed_PE": true,
+        "zero_filled_PE_virtual_tail": false
+      },
+      {
+        "address": "00b3e190",
+        "length": 93,
+        "kind": "owned",
+        "offset": 7594384,
+        "hex": "568bf18b0d94d3f80057e8511dfeff8bf833c0837e18147505b8150000008b4e4c8d5610528b562c6a006a006a006aff68040007006a01508b463c6a00508b4628528b11508b4230ffd08b4e4c50e82d140b005057e8fcfd0e005f5ec3",
+        "sha256": "2add77ebc7813add3ebd37bb5a7a41cfb509c8969e3c62d3219bcd2ecfdee7d5",
+        "fresh_live_Ghidra_matches_installed_PE": true,
+        "zero_filled_PE_virtual_tail": false
+      },
+      {
+        "address": "00b3dd30",
+        "length": 86,
+        "kind": "dependency",
+        "offset": 7593264,
+        "hex": "56578bf133ff397e447e1beb038d49008b46408b4cf8048b118b423cffd083c7013b7e447cea8b7e1085ff74108b0f8b510457ffd28b078b480857ffd18b461085c0740f8b10508b4208ffd0c74610000000005f5ec3",
+        "sha256": "79b651f7ffa1321bc2e2a1652f0d397b58b9a77a9a9d4f35add970d4521815e2",
+        "fresh_live_Ghidra_matches_installed_PE": true,
+        "zero_filled_PE_virtual_tail": false
+      },
+      {
+        "address": "00b3d510",
+        "length": 52,
+        "kind": "dependency",
+        "offset": 7591184,
+        "hex": "568bf1578b7e2c85ff74108b078b480457ffd18b178b420857ffd08b462c85c0740f8b088b510850ffd2c7462c000000005f5ec3",
+        "sha256": "8a7cb88d5e952ed1cd7878fab4dcfcc9b1ef97658f9b4ef66bafc2b956439b2c",
+        "fresh_live_Ghidra_matches_installed_PE": true,
+        "zero_filled_PE_virtual_tail": false
+      },
+      {
+        "address": "00b1fef0",
+        "length": 7,
+        "kind": "dependency",
+        "offset": 7470832,
+        "hex": "8b81101a0000c3",
+        "sha256": "8e2f8eda5033d3403561544aec8eccd01530285ea93dcd284ef49a1308e871a6",
+        "fresh_live_Ghidra_matches_installed_PE": true,
+        "zero_filled_PE_virtual_tail": false
+      },
+      {
+        "address": "00bef600",
+        "length": 11,
+        "kind": "dependency",
+        "offset": 8320512,
+        "hex": "8b51088b410c2b420899c3",
+        "sha256": "3868b670bd048da71266ed078741a94b1706b40c90a35cdc4a51c6ecad47cd36",
+        "fresh_live_Ghidra_matches_installed_PE": true,
+        "zero_filled_PE_virtual_tail": false
+      },
+      {
+        "address": "00bef610",
+        "length": 7,
+        "kind": "dependency",
+        "offset": 8320528,
+        "hex": "8b41088b4008c3",
+        "sha256": "92c5e2972d2442d6d750d027a5da0e7ee862ca52fef58c2af20331258d8191ef",
+        "fresh_live_Ghidra_matches_installed_PE": true,
+        "zero_filled_PE_virtual_tail": false
+      },
+      {
+        "address": "00c2dfe6",
+        "length": 6,
+        "kind": "import_thunk",
+        "offset": 8576998,
+        "hex": "ff250024ce00",
+        "sha256": "0aaed713a16a29364976d1cc59c0d32f3b285eadc1e5d2313dae0be85de1c9df",
+        "fresh_live_Ghidra_matches_installed_PE": true,
+        "zero_filled_PE_virtual_tail": false
+      },
+      {
+        "address": "00d61948",
+        "length": 64,
+        "kind": "profile",
+        "offset": 9836872,
+        "hex": "e030bd0090f5b30090fab30030ceb30040ceb300803eb300903eb300a0ceb30030ddb30090ddb300b0d7b30090e1b30080fdb30090d5b300c0d5b30050ceb300",
+        "sha256": "09d9f4bb95106b475519c558ee9d58307a2408c7cc2a263d812364d5af1ba930",
+        "fresh_live_Ghidra_matches_installed_PE": true,
+        "zero_filled_PE_virtual_tail": false
+      },
+      {
+        "address": "00d619a0",
+        "length": 64,
+        "kind": "profile",
+        "offset": 9836960,
+        "hex": "e030bd00b0f5b300f0fabe005022a800f0ccb30080ccb30000cdb30010cdb30020cdb30030cdb30000d5b30040cdb30060cdb30000ddb30070cdb30010d5b300",
+        "sha256": "f16fd20b54fea71595234709b4fe48994ce65f565469b4d1db3c17dc50a1e9ad",
+        "fresh_live_Ghidra_matches_installed_PE": true,
+        "zero_filled_PE_virtual_tail": false
+      },
+      {
+        "address": "00d642c0",
+        "length": 52,
+        "kind": "profile",
+        "offset": 9847488,
+        "hex": "e030bd00908fbb00a0f4be00608fbb00209d6f00b0f4be00c0f4be0040f5be0080f5be0090f5be00f0f5be00a041be0000f6be00",
+        "sha256": "2b1932e6aa0f9ed1ee97f2a8450cf5e9afebc6ba651116eea1b2245e1ef6e566",
+        "fresh_live_Ghidra_matches_installed_PE": true,
+        "zero_filled_PE_virtual_tail": false
+      },
+      {
+        "address": "00d15ad8",
+        "length": 8,
+        "kind": "profile",
+        "offset": 9525976,
+        "hex": "e030bd0070448d00",
+        "sha256": "4961e9832015a124713cd4e85d58bfc0ab3700c1bb84d137d4cee67ebfdfc319",
+        "fresh_live_Ghidra_matches_installed_PE": true,
+        "zero_filled_PE_virtual_tail": false
+      },
+      {
+        "address": "00ce2400",
+        "length": 4,
+        "kind": "IAT",
+        "offset": 9315328,
+        "hex": "7872a000",
+        "sha256": "a2b3c49a268ff4aa1b1a4beca220269e729b4c6b271044672caf3884db94750d",
+        "fresh_live_Ghidra_matches_installed_PE": true,
+        "zero_filled_PE_virtual_tail": false
+      },
+      {
+        "address": "00f8d394",
+        "length": 4,
+        "kind": "renderer_publication",
+        "offset": 12112788,
+        "hex": "00000000",
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "fresh_live_Ghidra_matches_installed_PE": true,
+        "zero_filled_PE_virtual_tail": true
+      }
+    ]
+  },
+  "profile_xrefs": [
+    {
+      "target": "00b3d7b0",
+      "site": "00d61970",
+      "kind": "DATA"
+    },
+    {
+      "target": "00b3e190",
+      "site": "00d61974",
+      "kind": "DATA"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b3d7b5",
+      "native": "00b3dd30",
+      "function": "00b3d7b0",
+      "kind": "tail_jump",
+      "contract": "Current D61948/+20 selects complete actual reset-release provider.",
+      "structural_expectation": "Call site is in no saved Ghidra function until root defines seven bytes."
+    },
+    {
+      "address": "00b3e19a",
+      "native": "00b1fef0",
+      "function": "00b3e190",
+      "contract": "Captured current renderer ECX; complete leaf returns actual +1A10 device; RET."
+    },
+    {
+      "address": "00b3e1d8",
+      "native": "00bef600",
+      "function": "00b3e190",
+      "contract": "Current stream table+30; actual D642C0 slot resolves BEF600; length EDX:EAX, only EAX pushed; RET.",
+      "resolution_evidence": "Full live D642C0 table and complete BEF600 body, both installed PE matched."
+    },
+    {
+      "address": "00b3e1de",
+      "native": "00bef610",
+      "function": "00b3e190",
+      "contract": "Reload ECX from current owner+4C after length; full backing-data leaf; RET."
+    },
+    {
+      "address": "00b3e1e5",
+      "native": "00c2dfe6",
+      "function": "00b3e190",
+      "contract": "Real D3DXCreateTextureFromFileInMemoryEx through CE2400; 15 DWORD stdcall args; HRESULT ignored."
+    }
+  ],
+  "exact_d3dx_arguments": [
+    "captured renderer device",
+    "fresh backing data",
+    "low32 length",
+    "captured width",
+    "captured height",
+    "captured mip count",
+    "0",
+    "format20 ? 21 : 0",
+    "1",
+    "00070004",
+    "ffffffff",
+    "0",
+    "null",
+    "null",
+    "actual owner+10"
+  ],
+  "producer_evidence": [
+    "B3F930/B3F968 installs D61948; B3F971 clears +3C; B3F978/B3F97B/B3F97E clear cache header; B3F984 clears +4C.",
+    "B3F9C8/B3F9CB write dimensions and B3F9FF writes format from real GetLevelDesc output.",
+    "Existing B23640 stores/retains actual source; existing BEF6D0 and 8D43C0 establish stream and backing layouts."
+  ],
+  "verification": {
+    "strict_source_compile_passed": true,
+    "compiler": "MSVC 14.51.36231 Win32 /W4 /WX /O2 /MD /fp:strict",
+    "verify_seeds": "all 8 live/disk seed comparisons matched",
+    "repository_build_and_existing_ctests": "passed, 2/2",
+    "new_source_registered_in_worker_CMake": false,
+    "primary_must_register_source": true,
+    "report_calls_expected": "5 rows; sole failure raw B3D7B5 has no saved containing function; BEF600 indirect resolved by profile evidence",
+    "report_calls_log": "C:\\Users\\sqz269\\bsp-aw-retained2d\\verify_report_calls.log",
+    "native_differential": {
+      "passed": true,
+      "scope": "Complete actual original bodies, real installed D3DX9_40 and HAL D3D9",
+      "real_d3dx_module": {
+        "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/D3DX9_40.dll",
+        "sha256": "16fd909aeb68d0d1aca8529dc7f78880b97d6649d70ce8d03a2c858bc28e216b"
+      },
+      "creation_pairs": 5,
+      "release_pairs": 3,
+      "original_instruction_relocations_or_replacements": 0,
+      "runtime_data_bindings": [
+        "CE2400 real installed D3DX export",
+        "F8D394 actual fixture renderer publication"
+      ],
+      "custom_service_or_destructor_bridges": 0,
+      "original_profile_words_unchanged": true,
+      "cases": [
+        "format20 mapping",
+        "other-format fallback",
+        "4x4 and8x8 dimensions",
+        "mip1/2/automatic",
+        "width0 native D3DX default",
+        "existing output success",
+        "invalid image preserves existing output with HRESULT88760B59",
+        "one actual cached surface and texture release",
+        "negative signed cache count",
+        "empty release"
+      ],
+      "comparisons": [
+        "output identity/null and old output retention",
+        "real level descriptors and count",
+        "all level0 pixel bytes hashed",
+        "owner fields outside +10 unchanged on recreation",
+        "released actual texture/surface fields zero",
+        "native ESP and EBX/ESI/EDI/EBP preserved",
+        "actual memory counters balanced"
+      ],
+      "source_link_mode": "Explicit worker source-object + supplied primary current bsp_core/bsp_lua511/bsp_zlib121 libraries",
+      "final_mode": "run_probe.ps1 defaults to compile ONLY probe.cpp against supplied current libraries",
+      "fixture_directory": "C:\\Users\\sqz269\\bsp-aw-retained2d",
+      "result_log": "C:\\Users\\sqz269\\bsp-aw-retained2d\\probe-results.log",
+      "linked_libraries": [
+        {
+          "sha256": "6796f4dff7b8ff67df1fbdd69770ed1a4042c091774f2cbca7784a0dcd75b54c",
+          "path": "J:/PROG/battlestations-pacific-decompile-orch3-20260910/build/win32/Release/bsp_core.lib"
+        },
+        {
+          "sha256": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+          "path": "J:/PROG/battlestations-pacific-decompile-orch3-20260910/build/win32/Release/bsp_lua511.lib"
+        },
+        {
+          "sha256": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102",
+          "path": "J:/PROG/battlestations-pacific-decompile-orch3-20260910/build/win32/Release/bsp_zlib121.lib"
+        }
+      ]
+    }
+  },
+  "uncertainty": [
+    "Names are descriptive hypotheses.",
+    "New C++ context interfaces are not original binary ABI entries.",
+    "Current supported profiles and live actual storage required; arbitrary or concurrent mutation not proved.",
+    "Fresh retained-source reload is established by full native assembly and source access order; no mutation callback is invented to exercise it.",
+    "Real fixture does not prove Windows fault/EH paths, whole dependency closure, renderer traversal, game execution or visual parity.",
+    "EAX retains imported HRESULT incidentally in native recreation; no semantic return is added."
+  ],
+  "fixture_assets": [
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\00b1fef0.bin",
+      "size": 7,
+      "sha256": "8e2f8eda5033d3403561544aec8eccd01530285ea93dcd284ef49a1308e871a6"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\00b3d510.bin",
+      "size": 52,
+      "sha256": "8a7cb88d5e952ed1cd7878fab4dcfcc9b1ef97658f9b4ef66bafc2b956439b2c"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\00b3d7b0.bin",
+      "size": 7,
+      "sha256": "8ea925aff327acddfd70cca66f20bbf11495e2551b1b873c70bb0eb4e6b44ee7"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\00b3dd30.bin",
+      "size": 86,
+      "sha256": "79b651f7ffa1321bc2e2a1652f0d397b58b9a77a9a9d4f35add970d4521815e2"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\00b3e190.bin",
+      "size": 93,
+      "sha256": "2add77ebc7813add3ebd37bb5a7a41cfb509c8969e3c62d3219bcd2ecfdee7d5"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\00bef600.bin",
+      "size": 11,
+      "sha256": "3868b670bd048da71266ed078741a94b1706b40c90a35cdc4a51c6ecad47cd36"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\00bef610.bin",
+      "size": 7,
+      "sha256": "92c5e2972d2442d6d750d027a5da0e7ee862ca52fef58c2af20331258d8191ef"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\00c2dfe6.bin",
+      "size": 6,
+      "sha256": "0aaed713a16a29364976d1cc59c0d32f3b285eadc1e5d2313dae0be85de1c9df"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\00ce2400.bin",
+      "size": 4,
+      "sha256": "a2b3c49a268ff4aa1b1a4beca220269e729b4c6b271044672caf3884db94750d"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\00d15ad8.bin",
+      "size": 8,
+      "sha256": "4961e9832015a124713cd4e85d58bfc0ab3700c1bb84d137d4cee67ebfdfc319"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\00d61948.bin",
+      "size": 64,
+      "sha256": "09d9f4bb95106b475519c558ee9d58307a2408c7cc2a263d812364d5af1ba930"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\00d619a0.bin",
+      "size": 64,
+      "sha256": "f16fd20b54fea71595234709b4fe48994ce65f565469b4d1db3c17dc50a1e9ad"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\00d642c0.bin",
+      "size": 52,
+      "sha256": "2b1932e6aa0f9ed1ee97f2a8450cf5e9afebc6ba651116eea1b2245e1ef6e566"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\00f8d394.bin",
+      "size": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\build.log",
+      "size": 39952,
+      "sha256": "e0cb07238bc7b9325bbed6dcfcc6146dfb434cb08fc0772c0fe0d77bacab5c39"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\compile-run.log",
+      "size": 871,
+      "sha256": "25c05f91986e25661f8399e36a16e279c3a386c55bf0a0778dba3f19809ea02b"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\disk_00b3d7b0_disasm.log",
+      "size": 155,
+      "sha256": "748c3c99c1f57f5bed19dec03961c99e3d4dce3325f2f5dd7696e8827b933b8e"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\evidence.json",
+      "size": 5831,
+      "sha256": "61cd207f3d735171cf9308f16ab979a25b653a115f67d1ab97f17ec420f0ebd4"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\fixture.tga",
+      "size": 82,
+      "sha256": "1b64eb57f648f3a0b445db74fcdaa19d7fc657bf8c05c2cb32cd5d19eef9361a"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\iat.json",
+      "size": 97,
+      "sha256": "cb13881984abd5fdc23158dd97e0ef3e3afe9f3a8d937c2fcb7c593e9125479b"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\linked_inputs.json",
+      "size": 781,
+      "sha256": "928daebf98348748ed85216b0870c7e2cf44d29e28146c633f449fd038280713"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\live_00b1fef0.log",
+      "size": 41,
+      "sha256": "e545de402c70014ce8028c562c73dd3b8128bacff7b7687cdc5838416d0c1de8"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\live_00b3d510.log",
+      "size": 260,
+      "sha256": "41576cd34f58461cd272c00045e89cc2e6d3f575add4ad9e276b86450c6af571"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\live_00b3d7b0.log",
+      "size": 41,
+      "sha256": "193321ef514b778550f37845274bc524230d14f6a7fa330ef041b4797ad2bf9f"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\live_00b3dd30.log",
+      "size": 422,
+      "sha256": "d03704bd0039fb8959e5f7117c7ebaf6e841225712304a96314452f742dc535c"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\live_00b3e190.log",
+      "size": 450,
+      "sha256": "54784d98a590815cfbbcc39ed854637df648e560a36d26b9090cb7b7c59a5b08"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\live_00b3e190_disasm.log",
+      "size": 1061,
+      "sha256": "e6a5ae7bb127e575c63854185d19bb40136a148349a33b730042ce7631e47958"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\live_00bef600.log",
+      "size": 57,
+      "sha256": "337e562ba9b20792003ac1105771624427e5bcbb5bae9ae4e4cdb14dd5bc6468"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\live_00bef610.log",
+      "size": 41,
+      "sha256": "e6b032db3f52ba73323aea9edda0f23af6b202c8afd3a8926f19395c83c39b2f"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\live_00c2dfe6.log",
+      "size": 37,
+      "sha256": "0234eec85511336d4b3e1a441f877f4edcf09a4416d9da7a576ddaaeb07a856e"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\live_00ce2400.log",
+      "size": 29,
+      "sha256": "2f45bd4eec28e137d6dd85262a7d4c56a8525c028a040794fd77c1a7e4a5bd85"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\live_00d15ad8.log",
+      "size": 45,
+      "sha256": "1865440048b5a66da33c48daaa1266a965a51d1715cb8470f204890857835be9"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\live_00d61948.log",
+      "size": 308,
+      "sha256": "d2b1103f3cfacd883fb80a9a9f573b82fd7870d673823f02813b2be689b1c249"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\live_00d619a0.log",
+      "size": 308,
+      "sha256": "d3b039261cdacc1a8690d584ca596ede9d96b2c98618bc3eb97f4951f1594400"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\live_00d642c0.log",
+      "size": 260,
+      "sha256": "3ca84efb8b07fdba9e48cb90cb09d012756831461328ab0b7bb348153bedc04c"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\live_00f8d394.log",
+      "size": 29,
+      "sha256": "185167e9b01f37c26cf222b2e65cb11322afde473342afcef500aeb7f230aafe"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\native_texture_2d_retained_recreation.obj",
+      "size": 3178,
+      "sha256": "39dc35d31b1e65ae3c738cc5679b3a2956aa5cf32932fc93ee8807cdfc0f80c0"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\prepare.py",
+      "size": 2636,
+      "sha256": "8289d1158b349c7e03e310a1fc9b990e72a1d6a8bdf6d3b9d85af2e9cfb702db"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\probe-errors.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\probe-results.log",
+      "size": 817,
+      "sha256": "a4855318605ab3d4a49c750093232c97a84ffd29e3ea6803d4f91507133117fd"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\probe.cpp",
+      "size": 12181,
+      "sha256": "40b8c1e68d330ec407f368d6f43c0821b25db9269b014f0ac1d658b0a1a90765"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\probe.obj",
+      "size": 100015,
+      "sha256": "1fe88619e925c4171d17b8b8935b3b939a1c6c263c74c6f81d8b9e0549b1e177"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\retained2d_probe.exe",
+      "size": 33792,
+      "sha256": "60609e3432614dc393faa0039afd6a136999fbc88ecb35de1c6505b43a57979a"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\run_probe.ps1",
+      "size": 2683,
+      "sha256": "e6ef390d3b9e4df06e921b6730afd86b75977666130c01dba4fb89c1d292ecc4"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\verify_report_calls.log",
+      "size": 311,
+      "sha256": "eb73a7454a18106c22a8308137eef022a49b7f45644d98b943a8fa136e0383c7"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-aw-retained2d\\write_report.py",
+      "size": 8550,
+      "sha256": "b9ac485b9b7c52f2c529b635f0ba16311e16cdee1c2adeb74a5793b9860639fe"
+    }
+  ]
+}
