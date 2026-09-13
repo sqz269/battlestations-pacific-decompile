@@ -50,12 +50,22 @@
 #include "bsp/cruise_command.hpp"
 #include "bsp/scene_deferred_refs.hpp"
 #include "bsp/ship_ai_states.hpp"
+#include "bsp/ship_ai_avoidance_request.hpp"
+#include "bsp/weapon_director.hpp"
 #include "bsp/unit_commanded_speed.hpp"
 #include "bsp/unit_state_message.hpp"
 
 namespace bsp::game {
 
 class GameHostLog;
+
+// Only director+240h/+241h/+242h. The persistent command owner stores this
+// projection; its cruise, target and permission state is not duplicated here.
+struct GameDirectorAvoidance {
+    bool torpedo{false};
+    bool ship{false};
+    bool land{false};
+};
 
 // One created instance as the command path sees it. `object_id` stands in for
 // entity+174h: the two handle tables at 00f89a0c / 00f89a60 are not built in
@@ -165,6 +175,17 @@ public:
     // its records name. Called once, after the instantiate pass.
     void register_units(std::vector<GameCommandUnit> units);
 
+    // 0080E160's unit+738h owner, then the three avoidance bytes. False means
+    // no registered director; out is unchanged. Construction publishes the
+    // proven 00836724/2A/30 stores, independently of the unbound full ctor.
+    bool director_avoidance(std::size_t unit_index, GameDirectorAvoidance& out) const;
+    // Delivery-side projection of 00835640, sub-kinds 7..9 only. This does not
+    // send or route 00835940/008359C0/00835A40 messages. The caller must have
+    // received kind 5Ah through its actual delivery path. False leaves state
+    // untouched for a missing owner, wrong kind, or unsupported sub-kind.
+    bool apply_director_avoidance_message_00835640(std::size_t unit_index,
+        const bsp::DirectorCommandMessage& message);
+
     // The whole chain for one authored record: 0046aab0 resolves the token
     // against the 26-row registry, 0077d600 builds and routes MT_COMMAND,
     // 00816e30 applies it, 0071ecf0 issues it to the director, 00721a40's 5Ch
@@ -261,7 +282,15 @@ public:
     // values 009dbf90 and 009dffb0 store and 009ed6b0 reads.
     bool cruise_step(std::size_t unit_index, bool player_controlled,
         float body_axis_speed, float reference_speed, bsp::CruiseOrderedValues& out,
-        bsp::ShipAiControlBlock* blk = nullptr, bsp::ShipAiSetterHost* setters = nullptr);
+        bsp::ShipAiControlBlock* blk = nullptr, bsp::ShipAiSetterHost* setters = nullptr,
+        bsp::ShipAiAvoidanceRequest* request = nullptr,
+        const bsp::ShipAiCruiseAvoidanceInputs* avoidance_inputs = nullptr);
+    // request and avoidance_inputs are either both absent (legacy drive-only
+    // projection), or both present with blk. Actual slot predicates are
+    // required; player_controlled supplies the live unit+184h value. The
+    // compiled request helper updates all three fields plus blk+3F5h. A
+    // non-cruise arm publishes its request but returns false because its
+    // remaining drive behavior is still outside this host's projection.
 
     const std::vector<GameCommandRow>& rows() const noexcept;
     const GameCommandsSummary& summary() const noexcept;

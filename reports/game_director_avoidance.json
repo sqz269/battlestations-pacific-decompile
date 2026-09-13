@@ -1,0 +1,382 @@
+{
+  "packet": "orch6_live_director_request_i",
+  "status": "implemented; validation passed",
+  "doc": "docs/GAME_DIRECTOR_AVOIDANCE.md",
+  "base_commit": "2f9da1dd",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "bsp.py Client.verify() before every live query; target config re-read",
+    "mutations": 0
+  },
+  "owned_files": [
+    "include/bsp/game_hosts_commands.hpp",
+    "src/game_hosts_commands.cpp",
+    "include/bsp/game_hosts_units.hpp",
+    "src/game_hosts_units.cpp",
+    "docs/GAME_DIRECTOR_AVOIDANCE.md",
+    "reports/game_director_avoidance.json"
+  ],
+  "routines": [
+    {
+      "entry": "008366d0",
+      "end_inclusive": "0083678b",
+      "original_abi": "ECX director, unit stack argument, RET4 at00836789",
+      "coverage": "partial projection: three unconditional stores00836724/2A/30; full endpoint/base/subobject constructor remains outside runtime projection",
+      "reuse": "Only documented WeaponDirectorState torpedo/ship/land defaults are copied into GameDirectorAvoidance; no fake full ctor host"
+    },
+    {
+      "entry": "00835640",
+      "end_inclusive": "0083568e",
+      "original_abi": "ECX director, message stack argument, RET4 on derived arms",
+      "coverage": "partial runtime projection00835640..00835685, subkinds7/8/9; base tail00835686..0083568E not consumed",
+      "reuse": "Existing DirectorCommandMessage and DirectorCommandSubKind; three host-free stores mirror already compiled contract without unrelated base-host stubs"
+    },
+    {
+      "entry": "0080e160",
+      "end_inclusive": "0080e166",
+      "original_abi": "ECX unit; EAX=[unit+738h]; RET",
+      "coverage": "complete getter ownership evidence; new typed availability API accesses corresponding persistent Commands owner"
+    },
+    {
+      "entry": "009e1170",
+      "end_inclusive": "009e14b7",
+      "original_abi": "ECX state; brain through state+4h; float seconds; RET4",
+      "coverage": "runtime reuse of existing partial cruise drive arm and compiled all-three-arm request helper; disabled-arm drive remains partial",
+      "request_stores": [
+        "009e11d6..009e11ea",
+        "009e12eb..009e12ff",
+        "009e13b6..009e13dc"
+      ]
+    },
+    {
+      "entry": "00835a40",
+      "end_inclusive": "00835abb",
+      "original_abi": "ECX director; boolean stack argument; RET4 at00835AB9",
+      "coverage": "sender inspected only; no implementation changes; session delivery not replaced"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00810fa0",
+      "native": "008366d0",
+      "function": "00810f60",
+      "contract": "Native constructor call; this packet projects only the unconditional three avoidance stores, not full ctor services"
+    },
+    {
+      "address": "009da6f6",
+      "native": "0080e160",
+      "function": "009da6e0",
+      "contract": "Future AI consumer uses current unit+738h owner then +242h; root owns call-site binding"
+    },
+    {
+      "address": "009da73f",
+      "native": "0080e160",
+      "function": "009da6e0",
+      "contract": "Future AI consumer uses current unit+738h owner then +242h; root owns call-site binding"
+    },
+    {
+      "address": "009da78c",
+      "native": "0080e160",
+      "function": "009da6e0",
+      "contract": "Future AI consumer uses current unit+738h owner then +242h; root owns call-site binding"
+    },
+    {
+      "address": "009da7dd",
+      "native": "0080e160",
+      "function": "009da6e0",
+      "contract": "Future AI consumer uses current unit+738h owner then +242h; root owns call-site binding"
+    },
+    {
+      "address": "00835aa5",
+      "native": "0077c2a0",
+      "function": "00835a40",
+      "contract": "Sender still routes message/channel7/flags0 through director+34h; no local apply shortcut added"
+    },
+    {
+      "address": "009e12e4",
+      "native": "00521e70",
+      "function": "009e1170",
+      "contract": "Own-slot predicate supplied explicitly to compiled request helper; no Party substitution"
+    },
+    {
+      "address": "009e1367",
+      "native": "009e0040",
+      "function": "009e1170",
+      "contract": "Native request stores precede desired-heading setter; runtime publishes before its callback"
+    },
+    {
+      "address": "009e1397",
+      "native": "009dffb0",
+      "function": "009e1170",
+      "contract": "Native request stores precede desired-steering setter; runtime publishes before its callback"
+    },
+    {
+      "address": "009e13a6",
+      "native": "009dbf90",
+      "function": "009e1170",
+      "contract": "Desired-throttle write follows first heading/steering setter and request publication"
+    }
+  ],
+  "ownership": {
+    "persistent_record": "GameCommandsHost::Impl::directors[index].avoidance",
+    "parent_owner": "GameUnitsHost::Impl::commands",
+    "fields": {
+      "torpedo": "director+240h",
+      "ship": "director+241h",
+      "land": "director+242h"
+    },
+    "initial_value": [
+      true,
+      true,
+      true
+    ],
+    "initial_producer": "EBX=1 at008366F4, stores00836724/0083672A/00836730",
+    "no_duplicate_state": "Only three booleans stored; cruise/target/permissions not copied into a second full WeaponDirectorState",
+    "lifetime": "register_units creates/replaces owners; reads and command issuance do not reset values"
+  },
+  "api": {
+    "read": "bool director_avoidance(index, GameDirectorAvoidance& out); absent owner leaves out unchanged",
+    "write": "bool apply_director_avoidance_message_00835640(index,const DirectorCommandMessage&); delivery-only subset5Ah/subkinds7..9",
+    "cruise": "Units::run_cruise_state_step_009e1170(index,blk,setters,request,const ShipAiCruiseAvoidanceInputs&)",
+    "unsupported_write": "wrong message kind, unsupported subkind or absent owner returnsfalse without mutation; no fake sender/session delivery"
+  },
+  "request_handoff": {
+    "canonical_input": "caller-owned ShipAiAvoidanceRequest reference",
+    "field_identity": {
+      "enable_3f4": "nav+3ECh torpedo",
+      "side_filter_3f8": "nav+3F0h party",
+      "flag_3fc": "nav+3F4h land",
+      "blk.early_out_3f5": "nav+3F5h drive bypass"
+    },
+    "helper": "ship_ai_cruise_step_request_009e11d6",
+    "live_unit_input": "Units reads actual controlled-unit state; overwrites stale copied unit_player_controlled predicate",
+    "required_external_inputs": [
+      "group slot unassigned/AI-held at[[unit+740]+50]+1B0",
+      "own slot unassigned/AI-held atunit+1AC"
+    ],
+    "ordering": "CruiseRule publishes once after existing speed reads and immediately before first desired steering/heading setter; callback sees updated request",
+    "noncruise": "No current cruise leaves request untouched; helm/player arms publish request and preserve/set bypass as helper specifies but returnfalse for partial drive behavior",
+    "legacy": "Existing overload remains drive-only; root owns call-site switch and will not supply guessed slot predicates"
+  },
+  "validation": {
+    "win32_build": "passed",
+    "existing_ctest": "2/2 passed",
+    "focused_probe": {
+      "status": "passed",
+      "checks": 27,
+      "scope": "actual Commands runtime owner/command issue/received-write and cruise helper linked from successful bsp_game build objects; Units forwarding build checked",
+      "received_writes": 4,
+      "rejected_writes": 3,
+      "cruise_arms": 3,
+      "checks_include": [
+        "two-owner isolation",
+        "one-field mutations",
+        "nonzero payload normalization",
+        "no mutation on rejected messages",
+        "request before steering callback",
+        "torpedo independent of land",
+        "bypass retention",
+        "new-owner reset"
+      ]
+    },
+    "report_calls": "10 call rows checked, 0 failed",
+    "new_tracked_tests": 0,
+    "runtime": "No mission or real session delivery run in this packet"
+  },
+  "corrections": [
+    {
+      "was": "director avoidance has no persistent fields in the process",
+      "is": "existing canonical command director owns the three produced bytes and exposes live availability reads",
+      "evidence": "GameDirector storage/register_units and focused host probe"
+    },
+    {
+      "was": "cruise interface cannot publish the caller request",
+      "is": "new overload carries the exact request and bypass through the compiled helper; requires actual slot inputs",
+      "evidence": "Units->Commands references; native request stores; focused callback-order probe"
+    },
+    {
+      "was": "calling a setter implies local director mutation",
+      "is": "new API is receiver-only; no sender/session shortcut is introduced",
+      "evidence": "00835AA5 routes through actual endpoint; current Lua/script-order hosts lack this delivery"
+    }
+  ],
+  "limits": [
+    "Native player/group slot producer still unresolved in runtime; no Party-as-slot assumption",
+    "Root owns AI construction/prepass/request synchronization and Lua/settings integration",
+    "Snapshot/property routes remain unavailable until actual delivery exists",
+    "Full director ctor and base-message behaviors not claimed",
+    "Existing drive projection collects some cruise values earlier than original getter schedule; no full instruction/FP-state equivalence claim"
+  ],
+  "no_ghidra_function": [],
+  "new_ledger_records": 0,
+  "evidence": {
+    "manifest": "local/director_manifest.json",
+    "sources": [
+      {
+        "path": "include/bsp/game_hosts_commands.hpp",
+        "sha256": "8ece326c2cf173ffa6f79374f91ce0401e5f4ef20d70c3531333fd2b919472e2"
+      },
+      {
+        "path": "src/game_hosts_commands.cpp",
+        "sha256": "9f640e27ca3642cc8ed77ac06d7378e20be2fc96fb66d23c27aa012eac8fb50b"
+      },
+      {
+        "path": "include/bsp/game_hosts_units.hpp",
+        "sha256": "f040f00bbda03e6521e057477c4dc70ccf7daf77a5cb4133b2a9a0082a8697e1"
+      },
+      {
+        "path": "src/game_hosts_units.cpp",
+        "sha256": "ce34a1eea4187442e3e24db2304bc633d51dca584890856bc66138ea67546b16"
+      },
+      {
+        "path": "src/weapon_director.cpp",
+        "sha256": "d590782779ca9fca9e643d4618df41b7ed298e5452c897d99b0904ea6f3f35d1"
+      },
+      {
+        "path": "include/bsp/weapon_director.hpp",
+        "sha256": "7108486805530fa72c3b20c754bb35a5d5b6883a4616297918a62ef6c0ee7330"
+      },
+      {
+        "path": "src/ship_ai_avoidance_request.cpp",
+        "sha256": "da36efd46843f4f6517acccb30e4339c4211c984333442ce9f458fefb6a7feec"
+      },
+      {
+        "path": "include/bsp/ship_ai_avoidance_request.hpp",
+        "sha256": "b65d2df2e38a746a10848fd40ce9544bb397c474fc9abb2987fa587055d07863"
+      },
+      {
+        "path": "src/cruise_command.cpp",
+        "sha256": "50fdc05188b2a466f7359d66c3c36d3163562fe2a6f262838174fbea4b6078a4"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "sha256": "7d4ed7acc3d7de42253fe4cb7b18f255539b3f7fba170a56964fda385d501f43"
+      },
+      {
+        "path": "src/game_hosts_lua.cpp",
+        "sha256": "73587a25fa38674280a5d650a7b47d47ceb8ae9c3d9a7492e61d90d84717a83b"
+      },
+      {
+        "path": "src/game_hosts_script_orders.cpp",
+        "sha256": "dd993961da6001bc5ce1cdd1f93301a453e9b322b6a736cb2d45e2a08f705976"
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "local/director_0080e160.asm",
+        "bytes": 60,
+        "sha256": "34bb950b14ed65ea22e3481d08b96d926315b91fa479ec9dbf5fba952d929f55"
+      },
+      {
+        "path": "local/director_00810f60.asm",
+        "bytes": 945,
+        "sha256": "1f4550abe1b9a078cda81826020f05384c93f600a196f7fe9908fb15b33d362a"
+      },
+      {
+        "path": "local/director_00835640.asm",
+        "bytes": 685,
+        "sha256": "19aedf56c95b449ae9103b08d705e99b13132b66abf2e0ceaa5864391e4ab23a"
+      },
+      {
+        "path": "local/director_00835a40.asm",
+        "bytes": 1011,
+        "sha256": "9ba518297156a3868f3f83a008dd448c2e73e86cc321f521e60c9a73f81ca83f"
+      },
+      {
+        "path": "local/director_008366d0.asm",
+        "bytes": 1627,
+        "sha256": "5062bd34666d04474e4c96e7505aebc67326ae776d14f40a4f92f338bd313a69"
+      },
+      {
+        "path": "local/director_009da6e0.asm",
+        "bytes": 2944,
+        "sha256": "7f23b1b42235b9802e9fb05aebad0ddeaf613d6daab2525f88b0e79e4f1cd0ee"
+      },
+      {
+        "path": "local/director_009e1170.asm",
+        "bytes": 7519,
+        "sha256": "a286681c180e7ab19695f9ffb4ffe9dbe80200e10b3021f203e8603fa417f7c3"
+      },
+      {
+        "path": "local/director_probe.cpp",
+        "bytes": 5568,
+        "sha256": "9b285f7041193f10d1fdb33faf992ef419cc35ad688aa9ace28c4514da12f6cc"
+      },
+      {
+        "path": "local/director_probe.exe",
+        "bytes": 311296,
+        "sha256": "c98cb2c5e278ece3c719e89934a77c4ab01f41e80b59674f6bf96a360b33d5df"
+      },
+      {
+        "path": "local/director_build.log",
+        "bytes": 4156,
+        "sha256": "b5597b11a7df431bae062afeade3f027f59d4cf555d3cdf20348e947c1f69e93"
+      },
+      {
+        "path": "local/director_build_initial.log",
+        "bytes": 38481,
+        "sha256": "e66dd55679d5e514f3fa2735000566cdf4251c404e77ed106303ec98e864f3c3"
+      },
+      {
+        "path": "local/director_probe.log",
+        "bytes": 4379,
+        "sha256": "100edbe433e120ec97e707926918af91cea93208d1071587db1f1df5e7f18a71"
+      },
+      {
+        "path": "local/director_report_calls.log",
+        "bytes": 70,
+        "sha256": "dee4f0d3170b4011a3a80244e7fcb1134e2903cc3b8f8a8f80312e662571dfa6"
+      },
+      {
+        "path": "local/director_seeds.log",
+        "bytes": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+      },
+      {
+        "path": "local/director_game_hosts.lib",
+        "bytes": 12976098,
+        "sha256": "bf4bc62b2ae0982ac9257b582ca5f26bcffc5bd8318e9c2c166774b59535eb63"
+      },
+      {
+        "path": "local/director_game_objects.rsp",
+        "bytes": 4377,
+        "sha256": "ff8926bdee36792a995c8951dddfb5b9f4920cceb8b4d77a9069ea16878398e6"
+      },
+      {
+        "path": "local/director_game_objects.json",
+        "bytes": 8450,
+        "sha256": "4efb60e31d125e75c2fa7cbcc10f6891d7381b97a1b8b2cc1e6aa3371516bd37"
+      },
+      {
+        "path": "local/build_director_probe.cmd",
+        "bytes": 659,
+        "sha256": "a8019e902d8692809b34bb9ff80391d9089d1ce0d00eff487da70d5e530cb06f"
+      },
+      {
+        "path": "local/build_director_probe.ps1",
+        "bytes": 1870,
+        "sha256": "4f95d32f4c3105ace3f04a58e59e1997baf4e9a095cce56b5f6fcb3ed005346b"
+      },
+      {
+        "path": "local/write_director_report.py",
+        "bytes": 10201,
+        "sha256": "ce666aeb7c355053b29ee50e2ffa4b4334a6b1803d08156856902aadc680a638"
+      }
+    ],
+    "linked_libraries": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "d02d3d8202536cdad74c4b6bc728ae6a1b4bebae8d0787616bd0fd9da15a160d"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "sha256": "b664618d9caae7f4da3edb7ee68aab6df47ef1b11092f9d97984b79c9ae216b8"
+      },
+      {
+        "path": "build/win32/Release/bsp_zlib121.lib",
+        "sha256": "7ee4ad1d497937b147bdb23557c83e19f2ed736ba9bf9a0a3a2e12f26c8b39a9"
+      }
+    ]
+  }
+}
