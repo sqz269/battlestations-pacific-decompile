@@ -77,4 +77,9 @@ void native_shipyard_observer_callback_008455a0(
 void native_unit_observer_noop_0080dfc0() noexcept;
 void native_unit_observer_noop_00952050() noexcept;
 
+// Exact separate0042B120 RET4 provider, selected by verified callback slot08
+// entries. No arguments/registers are read and no return value is defined.
+// Invoke only for that captured native target; this is not a default handler.
+void native_observer_noop_0042b120() noexcept;
+
 } // namespace bsp

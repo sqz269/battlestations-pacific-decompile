@@ -1,0 +1,285 @@
+{
+  "packet": "orch6_observer_ret4_provider_v",
+  "address": "0042B120",
+  "source": "src/native_unit_observer_callbacks.cpp",
+  "function": "native_observer_noop_0042b120",
+  "original_abi": "Complete3-byte C20400. RET4 discards one stack word; no argument/register reads, no defined return. ECX type is not inferred.",
+  "source_abi": "Parameterless noexcept C++ void provider, not binary ABI compatible.",
+  "native": {
+    "address": "0042b120",
+    "length": 3,
+    "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+    "bytes": "c20400"
+  },
+  "tables": [
+    {
+      "label": "Destroyer",
+      "creator": "006FE590",
+      "callback_table": "00CFC3B8",
+      "slot": "08",
+      "target": "0042B120",
+      "cell": {
+        "address": "00cfc3c0",
+        "length": 4,
+        "sha256": "2ecf63ab49ce50e11bd7741b9d9ebc309fdcd995e0ed0be5f1b9924e78674463",
+        "bytes": "20b14200"
+      }
+    },
+    {
+      "label": "Cruiser",
+      "creator": "006FB430",
+      "callback_table": "00CFB71C",
+      "slot": "08",
+      "target": "0042B120",
+      "cell": {
+        "address": "00cfb724",
+        "length": 4,
+        "sha256": "2ecf63ab49ce50e11bd7741b9d9ebc309fdcd995e0ed0be5f1b9924e78674463",
+        "bytes": "20b14200"
+      }
+    },
+    {
+      "label": "LandingShip",
+      "creator": "0074BE00",
+      "callback_table": "00CFFA18",
+      "slot": "08",
+      "target": "0042B120",
+      "cell": {
+        "address": "00cffa20",
+        "length": 4,
+        "sha256": "2ecf63ab49ce50e11bd7741b9d9ebc309fdcd995e0ed0be5f1b9924e78674463",
+        "bytes": "20b14200"
+      }
+    },
+    {
+      "label": "Cargo",
+      "creator": "006EB290",
+      "callback_table": "00CFA75C",
+      "slot": "08",
+      "target": "0042B120",
+      "cell": {
+        "address": "00cfa764",
+        "length": 4,
+        "sha256": "2ecf63ab49ce50e11bd7741b9d9ebc309fdcd995e0ed0be5f1b9924e78674463",
+        "bytes": "20b14200"
+      }
+    },
+    {
+      "label": "BattleShip",
+      "creator": "006DFEF0",
+      "callback_table": "00CF9094",
+      "slot": "08",
+      "target": "0042B120",
+      "cell": {
+        "address": "00cf909c",
+        "length": 4,
+        "sha256": "2ecf63ab49ce50e11bd7741b9d9ebc309fdcd995e0ed0be5f1b9924e78674463",
+        "bytes": "20b14200"
+      }
+    },
+    {
+      "label": "Submarine",
+      "creator": "008531A0",
+      "callback_table": "00D0BF68",
+      "slot": "08",
+      "target": "0042B120",
+      "cell": {
+        "address": "00d0bf70",
+        "length": 4,
+        "sha256": "2ecf63ab49ce50e11bd7741b9d9ebc309fdcd995e0ed0be5f1b9924e78674463",
+        "bytes": "20b14200"
+      }
+    },
+    {
+      "label": "TorpedoBoat",
+      "creator": "00857E20",
+      "callback_table": "00D0C630",
+      "slot": "08",
+      "target": "0042B120",
+      "cell": {
+        "address": "00d0c638",
+        "length": 4,
+        "sha256": "2ecf63ab49ce50e11bd7741b9d9ebc309fdcd995e0ed0be5f1b9924e78674463",
+        "bytes": "20b14200"
+      }
+    },
+    {
+      "label": "MotherShip",
+      "creator": "00758D30",
+      "callback_table": "00D01614",
+      "slot": "08",
+      "target": "0042B120",
+      "cell": {
+        "address": "00d0161c",
+        "length": 4,
+        "sha256": "2ecf63ab49ce50e11bd7741b9d9ebc309fdcd995e0ed0be5f1b9924e78674463",
+        "bytes": "20b14200"
+      }
+    },
+    {
+      "label": "ReconPlane",
+      "creator": "008091D0",
+      "callback_table": "00D00058",
+      "slot": "08",
+      "target": "0042B120",
+      "cell": {
+        "address": "00d00060",
+        "length": 4,
+        "sha256": "2ecf63ab49ce50e11bd7741b9d9ebc309fdcd995e0ed0be5f1b9924e78674463",
+        "bytes": "20b14200"
+      }
+    },
+    {
+      "label": "SmallReconPlane",
+      "creator": "0084CA50",
+      "callback_table": "00D0BA68",
+      "slot": "08",
+      "target": "0042B120",
+      "cell": {
+        "address": "00d0ba70",
+        "length": 4,
+        "sha256": "2ecf63ab49ce50e11bd7741b9d9ebc309fdcd995e0ed0be5f1b9924e78674463",
+        "bytes": "20b14200"
+      }
+    },
+    {
+      "label": "LargeReconPlane",
+      "creator": "0074E540",
+      "callback_table": "00D002F0",
+      "slot": "08",
+      "target": "0042B120",
+      "cell": {
+        "address": "00d002f8",
+        "length": 4,
+        "sha256": "2ecf63ab49ce50e11bd7741b9d9ebc309fdcd995e0ed0be5f1b9924e78674463",
+        "bytes": "20b14200"
+      }
+    },
+    {
+      "label": "Fighter",
+      "creator": "007DDAE0",
+      "callback_table": "00D06908",
+      "slot": "08",
+      "target": "0042B120",
+      "cell": {
+        "address": "00d06910",
+        "length": 4,
+        "sha256": "2ecf63ab49ce50e11bd7741b9d9ebc309fdcd995e0ed0be5f1b9924e78674463",
+        "bytes": "20b14200"
+      }
+    },
+    {
+      "label": "DiveBomber",
+      "creator": "00956390",
+      "callback_table": "00D19D10",
+      "slot": "08",
+      "target": "0042B120",
+      "cell": {
+        "address": "00d19d18",
+        "length": 4,
+        "sha256": "2ecf63ab49ce50e11bd7741b9d9ebc309fdcd995e0ed0be5f1b9924e78674463",
+        "bytes": "20b14200"
+      }
+    },
+    {
+      "label": "TorpedoBomber",
+      "creator": "009564E0",
+      "callback_table": "00D19FE8",
+      "slot": "08",
+      "target": "0042B120",
+      "cell": {
+        "address": "00d19ff0",
+        "length": 4,
+        "sha256": "2ecf63ab49ce50e11bd7741b9d9ebc309fdcd995e0ed0be5f1b9924e78674463",
+        "bytes": "20b14200"
+      }
+    },
+    {
+      "label": "Kamikaze",
+      "creator": "00956240",
+      "callback_table": "00D1A2C0",
+      "slot": "08",
+      "target": "0042B120",
+      "cell": {
+        "address": "00d1a2c8",
+        "length": 4,
+        "sha256": "2ecf63ab49ce50e11bd7741b9d9ebc309fdcd995e0ed0be5f1b9924e78674463",
+        "bytes": "20b14200"
+      }
+    },
+    {
+      "label": "LevelBomber",
+      "creator": "007D7850",
+      "callback_table": "00D06620",
+      "slot": "08",
+      "target": "0042B120",
+      "cell": {
+        "address": "00d06628",
+        "length": 4,
+        "sha256": "2ecf63ab49ce50e11bd7741b9d9ebc309fdcd995e0ed0be5f1b9924e78674463",
+        "bytes": "20b14200"
+      }
+    },
+    {
+      "label": "AirField",
+      "creator": "006D3110",
+      "callback_table": "00CF8BEC",
+      "slot": "08",
+      "target": "0042B120",
+      "cell": {
+        "address": "00cf8bf4",
+        "length": 4,
+        "sha256": "2ecf63ab49ce50e11bd7741b9d9ebc309fdcd995e0ed0be5f1b9924e78674463",
+        "bytes": "20b14200"
+      }
+    },
+    {
+      "label": "LandVehicle",
+      "creator": "0074DF10",
+      "callback_table": "00CFFDC8",
+      "slot": "08",
+      "target": "0042B120",
+      "cell": {
+        "address": "00cffdd0",
+        "length": 4,
+        "sha256": "2ecf63ab49ce50e11bd7741b9d9ebc309fdcd995e0ed0be5f1b9924e78674463",
+        "bytes": "20b14200"
+      }
+    },
+    {
+      "label": "LandFort",
+      "creator": "00747000",
+      "callback_table": "00CFF3E0",
+      "slot": "08",
+      "target": "0042B120",
+      "cell": {
+        "address": "00cff3e8",
+        "length": 4,
+        "sha256": "2ecf63ab49ce50e11bd7741b9d9ebc309fdcd995e0ed0be5f1b9924e78674463",
+        "bytes": "20b14200"
+      }
+    },
+    {
+      "label": "CommandBuilding",
+      "creator": "006F5C10",
+      "callback_table": "00CFB00C",
+      "slot": "08",
+      "target": "0042B120",
+      "cell": {
+        "address": "00cfb014",
+        "length": 4,
+        "sha256": "2ecf63ab49ce50e11bd7741b9d9ebc309fdcd995e0ed0be5f1b9924e78674463",
+        "bytes": "20b14200"
+      }
+    }
+  ],
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "validation": "Verified CLI confirms original3bytes and every listed tablecell match installed PE. Combined V build/fixture pending.",
+  "limits": [
+    "Only invoke when captured actualtable selects0042B120. Never a universalcallback/default.",
+    "Separate from0080DFC0 and00952050 even though byte-identical.",
+    "No native argument type or defined EAX result inferred."
+  ]
+}
