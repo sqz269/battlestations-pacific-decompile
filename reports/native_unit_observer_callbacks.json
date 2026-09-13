@@ -1,0 +1,882 @@
+{
+  "packet": "orch6_native_unit_observer_callbacks_t",
+  "base_commit": "6aaa4dd538250308d5df776a019413cb58c9be2e",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "Read-only formal BSP CLI, each batch verifies project/program; root owns names/comments/save/export after integration. Prior comments archived in local/unit_callback_comments_before.json.",
+  "header": "include/bsp/native_unit_observer_callbacks.hpp",
+  "source": "src/native_unit_observer_callbacks.cpp",
+  "doc": "docs/NATIVE_UNIT_OBSERVER_CALLBACKS.md",
+  "complete_functions_reconstructed": 4,
+  "functions": [
+    {
+      "address": "007C6E90",
+      "name": "native_plane_observer_callback_007c6e90",
+      "ghidra_name": "BSP_Plane_ObservedUnitCallback",
+      "coverage": "complete normal body with external providers retained",
+      "native_envelope": {
+        "entry": "007C6E90",
+        "length": 135,
+        "offset": 0,
+        "sha256": "8e95bc384bad29c1809cdb19595613fa6cbe2b984649ab9656ea0656f1bf06a6",
+        "instructions": 50
+      },
+      "original_abi": "ECX=actual secondary prefix (whole unit+10h); one delivered first endpoint on stack; RET4; no defined return",
+      "source_abi": "new C++ borrowed owner/field view and explicit provider interface; no binary replacement",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "hypothesis_not_recovered_symbol. Complete135-byte body007C6E90..007C6F16; native ECX=actual plane+10h, stack=delivered first endpoint, RET4. Calls delivered first vtable+4 once, returned target vtable+5Ch with45h then9 and current game004BCA50!=9 fallback; null getter dereferences null at007C6EB4. Requires actual unit+9D4 squadron and live flag loads +5C,+5D,+60,+5E,+60,+5D. Calls external007C5AC0 on whole plane with exact x87-pushed BF800000(-1.0f). Actual leaf callback slot04. New borrowed C++ view over same owner; not binary/game replacement. docs/NATIVE_UNIT_OBSERVER_CALLBACKS.md; reports/native_unit_observer_callbacks.json."
+    },
+    {
+      "address": "008455A0",
+      "name": "native_shipyard_observer_callback_008455a0",
+      "ghidra_name": "BSP_Shipyard_ClearObservedUnitRecords",
+      "coverage": "complete reachable normal body; two always-equal CMP EDI,EDI error edges unreachable",
+      "native_envelope": {
+        "entry": "008455A0",
+        "length": 206,
+        "offset": 135,
+        "sha256": "2405ef18cb9f42c60bfca16eca745145b9286223aaf963ee16808274d70aa30e",
+        "instructions": 67
+      },
+      "original_abi": "ECX=actual secondary prefix (whole unit+10h); one delivered first endpoint on stack; RET4; no defined return",
+      "source_abi": "new C++ borrowed owner/field view and explicit provider interface; no binary replacement",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "hypothesis_not_recovered_symbol. Complete reachable206-byte body008455A0..0084566D; native ECX=actual shipyard+10h, stack=delivered first endpoint, RET4. Actual secondary slot08; slot04 remains00952050 no-op. First-match-only zero of10h record+Ch in whole-owner+780h vector; then first-match-only zero of4Ch record+4,+8,+30h in whole-owner+790h vector. Producer00844FC0 stores SAME first to both records at00845413/1B then registers first ECX and shipyard+10h EDX at008454D4. Native returning invalid-parameter checks and captured/reloaded header order retained; no erase/unregister/release. New borrowed source API, not binary/game replacement. docs/NATIVE_UNIT_OBSERVER_CALLBACKS.md; reports/native_unit_observer_callbacks.json."
+    },
+    {
+      "address": "0080DFC0",
+      "name": "native_unit_observer_noop_0080dfc0",
+      "ghidra_name": "BSP_Unit_ObserverNoop_0080DFC0",
+      "coverage": "complete",
+      "native_envelope": {
+        "entry": "0080DFC0",
+        "length": 3,
+        "offset": 341,
+        "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+        "instructions": 1
+      },
+      "original_abi": "C2 04 00; one untyped discarded stack word, ECX unused, no defined return",
+      "source_abi": "parameterless noexcept C++ void function",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "hypothesis_not_recovered_symbol. Complete exact three bytes C2 04 00 at0080DFC0..0080DFC2; RET4 discards one native stack word, no argument/register reads and no defined return. Actual selected leaf slot04 provider; shipyard slot08 is the separate008455A0 body. Preserves distinct identity from00952050 and generic0042B120. Parameterless C++ no-op infers no unused ECX/type. docs/NATIVE_UNIT_OBSERVER_CALLBACKS.md; reports/native_unit_observer_callbacks.json."
+    },
+    {
+      "address": "00952050",
+      "name": "native_unit_observer_noop_00952050",
+      "ghidra_name": "BSP_Unit_ObserverNoop_00952050",
+      "coverage": "complete",
+      "native_envelope": {
+        "entry": "00952050",
+        "length": 3,
+        "offset": 344,
+        "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+        "instructions": 1
+      },
+      "original_abi": "C2 04 00; one untyped discarded stack word, ECX unused, no defined return",
+      "source_abi": "parameterless noexcept C++ void function",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "hypothesis_not_recovered_symbol. Complete exact three bytes C2 04 00 at00952050..00952052; RET4 discards one native stack word, no argument/register reads and no defined return. Actual selected building leaf slot04 including shipyard; preserve distinct identity from0080DFC0 and generic0042B120. Parameterless C++ no-op infers no unused ECX/type. docs/NATIVE_UNIT_OBSERVER_CALLBACKS.md; reports/native_unit_observer_callbacks.json."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "007C6E9D",
+      "native": "delivered-first+vtable04",
+      "function": "007C6E90",
+      "contract": "actual delivered first endpoint getter; EAX may differ from first; ECX=first; no stack words"
+    },
+    {
+      "address": "007C6EAE",
+      "native": "getter-target+vtable5C",
+      "function": "007C6E90",
+      "contract": "actual producer-specific predicate, ECX=target, PUSH45h, bool AL; provider consumes one stack word"
+    },
+    {
+      "address": "007C6EBD",
+      "native": "getter-target+vtable5C",
+      "function": "007C6E90",
+      "contract": "same actual provider, literal9; null dereferences at007C6EB4 before call"
+    },
+    {
+      "address": "007C6EC9",
+      "native": "004BCA50",
+      "function": "007C6E90",
+      "contract": "body read; existing effective-game-mode provider; ECX=current owner globalE188A8; no stack arguments; RET at004BCA77"
+    },
+    {
+      "address": "007C6F0D",
+      "native": "007C5AC0",
+      "function": "007C6E90",
+      "contract": "complete callee assembly read; externally owned address-named call; whole-plane ECX=secondary-10h; exact float BF800000, RET4 at007C5F38 and007C5F5C"
+    },
+    {
+      "address": "008455BA",
+      "native": "00BF6713",
+      "function": "008455A0",
+      "reachable": true,
+      "contract": "existing invalid-parameter wrapper, no arguments; returning handler allowed; no container repair added"
+    },
+    {
+      "address": "008455C8",
+      "native": "00BF6713",
+      "function": "008455A0",
+      "reachable": true,
+      "contract": "existing invalid-parameter wrapper, no arguments; returning handler allowed; no container repair added"
+    },
+    {
+      "address": "008455D1",
+      "native": "00BF6713",
+      "function": "008455A0",
+      "reachable": false,
+      "contract": "existing invalid-parameter wrapper, no arguments; returning handler allowed; no container repair added"
+    },
+    {
+      "address": "008455DF",
+      "native": "00BF6713",
+      "function": "008455A0",
+      "reachable": true,
+      "contract": "existing invalid-parameter wrapper, no arguments; returning handler allowed; no container repair added"
+    },
+    {
+      "address": "008455F2",
+      "native": "00BF6713",
+      "function": "008455A0",
+      "reachable": true,
+      "contract": "existing invalid-parameter wrapper, no arguments; returning handler allowed; no container repair added"
+    },
+    {
+      "address": "00845617",
+      "native": "00BF6713",
+      "function": "008455A0",
+      "reachable": true,
+      "contract": "existing invalid-parameter wrapper, no arguments; returning handler allowed; no container repair added"
+    },
+    {
+      "address": "00845628",
+      "native": "00BF6713",
+      "function": "008455A0",
+      "reachable": true,
+      "contract": "existing invalid-parameter wrapper, no arguments; returning handler allowed; no container repair added"
+    },
+    {
+      "address": "00845631",
+      "native": "00BF6713",
+      "function": "008455A0",
+      "reachable": false,
+      "contract": "existing invalid-parameter wrapper, no arguments; returning handler allowed; no container repair added"
+    },
+    {
+      "address": "0084563F",
+      "native": "00BF6713",
+      "function": "008455A0",
+      "reachable": true,
+      "contract": "existing invalid-parameter wrapper, no arguments; returning handler allowed; no container repair added"
+    },
+    {
+      "address": "00845652",
+      "native": "00BF6713",
+      "function": "008455A0",
+      "reachable": true,
+      "contract": "existing invalid-parameter wrapper, no arguments; returning handler allowed; no container repair added"
+    }
+  ],
+  "producer_steps": [
+    {
+      "address": "00844FF3",
+      "native": "00844CE0",
+      "function": "00844FC0",
+      "contract": "body read; selects borrowed10h record from owner+780h; no stack args; RET"
+    },
+    {
+      "address": "008454D4",
+      "native": "00694A60",
+      "function": "00844FC0",
+      "contract": "existing register pair; ECX=created first stored at4Ch-record+30h and10h-record+Ch; EDX=whole shipyard+10h; no stack args; RET"
+    },
+    {
+      "address": "00846F89",
+      "native": "00844FC0",
+      "function": "00846D90",
+      "contract": "producer read; PUSH EBX where EBX=index*4Ch+whole-owner[794h], ECX=selected shipyard; RET4"
+    },
+    {
+      "address": "00BF671A",
+      "native": "00BF66EF",
+      "function": "00BF6713",
+      "contract": "decoded handler path read; five PUSH0, ADD ESP,14h at00BF671F; returning boundary retained"
+    }
+  ],
+  "leaf_table_evidence": {
+    "rows": [
+      {
+        "label": "Destroyer",
+        "creator": "006FE590",
+        "constructor": "006FE460",
+        "primary_table": "00CFC3D0",
+        "callback_table": "00CFC3B8",
+        "primary_store": "006FE46D",
+        "callback_store": "006FE473",
+        "end_inclusive": "006FE479",
+        "native_bytes": 13,
+        "sha256": "38fd7b0515668a06a4bfe24e2d989ec43f2df9b99c27cac309f0521684cafaf9",
+        "primary_slot00": "006FE570",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "006FE520",
+        "callback_slot04": "0080DFC0",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "Cruiser",
+        "creator": "006FB430",
+        "constructor": "006FB300",
+        "primary_table": "00CFB738",
+        "callback_table": "00CFB71C",
+        "primary_store": "006FB30D",
+        "callback_store": "006FB313",
+        "end_inclusive": "006FB319",
+        "native_bytes": 13,
+        "sha256": "8c63cde5b5da42bbc4242674db3e80841d1fe6f11f9ed4ad8c9dfd0643189826",
+        "primary_slot00": "006FB410",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "006FB3B0",
+        "callback_slot04": "0080DFC0",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "LandingShip",
+        "creator": "0074BE00",
+        "constructor": "0074BB00",
+        "primary_table": "00CFFA30",
+        "callback_table": "00CFFA18",
+        "primary_store": "0074BB2C",
+        "callback_store": "0074BB32",
+        "end_inclusive": "0074BB38",
+        "native_bytes": 13,
+        "sha256": "54435382d1812ca7886ff1ec99f777ead0ac18b900799a74b661f15b183a4305",
+        "primary_slot00": "0074BDA0",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "0074BC50",
+        "callback_slot04": "0080DFC0",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "Cargo",
+        "creator": "006EB290",
+        "constructor": "006EB160",
+        "primary_table": "00CFA778",
+        "callback_table": "00CFA75C",
+        "primary_store": "006EB170",
+        "callback_store": "006EB176",
+        "end_inclusive": "006EB17C",
+        "native_bytes": 13,
+        "sha256": "fb08e24b2f8e77feb7f437e8277cd766ec953628842035c5b22f6b2e6265ed31",
+        "primary_slot00": "006EB270",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "006EB1F0",
+        "callback_slot04": "0080DFC0",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "BattleShip",
+        "creator": "006DFEF0",
+        "constructor": "006DFC90",
+        "primary_table": "00CF90B0",
+        "callback_table": "00CF9094",
+        "primary_store": "006DFC9D",
+        "callback_store": "006DFCA3",
+        "end_inclusive": "006DFCA9",
+        "native_bytes": 13,
+        "sha256": "c29f65e6a62ca2e5b08196116b66f0260b963637651952d65c893b481195eea3",
+        "primary_slot00": "006DFED0",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "006DFE10",
+        "callback_slot04": "0080DFC0",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "Submarine",
+        "creator": "008531A0",
+        "constructor": "00852F10",
+        "primary_table": "00D0BF80",
+        "callback_table": "00D0BF68",
+        "primary_store": "00852F27",
+        "callback_store": "00852F2D",
+        "end_inclusive": "00852F33",
+        "native_bytes": 13,
+        "sha256": "e7d6053c3aa6ee2d208ff620134ec96775e7a3aa1fabd6538fcff6cd798bbf6f",
+        "primary_slot00": "00853380",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "00853040",
+        "callback_slot04": "0080DFC0",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "TorpedoBoat",
+        "creator": "00857E20",
+        "constructor": "00857CD0",
+        "primary_table": "00D0C648",
+        "callback_table": "00D0C630",
+        "primary_store": "00857CDD",
+        "callback_store": "00857CE3",
+        "end_inclusive": "00857CE9",
+        "native_bytes": 13,
+        "sha256": "e8e354e28f846e7b83a1e7e5b8529e22ee9ab234296a1121e12e3b21a5f79d5d",
+        "primary_slot00": "00857E00",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "00857DB0",
+        "callback_slot04": "0080DFC0",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "MotherShip",
+        "creator": "00758D30",
+        "constructor": "00758550",
+        "primary_table": "00D01630",
+        "callback_table": "00D01614",
+        "primary_store": "00758598",
+        "callback_store": "0075859E",
+        "end_inclusive": "007585A4",
+        "native_bytes": 13,
+        "sha256": "45dda5570a6ee9f99646cddbf901eccafada82fbd6a704e6261a5a3f221414ff",
+        "primary_slot00": "00758610",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "00758490",
+        "callback_slot04": "0080DFC0",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "ReconPlane",
+        "creator": "008091D0",
+        "constructor": "0074E0F0",
+        "primary_table": "00D00070",
+        "callback_table": "00D00058",
+        "primary_store": "0074E0FF",
+        "callback_store": "0074E105",
+        "end_inclusive": "0074E10B",
+        "native_bytes": 13,
+        "sha256": "951b40fb88285748b76385e36fd17187c71db6982d0aa0385dd4b9752de4a006",
+        "primary_slot00": "0074E4C0",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "0074E3D0",
+        "callback_slot04": "007C6E90",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "SmallReconPlane",
+        "creator": "0084CA50",
+        "constructor": "0084C920",
+        "primary_table": "00D0BA80",
+        "callback_table": "00D0BA68",
+        "primary_store": "0084C92D",
+        "callback_store": "0084C933",
+        "end_inclusive": "0084C939",
+        "native_bytes": 13,
+        "sha256": "8529727a7d491a314e81ebf1822f584c39979c99f9ea0db4a584734794ea9974",
+        "primary_slot00": "0084CA30",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "0084C9E0",
+        "callback_slot04": "007C6E90",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "LargeReconPlane",
+        "creator": "0074E540",
+        "constructor": "0074E2D0",
+        "primary_table": "00D00308",
+        "callback_table": "00D002F0",
+        "primary_store": "0074E2DD",
+        "callback_store": "0074E2E3",
+        "end_inclusive": "0074E2E9",
+        "native_bytes": 13,
+        "sha256": "a8658276e37cb82d74f72156e47f020831d0b49e3d833dce4910637102bde95b",
+        "primary_slot00": "0074E520",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "0074E3E0",
+        "callback_slot04": "007C6E90",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "Fighter",
+        "creator": "007DDAE0",
+        "constructor": "007DD9B0",
+        "primary_table": "00D06920",
+        "callback_table": "00D06908",
+        "primary_store": "007DD9BF",
+        "callback_store": "007DD9C5",
+        "end_inclusive": "007DD9CB",
+        "native_bytes": 13,
+        "sha256": "710a3c62c74c668e1b54d8452f6925b9eb87b73172015ecc6587974c045ed121",
+        "primary_slot00": "007DDAC0",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "007DDA70",
+        "callback_slot04": "007C6E90",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "DiveBomber",
+        "creator": "00956390",
+        "constructor": "00951B60",
+        "primary_table": "00D19D28",
+        "callback_table": "00D19D10",
+        "primary_store": "00951B6F",
+        "callback_store": "00951B75",
+        "end_inclusive": "00951B7B",
+        "native_bytes": 13,
+        "sha256": "d09037d507f443818281859b680f0b89f43f25a7ee1efe807b4859fc749f3073",
+        "primary_slot00": "00953570",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "009530D0",
+        "callback_slot04": "007C6E90",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "TorpedoBomber",
+        "creator": "009564E0",
+        "constructor": "00951C40",
+        "primary_table": "00D1A000",
+        "callback_table": "00D19FE8",
+        "primary_store": "00951C4F",
+        "callback_store": "00951C55",
+        "end_inclusive": "00951C5B",
+        "native_bytes": 13,
+        "sha256": "1c745dfd968bc55f0dd27bcaf8955c740aefb8b58c0f1dde55c69226d85433f2",
+        "primary_slot00": "00953600",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "00953080",
+        "callback_slot04": "007C6E90",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "Kamikaze",
+        "creator": "00956240",
+        "constructor": "00951D20",
+        "primary_table": "00D1A2D8",
+        "callback_table": "00D1A2C0",
+        "primary_store": "00951D2F",
+        "callback_store": "00951D35",
+        "end_inclusive": "00951D3B",
+        "native_bytes": 13,
+        "sha256": "da6fd467db1b5cae89d0c1113327dd11d8d46b1d7d0affcd884cda2dc0833e1c",
+        "primary_slot00": "009534E0",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "009530E0",
+        "callback_slot04": "007C6E90",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "LevelBomber",
+        "creator": "007D7850",
+        "constructor": "007D7720",
+        "primary_table": "00D06638",
+        "callback_table": "00D06620",
+        "primary_store": "007D772F",
+        "callback_store": "007D7735",
+        "end_inclusive": "007D773B",
+        "native_bytes": 13,
+        "sha256": "686dd9f77a7f471579e6d48c57e71f6427b295623296fd4a50893a315fe9677c",
+        "primary_slot00": "007D7830",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "007D77E0",
+        "callback_slot04": "007C6E90",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "AirField",
+        "creator": "006D3110",
+        "constructor": "006D1C20",
+        "primary_table": "00CF8C08",
+        "callback_table": "00CF8BEC",
+        "primary_store": "006D1C68",
+        "callback_store": "006D1C6E",
+        "end_inclusive": "006D1C74",
+        "native_bytes": 13,
+        "sha256": "6f77e6dc1d0760b990dd1a8ec89aca6b2e00c9ac94ee79a861eb2f1780cf758e",
+        "primary_slot00": "006D40D0",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "006D1DB0",
+        "callback_slot04": "00952050",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "Shipyard",
+        "creator": "00848380",
+        "constructor": "00848080",
+        "primary_table": "00D0B770",
+        "callback_table": "00D0B754",
+        "primary_store": "008480B1",
+        "callback_store": "008480B7",
+        "end_inclusive": "008480BD",
+        "native_bytes": 13,
+        "sha256": "c1170042d8166b8b174c729915c572a1d7090812576ad2f37f062215595c52a1",
+        "primary_slot00": "00847610",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "00846BE0",
+        "callback_slot04": "00952050",
+        "callback_slot08": "008455A0",
+        "live_equals_disk": true
+      },
+      {
+        "label": "LandVehicle",
+        "creator": "0074DF10",
+        "constructor": "0074DCC0",
+        "primary_table": "00CFFDE0",
+        "callback_table": "00CFFDC8",
+        "primary_store": "0074DCCF",
+        "callback_store": "0074DCD5",
+        "end_inclusive": "0074DCDB",
+        "native_bytes": 13,
+        "sha256": "594e6ffe791dc99b7522bb0eb05694806899b24730a36f34a8fb620125a73bde",
+        "primary_slot00": "0074DFA0",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "0074DD60",
+        "callback_slot04": "00952050",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "LandFort",
+        "creator": "00747000",
+        "constructor": "00745940",
+        "primary_table": "00CFF3F8",
+        "callback_table": "00CFF3E0",
+        "primary_store": "0074597D",
+        "callback_store": "00745983",
+        "end_inclusive": "00745989",
+        "native_bytes": 13,
+        "sha256": "b434b01d39fc6af16d5a774890e1104f80c08c08abb7e52cda82262915e3acd6",
+        "primary_slot00": "00747090",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "00745A90",
+        "callback_slot04": "00952050",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      },
+      {
+        "label": "CommandBuilding",
+        "creator": "006F5C10",
+        "constructor": "006F5610",
+        "primary_table": "00CFB028",
+        "callback_table": "00CFB00C",
+        "primary_store": "006F564E",
+        "callback_store": "006F5654",
+        "end_inclusive": "006F565A",
+        "native_bytes": 13,
+        "sha256": "60d5cc7e7f4c2da34ccaaba00134ec90650adf3658102ab47e0524b20fd6dc25",
+        "primary_slot00": "006F5CA0",
+        "primary_slot04": "0042B970",
+        "callback_slot00": "006F5850",
+        "callback_slot04": "00952050",
+        "callback_slot08": "0042B120",
+        "live_equals_disk": true
+      }
+    ],
+    "count": 21,
+    "scope": "21 previously supported exact creator identities; each actual callback table12 bytes checked live against original disk. Other table references do not expand this producer scope."
+  },
+  "layout_evidence": [
+    {
+      "producer": "00848080",
+      "writes": "00848109/0F/15 and0084811F/25/2B",
+      "layout": "whole-owner+780h and+790h vector begin/end/capacity; ESI=whole owner, EDI=0; vector word0 unconsumed"
+    },
+    {
+      "producer": "00844FC0",
+      "writes": "00845413 and0084541B",
+      "layout": "same newly created observed first at4Ch-record+30h and10h-record+Ch; opaque+4 word set3 at0084500A; existing descriptor at+8"
+    },
+    {
+      "producer": "00846D90",
+      "writes": "00846DE0..00846DED",
+      "layout": "4Ch record input address is index*4Ch+whole owner[794h]"
+    },
+    {
+      "producer": "007ED0D0 /007F4580",
+      "writes": "007ED0E6 /007F4B49",
+      "layout": "actual plane squadron backpointer+9D4h; existing plane_flight/plane_squadron constants reused conceptually"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "consumer-side inference could treat getter result as first or canonical unit",
+      "is": "first, getter result, callback secondary, raw whole unit and canonical world identity stay distinct",
+      "evidence": "007C6E94/9D/9F; alias contract from S packet"
+    },
+    {
+      "was": "null getter might be silently skipped",
+      "is": "native null read at007C6EB4; source provider is explicit fault boundary",
+      "evidence": "007C6EA3 target and native fixture access violation category"
+    },
+    {
+      "was": "shipyard vector record fields could be inferred as entity metadata or all duplicates removed",
+      "is": "producer writes same raw first to both layouts; first matching record only in each vector",
+      "evidence": "00845413/1B; 008455FC exits first loop;0084565E/61/64 then returns"
+    },
+    {
+      "was": "one generic no-op could replace all unit secondary providers",
+      "is": "distinct0080DFC0 and00952050 exact RET4 identities, plane slot04 and shipyard slot08 retained",
+      "evidence": "21 exact callback table rows and four original byte envelopes"
+    }
+  ],
+  "verification": {
+    "build_tested": true,
+    "fixture_tested": true,
+    "abi_compatible": false,
+    "game_validated": false,
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "log": "local/unit_callback_build.log",
+      "source_unchanged_after_build": true,
+      "ctest": "2/2 passed; reconstructed_math and native_math_differential",
+      "native_math_result": "456 native-reference comparisons;0 failures; PRNG seed,1500 outputs and final state match",
+      "retained_last_test": "local/unit_callback_proof/build/win32/Testing/Temporary/LastTest.log"
+    },
+    "native_fixture": {
+      "capture_pairs": 12,
+      "bytes_per_side": 34384,
+      "input_bytes_per_side": 39072,
+      "original_spans": 4,
+      "original_bytes": 347,
+      "relocations": [
+        {
+          "site": "007C6EC9",
+          "kind": "rel32 CALL",
+          "callee": "004BCA50",
+          "replacement": "controlled native fixture stub"
+        },
+        {
+          "site": "007C6F0D",
+          "kind": "rel32 CALL",
+          "callee": "007C5AC0",
+          "replacement": "controlled native fixture stub"
+        },
+        {
+          "site": "008455BA",
+          "kind": "rel32 CALL",
+          "callee": "00BF6713",
+          "replacement": "controlled native fixture stub"
+        },
+        {
+          "site": "008455C8",
+          "kind": "rel32 CALL",
+          "callee": "00BF6713",
+          "replacement": "controlled native fixture stub"
+        },
+        {
+          "site": "008455D1",
+          "kind": "rel32 CALL",
+          "callee": "00BF6713",
+          "replacement": "controlled native fixture stub"
+        },
+        {
+          "site": "008455DF",
+          "kind": "rel32 CALL",
+          "callee": "00BF6713",
+          "replacement": "controlled native fixture stub"
+        },
+        {
+          "site": "008455F2",
+          "kind": "rel32 CALL",
+          "callee": "00BF6713",
+          "replacement": "controlled native fixture stub"
+        },
+        {
+          "site": "00845617",
+          "kind": "rel32 CALL",
+          "callee": "00BF6713",
+          "replacement": "controlled native fixture stub"
+        },
+        {
+          "site": "00845628",
+          "kind": "rel32 CALL",
+          "callee": "00BF6713",
+          "replacement": "controlled native fixture stub"
+        },
+        {
+          "site": "00845631",
+          "kind": "rel32 CALL",
+          "callee": "00BF6713",
+          "replacement": "controlled native fixture stub"
+        },
+        {
+          "site": "0084563F",
+          "kind": "rel32 CALL",
+          "callee": "00BF6713",
+          "replacement": "controlled native fixture stub"
+        },
+        {
+          "site": "00845652",
+          "kind": "rel32 CALL",
+          "callee": "00BF6713",
+          "replacement": "controlled native fixture stub"
+        },
+        {
+          "operand": "007C6EC5",
+          "kind": "absolute address",
+          "original": "00E188A8",
+          "replacement": "address of fixture game_pointer"
+        },
+        {
+          "operand": "007C6F05",
+          "kind": "absolute address",
+          "original": "00D7A260",
+          "replacement": "address of fixture exact -1.0f"
+        }
+      ],
+      "mismatches": 0,
+      "inputs_equal": true,
+      "records_sha256": "bab509dfe6d5e46ebcccfefa5c97e437648149d78773af255f71d474c552a77a",
+      "inputs_sha256": "127d83524a3f85444be586853953346bdcc7ee784d78c9b93a1673241c692170",
+      "case_order": [
+        "kind45 success",
+        "kind9/mode9 gated",
+        "kind9/mode8 success",
+        "flag5D gate",
+        "null squadron gate",
+        "both kinds false",
+        "null getter AV",
+        "duplicate clear first",
+        "duplicate clear next",
+        "no matches",
+        "returning validation handler",
+        "both distinct RET4 bodies"
+      ],
+      "limitations": [
+        "No external class predicate, effective-mode implementation or plane prepass runs in this isolated fixture.",
+        "Source null host raises the recorded Windows access violation category; exact native fault address and arbitrary SEH are not emulated.",
+        "Tool executable paths/hashes identify installed compiler inputs; linker libraries and all repository include dependencies are copied into the retained proof."
+      ]
+    },
+    "proof_manifest": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-observer-callbacks-t\\local\\unit_callback_proof\\manifest.json",
+    "proof_manifest_sha256": "f89f425064d9a895246683cbe16fbc789797203c92e46c8379f13aa409944e23",
+    "toolchain": [
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\cl.exe",
+        "bytes": 830824,
+        "sha256": "33ee095d65686e5f4caedd7d52b74fbba8447b2ef4b07019a9dca58c5cb74e5c"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\link.exe",
+        "bytes": 3208544,
+        "sha256": "b00f360e373955590d61ca2a5e43f504365edf555d9e80d28fd1cbc0bcd59438"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\lib.exe",
+        "bytes": 21376,
+        "sha256": "06da7daac5e297ba314d41b9930495b17fe9f43a3ffc6b4c3c542af2803451bd"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x86\\rc.exe",
+        "bytes": 30144,
+        "sha256": "81c7687f043f7b7774a2206a6d9d971fade672b9b3eae4fcef80915481f8484a"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\c1.dll",
+        "bytes": 3131704,
+        "sha256": "37b06f075d24eb9ff01047a5747383309dcf78397ddb6de0c64144cb192e6b3a"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\c1xx.dll",
+        "bytes": 11055928,
+        "sha256": "fe5610a0ed19fd233e56c9dc4d0e5b0ebbf64ed97dac08a7ade06a204856fedc"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\c2.dll",
+        "bytes": 8720696,
+        "sha256": "03befd4b4a8d3915091b99a4e4fe12586fb49ccd519e568f655fb1f431f6d7f0"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\mspdb140.dll",
+        "bytes": 378720,
+        "sha256": "558b54f4881fd2a85c48c44928291bcd38a3fe132a552adfd76e5398ad1c112c"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+        "bytes": 14060088,
+        "sha256": "d8173552e9d943c20feadd74d0437371f49d45c3d53a20dae2655ecc2493392c"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\ctest.exe",
+        "bytes": 15152224,
+        "sha256": "4d00d31a10d004edb8d7f39bcd47d0a94da1cd4464e9d2246d199f0cf6c7852b"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\python.exe",
+        "bytes": 104264,
+        "sha256": "ec0ea8d6907787b76dcf8524aaa93e52e167ceee62fa8778e182ea637a3dbc1d"
+      }
+    ],
+    "libraries": [
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcprt.lib",
+        "retained": "local/unit_callback_proof/libraries/00_msvcprt.lib",
+        "bytes": 5365666,
+        "sha256": "5043c6d473b6f5d0f767df241b4004175ad9b60d01ae4565b7caaea1709ab55f"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\MSVCRT.lib",
+        "retained": "local/unit_callback_proof/libraries/01_MSVCRT.lib",
+        "bytes": 8263656,
+        "sha256": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\OLDNAMES.lib",
+        "retained": "local/unit_callback_proof/libraries/02_OLDNAMES.lib",
+        "bytes": 158090,
+        "sha256": "3af0bc33f96a74105b9a83eea9238b7191885764b36bec144ec783a8fba59457"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\um\\x86\\kernel32.lib",
+        "retained": "local/unit_callback_proof/libraries/03_kernel32.lib",
+        "bytes": 329914,
+        "sha256": "0916cf9c90410acf8fe000b23443f54c467bdecb14078034f3c9ec086200afc7"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\vcruntime.lib",
+        "retained": "local/unit_callback_proof/libraries/04_vcruntime.lib",
+        "bytes": 400312,
+        "sha256": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\ucrt\\x86\\ucrt.lib",
+        "retained": "local/unit_callback_proof/libraries/05_ucrt.lib",
+        "bytes": 299244,
+        "sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d"
+      }
+    ],
+    "call_verifier": {
+      "command": "python tools/verify_report_calls.py reports/native_unit_observer_callbacks.json",
+      "direct_rows": 16,
+      "failures": 0,
+      "indirect_rows": 3,
+      "log": "local/unit_callback_report_calls.txt"
+    }
+  },
+  "integration_contract": "Root runtime binding only. Borrow one existing canonical GameUnitSlot identity and its raw observed/callback prefix; never reinterpret semantic metadata as native object bytes. Resolve actual producer for vtable5C; bind007C5AC0 to same real plane owner. Shipyard borrows actual headers/records and does not allocate/copy an owner.",
+  "uncertainty": [
+    "Descriptive names are hypotheses, not recovered symbols.",
+    "No full unit constructor/destructor, hierarchy, STL/CRT port or host runtime edits.",
+    "Native SEH, fault instruction identity, register preservation and external provider bodies are outside new source ABI."
+  ]
+}

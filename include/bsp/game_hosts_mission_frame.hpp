@@ -42,6 +42,7 @@ class GameVfsHost;
 class GameMissionLuaHost;
 class GameFrameProfiler;
 class GameHudHost;
+class GameObserverRuntime;
 
 // What the walk of the load inventory did. `concrete` counts the steps a
 // reconstruction performed in process; `records` counts the steps that took the
@@ -130,6 +131,9 @@ public:
     ~GameMissionFrameHost();
     GameMissionFrameHost(const GameMissionFrameHost&) = delete;
     GameMissionFrameHost& operator=(const GameMissionFrameHost&) = delete;
+
+    // The application runtime and Lua owner must outlive this frame's units.
+    void bind_observer_runtime(GameObserverRuntime&);
 
     // Walks the recovered load inventory in order from the step the mission
     // path's request 0Ah dispatches, performing every step whose owner area has
