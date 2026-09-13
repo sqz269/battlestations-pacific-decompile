@@ -7,6 +7,14 @@
   "change": "Preserve actual volatile pointer-slot qualification through a new canonical overload; existing unqualified interface delegates with qualification added.",
   "behavior": "One old-slot read, required old reference release, callback-following clear, then no-retain replacement; no same-pointer shortcut.",
   "native_reuse": "00484620 full body and InterlockedDecrement/virtual0 graph proof belongs to the active X provider packet; not claimed by this source-only interface change.",
-  "validation": "Pending combined W Win32 build and existing CTests. X original-byte adapter fixture remains separate.",
-  "limits": ["No new ownership, synchronization or release implementation.", "Existing VoiceReferenceHost contract remains required.", "Native EH, stack aliases and concurrent access remain unproved."]
+  "validation": {
+    "build": "Combined MSVC Win32 and2existingCTests passed",
+    "compiled_commit": "9c53c9ce4b71b9ccb4a8f7ae3eeb6a9b019458fc",
+    "native_fixture": "X actual effect adapter fixture remains separate"
+  },
+  "limits": [
+    "No new ownership, synchronization or release implementation.",
+    "Existing VoiceReferenceHost contract remains required.",
+    "Native EH, stack aliases and concurrent access remain unproved."
+  ]
 }

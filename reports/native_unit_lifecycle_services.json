@@ -112,7 +112,7 @@
     "No writes after the required renderer update; its publication changes survive."
   ],
   "validation": {
-    "status": "strict_ad_hoc_Win32_and_native_fixture_passed_pending_combined_CMake_build",
+    "status": "strict_Win32_native_fixture_and_combined_build_passed",
     "paired_scenarios": 6,
     "owned_native_bytes": 75,
     "read_provider_bytes": 25,
@@ -128,7 +128,9 @@
     "manifest_sha256": "e9df0162899c688926d1bc8202efd2c4a22f7617c06c15852516a851758c038d",
     "retained_artifacts": 207,
     "compiler": "MSVC Win32 /W4 /WX /O2 /MD; VsDevCmd hostx64 x86; MANIFEST:EMBED",
-    "failed_attempt": "Initial response-file sourceDependencies newline syntax failed before compilation; retained log/rsp, corrected without source workaround."
+    "failed_attempt": "Initial response-file sourceDependencies newline syntax failed before compilation; retained log/rsp, corrected without source workaround.",
+    "combined_commit": "9c53c9ce4b71b9ccb4a8f7ae3eeb6a9b019458fc",
+    "ctest": "2existingCTests passed"
   },
   "no_ghidra_function": [],
   "limitations": [
