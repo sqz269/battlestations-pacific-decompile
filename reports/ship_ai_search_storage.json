@@ -1,0 +1,196 @@
+{
+  "packet": "orch6_ship_search_storage_i",
+  "base_commit": "2f9da1dd",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "read_only; bsp wrappers verify project/program before each live analysis batch",
+  "source": "src/ship_ai_search_storage.cpp",
+  "header": "include/bsp/ship_ai_search_storage.hpp",
+  "doc": "docs/SHIP_AI_SEARCH_STORAGE.md",
+  "classification": "process_storage_adaptation_with_partial_native_constructor_fragment",
+  "routines": [
+    {
+      "address": "009E4401",
+      "end_inclusive": "009E444F",
+      "containing_function": "009E4330",
+      "containing_function_end_inclusive": "009E46C2",
+      "function_entry": false,
+      "name": "ShipAiSearchStorage searcher initialization stores",
+      "coverage": "partial_projection: complete 12 searcher stores; enclosing constructor before 009E4401 and from 009E4450 onward excluded",
+      "original_abi": "Inline: ESI=nav (ECX captured at 009E434A), EBX=0 (009E4351), EAX set to -1, PUSH EDI at 009E4410; containing constructor RET4 at 009E46C0",
+      "native_instructions": 14,
+      "native_bytes": 79,
+      "memory_stores": 12,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "native_call_rows": [
+    {
+      "address": "009F3F3E",
+      "native": "00BF681B",
+      "containing_function": "009F3F20",
+      "containing_function_end_inclusive": "009F3F7F",
+      "contract": "PUSH 2268h at 009F3F37; ADD ESP,4 at 009F3F43"
+    },
+    {
+      "address": "009F3F59",
+      "native": "009F3BA0",
+      "containing_function": "009F3F20",
+      "containing_function_end_inclusive": "009F3F7F",
+      "contract": "ECX=allocated composite; push unit ESI; callee RET4"
+    },
+    {
+      "address": "009F3BE5",
+      "native": "009F39C0",
+      "containing_function": "009F3BA0",
+      "containing_function_end_inclusive": "009F3C70",
+      "contract": "EDI=composite+58h, ECX=EDI; push unit; callee RET4"
+    },
+    {
+      "address": "009F39E5",
+      "native": "009F1160",
+      "containing_function": "009F39C0",
+      "containing_function_end_inclusive": "009F3B99",
+      "contract": "ECX=incoming brain, push unit; callee RET4"
+    },
+    {
+      "address": "009F118D",
+      "native": "009E4330",
+      "containing_function": "009F1160",
+      "containing_function_end_inclusive": "009F1413",
+      "contract": "ECX=brain+8h, push unit; RET4 at 009E46C0"
+    },
+    {
+      "address": "004158C3",
+      "native": "00BF65AC",
+      "containing_function": "004158A0",
+      "containing_function_end_inclusive": "004158D3",
+      "contract": "Push current node; ADD ESP,4 at 004158C8; continue until traversal head null"
+    }
+  ],
+  "storage": {
+    "allocation_bytes": 8808,
+    "navigation_offset": 96,
+    "record_offsets_from_nav": [
+      2596,
+      2628,
+      2660
+    ],
+    "record_offsets_from_allocation": [
+      2692,
+      2724,
+      2756
+    ],
+    "record_bytes": 32,
+    "cache_prefix_bytes": 24,
+    "list_bytes": 8,
+    "initialized_per_record": {
+      "00": "enabled byte=1",
+      "14": "query key=-1",
+      "18": "list head=null",
+      "1c": "list layer=0"
+    },
+    "untouched_per_record": [
+      "01..03 padding",
+      "04..13 bounds"
+    ],
+    "initial_bounds": "12 uint32 words copied from raw allocation before any FP access; snapshot remains original after queries",
+    "typed_views": "Explicit MSVC Win32 raw-object overlay, no placement/default construction; not a portable C++ object-model claim",
+    "other_composite_bytes": "untouched; not treated as a constructed composite object"
+  },
+  "ownership": {
+    "allocation": "existing AvoidZoneAllocationAccess.allocate_record_00bf681b(context,0x2268), nonnull aligned storage or throw",
+    "failure": "propagate supplied allocation exception; no fallback, null replacement, allocation retry in adapter, or partial publication",
+    "destruction": "index-order actual 004158A0 clear of all three current lists, then matching free_record_00bf65ac of backing",
+    "move": "transfer allocation/callback table without relocating records; assignment first destroys its old storage; self move supported; moved-from empty",
+    "lifetime": "borrowed callback context/free service outlive owner; all lists disjoint and use matching allocator; borrowed geometry valid during operations",
+    "aliasing": "cache/list views share actual records; old-destination aliases invalid after move assignment; transferred aliases follow receiving owner"
+  },
+  "corrections": [
+    {
+      "was": "Semantic cache defaults could be taken as native initial bounds; 009E4449 used as fragment inclusive end.",
+      "is": "Native leaves bounds and padding untouched; last instruction begins 009E4449 and ends 009E444F.",
+      "evidence": "Current full 009E4330 listing plus disk/live 79-byte fragment; native key-mismatch reads old width/height at 009D70F9..009D710B."
+    }
+  ],
+  "no_ghidra_function": [],
+  "false_free_flow_gaps": [],
+  "proposed_ghidra_names": [],
+  "verification": {
+    "build": "Win32 Release scripts/build.ps1 passed, /W4 /WX /fp:strict",
+    "ctest": "2/2 existing tests passed; native seeds verified before configure; no tracked tests added",
+    "report_call_check": "6 call rows checked, 0 failed",
+    "native_input": {
+      "original_executable": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "original_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "fragment_start": "009E4401",
+      "fragment_end_inclusive": "009E444F",
+      "fragment_bytes": 79,
+      "fragment_sha256": "a6bc1a5c06663d0b141c5bd4362717c2199a5607446ee2fac5b3a3bceb5c59c2",
+      "ghidra_bytes_equal_disk": true,
+      "bridge": "ESI=allocation+60h, EBX=0; append POP EDI;RET to balance original PUSH EDI at 009E4410; no original calls/globals/relocations"
+    },
+    "fixture": {
+      "allocation_bytes_compared": 8808,
+      "changed_bytes": 39,
+      "untouched_bytes": 8769,
+      "raw_bounds_words": 12,
+      "first_queries": 4,
+      "cache_reuses": 3,
+      "borrowed_list_hits": 3,
+      "selected_nodes_created_and_freed": 32,
+      "cyclic_runs": 8,
+      "backing_allocations_freed": 3,
+      "allocation_failure_requests": 1,
+      "tracked_allocations_remaining": 0,
+      "native_scope": "79-byte constructor-store fragment only",
+      "query_and_cleanup_scope": "existing reconstructed source routines over explicit square inputs"
+    },
+    "source_sha256": {
+      "include/bsp/ship_ai_search_storage.hpp": "ff92df8ce6735c0e3e01ed823d3ee35e1cb1e0d978b8d8054175848c70a245b7",
+      "src/ship_ai_search_storage.cpp": "5fcc7208710274d7ef3523e23cc1ae74d4483225fd1842373d6066e5808f20e4",
+      "include/bsp/ship_ai_avoid_zone_search.hpp": "033b114071d83bd68fcbc917fa9daf0c0cc78b7895431d2df8d46f837d518c17",
+      "src/ship_ai_avoid_zone_search.cpp": "042879872a8373214422eece7f47454486f6cf4a1e77782e19860dad026f15b3",
+      "include/bsp/ship_ai_avoidance_request.hpp": "b65d2df2e38a746a10848fd40ce9544bb397c474fc9abb2987fa587055d07863",
+      "src/ship_ai_avoidance_request.cpp": "da36efd46843f4f6517acccb30e4339c4211c984333442ce9f458fefb6a7feec",
+      "include/bsp/avoid_zone_owner.hpp": "772b2ad89ccefd721e0691cfc0fa441cabba5805a4a117f90acf259798ae37e6",
+      "include/bsp/avoid_zone_clearance.hpp": "9d0a102aae592e82d1c4fe4266b669a8a4596462efa200ba9186a2fdf42ebdd9",
+      "src/avoid_zone_clearance.cpp": "aed0300b3ce94e9be82af1f6d4e7664375f4fd7e48905912f0e40f4a1a1028e4",
+      "src/avoid_zone_manager_queries.cpp": "10f805867eabc7233ae7674d5a7f175196afbf784b2785c2146d8212e270ccae",
+      "include/bsp/avoid_zone_geometry.hpp": "1c4cf03de18493422abb89978aa1a0eae604327a3eb0664e27de6c70a5a4a8a8",
+      "include/bsp/ship_ai_lateral_record.hpp": "8432b1cd3535e9dd00294f7f76d2bc99315accc768bd99f14f595799d57e080e",
+      "src/ship_ai_lateral_record.cpp": "b361d6e24e3dee6c05efe306544fff6cfbd8dd84bff8a8efc10604365f3044ea",
+      "src/geometry_helpers.cpp": "913208132d9532dddcb7fe1aef606d439321ddbca04de65a13b30d828c9e3d84",
+      "local/ship_search_storage_probe.cpp": "5ae6508ec2fe59f1fc1881d49cb78276d009fbd3f13090145565044211931c6e",
+      "local/make_ship_search_probe.py": "b6dc97be39ffd11ae7aa9dfc9d50f3031efaf5a52c175a0ac5a877dd5c25c6fc"
+    },
+    "artifact_manifest": "local/ship_search_storage_manifest.json",
+    "paired_output_sha256": "6ca3309823b12f9f333361c88a88a281df3f3a6fa295c71e0188abcae4a088b4",
+    "fixture_source_sha256": "5ae6508ec2fe59f1fc1881d49cb78276d009fbd3f13090145565044211931c6e",
+    "fixture_binary_sha256": "6803f38c49b87458c6505c2fa7755e3748ff5c46c31bde48543e94eee485feaf",
+    "compiled_bsp_core_sha256": "8c44b89fe82e4f1582f6641c41f4db8f85370a8ba124dce20ee10a9fad693570",
+    "optimized_constructor_audit": "Only 12 intended backing stores; snapshot is MOVUPS bit transfer without arithmetic/conversion. First enabled store is reordered by MSVC; no native instruction timing, concurrent publication or fault-order claim.",
+    "optimized_disassembly_sha256": "aacaa645a6a571aba60ab9c41fcbb742fe3f7ce658783638132f99bdc0aaaa58"
+  },
+  "limits": [
+    "No full composite/navigation/director/brain constructor or destructor, SEH, original CRT failure identity, or live game execution.",
+    "Exact allocation size does not reproduce original heap allocation history or establish the game initial bounds bits.",
+    "Native differential executes only the 79-byte store fragment with explicit ESI/EBX and a balanced return bridge.",
+    "Query/selection/hit/cleanup proof runs existing reconstructed source over explicit valid square fixtures, not original bytes of those functions.",
+    "Raw bounds may carry arbitrary binary32 payloads; special-value preservation is checked without querying them. Query proof uses finite bounds.",
+    "New process APIs rely on MSVC Win32 raw overlays and valid index, callback, alignment, topology and lifetime preconditions."
+  ],
+  "worker_verification_checklist": {
+    "callee_before_contract": "Existing allocator and 004158A0 bodies read; new host class not introduced.",
+    "boundary_before_attribution": "Live proto confirms all six call-site containing bodies; native fragment belongs to 009E4330.",
+    "all_call_sites_before_contract": "Existing consumed allocator/clear contracts reused; no narrowed host method inferred from one call.",
+    "producer_before_layout": "Full constructor listing and allocation receiver chain checked; existing prefix/list types reused with static assertions.",
+    "partial_projection_labelled": "Header/doc/report/fragment ledger explicitly exclude rest of constructor and complete composite lifetime.",
+    "runtime_evidence": "New owner not wired to game by this packet; no frame/gameplay claim. Ignored fixture scope recorded.",
+    "stack_cleanup": "Allocation/free cdecl ADD ESP4 and receiver constructor RET4 recorded; inline PUSH EDI balanced only by fixture bridge.",
+    "register_provenance": "Full 009E4330 listing filtered for ESI and EBX; receiver capture and zero provenance retained.",
+    "lease_only_annotated": "Own files and 009E4401..009E444F fragment only; no consumed functions leased.",
+    "report_evidence": "Six address/native/containing-function call rows; precise range, coverage and corrections supplied."
+  }
+}
