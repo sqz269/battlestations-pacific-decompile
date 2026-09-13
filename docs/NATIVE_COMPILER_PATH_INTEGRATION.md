@@ -269,3 +269,33 @@ body through CBF40A, and exported all five instructions with no gap. Earlier
 checkpoints remain unchanged. Source exception cleanup evidence does not prove
 original FH3 delivery. Full sampler/event/online-manager and compiler closure,
 shader binding/drawing/readback and gameplay remain unproven.
+
+## Publication after concurrent input-tree integration
+
+Twenty more complete normal bodies are reconstructed: three pass-slot setters/
+removal, three descriptor-sampler leaves, eight shader construction/registry
+helpers, and six actual destructor/scalar-delete/renderer-unregister bodies.
+They share the actual wrapper storage, raw+04 atomic, renderer arrays, pooled
+strings, singleton allocation domain and current COM interface. Both pass-slot
+setters now exercise a concrete canonical terminal provider. Eight lifetime
+original/source comparisons use constructor-produced wrappers and real HAL COM
+objects; wrapper acquisitions and companions are cleaned after use.
+
+Default Win32 compilation and both CTests passed at `a50d1fc3`. All29 focused
+fixtures passed at `a50d1fc3` with three unchanged library
+hashes and 256 unchanged runner/transitive fixture inputs.
+Twenty-one reports contain1,674 checked numeric call rows and zero failures.
+Twenty-two names/comments were saved, read back and exported with old values
+retained. The checkpoint is `local/checkpoints/a50d1fc3/native-shader-ownership-default/validation.json` (659 artifacts).
+
+The earlier05e953d4 checkpoint retains the missing-input fixture failure and
+its correction. This later checkpoint follows integration of concurrent native
+input-settings tree changes: the default build and all29 fixtures were rerun
+against the newly built libraries. The earlier checkpoint remains unchanged.
+
+The earlier incomplete CBF400 repair is now superseded: official recreation
+preserved its existing compiler name and comment, saved the complete11-byte
+body through CBF40A, and exported all five instructions with no gap. Earlier
+checkpoints remain unchanged. Source exception cleanup evidence does not prove
+original FH3 delivery. Full sampler/event/online-manager and compiler closure,
+shader binding/drawing/readback and gameplay remain unproven.

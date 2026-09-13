@@ -1,27 +1,27 @@
 {
   "scope": "Actual compiler dependencies and complete shader construction, pass ownership, registry removal and terminal lifetime",
-  "validated_code_commit": "05e953d4f624ca90414567b509a292f1a8cadba3",
+  "validated_code_commit": "a50d1fc3582f1225ec0b1b00a2df3cf9ef7d0084",
   "default_registration": true,
   "default_build": "MSVC Win32 scripts/build.ps1 passed;CTest2/2",
   "checkpoint": {
+    "path": "local/checkpoints/a50d1fc3/native-shader-ownership-default/validation.json",
+    "sha256": "b75284645761ec776964184a6bdb5dcaff338773a8c68d9ad0cf0e160efb413c",
+    "artifacts": 659
+  },
+  "previous_default_checkpoint": {
     "path": "local/checkpoints/05e953d4/native-shader-ownership-default/validation.json",
     "sha256": "5b8490ecccd30753fb92caf80e1d7c63f8124a180e0be98427ec09c867ae545a",
     "artifacts": 688
   },
-  "previous_default_checkpoint": {
-    "path": "local/checkpoints/e2abc28f/native-compiler-source-default/validation.json",
-    "sha256": "d855e5fb33ce5fb8eb4c43449fec09dd45942f2c0092b1c777fd27a134f1a012",
-    "artifacts": 448
-  },
   "fixture_programs": 29,
-  "fixture_origin_commit": "05e953d4f624ca90414567b509a292f1a8cadba3",
+  "fixture_origin_commit": "a50d1fc3582f1225ec0b1b00a2df3cf9ef7d0084",
   "fixture_equivalence_after_metadata_merge": {
     "metadata_only_changed_paths": [],
     "all_three_library_hashes_unchanged": true,
     "all_runner_and_transitive_fixture_input_hashes_unchanged": true,
     "input_count": 256
   },
-  "registered_library_sha256": "c155404e05950eda4dc003309ea9e7a6ea63bc90e8e85b79f2ebeb3f02f28dc1",
+  "registered_library_sha256": "b2b02908638181517219885de701b317f2e8175c5c4dcb9799cc2fca92070452",
   "call_checks": [
     {
       "report": "reports/native_shader_system_fields.json",
@@ -323,25 +323,61 @@
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe",
     "saved_readback_exported_addresses": [
-      "00b20190",
-      "00b39110",
-      "00b347e0",
-      "00b34890",
-      "00b34920",
-      "00b34c70",
-      "00b39880"
+      "00b5eff0",
+      "00b5f080",
+      "00b5f0c0",
+      "00b5f100",
+      "00b44cf0",
+      "00b18fb0",
+      "00b3b280",
+      "00cbf400",
+      "00b5f9b0",
+      "00b5faf0",
+      "00b253e0",
+      "00b25450",
+      "00b22dd0",
+      "00b22e30",
+      "00b289a0",
+      "00b289f0",
+      "00b5f410",
+      "00b5f490",
+      "00b5f6e0",
+      "00b5f700",
+      "00b268a0",
+      "00b268c0"
     ],
     "reconstructed_addresses": [
-      "00b20190",
-      "00b347e0",
-      "00b34890",
-      "00b34920",
-      "00b39110",
-      "00b39880"
+      "00b5eff0",
+      "00b5f080",
+      "00b5f0c0",
+      "00b5f100",
+      "00b44cf0",
+      "00b18fb0",
+      "00b5f9b0",
+      "00b5faf0",
+      "00b253e0",
+      "00b25450",
+      "00b22dd0",
+      "00b22e30",
+      "00b289a0",
+      "00b289f0",
+      "00b5f410",
+      "00b5f490",
+      "00b5f6e0",
+      "00b5f700",
+      "00b268a0",
+      "00b268c0"
     ],
-    "analyzed_producer_defined": [
-      "00b34c70"
-    ]
+    "analyzed_addresses": [
+      "00b3b280"
+    ],
+    "completed_body_repair": {
+      "address": "00cbf400",
+      "end_inclusive": "00cbf40a",
+      "instructions": 5,
+      "gaps": 0,
+      "record": "local/sampler-binding-unwind-recreation.json"
+    }
   },
   "repairs": [
     "B5BD10/B5DF70/B5BB20 post-free flow; B5DF00 full99-byte destructor restored",
