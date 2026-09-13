@@ -22,7 +22,7 @@
       "header": "include/bsp/native_scene_registry_storage_leaves.hpp",
       "original_abi": "ECX ignored; no stack arguments; EAX pointer; RET",
       "native_prototype_evidence": "void* __thiscall fn(void*)",
-      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b82390..00b823a9 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_SCENE_REGISTRY_STORAGE_LEAVES.md; reports/native_scene_registry_storage_leaves.json.",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b82390..00b823a9 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_SCENE_REGISTRY_STORAGE_LEAVES.md; reports/native_scene_registry_storage_leaves.json. Inferred member convention from all observed caller preparations; incoming ECX is unused by the complete body. Exact original source declaration is not recoverable from these bytes alone. Implicit receiver is not an additional stacked argument.",
       "end_exclusive": "00b823aa",
       "module": "native_scene_registry_storage_leaves",
       "ghidra_name": "BSP_SceneRegistry_AllocateSentinel",
@@ -30,12 +30,13 @@
       "existing_body_raw_extension": false,
       "ledger_record_name": "allocate_native_scene_registry_sentinel_00b82390",
       "native_prototype": "void * BSP_SceneRegistry_AllocateSentinel(void)",
-      "native_calling_convention": "__cdecl",
+      "native_calling_convention": "__thiscall",
       "worker_evidence": [
         "docs/NATIVE_SCENE_REGISTRY_STORAGE_LEAVES.md",
         "C:\\Users\\sqz269\\bsp-ba-scene-registry-leaves\\00b82390.asm.txt",
         "C:\\Users\\sqz269\\bsp-ba-scene-registry-leaves\\strict_disasm.txt"
-      ]
+      ],
+      "native_calling_convention_uncertainty": "Inferred member convention from all observed caller preparations; incoming ECX is unused by the complete body. Exact original source declaration is not recoverable from these bytes alone. Implicit receiver is not an additional stacked argument."
     },
     {
       "address": "00b823b0",
@@ -47,7 +48,7 @@
       "header": "include/bsp/native_scene_registry_storage_leaves.hpp",
       "original_abi": "ECX ignored; next/previous/key-source three stack DWORDs; EAX pointer; RET Ch",
       "native_prototype_evidence": "void* __thiscall fn(void*, uint32_t, uint32_t, const void*)",
-      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b823b0..00b823e2 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_SCENE_REGISTRY_STORAGE_LEAVES.md; reports/native_scene_registry_storage_leaves.json.",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b823b0..00b823e2 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_SCENE_REGISTRY_STORAGE_LEAVES.md; reports/native_scene_registry_storage_leaves.json. Inferred member convention from all observed caller preparations; incoming ECX is unused by the complete body. Exact original source declaration is not recoverable from these bytes alone. Implicit receiver is not an additional stacked argument.",
       "end_exclusive": "00b823e3",
       "module": "native_scene_registry_storage_leaves",
       "ghidra_name": "BSP_SceneRegistry_AllocateListNode",
@@ -55,12 +56,13 @@
       "existing_body_raw_extension": false,
       "ledger_record_name": "allocate_native_scene_registry_node_00b823b0",
       "native_prototype": "void * BSP_SceneRegistry_AllocateListNode(unsigned int next, unsigned int previous, void * key_source)",
-      "native_calling_convention": "__stdcall",
+      "native_calling_convention": "__thiscall",
       "worker_evidence": [
         "docs/NATIVE_SCENE_REGISTRY_STORAGE_LEAVES.md",
         "C:\\Users\\sqz269\\bsp-ba-scene-registry-leaves\\00b823b0.asm.txt",
         "C:\\Users\\sqz269\\bsp-ba-scene-registry-leaves\\strict_disasm.txt"
-      ]
+      ],
+      "native_calling_convention_uncertainty": "Inferred member convention from all observed caller preparations; incoming ECX is unused by the complete body. Exact original source declaration is not recoverable from these bytes alone. Implicit receiver is not an additional stacked argument."
     },
     {
       "address": "00b82570",
@@ -308,6 +310,6 @@
     "current_report_call_check": "reports/native_scene_registry_storage_leaves.json: 8 call rows checked, 0 failed",
     "saved_original_signature_readback": true,
     "saved_full_body_ranges": true,
-    "current_signature_audit_count": 6
+    "current_signature_audit_count": 16
   }
 }

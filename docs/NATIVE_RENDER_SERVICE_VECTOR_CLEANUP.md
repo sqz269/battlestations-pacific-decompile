@@ -82,3 +82,11 @@ normalized state bytes and ten event DWORDs. All 195 original parent bytes
 remain except seven declared rel32 operands. The fixture restores its private
 CRT free import and pins code, fixture and library inputs before/after execution.
 Final current-library-only replay follows root registration and integration.
+
+## BA integration checkpoint
+
+The integrator reviewed the complete native body and actual producer evidence,
+saved its original signature and complete stored range in the existing BSP
+project, and registered the source. Current combined validation follows
+separately from the source or worker checks above. No complete owner lifetime,
+original binary replacement or gameplay claim follows from this checkpoint.

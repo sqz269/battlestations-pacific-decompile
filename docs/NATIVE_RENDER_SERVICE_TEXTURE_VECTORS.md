@@ -131,3 +131,11 @@ These routines do not complete B52550, render service startup, raw lifetime
 integration, original binary ABI compatibility, unrestricted access-fault or
 native EH/SEH identity, concurrency, GPU behavior or gameplay. No repository
 tests or broad test framework were added.
+
+## BA integration checkpoint
+
+The integrator reviewed the complete native body and actual producer evidence,
+saved its original signature and complete stored range in the existing BSP
+project, and registered the source. Current combined validation follows
+separately from the source or worker checks above. No complete owner lifetime,
+original binary replacement or gameplay claim follows from this checkpoint.

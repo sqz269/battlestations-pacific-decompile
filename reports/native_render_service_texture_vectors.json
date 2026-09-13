@@ -27,7 +27,13 @@
       "original_abi": "ECX actual raw pointer/count/capacity header; one signed requested DWORD stack argument; RET4; no specified semantic return value",
       "proposed_ghidra_name": "BSP_TextureVector24_Reserve",
       "name_status": "descriptive_hypothesis_not_recovered_symbol",
-      "evidence": "Full fresh live listing and PE bytes after root returning-free repair; native signed/current-load/copy/null-skip/CRT allocation and post-free publication order retained. New C++ interface; ABI/gameplay unproved."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b51fc0..00b5203e over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_VECTORS.md; reports/native_render_service_texture_vectors.json.",
+      "ghidra_name": "BSP_TextureVector24_Reserve",
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "reserve_native_texture_vector24_00b51fc0",
+      "native_prototype": "void BSP_TextureVector24_Reserve(int requested)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": "Full fresh live listing and PE bytes after root returning-free repair; native signed/current-load/copy/null-skip/CRT allocation and post-free publication order retained. New C++ interface; ABI/gameplay unproved."
     },
     {
       "address": "00b52040",
@@ -48,7 +54,13 @@
       "original_abi": "ECX actual raw pointer/count/capacity header; one signed requested DWORD stack argument; RET4; no specified semantic return value",
       "proposed_ghidra_name": "BSP_TextureVector12_Reserve",
       "name_status": "descriptive_hypothesis_not_recovered_symbol",
-      "evidence": "Full fresh live listing and PE bytes after root returning-free repair; native signed/current-load/copy/null-skip/CRT allocation and post-free publication order retained. New C++ interface; ABI/gameplay unproved."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b52040..00b520c1 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_VECTORS.md; reports/native_render_service_texture_vectors.json.",
+      "ghidra_name": "BSP_TextureVector12_Reserve",
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "reserve_native_texture_vector12_00b52040",
+      "native_prototype": "void BSP_TextureVector12_Reserve(int requested)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": "Full fresh live listing and PE bytes after root returning-free repair; native signed/current-load/copy/null-skip/CRT allocation and post-free publication order retained. New C++ interface; ABI/gameplay unproved."
     },
     {
       "address": "00b52170",
@@ -69,7 +81,13 @@
       "original_abi": "ECX actual raw pointer/count/capacity header; one signed requested DWORD stack argument; RET4; no specified semantic return value",
       "proposed_ghidra_name": "BSP_TextureVector24_Resize",
       "name_status": "descriptive_hypothesis_not_recovered_symbol",
-      "evidence": "Full fresh live listing and PE bytes after root returning-free repair; native signed/current-load/copy/null-skip/CRT allocation and post-free publication order retained. New C++ interface; ABI/gameplay unproved."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b52170..00b521df over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_VECTORS.md; reports/native_render_service_texture_vectors.json.",
+      "ghidra_name": "BSP_TextureVector24_Resize",
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "resize_native_texture_vector24_00b52170",
+      "native_prototype": "void BSP_TextureVector24_Resize(int requested)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": "Full fresh live listing and PE bytes after root returning-free repair; native signed/current-load/copy/null-skip/CRT allocation and post-free publication order retained. New C++ interface; ABI/gameplay unproved."
     },
     {
       "address": "00b521e0",
@@ -90,7 +108,13 @@
       "original_abi": "ECX actual raw pointer/count/capacity header; one signed requested DWORD stack argument; RET4; no specified semantic return value",
       "proposed_ghidra_name": "BSP_TextureVector12_Resize",
       "name_status": "descriptive_hypothesis_not_recovered_symbol",
-      "evidence": "Full fresh live listing and PE bytes after root returning-free repair; native signed/current-load/copy/null-skip/CRT allocation and post-free publication order retained. New C++ interface; ABI/gameplay unproved."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b521e0..00b52236 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_VECTORS.md; reports/native_render_service_texture_vectors.json.",
+      "ghidra_name": "BSP_TextureVector12_Resize",
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "resize_native_texture_vector12_00b521e0",
+      "native_prototype": "void BSP_TextureVector12_Resize(int requested)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": "Full fresh live listing and PE bytes after root returning-free repair; native signed/current-load/copy/null-skip/CRT allocation and post-free publication order retained. New C++ interface; ABI/gameplay unproved."
     },
     {
       "address": "00b523c0",
@@ -111,7 +135,13 @@
       "original_abi": "ECX actual raw pointer/count/capacity header; zero stack arguments; RET; no specified semantic return value",
       "proposed_ghidra_name": "BSP_TextureVector24_Destroy",
       "name_status": "descriptive_hypothesis_not_recovered_symbol",
-      "evidence": "Full fresh live listing and PE bytes after root returning-free repair; native signed/current-load/copy/null-skip/CRT allocation and post-free publication order retained. New C++ interface; ABI/gameplay unproved."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b523c0..00b523d6 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_VECTORS.md; reports/native_render_service_texture_vectors.json.",
+      "ghidra_name": "BSP_TextureVector24_Destroy",
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "destroy_native_texture_vector24_00b523c0",
+      "native_prototype": "void BSP_TextureVector24_Destroy(void)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": "Full fresh live listing and PE bytes after root returning-free repair; native signed/current-load/copy/null-skip/CRT allocation and post-free publication order retained. New C++ interface; ABI/gameplay unproved."
     },
     {
       "address": "00b523e0",
@@ -132,7 +162,13 @@
       "original_abi": "ECX actual raw pointer/count/capacity header; zero stack arguments; RET; no specified semantic return value",
       "proposed_ghidra_name": "BSP_TextureVector12_Destroy",
       "name_status": "descriptive_hypothesis_not_recovered_symbol",
-      "evidence": "Full fresh live listing and PE bytes after root returning-free repair; native signed/current-load/copy/null-skip/CRT allocation and post-free publication order retained. New C++ interface; ABI/gameplay unproved."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b523e0..00b523f6 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_VECTORS.md; reports/native_render_service_texture_vectors.json.",
+      "ghidra_name": "BSP_TextureVector12_Destroy",
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "destroy_native_texture_vector12_00b523e0",
+      "native_prototype": "void BSP_TextureVector12_Destroy(void)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": "Full fresh live listing and PE bytes after root returning-free repair; native signed/current-load/copy/null-skip/CRT allocation and post-free publication order retained. New C++ interface; ABI/gameplay unproved."
     }
   ],
   "files": [
@@ -660,5 +696,13 @@
     "uncompressed_bytes": 56345546,
     "verified_all_members": true,
     "manifest": "C:\\Users\\sqz269\\bsp-ba-texture-vectors\\worker_capture_manifest.json"
+  },
+  "integration_ba_review": {
+    "combined_validation": "pending current combined build and applicable current-library replay",
+    "game_validated": false,
+    "current_report_call_check": "reports/native_render_service_texture_vectors.json: 29 call rows checked, 0 failed",
+    "saved_original_signature_readback": true,
+    "saved_full_body_ranges": true,
+    "current_signature_audit_count": 16
   }
 }

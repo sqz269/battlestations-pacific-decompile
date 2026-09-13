@@ -22,7 +22,18 @@
       "original_abi": "ECX=actual vector; no stack arguments; plain RET; no semantic result.",
       "is_forwarding_thunk": false,
       "new_full_function_entry": true,
-      "evidence": "Complete raw storage, current-pool provider composition and full refreshed listing; descriptive names are hypotheses, native binary ABI and gameplay remain unproved."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b14500..00b14548 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_RENDER_SERVICE_VECTOR_CLEANUP.md; reports/native_render_service_vector_cleanup.json.",
+      "end_exclusive": "00b14549",
+      "module": "native_render_service_vector_cleanup",
+      "source": "src/native_render_service_vector_cleanup.cpp",
+      "header": "include/bsp/native_render_service_vector_cleanup.hpp",
+      "ghidra_name": "BSP_RendererRecordVector_DestroyStorage",
+      "new_native_body": true,
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "destroy_native_renderer_record_vector_00b14500",
+      "native_prototype": "void BSP_RendererRecordVector_DestroyStorage(void)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": "Complete raw storage, current-pool provider composition and full refreshed listing; descriptive names are hypotheses, native binary ABI and gameplay remain unproved."
     },
     {
       "address": "00b14590",
@@ -36,7 +47,18 @@
       "original_abi": "ECX=actual vector; no stack arguments; tail JMP B14500, eventual plain RET; no semantic result.",
       "is_forwarding_thunk": true,
       "new_full_function_entry": true,
-      "evidence": "Complete raw storage, current-pool provider composition and full refreshed listing; descriptive names are hypotheses, native binary ABI and gameplay remain unproved."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b14590..00b14594 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_RENDER_SERVICE_VECTOR_CLEANUP.md; reports/native_render_service_vector_cleanup.json.",
+      "end_exclusive": "00b14595",
+      "module": "native_render_service_vector_cleanup",
+      "source": "src/native_render_service_vector_cleanup.cpp",
+      "header": "include/bsp/native_render_service_vector_cleanup.hpp",
+      "ghidra_name": "BSP_RendererRecordVector_DestroyStorageThunk",
+      "new_native_body": true,
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "destroy_native_renderer_record_vector_thunk_00b14590",
+      "native_prototype": "void BSP_RendererRecordVector_DestroyStorageThunk(void)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": "Complete raw storage, current-pool provider composition and full refreshed listing; descriptive names are hypotheses, native binary ABI and gameplay remain unproved."
     },
     {
       "address": "004324a0",
@@ -50,7 +72,18 @@
       "original_abi": "ECX=actual vector; no stack arguments; plain RET; no semantic result.",
       "is_forwarding_thunk": false,
       "new_full_function_entry": true,
-      "evidence": "Complete raw storage, current-pool provider composition and full refreshed listing; descriptive names are hypotheses, native binary ABI and gameplay remain unproved."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 004324a0..004324dc over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_RENDER_SERVICE_VECTOR_CLEANUP.md; reports/native_render_service_vector_cleanup.json.",
+      "end_exclusive": "004324dd",
+      "module": "native_render_service_vector_cleanup",
+      "source": "src/native_render_service_vector_cleanup.cpp",
+      "header": "include/bsp/native_render_service_vector_cleanup.hpp",
+      "ghidra_name": "BSP_NativeStringVector_DestroyStorage",
+      "new_native_body": true,
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "destroy_native_string_header_vector_004324a0",
+      "native_prototype": "void BSP_NativeStringVector_DestroyStorage(void)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": "Complete raw storage, current-pool provider composition and full refreshed listing; descriptive names are hypotheses, native binary ABI and gameplay remain unproved."
     },
     {
       "address": "00432050",
@@ -64,7 +97,18 @@
       "original_abi": "ECX=begin; EDX=end; two unused DWORD stack arguments; RET8; no semantic result.",
       "is_forwarding_thunk": false,
       "new_full_function_entry": true,
-      "evidence": "Complete raw storage, current-pool provider composition and full refreshed listing; descriptive names are hypotheses, native binary ABI and gameplay remain unproved."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00432050..00432087 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_RENDER_SERVICE_VECTOR_CLEANUP.md; reports/native_render_service_vector_cleanup.json.",
+      "end_exclusive": "00432088",
+      "module": "native_render_service_vector_cleanup",
+      "source": "src/native_render_service_vector_cleanup.cpp",
+      "header": "include/bsp/native_render_service_vector_cleanup.hpp",
+      "ghidra_name": "STL_NativeStringRange_Destroy_00432050",
+      "new_native_body": true,
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "destroy_native_string_header_range_00432050",
+      "native_prototype": "void STL_NativeStringRange_Destroy_00432050(void * begin, void * end, unsigned int unused1, unsigned int unused2)",
+      "native_calling_convention": "__fastcall",
+      "worker_evidence": "Complete raw storage, current-pool provider composition and full refreshed listing; descriptive names are hypotheses, native binary ABI and gameplay remain unproved."
     }
   ],
   "normal_function_entries": 4,
@@ -289,5 +333,13 @@
     "manifest": "C:\\Users\\sqz269\\bsp-ba-service-vector-cleanup\\worker_capture_manifest.json",
     "original_capture_immutable": true,
     "includes": "All loose fixture code/bytes/state/event/log evidence, native listings/readiness/repair captures, source/header/build-input snapshots and the three exact libraries. Archive report snapshot precedes adding this final archive hash to the tracked report."
+  },
+  "integration_ba_review": {
+    "combined_validation": "pending current combined build and applicable current-library replay",
+    "game_validated": false,
+    "current_report_call_check": "reports/native_render_service_vector_cleanup.json: 7 call rows checked, 0 failed",
+    "saved_original_signature_readback": true,
+    "saved_full_body_ranges": true,
+    "current_signature_audit_count": 16
   }
 }

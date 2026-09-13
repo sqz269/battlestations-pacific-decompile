@@ -114,6 +114,19 @@ incoming calls. No frame-path/gameplay claim is made: the fixture establishes th
 bounded leaf behavior, not executable reachability, registry construction/growth/
 erasure/teardown, an ABI-compatible game replacement, or a runnable game rebuild.
 
+## BA caller-based convention review
+
+All four direct allocator caller preparations supply a list receiver in ECX:
+B82B53 retains the entry owner, B8362D explicitly moves registry+4 into ECX,
+B83366 reloads its saved receiver, and B83B21 reloads the saved registry+4
+pointer with the stack displacement adjusted for the preceding push. The
+complete B82390 and B823B0 bodies do not consume that incoming value.
+Their analysis signatures therefore use inferred `__thiscall` with an unused
+implicit receiver. The exact original source declaration remains uncertain;
+the observed register inputs, three explicit stack slots for B823B0, EAX
+return and RET cleanup are the stronger machine-level facts. The receiver
+does not add a fourth stack argument. No source or fixture ABI changed.
+
 ## BA integration checkpoint
 
 The integrator reviewed the complete native body and actual producer evidence,
