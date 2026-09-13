@@ -112,6 +112,17 @@
     "runtime": {
       "manifest_sha256": "4dc9a05c1610e6b0294d10f4cbb39661bcb077250da33bd386e70bf1f4936072",
       "retained": "local/native-ax-worker-deliveries/runtime_review/lab"
+    },
+    "promotion_hook": {
+      "retained": "local/native-ax-worker-deliveries/promotion_hook_review/lab",
+      "seal_sha256": "58453c80cedd4ccb2b4437cdcbf29e10fbfba68d75c882742b02c5a34dae1621",
+      "scope": "AX disables the shared manual dirty-shard ref/working-copy fallback; peer changes use ordinary Git FF and bounded wait/merge/gate retry. Prepare-only correctly reports skipped build.",
+      "configuration_after_review": "Only selected attempt paths were updated to the three successful post-main replays; full public gate accepted all four families."
+    },
+    "validator_final": {
+      "retained": "local/native-ax-worker-deliveries/validator_review_final/lab",
+      "manifest_sha256": "dc2fd5e0a830b2763fd52911945822e5aab7d229fa39b40e042ee7084a29d52e",
+      "scope": "Final archive adapter and all-four-family public gate independently accepted; frozen files, current pins, build records and artifacts rehashed."
     }
   },
   "ghidra": {
@@ -137,7 +148,9 @@
     "Directory integrated attempt01: missing replay-support evidence directory, before execution; unchanged84-file copy repaired support for attempt02.",
     "Archive attempts01/02: probe-only SDK overloaded InterlockedDecrement address-taking errors, before execution.",
     "Archive attempts03/04: full archive comparison and early opener cleanup passed; unused auxiliary lifetime context rejected empty callbacks before runtime operation.",
-    "Archive attempt05: failure-only callbacks satisfy the unused auxiliary constructor; empty/unpublished state verified. No production source change was needed."
+    "Archive attempt05: failure-only callbacks satisfy the unused auxiliary constructor; empty/unpublished state verified. No production source change was needed.",
+    "Archive integrated attempt06: copied replay support omitted README.md; stopped before execution. Unchanged sealed README restored for a fresh attempt.",
+    "Archive integrated attempt07: sealed source-lab read-only attributes reached working driver copies, blocking seal.py recopy before execution. Only independent working-copy attributes were changed; all script bytes and evidence attempts preserved."
   ],
   "limits": [
     "New C++ service interfaces over actual storage; original FH3/SEH, arbitrary native stack aliases and simultaneous cleanup failures remain unproven.",
@@ -164,5 +177,52 @@
     "result": "local/native-ax-validator/result01.json",
     "sha256": "d84d90fa549adfd02c8eef673d3115e00219bf2928c1301f5bd99617cd29c64a",
     "scope": "Historical all-four-family public gate pass at the fixture source HEAD; publication repeats sealed strict build and gate for the final integration HEAD."
+  },
+  "post_main_requalification": {
+    "head": "3477213b99319a55ca6bd0b36fd40c815021d002",
+    "trigger": "Concurrent main changed include/bsp/gui_widget_scene.hpp, an actual dependent header in directory/provider/archive fixtures.",
+    "rejection": "local/native-ax-moving-main-input-rejection01.json",
+    "build_proof": "local/native-ax-build02-proof.json",
+    "build_proof_sha256": "c0ba0670428308968e221ea76f9f0f930c90d50eb645dc0c9e36b6eb9bbedb32",
+    "build_log": "local/native-ax-integrated-build02.log",
+    "strict_win32_and_two_ctests": "passed",
+    "bsp_core_sha256": "ee2771bb708d5cf3bd052b8ee89d8044fea12d32c952e30302e06a701bc9abf3",
+    "selected_attempts": [
+      {
+        "attempt": "local/native-ax-integrated/vector/attempt01",
+        "before_sha256": "09a44fe91b2e6b192b84f03e7a46ccb4567debc5af80b70c494c4eaaca95608c",
+        "after_sha256": "9d5eee6ca5ee4f22796cdbd0ecf345cb6d932a433c1b4b7a5afcbf19e96ca232"
+      },
+      {
+        "attempt": "local/native-ax-integrated/directory/attempt03",
+        "before_sha256": "3b66c18a9dc372dab7bbcb777108e84ca20b300d2880e32f31c210e003448885",
+        "after_sha256": "77cc032df4c65548a7ac8021568e8311752a92f41ee4dc63b690d98f143ea6de"
+      },
+      {
+        "attempt": "local/native-ax-integrated/provider/attempt02",
+        "before_sha256": "ed9b24b159f7f30566895cfe386b88f0acb97ef9aca8fce5bf9268cb692b78da",
+        "after_sha256": "8992b37d446df47776c081e2c41721277eba6cacd8855e9fc6004dd8142e63e5"
+      },
+      {
+        "attempt": "local/native-ax-integrated/archive/attempt08",
+        "before_sha256": "ddbefc080aaa947b2c53087043243a322568bf5cfe15172b13f2a3a90cb18dbe",
+        "after_sha256": "6577b979244e3debb20dc890fad9c75ed04029a6c839729b68f48650708eaffd"
+      }
+    ],
+    "replayed_families": [
+      "directory",
+      "provider",
+      "archive"
+    ],
+    "vector_requalified_through_unchanged_current_tested_input_and_member_hashes": true,
+    "comparisons": 19,
+    "checks": 7111,
+    "source_only_checks": 6,
+    "gate": "local/native-ax-post-main-validation01.json",
+    "gate_sha256": "0ec616e1c56447709df4461cfa82d4c7b866035c74d09592c6ad350200671e5f",
+    "gate_current_input_pins": 533,
+    "gate_unique_linked_objects": 155,
+    "gate_frozen_files_rehashed": 1814,
+    "final_publication_rule": "Every changed integration HEAD repeats sealed strict build and immutable four-family preparation/validation before ordinary Git fast-forward."
   }
 }

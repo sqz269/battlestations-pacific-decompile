@@ -59,3 +59,11 @@ Exact addresses, ABIs, Ghidra repairs, source boundaries, fixture pins and
 promotion requirements are retained in `reports/native_ax_integration.json`
 and the five packet reports it references. Saved Ghidra annotations preserve
 prior comments and mark descriptive names as hypotheses.
+
+After merging concurrent main at `3477213b`, an actual dependent GUI header
+changed. Directory, provider and archive fixtures were relinked and replayed;
+the vector fixture retained exact current input/member parity. The merged
+strict build, both CTests and four-family gate passed with the same comparison
+and check counts. Later promotion HEADs repeat the build and gate. AX waits
+for dirty peer-owned files to be committed and uses ordinary Git fast-forward
+checks; it does not use the shared helper's manual dirty-shard fallback.
