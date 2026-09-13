@@ -1,0 +1,387 @@
+{
+  "packet": "orch3_instance_geometry_au",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00b4c8d0",
+      "end_inclusive": "00b4caca",
+      "end_exclusive": "00b4cacb",
+      "final_instruction_length": 3,
+      "native_byte_count": 507,
+      "native_sha256": "446937faa0653c131dec369fdd8679d392949a4356e61018c3bf01bfae68ac06",
+      "cpp_symbol": "create_native_instance_geometry_00b4c8d0",
+      "ghidra_name": "BSP_InstanceGeometry_CreateGeneratedModel",
+      "previous_ghidra_name": "BSP_InstanceGeometry_CreateGeneratedModel",
+      "original_abi": "ECX native8h name header; EDX generator; stack actual source mesh and selected section; EAX same newly constructed actual model; RET8.",
+      "source": "src/native_instance_geometry.cpp",
+      "header": "include/bsp/native_instance_geometry.hpp",
+      "coverage": "complete_normal_actual_owner_composition",
+      "status": "reconstructed_build_tested_original_composition_fixture_tested",
+      "evidence": "Complete principal native body; actual canonical owner composition. Installed/live byte equality and original/current-source fixture. Constructor original callees replay current native library bodies; native FH3/SEH and gameplay are unproven. Evidence: docs/NATIVE_INSTANCE_GEOMETRY.md; reports/native_instance_geometry.json. Names are descriptive hypotheses; new C++ ABI."
+    },
+    {
+      "address": "00b556b0",
+      "end_inclusive": "00b556b3",
+      "end_exclusive": "00b556b4",
+      "final_instruction_length": 1,
+      "native_byte_count": 4,
+      "native_sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62",
+      "cpp_symbol": "native_instance_generator_declaration_00b556b0",
+      "ghidra_name": "BSP_InstanceGenerator_GetInstanceDeclaration",
+      "previous_ghidra_name": "BSP_InstanceGenerator_GetInstanceDeclaration",
+      "original_abi": "ECX actual generator; EAX raw generator+10; RET.",
+      "source": "src/native_instance_geometry.cpp",
+      "header": "include/bsp/native_instance_geometry.hpp",
+      "coverage": "complete",
+      "status": "reconstructed_build_tested_original_composition_fixture_tested",
+      "evidence": "Complete principal native body; actual canonical owner composition. Installed/live byte equality and original/current-source fixture. Constructor original callees replay current native library bodies; native FH3/SEH and gameplay are unproven. Evidence: docs/NATIVE_INSTANCE_GEOMETRY.md; reports/native_instance_geometry.json. Names are descriptive hypotheses; new C++ ABI."
+    },
+    {
+      "address": "00b556c0",
+      "end_inclusive": "00b556c3",
+      "end_exclusive": "00b556c4",
+      "final_instruction_length": 1,
+      "native_byte_count": 4,
+      "native_sha256": "01d3abacb68aac3537badfe563d0e21d0244fb61db1d805bcef8f455407fad96",
+      "cpp_symbol": "native_instance_generator_layout_00b556c0",
+      "ghidra_name": "BSP_InstanceGenerator_GetCombinedLayout",
+      "previous_ghidra_name": "BSP_InstanceGenerator_GetCombinedLayout",
+      "original_abi": "ECX actual generator; EAX raw generator+14; RET.",
+      "source": "src/native_instance_geometry.cpp",
+      "header": "include/bsp/native_instance_geometry.hpp",
+      "coverage": "complete",
+      "status": "reconstructed_build_tested_original_composition_fixture_tested",
+      "evidence": "Complete principal native body; actual canonical owner composition. Installed/live byte equality and original/current-source fixture. Constructor original callees replay current native library bodies; native FH3/SEH and gameplay are unproven. Evidence: docs/NATIVE_INSTANCE_GEOMETRY.md; reports/native_instance_geometry.json. Names are descriptive hypotheses; new C++ ABI."
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "00b4c8f9",
+      "native": "00b74eb0",
+      "function": "00b4c8d0",
+      "contract": "existing reconstructed actual owner body inspected"
+    },
+    {
+      "address": "00b4c90f",
+      "native": "00b75030",
+      "function": "00b4c8d0",
+      "contract": "existing reconstructed actual owner body inspected"
+    },
+    {
+      "address": "00b4c92a",
+      "native": "00b73b60",
+      "function": "00b4c8d0",
+      "contract": "existing reconstructed actual owner body inspected"
+    },
+    {
+      "address": "00b4c941",
+      "native": "00b73d70",
+      "function": "00b4c8d0",
+      "contract": "existing reconstructed actual owner body inspected"
+    },
+    {
+      "address": "00b4c966",
+      "native": "00b75170",
+      "function": "00b4c8d0",
+      "contract": "existing reconstructed actual owner body inspected"
+    },
+    {
+      "address": "00b4c975",
+      "native": "00b556b0",
+      "function": "00b4c8d0",
+      "contract": "existing reconstructed actual owner body inspected"
+    },
+    {
+      "address": "00b4c997",
+      "native": "00b73bb0",
+      "function": "00b4c8d0",
+      "contract": "existing reconstructed actual owner body inspected"
+    },
+    {
+      "address": "00b4c9a1",
+      "native": "00b73bb0",
+      "function": "00b4c8d0",
+      "contract": "existing reconstructed actual owner body inspected"
+    },
+    {
+      "address": "00b4c9c8",
+      "native": "00b18780",
+      "function": "00b4c8d0",
+      "contract": "existing reconstructed actual owner body inspected"
+    },
+    {
+      "address": "00b4c9e3",
+      "native": "00b18b60",
+      "function": "00b4c8d0",
+      "contract": "existing reconstructed actual owner body inspected"
+    },
+    {
+      "address": "00b4ca00",
+      "native": "00b73b70",
+      "function": "00b4c8d0",
+      "contract": "existing reconstructed actual owner body inspected"
+    },
+    {
+      "address": "00b4ca05",
+      "native": "00533fa0",
+      "function": "00b4c8d0",
+      "contract": "existing reconstructed actual owner body inspected"
+    },
+    {
+      "address": "00b4ca2d",
+      "native": "00b864c0",
+      "function": "00b4c8d0",
+      "contract": "existing reconstructed actual owner body inspected"
+    },
+    {
+      "address": "00b4ca35",
+      "native": "00b73c60",
+      "function": "00b4c8d0",
+      "contract": "existing reconstructed actual owner body inspected"
+    },
+    {
+      "address": "00b4ca3e",
+      "native": "00b73260",
+      "function": "00b4c8d0",
+      "contract": "existing reconstructed actual owner body inspected"
+    },
+    {
+      "address": "00b4ca46",
+      "native": "00b85b80",
+      "function": "00b4c8d0",
+      "contract": "existing reconstructed actual owner body inspected"
+    },
+    {
+      "address": "00b4ca4f",
+      "native": "00b73260",
+      "function": "00b4c8d0",
+      "contract": "existing reconstructed actual owner body inspected"
+    },
+    {
+      "address": "00b4ca57",
+      "native": "00b85b80",
+      "function": "00b4c8d0",
+      "contract": "existing reconstructed actual owner body inspected"
+    },
+    {
+      "address": "00b4ca60",
+      "native": "00b556c0",
+      "function": "00b4c8d0",
+      "contract": "existing reconstructed actual owner body inspected"
+    },
+    {
+      "address": "00b4ca68",
+      "native": "00b86650",
+      "function": "00b4c8d0",
+      "contract": "existing reconstructed actual owner body inspected"
+    },
+    {
+      "address": "00b4c987",
+      "native": "00b287c0",
+      "function": "00b4c8d0",
+      "contract": "current D5F0A8 renderer5C; count0 flags1000 raw declaration; explicit profile mapping to real factory"
+    },
+    {
+      "address": "00b4c9b1",
+      "native": "InterlockedDecrement through CE2220",
+      "function": "00b4c8d0",
+      "contract": "decrement actual+04; current canonical virtual0 only at zero"
+    },
+    {
+      "address": "00b4ca7b",
+      "native": "InterlockedDecrement through CE2220",
+      "function": "00b4c8d0",
+      "contract": "decrement actual+04; current canonical virtual0 only at zero"
+    },
+    {
+      "address": "00b4ca8e",
+      "native": "InterlockedDecrement through CE2220",
+      "function": "00b4c8d0",
+      "contract": "decrement actual+04; current canonical virtual0 only at zero"
+    },
+    {
+      "address": "00b4caa4",
+      "native": "InterlockedDecrement through CE2220",
+      "function": "00b4c8d0",
+      "contract": "decrement actual+04; current canonical virtual0 only at zero"
+    },
+    {
+      "address": "00b4c9c1",
+      "native": "CURRENT actual owner virtual0",
+      "function": "00b4c8d0",
+      "contract": "resolve exact canonical raw owner only after actual+04 reaches zero"
+    },
+    {
+      "address": "00b4ca88",
+      "native": "CURRENT actual owner virtual0",
+      "function": "00b4c8d0",
+      "contract": "resolve exact canonical raw owner only after actual+04 reaches zero"
+    },
+    {
+      "address": "00b4ca9a",
+      "native": "CURRENT actual owner virtual0",
+      "function": "00b4c8d0",
+      "contract": "resolve exact canonical raw owner only after actual+04 reaches zero"
+    },
+    {
+      "address": "00b4cab0",
+      "native": "CURRENT actual owner virtual0",
+      "function": "00b4c8d0",
+      "contract": "resolve exact canonical raw owner only after actual+04 reaches zero"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Existing GENERATED_INSTANCE_GEOMETRY semantic wrapper returns typed geometry and requires supplied model/material clone.",
+      "evidence": "B4C8D0 complete listing, existing native owners,274-DWORD original/current-source composition replay.",
+      "is": "Separate native-instance source allocates and returns the real Model; composes actual mesh/section/material/logical stream bodies and canonical +04 owners."
+    },
+    {
+      "was": "Ghidra one-argument pseudocode treats selected section/source mesh as locals and reports the wrong return register.",
+      "evidence": "B4C8EB/ED, B4C989, B4C9EE, B4CAB6, B4CAC8; complete174-instruction listing.",
+      "is": "ECX=name, EDX=generator, stack mesh/section; model EAX; RET8."
+    },
+    {
+      "was": "Early proposed API message mistakenly stated getters+1C/+20.",
+      "evidence": "Both complete four-byte original bodies; B55B20 producer; corrected before implementation.",
+      "is": "B556B0 reads+10 and B556C0 reads+14."
+    }
+  ],
+  "native_unwind": {
+    "descriptor": "00df8600",
+    "table": "00df85e8",
+    "states": [
+      {
+        "state": 0,
+        "previous_state": -1,
+        "funclet": "00cbfa80",
+        "tail_target": "00b748c0",
+        "operation": "return captured raw Model allocation"
+      },
+      {
+        "state": 1,
+        "previous_state": -1,
+        "funclet": "00cbfa88",
+        "tail_target": "00b72f70",
+        "operation": "return captured raw mesh allocation"
+      },
+      {
+        "state": 2,
+        "previous_state": -1,
+        "funclet": "00cbfa90",
+        "tail_target": "00b17d70",
+        "operation": "return captured raw material allocation"
+      }
+    ],
+    "coverage": "static actual allocation cleanup composition; no native FH3/SEH runtime claim",
+    "completed_object_rollback": false
+  },
+  "verification": {
+    "live_disk_spans": [
+      {
+        "address": "00b4c8d0",
+        "byte_count": 507,
+        "sha256": "446937faa0653c131dec369fdd8679d392949a4356e61018c3bf01bfae68ac06",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b556b0",
+        "byte_count": 4,
+        "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b556c0",
+        "byte_count": 4,
+        "sha256": "01d3abacb68aac3537badfe563d0e21d0244fb61db1d805bcef8f455407fad96",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00cbfa80",
+        "byte_count": 34,
+        "sha256": "d3f8e8f284dafbd7f84bd1667252a25285ef9b44535cc2da8b1366ae7ca30b62",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00df85e8",
+        "byte_count": 24,
+        "sha256": "6289a78fde400226cebb6329a4ec291b70675aad89afefb32ae468611d0fd8b8",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00df8600",
+        "byte_count": 36,
+        "sha256": "26e05335e61f3938d63548e450edec77e5013219f1c7c420d9dddef74e6e68a1",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00d5f104",
+        "byte_count": 4,
+        "sha256": "2928cfb7cab4a39712fdeb4d6806d47ba1b1669798ffc67542f574883bbf6175",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00d7a260",
+        "byte_count": 4,
+        "sha256": "c68830a25204a09f8e77aada6bc5807f607cccaaa0ebb2a7122d317584478a8b",
+        "live_disk_equal": true
+      }
+    ],
+    "flow": {
+      "listed_instructions": 174,
+      "gaps": 0,
+      "final_ret_address": "00b4cac8",
+      "final_ret_length": 3
+    },
+    "source_compile": "PASS MSVC14.51.36231 Win32 /MD /W4 /WX /fp:strict",
+    "existing_build": "PASS scripts/build.ps1 Release;1/1 existing reconstructed_math test",
+    "fixture": {
+      "status": "PASS",
+      "original_body_bytes": 507,
+      "normalized_dwords": 274,
+      "original_getters": 2,
+      "actual_owner_final_release": "Model/mesh/section/material/generated stream creators retired; borrowed source/declaration/layout/physical references restored",
+      "device": "real hidden D3D9 HAL; real16MiB DEFAULT shared VB; real combined COM declaration",
+      "external_callees": "ABI thunks to current-library native owner bodies; not independently differentiated here",
+      "initial_link": "new source object plus freshly built worktree bsp_core.lib and current bundled Lua/zlib libraries",
+      "current_library_only_replay": "available via build_probe.ps1 -RepositoryRoot <integrated checkout> -CurrentLibraryOnly; integrator must run after CMake integration",
+      "secondary_registry": "One observed raw append per run; compare delta because existing B4B5D0 removes primary/physical registrations but leaves secondary19B0 raw entries",
+      "fixture_inputs": "Explicit raw CPU declaration arrays, null source index, null material effect/textures, initialized borrowed hardware-layout identity with real COM declaration; producer/lifetimes not independently proved"
+    },
+    "report_call_check": "PASS21 rows,0 failed;20 direct callees checked; current renderer5C mapping is assembly/profile evidence, not resolved by the checker;8 actual import/current-terminal rows explicitly indirect"
+  },
+  "proof_limits": [
+    "New C++ interfaces, not original detour ABI.",
+    "Complete normal constructor composition; corrupt objects, null-allocation access violations, native FH3/SEH and host callback allocation failure parity not established.",
+    "No game render submission, visible scene or gameplay validation.",
+    "Actual renderer profile must be current D5F0A8/B287C0; real existing owner/string/sentinel domains and device services required.",
+    "Canonical preparation/registration callbacks are host bookkeeping only and remain integration responsibilities."
+  ],
+  "resources": {
+    "directory": "local/native_instance_geometry",
+    "required": [
+      "runtime.hpp",
+      "probe.cpp",
+      "native_bytes.hpp",
+      "profiles.hpp",
+      "capture.py",
+      "capture.json",
+      "build_probe.ps1"
+    ],
+    "commands": [
+      "python local/native_instance_geometry/capture.py",
+      "./local/native_instance_geometry/compile.ps1",
+      "./scripts/build.ps1",
+      "./local/native_instance_geometry/build_probe.ps1",
+      "./local/native_instance_geometry/build_probe.ps1 -RepositoryRoot <integrated checkout> -CurrentLibraryOnly"
+    ],
+    "logs": [
+      "local/native_instance_geometry/build.log",
+      "local/native_instance_geometry/probe.log"
+    ]
+  },
+  "ghidra_mutations": false,
+  "ledger_mutations": false
+}
